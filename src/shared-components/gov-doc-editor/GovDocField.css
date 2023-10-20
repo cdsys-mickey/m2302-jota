@@ -1,0 +1,32 @@
+.item-wrapper {
+	display: flex
+}
+
+.item-bullet {
+	display: block;
+}
+
+.item-text {
+	display: flex;
+	flex: 1;
+}
+
+.item-text span[data-slate-node="text"] {
+	padding-left: 1px;
+}
+
+.item-lvl-1{
+	margin-left: 0;
+}
+.item-lvl-2{
+	margin-left: 0;
+}
+.item-lvl-3{
+	margin-left: 32px;
+}
+.item-lvl-4{
+	margin-left: 48px;
+}
+.item-lvl-5{
+	margin-left: 80px;
+}

@@ -1,0 +1,184 @@
+import { useCallback } from "react";
+
+import axios from "axios";
+import HttpStatus from "@/shared-classes/HttpStatus";
+import querystring from "query-string";
+import WebApis from "@/shared-modules/web-apis";
+
+const DEFAULT_HEADERS = {};
+
+const DEFAULT_JSON_HEADERS = {
+	"Content-Type": "application/json",
+};
+
+const DEFAULT_FORM_HEADERS = {
+	"Content-Type": "multipart/form-data",
+};
+
+/**
+ * 呼叫 Web-API,
+ * createdAt: 22.12.23
+ */
+export const useWebApi = (props) => {
+	const {
+		baseUrl = import.meta.env.VITE_URL_API || "/",
+		stacktrace = false,
+		mode = "json",
+	} = props || {};
+
+	const getUrl = useCallback(
+		(relativePath, params) => {
+			if (!baseUrl) {
+				console.error("baseUrl and REACT_APP_URL_API are both empty");
+				return;
+			}
+			// 應保留彈性, 不包含 PUBLIC_URL
+
+			let result = `${baseUrl.substring(0, 1) === "/" ? "" : "/"}${
+				baseUrl.substring(baseUrl.length - 1) === "/"
+					? `${baseUrl.substring(0, baseUrl.length - 1)}`
+					: baseUrl
+			}/${
+				relativePath.substring(0, 1) === "/"
+					? relativePath.substring(1)
+					: relativePath
+			}`;
+
+			if (params) {
+				result += "?" + querystring.stringify(params);
+			}
+
+			return result;
+		},
+		[baseUrl]
+	);
+
+	// const getErrorFromPayload = useCallback(
+	// 	(payload) => {
+	// 		//try to parse axiosResponse.data as json
+	// 		let result = {};
+	// 		if (!payload) return result;
+	// 		result["message"] = payload?.Message;
+	// 		result["type"] = payload?.Type;
+	// 		if (stacktrace) {
+	// 			result["stacktrace"] = payload?.StackTrace;
+	// 		}
+	// 		return result;
+	// 	},
+	// 	[stacktrace]
+	// );
+
+	// async 版本
+	const sendAsync = useCallback(
+		async ({ url, method, data, headers, ...rest }) => {
+			const apiUrl = getUrl(url);
+			console.debug(`${method} ${apiUrl}`);
+			if (data) {
+				console.debug(data, "data");
+			}
+			let formData;
+			if (mode === "form") {
+				formData = new FormData();
+				for (const prop in data) {
+					formData.append(prop, data[prop]);
+				}
+			}
+
+			const isUseRawData = method !== "get" && mode !== "form";
+
+			try {
+				const axiosResponse = await axios({
+					url: apiUrl,
+					method: method,
+					...(isUseRawData && {
+						data,
+					}),
+					...(mode === "form" && {
+						data: formData,
+					}),
+					...(method === "get" && {
+						params: data,
+					}),
+					headers: {
+						// 先列舉 props 內的 headers
+						...DEFAULT_HEADERS,
+						...headers,
+						// 再列舉 參數 內的 headers
+						...(mode === "json" && DEFAULT_JSON_HEADERS),
+						...(mode === "form" && DEFAULT_FORM_HEADERS),
+					},
+					...rest,
+				});
+				const status = HttpStatus.from(axiosResponse.status);
+				if (status.is2xx) {
+					return { status: status, payload: axiosResponse.data };
+				} else {
+					return {
+						status: status,
+						// error: getErrorFromPayload(axiosResponse.data),
+						error: WebApis.getErrorFromPayload(axiosResponse.data, {
+							stacktrace,
+						}),
+					};
+				}
+			} catch (err) {
+				console.error(err);
+				return {
+					status: HttpStatus.from(err.response.status),
+					// payload: err.response.data,
+					// error: getErrorFromPayload(err.response.data),
+					error: WebApis.getErrorFromPayload(err.response.data, {
+						stacktrace,
+					}),
+				};
+			}
+		},
+		[getUrl, mode, stacktrace]
+	);
+
+	const httpGetAsync = useCallback(
+		({ url, data, headers }) => {
+			return sendAsync({ url, method: "get", data, headers });
+		},
+		[sendAsync]
+	);
+
+	const httpPostAsync = useCallback(
+		({ url, data, headers }) => {
+			return sendAsync({ url, method: "post", data, headers });
+		},
+		[sendAsync]
+	);
+
+	const httpPutAsync = useCallback(
+		({ url, data, headers }) => {
+			return sendAsync({ url, method: "put", data, headers });
+		},
+		[sendAsync]
+	);
+
+	const httpDeleteAsync = useCallback(
+		({ url, data, headers }) => {
+			return sendAsync({ url, method: "delete", data, headers });
+		},
+		[sendAsync]
+	);
+
+	const httpPatchAsync = useCallback(
+		({ url, data, headers }) => {
+			return sendAsync({ url, method: "patch", data, headers });
+		},
+		[sendAsync]
+	);
+
+	return {
+		sendAsync,
+		httpGetAsync,
+		httpPostAsync,
+		httpPutAsync,
+		httpPatchAsync,
+		httpDeleteAsync,
+		getUrl,
+		fetch,
+	};
+};

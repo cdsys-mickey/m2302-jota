@@ -1,0 +1,26 @@
+const MOMENTS_FORMATS = Object.freeze({
+	MOMENTS_VERSION: "YYYYMMDD.HHmm",
+	MOMENTS_DATE: "YYYY/MM/DD",
+	MOMENTS_DATETIME: "YYYY/MM/DD HH:mm",
+	MOMENTS_DATETIME_SECONDS: "YYYY/MM/DD HH:mm:ss",
+	MOMENTS_TIME: "HH:mm",
+	MOMENTS_TIME_SECONDS: "HH:mm:ss",
+});
+
+const DATEFNS_FORMATS = Object.freeze({
+	DATEFNS_VERSION: "yyMMdd.HHmm",
+	DATEFNS_DATE: "yyyy/MM/dd",
+	DATEFNS_MONTH_AND_DAY: "yyyy/MM/dd",
+	DATEFNS_YEAR_AND_MONTH: "yyyyMM",
+	DATEFNS_DATETIME: "yyyy/MM/dd HH:mm",
+	DATEFNS_DATETIME_SECONDS: "yyyy/MM/dd HH:mm:ss",
+	DATEFNS_TIME: "HH:mm",
+	DATEFNS_TIME_SECONDS: "HH:mm:ss",
+});
+
+const DateFormats = {
+	...MOMENTS_FORMATS,
+	...DATEFNS_FORMATS,
+};
+
+export default DateFormats;

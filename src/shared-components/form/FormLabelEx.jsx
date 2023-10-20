@@ -1,0 +1,58 @@
+import PropTypes from "prop-types";
+import { FormLabel, Typography } from "@mui/material";
+import FlexBox from "@/shared-components/FlexBox";
+import { memo } from "react";
+
+const iconProps = (size) => {
+	switch (size) {
+		case "sm":
+			return {
+				fontSize: "small",
+			};
+		case "md":
+		default:
+			return {
+				fontSize: "medium",
+			};
+	}
+};
+
+export const FormLabelEx = memo((props) => {
+	const {
+		size,
+		IconComponent,
+		children,
+		variant = "subtitle1",
+		sx = [],
+	} = props;
+	return (
+		<FormLabel
+			sx={[
+				(theme) => ({
+					// color: "rgb(0 0 0 / 50%)",
+					// color: theme.palette.primary.main,
+					color: theme.palette.text.primary,
+				}),
+				...(Array.isArray(sx) ? sx : [sx]),
+			]}>
+			<FlexBox fullWidth inline>
+				{IconComponent && (
+					<FlexBox alignItems="center" mr={0.5}>
+						<IconComponent {...iconProps(size)} />
+					</FlexBox>
+				)}
+				<FlexBox alignItems="center" flex={1}>
+					<Typography variant={variant}>{children}</Typography>
+				</FlexBox>
+			</FlexBox>
+		</FormLabel>
+	);
+});
+
+FormLabelEx.displayName = "FormLabelEx";
+
+FormLabelEx.propTypes = {
+	children: PropTypes.node,
+};
+
+export default FormLabelEx;

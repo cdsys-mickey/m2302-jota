@@ -1,0 +1,23 @@
+const Z_INDEX_BASE = 1000;
+
+const Z_INDEXES = Object.freeze({
+	Z_INDEX_POPPER: Z_INDEX_BASE + 10,
+	Z_INDEX_DIALOG: Z_INDEX_BASE + 300,
+	Z_INDEX_PICKER_POPPER: Z_INDEX_BASE + 300,
+	Z_INDEX_LISTVIEW_HEADER: Z_INDEX_BASE,
+	Z_INDEX_INPUT_ICON: 100,
+});
+
+const WIDTHES = Object.freeze({
+	WIDTH_DRAWER: "200px",
+	WIDTH_DRAWER_BAR: "56px",
+});
+
+const Layouts = {
+	Z_INDEXES,
+	...Z_INDEXES,
+	WIDTHES,
+	...WIDTHES,
+};
+
+export default Layouts;
