@@ -2,7 +2,7 @@ import SideMenuContainer from "@/components/layout/SideMenuContainer";
 import { Outlet } from "react-router-dom";
 import FlexBox from "@/shared-components/FlexBox";
 import ResponsiveDrawer from "@/shared-components/responsive/ResponsiveDrawer";
-import { SideMenuSearchBarContainer } from "@/shared-components/side-menu/SideMenuSearchBarContainer";
+import SideMenuSearchBarContainer from "@/shared-components/side-menu/SideMenuSearchBarContainer";
 import PropTypes from "prop-types";
 import AppFrameContainer from "@/shared-components/protected-page/AppFrameContainer";
 

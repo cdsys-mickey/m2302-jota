@@ -32,7 +32,7 @@ export const AuthProvider = (props) => {
 				const token = Cookies.get("token");
 				if (!token) {
 					toast.error("您尚未登入");
-					redirectTo(import.meta.env.VITE_URL_LANDING);
+					redirectTo(import.meta.env.VITE_URL_LOGIN);
 					return;
 				}
 
@@ -57,7 +57,7 @@ export const AuthProvider = (props) => {
 			} catch (err) {
 				console.error("token restore failed", err);
 				toast.error("您的登入已逾期，請重新登入");
-				redirectTo(import.meta.env.VITE_URL_LANDING);
+				redirectTo(import.meta.env.VITE_URL_LOGIN);
 			} finally {
 				setState((prev) => ({
 					...prev,
@@ -73,7 +73,15 @@ export const AuthProvider = (props) => {
 		validateToken();
 	}, [validateToken]);
 
-	return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
+	return (
+		<AuthContext.Provider
+			value={{
+				...state,
+				validateToken,
+			}}>
+			{children}
+		</AuthContext.Provider>
+	);
 };
 
 AuthProvider.propTypes = {

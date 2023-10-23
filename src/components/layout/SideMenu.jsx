@@ -12,96 +12,106 @@ import AccordionDetailsEx from "@/shared-components/accordion-ex/AccordionDetail
 import AccordionSummaryEx from "@/shared-components/accordion-ex/AccordionSummaryEx";
 import FlexBox from "@/shared-components/FlexBox";
 import useScrollable from "@/shared-hooks/useScrollable";
+import { memo } from "react";
+import { forwardRef } from "react";
 
-const SideMenu = React.forwardRef((props, ref) => {
-	const {
-		height,
-		// Menu
-		menus = [],
-		handleItemClick,
-		selectedItem,
-		// Accordion
-		expanded,
-		handleAccordionChange,
-		...rest
-	} = props;
+const SideMenu = memo(
+	forwardRef((props, ref) => {
+		const {
+			height,
+			// Menu
+			menus = [],
+			handleItemClick,
+			selectedItem,
+			// Accordion
+			expanded,
+			handleAccordionChange,
+			...rest
+		} = props;
 
-	const scrollable = useScrollable({
-		height,
-	});
+		const scrollable = useScrollable({
+			height,
+		});
 
-	return (
-		<Box ref={ref} sx={[scrollable.scroller]} {...rest}>
-			<Box sx={[scrollable.body]}>
-				{Object.keys(menus).map((s) => (
-					<AccordionEx
-						key={s}
-						expanded={expanded.includes(s)}
-						onChange={handleAccordionChange(s)}>
-						<AccordionSummaryEx
-							aria-controls="panel1d-content"
-							id="panel1d-header">
-							<FlexBox inline>
-								<FlexBox mr={1} alignItems="center">
-									{menus[s].icon}
+		return (
+			<Box ref={ref} sx={[scrollable.scroller]} {...rest}>
+				<Box sx={[scrollable.body]}>
+					{Object.keys(menus).map((s) => (
+						<AccordionEx
+							key={s}
+							expanded={expanded.includes(s)}
+							onChange={handleAccordionChange(s)}>
+							{/* 選單頭 */}
+							<AccordionSummaryEx
+								aria-controls="panel1d-content"
+								id="panel1d-header">
+								<FlexBox inline>
+									<FlexBox mr={1} alignItems="center">
+										{menus[s].icon}
+									</FlexBox>
+
+									<Typography
+										variant="subtitle1"
+										color="text.secondary"
+										sx={
+											{
+												// fontWeight: 600,
+											}
+										}>
+										{/* {s} */}
+										{menus[s].name}
+									</Typography>
 								</FlexBox>
-
-								<Typography
-									variant="subtitle1"
-									color="text.secondary"
-									sx={
-										{
-											// fontWeight: 600,
-										}
-									}>
-									{/* {s} */}
-									{menus[s].name}
-								</Typography>
-							</FlexBox>
-						</AccordionSummaryEx>
-						<AccordionDetailsEx>
-							<FlexBox py={1}>
-								<List
-									dense
-									disablePadding
-									sx={{ width: "100%" }}>
-									{menus[s].items.map((i) => (
-										<ListItem
-											dense
-											disablePadding
-											key={i.id}>
-											<ListItemButton
-												selected={selectedItem === i.id}
-												onClick={handleItemClick(i.id)}>
-												<FlexBox
-													inline
-													alignItems="flex-start">
+							</AccordionSummaryEx>
+							{/* 選單項目容器 */}
+							<AccordionDetailsEx>
+								<FlexBox py={1}>
+									<List
+										dense
+										disablePadding
+										sx={{ width: "100%" }}>
+										{menus[s].items.map((i) => (
+											<ListItem
+												dense
+												disablePadding
+												key={i.id}>
+												<ListItemButton
+													selected={
+														selectedItem === i.id
+													}
+													onClick={handleItemClick(
+														i.id
+													)}>
 													<FlexBox
-														pt="5px"
-														sx={{
-															width: "3rem",
-														}}>
-														<Typography variant="body2">
-															{i.id}
-														</Typography>
+														inline
+														alignItems="flex-start">
+														<FlexBox
+															pt="5px"
+															sx={{
+																width: "3rem",
+															}}>
+															<Typography variant="body2">
+																{i.id}
+															</Typography>
+														</FlexBox>
+														<FlexBox flex={1}>
+															<ListItemText
+																primary={`${i.name}`}
+															/>
+														</FlexBox>
 													</FlexBox>
-													<FlexBox flex={1}>
-														<ListItemText
-															primary={`${i.name}`}
-														/>
-													</FlexBox>
-												</FlexBox>
-											</ListItemButton>
-										</ListItem>
-									))}
-								</List>
-							</FlexBox>
-						</AccordionDetailsEx>
-					</AccordionEx>
-				))}
+												</ListItemButton>
+											</ListItem>
+										))}
+									</List>
+								</FlexBox>
+							</AccordionDetailsEx>
+						</AccordionEx>
+					))}
+				</Box>
 			</Box>
-		</Box>
-	);
-});
+		);
+	})
+);
 
-export default React.memo(SideMenu);
+export default SideMenu;

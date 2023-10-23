@@ -1,9 +1,9 @@
 import { Drawer } from "@mui/material";
 import { useMemo } from "react";
-import useProtectedLayout from "@/shared-contexts/useProtectedLayout";
 import { memo } from "react";
 import { forwardRef } from "react";
 import PropTypes from "prop-types";
+import useResponsive from "@/shared-contexts/useResponsive";
 
 /**
  * mobile 狀態 variant 會自動改成 temporary
@@ -17,7 +17,7 @@ const ResponsiveDrawer = memo(
 			open = false,
 			...rest
 		} = props;
-		const { mobile } = useProtectedLayout();
+		const { mobile } = useResponsive();
 
 		const autoVariant = useMemo(() => {
 			return mobile ? "temporary" : "persistent";

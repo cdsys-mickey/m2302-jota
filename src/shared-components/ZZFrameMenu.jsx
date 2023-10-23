@@ -1,3 +1,4 @@
+import useRedirect from "@/shared-hooks/useRedirect";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import {
@@ -11,12 +12,8 @@ import {
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { styled } from "@mui/system";
-import { useSessionContext } from "@/contexts/SessionContext";
-import React, { forwardRef, memo, useCallback, useState } from "react";
-import { useLocation } from "react-router-dom";
-import useRedirect from "@/shared-hooks/useRedirect";
+import React, { memo, useCallback, useState } from "react";
 import IconEx from "./IconEx";
-import { useNavigate } from "react-router-dom";
 
 // const FrameMenuListItemNormal = styled(ListItemButton, {
 // 	name: "FrameMenuListItem",
@@ -73,7 +70,7 @@ const FrameMenuListItemText = styled(ListItemText, {
 	},
 }));
 
-export const FrameMenu = memo((props) => {
+export const ZZFrameMenu = memo((props) => {
 	const {
 		iconClass,
 		listClass,
@@ -269,21 +266,6 @@ export const FrameMenu = memo((props) => {
 	);
 });
 
-export default FrameMenu;
+ZZFrameMenu.displayName = "ZZFrameMenu";
 
-export const FrameMenuContainer = (props) => {
-	const { ...rest } = props;
-	const location = useLocation();
-	const sessions = useSessionContext();
-
-	return (
-		<FrameMenu
-			// from context
-			// PROPS
-			items={sessions.menuItems}
-			drawerOpen={sessions.drawerOpen}
-			pathname={location.pathname}
-			{...rest}
-		/>
-	);
-};
+export default ZZFrameMenu;

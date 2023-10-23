@@ -1,3 +1,5 @@
+import useResponsive from "@/shared-contexts/useResponsive";
+import Layouts from "@/shared-modules/layouts";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import {
@@ -5,18 +7,14 @@ import {
 	Divider,
 	Fade,
 	IconButton,
-	InputBase,
 	Paper,
 	Popper,
 	Tooltip,
 } from "@mui/material";
-import React, { useMemo, useRef } from "react";
-import { useResponsive } from "@/shared-contexts/useResponsive";
-import Layouts from "@/shared-modules/layouts";
-import ClearIcon from "@mui/icons-material/Clear";
+import { memo, useMemo, useRef } from "react";
 import ControlledInputBase from "./controlled/ControlledInputBase";
 
-const SearchForm = React.forwardRef((props, ref) => {
+const SearchForm = memo((props) => {
 	const {
 		placeholder,
 		width,
@@ -188,4 +186,5 @@ const SearchForm = React.forwardRef((props, ref) => {
 	);
 });
 
-export default React.memo(SearchForm);
+SearchForm.displayName = "SearchForm";
+export default SearchForm;

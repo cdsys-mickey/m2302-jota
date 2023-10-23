@@ -2,7 +2,7 @@ import { useCrud } from "@/contexts/crud/useCrud";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import { MockProducts } from "@/mocks/mock-products";
-import A01 from "@/mock-modules/md-a01";
+import A01 from "@/modules/md-a01";
 import { ProdsContext } from "./ProdsContext";
 
 export const ProdsProvider = ({ children }) => {

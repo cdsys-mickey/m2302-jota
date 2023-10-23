@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { ResponsiveContext } from "./ResponsiveContext";
 
-export const useResponsive = () => {
+const useResponsive = () => {
 	return useContext(ResponsiveContext);
 };
+
+export default useResponsive;

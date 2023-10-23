@@ -1,8 +1,8 @@
 import React from "react";
 import PushMessagesButton from "@/components/push-messages/PushMessageButton";
-import { usePushMessages } from "@/contexts/PushMessagesContext";
+import usePushMessages from "@/contexts/usePushMessages";
 
-export const PushMessagesButtonContainer = React.forwardRef((props, ref) => {
+export const PushMessagesButtonContainer = (props) => {
 	const { ...rest } = props;
 	const {
 		data,
@@ -22,4 +22,4 @@ export const PushMessagesButtonContainer = React.forwardRef((props, ref) => {
 			togglePopoverOpen={togglePopoverOpen}
 		/>
 	);
-});
+};

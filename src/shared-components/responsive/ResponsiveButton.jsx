@@ -1,7 +1,7 @@
 import { Button, IconButton, Tooltip } from "@mui/material";
 import React, { memo, forwardRef, useMemo } from "react";
 import ButtonEx from "@/shared-components/button/ButtonEx";
-import { useResponsive } from "@/shared-contexts/useResponsive";
+import useResponsive from "@/shared-contexts/useResponsive";
 
 import PropTypes from "prop-types";
 

@@ -1,12 +1,12 @@
-import { usePushMessages } from "@/contexts/PushMessagesContext";
+import usePushMessages from "@/contexts/usePushMessages";
 
 import { forwardRef, useCallback } from "react";
 import PushMessageItem from "./PushMessageItem";
-import useProtectedLayout from "@/shared-contexts/useProtectedLayout";
+import useAppFrame from "@/shared-contexts/useAppFrame";
 
 export const PushMessageItemContainer = forwardRef((props, ref) => {
 	const { job, ...rest } = props;
-	const { handleSelectJob } = useProtectedLayout();
+	const { handleSelectJob } = useAppFrame();
 	const { handlePopoverClose } = usePushMessages();
 
 	const handleJobClick = useCallback(() => {

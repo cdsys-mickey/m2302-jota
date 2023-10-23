@@ -1,23 +1,14 @@
-import {
-	Avatar,
-	Box,
-	Divider,
-	IconButton,
-	ListItemIcon,
-	Menu,
-	MenuItem,
-	Tooltip,
-	Typography,
-} from "@mui/material";
-import React from "react";
-import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RepeatIcon from "@mui/icons-material/Repeat";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { forwardRef, memo } from "react";
 
-const MockAccountMenu = React.forwardRef(
-	({ open, anchorEl, onClose, ...rest }, ref) => {
+const MockAccountMenu = memo(
+	forwardRef(({ open, anchorEl, onClose, ...rest }, ref) => {
 		return (
 			<Menu
+				ref={ref}
 				anchorEl={anchorEl}
 				id="account-menu"
 				open={open}
@@ -74,7 +65,7 @@ const MockAccountMenu = React.forwardRef(
 				</MenuItem>
 			</Menu>
 		);
-	}
+	})
 );
 
-export default React.memo(MockAccountMenu);
+export default MockAccountMenu;

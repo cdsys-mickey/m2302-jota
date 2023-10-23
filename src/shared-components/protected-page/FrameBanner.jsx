@@ -1,10 +1,11 @@
 import { PushMessagesButtonContainer } from "@/components/push-messages/PushMessagesButtonContainer";
-import { AccountMenuButtonContainer } from "@/mock-components/account/AccountMenuButtonContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import { Stack } from "@mui/material";
 import { forwardRef, memo } from "react";
 import ResponsiveFrameTitle from "../responsive/ResponsiveFrameTitle";
-import ResponsiveMenuButton from "./ResponsiveMenuButton";
+// import ResponsiveFrameMenuButton from "./ResponsiveFrameMenuButton";
+import AvatarButtonContainer from "@/shared-components/avatar-button/AvatarButtonContainer";
+import FrameMenuButtonContainer from "./FrameMenuButtonContainer";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
@@ -17,7 +18,8 @@ const FrameBanner = memo(
 					alignItems="center"
 					justifyContent="flex-start"
 					flex={1}>
-					<ResponsiveMenuButton />
+					{/* <ResponsiveFrameMenuButton /> */}
+					<FrameMenuButtonContainer />
 					<ResponsiveFrameTitle alt={alt}>
 						{title}
 					</ResponsiveFrameTitle>
@@ -35,20 +37,10 @@ const FrameBanner = memo(
 						direction="row"
 						alignItems="flex-end"
 						sx={{ color: "action.active" }}>
+						{/* 通知 */}
 						<PushMessagesButtonContainer />
-
-						{/* <Tooltip title="王XX">
-						<IconButton onClick={handleAccountClick}>
-							<Avatar sx={{ width: 32, height: 32 }}>王</Avatar>
-						</IconButton>
-					</Tooltip>
-					<MockAccountMenu
-						open={!!accountAnchorEl}
-						anchorEl={accountAnchorEl}
-						onClose={handleAccountMenuClose}
-					/> */}
-
-						<AccountMenuButtonContainer />
+						{/* 帳號 */}
+						<AvatarButtonContainer />
 					</Stack>
 				</FlexBox>
 			</FlexBox>

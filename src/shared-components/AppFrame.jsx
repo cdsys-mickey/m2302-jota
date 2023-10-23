@@ -1,44 +1,25 @@
 import { Box } from "@mui/system";
 import React from "react";
-import { useLocation } from "react-router-dom";
-import AppDrawer from "./AppDrawer";
-import FrameMenu, { FrameMenuContainer } from "./FrameMenu";
+import { forwardRef } from "react";
+import { memo } from "react";
+import PropTypes from "prop-types";
 
-const AppFrame = (props) => {
-	const {
-		// PROPS
-		children,
-		drawerOpen = false,
-		inverted = false,
-		menuItems = [],
-		menuOptions,
-		// METHODS
-		onToggleDrawerOpen,
-		...rest
-	} = props;
+const AppFrame = memo(
+	forwardRef((props, ref) => {
+		const { children, ...rest } = props;
 
-	const location = useLocation();
+		// const location = useLocation();
 
-	return (
-		<Box sx={{ display: "flex", width: "100%" }} {...rest}>
-			<AppDrawer
-				variant="permanent"
-				open={drawerOpen}
-				inverted={inverted}>
-				<FrameMenu
-					inverted={inverted}
-					onToggleDrawerOpen={onToggleDrawerOpen}
-					showTooltip
-					// from context
-					items={menuItems}
-					drawerOpen={drawerOpen}
-					pathname={location.pathname}
-					{...menuOptions}
-				/>
-			</AppDrawer>
-			<Box sx={{ flexGrow: 1, height: "100vh" }}>{children}</Box>
-		</Box>
-	);
+		return (
+			<Box ref={ref} sx={{ display: "flex", width: "100%" }} {...rest}>
+				<Box sx={{ flexGrow: 1, height: "100vh" }}>{children}</Box>
+			</Box>
+		);
+	})
+);
+
+AppFrame.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
 };
 
 export default AppFrame;

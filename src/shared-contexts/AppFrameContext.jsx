@@ -1,13 +1,13 @@
-import { useResponsive } from "@/shared-contexts/useResponsive";
+import useResponsive from "@/shared-contexts/useResponsive";
 import { createContext, useEffect, useMemo, useState } from "react";
 import useRedirect from "@/shared-hooks/useRedirect";
 import { useCallback } from "react";
 import Auth from "@/modules/md-auth";
 import { MockMenus } from "@/mocks/mock-menus";
 
-export const ProtectedLayoutContext = createContext();
+export const AppFrameContext = createContext();
 
-export const ProtectedLayoutProvider = (props) => {
+export const AppFrameProvider = (props) => {
 	const { children } = props;
 	const { mobile } = useResponsive();
 	const { redirectTo } = useRedirect();
@@ -73,7 +73,7 @@ export const ProtectedLayoutProvider = (props) => {
 		return mobile || drawerState.drawerOpen;
 	}, [drawerState.drawerOpen, mobile]);
 
-	const isMenuIconVisibled = useMemo(() => {
+	const isFrameMenuButtonVisibled = useMemo(() => {
 		return mobile || !drawerState.drawerOpen;
 	}, [drawerState.drawerOpen, mobile]);
 
@@ -113,7 +113,7 @@ export const ProtectedLayoutProvider = (props) => {
 	}, [drawerState.drawerOpen, mobile]);
 
 	return (
-		<ProtectedLayoutContext.Provider
+		<AppFrameContext.Provider
 			value={{
 				// DRAWER
 				...drawerState,
@@ -121,7 +121,7 @@ export const ProtectedLayoutProvider = (props) => {
 				handleDrawerOpen,
 				handleDrawerClose,
 				menuFloating,
-				isMenuIconVisibled,
+				isFrameMenuButtonVisibled,
 				mobile,
 				// MENU
 				...menuState,
@@ -130,12 +130,12 @@ export const ProtectedLayoutProvider = (props) => {
 				...accordionState,
 				handleAccordionChange,
 				// Account
-				accountAnchorEl,
-				handleAccountClick,
-				handleAccountMenuClose,
+				// accountAnchorEl,
+				// handleAccountClick,
+				// handleAccountMenuClose,
 				handleSelectJob,
 			}}>
 			{children}
-		</ProtectedLayoutContext.Provider>
+		</AppFrameContext.Provider>
 	);
 };

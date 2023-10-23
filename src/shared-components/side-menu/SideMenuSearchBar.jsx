@@ -1,17 +1,17 @@
-import { AppBar, IconButton, Toolbar } from "@mui/material";
-import React from "react";
-import SearchField from "@/shared-components/SearchField";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import FlexBox from "@/shared-components/FlexBox";
 import ControlledSearchField from "@/shared-components/controlled/ControlledSearchField";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { AppBar, IconButton } from "@mui/material";
+import { forwardRef, memo } from "react";
 
-const SideMenuSearchBar = React.forwardRef((props, ref) => {
-	const { inputRef, onToggleDrawerOpen, name, ...rest } = props;
+const SideMenuSearchBar = memo(
+	forwardRef((props, ref) => {
+		const { inputRef, onToggleDrawerOpen, name, ...rest } = props;
 
-	return (
-		<AppBar position="sticky" color="white" {...rest}>
-			<FlexBox inline py={1}>
-				<FlexBox flex={1}>
+		return (
+			<AppBar position="sticky" color="white" ref={ref} {...rest}>
+				<FlexBox py={1} pl={1}>
+					{/* <FlexBox flex={1}> */}
 					<ControlledSearchField
 						inputRef={inputRef}
 						name="q"
@@ -22,13 +22,14 @@ const SideMenuSearchBar = React.forwardRef((props, ref) => {
 						hoverBackgroundColor="rgb(0 0 0 / 6%)"
 						width="100%"
 					/>
+					{/* </FlexBox> */}
+					{/* <IconButton onClick={onToggleDrawerOpen}>
+						<MenuOpenIcon />
+					</IconButton> */}
 				</FlexBox>
-				<IconButton onClick={onToggleDrawerOpen}>
-					<MenuOpenIcon />
-				</IconButton>
-			</FlexBox>
-		</AppBar>
-	);
-});
+			</AppBar>
+		);
+	})
+);
 
-export default React.memo(SideMenuSearchBar);
+export default SideMenuSearchBar;

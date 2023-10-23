@@ -23,7 +23,7 @@ const AppProvider = ({ children }) => {
 
 	const [state, setState] = useState({
 		data: null,
-		operator: null,
+		// operator: null,
 		loading: null,
 		error: null,
 	});
@@ -37,47 +37,47 @@ const AppProvider = ({ children }) => {
 		}));
 	}, []);
 
-	const validateToken = async () => {
-		if (state.loading == null) {
-			console.debug("restoring authorities...");
-			try {
-				setState((prev) => ({
-					...prev,
-					loading: true,
-				}));
-				// 檢查 cookie
-				const token = Cookies.get("token");
-				if (!token) {
-					toast.error("您尚未登入");
-					redirectTo(import.meta.env.VITE_URL_LANDING);
-					return;
-				}
+	// const validateToken = async () => {
+	// 	if (state.loading == null) {
+	// 		console.debug("restoring authorities...");
+	// 		try {
+	// 			setState((prev) => ({
+	// 				...prev,
+	// 				loading: true,
+	// 			}));
+	// 			// 檢查 cookie
+	// 			const token = Cookies.get("token");
+	// 			if (!token) {
+	// 				toast.error("您尚未登入");
+	// 				redirectTo(import.meta.env.VITE_URL_LANDING);
+	// 				return;
+	// 			}
 
-				// const decoded = decodeJwt(token);
-				// console.debug("decoded", decoded);
+	// 			// const decoded = decodeJwt(token);
+	// 			// console.debug("decoded", decoded);
 
-				const secret = new TextEncoder().encode(
-					import.meta.env.VITE_JWT_SECRET
-				);
-				const { payload } = await jwtVerify(token, secret);
-				console.debug("payload", payload);
-				setState((prev) => ({
-					...prev,
-					operator: payload.entity,
-					roles: payload.roles,
-				}));
-			} catch (err) {
-				console.error("token restore failed", err);
-				toast.error("您的登入已逾期，請重新登入");
-				redirectTo(import.meta.env.VITE_URL_LANDING);
-			} finally {
-				setState((prev) => ({
-					...prev,
-					loading: false,
-				}));
-			}
-		}
-	};
+	// 			const secret = new TextEncoder().encode(
+	// 				import.meta.env.VITE_JWT_SECRET
+	// 			);
+	// 			const { payload } = await jwtVerify(token, secret);
+	// 			console.debug("payload", payload);
+	// 			setState((prev) => ({
+	// 				...prev,
+	// 				operator: payload.entity,
+	// 				roles: payload.roles,
+	// 			}));
+	// 		} catch (err) {
+	// 			console.error("token restore failed", err);
+	// 			toast.error("您的登入已逾期，請重新登入");
+	// 			redirectTo(import.meta.env.VITE_URL_LANDING);
+	// 		} finally {
+	// 			setState((prev) => ({
+	// 				...prev,
+	// 				loading: false,
+	// 			}));
+	// 		}
+	// 	}
+	// };
 
 	return (
 		<AppContext.Provider
@@ -86,7 +86,7 @@ const AppProvider = ({ children }) => {
 				fetch,
 				version,
 				setLoading,
-				validateToken,
+				// validateToken,
 			}}>
 			{children}
 		</AppContext.Provider>

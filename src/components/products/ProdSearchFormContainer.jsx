@@ -1,4 +1,4 @@
-import A01 from "@/mock-modules/md-a01";
+import A01 from "@/modules/md-a01";
 import React, { useCallback, useMemo, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import SearchForm from "@/shared-components/SearchForm";

@@ -1,6 +1,6 @@
-import useProtectedLayout from "@/shared-contexts/useProtectedLayout";
 import { forwardRef, memo } from "react";
 import SideMenu from "./SideMenu";
+import useAppFrame from "@/shared-contexts/useAppFrame";
 
 const SideMenuContainer = memo(
 	forwardRef((props, ref) => {
@@ -13,7 +13,7 @@ const SideMenuContainer = memo(
 			// Accordion
 			expanded,
 			handleAccordionChange,
-		} = useProtectedLayout();
+		} = useAppFrame();
 
 		return (
 			<SideMenu

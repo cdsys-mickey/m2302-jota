@@ -1,20 +1,16 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import { useAuth } from "@/contexts/useAuth";
+import useAuth from "@/contexts/useAuth";
 
 import PushMessageContent from "@/components/push-messages/PushMessageContent";
 import { MockMessages } from "@/mocks/mock-messages";
-import useProtectedLayout from "@/shared-contexts/useProtectedLayout";
+import useAppFrame from "@/shared-contexts/useAppFrame";
 
-const PushMessagesContext = createContext();
-
-export const usePushMessages = () => {
-	return useContext(PushMessagesContext);
-};
+export const PushMessagesContext = createContext();
 
 export const PushMessagesProvider = ({ children }) => {
-	const { handleSelectJob } = useProtectedLayout();
+	const { handleSelectJob } = useAppFrame();
 	const [state, setState] = useState({
 		data: MockMessages,
 	});

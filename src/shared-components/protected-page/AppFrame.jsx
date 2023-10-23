@@ -3,6 +3,7 @@ import { memo, forwardRef } from "react";
 
 import PropTypes from "prop-types";
 import { LoadingFrame } from "./LoadingFrame";
+
 const StyledMain = styled("main", {
 	shouldForwardProp: (prop) =>
 		!["menuFloating", "drawerWidth"].includes(prop),

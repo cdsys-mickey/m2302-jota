@@ -1,10 +1,13 @@
 import { Typography } from "@mui/material";
-import React, { useMemo } from "react";
-import useProtectedLayout from "@/shared-contexts/useProtectedLayout";
+import { memo } from "react";
+import { forwardRef } from "react";
+import { useMemo } from "react";
+import useResponsive from "@/shared-contexts/useResponsive";
 
-const ResponsiveFrameTitle = React.forwardRef(
-	({ children, alt, ...rest }, ref) => {
-		const { mobile } = useProtectedLayout();
+const ResponsiveFrameTitle = memo(
+	forwardRef((props, ref) => {
+		const { children, alt, ...rest } = props;
+		const { mobile } = useResponsive();
 
 		const text = useMemo(() => {
 			if (alt && mobile) {
@@ -18,7 +21,8 @@ const ResponsiveFrameTitle = React.forwardRef(
 				{text}
 			</Typography>
 		);
-	}
+	})
 );
 
-export default React.memo(ResponsiveFrameTitle);
+ResponsiveFrameTitle.displayName = "ResponsiveFrameTitle";
+export default ResponsiveFrameTitle;
