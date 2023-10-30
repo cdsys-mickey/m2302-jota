@@ -1,16 +1,16 @@
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PushMessagesProvider } from "@/contexts/PushMessagesContext";
-import { FrameBaseContainer } from "@/frames/FrameBaseContainer";
-import { ResponsiveProvider } from "@/shared-contexts/ResponsiveContext";
-import { AppFrameProvider } from "../shared-contexts/AppFrameContext";
+import { BasePageContainer } from "@/frames/BasePageContainer";
+import { ResponsiveProvider } from "@/shared-contexts/ResponsiveProvider";
+import AppFrameProvider from "../shared-contexts/AppFrameProvider";
 
 const ProtectedRoute = () => {
 	return (
 		<ResponsiveProvider>
 			<AuthProvider>
-				<AppFrameProvider>
+				<AppFrameProvider drawerWidth={350}>
 					<PushMessagesProvider>
-						<FrameBaseContainer />
+						<BasePageContainer />
 					</PushMessagesProvider>
 				</AppFrameProvider>
 			</AuthProvider>

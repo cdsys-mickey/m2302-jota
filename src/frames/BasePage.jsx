@@ -1,30 +1,39 @@
-import SideMenuContainer from "@/components/layout/SideMenuContainer";
-import { Outlet } from "react-router-dom";
 import FlexBox from "@/shared-components/FlexBox";
-import ResponsiveDrawer from "@/shared-components/responsive/ResponsiveDrawer";
-import SideMenuSearchBarContainer from "@/shared-components/side-menu/SideMenuSearchBarContainer";
-import PropTypes from "prop-types";
 import AppFrameContainer from "@/shared-components/protected-page/AppFrameContainer";
+import ResponsiveDrawer from "@/shared-components/responsive/ResponsiveDrawer";
+import PropTypes from "prop-types";
+import { Outlet } from "react-router-dom";
+import { SideMenuProvider } from "@/contexts/SideMenuProvider";
 
-const FrameBase = (props) => {
+const BasePage = (props) => {
 	const {
 		drawerOpen,
 		handleDrawerClose,
-		height,
+		// height,
 		drawerWidth = 260,
-		// bannerOptions,
+		// menuFloating,
+		// loading,
+		searchBar,
+		menu,
 	} = props;
+
+	// const scrollable = useScrollable({
+	// 	height,
+	// });
 
 	return (
 		<FlexBox sx={{}}>
 			<ResponsiveDrawer
 				anchor="left"
-				width={260}
+				width={drawerWidth}
 				open={drawerOpen}
 				onClose={handleDrawerClose}>
-				<SideMenuSearchBarContainer name="q" />
-				<SideMenuContainer py={1} height={height - 56} />
+				<SideMenuProvider>
+					{searchBar}
+					{menu}
+				</SideMenuProvider>
 			</ResponsiveDrawer>
+
 			<AppFrameContainer drawerWidth={drawerWidth}>
 				<Outlet />
 			</AppFrameContainer>
@@ -32,11 +41,13 @@ const FrameBase = (props) => {
 	);
 };
 
-FrameBase.propTypes = {
+BasePage.propTypes = {
 	drawerOpen: PropTypes.bool,
 	handleDrawerClose: PropTypes.func,
 	height: PropTypes.number,
 	drawerWidth: PropTypes.number,
+	searchBar: PropTypes.element,
+	menu: PropTypes.element,
 };
 
-export default FrameBase;
+export default BasePage;

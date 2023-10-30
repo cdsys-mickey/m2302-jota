@@ -26,9 +26,17 @@ const AppProvider = ({ children }) => {
 		// operator: null,
 		loading: null,
 		error: null,
+		token: null,
 	});
 
-	const { redirectTo } = useRedirect();
+	// const { redirectTo } = useRedirect();
+
+	const handleTokenChange = useCallback((newToken) => {
+		setState((prev) => ({
+			...prev,
+			token: newToken,
+		}));
+	}, []);
 
 	const setLoading = useCallback((loading) => {
 		setState((prev) => ({
@@ -87,6 +95,10 @@ const AppProvider = ({ children }) => {
 				version,
 				setLoading,
 				// validateToken,
+				handleTokenChange,
+				// REDIRECTS
+				// redirectToLanding,
+				// redirectToLogin
 			}}>
 			{children}
 		</AppContext.Provider>

@@ -1,3 +1,4 @@
+import { expect, test } from "vitest";
 import ChtStr from "./cht-str";
 
 test("數字轉中文", () => {

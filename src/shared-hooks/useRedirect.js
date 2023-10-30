@@ -50,7 +50,6 @@ const useRedirect = () => {
 	const redirectTo = useCallback(
 		(path, redirectParams) => {
 			return redirectStub(path, {
-				replace: true,
 				...redirectParams,
 			});
 		},

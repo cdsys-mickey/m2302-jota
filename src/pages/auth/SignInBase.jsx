@@ -8,6 +8,7 @@ import ModuleHeading from "@/shared-components/ModuleHeading";
 import LockIcon from "@mui/icons-material/Lock";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
+import FlexContainer from "../../shared-components/FlexContainer";
 
 const SignInBase = memo(
 	forwardRef((props, ref) => {
@@ -23,14 +24,10 @@ const SignInBase = memo(
 					minHeight: "100vh",
 				}}
 				boxStyles={{ alignItems: "center" }}>
-				<Container
+				<FlexContainer
 					maxWidth="xs"
-					sx={{
-						display: "flex",
-						justifyContent: "center",
-						marginTop: "auto",
-						marginBottom: "auto",
-					}}
+					justifyContent="center"
+					alignItems="center"
 					ref={ref}>
 					<FlexBox
 						px={3}
@@ -50,7 +47,7 @@ const SignInBase = memo(
 							<FlexBox>{children}</FlexBox>
 						</FlexBox>
 					</FlexBox>
-				</Container>
+				</FlexContainer>
 			</PublicPageContainer>
 		);
 	})

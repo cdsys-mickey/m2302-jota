@@ -34,13 +34,8 @@ const AppFrame = memo(
 			// sx = [],
 			menuFloating = true,
 			drawerWidth = 260,
-			loading,
 			...rest
 		} = props;
-
-		if (loading) {
-			return <LoadingFrame title="還原認證中..." />;
-		}
 
 		return (
 			<StyledMain

@@ -44,12 +44,12 @@ export const ProdSearchFormContainer = forwardRef((props, ref) => {
 				<SearchForm
 					fieldName={fieldName}
 					onSubmit={handleSubmit}
-					placeholder="以代碼或名稱搜尋貨品 (ctrl+F12)"
+					placeholder="搜尋貨品 (ctrl+F12)"
 					mobilePlaceholder="編號/品名"
 					// rightSquare
 					// square
 					borderRadius="8px"
-					width="40ch"
+					width="30ch"
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}

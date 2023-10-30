@@ -14,19 +14,20 @@ import FlexBox from "@/shared-components/FlexBox";
 import useScrollable from "@/shared-hooks/useScrollable";
 import { memo } from "react";
 import { forwardRef } from "react";
+import FrameMenuItemButton from "./FrameMenuItemButton";
+import { FrameMenuGroupHeader } from "./FrameMenuGroupHeader";
 
-const SideMenu = memo(
+const FrameAccordion = memo(
 	forwardRef((props, ref) => {
 		const {
 			height,
 			// Menu
 			menus = [],
-			handleItemClick,
+			handleItemClickBy,
 			selectedItem,
 			// Accordion
 			expanded,
 			handleAccordionChange,
-			...rest
 		} = props;
 
 		const scrollable = useScrollable({
@@ -34,7 +35,7 @@ const SideMenu = memo(
 		});
 
 		return (
-			<Box ref={ref} sx={[scrollable.scroller]} {...rest}>
+			<Box ref={ref} sx={[scrollable.scroller]}>
 				<Box sx={[scrollable.body]}>
 					{Object.keys(menus).map((s) => (
 						<AccordionEx
@@ -45,23 +46,10 @@ const SideMenu = memo(
 							<AccordionSummaryEx
 								aria-controls="panel1d-content"
 								id="panel1d-header">
-								<FlexBox inline>
-									<FlexBox mr={1} alignItems="center">
-										{menus[s].icon}
-									</FlexBox>
-
-									<Typography
-										variant="subtitle1"
-										color="text.secondary"
-										sx={
-											{
-												// fontWeight: 600,
-											}
-										}>
-										{/* {s} */}
-										{menus[s].name}
-									</Typography>
-								</FlexBox>
+								<FrameMenuGroupHeader
+									icon={menus[s].icon}
+									text={menus[s].name}
+								/>
 							</AccordionSummaryEx>
 							{/* 選單項目容器 */}
 							<AccordionDetailsEx>
@@ -75,32 +63,16 @@ const SideMenu = memo(
 												dense
 												disablePadding
 												key={i.id}>
-												<ListItemButton
+												<FrameMenuItemButton
 													selected={
 														selectedItem === i.id
 													}
-													onClick={handleItemClick(
+													onClick={handleItemClickBy(
 														i.id
-													)}>
-													<FlexBox
-														inline
-														alignItems="flex-start">
-														<FlexBox
-															pt="5px"
-															sx={{
-																width: "3rem",
-															}}>
-															<Typography variant="body2">
-																{i.id}
-															</Typography>
-														</FlexBox>
-														<FlexBox flex={1}>
-															<ListItemText
-																primary={`${i.name}`}
-															/>
-														</FlexBox>
-													</FlexBox>
-												</ListItemButton>
+													)}
+													code={i.id}
+													primary={`${i.name}`}
+												/>
 											</ListItem>
 										))}
 									</List>
@@ -114,4 +86,4 @@ const SideMenu = memo(
 	})
 );
 
-export default SideMenu;
+export default FrameAccordion;

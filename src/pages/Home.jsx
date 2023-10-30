@@ -1,36 +1,23 @@
-import { Container, Grid, Box } from "@mui/material";
-import { memo } from "react";
-import FlexBox from "@/shared-components/FlexBox";
 import HomeFrameBanner from "@/components/home/HomeFrameBanner";
-import BulletinWidget from "@/components/home/widgets/BulletinWidget";
+import BulletinWidgetContainer from "@/components/home/widgets/BulletinWidgetContainer";
+import Colors from "@/modules/Colors";
+import { CopyrightContainer } from "@/shared-components/CopyrightContainer";
+import FlexBox from "@/shared-components/FlexBox";
 import ModuleHeading from "@/shared-components/ModuleHeading";
 import CampaignIcon from "@mui/icons-material/Campaign";
-import Colors from "@/modules/Colors";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import { CopyrightContainer } from "@/shared-components/CopyrightContainer";
 import InboxIcon from "@mui/icons-material/Inbox";
-import BulletinWidgetContainer from "@/components/home/widgets/BulletinWidgetContainer";
+import { Box, Container, Grid } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo, useMemo } from "react";
+import Styles from "../modules/md-styles";
 
-const useBoxStyles = (props) => ({
-	paddingTop: "30px",
-	paddingLeft: {
-		xl: "60px",
-		lg: "40px",
-		md: "40px",
-		sm: "20px",
-		xs: "0px",
-	},
-	paddingRight: {
-		xl: "60px",
-		lg: "40px",
-		md: "40px",
-		sm: "20px",
-		xs: "0px",
-	},
-});
-
-const Home = memo(() => {
-	const boxStyles = useBoxStyles();
+const Home = memo((props) => {
+	const { theme, drawerOpen } = props;
+	const boxStyles = useMemo(
+		() => Styles.ofFrameBox({ theme, drawerOpen }),
+		[drawerOpen, theme]
+	);
 	return (
 		<Box pl={0} pt={1}>
 			<HomeFrameBanner />
@@ -89,5 +76,8 @@ const Home = memo(() => {
 });
 
 Home.displayName = "Home";
-
+Home.propTypes = {
+	theme: PropTypes.object,
+	drawerOpen: PropTypes.bool,
+};
 export default Home;

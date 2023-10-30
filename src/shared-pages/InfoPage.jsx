@@ -3,6 +3,7 @@ import { AlertTitle, Box, Container } from "@mui/material";
 
 import { PublicPageContainer } from "./PublicPageContainer";
 import AlertEx from "@/shared-components/AlertEx";
+import FlexContainer from "../shared-components/FlexContainer";
 
 const InfoPage = ({
 	dense,
@@ -15,27 +16,29 @@ const InfoPage = ({
 	...rest
 }) => {
 	return (
-		<PublicPageContainer
-			sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
-			boxProps={{}}
-			{...rest}>
-			<Container maxWidth="sm" {...containerProps}>
-				<Box mb={"15vh"}>
-					<AlertEx
-						severity={severity}
-						{...alertProps}
-						sx={{
-							boxShadow: `
+		<FlexContainer
+			maxWidth="sm"
+			alignItems="center"
+			justifyContent="center"
+			fullHeight
+			{...containerProps}>
+			<Box>
+				<AlertEx
+					severity={severity}
+					{...alertProps}
+					sx={{
+						boxShadow: `
 								1px 1px 8px rgb(0 0 0 / 9%)
 								, -2px 0px 5px rgb(0 0 0 / 0%)
 							`,
-						}}>
-						<AlertTitle>{title}</AlertTitle>
-						{message}
-					</AlertEx>
-				</Box>
-			</Container>
-		</PublicPageContainer>
+						paddingLeft: 4,
+						paddingRight: 6,
+					}}>
+					<AlertTitle>{title}</AlertTitle>
+					{message}
+				</AlertEx>
+			</Box>
+		</FlexContainer>
 	);
 };
 

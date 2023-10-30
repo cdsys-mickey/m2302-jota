@@ -1,17 +1,9 @@
 import React, { useCallback } from "react";
 
-const useSearchField = ({
-	onChange,
-	inputRef,
-	doubleTapToClear = false,
-	...rest
-}) => {
+const useSearchField = ({ onChange, inputRef, doubleTapToClear = false }) => {
 	const handleClear = useCallback(() => {
 		console.log("handleClear");
 		onChange("");
-		// if (inputRef.current) {
-		// 	inputRef.current.focus();
-		// }
 	}, [onChange]);
 
 	const handleFocus = useCallback(

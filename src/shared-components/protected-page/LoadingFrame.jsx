@@ -23,7 +23,9 @@ export const LoadingFrame = memo(
 				boxProps={{ alignItems: "center" }}>
 				<Container maxWidth="xs">
 					<FlexBox justifyContent="center">
-						<LoadingTypography>{title}</LoadingTypography>
+						<LoadingTypography iconSize="lg" variant="h5">
+							{title}
+						</LoadingTypography>
 					</FlexBox>
 				</Container>
 			</PublicPageContainer>

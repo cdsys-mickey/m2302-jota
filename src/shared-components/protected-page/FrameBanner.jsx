@@ -24,7 +24,7 @@ const FrameBanner = memo(
 						{title}
 					</ResponsiveFrameTitle>
 				</FlexBox>
-				<FlexBox alignItems="center" flex={2} px={2}>
+				<FlexBox alignItems="center" flex={1} px={2}>
 					{SearchFormComponent && <SearchFormComponent />}
 				</FlexBox>
 				<FlexBox

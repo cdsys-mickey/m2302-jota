@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 
 const makeBorder = ({
 	borderStyle,
@@ -56,7 +56,7 @@ const makeScroller = ({
 	borderBottomLeftRadius,
 	borderBottomRightRadius,
 	// SCROLLER
-	scrollerWidth,
+	// scrollerWidth,
 	scrollerBackgroundColor,
 	// SCROLLER THUMB
 	thumbColor,
@@ -110,7 +110,7 @@ const makeScroller = ({
 	overflowX: "hidden",
 });
 
-const makeBody = ({}) => ({
+const makeBody = () => ({
 	flexGrow: 1,
 });
 

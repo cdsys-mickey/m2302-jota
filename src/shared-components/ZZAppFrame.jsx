@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 import { memo } from "react";
 import PropTypes from "prop-types";
 
-const AppFrame = memo(
+const ZZAppFrame = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;
 
@@ -18,8 +18,8 @@ const AppFrame = memo(
 	})
 );
 
-AppFrame.propTypes = {
+ZZAppFrame.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
 };
 
-export default AppFrame;
+export default ZZAppFrame;

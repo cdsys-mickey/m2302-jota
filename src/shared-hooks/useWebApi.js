@@ -53,24 +53,9 @@ export const useWebApi = (props) => {
 		[baseUrl]
 	);
 
-	// const getErrorFromPayload = useCallback(
-	// 	(payload) => {
-	// 		//try to parse axiosResponse.data as json
-	// 		let result = {};
-	// 		if (!payload) return result;
-	// 		result["message"] = payload?.Message;
-	// 		result["type"] = payload?.Type;
-	// 		if (stacktrace) {
-	// 			result["stacktrace"] = payload?.StackTrace;
-	// 		}
-	// 		return result;
-	// 	},
-	// 	[stacktrace]
-	// );
-
 	// async 版本
 	const sendAsync = useCallback(
-		async ({ url, method, data, headers, ...rest }) => {
+		async ({ url, method, data, headers, bearer, ...rest }) => {
 			const apiUrl = getUrl(url);
 			console.debug(`${method} ${apiUrl}`);
 			if (data) {
@@ -104,6 +89,9 @@ export const useWebApi = (props) => {
 						...DEFAULT_HEADERS,
 						...headers,
 						// 再列舉 參數 內的 headers
+						...(!!bearer && {
+							Authorization: `bearer ${bearer}`,
+						}),
 						...(mode === "json" && DEFAULT_JSON_HEADERS),
 						...(mode === "form" && DEFAULT_FORM_HEADERS),
 					},
@@ -137,36 +125,36 @@ export const useWebApi = (props) => {
 	);
 
 	const httpGetAsync = useCallback(
-		({ url, data, headers }) => {
-			return sendAsync({ url, method: "get", data, headers });
+		({ url, ...rest }) => {
+			return sendAsync({ url, method: "get", ...rest });
 		},
 		[sendAsync]
 	);
 
 	const httpPostAsync = useCallback(
-		({ url, data, headers }) => {
-			return sendAsync({ url, method: "post", data, headers });
+		({ url, ...rest }) => {
+			return sendAsync({ url, method: "post", ...rest });
 		},
 		[sendAsync]
 	);
 
 	const httpPutAsync = useCallback(
-		({ url, data, headers }) => {
-			return sendAsync({ url, method: "put", data, headers });
+		({ url, ...rest }) => {
+			return sendAsync({ url, method: "put", ...rest });
 		},
 		[sendAsync]
 	);
 
 	const httpDeleteAsync = useCallback(
-		({ url, data, headers }) => {
-			return sendAsync({ url, method: "delete", data, headers });
+		({ url, ...rest }) => {
+			return sendAsync({ url, method: "delete", ...rest });
 		},
 		[sendAsync]
 	);
 
 	const httpPatchAsync = useCallback(
-		({ url, data, headers }) => {
-			return sendAsync({ url, method: "patch", data, headers });
+		({ url, ...rest }) => {
+			return sendAsync({ url, method: "patch", ...rest });
 		},
 		[sendAsync]
 	);

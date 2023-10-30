@@ -1,13 +1,13 @@
 import { useLocation } from "react-router-dom";
-import ZZFrameMenu from "./ZZFrameMenu";
+import FrameMenu from "./FrameMenu";
 
-const ZZFrameMenuContainer = (props) => {
+const FrameMenuContainer = (props) => {
 	const { ...rest } = props;
 	const location = useLocation();
 	// const sessions = useSessionContext();
 
 	return (
-		<ZZFrameMenu
+		<FrameMenu
 			// from context
 			// PROPS
 			// items={sessions.menuItems}
@@ -18,4 +18,4 @@ const ZZFrameMenuContainer = (props) => {
 	);
 };
 
-export default ZZFrameMenuContainer;
+export default FrameMenuContainer;

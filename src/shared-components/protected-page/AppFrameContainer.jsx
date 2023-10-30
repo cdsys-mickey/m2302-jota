@@ -1,13 +1,17 @@
 import useAppFrame from "@/shared-contexts/useAppFrame";
 import AppFrame from "./AppFrame";
-import useAuth from "@/contexts/useAuth";
 
 const AppFrameContainer = (props) => {
 	const { ...rest } = props;
-	const { menuFloating } = useAppFrame();
-	const { loading } = useAuth();
+	const { drawerWidth, menuFloating } = useAppFrame();
 
-	return <AppFrame menuFloating={menuFloating} loading={loading} {...rest} />;
+	return (
+		<AppFrame
+			menuFloating={menuFloating}
+			drawerWidth={drawerWidth}
+			{...rest}
+		/>
+	);
 };
 
 AppFrameContainer.displayName = "AppFrameContainer";

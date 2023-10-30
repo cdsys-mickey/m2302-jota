@@ -1,26 +1,30 @@
 import { forwardRef, memo } from "react";
-import SideMenu from "./SideMenu";
+import FrameAccordion from "./FrameAccordion";
 import useAppFrame from "@/shared-contexts/useAppFrame";
+import useWindowSize from "@/shared-hooks/useWindowSize";
 
-const SideMenuContainer = memo(
+const FrameAccordionContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		const {
 			// Menu
 			menus,
-			handleMenuItemClick,
+			handleMenuItemClickBy,
 			selectedItem,
 			// Accordion
 			expanded,
 			handleAccordionChange,
 		} = useAppFrame();
 
+		const { height } = useWindowSize();
+
 		return (
-			<SideMenu
+			<FrameAccordion
 				ref={ref}
+				height={height - 56}
 				// menu
 				menus={menus}
-				handleItemClick={handleMenuItemClick}
+				handleItemClickBy={handleMenuItemClickBy}
 				selectedItem={selectedItem}
 				// Accordion
 				expanded={expanded}
@@ -31,4 +35,4 @@ const SideMenuContainer = memo(
 	})
 );
 
-export default SideMenuContainer;
+export default FrameAccordionContainer;

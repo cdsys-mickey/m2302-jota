@@ -18,12 +18,12 @@ const LoadingTypography = memo(
 				case "sm":
 					return 16;
 				case "lg":
-					return 28;
+					return 24;
 				case "md":
 				default:
 					return 20;
 			}
-		}, []);
+		}, [iconSize]);
 
 		return (
 			<Box
