@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import ErrorBox from "@/shared-components/ErrorBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import NoDataBox from "@/shared-components/NoDataBox";
-import useScrollable from "@/shared-hooks/useScrollable";
+import { useScrollable } from "@/shared-hooks/useScrollable";
 import { memo } from "react";
 
 const useStyles = () => ({

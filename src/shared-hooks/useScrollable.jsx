@@ -114,7 +114,7 @@ const makeBody = () => ({
 	flexGrow: 1,
 });
 
-const useScrollable = (props) => {
+export const useScrollable = (props) => {
 	const {
 		height = 500,
 		// maxHeight,
@@ -188,5 +188,3 @@ const useScrollable = (props) => {
 		...styles,
 	};
 };
-
-export default useScrollable;

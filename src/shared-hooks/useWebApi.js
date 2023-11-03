@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import axios from "axios";
 import HttpStatus from "@/shared-classes/HttpStatus";
 import querystring from "query-string";
-import WebApis from "@/shared-modules/web-apis";
+import WebApis from "@/shared-modules/md-web-apis";
 
 const DEFAULT_HEADERS = {};
 

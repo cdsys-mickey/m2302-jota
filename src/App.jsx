@@ -10,7 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import zhTW from "date-fns/locale/zh-TW";
 
-import { DialogsProvider } from "@/shared-components/dialog/DialogsContext";
+import { DialogProvider } from "@/shared-contexts/dialog/DialogProvider";
 import { AppProvider } from "@/contexts/AppContext";
 import AppRoute from "@/routes/AppRoute";
 import Colors from "@/modules/colors";
@@ -95,18 +95,19 @@ function App() {
 				<LocalizationProvider
 					dateAdapter={AdapterDateFns}
 					locale={zhTW}>
-					<DialogsProvider buttonProps={{ size: "small" }}>
+					<DialogProvider buttonProps={{ size: "small" }}>
 						<CssBaseline />
 						<AppProvider>
 							<AppRoute />
 						</AppProvider>
-					</DialogsProvider>
+					</DialogProvider>
 					<ToastContainer
 						// theme="dark"
-						// theme="colored"
+						theme="colored"
 						// hideProgressBar
 						// position="top-center"
 						position="bottom-left"
+						// position="top-right"
 					/>
 				</LocalizationProvider>
 			</ThemeProvider>

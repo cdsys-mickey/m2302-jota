@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { memo } from "react";
 import { forwardRef } from "react";
 import { useMemo } from "react";
-import useResponsive from "@/shared-contexts/useResponsive";
+import useResponsive from "@/shared-contexts/responsive/useResponsive";
 
 const ResponsiveFrameTitle = memo(
 	forwardRef((props, ref) => {

@@ -43,7 +43,7 @@ const ofHomeBox = ({ theme, drawerOpen }) => ({
 });
 
 const ofFrameBox = ({ theme, drawerOpen }) => ({
-	paddingTop: "30px",
+	// paddingTop: "30px",
 	// transition: theme.transitions.create("paddingRight", {
 	// 	easing: theme.transitions.easing.sharp,
 	// 	duration: theme.transitions.duration.enteringScreen,

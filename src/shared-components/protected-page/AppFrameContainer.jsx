@@ -1,4 +1,4 @@
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import AppFrame from "./AppFrame";
 
 const AppFrameContainer = (props) => {

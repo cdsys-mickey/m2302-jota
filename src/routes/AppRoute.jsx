@@ -1,20 +1,20 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
+import A02Provider from "@/contexts/a02/A02Provider";
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
-import MockC04Page from "@/mock-pages/MockC04Page";
-import ProtectedRoute from "@/routes/ProtectedRoute";
-import SignInRoute from "@/routes/SignInRoute";
-import InfoPage from "@/shared-pages/InfoPage";
 import { ProdsProvider } from "@/contexts/prods/ProdsProvider";
 import { PurchaseProvider } from "@/contexts/purchase/PurchaseProvider";
-import SignIn from "@/pages/auth/SignIn";
-import SignInX from "@/pages/auth/SignInX";
-import Home from "@/pages/Home";
+import MockC04Page from "@/mock-pages/MockC04Page";
+import HomeContainer from "@/pages/home/HomeContainer";
+import ProtectedRoute from "@/routes/ProtectedRoute";
+import SignInRoute from "@/routes/SignInRoute";
 import { LoadingFrame } from "@/shared-components/protected-page/LoadingFrame";
-import HomeContainer from "@/pages/HomeContainer";
-import MockA01FrameContainer from "../mock-pages/MockA01FrameContainer";
-import A02Frame from "../pages/A02Frame";
-import A02Provider from "../contexts/A02Provider";
+import InfoPage from "@/shared-pages/InfoPage";
+import MockA01FrameContainer from "@/mock-pages/MockA01FrameContainer";
+import { A02FrameContainer } from "@/pages/a02/A02FrameContainer";
+import { DSGProvider } from "@/shared-contexts/datasheet-grid/DSGProvider";
+import SignIn from "@/pages/signin/SignIn";
+import SignInX from "@/pages/signin/SignInX";
 
 const AppRoute = () => {
 	return (
@@ -54,9 +54,13 @@ const AppRoute = () => {
 					<Route
 						path="A02"
 						element={
-							<A02Provider>
-								<A02Frame />
-							</A02Provider>
+							<DSGProvider
+								keyColumn="CodeID"
+								otherColumns="CodeData">
+								<A02Provider>
+									<A02FrameContainer />
+								</A02Provider>
+							</DSGProvider>
 						}
 					/>
 					<Route

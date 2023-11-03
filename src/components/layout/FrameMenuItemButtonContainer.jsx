@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import FrameMenuItemButton from "./FrameMenuItemButton";
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import PropTypes from "prop-types";
 
 const FrameMenuItemButtonContainer = (props) => {

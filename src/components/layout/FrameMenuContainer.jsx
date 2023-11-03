@@ -1,8 +1,8 @@
 import useAuth from "@/contexts/useAuth";
-import useWindowSize from "@/shared-hooks/useWindowSize";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import FrameMenu from "./FrameMenu";
 import useSideMenu from "@/contexts/useSideMenu";
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import VirtualizedFrameMenu from "./VirtualizedFrameMenu";
 
 const FrameMenuContainer = (props) => {

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import PublicPage from "./PublicPage";
 
-import useWindowSize from "@/shared-hooks/useWindowSize";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 
 export const PublicPageContainer = ({ title, ...rest }) => {
 	const { height } = useWindowSize();

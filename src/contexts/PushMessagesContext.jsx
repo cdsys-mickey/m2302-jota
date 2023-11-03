@@ -5,7 +5,7 @@ import useAuth from "@/contexts/useAuth";
 
 import PushMessageContent from "@/components/push-messages/PushMessageContent";
 import { MockMessages } from "@/mocks/mock-messages";
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 
 export const PushMessagesContext = createContext();
 

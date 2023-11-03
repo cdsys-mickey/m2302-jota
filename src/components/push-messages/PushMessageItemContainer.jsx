@@ -2,7 +2,7 @@ import usePushMessages from "@/contexts/usePushMessages";
 
 import { forwardRef, useCallback } from "react";
 import PushMessageItem from "./PushMessageItem";
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 
 export const PushMessageItemContainer = forwardRef((props, ref) => {
 	const { job, ...rest } = props;

@@ -1,5 +1,5 @@
 import { forwardRef, memo } from "react";
-import useScrollable from "@/shared-hooks/useScrollable";
+import { useScrollable } from "@/shared-hooks/useScrollable";
 import PropTypes from "prop-types";
 import FrameMenuItemButton from "./FrameMenuItemButton";
 import LoadingTypography from "@/shared-components/LoadingTypography";
@@ -11,7 +11,7 @@ import { Box } from "@mui/material";
 const VirtualizedFrameMenu = memo(
 	forwardRef((props, ref) => {
 		const {
-			height,
+			height = 300,
 			width = 260,
 			authorities,
 			authoritiesLoading,

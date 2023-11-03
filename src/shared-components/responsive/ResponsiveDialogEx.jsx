@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import DialogEx from "../dialog/DialogEx";
-import useResponsive from "@/shared-contexts/useResponsive";
+import useResponsive from "@/shared-contexts/responsive/useResponsive";
 
 /**
  * 自適應對話框

@@ -1,6 +1,6 @@
 import { Box, Paper } from "@mui/material";
 import React from "react";
-import useScrollable from "@/shared-hooks/useScrollable";
+import { useScrollable } from "@/shared-hooks/useScrollable";
 
 import ItemListViewCache from "@/shared-components/listview/ItemListViewCache";
 import MuiStyles from "@/shared-modules/mui-styles";

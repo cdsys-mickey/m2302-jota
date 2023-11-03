@@ -17,14 +17,14 @@ const FrameBanner = memo(
 					ml={2}
 					alignItems="center"
 					justifyContent="flex-start"
-					flex={1}>
+					flex={SearchFormComponent ? 2 : 4}>
 					{/* <ResponsiveFrameMenuButton /> */}
 					<FrameMenuButtonContainer />
 					<ResponsiveFrameTitle alt={alt}>
 						{title}
 					</ResponsiveFrameTitle>
 				</FlexBox>
-				<FlexBox alignItems="center" flex={1} px={2}>
+				<FlexBox alignItems="center" flex={2} px={2}>
 					{SearchFormComponent && <SearchFormComponent />}
 				</FlexBox>
 				<FlexBox

@@ -1,5 +1,5 @@
 import { forwardRef, memo } from "react";
-import useScrollable from "@/shared-hooks/useScrollable";
+import { useScrollable } from "@/shared-hooks/useScrollable";
 import { Box, List, ListItem } from "@mui/material";
 import PropTypes from "prop-types";
 import FrameMenuItemButton from "./FrameMenuItemButton";

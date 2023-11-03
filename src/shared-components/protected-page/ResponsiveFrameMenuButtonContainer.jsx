@@ -1,5 +1,5 @@
 import ResponsiveFrameMenuButton from "./ResponsiveFrameMenuButton";
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 
 const ResponsiveFrameMenuButtonContainer = (props) => {
 	const { ...rest } = props;

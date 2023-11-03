@@ -1,6 +1,6 @@
 import React from "react";
 import ItemListView from "@/shared-components/listview/ItemListView";
-import useWindowSize from "@/shared-hooks/useWindowSize";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { C04ListHeader } from "./C04ListItem";
 import { C04ListItemContainer } from "./C04ListItemContainer";
 import { usePurchase } from "@/contexts/purchase/usePurchase";

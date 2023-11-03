@@ -1,5 +1,5 @@
-import { SignInProvider } from "@/contexts/SignInContext";
-import SignInBase from "@/pages/auth/SignInBase";
+import { SignInProvider } from "@/contexts/signin/SignInProvider";
+import SignInBase from "@/pages/signin/SignInBase";
 import { Outlet } from "react-router-dom";
 
 const SignInRoute = () => {

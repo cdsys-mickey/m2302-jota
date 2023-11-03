@@ -1,5 +1,5 @@
 import MockA01Frame from "./MockA01Frame";
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import useTheme from "@mui/material/styles/useTheme";
 
 const MockA01FrameContainer = () => {

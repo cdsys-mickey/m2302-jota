@@ -2,7 +2,7 @@ import FrameMenuContainer from "@/components/layout/FrameMenuContainer";
 import SideMenuSearchBarContainer from "@/components/layout/SideMenuSearchBarContainer";
 import useAuth from "@/contexts/useAuth";
 import { LoadingFrame } from "@/shared-components/protected-page/LoadingFrame";
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import BasePage from "./BasePage";
 
 export const BasePageContainer = (props) => {

@@ -1,4 +1,4 @@
-import useAppFrame from "@/shared-contexts/useAppFrame";
+import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import useSearchField from "@/shared-hooks/useSearchField";
 import { forwardRef, memo, useRef } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";

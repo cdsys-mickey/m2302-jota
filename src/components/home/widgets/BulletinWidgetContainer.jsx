@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import BulletinWidget from "./BulletinWidget";
-import useWindowSize from "@/shared-hooks/useWindowSize";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 
 const BulletinWidgetContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

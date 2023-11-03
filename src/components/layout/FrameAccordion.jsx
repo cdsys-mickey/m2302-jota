@@ -11,7 +11,7 @@ import {
 import AccordionDetailsEx from "@/shared-components/accordion-ex/AccordionDetailsEx";
 import AccordionSummaryEx from "@/shared-components/accordion-ex/AccordionSummaryEx";
 import FlexBox from "@/shared-components/FlexBox";
-import useScrollable from "@/shared-hooks/useScrollable";
+import { useScrollable } from "@/shared-hooks/useScrollable";
 import { memo } from "react";
 import { forwardRef } from "react";
 import FrameMenuItemButton from "./FrameMenuItemButton";

@@ -2,7 +2,7 @@ import { blue } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import { memo, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
-import useScrollable from "@/shared-hooks/useScrollable";
+import { useScrollable } from "@/shared-hooks/useScrollable";
 import { Paper } from "@mui/material";
 
 const LinkRenderer = ({ children, href }) => {
