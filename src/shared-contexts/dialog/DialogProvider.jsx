@@ -19,8 +19,7 @@ export const DialogProvider = ({ children, buttonProps }) => {
 	}, []);
 
 	const create = useCallback(
-		(props) => {
-			const { buttonProps: dialogButtonProps, ...dialogProps } = props;
+		({ buttonProps: dialogButtonProps, ...dialogProps }) => {
 			setDialogs((prev) => [
 				...prev,
 				{
@@ -28,8 +27,8 @@ export const DialogProvider = ({ children, buttonProps }) => {
 						...buttonProps,
 						...dialogButtonProps,
 					},
-					...dialogProps,
 					open: true,
+					...dialogProps,
 				},
 			]);
 		},
@@ -46,9 +45,9 @@ export const DialogProvider = ({ children, buttonProps }) => {
 		});
 	}, []);
 
-	const confirm = useCallback((props) => {}, []);
+	const confirm = useCallback(() => {}, []);
 
-	const alert = useCallback((props) => {}, []);
+	const alert = useCallback(() => {}, []);
 
 	return (
 		<DialogContext.Provider
@@ -63,11 +62,6 @@ export const DialogProvider = ({ children, buttonProps }) => {
 			{dialogs.map((d, i) => {
 				const { onClose, destroyOnClose = true, ...dialogProps } = d;
 
-				// const handleDestroy = () => {
-				// 	// if (onDestroy) onDestroy();
-				// 	setDialogs((prev) => prev.slice(0, dialogs.length - 1));
-				// };
-
 				const handleClose = () => {
 					handleCloseLatest();
 					if (destroyOnClose) {
@@ -81,7 +75,7 @@ export const DialogProvider = ({ children, buttonProps }) => {
 				return (
 					<DialogEx
 						key={i}
-						onClose={handleClose}
+						onClose={onClose || handleClose}
 						onCancel={handleClose}
 						// onDestroy={handleDestroy}
 						{...dialogProps}

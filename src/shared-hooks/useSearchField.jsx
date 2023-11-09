@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 
 const useSearchField = ({ onChange, inputRef, doubleTapToClear = false }) => {
 	const handleClear = useCallback(() => {

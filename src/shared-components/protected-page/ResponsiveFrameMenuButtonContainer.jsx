@@ -3,7 +3,8 @@ import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 
 const ResponsiveFrameMenuButtonContainer = (props) => {
 	const { ...rest } = props;
-	const { handleToggleDrawerOpen, isFrameMenuButtonVisibled } = useAppFrame();
+	const { handleToggleDrawerOpen, isFrameMenuButtonVisibled } =
+		useContext(AppFrameContext);
 
 	return (
 		<ResponsiveFrameMenuButton

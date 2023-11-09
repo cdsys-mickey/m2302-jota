@@ -55,17 +55,17 @@ const DialogEx = memo(
 		return (
 			<Dialog
 				ref={ref}
-				sx={(theme) => ({
-					"& .MuiDialog-paper": {
-						// minWidth: minWidth,
-						// ...(minHeight && { minHeight: minHeight }),
-						// ...(maxWidth && { maxWidth: maxWidth }),
-					},
-					"& .MuiDialogContentText-root": {
-						// paddingLeft: theme.spacing(3),
-						// paddingRight: theme.spacing(3),
-					},
-				})}
+				// sx={(theme) => ({
+				// 	"& .MuiDialog-paper": {
+				// 		// minWidth: minWidth,
+				// 		// ...(minHeight && { minHeight: minHeight }),
+				// 		// ...(maxWidth && { maxWidth: maxWidth }),
+				// 	},
+				// 	"& .MuiDialogContentText-root": {
+				// 		// paddingLeft: theme.spacing(3),
+				// 		// paddingRight: theme.spacing(3),
+				// 	},
+				// })}
 				onClose={onClose}
 				{...rest}>
 				{showTitle && (

@@ -1,12 +1,10 @@
-import React from "react";
+import { useContext } from "react";
 import Copyright from "./Copyright";
-import { useApp } from "@/contexts/useApp";
+import { AppContext } from "@/contexts/app/AppContext";
 
-export const CopyrightContainerStub = (props, ref) => {
+export const CopyrightContainer = (props) => {
 	const { ...rest } = props;
-	const app = useApp();
+	const { version, apiVersion } = useContext(AppContext);
 
-	return <Copyright ref={ref} version={app.version} {...rest} />;
+	return <Copyright version={version} apiVersion={apiVersion} {...rest} />;
 };
-
-export const CopyrightContainer = React.forwardRef(CopyrightContainerStub);

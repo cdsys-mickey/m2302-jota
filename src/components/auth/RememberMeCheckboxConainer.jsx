@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import ControlledRememberMeCheckbox from "./ControlledRememberMeCheckbox";
 
 export const RememberMeCheckboxContainer = (props) => {
-	// const signin = useAuthContext();
 	const { ...rest } = props;
 
 	const handleClick = useCallback((e) => {

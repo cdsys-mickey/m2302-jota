@@ -15,7 +15,7 @@ import Styles from "../../modules/md-styles";
 const Home = memo((props) => {
 	const { theme, drawerOpen } = props;
 	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
+		() => Styles.ofHomeBox({ theme, drawerOpen }),
 		[drawerOpen, theme]
 	);
 	return (

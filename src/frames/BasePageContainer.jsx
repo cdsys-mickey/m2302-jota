@@ -1,17 +1,18 @@
 import FrameMenuContainer from "@/components/layout/FrameMenuContainer";
 import SideMenuSearchBarContainer from "@/components/layout/SideMenuSearchBarContainer";
-import useAuth from "@/contexts/useAuth";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 import { LoadingFrame } from "@/shared-components/protected-page/LoadingFrame";
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
+import { useContext } from "react";
+import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 import BasePage from "./BasePage";
 
 export const BasePageContainer = (props) => {
 	const { ...rest } = props;
 
 	const { drawerWidth, drawerOpen, handleDrawerClose, menuFloating } =
-		useAppFrame();
+		useContext(AppFrameContext);
 	// const { height } = useWindowSize();
-	const { validating } = useAuth();
+	const { validating } = useContext(AuthContext);
 
 	if (validating !== false) {
 		return <LoadingFrame title="登入中..." />;

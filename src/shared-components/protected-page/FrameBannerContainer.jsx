@@ -1,17 +1,15 @@
-import React from "react";
+import { useContext } from "react";
+import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
 import FrameBanner from "./FrameBanner";
-import { usePushMessages } from "@/contexts/PushMessagesContext";
 
-export const FrameBannerContainer = React.forwardRef((props, ref) => {
+export const FrameBannerContainer = (props) => {
 	const { ...rest } = props;
-	// const pushMessages = usePushMessages();
+	const appFrame = useContext(AppFrameContext);
 
 	return (
 		<FrameBanner
-			ref={ref}
-			// onGenerateToast={pushMessages.handleGenerateToast}
-			// messages={pushMessages.data}
+			title={appFrame.menuItemSelected?.JobName || "(未知)"}
 			{...rest}
 		/>
 	);
-});
+};

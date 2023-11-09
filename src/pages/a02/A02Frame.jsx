@@ -5,11 +5,12 @@ import FrameBanner from "@/shared-components/protected-page/FrameBanner";
 import A02Grid from "../../components/modules/a02/A02Grid";
 import A02GridContainer from "@/components/modules/a02/A02GridContainer";
 import A02Toolbar from "../../components/modules/a02/A02Toolbar";
+import { FrameBannerContainer } from "../../shared-components/protected-page/FrameBannerContainer";
 
 const A02Frame = memo(() => {
 	return (
 		<Box pt={1}>
-			<FrameBanner title="商品包裝代碼維護作業" />
+			<FrameBannerContainer />
 			<A02Toolbar />
 			<A02GridContainer />
 		</Box>

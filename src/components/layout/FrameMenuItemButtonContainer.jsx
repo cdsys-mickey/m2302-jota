@@ -1,21 +1,25 @@
-import { useMemo } from "react";
-import FrameMenuItemButton from "./FrameMenuItemButton";
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import PropTypes from "prop-types";
+import { useContext, useMemo } from "react";
+import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
+import FrameMenuItemButton from "./FrameMenuItemButton";
 
 const FrameMenuItemButtonContainer = (props) => {
-	const { code, ...rest } = props;
-	const { handleMenuItemClickBy, menuItemSelected } = useAppFrame();
+	const { value, ...rest } = props;
+	const { handleMenuItemClickBy, menuItemSelected } =
+		useContext(AppFrameContext);
 
 	const selected = useMemo(() => {
-		return menuItemSelected === code;
-	}, [code, menuItemSelected]);
+		return menuItemSelected?.JobID === value.JobID;
+	}, [menuItemSelected, value.JobID]);
 
 	return (
 		<FrameMenuItemButton
-			code={code}
+			value={value}
+			// code={value.JobID}
 			handleClickBy={handleMenuItemClickBy}
 			selected={selected}
+			// primary={value.JobName}
+			disabled={!value.WebName}
 			{...rest}
 		/>
 	);
@@ -23,6 +27,6 @@ const FrameMenuItemButtonContainer = (props) => {
 
 FrameMenuItemButtonContainer.displayName = "FrameMenuItemButtonContainer";
 FrameMenuItemButtonContainer.propTypes = {
-	code: PropTypes.string.isRequired,
+	value: PropTypes.object.isRequired,
 };
 export default FrameMenuItemButtonContainer;

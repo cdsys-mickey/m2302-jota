@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthProvider } from "@/contexts/auth/AuthProvider";
 import { PushMessagesProvider } from "@/contexts/PushMessagesContext";
 import { BasePageContainer } from "@/frames/BasePageContainer";
 import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";

@@ -7,8 +7,9 @@ import { grey } from "@mui/material/colors";
 const FrameMenuItemButton = memo(
 	forwardRef((props, ref) => {
 		const {
-			code,
-			primary,
+			// code,
+			// primary,
+			value,
 			sx = [],
 			handleClickBy,
 			selected = false,
@@ -25,7 +26,7 @@ const FrameMenuItemButton = memo(
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				selected={selected}
-				onClick={handleClickBy(code)}
+				onClick={handleClickBy(value)}
 				{...rest}>
 				<FlexBox inline fullWidth alignItems="flex-start">
 					<FlexBox
@@ -35,7 +36,7 @@ const FrameMenuItemButton = memo(
 						sx={{
 							width: "2.5rem",
 						}}>
-						<Typography variant="body1">{code}</Typography>
+						<Typography variant="body1">{value.JobID}</Typography>
 					</FlexBox>
 					<FlexBox
 						flex={1}
@@ -43,7 +44,7 @@ const FrameMenuItemButton = memo(
 							borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
 						}}>
 						<ListItemText
-							primary={primary}
+							primary={value.JobName}
 							primaryTypographyProps={{
 								variant: "subtitle1",
 							}}
@@ -63,8 +64,7 @@ const FrameMenuItemButton = memo(
 );
 
 FrameMenuItemButton.propTypes = {
-	code: PropTypes.string.isRequired,
-	primary: PropTypes.string.isRequired,
+	value: PropTypes.object.isRequired,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	handleClickBy: PropTypes.func,
 	selected: PropTypes.bool,

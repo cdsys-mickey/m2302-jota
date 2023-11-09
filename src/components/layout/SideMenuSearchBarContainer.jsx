@@ -1,11 +1,9 @@
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
-import useSearchField from "@/shared-hooks/useSearchField";
-import { forwardRef, memo, useRef } from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { useHotkeys } from "react-hotkeys-hook";
 import SideMenuSearchBar from "@/shared-components/side-menu/SideMenuSearchBar";
-import useSideMenu from "@/contexts/useSideMenu";
-import useAppRedirect from "@/hooks/useAppRedirect";
+import useSearchField from "@/shared-hooks/useSearchField";
+import { forwardRef, memo, useContext, useRef } from "react";
+import { useFormContext } from "react-hook-form";
+import { useHotkeys } from "react-hotkeys-hook";
+import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
 
 const SideMenuSearchBarContainer = memo(
 	forwardRef((props, ref) => {
@@ -16,7 +14,7 @@ const SideMenuSearchBarContainer = memo(
 
 		// const { mobile } = useResponsive();
 		const { setValue } = useFormContext();
-		const { handleHomeClick } = useAppFrame();
+		const { handleHomeClick } = useContext(AppFrameContext);
 
 		const searchField = useSearchField({
 			inputRef,

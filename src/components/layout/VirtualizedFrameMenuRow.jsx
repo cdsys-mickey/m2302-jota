@@ -22,8 +22,9 @@ const VirtualizedFrameMenuRow = memo((props) => {
 					/>
 				) : (
 					<FrameMenuItemButtonContainer
-						code={value.JobID}
-						primary={value.JobName}
+						value={value}
+						// code={value.JobID}
+						// primary={value.JobName}
 					/>
 				)}
 			</ListItem>

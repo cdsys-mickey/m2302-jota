@@ -1,13 +1,12 @@
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import { jwtVerify } from "jose";
-import Cookies from "js-cookie";
-import PropTypes from "prop-types";
-import { createContext, useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Messages from "@/modules/md-messages";
-
-export const AuthContext = createContext();
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import { decodeJwt, jwtVerify } from "jose";
+import Cookies from "js-cookie";
+import PropTypes from "prop-types";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = (props) => {
 	const { children } = props;
@@ -93,15 +92,27 @@ export const AuthProvider = (props) => {
 					return;
 				}
 
+				// ** 1 **
 				const token = payload.token;
-				// const decoded = decodeJwt(token);
-				// console.debug("decoded", decoded);
-
-				const secret = new TextEncoder().encode(
-					import.meta.env.VITE_JWT_SECRET
-				);
-				const { payload: jwtPayload } = await jwtVerify(token, secret);
+				const jwtPayload = decodeJwt(token);
 				console.debug("jwtPayload", jwtPayload);
+
+				// ** 2 **
+				// const secret = new TextEncoder().encode(
+				// 	import.meta.env.VITE_JWT_SECRET
+				// );
+				// const { payload: jwtPayload } = await jwtVerify(token, secret);
+
+				// ** 3 **
+				// const secret = jose.base64url.decode(
+				// 	"zH4NRP1HMALxxCFnRZABFA7GOJtzU_gIj02alfL1lvI"
+				// );
+				// const { payload: jwtPayload } = await jose.jwtDecrypt(
+				// 	token,
+				// 	secret
+				// );
+				// console.debug("jwtPayload", jwtPayload);
+
 				setState((prev) => ({
 					...prev,
 					token,

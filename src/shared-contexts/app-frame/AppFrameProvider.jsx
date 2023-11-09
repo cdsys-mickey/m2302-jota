@@ -1,8 +1,5 @@
-import useAuth from "@/contexts/useAuth";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import useResponsive from "@/shared-contexts/responsive/useResponsive";
-import useRedirect from "@/shared-hooks/useRedirect";
-import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AppFrameContext } from "./AppFrameContext";
@@ -11,9 +8,6 @@ const AppFrameProvider = (props) => {
 	const { children, drawerWidth } = props;
 	const { mobile } = useResponsive();
 	const { redirectToModule, redirectToLanding } = useAppRedirect();
-	const { redirectTo } = useRedirect();
-	const { token } = useAuth();
-	const { httpGetAsync } = useWebApi();
 	// Account
 
 	const [drawerState, setDrawerState] = useState({
@@ -54,13 +48,13 @@ const AppFrameProvider = (props) => {
 	);
 
 	const handleMenuItemClickBy = useCallback(
-		(moduleId) => () => {
+		(module) => () => {
 			setMenuState((prev) => ({
 				...prev,
-				menuItemSelected: moduleId,
+				menuItemSelected: module,
 			}));
-			console.debug(`module ${moduleId} selected`);
-			redirectToModule(moduleId);
+			console.debug(`module ${module.JobID} selected`);
+			redirectToModule(module.WebName);
 		},
 		[redirectToModule]
 	);

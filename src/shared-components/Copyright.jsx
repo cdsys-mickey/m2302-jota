@@ -9,7 +9,7 @@ const Copyright = ({ version, loading, apiVersion }) => {
 					? `[${import.meta.env.VITE_PROFILE}]`
 					: "[no profile]"
 			},
-			API: ${apiVersion || loading === false ? "(系統啟動中...)" : "(N/A)"}`}
+			API: ${apiVersion || (loading ? "(系統啟動中...)" : "(N/A)")}`}
 		</Typography>
 	);
 };

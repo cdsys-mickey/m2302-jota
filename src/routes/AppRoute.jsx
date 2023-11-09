@@ -15,6 +15,10 @@ import { A02FrameContainer } from "@/pages/a02/A02FrameContainer";
 import { DSGProvider } from "@/shared-contexts/datasheet-grid/DSGProvider";
 import SignIn from "@/pages/signin/SignIn";
 import SignInX from "@/pages/signin/SignInX";
+import A04Provider from "../contexts/a04/A04Provider";
+import { A04FrameContainer } from "../pages/a04/A04FrameContainer";
+import A26Provider from "../contexts/a26/A26Provider";
+import { A26FrameContainer } from "../pages/a26/A26FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -60,6 +64,30 @@ const AppRoute = () => {
 								<A02Provider>
 									<A02FrameContainer />
 								</A02Provider>
+							</DSGProvider>
+						}
+					/>
+					<Route
+						path="A04"
+						element={
+							<DSGProvider
+								keyColumn="CodeID"
+								otherColumns="CodeData">
+								<A04Provider>
+									<A04FrameContainer />
+								</A04Provider>
+							</DSGProvider>
+						}
+					/>
+					<Route
+						path="A26"
+						element={
+							<DSGProvider
+								keyColumn="CodeID"
+								otherColumns="CodeData,Other1">
+								<A26Provider>
+									<A26FrameContainer />
+								</A26Provider>
 							</DSGProvider>
 						}
 					/>

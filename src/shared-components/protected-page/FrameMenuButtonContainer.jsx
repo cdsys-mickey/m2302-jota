@@ -1,9 +1,11 @@
 import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import { FrameMenuButton } from "./FrameMenuButton";
+import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
+import { useContext } from "react";
 
 const FrameMenuButtonContainer = (props) => {
 	const { ...rest } = props;
-	const { handleToggleDrawerOpen, drawerOpen } = useAppFrame();
+	const { handleToggleDrawerOpen, drawerOpen } = useContext(AppFrameContext);
 
 	return (
 		<FrameMenuButton

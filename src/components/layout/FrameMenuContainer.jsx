@@ -1,17 +1,17 @@
-import useAuth from "@/contexts/useAuth";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import FrameMenu from "./FrameMenu";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 import useSideMenu from "@/contexts/useSideMenu";
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { useContext } from "react";
+import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
 import VirtualizedFrameMenu from "./VirtualizedFrameMenu";
 
 const FrameMenuContainer = (props) => {
 	const { ...rest } = props;
-	// const { menus } = useAppFrame();
-	const { authoritiesLoading, authoritiesError } = useAuth();
+	// const { menus } = useContext(AppFrameContext);
+	const { authoritiesLoading, authoritiesError } = useContext(AuthContext);
 	const { height } = useWindowSize();
 	const { filteredAuthorities } = useSideMenu();
-	const { drawerWidth } = useAppFrame();
+	const { drawerWidth } = useContext(AppFrameContext);
 
 	return (
 		// <FrameMenu

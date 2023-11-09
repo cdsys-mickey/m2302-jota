@@ -1,19 +1,14 @@
-import { memo } from "react";
+import LoadingTypography from "@/shared-components/LoadingTypography";
+import { Box, Container, useTheme } from "@mui/material";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useMemo } from "react";
 import {
 	DataSheetGrid,
-	checkboxColumn,
-	textColumn,
-	keyColumn,
 	createTextColumn,
+	keyColumn,
 } from "react-datasheet-grid";
-import PropTypes from "prop-types";
-import { useState } from "react";
-import { Box, Container, useTheme } from "@mui/material";
-import { useMemo } from "react";
 import Styles from "../../../modules/md-styles";
 import A02GridAddRows from "./A02GridAddRows";
-import LoadingTypography from "@/shared-components/LoadingTypography";
-import { forwardRef } from "react";
 
 const A02Grid = memo(
 	forwardRef((props, ref) => {
@@ -21,10 +16,9 @@ const A02Grid = memo(
 			drawerOpen,
 			data,
 			loading,
-			handleChange,
-			handleBlur,
 			height,
 			// METHODS
+			handleChange,
 			isPersisted,
 			handleActiveCellChange,
 			...rest
@@ -62,7 +56,11 @@ const A02Grid = memo(
 		);
 
 		if (loading) {
-			return <LoadingTypography>讀取中...</LoadingTypography>;
+			return (
+				<Container maxWidth="sm">
+					<LoadingTypography>讀取中...</LoadingTypography>
+				</Container>
+			);
 		}
 
 		return (
@@ -74,7 +72,6 @@ const A02Grid = memo(
 						height={height || 300}
 						value={data}
 						onChange={handleChange}
-						onBlur={handleBlur}
 						columns={columns}
 						addRowsComponent={A02GridAddRows}
 						disableExpandSelection
@@ -88,7 +85,15 @@ const A02Grid = memo(
 	})
 );
 
-A02Grid.propTypes = {};
+A02Grid.propTypes = {
+	drawerOpen: PropTypes.bool,
+	data: PropTypes.array,
+	loading: PropTypes.bool,
+	height: PropTypes.number,
+	handleChange: PropTypes.func,
+	isPersisted: PropTypes.func,
+	handleActiveCellChange: PropTypes.func,
+};
 
 A02Grid.displayName = "A02Grid";
 export default A02Grid;

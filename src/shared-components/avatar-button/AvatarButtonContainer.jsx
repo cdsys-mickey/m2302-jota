@@ -1,13 +1,15 @@
 import MockAccountMenu from "@/mock-components/account/MockAccountMenu";
 import { useCallback, useMemo, useState } from "react";
 import AvatarButton from "./AvatarButton";
-import useAuth from "@/contexts/useAuth";
+import { useContext } from "react";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { AccountMenuContainer } from "../../components/account/AccountMenuContainer";
 
 const AvatarButtonContainer = (props) => {
 	const { ...rest } = props;
 
 	const [anchorEl, setAnchorEl] = useState(null);
-	const { operator } = useAuth();
+	const { operator } = useContext(AuthContext);
 
 	const handleClick = useCallback((e) => {
 		setAnchorEl(e.currentTarget);
@@ -31,6 +33,7 @@ const AvatarButtonContainer = (props) => {
 			handleClick={handleClick}
 			handleMenuClose={handleMenuClose}
 			Menu={MockAccountMenu}
+			// Menu={AccountMenuContainer}
 			fullName={fullName}
 			name={name}
 			{...rest}

@@ -1,8 +1,9 @@
-import useAuth from "@/contexts/useAuth";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { SideMenuContext } from "./SideMenuContext";
+import { useContext } from "react";
+import { AuthContext } from "./auth/AuthContext";
 
 export const SideMenuProvider = ({ children }) => {
 	const inputRef = useRef(null);
@@ -12,7 +13,7 @@ export const SideMenuProvider = ({ children }) => {
 		name: "q",
 		control,
 	});
-	const { authorities } = useAuth();
+	const { authorities } = useContext(AuthContext);
 
 	const [state, setState] = useState({
 		filteredAuthorities: null,

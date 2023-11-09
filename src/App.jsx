@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import zhTW from "date-fns/locale/zh-TW";
 
 import { DialogProvider } from "@/shared-contexts/dialog/DialogProvider";
-import { AppProvider } from "@/contexts/AppContext";
+import { AppProvider } from "@/contexts/app/AppProvider";
 import AppRoute from "@/routes/AppRoute";
 import Colors from "@/modules/colors";
 

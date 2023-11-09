@@ -9,9 +9,6 @@ import _ from "lodash";
 
 export const DSGProvider = ({
 	children,
-	handleCreate,
-	handleUpdate,
-	handleDelete,
 	confirmText,
 	keyColumn,
 	otherColumns,
@@ -19,10 +16,13 @@ export const DSGProvider = ({
 	const gridRef = createRef();
 
 	const [state, setState] = useState({
+		loading: null,
 		prevData: [],
 		data: [],
-		loading: null,
+		deletingTaregt: null,
 	});
+
+	const [deletingTarget, setDeletingTarget] = useState();
 
 	const keyColumnName = useMemo(() => keyColumn, [keyColumn]);
 
@@ -46,6 +46,37 @@ export const DSGProvider = ({
 		}));
 	}, []);
 
+	const removeByKey = useCallback(
+		(key) => {
+			const newValue = state.prevData.filter(
+				(i) => i[keyColumnName] !== key
+			);
+			setState((prev) => ({
+				...prev,
+				prevData: newValue,
+				data: newValue,
+				loading: false,
+			}));
+		},
+		[keyColumnName, state.prevData]
+	);
+
+	const commitChanges = useCallback(() => {
+		console.debug("commitChanges", state.data);
+		setState((prev) => ({
+			...prev,
+			prevData: state.data,
+		}));
+	}, [state.data]);
+
+	const rollbackChanges = useCallback(() => {
+		console.debug("rollbackChanges", state.prevData);
+		setState((prev) => ({
+			...prev,
+			data: state.prevData,
+		}));
+	}, [state.prevData]);
+
 	const setData = useCallback((newValue) => {
 		setState((prev) => ({
 			...prev,
@@ -60,59 +91,86 @@ export const DSGProvider = ({
 		[keyColumnName, state.prevData]
 	);
 
-	const handleChange = useCallback(
-		(newValue, operations) => {
-			for (const operation of operations) {
-				console.debug("operation", operation);
-				if (operation.type === "DELETE") {
-					state.data
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((row) => {
-							console.debug(`[DSG DELETE]`, row);
-						});
-				} else if (operation.type === "CREATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((row) => {
-							console.debug(`[DSG CREATE]`, row);
-						});
-				} else if (operation.type === "UPDATE") {
-					_.range(
-						operation.fromRowIndex,
-						operation.toRowIndex
-					).forEach((rowIndex) => {
-						const row = newValue[rowIndex];
-						console.debug(`[DSG UPDATE]`, row);
-						if (
-							Objects.isAllPropsNotNull(row, [
-								keyColumnName,
-								...otherColumnNames,
-							])
-						) {
-							const key = row[keyColumnName];
-							if (isInPrevData(key)) {
-								console.debug(`UPDATE`, row);
-							} else {
-								console.debug(`CREATE`, row);
-							}
-						} else if (
-							Objects.isAllPropsNull(row, [
-								keyColumnName,
-								...otherColumnNames,
-							])
-						) {
-							const row = state.prevData[rowIndex];
-							if (row) {
-								console.debug(`DELETE`, row);
-							}
-						}
-					});
-				}
-			}
-
-			setData(newValue);
+	const isDuplicated = useCallback(
+		(key) => {
+			return state.data.filter((i) => i?.CodeID === key).length > 1;
 		},
+		[state.data]
+	);
+
+	const handleChange = useCallback(
+		({ onCreate, onUpdate, onDelete, onDuplicatedError }) =>
+			(newValue, operations) => {
+				let doDelete = false;
+				for (const operation of operations) {
+					console.debug("operation", operation);
+					if (operation.type === "DELETE") {
+						state.data
+							.slice(operation.fromRowIndex, operation.toRowIndex)
+							.forEach((row) => {
+								console.debug(`[DSG DELETE]`, row);
+							});
+					} else if (operation.type === "CREATE") {
+						newValue
+							.slice(operation.fromRowIndex, operation.toRowIndex)
+							.forEach((row) => {
+								console.debug(`[DSG CREATE]`, row);
+							});
+					} else if (operation.type === "UPDATE") {
+						_.range(
+							operation.fromRowIndex,
+							operation.toRowIndex
+						).forEach((rowIndex) => {
+							const row = newValue[rowIndex];
+							console.debug(`[DSG UPDATE]`, row);
+							if (
+								Objects.isAllPropsNotNull(row, [
+									keyColumnName,
+									...otherColumnNames,
+								])
+							) {
+								// 新增或修改
+								const key = row[keyColumnName];
+								if (isDuplicated(key)) {
+									if (onDuplicatedError) {
+										onDuplicatedError(row);
+									}
+								} else {
+									if (isInPrevData(key)) {
+										// console.debug(`UPDATE`, row);
+										if (onUpdate) {
+											onUpdate(row);
+										}
+									} else {
+										// console.debug(`CREATE`, row);
+										if (onCreate) {
+											onCreate(row);
+										}
+									}
+								}
+							} else if (
+								Objects.isAllPropsNull(row, [
+									// keyColumnName,
+									...otherColumnNames,
+								])
+							) {
+								// 刪除
+								const row = state.prevData[rowIndex];
+								if (row) {
+									// console.debug(`DELETE`, row);
+									if (onDelete) {
+										onDelete(row);
+										doDelete = true;
+									}
+								}
+							}
+						});
+					}
+				}
+				setData(newValue);
+			},
 		[
+			isDuplicated,
 			isInPrevData,
 			keyColumnName,
 			otherColumnNames,
@@ -124,7 +182,10 @@ export const DSGProvider = ({
 
 	const isPersisted = useCallback(
 		({ rowData }) => {
-			return state.prevData.some((i) => i.CodeID === rowData.CodeID);
+			return (
+				rowData?.CodeID &&
+				state.prevData.some((i) => i.CodeID === rowData.CodeID)
+			);
 		},
 		[state.prevData]
 	);
@@ -140,10 +201,16 @@ export const DSGProvider = ({
 				...state,
 				setLoading,
 				handleDataLoaded,
+				commitChanges,
+				rollbackChanges,
 				setData,
 				handleChange,
 				isPersisted,
 				handleActiveCellChange,
+				// DELETING
+				deletingTarget,
+				setDeletingTarget,
+				removeByKey,
 			}}>
 			{children}
 		</DSGContext.Provider>

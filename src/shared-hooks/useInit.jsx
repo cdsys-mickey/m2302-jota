@@ -1,6 +1,6 @@
 import { useCallback, useRef, useEffect } from "react";
 
-const useInit = (callback, dependencies = []) => {
+export const useInit = (callback, dependencies = []) => {
 	const loadedRef = useRef(false);
 
 	const setLoaded = useCallback((value) => {
@@ -17,5 +17,3 @@ const useInit = (callback, dependencies = []) => {
 
 	return [loadedRef.current, setLoaded];
 };
-
-export default useInit;
