@@ -3,6 +3,10 @@ import useResponsive from "@/shared-contexts/responsive/useResponsive";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AppFrameContext } from "./AppFrameContext";
+import { useMatch } from "react-router-dom";
+import { useContext } from "react";
+import { AuthProvider } from "../../contexts/auth/AuthProvider";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 const AppFrameProvider = (props) => {
 	const { children, drawerWidth } = props;
@@ -127,6 +131,42 @@ const AppFrameProvider = (props) => {
 			}));
 		}
 	}, [drawerState.drawerOpen, mobile]);
+
+	const match = useMatch("/modules/:moduleId");
+	const menuItemId = useMemo(() => {
+		return match?.params?.moduleId;
+	}, [match?.params?.moduleId]);
+
+	const auth = useContext(AuthContext);
+
+	const recoverMenuItemSelected = useCallback(
+		(menuItemId) => {
+			const matchedAuthority = auth.authorities?.find(
+				(a) => a.JobID === menuItemId
+			);
+			console.debug(`recovered ${menuItemId}...`, matchedAuthority);
+			setMenuState((prev) => ({
+				...prev,
+				menuItemSelected: matchedAuthority,
+			}));
+		},
+		[auth.authorities]
+	);
+
+	useEffect(() => {
+		if (
+			auth.authorities &&
+			menuItemId &&
+			menuState.menuItemSelected == null
+		) {
+			recoverMenuItemSelected(menuItemId);
+		}
+	}, [
+		auth.authorities,
+		menuItemId,
+		menuState.menuItemSelected,
+		recoverMenuItemSelected,
+	]);
 
 	return (
 		<AppFrameContext.Provider

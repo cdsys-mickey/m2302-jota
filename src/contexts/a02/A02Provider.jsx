@@ -56,7 +56,7 @@ const A02Provider = (props) => {
 				setLoading(false);
 			}
 		},
-		[handleDataLoaded, httpGetAsync, loading, setLoading, token]
+		[handleDataLoaded, httpGetAsync, setLoading, token]
 	);
 
 	const handleCreate = useCallback(
@@ -186,12 +186,7 @@ const A02Provider = (props) => {
 		onDuplicatedError: handleDuplicatedError,
 	});
 
-	// useEffect(() => {
-	// 	load({ init: true });
-	// }, [load]);
-
 	useInit(() => {
-		// load({ init: true });
 		load();
 	}, []);
 

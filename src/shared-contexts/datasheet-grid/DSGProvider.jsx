@@ -8,6 +8,7 @@ import Arrays from "../../shared-modules/md-arrays";
 import _ from "lodash";
 
 export const DSGProvider = ({
+	id,
 	children,
 	confirmText,
 	keyColumn,
@@ -18,7 +19,7 @@ export const DSGProvider = ({
 	const [state, setState] = useState({
 		loading: null,
 		prevData: [],
-		data: [],
+		data: null,
 		deletingTaregt: null,
 	});
 
@@ -30,10 +31,10 @@ export const DSGProvider = ({
 		return Arrays.getArray(otherColumns);
 	}, [otherColumns]);
 
-	const setLoading = useCallback((loading) => {
+	const setLoading = useCallback((value) => {
 		setState((prev) => ({
 			...prev,
-			loading,
+			loading: value,
 		}));
 	}, []);
 
@@ -45,6 +46,13 @@ export const DSGProvider = ({
 			loading: false,
 		}));
 	}, []);
+
+	const getRowDataByIndex = useCallback(
+		(rowIndex) => {
+			return state.data[rowIndex];
+		},
+		[state.data]
+	);
 
 	const removeByKey = useCallback(
 		(key) => {
@@ -70,12 +78,18 @@ export const DSGProvider = ({
 	}, [state.data]);
 
 	const rollbackChanges = useCallback(() => {
-		console.debug("rollbackChanges", state.prevData);
+		// console.debug("rollbackChanges", state.prevData);
+		setState((prev) => ({
+			...prev,
+			loading: true,
+		}));
+		console.debug(`rollbackChanges ${id}, prevData:`, state.prevData);
 		setState((prev) => ({
 			...prev,
 			data: state.prevData,
+			loading: false,
 		}));
-	}, [state.prevData]);
+	}, [id, state.prevData]);
 
 	const setData = useCallback((newValue) => {
 		setState((prev) => ({
@@ -93,15 +107,17 @@ export const DSGProvider = ({
 
 	const isDuplicated = useCallback(
 		(key) => {
-			return state.data.filter((i) => i?.CodeID === key).length > 1;
+			return (
+				state.data.filter((i) => i[keyColumnName] === key).length > 1
+			);
 		},
-		[state.data]
+		[keyColumnName, state.data]
 	);
 
 	const handleChange = useCallback(
 		({ onCreate, onUpdate, onDelete, onDuplicatedError }) =>
 			(newValue, operations) => {
-				let doDelete = false;
+				// let doDelete = false;
 				for (const operation of operations) {
 					console.debug("operation", operation);
 					if (operation.type === "DELETE") {
@@ -121,35 +137,44 @@ export const DSGProvider = ({
 							operation.fromRowIndex,
 							operation.toRowIndex
 						).forEach((rowIndex) => {
-							const row = newValue[rowIndex];
-							console.debug(`[DSG UPDATE]`, row);
+							const rowData = newValue[rowIndex];
+							console.debug(`[DSG UPDATE]`, rowData);
 							if (
-								Objects.isAllPropsNotNull(row, [
+								Objects.isAllPropsNotNull(rowData, [
 									keyColumnName,
 									...otherColumnNames,
 								])
 							) {
 								// 新增或修改
-								const key = row[keyColumnName];
+								const key = rowData[keyColumnName];
 								if (isDuplicated(key)) {
 									if (onDuplicatedError) {
-										onDuplicatedError(row);
+										onDuplicatedError({
+											rowIndex,
+											rowData,
+										});
 									}
 								} else {
 									if (isInPrevData(key)) {
 										// console.debug(`UPDATE`, row);
 										if (onUpdate) {
-											onUpdate(row);
+											onUpdate({
+												rowIndex,
+												rowData,
+											});
 										}
 									} else {
 										// console.debug(`CREATE`, row);
 										if (onCreate) {
-											onCreate(row);
+											onCreate({
+												rowIndex,
+												rowData,
+											});
 										}
 									}
 								}
 							} else if (
-								Objects.isAllPropsNull(row, [
+								Objects.isAllPropsNull(rowData, [
 									// keyColumnName,
 									...otherColumnNames,
 								])
@@ -159,8 +184,11 @@ export const DSGProvider = ({
 								if (row) {
 									// console.debug(`DELETE`, row);
 									if (onDelete) {
-										onDelete(row);
-										doDelete = true;
+										onDelete({
+											rowIndex,
+											rowData,
+										});
+										// doDelete = true;
 									}
 								}
 							}
@@ -183,20 +211,63 @@ export const DSGProvider = ({
 	const isPersisted = useCallback(
 		({ rowData }) => {
 			return (
-				rowData?.CodeID &&
-				state.prevData.some((i) => i.CodeID === rowData.CodeID)
+				rowData[keyColumnName] &&
+				state.prevData.some(
+					(i) => i[keyColumnName] === rowData[keyColumnName]
+				)
 			);
 		},
-		[state.prevData]
+		[keyColumnName, state.prevData]
 	);
 
 	const handleActiveCellChange = useCallback(({ cell }) => {
-		console.debug(`onActiveCellChange:`, cell);
+		console.debug(`DSG.onActiveCellChange →`, cell);
 	}, []);
+
+	const isAllFieldsNotNull = useCallback(
+		(row) => {
+			return Objects.isAllPropsNotNull(row, [
+				keyColumnName,
+				...otherColumnNames,
+			]);
+		},
+		[keyColumnName, otherColumnNames]
+	);
+
+	const handleSelectionChangeBy = useCallback(
+		({ onRowSelectionChange }) =>
+			({ selection }) => {
+				if (selection) {
+					const selectedRow = selection
+						? getRowDataByIndex(selection?.min?.row)
+						: null;
+					console.debug(`${id} selectedRow:`, selectedRow);
+					if (onRowSelectionChange) {
+						onRowSelectionChange({
+							rowIndex: selection?.min?.row,
+							rowData:
+								selectedRow && isAllFieldsNotNull(selectedRow)
+									? selectedRow
+									: null,
+						});
+					}
+				}
+			},
+		[getRowDataByIndex, id, isAllFieldsNotNull]
+	);
+
+	const onRowSelectionChange = useCallback(
+		({ rowIndex, rowData }) => {
+			console.debug(`${id}[${rowIndex}] selected, data:`, rowData);
+		},
+		[id]
+	);
 
 	return (
 		<DSGContext.Provider
 			value={{
+				id,
+				keyColumnName,
 				gridRef,
 				...state,
 				setLoading,
@@ -207,10 +278,13 @@ export const DSGProvider = ({
 				handleChange,
 				isPersisted,
 				handleActiveCellChange,
+				handleSelectionChangeBy,
+				isAllFieldsNotNull,
 				// DELETING
 				deletingTarget,
 				setDeletingTarget,
 				removeByKey,
+				getRowDataByIndex,
 			}}>
 			{children}
 		</DSGContext.Provider>
@@ -218,6 +292,7 @@ export const DSGProvider = ({
 };
 
 DSGProvider.propTypes = {
+	id: PropTypes.string,
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 		.isRequired,
 	handleCreate: PropTypes.func,

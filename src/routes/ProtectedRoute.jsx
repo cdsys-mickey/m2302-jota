@@ -18,5 +18,4 @@ const ProtectedRoute = () => {
 	);
 };
 
-ProtectedRoute.displayName = "ProtectedRoute";
 export default ProtectedRoute;

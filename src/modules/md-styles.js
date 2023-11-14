@@ -43,11 +43,7 @@ const ofHomeBox = ({ theme, drawerOpen }) => ({
 });
 
 const ofFrameBox = ({ theme, drawerOpen }) => ({
-	// paddingTop: "30px",
-	// transition: theme.transitions.create("paddingRight", {
-	// 	easing: theme.transitions.easing.sharp,
-	// 	duration: theme.transitions.duration.enteringScreen,
-	// }),
+	paddingTop: theme.spacing(1),
 	...(drawerOpen && {
 		paddingLeft: {
 			xl: "40px",

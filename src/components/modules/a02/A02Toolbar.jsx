@@ -10,7 +10,7 @@ const A02Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<Container maxWidth="sm">
+			<Container maxWidth="xs">
 				<InlineListViewToolbar
 					ref={ref}
 					right={

@@ -3,6 +3,7 @@ const STYLES = Object.freeze({
 		whiteSpace: "nowrap",
 		overflow: "hidden",
 		textOverflow: "ellipsis",
+		wordBreak: "break-all",
 	},
 	ELLIPSIS_BOX: {
 		overflow: "hidden",

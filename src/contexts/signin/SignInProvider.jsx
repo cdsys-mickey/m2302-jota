@@ -8,12 +8,23 @@ import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { SignInContext } from "./SignInContext";
 
+const pageCookieOpts = {
+	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
+	expires: 365,
+};
+
+const rootCookieOpts = {
+	path: "/",
+	expires: 365,
+};
+
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWROD = "pw";
 const PARAM_CAPTCHA_PASSED = "captchaPassed";
 const COOKIE_ACCOUNT = "ac";
 const COOKIE_LOGKEY = "LogKey";
 const COOKIE_MODE = "md";
+const COOKIE_REMEMBER_ME = "rememberMe";
 
 export const SignInProvider = ({ children }) => {
 	const forms = useForm({
@@ -21,7 +32,10 @@ export const SignInProvider = ({ children }) => {
 			[PARAM_ACCOUNT]: Cookies.get(COOKIE_ACCOUNT) || "",
 			[PARAM_PWROD]: "",
 			[PARAM_CAPTCHA_PASSED]: false,
-			rememberMe: true,
+			rememberMe:
+				Cookies.get(COOKIE_REMEMBER_ME) !== undefined
+					? Cookies.get(COOKIE_REMEMBER_ME) === "1"
+					: true,
 		},
 	});
 
@@ -36,73 +50,18 @@ export const SignInProvider = ({ children }) => {
 		mode: "form",
 	});
 
-	const onSignInSubmit = useCallback(
-		async (data) => {
-			console.log("onSignInSubmit", data);
+	const handleSignInSubmit = useCallback(
+		async (data, isImpersonate) => {
 			const collected = _.pick(data, [
 				PARAM_ACCOUNT,
 				PARAM_PWROD,
 				"captchaPassed",
 			]);
 
-			if (data.captchaPassed) {
-				setState((prev) => ({
-					...prev,
-					loading: true,
-				}));
-				try {
-					const { status, payload, error } = await httpPostAsync({
-						url: "/v1/auth/signin",
-						data: collected,
-					});
-					console.debug("status", status);
-					console.debug("payload", payload);
-					if (error) {
-						console.error(error);
-					}
-					if (status.success) {
-						// 1.儲存 Cookie
-						Cookies.set(COOKIE_LOGKEY, payload.LogKey || "");
-						Cookies.remove(COOKIE_MODE);
-
-						// 2.重導至首頁
-						// redirectTo("/mock/A01");
-						redirectToLanding();
-					} else {
-						console.error(`status ${status}`);
-						toast.warn(error?.message);
-						Cookies.remove(COOKIE_LOGKEY);
-					}
-				} catch (err) {
-					console.error("onSignInXSubmit failed", err);
-					toast.error("登入發生系統異常，請稍後再弒");
-				} finally {
-					setState((prev) => ({
-						...prev,
-						loading: false,
-					}));
-				}
-			} else {
-				toast.error("請輸入正確的驗證碼");
-			}
-		},
-		[httpPostAsync, redirectToLanding]
-	);
-
-	const onSignInSubmitError = useCallback((err) => {
-		console.error("onSignInSubmitError", err);
-	}, []);
-
-	const onSignInXSubmit = useCallback(
-		async (data) => {
-			console.log("onSignInXSubmit", data);
-			const collected = _.pick(data, [
-				PARAM_ACCOUNT,
-				PARAM_PWROD,
-				"captchaPassed",
-			]);
-
-			if (collected[PARAM_PWROD] !== import.meta.env.VITE_PWORDX) {
+			if (
+				isImpersonate &&
+				collected[PARAM_PWROD] !== import.meta.env.VITE_PWORDX
+			) {
 				toast.error("通行碼驗證失敗, 請重新輸入");
 				return;
 			}
@@ -113,7 +72,9 @@ export const SignInProvider = ({ children }) => {
 				}));
 				try {
 					const { status, payload, error } = await httpPostAsync({
-						url: "/v1/auth/signinx",
+						url: isImpersonate
+							? "/v1/auth/signinx"
+							: "/v1/auth/signin",
 						data: collected,
 					});
 					console.debug("status", status);
@@ -124,18 +85,28 @@ export const SignInProvider = ({ children }) => {
 
 					if (status.success) {
 						// 1.儲存 Cookie
-						Cookies.set(COOKIE_LOGKEY, payload.LogKey || "");
+						Cookies.set(
+							COOKIE_LOGKEY,
+							payload.LogKey || "",
+							rootCookieOpts
+						);
+						if (!isImpersonate) {
+							Cookies.remove(COOKIE_MODE);
+						} else {
+							Cookies.set(COOKIE_MODE, "im", rootCookieOpts);
+						}
 						if (data.rememberMe) {
+							Cookies.set(COOKIE_REMEMBER_ME, 1, pageCookieOpts);
 							Cookies.set(
 								COOKIE_ACCOUNT,
-								collected[PARAM_ACCOUNT]
+								collected[PARAM_ACCOUNT],
+								rootCookieOpts
 							);
-							Cookies.set(COOKIE_MODE, "im");
 						} else {
+							Cookies.set(COOKIE_REMEMBER_ME, 0, pageCookieOpts);
 							Cookies.remove(COOKIE_ACCOUNT);
 						}
 						// 2.重導至首頁
-						// redirectTo("/mock/A01");
 						redirectToLanding();
 					} else {
 						console.error(`status: ${status}`);
@@ -153,7 +124,7 @@ export const SignInProvider = ({ children }) => {
 						Cookies.remove(COOKIE_LOGKEY);
 					}
 				} catch (err) {
-					console.error("onSignInXSubmit failed", err);
+					console.error("handleSignInSubmit failed", err);
 					toast.error("登入發生系統異常，請稍後再弒");
 				} finally {
 					setState((prev) => ({
@@ -166,6 +137,26 @@ export const SignInProvider = ({ children }) => {
 			}
 		},
 		[httpPostAsync, redirectToLanding]
+	);
+
+	const onSignInSubmit = useCallback(
+		(data) => {
+			console.log("onSignInSubmit", data);
+			handleSignInSubmit(data, false);
+		},
+		[handleSignInSubmit]
+	);
+
+	const onSignInSubmitError = useCallback((err) => {
+		console.error("onSignInSubmitError", err);
+	}, []);
+
+	const onSignInXSubmit = useCallback(
+		(data) => {
+			console.log("onSignInXSubmit", data);
+			handleSignInSubmit(data, true);
+		},
+		[handleSignInSubmit]
 	);
 
 	const onSignInXSubmitError = useCallback((err) => {

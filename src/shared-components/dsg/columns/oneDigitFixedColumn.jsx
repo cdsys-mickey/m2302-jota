@@ -1,6 +1,6 @@
 import { createTextColumn } from "react-datasheet-grid";
 
-export const fixedOneFloatColumn = createTextColumn({
+export const oneDigitFixedColumn = createTextColumn({
 	alignRight: true,
 	continuousUpdates: false,
 	formatBlurredInput: (value) =>

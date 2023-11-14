@@ -28,7 +28,7 @@ const isAllPropsNotNull = (obj, columnPattern) => {
  */
 const isAllPropsNull = (obj, columnPattern) => {
 	if (!obj) {
-		throw "obj 為 null";
+		throw "obj cabnot be null";
 	}
 	if (!columnPattern) {
 		return Object.keys(obj).filter((key) => obj[key] !== null).length === 0;
@@ -39,7 +39,7 @@ const isAllPropsNull = (obj, columnPattern) => {
 
 const isAllPropsNotNullOrEmpty = (obj, columnPattern) => {
 	if (!obj) {
-		throw "obj 為 null";
+		throw "obj cabnot be null";
 	}
 	if (!columnPattern) {
 		return (
@@ -59,7 +59,7 @@ const isAllPropsNotNullOrEmpty = (obj, columnPattern) => {
 
 const hasAllProps = (obj, columnPattern) => {
 	if (!obj) {
-		throw "obj 為 null";
+		throw "obj cabnot be null";
 	}
 	if (!columnPattern) {
 		throw "未指定檢查屬性名";

@@ -1,5 +1,5 @@
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import { Box, Container, useTheme } from "@mui/material";
+import { Box, Container, Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import {
@@ -7,55 +7,46 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import Styles from "@/modules/md-styles";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
-import { oneDigitFixedColumn } from "@/shared-components/dsg/columns/oneDigitFixedColumn";
+import _ from "lodash";
+import DSGLoading from "../../../shared-components/dsg/DSGLoading";
 
-const A26Grid = memo(
+const CatMGrid = memo(
 	forwardRef((props, ref) => {
 		const {
-			drawerOpen,
 			data,
 			loading,
 			height,
 			// METHODS
 			handleChange,
 			isPersisted,
-			handleActiveCellChange,
-			...rest
+			// handleActiveCellChange,
+			handleSelectionChange,
+			// isSelected,
 		} = props;
-		const theme = useTheme();
-		const boxStyles = useMemo(
-			() => Styles.ofFrameBox({ theme, drawerOpen }),
-			[drawerOpen, theme]
-		);
 
 		const columns = useMemo(
 			() => [
 				{
 					...keyColumn(
-						"CodeID",
+						"MClas",
 						createTextColumn({
 							continuousUpdates: false,
 						})
 					),
 					disabled: isPersisted,
 					title: "代碼",
+					minWidth: 60,
 				},
 				{
 					...keyColumn(
-						"CodeData",
+						"ClassData",
 						createTextColumn({
 							continuousUpdates: false,
 						})
 					),
-					title: "佣金類別",
-					grow: 4,
-				},
-				{
-					...keyColumn("Other1", oneDigitFixedColumn),
-					title: "佣金比例",
-					grow: 1,
+					title: "中分類名稱",
+					grow: 5,
 				},
 			],
 			[isPersisted]
@@ -64,7 +55,11 @@ const A26Grid = memo(
 		if (loading) {
 			return (
 				<Container maxWidth="sm">
-					<LoadingTypography>讀取中...</LoadingTypography>
+					{/* <LoadingTypography>讀取中...</LoadingTypography> */}
+					{/* {_.range(10).map((i) => (
+						<Skeleton key={i} height={45} />
+					))} */}
+					<DSGLoading height={height} />
 				</Container>
 			);
 		}
@@ -74,11 +69,11 @@ const A26Grid = memo(
 		}
 
 		return (
-			<Container maxWidth="sm">
-				<Box sx={boxStyles} {...rest}>
+			<Container maxWidth="xs">
+				<Box>
 					<DataSheetGrid
 						ref={ref}
-						rowKey="CodeID"
+						rowKey="MClas"
 						height={height || 300}
 						value={data}
 						onChange={handleChange}
@@ -86,8 +81,12 @@ const A26Grid = memo(
 						addRowsComponent={DSGAddRowsToolbar}
 						disableExpandSelection
 						disableContextMenu
-						onActiveCellChange={handleActiveCellChange}
+						// onActiveCellChange={handleActiveCellChange}
+						onSelectionChange={handleSelectionChange}
 						// autoAddRow
+						// rowClassName={(row) =>
+						// 	isSelected(row) ? "row-selected" : null
+						// }
 					/>
 				</Box>
 			</Container>
@@ -95,7 +94,7 @@ const A26Grid = memo(
 	})
 );
 
-A26Grid.propTypes = {
+CatMGrid.propTypes = {
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,
@@ -103,7 +102,8 @@ A26Grid.propTypes = {
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	handleActiveCellChange: PropTypes.func,
+	handleSelectionChange: PropTypes.func,
 };
 
-A26Grid.displayName = "A26Grid";
-export default A26Grid;
+CatMGrid.displayName = "CatMGrid";
+export default CatMGrid;

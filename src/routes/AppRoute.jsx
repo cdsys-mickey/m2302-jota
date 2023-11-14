@@ -19,6 +19,8 @@ import A04Provider from "../contexts/a04/A04Provider";
 import { A04FrameContainer } from "../pages/a04/A04FrameContainer";
 import A26Provider from "../contexts/a26/A26Provider";
 import { A26FrameContainer } from "../pages/a26/A26FrameContainer";
+import A03Provider from "../contexts/a03/A03Provider";
+import { A03FrameContainer } from "../pages/a03/A03FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -65,6 +67,15 @@ const AppRoute = () => {
 									<A02FrameContainer />
 								</A02Provider>
 							</DSGProvider>
+						}
+					/>
+					{/* A03 */}
+					<Route
+						path="A03"
+						element={
+							<A03Provider>
+								<A03FrameContainer />
+							</A03Provider>
 						}
 					/>
 					<Route

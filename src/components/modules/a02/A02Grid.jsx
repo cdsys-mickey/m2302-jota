@@ -8,12 +8,11 @@ import {
 	keyColumn,
 } from "react-datasheet-grid";
 import Styles from "../../../modules/md-styles";
-import A02GridAddRows from "./A02GridAddRows";
+import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
 
 const A02Grid = memo(
 	forwardRef((props, ref) => {
 		const {
-			drawerOpen,
 			data,
 			loading,
 			height,
@@ -21,13 +20,7 @@ const A02Grid = memo(
 			handleChange,
 			isPersisted,
 			handleActiveCellChange,
-			...rest
 		} = props;
-		const theme = useTheme();
-		const boxStyles = useMemo(
-			() => Styles.ofFrameBox({ theme, drawerOpen }),
-			[drawerOpen, theme]
-		);
 
 		const columns = useMemo(
 			() => [
@@ -63,9 +56,13 @@ const A02Grid = memo(
 			);
 		}
 
+		if (!data) {
+			return false;
+		}
+
 		return (
-			<Container maxWidth="sm">
-				<Box sx={boxStyles} {...rest}>
+			<Container maxWidth="xs">
+				<Box>
 					<DataSheetGrid
 						ref={ref}
 						rowKey="CodeID"
@@ -73,7 +70,7 @@ const A02Grid = memo(
 						value={data}
 						onChange={handleChange}
 						columns={columns}
-						addRowsComponent={A02GridAddRows}
+						addRowsComponent={DSGAddRowsToolbar}
 						disableExpandSelection
 						disableContextMenu
 						onActiveCellChange={handleActiveCellChange}

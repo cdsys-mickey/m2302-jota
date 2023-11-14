@@ -8,7 +8,7 @@ import {
 	keyColumn,
 } from "react-datasheet-grid";
 import Styles from "../../../modules/md-styles";
-import A04GridAddRows from "./A04GridAddRows";
+import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
 
 const A04Grid = memo(
 	forwardRef((props, ref) => {
@@ -63,6 +63,10 @@ const A04Grid = memo(
 			);
 		}
 
+		if (!data) {
+			return false;
+		}
+
 		return (
 			<Container maxWidth="sm">
 				<Box sx={boxStyles} {...rest}>
@@ -73,7 +77,7 @@ const A04Grid = memo(
 						value={data}
 						onChange={handleChange}
 						columns={columns}
-						addRowsComponent={A04GridAddRows}
+						addRowsComponent={DSGAddRowsToolbar}
 						disableExpandSelection
 						disableContextMenu
 						onActiveCellChange={handleActiveCellChange}

@@ -1,23 +1,32 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-import { Box } from "@mui/material";
-import FrameBanner from "@/shared-components/protected-page/FrameBanner";
-import A02Grid from "../../components/modules/a02/A02Grid";
 import A02GridContainer from "@/components/modules/a02/A02GridContainer";
-import A02Toolbar from "../../components/modules/a02/A02Toolbar";
-import { FrameBannerContainer } from "../../shared-components/protected-page/FrameBannerContainer";
+import { Box, useTheme } from "@mui/material";
+import { memo, useMemo } from "react";
+import A02Toolbar from "@/components/modules/a02/A02Toolbar";
+import Styles from "@/modules/md-styles";
+import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
+import PropTypes from "prop-types";
 
-const A02Frame = memo(() => {
+const A02Frame = memo((props) => {
+	const { drawerOpen } = props;
+	const theme = useTheme();
+	const boxStyles = useMemo(
+		() => Styles.ofFrameBox({ theme, drawerOpen }),
+		[drawerOpen, theme]
+	);
 	return (
-		<Box pt={1}>
+		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
-			<A02Toolbar />
-			<A02GridContainer />
+			<Box>
+				<A02Toolbar />
+				<A02GridContainer />
+			</Box>
 		</Box>
 	);
 });
 
-A02Frame.propTypes = {};
+A02Frame.propTypes = {
+	drawerOpen: PropTypes.bool,
+};
 
 A02Frame.displayName = "A02Frame";
 export default A02Frame;
