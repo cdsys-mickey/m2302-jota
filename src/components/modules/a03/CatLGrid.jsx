@@ -1,101 +1,103 @@
-import LoadingTypography from "@/shared-components/LoadingTypography";
-import { Box, Container, Skeleton } from "@mui/material";
+import DSGLoading from "@/shared-components/dsg/DSGLoading";
+import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import {
-	DataSheetGrid,
 	createTextColumn,
 	keyColumn,
+	DynamicDataSheetGrid,
 } from "react-datasheet-grid";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
-import _ from "lodash";
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
+import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 
-const CatLGrid = memo(
-	forwardRef((props, ref) => {
-		const {
-			data,
-			loading,
-			height,
-			// METHODS
-			handleChange,
-			isPersisted,
-			// handleActiveCellChange,
-			handleSelectionChange,
-		} = props;
+const ContextMenu = createDSGContextMenu({
+	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+});
 
-		const columns = useMemo(
-			() => [
-				{
-					...keyColumn(
-						"LClas",
-						createTextColumn({
-							continuousUpdates: false,
-						})
-					),
-					disabled: isPersisted,
-					title: "代碼",
-					grow: 1,
-					minWidth: 60,
-				},
-				{
-					...keyColumn(
-						"ClassData",
-						createTextColumn({
-							continuousUpdates: false,
-						})
-					),
-					title: "大分類名稱",
-					grow: 5,
-				},
-			],
-			[isPersisted]
-		);
+const CatLGrid = memo((props) => {
+	const {
+		lockRows,
+		setGridRef,
+		data,
+		loading,
+		height = 300,
+		// METHODS
+		handleChange,
+		isPersisted,
+		// handleActiveCellChange,
+		handleSelectionChange,
+	} = props;
 
-		if (loading) {
-			return (
-				<Container maxWidth="sm">
-					{/* <LoadingTypography>讀取中...</LoadingTypography> */}
-					<DSGLoading height={height} />
-				</Container>
-			);
-		}
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"LClas",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
+				disabled: isPersisted,
+				title: "代碼",
+				grow: 1,
+				minWidth: 60,
+			},
+			{
+				...keyColumn(
+					"ClassData",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
+				title: "大分類名稱",
+				grow: 5,
+				disabled: lockRows,
+			},
+		],
+		[isPersisted, lockRows]
+	);
 
-		if (!data) {
-			return false;
-		}
-
+	if (loading) {
 		return (
-			<Container maxWidth="xs">
-				<Box
-					sx={{
-						"& .selected-row": {
-							backgroundColor: "red",
-						},
-					}}>
-					<DataSheetGrid
-						ref={ref}
-						rowKey="LClas"
-						height={height || 300}
-						value={data}
-						onChange={handleChange}
-						columns={columns}
-						addRowsComponent={DSGAddRowsToolbar}
-						disableExpandSelection
-						disableContextMenu
-						// onActiveCellChange={handleActiveCellChange}
-						onSelectionChange={handleSelectionChange}
-						// rowClassName={({ rowIndex }) =>
-						// 	isSelected(rowIndex) ? "selected-row" : null
-						// }
-					/>
-				</Box>
+			<Container maxWidth="sm">
+				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
+				<DSGLoading height={height} />
 			</Container>
 		);
-	})
-);
+	}
 
+	if (!data) {
+		return false;
+	}
+
+	return (
+		<Container maxWidth="xs">
+			<Box
+				sx={{
+					"& .selected-row": {
+						backgroundColor: "red",
+					},
+				}}>
+				<DynamicDataSheetGrid
+					lockRows={lockRows}
+					ref={setGridRef}
+					rowKey="LClas"
+					height={height + (lockRows ? 48 : 0)}
+					value={data}
+					onChange={handleChange}
+					columns={columns}
+					addRowsComponent={DSGAddRowsToolbar}
+					disableExpandSelection
+					contextMenuComponent={ContextMenu}
+					onSelectionChange={handleSelectionChange}
+				/>
+			</Box>
+		</Container>
+	);
+});
 CatLGrid.propTypes = {
+	lockRows: PropTypes.bool,
+	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,

@@ -6,16 +6,20 @@ import { useCallback, useContext } from "react";
 import { toast } from "react-toastify";
 import { DSGContext } from "../../shared-contexts/datasheet-grid/DSGContext";
 import { DialogContext } from "../../shared-contexts/dialog/DialogContext";
-import { A02Context } from "./A02Context";
-import { startTransition } from "react";
+import { A16Context } from "./A16Context";
 import { useToggle } from "@/shared-hooks/useToggle";
 
-const A02Provider = (props) => {
+const A16Provider = (props) => {
 	const { children } = props;
-	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
-	const { token } = useContext(AuthContext);
 	const [lockRows, toggleLockRows] = useToggle(true);
+	const {
+		httpGetAsync,
+		httpPostAsync,
+		httpPutAsync,
+		httpDeleteAsync,
+		httpPatchAsync,
+	} = useWebApi();
+	const { token } = useContext(AuthContext);
 
 	const dsg = useContext(DSGContext);
 	const dialogs = useContext(DialogContext);
@@ -29,8 +33,11 @@ const A02Provider = (props) => {
 			}
 			try {
 				const { status, payload } = await httpGetAsync({
-					url: "v1/prod/pkg-types",
+					url: "v1/depts",
 					bearer: token,
+					data: {
+						sd: 1,
+					},
 				});
 				if (status.success) {
 					dsg.handleDataLoaded(payload);
@@ -59,7 +66,7 @@ const A02Provider = (props) => {
 			console.debug(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
-					url: "v1/prod/pkg-types",
+					url: "v1/depts",
 					bearer: token,
 					data: rowData,
 				});
@@ -67,13 +74,14 @@ const A02Provider = (props) => {
 				if (status.success) {
 					dsg.commitChanges(newValue);
 					toast.success(
-						`代碼 ${rowData.CodeID}/${rowData.CodeData} 新增成功`
+						`門市 ${rowData.DeptID}/${rowData.DeptName} 新增成功`
 					);
 				} else {
 					throw error?.message || "新增失敗";
 				}
 			} catch (err) {
-				toast.error(`新增代碼發生例外: ${err.message}`);
+				console.error(err);
+				toast.error(`新增門市發生例外: ${err.message}`);
 				reload();
 			}
 		},
@@ -85,47 +93,75 @@ const A02Provider = (props) => {
 			console.debug(`UPDATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPutAsync({
-					url: "v1/prod/pkg-types",
+					url: "v1/depts",
 					data: rowData,
 					bearer: token,
 				});
 				console.debug("handleCreate response.payload", payload);
+
 				if (status.success) {
 					dsg.commitChanges(newValue);
 					toast.success(
-						`代碼 ${rowData.CodeID}/${rowData.CodeData} 修改成功`
+						`門市 ${rowData.DeptID}/${rowData.DeptName} 修改成功`
 					);
 				} else {
 					throw error?.message || "修改失敗";
 				}
 			} catch (err) {
-				toast.error(`修改代碼發生例外: ${err.message}`);
+				console.error(err);
+				toast.error(`修改門市發生例外: ${err.message}`);
 				reload();
 			}
 		},
 		[dsg, httpPutAsync, reload, token]
 	);
 
+	const handlePatch = useCallback(
+		async ({ rowData }, newValue) => {
+			console.debug(`PATCH`, rowData);
+			try {
+				const { status, payload, error } = await httpPatchAsync({
+					url: "v1/depts",
+					data: rowData,
+					bearer: token,
+				});
+				console.debug("handlePatch response.payload", payload);
+				if (status.success) {
+					dsg.commitChanges(newValue);
+					toast.success(
+						`門市 ${rowData.DeptID}/${rowData.DeptName} 更新成功`
+					);
+				} else {
+					throw error?.message || "更新失敗";
+				}
+			} catch (err) {
+				console.error(err);
+				toast.error(`更新門市發生例外: ${err.message}`);
+				reload();
+			}
+		},
+		[dsg, httpPatchAsync, reload, token]
+	);
+
 	const handleDelete = useCallback(
 		async ({ rowData }) => {
 			console.debug(`DELETE`, rowData);
+			const key = rowData.DeptID;
 			try {
-				const key = rowData.CodeID;
 				const { status, error } = await httpDeleteAsync({
-					url: `v1/prod/pkg-types/${key}`,
+					url: `v1/depts/${key}`,
 					bearer: token,
 				});
-
 				if (status.success) {
 					toast.success(
-						`代碼 ${rowData.CodeID}/${rowData.CodeData} 刪除成功`
+						`門市 ${rowData.DeptID}/${rowData.DeptName} 刪除成功`
 					);
 				} else {
 					throw error?.message || "刪除失敗";
 				}
 			} catch (err) {
 				console.error(err);
-				toast.error(`刪除代碼發生例外: ${err.message}`);
+				toast.error(`刪除門市發生例外: ${err.message}`);
 			} finally {
 				dsg.setDeletingTarget(null);
 				dialogs.closeLatest();
@@ -141,7 +177,7 @@ const A02Provider = (props) => {
 			dsg.setDeletingTarget(rowData);
 			dialogs.create({
 				title: "刪除確認",
-				message: `確定要刪除代碼 ${rowData.CodeID}/${rowData.CodeData} ?`,
+				message: `確定要刪除門市 ${rowData.DeptID}/${rowData.DeptName} ?`,
 				onConfirm: () => {
 					handleDelete({ rowData });
 				},
@@ -157,10 +193,10 @@ const A02Provider = (props) => {
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
-			toast.error(`代碼 ${row.rowData.CodeID} 已存在`);
+			toast.error(`門市 ${row.rowData.DeptID} 已存在`);
 
 			dsg.rewriteValue(row, newValue, {
-				CodeID: "",
+				DeptID: "",
 			});
 			setTimeout(() => {
 				dsg.setActiveCell({ row: row.rowIndex, col: 0 });
@@ -176,32 +212,40 @@ const A02Provider = (props) => {
 		[dsg.id]
 	);
 
+	const handleCreateRow = useCallback(
+		() => ({
+			Using_N: "1",
+		}),
+		[]
+	);
+
 	useInit(() => {
 		load();
 	}, []);
 
 	return (
-		<A02Context.Provider
+		<A16Context.Provider
 			value={{
 				load,
 				// handleGridChange,
 				handleCreate,
 				handleUpdate,
+				handlePatch,
 				handleConfirmDelete,
 				handleDelete,
 				handleDuplicatedError,
 				handleRowSelectionChange,
-				// lockRows
+				handleCreateRow,
 				lockRows,
 				toggleLockRows,
 			}}>
 			{children}
-		</A02Context.Provider>
+		</A16Context.Provider>
 	);
 };
 
-A02Provider.propTypes = {
+A16Provider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
-export default A02Provider;
+export default A16Provider;

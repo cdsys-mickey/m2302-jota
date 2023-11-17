@@ -11,14 +11,24 @@ const A26GridContainer = () => {
 
 	return (
 		<A26Grid
-			ref={dsg.gridRef}
+			lockRows={a26.lockRows}
+			setGridRef={dsg.setFridRef}
 			data={dsg.data}
 			loading={dsg.loading}
-			// handleChange={handleChange}
-			handleChange={a26.handleGridChange}
+			handleChange={dsg.handleChange({
+				onCreate: a26.handleCreate,
+				onUpdate: a26.handleUpdate,
+				onDelete: a26.handleConfirmDelete,
+				// onConfirmDelete: handleConfirmDelete,
+				onDuplicatedError: a26.handleDuplicatedError,
+			})}
+			// handleChange={a26.handleGridChange}
 			height={height - 176}
 			isPersisted={dsg.isPersisted}
-			handleActiveCellChange={dsg.handleActiveCellChange}
+			// handleActiveCellChange={dsg.handleActiveCellChange}
+			handleSelectionChange={dsg.handleSelectionChangeBy({
+				// onRowSelectionChange: a26.handleRowSelectionChange,
+			})}
 		/>
 	);
 };

@@ -1,0 +1,32 @@
+import A16GridContainer from "@/components/modules/a16/A16GridContainer";
+import { Box, useTheme } from "@mui/material";
+import { memo, useMemo } from "react";
+import A16Toolbar from "@/components/modules/a16/A16Toolbar";
+import Styles from "@/modules/md-styles";
+import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
+import PropTypes from "prop-types";
+
+const A16Frame = memo((props) => {
+	const { drawerOpen } = props;
+	const theme = useTheme();
+	const boxStyles = useMemo(
+		() => Styles.ofFrameBox({ theme, drawerOpen }),
+		[drawerOpen, theme]
+	);
+	return (
+		<Box sx={[boxStyles]}>
+			<FrameBannerContainer />
+			<Box>
+				<A16Toolbar />
+				<A16GridContainer />
+			</Box>
+		</Box>
+	);
+});
+
+A16Frame.propTypes = {
+	drawerOpen: PropTypes.bool,
+};
+
+A16Frame.displayName = "A16Frame";
+export default A16Frame;

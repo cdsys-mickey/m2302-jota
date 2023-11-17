@@ -21,6 +21,11 @@ import A26Provider from "../contexts/a26/A26Provider";
 import { A26FrameContainer } from "../pages/a26/A26FrameContainer";
 import A03Provider from "../contexts/a03/A03Provider";
 import { A03FrameContainer } from "../pages/a03/A03FrameContainer";
+import A16Provider from "../contexts/a16/A16Provider";
+import { A16FrameContainer } from "../pages/a16/A16FrameContainer";
+import DSGTest from "../pages/lab/DSGTest";
+import { DSGTestProvider } from "../pages/lab/DSGTestProvider";
+import { DSGTestContainer } from "../pages/lab/DSGTestContainer";
 
 const AppRoute = () => {
 	return (
@@ -33,6 +38,14 @@ const AppRoute = () => {
 			{/* Lab */}
 			<Route path="lab">
 				<Route path="loading" element={<LoadingFrame />} />
+				<Route
+					path="dsg"
+					element={
+						<DSGTestProvider>
+							<DSGTestContainer />
+						</DSGTestProvider>
+					}
+				/>
 			</Route>
 			{/* LADING REDIRECTION */}
 			<Route
@@ -56,7 +69,6 @@ const AppRoute = () => {
 							</CrudProvider>
 						}
 					/>
-					{/* A02 */}
 					<Route
 						path="A02"
 						element={
@@ -69,7 +81,6 @@ const AppRoute = () => {
 							</DSGProvider>
 						}
 					/>
-					{/* A03 */}
 					<Route
 						path="A03"
 						element={
@@ -87,6 +98,18 @@ const AppRoute = () => {
 								<A04Provider>
 									<A04FrameContainer />
 								</A04Provider>
+							</DSGProvider>
+						}
+					/>
+					<Route
+						path="A16"
+						element={
+							<DSGProvider
+								keyColumn="DeptID"
+								otherColumns="GroupKey,DeptName,AbbrName">
+								<A16Provider>
+									<A16FrameContainer />
+								</A16Provider>
 							</DSGProvider>
 						}
 					/>

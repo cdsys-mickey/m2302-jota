@@ -1,7 +1,5 @@
-import Styles from "@/modules/md-styles";
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
-import { Box, Container, useTheme } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import {
@@ -9,53 +7,78 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
+import DSGLoading from "../../../shared-components/dsg/DSGLoading";
+import { stringCheckboxColumn } from "../../../shared-components/dsg/columns/stringCheckboxColumn";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
 });
 
-const A04Grid = memo((props) => {
+const A16Grid = memo((props) => {
 	const {
 		lockRows,
 		setGridRef,
-		drawerOpen,
 		data,
 		loading,
 		height = 300,
 		// METHODS
 		handleChange,
 		isPersisted,
-		handleSelectionChange,
-		...rest
+		// handleActiveCellChange,
+		handleCreateRow,
 	} = props;
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
 
 	const columns = useMemo(
 		() => [
 			{
 				...keyColumn(
-					"CodeID",
+					"DeptID",
 					createTextColumn({
 						continuousUpdates: false,
 					})
 				),
 				disabled: isPersisted,
-				title: "代碼",
+				title: "門市代碼",
+				grow: 2,
 			},
 			{
 				...keyColumn(
-					"CodeData",
+					"GroupKey",
 					createTextColumn({
 						continuousUpdates: false,
 					})
 				),
-				title: "櫃位名稱",
+				title: "群組",
+				grow: 1,
+				disabled: lockRows,
+			},
+			{
+				...keyColumn(
+					"DeptName",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
+				title: "門市名稱",
 				grow: 4,
+				disabled: lockRows,
+			},
+			{
+				...keyColumn(
+					"AbbrName",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
+				title: "簡稱",
+				grow: 2,
+				disabled: lockRows,
+			},
+			{
+				...keyColumn("Using_N", stringCheckboxColumn()),
+				title: "使用中",
+				minWidth: 60,
 				disabled: lockRows,
 			},
 		],
@@ -64,7 +87,7 @@ const A04Grid = memo((props) => {
 
 	if (loading) {
 		return (
-			<Container maxWidth="sm">
+			<Container maxWidth="md">
 				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
 				<DSGLoading height={height} />
 			</Container>
@@ -76,28 +99,34 @@ const A04Grid = memo((props) => {
 	}
 
 	return (
-		<Container maxWidth="sm">
-			<Box sx={boxStyles} {...rest}>
+		<Container maxWidth="md">
+			<Box>
+				{/* <LoadingBackdrop open={loading} /> */}
 				<DynamicDataSheetGrid
 					lockRows={lockRows}
 					ref={setGridRef}
-					rowKey="CodeID"
+					rowKey="DeptID"
 					height={height + (lockRows ? 48 : 0)}
 					value={data}
 					onChange={handleChange}
 					columns={columns}
 					addRowsComponent={DSGAddRowsToolbar}
 					disableExpandSelection
-					// disableContextMenu
-					onSelectionChange={handleSelectionChange}
-					// autoAddRow
 					contextMenuComponent={ContextMenu}
+					// onActiveCellChange={handleActiveCellChange}
+					// autoAddRow
+					createRow={handleCreateRow}
+					duplicateRow={({ rowData }) => ({
+						...rowData,
+						age: rowData.int ?? 25,
+						date: rowData.date ?? new Date(),
+					})}
 				/>
 			</Box>
 		</Container>
 	);
 });
-A04Grid.propTypes = {
+A16Grid.propTypes = {
 	lockRows: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
@@ -106,8 +135,9 @@ A04Grid.propTypes = {
 	height: PropTypes.number,
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleSelectionChange: PropTypes.func,
+	handleActiveCellChange: PropTypes.func,
+	handleCreateRow: PropTypes.func,
 };
 
-A04Grid.displayName = "A04Grid";
-export default A04Grid;
+A16Grid.displayName = "A16Grid";
+export default A16Grid;

@@ -7,32 +7,22 @@ import { toast } from "react-toastify";
 import { DSGContext } from "../../shared-contexts/datasheet-grid/DSGContext";
 import { DialogContext } from "../../shared-contexts/dialog/DialogContext";
 import { A04Context } from "./A04Context";
+import { useToggle } from "@/shared-hooks/useToggle";
 
 const A04Provider = (props) => {
 	const { children } = props;
+	const [lockRows, toggleLockRows] = useToggle(true);
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 	const { token } = useContext(AuthContext);
 
-	const {
-		loading,
-		setLoading,
-		handleDataLoaded,
-		handleChange,
-		// commitChanges,
-		rollbackChanges,
-		// deletingTarget,
-		setDeletingTarget,
-		// removeByKey,
-	} = useContext(DSGContext);
+	const dsg = useContext(DSGContext);
 	const dialogs = useContext(DialogContext);
-
-	// const [loading, setLoading] = useState();
 
 	const load = useCallback(
 		async ({ supressLoading = false } = {}) => {
 			if (!supressLoading) {
-				setLoading(true);
+				dsg.setLoading(true);
 			}
 			try {
 				const { status, payload } = await httpGetAsync({
@@ -40,7 +30,7 @@ const A04Provider = (props) => {
 					bearer: token,
 				});
 				if (status.success) {
-					handleDataLoaded(payload);
+					dsg.handleDataLoaded(payload);
 				} else {
 					switch (status.code) {
 						default:
@@ -51,142 +41,132 @@ const A04Provider = (props) => {
 			} catch (err) {
 				console.error("load", err);
 			} finally {
-				setLoading(false);
+				dsg.setLoading(false);
 			}
 		},
-		[handleDataLoaded, httpGetAsync, setLoading, token]
+		[dsg, httpGetAsync, token]
 	);
 
+	const reload = useCallback(() => {
+		load({ supressLoading: true });
+	}, [load]);
+
 	const handleCreate = useCallback(
-		async (row) => {
-			console.debug(`CREATE`, row);
+		async ({ rowData }, newValue) => {
+			console.debug(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
 					url: "v1/prod/counters",
 					bearer: token,
-					data: row,
+					data: rowData,
 				});
 				console.debug("handleCreate response.payload", payload);
 				if (status.success) {
-					// commitChanges();
-					load({ supressLoading: true });
+					dsg.commitChanges(newValue);
 					toast.success(
-						`代碼 ${row.CodeID}/${row.CodeData} 新增成功`
+						`代碼 ${rowData.CodeID}/${rowData.CodeData} 新增成功`
 					);
 				} else {
-					rollbackChanges();
-					toast.error(error?.message || "新增失敗");
+					throw error?.message || "新增失敗";
 				}
 			} catch (err) {
+				console.error(err);
 				toast.error(`新增代碼發生例外: ${err.message}`);
-				rollbackChanges();
+				reload();
 			}
 		},
-		[httpPostAsync, load, rollbackChanges, token]
+		[dsg, httpPostAsync, reload, token]
 	);
 
 	const handleUpdate = useCallback(
-		async (row) => {
-			console.debug(`UPDATE`, row);
+		async ({ rowData }, newValue) => {
+			console.debug(`UPDATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPutAsync({
 					url: "v1/prod/counters",
-					data: row,
+					data: rowData,
 					bearer: token,
 				});
 				console.debug("handleCreate response.payload", payload);
 				if (status.success) {
-					// commitChanges();
-					load({ supressLoading: true });
+					dsg.commitChanges(newValue);
 					toast.success(
-						`代碼 ${row.CodeID}/${row.CodeData} 修改成功`
+						`代碼 ${rowData.CodeID}/${rowData.CodeData} 修改成功`
 					);
 				} else {
-					rollbackChanges();
-					toast.error(error?.message || "修改失敗");
+					throw error?.message || "修改失敗";
 				}
 			} catch (err) {
+				console.error(err);
 				toast.error(`新增代碼發生例外: ${err.message}`);
+				reload();
 			}
 		},
-		[httpPutAsync, load, rollbackChanges, token]
+		[dsg, httpPutAsync, reload, token]
 	);
 
 	const handleDelete = useCallback(
-		async (row) => {
-			console.debug(`DELETE`, row);
-			const key = row.CodeID;
+		async ({ rowData }) => {
+			console.debug(`DELETE`, rowData);
 			try {
+				const key = rowData.CodeID;
 				const { status, error } = await httpDeleteAsync({
 					url: `v1/prod/counters/${key}`,
 					bearer: token,
 				});
 				if (status.success) {
-					// removeByKey(key);
-					load({ supressLoading: true });
-					setDeletingTarget(null);
-					dialogs.closeLatest();
 					toast.success(
-						`代碼 ${row.CodeID}/${row.CodeData} 刪除成功`
+						`代碼 ${rowData.CodeID}/${rowData.CodeData} 刪除成功`
 					);
 				} else {
-					rollbackChanges();
-					toast.error(error?.message || "刪除失敗");
+					throw error?.message || "刪除失敗";
 				}
 			} catch (err) {
 				console.error(err);
 				toast.error(`刪除代碼發生例外: ${err.message}`);
+			} finally {
+				dsg.setDeletingTarget(null);
+				dialogs.closeLatest();
+				reload();
 			}
 		},
-		[
-			dialogs,
-			httpDeleteAsync,
-			load,
-			rollbackChanges,
-			setDeletingTarget,
-			token,
-		]
+		[dialogs, dsg, httpDeleteAsync, reload, token]
 	);
 
 	const handleConfirmDelete = useCallback(
-		async (row) => {
-			console.debug(`confirm DELETE`, row);
-			setDeletingTarget(row);
+		async (row, newValue) => {
+			const { rowData } = row;
+			console.debug(`handleConfirmDelete`, rowData);
+			dsg.setDeletingTarget(rowData);
 			dialogs.create({
 				title: "刪除確認",
-				message: `確定要刪除代碼 ${row.CodeID}/${row.CodeData} ?`,
+				message: `確定要刪除代碼 ${rowData.CodeID}/${rowData.CodeData} ?`,
 				onConfirm: () => {
-					handleDelete(row);
+					handleDelete(row, newValue);
 				},
 				onCancel: () => {
-					setDeletingTarget(null);
-					rollbackChanges();
+					dsg.setDeletingTarget(null);
+					dsg.rollbackChanges();
 					dialogs.closeLatest();
 				},
 			});
 		},
-		[dialogs, handleDelete, rollbackChanges, setDeletingTarget]
+		[dialogs, dsg, handleDelete]
 	);
 
 	const handleDuplicatedError = useCallback(
-		(row) => {
-			rollbackChanges();
-			toast.error(`代碼 ${row.CodeID} 已存在`);
+		(row, newValue) => {
+			toast.error(`代碼 ${row.rowData.CodeID} 已存在`);
+
+			dsg.rewriteValue(row, newValue, {
+				CodeID: "",
+			});
+			setTimeout(() => {
+				dsg.setActiveCell({ row: row.rowIndex, col: 0 });
+			}, 0);
 		},
-		[rollbackChanges]
+		[dsg]
 	);
-
-	const handleGridChange = handleChange({
-		onCreate: handleCreate,
-		onUpdate: handleUpdate,
-		onDelete: handleConfirmDelete,
-		// onConfirmDelete: handleConfirmDelete,
-		onDuplicatedError: handleDuplicatedError,
-	});
-
-	// useEffect(() => {
-	// 	load({ init: true });
-	// }, [load]);
 
 	useInit(() => {
 		// load({ init: true });
@@ -197,7 +177,14 @@ const A04Provider = (props) => {
 		<A04Context.Provider
 			value={{
 				load,
-				handleGridChange,
+				// handleGridChange,
+				handleCreate,
+				handleUpdate,
+				handleConfirmDelete,
+				handleDelete,
+				handleDuplicatedError,
+				lockRows,
+				toggleLockRows,
 			}}>
 			{children}
 		</A04Context.Provider>

@@ -11,14 +11,17 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import { CatLContext } from "./CatLContext";
 import { CatMContext } from "./CatMContext";
 import { CatSContext } from "./CatSContext";
+import { useTransition } from "react";
 
 const CatLProvider = (props) => {
 	const { children } = props;
+	const [isPending, startTransition] = useTransition();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 	const { token } = useContext(AuthContext);
 
 	const dsg = useContext(DSGContext);
+	// const { gridRef } = dsg;
 	const dialogs = useContext(DialogContext);
 	const catM = useContext(CatMContext);
 	const catS = useContext(CatSContext);
@@ -26,6 +29,7 @@ const CatLProvider = (props) => {
 	const [state, setState] = useState({
 		selected: null,
 		selectedRowIndex: null,
+		error: null,
 	});
 
 	const clear = useCallback(() => {
@@ -33,7 +37,7 @@ const CatLProvider = (props) => {
 	}, [dsg]);
 
 	const selectRow = useCallback(
-		({ rowIndex, rowData } = {}) => {
+		({ rowIndex, rowData }) => {
 			setState((prev) => ({
 				...prev,
 				selected: rowData,
@@ -76,6 +80,10 @@ const CatLProvider = (props) => {
 				}
 			} catch (err) {
 				console.error("load", err);
+				setState((prev) => ({
+					...prev,
+					error: err,
+				}));
 			} finally {
 				dsg.setLoading(false);
 			}
@@ -88,7 +96,7 @@ const CatLProvider = (props) => {
 	}, [load]);
 
 	const handleCreate = useCallback(
-		async ({ rowIndex, rowData }) => {
+		async ({ rowIndex, rowData }, newValue) => {
 			console.debug(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
@@ -97,28 +105,25 @@ const CatLProvider = (props) => {
 					data: rowData,
 				});
 				console.debug("handleCreate response.payload", payload);
-				reload();
 				if (status.success) {
+					dsg.commitChanges(newValue);
 					selectRow({ rowIndex, rowData });
 					toast.success(
 						`大分類 ${rowData.LClas}/${rowData.ClassData} 新增成功`
 					);
 				} else {
-					// rollback 無效
-					// dsg.rollbackChanges();
-					toast.error(error?.message || "新增失敗");
+					throw error?.message || "新增失敗";
 				}
 			} catch (err) {
 				toast.error(`新增大分類發生例外: ${err.message}`);
-				// dsg.rollbackChanges();
 				reload();
 			}
 		},
-		[httpPostAsync, reload, selectRow, token]
+		[dsg, httpPostAsync, reload, selectRow, token]
 	);
 
 	const handleUpdate = useCallback(
-		async ({ rowIndex, rowData }) => {
+		async ({ rowIndex, rowData }, newValue) => {
 			console.debug(`UPDATE`, rowData);
 			const key = rowData.LClas;
 			try {
@@ -128,66 +133,64 @@ const CatLProvider = (props) => {
 					bearer: token,
 				});
 				console.debug("handleCreate response.payload", payload);
-				reload();
+
 				if (status.success) {
+					dsg.commitChanges(newValue);
 					selectRow({ rowIndex, rowData });
 					toast.success(
-						`代碼 ${rowData.LClas}/${rowData.ClassData} 修改成功`
+						`大分類 ${rowData.LClas}/${rowData.ClassData} 修改成功`
 					);
 				} else {
-					// dsg.rollbackChanges();
-					toast.error(error?.message || "修改失敗");
+					throw error?.message || "修改失敗";
 				}
 			} catch (err) {
-				toast.error(`新增代碼發生例外: ${err.message}`);
+				toast.error(`新增大分類發生例外: ${err.message}`);
 				reload();
 			}
 		},
-		[httpPutAsync, reload, selectRow, token]
+		[dsg, httpPutAsync, reload, selectRow, token]
 	);
 
 	const handleDelete = useCallback(
 		async ({ rowIndex, rowData }) => {
 			console.debug(`DELETE`, rowData);
-			const key = rowData.LClas;
 			try {
+				const key = rowData.LClas;
 				const { status, error } = await httpDeleteAsync({
 					url: `v1/prod/l-cats/${key}`,
 					bearer: token,
 				});
-				if (status.success) {
-					// 重新讀取
-					reload();
-					// 取消選取列
-					selectRow(null);
 
-					dialogs.closeLatest();
+				if (status.success) {
+					// 取消選取列
+					selectRow({});
 					toast.success(
-						`代碼 ${rowData.LClas}/${rowData.ClassData} 刪除成功`
+						`大分類 ${rowData.LClas}/${rowData.ClassData} 刪除成功`
 					);
 				} else {
-					dsg.rollbackChanges();
-					toast.error(error?.message || "刪除失敗");
+					throw error?.message || "刪除失敗";
 				}
 			} catch (err) {
 				console.error(err);
 				toast.error(`刪除大分類發生例外: ${err.message}`);
 			} finally {
 				dsg.setDeletingTarget(null);
+				dialogs.closeLatest();
+				reload();
 			}
 		},
 		[dialogs, dsg, httpDeleteAsync, reload, token, selectRow]
 	);
 
 	const handleConfirmDelete = useCallback(
-		async ({ rowIndex, rowData }) => {
+		async ({ rowData }) => {
 			console.debug(`confirm DELETE`, rowData);
 			dsg.setDeletingTarget(rowData);
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除大分類 ${rowData.LClas}/${rowData.ClassData} ?`,
 				onConfirm: () => {
-					handleDelete(rowData);
+					handleDelete({ rowData });
 				},
 				onCancel: () => {
 					dsg.setDeletingTarget(null);
@@ -200,48 +203,18 @@ const CatLProvider = (props) => {
 	);
 
 	const handleDuplicatedError = useCallback(
-		({ rowIndex, rowData }) => {
+		(row, newValue) => {
 			// dsg.rollbackChanges();
-			toast.error(`大分類 ${rowData.LClas} 已存在`);
-			reload();
+			toast.error(`大分類 ${row.rowData.LClas} 已存在`);
+			dsg.rewriteValue(row, newValue, {
+				LClas: "",
+			});
+			dsg.rewriteValue(row, newValue, {
+				LClas: "",
+			});
 		},
-		[reload]
+		[dsg]
 	);
-
-	// const handleGridChange = dsg.handleChange({
-	// 	onCreate: handleCreate,
-	// 	onUpdate: handleUpdate,
-	// 	onDelete: handleConfirmDelete,
-	// 	onDuplicatedError: handleDuplicatedError,
-	// });
-
-	// const handleActiveCellChange = useCallback(({ cell }) => {
-	// 	console.debug(`CatL.onActiveCellChange →`, cell);
-	// 	if (cell) {
-	// 		selectRowIndex(cell.row);
-	// 		const selectedRow = dsg.getRowDataByIndex(cell?.row || 0);
-	// 		if (selectedRow && dsg.isAllFieldsNotNull(selectedRow)) {
-	// 			console.debug(`${dsg.id} selected`, selectedRow);
-	// 			selectRow(selectedRow);
-	// 		}
-	// 	}
-	// }, []);
-
-	// const handleSelectionChange = useCallback(
-	// 	({ selection }) => {
-	// 		if (selection) {
-	// 			console.debug(`${dsg.id} select:`, selection);
-	// 			const selectedRow = dsg.getRowDataByIndex(selection.min.row);
-	// 			if (selectedRow && dsg.isAllFieldsNotNull(selectedRow)) {
-	// 				console.debug(`${dsg.id} selected`, selectedRow);
-	// 				selectRow(selectedRow);
-	// 			}
-	// 		} else {
-	// 			console.debug(`${dsg.id} de-selected`);
-	// 		}
-	// 	},
-	// 	[dsg, selectRow]
-	// );
 
 	const handleRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {

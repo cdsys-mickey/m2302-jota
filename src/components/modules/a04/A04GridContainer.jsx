@@ -11,14 +11,23 @@ const A04GridContainer = () => {
 
 	return (
 		<A04Grid
-			ref={dsg.gridRef}
+			lockRows={a04.lockRows}
+			setGridRef={dsg.setGridRef}
 			data={dsg.data}
 			loading={dsg.loading}
-			// handleChange={handleChange}
-			handleChange={a04.handleGridChange}
+			handleChange={dsg.handleChange({
+				onCreate: a04.handleCreate,
+				onUpdate: a04.handleUpdate,
+				onDelete: a04.handleConfirmDelete,
+				onDuplicatedError: a04.handleDuplicatedError,
+			})}
+			// handleChange={a04.handleGridChange}
 			height={height - 176}
 			isPersisted={dsg.isPersisted}
-			handleActiveCellChange={dsg.handleActiveCellChange}
+			// handleActiveCellChange={dsg.handleActiveCellChange}
+			handleSelectionChange={dsg.handleSelectionChangeBy({
+				// onRowSelectionChange: catM.handleRowSelectionChange,
+			})}
 		/>
 	);
 };

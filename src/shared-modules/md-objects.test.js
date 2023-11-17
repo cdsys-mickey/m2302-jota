@@ -80,3 +80,27 @@ it("should hasAllProps", () => {
 	expect(Objects.hasAllProps(obj, "a,b,c")).toBeTruthy();
 	expect(Objects.hasAllProps(obj, "a,b,c,d")).toBeTruthy();
 });
+
+it("isAllPropsEqual", () => {
+	let x = {
+		DeptID: "100000",
+		GroupKey: "H00",
+		DeptName: "宗泰物流倉",
+		AbbrName: "物流倉",
+		Using_N: "1",
+	};
+
+	let y = {
+		DeptID: "100000",
+		GroupKey: "H00",
+		DeptName: "宗泰物流倉",
+		AbbrName: "物流倉",
+		Using_N: false,
+	};
+
+	expect(Objects.isAllPropsEqual(x, y)).toBeFalsy();
+
+	expect(
+		Objects.isAllPropsEqual(x, y, "DeptID,GroupKey,DeptName,AbbrName")
+	).toBeTruthy();
+});

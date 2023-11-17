@@ -1,6 +1,6 @@
 import Types from "./md-types";
 
-const getArray = (s) => {
+const parse = (s) => {
 	if (Array.isArray(s)) {
 		return s;
 	}
@@ -11,7 +11,7 @@ const getArray = (s) => {
 };
 
 const Arrays = {
-	getArray,
+	parse,
 };
 
 export default Arrays;

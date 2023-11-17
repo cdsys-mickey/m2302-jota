@@ -1,16 +1,16 @@
 import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
 import { Container } from "@mui/material";
 import { forwardRef, memo } from "react";
-import { A04LockRowsSwitchContainer } from "./A04LockRowsSwitchContainer";
+import { A16LockRowsSwitchContainer } from "./A16LockRowsSwitchContainer";
 
-const A04Toolbar = memo(
+const A16Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<Container maxWidth="sm">
+			<Container maxWidth="md">
 				<InlineListViewToolbar
 					ref={ref}
-					right={<A04LockRowsSwitchContainer />}
+					right={<A16LockRowsSwitchContainer />}
 					// right={<Switch />}
 					{...rest}
 				/>
@@ -19,7 +19,7 @@ const A04Toolbar = memo(
 	})
 );
 
-A04Toolbar.propTypes = {};
+A16Toolbar.propTypes = {};
 
-A04Toolbar.displayName = "A04Toolbar";
-export default A04Toolbar;
+A16Toolbar.displayName = "A16Toolbar";
+export default A16Toolbar;

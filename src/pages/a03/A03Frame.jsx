@@ -1,4 +1,4 @@
-import CatLGridContainer from "@/components/modules/a03/CatLGridContainer";
+import { CatLGridContainer } from "@/components/modules/a03/CatLGridContainer";
 import { Box, Grid, useTheme } from "@mui/material";
 import { memo, useMemo } from "react";
 import A03Toolbar from "../../components/modules/a03/A03Toolbar";

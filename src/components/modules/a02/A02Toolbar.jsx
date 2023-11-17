@@ -1,10 +1,7 @@
-import { memo } from "react";
 import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
-import PropTypes from "prop-types";
-import { forwardRef } from "react";
-import Android12Switch from "../../../shared-components/Android12Switch";
-import { Container, Switch } from "@mui/material";
-import SwitchEx from "../../../shared-components/SwitchEx";
+import { Container } from "@mui/material";
+import { forwardRef, memo } from "react";
+import { A02LockRowsSwitchContainer } from "./A02LockRowsSwitchContainer";
 
 const A02Toolbar = memo(
 	forwardRef((props, ref) => {
@@ -13,9 +10,7 @@ const A02Toolbar = memo(
 			<Container maxWidth="xs">
 				<InlineListViewToolbar
 					ref={ref}
-					right={
-						<SwitchEx label="編輯鎖定" checkedLabel="編輯模式" />
-					}
+					right={<A02LockRowsSwitchContainer />}
 					// right={<Switch />}
 					{...rest}
 				/>

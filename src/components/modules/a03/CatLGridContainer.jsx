@@ -1,17 +1,22 @@
+import { CatLContext } from "@/contexts/a03/CatLContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
-import { CatLContext } from "@/contexts/a03/CatLContext";
+import { A03Context } from "../../../contexts/a03/A03Context";
 import CatLGrid from "./CatLGrid";
 
-const CatLGridContainer = () => {
+export const CatLGridContainer = () => {
 	const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const catL = useContext(CatLContext);
+	const a03 = useContext(A03Context);
 
 	return (
 		<CatLGrid
-			ref={dsg.gridRef}
+			lockRows={a03.lockRows}
+			gridRef={dsg.gridRef}
+			setGridRef={dsg.setGridRef}
+			// ref={ref}
 			data={dsg.data}
 			loading={dsg.loading}
 			handleChange={dsg.handleChange({
@@ -20,10 +25,8 @@ const CatLGridContainer = () => {
 				onDelete: catL.handleConfirmDelete,
 				onDuplicatedError: catL.handleDuplicatedError,
 			})}
-			// handleChange={catL.handleGridChange}
 			height={height - 176}
 			isPersisted={dsg.isPersisted}
-			// handleActiveCellChange={catL.handleActiveCellChange}
 			handleSelectionChange={dsg.handleSelectionChangeBy({
 				onRowSelectionChange: catL.handleRowSelectionChange,
 			})}
@@ -33,5 +36,3 @@ const CatLGridContainer = () => {
 };
 
 CatLGridContainer.displayName = "CatLGridContainer";
-
-export default CatLGridContainer;

@@ -1,108 +1,120 @@
-import LoadingTypography from "@/shared-components/LoadingTypography";
+import Styles from "@/modules/md-styles";
+import LoadingBackdrop from "@/shared-components/LoadingBackdrop";
+import { oneDigitFixedColumn } from "@/shared-components/dsg/columns/oneDigitFixedColumn";
+import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { Box, Container, useTheme } from "@mui/material";
 import PropTypes from "prop-types";
-import { forwardRef, memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import {
-	DataSheetGrid,
+	DynamicDataSheetGrid,
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import Styles from "@/modules/md-styles";
+import DSGLoading from "../../../shared-components/dsg/DSGLoading";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
-import { oneDigitFixedColumn } from "@/shared-components/dsg/columns/oneDigitFixedColumn";
 
-const A26Grid = memo(
-	forwardRef((props, ref) => {
-		const {
-			drawerOpen,
-			data,
-			loading,
-			height,
-			// METHODS
-			handleChange,
-			isPersisted,
-			handleActiveCellChange,
-			...rest
-		} = props;
-		const theme = useTheme();
-		const boxStyles = useMemo(
-			() => Styles.ofFrameBox({ theme, drawerOpen }),
-			[drawerOpen, theme]
-		);
+const ContextMenu = createDSGContextMenu({
+	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+});
 
-		const columns = useMemo(
-			() => [
-				{
-					...keyColumn(
-						"CodeID",
-						createTextColumn({
-							continuousUpdates: false,
-						})
-					),
-					disabled: isPersisted,
-					title: "代碼",
-				},
-				{
-					...keyColumn(
-						"CodeData",
-						createTextColumn({
-							continuousUpdates: false,
-						})
-					),
-					title: "佣金類別",
-					grow: 4,
-				},
-				{
-					...keyColumn("Other1", oneDigitFixedColumn),
-					title: "佣金比例",
-					grow: 1,
-				},
-			],
-			[isPersisted]
-		);
+const A26Grid = memo((props) => {
+	const {
+		lockRows,
+		setGridRef,
+		drawerOpen,
+		data,
+		loading,
+		height = 300,
+		// METHODS
+		handleChange,
+		isPersisted,
+		handleSelectionChange,
+		...rest
+	} = props;
+	const theme = useTheme();
+	const boxStyles = useMemo(
+		() => Styles.ofFrameBox({ theme, drawerOpen }),
+		[drawerOpen, theme]
+	);
 
-		if (loading) {
-			return (
-				<Container maxWidth="sm">
-					<LoadingTypography>讀取中...</LoadingTypography>
-				</Container>
-			);
-		}
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"CodeID",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
+				title: "代碼",
+				disabled: isPersisted,
+			},
+			{
+				...keyColumn(
+					"CodeData",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
+				title: "佣金類別",
+				grow: 4,
+				disabled: lockRows,
+			},
+			{
+				...keyColumn("Other1", oneDigitFixedColumn),
+				title: "佣金比例",
+				grow: 1,
+				disabled: lockRows,
+			},
+		],
+		[isPersisted, lockRows]
+	);
 
-		if (!data) {
-			return false;
-		}
-
+	if (loading) {
 		return (
 			<Container maxWidth="sm">
-				<Box sx={boxStyles} {...rest}>
-					<DataSheetGrid
-						ref={ref}
-						rowKey="CodeID"
-						height={height || 300}
-						value={data}
-						onChange={handleChange}
-						columns={columns}
-						addRowsComponent={DSGAddRowsToolbar}
-						disableExpandSelection
-						disableContextMenu
-						onActiveCellChange={handleActiveCellChange}
-						// autoAddRow
-					/>
-				</Box>
+				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
+				<DSGLoading height={height} />
 			</Container>
 		);
-	})
-);
+	}
 
+	if (!data) {
+		return false;
+	}
+
+	return (
+		<Container maxWidth="sm">
+			<LoadingBackdrop open={loading} />
+			<Box sx={boxStyles} {...rest}>
+				<DynamicDataSheetGrid
+					lockRows={lockRows}
+					ref={setGridRef}
+					rowKey="CodeID"
+					height={height + (lockRows ? 48 : 0)}
+					value={data}
+					onChange={handleChange}
+					columns={columns}
+					addRowsComponent={DSGAddRowsToolbar}
+					disableExpandSelection
+					contextMenuComponent={ContextMenu}
+					onSelectionChange={handleSelectionChange}
+					// autoAddRow
+				/>
+			</Box>
+		</Container>
+	);
+});
 A26Grid.propTypes = {
+	lockRows: PropTypes.bool,
+	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
+	handleSelectionChange: PropTypes.func,
 };
 
 A26Grid.displayName = "A26Grid";

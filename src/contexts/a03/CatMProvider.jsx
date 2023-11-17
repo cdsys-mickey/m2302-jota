@@ -25,6 +25,7 @@ const CatMProvider = (props) => {
 		selectedRowData: null,
 		selectedRowIndex: null,
 		lgId: null,
+		error: null,
 	});
 
 	const clear = useCallback(() => {
@@ -32,7 +33,7 @@ const CatMProvider = (props) => {
 	}, [dsg]);
 
 	const selectRow = useCallback(
-		({ rowIndex, rowData } = {}) => {
+		({ rowIndex, rowData }) => {
 			// selectedRowIndexRef.current = rowIndex;
 			setState((prev) => ({
 				...prev,
@@ -79,6 +80,10 @@ const CatMProvider = (props) => {
 					}
 				} catch (err) {
 					console.error("load", err);
+					setState((prev) => ({
+						...prev,
+						error: err,
+					}));
 				} finally {
 					dsg.setLoading(false);
 				}
@@ -94,7 +99,7 @@ const CatMProvider = (props) => {
 	}, [load, state.lgId]);
 
 	const handleCreate = useCallback(
-		async ({ rowData }) => {
+		async ({ rowData, rowIndex }, newValue) => {
 			console.debug(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
@@ -108,26 +113,25 @@ const CatMProvider = (props) => {
 				console.debug("handleCreate response.payload", payload);
 				reload();
 				if (status.success) {
-					// commitChanges();
-					selectRow({ rowData });
+					dsg.commitChanges(newValue);
+					selectRow({ rowData, rowIndex });
 					toast.success(
 						`中分類 ${rowData.MClas}/${rowData.ClassData} 新增成功`
 					);
 				} else {
 					//dsg.rollbackChanges();
-					toast.error(error?.message || "新增失敗");
+					throw error?.message || "新增失敗";
 				}
 			} catch (err) {
 				toast.error(`新增中分類發生例外: ${err.message}`);
-				//dsg.rollbackChanges();
 				reload();
 			}
 		},
-		[httpPostAsync, token, state.lgId, reload, selectRow]
+		[httpPostAsync, token, state.lgId, reload, dsg, selectRow]
 	);
 
 	const handleUpdate = useCallback(
-		async ({ rowData }) => {
+		async ({ rowData, rowIndex }, newValue) => {
 			console.debug(`UPDATE`, rowData);
 			const key = `${state.lgId},${rowData.MClas}`;
 			try {
@@ -140,23 +144,21 @@ const CatMProvider = (props) => {
 					},
 				});
 				console.debug("handleCreate response.payload", payload);
-				reload();
 				if (status.success) {
-					// commitChanges();
-					selectRow({ rowData });
+					dsg.commitChanges(newValue);
+					selectRow({ rowData, rowIndex });
 					toast.success(
 						`中分類 ${rowData.MClas}/${rowData.ClassData} 修改成功`
 					);
 				} else {
-					// dsg.rollbackChanges();
-					toast.error(error?.message || "修改失敗");
+					throw error?.message || "修改失敗";
 				}
 			} catch (err) {
 				toast.error(`新增中分類發生例外: ${err.message}`);
 				reload();
 			}
 		},
-		[state.lgId, httpPutAsync, token, reload, selectRow]
+		[state.lgId, httpPutAsync, token, dsg, selectRow, reload]
 	);
 
 	const handleDelete = useCallback(
@@ -168,38 +170,38 @@ const CatMProvider = (props) => {
 					url: `v1/prod/m-cats/${key}`,
 					bearer: token,
 				});
-				// 重新讀取
-				reload();
+
 				if (status.success) {
 					// 取消選取列
-					selectRow(null);
-					dialogs.closeLatest();
+					selectRow({});
+
 					toast.success(
 						`中分類 ${rowData.LClas}/${rowData.ClassData} 刪除成功`
 					);
 				} else {
-					// dsg.rollbackChanges();
-					toast.error(error?.message || "刪除失敗");
+					throw error?.message || "刪除失敗";
 				}
 			} catch (err) {
 				console.error(err);
 				toast.error(`刪除中分類發生例外: ${err.message}`);
 			} finally {
 				dsg.setDeletingTarget(null);
+				dialogs.closeLatest();
+				reload();
 			}
 		},
 		[state.lgId, httpDeleteAsync, token, reload, selectRow, dialogs, dsg]
 	);
 
 	const handleConfirmDelete = useCallback(
-		async (row) => {
-			console.debug(`confirm DELETE`, row);
-			dsg.setDeletingTarget(row);
+		async ({ rowData }) => {
+			console.debug(`confirm DELETE`, rowData);
+			dsg.setDeletingTarget(rowData);
 			dialogs.create({
 				title: "刪除確認",
-				message: `確定要刪除中分類 ${row.MClas}/${row.ClassData} ?`,
+				message: `確定要刪除中分類 ${rowData.MClas}/${rowData.ClassData} ?`,
 				onConfirm: () => {
-					handleDelete(row);
+					handleDelete({ rowData });
 				},
 				onCancel: () => {
 					dsg.setDeletingTarget(null);
@@ -212,54 +214,18 @@ const CatMProvider = (props) => {
 	);
 
 	const handleDuplicatedError = useCallback(
-		(row) => {
+		(row, newValue) => {
 			//dsg.rollbackChanges();
-			toast.error(`中分類 ${row.MClas} 已存在`);
-			reload();
+			toast.error(`中分類 ${row.rowData.MClas} 已存在`);
+			dsg.rewriteValue(row, newValue, {
+				MClas: "",
+			});
+			dsg.rewriteValue(row, newValue, {
+				MClas: "",
+			});
 		},
-		[reload]
+		[dsg]
 	);
-
-	// const isSelected = useCallback(({ rowIndex }) => {
-	// 	console.debug(
-	// 		"selectedRowIndexRef.current",
-	// 		selectedRowIndexRef.current
-	// 	);
-	// }, []);
-
-	// const handleGridChange = dsg.handleChange({
-	// 	onCreate: handleCreate,
-	// 	onUpdate: handleUpdate,
-	// 	onDelete: handleConfirmDelete,
-	// 	onDuplicatedError: handleDuplicatedError,
-	// });
-
-	// const handleActiveCellChange = useCallback(({ cell }) => {
-	// 	console.debug(`CatM.onActiveCellChange →`, cell);
-	// 	if (cell) {
-	// 		const selectedRow = dsg.getRowDataByIndex(cell.row || 0);
-	// 		if (selectedRow && dsg.isAllFieldsNotNull(selectedRow)) {
-	// 			console.debug(`${dsg.id} selected `, selectedRow);
-	// 			selectRow(selectedRow);
-	// 		}
-	// 	}
-	// }, []);
-
-	// const handleSelectionChange = useCallback(
-	// 	({ selection }) => {
-	// 		if (selection) {
-	// 			console.debug(`${dsg.id} select:`, selection);
-	// 			const selectedRow = dsg.getRowDataByIndex(selection.min.row);
-	// 			if (selectedRow && dsg.isAllFieldsNotNull(selectedRow)) {
-	// 				console.debug(`${dsg.id} selected`, selectedRow);
-	// 				selectRow(selectedRow);
-	// 			}
-	// 		} else {
-	// 			console.debug(`${dsg.id} de-selected`);
-	// 		}
-	// 	},
-	// 	[dsg, selectRow]
-	// );
 
 	const handleRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {

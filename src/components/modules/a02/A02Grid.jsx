@@ -1,5 +1,5 @@
-import LoadingTypography from "@/shared-components/LoadingTypography";
-import { Box, Container, useTheme } from "@mui/material";
+import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
+import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import {
@@ -7,82 +7,93 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import Styles from "../../../modules/md-styles";
+import DSGLoading from "../../../shared-components/dsg/DSGLoading";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import { DynamicDataSheetGrid } from "react-datasheet-grid";
 
-const A02Grid = memo(
-	forwardRef((props, ref) => {
-		const {
-			data,
-			loading,
-			height,
-			// METHODS
-			handleChange,
-			isPersisted,
-			handleActiveCellChange,
-		} = props;
+const ContextMenu = createDSGContextMenu({
+	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+});
 
-		const columns = useMemo(
-			() => [
-				{
-					...keyColumn(
-						"CodeID",
-						createTextColumn({
-							continuousUpdates: false,
-						})
-					),
-					disabled: isPersisted,
-					title: "代碼",
-				},
-				{
-					...keyColumn(
-						"CodeData",
-						createTextColumn({
-							continuousUpdates: false,
-						})
-					),
-					title: "包裝名稱",
-					grow: 4,
-				},
-			],
-			[isPersisted]
-		);
+const A02Grid = memo((props) => {
+	const {
+		lockRows,
+		setGridRef,
+		data,
+		loading,
+		height = 300,
+		// METHODS
+		handleChange,
+		isPersisted,
+		// handleActiveCellChange,
+	} = props;
 
-		if (loading) {
-			return (
-				<Container maxWidth="sm">
-					<LoadingTypography>讀取中...</LoadingTypography>
-				</Container>
-			);
-		}
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"CodeID",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
+				disabled: isPersisted,
+				title: "代碼",
+			},
+			{
+				...keyColumn(
+					"CodeData",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
+				title: "包裝名稱",
+				grow: 4,
+				disabled: lockRows,
+			},
+		],
+		[isPersisted, lockRows]
+	);
 
-		if (!data) {
-			return false;
-		}
-
+	if (loading) {
 		return (
 			<Container maxWidth="xs">
-				<Box>
-					<DataSheetGrid
-						ref={ref}
-						rowKey="CodeID"
-						height={height || 300}
-						value={data}
-						onChange={handleChange}
-						columns={columns}
-						addRowsComponent={DSGAddRowsToolbar}
-						disableExpandSelection
-						disableContextMenu
-						onActiveCellChange={handleActiveCellChange}
-						// autoAddRow
-					/>
-				</Box>
+				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
+				<DSGLoading height={height} />
 			</Container>
 		);
-	})
-);
+	}
 
+	if (!data) {
+		return false;
+	}
+
+	return (
+		<Container maxWidth="xs">
+			<Box>
+				{/* <LoadingBackdrop open={loading} /> */}
+				<DynamicDataSheetGrid
+					lockRows={lockRows}
+					ref={setGridRef}
+					rowKey="CodeID"
+					height={height + (lockRows ? 48 : 0)}
+					value={data}
+					onChange={handleChange}
+					columns={columns}
+					addRowsComponent={DSGAddRowsToolbar}
+					disableExpandSelection
+					// disableContextMenu
+					contextMenuComponent={ContextMenu}
+					// onActiveCellChange={handleActiveCellChange}
+					// autoAddRow
+				/>
+			</Box>
+		</Container>
+	);
+});
 A02Grid.propTypes = {
+	lockRows: PropTypes.bool,
+	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,

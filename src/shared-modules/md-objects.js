@@ -15,7 +15,7 @@ const isAllPropsNotNull = (obj, columnPattern) => {
 			}).length === 0
 		);
 	}
-	const columns = Arrays.getArray(columnPattern);
+	const columns = Arrays.parse(columnPattern);
 	return columns.every((prop) => {
 		return obj[prop] !== null && obj[prop] !== undefined;
 	});
@@ -33,7 +33,7 @@ const isAllPropsNull = (obj, columnPattern) => {
 	if (!columnPattern) {
 		return Object.keys(obj).filter((key) => obj[key] !== null).length === 0;
 	}
-	const columns = Arrays.getArray(columnPattern);
+	const columns = Arrays.parse(columnPattern);
 	return columns.every((prop) => obj[prop] === null);
 };
 
@@ -46,14 +46,14 @@ const isAllPropsNotNullOrEmpty = (obj, columnPattern) => {
 			Object.keys(obj).filter((key) => {
 				const value = obj[key];
 
-				return value === null || value === "";
+				return value === null || value === undefined || value === "";
 			}).length === 0
 		);
 	}
-	const columns = Arrays.getArray(columnPattern);
+	const columns = Arrays.parse(columnPattern);
 	return columns.every((prop) => {
 		const value = obj[prop];
-		return value !== null && value !== "";
+		return value !== null && value !== undefined && value !== "";
 	});
 };
 
@@ -64,8 +64,28 @@ const hasAllProps = (obj, columnPattern) => {
 	if (!columnPattern) {
 		throw "未指定檢查屬性名";
 	}
-	const columns = Arrays.getArray(columnPattern);
+	const columns = Arrays.parse(columnPattern);
 	return Object.keys(obj).includes(...columns);
+};
+
+const isAllPropsEqual = (x, y, columnPattern) => {
+	// 比對所有欄位
+	if (!columnPattern) {
+		for (const field of Object.keys(x)) {
+			if (x[field] !== y[field]) {
+				return false;
+			}
+		}
+		return true;
+	}
+	// 只對指定欄位
+	const columns = Arrays.parse(columnPattern);
+	for (const field of columns) {
+		if (x[field] !== y[field]) {
+			return false;
+		}
+	}
+	return true;
 };
 
 const Objects = {
@@ -73,6 +93,7 @@ const Objects = {
 	isAllPropsNull,
 	isAllPropsNotNullOrEmpty,
 	hasAllProps,
+	isAllPropsEqual,
 };
 
 export default Objects;

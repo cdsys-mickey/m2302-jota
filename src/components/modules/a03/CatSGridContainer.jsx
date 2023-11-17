@@ -3,15 +3,19 @@ import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import CatSGrid from "./CatSGrid";
+import { A03Context } from "@/contexts/a03/A03Context";
 
 export const CatSGridContainer = () => {
 	const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const catS = useContext(CatSContext);
+	const a03 = useContext(A03Context);
 
 	return (
 		<CatSGrid
-			ref={dsg.gridRef}
+			lockRows={a03.lockRows}
+			gridRef={dsg.gridRef}
+			setGridRef={dsg.setGridRef}
 			lgId={catS.lgId}
 			mdId={catS.mdId}
 			data={dsg.data}
