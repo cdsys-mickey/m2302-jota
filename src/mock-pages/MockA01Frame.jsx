@@ -8,28 +8,17 @@ import Styles from "@/modules/md-styles";
 import { memo, useMemo } from "react";
 
 const MockA01Frame = memo((props) => {
-	const { theme, drawerOpen } = props;
-
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
-
-	const { data, ...rest } = props;
+	const { boxStyles } = props;
 	return (
-		<Box pt={1}>
+		<Box sx={[boxStyles]}>
 			{/* 標題 */}
 			<MockA01FrameBanner />
-			<Container maxWidth="xl">
-				<Box sx={boxStyles}>
-					{/* 功能 */}
-					<MockA01ListViewToolbar />
-					{/* 列表 */}
-					<MockA01ItemListViewContainer />
-					{/* 對話框 */}
-					<MockA01DialogContainer />
-				</Box>
-			</Container>
+			{/* 功能 */}
+			<MockA01ListViewToolbar />
+			{/* 列表 */}
+			<MockA01ItemListViewContainer />
+			{/* 對話框 */}
+			<MockA01DialogContainer />
 		</Box>
 	);
 });

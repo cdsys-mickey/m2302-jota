@@ -19,7 +19,9 @@ export const AuthProvider = (props) => {
 		token: null,
 		roles: null,
 		error: null,
-		// AUTHORITIES
+	});
+
+	const [authoritiesState, setAuthoritiesState] = useState({
 		authorities: null,
 		authoritiesError: null,
 		authoritiesLoading: null,
@@ -28,7 +30,7 @@ export const AuthProvider = (props) => {
 	const loadAuthorities = useCallback(
 		async (token) => {
 			console.debug("loading authorities...");
-			setState((prev) => ({
+			setAuthoritiesState((prev) => ({
 				...prev,
 				authoritiesLoading: true,
 			}));
@@ -38,7 +40,7 @@ export const AuthProvider = (props) => {
 					bearer: token,
 				});
 				if (status.success) {
-					setState((prev) => ({
+					setAuthoritiesState((prev) => ({
 						...prev,
 						authorities: payload,
 						authoritiesLoading: false,
@@ -52,7 +54,7 @@ export const AuthProvider = (props) => {
 				}
 			} catch (err) {
 				console.error("loadAuthorities", err);
-				setState((prev) => ({
+				setAuthoritiesState((prev) => ({
 					...prev,
 					authoritiesLoading: false,
 				}));
@@ -82,22 +84,33 @@ export const AuthProvider = (props) => {
 					redirectToLogin();
 					return;
 				}
-				const { status, payload } = await httpGetAsync({
+				const { status, payload, error } = await httpGetAsync({
 					url: "v1/auth/token",
 				});
 
 				if (!status.success) {
-					toast.error("登入發生例外");
-					redirectToLogin();
-					return;
+					// toast.error("登入發生例外");
+					// redirectToLogin();
+					// return;
+					throw error;
 				}
 
-				// ** 1 **
+				// JOSE methods
+				// ** 1 ** → no validation
 				const token = payload.token;
 				const jwtPayload = decodeJwt(token);
 				console.debug("jwtPayload", jwtPayload);
 
-				// ** 2 **
+				const expDate = new Date(jwtPayload.exp * 1000);
+
+				// 檢查令牌是否已過期
+				if (Date.now() > expDate) {
+					console.log("token expired");
+				} else {
+					console.log("token is valid");
+				}
+
+				// ** 2 ** → requires https
 				// const secret = new TextEncoder().encode(
 				// 	import.meta.env.VITE_JWT_SECRET
 				// );
@@ -128,7 +141,14 @@ export const AuthProvider = (props) => {
 				loadAuthorities(token);
 			} catch (err) {
 				console.error("token restore failed", err);
-				toast.error("您的登入已逾期，請重新登入");
+				switch (err.status) {
+					case 401:
+						toast.error("您的登入已逾期，請重新登入");
+						break;
+					default:
+						toast.error("登入發生例外，請重新登入");
+						break;
+				}
 				redirectToLogin();
 			} finally {
 				setState((prev) => ({
@@ -149,6 +169,7 @@ export const AuthProvider = (props) => {
 		<AuthContext.Provider
 			value={{
 				...state,
+				...authoritiesState,
 				validateToken,
 			}}>
 			{children}

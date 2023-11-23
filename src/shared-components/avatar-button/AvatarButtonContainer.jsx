@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import AvatarButton from "./AvatarButton";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { AccountMenuContainer } from "../../components/account/AccountMenuContainer";
+import { AccountMenuContainer } from "@/components/account/AccountMenuContainer";
 
 const AvatarButtonContainer = (props) => {
 	const { ...rest } = props;
@@ -27,17 +27,18 @@ const AvatarButtonContainer = (props) => {
 		return (operator?.UserName || "?")[0];
 	}, [operator?.UserName]);
 
+	const Menu = (props) => <AccountMenuContainer {...props} />;
+
 	return (
 		<AvatarButton
 			anchorEl={anchorEl}
 			handleClick={handleClick}
 			handleMenuClose={handleMenuClose}
-			Menu={MockAccountMenu}
-			// Menu={AccountMenuContainer}
 			fullName={fullName}
 			name={name}
-			{...rest}
-		/>
+			{...rest}>
+			{Menu}
+		</AvatarButton>
 	);
 };
 

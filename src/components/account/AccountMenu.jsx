@@ -5,7 +5,7 @@ import { Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { forwardRef, memo } from "react";
 
 const AccountMenu = memo(
-	forwardRef(({ open, anchorEl, onClose, ...rest }, ref) => {
+	forwardRef(({ open, anchorEl, onClose, title, ...rest }, ref) => {
 		return (
 			<Menu
 				ref={ref}
@@ -42,7 +42,7 @@ const AccountMenu = memo(
 				}}
 				transformOrigin={{ horizontal: "right", vertical: "top" }}
 				anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-				<MenuItem onClick={onClose}>總公司 王XX</MenuItem>
+				<MenuItem onClick={onClose}>{title}</MenuItem>
 				<Divider />
 				<MenuItem onClick={onClose}>
 					<ListItemIcon>
@@ -67,5 +67,5 @@ const AccountMenu = memo(
 		);
 	})
 );
-
+AccountMenu.propTypes = {};
 export default AccountMenu;

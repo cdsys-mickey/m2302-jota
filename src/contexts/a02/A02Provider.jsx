@@ -4,13 +4,13 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
 import { useCallback, useContext } from "react";
 import { toast } from "react-toastify";
-import { DSGContext } from "../../shared-contexts/datasheet-grid/DSGContext";
-import { DialogContext } from "../../shared-contexts/dialog/DialogContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
 import { A02Context } from "./A02Context";
 import { startTransition } from "react";
 import { useToggle } from "@/shared-hooks/useToggle";
 
-const A02Provider = (props) => {
+export const A02Provider = (props) => {
 	const { children } = props;
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
@@ -203,5 +203,3 @@ const A02Provider = (props) => {
 A02Provider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
-
-export default A02Provider;

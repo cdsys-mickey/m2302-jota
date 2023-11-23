@@ -2,8 +2,9 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import useSideMenu from "@/contexts/useSideMenu";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
-import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
-import VirtualizedFrameMenu from "./VirtualizedFrameMenu";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import RWFrameMenu from "./RWFrameMenu";
+import VFrameMenu from "./VFrameMenu";
 
 const FrameMenuContainer = (props) => {
 	const { ...rest } = props;
@@ -23,15 +24,24 @@ const FrameMenuContainer = (props) => {
 		// 	itemCount={filteredAuthorities?.length || 0}
 		// 	{...rest}
 		// />
-		<VirtualizedFrameMenu
+		<RWFrameMenu
 			height={height}
-			authorities={filteredAuthorities}
-			authoritiesLoading={authoritiesLoading}
-			authoritiesError={authoritiesError}
+			data={filteredAuthorities}
+			loading={authoritiesLoading}
+			error={authoritiesError}
 			width={drawerWidth}
 			itemCount={filteredAuthorities?.length || 0}
 			{...rest}
 		/>
+		// <VFrameMenu
+		// 	height={height}
+		// 	data={filteredAuthorities}
+		// 	loading={authoritiesLoading}
+		// 	error={authoritiesError}
+		// 	width={drawerWidth}
+		// 	itemCount={filteredAuthorities?.length || 0}
+		// 	{...rest}
+		// />
 	);
 };
 

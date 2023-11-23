@@ -10,7 +10,7 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import Styles from "../../modules/md-styles";
+import Styles from "@/modules/md-styles";
 
 const Home = memo((props) => {
 	const { theme, drawerOpen } = props;
@@ -19,11 +19,10 @@ const Home = memo((props) => {
 		[drawerOpen, theme]
 	);
 	return (
-		<Box pl={0} pt={1}>
-			<HomeFrameBanner />
-
-			<Container maxWidth="xl">
-				<Box sx={boxStyles}>
+		<>
+			<Box sx={boxStyles}>
+				<HomeFrameBanner />
+				<Box pt={3}>
 					<Grid container spacing={3}>
 						<Grid item xl={3} lg={5} md={6} sm={12} xs={12}>
 							<BulletinWidgetContainer
@@ -67,11 +66,11 @@ const Home = memo((props) => {
 						</Grid>
 					</Grid>
 				</Box>
-			</Container>
+			</Box>
 			<FlexBox fullWidth mt={1} px={2} justifyContent="flex-end">
 				<CopyrightContainer />
 			</FlexBox>
-		</Box>
+		</>
 	);
 });
 

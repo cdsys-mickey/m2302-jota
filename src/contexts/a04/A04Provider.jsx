@@ -4,12 +4,12 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
 import { useCallback, useContext } from "react";
 import { toast } from "react-toastify";
-import { DSGContext } from "../../shared-contexts/datasheet-grid/DSGContext";
-import { DialogContext } from "../../shared-contexts/dialog/DialogContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
 import { A04Context } from "./A04Context";
 import { useToggle } from "@/shared-hooks/useToggle";
 
-const A04Provider = (props) => {
+export const A04Provider = (props) => {
 	const { children } = props;
 	const [lockRows, toggleLockRows] = useToggle(true);
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
@@ -194,5 +194,3 @@ const A04Provider = (props) => {
 A04Provider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
-
-export default A04Provider;

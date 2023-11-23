@@ -2,7 +2,7 @@ import { CatLContext } from "@/contexts/a03/CatLContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
-import { A03Context } from "../../../contexts/a03/A03Context";
+import { A03Context } from "@/contexts/a03/A03Context";
 import CatLGrid from "./CatLGrid";
 
 export const CatLGridContainer = () => {

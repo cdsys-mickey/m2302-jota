@@ -7,13 +7,9 @@ const C04FrameBannerContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 
 	return (
-		<FrameBanner
-			title="進貨單輸入作業"
-			alt="C04"
-			ref={ref}
-			SearchFormComponent={PurchaseOrderSearchFormContainer}
-			{...rest}
-		/>
+		<FrameBanner title="進貨單輸入作業" alt="C04" ref={ref} {...rest}>
+			{PurchaseOrderSearchFormContainer}
+		</FrameBanner>
 	);
 });
 

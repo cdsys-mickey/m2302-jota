@@ -1,7 +1,9 @@
 import { Box, Grid } from "@mui/material";
-import React from "react";
+import PropTypes from "prop-types";
+import { memo } from "react";
 
-const IndexCell = React.forwardRef(({ children, sx = [], ...rest }, ref) => {
+const IndexCell = memo((props, ref) => {
+	const { children, sx = [], ...rest } = props;
 	return (
 		<Grid
 			item
@@ -16,10 +18,17 @@ const IndexCell = React.forwardRef(({ children, sx = [], ...rest }, ref) => {
 					},
 				},
 				...(Array.isArray(sx) ? sx : [sx]),
-			]}>
+			]}
+			{...rest}>
 			<Box pr={1}>{children}</Box>
 		</Grid>
 	);
 });
 
-export default React.memo(IndexCell);
+IndexCell.propTypes = {
+	children: PropTypes.node,
+	sx: PropTypes.array,
+};
+
+IndexCell.displayName = "IndexCell";
+export default IndexCell;

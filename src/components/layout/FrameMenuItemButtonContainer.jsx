@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
-import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import FrameMenuItemButton from "./FrameMenuItemButton";
 
 const FrameMenuItemButtonContainer = (props) => {
@@ -15,10 +15,8 @@ const FrameMenuItemButtonContainer = (props) => {
 	return (
 		<FrameMenuItemButton
 			value={value}
-			// code={value.JobID}
 			handleClickBy={handleMenuItemClickBy}
 			selected={selected}
-			// primary={value.JobName}
 			disabled={!value.WebName}
 			{...rest}
 		/>

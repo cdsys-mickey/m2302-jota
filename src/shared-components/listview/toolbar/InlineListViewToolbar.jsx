@@ -1,59 +1,60 @@
-import { Box } from "@mui/material";
-import React from "react";
 import FlexBox from "@/shared-components/FlexBox";
+import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
 
-const ListViewToolbarOneLinerBox = React.forwardRef((props, ref) => {
-	const {
-		LeftComponent,
-		left,
-		RightComponent,
-		right,
-		boxSx = [],
-		...rest
-	} = props;
-	return (
-		<FlexBox
-			ref={ref}
-			inline
-			fullWidth
-			alignItems="flex-end"
-			sx={[
-				{
-					minHeight: "48px",
-				},
-				...(Array.isArray(boxSx) ? boxSx : [boxSx]),
-			]}
-			{...rest}>
-			<FlexBox flex={1}>
-				{LeftComponent && <LeftComponent />}
-				{left}
+const InlineListViewToolbar = memo(
+	forwardRef((props, ref) => {
+		const {
+			leftComponent,
+			rightComponent,
+			boxSx = [],
+			componentProps = {},
+			...rest
+		} = props;
+		const LeftComponent = leftComponent;
+		const RightComponent = rightComponent;
+		return (
+			<FlexBox
+				ref={ref}
+				inline
+				fullWidth
+				alignItems="flex-end"
+				sx={[
+					{
+						minHeight: "48px",
+					},
+					...(Array.isArray(boxSx) ? boxSx : [boxSx]),
+				]}
+				{...rest}>
+				{LeftComponent && (
+					<FlexBox flex={1} justifyContent="flex-start">
+						<LeftComponent {...componentProps} />
+					</FlexBox>
+				)}
+
+				{RightComponent && (
+					<FlexBox
+						{...(!LeftComponent && {
+							flex: 1,
+						})}
+						justifyContent="flex-end">
+						<RightComponent {...componentProps} />
+					</FlexBox>
+				)}
 			</FlexBox>
-			<FlexBox>
-				{RightComponent && <RightComponent />}
-				{right}
-			</FlexBox>
-		</FlexBox>
-	);
-});
+		);
+	})
+);
 
-const InlineListViewToolbar = ({
-	loading,
-	LoadingComponent,
-	LeftComponent,
-	RightComponent,
-	...rest
-}) => {
-	if (loading && !!LoadingComponent) {
-		return <ListViewToolbarOneLinerBox RightComponent={LoadingComponent} />;
-	}
-
-	return (
-		<ListViewToolbarOneLinerBox
-			LeftComponent={LeftComponent}
-			RightComponent={RightComponent}
-			{...rest}
-		/>
-	);
+InlineListViewToolbar.displayName = "InlineListViewToolbar";
+InlineListViewToolbar.propTypes = {
+	leftComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
+	rightComponent: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.elementType,
+	]),
+	componentProps: PropTypes.object,
+	boxSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
-export default React.memo(InlineListViewToolbar);
+export default InlineListViewToolbar;

@@ -17,12 +17,11 @@ LeftButtons.displayName = "LeftButtons";
 const MockA01ListViewToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			// <GridListViewToolbar
 			<InlineListViewToolbar
 				pb={1}
 				ref={ref}
-				left={<LeftButtons />}
-				right={<FetchResultLabel totalElements={365} />}
+				leftComponent={LeftButtons}
+				rightComponent={() => <FetchResultLabel totalElements={365} />}
 				{...rest}
 			/>
 		);

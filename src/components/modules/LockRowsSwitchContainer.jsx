@@ -1,4 +1,4 @@
-import SwitchEx from "../../shared-components/SwitchEx";
+import SwitchEx from "@/shared-components/SwitchEx";
 
 export const LockRowsSwitchContainer = (props) => {
 	const { ...rest } = props;

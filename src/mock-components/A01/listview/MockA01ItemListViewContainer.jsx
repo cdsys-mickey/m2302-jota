@@ -1,4 +1,4 @@
-import ItemListView from "@/shared-components/listview/ItemListView";
+import ItemListView from "@/shared-components/item-listview/ItemListView";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { A01ListHeader } from "./MockA01ListItem";
 import { MockA01ListItemContainer } from "./MockA01ListItemContainer";
@@ -10,7 +10,7 @@ export const MockA01ItemListViewContainer = () => {
 
 	return (
 		<ItemListView
-			height={height - 140}
+			height={height - 150}
 			ItemComponent={MockA01ListItemContainer}
 			header={<A01ListHeader />}
 			data={data}

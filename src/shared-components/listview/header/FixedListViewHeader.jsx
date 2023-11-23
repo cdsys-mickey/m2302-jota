@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 import React from "react";
-import Layouts from "@/shared-modules/layouts";
+import Layouts from "@/shared-modules/md-layouts";
 
 const FixedListViewHeader = styled(
 	"nav",

@@ -1,16 +1,16 @@
 import { CatLGridContainer } from "@/components/modules/a03/CatLGridContainer";
 import { Box, Grid, useTheme } from "@mui/material";
 import { memo, useMemo } from "react";
-import A03Toolbar from "../../components/modules/a03/A03Toolbar";
-import { FrameBannerContainer } from "../../shared-components/protected-page/FrameBannerContainer";
-import CatLProvider from "../../contexts/a03/CatLProvider";
-import Styles from "../../modules/md-styles";
+import A03Toolbar from "@/components/modules/a03/A03Toolbar";
+import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
+import CatLProvider from "@/contexts/a03/CatLProvider";
+import Styles from "@/modules/md-styles";
 import PropTypes from "prop-types";
-import CatMProvider from "../../contexts/a03/CatMProvider";
+import CatMProvider from "@/contexts/a03/CatMProvider";
 import { DSGProvider } from "@/shared-contexts/datasheet-grid/DSGProvider";
-import { CatMGridContainer } from "../../components/modules/a03/CatMGridContainer";
-import CatSProvider from "../../contexts/a03/CatSProvider";
-import { CatSGridContainer } from "../../components/modules/a03/CatSGridContainer";
+import { CatMGridContainer } from "@/components/modules/a03/CatMGridContainer";
+import CatSProvider from "@/contexts/a03/CatSProvider";
+import { CatSGridContainer } from "@/components/modules/a03/CatSGridContainer";
 
 const A03Frame = memo((props) => {
 	const { drawerOpen } = props;

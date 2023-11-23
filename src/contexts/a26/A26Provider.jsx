@@ -2,16 +2,16 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
 import { useCallback, useEffect } from "react";
 import { toast } from "react-toastify";
-import { DSGContext } from "../../shared-contexts/datasheet-grid/DSGContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useContext } from "react";
 import { useState } from "react";
-import { DialogContext } from "../../shared-contexts/dialog/DialogContext";
+import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
 import { useInit } from "@/shared-hooks/useInit";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { A26Context } from "./A26Context";
 import { useToggle } from "@/shared-hooks/useToggle";
 
-const A26Provider = (props) => {
+export const A26Provider = (props) => {
 	const { children } = props;
 	const [lockRows, toggleLockRows] = useToggle(true);
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
@@ -210,5 +210,3 @@ const A26Provider = (props) => {
 A26Provider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
-
-export default A26Provider;

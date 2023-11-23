@@ -1,4 +1,4 @@
-import Layouts from "@/shared-modules/layouts";
+import Layouts from "@/shared-modules/md-layouts";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";

@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 import { DSGContext } from "./DSGContext";
 import PropTypes from "prop-types";
-import Objects from "../../shared-modules/md-objects";
+import Objects from "@/shared-modules/md-objects";
 import { useMemo } from "react";
-import Arrays from "../../shared-modules/md-arrays";
+import Arrays from "@/shared-modules/md-arrays";
 import _ from "lodash";
 import { useTransition } from "react";
 import { useRef } from "react";

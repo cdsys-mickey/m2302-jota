@@ -116,15 +116,6 @@ const ItemListViewCache = ({
 								index={startingIndex + index}
 								key={`item-${index}`}
 								data={row}
-								// onClick={() => {
-								// 	if (handleSelect) {
-								// 		handleSelect(row);
-								// 	} else {
-								// 		console.debug(
-								// 			"handleSelect not defined"
-								// 		);
-								// 	}
-								// }}
 								{...ItemComponentProps}
 							/>
 						))}
@@ -135,5 +126,3 @@ const ItemListViewCache = ({
 	);
 };
 export default React.memo(ItemListViewCache);
-// for debug purpose
-// export default React.memo(ItemListViewCache, areEqual);

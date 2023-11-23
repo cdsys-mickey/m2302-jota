@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AccordionEx from "../../shared-components/accordion-ex/AccordionEx";
+import AccordionEx from "@/shared-components/accordion-ex/AccordionEx";
 import {
 	Box,
 	List,

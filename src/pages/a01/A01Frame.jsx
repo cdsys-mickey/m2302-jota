@@ -1,24 +1,31 @@
-import MockA01FrameBanner from "@/mock-components/A01/MockA01FrameBanner";
-import { A01DialogContainer } from "@/mock-components/A01/dialog/A01DialogContainer";
-import { MockA01ItemListViewContainer } from "@/mock-components/A01/listview/MockA01ItemListViewContainer";
-import MockA01ListViewToolbar from "@/mock-components/A01/listview/MockA01ListViewToolbar";
+import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { Box } from "@mui/material";
 import { memo } from "react";
+import A01Toolbar from "@/components/modules/a01/A01Toolbar";
+import PropTypes from "prop-types";
+import { A01ListViewContainer } from "@/components/modules/a01/A01ListViewContainer";
+import A01ListHeader from "@/components/modules/a01/A01ListHeader";
 
-const A01Frame = memo(() => {
+const A01Frame = memo((props) => {
+	const { boxStyles } = props;
+
 	return (
-		<Box pt={1}>
+		<Box sx={[boxStyles]}>
 			{/* 標題 */}
-			<MockA01FrameBanner />
-			{/* 功能 */}
-			<MockA01ListViewToolbar />
+			<FrameBannerContainer />
+			{/* 工具列 */}
+			<A01Toolbar />
 			{/* 列表 */}
-			<MockA01ItemListViewContainer />
+			<A01ListHeader />
+			<A01ListViewContainer />
 			{/* 對話框 */}
-			<A01DialogContainer />
 		</Box>
 	);
 });
+A01Frame.propTypes = {
+	drawerOpen: PropTypes.bool,
+	boxStyles: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+};
 A01Frame.displayName = "A01Frame";
 
 export default A01Frame;

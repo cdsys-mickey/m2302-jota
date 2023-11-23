@@ -2,7 +2,7 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import { useRef } from "react";
 import { useCallback } from "react";
-import { useDocumentEventListener } from "../../../shared-hooks/useDocumentEventListener";
+import { useDocumentEventListener } from "@/shared-hooks/useDocumentEventListener";
 
 const DSGContextMenu = memo((props) => {
 	const { clientX, clientY, items, close, renderItem, filterItem } = props;

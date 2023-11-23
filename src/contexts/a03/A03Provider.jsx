@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { A03Context } from "./A03Context";
 import { useToggle } from "@/shared-hooks/useToggle";
 
-const A03Provider = (props) => {
+export const A03Provider = (props) => {
 	const { children } = props;
 	const [lockRows, toggleLockRows] = useToggle(true);
 	return (
@@ -15,5 +15,3 @@ const A03Provider = (props) => {
 A03Provider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
-
-export default A03Provider;

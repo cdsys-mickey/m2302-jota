@@ -3,7 +3,7 @@ import useSearchField from "@/shared-hooks/useSearchField";
 import { forwardRef, memo, useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
-import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
 const SideMenuSearchBarContainer = memo(
 	forwardRef((props, ref) => {

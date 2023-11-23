@@ -8,7 +8,7 @@ import { Button, IconButton, styled, Tooltip, Typography } from "@mui/material";
 
 import { forwardRef } from "react";
 import { useSlate } from "slate-react";
-import GovDocEditor from "../../modules/gov-doc-editor";
+import GovDocEditor from "@/modules/gov-doc-editor";
 import FlexBox from "@/shared-components/FlexBox";
 
 const ToolbarBox = styled(({ bgcolor, children, ...rest }) => {

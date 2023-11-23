@@ -1,13 +1,20 @@
 import MockA01Frame from "./MockA01Frame";
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
-import useTheme from "@mui/material/styles/useTheme";
 import { useContext } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import Styles from "@/modules/md-styles";
+import { useTheme } from "@mui/material";
+import { useMemo } from "react";
 
 const MockA01FrameContainer = () => {
-	const { drawerOpen } = useContext(AppFrameContext);
+	const appFrame = useContext(AppFrameContext);
 	const theme = useTheme();
-	return <MockA01Frame drawerOpen={drawerOpen} theme={theme} />;
+	const boxStyles = useMemo(
+		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
+		[appFrame.drawerOpen, theme]
+	);
+	return (
+		<MockA01Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />
+	);
 };
 
 MockA01FrameContainer.displayName = "MockA01FrameContainer";

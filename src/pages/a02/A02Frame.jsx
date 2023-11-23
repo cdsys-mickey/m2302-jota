@@ -1,18 +1,13 @@
 import A02GridContainer from "@/components/modules/a02/A02GridContainer";
-import { Box, useTheme } from "@mui/material";
-import { memo, useMemo } from "react";
 import A02Toolbar from "@/components/modules/a02/A02Toolbar";
-import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
+import { Box } from "@mui/material";
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 const A02Frame = memo((props) => {
-	const { drawerOpen } = props;
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
+	const { boxStyles } = props;
+
 	return (
 		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
@@ -26,6 +21,7 @@ const A02Frame = memo((props) => {
 
 A02Frame.propTypes = {
 	drawerOpen: PropTypes.bool,
+	boxStyles: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
 A02Frame.displayName = "A02Frame";

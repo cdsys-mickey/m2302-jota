@@ -8,7 +8,7 @@ import ModuleHeading from "@/shared-components/ModuleHeading";
 import LockIcon from "@mui/icons-material/Lock";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import FlexContainer from "../../shared-components/FlexContainer";
+import FlexContainer from "@/shared-components/FlexContainer";
 
 const SignInBase = memo(
 	forwardRef((props, ref) => {

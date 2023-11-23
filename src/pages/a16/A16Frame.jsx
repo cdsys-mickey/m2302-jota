@@ -14,13 +14,15 @@ const A16Frame = memo((props) => {
 		[drawerOpen, theme]
 	);
 	return (
-		<Box sx={[boxStyles]}>
+		<>
 			<FrameBannerContainer />
-			<Box>
-				<A16Toolbar />
-				<A16GridContainer />
+			<Box sx={[boxStyles]}>
+				<Box>
+					<A16Toolbar />
+					<A16GridContainer />
+				</Box>
 			</Box>
-		</Box>
+		</>
 	);
 });
 

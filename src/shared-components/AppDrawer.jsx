@@ -1,6 +1,6 @@
 import { Drawer } from "@mui/material";
 import { styled } from "@mui/system";
-import Layouts from "@/shared-modules/layouts";
+import Layouts from "@/shared-modules/md-layouts";
 
 // const drawerWidth = 200;
 

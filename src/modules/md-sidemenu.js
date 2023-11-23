@@ -10,9 +10,14 @@ const GROUP_ICONS = {
 	D00: PrecisionManufacturingIcon,
 };
 
-const getHeaderIcon = (module) => {};
+const getHeaderIcon = (module) => {
+	return GROUP_ICONS[module?.JobID];
+};
 
 const isHeader = (module) => {
+	if (!module) {
+		return null;
+	}
 	const regexp = /^[a-zA-Z][0]{2}$/;
 	return regexp.test(module.JobID);
 };
@@ -20,6 +25,7 @@ const isHeader = (module) => {
 const SideMenus = {
 	isHeader,
 	GROUP_ICONS,
+	getHeaderIcon,
 };
 
 export default SideMenus;

@@ -11,9 +11,9 @@ const MockA01FrameBanner = memo(
 				title="貨品基本資料維護作業"
 				alt="A01"
 				ref={ref}
-				SearchFormComponent={ProdSearchFormContainer}
-				{...rest}
-			/>
+				{...rest}>
+				{ProdSearchFormContainer}
+			</FrameBanner>
 		);
 	})
 );

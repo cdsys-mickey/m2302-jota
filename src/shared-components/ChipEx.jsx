@@ -1,7 +1,7 @@
 import { Chip } from "@mui/material";
 import React from "react";
 // Constants
-import { Severity } from "@/shared-modules/severity";
+import { Severity } from "@/shared-modules/md-severity";
 
 const VARIANT_DEFAULT = "default";
 const VARIANT_OUTLINED = "outlined";

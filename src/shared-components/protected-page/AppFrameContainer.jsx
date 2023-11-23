@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import AppFrame from "./AppFrame";
 
 const AppFrameContainer = (props) => {

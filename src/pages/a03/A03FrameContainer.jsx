@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import A03Frame from "./A03Frame";
-import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
 export const A03FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);

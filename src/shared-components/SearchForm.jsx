@@ -1,5 +1,5 @@
 import useResponsive from "@/shared-contexts/responsive/useResponsive";
-import Layouts from "@/shared-modules/layouts";
+import Layouts from "@/shared-modules/md-layouts";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import {

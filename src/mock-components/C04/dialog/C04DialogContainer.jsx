@@ -5,7 +5,7 @@ import { useCrud } from "@/contexts/crud/useCrud";
 import C04Dialog from "./C04Dialog";
 
 import { forwardRef } from "react";
-import { MockPurchaseOrders } from "../../../mocks/mock-purchase-orders";
+import { MockPurchaseOrders } from "@/mocks/mock-purchase-orders";
 
 const C04DialogContainer = forwardRef(({ ...rest }, ref) => {
 	const { dialogOpen, handleViewing, cancelAction, creating, editing } =

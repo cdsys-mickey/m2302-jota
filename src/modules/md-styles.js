@@ -1,5 +1,5 @@
 const ofHomeBox = ({ theme, drawerOpen }) => ({
-	paddingTop: "30px",
+	paddingTop: theme.spacing(1),
 	// transition: theme.transitions.create("paddingRight", {
 	// 	easing: theme.transitions.easing.sharp,
 	// 	duration: theme.transitions.duration.enteringScreen,
@@ -47,7 +47,7 @@ const ofFrameBox = ({ theme, drawerOpen }) => ({
 	...(drawerOpen && {
 		paddingLeft: {
 			xl: "40px",
-			lg: "16px",
+			lg: "24px",
 			md: "16px",
 			sm: "0px",
 			xs: "0px",
@@ -65,7 +65,7 @@ const ofFrameBox = ({ theme, drawerOpen }) => ({
 	...(drawerOpen && {
 		paddingRight: {
 			xl: "40px",
-			lg: "16px",
+			lg: "24px",
 			md: "16px",
 			sm: "0px",
 			xs: "0px",

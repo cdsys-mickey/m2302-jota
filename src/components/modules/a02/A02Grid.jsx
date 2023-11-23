@@ -7,7 +7,7 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGLoading from "../../../shared-components/dsg/DSGLoading";
+import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
 import { DynamicDataSheetGrid } from "react-datasheet-grid";
 

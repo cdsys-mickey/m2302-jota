@@ -6,32 +6,40 @@ import ResponsiveFrameTitle from "../responsive/ResponsiveFrameTitle";
 // import ResponsiveFrameMenuButton from "./ResponsiveFrameMenuButton";
 import AvatarButtonContainer from "@/shared-components/avatar-button/AvatarButtonContainer";
 import FrameMenuButtonContainer from "./FrameMenuButtonContainer";
+import useResponsive from "@/shared-contexts/responsive/useResponsive";
+import PropTypes from "prop-types";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
-		const { title, alt, SearchFormComponent, ...rest } = props;
+		const { title, alt, children, ...rest } = props;
+		const { mobile } = useResponsive();
+		const SearchComponent = children;
 
 		return (
 			<FlexBox ref={ref} {...rest}>
 				<FlexBox
-					ml={2}
+					ml={-2}
 					alignItems="center"
 					justifyContent="flex-start"
-					flex={SearchFormComponent ? 2 : 4}>
+					flex={SearchComponent ? 1 : 2}>
 					{/* <ResponsiveFrameMenuButton /> */}
 					<FrameMenuButtonContainer />
 					<ResponsiveFrameTitle alt={alt}>
 						{title}
 					</ResponsiveFrameTitle>
 				</FlexBox>
-				<FlexBox alignItems="center" flex={2} px={2}>
-					{SearchFormComponent && <SearchFormComponent />}
-				</FlexBox>
+
+				{SearchComponent ? (
+					<FlexBox alignItems="center" flex={mobile ? 2 : 1} px={2}>
+						<SearchComponent />
+					</FlexBox>
+				) : null}
+
 				<FlexBox
 					alignItems="center"
 					justifyContent="flex-end"
 					flex={1}
-					mr={1}>
+					mr={-2}>
 					<Stack
 						spacing={1}
 						direction="row"
@@ -49,5 +57,10 @@ const FrameBanner = memo(
 );
 
 FrameBanner.displayName = "FrameBanner";
+FrameBanner.propTypes = {
+	title: PropTypes.string,
+	alt: PropTypes.string,
+	children: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
+};
 
 export default FrameBanner;

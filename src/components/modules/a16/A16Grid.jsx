@@ -7,8 +7,8 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGLoading from "../../../shared-components/dsg/DSGLoading";
-import { stringCheckboxColumn } from "../../../shared-components/dsg/columns/stringCheckboxColumn";
+import DSGLoading from "@/shared-components/dsg/DSGLoading";
+import { stringCheckboxColumn } from "@/shared-components/dsg/columns/stringCheckboxColumn";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
 
 const ContextMenu = createDSGContextMenu({
@@ -76,7 +76,10 @@ const A16Grid = memo((props) => {
 				disabled: lockRows,
 			},
 			{
-				...keyColumn("Using_N", stringCheckboxColumn()),
+				...keyColumn(
+					"Using_N",
+					stringCheckboxColumn({ trueValue: "1", falseValue: "0" })
+				),
 				title: "使用中",
 				minWidth: 60,
 				disabled: lockRows,

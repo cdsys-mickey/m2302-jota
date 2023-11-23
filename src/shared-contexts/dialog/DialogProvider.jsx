@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import DialogEx from "../../shared-components/dialog/DialogEx";
+import DialogEx from "@/shared-components/dialog/DialogEx";
 import { DialogContext } from "./DialogContext";
 
 export const DialogProvider = ({ children, buttonProps }) => {

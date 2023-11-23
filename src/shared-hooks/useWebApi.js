@@ -101,11 +101,13 @@ export const useWebApi = (props) => {
 				if (status.is2xx) {
 					return { status: status, payload: axiosResponse.data };
 				} else {
+					//should not happen
 					return {
 						status: status,
 						// error: getErrorFromPayload(axiosResponse.data),
 						error: WebApis.getErrorFromPayload(axiosResponse.data, {
 							stacktrace,
+							status: status.code,
 						}),
 					};
 				}
@@ -117,6 +119,7 @@ export const useWebApi = (props) => {
 					// error: getErrorFromPayload(err.response.data),
 					error: WebApis.getErrorFromPayload(err.response.data, {
 						stacktrace,
+						status: err.response.status,
 					}),
 				};
 			}

@@ -5,11 +5,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AppFrameContext } from "./AppFrameContext";
 import { useMatch } from "react-router-dom";
 import { useContext } from "react";
-import { AuthProvider } from "../../contexts/auth/AuthProvider";
-import { AuthContext } from "../../contexts/auth/AuthContext";
+import { AuthProvider } from "@/contexts/auth/AuthProvider";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import Styles from "@/modules/md-styles";
+import { useTheme } from "@mui/material";
 
 const AppFrameProvider = (props) => {
 	const { children, drawerWidth } = props;
+	const theme = useTheme();
 	const { mobile } = useResponsive();
 	const { redirectToModule, redirectToLanding } = useAppRedirect();
 	// Account
@@ -18,11 +21,6 @@ const AppFrameProvider = (props) => {
 		drawerOpen: null,
 		drawerWidth: drawerWidth || 300,
 	});
-
-	// const [menuStateEx, setMenuStateEx] = useState({
-	// 	menus: MockMenus,
-	// 	selectedItem: "A01",
-	// });
 
 	const [menuState, setMenuState] = useState({
 		menuItems: null,

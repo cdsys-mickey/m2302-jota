@@ -1,5 +1,5 @@
 import React from "react";
-import ItemListView from "@/shared-components/listview/ItemListView";
+import ItemListView from "@/shared-components/item-listview/ItemListView";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { C04ListHeader } from "./C04ListItem";
 import { C04ListItemContainer } from "./C04ListItemContainer";
@@ -13,7 +13,7 @@ const C04ListViewContainer = forwardRef((props, ref) => {
 
 	return (
 		<ItemListView
-			height={height - 160}
+			height={height - 150}
 			ItemComponent={C04ListItemContainer}
 			header={<C04ListHeader />}
 			data={data}
