@@ -47,7 +47,7 @@ const FrameAccordion = memo(
 								aria-controls="panel1d-content"
 								id="panel1d-header">
 								<FrameMenuGroupHeader
-									icon={menus[s].icon}
+									iconComponent={menus[s].icon}
 									text={menus[s].name}
 								/>
 							</AccordionSummaryEx>

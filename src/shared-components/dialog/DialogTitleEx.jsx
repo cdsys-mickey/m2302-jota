@@ -8,102 +8,119 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DialogTitleButtonsBox from "@/shared-components/dialog/DialogTitleButtonsBox";
 import FlexBox from "@/shared-components/FlexBox";
 import HoverableListItem from "@/shared-components/HoverableListItem";
-import { memo } from "react";
+import { memo, forwardRef } from "react";
 
-const DialogTitleEx = memo((props) => {
-	const {
-		children,
-		onClose,
-		closeText = "關閉",
-		onReturn,
-		returnText = "返回",
-		returnIcon,
-		buttons,
-		closeButtonProps = { size: "small" },
-		padding,
-		sx = [],
-		yOffset = "12px",
-		xOffset = "4px",
-		...rest
-	} = props;
+const DialogTitleEx = memo(
+	forwardRef((props, ref) => {
+		const {
+			children,
+			onClose,
+			closeText = "關閉",
+			onReturn,
+			returnText = "返回",
+			returnIcon,
+			buttons,
+			buttonsComponent,
+			closeButtonProps = { size: "small" },
+			padding,
+			sx = [],
+			yOffset = "12px",
+			xOffset = "4px",
+			...rest
+		} = props;
 
-	const iconSize = useMemo(() => {
-		return closeButtonProps?.size || "small";
-	}, [closeButtonProps?.size]);
+		const ButtonsComponent = buttonsComponent;
 
-	return (
-		<DialogTitle
-			sx={[
-				(theme) => ({
-					display: "flex",
-					...(padding && {
-						padding,
+		const renderButtonsComponent = useMemo(() => {
+			return ButtonsComponent && !buttons;
+		}, [ButtonsComponent, buttons]);
+
+		const iconSize = useMemo(() => {
+			return closeButtonProps?.size || "small";
+		}, [closeButtonProps?.size]);
+
+		return (
+			<DialogTitle
+				ref={ref}
+				sx={[
+					(theme) => ({
+						display: "flex",
+						...(padding && {
+							padding,
+						}),
+						...(onReturn && {
+							paddingLeft: "60px",
+						}),
 					}),
-					...(onReturn && {
-						paddingLeft: "60px",
-					}),
-				}),
-				...(Array.isArray(sx) ? sx : [sx]),
-			]}
-			{...rest}>
-			{onReturn && (
+					...(Array.isArray(sx) ? sx : [sx]),
+				]}
+				{...rest}>
+				{onReturn && (
+					<FlexBox
+						sx={[
+							(theme) => ({
+								position: "absolute",
+								left: xOffset,
+								top: yOffset,
+							}),
+						]}>
+						<Tooltip title={returnText || ""}>
+							<IconButton
+								aria-label="back"
+								onClick={onReturn}
+								sx={(theme) => ({
+									color: (theme) => theme.palette.grey[500],
+									marginLeft: theme.spacing(1),
+								})}>
+								<ArrowBackIosNewIcon />
+							</IconButton>
+						</Tooltip>
+					</FlexBox>
+				)}
+
+				{children}
 				<FlexBox
+					alignItems="center"
 					sx={[
 						(theme) => ({
 							position: "absolute",
-							left: xOffset,
+							right: xOffset,
 							top: yOffset,
+							minHeight: "40px",
+							...(!onClose && {
+								paddingRight: "20px",
+							}),
 						}),
 					]}>
-					<Tooltip title={returnText || ""}>
-						<IconButton
-							aria-label="back"
-							onClick={onReturn}
-							sx={(theme) => ({
-								color: (theme) => theme.palette.grey[500],
-								marginLeft: theme.spacing(1),
-							})}>
-							<ArrowBackIosNewIcon />
-						</IconButton>
-					</Tooltip>
+					{buttons && (
+						<DialogTitleButtonsBox>{buttons}</DialogTitleButtonsBox>
+					)}
+					{renderButtonsComponent && (
+						<DialogTitleButtonsBox>
+							<ButtonsComponent />
+						</DialogTitleButtonsBox>
+					)}
+					{onClose && (
+						<Tooltip title={closeText || ""}>
+							<IconButton
+								// disableRipple
+								aria-label="close"
+								onClick={onClose}
+								sx={(theme) => ({
+									color: (theme) => theme.palette.grey[500],
+									marginLeft: theme.spacing(1),
+								})}
+								// {...closeButtonProps}
+							>
+								<CloseIcon />
+							</IconButton>
+						</Tooltip>
+					)}
 				</FlexBox>
-			)}
-
-			{children}
-			<FlexBox
-				alignItems="center"
-				sx={[
-					(theme) => ({
-						position: "absolute",
-						right: xOffset,
-						top: yOffset,
-						minHeight: "40px",
-						...(!onClose && {
-							paddingRight: "20px",
-						}),
-					}),
-				]}>
-				<DialogTitleButtonsBox>{buttons}</DialogTitleButtonsBox>
-				{onClose && (
-					<Tooltip title={closeText || ""}>
-						<IconButton
-							// disableRipple
-							aria-label="close"
-							onClick={onClose}
-							sx={(theme) => ({
-								color: (theme) => theme.palette.grey[500],
-								marginLeft: theme.spacing(1),
-							})}
-							// {...closeButtonProps}
-						>
-							<CloseIcon />
-						</IconButton>
-					</Tooltip>
-				)}
-			</FlexBox>
-		</DialogTitle>
-	);
-});
+			</DialogTitle>
+		);
+	})
+);
 
 DialogTitleEx.displayName = "DialogTitleEx";
 

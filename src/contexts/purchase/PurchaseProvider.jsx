@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { PurchaseContext } from "./PurchaseContext";
-import { useCrud } from "@/contexts/crud/useCrud";
+import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 import { MockPurchaseOrders } from "@/mocks/mock-purchase-orders";
 
 export const PurchaseProvider = ({ children }) => {
-	const { cancelEditing, popperOpen, handlePopperClose } = useCrud();
+	const { cancelEditing, popperOpen, handlePopperClose } = useCrudZZ();
 	const [state, setState] = useState({
 		data: MockPurchaseOrders,
 	});

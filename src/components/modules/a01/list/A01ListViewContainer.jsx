@@ -12,13 +12,14 @@ export const A01ListViewContainer = () => {
 	const { height } = useWindowSize();
 
 	useInit(() => {
-		a01.load({ start: 0, end: 50 });
+		// a01.load({ start: 0, stop: 50 });
+		a01.loadItems();
 	}, []);
 
 	return (
 		<Box component={Paper} pr="2px">
 			<InfiniteListView
-				loading={a01.loading}
+				loading={a01.listLoading}
 				data={a01.data}
 				itemCount={a01.itemCount}
 				loadMoreItems={a01.loadMoreItems}

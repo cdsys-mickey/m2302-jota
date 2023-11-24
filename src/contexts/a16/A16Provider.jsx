@@ -1,17 +1,16 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
 import { useCallback, useContext } from "react";
 import { toast } from "react-toastify";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
+import { useDSG } from "../../shared-hooks/useDSG";
 import { A16Context } from "./A16Context";
-import { useToggle } from "@/shared-hooks/useToggle";
 
 export const A16Provider = (props) => {
 	const { children } = props;
-	const [lockRows, toggleLockRows] = useToggle(true);
+	// const [lockRows, toggleLockRows] = useToggle(true);
 	const {
 		httpGetAsync,
 		httpPostAsync,
@@ -21,7 +20,12 @@ export const A16Provider = (props) => {
 	} = useWebApi();
 	const { token } = useContext(AuthContext);
 
-	const dsg = useContext(DSGContext);
+	// const dsg = useContext(DSGContext);
+	const dsg = useDSG({
+		id: "A16",
+		keyColumn: "DeptID",
+		otherColumns: "GroupKey,DeptName,AbbrName",
+	});
 	const dialogs = useContext(DialogContext);
 
 	// const [loading, setLoading] = useState();
@@ -29,7 +33,7 @@ export const A16Provider = (props) => {
 	const load = useCallback(
 		async ({ supressLoading = false } = {}) => {
 			if (!supressLoading) {
-				dsg.setLoading(true);
+				dsg.setGridLoading(true);
 			}
 			try {
 				const { status, payload } = await httpGetAsync({
@@ -40,7 +44,7 @@ export const A16Provider = (props) => {
 					},
 				});
 				if (status.success) {
-					dsg.handleDataLoaded(payload);
+					dsg.handleGridDataLoaded(payload);
 				} else {
 					switch (status.code) {
 						default:
@@ -51,7 +55,7 @@ export const A16Provider = (props) => {
 			} catch (err) {
 				console.error("load", err);
 			} finally {
-				dsg.setLoading(false);
+				dsg.setGridLoading(false);
 			}
 		},
 		[dsg, httpGetAsync, token]
@@ -163,7 +167,7 @@ export const A16Provider = (props) => {
 				console.error(err);
 				toast.error(`刪除門市發生例外: ${err.message}`);
 			} finally {
-				dsg.setDeletingTarget(null);
+				dsg.setDeletingRow(null);
 				dialogs.closeLatest();
 				reload();
 			}
@@ -172,17 +176,18 @@ export const A16Provider = (props) => {
 	);
 
 	const handleConfirmDelete = useCallback(
-		async ({ rowData }) => {
+		async (row) => {
+			const { rowData } = row;
 			console.debug(`confirm DELETE`, rowData);
-			dsg.setDeletingTarget(rowData);
+			dsg.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除門市 ${rowData.DeptID}/${rowData.DeptName} ?`,
 				onConfirm: () => {
-					handleDelete({ rowData });
+					handleDelete(row);
 				},
 				onCancel: () => {
-					dsg.setDeletingTarget(null);
+					dsg.setDeletingRow(null);
 					dsg.rollbackChanges();
 					dialogs.closeLatest();
 				},
@@ -195,7 +200,7 @@ export const A16Provider = (props) => {
 		(row, newValue) => {
 			toast.error(`門市 ${row.rowData.DeptID} 已存在`);
 
-			dsg.rewriteValue(row, newValue, {
+			dsg.rewriteRowValue(row, newValue, {
 				DeptID: "",
 			});
 			setTimeout(() => {
@@ -207,9 +212,12 @@ export const A16Provider = (props) => {
 
 	const handleRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
-			console.debug(`${dsg.id}[${rowIndex}] selected, data:`, rowData);
+			console.debug(
+				`${dsg.gridId}[${rowIndex}] selected, data:`,
+				rowData
+			);
 		},
-		[dsg.id]
+		[dsg.gridId]
 	);
 
 	const handleCreateRow = useCallback(
@@ -236,8 +244,7 @@ export const A16Provider = (props) => {
 				handleDuplicatedError,
 				handleRowSelectionChange,
 				handleCreateRow,
-				lockRows,
-				toggleLockRows,
+				...dsg,
 			}}>
 			{children}
 		</A16Context.Provider>

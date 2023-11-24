@@ -4,26 +4,24 @@ import PropTypes from "prop-types";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { useCrud } from "../../shared-hooks/useCrud";
 
 export const A01Provider = ({ children }) => {
-	const [state, setState] = useState({});
+	// const [state, setState] = useState({});
 	const auth = useContext(AuthContext);
+	const crud = useCrud();
 	const loader = useInfiniteLoader({
 		url: "v1/prods",
 		bearer: auth.token,
-		initialFetchSize: 29,
+		initialFetchSize: 50,
 	});
 
 	return (
 		<A01Context.Provider
 			value={{
-				...state,
+				// ...state,
 				...loader,
-				// data: loader.data,
-				// load: loader.load,
-				// itemCount: loader.itemCount,
-				// loadMoreItems: loader.loadMoreItems,
-				// isItemLoaded: loader.isItemLoaded,
+				...crud,
 			}}>
 			{children}
 		</A01Context.Provider>

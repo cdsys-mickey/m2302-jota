@@ -6,31 +6,32 @@ import Colors from "@/modules/colors";
 
 export const FrameMenuGroupHeader = memo(
 	forwardRef((props, ref) => {
-		const { Icon, text, variant = "h6", sx = [], ...rest } = props;
+		const { iconComponent, text, variant = "h6", sx = [], ...rest } = props;
+		const Icon = iconComponent;
 		return (
 			<FlexBox
 				ref={ref}
 				inline
 				fullWidth
+				alignItems="center"
 				pt="2px"
 				pl={0.5}
 				sx={[
 					{
 						bgcolor: "primary.main",
-						height: "36px",
+						height: "34px",
 					},
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				{...rest}>
-				<FlexBox alignItems="center">
-					{Icon && <Icon htmlColor="#fff" />}
-				</FlexBox>
+				<FlexBox>{Icon && <Icon htmlColor="#fff" />}</FlexBox>
 
 				<Typography
 					variant={variant}
 					color="primary.contrastText"
 					sx={{
 						fontWeight: 700,
+						fontSize: 18,
 					}}>
 					{text}
 				</Typography>
@@ -40,7 +41,7 @@ export const FrameMenuGroupHeader = memo(
 );
 
 FrameMenuGroupHeader.propTypes = {
-	Icon: PropTypes.object,
+	iconComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
 	text: PropTypes.string.isRequired,
 	variant: PropTypes.string,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),

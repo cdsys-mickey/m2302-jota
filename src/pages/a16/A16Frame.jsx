@@ -7,22 +7,16 @@ import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBa
 import PropTypes from "prop-types";
 
 const A16Frame = memo((props) => {
-	const { drawerOpen } = props;
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
+	const { drawerOpen, boxStyles } = props;
+
 	return (
-		<>
+		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
-			<Box sx={[boxStyles]}>
-				<Box>
-					<A16Toolbar />
-					<A16GridContainer />
-				</Box>
+			<Box>
+				<A16Toolbar />
+				<A16GridContainer />
 			</Box>
-		</>
+		</Box>
 	);
 });
 

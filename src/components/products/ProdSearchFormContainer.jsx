@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import SearchForm from "@/shared-components/SearchForm";
 import ProdSearchPopperContainer from "./ProdSearchPopperContainer";
-import { useCrud } from "@/contexts/crud/useCrud";
+import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 import { useHotkeys } from "react-hotkeys-hook";
 import useSearchField from "@/shared-hooks/useSearchField";
 import { useProds } from "@/contexts/prods/useProds";
@@ -13,7 +13,7 @@ export const ProdSearchFormContainer = forwardRef((props, ref) => {
 	const { fieldName = "q", ...rest } = props;
 	const forms = useForm();
 	const prods = useProds();
-	const crud = useCrud();
+	const crud = useCrudZZ();
 
 	const inputRef = useRef(null);
 

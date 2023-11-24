@@ -23,7 +23,7 @@ const RWFrameMenuRow = memo(
 				<ListItem dense disablePadding>
 					{header ? (
 						<FrameMenuGroupHeader
-							Icon={SideMenus.getHeaderIcon(value)}
+							iconComponent={SideMenus.getHeaderIcon(value)}
 							text={value.JobName}
 						/>
 					) : (

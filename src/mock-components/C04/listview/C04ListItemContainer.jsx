@@ -1,9 +1,9 @@
 import React from "react";
 import C04ListItem from "./C04ListItem";
-import { useCrud } from "@/contexts/crud/useCrud";
+import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 
 export const C04ListItemContainer = React.forwardRef(({ ...rest }, ref) => {
-	const { handleViewing, handleEditing } = useCrud();
+	const { handleViewing, handleEditing } = useCrudZZ();
 
 	return (
 		<C04ListItem

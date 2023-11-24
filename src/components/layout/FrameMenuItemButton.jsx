@@ -36,7 +36,11 @@ const FrameMenuItemButton = memo(
 						sx={{
 							width: "2.5rem",
 						}}>
-						<Typography variant="body1">{value.JobID}</Typography>
+						<Typography
+							variant="body1"
+							fontWeight={selected ? 700 : 200}>
+							{value.JobID}
+						</Typography>
 					</FlexBox>
 					<FlexBox
 						flex={1}
@@ -46,13 +50,12 @@ const FrameMenuItemButton = memo(
 						<ListItemText
 							primary={value.JobName}
 							primaryTypographyProps={{
-								variant: "subtitle1",
+								variant: "body1",
 							}}
 							sx={{
-								// color: "text.secondary",
 								color: "text.primary",
 								"& *": {
-									fontWeight: 500,
+									fontWeight: selected ? 700 : 200,
 								},
 							}}
 						/>

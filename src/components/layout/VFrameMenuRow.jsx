@@ -10,10 +10,10 @@ const VFrameMenuRow = memo((props) => {
 	const header = useMemo(() => SideMenus.isHeader(value), [value]);
 
 	return (
-		<ListItem dense disablePadding sx={{ minHeight: 36 }}>
+		<ListItem dense disablePadding>
 			{header ? (
 				<FrameMenuGroupHeader
-					Icon={SideMenus.GROUP_ICONS[value.JobID]}
+					iconComponent={SideMenus.GROUP_ICONS[value.JobID]}
 					text={value.JobName}
 				/>
 			) : (

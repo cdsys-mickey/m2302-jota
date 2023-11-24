@@ -29,6 +29,7 @@ const MockA01Dialog = memo(
 			<DialogEx
 				ref={ref}
 				fullWidth
+				responsive
 				maxWidth="md"
 				titleButtons={<A01DialogTitleButtonsContainer />}
 				titleProps={{ returnText: "取消編輯" }}

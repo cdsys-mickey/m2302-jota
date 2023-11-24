@@ -6,7 +6,7 @@ import CatSGrid from "./CatSGrid";
 import { A03Context } from "@/contexts/a03/A03Context";
 
 export const CatSGridContainer = () => {
-	const dsg = useContext(DSGContext);
+	// const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const catS = useContext(CatSContext);
 	const a03 = useContext(A03Context);
@@ -14,13 +14,13 @@ export const CatSGridContainer = () => {
 	return (
 		<CatSGrid
 			lockRows={a03.lockRows}
-			gridRef={dsg.gridRef}
-			setGridRef={dsg.setGridRef}
+			gridRef={catS.gridRef}
+			setGridRef={catS.setGridRef}
 			lgId={catS.lgId}
 			mdId={catS.mdId}
-			data={dsg.data}
-			loading={dsg.loading}
-			handleChange={dsg.handleChange({
+			data={catS.gridData}
+			loading={catS.loading}
+			handleChange={catS.handleGridChange({
 				onCreate: catS.handleCreate,
 				onUpdate: catS.handleUpdate,
 				onDelete: catS.handleConfirmDelete,
@@ -28,9 +28,9 @@ export const CatSGridContainer = () => {
 			})}
 			// handleChange={catS.handleGridChange}
 			height={height - 176}
-			isPersisted={dsg.isPersisted}
+			isPersisted={catS.isPersisted}
 			// handleActiveCellChange={catS.handleActiveCellChange}
-			handleSelectionChange={dsg.handleSelectionChangeBy({
+			handleSelectionChange={catS.handleSelectionChangeBy({
 				onRowSelectionChange: catS.handleRowSelectionChange,
 			})}
 		/>

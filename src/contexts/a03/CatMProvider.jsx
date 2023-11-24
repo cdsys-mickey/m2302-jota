@@ -8,6 +8,8 @@ import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
 import { CatMContext } from "./CatMContext";
 import { CatSContext } from "./CatSContext";
 import { useRef } from "react";
+import { RoomTwoTone } from "@mui/icons-material";
+import { useDSG } from "../../shared-hooks/useDSG";
 
 const CatMProvider = (props) => {
 	const { children } = props;
@@ -15,7 +17,12 @@ const CatMProvider = (props) => {
 		useWebApi();
 	const { token } = useContext(AuthContext);
 
-	const dsg = useContext(DSGContext);
+	// const dsg = useContext(DSGContext);
+	const dsg = useDSG({
+		id: "md",
+		keyColumn: "MClas",
+		otherColumns: "ClassData",
+	});
 	const dialogs = useContext(DialogContext);
 	const catS = useContext(CatSContext);
 
@@ -29,7 +36,7 @@ const CatMProvider = (props) => {
 	});
 
 	const clear = useCallback(() => {
-		dsg.setData(null);
+		dsg.setGridData(null);
 	}, [dsg]);
 
 	const selectRow = useCallback(
@@ -62,7 +69,7 @@ const CatMProvider = (props) => {
 			}));
 			if (lgId) {
 				if (!supressLoading) {
-					dsg.setLoading(true);
+					dsg.setGridLoading(true);
 				}
 				try {
 					const { status, payload } = await httpGetAsync({
@@ -70,7 +77,7 @@ const CatMProvider = (props) => {
 						bearer: token,
 					});
 					if (status.success) {
-						dsg.handleDataLoaded(payload);
+						dsg.handleGridDataLoaded(payload);
 					} else {
 						switch (status.code) {
 							default:
@@ -85,7 +92,7 @@ const CatMProvider = (props) => {
 						error: err,
 					}));
 				} finally {
-					dsg.setLoading(false);
+					dsg.setGridLoading(false);
 				}
 			} else {
 				dsg.clear();
@@ -185,7 +192,7 @@ const CatMProvider = (props) => {
 				console.error(err);
 				toast.error(`刪除中分類發生例外: ${err.message}`);
 			} finally {
-				dsg.setDeletingTarget(null);
+				dsg.setDeletingRow(null);
 				dialogs.closeLatest();
 				reload();
 			}
@@ -194,17 +201,18 @@ const CatMProvider = (props) => {
 	);
 
 	const handleConfirmDelete = useCallback(
-		async ({ rowData }) => {
+		async (row) => {
+			const { rowData } = row;
 			console.debug(`confirm DELETE`, rowData);
-			dsg.setDeletingTarget(rowData);
+			dsg.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除中分類 ${rowData.MClas}/${rowData.ClassData} ?`,
 				onConfirm: () => {
-					handleDelete({ rowData });
+					handleDelete(RoomTwoTone);
 				},
 				onCancel: () => {
-					dsg.setDeletingTarget(null);
+					dsg.setDeletingRow(null);
 					dsg.rollbackChanges();
 					dialogs.closeLatest();
 				},
@@ -217,10 +225,10 @@ const CatMProvider = (props) => {
 		(row, newValue) => {
 			//dsg.rollbackChanges();
 			toast.error(`中分類 ${row.rowData.MClas} 已存在`);
-			dsg.rewriteValue(row, newValue, {
+			dsg.rewriteRowValue(row, newValue, {
 				MClas: "",
 			});
-			dsg.rewriteValue(row, newValue, {
+			dsg.rewriteRowValue(row, newValue, {
 				MClas: "",
 			});
 		},
@@ -247,6 +255,7 @@ const CatMProvider = (props) => {
 				handleDelete,
 				handleDuplicatedError,
 				// isSelected,
+				...dsg,
 			}}>
 			{children}
 		</CatMContext.Provider>

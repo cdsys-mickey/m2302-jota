@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import IndexColumn from "@/shared-components/listview/IndexColumn";
 import A01ProdIDColumn from "./columns/A01ProdIDColumn";
 import A01ProdNameColumn from "./columns/A01ProdNameColumn";
+import A01ClassNColumn from "./columns/A01ClassNColumn";
 
 const A01ListHeader = memo(
 	forwardRef((props, ref) => {
@@ -14,6 +15,7 @@ const A01ListHeader = memo(
 				<IndexColumn></IndexColumn>
 				<A01ProdIDColumn>商品編號</A01ProdIDColumn>
 				<A01ProdNameColumn>品名及規格</A01ProdNameColumn>
+				{/* <A01ClassNColumn>分類</A01ClassNColumn> */}
 			</ListViewHeader>
 		);
 	})

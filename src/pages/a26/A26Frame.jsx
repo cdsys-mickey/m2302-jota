@@ -5,26 +5,23 @@ import { memo, useMemo } from "react";
 import A26Toolbar from "@/components/modules/a26/A26Toolbar";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import Styles from "@/modules/md-styles";
+import PropTypes from "prop-types";
 
 const A26Frame = memo((props) => {
-	const { drawerOpen } = props;
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
+	const { drawerOpen, boxStyles } = props;
+
 	return (
-		<Box pt={1}>
+		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
-			<Box sx={[boxStyles]}>
-				<A26Toolbar />
-				<A26GridContainer />
-			</Box>
+			<A26Toolbar />
+			<A26GridContainer />
 		</Box>
 	);
 });
 
-A26Frame.propTypes = {};
+A26Frame.propTypes = {
+	drawerOpen: PropTypes.bool,
+};
 
 A26Frame.displayName = "A26Frame";
 export default A26Frame;

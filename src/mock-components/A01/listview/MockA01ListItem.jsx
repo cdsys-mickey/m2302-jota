@@ -134,10 +134,10 @@ const MockA01ListItem = memo(
 					<IndexCell>
 						<Typography variant="body1"></Typography>
 					</IndexCell>
-					<ProdCodeCell>{data.Code}</ProdCodeCell>
-					<ProdNameCell>{data.Name}</ProdNameCell>
-					<PriceCell>{data.Price}</PriceCell>
-					<StockCell>{data.Stock}</StockCell>
+					<ProdCodeCell>{data?.Code}</ProdCodeCell>
+					<ProdNameCell>{data?.Name}</ProdNameCell>
+					<PriceCell>{data?.Price}</PriceCell>
+					<StockCell>{data?.Stock}</StockCell>
 				</ItemRow>
 			</HoverableListItem>
 		);
@@ -146,7 +146,7 @@ const MockA01ListItem = memo(
 
 export default MockA01ListItem;
 
-export const A01ListHeader = memo(
+export const MockA01ListHeader = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			<ListViewHeader ref={ref} {...rest}>

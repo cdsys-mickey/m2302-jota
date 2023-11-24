@@ -43,7 +43,7 @@ const RWFrameMenu = memo((props) => {
 			// innerRef={ref}
 			height={height}
 			itemCount={itemCount}
-			itemSize={36}
+			itemSize={34}
 			itemData={data}
 			width={width - 4}
 			innerElementType={innerElementType}>

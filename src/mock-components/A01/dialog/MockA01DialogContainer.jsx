@@ -3,11 +3,11 @@ import MockA01Dialog from "./MockA01Dialog";
 
 import { MockProducts } from "@/mocks/mock-products";
 import { FormProvider, useForm } from "react-hook-form";
-import { useCrud } from "@/contexts/crud/useCrud";
+import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 
 export const MockA01DialogContainer = ({ ...rest }) => {
 	const { dialogOpen, handleViewing, cancelAction, creating, editing } =
-		useCrud();
+		useCrudZZ();
 	const forms = useForm();
 
 	const title = useMemo(() => {

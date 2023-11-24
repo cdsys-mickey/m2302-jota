@@ -60,7 +60,7 @@ InfiniteListView.propTypes = {
 	loadMoreItems: PropTypes.func,
 	isItemLoaded: PropTypes.func,
 	rowComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
-	data: PropTypes.array,
+	data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	loading: PropTypes.bool,
 	handleItemsRendered: PropTypes.func,
 };

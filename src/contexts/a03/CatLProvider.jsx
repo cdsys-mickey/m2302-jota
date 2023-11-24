@@ -12,6 +12,7 @@ import { CatLContext } from "./CatLContext";
 import { CatMContext } from "./CatMContext";
 import { CatSContext } from "./CatSContext";
 import { useTransition } from "react";
+import { useDSG } from "../../shared-hooks/useDSG";
 
 const CatLProvider = (props) => {
 	const { children } = props;
@@ -20,8 +21,13 @@ const CatLProvider = (props) => {
 		useWebApi();
 	const { token } = useContext(AuthContext);
 
-	const dsg = useContext(DSGContext);
-	// const { gridRef } = dsg;
+	// const dsg = useContext(DSGContext);
+	const dsg = useDSG({
+		id: "lg",
+		keyColumn: "LClas",
+		otherColumns: "ClassData",
+	});
+
 	const dialogs = useContext(DialogContext);
 	const catM = useContext(CatMContext);
 	const catS = useContext(CatSContext);
@@ -33,7 +39,7 @@ const CatLProvider = (props) => {
 	});
 
 	const clear = useCallback(() => {
-		dsg.setData(null);
+		dsg.setGridData(null);
 	}, [dsg]);
 
 	const selectRow = useCallback(
@@ -58,7 +64,7 @@ const CatLProvider = (props) => {
 	const load = useCallback(
 		async ({ supressLoading = false } = {}) => {
 			if (!supressLoading) {
-				dsg.setLoading(true);
+				dsg.setGridLoading(true);
 			}
 			try {
 				const { status, payload } = await httpGetAsync({
@@ -66,7 +72,7 @@ const CatLProvider = (props) => {
 					bearer: token,
 				});
 				if (status.success) {
-					dsg.handleDataLoaded(payload);
+					dsg.handleGridDataLoaded(payload);
 					setState((prev) => ({
 						...prev,
 						selected: null,
@@ -85,7 +91,7 @@ const CatLProvider = (props) => {
 					error: err,
 				}));
 			} finally {
-				dsg.setLoading(false);
+				dsg.setGridLoading(false);
 			}
 		},
 		[dsg, httpGetAsync, token]
@@ -174,7 +180,7 @@ const CatLProvider = (props) => {
 				console.error(err);
 				toast.error(`刪除大分類發生例外: ${err.message}`);
 			} finally {
-				dsg.setDeletingTarget(null);
+				dsg.setDeletingRow(null);
 				dialogs.closeLatest();
 				reload();
 			}
@@ -183,17 +189,18 @@ const CatLProvider = (props) => {
 	);
 
 	const handleConfirmDelete = useCallback(
-		async ({ rowData }) => {
+		async (row) => {
+			const { rowData } = row;
 			console.debug(`confirm DELETE`, rowData);
-			dsg.setDeletingTarget(rowData);
+			dsg.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除大分類 ${rowData.LClas}/${rowData.ClassData} ?`,
 				onConfirm: () => {
-					handleDelete({ rowData });
+					handleDelete(row);
 				},
 				onCancel: () => {
-					dsg.setDeletingTarget(null);
+					dsg.setDeletingRow(null);
 					dsg.rollbackChanges();
 					dialogs.closeLatest();
 				},
@@ -206,10 +213,10 @@ const CatLProvider = (props) => {
 		(row, newValue) => {
 			// dsg.rollbackChanges();
 			toast.error(`大分類 ${row.rowData.LClas} 已存在`);
-			dsg.rewriteValue(row, newValue, {
+			dsg.rewriteRowValue(row, newValue, {
 				LClas: "",
 			});
-			dsg.rewriteValue(row, newValue, {
+			dsg.rewriteRowValue(row, newValue, {
 				LClas: "",
 			});
 		},
@@ -251,6 +258,7 @@ const CatLProvider = (props) => {
 				handleDelete,
 				handleDuplicatedError,
 				isSelected,
+				...dsg,
 			}}>
 			{children}
 		</CatLContext.Provider>

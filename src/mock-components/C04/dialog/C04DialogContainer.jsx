@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { MockProducts } from "@/mocks/mock-products";
 import { FormProvider, useForm } from "react-hook-form";
-import { useCrud } from "@/contexts/crud/useCrud";
+import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 import C04Dialog from "./C04Dialog";
 
 import { forwardRef } from "react";
@@ -9,7 +9,7 @@ import { MockPurchaseOrders } from "@/mocks/mock-purchase-orders";
 
 const C04DialogContainer = forwardRef(({ ...rest }, ref) => {
 	const { dialogOpen, handleViewing, cancelAction, creating, editing } =
-		useCrud();
+		useCrudZZ();
 	const forms = useForm();
 
 	const title = useMemo(() => {

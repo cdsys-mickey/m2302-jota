@@ -14,13 +14,14 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import IndexColumn from "@/shared-components/listview/IndexColumn";
 import A01ProdIDColumn from "./columns/A01ProdIDColumn";
 import A01ProdNameColumn from "./columns/A01ProdNameColumn";
+import A01ClassNColumn from "./columns/A01ClassNColumn";
 
 const A01ListRow = memo((props) => {
-	const { index, style, value, loading } = props;
+	const { index, style, value, loading, onClick } = props;
 
 	return (
 		<div style={style}>
-			<HoverableListItem borderBottom>
+			<HoverableListItem borderBottom onClick={onClick}>
 				<HoverableListItemSecondaryAction>
 					<Tooltip arrow title="編輯">
 						<IconButton>
@@ -44,6 +45,9 @@ const A01ListRow = memo((props) => {
 					<A01ProdNameColumn loading={loading}>
 						{value?.ProdData}
 					</A01ProdNameColumn>
+					{/* <A01ClassNColumn loading={loading}>
+						{value?.Clas_N}
+					</A01ClassNColumn> */}
 				</Grid>
 			</HoverableListItem>
 		</div>
@@ -56,6 +60,7 @@ A01ListRow.propTypes = {
 	value: PropTypes.object,
 	loading: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	onClick: PropTypes.func,
 };
 
 A01ListRow.displayName = "A01ListRow";

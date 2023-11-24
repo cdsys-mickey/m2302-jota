@@ -1,20 +1,15 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useCallback, useState } from "react";
-import { DSGContext } from "./DSGContext";
-import PropTypes from "prop-types";
-import Objects from "@/shared-modules/md-objects";
-import { useMemo } from "react";
 import Arrays from "@/shared-modules/md-arrays";
-import _ from "lodash";
-import { useTransition } from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
+import Objects from "@/shared-modules/md-objects";
+import { useCallback, useMemo, useRef, useState, useTransition } from "react";
+import { useToggle } from "@/shared-hooks/useToggle";
 
-export const DSGProvider = ({
+export const useDSG = ({
 	gridId = "DSGProvider",
 	children,
 	keyColumn,
 	otherColumns,
+	initialLockRows = true,
 }) => {
 	const gridRef = useRef();
 	const setGridRef = useCallback((node) => {
@@ -22,8 +17,8 @@ export const DSGProvider = ({
 			gridRef.current = node;
 		}
 	}, []);
-
-	const [lockRows, setLockRows] = useState(true);
+	const [lockRows, toggleLockRows] = useToggle(initialLockRows);
+	// const [lockRows, setLockRows] = useState(true);
 	const [isPending, startTransition] = useTransition();
 	const selectedRowIndexRef = useRef();
 
@@ -42,7 +37,7 @@ export const DSGProvider = ({
 		return Arrays.parse(otherColumns);
 	}, [otherColumns]);
 
-	const setLoading = useCallback((value) => {
+	const setGridLoading = useCallback((value) => {
 		setState((prev) => ({
 			...prev,
 			gridLoading: value,
@@ -115,9 +110,9 @@ export const DSGProvider = ({
 		}));
 	}, [gridId, state.prevGridData]);
 
-	const setData = useCallback(
+	const setGridData = useCallback(
 		(newValue) => {
-			console.debug(`${gridId}.setData()`, newValue);
+			console.debug(`${gridId}.setGridData()`, newValue);
 			setState((prev) => ({
 				...prev,
 				gridData: newValue,
@@ -192,7 +187,7 @@ export const DSGProvider = ({
 							onDelete(row, newValue);
 						}
 					} else {
-						setData(newValue);
+						setGridData(newValue);
 					}
 				} else if (operation.type === "CREATE") {
 					newValue
@@ -200,7 +195,7 @@ export const DSGProvider = ({
 						.forEach((row) => {
 							console.debug(`[DSG CREATE]`, row);
 						});
-					setData(newValue);
+					setGridData(newValue);
 				} else if (operation.type === "UPDATE") {
 					const rowIndex = operation.fromRowIndex;
 					const rowData = newValue[rowIndex];
@@ -216,7 +211,7 @@ export const DSGProvider = ({
 							...otherColumnNames,
 						])
 					) {
-						setData(newValue);
+						setGridData(newValue);
 						// 新增 或 修改
 						const key = rowData[keyColumn];
 						if (isDuplicated(key)) {
@@ -268,10 +263,10 @@ export const DSGProvider = ({
 							}
 						}
 					} else {
-						setData(newValue);
+						setGridData(newValue);
 					}
 				} else {
-					setData(newValue);
+					setGridData(newValue);
 				}
 			},
 		[
@@ -280,7 +275,7 @@ export const DSGProvider = ({
 			isUnchanged,
 			keyColumn,
 			otherColumnNames,
-			setData,
+			setGridData,
 			state.prevGridData,
 		]
 	);
@@ -384,58 +379,34 @@ export const DSGProvider = ({
 		[gridId]
 	);
 
-	const toggleLockRows = useCallback((enabled) => {
-		setLockRows(!enabled);
-	}, []);
-
-	useEffect(() => {
-		return () => {
-			gridRef.current = null;
-			console.debug(`${gridId}.gridRef released`);
-		};
-	}, [gridId]);
-
-	return (
-		<DSGContext.Provider
-			value={{
-				...state,
-				gridRef,
-				setGridRef,
-				gridId,
-				keyColumn,
-				setLoading,
-				handleGridDataLoaded,
-				commitChanges,
-				rollbackChanges,
-				setData,
-				handleGridChange,
-				isPersisted,
-				handleActiveCellChange,
-				handleSelectionChangeBy,
-				isAllFieldsNotNull,
-				// DELETING
-				deletingRow,
-				setDeletingRow,
-				removeByKey,
-				getRowDataByIndex,
-				rewriteRowValue,
-				setActiveCell,
-				// 鎖定列
-				lockRows,
-				toggleLockRows,
-			}}>
-			{children}
-		</DSGContext.Provider>
-	);
-};
-
-DSGProvider.propTypes = {
-	gridId: PropTypes.string,
-	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-		.isRequired,
-	handleGridChange: PropTypes.func,
-	keyColumn: PropTypes.string.isRequired,
-	otherColumns: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
-		.isRequired,
-	rewriteRowValue: PropTypes.func,
+	// const toggleLockRows = useCallback((enabled) => {
+	// 	setLockRows(!enabled);
+	// }, []);
+	return {
+		...state,
+		gridRef,
+		setGridRef,
+		gridId,
+		keyColumn,
+		setGridLoading,
+		handleGridDataLoaded,
+		commitChanges,
+		rollbackChanges,
+		setGridData,
+		handleGridChange,
+		isPersisted,
+		handleActiveCellChange,
+		handleSelectionChangeBy,
+		isAllFieldsNotNull,
+		// DELETING
+		deletingRow,
+		setDeletingRow,
+		removeByKey,
+		getRowDataByIndex,
+		rewriteRowValue,
+		setActiveCell,
+		// 鎖定列
+		lockRows,
+		toggleLockRows,
+	};
 };

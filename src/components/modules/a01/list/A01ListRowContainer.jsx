@@ -6,19 +6,22 @@ import PropTypes from "prop-types";
 
 export const A01ListRowContainer = (props) => {
 	const a01 = useContext(A01Context);
-	const { index, data, ...rest } = props;
+	const { index, ...rest } = props;
 	const loading = useMemo(() => a01.isItemLoading(index), [a01, index]);
+	const value = a01.data[index];
+	// console.debug(`rendering[${loading}] ${index}...`, value);
 	return (
 		<A01ListRow
 			index={index}
 			loading={loading}
-			value={data[index]}
+			value={value}
+			onClick={(e) => a01.handleViewing(e, value)}
 			{...rest}
 		/>
 	);
 };
 A01ListRowContainer.propTypes = {
 	index: PropTypes.number,
-	data: PropTypes.array,
+	data: PropTypes.object,
 };
 A01ListRowContainer.displayName = "A01ListRowContainer";

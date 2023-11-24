@@ -1,3 +1,4 @@
+import useResponsive from "@/shared-contexts/responsive/useResponsive";
 import { LoadingButton } from "@mui/lab";
 import {
 	Button,
@@ -7,10 +8,9 @@ import {
 	DialogContent,
 	DialogContentText,
 } from "@mui/material";
-import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useMemo } from "react";
 import DialogTitleEx from "./DialogTitleEx";
-import { memo } from "react";
-import { forwardRef } from "react";
 
 /**
  * 關鍵屬性是 onConfirm, onCancel, 以及 onClose, 雖然沒有在這裡定義 onClose,
@@ -24,55 +24,66 @@ const DialogEx = memo(
 	forwardRef((props, ref) => {
 		const {
 			title,
+			titleSx = [],
 			message,
 			children,
 			confirmText = "確定",
 			cancelText = "取消",
-			onConfirm,
-			onCancel,
-			onClose,
-			onReturn,
+
 			// minWidth = "50vw",
 			// maxWidth = "100vw",
 			// minHeight,
-			ContentProps,
+			contentProps,
 			buttonProps,
 			confirmButtonProps,
 			cancelButtonProps,
 			loading = false,
 			working = false,
 			titleButtons,
+			titleButtonsComponent,
 			titleProps,
-			otherButtons,
-			titleSx = [],
+			otherActionButtons,
+			otherActionButtonsComponent,
+
 			responsive = false,
+			fullScreen,
+			// METHODS
+			onConfirm,
+			onCancel,
+			onClose,
+			onReturn,
 			...rest
 		} = props;
+
+		const TitleButtonsComponent = titleButtonsComponent;
+		const OtherActionButtonsComponent = otherActionButtonsComponent;
+
 		const showTitle = useMemo(() => {
-			return title || titleButtons || onClose;
-		}, [onClose, title, titleButtons]);
+			return title || titleButtons || titleButtonsComponent || onClose;
+		}, [onClose, title, titleButtons, titleButtonsComponent]);
+
+		const renderOtherActionButtonsComponent = useMemo(() => {
+			return OtherActionButtonsComponent && !otherActionButtons;
+		}, [OtherActionButtonsComponent, otherActionButtons]);
+
+		const { mobile } = useResponsive();
+
+		const isFullScreen = useMemo(() => {
+			return (responsive && mobile) || fullScreen;
+		}, [fullScreen, mobile, responsive]);
 
 		return (
 			<Dialog
 				ref={ref}
-				// sx={(theme) => ({
-				// 	"& .MuiDialog-paper": {
-				// 		// minWidth: minWidth,
-				// 		// ...(minHeight && { minHeight: minHeight }),
-				// 		// ...(maxWidth && { maxWidth: maxWidth }),
-				// 	},
-				// 	"& .MuiDialogContentText-root": {
-				// 		// paddingLeft: theme.spacing(3),
-				// 		// paddingRight: theme.spacing(3),
-				// 	},
-				// })}
 				onClose={onClose}
+				fullScreen={isFullScreen}
 				{...rest}>
 				{showTitle && (
 					<DialogTitleEx
 						onClose={onClose}
 						onReturn={onReturn}
 						buttons={titleButtons}
+						buttonsComponent={TitleButtonsComponent}
 						{...titleProps}
 						sx={[
 							{
@@ -84,7 +95,7 @@ const DialogEx = memo(
 					</DialogTitleEx>
 				)}
 
-				<DialogContent {...ContentProps}>
+				<DialogContent {...contentProps}>
 					{message &&
 						message
 							.split("\n")
@@ -98,7 +109,10 @@ const DialogEx = memo(
 				</DialogContent>
 				{!loading && (
 					<DialogActions>
-						{otherButtons}
+						{otherActionButtons}
+						{renderOtherActionButtonsComponent && (
+							<OtherActionButtonsComponent />
+						)}
 						{onConfirm && (
 							<LoadingButton
 								type="submit"
@@ -130,5 +144,36 @@ const DialogEx = memo(
 );
 
 DialogEx.displayName = "DialogEx";
+DialogEx.propTypes = {
+	title: PropTypes.string,
+	message: PropTypes.string,
+	children: PropTypes.node,
+	confirmText: PropTypes.string,
+	cancelText: PropTypes.string,
+	onConfirm: PropTypes.func,
+	onCancel: PropTypes.func,
+	onClose: PropTypes.func,
+	onReturn: PropTypes.func,
+	loading: PropTypes.bool,
+	working: PropTypes.bool,
+	contentProps: PropTypes.object,
+	buttonProps: PropTypes.object,
+	confirmButtonProps: PropTypes.object,
+	cancelButtonProps: PropTypes.object,
+	titleButtons: PropTypes.element,
+	titleButtonsComponent: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.elementType,
+	]),
+	titleProps: PropTypes.object,
+	otherActionButtons: PropTypes.element,
+	otherActionButtonsComponent: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.elementType,
+	]),
+	fullScreen: PropTypes.bool,
+	responsive: PropTypes.bool,
+	titleSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+};
 
 export default DialogEx;

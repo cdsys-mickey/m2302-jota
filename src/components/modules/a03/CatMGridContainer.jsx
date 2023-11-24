@@ -6,7 +6,7 @@ import { useContext } from "react";
 import CatMGrid from "./CatMGrid";
 
 export const CatMGridContainer = () => {
-	const dsg = useContext(DSGContext);
+	// const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const catM = useContext(CatMContext);
 	const a03 = useContext(A03Context);
@@ -14,19 +14,19 @@ export const CatMGridContainer = () => {
 	return (
 		<CatMGrid
 			lockRows={a03.lockRows}
-			setGridRef={dsg.setGridRef}
+			setGridRef={catM.setGridRef}
 			lgId={catM.lgId}
-			data={dsg.data}
-			loading={dsg.loading}
-			handleChange={dsg.handleChange({
+			data={catM.gridData}
+			loading={catM.loading}
+			handleChange={catM.handleGridChange({
 				onCreate: catM.handleCreate,
 				onUpdate: catM.handleUpdate,
 				onDelete: catM.handleConfirmDelete,
 				onDuplicatedError: catM.handleDuplicatedError,
 			})}
 			height={height - 176}
-			isPersisted={dsg.isPersisted}
-			handleSelectionChange={dsg.handleSelectionChangeBy({
+			isPersisted={catM.isPersisted}
+			handleSelectionChange={catM.handleSelectionChangeBy({
 				onRowSelectionChange: catM.handleRowSelectionChange,
 			})}
 		/>

@@ -1,10 +1,10 @@
 import React from "react";
 import PurchaseSearchPopper from "./PurchaseSearchPopper";
 import { forwardRef } from "react";
-import { useCrud } from "@/contexts/crud/useCrud";
+import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 
 const PurchaseSearchPopperContainer = forwardRef(({ ...rest }, ref) => {
-	const { handlePopperClose } = useCrud();
+	const { handlePopperClose } = useCrudZZ();
 
 	return (
 		<PurchaseSearchPopper ref={ref} onClose={handlePopperClose} {...rest} />

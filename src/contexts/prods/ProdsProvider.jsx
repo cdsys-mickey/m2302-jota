@@ -1,4 +1,4 @@
-import { useCrud } from "@/contexts/crud/useCrud";
+import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import { MockProducts } from "@/mocks/mock-products";
@@ -6,7 +6,7 @@ import A01 from "@/modules/md-a01";
 import { ProdsContext } from "./ProdsContext";
 
 export const ProdsProvider = ({ children }) => {
-	const { cancelEditing, popperOpen, handlePopperClose } = useCrud();
+	const { cancelEditing, popperOpen, handlePopperClose } = useCrudZZ();
 
 	const [state, setState] = useState({
 		data: MockProducts,

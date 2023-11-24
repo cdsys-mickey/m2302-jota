@@ -13,45 +13,40 @@ import CatSProvider from "@/contexts/a03/CatSProvider";
 import { CatSGridContainer } from "@/components/modules/a03/CatSGridContainer";
 
 const A03Frame = memo((props) => {
-	const { drawerOpen } = props;
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
+	const { drawerOpen, boxStyles } = props;
 
 	return (
 		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
 			<A03Toolbar />
 			<Grid container spacing={1}>
-				<DSGProvider id="sm" keyColumn="SClas" otherColumns="ClassData">
-					<CatSProvider>
-						<DSGProvider
+				{/* <DSGProvider id="sm" keyColumn="SClas" otherColumns="ClassData"> */}
+				<CatSProvider>
+					{/* <DSGProvider
 							id="md"
 							keyColumn="MClas"
-							otherColumns="ClassData">
-							<CatMProvider>
-								<Grid item xs={12} sm={6} md={4}>
-									<DSGProvider
+							otherColumns="ClassData"> */}
+					<CatMProvider>
+						<Grid item xs={12} sm={6} md={4}>
+							{/* <DSGProvider
 										id="lg"
 										keyColumn="LClas"
-										otherColumns="ClassData">
-										<CatLProvider>
-											<CatLGridContainer />
-										</CatLProvider>
-									</DSGProvider>
-								</Grid>
-								<Grid item xs={12} sm={6} md={4}>
-									<CatMGridContainer />
-								</Grid>
-							</CatMProvider>
-						</DSGProvider>
-						<Grid item xs={12} sm={6} md={4}>
-							<CatSGridContainer />
+										otherColumns="ClassData"> */}
+							<CatLProvider>
+								<CatLGridContainer />
+							</CatLProvider>
+							{/* </DSGProvider> */}
 						</Grid>
-					</CatSProvider>
-				</DSGProvider>
+						<Grid item xs={12} sm={6} md={4}>
+							<CatMGridContainer />
+						</Grid>
+					</CatMProvider>
+					{/* </DSGProvider> */}
+					<Grid item xs={12} sm={6} md={4}>
+						<CatSGridContainer />
+					</Grid>
+				</CatSProvider>
+				{/* </DSGProvider> */}
 			</Grid>
 		</Box>
 	);

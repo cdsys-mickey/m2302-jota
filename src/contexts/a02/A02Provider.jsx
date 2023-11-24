@@ -9,15 +9,17 @@ import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
 import { A02Context } from "./A02Context";
 import { startTransition } from "react";
 import { useToggle } from "@/shared-hooks/useToggle";
+import { useDSG } from "../../shared-hooks/useDSG";
 
 export const A02Provider = (props) => {
 	const { children } = props;
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 	const { token } = useContext(AuthContext);
-	const [lockRows, toggleLockRows] = useToggle(true);
+	// const [lockRows, toggleLockRows] = useToggle(true);
 
-	const dsg = useContext(DSGContext);
+	// const dsg = useContext(DSGContext);
+	const dsg = useDSG({ keyColumn: "CodeID", otherColumns: "CodeData" });
 	const dialogs = useContext(DialogContext);
 
 	// const [loading, setLoading] = useState();
@@ -25,7 +27,7 @@ export const A02Provider = (props) => {
 	const load = useCallback(
 		async ({ supressLoading = false } = {}) => {
 			if (!supressLoading) {
-				dsg.setLoading(true);
+				dsg.setGridLoading(true);
 			}
 			try {
 				const { status, payload } = await httpGetAsync({
@@ -33,7 +35,7 @@ export const A02Provider = (props) => {
 					bearer: token,
 				});
 				if (status.success) {
-					dsg.handleDataLoaded(payload);
+					dsg.handleGridDataLoaded(payload);
 				} else {
 					switch (status.code) {
 						default:
@@ -44,7 +46,7 @@ export const A02Provider = (props) => {
 			} catch (err) {
 				console.error("load", err);
 			} finally {
-				dsg.setLoading(false);
+				dsg.setGridLoading(false);
 			}
 		},
 		[dsg, httpGetAsync, token]
@@ -127,7 +129,7 @@ export const A02Provider = (props) => {
 				console.error(err);
 				toast.error(`刪除代碼發生例外: ${err.message}`);
 			} finally {
-				dsg.setDeletingTarget(null);
+				dsg.setDeletingRow(null);
 				dialogs.closeLatest();
 				reload();
 			}
@@ -136,17 +138,18 @@ export const A02Provider = (props) => {
 	);
 
 	const handleConfirmDelete = useCallback(
-		async ({ rowData }) => {
+		async (row) => {
+			const { rowData } = row;
 			console.debug(`confirm DELETE`, rowData);
-			dsg.setDeletingTarget(rowData);
+			dsg.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除代碼 ${rowData.CodeID}/${rowData.CodeData} ?`,
 				onConfirm: () => {
-					handleDelete({ rowData });
+					handleDelete(row);
 				},
 				onCancel: () => {
-					dsg.setDeletingTarget(null);
+					dsg.setDeletingRow(null);
 					dsg.rollbackChanges();
 					dialogs.closeLatest();
 				},
@@ -159,7 +162,7 @@ export const A02Provider = (props) => {
 		(row, newValue) => {
 			toast.error(`代碼 ${row.rowData.CodeID} 已存在`);
 
-			dsg.rewriteValue(row, newValue, {
+			dsg.rewriteRowValue(row, newValue, {
 				CodeID: "",
 			});
 			setTimeout(() => {
@@ -171,9 +174,12 @@ export const A02Provider = (props) => {
 
 	const handleRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
-			console.debug(`${dsg.id}[${rowIndex}] selected, data:`, rowData);
+			console.debug(
+				`${dsg.gridId}[${rowIndex}] selected, data:`,
+				rowData
+			);
 		},
-		[dsg.id]
+		[dsg.gridId]
 	);
 
 	useInit(() => {
@@ -191,9 +197,7 @@ export const A02Provider = (props) => {
 				handleDelete,
 				handleDuplicatedError,
 				handleRowSelectionChange,
-				// lockRows
-				lockRows,
-				toggleLockRows,
+				...dsg,
 			}}>
 			{children}
 		</A02Context.Provider>
