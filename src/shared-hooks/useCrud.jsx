@@ -1,93 +1,210 @@
-import { useMemo } from "react";
 import { useCallback, useState } from "react";
+import { useAction } from "./useAction";
+import { useMemo } from "react";
+import ActionState from "../shared-constants/action-state";
 
-export const useCrud = (props = {}) => {
-	const { viewWithPopper = false } = props;
-	const [item, setItem] = useState();
-	const [itemLoading, setItemLoading] = useState(false);
-	const [state, setState] = useState({
-		editing: false,
-		viewing: false,
-		creating: false,
-	});
+export const useCrud = ({ useItemView = false } = {}) => {
+	const [itemData, setItemData] = useState();
 
-	const [popperOpen, setPopperOpen] = useState(false);
-
-	const togglePopperOpen = useCallback(() => {
-		console.log("handlePopperToggle");
-		setPopperOpen((prev) => !prev);
-	}, []);
-
-	const handleViewing = useCallback(
-		(e, value) => {
-			console.log("handleViewing", value);
-			e?.stopPropagation();
-			setState((prev) => ({
-				...prev,
-				viewing: true,
-				creating: false,
-				editing: false,
-			}));
-			if (viewWithPopper) {
-				setPopperOpen(true);
-			}
-		},
-		[viewWithPopper]
-	);
-
-	const handleCreating = useCallback((e) => {
-		console.log("handleCreating");
-		e?.stopPropagation();
-		setState((prev) => ({
-			...prev,
-			creating: true,
-			editing: false,
-			viewing: false,
-		}));
-		// goEditing();
-	}, []);
-
-	const handleEditing = useCallback((e) => {
-		console.log("handleEditing");
-		e?.stopPropagation();
-		setState((prev) => ({
-			...prev,
-			editing: true,
-			creating: false,
-			viewing: false,
-		}));
-		// goEditing();
-	}, []);
+	const createAction = useAction();
+	const readAction = useAction();
+	const updateAction = useAction();
+	const deleteAction = useAction();
 
 	const cancelAction = useCallback(() => {
-		setState((prev) => ({
-			...prev,
-			viewing: false,
-			editing: false,
-			creating: false,
-		}));
-		setPopperOpen(false);
-	}, []);
+		console.debug(`crud.cancelAction`);
+		createAction.clear();
+		readAction.clear();
+		updateAction.clear();
+		deleteAction.clear();
+	}, [createAction, deleteAction, readAction, updateAction]);
 
-	const dialogOpen = useMemo(
-		() =>
-			(state.viewing && viewWithPopper) ||
-			state.editing ||
-			state.creating,
-		[state.creating, state.editing, state.viewing, viewWithPopper]
+	// CREATE
+	const promptCreate = useCallback(
+		(value) => {
+			createAction.prompt();
+		},
+		[createAction]
 	);
 
+	const startCreate = useCallback(
+		(value) => {
+			createAction.start(value);
+		},
+		[createAction]
+	);
+
+	const finishCreate = useCallback(() => {
+		createAction.clear();
+	}, [createAction]);
+
+	const failCreate = useCallback(
+		(err) => {
+			createAction.fail(err);
+		},
+		[createAction]
+	);
+
+	const creating = useMemo(() => {
+		return !!createAction.state && createAction !== ActionState.DONE;
+	}, [createAction]);
+
+	const createWorking = useMemo(() => {
+		return createAction.state === ActionState.WORKING;
+	}, [createAction.state]);
+
+	// READ
+	const startRead = useCallback(
+		(value, message) => {
+			console.debug("startRead", value);
+			readAction.start(value, message);
+			setItemData(value);
+		},
+		[readAction]
+	);
+
+	const finishRead = useCallback(
+		(value) => {
+			console.debug("finishRead", value);
+			readAction.finish(value);
+			setItemData(value);
+		},
+		[readAction]
+	);
+
+	const failRead = useCallback(
+		(err) => {
+			console.debug("failRead", err);
+			readAction.fail(err);
+		},
+		[readAction]
+	);
+
+	const reading = useMemo(() => {
+		return !!readAction.state;
+	}, [readAction.state]);
+
+	const readWorking = useMemo(() => {
+		return readAction.state === ActionState.WORKING;
+	}, [readAction.state]);
+
+	// UPDATE
+	const promptUpdate = useCallback(() => {
+		updateAction.prompt();
+	}, [updateAction]);
+
+	const startUpdate = useCallback(
+		(value) => {
+			updateAction.start(value);
+		},
+		[updateAction]
+	);
+
+	const finishUpdate = useCallback(() => {
+		updateAction.clear();
+	}, [updateAction]);
+
+	const failUpdate = useCallback(
+		(err) => {
+			updateAction.fail(err);
+		},
+		[updateAction]
+	);
+
+	const updating = useMemo(() => {
+		return !!updateAction.state;
+	}, [updateAction.state]);
+
+	const updateWorking = useMemo(() => {
+		return updateAction.state === ActionState.WORKING;
+	}, [updateAction.state]);
+
+	// DELETE
+	const promptDelete = useCallback(
+		(payload, message) => {
+			deleteAction.prompt(payload, message);
+		},
+		[deleteAction]
+	);
+
+	const startDelete = useCallback(
+		(payload) => {
+			deleteAction.start(payload);
+		},
+		[deleteAction]
+	);
+
+	const finishDelete = useCallback(() => {
+		deleteAction.finish();
+	}, [deleteAction]);
+
+	const cancelDelete = useCallback(() => {
+		deleteAction.clear();
+	}, [deleteAction]);
+
+	const failDelete = useCallback(
+		(err) => {
+			deleteAction.fail(err);
+		},
+		[deleteAction]
+	);
+
+	const deleting = useMemo(() => {
+		return !!deleteAction.state;
+	}, [deleteAction.state]);
+
+	const deleteWorking = useMemo(() => {
+		return deleteAction.state === ActionState.WORKING;
+	}, [deleteAction.state]);
+
+	const editing = useMemo(() => {
+		return creating || updating;
+	}, []);
+
 	return {
-		...state,
-		dialogOpen,
-		handleEditing,
-		handleViewing,
-		handleCreating,
+		itemData,
 		cancelAction,
-		itemLoading,
-		// Popper
-		popperOpen,
-		togglePopperOpen,
-		item,
+		// C
+		createState: createAction.state,
+		createFailed: createAction.failed,
+		createError: createAction.error,
+		promptCreate,
+		startCreate,
+		finishCreate,
+		failCreate,
+		creating,
+		createWorking,
+		// R
+		readState: readAction.state,
+		readFailed: readAction.failed,
+		readError: readAction.error,
+		startRead,
+		finishRead,
+		failRead,
+		reading,
+		readWorking,
+		// U
+		updateState: updateAction.state,
+		updateFailed: updateAction.failed,
+		updateError: updateAction.error,
+		promptUpdate,
+		startUpdate,
+		finishUpdate,
+		failUpdate,
+		updating,
+		updateWorking,
+		// D
+		deleteState: deleteAction.state,
+		deleteFailed: deleteAction.failed,
+		deleteError: deleteAction.error,
+		promptDelete,
+		startDelete,
+		finishDelete,
+		cancelDelete,
+		failDelete,
+		deleting,
+		deleteWorking,
+		// AGG
+		editing,
 	};
 };

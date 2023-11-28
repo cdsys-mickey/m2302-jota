@@ -3,9 +3,9 @@ import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import { MockProducts } from "@/mocks/mock-products";
 import A01 from "@/modules/md-a01";
-import { ProdsContext } from "./ProdsContext";
+import { MockProdsContext } from "./MockProdsContext";
 
-export const ProdsProvider = ({ children }) => {
+export const MockProdsProvider = ({ children }) => {
 	const { cancelEditing, popperOpen, handlePopperClose } = useCrudZZ();
 
 	const [state, setState] = useState({
@@ -53,7 +53,7 @@ export const ProdsProvider = ({ children }) => {
 	// POPPER
 
 	return (
-		<ProdsContext.Provider
+		<MockProdsContext.Provider
 			value={{
 				...state,
 
@@ -62,6 +62,6 @@ export const ProdsProvider = ({ children }) => {
 				onSubmitError,
 			}}>
 			{children}
-		</ProdsContext.Provider>
+		</MockProdsContext.Provider>
 	);
 };

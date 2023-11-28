@@ -6,12 +6,12 @@ import Arrays from "../shared-modules/md-arrays";
 
 export const useInfiniteLoader = (props = {}) => {
 	const { url, params, bearer, initialFetchSize = 50 } = props;
-	const loadedMap = useMemo(() => new Set(), []);
+	const loadingMap = useMemo(() => new Set(), []);
 	// const [itemLoading, setItemLoading] = useState({});
 	const [saveKey, setSaveKey] = useState(null);
 	const [itemCount, setItemCount] = useState(0);
 	const [listLoading, setListLoading] = useState(true);
-	const [data, setData] = useState({});
+	const [listData, setListData] = useState({});
 	const [viewportState, setViewportState] = useState({
 		visibleStartIndex: 0,
 		visibleStopIndex: 0,
@@ -31,19 +31,6 @@ export const useInfiniteLoader = (props = {}) => {
 		return payload["Select"]["TotalRecord"];
 	}, []);
 
-	const isItemLoading = useCallback(
-		(index) => {
-			return !loadedMap[index];
-		},
-		[loadedMap]
-	);
-	// const isItemLoading = useCallback(
-	// 	(index) => {
-	// 		return itemLoading[index];
-	// 	},
-	// 	[itemLoading]
-	// );
-
 	const handleItemsRendered = useCallback(
 		(onItemsRendered) =>
 			({ visibleStartIndex, visibleStopIndex, ...rest }) => {
@@ -60,7 +47,7 @@ export const useInfiniteLoader = (props = {}) => {
 		[]
 	);
 
-	const loadItems = useCallback(
+	const loadList = useCallback(
 		async ({
 			start,
 			stop,
@@ -69,18 +56,12 @@ export const useInfiniteLoader = (props = {}) => {
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
 		} = {}) => {
-			// if (start !== undefined && stop !== undefined) {
-			// 	for (let i = start; i <= stop; i++) {
-			// 		loadedMap[i] = false;
-			// 	}
-			// }
-
 			let startIndex = start !== undefined ? start : 0;
 			let stopIndex =
 				stop !== undefined ? stop : startIndex + initialFetchSize;
 
 			for (let i = startIndex; i <= stopIndex; i++) {
-				loadedMap[i] = false;
+				loadingMap[i] = true;
 			}
 
 			console.debug(`load(${startIndex} ~ ${stopIndex})`);
@@ -88,20 +69,6 @@ export const useInfiniteLoader = (props = {}) => {
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: url,
-					// data:
-					// 	start !== undefined
-					// 		? {
-					// 				...params,
-					// 				...extraParams,
-					// 				st: start,
-					// 				ed: end,
-					// 				sk: saveKey,
-					// 		  }
-					// 		: {
-					// 				...params,
-					// 				...extraParams,
-					// 				sz: initialFetchSize,
-					// 		  },
 					data: {
 						...params,
 						...extraParams,
@@ -116,39 +83,19 @@ export const useInfiniteLoader = (props = {}) => {
 				if (status.success) {
 					setSaveKey(getSaveKey(payload));
 					setItemCount(getItemCount(payload));
-					// setData((prev) => [
-					// 	...prev,
-					// 	...(getData ? getData(payload) : payload),
-					// ]);
-					// setData((prev) => ({
-					// 	...prev,
-					// 	...(getData
-					// 		? Arrays.toObject(getData(payload), start)
-					// 		: payload),
-					// }));
 
 					const newData = Arrays.toObject(getData(payload), start);
 					console.debug("newData", newData);
 
-					setData((prev) => ({
+					setListData((prev) => ({
 						...prev,
 						...(getData
 							? Arrays.toObject(getData(payload), start)
 							: payload),
 					}));
 					for (let i = startIndex; i <= stopIndex; i++) {
-						loadedMap[i] = true;
+						loadingMap[i] = false;
 					}
-
-					// setItemLoading((prev) => ({
-					// 	...prev,
-					// 	...Arrays.rangeToObject(startIndex, stopIndex, false),
-					// }));
-					// if (start !== undefined && stop !== undefined) {
-					// 	for (let i = start; i <= stop; i++) {
-					// 		loadedMap[i] = true;
-					// 	}
-					// }
 				} else {
 					throw error;
 				}
@@ -163,7 +110,7 @@ export const useInfiniteLoader = (props = {}) => {
 			defaultGetSaveKey,
 			defaultGetItemCount,
 			initialFetchSize,
-			loadedMap,
+			loadingMap,
 			httpGetAsync,
 			url,
 			params,
@@ -177,29 +124,36 @@ export const useInfiniteLoader = (props = {}) => {
 			console.debug(`loadMoreItems(${start}, ${stop})`);
 
 			return new Promise((resolve) => {
-				loadItems({ start, stop });
+				loadList({ start, stop });
 				resolve();
 			});
 		},
-		[loadItems]
+		[loadList]
+	);
+
+	const isItemLoading = useCallback(
+		(index) => {
+			return loadingMap[index];
+		},
+		[loadingMap]
 	);
 
 	const isItemLoaded = useCallback(
 		(index) => {
 			// console.debug(`isItemLoaded(${index})`);
-			return loadedMap[index] === true;
+			return loadingMap[index] === false;
 		},
-		[loadedMap]
+		[loadingMap]
 	);
 
 	return {
-		loadItems,
-		data,
+		loadList,
+		listData,
 		listLoading,
 		isItemLoading,
+		isItemLoaded,
 		//
 		itemCount,
-		isItemLoaded,
 		loadMoreItems,
 		handleItemsRendered,
 		...viewportState,

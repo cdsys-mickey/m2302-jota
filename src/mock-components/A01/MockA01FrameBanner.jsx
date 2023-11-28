@@ -1,6 +1,6 @@
-import { ProdSearchFormContainer } from "@/components/products/ProdSearchFormContainer";
 import FrameBanner from "@/shared-components/protected-page/FrameBanner";
 import { forwardRef, memo } from "react";
+import MockProdSearchFormContainer from "../products/MockProdSearchFormContainer";
 
 const MockA01FrameBanner = memo(
 	forwardRef((props, ref) => {
@@ -12,7 +12,7 @@ const MockA01FrameBanner = memo(
 				alt="A01"
 				ref={ref}
 				{...rest}>
-				{ProdSearchFormContainer}
+				{MockProdSearchFormContainer}
 			</FrameBanner>
 		);
 	})

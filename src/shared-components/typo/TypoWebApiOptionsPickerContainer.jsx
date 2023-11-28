@@ -1,9 +1,10 @@
-import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import React, { forwardRef, memo } from "react";
+import { forwardRef, memo } from "react";
 import TypoWebApiOptionsPicker from "./TypoWebApiOptionsPicker";
+import CrudContext from "../../contexts/crud/CrudContext";
+import { useContext } from "react";
 
 const TypoWebApiOptionsPickerContainer = forwardRef(({ ...rest }, ref) => {
-	const { editing } = useCrudZZ();
+	const { editing } = useContext(CrudContext);
 	return <TypoWebApiOptionsPicker ref={ref} editing={editing} {...rest} />;
 });
 

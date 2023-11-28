@@ -1,8 +1,10 @@
-import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import React from "react";
+import { forwardRef, useContext } from "react";
+import CrudContext from "../../contexts/crud/CrudContext";
 import TypoCheckboxEx from "./TypoCheckboxEx";
 
-export const TypoCheckboxExContainer = React.forwardRef(({ ...rest }, ref) => {
-	const { editing } = useCrudZZ();
+export const TypoCheckboxExContainer = forwardRef(({ ...rest }, ref) => {
+	const { editing } = useContext(CrudContext);
 	return <TypoCheckboxEx ref={ref} editing={editing} {...rest} />;
 });
+
+TypoCheckboxExContainer.displayName = "TypoCheckboxExContainer";

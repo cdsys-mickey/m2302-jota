@@ -1,8 +1,10 @@
-import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import React from "react";
+import { forwardRef, useContext } from "react";
+import CrudContext from "../../contexts/crud/CrudContext";
 import TypoDateField from "./TypoDateField";
 
-export const TypoDateFieldContainer = React.forwardRef(({ ...rest }, ref) => {
-	const { editing } = useCrudZZ();
+export const TypoDateFieldContainer = forwardRef(({ ...rest }, ref) => {
+	const { editing } = useContext(CrudContext);
 	return <TypoDateField ref={ref} editing={editing} {...rest} />;
 });
+
+TypoDateFieldContainer.displayName = "TypoDateFieldContainer";

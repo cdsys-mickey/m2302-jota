@@ -3,31 +3,30 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { A01Provider } from "@/contexts/a01/A01Provider";
 import { A02Provider } from "@/contexts/a02/A02Provider";
 import { ZZCrudProvider } from "@/contexts/crud/ZZCrudProvider";
-import { ProdsProvider } from "@/contexts/prods/ProdsProvider";
 import { PurchaseProvider } from "@/contexts/purchase/PurchaseProvider";
+import MockA01FrameContainer from "@/mock-pages/MockA01FrameContainer";
+import { A02FrameContainer } from "@/pages/a02/A02FrameContainer";
 import HomeContainer from "@/pages/home/HomeContainer";
+import SignIn from "@/pages/signin/SignIn";
+import SignInX from "@/pages/signin/SignInX";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import SignInRoute from "@/routes/SignInRoute";
 import { LoadingFrame } from "@/shared-components/protected-page/LoadingFrame";
 import InfoPage from "@/shared-pages/InfoPage";
-import MockA01FrameContainer from "@/mock-pages/MockA01FrameContainer";
-import { A02FrameContainer } from "@/pages/a02/A02FrameContainer";
-import { DSGProvider } from "@/shared-contexts/datasheet-grid/DSGProvider";
-import SignIn from "@/pages/signin/SignIn";
-import SignInX from "@/pages/signin/SignInX";
-import { A04Provider } from "../contexts/a04/A04Provider";
-import { A04FrameContainer } from "../pages/a04/A04FrameContainer";
-import { A26Provider } from "../contexts/a26/A26Provider";
-import { A26FrameContainer } from "../pages/a26/A26FrameContainer";
 import { A03Provider } from "../contexts/a03/A03Provider";
-import { A03FrameContainer } from "../pages/a03/A03FrameContainer";
+import { A04Provider } from "../contexts/a04/A04Provider";
 import { A16Provider } from "../contexts/a16/A16Provider";
-import { A16FrameContainer } from "../pages/a16/A16FrameContainer";
-import DSGTest from "../pages/lab/DSGTest";
-import { DSGTestProvider } from "../pages/lab/DSGTestProvider";
-import { DSGTestContainer } from "../pages/lab/DSGTestContainer";
-import { A01FrameContainer } from "../pages/a01/A01FrameContainer";
+import { A26Provider } from "../contexts/a26/A26Provider";
+import { CrudProvider } from "../contexts/crud/CrudProvider";
+import { MockProdsProvider } from "../contexts/prods/MockProdsProvider";
 import { MockC04FrameContainer } from "../mock-pages/MockC04FrameContainer";
+import { A01FrameContainer } from "../pages/a01/A01FrameContainer";
+import { A03FrameContainer } from "../pages/a03/A03FrameContainer";
+import { A04FrameContainer } from "../pages/a04/A04FrameContainer";
+import { A16FrameContainer } from "../pages/a16/A16FrameContainer";
+import { A26FrameContainer } from "../pages/a26/A26FrameContainer";
+import { DSGTestContainer } from "../pages/lab/DSGTestContainer";
+import { DSGTestProvider } from "../pages/lab/DSGTestProvider";
 
 const AppRoute = () => {
 	return (
@@ -61,26 +60,24 @@ const AppRoute = () => {
 				<Route index path="home" element={<HomeContainer />} />
 
 				<Route path="modules">
-					<Route
+					{/* <Route
 						path="A01M"
 						element={
 							<ZZCrudProvider>
-								<ProdsProvider>
+								<MockProdsProvider>
 									<MockA01FrameContainer />
-								</ProdsProvider>
+								</MockProdsProvider>
 							</ZZCrudProvider>
 						}
-					/>
+					/> */}
 					<Route
 						path="A01"
 						element={
-							<ZZCrudProvider>
+							<CrudProvider>
 								<A01Provider>
-									<ProdsProvider>
-										<A01FrameContainer />
-									</ProdsProvider>
+									<A01FrameContainer />
 								</A01Provider>
-							</ZZCrudProvider>
+							</CrudProvider>
 						}
 					/>
 					<Route

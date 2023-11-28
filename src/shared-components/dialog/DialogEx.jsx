@@ -25,6 +25,7 @@ const DialogEx = memo(
 		const {
 			title,
 			titleSx = [],
+			contentSx = [],
 			message,
 			children,
 			confirmText = "確定",
@@ -62,7 +63,7 @@ const DialogEx = memo(
 			return title || titleButtons || titleButtonsComponent || onClose;
 		}, [onClose, title, titleButtons, titleButtonsComponent]);
 
-		const renderOtherActionButtonsComponent = useMemo(() => {
+		const doRenderOtherActionButtonsComponent = useMemo(() => {
 			return OtherActionButtonsComponent && !otherActionButtons;
 		}, [OtherActionButtonsComponent, otherActionButtons]);
 
@@ -95,7 +96,12 @@ const DialogEx = memo(
 					</DialogTitleEx>
 				)}
 
-				<DialogContent {...contentProps}>
+				<DialogContent
+					sx={[
+						{},
+						...(Array.isArray(contentSx) ? contentSx : [contentSx]),
+					]}
+					{...contentProps}>
 					{message &&
 						message
 							.split("\n")
@@ -110,7 +116,7 @@ const DialogEx = memo(
 				{!loading && (
 					<DialogActions>
 						{otherActionButtons}
-						{renderOtherActionButtonsComponent && (
+						{doRenderOtherActionButtonsComponent && (
 							<OtherActionButtonsComponent />
 						)}
 						{onConfirm && (

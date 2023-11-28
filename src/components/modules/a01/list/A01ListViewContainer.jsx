@@ -13,7 +13,7 @@ export const A01ListViewContainer = () => {
 
 	useInit(() => {
 		// a01.load({ start: 0, stop: 50 });
-		a01.loadItems();
+		a01.loadList();
 	}, []);
 
 	return (

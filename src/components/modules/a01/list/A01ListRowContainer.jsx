@@ -8,14 +8,19 @@ export const A01ListRowContainer = (props) => {
 	const a01 = useContext(A01Context);
 	const { index, ...rest } = props;
 	const loading = useMemo(() => a01.isItemLoading(index), [a01, index]);
-	const value = a01.data[index];
-	// console.debug(`rendering[${loading}] ${index}...`, value);
+	const value = a01.listData[index];
+
+	const selected = useMemo(() => {
+		return value?.ProdID === a01.selectedItem?.ProdID;
+	}, [a01.selectedItem?.ProdID, value?.ProdID]);
+
 	return (
 		<A01ListRow
 			index={index}
 			loading={loading}
 			value={value}
-			onClick={(e) => a01.handleViewing(e, value)}
+			onClick={(e) => a01.handleSelect(e, value)}
+			selected={selected}
 			{...rest}
 		/>
 	);

@@ -17,7 +17,7 @@ import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContai
 import TypoWebApiOptionsPickerContainer from "@/shared-components/typo/TypoWebApiOptionsPickerContainer";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import TypoA01TransferEditorContainer from "../transfer/TypoA01TransferEditorContainer";
-import A01DialogTitleButtonsContainer from "./A01DialogTitleButtonsContainer";
+import MockA01DialogTitleButtonsContainer from "./buttons/MockA01DialogTitleButtonsContainer";
 import { forwardRef, memo } from "react";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import Strings from "@/modules/md-strings";
@@ -31,7 +31,7 @@ const MockA01Dialog = memo(
 				fullWidth
 				responsive
 				maxWidth="md"
-				titleButtons={<A01DialogTitleButtonsContainer />}
+				titleButtons={<MockA01DialogTitleButtonsContainer />}
 				titleProps={{ returnText: "取消編輯" }}
 				{...rest}>
 				<Box pt={1}>

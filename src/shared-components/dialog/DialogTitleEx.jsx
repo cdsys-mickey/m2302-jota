@@ -15,23 +15,23 @@ const DialogTitleEx = memo(
 		const {
 			children,
 			onClose,
-			closeText = "關閉",
+			closeText = "",
 			onReturn,
-			returnText = "返回",
+			returnText = "",
 			returnIcon,
 			buttons,
 			buttonsComponent,
 			closeButtonProps = { size: "small" },
 			padding,
 			sx = [],
-			yOffset = "12px",
-			xOffset = "4px",
+			yOffset = 0,
+			xOffset = 0,
 			...rest
 		} = props;
 
 		const ButtonsComponent = buttonsComponent;
 
-		const renderButtonsComponent = useMemo(() => {
+		const doRenderButtonsComponent = useMemo(() => {
 			return ButtonsComponent && !buttons;
 		}, [ButtonsComponent, buttons]);
 
@@ -66,6 +66,7 @@ const DialogTitleEx = memo(
 						]}>
 						<Tooltip title={returnText || ""}>
 							<IconButton
+								disableRipple
 								aria-label="back"
 								onClick={onReturn}
 								sx={(theme) => ({
@@ -95,7 +96,7 @@ const DialogTitleEx = memo(
 					{buttons && (
 						<DialogTitleButtonsBox>{buttons}</DialogTitleButtonsBox>
 					)}
-					{renderButtonsComponent && (
+					{doRenderButtonsComponent && (
 						<DialogTitleButtonsBox>
 							<ButtonsComponent />
 						</DialogTitleButtonsBox>
@@ -103,7 +104,7 @@ const DialogTitleEx = memo(
 					{onClose && (
 						<Tooltip title={closeText || ""}>
 							<IconButton
-								// disableRipple
+								disableRipple
 								aria-label="close"
 								onClick={onClose}
 								sx={(theme) => ({

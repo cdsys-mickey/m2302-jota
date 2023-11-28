@@ -1,10 +1,10 @@
-import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import { forwardRef } from "react";
+import { forwardRef, useContext } from "react";
+import CrudContext from "../../contexts/crud/CrudContext";
 import TypoTextField from "./TypoTextField";
 
 const TypoTextFieldContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
-	const { editing } = useCrudZZ();
+	const { editing } = useContext(CrudContext);
 	return <TypoTextField ref={ref} editing={editing} {...rest} />;
 });
 

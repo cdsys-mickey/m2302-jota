@@ -11,7 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";
 
-const ProdSearchPopper = memo(
+const MockProdSearchPopper = memo(
 	forwardRef((props, ref) => {
 		const { width = "40ch", onClose, ContentProps, ...rest } = props;
 		return (
@@ -180,6 +180,6 @@ const ProdSearchPopper = memo(
 	})
 );
 
-ProdSearchPopper.displayName = "ProdSearchPopper";
+MockProdSearchPopper.displayName = "MockProdSearchPopper";
 
-export default ProdSearchPopper;
+export default MockProdSearchPopper;

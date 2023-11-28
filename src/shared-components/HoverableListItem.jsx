@@ -1,11 +1,11 @@
-import { grey } from "@mui/material/colors";
+import { cyan, grey } from "@mui/material/colors";
 import { Box, styled } from "@mui/system";
 import Colors from "@/modules/colors";
 import { useMemo } from "react";
 
 const HoverableListItem = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!`transparent,disabled,hoverStyles,disabledStyles,borderBottom`
+		!`transparent,disabled,selected,hoverStyles,disabledStyles,borderBottom`
 			.trim()
 			.split(/\s*,\s*/)
 			.includes(prop),
@@ -15,6 +15,10 @@ const HoverableListItem = styled(Box, {
 		disabled = false,
 		transparent = false,
 		borderBottom = false,
+		selected = false,
+		selectedStyles = {
+			backgroundColor: cyan[100],
+		},
 		hoverStyles = {
 			backgroundColor: grey[200],
 			boxShadow: "1px 2px 3px rgb(0 0 0 / 20%)",
@@ -47,6 +51,9 @@ const HoverableListItem = styled(Box, {
 			...(showDisabledStyles && {
 				//default disabled styles
 				...disabledStyles,
+			}),
+			...(selected && {
+				...selectedStyles,
 			}),
 			"& .secondary-action": {
 				opacity: 0,

@@ -5,6 +5,7 @@ import A01Toolbar from "@/components/modules/a01/A01Toolbar";
 import PropTypes from "prop-types";
 import { A01ListViewContainer } from "@/components/modules/a01/list/A01ListViewContainer";
 import A01ListHeader from "@/components/modules/a01/list/A01ListHeader";
+import { A01DialogContainer } from "../../components/modules/a01/dialog/A01DialogContainer";
 
 const A01Frame = memo((props) => {
 	const { boxStyles } = props;
@@ -19,6 +20,7 @@ const A01Frame = memo((props) => {
 			<A01ListHeader />
 			<A01ListViewContainer />
 			{/* 對話框 */}
+			<A01DialogContainer />
 		</Box>
 	);
 });

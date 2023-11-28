@@ -43,7 +43,7 @@ const TreeItemEx = styled(
 			return secondary && typeof secondary === "string";
 		}, [secondary]);
 
-		const showComponent = useMemo(() => {
+		const showSecondary = useMemo(() => {
 			return secondary && typeof secondary !== "string";
 		}, [secondary]);
 		return (
@@ -91,7 +91,7 @@ const TreeItemEx = styled(
 								{secondary}
 							</Typography>
 						)}
-						{showComponent && secondary}
+						{showSecondary && secondary}
 					</FlexBox>
 				}
 				style={{

@@ -1,8 +1,10 @@
-import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import React from "react";
+import { forwardRef, useContext } from "react";
+import CrudContext from "../../contexts/crud/CrudContext";
 import TypoPicker from "./TypoPicker";
 
-export const TypoPickerContainer = React.forwardRef(({ ...rest }, ref) => {
-	const { editing } = useCrudZZ();
+export const TypoPickerContainer = forwardRef(({ ...rest }, ref) => {
+	const { editing } = useContext(CrudContext);
 	return <TypoPicker ref={ref} editing={editing} {...rest} />;
 });
+
+TypoPickerContainer.displayName = "TypoPickerContainer";

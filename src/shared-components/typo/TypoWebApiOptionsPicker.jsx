@@ -10,8 +10,6 @@ const TypoWebApiOptionsPicker = memo(
 			value,
 			label,
 			// Typography
-			getOptionLabel,
-			renderText,
 			typoVariant = "body1",
 			typographyProps,
 			emptyText = "(空白)",
@@ -20,7 +18,9 @@ const TypoWebApiOptionsPicker = memo(
 			editing = true,
 			size = "small",
 			variant = "outlined",
-
+			// METHODS
+			getOptionLabel,
+			renderText,
 			...rest
 		} = props;
 

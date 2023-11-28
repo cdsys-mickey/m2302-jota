@@ -1,15 +1,33 @@
 import { FormProvider, useForm } from "react-hook-form";
 import A01Dialog from "./A01Dialog";
 import { useContext } from "react";
-import { A01Context } from "../../../../contexts/a01/A01Context";
+import { A01Context } from "@/contexts/a01/A01Context";
+import { useEffect } from "react";
+import { useMemo } from "react";
+import ActionState from "../../../../shared-constants/action-state";
 
 export const A01DialogContainer = () => {
 	const forms = useForm();
 	const a01 = useContext(A01Context);
+
+	const dataLoaded = useMemo(() => {
+		return a01.readState === ActionState.DONE && a01.itemData;
+	}, [a01.itemData, a01.readState]);
+
 	return (
 		<FormProvider {...forms}>
-			<form>
-				<A01Dialog open={a01.dialogOpen} />
+			<form
+				onSubmit={forms.handleSubmit(a01.onSubmit, a01.onSubmitError)}>
+				<A01Dialog
+					open={a01.dialogOpen}
+					onClose={a01.handleDialogClose}
+					createState={a01.createState}
+					readState={a01.readState}
+					updateState={a01.updateState}
+					deleteState={a01.deleteState}
+					data={a01.itemData}
+					dataLoaded={dataLoaded}
+				/>
 			</form>
 		</FormProvider>
 	);
