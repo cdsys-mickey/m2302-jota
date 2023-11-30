@@ -2,14 +2,14 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import PkgTypes from "../../modules/md-pkg-types";
-import TypoWebApiOptionsPickerContainer from "../../shared-components/typo/TypoWebApiOptionsPickerContainer";
+import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 
 const PkyTypePickerContainer = forwardRef((props, ref) => {
 	const { children, label = "包裝單位", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
-		<TypoWebApiOptionsPickerContainer
+		<TypoWebApiOptionPickerContainer
 			label={label}
 			ref={ref}
 			bearer={token}
@@ -18,7 +18,7 @@ const PkyTypePickerContainer = forwardRef((props, ref) => {
 			isOptionEqualToValue={PkgTypes.isOptionEqualToValue}
 			{...rest}>
 			{children}
-		</TypoWebApiOptionsPickerContainer>
+		</TypoWebApiOptionPickerContainer>
 	);
 });
 PkyTypePickerContainer.propTypes = {

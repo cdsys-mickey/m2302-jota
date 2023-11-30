@@ -2,14 +2,14 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import Counters from "../../modules/md-counters";
-import TypoWebApiOptionsPickerContainer from "../../shared-components/typo/TypoWebApiOptionsPickerContainer";
+import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 
 const CounterPickerContainer = forwardRef((props, ref) => {
 	const { children, label = "櫃別", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
-		<TypoWebApiOptionsPickerContainer
+		<TypoWebApiOptionPickerContainer
 			label={label}
 			ref={ref}
 			bearer={token}
@@ -18,7 +18,7 @@ const CounterPickerContainer = forwardRef((props, ref) => {
 			isOptionEqualToValue={Counters.isOptionEqualToValue}
 			{...rest}>
 			{children}
-		</TypoWebApiOptionsPickerContainer>
+		</TypoWebApiOptionPickerContainer>
 	);
 });
 CounterPickerContainer.propTypes = {

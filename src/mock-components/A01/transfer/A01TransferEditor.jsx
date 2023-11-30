@@ -2,7 +2,7 @@ import { MockShops } from "@/mocks/mock-shops";
 import Shops from "@/modules/md-shops";
 import ButtonEx from "@/shared-components/button/ButtonEx";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
-import TypoWebApiOptionsPicker from "@/shared-components/typo/TypoWebApiOptionsPicker";
+import { TypoWebApiOptionPicker } from "@/shared-components/typo/TypoWebApiOptionPicker";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Box, Container, Grid, IconButton } from "@mui/material";
 import React, { Fragment, forwardRef, memo, useCallback } from "react";
@@ -43,7 +43,7 @@ const A01TransferEditor = memo(
 						{value.map((t, i) => (
 							<Fragment key={t.key}>
 								<Grid item xs={7}>
-									<TypoWebApiOptionsPicker
+									<TypoWebApiOptionPicker
 										label="門市"
 										options={MockShops}
 										name={`${name}[${i}].shop`}
@@ -74,7 +74,7 @@ const A01TransferEditor = memo(
 					</Grid>
 				</Box>
 				{/* <FlexBox inline>
-				<TypoWebApiOptionsPicker name="shop" options={MockShops} />
+				<TypoWebApiOptionPicker name="shop" options={MockShops} />
 				<ControlledTextField label="調撥成本" name="cost" />
 				<IconButton>
 					<ClearIcon />

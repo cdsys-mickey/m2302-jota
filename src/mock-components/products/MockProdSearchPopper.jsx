@@ -5,7 +5,7 @@ import ButtonEx from "@/shared-components/button/ButtonEx";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
-import TypoWebApiOptionsPicker from "@/shared-components/typo/TypoWebApiOptionsPicker";
+import { TypoWebApiOptionPicker } from "@/shared-components/typo/TypoWebApiOptionPicker";
 import SearchIcon from "@mui/icons-material/Search";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";
@@ -70,7 +70,7 @@ const MockProdSearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							{/* <TypoWebApiOptionsPicker
+							{/* <TypoWebApiOptionPicker
 								label="櫃別"
 								name="Cabinet"
 								options={Object.entries(CabinetTypes.Types).map(
@@ -92,7 +92,7 @@ const MockProdSearchPopper = memo(
 					</Divider>
 					<Grid container spacing={2} columns={12}>
 						<Grid item xs={12} sm={12}>
-							<TypoWebApiOptionsPicker
+							<TypoWebApiOptionPicker
 								label="大"
 								name="PrdClassL"
 								options={MockProdClassLg}
@@ -103,14 +103,14 @@ const MockProdSearchPopper = memo(
 							/>
 						</Grid>
 						{/* <Grid item xs={12} sm={12}>
-						<TypoWebApiOptionsPicker
+						<TypoWebApiOptionPicker
 							label="中"
 							name="PRDCLASS_M"
 							options={MockProdClassMd}
 						/>
 					</Grid>
 					<Grid item xs={12} sm={12}>
-						<TypoWebApiOptionsPicker
+						<TypoWebApiOptionPicker
 							label="小"
 							name="PRDCLASS_S"
 							options={MockProdClassSm}

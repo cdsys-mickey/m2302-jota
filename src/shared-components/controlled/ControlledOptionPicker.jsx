@@ -1,9 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Controller } from "react-hook-form";
-import OptionsPicker from "../picker/OptionsPicker";
+import OptionPicker from "../picker/OptionPicker";
 import PropTypes from "prop-types";
 
-export const ControlledOptionsPicker = ({
+export const ControlledOptionPicker = ({
 	name,
 	disabled = false,
 	control,
@@ -22,7 +22,7 @@ export const ControlledOptionsPicker = ({
 			rules={rules}
 			render={({ field: { value, onChange }, fieldState: { error } }) => (
 				<>
-					<OptionsPicker
+					<OptionPicker
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 						onChange={
@@ -49,7 +49,7 @@ export const ControlledOptionsPicker = ({
 	);
 };
 
-ControlledOptionsPicker.propTypes = {
+ControlledOptionPicker.propTypes = {
 	name: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,
 	control: PropTypes.object,

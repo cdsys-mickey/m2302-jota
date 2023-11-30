@@ -3,9 +3,9 @@ import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import queryString from "query-string";
 import { memo } from "react";
-import OptionsPicker from "./OptionsPicker";
+import OptionPicker from "./OptionPicker";
 
-const WebApiOptionsPicker = memo(
+const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
 			name,
@@ -330,7 +330,7 @@ const WebApiOptionsPicker = memo(
 		// }, [options, url]);
 
 		return (
-			<OptionsPicker
+			<OptionPicker
 				name={name}
 				ref={ref}
 				loading={loading}
@@ -348,9 +348,9 @@ const WebApiOptionsPicker = memo(
 	})
 );
 
-WebApiOptionsPicker.displayName = "WebApiOptionsPicker";
+WebApiOptionPicker.displayName = "WebApiOptionPicker";
 
-WebApiOptionsPicker.propTypes = {
+WebApiOptionPicker.propTypes = {
 	name: PropTypes.string,
 	value: PropTypes.object,
 	bearer: PropTypes.string,
@@ -374,4 +374,4 @@ WebApiOptionsPicker.propTypes = {
 	options: PropTypes.array,
 };
 
-export default WebApiOptionsPicker;
+export default WebApiOptionPicker;

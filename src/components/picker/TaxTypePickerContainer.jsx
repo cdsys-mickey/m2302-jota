@@ -1,12 +1,12 @@
 import { memo, forwardRef } from "react";
 import PropTypes from "prop-types";
-import TypoOptionsPickerContainer from "../../shared-components/typo/TypoOptionsPickerContainer";
+import TypoOptionPickerContainer from "../../shared-components/typo/TypoOptionPickerContainer";
 import TaxTypes from "../../modules/md-tax-types";
 
 const TaxTypePickerContainer = forwardRef((props, ref) => {
 	const { children, label = "稅別", ...rest } = props;
 	return (
-		<TypoOptionsPickerContainer
+		<TypoOptionPickerContainer
 			ref={ref}
 			label={label}
 			options={TaxTypes.options}
@@ -14,7 +14,7 @@ const TaxTypePickerContainer = forwardRef((props, ref) => {
 			isOptionEqualToValue={TaxTypes.isOptionEqualToValue}
 			{...rest}>
 			{children}
-		</TypoOptionsPickerContainer>
+		</TypoOptionPickerContainer>
 	);
 });
 TaxTypePickerContainer.propTypes = {

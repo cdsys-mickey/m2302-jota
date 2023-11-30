@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import ProdTypeB from "../../modules/md-prod-type-b";
-import TypoOptionsPickerContainer from "../../shared-components/typo/TypoOptionsPickerContainer";
+import TypoOptionPickerContainer from "../../shared-components/typo/TypoOptionPickerContainer";
 
 const ProdTypeBPickerContainer = forwardRef((props, ref) => {
 	const { children, label = "品類", ...rest } = props;
 	return (
-		<TypoOptionsPickerContainer
+		<TypoOptionPickerContainer
 			ref={ref}
 			label={label}
 			options={ProdTypeB.options}
@@ -14,7 +14,7 @@ const ProdTypeBPickerContainer = forwardRef((props, ref) => {
 			isOptionEqualToValue={ProdTypeB.isOptionEqualToValue}
 			{...rest}>
 			{children}
-		</TypoOptionsPickerContainer>
+		</TypoOptionPickerContainer>
 	);
 });
 ProdTypeBPickerContainer.propTypes = {

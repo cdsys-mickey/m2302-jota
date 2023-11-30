@@ -1,9 +1,9 @@
-import { ControlledWebApiOptionsPicker } from "@/shared-components/controlled/ControlledWebApiOptionsPicker";
+import { ControlledWebApiOptionPicker } from "@/shared-components/controlled/ControlledWebApiOptionPicker";
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import { forwardRef, memo, useMemo } from "react";
 import PropTypes from "prop-types";
 
-const TypoWebApiOptionsPicker = memo(
+const TypoWebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
 			// Common
@@ -41,7 +41,7 @@ const TypoWebApiOptionsPicker = memo(
 		}
 
 		return (
-			<ControlledWebApiOptionsPicker
+			<ControlledWebApiOptionPicker
 				name={name}
 				ref={ref}
 				label={label}
@@ -55,9 +55,9 @@ const TypoWebApiOptionsPicker = memo(
 	})
 );
 
-TypoWebApiOptionsPicker.displayName = "TypoWebApiOptionsPicker";
-TypoWebApiOptionsPicker.propTypes = {
+TypoWebApiOptionPicker.displayName = "TypoWebApiOptionPicker";
+TypoWebApiOptionPicker.propTypes = {
 	children: PropTypes.node,
 };
 
-export default TypoWebApiOptionsPicker;
+export default TypoWebApiOptionPicker;

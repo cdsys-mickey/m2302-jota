@@ -5,7 +5,7 @@ import ControlledDatePicker from "@/shared-components/controlled/ControlledDateP
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
-import TypoWebApiOptionsPicker from "@/shared-components/typo/TypoWebApiOptionsPicker";
+import TypoWebApiOptionPicker from "@/shared-components/typo/TypoWebApiOptionPicker";
 import SearchIcon from "@mui/icons-material/Search";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import React, { forwardRef, memo } from "react";
@@ -62,7 +62,7 @@ const PurchaseSearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							{/* <TypoWebApiOptionsPicker
+							{/* <TypoWebApiOptionPicker
 								label="廠商"
 								variant="filled"
 								name="Cabinet"
@@ -80,7 +80,7 @@ const PurchaseSearchPopper = memo(
 					</Divider>
 					<Grid container spacing={2} columns={12}>
 						<Grid item xs={12} sm={12}>
-							<TypoWebApiOptionsPicker
+							<TypoWebApiOptionPicker
 								label="大"
 								variant="filled"
 								name="PRDCLASS_L"

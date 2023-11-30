@@ -2,14 +2,14 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import CmsTypes from "../../modules/md-cms-types";
-import TypoWebApiOptionsPickerContainer from "../../shared-components/typo/TypoWebApiOptionsPickerContainer";
+import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 
 const CmsTypePickerContainer = forwardRef((props, ref) => {
 	const { children, label = "佣金類別", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
-		<TypoWebApiOptionsPickerContainer
+		<TypoWebApiOptionPickerContainer
 			label={label}
 			ref={ref}
 			bearer={token}
@@ -18,7 +18,7 @@ const CmsTypePickerContainer = forwardRef((props, ref) => {
 			isOptionEqualToValue={CmsTypes.isOptionEqualToValue}
 			{...rest}>
 			{children}
-		</TypoWebApiOptionsPickerContainer>
+		</TypoWebApiOptionPickerContainer>
 	);
 });
 CmsTypePickerContainer.propTypes = {

@@ -1,21 +1,19 @@
-import PropTypes from "prop-types";
-import { Box, Grid, Typography } from "@mui/material";
-import ProdClasses from "@/modules/md-prod-classes";
-import React, { forwardRef, memo } from "react";
+import { TypoC04OrderDetailsEditorContainer } from "@/mock-components/C04/order-detail/TypoC04OrderDetailsEditorContainer";
+import Keepers from "@/modules/md-keepers";
+import Suppliers from "@/modules/md-suppliers";
 import FlexBox from "@/shared-components/FlexBox";
 import DialogEx from "@/shared-components/dialog/DialogEx";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
-import { TypoDateFieldContainer } from "@/shared-components/typo/TypoDateFieldContainer";
-import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
-import TypoWebApiOptionsPickerContainer from "@/shared-components/typo/TypoWebApiOptionsPickerContainer";
-import { TypoC04OrderDetailsEditorContainer } from "@/mock-components/C04/order-detail/TypoC04OrderDetailsEditorContainer";
-import { C04DialogTitleButtonsContainer } from "./C04DialogTitleButtonsContainer";
-import { TypoDatePickerContainer } from "@/shared-components/typo/TypoDatePickerContainer";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import Suppliers from "@/modules/md-suppliers";
-import Keepers from "@/modules/md-keepers";
+import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
+import { TypoDatePickerContainer } from "@/shared-components/typo/TypoDatePickerContainer";
+import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
+import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
+import { Box, Grid } from "@mui/material";
+import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
 import SupplierLabel from "../supplier/SupplierLabel";
+import { C04DialogTitleButtonsContainer } from "./C04DialogTitleButtonsContainer";
 
 const C04Dialog = memo(
 	forwardRef(({ data, ...rest }, ref) => {
@@ -61,7 +59,7 @@ const C04Dialog = memo(
 								</TypoDatePickerContainer>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoWebApiOptionsPickerContainer
+								<TypoWebApiOptionPickerContainer
 									label="倉管人員"
 									name="keeper.id"
 									options={Keepers.data}
@@ -70,11 +68,11 @@ const C04Dialog = memo(
 										Keepers.isOptionEqualToValue
 									}>
 									{data?.keeper.id}
-								</TypoWebApiOptionsPickerContainer>
+								</TypoWebApiOptionPickerContainer>
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={12}>
-								<TypoWebApiOptionsPickerContainer
+								<TypoWebApiOptionPickerContainer
 									label="廠商"
 									name="supplier.id"
 									options={Suppliers.data}
@@ -87,7 +85,7 @@ const C04Dialog = memo(
 										Suppliers.isOptionEqualToValue
 									}>
 									<SupplierLabel value={data?.supplier} />
-								</TypoWebApiOptionsPickerContainer>
+								</TypoWebApiOptionPickerContainer>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
 								<TypoTextFieldContainer

@@ -1,8 +1,8 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Controller } from "react-hook-form";
-import WebApiOptionsPicker from "@/shared-components/picker/WebApiOptionsPicker";
+import WebApiOptionPicker from "@/shared-components/picker/WebApiOptionPicker";
 
-export const ControlledWebApiOptionsPicker = ({
+export const ControlledWebApiOptionPicker = ({
 	name,
 	disabled = false,
 	control,
@@ -21,7 +21,7 @@ export const ControlledWebApiOptionsPicker = ({
 			rules={rules}
 			render={({ field: { value, onChange }, fieldState: { error } }) => (
 				<>
-					<WebApiOptionsPicker
+					<WebApiOptionPicker
 						name={name}
 						required={required}
 						value={value}

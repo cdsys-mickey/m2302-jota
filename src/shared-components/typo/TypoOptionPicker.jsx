@@ -1,9 +1,9 @@
-import { ControlledOptionsPicker } from "@/shared-components/controlled/ControlledOptionsPicker";
+import { ControlledOptionPicker } from "@/shared-components/controlled/ControlledOptionPicker";
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import { forwardRef, memo, useMemo } from "react";
 import PropTypes from "prop-types";
 
-const TypoOptionsPicker = memo(
+const TypoOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
 			// Common
@@ -41,7 +41,7 @@ const TypoOptionsPicker = memo(
 		}
 
 		return (
-			<ControlledOptionsPicker
+			<ControlledOptionPicker
 				name={name}
 				ref={ref}
 				label={label}
@@ -55,9 +55,9 @@ const TypoOptionsPicker = memo(
 	})
 );
 
-TypoOptionsPicker.displayName = "TypoOptionsPicker";
-TypoOptionsPicker.propTypes = {
+TypoOptionPicker.displayName = "TypoOptionPicker";
+TypoOptionPicker.propTypes = {
 	children: PropTypes.node,
 };
 
-export default TypoOptionsPicker;
+export default TypoOptionPicker;

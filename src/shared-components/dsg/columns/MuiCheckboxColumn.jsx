@@ -3,22 +3,31 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useMemo } from "react";
 
 const MuiCheckboxColumn = memo((props) => {
-	const { focus, rowData, setRowData, active, stopEditing, disabled } = props;
+	const {
+		trueValue = "1",
+		falseValue = "0",
+		focus,
+		rowData,
+		setRowData,
+		active,
+		stopEditing,
+		disabled,
+	} = props;
 
 	const handleChange = useCallback(
 		(e) => {
 			if (e.target.checked) {
-				setRowData("1");
+				setRowData(trueValue);
 			} else {
-				setRowData("0");
+				setRowData(falseValue);
 			}
 		},
-		[setRowData]
+		[falseValue, setRowData, trueValue]
 	);
 
 	return (
 		<Checkbox
-			checked={rowData === "1"}
+			checked={rowData === trueValue}
 			onChange={handleChange}
 			disabled={disabled}
 		/>

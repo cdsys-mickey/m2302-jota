@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import TypoWebApiOptionsPickerContainer from "../../shared-components/typo/TypoWebApiOptionsPickerContainer";
+import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ProdLCats from "../../modules/md-prod-l-cats";
@@ -10,7 +10,7 @@ const ProdCatLPickerContainer = forwardRef((props, ref) => {
 	const { token } = useContext(AuthContext);
 
 	return (
-		<TypoWebApiOptionsPickerContainer
+		<TypoWebApiOptionPickerContainer
 			label={label}
 			ref={ref}
 			bearer={token}
@@ -19,7 +19,7 @@ const ProdCatLPickerContainer = forwardRef((props, ref) => {
 			isOptionEqualToValue={ProdLCats.isOptionEqualToValue}
 			{...rest}>
 			{children}
-		</TypoWebApiOptionsPickerContainer>
+		</TypoWebApiOptionPickerContainer>
 	);
 });
 ProdCatLPickerContainer.propTypes = {

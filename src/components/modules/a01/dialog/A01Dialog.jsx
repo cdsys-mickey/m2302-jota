@@ -87,7 +87,9 @@ const A01Dialog = memo(
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoCheckboxExContainer
 										label="列印條碼"
-										name="BarPR">
+										name="BarPR"
+										valueToChecked={YesNo.valueToChecked}
+										checkedToValue={YesNo.checkedToValue}>
 										{YesNo.getOptionLabel(data?.BarPR)}
 									</TypoCheckboxExContainer>
 								</Grid>

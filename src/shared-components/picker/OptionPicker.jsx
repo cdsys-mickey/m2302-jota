@@ -41,7 +41,7 @@ const PickerBox = styled(Box, {
 	width: "100%",
 }));
 
-const OptionsPicker = memo(
+const OptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
 			name,
@@ -266,9 +266,9 @@ const OptionsPicker = memo(
 		);
 	})
 );
-OptionsPicker.displayName = "OptionsPicker";
-OptionsPicker.propTypes = {
+OptionPicker.displayName = "OptionPicker";
+OptionPicker.propTypes = {
 	onInputChange: PropTypes.func,
 	options: PropTypes.array,
 };
-export default OptionsPicker;
+export default OptionPicker;

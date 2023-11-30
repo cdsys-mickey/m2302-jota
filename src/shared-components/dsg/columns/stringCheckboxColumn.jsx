@@ -5,7 +5,16 @@ export const stringCheckboxColumn = ({
 	falseValue = "0",
 } = {}) => {
 	return {
-		component: MuiCheckboxColumn,
+		// component: MuiCheckboxColumn,
+		component: (props) => {
+			return (
+				<MuiCheckboxColumn
+					trueValue={trueValue}
+					falseValue={falseValue}
+					{...props}
+				/>
+			);
+		},
 		deleteValue: () => false,
 		copyValue: ({ rowData }) => (rowData ? trueValue : falseValue),
 		pasteValue: ({ value }) => value === trueValue,

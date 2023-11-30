@@ -3,10 +3,10 @@ import Products from "@/modules/md-prods";
 import FlexGrid from "@/shared-components/FlexGrid";
 import ButtonEx from "@/shared-components/button/ButtonEx";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
-import TypoWebApiOptionsPickerContainer from "@/shared-components/typo/TypoWebApiOptionsPickerContainer";
+import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Box, Container, Grid, IconButton } from "@mui/material";
-import React, { Fragment, forwardRef, memo, useCallback } from "react";
+import { Fragment, forwardRef, memo, useCallback } from "react";
 import { v4 as uuid } from "uuid";
 import FlexBox from "@/shared-components/FlexBox";
 import MuiStyles from "../../../shared-modules/sd-mui-styles";
@@ -52,7 +52,7 @@ const C04OrderDetailEditor = memo(
 						{value.map((t, i) => (
 							<Fragment key={t.key}>
 								<Grid item xs={12} sm={12} md={9}>
-									<TypoWebApiOptionsPickerContainer
+									<TypoWebApiOptionPickerContainer
 										label="貨品"
 										name={`${name}[${i}].product`}
 										variant={variant}
@@ -126,7 +126,7 @@ const C04OrderDetailEditor = memo(
 					</Grid>
 				</Box>
 				{/* <FlexBox inline>
-				<TypoWebApiOptionsPicker name="shop" options={MockShops} />
+				<TypoWebApiOptionPicker name="shop" options={MockShops} />
 				<ControlledTextField label="調撥成本" name="cost" />
 				<IconButton>
 					<ClearIcon />
