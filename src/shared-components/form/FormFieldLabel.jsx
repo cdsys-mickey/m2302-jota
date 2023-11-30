@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
-import React, { forwardRef, memo } from "react";
+import { forwardRef, memo } from "react";
 import FormLabelEx from "./FormLabelEx";
-import MuiInputs from "@/shared-modules/mui-inputs";
+import MuiStyles from "../../shared-modules/sd-mui-styles";
 
 /**
  * 增加 label 功能的 Typography
@@ -13,18 +13,11 @@ const FormFieldLabel = memo(
 			label,
 			children,
 			labelProps,
-			labelStyles = MuiInputs.DEFAULT_FORM_LABEL_STYLES,
-			typographyStyles,
+			labelStyles = MuiStyles.DEFAULT_FORM_LABEL_STYLES,
+			typographySx,
 			emptyText = "(空白)",
 			...rest
 		} = props;
-		// if (!label) {
-		// 	return (
-		// 		<Typography ref={ref} {...rest}>
-		// 			{children}
-		// 		</Typography>
-		// 	);
-		// }
 
 		return (
 			<Box ref={ref}>
@@ -43,7 +36,9 @@ const FormFieldLabel = memo(
 								color: theme.palette.primary.main,
 							}),
 						}),
-						typographyStyles,
+						...(Array.isArray(typographySx)
+							? typographySx
+							: [typographySx]),
 					]}
 					{...rest}>
 					{children || emptyText}
@@ -60,6 +55,7 @@ FormFieldLabel.propTypes = {
 	labelProps: PropTypes.object,
 	labelStyles: PropTypes.object,
 	emptyText: PropTypes.string,
+	typographySx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
 export default FormFieldLabel;

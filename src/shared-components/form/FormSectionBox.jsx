@@ -9,12 +9,14 @@ const FormSectionBox = styled(Box, {
 })(
 	({
 		theme,
-		bgcolor = "transpanret",
-		borderLeft = "5px solid transparent",
+		bgcolor = "rgba(0, 0, 0, 0.02)",
+		borderColor = "rgb(16 160 215)",
+		// borderLeft = "5px solid",
 	}) => ({
 		backgroundColor: bgcolor,
 		borderRadius: theme.spacing(1),
-		borderLeft: borderLeft,
+		// borderColor: borderColor,
+		borderLeft: `5px solid ${borderColor}`,
 	})
 );
 

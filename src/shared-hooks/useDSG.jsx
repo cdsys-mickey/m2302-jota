@@ -1,12 +1,11 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import Arrays from "@/shared-modules/md-arrays";
-import Objects from "@/shared-modules/md-objects";
+import Arrays from "@/shared-modules/sd-arrays";
+import Objects from "@/shared-modules/sd-objects";
 import { useCallback, useMemo, useRef, useState, useTransition } from "react";
 import { useToggle } from "@/shared-hooks/useToggle";
 
 export const useDSG = ({
-	gridId = "DSGProvider",
-	children,
+	gridId = "NO_NAME",
 	keyColumn,
 	otherColumns,
 	initialLockRows = true,
@@ -18,7 +17,6 @@ export const useDSG = ({
 		}
 	}, []);
 	const [lockRows, toggleLockRows] = useToggle(initialLockRows);
-	// const [lockRows, setLockRows] = useState(true);
 	const [isPending, startTransition] = useTransition();
 	const selectedRowIndexRef = useRef();
 
@@ -86,8 +84,7 @@ export const useDSG = ({
 
 	const commitChanges = useCallback(
 		(newValue) => {
-			// console.debug("commitChanges", newValue);
-			console.debug(`${gridId}.commitChanges`);
+			console.debug(`${gridId}.commitChanges`, newValue);
 			persistedIds.clear();
 			newValue.map((i) => {
 				persistedIds.add(i[keyColumn]);
@@ -101,8 +98,7 @@ export const useDSG = ({
 	);
 
 	const rollbackChanges = useCallback(() => {
-		// console.debug(`${id}.rollbackChanges, prevData:`, state.prevData);
-		console.debug(`${gridId}.rollbackChanges`);
+		console.debug(`${gridId}.rollbackChanges`, state.prevGridData);
 		setState((prev) => ({
 			...prev,
 			gridData: state.prevGridData,
@@ -122,7 +118,7 @@ export const useDSG = ({
 		[gridId]
 	);
 
-	const isInPrevData = useCallback(
+	const isInPrevGridData = useCallback(
 		(rowData) => {
 			return state.prevGridData.some(
 				(i) => i[keyColumn] === rowData[keyColumn]
@@ -161,13 +157,17 @@ export const useDSG = ({
 
 	const handleGridChange = useCallback(
 		({
+				// C
+				onBeforeCreate,
 				onCreate,
+				// U
+				onBeforeUpdate,
 				onUpdate,
 				onPatch,
+				// D
 				onDelete,
+				// E
 				onDuplicatedError,
-				onBeforeUpdate,
-				onBeforeCreate,
 			}) =>
 			(newValue, operations) => {
 				// 只處理第一行
@@ -219,7 +219,7 @@ export const useDSG = ({
 								onDuplicatedError(row, newValue);
 							}
 						} else {
-							if (isInPrevData(rowData)) {
+							if (isInPrevGridData(rowData)) {
 								// 確認是否是額外欄位造成的異動
 								// Extra UPDATE
 								if (isUnchanged(row)) {
@@ -271,7 +271,7 @@ export const useDSG = ({
 			},
 		[
 			isDuplicated,
-			isInPrevData,
+			isInPrevGridData,
 			isUnchanged,
 			keyColumn,
 			otherColumnNames,
@@ -326,7 +326,10 @@ export const useDSG = ({
 	 */
 	const handleRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
-			console.debug(`${gridId}[${rowIndex}] selected, data:`, rowData);
+			console.debug(
+				`${gridId}.rows[${rowIndex}] selected, rowData:`,
+				rowData
+			);
 		},
 		[gridId]
 	);

@@ -1,9 +1,10 @@
 import { Button, IconButton, Tooltip } from "@mui/material";
 import React, { memo, forwardRef, useMemo } from "react";
 import ButtonEx from "@/shared-components/button/ButtonEx";
-import useResponsive from "@/shared-contexts/responsive/useResponsive";
 
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 
 const ResponsiveButton = memo(
 	forwardRef((props, ref) => {
@@ -17,7 +18,7 @@ const ResponsiveButton = memo(
 			useIconButton = false,
 			...rest
 		} = props;
-		const { mobile } = useResponsive();
+		const { mobile } = useContext(ResponsiveContext);
 
 		const icon = useMemo(() => {
 			return startIcon || endIcon;

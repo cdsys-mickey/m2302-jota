@@ -1,11 +1,11 @@
 import React, { forwardRef, memo, useMemo } from "react";
 import ControlledCheckboxEx from "@/shared-components/controlled/ControlledCheckboxEx";
-import MuiInputs from "@/shared-modules/mui-inputs";
 import FormFieldLabel from "../form/FormFieldLabel";
 
 const TypoCheckboxEx = memo(
 	forwardRef((props, ref) => {
 		const {
+			children,
 			// Typography
 			label,
 			value,
@@ -18,13 +18,12 @@ const TypoCheckboxEx = memo(
 			editing = false,
 			variant = "outlined",
 			size = "small",
-			// InputLabelProps = MuiInputs.DEFAULT_INPUT_LABEL_PROPS,
 			...rest
 		} = props;
 
 		const text = useMemo(() => {
-			return renderText ? renderText(value) : value;
-		}, [renderText, value]);
+			return children || value;
+		}, [children, value]);
 
 		if (!editing) {
 			return (

@@ -1,6 +1,6 @@
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import DateFormats from "@/shared-modules/md-date-formats";
+import DateFormats from "@/shared-modules/sd-date-formats";
 import { format, parseISO } from "date-fns";
 import PropTypes from "prop-types";
 import { useCallback, useMemo, useState } from "react";
@@ -61,6 +61,8 @@ const AppProvider = ({ children }) => {
 					apiVersion: payload.version,
 				}));
 			}
+		} catch (err) {
+			console.error("loadAppInto failed", err);
 		} finally {
 			setState((prev) => ({
 				...prev,

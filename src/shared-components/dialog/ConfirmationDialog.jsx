@@ -28,7 +28,7 @@ const ConfirmationDialog = ({
 	onCancel,
 	minWidth = "24rem",
 	minHeight,
-	buttonProps,
+	ButtonProps,
 	confirmButtonProps,
 	cancelButtonProps,
 	working = false,
@@ -60,7 +60,7 @@ const ConfirmationDialog = ({
 						variant="contained"
 						color="primary"
 						onClick={onConfirm}
-						{...buttonProps}
+						{...ButtonProps}
 						{...confirmButtonProps}>
 						{confirmText}
 					</LoadingButton>
@@ -71,7 +71,7 @@ const ConfirmationDialog = ({
 						variant="outlined"
 						color="primary"
 						onClick={onCancel}
-						{...buttonProps}
+						{...ButtonProps}
 						{...cancelButtonProps}>
 						{cancelText}
 					</Button>

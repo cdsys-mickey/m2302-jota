@@ -8,7 +8,7 @@ export const FrameBannerContainer = (props) => {
 
 	return (
 		<FrameBanner
-			title={appFrame.menuItemSelected?.JobName || "(未知)"}
+			title={appFrame.menuItemSelected?.JobName || "(作業名稱)"}
 			{...rest}
 		/>
 	);

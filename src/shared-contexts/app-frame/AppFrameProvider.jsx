@@ -1,19 +1,16 @@
-import useAppRedirect from "@/hooks/useAppRedirect";
-import useResponsive from "@/shared-contexts/responsive/useResponsive";
-import PropTypes from "prop-types";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { AppFrameContext } from "./AppFrameContext";
-import { useMatch } from "react-router-dom";
-import { useContext } from "react";
-import { AuthProvider } from "@/contexts/auth/AuthProvider";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import Styles from "@/modules/md-styles";
+import useAppRedirect from "@/hooks/useAppRedirect";
 import { useTheme } from "@mui/material";
+import PropTypes from "prop-types";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useMatch } from "react-router-dom";
+import { ResponsiveContext } from "../responsive/ResponsiveContext";
+import { AppFrameContext } from "./AppFrameContext";
 
 const AppFrameProvider = (props) => {
 	const { children, drawerWidth } = props;
 	const theme = useTheme();
-	const { mobile } = useResponsive();
+	const { mobile } = useContext(ResponsiveContext);
 	const { redirectToModule, redirectToLanding } = useAppRedirect();
 	// Account
 

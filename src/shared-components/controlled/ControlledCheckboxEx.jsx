@@ -1,6 +1,8 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React from "react";
 import { Controller } from "react-hook-form";
 import CheckboxEx from "@/shared-components/CheckboxEx";
+import PropTypes from "prop-types";
 
 const ControlledCheckboxEx = ({
 	name,
@@ -8,8 +10,8 @@ const ControlledCheckboxEx = ({
 	control,
 	rules,
 	onChange: handleCheckChange,
-	getValue,
-	getChecked,
+	checkedToValue,
+	valueToChecked,
 	defaultValue = null,
 	...rest
 }) => {
@@ -21,7 +23,7 @@ const ControlledCheckboxEx = ({
 			rules={rules}
 			render={({ field: { value, onChange }, fieldState: { error } }) => (
 				<CheckboxEx
-					checked={getChecked ? getChecked(value) : value}
+					checked={valueToChecked ? valueToChecked(value) : value}
 					onChange={
 						readOnly
 							? null
@@ -30,8 +32,8 @@ const ControlledCheckboxEx = ({
 										handleCheckChange(e);
 									}
 									onChange(
-										getValue
-											? getValue(e.target.checked)
+										checkedToValue
+											? checkedToValue(e.target.checked)
 											: e.target.checked
 									);
 							  }
@@ -51,4 +53,15 @@ const ControlledCheckboxEx = ({
 	);
 };
 
-export default React.memo(ControlledCheckboxEx);
+export default ControlledCheckboxEx;
+
+ControlledCheckboxEx.propTypes = {
+	name: PropTypes.string,
+	readOnly: PropTypes.bool,
+	control: PropTypes.object,
+	rules: PropTypes.object,
+	onChange: PropTypes.func,
+	checkedToValue: PropTypes.func,
+	valueToChecked: PropTypes.func,
+	defaultValue: PropTypes.node,
+};

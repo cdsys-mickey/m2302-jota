@@ -82,7 +82,7 @@ const C04OrderDetailTable = memo(
 							justifyContent="flex-end">
 							<FormFieldLabel
 								label="進貨合計"
-								typographyStyles={{ textAlign: "right" }}>
+								typographySx={{ textAlign: "right" }}>
 								{Strings.formatPrice(data?.TotalPrice)}
 							</FormFieldLabel>
 						</FlexGrid>
@@ -94,7 +94,7 @@ const C04OrderDetailTable = memo(
 							justifyContent="flex-end">
 							<FormFieldLabel
 								label="外加稅額"
-								typographyStyles={{ textAlign: "right" }}>
+								typographySx={{ textAlign: "right" }}>
 								{Strings.formatPrice(data?.Tax)}
 							</FormFieldLabel>
 						</FlexGrid>
@@ -106,7 +106,7 @@ const C04OrderDetailTable = memo(
 							justifyContent="flex-end">
 							<FormFieldLabel
 								label="總計金額"
-								typographyStyles={{ textAlign: "right" }}>
+								typographySx={{ textAlign: "right" }}>
 								{Strings.formatPrice(data?.TotalPrice)}
 							</FormFieldLabel>
 						</FlexGrid>
@@ -118,7 +118,7 @@ const C04OrderDetailTable = memo(
 							justifyContent="flex-end">
 							<FormFieldLabel
 								label="已付金額"
-								typographyStyles={{ textAlign: "right" }}>
+								typographySx={{ textAlign: "right" }}>
 								{Strings.formatPrice(data?.Paid)}
 							</FormFieldLabel>
 						</FlexGrid>
@@ -130,7 +130,7 @@ const C04OrderDetailTable = memo(
 							justifyContent="flex-end">
 							<FormFieldLabel
 								label="應付金額"
-								typographyStyles={{ textAlign: "right" }}>
+								typographySx={{ textAlign: "right" }}>
 								{Strings.formatPrice(data?.ToPaid)}
 							</FormFieldLabel>
 						</FlexGrid>

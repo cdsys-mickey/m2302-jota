@@ -1,17 +1,15 @@
-import { useMediaQuery, useTheme } from "@mui/material";
 import PropTypes from "prop-types";
-import { createContext } from "react";
+import { useResponsive } from "@/shared-hooks/responsive/useResponsive";
 import { ResponsiveContext } from "./ResponsiveContext";
 
 export const ResponsiveProvider = (props) => {
-	const theme = useTheme();
-	const { breakpoint = "md", children } = props;
-	const mobile = useMediaQuery(theme.breakpoints.down(breakpoint));
+	const { children } = props;
+	const responsive = useResponsive();
 
 	return (
 		<ResponsiveContext.Provider
 			value={{
-				mobile,
+				...responsive,
 			}}>
 			{children}
 		</ResponsiveContext.Provider>
@@ -19,6 +17,5 @@ export const ResponsiveProvider = (props) => {
 };
 
 ResponsiveProvider.propTypes = {
-	breakpoint: PropTypes.oneOf(["md", "lg"]),
 	children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
 };

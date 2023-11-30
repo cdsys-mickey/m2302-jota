@@ -6,13 +6,14 @@ import ResponsiveFrameTitle from "../responsive/ResponsiveFrameTitle";
 // import ResponsiveFrameMenuButton from "./ResponsiveFrameMenuButton";
 import AvatarButtonContainer from "@/shared-components/avatar-button/AvatarButtonContainer";
 import FrameMenuButtonContainer from "./FrameMenuButtonContainer";
-import useResponsive from "@/shared-contexts/responsive/useResponsive";
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
 		const { title, alt, children, ...rest } = props;
-		const { mobile } = useResponsive();
+		const { mobile } = useContext(ResponsiveContext);
 		const SearchComponent = children;
 
 		return (

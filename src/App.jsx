@@ -10,11 +10,11 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import zhTW from "date-fns/locale/zh-TW";
 
-import { DialogProvider } from "@/shared-contexts/dialog/DialogProvider";
+import { DialogsProvider } from "@/shared-contexts/dialog/DialogsProvider";
 import { AppProvider } from "@/contexts/app/AppProvider";
 import AppRoute from "@/routes/AppRoute";
 import Colors from "@/modules/colors";
-
+import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";
 // use palette from default theme
 const { palette } = createTheme();
 
@@ -95,12 +95,14 @@ function App() {
 				<LocalizationProvider
 					dateAdapter={AdapterDateFns}
 					locale={zhTW}>
-					<DialogProvider buttonProps={{ size: "small" }}>
-						<CssBaseline />
-						<AppProvider>
-							<AppRoute />
-						</AppProvider>
-					</DialogProvider>
+					<ResponsiveProvider>
+						<DialogsProvider ButtonProps={{ size: "small" }}>
+							<CssBaseline />
+							<AppProvider>
+								<AppRoute />
+							</AppProvider>
+						</DialogsProvider>
+					</ResponsiveProvider>
 					<ToastContainer
 						// theme="dark"
 						theme="colored"

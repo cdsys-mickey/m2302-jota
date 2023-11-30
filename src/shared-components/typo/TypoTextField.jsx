@@ -1,8 +1,8 @@
-import React, { forwardRef, memo, useMemo } from "react";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
+import React, { forwardRef, memo, useMemo } from "react";
 
-import MuiInputs from "@/shared-modules/mui-inputs";
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import MuiStyles from "../../shared-modules/sd-mui-styles";
 
 const TypoTextField = memo(
 	forwardRef((props, ref) => {
@@ -12,7 +12,6 @@ const TypoTextField = memo(
 			value,
 			label,
 			// Typography
-			renderText,
 			typoVariant = "body1",
 			typographyProps,
 			emptyText = "(空白)",
@@ -21,7 +20,7 @@ const TypoTextField = memo(
 			editing = false,
 			size = "small",
 			variant = "outlined",
-			InputLabelProps = MuiInputs.DEFAULT_INPUT_LABEL_PROPS,
+			InputLabelProps = MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
 
 			...rest
 		} = props;
@@ -30,8 +29,8 @@ const TypoTextField = memo(
 			if (children) {
 				return children;
 			}
-			return renderText ? renderText(value) : value;
-		}, [children, renderText, value]);
+			return children || value;
+		}, [children, value]);
 
 		if (!editing) {
 			return (

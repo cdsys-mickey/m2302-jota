@@ -4,12 +4,12 @@ import { Box, Grid, Typography } from "@mui/material";
 import { MockProdClassLg } from "@/mocks/mock-prod-class-lg";
 import { MockProdClassMd } from "@/mocks/mock-prod-class-md";
 import { MockProdClassSm } from "@/mocks/mock-prod-class-sm";
-import CabinetTypes from "@/modules/md-cabinet-types";
+import Counters from "@/modules/md-counters";
 import ProdCats from "@/modules/md-prod-cats";
 import ProdClasses from "@/modules/md-prod-classes";
-import ProdTypes from "@/modules/md-prod-types";
+import ProdTypeA from "@/modules/md-prod-type-a";
 import TaxTypes from "@/modules/md-tax-types";
-import Commission from "@/modules/md-commission-types";
+// import Commission from "@/modules/md-commission-types";
 
 import DialogEx from "@/shared-components/dialog/DialogEx";
 import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
@@ -152,14 +152,14 @@ const MockA01Dialog = memo(
 									label="品別"
 									name="ProdType"
 									options={Object.entries(
-										ProdTypes.Types
+										ProdTypeA.Types
 									).map(([id, name]) => ({
 										id,
 										name,
 									}))}
-									getOptionLabel={ProdTypes.getOptionLabel}
+									getOptionLabel={ProdTypeA.getOptionLabel}
 									isOptionEqualToValue={
-										ProdTypes.isOptionEqualToValue
+										ProdTypeA.isOptionEqualToValue
 									}
 									value={data?.ProdType}
 								/>
@@ -168,15 +168,15 @@ const MockA01Dialog = memo(
 								<TypoWebApiOptionsPickerContainer
 									label="櫃別"
 									name="Cabinet"
-									options={Object.entries(
-										CabinetTypes.Types
-									).map(([id, name]) => ({
-										id,
-										name,
-									}))}
-									getOptionLabel={CabinetTypes.getOptionLabel}
+									options={Object.entries(Counters.Types).map(
+										([id, name]) => ({
+											id,
+											name,
+										})
+									)}
+									getOptionLabel={Counters.getOptionLabel}
 									isOptionEqualToValue={
-										CabinetTypes.isOptionEqualToValue
+										Counters.isOptionEqualToValue
 									}
 									fullWidth
 								/>
@@ -276,7 +276,7 @@ const MockA01Dialog = memo(
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoWebApiOptionsPickerContainer
+								{/* <TypoWebApiOptionsPickerContainer
 									label="佣金類別"
 									name="CommissionType"
 									fullWidth
@@ -291,7 +291,7 @@ const MockA01Dialog = memo(
 										Commission.isOptionEqualToValue
 									}
 									value={data?.CommissionType}
-								/>
+								/> */}
 							</Grid>
 
 							{/* <Grid xs={12} sm={12} md={4}>

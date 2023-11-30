@@ -1,19 +1,14 @@
-import SearchIcon from "@mui/icons-material/Search";
-import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import { MockProdClassLg } from "@/mocks/mock-prod-class-lg";
-import CabinetTypes from "@/modules/md-cabinet-types";
 import ProdClasses from "@/modules/md-prod-classes";
-import React from "react";
 import ButtonEx from "@/shared-components/button/ButtonEx";
+import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
-import TypoWebApiOptionsPicker from "@/shared-components/typo/TypoWebApiOptionsPicker";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
-import MuiInputs from "@/shared-modules/mui-inputs";
-import ControlledDateField from "@/shared-components/controlled/ControlledDateField";
-import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
-import { memo } from "react";
-import { forwardRef } from "react";
+import TypoWebApiOptionsPicker from "@/shared-components/typo/TypoWebApiOptionsPicker";
+import SearchIcon from "@mui/icons-material/Search";
+import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
+import React, { forwardRef, memo } from "react";
 
 const PurchaseSearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -67,7 +62,7 @@ const PurchaseSearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<TypoWebApiOptionsPicker
+							{/* <TypoWebApiOptionsPicker
 								label="廠商"
 								variant="filled"
 								name="Cabinet"
@@ -77,7 +72,7 @@ const PurchaseSearchPopper = memo(
 									CabinetTypes.isOptionEqualToValue
 								}
 								fullWidth
-							/>
+							/> */}
 						</Grid>
 					</Grid>
 					<Divider textAlign="center" sx={{ mt: 2, mb: 0.5 }}>

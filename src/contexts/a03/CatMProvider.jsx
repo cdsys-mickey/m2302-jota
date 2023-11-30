@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { CatMContext } from "./CatMContext";
 import { CatSContext } from "./CatSContext";
 import { useRef } from "react";
@@ -23,7 +23,7 @@ const CatMProvider = (props) => {
 		keyColumn: "MClas",
 		otherColumns: "ClassData",
 	});
-	const dialogs = useContext(DialogContext);
+	const dialogs = useContext(DialogsContext);
 	const catS = useContext(CatSContext);
 
 	// const selectedRowIndexRef = useRef(null);

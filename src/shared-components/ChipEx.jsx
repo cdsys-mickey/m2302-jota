@@ -1,7 +1,7 @@
 import { Chip } from "@mui/material";
-import React from "react";
 // Constants
-import { Severity } from "@/shared-modules/md-severity";
+import MuiSeverity from "@/shared-modules/sd-mui-severity";
+import { forwardRef, memo } from "react";
 
 const VARIANT_DEFAULT = "default";
 const VARIANT_OUTLINED = "outlined";
@@ -54,86 +54,88 @@ const useStyles = (props) => {
 	};
 };
 
-const ChipEx = React.forwardRef((props, ref) => {
-	const {
-		variant = VARIANT_DEFAULT,
-		color = "default",
-		square = false,
-		severity,
-		className,
-		children,
-		htmlColor,
-		htmlTextColor,
-		borderRadius,
-		sx = [],
-		...rest
-	} = props;
-	const classes = useStyles({
-		htmlColor,
-		htmlTextColor,
-		borderRadius,
-	});
-	let severityClass;
-	if (severity) {
-		if (variant === VARIANT_OUTLINED) {
-			switch (severity) {
-				case Severity.ERROR:
-					severityClass = classes.outlinedError;
-					break;
-				case Severity.WARNING:
-					severityClass = classes.outlinedWarning;
-					break;
-				case Severity.INFO:
-					severityClass = classes.outlinedInfo;
-					break;
-				case Severity.SUCCESS:
-					severityClass = classes.outlinedSuccess;
-					break;
-				default:
-					break;
-			}
-		} else if (variant === VARIANT_DEFAULT) {
-			switch (severity) {
-				case Severity.ERROR:
-					severityClass = classes.defaultError;
-					break;
-				case Severity.WARNING:
-					severityClass = classes.defaultWarning;
-					break;
-				case Severity.INFO:
-					severityClass = classes.defaultInfo;
-					break;
-				case Severity.SUCCESS:
-					severityClass = classes.defaultSuccess;
-					break;
-				default:
-					break;
+const ChipEx = memo(
+	forwardRef((props, ref) => {
+		const {
+			variant = VARIANT_DEFAULT,
+			color = "default",
+			square = false,
+			severity,
+			className,
+			children,
+			htmlColor,
+			htmlTextColor,
+			borderRadius,
+			sx = [],
+			...rest
+		} = props;
+		const classes = useStyles({
+			htmlColor,
+			htmlTextColor,
+			borderRadius,
+		});
+		let severityClass;
+		if (severity) {
+			if (variant === VARIANT_OUTLINED) {
+				switch (severity) {
+					case MuiSeverity.ERROR:
+						severityClass = classes.outlinedError;
+						break;
+					case MuiSeverity.WARNING:
+						severityClass = classes.outlinedWarning;
+						break;
+					case MuiSeverity.INFO:
+						severityClass = classes.outlinedInfo;
+						break;
+					case MuiSeverity.SUCCESS:
+						severityClass = classes.outlinedSuccess;
+						break;
+					default:
+						break;
+				}
+			} else if (variant === VARIANT_DEFAULT) {
+				switch (severity) {
+					case MuiSeverity.ERROR:
+						severityClass = classes.defaultError;
+						break;
+					case MuiSeverity.WARNING:
+						severityClass = classes.defaultWarning;
+						break;
+					case MuiSeverity.INFO:
+						severityClass = classes.defaultInfo;
+						break;
+					case MuiSeverity.SUCCESS:
+						severityClass = classes.defaultSuccess;
+						break;
+					default:
+						break;
+				}
 			}
 		}
-	}
-	// console.log(`severityClass: ${severityClass}`);
-	return (
-		<Chip
-			ref={ref}
-			color={color}
-			variant={variant}
-			sx={[
-				severityClass,
-				!!square && classes.square,
-				!!htmlColor && {
-					backgroundColor: htmlColor,
-				},
-				!!htmlTextColor && {
-					color: htmlTextColor,
-				},
-				!!borderRadius && {
-					borderRadius: borderRadius,
-				},
-				...(Array.isArray(sx) ? sx : [sx]),
-			]}
-			{...rest}
-		/>
-	);
-});
+		// console.log(`severityClass: ${severityClass}`);
+		return (
+			<Chip
+				ref={ref}
+				color={color}
+				variant={variant}
+				sx={[
+					severityClass,
+					!!square && classes.square,
+					!!htmlColor && {
+						backgroundColor: htmlColor,
+					},
+					!!htmlTextColor && {
+						color: htmlTextColor,
+					},
+					!!borderRadius && {
+						borderRadius: borderRadius,
+					},
+					...(Array.isArray(sx) ? sx : [sx]),
+				]}
+				{...rest}
+			/>
+		);
+	})
+);
 
-export default React.memo(ChipEx);
+export default ChipEx;

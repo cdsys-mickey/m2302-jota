@@ -1,6 +1,7 @@
 import { ControlledWebApiOptionsPicker } from "@/shared-components/controlled/ControlledWebApiOptionsPicker";
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
-import React, { forwardRef, memo, useMemo } from "react";
+import { forwardRef, memo, useMemo } from "react";
+import PropTypes from "prop-types";
 
 const TypoWebApiOptionsPicker = memo(
 	forwardRef((props, ref) => {
@@ -20,24 +21,12 @@ const TypoWebApiOptionsPicker = memo(
 			variant = "outlined",
 			// METHODS
 			getOptionLabel,
-			renderText,
 			...rest
 		} = props;
 
 		const text = useMemo(() => {
-			if (children) {
-				return children;
-			}
-			if (renderText) {
-				return renderText ? renderText(value) : value;
-			}
-
-			if (getOptionLabel) {
-				return getOptionLabel(value);
-			}
-
-			return value;
-		}, [children, getOptionLabel, renderText, value]);
+			return children || value;
+		}, [children, value]);
 
 		if (!editing) {
 			return (
@@ -53,9 +42,9 @@ const TypoWebApiOptionsPicker = memo(
 
 		return (
 			<ControlledWebApiOptionsPicker
+				name={name}
 				ref={ref}
 				label={label}
-				name={name}
 				variant={variant}
 				size={size}
 				// methods
@@ -67,5 +56,8 @@ const TypoWebApiOptionsPicker = memo(
 );
 
 TypoWebApiOptionsPicker.displayName = "TypoWebApiOptionsPicker";
+TypoWebApiOptionsPicker.propTypes = {
+	children: PropTypes.node,
+};
 
 export default TypoWebApiOptionsPicker;

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useContext } from "react";
 import { useState } from "react";
-import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useInit } from "@/shared-hooks/useInit";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { CatLContext } from "./CatLContext";
@@ -193,6 +193,7 @@ const CatLProvider = (props) => {
 			const { rowData } = row;
 			console.debug(`confirm DELETE`, rowData);
 			dsg.setDeletingRow(row);
+
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除大分類 ${rowData.LClas}/${rowData.ClassData} ?`,

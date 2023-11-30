@@ -1,17 +1,19 @@
-const PRICE_DIGITS = 1;
-const RATE_DIGITS = 2;
+import Types from "../shared-modules/sd-types";
 
-const formatPrice = (data) => {
-	return data?.toFixed(PRICE_DIGITS);
+const PRICE_FIXED_DIGITS = 2;
+const RATE_FIXED_DIGITS = 4;
+
+const formatPrice = (v) => {
+	return Types.isNumber(v) ? v?.toFixed(PRICE_FIXED_DIGITS) : v;
 };
 
-const formatRate = (data) => {
-	return data?.toFixed(RATE_DIGITS);
+const formatRate = (v) => {
+	return Types.isNumber(v) ? v?.toFixed(RATE_FIXED_DIGITS) : v;
 };
 
 const Strings = {
-	PRICE_DIGITS,
-	RATE_DIGITS,
+	PRICE_DIGITS: PRICE_FIXED_DIGITS,
+	RATE_DIGITS: RATE_FIXED_DIGITS,
 	formatPrice,
 	formatRate,
 };

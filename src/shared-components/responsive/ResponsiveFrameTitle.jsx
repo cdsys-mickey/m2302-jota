@@ -1,13 +1,14 @@
 import { Typography } from "@mui/material";
+import { useContext } from "react";
 import { memo } from "react";
 import { forwardRef } from "react";
 import { useMemo } from "react";
-import useResponsive from "@/shared-contexts/responsive/useResponsive";
+import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 
 const ResponsiveFrameTitle = memo(
 	forwardRef((props, ref) => {
 		const { children, alt, ...rest } = props;
-		const { mobile } = useResponsive();
+		const { mobile } = useContext(ResponsiveContext);
 
 		const text = useMemo(() => {
 			if (alt && mobile) {

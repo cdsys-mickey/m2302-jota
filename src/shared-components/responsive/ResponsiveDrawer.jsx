@@ -3,7 +3,8 @@ import { useMemo } from "react";
 import { memo } from "react";
 import { forwardRef } from "react";
 import PropTypes from "prop-types";
-import useResponsive from "@/shared-contexts/responsive/useResponsive";
+import { useContext } from "react";
+import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 
 /**
  * mobile 狀態 variant 會自動改成 temporary
@@ -17,7 +18,7 @@ const ResponsiveDrawer = memo(
 			open = false,
 			...rest
 		} = props;
-		const { mobile } = useResponsive();
+		const { mobile } = useContext(ResponsiveContext);
 
 		const autoVariant = useMemo(() => {
 			return mobile ? "temporary" : "persistent";

@@ -1,0 +1,88 @@
+import { useCallback } from "react";
+import { useState } from "react";
+
+export const useDialogs = ({ ButtonProps }) => {
+	const [entities, setEntities] = useState([]);
+
+	const closeLatest = useCallback(() => {
+		setEntities((prev) => {
+			const latest = prev.pop();
+			if (!latest) {
+				return prev;
+			}
+			if (latest.onClose) {
+				latest.onClose();
+			}
+			return [...prev].concat({ ...latest, open: false, working: false });
+		});
+	}, []);
+
+	const create = useCallback(
+		({ ButtonProps: dialogButtonProps, ...dialogProps }) => {
+			setEntities((prev) => [
+				...prev,
+				{
+					ButtonProps: {
+						...ButtonProps,
+						...dialogButtonProps,
+					},
+					open: true,
+					...dialogProps,
+				},
+			]);
+		},
+		[ButtonProps]
+	);
+
+	const setWorking = useCallback((working) => {
+		setEntities((prev) => {
+			const latest = prev.pop();
+			if (!latest) {
+				return prev;
+			}
+			return [...prev].concat({ ...latest, working });
+		});
+	}, []);
+
+	const confirm = useCallback(
+		({ title = "確認", message = "[訊息]", onConfirm, onCancel }) => {
+			create({
+				title: title,
+				message: message,
+				onConfirm: () => {
+					if (onConfirm) onConfirm();
+					closeLatest();
+				},
+				onCancel: () => {
+					if (onCancel) onCancel();
+					closeLatest();
+				},
+			});
+		},
+		[closeLatest, create]
+	);
+
+	const alert = useCallback(
+		({ title = "提醒", message = "[訊息]", onConfirm }) => {
+			create({
+				title: title,
+				message: message,
+				onConfirm: () => {
+					if (onConfirm) onConfirm();
+					closeLatest();
+				},
+			});
+		},
+		[create, closeLatest]
+	);
+
+	return {
+		entities,
+		setEntities,
+		create,
+		confirm,
+		alert,
+		setWorking,
+		closeLatest,
+	};
+};

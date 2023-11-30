@@ -2,7 +2,7 @@
 import { useCallback, useState } from "react";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useMemo } from "react";
-import Arrays from "../shared-modules/md-arrays";
+import Arrays from "../shared-modules/sd-arrays";
 
 export const useInfiniteLoader = (props = {}) => {
 	const { url, params, bearer, initialFetchSize = 50 } = props;

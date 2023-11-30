@@ -1,15 +1,15 @@
 import { MockProdClassLg } from "@/mocks/mock-prod-class-lg";
-import CabinetTypes from "@/modules/md-cabinet-types";
+// import CabinetTypes from "@/modules/md-cabinet-types";
 import ProdClasses from "@/modules/md-prod-classes";
 import ButtonEx from "@/shared-components/button/ButtonEx";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
 import TypoWebApiOptionsPicker from "@/shared-components/typo/TypoWebApiOptionsPicker";
-import MuiInputs from "@/shared-modules/mui-inputs";
 import SearchIcon from "@mui/icons-material/Search";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";
+import MuiStyles from "../../shared-modules/sd-mui-styles";
 
 const MockProdSearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -29,7 +29,7 @@ const MockProdSearchPopper = memo(
 								size="small"
 								fullWidth
 								InputLabelProps={
-									MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
 							/>
 						</Grid>
@@ -41,7 +41,7 @@ const MockProdSearchPopper = memo(
 								size="small"
 								fullWidth
 								InputLabelProps={
-									MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
 							/>
 						</Grid>
@@ -53,7 +53,7 @@ const MockProdSearchPopper = memo(
 								size="small"
 								fullWidth
 								InputLabelProps={
-									MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
 							/>
 						</Grid>
@@ -65,12 +65,12 @@ const MockProdSearchPopper = memo(
 								size="small"
 								fullWidth
 								InputLabelProps={
-									MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<TypoWebApiOptionsPicker
+							{/* <TypoWebApiOptionsPicker
 								label="櫃別"
 								name="Cabinet"
 								options={Object.entries(CabinetTypes.Types).map(
@@ -84,7 +84,7 @@ const MockProdSearchPopper = memo(
 									CabinetTypes.isOptionEqualToValue
 								}
 								fullWidth
-							/>
+							/> */}
 						</Grid>
 					</Grid>
 					<Divider textAlign="center" sx={{ mt: 2, mb: 0.5 }}>

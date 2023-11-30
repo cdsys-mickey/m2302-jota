@@ -21,11 +21,16 @@ export const useCrud = ({ useItemView = false } = {}) => {
 
 	// CREATE
 	const promptCreate = useCallback(
-		(value) => {
-			createAction.prompt();
+		(data, message) => {
+			createAction.prompt(data, message);
+			setItemData(data);
 		},
 		[createAction]
 	);
+
+	const cancelCreate = useCallback(() => {
+		createAction.clear();
+	}, [createAction]);
 
 	const startCreate = useCallback(
 		(value) => {
@@ -72,6 +77,10 @@ export const useCrud = ({ useItemView = false } = {}) => {
 		[readAction]
 	);
 
+	const cancelRead = useCallback(() => {
+		readAction.clear();
+	}, [readAction]);
+
 	const failRead = useCallback(
 		(err) => {
 			console.debug("failRead", err);
@@ -89,9 +98,12 @@ export const useCrud = ({ useItemView = false } = {}) => {
 	}, [readAction.state]);
 
 	// UPDATE
-	const promptUpdate = useCallback(() => {
-		updateAction.prompt();
-	}, [updateAction]);
+	const promptUpdate = useCallback(
+		(data, message) => {
+			updateAction.prompt(data, message);
+		},
+		[updateAction]
+	);
 
 	const startUpdate = useCallback(
 		(value) => {
@@ -104,6 +116,10 @@ export const useCrud = ({ useItemView = false } = {}) => {
 		updateAction.clear();
 	}, [updateAction]);
 
+	const cancelUpdate = useCallback(() => {
+		updateAction.clear();
+	}, [updateAction]);
+
 	const failUpdate = useCallback(
 		(err) => {
 			updateAction.fail(err);
@@ -112,8 +128,8 @@ export const useCrud = ({ useItemView = false } = {}) => {
 	);
 
 	const updating = useMemo(() => {
-		return !!updateAction.state;
-	}, [updateAction.state]);
+		return !!updateAction.state && updateAction !== ActionState.DONE;
+	}, [updateAction]);
 
 	const updateWorking = useMemo(() => {
 		return updateAction.state === ActionState.WORKING;
@@ -159,7 +175,7 @@ export const useCrud = ({ useItemView = false } = {}) => {
 
 	const editing = useMemo(() => {
 		return creating || updating;
-	}, []);
+	}, [creating, updating]);
 
 	return {
 		itemData,
@@ -171,6 +187,7 @@ export const useCrud = ({ useItemView = false } = {}) => {
 		promptCreate,
 		startCreate,
 		finishCreate,
+		cancelCreate,
 		failCreate,
 		creating,
 		createWorking,
@@ -180,6 +197,7 @@ export const useCrud = ({ useItemView = false } = {}) => {
 		readError: readAction.error,
 		startRead,
 		finishRead,
+		cancelRead,
 		failRead,
 		reading,
 		readWorking,
@@ -190,6 +208,7 @@ export const useCrud = ({ useItemView = false } = {}) => {
 		promptUpdate,
 		startUpdate,
 		finishUpdate,
+		cancelUpdate,
 		failUpdate,
 		updating,
 		updateWorking,
@@ -204,7 +223,7 @@ export const useCrud = ({ useItemView = false } = {}) => {
 		failDelete,
 		deleting,
 		deleteWorking,
-		// AGG
+		// COMPUTED
 		editing,
 	};
 };

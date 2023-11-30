@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { useCallback, useContext } from "react";
 import { toast } from "react-toastify";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { A02Context } from "./A02Context";
 import { startTransition } from "react";
 import { useToggle } from "@/shared-hooks/useToggle";
@@ -20,7 +20,7 @@ export const A02Provider = (props) => {
 
 	// const dsg = useContext(DSGContext);
 	const dsg = useDSG({ keyColumn: "CodeID", otherColumns: "CodeData" });
-	const dialogs = useContext(DialogContext);
+	const dialogs = useContext(DialogsContext);
 
 	// const [loading, setLoading] = useState();
 

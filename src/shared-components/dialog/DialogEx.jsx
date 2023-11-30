@@ -1,4 +1,3 @@
-import useResponsive from "@/shared-contexts/responsive/useResponsive";
 import { LoadingButton } from "@mui/lab";
 import {
 	Button,
@@ -11,6 +10,8 @@ import {
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import DialogTitleEx from "./DialogTitleEx";
+import { useContext } from "react";
+import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 
 /**
  * 關鍵屬性是 onConfirm, onCancel, 以及 onClose, 雖然沒有在這裡定義 onClose,
@@ -21,7 +22,7 @@ import DialogTitleEx from "./DialogTitleEx";
  * @returns
  */
 const DialogEx = memo(
-	forwardRef((props, ref) => {
+	forwardRef((props = {}, ref) => {
 		const {
 			title,
 			titleSx = [],
@@ -31,11 +32,11 @@ const DialogEx = memo(
 			confirmText = "確定",
 			cancelText = "取消",
 
-			// minWidth = "50vw",
+			minWidth = "20em",
 			// maxWidth = "100vw",
 			// minHeight,
 			contentProps,
-			buttonProps,
+			ButtonProps,
 			confirmButtonProps,
 			cancelButtonProps,
 			loading = false,
@@ -67,11 +68,17 @@ const DialogEx = memo(
 			return OtherActionButtonsComponent && !otherActionButtons;
 		}, [OtherActionButtonsComponent, otherActionButtons]);
 
-		const { mobile } = useResponsive();
+		const responsiveCtx = useContext(ResponsiveContext);
+		const { mobile } = responsiveCtx;
 
 		const isFullScreen = useMemo(() => {
-			return (responsive && mobile) || fullScreen;
-		}, [fullScreen, mobile, responsive]);
+			if (responsive && !responsiveCtx) {
+				console.error(
+					"使用 responsive 參數必須位在 ResponsiveContext 內"
+				);
+			}
+			return (!!responsiveCtx && responsive && mobile) || fullScreen;
+		}, [fullScreen, mobile, responsive, responsiveCtx]);
 
 		return (
 			<Dialog
@@ -98,7 +105,7 @@ const DialogEx = memo(
 
 				<DialogContent
 					sx={[
-						{},
+						{ ...(minWidth && { minWidth: minWidth }) },
 						...(Array.isArray(contentSx) ? contentSx : [contentSx]),
 					]}
 					{...contentProps}>
@@ -126,7 +133,7 @@ const DialogEx = memo(
 								color="primary"
 								onClick={onConfirm}
 								loading={working}
-								{...buttonProps}
+								{...ButtonProps}
 								{...confirmButtonProps}>
 								{confirmText}
 							</LoadingButton>
@@ -137,7 +144,7 @@ const DialogEx = memo(
 								variant="outlined"
 								color="primary"
 								onClick={onCancel}
-								{...buttonProps}
+								{...ButtonProps}
 								{...cancelButtonProps}>
 								{cancelText}
 							</Button>
@@ -163,7 +170,7 @@ DialogEx.propTypes = {
 	loading: PropTypes.bool,
 	working: PropTypes.bool,
 	contentProps: PropTypes.object,
-	buttonProps: PropTypes.object,
+	ButtonProps: PropTypes.object,
 	confirmButtonProps: PropTypes.object,
 	cancelButtonProps: PropTypes.object,
 	titleButtons: PropTypes.element,
@@ -180,6 +187,8 @@ DialogEx.propTypes = {
 	fullScreen: PropTypes.bool,
 	responsive: PropTypes.bool,
 	titleSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	contentSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default DialogEx;

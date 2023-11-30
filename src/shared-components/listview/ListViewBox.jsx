@@ -3,7 +3,7 @@ import React from "react";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 
 import ItemListViewCache from "@/shared-components/item-listview/ItemListViewCache";
-import MuiStyles from "@/shared-modules/mui-styles";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 import ItemListViewError from "./ItemListViewError";
 import { useScrollTop } from "@/shared-hooks/useScrollTop";
 import { memo } from "react";

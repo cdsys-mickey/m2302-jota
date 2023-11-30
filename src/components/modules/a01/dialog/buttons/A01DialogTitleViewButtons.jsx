@@ -16,11 +16,11 @@ const A01DialogTitleViewButtons = memo(
 					onClick={onDelete}>
 					刪除
 				</ResponsiveButton>
-				<ResponsiveButton
+				{/* <ResponsiveButton
 					startIcon={<ContentCopyIcon />}
 					color="neutral">
 					複製
-				</ResponsiveButton>
+				</ResponsiveButton> */}
 				<ResponsiveButton
 					startIcon={<EditOutlinedIcon />}
 					color="primary"

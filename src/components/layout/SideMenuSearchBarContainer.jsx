@@ -12,7 +12,7 @@ const SideMenuSearchBarContainer = memo(
 		const inputRef = useRef(null);
 		// const { onInputChange } = useSideMenu();
 
-		// const { mobile } = useResponsive();
+		// const { mobile } = useContext(ResponsiveContext);
 		const { setValue } = useFormContext();
 		const { handleHomeClick } = useContext(AppFrameContext);
 

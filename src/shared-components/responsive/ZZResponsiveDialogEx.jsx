@@ -1,6 +1,7 @@
 import { forwardRef, useMemo, memo } from "react";
 import DialogEx from "../dialog/DialogEx";
-import useResponsive from "@/shared-contexts/responsive/useResponsive";
+import { useContext } from "react";
+import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 
 /**
  * 自適應對話框
@@ -8,7 +9,7 @@ import useResponsive from "@/shared-contexts/responsive/useResponsive";
  */
 const ZZResponsiveDailogEx = memo(
 	forwardRef(({ ...rest }, ref) => {
-		const { mobile } = useResponsive();
+		const { mobile } = useContext(ResponsiveContext);
 
 		const fullScreen = useMemo(() => {
 			return mobile;

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { CatSContext } from "./CatSContext";
 import { useDSG } from "../../shared-hooks/useDSG";
 

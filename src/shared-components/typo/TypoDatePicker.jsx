@@ -19,7 +19,6 @@ const TypoDatePicker = memo(
 			editing = false,
 			size = "small",
 			variant = "filled",
-			// InputLabelProps = MuiInputs.DEFAULT_INPUT_LABEL_PROPS,
 			...rest
 		} = props;
 

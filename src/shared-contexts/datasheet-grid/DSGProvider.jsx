@@ -2,9 +2,9 @@
 import { useCallback, useState } from "react";
 import { DSGContext } from "./DSGContext";
 import PropTypes from "prop-types";
-import Objects from "@/shared-modules/md-objects";
+import Objects from "@/shared-modules/sd-objects";
 import { useMemo } from "react";
-import Arrays from "@/shared-modules/md-arrays";
+import Arrays from "@/shared-modules/sd-arrays";
 import _ from "lodash";
 import { useTransition } from "react";
 import { useRef } from "react";
@@ -127,7 +127,7 @@ export const DSGProvider = ({
 		[gridId]
 	);
 
-	const isInPrevData = useCallback(
+	const isInPrevGridData = useCallback(
 		(rowData) => {
 			return state.prevGridData.some(
 				(i) => i[keyColumn] === rowData[keyColumn]
@@ -224,7 +224,7 @@ export const DSGProvider = ({
 								onDuplicatedError(row, newValue);
 							}
 						} else {
-							if (isInPrevData(rowData)) {
+							if (isInPrevGridData(rowData)) {
 								// 確認是否是額外欄位造成的異動
 								// Extra UPDATE
 								if (isUnchanged(row)) {
@@ -276,7 +276,7 @@ export const DSGProvider = ({
 			},
 		[
 			isDuplicated,
-			isInPrevData,
+			isInPrevGridData,
 			isUnchanged,
 			keyColumn,
 			otherColumnNames,

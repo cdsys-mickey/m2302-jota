@@ -4,12 +4,12 @@ import FlexGrid from "@/shared-components/FlexGrid";
 import ButtonEx from "@/shared-components/button/ButtonEx";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import TypoWebApiOptionsPickerContainer from "@/shared-components/typo/TypoWebApiOptionsPickerContainer";
-import MuiInputs from "@/shared-modules/mui-inputs";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Box, Container, Grid, IconButton } from "@mui/material";
 import React, { Fragment, forwardRef, memo, useCallback } from "react";
 import { v4 as uuid } from "uuid";
 import FlexBox from "@/shared-components/FlexBox";
+import MuiStyles from "../../../shared-modules/sd-mui-styles";
 
 const C04OrderDetailEditor = memo(
 	forwardRef((props, ref) => {
@@ -70,7 +70,7 @@ const C04OrderDetailEditor = memo(
 										name={`${name}[${i}].cost`}
 										size="small"
 										InputLabelProps={
-											MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+											MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 										}
 										type="number"
 									/>
@@ -82,7 +82,7 @@ const C04OrderDetailEditor = memo(
 										name={`${name}[${i}].quantity`}
 										size="small"
 										InputLabelProps={
-											MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+											MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 										}
 										type="number"
 									/>
@@ -94,7 +94,7 @@ const C04OrderDetailEditor = memo(
 										name={`${name}[${i}].total`}
 										size="small"
 										InputLabelProps={
-											MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+											MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 										}
 										type="number"
 									/>
@@ -108,7 +108,7 @@ const C04OrderDetailEditor = memo(
 											name={`${name}[${i}].note`}
 											size="small"
 											InputLabelProps={
-												MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+												MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 											}
 											type="number"
 										/>

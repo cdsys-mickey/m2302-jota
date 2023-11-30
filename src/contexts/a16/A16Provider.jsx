@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { DialogContext } from "@/shared-contexts/dialog/DialogContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
@@ -26,7 +26,7 @@ export const A16Provider = (props) => {
 		keyColumn: "DeptID",
 		otherColumns: "GroupKey,DeptName,AbbrName",
 	});
-	const dialogs = useContext(DialogContext);
+	const dialogs = useContext(DialogsContext);
 
 	// const [loading, setLoading] = useState();
 

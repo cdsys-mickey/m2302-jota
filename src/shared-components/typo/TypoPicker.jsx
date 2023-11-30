@@ -1,9 +1,7 @@
-import React from "react";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
-import MuiInputs from "@/shared-modules/mui-inputs";
-import { memo } from "react";
-import { forwardRef } from "react";
+import React, { forwardRef, memo } from "react";
+import MuiStyles from "../../shared-modules/sd-mui-styles";
 
 const EditableText = memo(
 	forwardRef((props, ref) => {
@@ -15,7 +13,7 @@ const EditableText = memo(
 			variant = "body1",
 			inputSize = "small",
 			inputVariant = "outlined",
-			InputLabelProps = MuiInputs.DEFAULT_INPUT_LABEL_PROPS,
+			InputLabelProps = MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
 			inputProps,
 			emptyText = "(空白)",
 			...rest

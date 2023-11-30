@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import axios from "axios";
 import HttpStatus from "@/shared-classes/HttpStatus";
 import querystring from "query-string";
-import WebApis from "@/shared-modules/md-web-apis";
+import WebApis from "@/shared-modules/sd-web-apis";
 
 const DEFAULT_HEADERS = {};
 
@@ -28,6 +28,9 @@ export const useWebApi = (props) => {
 
 	const getUrl = useCallback(
 		(relativePath, params) => {
+			if (relativePath === undefined || relativePath === null) {
+				return null;
+			}
 			if (!baseUrl) {
 				console.error("baseUrl and REACT_APP_URL_API are both empty");
 				return;
@@ -57,6 +60,9 @@ export const useWebApi = (props) => {
 	const sendAsync = useCallback(
 		async ({ url, method, data, headers, bearer, ...rest }) => {
 			const apiUrl = getUrl(url);
+			if (!apiUrl) {
+				throw `url cannot be null`;
+			}
 			console.debug(`${method} ${apiUrl}`);
 			if (data) {
 				console.debug(data, "data");

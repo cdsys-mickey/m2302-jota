@@ -1,21 +1,17 @@
-import { Box, Button, Container, Grid, IconButton, Stack } from "@mui/material";
 import { MockShops } from "@/mocks/mock-shops";
-import React, { Fragment, useCallback } from "react";
-import FlexBox from "@/shared-components/FlexBox";
+import Shops from "@/modules/md-shops";
+import ButtonEx from "@/shared-components/button/ButtonEx";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import TypoWebApiOptionsPicker from "@/shared-components/typo/TypoWebApiOptionsPicker";
 import ClearIcon from "@mui/icons-material/Clear";
-import ButtonEx from "@/shared-components/button/ButtonEx";
-import Shops from "@/modules/md-shops";
-import MuiInputs from "@/shared-modules/mui-inputs";
+import { Box, Container, Grid, IconButton } from "@mui/material";
+import React, { Fragment, forwardRef, memo, useCallback } from "react";
 import { v4 as uuid } from "uuid";
-import { forwardRef } from "react";
-import { memo } from "react";
+import MuiStyles from "../../../shared-modules/sd-mui-styles";
 
 const A01TransferEditor = memo(
 	forwardRef((props, ref) => {
 		const { name, value = [], onChange, ...rest } = props;
-
 		const handleAdd = useCallback(
 			(e) => {
 				e?.stopPropagation();
@@ -63,7 +59,7 @@ const A01TransferEditor = memo(
 										name={`${name}[${i}].cost`}
 										size="small"
 										InputLabelProps={
-											MuiInputs.DEFAULT_INPUT_LABEL_PROPS
+											MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 										}
 										type="number"
 									/>

@@ -1,4 +1,3 @@
-import useResponsive from "@/shared-contexts/responsive/useResponsive";
 import Layouts from "@/shared-modules/md-layouts";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -13,6 +12,8 @@ import {
 } from "@mui/material";
 import { memo, useMemo, useRef } from "react";
 import ControlledInputBase from "./controlled/ControlledInputBase";
+import { useContext } from "react";
+import { ResponsiveContext } from "../shared-contexts/responsive/ResponsiveContext";
 
 const SearchForm = memo((props) => {
 	const {
@@ -42,7 +43,7 @@ const SearchForm = memo((props) => {
 		mobilePlaceholder,
 		...rest
 	} = props;
-	const { mobile } = useResponsive();
+	const { mobile } = useContext(ResponsiveContext);
 	const paperRef = useRef(null);
 
 	const doExpand = useMemo(() => responsive && mobile, [mobile, responsive]);

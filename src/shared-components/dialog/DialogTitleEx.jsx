@@ -22,10 +22,10 @@ const DialogTitleEx = memo(
 			buttons,
 			buttonsComponent,
 			closeButtonProps = { size: "small" },
-			padding,
+			padding = "8px 24px",
 			sx = [],
-			yOffset = 0,
-			xOffset = 0,
+			yOffset = 4,
+			xOffset = 4,
 			...rest
 		} = props;
 
@@ -49,13 +49,16 @@ const DialogTitleEx = memo(
 							padding,
 						}),
 						...(onReturn && {
-							paddingLeft: "60px",
+							paddingLeft: "50px",
 						}),
+						minHeight: `calc(${theme.spacing(5)} + ${
+							yOffset * 2
+						}px)`,
 					}),
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				{...rest}>
-				{onReturn && (
+				{!!onReturn && (
 					<FlexBox
 						sx={[
 							(theme) => ({
@@ -66,12 +69,12 @@ const DialogTitleEx = memo(
 						]}>
 						<Tooltip title={returnText || ""}>
 							<IconButton
-								disableRipple
+								// disableRipple
 								aria-label="back"
 								onClick={onReturn}
 								sx={(theme) => ({
 									color: (theme) => theme.palette.grey[500],
-									marginLeft: theme.spacing(1),
+									// marginLeft: theme.spacing(1),
 								})}>
 								<ArrowBackIosNewIcon />
 							</IconButton>
@@ -101,10 +104,10 @@ const DialogTitleEx = memo(
 							<ButtonsComponent />
 						</DialogTitleButtonsBox>
 					)}
-					{onClose && (
+					{!!onClose && (
 						<Tooltip title={closeText || ""}>
 							<IconButton
-								disableRipple
+								// disableRipple
 								aria-label="close"
 								onClick={onClose}
 								sx={(theme) => ({
