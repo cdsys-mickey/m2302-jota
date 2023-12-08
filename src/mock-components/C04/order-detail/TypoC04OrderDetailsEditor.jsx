@@ -12,7 +12,7 @@ const TypoC04OrderDetailPicker = memo(
 			renderText,
 			emptyText = "(空白)",
 			typoVariant = "body1",
-			typographyProps,
+			TypographyProps,
 			// Input
 			name,
 			editing = true,

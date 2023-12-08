@@ -31,10 +31,12 @@ import PkyTypePickerContainer from "../../../picker/PkyTypePickerContainer";
 import PkgTypes from "../../../../modules/md-pkg-types";
 import Counters from "../../../../modules/md-counters";
 import CounterPickerContainer from "../../../picker/CounterPickerContainer";
+import { ProdTransGridContainer } from "../trans/ProdTransGridContainer";
+import { ProdComboGridContainer } from "../combo/ProdComboGridContainer";
 
 const A01Dialog = memo(
 	forwardRef((props, ref) => {
-		const { data, readWorking, dataLoaded, ...rest } = props;
+		const { data, readWorking, dataLoaded, editing, ...rest } = props;
 
 		return (
 			<DialogEx
@@ -42,7 +44,12 @@ const A01Dialog = memo(
 				responsive
 				fullWidth
 				maxWidth="md"
-				titleButtonsComponent={A01DialogTitleButtonsContainer}
+				TitleButtonsComponent={A01DialogTitleButtonsContainer}
+				sx={{
+					"& .MuiDialog-paper": {
+						backgroundColor: "rgb(255 255 255 / 100%)",
+					},
+				}}
 				contentSx={{
 					minHeight: "30em",
 				}}
@@ -57,7 +64,15 @@ const A01Dialog = memo(
 					</Container>
 				)}
 				{dataLoaded && (
-					<Box pt={1}>
+					<Box
+						pt={1}
+						sx={{
+							"& .MuiInputLabel-shrink": {
+								fontSize: "120%",
+								fontWeight: 600,
+								left: "-2px",
+							},
+						}}>
 						<FormSectionTitle>基本資料</FormSectionTitle>
 						<FormSectionBox
 							// bgcolor="rgba(0, 0, 0, 0.02)"
@@ -65,15 +80,19 @@ const A01Dialog = memo(
 							p={1}
 							pt={0}
 							mb={2}>
-							<Grid container columns={12} spacing={1}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoTextFieldContainer
+										name="ProdID"
+										label="貨品編號"
 										autoFocus
 										fullWidth
-										required
-										label="貨品編號"
-										name="ProdID"
 										value={data?.ProdID}
+										required
+										rules={{ required: "貨品編號為必填" }}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
@@ -87,6 +106,7 @@ const A01Dialog = memo(
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoCheckboxExContainer
 										label="列印條碼"
+										defaultValue="N"
 										name="BarPR"
 										valueToChecked={YesNo.valueToChecked}
 										checkedToValue={YesNo.checkedToValue}>
@@ -110,24 +130,30 @@ const A01Dialog = memo(
 								</Grid> */}
 								<Grid item xs={12} sm={12} md={12}>
 									<TypoTextFieldContainer
-										required
-										label="品名規格"
 										name="ProdData"
-										fullWidth>
+										label="品名規格"
+										fullWidth
+										required
+										rules={{
+											required: "品名規格為必填",
+										}}>
 										{data?.ProdData}
 									</TypoTextFieldContainer>
 								</Grid>
 							</Grid>
 						</FormSectionBox>
 
+						<FormSectionTitle>分類</FormSectionTitle>
 						<FormSectionBox
 							// bgcolor="rgba(0, 0, 0, 0.02)"
 							// borderLeft="5px solid rgb(16 160 215)"
 							p={1}
 							pt={0}
 							mb={2}>
-							<FormSectionTitle>分類</FormSectionTitle>
-							<Grid container columns={12} spacing={1}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
 									<ProdCatLPickerContainer name="catL">
 										{ProdLCats.getOptionLabel(data?.catL)}
@@ -175,9 +201,12 @@ const A01Dialog = memo(
 								</Grid>
 							</Grid>
 						</FormSectionBox>
+						<FormSectionTitle>成本</FormSectionTitle>
 						<FormSectionBox p={1} pt={0} mb={2}>
-							<FormSectionTitle>成本</FormSectionTitle>
-							<Grid container columns={12} spacing={1}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoTextFieldContainer
 										name="StdCost"
@@ -218,7 +247,10 @@ const A01Dialog = memo(
 							pt={2}
 							p={1}
 							mb={2}>
-							<Grid container columns={12} spacing={1}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoTextFieldContainer
 										label="儲位"
@@ -236,20 +268,23 @@ const A01Dialog = memo(
 							</Grid>
 						</FormSectionBox>
 
+						<FormSectionTitle>安全存量</FormSectionTitle>
 						<FormSectionBox
 							// bgcolor="rgba(0, 0, 0, 0.02)"
 							// borderLeft="5px solid rgb(16 160 215)"
 							p={1}
 							pt={0}
 							mb={2}>
-							<FormSectionTitle>安全存量</FormSectionTitle>
-							<Grid container columns={12} spacing={1}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoTextFieldContainer
-										label="平日"
 										name="SafeQty"
-										fullWidth
-										type="number">
+										label="平日"
+										type="number"
+										fullWidth>
 										{Strings.formatPrice(data?.SafeQty)}
 									</TypoTextFieldContainer>
 								</Grid>
@@ -272,14 +307,17 @@ const A01Dialog = memo(
 							</Grid>
 						</FormSectionBox>
 
+						<FormSectionTitle>包裝單位</FormSectionTitle>
 						<FormSectionBox
 							// bgcolor="rgba(0, 0, 0, 0.02)"
 							// borderLeft="5px solid rgb(16 160 215)"
 							p={1}
 							pt={0}
 							mb={2}>
-							<FormSectionTitle>包裝單位</FormSectionTitle>
-							<Grid container columns={12} spacing={1}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
 									<PkyTypePickerContainer
 										name="bunit"
@@ -311,14 +349,17 @@ const A01Dialog = memo(
 							</Grid>
 						</FormSectionBox>
 
+						<FormSectionTitle>換算率</FormSectionTitle>
 						<FormSectionBox
 							// bgcolor="rgba(0, 0, 0, 0.02)"
 							// borderLeft="5px solid rgb(16 160 215)"
 							p={1}
 							pt={0}
 							mb={2}>
-							<FormSectionTitle>換算率</FormSectionTitle>
-							<Grid container columns={12} spacing={1}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoTextFieldContainer
 										label="銷/存"
@@ -346,14 +387,17 @@ const A01Dialog = memo(
 							</Grid>
 						</FormSectionBox>
 
+						<FormSectionTitle>售價</FormSectionTitle>
 						<FormSectionBox
 							// bgcolor="rgba(0, 0, 0, 0.02)"
 							// borderLeft="5px solid rgb(16 160 215)"
 							p={1}
 							pt={0}
 							mb={2}>
-							<FormSectionTitle>售價</FormSectionTitle>
-							<Grid container columns={12} spacing={1}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={2}>
 									<TypoTextFieldContainer
 										label="建議售價"
@@ -415,19 +459,21 @@ const A01Dialog = memo(
 								</Grid>
 							</Grid>
 						</FormSectionBox>
-						<Grid container>
-							<Grid item xs={12} sm={12} md={6}>
-								<FormSectionBox pt={2} p={1} mb={2}>
+						<Grid container columns={24} spacing={1}>
+							<Grid item xs={24} sm={24} md={24} lg={11} xl={11}>
+								<FormSectionBox p={1} pt={0} mb={2}>
 									<FormSectionTitle>
 										調撥成本
 									</FormSectionTitle>
+									<ProdTransGridContainer />
 								</FormSectionBox>
 							</Grid>
-							<Grid item xs={12} sm={12} md={6}>
-								<FormSectionBox pt={2} p={1} mb={2}>
+							<Grid item xs={24} sm={24} md={6} lg={13} xl={13}>
+								<FormSectionBox p={1} pt={0} mb={2}>
 									<FormSectionTitle>
 										組合細項
 									</FormSectionTitle>
+									<ProdComboGridContainer />
 								</FormSectionBox>
 							</Grid>
 						</Grid>
@@ -456,6 +502,7 @@ A01Dialog.propTypes = {
 	// readState: PropTypes.symbol,
 	readWorking: PropTypes.bool,
 	dataLoaded: PropTypes.bool,
+	editing: PropTypes.bool,
 };
 
 A01Dialog.displayName = "A01Dialog";

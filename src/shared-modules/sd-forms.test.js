@@ -47,3 +47,32 @@ it("should processDateFieldsForReset", () => {
 		)
 	).toStrictEqual(expected);
 });
+
+it("should assignDefaultValues", () => {
+	const source = {
+		a: null,
+		b: null,
+		c: 1,
+		d: "A",
+		e: null,
+	};
+	let expected = {
+		a: 0,
+		b: 0,
+		c: 1,
+		d: "A",
+		e: null,
+	};
+	expect(Forms.assignDefaultValues(source, "a,b", 0)).toStrictEqual(expected);
+
+	expected = {
+		a: "",
+		b: "",
+		c: 1,
+		d: "A",
+		e: null,
+	};
+	expect(Forms.assignDefaultValues(source, "a,b,c", "")).toStrictEqual(
+		expected
+	);
+});

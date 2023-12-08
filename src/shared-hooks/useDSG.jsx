@@ -29,8 +29,6 @@ export const useDSG = ({
 
 	const [deletingRow, setDeletingRow] = useState();
 
-	// const keyColumnName = useMemo(() => keyColumn, [keyColumn]);
-
 	const otherColumnNames = useMemo(() => {
 		return Arrays.parse(otherColumns);
 	}, [otherColumns]);
@@ -45,9 +43,9 @@ export const useDSG = ({
 	const handleGridDataLoaded = useCallback(
 		(payload) => {
 			// console.debug(`data loaded`, payload);
-			console.debug(`${gridId}.onDataLoaded`);
+			console.debug(`${gridId}.onDataLoaded, payload:`, payload);
 			persistedIds.clear();
-			payload.map((i) => {
+			payload?.map((i) => {
 				persistedIds.add(i[keyColumn]);
 			});
 			setState((prev) => ({
@@ -155,6 +153,14 @@ export const useDSG = ({
 		[keyColumn, state.gridData]
 	);
 
+	const propagateGridChange = useCallback(
+		(newValue, _) => {
+			console.debug(`${gridId}.propagateGridChange`);
+			setGridData(newValue);
+		},
+		[gridId, setGridData]
+	);
+
 	const handleGridChange = useCallback(
 		({
 				// C
@@ -168,8 +174,9 @@ export const useDSG = ({
 				onDelete,
 				// E
 				onDuplicatedError,
-			}) =>
+			} = {}) =>
 			(newValue, operations) => {
+				console.debug(`${gridId}.handleGridChange`, newValue);
 				// 只處理第一行
 				const operation = operations[0];
 				console.debug("operation", operation);
@@ -270,6 +277,7 @@ export const useDSG = ({
 				}
 			},
 		[
+			gridId,
 			isDuplicated,
 			isInPrevGridData,
 			isUnchanged,
@@ -382,6 +390,10 @@ export const useDSG = ({
 		[gridId]
 	);
 
+	const clearGridData = useCallback(() => {
+		setGridData([]);
+	}, [setGridData]);
+
 	// const toggleLockRows = useCallback((enabled) => {
 	// 	setLockRows(!enabled);
 	// }, []);
@@ -393,9 +405,11 @@ export const useDSG = ({
 		keyColumn,
 		setGridLoading,
 		handleGridDataLoaded,
+		propagateGridChange, // 單純 passthrough data
 		commitChanges,
 		rollbackChanges,
 		setGridData,
+		clearGridData,
 		handleGridChange,
 		isPersisted,
 		handleActiveCellChange,

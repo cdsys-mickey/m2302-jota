@@ -12,8 +12,7 @@ const A16GridContainer = () => {
 	return (
 		<A16Grid
 			lockRows={a16.lockRows}
-			gridRef={a16.gridRef}
-			setGridRef={a16.setGridRef}
+			gridRef={a16.setGridRef}
 			data={a16.gridData}
 			loading={a16.gridLoading}
 			handleChange={a16.handleGridChange({

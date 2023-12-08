@@ -62,6 +62,37 @@ export const useDialogs = ({ ButtonProps }) => {
 		[closeLatest, create]
 	);
 
+	const prompt = useCallback(
+		({
+			title = "確認",
+			message = "[訊息]",
+			value = "",
+			onConfirm,
+			onCancel,
+			...rest
+		}) => {
+			create({
+				title: title,
+				message: message,
+				prompt: true,
+				promptValue: value,
+				promptTextFieldProps: {
+					label: "正式商品編號",
+				},
+				onConfirm: (v) => {
+					if (onConfirm) onConfirm(v);
+					closeLatest();
+				},
+				onCancel: () => {
+					if (onCancel) onCancel();
+					closeLatest();
+				},
+				...rest,
+			});
+		},
+		[closeLatest, create]
+	);
+
 	const alert = useCallback(
 		({ title = "提醒", message = "[訊息]", onConfirm }) => {
 			create({
@@ -84,5 +115,6 @@ export const useDialogs = ({ ButtonProps }) => {
 		alert,
 		setWorking,
 		closeLatest,
+		prompt,
 	};
 };

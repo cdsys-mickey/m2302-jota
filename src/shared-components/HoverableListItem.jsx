@@ -1,6 +1,6 @@
 import { cyan, grey } from "@mui/material/colors";
 import { Box, styled } from "@mui/system";
-import Colors from "@/modules/colors";
+import Colors from "@/modules/md-colors";
 import { useMemo } from "react";
 
 const HoverableListItem = styled(Box, {

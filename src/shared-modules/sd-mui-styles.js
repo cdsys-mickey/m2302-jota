@@ -28,9 +28,9 @@ const STYLES = Object.freeze({
 		"& .MuiTypography-root": {
 			fontWeight: 600,
 		},
-		DEFAULT_INPUT_LABEL_PROPS: {
-			shrink: true,
-		},
+	},
+	DEFAULT_INPUT_LABEL_PROPS: {
+		shrink: true,
 	},
 });
 

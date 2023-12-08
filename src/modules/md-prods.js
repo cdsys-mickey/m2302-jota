@@ -1,15 +1,15 @@
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { Code, Name } = option;
-	return `${Code} ${Name}`;
+	const { ProdID, ProdData } = option;
+	return `${ProdID} ${ProdData}`;
 };
 
 const isOptionEqualToValue = (option, value) =>
-	option["Code"] === value["Code"];
+	option["ProdID"] === value["ProdID"];
 
-const Products = {
+const Prods = {
 	getOptionLabel,
 	isOptionEqualToValue,
 };
 
-export default Products;
+export default Prods;

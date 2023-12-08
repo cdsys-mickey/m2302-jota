@@ -30,11 +30,11 @@ const FrameBanner = memo(
 					</ResponsiveFrameTitle>
 				</FlexBox>
 
-				{SearchComponent ? (
+				{SearchComponent && (
 					<FlexBox alignItems="center" flex={mobile ? 2 : 1} px={2}>
 						<SearchComponent />
 					</FlexBox>
-				) : null}
+				)}
 
 				<FlexBox
 					alignItems="center"

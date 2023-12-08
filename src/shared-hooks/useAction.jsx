@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import ActionState from "../shared-constants/action-state";
 
 export const useAction = (initState = null) => {
-	// const [actionState, setActionState] = useState(initState);
 	const [state, setState] = useState({
 		state: initState,
 		payload: null,
@@ -50,24 +49,31 @@ export const useAction = (initState = null) => {
 
 	const fail = useCallback((err) => {
 		// setActionState(ActionState.FAILED);
-		setState([
-			(prev) => ({
-				...prev,
-				state: ActionState.FAILED,
-				payload: null,
-				message: null,
-			}),
-		]);
+		setState((prev) => ({
+			...prev,
+			state: ActionState.FAILED,
+			payload: null,
+			message: null,
+		}));
 		setErrorState({
 			failed: true,
 			error: err,
 		});
 	}, []);
 
+	// const clear = useCallback(() => {
+	// 	setState({
+	// 		state: null,
+	// 		payload: null,
+	// 		message: null,
+	// 	});
+	// 	setErrorState({
+	// 		error: null,
+	// 		failed: false,
+	// 	});
+	// }, []);
+
 	const clear = useCallback(() => {
-		// setActionState(null);
-		// setPayload(null);
-		// setMessage(null);
 		setState({
 			state: null,
 			payload: null,
@@ -90,6 +96,7 @@ export const useAction = (initState = null) => {
 		start,
 		finish,
 		fail,
+		// clear,
 		clear,
 	};
 };

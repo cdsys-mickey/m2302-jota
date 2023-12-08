@@ -1,7 +1,6 @@
 import A01 from "@/modules/md-a01";
 import React, { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import SearchForm from "@/shared-components/SearchForm";
 import PurchaseSearchPopperContainer from "./PurchaseSearchPopperContainer";
 import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 import { usePurchase } from "@/contexts/purchase/usePurchase";
@@ -9,6 +8,7 @@ import { forwardRef } from "react";
 import useSearchField from "@/shared-hooks/useSearchField";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRef } from "react";
+import SearchField from "../../shared-components/search-field/SearchField";
 
 const PurchaseOrderSearchFormContainer = forwardRef((props, ref) => {
 	const { fieldName = "q", ...rest } = props;
@@ -40,7 +40,7 @@ const PurchaseOrderSearchFormContainer = forwardRef((props, ref) => {
 	return (
 		<div ref={escRef}>
 			<FormProvider {...forms}>
-				<SearchForm
+				<SearchField
 					fieldName={fieldName}
 					onSubmit={handleSubmit}
 					placeholder="以進貨單號或採購單號搜尋"

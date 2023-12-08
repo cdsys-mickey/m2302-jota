@@ -1,4 +1,5 @@
 import { LoadingButton } from "@mui/lab";
+import { Box, TextField } from "@mui/material";
 import {
 	Button,
 	Dialog,
@@ -12,6 +13,9 @@ import { forwardRef, memo, useMemo } from "react";
 import DialogTitleEx from "./DialogTitleEx";
 import { useContext } from "react";
 import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
+import MuiStyles from "../../shared-modules/sd-mui-styles";
+import { useRef } from "react";
+import { useCallback } from "react";
 
 /**
  * 關鍵屬性是 onConfirm, onCancel, 以及 onClose, 雖然沒有在這裡定義 onClose,
@@ -24,6 +28,7 @@ import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveCo
 const DialogEx = memo(
 	forwardRef((props = {}, ref) => {
 		const {
+			sx = [],
 			title,
 			titleSx = [],
 			contentSx = [],
@@ -42,10 +47,10 @@ const DialogEx = memo(
 			loading = false,
 			working = false,
 			titleButtons,
-			titleButtonsComponent,
+			TitleButtonsComponent,
 			titleProps,
 			otherActionButtons,
-			otherActionButtonsComponent,
+			OtherActionButtonsComponent,
 
 			responsive = false,
 			fullScreen,
@@ -54,15 +59,23 @@ const DialogEx = memo(
 			onCancel,
 			onClose,
 			onReturn,
+			// PROMPT
+			prompt = false,
+			promptValue = "",
+			promptTextFieldProps,
 			...rest
 		} = props;
 
-		const TitleButtonsComponent = titleButtonsComponent;
-		const OtherActionButtonsComponent = otherActionButtonsComponent;
+		const inputRef = useRef();
+		const setInputRef = useCallback((node) => {
+			if (node) {
+				inputRef.current = node;
+			}
+		}, []);
 
 		const showTitle = useMemo(() => {
-			return title || titleButtons || titleButtonsComponent || onClose;
-		}, [onClose, title, titleButtons, titleButtonsComponent]);
+			return title || titleButtons || TitleButtonsComponent || onClose;
+		}, [onClose, title, titleButtons, TitleButtonsComponent]);
 
 		const doRenderOtherActionButtonsComponent = useMemo(() => {
 			return OtherActionButtonsComponent && !otherActionButtons;
@@ -80,18 +93,31 @@ const DialogEx = memo(
 			return (!!responsiveCtx && responsive && mobile) || fullScreen;
 		}, [fullScreen, mobile, responsive, responsiveCtx]);
 
+		const showMessage = useMemo(() => {
+			return !!message && !prompt;
+		}, [message, prompt]);
+
+		const handleConfirm = useCallback(() => {
+			// console.debug("inputRef", inputRef);
+			// console.debug("value", inputRef.current?.value);
+			if (onConfirm) {
+				onConfirm(inputRef.current?.value);
+			}
+		}, [onConfirm]);
+
 		return (
 			<Dialog
 				ref={ref}
 				onClose={onClose}
 				fullScreen={isFullScreen}
+				sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 				{...rest}>
 				{showTitle && (
 					<DialogTitleEx
 						onClose={onClose}
 						onReturn={onReturn}
 						buttons={titleButtons}
-						buttonsComponent={TitleButtonsComponent}
+						ButtonsComponent={TitleButtonsComponent}
 						{...titleProps}
 						sx={[
 							{
@@ -109,7 +135,7 @@ const DialogEx = memo(
 						...(Array.isArray(contentSx) ? contentSx : [contentSx]),
 					]}
 					{...contentProps}>
-					{message &&
+					{showMessage &&
 						message
 							.split("\n")
 							.map((line, index) => (
@@ -117,7 +143,21 @@ const DialogEx = memo(
 									{line}
 								</DialogContentText>
 							))}
-
+					{prompt && (
+						<Box py={1}>
+							<TextField
+								inputRef={setInputRef}
+								placeholder={message}
+								size="small"
+								fullWidth
+								InputLabelProps={
+									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
+								}
+								value={promptValue}
+								{...promptTextFieldProps}
+							/>
+						</Box>
+					)}
 					{children}
 				</DialogContent>
 				{!loading && (
@@ -131,7 +171,7 @@ const DialogEx = memo(
 								type="submit"
 								variant="contained"
 								color="primary"
-								onClick={onConfirm}
+								onClick={handleConfirm}
 								loading={working}
 								{...ButtonProps}
 								{...confirmButtonProps}>
@@ -174,13 +214,13 @@ DialogEx.propTypes = {
 	confirmButtonProps: PropTypes.object,
 	cancelButtonProps: PropTypes.object,
 	titleButtons: PropTypes.element,
-	titleButtonsComponent: PropTypes.oneOfType([
+	TitleButtonsComponent: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.elementType,
 	]),
 	titleProps: PropTypes.object,
 	otherActionButtons: PropTypes.element,
-	otherActionButtonsComponent: PropTypes.oneOfType([
+	OtherActionButtonsComponent: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.elementType,
 	]),
@@ -189,6 +229,10 @@ DialogEx.propTypes = {
 	titleSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	contentSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	// prompt
+	prompt: PropTypes.bool,
+	promptValue: PropTypes.string,
+	promptTextFieldProps: PropTypes.object,
 };
 
 export default DialogEx;

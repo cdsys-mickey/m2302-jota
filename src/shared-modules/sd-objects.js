@@ -88,12 +88,35 @@ const isAllPropsEqual = (x, y, columnPattern) => {
 	return true;
 };
 
+const isAnyPropNotEmpty = (obj, columnPattern) => {
+	if (!obj) {
+		throw "obj cabnot be null";
+	}
+	if (!columnPattern) {
+		for (const field of Object.keys(obj)) {
+			if (obj[field]) {
+				return true;
+			}
+		}
+		return false;
+	}
+	const columns = Arrays.parse(columnPattern);
+	for (const field of columns) {
+		const value = obj[field];
+		if (value) {
+			return true;
+		}
+	}
+	return false;
+};
+
 const Objects = {
 	isAllPropsNotNull,
 	isAllPropsNull,
 	isAllPropsNotNullOrEmpty,
 	hasAllProps,
 	isAllPropsEqual,
+	isAnyPropNotEmpty,
 };
 
 export default Objects;

@@ -7,6 +7,7 @@ import { useCallback, useContext } from "react";
 import { toast } from "react-toastify";
 import { useDSG } from "../../shared-hooks/useDSG";
 import { A26Context } from "./A26Context";
+import Errors from "../../shared-modules/sd-errors";
 
 export const A26Provider = (props) => {
 	const { children } = props;
@@ -73,7 +74,7 @@ export const A26Provider = (props) => {
 					);
 				} else {
 					// rollbackChanges();
-					toast.error(error?.message || "新增失敗");
+					toast.error(Errors.getMessage("新增失敗", error));
 				}
 			} catch (err) {
 				toast.error(`新增代碼發生例外: ${err.message}`);
@@ -102,7 +103,7 @@ export const A26Provider = (props) => {
 						`代碼 ${rowData.CodeID}/${rowData.CodeData} 修改成功`
 					);
 				} else {
-					toast.error(error?.message || "修改失敗");
+					toast.error(Errors.getMessage("修改失敗", error));
 				}
 			} catch (err) {
 				toast.error(`新增代碼發生例外: ${err.message}`);
@@ -131,7 +132,7 @@ export const A26Provider = (props) => {
 					);
 				} else {
 					// rollbackChanges();
-					toast.error(error?.message || "刪除失敗");
+					toast.error(Errors.getMessage("刪除失敗", error));
 				}
 			} catch (err) {
 				console.error(err);

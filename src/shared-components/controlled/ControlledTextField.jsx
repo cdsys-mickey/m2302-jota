@@ -1,5 +1,7 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
+import PropTypes from "prop-types";
 
 export const ControlledTextField = ({
 	name,
@@ -11,6 +13,7 @@ export const ControlledTextField = ({
 	labelShrink = false,
 	defaultValue = "",
 	sx = [],
+	EndAdornmentComponent,
 	...rest
 }) => {
 	return (
@@ -24,11 +27,14 @@ export const ControlledTextField = ({
 					required={required}
 					value={value}
 					sx={[
-						{
+						(theme) => ({
 							"&:has(.MuiInputBase-input:focus)": {
-								backgroundColor: "rgb(253 253 253)",
+								// backgroundColor: "rgb(253 253 253)",
 							},
-						},
+							"& .MuiOutlinedInput-root": {
+								paddingRight: theme.spacing(1),
+							},
+						}),
 						...(Array.isArray(sx) ? sx : [sx]),
 					]}
 					onChange={
@@ -41,11 +47,20 @@ export const ControlledTextField = ({
 									}
 							  }
 					}
-					InputProps={
-						readOnly
-							? { readOnly: true, disableUnderline: true }
-							: null
-					}
+					InputProps={{
+						...(readOnly && {
+							readOnly: true,
+							disableUnderline: true,
+						}),
+						...(EndAdornmentComponent && {
+							endAdornment: (
+								<EndAdornmentComponent
+									value={value}
+									onChange={onChange}
+								/>
+							),
+						}),
+					}}
 					disabled={readOnly}
 					InputLabelProps={{
 						...(labelShrink && { shrink: true }),
@@ -57,4 +72,11 @@ export const ControlledTextField = ({
 			)}
 		/>
 	);
+};
+
+ControlledTextField.propTypes = {
+	EndAdornmentComponent: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.elementType,
+	]),
 };

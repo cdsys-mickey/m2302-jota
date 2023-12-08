@@ -63,10 +63,8 @@ export const useWebApi = (props) => {
 			if (!apiUrl) {
 				throw `url cannot be null`;
 			}
-			console.debug(`${method} ${apiUrl}`);
-			if (data) {
-				console.debug(data, "data");
-			}
+			console.debug(`${method} ${apiUrl}`, data);
+
 			let formData;
 			if (mode === "form") {
 				formData = new FormData();

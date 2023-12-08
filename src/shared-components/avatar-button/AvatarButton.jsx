@@ -10,9 +10,10 @@ const AvatarButton = memo((props) => {
 		anchorEl,
 		handleClick,
 		handleMenuClose,
+		MenuComponent,
 		...rest
 	} = props;
-	const renderMenu = children;
+	// const renderMenu = children;
 	return (
 		<>
 			<Tooltip title={fullName}>
@@ -20,20 +21,20 @@ const AvatarButton = memo((props) => {
 					<Avatar sx={{ width: 32, height: 32 }}>{name}</Avatar>
 				</IconButton>
 			</Tooltip>
-			{renderMenu
+			{/* {renderMenu
 				? renderMenu({
 						open: !!anchorEl,
 						anchorEl,
 						onClose: handleMenuClose,
 				  })
-				: null}
-			{/* {Menu && (
-				<Menu
+				: null} */}
+			{MenuComponent && (
+				<MenuComponent
 					open={!!anchorEl}
 					anchorEl={anchorEl}
 					onClose={handleMenuClose}
 				/>
-			)} */}
+			)}
 		</>
 	);
 });
@@ -43,5 +44,6 @@ AvatarButton.propTypes = {
 	anchorEl: PropTypes.object,
 	handleClick: PropTypes.func,
 	handleMenuClose: PropTypes.func,
+	MenuComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
 };
 export default AvatarButton;

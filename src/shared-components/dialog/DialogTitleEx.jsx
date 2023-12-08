@@ -9,10 +9,12 @@ import DialogTitleButtonsBox from "@/shared-components/dialog/DialogTitleButtons
 import FlexBox from "@/shared-components/FlexBox";
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import { memo, forwardRef } from "react";
+import PropTypes from "prop-types";
 
 const DialogTitleEx = memo(
 	forwardRef((props, ref) => {
 		const {
+			size = "medium",
 			children,
 			onClose,
 			closeText = "",
@@ -20,7 +22,7 @@ const DialogTitleEx = memo(
 			returnText = "",
 			returnIcon,
 			buttons,
-			buttonsComponent,
+			ButtonsComponent,
 			closeButtonProps = { size: "small" },
 			padding = "8px 24px",
 			sx = [],
@@ -28,8 +30,6 @@ const DialogTitleEx = memo(
 			xOffset = 4,
 			...rest
 		} = props;
-
-		const ButtonsComponent = buttonsComponent;
 
 		const doRenderButtonsComponent = useMemo(() => {
 			return ButtonsComponent && !buttons;
@@ -72,6 +72,7 @@ const DialogTitleEx = memo(
 								// disableRipple
 								aria-label="back"
 								onClick={onReturn}
+								size={size}
 								sx={(theme) => ({
 									color: (theme) => theme.palette.grey[500],
 									// marginLeft: theme.spacing(1),
@@ -114,8 +115,7 @@ const DialogTitleEx = memo(
 									color: (theme) => theme.palette.grey[500],
 									marginLeft: theme.spacing(1),
 								})}
-								// {...closeButtonProps}
-							>
+								size={size}>
 								<CloseIcon />
 							</IconButton>
 						</Tooltip>
@@ -125,7 +125,9 @@ const DialogTitleEx = memo(
 		);
 	})
 );
-
+DialogTitleEx.propTypes = {
+	size: PropTypes.oneOf(["medium", "small"]),
+};
 DialogTitleEx.displayName = "DialogTitleEx";
 
 export default DialogTitleEx;

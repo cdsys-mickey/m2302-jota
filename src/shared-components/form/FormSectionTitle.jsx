@@ -6,7 +6,7 @@ const FormSectionTitle = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;
 		return (
-			<Box ref={ref} my={1} {...rest}>
+			<Box ref={ref} mb={2} {...rest}>
 				<Typography
 					variant="subtitle1"
 					sx={[

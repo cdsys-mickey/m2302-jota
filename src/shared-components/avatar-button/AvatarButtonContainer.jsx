@@ -27,7 +27,7 @@ const AvatarButtonContainer = (props) => {
 		return (operator?.UserName || "?")[0];
 	}, [operator?.UserName]);
 
-	const Menu = (props) => <AccountMenuContainer {...props} />;
+	// const Menu = (props) => <AccountMenuContainer {...props} />;
 
 	return (
 		<AvatarButton
@@ -36,8 +36,9 @@ const AvatarButtonContainer = (props) => {
 			handleMenuClose={handleMenuClose}
 			fullName={fullName}
 			name={name}
+			MenuComponent={AccountMenuContainer}
 			{...rest}>
-			{Menu}
+			{/* {Menu} */}
 		</AvatarButton>
 	);
 };

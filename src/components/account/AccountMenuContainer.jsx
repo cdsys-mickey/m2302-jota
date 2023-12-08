@@ -8,7 +8,9 @@ export const AccountMenuContainer = ({ ...rest }) => {
 	const title = useMemo(() => {
 		return `${auth.operator?.CurDeptName} ${auth.operator?.UserName}`;
 	}, [auth.operator?.CurDeptName, auth.operator?.UserName]);
-	return <AccountMenu title={title} {...rest} />;
+	return (
+		<AccountMenu title={title} onSignOut={auth.confirmSignOut} {...rest} />
+	);
 };
 
 AccountMenuContainer.displayName = "AccountMenuContainer";

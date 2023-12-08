@@ -7,5 +7,13 @@ export const useToggle = (defaultChecked = false) => {
 		setChecked(!checked);
 	}, [checked]);
 
-	return [checked, toggle];
+	const onChecked = useCallback(() => {
+		setChecked(true);
+	}, []);
+
+	const onUnChecked = useCallback(() => {
+		setChecked(false);
+	}, []);
+
+	return [checked, toggle, onChecked, onUnChecked];
 };

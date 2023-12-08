@@ -1,6 +1,15 @@
+import Forms from "@/shared-modules/sd-forms";
 import ProdTypeA from "./md-prod-type-a";
 import ProdTypeB from "./md-prod-type-b";
 import TaxTypes from "./md-tax-types";
+import { v4 as uuidv4 } from "uuid";
+import Objects from "@/shared-modules/sd-objects";
+
+const Mode = Object.freeze({
+	PROD: Symbol("PROD"),
+	NEW_PROD: Symbol("NEW_PROD"),
+	STORE: Symbol("STORE"),
+});
 
 const hasEmptyError = (criteria) => {
 	if (criteria.q) {
@@ -32,6 +41,8 @@ const processForRead = (data) => {
 		Tax,
 		TypeA,
 		TypeB,
+		StoreTrans_S,
+		StoreCom_S,
 		...rest
 	} = data;
 
@@ -105,6 +116,28 @@ const processForRead = (data) => {
 		...(TypeB && {
 			typeB: ProdTypeB.getById(TypeB),
 		}),
+		...(StoreTrans_S && {
+			trans: StoreTrans_S.map((v, i) => ({
+				id: uuidv4(),
+				dept: {
+					DeptID: v.SDeptID,
+					DeptName: v.SDept_N,
+				},
+				// SCost: Number(v.SCost),
+				SCost: v.SCost,
+			})),
+		}),
+		...(StoreCom_S && {
+			combo: StoreCom_S.map((v, i) => ({
+				id: uuidv4(),
+				prod: {
+					ProdID: v.SProdID,
+					ProdData: v.Prod_N,
+				},
+				// SProdQty: Number(v.SProdQty),
+				SProdQty: v.SProdQty,
+			})),
+		}),
 	};
 };
 
@@ -112,7 +145,7 @@ const processForDefaultSubmit = (data) => {
 	return data;
 };
 
-const processForEditorSubmit = (data) => {
+const processForEditorSubmit = (data, transGridData, comboGridData) => {
 	const {
 		catL,
 		catM,
@@ -127,6 +160,8 @@ const processForEditorSubmit = (data) => {
 		typeA,
 		typeB,
 		// omit props
+		combo,
+		trans,
 		Clas_N,
 		Checker_N,
 		GroupKey_N,
@@ -140,15 +175,24 @@ const processForEditorSubmit = (data) => {
 		Clas_N,
 		Checker_N,
 		GroupKey_N,
+		combo,
+		trans,
 		Using_N,
 		WriteDate_N,
 		Writer_N,
 	};
 
 	console.debug("omitProps", omitProps);
+	let result = Forms.assignDefaultValues(
+		{
+			...rest,
+		},
+		"StdCost,TranCost,LocalCost,OutCost,SafeQty,SRate,IRate,MRate,Price,PriceA,PriceB,PriceC,PriceD,PriceE",
+		0
+	);
 
 	return {
-		...rest,
+		...result,
 		LClas: catL?.LClas || "",
 		MClas: catM?.MClas || "",
 		SClas: catS?.SClas || "",
@@ -161,11 +205,25 @@ const processForEditorSubmit = (data) => {
 		Tax: taxType?.Tax || "",
 		TypeA: typeA?.TypeA || "",
 		TypeB: typeB?.TypeB || "",
+		...(transGridData && {
+			StoreTrans_S: transGridData.map((v, i) => ({
+				Seq: i,
+				SDeptID: v.dept.DeptID,
+				SCost: v.SCost,
+			})),
+		}),
+		...(comboGridData && {
+			StoreCom_S: comboGridData.map((v, i) => ({
+				Seq: i,
+				SProdID: v.prod.ProdID,
+				SProdQty: v.ProdQtry,
+			})),
+		}),
 	};
 };
 
 const isFiltered = (criteria) => {
-	return false;
+	return Objects.isAnyPropNotEmpty(criteria, "pi,pn,bc");
 };
 
 const A01 = {
@@ -174,6 +232,7 @@ const A01 = {
 	processForDefaultSubmit,
 	processForEditorSubmit,
 	isFiltered,
+	Mode,
 };
 
 export default A01;

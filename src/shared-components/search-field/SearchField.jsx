@@ -1,204 +1,277 @@
 import Layouts from "@/shared-modules/md-layouts";
-import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
+
 import {
 	Box,
-	Button,
 	ClickAwayListener,
+	Divider,
 	Fade,
 	IconButton,
+	Paper,
 	Popper,
 	Tooltip,
-	styled,
+	InputBase,
+	FormHelperText,
 } from "@mui/material";
-import { forwardRef, memo, useCallback, useMemo } from "react";
-import SearchFieldBorder from "./SearchFieldBorder";
-import SearchIconWrapper from "./SearchIconWrapper";
-import StyledInputBase from "./StyledInputBase";
+import { memo, useMemo, useRef } from "react";
+import ControlledInputBase from "../controlled/ZZControlledInputBaseEx";
+import { useContext } from "react";
+import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
+import FlexBox from "@/shared-components/FlexBox";
+import InputBaseEx from "../input-ex/InputBaseEx";
+import ClearInputButton from "../input/ClearInputButton";
 import PropTypes from "prop-types";
+import { forwardRef } from "react";
 
-/**
- * shadowStyle: in, out
- * shadow: always, focus
- */
+const renderPaperStyles = ({
+	responsive,
+	mobile,
+	width,
+	square,
+	borderRadius,
+	rightSquare,
+	fullWidth,
+}) => {
+	const doFlex = responsive && mobile;
+	const doWidth = !doFlex && width;
+
+	return {
+		display: "flex",
+		...(doFlex && {
+			flex: 1,
+		}),
+
+		alignItems: "center",
+		p: "2px",
+		...(square && {
+			borderRadius: "4px",
+		}),
+		...(borderRadius && {
+			borderRadius: borderRadius,
+		}),
+		...(rightSquare && {
+			borderTopRightRadius: "4px",
+			borderBottomRightRadius: "4px",
+		}),
+		...(doWidth && {
+			width: width,
+		}),
+		...(fullWidth && {
+			width: "100%",
+		}),
+	};
+};
 
 const SearchField = memo(
 	forwardRef((props, ref) => {
 		const {
-			focusShadow = false,
-			// InputBase
-			inputRef,
-			name = "q",
-			value = "",
-			placeholder,
-			extraEndAdorment,
-			filtered,
-			searchIconPlacement = "left",
-			// METHODS
+			helperText,
+			value,
 			onChange,
+			mobile,
+			placeholder,
+			width,
+			sx = [],
+			square = false,
+			rightSquare = false,
+			fullWidth = false,
+			borderRadius,
+			// Box
+			BoxProps,
+			// Paper
+			PaperProps,
+			// Input
+			inputProps,
+			// input
+			name,
 			onClear,
-			onSubmit,
-			// onClear,
+			inputRef,
+			filtered,
 			// Popper
 			PopperComponent,
 			popper,
-			popperId,
+			popperId = "search",
 			popperClickAway = true,
+			onPopperToggle,
 			onPopperOpen,
 			onPopperClose,
 			popperOpen,
+			// Responsive
+			responsive = false,
+			mobilePlaceholder,
+			onSubmit,
 			...rest
 		} = props;
 
-		const doRenderPopper = useMemo(
-			() => popper || PopperComponent,
-			[PopperComponent, popper]
+		const paperRef = useRef(null);
+
+		const paperStyles = useMemo(
+			() =>
+				renderPaperStyles({
+					responsive,
+					mobile,
+					width,
+					square,
+					borderRadius,
+					rightSquare,
+					fullWidth,
+				}),
+			[
+				borderRadius,
+				fullWidth,
+				mobile,
+				responsive,
+				rightSquare,
+				square,
+				width,
+			]
 		);
 
-		const showClearButton = useMemo(() => {
-			return value !== "" && !popperOpen;
-		}, [popperOpen, value]);
+		// const doFlex = useMemo(
+		// 	() => responsive && mobile,
+		// 	[mobile, responsive]
+		// );
 
-		const showSearchIcon = useMemo(() => {
-			return (
-				searchIconPlacement === "left" ||
-				searchIconPlacement === "right"
-			);
-		}, [searchIconPlacement]);
+		// const doWidth = useMemo(() => !doFlex && width, [doFlex, width]);
+
+		const doRenderPopper = useMemo(
+			() => (popper || PopperComponent) && onPopperOpen,
+			[PopperComponent, onPopperOpen, popper]
+		);
+
+		const placeholderText = useMemo(() => {
+			if (mobile) {
+				return mobilePlaceholder || placeholder;
+			}
+			return placeholder;
+		}, [mobile, mobilePlaceholder, placeholder]);
 
 		return (
-			<div ref={ref}>
-				<SearchFieldBorder focusShadow={focusShadow}>
-					{showSearchIcon && (
-						<SearchIconWrapper placement={searchIconPlacement}>
-							<SearchIcon onClick={onSubmit} />
-						</SearchIconWrapper>
-					)}
+			<Box ref={ref}>
+				<Paper
+					// component="form"
+					ref={paperRef}
+					// ref={inputRef}
 
-					<StyledInputBase
-						id={name}
-						searchIconPlacement={searchIconPlacement}
-						name={name}
-						value={value}
-						onChange={onChange}
-						autoComplete="off"
-						inputRef={inputRef}
-						inputProps={{ "aria-label": "search" }}
-						placeholder={placeholder}
-						endAdornment={
-							<Box
-								sx={{
-									whiteSpace: "nowrap",
-									position: "absolute",
-									right: "4px",
-									...(searchIconPlacement === "right" && {
-										right: "36px",
-									}),
-								}}
-								className="right-box">
-								{extraEndAdorment}
-								<Tooltip title={value ? "清除" : ""}>
+					sx={[paperStyles, ...(Array.isArray(sx) ? sx : [sx])]}
+					onSubmit={onSubmit}
+					noValidate
+					autoComplete="off">
+					<FlexBox px={0.5} {...BoxProps}>
+						<IconButton
+							type="button"
+							sx={{
+								p: "5px",
+								// ...(square && {
+								// 	borderRadius: "4px",
+								// }),
+								// ...(borderRadius && {
+								// 	borderRadius: borderRadius,
+								// }),
+							}}
+							aria-label="search">
+							<SearchIcon />
+						</IconButton>
+						<InputBase
+							name={name}
+							inputRef={inputRef}
+							// inputRef={ref}
+							value={value}
+							onChange={onChange}
+							sx={(theme) => ({
+								ml: 0.5,
+								flex: 1,
+								transition: theme.transitions.create("width"),
+								"& input": {
+									padding: 0,
+								},
+							})}
+							placeholder={placeholderText}
+							inputProps={{
+								"aria-label": placeholder,
+								...inputProps,
+							}}
+							endAdornment={
+								<ClearInputButton
+									value={value}
+									onChange={onChange}
+								/>
+							}
+							{...rest}
+						/>
+
+						{doRenderPopper && (
+							<>
+								<Divider
+									sx={{ height: 28, m: 0.5 }}
+									orientation="vertical"
+								/>
+								<Tooltip title={popperOpen ? "" : "進階搜尋"}>
 									<IconButton
-										// onClick={handleQueryStringClear}
-										onClick={onClear}
 										color="inherit"
 										size="small"
-										sx={[
-											(theme) => ({
-												visibility: "hidden",
-												opacity: 0,
-												transition:
-													theme.transitions.create(
-														"opacity",
-														{
-															easing: theme
-																.transitions
-																.easing.sharp,
-															duration:
-																theme
-																	.transitions
-																	.duration
-																	.leavingScreen,
-														}
-													),
-											}),
-											showClearButton && {
-												opacity: 100,
-												visibility: "visible",
-											},
-										]}>
-										<ClearIcon
-											color="action"
-											fontSize="small"
+										disabled={popperOpen}
+										onClick={onPopperToggle}>
+										<TuneIcon
 											position="end"
+											// color="action"
+											color={
+												filtered ? "primary" : "inherit"
+											}
+											// color={popperOpen ? "primary" : "inherit"}
 										/>
 									</IconButton>
 								</Tooltip>
-								{onPopperOpen && (
-									<Tooltip
-										title={popperOpen ? "" : "進階搜尋"}>
-										<IconButton
-											color="inherit"
-											size="small"
-											onClick={onPopperOpen}>
-											<TuneIcon
-												position="end"
-												// color="action"
-												color={
-													filtered
-														? "primary"
-														: "inherit"
-												}
-											/>
-										</IconButton>
-									</Tooltip>
-								)}
-							</Box>
-						}
-						{...rest}
-					/>
-
-					{/* hidden submit button for default form submission */}
-					{/* <Button type="submit" sx={{ display: "none" }} /> */}
-					<input type="submit" style={{ display: "none" }} />
-				</SearchFieldBorder>
-				{doRenderPopper && (
-					<ClickAwayListener
-						onClickAway={() => {
-							if (popperClickAway) {
-								if (onPopperClose) {
-									onPopperClose();
-								} else {
-									console.error(
-										"onPopperClose not specified"
-									);
-								}
-							}
-						}}
-						mouseEvent="onMouseDown">
-						<Popper
-							sx={{ zIndex: Layouts.Z_INDEX_POPPER }}
-							id={popperId}
-							open={popperOpen}
-							anchorEl={inputRef.current}
-							// disablePortal is required for default form submission action
-							disablePortal
-							// transition
-							placement="bottom-start">
-							{({ TransitionProps }) => (
-								<Fade {...TransitionProps}>
-									<PopperComponent />
-								</Fade>
-							)}
-						</Popper>
-					</ClickAwayListener>
+							</>
+						)}
+						{doRenderPopper && (
+							<ClickAwayListener
+								onClickAway={() => {
+									if (popperClickAway) {
+										if (onPopperClose) {
+											onPopperClose();
+										} else {
+											console.error(
+												"onPopperClose not specified"
+											);
+										}
+									} else {
+										console.log("popperClickAway = false");
+									}
+								}}
+								mouseEvent="onMouseDown">
+								<Popper
+									sx={{
+										zIndex: Layouts.Z_INDEX_POPPER,
+									}}
+									id={popperId}
+									open={popperOpen}
+									anchorEl={paperRef.current}
+									// disablePortal is required for default form submission action
+									disablePortal
+									// transition
+									placement="bottom-start">
+									{({ TransitionProps }) => (
+										<Fade {...TransitionProps}>
+											<PopperComponent width={width} />
+										</Fade>
+									)}
+								</Popper>
+							</ClickAwayListener>
+						)}
+					</FlexBox>
+				</Paper>
+				{helperText && (
+					<FormHelperText error>{helperText}</FormHelperText>
 				)}
-			</div>
+			</Box>
 		);
 	})
 );
+
+SearchField.displayName = "SearchField";
 SearchField.propTypes = {
-	searchIconPlacement: PropTypes.oneOf(["left", "right", "none"]),
+	mobile: PropTypes.bool,
 };
 export default SearchField;

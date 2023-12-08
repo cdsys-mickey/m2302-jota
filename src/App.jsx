@@ -13,7 +13,7 @@ import zhTW from "date-fns/locale/zh-TW";
 import { DialogsProvider } from "@/shared-contexts/dialog/DialogsProvider";
 import { AppProvider } from "@/contexts/app/AppProvider";
 import AppRoute from "@/routes/AppRoute";
-import Colors from "@/modules/colors";
+import Colors from "@/modules/md-colors";
 import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";
 // use palette from default theme
 const { palette } = createTheme();

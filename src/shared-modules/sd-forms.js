@@ -76,9 +76,51 @@ const processDateFieldsForReset = (
 	return resultObj;
 };
 
+// const processNumberFieldsForSubmit = (obj, numberFields) => {
+// 	let resultObj = {
+// 		...obj,
+// 	};
+
+// 	let fields = [];
+// 	if (Types.isString(numberFields)) {
+// 		fields = numberFields.trim().split(/\s*,\s*/);
+// 	} else if (Array.isArray(numberFields)) {
+// 		fields = numberFields;
+// 	}
+// 	for (const field of fields) {
+// 		const value = resultObj[field];
+// 		if (isNaN(value)){
+// 			resultObj[field] = 0;
+// 		}
+// 	}
+// 	return resultObj;
+// };
+
+const assignDefaultValues = (obj, fieldNames, defaultValue = "") => {
+	let resultObj = {
+		...obj,
+	};
+
+	let fields = [];
+	if (Types.isString(fieldNames)) {
+		fields = fieldNames.trim().split(/\s*,\s*/);
+	} else if (Array.isArray(fieldNames)) {
+		fields = fieldNames;
+	}
+	for (const field of fields) {
+		const value = resultObj[field];
+		if (!value) {
+			resultObj[field] = defaultValue;
+		}
+	}
+	return resultObj;
+};
+
 const Forms = {
 	processDateFieldsForSubmit,
 	processDateFieldsForReset,
+	// processNumberFieldsForSubmit,
+	assignDefaultValues,
 };
 
 export default Forms;

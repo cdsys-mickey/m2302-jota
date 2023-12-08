@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { forwardRef, memo } from "react";
 import FormLabelEx from "./FormLabelEx";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
+import { useMemo } from "react";
 
 /**
  * 增加 label 功能的 Typography
@@ -19,6 +20,14 @@ const FormFieldLabel = memo(
 			...rest
 		} = props;
 
+		const useEmptyText = useMemo(() => {
+			return !children && emptyText;
+		}, [children, emptyText]);
+
+		const typoVariant = useMemo(() => {
+			return useEmptyText ? "body2" : "body1";
+		}, [useEmptyText]);
+
 		return (
 			<Box ref={ref}>
 				{label && (
@@ -30,9 +39,11 @@ const FormFieldLabel = memo(
 				<Typography
 					ref={ref}
 					color="text.secondary"
+					variant={typoVariant}
 					sx={[
 						(theme) => ({
-							...(children && {
+							fontWeight: 400,
+							...(!useEmptyText && {
 								color: theme.palette.primary.main,
 							}),
 						}),

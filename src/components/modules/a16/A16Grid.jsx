@@ -8,7 +8,7 @@ import {
 	keyColumn,
 } from "react-datasheet-grid";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { stringCheckboxColumn } from "@/shared-components/dsg/columns/stringCheckboxColumn";
+import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
 
 const ContextMenu = createDSGContextMenu({
@@ -18,7 +18,7 @@ const ContextMenu = createDSGContextMenu({
 const A16Grid = memo((props) => {
 	const {
 		lockRows,
-		setGridRef,
+		gridRef,
 		data,
 		loading,
 		height = 300,
@@ -78,7 +78,7 @@ const A16Grid = memo((props) => {
 			{
 				...keyColumn(
 					"Using_N",
-					stringCheckboxColumn({ trueValue: "1", falseValue: "0" })
+					createMuiCheckboxColumn({ trueValue: "1", falseValue: "0" })
 				),
 				title: "使用中",
 				minWidth: 60,
@@ -107,7 +107,7 @@ const A16Grid = memo((props) => {
 				{/* <LoadingBackdrop open={loading} /> */}
 				<DynamicDataSheetGrid
 					lockRows={lockRows}
-					ref={setGridRef}
+					ref={gridRef}
 					rowKey="DeptID"
 					height={height + (lockRows ? 48 : 0)}
 					value={data}
@@ -131,7 +131,7 @@ const A16Grid = memo((props) => {
 });
 A16Grid.propTypes = {
 	lockRows: PropTypes.bool,
-	setGridRef: PropTypes.func,
+	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,

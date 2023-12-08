@@ -28,7 +28,7 @@ const CatLProvider = (props) => {
 		otherColumns: "ClassData",
 	});
 
-	const dialogs = useContext(DialogContext);
+	const dialogs = useContext(DialogsContext);
 	const catM = useContext(CatMContext);
 	const catS = useContext(CatSContext);
 

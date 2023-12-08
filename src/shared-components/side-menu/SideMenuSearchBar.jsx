@@ -1,17 +1,17 @@
 import FlexBox from "@/shared-components/FlexBox";
-import ControlledSearchField from "@/shared-components/controlled/ControlledSearchField";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { AppBar, IconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
+import ControlledFilterField from "../controlled/ControlledFilterField";
 
 const SideMenuSearchBar = memo(
 	forwardRef((props, ref) => {
 		const {
+			name,
 			inputRef,
 			onToggleDrawerOpen,
-			name,
 			onClear,
 			onHomeClick,
 			...rest
@@ -23,9 +23,9 @@ const SideMenuSearchBar = memo(
 					<IconButton color="primary" onClick={onHomeClick}>
 						<ViewColumnIcon />
 					</IconButton>
-					<ControlledSearchField
-						inputRef={inputRef}
+					<ControlledFilterField
 						name={name}
+						inputRef={inputRef}
 						onClear={onClear}
 						searchIconPlacement="right"
 						placeholder="篩選作業 (ctrl+F9)"

@@ -11,15 +11,13 @@ import { forwardRef, memo, useCallback, useMemo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 
-// const PickerPaper = (props) => {
-// 	const { elevation = 8, ...rest } = props;
-// 	return <Paper elevation={elevation} {...rest} />;
-// };
-
 const PickerBox = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!["focusedBackgroundColor", "size"].includes(prop),
-})(({ theme, focusedBackgroundColor, size }) => ({
+		!["focusedBackgroundColor", "size", "hideBorders"].includes(prop),
+})(({ theme, focusedBackgroundColor, size, hideBorders }) => ({
+	...(hideBorders && {
+		"& fieldset": { border: "none" },
+	}),
 	"& .MuiAutocomplete-groupLabel": {
 		backgroundColor: theme.palette.primary.main,
 		...(size === "small" && {
@@ -44,50 +42,49 @@ const PickerBox = styled(Box, {
 const OptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
+			// Global
+			onChange,
+			dense = false,
+			dnd = false,
+			size = "small",
+			hideBorders = false,
 			name,
+
+			// Autocomplete
 			options,
-			fullWidth,
-			// disablePortal = true,
-			variant,
-			// noOptionsText = "無可用選項",
+			sx = [],
+			noOptionsText = "無可用選項",
 			// typeToSearchText = "請輸入關鍵字進行搜尋",
 			clearText = "清除",
 			closeText = "收和",
 			openText = "展開",
-			value,
-			// onChange,
-			multiple = false,
-			ChipProps,
-			filterSelectedOptions,
-			disableCloseOnSelect,
 			TextFieldProps,
-			placeholder,
-			inputRef,
-			dnd = false,
-			//
-			label,
+			value,
 			loading = false,
 			loadingText = "讀取中...",
-			// 提供給 Input(mui) 的屬性
-			InputProps,
-			// 提供給 input(html) 的屬性
-			inputProps,
+			multiple = false,
+			ChipProps,
+
+			// TextField
+			placeholder,
+			inputRef,
+			label,
+			fullWidth,
+			variant,
+			InputProps, // 提供給 Input(mui) 的屬性
+			inputProps, // 提供給 input(html) 的屬性
 			InputLabelProps,
 			required,
 			error,
 			helperText,
 			disabled = false,
-			filterOptions,
-			sortBy,
-			filterBy,
-			focusedBackgroundColor = "#b6f0ff",
-			// debug 用
-			// dontClose = false,
-			// dnd = true,
-			size = "small",
-			sx = [],
-			// METHODS
 			onInputChange,
+
+			// PickerBox
+			BoxProps,
+			focusedBackgroundColor = "#b6f0ff",
+
+			// METHODS
 			...rest
 		} = props;
 
@@ -97,10 +94,6 @@ const OptionPicker = memo(
 			}
 			return ChipProps;
 		}, [ChipProps, multiple]);
-
-		const noOptionsTextValue = useMemo(() => {}, []);
-
-		const filterSelectedOptionsValue = useMemo(() => {}, []);
 
 		const renderNormalInput = useCallback(
 			(textFieldProps) => {
@@ -117,16 +110,24 @@ const OptionPicker = memo(
 						inputRef={inputRef}
 						variant={variant}
 						onChange={onInputChange}
-						disabled={disabled}
+						// 在 Autocomplete 層 disabled 就可以
+						// disabled={disabled}
+
 						{...textFieldProps}
 						InputProps={{
 							...textFieldProps.InputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
+							...(dense && {
+								padding: 0,
+							}),
 							...InputProps,
 						}}
 						inputProps={{
 							...textFieldProps.inputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
+							...(dense && {
+								padding: 0,
+							}),
 							...inputProps,
 						}}
 						InputLabelProps={{
@@ -142,7 +143,7 @@ const OptionPicker = memo(
 				InputLabelProps,
 				InputProps,
 				TextFieldProps,
-				disabled,
+				dense,
 				error,
 				fullWidth,
 				helperText,
@@ -196,7 +197,6 @@ const OptionPicker = memo(
 		const renderDndTags = useCallback(
 			// (value, getCustomizedTagProps, ownerState) => {
 			(value, getCustomizedTagProps) => {
-				// console.debug(value, "renderTags");
 				return value?.map((o, index) => (
 					<Draggable key={o} draggableId={o} index={index}>
 						{/* {(provided, snapshot) => ( */}
@@ -233,32 +233,50 @@ const OptionPicker = memo(
 			[dnd, renderDndTags, renderNormalTags]
 		);
 
+		const handleChange = (event, value, reason) => {
+			console.debug(`${name}.event`, event);
+			console.debug(`${name}.value`, value);
+			console.debug(`${name}.reason`, reason);
+			if (onChange) {
+				onChange(value);
+			}
+		};
+
 		return (
 			<PickerBox
+				hideBorders={hideBorders}
 				focusedBackgroundColor={focusedBackgroundColor}
-				size={size}>
+				size={size}
+				{...BoxProps}>
 				<Autocomplete
+					onChange={handleChange}
 					ref={ref}
 					size={size}
 					PaperComponent={({ ...rest }) => (
 						<Paper elevation={8} {...rest} />
 					)}
-					// PaperComponent={PickerPaper}
 					ChipProps={chipProps}
 					disabled={disabled}
-					// disablePortal={disablePortal}
-					noOptionsText={noOptionsTextValue}
+					noOptionsText={noOptionsText}
 					clearText={clearText}
 					closeText={closeText}
 					openText={openText}
 					multiple={multiple}
-					filterSelectedOptions={filterSelectedOptionsValue}
 					renderInput={renderInput}
 					renderTags={renderTags}
 					loading={loading}
 					loadingText={loadingText}
 					value={value}
-					sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
+					sx={[
+						{
+							...(disabled && {
+								"& .MuiAutocomplete-popupIndicator": {
+									opacity: 0,
+								},
+							}),
+						},
+						...(Array.isArray(sx) ? sx : [sx]),
+					]}
 					options={options}
 					{...rest}
 				/>
@@ -268,7 +286,46 @@ const OptionPicker = memo(
 );
 OptionPicker.displayName = "OptionPicker";
 OptionPicker.propTypes = {
-	onInputChange: PropTypes.func,
+	// Global
+	onChange: PropTypes.func,
+	dnd: PropTypes.bool,
+	dense: PropTypes.bool,
+	size: PropTypes.string,
+	hideBorders: PropTypes.bool,
+	name: PropTypes.string,
+	// Autocomplete
 	options: PropTypes.array,
+	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	noOptionsText: PropTypes.string,
+	openText: PropTypes.string,
+	clearText: PropTypes.string,
+	closeText: PropTypes.string,
+	TextFieldProps: PropTypes.object,
+	value: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+		PropTypes.object,
+	]),
+	loading: PropTypes.bool,
+	loadingText: PropTypes.string,
+	multiple: PropTypes.bool,
+	ChipProps: PropTypes.object,
+	// TextField
+	placeholder: PropTypes.string,
+	inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+	label: PropTypes.string,
+	fullWidth: PropTypes.bool,
+	variant: PropTypes.string,
+	InputProps: PropTypes.object,
+	inputProps: PropTypes.object,
+	InputLabelProps: PropTypes.object,
+	required: PropTypes.bool,
+	error: PropTypes.bool,
+	helperText: PropTypes.string,
+	disabled: PropTypes.bool,
+	onInputChange: PropTypes.func,
+	// PickerBox
+	BoxProps: PropTypes.object,
+	focusedBackgroundColor: PropTypes.string,
 };
 export default OptionPicker;

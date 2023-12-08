@@ -1,9 +1,9 @@
-import BackgroundImage from "@/images/rm218batch4-ning-34.jpg";
+import BackgroundImage from "@/images/rm218batch4-ning-34_2.jpg";
 import FlexBox from "@/shared-components/FlexBox";
 import { PublicPageContainer } from "@/shared-pages/PublicPageContainer";
 import { forwardRef, memo } from "react";
 
-import Colors from "@/modules/colors";
+import Colors from "@/modules/md-colors";
 import ModuleHeading from "@/shared-components/ModuleHeading";
 import LockIcon from "@mui/icons-material/Lock";
 import { Container } from "@mui/material";

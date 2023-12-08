@@ -85,8 +85,8 @@ const AppProvider = ({ children }) => {
 				// validateToken,
 				handleTokenChange,
 				// REDIRECTS
-				// redirectToLanding,
-				// redirectToLogin
+				// toLanding,
+				// toLogin
 			}}>
 			{children}
 		</AppContext.Provider>

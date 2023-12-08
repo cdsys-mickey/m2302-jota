@@ -11,7 +11,7 @@ const AppFrameProvider = (props) => {
 	const { children, drawerWidth } = props;
 	const theme = useTheme();
 	const { mobile } = useContext(ResponsiveContext);
-	const { redirectToModule, redirectToLanding } = useAppRedirect();
+	const { toModule, toLanding } = useAppRedirect();
 	// Account
 
 	const [drawerState, setDrawerState] = useState({
@@ -53,9 +53,9 @@ const AppFrameProvider = (props) => {
 				menuItemSelected: module,
 			}));
 			console.debug(`module ${module.JobID} selected`);
-			redirectToModule(module.WebName);
+			toModule(module.WebName);
 		},
-		[redirectToModule]
+		[toModule]
 	);
 
 	const handleHomeClick = useCallback(() => {
@@ -64,8 +64,8 @@ const AppFrameProvider = (props) => {
 			menuItemSelected: null,
 		}));
 		console.debug("home clicked");
-		redirectToLanding();
-	}, [redirectToLanding]);
+		toLanding();
+	}, [toLanding]);
 
 	// const handleSelectJob = useCallback(
 	// 	(itemId) => {

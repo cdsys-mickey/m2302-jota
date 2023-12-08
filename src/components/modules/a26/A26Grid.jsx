@@ -1,6 +1,6 @@
 import Styles from "@/modules/md-styles";
 import LoadingBackdrop from "@/shared-components/LoadingBackdrop";
-import { floatColumn } from "@/shared-components/dsg/columns/floatColumn";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { Box, Container, useTheme } from "@mui/material";
 import PropTypes from "prop-types";
@@ -61,7 +61,7 @@ const A26Grid = memo((props) => {
 				disabled: lockRows,
 			},
 			{
-				...keyColumn("Other1", floatColumn(1)),
+				...keyColumn("Other1", createFloatColumn(1)),
 				title: "佣金比例",
 				grow: 1,
 				disabled: lockRows,

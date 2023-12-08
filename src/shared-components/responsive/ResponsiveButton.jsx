@@ -58,7 +58,8 @@ const ResponsiveButton = memo(
 		}
 
 		return (
-			<ButtonEx
+			<Button
+				size="small"
 				ref={ref}
 				{...(doStartIcon && {
 					startIcon,
@@ -68,7 +69,7 @@ const ResponsiveButton = memo(
 				})}
 				{...rest}>
 				{text}
-			</ButtonEx>
+			</Button>
 		);
 	})
 );

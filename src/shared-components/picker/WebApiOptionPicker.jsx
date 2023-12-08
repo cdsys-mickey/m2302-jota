@@ -5,10 +5,19 @@ import queryString from "query-string";
 import { memo } from "react";
 import OptionPicker from "./OptionPicker";
 
+const defaultTriggerServerFilter = (q) => {
+	return !!q;
+};
+
+const defaultGetData = (payload) => {
+	// return payload["data"];
+	return payload;
+};
+
 const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
-			name,
+			name = "NO_NAME",
 			// variant = "outlined",
 			// value,
 			onChange,
@@ -16,7 +25,7 @@ const WebApiOptionPicker = memo(
 			// ChipProps,
 			// filterSelectedOptions,
 			// disableCloseOnSelect,
-			filteredByServer = false,
+			filterByServer = false,
 			// TextFieldProps,
 			// placeholder,
 			// inputRef,
@@ -27,7 +36,7 @@ const WebApiOptionPicker = memo(
 			queryParam = "q",
 			queryRequired = false,
 			// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
-			qs,
+			parameters,
 			headers,
 			//
 			// label,
@@ -56,6 +65,9 @@ const WebApiOptionPicker = memo(
 			// fullWidth = false,
 			// HTTP
 			bearer,
+			// METHODS
+			triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
+			getData = defaultGetData,
 			...rest
 		} = props;
 
@@ -83,13 +95,13 @@ const WebApiOptionPicker = memo(
 		}, []);
 
 		const handleOpen = useCallback(() => {
-			console.debug(`${name}.handleOpen`);
+			// console.debug(`${name}.handleOpen`);
 			setOpen(true);
-		}, [name, setOpen]);
+		}, [setOpen]);
 
 		const handleClose = useCallback(() => {
-			console.debug(`${name}.handleClose`);
-			if (filteredByServer) {
+			// console.debug(`${name}.handleClose`);
+			if (filterByServer) {
 				setState((prev) => ({
 					...prev,
 					open: false,
@@ -103,15 +115,10 @@ const WebApiOptionPicker = memo(
 					// }),
 				}));
 			}
-		}, [filteredByServer, name]);
-
-		const defaultGetData = useCallback((payload) => {
-			// return payload["data"];
-			return payload;
-		}, []);
+		}, [filterByServer]);
 
 		const loadOptions = useCallback(
-			async ({ q, getData = defaultGetData } = {}) => {
+			async ({ q } = {}) => {
 				// 若有指定 options 則不 fetch
 				// if (options) {
 				// 	console.debug("option provided, no fetching needed");
@@ -129,16 +136,15 @@ const WebApiOptionPicker = memo(
 					...prev,
 					// query: q,
 					// loading: true,
-					noOptionsText,
+					noOptionsText: typeToSearchText,
 				}));
 				try {
 					const { status, payload, error } = await sendAsync({
 						method,
 						url,
 						data: {
-							[queryParam]: q,
-							// ...paramsObj,
-							...(qs && queryString.parse(qs)),
+							...(q && { [queryParam]: q }),
+							...(parameters && queryString.parse(parameters)),
 						},
 						headers,
 						...(bearer && {
@@ -149,9 +155,9 @@ const WebApiOptionPicker = memo(
 						setState((prev) => ({
 							...prev,
 							// loading: false,
-							options: getData(payload),
+							options: getData(payload) || [],
 							// error: error,
-							// noOptionsText: fetchErrorText,
+							noOptionsText,
 						}));
 					} else {
 						throw error || "load options failed";
@@ -173,16 +179,17 @@ const WebApiOptionPicker = memo(
 				}
 			},
 			[
-				defaultGetData,
 				name,
-				noOptionsText,
+				typeToSearchText,
 				sendAsync,
 				method,
 				url,
 				queryParam,
-				qs,
+				parameters,
 				headers,
 				bearer,
+				getData,
+				noOptionsText,
 				fetchErrorText,
 			]
 		);
@@ -191,24 +198,38 @@ const WebApiOptionPicker = memo(
 			(event) => {
 				let query = event.target.value;
 
+				// if (timerIdRef.current) {
+				// 	clearTimeout(timerIdRef.current);
+				// }
+				// timerIdRef.current = setTimeout(() => {
+				// 	if (query) {
+				// 		if (filterByServer && triggerServerFilter(query)) {
+				// 			loadOptions({ q: query });
+				// 		}
+				// 	} else {
+				// 		if (filterByServer && queryRequired) {
+				// 			setState((prevState) => ({
+				// 				...prevState,
+				// 				options: [],
+				// 				// loading: null,
+				// 				noOptionsText:
+				// 					typeToSearchText || noOptionsText,
+				// 			}));
+				// 			setLoading(null);
+				// 		}
+				// 	}
+				// }, triggerDelay);
 				if (timerIdRef.current) {
 					clearTimeout(timerIdRef.current);
 				}
 				timerIdRef.current = setTimeout(() => {
-					if (query) {
-						if (filteredByServer) {
-							loadOptions({ q: query });
-						}
-					} else {
-						if (filteredByServer && queryRequired) {
-							setState((prevState) => ({
-								...prevState,
-								options: [],
-								// loading: null,
-								noOptionsText:
-									typeToSearchText || noOptionsText,
-							}));
-							setLoading(null);
+					if (filterByServer) {
+						if (query) {
+							if (triggerServerFilter(query)) {
+								loadOptions({ q: query });
+							}
+						} else {
+							loadOptions();
 						}
 					}
 				}, triggerDelay);
@@ -217,14 +238,7 @@ const WebApiOptionPicker = memo(
 					query,
 				}));
 			},
-			[
-				filteredByServer,
-				loadOptions,
-				noOptionsText,
-				queryRequired,
-				triggerDelay,
-				typeToSearchText,
-			]
+			[filterByServer, loadOptions, triggerDelay, triggerServerFilter]
 		);
 
 		/**
@@ -232,11 +246,29 @@ const WebApiOptionPicker = memo(
 		 * @param {*} event
 		 * @param {*} value
 		 */
-		const handleChange = (event, value, reason) => {
-			console.debug(`${name}.event`, event);
-			// console.debug(`${name}.value`, value);
-			console.debug(`${name}.reason`, reason);
-			// clear options when input is empty
+		// const handleChange = (event, value, reason) => {
+		// 	console.debug(`${name}.event`, event);
+		// 	console.debug(`${name}.value`, value);
+		// 	console.debug(`${name}.reason`, reason);
+		// 	// clear options when input is empty
+		// 	if (
+		// 		queryRequired &&
+		// 		((!multiple && value === "") ||
+		// 			(multiple && Array.isArray(value) && value.length === 0))
+		// 	) {
+		// 		// clearOptions();
+		// 		setState((prevState) => ({
+		// 			...prevState,
+		// 			options: [],
+		// 			// loading: null,
+		// 		}));
+		// 		setLoading(null);
+		// 	}
+		// 	if (onChange) {
+		// 		onChange(value);
+		// 	}
+		// };
+		const handleChange = (value) => {
 			if (
 				queryRequired &&
 				((!multiple && value === "") ||
@@ -264,7 +296,7 @@ const WebApiOptionPicker = memo(
 		 * query
 		 */
 		useEffect(() => {
-			if (filteredByServer && !state.open) {
+			if (filterByServer && !state.open) {
 				setState((prevState) => ({
 					...prevState,
 					// loading: null,
@@ -272,7 +304,7 @@ const WebApiOptionPicker = memo(
 				}));
 				setLoading(null);
 			}
-		}, [filteredByServer, state.open]);
+		}, [filterByServer, state.open]);
 
 		/**
 		 * 空白展開時 fetch options
@@ -303,22 +335,21 @@ const WebApiOptionPicker = memo(
 		// 當網址清空時, 重設 options, 退回到 loading = null 狀態
 		useEffect(() => {
 			if (!url) {
-				console.debug(
-					`${name}.url set to null, options cleared due to url reset to null`
-				);
-				setState((prev) => ({
-					...prev,
-					options: [],
-				}));
 				if (onChange) {
 					onChange(null, null);
 				}
 			} else {
 				// console.debug(`url set to ${url}`);
 			}
-			// console.debug(`loading reset to null`);
+			// console.debug(`${name}.options cleared, due to url/qs changed`);
+			// console.debug(`\turl`, url);
+			// console.debug(`\tparameters`, parameters);
+			// setState((prev) => ({
+			// 	...prev,
+			// 	options: [],
+			// }));
 			setLoading(null);
-		}, [name, onChange, url]);
+		}, [name, onChange, parameters, url]);
 
 		// useEffect(() => {
 		// 	if (options && url) {
@@ -358,13 +389,13 @@ WebApiOptionPicker.propTypes = {
 	onChange: PropTypes.func,
 	multiple: PropTypes.bool,
 	ChipProps: PropTypes.object,
-	filteredByServer: PropTypes.bool,
+	filterByServer: PropTypes.bool,
 	url: PropTypes.string,
 	method: PropTypes.oneOf(["get", "post"]),
 	lazy: PropTypes.bool,
 	queryParam: PropTypes.string,
 	queryRequired: PropTypes.bool,
-	qs: PropTypes.string,
+	parameters: PropTypes.string,
 	headers: PropTypes.object,
 	disabled: PropTypes.bool,
 	typeToSearchText: PropTypes.string,
@@ -372,6 +403,8 @@ WebApiOptionPicker.propTypes = {
 	fetchErrorText: PropTypes.string,
 	triggerDelay: PropTypes.number,
 	options: PropTypes.array,
+	triggerServerFilter: PropTypes.func,
+	getData: PropTypes.func,
 };
 
 export default WebApiOptionPicker;

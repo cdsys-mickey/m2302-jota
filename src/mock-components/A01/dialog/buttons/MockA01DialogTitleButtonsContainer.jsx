@@ -13,7 +13,7 @@ const MockA01DialogTitleButtonsContainer = React.forwardRef((props, ref) => {
 	return (
 		<MockA01DialogTitleViewButtons
 			ref={ref}
-			onEdit={curd.promptUpdate}
+			onEdit={curd.updatePrompt}
 			{...rest}
 		/>
 	);

@@ -2,24 +2,28 @@ import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
 import SendIcon from "@mui/icons-material/Send";
 import { Fragment, forwardRef, memo } from "react";
 import PropTypes from "prop-types";
+import ResponsiveLoadingButton from "../../../../../shared-components/responsive/ResponsiveLoadingButton";
 
 const A01DialogTitleEditButtons = memo(
 	forwardRef((props, ref) => {
-		const { onClick, ...rest } = props;
+		const { onSave, loading, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				<ResponsiveButton
-					onClick={onClick}
+				<ResponsiveLoadingButton
+					onClick={onSave}
 					endIcon={<SendIcon />}
 					color="primary"
-					variant="contained">
+					variant="contained"
+					loading={loading}>
 					儲存
-				</ResponsiveButton>
+				</ResponsiveLoadingButton>
 			</Fragment>
 		);
 	})
 );
+A01DialogTitleEditButtons.displayName = "A01DialogTitleEditButtons";
 A01DialogTitleEditButtons.propTypes = {
-	onClick: PropTypes.func,
+	onSave: PropTypes.func,
+	loading: PropTypes.bool,
 };
 export default A01DialogTitleEditButtons;

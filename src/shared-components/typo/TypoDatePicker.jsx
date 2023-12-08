@@ -13,7 +13,7 @@ const TypoDatePicker = memo(
 			renderText,
 			emptyText = "(空白)",
 			typoVariant = "body1",
-			typographyProps,
+			TypographyProps,
 			// Input
 			name,
 			editing = false,
@@ -34,7 +34,7 @@ const TypoDatePicker = memo(
 				<FormFieldLabel
 					label={label}
 					variant={typoVariant}
-					{...typographyProps}>
+					{...TypographyProps}>
 					{text}
 				</FormFieldLabel>
 			);

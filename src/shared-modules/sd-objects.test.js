@@ -104,3 +104,46 @@ it("isAllPropsEqual", () => {
 		Objects.isAllPropsEqual(x, y, "DeptID,GroupKey,DeptName,AbbrName")
 	).toBeTruthy();
 });
+
+it("isAnyPropNotEmpty", () => {
+	let obj = {
+		a: null,
+		b: null,
+		q: "",
+	};
+
+	expect(Objects.isAnyPropNotEmpty(obj, "a,b,c")).toBeFalsy();
+
+	obj = {
+		a: null,
+		b: null,
+		q: "",
+	};
+	expect(Objects.isAnyPropNotEmpty(obj, "a,b")).toBeFalsy();
+
+	obj = {
+		a: null,
+		b: null,
+		q: "a",
+	};
+	expect(Objects.isAnyPropNotEmpty(obj, "a,b")).toBeFalsy();
+
+	obj = {
+		a: null,
+		b: null,
+		q: "a",
+		d: null,
+	};
+	expect(Objects.isAnyPropNotEmpty(obj, "a,b")).toBeFalsy();
+
+	obj = {
+		a: null,
+		b: null,
+		q: "a",
+		d: "d",
+	};
+	expect(Objects.isAnyPropNotEmpty(obj, "a,b,c,d")).toBeTruthy();
+
+	obj = { qs: "", pi: "", bc: "", pn: "" };
+	expect(Objects.isAnyPropNotEmpty(obj, "")).toBeFalsy();
+});

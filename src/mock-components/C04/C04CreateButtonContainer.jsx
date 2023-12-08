@@ -3,12 +3,14 @@ import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 import React from "react";
 import ButtonEx from "@/shared-components/button/ButtonEx";
 import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import { forwardRef } from "react";
 
-export const C04CreateButtonContainer = React.forwardRef(({ ...rest }, ref) => {
+export const C04CreateButtonContainer = forwardRef(({ ...rest }, ref) => {
 	const { handleCreating } = useCrudZZ();
 
 	return (
 		<ResponsiveButton
+			size="small"
 			ref={ref}
 			variant="contained"
 			startIcon={<AddIcon />}

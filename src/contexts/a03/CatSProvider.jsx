@@ -3,10 +3,9 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { CatSContext } from "./CatSContext";
 import { useDSG } from "../../shared-hooks/useDSG";
+import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 
 const CatSProvider = (props) => {
 	const { children } = props;
@@ -20,7 +19,7 @@ const CatSProvider = (props) => {
 		keyColumn: "SClas",
 		otherColumns: "ClassData",
 	});
-	const dialogs = useContext(DialogContext);
+	const dialogs = useContext(DialogsContext);
 	const [state, setState] = useState({
 		lgId: null,
 		mdId: null,

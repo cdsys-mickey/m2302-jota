@@ -39,7 +39,7 @@ export const SignInProvider = ({ children }) => {
 		},
 	});
 
-	const { redirectToLanding } = useAppRedirect();
+	const { toLanding } = useAppRedirect();
 
 	const [state, setState] = useState({
 		data: null,
@@ -107,7 +107,7 @@ export const SignInProvider = ({ children }) => {
 							Cookies.remove(COOKIE_ACCOUNT);
 						}
 						// 2.重導至首頁
-						redirectToLanding();
+						toLanding();
 					} else {
 						console.error(`status: ${status}`);
 						switch (status.code) {
@@ -136,7 +136,7 @@ export const SignInProvider = ({ children }) => {
 				toast.warn("請輸入正確的驗證碼");
 			}
 		},
-		[httpPostAsync, redirectToLanding]
+		[httpPostAsync, toLanding]
 	);
 
 	const onSignInSubmit = useCallback(

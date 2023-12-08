@@ -33,6 +33,14 @@ export const SideMenuProvider = ({ children }) => {
 		[q]
 	);
 
+	const onSubmit = useCallback((data) => {
+		console.debug("onSubmit", data);
+	}, []);
+
+	const onSubmitError = useCallback((err) => {
+		console.error("onSubmitError", err);
+	}, []);
+
 	useEffect(() => {
 		console.debug(`q:${q}`);
 	}, [q]);
@@ -51,8 +59,14 @@ export const SideMenuProvider = ({ children }) => {
 				...state,
 				inputRef,
 				q,
+				onSubmit,
+				onSubmitError,
 			}}>
-			<FormProvider {...forms}>{children}</FormProvider>
+			<FormProvider {...forms}>
+				{/* <form onSubmit={forms.handleSubmit(onSubmit, onSubmitError)}> */}
+				{children}
+				{/* </form> */}
+			</FormProvider>
 		</SideMenuContext.Provider>
 	);
 };

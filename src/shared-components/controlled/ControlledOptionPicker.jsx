@@ -7,7 +7,7 @@ export const ControlledOptionPicker = ({
 	name,
 	disabled = false,
 	control,
-	onChange: handleChange,
+	// onChange: handleChange,
 	rules,
 	labelShrink = false,
 	defaultValue = null,
@@ -25,16 +25,17 @@ export const ControlledOptionPicker = ({
 					<OptionPicker
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
-						onChange={
-							disabled
-								? null
-								: (e) => {
-										onChange(e.target.value);
-										if (handleChange) {
-											handleChange(e.target.value);
-										}
-								  }
-						}
+						onChange={onChange}
+						// onChange={
+						// 	disabled
+						// 		? null
+						// 		: (e) => {
+						// 				onChange(e.target.value);
+						// 				if (handleChange) {
+						// 					handleChange(e.target.value);
+						// 				}
+						// 		  }
+						// }
 						disabled={disabled}
 						InputLabelProps={{
 							...(labelShrink && { shrink: true }),

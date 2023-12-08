@@ -1,20 +1,69 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import CrudContext from "../../contexts/crud/CrudContext";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import A01 from "../../modules/md-a01";
+import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
+import { useAction } from "../../shared-hooks/useAction";
+import { useDSG } from "../../shared-hooks/useDSG";
+import { useToggle } from "../../shared-hooks/useToggle";
+import Errors from "../../shared-modules/sd-errors";
 
-export const useA01 = ({ token }) => {
+/**
+ * 適用三種情境
+ * 1. 商品維護 A01
+ * 2. 新商品維護(審核) - A010
+ * 3. 門市櫃位維護 - A011
+ */
+export const useA01 = ({ token, mode }) => {
 	const crud = useContext(CrudContext);
-	const { httpGetAsync } = useWebApi();
+	const {
+		httpGetAsync,
+		httpPostAsync,
+		httpPutAsync,
+		httpPatchAsync,
+		httpDeleteAsync,
+	} = useWebApi();
 	const [selectedItem, setSelectedItem] = useState();
 	const dialogs = useContext(DialogsContext);
+	// const form = useFormContext();
+	const [
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+	] = useToggle(false);
+
+	const loader = useInfiniteLoader({
+		url: mode === A01.Mode.NEW_PROD ? "v1/new-prods" : "v1/prods",
+		bearer: token,
+		initialFetchSize: 50,
+		// columns: "pi,bc,pn",
+	});
+
+	if (!mode) {
+		throw `mode 未指定`;
+	}
+
+	//ProdTransGrid
+	const transGrid = useDSG({
+		gridId: "trans",
+		keyColumn: "dept.DeptID",
+	});
+
+	//ProdComboGrid
+	const comboGrid = useDSG({
+		gridId: "combo",
+		keyColumn: "prod.ProdID",
+	});
 
 	const confirmReturn = useCallback(() => {
 		dialogs.confirm({
 			message: "確認要放棄編輯?",
 			onConfirm: () => {
-				crud.cancelUpdate();
+				crud.updateCancel();
 			},
 		});
 	}, [crud, dialogs]);
@@ -23,24 +72,32 @@ export const useA01 = ({ token }) => {
 		async (e, rowData) => {
 			e?.stopPropagation();
 			crud.cancelAction();
-			crud.startRead(rowData, "讀取中...");
+			crud.readStart(rowData, "讀取中...");
 			try {
 				setSelectedItem(rowData);
 				const { status, payload, error } = await httpGetAsync({
-					url: `v1/prods/${rowData.ProdID}`,
+					url:
+						mode === A01.Mode.NEW_PROD
+							? `v1/new-prods/${rowData.ProdID}`
+							: `v1/prods/${rowData.ProdID}`,
 					bearer: token,
 				});
 				console.debug("payload", payload);
 				if (status.success) {
-					crud.finishRead(A01.processForRead(payload));
+					const data = A01.processForRead(payload);
+
+					transGrid.handleGridDataLoaded(data.trans);
+					comboGrid.handleGridDataLoaded(data.combo);
+
+					crud.readDone(data);
 				} else {
 					throw error || "讀取失敗";
 				}
 			} catch (err) {
-				crud.failRead(err);
+				crud.readFail(err);
 			}
 		},
-		[crud, httpGetAsync, token]
+		[comboGrid, crud, httpGetAsync, mode, token, transGrid]
 	);
 
 	const dialogOpen = useMemo(() => {
@@ -60,25 +117,289 @@ export const useA01 = ({ token }) => {
 		crud.cancelAction();
 	}, [crud]);
 
-	const onEditorSubmit = useCallback((data) => {
-		console.debug(`A01.onSubmit()`, data);
-		const processed = A01.processForEditorSubmit(data);
-		console.debug(`processed`, processed);
-	}, []);
+	const handleCreate = useCallback(
+		async ({ data }) => {
+			try {
+				crud.createStart();
+				const { status, error } = await httpPostAsync({
+					url:
+						mode === A01.Mode.NEW_PROD
+							? "v1/new-prods"
+							: "v1/prods",
+					data: data,
+					bearer: token,
+				});
+
+				if (status.success) {
+					toast.success(
+						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${
+							data?.ProdData
+						}」新增成功`
+					);
+					crud.createDone();
+					crud.readCancel();
+					// 重新整理
+					loader.loadList({ reset: true });
+				} else {
+					throw error || "新增發生未預期例外";
+				}
+			} catch (err) {
+				crud.createFail(err);
+				console.error("handleCreate.failed", err);
+				toast.error(Errors.getMessage("新增失敗", err));
+			}
+		},
+		[crud, httpPostAsync, loader, mode, token]
+	);
+
+	const handleUpdate = useCallback(
+		async ({ data }) => {
+			try {
+				crud.updateStart();
+				const { status, error } = await httpPutAsync({
+					url:
+						mode === A01.Mode.NEW_PROD
+							? "v1/new-prods"
+							: "v1/prods",
+					data: data,
+					bearer: token,
+				});
+
+				if (status.success) {
+					toast.success(
+						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${
+							data?.ProdData
+						}」修改成功`
+					);
+					crud.updateDone();
+					crud.readCancel();
+					// 重新整理
+					loader.loadList({ reset: true });
+				} else {
+					throw error || "修改發生未預期例外";
+				}
+			} catch (err) {
+				crud.updateFail();
+				console.error("handleUpdate.failed", err);
+				toast.error(Errors.getMessage("修改失敗", err));
+			}
+		},
+		[crud, httpPutAsync, loader, mode, token]
+	);
+
+	const onEditorSubmit = useCallback(
+		async (data) => {
+			console.debug(`A01.onEditorSubmit()`, data);
+			console.debug(`transGrid.gridData`, transGrid.gridData);
+			console.debug(`comboGrid.gridData`, comboGrid.gridData);
+			const processed = A01.processForEditorSubmit(
+				data,
+				transGrid.gridData,
+				comboGrid.gridData
+			);
+			console.debug(`processed`, processed);
+			if (crud.creating) {
+				handleCreate({ data: processed });
+			} else if (crud.updating) {
+				handleUpdate({ data: processed });
+			} else {
+				console.error("UNKNOWN SUBMIT TYPE");
+			}
+		},
+		[
+			comboGrid.gridData,
+			crud.creating,
+			crud.updating,
+			handleCreate,
+			handleUpdate,
+			transGrid.gridData,
+		]
+	);
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A01.onSubmitError`, err);
+		toast.error(
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+		);
+	}, []);
+
+	const resetGridData = useCallback(
+		(data) => {
+			transGrid.setGridData(data?.trans || []);
+			comboGrid.setGridData(data?.combo || []);
+		},
+		[comboGrid, transGrid]
+	);
+
+	const createPrompt = useCallback(
+		(e) => {
+			e?.stopPropagation();
+			const data = {
+				trans: [],
+				combo: [],
+			};
+			crud.readDone(data);
+			crud.createPrompt(data);
+			transGrid.handleGridDataLoaded(data.trans);
+			comboGrid.handleGridDataLoaded(data.combo);
+		},
+		[comboGrid, crud, transGrid]
+	);
+
+	const confirmDelete = useCallback(() => {
+		dialogs.confirm({
+			message: `確認要删除商品「${crud.itemData?.ProdData}」?`,
+			onConfirm: async () => {
+				try {
+					crud.deleteStart(crud.itemData);
+					const { status, error } = await httpDeleteAsync({
+						url:
+							mode === A01.Mode.NEW_PROD
+								? `v1/new-prods/${crud.itemData?.ProdID}`
+								: `v1/prods/${crud.itemData?.ProdID}`,
+						bearer: token,
+					});
+					crud.cancelAction();
+					if (status.success) {
+						toast.success(
+							`成功删除${
+								mode === A01.Mode.NEW_PROD ? "新" : ""
+							}商品${crud.itemData.ProdData}`
+						);
+						loader.loadList({ reset: true });
+					} else {
+						throw error || `發生未預期例外`;
+					}
+				} catch (err) {
+					crud.deleteFail(err);
+					console.error("confirmDelete.failed", err);
+					toast.error(Errors.getMessage("刪除失敗", err));
+				}
+			},
+		});
+	}, [crud, dialogs, httpDeleteAsync, loader, mode, token]);
+
+	// REVIEW
+	const reviewAction = useAction();
+	const reviewing = useMemo(() => {
+		return !!reviewAction.state;
+	}, [reviewAction.state]);
+
+	const handleReview = useCallback(
+		async (value) => {
+			console.debug(`handleReview`, value);
+			try {
+				const { status, error } = await httpPatchAsync({
+					url: `v1/new-prods`,
+					data: {
+						...crud.itemData,
+						OfficialProdID: value,
+					},
+					bearer: token,
+				});
+				if (status.success) {
+					reviewAction.clear();
+					crud.cancelAction();
+					loader.loadList({ reset: true });
+					toast.success(
+						`商品「${crud.itemData?.ProdData}」已審核成功`
+					);
+				} else {
+					throw error || "發生未預期例外";
+				}
+			} catch (err) {
+				toast.error(Errors.getMessage("審核失敗", err));
+			}
+		},
+		[crud, httpPatchAsync, loader, reviewAction, token]
+	);
+
+	const reviewPrompt = useCallback(() => {
+		dialogs.prompt({
+			title: "確認審核",
+			message: "請輸入正式商品編號",
+			onConfirm: handleReview,
+			value: crud.itemData?.ProdID || "",
+			confirmText: "通過",
+		});
+		reviewAction.prompt();
+	}, [crud.itemData?.ProdID, dialogs, handleReview, reviewAction]);
+
+	// const reviewPrompt = useCallback(() => {
+	// 	reviewAction.prompt(crud.itemData, "確定要審核商品?");
+	// }, [crud.itemData, reviewAction]);
+
+	const cancelReview = useCallback(() => {
+		reviewAction.cancel();
+	}, [reviewAction]);
+
+	const startReview = useCallback(() => {
+		reviewAction.start();
+	}, [reviewAction]);
+
+	const finishReview = useCallback(() => {
+		reviewAction.finish();
+	}, [reviewAction]);
+
+	const failReview = useCallback(() => {
+		reviewAction.fail();
+	}, [reviewAction]);
+
+	const onSearchSubmit = useCallback(
+		(data) => {
+			handlePopperClose();
+			console.debug(`onSearchSubmit`, data);
+			// const q = data?.q;
+			loader.loadList({
+				params: data,
+				// reset: true,
+			});
+		},
+		[handlePopperClose, loader]
+	);
+
+	const onSearchSubmitError = useCallback((err) => {
+		console.error(`onSearchSubmitError`, err);
 	}, []);
 
 	return {
-		...crud,
+		...loader,
+
+		// Popper
+		popperOpen: popperOpen,
+		handlePopperToggle: handlePopperToggle,
+		handlePopperOpen: handlePopperOpen,
+		handlePopperClose: handlePopperClose,
+		onSearchSubmit,
+		onSearchSubmitError,
+		mode,
 		handleSelect,
 		selectedItem,
+		...crud,
 		handleDialogClose,
 		confirmDialogClose,
 		dialogOpen,
 		onEditorSubmit,
 		onEditorSubmitError,
 		confirmReturn,
+		resetGridData,
+		// CRUD OVERRIDES
+		createPrompt,
+		confirmDelete,
+		// REVIEW
+		reviewing,
+		reviewPrompt,
+		cancelReview,
+		startReview,
+		finishReview,
+		failReview,
+		// ProdTransGrid
+		setTransGridRef: transGrid.setGridRef,
+		transGridData: transGrid.gridData,
+		handleTransGridChange: transGrid.propagateGridChange,
+		// ProdComboGrid
+		setComboGridRef: comboGrid.setGridRef,
+		comboGridData: comboGrid.gridData,
+		handleComboGridChange: comboGrid.propagateGridChange,
 	};
 };

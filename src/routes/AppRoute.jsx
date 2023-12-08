@@ -25,6 +25,9 @@ import { A16FrameContainer } from "../pages/a16/A16FrameContainer";
 import { A26FrameContainer } from "../pages/a26/A26FrameContainer";
 import { DSGTestContainer } from "../pages/lab/DSGTestContainer";
 import { DSGTestProvider } from "../pages/lab/DSGTestProvider";
+import { DSGTest2Container } from "../pages/lab/DSGTest2Container";
+import { A010Provider } from "../contexts/a01/A010Provider";
+import { AA01Provider } from "../contexts/a01/AA01Provider";
 
 const AppRoute = () => {
 	return (
@@ -45,6 +48,9 @@ const AppRoute = () => {
 						</DSGTestProvider>
 					}
 				/>
+			</Route>
+			<Route path="lab-protected" element={<ProtectedRoute />}>
+				<Route path="dsg" element={<DSGTest2Container />} />
 			</Route>
 			{/* LADING REDIRECTION */}
 			<Route
@@ -79,15 +85,31 @@ const AppRoute = () => {
 						}
 					/>
 					<Route
+						path="A010"
+						element={
+							<CrudProvider>
+								<A010Provider>
+									<A01FrameContainer />
+								</A010Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="AA01"
+						element={
+							<CrudProvider>
+								<AA01Provider>
+									<A01FrameContainer />
+								</AA01Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
 						path="A02"
 						element={
-							// <DSGProvider
-							// 	keyColumn="CodeID"
-							// 	otherColumns="CodeData">
 							<A02Provider>
 								<A02FrameContainer />
 							</A02Provider>
-							// </DSGProvider>
 						}
 					/>
 					<Route
@@ -101,37 +123,25 @@ const AppRoute = () => {
 					<Route
 						path="A04"
 						element={
-							// <DSGProvider
-							// 	keyColumn="CodeID"
-							// 	otherColumns="CodeData">
 							<A04Provider>
 								<A04FrameContainer />
 							</A04Provider>
-							// </DSGProvider>
 						}
 					/>
 					<Route
 						path="A16"
 						element={
-							// <DSGProvider
-							// 	keyColumn="DeptID"
-							// 	otherColumns="GroupKey,DeptName,AbbrName">
 							<A16Provider>
 								<A16FrameContainer />
 							</A16Provider>
-							// </DSGProvider>
 						}
 					/>
 					<Route
 						path="A26"
 						element={
-							// <DSGProvider
-							// 	keyColumn="CodeID"
-							// 	otherColumns="CodeData,Other1">
 							<A26Provider>
 								<A26FrameContainer />
 							</A26Provider>
-							// </DSGProvider>
 						}
 					/>
 					<Route

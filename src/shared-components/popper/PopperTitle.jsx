@@ -1,14 +1,23 @@
-import React from "react";
+import { memo } from "react";
 import DialogTitleEx from "@/shared-components/dialog/DialogTitleEx";
+import PropTypes from "prop-types";
 
-const PopperTitle = (props) => {
-	const { children, ...rest } = props;
+const PopperTitle = memo((props) => {
+	const { children, onClose, ...rest } = props;
 
 	return (
-		<DialogTitleEx padding="0 0 16px 0" {...rest}>
+		<DialogTitleEx
+			padding="8px 0 8px 16px"
+			size="small"
+			onClose={onClose}
+			{...rest}>
 			{children}
 		</DialogTitleEx>
 	);
+});
+PopperTitle.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.elementType, PropTypes.array]),
+	onClose: PropTypes.func,
 };
-
-export default React.memo(PopperTitle);
+PopperTitle.displayName = "PopperTitle";
+export default PopperTitle;

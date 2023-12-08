@@ -8,7 +8,7 @@ export const useKeyEvent = (props) => {
 			if (e.key === key) {
 				// console.debug(`key: ${e.key}`);
 				if (callback) {
-					callback();
+					callback(e);
 				} else {
 					console.debug("callback not defined");
 				}
@@ -20,7 +20,7 @@ export const useKeyEvent = (props) => {
 			document.removeEventListener(event, handler);
 			console.debug(`key listener for ${key} removed`);
 		};
-	}, [callback, event, key, log]);
+	}, [callback, event, key]);
 };
 
 export const useKeyCodeEvent = (props) => {
@@ -32,7 +32,7 @@ export const useKeyCodeEvent = (props) => {
 			if (e.keyCode === keyCode) {
 				// console.debug(`${keyCode} pressed`);
 				if (callback) {
-					callback();
+					callback(e);
 				} else {
 					console.debug("callback not defined");
 				}
@@ -44,7 +44,7 @@ export const useKeyCodeEvent = (props) => {
 			document.removeEventListener(event, handler);
 			console.debug(`key listener for ${keyCode} removed`);
 		};
-	}, [callback, event, keyCode, log]);
+	}, [callback, event, keyCode]);
 };
 
 export const useEscapeDown = (callback) =>

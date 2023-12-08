@@ -6,11 +6,11 @@ import Cookies from "js-cookie";
 const useAppRedirect = () => {
 	const { redirectTo } = useRedirect();
 
-	const redirectToLanding = useCallback(() => {
+	const toLanding = useCallback(() => {
 		redirectTo(import.meta.env.VITE_URL_LANDING, { replace: true });
 	}, [redirectTo]);
 
-	const redirectToLogin = useCallback(() => {
+	const toLogin = useCallback(() => {
 		const impersonte = Cookies.get("md") === "im";
 		redirectTo(
 			impersonte
@@ -20,7 +20,7 @@ const useAppRedirect = () => {
 		);
 	}, [redirectTo]);
 
-	const redirectToModule = useCallback(
+	const toModule = useCallback(
 		(moduleId) => {
 			redirectTo(`/${AppRoutes.MODULES}/${moduleId}`);
 		},
@@ -28,9 +28,9 @@ const useAppRedirect = () => {
 	);
 
 	return {
-		redirectToLanding,
-		redirectToLogin,
-		redirectToModule,
+		toLanding,
+		toLogin,
+		toModule,
 	};
 };
 

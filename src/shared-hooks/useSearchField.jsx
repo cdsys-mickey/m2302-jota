@@ -1,5 +1,8 @@
 import { useCallback } from "react";
 
+/**
+ * 在 focus 狀態按下 esc 將內容清空
+ */
 const useSearchField = ({ onChange, inputRef, doubleTapToClear = false }) => {
 	const handleClear = useCallback(() => {
 		console.log("handleClear");

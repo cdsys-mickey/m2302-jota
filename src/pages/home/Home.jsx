@@ -1,6 +1,6 @@
 import HomeFrameBanner from "@/components/home/HomeFrameBanner";
 import BulletinWidgetContainer from "@/components/home/widgets/BulletinWidgetContainer";
-import Colors from "@/modules/Colors";
+import Colors from "@/modules/md-colors";
 import { CopyrightContainer } from "@/shared-components/CopyrightContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import ModuleHeading from "@/shared-components/ModuleHeading";
