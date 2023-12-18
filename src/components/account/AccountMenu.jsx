@@ -5,6 +5,7 @@ import { Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { useCallback } from "react";
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
+import { DeptSwitchMenuItemContainer } from "./menu-items/DeptSwitchMenuItemContainer";
 
 const AccountMenu = memo(
 	forwardRef(
@@ -50,14 +51,20 @@ const AccountMenu = memo(
 					}}
 					transformOrigin={{ horizontal: "right", vertical: "top" }}
 					anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-					<MenuItem onClick={onClose}>{title}</MenuItem>
+					{/* <MenuItem onClick={onClose}>{title}</MenuItem> */}
+					<DeptSwitchMenuItemContainer
+						title={title}
+						onMenuClose={onClose}
+					/>
 					<Divider />
-					<MenuItem onClick={onClose}>
+					{/* <MenuItem onClick={onClose}>
 						<ListItemIcon>
 							<RepeatIcon fontSize="small" />
 						</ListItemIcon>
 						切換體系
-					</MenuItem>
+					</MenuItem> */}
+					{/* 切換體系 */}
+
 					<MenuItem onClick={onClose}>
 						<ListItemIcon>
 							<SettingsIcon fontSize="small" />

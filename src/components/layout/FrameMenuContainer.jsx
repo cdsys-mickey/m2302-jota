@@ -3,7 +3,6 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import RWFrameMenu from "./RWFrameMenu";
-import VFrameMenu from "./VFrameMenu";
 import { SideMenuContext } from "../../contexts/SideMenuContext";
 
 const FrameMenuContainer = (props) => {
@@ -16,15 +15,6 @@ const FrameMenuContainer = (props) => {
 	const { drawerWidth } = useContext(AppFrameContext);
 
 	return (
-		// <FrameMenu
-		// 	height={height}
-		// 	authorities={filteredAuthorities}
-		// 	authoritiesLoading={authoritiesLoading}
-		// 	authoritiesError={authoritiesError}
-		// 	width={drawerWidth}
-		// 	itemCount={filteredAuthorities?.length || 0}
-		// 	{...rest}
-		// />
 		<RWFrameMenu
 			height={height}
 			data={sideMenu.filteredAuthorities}
@@ -34,15 +24,6 @@ const FrameMenuContainer = (props) => {
 			itemCount={sideMenu.filteredAuthorities?.length || 0}
 			{...rest}
 		/>
-		// <VFrameMenu
-		// 	height={height}
-		// 	data={filteredAuthorities}
-		// 	loading={authoritiesLoading}
-		// 	error={authoritiesError}
-		// 	width={drawerWidth}
-		// 	itemCount={filteredAuthorities?.length || 0}
-		// 	{...rest}
-		// />
 	);
 };
 

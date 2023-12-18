@@ -1,7 +1,6 @@
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
 import SendIcon from "@mui/icons-material/Send";
-import { Fragment, forwardRef, memo } from "react";
 import PropTypes from "prop-types";
+import { Fragment, forwardRef, memo } from "react";
 import ResponsiveLoadingButton from "../../../../../shared-components/responsive/ResponsiveLoadingButton";
 
 const A01DialogTitleEditButtons = memo(
@@ -11,6 +10,7 @@ const A01DialogTitleEditButtons = memo(
 			<Fragment ref={ref} {...rest}>
 				<ResponsiveLoadingButton
 					onClick={onSave}
+					type="submit"
 					endIcon={<SendIcon />}
 					color="primary"
 					variant="contained"

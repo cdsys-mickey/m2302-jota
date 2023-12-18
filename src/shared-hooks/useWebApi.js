@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import axios from "axios";
 import HttpStatus from "@/shared-classes/HttpStatus";
 import querystring from "query-string";
-import WebApis from "@/shared-modules/sd-web-apis";
+import WebApi from "@/shared-modules/sd-web-apis";
 
 const DEFAULT_HEADERS = {};
 
@@ -109,7 +109,7 @@ export const useWebApi = (props) => {
 					return {
 						status: status,
 						// error: getErrorFromPayload(axiosResponse.data),
-						error: WebApis.getErrorFromPayload(axiosResponse.data, {
+						error: WebApi.getErrorFromPayload(axiosResponse.data, {
 							stacktrace,
 							status: status.code,
 						}),
@@ -121,7 +121,7 @@ export const useWebApi = (props) => {
 					status: HttpStatus.from(err.response.status),
 					// payload: err.response.data,
 					// error: getErrorFromPayload(err.response.data),
-					error: WebApis.getErrorFromPayload(err.response.data, {
+					error: WebApi.getErrorFromPayload(err.response.data, {
 						stacktrace,
 						status: err.response.status,
 					}),

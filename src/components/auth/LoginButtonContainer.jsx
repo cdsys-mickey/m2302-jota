@@ -3,13 +3,15 @@ import { LoadingButton } from "@mui/lab";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { useFormContext } from "react-hook-form";
-import useSignIn from "@/contexts/signin/useSignIn";
+import { useContext } from "react";
+import { SignInContext } from "../../contexts/signin/SignInContext";
 
 const LoginButtonContainer = forwardRef((props, ref) => {
 	// const app = useAppContext();
 	const { children, ...rest } = props;
 	const forms = useFormContext();
-	const { loading, onSignInSubmit, onSignInSubmitError } = useSignIn();
+	const { loading, onSignInSubmit, onSignInSubmitError } =
+		useContext(SignInContext);
 
 	const handleSubmit = forms.handleSubmit(
 		onSignInSubmit,

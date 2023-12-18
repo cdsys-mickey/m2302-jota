@@ -145,6 +145,14 @@ const processForDefaultSubmit = (data) => {
 	return data;
 };
 
+const processForCounterSubmit = (data) => {
+	const { ProdID, counter } = data;
+	return {
+		ProdID,
+		NewCaseID: counter?.CodeID || "",
+	};
+};
+
 const processForEditorSubmit = (data, transGridData, comboGridData) => {
 	const {
 		catL,
@@ -183,13 +191,17 @@ const processForEditorSubmit = (data, transGridData, comboGridData) => {
 	};
 
 	console.debug("omitProps", omitProps);
-	let result = Forms.assignDefaultValues(
-		{
-			...rest,
-		},
-		"StdCost,TranCost,LocalCost,OutCost,SafeQty,SRate,IRate,MRate,Price,PriceA,PriceB,PriceC,PriceD,PriceE",
-		0
-	);
+	let result = {
+		...rest,
+	};
+
+	// result = Forms.assignDefaultValues(
+	// 	{
+	// 		...rest,
+	// 	},
+	// 	"StdCost,TranCost,LocalCost,OutCost,SafeQty,SRate,IRate,MRate,Price,PriceA,PriceB,PriceC,PriceD,PriceE",
+	// 	0
+	// );
 
 	return {
 		...result,
@@ -216,7 +228,7 @@ const processForEditorSubmit = (data, transGridData, comboGridData) => {
 			StoreCom_S: comboGridData.map((v, i) => ({
 				Seq: i,
 				SProdID: v.prod.ProdID,
-				SProdQty: v.ProdQtry,
+				SProdQty: v.SProdQty,
 			})),
 		}),
 	};
@@ -231,6 +243,7 @@ const A01 = {
 	processForRead,
 	processForDefaultSubmit,
 	processForEditorSubmit,
+	processForCounterSubmit,
 	isFiltered,
 	Mode,
 };

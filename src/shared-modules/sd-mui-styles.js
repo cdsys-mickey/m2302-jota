@@ -30,7 +30,7 @@ const STYLES = Object.freeze({
 		},
 	},
 	DEFAULT_INPUT_LABEL_PROPS: {
-		shrink: true,
+		// shrink: true,
 	},
 });
 

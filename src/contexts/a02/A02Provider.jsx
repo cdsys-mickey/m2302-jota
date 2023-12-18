@@ -72,7 +72,7 @@ export const A02Provider = (props) => {
 						`代碼 ${rowData.CodeID}/${rowData.CodeData} 新增成功`
 					);
 				} else {
-					throw error?.message || "新增失敗";
+					throw error?.message || new Error("新增失敗");
 				}
 			} catch (err) {
 				toast.error(`新增代碼發生例外: ${err.message}`);
@@ -98,7 +98,7 @@ export const A02Provider = (props) => {
 						`代碼 ${rowData.CodeID}/${rowData.CodeData} 修改成功`
 					);
 				} else {
-					throw error?.message || "修改失敗";
+					throw error?.message || new Error("修改失敗");
 				}
 			} catch (err) {
 				toast.error(`修改代碼發生例外: ${err.message}`);
@@ -123,7 +123,7 @@ export const A02Provider = (props) => {
 						`代碼 ${rowData.CodeID}/${rowData.CodeData} 刪除成功`
 					);
 				} else {
-					throw error?.message || "刪除失敗";
+					throw error?.message || new Error("刪除失敗");
 				}
 			} catch (err) {
 				console.error(err);

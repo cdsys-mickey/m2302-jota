@@ -9,6 +9,7 @@ import FrameMenuButtonContainer from "./FrameMenuButtonContainer";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
+import { DeptSwitchDialogContainer } from "../../components/account/DeptSwitchDialogContainer";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
@@ -50,6 +51,8 @@ const FrameBanner = memo(
 						<PushMessagesButtonContainer />
 						{/* 帳號 */}
 						<AvatarButtonContainer />
+						{/* 門市切換 */}
+						<DeptSwitchDialogContainer />
 					</Stack>
 				</FlexBox>
 			</FlexBox>

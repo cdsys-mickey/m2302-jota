@@ -8,6 +8,7 @@ const TypoWebApiOptionPicker = memo(
 		const {
 			// Common
 			children,
+			readOnly = false,
 			value,
 			label,
 			// Typography
@@ -49,6 +50,7 @@ const TypoWebApiOptionPicker = memo(
 				size={size}
 				// methods
 				getOptionLabel={getOptionLabel}
+				disabled={readOnly}
 				{...rest}
 			/>
 		);
@@ -58,6 +60,7 @@ const TypoWebApiOptionPicker = memo(
 TypoWebApiOptionPicker.displayName = "TypoWebApiOptionPicker";
 TypoWebApiOptionPicker.propTypes = {
 	children: PropTypes.node,
+	readOnly: PropTypes.bool,
 };
 
 export default TypoWebApiOptionPicker;

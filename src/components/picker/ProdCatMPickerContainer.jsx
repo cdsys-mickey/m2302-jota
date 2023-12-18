@@ -8,12 +8,12 @@ import { useWatch } from "react-hook-form";
 import { useMemo } from "react";
 
 const ProdCatMPickerContainer = forwardRef((props, ref) => {
-	const { children, ...rest } = props;
+	const { children, readOnly = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const catL = useWatch({ name: "catL" });
 	const disabled = useMemo(() => {
-		return !catL?.LClas;
-	}, [catL?.LClas]);
+		return !catL?.LClas || readOnly;
+	}, [catL?.LClas, readOnly]);
 
 	const url = useMemo(() => {
 		return disabled ? null : `v1/prod/m-cats/${catL?.LClas}`;
@@ -35,6 +35,7 @@ const ProdCatMPickerContainer = forwardRef((props, ref) => {
 });
 ProdCatMPickerContainer.propTypes = {
 	children: PropTypes.node,
+	readOnly: PropTypes.bool,
 };
 
 ProdCatMPickerContainer.displayName = "ProdCatMPickerContainer";

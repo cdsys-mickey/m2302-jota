@@ -68,18 +68,15 @@ export const useA01 = ({ token, mode }) => {
 		});
 	}, [crud, dialogs]);
 
-	const handleSelect = useCallback(
-		async (e, rowData) => {
-			e?.stopPropagation();
-			crud.cancelAction();
-			crud.readStart(rowData, "讀取中...");
+	const loadProd = useCallback(
+		async (prodId) => {
 			try {
-				setSelectedItem(rowData);
+				const encodedProdId = encodeURIComponent(prodId);
 				const { status, payload, error } = await httpGetAsync({
 					url:
 						mode === A01.Mode.NEW_PROD
-							? `v1/new-prods/${rowData.ProdID}`
-							: `v1/prods/${rowData.ProdID}`,
+							? `v1/new-prods/${encodedProdId}`
+							: `v1/prods/${encodedProdId}`,
 					bearer: token,
 				});
 				console.debug("payload", payload);
@@ -91,13 +88,25 @@ export const useA01 = ({ token, mode }) => {
 
 					crud.readDone(data);
 				} else {
-					throw error || "讀取失敗";
+					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
 				crud.readFail(err);
 			}
 		},
 		[comboGrid, crud, httpGetAsync, mode, token, transGrid]
+	);
+
+	const handleSelect = useCallback(
+		async (e, rowData) => {
+			e?.stopPropagation();
+			crud.cancelAction();
+			setSelectedItem(rowData);
+
+			crud.readStart(rowData, "讀取中...");
+			loadProd(rowData.ProdID);
+		},
+		[crud, loadProd]
 	);
 
 	const dialogOpen = useMemo(() => {
@@ -139,9 +148,9 @@ export const useA01 = ({ token, mode }) => {
 					crud.createDone();
 					crud.readCancel();
 					// 重新整理
-					loader.loadList({ reset: true });
+					loader.loadList();
 				} else {
-					throw error || "新增發生未預期例外";
+					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
 				crud.createFail(err);
@@ -156,11 +165,12 @@ export const useA01 = ({ token, mode }) => {
 		async ({ data }) => {
 			try {
 				crud.updateStart();
+				// const oldId = crud.itemData?.ProdID;
 				const { status, error } = await httpPutAsync({
 					url:
 						mode === A01.Mode.NEW_PROD
-							? "v1/new-prods"
-							: "v1/prods",
+							? `v1/new-prods`
+							: `v1/prods`,
 					data: data,
 					bearer: token,
 				});
@@ -172,20 +182,56 @@ export const useA01 = ({ token, mode }) => {
 						}」修改成功`
 					);
 					crud.updateDone();
-					crud.readCancel();
+					// crud.readCancel();
+					loadProd(data?.ProdID);
 					// 重新整理
-					loader.loadList({ reset: true });
+					loader.loadList();
 				} else {
-					throw error || "修改發生未預期例外";
+					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.updateFail();
+				crud.updateFail(err);
 				console.error("handleUpdate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err));
 			}
 		},
-		[crud, httpPutAsync, loader, mode, token]
+		[crud, httpPutAsync, loadProd, loader, mode, token]
 	);
+
+	const onCounterSubmit = useCallback(
+		async (data) => {
+			console.debug(`A01.onCounterSubmit()`, data);
+			const processed = A01.processForCounterSubmit(data);
+			console.debug(`processed`, processed);
+			try {
+				crud.updateStart();
+				const { status, error } = await httpPatchAsync({
+					url: `v1/prods/counter`,
+					data: processed,
+					bearer: token,
+				});
+				if (status.success) {
+					toast.success(`商品「${data?.ProdData}」已成功更新櫃位`);
+					crud.updateDone();
+					loadProd(processed?.ProdID);
+				} else {
+					throw error || new Error("櫃位更新失敗");
+				}
+			} catch (err) {
+				crud.updateFail(err);
+				console.error("onCounterSubmit.failed", err);
+				toast.error(Errors.getMessage("更新櫃位失敗", err));
+			}
+		},
+		[crud, httpPatchAsync, loadProd, token]
+	);
+
+	const onCounterSubmitError = useCallback((err) => {
+		console.error(`A01.onCounterSubmitError`, err);
+		toast.error(
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+		);
+	}, []);
 
 	const onEditorSubmit = useCallback(
 		async (data) => {
@@ -266,7 +312,7 @@ export const useA01 = ({ token, mode }) => {
 								mode === A01.Mode.NEW_PROD ? "新" : ""
 							}商品${crud.itemData.ProdData}`
 						);
-						loader.loadList({ reset: true });
+						loader.loadList();
 					} else {
 						throw error || `發生未預期例外`;
 					}
@@ -290,7 +336,7 @@ export const useA01 = ({ token, mode }) => {
 			console.debug(`handleReview`, value);
 			try {
 				const { status, error } = await httpPatchAsync({
-					url: `v1/new-prods`,
+					url: `v1/new-prods/reviewed`,
 					data: {
 						...crud.itemData,
 						OfficialProdID: value,
@@ -300,12 +346,12 @@ export const useA01 = ({ token, mode }) => {
 				if (status.success) {
 					reviewAction.clear();
 					crud.cancelAction();
-					loader.loadList({ reset: true });
+					loader.loadList();
 					toast.success(
 						`商品「${crud.itemData?.ProdData}」已審核成功`
 					);
 				} else {
-					throw error || "發生未預期例外";
+					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("審核失敗", err));
@@ -364,7 +410,6 @@ export const useA01 = ({ token, mode }) => {
 
 	return {
 		...loader,
-
 		// Popper
 		popperOpen: popperOpen,
 		handlePopperToggle: handlePopperToggle,
@@ -401,5 +446,8 @@ export const useA01 = ({ token, mode }) => {
 		setComboGridRef: comboGrid.setGridRef,
 		comboGridData: comboGrid.gridData,
 		handleComboGridChange: comboGrid.propagateGridChange,
+		// Store
+		onCounterSubmit,
+		onCounterSubmitError,
 	};
 };

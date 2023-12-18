@@ -75,7 +75,7 @@ export const useDialogs = ({ ButtonProps }) => {
 				title: title,
 				message: message,
 				prompt: true,
-				promptValue: value,
+				defaultPromptValue: value,
 				promptTextFieldProps: {
 					label: "正式商品編號",
 				},

@@ -43,6 +43,7 @@ const FormFieldLabel = memo(
 					sx={[
 						(theme) => ({
 							fontWeight: 400,
+							marginLeft: theme.spacing(0.5),
 							...(!useEmptyText && {
 								color: theme.palette.primary.main,
 							}),

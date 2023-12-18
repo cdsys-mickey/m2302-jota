@@ -4,7 +4,6 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useMemo } from "react";
 import Arrays from "../shared-modules/sd-arrays";
 import useDebounce from "./useDebounce";
-import queryString from "query-string";
 
 export const useInfiniteLoader = (props = {}) => {
 	const {
@@ -12,19 +11,21 @@ export const useInfiniteLoader = (props = {}) => {
 		params: baseParams,
 		bearer,
 		initialFetchSize = 50,
-		debounce = 400,
+		debounce = 300,
 	} = props;
 	const loadingMap = useMemo(() => new Set(), []);
 	// const checkedMap = useMemo(() => new Set(), []);
 	const [state, setState] = useState({
 		saveKey: null,
+		loading: null,
+		forceLoading: false,
 	});
-	// const [saveKey, setSaveKey] = useState(null);
+
 	const [itemCount, setItemCount] = useState(0);
 	const [listError, setListError] = useState();
-	const [loading, setLoading] = useState(false);
-	const [forceLoading, setForceLoading] = useState(false);
-	const debouncedLoading = useDebounce(loading, debounce);
+	// const [loading, setLoading] = useState(null);
+	// const [forceLoading, setForceLoading] = useState(false);
+	const debouncedLoading = useDebounce(state.loading, debounce);
 	const [listData, setListData] = useState({});
 	const [viewportState, setViewportState] = useState({
 		visibleStartIndex: 0,
@@ -70,7 +71,7 @@ export const useInfiniteLoader = (props = {}) => {
 			getData = defaultGetData,
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
-			reset = false,
+			// reset = false,
 		} = {}) => {
 			let startIndex = start !== undefined ? start : 0;
 			let stopIndex =
@@ -82,19 +83,18 @@ export const useInfiniteLoader = (props = {}) => {
 
 			console.debug(`load(${startIndex} ~ ${stopIndex})`);
 
-			// const newParams = reset
-			// 	? params
-			// 	: {
-			// 			...(queryString.parse(listParams)),
-			// 			...params,
-			// 	  };
-			// console.debug(`newParams, reset=${reset}`, newParams);
-
 			setListError(null);
-			// const withSaveKey = !reset && !!saveKey;
-			const withSaveKey = !!saveKey;
-			setForceLoading(reset);
-			setLoading(true);
+			setState((prev) => ({
+				...prev,
+				forceLoading: !!saveKey,
+				...(!saveKey && {
+					loading: true,
+				}),
+			}));
+			// setForceLoading(!!saveKey);
+			// if (!saveKey) {
+			// 	setLoading(true);
+			// }
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: url,
@@ -104,7 +104,7 @@ export const useInfiniteLoader = (props = {}) => {
 						// ...newParams,
 						st: startIndex,
 						sp: stopIndex,
-						...(withSaveKey && {
+						...(saveKey && {
 							sk: saveKey,
 						}),
 					},
@@ -135,7 +135,11 @@ export const useInfiniteLoader = (props = {}) => {
 				console.error(err);
 				setListError(err);
 			} finally {
-				setLoading(false);
+				// setLoading(false);
+				setState((prev) => ({
+					...prev,
+					loading: false,
+				}));
 			}
 		},
 		[
@@ -178,9 +182,12 @@ export const useInfiniteLoader = (props = {}) => {
 		[loadingMap]
 	);
 
+	// const listLoading = useMemo(() => {
+	// 	return forceLoading ? loading : debouncedLoading;
+	// }, [debouncedLoading, forceLoading, loading]);
 	const listLoading = useMemo(() => {
-		return forceLoading ? loading : debouncedLoading;
-	}, [debouncedLoading, forceLoading, loading]);
+		return state.forceLoading ? state.loading : debouncedLoading;
+	}, [debouncedLoading, state.forceLoading, state.loading]);
 
 	const listFiltered = useMemo(() => {
 		return false;

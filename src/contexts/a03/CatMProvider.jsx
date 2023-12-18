@@ -127,7 +127,7 @@ const CatMProvider = (props) => {
 					);
 				} else {
 					//dsg.rollbackChanges();
-					throw error?.message || "新增失敗";
+					throw error?.message || new Error("新增失敗");
 				}
 			} catch (err) {
 				toast.error(`新增中分類發生例外: ${err.message}`);
@@ -158,7 +158,7 @@ const CatMProvider = (props) => {
 						`中分類 ${rowData.MClas}/${rowData.ClassData} 修改成功`
 					);
 				} else {
-					throw error?.message || "修改失敗";
+					throw error?.message || new Error("修改失敗");
 				}
 			} catch (err) {
 				toast.error(`新增中分類發生例外: ${err.message}`);
@@ -186,7 +186,7 @@ const CatMProvider = (props) => {
 						`中分類 ${rowData.LClas}/${rowData.ClassData} 刪除成功`
 					);
 				} else {
-					throw error?.message || "刪除失敗";
+					throw error?.message || new Error("刪除失敗");
 				}
 			} catch (err) {
 				console.error(err);

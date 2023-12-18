@@ -28,14 +28,16 @@ import { DSGTestProvider } from "../pages/lab/DSGTestProvider";
 import { DSGTest2Container } from "../pages/lab/DSGTest2Container";
 import { A010Provider } from "../contexts/a01/A010Provider";
 import { AA01Provider } from "../contexts/a01/AA01Provider";
+import { SignInContainer } from "../pages/signin/SignInContainer";
+import { SignInXContainer } from "../pages/signin/SignInXContainer";
 
 const AppRoute = () => {
 	return (
 		<Routes>
 			{/* Sign In */}
 			<Route path="auth" element={<SignInRoute />}>
-				<Route index path="signin" element={<SignIn />} />
-				<Route path="signinx" element={<SignInX />} />
+				<Route index path="signin" element={<SignInContainer />} />
+				<Route path="signinx" element={<SignInXContainer />} />
 			</Route>
 			{/* Lab */}
 			<Route path="lab">
@@ -52,7 +54,7 @@ const AppRoute = () => {
 			<Route path="lab-protected" element={<ProtectedRoute />}>
 				<Route path="dsg" element={<DSGTest2Container />} />
 			</Route>
-			{/* LADING REDIRECTION */}
+			{/* LANDING REDIRECTION */}
 			<Route
 				path="/"
 				element={

@@ -25,7 +25,6 @@ const A02Grid = memo((props) => {
 		// METHODS
 		handleChange,
 		isPersisted,
-		// handleActiveCellChange,
 	} = props;
 
 	const columns = useMemo(
@@ -58,7 +57,6 @@ const A02Grid = memo((props) => {
 	if (loading) {
 		return (
 			<Container maxWidth="xs">
-				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
 				<DSGLoading height={height} />
 			</Container>
 		);

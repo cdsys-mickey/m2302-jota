@@ -38,11 +38,8 @@ const ControlledCheckboxEx = ({
 									);
 							  }
 					}
-					inputProps={
-						readOnly
-							? { readOnly: true, disableUnderline: true }
-							: null
-					}
+					inputProps={readOnly ? { readOnly: true } : null}
+					// InputProps={readOnly ? { disableUnderline: true } : null}
 					disabled={readOnly}
 					error={error}
 					helperText={error?.message}

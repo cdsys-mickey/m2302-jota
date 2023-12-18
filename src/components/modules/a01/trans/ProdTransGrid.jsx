@@ -14,6 +14,7 @@ const ContextMenu = createDSGContextMenu({
 
 const ProdTransGrid = memo((props) => {
 	const {
+		readOnly = false,
 		lockRows,
 		gridRef,
 		data,
@@ -73,7 +74,7 @@ const ProdTransGrid = memo((props) => {
 		<DynamicDataSheetGrid
 			ref={gridRef}
 			rowKey="id"
-			lockRows={lockRows}
+			lockRows={lockRows || readOnly}
 			height={height + (lockRows ? 48 : 0)}
 			value={data}
 			onChange={handleGridChange}
@@ -87,6 +88,7 @@ const ProdTransGrid = memo((props) => {
 
 ProdTransGrid.propTypes = {
 	lockRows: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	gridRef: PropTypes.func,
 	data: PropTypes.array,
 };

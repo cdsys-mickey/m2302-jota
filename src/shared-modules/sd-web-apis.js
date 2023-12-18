@@ -1,8 +1,10 @@
 const getErrorFromPayload = (payload, options) => {
 	const { stacktrace = false, status } = options || {};
 	//try to parse axiosResponse.data as json
+	if (!payload && !status) {
+		return null;
+	}
 	let result = {};
-	if (!payload) return result;
 	result["message"] = payload?.Message || payload?.message;
 	result["type"] = payload?.Type || payload?.type;
 	if (stacktrace) {
@@ -13,8 +15,8 @@ const getErrorFromPayload = (payload, options) => {
 	}
 	return result;
 };
-const WebApis = {
+const WebApi = {
 	getErrorFromPayload,
 };
 
-export default WebApis;
+export default WebApi;

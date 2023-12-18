@@ -1,4 +1,3 @@
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import { FrameMenuButton } from "./FrameMenuButton";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useContext } from "react";

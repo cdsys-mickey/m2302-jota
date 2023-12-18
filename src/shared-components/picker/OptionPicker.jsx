@@ -66,6 +66,7 @@ const OptionPicker = memo(
 			ChipProps,
 
 			// TextField
+			autoFocus,
 			placeholder,
 			inputRef,
 			label,
@@ -135,6 +136,7 @@ const OptionPicker = memo(
 							...InputLabelProps,
 						}}
 						placeholder={placeholder}
+						autoFocus={autoFocus}
 						{...TextFieldProps}
 					/>
 				);
@@ -143,6 +145,7 @@ const OptionPicker = memo(
 				InputLabelProps,
 				InputProps,
 				TextFieldProps,
+				autoFocus,
 				dense,
 				error,
 				fullWidth,
@@ -312,6 +315,7 @@ OptionPicker.propTypes = {
 	ChipProps: PropTypes.object,
 	// TextField
 	placeholder: PropTypes.string,
+	autoFocus: PropTypes.bool,
 	inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	label: PropTypes.string,
 	fullWidth: PropTypes.bool,

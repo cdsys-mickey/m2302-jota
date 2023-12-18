@@ -82,7 +82,6 @@ const AppProvider = ({ children }) => {
 				fetch,
 				version,
 				setLoading,
-				// validateToken,
 				handleTokenChange,
 				// REDIRECTS
 				// toLanding,

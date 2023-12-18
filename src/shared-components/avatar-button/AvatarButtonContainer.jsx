@@ -9,7 +9,7 @@ const AvatarButtonContainer = (props) => {
 	const { ...rest } = props;
 
 	const [anchorEl, setAnchorEl] = useState(null);
-	const { operator } = useContext(AuthContext);
+	const { operator, deptSwitchWorking } = useContext(AuthContext);
 
 	const handleClick = useCallback((e) => {
 		setAnchorEl(e.currentTarget);
@@ -19,9 +19,14 @@ const AvatarButtonContainer = (props) => {
 		setAnchorEl(null);
 	}, []);
 
+	// const fullName = useMemo(() => {
+	// 	return !deptSwitchWorking
+	// 		? `${operator?.CurDeptName || "?"} ${operator?.UserName || "?"}`
+	// 		: "...";
+	// }, [deptSwitchWorking, operator?.CurDeptName, operator?.UserName]);
 	const fullName = useMemo(() => {
-		return `${operator?.DeptName || "?"} ${operator?.UserName || "?"}`;
-	}, [operator?.DeptName, operator?.UserName]);
+		return `${operator?.CurDeptName || "?"} ${operator?.UserName || "?"}`;
+	}, [operator?.CurDeptName, operator?.UserName]);
 
 	const name = useMemo(() => {
 		return (operator?.UserName || "?")[0];

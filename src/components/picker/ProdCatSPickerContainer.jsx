@@ -9,13 +9,13 @@ import { useMemo } from "react";
 import queryString from "query-string";
 
 const ProdCatSPickerContainer = forwardRef((props, ref) => {
-	const { children, ...rest } = props;
+	const { children, readOnly = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const catL = useWatch({ name: "catL" });
 	const catM = useWatch({ name: "catM" });
 	const disabled = useMemo(() => {
-		return !catL?.LClas || !catM?.MClas;
-	}, [catL?.LClas, catM?.MClas]);
+		return !catL?.LClas || !catM?.MClas || readOnly;
+	}, [catL?.LClas, catM?.MClas, readOnly]);
 
 	const url = useMemo(() => {
 		return disabled ? null : `v1/prod/s-cats/${catL?.LClas},${catM?.MClas}`;
@@ -37,6 +37,7 @@ const ProdCatSPickerContainer = forwardRef((props, ref) => {
 });
 ProdCatSPickerContainer.propTypes = {
 	children: PropTypes.node,
+	readOnly: PropTypes.bool,
 };
 
 ProdCatSPickerContainer.displayName = "ProdCatSPickerContainer";

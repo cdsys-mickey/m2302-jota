@@ -7,6 +7,7 @@ const TypoOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
 			// Common
+			readOnly = false,
 			name,
 			children,
 			value,
@@ -42,6 +43,7 @@ const TypoOptionPicker = memo(
 
 		return (
 			<ControlledOptionPicker
+				disabled={readOnly}
 				name={name}
 				ref={ref}
 				label={label}
@@ -58,6 +60,7 @@ const TypoOptionPicker = memo(
 TypoOptionPicker.displayName = "TypoOptionPicker";
 TypoOptionPicker.propTypes = {
 	children: PropTypes.node,
+	readOnly: PropTypes.bool,
 };
 
 export default TypoOptionPicker;

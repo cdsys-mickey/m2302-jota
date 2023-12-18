@@ -61,8 +61,9 @@ const DialogEx = memo(
 			onReturn,
 			// PROMPT
 			prompt = false,
-			promptValue = "",
+			defaultPromptValue = "",
 			promptTextFieldProps,
+			onSubmit,
 			...rest
 		} = props;
 
@@ -84,6 +85,10 @@ const DialogEx = memo(
 		const responsiveCtx = useContext(ResponsiveContext);
 		const { mobile } = responsiveCtx;
 
+		const showConfirmButton = useMemo(() => {
+			return !!onConfirm || !!onSubmit;
+		}, [onConfirm, onSubmit]);
+
 		const isFullScreen = useMemo(() => {
 			if (responsive && !responsiveCtx) {
 				console.error(
@@ -98,12 +103,14 @@ const DialogEx = memo(
 		}, [message, prompt]);
 
 		const handleConfirm = useCallback(() => {
-			// console.debug("inputRef", inputRef);
-			// console.debug("value", inputRef.current?.value);
+			if (onSubmit) {
+				onSubmit();
+				return;
+			}
 			if (onConfirm) {
 				onConfirm(inputRef.current?.value);
 			}
-		}, [onConfirm]);
+		}, [onConfirm, onSubmit]);
 
 		return (
 			<Dialog
@@ -153,12 +160,12 @@ const DialogEx = memo(
 								InputLabelProps={
 									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
-								value={promptValue}
+								value={defaultPromptValue}
 								{...promptTextFieldProps}
 							/>
 						</Box>
 					)}
-					{children}
+					<form onSubmit={onSubmit}>{children}</form>
 				</DialogContent>
 				{!loading && (
 					<DialogActions>
@@ -166,7 +173,7 @@ const DialogEx = memo(
 						{doRenderOtherActionButtonsComponent && (
 							<OtherActionButtonsComponent />
 						)}
-						{onConfirm && (
+						{showConfirmButton && (
 							<LoadingButton
 								type="submit"
 								variant="contained"
@@ -198,6 +205,7 @@ const DialogEx = memo(
 
 DialogEx.displayName = "DialogEx";
 DialogEx.propTypes = {
+	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	title: PropTypes.string,
 	message: PropTypes.string,
 	children: PropTypes.node,
@@ -231,8 +239,9 @@ DialogEx.propTypes = {
 	minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	// prompt
 	prompt: PropTypes.bool,
-	promptValue: PropTypes.string,
+	defaultPromptValue: PropTypes.string,
 	promptTextFieldProps: PropTypes.object,
+	onSubmit: PropTypes.func,
 };
 
 export default DialogEx;

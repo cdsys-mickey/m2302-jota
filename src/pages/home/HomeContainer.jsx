@@ -1,5 +1,4 @@
 import Home from "./Home";
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import useTheme from "@mui/material/styles/useTheme";
 import { useContext } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

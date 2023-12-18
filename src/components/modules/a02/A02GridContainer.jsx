@@ -1,11 +1,9 @@
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { A02Context } from "@/contexts/a02/A02Context";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import A02Grid from "./A02Grid";
-import { A02Context } from "@/contexts/a02/A02Context";
 
 const A02GridContainer = () => {
-	// const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const a02 = useContext(A02Context);
 
@@ -15,7 +13,7 @@ const A02GridContainer = () => {
 			gridRef={a02.gridRef}
 			setGridRef={a02.setGridRef}
 			data={a02.gridData}
-			loading={a02.loading}
+			loading={a02.gridLoading}
 			handleChange={a02.handleGridChange({
 				onCreate: a02.handleCreate,
 				onUpdate: a02.handleUpdate,
@@ -24,10 +22,7 @@ const A02GridContainer = () => {
 			})}
 			height={height - 176}
 			isPersisted={a02.isPersisted}
-			// handleActiveCellChange={a02.handleActiveCellChange}
-			handleSelectionChange={a02.handleSelectionChangeBy({
-				// onRowSelectionChange: catM.handleRowSelectionChange,
-			})}
+			handleSelectionChange={a02.handleSelectionChangeBy({})}
 		/>
 	);
 };

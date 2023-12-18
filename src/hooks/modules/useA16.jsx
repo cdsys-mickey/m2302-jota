@@ -77,7 +77,7 @@ export const useA16 = ({ token }) => {
 						`門市 ${rowData.DeptID}/${rowData.DeptName} 新增成功`
 					);
 				} else {
-					throw error?.message || "新增失敗";
+					throw error || new Error("新增失敗");
 				}
 			} catch (err) {
 				console.error(err);
@@ -105,7 +105,7 @@ export const useA16 = ({ token }) => {
 						`門市 ${rowData.DeptID}/${rowData.DeptName} 修改成功`
 					);
 				} else {
-					throw error?.message || "修改失敗";
+					throw error || new Error("修改失敗");
 				}
 			} catch (err) {
 				console.error(err);
@@ -132,7 +132,7 @@ export const useA16 = ({ token }) => {
 						`門市 ${rowData.DeptID}/${rowData.DeptName} 更新成功`
 					);
 				} else {
-					throw error?.message || "更新失敗";
+					throw error?.message || new Error("更新失敗");
 				}
 			} catch (err) {
 				console.error(err);
@@ -157,7 +157,7 @@ export const useA16 = ({ token }) => {
 						`門市 ${rowData.DeptID}/${rowData.DeptName} 刪除成功`
 					);
 				} else {
-					throw error?.message || "刪除失敗";
+					throw error?.message || new Error("刪除失敗");
 				}
 			} catch (err) {
 				console.error(err);

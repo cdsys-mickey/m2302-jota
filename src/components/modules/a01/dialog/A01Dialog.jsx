@@ -36,7 +36,15 @@ import { ProdComboGridContainer } from "../combo/ProdComboGridContainer";
 
 const A01Dialog = memo(
 	forwardRef((props, ref) => {
-		const { data, readWorking, dataLoaded, editing, ...rest } = props;
+		const {
+			data,
+			readWorking,
+			dataLoaded,
+			editing,
+			updating,
+			store,
+			...rest
+		} = props;
 
 		return (
 			<DialogEx
@@ -47,7 +55,7 @@ const A01Dialog = memo(
 				TitleButtonsComponent={A01DialogTitleButtonsContainer}
 				sx={{
 					"& .MuiDialog-paper": {
-						backgroundColor: "rgb(255 255 255 / 100%)",
+						backgroundColor: "rgb(241 241 241)",
 					},
 				}}
 				contentSx={{
@@ -66,13 +74,25 @@ const A01Dialog = memo(
 				{dataLoaded && (
 					<Box
 						pt={1}
-						sx={{
+						sx={(theme) => ({
+							"& .MuiInputLabel-root": {
+								fontSize: "105%",
+								// fontWeight: 500,
+								// color: "rgba(0, 0, 0, 0.8 )",
+							},
 							"& .MuiInputLabel-shrink": {
 								fontSize: "120%",
 								fontWeight: 600,
 								left: "-2px",
+								// color: theme.palette.primary.main,
 							},
-						}}>
+							// "& .MuiInputLabel-root:not(.Mui-focusd)": {
+							// 	color: "rgb(0 0 0 / 100% )",
+							// },
+							// "& .MuiInputBase-input": {
+							// 	color: "rgb(0 0 0 / 100% )",
+							// },
+						})}>
 						<FormSectionTitle>基本資料</FormSectionTitle>
 						<FormSectionBox
 							// bgcolor="rgba(0, 0, 0, 0.02)"
@@ -93,6 +113,7 @@ const A01Dialog = memo(
 										value={data?.ProdID}
 										required
 										rules={{ required: "貨品編號為必填" }}
+										readOnly={updating}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
@@ -101,6 +122,7 @@ const A01Dialog = memo(
 										name="Barcode"
 										fullWidth
 										value={data?.Barcode}
+										readOnly={store}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
@@ -108,6 +130,7 @@ const A01Dialog = memo(
 										label="列印條碼"
 										defaultValue="N"
 										name="BarPR"
+										readOnly={store}
 										valueToChecked={YesNo.valueToChecked}
 										checkedToValue={YesNo.checkedToValue}>
 										{YesNo.getOptionLabel(data?.BarPR)}
@@ -136,7 +159,8 @@ const A01Dialog = memo(
 										required
 										rules={{
 											required: "品名規格為必填",
-										}}>
+										}}
+										readOnly={store}>
 										{data?.ProdData}
 									</TypoTextFieldContainer>
 								</Grid>
@@ -155,17 +179,23 @@ const A01Dialog = memo(
 								columns={12}
 								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdCatLPickerContainer name="catL">
+									<ProdCatLPickerContainer
+										name="catL"
+										readOnly={store}>
 										{ProdLCats.getOptionLabel(data?.catL)}
 									</ProdCatLPickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdCatMPickerContainer name="catM">
+									<ProdCatMPickerContainer
+										name="catM"
+										readOnly={store}>
 										{ProdMCats.getOptionLabel(data?.catM)}
 									</ProdCatMPickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdCatSPickerContainer name="catS">
+									<ProdCatSPickerContainer
+										name="catS"
+										readOnly={store}>
 										{ProdSCats.getOptionLabel(data?.catS)}
 									</ProdCatSPickerContainer>
 								</Grid>
@@ -177,25 +207,32 @@ const A01Dialog = memo(
 								</Grid> */}
 								<FlexBox fullWidth />
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdTypeAPickerContainer name="typeA">
+									<ProdTypeAPickerContainer
+										name="typeA"
+										readOnly={store}>
 										{ProdTypeA.getOptionLabel(data?.typeA)}
 									</ProdTypeAPickerContainer>
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdTypeBPickerContainer name="typeB">
+									<ProdTypeBPickerContainer
+										name="typeB"
+										readOnly={store}>
 										{ProdTypeB.getOptionLabel(data?.typeB)}
 									</ProdTypeBPickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
 									<TaxTypePickerContainer
 										name="taxType"
-										label="稅別">
+										label="稅別"
+										readOnly={store}>
 										{TaxTypes.getOptionLabel(data?.taxType)}
 									</TaxTypePickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<CounterPickerContainer name="counter">
+									<CounterPickerContainer
+										name="counter"
+										autoFocus={store}>
 										{Counters.getOptionLabel(data?.counter)}
 									</CounterPickerContainer>
 								</Grid>
@@ -211,7 +248,8 @@ const A01Dialog = memo(
 									<TypoTextFieldContainer
 										name="StdCost"
 										label="標準成本"
-										type="number">
+										type="number"
+										readOnly={store}>
 										{Strings.formatPrice(data?.StdCost)}
 									</TypoTextFieldContainer>
 								</Grid>
@@ -219,7 +257,8 @@ const A01Dialog = memo(
 									<TypoTextFieldContainer
 										name="TranCost"
 										label="調撥成本"
-										type="number">
+										type="number"
+										readOnly={store}>
 										{Strings.formatPrice(data?.TranCost)}
 									</TypoTextFieldContainer>
 								</Grid>
@@ -227,7 +266,8 @@ const A01Dialog = memo(
 									<TypoTextFieldContainer
 										name="LocalCost"
 										label="批發成本(本)"
-										type="number">
+										type="number"
+										readOnly={store}>
 										{Strings.formatPrice(data?.LocalCost)}
 									</TypoTextFieldContainer>
 								</Grid>
@@ -235,7 +275,8 @@ const A01Dialog = memo(
 									<TypoTextFieldContainer
 										name="OutCost"
 										label="批發成本(外)"
-										type="number">
+										type="number"
+										readOnly={store}>
 										{Strings.formatPrice(data?.OutCost)}
 									</TypoTextFieldContainer>
 								</Grid>
@@ -244,36 +285,8 @@ const A01Dialog = memo(
 						<FormSectionBox
 							// bgcolor="rgba(0, 0, 0, 0.02)"
 							// borderLeft="5px solid rgb(16 160 215)"
+							p={1}
 							pt={2}
-							p={1}
-							mb={2}>
-							<Grid
-								container
-								columns={12}
-								spacing={editing ? 2 : 1}>
-								<Grid item xs={12} sm={12} md={3}>
-									<TypoTextFieldContainer
-										label="儲位"
-										name="Location"
-										fullWidth>
-										{data?.Location}
-									</TypoTextFieldContainer>
-								</Grid>
-
-								<Grid item xs={12} sm={12} md={4}>
-									<CmsTypePickerContainer name="cmsType">
-										{CmsTypes.getOptionLabel(data?.cmsType)}
-									</CmsTypePickerContainer>
-								</Grid>
-							</Grid>
-						</FormSectionBox>
-
-						<FormSectionTitle>安全存量</FormSectionTitle>
-						<FormSectionBox
-							// bgcolor="rgba(0, 0, 0, 0.02)"
-							// borderLeft="5px solid rgb(16 160 215)"
-							p={1}
-							pt={0}
 							mb={2}>
 							<Grid
 								container
@@ -282,30 +295,44 @@ const A01Dialog = memo(
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoTextFieldContainer
 										name="SafeQty"
-										label="平日"
+										label="平日安全存量"
 										type="number"
+										readOnly={store}
 										fullWidth>
 										{Strings.formatPrice(data?.SafeQty)}
 									</TypoTextFieldContainer>
 								</Grid>
-								{/* <Grid item xs={12} sm={12} md={3}>
-									<TypoTextFieldContainer
-										label="假日"
-										name="Stock2"
-										fullWidth
-										type="number"
-									/>
-								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
 									<TypoTextFieldContainer
-										label="續假日"
-										name="Stock2"
-										fullWidth
-										type="number"
-									/>
-								</Grid> */}
+										label="儲位"
+										name="Location"
+										readOnly={store}
+										fullWidth>
+										{data?.Location}
+									</TypoTextFieldContainer>
+								</Grid>
+
+								<Grid item xs={12} sm={12} md={4}>
+									<CmsTypePickerContainer
+										name="cmsType"
+										readOnly={store}>
+										{CmsTypes.getOptionLabel(data?.cmsType)}
+									</CmsTypePickerContainer>
+								</Grid>
 							</Grid>
 						</FormSectionBox>
+
+						{/* <FormSectionTitle>安全存量</FormSectionTitle>
+						<FormSectionBox
+							p={1}
+							pt={0}
+							mb={2}>
+							<Grid
+								container
+								columns={12}
+								spacing={editing ? 2 : 1}>
+							</Grid>
+						</FormSectionBox> */}
 
 						<FormSectionTitle>包裝單位</FormSectionTitle>
 						<FormSectionBox
@@ -321,28 +348,32 @@ const A01Dialog = memo(
 								<Grid item xs={12} sm={12} md={3}>
 									<PkyTypePickerContainer
 										name="bunit"
-										label="庫存">
+										label="庫存"
+										readOnly={store}>
 										{PkgTypes.getOptionLabel(data?.bunit)}
 									</PkyTypePickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
 									<PkyTypePickerContainer
 										name="sunit"
-										label="銷售">
+										label="銷售"
+										readOnly={store}>
 										{PkgTypes.getOptionLabel(data?.sunit)}
 									</PkyTypePickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
 									<PkyTypePickerContainer
 										name="iunit"
-										label="進貨">
+										label="進貨"
+										readOnly={store}>
 										{PkgTypes.getOptionLabel(data?.iunit)}
 									</PkyTypePickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
 									<PkyTypePickerContainer
 										name="munit"
-										label="BOM">
+										label="BOM"
+										readOnly={store}>
 										{PkgTypes.getOptionLabel(data?.munit)}
 									</PkyTypePickerContainer>
 								</Grid>
@@ -366,6 +397,7 @@ const A01Dialog = memo(
 										type="number"
 										name="SRate"
 										value={Strings.formatRate(data?.SRate)}
+										readOnly={store}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
@@ -374,6 +406,7 @@ const A01Dialog = memo(
 										type="number"
 										name="IRate"
 										value={Strings.formatRate(data?.IRate)}
+										readOnly={store}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
@@ -382,6 +415,7 @@ const A01Dialog = memo(
 										type="number"
 										name="MRate"
 										value={Strings.formatRate(data?.MRate)}
+										readOnly={store}
 									/>
 								</Grid>
 							</Grid>
@@ -404,6 +438,7 @@ const A01Dialog = memo(
 										name="Price"
 										type="number"
 										value={Strings.formatPrice(data?.Price)}
+										readOnly={store}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={2}>
@@ -414,6 +449,7 @@ const A01Dialog = memo(
 										value={Strings.formatPrice(
 											data?.PriceA
 										)}
+										readOnly={store}
 									/>
 								</Grid>
 
@@ -425,6 +461,7 @@ const A01Dialog = memo(
 										value={Strings.formatPrice(
 											data?.PriceB
 										)}
+										readOnly={store}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={2}>
@@ -435,6 +472,7 @@ const A01Dialog = memo(
 										value={Strings.formatPrice(
 											data?.PriceC
 										)}
+										readOnly={store}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={2}>
@@ -445,6 +483,7 @@ const A01Dialog = memo(
 										value={Strings.formatPrice(
 											data?.PriceD
 										)}
+										readOnly={store}
 									/>
 								</Grid>
 								<Grid item xs={12} sm={12} md={2}>
@@ -455,6 +494,7 @@ const A01Dialog = memo(
 										value={Strings.formatPrice(
 											data?.PriceE
 										)}
+										readOnly={store}
 									/>
 								</Grid>
 							</Grid>
@@ -465,7 +505,7 @@ const A01Dialog = memo(
 									<FormSectionTitle>
 										調撥成本
 									</FormSectionTitle>
-									<ProdTransGridContainer />
+									<ProdTransGridContainer readOnly={store} />
 								</FormSectionBox>
 							</Grid>
 							<Grid item xs={24} sm={24} md={6} lg={13} xl={13}>
@@ -473,7 +513,7 @@ const A01Dialog = memo(
 									<FormSectionTitle>
 										組合細項
 									</FormSectionTitle>
-									<ProdComboGridContainer />
+									<ProdComboGridContainer readOnly={store} />
 								</FormSectionBox>
 							</Grid>
 						</Grid>
@@ -503,6 +543,8 @@ A01Dialog.propTypes = {
 	readWorking: PropTypes.bool,
 	dataLoaded: PropTypes.bool,
 	editing: PropTypes.bool,
+	updating: PropTypes.bool,
+	store: PropTypes.bool,
 };
 
 A01Dialog.displayName = "A01Dialog";

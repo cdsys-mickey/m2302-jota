@@ -6,11 +6,15 @@ import Cookies from "js-cookie";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useAction } from "@/shared-hooks/useAction";
+import { useMemo } from "react";
+import ActionState from "../shared-constants/action-state";
 
 export const useAuth = () => {
-	const redirect = useAppRedirect();
+	const { toLogin, toLanding } = useAppRedirect();
 	const { httpGetAsync } = useWebApi();
 	const dialogs = useContext(DialogsContext);
+	const deptSwitchAction = useAction();
 
 	const [state, setState] = useState({
 		// AUTHENTICATE
@@ -49,7 +53,7 @@ export const useAuth = () => {
 					switch (status.code) {
 						case 401:
 							toast.warn(Messages.SESSION_EXPIRED);
-							redirect.toLogin();
+							toLogin();
 					}
 				}
 			} catch (err) {
@@ -60,28 +64,22 @@ export const useAuth = () => {
 				}));
 			}
 		},
-		[httpGetAsync, redirect]
+		[httpGetAsync, toLogin]
 	);
 
-	const validateToken = useCallback(async () => {
-		if (state.validating == null) {
-			console.debug(`validating token...`);
+	const validateCookie = useCallback(
+		async (switching = false) => {
+			console.debug(`validating cookie...`);
 			try {
 				setState((prev) => ({
 					...prev,
 					validating: true,
 				}));
 				// 檢查 cookie
-				// const token = Cookies.get("token");
-				// if (!token) {
-				// 	toast.error("您尚未登入");
-				// 	redirectTo(import.meta.env.VITE_URL_LOGIN);
-				// 	return;
-				// }
 				const logKey = Cookies.get("LogKey");
 				if (!logKey) {
 					toast.error("您尚未登入");
-					redirect.toLogin();
+					toLogin();
 					return;
 				}
 				const { status, payload, error } = await httpGetAsync({
@@ -89,34 +87,31 @@ export const useAuth = () => {
 				});
 
 				if (!status.success) {
-					// toast.error("登入發生例外");
-					// toLogin();
-					// return;
 					throw error;
 				}
 
 				// JOSE methods
-				// ** 1 ** → no validation
+				// ** METHOD 1 ** → no validation
 				const token = payload.token;
 				const jwtPayload = decodeJwt(token);
 				console.debug("jwtPayload", jwtPayload);
 
 				const expDate = new Date(jwtPayload.exp * 1000);
 
-				// 檢查令牌是否已過期
+				// 檢查 token 是否已過期
 				if (Date.now() > expDate) {
 					console.log("token expired");
 				} else {
 					console.log("token is valid");
 				}
 
-				// ** 2 ** → requires https
+				// ** METHOD 2 ** → requires https
 				// const secret = new TextEncoder().encode(
 				// 	import.meta.env.VITE_JWT_SECRET
 				// );
 				// const { payload: jwtPayload } = await jwtVerify(token, secret);
 
-				// ** 3 **
+				// ** METHOD 3 **
 				// const secret = jose.base64url.decode(
 				// 	"zH4NRP1HMALxxCFnRZABFA7GOJtzU_gIj02alfL1lvI"
 				// );
@@ -135,7 +130,9 @@ export const useAuth = () => {
 				toast.success(
 					`${jwtPayload.entity.LoginName || "(帳號)"}/${
 						jwtPayload.entity.UserName || ""
-					} 已成功登入`
+					} 已成功${switching ? "切換" : "登入"}到${
+						jwtPayload.entity.CurDeptName
+					}`
 				);
 
 				loadAuthorities(token);
@@ -149,15 +146,23 @@ export const useAuth = () => {
 						toast.error("登入發生例外，請重新登入");
 						break;
 				}
-				redirect.toLogin();
+				toLogin();
 			} finally {
 				setState((prev) => ({
 					...prev,
 					validating: false,
 				}));
 			}
-		}
-	}, [state.validating, httpGetAsync, loadAuthorities, redirect]);
+		},
+		[httpGetAsync, loadAuthorities, toLogin]
+	);
+
+	const invalidate = useCallback(() => {
+		setState((prev) => ({
+			...prev,
+			validating: null,
+		}));
+	}, []);
 
 	const handleSignOut = useCallback(async () => {
 		try {
@@ -166,15 +171,15 @@ export const useAuth = () => {
 				bearer: state.token,
 			});
 			if (status.success) {
-				redirect.toLogin();
+				toLogin();
 				toast.success("您已成功登出");
 			} else {
-				throw error || "登出失敗";
+				throw error || new Error("登出失敗");
 			}
 		} catch (err) {
 			console.error("handleSignOut.failed", err);
 		}
-	}, [httpGetAsync, redirect, state.token]);
+	}, [httpGetAsync, toLogin, state.token]);
 
 	const confirmSignOut = useCallback(() => {
 		dialogs.confirm({
@@ -185,15 +190,70 @@ export const useAuth = () => {
 		});
 	}, [dialogs, handleSignOut]);
 
+	const onDeptSwitchSubmit = useCallback(
+		async (data) => {
+			console.debug(`onDeptSwitchSubmit`, data);
+			const newDeptId = data?.newDept?.DeptID;
+			try {
+				deptSwitchAction.start();
+				const { status, error } = await httpGetAsync({
+					url: `v1/auth/switch-dept/${newDeptId}`,
+					bearer: state.token,
+				});
+				if (status.success) {
+					validateCookie(true);
+					toLanding();
+					deptSwitchAction.clear();
+				} else {
+					throw error || new Error("切換單位發生未預期例外");
+				}
+			} catch (err) {
+				console.error("onDeptSwitchSubmit.failed", err);
+				toast.error(`切換單位異常`);
+			}
+		},
+		[deptSwitchAction, httpGetAsync, state.token, toLanding, validateCookie]
+	);
+
+	const onDeptSwitchSubmitError = useCallback((err) => {
+		console.error(`onDeptSwitchSubmitError`, err);
+	}, []);
+
+	const promptDeptSwitch = useCallback(() => {
+		deptSwitchAction.prompt();
+	}, [deptSwitchAction]);
+
+	const deptSwitching = useMemo(() => {
+		return deptSwitchAction.state === ActionState.PROMPT;
+	}, [deptSwitchAction.state]);
+
+	const deptSwitchWorking = useMemo(() => {
+		return deptSwitchAction.state === ActionState.WORKING;
+	}, [deptSwitchAction.state]);
+
+	const cancelDeptSwitch = useCallback(() => {
+		deptSwitchAction.clear();
+	}, [deptSwitchAction]);
+
 	useEffect(() => {
-		validateToken();
-	}, [validateToken]);
+		if (state.validating == null) {
+			validateCookie();
+		}
+	}, [state.validating, validateCookie]);
 
 	return {
 		...state,
 		...authoritiesState,
 		// METHODS
-		validateToken,
+		validateCookie,
+		invalidate,
 		confirmSignOut,
+		// 切換帳號
+		onDeptSwitchSubmit,
+		onDeptSwitchSubmitError,
+		deptSwitching,
+		cancelDeptSwitch,
+		promptDeptSwitch,
+		deptSwitchWorking,
 	};
 };

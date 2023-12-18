@@ -4,9 +4,10 @@ import ProdTypeA from "../../modules/md-prod-type-a";
 import TypoOptionPickerContainer from "../../shared-components/typo/TypoOptionPickerContainer";
 
 const ProdTypeAPickerContainer = forwardRef((props, ref) => {
-	const { children, label = "品別", ...rest } = props;
+	const { children, readOnly = false, label = "品別", ...rest } = props;
 	return (
 		<TypoOptionPickerContainer
+			readOnly={readOnly}
 			ref={ref}
 			label={label}
 			options={ProdTypeA.options}
@@ -20,6 +21,7 @@ const ProdTypeAPickerContainer = forwardRef((props, ref) => {
 ProdTypeAPickerContainer.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
+	readOnly: PropTypes.bool,
 };
 
 ProdTypeAPickerContainer.displayName = "ProdTypeAPickerContainer";

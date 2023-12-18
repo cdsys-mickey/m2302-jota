@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import { SignInContext } from "../../contexts/signin/SignInContext";
-import SignIn from "./SignIn";
+import SignInX from "./SignInX";
 
-export const SignInContainer = (props) => {
+export const SignInXContainer = (props) => {
 	const { ...rest } = props;
 	const form = useFormContext();
 	const signin = useContext(SignInContext);
@@ -12,10 +12,10 @@ export const SignInContainer = (props) => {
 			noValidate
 			autoComplete="off"
 			onSubmit={form.handleSubmit(
-				signin.onSignInSubmit,
-				signin.onSignInSubmitError
+				signin.onSignInXSubmit,
+				signin.onSignInXSubmitError
 			)}>
-			<SignIn loading={signin.loading} {...rest} />
+			<SignInX loading={signin.loading} {...rest} />
 		</form>
 	);
 };

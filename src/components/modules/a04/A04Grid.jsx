@@ -65,7 +65,6 @@ const A04Grid = memo((props) => {
 	if (loading) {
 		return (
 			<Container maxWidth="sm">
-				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
 				<DSGLoading height={height} />
 			</Container>
 		);

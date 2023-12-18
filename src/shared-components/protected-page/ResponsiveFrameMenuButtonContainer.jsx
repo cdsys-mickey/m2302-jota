@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import ResponsiveFrameMenuButton from "./ResponsiveFrameMenuButton";
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
+import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
 
 const ResponsiveFrameMenuButtonContainer = (props) => {
 	const { ...rest } = props;

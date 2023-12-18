@@ -1,6 +1,5 @@
 import { forwardRef, memo } from "react";
 import FrameAccordion from "./FrameAccordion";
-import useAppFrame from "@/shared-contexts/app-frame/useAppFrame";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

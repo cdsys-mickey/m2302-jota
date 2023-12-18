@@ -1,11 +1,11 @@
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { DeptID, DeptName } = option;
-	return `${DeptID} ${DeptName}`;
+	const { DeptID, DeptName, AbbrName } = option;
+	return `${DeptID} ${DeptName || AbbrName}`;
 };
 
 const isOptionEqualToValue = (option, value) => {
-	return option?.DeptName === value?.DeptName;
+	return option?.DeptID === value?.DeptID;
 };
 
 const Depts = {

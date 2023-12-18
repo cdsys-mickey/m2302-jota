@@ -46,7 +46,9 @@ export const A01DialogContainer = () => {
 			if (a01.creating) {
 				return "新增商品";
 			} else if (a01.updating) {
-				return "修改商品";
+				return a01.mode === A01.Mode.STORE
+					? "修改商品櫃位"
+					: "修改商品";
 			} else {
 				return "商品內容";
 			}
@@ -61,13 +63,21 @@ export const A01DialogContainer = () => {
 		}
 	}, [a01.itemData, a01.readState, forms]);
 
+	const store = useMemo(() => {
+		return a01.mode === A01.Mode.STORE;
+	}, [a01.mode]);
+
 	return (
 		<FormProvider {...forms}>
 			<form
-				onSubmit={forms.handleSubmit(a01.onSubmit, a01.onSubmitError)}>
+				onSubmit={forms.handleSubmit(
+					a01.onEditorSubmit,
+					a01.onEditorSubmitError
+				)}>
 				<A01Dialog
 					title={title}
 					editing={a01.editing}
+					updating={a01.updating}
 					open={a01.dialogOpen}
 					onClose={
 						a01.editing ? a01.confirmDialogClose : a01.cancelAction
@@ -80,6 +90,7 @@ export const A01DialogContainer = () => {
 					// deleteState={a01.deleteState}
 					data={a01.itemData}
 					dataLoaded={dataLoaded}
+					store={store}
 				/>
 			</form>
 		</FormProvider>
