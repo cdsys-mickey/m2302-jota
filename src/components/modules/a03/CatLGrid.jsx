@@ -25,7 +25,7 @@ const CatLGrid = memo((props) => {
 		handleChange,
 		isPersisted,
 		// handleActiveCellChange,
-		handleSelectionChange,
+		onSelectionChange,
 	} = props;
 
 	const columns = useMemo(
@@ -88,7 +88,7 @@ const CatLGrid = memo((props) => {
 					addRowsComponent={DSGAddRowsToolbar}
 					disableExpandSelection
 					contextMenuComponent={ContextMenu}
-					onSelectionChange={handleSelectionChange}
+					onSelectionChange={onSelectionChange}
 				/>
 			</Box>
 		</Container>
@@ -104,7 +104,7 @@ CatLGrid.propTypes = {
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	handleActiveCellChange: PropTypes.func,
-	handleSelectionChange: PropTypes.func,
+	onSelectionChange: PropTypes.func,
 	isSelected: PropTypes.func,
 };
 

@@ -7,13 +7,8 @@ import { A16Context } from "./A16Context";
 
 export const A16Provider = (props) => {
 	const { children } = props;
-	// const [lockRows, toggleLockRows] = useToggle(true);
 	const { token } = useContext(AuthContext);
 	const a16 = useA16({ token });
-
-	useInit(() => {
-		a16.load();
-	}, []);
 
 	return (
 		<A16Context.Provider

@@ -55,7 +55,7 @@ const CatSProvider = (props) => {
 						bearer: token,
 					});
 					if (status.success) {
-						dsg.handleGridDataLoaded(payload.data);
+						dsg.handleGridDataLoaded(payload.data || []);
 					} else {
 						switch (status.code) {
 							default:
@@ -220,7 +220,7 @@ const CatSProvider = (props) => {
 		[dsg]
 	);
 
-	const handleRowSelectionChange = useCallback(
+	const onRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
 			selectRow({ rowIndex, rowData });
 		},
@@ -239,7 +239,7 @@ const CatSProvider = (props) => {
 				handleConfirmDelete,
 				handleDelete,
 				handleDuplicatedError,
-				handleRowSelectionChange,
+				onRowSelectionChange,
 				...dsg,
 			}}>
 			{children}

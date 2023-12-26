@@ -224,7 +224,7 @@ const CatLProvider = (props) => {
 		[dsg]
 	);
 
-	const handleRowSelectionChange = useCallback(
+	const onRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
 			selectRow({ rowIndex, rowData });
 		},
@@ -252,7 +252,7 @@ const CatLProvider = (props) => {
 				...state,
 				load,
 				clear,
-				handleRowSelectionChange,
+				onRowSelectionChange,
 				handleCreate,
 				handleUpdate,
 				handleConfirmDelete,

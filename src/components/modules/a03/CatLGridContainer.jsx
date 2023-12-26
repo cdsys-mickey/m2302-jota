@@ -6,7 +6,6 @@ import { A03Context } from "@/contexts/A03/A03Context";
 import CatLGrid from "./CatLGrid";
 
 export const CatLGridContainer = () => {
-	// const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const catL = useContext(CatLContext);
 	const a03 = useContext(A03Context);
@@ -27,8 +26,8 @@ export const CatLGridContainer = () => {
 			})}
 			height={height - 176}
 			isPersisted={catL.isPersisted}
-			handleSelectionChange={catL.handleSelectionChangeBy({
-				onRowSelectionChange: catL.handleRowSelectionChange,
+			onSelectionChange={catL.handleSelectionChange({
+				onRowSelectionChange: catL.onRowSelectionChange,
 			})}
 			isSelected={catL.isSelected}
 		/>

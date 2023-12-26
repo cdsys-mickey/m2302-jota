@@ -30,8 +30,8 @@ export const CatSGridContainer = () => {
 			height={height - 176}
 			isPersisted={catS.isPersisted}
 			// handleActiveCellChange={catS.handleActiveCellChange}
-			handleSelectionChange={catS.handleSelectionChangeBy({
-				onRowSelectionChange: catS.handleRowSelectionChange,
+			onSelectionChange={catS.handleSelectionChange({
+				onRowSelectionChange: catS.onRowSelectionChange,
 			})}
 		/>
 	);

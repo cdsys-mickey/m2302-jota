@@ -170,7 +170,7 @@ export const useA011 = ({ token } = {}) => {
 		[dsg]
 	);
 
-	const handleRowSelectionChange = useCallback(
+	const onRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
 			console.debug(
 				`${dsg.gridId}[${rowIndex}] selected, data:`,
@@ -196,7 +196,7 @@ export const useA011 = ({ token } = {}) => {
 		handleConfirmDelete,
 		handleDelete,
 		handleDuplicatedError,
-		handleRowSelectionChange,
+		onRowSelectionChange,
 		...dsg,
 		// form
 		onSubmit,

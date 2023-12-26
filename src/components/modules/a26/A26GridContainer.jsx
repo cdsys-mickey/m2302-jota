@@ -24,8 +24,8 @@ const A26GridContainer = () => {
 			})}
 			height={height - 176}
 			isPersisted={a26.isPersisted}
-			handleSelectionChange={a26.handleSelectionChangeBy({
-				// onRowSelectionChange: a26.handleRowSelectionChange,
+			onSelectionChange={a26.handleSelectionChange({
+				// onRowSelectionChange: a26.onRowSelectionChange,
 			})}
 		/>
 	);

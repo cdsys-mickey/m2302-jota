@@ -22,7 +22,7 @@ const A15GridContainer = () => {
 			})}
 			height={height - 176}
 			isPersisted={a15.isPersisted}
-			handleSelectionChange={a15.handleSelectionChangeBy({})}
+			onSelectionChange={a15.handleSelectionChange({})}
 		/>
 	);
 };

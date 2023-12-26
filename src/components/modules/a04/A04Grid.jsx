@@ -26,7 +26,7 @@ const A04Grid = memo((props) => {
 		// METHODS
 		handleChange,
 		isPersisted,
-		handleSelectionChange,
+		onSelectionChange,
 		...rest
 	} = props;
 	const theme = useTheme();
@@ -88,7 +88,7 @@ const A04Grid = memo((props) => {
 					addRowsComponent={DSGAddRowsToolbar}
 					disableExpandSelection
 					// disableContextMenu
-					onSelectionChange={handleSelectionChange}
+					onSelectionChange={onSelectionChange}
 					// autoAddRow
 					contextMenuComponent={ContextMenu}
 				/>
@@ -105,7 +105,7 @@ A04Grid.propTypes = {
 	height: PropTypes.number,
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleSelectionChange: PropTypes.func,
+	onSelectionChange: PropTypes.func,
 };
 
 A04Grid.displayName = "A04Grid";

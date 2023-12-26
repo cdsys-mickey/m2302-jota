@@ -21,7 +21,7 @@ const A04GridContainer = () => {
 			})}
 			height={height - 176}
 			isPersisted={a04.isPersisted}
-			handleSelectionChange={a04.handleSelectionChangeBy({})}
+			onSelectionChange={a04.handleSelectionChange({})}
 		/>
 	);
 };

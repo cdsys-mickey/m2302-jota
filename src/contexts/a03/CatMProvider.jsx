@@ -235,7 +235,7 @@ const CatMProvider = (props) => {
 		[dsg]
 	);
 
-	const handleRowSelectionChange = useCallback(
+	const onRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
 			selectRow({ rowIndex, rowData });
 		},
@@ -248,7 +248,7 @@ const CatMProvider = (props) => {
 				...state,
 				clear,
 				load,
-				handleRowSelectionChange,
+				onRowSelectionChange,
 				handleCreate,
 				handleUpdate,
 				handleConfirmDelete,

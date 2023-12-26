@@ -24,7 +24,7 @@ const A16GridContainer = () => {
 			})}
 			height={height - 176}
 			isPersisted={a16.isPersisted}
-			handleSelectionChange={a16.handleSelectionChangeBy({})}
+			onSelectionChange={a16.handleSelectionChange({})}
 			handleCreateRow={a16.handleCreateRow}
 		/>
 	);

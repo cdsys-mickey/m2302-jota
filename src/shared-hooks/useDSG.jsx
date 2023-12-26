@@ -332,7 +332,7 @@ export const useDSG = ({
 	/**
 	 * onRowSelectionChange 的預設實作
 	 */
-	const handleRowSelectionChange = useCallback(
+	const defaultOnRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
 			console.debug(
 				`${gridId}.rows[${rowIndex}] selected, rowData:`,
@@ -342,8 +342,8 @@ export const useDSG = ({
 		[gridId]
 	);
 
-	const handleSelectionChangeBy = useCallback(
-		({ onRowSelectionChange = handleRowSelectionChange }) =>
+	const handleSelectionChange = useCallback(
+		({ onRowSelectionChange = defaultOnRowSelectionChange }) =>
 			({ selection }) => {
 				if (
 					selection &&
@@ -368,7 +368,7 @@ export const useDSG = ({
 			},
 		[
 			getRowDataByIndex,
-			handleRowSelectionChange,
+			defaultOnRowSelectionChange,
 			gridId,
 			isAllFieldsNotNull,
 		]
@@ -413,7 +413,7 @@ export const useDSG = ({
 		handleGridChange,
 		isPersisted,
 		handleActiveCellChange,
-		handleSelectionChangeBy,
+		handleSelectionChange,
 		isAllFieldsNotNull,
 		// DELETING
 		deletingRow,

@@ -329,15 +329,15 @@ export const ZZDSGProvider = ({
 	/**
 	 * onRowSelectionChange 的預設實作
 	 */
-	const handleRowSelectionChange = useCallback(
+	const onRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
 			console.debug(`${gridId}[${rowIndex}] selected, data:`, rowData);
 		},
 		[gridId]
 	);
 
-	const handleSelectionChangeBy = useCallback(
-		({ onRowSelectionChange = handleRowSelectionChange }) =>
+	const handleSelectionChange = useCallback(
+		({ onRowSelectionChange = onRowSelectionChange }) =>
 			({ selection }) => {
 				if (
 					selection &&
@@ -360,12 +360,7 @@ export const ZZDSGProvider = ({
 					});
 				}
 			},
-		[
-			getRowDataByIndex,
-			handleRowSelectionChange,
-			gridId,
-			isAllFieldsNotNull,
-		]
+		[getRowDataByIndex, onRowSelectionChange, gridId, isAllFieldsNotNull]
 	);
 
 	const setActiveCell = useCallback(
@@ -411,7 +406,7 @@ export const ZZDSGProvider = ({
 				handleGridChange,
 				isPersisted,
 				handleActiveCellChange,
-				handleSelectionChangeBy,
+				handleSelectionChange,
 				isAllFieldsNotNull,
 				// DELETING
 				deletingRow,

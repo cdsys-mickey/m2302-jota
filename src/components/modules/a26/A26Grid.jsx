@@ -28,7 +28,7 @@ const A26Grid = memo((props) => {
 		// METHODS
 		handleChange,
 		isPersisted,
-		handleSelectionChange,
+		onSelectionChange,
 		...rest
 	} = props;
 	const theme = useTheme();
@@ -98,7 +98,7 @@ const A26Grid = memo((props) => {
 					addRowsComponent={DSGAddRowsToolbar}
 					disableExpandSelection
 					contextMenuComponent={ContextMenu}
-					onSelectionChange={handleSelectionChange}
+					onSelectionChange={onSelectionChange}
 					// autoAddRow
 				/>
 			</Box>
@@ -114,7 +114,7 @@ A26Grid.propTypes = {
 	height: PropTypes.number,
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleSelectionChange: PropTypes.func,
+	onSelectionChange: PropTypes.func,
 };
 
 A26Grid.displayName = "A26Grid";
