@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import A01ListRow from "./A01ListRow";
-import { A01Context } from "@/contexts/a01/A01Context";
+import { A01Context } from "@/contexts/A01/A01Context";
 import { useMemo } from "react";
 import PropTypes from "prop-types";
 

@@ -56,14 +56,26 @@ export const useWebApi = (props) => {
 		[baseUrl]
 	);
 
+	// const defaultGetData = useCallback((payload) => {
+	// 	return payload["data"] || [];
+	// }, []);
+
 	// async 版本
 	const sendAsync = useCallback(
-		async ({ url, method, data, headers, bearer, ...rest }) => {
+		async ({
+			url,
+			method,
+			data,
+			headers,
+			bearer,
+			// getData = defaultGetData,
+			...rest
+		}) => {
 			const apiUrl = getUrl(url);
 			if (!apiUrl) {
 				throw `url cannot be null`;
 			}
-			console.debug(`${method} ${apiUrl}`, data);
+			console.debug(`${method.toUpperCase()} ${apiUrl}, data:`, data);
 
 			let formData;
 			if (mode === "form") {
@@ -103,7 +115,13 @@ export const useWebApi = (props) => {
 				});
 				const status = HttpStatus.from(axiosResponse.status);
 				if (status.is2xx) {
-					return { status: status, payload: axiosResponse.data };
+					return {
+						status: status,
+						payload: axiosResponse.data,
+						// ...(getData && {
+						// 	data: getData(axiosResponse.data),
+						// }),
+					};
 				} else {
 					//should not happen
 					return {

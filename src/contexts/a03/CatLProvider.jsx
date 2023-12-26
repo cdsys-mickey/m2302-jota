@@ -72,7 +72,7 @@ const CatLProvider = (props) => {
 					bearer: token,
 				});
 				if (status.success) {
-					dsg.handleGridDataLoaded(payload);
+					dsg.handleGridDataLoaded(payload.data);
 					setState((prev) => ({
 						...prev,
 						selected: null,

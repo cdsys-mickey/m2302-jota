@@ -1,4 +1,4 @@
-import { A01Context } from "@/contexts/a01/A01Context";
+import { A01Context } from "@/contexts/A01/A01Context";
 import InfiniteListView from "@/shared-components/infinite-listview/InfiniteListView";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
@@ -43,7 +43,7 @@ export const A01ListViewContainer = () => {
 			loadMoreItems={a01.loadMoreItems}
 			isItemLoaded={a01.isItemLoaded}
 			RowComponent={A01ListRowContainer}
-			height={height - 142}
+			height={height ? height - 142 : 300}
 			handleItemsRendered={a01.handleItemsRendered}
 			error={a01.listError}
 		/>

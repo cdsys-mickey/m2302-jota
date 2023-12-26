@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { forwardRef, useContext } from "react";
-import { A01Context } from "@/contexts/a01/A01Context";
+import { A01Context } from "@/contexts/A01/A01Context";
 import A01DialogTitleEditButtons from "./A01DialogTitleEditButtons";
 import A01DialogTitleViewButtons from "./A01DialogTitleViewButtons";
 import ActionState from "../../../../../shared-constants/action-state";

@@ -55,7 +55,7 @@ const CatSProvider = (props) => {
 						bearer: token,
 					});
 					if (status.success) {
-						dsg.handleGridDataLoaded(payload);
+						dsg.handleGridDataLoaded(payload.data);
 					} else {
 						switch (status.code) {
 							default:

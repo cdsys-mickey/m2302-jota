@@ -10,8 +10,8 @@ const defaultTriggerServerFilter = (q) => {
 };
 
 const defaultGetData = (payload) => {
-	// return payload["data"];
-	return payload;
+	return payload["data"];
+	// return payload;
 };
 
 const WebApiOptionPicker = memo(

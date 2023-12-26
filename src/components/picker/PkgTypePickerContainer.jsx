@@ -4,7 +4,7 @@ import { forwardRef, useContext } from "react";
 import PkgTypes from "../../modules/md-pkg-types";
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 
-const PkyTypePickerContainer = forwardRef((props, ref) => {
+export const PkgTypePickerContainer = forwardRef((props, ref) => {
 	const { children, label = "包裝單位", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
@@ -21,10 +21,10 @@ const PkyTypePickerContainer = forwardRef((props, ref) => {
 		</TypoWebApiOptionPickerContainer>
 	);
 });
-PkyTypePickerContainer.propTypes = {
+
+PkgTypePickerContainer.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
 };
 
-PkyTypePickerContainer.displayName = "PkyTypePickerContainer";
-export default PkyTypePickerContainer;
+PkgTypePickerContainer.displayName = "PkgTypePickerContainer";

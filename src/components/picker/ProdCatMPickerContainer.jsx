@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import ProdMCats from "../../modules/md-prod-m-cats";
+import ProdMCats from "@/modules/md-prod-m-cats";
 import { useWatch } from "react-hook-form";
 import { useMemo } from "react";
+import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
+import { ControlledWebApiOptionPicker } from "../../shared-components/controlled/ControlledWebApiOptionPicker";
 
 const ProdCatMPickerContainer = forwardRef((props, ref) => {
-	const { children, readOnly = false, ...rest } = props;
+	const { name, readOnly = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const catL = useWatch({ name: "catL" });
 	const disabled = useMemo(() => {
@@ -20,7 +22,8 @@ const ProdCatMPickerContainer = forwardRef((props, ref) => {
 	}, [catL?.LClas, disabled]);
 
 	return (
-		<TypoWebApiOptionPickerContainer
+		<ControlledWebApiOptionPicker
+			name={name}
 			label="中分類"
 			ref={ref}
 			bearer={token}
@@ -28,13 +31,12 @@ const ProdCatMPickerContainer = forwardRef((props, ref) => {
 			url={url}
 			getOptionLabel={ProdMCats.getOptionLabel}
 			isOptionEqualToValue={ProdMCats.isOptionEqualToValue}
-			{...rest}>
-			{children}
-		</TypoWebApiOptionPickerContainer>
+			{...rest}
+		/>
 	);
 });
 ProdCatMPickerContainer.propTypes = {
-	children: PropTypes.node,
+	name: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 

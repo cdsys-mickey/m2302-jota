@@ -1,4 +1,4 @@
-import { A02Context } from "@/contexts/a02/A02Context";
+import { A02Context } from "@/contexts/A02/A02Context";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import A02Grid from "./A02Grid";

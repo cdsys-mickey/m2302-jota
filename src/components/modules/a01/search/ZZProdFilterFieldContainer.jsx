@@ -1,4 +1,4 @@
-import { A01Context } from "@/contexts/a01/A01Context";
+import { A01Context } from "@/contexts/A01/A01Context";
 import { SearchFieldContainer } from "@/shared-components/search-field/SearchFieldContainer";
 import useSearchField from "@/shared-hooks/useSearchField";
 import PropTypes from "prop-types";

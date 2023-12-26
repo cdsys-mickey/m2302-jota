@@ -13,26 +13,33 @@ import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
 import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { Container } from "@mui/material";
-import CmsTypes from "../../../../modules/md-cms-types";
-import ProdLCats from "../../../../modules/md-prod-l-cats";
-import ProdMCats from "../../../../modules/md-prod-m-cats";
-import ProdSCats from "../../../../modules/md-prod-s-cats";
-import ProdTypeB from "../../../../modules/md-prod-type-b";
-import YesNo from "../../../../modules/md-yes-no";
-import CmsTypePickerContainer from "../../../picker/CmsTypePickerContainer";
-import ProdCatLPickerContainer from "../../../picker/ProdCatLPickerContainer";
-import ProdCatMPickerContainer from "../../../picker/ProdCatMPickerContainer";
-import ProdCatSPickerContainer from "../../../picker/ProdCatSPickerContainer";
-import ProdTypeAPickerContainer from "../../../picker/ProdTypeAPickerContainer";
-import ProdTypeBPickerContainer from "../../../picker/ProdTypeBPickerContainer";
-import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
+import CmsTypes from "@/modules/md-cms-types";
+import ProdLCats from "@/modules/md-prod-l-cats";
+import ProdMCats from "@/modules/md-prod-m-cats";
+import ProdSCats from "@/modules/md-prod-s-cats";
+import ProdTypeB from "@/modules/md-prod-type-b";
+import YesNo from "@/modules/md-yes-no";
+import CmsTypePickerContainer from "@/components/picker/CmsTypePickerContainer";
+import ProdCatLPickerContainer from "@/components/picker/ProdCatLPickerContainer";
+import ProdCatMPickerContainer from "@/components/picker/ProdCatMPickerContainer";
+import ProdCatSPickerContainer from "@/components/picker/ProdCatSPickerContainer";
+import ProdTypeAPickerContainer from "@/components/picker/ProdTypeAPickerContainer";
+import ProdTypeBPickerContainer from "@/components/picker/ProdTypeBPickerContainer";
+import TaxTypePickerContainer from "@/components/picker/TaxTypePickerContainer";
 import { A01DialogTitleButtonsContainer } from "./buttons/A01DialogTitleButtonsContainer";
-import PkyTypePickerContainer from "../../../picker/PkyTypePickerContainer";
+import { PkgTypePickerContainer } from "../../../picker/PkgTypePickerContainer";
 import PkgTypes from "../../../../modules/md-pkg-types";
 import Counters from "../../../../modules/md-counters";
 import CounterPickerContainer from "../../../picker/CounterPickerContainer";
 import { ProdTransGridContainer } from "../trans/ProdTransGridContainer";
 import { ProdComboGridContainer } from "../combo/ProdComboGridContainer";
+import TypoProdCatLPickerContainer from "../../../picker/TypoProdCatLPickerContainer";
+import TypoProdCatMPickerContainer from "../../../picker/TypoProdCatMPickerContainer";
+import TypoProdCatSPickerContainer from "../../../picker/TypoProdCatSPickerContainer";
+import TypoProdTypeAPickerContainer from "../../../picker/TypoProdTypeAPickerContainer";
+import TypoProdTypeBPickerContainer from "../../../picker/TypoProdTypeBPickerContainer";
+import TypoTaxTypePickerContainer from "../../../picker/TypoTaxTypePickerContainer";
+import TypoCounterPickerContainer from "../../../picker/TypoCounterPickerContainer";
 
 const A01Dialog = memo(
 	forwardRef((props, ref) => {
@@ -179,25 +186,25 @@ const A01Dialog = memo(
 								columns={12}
 								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdCatLPickerContainer
+									<TypoProdCatLPickerContainer
 										name="catL"
 										readOnly={store}>
 										{ProdLCats.getOptionLabel(data?.catL)}
-									</ProdCatLPickerContainer>
+									</TypoProdCatLPickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdCatMPickerContainer
+									<TypoProdCatMPickerContainer
 										name="catM"
 										readOnly={store}>
 										{ProdMCats.getOptionLabel(data?.catM)}
-									</ProdCatMPickerContainer>
+									</TypoProdCatMPickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdCatSPickerContainer
+									<TypoProdCatSPickerContainer
 										name="catS"
 										readOnly={store}>
 										{ProdSCats.getOptionLabel(data?.catS)}
-									</ProdCatSPickerContainer>
+									</TypoProdCatSPickerContainer>
 								</Grid>
 								{/* <Grid item xs={12} sm={12} md={2}>
 									<TypoCheckboxExContainer
@@ -207,34 +214,34 @@ const A01Dialog = memo(
 								</Grid> */}
 								<FlexBox fullWidth />
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdTypeAPickerContainer
+									<TypoProdTypeAPickerContainer
 										name="typeA"
 										readOnly={store}>
 										{ProdTypeA.getOptionLabel(data?.typeA)}
-									</ProdTypeAPickerContainer>
+									</TypoProdTypeAPickerContainer>
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={3}>
-									<ProdTypeBPickerContainer
+									<TypoProdTypeBPickerContainer
 										name="typeB"
 										readOnly={store}>
 										{ProdTypeB.getOptionLabel(data?.typeB)}
-									</ProdTypeBPickerContainer>
+									</TypoProdTypeBPickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<TaxTypePickerContainer
+									<TypoTaxTypePickerContainer
 										name="taxType"
 										label="稅別"
 										readOnly={store}>
 										{TaxTypes.getOptionLabel(data?.taxType)}
-									</TaxTypePickerContainer>
+									</TypoTaxTypePickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<CounterPickerContainer
+									<TypoCounterPickerContainer
 										name="counter"
 										autoFocus={store}>
 										{Counters.getOptionLabel(data?.counter)}
-									</CounterPickerContainer>
+									</TypoCounterPickerContainer>
 								</Grid>
 							</Grid>
 						</FormSectionBox>
@@ -346,36 +353,36 @@ const A01Dialog = memo(
 								columns={12}
 								spacing={editing ? 2 : 1}>
 								<Grid item xs={12} sm={12} md={3}>
-									<PkyTypePickerContainer
+									<PkgTypePickerContainer
 										name="bunit"
 										label="庫存"
 										readOnly={store}>
 										{PkgTypes.getOptionLabel(data?.bunit)}
-									</PkyTypePickerContainer>
+									</PkgTypePickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<PkyTypePickerContainer
+									<PkgTypePickerContainer
 										name="sunit"
 										label="銷售"
 										readOnly={store}>
 										{PkgTypes.getOptionLabel(data?.sunit)}
-									</PkyTypePickerContainer>
+									</PkgTypePickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<PkyTypePickerContainer
+									<PkgTypePickerContainer
 										name="iunit"
 										label="進貨"
 										readOnly={store}>
 										{PkgTypes.getOptionLabel(data?.iunit)}
-									</PkyTypePickerContainer>
+									</PkgTypePickerContainer>
 								</Grid>
 								<Grid item xs={12} sm={12} md={3}>
-									<PkyTypePickerContainer
+									<PkgTypePickerContainer
 										name="munit"
 										label="BOM"
 										readOnly={store}>
 										{PkgTypes.getOptionLabel(data?.munit)}
-									</PkyTypePickerContainer>
+									</PkgTypePickerContainer>
 								</Grid>
 							</Grid>
 						</FormSectionBox>

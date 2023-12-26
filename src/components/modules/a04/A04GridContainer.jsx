@@ -1,4 +1,4 @@
-import { A04Context } from "@/contexts/a04/A04Context";
+import { A04Context } from "@/contexts/A04/A04Context";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import A04Grid from "./A04Grid";

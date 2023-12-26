@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import SwitchEx from "@/shared-components/SwitchEx";
-import { A16Context } from "@/contexts/a16/A16Context";
+import { A16Context } from "@/contexts/A16/A16Context";
 
 export const A16LockRowsSwitchContainer = (props) => {
 	const { ...rest } = props;

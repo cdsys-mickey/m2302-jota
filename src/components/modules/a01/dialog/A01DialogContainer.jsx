@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from "react-hook-form";
 import A01Dialog from "./A01Dialog";
 import { useContext } from "react";
-import { A01Context } from "@/contexts/a01/A01Context";
+import { A01Context } from "@/contexts/A01/A01Context";
 import { useEffect } from "react";
 import { useMemo } from "react";
 import ActionState from "../../../../shared-constants/action-state";
@@ -57,8 +57,8 @@ export const A01DialogContainer = () => {
 
 	useEffect(() => {
 		if (a01.readState === ActionState.DONE && !!a01.itemData) {
-			console.debug(`a01 form reset`);
 			forms.reset(a01.itemData);
+			console.debug(`a01 form reset`, a01.itemData);
 			// a01.resetGridData(a01.itemData);
 		}
 	}, [a01.itemData, a01.readState, forms]);

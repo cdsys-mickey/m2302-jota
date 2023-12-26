@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { A01Context } from "@/contexts/a01/A01Context";
+import { A01Context } from "@/contexts/A01/A01Context";
 import FetchResultLabel from "@/shared-components/listview/FetchResultLabel";
 
 export const A01FetchResultLabelContainer = () => {

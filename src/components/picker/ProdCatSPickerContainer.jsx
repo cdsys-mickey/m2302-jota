@@ -7,9 +7,11 @@ import ProdSCats from "../../modules/md-prod-s-cats";
 import { useWatch } from "react-hook-form";
 import { useMemo } from "react";
 import queryString from "query-string";
+import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
+import { ControlledWebApiOptionPicker } from "../../shared-components/controlled/ControlledWebApiOptionPicker";
 
 const ProdCatSPickerContainer = forwardRef((props, ref) => {
-	const { children, readOnly = false, ...rest } = props;
+	const { name, readOnly = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const catL = useWatch({ name: "catL" });
 	const catM = useWatch({ name: "catM" });
@@ -22,7 +24,8 @@ const ProdCatSPickerContainer = forwardRef((props, ref) => {
 	}, [catL?.LClas, catM?.MClas, disabled]);
 
 	return (
-		<TypoWebApiOptionPickerContainer
+		<ControlledWebApiOptionPicker
+			name={name}
 			label="小分類"
 			ref={ref}
 			bearer={token}
@@ -30,13 +33,12 @@ const ProdCatSPickerContainer = forwardRef((props, ref) => {
 			url={url}
 			getOptionLabel={ProdSCats.getOptionLabel}
 			isOptionEqualToValue={ProdSCats.isOptionEqualToValue}
-			{...rest}>
-			{children}
-		</TypoWebApiOptionPickerContainer>
+			{...rest}
+		/>
 	);
 });
 ProdCatSPickerContainer.propTypes = {
-	children: PropTypes.node,
+	name: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 

@@ -18,7 +18,7 @@ export const useA16 = ({ token }) => {
 
 	// const dsg = useContext(DSGContext);
 	const dsg = useDSG({
-		id: "A16",
+		gridId: "A16",
 		keyColumn: "DeptID",
 		otherColumns: "GroupKey,DeptName,AbbrName",
 	});
@@ -40,7 +40,7 @@ export const useA16 = ({ token }) => {
 					},
 				});
 				if (status.success) {
-					dsg.handleGridDataLoaded(payload["data"]);
+					dsg.handleGridDataLoaded(payload.data);
 				} else {
 					switch (status.code) {
 						default:

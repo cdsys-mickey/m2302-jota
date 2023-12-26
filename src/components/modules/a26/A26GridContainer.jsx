@@ -2,7 +2,7 @@ import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import A26Grid from "./A26Grid";
-import { A26Context } from "@/contexts/a26/A26Context";
+import { A26Context } from "@/contexts/A26/A26Context";
 
 const A26GridContainer = () => {
 	// const dsg = useContext(DSGContext);
