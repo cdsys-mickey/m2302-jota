@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Controller } from "react-hook-form";
 import WebApiOptionPicker from "@/shared-components/picker/WebApiOptionPicker";
+import { useCallback } from "react";
 
 export const ControlledWebApiOptionPicker = ({
 	name,
@@ -11,6 +12,7 @@ export const ControlledWebApiOptionPicker = ({
 	labelShrink = false,
 	defaultValue = null,
 	sx = [],
+	// onChange: handleChangeEx,
 	...rest
 }) => {
 	return (
@@ -27,6 +29,13 @@ export const ControlledWebApiOptionPicker = ({
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 						onChange={onChange}
+						// onChange={(v) => {
+						// 	console.log("onChange", v);
+						// 	onChange(v);
+						// 	if (handleChangeEx) {
+						// 		handleChangeEx(v);
+						// 	}
+						// }}
 						disabled={disabled}
 						InputLabelProps={{
 							...(labelShrink && { shrink: true }),

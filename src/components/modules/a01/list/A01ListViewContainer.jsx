@@ -25,11 +25,11 @@ export const A01ListViewContainer = () => {
 	}, []);
 
 	// useEffect(() => {
-	// 	console.debug(`qs: ${qs}`);
+	// 	console.log(`qs: ${qs}`);
 	// }, [qs]);
 
 	useEffect(() => {
-		console.debug(`debouncedQs: ${debouncedQs}`);
+		console.log(`debouncedQs: ${debouncedQs}`);
 		const values = getValues();
 		loadList({ params: { ...values, qs: debouncedQs } });
 		setValue("qs", debouncedQs);

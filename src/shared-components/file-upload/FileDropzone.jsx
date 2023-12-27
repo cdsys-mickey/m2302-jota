@@ -90,8 +90,8 @@ const FileDropzone = (props) => {
 
 	const handleUpload = useCallback(
 		async (uploadingFile) => {
-			// console.debug(`building FormData for [${uploadingFile.name}]...`);
-			console.debug("handleUpload", uploadingFile);
+			// console.log(`building FormData for [${uploadingFile.name}]...`);
+			console.log("handleUpload", uploadingFile);
 			let formData = new FormData();
 
 			formData.append("file", uploadingFile, uploadingFile.name);
@@ -105,7 +105,7 @@ const FileDropzone = (props) => {
 				};
 			});
 
-			//console.debug("uploadingFile", uploadingFile);
+			//console.log("uploadingFile", uploadingFile);
 			const { status, error } = await sendAsync({
 				method: httpMethod,
 				url: uploadUrl,
@@ -114,7 +114,7 @@ const FileDropzone = (props) => {
 					"Content-Type": "multipart/form-data",
 				},
 				onUploadProgress: (progressEvent) => {
-					console.debug("progressEvent", progressEvent);
+					console.log("progressEvent", progressEvent);
 					const completed = Math.round(
 						(progressEvent.loaded * 100) / progressEvent.total
 					);
@@ -154,7 +154,7 @@ const FileDropzone = (props) => {
 							: LoadingState.DONE,
 					};
 				});
-				console.debug("upload done");
+				console.log("upload done");
 
 				if (onUploaded) {
 					onUploaded(uploadingFile);
@@ -182,8 +182,8 @@ const FileDropzone = (props) => {
 
 	const handleUploadAll = useCallback(
 		async (uploadingFiles) => {
-			// console.debug(`building FormData for [${uploadingFile.name}]...`);
-			console.debug("handleUploadAll", uploadingFiles);
+			// console.log(`building FormData for [${uploadingFile.name}]...`);
+			console.log("handleUploadAll", uploadingFiles);
 			const success = [];
 			for (let i = 0; i < uploadingFiles.length; i++) {
 				const uploadingFile = uploadingFiles[i];
@@ -207,7 +207,7 @@ const FileDropzone = (props) => {
 						"Content-Type": "multipart/form-data",
 					},
 					onUploadProgress: (progressEvent) => {
-						console.debug("progressEvent", progressEvent);
+						console.log("progressEvent", progressEvent);
 						const completed = Math.round(
 							(progressEvent.loaded * 100) / progressEvent.total
 						);
@@ -251,7 +251,7 @@ const FileDropzone = (props) => {
 							// 	: LoadingState.DONE,
 						};
 					});
-					console.debug("upload done");
+					console.log("upload done");
 
 					if (onUploaded) {
 						onUploaded(uploadingFile);
@@ -281,7 +281,7 @@ const FileDropzone = (props) => {
 
 	const handleDropAccepted = useCallback(
 		async (acceptedFiles, e) => {
-			console.debug("handleDropAccepted", acceptedFiles);
+			console.log("handleDropAccepted", acceptedFiles);
 			//TODO: 檢查是否已有重複檔名
 
 			if (acceptedFiles && acceptedFiles.length > 0) {
@@ -297,7 +297,7 @@ const FileDropzone = (props) => {
 						};
 					});
 					// await handleUpload(acceptedFiles[0]);
-					// console.debug("state.uploaded", state.uploaded);
+					// console.log("state.uploaded", state.uploaded);
 					handleUploadAll(acceptedFiles);
 				} catch (err) {
 					console.error(err, "handleDropAccepted err");
@@ -310,8 +310,8 @@ const FileDropzone = (props) => {
 
 	const handleDropRejected = useCallback(
 		(rejectedFiles, e) => {
-			console.debug(`drop rejected:`);
-			console.debug(rejectedFiles);
+			console.log(`drop rejected:`);
+			console.log(rejectedFiles);
 			if (onDropRejected) onDropRejected();
 		},
 		[onDropRejected]

@@ -8,7 +8,7 @@ const A03Toolbar = memo(
 		return (
 			<InlineListViewToolbar
 				ref={ref}
-				rightComponent={A03LockRowsSwitchContainer}
+				RightComponent={A03LockRowsSwitchContainer}
 				// right={<Switch />}
 				{...rest}
 			/>

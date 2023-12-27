@@ -20,7 +20,7 @@ export const MockProdsProvider = ({ children }) => {
 	const onDefaultSubmit = useCallback(
 		({ setError }) =>
 			(data) => {
-				console.debug(data, "onDefaultSubmit");
+				console.log(data, "onDefaultSubmit");
 				if (!popperOpen) {
 					if (data.qs) {
 						fetch({
@@ -28,7 +28,7 @@ export const MockProdsProvider = ({ children }) => {
 						});
 					}
 				} else {
-					console.debug(data, "onSearchSubmitEx");
+					console.log(data, "onSearchSubmitEx");
 					if (A01.hasEmptyError(data)) {
 						setError("empty", {
 							type: "custom",
@@ -38,7 +38,7 @@ export const MockProdsProvider = ({ children }) => {
 					}
 
 					const collected = A01.processForSubmit(data);
-					console.debug(collected, "collected");
+					console.log(collected, "collected");
 
 					handlePopperClose();
 				}

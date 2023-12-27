@@ -48,7 +48,7 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 				...prev,
 				menuItemSelected: module,
 			}));
-			console.debug(`module ${module.JobID} selected`);
+			console.log(`module ${module.JobID} selected`);
 			toModule(module.WebName);
 		},
 		[toModule]
@@ -59,7 +59,7 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 			...prev,
 			menuItemSelected: null,
 		}));
-		console.debug("home clicked");
+		console.log("home clicked");
 		toLanding();
 	}, [toLanding]);
 
@@ -129,7 +129,7 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 	}, [match?.params?.moduleId]);
 
 	const resetMenuState = useCallback(() => {
-		console.debug("resetMenuState");
+		console.log("resetMenuState");
 		setMenuState((prev) => ({
 			...prev,
 			menuItemSelected: null,
@@ -141,7 +141,7 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 			const matchedAuthority = auth.authorities?.find(
 				(a) => a.JobID === menuItemId
 			);
-			console.debug(`recovered ${menuItemId}...`, matchedAuthority);
+			console.log(`recovered ${menuItemId}...`, matchedAuthority);
 			setMenuState((prev) => ({
 				...prev,
 				menuItemSelected: matchedAuthority,

@@ -4,36 +4,105 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext } from "react";
 import { toast } from "react-toastify";
 import { useDSG } from "../../shared-hooks/useDSG";
+import { useState } from "react";
+import A011 from "../../modules/md-a011";
+import Errors from "../../shared-modules/sd-errors";
+import Objects from "../../shared-modules/sd-objects";
+import { useToggle } from "../../shared-hooks/useToggle";
+import { useAction } from "../../shared-hooks/useAction";
 
 export const useA011 = ({ token } = {}) => {
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
+	// const [formExpanded, toggleFormExpanded] = useToggle(false);
+	const [expanded, toggleExpanded] = useToggle(false);
+	const saveAction = useAction();
 
-	// const dsg = useContext(DSGContext);
+	const [state, setState] = useState({
+		saveKey: null,
+		totalElements: null,
+		loading: null,
+	});
 	const dsg = useDSG({
 		gridId: "A011",
 		keyColumn: "ProdID",
 		otherColumns: "ProdData_N,Price,PriceA,PriceB,PriceC,PriceD,PriceE",
 	});
-	const dialogs = useContext(DialogsContext);
 
-	// const [loading, setLoading] = useState();
-
-	const load = useCallback(
-		async ({ supressLoading = false } = {}) => {
+	const peek = useCallback(
+		async (criteria) => {
 			if (!token) {
 				throw new Error("token not specified");
 			}
-			if (!supressLoading) {
-				dsg.setGridLoading(true);
+			if (Objects.isAllPropsEmpty(criteria)) {
+				setState((prev) => ({
+					...prev,
+					saveKey: null,
+					totalElements: null,
+				}));
+				return;
 			}
+			setState((prev) => ({
+				...prev,
+				loading: true,
+			}));
+			try {
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/prod-grid/A011",
+					bearer: token,
+					data: {
+						...A011.transformAsQueryParams(criteria),
+						pk: 1,
+					},
+				});
+				if (status.success) {
+					setState((prev) => ({
+						...prev,
+						saveKey: payload.Select?.SaveKey,
+						totalElements: payload.Select?.TotalRecord,
+					}));
+				} else {
+					throw error;
+				}
+			} catch (err) {
+				console.error("peek failed", err);
+				toast.error(Errors.getMessage("篩選失敗", err));
+			} finally {
+				setState((prev) => ({
+					...prev,
+					loading: false,
+				}));
+			}
+		},
+		[httpGetAsync, token]
+	);
+
+	const unload = useCallback(() => {
+		dsg.handleGridDataLoaded([]);
+	}, [dsg]);
+
+	const load = useCallback(
+		async (criteria) => {
+			console.log(`saveKey`, state.saveKey);
+			if (!token) {
+				throw new Error("token not specified");
+			}
+
+			dsg.setGridLoading(true);
+
 			try {
 				const { status, payload } = await httpGetAsync({
 					url: "v1/prod-grid/A011",
 					bearer: token,
+					data: {
+						...A011.transformAsQueryParams(criteria),
+						...(state.saveKey && {
+							sk: state.saveKey,
+						}),
+					},
 				});
 				if (status.success) {
-					dsg.handleGridDataLoaded(payload.data["A011_W1"]);
+					dsg.handleGridDataLoaded(payload.data[0]["A011_W1"]);
 				} else {
 					switch (status.code) {
 						default:
@@ -45,161 +114,63 @@ export const useA011 = ({ token } = {}) => {
 				console.error("load", err);
 			} finally {
 				dsg.setGridLoading(false);
+				setState((prev) => ({
+					...prev,
+					saveKey: null,
+				}));
 			}
 		},
-		[dsg, httpGetAsync, token]
+		[dsg, httpGetAsync, state.saveKey, token]
 	);
 
-	const reload = useCallback(() => {
-		load({ supressLoading: true });
-	}, [load]);
-
-	const handleCreate = useCallback(
-		async ({ rowData }, newValue) => {
-			console.debug(`CREATE`, rowData);
-			try {
-				const { status, payload, error } = await httpPostAsync({
-					url: "v1/prod-grid/A011",
-					bearer: token,
-					data: rowData,
-				});
-				console.debug("handleCreate response.payload", payload);
-				if (status.success) {
-					dsg.commitChanges(newValue);
-					toast.success(
-						`代碼 ${rowData.CodeID}/${rowData.CodeData} 新增成功`
-					);
-				} else {
-					throw error?.message || new Error("新增失敗");
-				}
-			} catch (err) {
-				toast.error(`新增代碼發生例外: ${err.message}`);
-				reload();
-			}
+	const onSubmit = useCallback(
+		(data) => {
+			console.log(`onSubmit`, data);
+			load(data);
 		},
-		[dsg, httpPostAsync, reload, token]
+		[load]
 	);
-
-	const handleUpdate = useCallback(
-		async ({ rowData }, newValue) => {
-			console.debug(`UPDATE`, rowData);
-			try {
-				const { status, payload, error } = await httpPutAsync({
-					url: "v1/prod-grid/A011",
-					data: rowData,
-					bearer: token,
-				});
-				console.debug("handleCreate response.payload", payload);
-				if (status.success) {
-					dsg.commitChanges(newValue);
-					toast.success(
-						`代碼 ${rowData.CodeID}/${rowData.CodeData} 修改成功`
-					);
-				} else {
-					throw error?.message || new Error("修改失敗");
-				}
-			} catch (err) {
-				toast.error(`修改代碼發生例外: ${err.message}`);
-				reload();
-			}
-		},
-		[dsg, httpPutAsync, reload, token]
-	);
-
-	const handleDelete = useCallback(
-		async ({ rowData }) => {
-			console.debug(`DELETE`, rowData);
-			try {
-				const key = rowData.CodeID;
-				const { status, error } = await httpDeleteAsync({
-					url: `v1/prod-grid/A011/${key}`,
-					bearer: token,
-				});
-
-				if (status.success) {
-					toast.success(
-						`代碼 ${rowData.CodeID}/${rowData.CodeData} 刪除成功`
-					);
-				} else {
-					throw error?.message || new Error("刪除失敗");
-				}
-			} catch (err) {
-				console.error(err);
-				toast.error(`刪除代碼發生例外: ${err.message}`);
-			} finally {
-				dsg.setDeletingRow(null);
-				dialogs.closeLatest();
-				reload();
-			}
-		},
-		[dialogs, dsg, httpDeleteAsync, reload, token]
-	);
-
-	const handleConfirmDelete = useCallback(
-		async (row) => {
-			const { rowData } = row;
-			console.debug(`confirm DELETE`, rowData);
-			dsg.setDeletingRow(row);
-			dialogs.create({
-				title: "刪除確認",
-				message: `確定要刪除代碼 ${rowData.CodeID}/${rowData.CodeData} ?`,
-				onConfirm: () => {
-					handleDelete(row);
-				},
-				onCancel: () => {
-					dsg.setDeletingRow(null);
-					dsg.rollbackChanges();
-					dialogs.closeLatest();
-				},
-			});
-		},
-		[dialogs, dsg, handleDelete]
-	);
-
-	const handleDuplicatedError = useCallback(
-		(row, newValue) => {
-			toast.error(`代碼 ${row.rowData.CodeID} 已存在`);
-
-			dsg.rewriteRowValue(row, newValue, {
-				CodeID: "",
-			});
-			setTimeout(() => {
-				dsg.setActiveCell({ row: row.rowIndex, col: 0 });
-			}, 0);
-		},
-		[dsg]
-	);
-
-	const onRowSelectionChange = useCallback(
-		({ rowIndex, rowData }) => {
-			console.debug(
-				`${dsg.gridId}[${rowIndex}] selected, data:`,
-				rowData
-			);
-		},
-		[dsg.gridId]
-	);
-
-	const onSubmit = useCallback((data) => {
-		console.debug(`onSubmit`, data);
-	}, []);
 
 	const onSubmitError = useCallback((err) => {
 		console.error(`onSubmitError`, err);
 	}, []);
 
+	const handleSave = useCallback(async () => {
+		console.log(`handleSave`, dsg.gridData);
+		const collected = A011.transformForSubmit(dsg.gridData);
+		console.log("collected", collected);
+		try {
+			saveAction.start();
+			const { status, error } = await httpPutAsync({
+				url: `v1/prod-grid/A011`,
+				data: collected,
+				bearer: token,
+			});
+			if (status.success) {
+				toast.success("商品資料已更新");
+				saveAction.finish();
+			} else {
+				throw error || new Error("未預期例外");
+			}
+		} catch (err) {
+			saveAction.fail(err);
+			toast.error(Errors.getMessage("儲存失敗", err));
+		}
+	}, [dsg.gridData, httpPutAsync, saveAction, token]);
+
 	return {
 		load,
+		unload,
 		// handleGridChange,
-		handleCreate,
-		handleUpdate,
-		handleConfirmDelete,
-		handleDelete,
-		handleDuplicatedError,
-		onRowSelectionChange,
 		...dsg,
 		// form
 		onSubmit,
 		onSubmitError,
+		...state,
+		peek,
+		expanded,
+		toggleExpanded,
+		saveWorking: saveAction.working,
+		handleSave,
 	};
 };

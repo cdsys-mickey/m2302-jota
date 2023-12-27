@@ -54,7 +54,7 @@ const FilesField = ({
 				onDelete(v);
 				return;
 			}
-			console.debug("handleDelete", v);
+			console.log("handleDelete", v);
 		},
 		[onDelete]
 	);
@@ -89,13 +89,13 @@ const FilesField = ({
 
 	const confirmDelete = useCallback((item) => {
 		setDeleting(item);
-		console.debug("deleting", item);
+		console.log("deleting", item);
 	}, []);
 
 	const handleAllUploaded = useCallback(
 		(files) => {
-			console.debug("current value", value);
-			console.debug("handleAllUploaded", files);
+			console.log("current value", value);
+			console.log("handleAllUploaded", files);
 
 			onChange([
 				...value,

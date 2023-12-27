@@ -58,7 +58,7 @@ export const A01DialogContainer = () => {
 	useEffect(() => {
 		if (a01.readState === ActionState.DONE && !!a01.itemData) {
 			forms.reset(a01.itemData);
-			console.debug(`a01 form reset`, a01.itemData);
+			console.log(`a01 form reset`, a01.itemData);
 			// a01.resetGridData(a01.itemData);
 		}
 	}, [a01.itemData, a01.readState, forms]);

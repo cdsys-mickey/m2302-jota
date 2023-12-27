@@ -253,17 +253,17 @@ const useAxiosServiceDotNet = (props) => {
 	const delayTimer = useRef(null);
 
 	const delayLoading = useCallback(() => {
-		console.debug("delay loading...");
+		console.log("delay loading...");
 		clearTimeout(delayTimer.current);
 		delayTimer.current = setTimeout(() => {
 			if (delayTimer.current) {
-				console.debug("loading...");
+				console.log("loading...");
 				setFetchState((prevState) => ({
 					...prevState,
 					loading: LoadingState.LOADING,
 				}));
 			} else {
-				console.debug("loaded");
+				console.log("loaded");
 			}
 		}, loadingDelay);
 	}, [loadingDelay]);
@@ -311,7 +311,7 @@ const useAxiosServiceDotNet = (props) => {
 						  },
 				});
 				delayTimer.current = null;
-				console.debug(response, "fetch response");
+				console.log(response, "fetch response");
 
 				const numberOfElements = response.data?.length || 0;
 				// API 回應包括分頁資訊才更新 pageResult
@@ -392,7 +392,7 @@ const useAxiosServiceDotNet = (props) => {
 
 	const load = useCallback(
 		async (actionTargetId, refresh = RefreshMode.REFRESH) => {
-			console.debug(`load ${actionTargetId}`);
+			console.log(`load ${actionTargetId}`);
 			if (!fetchUrl) {
 				console.error("fetchUrl is not defined");
 			}
@@ -414,7 +414,7 @@ const useAxiosServiceDotNet = (props) => {
 					url:
 						fetchUrl + (actionTargetId ? "/" + actionTargetId : ""),
 				});
-				console.debug(response);
+				console.log(response);
 				if (actionTargetId) {
 					setActionState((prevState) => ({
 						...prevState,
@@ -441,7 +441,7 @@ const useAxiosServiceDotNet = (props) => {
 			const result = Array.from(fetchState.data);
 			const [removed] = result.splice(startIndex, 1);
 			result.splice(endIndex, 0, removed);
-			console.debug(`reorder: startIndex -> endIndex`);
+			console.log(`reorder: startIndex -> endIndex`);
 			setFetchState((prevState) => ({
 				...prevState,
 				data: result,
@@ -451,7 +451,7 @@ const useAxiosServiceDotNet = (props) => {
 				url: fetchUrl,
 				data: result.map((c, index) => ({ id: c.id, seq: index + 1 })),
 			});
-			console.debug(response);
+			console.log(response);
 			return response;
 		},
 		[fetchState.data, fetchUrl, httpPatch]
@@ -467,7 +467,7 @@ const useAxiosServiceDotNet = (props) => {
 	}, []);
 
 	const cancelAction = useCallback(() => {
-		console.debug("cancelAction");
+		console.log("cancelAction");
 		setActionState((prevState) => ({
 			...prevState,
 			action: null,

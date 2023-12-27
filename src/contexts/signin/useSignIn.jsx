@@ -64,8 +64,8 @@ export const useSignIn = () => {
 							: "/v1/auth/signin",
 						data: collected,
 					});
-					console.debug("status", status);
-					console.debug("payload", payload);
+					console.log("status", status);
+					console.log("payload", payload);
 					if (error) {
 						console.error(error);
 					}

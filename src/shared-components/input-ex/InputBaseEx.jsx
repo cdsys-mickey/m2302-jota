@@ -1,6 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import ClearIcon from "@mui/icons-material/Clear";
-import { IconButton, InputBase, Tooltip } from "@mui/material";
+import { InputBase } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 

@@ -1,15 +1,13 @@
-import { forwardRef } from "react";
-import PropTypes from "prop-types";
-import TypoOptionPickerContainer from "../../shared-components/typo/TypoOptionPickerContainer";
 import TaxTypes from "@/modules/md-tax-types";
-import { useWatch } from "react-hook-form";
-import OptionPicker from "@/shared-components/picker/OptionPicker";
+import PropTypes from "prop-types";
+import { forwardRef } from "react";
+import { ControlledOptionPicker } from "../../shared-components/controlled/ControlledOptionPicker";
 
 const TaxTypePickerContainer = forwardRef((props, ref) => {
 	const { name, label = "稅別", ...rest } = props;
 
 	return (
-		<OptionPicker
+		<ControlledOptionPicker
 			name={name}
 			ref={ref}
 			label={label}

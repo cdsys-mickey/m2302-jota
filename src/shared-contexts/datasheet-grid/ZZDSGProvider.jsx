@@ -51,8 +51,8 @@ export const ZZDSGProvider = ({
 
 	const handleGridDataLoaded = useCallback(
 		(payload) => {
-			// console.debug(`data loaded`, payload);
-			console.debug(`${gridId}.onDataLoaded`);
+			// console.log(`data loaded`, payload);
+			console.log(`${gridId}.onDataLoaded`);
 			persistedIds.clear();
 			payload.map((i) => {
 				persistedIds.add(i[keyColumn]);
@@ -91,8 +91,8 @@ export const ZZDSGProvider = ({
 
 	const commitChanges = useCallback(
 		(newValue) => {
-			// console.debug("commitChanges", newValue);
-			console.debug(`${gridId}.commitChanges`);
+			// console.log("commitChanges", newValue);
+			console.log(`${gridId}.commitChanges`);
 			persistedIds.clear();
 			newValue.map((i) => {
 				persistedIds.add(i[keyColumn]);
@@ -106,8 +106,8 @@ export const ZZDSGProvider = ({
 	);
 
 	const rollbackChanges = useCallback(() => {
-		// console.debug(`${id}.rollbackChanges, prevData:`, state.prevData);
-		console.debug(`${gridId}.rollbackChanges`);
+		// console.log(`${id}.rollbackChanges, prevData:`, state.prevData);
+		console.log(`${gridId}.rollbackChanges`);
 		setState((prev) => ({
 			...prev,
 			gridData: state.prevGridData,
@@ -117,7 +117,7 @@ export const ZZDSGProvider = ({
 
 	const setData = useCallback(
 		(newValue) => {
-			console.debug(`${gridId}.setData()`, newValue);
+			console.log(`${gridId}.setData()`, newValue);
 			setState((prev) => ({
 				...prev,
 				gridData: newValue,
@@ -177,7 +177,7 @@ export const ZZDSGProvider = ({
 			(newValue, operations) => {
 				// 只處理第一行
 				const operation = operations[0];
-				console.debug("operation", operation);
+				console.log("operation", operation);
 				if (operation.type === "DELETE") {
 					const rowIndex = operation.fromRowIndex;
 					const prevRowData = state.prevGridData[rowIndex];
@@ -187,7 +187,7 @@ export const ZZDSGProvider = ({
 							rowIndex,
 							rowData: prevRowData,
 						};
-						console.debug(`[DSG DELETE]`, row);
+						console.log(`[DSG DELETE]`, row);
 						if (onDelete) {
 							onDelete(row, newValue);
 						}
@@ -198,7 +198,7 @@ export const ZZDSGProvider = ({
 					newValue
 						.slice(operation.fromRowIndex, operation.toRowIndex)
 						.forEach((row) => {
-							console.debug(`[DSG CREATE]`, row);
+							console.log(`[DSG CREATE]`, row);
 						});
 					setData(newValue);
 				} else if (operation.type === "UPDATE") {
@@ -208,7 +208,7 @@ export const ZZDSGProvider = ({
 						rowIndex,
 						rowData,
 					};
-					console.debug(`[DSG UPDATE]`, rowData);
+					console.log(`[DSG UPDATE]`, rowData);
 					// 所有欄位都有值(包含 Key)
 					if (
 						Objects.isAllPropsNotNullOrEmpty(rowData, [
@@ -256,7 +256,7 @@ export const ZZDSGProvider = ({
 						// 刪除: Key 以外都是 null
 						const prevRowData = state.prevGridData[rowIndex];
 						if (prevRowData) {
-							console.debug(`DELETE`, row);
+							console.log(`DELETE`, row);
 							if (onDelete) {
 								onDelete(
 									{
@@ -286,7 +286,7 @@ export const ZZDSGProvider = ({
 	);
 
 	const rewriteRowValue = useCallback((row, newValue, newValues) => {
-		console.debug(`rewriteRowValue ${JSON.stringify(row)}`, newValues);
+		console.log(`rewriteRowValue ${JSON.stringify(row)}`, newValues);
 		setState((prev) => ({
 			...prev,
 			gridData: newValue.map((v, i) =>
@@ -313,7 +313,7 @@ export const ZZDSGProvider = ({
 	);
 
 	const handleActiveCellChange = useCallback(({ cell }) => {
-		console.debug(`DSG.onActiveCellChange →`, cell);
+		console.log(`DSG.onActiveCellChange →`, cell);
 	}, []);
 
 	const isAllFieldsNotNull = useCallback(
@@ -331,7 +331,7 @@ export const ZZDSGProvider = ({
 	 */
 	const onRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
-			console.debug(`${gridId}[${rowIndex}] selected, data:`, rowData);
+			console.log(`${gridId}[${rowIndex}] selected, data:`, rowData);
 		},
 		[gridId]
 	);
@@ -347,7 +347,7 @@ export const ZZDSGProvider = ({
 					const selectedRow = selection
 						? getRowDataByIndex(selection?.min?.row)
 						: null;
-					console.debug(`${gridId}.selectedRow:`, selectedRow);
+					console.log(`${gridId}.selectedRow:`, selectedRow);
 
 					startTransition(() => {
 						onRowSelectionChange({
@@ -365,11 +365,11 @@ export const ZZDSGProvider = ({
 
 	const setActiveCell = useCallback(
 		(newCell) => {
-			console.debug(`${gridId}.setActiveCell`, newCell);
+			console.log(`${gridId}.setActiveCell`, newCell);
 			if (gridRef.current) {
 				gridRef.current?.setActiveCell(newCell);
 			} else {
-				console.debug(
+				console.log(
 					`${gridId}.setActiveCell(${JSON.stringify(
 						newCell
 					)}) failed: gridRef.current is null`
@@ -386,7 +386,7 @@ export const ZZDSGProvider = ({
 	useEffect(() => {
 		return () => {
 			gridRef.current = null;
-			console.debug(`${gridId}.gridRef released`);
+			console.log(`${gridId}.gridRef released`);
 		};
 	}, [gridId]);
 

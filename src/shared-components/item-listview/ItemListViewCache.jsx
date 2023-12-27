@@ -70,7 +70,7 @@ const ItemListViewCache = ({
 		return PageResult.from(pageResult).getIndexNumber(0, pageResult.page);
 	}, [pageResult]);
 
-	console.debug("ItemListViewCache rendered");
+	console.log("ItemListViewCache rendered");
 	if (!ItemComponent) {
 		return (
 			<Container maxWidth="xs">

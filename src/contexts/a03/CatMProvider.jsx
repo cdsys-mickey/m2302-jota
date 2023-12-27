@@ -19,7 +19,7 @@ const CatMProvider = (props) => {
 
 	// const dsg = useContext(DSGContext);
 	const dsg = useDSG({
-		id: "md",
+		gridId: "CatM",
 		keyColumn: "MClas",
 		otherColumns: "ClassData",
 	});
@@ -62,7 +62,7 @@ const CatMProvider = (props) => {
 
 	const load = useCallback(
 		async ({ lgId, supressLoading = false } = {}) => {
-			console.debug(`CatM.load(${lgId})`);
+			console.log(`CatM.load(${lgId})`);
 			setState((prev) => ({
 				...prev,
 				lgId,
@@ -107,7 +107,7 @@ const CatMProvider = (props) => {
 
 	const handleCreate = useCallback(
 		async ({ rowData, rowIndex }, newValue) => {
-			console.debug(`CREATE`, rowData);
+			console.log(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
 					url: "v1/prod/m-cats",
@@ -117,7 +117,7 @@ const CatMProvider = (props) => {
 						LClas: state.lgId,
 					},
 				});
-				console.debug("handleCreate response.payload", payload);
+				console.log("handleCreate response.payload", payload);
 				reload();
 				if (status.success) {
 					dsg.commitChanges(newValue);
@@ -139,7 +139,7 @@ const CatMProvider = (props) => {
 
 	const handleUpdate = useCallback(
 		async ({ rowData, rowIndex }, newValue) => {
-			console.debug(`UPDATE`, rowData);
+			console.log(`UPDATE`, rowData);
 			const key = `${state.lgId},${rowData.MClas}`;
 			try {
 				const { status, payload, error } = await httpPutAsync({
@@ -150,7 +150,7 @@ const CatMProvider = (props) => {
 						LClas: state.lgId,
 					},
 				});
-				console.debug("handleCreate response.payload", payload);
+				console.log("handleCreate response.payload", payload);
 				if (status.success) {
 					dsg.commitChanges(newValue);
 					selectRow({ rowData, rowIndex });
@@ -170,7 +170,7 @@ const CatMProvider = (props) => {
 
 	const handleDelete = useCallback(
 		async ({ rowData }) => {
-			console.debug(`DELETE`, rowData);
+			console.log(`DELETE`, rowData);
 			const key = `${state.lgId},${rowData.MClas}`;
 			try {
 				const { status, error } = await httpDeleteAsync({
@@ -203,7 +203,7 @@ const CatMProvider = (props) => {
 	const handleConfirmDelete = useCallback(
 		async (row) => {
 			const { rowData } = row;
-			console.debug(`confirm DELETE`, rowData);
+			console.log(`confirm DELETE`, rowData);
 			dsg.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",

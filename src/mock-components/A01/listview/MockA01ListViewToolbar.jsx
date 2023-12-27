@@ -20,8 +20,8 @@ const MockA01ListViewToolbar = memo(
 			<InlineListViewToolbar
 				pb={1}
 				ref={ref}
-				leftComponent={LeftButtons}
-				rightComponent={() => <FetchResultLabel totalElements={365} />}
+				LeftComponent={LeftButtons}
+				RightComponent={() => <FetchResultLabel totalElements={365} />}
 				{...rest}
 			/>
 		);

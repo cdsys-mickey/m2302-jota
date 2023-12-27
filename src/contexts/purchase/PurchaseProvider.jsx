@@ -17,7 +17,7 @@ export const PurchaseProvider = ({ children }) => {
 	const onDefaultSubmit = useCallback(
 		({ setError }) =>
 			(data) => {
-				console.debug(data, "onDefaultSubmit");
+				console.log(data, "onDefaultSubmit");
 				if (!popperOpen) {
 					if (data.qs) {
 						fetch({
@@ -25,7 +25,7 @@ export const PurchaseProvider = ({ children }) => {
 						});
 					}
 				} else {
-					console.debug(data, "onSearchSubmitEx");
+					console.log(data, "onSearchSubmitEx");
 					if (A01.hasEmptyError(data)) {
 						setError("empty", {
 							type: "custom",
@@ -35,7 +35,7 @@ export const PurchaseProvider = ({ children }) => {
 					}
 
 					const collected = A01.processForSubmit(data);
-					console.debug(collected, "collected");
+					console.log(collected, "collected");
 
 					handlePopperClose();
 				}

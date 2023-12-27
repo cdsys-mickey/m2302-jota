@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig(({ mode }) => {
 	// eslint-disable-next-line no-undef
 	const env = loadEnv(mode, process.cwd(), "");
-	console.debug(`PROFILE: ${env.VITE_PROFILE}`);
+	console.log(`PROFILE: ${env.VITE_PROFILE}`);
 
 	return {
 		base: env.VITE_PUBLIC_URL,

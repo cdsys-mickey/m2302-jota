@@ -79,7 +79,7 @@ export const useA01 = ({ token, mode }) => {
 							: `v1/prods/${encodedProdId}`,
 					bearer: token,
 				});
-				console.debug("payload", payload);
+				console.log("payload", payload);
 				if (status.success) {
 					const data = A01.processForRead(payload);
 
@@ -200,9 +200,9 @@ export const useA01 = ({ token, mode }) => {
 
 	const onCounterSubmit = useCallback(
 		async (data) => {
-			console.debug(`A01.onCounterSubmit()`, data);
+			console.log(`A01.onCounterSubmit()`, data);
 			const processed = A01.processForCounterSubmit(data);
-			console.debug(`processed`, processed);
+			console.log(`processed`, processed);
 			try {
 				crud.updateStart();
 				const { status, error } = await httpPatchAsync({
@@ -235,15 +235,15 @@ export const useA01 = ({ token, mode }) => {
 
 	const onEditorSubmit = useCallback(
 		async (data) => {
-			console.debug(`A01.onEditorSubmit()`, data);
-			console.debug(`transGrid.gridData`, transGrid.gridData);
-			console.debug(`comboGrid.gridData`, comboGrid.gridData);
+			console.log(`A01.onEditorSubmit()`, data);
+			console.log(`transGrid.gridData`, transGrid.gridData);
+			console.log(`comboGrid.gridData`, comboGrid.gridData);
 			const processed = A01.processForEditorSubmit(
 				data,
 				transGrid.gridData,
 				comboGrid.gridData
 			);
-			console.debug(`processed`, processed);
+			console.log(`processed`, processed);
 			if (crud.creating) {
 				handleCreate({ data: processed });
 			} else if (crud.updating) {
@@ -333,7 +333,7 @@ export const useA01 = ({ token, mode }) => {
 
 	const handleReview = useCallback(
 		async (value) => {
-			console.debug(`handleReview`, value);
+			console.log(`handleReview`, value);
 			try {
 				const { status, error } = await httpPatchAsync({
 					url: `v1/new-prods/reviewed`,
@@ -394,7 +394,7 @@ export const useA01 = ({ token, mode }) => {
 	const onSearchSubmit = useCallback(
 		(data) => {
 			handlePopperClose();
-			console.debug(`onSearchSubmit`, data);
+			console.log(`onSearchSubmit`, data);
 			// const q = data?.q;
 			loader.loadList({
 				params: data,

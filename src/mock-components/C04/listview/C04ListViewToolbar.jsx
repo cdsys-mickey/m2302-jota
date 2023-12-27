@@ -28,8 +28,8 @@ const C04ListViewToolbar = memo(
 			<InlineListViewToolbar
 				pb={1}
 				ref={ref}
-				leftComponent={LeftButtons}
-				rightComponent={() => <FetchResultLabel totalElements={6} />}
+				LeftComponent={LeftButtons}
+				RightComponent={() => <FetchResultLabel totalElements={6} />}
 				{...rest}
 			/>
 		);

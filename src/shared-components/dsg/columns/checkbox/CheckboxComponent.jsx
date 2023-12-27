@@ -14,8 +14,8 @@ const CheckboxComponent = memo(
 
 		const handleChange = useCallback(
 			(newValue) => {
-				console.debug("rowData", rowData);
-				console.debug("newValue", newValue);
+				console.log("rowData", rowData);
+				console.log("newValue", newValue);
 			},
 			[rowData]
 		);

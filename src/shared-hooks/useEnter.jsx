@@ -10,7 +10,7 @@ export const useEnter = (callback, props) => {
 			if (e.key === "Enter") {
 				e.preventDefault();
 				const value = inputRef?.current?.value;
-				// console.debug(`onEnter: ${value}`);
+				// console.log(`onEnter: ${value}`);
 				if (clearOnEnter) {
 					inputRef.current.value = "";
 				}

@@ -21,9 +21,9 @@ const A01Toolbar = memo(
 			<InlineListViewToolbar
 				pb={1}
 				ref={ref}
-				leftComponent={LeftButtons}
-				// rightComponent={() => <FetchResultLabel totalElements={365} />}
-				rightComponent={A01FetchResultLabelContainer}
+				LeftComponent={LeftButtons}
+				// RightComponent={() => <FetchResultLabel totalElements={365} />}
+				RightComponent={A01FetchResultLabelContainer}
 				{...rest}
 			/>
 		);

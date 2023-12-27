@@ -1,8 +1,50 @@
 import { Alert } from "@mui/material";
-import React from "react";
+import { useMemo } from "react";
+import { forwardRef } from "react";
 
-const AlertEx = React.forwardRef((props, ref) => {
-	const { sx = [], transparent, children, flex, maxWidth, ...rest } = props;
+const AlertEx = forwardRef((props, ref) => {
+	const {
+		size = "small",
+		sx = [],
+		transparent,
+		children,
+		flex,
+		maxWidth,
+		...rest
+	} = props;
+
+	const fontSize = useMemo(() => {
+		switch (size) {
+			case "large":
+				return "150%";
+			case "medium":
+				return "120%";
+			case "small":
+				return null;
+		}
+	}, [size]);
+
+	const iconSize = useMemo(() => {
+		switch (size) {
+			case "large":
+				return "1.5em";
+			case "medium":
+				return "1.2em";
+			case "small":
+				return null;
+		}
+	}, [size]);
+
+	const marginTop = useMemo(() => {
+		switch (size) {
+			case "large":
+				return 1;
+			case "medium":
+				return 0.5;
+			case "small":
+				return 0;
+		}
+	}, [size]);
 
 	return (
 		<Alert
@@ -21,6 +63,16 @@ const AlertEx = React.forwardRef((props, ref) => {
 				maxWidth && {
 					maxWidth,
 				},
+				fontSize && {
+					fontSize,
+				},
+				iconSize && {
+					"& .MuiAlert-icon .MuiSvgIcon-root": {
+						marginTop: marginTop,
+						height: iconSize,
+						width: iconSize,
+					},
+				},
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}
 			{...rest}>
@@ -28,5 +80,5 @@ const AlertEx = React.forwardRef((props, ref) => {
 		</Alert>
 	);
 });
-
+AlertEx.displayName = "AlertEx";
 export default AlertEx;

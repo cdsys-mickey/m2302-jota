@@ -39,7 +39,7 @@ const TreeItemContentEx = React.forwardRef((props, ref) => {
 	const icon = iconProp || expansionIcon || displayIcon;
 
 	const handleMouseDown = (event) => {
-		console.debug(`handleMouseDown`);
+		console.log(`handleMouseDown`);
 		preventSelection(event);
 
 		if (onMouseDown) {
@@ -48,7 +48,7 @@ const TreeItemContentEx = React.forwardRef((props, ref) => {
 	};
 
 	// const handleClick = (event) => {
-	// 	console.debug(`handleClick`);
+	// 	console.log(`handleClick`);
 	// 	handleExpansion(event);
 	// 	handleSelection(event);
 
@@ -58,7 +58,7 @@ const TreeItemContentEx = React.forwardRef((props, ref) => {
 	// };
 
 	const handleIconClick = (event) => {
-		console.debug(`handleIconClick`);
+		console.log(`handleIconClick`);
 
 		handleExpansion(event);
 		// if (!dontSelectOnIconClick) {
@@ -72,7 +72,7 @@ const TreeItemContentEx = React.forwardRef((props, ref) => {
 	};
 
 	const handleLabelClick = (event) => {
-		console.debug(`handleLabelClick`);
+		console.log(`handleLabelClick`);
 		event.preventDefault();
 		if (!container) {
 			handleSelection(event);

@@ -6,9 +6,9 @@ export const RememberMeCheckboxContainer = (props) => {
 	const { ...rest } = props;
 
 	const handleClick = useCallback((e) => {
-		// console.debug("handleClick", checked);
+		// console.log("handleClick", checked);
 		if (!e.target.checked) {
-			console.debug("removing cookie");
+			console.log("removing cookie");
 			// signin.forgetMe();
 		}
 	}, []);

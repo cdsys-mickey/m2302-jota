@@ -1,15 +1,14 @@
+import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
-import { forwardRef, memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import {
-	DataSheetGrid,
+	DynamicDataSheetGrid,
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
-import { DynamicDataSheetGrid } from "react-datasheet-grid";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -69,7 +68,6 @@ const A02Grid = memo((props) => {
 	return (
 		<Container maxWidth="xs">
 			<Box>
-				{/* <LoadingBackdrop open={loading} /> */}
 				<DynamicDataSheetGrid
 					lockRows={lockRows}
 					ref={setGridRef}
@@ -80,10 +78,7 @@ const A02Grid = memo((props) => {
 					columns={columns}
 					addRowsComponent={DSGAddRowsToolbar}
 					disableExpandSelection
-					// disableContextMenu
 					contextMenuComponent={ContextMenu}
-					// onActiveCellChange={handleActiveCellChange}
-					// autoAddRow
 				/>
 			</Box>
 		</Container>

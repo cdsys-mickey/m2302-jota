@@ -6,7 +6,11 @@ export const createFloatColumn = (fixedDigit = 1) =>
 		alignRight: true,
 		continuousUpdates: false,
 		formatBlurredInput: (value) => {
+			if (value === "" || value === null || value === undefined) {
+				return "";
+			}
 			let number = Number(value);
+			// console.log(`${value} parsed as ${number}`);
 			if (isNaN(number)) {
 				return "";
 			}

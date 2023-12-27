@@ -59,14 +59,14 @@ export const useWebApiDSG = ({
 
 	const handleCreate = useCallback(
 		async ({ rowData }, newValue) => {
-			console.debug(`CREATE`, rowData);
+			console.log(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
 					url: baseUri,
 					bearer: token,
 					data: rowData,
 				});
-				console.debug("handleCreate response.payload", payload);
+				console.log("handleCreate response.payload", payload);
 				if (status.success) {
 					dsg.commitChanges(newValue);
 					toast.success(
@@ -85,14 +85,14 @@ export const useWebApiDSG = ({
 
 	const handleUpdate = useCallback(
 		async ({ rowData }, newValue) => {
-			console.debug(`UPDATE`, rowData);
+			console.log(`UPDATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPutAsync({
 					url: baseUri,
 					data: rowData,
 					bearer: token,
 				});
-				console.debug("handleCreate response.payload", payload);
+				console.log("handleCreate response.payload", payload);
 				if (status.success) {
 					dsg.commitChanges(newValue);
 					toast.success(
@@ -111,7 +111,7 @@ export const useWebApiDSG = ({
 
 	const handleDelete = useCallback(
 		async ({ rowData }) => {
-			console.debug(`DELETE`, rowData);
+			console.log(`DELETE`, rowData);
 			try {
 				const key = rowData[keyColumn];
 				const { status, error } = await httpDeleteAsync({
@@ -150,7 +150,7 @@ export const useWebApiDSG = ({
 	const handleConfirmDelete = useCallback(
 		async (row) => {
 			const { rowData } = row;
-			console.debug(`confirm DELETE`, rowData);
+			console.log(`confirm DELETE`, rowData);
 			dsg.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",
@@ -184,10 +184,7 @@ export const useWebApiDSG = ({
 
 	const onRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
-			console.debug(
-				`${dsg.gridId}[${rowIndex}] selected, data:`,
-				rowData
-			);
+			console.log(`${dsg.gridId}[${rowIndex}] selected, data:`, rowData);
 		},
 		[dsg.gridId]
 	);

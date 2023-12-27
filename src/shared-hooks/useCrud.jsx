@@ -13,7 +13,7 @@ export const useCrud = () => {
 	const deleteAction = useAction();
 
 	const cancelAction = useCallback(() => {
-		console.debug(`crud.cancelAction`);
+		console.log(`crud.cancelAction`);
 		createAction.clear();
 		readAction.clear();
 		updateAction.clear();
@@ -66,7 +66,7 @@ export const useCrud = () => {
 	// READ
 	const readStart = useCallback(
 		(value, message) => {
-			console.debug("readStart", value);
+			console.log("readStart", value);
 			readAction.start(value, message);
 			setItemData(value);
 		},
@@ -75,7 +75,7 @@ export const useCrud = () => {
 
 	const readDone = useCallback(
 		(value) => {
-			console.debug("readDone", value);
+			console.log("readDone", value);
 			setItemData(value);
 			readAction.finish(value);
 		},
@@ -88,7 +88,7 @@ export const useCrud = () => {
 
 	const readFail = useCallback(
 		(err) => {
-			console.debug("readFail", err);
+			console.log("readFail", err);
 			readAction.fail(err);
 		},
 		[readAction]

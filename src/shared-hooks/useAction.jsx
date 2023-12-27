@@ -48,7 +48,7 @@ export const useAction = (initState = null) => {
 	}, []);
 
 	const fail = useCallback((err) => {
-		// setActionState(ActionState.FAILED);
+		console.error("action failed", err);
 		setState((prev) => ({
 			...prev,
 			state: ActionState.FAILED,

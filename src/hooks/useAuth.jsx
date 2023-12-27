@@ -33,7 +33,7 @@ export const useAuth = () => {
 
 	const loadAuthorities = useCallback(
 		async (token) => {
-			console.debug("loading authorities...");
+			console.log("loading authorities...");
 			setAuthoritiesState((prev) => ({
 				...prev,
 				authoritiesLoading: true,
@@ -69,7 +69,7 @@ export const useAuth = () => {
 
 	const validateCookie = useCallback(
 		async (switching = false) => {
-			console.debug(`validating cookie...`);
+			console.log(`validating cookie...`);
 			try {
 				setState((prev) => ({
 					...prev,
@@ -94,7 +94,7 @@ export const useAuth = () => {
 				// ** METHOD 1 ** → no validation
 				const token = payload.token;
 				const jwtPayload = decodeJwt(token);
-				console.debug("jwtPayload", jwtPayload);
+				console.log("jwtPayload", jwtPayload);
 
 				const expDate = new Date(jwtPayload.exp * 1000);
 
@@ -119,7 +119,7 @@ export const useAuth = () => {
 				// 	token,
 				// 	secret
 				// );
-				// console.debug("jwtPayload", jwtPayload);
+				// console.log("jwtPayload", jwtPayload);
 
 				setState((prev) => ({
 					...prev,
@@ -192,7 +192,7 @@ export const useAuth = () => {
 
 	const onDeptSwitchSubmit = useCallback(
 		async (data) => {
-			console.debug(`onDeptSwitchSubmit`, data);
+			console.log(`onDeptSwitchSubmit`, data);
 			const newDeptId = data?.newDept?.DeptID;
 			try {
 				deptSwitchAction.start();

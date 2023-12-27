@@ -6,19 +6,19 @@ export const useKeyEvent = (props) => {
 	useEffect(() => {
 		const handler = function (e) {
 			if (e.key === key) {
-				// console.debug(`key: ${e.key}`);
+				// console.log(`key: ${e.key}`);
 				if (callback) {
 					callback(e);
 				} else {
-					console.debug("callback not defined");
+					console.log("callback not defined");
 				}
 			}
 		};
-		console.debug(`key listener for ${key} added`);
+		console.log(`key listener for ${key} added`);
 		document.addEventListener(event, handler);
 		return () => {
 			document.removeEventListener(event, handler);
-			console.debug(`key listener for ${key} removed`);
+			console.log(`key listener for ${key} removed`);
 		};
 	}, [callback, event, key]);
 };
@@ -28,21 +28,21 @@ export const useKeyCodeEvent = (props) => {
 
 	useEffect(() => {
 		const handler = function (e) {
-			// console.debug(`on${event}: ${e.keyCode} `);
+			// console.log(`on${event}: ${e.keyCode} `);
 			if (e.keyCode === keyCode) {
-				// console.debug(`${keyCode} pressed`);
+				// console.log(`${keyCode} pressed`);
 				if (callback) {
 					callback(e);
 				} else {
-					console.debug("callback not defined");
+					console.log("callback not defined");
 				}
 			}
 		};
-		console.debug(`key listener for ${keyCode} added`);
+		console.log(`key listener for ${keyCode} added`);
 		document.addEventListener(event, handler);
 		return () => {
 			document.removeEventListener(event, handler);
-			console.debug(`key listener for ${keyCode} removed`);
+			console.log(`key listener for ${keyCode} removed`);
 		};
 	}, [callback, event, keyCode]);
 };

@@ -53,7 +53,7 @@ const SplitButton = ({
 
 	const handleClick = useCallback(
 		(e) => {
-			console.debug(state.selected, "click");
+			console.log(state.selected, "click");
 			if (!state.selected && openOnClick) {
 				handleOpen();
 				return;
@@ -72,7 +72,7 @@ const SplitButton = ({
 	const handleMenuItemClick = useCallback(
 		(e, t) => {
 			e.stopPropagation();
-			console.debug(t, "handleMenuItemClick");
+			console.log(t, "handleMenuItemClick");
 			setState({
 				selected: t,
 				open: false,

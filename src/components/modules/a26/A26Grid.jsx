@@ -26,7 +26,7 @@ const A26Grid = memo((props) => {
 		loading,
 		height = 300,
 		// METHODS
-		handleChange,
+		onChange,
 		isPersisted,
 		onSelectionChange,
 		...rest
@@ -93,7 +93,7 @@ const A26Grid = memo((props) => {
 					rowKey="CodeID"
 					height={height + (lockRows ? 48 : 0)}
 					value={data}
-					onChange={handleChange}
+					onChange={onChange}
 					columns={columns}
 					addRowsComponent={DSGAddRowsToolbar}
 					disableExpandSelection
@@ -112,7 +112,7 @@ A26Grid.propTypes = {
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
+	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	onSelectionChange: PropTypes.func,
 };

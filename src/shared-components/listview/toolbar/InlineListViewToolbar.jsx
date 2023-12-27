@@ -5,20 +5,22 @@ import { forwardRef, memo } from "react";
 const InlineListViewToolbar = memo(
 	forwardRef((props, ref) => {
 		const {
-			leftComponent,
-			rightComponent,
+			children,
+			leftComponents,
+			LeftComponent,
+			RightComponent,
+			rightComponents,
 			boxSx = [],
 			componentProps = {},
 			...rest
 		} = props;
-		const LeftComponent = leftComponent;
-		const RightComponent = rightComponent;
+
 		return (
 			<FlexBox
 				ref={ref}
 				inline
 				fullWidth
-				alignItems="flex-end"
+				alignItems="center"
 				sx={[
 					{
 						minHeight: "48px",
@@ -26,21 +28,22 @@ const InlineListViewToolbar = memo(
 					...(Array.isArray(boxSx) ? boxSx : [boxSx]),
 				]}
 				{...rest}>
-				{LeftComponent && (
-					<FlexBox flex={1} justifyContent="flex-start">
-						<LeftComponent {...componentProps} />
-					</FlexBox>
-				)}
+				<FlexBox flex={1} justifyContent="flex-start">
+					{LeftComponent && <LeftComponent {...componentProps} />}
+					{leftComponents}
+				</FlexBox>
 
-				{RightComponent && (
-					<FlexBox
-						{...(!LeftComponent && {
-							flex: 1,
-						})}
-						justifyContent="flex-end">
-						<RightComponent {...componentProps} />
-					</FlexBox>
-				)}
+				{children}
+
+				<FlexBox
+					{...(!LeftComponent && {
+						flex: 1,
+					})}
+					alignItems="center"
+					justifyContent="flex-end">
+					{RightComponent && <RightComponent {...componentProps} />}
+					{rightComponents}
+				</FlexBox>
 			</FlexBox>
 		);
 	})
@@ -48,11 +51,14 @@ const InlineListViewToolbar = memo(
 
 InlineListViewToolbar.displayName = "InlineListViewToolbar";
 InlineListViewToolbar.propTypes = {
-	leftComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
-	rightComponent: PropTypes.oneOfType([
+	children: PropTypes.element,
+	leftComponents: PropTypes.element,
+	LeftComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
+	RightComponent: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.elementType,
 	]),
+	rightComponents: PropTypes.element,
 	componentProps: PropTypes.object,
 	boxSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };

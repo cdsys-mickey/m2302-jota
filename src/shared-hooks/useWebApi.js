@@ -75,7 +75,7 @@ export const useWebApi = (props) => {
 			if (!apiUrl) {
 				throw `url cannot be null`;
 			}
-			console.debug(`${method.toUpperCase()} ${apiUrl}, data:`, data);
+			console.log(`${method.toUpperCase()} ${apiUrl}, data:`, data);
 
 			let formData;
 			if (mode === "form") {

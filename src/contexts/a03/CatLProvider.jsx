@@ -23,7 +23,7 @@ const CatLProvider = (props) => {
 
 	// const dsg = useContext(DSGContext);
 	const dsg = useDSG({
-		id: "lg",
+		gridId: "CatL",
 		keyColumn: "LClas",
 		otherColumns: "ClassData",
 	});
@@ -103,14 +103,14 @@ const CatLProvider = (props) => {
 
 	const handleCreate = useCallback(
 		async ({ rowIndex, rowData }, newValue) => {
-			console.debug(`CREATE`, rowData);
+			console.log(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
 					url: "v1/prod/l-cats",
 					bearer: token,
 					data: rowData,
 				});
-				console.debug("handleCreate response.payload", payload);
+				console.log("handleCreate response.payload", payload);
 				if (status.success) {
 					dsg.commitChanges(newValue);
 					selectRow({ rowIndex, rowData });
@@ -130,7 +130,7 @@ const CatLProvider = (props) => {
 
 	const handleUpdate = useCallback(
 		async ({ rowIndex, rowData }, newValue) => {
-			console.debug(`UPDATE`, rowData);
+			console.log(`UPDATE`, rowData);
 			const key = rowData.LClas;
 			try {
 				const { status, payload, error } = await httpPutAsync({
@@ -138,7 +138,7 @@ const CatLProvider = (props) => {
 					data: rowData,
 					bearer: token,
 				});
-				console.debug("handleCreate response.payload", payload);
+				console.log("handleCreate response.payload", payload);
 
 				if (status.success) {
 					dsg.commitChanges(newValue);
@@ -159,7 +159,7 @@ const CatLProvider = (props) => {
 
 	const handleDelete = useCallback(
 		async ({ rowIndex, rowData }) => {
-			console.debug(`DELETE`, rowData);
+			console.log(`DELETE`, rowData);
 			try {
 				const key = rowData.LClas;
 				const { status, error } = await httpDeleteAsync({
@@ -191,7 +191,7 @@ const CatLProvider = (props) => {
 	const handleConfirmDelete = useCallback(
 		async (row) => {
 			const { rowData } = row;
-			console.debug(`confirm DELETE`, rowData);
+			console.log(`confirm DELETE`, rowData);
 			dsg.setDeletingRow(row);
 
 			dialogs.create({
@@ -233,7 +233,7 @@ const CatLProvider = (props) => {
 
 	const isSelected = useCallback(
 		(rowIndex) => {
-			console.debug(
+			console.log(
 				`state.selectedRowIndex: ${state.selectedRowIndex}, rowIndex: ${rowIndex}`,
 				rowIndex
 			);

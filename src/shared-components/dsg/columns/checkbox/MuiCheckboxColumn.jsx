@@ -38,7 +38,7 @@ const MuiCheckboxColumn = memo((props) => {
 		(e) => {
 			// e?.preventDefault();
 			const checked = e.target.checked;
-			// console.debug(`checked: ${checked}`);
+			// console.log(`checked: ${checked}`);
 			if (checked) {
 				setRowData(trueValue);
 			} else {
@@ -49,7 +49,7 @@ const MuiCheckboxColumn = memo((props) => {
 	);
 
 	// useLayoutEffect(() => {
-	// 	// console.debug(`focus: ${focus}`);
+	// 	// console.log(`focus: ${focus}`);
 	// 	if (focus) {
 	// 		setRowData(checkedToRowData(!rowDataToChecked(rowData)));
 	// 		stopEditing({ nextRow: false });

@@ -2,6 +2,7 @@
 import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import PropTypes from "prop-types";
+import ClearInputButton from "../input/ClearInputButton";
 
 export const ControlledTextField = ({
 	name,
@@ -13,6 +14,7 @@ export const ControlledTextField = ({
 	labelShrink = false,
 	defaultValue = "",
 	sx = [],
+	clearable,
 	EndAdornmentComponent,
 	...rest
 }) => {
@@ -55,6 +57,14 @@ export const ControlledTextField = ({
 						...(EndAdornmentComponent && {
 							endAdornment: (
 								<EndAdornmentComponent
+									value={value}
+									onChange={onChange}
+								/>
+							),
+						}),
+						...(clearable && {
+							endAdornment: (
+								<ClearInputButton
 									value={value}
 									onChange={onChange}
 								/>

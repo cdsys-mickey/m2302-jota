@@ -237,9 +237,9 @@ const OptionPicker = memo(
 		);
 
 		const handleChange = (event, value, reason) => {
-			console.debug(`${name}.event`, event);
-			console.debug(`${name}.value`, value);
-			console.debug(`${name}.reason`, reason);
+			console.log(`${name}.event`, event);
+			console.log(`${name}.value`, value);
+			console.log(`${name}.reason`, reason);
 			if (onChange) {
 				onChange(value);
 			}

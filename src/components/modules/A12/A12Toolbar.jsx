@@ -10,7 +10,7 @@ const A12Toolbar = memo(
 			<Container maxWidth="xs">
 				<InlineListViewToolbar
 					ref={ref}
-					rightComponent={A12LockRowsSwitchContainer}
+					RightComponent={A12LockRowsSwitchContainer}
 					{...rest}
 				/>
 			</Container>

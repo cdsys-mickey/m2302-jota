@@ -81,7 +81,7 @@ export const useInfiniteLoader = (props = {}) => {
 				loadingMap[i] = true;
 			}
 
-			console.debug(`load(${startIndex} ~ ${stopIndex})`);
+			console.log(`load(${startIndex} ~ ${stopIndex})`);
 
 			setListError(null);
 			setState((prev) => ({
@@ -119,7 +119,7 @@ export const useInfiniteLoader = (props = {}) => {
 					setItemCount(getItemCount(payload));
 
 					const newData = Arrays.toObject(getData(payload), start);
-					// console.debug("newData", newData);
+					// console.log("newData", newData);
 
 					setListData((prev) => ({
 						...prev,
@@ -157,7 +157,7 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const loadMoreItems = useCallback(
 		(start, stop) => {
-			console.debug(`loadMoreItems(${start}, ${stop})`);
+			console.log(`loadMoreItems(${start}, ${stop})`);
 
 			return new Promise((resolve) => {
 				loadList({ start, stop, saveKey: state.saveKey });
@@ -176,7 +176,7 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const isItemLoaded = useCallback(
 		(index) => {
-			// console.debug(`isItemLoaded(${index})`);
+			// console.log(`isItemLoaded(${index})`);
 			return loadingMap[index] === false;
 		},
 		[loadingMap]

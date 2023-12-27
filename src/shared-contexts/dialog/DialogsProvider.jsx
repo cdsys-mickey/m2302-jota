@@ -23,9 +23,9 @@ export const DialogsProvider = ({ children, ButtonProps }) => {
 						setEntities((prev) =>
 							prev.slice(0, entities.length - 1)
 						);
-						console.debug("dialog destroyed");
+						console.log("dialog destroyed");
 					} else {
-						console.debug("dialog not destroyed");
+						console.log("dialog not destroyed");
 					}
 				};
 

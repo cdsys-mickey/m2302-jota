@@ -34,7 +34,7 @@ export const SideMenuProvider = ({ children }) => {
 	);
 
 	const onSubmit = useCallback((data) => {
-		console.debug("onSubmit", data);
+		console.log("onSubmit", data);
 	}, []);
 
 	const onSubmitError = useCallback((err) => {
@@ -42,11 +42,11 @@ export const SideMenuProvider = ({ children }) => {
 	}, []);
 
 	useEffect(() => {
-		console.debug(`q:${q}`);
+		console.log(`q:${q}`);
 	}, [q]);
 
 	useEffect(() => {
-		// console.debug("authorities fetched from AuthContext", authorities);
+		// console.log("authorities fetched from AuthContext", authorities);
 		setState((prev) => ({
 			...prev,
 			filteredAuthorities: authorities?.filter((a) => filterByInput(a)),

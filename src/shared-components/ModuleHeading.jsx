@@ -27,7 +27,7 @@ const ModuleHeading = (props) => {
 			if (onClick) {
 				onClick(e);
 			} else {
-				console.debug("onClick not defined");
+				console.log("onClick not defined");
 			}
 		},
 		[onClick]

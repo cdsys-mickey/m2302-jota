@@ -23,12 +23,12 @@ const processDateFieldsForSubmit = (
 	}
 	for (const field of fields) {
 		if (!resultObj[field]) {
-			console.debug(`delete empty date field: ${field}`);
+			console.log(`delete empty date field: ${field}`);
 			delete resultObj[field];
 		} else {
 			try {
 				resultObj[field] = format(resultObj[field], pattern);
-				console.debug(
+				console.log(
 					`field [${field}] formatted -> ${resultObj[field]}`
 				);
 			} catch (err) {
@@ -62,7 +62,7 @@ const processDateFieldsForReset = (
 	for (const field of fields) {
 		if (resultObj[field]) {
 			try {
-				console.debug(
+				console.log(
 					`parsing date field[${field}]: ${resultObj[field]}`
 				);
 				resultObj[field] = DateTimes.parseEx(resultObj[field], pattern);

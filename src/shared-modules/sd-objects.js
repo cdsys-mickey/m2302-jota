@@ -37,6 +37,17 @@ const isAllPropsNull = (obj, columnPattern) => {
 	return columns.every((prop) => obj[prop] === null);
 };
 
+const isAllPropsEmpty = (obj, columnPattern) => {
+	if (!obj) {
+		throw "obj cabnot be null";
+	}
+	if (!columnPattern) {
+		return Object.keys(obj).filter((key) => !!obj[key]).length === 0;
+	}
+	const columns = Arrays.parse(columnPattern);
+	return columns.every((prop) => obj[prop] === null || obj[prop] === "");
+};
+
 const isAllPropsNotNullOrEmpty = (obj, columnPattern) => {
 	if (!obj) {
 		throw "obj cabnot be null";
@@ -55,6 +66,14 @@ const isAllPropsNotNullOrEmpty = (obj, columnPattern) => {
 		const value = obj[prop];
 		return value !== null && value !== undefined && value !== "";
 	});
+};
+
+const hasNoProps = (obj) => {
+	return Object.keys(obj).length === 0;
+};
+
+const hasAnyProp = (obj) => {
+	return !hasNoProps(obj);
 };
 
 const hasAllProps = (obj, columnPattern) => {
@@ -113,10 +132,13 @@ const isAnyPropNotEmpty = (obj, columnPattern) => {
 const Objects = {
 	isAllPropsNotNull,
 	isAllPropsNull,
+	isAllPropsEmpty,
 	isAllPropsNotNullOrEmpty,
 	hasAllProps,
 	isAllPropsEqual,
 	isAnyPropNotEmpty,
+	hasNoProps,
+	hasAnyProp,
 };
 
 export default Objects;

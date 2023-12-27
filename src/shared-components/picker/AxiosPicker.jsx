@@ -130,11 +130,11 @@ const AxiosPicker = React.forwardRef((props, ref) => {
 
 	const handleTextFieldChange = (event) => {
 		query = event.target.value;
-		console.debug(`"${query}"`, "handleTextFieldChange");
+		console.log(`"${query}"`, "handleTextFieldChange");
 
 		clearTimeout(timerId);
 		timerId = setTimeout(() => {
-			console.debug(
+			console.log(
 				`input changed: ${query}, filterMode: ${filterMode?.toString()}`
 			);
 
@@ -164,7 +164,7 @@ const AxiosPicker = React.forwardRef((props, ref) => {
 	 * @param {*} value
 	 */
 	const handleAutocompleteChange = (event, value) => {
-		console.debug(value, "handleAutocompleteChange");
+		console.log(value, "handleAutocompleteChange");
 		// clear options when input is empty
 		if (
 			queryRequired &&
@@ -202,7 +202,7 @@ const AxiosPicker = React.forwardRef((props, ref) => {
 	 */
 	const loadOptions = useCallback(
 		(q) => {
-			console.debug(
+			console.log(
 				`loadOptions(${queryParam}: ${q}, params: ${state.paramsObj})`
 			);
 
@@ -231,7 +231,7 @@ const AxiosPicker = React.forwardRef((props, ref) => {
 				headers: headers,
 			})
 				.then((axiosResponse) => {
-					console.debug("axiosResponse", axiosResponse);
+					console.log("axiosResponse", axiosResponse);
 					if (2 === Math.floor(axiosResponse.status / 100)) {
 						let payload = axiosResponse.data || [];
 						if (filterBy) {
@@ -364,7 +364,7 @@ const AxiosPicker = React.forwardRef((props, ref) => {
 
 	const renderDndTags = useCallback(
 		(value, getCustomizedTagProps, ownerState) => {
-			// console.debug(value, "renderTags");
+			// console.log(value, "renderTags");
 			return value?.map((o, index) => (
 				<Draggable key={o} draggableId={o} index={index}>
 					{(provided, snapshot) => (
@@ -468,7 +468,7 @@ const AxiosPicker = React.forwardRef((props, ref) => {
 			!state.loading &&
 			!disabled
 		) {
-			console.debug("load full options for the first time, http");
+			console.log("load full options for the first time, http");
 			loadOptions();
 		}
 	}, [

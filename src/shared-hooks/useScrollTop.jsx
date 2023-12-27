@@ -24,11 +24,11 @@ export const useScrollTop = ({ debounce = 0 }) => {
 	}, []);
 
 	// useEffect(() => {
-	// 	console.debug(`debouncedScrollTop: ${debouncedScrollTop}`);
+	// 	console.log(`debouncedScrollTop: ${debouncedScrollTop}`);
 	// }, [debouncedScrollTop]);
 
 	// useEffect(() => {
-	// 	console.debug(`debouncedYOffset: ${debouncedYOffset}`);
+	// 	console.log(`debouncedYOffset: ${debouncedYOffset}`);
 	// }, [debouncedYOffset]);
 
 	return {

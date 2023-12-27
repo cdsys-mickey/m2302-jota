@@ -31,7 +31,7 @@ const UploadButton = ({
 
 		// 👇️ reset file input, -> emptys e.target.files
 
-		console.debug("fileList", fileList);
+		console.log("fileList", fileList);
 		// 👇️ can still access file object here
 		if (onSelect) onSelect(e, fileList);
 		e.target.value = null;

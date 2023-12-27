@@ -35,7 +35,7 @@ const VFrameMenu = memo(
 				fixedItemHeight={36}
 				logLevel={LogLevel.DEBUG}
 				itemContent={(index, item) => {
-					// console.debug(`rendering ${index}..`);
+					// console.log(`rendering ${index}..`);
 					return <VFrameMenuRow index={index} value={item} />;
 				}}
 				scrollSeekConfiguration={{

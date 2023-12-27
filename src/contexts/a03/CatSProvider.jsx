@@ -15,7 +15,7 @@ const CatSProvider = (props) => {
 
 	// const dsg = useContext(DSGContext);
 	const dsg = useDSG({
-		id: "sm",
+		gridId: "CatS",
 		keyColumn: "SClas",
 		otherColumns: "ClassData",
 	});
@@ -39,7 +39,7 @@ const CatSProvider = (props) => {
 
 	const load = useCallback(
 		async ({ lgId, mdId, supressLoading = false } = {}) => {
-			console.debug(`CatS.load(${lgId}, ${mdId})`);
+			console.log(`CatS.load(${lgId}, ${mdId})`);
 			setState((prev) => ({
 				...prev,
 				lgId,
@@ -85,7 +85,7 @@ const CatSProvider = (props) => {
 
 	const handleCreate = useCallback(
 		async ({ rowData }, newValue) => {
-			console.debug(`CREATE`, rowData);
+			console.log(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
 					url: "v1/prod/s-cats",
@@ -96,7 +96,7 @@ const CatSProvider = (props) => {
 						MClas: state.mdId,
 					},
 				});
-				console.debug("handleCreate response.payload", payload);
+				console.log("handleCreate response.payload", payload);
 				if (status.success) {
 					dsg.commitChanges(newValue);
 					selectRow({ rowData });
@@ -116,7 +116,7 @@ const CatSProvider = (props) => {
 
 	const handleUpdate = useCallback(
 		async ({ rowData }, newValue) => {
-			console.debug(`UPDATE`, rowData);
+			console.log(`UPDATE`, rowData);
 			const key = `${state.lgId},${state.mdId},${rowData.SClas}`;
 			try {
 				const { status, payload, error } = await httpPutAsync({
@@ -128,7 +128,7 @@ const CatSProvider = (props) => {
 						MClas: state.mdId,
 					},
 				});
-				console.debug("handleCreate response.payload", payload);
+				console.log("handleCreate response.payload", payload);
 
 				if (status.success) {
 					dsg.commitChanges(newValue);
@@ -149,7 +149,7 @@ const CatSProvider = (props) => {
 
 	const handleDelete = useCallback(
 		async ({ rowData }) => {
-			console.debug(`DELETE`, rowData);
+			console.log(`DELETE`, rowData);
 			const key = `${state.lgId},${state.mdId},${rowData.SClas}`;
 			try {
 				const { status, error } = await httpDeleteAsync({
@@ -188,7 +188,7 @@ const CatSProvider = (props) => {
 	const handleConfirmDelete = useCallback(
 		async (row) => {
 			const { rowData } = row;
-			console.debug(`confirm DELETE`, rowData);
+			console.log(`confirm DELETE`, rowData);
 			dsg.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",

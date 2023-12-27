@@ -31,7 +31,7 @@ const useDateFNS2 = () => {
 
 	const getWeekdayNames = useCallback(() => {
 		if (weekdayNames.length === 0) {
-			console.debug("retrieving weekdays...");
+			console.log("retrieving weekdays...");
 			const firstDayOfWeek = startOfWeek(new Date());
 			const result = [
 				...Array.from(Array(7)).map((_, i) =>

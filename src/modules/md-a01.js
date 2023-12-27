@@ -190,7 +190,7 @@ const processForEditorSubmit = (data, transGridData, comboGridData) => {
 		Writer_N,
 	};
 
-	console.debug("omitProps", omitProps);
+	console.log("omitProps", omitProps);
 	let result = {
 		...rest,
 	};

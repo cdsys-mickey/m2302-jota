@@ -122,11 +122,11 @@ const AxiosPickerDotNet = (props) => {
 
 	const handleTextFieldChange = (event) => {
 		query = event.target.value;
-		console.debug(`"${query}"`, "handleTextFieldChange");
+		console.log(`"${query}"`, "handleTextFieldChange");
 
 		clearTimeout(timerId);
 		timerId = setTimeout(() => {
-			console.debug(
+			console.log(
 				`input changed: ${query}, filterMode: ${filterMode?.toString()}`
 			);
 
@@ -156,7 +156,7 @@ const AxiosPickerDotNet = (props) => {
 	 * @param {*} value
 	 */
 	const handleAutocompleteChange = (event, value) => {
-		console.debug(value, "handleAutocompleteChange");
+		console.log(value, "handleAutocompleteChange");
 		// clear options when input is empty
 		if (
 			queryRequired &&
@@ -194,7 +194,7 @@ const AxiosPickerDotNet = (props) => {
 	 */
 	const loadOptions = useCallback(
 		(q) => {
-			console.debug(
+			console.log(
 				`loadOptions(${queryParam}: ${q}, params: ${state.paramsObj})`
 			);
 
@@ -223,7 +223,7 @@ const AxiosPickerDotNet = (props) => {
 				headers: headers,
 			})
 				.then((axiosResponse) => {
-					console.debug("axiosResponse", axiosResponse);
+					console.log("axiosResponse", axiosResponse);
 					if (2 === Math.floor(axiosResponse.status / 100)) {
 						let payload = axiosResponse.data || [];
 						if (filterBy) {
@@ -325,7 +325,7 @@ const AxiosPickerDotNet = (props) => {
 			!state.loading &&
 			!disabled
 		) {
-			console.debug("load full options for the first time, http");
+			console.log("load full options for the first time, http");
 			loadOptions();
 		}
 	}, [

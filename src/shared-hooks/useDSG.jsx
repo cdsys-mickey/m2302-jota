@@ -42,8 +42,8 @@ export const useDSG = ({
 
 	const handleGridDataLoaded = useCallback(
 		(payload) => {
-			// console.debug(`data loaded`, payload);
-			console.debug(`${gridId}.onDataLoaded, payload:`, payload);
+			// console.log(`data loaded`, payload);
+			console.log(`${gridId}.onDataLoaded, payload:`, payload);
 			persistedIds.clear();
 			payload?.map((i) => {
 				persistedIds.add(i[keyColumn]);
@@ -82,7 +82,7 @@ export const useDSG = ({
 
 	const commitChanges = useCallback(
 		(newValue) => {
-			console.debug(`${gridId}.commitChanges`, newValue);
+			console.log(`${gridId}.commitChanges`, newValue);
 			persistedIds.clear();
 			newValue.map((i) => {
 				persistedIds.add(i[keyColumn]);
@@ -96,7 +96,7 @@ export const useDSG = ({
 	);
 
 	const rollbackChanges = useCallback(() => {
-		console.debug(`${gridId}.rollbackChanges`, state.prevGridData);
+		console.log(`${gridId}.rollbackChanges`, state.prevGridData);
 		setState((prev) => ({
 			...prev,
 			gridData: state.prevGridData,
@@ -106,7 +106,7 @@ export const useDSG = ({
 
 	const setGridData = useCallback(
 		(newValue) => {
-			console.debug(`${gridId}.setGridData()`, newValue);
+			console.log(`${gridId}.setGridData()`, newValue);
 			setState((prev) => ({
 				...prev,
 				gridData: newValue,
@@ -155,7 +155,7 @@ export const useDSG = ({
 
 	const propagateGridChange = useCallback(
 		(newValue, _) => {
-			console.debug(`${gridId}.propagateGridChange`);
+			console.log(`${gridId}.propagateGridChange`);
 			setGridData(newValue);
 		},
 		[gridId, setGridData]
@@ -176,10 +176,10 @@ export const useDSG = ({
 				onDuplicatedError,
 			} = {}) =>
 			(newValue, operations) => {
-				console.debug(`${gridId}.handleGridChange`, newValue);
+				console.log(`${gridId}.handleGridChange`, newValue);
 				// 只處理第一行
 				const operation = operations[0];
-				console.debug("operation", operation);
+				console.log("operation", operation);
 				if (operation.type === "DELETE") {
 					const rowIndex = operation.fromRowIndex;
 					const prevRowData = state.prevGridData[rowIndex];
@@ -189,7 +189,7 @@ export const useDSG = ({
 							rowIndex,
 							rowData: prevRowData,
 						};
-						console.debug(`[DSG DELETE]`, row);
+						console.log(`[DSG DELETE]`, row);
 						if (onDelete) {
 							onDelete(row, newValue);
 						}
@@ -200,7 +200,7 @@ export const useDSG = ({
 					newValue
 						.slice(operation.fromRowIndex, operation.toRowIndex)
 						.forEach((row) => {
-							console.debug(`[DSG CREATE]`, row);
+							console.log(`[DSG CREATE]`, row);
 						});
 					setGridData(newValue);
 				} else if (operation.type === "UPDATE") {
@@ -210,7 +210,7 @@ export const useDSG = ({
 						rowIndex,
 						rowData,
 					};
-					console.debug(`[DSG UPDATE]`, rowData);
+					console.log(`[DSG UPDATE]`, rowData);
 					// 所有欄位都有值(包含 Key)
 					if (
 						Objects.isAllPropsNotNullOrEmpty(rowData, [
@@ -258,7 +258,7 @@ export const useDSG = ({
 						// 刪除: Key 以外都是 null
 						const prevRowData = state.prevGridData[rowIndex];
 						if (prevRowData) {
-							console.debug(`DELETE`, row);
+							console.log(`DELETE`, row);
 							if (onDelete) {
 								onDelete(
 									{
@@ -289,7 +289,7 @@ export const useDSG = ({
 	);
 
 	const rewriteRowValue = useCallback((row, newValue, newValues) => {
-		console.debug(`rewriteRowValue ${JSON.stringify(row)}`, newValues);
+		console.log(`rewriteRowValue ${JSON.stringify(row)}`, newValues);
 		setState((prev) => ({
 			...prev,
 			gridData: newValue.map((v, i) =>
@@ -316,7 +316,7 @@ export const useDSG = ({
 	);
 
 	const handleActiveCellChange = useCallback(({ cell }) => {
-		console.debug(`DSG.onActiveCellChange →`, cell);
+		console.log(`DSG.onActiveCellChange →`, cell);
 	}, []);
 
 	const isAllFieldsNotNull = useCallback(
@@ -334,7 +334,7 @@ export const useDSG = ({
 	 */
 	const defaultOnRowSelectionChange = useCallback(
 		({ rowIndex, rowData }) => {
-			console.debug(
+			console.log(
 				`${gridId}.rows[${rowIndex}] selected, rowData:`,
 				rowData
 			);
@@ -353,7 +353,7 @@ export const useDSG = ({
 					const selectedRow = selection
 						? getRowDataByIndex(selection?.min?.row)
 						: null;
-					console.debug(`${gridId}.selectedRow:`, selectedRow);
+					console.log(`${gridId}.selectedRow:`, selectedRow);
 
 					startTransition(() => {
 						onRowSelectionChange({
@@ -376,11 +376,11 @@ export const useDSG = ({
 
 	const setActiveCell = useCallback(
 		(newCell) => {
-			console.debug(`${gridId}.setActiveCell`, newCell);
+			console.log(`${gridId}.setActiveCell`, newCell);
 			if (gridRef.current) {
 				gridRef.current?.setActiveCell(newCell);
 			} else {
-				console.debug(
+				console.log(
 					`${gridId}.setActiveCell(${JSON.stringify(
 						newCell
 					)}) failed: gridRef.current is null`

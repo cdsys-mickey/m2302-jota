@@ -95,12 +95,12 @@ const WebApiOptionPicker = memo(
 		}, []);
 
 		const handleOpen = useCallback(() => {
-			// console.debug(`${name}.handleOpen`);
+			// console.log(`${name}.handleOpen`);
 			setOpen(true);
 		}, [setOpen]);
 
 		const handleClose = useCallback(() => {
-			// console.debug(`${name}.handleClose`);
+			// console.log(`${name}.handleClose`);
 			if (filterByServer) {
 				setState((prev) => ({
 					...prev,
@@ -121,7 +121,7 @@ const WebApiOptionPicker = memo(
 			async ({ q } = {}) => {
 				// 若有指定 options 則不 fetch
 				// if (options) {
-				// 	console.debug("option provided, no fetching needed");
+				// 	console.log("option provided, no fetching needed");
 				// 	setState((prev) => ({
 				// 		...prev,
 				// 		options: options,
@@ -247,9 +247,9 @@ const WebApiOptionPicker = memo(
 		 * @param {*} value
 		 */
 		// const handleChange = (event, value, reason) => {
-		// 	console.debug(`${name}.event`, event);
-		// 	console.debug(`${name}.value`, value);
-		// 	console.debug(`${name}.reason`, reason);
+		// 	console.log(`${name}.event`, event);
+		// 	console.log(`${name}.value`, value);
+		// 	console.log(`${name}.reason`, reason);
 		// 	// clear options when input is empty
 		// 	if (
 		// 		queryRequired &&
@@ -318,7 +318,7 @@ const WebApiOptionPicker = memo(
 				loading === null &&
 				!disabled
 			) {
-				console.debug("load full options for the first time");
+				console.log("load full options for the first time");
 				loadOptions();
 			}
 		}, [
@@ -339,11 +339,11 @@ const WebApiOptionPicker = memo(
 					onChange(null, null);
 				}
 			} else {
-				// console.debug(`url set to ${url}`);
+				// console.log(`url set to ${url}`);
 			}
-			// console.debug(`${name}.options cleared, due to url/qs changed`);
-			// console.debug(`\turl`, url);
-			// console.debug(`\tparameters`, parameters);
+			// console.log(`${name}.options cleared, due to url/qs changed`);
+			// console.log(`\turl`, url);
+			// console.log(`\tparameters`, parameters);
 			// setState((prev) => ({
 			// 	...prev,
 			// 	options: [],

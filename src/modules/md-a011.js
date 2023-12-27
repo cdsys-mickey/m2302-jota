@@ -1,11 +1,35 @@
-import Objects from "@/shared-modules/sd-objects";
+const transformAsQueryParams = (data) => {
+	return {
+		pi: data.prodId,
+		pn: data.prodName,
+		cl: data.catL?.LClas,
+		cm: data.catM?.MClas,
+		cs: data.catS?.SClas,
+		ta: data.typeA?.TypeA,
+		tb: data.typeB?.TypeB,
+		tx: data.taxType?.Tax,
+		sq: data.safeQty,
+	};
+};
 
-const isAnyPropNotEmpty = (data) => {
-	return Objects.isAnyPropNotEmpty(data);
+const transformForSubmit = (data) => {
+	return data.map((i) => {
+		const { ProdID, Price, PriceA, PriceB, PriceC, PriceD, PriceE } = i;
+		return {
+			ProdID,
+			Price,
+			PriceA,
+			PriceB,
+			PriceC,
+			PriceD,
+			PriceE,
+		};
+	});
 };
 
 const A011 = {
-	isAnyPropNotEmpty,
+	transformAsQueryParams,
+	transformForSubmit,
 };
 
 export default A011;

@@ -11,7 +11,7 @@ import GovDocFieldBox from "./GovDocFieldBox";
 import GovDocToolbar from "./GovDocToolbar";
 
 const ListItemElement = ({ children, element }) => {
-	console.debug(`children:`, children);
+	console.log(`children:`, children);
 	return (
 		<div className={clsx("item-wrapper", `item-lvl-${element.level}`)}>
 			<div className="item-bullet" contentEditable={false}>
@@ -40,7 +40,7 @@ const GovDocField = ({
 	// const debounced = useDebounce(state?.data, 800);
 
 	const renderElement = useCallback((props) => {
-		// console.debug(props, "props");
+		// console.log(props, "props");
 		switch (props.element.type) {
 			case GovDoc.ELEMENT_LI:
 				return <ListItemElement {...props} />;
@@ -51,7 +51,7 @@ const GovDocField = ({
 
 	const handleKeyDown = useCallback(
 		(e) => {
-			// console.debug(e.key);
+			// console.log(e.key);
 			switch (e.key) {
 				case "`":
 					// 切換項目符號模式
@@ -97,7 +97,7 @@ const GovDocField = ({
 
 	const handleSlateBlur = useCallback(
 		(e) => {
-			console.debug("handleSlateBlur");
+			console.log("handleSlateBlur");
 			onChange(editor.children);
 		},
 		[editor.children, onChange]
@@ -105,7 +105,7 @@ const GovDocField = ({
 
 	// 當 rows 改變觸發 rewriteBullets
 	useEffect(() => {
-		console.debug(`rows = ${state?.rows}`);
+		console.log(`rows = ${state?.rows}`);
 		GovDocEditor.rewriteBullets(editor);
 	}, [editor, state?.rows]);
 

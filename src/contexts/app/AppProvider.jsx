@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { useCallback, useMemo, useState } from "react";
 import { AppContext } from "./AppContext";
 
-const AppProvider = ({ children }) => {
+export const AppProvider = ({ children }) => {
 	const { httpGetAsync } = useWebApi();
 
 	// 版本資訊
@@ -54,7 +54,7 @@ const AppProvider = ({ children }) => {
 				url: "",
 			});
 			if (status.success) {
-				console.debug("payload", payload);
+				console.log("payload", payload);
 				setState((prev) => ({
 					...prev,
 					loading: false,
@@ -95,5 +95,3 @@ const AppProvider = ({ children }) => {
 AppProvider.propTypes = {
 	children: PropTypes.node,
 };
-
-export { AppProvider };

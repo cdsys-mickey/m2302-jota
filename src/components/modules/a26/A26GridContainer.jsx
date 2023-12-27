@@ -1,11 +1,9 @@
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { A26Context } from "@/contexts/A26/A26Context";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import A26Grid from "./A26Grid";
-import { A26Context } from "@/contexts/A26/A26Context";
 
 const A26GridContainer = () => {
-	// const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const a26 = useContext(A26Context);
 
@@ -15,7 +13,7 @@ const A26GridContainer = () => {
 			setGridRef={a26.setGridRef}
 			data={a26.gridData}
 			loading={a26.gridLoading}
-			handleChange={a26.handleGridChange({
+			onChange={a26.handleGridChange({
 				onCreate: a26.handleCreate,
 				onUpdate: a26.handleUpdate,
 				onDelete: a26.handleConfirmDelete,

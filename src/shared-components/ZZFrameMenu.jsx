@@ -162,7 +162,7 @@ export const ZZFrameMenu = memo((props) => {
 		(item) => {
 			// let fullPath = getFullPath(item.path, true);
 			// let hit = pathname === fullPath;
-			// console.debug(`pathname: ${pathname}, item.path: ${item.path}`);
+			// console.log(`pathname: ${pathname}, item.path: ${item.path}`);
 			let hit = pathname === item.path;
 			return hit;
 		},
