@@ -13,6 +13,7 @@ import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbo
 import { createWebApiOptionPickerColumn } from "../../shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
 import Depts from "../../modules/md-depts";
 import Prods from "../../modules/md-prods";
+import OptionPickerColumn from "../../shared-components/dsg/columns/option-picker/OptionPickerColumn";
 
 const DSGTest2 = memo(
 	forwardRef((props, ref) => {
@@ -45,7 +46,9 @@ const DSGTest2 = memo(
 				{
 					...keyColumn(
 						"abc",
-						createOptionPickerColumn({ options: ["A", "B", "C"] })
+						createOptionPickerColumn(OptionPickerColumn, {
+							options: ["A", "B", "C"],
+						})
 					),
 					title: "ABC",
 					minWidth: 100,
@@ -54,14 +57,11 @@ const DSGTest2 = memo(
 					...keyColumn(
 						"dept",
 						createWebApiOptionPickerColumn({
-							ComponentProps: {
-								url: "v1/depts",
-								bearer: bearer,
-								getOptionLabel: Depts.getOptionLabel,
-								isOptionEqualToValue:
-									Depts.isOptionEqualToValue,
-								getData: (p) => p["data"],
-							},
+							url: "v1/depts",
+							bearer: bearer,
+							getOptionLabel: Depts.getOptionLabel,
+							isOptionEqualToValue: Depts.isOptionEqualToValue,
+							getData: (p) => p["data"],
 						})
 					),
 					title: "門市",
@@ -71,17 +71,14 @@ const DSGTest2 = memo(
 					...keyColumn(
 						"prod",
 						createWebApiOptionPickerColumn({
-							ComponentProps: {
-								url: "v1/prods",
-								parameters: "tp=20",
-								bearer: bearer,
-								queryParam: "qs",
-								getOptionLabel: Prods.getOptionLabel,
-								isOptionEqualToValue:
-									Prods.isOptionEqualToValue,
-								filterByServer: true,
-								getData: (p) => p["data"],
-							},
+							url: "v1/prods",
+							parameters: "tp=20",
+							bearer: bearer,
+							queryParam: "qs",
+							getOptionLabel: Prods.getOptionLabel,
+							isOptionEqualToValue: Prods.isOptionEqualToValue,
+							filterByServer: true,
+							getData: (p) => p["data"],
 						})
 					),
 					title: "商品",

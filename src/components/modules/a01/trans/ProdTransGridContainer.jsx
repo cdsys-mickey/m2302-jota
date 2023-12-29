@@ -2,15 +2,16 @@ import { useContext } from "react";
 import ProdTransGrid from "./ProdTransGrid";
 import { A01Context } from "@/contexts/A01/A01Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import PropTypes from "prop-types";
 
 export const ProdTransGridContainer = (props) => {
-	const { ...rest } = props;
+	const { store, ...rest } = props;
 	const a01 = useContext(A01Context);
 	const auth = useContext(AuthContext);
 	return (
 		<ProdTransGrid
 			gridRef={a01.setTransGridRef}
-			lockRows={!a01.editing}
+			readOnly={!a01.editing || store}
 			data={a01.transGridData}
 			handleGridChange={a01.handleTransGridChange}
 			bearer={auth.token}
@@ -18,5 +19,7 @@ export const ProdTransGridContainer = (props) => {
 		/>
 	);
 };
-
+ProdTransGridContainer.propTypes = {
+	store: PropTypes.bool,
+};
 ProdTransGridContainer.displayName = "ProdTransGridContainer";

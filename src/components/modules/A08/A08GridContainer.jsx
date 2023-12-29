@@ -9,7 +9,7 @@ const A08GridContainer = () => {
 
 	return (
 		<A08Grid
-			lockRows={a08.lockRows}
+			readOnly={a08.readOnly}
 			gridRef={a08.gridRef}
 			setGridRef={a08.setGridRef}
 			data={a08.gridData}

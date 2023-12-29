@@ -1,26 +1,24 @@
-import { useContext } from "react";
-import { A011Context } from "../../../contexts/A011/A011Context";
+import { useContext, useMemo } from "react";
+import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { useWindowSize } from "../../../shared-hooks/useWindowSize";
 import A011Grid from "./A011Grid";
-import NoDataBox from "../../../shared-components/NoDataBox";
-import { useMemo } from "react";
 
 export const A011GridContainer = () => {
 	const { height } = useWindowSize();
-	const a011 = useContext(A011Context);
+	const prodGrid = useContext(ProdGridContext);
 
 	const gridHeight = useMemo(() => {
-		return a011.expanded ? height - 330 : height - 230;
-	}, [a011.expanded, height]);
+		return prodGrid.expanded ? height - 330 : height - 230;
+	}, [prodGrid.expanded, height]);
 
 	return (
 		<A011Grid
-			lockRows={a011.lockRows}
-			setGridRef={a011.setGridRef}
-			data={a011.gridData}
-			loading={a011.gridLoading}
+			readOnly={prodGrid.readOnly}
+			setGridRef={prodGrid.setGridRef}
+			data={prodGrid.gridData}
+			loading={prodGrid.gridLoading}
 			height={gridHeight}
-			onChange={a011.handleGridChange()}
+			onChange={prodGrid.handleGridChange()}
 		/>
 	);
 };

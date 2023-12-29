@@ -10,7 +10,7 @@ const AlertTitleEx = memo((props) => {
 			case "large":
 				return "150%";
 			case "medium":
-				return "120%";
+				return "130%";
 			case "small":
 				return null;
 		}
@@ -21,7 +21,9 @@ const AlertTitleEx = memo((props) => {
 			sx={[
 				{
 					...(fontSize && {
-						fontSize,
+						"&.MuiAlertTitle-root": {
+							fontSize,
+						},
 					}),
 				},
 				...(Array.isArray(sx) ? sx : [sx]),

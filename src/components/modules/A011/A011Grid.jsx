@@ -12,13 +12,9 @@ import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import NoDataBox from "../../../shared-components/NoDataBox";
 
-const ContextMenu = createDSGContextMenu({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
-});
-
 const A011Grid = memo((props) => {
 	const {
-		lockRows,
+		readOnly,
 		setGridRef,
 		data,
 		loading,
@@ -55,56 +51,52 @@ const A011Grid = memo((props) => {
 				...keyColumn("Price", createFloatColumn(2)),
 				title: "建議售價",
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn("PriceA", createFloatColumn(2)),
 				title: "售價A",
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn("PriceB", createFloatColumn(2)),
 				title: "售價B",
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn("PriceC", createFloatColumn(2)),
 				title: "售價C",
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn("PriceD", createFloatColumn(2)),
 				title: "售價D",
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn("PriceE", createFloatColumn(2)),
 				title: "售價E",
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 		],
-		[lockRows]
+		[readOnly]
 	);
 
 	if (!data || data.legnth === 0) {
 		return (
 			<NoDataBox height={height} size="medium">
-				輸入篩選條件後再按下讀取
+				輸入篩選條件後再按下[讀取資料]
 			</NoDataBox>
 		);
 	}
 
 	if (loading) {
-		return (
-			// <Container maxWidth="xs">
-			<DSGLoading height={height} />
-			// </Container>
-		);
+		return <DSGLoading height={height} />;
 	}
 
 	if (!data) {
@@ -114,22 +106,24 @@ const A011Grid = memo((props) => {
 	return (
 		<Box>
 			<DynamicDataSheetGrid
-				lockRows={lockRows}
+				lockRows
 				ref={setGridRef}
 				rowKey="CodeID"
-				height={height + (lockRows ? 48 : 0)}
+				// height={height + (readOnly ? 48 : 0)}
+				height={height + 48}
+				rowHeight={42}
 				value={data}
 				onChange={onChange}
 				columns={columns}
 				addRowsComponent={DSGAddRowsToolbar}
 				disableExpandSelection
-				contextMenuComponent={ContextMenu}
+				disableContextMenu
 			/>
 		</Box>
 	);
 });
 A011Grid.propTypes = {
-	lockRows: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,

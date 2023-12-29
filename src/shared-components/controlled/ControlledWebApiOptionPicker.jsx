@@ -1,7 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Controller } from "react-hook-form";
 import WebApiOptionPicker from "@/shared-components/picker/WebApiOptionPicker";
-import { useCallback } from "react";
+import { Controller } from "react-hook-form";
 
 export const ControlledWebApiOptionPicker = ({
 	name,

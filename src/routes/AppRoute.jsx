@@ -49,10 +49,27 @@ import { A15Provider } from "@/contexts/A15/A15Provider";
 import { A15FrameContainer } from "@/pages/A15/A15FrameContainer";
 import { A011Provider } from "../contexts/A011/A011Provider";
 import { A011FrameContainer } from "../pages/A011/A011FrameContainer";
+import { A012Provider } from "../contexts/A012/A012Provider";
+import { A012FrameContainer } from "../pages/A012/A012FrameContainer";
+import { A013Provider } from "../contexts/A013/A013Provider";
+import { A013FrameContainer } from "../pages/A013/A013FrameContainer";
+import { A014Provider } from "../contexts/A014/A014Provider";
+import { A014FrameContainer } from "../pages/A014/A014FrameContainer";
+import { A015Provider } from "../contexts/A015/A015Provider";
+import { A015FrameContainer } from "../pages/A015/A015FrameContainer";
+import CheckAuthRoute from "./CheckAuthRoute";
 
 const AppRoute = () => {
 	return (
 		<Routes>
+			{/* LANDING REDIRECTION */}
+			<Route
+				index
+				element={
+					// <Navigate to={import.meta.env.VITE_URL_LANDING} replace />
+					<CheckAuthRoute />
+				}
+			/>
 			{/* Sign In */}
 			<Route path="auth" element={<SignInRoute />}>
 				<Route index path="signin" element={<SignInContainer />} />
@@ -73,13 +90,7 @@ const AppRoute = () => {
 			<Route path="lab-protected" element={<ProtectedRoute />}>
 				<Route path="dsg" element={<DSGTest2Container />} />
 			</Route>
-			{/* LANDING REDIRECTION */}
-			<Route
-				path="/"
-				element={
-					<Navigate to={import.meta.env.VITE_URL_LANDING} replace />
-				}
-			/>
+
 			{/* PROTECTED */}
 			<Route path="" element={<ProtectedRoute />}>
 				<Route path="home" element={<HomeContainer />} />
@@ -133,6 +144,38 @@ const AppRoute = () => {
 							<A011Provider>
 								<A011FrameContainer />
 							</A011Provider>
+						}
+					/>
+					<Route
+						path="A012"
+						element={
+							<A012Provider>
+								<A012FrameContainer />
+							</A012Provider>
+						}
+					/>
+					<Route
+						path="A013"
+						element={
+							<A013Provider>
+								<A013FrameContainer />
+							</A013Provider>
+						}
+					/>
+					<Route
+						path="A014"
+						element={
+							<A014Provider>
+								<A014FrameContainer />
+							</A014Provider>
+						}
+					/>
+					<Route
+						path="A015"
+						element={
+							<A015Provider>
+								<A015FrameContainer />
+							</A015Provider>
 						}
 					/>
 					<Route

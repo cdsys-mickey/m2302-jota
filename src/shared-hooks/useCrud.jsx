@@ -254,6 +254,6 @@ export const useCrud = () => {
 		deleteCancel,
 		deleteFail,
 		// COMPUTED
-		editing: createAction.state != null || updateAction.state != null,
+		editing: createAction.state || updateAction.state,
 	};
 };

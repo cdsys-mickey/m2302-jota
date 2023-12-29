@@ -15,7 +15,6 @@ const ContextMenu = createDSGContextMenu({
 const ProdComboGrid = memo((props) => {
 	const {
 		readOnly = false,
-		lockRows,
 		gridRef,
 		data,
 		handleGridChange,
@@ -31,32 +30,30 @@ const ProdComboGrid = memo((props) => {
 				...keyColumn(
 					"prod",
 					createWebApiOptionPickerColumn({
-						ComponentProps: {
-							url: "v1/prods",
-							parameters: "tp=20",
-							bearer: bearer,
-							queryParam: "qs",
-							getOptionLabel: Prods.getOptionLabel,
-							isOptionEqualToValue: Prods.isOptionEqualToValue,
-							filterByServer: true,
-							size: "small",
-							getData: (p) => p["data"],
-						},
+						url: "v1/prods",
+						parameters: "tp=20",
+						bearer: bearer,
+						queryParam: "qs",
+						getOptionLabel: Prods.getOptionLabel,
+						isOptionEqualToValue: Prods.isOptionEqualToValue,
+						filterByServer: true,
+						size: "small",
+						getData: (p) => p["data"],
 					})
 				),
 				title: "商品",
 				grow: 8,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn("SProdQty", createFloatColumn(2)),
 				title: "數量",
 				minWidth: 90,
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 		],
-		[bearer, lockRows]
+		[bearer, readOnly]
 	);
 
 	if (!data) {
@@ -67,7 +64,7 @@ const ProdComboGrid = memo((props) => {
 		);
 	}
 
-	if (data?.length === 0 && lockRows) {
+	if (data?.length === 0 && readOnly) {
 		return (
 			<Typography variant="body2" color="text.secondary">
 				(空白)
@@ -79,8 +76,9 @@ const ProdComboGrid = memo((props) => {
 		<DynamicDataSheetGrid
 			ref={gridRef}
 			rowKey="id"
-			lockRows={lockRows || readOnly}
-			height={height + (lockRows ? 48 : 0)}
+			lockRows={readOnly}
+			height={height + (readOnly ? 48 : 0)}
+			rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}
@@ -92,7 +90,7 @@ const ProdComboGrid = memo((props) => {
 });
 
 ProdComboGrid.propTypes = {
-	lockRows: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	gridRef: PropTypes.func,
 	data: PropTypes.array,
 };

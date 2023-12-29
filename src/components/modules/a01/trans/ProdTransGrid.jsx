@@ -15,7 +15,6 @@ const ContextMenu = createDSGContextMenu({
 const ProdTransGrid = memo((props) => {
 	const {
 		readOnly = false,
-		lockRows,
 		gridRef,
 		data,
 		handleGridChange,
@@ -30,28 +29,26 @@ const ProdTransGrid = memo((props) => {
 				...keyColumn(
 					"dept",
 					createWebApiOptionPickerColumn({
-						ComponentProps: {
-							url: "v1/depts",
-							bearer: bearer,
-							getOptionLabel: Depts.getOptionLabel,
-							isOptionEqualToValue: Depts.isOptionEqualToValue,
-							getData: (p) => p["data"],
-						},
+						url: "v1/depts",
+						bearer: bearer,
+						getOptionLabel: Depts.getOptionLabel,
+						isOptionEqualToValue: Depts.isOptionEqualToValue,
+						getData: (p) => p["data"],
 					})
 				),
 				title: "門市",
 				grow: 6,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn("SCost", createFloatColumn(2)),
 				title: "調撥成本",
 				minWidth: 90,
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 		],
-		[bearer, lockRows]
+		[bearer, readOnly]
 	);
 
 	if (!data) {
@@ -62,7 +59,7 @@ const ProdTransGrid = memo((props) => {
 		);
 	}
 
-	if (data?.length === 0 && lockRows) {
+	if (data?.length === 0 && readOnly) {
 		return (
 			<Typography variant="body2" color="text.secondary">
 				(空白)
@@ -74,8 +71,9 @@ const ProdTransGrid = memo((props) => {
 		<DynamicDataSheetGrid
 			ref={gridRef}
 			rowKey="id"
-			lockRows={lockRows || readOnly}
-			height={height + (lockRows ? 48 : 0)}
+			lockRows={readOnly}
+			height={height + (readOnly ? 48 : 0)}
+			rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}
@@ -87,7 +85,6 @@ const ProdTransGrid = memo((props) => {
 });
 
 ProdTransGrid.propTypes = {
-	lockRows: PropTypes.bool,
 	readOnly: PropTypes.bool,
 	gridRef: PropTypes.func,
 	data: PropTypes.array,

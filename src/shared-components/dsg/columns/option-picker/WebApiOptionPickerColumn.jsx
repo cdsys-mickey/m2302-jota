@@ -1,15 +1,10 @@
-import { memo } from "react";
-import WebApiOptionPicker from "../../../picker/WebApiOptionPicker";
 import PropTypes from "prop-types";
-import { useRef } from "react";
-import { useLayoutEffect } from "react";
-import { useCallback } from "react";
+import { memo, useCallback, useLayoutEffect, useRef } from "react";
+import WebApiOptionPicker from "../../../picker/WebApiOptionPicker";
 
 const WebApiOptionPickerColumn = memo((props) => {
 	const {
-		// url,
-		// parameters,
-		// bearer,
+		name,
 		ComponentProps,
 		/** BUILT-IN PROPS */
 		focus,
@@ -19,16 +14,25 @@ const WebApiOptionPickerColumn = memo((props) => {
 		stopEditing,
 		disabled,
 	} = props;
+	console.log(`rendering WebApiOptionPickerColumn`, props);
+	console.log(`rowData`, rowData);
 	const ref = useRef();
 
 	const handleChange = useCallback(
 		(newValue) => {
-			setRowData(newValue);
+			if (name) {
+				setRowData({
+					...rowData,
+					[name]: newValue,
+				});
+			} else {
+				setRowData(newValue);
+			}
 		},
-		[setRowData]
+		[name, rowData, setRowData]
 	);
 
-	// This function will be called only when `focus` changes
+	// focusing on underlying input component when cel is focused
 	useLayoutEffect(() => {
 		if (focus) {
 			ref.current?.focus();
@@ -44,17 +48,25 @@ const WebApiOptionPickerColumn = memo((props) => {
 			hideBorders
 			value={rowData}
 			onChange={handleChange}
-			// url={url}
-			// parameters={parameters}
-			// bearer={bearer}
 			{...ComponentProps}
 		/>
 	);
 });
 
 WebApiOptionPickerColumn.propTypes = {
+	focus: PropTypes.bool,
+	name: PropTypes.string,
 	url: PropTypes.string,
 	ComponentProps: PropTypes.object,
+	rowData: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+		PropTypes.object,
+	]),
+	setRowData: PropTypes.func,
+	active: PropTypes.bool,
+	stopEditing: PropTypes.func,
+	disabled: PropTypes.bool,
 };
 
 WebApiOptionPickerColumn.displayName = "WebApiOptionPickerColumn";

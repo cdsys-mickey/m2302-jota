@@ -8,7 +8,7 @@ export const useDSG = ({
 	gridId = "NO_NAME",
 	keyColumn,
 	otherColumns,
-	initialLockRows = true,
+	initialReadOnly = true,
 }) => {
 	const gridRef = useRef();
 	const setGridRef = useCallback((node) => {
@@ -16,7 +16,7 @@ export const useDSG = ({
 			gridRef.current = node;
 		}
 	}, []);
-	const [lockRows, toggleLockRows] = useToggle(initialLockRows);
+	const [readOnly, toggleReadOnly] = useToggle(initialReadOnly);
 	const [isPending, startTransition] = useTransition();
 	const selectedRowIndexRef = useRef();
 
@@ -43,7 +43,7 @@ export const useDSG = ({
 	const handleGridDataLoaded = useCallback(
 		(payload) => {
 			// console.log(`data loaded`, payload);
-			console.log(`${gridId}.onDataLoaded, payload:`, payload);
+			console.log(`${gridId}.onDataLoaded`, payload);
 			persistedIds.clear();
 			payload?.map((i) => {
 				persistedIds.add(i[keyColumn]);
@@ -394,7 +394,7 @@ export const useDSG = ({
 		setGridData([]);
 	}, [setGridData]);
 
-	// const toggleLockRows = useCallback((enabled) => {
+	// const toggleReadOnly = useCallback((enabled) => {
 	// 	setLockRows(!enabled);
 	// }, []);
 	return {
@@ -423,7 +423,7 @@ export const useDSG = ({
 		rewriteRowValue,
 		setActiveCell,
 		// 鎖定列
-		lockRows,
-		toggleLockRows,
+		readOnly,
+		toggleReadOnly,
 	};
 };

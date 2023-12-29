@@ -1,4 +1,4 @@
-import { CatLContext } from "@/contexts/A03/CatLContext";
+import { CatLGridContext } from "@/contexts/A03/CatLGridContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
@@ -7,12 +7,12 @@ import CatLGrid from "./CatLGrid";
 
 export const CatLGridContainer = () => {
 	const { height } = useWindowSize();
-	const catL = useContext(CatLContext);
+	const catL = useContext(CatLGridContext);
 	const a03 = useContext(A03Context);
 
 	return (
 		<CatLGrid
-			lockRows={a03.lockRows}
+			readOnly={a03.readOnly}
 			gridRef={catL.gridRef}
 			setGridRef={catL.setGridRef}
 			// ref={ref}

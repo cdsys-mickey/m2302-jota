@@ -81,7 +81,7 @@ export const useA01 = ({ token, mode }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A01.processForRead(payload);
+					const data = A01.transformForRead(payload);
 
 					transGrid.handleGridDataLoaded(data.trans);
 					comboGrid.handleGridDataLoaded(data.combo);
@@ -201,7 +201,7 @@ export const useA01 = ({ token, mode }) => {
 	const onCounterSubmit = useCallback(
 		async (data) => {
 			console.log(`A01.onCounterSubmit()`, data);
-			const processed = A01.processForCounterSubmit(data);
+			const processed = A01.transformForCounterSubmit(data);
 			console.log(`processed`, processed);
 			try {
 				crud.updateStart();
@@ -238,7 +238,7 @@ export const useA01 = ({ token, mode }) => {
 			console.log(`A01.onEditorSubmit()`, data);
 			console.log(`transGrid.gridData`, transGrid.gridData);
 			console.log(`comboGrid.gridData`, comboGrid.gridData);
-			const processed = A01.processForEditorSubmit(
+			const processed = A01.transformForEditorSubmit(
 				data,
 				transGrid.gridData,
 				comboGrid.gridData

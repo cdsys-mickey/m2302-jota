@@ -9,7 +9,7 @@ const A11GridContainer = () => {
 
 	return (
 		<A11Grid
-			lockRows={a11.lockRows}
+			readOnly={a11.readOnly}
 			gridRef={a11.gridRef}
 			setGridRef={a11.setGridRef}
 			data={a11.gridData}

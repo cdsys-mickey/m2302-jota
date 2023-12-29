@@ -4,7 +4,7 @@ import { Container } from "@mui/material";
 import LoadingTypography from "../LoadingTypography";
 import FlexBox from "@/shared-components/FlexBox";
 import { PublicPageContainer } from "@/shared-pages/PublicPageContainer";
-import BackgroundImage from "@/images/rm218batch4-ning-34.jpg";
+import BackgroundImage from "@/images/rm218batch4-ning-34_2.jpg";
 
 export const LoadingFrame = memo(
 	forwardRef((props, ref) => {

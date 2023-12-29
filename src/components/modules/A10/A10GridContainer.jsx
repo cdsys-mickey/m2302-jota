@@ -9,7 +9,7 @@ const A10GridContainer = () => {
 
 	return (
 		<A10Grid
-			lockRows={a10.lockRows}
+			readOnly={a10.readOnly}
 			gridRef={a10.gridRef}
 			setGridRef={a10.setGridRef}
 			data={a10.gridData}

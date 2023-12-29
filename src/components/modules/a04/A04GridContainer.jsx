@@ -9,7 +9,7 @@ const A04GridContainer = () => {
 
 	return (
 		<A04Grid
-			lockRows={a04.lockRows}
+			readOnly={a04.readOnly}
 			setGridRef={a04.setGridRef}
 			data={a04.gridData}
 			loading={a04.gridLoading}

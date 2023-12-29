@@ -4,7 +4,14 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
+import CmsTypePickerContainer from "@/components/picker/CmsTypePickerContainer";
+import CmsTypes from "@/modules/md-cms-types";
+import ProdLCats from "@/modules/md-prod-l-cats";
+import ProdMCats from "@/modules/md-prod-m-cats";
+import ProdSCats from "@/modules/md-prod-s-cats";
+import ProdTypeB from "@/modules/md-prod-type-b";
 import Strings from "@/modules/md-strings";
+import YesNo from "@/modules/md-yes-no";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import DialogEx from "@/shared-components/dialog/DialogEx";
@@ -13,33 +20,19 @@ import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
 import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { Container } from "@mui/material";
-import CmsTypes from "@/modules/md-cms-types";
-import ProdLCats from "@/modules/md-prod-l-cats";
-import ProdMCats from "@/modules/md-prod-m-cats";
-import ProdSCats from "@/modules/md-prod-s-cats";
-import ProdTypeB from "@/modules/md-prod-type-b";
-import YesNo from "@/modules/md-yes-no";
-import CmsTypePickerContainer from "@/components/picker/CmsTypePickerContainer";
-import ProdCatLPickerContainer from "@/components/picker/ProdCatLPickerContainer";
-import ProdCatMPickerContainer from "@/components/picker/ProdCatMPickerContainer";
-import ProdCatSPickerContainer from "@/components/picker/ProdCatSPickerContainer";
-import ProdTypeAPickerContainer from "@/components/picker/ProdTypeAPickerContainer";
-import ProdTypeBPickerContainer from "@/components/picker/ProdTypeBPickerContainer";
-import TaxTypePickerContainer from "@/components/picker/TaxTypePickerContainer";
-import { A01DialogTitleButtonsContainer } from "./buttons/A01DialogTitleButtonsContainer";
-import { PkgTypePickerContainer } from "../../../picker/PkgTypePickerContainer";
-import PkgTypes from "../../../../modules/md-pkg-types";
 import Counters from "../../../../modules/md-counters";
-import CounterPickerContainer from "../../../picker/CounterPickerContainer";
-import { ProdTransGridContainer } from "../trans/ProdTransGridContainer";
-import { ProdComboGridContainer } from "../combo/ProdComboGridContainer";
+import PkgTypes from "../../../../modules/md-pkg-types";
+import { PkgTypePickerContainer } from "../../../picker/PkgTypePickerContainer";
+import TypoCounterPickerContainer from "../../../picker/TypoCounterPickerContainer";
 import TypoProdCatLPickerContainer from "../../../picker/TypoProdCatLPickerContainer";
 import TypoProdCatMPickerContainer from "../../../picker/TypoProdCatMPickerContainer";
 import TypoProdCatSPickerContainer from "../../../picker/TypoProdCatSPickerContainer";
 import TypoProdTypeAPickerContainer from "../../../picker/TypoProdTypeAPickerContainer";
 import TypoProdTypeBPickerContainer from "../../../picker/TypoProdTypeBPickerContainer";
 import TypoTaxTypePickerContainer from "../../../picker/TypoTaxTypePickerContainer";
-import TypoCounterPickerContainer from "../../../picker/TypoCounterPickerContainer";
+import { ProdComboGridContainer } from "../combo/ProdComboGridContainer";
+import { ProdTransGridContainer } from "../trans/ProdTransGridContainer";
+import { A01DialogTitleButtonsContainer } from "./buttons/A01DialogTitleButtonsContainer";
 
 const A01Dialog = memo(
 	forwardRef((props, ref) => {
@@ -512,7 +505,7 @@ const A01Dialog = memo(
 									<FormSectionTitle>
 										調撥成本
 									</FormSectionTitle>
-									<ProdTransGridContainer readOnly={store} />
+									<ProdTransGridContainer store={store} />
 								</FormSectionBox>
 							</Grid>
 							<Grid item xs={24} sm={24} md={6} lg={13} xl={13}>
@@ -520,7 +513,7 @@ const A01Dialog = memo(
 									<FormSectionTitle>
 										組合細項
 									</FormSectionTitle>
-									<ProdComboGridContainer readOnly={store} />
+									<ProdComboGridContainer store={store} />
 								</FormSectionBox>
 							</Grid>
 						</Grid>

@@ -11,6 +11,7 @@ import { DynamicDataSheetGrid } from "react-datasheet-grid";
 import PropTypes from "prop-types";
 import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
 import { createFloatColumn } from "../../shared-components/dsg/columns/float/createFloatColumn";
+import OptionPickerColumn from "../../shared-components/dsg/columns/option-picker/OptionPickerColumn";
 
 const DSGTest = memo(
 	forwardRef((props, ref) => {
@@ -57,7 +58,9 @@ const DSGTest = memo(
 				{
 					...keyColumn(
 						"abc",
-						createOptionPickerColumn({ options: ["A", "B", "C"] })
+						createOptionPickerColumn(OptionPickerColumn, {
+							options: ["A", "B", "C"],
+						})
 					),
 					title: "OptionPicker",
 				},
@@ -85,6 +88,7 @@ const DSGTest = memo(
 					columns={columns}
 					height={500}
 					rowHeight={42}
+					disableExpandSelection
 				/>
 			</div>
 		);

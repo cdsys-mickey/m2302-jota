@@ -1,18 +1,10 @@
 import WebApiOptionPickerColumn from "./WebApiOptionPickerColumn";
 
-export const createWebApiOptionPickerColumn = ({
-	// url,
-	// parameters,
-	// bearer,
-	ComponentProps,
-} = {}) => {
+export const createWebApiOptionPickerColumn = (ComponentProps) => {
 	return {
 		component: (props) => {
 			return (
 				<WebApiOptionPickerColumn
-					// url={url}
-					// parameters={parameters}
-					// bearer={bearer}
 					ComponentProps={ComponentProps}
 					{...props}
 				/>

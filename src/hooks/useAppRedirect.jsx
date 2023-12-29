@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import useRedirect from "@/shared-hooks/useRedirect";
 import AppRoutes from "../modules/md-app-routes";
 import Cookies from "js-cookie";
+import Auth from "../modules/md-auth";
 
 const useAppRedirect = () => {
 	const { redirectTo } = useRedirect();
@@ -11,7 +12,7 @@ const useAppRedirect = () => {
 	}, [redirectTo]);
 
 	const toLogin = useCallback(() => {
-		const impersonte = Cookies.get("md") === "im";
+		const impersonte = Cookies.get(Auth.COOKIE_MODE) === "im";
 		redirectTo(
 			impersonte
 				? import.meta.env.VITE_URL_LOGINX

@@ -3,6 +3,7 @@ import OptionPicker from "../../../picker/OptionPicker";
 import PropTypes from "prop-types";
 import { useRef } from "react";
 import { useLayoutEffect } from "react";
+import { useCallback } from "react";
 
 const OptionPickerColumn = memo((props) => {
 	const {
@@ -17,6 +18,13 @@ const OptionPickerColumn = memo((props) => {
 		disabled,
 	} = props;
 	const ref = useRef();
+
+	const handleChange = useCallback(
+		(newValue) => {
+			setRowData(newValue);
+		},
+		[setRowData]
+	);
 
 	// This function will be called only when `focus` changes
 	useLayoutEffect(() => {
@@ -34,6 +42,14 @@ const OptionPickerColumn = memo((props) => {
 			hideBorders
 			options={options}
 			value={rowData}
+			onChange={handleChange}
+			dense
+			disabled={disabled}
+			// sx={{
+			// 	"& .MuiInputBase-root": {
+			// 		padding: 0,
+			// 	},
+			// }}
 			{...ComponentProps}
 		/>
 	);

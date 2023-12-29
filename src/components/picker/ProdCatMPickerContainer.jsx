@@ -1,29 +1,23 @@
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
-import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
-import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ProdMCats from "@/modules/md-prod-m-cats";
-import { useWatch } from "react-hook-form";
-import { useMemo } from "react";
+import PropTypes from "prop-types";
+import { forwardRef, useContext, useMemo } from "react";
 import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
-import { ControlledWebApiOptionPicker } from "../../shared-components/controlled/ControlledWebApiOptionPicker";
 
-const ProdCatMPickerContainer = forwardRef((props, ref) => {
-	const { name, readOnly = false, ...rest } = props;
+export const ProdCatMPickerContainer = forwardRef((props, ref) => {
+	const { readOnly = false, catL, ...rest } = props;
 	const { token } = useContext(AuthContext);
-	const catL = useWatch({ name: "catL" });
+
 	const disabled = useMemo(() => {
-		return !catL?.LClas || readOnly;
-	}, [catL?.LClas, readOnly]);
+		return !catL || readOnly;
+	}, [catL, readOnly]);
 
 	const url = useMemo(() => {
-		return disabled ? null : `v1/prod/m-cats/${catL?.LClas}`;
-	}, [catL?.LClas, disabled]);
+		return disabled ? null : `v1/prod/m-cats/${catL}`;
+	}, [catL, disabled]);
 
 	return (
-		<ControlledWebApiOptionPicker
-			name={name}
+		<WebApiOptionPicker
 			label="中分類"
 			ref={ref}
 			bearer={token}
@@ -35,8 +29,9 @@ const ProdCatMPickerContainer = forwardRef((props, ref) => {
 		/>
 	);
 });
+
 ProdCatMPickerContainer.propTypes = {
-	name: PropTypes.string,
+	catL: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 

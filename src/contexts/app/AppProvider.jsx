@@ -54,7 +54,6 @@ export const AppProvider = ({ children }) => {
 				url: "",
 			});
 			if (status.success) {
-				console.log("payload", payload);
 				setState((prev) => ({
 					...prev,
 					loading: false,

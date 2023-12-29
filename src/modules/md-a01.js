@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "@/shared-modules/sd-forms";
 import ProdTypeA from "./md-prod-type-a";
 import ProdTypeB from "./md-prod-type-b";
@@ -18,7 +19,7 @@ const hasEmptyError = (criteria) => {
 	return true;
 };
 
-const processForRead = (data) => {
+const transformForRead = (data) => {
 	const {
 		BUnit,
 		BUnit_N,
@@ -50,72 +51,64 @@ const processForRead = (data) => {
 	//StoreCom_S
 
 	return {
-		...rest,
+		catL: LClas
+			? {
+					LClas,
+					ClassData: LClas_N,
+			  }
+			: null,
+		catM: MClas
+			? {
+					MClas,
+					ClassData: MClas_N,
+			  }
+			: null,
+		catS: SClas
+			? {
+					SClas,
+					ClassData: SClas_N,
+			  }
+			: null,
+		cmsType: CmsID
+			? {
+					CodeID: CmsID,
+					CodeData: Cms_N,
+			  }
+			: null,
+		counter: CaseID
+			? {
+					CodeID: CaseID,
+					CodeData: Case_N,
+			  }
+			: null,
+		bunit: BUnit
+			? {
+					CodeID: BUnit,
+					CodeData: BUnit_N,
+			  }
+			: null,
+		iunit: IUnit
+			? {
+					CodeID: IUnit,
+					CodeData: IUnit_N,
+			  }
+			: null,
+		sunit: SUnit
+			? {
+					CodeID: SUnit,
+					CodeData: SUnit_N,
+			  }
+			: null,
 
-		...(LClas && {
-			catL: {
-				LClas,
-				ClassData: LClas_N,
-			},
-		}),
-		...(MClas && {
-			catM: {
-				MClas,
-				ClassData: MClas_N,
-			},
-		}),
-		...(SClas && {
-			catS: {
-				SClas,
-				ClassData: SClas_N,
-			},
-		}),
-		...(CmsID && {
-			cmsType: {
-				CodeID: CmsID,
-				CodeData: Cms_N,
-			},
-		}),
-		...(CaseID && {
-			counter: {
-				CodeID: CaseID,
-				CodeData: Case_N,
-			},
-		}),
-		...(BUnit && {
-			bunit: {
-				CodeID: BUnit,
-				CodeData: BUnit_N,
-			},
-		}),
-		...(IUnit && {
-			iunit: {
-				CodeID: IUnit,
-				CodeData: IUnit_N,
-			},
-		}),
-		...(SUnit && {
-			sunit: {
-				CodeID: SUnit,
-				CodeData: SUnit_N,
-			},
-		}),
-
-		...(MUnit && {
-			munit: {
-				CodeID: MUnit,
-				CodeData: MUnit_N,
-			},
-		}),
-		...(Tax && {
-			taxType: TaxTypes.getById(Tax),
-		}),
-		...(TypeA && {
-			typeA: ProdTypeA.getById(TypeA),
-		}),
-		...(TypeB && {
-			typeB: ProdTypeB.getById(TypeB),
-		}),
+		munit: MUnit
+			? {
+					CodeID: MUnit,
+					CodeData: MUnit_N,
+			  }
+			: null,
+		taxType: Tax ? TaxTypes.getById(Tax) : null,
+		typeA: TypeA ? ProdTypeA.getById(TypeA) : null,
+		typeB: TypeB ? ProdTypeB.getById(TypeB) : null,
 		...(StoreTrans_S && {
 			trans: StoreTrans_S.map((v, i) => ({
 				id: uuidv4(),
@@ -138,6 +131,7 @@ const processForRead = (data) => {
 				SProdQty: v.SProdQty,
 			})),
 		}),
+		...rest,
 	};
 };
 
@@ -145,7 +139,7 @@ const processForDefaultSubmit = (data) => {
 	return data;
 };
 
-const processForCounterSubmit = (data) => {
+const transformForCounterSubmit = (data) => {
 	const { ProdID, counter } = data;
 	return {
 		ProdID,
@@ -153,7 +147,7 @@ const processForCounterSubmit = (data) => {
 	};
 };
 
-const processForEditorSubmit = (data, transGridData, comboGridData) => {
+const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 	const {
 		catL,
 		catM,
@@ -240,10 +234,10 @@ const isFiltered = (criteria) => {
 
 const A01 = {
 	hasEmptyError,
-	processForRead,
+	transformForRead,
 	processForDefaultSubmit,
-	processForEditorSubmit,
-	processForCounterSubmit,
+	transformForEditorSubmit,
+	transformForCounterSubmit,
 	isFiltered,
 	Mode,
 };

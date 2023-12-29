@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { useA011 } from "../../hooks/modules/useA011";
-import { A011Context } from "./A011Context";
+import { ProdGridContext } from "../prod-grid/ProdGridContext";
 
 export const A011Provider = (props) => {
 	const { children } = props;
@@ -10,12 +10,12 @@ export const A011Provider = (props) => {
 	const a011 = useA011({ token: auth.token });
 
 	return (
-		<A011Context.Provider
+		<ProdGridContext.Provider
 			value={{
 				...a011,
 			}}>
 			{children}
-		</A011Context.Provider>
+		</ProdGridContext.Provider>
 	);
 };
 

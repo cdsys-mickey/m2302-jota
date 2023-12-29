@@ -171,6 +171,7 @@ export const useAuth = () => {
 				bearer: state.token,
 			});
 			if (status.success) {
+				Cookies.remove("LogKey");
 				toLogin();
 				toast.success("您已成功登出");
 			} else {

@@ -17,7 +17,7 @@ const ContextMenu = createDSGContextMenu({
 
 const A16Grid = memo((props) => {
 	const {
-		lockRows,
+		readOnly,
 		gridRef,
 		data,
 		loading,
@@ -51,7 +51,7 @@ const A16Grid = memo((props) => {
 				),
 				title: "群組",
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn(
@@ -62,7 +62,7 @@ const A16Grid = memo((props) => {
 				),
 				title: "門市名稱",
 				grow: 4,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn(
@@ -73,7 +73,7 @@ const A16Grid = memo((props) => {
 				),
 				title: "簡稱",
 				grow: 2,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn(
@@ -82,10 +82,10 @@ const A16Grid = memo((props) => {
 				),
 				title: "使用中",
 				minWidth: 60,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 		],
-		[isPersisted, lockRows]
+		[isPersisted, readOnly]
 	);
 
 	if (loading) {
@@ -106,10 +106,11 @@ const A16Grid = memo((props) => {
 			<Box>
 				{/* <LoadingBackdrop open={loading} /> */}
 				<DynamicDataSheetGrid
-					lockRows={lockRows}
+					lockRows={readOnly}
 					ref={gridRef}
 					rowKey="DeptID"
-					height={height + (lockRows ? 48 : 0)}
+					height={height + (readOnly ? 48 : 0)}
+					rowHeight={42}
 					value={data}
 					onChange={handleChange}
 					columns={columns}
@@ -130,7 +131,7 @@ const A16Grid = memo((props) => {
 	);
 });
 A16Grid.propTypes = {
-	lockRows: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,

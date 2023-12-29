@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 
@@ -26,6 +26,9 @@ export const ControlledAccountField = memo((props) => {
 					onChange={onChange}
 					error={!!error}
 					helperText={error?.message}
+					inputProps={{
+						autoComplete: "username",
+					}}
 					{...rest}
 				/>
 			)}

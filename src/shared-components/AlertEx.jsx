@@ -18,7 +18,7 @@ const AlertEx = forwardRef((props, ref) => {
 			case "large":
 				return "150%";
 			case "medium":
-				return "120%";
+				return "100%";
 			case "small":
 				return null;
 		}
@@ -29,7 +29,7 @@ const AlertEx = forwardRef((props, ref) => {
 			case "large":
 				return "1.5em";
 			case "medium":
-				return "1.2em";
+				return "1.4em";
 			case "small":
 				return null;
 		}
@@ -40,7 +40,7 @@ const AlertEx = forwardRef((props, ref) => {
 			case "large":
 				return 1;
 			case "medium":
-				return 0.5;
+				return 0.1;
 			case "small":
 				return 0;
 		}

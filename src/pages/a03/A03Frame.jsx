@@ -2,9 +2,9 @@ import A03Toolbar from "@/components/modules/A03/A03Toolbar";
 import { CatLGridContainer } from "@/components/modules/A03/CatLGridContainer";
 import { CatMGridContainer } from "@/components/modules/A03/CatMGridContainer";
 import { CatSGridContainer } from "@/components/modules/A03/CatSGridContainer";
-import CatLProvider from "@/contexts/A03/CatLProvider";
-import CatMProvider from "@/contexts/A03/CatMProvider";
-import CatSProvider from "@/contexts/A03/CatSProvider";
+import CatLGridProvider from "@/contexts/A03/CatLGridProvider";
+import CatMGridProvider from "@/contexts/A03/CatMGridProvider";
+import CatSGridProvider from "@/contexts/A03/CatSGridProvider";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
@@ -19,31 +19,31 @@ const A03Frame = memo((props) => {
 			<A03Toolbar />
 			<Grid container spacing={1}>
 				{/* <DSGProvider id="sm" keyColumn="SClas" otherColumns="ClassData"> */}
-				<CatSProvider>
+				<CatSGridProvider>
 					{/* <DSGProvider
 							id="md"
 							keyColumn="MClas"
 							otherColumns="ClassData"> */}
-					<CatMProvider>
+					<CatMGridProvider>
 						<Grid item xs={12} sm={6} md={4}>
 							{/* <DSGProvider
 										id="lg"
 										keyColumn="LClas"
 										otherColumns="ClassData"> */}
-							<CatLProvider>
+							<CatLGridProvider>
 								<CatLGridContainer />
-							</CatLProvider>
+							</CatLGridProvider>
 							{/* </DSGProvider> */}
 						</Grid>
 						<Grid item xs={12} sm={6} md={4}>
 							<CatMGridContainer />
 						</Grid>
-					</CatMProvider>
+					</CatMGridProvider>
 					{/* </DSGProvider> */}
 					<Grid item xs={12} sm={6} md={4}>
 						<CatSGridContainer />
 					</Grid>
-				</CatSProvider>
+				</CatSGridProvider>
 				{/* </DSGProvider> */}
 			</Grid>
 		</Box>

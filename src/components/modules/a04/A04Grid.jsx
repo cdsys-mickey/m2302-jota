@@ -17,7 +17,7 @@ const ContextMenu = createDSGContextMenu({
 
 const A04Grid = memo((props) => {
 	const {
-		lockRows,
+		readOnly,
 		setGridRef,
 		drawerOpen,
 		data,
@@ -56,10 +56,10 @@ const A04Grid = memo((props) => {
 				),
 				title: "櫃位名稱",
 				grow: 4,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 		],
-		[isPersisted, lockRows]
+		[isPersisted, readOnly]
 	);
 
 	if (loading) {
@@ -78,10 +78,11 @@ const A04Grid = memo((props) => {
 		<Container maxWidth="sm">
 			<Box sx={boxStyles} {...rest}>
 				<DynamicDataSheetGrid
-					lockRows={lockRows}
+					lockRows={readOnly}
 					ref={setGridRef}
 					rowKey="CodeID"
-					height={height + (lockRows ? 48 : 0)}
+					height={height + (readOnly ? 48 : 0)}
+					rowHeight={42}
 					value={data}
 					onChange={handleChange}
 					columns={columns}
@@ -97,7 +98,7 @@ const A04Grid = memo((props) => {
 	);
 });
 A04Grid.propTypes = {
-	lockRows: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,

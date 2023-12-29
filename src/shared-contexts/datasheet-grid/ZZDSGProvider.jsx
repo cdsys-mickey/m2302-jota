@@ -379,7 +379,7 @@ export const ZZDSGProvider = ({
 		[gridId]
 	);
 
-	const toggleLockRows = useCallback((enabled) => {
+	const toggleReadOnly = useCallback((enabled) => {
 		setLockRows(!enabled);
 	}, []);
 
@@ -417,7 +417,7 @@ export const ZZDSGProvider = ({
 				setActiveCell,
 				// 鎖定列
 				lockRows,
-				toggleLockRows,
+				toggleReadOnly,
 			}}>
 			{children}
 		</DSGContext.Provider>

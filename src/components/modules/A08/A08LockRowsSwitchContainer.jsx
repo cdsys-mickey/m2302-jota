@@ -9,8 +9,8 @@ export const A08LockRowsSwitchContainer = (props) => {
 		<SwitchEx
 			label="編輯鎖定"
 			checkedLabel="編輯鎖定"
-			checked={a08.lockRows}
-			onChange={a08.toggleLockRows}
+			checked={a08.readOnly}
+			onChange={a08.toggleReadOnly}
 			{...rest}
 		/>
 	);

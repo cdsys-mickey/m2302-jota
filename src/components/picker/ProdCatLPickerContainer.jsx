@@ -1,24 +1,16 @@
-import { forwardRef, memo, useContext } from "react";
-import PropTypes from "prop-types";
-import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import ProdLCats from "../../modules/md-prod-l-cats";
-import { useFormContext, useWatch } from "react-hook-form";
+import ProdLCats from "@/modules/md-prod-l-cats";
+import PropTypes from "prop-types";
+import { useContext } from "react";
 import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
-import { ControlledWebApiOptionPicker } from "../../shared-components/controlled/ControlledWebApiOptionPicker";
-import { CatMContext } from "../../contexts/A03/CatMContext";
-import { CatSContext } from "../../contexts/A03/CatSContext";
-import { useCallback } from "react";
 
-const ProdCatLPickerContainer = forwardRef((props, ref) => {
-	const { name, label = "大分類", ...rest } = props;
+export const ProdCatLPickerContainer = (props) => {
+	const { label = "大分類", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
-		<ControlledWebApiOptionPicker
-			name={name}
+		<WebApiOptionPicker
 			label={label}
-			ref={ref}
 			bearer={token}
 			url={`v1/prod/l-cats`}
 			getOptionLabel={ProdLCats.getOptionLabel}
@@ -26,12 +18,11 @@ const ProdCatLPickerContainer = forwardRef((props, ref) => {
 			{...rest}
 		/>
 	);
-});
+};
+
 ProdCatLPickerContainer.propTypes = {
-	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
 };
 
 ProdCatLPickerContainer.displayName = "ProdCatLPickerContainer";
-export default ProdCatLPickerContainer;

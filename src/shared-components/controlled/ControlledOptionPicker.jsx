@@ -20,9 +20,13 @@ export const ControlledOptionPicker = ({
 			defaultValue={defaultValue}
 			control={control}
 			rules={rules}
-			render={({ field: { value, onChange }, fieldState: { error } }) => (
+			render={({
+				field: { ref, value, onChange },
+				fieldState: { error },
+			}) => (
 				<>
 					<OptionPicker
+						ref={ref}
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 						onChange={onChange}

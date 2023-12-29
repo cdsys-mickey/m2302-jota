@@ -16,7 +16,7 @@ const ContextMenu = createDSGContextMenu({
 
 const CatMGrid = memo((props) => {
 	const {
-		lockRows,
+		readOnly,
 		setGridRef,
 		data,
 		loading,
@@ -51,10 +51,10 @@ const CatMGrid = memo((props) => {
 				),
 				title: "中分類名稱",
 				grow: 5,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 		],
-		[isPersisted, lockRows]
+		[isPersisted, readOnly]
 	);
 
 	if (loading) {
@@ -78,10 +78,11 @@ const CatMGrid = memo((props) => {
 			<Box>
 				{/* <LoadingBackdrop open={loading} /> */}
 				<DynamicDataSheetGrid
-					lockRows={lockRows}
+					lockRows={readOnly}
 					ref={setGridRef}
 					rowKey="MClas"
-					height={height + (lockRows ? 48 : 0)}
+					height={height + (readOnly ? 48 : 0)}
+					rowHeight={42}
 					value={data}
 					onChange={handleChange}
 					columns={columns}
@@ -101,7 +102,7 @@ const CatMGrid = memo((props) => {
 });
 
 CatMGrid.propTypes = {
-	lockRows: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,

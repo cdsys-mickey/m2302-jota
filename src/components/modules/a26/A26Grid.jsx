@@ -19,7 +19,7 @@ const ContextMenu = createDSGContextMenu({
 
 const A26Grid = memo((props) => {
 	const {
-		lockRows,
+		readOnly,
 		setGridRef,
 		drawerOpen,
 		data,
@@ -58,16 +58,16 @@ const A26Grid = memo((props) => {
 				),
 				title: "佣金類別",
 				grow: 4,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn("Other1", createFloatColumn(1)),
 				title: "佣金比例",
 				grow: 1,
-				disabled: lockRows,
+				disabled: readOnly,
 			},
 		],
-		[isPersisted, lockRows]
+		[isPersisted, readOnly]
 	);
 
 	if (loading) {
@@ -88,10 +88,11 @@ const A26Grid = memo((props) => {
 			<LoadingBackdrop open={loading} />
 			<Box sx={boxStyles} {...rest}>
 				<DynamicDataSheetGrid
-					lockRows={lockRows}
+					lockRows={readOnly}
 					ref={setGridRef}
 					rowKey="CodeID"
-					height={height + (lockRows ? 48 : 0)}
+					height={height + (readOnly ? 48 : 0)}
+					rowHeight={42}
 					value={data}
 					onChange={onChange}
 					columns={columns}
@@ -106,7 +107,7 @@ const A26Grid = memo((props) => {
 	);
 });
 A26Grid.propTypes = {
-	lockRows: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,

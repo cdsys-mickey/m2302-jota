@@ -114,6 +114,7 @@ export const useWebApi = (props) => {
 					...rest,
 				});
 				const status = HttpStatus.from(axiosResponse.status);
+				console.log(`payload`, axiosResponse.data);
 				if (status.is2xx) {
 					return {
 						status: status,

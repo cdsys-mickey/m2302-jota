@@ -1,19 +1,6 @@
-import OptionPickerColumn from "./OptionPickerColumn";
-
-export const createOptionPickerColumn = ({
-	options = [],
-	ComponentProps,
-} = {}) => {
+export const createOptionPickerColumn = (CellComponent) => {
 	return {
-		component: (props) => {
-			return (
-				<OptionPickerColumn
-					options={options}
-					ComponentProps={ComponentProps}
-					{...props}
-				/>
-			);
-		},
+		component: CellComponent,
 		disableKeys: true,
 		keepFocus: true,
 		deleteValue: () => null,

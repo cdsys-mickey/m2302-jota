@@ -76,7 +76,7 @@ const OptionPicker = memo(
 			inputProps, // 提供給 input(html) 的屬性
 			InputLabelProps,
 			required,
-			error,
+			error = false,
 			helperText,
 			disabled = false,
 			onInputChange,
@@ -110,6 +110,8 @@ const OptionPicker = memo(
 						helperText={helperText}
 						inputRef={inputRef}
 						variant={variant}
+						placeholder={placeholder}
+						autoFocus={autoFocus}
 						onChange={onInputChange}
 						// 在 Autocomplete 層 disabled 就可以
 						// disabled={disabled}
@@ -118,26 +120,21 @@ const OptionPicker = memo(
 						InputProps={{
 							...textFieldProps.InputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
-							...(dense && {
-								padding: 0,
-							}),
 							...InputProps,
 						}}
 						inputProps={{
 							...textFieldProps.inputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
-							...(dense && {
-								padding: 0,
-							}),
+							// ...(dense && {
+							// 	padding: 0,
+							// }),
 							...inputProps,
 						}}
+						{...TextFieldProps}
 						InputLabelProps={{
 							...textFieldProps.InputLabelProps,
 							...InputLabelProps,
 						}}
-						placeholder={placeholder}
-						autoFocus={autoFocus}
-						{...TextFieldProps}
 					/>
 				);
 			},
@@ -146,7 +143,6 @@ const OptionPicker = memo(
 				InputProps,
 				TextFieldProps,
 				autoFocus,
-				dense,
 				error,
 				fullWidth,
 				helperText,
@@ -237,9 +233,9 @@ const OptionPicker = memo(
 		);
 
 		const handleChange = (event, value, reason) => {
-			console.log(`${name}.event`, event);
-			console.log(`${name}.value`, value);
-			console.log(`${name}.reason`, reason);
+			// console.log(`${name}.event`, event);
+			// console.log(`${name}.value`, value);
+			// console.log(`${name}.reason`, reason);
 			if (onChange) {
 				onChange(value);
 			}
@@ -275,6 +271,11 @@ const OptionPicker = memo(
 							...(disabled && {
 								"& .MuiAutocomplete-popupIndicator": {
 									opacity: 0,
+								},
+							}),
+							...(dense && {
+								"& .MuiAutocomplete-root ": {
+									padding: 0,
 								},
 							}),
 						},

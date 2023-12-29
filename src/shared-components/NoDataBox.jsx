@@ -23,6 +23,15 @@ const NoDataBox = memo(
 					justifyContent="center"
 					alignItems="center"
 					height={height}
+					sx={[
+						(theme) => ({
+							transition: theme.transitions.create("height", {
+								easing: theme.transitions.easing.sharp,
+								duration:
+									theme.transitions.duration.enteringScreen,
+							}),
+						}),
+					]}
 					{...rest}>
 					<Box mb="30%">
 						<AlertEx severity={severity} transparent size={size}>
@@ -40,5 +49,6 @@ NoDataBox.propTypes = {
 	children: PropTypes.node,
 	severity: PropTypes.string,
 	title: PropTypes.string,
+	size: PropTypes.oneOf(["small", "medium", "large"]),
 };
 export default NoDataBox;

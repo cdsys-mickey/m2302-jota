@@ -1,5 +1,4 @@
 import { createTextColumn } from "react-datasheet-grid";
-import Types from "../../../../shared-modules/sd-types";
 
 export const createFloatColumn = (fixedDigit = 1) =>
 	createTextColumn({

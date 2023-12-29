@@ -9,7 +9,7 @@ const A26GridContainer = () => {
 
 	return (
 		<A26Grid
-			lockRows={a26.lockRows}
+			readOnly={a26.readOnly}
 			setGridRef={a26.setGridRef}
 			data={a26.gridData}
 			loading={a26.gridLoading}

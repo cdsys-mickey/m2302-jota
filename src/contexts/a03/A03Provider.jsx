@@ -1,14 +1,13 @@
 import PropTypes from "prop-types";
 import { A03Context } from "./A03Context";
-import { useToggle } from "@/shared-hooks/useToggle";
+import { useA03 } from "../../hooks/modules/useA03";
 
 export const A03Provider = (props) => {
 	const { children } = props;
-	const [lockRows, toggleLockRows] = useToggle(true);
+	const a03 = useA03();
+
 	return (
-		<A03Context.Provider value={{ lockRows, toggleLockRows }}>
-			{children}
-		</A03Context.Provider>
+		<A03Context.Provider value={{ ...a03 }}>{children}</A03Context.Provider>
 	);
 };
 

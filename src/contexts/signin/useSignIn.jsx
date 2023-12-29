@@ -6,6 +6,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApi } from "@/shared-hooks/useWebApi";
+import Auth from "../../modules/md-auth";
 
 const pageCookieOpts = {
 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
@@ -19,11 +20,6 @@ const rootCookieOpts = {
 
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWROD = "pw";
-const PARAM_CAPTCHA_PASSED = "captchaPassed";
-const COOKIE_ACCOUNT = "ac";
-const COOKIE_LOGKEY = "LogKey";
-const COOKIE_MODE = "md";
-const COOKIE_REMEMBER_ME = "rememberMe";
 
 export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
@@ -73,25 +69,33 @@ export const useSignIn = () => {
 					if (status.success) {
 						// 1.儲存 Cookie
 						Cookies.set(
-							COOKIE_LOGKEY,
+							Auth.COOKIE_LOGKEY,
 							payload.LogKey || "",
 							rootCookieOpts
 						);
 						if (!isImpersonate) {
-							Cookies.remove(COOKIE_MODE);
+							Cookies.remove(Auth.COOKIE_MODE);
 						} else {
-							Cookies.set(COOKIE_MODE, "im", rootCookieOpts);
+							Cookies.set(Auth.COOKIE_MODE, "im", rootCookieOpts);
 						}
 						if (data.rememberMe) {
-							Cookies.set(COOKIE_REMEMBER_ME, 1, pageCookieOpts);
 							Cookies.set(
-								COOKIE_ACCOUNT,
+								Auth.COOKIE_REMEMBER_ME,
+								1,
+								pageCookieOpts
+							);
+							Cookies.set(
+								Auth.COOKIE_ACCOUNT,
 								collected[PARAM_ACCOUNT],
 								rootCookieOpts
 							);
 						} else {
-							Cookies.set(COOKIE_REMEMBER_ME, 0, pageCookieOpts);
-							Cookies.remove(COOKIE_ACCOUNT);
+							Cookies.set(
+								Auth.COOKIE_REMEMBER_ME,
+								0,
+								pageCookieOpts
+							);
+							Cookies.remove(Auth.COOKIE_ACCOUNT);
 						}
 						// 2.重導至首頁
 						toLanding();
@@ -108,7 +112,7 @@ export const useSignIn = () => {
 								);
 								break;
 						}
-						Cookies.remove(COOKIE_LOGKEY);
+						Cookies.remove(Auth.COOKIE_LOGKEY);
 					}
 				} catch (err) {
 					console.error("handleSignInSubmit failed", err);
