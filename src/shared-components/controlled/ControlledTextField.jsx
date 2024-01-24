@@ -52,7 +52,7 @@ export const ControlledTextField = ({
 					InputProps={{
 						...(readOnly && {
 							readOnly: true,
-							disableUnderline: true,
+							// disableUnderline: true,
 						}),
 						...(EndAdornmentComponent && {
 							endAdornment: (

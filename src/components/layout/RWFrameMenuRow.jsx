@@ -18,7 +18,8 @@ const RWFrameMenuRow = memo(
 				ref={ref}
 				style={{
 					...style,
-					top: `${parseFloat(style.top) + PADDING_SIZE}px`,
+					// top: `${parseFloat(style.top) + PADDING_SIZE}px`,
+					// paddingTop: `${PADDING_SIZE}px`,
 				}}>
 				<ListItem dense disablePadding>
 					{header ? (

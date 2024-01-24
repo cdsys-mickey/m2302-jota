@@ -4,8 +4,8 @@ import { DialogsContext } from "./DialogsContext";
 import PropTypes from "prop-types";
 import { useDialogs } from "../../shared-hooks/dialog/useDialogs";
 
-export const DialogsProvider = ({ children, ButtonProps }) => {
-	const dialogs = useDialogs({ ButtonProps });
+export const DialogsProvider = ({ children, buttonProps }) => {
+	const dialogs = useDialogs({ buttonProps });
 	const { entities, closeLatest, setEntities } = dialogs;
 
 	return (
@@ -45,5 +45,5 @@ export const DialogsProvider = ({ children, ButtonProps }) => {
 
 DialogsProvider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.elementType, PropTypes.array]),
-	ButtonProps: PropTypes.object,
+	buttonProps: PropTypes.object,
 };

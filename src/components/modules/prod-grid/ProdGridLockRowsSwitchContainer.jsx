@@ -18,7 +18,8 @@ export const ProdGridLockRowsSwitchContainer = (props) => {
 			label="編輯鎖定"
 			checkedLabel="編輯鎖定"
 			checked={prodGrid.readOnly}
-			onChange={prodGrid.toggleReadOnly}
+			// onChange={prodGrid.toggleReadOnly}
+			onChange={prodGrid.toggleEditorLock}
 			{...rest}
 		/>
 	);

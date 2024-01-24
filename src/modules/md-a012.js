@@ -57,8 +57,8 @@ const transformForSubmit = (data) => {
 		return {
 			ProdID,
 			ProdData,
-			StdCost,
-			SafeQty,
+			StdCost: i.StdCost?.toString() || "",
+			SafeQty: i.SafeQty?.toString() || "",
 			BUnit: bunit?.CodeID || "",
 			SUnit: sunit?.CodeID || "",
 			IUnit: iunit?.CodeID || "",

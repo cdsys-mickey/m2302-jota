@@ -176,7 +176,7 @@ const FileCard = ({
 					<ConfirmationDialog
 						title="移除附件檔案"
 						open={state.confirmRemove}
-						ButtonProps={{
+						buttonProps={{
 							size: "small",
 						}}
 						message={`確定要移除附件檔案${file?.name}?`}

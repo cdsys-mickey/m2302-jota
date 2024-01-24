@@ -145,7 +145,7 @@ const FilesField = ({
 			<DialogEx
 				title="移除檔案"
 				open={!!deleting}
-				ButtonProps={{
+				buttonProps={{
 					size: "small",
 				}}
 				message={

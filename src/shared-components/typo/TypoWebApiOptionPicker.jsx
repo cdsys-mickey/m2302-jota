@@ -13,7 +13,7 @@ const TypoWebApiOptionPicker = memo(
 			label,
 			// Typography
 			typoVariant = "body1",
-			TypographyProps,
+			typographyProps,
 			emptyText = "(空白)",
 			// Input
 			name,
@@ -35,7 +35,7 @@ const TypoWebApiOptionPicker = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
-					{...TypographyProps}>
+					{...typographyProps}>
 					{text}
 				</FormFieldLabel>
 			);

@@ -6,9 +6,10 @@ import PropTypes from "prop-types";
 
 export const A01ListRowContainer = (props) => {
 	const a01 = useContext(A01Context);
+	const { isItemLoading } = a01;
 	const { index, ...rest } = props;
-	const loading = useMemo(() => a01.isItemLoading(index), [a01, index]);
-	const value = a01.listData[index];
+	const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
+	const value = useMemo(() => a01.listData[index], [a01.listData, index]);
 
 	const selected = useMemo(() => {
 		return value?.ProdID === a01.selectedItem?.ProdID;

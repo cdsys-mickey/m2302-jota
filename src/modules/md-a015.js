@@ -7,6 +7,7 @@ const transformForSubmit = (data) => {
 		const { ...rest } = i;
 		return {
 			...rest,
+			SafeQty: i.SafeQty?.toString() || "",
 		};
 	});
 };

@@ -1,0 +1,357 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useCallback, useContext, useMemo, useState } from "react";
+import { toast } from "react-toastify";
+import CrudContext from "@/contexts/crud/CrudContext";
+import A06 from "@/modules/md-a06";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useAction } from "@/shared-hooks/useAction";
+import { useToggle } from "@/shared-hooks/useToggle";
+import Errors from "@/shared-modules/sd-errors";
+import { useAppModule } from "./useAppModule";
+
+export const useA06 = ({ token, mode }) => {
+	const crud = useContext(CrudContext);
+	const appModule = useAppModule({
+		token,
+		moduleId: "A06",
+	});
+	const {
+		httpGetAsync,
+		httpPostAsync,
+		httpPutAsync,
+		httpPatchAsync,
+		httpDeleteAsync,
+	} = useWebApi();
+	const [selectedItem, setSelectedItem] = useState();
+	const dialogs = useContext(DialogsContext);
+
+	const [
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+	] = useToggle(false);
+
+	const loader = useInfiniteLoader({
+		url:
+			mode === A06.Mode.NEW_CUSTOMER
+				? "v1/sale/new-customers"
+				: "v1/sale/customers",
+		bearer: token,
+		initialFetchSize: 50,
+	});
+
+	if (!mode) {
+		throw `mode 未指定`;
+	}
+
+	const confirmReturn = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要放棄編輯?",
+			onConfirm: () => {
+				crud.updateCancel();
+			},
+		});
+	}, [crud, dialogs]);
+
+	const loadItem = useCallback(
+		async (itemId) => {
+			try {
+				const encodedItemId = encodeURIComponent(itemId);
+				const { status, payload, error } = await httpGetAsync({
+					url:
+						mode === A06.Mode.NEW_CUSTOMER
+							? `v1/sale/new-customers/${encodedItemId}`
+							: `v1/sale/customers/${encodedItemId}`,
+					bearer: token,
+				});
+				console.log("payload", payload);
+				if (status.success) {
+					const data = A06.transformForRead(payload);
+
+					crud.readDone(data);
+				} else {
+					throw error || new Error("讀取失敗");
+				}
+			} catch (err) {
+				crud.readFail(err);
+			}
+		},
+		[crud, httpGetAsync, mode, token]
+	);
+
+	const handleSelect = useCallback(
+		async (e, rowData) => {
+			e?.stopPropagation();
+			crud.cancelAction();
+			setSelectedItem(rowData);
+
+			crud.readStart(rowData, "讀取中...");
+			loadItem(rowData.CustID);
+		},
+		[crud, loadItem]
+	);
+
+	const confirmDialogClose = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要放棄編輯?",
+			onConfirm: () => {
+				crud.cancelAction();
+			},
+		});
+	}, [crud, dialogs]);
+
+	const handleDialogClose = useCallback(() => {
+		crud.cancelAction();
+	}, [crud]);
+
+	const handleCreate = useCallback(
+		async ({ data }) => {
+			try {
+				crud.createStart();
+				const { status, error } = await httpPostAsync({
+					url:
+						mode === A06.Mode.NEW_CUSTOMER
+							? "v1/sale/new-customers"
+							: "v1/sale/customers",
+					data: data,
+					bearer: token,
+				});
+
+				if (status.success) {
+					toast.success(
+						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
+							data?.CustData
+						}」新增成功`
+					);
+					crud.createDone();
+					crud.readCancel();
+					// 重新整理
+					loader.loadList();
+				} else {
+					throw error || new Error("新增發生未預期例外");
+				}
+			} catch (err) {
+				crud.createFail(err);
+				console.error("handleCreate.failed", err);
+				toast.error(Errors.getMessage("新增失敗", err));
+			}
+		},
+		[crud, httpPostAsync, loader, mode, token]
+	);
+
+	const handleUpdate = useCallback(
+		async ({ data }) => {
+			try {
+				crud.updateStart();
+				const { status, error } = await httpPutAsync({
+					url:
+						mode === A06.Mode.NEW_CUSTOMER
+							? `v1/sale/new-customers`
+							: `v1/sale/customers`,
+					data: data,
+					bearer: token,
+				});
+
+				if (status.success) {
+					toast.success(
+						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
+							data?.CustData
+						}」修改成功`
+					);
+					crud.updateDone();
+					// crud.readCancel();
+					loadItem(data?.CustID);
+					// 重新整理
+					loader.loadList();
+				} else {
+					throw error || new Error("修改發生未預期例外");
+				}
+			} catch (err) {
+				crud.updateFail(err);
+				console.error("handleUpdate.failed", err);
+				toast.error(Errors.getMessage("修改失敗", err));
+			}
+		},
+		[crud, httpPutAsync, loadItem, loader, mode, token]
+	);
+
+	const onEditorSubmit = useCallback(
+		async (data) => {
+			console.log(`A06.onEditorSubmit()`, data);
+			const processed = A06.transformForEditorSubmit(data);
+			console.log(`processed`, processed);
+			if (crud.creating) {
+				handleCreate({ data: processed });
+			} else if (crud.updating) {
+				handleUpdate({ data: processed });
+			} else {
+				console.error("UNKNOWN SUBMIT TYPE");
+			}
+		},
+		[crud.creating, crud.updating, handleCreate, handleUpdate]
+	);
+
+	const onEditorSubmitError = useCallback((err) => {
+		console.error(`A06.onSubmitError`, err);
+		toast.error(
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+		);
+	}, []);
+
+	const createPrompt = useCallback(
+		(e) => {
+			e?.stopPropagation();
+			const data = {
+				trans: [],
+				combo: [],
+			};
+			crud.readDone(data);
+			crud.createPrompt(data);
+		},
+		[crud]
+	);
+
+	const confirmDelete = useCallback(() => {
+		dialogs.confirm({
+			message: `確認要删除客戶「${crud.itemData?.CustData}」?`,
+			onConfirm: async () => {
+				try {
+					crud.deleteStart(crud.itemData);
+					const { status, error } = await httpDeleteAsync({
+						url:
+							mode === A06.Mode.NEW_CUSTOMER
+								? `v1/sale/new-customers/${crud.itemData?.CustID}`
+								: `v1/sale/customers/${crud.itemData?.CustID}`,
+						bearer: token,
+					});
+					crud.cancelAction();
+					if (status.success) {
+						toast.success(
+							`成功删除${
+								mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
+							}商品${crud.itemData.CustData}`
+						);
+						loader.loadList();
+					} else {
+						throw error || `發生未預期例外`;
+					}
+				} catch (err) {
+					crud.deleteFail(err);
+					console.error("confirmDelete.failed", err);
+					toast.error(Errors.getMessage("刪除失敗", err));
+				}
+			},
+		});
+	}, [crud, dialogs, httpDeleteAsync, loader, mode, token]);
+
+	// REVIEW
+	const reviewAction = useAction();
+	const reviewing = useMemo(() => {
+		return !!reviewAction.state;
+	}, [reviewAction.state]);
+
+	const handleReview = useCallback(
+		async (value) => {
+			console.log(`handleReview`, value);
+			try {
+				const { status, error } = await httpPatchAsync({
+					url: `v1/new-customers/reviewed`,
+					data: {
+						...crud.itemData,
+						OfficialCustID: value,
+					},
+					bearer: token,
+				});
+				if (status.success) {
+					reviewAction.clear();
+					crud.cancelAction();
+					loader.loadList();
+					toast.success(
+						`商品「${crud.itemData?.CustData}」已審核成功`
+					);
+				} else {
+					throw error || new Error("發生未預期例外");
+				}
+			} catch (err) {
+				toast.error(Errors.getMessage("審核失敗", err));
+			}
+		},
+		[crud, httpPatchAsync, loader, reviewAction, token]
+	);
+
+	const promptReview = useCallback(() => {
+		dialogs.prompt({
+			title: "確認審核",
+			message: "請輸入正式商品編號",
+			onConfirm: handleReview,
+			value: crud.itemData?.CustID || "",
+			confirmText: "通過",
+		});
+		reviewAction.prompt();
+	}, [crud.itemData?.CustID, dialogs, handleReview, reviewAction]);
+
+	const cancelReview = useCallback(() => {
+		reviewAction.cancel();
+	}, [reviewAction]);
+
+	const startReview = useCallback(() => {
+		reviewAction.start();
+	}, [reviewAction]);
+
+	const finishReview = useCallback(() => {
+		reviewAction.finish();
+	}, [reviewAction]);
+
+	const failReview = useCallback(() => {
+		reviewAction.fail();
+	}, [reviewAction]);
+
+	const onSearchSubmit = useCallback(
+		(data) => {
+			handlePopperClose();
+			console.log(`onSearchSubmit`, data);
+			loader.loadList({
+				params: data,
+			});
+		},
+		[handlePopperClose, loader]
+	);
+
+	const onSearchSubmitError = useCallback((err) => {
+		console.error(`onSearchSubmitError`, err);
+	}, []);
+
+	return {
+		...loader,
+		// Popper
+		popperOpen: popperOpen,
+		handlePopperToggle: handlePopperToggle,
+		handlePopperOpen: handlePopperOpen,
+		handlePopperClose: handlePopperClose,
+		onSearchSubmit,
+		onSearchSubmitError,
+		mode,
+		handleSelect,
+		selectedItem,
+		...crud,
+		handleDialogClose,
+		confirmDialogClose,
+		onEditorSubmit,
+		onEditorSubmitError,
+		confirmReturn,
+		// CRUD OVERRIDES
+		createPrompt,
+		confirmDelete,
+		// REVIEW
+		reviewing,
+		promptReview,
+		cancelReview,
+		startReview,
+		finishReview,
+		failReview,
+		...appModule,
+	};
+};

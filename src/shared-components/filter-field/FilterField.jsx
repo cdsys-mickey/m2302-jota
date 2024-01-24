@@ -93,7 +93,10 @@ const FilterField = memo(
 				<FilterFieldBorder focusShadow={focusShadow}>
 					{showSearchIcon && (
 						<FilterIconWrapper placement={searchIconPlacement}>
-							<SearchIconComponent onClick={onSubmit} />
+							<SearchIconComponent
+								color="action"
+								onClick={onSubmit}
+							/>
 						</FilterIconWrapper>
 					)}
 

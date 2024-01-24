@@ -95,13 +95,13 @@ const InfoDialog = (props) => {
 export default InfoDialog;
 
 // export const InfoDialogTitle = (props) => {
-// 	const { title, onClose, className, TypographyProps } = props;
+// 	const { title, onClose, className, typographyProps } = props;
 // 	const classes = useStyles();
 // 	return (
 // 		<DialogTitle
 // 			disableTypography
 // 			className={clsx(classes.title, className)}>
-// 			<Typography variant="h5" {...TypographyProps}>
+// 			<Typography variant="h5" {...typographyProps}>
 // 				{title}
 // 			</Typography>
 // 			<Box className={classes.buttons}>

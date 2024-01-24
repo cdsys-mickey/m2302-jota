@@ -1,19 +1,17 @@
 import { A01Context } from "@/contexts/A01/A01Context";
+import A01 from "@/modules/md-a01";
+import { ControlledSearchFieldContainer } from "@/shared-components/search-field/ControlledSearchFieldContainer";
 import useSearchField from "@/shared-hooks/useSearchField";
-import { useContext, useRef } from "react";
+import PropTypes from "prop-types";
+import { useCallback, useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
-import { ControlledSearchFieldContainer } from "../../../../shared-components/search-field/ControlledSearchFieldContainer";
 import ProdSearchPopperContainer from "./ProdSearchPopperContainer";
-import { useMemo } from "react";
-import A01 from "../../../../modules/md-a01";
-import { useCallback } from "react";
 
 export const ProdSearchFieldContainer = (props) => {
-	const { name = "qs", ...rest } = props;
+	const { name = "qs" } = props;
 	const forms = useFormContext();
 	const { getValues } = forms;
-	// const forms = useForm();
 
 	const a01 = useContext(A01Context);
 	const { popperOpen } = a01;
@@ -25,14 +23,15 @@ export const ProdSearchFieldContainer = (props) => {
 		onChange: (v) => {
 			forms.setValue(name, v);
 		},
+		// doubleFocusToClear: true,
 	});
 	useHotkeys("ctrl+F12", searchField.handleFocus, { enableOnFormTags: true });
 
 	const handleClear = useCallback(() => {
 		if (!popperOpen) {
-			searchField.handleClear;
+			searchField.handleClear();
 		}
-	}, [popperOpen, searchField.handleClear]);
+	}, [popperOpen, searchField]);
 
 	const escRef = useHotkeys("esc", handleClear, {
 		enableOnFormTags: true,
@@ -69,5 +68,7 @@ export const ProdSearchFieldContainer = (props) => {
 		</form>
 	);
 };
-
+ProdSearchFieldContainer.propTypes = {
+	name: PropTypes.string,
+};
 ProdSearchFieldContainer.displayName = "ProdSearchFieldContainer";

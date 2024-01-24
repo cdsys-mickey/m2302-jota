@@ -19,7 +19,7 @@ const iconProps = (size) => {
 
 export const FormLabelEx = memo((props) => {
 	const {
-		size,
+		size = "small",
 		IconComponent,
 		children,
 		variant = "subtitle1",
@@ -29,9 +29,8 @@ export const FormLabelEx = memo((props) => {
 		<FormLabel
 			sx={[
 				(theme) => ({
-					// color: "rgb(0 0 0 / 50%)",
-					// color: theme.palette.primary.main,
 					color: theme.palette.text.primary,
+					fontWeight: 400,
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}>

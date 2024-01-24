@@ -2,6 +2,7 @@ import { Chip } from "@mui/material";
 // Constants
 import MuiSeverity from "@/shared-modules/sd-mui-severity";
 import { forwardRef, memo } from "react";
+import { useMemo } from "react";
 
 const VARIANT_DEFAULT = "default";
 const VARIANT_OUTLINED = "outlined";
@@ -9,7 +10,7 @@ const VARIANT_OUTLINED = "outlined";
 // const COLOR_PRIMARY = "primary";
 // const COLOR_SECONDARY = "secondary";
 
-const useStyles = (props) => {
+const makeStyles = () => {
 	return {
 		root: {},
 		defaultError: {
@@ -66,14 +67,19 @@ const ChipEx = memo(
 			htmlColor,
 			htmlTextColor,
 			borderRadius,
+			fullWidth = false,
 			sx = [],
 			...rest
 		} = props;
-		const classes = useStyles({
-			htmlColor,
-			htmlTextColor,
-			borderRadius,
-		});
+		const classes = useMemo(
+			() =>
+				makeStyles({
+					htmlColor,
+					htmlTextColor,
+					borderRadius,
+				}),
+			[borderRadius, htmlColor, htmlTextColor]
+		);
 		let severityClass;
 		if (severity) {
 			if (variant === VARIANT_OUTLINED) {
@@ -129,6 +135,11 @@ const ChipEx = memo(
 					},
 					!!borderRadius && {
 						borderRadius: borderRadius,
+					},
+					{
+						...(fullWidth && {
+							width: "100%",
+						}),
 					},
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}

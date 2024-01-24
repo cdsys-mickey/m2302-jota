@@ -3,7 +3,7 @@ import { useCallback } from "react";
 /**
  * 在 focus 狀態按下 esc 將內容清空
  */
-const useSearchField = ({ onChange, inputRef, doubleTapToClear = false }) => {
+const useSearchField = ({ onChange, inputRef, doubleFocusToClear = false }) => {
 	const handleClear = useCallback(() => {
 		console.log("handleClear");
 		onChange("");
@@ -14,9 +14,10 @@ const useSearchField = ({ onChange, inputRef, doubleTapToClear = false }) => {
 			console.log("handleFocus");
 			e?.preventDefault();
 			if (inputRef?.current) {
+				console.log(`document.activeElement:`, document.activeElement);
 				if (
 					document.activeElement === inputRef.current &&
-					doubleTapToClear
+					doubleFocusToClear
 				) {
 					handleClear();
 				} else {
@@ -24,7 +25,7 @@ const useSearchField = ({ onChange, inputRef, doubleTapToClear = false }) => {
 				}
 			}
 		},
-		[doubleTapToClear, handleClear, inputRef]
+		[doubleFocusToClear, handleClear, inputRef]
 	);
 
 	return {

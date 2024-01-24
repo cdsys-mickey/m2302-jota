@@ -23,7 +23,7 @@ const DialogTitleEx = memo(
 			returnIcon,
 			buttons,
 			ButtonsComponent,
-			closeButtonProps = { size: "small" },
+			closebuttonProps = { size: "small" },
 			padding = "8px 24px",
 			sx = [],
 			yOffset = 4,
@@ -36,8 +36,8 @@ const DialogTitleEx = memo(
 		}, [ButtonsComponent, buttons]);
 
 		const iconSize = useMemo(() => {
-			return closeButtonProps?.size || "small";
-		}, [closeButtonProps?.size]);
+			return closebuttonProps?.size || "small";
+		}, [closebuttonProps?.size]);
 
 		return (
 			<DialogTitle

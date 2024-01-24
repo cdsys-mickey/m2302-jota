@@ -6,6 +6,9 @@ import FrameMenuItemButton from "./FrameMenuItemButton";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import ErrorBox from "@/shared-components/ErrorBox";
 
+/**
+ * 目前由 React Window 版本取代，暫不刪除
+ */
 const FrameMenu = memo(
 	forwardRef((props, ref) => {
 		const { height, authorities, authoritiesLoading, authoritiesError } =

@@ -16,9 +16,8 @@ export const useAction = (initState = null) => {
 	// const [message, setMessage] = useState();
 
 	const prompt = useCallback((data, message) => {
-		// setActionState(ActionState.PROMPT);
-		// setPayload(data);
-		// setMessage(message);
+		console.log("prompt");
+
 		setState((prev) => ({
 			...prev,
 			state: ActionState.PROMPT,

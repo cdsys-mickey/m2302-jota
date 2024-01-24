@@ -10,6 +10,9 @@ import { useAction } from "../../shared-hooks/useAction";
 import { useDSG } from "../../shared-hooks/useDSG";
 import { useToggle } from "../../shared-hooks/useToggle";
 import Errors from "../../shared-modules/sd-errors";
+import { useAppModule } from "./useAppModule";
+import useHttpPost from "../../shared-hooks/useHttpPost";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 /**
  * 適用三種情境
@@ -18,7 +21,12 @@ import Errors from "../../shared-modules/sd-errors";
  * 3. 門市櫃位維護 - A011
  */
 export const useA01 = ({ token, mode }) => {
+	const [tabIndex, setTabIndex] = useState(A01.Tabs.INFO);
 	const crud = useContext(CrudContext);
+	const appModule = useAppModule({
+		token,
+		moduleId: mode === A01.Mode.NEW_PROD ? "A010" : "A01",
+	});
 	const {
 		httpGetAsync,
 		httpPostAsync,
@@ -28,7 +36,7 @@ export const useA01 = ({ token, mode }) => {
 	} = useWebApi();
 	const [selectedItem, setSelectedItem] = useState();
 	const dialogs = useContext(DialogsContext);
-	// const form = useFormContext();
+
 	const [
 		popperOpen,
 		handlePopperToggle,
@@ -40,7 +48,6 @@ export const useA01 = ({ token, mode }) => {
 		url: mode === A01.Mode.NEW_PROD ? "v1/new-prods" : "v1/prods",
 		bearer: token,
 		initialFetchSize: 50,
-		// columns: "pi,bc,pn",
 	});
 
 	if (!mode) {
@@ -68,15 +75,18 @@ export const useA01 = ({ token, mode }) => {
 		});
 	}, [crud, dialogs]);
 
-	const loadProd = useCallback(
+	const loadItem = useCallback(
 		async (prodId) => {
 			try {
-				const encodedProdId = encodeURIComponent(prodId);
+				// const encodedProdId = encodeURIComponent(prodId);
 				const { status, payload, error } = await httpGetAsync({
 					url:
 						mode === A01.Mode.NEW_PROD
-							? `v1/new-prods/${encodedProdId}`
-							: `v1/prods/${encodedProdId}`,
+							? `v1/new-prods`
+							: `v1/prods`,
+					data: {
+						id: prodId,
+					},
 					bearer: token,
 				});
 				console.log("payload", payload);
@@ -100,18 +110,15 @@ export const useA01 = ({ token, mode }) => {
 	const handleSelect = useCallback(
 		async (e, rowData) => {
 			e?.stopPropagation();
+			setTabIndex(A01.Tabs.INFO);
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
 			crud.readStart(rowData, "讀取中...");
-			loadProd(rowData.ProdID);
+			loadItem(rowData.ProdID);
 		},
-		[crud, loadProd]
+		[crud, loadItem]
 	);
-
-	const dialogOpen = useMemo(() => {
-		return crud.reading || crud.creating || crud.updating;
-	}, [crud.creating, crud.reading, crud.updating]);
 
 	const confirmDialogClose = useCallback(() => {
 		dialogs.confirm({
@@ -148,7 +155,9 @@ export const useA01 = ({ token, mode }) => {
 					crud.createDone();
 					crud.readCancel();
 					// 重新整理
-					loader.loadList();
+					loader.loadList({ useLastParams: true });
+				} else if (status.code === 422) {
+					throw new Error("必要欄位檢查失敗，請檢查");
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
@@ -183,9 +192,11 @@ export const useA01 = ({ token, mode }) => {
 					);
 					crud.updateDone();
 					// crud.readCancel();
-					loadProd(data?.ProdID);
+					loadItem(data?.ProdID);
 					// 重新整理
-					loader.loadList();
+					loader.loadList({
+						useLastParams: true,
+					});
 				} else {
 					throw error || new Error("修改發生未預期例外");
 				}
@@ -195,7 +206,7 @@ export const useA01 = ({ token, mode }) => {
 				toast.error(Errors.getMessage("修改失敗", err));
 			}
 		},
-		[crud, httpPutAsync, loadProd, loader, mode, token]
+		[crud, httpPutAsync, loadItem, loader, mode, token]
 	);
 
 	const onCounterSubmit = useCallback(
@@ -213,7 +224,7 @@ export const useA01 = ({ token, mode }) => {
 				if (status.success) {
 					toast.success(`商品「${data?.ProdData}」已成功更新櫃位`);
 					crud.updateDone();
-					loadProd(processed?.ProdID);
+					loadItem(processed?.ProdID);
 				} else {
 					throw error || new Error("櫃位更新失敗");
 				}
@@ -223,7 +234,7 @@ export const useA01 = ({ token, mode }) => {
 				toast.error(Errors.getMessage("更新櫃位失敗", err));
 			}
 		},
-		[crud, httpPatchAsync, loadProd, token]
+		[crud, httpPatchAsync, loadItem, token]
 	);
 
 	const onCounterSubmitError = useCallback((err) => {
@@ -280,6 +291,7 @@ export const useA01 = ({ token, mode }) => {
 	const createPrompt = useCallback(
 		(e) => {
 			e?.stopPropagation();
+			setTabIndex(A01.Tabs.INFO);
 			const data = {
 				trans: [],
 				combo: [],
@@ -312,7 +324,9 @@ export const useA01 = ({ token, mode }) => {
 								mode === A01.Mode.NEW_PROD ? "新" : ""
 							}商品${crud.itemData.ProdData}`
 						);
-						loader.loadList();
+						loader.loadList({
+							useLastParams: true,
+						});
 					} else {
 						throw error || `發生未預期例外`;
 					}
@@ -324,6 +338,20 @@ export const useA01 = ({ token, mode }) => {
 			},
 		});
 	}, [crud, dialogs, httpDeleteAsync, loader, mode, token]);
+
+	// PRINT
+	const printAction = useAction();
+	const printing = useMemo(() => {
+		return !!printAction.state;
+	}, [printAction.state]);
+
+	const promptPrint = useCallback(() => {
+		printAction.prompt();
+	}, [printAction]);
+
+	const cancelPrint = useCallback(() => {
+		printAction.clear();
+	}, [printAction]);
 
 	// REVIEW
 	const reviewAction = useAction();
@@ -360,7 +388,7 @@ export const useA01 = ({ token, mode }) => {
 		[crud, httpPatchAsync, loader, reviewAction, token]
 	);
 
-	const reviewPrompt = useCallback(() => {
+	const promptReview = useCallback(() => {
 		dialogs.prompt({
 			title: "確認審核",
 			message: "請輸入正式商品編號",
@@ -370,10 +398,6 @@ export const useA01 = ({ token, mode }) => {
 		});
 		reviewAction.prompt();
 	}, [crud.itemData?.ProdID, dialogs, handleReview, reviewAction]);
-
-	// const reviewPrompt = useCallback(() => {
-	// 	reviewAction.prompt(crud.itemData, "確定要審核商品?");
-	// }, [crud.itemData, reviewAction]);
 
 	const cancelReview = useCallback(() => {
 		reviewAction.cancel();
@@ -391,14 +415,13 @@ export const useA01 = ({ token, mode }) => {
 		reviewAction.fail();
 	}, [reviewAction]);
 
+	// SEARCH
 	const onSearchSubmit = useCallback(
 		(data) => {
 			handlePopperClose();
 			console.log(`onSearchSubmit`, data);
-			// const q = data?.q;
 			loader.loadList({
 				params: data,
-				// reset: true,
 			});
 		},
 		[handlePopperClose, loader]
@@ -406,6 +429,10 @@ export const useA01 = ({ token, mode }) => {
 
 	const onSearchSubmitError = useCallback((err) => {
 		console.error(`onSearchSubmitError`, err);
+	}, []);
+
+	const handleTabChange = useCallback((e, newValue) => {
+		setTabIndex(newValue);
 	}, []);
 
 	return {
@@ -423,7 +450,6 @@ export const useA01 = ({ token, mode }) => {
 		...crud,
 		handleDialogClose,
 		confirmDialogClose,
-		dialogOpen,
 		onEditorSubmit,
 		onEditorSubmitError,
 		confirmReturn,
@@ -433,7 +459,7 @@ export const useA01 = ({ token, mode }) => {
 		confirmDelete,
 		// REVIEW
 		reviewing,
-		reviewPrompt,
+		promptReview,
 		cancelReview,
 		startReview,
 		finishReview,
@@ -449,5 +475,15 @@ export const useA01 = ({ token, mode }) => {
 		// Store
 		onCounterSubmit,
 		onCounterSubmitError,
+		// module
+		...appModule,
+		// PRINT
+		printing,
+		promptPrint,
+		cancelPrint,
+		// TAB
+		tabIndex,
+		handleTabChange,
+		setTabIndex,
 	};
 };

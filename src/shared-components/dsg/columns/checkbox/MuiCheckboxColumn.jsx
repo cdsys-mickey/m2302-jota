@@ -1,5 +1,6 @@
 import { Checkbox } from "@mui/material";
 import PropTypes from "prop-types";
+import { useRef } from "react";
 import { useLayoutEffect } from "react";
 import { memo, useCallback, useMemo } from "react";
 
@@ -11,6 +12,7 @@ const MuiCheckboxColumn = memo((props) => {
 		// disableRipple = true,
 		sx = [],
 		/** BUILT-IN PROPS */
+		columnData,
 		focus,
 		rowData,
 		setRowData,
@@ -18,6 +20,7 @@ const MuiCheckboxColumn = memo((props) => {
 		stopEditing,
 		disabled,
 		// ...rest
+		onChange,
 	} = props;
 
 	const rowDataToChecked = useCallback(
@@ -34,18 +37,27 @@ const MuiCheckboxColumn = memo((props) => {
 		[falseValue, trueValue]
 	);
 
+	const ref = useRef();
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
+
 	const handleChange = useCallback(
 		(e) => {
 			// e?.preventDefault();
 			const checked = e.target.checked;
-			// console.log(`checked: ${checked}`);
+			console.log(`checked: ${checked}`, rowDataRef.current);
+			console.log(`columnData`, columnData);
 			if (checked) {
 				setRowData(trueValue);
 			} else {
 				setRowData(falseValue);
 			}
+
+			if (onChange) {
+				onChange(checked);
+			}
 		},
-		[falseValue, setRowData, trueValue]
+		[columnData, falseValue, onChange, setRowData, trueValue]
 	);
 
 	// useLayoutEffect(() => {

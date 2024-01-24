@@ -4,10 +4,15 @@ import { ControlledWebApiOptionPicker } from "../../shared-components/controlled
 import Depts from "../../modules/md-depts";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
+import { useCallback } from "react";
 
 const UserDeptPicker = memo((props) => {
 	const { ...rest } = props;
 	const auth = useContext(AuthContext);
+
+	const getData = useCallback((payload) => {
+		return payload;
+	}, []);
 
 	return (
 		<ControlledWebApiOptionPicker
@@ -15,6 +20,7 @@ const UserDeptPicker = memo((props) => {
 			getOptionLabel={Depts.getOptionLabel}
 			isOptionEqualToValue={Depts.isOptionEqualToValue}
 			bearer={auth.token}
+			getData={getData}
 			{...rest}
 		/>
 	);

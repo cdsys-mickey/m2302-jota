@@ -1,10 +1,15 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import Forms from "@/shared-modules/sd-forms";
 import ProdTypeA from "./md-prod-type-a";
 import ProdTypeB from "./md-prod-type-b";
 import TaxTypes from "./md-tax-types";
 import { v4 as uuidv4 } from "uuid";
 import Objects from "@/shared-modules/sd-objects";
+
+const Tabs = Object.freeze({
+	INFO: "INFO",
+	TRANS: "TRANS",
+	COMBO: "COMBO",
+});
 
 const Mode = Object.freeze({
 	PROD: Symbol("PROD"),
@@ -232,6 +237,44 @@ const isFiltered = (criteria) => {
 	return Objects.isAnyPropNotEmpty(criteria, "pi,pn,bc");
 };
 
+const paramsToJsonData = (params) => {
+	const where = [];
+
+	if (params?.bc) {
+		where.push({
+			ShowName: "原印條碼",
+			OpCode: "LIKE",
+			CondData: `${params.bc}%`,
+		});
+	}
+
+	if (params?.pi) {
+		where.push({
+			ShowName: "產品代號",
+			OpCode: "LIKE",
+			CondData: `${params.pi}%`,
+		});
+	}
+
+	if (params?.pn) {
+		where.push({
+			ShowName: "產品名稱",
+			OpCode: "LIKE",
+			CondData: `%${params.pn}%`,
+		});
+	}
+
+	return {
+		StdWhere: where,
+		...(params?.qs && {
+			CondData: {
+				QS_ID: `${params.qs}%`,
+				QS_NAME: `%${params.qs}%`,
+			},
+		}),
+	};
+};
+
 const A01 = {
 	hasEmptyError,
 	transformForRead,
@@ -240,6 +283,8 @@ const A01 = {
 	transformForCounterSubmit,
 	isFiltered,
 	Mode,
+	paramsToJsonData,
+	Tabs,
 };
 
 export default A01;

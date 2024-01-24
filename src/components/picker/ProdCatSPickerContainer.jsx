@@ -5,15 +5,16 @@ import ProdSCats from "../../modules/md-prod-s-cats";
 import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
 
 export const ProdCatSPickerContainer = forwardRef((props, ref) => {
-	const { catL, catM, readOnly = false, ...rest } = props;
+	const { catL, catM, ...rest } = props;
 	const { token } = useContext(AuthContext);
+
 	const disabled = useMemo(() => {
-		return !catL || !catM || readOnly;
-	}, [catL, catM, readOnly]);
+		return !catL || !catM;
+	}, [catL, catM]);
 
 	const url = useMemo(() => {
-		return disabled ? null : `v1/prod/s-cats/${catL},${catM}`;
-	}, [catL, catM, disabled]);
+		return `v1/prod/s-cats/${catL},${catM}`;
+	}, [catL, catM]);
 
 	return (
 		<WebApiOptionPicker

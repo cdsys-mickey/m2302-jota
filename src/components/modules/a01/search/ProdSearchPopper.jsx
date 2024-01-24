@@ -30,10 +30,10 @@ const ProdSearchPopper = memo(
 				<DialogContent {...ContentProps}>
 					<Divider sx={{ mt: 0, mb: 2 }} />
 					<Grid container spacing={2} columns={12}>
-						<Grid item xs={12} sm={12}>
+						{/* <Grid item xs={12} sm={12}>
 							<ControlledTextField
 								autoFocus
-								name="pi"
+								name="id"
 								label="貨品編號"
 								variant="outlined"
 								size="small"
@@ -43,7 +43,7 @@ const ProdSearchPopper = memo(
 								}
 								EndAdornmentComponent={ClearInputButton}
 							/>
-						</Grid>
+						</Grid> */}
 						<Grid item xs={12} sm={12}>
 							<ControlledTextField
 								name="bc"

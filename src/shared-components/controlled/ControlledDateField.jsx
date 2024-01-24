@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React from "react";
 import { TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
@@ -62,7 +63,10 @@ const ControlledDateField = ({
 					}
 					InputProps={
 						readOnly
-							? { readOnly: true, disableUnderline: true }
+							? {
+									readOnly: true,
+									// disableUnderline: true
+							  }
 							: null
 					}
 					disabled={readOnly}

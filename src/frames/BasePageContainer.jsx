@@ -5,6 +5,7 @@ import { LoadingFrame } from "@/shared-components/protected-page/LoadingFrame";
 import { useContext } from "react";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 import BasePage from "./BasePage";
+import RWFrameMenuContainer from "../components/layout/RWFrameMenuContainer";
 
 export const BasePageContainer = (props) => {
 	const { ...rest } = props;
@@ -26,9 +27,10 @@ export const BasePageContainer = (props) => {
 			drawerWidth={drawerWidth}
 			// menuFloating={menuFloating}
 			// loading={loading}
-			searchBar={<SideMenuSearchBarContainer name="q" />}
+			SearchBarComponent={SideMenuSearchBarContainer}
 			// menu={<FrameAccordionContainer />}
-			menu={<FrameMenuContainer />}
+			// menu={<FrameMenuContainer />}
+			MenuComponent={RWFrameMenuContainer}
 			{...rest}
 		/>
 	);

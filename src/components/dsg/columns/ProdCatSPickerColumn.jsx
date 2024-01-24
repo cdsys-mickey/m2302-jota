@@ -16,7 +16,7 @@ const ProdCatSPickerColumn = memo((props) => {
 		// Cell state
 		active,
 		focus,
-		disabled,
+		disabled: columnDisabled,
 		// Control functions
 		stopEditing,
 		insertRowBelow,
@@ -34,27 +34,32 @@ const ProdCatSPickerColumn = memo((props) => {
 		return rowData["catM"]?.MClas;
 	}, [rowData]);
 
-	const readOnly = useMemo(() => {
-		return !catL || !catM || disabled;
-	}, [catL, catM, disabled]);
+	const disabled = useMemo(() => {
+		return !catL || !catM || columnDisabled;
+	}, [catL, catM, columnDisabled]);
 
 	const ref = useRef();
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
 
 	const handleChange = useCallback(
 		(newValue) => {
-			console.log(
-				`${name}.[${rowIndex}, ${columnIndex}]rowData`,
-				rowData
-			);
-			console.log(`${name}.newValue`, newValue);
-			if (catL && catM) {
+			if (name) {
+				console.log(`${name}.rowData`, rowDataRef.current);
+				console.log(`${name}.handleChange, newValue`, newValue);
+
 				setRowData({
-					...rowData,
+					...rowDataRef.current,
 					[name]: newValue,
 				});
+			} else {
+				console.log(`rowData`, rowDataRef.current);
+				console.log(`handleChange, newValue`, newValue);
+
+				setRowData(newValue);
 			}
 		},
-		[catL, catM, columnIndex, name, rowData, rowIndex, setRowData]
+		[name, setRowData]
 	);
 
 	// focusing on the underlying input component when the cell is focused
@@ -74,7 +79,6 @@ const ProdCatSPickerColumn = memo((props) => {
 			catL={catL}
 			catM={catM}
 			disabled={disabled}
-			readOnly={readOnly}
 			value={rowData[name]}
 			onChange={handleChange}
 			{...rest}

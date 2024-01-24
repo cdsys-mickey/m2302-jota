@@ -13,8 +13,8 @@ const BasePage = (props) => {
 		drawerWidth = 260,
 		// menuFloating,
 		// loading,
-		searchBar,
-		menu,
+		SearchBarComponent,
+		MenuComponent,
 	} = props;
 
 	// const scrollable = useScrollable({
@@ -29,8 +29,8 @@ const BasePage = (props) => {
 				open={drawerOpen}
 				onClose={handleDrawerClose}>
 				<SideMenuProvider>
-					{searchBar}
-					{menu}
+					{SearchBarComponent && <SearchBarComponent />}
+					{MenuComponent && <MenuComponent />}
 				</SideMenuProvider>
 			</ResponsiveDrawer>
 
@@ -46,8 +46,8 @@ BasePage.propTypes = {
 	handleDrawerClose: PropTypes.func,
 	height: PropTypes.number,
 	drawerWidth: PropTypes.number,
-	searchBar: PropTypes.element,
-	menu: PropTypes.element,
+	SearchBarComponent: PropTypes.elementType,
+	MenuComponent: PropTypes.elementType,
 };
 
 export default BasePage;

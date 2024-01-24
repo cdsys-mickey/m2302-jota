@@ -6,6 +6,9 @@ import { useDSG } from "@/shared-hooks/useDSG";
 import { useToggle } from "@/shared-hooks/useToggle";
 import Errors from "@/shared-modules/sd-errors";
 import Objects from "@/shared-modules/sd-objects";
+import { useContext } from "react";
+import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
+import { useRef } from "react";
 
 export const useProdGrid = ({
 	token,
@@ -18,9 +21,10 @@ export const useProdGrid = ({
 	transformForGridEdior,
 }) => {
 	const { httpGetAsync, httpPutAsync } = useWebApi();
-	// const [formExpanded, toggleFormExpanded] = useToggle(false);
 	const [expanded, toggleExpanded] = useToggle(false);
 	const saveAction = useAction();
+	const appFrame = useContext(AppFrameContext);
+	const recoverDrawerOpen = useRef();
 
 	const [state, setState] = useState({
 		saveKey: null,
@@ -32,6 +36,20 @@ export const useProdGrid = ({
 		keyColumn,
 		otherColumns,
 	});
+	const { gridData, dirtyIds } = dsg;
+
+	const toggleEditorLock = useCallback(() => {
+		if (dsg.readOnly) {
+			recoverDrawerOpen.current = appFrame.drawerOpen;
+			console.log(`og drawer opened memoised`);
+			appFrame.handleDrawerClose();
+		} else {
+			if (recoverDrawerOpen.current === true) {
+				appFrame.handleDrawerOpen();
+			}
+		}
+		dsg.toggleReadOnly();
+	}, [appFrame, dsg]);
 
 	const peek = useCallback(
 		async (criteria) => {
@@ -148,8 +166,8 @@ export const useProdGrid = ({
 	}, []);
 
 	const handleSave = useCallback(async () => {
-		console.log(`handleSave`, dsg.gridData);
-		const collected = transformForSubmit(dsg.gridData);
+		console.log(`handleSave`, gridData);
+		const collected = transformForSubmit(gridData, dirtyIds);
 		console.log("collected", collected);
 		try {
 			saveAction.start();
@@ -159,7 +177,7 @@ export const useProdGrid = ({
 				bearer: token,
 			});
 			if (status.success) {
-				toast.success("商品資料已更新");
+				toast.success(`${collected.length}筆商品資料已更新`);
 				saveAction.finish();
 			} else {
 				throw error || new Error("未預期例外");
@@ -170,7 +188,8 @@ export const useProdGrid = ({
 		}
 	}, [
 		baseUri,
-		dsg.gridData,
+		dirtyIds,
+		gridData,
 		httpPutAsync,
 		saveAction,
 		token,
@@ -190,5 +209,6 @@ export const useProdGrid = ({
 		toggleExpanded,
 		saveWorking: saveAction.working,
 		handleSave,
+		toggleEditorLock,
 	};
 };

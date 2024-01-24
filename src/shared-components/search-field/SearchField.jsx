@@ -2,27 +2,22 @@ import Layouts from "@/shared-modules/md-layouts";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 
+import FlexBox from "@/shared-components/FlexBox";
 import {
 	Box,
 	ClickAwayListener,
 	Divider,
 	Fade,
+	FormHelperText,
 	IconButton,
+	InputBase,
 	Paper,
 	Popper,
 	Tooltip,
-	InputBase,
-	FormHelperText,
 } from "@mui/material";
-import { memo, useMemo, useRef } from "react";
-import ControlledInputBase from "../controlled/ZZControlledInputBaseEx";
-import { useContext } from "react";
-import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
-import FlexBox from "@/shared-components/FlexBox";
-import InputBaseEx from "../input-ex/InputBaseEx";
-import ClearInputButton from "../input/ClearInputButton";
 import PropTypes from "prop-types";
-import { forwardRef } from "react";
+import { forwardRef, memo, useMemo, useRef } from "react";
+import ClearInputButton from "../input/ClearInputButton";
 
 const renderPaperStyles = ({
 	responsive,

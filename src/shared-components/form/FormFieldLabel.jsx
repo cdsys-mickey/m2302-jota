@@ -17,6 +17,7 @@ const FormFieldLabel = memo(
 			labelStyles = MuiStyles.DEFAULT_FORM_LABEL_STYLES,
 			typographySx,
 			emptyText = "(空白)",
+			sx = [],
 			...rest
 		} = props;
 
@@ -28,33 +29,45 @@ const FormFieldLabel = memo(
 			return useEmptyText ? "body2" : "body1";
 		}, [useEmptyText]);
 
+		const body = useMemo(
+			() => children || emptyText,
+			[children, emptyText]
+		);
+
 		return (
 			<Box ref={ref}>
 				{label && (
-					<FormLabelEx {...labelProps} sx={labelStyles}>
+					<FormLabelEx
+						{...labelProps}
+						sx={[
+							{},
+							labelStyles,
+							...(Array.isArray(sx) ? sx : [sx]),
+						]}>
 						{label}
 					</FormLabelEx>
 				)}
-
-				<Typography
-					ref={ref}
-					color="text.secondary"
-					variant={typoVariant}
-					sx={[
-						(theme) => ({
-							fontWeight: 400,
-							marginLeft: theme.spacing(0.5),
-							...(!useEmptyText && {
-								color: theme.palette.primary.main,
+				{body?.split("\n").map((s, index) => (
+					<Typography
+						key={`${s}_${index}`}
+						color="text.secondary"
+						variant={typoVariant}
+						sx={[
+							(theme) => ({
+								fontWeight: 600,
+								marginLeft: theme.spacing(0.5),
+								...(!useEmptyText && {
+									color: theme.palette.primary.main,
+								}),
 							}),
-						}),
-						...(Array.isArray(typographySx)
-							? typographySx
-							: [typographySx]),
-					]}
-					{...rest}>
-					{children || emptyText}
-				</Typography>
+							...(Array.isArray(typographySx)
+								? typographySx
+								: [typographySx]),
+						]}
+						{...rest}>
+						{s}
+					</Typography>
+				))}
 			</Box>
 		);
 	})

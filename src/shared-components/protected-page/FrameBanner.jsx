@@ -10,12 +10,16 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 import { DeptSwitchDialogContainer } from "../../components/account/DeptSwitchDialogContainer";
+import { useMemo } from "react";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
-		const { title, alt, children, ...rest } = props;
+		const { title, alt, children, SearchComponent, ...rest } = props;
 		const { mobile } = useContext(ResponsiveContext);
-		const SearchComponent = children;
+
+		const centerFlex = useMemo(() => {
+			return mobile || !!SearchComponent ? 2 : 1;
+		}, [SearchComponent, mobile]);
 
 		return (
 			<FlexBox ref={ref} {...rest}>
@@ -23,19 +27,17 @@ const FrameBanner = memo(
 					ml={-2}
 					alignItems="center"
 					justifyContent="flex-start"
-					flex={SearchComponent ? 1 : 2}>
+					flex={1}>
 					{/* <ResponsiveFrameMenuButton /> */}
 					<FrameMenuButtonContainer />
 					<ResponsiveFrameTitle alt={alt}>
 						{title}
 					</ResponsiveFrameTitle>
 				</FlexBox>
-
-				{SearchComponent && (
-					<FlexBox alignItems="center" flex={mobile ? 2 : 1} px={2}>
-						<SearchComponent />
-					</FlexBox>
-				)}
+				<FlexBox alignItems="center" flex={centerFlex} px={2}>
+					{children}
+					{SearchComponent && <SearchComponent />}
+				</FlexBox>
 
 				<FlexBox
 					alignItems="center"
@@ -64,7 +66,11 @@ FrameBanner.displayName = "FrameBanner";
 FrameBanner.propTypes = {
 	title: PropTypes.string,
 	alt: PropTypes.string,
-	children: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
+	SearchComponent: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.elementType,
+	]),
+	children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
 };
 
 export default FrameBanner;

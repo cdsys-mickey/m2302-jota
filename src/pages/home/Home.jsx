@@ -24,7 +24,8 @@ const Home = memo((props) => {
 				<HomeFrameBanner />
 				<Box pt={3}>
 					<Grid container spacing={3}>
-						<Grid item xl={3} lg={5} md={6} sm={12} xs={12}>
+						{/* <Grid item xl={3} lg={5} md={6} sm={12} xs={12}> */}
+						<Grid item xs={12}>
 							<BulletinWidgetContainer
 								// height={widgetHeight}
 								heading={
@@ -35,8 +36,8 @@ const Home = memo((props) => {
 									/>
 								}></BulletinWidgetContainer>
 						</Grid>
-						{/* 待辦案件 */}
-						<Grid item xl={3} lg={4} md={6} sm={12} xs={12}>
+						{/* 待審核 */}
+						{/* <Grid item xl={3} lg={4} md={6} sm={12} xs={12}>
 							<BulletinWidgetContainer
 								// height={widgetHeight}
 								heading={
@@ -49,8 +50,8 @@ const Home = memo((props) => {
 								// children={`* [系統使用者操作手冊](https://cyey.nat.gov.tw/download/%E7%9B%A3%E5%AF%9F%E6%A1%88%E4%BB%B6%E7%AE%A1%E7%90%86%E8%B3%87%E8%A8%8A%E7%B3%BB%E7%B5%B1%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8A.pdf)`}
 								// children={MdMessages.POST_DOWNLOAD}
 							/>
-						</Grid>
-						<Grid item xl={3} lg={3} md={6} sm={12} xs={12}>
+						</Grid> */}
+						{/* <Grid item xl={3} lg={3} md={6} sm={12} xs={12}>
 							<BulletinWidgetContainer
 								// height={widgetHeight}
 								heading={
@@ -63,7 +64,7 @@ const Home = memo((props) => {
 								// children={`* [系統使用者操作手冊](https://cyey.nat.gov.tw/download/%E7%9B%A3%E5%AF%9F%E6%A1%88%E4%BB%B6%E7%AE%A1%E7%90%86%E8%B3%87%E8%A8%8A%E7%B3%BB%E7%B5%B1%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8A.pdf)`}
 								// children={MdMessages.POST_DOWNLOAD}
 							/>
-						</Grid>
+						</Grid> */}
 					</Grid>
 				</Box>
 			</Box>

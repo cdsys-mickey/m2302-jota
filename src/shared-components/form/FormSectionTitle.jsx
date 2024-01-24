@@ -6,12 +6,13 @@ const FormSectionTitle = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;
 		return (
-			<Box ref={ref} mb={2} {...rest}>
+			<Box ref={ref} {...rest}>
 				<Typography
 					variant="subtitle1"
 					sx={[
 						(theme) => ({
 							fontWeight: 600,
+							fontSize: "100%",
 							// color: theme.palette.primary.main,
 							color: theme.palette.text.primary,
 							// color: theme.palette.neutral.main,

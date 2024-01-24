@@ -7,7 +7,7 @@ export const useA15 = ({ token }) => {
 		gridId: "A15",
 		keyColumn: "CodeID",
 		otherColumns: "CodeData",
-		baseUri: "v1/employees",
+		baseUri: "v1/ou/employees",
 	});
 
 	useInit(() => {

@@ -6,7 +6,6 @@ export const createMuiCheckboxColumn = ({
 	ComponentProps,
 } = {}) => {
 	return {
-		// component: MuiCheckboxColumn,
 		component: (props) => {
 			return (
 				<MuiCheckboxColumn

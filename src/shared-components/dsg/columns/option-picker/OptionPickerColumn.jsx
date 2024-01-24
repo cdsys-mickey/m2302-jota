@@ -45,6 +45,7 @@ const OptionPickerColumn = memo((props) => {
 			onChange={handleChange}
 			dense
 			disabled={disabled}
+			// onClose={stopEditing}
 			// sx={{
 			// 	"& .MuiInputBase-root": {
 			// 		padding: 0,

@@ -16,6 +16,7 @@ import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveCo
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { useRef } from "react";
 import { useCallback } from "react";
+import ResponsiveLoadingButton from "../responsive/ResponsiveLoadingButton";
 
 /**
  * 關鍵屬性是 onConfirm, onCancel, 以及 onClose, 雖然沒有在這裡定義 onClose,
@@ -28,10 +29,12 @@ import { useCallback } from "react";
 const DialogEx = memo(
 	forwardRef((props = {}, ref) => {
 		const {
+			dense = false,
 			sx = [],
 			title,
 			titleSx = [],
 			contentSx = [],
+			actionsSx = [],
 			message,
 			children,
 			confirmText = "確定",
@@ -41,7 +44,7 @@ const DialogEx = memo(
 			// maxWidth = "100vw",
 			// minHeight,
 			contentProps,
-			ButtonProps,
+			buttonProps,
 			confirmButtonProps,
 			cancelButtonProps,
 			loading = false,
@@ -79,7 +82,7 @@ const DialogEx = memo(
 		}, [onClose, title, titleButtons, TitleButtonsComponent]);
 
 		const doRenderOtherActionButtonsComponent = useMemo(() => {
-			return OtherActionButtonsComponent && !otherActionButtons;
+			return OtherActionButtonsComponent || otherActionButtons;
 		}, [OtherActionButtonsComponent, otherActionButtons]);
 
 		const responsiveCtx = useContext(ResponsiveContext);
@@ -90,12 +93,15 @@ const DialogEx = memo(
 		}, [onConfirm, onSubmit]);
 
 		const isFullScreen = useMemo(() => {
+			if (fullScreen) {
+				return true;
+			}
 			if (responsive && !responsiveCtx) {
 				console.error(
 					"使用 responsive 參數必須位在 ResponsiveContext 內"
 				);
 			}
-			return (!!responsiveCtx && responsive && mobile) || fullScreen;
+			return !!responsiveCtx && responsive && mobile;
 		}, [fullScreen, mobile, responsive, responsiveCtx]);
 
 		const showMessage = useMemo(() => {
@@ -111,6 +117,20 @@ const DialogEx = memo(
 				onConfirm(inputRef.current?.value);
 			}
 		}, [onConfirm, onSubmit]);
+
+		const showActions = useMemo(() => {
+			return (
+				!loading &&
+				(doRenderOtherActionButtonsComponent ||
+					showConfirmButton ||
+					onCancel)
+			);
+		}, [
+			doRenderOtherActionButtonsComponent,
+			loading,
+			onCancel,
+			showConfirmButton,
+		]);
 
 		return (
 			<Dialog
@@ -138,7 +158,13 @@ const DialogEx = memo(
 
 				<DialogContent
 					sx={[
-						{ ...(minWidth && { minWidth: minWidth }) },
+						(theme) => ({
+							...(minWidth && { minWidth: minWidth }),
+							...(dense && {
+								paddingBottom: theme.spacing(1),
+							}),
+						}),
+
 						...(Array.isArray(contentSx) ? contentSx : [contentSx]),
 					]}
 					{...contentProps}>
@@ -160,30 +186,37 @@ const DialogEx = memo(
 								InputLabelProps={
 									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
-								value={defaultPromptValue}
+								defaultValue={defaultPromptValue}
 								{...promptTextFieldProps}
 							/>
 						</Box>
 					)}
-					<form onSubmit={onSubmit}>{children}</form>
+					{/* <form onSubmit={onSubmit}>{children}</form> */}
+					{children}
 				</DialogContent>
-				{!loading && (
-					<DialogActions>
+				{showActions && (
+					<DialogActions
+						sx={[
+							...(Array.isArray(actionsSx)
+								? actionsSx
+								: [actionsSx]),
+						]}>
 						{otherActionButtons}
-						{doRenderOtherActionButtonsComponent && (
+						{OtherActionButtonsComponent && (
 							<OtherActionButtonsComponent />
 						)}
 						{showConfirmButton && (
-							<LoadingButton
+							<ResponsiveLoadingButton
 								type="submit"
 								variant="contained"
 								color="primary"
+								// onClick={onConfirm ? handleConfirm : null}
 								onClick={handleConfirm}
 								loading={working}
-								{...ButtonProps}
+								{...buttonProps}
 								{...confirmButtonProps}>
 								{confirmText}
-							</LoadingButton>
+							</ResponsiveLoadingButton>
 						)}
 
 						{onCancel && (
@@ -191,7 +224,7 @@ const DialogEx = memo(
 								variant="outlined"
 								color="primary"
 								onClick={onCancel}
-								{...ButtonProps}
+								{...buttonProps}
 								{...cancelButtonProps}>
 								{cancelText}
 							</Button>
@@ -206,6 +239,7 @@ const DialogEx = memo(
 DialogEx.displayName = "DialogEx";
 DialogEx.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+
 	title: PropTypes.string,
 	message: PropTypes.string,
 	children: PropTypes.node,
@@ -218,7 +252,7 @@ DialogEx.propTypes = {
 	loading: PropTypes.bool,
 	working: PropTypes.bool,
 	contentProps: PropTypes.object,
-	ButtonProps: PropTypes.object,
+	buttonProps: PropTypes.object,
 	confirmButtonProps: PropTypes.object,
 	cancelButtonProps: PropTypes.object,
 	titleButtons: PropTypes.element,
@@ -236,12 +270,14 @@ DialogEx.propTypes = {
 	responsive: PropTypes.bool,
 	titleSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	contentSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	actionsSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	// prompt
 	prompt: PropTypes.bool,
 	defaultPromptValue: PropTypes.string,
 	promptTextFieldProps: PropTypes.object,
 	onSubmit: PropTypes.func,
+	dense: PropTypes.bool,
 };
 
 export default DialogEx;

@@ -27,6 +27,7 @@ const A014Grid = memo((props) => {
 		height = 300,
 		// METHODS
 		onChange,
+		handleCreateRow,
 	} = props;
 
 	const columns = useMemo(
@@ -42,12 +43,23 @@ const A014Grid = memo((props) => {
 				grow: 2,
 				disabled: true,
 			},
+			// {
+			// 	...keyColumn(
+			// 		"catL",
+			// 		createOptionPickerColumn((props) => (
+			// 			<ProdCatLPickerColumn {...props} />
+			// 		))
+			// 	),
+			// 	title: "大分類",
+			// 	grow: 2,
+			// 	disabled: readOnly,
+			// },
 			{
 				...createOptionPickerColumn((props) => (
 					<ProdCatLPickerColumn name="catL" {...props} />
 				)),
 				title: "大分類",
-				grow: 2,
+				grow: 3,
 				disabled: readOnly,
 			},
 			{
@@ -55,7 +67,7 @@ const A014Grid = memo((props) => {
 					<ProdCatMPickerColumn name="catM" {...props} />
 				)),
 				title: "中分類",
-				grow: 2,
+				grow: 3,
 				disabled: readOnly,
 			},
 			{
@@ -63,7 +75,7 @@ const A014Grid = memo((props) => {
 					<ProdCatSPickerColumn name="catS" {...props} />
 				)),
 				title: "小分類",
-				grow: 2,
+				grow: 3,
 				disabled: readOnly,
 			},
 			{
@@ -127,14 +139,7 @@ const A014Grid = memo((props) => {
 				columns={columns}
 				disableExpandSelection
 				disableContextMenu
-				createRow={() => ({
-					catL: null,
-					catM: null,
-					catS: null,
-					typeA: null,
-					typeB: null,
-					taxType: null,
-				})}
+				createRow={handleCreateRow}
 			/>
 		</Box>
 	);
@@ -150,6 +155,7 @@ A014Grid.propTypes = {
 	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	handleActiveCellChange: PropTypes.func,
+	handleCreateRow: PropTypes.func,
 };
 
 A014Grid.displayName = "A014Grid";

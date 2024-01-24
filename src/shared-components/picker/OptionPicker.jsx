@@ -14,7 +14,7 @@ import MuiStyles from "../../shared-modules/sd-mui-styles";
 const PickerBox = styled(Box, {
 	shouldForwardProp: (prop) =>
 		!["focusedBackgroundColor", "size", "hideBorders"].includes(prop),
-})(({ theme, focusedBackgroundColor, size, hideBorders }) => ({
+})(({ theme, focusedBackgroundColor, size, hideBorders, width }) => ({
 	...(hideBorders && {
 		"& fieldset": { border: "none" },
 	}),
@@ -36,7 +36,9 @@ const PickerBox = styled(Box, {
 		borderRadius: theme.spacing(0.5),
 		backgroundColor: "rgba(0, 0, 0, .2)",
 	},
-	width: "100%",
+	...(!width && {
+		width: "100%",
+	}),
 }));
 
 const OptionPicker = memo(
@@ -64,6 +66,7 @@ const OptionPicker = memo(
 			loadingText = "讀取中...",
 			multiple = false,
 			ChipProps,
+			getOptionLabel,
 
 			// TextField
 			autoFocus,
@@ -82,6 +85,7 @@ const OptionPicker = memo(
 			onInputChange,
 
 			// PickerBox
+			width,
 			BoxProps,
 			focusedBackgroundColor = "#b6f0ff",
 
@@ -232,20 +236,27 @@ const OptionPicker = memo(
 			[dnd, renderDndTags, renderNormalTags]
 		);
 
+		// eslint-disable-next-line no-unused-vars
 		const handleChange = (event, value, reason) => {
 			// console.log(`${name}.event`, event);
 			// console.log(`${name}.value`, value);
-			// console.log(`${name}.reason`, reason);
 			if (onChange) {
+				console.log(`parent.onChange`, value);
 				onChange(value);
 			}
 		};
+
+		const title = useMemo(() => {
+			return getOptionLabel ? getOptionLabel(value) : value;
+		}, [getOptionLabel, value]);
 
 		return (
 			<PickerBox
 				hideBorders={hideBorders}
 				focusedBackgroundColor={focusedBackgroundColor}
 				size={size}
+				title={title}
+				width={width}
 				{...BoxProps}>
 				<Autocomplete
 					onChange={handleChange}
@@ -269,19 +280,33 @@ const OptionPicker = memo(
 					sx={[
 						{
 							...(disabled && {
-								"& .MuiAutocomplete-popupIndicator": {
-									opacity: 0,
-								},
+								"&.MuiAutocomplete-root .MuiAutocomplete-popupIndicator":
+									{
+										// opacity: 0,
+										display: "none",
+									},
+								"&.MuiAutocomplete-root .MuiInputBase-root.Mui-disabled ":
+									{
+										paddingRight: 0,
+									},
 							}),
 							...(dense && {
-								"& .MuiAutocomplete-root ": {
-									padding: 0,
-								},
+								// "& .MuiAutocomplete-root ": {
+								// 	padding: 0,
+								// },
+								"&.MuiAutocomplete-root .MuiInputBase-root.MuiInputBase-sizeSmall":
+									{
+										paddingTop: "2px",
+										paddingBottom: "2px",
+										paddingLeft: "2px",
+										paddingRight: "40px",
+									},
 							}),
 						},
 						...(Array.isArray(sx) ? sx : [sx]),
 					]}
 					options={options}
+					getOptionLabel={getOptionLabel}
 					{...rest}
 				/>
 			</PickerBox>
@@ -329,8 +354,10 @@ OptionPicker.propTypes = {
 	helperText: PropTypes.string,
 	disabled: PropTypes.bool,
 	onInputChange: PropTypes.func,
+	getOptionLabel: PropTypes.func,
 	// PickerBox
 	BoxProps: PropTypes.object,
 	focusedBackgroundColor: PropTypes.string,
+	width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 export default OptionPicker;

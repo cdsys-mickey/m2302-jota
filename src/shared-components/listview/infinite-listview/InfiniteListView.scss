@@ -1,0 +1,43 @@
+.thin-scroller {
+	// TRACK
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+	&:hover::-webkit-scrollbar-track {
+		background-color: rgba(0, 0, 0, 0.04);
+	}
+
+	&::-webkit-scrollbar-track:hover {
+		background-color: rgba(0, 0, 0, 0.08);
+	}
+	// SCROLLBAR
+	&::-webkit-scrollbar {
+		width: 8px;
+		background-color: transparent;
+	}
+	// THUMB
+	&::-webkit-scrollbar-thumb {
+		border-radius: 4px;
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+	&:hover::-webkit-scrollbar-thumb {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: rgba(0, 0, 0, 0.3);
+	}
+}
+
+.shadow {
+	transition: box-shadow 0.2s ease-in-out;
+}
+
+.top-shadow {
+	box-shadow: inset 0px 7px 7px -3px rgba(0, 0, 0, 0.2),
+		inset 0px 2px 4px -3px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-shadow {
+	box-shadow: inset 0px -10px 7px -3px rgba(0, 0, 0, 0.14),
+		inset 0px -3px 4px -3px rgba(0, 0, 0, 0.36);
+}

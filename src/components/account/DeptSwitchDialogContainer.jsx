@@ -12,27 +12,30 @@ export const DeptSwitchDialogContainer = () => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogEx
-				title="切換門市"
-				open={auth.deptSwitching}
-				onClose={auth.cancelDeptSwitch}
-				onSubmit={form.handleSubmit(
-					auth.onDeptSwitchSubmit,
-					auth.onDeptSwitchSubmitError
-				)}
-				ButtonProps={{ size: "small" }}>
-				<FlexBox py={1}>
-					<UserDeptPicker
-						label="目的門市"
-						name="newDept"
-						autoFocus
-						placeholder="請輸入代碼或名稱篩選"
-						rules={{
-							required: "請選擇要前往的門市",
-						}}
-					/>
-				</FlexBox>
-			</DialogEx>
+			<form>
+				<DialogEx
+					onSubmit={form.handleSubmit(
+						auth.onDeptSwitchSubmit,
+						auth.onDeptSwitchSubmitError
+					)}
+					title="切換門市"
+					open={auth.deptSwitching}
+					onClose={auth.cancelDeptSwitch}
+					buttonProps={{ size: "small" }}>
+					<FlexBox py={1}>
+						<UserDeptPicker
+							label="目的門市"
+							name="newDept"
+							autoFocus
+							placeholder="請輸入代碼或名稱篩選"
+							rules={{
+								required: "請選擇要前往的門市",
+							}}
+							onError={auth.handleError}
+						/>
+					</FlexBox>
+				</DialogEx>
+			</form>
 		</FormProvider>
 	);
 };

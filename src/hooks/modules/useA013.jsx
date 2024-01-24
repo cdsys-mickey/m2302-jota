@@ -8,7 +8,7 @@ export const useA013 = ({ token } = {}) => {
 		gridId: "A013",
 		keyColumn: "ProdID",
 		otherColumns: "ProdData,SRate,IRate,MRate",
-		baseUri: "v1/prod-grid/A013",
+		baseUri: "v1/prod/prod-grid/A013",
 		transformAsQueryParams: ProdGrid.transformAsQueryParams,
 		transformForSubmit: A013.transformForSubmit,
 		transformForGridEdior: A013.transformForGridEdior,

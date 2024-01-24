@@ -21,6 +21,7 @@ export const useDSG = ({
 	const selectedRowIndexRef = useRef();
 
 	const persistedIds = useMemo(() => new Set(), []);
+	const dirtyIds = useMemo(() => new Set(), []);
 	const [state, setState] = useState({
 		gridLoading: null,
 		prevGridData: [],
@@ -44,6 +45,7 @@ export const useDSG = ({
 		(payload) => {
 			// console.log(`data loaded`, payload);
 			console.log(`${gridId}.onDataLoaded`, payload);
+			dirtyIds.clear();
 			persistedIds.clear();
 			payload?.map((i) => {
 				persistedIds.add(i[keyColumn]);
@@ -55,7 +57,7 @@ export const useDSG = ({
 				gridLoading: false,
 			}));
 		},
-		[gridId, keyColumn, persistedIds]
+		[dirtyIds, gridId, keyColumn, persistedIds]
 	);
 
 	const getRowDataByIndex = useCallback(
@@ -211,6 +213,11 @@ export const useDSG = ({
 						rowData,
 					};
 					console.log(`[DSG UPDATE]`, rowData);
+					const key = rowData[keyColumn];
+					if (key) {
+						dirtyIds.add(key);
+						console.log(`dirtyId ${key} added`);
+					}
 					// 所有欄位都有值(包含 Key)
 					if (
 						Objects.isAllPropsNotNullOrEmpty(rowData, [
@@ -251,6 +258,7 @@ export const useDSG = ({
 									onCreate(row, newValue);
 								}
 							}
+							console.log(`dirtyId ${key} added`);
 						}
 					} else if (
 						Objects.isAllPropsNull(rowData, [...otherColumnNames])
@@ -277,6 +285,7 @@ export const useDSG = ({
 				}
 			},
 		[
+			dirtyIds,
 			gridId,
 			isDuplicated,
 			isInPrevGridData,
@@ -425,5 +434,6 @@ export const useDSG = ({
 		// 鎖定列
 		readOnly,
 		toggleReadOnly,
+		dirtyIds,
 	};
 };

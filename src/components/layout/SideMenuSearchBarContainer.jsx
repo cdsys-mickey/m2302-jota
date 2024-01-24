@@ -6,9 +6,11 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import PropTypes from "prop-types";
 import { SideMenuContext } from "@/contexts/SideMenuContext";
+import { useScrollTrigger } from "@mui/material";
+import { useReactWindowScroll } from "../../shared-hooks/react-window/useReactWindowScroll";
 
 const SideMenuSearchBarContainer = forwardRef((props, ref) => {
-	const { name, ...rest } = props;
+	const { name = "q", ...rest } = props;
 
 	const inputRef = useRef(null);
 	const sideMenu = useContext(SideMenuContext);
@@ -33,6 +35,12 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true,
 	});
 
+	// const trigger = useScrollTrigger({
+	// 	disableHysteresis: true,
+	// 	threshold: 0,
+	// });
+	// const { scrollOffset, onScroll } = useReactWindowScroll({ debounce: 20 });
+
 	return (
 		<div ref={escRef}>
 			{/* <FormProvider {...form}>*/}
@@ -49,10 +57,14 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 					// 	mobile ? handleToggleDrawerOpen : undefined
 					// }
 					onClear={searchField.handleClear}
+					// onScroll={onScroll}
+					// scrollOffset={scrollOffset}
 					// onSubmit={}
 					onHomeClick={handleHomeClick}
 					// onInputChange={onInputChange}
 					// onClear={handleClear}
+					// elevation={trigger > 0 ? 4 : 0}
+					// elevation={scrollOffset > 0 ? 4 : 0}
 					{...rest}
 				/>
 			</form>
@@ -62,6 +74,6 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 });
 SideMenuSearchBarContainer.displayName = "SideMenuSearchBarContainer";
 SideMenuSearchBarContainer.propTypes = {
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 };
 export default SideMenuSearchBarContainer;

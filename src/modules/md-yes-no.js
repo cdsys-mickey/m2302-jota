@@ -3,7 +3,7 @@ const getOptionLabel = (value) => {
 };
 
 const valueToChecked = (v) => {
-	return (v?.toUpperCase() || "N") === "Y";
+	return v?.toUpperCase() === "Y";
 };
 
 const checkedToValue = (c) => {

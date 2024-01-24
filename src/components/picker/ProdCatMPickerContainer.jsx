@@ -5,16 +5,17 @@ import { forwardRef, useContext, useMemo } from "react";
 import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
 
 export const ProdCatMPickerContainer = forwardRef((props, ref) => {
-	const { readOnly = false, catL, ...rest } = props;
+	const { catL, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const disabled = useMemo(() => {
-		return !catL || readOnly;
-	}, [catL, readOnly]);
+		// return !catL || readOnly;
+		return !catL;
+	}, [catL]);
 
 	const url = useMemo(() => {
-		return disabled ? null : `v1/prod/m-cats/${catL}`;
-	}, [catL, disabled]);
+		return `v1/prod/m-cats/${catL}`;
+	}, [catL]);
 
 	return (
 		<WebApiOptionPicker

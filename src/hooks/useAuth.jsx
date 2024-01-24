@@ -236,6 +236,16 @@ export const useAuth = () => {
 		deptSwitchAction.clear();
 	}, [deptSwitchAction]);
 
+	const handleError = useCallback(
+		(err) => {
+			console.error(`onError`, err);
+			if (err?.status === 401) {
+				toLogin();
+			}
+		},
+		[toLogin]
+	);
+
 	useEffect(() => {
 		if (state.validating == null) {
 			validateCookie();
@@ -256,5 +266,6 @@ export const useAuth = () => {
 		cancelDeptSwitch,
 		promptDeptSwitch,
 		deptSwitchWorking,
+		handleError,
 	};
 };

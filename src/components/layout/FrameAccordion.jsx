@@ -17,6 +17,9 @@ import { forwardRef } from "react";
 import FrameMenuItemButton from "./FrameMenuItemButton";
 import { FrameMenuGroupHeader } from "./FrameMenuGroupHeader";
 
+/**
+ * 三個版本之一，目前採用 React Window 方案
+ */
 const FrameAccordion = memo(
 	forwardRef((props, ref) => {
 		const {

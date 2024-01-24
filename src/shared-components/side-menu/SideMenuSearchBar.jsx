@@ -11,6 +11,8 @@ const SideMenuSearchBar = memo(
 		const {
 			name,
 			inputRef,
+			// elevation,
+			// METHODS
 			onToggleDrawerOpen,
 			onClear,
 			onHomeClick,
@@ -18,7 +20,12 @@ const SideMenuSearchBar = memo(
 		} = props;
 
 		return (
-			<AppBar position="sticky" color="white" ref={ref} {...rest}>
+			<AppBar
+				position="sticky"
+				color="white"
+				ref={ref}
+				elevation={0}
+				{...rest}>
 				<FlexBox py={1} pl={1}>
 					<IconButton color="primary" onClick={onHomeClick}>
 						<ViewColumnIcon />
@@ -30,7 +37,7 @@ const SideMenuSearchBar = memo(
 						searchIconPlacement="right"
 						placeholder="篩選作業 (ctrl+F9)"
 						shadowStyle="in"
-						shadow="focus"
+						// shadow="focus"
 						focusBackgroundColor="rgb(0 0 0 / 10%)"
 						hoverBackgroundColor="rgb(0 0 0 / 6%)"
 						width="20ch"

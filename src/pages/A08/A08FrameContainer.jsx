@@ -4,6 +4,9 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useMemo } from "react";
 import Styles from "@/modules/md-styles";
 import { useTheme } from "@mui/material";
+import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
+import A08 from "../../modules/md-a08";
+import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
 
 export const A08FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -12,7 +15,13 @@ export const A08FrameContainer = () => {
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
 	);
-	return <A08Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+	return (
+		<StdPrintProvider tableName="AreaCod">
+			<A08Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />
+			{/* 對話框 */}
+			<StdPrintDialogContainer />
+		</StdPrintProvider>
+	);
 };
 
 A08FrameContainer.displayName = "A08Frame";

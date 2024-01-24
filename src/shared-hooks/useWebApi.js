@@ -22,8 +22,8 @@ const DEFAULT_FORM_HEADERS = {
 export const useWebApi = (props) => {
 	const {
 		baseUrl = import.meta.env.VITE_URL_API || "/",
-		stacktrace = false,
 		mode = "json",
+		stacktrace = false,
 	} = props || {};
 
 	const getUrl = useCallback(
@@ -62,15 +62,7 @@ export const useWebApi = (props) => {
 
 	// async 版本
 	const sendAsync = useCallback(
-		async ({
-			url,
-			method,
-			data,
-			headers,
-			bearer,
-			// getData = defaultGetData,
-			...rest
-		}) => {
+		async ({ url, method, data, headers, bearer, ...rest }) => {
 			const apiUrl = getUrl(url);
 			if (!apiUrl) {
 				throw `url cannot be null`;
@@ -119,15 +111,11 @@ export const useWebApi = (props) => {
 					return {
 						status: status,
 						payload: axiosResponse.data,
-						// ...(getData && {
-						// 	data: getData(axiosResponse.data),
-						// }),
 					};
 				} else {
 					//should not happen
 					return {
 						status: status,
-						// error: getErrorFromPayload(axiosResponse.data),
 						error: WebApi.getErrorFromPayload(axiosResponse.data, {
 							stacktrace,
 							status: status.code,
@@ -138,8 +126,6 @@ export const useWebApi = (props) => {
 				console.error(err);
 				return {
 					status: HttpStatus.from(err.response.status),
-					// payload: err.response.data,
-					// error: getErrorFromPayload(err.response.data),
 					error: WebApi.getErrorFromPayload(err.response.data, {
 						stacktrace,
 						status: err.response.status,

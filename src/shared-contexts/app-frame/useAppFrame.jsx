@@ -54,6 +54,18 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 		[toModule]
 	);
 
+	const handleSelect = useCallback(
+		(module) => {
+			setMenuState((prev) => ({
+				...prev,
+				menuItemSelected: module,
+			}));
+			console.log(`module ${module.JobID} selected`);
+			toModule(module.WebName);
+		},
+		[toModule]
+	);
+
 	const handleHomeClick = useCallback(() => {
 		setMenuState((prev) => ({
 			...prev,
@@ -194,5 +206,6 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 		// handleSelectJob,
 		handleHomeClick,
 		resetMenuState,
+		handleSelect,
 	};
 };

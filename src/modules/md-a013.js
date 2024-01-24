@@ -4,13 +4,13 @@ const transformForGridEdior = (payload) => {
 
 const transformForSubmit = (data) => {
 	return data.map((i) => {
-		const { ProdID, ProdData, SRate, IRate, MRate } = i;
+		const { ProdID, ProdData } = i;
 		return {
 			ProdID,
 			ProdData,
-			SRate,
-			IRate,
-			MRate,
+			SRate: i.SRate?.toString() || "",
+			IRate: i.IRate?.toString() || "",
+			MRate: i.MRate?.toString() || "",
 		};
 	});
 };

@@ -61,6 +61,10 @@ ControlledOptionPicker.propTypes = {
 	onChange: PropTypes.func,
 	rules: PropTypes.object,
 	labelShrink: PropTypes.bool,
-	defaultValue: PropTypes.node,
+	defaultValue: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+		PropTypes.object,
+	]),
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };

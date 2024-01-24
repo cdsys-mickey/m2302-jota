@@ -30,7 +30,7 @@ export const A01DialogTitleButtonsContainer = (props) => {
 								a01.onEditorSubmitError
 						  )
 				}
-				loading={a01.createWorking || a01.updateWorking}
+				loading={a01.editWorking}
 				{...rest}
 			/>
 		);
@@ -40,7 +40,7 @@ export const A01DialogTitleButtonsContainer = (props) => {
 		<A01DialogTitleViewButtons
 			onEdit={a01.updatePrompt}
 			onDelete={a01.confirmDelete}
-			onReview={a01.mode === A01.Mode.NEW_PROD ? a01.reviewPrompt : null}
+			onReview={a01.mode === A01.Mode.NEW_PROD ? a01.promptReview : null}
 			{...rest}
 		/>
 	);

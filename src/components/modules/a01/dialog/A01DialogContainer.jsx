@@ -1,37 +1,38 @@
-import { FormProvider, useForm } from "react-hook-form";
-import A01Dialog from "./A01Dialog";
-import { useContext } from "react";
 import { A01Context } from "@/contexts/A01/A01Context";
-import { useEffect } from "react";
-import { useMemo } from "react";
-import ActionState from "../../../../shared-constants/action-state";
+import DialogEx from "@/shared-components/dialog/DialogEx";
+import { forwardRef, useContext, useMemo } from "react";
 import A01 from "../../../../modules/md-a01";
+import { A01DialogTitleButtonsContainer } from "./buttons/A01DialogTitleButtonsContainer";
+import { FormProvider, useForm } from "react-hook-form";
+import A01Form from "../form/A01Form";
+import { useEffect } from "react";
+import ActionState from "../../../../shared-constants/action-state";
+import { useScrollable } from "../../../../shared-hooks/useScrollable";
+import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
+import { DialogExContainer } from "../../../../shared-components/dialog/DialogExContainer";
 
-export const A01DialogContainer = () => {
+export const A01DialogContainer = forwardRef((props, ref) => {
+	const { ...rest } = props;
+	const { height } = useWindowSize();
+	// MODE 1
+	const scrollable = useScrollable({
+		height: height,
+		alwaysShowThumb: true,
+		scrollerBackgroundColor: "transparent",
+	});
+	// MODE 2
+	// const scrollable = useScrollable({
+	// 	hide: true,
+	// });
+	// MODE 3
+	// const scrollable = useScrollable({});
+
+	const a01 = useContext(A01Context);
+	const { setTabIndex } = a01;
+
 	const forms = useForm({
 		defaultValues: {},
 	});
-	const a01 = useContext(A01Context);
-
-	// const dataLoaded = useMemo(() => {
-	// 	return (
-	// 		(a01.readState === ActionState.DONE && !!a01.itemData) ||
-	// 		a01.createState === ActionState.PROMPT
-	// 	);
-	// }, [a01.createState, a01.itemData, a01.readState]);
-	const dataLoaded = useMemo(() => {
-		return (
-			(a01.reading && !a01.readWorking && !a01.readFailed) ||
-			a01.creating ||
-			(a01.updating && !a01.readWorking && !a01.readFailed)
-		);
-	}, [
-		a01.creating,
-		a01.readFailed,
-		a01.readWorking,
-		a01.reading,
-		a01.updating,
-	]);
 
 	const title = useMemo(() => {
 		if (a01.mode === A01.Mode.NEW_PROD) {
@@ -55,46 +56,62 @@ export const A01DialogContainer = () => {
 		}
 	}, [a01.creating, a01.mode, a01.updating]);
 
-	useEffect(() => {
-		if (a01.readState === ActionState.DONE && !!a01.itemData) {
-			forms.reset(a01.itemData);
-			console.log(`a01 form reset`, a01.itemData);
-			// a01.resetGridData(a01.itemData);
-		}
-	}, [a01.itemData, a01.readState, forms]);
-
 	const store = useMemo(() => {
 		return a01.mode === A01.Mode.STORE;
 	}, [a01.mode]);
 
+	useEffect(() => {
+		if (a01.readState === ActionState.DONE && !!a01.itemData) {
+			// setTabIndex(A01.Tabs.INFO);
+			console.log(`a01 form reset`, a01.itemData);
+			forms.reset(a01.itemData);
+		}
+	}, [a01.itemData, a01.readState, forms, setTabIndex]);
+
 	return (
 		<FormProvider {...forms}>
-			<form
-				onSubmit={forms.handleSubmit(
-					a01.onEditorSubmit,
-					a01.onEditorSubmitError
-				)}>
-				<A01Dialog
-					title={title}
+			<DialogExContainer
+				title={title}
+				ref={ref}
+				// fullScreen
+				responsive
+				fullWidth
+				maxWidth="md"
+				TitleButtonsComponent={A01DialogTitleButtonsContainer}
+				open={a01.itemViewOpen}
+				onClose={
+					a01.editing ? a01.confirmDialogClose : a01.cancelAction
+				}
+				onReturn={a01.updating ? a01.confirmReturn : null}
+				sx={{
+					"& .MuiDialog-paper": {
+						backgroundColor: "rgb(241 241 241)",
+					},
+				}}
+				contentSx={[
+					{
+						minHeight: "30em",
+					},
+					scrollable.scroller,
+				]}
+				{...rest}>
+				<A01Form
+					onSubmit={forms.handleSubmit(
+						a01.onEditorSubmit,
+						a01.onEditorSubmitError
+					)}
 					editing={a01.editing}
 					updating={a01.updating}
-					open={a01.dialogOpen}
-					onClose={
-						a01.editing ? a01.confirmDialogClose : a01.cancelAction
-					}
-					onReturn={a01.updating ? a01.confirmReturn : null}
 					readWorking={a01.readWorking}
-					// createState={a01.createState}
-					// readState={a01.readState}
-					// updateState={a01.updateState}
-					// deleteState={a01.deleteState}
 					data={a01.itemData}
-					dataLoaded={dataLoaded}
+					dataLoaded={a01.itemDataLoaded}
 					store={store}
+					tabIndex={a01.tabIndex}
+					handleTabChange={a01.handleTabChange}
 				/>
-			</form>
+			</DialogExContainer>
 		</FormProvider>
 	);
-};
+});
 
 A01DialogContainer.displayName = "A01DialogContainer";

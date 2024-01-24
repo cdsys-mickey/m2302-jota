@@ -1,11 +1,8 @@
-import { forwardRef, memo } from "react";
-import { Box, Grid, IconButton, Tooltip, Typography } from "@mui/material";
 import ListViewHeader from "@/shared-components/listview/header/ListViewHeader";
-import PropTypes from "prop-types";
-import IndexColumn from "@/shared-components/listview/IndexColumn";
+import { forwardRef, memo } from "react";
 import A01ProdIDColumn from "./columns/A01ProdIDColumn";
 import A01ProdNameColumn from "./columns/A01ProdNameColumn";
-import A01ClassNColumn from "./columns/A01ClassNColumn";
+import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 
 const A01ListHeader = memo(
 	forwardRef((props, ref) => {

@@ -96,7 +96,7 @@ function App() {
 					dateAdapter={AdapterDateFns}
 					locale={zhTW}>
 					<ResponsiveProvider>
-						<DialogsProvider ButtonProps={{ size: "small" }}>
+						<DialogsProvider buttonProps={{ size: "small" }}>
 							<CssBaseline />
 							<AppProvider>
 								<AppRoute />
@@ -106,7 +106,7 @@ function App() {
 					<ToastContainer
 						// theme="dark"
 						theme="colored"
-						// hideProgressBar
+						hideProgressBar
 						// position="top-center"
 						position="bottom-left"
 						// position="top-right"

@@ -20,7 +20,7 @@ const A11GridContainer = () => {
 				onDelete: a11.handleConfirmDelete,
 				onDuplicatedError: a11.handleDuplicatedError,
 			})}
-			height={height - 176}
+			height={height - 180}
 			isPersisted={a11.isPersisted}
 			onSelectionChange={a11.handleSelectionChange({})}
 		/>

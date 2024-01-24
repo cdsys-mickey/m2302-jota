@@ -4,12 +4,15 @@ import { Box } from "@mui/material";
 import { forwardRef, memo } from "react";
 import A01CreateButtonContainer from "./A01CreateButtonContainer";
 import { A01FetchResultLabelContainer } from "./A01FetchResultLabelContainer";
+import A01PrintButtonContainer from "./A01PrintButtonContainer";
+import ModuleToolbar from "../ModuleToolbar";
 
 const LeftButtons = memo(() => {
 	return (
-		<Box>
+		<ModuleToolbar>
 			<A01CreateButtonContainer />
-		</Box>
+			<A01PrintButtonContainer color="neutral" />
+		</ModuleToolbar>
 	);
 });
 

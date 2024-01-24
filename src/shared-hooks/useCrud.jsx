@@ -1,10 +1,10 @@
-import { useCallback, useState } from "react";
-import { useAction } from "./useAction";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import ActionState from "../shared-constants/action-state";
-import { useForm } from "react-hook-form";
+import { useAction } from "./useAction";
+import { useRef } from "react";
 
 export const useCrud = () => {
+	const paramsRef = useRef({});
 	const [itemData, setItemData] = useState();
 
 	const createAction = useAction();
@@ -196,11 +196,26 @@ export const useCrud = () => {
 		return deleteAction.failed || !!deleteAction.error;
 	}, [deleteAction.error, deleteAction.failed]);
 
-	// Global synth props
+	// Synth Props
+	const editing = useMemo(() => {
+		return !!createAction.state || !!updateAction.state;
+	}, [createAction.state, updateAction.state]);
 
-	// const editing = useMemo(() => {
-	// 	return creating || updating;
-	// }, [creating, updating]);
+	const itemDataLoaded = useMemo(() => {
+		return (
+			(reading && !readWorking && !readFailed) ||
+			creating ||
+			(updating && !readWorking && !readFailed)
+		);
+	}, [creating, readFailed, readWorking, reading, updating]);
+
+	const editWorking = useMemo(() => {
+		return createWorking || updateWorking;
+	}, [createWorking, updateWorking]);
+
+	const itemViewOpen = useMemo(() => {
+		return reading || creating || updating;
+	}, [creating, reading, updating]);
 
 	return {
 		itemData,
@@ -254,6 +269,11 @@ export const useCrud = () => {
 		deleteCancel,
 		deleteFail,
 		// COMPUTED
-		editing: createAction.state || updateAction.state,
+		editing,
+		itemDataLoaded,
+		editWorking,
+		itemViewOpen,
+		// Params
+		paramsRef,
 	};
 };

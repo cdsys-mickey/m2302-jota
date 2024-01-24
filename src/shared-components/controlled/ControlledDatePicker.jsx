@@ -68,7 +68,10 @@ const ControlledDatePicker = ({
 					}
 					InputProps={
 						readOnly
-							? { readOnly: true, disableUnderline: true }
+							? {
+									readOnly: true,
+									// disableUnderline: true
+							  }
 							: null
 					}
 					disabled={readOnly}

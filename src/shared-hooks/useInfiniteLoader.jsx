@@ -4,6 +4,9 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useMemo } from "react";
 import Arrays from "../shared-modules/sd-arrays";
 import useDebounce from "./useDebounce";
+import { useRef } from "react";
+import { useContext } from "react";
+import CrudContext from "../contexts/crud/CrudContext";
 
 export const useInfiniteLoader = (props = {}) => {
 	const {
@@ -11,10 +14,13 @@ export const useInfiniteLoader = (props = {}) => {
 		params: baseParams,
 		bearer,
 		initialFetchSize = 50,
-		debounce = 300,
+		debounce = 0,
 	} = props;
+
+	const crud = useContext(CrudContext);
+
 	const loadingMap = useMemo(() => new Set(), []);
-	// const checkedMap = useMemo(() => new Set(), []);
+
 	const [state, setState] = useState({
 		saveKey: null,
 		loading: null,
@@ -23,13 +29,12 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const [itemCount, setItemCount] = useState(0);
 	const [listError, setListError] = useState();
-	// const [loading, setLoading] = useState(null);
-	// const [forceLoading, setForceLoading] = useState(false);
 	const debouncedLoading = useDebounce(state.loading, debounce);
 	const [listData, setListData] = useState({});
 	const [viewportState, setViewportState] = useState({
 		visibleStartIndex: 0,
 		visibleStopIndex: 0,
+		bottomReached: false,
 	});
 
 	const { httpGetAsync } = useWebApi();
@@ -52,16 +57,23 @@ export const useInfiniteLoader = (props = {}) => {
 				setViewportState({
 					visibleStartIndex,
 					visibleStopIndex,
+					bottomReached: visibleStopIndex === itemCount - 1,
 				});
+				// console.log(
+				// 	`onItemsRendered(${visibleStartIndex}, ${visibleStopIndex})`
+				// );
 				onItemsRendered({
 					visibleStartIndex,
 					visibleStopIndex,
 					...rest,
 				});
 			},
-		[]
+		[itemCount]
 	);
 
+	/**
+	 * 必須使用 crud.paramsRef 來避免 re-render
+	 */
 	const loadList = useCallback(
 		async ({
 			start,
@@ -71,6 +83,7 @@ export const useInfiniteLoader = (props = {}) => {
 			getData = defaultGetData,
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
+			useLastParams = false,
 			// reset = false,
 		} = {}) => {
 			let startIndex = start !== undefined ? start : 0;
@@ -81,7 +94,20 @@ export const useInfiniteLoader = (props = {}) => {
 				loadingMap[i] = true;
 			}
 
-			console.log(`load(${startIndex} ~ ${stopIndex})`);
+			let activeParams;
+			if (crud?.paramsRef) {
+				if (useLastParams) {
+					activeParams = crud.paramsRef.current;
+				} else {
+					crud.paramsRef.current = params;
+					activeParams = params;
+				}
+			}
+
+			console.log(
+				`load(${startIndex} ~ ${stopIndex}), params:`,
+				activeParams
+			);
 
 			setListError(null);
 			setState((prev) => ({
@@ -100,8 +126,7 @@ export const useInfiniteLoader = (props = {}) => {
 					url: url,
 					data: {
 						...baseParams,
-						...params,
-						// ...newParams,
+						...activeParams,
 						st: startIndex,
 						sp: stopIndex,
 						...(saveKey && {
@@ -147,6 +172,7 @@ export const useInfiniteLoader = (props = {}) => {
 			defaultGetSaveKey,
 			defaultGetItemCount,
 			initialFetchSize,
+			crud?.paramsRef,
 			loadingMap,
 			httpGetAsync,
 			url,
@@ -169,7 +195,7 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const isItemLoading = useCallback(
 		(index) => {
-			return loadingMap[index];
+			return loadingMap[index] === true;
 		},
 		[loadingMap]
 	);
@@ -186,17 +212,19 @@ export const useInfiniteLoader = (props = {}) => {
 	// 	return forceLoading ? loading : debouncedLoading;
 	// }, [debouncedLoading, forceLoading, loading]);
 	const listLoading = useMemo(() => {
-		return state.forceLoading ? state.loading : debouncedLoading;
-	}, [debouncedLoading, state.forceLoading, state.loading]);
+		return state.forceLoading || debounce === 0
+			? state.loading
+			: debouncedLoading;
+	}, [debounce, debouncedLoading, state.forceLoading, state.loading]);
 
 	const listFiltered = useMemo(() => {
 		return false;
 	}, []);
 
 	return {
+		// PROPS
 		listData,
 		listLoading,
-		// PROPS
 		listFiltered,
 		listError,
 		itemCount,

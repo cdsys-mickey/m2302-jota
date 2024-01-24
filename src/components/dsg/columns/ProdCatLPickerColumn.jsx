@@ -26,19 +26,29 @@ const ProdCatLPickerColumn = memo((props) => {
 	} = props;
 
 	const ref = useRef();
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
 
 	const handleChange = useCallback(
 		(newValue) => {
-			console.log(`${name}[${rowIndex}, ${columnIndex}]rowData`, rowData);
-			console.log(`${name}.newValue`, newValue);
-			setRowData({
-				...rowData,
-				[name]: newValue,
-				catM: null,
-				catS: null,
-			});
+			if (name) {
+				console.log(`${name}.rowData`, rowDataRef.current);
+				console.log(`${name}.handleChange, newValue`, newValue);
+				const ogValue = rowDataRef.current[name];
+				if (newValue?.LClas !== ogValue?.LClas) {
+					setRowData({
+						...rowDataRef.current,
+						[name]: newValue,
+						catM: null,
+					});
+				}
+			} else {
+				console.log(`rowData`, rowDataRef.current);
+				console.log(`handleChange, newValue`, newValue);
+				setRowData(newValue);
+			}
 		},
-		[columnIndex, name, rowData, rowIndex, setRowData]
+		[name, setRowData]
 	);
 
 	// focusing on the underlying input component when the cell is focused
@@ -56,7 +66,7 @@ const ProdCatLPickerColumn = memo((props) => {
 			hideBorders
 			inputRef={ref}
 			disabled={disabled}
-			value={rowData[name]}
+			value={name ? rowData[name] : rowData}
 			onChange={handleChange}
 			{...rest}
 		/>

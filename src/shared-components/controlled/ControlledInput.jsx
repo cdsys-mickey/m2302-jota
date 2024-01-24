@@ -45,7 +45,7 @@ const ControlledInput = ({
 						// }
 						{...(readOnly && {
 							readOnly: true,
-							disableUnderline: true,
+							// disableUnderline: true,
 						})}
 						disabled={readOnly}
 						id="component-simple"

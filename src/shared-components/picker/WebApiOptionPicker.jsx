@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import queryString from "query-string";
+import QueryString from "query-string";
 import { memo } from "react";
 import OptionPicker from "./OptionPicker";
 
@@ -12,6 +12,10 @@ const defaultTriggerServerFilter = (q) => {
 const defaultGetData = (payload) => {
 	return payload["data"];
 	// return payload;
+};
+
+const defaultOnError = (err) => {
+	console.error(`onError`, err);
 };
 
 const WebApiOptionPicker = memo(
@@ -36,7 +40,7 @@ const WebApiOptionPicker = memo(
 			queryParam = "q",
 			queryRequired = false,
 			// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
-			parameters,
+			queryString,
 			headers,
 			//
 			// label,
@@ -68,6 +72,8 @@ const WebApiOptionPicker = memo(
 			// METHODS
 			triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
 			getData = defaultGetData,
+			onError = defaultOnError,
+			onClose,
 			...rest
 		} = props;
 
@@ -101,6 +107,9 @@ const WebApiOptionPicker = memo(
 
 		const handleClose = useCallback(() => {
 			// console.log(`${name}.handleClose`);
+			if (onClose) {
+				onClose();
+			}
 			if (filterByServer) {
 				setState((prev) => ({
 					...prev,
@@ -115,10 +124,10 @@ const WebApiOptionPicker = memo(
 					// }),
 				}));
 			}
-		}, [filterByServer]);
+		}, [filterByServer, onClose]);
 
 		const loadOptions = useCallback(
-			async ({ q } = {}) => {
+			async ({ q, onError: onMethodError } = {}) => {
 				// 若有指定 options 則不 fetch
 				// if (options) {
 				// 	console.log("option provided, no fetching needed");
@@ -144,7 +153,7 @@ const WebApiOptionPicker = memo(
 						url,
 						data: {
 							...(q && { [queryParam]: q }),
-							...(parameters && queryString.parse(parameters)),
+							...(queryString && QueryString.parse(queryString)),
 						},
 						headers,
 						...(bearer && {
@@ -164,7 +173,12 @@ const WebApiOptionPicker = memo(
 					}
 				} catch (err) {
 					// 正常情況不該跑到這裡
-					console.error(`${name}.loadOptions failed`, err);
+					console.error(`${name}.loadOptions failed`);
+					if (onMethodError) {
+						onMethodError(err);
+					} else {
+						onError(err);
+					}
 					setState((prev) => ({
 						...prev,
 						options: [],
@@ -185,48 +199,30 @@ const WebApiOptionPicker = memo(
 				method,
 				url,
 				queryParam,
-				parameters,
+				queryString,
 				headers,
 				bearer,
 				getData,
 				noOptionsText,
+				onError,
 				fetchErrorText,
 			]
 		);
 
 		const handleTextFieldChange = useCallback(
 			(event) => {
-				let query = event.target.value;
+				let qs = event.target.value;
+				console.log(`text changed: `, qs);
 
-				// if (timerIdRef.current) {
-				// 	clearTimeout(timerIdRef.current);
-				// }
-				// timerIdRef.current = setTimeout(() => {
-				// 	if (query) {
-				// 		if (filterByServer && triggerServerFilter(query)) {
-				// 			loadOptions({ q: query });
-				// 		}
-				// 	} else {
-				// 		if (filterByServer && queryRequired) {
-				// 			setState((prevState) => ({
-				// 				...prevState,
-				// 				options: [],
-				// 				// loading: null,
-				// 				noOptionsText:
-				// 					typeToSearchText || noOptionsText,
-				// 			}));
-				// 			setLoading(null);
-				// 		}
-				// 	}
-				// }, triggerDelay);
 				if (timerIdRef.current) {
 					clearTimeout(timerIdRef.current);
 				}
 				timerIdRef.current = setTimeout(() => {
 					if (filterByServer) {
-						if (query) {
-							if (triggerServerFilter(query)) {
-								loadOptions({ q: query });
+						console.log("filterByServer");
+						if (qs) {
+							if (triggerServerFilter(qs)) {
+								loadOptions({ q: qs });
 							}
 						} else {
 							loadOptions();
@@ -235,7 +231,7 @@ const WebApiOptionPicker = memo(
 				}, triggerDelay);
 				setState((prev) => ({
 					...prev,
-					query,
+					query: qs,
 				}));
 			},
 			[filterByServer, loadOptions, triggerDelay, triggerServerFilter]
@@ -341,15 +337,9 @@ const WebApiOptionPicker = memo(
 			} else {
 				// console.log(`url set to ${url}`);
 			}
-			// console.log(`${name}.options cleared, due to url/qs changed`);
-			// console.log(`\turl`, url);
-			// console.log(`\tparameters`, parameters);
-			// setState((prev) => ({
-			// 	...prev,
-			// 	options: [],
-			// }));
+
 			setLoading(null);
-		}, [name, onChange, parameters, url]);
+		}, [name, onChange, queryString, url]);
 
 		// useEffect(() => {
 		// 	if (options && url) {
@@ -395,7 +385,7 @@ WebApiOptionPicker.propTypes = {
 	lazy: PropTypes.bool,
 	queryParam: PropTypes.string,
 	queryRequired: PropTypes.bool,
-	parameters: PropTypes.string,
+	queryString: PropTypes.string,
 	headers: PropTypes.object,
 	disabled: PropTypes.bool,
 	typeToSearchText: PropTypes.string,
@@ -405,6 +395,8 @@ WebApiOptionPicker.propTypes = {
 	options: PropTypes.array,
 	triggerServerFilter: PropTypes.func,
 	getData: PropTypes.func,
+	onError: PropTypes.func,
+	onClose: PropTypes.func,
 };
 
 export default WebApiOptionPicker;

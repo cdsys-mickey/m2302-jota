@@ -14,7 +14,7 @@ const ModuleHeading = (props) => {
 		style,
 		iconColor,
 		cssColor,
-		TypographyProps,
+		typographyProps,
 		sx = [],
 		// METHODS
 		onClick,
@@ -98,7 +98,7 @@ const ModuleHeading = (props) => {
 					...style,
 				}}
 				onClick={handleClick}
-				{...TypographyProps}>
+				{...typographyProps}>
 				{text}
 			</Typography>
 		</FlexBox>

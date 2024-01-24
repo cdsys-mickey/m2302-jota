@@ -25,7 +25,6 @@ const A16Grid = memo((props) => {
 		// METHODS
 		handleChange,
 		isPersisted,
-		// handleActiveCellChange,
 		handleCreateRow,
 	} = props;
 
@@ -78,7 +77,10 @@ const A16Grid = memo((props) => {
 			{
 				...keyColumn(
 					"Using_N",
-					createMuiCheckboxColumn({ trueValue: "1", falseValue: "0" })
+					createMuiCheckboxColumn({
+						trueValue: "1",
+						falseValue: "0",
+					})
 				),
 				title: "使用中",
 				minWidth: 60,

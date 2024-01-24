@@ -1,0 +1,8 @@
+.top-shadow {
+	box-shadow: inset 0px 10px 5px -3px rgba(199, 199, 199, 1);
+	// rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px
+}
+
+.bottom-shadow {
+	box-shadow: inset 0px -10px 5px -3px rgba(199, 199, 199, 1);
+}

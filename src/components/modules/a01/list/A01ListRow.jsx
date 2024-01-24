@@ -1,20 +1,12 @@
-import { memo } from "react";
-import {
-	Box,
-	Grid,
-	IconButton,
-	Tooltip,
-	Typography,
-	Skeleton,
-} from "@mui/material";
-import PropTypes from "prop-types";
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
+import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import IndexColumn from "@/shared-components/listview/IndexColumn";
+import { Grid, IconButton, Tooltip } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo } from "react";
 import A01ProdIDColumn from "./columns/A01ProdIDColumn";
 import A01ProdNameColumn from "./columns/A01ProdNameColumn";
-import A01ClassNColumn from "./columns/A01ClassNColumn";
 
 const A01ListRow = memo((props) => {
 	const { index, style, value, loading, onClick } = props;
@@ -22,13 +14,13 @@ const A01ListRow = memo((props) => {
 	return (
 		<div style={style}>
 			<HoverableListItem borderBottom onClick={onClick}>
-				<HoverableListItemSecondaryAction>
+				{/* <HoverableListItemSecondaryAction>
 					<Tooltip arrow title="編輯">
 						<IconButton>
 							<EditOutlinedIcon htmlColor="#000" />
 						</IconButton>
 					</Tooltip>
-				</HoverableListItemSecondaryAction>
+				</HoverableListItemSecondaryAction> */}
 				<Grid
 					container
 					columns={24}
@@ -38,7 +30,7 @@ const A01ListRow = memo((props) => {
 							alignItems: "center",
 						},
 					]}>
-					<IndexColumn></IndexColumn>
+					<IndexColumn title={index}></IndexColumn>
 					<A01ProdIDColumn loading={loading}>
 						{value?.ProdID}
 					</A01ProdIDColumn>

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useState } from "react";
 
-export const useDialogs = ({ ButtonProps }) => {
+export const useDialogs = ({ buttonProps }) => {
 	const [entities, setEntities] = useState([]);
 
 	const closeLatest = useCallback(() => {
@@ -18,20 +18,20 @@ export const useDialogs = ({ ButtonProps }) => {
 	}, []);
 
 	const create = useCallback(
-		({ ButtonProps: dialogButtonProps, ...dialogProps }) => {
+		({ buttonProps: dialogbuttonProps, ...dialogProps }) => {
 			setEntities((prev) => [
 				...prev,
 				{
-					ButtonProps: {
-						...ButtonProps,
-						...dialogButtonProps,
+					buttonProps: {
+						...buttonProps,
+						...dialogbuttonProps,
 					},
 					open: true,
 					...dialogProps,
 				},
 			]);
 		},
-		[ButtonProps]
+		[buttonProps]
 	);
 
 	const setWorking = useCallback((working) => {

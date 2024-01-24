@@ -5,6 +5,9 @@ import { memo } from "react";
 import { FixedSizeList as List } from "react-window";
 import RWFrameMenuRow from "./RWFrameMenuRow";
 import { forwardRef } from "react";
+import "./RWFrameMenu.scss";
+import clsx from "clsx";
+import { useScrollable } from "../../shared-hooks/useScrollable";
 
 const PADDING_SIZE = 8;
 
@@ -28,6 +31,10 @@ const RWFrameMenu = memo((props) => {
 		loading,
 		error,
 		itemCount,
+		bottomReached,
+		scrollOffset,
+		onScroll,
+		onItemsRendered,
 	} = props;
 
 	if (loading) {
@@ -38,17 +45,31 @@ const RWFrameMenu = memo((props) => {
 		return <ErrorBox error={error} />;
 	}
 
+	// console.log("styles:", styles);
+
 	return (
-		<List
-			// innerRef={ref}
-			height={height}
-			itemCount={itemCount}
-			itemSize={34}
-			itemData={data}
-			width={width - 4}
-			innerElementType={innerElementType}>
-			{RWFrameMenuRow}
-		</List>
+		<div
+			className={clsx("rw-shadow", {
+				// "rw-top-shadow": scrollOffset > 0,
+				"rw-bottom-shadow": !bottomReached,
+			})}
+			// style={scrollable.scroller}
+		>
+			<List
+				onScroll={onScroll}
+				className={clsx("rw-scrollable", {
+					"rw-top-shadow": scrollOffset > 0,
+				})}
+				height={height}
+				itemCount={itemCount}
+				itemSize={34}
+				itemData={data}
+				width={width - 1}
+				// innerElementType={innerElementType}
+				onItemsRendered={onItemsRendered}>
+				{RWFrameMenuRow}
+			</List>
+		</div>
 	);
 });
 RWFrameMenu.propTypes = {
@@ -60,6 +81,6 @@ RWFrameMenu.propTypes = {
 	error: PropTypes.object,
 };
 
-RWFrameMenu.displayName = "VirtualizedFrameMenu";
+RWFrameMenu.displayName = "RWFrameMenu";
 
 export default RWFrameMenu;

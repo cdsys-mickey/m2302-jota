@@ -10,12 +10,15 @@ const WebApiOptionPickerColumn = memo((props) => {
 		focus,
 		rowData,
 		setRowData,
+		rowIndex,
+		columnIndex,
 		active,
 		stopEditing,
 		disabled,
 	} = props;
-	console.log(`rendering WebApiOptionPickerColumn`, props);
+	// console.log(`rendering WebApiOptionPickerColumn`, props);
 	console.log(`rowData`, rowData);
+	console.log(`columnIndex: ${columnIndex}, rowIndex: ${rowIndex}`);
 	const ref = useRef();
 
 	const handleChange = useCallback(
@@ -31,6 +34,11 @@ const WebApiOptionPickerColumn = memo((props) => {
 		},
 		[name, rowData, setRowData]
 	);
+
+	const handleClose = useCallback(() => {
+		stopEditing();
+		console.log("stopEditing");
+	}, [stopEditing]);
 
 	// focusing on underlying input component when cel is focused
 	useLayoutEffect(() => {
@@ -48,6 +56,7 @@ const WebApiOptionPickerColumn = memo((props) => {
 			hideBorders
 			value={rowData}
 			onChange={handleChange}
+			// onClose={handleClose}
 			{...ComponentProps}
 		/>
 	);

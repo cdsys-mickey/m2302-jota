@@ -16,6 +16,11 @@ export default defineConfig(({ mode }) => {
 					changeOrigin: true,
 					rewrite: (path) => path.replace(/^\/api/, ""),
 				},
+				"/hub": {
+					target: "http://127.0.0.1:5229",
+					changeOrigin: true,
+					rewrite: (path) => path.replace(/^\/hub/, ""),
+				},
 			},
 		},
 		plugins: [react()],

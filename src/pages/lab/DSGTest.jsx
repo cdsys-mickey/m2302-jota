@@ -58,9 +58,12 @@ const DSGTest = memo(
 				{
 					...keyColumn(
 						"abc",
-						createOptionPickerColumn(OptionPickerColumn, {
-							options: ["A", "B", "C"],
-						})
+						createOptionPickerColumn((props) => (
+							<OptionPickerColumn
+								options={["A", "B", "C"]}
+								{...props}
+							/>
+						))
 					),
 					title: "OptionPicker",
 				},
@@ -96,7 +99,7 @@ const DSGTest = memo(
 );
 
 DSGTest.propTypes = {
-	gridRef: PropTypes.func,
+	gridRef: PropTypes.object,
 };
 
 DSGTest.displayName = "DSGTest";

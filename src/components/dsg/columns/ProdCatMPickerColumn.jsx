@@ -16,7 +16,7 @@ const ProdCatMPickerColumn = memo((props) => {
 		// Cell state
 		active,
 		focus,
-		disabled,
+		disabled: columnDisabled,
 		// Control functions
 		stopEditing,
 		insertRowBelow,
@@ -30,28 +30,36 @@ const ProdCatMPickerColumn = memo((props) => {
 		return rowData["catL"]?.LClas;
 	}, [rowData]);
 
-	const readOnly = useMemo(() => {
-		return !catL || disabled;
-	}, [catL, disabled]);
+	const disabled = useMemo(() => {
+		return !catL || columnDisabled;
+	}, [catL, columnDisabled]);
 
 	const ref = useRef();
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
 
 	const handleChange = useCallback(
 		(newValue) => {
-			console.log(
-				`${name}.[${rowIndex}, ${columnIndex}]rowData`,
-				rowData
-			);
-			console.log(`${name}.newValue`, newValue);
-			if (catL) {
-				setRowData({
-					...rowData,
-					[name]: newValue,
-					catS: null,
-				});
+			if (name) {
+				console.log(`${name}.rowData`, rowDataRef.current);
+				console.log(`${name}.handleChange, newValue`, newValue);
+				const ogValue = rowDataRef.current[name];
+				if (newValue?.MClas !== ogValue?.MClas) {
+					setRowData({
+						...rowDataRef.current,
+						[name]: newValue,
+						// ...(newValue && {
+						catS: null,
+						// }),
+					});
+				}
+			} else {
+				console.log(`rowData`, rowDataRef.current);
+				console.log(`handleChange, newValue`, newValue);
+				setRowData(newValue);
 			}
 		},
-		[catL, columnIndex, name, rowData, rowIndex, setRowData]
+		[name, setRowData]
 	);
 
 	// focusing on the underlying input component when the cell is focused
@@ -68,9 +76,8 @@ const ProdCatMPickerColumn = memo((props) => {
 			label=""
 			hideBorders
 			inputRef={ref}
-			readOnly={readOnly}
 			disabled={disabled}
-			value={rowData[name]}
+			value={name ? rowData[name] : rowData}
 			onChange={handleChange}
 			catL={catL}
 			{...rest}

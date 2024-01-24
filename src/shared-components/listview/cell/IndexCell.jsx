@@ -2,7 +2,7 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-const IndexCell = memo((props, ref) => {
+const IndexCell = memo((props) => {
 	const { children, sx = [], ...rest } = props;
 	return (
 		<Grid

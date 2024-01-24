@@ -18,9 +18,13 @@ const FormSectionBox = styled(Box, {
 		// borderBottom: `1px solid ${borderColor}`,
 		borderLeft: `5px solid ${borderColor}`,
 		boxShadow: "rgba(0, 0, 0, 0.16) 1px 1px 6px",
-		paddingBottom: "16px",
-		paddingLeft: "12px",
-		paddingRight: "12px",
+		// paddingTop: theme.spacing(1),
+		paddingBottom: theme.spacing(1),
+		paddingLeft: theme.spacing(1),
+		paddingRight: theme.spacing(1),
+		// marginTop: theme.spacing(1),
+		marginTop: theme.spacing(0),
+		marginBottom: theme.spacing(2),
 	})
 );
 

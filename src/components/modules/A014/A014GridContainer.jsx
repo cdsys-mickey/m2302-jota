@@ -22,6 +22,7 @@ export const A014GridContainer = () => {
 			height={gridHeight}
 			onChange={prodGrid.handleGridChange()}
 			bearer={token}
+			handleCreateRow={prodGrid.handleCreateRow}
 		/>
 	);
 };
