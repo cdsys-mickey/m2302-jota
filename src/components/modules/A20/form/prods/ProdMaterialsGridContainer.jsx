@@ -13,6 +13,7 @@ export const ProdMaterialsGridContainer = (props) => {
 
 	return (
 		<ProdMaterialsGrid
+			rowKey={a20.getRowKey}
 			gridRef={a20.setMaterialsGridRef}
 			readOnly={!a20.editing}
 			data={a20.materialsGridData}

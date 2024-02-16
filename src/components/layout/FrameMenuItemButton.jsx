@@ -51,6 +51,7 @@ const FrameMenuItemButton = memo(
 							primary={value.JobName}
 							primaryTypographyProps={{
 								variant: "body1",
+								// fontSize: 17,
 							}}
 							sx={{
 								color: "text.primary",

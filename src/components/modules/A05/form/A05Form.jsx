@@ -40,7 +40,7 @@ const A05Form = memo((props) => {
 						},
 					})}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
-					<FormSectionBox pt={editing ? 2 : 1}>
+					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={3}>
 								<TypoTextFieldContainer
@@ -130,7 +130,7 @@ const A05Form = memo((props) => {
 					</FormSectionBox>
 					{/* 公司 */}
 					<FormSectionTitle>公司</FormSectionTitle>
-					<FormSectionBox pt={editing ? 2 : 1}>
+					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TypoTextFieldContainer
@@ -157,7 +157,7 @@ const A05Form = memo((props) => {
 					</FormSectionBox>
 					{/* 工廠 */}
 					<FormSectionTitle>工廠</FormSectionTitle>
-					<FormSectionBox pt={editing ? 2 : 1}>
+					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TypoTextFieldContainer
@@ -182,7 +182,7 @@ const A05Form = memo((props) => {
 							</Grid>
 						</Grid>
 					</FormSectionBox>
-					<FormSectionBox pt={editing ? 2 : 1}>
+					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TypoTextFieldContainer

@@ -2,18 +2,19 @@ import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineLi
 import { Container } from "@mui/material";
 import { forwardRef, memo } from "react";
 import { A14LockRowsSwitchContainer } from "./A14LockRowsSwitchContainer";
+import ContainerEx from "../../../shared-components/ContainerEx";
 
 const A14Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<Container maxWidth="xs">
+			<ContainerEx maxWidth="xs" alignLeft>
 				<InlineListViewToolbar
 					ref={ref}
-					RightComponent={A14LockRowsSwitchContainer}
+					LeftComponent={A14LockRowsSwitchContainer}
 					{...rest}
 				/>
-			</Container>
+			</ContainerEx>
 		);
 	})
 );

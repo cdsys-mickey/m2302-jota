@@ -12,7 +12,7 @@ const hasEmptyError = (criteria) => {
 	return true;
 };
 
-const transformForRead = (data) => {
+const transformForReading = (data) => {
 	const { ProdID, ProdData_N, BomFile_S, ...rest } = data;
 
 	//StoreTrans_S
@@ -91,7 +91,7 @@ const paramsToJsonData = (params) => {
 
 const A20 = {
 	hasEmptyError,
-	transformForRead,
+	transformForReading,
 	processForDefaultSubmit,
 	transformForEditorSubmit,
 	isFiltered,

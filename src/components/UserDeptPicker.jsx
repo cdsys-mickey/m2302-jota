@@ -1,9 +1,9 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
-import { ControlledWebApiOptionPicker } from "../../shared-components/controlled/ControlledWebApiOptionPicker";
-import Depts from "../../modules/md-depts";
+import { ControlledWebApiOptionPicker } from "../shared-components/controlled/ControlledWebApiOptionPicker";
+import Depts from "../modules/md-depts";
 import { useContext } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
+import { AuthContext } from "../contexts/auth/AuthContext";
 import { useCallback } from "react";
 
 const UserDeptPicker = memo((props) => {

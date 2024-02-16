@@ -102,7 +102,7 @@ const HomeWidget = memo((props) => {
 			{isDataEmpty && <NoDataBox />}
 			{hasData &&
 				data.map((item, index) => (
-					<ItemComponent key={`item_${index}`} data={item} />
+					<ItemComponent key={`item_${index}`} value={item} />
 				))}
 		</WidgetBox>
 	);

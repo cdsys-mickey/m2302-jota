@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const transformForRead = (payload) => {
+const transformForReading = (payload) => {
 	const { BankID, BankData_N, MainProd = [], Remark = [], ...rest } = payload;
 	return {
 		bank: BankID
@@ -39,7 +39,7 @@ const paramsToJsonData = (params) => {
 };
 
 const A05 = {
-	transformForRead,
+	transformForReading,
 	transformForEditorSubmit,
 	paramsToJsonData,
 };

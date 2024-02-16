@@ -140,10 +140,10 @@ export const useAuth = () => {
 				console.error("token restore failed", err);
 				switch (err.status) {
 					case 401:
-						toast.error("您的登入已逾期，請重新登入");
+						toast.error("您的連線階段已逾期，請重新登入");
 						break;
 					default:
-						toast.error("登入發生例外，請重新登入");
+						toast.error("登入發生例外，請重新嘗試");
 						break;
 				}
 				toLogin();

@@ -2,8 +2,7 @@ import DialogEx from "@/shared-components/dialog/DialogEx";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import { Stack } from "@mui/material";
-import UserDeptPicker from "./UserDeptPicker";
+import UserDeptPicker from "@/components/UserDeptPicker";
 import FlexBox from "@/shared-components/FlexBox";
 
 export const DeptSwitchDialogContainer = () => {
@@ -14,11 +13,11 @@ export const DeptSwitchDialogContainer = () => {
 		<FormProvider {...form}>
 			<form>
 				<DialogEx
+					title="切換門市"
 					onSubmit={form.handleSubmit(
 						auth.onDeptSwitchSubmit,
 						auth.onDeptSwitchSubmitError
 					)}
-					title="切換門市"
 					open={auth.deptSwitching}
 					onClose={auth.cancelDeptSwitch}
 					buttonProps={{ size: "small" }}>

@@ -12,7 +12,8 @@ export const A05DialogTitleButtonsContainer = (props) => {
 	const a05 = useContext(A05Context);
 	const forms = useFormContext();
 
-	if (a05.readState !== ActionState.DONE) {
+	// if (a05.readState !== ActionState.DONE) {
+	if (!a05.itemDataReady) {
 		return false;
 	}
 
@@ -31,7 +32,7 @@ export const A05DialogTitleButtonsContainer = (props) => {
 
 	return (
 		<A05DialogTitleViewButtons
-			onEdit={a05.updatePrompt}
+			onEdit={a05.promptUpdating}
 			onDelete={a05.confirmDelete}
 			{...rest}
 		/>

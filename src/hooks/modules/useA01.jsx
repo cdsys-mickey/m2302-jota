@@ -13,6 +13,7 @@ import Errors from "../../shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
 import useHttpPost from "../../shared-hooks/useHttpPost";
 import { AuthContext } from "../../contexts/auth/AuthContext";
+import { useInit } from "../../shared-hooks/useInit";
 
 /**
  * 適用三種情境
@@ -70,7 +71,7 @@ export const useA01 = ({ token, mode }) => {
 		dialogs.confirm({
 			message: "確認要放棄編輯?",
 			onConfirm: () => {
-				crud.updateCancel();
+				crud.cancelUpdating();
 			},
 		});
 	}, [crud, dialogs]);
@@ -91,17 +92,17 @@ export const useA01 = ({ token, mode }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A01.transformForRead(payload);
+					const data = A01.transformForReading(payload);
 
 					transGrid.handleGridDataLoaded(data.trans);
 					comboGrid.handleGridDataLoaded(data.combo);
 
-					crud.readDone(data);
+					crud.doneReading(data);
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.readFail(err);
+				crud.failReading(err);
 			}
 		},
 		[comboGrid, crud, httpGetAsync, mode, token, transGrid]
@@ -114,7 +115,7 @@ export const useA01 = ({ token, mode }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.readStart(rowData, "讀取中...");
+			crud.startReading(rowData, "讀取中...");
 			loadItem(rowData.ProdID);
 		},
 		[crud, loadItem]
@@ -136,7 +137,7 @@ export const useA01 = ({ token, mode }) => {
 	const handleCreate = useCallback(
 		async ({ data }) => {
 			try {
-				crud.createStart();
+				crud.startCreating();
 				const { status, error } = await httpPostAsync({
 					url:
 						mode === A01.Mode.NEW_PROD
@@ -152,8 +153,8 @@ export const useA01 = ({ token, mode }) => {
 							data?.ProdData
 						}」新增成功`
 					);
-					crud.createDone();
-					crud.readCancel();
+					crud.doneCreating();
+					crud.cancelReading();
 					// 重新整理
 					loader.loadList({ useLastParams: true });
 				} else if (status.code === 422) {
@@ -162,7 +163,7 @@ export const useA01 = ({ token, mode }) => {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
-				crud.createFail(err);
+				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err));
 			}
@@ -173,7 +174,7 @@ export const useA01 = ({ token, mode }) => {
 	const handleUpdate = useCallback(
 		async ({ data }) => {
 			try {
-				crud.updateStart();
+				crud.startUpdating();
 				// const oldId = crud.itemData?.ProdID;
 				const { status, error } = await httpPutAsync({
 					url:
@@ -190,8 +191,8 @@ export const useA01 = ({ token, mode }) => {
 							data?.ProdData
 						}」修改成功`
 					);
-					crud.updateDone();
-					// crud.readCancel();
+					crud.doneUpdating();
+					// crud.cancelReading();
 					loadItem(data?.ProdID);
 					// 重新整理
 					loader.loadList({
@@ -201,7 +202,7 @@ export const useA01 = ({ token, mode }) => {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.updateFail(err);
+				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err));
 			}
@@ -215,7 +216,7 @@ export const useA01 = ({ token, mode }) => {
 			const processed = A01.transformForCounterSubmit(data);
 			console.log(`processed`, processed);
 			try {
-				crud.updateStart();
+				crud.startUpdating();
 				const { status, error } = await httpPatchAsync({
 					url: `v1/prods/counter`,
 					data: processed,
@@ -223,13 +224,13 @@ export const useA01 = ({ token, mode }) => {
 				});
 				if (status.success) {
 					toast.success(`商品「${data?.ProdData}」已成功更新櫃位`);
-					crud.updateDone();
+					crud.doneUpdating();
 					loadItem(processed?.ProdID);
 				} else {
 					throw error || new Error("櫃位更新失敗");
 				}
 			} catch (err) {
-				crud.updateFail(err);
+				crud.failUpdating(err);
 				console.error("onCounterSubmit.failed", err);
 				toast.error(Errors.getMessage("更新櫃位失敗", err));
 			}
@@ -288,7 +289,7 @@ export const useA01 = ({ token, mode }) => {
 		[comboGrid, transGrid]
 	);
 
-	const createPrompt = useCallback(
+	const promptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			setTabIndex(A01.Tabs.INFO);
@@ -296,8 +297,8 @@ export const useA01 = ({ token, mode }) => {
 				trans: [],
 				combo: [],
 			};
-			crud.readDone(data);
-			crud.createPrompt(data);
+			crud.promptCreating(data);
+			// crud.doneReading(data);
 			transGrid.handleGridDataLoaded(data.trans);
 			comboGrid.handleGridDataLoaded(data.combo);
 		},
@@ -309,7 +310,7 @@ export const useA01 = ({ token, mode }) => {
 			message: `確認要删除商品「${crud.itemData?.ProdData}」?`,
 			onConfirm: async () => {
 				try {
-					crud.deleteStart(crud.itemData);
+					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
 						url:
 							mode === A01.Mode.NEW_PROD
@@ -331,7 +332,7 @@ export const useA01 = ({ token, mode }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.deleteFail(err);
+					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err));
 				}
@@ -435,6 +436,87 @@ export const useA01 = ({ token, mode }) => {
 		setTabIndex(newValue);
 	}, []);
 
+	// TRANS GRID
+	const handleTransGridChange = useCallback(
+		(newValue, operations) => {
+			const operation = operations[0];
+			console.log("operation", operation);
+			console.log("newValue", newValue);
+
+			if (operation.type === "UPDATE") {
+				const rowIndex = operation.fromRowIndex;
+				const rowData = newValue[rowIndex];
+				const row = { rowIndex, rowData };
+				if (
+					rowData.dept &&
+					transGrid.isDuplicating(rowData, newValue)
+				) {
+					transGrid.rewriteRowValue(row, newValue, {
+						dept: null,
+					});
+					toast.error(
+						`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
+					);
+					return;
+				}
+			}
+			transGrid.propagateGridChange(newValue, operations);
+		},
+		[transGrid]
+	);
+
+	// COMBO GRID
+	const handleComboGridChange = useCallback(
+		(newValue, operations) => {
+			const operation = operations[0];
+			console.log("operation", operation);
+			console.log("newValue", newValue);
+
+			if (operation.type === "UPDATE") {
+				const rowIndex = operation.fromRowIndex;
+				const rowData = newValue[rowIndex];
+				const row = { rowIndex, rowData };
+				if (
+					rowData.prod &&
+					comboGrid.isDuplicating(rowData, newValue)
+				) {
+					comboGrid.rewriteRowValue(row, newValue, {
+						dept: null,
+					});
+					toast.error(
+						`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
+					);
+					return;
+				}
+			}
+			comboGrid.propagateGridChange(newValue, operations);
+		},
+		[comboGrid]
+	);
+
+	// const handleTransGridDeptBlur = useCallback(({cell}) => {
+	// 	const {col, row} =  cell;
+	// 	const rowData = transGrid.getRowDataByIndex(row);
+	// 	switch (col) {
+	// 		case 1: //門市
+	// 			if (transGrid.isKeyDuplicated(rowData)) {
+	// 				toast.error(`門市「${rowData.dept?.DeptName}」不可重複選擇`);
+	// 				transGrid.rewriteRowValue(row, newValue, {
+	// 					dept: null,
+	// 				});
+	// 			}
+	// 			console.log(`duplicated`);
+	// 			break;
+	// 		default:
+	// 			break;
+	// 	}
+
+	// }, []);
+
+	useInit(() => {
+		crud.cancelAction();
+	}, []);
+
 	return {
 		...loader,
 		// Popper
@@ -455,7 +537,7 @@ export const useA01 = ({ token, mode }) => {
 		confirmReturn,
 		resetGridData,
 		// CRUD OVERRIDES
-		createPrompt,
+		promptCreating,
 		confirmDelete,
 		// REVIEW
 		reviewing,
@@ -467,11 +549,13 @@ export const useA01 = ({ token, mode }) => {
 		// ProdTransGrid
 		setTransGridRef: transGrid.setGridRef,
 		transGridData: transGrid.gridData,
-		handleTransGridChange: transGrid.propagateGridChange,
+		// handleTransGridChange: transGrid.propagateGridChange,
+		handleTransGridChange,
 		// ProdComboGrid
 		setComboGridRef: comboGrid.setGridRef,
 		comboGridData: comboGrid.gridData,
-		handleComboGridChange: comboGrid.propagateGridChange,
+		// handleComboGridChange: comboGrid.propagateGridChange,
+		handleComboGridChange,
 		// Store
 		onCounterSubmit,
 		onCounterSubmitError,

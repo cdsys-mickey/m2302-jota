@@ -5,6 +5,7 @@ import { memo } from "react";
 import { A014GridContainer } from "../../components/modules/A014/A014GridContainer";
 import { ProdGridFormContainer } from "../../components/modules/prod-grid/ProdGridFormContainer";
 import ProdGridToolbar from "../../components/modules/prod-grid/ProdGridToolbar";
+import ContainerEx from "../../shared-components/ContainerEx";
 
 const A014Frame = memo((props) => {
 	const { boxStyles } = props;
@@ -12,11 +13,11 @@ const A014Frame = memo((props) => {
 	return (
 		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
-			<Container maxWidth="md">
+			<ContainerEx maxWidth="md" alignLeft>
 				<Box>
 					<ProdGridFormContainer />
 				</Box>
-			</Container>
+			</ContainerEx>
 			<Box>
 				<ProdGridToolbar />
 				<A014GridContainer />

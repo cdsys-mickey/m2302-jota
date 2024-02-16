@@ -155,7 +155,7 @@ export const ZZDSGProvider = ({
 		[keyColumn, otherColumnNames, state.prevGridData]
 	);
 
-	const isDuplicated = useCallback(
+	const isKeyDuplicated = useCallback(
 		(key) => {
 			return (
 				state.gridData.filter((i) => i[keyColumn] === key).length > 1
@@ -219,7 +219,7 @@ export const ZZDSGProvider = ({
 						setData(newValue);
 						// 新增 或 修改
 						const key = rowData[keyColumn];
-						if (isDuplicated(key)) {
+						if (isKeyDuplicated(key)) {
 							if (onDuplicatedError) {
 								onDuplicatedError(row, newValue);
 							}
@@ -275,7 +275,7 @@ export const ZZDSGProvider = ({
 				}
 			},
 		[
-			isDuplicated,
+			isKeyDuplicated,
 			isInPrevGridData,
 			isUnchanged,
 			keyColumn,

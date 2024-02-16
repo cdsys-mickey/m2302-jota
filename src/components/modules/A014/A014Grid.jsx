@@ -15,7 +15,7 @@ import {
 import ProdCatLPickerColumn from "../../dsg/columns/ProdCatLPickerColumn";
 import ProdCatMPickerColumn from "../../dsg/columns/ProdCatMPickerColumn";
 import ProdCatSPickerColumn from "../../dsg/columns/ProdCatSPickerColumn";
-import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 
 const A014Grid = memo((props) => {
 	const {
@@ -130,7 +130,7 @@ const A014Grid = memo((props) => {
 			<DynamicDataSheetGrid
 				lockRows
 				ref={setGridRef}
-				rowKey="CodeID"
+				rowKey="ProdID"
 				// height={height + (readOnly ? 48 : 0)}
 				height={height + 48}
 				rowHeight={42}

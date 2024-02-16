@@ -10,6 +10,7 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useToggle } from "@/shared-hooks/useToggle";
 import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
+import { useInit } from "../../shared-hooks/useInit";
 
 export const useA06 = ({ token, mode }) => {
 	const crud = useContext(CrudContext);
@@ -51,7 +52,7 @@ export const useA06 = ({ token, mode }) => {
 		dialogs.confirm({
 			message: "確認要放棄編輯?",
 			onConfirm: () => {
-				crud.updateCancel();
+				crud.cancelUpdating();
 			},
 		});
 	}, [crud, dialogs]);
@@ -69,14 +70,14 @@ export const useA06 = ({ token, mode }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A06.transformForRead(payload);
+					const data = A06.transformForReading(payload);
 
-					crud.readDone(data);
+					crud.doneReading(data);
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.readFail(err);
+				crud.failReading(err);
 			}
 		},
 		[crud, httpGetAsync, mode, token]
@@ -88,7 +89,7 @@ export const useA06 = ({ token, mode }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.readStart(rowData, "讀取中...");
+			crud.startReading(rowData, "讀取中...");
 			loadItem(rowData.CustID);
 		},
 		[crud, loadItem]
@@ -110,7 +111,7 @@ export const useA06 = ({ token, mode }) => {
 	const handleCreate = useCallback(
 		async ({ data }) => {
 			try {
-				crud.createStart();
+				crud.startCreating();
 				const { status, error } = await httpPostAsync({
 					url:
 						mode === A06.Mode.NEW_CUSTOMER
@@ -126,15 +127,15 @@ export const useA06 = ({ token, mode }) => {
 							data?.CustData
 						}」新增成功`
 					);
-					crud.createDone();
-					crud.readCancel();
+					crud.doneCreating();
+					crud.cancelReading();
 					// 重新整理
 					loader.loadList();
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
-				crud.createFail(err);
+				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err));
 			}
@@ -145,7 +146,7 @@ export const useA06 = ({ token, mode }) => {
 	const handleUpdate = useCallback(
 		async ({ data }) => {
 			try {
-				crud.updateStart();
+				crud.startUpdating();
 				const { status, error } = await httpPutAsync({
 					url:
 						mode === A06.Mode.NEW_CUSTOMER
@@ -161,8 +162,8 @@ export const useA06 = ({ token, mode }) => {
 							data?.CustData
 						}」修改成功`
 					);
-					crud.updateDone();
-					// crud.readCancel();
+					crud.doneUpdating();
+					// crud.cancelReading();
 					loadItem(data?.CustID);
 					// 重新整理
 					loader.loadList();
@@ -170,7 +171,7 @@ export const useA06 = ({ token, mode }) => {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.updateFail(err);
+				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err));
 			}
@@ -201,15 +202,15 @@ export const useA06 = ({ token, mode }) => {
 		);
 	}, []);
 
-	const createPrompt = useCallback(
+	const promptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			const data = {
 				trans: [],
 				combo: [],
 			};
-			crud.readDone(data);
-			crud.createPrompt(data);
+			// crud.doneReading(data);
+			crud.promptCreating(data);
 		},
 		[crud]
 	);
@@ -219,7 +220,7 @@ export const useA06 = ({ token, mode }) => {
 			message: `確認要删除客戶「${crud.itemData?.CustData}」?`,
 			onConfirm: async () => {
 				try {
-					crud.deleteStart(crud.itemData);
+					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
 						url:
 							mode === A06.Mode.NEW_CUSTOMER
@@ -239,7 +240,7 @@ export const useA06 = ({ token, mode }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.deleteFail(err);
+					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err));
 				}
@@ -324,6 +325,10 @@ export const useA06 = ({ token, mode }) => {
 		console.error(`onSearchSubmitError`, err);
 	}, []);
 
+	useInit(() => {
+		crud.cancelAction();
+	}, []);
+
 	return {
 		...loader,
 		// Popper
@@ -343,7 +348,7 @@ export const useA06 = ({ token, mode }) => {
 		onEditorSubmitError,
 		confirmReturn,
 		// CRUD OVERRIDES
-		createPrompt,
+		promptCreating,
 		confirmDelete,
 		// REVIEW
 		reviewing,

@@ -30,8 +30,8 @@ export const FrameMenuGroupHeader = memo(
 					variant={variant}
 					color="primary.contrastText"
 					sx={{
-						fontWeight: 700,
-						fontSize: 18,
+						fontWeight: 500,
+						fontSize: 20,
 					}}>
 					{text}
 				</Typography>

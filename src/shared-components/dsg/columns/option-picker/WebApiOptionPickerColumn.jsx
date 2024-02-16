@@ -5,7 +5,7 @@ import WebApiOptionPicker from "../../../picker/WebApiOptionPicker";
 const WebApiOptionPickerColumn = memo((props) => {
 	const {
 		name,
-		ComponentProps,
+		componentProps,
 		/** BUILT-IN PROPS */
 		focus,
 		rowData,
@@ -16,9 +16,12 @@ const WebApiOptionPickerColumn = memo((props) => {
 		stopEditing,
 		disabled,
 	} = props;
-	// console.log(`rendering WebApiOptionPickerColumn`, props);
-	console.log(`rowData`, rowData);
-	console.log(`columnIndex: ${columnIndex}, rowIndex: ${rowIndex}`);
+	// console.log(
+	// 	`rendering WebApiOptionPickerColumn ${name}[${rowIndex}]`
+	// 	// props
+	// );
+	// console.log(`rowData`, rowData);
+	// console.log(`columnIndex: ${columnIndex}, rowIndex: ${rowIndex}`);
 	const ref = useRef();
 
 	const handleChange = useCallback(
@@ -40,7 +43,7 @@ const WebApiOptionPickerColumn = memo((props) => {
 		console.log("stopEditing");
 	}, [stopEditing]);
 
-	// focusing on underlying input component when cel is focused
+	// focusing on underlying input component when cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
 			ref.current?.focus();
@@ -57,7 +60,7 @@ const WebApiOptionPickerColumn = memo((props) => {
 			value={rowData}
 			onChange={handleChange}
 			// onClose={handleClose}
-			{...ComponentProps}
+			{...componentProps}
 		/>
 	);
 });
@@ -66,7 +69,7 @@ WebApiOptionPickerColumn.propTypes = {
 	focus: PropTypes.bool,
 	name: PropTypes.string,
 	url: PropTypes.string,
-	ComponentProps: PropTypes.object,
+	componentProps: PropTypes.object,
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.number,

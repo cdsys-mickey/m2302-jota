@@ -3,12 +3,13 @@ import { Container } from "@mui/material";
 import { forwardRef, memo } from "react";
 import { A11LockRowsSwitchContainer } from "./A11LockRowsSwitchContainer";
 import A11PrintButtonContainer from "./A11PrintButtonContainer";
+import ContainerEx from "../../../shared-components/ContainerEx";
 
 const A11Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<Container maxWidth="xs">
+			<ContainerEx maxWidth="xs" alignLeft>
 				<InlineListViewToolbar
 					ref={ref}
 					LeftComponent={A11LockRowsSwitchContainer}
@@ -18,7 +19,7 @@ const A11Toolbar = memo(
 					mb={0.5}
 					{...rest}
 				/>
-			</Container>
+			</ContainerEx>
 		);
 	})
 );

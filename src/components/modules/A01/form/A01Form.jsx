@@ -85,8 +85,8 @@ const A01Form = memo((props) => {
 							</TabList>
 						</Box>
 						<TabPanel value={A01.Tabs.INFO}>
-							<FormSectionTitle>基本資料</FormSectionTitle>
-							<FormSectionBox pt={editing ? 2 : 1}>
+							{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
+							<FormSectionBox py={editing ? 2 : 1} mb={2}>
 								<Grid
 									container
 									columns={12}
@@ -146,7 +146,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>分類</FormSectionTitle>
-							<FormSectionBox pt={editing ? 2 : 1}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2}>
 								<Grid
 									container
 									columns={12}
@@ -221,7 +221,7 @@ const A01Form = memo((props) => {
 								</Grid>
 							</FormSectionBox>
 							<FormSectionTitle>成本</FormSectionTitle>
-							<FormSectionBox pt={editing ? 2 : 1}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2}>
 								<Grid
 									container
 									columns={12}
@@ -268,7 +268,8 @@ const A01Form = memo((props) => {
 									</Grid>
 								</Grid>
 							</FormSectionBox>
-							<FormSectionBox pt={editing ? 2 : 1}>
+							<FormSectionTitle>安全存量</FormSectionTitle>
+							<FormSectionBox py={editing ? 2 : 1} mb={2}>
 								<Grid
 									container
 									columns={12}
@@ -306,7 +307,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>包裝單位</FormSectionTitle>
-							<FormSectionBox pt={editing ? 2 : 1}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2}>
 								<Grid
 									container
 									columns={12}
@@ -355,7 +356,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>換算率</FormSectionTitle>
-							<FormSectionBox pt={editing ? 2 : 1}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2}>
 								<Grid
 									container
 									columns={12}
@@ -397,7 +398,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>售價</FormSectionTitle>
-							<FormSectionBox pt={editing ? 2 : 1}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2}>
 								<Grid
 									container
 									columns={12}
@@ -510,7 +511,7 @@ A01Form.propTypes = {
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,
-	tabIndex: PropTypes.number,
+	tabIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	handleTabChange: PropTypes.func,
 };
 

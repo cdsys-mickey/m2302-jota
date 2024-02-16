@@ -6,7 +6,7 @@ import { memo, useMemo } from "react";
 import { DynamicDataSheetGrid, keyColumn } from "react-datasheet-grid";
 import Prods from "@/modules/md-prods";
 import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
-import DSGAddRowsToolbar from "@/components/modules/DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -18,7 +18,6 @@ const ProdComboGrid = memo((props) => {
 		gridRef,
 		data,
 		handleGridChange,
-		loading,
 		height = 600,
 		bearer,
 		...rest
@@ -31,7 +30,7 @@ const ProdComboGrid = memo((props) => {
 					"prod",
 					createWebApiOptionPickerColumn({
 						url: "v1/prods",
-						queryString: "tp=20",
+						queryString: "tp=50",
 						bearer: bearer,
 						queryParam: "qs",
 						getOptionLabel: Prods.getOptionLabel,
@@ -39,6 +38,9 @@ const ProdComboGrid = memo((props) => {
 						filterByServer: true,
 						size: "small",
 						getData: (p) => p["data"],
+						queryRequired: true,
+						placeholder: "組合商品",
+						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
 					})
 				),
 				title: "商品",

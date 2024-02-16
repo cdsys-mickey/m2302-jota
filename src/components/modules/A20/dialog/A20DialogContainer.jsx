@@ -13,6 +13,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 	const forms = useForm({
 		defaultValues: {},
 	});
+	const { reset } = forms;
 	const a20 = useContext(A20Context);
 	const { height } = useWindowSize();
 
@@ -32,11 +33,12 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 	});
 
 	useEffect(() => {
-		if (a20.readState === ActionState.DONE && !!a20.itemData) {
+		// if (a20.readState === ActionState.DONE && !!a20.itemData) {
+		if (a20.itemDataReady) {
 			console.log(`a20 form reset`, a20.itemData);
-			forms.reset(a20.itemData);
+			reset(a20.itemData);
 		}
-	}, [a20.itemData, a20.readState, forms]);
+	}, [a20.itemData, a20.itemDataReady, a20.readState, reset]);
 
 	return (
 		<FormProvider {...forms}>

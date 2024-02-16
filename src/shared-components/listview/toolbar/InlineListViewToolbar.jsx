@@ -21,6 +21,7 @@ const InlineListViewToolbar = memo(
 				inline
 				fullWidth
 				alignItems="flex-end"
+				pb={0.5}
 				sx={[
 					{
 						minHeight: "48px",

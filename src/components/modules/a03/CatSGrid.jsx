@@ -8,7 +8,7 @@ import {
 	keyColumn,
 } from "react-datasheet-grid";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -58,10 +58,9 @@ const CatSGrid = memo((props) => {
 
 	if (loading) {
 		return (
-			<Container maxWidth="sm">
-				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
-				<DSGLoading height={height} />
-			</Container>
+			// <Container maxWidth="sm">
+			<DSGLoading height={height} />
+			// </Container>
 		);
 	}
 
@@ -70,26 +69,26 @@ const CatSGrid = memo((props) => {
 	}
 
 	return (
-		<Container maxWidth="xs">
-			<Box>
-				<DynamicDataSheetGrid
-					lockRows={readOnly}
-					ref={setGridRef}
-					rowKey="SClas"
-					height={height + (readOnly ? 48 : 0)}
-					rowHeight={42}
-					value={data}
-					onChange={handleChange}
-					columns={columns}
-					addRowsComponent={DSGAddRowsToolbar}
-					disableExpandSelection
-					contextMenuComponent={ContextMenu}
-					// onActiveCellChange={handleActiveCellChange}
-					onSelectionChange={onSelectionChange}
-					// autoAddRow
-				/>
-			</Box>
-		</Container>
+		// <Container maxWidth="xs">
+		<Box>
+			<DynamicDataSheetGrid
+				lockRows={readOnly}
+				ref={setGridRef}
+				rowKey="SClas"
+				height={height + (readOnly ? 48 : 0)}
+				rowHeight={42}
+				value={data}
+				onChange={handleChange}
+				columns={columns}
+				addRowsComponent={DSGAddRowsToolbar}
+				disableExpandSelection
+				contextMenuComponent={ContextMenu}
+				// onActiveCellChange={handleActiveCellChange}
+				onSelectionChange={onSelectionChange}
+				// autoAddRow
+			/>
+		</Box>
+		// </Container>
 	);
 });
 CatSGrid.propTypes = {

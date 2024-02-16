@@ -11,7 +11,8 @@ export const A20DialogTitleButtonsContainer = (props) => {
 	const a20 = useContext(A20Context);
 	const forms = useFormContext();
 
-	if (a20.readState !== ActionState.DONE) {
+	// if (a20.readState !== ActionState.DONE) {
+	if (!a20.itemDataReady) {
 		return false;
 	}
 
@@ -30,7 +31,7 @@ export const A20DialogTitleButtonsContainer = (props) => {
 
 	return (
 		<A20DialogTitleViewButtons
-			onEdit={a20.updatePrompt}
+			onEdit={a20.promptUpdating}
 			onDelete={a20.confirmDelete}
 			{...rest}
 		/>

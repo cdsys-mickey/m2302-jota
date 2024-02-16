@@ -56,14 +56,13 @@ const BulletinWidget = memo((props) => {
 	return (
 		<Box sx={[...(Array.isArray(sx) ? sx : [sx])]}>
 			{heading}
-			<Box mt={1}>
-				<Paper sx={[scrollable.scroller, {}]}>
-					<Box sx={[scrollable.body, styles]}>
-						<ReactMarkdown components={{ a: LinkRenderer }}>
-							{children}
-						</ReactMarkdown>
-					</Box>
-				</Paper>
+			<hr />
+			<Box mt={1} sx={[scrollable.scroller, {}]}>
+				<Box sx={[scrollable.body, styles]}>
+					<ReactMarkdown components={{ a: LinkRenderer }}>
+						{children}
+					</ReactMarkdown>
+				</Box>
 			</Box>
 		</Box>
 	);

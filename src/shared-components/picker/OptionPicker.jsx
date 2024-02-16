@@ -67,7 +67,7 @@ const OptionPicker = memo(
 			multiple = false,
 			ChipProps,
 			getOptionLabel,
-
+			getTitle,
 			// TextField
 			autoFocus,
 			placeholder,
@@ -83,6 +83,8 @@ const OptionPicker = memo(
 			helperText,
 			disabled = false,
 			onInputChange,
+			renderTagLabel,
+			getOptionKey,
 
 			// PickerBox
 			width,
@@ -190,33 +192,57 @@ const OptionPicker = memo(
 			[dnd, renderDndInput, renderNormalInput]
 		);
 
-		const renderNormalTags = useCallback((value) => {
-			// return value?.map((v, index) => (
-			return value?.map((v) => (
-				<Chip key={v} label={v} size="small" color="primary" />
-			));
-		}, []);
+		const renderNormalTags = useCallback(
+			(value) => {
+				// return value?.map((v, index) => (
+				return value?.map((v) => {
+					const key = getOptionKey ? getOptionKey(v) : v;
+					const label = renderTagLabel
+						? renderTagLabel(v)
+						: getOptionLabel
+						? getOptionLabel(v)
+						: v;
+					return (
+						<Chip
+							key={key}
+							label={label}
+							size="small"
+							color="primary"
+						/>
+					);
+				});
+			},
+			[getOptionKey, getOptionLabel, renderTagLabel]
+		);
 
 		const renderDndTags = useCallback(
 			// (value, getCustomizedTagProps, ownerState) => {
 			(value, getCustomizedTagProps) => {
-				return value?.map((o, index) => (
-					<Draggable key={o} draggableId={o} index={index}>
-						{/* {(provided, snapshot) => ( */}
-						{(provided) => (
-							<Chip
-								label={o}
-								size="small"
-								color="primary"
-								ref={provided.innerRef}
-								{...provided.draggableProps}
-								{...provided.dragHandleProps}
-								{...getCustomizedTagProps({ index })}
-							/>
-							// </div>
-						)}
-					</Draggable>
-				));
+				return value?.map((v, index) => {
+					const key = getOptionKey ? getOptionKey(v) : v;
+					const label = renderTagLabel
+						? renderTagLabel(v)
+						: getOptionLabel
+						? getOptionLabel(v)
+						: null;
+					return (
+						<Draggable key={key} draggableId={key} index={index}>
+							{/* {(provided, snapshot) => ( */}
+							{(provided) => (
+								<Chip
+									label={label}
+									size="small"
+									color="primary"
+									ref={provided.innerRef}
+									{...provided.draggableProps}
+									{...provided.dragHandleProps}
+									{...getCustomizedTagProps({ index })}
+								/>
+								// </div>
+							)}
+						</Draggable>
+					);
+				});
 			},
 			[]
 		);
@@ -238,24 +264,26 @@ const OptionPicker = memo(
 
 		// eslint-disable-next-line no-unused-vars
 		const handleChange = (event, value, reason) => {
-			// console.log(`${name}.event`, event);
-			// console.log(`${name}.value`, value);
 			if (onChange) {
 				console.log(`parent.onChange`, value);
 				onChange(value);
 			}
 		};
 
-		const title = useMemo(() => {
+		const memoisedTitle = useMemo(() => {
+			if (getTitle) {
+				return getTitle(value);
+			}
+
 			return getOptionLabel ? getOptionLabel(value) : value;
-		}, [getOptionLabel, value]);
+		}, [getOptionLabel, getTitle, value]);
 
 		return (
 			<PickerBox
 				hideBorders={hideBorders}
 				focusedBackgroundColor={focusedBackgroundColor}
 				size={size}
-				title={title}
+				title={memoisedTitle}
 				width={width}
 				{...BoxProps}>
 				<Autocomplete
@@ -330,11 +358,6 @@ OptionPicker.propTypes = {
 	clearText: PropTypes.string,
 	closeText: PropTypes.string,
 	TextFieldProps: PropTypes.object,
-	value: PropTypes.oneOfType([
-		PropTypes.string,
-		PropTypes.number,
-		PropTypes.object,
-	]),
 	loading: PropTypes.bool,
 	loadingText: PropTypes.string,
 	multiple: PropTypes.bool,
@@ -359,5 +382,14 @@ OptionPicker.propTypes = {
 	BoxProps: PropTypes.object,
 	focusedBackgroundColor: PropTypes.string,
 	width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	value: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+		PropTypes.object,
+		PropTypes.array,
+	]),
+	renderTagLabel: PropTypes.func,
+	getOptionKey: PropTypes.func,
+	getTitle: PropTypes.func,
 };
 export default OptionPicker;

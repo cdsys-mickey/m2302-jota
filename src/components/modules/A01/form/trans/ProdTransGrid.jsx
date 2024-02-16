@@ -6,7 +6,7 @@ import { memo, useMemo } from "react";
 import { DynamicDataSheetGrid, keyColumn } from "react-datasheet-grid";
 import Depts from "@/modules/md-depts";
 import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
-import DSGAddRowsToolbar from "@/components/modules/DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),

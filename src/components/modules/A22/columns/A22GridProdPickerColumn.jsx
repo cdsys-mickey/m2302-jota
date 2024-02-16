@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import { ProdPickerContainer } from "../../picker/ProdPickerContainer";
+import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 
-const ProdPickerColumn = memo((props) => {
+const A22GridProdPickerColumn = memo((props) => {
 	const {
 		name,
-		withBomPackageName = false,
 		// Data
 		rowData,
 		setRowData,
@@ -40,7 +39,8 @@ const ProdPickerColumn = memo((props) => {
 					setRowData({
 						...rowDataRef.current,
 						[name]: newValue,
-						SPackData_N: newValue?.PackData_N,
+						Barcode: newValue?.Barcode,
+						PackData: newValue?.PackData_N,
 					});
 				}
 			} else {
@@ -63,7 +63,8 @@ const ProdPickerColumn = memo((props) => {
 
 	return (
 		<ProdPickerContainer
-			withBomPackageName={withBomPackageName}
+			name={name}
+			withSalesPackageName
 			queryParam="qs"
 			filterByServer
 			label=""
@@ -72,12 +73,15 @@ const ProdPickerColumn = memo((props) => {
 			disabled={disabled}
 			value={name ? rowData[name] : rowData}
 			onChange={handleChange}
+			queryRequired
+			placeholder="關連商品"
+			typeToSearchText="請輸入商品編號或名稱進行搜尋"
 			{...rest}
 		/>
 	);
 });
 
-ProdPickerColumn.propTypes = {
+A22GridProdPickerColumn.propTypes = {
 	name: PropTypes.string,
 	// Data
 	rowData: PropTypes.oneOfType([
@@ -102,8 +106,8 @@ ProdPickerColumn.propTypes = {
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
 };
-ProdPickerColumn.propTypes = {
+A22GridProdPickerColumn.propTypes = {
 	withBomPackageName: PropTypes.bool,
 };
-ProdPickerColumn.displayName = "ProdPickerColumn";
-export default ProdPickerColumn;
+A22GridProdPickerColumn.displayName = "A22GridProdPickerColumn";
+export default A22GridProdPickerColumn;

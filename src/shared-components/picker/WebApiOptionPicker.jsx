@@ -4,6 +4,12 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import QueryString from "query-string";
 import { memo } from "react";
 import OptionPicker from "./OptionPicker";
+import { createFilterOptions } from "@mui/material";
+import { useMemo } from "react";
+
+const noFilterOptions = (options) => {
+	return options;
+};
 
 const defaultTriggerServerFilter = (q) => {
 	return !!q;
@@ -77,22 +83,24 @@ const WebApiOptionPicker = memo(
 			...rest
 		} = props;
 
+		// console.log(`rendering WebApiOptionPicker`);
+
 		const { sendAsync } = useWebApi();
 
 		const [loading, setLoading] = useState(null);
 
-		const [state, setState] = useState({
+		const [pickerState, setPickerState] = useState({
 			// loading: null,
 			// query: null,
 			options: options,
 			open: false,
-			noOptionsText: noOptionsText,
+			noOptionsText: queryRequired ? typeToSearchText : noOptionsText,
 		});
 
 		const timerIdRef = useRef();
 
 		const setOpen = useCallback((open) => {
-			setState((prevState) => {
+			setPickerState((prevState) => {
 				return {
 					...prevState,
 					open,
@@ -111,12 +119,12 @@ const WebApiOptionPicker = memo(
 				onClose();
 			}
 			if (filterByServer) {
-				setState((prev) => ({
+				setPickerState((prev) => ({
 					...prev,
 					open: false,
 				}));
 			} else {
-				setState((prev) => ({
+				setPickerState((prev) => ({
 					...prev,
 					open: false,
 					// ...(prev.error && {
@@ -131,7 +139,7 @@ const WebApiOptionPicker = memo(
 				// 若有指定 options 則不 fetch
 				// if (options) {
 				// 	console.log("option provided, no fetching needed");
-				// 	setState((prev) => ({
+				// 	setPickerState((prev) => ({
 				// 		...prev,
 				// 		options: options,
 				// 	}));
@@ -141,7 +149,7 @@ const WebApiOptionPicker = memo(
 				console.log(`${name}.loadOptions(${q})`);
 				// 每次找之前回復 noOptionsText
 				setLoading(true);
-				setState((prev) => ({
+				setPickerState((prev) => ({
 					...prev,
 					// query: q,
 					// loading: true,
@@ -161,7 +169,7 @@ const WebApiOptionPicker = memo(
 						}),
 					});
 					if (status.success) {
-						setState((prev) => ({
+						setPickerState((prev) => ({
 							...prev,
 							// loading: false,
 							options: getData(payload) || [],
@@ -179,7 +187,7 @@ const WebApiOptionPicker = memo(
 					} else {
 						onError(err);
 					}
-					setState((prev) => ({
+					setPickerState((prev) => ({
 						...prev,
 						options: [],
 						// loading: false,
@@ -209,7 +217,17 @@ const WebApiOptionPicker = memo(
 			]
 		);
 
-		const handleTextFieldChange = useCallback(
+		const clearOptions = useCallback(() => {
+			setPickerState((prev) => ({
+				...prev,
+				options: [],
+				...(queryRequired && {
+					noOptionsText: typeToSearchText,
+				}),
+			}));
+		}, [queryRequired, typeToSearchText]);
+
+		const handleInputChange = useCallback(
 			(event) => {
 				let qs = event.target.value;
 				console.log(`text changed: `, qs);
@@ -225,16 +243,22 @@ const WebApiOptionPicker = memo(
 								loadOptions({ q: qs });
 							}
 						} else {
-							loadOptions();
+							clearOptions();
 						}
 					}
 				}, triggerDelay);
-				setState((prev) => ({
+				setPickerState((prev) => ({
 					...prev,
 					query: qs,
 				}));
 			},
-			[filterByServer, loadOptions, triggerDelay, triggerServerFilter]
+			[
+				clearOptions,
+				filterByServer,
+				loadOptions,
+				triggerDelay,
+				triggerServerFilter,
+			]
 		);
 
 		/**
@@ -253,7 +277,7 @@ const WebApiOptionPicker = memo(
 		// 			(multiple && Array.isArray(value) && value.length === 0))
 		// 	) {
 		// 		// clearOptions();
-		// 		setState((prevState) => ({
+		// 		setPickerState((prevState) => ({
 		// 			...prevState,
 		// 			options: [],
 		// 			// loading: null,
@@ -267,14 +291,14 @@ const WebApiOptionPicker = memo(
 		const handleChange = (value) => {
 			if (
 				queryRequired &&
-				((!multiple && value === "") ||
+				// ((!multiple && value === "") ||
+				((!multiple && !value) ||
 					(multiple && Array.isArray(value) && value.length === 0))
 			) {
-				// clearOptions();
-				setState((prevState) => ({
+				setPickerState((prevState) => ({
 					...prevState,
 					options: [],
-					// loading: null,
+					noOptionsText: typeToSearchText,
 				}));
 				setLoading(null);
 			}
@@ -283,24 +307,30 @@ const WebApiOptionPicker = memo(
 			}
 		};
 
+		// 當 filterByServer 時, 不會對輸出做任何篩選
+		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
+		const filterOptions = useMemo(() => {
+			return filterByServer ? noFilterOptions : createFilterOptions();
+		}, [filterByServer]);
+
 		/**
 		 * 何時清除 options?
 		 * 1.FilterMode.SERVER
-		 * 2.state.open == false
+		 * 2.pickerState.open == false
 		 * 則
 		 * loading === NONE
 		 * query
 		 */
 		useEffect(() => {
-			if (filterByServer && !state.open) {
-				setState((prevState) => ({
+			if (filterByServer && !pickerState.open) {
+				setPickerState((prevState) => ({
 					...prevState,
 					// loading: null,
 					options: [],
 				}));
 				setLoading(null);
 			}
-		}, [filterByServer, state.open]);
+		}, [filterByServer, pickerState.open]);
 
 		/**
 		 * 空白展開時 fetch options
@@ -308,7 +338,7 @@ const WebApiOptionPicker = memo(
 		useEffect(() => {
 			if (
 				url &&
-				state.open &&
+				pickerState.open &&
 				!queryRequired &&
 				lazy &&
 				loading === null &&
@@ -323,8 +353,8 @@ const WebApiOptionPicker = memo(
 			loadOptions,
 			queryRequired,
 			loading,
-			state.open,
-			state.error,
+			pickerState.open,
+			pickerState.error,
 			url,
 		]);
 
@@ -353,15 +383,17 @@ const WebApiOptionPicker = memo(
 		return (
 			<OptionPicker
 				name={name}
+				multiple={multiple}
 				ref={ref}
 				loading={loading}
-				{...state}
+				{...pickerState}
 				disabled={disabled}
 				// ChipProps={chipProps}
 				onOpen={handleOpen}
 				onClose={handleClose}
 				onChange={handleChange}
-				onInputChange={handleTextFieldChange}
+				onInputChange={handleInputChange}
+				filterOptions={filterOptions}
 				// noOptionsText={noOptionsText}
 				{...rest}
 			/>
@@ -373,7 +405,6 @@ WebApiOptionPicker.displayName = "WebApiOptionPicker";
 
 WebApiOptionPicker.propTypes = {
 	name: PropTypes.string,
-	value: PropTypes.object,
 	bearer: PropTypes.string,
 	// METHODS
 	onChange: PropTypes.func,

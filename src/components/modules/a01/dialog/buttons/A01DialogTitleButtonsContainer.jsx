@@ -12,7 +12,8 @@ export const A01DialogTitleButtonsContainer = (props) => {
 	const a01 = useContext(A01Context);
 	const forms = useFormContext();
 
-	if (a01.readState !== ActionState.DONE) {
+	// if (a01.readState !== ActionState.DONE) {
+	if (!a01.itemDataReady) {
 		return false;
 	}
 
@@ -38,7 +39,7 @@ export const A01DialogTitleButtonsContainer = (props) => {
 
 	return (
 		<A01DialogTitleViewButtons
-			onEdit={a01.updatePrompt}
+			onEdit={a01.promptUpdating}
 			onDelete={a01.confirmDelete}
 			onReview={a01.mode === A01.Mode.NEW_PROD ? a01.promptReview : null}
 			{...rest}

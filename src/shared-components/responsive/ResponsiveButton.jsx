@@ -13,6 +13,7 @@ const ResponsiveButton = memo(
 			startIcon,
 			endIcon,
 			mobileText,
+			size = "small",
 			// hideIcon = true,
 			// hideText = false,
 			useIconButton = false,
@@ -59,7 +60,7 @@ const ResponsiveButton = memo(
 
 		return (
 			<Button
-				size="small"
+				size={size}
 				ref={ref}
 				{...(doStartIcon && {
 					startIcon,
@@ -78,6 +79,7 @@ ResponsiveButton.propTypes = {
 	children: PropTypes.node,
 	startIcon: PropTypes.object,
 	endIcon: PropTypes.object,
+	size: PropTypes.string,
 	mobileText: PropTypes.string,
 	useIconButton: PropTypes.bool,
 };

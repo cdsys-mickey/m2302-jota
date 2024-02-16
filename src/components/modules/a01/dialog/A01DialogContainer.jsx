@@ -33,6 +33,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 	const forms = useForm({
 		defaultValues: {},
 	});
+	const { reset } = forms;
 
 	const title = useMemo(() => {
 		if (a01.mode === A01.Mode.NEW_PROD) {
@@ -61,12 +62,12 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 	}, [a01.mode]);
 
 	useEffect(() => {
-		if (a01.readState === ActionState.DONE && !!a01.itemData) {
-			// setTabIndex(A01.Tabs.INFO);
+		// if (a01.readState === ActionState.DONE && !!a01.itemData) {
+		if (a01.itemDataReady) {
 			console.log(`a01 form reset`, a01.itemData);
-			forms.reset(a01.itemData);
+			reset(a01.itemData);
 		}
-	}, [a01.itemData, a01.readState, forms, setTabIndex]);
+	}, [a01.itemData, a01.itemDataReady, a01.readState, reset]);
 
 	return (
 		<FormProvider {...forms}>

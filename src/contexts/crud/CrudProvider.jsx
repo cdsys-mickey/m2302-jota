@@ -1,8 +1,6 @@
-import { useCallback, useState } from "react";
-import CrudContext from "./CrudContext";
-import { useMemo } from "react";
 import PropTypes from "prop-types";
 import { useCrud } from "../../shared-hooks/useCrud";
+import CrudContext from "./CrudContext";
 
 export const CrudProvider = ({ children }) => {
 	const crud = useCrud();

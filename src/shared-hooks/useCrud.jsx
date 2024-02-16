@@ -2,8 +2,10 @@ import { useCallback, useMemo, useState } from "react";
 import ActionState from "../shared-constants/action-state";
 import { useAction } from "./useAction";
 import { useRef } from "react";
+import { useInit } from "./useInit";
+import { useEffect } from "react";
 
-export const useCrud = () => {
+export const useCrud = ({ resetOnInit = true } = {}) => {
 	const paramsRef = useRef({});
 	const [itemData, setItemData] = useState();
 
@@ -21,7 +23,7 @@ export const useCrud = () => {
 	}, [createAction, deleteAction, readAction, updateAction]);
 
 	// CREATE
-	const createPrompt = useCallback(
+	const promptCreating = useCallback(
 		(data, message) => {
 			createAction.prompt(data, message);
 			setItemData(data);
@@ -29,22 +31,22 @@ export const useCrud = () => {
 		[createAction]
 	);
 
-	const createCancel = useCallback(() => {
+	const cancelCreating = useCallback(() => {
 		createAction.clear();
 	}, [createAction]);
 
-	const createStart = useCallback(
+	const startCreating = useCallback(
 		(value) => {
 			createAction.start(value);
 		},
 		[createAction]
 	);
 
-	const createDone = useCallback(() => {
+	const doneCreating = useCallback(() => {
 		createAction.clear();
 	}, [createAction]);
 
-	const createFail = useCallback(
+	const failCreating = useCallback(
 		(err) => {
 			createAction.fail(err);
 		},
@@ -64,31 +66,31 @@ export const useCrud = () => {
 	}, [createAction.error, createAction.failed]);
 
 	// READ
-	const readStart = useCallback(
+	const startReading = useCallback(
 		(value, message) => {
-			console.log("readStart", value);
+			console.log("startReading", value);
 			readAction.start(value, message);
 			setItemData(value);
 		},
 		[readAction]
 	);
 
-	const readDone = useCallback(
+	const doneReading = useCallback(
 		(value) => {
-			console.log("readDone", value);
+			console.log("doneReading", value);
 			setItemData(value);
 			readAction.finish(value);
 		},
 		[readAction]
 	);
 
-	const readCancel = useCallback(() => {
+	const cancelReading = useCallback(() => {
 		readAction.clear();
 	}, [readAction]);
 
-	const readFail = useCallback(
+	const failReading = useCallback(
 		(err) => {
-			console.log("readFail", err);
+			console.log("failReading", err);
 			readAction.fail(err);
 		},
 		[readAction]
@@ -102,38 +104,38 @@ export const useCrud = () => {
 		return readAction.state === ActionState.WORKING;
 	}, [readAction.state]);
 
-	const readFailed = useMemo(() => {
+	const readingFailed = useMemo(() => {
 		return readAction.failed || !!readAction.error;
 	}, [readAction.error, readAction.failed]);
 
-	// const readDone = useMemo(() => {
+	// const doneReading = useMemo(() => {
 	// 	return readAction.state === ActionState.DONE;
 	// }, [readAction.state]);
 
 	// UPDATE
-	const updatePrompt = useCallback(
+	const promptUpdating = useCallback(
 		(data, message) => {
 			updateAction.prompt(data, message);
 		},
 		[updateAction]
 	);
 
-	const updateStart = useCallback(
+	const startUpdating = useCallback(
 		(value) => {
 			updateAction.start(value);
 		},
 		[updateAction]
 	);
 
-	const updateDone = useCallback(() => {
+	const doneUpdating = useCallback(() => {
 		updateAction.clear();
 	}, [updateAction]);
 
-	const updateCancel = useCallback(() => {
+	const cancelUpdating = useCallback(() => {
 		updateAction.clear();
 	}, [updateAction]);
 
-	const updateFail = useCallback(
+	const failUpdating = useCallback(
 		(err) => {
 			updateAction.fail(err);
 		},
@@ -149,34 +151,34 @@ export const useCrud = () => {
 		return updateAction.state === ActionState.WORKING;
 	}, [updateAction.state]);
 
-	const updateFailed = useMemo(() => {
+	const updatingFailed = useMemo(() => {
 		return updateAction.failed || !!updateAction.error;
 	}, [updateAction.error, updateAction.failed]);
 
 	// DELETE
-	const deletePrompt = useCallback(
+	const promptDeleting = useCallback(
 		(payload, message) => {
 			deleteAction.prompt(payload, message);
 		},
 		[deleteAction]
 	);
 
-	const deleteStart = useCallback(
+	const startDeleting = useCallback(
 		(payload) => {
 			deleteAction.start(payload);
 		},
 		[deleteAction]
 	);
 
-	const deleteDone = useCallback(() => {
+	const doneDeleting = useCallback(() => {
 		deleteAction.finish();
 	}, [deleteAction]);
 
-	const deleteCancel = useCallback(() => {
+	const cancelDeleting = useCallback(() => {
 		deleteAction.clear();
 	}, [deleteAction]);
 
-	const deleteFail = useCallback(
+	const failDeleting = useCallback(
 		(err) => {
 			deleteAction.fail(err);
 		},
@@ -192,22 +194,29 @@ export const useCrud = () => {
 		return deleteAction.state === ActionState.WORKING;
 	}, [deleteAction.state]);
 
-	const deleteFailed = useMemo(() => {
+	const deletingFailed = useMemo(() => {
 		return deleteAction.failed || !!deleteAction.error;
 	}, [deleteAction.error, deleteAction.failed]);
 
-	// Synth Props
+	// Synthetic Props
+	const itemDataReady = useMemo(() => {
+		return (
+			(readAction.state === ActionState.DONE && !!itemData) ||
+			(!!createAction.state && !!itemData)
+		);
+	}, [createAction.state, itemData, readAction.state]);
+
 	const editing = useMemo(() => {
 		return !!createAction.state || !!updateAction.state;
 	}, [createAction.state, updateAction.state]);
 
 	const itemDataLoaded = useMemo(() => {
 		return (
-			(reading && !readWorking && !readFailed) ||
+			(reading && !readWorking && !readingFailed) ||
 			creating ||
-			(updating && !readWorking && !readFailed)
+			(updating && !readWorking && !readingFailed)
 		);
-	}, [creating, readFailed, readWorking, reading, updating]);
+	}, [creating, readWorking, reading, readingFailed, updating]);
 
 	const editWorking = useMemo(() => {
 		return createWorking || updateWorking;
@@ -217,62 +226,69 @@ export const useCrud = () => {
 		return reading || creating || updating;
 	}, [creating, reading, updating]);
 
+	const cancelEditing = useCallback(() => {
+		createAction.clear();
+		updateAction.clear();
+	}, [createAction, updateAction]);
+
 	return {
+		// Common Props/Methods
 		itemData,
 		cancelAction,
-		// C
+		// Create Props
 		createState: createAction.state,
-		createFailed: createFailed,
+		createFailed,
 		createError: createAction.error,
-		creating: creating,
+		creating,
 		createWorking,
-		// C methods
-		createPrompt,
-		createStart,
-		createDone,
-		createCancel,
-		createFail,
-		// R
+		// CREATE Methods
+		promptCreating,
+		startCreating,
+		doneCreating,
+		cancelCreating,
+		failCreating,
+		// READ Props
 		readState: readAction.state,
-		readFailed: readFailed,
+		readingFailed,
 		readError: readAction.error,
 		reading,
 		readWorking,
-		// readDone,
-		// R METHODS
-		readStart,
-		readDone,
-		readCancel,
-		readFail,
-		// U
+		// READ Methods
+		startReading,
+		doneReading,
+		cancelReading,
+		failReading,
+		// UPDATE Props
 		updateState: updateAction.state,
-		updateFailed: updateFailed,
+		updatingFailed,
 		updateError: updateAction.error,
 		updating,
 		updateWorking,
-		// U METHODS
-		updatePrompt,
-		updateStart,
-		updateDone,
-		updateCancel,
-		updateFail,
-		// D
+		// UPDATE Methods
+		promptUpdating,
+		startUpdating,
+		doneUpdating,
+		cancelUpdating,
+		failUpdating,
+		// DELETE Props
 		deleteState: deleteAction.state,
-		deleteFailed: deleteFailed,
+		deletingFailed,
 		deleteError: deleteAction.error,
 		deleting,
 		deleteWorking,
-		// D METHODS
-		deletePrompt,
-		deleteStart,
-		deleteDone,
-		deleteCancel,
-		deleteFail,
+		// DELETE Methods
+		promptDeleting,
+		startDeleting,
+		doneDeleting,
+		cancelDeleting,
+		failDeleting,
 		// COMPUTED
+		itemDataReady,
 		editing,
 		itemDataLoaded,
 		editWorking,
 		itemViewOpen,
+		cancelEditing,
 		// Params
 		paramsRef,
 	};

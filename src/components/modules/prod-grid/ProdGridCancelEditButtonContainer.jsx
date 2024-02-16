@@ -19,7 +19,6 @@ export const ProdGridCancelEditButtonContainer = () => {
 			// variant="contained"
 			endIcon={<CloseIcon />}
 			color="primary"
-			loading={prodGrid.saveWorking}
 			onClick={prodGrid.unload}>
 			取消
 		</Button>

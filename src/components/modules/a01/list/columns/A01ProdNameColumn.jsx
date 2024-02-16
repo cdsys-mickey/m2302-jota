@@ -5,7 +5,7 @@ const A01ProdNameColumn = (props) => {
 	const { loading, children, ...rest } = props;
 	const isLoading = loading && !children;
 	return (
-		<Grid item pr={1} xs={12} sm={12} md={12} lg={9} {...rest}>
+		<Grid item pr={1} xs={9} sm={9} md={9} lg={9} {...rest}>
 			{isLoading ? <Skeleton /> : children || ""}
 		</Grid>
 	);

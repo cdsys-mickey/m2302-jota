@@ -21,26 +21,26 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 		menuItemSelected: null,
 	});
 
-	const [accordionState, setAccordionState] = useState({
-		expanded: ["A00"],
-	});
+	// const [accordionState, setAccordionState] = useState({
+	// 	expanded: ["A00"],
+	// });
 
-	const handleAccordionChange = useCallback(
-		(panel) => (_, newExpanded) => {
-			if (newExpanded) {
-				setAccordionState((prev) => ({
-					...prev,
-					expanded: [...prev.expanded, panel],
-				}));
-			} else {
-				setAccordionState((prev) => ({
-					...prev,
-					expanded: [...prev.expanded.filter((p) => p !== panel)],
-				}));
-			}
-		},
-		[]
-	);
+	// const handleAccordionChange = useCallback(
+	// 	(panel) => (_, newExpanded) => {
+	// 		if (newExpanded) {
+	// 			setAccordionState((prev) => ({
+	// 				...prev,
+	// 				expanded: [...prev.expanded, panel],
+	// 			}));
+	// 		} else {
+	// 			setAccordionState((prev) => ({
+	// 				...prev,
+	// 				expanded: [...prev.expanded.filter((p) => p !== panel)],
+	// 			}));
+	// 		}
+	// 	},
+	// 	[]
+	// );
 
 	const handleMenuItemClickBy = useCallback(
 		(module) => () => {
@@ -64,6 +64,16 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 			toModule(module.WebName);
 		},
 		[toModule]
+	);
+
+	const handleSelectById = useCallback(
+		(moduleId) => {
+			const module = auth.authorities.find((x) => x.JobID === moduleId);
+			if (module) {
+				handleSelect(module);
+			}
+		},
+		[auth.authorities, handleSelect]
 	);
 
 	const handleHomeClick = useCallback(() => {
@@ -197,8 +207,8 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 		...menuState,
 		handleMenuItemClickBy,
 		//
-		...accordionState,
-		handleAccordionChange,
+		// ...accordionState,
+		// handleAccordionChange,
 		// Account
 		// accountAnchorEl,
 		// handleAccountClick,
@@ -207,5 +217,6 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 		handleHomeClick,
 		resetMenuState,
 		handleSelect,
+		handleSelectById,
 	};
 };

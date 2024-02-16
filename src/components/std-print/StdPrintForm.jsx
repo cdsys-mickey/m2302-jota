@@ -1,10 +1,9 @@
 import { Grid, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 import { memo } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { StdPrintActiveFieldsContainer } from "./StdPrintActiveFieldsContainer";
 import { StdPrintUnusedFieldsContainer } from "./StdPrintUnusedFieldContainer";
-import PropTypes from "prop-types";
-import { useScrollable } from "../../shared-hooks/useScrollable";
 
 const SectionLabel = memo((props) => {
 	const { ...rest } = props;

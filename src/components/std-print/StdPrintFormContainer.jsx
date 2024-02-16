@@ -9,7 +9,7 @@ export const StdPrintFormContainer = () => {
 
 	return (
 		<StdPrintForm
-			height={height - 210}
+			height={height - 190}
 			onDragEnd={stdPrint.handleDragEnd}
 		/>
 	);

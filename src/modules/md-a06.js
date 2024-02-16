@@ -4,7 +4,7 @@ const Mode = Object.freeze({
 	NEW_CUSTOMER: Symbol("NEW_CUSTOMER"),
 });
 
-const transformForRead = (payload) => {
+const transformForReading = (payload) => {
 	const {
 		EmplID,
 		EmplData_N,
@@ -115,7 +115,7 @@ const paramsToJsonData = (params) => {
 
 const A06 = {
 	Mode,
-	transformForRead,
+	transformForReading,
 	transformForEditorSubmit,
 	paramsToJsonData,
 };

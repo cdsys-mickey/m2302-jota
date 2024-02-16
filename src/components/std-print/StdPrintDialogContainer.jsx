@@ -54,6 +54,7 @@ export const StdPrintDialogContainer = forwardRef((props, ref) => {
 					contentSx={{
 						backgroundColor: grey[100],
 						height: height,
+						paddingBottom: 0,
 					}}
 					actionsSx={{
 						backgroundColor: grey[100],

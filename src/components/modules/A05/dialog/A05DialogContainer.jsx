@@ -15,6 +15,7 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 	const forms = useForm({
 		defaultValues: {},
 	});
+	const { reset } = forms;
 	const a05 = useContext(A05Context);
 
 	const title = useMemo(() => {
@@ -33,19 +34,20 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 	});
 
 	useEffect(() => {
-		if (a05.readState === ActionState.DONE && !!a05.itemData) {
+		// if (a05.readState === ActionState.DONE && !!a05.itemData) {
+		if (a05.itemDataReady) {
 			console.log(`a05 form reset`, a05.itemData);
-			forms.reset(a05.itemData);
+			reset(a05.itemData);
 		}
-	}, [a05.itemData, a05.readState, forms]);
+	}, [a05.itemData, a05.itemDataReady, a05.readState, forms, reset]);
 
 	return (
 		<FormProvider {...forms}>
 			<DialogExContainer
 				title={title}
 				ref={ref}
-				fullScreen
-				// responsive
+				// fullScreen
+				responsive
 				fullWidth
 				maxWidth="md"
 				TitleButtonsComponent={A05DialogTitleButtonsContainer}

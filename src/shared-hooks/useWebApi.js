@@ -62,12 +62,15 @@ export const useWebApi = (props) => {
 
 	// async 版本
 	const sendAsync = useCallback(
-		async ({ url, method, data, headers, bearer, ...rest }) => {
+		async ({ url, method, data, params, headers, bearer, ...rest }) => {
 			const apiUrl = getUrl(url);
 			if (!apiUrl) {
 				throw `url cannot be null`;
 			}
-			console.log(`${method.toUpperCase()} ${apiUrl}, data:`, data);
+			console.log(`${method.toUpperCase()} ${apiUrl}, params:`, params);
+			if (data) {
+				console.log("data:", data);
+			}
 
 			let formData;
 			if (mode === "form") {
@@ -78,7 +81,8 @@ export const useWebApi = (props) => {
 			}
 
 			const isUseRawData = method !== "get" && mode !== "form";
-
+			const useDataAsParams = method === "get" && !params && !!data;
+			// console.log(`useDataAsParams`, useDataAsParams);
 			try {
 				const axiosResponse = await axios({
 					url: apiUrl,
@@ -89,8 +93,11 @@ export const useWebApi = (props) => {
 					...(mode === "form" && {
 						data: formData,
 					}),
-					...(method === "get" && {
+					...(useDataAsParams && {
 						params: data,
+					}),
+					...(params && {
+						params: params,
 					}),
 					headers: {
 						// 先列舉 props 內的 headers

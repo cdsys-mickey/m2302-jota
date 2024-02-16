@@ -1,14 +1,13 @@
-import { useContext } from "react";
-import { useCallback, useState } from "react";
-import CrudContext from "../../contexts/crud/CrudContext";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
-import A05 from "../../modules/md-a05";
-import { useMemo } from "react";
+import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
-import Errors from "../../shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
+import CrudContext from "@/contexts/crud/CrudContext";
+import A05 from "@/modules/md-a05";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import Errors from "@/shared-modules/sd-errors";
+import { useInit } from "../../shared-hooks/useInit";
 
 export const useA05 = ({ token }) => {
 	const crud = useContext(CrudContext);
@@ -27,33 +26,27 @@ export const useA05 = ({ token }) => {
 		initialFetchSize: 50,
 	});
 
-	const confirmReturn = useCallback(() => {
-		dialogs.confirm({
-			message: "確認要放棄編輯?",
-			onConfirm: () => {
-				crud.updateCancel();
-			},
-		});
-	}, [crud, dialogs]);
-
-	const load = useCallback(
+	const loadItem = useCallback(
 		async (id) => {
 			try {
 				const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
-					url: `v1/purchase/suppliers/${encodedId}`,
+					url: `v1/purchase/suppliers`,
 					bearer: token,
+					params: {
+						id: encodedId,
+					},
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A05.transformForRead(payload);
+					const data = A05.transformForReading(payload);
 
-					crud.readDone(data);
+					crud.doneReading(data);
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.readFail(err);
+				crud.failReading(err);
 			}
 		},
 		[crud, httpGetAsync, token]
@@ -65,11 +58,20 @@ export const useA05 = ({ token }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.readStart(rowData, "讀取中...");
-			load(rowData.FactID);
+			crud.startReading(rowData, "讀取中...");
+			loadItem(rowData.FactID);
 		},
-		[crud, load]
+		[crud, loadItem]
 	);
+
+	const confirmReturn = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要放棄編輯?",
+			onConfirm: () => {
+				crud.cancelUpdating();
+			},
+		});
+	}, [crud, dialogs]);
 
 	const confirmDialogClose = useCallback(() => {
 		dialogs.confirm({
@@ -87,7 +89,7 @@ export const useA05 = ({ token }) => {
 	const handleCreate = useCallback(
 		async ({ data }) => {
 			try {
-				crud.createStart();
+				crud.startCreating();
 				const { status, error } = await httpPostAsync({
 					url: "v1/purchase/suppliers",
 					data: data,
@@ -98,15 +100,15 @@ export const useA05 = ({ token }) => {
 					toast.success(
 						`廠商商品「${data?.FactID} ${data?.FactData}」新增成功`
 					);
-					crud.createDone();
-					crud.readCancel();
+					crud.doneCreating();
+					crud.cancelReading();
 					// 重新整理
-					loader.loadList();
+					loader.loadList({ useLastParam: true });
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
-				crud.createFail(err);
+				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err));
 			}
@@ -117,7 +119,7 @@ export const useA05 = ({ token }) => {
 	const handleUpdate = useCallback(
 		async ({ data }) => {
 			try {
-				crud.updateStart();
+				crud.startUpdating();
 				// const oldId = crud.itemData?.ProdID;
 				const { status, error } = await httpPutAsync({
 					url: `v1/purchase/suppliers`,
@@ -129,20 +131,20 @@ export const useA05 = ({ token }) => {
 					toast.success(
 						`商品「${data?.FactID} ${data?.FactData}」修改成功`
 					);
-					crud.updateDone();
-					load(data?.FactID);
+					crud.doneUpdating();
+					loadItem(data?.FactID);
 					// 重新整理
-					loader.loadList();
+					loader.loadList({ useLastParam: true });
 				} else {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.updateFail(err);
+				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err));
 			}
 		},
-		[crud, httpPutAsync, load, loader, token]
+		[crud, httpPutAsync, loadItem, loader, token]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -169,15 +171,15 @@ export const useA05 = ({ token }) => {
 		);
 	}, []);
 
-	const createPrompt = useCallback(
+	const promptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			const data = {
 				trans: [],
 				combo: [],
 			};
-			crud.readDone(data);
-			crud.createPrompt(data);
+			// crud.doneReading(data);
+			crud.promptCreating(data);
 		},
 		[crud]
 	);
@@ -187,7 +189,7 @@ export const useA05 = ({ token }) => {
 			message: `確認要删除「${crud.itemData?.FactID} ${crud.itemData?.FactData}」?`,
 			onConfirm: async () => {
 				try {
-					crud.deleteStart(crud.itemData);
+					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
 						url: `v1/new-prods/${crud.itemData?.FactID}`,
 						bearer: token,
@@ -197,12 +199,12 @@ export const useA05 = ({ token }) => {
 						toast.success(
 							`成功删除${crud.itemData?.FactID} ${crud.itemData.FactData}`
 						);
-						loader.loadList();
+						loader.loadList({ useLastParam: true });
 					} else {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.deleteFail(err);
+					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err));
 				}
@@ -226,6 +228,10 @@ export const useA05 = ({ token }) => {
 		console.error(`onSearchSubmitError`, err);
 	}, []);
 
+	useInit(() => {
+		crud.cancelAction();
+	}, []);
+
 	return {
 		...loader,
 		...crud,
@@ -239,7 +245,7 @@ export const useA05 = ({ token }) => {
 		onEditorSubmitError,
 		confirmReturn,
 		// CRUD overrides
-		createPrompt,
+		promptCreating,
 		confirmDelete,
 		...appModule,
 	};

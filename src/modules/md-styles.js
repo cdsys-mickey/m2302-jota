@@ -9,8 +9,17 @@ const ofHomeBox = ({ theme, drawerOpen }) => ({
 			xl: "40px",
 			lg: "24px",
 			md: "16px",
-			sm: "0px",
-			xs: "0px",
+			sm: "16px",
+			xs: "16px",
+		},
+	}),
+	...(drawerOpen && {
+		paddingRight: {
+			xl: "40px",
+			lg: "24px",
+			md: "16px",
+			sm: "16px",
+			xs: "16px",
 		},
 	}),
 	...(!drawerOpen && {
@@ -22,15 +31,7 @@ const ofHomeBox = ({ theme, drawerOpen }) => ({
 			xs: "0px",
 		},
 	}),
-	...(drawerOpen && {
-		paddingRight: {
-			xl: "40px",
-			lg: "24px",
-			md: "16px",
-			sm: "0px",
-			xs: "0px",
-		},
-	}),
+
 	...(!drawerOpen && {
 		paddingRight: {
 			xl: "60px",
@@ -46,11 +47,20 @@ const ofFrameBox = ({ theme, drawerOpen }) => ({
 	paddingTop: theme.spacing(1),
 	...(drawerOpen && {
 		paddingLeft: {
-			xl: "40px",
-			lg: "24px",
+			xl: "60px",
+			lg: "40px",
 			md: "16px",
-			sm: "0px",
-			xs: "0px",
+			sm: "20px",
+			xs: "20px",
+		},
+	}),
+	...(drawerOpen && {
+		paddingRight: {
+			xl: "60px",
+			lg: "40px",
+			md: "16px",
+			sm: "20px",
+			xs: "20px",
 		},
 	}),
 	...(!drawerOpen && {
@@ -59,16 +69,7 @@ const ofFrameBox = ({ theme, drawerOpen }) => ({
 			lg: "40px",
 			md: "40px",
 			sm: "20px",
-			xs: "0px",
-		},
-	}),
-	...(drawerOpen && {
-		paddingRight: {
-			xl: "40px",
-			lg: "24px",
-			md: "16px",
-			sm: "0px",
-			xs: "0px",
+			xs: "20px",
 		},
 	}),
 	...(!drawerOpen && {
@@ -77,7 +78,7 @@ const ofFrameBox = ({ theme, drawerOpen }) => ({
 			lg: "40px",
 			md: "40px",
 			sm: "20px",
-			xs: "0px",
+			xs: "20px",
 		},
 	}),
 });

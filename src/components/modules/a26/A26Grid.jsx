@@ -11,7 +11,8 @@ import {
 	keyColumn,
 } from "react-datasheet-grid";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import ContainerEx from "../../../shared-components/ContainerEx";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -46,6 +47,7 @@ const A26Grid = memo((props) => {
 						continuousUpdates: false,
 					})
 				),
+				minWidth: 70,
 				title: "代碼",
 				disabled: isPersisted,
 			},
@@ -57,13 +59,13 @@ const A26Grid = memo((props) => {
 					})
 				),
 				title: "佣金類別",
-				grow: 4,
+				grow: 5,
 				disabled: readOnly,
 			},
 			{
 				...keyColumn("Other1", createFloatColumn(1)),
 				title: "佣金比例",
-				grow: 1,
+				minWidth: 120,
 				disabled: readOnly,
 			},
 		],
@@ -72,10 +74,10 @@ const A26Grid = memo((props) => {
 
 	if (loading) {
 		return (
-			<Container maxWidth="sm">
+			<ContainerEx maxWidth="xs" alignLeft>
 				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
 				<DSGLoading height={height} />
-			</Container>
+			</ContainerEx>
 		);
 	}
 
@@ -84,9 +86,10 @@ const A26Grid = memo((props) => {
 	}
 
 	return (
-		<Container maxWidth="sm">
+		<>
 			<LoadingBackdrop open={loading} />
-			<Box sx={boxStyles} {...rest}>
+			{/* <Box sx={boxStyles} {...rest}> */}
+			<ContainerEx maxWidth="xs" alignLeft>
 				<DynamicDataSheetGrid
 					lockRows={readOnly}
 					ref={setGridRef}
@@ -102,8 +105,9 @@ const A26Grid = memo((props) => {
 					onSelectionChange={onSelectionChange}
 					// autoAddRow
 				/>
-			</Box>
-		</Container>
+			</ContainerEx>
+			{/* </Box> */}
+		</>
 	);
 });
 A26Grid.propTypes = {

@@ -8,8 +8,9 @@ import {
 	keyColumn,
 } from "react-datasheet-grid";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { DynamicDataSheetGrid } from "react-datasheet-grid";
+import ContainerEx from "../../../shared-components/ContainerEx";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -56,9 +57,9 @@ const A11Grid = memo((props) => {
 
 	if (loading) {
 		return (
-			<Container maxWidth="xs">
+			<ContainerEx maxWidth="xs" alignLeft>
 				<DSGLoading height={height} />
-			</Container>
+			</ContainerEx>
 		);
 	}
 
@@ -67,7 +68,7 @@ const A11Grid = memo((props) => {
 	}
 
 	return (
-		<Container maxWidth="xs">
+		<ContainerEx maxWidth="xs" alignLeft>
 			<Box>
 				<DynamicDataSheetGrid
 					lockRows={readOnly}
@@ -86,7 +87,7 @@ const A11Grid = memo((props) => {
 					// autoAddRow
 				/>
 			</Box>
-		</Container>
+		</ContainerEx>
 	);
 });
 A11Grid.propTypes = {

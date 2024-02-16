@@ -80,7 +80,8 @@ FormFieldLabel.propTypes = {
 	labelProps: PropTypes.object,
 	labelStyles: PropTypes.object,
 	emptyText: PropTypes.string,
-	typographySx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	typographySx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 export default FormFieldLabel;

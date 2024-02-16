@@ -53,20 +53,36 @@ const transformForGridEdior = (payload) => {
 	});
 };
 
-const transformForSubmit = (data) => {
-	return data.map((i) => {
-		const { catL, catM, catS, cmsType, taxType, typeA, typeB, ...rest } = i;
-		return {
-			LClas: catL?.LClas || "",
-			MClas: catM?.MClas || "",
-			SClas: catS?.SClas || "",
-			CmsID: cmsType?.CodeID || "",
-			Tax: taxType?.Tax || "",
-			TypeA: typeA?.TypeA || "",
-			TypeB: typeB?.TypeB || "",
-			...rest,
-		};
-	});
+const transformForSubmit = (data, dirtyIds) => {
+	return data
+		.filter((x) => {
+			if (dirtyIds && dirtyIds.size > 0) {
+				return dirtyIds.has(x.ProdID);
+			}
+			return false;
+		})
+		.map((i) => {
+			const {
+				catL,
+				catM,
+				catS,
+				cmsType,
+				taxType,
+				typeA,
+				typeB,
+				...rest
+			} = i;
+			return {
+				LClas: catL?.LClas || "",
+				MClas: catM?.MClas || "",
+				SClas: catS?.SClas || "",
+				CmsID: cmsType?.CodeID || "",
+				Tax: taxType?.Tax || "",
+				TypeA: typeA?.TypeA || "",
+				TypeB: typeB?.TypeB || "",
+				...rest,
+			};
+		});
 };
 
 const A014 = {

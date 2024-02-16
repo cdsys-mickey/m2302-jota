@@ -1,16 +1,15 @@
-import { Container } from "@mui/material";
-import React from "react";
+import { Container, styled } from "@mui/material";
 
-const ContainerEx = React.forwardRef((props, ref) => {
-	const { children, sx = [], ...rest } = props;
-	return (
-		<Container
-			ref={ref}
-			sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
-			{...rest}>
-			{children}
-		</Container>
-	);
-});
+const ContainerEx = styled(Container, {
+	shouldForwardProp: (prop) =>
+		!`alignLeft`
+			// .trim()
+			.split(/\s*,\s*/)
+			.includes(prop),
+})(({ theme, alignLeft = false }) => ({
+	...(alignLeft && {
+		marginLeft: 0,
+	}),
+}));
 
-export default React.memo(ContainerEx);
+export default ContainerEx;

@@ -12,6 +12,8 @@ import { CustomerSearchFieldContainer } from "../../components/modules/A06/searc
 import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
 import A06 from "../../modules/md-a06";
 import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
+import { A06Context } from "../../contexts/A06/A06Context";
+import { useInit } from "../../shared-hooks/useInit";
 
 export const A06FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);

@@ -72,7 +72,7 @@ export const useProdGrid = ({
 				const { status, payload, error } = await httpGetAsync({
 					url: baseUri,
 					bearer: token,
-					data: {
+					params: {
 						...transformAsQueryParams(criteria),
 						pk: 1,
 					},
@@ -116,7 +116,7 @@ export const useProdGrid = ({
 				const { status, payload } = await httpGetAsync({
 					url: baseUri,
 					bearer: token,
-					data: {
+					params: {
 						...transformAsQueryParams(criteria),
 						...(state.saveKey && {
 							sk: state.saveKey,

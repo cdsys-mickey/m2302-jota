@@ -1,22 +1,26 @@
-import { LoadingButton } from "@mui/lab";
-import { Box, TextField } from "@mui/material";
 import {
+	Box,
 	Button,
 	Dialog,
 	DialogActions,
 	// Checkbox,
 	DialogContent,
 	DialogContentText,
+	TextField,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import { forwardRef, memo, useMemo } from "react";
-import DialogTitleEx from "./DialogTitleEx";
-import { useContext } from "react";
+import {
+	forwardRef,
+	memo,
+	useCallback,
+	useContext,
+	useMemo,
+	useRef,
+} from "react";
 import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
-import { useRef } from "react";
-import { useCallback } from "react";
 import ResponsiveLoadingButton from "../responsive/ResponsiveLoadingButton";
+import DialogTitleEx from "./DialogTitleEx";
 
 /**
  * 關鍵屬性是 onConfirm, onCancel, 以及 onClose, 雖然沒有在這裡定義 onClose,
@@ -210,7 +214,6 @@ const DialogEx = memo(
 								type="submit"
 								variant="contained"
 								color="primary"
-								// onClick={onConfirm ? handleConfirm : null}
 								onClick={handleConfirm}
 								loading={working}
 								{...buttonProps}

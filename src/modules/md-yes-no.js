@@ -1,9 +1,14 @@
+import Types from "../shared-modules/sd-types";
+
 const getOptionLabel = (value) => {
 	return value === "Y" ? "是" : "否";
 };
 
 const valueToChecked = (v) => {
-	return v?.toUpperCase() === "Y";
+	if (Types.isString(v)) {
+		return v?.toUpperCase() === "Y";
+	}
+	return false;
 };
 
 const checkedToValue = (c) => {

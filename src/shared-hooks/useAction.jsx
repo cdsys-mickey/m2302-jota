@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
 import ActionState from "../shared-constants/action-state";
+import { useMemo } from "react";
 
 export const useAction = (initState = null) => {
-	const [state, setState] = useState({
+	const [actionState, setActionState] = useState({
 		state: initState,
 		payload: null,
 		message: null,
@@ -18,7 +19,7 @@ export const useAction = (initState = null) => {
 	const prompt = useCallback((data, message) => {
 		console.log("prompt");
 
-		setState((prev) => ({
+		setActionState((prev) => ({
 			...prev,
 			state: ActionState.PROMPT,
 			payload: data,
@@ -27,7 +28,7 @@ export const useAction = (initState = null) => {
 	}, []);
 
 	const start = useCallback((payload, message) => {
-		setState((prev) => ({
+		setActionState((prev) => ({
 			...prev,
 			state: ActionState.WORKING,
 			payload: payload,
@@ -38,7 +39,7 @@ export const useAction = (initState = null) => {
 	const finish = useCallback((payload) => {
 		// setActionState(ActionState.DONE);
 		// setPayload(payload);
-		setState((prev) => ({
+		setActionState((prev) => ({
 			...prev,
 			state: ActionState.DONE,
 			payload: payload,
@@ -48,7 +49,7 @@ export const useAction = (initState = null) => {
 
 	const fail = useCallback((err) => {
 		console.error("action failed", err);
-		setState((prev) => ({
+		setActionState((prev) => ({
 			...prev,
 			state: ActionState.FAILED,
 			payload: null,
@@ -60,20 +61,8 @@ export const useAction = (initState = null) => {
 		});
 	}, []);
 
-	// const clear = useCallback(() => {
-	// 	setState({
-	// 		state: null,
-	// 		payload: null,
-	// 		message: null,
-	// 	});
-	// 	setErrorState({
-	// 		error: null,
-	// 		failed: false,
-	// 	});
-	// }, []);
-
 	const clear = useCallback(() => {
-		setState({
+		setActionState({
 			state: null,
 			payload: null,
 			message: null,
@@ -84,11 +73,20 @@ export const useAction = (initState = null) => {
 		});
 	}, []);
 
+	const working = useMemo(() => {
+		return actionState.state === ActionState.WORKING;
+	}, [actionState.state]);
+
+	const prompting = useMemo(() => {
+		return actionState.state === ActionState.PROMPT;
+	}, [actionState.state]);
+
+	const done = useMemo(() => {
+		return actionState.state === ActionState.DONE;
+	}, [actionState.state]);
+
 	return {
-		// actionState,
-		// payload,
-		// message,
-		...state,
+		...actionState,
 		...errorState,
 		// METHODS
 		prompt,
@@ -97,5 +95,9 @@ export const useAction = (initState = null) => {
 		fail,
 		// clear,
 		clear,
+		// 合成狀態
+		working,
+		prompting,
+		done,
 	};
 };

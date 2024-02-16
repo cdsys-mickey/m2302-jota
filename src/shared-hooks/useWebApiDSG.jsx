@@ -131,20 +131,10 @@ export const useWebApiDSG = ({
 				toast.error(`刪除${displayName}發生例外: ${err.message}`);
 			} finally {
 				dsg.setDeletingRow(null);
-				dialogs.closeLatest();
 				reload();
 			}
 		},
-		[
-			baseUri,
-			dialogs,
-			displayName,
-			dsg,
-			httpDeleteAsync,
-			keyColumn,
-			reload,
-			token,
-		]
+		[baseUri, displayName, dsg, httpDeleteAsync, keyColumn, reload, token]
 	);
 
 	const handleConfirmDelete = useCallback(
@@ -157,6 +147,7 @@ export const useWebApiDSG = ({
 				message: `確定要刪除${displayName} ${rowData[keyColumn]}?`,
 				onConfirm: () => {
 					handleDelete(row);
+					dialogs.closeLatest();
 				},
 				onCancel: () => {
 					dsg.setDeletingRow(null);

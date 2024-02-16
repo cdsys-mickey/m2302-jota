@@ -8,7 +8,7 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -59,13 +59,10 @@ const CatMGrid = memo((props) => {
 
 	if (loading) {
 		return (
-			<Container maxWidth="sm">
-				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
-				{/* {_.range(10).map((i) => (
-						<Skeleton key={i} height={45} />
-					))} */}
-				<DSGLoading height={height} />
-			</Container>
+			// <Container maxWidth="sm">
+
+			<DSGLoading height={height} />
+			// </Container>
 		);
 	}
 
@@ -74,30 +71,30 @@ const CatMGrid = memo((props) => {
 	}
 
 	return (
-		<Container maxWidth="xs">
-			<Box>
-				{/* <LoadingBackdrop open={loading} /> */}
-				<DynamicDataSheetGrid
-					lockRows={readOnly}
-					ref={setGridRef}
-					rowKey="MClas"
-					height={height + (readOnly ? 48 : 0)}
-					rowHeight={42}
-					value={data}
-					onChange={handleChange}
-					columns={columns}
-					addRowsComponent={DSGAddRowsToolbar}
-					disableExpandSelection
-					contextMenuComponent={ContextMenu}
-					// onActiveCellChange={handleActiveCellChange}
-					onSelectionChange={onSelectionChange}
-					// autoAddRow
-					// rowClassName={(row) =>
-					// 	isSelected(row) ? "row-selected" : null
-					// }
-				/>
-			</Box>
-		</Container>
+		// <Container maxWidth="xs">
+		<Box>
+			{/* <LoadingBackdrop open={loading} /> */}
+			<DynamicDataSheetGrid
+				lockRows={readOnly}
+				ref={setGridRef}
+				rowKey="MClas"
+				height={height + (readOnly ? 48 : 0)}
+				rowHeight={42}
+				value={data}
+				onChange={handleChange}
+				columns={columns}
+				addRowsComponent={DSGAddRowsToolbar}
+				disableExpandSelection
+				contextMenuComponent={ContextMenu}
+				// onActiveCellChange={handleActiveCellChange}
+				onSelectionChange={onSelectionChange}
+				// autoAddRow
+				// rowClassName={(row) =>
+				// 	isSelected(row) ? "row-selected" : null
+				// }
+			/>
+		</Box>
+		// </Container>
 	);
 });
 

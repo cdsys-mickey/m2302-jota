@@ -23,13 +23,17 @@ const TypoProdPickerContainer = forwardRef((props, ref) => {
 
 	const queryString = useMemo(() => {
 		const obj = {
-			tp: 20,
+			tp: 50,
 			...(withBomPackageName && {
 				pb: 1,
 			}),
 		};
 		return QueryString.stringify(obj);
 	}, [withBomPackageName]);
+
+	const text = useMemo(() => {
+		return children || Prods.getOptionLabel(value);
+	}, [children, value]);
 
 	return (
 		<TypoWebApiOptionPickerContainer
@@ -41,10 +45,13 @@ const TypoProdPickerContainer = forwardRef((props, ref) => {
 			queryString={queryString}
 			queryParam="qs"
 			filterByServer
+			queryRequired
+			placeholder="關連商品"
+			typeToSearchText="請輸入商品編號或名稱進行搜尋"
 			getOptionLabel={Prods.getOptionLabel}
 			isOptionEqualToValue={Prods.isOptionEqualToValue}
 			{...rest}>
-			{children || Prods.getOptionLabel(value)}
+			{text}
 		</TypoWebApiOptionPickerContainer>
 	);
 });

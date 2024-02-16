@@ -15,11 +15,12 @@
   "dependencies": {
     "@microsoft/signalr": "^8.0.0",
     "@mui/icons-material": "^5.14.16",
-    "@mui/x-date-pickers": "^6.17.0",
+    "@mui/x-date-pickers": "^6.19.4",
     "axios": "^1.6.0",
     "classnames": "^2.5.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
     "jose": "^4.15.4",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",

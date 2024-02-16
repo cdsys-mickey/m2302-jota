@@ -1,22 +1,23 @@
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { A013GridContainer } from "../../components/modules/A013/A013GridContainer";
-import { ProdGridFormContainer } from "../../components/modules/prod-grid/ProdGridFormContainer";
-import ProdGridToolbar from "../../components/modules/prod-grid/ProdGridToolbar";
+import { A013GridContainer } from "@/components/modules/A013/A013GridContainer";
+import { ProdGridFormContainer } from "@/components/modules/prod-grid/ProdGridFormContainer";
+import ProdGridToolbar from "@/components/modules/prod-grid/ProdGridToolbar";
+import ContainerEx from "@/shared-components/ContainerEx";
 
-const A013Frame = memo((props) => {
+const A22Frame = memo((props) => {
 	const { boxStyles } = props;
 
 	return (
 		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
-			<Container maxWidth="md">
+			<ContainerEx maxWidth="md" alignLeft>
 				<Box>
 					<ProdGridFormContainer />
 				</Box>
-			</Container>
+			</ContainerEx>
 			<Box>
 				<ProdGridToolbar />
 				<A013GridContainer />
@@ -25,10 +26,10 @@ const A013Frame = memo((props) => {
 	);
 });
 
-A013Frame.propTypes = {
+A22Frame.propTypes = {
 	drawerOpen: PropTypes.bool,
 	boxStyles: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
-A013Frame.displayName = "A013Frame";
-export default A013Frame;
+A22Frame.displayName = "A22Frame";
+export default A22Frame;

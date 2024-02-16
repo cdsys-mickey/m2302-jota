@@ -16,7 +16,7 @@ const A06CreateButtonContainer = memo(
 				ref={ref}
 				variant="contained"
 				startIcon={<AddIcon />}
-				onClick={a06.createPrompt}
+				onClick={a06.promptCreating}
 				sx={{
 					fontWeight: 600,
 				}}

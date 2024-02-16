@@ -24,7 +24,7 @@ const hasEmptyError = (criteria) => {
 	return true;
 };
 
-const transformForRead = (data) => {
+const transformForReading = (data) => {
 	const {
 		BUnit,
 		BUnit_N,
@@ -217,18 +217,22 @@ const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 		TypeA: typeA?.TypeA || "",
 		TypeB: typeB?.TypeB || "",
 		...(transGridData && {
-			StoreTrans_S: transGridData.map((v, i) => ({
-				Seq: i,
-				SDeptID: v.dept.DeptID,
-				SCost: v.SCost,
-			})),
+			StoreTrans_S: transGridData
+				.filter((x) => !!x.dept)
+				.map((v, i) => ({
+					Seq: i,
+					SDeptID: v.dept?.DeptID,
+					SCost: v.SCost,
+				})),
 		}),
 		...(comboGridData && {
-			StoreCom_S: comboGridData.map((v, i) => ({
-				Seq: i,
-				SProdID: v.prod.ProdID,
-				SProdQty: v.SProdQty,
-			})),
+			StoreCom_S: comboGridData
+				.filter((x) => !!x.prod)
+				.map((v, i) => ({
+					Seq: i,
+					SProdID: v.prod?.ProdID,
+					SProdQty: v.SProdQty,
+				})),
 		}),
 	};
 };
@@ -277,7 +281,7 @@ const paramsToJsonData = (params) => {
 
 const A01 = {
 	hasEmptyError,
-	transformForRead,
+	transformForReading,
 	processForDefaultSubmit,
 	transformForEditorSubmit,
 	transformForCounterSubmit,

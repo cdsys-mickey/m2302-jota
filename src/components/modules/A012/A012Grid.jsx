@@ -8,7 +8,7 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import NoDataBox from "../../../shared-components/NoDataBox";
 import { createWebApiOptionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
@@ -60,7 +60,7 @@ const A012Grid = memo((props) => {
 						bearer: bearer,
 						getOptionLabel: PkgTypes.getOptionLabel,
 						isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
-						getData: (p) => p["data"],
+						// getData: (p) => p["data"],
 					})
 				),
 				title: "庫存單位",
@@ -75,7 +75,7 @@ const A012Grid = memo((props) => {
 						bearer: bearer,
 						getOptionLabel: PkgTypes.getOptionLabel,
 						isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
-						getData: (p) => p["data"],
+						// getData: (p) => p["data"],
 					})
 				),
 				title: "銷售單位",
@@ -90,7 +90,7 @@ const A012Grid = memo((props) => {
 						bearer: bearer,
 						getOptionLabel: PkgTypes.getOptionLabel,
 						isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
-						getData: (p) => p["data"],
+						// getData: (p) => p["data"],
 					})
 				),
 				title: "進貨單位",
@@ -105,7 +105,7 @@ const A012Grid = memo((props) => {
 						bearer: bearer,
 						getOptionLabel: PkgTypes.getOptionLabel,
 						isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
-						getData: (p) => p["data"],
+						// getData: (p) => p["data"],
 					})
 				),
 				title: "BOM單位",
@@ -148,7 +148,7 @@ const A012Grid = memo((props) => {
 			<DynamicDataSheetGrid
 				lockRows
 				ref={setGridRef}
-				rowKey="CodeID"
+				rowKey="ProdID"
 				// height={height + (readOnly ? 48 : 0)}
 				height={height + 48}
 				rowHeight={42}

@@ -20,6 +20,7 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 	const forms = useForm({
 		defaultValues: {},
 	});
+	const { reset } = forms;
 	const a06 = useContext(A06Context);
 
 	const title = useMemo(() => {
@@ -33,11 +34,12 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 	}, [a06.creating, a06.updating]);
 
 	useEffect(() => {
-		if (a06.readState === ActionState.DONE && !!a06.itemData) {
+		// if (a06.readState === ActionState.DONE && !!a06.itemData) {
+		if (a06.itemDataReady) {
 			console.log(`a06 form reset`, a06.itemData);
-			forms.reset(a06.itemData);
+			reset(a06.itemData);
 		}
-	}, [a06.itemData, a06.readState, forms]);
+	}, [a06.itemData, a06.itemDataReady, a06.readState, reset]);
 
 	return (
 		<FormProvider {...forms}>

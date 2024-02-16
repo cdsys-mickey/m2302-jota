@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
 import { useDSG } from "../../shared-hooks/useDSG";
+import { useInit } from "../../shared-hooks/useInit";
 
 export const useA20 = ({ token }) => {
 	const crud = useContext(CrudContext);
@@ -38,7 +39,7 @@ export const useA20 = ({ token }) => {
 		dialogs.confirm({
 			message: "確認要放棄編輯?",
 			onConfirm: () => {
-				crud.updateCancel();
+				crud.cancelUpdating();
 			},
 		});
 	}, [crud, dialogs]);
@@ -53,14 +54,14 @@ export const useA20 = ({ token }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A20.transformForRead(payload);
+					const data = A20.transformForReading(payload);
 					materialsGrid.handleGridDataLoaded(data.materials);
-					crud.readDone(data);
+					crud.doneReading(data);
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.readFail(err);
+				crud.failReading(err);
 			}
 		},
 		[crud, httpGetAsync, materialsGrid, token]
@@ -72,7 +73,7 @@ export const useA20 = ({ token }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.readStart(rowData, "讀取中...");
+			crud.startReading(rowData, "讀取中...");
 			loadItem(rowData.ProdID);
 		},
 		[crud, loadItem]
@@ -94,7 +95,7 @@ export const useA20 = ({ token }) => {
 	const handleCreate = useCallback(
 		async ({ data }) => {
 			try {
-				crud.createStart();
+				crud.startCreating();
 				const { status, error } = await httpPostAsync({
 					url: "v1/prod/boms",
 					data: data,
@@ -105,15 +106,15 @@ export const useA20 = ({ token }) => {
 					toast.success(
 						`BOM「${data?.prod?.ProdID} ${data?.prod?.ProdData}」新增成功`
 					);
-					crud.createDone();
-					crud.readCancel();
+					crud.doneCreating();
+					crud.cancelReading();
 					// 重新整理
-					loader.loadList();
+					loader.loadList({ useLastParams: true });
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
-				crud.createFail(err);
+				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err));
 			}
@@ -124,7 +125,7 @@ export const useA20 = ({ token }) => {
 	const handleUpdate = useCallback(
 		async ({ data }) => {
 			try {
-				crud.updateStart();
+				crud.startUpdating();
 
 				const { status, error } = await httpPutAsync({
 					url: `v1/prod/boms`,
@@ -136,7 +137,7 @@ export const useA20 = ({ token }) => {
 					toast.success(
 						`BOM「${data?.ProdID} ${data?.ProdData}」修改成功`
 					);
-					crud.updateDone();
+					crud.doneUpdating();
 					loadItem(data?.ProdID);
 					// 重新整理
 					loader.loadList();
@@ -144,7 +145,7 @@ export const useA20 = ({ token }) => {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.updateFail(err);
+				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err));
 			}
@@ -185,14 +186,14 @@ export const useA20 = ({ token }) => {
 		);
 	}, []);
 
-	const createPrompt = useCallback(
+	const promptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			const data = {
 				materials: [],
 			};
-			crud.readDone(data);
-			crud.createPrompt(data);
+			// crud.doneReading(data);
+			crud.promptCreating(data);
 			materialsGrid.handleGridDataLoaded(data.materials);
 		},
 		[crud, materialsGrid]
@@ -203,7 +204,7 @@ export const useA20 = ({ token }) => {
 			message: `確認要删除「${crud.itemData?.prod?.ProdID} ${crud.itemData?.prod?.ProdData}」?`,
 			onConfirm: async () => {
 				try {
-					crud.deleteStart(crud.itemData);
+					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
 						url: `v1/prod/boms/${crud.itemData?.prod.ProdID}`,
 						bearer: token,
@@ -218,7 +219,7 @@ export const useA20 = ({ token }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.deleteFail(err);
+					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err));
 				}
@@ -249,6 +250,14 @@ export const useA20 = ({ token }) => {
 		[]
 	);
 
+	const getRowKey = useCallback(({ rowData, rowIndex }) => {
+		return rowData?.prod?.ProdID || rowIndex;
+	}, []);
+
+	useInit(() => {
+		crud.cancelAction();
+	}, []);
+
 	return {
 		...loader,
 		...crud,
@@ -262,12 +271,13 @@ export const useA20 = ({ token }) => {
 		onEditorSubmitError,
 		confirmReturn,
 		// CRUD overrides
-		createPrompt,
+		promptCreating,
 		confirmDelete,
 		// materialsGrid
 		setMaterialsGridRef: materialsGrid.setGridRef,
 		materialsGridData: materialsGrid.gridData,
 		handleMaterialsGridChange: materialsGrid.propagateGridChange,
+		getRowKey,
 		...appModule,
 		handleCreateRow,
 	};

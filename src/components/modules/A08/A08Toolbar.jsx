@@ -3,12 +3,13 @@ import { Container } from "@mui/material";
 import { forwardRef, memo } from "react";
 import { A08LockRowsSwitchContainer } from "./A08LockRowsSwitchContainer";
 import A08PrintButtonContainer from "./A08PrintButtonContainer";
+import ContainerEx from "../../../shared-components/ContainerEx";
 
 const A08Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<Container maxWidth="xs">
+			<ContainerEx maxWidth="xs" alignLeft>
 				<InlineListViewToolbar
 					ref={ref}
 					LeftComponent={A08LockRowsSwitchContainer}
@@ -16,7 +17,7 @@ const A08Toolbar = memo(
 					mb={0.5}
 					{...rest}
 				/>
-			</Container>
+			</ContainerEx>
 		);
 	})
 );

@@ -60,5 +60,10 @@ ControlledCheckboxEx.propTypes = {
 	onChange: PropTypes.func,
 	checkedToValue: PropTypes.func,
 	valueToChecked: PropTypes.func,
-	defaultValue: PropTypes.node,
+	defaultValue: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.bool,
+		PropTypes.number,
+		PropTypes.object,
+	]),
 };

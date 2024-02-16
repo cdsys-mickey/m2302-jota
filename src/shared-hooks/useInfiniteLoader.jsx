@@ -124,7 +124,7 @@ export const useInfiniteLoader = (props = {}) => {
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: url,
-					data: {
+					params: {
 						...baseParams,
 						...activeParams,
 						st: startIndex,

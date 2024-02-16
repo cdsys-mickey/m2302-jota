@@ -9,7 +9,8 @@ import {
 } from "react-datasheet-grid";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
-import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import ContainerEx from "../../../shared-components/ContainerEx";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -92,10 +93,10 @@ const A16Grid = memo((props) => {
 
 	if (loading) {
 		return (
-			<Container maxWidth="md">
+			<ContainerEx maxWidth="md" alginLeft>
 				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
 				<DSGLoading height={height} />
-			</Container>
+			</ContainerEx>
 		);
 	}
 
@@ -104,7 +105,7 @@ const A16Grid = memo((props) => {
 	}
 
 	return (
-		<Container maxWidth="md">
+		<ContainerEx maxWidth="md" alignLeft>
 			<Box>
 				{/* <LoadingBackdrop open={loading} /> */}
 				<DynamicDataSheetGrid
@@ -129,7 +130,7 @@ const A16Grid = memo((props) => {
 					})}
 				/>
 			</Box>
-		</Container>
+		</ContainerEx>
 	);
 });
 A16Grid.propTypes = {

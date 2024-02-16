@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React from "react";
 import { TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
@@ -66,18 +67,13 @@ const ControlledDatePicker = ({
 									}
 							  }
 					}
-					InputProps={
-						readOnly
-							? {
-									readOnly: true,
-									// disableUnderline: true
-							  }
-							: null
-					}
-					disabled={readOnly}
-					onError={(err) => {
-						console.error(err);
+					InputProps={{
+						...(readOnly && { readOnly: true }),
 					}}
+					disabled={readOnly}
+					// onError={(err) => {
+					// 	console.error(err);
+					// }}
 					{...rest}
 					invalidDateMessage={invalidDateMessage}
 				/>

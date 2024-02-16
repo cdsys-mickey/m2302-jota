@@ -9,7 +9,8 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGAddRowsToolbar from "../DSGAddRowsToolbar";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import ContainerEx from "../../../shared-components/ContainerEx";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -64,9 +65,9 @@ const A04Grid = memo((props) => {
 
 	if (loading) {
 		return (
-			<Container maxWidth="sm">
+			<ContainerEx maxWidth="sm" alignLeft>
 				<DSGLoading height={height} />
-			</Container>
+			</ContainerEx>
 		);
 	}
 
@@ -75,26 +76,26 @@ const A04Grid = memo((props) => {
 	}
 
 	return (
-		<Container maxWidth="sm">
-			<Box sx={boxStyles} {...rest}>
-				<DynamicDataSheetGrid
-					lockRows={readOnly}
-					ref={setGridRef}
-					rowKey="CodeID"
-					height={height + (readOnly ? 48 : 0)}
-					rowHeight={42}
-					value={data}
-					onChange={handleChange}
-					columns={columns}
-					addRowsComponent={DSGAddRowsToolbar}
-					disableExpandSelection
-					// disableContextMenu
-					onSelectionChange={onSelectionChange}
-					// autoAddRow
-					contextMenuComponent={ContextMenu}
-				/>
-			</Box>
-		</Container>
+		<ContainerEx maxWidth="sm" alignLeft>
+			{/* <Box sx={boxStyles} {...rest}> */}
+			<DynamicDataSheetGrid
+				lockRows={readOnly}
+				ref={setGridRef}
+				rowKey="CodeID"
+				height={height + (readOnly ? 48 : 0)}
+				rowHeight={42}
+				value={data}
+				onChange={handleChange}
+				columns={columns}
+				addRowsComponent={DSGAddRowsToolbar}
+				disableExpandSelection
+				// disableContextMenu
+				onSelectionChange={onSelectionChange}
+				// autoAddRow
+				contextMenuComponent={ContextMenu}
+			/>
+			{/* </Box> */}
+		</ContainerEx>
 	);
 });
 A04Grid.propTypes = {

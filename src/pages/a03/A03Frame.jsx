@@ -6,9 +6,10 @@ import CatLGridProvider from "@/contexts/A03/CatLGridProvider";
 import CatMGridProvider from "@/contexts/A03/CatMGridProvider";
 import CatSGridProvider from "@/contexts/A03/CatSGridProvider";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
-import { Box, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
+import ContainerEx from "../../shared-components/ContainerEx";
 
 const A03Frame = memo((props) => {
 	const { drawerOpen, boxStyles } = props;
@@ -17,35 +18,25 @@ const A03Frame = memo((props) => {
 		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
 			<A03Toolbar />
-			<Grid container spacing={1}>
-				{/* <DSGProvider id="sm" keyColumn="SClas" otherColumns="ClassData"> */}
-				<CatSGridProvider>
-					{/* <DSGProvider
-							id="md"
-							keyColumn="MClas"
-							otherColumns="ClassData"> */}
-					<CatMGridProvider>
+			<ContainerEx maxWidth="lg" alignLeft>
+				<Grid container spacing={1}>
+					<CatSGridProvider>
+						<CatMGridProvider>
+							<Grid item xs={12} sm={6} md={4}>
+								<CatLGridProvider>
+									<CatLGridContainer />
+								</CatLGridProvider>
+							</Grid>
+							<Grid item xs={12} sm={6} md={4}>
+								<CatMGridContainer />
+							</Grid>
+						</CatMGridProvider>
 						<Grid item xs={12} sm={6} md={4}>
-							{/* <DSGProvider
-										id="lg"
-										keyColumn="LClas"
-										otherColumns="ClassData"> */}
-							<CatLGridProvider>
-								<CatLGridContainer />
-							</CatLGridProvider>
-							{/* </DSGProvider> */}
+							<CatSGridContainer />
 						</Grid>
-						<Grid item xs={12} sm={6} md={4}>
-							<CatMGridContainer />
-						</Grid>
-					</CatMGridProvider>
-					{/* </DSGProvider> */}
-					<Grid item xs={12} sm={6} md={4}>
-						<CatSGridContainer />
-					</Grid>
-				</CatSGridProvider>
-				{/* </DSGProvider> */}
-			</Grid>
+					</CatSGridProvider>
+				</Grid>
+			</ContainerEx>
 		</Box>
 	);
 });

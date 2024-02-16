@@ -17,9 +17,17 @@ const FrameBanner = memo(
 		const { title, alt, children, SearchComponent, ...rest } = props;
 		const { mobile } = useContext(ResponsiveContext);
 
+		const showSearchComponent = useMemo(() => {
+			return children || !!SearchComponent;
+		}, [SearchComponent, children]);
+
 		const centerFlex = useMemo(() => {
 			return mobile || !!SearchComponent ? 2 : 1;
 		}, [SearchComponent, mobile]);
+
+		const leftFlex = useMemo(() => {
+			return showSearchComponent ? 1 : 2;
+		}, [showSearchComponent]);
 
 		return (
 			<FlexBox ref={ref} {...rest}>
@@ -27,7 +35,7 @@ const FrameBanner = memo(
 					ml={-2}
 					alignItems="center"
 					justifyContent="flex-start"
-					flex={1}>
+					flex={leftFlex}>
 					{/* <ResponsiveFrameMenuButton /> */}
 					<FrameMenuButtonContainer />
 					<ResponsiveFrameTitle alt={alt}>

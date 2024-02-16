@@ -12,11 +12,14 @@ import { SupplierSearchFieldContainer } from "../../components/modules/A05/searc
 import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
 import A05 from "../../modules/md-a05";
 import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
+import { useInit } from "../../shared-hooks/useInit";
+import { A05Context } from "../../contexts/A05/A05Context";
 
 export const A05FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
 	const searchForm = useForm();
 	const theme = useTheme();
+
 	const boxStyles = useMemo(
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
