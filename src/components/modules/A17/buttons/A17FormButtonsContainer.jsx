@@ -16,7 +16,11 @@ export const A17FormButtonsContainer = () => {
 		);
 	}
 
-	return <A17FormViewButtons onEdit={a17.promptUpdating} />;
+	return (
+		<A17FormViewButtons
+			onEdit={a17.canUpdate ? a17.promptUpdating : null}
+		/>
+	);
 };
 
 A17FormButtonsContainer.displayName = "A17FormButtonsContainer";

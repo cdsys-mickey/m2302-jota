@@ -12,7 +12,7 @@ const SignalRTest = memo(() => {
 	const { register } = form;
 
 	const { connection, connectionState, error } = useSignalR({
-		url: import.meta.env.VITE_URL_CHAT_HUB,
+		url: "http://localhost:5229/hubs/chat",
 	});
 
 	// const state = useMemo(() => {

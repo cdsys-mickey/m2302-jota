@@ -31,6 +31,7 @@ const DATEFNS_FORMATS = Object.freeze({
 	DATEFNS_DATETIME_SECONDS: "yyyy/MM/dd HH:mm:ss",
 	DATEFNS_TIME: "HH:mm",
 	DATEFNS_TIME_SECONDS: "HH:mm:ss",
+	DATEFNS_MMDD_HHMMSS: "MM/dd HH:mm:ss",
 });
 
 const getWeekdayNames = () => {

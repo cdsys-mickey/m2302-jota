@@ -10,6 +10,8 @@ import {
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import PushMessageListItemSecondaryAction from "./PushMessageListItemSecondaryAction";
+import { format, parse } from "date-fns";
+import DateTimes from "../../shared-modules/sd-date-times";
 
 const PushMessageListItem = memo(
 	forwardRef((props, ref) => {
@@ -27,11 +29,20 @@ const PushMessageListItem = memo(
 				: `前往 ${message?.JobID} 作業`;
 		}, [disabled, message.AbbrName, message?.JobID]);
 
+		const timestamp = useMemo(() => {
+			const date = parse(
+				message?.SendTime,
+				DateTimes.DATEFNS_DATETIME_SECONDS,
+				new Date()
+			);
+			return format(date, DateTimes.DATEFNS_MMDD_HHMMSS);
+		}, [message?.SendTime]);
+
 		const secondary = useMemo(() => {
-			return `${message?.AbbrName} ${message?.SendTime} 來自 ${
-				message.SendName || "(未知)"
-			}`;
-		}, [message?.AbbrName, message.SendName, message?.SendTime]);
+			return `來自 ${message.SendName || "(未知)"} 給 ${
+				message?.AbbrName
+			}, ${timestamp}`;
+		}, [message?.AbbrName, message.SendName, timestamp]);
 
 		return (
 			<HoverableListItem ref={ref} {...rest}>
