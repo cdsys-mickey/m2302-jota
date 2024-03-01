@@ -9,6 +9,8 @@ import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContai
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import TypoBankPickerContainer from "@/components/fields/TypoBankPickerContainer";
+import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
+import YesNo from "@/modules/md-yes-no";
 
 const A05Form = memo((props) => {
 	const { data, readWorking, dataLoaded, editing, updating, ...rest } = props;
@@ -152,6 +154,16 @@ const A05Form = memo((props) => {
 									label="傳真"
 									fullWidth
 								/>
+							</Grid>
+							<Grid item xs={4} sm={4} md={2}>
+								<TypoCheckboxExContainer
+									label="稅外加"
+									defaultValue="N"
+									name="TaxType"
+									valueToChecked={YesNo.valueToChecked}
+									checkedToValue={YesNo.checkedToValue}>
+									{YesNo.getOptionLabel(data?.TaxType)}
+								</TypoCheckboxExContainer>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

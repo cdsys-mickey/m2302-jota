@@ -1,4 +1,3 @@
-import { PushMessagesButtonContainer } from "@/components/push-messages/PushMessagesButtonContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import { Stack } from "@mui/material";
 import { forwardRef, memo } from "react";
@@ -8,9 +7,11 @@ import AvatarButtonContainer from "@/shared-components/avatar-button/AvatarButto
 import FrameMenuButtonContainer from "./FrameMenuButtonContainer";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
-import { DeptSwitchDialogContainer } from "../../components/account/DeptSwitchDialogContainer";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
+import { DeptSwitchDialogContainer } from "@/components/account/DeptSwitchDialogContainer";
 import { useMemo } from "react";
+import { PushMessagesIconButtonContainer } from "@/components/push-messages/PushMessagesIconButtonContainer";
+import { PushMessagesPopoverContainer } from "@/components/push-messages/PushMessagesPopoverContainer";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
@@ -58,12 +59,17 @@ const FrameBanner = memo(
 						alignItems="flex-end"
 						sx={{ color: "action.active" }}>
 						{/* 通知 */}
-						<PushMessagesButtonContainer />
+						{/* <ZZPushMessagesButtonContainer /> */}
+
+						{/* 通知按鈕 */}
+						<PushMessagesIconButtonContainer />
+						{/* 通知小視窗 */}
+						<PushMessagesPopoverContainer />
 						{/* 帳號 */}
 						<AvatarButtonContainer />
-						{/* 門市切換 */}
-						<DeptSwitchDialogContainer />
 					</Stack>
+					{/* 門市切換 */}
+					<DeptSwitchDialogContainer />
 				</FlexBox>
 			</FlexBox>
 		);

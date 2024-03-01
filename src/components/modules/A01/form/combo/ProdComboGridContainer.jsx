@@ -13,7 +13,7 @@ export const ProdComboGridContainer = (props) => {
 	return (
 		<ProdComboGrid
 			gridRef={a01.setComboGridRef}
-			readOnly={!a01.editing || store}
+			lockRows={!a01.editing || store}
 			data={a01.comboGridData}
 			handleGridChange={a01.handleComboGridChange}
 			bearer={auth.token}

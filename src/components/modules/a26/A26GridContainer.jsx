@@ -9,14 +9,14 @@ const A26GridContainer = () => {
 
 	return (
 		<A26Grid
-			readOnly={a26.readOnly}
+			lockRows={a26.readOnly}
 			setGridRef={a26.setGridRef}
 			data={a26.gridData}
 			loading={a26.gridLoading}
 			onChange={a26.handleGridChange({
 				onCreate: a26.handleCreate,
 				onUpdate: a26.handleUpdate,
-				onDelete: a26.handleConfirmDelete,
+				onDelete: a26.canDelete ? a26.handleConfirmDelete : null,
 				// onConfirmDelete: handleConfirmDelete,
 				onDuplicatedError: a26.handleDuplicatedError,
 			})}
@@ -25,6 +25,7 @@ const A26GridContainer = () => {
 			onSelectionChange={a26.handleSelectionChange({
 				// onRowSelectionChange: a26.onRowSelectionChange,
 			})}
+			canCreate={a26.canCreate}
 		/>
 	);
 };

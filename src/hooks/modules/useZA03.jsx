@@ -105,26 +105,6 @@ export const useZA03 = () => {
 		// crud.doneReading();
 	}, [crud, operator.CurDeptID, operator.CurDeptName]);
 
-	// const prepaerCreate = useCallback(async () => {
-	// 	crud.promptCreating();
-	// 	crud.startReading();
-	// 	try {
-	// 		const { status, payload, error } = await httpGetAsync({
-	// 			url: `v1/ou/user/new`,
-	// 			bearer: token,
-	// 		});
-	// 		console.log("payload", payload);
-	// 		if (status.success) {
-	// 			const data = Users.transformForReading(payload);
-	// 			crud.doneReading(data);
-	// 		} else {
-	// 			throw error || new Error("讀取失敗");
-	// 		}
-	// 	} catch (err) {
-	// 		crud.failReading(err);
-	// 	}
-	// }, [crud, httpGetAsync, token]);
-
 	const loadItem = useCallback(
 		async (id) => {
 			crud.startReading();

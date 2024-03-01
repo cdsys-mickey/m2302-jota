@@ -20,7 +20,8 @@ const ContextMenu = createDSGContextMenu({
 
 const A26Grid = memo((props) => {
 	const {
-		readOnly,
+		canCreate,
+		lockRows,
 		setGridRef,
 		drawerOpen,
 		data,
@@ -60,17 +61,21 @@ const A26Grid = memo((props) => {
 				),
 				title: "佣金類別",
 				grow: 5,
-				disabled: readOnly,
+				disabled: lockRows,
 			},
 			{
 				...keyColumn("Other1", createFloatColumn(1)),
 				title: "佣金比例",
 				minWidth: 120,
-				disabled: readOnly,
+				disabled: lockRows,
 			},
 		],
-		[isPersisted, readOnly]
+		[isPersisted, lockRows]
 	);
+
+	const gridHeight = useMemo(() => {
+		return height + (lockRows || !canCreate ? 48 : 0);
+	}, [canCreate, height, lockRows]);
 
 	if (loading) {
 		return (
@@ -91,15 +96,15 @@ const A26Grid = memo((props) => {
 			{/* <Box sx={boxStyles} {...rest}> */}
 			<ContainerEx maxWidth="xs" alignLeft>
 				<DynamicDataSheetGrid
-					lockRows={readOnly}
+					lockRows={lockRows}
 					ref={setGridRef}
 					rowKey="CodeID"
-					height={height + (readOnly ? 48 : 0)}
+					height={gridHeight}
 					rowHeight={42}
 					value={data}
 					onChange={onChange}
 					columns={columns}
-					addRowsComponent={DSGAddRowsToolbar}
+					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 					disableExpandSelection
 					contextMenuComponent={ContextMenu}
 					onSelectionChange={onSelectionChange}
@@ -111,7 +116,7 @@ const A26Grid = memo((props) => {
 	);
 });
 A26Grid.propTypes = {
-	readOnly: PropTypes.bool,
+	lockRows: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,

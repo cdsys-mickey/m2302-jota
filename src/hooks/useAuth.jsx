@@ -178,7 +178,13 @@ export const useAuth = () => {
 				throw error || new Error("登出失敗");
 			}
 		} catch (err) {
-			console.error("handleSignOut.failed", err);
+			if (err.status === 401) {
+				console.log("already expired");
+				Cookies.remove("LogKey");
+				toLogin();
+			} else {
+				console.error("handleSignOut.failed", err);
+			}
 		}
 	}, [httpGetAsync, toLogin, state.token]);
 

@@ -32,8 +32,8 @@ export const A05DialogTitleButtonsContainer = (props) => {
 
 	return (
 		<A05DialogTitleViewButtons
-			onEdit={a05.promptUpdating}
-			onDelete={a05.confirmDelete}
+			onEdit={a05.canUpdate ? a05.promptUpdating : null}
+			onDelete={a05.canDelete ? a05.confirmDelete : null}
 			{...rest}
 		/>
 	);

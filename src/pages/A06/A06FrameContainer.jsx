@@ -17,6 +17,8 @@ import { useInit } from "../../shared-hooks/useInit";
 
 export const A06FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
+	const a06 = useContext(A06Context);
+	const { mode } = a06;
 	const searchForm = useForm();
 	const theme = useTheme();
 	const boxStyles = useMemo(
@@ -28,7 +30,11 @@ export const A06FrameContainer = () => {
 		<FormProvider {...searchForm}>
 			<Box sx={[boxStyles]}>
 				<StdPrintProvider
-					tableName="CustFile"
+					tableName={
+						mode === A06.Mode.NEW_CUSTOMER
+							? "CustFileN"
+							: "CustFile"
+					}
 					paramsToJsonData={A06.paramsToJsonData}>
 					{/* 標題 */}
 					<FrameBannerContainer>

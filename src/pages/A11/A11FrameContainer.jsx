@@ -16,7 +16,7 @@ export const A11FrameContainer = () => {
 	);
 	return (
 		<StdPrintProvider tableName="BankCod">
-			<A11Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+			<A11Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />
 			{/* 對話框 */}
 			<StdPrintDialogContainer />
 		</StdPrintProvider>

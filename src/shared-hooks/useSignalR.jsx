@@ -1,0 +1,276 @@
+import { useCallback, useState } from "react";
+import * as signalR from "@microsoft/signalr";
+import { useEffect } from "react";
+import { useRef } from "react";
+import { useMemo } from "react";
+
+// const reconnectDelays = [0, 0, 3000, 3000, 6000, 12000, 12000, 180000];
+const DEFAULT_RECONNECT_DELAYS = [
+	0, 0, 3000, 3000, 3000, 3000, 3000, 3000, 3000, 3000, 3000, 3000, 6000,
+	6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 12000,
+	12000, 12000, 12000, 12000, 12000, 12000, 12000, 12000, 12000, 12000, 12000,
+	180000,
+];
+
+/**
+ * 這裡的 connectionState 不是 connection.state, 雖然採用一樣的型態, 但實際上是分開維護的
+ * @param {*} param0
+ * @returns
+ */
+export const useSignalR = ({
+	url,
+	onClose,
+	onReconnecting,
+	onReconnected,
+	onConnected,
+	onConnectFailed,
+	// nextRetryPolicy = defaultNextRetryPolicy,
+	reconnectDelays = DEFAULT_RECONNECT_DELAYS, // 斷線後重新嘗試的等待時間
+	retryInterval = 60000, // 交握失敗的等待時間
+	autoConnect = true,
+	logginLevel = signalR.LogLevel.Error,
+}) => {
+	const [connection, setConnection] = useState();
+	const [state, setState] = useState({
+		connectionState: null,
+		error: null,
+		// connectionId: null,
+	});
+
+	const nextRetryPolicy = useCallback(
+		(retryContext) => {
+			const index =
+				retryContext.previousRetryCount < reconnectDelays.length
+					? retryContext.previousRetryCount
+					: reconnectDelays.length - 1;
+			return reconnectDelays[index];
+		},
+		[reconnectDelays]
+	);
+
+	const createConnection = useCallback(() => {
+		// console.log(`[SignalR] creating hub connection [${url}]...`);
+		const builder = new signalR.HubConnectionBuilder().withUrl(url, {
+			// skipNegotiation: true,
+			// transport: signalR.HttpTransportType.WebSockets,
+		});
+		if (logginLevel) {
+			builder.configureLogging(logginLevel);
+		}
+
+		if (reconnectDelays) {
+			builder.withAutomaticReconnect({
+				nextRetryDelayInMilliseconds: nextRetryPolicy,
+			});
+		}
+		const newConn = builder.build();
+		setConnection(newConn);
+		// console.log(`[SignalR] hub connection [${url}] created`, newConn);
+	}, [logginLevel, nextRetryPolicy, reconnectDelays, url]);
+
+	const handleConnected = useCallback(() => {
+		setState((prev) => ({
+			...prev,
+			connectionState: signalR.HubConnectionState.Connected,
+			// connectionId: connection?.connectionId,
+		}));
+		if (onConnected) {
+			onConnected();
+		}
+	}, [onConnected]);
+
+	const handleFailed = useCallback(
+		(err) => {
+			setState((prev) => ({
+				...prev,
+				connectionState: signalR.HubConnectionState.Disconnected,
+				// connectionId: null,
+				error: err,
+			}));
+			if (onConnectFailed) {
+				onConnectFailed(err);
+			}
+		},
+		[onConnectFailed]
+	);
+
+	const handleClose = useCallback(
+		(err) => {
+			// console.log("handleClose", err);
+			setState((prev) => ({
+				...prev,
+				connected: false,
+				error: err,
+			}));
+			if (onClose) {
+				onClose(err);
+			}
+		},
+		[onClose]
+	);
+
+	const handleReconnecting = useCallback(
+		(err) => {
+			// console.info("onReconnecting", err);
+			setState((prev) => ({
+				...prev,
+				connectionState: signalR.HubConnectionState.Connecting,
+				// connectionId: null,
+				error: err,
+			}));
+			if (onReconnecting) {
+				onReconnecting(err);
+			}
+		},
+		[onReconnecting]
+	);
+
+	const handleReconnected = useCallback(
+		(connectionId) => {
+			// console.info("handleReconnected, new connectionId:", connectionId);
+			setState((prev) => ({
+				...prev,
+				connectionState: signalR.HubConnectionState.Connected,
+				// connectionId: connectionId,
+				error: null,
+			}));
+			if (onReconnected) {
+				onReconnected(connectionId);
+			}
+		},
+		[onReconnected]
+	);
+
+	const connect = useCallback(async () => {
+		if (connection.state === signalR.HubConnectionState.Disconnected) {
+			// console.log(`[SignalR] connecting to Hub "${url}" ...`);
+			setState((prev) => ({
+				...prev,
+				connectionState: signalR.HubConnectionState.Connecting,
+				error: null,
+			}));
+			try {
+				await connection.start();
+				// console.log(
+				// 	`[SignalR] Hub ${url} connected, connectionId: ${connection.connectionId}`,
+				// 	connection
+				// );
+				handleConnected();
+			} catch (err) {
+				if (retryInterval > 0) {
+					retryIntervalIdRef.current = setInterval(() => {
+						if (retryIntervalIdRef.current) {
+							clearInterval(retryIntervalIdRef.current);
+							// console.log(
+							// 	`existing retryIntervalId: ${retryIntervalIdRef.current} cleared`
+							// );
+							retryIntervalIdRef.current = null;
+						}
+
+						console.log("Retrying...");
+						connect(); // re connecting....
+					}, retryInterval);
+				}
+
+				// console.error(
+				// 	`[SignalR] Hub ${url} failed to connect, retry in ${retryInterval} millis, retryIntervalId: ${retryIntervalIdRef.current}`,
+				// 	err
+				// );
+				handleFailed(err);
+			}
+		} else {
+			console.log(
+				`[SignalR] Hub [${url}] is not disconnected, connect attempt ignored:`,
+				connection.state
+			);
+		}
+	}, [connection, handleConnected, handleFailed, retryInterval, url]);
+
+	const connectionId = useMemo(() => {
+		return connection?.connectionId;
+	}, [connection?.connectionId]);
+
+	useEffect(() => {
+		connection?.onclose(handleClose);
+	}, [connection, handleClose]);
+
+	useEffect(() => {
+		connection?.onreconnecting(handleReconnecting);
+	}, [connection, handleReconnecting]);
+
+	useEffect(() => {
+		connection?.onreconnected(handleReconnected);
+	}, [connection, handleReconnected]);
+
+	useEffect(() => {
+		createConnection();
+	}, [createConnection]);
+
+	const retryIntervalIdRef = useRef();
+	useEffect(() => {
+		if (autoConnect && connection) {
+			connect();
+		}
+
+		return () => {
+			if (retryIntervalIdRef.current) {
+				clearInterval(retryIntervalIdRef.current);
+				// console.log(
+				// 	`retryIntervalIdRef: ${retryIntervalIdRef.current} cleared`
+				// );
+			}
+			if (connection) {
+				if (connection.state === signalR.HubConnectionState.Connected) {
+					console.log(`[SignalR] disconnecting from Hub ${url} ...`);
+					setState((prev) => ({
+						...prev,
+						stopping: true,
+						error: null,
+					}));
+					connection
+						.stop()
+						.then(() => {
+							console.log(`[SignalR] Hub ${url} disconnected`);
+							setState((prev) => ({
+								...prev,
+								stopping: false,
+							}));
+						})
+						.catch((err) => {
+							console.error(
+								`[SignalR] Hub ${url} disconnect error`,
+								err
+							);
+							setState((prev) => ({
+								...prev,
+								stopping: false,
+								error: err,
+							}));
+						});
+				} else {
+					console.warn(
+						`[SignalR] Hub ${url} is not connected, disconnect attempt ignored:`,
+						connection.state
+					);
+				}
+			} else {
+				console.log("no connection is created, exiting...");
+			}
+		};
+	}, [
+		autoConnect,
+		connect,
+		connection,
+		handleConnected,
+		handleFailed,
+		retryInterval,
+		url,
+	]);
+
+	return {
+		connect,
+		connection,
+		connectionId,
+		...state,
+	};
+};

@@ -17,7 +17,8 @@ const ContextMenu = createDSGContextMenu({
 
 const A12Grid = memo((props) => {
 	const {
-		readOnly,
+		canCreate,
+		lockRows,
 		setGridRef,
 		data,
 		loading,
@@ -48,11 +49,15 @@ const A12Grid = memo((props) => {
 				),
 				title: "員工姓名",
 				grow: 4,
-				disabled: readOnly,
+				disabled: lockRows,
 			},
 		],
-		[isPersisted, readOnly]
+		[isPersisted, lockRows]
 	);
+
+	const gridHeight = useMemo(() => {
+		return height + (lockRows || !canCreate ? 48 : 0);
+	}, [canCreate, height, lockRows]);
 
 	if (loading) {
 		return (
@@ -70,15 +75,15 @@ const A12Grid = memo((props) => {
 		<ContainerEx maxWidth="xs" alignLeft>
 			<Box>
 				<DynamicDataSheetGrid
-					lockRows={readOnly}
+					lockRows={lockRows}
 					ref={setGridRef}
 					rowKey="CodeID"
-					height={height + (readOnly ? 48 : 0)}
+					height={gridHeight}
 					rowHeight={42}
 					value={data}
 					onChange={handleChange}
 					columns={columns}
-					addRowsComponent={DSGAddRowsToolbar}
+					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 					disableExpandSelection
 					// disableContextMenu
 					contextMenuComponent={ContextMenu}
@@ -90,7 +95,8 @@ const A12Grid = memo((props) => {
 	);
 });
 A12Grid.propTypes = {
-	readOnly: PropTypes.bool,
+	canCreate: PropTypes.bool,
+	lockRows: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,

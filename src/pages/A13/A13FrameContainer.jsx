@@ -4,6 +4,8 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useMemo } from "react";
 import Styles from "@/modules/md-styles";
 import { useTheme } from "@mui/material";
+import { StdPrintProvider } from "@/contexts/std-print/StdPrintProvider";
+import { StdPrintDialogContainer } from "@/components/std-print/StdPrintDialogContainer";
 
 export const A13FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -12,7 +14,13 @@ export const A13FrameContainer = () => {
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
 	);
-	return <A13Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+	return (
+		<StdPrintProvider tableName="PDlineCod">
+			<A13Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+			{/* 對話框 */}
+			<StdPrintDialogContainer />
+		</StdPrintProvider>
+	);
 };
 
 A13FrameContainer.displayName = "A13Frame";

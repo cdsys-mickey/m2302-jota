@@ -60,8 +60,10 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 				...prev,
 				menuItemSelected: module,
 			}));
-			console.log(`module ${module.JobID} selected`);
-			toModule(module.WebName);
+			console.log(`module ${module?.JobID || null} selected`);
+			if (module?.WebName) {
+				toModule(module?.WebName);
+			}
 		},
 		[toModule]
 	);

@@ -5,10 +5,14 @@ import {
 	ThemeProvider,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+// import zhTW from "date-fns/locale/zh-TW";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { zhTW } from "date-fns/locale/zh-TW";
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import zhTW from "dayjs/locale/zh-tw";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import zhTW from "date-fns/locale/zh-TW";
 
 import { DialogsProvider } from "@/shared-contexts/dialog/DialogsProvider";
 import { AppProvider } from "@/contexts/app/AppProvider";
@@ -94,7 +98,10 @@ function App() {
 			<ThemeProvider theme={theme}>
 				<LocalizationProvider
 					dateAdapter={AdapterDateFns}
-					locale={zhTW}>
+					adapterLocale={zhTW}
+					// dateAdapter={AdapterDayjs}
+					// adapterLocale="zhTW"
+				>
 					<ResponsiveProvider>
 						<DialogsProvider buttonProps={{ size: "small" }}>
 							<CssBaseline />

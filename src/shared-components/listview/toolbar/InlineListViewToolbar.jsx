@@ -29,7 +29,10 @@ const InlineListViewToolbar = memo(
 					...(Array.isArray(boxSx) ? boxSx : [boxSx]),
 				]}
 				{...rest}>
-				<FlexBox flex={1} justifyContent="flex-start">
+				<FlexBox
+					flex={1}
+					alignItems="center"
+					justifyContent="flex-start">
 					{LeftComponent && <LeftComponent {...componentProps} />}
 					{leftComponents}
 				</FlexBox>

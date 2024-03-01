@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import axios from "axios";
 import HttpStatus from "@/shared-classes/HttpStatus";
 import querystring from "query-string";
-import WebApi from "@/shared-modules/sd-web-apis";
+import WebApi from "@/shared-modules/sd-web-api";
 
 const DEFAULT_HEADERS = {};
 
@@ -67,7 +67,15 @@ export const useWebApi = (props) => {
 			if (!apiUrl) {
 				throw `url cannot be null`;
 			}
-			console.log(`${method.toUpperCase()} ${apiUrl}, params:`, params);
+			if (params) {
+				console.log(
+					`${method.toUpperCase()} ${apiUrl}, params:`,
+					params
+				);
+			} else {
+				console.log(`${method.toUpperCase()} ${apiUrl}`);
+			}
+
 			if (data) {
 				console.log("data:", data);
 			}
@@ -120,7 +128,7 @@ export const useWebApi = (props) => {
 						payload: axiosResponse.data,
 					};
 				} else {
-					//should not happen
+					//should not happen, because Axios always throws error when status is not 2xx
 					return {
 						status: status,
 						error: WebApi.getErrorFromPayload(axiosResponse.data, {
@@ -130,7 +138,7 @@ export const useWebApi = (props) => {
 					};
 				}
 			} catch (err) {
-				console.error(err);
+				console.error(`sendAsync[${method}]`, err);
 				return {
 					status: HttpStatus.from(err.response.status),
 					error: WebApi.getErrorFromPayload(err.response.data, {

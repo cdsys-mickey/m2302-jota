@@ -28,10 +28,28 @@ const useAppRedirect = () => {
 		[redirectTo]
 	);
 
+	const toRoot = useCallback(
+		(rootModule) => {
+			redirectTo(`/${rootModule}`);
+		},
+		[redirectTo]
+	);
+
+	const toHome = useCallback(() => {
+		toRoot("home");
+	}, [toRoot]);
+
+	const toMessages = useCallback(() => {
+		toRoot("messages");
+	}, [toRoot]);
+
 	return {
 		toLanding,
 		toLogin,
 		toModule,
+		toRoot,
+		toHome,
+		toMessages,
 	};
 };
 

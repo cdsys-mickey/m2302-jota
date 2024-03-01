@@ -20,7 +20,6 @@ export const ZA03ListViewContainer = () => {
 	});
 
 	const debouncedQs = useDebounce(qs, 300);
-	// const { scrollOffset, onScroll } = useReactWindowScroll({ debounce: 20 });
 
 	useInit(() => {
 		users.loadList();

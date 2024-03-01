@@ -9,7 +9,7 @@ const A04GridContainer = () => {
 
 	return (
 		<A04Grid
-			readOnly={a04.readOnly}
+			lockRows={a04.readOnly}
 			setGridRef={a04.setGridRef}
 			data={a04.gridData}
 			loading={a04.gridLoading}
@@ -22,6 +22,7 @@ const A04GridContainer = () => {
 			height={height - 176}
 			isPersisted={a04.isPersisted}
 			onSelectionChange={a04.handleSelectionChange({})}
+			canCreate={a04.canCreate}
 		/>
 	);
 };

@@ -84,6 +84,7 @@ export const useInfiniteLoader = (props = {}) => {
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
 			useLastParams = false,
+			disableLoading = false,
 			// reset = false,
 		} = {}) => {
 			let startIndex = start !== undefined ? start : 0;
@@ -109,13 +110,16 @@ export const useInfiniteLoader = (props = {}) => {
 				activeParams
 			);
 
+			const loading = !saveKey && !disableLoading;
+
 			setListError(null);
 			setState((prev) => ({
 				...prev,
 				forceLoading: !!saveKey,
-				...(!saveKey && {
-					loading: true,
-				}),
+				// ...(!saveKey && {
+				// 	loading: true,
+				// }),
+				loading,
 			}));
 			// setForceLoading(!!saveKey);
 			// if (!saveKey) {

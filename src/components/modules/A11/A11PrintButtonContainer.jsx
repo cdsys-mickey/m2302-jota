@@ -9,15 +9,15 @@ const A11PrintButtonContainer = memo(
 		const { ...rest } = props;
 		const stdPrint = useContext(StdPrintContext);
 		const a11 = useContext(A11Context);
-		const { moduleAuthorityLoading, canPrint } = a11;
 
-		if (moduleAuthorityLoading || !canPrint) {
+		if (a11.moduleAuthorityLoading || !a11.canPrint) {
 			return false;
 		}
 
 		return (
 			<ResponsiveButton
 				ref={ref}
+				color="neutral"
 				variant="contained"
 				startIcon={<LocalPrintshopIcon />}
 				sx={{

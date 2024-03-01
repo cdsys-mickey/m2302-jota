@@ -1,16 +1,18 @@
 import { AuthProvider } from "@/contexts/auth/AuthProvider";
-import { PushMessagesProvider } from "@/contexts/PushMessagesContext";
 import { BasePageContainer } from "@/frames/BasePageContainer";
 
 import AppFrameProvider from "@/shared-contexts/app-frame/AppFrameProvider";
+import { MessagingProvider } from "../contexts/MessagingProvider";
 
 const ProtectedRoute = () => {
 	return (
 		<AuthProvider>
 			<AppFrameProvider drawerWidth={350}>
-				<PushMessagesProvider>
+				{/* <ZZPushMessagingProvider> */}
+				<MessagingProvider>
 					<BasePageContainer />
-				</PushMessagesProvider>
+				</MessagingProvider>
+				{/* </ZZPushMessagingProvider> */}
 			</AppFrameProvider>
 		</AuthProvider>
 	);

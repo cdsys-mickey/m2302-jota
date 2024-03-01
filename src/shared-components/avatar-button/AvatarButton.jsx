@@ -1,9 +1,11 @@
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
+import StateBadge from "../state-badge/StateBadge";
 
 const AvatarButton = memo((props) => {
 	const {
+		state,
 		name,
 		fullName,
 		children,
@@ -18,7 +20,16 @@ const AvatarButton = memo((props) => {
 		<>
 			<Tooltip title={fullName}>
 				<IconButton onClick={handleClick}>
-					<Avatar sx={{ width: 32, height: 32 }}>{name}</Avatar>
+					<StateBadge
+						state={state}
+						overlap="circular"
+						anchorOrigin={{
+							vertical: "bottom",
+							horizontal: "right",
+						}}
+						variant="dot">
+						<Avatar sx={{ width: 32, height: 32 }}>{name}</Avatar>
+					</StateBadge>
 				</IconButton>
 			</Tooltip>
 			{/* {renderMenu

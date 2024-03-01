@@ -13,9 +13,7 @@ const A11Toolbar = memo(
 				<InlineListViewToolbar
 					ref={ref}
 					LeftComponent={A11LockRowsSwitchContainer}
-					rightComponents={
-						<A11PrintButtonContainer color="neutral" />
-					}
+					RightComponent={A11PrintButtonContainer}
 					mb={0.5}
 					{...rest}
 				/>

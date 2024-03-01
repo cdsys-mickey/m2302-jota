@@ -17,7 +17,8 @@ const ContextMenu = createDSGContextMenu({
 
 const CatLGrid = memo((props) => {
 	const {
-		readOnly,
+		canCreate,
+		lockRows,
 		setGridRef,
 		data,
 		loading,
@@ -52,11 +53,15 @@ const CatLGrid = memo((props) => {
 				),
 				title: "大分類名稱",
 				grow: 5,
-				disabled: readOnly,
+				disabled: lockRows,
 			},
 		],
-		[isPersisted, readOnly]
+		[isPersisted, lockRows]
 	);
+
+	const gridHeight = useMemo(() => {
+		return height + (lockRows || !canCreate ? 48 : 0);
+	}, [canCreate, height, lockRows]);
 
 	if (loading) {
 		return (
@@ -79,15 +84,15 @@ const CatLGrid = memo((props) => {
 				},
 			}}>
 			<DynamicDataSheetGrid
-				lockRows={readOnly}
+				lockRows={lockRows}
 				ref={setGridRef}
 				rowKey="LClas"
-				height={height + (readOnly ? 48 : 0)}
+				height={gridHeight}
 				rowHeight={42}
 				value={data}
 				onChange={handleChange}
 				columns={columns}
-				addRowsComponent={DSGAddRowsToolbar}
+				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 				disableExpandSelection
 				contextMenuComponent={ContextMenu}
 				onSelectionChange={onSelectionChange}
@@ -97,7 +102,7 @@ const CatLGrid = memo((props) => {
 	);
 });
 CatLGrid.propTypes = {
-	readOnly: PropTypes.bool,
+	lockRows: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,

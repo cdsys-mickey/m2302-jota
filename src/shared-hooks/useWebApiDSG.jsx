@@ -32,7 +32,7 @@ export const useWebApiDSG = ({
 					url: baseUri,
 					bearer: token,
 					...(queryString && {
-						data: QueryString.parse(queryString),
+						params: QueryString.parse(queryString),
 					}),
 				});
 				if (status.success) {

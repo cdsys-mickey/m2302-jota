@@ -8,6 +8,9 @@ import PropTypes from "prop-types";
 import { SideMenuContext } from "@/contexts/SideMenuContext";
 import { useScrollTrigger } from "@mui/material";
 import { useReactWindowScroll } from "../../shared-hooks/react-window/useReactWindowScroll";
+import { MessagingContext } from "../../contexts/MessagingContext";
+import useAppRedirect from "../../hooks/useAppRedirect";
+import { useCallback } from "react";
 
 const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 	const { name = "q", ...rest } = props;
@@ -19,6 +22,14 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 	const form = useFormContext();
 	const { handleHomeClick } = useContext(AppFrameContext);
 	// const form = useForm();
+	const messaging = useContext(MessagingContext);
+	const { toMessages } = useAppRedirect();
+	const { handlePopoverClose } = messaging;
+
+	const gotoMessages = useCallback(() => {
+		handlePopoverClose();
+		toMessages();
+	}, [handlePopoverClose, toMessages]);
 
 	const searchField = useSearchField({
 		inputRef,
@@ -53,18 +64,9 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 					name={name}
 					ref={ref}
 					inputRef={inputRef}
-					// onToggleDrawerOpen={
-					// 	mobile ? handleToggleDrawerOpen : undefined
-					// }
 					onClear={searchField.handleClear}
-					// onScroll={onScroll}
-					// scrollOffset={scrollOffset}
-					// onSubmit={}
 					onHomeClick={handleHomeClick}
-					// onInputChange={onInputChange}
-					// onClear={handleClear}
-					// elevation={trigger > 0 ? 4 : 0}
-					// elevation={scrollOffset > 0 ? 4 : 0}
+					// gotoMessages={gotoMessages}
 					{...rest}
 				/>
 			</form>

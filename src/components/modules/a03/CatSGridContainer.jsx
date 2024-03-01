@@ -10,10 +10,11 @@ export const CatSGridContainer = () => {
 	const { height } = useWindowSize();
 	const catS = useContext(CatSGridContext);
 	const a03 = useContext(A03Context);
+	const { canDelete } = a03;
 
 	return (
 		<CatSGrid
-			readOnly={a03.readOnly}
+			lockRows={a03.readOnly}
 			gridRef={catS.gridRef}
 			setGridRef={catS.setGridRef}
 			lgId={catS.lgId}
@@ -23,7 +24,7 @@ export const CatSGridContainer = () => {
 			handleChange={catS.handleGridChange({
 				onCreate: catS.handleCreate,
 				onUpdate: catS.handleUpdate,
-				onDelete: catS.handleConfirmDelete,
+				onDelete: canDelete ? catS.handleConfirmDelete : null,
 				onDuplicatedError: catS.handleDuplicatedError,
 			})}
 			// handleChange={catS.handleGridChange}
@@ -33,6 +34,7 @@ export const CatSGridContainer = () => {
 			onSelectionChange={catS.handleSelectionChange({
 				onRowSelectionChange: catS.onRowSelectionChange,
 			})}
+			canCreate={a03.canCreate}
 		/>
 	);
 };

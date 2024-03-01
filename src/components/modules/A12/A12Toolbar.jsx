@@ -1,8 +1,8 @@
 import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
-import { Container } from "@mui/material";
 import { forwardRef, memo } from "react";
-import { A12LockRowsSwitchContainer } from "./A12LockRowsSwitchContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
+import { A12LockRowsSwitchContainer } from "./A12LockRowsSwitchContainer";
+import A12PrintButtonContainer from "./A12PrintButtonContainer";
 
 const A12Toolbar = memo(
 	forwardRef((props, ref) => {
@@ -12,6 +12,7 @@ const A12Toolbar = memo(
 				<InlineListViewToolbar
 					ref={ref}
 					LeftComponent={A12LockRowsSwitchContainer}
+					RightComponent={A12PrintButtonContainer}
 					{...rest}
 				/>
 			</ContainerEx>

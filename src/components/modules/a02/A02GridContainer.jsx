@@ -9,7 +9,7 @@ const A02GridContainer = () => {
 
 	return (
 		<A02Grid
-			readOnly={a02.readOnly}
+			lockRows={a02.readOnly}
 			gridRef={a02.gridRef}
 			setGridRef={a02.setGridRef}
 			data={a02.gridData}
@@ -17,12 +17,13 @@ const A02GridContainer = () => {
 			handleChange={a02.handleGridChange({
 				onCreate: a02.handleCreate,
 				onUpdate: a02.handleUpdate,
-				onDelete: a02.handleConfirmDelete,
+				onDelete: a02.canDelete ? a02.handleConfirmDelete : null,
 				onDuplicatedError: a02.handleDuplicatedError,
 			})}
 			height={height - 176}
 			isPersisted={a02.isPersisted}
 			onSelectionChange={a02.handleSelectionChange({})}
+			canCreate={a02.canCreate}
 		/>
 	);
 };

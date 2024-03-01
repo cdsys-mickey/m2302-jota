@@ -39,9 +39,13 @@ export const A01DialogTitleButtonsContainer = (props) => {
 
 	return (
 		<A01DialogTitleViewButtons
-			onEdit={a01.promptUpdating}
-			onDelete={a01.confirmDelete}
-			onReview={a01.mode === A01.Mode.NEW_PROD ? a01.promptReview : null}
+			onEdit={a01.canUpdate ? a01.promptUpdating : null}
+			onDelete={a01.canDelete ? a01.confirmDelete : null}
+			onReview={
+				a01.mode === A01.Mode.NEW_PROD && a01.canReview
+					? a01.promptReview
+					: null
+			}
 			{...rest}
 		/>
 	);

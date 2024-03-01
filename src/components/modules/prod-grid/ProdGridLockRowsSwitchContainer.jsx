@@ -5,6 +5,8 @@ import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 export const ProdGridLockRowsSwitchContainer = (props) => {
 	const { ...rest } = props;
 	const prodGrid = useContext(ProdGridContext);
+	const { canUpdate } = prodGrid;
+
 	if (
 		prodGrid.gridLoading ||
 		!prodGrid.gridData ||
@@ -20,6 +22,7 @@ export const ProdGridLockRowsSwitchContainer = (props) => {
 			checked={prodGrid.readOnly}
 			// onChange={prodGrid.toggleReadOnly}
 			onChange={prodGrid.toggleEditorLock}
+			disabled={!canUpdate}
 			{...rest}
 		/>
 	);

@@ -5,8 +5,13 @@ import QueryString from "query-string";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import { toast } from "react-toastify";
 import Errors from "../../shared-modules/sd-errors";
+import { useAppModule } from "./useAppModule";
 
 export const useA16 = ({ token }) => {
+	const appModule = useAppModule({
+		token,
+		moduleId: "A16",
+	});
 	const { httpPatchAsync } = useWebApi();
 	const dsgEditor = useWebApiDSG({
 		token,
@@ -63,6 +68,7 @@ export const useA16 = ({ token }) => {
 	}, []);
 
 	return {
+		...appModule,
 		...dsgEditor,
 		handleCreateRow,
 		handlePatch,

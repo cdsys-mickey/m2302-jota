@@ -14,6 +14,7 @@ import NoDataBox from "../../../shared-components/NoDataBox";
 
 const A011Grid = memo((props) => {
 	const {
+		canCreate,
 		readOnly,
 		setGridRef,
 		data,

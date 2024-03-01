@@ -9,7 +9,7 @@ const A10GridContainer = () => {
 
 	return (
 		<A10Grid
-			readOnly={a10.readOnly}
+			lockRows={a10.readOnly}
 			gridRef={a10.gridRef}
 			setGridRef={a10.setGridRef}
 			data={a10.gridData}
@@ -17,12 +17,13 @@ const A10GridContainer = () => {
 			handleChange={a10.handleGridChange({
 				onCreate: a10.handleCreate,
 				onUpdate: a10.handleUpdate,
-				onDelete: a10.handleConfirmDelete,
+				onDelete: a10.canDelete ? a10.handleConfirmDelete : null,
 				onDuplicatedError: a10.handleDuplicatedError,
 			})}
 			height={height - 176}
 			isPersisted={a10.isPersisted}
 			onSelectionChange={a10.handleSelectionChange({})}
+			canCreate={a10.canCreate}
 		/>
 	);
 };

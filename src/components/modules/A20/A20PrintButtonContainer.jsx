@@ -9,9 +9,8 @@ const A20PrintButtonContainer = memo(
 		const { ...rest } = props;
 		const stdPrint = useContext(StdPrintContext);
 		const a20 = useContext(A20Context);
-		const { moduleAuthorityLoading, canPrint } = a20;
 
-		if (moduleAuthorityLoading || !canPrint) {
+		if (a20.moduleAuthorityLoading || !a20.canPrint) {
 			return false;
 		}
 

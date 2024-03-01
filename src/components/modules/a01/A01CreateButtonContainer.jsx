@@ -10,7 +10,6 @@ const A01CreateButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		const a01 = useContext(A01Context);
-		const { moduleAuthorityLoading, canCreate } = a01;
 		const text = useMemo(() => {
 			if (a01.mode === A01.Mode.NEW_PROD) {
 				return "新增新商品";
@@ -18,7 +17,7 @@ const A01CreateButtonContainer = memo(
 			return "新增商品";
 		}, [a01.mode]);
 
-		if (moduleAuthorityLoading || !canCreate) {
+		if (a01.moduleAuthorityLoading || !a01.canCreate) {
 			return false;
 		}
 

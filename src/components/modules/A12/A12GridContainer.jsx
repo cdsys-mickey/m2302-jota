@@ -9,7 +9,7 @@ const A12GridContainer = () => {
 
 	return (
 		<A12Grid
-			readOnly={a12.readOnly}
+			lockRows={a12.readOnly}
 			gridRef={a12.gridRef}
 			setGridRef={a12.setGridRef}
 			data={a12.gridData}
@@ -23,6 +23,7 @@ const A12GridContainer = () => {
 			height={height - 176}
 			isPersisted={a12.isPersisted}
 			onSelectionChange={a12.handleSelectionChange({})}
+			canCreate={a12.canCreate}
 		/>
 	);
 };

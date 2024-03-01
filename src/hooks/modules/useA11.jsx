@@ -20,7 +20,7 @@ export const useA11 = ({ token }) => {
 	}, []);
 
 	return {
-		...dsgEditor,
 		...appModule,
+		...dsgEditor,
 	};
 };

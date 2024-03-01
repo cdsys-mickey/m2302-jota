@@ -77,6 +77,7 @@ import { A19FrameContainer } from "@/pages/A19/A19FrameContainer";
 import { A21FrameContainer } from "@/pages/A21/A21FrameContainer";
 import { A22Provider } from "@/contexts/A22/A22Provider";
 import { A22FrameContainer } from "@/pages/A22/A22FrameContainer";
+import { MsgFrameContainer } from "../pages/messages/MsgFrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -121,6 +122,7 @@ const AppRoute = () => {
 						</HomeProvider>
 					}
 				/>
+				<Route path="messages" element={<MsgFrameContainer />} />
 
 				<Route path="modules">
 					{/* <Route
@@ -208,17 +210,21 @@ const AppRoute = () => {
 					<Route
 						path="A02"
 						element={
-							<A02Provider>
-								<A02FrameContainer />
-							</A02Provider>
+							<CrudProvider>
+								<A02Provider>
+									<A02FrameContainer />
+								</A02Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
 						path="A03"
 						element={
-							<A03Provider>
-								<A03FrameContainer />
-							</A03Provider>
+							<CrudProvider>
+								<A03Provider>
+									<A03FrameContainer />
+								</A03Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
@@ -274,17 +280,21 @@ const AppRoute = () => {
 					<Route
 						path="A09"
 						element={
-							<A09Provider>
-								<A09FrameContainer />
-							</A09Provider>
+							<CrudProvider>
+								<A09Provider>
+									<A09FrameContainer />
+								</A09Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
 						path="A10"
 						element={
-							<A10Provider>
-								<A10FrameContainer />
-							</A10Provider>
+							<CrudProvider>
+								<A10Provider>
+									<A10FrameContainer />
+								</A10Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
@@ -300,41 +310,51 @@ const AppRoute = () => {
 					<Route
 						path="A12"
 						element={
-							<A12Provider>
-								<A12FrameContainer />
-							</A12Provider>
+							<CrudProvider>
+								<A12Provider>
+									<A12FrameContainer />
+								</A12Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
 						path="A13"
 						element={
-							<A13Provider>
-								<A13FrameContainer />
-							</A13Provider>
+							<CrudProvider>
+								<A13Provider>
+									<A13FrameContainer />
+								</A13Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
 						path="A14"
 						element={
-							<A14Provider>
-								<A14FrameContainer />
-							</A14Provider>
+							<CrudProvider>
+								<A14Provider>
+									<A14FrameContainer />
+								</A14Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
 						path="A15"
 						element={
-							<A15Provider>
-								<A15FrameContainer />
-							</A15Provider>
+							<CrudProvider>
+								<A15Provider>
+									<A15FrameContainer />
+								</A15Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
 						path="A16"
 						element={
-							<A16Provider>
-								<A16FrameContainer />
-							</A16Provider>
+							<CrudProvider>
+								<A16Provider>
+									<A16FrameContainer />
+								</A16Provider>
+							</CrudProvider>
 						}
 					/>
 					<Route
@@ -398,9 +418,11 @@ const AppRoute = () => {
 					<Route
 						path="A26"
 						element={
-							<A26Provider>
-								<A26FrameContainer />
-							</A26Provider>
+							<CrudProvider>
+								<A26Provider>
+									<A26FrameContainer />
+								</A26Provider>
+							</CrudProvider>
 						}
 					/>
 

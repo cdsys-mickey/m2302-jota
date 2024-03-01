@@ -3,6 +3,7 @@ import { Container } from "@mui/material";
 import { forwardRef, memo } from "react";
 import { A15LockRowsSwitchContainer } from "./A15LockRowsSwitchContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
+import A15PrintButtonContainer from "./A15PrintButtonContainer";
 
 const A15Toolbar = memo(
 	forwardRef((props, ref) => {
@@ -12,6 +13,7 @@ const A15Toolbar = memo(
 				<InlineListViewToolbar
 					ref={ref}
 					LeftComponent={A15LockRowsSwitchContainer}
+					RightComponent={A15PrintButtonContainer}
 					{...rest}
 				/>
 			</ContainerEx>

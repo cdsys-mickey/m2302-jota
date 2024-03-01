@@ -2,8 +2,13 @@ import ProdGrid from "@/modules/md-prod-grid";
 import { useProdGrid } from "../useProdGrid";
 import A014 from "../../modules/md-a014";
 import { useCallback } from "react";
+import { useAppModule } from "./useAppModule";
 
 export const useA014 = ({ token } = {}) => {
+	const appModule = useAppModule({
+		token,
+		moduleId: "A014",
+	});
 	const prodGrid = useProdGrid({
 		token,
 		gridId: "A014",
@@ -28,6 +33,7 @@ export const useA014 = ({ token } = {}) => {
 	);
 
 	return {
+		...appModule,
 		...prodGrid,
 		handleCreateRow,
 	};

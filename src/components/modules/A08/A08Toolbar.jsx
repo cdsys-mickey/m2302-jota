@@ -13,7 +13,7 @@ const A08Toolbar = memo(
 				<InlineListViewToolbar
 					ref={ref}
 					LeftComponent={A08LockRowsSwitchContainer}
-					rightComponents={<A08PrintButtonContainer />}
+					RightComponent={A08PrintButtonContainer}
 					mb={0.5}
 					{...rest}
 				/>

@@ -32,10 +32,12 @@ export const A06DialogTitleButtonsContainer = (props) => {
 
 	return (
 		<A06DialogTitleViewButtons
-			onEdit={a06.promptUpdating}
-			onDelete={a06.confirmDelete}
+			onEdit={a06.canUpdate ? a06.promptUpdating : null}
+			onDelete={a06.canDelete ? a06.confirmDelete : null}
 			onReview={
-				a06.mode === A06.Mode.NEW_CUSTOMER ? a06.promptReview : null
+				a06.canReview && a06.mode === A06.Mode.NEW_CUSTOMER
+					? a06.promptReview
+					: null
 			}
 			{...rest}
 		/>

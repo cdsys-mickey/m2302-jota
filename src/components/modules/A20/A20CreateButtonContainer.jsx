@@ -11,6 +11,10 @@ const A20CreateButtonContainer = memo(
 			return "新增";
 		}, []);
 
+		if (a20.moduleAuthorityLoading || !a20.canCreate) {
+			return false;
+		}
+
 		return (
 			<ResponsiveButton
 				ref={ref}

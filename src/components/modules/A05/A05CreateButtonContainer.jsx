@@ -10,9 +10,14 @@ const A05CreateButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		const a05 = useContext(A05Context);
+		const { moduleAuthorityLoading, canCreate } = a05;
 		const text = useMemo(() => {
 			return "新增";
 		}, []);
+
+		if (moduleAuthorityLoading || !canCreate) {
+			return false;
+		}
 
 		return (
 			<ResponsiveButton

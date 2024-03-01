@@ -9,7 +9,7 @@ const A15GridContainer = () => {
 
 	return (
 		<A15Grid
-			readOnly={a15.readOnly}
+			lockRows={a15.readOnly}
 			gridRef={a15.gridRef}
 			setGridRef={a15.setGridRef}
 			data={a15.gridData}
@@ -17,12 +17,13 @@ const A15GridContainer = () => {
 			handleChange={a15.handleGridChange({
 				onCreate: a15.handleCreate,
 				onUpdate: a15.handleUpdate,
-				onDelete: a15.handleConfirmDelete,
+				onDelete: a15.canDelete ? a15.handleConfirmDelete : null,
 				onDuplicatedError: a15.handleDuplicatedError,
 			})}
 			height={height - 176}
 			isPersisted={a15.isPersisted}
 			onSelectionChange={a15.handleSelectionChange({})}
+			canCreate={a15.canCreate}
 		/>
 	);
 };

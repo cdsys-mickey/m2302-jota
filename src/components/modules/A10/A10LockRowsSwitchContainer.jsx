@@ -11,6 +11,7 @@ export const A10LockRowsSwitchContainer = (props) => {
 			checkedLabel="編輯鎖定"
 			checked={a10.readOnly}
 			onChange={a10.toggleReadOnly}
+			disabled={!a10.canUpdate}
 			{...rest}
 		/>
 	);

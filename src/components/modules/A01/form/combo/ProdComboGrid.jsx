@@ -14,7 +14,7 @@ const ContextMenu = createDSGContextMenu({
 
 const ProdComboGrid = memo((props) => {
 	const {
-		readOnly = false,
+		lockRows = false,
 		gridRef,
 		data,
 		handleGridChange,
@@ -45,17 +45,17 @@ const ProdComboGrid = memo((props) => {
 				),
 				title: "商品",
 				grow: 8,
-				disabled: readOnly,
+				disabled: lockRows,
 			},
 			{
 				...keyColumn("SProdQty", createFloatColumn(2)),
 				title: "數量",
 				minWidth: 90,
 				grow: 1,
-				disabled: readOnly,
+				disabled: lockRows,
 			},
 		],
-		[bearer, readOnly]
+		[bearer, lockRows]
 	);
 
 	if (!data) {
@@ -66,7 +66,7 @@ const ProdComboGrid = memo((props) => {
 		);
 	}
 
-	if (data?.length === 0 && readOnly) {
+	if (data?.length === 0 && lockRows) {
 		return (
 			<Typography variant="body2" color="text.secondary">
 				(空白)
@@ -78,8 +78,8 @@ const ProdComboGrid = memo((props) => {
 		<DynamicDataSheetGrid
 			ref={gridRef}
 			rowKey="id"
-			lockRows={readOnly}
-			height={height + (readOnly ? 48 : 0)}
+			lockRows={lockRows}
+			height={height + (lockRows ? 48 : 0)}
 			rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
@@ -96,7 +96,7 @@ const ProdComboGrid = memo((props) => {
 });
 
 ProdComboGrid.propTypes = {
-	readOnly: PropTypes.bool,
+	lockRows: PropTypes.bool,
 	gridRef: PropTypes.func,
 	handleGridChange: PropTypes.func,
 	data: PropTypes.array,

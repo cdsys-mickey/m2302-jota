@@ -1,8 +1,13 @@
 import A012 from "@/modules/md-a012";
 import ProdGrid from "@/modules/md-prod-grid";
 import { useProdGrid } from "../useProdGrid";
+import { useAppModule } from "./useAppModule";
 
 export const useA012 = ({ token } = {}) => {
+	const appModule = useAppModule({
+		token,
+		moduleId: "A012",
+	});
 	const prodGrid = useProdGrid({
 		token,
 		gridId: "A012",
@@ -15,6 +20,7 @@ export const useA012 = ({ token } = {}) => {
 	});
 
 	return {
+		...appModule,
 		...prodGrid,
 	};
 };

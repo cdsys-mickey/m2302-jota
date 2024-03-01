@@ -9,7 +9,7 @@ const A09GridContainer = () => {
 
 	return (
 		<A09Grid
-			readOnly={a09.readOnly}
+			lockRows={a09.readOnly}
 			gridRef={a09.gridRef}
 			setGridRef={a09.setGridRef}
 			data={a09.gridData}
@@ -17,12 +17,13 @@ const A09GridContainer = () => {
 			handleChange={a09.handleGridChange({
 				onCreate: a09.handleCreate,
 				onUpdate: a09.handleUpdate,
-				onDelete: a09.handleConfirmDelete,
+				onDelete: a09.canDelete ? a09.handleConfirmDelete : null,
 				onDuplicatedError: a09.handleDuplicatedError,
 			})}
 			height={height - 176}
 			isPersisted={a09.isPersisted}
 			onSelectionChange={a09.handleSelectionChange({})}
+			canCreate={a09.canCreate}
 		/>
 	);
 };

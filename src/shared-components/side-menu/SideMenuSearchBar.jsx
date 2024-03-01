@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 import ControlledFilterField from "../controlled/ControlledFilterField";
+import AllInboxIcon from "@mui/icons-material/AllInbox";
 
 const SideMenuSearchBar = memo(
 	forwardRef((props, ref) => {
@@ -16,6 +17,7 @@ const SideMenuSearchBar = memo(
 			onToggleDrawerOpen,
 			onClear,
 			onHomeClick,
+			gotoMessages,
 			...rest
 		} = props;
 
@@ -43,6 +45,12 @@ const SideMenuSearchBar = memo(
 						width="20ch"
 						// onChange={onInputChange}
 					/>
+					{gotoMessages && (
+						<IconButton color="primary" onClick={gotoMessages}>
+							<AllInboxIcon />
+						</IconButton>
+					)}
+
 					{onToggleDrawerOpen && (
 						<IconButton onClick={onToggleDrawerOpen}>
 							<MenuOpenIcon />

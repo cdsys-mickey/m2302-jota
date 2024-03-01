@@ -9,7 +9,7 @@ const A14GridContainer = () => {
 
 	return (
 		<A14Grid
-			readOnly={a14.readOnly}
+			lockRows={a14.readOnly}
 			gridRef={a14.gridRef}
 			setGridRef={a14.setGridRef}
 			data={a14.gridData}
@@ -17,12 +17,13 @@ const A14GridContainer = () => {
 			handleChange={a14.handleGridChange({
 				onCreate: a14.handleCreate,
 				onUpdate: a14.handleUpdate,
-				onDelete: a14.handleConfirmDelete,
+				onDelete: a14.canDelete ? a14.handleConfirmDelete : null,
 				onDuplicatedError: a14.handleDuplicatedError,
 			})}
 			height={height - 176}
 			isPersisted={a14.isPersisted}
 			onSelectionChange={a14.handleSelectionChange({})}
+			canCreate={a14.canCreate}
 		/>
 	);
 };
