@@ -5,6 +5,10 @@ const getErrorFromPayload = (payload, options) => {
 		return null;
 	}
 	let result = {};
+	const code = payload?.code || payload?.Code;
+	if (code) {
+		result["code"] = code;
+	}
 	result["message"] = payload?.Message || payload?.message;
 	result["type"] = payload?.Type || payload?.type;
 	if (stacktrace) {

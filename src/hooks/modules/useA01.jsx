@@ -157,10 +157,22 @@ export const useA01 = ({ token, mode }) => {
 					crud.cancelReading();
 					// 重新整理
 					loader.loadList({ useLastParams: true });
-				} else if (status.code === 422) {
-					throw new Error("必要欄位檢查失敗，請檢查");
 				} else {
-					throw error || new Error("新增發生未預期例外");
+					if (error.code) {
+						switch (error.code) {
+							case 410:
+								setTabIndex(A01.Tabs.TRANS);
+								break;
+							case 420:
+								setTabIndex(A01.Tabs.COMBO);
+								break;
+							default:
+							case 422:
+								setTabIndex(A01.Tabs.INFO);
+								throw new Error("必要欄位檢查失敗，請檢查");
+						}
+					}
+					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating(err);

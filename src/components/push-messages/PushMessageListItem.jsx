@@ -12,6 +12,7 @@ import { forwardRef, memo, useMemo } from "react";
 import PushMessageListItemSecondaryAction from "./PushMessageListItemSecondaryAction";
 import { format, parse } from "date-fns";
 import DateTimes from "../../shared-modules/sd-date-times";
+import { grey } from "@mui/material/colors";
 
 const PushMessageListItem = memo(
 	forwardRef((props, ref) => {
@@ -54,12 +55,15 @@ const PushMessageListItem = memo(
 						paddingLeft: 1,
 						paddingTop: 0,
 						paddingBottom: 0,
+						...(!unread && {
+							backgroundColor: grey[100],
+						}),
 					}}>
 					<ListItemIcon sx={{ paddingTop: 1 }}>
 						{message?.JobID && (
 							<Tooltip title={title}>
 								<Button
-									variant="contained"
+									// variant="contained"
 									// disabled={disabled}
 									size="small"
 									color="primary"

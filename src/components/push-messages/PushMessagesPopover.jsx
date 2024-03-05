@@ -65,7 +65,7 @@ const PushMessagesPopover = memo(
 						</FlexBox>
 						<FlexBox>
 							<ButtonEx
-								variant="contained"
+								variant="outlined"
 								startIcon={<AllInboxIcon />}
 								onClick={gotoMessages}>
 								前往訊息匣
