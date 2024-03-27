@@ -9,6 +9,7 @@ const FrameMenuItemButton = memo(
 		const {
 			// code,
 			// primary,
+			disabled,
 			value,
 			sx = [],
 			handleClickBy,
@@ -19,14 +20,19 @@ const FrameMenuItemButton = memo(
 			<ListItemButton
 				ref={ref}
 				sx={[
-					{
+					(theme) => ({
 						paddingTop: 0,
 						paddingBottom: 0,
-					},
+						// transition: theme.transitions.create("fontSize", {
+						// 	easing: theme.transitions.easing.sharp,
+						// 	duration: theme.transitions.duration.enteringScreen,
+						// }),
+					}),
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				selected={selected}
 				onClick={handleClickBy(value)}
+				disabled={disabled}
 				{...rest}>
 				<FlexBox inline fullWidth alignItems="flex-start">
 					<FlexBox
@@ -37,7 +43,7 @@ const FrameMenuItemButton = memo(
 							width: "2.5rem",
 						}}>
 						<Typography
-							variant="body1"
+							// variant={selected ? "body1" : "body2"}
 							fontWeight={selected ? 700 : 200}>
 							{value.JobID}
 						</Typography>
@@ -50,13 +56,15 @@ const FrameMenuItemButton = memo(
 						<ListItemText
 							primary={value.JobName}
 							primaryTypographyProps={{
-								variant: "body1",
-								// fontSize: 17,
+								// variant: selected ? "body1" : "body2",
+								fontSize: 16,
 							}}
 							sx={{
-								color: "text.primary",
-								"& *": {
-									fontWeight: selected ? 700 : 200,
+								color: disabled
+									? "text.secondary"
+									: "text.primary",
+								"& .MuiTypography-root": {
+									fontWeight: selected ? 800 : 400,
 								},
 							}}
 						/>

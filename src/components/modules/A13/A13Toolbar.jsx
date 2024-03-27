@@ -3,16 +3,17 @@ import { forwardRef, memo } from "react";
 import ContainerEx from "../../../shared-components/ContainerEx";
 import { A13LockRowsSwitchContainer } from "./A13LockRowsSwitchContainer";
 import A13PrintButtonContainer from "./A13PrintButtonContainer";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 
 const A13Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<InlineListViewToolbar
+				<FlexToolbar
 					ref={ref}
-					LeftComponent={A13LockRowsSwitchContainer}
-					RightComponent={A13PrintButtonContainer}
+					LeftComponent={A13PrintButtonContainer}
+					RightComponent={A13LockRowsSwitchContainer}
 					{...rest}
 				/>
 			</ContainerEx>

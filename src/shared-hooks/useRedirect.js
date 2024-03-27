@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import querystring from "query-string";

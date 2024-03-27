@@ -4,6 +4,7 @@ import ModuleToolbar from "../ModuleToolbar";
 import A20CreateButtonContainer from "./A20CreateButtonContainer";
 import { A20FetchResultLabelContainer } from "./A20FetchResultLabelContainer";
 import A20PrintButtonContainer from "./A20PrintButtonContainer";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 
 const LeftButtons = memo(() => {
 	return (
@@ -19,10 +20,16 @@ LeftButtons.displayName = "LeftButtons";
 const A20Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<InlineListViewToolbar
+			<FlexToolbar
 				pb={1}
 				ref={ref}
-				LeftComponent={LeftButtons}
+				leftComponents={
+					<>
+						<A20CreateButtonContainer />
+						<A20PrintButtonContainer />
+					</>
+				}
+				// LeftComponent={LeftButtons}
 				// RightComponent={() => <FetchResultLabel totalElements={365} />}
 				RightComponent={A20FetchResultLabelContainer}
 				{...rest}

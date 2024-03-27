@@ -4,6 +4,7 @@ import { forwardRef, memo } from "react";
 import FormLabelEx from "./FormLabelEx";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { useMemo } from "react";
+import Types from "../../shared-modules/sd-types";
 
 /**
  * 增加 label 功能的 Typography
@@ -47,27 +48,29 @@ const FormFieldLabel = memo(
 						{label}
 					</FormLabelEx>
 				)}
-				{body?.split("\n").map((s, index) => (
-					<Typography
-						key={`${s}_${index}`}
-						color="text.secondary"
-						variant={typoVariant}
-						sx={[
-							(theme) => ({
-								fontWeight: 600,
-								marginLeft: theme.spacing(0.5),
-								...(!useEmptyText && {
-									color: theme.palette.primary.main,
-								}),
-							}),
-							...(Array.isArray(typographySx)
-								? typographySx
-								: [typographySx]),
-						]}
-						{...rest}>
-						{s}
-					</Typography>
-				))}
+				{Types.isString(body)
+					? body?.split("\n").map((s, index) => (
+							<Typography
+								key={`${s}_${index}`}
+								color="text.secondary"
+								variant={typoVariant}
+								sx={[
+									(theme) => ({
+										fontWeight: 600,
+										marginLeft: theme.spacing(0.5),
+										...(!useEmptyText && {
+											color: theme.palette.primary.main,
+										}),
+									}),
+									...(Array.isArray(typographySx)
+										? typographySx
+										: [typographySx]),
+								]}
+								{...rest}>
+								{s}
+							</Typography>
+					  ))
+					: body}
 			</Box>
 		);
 	})

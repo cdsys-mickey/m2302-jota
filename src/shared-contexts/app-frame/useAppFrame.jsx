@@ -42,6 +42,12 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 	// 	[]
 	// );
 
+	const clearParams = useCallback(() => {
+		if (menuState.menuItemSelected?.WebName) {
+			toModule(menuState.menuItemSelected?.WebName);
+		}
+	}, [menuState.menuItemSelected?.WebName, toModule]);
+
 	const handleMenuItemClickBy = useCallback(
 		(module) => () => {
 			setMenuState((prev) => ({
@@ -55,24 +61,24 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 	);
 
 	const handleSelect = useCallback(
-		(module) => {
+		(module, params) => {
 			setMenuState((prev) => ({
 				...prev,
 				menuItemSelected: module,
 			}));
 			console.log(`module ${module?.JobID || null} selected`);
 			if (module?.WebName) {
-				toModule(module?.WebName);
+				toModule(module?.WebName, params);
 			}
 		},
 		[toModule]
 	);
 
-	const handleSelectById = useCallback(
-		(moduleId) => {
+	const selectJobById = useCallback(
+		(moduleId, params) => {
 			const module = auth.authorities.find((x) => x.JobID === moduleId);
 			if (module) {
-				handleSelect(module);
+				handleSelect(module, params);
 			}
 		},
 		[auth.authorities, handleSelect]
@@ -86,6 +92,15 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 		console.log("home clicked");
 		toLanding();
 	}, [toLanding]);
+
+	const detectDrawerState = useCallback(() => {
+		const defaultOpen = !mobile;
+		console.log(`drawer default to ${defaultOpen ? "opened" : "closed"}`);
+		setDrawerState((prev) => ({
+			...prev,
+			drawerOpen: defaultOpen,
+		}));
+	}, [mobile]);
 
 	// const handleSelectJob = useCallback(
 	// 	(itemId) => {
@@ -136,21 +151,14 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 
 	useEffect(() => {
 		if (drawerState.drawerOpen === null) {
-			const defaultOpen = !mobile;
-			console.log(
-				`drawer default to ${defaultOpen ? "opened" : "closed"}`
-			);
-			setDrawerState((prev) => ({
-				...prev,
-				drawerOpen: defaultOpen,
-			}));
+			detectDrawerState();
 		}
-	}, [drawerState.drawerOpen, mobile]);
+	}, [detectDrawerState, drawerState.drawerOpen, mobile]);
 
-	const match = useMatch("/modules/:moduleId");
+	const moduleMatched = useMatch("/modules/:moduleId");
 	const menuItemId = useMemo(() => {
-		return match?.params?.moduleId;
-	}, [match?.params?.moduleId]);
+		return moduleMatched?.params?.moduleId;
+	}, [moduleMatched?.params?.moduleId]);
 
 	const resetMenuState = useCallback(() => {
 		console.log("resetMenuState");
@@ -162,32 +170,31 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 
 	const recoverMenuItemSelected = useCallback(
 		(menuItemId) => {
-			const matchedAuthority = auth.authorities?.find(
-				(a) => a.JobID === menuItemId
-			);
-			console.log(`recovered ${menuItemId}...`, matchedAuthority);
-			setMenuState((prev) => ({
-				...prev,
-				menuItemSelected: matchedAuthority,
-			}));
+			console.log(`recoverMenuItemSelected(${menuItemId})`);
+			if (menuItemId) {
+				const matchedAuthority = auth.authorities?.find(
+					(a) => a.JobID === menuItemId
+				);
+				console.log(`recovered ${menuItemId}...`, matchedAuthority);
+				setMenuState((prev) => ({
+					...prev,
+					menuItemSelected: matchedAuthority,
+				}));
+			} else {
+				setMenuState((prev) => ({
+					...prev,
+					menuItemSelected: null,
+				}));
+			}
 		},
 		[auth.authorities]
 	);
 
 	useEffect(() => {
-		if (
-			auth.authorities &&
-			menuItemId &&
-			menuState.menuItemSelected == null
-		) {
+		if (auth.authorities) {
 			recoverMenuItemSelected(menuItemId);
 		}
-	}, [
-		auth.authorities,
-		menuItemId,
-		menuState.menuItemSelected,
-		recoverMenuItemSelected,
-	]);
+	}, [auth.authorities, menuItemId, recoverMenuItemSelected]);
 
 	useEffect(() => {
 		if (!auth.deptSwitchWorking) {
@@ -219,6 +226,8 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 		handleHomeClick,
 		resetMenuState,
 		handleSelect,
-		handleSelectById,
+		selectJobById,
+		detectDrawerState,
+		clearParams,
 	};
 };

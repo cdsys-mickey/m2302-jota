@@ -1,3 +1,5 @@
+import AreaTypes from "./md-area-types";
+
 const paramsToJsonData = (params) => {
 	const where = [];
 
@@ -12,8 +14,33 @@ const paramsToJsonData = (params) => {
 	};
 };
 
+const transformForReading = (payload) => {
+	if (!payload.data) {
+		return [];
+	}
+	return payload.data.map((i) => {
+		const { Other1, ...rest } = i;
+		return {
+			areaType: AreaTypes.getById(Other1),
+			...rest,
+		};
+	});
+};
+
+const transformForSubmitting = (rowData) => {
+	const { areaType, ...rest } = rowData;
+	return {
+		...(areaType?.AreaType && {
+			Other1: areaType?.AreaType,
+		}),
+		...rest,
+	};
+};
+
 const A08 = {
 	paramsToJsonData,
+	transformForReading,
+	transformForSubmitting,
 };
 
 export default A08;

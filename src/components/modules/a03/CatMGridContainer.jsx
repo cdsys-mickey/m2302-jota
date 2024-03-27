@@ -31,6 +31,7 @@ export const CatMGridContainer = () => {
 				onRowSelectionChange: catM.onRowSelectionChange,
 			})}
 			canCreate={a03.canCreate}
+			getRowClassName={catM.getRowClassName}
 		/>
 	);
 };

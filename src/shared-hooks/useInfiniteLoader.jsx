@@ -4,9 +4,9 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useMemo } from "react";
 import Arrays from "../shared-modules/sd-arrays";
 import useDebounce from "./useDebounce";
-import { useRef } from "react";
 import { useContext } from "react";
 import CrudContext from "../contexts/crud/CrudContext";
+import { v4 as uuidv4 } from "uuid";
 
 export const useInfiniteLoader = (props = {}) => {
 	const {
@@ -19,10 +19,10 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const crud = useContext(CrudContext);
 
-	const loadingMap = useMemo(() => new Set(), []);
-
+	// const loadingMap = useMemo(() => new Set(), []);
+	const loadingMap = useMemo(() => new Object(), []);
+	const [saveKey, setSaveKey] = useState();
 	const [state, setState] = useState({
-		saveKey: null,
 		loading: null,
 		forceLoading: false,
 	});
@@ -44,11 +44,11 @@ export const useInfiniteLoader = (props = {}) => {
 	}, []);
 
 	const defaultGetSaveKey = useCallback((payload) => {
-		return payload["Select"]["SaveKey"];
+		return payload?.Select?.SaveKey;
 	}, []);
 
 	const defaultGetItemCount = useCallback((payload) => {
-		return payload["Select"]["TotalRecord"];
+		return payload?.Select?.TotalRecord;
 	}, []);
 
 	const handleItemsRendered = useCallback(
@@ -83,7 +83,7 @@ export const useInfiniteLoader = (props = {}) => {
 			getData = defaultGetData,
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
-			useLastParams = false,
+			refresh = false,
 			disableLoading = false,
 			// reset = false,
 		} = {}) => {
@@ -91,13 +91,24 @@ export const useInfiniteLoader = (props = {}) => {
 			let stopIndex =
 				stop !== undefined ? stop : startIndex + initialFetchSize;
 
+			if (refresh) {
+				// loadingMap.clear();
+				Object.keys(loadingMap).forEach((key) => {
+					// 删除对象的属性
+					delete loadingMap[key];
+				});
+				// console.log("loadingMap cleared", loadingMap);
+			}
+
 			for (let i = startIndex; i <= stopIndex; i++) {
 				loadingMap[i] = true;
 			}
 
+			// console.log("loadingMap before", loadingMap);
+
 			let activeParams;
 			if (crud?.paramsRef) {
-				if (useLastParams) {
+				if (refresh) {
 					activeParams = crud.paramsRef.current;
 				} else {
 					crud.paramsRef.current = params;
@@ -110,23 +121,17 @@ export const useInfiniteLoader = (props = {}) => {
 				activeParams
 			);
 
-			const loading = !saveKey && !disableLoading;
+			const loading = (!start && !disableLoading) || refresh;
 
 			setListError(null);
 			setState((prev) => ({
 				...prev,
 				forceLoading: !!saveKey,
-				// ...(!saveKey && {
-				// 	loading: true,
-				// }),
 				loading,
 			}));
-			// setForceLoading(!!saveKey);
-			// if (!saveKey) {
-			// 	setLoading(true);
-			// }
 			try {
 				const { status, payload, error } = await httpGetAsync({
+					bearer: bearer,
 					url: url,
 					params: {
 						...baseParams,
@@ -137,26 +142,47 @@ export const useInfiniteLoader = (props = {}) => {
 							sk: saveKey,
 						}),
 					},
-					bearer: bearer,
 				});
 				if (status.success) {
-					// setSaveKey(getSaveKey(payload));
-					setState((prev) => ({
-						...prev,
-						saveKey: getSaveKey(payload),
-					}));
-					setItemCount(getItemCount(payload));
+					const newSaveKey = getSaveKey(payload);
 
-					const newData = Arrays.toObject(getData(payload), start);
+					// setState((prev) => ({
+					// 	...prev,
+					// 	// saveKey: getSaveKey(payload),
+					// 	saveKey:
+					// (!startIndex || refresh) && !newSaveKey
+					// 	? uuidv4()
+					// 	: newSaveKey,
+					// }));
+					setSaveKey(
+						(!startIndex || refresh) && !newSaveKey
+							? uuidv4()
+							: newSaveKey
+					);
+					const itemCount = getItemCount(payload);
+					if (itemCount !== undefined) {
+						setItemCount(itemCount);
+					}
+					const newData = getData(payload);
+					const newDataObj = Arrays.toObject(newData, start);
 					// console.log("newData", newData);
 
-					setListData((prev) => ({
-						...prev,
-						...newData,
-					}));
+					if (refresh) {
+						// setListData({
+						// 	...newData,
+						// });
+						setListData(newDataObj);
+					} else {
+						setListData((prev) => ({
+							...prev,
+							...newDataObj,
+						}));
+					}
+					console.log(`mark ${startIndex}~${stopIndex} as loaded`);
 					for (let i = startIndex; i <= stopIndex; i++) {
 						loadingMap[i] = false;
 					}
+					// console.log("loadingMap after", loadingMap);
 				} else {
 					throw error;
 				}
@@ -185,16 +211,30 @@ export const useInfiniteLoader = (props = {}) => {
 		]
 	);
 
+	const refreshList = useCallback(() => {
+		if (state.loading === null) {
+			loadList();
+		}
+	}, [loadList, state.loading]);
+
+	const clearListLoading = useCallback(() => {
+		setState((prev) => ({
+			...prev,
+			loading: null,
+		}));
+	}, []);
+
 	const loadMoreItems = useCallback(
 		(start, stop) => {
 			console.log(`loadMoreItems(${start}, ${stop})`);
 
 			return new Promise((resolve) => {
-				loadList({ start, stop, saveKey: state.saveKey });
+				// loadList({ start, stop, saveKey: state.saveKey });
+				loadList({ start, stop, saveKey: saveKey });
 				resolve();
 			});
 		},
-		[loadList, state.saveKey]
+		[loadList, saveKey]
 	);
 
 	const isItemLoading = useCallback(
@@ -206,7 +246,7 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const isItemLoaded = useCallback(
 		(index) => {
-			// console.log(`isItemLoaded(${index})`);
+			// console.log(`isItemLoaded(${index})`, loadingMap[index] === false);
 			return loadingMap[index] === false;
 		},
 		[loadingMap]
@@ -227,6 +267,7 @@ export const useInfiniteLoader = (props = {}) => {
 
 	return {
 		// PROPS
+		saveKey,
 		listData,
 		listLoading,
 		listFiltered,
@@ -239,5 +280,7 @@ export const useInfiniteLoader = (props = {}) => {
 		isItemLoading,
 		loadMoreItems,
 		handleItemsRendered,
+		refreshList,
+		clearListLoading,
 	};
 };

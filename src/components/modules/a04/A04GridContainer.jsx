@@ -23,6 +23,7 @@ const A04GridContainer = () => {
 			isPersisted={a04.isPersisted}
 			onSelectionChange={a04.handleSelectionChange({})}
 			canCreate={a04.canCreate}
+			getRowClassName={a04.getRowClassName}
 		/>
 	);
 };

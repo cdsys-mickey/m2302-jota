@@ -71,20 +71,17 @@ const SignIn = memo(
 						/>
 					</FlexBox>
 					<Divider />
-					<FlexBox mt={1} inline fullWidth>
-						<FlexBox flex={1} alignItems="center">
-							<Link
+					<FlexBox mt={1} inline fullWidth alignItems="center">
+						<FlexBox flex={1}>
+							{/* <Link
 								variant="body2"
 								underline="hover"
-								// component="button"
-								// href="#"
 								sx={{
 									cursor: "pointer",
 								}}
-								// onClick={goPrepareReset}
 							>
 								重設密碼
-							</Link>
+							</Link> */}
 						</FlexBox>
 						<FlexBox>
 							<LoadingButton

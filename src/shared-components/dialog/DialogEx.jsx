@@ -22,6 +22,19 @@ import MuiStyles from "../../shared-modules/sd-mui-styles";
 import ResponsiveLoadingButton from "../responsive/ResponsiveLoadingButton";
 import DialogTitleEx from "./DialogTitleEx";
 
+const defaultActionsStyle = {};
+
+const defaultConfirmButtonProps = {
+	type: "submit",
+	variant: "contained",
+	color: "primary",
+};
+
+const defaultCancelButtonProps = {
+	variant: "outlined",
+	color: "primary",
+};
+
 /**
  * 關鍵屬性是 onConfirm, onCancel, 以及 onClose, 雖然沒有在這裡定義 onClose,
  * 可是他會往下傳遞給 Dialog, 有 onClose 才會
@@ -38,7 +51,7 @@ const DialogEx = memo(
 			title,
 			titleSx = [],
 			contentSx = [],
-			actionsSx = [],
+			actionsStyle = defaultActionsStyle,
 			message,
 			children,
 			confirmText = "確定",
@@ -49,8 +62,8 @@ const DialogEx = memo(
 			// minHeight,
 			contentProps,
 			buttonProps,
-			confirmButtonProps,
-			cancelButtonProps,
+			confirmButtonProps = defaultConfirmButtonProps,
+			cancelButtonProps = defaultCancelButtonProps,
 			loading = false,
 			working = false,
 			titleButtons,
@@ -82,8 +95,8 @@ const DialogEx = memo(
 		}, []);
 
 		const showTitle = useMemo(() => {
-			return title || titleButtons || TitleButtonsComponent || onClose;
-		}, [onClose, title, titleButtons, TitleButtonsComponent]);
+			return title || titleButtons || TitleButtonsComponent;
+		}, [title, titleButtons, TitleButtonsComponent]);
 
 		const doRenderOtherActionButtonsComponent = useMemo(() => {
 			return OtherActionButtonsComponent || otherActionButtons;
@@ -143,22 +156,23 @@ const DialogEx = memo(
 				fullScreen={isFullScreen}
 				sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 				{...rest}>
-				{showTitle && (
-					<DialogTitleEx
-						onClose={onClose}
-						onReturn={onReturn}
-						buttons={titleButtons}
-						ButtonsComponent={TitleButtonsComponent}
-						{...titleProps}
-						sx={[
-							{
-								fontWeight: 600,
-							},
-							...(Array.isArray(titleSx) ? titleSx : [titleSx]),
-						]}>
-						{title}
-					</DialogTitleEx>
-				)}
+				<DialogTitleEx
+					onClose={onClose}
+					onReturn={onReturn}
+					buttons={titleButtons}
+					ButtonsComponent={TitleButtonsComponent}
+					{...titleProps}
+					sx={[
+						(theme) => ({
+							fontWeight: 600,
+							...(!showTitle && {
+								minHeight: theme.spacing(3),
+							}),
+						}),
+						...(Array.isArray(titleSx) ? titleSx : [titleSx]),
+					]}>
+					{title}
+				</DialogTitleEx>
 
 				<DialogContent
 					sx={[
@@ -201,9 +215,9 @@ const DialogEx = memo(
 				{showActions && (
 					<DialogActions
 						sx={[
-							...(Array.isArray(actionsSx)
-								? actionsSx
-								: [actionsSx]),
+							...(Array.isArray(actionsStyle)
+								? actionsStyle
+								: [actionsStyle]),
 						]}>
 						{otherActionButtons}
 						{OtherActionButtonsComponent && (
@@ -211,9 +225,6 @@ const DialogEx = memo(
 						)}
 						{showConfirmButton && (
 							<ResponsiveLoadingButton
-								type="submit"
-								variant="contained"
-								color="primary"
 								onClick={handleConfirm}
 								loading={working}
 								{...buttonProps}
@@ -223,14 +234,13 @@ const DialogEx = memo(
 						)}
 
 						{onCancel && (
-							<Button
-								variant="outlined"
+							<ResponsiveLoadingButton
 								color="primary"
 								onClick={onCancel}
 								{...buttonProps}
 								{...cancelButtonProps}>
 								{cancelText}
-							</Button>
+							</ResponsiveLoadingButton>
 						)}
 					</DialogActions>
 				)}
@@ -273,7 +283,7 @@ DialogEx.propTypes = {
 	responsive: PropTypes.bool,
 	titleSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	contentSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	actionsSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	actionsStyle: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	// prompt
 	prompt: PropTypes.bool,

@@ -6,6 +6,7 @@ import Styles from "@/modules/md-styles";
 import { useTheme } from "@mui/material";
 import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
 import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
+import A16 from "../../modules/md-a16";
 
 export const A16FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -15,7 +16,9 @@ export const A16FrameContainer = () => {
 		[appFrame.drawerOpen, theme]
 	);
 	return (
-		<StdPrintProvider tableName="AppDept">
+		<StdPrintProvider
+			tableName="AppDept"
+			paramsToJsonData={A16.paramsToJsonData}>
 			<A16Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />
 			{/* 對話框 */}
 			<StdPrintDialogContainer />

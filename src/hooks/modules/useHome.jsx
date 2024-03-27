@@ -7,7 +7,7 @@ export const useHome = () => {
 	const { httpGetAsync } = useWebApi();
 	const { token } = useContext(AuthContext);
 	const appFrame = useAppFrame();
-	const { handleSelectById } = appFrame;
+	const { selectJobById } = appFrame;
 	const [reviewState, setReviewState] = useState({
 		reviewData: null,
 		reviewDataError: null,
@@ -48,9 +48,9 @@ export const useHome = () => {
 
 	const handleReviewItemClick = useCallback(
 		(item) => {
-			handleSelectById(item.module);
+			selectJobById(item.module);
 		},
-		[handleSelectById]
+		[selectJobById]
 	);
 
 	return {

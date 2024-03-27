@@ -1,7 +1,56 @@
+import Colors from "./md-colors";
+
 const COOKIE_MODE = "md";
 const COOKIE_ACCOUNT = "ac";
 const COOKIE_LOGKEY = "LogKey";
 const COOKIE_REMEMBER_ME = "rememberMe";
+
+const SCOPES = Object.freeze({
+	DEPT: 0,
+	BRANCH_HQ: 1,
+	HQ: 2,
+	ROOT: 3,
+});
+
+const COOKIE_OPTS = {
+	path: "/",
+	expires: 365,
+};
+
+const AUTH_SCOPE_OPTIONS = [
+	{
+		id: SCOPES.DEPT,
+		label: "門市",
+	},
+	{
+		id: SCOPES.BRANCH_HQ,
+		label: "分公司",
+	},
+	{
+		id: SCOPES.HQ,
+		label: "總公司",
+	},
+	{
+		id: SCOPES.ROOT,
+		label: "系統",
+	},
+];
+
+const getOptionLabel = (option) => {
+	if (!option) return "";
+	const { label } = option;
+	return `${label}`;
+};
+
+const isOptionEqualToValue = (option, value) => option["id"] === value["id"];
+
+const getOptionKey = (option) => {
+	return option?.id;
+};
+
+const getById = (id) => {
+	return AUTH_SCOPE_OPTIONS.find((o) => o.id === id);
+};
 
 const FUNCTIONS = Object.freeze({
 	INQ: "查詢",
@@ -46,6 +95,20 @@ const transformPayloadToAuthority = (payload) => ({
 	canImport: payload["IMP"] === "1",
 });
 
+const getHeaderColor = (userClass) => {
+	switch (userClass) {
+		case Auth.SCOPES.ROOT:
+			return Colors.SCOPE_ROOT;
+		case Auth.SCOPES.HQ:
+			return Colors.SCOPE_HQ;
+		case Auth.SCOPES.BRANCH_HQ:
+			return Colors.SCOPE_BRANCH_HQ;
+		case Auth.SCOPES.DEPT:
+		default:
+			return Colors.SCOPE_DEPT;
+	}
+};
+
 const Auth = {
 	getItemById,
 	COOKIE_MODE,
@@ -55,6 +118,14 @@ const Auth = {
 	FUNCTIONS,
 	...FUNCTIONS,
 	transformPayloadToAuthority,
+	SCOPES,
+	AUTH_SCOPE_OPTIONS,
+	getOptionLabel,
+	isOptionEqualToValue,
+	getOptionKey,
+	COOKIE_OPTS,
+	getById,
+	getHeaderColor,
 };
 
 export default Auth;

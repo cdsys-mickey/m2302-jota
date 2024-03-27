@@ -9,7 +9,7 @@ import { CatMGridContext } from "./CatMGridContext";
 import { CatSGridContext } from "./CatSGridContext";
 import { useRef } from "react";
 import { RoomTwoTone } from "@mui/icons-material";
-import { useDSG } from "../../shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/useDSG";
 
 const CatMGridProvider = (props) => {
 	const { children } = props;
@@ -29,8 +29,8 @@ const CatMGridProvider = (props) => {
 	// const selectedRowIndexRef = useRef(null);
 
 	const [state, setState] = useState({
-		selectedRowData: null,
-		selectedRowIndex: null,
+		// selectedRowData: null,
+		// selectedRowIndex: null,
 		lgId: null,
 		error: null,
 	});
@@ -40,13 +40,13 @@ const CatMGridProvider = (props) => {
 	}, [dsg]);
 
 	const selectRow = useCallback(
-		({ rowIndex, rowData }) => {
+		({ rowData } = {}) => {
 			// selectedRowIndexRef.current = rowIndex;
-			setState((prev) => ({
-				...prev,
-				selectedRowData: rowData,
-				selectedRowIndex: rowIndex,
-			}));
+			// setState((prev) => ({
+			// 	...prev,
+			// 	selectedRowData: rowData,
+			// 	selectedRowIndex: rowIndex,
+			// }));
 			if (rowData?.MClas) {
 				catS.load({
 					lgId: state.lgId,
@@ -70,8 +70,13 @@ const CatMGridProvider = (props) => {
 			if (lgId) {
 				if (!supressLoading) {
 					dsg.setGridLoading(true);
+					dsg.setSelectedRow(null);
 				}
 				try {
+					setState((prev) => ({
+						...prev,
+						error: null,
+					}));
 					const { status, payload } = await httpGetAsync({
 						url: `v1/prod/m-cats/${lgId}`,
 						bearer: token,
@@ -180,7 +185,7 @@ const CatMGridProvider = (props) => {
 
 				if (status.success) {
 					// 取消選取列
-					selectRow({});
+					selectRow(undefined);
 
 					toast.success(
 						`中分類 ${rowData.LClas}/${rowData.ClassData} 刪除成功`
@@ -236,10 +241,11 @@ const CatMGridProvider = (props) => {
 	);
 
 	const onRowSelectionChange = useCallback(
-		({ rowIndex, rowData }) => {
-			selectRow({ rowIndex, rowData });
+		(row) => {
+			dsg.setSelectedRow(row);
+			selectRow(row);
 		},
-		[selectRow]
+		[dsg, selectRow]
 	);
 
 	return (

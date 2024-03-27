@@ -1,13 +1,14 @@
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import StateBadge from "../state-badge/StateBadge";
+import ConnStateBadge from "../state-badge/ConnStateBadge";
 
 const AvatarButton = memo((props) => {
 	const {
+		color,
 		state,
-		name,
-		fullName,
+		label,
+		title,
 		children,
 		anchorEl,
 		handleClick,
@@ -15,12 +16,12 @@ const AvatarButton = memo((props) => {
 		MenuComponent,
 		...rest
 	} = props;
-	// const renderMenu = children;
+
 	return (
 		<>
-			<Tooltip title={fullName}>
+			<Tooltip title={title}>
 				<IconButton onClick={handleClick}>
-					<StateBadge
+					<ConnStateBadge
 						state={state}
 						overlap="circular"
 						anchorOrigin={{
@@ -28,17 +29,20 @@ const AvatarButton = memo((props) => {
 							horizontal: "right",
 						}}
 						variant="dot">
-						<Avatar sx={{ width: 32, height: 32 }}>{name}</Avatar>
-					</StateBadge>
+						<Avatar
+							sx={[
+								(theme) => ({
+									width: 32,
+									height: 32,
+									bgcolor: color,
+									color: theme.palette.getContrastText(color),
+								}),
+							]}>
+							{label}
+						</Avatar>
+					</ConnStateBadge>
 				</IconButton>
 			</Tooltip>
-			{/* {renderMenu
-				? renderMenu({
-						open: !!anchorEl,
-						anchorEl,
-						onClose: handleMenuClose,
-				  })
-				: null} */}
 			{MenuComponent && (
 				<MenuComponent
 					open={!!anchorEl}

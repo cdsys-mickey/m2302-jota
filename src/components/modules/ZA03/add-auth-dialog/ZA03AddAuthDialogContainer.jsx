@@ -8,9 +8,11 @@ import { useEffect } from "react";
 
 export const ZA03AddAuthDialogContainer = () => {
 	const za03 = useContext(ZA03Context);
+	const { startJobId, endJobId } = za03;
 	const forms = useForm({
 		defaultValues: {
 			modules: [],
+			position: 1,
 		},
 	});
 	const { reset } = forms;
@@ -29,13 +31,17 @@ export const ZA03AddAuthDialogContainer = () => {
 					title="新增功能權限"
 					open={za03.addAuthDialogOpen}
 					onClose={za03.cancelAddAuth}
+					onCancel={za03.cancelAddAuth}
 					onSubmit={forms.handleSubmit(
 						za03.onAddAuthSubmit,
 						za03.onAddAuthSubmitError
 					)}
 					working={za03.addAuthWorking}
 					confirmText="新增">
-					<ZA03AddAuthForm />
+					<ZA03AddAuthForm
+						startJobId={startJobId}
+						endJobId={endJobId}
+					/>
 				</DialogEx>
 			</form>
 		</FormProvider>

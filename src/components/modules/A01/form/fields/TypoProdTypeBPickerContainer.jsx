@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { useWatch } from "react-hook-form";
 import ProdTypeB from "@/modules/md-prod-type-b";
-import TypoOptionPickerContainer from "@/shared-components/typo/TypoOptionPickerContainer";
+import TypoOptionPickerContainer from "@/shared-components/picker/TypoOptionPickerContainer";
 
 export const TypoProdTypeBPickerContainer = forwardRef((props, ref) => {
 	const { name, children, label = "品類", ...rest } = props;

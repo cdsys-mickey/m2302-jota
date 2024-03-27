@@ -1,19 +1,23 @@
-import React, { forwardRef } from "react";
-import { Button, styled } from "@mui/material";
+import { memo } from "react";
 import PropTypes from "prop-types";
+import { Button } from "@mui/material";
+import { forwardRef } from "react";
 
-const ButtonEx = styled((props) => {
-	const { children, ...other } = props;
-	return (
-		<Button size="small" {...other}>
-			{children}
-		</Button>
-	);
-})(({ theme }) => ({}));
+const ButtonEx = memo(
+	forwardRef((props, ref) => {
+		const { children, size = "small", ...rest } = props;
+		return (
+			<Button ref={ref} size={size} {...rest}>
+				{children}
+			</Button>
+		);
+	})
+);
 
 ButtonEx.propTypes = {
-	children: PropTypes.node,
+	size: PropTypes.oneOf(["small", "medium", "large"]),
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
-ButtonEx.displayName = "ButtonEx";
 
+ButtonEx.displayName = "ButtonEx";
 export default ButtonEx;

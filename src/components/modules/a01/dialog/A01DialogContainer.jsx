@@ -2,7 +2,7 @@ import { A01Context } from "@/contexts/A01/A01Context";
 import DialogEx from "@/shared-components/dialog/DialogEx";
 import { forwardRef, useContext, useMemo } from "react";
 import A01 from "../../../../modules/md-a01";
-import { A01DialogTitleButtonsContainer } from "./buttons/A01DialogTitleButtonsContainer";
+import { A01DialogTitleContainer } from "./buttons/A01DialogTitleContainer";
 import { FormProvider, useForm } from "react-hook-form";
 import A01Form from "../form/A01Form";
 import { useEffect } from "react";
@@ -78,12 +78,12 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 				responsive
 				fullWidth
 				maxWidth="md"
-				TitleButtonsComponent={A01DialogTitleButtonsContainer}
+				TitleButtonsComponent={A01DialogTitleContainer}
 				open={a01.itemViewOpen}
 				onClose={
 					a01.editing ? a01.confirmDialogClose : a01.cancelAction
 				}
-				onReturn={a01.updating ? a01.confirmReturn : null}
+				// onReturn={a01.updating ? a01.confirmReturn : null}
 				sx={{
 					"& .MuiDialog-paper": {
 						backgroundColor: "rgb(241 241 241)",
@@ -109,6 +109,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					store={store}
 					tabIndex={a01.tabIndex}
 					handleTabChange={a01.handleTabChange}
+					readError={a01.readError}
 				/>
 			</DialogExContainer>
 		</FormProvider>

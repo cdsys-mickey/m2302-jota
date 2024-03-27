@@ -37,7 +37,7 @@ export const useA20 = ({ token }) => {
 
 	const confirmReturn = useCallback(() => {
 		dialogs.confirm({
-			message: "確認要放棄編輯?",
+			message: "確認要結束編輯?",
 			onConfirm: () => {
 				crud.cancelUpdating();
 			},
@@ -56,7 +56,9 @@ export const useA20 = ({ token }) => {
 				if (status.success) {
 					const data = A20.transformForReading(payload);
 					materialsGrid.handleGridDataLoaded(data.materials);
-					crud.doneReading(data);
+					crud.doneReading({
+						data,
+					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
@@ -73,7 +75,7 @@ export const useA20 = ({ token }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.startReading(rowData, "讀取中...");
+			crud.startReading("讀取中...", { id: rowData.ProdID });
 			loadItem(rowData.ProdID);
 		},
 		[crud, loadItem]
@@ -82,6 +84,15 @@ export const useA20 = ({ token }) => {
 	const confirmDialogClose = useCallback(() => {
 		dialogs.confirm({
 			message: "確認要放棄編輯?",
+			onConfirm: () => {
+				crud.cancelAction();
+			},
+		});
+	}, [crud, dialogs]);
+
+	const confirmQuitCreating = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要放棄新增?",
 			onConfirm: () => {
 				crud.cancelAction();
 			},
@@ -109,7 +120,7 @@ export const useA20 = ({ token }) => {
 					crud.doneCreating();
 					crud.cancelReading();
 					// 重新整理
-					loader.loadList({ useLastParams: true });
+					loader.loadList({ refresh: true });
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
@@ -140,7 +151,9 @@ export const useA20 = ({ token }) => {
 					crud.doneUpdating();
 					loadItem(data?.ProdID);
 					// 重新整理
-					loader.loadList();
+					loader.loadList({
+						refresh: true,
+					});
 				} else {
 					throw error || new Error("修改發生未預期例外");
 				}
@@ -192,8 +205,9 @@ export const useA20 = ({ token }) => {
 			const data = {
 				materials: [],
 			};
-			// crud.doneReading(data);
-			crud.promptCreating(data);
+			crud.promptCreating({
+				data,
+			});
 			materialsGrid.handleGridDataLoaded(data.materials);
 		},
 		[crud, materialsGrid]
@@ -214,7 +228,7 @@ export const useA20 = ({ token }) => {
 						toast.success(
 							`成功删除${crud.itemData?.prod?.ProdID} ${crud.itemData?.prod?.ProdData}`
 						);
-						loader.loadList();
+						loader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
 					}
@@ -267,6 +281,7 @@ export const useA20 = ({ token }) => {
 		selectedItem,
 		handleDialogClose,
 		confirmDialogClose,
+		confirmQuitCreating,
 		onEditorSubmit,
 		onEditorSubmitError,
 		confirmReturn,

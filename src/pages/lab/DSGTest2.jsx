@@ -72,7 +72,7 @@ const DSGTest2 = memo(
 						"prod",
 						createWebApiOptionPickerColumn({
 							url: "v1/prods",
-							queryString: "tp=20",
+							querystring: "tp=20",
 							bearer: bearer,
 							queryParam: "qs",
 							getOptionLabel: Prods.getOptionLabel,

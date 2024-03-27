@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import QueryString from "query-string";
+import queryString from "query-string";
 import { memo } from "react";
 import OptionPicker from "./OptionPicker";
 import { createFilterOptions } from "@mui/material";
@@ -46,32 +46,14 @@ const WebApiOptionPicker = memo(
 			queryParam = "q",
 			queryRequired = false,
 			// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
-			queryString,
+			querystring,
 			headers,
-			//
-			// label,
-			// 提供給 Input(mui) 的屬性
-			// InputProps,
-			// 提供給 input(html) 的屬性
-			// inputProps,
-			// InputLabelProps,
-			// required,
-			// error,
-			// helperText,
 			disabled = false,
-			// filterOptions,
-			// sortBy,
-			// filterBy,
-			// focusedBackgroundColor = "#b6f0ff",
-			// debug 用
-			// dontClose = false,
-			// dnd = false,
-			// size,
 			typeToSearchText = "請輸入關鍵字進行搜尋",
 			noOptionsText = "無可用選項",
 			fetchErrorText = "讀取失敗",
 			triggerDelay = 700,
-			options = [],
+			defaultOptions = [],
 			// fullWidth = false,
 			// HTTP
 			bearer,
@@ -92,7 +74,7 @@ const WebApiOptionPicker = memo(
 		const [pickerState, setPickerState] = useState({
 			// loading: null,
 			// query: null,
-			options: options,
+			options: defaultOptions,
 			open: false,
 			noOptionsText: queryRequired ? typeToSearchText : noOptionsText,
 		});
@@ -161,7 +143,7 @@ const WebApiOptionPicker = memo(
 						url,
 						data: {
 							...(q && { [queryParam]: q }),
-							...(queryString && QueryString.parse(queryString)),
+							...(querystring && queryString.parse(querystring)),
 						},
 						headers,
 						...(bearer && {
@@ -207,7 +189,7 @@ const WebApiOptionPicker = memo(
 				method,
 				url,
 				queryParam,
-				queryString,
+				querystring,
 				headers,
 				bearer,
 				getData,
@@ -369,16 +351,7 @@ const WebApiOptionPicker = memo(
 			}
 
 			setLoading(null);
-		}, [name, onChange, queryString, url]);
-
-		// useEffect(() => {
-		// 	if (options && url) {
-		// 		console.error("options 與 url 不可同時指定");
-		// 	}
-		// 	if (!options && !url) {
-		// 		console.error("options 與 url 必須指定其一");
-		// 	}
-		// }, [options, url]);
+		}, [name, onChange, querystring, url]);
 
 		return (
 			<OptionPicker
@@ -404,6 +377,9 @@ const WebApiOptionPicker = memo(
 WebApiOptionPicker.displayName = "WebApiOptionPicker";
 
 WebApiOptionPicker.propTypes = {
+	// 來自 OptionPicker
+	disabled: PropTypes.bool,
+
 	name: PropTypes.string,
 	bearer: PropTypes.string,
 	// METHODS
@@ -416,14 +392,13 @@ WebApiOptionPicker.propTypes = {
 	lazy: PropTypes.bool,
 	queryParam: PropTypes.string,
 	queryRequired: PropTypes.bool,
-	queryString: PropTypes.string,
+	querystring: PropTypes.string,
 	headers: PropTypes.object,
-	disabled: PropTypes.bool,
 	typeToSearchText: PropTypes.string,
 	noOptionsText: PropTypes.string,
 	fetchErrorText: PropTypes.string,
 	triggerDelay: PropTypes.number,
-	options: PropTypes.array,
+	defaultOptions: PropTypes.array,
 	triggerServerFilter: PropTypes.func,
 	getData: PropTypes.func,
 	onError: PropTypes.func,

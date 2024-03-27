@@ -24,7 +24,7 @@ export const FrameMenuGroupHeader = memo(
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				{...rest}>
-				<FlexBox>{Icon && <Icon htmlColor="#fff" />}</FlexBox>
+				<FlexBox>{iconComponent && <Icon htmlColor="#fff" />}</FlexBox>
 
 				<Typography
 					variant={variant}

@@ -8,41 +8,50 @@ import StdPrint from "../../modules/md-std-print";
 
 const StdPrintOutputModePicker = memo(
 	forwardRef((props, ref) => {
-		const { name, readOnly = false, label = "輸出格式", ...rest } = props;
+		const { label = "輸出格式", ...rest } = props;
 
-		if (name) {
-			return (
-				<ControlledOptionPicker
-					name={name}
-					readOnly={readOnly}
-					label={label}
-					options={StdPrint.options}
-					getOptionLabel={StdPrint.getOptionLabel}
-					isOptionEqualToValue={StdPrint.isOptionEqualToValue}
-					{...rest}
-				/>
-			);
-		} else {
-			return (
-				<OptionPicker
-					readOnly={readOnly}
-					ref={ref}
-					label={label}
-					options={StdPrint.options}
-					getOptionLabel={StdPrint.getOptionLabel}
-					isOptionEqualToValue={StdPrint.isOptionEqualToValue}
-					{...rest}
-				/>
-			);
-		}
+		return (
+			<ControlledOptionPicker
+				ref={ref}
+				label={label}
+				options={StdPrint.options}
+				getOptionLabel={StdPrint.getOptionLabel}
+				isOptionEqualToValue={StdPrint.isOptionEqualToValue}
+				{...rest}
+			/>
+		);
+
+		// if (name) {
+		// 	return (
+		// 		<ControlledOptionPicker
+		// 			name={name}
+		// 			readOnly={readOnly}
+		// 			label={label}
+		// 			options={StdPrint.options}
+		// 			getOptionLabel={StdPrint.getOptionLabel}
+		// 			isOptionEqualToValue={StdPrint.isOptionEqualToValue}
+		// 			{...rest}
+		// 		/>
+		// 	);
+		// } else {
+		// 	return (
+		// 		<OptionPicker
+		// 			readOnly={readOnly}
+		// 			ref={ref}
+		// 			label={label}
+		// 			options={StdPrint.options}
+		// 			getOptionLabel={StdPrint.getOptionLabel}
+		// 			isOptionEqualToValue={StdPrint.isOptionEqualToValue}
+		// 			{...rest}
+		// 		/>
+		// 	);
+		// }
 	})
 );
 
 StdPrintOutputModePicker.propTypes = {
-	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
-	readOnly: PropTypes.bool,
 };
 
 StdPrintOutputModePicker.displayName = "StdPrintOutputModePicker";

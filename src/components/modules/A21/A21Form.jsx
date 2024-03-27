@@ -1,4 +1,3 @@
-import UserDeptPicker from "@/components/UserDeptPicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -6,9 +5,8 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import ControlledYesNoCheckbox from "../../../shared-components/controlled/ControlledYesNoCheckbox";
-import A21 from "../../../modules/md-a21";
-import { ControlledOptionPicker } from "../../../shared-components/controlled/ControlledOptionPicker";
 import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
+import AuthDeptPicker from "../../AuthDeptPicker";
 
 const A21Form = memo((props) => {
 	const { ...rest } = props;
@@ -33,7 +31,7 @@ const A21Form = memo((props) => {
 					<FormSectionBox py={2}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12}>
-								<UserDeptPicker
+								<AuthDeptPicker
 									label="門市編號"
 									required
 									name="dept"

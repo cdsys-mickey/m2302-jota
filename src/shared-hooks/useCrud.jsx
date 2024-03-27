@@ -2,12 +2,14 @@ import { useCallback, useMemo, useState } from "react";
 import ActionState from "../shared-constants/action-state";
 import { useAction } from "./useAction";
 import { useRef } from "react";
-import { useInit } from "./useInit";
-import { useEffect } from "react";
 
-export const useCrud = ({ resetOnInit = true } = {}) => {
+export const useCrud = () => {
 	const paramsRef = useRef({});
-	const [itemData, setItemData] = useState();
+	// const [itemData, setItemData] = useState();
+	const [state, setState] = useState({
+		itemId: null,
+		itemData: null,
+	});
 
 	const createAction = useAction();
 	const readAction = useAction();
@@ -22,13 +24,27 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 		deleteAction.clear();
 	}, [createAction, deleteAction, readAction, updateAction]);
 
+	const setOpts = useCallback((opts) => {
+		if (opts) {
+			setState((prev) => ({
+				...prev,
+				...(opts.id && {
+					itemId: opts.id,
+				}),
+				...(opts.data && {
+					itemData: opts.data,
+				}),
+			}));
+		}
+	}, []);
+
 	// CREATE
 	const promptCreating = useCallback(
-		(data, message) => {
-			createAction.prompt(data, message);
-			setItemData(data);
+		(opts) => {
+			createAction.prompt();
+			setOpts(opts);
 		},
-		[createAction]
+		[createAction, setOpts]
 	);
 
 	const cancelCreating = useCallback(() => {
@@ -36,21 +52,27 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 	}, [createAction]);
 
 	const startCreating = useCallback(
-		(value) => {
-			createAction.start(value);
+		(message, opts) => {
+			createAction.start(message);
+			setOpts(opts);
 		},
-		[createAction]
+		[createAction, setOpts]
 	);
 
-	const doneCreating = useCallback(() => {
-		createAction.clear();
-	}, [createAction]);
+	const doneCreating = useCallback(
+		(opts) => {
+			createAction.clear();
+			setOpts(opts);
+		},
+		[createAction, setOpts]
+	);
 
 	const failCreating = useCallback(
-		(err) => {
+		(err, opts) => {
 			createAction.fail(err);
+			setOpts(opts);
 		},
-		[createAction]
+		[createAction, setOpts]
 	);
 
 	const creating = useMemo(() => {
@@ -67,21 +89,21 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 
 	// READ
 	const startReading = useCallback(
-		(value, message) => {
-			console.log("startReading", value);
-			readAction.start(value, message);
-			setItemData(value);
+		(message, opts) => {
+			console.log(`startReading${message}`, opts);
+			readAction.start(message);
+			setOpts(opts);
 		},
-		[readAction]
+		[readAction, setOpts]
 	);
 
 	const doneReading = useCallback(
-		(value) => {
-			console.log("doneReading", value);
-			setItemData(value);
-			readAction.finish(value);
+		(opts) => {
+			console.log("doneReading", opts);
+			readAction.finish();
+			setOpts(opts);
 		},
-		[readAction]
+		[readAction, setOpts]
 	);
 
 	const cancelReading = useCallback(() => {
@@ -89,11 +111,12 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 	}, [readAction]);
 
 	const failReading = useCallback(
-		(err) => {
+		(err, opts) => {
 			console.log("failReading", err);
 			readAction.fail(err);
+			setOpts(opts);
 		},
-		[readAction]
+		[readAction, setOpts]
 	);
 
 	const reading = useMemo(() => {
@@ -108,23 +131,22 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 		return readAction.failed || !!readAction.error;
 	}, [readAction.error, readAction.failed]);
 
-	// const doneReading = useMemo(() => {
-	// 	return readAction.state === ActionState.DONE;
-	// }, [readAction.state]);
-
 	// UPDATE
+	// 打開編輯器
 	const promptUpdating = useCallback(
-		(data, message) => {
-			updateAction.prompt(data, message);
+		(message, opts) => {
+			updateAction.prompt(message);
+			setOpts(opts);
 		},
-		[updateAction]
+		[setOpts, updateAction]
 	);
 
 	const startUpdating = useCallback(
-		(value) => {
-			updateAction.start(value);
+		(message, opts) => {
+			updateAction.start(message);
+			setOpts(opts);
 		},
-		[updateAction]
+		[setOpts, updateAction]
 	);
 
 	const doneUpdating = useCallback(() => {
@@ -136,10 +158,11 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 	}, [updateAction]);
 
 	const failUpdating = useCallback(
-		(err) => {
+		(err, opts) => {
 			updateAction.fail(err);
+			setOpts(opts);
 		},
-		[updateAction]
+		[setOpts, updateAction]
 	);
 
 	// U synth props
@@ -157,17 +180,19 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 
 	// DELETE
 	const promptDeleting = useCallback(
-		(payload, message) => {
-			deleteAction.prompt(payload, message);
+		(message, opts) => {
+			deleteAction.prompt(message);
+			setOpts(opts);
 		},
-		[deleteAction]
+		[deleteAction, setOpts]
 	);
 
 	const startDeleting = useCallback(
-		(payload) => {
-			deleteAction.start(payload);
+		(message, opts) => {
+			deleteAction.start(message);
+			setOpts(opts);
 		},
-		[deleteAction]
+		[deleteAction, setOpts]
 	);
 
 	const doneDeleting = useCallback(() => {
@@ -179,10 +204,11 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 	}, [deleteAction]);
 
 	const failDeleting = useCallback(
-		(err) => {
+		(err, opts) => {
 			deleteAction.fail(err);
+			setOpts(opts);
 		},
-		[deleteAction]
+		[deleteAction, setOpts]
 	);
 
 	// D synth props
@@ -201,10 +227,10 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 	// Synthetic Props
 	const itemDataReady = useMemo(() => {
 		return (
-			(readAction.state === ActionState.DONE && !!itemData) ||
-			(!!createAction.state && !!itemData)
+			(readAction.state === ActionState.DONE && !!state.itemData) ||
+			(!!createAction.state && !!state.itemData)
 		);
-	}, [createAction.state, itemData, readAction.state]);
+	}, [createAction.state, readAction.state, state.itemData]);
 
 	const editing = useMemo(() => {
 		return !!createAction.state || !!updateAction.state;
@@ -233,12 +259,13 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 
 	return {
 		// Common Props/Methods
-		itemData,
+		...state,
 		cancelAction,
 		// Create Props
+		createMessage: createAction.message,
 		createState: createAction.state,
-		createFailed,
 		createError: createAction.error,
+		createFailed,
 		creating,
 		createWorking,
 		// CREATE Methods
@@ -248,9 +275,10 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 		cancelCreating,
 		failCreating,
 		// READ Props
+		readMessage: readAction.message,
 		readState: readAction.state,
-		readingFailed,
 		readError: readAction.error,
+		readingFailed,
 		reading,
 		readWorking,
 		// READ Methods
@@ -259,9 +287,10 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 		cancelReading,
 		failReading,
 		// UPDATE Props
+		updateMessage: updateAction.message,
 		updateState: updateAction.state,
-		updatingFailed,
 		updateError: updateAction.error,
+		updatingFailed,
 		updating,
 		updateWorking,
 		// UPDATE Methods
@@ -271,9 +300,10 @@ export const useCrud = ({ resetOnInit = true } = {}) => {
 		cancelUpdating,
 		failUpdating,
 		// DELETE Props
+		deleteMessage: deleteAction.message,
 		deleteState: deleteAction.state,
-		deletingFailed,
 		deleteError: deleteAction.error,
+		deletingFailed,
 		deleting,
 		deleteWorking,
 		// DELETE Methods

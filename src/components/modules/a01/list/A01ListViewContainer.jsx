@@ -37,6 +37,7 @@ export const A01ListViewContainer = () => {
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
+				saveKey={a01.saveKey}
 				loading={a01.listLoading}
 				data={a01.listData}
 				itemCount={a01.itemCount}

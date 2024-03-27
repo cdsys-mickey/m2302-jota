@@ -3,7 +3,8 @@ import { Button } from "@mui/material";
 import { useContext } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 
-export const ProdGridCancelEditButtonContainer = () => {
+export const ProdGridCancelEditButtonContainer = (props) => {
+	const { ...rest } = props;
 	const prodGrid = useContext(ProdGridContext);
 
 	if (
@@ -16,10 +17,11 @@ export const ProdGridCancelEditButtonContainer = () => {
 	return (
 		<Button
 			size="small"
-			// variant="contained"
+			//
 			endIcon={<CloseIcon />}
 			color="primary"
-			onClick={prodGrid.unload}>
+			onClick={prodGrid.unload}
+			{...rest}>
 			取消
 		</Button>
 	);

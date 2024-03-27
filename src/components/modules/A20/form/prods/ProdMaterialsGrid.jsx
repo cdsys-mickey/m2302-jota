@@ -33,20 +33,6 @@ const ProdMaterialsGrid = memo((props) => {
 	const columns = useMemo(
 		() => [
 			{
-				// ...keyColumn(
-				// 	"prod",
-				// 	createWebApiOptionPickerColumn({
-				// 		url: "v1/prods",
-				// 		queryString: "tp=20&pb=1",
-				// 		bearer: bearer,
-				// 		queryParam: "qs",
-				// 		getOptionLabel: Prods.getOptionLabel,
-				// 		isOptionEqualToValue: Prods.isOptionEqualToValue,
-				// 		filterByServer: true,
-				// 		size: "small",
-				// 		getData: (p) => p["data"],
-				// 	})
-				// ),
 				...createOptionPickerColumn((props) => (
 					<BomProdPickerColumn
 						name="prod"

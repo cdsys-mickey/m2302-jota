@@ -27,6 +27,13 @@ const PickerBox = styled(Box, {
 	"& .MuiAutocomplete-option[data-focus=true]": {
 		backgroundColor: focusedBackgroundColor || "#b6f0ff",
 	},
+	"& .MuiOutlinedInput-root.MuiInputBase-root.MuiInputBase-sizeSmall": {
+		// paddingTop: theme.spacing(2),
+	},
+	"& .MuiInputBase-root .MuiChip-root": {
+		marginTop: "4px",
+		marginRight: "2px",
+	},
 	"& ::-webkit-scrollbar": {
 		width: "8px",
 		borderRadius: theme.spacing(0.5),
@@ -53,6 +60,7 @@ const OptionPicker = memo(
 			name,
 
 			// Autocomplete
+			filterSelectedOptions = true,
 			options,
 			sx = [],
 			noOptionsText = "無可用選項",
@@ -103,7 +111,7 @@ const OptionPicker = memo(
 		}, [ChipProps, multiple]);
 
 		const renderNormalInput = useCallback(
-			(textFieldProps) => {
+			(props) => {
 				// console.log("textFieldProps", textFieldProps);
 
 				return (
@@ -122,14 +130,14 @@ const OptionPicker = memo(
 						// 在 Autocomplete 層 disabled 就可以
 						// disabled={disabled}
 
-						{...textFieldProps}
+						{...props}
 						InputProps={{
-							...textFieldProps.InputProps,
+							...props.InputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
 							...InputProps,
 						}}
 						inputProps={{
-							...textFieldProps.inputProps,
+							...props.inputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
 							// ...(dense && {
 							// 	padding: 0,
@@ -138,7 +146,7 @@ const OptionPicker = memo(
 						}}
 						{...TextFieldProps}
 						InputLabelProps={{
-							...textFieldProps.InputLabelProps,
+							...props.InputLabelProps,
 							...InputLabelProps,
 						}}
 					/>
@@ -193,9 +201,8 @@ const OptionPicker = memo(
 		);
 
 		const renderNormalTags = useCallback(
-			(value) => {
-				// return value?.map((v, index) => (
-				return value?.map((v) => {
+			(value, getTagProps, ownerState) => {
+				return value?.map((v, index) => {
 					const key = getOptionKey ? getOptionKey(v) : v;
 					const label = renderTagLabel
 						? renderTagLabel(v)
@@ -208,6 +215,7 @@ const OptionPicker = memo(
 							label={label}
 							size="small"
 							color="primary"
+							{...getTagProps({ index })}
 						/>
 					);
 				});
@@ -216,8 +224,7 @@ const OptionPicker = memo(
 		);
 
 		const renderDndTags = useCallback(
-			// (value, getCustomizedTagProps, ownerState) => {
-			(value, getCustomizedTagProps) => {
+			(value, getTagProps, ownerState) => {
 				return value?.map((v, index) => {
 					const key = getOptionKey ? getOptionKey(v) : v;
 					const label = renderTagLabel
@@ -236,7 +243,7 @@ const OptionPicker = memo(
 									ref={provided.innerRef}
 									{...provided.draggableProps}
 									{...provided.dragHandleProps}
-									{...getCustomizedTagProps({ index })}
+									{...getTagProps({ index })}
 								/>
 								// </div>
 							)}
@@ -244,19 +251,15 @@ const OptionPicker = memo(
 					);
 				});
 			},
-			[]
+			[getOptionKey, getOptionLabel, renderTagLabel]
 		);
 
 		const renderTags = useCallback(
-			(value, getCustomizedTagProps, ownerState) => {
+			(value, getTagProps, ownerState) => {
 				if (dnd) {
-					return renderDndTags(
-						value,
-						getCustomizedTagProps,
-						ownerState
-					);
+					return renderDndTags(value, getTagProps, ownerState);
 				} else {
-					return renderNormalTags(value);
+					return renderNormalTags(value, getTagProps, ownerState);
 				}
 			},
 			[dnd, renderDndTags, renderNormalTags]
@@ -274,9 +277,12 @@ const OptionPicker = memo(
 			if (getTitle) {
 				return getTitle(value);
 			}
+			if (multiple) {
+				return null;
+			}
 
 			return getOptionLabel ? getOptionLabel(value) : value;
-		}, [getOptionLabel, getTitle, value]);
+		}, [getOptionLabel, getTitle, multiple, value]);
 
 		return (
 			<PickerBox
@@ -293,6 +299,7 @@ const OptionPicker = memo(
 					PaperComponent={({ ...rest }) => (
 						<Paper elevation={8} {...rest} />
 					)}
+					filterSelectedOptions={filterSelectedOptions}
 					ChipProps={chipProps}
 					disabled={disabled}
 					noOptionsText={noOptionsText}

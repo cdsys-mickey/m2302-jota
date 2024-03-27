@@ -20,6 +20,7 @@ export const useA17 = () => {
 
 	const loadItem = useCallback(async () => {
 		try {
+			crud.startReading("讀取中...");
 			const { status, payload, error } = await httpGetAsync({
 				url: `v1/ou/dept/params`,
 				bearer: token,
@@ -27,7 +28,9 @@ export const useA17 = () => {
 			console.log("payload", payload);
 			if (status.success) {
 				const data = A17.transformForReading(payload);
-				crud.doneReading(data);
+				crud.doneReading({
+					data,
+				});
 			} else {
 				throw error || new Error("讀取失敗");
 			}
@@ -49,7 +52,9 @@ export const useA17 = () => {
 				if (status.success) {
 					crud.doneUpdating();
 					const processed = A17.transformForReading(payload);
-					crud.doneReading(processed);
+					crud.doneReading({
+						data: processed,
+					});
 					toast.success("單位參數已更新");
 				} else {
 					throw error || new Error("未預期例外");

@@ -2,7 +2,8 @@ import ResponsiveLoadingButton from "@/shared-components/responsive/ResponsiveLo
 import SaveIcon from "@mui/icons-material/Save";
 import { useContext } from "react";
 import { ProdGridContext } from "../../../contexts/prod-grid/ProdGridContext";
-export const ProdGridSaveButtonContainer = () => {
+export const ProdGridSaveButtonContainer = (props) => {
+	const { ...rest } = props;
 	const prodGrid = useContext(ProdGridContext);
 
 	if (
@@ -16,11 +17,11 @@ export const ProdGridSaveButtonContainer = () => {
 	return (
 		<ResponsiveLoadingButton
 			size="small"
-			variant="contained"
+			disabled={prodGrid.dirtyIds.size === 0}
 			endIcon={<SaveIcon />}
-			color="primary"
 			loading={prodGrid.saveWorking}
-			onClick={prodGrid.handleSave}>
+			onClick={prodGrid.handleSave}
+			{...rest}>
 			儲存
 		</ResponsiveLoadingButton>
 	);

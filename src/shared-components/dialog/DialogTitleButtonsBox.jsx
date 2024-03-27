@@ -12,8 +12,8 @@ const DialogTitleButtonsBox = styled(FlexBox)(
 		// },
 	}) => ({
 		position: "relative",
-		"& button": {
-			// marginLeft: theme.spacing(1),
+		"& button, & label, & .button": {
+			marginLeft: theme.spacing(0.5),
 		},
 		// padding: theme.spacing(1),
 		// paddingBottom: 0,

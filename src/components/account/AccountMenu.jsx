@@ -9,7 +9,18 @@ import { DeptSwitchMenuItemContainer } from "./menu-items/DeptSwitchMenuItemCont
 
 const AccountMenu = memo(
 	forwardRef(
-		({ open, anchorEl, title, onClose, onSignOut, ...rest }, ref) => {
+		(
+			{
+				open,
+				anchorEl,
+				headerColor,
+				onClose,
+				onSignOut,
+				toSettings,
+				...rest
+			},
+			ref
+		) => {
 			const handleSignOut = useCallback(() => {
 				onClose();
 				onSignOut();
@@ -43,19 +54,24 @@ const AccountMenu = memo(
 								right: 14,
 								width: 10,
 								height: 10,
-								bgcolor: "background.paper",
+								// bgcolor: "background.paper",
+								bgcolor: headerColor,
 								transform: "translateY(-50%) rotate(45deg)",
 								zIndex: 0,
+							},
+							"& .MuiList-root": {
+								paddingTop: 0,
+							},
+							"& .MuiDivider-root": {
+								marginTop: 0,
+								marginBottom: 0,
 							},
 						},
 					}}
 					transformOrigin={{ horizontal: "right", vertical: "top" }}
 					anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
 					{/* <MenuItem onClick={onClose}>{title}</MenuItem> */}
-					<DeptSwitchMenuItemContainer
-						title={title}
-						onMenuClose={onClose}
-					/>
+					<DeptSwitchMenuItemContainer onMenuClose={onClose} />
 					<Divider />
 					{/* <MenuItem onClick={onClose}>
 						<ListItemIcon>
@@ -65,7 +81,13 @@ const AccountMenu = memo(
 					</MenuItem> */}
 					{/* 切換體系 */}
 
-					<MenuItem onClick={onClose}>
+					<MenuItem
+						onClick={toSettings}
+						sx={[
+							(theme) => ({
+								marginTop: theme.spacing(1),
+							}),
+						]}>
 						<ListItemIcon>
 							<SettingsIcon fontSize="small" />
 						</ListItemIcon>
@@ -86,5 +108,6 @@ const AccountMenu = memo(
 AccountMenu.propTypes = {
 	onSignOut: PropTypes.func,
 	onClose: PropTypes.func,
+	toSettings: PropTypes.func,
 };
 export default AccountMenu;

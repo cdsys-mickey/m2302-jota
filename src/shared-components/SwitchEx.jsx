@@ -9,6 +9,7 @@ import React from "react";
 import { useMemo } from "react";
 import { forwardRef } from "react";
 import { memo } from "react";
+import FormControlLabelEx from "./FormControlLabelEx";
 
 /**
  * 新增 color 屬性
@@ -28,15 +29,16 @@ const SwitchEx = memo(
 			...rest
 		} = props;
 
-		const controledLabel = useMemo(
+		const memoisedLabelText = useMemo(
 			() => (checked ? checkedLabel || label : label),
 			[checked, checkedLabel, label]
 		);
 
 		return (
 			<FormGroup>
-				<FormControlLabel
-					label={controledLabel}
+				<FormControlLabelEx
+					nowrap
+					label={memoisedLabelText}
 					error={error}
 					control={
 						<Switch

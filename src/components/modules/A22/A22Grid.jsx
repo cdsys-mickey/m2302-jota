@@ -34,38 +34,7 @@ const A22Grid = memo((props) => {
 
 	const columns = useMemo(
 		() => [
-			// {
-			// 	...keyColumn(
-			// 		"ProdID",
-			// 		createTextColumn({
-			// 			continuousUpdates: false,
-			// 		})
-			// 	),
-			// 	disabled: true,
-			// 	grow: 2,
-			// 	title: "商品代碼",
-			// },
 			{
-				// ...keyColumn(
-				// 	"prod",
-				// 	createWebApiOptionPickerColumn({
-				// 		url: "v1/prods",
-				// 		queryString: QueryString.stringify({
-				// 			tp: 50,
-				// 			ps: 1,
-				// 		}),
-				// 		bearer: bearer,
-				// 		queryParam: "qs",
-				// 		getOptionLabel: Prods.getOptionLabel,
-				// 		isOptionEqualToValue: Prods.isOptionEqualToValue,
-				// 		filterByServer: true,
-				// 		size: "small",
-				// 		getData: (p) => p["data"],
-				// 		queryRequired: true,
-				// 		placeholder: "商品編號",
-				// 		typeToSearchText: "請輸入編號名稱或條碼進行搜尋",
-				// 	})
-				// ),
 				...createOptionPickerColumn((props) => (
 					<A22GridProdPickerColumn name="prod" {...props} />
 				)),

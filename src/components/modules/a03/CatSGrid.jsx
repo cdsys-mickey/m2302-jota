@@ -9,6 +9,7 @@ import {
 } from "react-datasheet-grid";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import DSGBox from "../../../shared-components/dsg/DSGBox";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -26,6 +27,7 @@ const CatSGrid = memo((props) => {
 		handleChange,
 		isPersisted,
 		onSelectionChange,
+		getRowClassName,
 	} = props;
 
 	const columns = useMemo(
@@ -75,7 +77,7 @@ const CatSGrid = memo((props) => {
 
 	return (
 		// <Container maxWidth="xs">
-		<Box>
+		<DSGBox>
 			<DynamicDataSheetGrid
 				lockRows={lockRows}
 				ref={setGridRef}
@@ -91,8 +93,9 @@ const CatSGrid = memo((props) => {
 				// onActiveCellChange={handleActiveCellChange}
 				onSelectionChange={onSelectionChange}
 				// autoAddRow
+				rowClassName={getRowClassName}
 			/>
-		</Box>
+		</DSGBox>
 		// </Container>
 	);
 });
@@ -106,6 +109,7 @@ CatSGrid.propTypes = {
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	onSelectionChange: PropTypes.func,
+	getRowClassName: PropTypes.func,
 };
 
 CatSGrid.displayName = "CatSGrid";

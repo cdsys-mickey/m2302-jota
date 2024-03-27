@@ -1,26 +1,73 @@
 const getErrorFromPayload = (payload, options) => {
-	const { stacktrace = false, status } = options || {};
-	//try to parse axiosResponse.data as json
-	if (!payload && !status) {
-		return null;
+	const { withStackTtrace = false } = options || {};
+
+	if (!payload) {
+		const { status, statusText } = options;
+
+		return {
+			...(status && {
+				status,
+			}),
+			...(statusText && {
+				statusText,
+			}),
+		};
 	}
+	const {
+		code,
+		Code,
+		message,
+		Message,
+		type,
+		Type,
+		stackTrace,
+		StackTrace,
+		status,
+		statusText,
+		Status,
+		StatusText,
+		...rest
+	} = payload;
+
 	let result = {};
-	const code = payload?.code || payload?.Code;
-	if (code) {
-		result["code"] = code;
+	const codeValue = code || Code;
+	if (codeValue) {
+		result["code"] = codeValue;
 	}
-	result["message"] = payload?.Message || payload?.message;
-	result["type"] = payload?.Type || payload?.type;
-	if (stacktrace) {
-		result["stacktrace"] = payload?.StackTrace || payload?.stacktrace;
+	result["message"] = message || Message;
+	result["type"] = type || Type;
+
+	const stacktraceValue = stackTrace || StackTrace;
+	if (withStackTtrace && stacktraceValue) {
+		result["stackTrace"] = stacktraceValue;
 	}
-	if (status) {
-		result["status"] = status;
+	const statusValue = status || Status || options?.status;
+	if (statusValue) {
+		result["status"] = statusValue;
 	}
-	return result;
+	const statusTextValue = statusText || StatusText || options?.statusText;
+	if (statusValue) {
+		result["statusText"] = statusTextValue;
+	}
+	return {
+		...result,
+		...rest,
+	};
 };
+
+const mapStatusText = (err, mapping) => {
+	const overrideText = mapping[err.status];
+	return {
+		...err,
+		...(overrideText && {
+			statusText: overrideText,
+		}),
+	};
+};
+
 const WebApi = {
 	getErrorFromPayload,
+	mapStatusText,
 };
 
 export default WebApi;

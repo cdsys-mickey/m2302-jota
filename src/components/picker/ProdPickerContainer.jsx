@@ -4,7 +4,7 @@ import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicke
 import Prods from "@/modules/md-prods";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
-import QueryString from "query-string";
+import queryString from "query-string";
 import { ControlledWebApiOptionPicker } from "../../shared-components/controlled/ControlledWebApiOptionPicker";
 
 export const ProdPickerContainer = (props) => {
@@ -17,7 +17,7 @@ export const ProdPickerContainer = (props) => {
 	} = props;
 	const { token } = useContext(AuthContext);
 
-	const queryString = useMemo(() => {
+	const querystring = useMemo(() => {
 		const obj = {
 			tp: 20,
 			...(withBomPackageName && {
@@ -27,7 +27,7 @@ export const ProdPickerContainer = (props) => {
 				ps: 1,
 			}),
 		};
-		return QueryString.stringify(obj);
+		return queryString.stringify(obj);
 	}, [withBomPackageName, withSalesPackageName]);
 
 	if (!name) {
@@ -37,7 +37,7 @@ export const ProdPickerContainer = (props) => {
 			url={`v1/prods`}
 			filterByServer
 			queryRequired
-			queryString={queryString}
+			querystring={querystring}
 			getOptionLabel={Prods.getOptionLabel}
 			isOptionEqualToValue={Prods.isOptionEqualToValue}
 			{...rest}
@@ -52,7 +52,7 @@ export const ProdPickerContainer = (props) => {
 			filterByServer
 			queryRequired
 			queryParam="qs"
-			queryString={queryString}
+			querystring={querystring}
 			getOptionLabel={Prods.getOptionLabel}
 			isOptionEqualToValue={Prods.isOptionEqualToValue}
 			{...rest}

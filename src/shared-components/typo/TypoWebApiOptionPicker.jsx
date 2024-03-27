@@ -2,16 +2,18 @@ import { ControlledWebApiOptionPicker } from "@/shared-components/controlled/Con
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import { forwardRef, memo, useMemo } from "react";
 import PropTypes from "prop-types";
+import { useWatch } from "react-hook-form";
+import TypoChips from "@/shared-components/typo/TypoChips";
 
 const TypoWebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
-			// Common
+			// for OptionPicker
+			label,
+			multiple,
 			children,
 			readOnly = false,
-			value,
-			label,
-			// Typography
+			// for Typography
 			typoVariant = "body1",
 			typographyProps,
 			emptyText = "(空白)",
@@ -20,14 +22,29 @@ const TypoWebApiOptionPicker = memo(
 			editing = true,
 			size = "small",
 			variant = "outlined",
+			chip = false,
 			// METHODS
 			getOptionLabel,
+			getOptionKey,
 			...rest
 		} = props;
 
-		const text = useMemo(() => {
-			return children || value;
-		}, [children, value]);
+		const value = useWatch({
+			name,
+		});
+
+		const memoisedText = useMemo(() => {
+			// console.log(`${name}.memoisedText`, value);
+			if (children) {
+				return children;
+			}
+			if (multiple) {
+				return value
+					?.map((i) => (getOptionLabel ? getOptionLabel(i) : i))
+					.join(", ");
+			}
+			return getOptionLabel ? getOptionLabel(value) : value;
+		}, [children, getOptionLabel, multiple, value]);
 
 		if (!editing) {
 			return (
@@ -36,7 +53,15 @@ const TypoWebApiOptionPicker = memo(
 					variant={typoVariant}
 					emptyText={emptyText}
 					{...typographyProps}>
-					{text}
+					{chip ? (
+						<TypoChips
+							value={value}
+							getOptionLabel={getOptionLabel}
+							getOptionKey={getOptionKey}
+						/>
+					) : (
+						memoisedText
+					)}
 				</FormFieldLabel>
 			);
 		}
@@ -44,12 +69,14 @@ const TypoWebApiOptionPicker = memo(
 		return (
 			<ControlledWebApiOptionPicker
 				name={name}
-				ref={ref}
 				label={label}
+				multiple={multiple}
+				ref={ref}
 				variant={variant}
 				size={size}
 				// methods
 				getOptionLabel={getOptionLabel}
+				getOptionKey={getOptionKey}
 				disabled={readOnly}
 				{...rest}
 			/>
@@ -59,8 +86,28 @@ const TypoWebApiOptionPicker = memo(
 
 TypoWebApiOptionPicker.displayName = "TypoWebApiOptionPicker";
 TypoWebApiOptionPicker.propTypes = {
-	children: PropTypes.node,
+	// for OptionPicker
+	value: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	readOnly: PropTypes.bool,
+	variant: PropTypes.string,
+	multiple: PropTypes.bool,
+	getOptionKey: PropTypes.func,
+	getOptionLabel: PropTypes.func,
+
+	// for Typography
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+	label: PropTypes.string,
+	typoVariant: PropTypes.string,
+	typographyProps: PropTypes.object,
+	emptyText: PropTypes.string,
+	chip: PropTypes.bool,
+
+	// for input
+	name: PropTypes.string,
+	size: PropTypes.string,
+
+	//for crud context
+	editing: PropTypes.bool,
 };
 
 export default TypoWebApiOptionPicker;

@@ -10,7 +10,7 @@ import { MessagingContext } from "../../contexts/MessagingContext";
 export const PushMessageListItemContainer = (props) => {
 	const { message, ...rest } = props;
 	const { operator } = useContext(AuthContext);
-	const { handleSelectById } = useContext(AppFrameContext);
+	const { selectJobById } = useContext(AppFrameContext);
 	const { handlePopoverClose, markAsRead } = useContext(MessagingContext);
 
 	const unread = useMemo(() => {
@@ -23,8 +23,8 @@ export const PushMessageListItemContainer = (props) => {
 
 	const handleGotoJob = useCallback(() => {
 		handlePopoverClose();
-		handleSelectById(message?.JobID);
-	}, [handlePopoverClose, handleSelectById, message?.JobID]);
+		selectJobById(message?.JobID);
+	}, [handlePopoverClose, selectJobById, message?.JobID]);
 
 	const handleMarkAsRead = useCallback(() => {
 		console.log(`handleMarkAsRead`, message?.MsgID);

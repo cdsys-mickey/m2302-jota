@@ -2,7 +2,7 @@ import DialogEx from "@/shared-components/dialog/DialogEx";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import UserDeptPicker from "@/components/UserDeptPicker";
+import AuthDeptPicker from "@/components/AuthDeptPicker";
 import FlexBox from "@/shared-components/FlexBox";
 
 export const DeptSwitchDialogContainer = () => {
@@ -20,9 +20,10 @@ export const DeptSwitchDialogContainer = () => {
 					)}
 					open={auth.deptSwitching}
 					onClose={auth.cancelDeptSwitch}
+					onCancel={auth.cancelDeptSwitch}
 					buttonProps={{ size: "small" }}>
 					<FlexBox py={1}>
-						<UserDeptPicker
+						<AuthDeptPicker
 							label="目的門市"
 							name="newDept"
 							autoFocus

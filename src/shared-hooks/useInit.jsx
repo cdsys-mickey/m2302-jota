@@ -1,11 +1,7 @@
-import { useCallback, useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-export const useInit = (callback, dependencies = []) => {
+export const useInit = (callback, dependencies) => {
 	const loadedRef = useRef(false);
-
-	const setLoaded = useCallback((value) => {
-		loadedRef.current = value;
-	}, []);
 
 	useEffect(() => {
 		if (!loadedRef.current) {
@@ -13,7 +9,7 @@ export const useInit = (callback, dependencies = []) => {
 			callback();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [callback, setLoaded, ...dependencies]);
+	}, [callback, ...dependencies]);
 
-	return [loadedRef.current, setLoaded];
+	return [loadedRef.current];
 };

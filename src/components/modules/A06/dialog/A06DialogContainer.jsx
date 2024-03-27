@@ -4,7 +4,7 @@ import ActionState from "@/shared-constants/action-state";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A06Form from "../form/A06Form";
-import { A06DialogTitleButtonsContainer } from "./buttons/A06DialogTitleButtonsContainer";
+import { A06DialogButtonsContainer } from "./buttons/A06DialogButtonsContainer";
 import { useScrollable } from "../../../../shared-hooks/useScrollable";
 import { DialogExContainer } from "../../../../shared-components/dialog/DialogExContainer";
 import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
@@ -49,12 +49,12 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 				responsive
 				fullWidth
 				maxWidth="md"
-				TitleButtonsComponent={A06DialogTitleButtonsContainer}
+				TitleButtonsComponent={A06DialogButtonsContainer}
 				open={a06.itemViewOpen}
 				onClose={
 					a06.editing ? a06.confirmDialogClose : a06.cancelAction
 				}
-				onReturn={a06.updating ? a06.confirmReturn : null}
+				// onReturn={a06.updating ? a06.confirmReturn : null}
 				sx={{
 					"& .MuiDialog-paper": {
 						backgroundColor: "rgb(241 241 241)",

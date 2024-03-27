@@ -101,7 +101,72 @@ it("isAllPropsEqual", () => {
 	expect(Objects.isAllPropsEqual(x, y)).toBeFalsy();
 
 	expect(
-		Objects.isAllPropsEqual(x, y, "DeptID,GroupKey,DeptName,AbbrName")
+		Objects.isAllPropsEqual(x, y, {
+			fields: "DeptID,GroupKey,DeptName,AbbrName",
+		})
+	).toBeTruthy();
+
+	//測試 ignoresEmpty 參數
+
+	x = {
+		ProdID: "10000000",
+		ProdData_N: "運費",
+		PackData_N: "式",
+		Price: "180.00",
+		PriceA: "",
+		PriceB: "",
+		PriceC: "",
+		PriceD: "",
+		PriceE: "",
+	};
+
+	y = {
+		ProdID: "10000000",
+		ProdData_N: "運費",
+		PackData_N: "式",
+		Price: "180.00",
+		PriceA: 1,
+		PriceB: "",
+		PriceC: "",
+		PriceD: "",
+		PriceE: "",
+	};
+
+	expect(
+		Objects.isAllPropsEqual(x, y, {
+			ignoresEmpty: true,
+		})
+	).toBeFalsy();
+
+	// 測試 "" === null
+	y = {
+		...y,
+		PriceA: null,
+	};
+	expect(
+		Objects.isAllPropsEqual(x, y, {
+			ignoresEmpty: true,
+		})
+	).toBeTruthy();
+	// 測試 "" === undefined
+	y = {
+		...y,
+		PriceA: undefined,
+	};
+	expect(
+		Objects.isAllPropsEqual(x, y, {
+			ignoresEmpty: true,
+		})
+	).toBeTruthy();
+	// 測試 "" !== 0
+	y = {
+		...y,
+		PriceA: 0,
+	};
+	expect(
+		Objects.isAllPropsEqual(x, y, {
+			ignoresEmpty: true,
+		})
 	).toBeTruthy();
 });
 

@@ -5,7 +5,7 @@ import { useWatch } from "react-hook-form";
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import Prods from "@/modules/md-prods";
 import { useMemo } from "react";
-import QueryString from "query-string";
+import queryString from "query-string";
 
 const TypoProdPickerContainer = forwardRef((props, ref) => {
 	const {
@@ -21,14 +21,14 @@ const TypoProdPickerContainer = forwardRef((props, ref) => {
 		name,
 	});
 
-	const queryString = useMemo(() => {
+	const querystring = useMemo(() => {
 		const obj = {
 			tp: 50,
 			...(withBomPackageName && {
 				pb: 1,
 			}),
 		};
-		return QueryString.stringify(obj);
+		return queryString.stringify(obj);
 	}, [withBomPackageName]);
 
 	const text = useMemo(() => {
@@ -42,7 +42,7 @@ const TypoProdPickerContainer = forwardRef((props, ref) => {
 			ref={ref}
 			bearer={token}
 			url={`v1/prods`}
-			queryString={queryString}
+			querystring={querystring}
 			queryParam="qs"
 			filterByServer
 			queryRequired

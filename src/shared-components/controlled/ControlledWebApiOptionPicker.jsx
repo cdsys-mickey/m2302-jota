@@ -3,11 +3,16 @@ import WebApiOptionPicker from "@/shared-components/picker/WebApiOptionPicker";
 import { Controller } from "react-hook-form";
 import PropTypes from "prop-types";
 
+/**
+ * 由 name 屬性決定是否要使用 Controller 包覆
+ * @param {*} param0
+ * @returns
+ */
 export const ControlledWebApiOptionPicker = ({
 	name,
-	disabled = false,
+	// disabled = false,
 	control,
-	required = false,
+	// required = false,
 	rules,
 	labelShrink = false,
 	defaultValue = null,
@@ -15,6 +20,21 @@ export const ControlledWebApiOptionPicker = ({
 	// onChange: handleChangeEx,
 	...rest
 }) => {
+	if (!name) {
+		return (
+			<WebApiOptionPicker
+				// required={required}
+				sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
+				// disabled={disabled}
+				InputLabelProps={{
+					...(labelShrink && { shrink: true }),
+				}}
+				defaultValue={defaultValue}
+				{...rest}
+			/>
+		);
+	}
+
 	return (
 		<Controller
 			name={name}
@@ -25,18 +45,11 @@ export const ControlledWebApiOptionPicker = ({
 				<>
 					<WebApiOptionPicker
 						name={name}
-						required={required}
+						// required={required}
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 						onChange={onChange}
-						// onChange={(v) => {
-						// 	console.log("onChange", v);
-						// 	onChange(v);
-						// 	if (handleChangeEx) {
-						// 		handleChangeEx(v);
-						// 	}
-						// }}
-						disabled={disabled}
+						// disabled={disabled}
 						InputLabelProps={{
 							...(labelShrink && { shrink: true }),
 						}}
@@ -51,10 +64,10 @@ export const ControlledWebApiOptionPicker = ({
 };
 
 ControlledWebApiOptionPicker.propTypes = {
-	name: PropTypes.string.isRequired,
-	disabled: PropTypes.bool,
+	name: PropTypes.string,
+	// disabled: PropTypes.bool,
 	control: PropTypes.object,
-	required: PropTypes.bool,
+	// required: PropTypes.bool,
 	rules: PropTypes.object,
 	labelShrink: PropTypes.bool,
 	defaultValue: PropTypes.oneOfType([

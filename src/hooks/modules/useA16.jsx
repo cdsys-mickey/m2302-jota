@@ -1,7 +1,7 @@
 import { useInit } from "@/shared-hooks/useInit";
 import { useCallback } from "react";
 import { useWebApiDSG } from "../../shared-hooks/useWebApiDSG";
-import QueryString from "query-string";
+import queryString from "query-string";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import { toast } from "react-toastify";
 import Errors from "../../shared-modules/sd-errors";
@@ -17,11 +17,12 @@ export const useA16 = ({ token }) => {
 		token,
 		gridId: "A16",
 		keyColumn: "DeptID",
+		nameColumn: "DeptName",
 		otherColumns: "GroupKey,DeptName,AbbrName",
 		baseUri: "v1/ou/depts",
 		displayName: "門市代碼",
-		queryString: QueryString.stringify({
-			sd: 1,
+		querystring: queryString.stringify({
+			all: 1,
 		}),
 	});
 

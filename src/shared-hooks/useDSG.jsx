@@ -4,6 +4,7 @@ import Objects from "@/shared-modules/sd-objects";
 import { useCallback, useMemo, useRef, useState, useTransition } from "react";
 import { useToggle } from "@/shared-hooks/useToggle";
 import _ from "lodash";
+import DSG from "../shared-modules/sd-dsg";
 
 export const useDSG = ({
 	gridId = "NO_NAME",
@@ -19,7 +20,10 @@ export const useDSG = ({
 	}, []);
 	const [readOnly, toggleReadOnly] = useToggle(initialReadOnly);
 	const [isPending, startTransition] = useTransition();
-	const selectedRowIndexRef = useRef();
+	// const selectedRowIndexRef = useRef();
+	// const [selectedRowIndex, setSelectedRowIndex] = useState();
+	// const [selectedRow, setSelectedRow] = useState();
+	const selectedRowRef = useRef();
 
 	const persistedIds = useMemo(() => new Set(), []);
 	const dirtyIds = useMemo(() => new Set(), []);
@@ -156,25 +160,30 @@ export const useDSG = ({
 				throw `keys mismatched ${prevKey} → ${rowKey}`;
 			}
 
-			return Objects.isAllPropsEqual(
-				prevData,
-				row.rowData,
-				otherColumnNames
-			);
+			return Objects.isAllPropsEqual(prevData, row.rowData, {
+				fields: otherColumnNames,
+			});
 		},
 		[keyColumn, otherColumnNames, state.prevGridData]
 	);
 
+	const isRowDataEquals = useCallback((prevRowData, rowData) => {
+		console.log("isRowDataEquals", prevRowData, rowData);
+		return !Objects.isAllPropsEqual(prevRowData, rowData, {
+			ignoresEmpty: true,
+		});
+	}, []);
+
 	const isKeyDuplicated = useCallback(
-		(key) => {
+		(gridData, key) => {
 			return (
-				state.gridData.filter((i) => {
+				gridData.filter((i) => {
 					const prevKey = _.get(i, keyColumn);
 					return prevKey === key;
 				}).length > 1
 			);
 		},
-		[keyColumn, state.gridData]
+		[keyColumn]
 	);
 
 	const isDuplicated = useCallback(
@@ -210,7 +219,7 @@ export const useDSG = ({
 	);
 
 	const propagateGridChange = useCallback(
-		(newValue, _) => {
+		(newValue) => {
 			console.log(`${gridId}.propagateGridChange`);
 			setGridData(newValue);
 		},
@@ -272,6 +281,11 @@ export const useDSG = ({
 				} else if (operation.type === "UPDATE") {
 					const rowIndex = operation.fromRowIndex;
 					const rowData = newValue[rowIndex];
+					const prevRowData = state.prevGridData[rowIndex];
+
+					const isDirty = isRowDataEquals(prevRowData, rowData);
+					console.log("isDirty", isDirty);
+
 					const row = {
 						rowIndex,
 						rowData,
@@ -279,8 +293,13 @@ export const useDSG = ({
 					console.log(`[DSG UPDATE]`, rowData);
 					const key = _.get(rowData, keyColumn);
 					if (key) {
-						dirtyIds.add(key);
-						console.log(`dirtyId ${key} added`);
+						if (isDirty) {
+							dirtyIds.add(key);
+							console.log(`dirtyId ${key} added`);
+						} else {
+							dirtyIds.delete(key);
+							console.log(`dirtyId ${key} removed`);
+						}
 					}
 					// 所有欄位都有值(包含 Key)
 					if (
@@ -289,10 +308,11 @@ export const useDSG = ({
 							...otherColumnNames,
 						])
 					) {
-						setGridData(newValue);
+						console.log("CREATE or UPDATE", rowData);
+
 						// 新增 或 修改
 
-						if (isKeyDuplicated(key)) {
+						if (isKeyDuplicated(newValue, key)) {
 							console.log("[DSG]DuplicatedError detected", key);
 							if (onDuplicatedError) {
 								onDuplicatedError(row, newValue);
@@ -323,8 +343,8 @@ export const useDSG = ({
 									onCreate(row, newValue);
 								}
 							}
-							console.log(`dirtyId ${key} added`);
 						}
+						setGridData(newValue);
 					} else if (
 						Objects.isAllPropsNull(rowData, [...otherColumnNames])
 					) {
@@ -350,15 +370,16 @@ export const useDSG = ({
 				}
 			},
 		[
-			dirtyIds,
 			gridId,
+			state.prevGridData,
+			setGridData,
+			isRowDataEquals,
+			keyColumn,
+			otherColumnNames,
+			dirtyIds,
 			isKeyDuplicated,
 			isInPrevGridData,
 			isUnchanged,
-			keyColumn,
-			otherColumnNames,
-			setGridData,
-			state.prevGridData,
 		]
 	);
 
@@ -394,59 +415,81 @@ export const useDSG = ({
 		console.log(`DSG.onActiveCellChange →`, cell);
 	}, []);
 
-	const isAllFieldsNotNull = useCallback(
-		(row) => {
-			return Objects.isAllPropsNotNull(row, [
-				keyColumn,
-				...otherColumnNames,
-			]);
-		},
-		[keyColumn, otherColumnNames]
-	);
+	// const isAllFieldsNotNull = useCallback(
+	// 	(row) => {
+	// 		return Objects.isAllPropsNotNull(row, [
+	// 			keyColumn,
+	// 			...otherColumnNames,
+	// 		]);
+	// 	},
+	// 	[keyColumn, otherColumnNames]
+	// );
+
+	const setSelectedRow = useCallback((row) => {
+		console.log(`setSelectedRow(row)`, row);
+		selectedRowRef.current = row;
+	}, []);
 
 	/**
 	 * onRowSelectionChange 的預設實作
 	 */
 	const defaultOnRowSelectionChange = useCallback(
-		({ rowIndex, rowData }) => {
-			console.log(
-				`${gridId}.rows[${rowIndex}] selected, rowData:`,
-				rowData
-			);
+		(row) => {
+			setSelectedRow(row);
+			// selectedRowRef.current = row;
+
+			const { rowIndex, rowData } = row || {};
+			if (rowIndex === undefined || rowIndex == null) {
+				console.log("defaultOnRowSelectionChange: de-selected");
+			} else {
+				console.log(
+					`defaultOnRowSelectionChange ${gridId}.rows[${rowIndex}] selected, rowData:`,
+					rowData
+				);
+			}
 		},
-		[gridId]
+		[gridId, setSelectedRow]
 	);
 
-	const handleSelectionChange = useCallback(
-		({ onRowSelectionChange = defaultOnRowSelectionChange }) =>
-			({ selection }) => {
-				if (
-					selection &&
-					selectedRowIndexRef.current !== selection?.min?.row
-				) {
-					selectedRowIndexRef.current = selection?.min?.row;
-					const selectedRow = selection
-						? getRowDataByIndex(selection?.min?.row)
-						: null;
-					console.log(`${gridId}.selectedRow:`, selectedRow);
+	const getRowClassName = useCallback(({ rowIndex } = {}) => {
+		// console.log(
+		// 	`${gridId}.getRowClassName-rowInedx: ${rowIndex}: selected: ${selectedRowIndex}: `,
+		// 	rowIndex === selectedRowIndex
+		// );
+		if (rowIndex === undefined || rowIndex == null) {
+			return undefined;
+		}
+		// return rowIndex === selectedRow?.rowIndex
+		// 	? DSG.SELECTED_ROW_CLASSNAME
+		// 	: undefined;
+		return rowIndex === selectedRowRef.current?.rowIndex
+			? DSG.SELECTED_ROW_CLASSNAME
+			: undefined;
+	}, []);
 
-					startTransition(() => {
+	const handleSelectionChange = useCallback(
+		({ onRowSelectionChange = defaultOnRowSelectionChange } = {}) =>
+			({ selection }) => {
+				// console.log(
+				// 	`${gridId}.handleSelectionChange, selection:`,
+				// 	selection
+				// );
+				if (selection) {
+					if (selection?.min?.row === selection?.max?.row) {
+						const rowIndex = selection?.min?.row;
+						const rowData = getRowDataByIndex(rowIndex);
+						// setSelectedRowIndex(rowIndex);
 						onRowSelectionChange({
-							rowIndex: selection?.min?.row,
-							rowData:
-								selectedRow && isAllFieldsNotNull(selectedRow)
-									? selectedRow
-									: null,
+							rowIndex,
+							rowData,
 						});
-					});
+					} else {
+						// setSelectedRowIndex(undefined);
+						onRowSelectionChange(undefined);
+					}
 				}
 			},
-		[
-			getRowDataByIndex,
-			defaultOnRowSelectionChange,
-			gridId,
-			isAllFieldsNotNull,
-		]
+		[defaultOnRowSelectionChange, getRowDataByIndex]
 	);
 
 	const setActiveCell = useCallback(
@@ -469,9 +512,31 @@ export const useDSG = ({
 		setGridData([]);
 	}, [setGridData]);
 
+	// const onRowSelectionChange = useCallback(
+	// 	({ rowIndex, rowData } = {}) => {
+	// 		console.log(`${gridId}[${rowIndex}] selected, data:`, rowData);
+	// 	},
+	// 	[gridId]
+	// );
+
 	// const toggleReadOnly = useCallback((enabled) => {
 	// 	setLockRows(!enabled);
 	// }, []);
+
+	const getDirtyData = useCallback(() => {
+		return state.gridData.filter((row) => {
+			if (dirtyIds && dirtyIds.size > 0) {
+				const key = _.get(row, keyColumn);
+				return dirtyIds.has(key);
+			}
+			return false;
+		});
+	}, [dirtyIds, keyColumn, state.gridData]);
+
+	// const isDirty = useMemo(() => {
+	// 	return dirtyIds && dirtyIds.size > 0;
+	// }, [dirtyIds]);
+
 	return {
 		...state,
 		gridRef,
@@ -489,7 +554,7 @@ export const useDSG = ({
 		isPersisted,
 		handleActiveCellChange,
 		handleSelectionChange,
-		isAllFieldsNotNull,
+		// isAllFieldsNotNull,
 		// DELETING
 		deletingRow,
 		setDeletingRow,
@@ -505,5 +570,13 @@ export const useDSG = ({
 		isKeyDuplicated,
 		isDuplicated,
 		isDuplicating,
+		// Styling
+		getRowClassName,
+		// selectedRow,
+		setSelectedRow,
+		selectedRowRef,
+		// onRowSelectionChange,
+		getDirtyData,
+		isDirty: dirtyIds && dirtyIds.size > 0,
 	};
 };

@@ -30,7 +30,7 @@ const CatSGridProvider = (props) => {
 		dsg.setGridData(null);
 	}, [dsg]);
 
-	const selectRow = useCallback(({ rowData }) => {
+	const selectRow = useCallback(({ rowData } = {}) => {
 		setState((prev) => ({
 			...prev,
 			selected: rowData,
@@ -157,7 +157,7 @@ const CatSGridProvider = (props) => {
 					bearer: token,
 				});
 				if (status.success) {
-					selectRow({});
+					selectRow(undefined);
 					toast.success(
 						`小分類 ${rowData.SClas}/${rowData.ClassData} 刪除成功`
 					);
@@ -221,10 +221,11 @@ const CatSGridProvider = (props) => {
 	);
 
 	const onRowSelectionChange = useCallback(
-		({ rowIndex, rowData }) => {
-			selectRow({ rowIndex, rowData });
+		(row) => {
+			dsg.setSelectedRow(row);
+			selectRow(row);
 		},
-		[selectRow]
+		[dsg, selectRow]
 	);
 
 	return (

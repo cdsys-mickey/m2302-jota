@@ -16,6 +16,7 @@ const ResponsiveDrawer = memo(
 			variant = "persistent",
 			width = 260,
 			open = false,
+			bgcolor,
 			...rest
 		} = props;
 		const { mobile } = useContext(ResponsiveContext);
@@ -36,6 +37,9 @@ const ResponsiveDrawer = memo(
 					"& .MuiDrawer-paper": {
 						width: width,
 						boxSizing: "border-box",
+						...(bgcolor && {
+							backgroundColor: bgcolor,
+						}),
 					},
 				}}
 				{...rest}>
@@ -51,5 +55,6 @@ ResponsiveDrawer.propTypes = {
 	variant: PropTypes.oneOf(["persistent", "temporary"]),
 	width: PropTypes.number,
 	open: PropTypes.bool,
+	bgcolor: PropTypes.string,
 };
 export default ResponsiveDrawer;

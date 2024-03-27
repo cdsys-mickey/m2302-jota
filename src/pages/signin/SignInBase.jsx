@@ -19,7 +19,6 @@ const SignInBase = memo(
 				sx={{
 					backgroundImage: `url(${BackgroundImage})`,
 					backgroundSize: "cover",
-
 					backgroundRepeat: "no-repeat",
 					minHeight: "100vh",
 				}}

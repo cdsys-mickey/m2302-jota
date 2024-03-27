@@ -33,9 +33,13 @@ import { TypoProdTypeBPickerContainer } from "./fields/TypoProdTypeBPickerContai
 import { TypoTaxTypePickerContainer } from "./fields/TypoTaxTypePickerContainer";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import A01 from "../../../../modules/md-a01";
+import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
+import ErrorBox from "../../../../shared-components/ErrorBox";
+import AlertEx from "../../../../shared-components/AlertEx";
 
 const A01Form = memo((props) => {
 	const {
+		readError,
 		data,
 		readWorking,
 		dataLoaded,
@@ -57,6 +61,15 @@ const A01Form = memo((props) => {
 						</LoadingTypography>
 					</FlexBox>
 				</Container>
+			)}
+			{readError && (
+				<Box pt="20%">
+					<AlertEx
+						variant="filled"
+						title="讀取失敗"
+						error={readError}
+					/>
+				</Box>
 			)}
 			{dataLoaded && (
 				<Box
@@ -91,7 +104,7 @@ const A01Form = memo((props) => {
 									container
 									columns={12}
 									spacing={editing ? 2 : 1}>
-									<Grid item xs={12} sm={12} md={3}>
+									<Grid item xs={12} sm={12} md={4}>
 										<TypoTextFieldContainer
 											name="ProdID"
 											label="貨品編號"
@@ -105,7 +118,20 @@ const A01Form = memo((props) => {
 											readOnly={updating}
 										/>
 									</Grid>
-									<Grid item xs={12} sm={12} md={3}>
+									<Grid item xs={12} sm={12} md={8}>
+										<TypoTextFieldContainer
+											name="ProdData"
+											label="品名規格"
+											fullWidth
+											required
+											rules={{
+												required: "品名規格為必填",
+											}}
+											readOnly={store}>
+											{data?.ProdData}
+										</TypoTextFieldContainer>
+									</Grid>
+									<Grid item xs={12} sm={12} md={4}>
 										<TypoTextFieldContainer
 											label="條碼"
 											name="Barcode"
@@ -129,19 +155,6 @@ const A01Form = memo((props) => {
 											{YesNo.getOptionLabel(data?.BarPR)}
 										</TypoCheckboxExContainer>
 									</Grid>
-									<Grid item xs={12} sm={12} md={12}>
-										<TypoTextFieldContainer
-											name="ProdData"
-											label="品名規格"
-											fullWidth
-											required
-											rules={{
-												required: "品名規格為必填",
-											}}
-											readOnly={store}>
-											{data?.ProdData}
-										</TypoTextFieldContainer>
-									</Grid>
 								</Grid>
 							</FormSectionBox>
 
@@ -151,7 +164,7 @@ const A01Form = memo((props) => {
 									container
 									columns={12}
 									spacing={editing ? 2 : 1}>
-									<Grid item xs={12} sm={12} md={3}>
+									<Grid item xs={12} sm={12} md={4}>
 										<TypoProdCatLPickerContainer
 											name="catL"
 											readOnly={store}>
@@ -160,7 +173,7 @@ const A01Form = memo((props) => {
 											)}
 										</TypoProdCatLPickerContainer>
 									</Grid>
-									<Grid item xs={12} sm={12} md={3}>
+									<Grid item xs={12} sm={12} md={4}>
 										<TypoProdCatMPickerContainer
 											name="catM"
 											readOnly={store}>
@@ -169,7 +182,7 @@ const A01Form = memo((props) => {
 											)}
 										</TypoProdCatMPickerContainer>
 									</Grid>
-									<Grid item xs={12} sm={12} md={3}>
+									<Grid item xs={12} sm={12} md={4}>
 										<TypoProdCatSPickerContainer
 											name="catS"
 											readOnly={store}>
@@ -199,7 +212,8 @@ const A01Form = memo((props) => {
 										</TypoProdTypeBPickerContainer>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTaxTypePickerContainer
+										<TaxTypePickerContainer
+											typo
 											name="taxType"
 											label="稅別"
 											defaultValue={TaxTypes.getById("T")}
@@ -207,7 +221,16 @@ const A01Form = memo((props) => {
 											{TaxTypes.getOptionLabel(
 												data?.taxType
 											)}
-										</TypoTaxTypePickerContainer>
+										</TaxTypePickerContainer>
+										{/* <TypoTaxTypePickerContainer
+											name="taxType"
+											label="稅別"
+											defaultValue={TaxTypes.getById("T")}
+											readOnly={store}>
+											{TaxTypes.getOptionLabel(
+												data?.taxType
+											)}
+										</TypoTaxTypePickerContainer> */}
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
 										<TypoCounterPickerContainer

@@ -4,6 +4,7 @@ import ProdTypeB from "./md-prod-type-b";
 import TaxTypes from "./md-tax-types";
 import { v4 as uuidv4 } from "uuid";
 import Objects from "@/shared-modules/sd-objects";
+import Reports from "./md-reports";
 
 const Tabs = Object.freeze({
 	INFO: "INFO",
@@ -241,8 +242,11 @@ const isFiltered = (criteria) => {
 	return Objects.isAnyPropNotEmpty(criteria, "pi,pn,bc");
 };
 
-const paramsToJsonData = (params) => {
-	const where = [];
+const paramsToJsonData = (mode) => (params) => {
+	const where =
+		mode === A01.Mode.NEW_PROD
+			? [Reports.addParam("審核人員", "=", "")]
+			: [Reports.addParam("審核人員", "<>", "")];
 
 	if (params?.bc) {
 		where.push({

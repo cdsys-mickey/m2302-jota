@@ -5,6 +5,7 @@ import { AuthContext } from "./AuthContext";
 export const AuthProvider = (props) => {
 	const { children } = props;
 	const auth = useAuth();
+
 	return (
 		<AuthContext.Provider
 			value={{

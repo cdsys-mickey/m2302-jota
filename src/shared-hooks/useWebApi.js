@@ -22,8 +22,8 @@ const DEFAULT_FORM_HEADERS = {
 export const useWebApi = (props) => {
 	const {
 		baseUrl = import.meta.env.VITE_URL_API || "/",
-		mode = "json",
-		stacktrace = false,
+		mode: defaultMode = "json",
+		withStackTrace = false,
 	} = props || {};
 
 	const getUrl = useCallback(
@@ -62,7 +62,16 @@ export const useWebApi = (props) => {
 
 	// async 版本
 	const sendAsync = useCallback(
-		async ({ url, method, data, params, headers, bearer, ...rest }) => {
+		async ({
+			url,
+			method,
+			data,
+			params,
+			headers,
+			bearer,
+			mode = defaultMode,
+			...rest
+		}) => {
 			const apiUrl = getUrl(url);
 			if (!apiUrl) {
 				throw `url cannot be null`;
@@ -121,7 +130,7 @@ export const useWebApi = (props) => {
 					...rest,
 				});
 				const status = HttpStatus.from(axiosResponse.status);
-				console.log(`payload`, axiosResponse.data);
+				// console.log(`payload`, axiosResponse.data);
 				if (status.is2xx) {
 					return {
 						status: status,
@@ -132,8 +141,9 @@ export const useWebApi = (props) => {
 					return {
 						status: status,
 						error: WebApi.getErrorFromPayload(axiosResponse.data, {
-							stacktrace,
+							withStackTrace: withStackTrace,
 							status: status.code,
+							statusText: axiosResponse.statusText,
 						}),
 					};
 				}
@@ -142,13 +152,14 @@ export const useWebApi = (props) => {
 				return {
 					status: HttpStatus.from(err.response.status),
 					error: WebApi.getErrorFromPayload(err.response.data, {
-						stacktrace,
+						withStackTrace: withStackTrace,
 						status: err.response.status,
+						statusText: err.response.statusText,
 					}),
 				};
 			}
 		},
-		[getUrl, mode, stacktrace]
+		[defaultMode, getUrl, withStackTrace]
 	);
 
 	const httpGetAsync = useCallback(

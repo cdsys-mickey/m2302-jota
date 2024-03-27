@@ -146,11 +146,9 @@ export const ZZDSGProvider = ({
 				throw `keys mismatched ${prevKey} → ${rowKey}`;
 			}
 
-			return Objects.isAllPropsEqual(
-				prevData,
-				row.rowData,
-				otherColumnNames
-			);
+			return Objects.isAllPropsEqual(prevData, row.rowData, {
+				fields: otherColumnNames,
+			});
 		},
 		[keyColumn, otherColumnNames, state.prevGridData]
 	);

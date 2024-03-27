@@ -2,14 +2,14 @@ import HoverableListItem from "@/shared-components/HoverableListItem";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 import { Grid, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo } from "react";
-import MsgIDColumn from "../columns/MsgIDColumn";
-import MsgNameColumn from "../columns/MsgNameColumn";
-import MsgTimeColumn from "../columns/MsgTimeColumn";
-import { useMemo } from "react";
-import PushMessageListItemSecondaryAction from "../../push-messages/PushMessageListItemSecondaryAction";
+import { memo, useMemo } from "react";
+import ChipEx from "../../../shared-components/ChipEx";
 import ButtonEx from "../../../shared-components/button/ButtonEx";
+import MsgIDColumn from "../columns/MsgIDColumn";
 import MsgJobColumn from "../columns/MsgJobColumn";
+import MsgNameColumn from "../columns/MsgNameColumn";
+import MsgNewColumn from "../columns/MsgNewColumn";
+import MsgTimeColumn from "../columns/MsgTimeColumn";
 
 const UnreadTypography = (props) => {
 	const { children, unread, ...rest } = props;
@@ -33,22 +33,18 @@ UnreadTypography.propTypes = {
 };
 
 const MsgListRow = memo((props) => {
-	const {
-		index,
-		style,
-		value,
-		loading,
-		onClick,
-		handleMarkAsRead,
-		handleGotoJob,
-	} = props;
+	const { index, style, value, loading, handleGotoJob } = props;
 	const unread = useMemo(() => {
-		return value?.Unread === 0;
-	}, [value?.Unread]);
+		return !value?.RecdTime;
+	}, [value?.RecdTime]);
+
+	const memoisedTitle = useMemo(() => {
+		return `前往 ${value?.JobID} 作業`;
+	}, [value?.JobID]);
 
 	return (
 		<div style={style}>
-			<HoverableListItem borderBottom onClick={onClick}>
+			<HoverableListItem borderBottom>
 				<Grid
 					container
 					columns={24}
@@ -59,6 +55,16 @@ const MsgListRow = memo((props) => {
 						},
 					]}>
 					<IndexColumn title={index}></IndexColumn>
+
+					<MsgNewColumn loading={loading}>
+						{unread && (
+							<ChipEx
+								severity="warning"
+								size="small"
+								label="待辦"
+							/>
+						)}
+					</MsgNewColumn>
 					<MsgIDColumn loading={loading}>
 						<UnreadTypography unread={unread}>
 							{value?.SendName}
@@ -66,9 +72,11 @@ const MsgListRow = memo((props) => {
 					</MsgIDColumn>
 					<MsgJobColumn>
 						{value?.JobID && (
-							<ButtonEx size="small" onClick={handleGotoJob}>
-								{value?.JobID}
-							</ButtonEx>
+							<Tooltip title={memoisedTitle}>
+								<ButtonEx size="small" onClick={handleGotoJob}>
+									{value?.JobID}
+								</ButtonEx>
+							</Tooltip>
 						)}
 					</MsgJobColumn>
 					<MsgNameColumn loading={loading}>
@@ -82,9 +90,9 @@ const MsgListRow = memo((props) => {
 						</UnreadTypography>
 					</MsgTimeColumn>
 				</Grid>
-				<PushMessageListItemSecondaryAction
+				{/* <PushMessageListItemSecondaryAction
 					onMarkAsRead={unread ? handleMarkAsRead : null}
-				/>
+				/> */}
 			</HoverableListItem>
 		</div>
 	);
@@ -98,6 +106,7 @@ MsgListRow.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
 	handleMarkAsRead: PropTypes.func,
+	handleGotoJob: PropTypes.func,
 };
 
 MsgListRow.displayName = "MsgListRow";

@@ -7,14 +7,10 @@ import { toast } from "react-toastify";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Auth from "../../modules/md-auth";
+import Errors from "../../shared-modules/sd-errors";
 
 const pageCookieOpts = {
 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
-	expires: 365,
-};
-
-const rootCookieOpts = {
-	path: "/",
 	expires: 365,
 };
 
@@ -71,12 +67,16 @@ export const useSignIn = () => {
 						Cookies.set(
 							Auth.COOKIE_LOGKEY,
 							payload.LogKey || "",
-							rootCookieOpts
+							Auth.COOKIE_OPTS
 						);
 						if (!isImpersonate) {
 							Cookies.remove(Auth.COOKIE_MODE);
 						} else {
-							Cookies.set(Auth.COOKIE_MODE, "im", rootCookieOpts);
+							Cookies.set(
+								Auth.COOKIE_MODE,
+								"im",
+								Auth.COOKIE_OPTS
+							);
 						}
 						if (data.rememberMe) {
 							Cookies.set(
@@ -87,7 +87,7 @@ export const useSignIn = () => {
 							Cookies.set(
 								Auth.COOKIE_ACCOUNT,
 								collected[PARAM_ACCOUNT],
-								rootCookieOpts
+								Auth.COOKIE_OPTS
 							);
 						} else {
 							Cookies.set(
@@ -103,7 +103,12 @@ export const useSignIn = () => {
 						console.error(`status: ${status}`);
 						switch (status.code) {
 							case 401:
-								toast.warn(`帳號不存在，請重新輸入`);
+								toast.warn(`登入失敗，請檢查帳號密碼是否正確`);
+								break;
+							case 429:
+								toast.warn(
+									`帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`
+								);
 								break;
 							default:
 								toast.error(
@@ -116,7 +121,7 @@ export const useSignIn = () => {
 					}
 				} catch (err) {
 					console.error("handleSignInSubmit failed", err);
-					toast.error("登入發生系統異常，請稍後再弒");
+					toast.error(Errors.getMessage("登入發生異常", err));
 				} finally {
 					setState((prev) => ({
 						...prev,

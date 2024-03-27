@@ -30,7 +30,7 @@ const ProdComboGrid = memo((props) => {
 					"prod",
 					createWebApiOptionPickerColumn({
 						url: "v1/prods",
-						queryString: "tp=50",
+						querystring: "tp=50",
 						bearer: bearer,
 						queryParam: "qs",
 						getOptionLabel: Prods.getOptionLabel,

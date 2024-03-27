@@ -4,6 +4,7 @@ import { A17Context } from "../../../contexts/A17/A17Context";
 import { useInit } from "../../../shared-hooks/useInit";
 import { useEffect } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import LoadingTypography from "../../../shared-components/LoadingTypography";
 
 export const A17FormContainer = () => {
 	const a17 = useContext(A17Context);
@@ -24,6 +25,8 @@ export const A17FormContainer = () => {
 	return (
 		<A17Form
 			readWorking={a17.readWorking}
+			readMessage={a17.readMessage}
+			// readWorking={true}
 			itemDataReady={a17.itemDataReady}
 			editing={a17.editing}
 			updating={a17.updating}

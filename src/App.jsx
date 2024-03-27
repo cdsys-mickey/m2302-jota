@@ -45,8 +45,16 @@ const theme = createTheme({
 			main: Colors.PURPLE,
 			contrastText: "#fff",
 		},
+		"neutral-light": {
+			main: "rgba(0, 0, 0, 0.2)",
+			contrastText: "#000",
+		},
 		neutral: {
-			main: "rgba(0, 0, 0, 0.50)",
+			main: "rgba(0, 0, 0, 0.40)",
+			contrastText: "#fff",
+		},
+		"neutral-dark": {
+			main: "rgba(0, 0, 0, 0.60)",
 			contrastText: "#fff",
 		},
 		black: {
@@ -98,10 +106,7 @@ function App() {
 			<ThemeProvider theme={theme}>
 				<LocalizationProvider
 					dateAdapter={AdapterDateFns}
-					adapterLocale={zhTW}
-					// dateAdapter={AdapterDayjs}
-					// adapterLocale="zhTW"
-				>
+					adapterLocale={zhTW}>
 					<ResponsiveProvider>
 						<DialogsProvider buttonProps={{ size: "small" }}>
 							<CssBaseline />

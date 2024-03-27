@@ -9,6 +9,8 @@ import ErrorBox from "../../ErrorBox";
 import LoadingTypography from "../../LoadingTypography";
 import NoDataBox from "../../NoDataBox";
 import "./InfiniteListView.scss";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 const InfiniteListView = memo((props) => {
 	const {
@@ -28,7 +30,21 @@ const InfiniteListView = memo((props) => {
 		bottomReached,
 		minimumBatchSize = 20,
 		threshold = 20,
+		saveKey,
 	} = props;
+
+	const infiniteLoaderRef = useRef(null);
+	const hasMountedRef = useRef(false);
+
+	useEffect(() => {
+		if (hasMountedRef.current) {
+			if (infiniteLoaderRef.current) {
+				infiniteLoaderRef.current.resetloadMoreItemsCache();
+				console.log("InfiniteLoader.resetloadMoreItemsCache()");
+			}
+		}
+		hasMountedRef.current = true;
+	}, [saveKey]);
 
 	if (loading) {
 		return (
@@ -51,6 +67,7 @@ const InfiniteListView = memo((props) => {
 
 	return (
 		<InfiniteLoader
+			ref={infiniteLoaderRef}
 			isItemLoaded={isItemLoaded}
 			itemCount={itemCount}
 			loadMoreItems={loadMoreItems}
@@ -81,15 +98,21 @@ const InfiniteListView = memo((props) => {
 	);
 });
 InfiniteListView.propTypes = {
+	saveKey: PropTypes.string,
 	itemCount: PropTypes.number,
 	otherListProps: PropTypes.object,
 	height: PropTypes.number,
 	itemHeight: PropTypes.number,
+	minimumBatchSize: PropTypes.number,
+	threshold: PropTypes.number,
+	scrollOffset: PropTypes.number,
 	loadMoreItems: PropTypes.func,
+	onScroll: PropTypes.func,
 	isItemLoaded: PropTypes.func,
 	RowComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
 	data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	loading: PropTypes.bool,
+	bottomReached: PropTypes.bool,
 	handleItemsRendered: PropTypes.func,
 	error: PropTypes.object,
 };

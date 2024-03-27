@@ -1,35 +1,25 @@
-import SideMenuSearchBar from "@/shared-components/side-menu/SideMenuSearchBar";
-import useSearchField from "@/shared-hooks/useSearchField";
-import { forwardRef, memo, useContext, useRef } from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { useHotkeys } from "react-hotkeys-hook";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import PropTypes from "prop-types";
 import { SideMenuContext } from "@/contexts/SideMenuContext";
-import { useScrollTrigger } from "@mui/material";
-import { useReactWindowScroll } from "../../shared-hooks/react-window/useReactWindowScroll";
-import { MessagingContext } from "../../contexts/MessagingContext";
-import useAppRedirect from "../../hooks/useAppRedirect";
-import { useCallback } from "react";
+import SideMenuSearchBar from "@/shared-components/side-menu/SideMenuSearchBar";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import useSearchField from "@/shared-hooks/useSearchField";
+import PropTypes from "prop-types";
+import { forwardRef, useContext, useEffect, useRef } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import { useHotkeys } from "react-hotkeys-hook";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 	const { name = "q", ...rest } = props;
 
 	const inputRef = useRef(null);
 	const sideMenu = useContext(SideMenuContext);
+	const { onAuthoritiesChanges } = sideMenu;
 
-	// const { mobile } = useContext(ResponsiveContext);
+	const auth = useContext(AuthContext);
+	const { authorities } = auth;
+
 	const form = useFormContext();
 	const { handleHomeClick } = useContext(AppFrameContext);
-	// const form = useForm();
-	const messaging = useContext(MessagingContext);
-	const { toMessages } = useAppRedirect();
-	const { handlePopoverClose } = messaging;
-
-	const gotoMessages = useCallback(() => {
-		handlePopoverClose();
-		toMessages();
-	}, [handlePopoverClose, toMessages]);
 
 	const searchField = useSearchField({
 		inputRef,
@@ -46,11 +36,19 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true,
 	});
 
-	// const trigger = useScrollTrigger({
-	// 	disableHysteresis: true,
-	// 	threshold: 0,
-	// });
-	// const { scrollOffset, onScroll } = useReactWindowScroll({ debounce: 20 });
+	const q = useWatch({
+		name: name,
+		// control,
+	});
+
+	useEffect(() => {
+		console.log(`q:${q}`);
+	}, [q]);
+
+	useEffect(() => {
+		// console.log("authorities fetched from AuthContext", authorities);
+		onAuthoritiesChanges(authorities, q);
+	}, [authorities, onAuthoritiesChanges, q]);
 
 	return (
 		<div ref={escRef}>

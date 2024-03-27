@@ -5,14 +5,21 @@ import { usePopover } from "../shared-hooks/usePopover";
 import { useSignalR } from "../shared-hooks/useSignalR";
 import { useWebApi } from "../shared-hooks/useWebApi";
 import Errors from "../shared-modules/sd-errors";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/auth/AuthContext";
+import Messaging from "../modules/md-messaging";
+import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 
 export const useMessaging = ({ token }) => {
 	const { httpGetAsync, httpPutAsync, httpPatchAsync } = useWebApi();
-
+	const auth = useContext(AuthContext);
+	const { operator, clearListLoading } = auth;
 	const popover = usePopover();
+	const { handlePopoverClose } = popover;
+	const { selectJobById } = useContext(AppFrameContext);
 
 	const loader = useInfiniteLoader({
-		url: "v1/app/messages",
+		url: "v1/my/messages",
 		bearer: token,
 		initialFetchSize: 50,
 	});
@@ -22,28 +29,19 @@ export const useMessaging = ({ token }) => {
 		unreadCountError: null,
 		unreadCountLoading: null,
 	});
-	const [recentMessagesState, setRecentMessagesState] = useState({
-		recentMessages: null,
-		recentMessagesError: null,
-		recentMessagesLoading: null,
-	});
-
-	const clearRecentMessagesLoading = useCallback(() => {
-		setRecentMessagesState((prev) => ({
-			...prev,
-			recentMessagesLoading: null,
-		}));
-	}, []);
 
 	const loadUnreadCount = useCallback(async () => {
-		console.log("loadUnreadCount");
+		// console.log("loadUnreadCount, token", token);
+		if (!token) {
+			return;
+		}
 		setUnreadState((prev) => ({
 			...prev,
 			unreadCountLoading: true,
 		}));
 		try {
 			const { status, payload, error } = await httpGetAsync({
-				url: `v1/app/messages/count`,
+				url: `v1/my/messages/unread-count`,
 				bearer: token,
 			});
 			if (status.success) {
@@ -68,31 +66,64 @@ export const useMessaging = ({ token }) => {
 		}
 	}, [httpGetAsync, token]);
 
+	const handleGotoJob = useCallback(
+		(payload) => {
+			console.log("handleGotoJob", payload);
+			const jobId = payload?.jobID || payload?.JobID;
+			const targetId = payload?.id || payload?.ID;
+
+			handlePopoverClose();
+			if (jobId) {
+				selectJobById(jobId, {
+					...(targetId && {
+						id: targetId,
+					}),
+				});
+			}
+		},
+		[handlePopoverClose, selectJobById]
+	);
+
 	const handlNotify = useCallback(
 		(payload) => {
-			console.log(`handlNotify`, payload);
-			toast.info(`${payload.msgBody}\n - ${payload.sendName}`);
+			console.log(`"notify" signal received`, payload);
+			const msg = `${payload.msgBody}\n - ${payload.sendName}`;
+			toast(msg, {
+				type: Messaging.asToastifyType(payload.type),
+				onClick: () => handleGotoJob(payload),
+			});
+
 			loadUnreadCount();
-			clearRecentMessagesLoading();
+			clearListLoading();
 		},
-		[clearRecentMessagesLoading, loadUnreadCount]
+		[clearListLoading, handleGotoJob, loadUnreadCount]
 	);
+
+	const handleRefresh = useCallback(() => {
+		console.log(`"refresh" signal received`);
+		//
+		loadUnreadCount();
+		clearListLoading();
+	}, [clearListLoading, loadUnreadCount]);
 
 	const onConnected = useCallback(() => {
 		loadUnreadCount();
-		clearRecentMessagesLoading();
-	}, [clearRecentMessagesLoading, loadUnreadCount]);
+		clearListLoading();
+	}, [clearListLoading, loadUnreadCount]);
 
 	const onReconnected = useCallback(() => {
 		loadUnreadCount();
-		clearRecentMessagesLoading();
-	}, [clearRecentMessagesLoading, loadUnreadCount]);
+		clearListLoading();
+	}, [clearListLoading, loadUnreadCount]);
+
+	const onClose = useCallback(() => {}, []);
 
 	const { connection, connectionId, connectionState, connect } = useSignalR({
 		url: import.meta.env.VITE_URL_MSG_HUB,
 		autoConnect: false,
 		onConnected: onConnected,
 		onReconnected: onReconnected,
+		onClose: onClose,
 	});
 
 	useEffect(() => {
@@ -101,61 +132,23 @@ export const useMessaging = ({ token }) => {
 		}
 	}, [connect, connection, token]);
 
-	const loadRecentMessages = useCallback(async () => {
-		if (!token) {
-			throw "token is null";
-		}
-		setRecentMessagesState((prev) => ({
-			...prev,
-			recentMessagesLoading: true,
-		}));
-		try {
-			const { status, payload, error } = await httpGetAsync({
-				bearer: token,
-				url: `v1/app/messages`,
-				params: {
-					tp: 10,
-				},
-			});
-			if (status.success) {
-				setRecentMessagesState((prev) => ({
-					...prev,
-					recentMessages: payload?.data,
-				}));
-			} else {
-				throw error || new Error("未預期例外");
-			}
-		} catch (err) {
-			console.error(`fetchMessages failed`, err);
-			setRecentMessagesState((prev) => ({
-				...prev,
-				recentMessagesError: err,
-			}));
-		} finally {
-			setRecentMessagesState((prev) => ({
-				...prev,
-				recentMessagesLoading: false,
-			}));
-		}
-	}, [httpGetAsync, token]);
-
 	const markAsRead = useCallback(
 		async (msgId, reload = false) => {
 			console.log(`markAsRead`, msgId);
 			try {
 				const { status, error } = await httpPatchAsync({
 					bearer: token,
-					url: "v1/app/messages/read",
+					url: "v1/my/messages/read",
 					data: {
 						MsgID: msgId,
 					},
 				});
 				if (status.success) {
 					loadUnreadCount();
-					clearRecentMessagesLoading();
+					clearListLoading();
 					if (reload) {
 						loader.loadList({
-							useLastParams: true,
+							refresh: true,
 							disableLoading: true,
 						});
 					}
@@ -166,21 +159,35 @@ export const useMessaging = ({ token }) => {
 				toast.error(Errors.getMessage("標示已讀失敗", err));
 			}
 		},
-		[
-			clearRecentMessagesLoading,
-			httpPatchAsync,
-			loadUnreadCount,
-			loader,
-			token,
-		]
+		[clearListLoading, httpPatchAsync, loadUnreadCount, loader, token]
 	);
 
 	useEffect(() => {
+		// notify
+		// console.log("notify handler registered");
 		connection?.on("notify", handlNotify);
-	}, [connection, handlNotify]);
+
+		// refresh
+		connection?.on("refresh", handleRefresh);
+		// console.log("refresh handler registered");
+
+		console.log("notify handlers registered");
+
+		return () => {
+			// notify
+			connection?.off("notify");
+			// console.log("notify handler un-registered");
+
+			// refresh
+			connection?.off("refresh");
+			// console.log("refresh handler un-registered");
+
+			console.log("notify handlers un-registered");
+		};
+	}, [connection, handlNotify, handleRefresh]);
 
 	useEffect(() => {
-		const reportConnId = async () => {
+		const handleConnected = async () => {
 			console.log(`registering connection id: ${connectionId}`);
 			const { status } = await httpPutAsync({
 				url: "v1/auth/register",
@@ -190,13 +197,15 @@ export const useMessaging = ({ token }) => {
 				},
 			});
 			if (status.success) {
-				console.log(`connectionId ${connectionId} registered`);
+				console.log(
+					`connectionId ${connectionId} registered for ${operator?.LogKey}`
+				);
 			}
 		};
-		if (connectionId && token) {
-			reportConnId();
+		if (connectionId && operator?.LogKey) {
+			handleConnected();
 		}
-	}, [connectionId, httpPutAsync, token]);
+	}, [connectionId, httpPutAsync, operator?.LogKey, token]);
 
 	return {
 		connectionState,
@@ -204,9 +213,10 @@ export const useMessaging = ({ token }) => {
 		...loader,
 		...unreadState,
 		loadUnreadCount,
-		...recentMessagesState,
-		loadRecentMessages,
+		// ...recentMessagesState,
+		// loadRecentMessages,
 		...popover,
 		markAsRead,
+		handleGotoJob,
 	};
 };

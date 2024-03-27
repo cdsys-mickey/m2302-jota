@@ -16,7 +16,7 @@ export const useA06 = ({ token, mode }) => {
 	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
 		token,
-		moduleId: "A06",
+		moduleId: mode === A06.Mode.NEW_CUSTOMER ? "A07" : "A06",
 	});
 	const {
 		httpGetAsync,
@@ -50,7 +50,7 @@ export const useA06 = ({ token, mode }) => {
 
 	const confirmReturn = useCallback(() => {
 		dialogs.confirm({
-			message: "確認要放棄編輯?",
+			message: "確認要結束編輯?",
 			onConfirm: () => {
 				crud.cancelUpdating();
 			},
@@ -72,7 +72,9 @@ export const useA06 = ({ token, mode }) => {
 				if (status.success) {
 					const data = A06.transformForReading(payload);
 
-					crud.doneReading(data);
+					crud.doneReading({
+						data,
+					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
@@ -89,7 +91,7 @@ export const useA06 = ({ token, mode }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.startReading(rowData, "讀取中...");
+			crud.startReading("讀取中...", { id: rowData.CustID });
 			loadItem(rowData.CustID);
 		},
 		[crud, loadItem]
@@ -98,6 +100,15 @@ export const useA06 = ({ token, mode }) => {
 	const confirmDialogClose = useCallback(() => {
 		dialogs.confirm({
 			message: "確認要放棄編輯?",
+			onConfirm: () => {
+				crud.cancelAction();
+			},
+		});
+	}, [crud, dialogs]);
+
+	const confirmQuitCreating = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要放棄新增?",
 			onConfirm: () => {
 				crud.cancelAction();
 			},
@@ -130,7 +141,7 @@ export const useA06 = ({ token, mode }) => {
 					crud.doneCreating();
 					crud.cancelReading();
 					// 重新整理
-					loader.loadList();
+					loader.loadList({ refresh: true });
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
@@ -166,7 +177,7 @@ export const useA06 = ({ token, mode }) => {
 					// crud.cancelReading();
 					loadItem(data?.CustID);
 					// 重新整理
-					loader.loadList();
+					loader.loadList({ refresh: true });
 				} else {
 					throw error || new Error("修改發生未預期例外");
 				}
@@ -209,8 +220,9 @@ export const useA06 = ({ token, mode }) => {
 				trans: [],
 				combo: [],
 			};
-			// crud.doneReading(data);
-			crud.promptCreating(data);
+			crud.promptCreating({
+				data,
+			});
 		},
 		[crud]
 	);
@@ -235,7 +247,7 @@ export const useA06 = ({ token, mode }) => {
 								mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
 							}商品${crud.itemData.CustData}`
 						);
-						loader.loadList();
+						loader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
 					}
@@ -259,7 +271,7 @@ export const useA06 = ({ token, mode }) => {
 			console.log(`handleReview`, value);
 			try {
 				const { status, error } = await httpPatchAsync({
-					url: `v1/new-customers/reviewed`,
+					url: `v1/sale/new-customers/reviewed`,
 					data: {
 						...crud.itemData,
 						OfficialCustID: value,
@@ -269,15 +281,17 @@ export const useA06 = ({ token, mode }) => {
 				if (status.success) {
 					reviewAction.clear();
 					crud.cancelAction();
-					loader.loadList();
+					loader.loadList({
+						refresh: true,
+					});
 					toast.success(
-						`商品「${crud.itemData?.CustData}」已審核成功`
+						`「${crud.itemData?.CustData}」已轉為正式客戶`
 					);
 				} else {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("審核失敗", err));
+				toast.error(Errors.getMessage("轉換失敗", err));
 			}
 		},
 		[crud, httpPatchAsync, loader, reviewAction, token]
@@ -285,11 +299,12 @@ export const useA06 = ({ token, mode }) => {
 
 	const promptReview = useCallback(() => {
 		dialogs.prompt({
-			title: "確認審核",
-			message: "請輸入正式商品編號",
+			title: "轉正式客戶",
+			label: "正式客戶編號",
+			message: "請輸入正式客戶編號",
 			onConfirm: handleReview,
 			value: crud.itemData?.CustID || "",
-			confirmText: "通過",
+			confirmText: "執行轉換",
 		});
 		reviewAction.prompt();
 	}, [crud.itemData?.CustID, dialogs, handleReview, reviewAction]);
@@ -344,6 +359,7 @@ export const useA06 = ({ token, mode }) => {
 		...crud,
 		handleDialogClose,
 		confirmDialogClose,
+		confirmQuitCreating,
 		onEditorSubmit,
 		onEditorSubmitError,
 		confirmReturn,

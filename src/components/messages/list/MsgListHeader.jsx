@@ -5,6 +5,7 @@ import MsgIDColumn from "../columns/MsgIDColumn";
 import MsgNameColumn from "../columns/MsgNameColumn";
 import MsgTimeColumn from "../columns/MsgTimeColumn";
 import MsgJobColumn from "../columns/MsgJobColumn";
+import MsgNewColumn from "../columns/MsgNewColumn";
 
 const MsgListHeader = memo(
 	forwardRef((props, ref) => {
@@ -12,6 +13,7 @@ const MsgListHeader = memo(
 		return (
 			<ListViewHeader ref={ref} {...rest}>
 				<IndexColumn></IndexColumn>
+				<MsgNewColumn></MsgNewColumn>
 				<MsgIDColumn>來自</MsgIDColumn>
 				<MsgJobColumn>作業</MsgJobColumn>
 				<MsgNameColumn>內容</MsgNameColumn>

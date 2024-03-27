@@ -3,7 +3,8 @@ import { ToggleButton, Tooltip } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 
-export const ProdGridFormToggleButtonContainer = () => {
+export const ProdGridFormToggleButtonContainer = (props) => {
+	const { ...rest } = props;
 	const prodGrid = useContext(ProdGridContext);
 	const title = useMemo(() => {
 		return prodGrid.expanded ? "隱藏更多條件" : "顯示更多條件";
@@ -12,10 +13,10 @@ export const ProdGridFormToggleButtonContainer = () => {
 		<Tooltip title={title}>
 			<ToggleButton
 				value="1"
-				color="warning"
 				size="small"
 				selected={prodGrid.expanded}
-				onClick={prodGrid.toggleExpanded}>
+				onClick={prodGrid.toggleExpanded}
+				{...rest}>
 				<TuneIcon fontSize="small" />
 			</ToggleButton>
 		</Tooltip>

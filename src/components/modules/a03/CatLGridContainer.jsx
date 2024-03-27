@@ -30,8 +30,9 @@ export const CatLGridContainer = () => {
 			onSelectionChange={catL.handleSelectionChange({
 				onRowSelectionChange: catL.onRowSelectionChange,
 			})}
-			isSelected={catL.isSelected}
+			// isSelected={catL.isSelected}
 			canCreate={a03.canCreate}
+			getRowClassName={catL.getRowClassName}
 		/>
 	);
 };

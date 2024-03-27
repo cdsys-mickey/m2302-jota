@@ -1,17 +1,16 @@
+import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
+import ContainerEx from "@/shared-components/ContainerEx";
+import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
+import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ContainerEx from "@/shared-components/ContainerEx";
-import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
-import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import UserDeptPicker from "@/components/UserDeptPicker";
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
+import FlexBox from "../../../shared-components/FlexBox";
+import ControlledCheckboxEx from "../../../shared-components/controlled/ControlledCheckboxEx";
 import { ProdPickerContainer } from "../../picker/ProdPickerContainer";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
-import FlexBox from "../../../shared-components/FlexBox";
-import ControlledYesNoCheckbox from "../../../shared-components/controlled/ControlledYesNoCheckbox";
-import ControlledCheckboxEx from "../../../shared-components/controlled/ControlledCheckboxEx";
+import UserDeptPicker from "../../UserDeptPicker";
+import AppDeptPicker from "../../fields/AppDeptPicker";
 
 const A19Form = memo((props) => {
 	const { ...rest } = props;
@@ -80,10 +79,20 @@ const A19Form = memo((props) => {
 							<FlexBox fullWidth />
 							{/* 門市 */}
 							<Grid item xs={12} sm={6}>
-								<UserDeptPicker label="起始門市" name="sdept" />
+								{/* <AuthDeptPicker label="起始門市" name="sdept" /> */}
+								<AppDeptPicker
+									filterByOperator
+									label="起始門市"
+									name="sdept"
+								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<UserDeptPicker label="截止門市" name="edept" />
+								{/* <AuthDeptPicker label="截止門市" name="edept" /> */}
+								<AppDeptPicker
+									filterByOperator
+									label="截止門市"
+									name="edept"
+								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<ControlledDatePicker

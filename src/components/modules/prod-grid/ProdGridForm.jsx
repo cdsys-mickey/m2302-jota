@@ -45,8 +45,11 @@ const ProdGridForm = (props) => {
 								marginLeft: "4px",
 							},
 						}}>
-						<ProdGridLoadButtonContainer />
-						<ProdGridFormToggleButtonContainer />
+						<ProdGridLoadButtonContainer
+							variant="contained"
+							color="primary"
+						/>
+						<ProdGridFormToggleButtonContainer color="warning" />
 					</FlexGrid>
 				</Grid>
 				{/* ROW 2 */}

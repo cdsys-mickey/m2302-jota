@@ -4,7 +4,7 @@ import ActionState from "@/shared-constants/action-state";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A05Form from "../form/A05Form";
-import { A05DialogTitleButtonsContainer } from "./buttons/A05DialogTitleButtonsContainer";
+import { A05DialogButtonsContainer } from "./buttons/A05DialogButtonsContainer";
 import { useScrollable } from "../../../../shared-hooks/useScrollable";
 import { DialogExContainer } from "../../../../shared-components/dialog/DialogExContainer";
 import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
@@ -50,12 +50,12 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 				responsive
 				fullWidth
 				maxWidth="md"
-				TitleButtonsComponent={A05DialogTitleButtonsContainer}
+				TitleButtonsComponent={A05DialogButtonsContainer}
 				open={a05.itemViewOpen}
 				onClose={
 					a05.editing ? a05.confirmDialogClose : a05.cancelAction
 				}
-				onReturn={a05.updating ? a05.confirmReturn : null}
+				// onReturn={a05.updating ? a05.confirmReturn : null}
 				sx={{
 					"& .MuiDialog-paper": {
 						backgroundColor: "rgb(241 241 241)",

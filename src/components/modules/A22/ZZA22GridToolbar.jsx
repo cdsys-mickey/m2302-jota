@@ -6,12 +6,13 @@ import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer
 import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
 import TxtExport from "../../../modules/md-txt-export";
 import { A22OutputModePickerContainer } from "./A22OutputModePickerContainer";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 
 const ZZA22GridToolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<InlineListViewToolbar
+			<FlexToolbar
 				ref={ref}
 				// RightComponent={A22GridLockRowsSwitchContainer}
 				leftComponents={

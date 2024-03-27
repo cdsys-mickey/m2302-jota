@@ -13,11 +13,17 @@ import { toast } from "react-toastify";
 import ActionState from "../../shared-constants/action-state";
 import { useAppModule } from "./useAppModule";
 import { useInit } from "../../shared-hooks/useInit";
+import { useRef } from "react";
 
 export const useZA03 = () => {
-	const [selectedTab, setSelectedTab] = useState(Users.Tabs.INFO);
 	const crud = useContext(CrudContext);
+	const { itemData } = crud;
+
 	const { token, operator } = useContext(AuthContext);
+
+	const [selectedDept, setSelectedDept] = useState();
+	const [selectedTab, setSelectedTab] = useState(Users.Tabs.INFO);
+
 	const appModule = useAppModule({
 		token,
 		moduleId: "ZA03",
@@ -30,6 +36,7 @@ export const useZA03 = () => {
 		httpPatchAsync,
 	} = useWebApi();
 	const dialogs = useContext(DialogsContext);
+	const { confirm: dialogConfirm } = dialogs;
 
 	const loader = useInfiniteLoader({
 		url: "v1/ou/users",
@@ -43,26 +50,34 @@ export const useZA03 = () => {
 		// keyColumn: "module.JobID",
 		keyColumn: "JobID",
 	});
+	const { clearGridData, getRowDataByIndex } = authGrid;
 
+	const [selection, setSelection] = useState({
+		selectedModuleMin: null,
+		selectedModuleMax: null,
+	});
+
+	const [authEditingMode, setAuthEditingMode] = useState();
 	const loadAuthAction = useAction();
+	const { clear: clearLoadAuth } = loadAuthAction;
 
-	// const resetGridLoading = useCallback(() => {
+	// const clearLoadAuthAction = useCallback(() => {
 	// 	loadAuthAction.clear();
 	// }, [loadAuthAction]);
 
-	const authGridLoading = useMemo(() => {
-		return loadAuthAction.state === ActionState.WORKING;
-	}, [loadAuthAction.state]);
-
-	const loadAuthorities = useCallback(
-		async (userId) => {
+	const loadUserAuthorities = useCallback(
+		async (userId, deptId, opts = {}) => {
+			const { supressLoading } = opts;
 			try {
-				loadAuthAction.start();
+				if (!supressLoading) {
+					loadAuthAction.start();
+				}
 				const { status, payload, error } = await httpGetAsync({
 					url: "v1/ou/user/authorities",
 					bearer: token,
 					params: {
 						uid: userId,
+						dp: deptId,
 					},
 				});
 				if (status.success) {
@@ -70,7 +85,7 @@ export const useZA03 = () => {
 						ZA03.transformForReading(x)
 					);
 					authGrid.handleGridDataLoaded(data);
-					loadAuthAction.finish(data);
+					loadAuthAction.finish();
 				} else {
 					throw error || new Error("讀取權限失敗");
 				}
@@ -82,45 +97,108 @@ export const useZA03 = () => {
 		[authGrid, httpGetAsync, loadAuthAction, token]
 	);
 
-	const reloadAuthorities = useCallback(() => {
-		if (crud.itemData?.UID) {
-			loadAuthorities(crud.itemData?.UID);
-		}
-	}, [crud.itemData?.UID, loadAuthorities]);
+	const reloadUserAuthorities = useCallback(
+		(opts) => {
+			if (crud.itemData?.UID && selectedDept?.DeptID) {
+				loadUserAuthorities(
+					crud.itemData?.UID,
+					selectedDept?.DeptID,
+					opts
+				);
+			}
+		},
+		[crud.itemData?.UID, selectedDept?.DeptID, loadUserAuthorities]
+	);
+
+	const goAuthInstantEditing = useCallback(() => {
+		setAuthEditingMode(Users.AUTH_EDITING_MODE.CLICK);
+	}, []);
+
+	const goAuthBatchEditing = useCallback(() => {
+		setAuthEditingMode(Users.AUTH_EDITING_MODE.SUBMIT);
+	}, []);
+
+	const cancelAuthEditing = useCallback(() => {
+		setAuthEditingMode(null);
+		reloadUserAuthorities({
+			supressLoading: true,
+		});
+	}, [reloadUserAuthorities]);
+
+	const stopInstantEditing = useCallback(() => {
+		setAuthEditingMode(null);
+	}, []);
+
+	const authEditing = useMemo(() => {
+		return !!authEditingMode;
+	}, [authEditingMode]);
+
+	const authGridLoading = useMemo(() => {
+		return loadAuthAction.state === ActionState.WORKING;
+	}, [loadAuthAction.state]);
+
+	const handleDeptChange = useCallback(
+		(dept) => {
+			setSelectedDept(dept);
+			if (itemData?.UID && selectedDept?.DeptID) {
+				// 載入 grid
+				loadUserAuthorities(crud.itemData?.UID, dept?.DeptID);
+			} else {
+				clearGridData();
+			}
+		},
+		[
+			clearGridData,
+			crud.itemData?.UID,
+			itemData?.UID,
+			loadUserAuthorities,
+			selectedDept?.DeptID,
+		]
+	);
 
 	const promptCreating = useCallback(async () => {
 		crud.promptCreating({
-			LoginName: "",
-			UserName: "",
-			Tel: "",
-			Cel: "",
-			Email: "",
-			// DeptID: operator.CurDeptID,
-			// Dept_N: operator.CurDeptName,
-			dept: {
-				DeptID: operator.CurDeptID,
-				AbbrName: operator.CurDeptName,
+			data: {
+				LoginName: "",
+				UserName: "",
+				Tel: "",
+				Cel: "",
+				Email: "",
+				// DeptID: operator.CurDeptID,
+				// Dept_N: operator.CurDeptName,
+				dept: {
+					DeptID: operator.CurDeptID,
+					AbbrName: operator.CurDeptName,
+				},
+				depts: [
+					{
+						DeptID: operator.CurDeptID,
+						AbbrName: operator.CurDeptName,
+					},
+				],
 			},
 		});
-		// crud.doneReading();
 	}, [crud, operator.CurDeptID, operator.CurDeptName]);
 
 	const loadItem = useCallback(
 		async (id) => {
-			crud.startReading();
+			crud.startReading("讀取中...", { id });
 			try {
-				const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/ou/users`,
 					bearer: token,
 					params: {
-						id: encodedId,
+						id: id,
+						wdp: 1,
 					},
 				});
-				console.log("payload", payload);
+
 				if (status.success) {
 					const data = Users.transformForReading(payload);
-					crud.doneReading(data);
+					crud.doneReading({
+						data,
+					});
+					setSelectedDept(data.dept);
 				} else {
 					throw error || new Error("讀取失敗");
 				}
@@ -162,7 +240,7 @@ export const useZA03 = () => {
 
 	const confirmReturnReading = useCallback(() => {
 		dialogs.confirm({
-			message: "確認要放棄編輯?",
+			message: "確認要結束編輯?",
 			onConfirm: () => {
 				crud.cancelUpdating();
 			},
@@ -174,7 +252,8 @@ export const useZA03 = () => {
 	}, [crud]);
 
 	const getRowKey = useCallback(({ rowData, rowIndex }) => {
-		return rowData?.module?.JobID || rowIndex;
+		// return rowData?.module?.JobID || rowIndex;
+		return `${rowData?.module?.JobID}-${rowData?.Seq}` || rowIndex;
 	}, []);
 
 	const handleCreate = useCallback(
@@ -194,10 +273,12 @@ export const useZA03 = () => {
 					);
 
 					crud.doneCreating();
-					crud.doneReading(processed);
+					crud.doneReading({
+						data: processed,
+					});
 					// crud.cancelReading();
 					// 重新整理
-					loader.loadList({ useLastParams: true });
+					loader.loadList({ refresh: true });
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
@@ -227,7 +308,7 @@ export const useZA03 = () => {
 					crud.doneUpdating();
 					await loadItem(data?.UID);
 					// 重新整理
-					loader.loadList({ useLastParams: true });
+					loader.loadList({ refresh: true });
 				} else {
 					throw error || new Error("修改發生未預期例外");
 				}
@@ -262,16 +343,6 @@ export const useZA03 = () => {
 		);
 	}, []);
 
-	// const promptCreating = useCallback(
-	// 	(e) => {
-	// 		e?.stopPropagation();
-	// 		const data = {};
-	// 		crud.doneReading(data);
-	// 		crud.promptCreating(data);
-	// 	},
-	// 	[crud]
-	// );
-
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({
 			message: `確認要删除「${crud.itemData?.LoginName} ${crud.itemData?.UserName}」?`,
@@ -290,7 +361,7 @@ export const useZA03 = () => {
 						toast.success(
 							`成功删除 ${crud.itemData?.LoginName} ${crud.itemData.UserName}`
 						);
-						loader.loadList({ useLastParams: true });
+						loader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
 					}
@@ -323,13 +394,20 @@ export const useZA03 = () => {
 			if (
 				newValue === Users.Tabs.AUTH &&
 				loadAuthAction.state === null &&
-				crud.itemData?.UID
+				itemData?.UID &&
+				selectedDept?.DeptID
 			) {
 				// 載入 grid
-				loadAuthorities(crud.itemData?.UID);
+				loadUserAuthorities(crud.itemData?.UID, selectedDept?.DeptID);
 			}
 		},
-		[loadAuthAction.state, crud.itemData?.UID, loadAuthorities]
+		[
+			crud.itemData?.UID,
+			selectedDept?.DeptID,
+			itemData?.UID,
+			loadAuthAction.state,
+			loadUserAuthorities,
+		]
 	);
 
 	const handleFunctionEnabled = useCallback(
@@ -344,6 +422,7 @@ export const useZA03 = () => {
 						uid: crud.itemData?.UID,
 						md: moduleId,
 						fn: funcId,
+						dp: selectedDept?.DeptID,
 					},
 				});
 				if (!status.success) {
@@ -355,21 +434,24 @@ export const useZA03 = () => {
 				);
 			}
 		},
-		[crud.itemData?.UID, httpPatchAsync, token]
+		[crud.itemData?.UID, httpPatchAsync, selectedDept?.DeptID, token]
 	);
 
 	const handlePatch = useCallback(
 		async ({ rowIndex, rowData }) => {
-			// console.log(`PATCH [${rowIndex}]`, rowData);
 			const ogRowData = authGrid.gridData[rowIndex];
-			// console.log(`OG [${rowIndex}]`, ogRowData);
+			console.log(`OG [${rowIndex}]`, ogRowData);
+
+			console.log(`PATCH [${rowIndex}]`, rowData);
 			const moduleId = rowData["JobID"];
 			ZA03.FUNCTIONS.forEach((x) => {
 				const enabledValue = rowData[x];
 				if (enabledValue !== ogRowData[x]) {
-					const enabled = enabledValue === "1";
-					console.log(`PATCH [${moduleId}][${x}]=>`, enabled);
-					handleFunctionEnabled(moduleId, x, enabled);
+					// const enabled = enabledValue === "1";
+					// console.log(`PATCH [${moduleId}][${x}]=>`, enabled);
+					// handleFunctionEnabled(moduleId, x, enabled);
+					console.log(`PATCH [${moduleId}][${x}]=>`, enabledValue);
+					handleFunctionEnabled(moduleId, x, enabledValue);
 				}
 			});
 		},
@@ -406,6 +488,21 @@ export const useZA03 = () => {
 		},
 		[authGrid]
 	);
+
+	// const handleModuleSelectionChange = useCallback(
+	// 	({ selection } = {}) => {
+	// 		console.log("handleModuleSelectionChange", selection);
+	// 		if (selection) {
+	// 			const selectedModuleMin = getRowDataByIndex(selection.min.row);
+	// 			const selectedModuleMax = getRowDataByIndex(selection.max.row);
+	// 			setSelection({
+	// 				selectedModuleMin,
+	// 				selectedModuleMax,
+	// 			});
+	// 		}
+	// 	},
+	// 	[getRowDataByIndex]
+	// );
 
 	const handleCreateRow = useCallback(
 		() => ({
@@ -463,17 +560,26 @@ export const useZA03 = () => {
 		async (data) => {
 			console.log("onAddAuthSubmit", data);
 			addAuthAction.start();
+
+			let newSeq = authGrid.selectedRow?.rowData?.Seq || 0;
+			if (data.position === 0) {
+				newSeq -= 0.5;
+			} else {
+				newSeq += 0.5;
+			}
+
 			try {
 				const { status, error } = await httpPostAsync({
 					url: `v1/ou/user/authorities`,
 					params: {
 						uid: crud.itemData?.UID,
+						ps: newSeq,
 					},
 					data: ZA03.transformModulesToIds(data.modules),
 					bearer: token,
 				});
 				if (status.success) {
-					reloadAuthorities();
+					reloadUserAuthorities();
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -485,10 +591,11 @@ export const useZA03 = () => {
 		},
 		[
 			addAuthAction,
-			crud.itemData?.UID,
+			authGrid.selectedRow?.rowData?.Seq,
 			httpPostAsync,
-			reloadAuthorities,
+			crud.itemData?.UID,
 			token,
+			reloadUserAuthorities,
 		]
 	);
 
@@ -525,7 +632,7 @@ export const useZA03 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					reloadAuthorities();
+					reloadUserAuthorities();
 				} else {
 					throw error || new Error("發生未預期例外");
 				}
@@ -535,7 +642,13 @@ export const useZA03 = () => {
 				dialogs.closeLatest();
 			}
 		},
-		[crud.itemData?.UID, dialogs, httpDeleteAsync, reloadAuthorities, token]
+		[
+			crud.itemData?.UID,
+			dialogs,
+			httpDeleteAsync,
+			reloadUserAuthorities,
+			token,
+		]
 	);
 
 	const handleConfirmDelete = useCallback(
@@ -557,6 +670,100 @@ export const useZA03 = () => {
 		},
 		[authGrid, dialogs, handleDelAuth]
 	);
+
+	const confirmResetPword = useCallback(
+		(e, item) => {
+			e.stopPropagation();
+			dialogConfirm({
+				message: `確定要重設 ${item.LoginName} 的密碼為預設值?`,
+				onConfirm: async () => {
+					try {
+						const { status, error, payload } = await httpPatchAsync(
+							{
+								url: "v1/ou/user/pword-reset",
+								bearer: token,
+								data: {
+									uid: item.UID,
+								},
+							}
+						);
+						if (status.success) {
+							toast.success(
+								`${item.LoginName} 密碼已重設為「${payload.newPword}」`
+							);
+						} else {
+							throw error || new Error("未預期例外");
+						}
+					} catch (err) {
+						toast.error(Errors.getMessage("重設密碼失敗", err));
+					}
+				},
+			});
+		},
+		[dialogConfirm, httpPatchAsync, token]
+	);
+
+	const onRowSelectionChange = useCallback(
+		(row) => {
+			authGrid.setSelectedRow(row);
+		},
+		[authGrid]
+	);
+
+	const saveAuthAction = useAction();
+
+	const handleAuthSave = useCallback(async () => {
+		const dirtyData = authGrid.getDirtyData();
+		console.log(`handleAuthSave`, dirtyData);
+		try {
+			saveAuthAction.start("儲存中...");
+			const { status, error } = await httpPatchAsync({
+				url: `v1/ou/user/authorities`,
+				bearer: token,
+				params: {
+					uid: crud.itemData?.UID,
+					dp: selectedDept?.DeptID,
+				},
+				data: ZA03.transformForSubmit(dirtyData),
+			});
+
+			if (status.success) {
+				saveAuthAction.finish();
+				setAuthEditingMode(null);
+				reloadUserAuthorities();
+				toast.success("權限已更新");
+			} else {
+				throw error || new Error("權限異動異常");
+			}
+		} catch (err) {
+			saveAuthAction.fail("儲存失敗");
+			toast.error(
+				Errors.getMessage(
+					`更新 ${crud.itemData?.LoginName} 權限發生錯誤`,
+					err
+				)
+			);
+		} finally {
+			saveAuthAction.clear();
+		}
+	}, [
+		authGrid,
+		crud.itemData?.LoginName,
+		crud.itemData?.UID,
+		httpPatchAsync,
+		reloadUserAuthorities,
+		saveAuthAction,
+		selectedDept?.DeptID,
+		token,
+	]);
+
+	const onAuthSubmit = useCallback((data) => {
+		console.log("onAuthSubmit", data);
+	}, []);
+
+	const onAuthSubmitError = useCallback((err) => {
+		console.error("onAuthSubmitError", err);
+	}, []);
 
 	useInit(() => {
 		crud.cancelAction();
@@ -586,10 +793,12 @@ export const useZA03 = () => {
 		setSelectedTab,
 		handleTabChange,
 		// Auth Grid
+		handleDeptChange,
+		selectedDept,
 		getRowKey,
 		authGridLoading,
 		...authGrid,
-		loadAuthorities,
+		loadUserAuthorities,
 		handleAuthGridChange,
 		handleCreateRow,
 		handleConfirmDelete,
@@ -598,7 +807,6 @@ export const useZA03 = () => {
 		isOptionEqualToValue,
 		getData,
 		handlePatch,
-		resetGridLoading: loadAuthAction.clear,
 		// Add Authorities
 		promptAddAuth: addAuthAction.prompt,
 		cancelAddAuth: addAuthAction.clear,
@@ -606,5 +814,22 @@ export const useZA03 = () => {
 		onAddAuthSubmitError,
 		addAuthDialogOpen,
 		addAuthWorking,
+		// handleSelectionChange: handleModuleSelectionChange,
+		confirmResetPword,
+		...selection,
+		onRowSelectionChange,
+		// AuthGrid
+		authEditingMode,
+		setAuthEditingMode,
+		authEditing,
+		goAuthInstantEditing,
+		goAuthBatchEditing,
+		cancelAuthEditing,
+		onAuthSubmit,
+		onAuthSubmitError,
+		handleAuthSave,
+		stopInstantEditing,
+		clearLoadAuth,
+		saveAuthState: saveAuthAction.state,
 	};
 };

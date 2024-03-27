@@ -5,7 +5,8 @@ import { useWatch } from "react-hook-form";
 import useDebounce from "../../../shared-hooks/useDebounce";
 import Objects from "../../../shared-modules/sd-objects";
 
-export const ProdGridLoadButtonContainer = () => {
+export const ProdGridLoadButtonContainer = (props) => {
+	const { ...rest } = props;
 	const criteria = useWatch();
 	const prodGrid = useContext(ProdGridContext);
 	const { peek, totalElements, loading } = prodGrid;
@@ -36,17 +37,13 @@ export const ProdGridLoadButtonContainer = () => {
 	return (
 		<LoadingButton
 			type="submit"
-			variant="contained"
-			color="warning"
 			disabled={disabled}
 			size="small"
 			loading={loading}
 			sx={{
 				fontWeight: 600,
 			}}
-			// fullWidth
-			// onClick={handleClick}
-		>
+			{...rest}>
 			{buttonText}
 		</LoadingButton>
 	);

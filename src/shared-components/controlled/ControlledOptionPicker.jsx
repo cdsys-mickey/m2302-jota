@@ -2,18 +2,25 @@
 import { Controller } from "react-hook-form";
 import OptionPicker from "../picker/OptionPicker";
 import PropTypes from "prop-types";
+import { forwardRef } from "react";
 
-export const ControlledOptionPicker = ({
-	name,
-	disabled = false,
-	control,
-	// onChange: handleChange,
-	rules,
-	labelShrink = false,
-	defaultValue = null,
-	sx = [],
-	...rest
-}) => {
+export const ControlledOptionPicker = forwardRef((props, ref) => {
+	const {
+		name,
+		disabled = false,
+		control,
+		// onChange: handleChange,
+		rules,
+		labelShrink = false,
+		defaultValue = null,
+		sx = [],
+		...rest
+	} = props;
+
+	if (!name) {
+		return <OptionPicker ref={ref} {...rest} />;
+	}
+
 	return (
 		<Controller
 			name={name}
@@ -30,16 +37,6 @@ export const ControlledOptionPicker = ({
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 						onChange={onChange}
-						// onChange={
-						// 	disabled
-						// 		? null
-						// 		: (e) => {
-						// 				onChange(e.target.value);
-						// 				if (handleChange) {
-						// 					handleChange(e.target.value);
-						// 				}
-						// 		  }
-						// }
 						disabled={disabled}
 						InputLabelProps={{
 							...(labelShrink && { shrink: true }),
@@ -52,10 +49,10 @@ export const ControlledOptionPicker = ({
 			)}
 		/>
 	);
-};
-
+});
+ControlledOptionPicker.displayName = "ControlledOptionPicker";
 ControlledOptionPicker.propTypes = {
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	disabled: PropTypes.bool,
 	control: PropTypes.object,
 	onChange: PropTypes.func,

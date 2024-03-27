@@ -1,15 +1,18 @@
 import { Box, Grid, Tab } from "@mui/material";
 import { memo } from "react";
 
+import Users from "@/modules/md-users";
 import FlexBox from "@/shared-components/FlexBox";
+import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import TypoDeptPickerContainer from "../../../fields/TypoDeptPickerContainer";
-import Users from "@/modules/md-users";
+import AppDeptPicker from "../../../fields/AppDeptPicker";
+import AuthScopePickerContainer from "../../../fields/AuthScopePickerContainer";
+import { ZA03DialogTitleButtonsContainer } from "../dialog/buttons/ZA03DialogTitleButtonsContainer";
 import ZA03GridContainer from "./auth/ZA03GridContainer";
 
 const ZA03Form = memo((props) => {
@@ -40,7 +43,7 @@ const ZA03Form = memo((props) => {
 			)}
 			{dataLoaded && (
 				<Box
-					pt={1}
+					// pt={1}
 					sx={() => ({
 						"& .MuiInputLabel-root": {
 							fontSize: "105%",
@@ -48,29 +51,47 @@ const ZA03Form = memo((props) => {
 							// color: "rgba(0, 0, 0, 0.8 )",
 						},
 						"& .MuiInputLabel-shrink": {
-							fontSize: "120%",
+							fontSize: "110%",
 							fontWeight: 600,
 							left: "-2px",
+							// top: "-1px",
 							// color: theme.palette.primary.main,
 						},
 					})}>
 					<TabContext value={selectedTab}>
-						<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-							<TabList
-								onChange={handleTabChange}
-								aria-label="lab API tabs example">
-								<Tab
-									label="基本資料"
-									value={Users.Tabs.INFO}
-									disabled={infoDisabled}
-								/>
-								<Tab
-									label="功能權限"
-									value={Users.Tabs.AUTH}
-									disabled={authDisabled}
-								/>
-							</TabList>
+						<Box
+							sx={{
+								borderBottom: 1,
+								borderColor: "divider",
+							}}>
+							<Grid container>
+								<FlexGrid item xs={4}>
+									<TabList
+										onChange={handleTabChange}
+										aria-label="lab API tabs example">
+										<Tab
+											label="基本資料"
+											value={Users.Tabs.INFO}
+											disabled={infoDisabled}
+										/>
+										<Tab
+											label="功能權限"
+											value={Users.Tabs.AUTH}
+											disabled={authDisabled}
+										/>
+									</TabList>
+								</FlexGrid>
+								<FlexGrid
+									item
+									xs={8}
+									pr={3}
+									justifyContent="flex-end"
+									alignItems="center">
+									<ZA03DialogTitleButtonsContainer />
+								</FlexGrid>
+							</Grid>
 						</Box>
+
 						<TabPanel value={Users.Tabs.INFO}>
 							{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
 							<FormSectionBox py={editing ? 2 : 1} mb={2}>
@@ -116,26 +137,44 @@ const ZA03Form = memo((props) => {
 										/>
 									</Grid>
 									<FlexBox fullWidth />
-									<Grid item xs={12} sm={12} md={6}>
+									<Grid item xs={12} sm={12} md={5}>
 										<TypoTextFieldContainer
 											name="Email"
 											label="電子信箱"
 											fullWidth
-											// required
-											// rules={{
-											// 	required: "電子信箱必填",
-											// }}
 										/>
 									</Grid>
 
-									<Grid item xs={12} sm={12} md={6}>
-										<TypoDeptPickerContainer
-											required
+									<Grid item xs={12} sm={12} md={4}>
+										<AppDeptPicker
+											uid={data?.UID}
+											typo
 											name="dept"
+											label="隸屬門市"
+											required
 											disabled={deptDisabled}
-											rules={{
-												required: "電子信箱必填",
-											}}
+										/>
+									</Grid>
+									<Grid item xs={12} sm={12} md={3}>
+										<AuthScopePickerContainer
+											typo
+											name="userClass"
+											label="權限等級"
+											required>
+											{/* {Auth.getOptionLabel(
+												data?.userClass
+											)} */}
+										</AuthScopePickerContainer>
+									</Grid>
+
+									<Grid item xs={12}>
+										<AppDeptPicker
+											typo
+											name="depts"
+											label="可登入門市"
+											multiple
+											chip
+											required
 										/>
 									</Grid>
 								</Grid>
@@ -143,7 +182,11 @@ const ZA03Form = memo((props) => {
 						</TabPanel>
 						<TabPanel
 							value={Users.Tabs.AUTH}
-							sx={{ paddingBottom: 0 }}>
+							sx={{
+								paddingBottom: 0,
+								paddingLeft: 1,
+								paddingRight: 1,
+							}}>
 							{/* 權限 */}
 							{/* <FormSectionTitle>權限</FormSectionTitle> */}
 							<FormSectionBox py={editing ? 2 : 1}>
@@ -163,7 +206,6 @@ ZA03Form.propTypes = {
 	dataLoaded: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
-	store: PropTypes.bool,
 	infoDisabled: PropTypes.bool,
 	authDisabled: PropTypes.bool,
 	deptDisabled: PropTypes.bool,

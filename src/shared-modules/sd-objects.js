@@ -87,21 +87,27 @@ const hasAllProps = (obj, columnPattern) => {
 	return Object.keys(obj).includes(...columns);
 };
 
-const isAllPropsEqual = (x, y, columnPattern) => {
+const isAllPropsEqual = (x, y, opts = {}) => {
+	const { fields, ignoresEmpty } = opts;
+	if (x === null || x === undefined) {
+		return false;
+	}
+	const columns = fields ? Arrays.parse(fields) : Object.keys(x);
+
 	// 比對所有欄位
-	if (!columnPattern) {
-		for (const field of Object.keys(x)) {
-			if (x[field] !== y[field]) {
+	if (ignoresEmpty) {
+		for (const field of columns) {
+			const valueX = x[field] || "";
+			const valueY = y[field] || "";
+			if (valueX !== valueY) {
 				return false;
 			}
 		}
-		return true;
-	}
-	// 只對指定欄位
-	const columns = Arrays.parse(columnPattern);
-	for (const field of columns) {
-		if (x[field] !== y[field]) {
-			return false;
+	} else {
+		for (const field of columns) {
+			if (x[field] !== y[field]) {
+				return false;
+			}
 		}
 	}
 	return true;

@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import TypoWebApiOptionPicker from "./TypoWebApiOptionPicker";
-import CrudContext from "../../contexts/crud/CrudContext";
+import CrudContext from "@/contexts/crud/CrudContext";
 import { useContext } from "react";
 
 export const TypoWebApiOptionPickerContainer = forwardRef(

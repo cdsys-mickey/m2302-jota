@@ -12,7 +12,8 @@ import { CatLGridContext } from "./CatLGridContext";
 import { CatMGridContext } from "./CatMGridContext";
 import { CatSGridContext } from "./CatSGridContext";
 import { useTransition } from "react";
-import { useDSG } from "../../shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/useDSG";
+import DSG from "../../shared-modules/sd-dsg";
 
 const CatLGridProvider = (props) => {
 	const { children } = props;
@@ -33,8 +34,8 @@ const CatLGridProvider = (props) => {
 	const catS = useContext(CatSGridContext);
 
 	const [state, setState] = useState({
-		selected: null,
-		selectedRowIndex: null,
+		// selected: null,
+		// selectedRowIndex: null,
 		error: null,
 	});
 
@@ -43,11 +44,12 @@ const CatLGridProvider = (props) => {
 	}, [dsg]);
 
 	const selectRow = useCallback(
-		({ rowIndex, rowData }) => {
-			setState((prev) => ({
-				...prev,
-				selected: rowData,
-			}));
+		({ rowData } = {}) => {
+			console.log(`catL.selectedRow`, rowData);
+			// setState((prev) => ({
+			// 	...prev,
+			// 	selected: rowData,
+			// }));
 			if (rowData?.LClas) {
 				catM.load({
 					lgId: rowData?.LClas,
@@ -67,16 +69,20 @@ const CatLGridProvider = (props) => {
 				dsg.setGridLoading(true);
 			}
 			try {
+				setState((prev) => ({
+					...prev,
+					error: null,
+				}));
 				const { status, payload } = await httpGetAsync({
 					url: "v1/prod/l-cats",
 					bearer: token,
 				});
 				if (status.success) {
 					dsg.handleGridDataLoaded(payload.data);
-					setState((prev) => ({
-						...prev,
-						selected: null,
-					}));
+					// setState((prev) => ({
+					// 	...prev,
+					// 	selected: null,
+					// }));
 				} else {
 					switch (status.code) {
 						default:
@@ -158,7 +164,7 @@ const CatLGridProvider = (props) => {
 	);
 
 	const handleDelete = useCallback(
-		async ({ rowIndex, rowData }) => {
+		async ({ rowData }) => {
 			console.log(`DELETE`, rowData);
 			try {
 				const key = rowData.LClas;
@@ -225,22 +231,27 @@ const CatLGridProvider = (props) => {
 	);
 
 	const onRowSelectionChange = useCallback(
-		({ rowIndex, rowData }) => {
-			selectRow({ rowIndex, rowData });
+		(row) => {
+			// setState((prev) => ({
+			// 	...prev,
+			// 	selected: opts,
+			// }));
+			dsg.setSelectedRow(row);
+			selectRow(row);
 		},
-		[selectRow]
+		[dsg, selectRow]
 	);
 
-	const isSelected = useCallback(
-		(rowIndex) => {
-			console.log(
-				`state.selectedRowIndex: ${state.selectedRowIndex}, rowIndex: ${rowIndex}`,
-				rowIndex
-			);
-			return state.selectedRowIndex === rowIndex;
-		},
-		[state.selectedRowIndex]
-	);
+	// const isSelected = useCallback(
+	// 	(rowIndex) => {
+	// 		console.log(
+	// 			`state.selectedRowIndex: ${state.selectedRowIndex}, rowIndex: ${rowIndex}`,
+	// 			rowIndex
+	// 		);
+	// 		return state.selectedRowIndex === rowIndex;
+	// 	},
+	// 	[state.selectedRowIndex]
+	// );
 
 	useInit(() => {
 		load();
@@ -258,7 +269,8 @@ const CatLGridProvider = (props) => {
 				handleConfirmDelete,
 				handleDelete,
 				handleDuplicatedError,
-				isSelected,
+				// isSelected,
+				// getRowClassName,
 				...dsg,
 			}}>
 			{children}

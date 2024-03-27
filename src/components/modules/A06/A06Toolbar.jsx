@@ -5,6 +5,7 @@ import A06CreateButtonContainer from "./A06CreateButtonContainer";
 import { A06FetchResultLabelContainer } from "./A06FetchResultLabelContainer";
 import A06PrintButtonContainer from "./A06PrintButtonContainer";
 import ModuleToolbar from "../ModuleToolbar";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 
 const LeftButtons = memo(() => {
 	return (
@@ -20,7 +21,7 @@ LeftButtons.displayName = "LeftButtons";
 const A06Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<InlineListViewToolbar
+			<FlexToolbar
 				pb={1}
 				ref={ref}
 				LeftComponent={LeftButtons}

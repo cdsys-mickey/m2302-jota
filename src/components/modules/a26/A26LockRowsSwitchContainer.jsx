@@ -1,15 +1,14 @@
-import { useContext } from "react";
-import SwitchEx from "@/shared-components/SwitchEx";
 import { A26Context } from "@/contexts/A26/A26Context";
+import { useContext } from "react";
+import LockSwitch from "../../../shared-components/LockSwitch";
 
 export const A26LockRowsSwitchContainer = (props) => {
 	const { ...rest } = props;
 	const a26 = useContext(A26Context);
 	return (
-		<SwitchEx
-			label="編輯鎖定"
-			checkedLabel="編輯鎖定"
-			checked={a26.readOnly}
+		<LockSwitch
+			unlockedLabel="編輯"
+			locked={a26.readOnly}
 			onChange={a26.toggleReadOnly}
 			{...rest}
 		/>

@@ -3,23 +3,27 @@ import { forwardRef, memo } from "react";
 import { ProdGridLockRowsSwitchContainer } from "./ProdGridLockRowsSwitchContainer";
 import { ProdGridSaveButtonContainer } from "./ProdGridSaveButtonContainer";
 import { ProdGridCancelEditButtonContainer } from "./ProdGridCancelEditButtonContainer";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 
 const ProdGridToolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<InlineListViewToolbar
+			<FlexToolbar
 				ref={ref}
 				// RightComponent={ProdGridLockRowsSwitchContainer}
-				leftComponents={
-					<>
-						<ProdGridLockRowsSwitchContainer />
-					</>
-				}
+				leftComponents={<></>}
 				rightComponents={
 					<>
-						<ProdGridSaveButtonContainer />
-						<ProdGridCancelEditButtonContainer />
+						<ProdGridLockRowsSwitchContainer />
+						<ProdGridSaveButtonContainer
+							variant="contained"
+							color="warning"
+						/>
+						<ProdGridCancelEditButtonContainer
+							variant="contained"
+							color="neutral"
+						/>
 					</>
 				}
 				{...rest}

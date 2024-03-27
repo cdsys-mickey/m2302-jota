@@ -77,7 +77,11 @@ import { A19FrameContainer } from "@/pages/A19/A19FrameContainer";
 import { A21FrameContainer } from "@/pages/A21/A21FrameContainer";
 import { A22Provider } from "@/contexts/A22/A22Provider";
 import { A22FrameContainer } from "@/pages/A22/A22FrameContainer";
-import { MsgFrameContainer } from "../pages/messages/MsgFrameContainer";
+import { MsgFrameContainer } from "@/pages/messages/MsgFrameContainer";
+import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
+import { SettingsFrameContainer } from "../pages/settings/SettingsFrameContainer";
+import { SettingsProvider } from "../contexts/settings/SettingsProvider";
+import LockSwitchTest from "../pages/lab/LockSwitchTest";
 
 const AppRoute = () => {
 	return (
@@ -98,6 +102,7 @@ const AppRoute = () => {
 			{/* Lab */}
 			<Route path="lab">
 				<Route path="loading" element={<LoadingFrame />} />
+				<Route path="lock-switch" element={<LockSwitchTest />} />
 				<Route
 					path="dsg"
 					element={
@@ -123,6 +128,15 @@ const AppRoute = () => {
 					}
 				/>
 				<Route path="messages" element={<MsgFrameContainer />} />
+				<Route path="renew" element={<RenewFrameContainer />} />
+				<Route
+					path="settings"
+					element={
+						<SettingsProvider>
+							<SettingsFrameContainer />
+						</SettingsProvider>
+					}
+				/>
 
 				<Route path="modules">
 					{/* <Route

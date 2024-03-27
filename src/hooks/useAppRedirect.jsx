@@ -7,9 +7,23 @@ import Auth from "../modules/md-auth";
 const useAppRedirect = () => {
 	const { redirectTo } = useRedirect();
 
-	const toLanding = useCallback(() => {
-		redirectTo(import.meta.env.VITE_URL_LANDING, { replace: true });
+	const toRenew = useCallback(() => {
+		redirectTo("/renew");
 	}, [redirectTo]);
+
+	const toLanding = useCallback(
+		({ reloadAuthorities = false } = {}) => {
+			redirectTo(import.meta.env.VITE_URL_LANDING, {
+				replace: true,
+				params: {
+					...(reloadAuthorities && {
+						reload: 1,
+					}),
+				},
+			});
+		},
+		[redirectTo]
+	);
 
 	const toLogin = useCallback(() => {
 		const impersonte = Cookies.get(Auth.COOKIE_MODE) === "im";
@@ -22,8 +36,12 @@ const useAppRedirect = () => {
 	}, [redirectTo]);
 
 	const toModule = useCallback(
-		(moduleId) => {
-			redirectTo(`/${AppRoutes.MODULES}/${moduleId}`);
+		(moduleId, params) => {
+			redirectTo(`/${AppRoutes.MODULES}/${moduleId}`, {
+				...(params && {
+					params,
+				}),
+			});
 		},
 		[redirectTo]
 	);
@@ -43,6 +61,10 @@ const useAppRedirect = () => {
 		toRoot("messages");
 	}, [toRoot]);
 
+	const toSettings = useCallback(() => {
+		toRoot("settings");
+	}, [toRoot]);
+
 	return {
 		toLanding,
 		toLogin,
@@ -50,6 +72,8 @@ const useAppRedirect = () => {
 		toRoot,
 		toHome,
 		toMessages,
+		toRenew,
+		toSettings,
 	};
 };
 

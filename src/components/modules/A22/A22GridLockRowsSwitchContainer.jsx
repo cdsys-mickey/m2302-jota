@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import SwitchEx from "@/shared-components/SwitchEx";
 import { A22Context } from "@/contexts/A22/A22Context";
+import { useContext } from "react";
+import LockSwitch from "../../../shared-components/LockSwitch";
 
 export const A22GridLockRowsSwitchContainer = (props) => {
 	const { ...rest } = props;
@@ -10,10 +10,9 @@ export const A22GridLockRowsSwitchContainer = (props) => {
 	}
 
 	return (
-		<SwitchEx
-			label="編輯鎖定"
-			checkedLabel="編輯鎖定"
-			checked={a22.readOnly}
+		<LockSwitch
+			unlockedLabel="編輯"
+			locked={a22.readOnly}
 			// onChange={a22.toggleEditorLock}
 			onChange={a22.toggleReadOnly}
 			{...rest}

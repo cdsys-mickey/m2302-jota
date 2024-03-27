@@ -3,7 +3,9 @@ import AvatarButton from "./AvatarButton";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { AccountMenuContainer } from "@/components/account/AccountMenuContainer";
-import { MessagingContext } from "../../contexts/MessagingContext";
+import { MessagingContext } from "@/contexts/MessagingContext";
+import Colors from "@/modules/md-colors";
+import Auth from "@/modules/md-auth";
 
 const AvatarButtonContainer = (props) => {
 	const { ...rest } = props;
@@ -11,7 +13,7 @@ const AvatarButtonContainer = (props) => {
 	const { connectionState } = messaging;
 
 	const [anchorEl, setAnchorEl] = useState(null);
-	const { operator, deptSwitchWorking } = useContext(AuthContext);
+	const { operator } = useContext(AuthContext);
 
 	const handleClick = useCallback((e) => {
 		setAnchorEl(e.currentTarget);
@@ -21,15 +23,18 @@ const AvatarButtonContainer = (props) => {
 		setAnchorEl(null);
 	}, []);
 
-	const fullName = useMemo(() => {
+	const memoisedTitle = useMemo(() => {
 		return `${operator?.CurDeptName || "?"} ${operator?.UserName || "?"}`;
 	}, [operator?.CurDeptName, operator?.UserName]);
 
-	const name = useMemo(() => {
+	const memoisedLabel = useMemo(() => {
 		return (operator?.UserName || "?")[0];
 	}, [operator?.UserName]);
 
-	// const Menu = (props) => <AccountMenuContainer {...props} />;
+	const color = useMemo(
+		() => Auth.getHeaderColor(operator.Class),
+		[operator.Class]
+	);
 
 	return (
 		<AvatarButton
@@ -37,8 +42,9 @@ const AvatarButtonContainer = (props) => {
 			anchorEl={anchorEl}
 			handleClick={handleClick}
 			handleMenuClose={handleMenuClose}
-			fullName={fullName}
-			name={name}
+			title={memoisedTitle}
+			label={memoisedLabel}
+			color={color}
 			MenuComponent={AccountMenuContainer}
 			{...rest}>
 			{/* {Menu} */}

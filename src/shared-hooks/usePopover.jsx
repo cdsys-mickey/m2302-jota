@@ -5,20 +5,20 @@ export const usePopover = () => {
 	const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
 
 	const handlePopoverOpen = useCallback((e) => {
-		console.log("handlePopoverOpen", e.currentTarget);
+		// console.log("handlePopoverOpen", e.currentTarget);
 		setPopoverAnchorEl(e.currentTarget);
 	}, []);
 
 	const togglePopoverOpen = useCallback(
 		(e) => {
-			console.log("togglePopoverOpen");
+			// console.log("togglePopoverOpen");
 			setPopoverAnchorEl(popoverAnchorEl ? null : e.currentTarget);
 		},
 		[popoverAnchorEl]
 	);
 
 	const handlePopoverClose = useCallback(() => {
-		console.log("handlePopoverClose");
+		// console.log("handlePopoverClose");
 		setPopoverAnchorEl(null);
 	}, []);
 

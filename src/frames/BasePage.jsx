@@ -4,6 +4,7 @@ import ResponsiveDrawer from "@/shared-components/responsive/ResponsiveDrawer";
 import PropTypes from "prop-types";
 import { Outlet } from "react-router-dom";
 import { SideMenuProvider } from "@/contexts/SideMenuProvider";
+import { grey } from "@mui/material/colors";
 
 const BasePage = (props) => {
 	const {
@@ -24,6 +25,7 @@ const BasePage = (props) => {
 	return (
 		<FlexBox sx={{}}>
 			<ResponsiveDrawer
+				bgcolor={grey[100]}
 				anchor="left"
 				width={drawerWidth}
 				open={drawerOpen}

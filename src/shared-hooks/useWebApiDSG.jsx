@@ -4,17 +4,28 @@ import { useDSG } from "./useDSG";
 import { useContext } from "react";
 import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
 import { toast } from "react-toastify";
-import QueryString from "query-string";
+import queryString from "query-string";
+
+const defaultTransformForReading = (payload) => {
+	return payload?.data || [];
+};
+
+const defaultTransformForSubmmit = (payload) => {
+	return payload;
+};
 
 export const useWebApiDSG = ({
 	token,
 	gridId,
-	keyColumn,
+	keyColumn = "CodeID",
+	nameColumn = "CodeData",
 	otherColumns,
 	initialLockRows = true,
 	baseUri,
 	displayName = "代碼",
-	queryString,
+	querystring,
+	transformForReading = defaultTransformForReading,
+	transformForSubmitting = defaultTransformForSubmmit,
 }) => {
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
@@ -31,12 +42,12 @@ export const useWebApiDSG = ({
 				const { status, payload } = await httpGetAsync({
 					url: baseUri,
 					bearer: token,
-					...(queryString && {
-						params: QueryString.parse(queryString),
+					...(querystring && {
+						params: queryString.parse(querystring),
 					}),
 				});
 				if (status.success) {
-					dsg.handleGridDataLoaded(payload.data || []);
+					dsg.handleGridDataLoaded(transformForReading(payload));
 				} else {
 					switch (status.code) {
 						default:
@@ -50,7 +61,7 @@ export const useWebApiDSG = ({
 				dsg.setGridLoading(false);
 			}
 		},
-		[baseUri, dsg, httpGetAsync, queryString, token]
+		[baseUri, dsg, httpGetAsync, querystring, token, transformForReading]
 	);
 
 	const reload = useCallback(() => {
@@ -64,7 +75,7 @@ export const useWebApiDSG = ({
 				const { status, payload, error } = await httpPostAsync({
 					url: baseUri,
 					bearer: token,
-					data: rowData,
+					data: transformForSubmitting(rowData),
 				});
 				console.log("handleCreate response.payload", payload);
 				if (status.success) {
@@ -80,7 +91,16 @@ export const useWebApiDSG = ({
 				reload();
 			}
 		},
-		[baseUri, displayName, dsg, httpPostAsync, keyColumn, reload, token]
+		[
+			baseUri,
+			displayName,
+			dsg,
+			httpPostAsync,
+			keyColumn,
+			reload,
+			token,
+			transformForSubmitting,
+		]
 	);
 
 	const handleUpdate = useCallback(
@@ -89,14 +109,14 @@ export const useWebApiDSG = ({
 			try {
 				const { status, payload, error } = await httpPutAsync({
 					url: baseUri,
-					data: rowData,
+					data: transformForSubmitting(rowData),
 					bearer: token,
 				});
 				console.log("handleCreate response.payload", payload);
 				if (status.success) {
 					dsg.commitChanges(newValue);
 					toast.success(
-						`${displayName} ${rowData[keyColumn]}/${rowData.CodeData} 修改成功`
+						`${displayName} ${rowData[keyColumn]}/${rowData[nameColumn]} 修改成功`
 					);
 				} else {
 					throw error?.message || new Error("修改失敗");
@@ -106,7 +126,17 @@ export const useWebApiDSG = ({
 				reload();
 			}
 		},
-		[baseUri, displayName, dsg, httpPutAsync, keyColumn, reload, token]
+		[
+			baseUri,
+			displayName,
+			dsg,
+			httpPutAsync,
+			keyColumn,
+			nameColumn,
+			reload,
+			token,
+			transformForSubmitting,
+		]
 	);
 
 	const handleDelete = useCallback(
@@ -173,13 +203,6 @@ export const useWebApiDSG = ({
 		[displayName, dsg, keyColumn]
 	);
 
-	const onRowSelectionChange = useCallback(
-		({ rowIndex, rowData }) => {
-			console.log(`${dsg.gridId}[${rowIndex}] selected, data:`, rowData);
-		},
-		[dsg.gridId]
-	);
-
 	return {
 		load,
 		// handleGridChange,
@@ -188,7 +211,7 @@ export const useWebApiDSG = ({
 		handleConfirmDelete,
 		handleDelete,
 		handleDuplicatedError,
-		onRowSelectionChange,
+		// onRowSelectionChange,
 		...dsg,
 	};
 };

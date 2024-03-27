@@ -1,8 +1,9 @@
 import React from "react";
 import FlexBox from "./FlexBox";
 import clsx from "clsx";
+import { forwardRef } from "react";
 
-const HoverableListItemSecondaryAction = React.forwardRef(
+const HoverableListItemSecondaryAction = forwardRef(
 	({ className, sx = [], top = 0, right = 0, ...rest }, ref) => {
 		return (
 			<FlexBox
@@ -15,6 +16,7 @@ const HoverableListItemSecondaryAction = React.forwardRef(
 						top: theme.spacing(top),
 						right: theme.spacing(right),
 						position: "absolute",
+						zIndex: 10000,
 						"& .MuiIconButton-root": {
 							marginLeft: theme.spacing(0.5),
 							marginRight: theme.spacing(0.5),
@@ -27,5 +29,6 @@ const HoverableListItemSecondaryAction = React.forwardRef(
 		);
 	}
 );
-
-export default React.memo(HoverableListItemSecondaryAction);
+HoverableListItemSecondaryAction.displayName =
+	"HoverableListItemSecondaryAction";
+export default HoverableListItemSecondaryAction;

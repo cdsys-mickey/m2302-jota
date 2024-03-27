@@ -1,19 +1,20 @@
 import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
-import { Container } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";
-import { A08LockRowsSwitchContainer } from "./A08LockRowsSwitchContainer";
+import { A08LockSwitchContainer } from "./A08LockSwitchContainer";
 import A08PrintButtonContainer from "./A08PrintButtonContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 
 const A08Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<ContainerEx maxWidth="xs" alignLeft>
-				<InlineListViewToolbar
+			<ContainerEx maxWidth="sm" alignLeft>
+				<FlexToolbar
 					ref={ref}
-					LeftComponent={A08LockRowsSwitchContainer}
-					RightComponent={A08PrintButtonContainer}
+					LeftComponent={A08PrintButtonContainer}
+					RightComponent={A08LockSwitchContainer}
 					mb={0.5}
 					{...rest}
 				/>

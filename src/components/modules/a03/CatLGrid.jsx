@@ -10,6 +10,7 @@ import {
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import ContainerEx from "../../../shared-components/ContainerEx";
+import DSGBox from "../../../shared-components/dsg/DSGBox";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -28,6 +29,7 @@ const CatLGrid = memo((props) => {
 		isPersisted,
 		// handleActiveCellChange,
 		onSelectionChange,
+		getRowClassName,
 	} = props;
 
 	const columns = useMemo(
@@ -64,11 +66,7 @@ const CatLGrid = memo((props) => {
 	}, [canCreate, height, lockRows]);
 
 	if (loading) {
-		return (
-			// <ContainerEx maxWidth="sm" alignLeft>
-			<DSGLoading height={height} />
-			// </ContainerEx>
-		);
+		return <DSGLoading height={height} />;
 	}
 
 	if (!data) {
@@ -76,13 +74,7 @@ const CatLGrid = memo((props) => {
 	}
 
 	return (
-		// <ContainerEx maxWidth="sm" alignLeft>
-		<Box
-			sx={{
-				"& .selected-row": {
-					backgroundColor: "red",
-				},
-			}}>
+		<DSGBox>
 			<DynamicDataSheetGrid
 				lockRows={lockRows}
 				ref={setGridRef}
@@ -96,12 +88,13 @@ const CatLGrid = memo((props) => {
 				disableExpandSelection
 				contextMenuComponent={ContextMenu}
 				onSelectionChange={onSelectionChange}
+				rowClassName={getRowClassName}
 			/>
-		</Box>
-		// </ContainerEx>
+		</DSGBox>
 	);
 });
 CatLGrid.propTypes = {
+	canCreate: PropTypes.bool,
 	lockRows: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
@@ -112,7 +105,8 @@ CatLGrid.propTypes = {
 	isPersisted: PropTypes.func,
 	handleActiveCellChange: PropTypes.func,
 	onSelectionChange: PropTypes.func,
-	isSelected: PropTypes.func,
+	// isSelected: PropTypes.func,
+	getRowClassName: PropTypes.func,
 };
 
 CatLGrid.displayName = "CatLGrid";

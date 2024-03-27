@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import SwitchEx from "@/shared-components/SwitchEx";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
+import LockSwitch from "../../../shared-components/LockSwitch";
 
 export const ProdGridLockRowsSwitchContainer = (props) => {
 	const { ...rest } = props;
@@ -16,11 +17,9 @@ export const ProdGridLockRowsSwitchContainer = (props) => {
 	}
 
 	return (
-		<SwitchEx
-			label="編輯鎖定"
-			checkedLabel="編輯鎖定"
-			checked={prodGrid.readOnly}
-			// onChange={prodGrid.toggleReadOnly}
+		<LockSwitch
+			unlockedLabel="編輯"
+			locked={prodGrid.readOnly}
 			onChange={prodGrid.toggleEditorLock}
 			disabled={!canUpdate}
 			{...rest}

@@ -17,7 +17,7 @@ const A01PrintButtonContainer = memo(
 
 		if (
 			moduleAuthorityLoading ||
-			a01.mode === A01.Mode.NEW_PROD ||
+			// a01.mode === A01.Mode.NEW_PROD ||
 			!canPrint
 		) {
 			return false;

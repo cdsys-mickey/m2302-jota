@@ -1,25 +1,40 @@
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import useTheme from "@mui/material/styles/useTheme";
 import { useContext, useMemo } from "react";
+import { useLocation } from "react-router-dom";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 import Styles from "../../modules/md-styles";
-import Home from "./Home";
-import { useEffect } from "react";
-import { MessagingContext } from "../../contexts/MessagingContext";
 import { useInit } from "../../shared-hooks/useInit";
+import Home from "./Home";
 
 const HomeContainer = () => {
-	const { drawerOpen } = useContext(AppFrameContext);
+	const location = useLocation();
+	const params = new URLSearchParams(location.search);
+	const auth = useContext(AuthContext);
+	const { token, loadAuthorities } = auth;
+
+	const isLoadAuthorities = params.get("reload") === "1";
+	const { drawerOpen, detectDrawerState } = useContext(AppFrameContext);
 	const theme = useTheme();
 	const boxStyles = useMemo(
 		() => Styles.ofHomeBox({ theme, drawerOpen }),
 		[drawerOpen, theme]
 	);
-	const messaging = useContext(MessagingContext);
-	const { loadUnreadCount } = messaging;
+	// const messaging = useContext(MessagingContext);
+	// const { loadUnreadCount } = messaging;
 
 	// useInit(() => {
 	// 	loadUnreadCount();
 	// }, []);
+	useInit(() => {
+		detectDrawerState();
+	}, []);
+
+	useInit(() => {
+		if (isLoadAuthorities) {
+			loadAuthorities({ token });
+		}
+	}, []);
 
 	return <Home drawerOpen={drawerOpen} theme={theme} boxStyles={boxStyles} />;
 };

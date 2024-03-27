@@ -2,16 +2,12 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import ContainerEx from "../../../shared-components/ContainerEx";
-import FormSectionBox from "../../../shared-components/form/FormSectionBox";
-import TypoTextFieldContainer from "../../../shared-components/typo/TypoTextFieldContainer";
-import TypoDeptPickerContainer from "../../fields/TypoDeptPickerContainer";
-import UserDeptPicker from "../../UserDeptPicker";
 import ControlledDatePicker from "../../../shared-components/controlled/ControlledDatePicker";
+import FormSectionBox from "../../../shared-components/form/FormSectionBox";
+import AppDeptPicker from "../../fields/AppDeptPicker";
+import { RealFilePickerContainer } from "../../picker/RealFilePickerContainer";
 import StdPrintOutputModePicker from "../../std-print/StdPrintOutputModePicker";
 import A18ActionPicker from "./picker/A18ActionPicker";
-import { ControlledTextField } from "../../../shared-components/controlled/ControlledTextField";
-import DbTablePicker from "../../system/DbTablePicker";
-import { RealFilePickerContainer } from "../../picker/RealFilePickerContainer";
 
 const A18Form = memo((props) => {
 	const { ...rest } = props;
@@ -36,8 +32,9 @@ const A18Form = memo((props) => {
 					<FormSectionBox py={2}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12}>
-								<UserDeptPicker
-									label="門市編號"
+								<AppDeptPicker
+									filterByOperator
+									label="查詢門市"
 									required
 									name="dept"
 									// readOnly={true}

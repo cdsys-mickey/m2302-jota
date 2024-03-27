@@ -124,7 +124,6 @@ const FilterField = memo(
 								{extraEndAdorment}
 								<Tooltip title={value ? "清除" : ""}>
 									<IconButton
-										// onClick={handleQueryStringClear}
 										onClick={onClear}
 										color="inherit"
 										size="small"

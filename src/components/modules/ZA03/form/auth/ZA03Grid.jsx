@@ -1,19 +1,17 @@
+import DSGLoading from "@/shared-components/dsg/DSGLoading";
+import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import {
 	DynamicDataSheetGrid,
+	checkboxColumn,
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
-import ZA03 from "@/modules/md-za03";
-import QueryString from "query-string";
-import { useCallback } from "react";
+import DSGBox from "../../../../../shared-components/dsg/DSGBox";
+import MuiCheckboxColumn from "../../../../../shared-components/dsg/columns/checkbox/MuiCheckboxColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -29,7 +27,7 @@ const ZA03Grid = memo((props) => {
 		loading,
 		height = 300,
 		// METHODS
-		handleChange,
+		onChange,
 		isPersisted,
 		handleCreateRow,
 		isKeyDisabled,
@@ -38,46 +36,12 @@ const ZA03Grid = memo((props) => {
 		getData,
 		// web api
 		bearer,
+		getRowClassName,
+		...rest
 	} = props;
 
 	const columns = useMemo(
 		() => [
-			// {
-			// 	...keyColumn(
-			// 		"JobID",
-			// 		createWebApiOptionPickerColumn({
-			// 			url: "v1/ou/user/unused-jobs",
-			// 			queryString: QueryString.stringify({
-			// 				uid: uid,
-			// 			}),
-			// 			bearer: bearer,
-			// 			getData: getData,
-			// 		})
-			// 	),
-			// 	title: "功能",
-			// 	// grow: 4,
-			// 	disabled: isKeyDisabled,
-			// 	minWidth: 220,
-			// },
-			// {
-			// 	...keyColumn(
-			// 		"module",
-			// 		createWebApiOptionPickerColumn({
-			// 			url: "v1/ou/user/unused-authorities",
-			// 			queryString: QueryString.stringify({
-			// 				uid: uid,
-			// 			}),
-			// 			bearer: token,
-			// 			getOptionLabel: getOptionLabel,
-			// 			isOptionEqualToValue: isOptionEqualToValue,
-			// 			getData: getData,
-			// 		})
-			// 	),
-			// 	title: "功能",
-			// 	// grow: 4,
-			// 	disabled: isKeyDisabled,
-			// 	minWidth: 220,
-			// },
 			{
 				...keyColumn(
 					"JobID",
@@ -88,11 +52,11 @@ const ZA03Grid = memo((props) => {
 				title: "代號",
 				grow: 1,
 				disabled: true,
-				minWidth: 60,
+				minWidth: 70,
 			},
 			{
 				...keyColumn(
-					"JobName",
+					"JobName_N",
 					createTextColumn({
 						continuousUpdates: false,
 					})
@@ -100,141 +64,142 @@ const ZA03Grid = memo((props) => {
 				title: "名稱",
 				grow: 1,
 				disabled: true,
-				minWidth: 160,
+				minWidth: 240,
 			},
 
 			{
-				...keyColumn(
-					"INQ",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("INQ", createMuiCheckboxColumn()),
 				title: "查",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"INS",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("INS", createMuiCheckboxColumn()),
 				title: "增",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"UPD",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("UPD", createMuiCheckboxColumn()),
 				title: "改",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"PRT",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("PRT", createMuiCheckboxColumn()),
 				title: "印",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"DEL",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("DEL", createMuiCheckboxColumn()),
 				title: "刪",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"USI",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("USI", createMuiCheckboxColumn()),
 				title: "停",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"CHK",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("CHK", createMuiCheckboxColumn()),
 				title: "審",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"NCK",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("NCK", createMuiCheckboxColumn()),
 				title: "退",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"RUN",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("RUN", createMuiCheckboxColumn()),
 				title: "執",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"EXP",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("EXP", createMuiCheckboxColumn()),
 				title: "出",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn(
-					"IMP",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-				),
+				...keyColumn("IMP", createMuiCheckboxColumn()),
 				title: "入",
 				minWidth: 30,
 				disabled: readOnly,
 			},
+			// -------------------- Built-In Checkbox Column --------------------
+			// {
+			// 	...keyColumn("INQ", checkboxColumn),
+			// 	title: "查",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("INS", checkboxColumn),
+			// 	title: "增",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("UPD", checkboxColumn),
+			// 	title: "改",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("PRT", checkboxColumn),
+			// 	title: "印",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("DEL", checkboxColumn),
+			// 	title: "刪",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("USI", checkboxColumn),
+			// 	title: "停",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("CHK", checkboxColumn),
+			// 	title: "審",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("NCK", checkboxColumn),
+			// 	title: "退",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("RUN", checkboxColumn),
+			// 	title: "執",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("EXP", checkboxColumn),
+			// 	title: "出",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn("IMP", checkboxColumn),
+			// 	title: "入",
+			// 	minWidth: 30,
+			// 	disabled: readOnly,
+			// },
 		],
 		[readOnly]
 	);
@@ -253,37 +218,30 @@ const ZA03Grid = memo((props) => {
 	}
 
 	return (
-		<Container maxWidth="md">
-			<Box>
-				{/* <LoadingBackdrop open={loading} /> */}
-				<DynamicDataSheetGrid
-					// lockRows={true}
-					lockRows={readOnly}
-					ref={gridRef}
-					// rowKey="DeptID"
-					// rowKey={rowKey}
-					rowKey="JobID"
-					// height={height + (readOnly ? 48 : 0)}
-					height={height + 48}
-					rowHeight={42}
-					value={data}
-					onChange={handleChange}
-					columns={columns}
-					// addRowsComponent={DSGAddRowsToolbar}
-					addRowsComponent={null}
-					disableExpandSelection
-					contextMenuComponent={ContextMenu}
-					// onActiveCellChange={handleActiveCellChange}
-					// autoAddRow
-					// createRow={handleCreateRow}
-					// stickyRightColumn={{
-					// 	component: ({ deleteRow }) => (
-					// 		<button onClick={deleteRow}>❌</button>
-					// 	),
-					// }}
-				/>
-			</Box>
-		</Container>
+		<DSGBox>
+			{/* <LoadingBackdrop open={loading} /> */}
+			<DynamicDataSheetGrid
+				// lockRows={true}
+				lockRows={readOnly}
+				ref={gridRef}
+				// rowKey="DeptID"
+				// rowKey={rowKey}
+				// rowKey="JobID"
+				// height={height + (readOnly ? 48 : 0)}
+				// height={height + 48}
+				height={height}
+				rowHeight={42}
+				value={data}
+				onChange={onChange}
+				columns={columns}
+				// addRowsComponent={DSGAddRowsToolbar}
+				addRowsComponent={null}
+				disableExpandSelection
+				contextMenuComponent={ContextMenu}
+				rowClassName={getRowClassName}
+				{...rest}
+			/>
+		</DSGBox>
 	);
 });
 ZA03Grid.propTypes = {
@@ -293,7 +251,7 @@ ZA03Grid.propTypes = {
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
+	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	handleActiveCellChange: PropTypes.func,
 	handleCreateRow: PropTypes.func,

@@ -3,6 +3,7 @@ import { forwardRef, memo } from "react";
 
 import { MsgFetchResultLabelContainer } from "./MsgFetchResultLabelContainer";
 import ModuleToolbar from "../modules/ModuleToolbar";
+import FlexToolbar from "../../shared-components/listview/toolbar/FlexToolbar";
 
 const LeftButtons = memo(() => {
 	return <ModuleToolbar>{/* <ZA03CreateButtonContainer /> */}</ModuleToolbar>;
@@ -13,7 +14,7 @@ LeftButtons.displayName = "LeftButtons";
 const ZA03Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<InlineListViewToolbar
+			<FlexToolbar
 				pb={1}
 				ref={ref}
 				LeftComponent={LeftButtons}

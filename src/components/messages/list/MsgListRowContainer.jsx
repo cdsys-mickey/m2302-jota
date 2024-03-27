@@ -7,32 +7,29 @@ import { AppFrameContext } from "../../../shared-contexts/app-frame/AppFrameCont
 
 export const MsgListRowContainer = (props) => {
 	const messaging = useContext(MessagingContext);
-	const { handleSelectById } = useContext(AppFrameContext);
-	const { isItemLoading, markAsRead, handlePopoverClose } = messaging;
+	// const { selectJobById } = useContext(AppFrameContext);
 	const { index, ...rest } = props;
-	const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
+	// const { isItemLoading } = messaging;
+	// const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
 	const value = useMemo(
 		() => messaging.listData[index],
 		[messaging.listData, index]
 	);
+	const loading = useMemo(() => !value, [value]);
 
-	const handleMarkAsRead = useCallback(() => {
-		console.log(`handleMarkAsRead`, value?.MsgID);
-		markAsRead(value?.MsgID, true);
-	}, [markAsRead, value?.MsgID]);
-
-	const handleGotoJob = useCallback(() => {
-		console.log(`handleGotoJob`, value?.JobID);
-		handleSelectById(value?.JobID);
-	}, [handleSelectById, value?.JobID]);
+	// const handleGotoJob = useCallback(() => {
+	// 	console.log(`handleGotoJob`, value?.JobID);
+	// 	selectJobById(value?.JobID, {
+	// 		id: value?.ID,
+	// 	});
+	// }, [selectJobById, value?.ID, value?.JobID]);
 
 	return (
 		<MsgListRow
 			index={index}
 			loading={loading}
 			value={value}
-			handleMarkAsRead={handleMarkAsRead}
-			handleGotoJob={handleGotoJob}
+			handleGotoJob={() => messaging.handleGotoJob(value)}
 			{...rest}
 		/>
 	);

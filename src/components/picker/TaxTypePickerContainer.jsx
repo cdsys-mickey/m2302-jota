@@ -1,13 +1,13 @@
 import TaxTypes from "@/modules/md-tax-types";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import { ControlledOptionPicker } from "../../shared-components/controlled/ControlledOptionPicker";
+import { OptionPickerWrapper } from "../../shared-components/picker/OptionPickerWrapper";
 
 const TaxTypePickerContainer = forwardRef((props, ref) => {
 	const { name, label = "稅別", ...rest } = props;
 
 	return (
-		<ControlledOptionPicker
+		<OptionPickerWrapper
 			name={name}
 			ref={ref}
 			label={label}

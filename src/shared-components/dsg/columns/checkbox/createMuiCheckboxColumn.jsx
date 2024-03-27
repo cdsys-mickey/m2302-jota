@@ -1,10 +1,12 @@
 import MuiCheckboxColumn from "./MuiCheckboxColumn";
 
 export const createMuiCheckboxColumn = ({
-	trueValue = "1",
-	falseValue = "0",
+	trueValue = true,
+	falseValue = false,
 	ComponentProps,
 } = {}) => {
+	// console.log("createMuiCheckboxColumn");
+
 	return {
 		component: (props) => {
 			return (
@@ -16,6 +18,7 @@ export const createMuiCheckboxColumn = ({
 				/>
 			);
 		},
+		// component: MuiCheckboxColumn,
 		deleteValue: () => false,
 		copyValue: ({ rowData }) => (rowData ? trueValue : falseValue),
 		pasteValue: ({ value }) => value === trueValue,

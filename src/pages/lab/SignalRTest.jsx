@@ -62,7 +62,6 @@ const SignalRTest = memo(() => {
 	useEffect(() => {
 		connection?.on("broadcast", broadcastedHandler);
 		return () => {
-			// connection?.off("broadcast", broadcastedHandler);
 			connection?.off("broadcast");
 		};
 	}, [connection, broadcastedHandler]);
@@ -70,7 +69,6 @@ const SignalRTest = memo(() => {
 	useEffect(() => {
 		connection?.on("send", receivedHandler);
 		return () => {
-			// connection?.off("send", receivedHandler);
 			connection?.off("send");
 		};
 	}, [connection, receivedHandler]);

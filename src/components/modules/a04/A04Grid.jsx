@@ -11,6 +11,8 @@ import {
 } from "react-datasheet-grid";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import ContainerEx from "../../../shared-components/ContainerEx";
+import { cyan } from "@mui/material/colors";
+import DSGBox from "../../../shared-components/dsg/DSGBox";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -29,6 +31,7 @@ const A04Grid = memo((props) => {
 		handleChange,
 		isPersisted,
 		onSelectionChange,
+		getRowClassName,
 		...rest
 	} = props;
 	const theme = useTheme();
@@ -82,24 +85,25 @@ const A04Grid = memo((props) => {
 
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			{/* <Box sx={boxStyles} {...rest}> */}
-			<DynamicDataSheetGrid
-				lockRows={lockRows}
-				ref={setGridRef}
-				rowKey="CodeID"
-				height={gridHeight}
-				rowHeight={42}
-				value={data}
-				onChange={handleChange}
-				columns={columns}
-				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
-				disableExpandSelection
-				// disableContextMenu
-				onSelectionChange={onSelectionChange}
-				// autoAddRow
-				contextMenuComponent={ContextMenu}
-			/>
-			{/* </Box> */}
+			<DSGBox>
+				<DynamicDataSheetGrid
+					lockRows={lockRows}
+					ref={setGridRef}
+					rowKey="CodeID"
+					height={gridHeight}
+					rowHeight={42}
+					value={data}
+					onChange={handleChange}
+					columns={columns}
+					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
+					disableExpandSelection
+					// disableContextMenu
+					onSelectionChange={onSelectionChange}
+					// autoAddRow
+					contextMenuComponent={ContextMenu}
+					rowClassName={getRowClassName}
+				/>
+			</DSGBox>
 		</ContainerEx>
 	);
 });

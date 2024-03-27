@@ -3,6 +3,8 @@ import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import SyncIcon from "@mui/icons-material/Sync";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 
+const ITEM_CLASSNAME = "menu-item";
+
 const GROUP_ICONS = {
 	A00: DashboardIcon,
 	B00: LocalAtmIcon,
@@ -22,10 +24,11 @@ const isHeader = (module) => {
 	return regexp.test(module.JobID);
 };
 
-const SideMenus = {
+const SideMenu = {
 	isHeader,
 	GROUP_ICONS,
 	getHeaderIcon,
+	ITEM_CLASSNAME,
 };
 
-export default SideMenus;
+export default SideMenu;

@@ -10,6 +10,9 @@ import {
 } from "react-datasheet-grid";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import ContainerEx from "../../../shared-components/ContainerEx";
+import { createOptionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/createOptionPickerColumn";
+import AreaTypePickerColumn from "../../dsg/columns/AreaTypePickerColumn";
+import AreaTypes from "../../../modules/md-area-types";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -39,6 +42,17 @@ const A08Grid = memo((props) => {
 				),
 				disabled: isPersisted,
 				title: "代碼",
+				grow: 1,
+			},
+			{
+				...keyColumn(
+					"areaType",
+					createOptionPickerColumn(AreaTypePickerColumn)
+				),
+				title: "範圍",
+				minWidth: 200,
+				disabled: lockRows,
+				grow: 1,
 			},
 			{
 				...keyColumn(
@@ -61,7 +75,7 @@ const A08Grid = memo((props) => {
 
 	if (loading) {
 		return (
-			<ContainerEx maxWidth="xs" alignLeft>
+			<ContainerEx maxWidth="sm" alignLeft>
 				<DSGLoading height={height} />
 			</ContainerEx>
 		);
@@ -72,7 +86,7 @@ const A08Grid = memo((props) => {
 	}
 
 	return (
-		<ContainerEx maxWidth="xs" alignLeft>
+		<ContainerEx maxWidth="sm" alignLeft>
 			<Box>
 				<DynamicDataSheetGrid
 					lockRows={lockRows}
@@ -89,6 +103,9 @@ const A08Grid = memo((props) => {
 					contextMenuComponent={ContextMenu}
 					// onActiveCellChange={handleActiveCellChange}
 					// autoAddRow
+					createRow={() => ({
+						areaType: AreaTypes.getById(AreaTypes.KEY_OTHER),
+					})}
 				/>
 			</Box>
 		</ContainerEx>

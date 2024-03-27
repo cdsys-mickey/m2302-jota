@@ -14,21 +14,44 @@ import { A01ListViewContainer } from "@/components/modules/A01/list/A01ListViewC
 import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
 import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
 import A01 from "../../modules/md-a01";
+import { A01Context } from "../../contexts/A01/A01Context";
+import { useMatch } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useInit } from "../../shared-hooks/useInit";
+import { useEffect } from "react";
+import { useRef } from "react";
+import { useState } from "react";
+import { useSyncQuery } from "../../shared-hooks/useSyncQuery";
+import { useCallback } from "react";
 
 export const A01FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
+	const { clearParams } = useContext(AppFrameContext);
 	const searchForm = useForm();
 	const theme = useTheme();
+	const a01 = useContext(A01Context);
+	const { selectById } = a01;
 	const boxStyles = useMemo(
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
 	);
 
+	const handleQuerySync = useCallback(
+		(newValue) => {
+			if (newValue) {
+				selectById(newValue);
+			}
+		},
+		[selectById]
+	);
+
+	useSyncQuery("id", handleQuerySync);
+
 	return (
 		<Box sx={[boxStyles]}>
 			<StdPrintProvider
 				tableName="StoreFile_F"
-				paramsToJsonData={A01.paramsToJsonData}>
+				paramsToJsonData={A01.paramsToJsonData(a01.mode)}>
 				<FormProvider {...searchForm}>
 					{/* 標題 */}
 					<FrameBannerContainer>

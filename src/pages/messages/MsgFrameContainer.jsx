@@ -33,4 +33,4 @@ export const MsgFrameContainer = () => {
 	);
 };
 
-MsgFrameContainer.displayName = "MsgFrame";
+MsgFrameContainer.displayName = "MsgFrameContainer";

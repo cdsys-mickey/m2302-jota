@@ -1,15 +1,14 @@
-import { memo } from "react";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { Box, Container, Grid } from "@mui/material";
+import { memo } from "react";
+import ContainerEx from "../../../shared-components/ContainerEx";
+import ErrorBox from "../../../shared-components/ErrorBox";
 import FlexBox from "../../../shared-components/FlexBox";
 import LoadingTypography from "../../../shared-components/LoadingTypography";
 import FormSectionBox from "../../../shared-components/form/FormSectionBox";
 import TypoTextFieldContainer from "../../../shared-components/typo/TypoTextFieldContainer";
-import ErrorBox from "../../../shared-components/ErrorBox";
-import FormFieldLabel from "../../../shared-components/form/FormFieldLabel";
-import Depts from "../../../modules/md-depts";
-import TypoDeptPickerContainer from "../../fields/TypoDeptPickerContainer";
-import ContainerEx from "../../../shared-components/ContainerEx";
+import AppDeptPicker from "../../fields/AppDeptPicker";
+import DSGLoading from "../../../shared-components/dsg/DSGLoading";
 
 const A17Form = memo((props) => {
 	const {
@@ -21,12 +20,21 @@ const A17Form = memo((props) => {
 		readError,
 		...rest
 	} = props;
+
+	// if (readWorking) {
+	// 	return (
+	// 		<ContainerEx maxWidth="xs" alignLeft>
+	// 			<DSGLoading height={300} hideTitle />
+	// 		</ContainerEx>
+	// 	);
+	// }
+
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form {...rest}>
 				{readFailed && <ErrorBox error={readError} />}
 				{readWorking && (
-					<FlexBox justifyContent="center" minHeight="30em">
+					<FlexBox justifyContent="center" mt="20%">
 						<LoadingTypography iconSize="lg" variant="h5">
 							讀取中...
 						</LoadingTypography>
@@ -48,13 +56,14 @@ const A17Form = memo((props) => {
 								// color: theme.palette.primary.main,
 							},
 						})}>
-						<FormSectionBox py={editing ? 2 : 1}>
+						<FormSectionBox py={1}>
 							<Grid
 								container
 								columns={12}
 								spacing={editing ? 2 : 1}>
 								<Grid item xs={12}>
-									<TypoDeptPickerContainer
+									<AppDeptPicker
+										typo
 										name="dept"
 										readOnly={true}
 									/>

@@ -69,6 +69,7 @@ export const useDialogs = ({ buttonProps }) => {
 			value = "",
 			onConfirm,
 			onCancel,
+			label,
 			...rest
 		}) => {
 			create({
@@ -77,7 +78,7 @@ export const useDialogs = ({ buttonProps }) => {
 				prompt: true,
 				defaultPromptValue: value,
 				promptTextFieldProps: {
-					label: "正式商品編號",
+					label: label,
 				},
 				onConfirm: (v) => {
 					if (onConfirm) onConfirm(v);

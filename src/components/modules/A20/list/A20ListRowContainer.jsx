@@ -5,11 +5,13 @@ import { useMemo } from "react";
 import PropTypes from "prop-types";
 
 export const A20ListRowContainer = (props) => {
-	const a20 = useContext(A20Context);
-	const { isItemLoading } = a20;
 	const { index, ...rest } = props;
-	const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
+
+	const a20 = useContext(A20Context);
+	// const { isItemLoading } = a20;
+	// const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
 	const value = useMemo(() => a20.listData[index], [a20.listData, index]);
+	const loading = useMemo(() => !value, [value]);
 
 	const selected = useMemo(() => {
 		return value?.ProdID === a20.selectedItem?.ProdID;

@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { ControlledWebApiOptionPicker } from "@/shared-components/controlled/ControlledWebApiOptionPicker";
 import PropTypes from "prop-types";
-import QueryString from "query-string";
+import queryString from "query-string";
 import { memo, useContext } from "react";
 import { ZA03Context } from "../../contexts/ZA03/ZA03Context";
 import { useMemo } from "react";
@@ -25,7 +25,7 @@ export const ControlledUnusedModulePicker = memo((props) => {
 			disabled={!uid}
 			// url={`v1/ou/user/unused-modules`}
 			url={`v1/ou/user/unused-authorities`}
-			queryString={QueryString.stringify({
+			querystring={queryString.stringify({
 				uid,
 			})}
 			filterSelectedOptions
