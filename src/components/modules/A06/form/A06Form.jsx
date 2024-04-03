@@ -9,7 +9,7 @@ import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContai
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import TypoEmployeePickerContainer from "./fields/TypoEmployeePickerContainer";
-import { TypoCheckboxExContainer } from "../../../../shared-components/typo/TypoCheckboxExContainer";
+import { TypoCheckboxExContainer } from "../../../../shared-components/checkbox/TypoCheckboxExContainer";
 import YesNo from "../../../../modules/md-yes-no";
 import { TypoCustomerLevelPickerContainer } from "./fields/TypoCustomerLevelPickerContainer";
 import TypoChannelPickerContainer from "./fields/TypoChannelPickerContainer";

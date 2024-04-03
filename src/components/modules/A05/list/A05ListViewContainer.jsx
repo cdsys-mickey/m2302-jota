@@ -31,7 +31,9 @@ export const A05ListViewContainer = () => {
 		console.log(`debouncedQs: ${debouncedQs}`);
 		if (debouncedQs !== undefined) {
 			const values = getValues();
-			loadList({ params: { ...values, qs: debouncedQs } });
+			loadList({
+				params: { ...values, qs: debouncedQs },
+			});
 			setValue("qs", debouncedQs);
 		}
 	}, [debouncedQs, getValues, loadList, setValue]);

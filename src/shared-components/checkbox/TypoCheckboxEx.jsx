@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useMemo } from "react";
-import ControlledCheckboxEx from "@/shared-components/controlled/ControlledCheckboxEx";
+import ControlledCheckboxEx from "@/shared-components/checkbox/ControlledCheckboxEx";
 import FormFieldLabel from "../form/FormFieldLabel";
 
 const TypoCheckboxEx = memo(

@@ -64,7 +64,7 @@ export const useWebApi = (props) => {
 	const sendAsync = useCallback(
 		async ({
 			url,
-			method,
+			method = "get",
 			data,
 			params,
 			headers,
@@ -163,36 +163,36 @@ export const useWebApi = (props) => {
 	);
 
 	const httpGetAsync = useCallback(
-		({ url, ...rest }) => {
-			return sendAsync({ url, method: "get", ...rest });
+		({ ...rest }) => {
+			return sendAsync({ method: "get", ...rest });
 		},
 		[sendAsync]
 	);
 
 	const httpPostAsync = useCallback(
-		({ url, ...rest }) => {
-			return sendAsync({ url, method: "post", ...rest });
+		({ ...rest }) => {
+			return sendAsync({ method: "post", ...rest });
 		},
 		[sendAsync]
 	);
 
 	const httpPutAsync = useCallback(
-		({ url, ...rest }) => {
-			return sendAsync({ url, method: "put", ...rest });
+		({ ...rest }) => {
+			return sendAsync({ method: "put", ...rest });
 		},
 		[sendAsync]
 	);
 
 	const httpDeleteAsync = useCallback(
-		({ url, ...rest }) => {
-			return sendAsync({ url, method: "delete", ...rest });
+		({ ...rest }) => {
+			return sendAsync({ method: "delete", ...rest });
 		},
 		[sendAsync]
 	);
 
 	const httpPatchAsync = useCallback(
-		({ url, ...rest }) => {
-			return sendAsync({ url, method: "patch", ...rest });
+		({ ...rest }) => {
+			return sendAsync({ method: "patch", ...rest });
 		},
 		[sendAsync]
 	);

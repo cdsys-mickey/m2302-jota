@@ -12,14 +12,7 @@ const CheckboxEx = memo(
 	forwardRef((props, ref) => {
 		const { label, error, helperText, ...rest } = props;
 		return (
-			<FormGroup
-				sx={[
-					(theme) => ({
-						"& .MuiFormControlLabel-label": {
-							whiteSpace: "noWrap",
-						},
-					}),
-				]}>
+			<>
 				<FormControlLabel
 					label={label}
 					error={error}
@@ -30,7 +23,7 @@ const CheckboxEx = memo(
 						{helperText}
 					</FormHelperText>
 				)}
-			</FormGroup>
+			</>
 		);
 	})
 );

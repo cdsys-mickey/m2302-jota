@@ -1,8 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React from "react";
 import { Controller } from "react-hook-form";
-import CheckboxEx from "@/shared-components/CheckboxEx";
 import PropTypes from "prop-types";
+import CheckboxEx from "./CheckboxEx";
 
 const ControlledCheckboxEx = ({
 	name,

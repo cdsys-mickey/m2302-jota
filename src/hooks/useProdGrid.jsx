@@ -26,10 +26,11 @@ export const useProdGrid = ({
 	const appFrame = useContext(AppFrameContext);
 	const recoverDrawerOpen = useRef();
 
+	const [loading, setLoading] = useState();
 	const [state, setState] = useState({
+		criteria: null,
 		saveKey: null,
 		totalElements: null,
-		loading: null,
 	});
 	const dsg = useDSG({
 		gridId,
@@ -57,17 +58,21 @@ export const useProdGrid = ({
 				throw new Error("token not specified");
 			}
 			if (Objects.isAllPropsEmpty(criteria)) {
-				setState((prev) => ({
-					...prev,
-					saveKey: null,
-					totalElements: null,
-				}));
+				console.log("criteria is empty");
+				if (state.saveKey) {
+					setState((prev) => ({
+						...prev,
+						saveKey: null,
+						totalElements: null,
+					}));
+				}
 				return;
 			}
-			setState((prev) => ({
-				...prev,
-				loading: true,
-			}));
+			// setState((prev) => ({
+			// 	...prev,
+			// 	loading: true,
+			// }));
+			setLoading(true);
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: baseUri,
@@ -84,19 +89,20 @@ export const useProdGrid = ({
 						totalElements: payload.Select?.TotalRecord,
 					}));
 				} else {
-					throw error;
+					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err));
 			} finally {
-				setState((prev) => ({
-					...prev,
-					loading: false,
-				}));
+				// setState((prev) => ({
+				// 	...prev,
+				// 	loading: false,
+				// }));
+				setLoading(false);
 			}
 		},
-		[baseUri, httpGetAsync, token, transformAsQueryParams]
+		[baseUri, httpGetAsync, state.saveKey, token, transformAsQueryParams]
 	);
 
 	const unload = useCallback(() => {
@@ -104,13 +110,19 @@ export const useProdGrid = ({
 	}, [dsg]);
 
 	const load = useCallback(
-		async (criteria) => {
+		async ({ criteria, reload = false }) => {
 			console.log(`saveKey`, state.saveKey);
 			if (!token) {
 				throw new Error("token not specified");
 			}
 
-			dsg.setGridLoading(true);
+			if (!reload) {
+				dsg.setGridLoading(true);
+				setState((prev) => ({
+					...prev,
+					criteria,
+				}));
+			}
 
 			try {
 				const { status, payload } = await httpGetAsync({
@@ -153,10 +165,17 @@ export const useProdGrid = ({
 		]
 	);
 
+	const reload = useCallback(() => {
+		load({
+			criteria: state.criteria,
+			reload: true,
+		});
+	}, [load, state.criteria]);
+
 	const onSubmit = useCallback(
 		(data) => {
 			console.log(`onSubmit`, data);
-			load(data);
+			load({ criteria: data });
 		},
 		[load]
 	);
@@ -178,6 +197,7 @@ export const useProdGrid = ({
 			});
 			if (status.success) {
 				toast.success(`${collected.length}筆商品資料已更新`);
+				reload();
 				saveAction.finish();
 			} else {
 				throw error || new Error("未預期例外");
@@ -191,6 +211,7 @@ export const useProdGrid = ({
 		dirtyIds,
 		gridData,
 		httpPutAsync,
+		reload,
 		saveAction,
 		token,
 		transformForSubmit,
@@ -198,6 +219,7 @@ export const useProdGrid = ({
 
 	return {
 		load,
+		reload,
 		unload,
 		...dsg,
 		// form
@@ -210,5 +232,6 @@ export const useProdGrid = ({
 		saveWorking: saveAction.working,
 		handleSave,
 		toggleEditorLock,
+		loading,
 	};
 };

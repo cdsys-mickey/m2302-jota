@@ -8,9 +8,18 @@ import { memo } from "react";
 import ZA03IDColumn from "./columns/ZA03IDColumn";
 import ZA03NameColumn from "./columns/ZA03NameColumn";
 import LockResetIcon from "@mui/icons-material/LockReset";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const ZA03ListRow = memo((props) => {
-	const { index, style, value, loading, onClick, confirmResetPword } = props;
+	const {
+		index,
+		style,
+		value,
+		loading,
+		onClick,
+		confirmResetPword,
+		promptCopyAuth,
+	} = props;
 
 	return (
 		<div style={style}>
@@ -21,6 +30,11 @@ const ZA03ListRow = memo((props) => {
 							<EditOutlinedIcon htmlColor="#000" />
 						</IconButton>
 					</Tooltip> */}
+					<Tooltip arrow title="複製權限" sx={{ zIndex: 10000 }}>
+						<IconButton onClick={promptCopyAuth}>
+							<ContentCopyIcon htmlColor="#000" />
+						</IconButton>
+					</Tooltip>
 					<Tooltip arrow title="重設密碼" sx={{ zIndex: 10000 }}>
 						<IconButton onClick={confirmResetPword}>
 							<LockResetIcon htmlColor="#000" />
@@ -62,6 +76,7 @@ ZA03ListRow.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
 	confirmResetPword: PropTypes.func,
+	promptCopyAuth: PropTypes.func,
 };
 
 ZA03ListRow.displayName = "ZA03ListRow";

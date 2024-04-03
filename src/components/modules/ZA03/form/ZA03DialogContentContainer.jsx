@@ -22,6 +22,7 @@ export const ZA03DialogContentContainer = () => {
 			onTabChange={za03.handleTabChange}
 			infoDisabled={infoDisabled}
 			authDisabled={authDisabled}
+			readError={za03.readError}
 		/>
 	);
 };

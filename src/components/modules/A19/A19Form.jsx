@@ -6,7 +6,7 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import FlexBox from "../../../shared-components/FlexBox";
-import ControlledCheckboxEx from "../../../shared-components/controlled/ControlledCheckboxEx";
+import ControlledCheckboxEx from "../../../shared-components/checkbox/ControlledCheckboxEx";
 import { ProdPickerContainer } from "../../picker/ProdPickerContainer";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
 import UserDeptPicker from "../../UserDeptPicker";

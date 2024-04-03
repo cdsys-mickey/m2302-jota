@@ -16,6 +16,13 @@ export const useCrud = () => {
 	const updateAction = useAction();
 	const deleteAction = useAction();
 
+	const setItemData = useCallback((data) => {
+		setState((prev) => ({
+			...prev,
+			itemData: data,
+		}));
+	}, []);
+
 	const cancelAction = useCallback(() => {
 		console.log(`crud.cancelAction`);
 		createAction.clear();
@@ -261,6 +268,7 @@ export const useCrud = () => {
 		// Common Props/Methods
 		...state,
 		cancelAction,
+		setItemData,
 		// Create Props
 		createMessage: createAction.message,
 		createState: createAction.state,

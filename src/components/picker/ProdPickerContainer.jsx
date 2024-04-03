@@ -64,6 +64,7 @@ ProdPickerContainer.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
 	withBomPackageName: PropTypes.bool,
+	withSalesPackageName: PropTypes.bool,
 };
 
 ProdPickerContainer.displayName = "ProdPickerContainer";

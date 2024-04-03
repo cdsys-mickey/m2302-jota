@@ -15,12 +15,12 @@ const Tabs = Object.freeze({
 
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { DeptID, AbbrName } = option;
-	return `${DeptID} ${AbbrName || "(未知)"}`;
+	const { UserName, AbbrName } = option;
+	return `${UserName} ${AbbrName || "(未知)"}`;
 };
 
 const isOptionEqualToValue = (option, value) => {
-	return option?.DeptID === value?.DeptID;
+	return option?.UID === value?.UID;
 };
 
 const transformForReading = (payload) => {

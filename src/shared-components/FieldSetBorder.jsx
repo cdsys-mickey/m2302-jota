@@ -61,6 +61,7 @@ const FieldSetBorder = (props) => {
 										"MuiFormLabel-root",
 										"MuiInputLabel-shrink",
 										classes.legend
+										// eslint-disable-next-line no-mixed-spaces-and-tabs
 								  )
 								: legendClassName
 						}>

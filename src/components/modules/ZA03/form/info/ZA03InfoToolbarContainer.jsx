@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import { ZA03Context } from "../../../../../contexts/ZA03/ZA03Context";
-import ZA03DialogTitleEditButtons from "../../dialog/buttons/ZA03DialogEditButtons";
-import ZA03DialogTitleViewButtons from "../../dialog/buttons/ZA03DialogViewButtons";
+import ZA03DialogEditButtons from "../../dialog/buttons/ZA03DialogEditButtons";
+import ZA03DialogViewButtons from "../../dialog/buttons/ZA03DialogViewButtons";
 
 const ZA03InfoToolbarContainer = () => {
 	const za03 = useContext(ZA03Context);
@@ -10,7 +10,7 @@ const ZA03InfoToolbarContainer = () => {
 
 	if (za03.editing) {
 		return (
-			<ZA03DialogTitleEditButtons
+			<ZA03DialogEditButtons
 				onSave={form.handleSubmit(
 					za03.onEditorSubmit,
 					za03.onEditorSubmitError
@@ -26,7 +26,7 @@ const ZA03InfoToolbarContainer = () => {
 	}
 
 	return (
-		<ZA03DialogTitleViewButtons
+		<ZA03DialogViewButtons
 			onEdit={za03.promptUpdating}
 			onDelete={za03.confirmDelete}
 		/>

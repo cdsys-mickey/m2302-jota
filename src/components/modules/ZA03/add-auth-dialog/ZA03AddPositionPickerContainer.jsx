@@ -8,14 +8,14 @@ import { FormHelperText } from "@mui/material";
 export const ZA03AddPositionPickerContainer = (props) => {
 	const { ...rest } = props;
 	const za03 = useContext(ZA03Context);
-	const { selectedRow } = za03;
+	const { getSelectedRow } = za03;
 	const options = useMemo(() => {
 		return [0, 1];
 	}, []);
 
 	const selectedJobId = useMemo(() => {
-		return selectedRow?.rowData?.JobID;
-	}, [selectedRow?.rowData?.JobID]);
+		return getSelectedRow()?.rowData?.JobID;
+	}, [getSelectedRow]);
 
 	const getOptionLabel = useCallback(
 		(option) => {

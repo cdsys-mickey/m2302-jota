@@ -46,6 +46,13 @@ export const useDSG = ({
 		}));
 	}, []);
 
+	const clearDirtyIds = useCallback(() => {
+		Object.keys(dirtyIds).forEach((key) => {
+			// 删除对象的属性
+			delete dirtyIds[key];
+		});
+	}, [dirtyIds]);
+
 	const handleGridDataLoaded = useCallback(
 		(payload) => {
 			// console.log(`data loaded`, payload);
@@ -430,6 +437,10 @@ export const useDSG = ({
 		selectedRowRef.current = row;
 	}, []);
 
+	const getSelectedRow = useCallback(() => {
+		return selectedRowRef.current;
+	}, []);
+
 	/**
 	 * onRowSelectionChange 的預設實作
 	 */
@@ -566,17 +577,20 @@ export const useDSG = ({
 		// 鎖定列
 		readOnly,
 		toggleReadOnly,
+		// dirty check
 		dirtyIds,
+		getDirtyData,
 		isKeyDuplicated,
 		isDuplicated,
 		isDuplicating,
-		// Styling
+		// 繪製選取列
 		getRowClassName,
 		// selectedRow,
 		setSelectedRow,
+		getSelectedRow,
 		selectedRowRef,
 		// onRowSelectionChange,
-		getDirtyData,
 		isDirty: dirtyIds && dirtyIds.size > 0,
+		clearDirtyIds,
 	};
 };

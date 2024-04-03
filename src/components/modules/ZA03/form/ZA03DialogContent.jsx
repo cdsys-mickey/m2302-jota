@@ -10,10 +10,11 @@ import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { ZA03AuthFormContainer } from "./auth/ZA03AuthFormContainer";
 import { ZA03InfoFormContainer } from "./info/ZA03InfoFormContainer";
+import AlertEx from "../../../../shared-components/AlertEx";
 
 const ZA03DialogContent = memo((props) => {
 	const {
-		data,
+		readError,
 		readWorking,
 		dataLoaded,
 		editing,
@@ -26,6 +27,14 @@ const ZA03DialogContent = memo((props) => {
 		deptDisabled,
 		...rest
 	} = props;
+
+	if (readError) {
+		return (
+			<Box pt="20%">
+				<AlertEx variant="filled" title="讀取失敗" error={readError} />
+			</Box>
+		);
+	}
 
 	if (readWorking || !dataLoaded) {
 		return (

@@ -16,7 +16,7 @@ export const ZA03AuthInstantEditFinishButtonContainer = (props) => {
 			color="neutral"
 			onClick={za03.stopInstantEditing}
 			{...rest}>
-			結束編輯模式
+			結束即時編輯
 		</ResponsiveButton>
 	);
 };

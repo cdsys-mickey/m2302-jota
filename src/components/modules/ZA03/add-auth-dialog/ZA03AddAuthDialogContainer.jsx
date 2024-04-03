@@ -38,10 +38,7 @@ export const ZA03AddAuthDialogContainer = () => {
 					)}
 					working={za03.addAuthWorking}
 					confirmText="新增">
-					<ZA03AddAuthForm
-						startJobId={startJobId}
-						endJobId={endJobId}
-					/>
+					<ZA03AddAuthForm />
 				</DialogEx>
 			</form>
 		</FormProvider>

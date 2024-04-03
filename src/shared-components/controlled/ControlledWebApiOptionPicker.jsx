@@ -17,7 +17,7 @@ export const ControlledWebApiOptionPicker = ({
 	labelShrink = false,
 	defaultValue = null,
 	sx = [],
-	// onChange: handleChangeEx,
+	onChange: onPickerChange,
 	...rest
 }) => {
 	if (!name) {
@@ -48,7 +48,12 @@ export const ControlledWebApiOptionPicker = ({
 						// required={required}
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
-						onChange={onChange}
+						onChange={(newValue) => {
+							if (onPickerChange) {
+								onPickerChange(newValue);
+							}
+							onChange(newValue);
+						}}
 						// disabled={disabled}
 						InputLabelProps={{
 							...(labelShrink && { shrink: true }),
@@ -76,4 +81,5 @@ ControlledWebApiOptionPicker.propTypes = {
 		PropTypes.object,
 	]),
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	onChange: PropTypes.func,
 };

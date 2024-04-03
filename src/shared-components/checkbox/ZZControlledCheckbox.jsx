@@ -2,7 +2,7 @@ import { Checkbox } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
 
-const ControlledCheckbox = ({
+const ZZControlledCheckbox = ({
 	name,
 	control,
 	rules,
@@ -39,4 +39,4 @@ const ControlledCheckbox = ({
 	);
 };
 
-export default React.memo(ControlledCheckbox);
+export default React.memo(ZZControlledCheckbox);

@@ -25,7 +25,6 @@ const ZA03DialogEditButtons = memo(
 							onClick={onCancel}
 							color="neutral"
 							variant="contained"
-							loading={loading}
 							{...rest}>
 							取消
 						</ResponsiveLoadingButton>

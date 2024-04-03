@@ -45,7 +45,7 @@ const isAllPropsEmpty = (obj, columnPattern) => {
 		return Object.keys(obj).filter((key) => !!obj[key]).length === 0;
 	}
 	const columns = Arrays.parse(columnPattern);
-	return columns.every((prop) => obj[prop] === null || obj[prop] === "");
+	return columns.every((key) => !obj[key]);
 };
 
 const isAllPropsNotNullOrEmpty = (obj, columnPattern) => {

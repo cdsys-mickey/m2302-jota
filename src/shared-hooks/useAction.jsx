@@ -88,8 +88,8 @@ export const useAction = (initState = null) => {
 	}, [actionState.state]);
 
 	const failed = useMemo(() => {
-		return !!actionState.error;
-	}, [actionState.error]);
+		return actionState.state === ActionState.FAILED;
+	}, [actionState.state]);
 
 	const active = useMemo(() => !!actionState.state, [actionState.state]);
 

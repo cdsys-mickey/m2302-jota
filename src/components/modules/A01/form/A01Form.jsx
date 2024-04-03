@@ -16,7 +16,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
+import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
 import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";

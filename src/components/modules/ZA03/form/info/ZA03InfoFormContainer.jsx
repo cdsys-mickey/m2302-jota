@@ -33,6 +33,7 @@ export const ZA03InfoFormContainer = () => {
 					za03.onEditorSubmit,
 					za03.onEditorSubmitError
 				)}
+				readError={za03.readError}
 			/>
 		</FormProvider>
 	);

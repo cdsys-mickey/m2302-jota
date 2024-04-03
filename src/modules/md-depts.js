@@ -12,10 +12,15 @@ const getOptionKey = (option) => {
 	return option?.DeptID;
 };
 
+const isOptionChecked = (option, value) => {
+	return value.includes(getOptionKey(option));
+};
+
 const Depts = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionKey,
+	isOptionChecked,
 };
 
 export default Depts;

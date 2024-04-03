@@ -14,12 +14,19 @@ const UserDeptPicker = memo((props) => {
 		return payload;
 	}, []);
 
-	const qs = useMemo(() => {
+	const querystring = useMemo(() => {
 		return queryString.stringify({
 			uid: uid,
 			sp: scope,
 		});
 	}, [scope, uid]);
+
+	// const params = useMemo(() => {
+	// 	return {
+	// 		uid: uid,
+	// 		sp: scope,
+	// 	};
+	// }, [scope, uid]);
 
 	return (
 		<OptionPickerWrapper
@@ -29,7 +36,8 @@ const UserDeptPicker = memo((props) => {
 			isOptionEqualToValue={Depts.isOptionEqualToValue}
 			bearer={auth.token}
 			getData={getData}
-			querystring={qs}
+			// params={params}
+			querystring={querystring}
 			{...rest}
 		/>
 	);

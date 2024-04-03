@@ -14,9 +14,11 @@ import AppDeptPicker from "../../../fields/AppDeptPicker";
 import AuthScopePickerContainer from "../../../fields/AuthScopePickerContainer";
 import { ZA03DialogTitleButtonsContainer } from "../dialog/buttons/ZA03DialogTitleButtonsContainer";
 import ZA03GridContainer from "./auth/ZA03GridContainer";
+import AlertEx from "../../../../shared-components/AlertEx";
 
 const ZA03Form = memo((props) => {
 	const {
+		readError,
 		data,
 		readWorking,
 		dataLoaded,
@@ -40,6 +42,15 @@ const ZA03Form = memo((props) => {
 						</LoadingTypography>
 					</FlexBox>
 				</Container>
+			)}
+			{readError && (
+				<Box pt="20%">
+					<AlertEx
+						variant="filled"
+						title="讀取失敗"
+						error={readError}
+					/>
+				</Box>
 			)}
 			{dataLoaded && (
 				<Box

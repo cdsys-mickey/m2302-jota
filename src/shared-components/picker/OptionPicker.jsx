@@ -281,7 +281,11 @@ const OptionPicker = memo(
 				return null;
 			}
 
-			return getOptionLabel ? getOptionLabel(value) : value;
+			return value
+				? getOptionLabel
+					? getOptionLabel(value)
+					: value
+				: null;
 		}, [getOptionLabel, getTitle, multiple, value]);
 
 		return (

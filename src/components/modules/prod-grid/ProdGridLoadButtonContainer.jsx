@@ -1,21 +1,32 @@
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { LoadingButton } from "@mui/lab";
 import { useContext, useEffect, useMemo } from "react";
-import { useWatch } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import useDebounce from "../../../shared-hooks/useDebounce";
 import Objects from "../../../shared-modules/sd-objects";
+import { useState } from "react";
 
 export const ProdGridLoadButtonContainer = (props) => {
 	const { ...rest } = props;
 	const criteria = useWatch();
 	const prodGrid = useContext(ProdGridContext);
 	const { peek, totalElements, loading } = prodGrid;
+
 	const debouncedValues = useDebounce(criteria, 300);
 
+	const [prevJson, setPrevJson] = useState();
+
+	const debouncedJson = useMemo(() => {
+		return JSON.stringify(debouncedValues);
+	}, [debouncedValues]);
+
 	useEffect(() => {
-		console.log("criteria changed", debouncedValues);
-		peek(debouncedValues);
-	}, [peek, debouncedValues]);
+		if (debouncedJson !== prevJson) {
+			setPrevJson(debouncedJson);
+			console.log("criteria changed", debouncedValues);
+			peek(debouncedValues);
+		}
+	}, [peek, debouncedValues, prevJson, debouncedJson]);
 
 	const buttonText = useMemo(() => {
 		return Objects.isAllPropsEmpty(criteria)

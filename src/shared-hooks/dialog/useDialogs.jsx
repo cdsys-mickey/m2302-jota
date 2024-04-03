@@ -45,13 +45,21 @@ export const useDialogs = ({ buttonProps }) => {
 	}, []);
 
 	const confirm = useCallback(
-		({ title = "確認", message = "[訊息]", onConfirm, onCancel }) => {
+		({
+			title = "確認",
+			message = "[訊息]",
+			onConfirm,
+			onCancel,
+			closeOnConfirm = true,
+		}) => {
 			create({
 				title: title,
 				message: message,
 				onConfirm: () => {
 					if (onConfirm) onConfirm();
-					closeLatest();
+					if (closeOnConfirm) {
+						closeLatest();
+					}
 				},
 				onCancel: () => {
 					if (onCancel) onCancel();

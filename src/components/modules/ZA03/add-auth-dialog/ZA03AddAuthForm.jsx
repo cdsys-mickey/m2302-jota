@@ -6,7 +6,7 @@ import { ZA03AddPositionPickerContainer } from "./ZA03AddPositionPickerContainer
 import FlexGrid from "../../../../shared-components/FlexGrid";
 
 const ZA03AddAuthForm = memo((props) => {
-	const { startJobId, endJobId, ...rest } = props;
+	const { ...rest } = props;
 	return (
 		<FlexBox py={1}>
 			<Container maxWidth="md">
@@ -28,9 +28,9 @@ const ZA03AddAuthForm = memo((props) => {
 						/>
 					</FlexGrid>
 				</Grid>
-				<FormHelperText>
+				{/* <FormHelperText>
 					*點擊選單項目時按住 Ctrl 可進行複選
-				</FormHelperText>
+				</FormHelperText> */}
 			</Container>
 		</FlexBox>
 	);

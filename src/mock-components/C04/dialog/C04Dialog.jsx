@@ -5,7 +5,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import DialogEx from "@/shared-components/dialog/DialogEx";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
+import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
 import { TypoDatePickerContainer } from "@/shared-components/typo/TypoDatePickerContainer";
 import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";

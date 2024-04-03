@@ -79,9 +79,11 @@ import { A22Provider } from "@/contexts/A22/A22Provider";
 import { A22FrameContainer } from "@/pages/A22/A22FrameContainer";
 import { MsgFrameContainer } from "@/pages/messages/MsgFrameContainer";
 import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
-import { SettingsFrameContainer } from "../pages/settings/SettingsFrameContainer";
-import { SettingsProvider } from "../contexts/settings/SettingsProvider";
-import LockSwitchTest from "../pages/lab/LockSwitchTest";
+import { SettingsFrameContainer } from "@/pages/settings/SettingsFrameContainer";
+import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
+import LockSwitchTest from "@/pages/lab/LockSwitchTest";
+import { B05Provider } from "@/contexts/B05/B05Provider";
+import { B05FrameContainer } from "@/pages/jobs/B05FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -436,6 +438,17 @@ const AppRoute = () => {
 								<A26Provider>
 									<A26FrameContainer />
 								</A26Provider>
+							</CrudProvider>
+						}
+					/>
+
+					<Route
+						path="B05"
+						element={
+							<CrudProvider>
+								<B05Provider>
+									<B05FrameContainer />
+								</B05Provider>
 							</CrudProvider>
 						}
 					/>

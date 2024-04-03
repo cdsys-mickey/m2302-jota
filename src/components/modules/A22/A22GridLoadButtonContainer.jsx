@@ -4,24 +4,36 @@ import { useWatch } from "react-hook-form";
 import useDebounce from "@/shared-hooks/useDebounce";
 import Objects from "@/shared-modules/sd-objects";
 import { A22Context } from "@/contexts/A22/A22Context";
+import { useState } from "react";
 
 export const A22GridLoadButtonContainer = () => {
 	const criteria = useWatch();
 	const a22 = useContext(A22Context);
 	const { peek, totalElements, loading } = a22;
 	const debouncedValues = useDebounce(criteria, 300);
+	const [prevJson, setPrevJson] = useState();
+	const debouncedJson = useMemo(() => {
+		return JSON.stringify(debouncedValues);
+	}, [debouncedValues]);
 
+	// useEffect(() => {
+	// 	if (
+	// 		Objects.isAnyPropNotEmpty(
+	// 			debouncedValues,
+	// 			"prod1,prod2,catL,catM,catS"
+	// 		)
+	// 	) {
+	// 		console.log("criteria changed", debouncedValues);
+	// 		peek(debouncedValues);
+	// 	}
+	// }, [peek, debouncedValues]);
 	useEffect(() => {
-		if (
-			Objects.isAnyPropNotEmpty(
-				debouncedValues,
-				"prod1,prod2,catL,catM,catS"
-			)
-		) {
+		if (debouncedJson !== prevJson) {
+			setPrevJson(debouncedJson);
 			console.log("criteria changed", debouncedValues);
 			peek(debouncedValues);
 		}
-	}, [peek, debouncedValues]);
+	}, [peek, debouncedValues, prevJson, debouncedJson]);
 
 	const buttonText = useMemo(() => {
 		return Objects.isAllPropsEmpty(criteria, "prod1,prod2,catL,catM,catS")

@@ -9,7 +9,7 @@ import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContai
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import TypoBankPickerContainer from "@/components/fields/TypoBankPickerContainer";
-import { TypoCheckboxExContainer } from "@/shared-components/typo/TypoCheckboxExContainer";
+import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
 import YesNo from "@/modules/md-yes-no";
 
 const A05Form = memo((props) => {

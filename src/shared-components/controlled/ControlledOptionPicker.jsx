@@ -7,13 +7,13 @@ import { forwardRef } from "react";
 export const ControlledOptionPicker = forwardRef((props, ref) => {
 	const {
 		name,
-		disabled = false,
 		control,
 		// onChange: handleChange,
 		rules,
 		labelShrink = false,
 		defaultValue = null,
 		sx = [],
+		onChange: onPickerChange,
 		...rest
 	} = props;
 
@@ -36,8 +36,12 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						ref={ref}
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
-						onChange={onChange}
-						disabled={disabled}
+						onChange={(newValue) => {
+							if (onPickerChange) {
+								onPickerChange(newValue);
+							}
+							onChange(newValue);
+						}}
 						InputLabelProps={{
 							...(labelShrink && { shrink: true }),
 						}}
@@ -53,7 +57,6 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 ControlledOptionPicker.displayName = "ControlledOptionPicker";
 ControlledOptionPicker.propTypes = {
 	name: PropTypes.string,
-	disabled: PropTypes.bool,
 	control: PropTypes.object,
 	onChange: PropTypes.func,
 	rules: PropTypes.object,

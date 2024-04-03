@@ -30,7 +30,7 @@ export const useInfiniteLoader = (props = {}) => {
 	const [itemCount, setItemCount] = useState(0);
 	const [listError, setListError] = useState();
 	const debouncedLoading = useDebounce(state.loading, debounce);
-	const [listData, setListData] = useState({});
+	const [listData, setListData] = useState();
 	const [viewportState, setViewportState] = useState({
 		visibleStartIndex: 0,
 		visibleStopIndex: 0,
@@ -84,7 +84,7 @@ export const useInfiniteLoader = (props = {}) => {
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
 			refresh = false,
-			disableLoading = false,
+			supressLoading = false,
 			// reset = false,
 		} = {}) => {
 			let startIndex = start !== undefined ? start : 0;
@@ -121,7 +121,7 @@ export const useInfiniteLoader = (props = {}) => {
 				activeParams
 			);
 
-			const loading = (!start && !disableLoading) || refresh;
+			const loading = (!start && !listData && !supressLoading) || refresh;
 
 			setListError(null);
 			setState((prev) => ({

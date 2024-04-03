@@ -5,19 +5,20 @@ import ZA03ListRow from "./ZA03ListRow";
 import { useCallback } from "react";
 
 export const ZA03ListRowContainer = (props) => {
-	const users = useContext(ZA03Context);
-	const { isItemLoading, confirmResetPword } = users;
+	const za03 = useContext(ZA03Context);
+	const { isItemLoading, confirmResetPword, promptCopyAuth } = za03;
 	const { index, ...rest } = props;
 	const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
-	const value = useMemo(() => users.listData[index], [users.listData, index]);
+	const value = useMemo(() => za03.listData[index], [za03.listData, index]);
 
 	return (
 		<ZA03ListRow
 			index={index}
 			loading={loading}
 			value={value}
-			onClick={(e) => users.handleSelect(e, value)}
+			onClick={(e) => za03.handleSelect(e, value)}
 			confirmResetPword={(e) => confirmResetPword(e, value)}
+			promptCopyAuth={(e) => promptCopyAuth(e, value)}
 			{...rest}
 		/>
 	);

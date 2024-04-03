@@ -149,7 +149,7 @@ export const useMessaging = ({ token }) => {
 					if (reload) {
 						loader.loadList({
 							refresh: true,
-							disableLoading: true,
+							supressLoading: true,
 						});
 					}
 				} else {

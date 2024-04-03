@@ -7,11 +7,15 @@ import { ZA03AuthBatchCancelButtonContainer } from "./ZA03AuthBatchCancelButtonC
 import { ZA03AuthDeptPickerContainer } from "./ZA03AuthDeptPickerContainer";
 import { ZA03AuthInstantEditButtonContainer } from "./ZA03AuthInstantEditButtonContainer";
 import { ZA03AuthInstantEditFinishButtonContainer } from "./ZA03AuthInstantEditFinishButtonContainer";
+import { ZA03AuthCopyButtonContainer } from "./ZA03AuthCopyButtonContainer";
+import { useContext } from "react";
+import { ZA03Context } from "../../../../../contexts/ZA03/ZA03Context";
 
 const ZA03AuthToolbarLeftComponents = () => {
 	return (
 		<>
 			<ZA03AuthDeptPickerContainer
+				name="dept"
 				width="14em"
 				sx={{
 					backgroundColor: "#fff",
@@ -22,8 +26,15 @@ const ZA03AuthToolbarLeftComponents = () => {
 };
 
 const ZA03AuthToolbarRightComponents = () => {
+	const za03 = useContext(ZA03Context);
+
+	if (!za03.selectedDept) {
+		return false;
+	}
+
 	return (
 		<>
+			<ZA03AuthCopyButtonContainer />
 			<ZA03AuthAddButtonContainer />
 			<ZA03AuthInstantEditButtonContainer />
 			<ZA03AuthInstantEditFinishButtonContainer
@@ -32,7 +43,7 @@ const ZA03AuthToolbarRightComponents = () => {
 				disableElevation
 			/>
 
-			<ZA03AuthBatchEditButtonContainer color="neutral" />
+			<ZA03AuthBatchEditButtonContainer color="warning" />
 			<ZA03AuthBatchSubmitButtonContainer
 				variant="contained"
 				color="warning"
@@ -48,8 +59,9 @@ const ZA03AuthToolbarRightComponents = () => {
 	);
 };
 
-const ZA03AuthToolbar = memo((props) => {
+const ZA03AuthToolbar = (props) => {
 	const { ...rest } = props;
+
 	return (
 		<FlexToolbar
 			pt={1}
@@ -63,7 +75,7 @@ const ZA03AuthToolbar = memo((props) => {
 			}}
 		/>
 	);
-});
+};
 
 ZA03AuthToolbar.propTypes = {};
 
