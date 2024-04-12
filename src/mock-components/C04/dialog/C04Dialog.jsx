@@ -2,16 +2,16 @@ import { TypoC04OrderDetailsEditorContainer } from "@/mock-components/C04/order-
 import Keepers from "@/modules/md-keepers";
 import Suppliers from "@/modules/md-suppliers";
 import FlexBox from "@/shared-components/FlexBox";
+import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
 import DialogEx from "@/shared-components/dialog/DialogEx";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
 import { TypoDatePickerContainer } from "@/shared-components/typo/TypoDatePickerContainer";
-import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
+import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
 import SupplierLabel from "../supplier/SupplierLabel";
 import { C04DialogTitleButtonsContainer } from "./C04DialogTitleButtonsContainer";
 
@@ -34,14 +34,15 @@ const C04Dialog = memo(
 						mb={2}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									autoFocus
 									fullWidth
 									required
 									label="進貨單號"
 									name="Code">
 									{data?.id}
-								</TypoTextFieldContainer>
+								</TextFieldWrapper>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
 								{/* <TypoDateFieldContainer
@@ -88,13 +89,14 @@ const C04Dialog = memo(
 								</TypoWebApiOptionPickerContainer>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									required
 									label="發票號碼"
 									name="InvoiceNumber"
 									fullWidth>
 									{data?.InvoiceNumber}
-								</TypoTextFieldContainer>
+								</TextFieldWrapper>
 							</Grid>
 
 							<Grid item xs={12} sm={12} md={3}>
@@ -104,7 +106,8 @@ const C04Dialog = memo(
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									label="採購單號"
 									name="Stock2"
 									fullWidth
@@ -135,7 +138,8 @@ const C04Dialog = memo(
 						mb={2}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={12} md={12}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									multiline
 									label="備註"
 									name="Note"

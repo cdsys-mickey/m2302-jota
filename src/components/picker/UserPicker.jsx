@@ -10,7 +10,7 @@ export const UserPicker = (props) => {
 
 	const querystring = useMemo(() => {
 		const obj = {
-			tp: 20,
+			tp: 1000,
 		};
 		return queryString.stringify(obj);
 	}, []);
@@ -37,7 +37,7 @@ export const UserPicker = (props) => {
 			bearer={token}
 			url="v1/ou/users"
 			filterByServer
-			queryRequired
+			// queryRequired
 			queryParam="q"
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}

@@ -105,7 +105,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					updating={a01.updating}
 					readWorking={a01.readWorking}
 					data={a01.itemData}
-					dataLoaded={a01.itemDataLoaded}
+					itemDataReady={a01.itemDataReady}
 					store={store}
 					tabIndex={a01.tabIndex}
 					handleTabChange={a01.handleTabChange}

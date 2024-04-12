@@ -18,6 +18,10 @@ export const ControlledTextField = ({
 	EndAdornmentComponent,
 	...rest
 }) => {
+	if (!name) {
+		return <TextField {...rest} />;
+	}
+
 	return (
 		<Controller
 			name={name}

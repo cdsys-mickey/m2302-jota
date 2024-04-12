@@ -40,11 +40,6 @@ export const ProdGridLoadButtonContainer = (props) => {
 		return !totalElements;
 	}, [totalElements]);
 
-	// const handleClick = useCallback(() => {
-	// 	const values = getValues();
-
-	// }, [prodGrid, getValues]);
-
 	return (
 		<LoadingButton
 			type="submit"

@@ -3,16 +3,18 @@ import ControlledDateField from "@/shared-components/controlled/ControlledDateFi
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import { memo } from "react";
 import { forwardRef } from "react";
+import { useWatch } from "react-hook-form";
+import { format } from "date-fns";
+import DateTimes from "../../shared-modules/sd-date-times";
+import PropTypes from "prop-types";
 
 const TypoDateField = memo(
 	forwardRef((props, ref) => {
 		const {
 			// Common
-			children,
-			value,
+			dateFormat = DateTimes.DATEFNS_DATE,
 			label,
 			// Typography
-			renderText,
 			emptyText = "(空白)",
 			typoVariant = "body1",
 			typographyProps,
@@ -24,12 +26,13 @@ const TypoDateField = memo(
 			...rest
 		} = props;
 
-		const text = useMemo(() => {
-			if (children) {
-				return children;
-			}
-			return (renderText ? renderText(value) : value) || emptyText;
-		}, [children, emptyText, renderText, value]);
+		const value = useWatch({
+			name,
+		});
+
+		const memoisedText = useMemo(() => {
+			return value ? format(value, dateFormat) : null || emptyText;
+		}, [dateFormat, emptyText, value]);
 
 		if (!editing) {
 			return (
@@ -38,7 +41,7 @@ const TypoDateField = memo(
 					variant={typoVariant}
 					color="text.secondary"
 					{...typographyProps}>
-					{text}
+					{memoisedText}
 				</FormFieldLabel>
 			);
 		}
@@ -59,3 +62,6 @@ const TypoDateField = memo(
 );
 
 export default TypoDateField;
+TypoDateField.propTypes = {
+	dateFormat: PropTypes.string,
+};

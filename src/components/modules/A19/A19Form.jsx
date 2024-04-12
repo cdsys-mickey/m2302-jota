@@ -39,6 +39,9 @@ const A19Form = memo((props) => {
 									name="sprod"
 									label="起始商品編號"
 									size="small"
+									virtualize
+									// filterByServer
+									// queryRequired
 									typeToSearchText="以編號,條碼或名稱搜尋"
 								/>
 							</Grid>
@@ -47,6 +50,9 @@ const A19Form = memo((props) => {
 									name="eprod"
 									label="截止商品編號"
 									size="small"
+									virtualize
+									// filterByServer
+									// queryRequired
 									typeToSearchText="以編號,條碼或名稱搜尋"
 								/>
 							</Grid>
@@ -139,7 +145,6 @@ const A19Form = memo((props) => {
 
 A19Form.propTypes = {
 	readWorking: PropTypes.bool,
-	itemDataReady: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	readFailed: PropTypes.bool,

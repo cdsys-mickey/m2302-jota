@@ -5,18 +5,10 @@ import { useWatch } from "react-hook-form";
 import PropTypes from "prop-types";
 
 const TypoTextFieldContainer = forwardRef((props, ref) => {
-	const { name, children, ...rest } = props;
+	const { ...rest } = props;
 	const { editing } = useContext(CrudContext);
 
-	const value = useWatch({
-		name,
-	});
-
-	return (
-		<TypoTextField name={name} ref={ref} editing={editing} {...rest}>
-			{children || value}
-		</TypoTextField>
-	);
+	return <TypoTextField ref={ref} editing={editing} {...rest} />;
 });
 
 TypoTextFieldContainer.displayName = "TypoTextFieldContainer";

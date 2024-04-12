@@ -1,8 +1,8 @@
 import { forwardRef, memo } from "react";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import ModuleToolbar from "../ModuleToolbar";
-import B05CreateButtonContainer from "./B05CreateButtonContainer";
-import { B05FetchResultLabelContainer } from "./B05FetchResultLabelContainer";
+import ModuleToolbar from "../../ModuleToolbar";
+import B05CreateButtonContainer from "../B05CreateButtonContainer";
+import { B05FetchResultLabelContainer } from "../B05FetchResultLabelContainer";
 
 const LeftButtons = memo(() => {
 	return (
@@ -14,7 +14,7 @@ const LeftButtons = memo(() => {
 
 LeftButtons.displayName = "LeftButtons";
 
-const B05Toolbar = memo(
+const B05ListToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			<FlexToolbar
@@ -28,5 +28,5 @@ const B05Toolbar = memo(
 	})
 );
 
-B05Toolbar.displayName = "B05ListViewToolbar";
-export default B05Toolbar;
+B05ListToolbar.displayName = "B05ListViewToolbar";
+export default B05ListToolbar;

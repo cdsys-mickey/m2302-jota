@@ -84,7 +84,7 @@ const DSGTest = memo(
 					maxWidth: "900px",
 					background: "#f3f3f3",
 				}}>
-				<DynamicDataSheetGrid
+				<DataSheetGrid
 					ref={gridRef}
 					value={data}
 					onChange={setData}

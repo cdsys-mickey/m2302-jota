@@ -3,13 +3,13 @@ import React, { forwardRef, memo, useMemo } from "react";
 
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
+import { useWatch } from "react-hook-form";
 
 const TypoTextField = memo(
 	forwardRef((props, ref) => {
 		const {
 			// Common
 			children,
-			value,
 			label,
 			// Typography
 			typographyProps,
@@ -24,7 +24,11 @@ const TypoTextField = memo(
 			...rest
 		} = props;
 
-		const text = useMemo(() => {
+		const value = useWatch({
+			name,
+		});
+
+		const memoisedText = useMemo(() => {
 			return children || value;
 		}, [children, value]);
 
@@ -34,7 +38,7 @@ const TypoTextField = memo(
 					label={label}
 					emptyText={emptyText}
 					{...typographyProps}>
-					{text}
+					{memoisedText}
 				</FormFieldLabel>
 			);
 		}

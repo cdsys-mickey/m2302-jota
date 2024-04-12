@@ -116,7 +116,6 @@ const A21Form = memo((props) => {
 
 A21Form.propTypes = {
 	readWorking: PropTypes.bool,
-	itemDataReady: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	readFailed: PropTypes.bool,

@@ -17,7 +17,7 @@ export const ZA03DialogContentContainer = () => {
 	return (
 		<ZA03DialogContent
 			readWorking={za03.readWorking}
-			dataLoaded={za03.itemDataLoaded}
+			itemDataReady={za03.itemDataReady}
 			selectedTab={za03.selectedTab}
 			onTabChange={za03.handleTabChange}
 			infoDisabled={infoDisabled}

@@ -15,6 +15,7 @@ const WebApiOptionPickerColumn = memo((props) => {
 		active,
 		stopEditing,
 		disabled,
+		onChange,
 	} = props;
 	// console.log(
 	// 	`rendering WebApiOptionPickerColumn ${name}[${rowIndex}]`
@@ -26,16 +27,22 @@ const WebApiOptionPickerColumn = memo((props) => {
 
 	const handleChange = useCallback(
 		(newValue) => {
-			if (name) {
-				setRowData({
-					...rowData,
-					[name]: newValue,
-				});
+			// if (name) {
+			// 	setRowData({
+			// 		...rowData,
+			// 		[name]: newValue,
+			// 	});
+			// } else {
+			// 	setRowData(newValue);
+			// }
+
+			if (onChange) {
+				onChange({ rowData, setRowData, newValue });
 			} else {
 				setRowData(newValue);
 			}
 		},
-		[name, rowData, setRowData]
+		[onChange, rowData, setRowData]
 	);
 
 	const handleClose = useCallback(() => {
@@ -49,8 +56,9 @@ const WebApiOptionPickerColumn = memo((props) => {
 			ref.current?.focus();
 		} else {
 			ref.current?.blur();
+			handleClose();
 		}
-	}, [focus]);
+	}, [focus, handleClose]);
 
 	return (
 		<WebApiOptionPicker

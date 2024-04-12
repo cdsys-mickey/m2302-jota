@@ -1,16 +1,18 @@
 import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
-import React, { forwardRef, memo, useMemo } from "react";
+import { format } from "date-fns";
+import { forwardRef, memo, useMemo } from "react";
+import DateTimes from "@/shared-modules/sd-date-times";
+import { useWatch } from "react-hook-form";
 
 const TypoDatePicker = memo(
 	forwardRef((props, ref) => {
 		const {
 			// Common
 			children,
-			value,
 			label,
 			// Typography
-			renderText,
+			dateFormat = DateTimes.DATEFNS_DATE,
 			emptyText = "(空白)",
 			typoVariant = "body1",
 			typographyProps,
@@ -22,12 +24,16 @@ const TypoDatePicker = memo(
 			...rest
 		} = props;
 
-		const text = useMemo(() => {
+		const value = useWatch({
+			name,
+		});
+
+		const memoisedText = useMemo(() => {
 			if (children) {
 				return children;
 			}
-			return (renderText ? renderText(value) : value) || emptyText;
-		}, [children, emptyText, renderText, value]);
+			return value ? format(value, dateFormat) : null || emptyText;
+		}, [children, dateFormat, emptyText, value]);
 
 		if (!editing) {
 			return (
@@ -35,7 +41,7 @@ const TypoDatePicker = memo(
 					label={label}
 					variant={typoVariant}
 					{...typographyProps}>
-					{text}
+					{memoisedText}
 				</FormFieldLabel>
 			);
 		}

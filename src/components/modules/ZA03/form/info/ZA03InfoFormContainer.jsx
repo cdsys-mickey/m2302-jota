@@ -13,14 +13,14 @@ export const ZA03InfoFormContainer = () => {
 	const { reset } = form;
 	const za03 = useContext(ZA03Context);
 
-	const { itemDataLoaded, itemData } = za03;
+	const { itemDataReady, itemData } = za03;
 
 	useEffect(() => {
-		if (itemDataLoaded) {
+		if (itemDataReady) {
 			console.log(`za03 form reset`, itemData);
 			reset(itemData);
 		}
-	}, [reset, itemData, itemDataLoaded]);
+	}, [reset, itemData, itemDataReady]);
 
 	return (
 		<FormProvider {...form}>

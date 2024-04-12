@@ -16,7 +16,7 @@ export const B05ListRowContainer = (props) => {
 			index={index}
 			loading={loading}
 			value={value}
-			// onClick={(e) => b05.handleSelect(e, value)}
+			onClick={(e) => b05.handleSelect(e, value)}
 			// confirmResetPword={(e) => confirmResetPword(e, value)}
 			// promptCopyAuth={(e) => promptCopyAuth(e, value)}
 			{...rest}

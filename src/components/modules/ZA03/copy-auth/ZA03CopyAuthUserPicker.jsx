@@ -13,7 +13,14 @@ export const ZA03CopyAuthUserPicker = (props) => {
 		},
 		[copyAuth]
 	);
-	return <UserPicker onChange={handleChange} {...rest} />;
+	return (
+		<UserPicker
+			filterByServer
+			queryRequired
+			onChange={handleChange}
+			{...rest}
+		/>
+	);
 };
 
 ZA03CopyAuthUserPicker.displayName = "ZA03CopyAuthUserPicker";

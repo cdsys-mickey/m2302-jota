@@ -6,9 +6,8 @@ import ErrorBox from "../../../shared-components/ErrorBox";
 import FlexBox from "../../../shared-components/FlexBox";
 import LoadingTypography from "../../../shared-components/LoadingTypography";
 import FormSectionBox from "../../../shared-components/form/FormSectionBox";
-import TypoTextFieldContainer from "../../../shared-components/typo/TypoTextFieldContainer";
 import AppDeptPicker from "../../fields/AppDeptPicker";
-import DSGLoading from "../../../shared-components/dsg/DSGLoading";
+import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
 
 const A17Form = memo((props) => {
 	const {
@@ -69,7 +68,8 @@ const A17Form = memo((props) => {
 									/>
 								</Grid>
 								<Grid item xs={12}>
-									<TypoTextFieldContainer
+									<TextFieldWrapper
+										typo
 										name="StockPword"
 										label="強迫出貨密碼"
 										autoFocus

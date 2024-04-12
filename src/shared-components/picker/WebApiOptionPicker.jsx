@@ -1,15 +1,17 @@
-import PropTypes from "prop-types";
-import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import queryString from "query-string";
-import { memo } from "react";
-import OptionPicker from "./OptionPicker";
-import { createFilterOptions } from "@mui/material";
-import { useMemo } from "react";
 
-const noFilterOptions = (options) => {
-	return options;
-};
+import PropTypes from "prop-types";
+import queryString from "query-string";
+import {
+	forwardRef,
+	memo,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
+import OptionPicker from "./OptionPicker";
 
 const defaultTriggerServerFilter = (q) => {
 	return !!q;
@@ -61,80 +63,61 @@ const WebApiOptionPicker = memo(
 			triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
 			getData = defaultGetData,
 			onError = defaultOnError,
+			onOpen,
 			onClose,
 			...rest
 		} = props;
 
-		// console.log(`rendering WebApiOptionPicker`);
+		// console.log("rendering WebApiOptionPicker");
 
 		const { sendAsync } = useWebApi();
 
-		const [loading, setLoading] = useState(null);
+		// const [loading, setLoading] = useState(null);
+
+		const [open, setOpen] = useState(false);
 
 		const [pickerState, setPickerState] = useState({
-			// loading: null,
+			loading: null,
 			// query: null,
 			options: defaultOptions,
-			open: false,
+			// open: false,
 			noOptionsText: queryRequired ? typeToSearchText : noOptionsText,
 		});
 
 		const timerIdRef = useRef();
 
-		const setOpen = useCallback((open) => {
-			setPickerState((prevState) => {
-				return {
-					...prevState,
-					open,
-				};
-			});
-		}, []);
+		// const setOpen = useCallback((open) => {
+		// 	setPickerState((prevState) => {
+		// 		return {
+		// 			...prevState,
+		// 			open,
+		// 		};
+		// 	});
+		// }, []);
 
 		const handleOpen = useCallback(() => {
-			// console.log(`${name}.handleOpen`);
+			if (onOpen) {
+				onOpen();
+			}
 			setOpen(true);
-		}, [setOpen]);
+		}, [onOpen]);
 
 		const handleClose = useCallback(() => {
-			// console.log(`${name}.handleClose`);
 			if (onClose) {
 				onClose();
 			}
-			if (filterByServer) {
-				setPickerState((prev) => ({
-					...prev,
-					open: false,
-				}));
-			} else {
-				setPickerState((prev) => ({
-					...prev,
-					open: false,
-					// ...(prev.error && {
-					// 	loading: null,
-					// }),
-				}));
-			}
-		}, [filterByServer, onClose]);
+			setOpen(false);
+		}, [onClose]);
 
 		const loadOptions = useCallback(
 			async ({ q, onError: onMethodError } = {}) => {
-				// 若有指定 options 則不 fetch
-				// if (options) {
-				// 	console.log("option provided, no fetching needed");
-				// 	setPickerState((prev) => ({
-				// 		...prev,
-				// 		options: options,
-				// 	}));
-				// 	return;
-				// }
-
 				console.log(`${name}.loadOptions(${q})`);
 				// 每次找之前回復 noOptionsText
-				setLoading(true);
+				// setLoading(true);
 				setPickerState((prev) => ({
 					...prev,
 					// query: q,
-					// loading: true,
+					loading: true,
 					noOptionsText: typeToSearchText,
 				}));
 				try {
@@ -179,7 +162,11 @@ const WebApiOptionPicker = memo(
 						noOptionsText: fetchErrorText,
 					}));
 				} finally {
-					setLoading(false);
+					// setLoading(false);
+					setPickerState((prev) => ({
+						...prev,
+						loading: false,
+					}));
 				}
 			},
 			[
@@ -212,7 +199,7 @@ const WebApiOptionPicker = memo(
 		const handleInputChange = useCallback(
 			(event) => {
 				let qs = event.target.value;
-				console.log(`text changed: `, qs);
+				// console.log(`text changed: `, qs);
 
 				if (timerIdRef.current) {
 					clearTimeout(timerIdRef.current);
@@ -281,8 +268,9 @@ const WebApiOptionPicker = memo(
 					...prevState,
 					options: [],
 					noOptionsText: typeToSearchText,
+					loading: null,
 				}));
-				setLoading(null);
+				// setLoading(null);
 			}
 			if (onChange) {
 				onChange(value);
@@ -290,29 +278,25 @@ const WebApiOptionPicker = memo(
 		};
 
 		// 當 filterByServer 時, 不會對輸出做任何篩選
-		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
-		const filterOptions = useMemo(() => {
-			return filterByServer ? noFilterOptions : createFilterOptions();
-		}, [filterByServer]);
 
 		/**
 		 * 何時清除 options?
-		 * 1.FilterMode.SERVER
-		 * 2.pickerState.open == false
+		 * 1.FilterMode.SERVER + queryRequired
+		 * 2.pickerState.open === false
 		 * 則
 		 * loading === NONE
 		 * query
 		 */
 		useEffect(() => {
-			if (filterByServer && !pickerState.open) {
+			if (filterByServer && queryRequired && !open) {
 				setPickerState((prevState) => ({
 					...prevState,
-					// loading: null,
+					loading: null,
 					options: [],
 				}));
-				setLoading(null);
+				// setLoading(null);
 			}
-		}, [filterByServer, pickerState.open]);
+		}, [filterByServer, open, queryRequired]);
 
 		/**
 		 * 空白展開時 fetch options
@@ -320,13 +304,15 @@ const WebApiOptionPicker = memo(
 		useEffect(() => {
 			if (
 				url &&
-				pickerState.open &&
+				open &&
 				!queryRequired &&
 				lazy &&
-				loading === null &&
+				// (loading === null || loading === undefined) &&
+				(pickerState.loading === null ||
+					pickerState.loading === undefined) &&
 				!disabled
 			) {
-				console.log("load full options for the first time");
+				console.log(`loadOptions: loading: ${pickerState.loading}`);
 				loadOptions();
 			}
 		}, [
@@ -334,8 +320,8 @@ const WebApiOptionPicker = memo(
 			lazy,
 			loadOptions,
 			queryRequired,
-			loading,
-			pickerState.open,
+			pickerState.loading,
+			open,
 			pickerState.error,
 			url,
 		]);
@@ -346,11 +332,12 @@ const WebApiOptionPicker = memo(
 				if (onChange) {
 					onChange(null, null);
 				}
-			} else {
-				// console.log(`url set to ${url}`);
 			}
-
-			setLoading(null);
+			// setLoading(null);
+			setPickerState((prev) => ({
+				...prev,
+				loading: null,
+			}));
 		}, [name, onChange, querystring, url]);
 
 		return (
@@ -358,15 +345,15 @@ const WebApiOptionPicker = memo(
 				name={name}
 				multiple={multiple}
 				ref={ref}
-				loading={loading}
+				// loading={loading}
 				{...pickerState}
 				disabled={disabled}
 				// ChipProps={chipProps}
+				open={open}
 				onOpen={handleOpen}
 				onClose={handleClose}
 				onChange={handleChange}
 				onInputChange={handleInputChange}
-				filterOptions={filterOptions}
 				// noOptionsText={noOptionsText}
 				{...rest}
 			/>
@@ -403,6 +390,7 @@ WebApiOptionPicker.propTypes = {
 	getData: PropTypes.func,
 	onError: PropTypes.func,
 	onClose: PropTypes.func,
+	onOpen: PropTypes.func,
 };
 
 export default WebApiOptionPicker;

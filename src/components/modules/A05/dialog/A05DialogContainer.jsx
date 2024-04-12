@@ -78,7 +78,7 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 					updating={a05.updating}
 					readWorking={a05.readWorking}
 					data={a05.itemData}
-					dataLoaded={a05.itemDataLoaded}
+					itemDataReady={a05.itemDataReady}
 				/>
 			</DialogExContainer>
 		</FormProvider>

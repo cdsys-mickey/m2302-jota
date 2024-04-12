@@ -33,7 +33,6 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 	});
 
 	useEffect(() => {
-		// if (a20.readState === ActionState.DONE && !!a20.itemData) {
 		if (a20.itemDataReady) {
 			console.log(`a20 form reset`, a20.itemData);
 			reset(a20.itemData);
@@ -76,7 +75,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 					updating={a20.updating}
 					readWorking={a20.readWorking}
 					data={a20.itemData}
-					dataLoaded={a20.itemDataLoaded}
+					itemDataReady={a20.itemDataReady}
 				/>
 			</DialogEx>
 		</FormProvider>

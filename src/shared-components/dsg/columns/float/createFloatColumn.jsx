@@ -1,9 +1,10 @@
 import { createTextColumn } from "react-datasheet-grid";
 
-export const createFloatColumn = (fixedDigit = 1) =>
+export const createFloatColumn = (fixedDigit = 1, opts) =>
 	createTextColumn({
 		alignRight: true,
 		continuousUpdates: false,
+		...opts,
 		formatBlurredInput: (value) => {
 			if (value === "" || value === null || value === undefined) {
 				return "";

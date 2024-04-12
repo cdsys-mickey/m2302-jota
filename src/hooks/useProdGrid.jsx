@@ -68,10 +68,6 @@ export const useProdGrid = ({
 				}
 				return;
 			}
-			// setState((prev) => ({
-			// 	...prev,
-			// 	loading: true,
-			// }));
 			setLoading(true);
 			try {
 				const { status, payload, error } = await httpGetAsync({
@@ -95,10 +91,6 @@ export const useProdGrid = ({
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err));
 			} finally {
-				// setState((prev) => ({
-				// 	...prev,
-				// 	loading: false,
-				// }));
 				setLoading(false);
 			}
 		},

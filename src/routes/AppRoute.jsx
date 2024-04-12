@@ -83,7 +83,9 @@ import { SettingsFrameContainer } from "@/pages/settings/SettingsFrameContainer"
 import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
 import LockSwitchTest from "@/pages/lab/LockSwitchTest";
 import { B05Provider } from "@/contexts/B05/B05Provider";
-import { B05FrameContainer } from "@/pages/jobs/B05FrameContainer";
+import { B05FrameContainer } from "@/pages/B05/B05FrameContainer";
+import OptionPickerTest from "../pages/lab/OptionPickerTest";
+import DSGTest3 from "../pages/lab/DSGTest3";
 
 const AppRoute = () => {
 	return (
@@ -113,10 +115,12 @@ const AppRoute = () => {
 						</DSGTestProvider>
 					}
 				/>
+				<Route path="dsg3" element={<DSGTest3 />} />
 				<Route path="signalr" element={<SignalRTest />} />
 			</Route>
 			<Route path="lab-protected" element={<ProtectedRoute />}>
 				<Route path="dsg" element={<DSGTest2Container />} />
+				<Route path="option-picker" element={<OptionPickerTest />} />
 			</Route>
 
 			{/* PROTECTED */}

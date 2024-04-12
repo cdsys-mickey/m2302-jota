@@ -1,20 +1,19 @@
-import { Box, Grid, Tab } from "@mui/material";
+import { Box, Container, Grid, Tab } from "@mui/material";
 import { memo } from "react";
 
+import AppDeptPicker from "@/components/fields/AppDeptPicker";
+import AuthScopePickerContainer from "@/components/fields/AuthScopePickerContainer";
 import Users from "@/modules/md-users";
+import AlertEx from "@/shared-components/AlertEx";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import AppDeptPicker from "../../../fields/AppDeptPicker";
-import AuthScopePickerContainer from "../../../fields/AuthScopePickerContainer";
+import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 import { ZA03DialogTitleButtonsContainer } from "../dialog/buttons/ZA03DialogTitleButtonsContainer";
 import ZA03GridContainer from "./auth/ZA03GridContainer";
-import AlertEx from "../../../../shared-components/AlertEx";
 
 const ZA03Form = memo((props) => {
 	const {
@@ -111,7 +110,8 @@ const ZA03Form = memo((props) => {
 									columns={12}
 									spacing={editing ? 2 : 1}>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="LoginName"
 											label="帳號"
 											autoFocus
@@ -123,7 +123,8 @@ const ZA03Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="UserName"
 											label="姓名"
 											fullWidth
@@ -134,14 +135,16 @@ const ZA03Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="Tel"
 											label="辦公室電話"
 											fullWidth
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="Cel"
 											label="手機號碼"
 											fullWidth
@@ -149,7 +152,8 @@ const ZA03Form = memo((props) => {
 									</Grid>
 									<FlexBox fullWidth />
 									<Grid item xs={12} sm={12} md={5}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="Email"
 											label="電子信箱"
 											fullWidth
@@ -213,6 +217,7 @@ const ZA03Form = memo((props) => {
 
 ZA03Form.propTypes = {
 	data: PropTypes.object,
+	readError: PropTypes.object,
 	readWorking: PropTypes.bool,
 	dataLoaded: PropTypes.bool,
 	editing: PropTypes.bool,

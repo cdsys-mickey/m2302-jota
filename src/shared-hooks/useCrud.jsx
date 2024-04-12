@@ -231,25 +231,26 @@ export const useCrud = () => {
 		return deleteAction.failed || !!deleteAction.error;
 	}, [deleteAction.error, deleteAction.failed]);
 
-	// Synthetic Props
-	const itemDataReady = useMemo(() => {
+	// 資料已讀取完成
+	const itemDataLoaded = useMemo(() => {
 		return (
 			(readAction.state === ActionState.DONE && !!state.itemData) ||
 			(!!createAction.state && !!state.itemData)
 		);
 	}, [createAction.state, readAction.state, state.itemData]);
 
-	const editing = useMemo(() => {
-		return !!createAction.state || !!updateAction.state;
-	}, [createAction.state, updateAction.state]);
-
-	const itemDataLoaded = useMemo(() => {
+	// 資料已就緒 → 配合新增等狀況
+	const itemDataReady = useMemo(() => {
 		return (
 			(reading && !readWorking && !readingFailed) ||
 			creating ||
 			(updating && !readWorking && !readingFailed)
 		);
 	}, [creating, readWorking, reading, readingFailed, updating]);
+
+	const editing = useMemo(() => {
+		return !!createAction.state || !!updateAction.state;
+	}, [createAction.state, updateAction.state]);
 
 	const editWorking = useMemo(() => {
 		return createWorking || updateWorking;
@@ -321,9 +322,9 @@ export const useCrud = () => {
 		cancelDeleting,
 		failDeleting,
 		// COMPUTED
-		itemDataReady,
-		editing,
 		itemDataLoaded,
+		editing,
+		itemDataReady,
 		editWorking,
 		itemViewOpen,
 		cancelEditing,

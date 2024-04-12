@@ -16,7 +16,7 @@ const ZA03DialogContent = memo((props) => {
 	const {
 		readError,
 		readWorking,
-		dataLoaded,
+		itemDataReady,
 		editing,
 		updating,
 		//TAB
@@ -36,7 +36,7 @@ const ZA03DialogContent = memo((props) => {
 		);
 	}
 
-	if (readWorking || !dataLoaded) {
+	if (readWorking || !itemDataReady) {
 		return (
 			<Container maxWidth="xs">
 				<FlexBox justifyContent="center" minHeight="30em">
@@ -88,7 +88,7 @@ const ZA03DialogContent = memo((props) => {
 ZA03DialogContent.propTypes = {
 	data: PropTypes.object,
 	readWorking: PropTypes.bool,
-	dataLoaded: PropTypes.bool,
+	itemDataReady: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,

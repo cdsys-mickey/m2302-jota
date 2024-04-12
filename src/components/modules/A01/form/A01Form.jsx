@@ -14,14 +14,17 @@ import Strings from "@/modules/md-strings";
 import YesNo from "@/modules/md-yes-no";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
+import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
-import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
+import A01 from "../../../../modules/md-a01";
+import AlertEx from "../../../../shared-components/AlertEx";
+import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
+import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
 import { ProdComboGridContainer } from "./combo/ProdComboGridContainer";
-import { ProdTransGridContainer } from "./trans/ProdTransGridContainer";
 import TypoCmsTypePickerContainer from "./fields/TypoCmsTypePickerContainer";
 import { TypoCounterPickerContainer } from "./fields/TypoCounterPickerContainer";
 import { TypoPkgTypePickerContainer } from "./fields/TypoPkgTypePickerContainer";
@@ -30,19 +33,14 @@ import { TypoProdCatMPickerContainer } from "./fields/TypoProdCatMPickerContaine
 import { TypoProdCatSPickerContainer } from "./fields/TypoProdCatSPickerContainer";
 import { TypoProdTypeAPickerContainer } from "./fields/TypoProdTypeAPickerContainer";
 import { TypoProdTypeBPickerContainer } from "./fields/TypoProdTypeBPickerContainer";
-import { TypoTaxTypePickerContainer } from "./fields/TypoTaxTypePickerContainer";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import A01 from "../../../../modules/md-a01";
-import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
-import ErrorBox from "../../../../shared-components/ErrorBox";
-import AlertEx from "../../../../shared-components/AlertEx";
+import { ProdTransGridContainer } from "./trans/ProdTransGridContainer";
 
 const A01Form = memo((props) => {
 	const {
 		readError,
 		data,
 		readWorking,
-		dataLoaded,
+		itemDataReady,
 		editing,
 		updating,
 		store,
@@ -71,7 +69,7 @@ const A01Form = memo((props) => {
 					/>
 				</Box>
 			)}
-			{dataLoaded && (
+			{itemDataReady && (
 				<Box
 					pt={1}
 					sx={() => ({
@@ -105,7 +103,8 @@ const A01Form = memo((props) => {
 									columns={12}
 									spacing={editing ? 2 : 1}>
 									<Grid item xs={12} sm={12} md={4}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="ProdID"
 											label="貨品編號"
 											autoFocus
@@ -119,7 +118,8 @@ const A01Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={8}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="ProdData"
 											label="品名規格"
 											fullWidth
@@ -129,10 +129,11 @@ const A01Form = memo((props) => {
 											}}
 											readOnly={store}>
 											{data?.ProdData}
-										</TypoTextFieldContainer>
+										</TextFieldWrapper>
 									</Grid>
 									<Grid item xs={12} sm={12} md={4}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="條碼"
 											name="Barcode"
 											fullWidth
@@ -250,16 +251,18 @@ const A01Form = memo((props) => {
 									columns={12}
 									spacing={editing ? 2 : 1}>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="StdCost"
 											label="標準成本"
 											type="number"
 											readOnly={store}>
 											{Strings.formatPrice(data?.StdCost)}
-										</TypoTextFieldContainer>
+										</TextFieldWrapper>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="TranCost"
 											label="調撥成本"
 											type="number"
@@ -267,10 +270,11 @@ const A01Form = memo((props) => {
 											{Strings.formatPrice(
 												data?.TranCost
 											)}
-										</TypoTextFieldContainer>
+										</TextFieldWrapper>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="LocalCost"
 											label="批發成本(本)"
 											type="number"
@@ -278,16 +282,17 @@ const A01Form = memo((props) => {
 											{Strings.formatPrice(
 												data?.LocalCost
 											)}
-										</TypoTextFieldContainer>
+										</TextFieldWrapper>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="OutCost"
 											label="批發成本(外)"
 											type="number"
 											readOnly={store}>
 											{Strings.formatPrice(data?.OutCost)}
-										</TypoTextFieldContainer>
+										</TextFieldWrapper>
 									</Grid>
 								</Grid>
 							</FormSectionBox>
@@ -298,23 +303,25 @@ const A01Form = memo((props) => {
 									columns={12}
 									spacing={editing ? 2 : 1}>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											name="SafeQty"
 											label="平日安全存量"
 											type="number"
 											readOnly={store}
 											fullWidth>
 											{Strings.formatPrice(data?.SafeQty)}
-										</TypoTextFieldContainer>
+										</TextFieldWrapper>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="儲位"
 											name="Location"
 											readOnly={store}
 											fullWidth>
 											{data?.Location}
-										</TypoTextFieldContainer>
+										</TextFieldWrapper>
 									</Grid>
 
 									<Grid item xs={12} sm={12} md={4}>
@@ -385,7 +392,8 @@ const A01Form = memo((props) => {
 									columns={12}
 									spacing={editing ? 2 : 1}>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="銷/存"
 											type="number"
 											name="SRate"
@@ -396,7 +404,8 @@ const A01Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="進/存"
 											type="number"
 											name="IRate"
@@ -407,7 +416,8 @@ const A01Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="BOM/存"
 											type="number"
 											name="MRate"
@@ -427,7 +437,8 @@ const A01Form = memo((props) => {
 									columns={12}
 									spacing={editing ? 2 : 1}>
 									<Grid item xs={12} sm={12} md={2}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="建議售價"
 											name="Price"
 											type="number"
@@ -438,7 +449,8 @@ const A01Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={2}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="售價A"
 											type="number"
 											name="PriceA"
@@ -450,7 +462,8 @@ const A01Form = memo((props) => {
 									</Grid>
 
 									<Grid item xs={12} sm={12} md={2}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="售價B"
 											type="number"
 											name="PriceB"
@@ -461,7 +474,8 @@ const A01Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={2}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="售價C"
 											type="number"
 											name="PriceC"
@@ -472,7 +486,8 @@ const A01Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={2}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="售價D"
 											type="number"
 											name="PriceD"
@@ -483,7 +498,8 @@ const A01Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={2}>
-										<TypoTextFieldContainer
+										<TextFieldWrapper
+											typo
 											label="售價E"
 											type="number"
 											name="PriceE"
@@ -530,7 +546,7 @@ const A01Form = memo((props) => {
 A01Form.propTypes = {
 	data: PropTypes.object,
 	readWorking: PropTypes.bool,
-	dataLoaded: PropTypes.bool,
+	itemDataReady: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,

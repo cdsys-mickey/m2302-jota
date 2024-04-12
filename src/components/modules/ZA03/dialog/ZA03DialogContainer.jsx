@@ -50,18 +50,18 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 	}, [setSelectedTab, itemViewOpen, clearLoadAuth]);
 
 	// useEffect(() => {
-	// 	if (za03.itemDataLoaded) {
+	// 	if (za03.itemDataReady) {
 	// 		clearLoadAuthAction();
 	// 	}
-	// }, [clearLoadAuthAction, za03.itemDataLoaded]);
+	// }, [clearLoadAuthAction, za03.itemDataReady]);
 
 	// useEffect(() => {
-	// 	if (itemDataLoaded) {
+	// 	if (itemDataReady) {
 	// 		console.log(`za03 form reset`, itemData);
 	// 		reset(itemData);
 	// 		resetGridLoading();
 	// 	}
-	// }, [reset, resetGridLoading, itemData, itemDataLoaded]);
+	// }, [reset, resetGridLoading, itemData, itemDataReady]);
 
 	return (
 		// <FormProvider {...forms}>
@@ -100,7 +100,7 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 					updating={za03.updating}
 					readWorking={za03.readWorking}
 					data={za03.itemData}
-					dataLoaded={za03.itemDataLoaded}
+					itemDataReady={za03.itemDataReady}
 					selectedTab={za03.selectedTab}
 					handleTabChange={za03.handleTabChange}
 					infoDisabled={infoDisabled}

@@ -30,6 +30,8 @@ const MuiCheckboxColumn = memo((props) => {
 		// onChange,
 	} = props;
 
+	// console.log("rendering MuiCheckboxColumn");
+
 	// const rowDataToChecked = useCallback(
 	// 	(rowData) => {
 	// 		return rowData === trueValue;

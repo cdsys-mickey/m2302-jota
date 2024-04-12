@@ -66,16 +66,16 @@ const BomProdPickerColumn = memo((props) => {
 			name={name}
 			withBomPackageName
 			queryParam="qs"
-			filterByServer
 			label=""
 			hideBorders
 			inputRef={ref}
 			disabled={disabled}
 			value={name ? rowData[name] : rowData}
 			onChange={handleChange}
-			queryRequired
 			placeholder="關連商品"
 			typeToSearchText="請輸入商品編號或名稱進行搜尋"
+			filterByServer
+			queryRequired
 			{...rest}
 		/>
 	);

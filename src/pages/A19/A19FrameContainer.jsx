@@ -5,6 +5,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { A19FormContainer } from "@/components/modules/A19/A19FormContainer";
+import { OptionPickerProvider } from "../../shared-components/picker/listbox/OptionPickerProvider";
 
 export const A19FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -22,7 +23,9 @@ export const A19FrameContainer = () => {
 			{/* 工具列 */}
 			<A19Toolbar />
 			{/* 表單 */}
-			<A19FormContainer />
+			<OptionPickerProvider>
+				<A19FormContainer />
+			</OptionPickerProvider>
 		</Box>
 	);
 };

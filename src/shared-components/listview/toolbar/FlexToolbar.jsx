@@ -6,6 +6,7 @@ import { forwardRef, memo } from "react";
 const FlexToolbar = memo(
 	forwardRef((props, ref) => {
 		const {
+			align = "left",
 			children,
 			leftComponents,
 			LeftComponent,
@@ -69,7 +70,7 @@ const FlexToolbar = memo(
 					{...LeftProps}>
 					{LeftComponent && <LeftComponent {...componentProps} />}
 					{leftComponents}
-					{children}
+					{align === "left" && children}
 				</FlexBox>
 
 				{/* RIGHT */}
@@ -90,6 +91,7 @@ const FlexToolbar = memo(
 					{...RightProps}>
 					{RightComponent && <RightComponent {...componentProps} />}
 					{rightComponents}
+					{align === "right" && children}
 				</FlexBox>
 			</FlexBox>
 		);
@@ -98,6 +100,7 @@ const FlexToolbar = memo(
 
 FlexToolbar.displayName = "FlexToolbar";
 FlexToolbar.propTypes = {
+	align: PropTypes.oneOf(["left", "right", "center"]),
 	bgcolor: PropTypes.string,
 	borderRadius: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	children: PropTypes.element,

@@ -5,16 +5,16 @@ import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import { ProdMaterialsGridContainer } from "./prods/ProdMaterialsGridContainer";
-import TypoProdPickerContainer from "./fields/TypoProdPickerContainer";
+import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 import { PackageTypeLabelContainer } from "./fields/PackageTypeLabelContainer";
-import { useMemo } from "react";
+import TypoProdPickerContainer from "./fields/TypoProdPickerContainer";
+import { ProdMaterialsGridContainer } from "./prods/ProdMaterialsGridContainer";
 
 const A20Form = memo((props) => {
-	const { data, readWorking, dataLoaded, editing, updating, ...rest } = props;
+	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
+		props;
 
 	return (
 		<form {...rest}>
@@ -27,7 +27,7 @@ const A20Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{dataLoaded && (
+			{itemDataReady && (
 				<Box
 					pt={1}
 					sx={() => ({
@@ -59,7 +59,8 @@ const A20Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={2}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="ProdQty"
 									label="製造量"
 									type="number"
@@ -91,7 +92,7 @@ const A20Form = memo((props) => {
 A20Form.propTypes = {
 	data: PropTypes.object,
 	readWorking: PropTypes.bool,
-	dataLoaded: PropTypes.bool,
+	itemDataReady: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,

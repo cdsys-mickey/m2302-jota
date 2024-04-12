@@ -1,19 +1,20 @@
 import { Box, Grid } from "@mui/material";
 import { memo } from "react";
 
+import TypoBankPickerContainer from "@/components/fields/TypoBankPickerContainer";
+import YesNo from "@/modules/md-yes-no";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
+import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import TypoBankPickerContainer from "@/components/fields/TypoBankPickerContainer";
-import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
-import YesNo from "@/modules/md-yes-no";
+import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 
 const A05Form = memo((props) => {
-	const { data, readWorking, dataLoaded, editing, updating, ...rest } = props;
+	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
+		props;
 	return (
 		<form {...rest}>
 			{readWorking && (
@@ -25,7 +26,7 @@ const A05Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{dataLoaded && (
+			{itemDataReady && (
 				<Box
 					pt={1}
 					sx={() => ({
@@ -45,7 +46,8 @@ const A05Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="FactID"
 									label="廠商代碼"
 									autoFocus
@@ -57,7 +59,8 @@ const A05Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="FactData"
 									label="名稱"
 									fullWidth
@@ -68,7 +71,8 @@ const A05Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="AbbrName"
 									label="簡稱"
 									fullWidth
@@ -77,21 +81,24 @@ const A05Form = memo((props) => {
 							<FlexBox fullWidth />
 
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="Boss"
 									label="負責人"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="Contact"
 									label="聯絡人"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={5}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="Tel"
 									label="電話"
 									fullWidth
@@ -99,7 +106,8 @@ const A05Form = memo((props) => {
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="Uniform"
 									label="公司統編"
 									fullWidth
@@ -113,14 +121,16 @@ const A05Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="PayGroup"
 									label="應付帳組別"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="BankAcct"
 									label="帳號"
 									fullWidth
@@ -135,21 +145,24 @@ const A05Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="CompAddr"
 									label="地址"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="CompTel"
 									label="電話"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="CompFax"
 									label="傳真"
 									fullWidth
@@ -172,21 +185,24 @@ const A05Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="FactAddr"
 									label="地址"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="FactTel"
 									label="電話"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="FactFax"
 									label="傳真"
 									fullWidth
@@ -197,7 +213,8 @@ const A05Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="mainProd"
 									multiline
 									minRows={2}
@@ -206,7 +223,8 @@ const A05Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="remark"
 									multiline
 									minRows={2}
@@ -225,7 +243,7 @@ const A05Form = memo((props) => {
 A05Form.propTypes = {
 	data: PropTypes.object,
 	readWorking: PropTypes.bool,
-	dataLoaded: PropTypes.bool,
+	itemDataReady: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,

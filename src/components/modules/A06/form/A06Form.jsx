@@ -5,21 +5,22 @@ import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import TypoTextFieldContainer from "@/shared-components/typo/TypoTextFieldContainer";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import TypoEmployeePickerContainer from "./fields/TypoEmployeePickerContainer";
-import { TypoCheckboxExContainer } from "../../../../shared-components/checkbox/TypoCheckboxExContainer";
 import YesNo from "../../../../modules/md-yes-no";
-import { TypoCustomerLevelPickerContainer } from "./fields/TypoCustomerLevelPickerContainer";
-import TypoChannelPickerContainer from "./fields/TypoChannelPickerContainer";
-import TypoAreaPickerContainer from "./fields/TypoAreaPickerContainer";
-import TypoPaymentPickerContainer from "./fields/TypoPaymentPickerContainer";
+import { TypoCheckboxExContainer } from "../../../../shared-components/checkbox/TypoCheckboxExContainer";
+import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 import TypoBankPickerContainer from "../../../fields/TypoBankPickerContainer";
+import TypoAreaPickerContainer from "./fields/TypoAreaPickerContainer";
+import TypoChannelPickerContainer from "./fields/TypoChannelPickerContainer";
+import { TypoCustomerLevelPickerContainer } from "./fields/TypoCustomerLevelPickerContainer";
+import TypoEmployeePickerContainer from "./fields/TypoEmployeePickerContainer";
+import TypoPaymentPickerContainer from "./fields/TypoPaymentPickerContainer";
 import TypoTransportPickerContainer from "./fields/TypoTransportPickerContainer";
 
 const A06Form = memo((props) => {
-	const { data, readWorking, dataLoaded, editing, updating, ...rest } = props;
+	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
+		props;
 	return (
 		<form {...rest}>
 			{readWorking && (
@@ -31,7 +32,7 @@ const A06Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{dataLoaded && (
+			{itemDataReady && (
 				<Box
 					pt={1}
 					sx={() => ({
@@ -51,7 +52,8 @@ const A06Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="CustID"
 									label="客戶代碼"
 									autoFocus
@@ -63,7 +65,8 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="CustData"
 									label="名稱"
 									fullWidth
@@ -74,7 +77,8 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="AbbrName"
 									label="簡稱"
 									fullWidth
@@ -123,7 +127,8 @@ const A06Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="RecGroup"
 									label="收帳組別"
 									fullWidth
@@ -144,7 +149,8 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="BankAcct"
 									label="帳號"
 									fullWidth
@@ -155,21 +161,24 @@ const A06Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="Boss"
 									label="負責人"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="Contact"
 									label="聯絡人"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="UniForm"
 									label="統編"
 									fullWidth
@@ -177,21 +186,24 @@ const A06Form = memo((props) => {
 							</Grid>
 
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="CompTel"
 									label="電話"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="CompFax"
 									label="傳真"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="Cel"
 									label="行動"
 									fullWidth
@@ -203,28 +215,32 @@ const A06Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={8}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="RecAddr"
 									label="送貨地址"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={4}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="RecTel"
 									label="送貨電話"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={8}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="InvAddr"
 									label="發票地址"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={4}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="InvTel"
 									label="發票電話"
 									fullWidth
@@ -243,7 +259,8 @@ const A06Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="mainProd"
 									multiline
 									minRows={2}
@@ -252,7 +269,8 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoTextFieldContainer
+								<TextFieldWrapper
+									typo
 									name="remark"
 									multiline
 									minRows={2}
@@ -271,7 +289,7 @@ const A06Form = memo((props) => {
 A06Form.propTypes = {
 	data: PropTypes.object,
 	readWorking: PropTypes.bool,
-	dataLoaded: PropTypes.bool,
+	itemDataReady: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,
