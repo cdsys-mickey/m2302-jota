@@ -1,5 +1,5 @@
 import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import AddIcon from "@mui/icons-material/Add";
 import React, { forwardRef, memo } from "react";
 

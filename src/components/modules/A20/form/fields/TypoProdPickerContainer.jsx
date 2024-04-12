@@ -45,7 +45,7 @@ const TypoProdPickerContainer = forwardRef((props, ref) => {
 			querystring={querystring}
 			queryParam="qs"
 			filterByServer
-			queryRequired
+			// queryRequired
 			placeholder="關連商品"
 			typeToSearchText="請輸入商品編號或名稱進行搜尋"
 			getOptionLabel={Prods.getOptionLabel}

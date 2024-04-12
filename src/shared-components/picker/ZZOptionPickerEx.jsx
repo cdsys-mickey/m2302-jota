@@ -30,7 +30,7 @@ const defaultOnError = (err) => {
 	console.error(`onError`, err);
 };
 
-const OptionPickerEx = memo(
+const ZZOptionPickerEx = memo(
 	forwardRef((props, ref) => {
 		const {
 			name = "NO_NAME",
@@ -42,7 +42,7 @@ const OptionPickerEx = memo(
 			method = "get",
 			lazy = true,
 			queryParam = "q",
-			queryRequired = false,
+			// queryRequired = false,
 			// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
 			querystring,
 			headers,
@@ -74,7 +74,7 @@ const OptionPickerEx = memo(
 			loading: null,
 			// query: null,
 			options: defaultOptions,
-			noOptionsText: queryRequired ? typeToSearchText : noOptionsText,
+			noOptionsText: filterByServer ? typeToSearchText : noOptionsText,
 		});
 
 		const timerIdRef = useRef();
@@ -195,11 +195,11 @@ const OptionPickerEx = memo(
 			setPickerState((prev) => ({
 				...prev,
 				options: [],
-				...(queryRequired && {
+				...(filterByServer && {
 					noOptionsText: typeToSearchText,
 				}),
 			}));
-		}, [queryRequired, typeToSearchText]);
+		}, [filterByServer, typeToSearchText]);
 
 		const handleInputChange = useCallback(
 			(event) => {
@@ -262,25 +262,30 @@ const OptionPickerEx = memo(
 		// 		onChange(value);
 		// 	}
 		// };
-		const handleChange = (value) => {
-			if (
-				queryRequired &&
-				// ((!multiple && value === "") ||
-				((!multiple && !value) ||
-					(multiple && Array.isArray(value) && value.length === 0))
-			) {
-				setPickerState((prevState) => ({
-					...prevState,
-					options: [],
-					noOptionsText: typeToSearchText,
-					loading: null,
-				}));
-				// setLoading(null);
-			}
-			if (onChange) {
-				onChange(value);
-			}
-		};
+		const handleChange = useCallback(
+			(value) => {
+				if (
+					filterByServer &&
+					// ((!multiple && value === "") ||
+					((!multiple && !value) ||
+						(multiple &&
+							Array.isArray(value) &&
+							value.length === 0))
+				) {
+					setPickerState((prevState) => ({
+						...prevState,
+						options: [],
+						noOptionsText: typeToSearchText,
+						loading: null,
+					}));
+					// setLoading(null);
+				}
+				if (onChange) {
+					onChange(value);
+				}
+			},
+			[filterByServer, multiple, onChange, typeToSearchText]
+		);
 
 		// 當 filterByServer 時, 不會對輸出做任何篩選
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
@@ -371,9 +376,9 @@ const OptionPickerEx = memo(
 	})
 );
 
-OptionPickerEx.displayName = "OptionPickerEx";
+ZZOptionPickerEx.displayName = "ZZOptionPickerEx";
 
-OptionPickerEx.propTypes = {
+ZZOptionPickerEx.propTypes = {
 	// 來自 OptionPicker
 	disabled: PropTypes.bool,
 
@@ -403,4 +408,4 @@ OptionPickerEx.propTypes = {
 	onOpen: PropTypes.func,
 };
 
-export default OptionPickerEx;
+export default ZZOptionPickerEx;

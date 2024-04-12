@@ -1,4 +1,4 @@
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import SendIcon from "@mui/icons-material/Send";
 import { Fragment, forwardRef, memo } from "react";
 

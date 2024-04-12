@@ -22,7 +22,7 @@ const A22GridForm = (props) => {
 							label="起始商品編號"
 							size="small"
 							filterByServer
-							queryRequired
+							// queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
 						/>
 					</Grid>
@@ -32,7 +32,7 @@ const A22GridForm = (props) => {
 							label="截止商品編號"
 							size="small"
 							filterByServer
-							queryRequired
+							// queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
 						/>
 					</Grid>

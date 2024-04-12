@@ -12,7 +12,9 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
 	const form = useFormContext({
-		defaultValues: {},
+		defaultValues: {
+			quotes: [],
+		},
 	});
 	const { reset } = form;
 

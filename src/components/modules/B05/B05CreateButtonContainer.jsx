@@ -1,4 +1,4 @@
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import AddIcon from "@mui/icons-material/Add";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { B05Context } from "@/contexts/B05/B05Context";

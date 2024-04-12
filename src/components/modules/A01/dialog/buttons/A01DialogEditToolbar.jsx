@@ -1,8 +1,7 @@
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import ResponsiveLoadingButton from "../../../../../shared-components/responsive/ResponsiveLoadingButton";
-import FlexToolbar from "../../../../../shared-components/listview/toolbar/FlexToolbar";
+import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
 
 const A01DialogEditToolbar = memo(
 	forwardRef((props, ref) => {

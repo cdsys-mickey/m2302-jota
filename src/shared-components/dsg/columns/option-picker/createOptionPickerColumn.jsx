@@ -3,7 +3,7 @@ export const createOptionPickerColumn = (CellComponent) => {
 		component: CellComponent,
 		disableKeys: true,
 		keepFocus: false,
-		deleteValue: () => null,
+		deleteValue: () => ({}),
 		copyValue: ({ rowData }) => rowData,
 		pasteValue: ({ value }) => value,
 		isCellEmpty: ({ rowData }) => !rowData,

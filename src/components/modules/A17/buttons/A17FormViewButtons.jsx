@@ -1,4 +1,4 @@
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";

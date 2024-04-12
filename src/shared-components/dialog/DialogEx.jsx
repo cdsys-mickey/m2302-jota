@@ -19,8 +19,8 @@ import {
 } from "react";
 import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
-import ResponsiveLoadingButton from "../responsive/ResponsiveLoadingButton";
 import DialogTitleEx from "./DialogTitleEx";
+import { ButtonWrapper } from "../button/ButtonWrapper";
 
 const defaultActionsStyle = {};
 
@@ -224,23 +224,25 @@ const DialogEx = memo(
 							<OtherActionButtonsComponent />
 						)}
 						{showConfirmButton && (
-							<ResponsiveLoadingButton
+							<ButtonWrapper
+								responsive
 								onClick={handleConfirm}
 								loading={working}
 								{...buttonProps}
 								{...confirmButtonProps}>
 								{confirmText}
-							</ResponsiveLoadingButton>
+							</ButtonWrapper>
 						)}
 
 						{onCancel && (
-							<ResponsiveLoadingButton
+							<ButtonWrapper
+								responsive
 								color="primary"
 								onClick={onCancel}
 								{...buttonProps}
 								{...cancelButtonProps}>
 								{cancelText}
-							</ResponsiveLoadingButton>
+							</ButtonWrapper>
 						)}
 					</DialogActions>
 				)}

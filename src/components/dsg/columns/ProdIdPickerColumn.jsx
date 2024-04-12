@@ -90,7 +90,6 @@ const ProdIdPickerColumn = memo((props) => {
 			placeholder="商品"
 			typeToSearchText="請輸入商品編號或名稱進行搜尋"
 			filterByServer
-			queryRequired
 			{...rest}
 		/>
 	);

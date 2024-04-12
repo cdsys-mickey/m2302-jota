@@ -1,4 +1,4 @@
-import ResponsiveLoadingButton from "@/shared-components/responsive/ResponsiveLoadingButton";
+import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
 import { useContext } from "react";
 import { A22Context } from "@/contexts/A22/A22Context";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";

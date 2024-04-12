@@ -7,7 +7,7 @@ import LockResetIcon from "@mui/icons-material/LockReset";
 import Colors from "@/modules/md-colors";
 import { Box, FormHelperText, Grid, Paper } from "@mui/material";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
-import ResponsiveLoadingButton from "@/shared-components/responsive/ResponsiveLoadingButton";
+import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
 import LoginIcon from "@mui/icons-material/Login";
 import BackgroundImage from "@/images/rm218batch4-ning-34_2.jpg";
 

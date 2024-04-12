@@ -2,7 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
 import React from "react";
 import ButtonEx from "@/shared-components/button/ButtonEx";
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import { forwardRef } from "react";
 
 export const C04CreateButtonContainer = forwardRef(({ ...rest }, ref) => {

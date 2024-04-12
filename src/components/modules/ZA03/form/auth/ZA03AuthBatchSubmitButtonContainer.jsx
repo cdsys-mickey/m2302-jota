@@ -1,6 +1,6 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import Users from "@/modules/md-users";
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import { useMemo } from "react";
 import { useCallback, useContext } from "react";
 import { useFormContext } from "react-hook-form";

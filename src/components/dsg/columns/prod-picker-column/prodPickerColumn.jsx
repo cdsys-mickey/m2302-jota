@@ -6,7 +6,7 @@ export const prodPickerColumn = (opts) => {
 		columnData: opts,
 		disableKeys: true,
 		keepFocus: false,
-		deleteValue: () => null,
+		deleteValue: () => ({}),
 		copyValue: ({ rowData }) => rowData,
 		pasteValue: ({ value }) => value,
 		isCellEmpty: ({ rowData }) => !rowData,

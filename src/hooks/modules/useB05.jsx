@@ -12,6 +12,7 @@ import { useRef } from "react";
 import B05 from "../../modules/md-b05";
 import Errors from "../../shared-modules/sd-errors";
 import { toast } from "react-toastify";
+import Objects from "../../shared-modules/sd-objects";
 
 export const useB05 = () => {
 	const crud = useContext(CrudContext);
@@ -236,15 +237,109 @@ export const useB05 = () => {
 		return `${rowData?.Pkey || rowIndex}`;
 	}, []);
 
-	// 載入商品
+	// 帶入商品
 	const importProdsAction = useAction();
 
-	const onLoadProdsSubmit = useCallback((data) => {
-		console.log("onLoadProdsSubmit", data);
-	}, []);
+	const [ipState, setIpState] = useState({
+		criteria: null,
+		saveKey: null,
+		totalElements: null,
+		loading: false,
+	});
 
-	const onLoadProdsSubmitError = useCallback((err) => {
-		console.error("onLoadProdsSubmitError", err);
+	const peekProds = useCallback(
+		async (criteria) => {
+			if (!token) {
+				throw new Error("token not specified");
+			}
+			if (Objects.isAllPropsEmpty(criteria)) {
+				console.log("criteria is empty");
+				if (ipState.saveKey) {
+					setIpState((prev) => ({
+						...prev,
+
+						saveKey: null,
+						totalElements: null,
+					}));
+				}
+				return;
+			}
+			setIpState((prev) => ({
+				...prev,
+				loading: true,
+				criteria: criteria,
+			}));
+
+			try {
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/prod/data-grid/B05",
+					bearer: token,
+					params: {
+						...B05.transformAsQueryParams(criteria),
+						pk: 1,
+					},
+				});
+				if (status.success) {
+					setIpState((prev) => ({
+						...prev,
+						saveKey: payload.Select?.SaveKey,
+						totalElements: payload.Select?.TotalRecord,
+					}));
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				console.error("peek failed", err);
+				toast.error(Errors.getMessage("篩選失敗", err));
+			} finally {
+				setIpState((prev) => ({
+					...prev,
+					loading: false,
+				}));
+			}
+		},
+		[httpGetAsync, ipState.saveKey, token]
+	);
+
+	const onImportProdsSubmit = useCallback(
+		async (data) => {
+			console.log("onImportProdsSubmit", data);
+			try {
+				importProdsAction.start();
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/prod/data-grid/B05",
+					bearer: token,
+					params: {
+						...B05.transformAsQueryParams(ipState.criteria),
+						sk: ipState.saveKey,
+					},
+				});
+				if (status.success) {
+					const data = payload.data?.[0].FactInq_S || [];
+					console.log("data", data);
+					quoteGrid.handleGridDataLoaded(B05.transformForGrid(data));
+					toast.success(`成功帶入 ${data.length} 筆商品`);
+					importProdsAction.clear();
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				importProdsAction.fail(err);
+				toast.error(Errors.getMessage("帶入商品發生錯誤", err));
+			}
+		},
+		[
+			httpGetAsync,
+			importProdsAction,
+			ipState.criteria,
+			ipState.saveKey,
+			quoteGrid,
+			token,
+		]
+	);
+
+	const onImportProdsSubmitError = useCallback((err) => {
+		console.error("onImportProdsSubmitError", err);
 	}, []);
 
 	return {
@@ -266,11 +361,14 @@ export const useB05 = () => {
 		...quoteGrid,
 		handleQuoteGridChange,
 		getRowKey,
-		// 載入商品
+		// 帶入商品
+		importProdsWorking: importProdsAction.working,
 		promptImportProds: importProdsAction.prompt,
 		cancelImportProds: importProdsAction.clear,
 		importProdsDialogOpen: importProdsAction.active,
-		onLoadProdsSubmit,
-		onLoadProdsSubmitError,
+		onImportProdsSubmit,
+		onImportProdsSubmitError,
+		peekProds,
+		ipState,
 	};
 };

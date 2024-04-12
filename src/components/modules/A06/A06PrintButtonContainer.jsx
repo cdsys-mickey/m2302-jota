@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { A06Context } from "../../../contexts/A06/A06Context";
 import A06 from "../../../modules/md-a06";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import { StdPrintContext } from "../../../contexts/std-print/StdPrintContext";
 
 const A06PrintButtonContainer = memo(

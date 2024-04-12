@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { useMemo } from "react";
 import queryString from "query-string";
 import { OptionPickerWrapper } from "../../shared-components/picker/OptionPickerWrapper";
+import { useCallback } from "react";
 
 export const ProdPickerContainer = (props) => {
 	const {
@@ -35,6 +36,14 @@ export const ProdPickerContainer = (props) => {
 		return queryString.stringify(obj);
 	}, [withBomPackageName, withPurchasePackageName, withSalesPackageName]);
 
+	const isOptionEqualToValue = useCallback((option, value) => {
+		return Prods.isOptionEqualToValue(option, value);
+	}, []);
+
+	const getOptionLabel = useCallback((option) => {
+		return Prods.getOptionLabel(option);
+	}, []);
+
 	return (
 		<OptionPickerWrapper
 			name={name}
@@ -45,8 +54,8 @@ export const ProdPickerContainer = (props) => {
 			// queryRequired
 			queryParam="qs"
 			querystring={querystring}
-			getOptionLabel={Prods.getOptionLabel}
-			isOptionEqualToValue={Prods.isOptionEqualToValue}
+			getOptionLabel={getOptionLabel}
+			isOptionEqualToValue={isOptionEqualToValue}
 			{...rest}
 		/>
 	);

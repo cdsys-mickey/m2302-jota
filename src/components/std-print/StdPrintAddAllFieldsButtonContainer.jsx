@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import ResponsiveLoadingButton from "../../shared-components/responsive/ResponsiveLoadingButton";
-import { StdPrintContext } from "../../contexts/std-print/StdPrintContext";
+import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
+import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
 export const StdPrintAddAllFieldsButtonContainer = () => {

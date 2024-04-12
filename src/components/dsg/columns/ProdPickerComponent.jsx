@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import { useMemo } from "react";
+import { OptionPickerProvider } from "../../../shared-components/picker/listbox/OptionPickerProvider";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return false;
@@ -100,7 +101,8 @@ const ProdPickerComponent = memo((props) => {
 			placeholder="商品"
 			typeToSearchText="請輸入商品編號或名稱進行搜尋"
 			filterByServer
-			queryRequired
+			// queryRequired
+			// virtualize
 			{...rest}
 		/>
 	);

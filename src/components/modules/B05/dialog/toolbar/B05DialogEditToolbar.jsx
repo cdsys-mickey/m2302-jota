@@ -1,23 +1,26 @@
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import ResponsiveLoadingButton from "@/shared-components/responsive/ResponsiveLoadingButton";
-import B05LoadProdsDialogContainer from "./B05LoadProdsDialogContainer";
+
+import B05ImportProdsDialogContainer from "./B05ImportProdsDialogContainer";
 import SearchIcon from "@mui/icons-material/Search";
+import { ButtonWrapper } from "../../../../../shared-components/button/ButtonWrapper";
 
 const B05DialogEditToolbar = memo(
 	forwardRef((props, ref) => {
 		const { onLoadProds, onSave, onCancel, loading, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				<ResponsiveLoadingButton
+				<ButtonWrapper
+					responsive
 					onClick={onLoadProds}
 					endIcon={<SearchIcon />}
 					color="warning"
 					variant="outlined">
-					載入商品
-				</ResponsiveLoadingButton>
-				<ResponsiveLoadingButton
+					帶入商品
+				</ButtonWrapper>
+				<ButtonWrapper
+					responsive
 					onClick={onSave}
 					type="submit"
 					endIcon={<SendIcon />}
@@ -25,16 +28,17 @@ const B05DialogEditToolbar = memo(
 					variant="contained"
 					loading={loading}>
 					儲存
-				</ResponsiveLoadingButton>
-				<ResponsiveLoadingButton
+				</ButtonWrapper>
+				<ButtonWrapper
+					responsive
 					onClick={onCancel}
 					color="neutral"
 					variant="contained"
 					{...rest}>
 					取消
-				</ResponsiveLoadingButton>
-				{/* 載入商品 */}
-				<B05LoadProdsDialogContainer />
+				</ButtonWrapper>
+				{/* 帶入商品 */}
+				<B05ImportProdsDialogContainer />
 			</Fragment>
 		);
 	})

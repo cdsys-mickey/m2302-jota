@@ -16,7 +16,7 @@ export const ZA03CopyAuthUserPicker = (props) => {
 	return (
 		<UserPicker
 			filterByServer
-			queryRequired
+			// queryRequired
 			onChange={handleChange}
 			{...rest}
 		/>

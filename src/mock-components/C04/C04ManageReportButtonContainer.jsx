@@ -1,7 +1,7 @@
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import React from "react";
 import ButtonEx from "@/shared-components/button/ButtonEx";
-import ResponsiveButton from "@/shared-components/responsive/ResponsiveButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 
 export const C04ManageReportButtonContainer = React.forwardRef(
 	({ ...rest }, ref) => {

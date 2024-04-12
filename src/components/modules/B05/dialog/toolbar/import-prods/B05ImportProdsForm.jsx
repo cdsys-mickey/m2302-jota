@@ -1,13 +1,14 @@
 import { memo } from "react";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { ProdPickerContainer } from "../../../../../picker/ProdPickerContainer";
-import ProdTypeAPicker from "../../../../../picker/ProdTypeAPicker";
-import { ControlledProdCatLPicker } from "../../../../../picker/ControlledProdCatLPicker";
-import ControlledProdCatMPicker from "../../../../../picker/ControlledProdCatMPicker";
-import ControlledProdCatSPicker from "../../../../../picker/ControlledProdCatSPicker";
-import FlexBox from "../../../../../../shared-components/FlexBox";
-import FlexToolbar from "../../../../../../shared-components/listview/toolbar/FlexToolbar";
+import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
+import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
+import { ControlledProdCatLPicker } from "@/components/picker/ControlledProdCatLPicker";
+import ControlledProdCatMPicker from "@/components/picker/ControlledProdCatMPicker";
+import ControlledProdCatSPicker from "@/components/picker/ControlledProdCatSPicker";
+import FlexBox from "@/shared-components/FlexBox";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import { B05ImportProdsButtonContainer } from "./B05ImportProdsButtonContainer";
 
 const B05LoadProdsForm = memo((props) => {
 	const { handleSubmit, ...rest } = props;
@@ -51,7 +52,12 @@ const B05LoadProdsForm = memo((props) => {
 						<ControlledProdCatSPicker name="catS" />
 					</Grid>
 				</Grid>
-				<FlexToolbar align="right"></FlexToolbar>
+				<FlexToolbar align="right">
+					<B05ImportProdsButtonContainer
+						variant="contained"
+						color="primary"
+					/>
+				</FlexToolbar>
 			</Box>
 		</form>
 	);

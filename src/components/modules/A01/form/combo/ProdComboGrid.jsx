@@ -38,7 +38,7 @@ const ProdComboGrid = memo((props) => {
 						filterByServer: true,
 						size: "small",
 						getData: (p) => p["data"],
-						queryRequired: true,
+						// queryRequired: true,
 						placeholder: "組合商品",
 						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
 					})

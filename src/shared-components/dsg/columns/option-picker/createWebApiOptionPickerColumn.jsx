@@ -12,7 +12,7 @@ export const createWebApiOptionPickerColumn = (componentProps) => {
 		},
 		disableKeys: true,
 		keepFocus: true,
-		deleteValue: () => null,
+		deleteValue: () => ({}),
 		copyValue: ({ rowData }) => rowData,
 		pasteValue: ({ value }) => value,
 		isCellEmpty: ({ rowData }) => !rowData,

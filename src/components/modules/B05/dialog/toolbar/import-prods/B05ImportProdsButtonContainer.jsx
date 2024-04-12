@@ -1,15 +1,23 @@
 import { useWatch } from "react-hook-form";
-import useDebounce from "../../../../../../shared-hooks/useDebounce";
+import useDebounce from "@/shared-hooks/useDebounce";
 import { useContext } from "react";
-import { B05Context } from "../../../../../../contexts/B05/B05Context";
+import { B05Context } from "@/contexts/B05/B05Context";
 import { useState } from "react";
 import { useMemo } from "react";
+import { useEffect } from "react";
+import Objects from "@/shared-modules/sd-objects";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import Constants from "@/modules/md-constants";
 
-export const B05LoadProdsButtonContainer = (props) => {
+export const B05ImportProdsButtonContainer = (props) => {
 	const { ...rest } = props;
 	const criteria = useWatch();
 	const b05 = useContext(B05Context);
-	const { peek, totalElements, loading } = prodGrid;
+	const {
+		peekProds,
+		importProdsWorking,
+		ipState: { loading, totalElements },
+	} = b05;
 
 	const debouncedValues = useDebounce(criteria, 300);
 
@@ -23,35 +31,36 @@ export const B05LoadProdsButtonContainer = (props) => {
 		if (debouncedJson !== prevJson) {
 			setPrevJson(debouncedJson);
 			console.log("criteria changed", debouncedValues);
-			peek(debouncedValues);
+			peekProds(debouncedValues);
 		}
-	}, [peek, debouncedValues, prevJson, debouncedJson]);
+	}, [debouncedValues, prevJson, debouncedJson, peekProds]);
 
 	const buttonText = useMemo(() => {
 		return Objects.isAllPropsEmpty(criteria)
 			? "請先輸入篩選條件"
 			: totalElements
-			? `讀取資料(目前符合${totalElements}筆)`
+			? `帶入商品(目前符合${totalElements}筆)`
 			: "(查無相符商品)";
 	}, [criteria, totalElements]);
 
 	const disabled = useMemo(() => {
-		return !totalElements;
+		return !totalElements || totalElements > Constants.IMPORT_LIMIT;
 	}, [totalElements]);
 
 	return (
-		<LoadingButton
+		<ButtonWrapper
 			type="submit"
 			disabled={disabled}
 			size="small"
-			loading={loading}
+			responsive
+			loading={loading || importProdsWorking}
 			sx={{
 				fontWeight: 600,
 			}}
 			{...rest}>
 			{buttonText}
-		</LoadingButton>
+		</ButtonWrapper>
 	);
 };
 
-B05LoadProdsButtonContainer.displayName = "B05LoadProdsButtonContainer";
+B05ImportProdsButtonContainer.displayName = "B05ImportProdsButtonContainer";
