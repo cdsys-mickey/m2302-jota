@@ -13,6 +13,7 @@ import WebApiOptionPicker from "../../../../shared-components/picker/WebApiOptio
 import DialogEx from "@/shared-components/dialog/DialogEx";
 import ClearInputButton from "../../../../shared-components/input/ClearInputButton";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { ButtonWrapper } from "../../../../shared-components/button/ButtonWrapper";
 
 const ProdSearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -81,15 +82,14 @@ const ProdSearchPopper = memo(
 						onClick={onReset}>
 						清除
 					</ButtonEx> */}
-					<ButtonEx
+					<ButtonWrapper
 						startIcon={<FilterAltIcon />}
 						type="submit"
 						variant="contained"
-						size="small"
 						// onClick={handleSubmit}
 					>
 						篩選
-					</ButtonEx>
+					</ButtonWrapper>
 				</DialogActions>
 			</PopperBox>
 		);

@@ -39,9 +39,8 @@ const ListViewHeader = memo(
 							},
 						}),
 						...(Array.isArray(sx) ? sx : [sx]),
-					]}
-					{...rest}>
-					<Grid container columns={columns}>
+					]}>
+					<Grid container columns={columns} {...rest}>
 						{children}
 					</Grid>
 				</FlexBox>

@@ -47,7 +47,7 @@ export const useA16 = ({ token }) => {
 						Using_N: rowData["Using_N"],
 					},
 				});
-				if (status.success) {
+				if (status?.success) {
 					toast.success(
 						`${rowData["DeptName"]} 已成功 ${
 							enabled ? "啟用" : "停用"

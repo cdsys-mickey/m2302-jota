@@ -6,6 +6,7 @@ import {
 	DynamicDataSheetGrid,
 	keyColumn,
 	textColumn,
+	createTextColumn,
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker-column/prodPickerColumn";
@@ -24,6 +25,7 @@ const InqQuoteGrid = memo((props) => {
 		gridRef,
 		data,
 		handleGridChange,
+		getRowClassName,
 		height = 300,
 		bearer,
 		...rest
@@ -41,44 +43,7 @@ const InqQuoteGrid = memo((props) => {
 				grow: 4,
 				disabled: readOnly,
 			},
-			// {
-			// 	...createOptionPickerColumn((props) => (
-			// 		<ProdPickerColumn
-			// 			name="prod"
-			// 			triggerDelay={200}
-			// 			withPurchasePackageName
-			// 			{...props}
-			// 		/>
-			// 	)),
-			// 	id: "SProdID",
-			// 	title: "商品",
-			// 	grow: 4,
-			// 	disabled: readOnly,
-			// },
 			// *******
-			// {
-			// 	...createOptionPickerColumn((props) => (
-			// 		<ProdIdPickerColumn
-			// 			name="SProdID"
-			// 			triggerDelay={200}
-			// 			withPurchasePackageName
-			// 			{...props}
-			// 		/>
-			// 	)),
-			// 	title: "商品",
-			// 	grow: 4,
-			// 	disabled: readOnly,
-			// },
-			// *******
-			// {
-			// 	...keyColumn(
-			// 		"prod",
-			// 		createOptionPickerColumn((props) => (
-			// 			<ProdPickerColumn triggerDelay={200} {...props} />
-			// 		))
-			// 	),
-			// 	title: "OptionPicker",
-			// },
 			// {
 			// 	...keyColumn(
 			// 		"SProdID",
@@ -87,7 +52,7 @@ const InqQuoteGrid = memo((props) => {
 			// 		})
 			// 	),
 			// 	title: "商品編號",
-			// 	disabled: readOnly,
+			// 	disabled: true,
 			// },
 			// {
 			// 	...keyColumn("SProdData_N", textColumn),
@@ -140,6 +105,7 @@ const InqQuoteGrid = memo((props) => {
 			contextMenuComponent={ContextMenu}
 			createRow={createRow}
 			duplicateRow={duplicateRow}
+			rowClassName={getRowClassName}
 		/>
 	);
 });

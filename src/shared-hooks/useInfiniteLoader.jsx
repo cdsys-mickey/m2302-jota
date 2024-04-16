@@ -107,9 +107,14 @@ export const useInfiniteLoader = (props = {}) => {
 			// console.log("loadingMap before", loadingMap);
 
 			let activeParams;
-			if (crud?.paramsRef) {
+			if (!crud) {
+				console.warn(
+					"CrudContext not found, params cannot be memorized"
+				);
+				activeParams = params;
+			} else {
 				if (refresh) {
-					activeParams = crud.paramsRef.current;
+					activeParams = crud.paramsRef?.current;
 				} else {
 					crud.paramsRef.current = params;
 					activeParams = params;
@@ -143,7 +148,7 @@ export const useInfiniteLoader = (props = {}) => {
 						}),
 					},
 				});
-				if (status.success) {
+				if (status?.success) {
 					const newSaveKey = getSaveKey(payload);
 
 					// setState((prev) => ({
@@ -202,12 +207,13 @@ export const useInfiniteLoader = (props = {}) => {
 			defaultGetSaveKey,
 			defaultGetItemCount,
 			initialFetchSize,
-			crud?.paramsRef,
+			crud,
+			listData,
 			loadingMap,
 			httpGetAsync,
+			bearer,
 			url,
 			baseParams,
-			bearer,
 		]
 	);
 

@@ -8,6 +8,7 @@ import { Box, Container, Grid, IconButton } from "@mui/material";
 import React, { Fragment, forwardRef, memo, useCallback } from "react";
 import { v4 as uuid } from "uuid";
 import MuiStyles from "../../../shared-modules/sd-mui-styles";
+import { ButtonWrapper } from "../../../shared-components/button/ButtonWrapper";
 
 const A01TransferEditor = memo(
 	forwardRef((props, ref) => {
@@ -80,12 +81,12 @@ const A01TransferEditor = memo(
 					<ClearIcon />
 				</IconButton>
 			</FlexBox> */}
-				<ButtonEx
+				<ButtonWrapper
 					variant="contained"
 					color="inherit"
 					onClick={handleAdd}>
 					新增
-				</ButtonEx>
+				</ButtonWrapper>
 				{/* </Stack> */}
 				{/* 既有 */}
 			</Container>

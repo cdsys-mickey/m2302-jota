@@ -70,10 +70,8 @@ const ProdIdPickerColumn = memo((props) => {
 	useLayoutEffect(() => {
 		if (focus) {
 			ref.current?.focus();
-			console.log("focus");
 		} else {
 			ref.current?.blur();
-			console.log("blur");
 		}
 	}, [focus]);
 

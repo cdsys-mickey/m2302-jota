@@ -14,7 +14,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import RWListboxComponent from "./listbox/RWListboxComponent";
 
-const LISTBOX_PADDING = 8; // px
+// const LISTBOX_PADDING = 8; // px
 
 // function defaultRenderRow(props) {
 // 	// Props from React Window

@@ -33,7 +33,7 @@ export const useAppModule = (props = {}) => {
 				url: `v1/auth/authorities/${moduleId}`,
 				bearer: token,
 			});
-			if (status.success) {
+			if (status?.success) {
 				setState((prev) => ({
 					...prev,
 					moduleAuthority: payload,

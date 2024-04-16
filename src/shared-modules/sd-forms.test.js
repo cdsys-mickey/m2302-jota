@@ -1,6 +1,7 @@
 import { it } from "vitest";
 import Forms from "./sd-forms";
 import { expect } from "vitest";
+import DateFormats from "./sd-date-formats";
 
 it("should prepareForSubmit", () => {
 	const source = {
@@ -74,5 +75,20 @@ it("should assignDefaultValues", () => {
 	};
 	expect(Forms.assignDefaultValues(source, "a,b,c", "")).toStrictEqual(
 		expected
+	);
+});
+
+it("should formatDate/parseDate", () => {
+	const dateStr1 = "2022/11/11";
+	const date1 = Forms.parseDate(dateStr1);
+
+	expect(Forms.formatDate(date1)).toEqual(dateStr1);
+
+	const dateStr2 = "1912/02/28 11:23";
+	const date2 = Forms.parseDate(dateStr2);
+	console.log(date2);
+
+	expect(Forms.formatDate(date2, DateFormats.DATEFNS_DATETIME)).toEqual(
+		dateStr2
 	);
 });

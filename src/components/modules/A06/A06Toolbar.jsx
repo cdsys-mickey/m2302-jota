@@ -1,5 +1,3 @@
-import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
-import { Box } from "@mui/material";
 import { forwardRef, memo } from "react";
 import A06CreateButtonContainer from "./A06CreateButtonContainer";
 import { A06FetchResultLabelContainer } from "./A06FetchResultLabelContainer";

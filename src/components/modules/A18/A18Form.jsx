@@ -8,6 +8,8 @@ import AppDeptPicker from "../../fields/AppDeptPicker";
 import { RealFilePickerContainer } from "../../picker/RealFilePickerContainer";
 import StdPrintOutputModePicker from "../../std-print/StdPrintOutputModePicker";
 import A18ActionPicker from "./picker/A18ActionPicker";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import { A18FormButtonsContainer } from "./buttons/A18FormButtonsContainer";
 
 const A18Form = memo((props) => {
 	const { ...rest } = props;
@@ -84,6 +86,9 @@ const A18Form = memo((props) => {
 							<Grid item xs={12}>
 								<A18ActionPicker name="action" label="行為" />
 							</Grid>
+							<FlexToolbar align="right">
+								<A18FormButtonsContainer />
+							</FlexToolbar>
 						</Grid>
 					</FormSectionBox>
 				</Box>

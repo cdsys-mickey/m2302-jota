@@ -82,6 +82,14 @@ const transformForSubmitting = (payload, quoteGridData) => {
 						// Seq: v.Seq,
 						Seq: index + 1,
 					})),
+				// .filter((v) => v.prod?.ProdID)
+				// .map((v, index) => ({
+				// 	Pkey: v.Pkey?.length < 36 ? "" : v.Pkey,
+				// 	SProdID: v.prod?.ProdID,
+				// 	SPrice: v.SPrice,
+				// 	// Seq: v.Seq,
+				// 	Seq: index + 1,
+				// })),
 			}),
 		},
 		"InqDate"

@@ -10,7 +10,7 @@ export const StdPrintProvider = ({ children, tableName, paramsToJsonData }) => {
 		token: auth.token,
 		tableName,
 		deptId: auth.operator?.CurDeptID,
-		logKey: auth.operator.LogKey,
+		logKey: auth.operator?.LogKey,
 		paramsToJsonData,
 	});
 

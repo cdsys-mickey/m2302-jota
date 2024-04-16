@@ -81,7 +81,7 @@ const CatMGridProvider = (props) => {
 						url: `v1/prod/m-cats/${lgId}`,
 						bearer: token,
 					});
-					if (status.success) {
+					if (status?.success) {
 						dsg.handleGridDataLoaded(payload.data);
 					} else {
 						switch (status.code) {
@@ -124,7 +124,7 @@ const CatMGridProvider = (props) => {
 				});
 				console.log("handleCreate response.payload", payload);
 				reload();
-				if (status.success) {
+				if (status?.success) {
 					dsg.commitChanges(newValue);
 					selectRow({ rowData, rowIndex });
 					toast.success(
@@ -156,7 +156,7 @@ const CatMGridProvider = (props) => {
 					},
 				});
 				console.log("handleCreate response.payload", payload);
-				if (status.success) {
+				if (status?.success) {
 					dsg.commitChanges(newValue);
 					selectRow({ rowData, rowIndex });
 					toast.success(
@@ -183,7 +183,7 @@ const CatMGridProvider = (props) => {
 					bearer: token,
 				});
 
-				if (status.success) {
+				if (status?.success) {
 					// 取消選取列
 					selectRow(undefined);
 

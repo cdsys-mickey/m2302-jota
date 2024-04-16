@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 
 export const SupplierPicker = (props) => {
-	const { label = "員工", ...rest } = props;
+	const { label = "供應商", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {

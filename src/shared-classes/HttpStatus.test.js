@@ -8,7 +8,7 @@ it("should throw is status is not specified in constructor", () => {
 
 it("should be ok", () => {
 	let status = HttpStatus.from(200);
-	expect(status.success).toBe(true);
+	expect(status?.success).toBe(true);
 });
 
 it("401 should be 4xx", () => {

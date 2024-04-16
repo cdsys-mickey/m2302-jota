@@ -38,7 +38,7 @@ export const useA05 = ({ token }) => {
 					},
 				});
 				console.log("payload", payload);
-				if (status.success) {
+				if (status?.success) {
 					const data = A05.transformForReading(payload);
 
 					crud.doneReading({
@@ -107,7 +107,7 @@ export const useA05 = ({ token }) => {
 					bearer: token,
 				});
 
-				if (status.success) {
+				if (status?.success) {
 					toast.success(
 						`廠商商品「${data?.FactID} ${data?.FactData}」新增成功`
 					);
@@ -138,7 +138,7 @@ export const useA05 = ({ token }) => {
 					bearer: token,
 				});
 
-				if (status.success) {
+				if (status?.success) {
 					toast.success(
 						`商品「${data?.FactID} ${data?.FactData}」修改成功`
 					);
@@ -207,7 +207,7 @@ export const useA05 = ({ token }) => {
 						bearer: token,
 					});
 					crud.cancelAction();
-					if (status.success) {
+					if (status?.success) {
 						toast.success(
 							`成功删除${crud.itemData?.FactID} ${crud.itemData.FactData}`
 						);

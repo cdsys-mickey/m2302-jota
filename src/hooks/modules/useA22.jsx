@@ -83,7 +83,7 @@ export const useA22 = ({
 						pk: 1,
 					},
 				});
-				if (status.success) {
+				if (status?.success) {
 					setState((prev) => ({
 						...prev,
 						saveKey: payload.Select?.SaveKey,
@@ -130,7 +130,7 @@ export const useA22 = ({
 						}),
 					},
 				});
-				if (status.success) {
+				if (status?.success) {
 					dsg.handleGridDataLoaded(
 						A22.transformForGridEdior(payload)
 					);

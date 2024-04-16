@@ -96,7 +96,7 @@ export const useA01 = ({ token, mode }) => {
 					bearer: token,
 				});
 				console.log("payload", payload);
-				if (status.success) {
+				if (status?.success) {
 					const data = A01.transformForReading(payload);
 
 					transGrid.handleGridDataLoaded(data.trans);
@@ -183,7 +183,7 @@ export const useA01 = ({ token, mode }) => {
 					bearer: token,
 				});
 
-				if (status.success) {
+				if (status?.success) {
 					toast.success(
 						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${
 							data?.ProdData
@@ -236,7 +236,7 @@ export const useA01 = ({ token, mode }) => {
 					bearer: token,
 				});
 
-				if (status.success) {
+				if (status?.success) {
 					toast.success(
 						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${
 							data?.ProdData
@@ -273,7 +273,7 @@ export const useA01 = ({ token, mode }) => {
 					data: processed,
 					bearer: token,
 				});
-				if (status.success) {
+				if (status?.success) {
 					toast.success(`商品「${data?.ProdData}」已成功更新櫃位`);
 					crud.doneUpdating();
 					loadItem(processed?.ProdID);
@@ -371,7 +371,7 @@ export const useA01 = ({ token, mode }) => {
 						bearer: token,
 					});
 					crud.cancelAction();
-					if (status.success) {
+					if (status?.success) {
 						toast.success(
 							`成功删除${
 								mode === A01.Mode.NEW_PROD ? "新" : ""
@@ -424,7 +424,7 @@ export const useA01 = ({ token, mode }) => {
 					},
 					bearer: token,
 				});
-				if (status.success) {
+				if (status?.success) {
 					reviewAction.clear();
 					crud.cancelAction();
 					loader.loadList({

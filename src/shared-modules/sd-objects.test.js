@@ -81,7 +81,7 @@ it("should hasAllProps", () => {
 	expect(Objects.hasAllProps(obj, "a,b,c,d")).toBeTruthy();
 });
 
-it("isAllPropsEqual", () => {
+it("arePropsEqual", () => {
 	let x = {
 		DeptID: "100000",
 		GroupKey: "H00",
@@ -98,10 +98,10 @@ it("isAllPropsEqual", () => {
 		Using_N: false,
 	};
 
-	expect(Objects.isAllPropsEqual(x, y)).toBeFalsy();
+	expect(Objects.arePropsEqual(x, y)).toBeFalsy();
 
 	expect(
-		Objects.isAllPropsEqual(x, y, {
+		Objects.arePropsEqual(x, y, {
 			fields: "DeptID,GroupKey,DeptName,AbbrName",
 		})
 	).toBeTruthy();
@@ -133,7 +133,7 @@ it("isAllPropsEqual", () => {
 	};
 
 	expect(
-		Objects.isAllPropsEqual(x, y, {
+		Objects.arePropsEqual(x, y, {
 			ignoresEmpty: true,
 		})
 	).toBeFalsy();
@@ -144,7 +144,7 @@ it("isAllPropsEqual", () => {
 		PriceA: null,
 	};
 	expect(
-		Objects.isAllPropsEqual(x, y, {
+		Objects.arePropsEqual(x, y, {
 			ignoresEmpty: true,
 		})
 	).toBeTruthy();
@@ -154,7 +154,7 @@ it("isAllPropsEqual", () => {
 		PriceA: undefined,
 	};
 	expect(
-		Objects.isAllPropsEqual(x, y, {
+		Objects.arePropsEqual(x, y, {
 			ignoresEmpty: true,
 		})
 	).toBeTruthy();
@@ -164,7 +164,7 @@ it("isAllPropsEqual", () => {
 		PriceA: 0,
 	};
 	expect(
-		Objects.isAllPropsEqual(x, y, {
+		Objects.arePropsEqual(x, y, {
 			ignoresEmpty: true,
 		})
 	).toBeTruthy();
@@ -211,4 +211,24 @@ it("isAnyPropNotEmpty", () => {
 
 	obj = { qs: "", pi: "", bc: "", pn: "" };
 	expect(Objects.isAnyPropNotEmpty(obj, "")).toBeFalsy();
+});
+
+it("should arePropsEqual", () => {
+	let obj1 = {
+		a: 1,
+		b: "test",
+		c: false,
+	};
+
+	let obj2 = {
+		a: 1,
+		b: "test",
+		c: true,
+	};
+
+	expect(Objects.arePropsEqual(obj1, obj2)).toBeFalsy();
+
+	expect(Objects.arePropsEqual(obj1, obj2, { fields: "a,b" })).toBeTruthy();
+
+	expect(Objects.arePropsEqual(obj1, obj2, { fields: "a,b,c" })).toBeFalsy();
 });

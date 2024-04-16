@@ -90,7 +90,7 @@ export const useWebApiOptions = (opts = {}) => {
 						bearer,
 					}),
 				});
-				if (status.success) {
+				if (status?.success) {
 					setPickerState((prev) => ({
 						...prev,
 						// loading: false,

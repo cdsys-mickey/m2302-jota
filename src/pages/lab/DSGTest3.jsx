@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
 import { createFloatColumn } from "../../shared-components/dsg/columns/float/createFloatColumn";
 import OptionPickerColumn from "../../shared-components/dsg/columns/option-picker/OptionPickerColumn";
-import { checkboxColumn2 } from "../../shared-components/dsg/columns/checkbox/CheckboxComponent";
+import { checkboxColumn2 } from "../../shared-components/dsg/columns/checkbox/checkboxColumn2";
 
 const DSGTest3 = memo(
 	forwardRef((props, ref) => {
@@ -21,6 +21,7 @@ const DSGTest3 = memo(
 		const [data, setData] = useState([
 			{
 				active: true,
+				active2: false,
 				firstName: "Elon",
 				lastName: "Musk",
 				abc: "A",
@@ -30,8 +31,28 @@ const DSGTest3 = memo(
 				active: false,
 				firstName: "Jeff",
 				lastName: "Bezos",
-				abc: "B",
-				SCost: 0,
+				prod: {},
+			},
+			{
+				active: false,
+				active2: true,
+				firstName: "Jeff",
+				lastName: "Bezos2",
+				prod: {},
+			},
+			{
+				active: false,
+				active2: true,
+				firstName: "Jeff",
+				lastName: "Bezos3",
+				prod: {},
+			},
+			{
+				active: false,
+				active2: true,
+				firstName: "Jeff",
+				lastName: "Bezos4",
+				prod: {},
 			},
 		]);
 
@@ -41,6 +62,29 @@ const DSGTest3 = memo(
 				{ ...keyColumn("active", checkboxColumn2), title: "Active" },
 				{ ...keyColumn("firstName", textColumn), title: "First name" },
 				{ ...keyColumn("lastName", textColumn), title: "Last name" },
+				{
+					...keyColumn(
+						"active2",
+						createMuiCheckboxColumn({
+							trueValue: "1",
+							falseValue: "0",
+						})
+					),
+					title: "Active2",
+					minWidth: 60,
+				},
+				{
+					...keyColumn(
+						"abc",
+						createOptionPickerColumn((props) => (
+							<OptionPickerColumn
+								options={["A", "B", "C"]}
+								{...props}
+							/>
+						))
+					),
+					title: "OptionPicker",
+				},
 			],
 			[]
 		);

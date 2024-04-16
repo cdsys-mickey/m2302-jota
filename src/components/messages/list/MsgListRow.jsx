@@ -10,6 +10,7 @@ import MsgJobColumn from "../columns/MsgJobColumn";
 import MsgNameColumn from "../columns/MsgNameColumn";
 import MsgNewColumn from "../columns/MsgNewColumn";
 import MsgTimeColumn from "../columns/MsgTimeColumn";
+import { ButtonWrapper } from "../../../shared-components/button/ButtonWrapper";
 
 const UnreadTypography = (props) => {
 	const { children, unread, ...rest } = props;
@@ -73,9 +74,9 @@ const MsgListRow = memo((props) => {
 					<MsgJobColumn>
 						{value?.JobID && (
 							<Tooltip title={memoisedTitle}>
-								<ButtonEx size="small" onClick={handleGotoJob}>
+								<ButtonWrapper onClick={handleGotoJob}>
 									{value?.JobID}
-								</ButtonEx>
+								</ButtonWrapper>
 							</Tooltip>
 						)}
 					</MsgJobColumn>

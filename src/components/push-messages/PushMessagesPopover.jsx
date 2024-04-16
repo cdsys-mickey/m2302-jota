@@ -11,6 +11,7 @@ import { useScrollable } from "../../shared-hooks/useScrollable";
 import { TaskListViewContainer } from "../messages/list/TaskListViewContainer";
 import { FrameMenuGroupHeader } from "@/components/layout/FrameMenuGroupHeader";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
+import { ButtonWrapper } from "../../shared-components/button/ButtonWrapper";
 
 const PushMessagesPopover = memo(
 	forwardRef((props, ref) => {
@@ -95,12 +96,12 @@ const PushMessagesPopover = memo(
 							{loading && <LoadingTypography />}
 						</FlexBox>
 						<FlexBox>
-							<ButtonEx
+							<ButtonWrapper
 								variant="outlined"
 								startIcon={<AllInboxIcon />}
 								onClick={gotoMessages}>
 								前往訊息匣
-							</ButtonEx>
+							</ButtonWrapper>
 						</FlexBox>
 					</FlexBox>
 				</Box>

@@ -1,17 +1,15 @@
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import {
 	DynamicDataSheetGrid,
-	checkboxColumn,
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGBox from "../../../../../shared-components/dsg/DSGBox";
-import MuiCheckboxColumn from "../../../../../shared-components/dsg/columns/checkbox/MuiCheckboxColumn";
+import DSGBox from "@/shared-components/dsg/DSGBox";
+import { checkboxColumn2 } from "@/shared-components/dsg/columns/checkbox/checkboxColumn2";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -68,134 +66,134 @@ const ZA03Grid = memo((props) => {
 			},
 
 			{
-				...keyColumn("INQ", createMuiCheckboxColumn()),
+				...keyColumn("INQ", checkboxColumn),
 				title: "查",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("INS", createMuiCheckboxColumn()),
+				...keyColumn("INS", checkboxColumn),
 				title: "增",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("UPD", createMuiCheckboxColumn()),
+				...keyColumn("UPD", checkboxColumn),
 				title: "改",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("PRT", createMuiCheckboxColumn()),
+				...keyColumn("PRT", checkboxColumn),
 				title: "印",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("DEL", createMuiCheckboxColumn()),
+				...keyColumn("DEL", checkboxColumn),
 				title: "刪",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("USI", createMuiCheckboxColumn()),
+				...keyColumn("USI", checkboxColumn),
 				title: "停",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("CHK", createMuiCheckboxColumn()),
+				...keyColumn("CHK", checkboxColumn),
 				title: "審",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("NCK", createMuiCheckboxColumn()),
+				...keyColumn("NCK", checkboxColumn),
 				title: "退",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("RUN", createMuiCheckboxColumn()),
+				...keyColumn("RUN", checkboxColumn),
 				title: "執",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("EXP", createMuiCheckboxColumn()),
+				...keyColumn("EXP", checkboxColumn),
 				title: "出",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("IMP", createMuiCheckboxColumn()),
+				...keyColumn("IMP", checkboxColumn),
 				title: "入",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			// -------------------- Built-In Checkbox Column --------------------
 			// {
-			// 	...keyColumn("INQ", checkboxColumn),
+			// 	...keyColumn("INQ", bheckboxColumn),
 			// 	title: "查",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("INS", checkboxColumn),
+			// 	...keyColumn("INS", bheckboxColumn),
 			// 	title: "增",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("UPD", checkboxColumn),
+			// 	...keyColumn("UPD", bheckboxColumn),
 			// 	title: "改",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("PRT", checkboxColumn),
+			// 	...keyColumn("PRT", bheckboxColumn),
 			// 	title: "印",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("DEL", checkboxColumn),
+			// 	...keyColumn("DEL", bheckboxColumn),
 			// 	title: "刪",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("USI", checkboxColumn),
+			// 	...keyColumn("USI", bheckboxColumn),
 			// 	title: "停",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("CHK", checkboxColumn),
+			// 	...keyColumn("CHK", bheckboxColumn),
 			// 	title: "審",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("NCK", checkboxColumn),
+			// 	...keyColumn("NCK", bheckboxColumn),
 			// 	title: "退",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("RUN", checkboxColumn),
+			// 	...keyColumn("RUN", bheckboxColumn),
 			// 	title: "執",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("EXP", checkboxColumn),
+			// 	...keyColumn("EXP", bheckboxColumn),
 			// 	title: "出",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,
 			// },
 			// {
-			// 	...keyColumn("IMP", checkboxColumn),
+			// 	...keyColumn("IMP", bheckboxColumn),
 			// 	title: "入",
 			// 	minWidth: 30,
 			// 	disabled: readOnly,

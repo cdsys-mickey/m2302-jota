@@ -32,7 +32,7 @@ export const useOptions = ({
 				params,
 			});
 
-			if (status.success) {
+			if (status?.success) {
 				setOptionsData(getData(payload));
 			} else {
 				throw error || new Error("未預期例外");

@@ -1,9 +1,17 @@
 import { memo } from "react";
-import OptionPicker from "../../../picker/OptionPicker";
+import OptionPicker from "@/shared-components/picker/OptionPicker";
 import PropTypes from "prop-types";
 import { useRef } from "react";
 import { useLayoutEffect } from "react";
 import { useCallback } from "react";
+import Objects from "@/shared-modules/sd-objects";
+
+const arePropsEqual = (oldProps, newProps) => {
+	return Objects.arePropsEqual(oldProps, newProps, {
+		fields: "rowData,active,focus",
+		debug: true,
+	});
+};
 
 const OptionPickerColumn = memo((props) => {
 	const {
@@ -55,7 +63,7 @@ const OptionPickerColumn = memo((props) => {
 			{...ComponentProps}
 		/>
 	);
-});
+}, arePropsEqual);
 
 OptionPickerColumn.propTypes = {
 	options: PropTypes.array,

@@ -53,7 +53,7 @@ export const AppProvider = ({ children }) => {
 			const { status, payload } = await httpGetAsync({
 				url: "",
 			});
-			if (status.success) {
+			if (status?.success) {
 				setState((prev) => ({
 					...prev,
 					loading: false,

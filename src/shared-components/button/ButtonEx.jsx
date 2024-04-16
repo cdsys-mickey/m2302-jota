@@ -5,9 +5,9 @@ import { forwardRef } from "react";
 
 const ButtonEx = memo(
 	forwardRef((props, ref) => {
-		const { children, size = "small", ...rest } = props;
+		const { children, ...rest } = props;
 		return (
-			<Button ref={ref} size={size} {...rest}>
+			<Button ref={ref} {...rest}>
 				{children}
 			</Button>
 		);
@@ -15,7 +15,6 @@ const ButtonEx = memo(
 );
 
 ButtonEx.propTypes = {
-	size: PropTypes.oneOf(["small", "medium", "large"]),
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 

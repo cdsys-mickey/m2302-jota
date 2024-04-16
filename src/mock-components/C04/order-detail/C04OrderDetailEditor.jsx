@@ -10,6 +10,7 @@ import { Fragment, forwardRef, memo, useCallback } from "react";
 import { v4 as uuid } from "uuid";
 import FlexBox from "@/shared-components/FlexBox";
 import MuiStyles from "../../../shared-modules/sd-mui-styles";
+import { ButtonWrapper } from "../../../shared-components/button/ButtonWrapper";
 
 const C04OrderDetailEditor = memo(
 	forwardRef((props, ref) => {
@@ -132,12 +133,12 @@ const C04OrderDetailEditor = memo(
 					<ClearIcon />
 				</IconButton>
 			</FlexBox> */}
-				<ButtonEx
+				<ButtonWrapper
 					variant="contained"
 					color="inherit"
 					onClick={handleAdd}>
 					新增
-				</ButtonEx>
+				</ButtonWrapper>
 				{/* </Stack> */}
 				{/* 既有 */}
 			</Container>

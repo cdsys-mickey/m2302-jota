@@ -1,4 +1,7 @@
 import PageResult from "@/shared-classes/PageResult";
+import { test } from "vitest";
+import { expect } from "vitest";
+import { it } from "vitest";
 
 it("should return pageResult by new", () => {
 	let pageResult = new PageResult(30, 20);

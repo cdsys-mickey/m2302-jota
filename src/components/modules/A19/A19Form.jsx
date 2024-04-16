@@ -11,6 +11,9 @@ import { ProdPickerContainer } from "../../picker/ProdPickerContainer";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
 import UserDeptPicker from "../../UserDeptPicker";
 import AppDeptPicker from "../../fields/AppDeptPicker";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import { A19FormButtonsContainer } from "./buttons/A19FormButtonsContainer";
+import FlexGrid from "../../../shared-components/FlexGrid";
 
 const A19Form = memo((props) => {
 	const { ...rest } = props;
@@ -128,12 +131,19 @@ const A19Form = memo((props) => {
 									label="執行方式"
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+						</Grid>
+						<Grid container>
+							<FlexGrid item xs={12} sm={6} alignItems="center">
 								<ControlledCheckboxEx
 									label="含撥出入"
 									name="transIncluded"
 									defaultValue={true}
 								/>
+							</FlexGrid>
+							<Grid item xs={12} sm={6}>
+								<FlexToolbar align="right">
+									<A19FormButtonsContainer />
+								</FlexToolbar>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

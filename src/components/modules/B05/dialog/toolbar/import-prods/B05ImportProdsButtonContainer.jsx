@@ -44,7 +44,8 @@ export const B05ImportProdsButtonContainer = (props) => {
 	}, [criteria, totalElements]);
 
 	const disabled = useMemo(() => {
-		return !totalElements || totalElements > Constants.IMPORT_LIMIT;
+		return !totalElements;
+		// || totalElements > Constants.IMPORT_LIMIT
 	}, [totalElements]);
 
 	return (

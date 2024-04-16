@@ -1,19 +1,19 @@
-import ControlledDateField from "../controlled/ControlledDateField";
-import { TypoDateFieldContainer } from "../typo/TypoDateFieldContainer";
 import PropTypes from "prop-types";
 import { TypoDatePickerContainer } from "../typo/TypoDatePickerContainer";
+import ControlledDatePicker from "../controlled/ControlledDatePicker";
 
 export const DatePickerWrapper = (props) => {
-	const { typo = false, ...rest } = props;
+	const { typo = false, size = "small", ...rest } = props;
 
 	if (typo) {
-		return <TypoDatePickerContainer {...rest} />;
+		return <TypoDatePickerContainer size={size} {...rest} />;
 	}
 
-	return <ControlledDateField {...rest} />;
+	return <ControlledDatePicker size={size} {...rest} />;
 };
 
 DatePickerWrapper.displayName = "DatePickerWrapper";
 DatePickerWrapper.propTypes = {
 	typo: PropTypes.bool,
+	size: PropTypes.string,
 };

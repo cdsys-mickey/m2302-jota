@@ -2,10 +2,18 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import { useMemo } from "react";
-import { OptionPickerProvider } from "../../../shared-components/picker/listbox/OptionPickerProvider";
+import { OptionPickerProvider } from "@/shared-components/picker/listbox/OptionPickerProvider";
+import Objects from "@/shared-modules/sd-objects";
 
 const arePropsEqual = (oldProps, newProps) => {
-	return false;
+	// if (oldProps.rowData.SProdID !== newProps.rowData.SProdID) {
+	// 	return false;
+	// }
+
+	return Objects.arePropsEqual(oldProps, newProps, {
+		fields: "rowData.SProdID,active,disabled,focus",
+		debug: true,
+	});
 };
 
 const ProdPickerComponent = memo((props) => {
@@ -76,10 +84,8 @@ const ProdPickerComponent = memo((props) => {
 	useLayoutEffect(() => {
 		if (focus) {
 			ref.current?.focus();
-			console.log("focus");
 		} else {
 			ref.current?.blur();
-			console.log("blur");
 		}
 	}, [focus]);
 

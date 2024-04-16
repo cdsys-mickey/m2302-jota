@@ -11,6 +11,7 @@ import MsgNameColumn from "../../columns/MsgNameColumn";
 import MsgNewColumn from "../../columns/MsgNewColumn";
 import MsgTimeColumn from "../../columns/MsgTimeColumn";
 import TaskMessageColumn from "../../columns/TaskMessageColumn";
+import { ButtonWrapper } from "../../../../shared-components/button/ButtonWrapper";
 
 const UnreadTypography = (props) => {
 	const { children, unread, ...rest } = props;
@@ -51,9 +52,9 @@ const TaskListRow = memo((props) => {
 					<IndexColumn title={index}></IndexColumn>
 					<MsgJobColumn>
 						{value?.JobID && (
-							<ButtonEx size="small" onClick={handleGotoJob}>
+							<ButtonWrapper onClick={handleGotoJob}>
 								{value?.JobID}
-							</ButtonEx>
+							</ButtonWrapper>
 						)}
 					</MsgJobColumn>
 					<TaskMessageColumn loading={loading}>

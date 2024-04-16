@@ -1,12 +1,19 @@
-import { format } from "date-fns";
 import DateTimes from "./sd-date-times";
-import DateFormat from "./sd-date-formats";
+import DateFormats from "./sd-date-formats";
 import Types from "./sd-types";
+
+const formatDate = (value, pattern) => {
+	return DateTimes.format(value, pattern);
+};
+
+const parseDate = (value, pattern) => {
+	return DateTimes.parse(value, pattern);
+};
 
 const processDateFieldsForSubmit = (
 	obj,
 	dateFields,
-	pattern = DateFormat.DATEFNS_DATE
+	pattern = DateFormats.DATEFNS_DATE
 ) => {
 	if (!dateFields) {
 		throw new Error("dateFields not specified!");
@@ -27,7 +34,8 @@ const processDateFieldsForSubmit = (
 			delete resultObj[field];
 		} else {
 			try {
-				resultObj[field] = format(resultObj[field], pattern);
+				// resultObj[field] = format(resultObj[field], pattern);
+				resultObj[field] = formatDate(resultObj[field], pattern);
 				console.log(
 					`field [${field}] formatted -> ${resultObj[field]}`
 				);
@@ -44,7 +52,7 @@ const processDateFieldsForSubmit = (
 const processDateFieldsForReset = (
 	obj,
 	dateFields,
-	pattern = DateFormat.DATEFNS_DATE
+	pattern = DateFormats.DATEFNS_DATE
 ) => {
 	if (!dateFields) {
 		throw new Error("dateFields not specified!");
@@ -65,7 +73,8 @@ const processDateFieldsForReset = (
 				console.log(
 					`parsing date field[${field}]: ${resultObj[field]}`
 				);
-				resultObj[field] = DateTimes.parseEx(resultObj[field], pattern);
+				// resultObj[field] = DateTimes.parse(resultObj[field], pattern);
+				resultObj[field] = parseDate(resultObj[field], pattern);
 			} catch (err) {
 				console.error(
 					`failed to format ${resultObj[field]} as date in pattern[${pattern}]`
@@ -117,6 +126,8 @@ const assignDefaultValues = (obj, fieldNames, defaultValue = "") => {
 };
 
 const Forms = {
+	formatDate,
+	parseDate,
 	processDateFieldsForSubmit,
 	processDateFieldsForReset,
 	// processNumberFieldsForSubmit,

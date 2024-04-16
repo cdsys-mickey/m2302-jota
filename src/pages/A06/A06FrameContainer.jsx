@@ -10,10 +10,9 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { CustomerSearchFieldContainer } from "../../components/modules/A06/search/CustomerSearchFieldContainer";
 import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
-import A06 from "../../modules/md-a06";
-import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
 import { A06Context } from "../../contexts/A06/A06Context";
-import { useInit } from "../../shared-hooks/useInit";
+import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
+import A06 from "../../modules/md-a06";
 
 export const A06FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -54,4 +53,4 @@ export const A06FrameContainer = () => {
 	);
 };
 
-A06FrameContainer.displayName = "A06Frame";
+A06FrameContainer.displayName = "A06FrameContainer";

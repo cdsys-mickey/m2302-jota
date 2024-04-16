@@ -1,12 +1,22 @@
 import { memo, useLayoutEffect, useRef } from "react";
+import _ from "lodash";
+import Objects from "../../../../shared-modules/sd-objects";
+
+const arePropsEqual = (oldProps, newProps) => {
+	return Objects.arePropsEqual(oldProps, newProps, {
+		header: "CheckboxCompoent",
+		fields: "rowData,active,focus",
+		debug: true,
+	});
+};
 
 /**
  * 截自 GitHub 上的原始碼，用於參考
  * https://github.com/nick-keller/react-datasheet-grid/blob/master/src/columns/checkboxColumn.tsx
  */
-const CheckboxComponent = memo(
+const CheckboxComponent2 = memo(
 	({ focus, rowData, setRowData, active, stopEditing, disabled }) => {
-		console.log("rendering CheckboxComponent");
+		console.log("rendering CheckboxComponent2");
 
 		const ref = useRef(null);
 
@@ -36,34 +46,9 @@ const CheckboxComponent = memo(
 				onChange={() => null}
 			/>
 		);
-	}
+	},
+	arePropsEqual
 );
 
-CheckboxComponent.displayName = "CheckboxComponent";
-
-const FALSY = [
-	"",
-	"false",
-	"no",
-	"off",
-	"disabled",
-	"0",
-	"n",
-	"f",
-	"unchecked",
-	"undefined",
-	"null",
-	"wrong",
-	"negative",
-];
-
-export const checkboxColumn2 = {
-	component: CheckboxComponent,
-	deleteValue: () => false,
-	// We can customize what value is copied: when the checkbox is checked we copy YES, otherwise we copy NO
-	copyValue: ({ rowData }) => (rowData ? "YES" : "NO"),
-	// Since we copy custom values, we have to make sure pasting gives us the expected result
-	// Here NO is included in the FALSY array, so it will be converted to false, YES is not, so it will be converted to true
-	pasteValue: ({ value }) => !FALSY.includes(value.toLowerCase()),
-	isCellEmpty: ({ rowData }) => !rowData,
-};
+CheckboxComponent2.displayName = "CheckboxComponent2";
+export default CheckboxComponent2;

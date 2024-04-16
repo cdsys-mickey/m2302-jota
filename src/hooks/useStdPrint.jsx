@@ -53,7 +53,7 @@ export const useStdPrint = ({
 				},
 				bearer: token,
 			});
-			if (status.success) {
+			if (status?.success) {
 				setState((prev) => ({
 					...prev,
 					displayName: payload.info.RealName || tableName,

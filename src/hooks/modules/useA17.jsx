@@ -26,7 +26,7 @@ export const useA17 = () => {
 				bearer: token,
 			});
 			console.log("payload", payload);
-			if (status.success) {
+			if (status?.success) {
 				const data = A17.transformForReading(payload);
 				crud.doneReading({
 					data,
@@ -49,7 +49,7 @@ export const useA17 = () => {
 					bearer: token,
 					data: A17.transformForEditorSubmit(data),
 				});
-				if (status.success) {
+				if (status?.success) {
 					crud.doneUpdating();
 					const processed = A17.transformForReading(payload);
 					crud.doneReading({

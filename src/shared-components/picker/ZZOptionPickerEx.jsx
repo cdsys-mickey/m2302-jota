@@ -138,7 +138,7 @@ const ZZOptionPickerEx = memo(
 							bearer,
 						}),
 					});
-					if (status.success) {
+					if (status?.success) {
 						setPickerState((prev) => ({
 							...prev,
 							// loading: false,

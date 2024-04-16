@@ -1,4 +1,12 @@
 import Arrays from "./sd-arrays";
+import _ from "lodash";
+
+const DEFAULT_PROPS_OPTS = {
+	ignoresEmpty: true,
+	debug: false,
+	debugValues: false,
+	header: "",
+};
 
 /**
  * 所有欄位存在且不為 null
@@ -87,31 +95,31 @@ const hasAllProps = (obj, columnPattern) => {
 	return Object.keys(obj).includes(...columns);
 };
 
-const isAllPropsEqual = (x, y, opts = {}) => {
-	const { fields, ignoresEmpty } = opts;
-	if (x === null || x === undefined) {
-		return false;
-	}
-	const columns = fields ? Arrays.parse(fields) : Object.keys(x);
+// const isAllPropsEqual = (x, y, opts = {}) => {
+// 	const { fields, ignoresEmpty } = opts;
+// 	if (x === null || x === undefined) {
+// 		return false;
+// 	}
+// 	const columns = fields ? Arrays.parse(fields) : Object.keys(x);
 
-	// 比對所有欄位
-	if (ignoresEmpty) {
-		for (const field of columns) {
-			const valueX = x[field] || "";
-			const valueY = y[field] || "";
-			if (valueX !== valueY) {
-				return false;
-			}
-		}
-	} else {
-		for (const field of columns) {
-			if (x[field] !== y[field]) {
-				return false;
-			}
-		}
-	}
-	return true;
-};
+// 	// 比對所有欄位
+// 	if (ignoresEmpty) {
+// 		for (const field of columns) {
+// 			const valueX = x[field] || "";
+// 			const valueY = y[field] || "";
+// 			if (valueX !== valueY) {
+// 				return false;
+// 			}
+// 		}
+// 	} else {
+// 		for (const field of columns) {
+// 			if (x[field] !== y[field]) {
+// 				return false;
+// 			}
+// 		}
+// 	}
+// 	return true;
+// };
 
 const isAnyPropNotEmpty = (obj, columnPattern) => {
 	if (!obj) {
@@ -135,16 +143,63 @@ const isAnyPropNotEmpty = (obj, columnPattern) => {
 	return false;
 };
 
+const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
+	const { fields, ignoreFields, ignoresEmpty, debug, debugValues, header } =
+		opts;
+	// comapre null
+	if (obj1 === null && obj2 !== null) {
+		return false;
+	} else if (obj1 !== null && obj2 === null) {
+		return false;
+	} else if (obj1 === null && obj2 === null) {
+		return true;
+	}
+
+	// compare key count
+	let keys1 = fields ? Arrays.parse(fields) : Object.keys(obj1);
+	let keys2 = fields ? Arrays.parse(fields) : Object.keys(obj2);
+
+	if (ignoreFields) {
+		const ignoreFieldNames = Arrays.parse(ignoreFields);
+		keys1 = keys1.filter((x) => !ignoreFieldNames.includes(x));
+		keys2 = keys2.filter((x) => !ignoreFieldNames.includes(x));
+	}
+
+	if (keys1.length !== keys2.length) {
+		return false;
+	}
+
+	for (const key of keys1) {
+		// const value1 = ignoresEmpty ? obj1[key] || "" : obj1[key];
+		// const value2 = ignoresEmpty ? obj2[key] || "" : obj2[key];
+		const value1 = ignoresEmpty ? _.get(obj1, key) || "" : _.get(obj1, key);
+		const value2 = ignoresEmpty ? _.get(obj2, key) || "" : _.get(obj2, key);
+
+		if (value1 !== value2) {
+			if (debug) {
+				console.log(`${header ? header + "." : ""}${key} mismatched`);
+			}
+			if (debugValues) {
+				console.log("old", value1);
+				console.log("new", value2);
+			}
+			return false;
+		}
+	}
+	return true;
+};
+
 const Objects = {
 	isAllPropsNotNull,
 	isAllPropsNull,
 	isAllPropsEmpty,
 	isAllPropsNotNullOrEmpty,
 	hasAllProps,
-	isAllPropsEqual,
+	// isAllPropsEqual,
 	isAnyPropNotEmpty,
 	hasNoProps,
 	hasAnyProp,
+	arePropsEqual,
 };
 
 export default Objects;

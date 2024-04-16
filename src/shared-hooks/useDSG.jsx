@@ -167,7 +167,7 @@ export const useDSG = ({
 				throw `keys mismatched ${prevKey} → ${rowKey}`;
 			}
 
-			return Objects.isAllPropsEqual(prevData, row.rowData, {
+			return Objects.arePropsEqual(prevData, row.rowData, {
 				fields: otherColumnNames,
 			});
 		},
@@ -176,7 +176,7 @@ export const useDSG = ({
 
 	const isRowDataEquals = useCallback((prevRowData, rowData) => {
 		console.log("isRowDataEquals", prevRowData, rowData);
-		return !Objects.isAllPropsEqual(prevRowData, rowData, {
+		return !Objects.arePropsEqual(prevRowData, rowData, {
 			ignoresEmpty: true,
 		});
 	}, []);

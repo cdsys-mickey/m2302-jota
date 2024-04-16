@@ -73,7 +73,7 @@ export const useB05 = () => {
 						id: itemId,
 					},
 				});
-				if (status.success) {
+				if (status?.success) {
 					const data = B05.transformForReading(payload.data[0]);
 					crud.doneReading({
 						data: data,
@@ -104,7 +104,7 @@ export const useB05 = () => {
 
 	const confirmQuitCreating = useCallback(() => {
 		dialogs.confirm({
-			message: "確認要放棄新增?",
+			message: "確定要放棄新增?",
 			onConfirm: () => {
 				crud.cancelAction();
 			},
@@ -113,17 +113,16 @@ export const useB05 = () => {
 
 	const confirmQuitUpdating = useCallback(() => {
 		dialogs.confirm({
-			message: "確認要放棄修改?",
+			message: "確定要放棄修改?",
 			onConfirm: () => {
 				crud.cancelAction();
-				loadItem({ refresh: true });
 			},
 		});
-	}, [crud, dialogs, loadItem]);
+	}, [crud, dialogs]);
 
 	const confirmReturnReading = useCallback(() => {
 		dialogs.confirm({
-			message: "確認要結束編輯?",
+			message: "確定要取消編輯?",
 			onConfirm: () => {
 				crud.cancelUpdating();
 				loadItem({ refresh: true });
@@ -159,7 +158,7 @@ export const useB05 = () => {
 					data: data,
 					bearer: token,
 				});
-				if (status.success) {
+				if (status?.success) {
 					toast.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
@@ -185,7 +184,7 @@ export const useB05 = () => {
 					data: data,
 					bearer: token,
 				});
-				if (status.success) {
+				if (status?.success) {
 					toast.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
@@ -279,7 +278,7 @@ export const useB05 = () => {
 						pk: 1,
 					},
 				});
-				if (status.success) {
+				if (status?.success) {
 					setIpState((prev) => ({
 						...prev,
 						saveKey: payload.Select?.SaveKey,
@@ -314,7 +313,7 @@ export const useB05 = () => {
 						sk: ipState.saveKey,
 					},
 				});
-				if (status.success) {
+				if (status?.success) {
 					const data = payload.data?.[0].FactInq_S || [];
 					console.log("data", data);
 					quoteGrid.handleGridDataLoaded(B05.transformForGrid(data));

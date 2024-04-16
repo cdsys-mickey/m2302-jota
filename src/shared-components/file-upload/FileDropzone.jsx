@@ -125,7 +125,7 @@ const FileDropzone = (props) => {
 				},
 			});
 
-			if (status.success) {
+			if (status?.success) {
 				setState((prevState) => {
 					// 複製 uploading 陣列
 					const uploading = Array.from(prevState.uploading);
@@ -218,7 +218,7 @@ const FileDropzone = (props) => {
 					},
 				});
 
-				if (status.success) {
+				if (status?.success) {
 					success.push(uploadingFile);
 					setState((prevState) => {
 						// 複製 uploading 陣列

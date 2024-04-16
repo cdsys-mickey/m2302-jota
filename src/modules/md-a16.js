@@ -1,3 +1,11 @@
+const transformForReading = (payload) => {
+	const { Using_N, ...rest } = payload;
+	return {
+		Using_N: Using_N === "1",
+		...rest,
+	};
+};
+
 const paramsToJsonData = (params) => {
 	const where = [];
 	return {
@@ -12,6 +20,7 @@ const paramsToJsonData = (params) => {
 };
 
 const A16 = {
+	transformForReading,
 	paramsToJsonData,
 };
 

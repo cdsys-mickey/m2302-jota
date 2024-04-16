@@ -24,7 +24,7 @@ export const useHome = () => {
 				url: "v1/auth/review",
 				bearer: token,
 			});
-			if (status.success) {
+			if (status?.success) {
 				setReviewState((prev) => ({
 					...prev,
 					reviewDataError: null,

@@ -86,6 +86,8 @@ import { B05Provider } from "@/contexts/B05/B05Provider";
 import { B05FrameContainer } from "@/pages/B05/B05FrameContainer";
 import OptionPickerTest from "../pages/lab/OptionPickerTest";
 import DSGTest3 from "../pages/lab/DSGTest3";
+import { B06Provider } from "../contexts/B06/B06Provider";
+import { B06FrameContainer } from "@/pages/B06/B06FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -453,6 +455,16 @@ const AppRoute = () => {
 								<B05Provider>
 									<B05FrameContainer />
 								</B05Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="B06"
+						element={
+							<CrudProvider>
+								<B06Provider>
+									<B06FrameContainer />
+								</B06Provider>
 							</CrudProvider>
 						}
 					/>

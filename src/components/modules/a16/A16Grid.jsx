@@ -11,6 +11,7 @@ import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import ContainerEx from "../../../shared-components/ContainerEx";
+import { checkboxColumn2 } from "../../../shared-components/dsg/columns/checkbox/checkboxColumn2";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -82,6 +83,7 @@ const A16Grid = memo((props) => {
 						trueValue: "1",
 						falseValue: "0",
 					})
+					// checkboxColumn2
 				),
 				title: "使用中",
 				minWidth: 60,

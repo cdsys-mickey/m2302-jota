@@ -38,8 +38,8 @@ it("should format time as date", () => {
 	expect(format(date, DateFormat.DATEFNS_DATE)).toBe("2019/03/07");
 });
 
-it("should parseEx", () => {
-	const parsed = DateTimes.parseEx("2019/03/07");
+it("should parse", () => {
+	const parsed = DateTimes.parse("2019/03/07");
 	expect(isSameDay(parsed, new Date(2019, 2, 7))).toBe(true);
 });
 
