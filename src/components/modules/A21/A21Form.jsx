@@ -7,6 +7,8 @@ import { memo } from "react";
 import ControlledYesNoCheckbox from "../../../shared-components/controlled/ControlledYesNoCheckbox";
 import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
 import AuthDeptPicker from "../../AuthDeptPicker";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import { A21FormButtonsContainer } from "./buttons/A21FormButtonsContainer";
 
 const A21Form = memo((props) => {
 	const { ...rest } = props;
@@ -57,54 +59,47 @@ const A21Form = memo((props) => {
 									{...rest}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12}>
 								<ControlledYesNoCheckbox
 									label="客戶名稱"
 									name="Name"
 									defaultValue={true}
 								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
 								<ControlledYesNoCheckbox
 									label="客戶電話"
 									name="Tel"
 									defaultValue={true}
 								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
 								<ControlledYesNoCheckbox
 									label="發票地址"
 									name="InvAddr"
 									defaultValue={true}
 								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
 								<ControlledYesNoCheckbox
 									label="送貨地址"
 									name="ToAddr"
 									defaultValue={true}
 								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
 								<ControlledYesNoCheckbox
 									label="銷貨單號"
 									name="SalesID"
 									defaultValue={true}
 								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
 								<ControlledYesNoCheckbox
 									label="發票編號"
 									name="InvNo"
 									defaultValue={true}
 								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
 								<ControlledYesNoCheckbox
 									label="宅配通單號"
 									name="DelyNo"
 									defaultValue={true}
 								/>
+							</Grid>
+							<Grid item xs={12}>
+								<FlexToolbar align="right">
+									<A21FormButtonsContainer />
+								</FlexToolbar>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

@@ -1,17 +1,18 @@
 import { Box, Grid } from "@mui/material";
 import { memo } from "react";
-import { ProdPickerContainer } from "../../../picker/ProdPickerContainer";
-import { OptionPickerProvider } from "../../../../shared-components/picker/listbox/OptionPickerProvider";
+import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
+import { OptionPickerProvider } from "@/shared-components/picker/listbox/OptionPickerProvider";
 import { SupplierPicker } from "../../../picker/SupplierPicker";
-import { DatePickerWrapper } from "../../../../shared-components/date-picker/DatePickerWrapper";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import { B06SearchButtonContainer } from "./B06SearchButtonContainer";
-import FlexGrid from "../../../../shared-components/FlexGrid";
+import FlexGrid from "@/shared-components/FlexGrid";
 import { B06OrderByPicker } from "./fields/B06OrderByPicker";
+import PropTypes from "prop-types";
 
 const B06Form = memo((props) => {
-	const { ...rest } = props;
+	const { onSubmit } = props;
 	return (
-		<form {...rest}>
+		<form onSubmit={onSubmit}>
 			<Box
 				pt={1}
 				sx={() => ({
@@ -104,7 +105,9 @@ const B06Form = memo((props) => {
 	);
 });
 
-B06Form.propTypes = {};
+B06Form.propTypes = {
+	onSubmit: PropTypes.func,
+};
 
 B06Form.displayName = "B06Form";
 export default B06Form;

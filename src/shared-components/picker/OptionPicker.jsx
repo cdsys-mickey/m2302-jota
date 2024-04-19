@@ -96,7 +96,7 @@ const PickerBox = styled(Box, {
 
 const OptionPicker = memo(
 	forwardRef((props, ref) => {
-		console.log("redenring OptionPicker");
+		// console.log("redenring OptionPicker");
 		const {
 			// Global
 			onChange,

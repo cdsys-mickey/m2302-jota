@@ -11,6 +11,7 @@ import { TextFieldWrapper } from "../../../shared-components/text-field/TextFiel
 
 const A17Form = memo((props) => {
 	const {
+		readMessage,
 		readWorking,
 		itemDataReady,
 		editing,

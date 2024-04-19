@@ -3,16 +3,15 @@ import PropTypes from "prop-types";
 import { forwardRef, memo, useCallback, useEffect, useState } from "react";
 import OptionPicker from "./OptionPicker";
 import { useWebApiOptions } from "@/shared-hooks/useWebApiOptions";
-import { useRef } from "react";
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 import Objects from "../../shared-modules/sd-objects";
 
-const arePropsEqual = (oldProps, newProps) => {
-	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "",
-		debug: true,
-	});
-};
+// const arePropsEqual = (oldProps, newProps) => {
+// 	return Objects.arePropsEqual(oldProps, newProps, {
+// 		fields: "",
+// 		debug: true,
+// 	});
+// };
 
 const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
@@ -36,7 +35,7 @@ const WebApiOptionPicker = memo(
 			bearer,
 			// for OptionPicker
 			typeToSearchText,
-			noOptionsText,
+			noOptionsText: noOptionsTextValue,
 			fetchErrorText,
 			triggerDelay,
 			defaultOptions = [],
@@ -51,7 +50,10 @@ const WebApiOptionPicker = memo(
 
 		const [open, setOpen] = useState(false);
 		const {
-			pickerState,
+			// pickerState,
+			loading,
+			options,
+			noOptionsText,
 			// pickerCallback,
 			onInputChange,
 			resetLoading,
@@ -70,7 +72,7 @@ const WebApiOptionPicker = memo(
 
 			// for OptionPicker
 			typeToSearchText,
-			noOptionsText,
+			noOptionsText: noOptionsTextValue,
 			fetchErrorText,
 			triggerDelay,
 			defaultOptions,
@@ -95,7 +97,7 @@ const WebApiOptionPicker = memo(
 
 		// 當 filterByServer 時, 不會對輸出做任何篩選
 
-		const prevUrlRef = useRef();
+		// const prevUrlRef = useRef();
 
 		/**
 		 * 清除 options 時機
@@ -119,34 +121,49 @@ const WebApiOptionPicker = memo(
 		// }, [url, onChange, resetLoading, name]);
 
 		useChangeTracking(() => {
-			console.log("change1");
+			// console.log("changeTracking 1");
 			onChange(null);
 			resetLoading();
 		}, [url]);
 
-		useEffect(() => {
-			console.log("effect1");
+		// useEffect(() => {
+		// 	console.log("effect1");
+		// 	if (filterByServer && !open) {
+		// 		resetLoading();
+		// 	}
+		// }, [filterByServer, open, resetLoading]);
+		useChangeTracking(() => {
+			// console.log("changeTracking 2");
 			if (filterByServer && !open) {
 				resetLoading();
 			}
-		}, [filterByServer, open, resetLoading]);
+		}, [filterByServer, open]);
 
 		/**
 		 * 空白展開時 fetch options
 		 */
-		useEffect(() => {
-			console.log("effect2");
+		// useEffect(() => {
+		// 	console.log("effect2");
+		// 	if (open && loadOptionsTriggered) {
+		// 		loadOptions();
+		// 	}
+		// }, [loadOptions, open, loadOptionsTriggered]);
+		useChangeTracking(() => {
+			// console.log("changeTracking 3");
 			if (open && loadOptionsTriggered) {
 				loadOptions();
 			}
-		}, [loadOptions, open, loadOptionsTriggered]);
+		}, [open, loadOptionsTriggered]);
 
 		return (
 			<OptionPicker
 				ref={ref}
 				name={name}
 				// loading={loading}
-				{...pickerState}
+				// {...pickerState}
+				loading={loading}
+				options={options}
+				noOptionsText={noOptionsText}
 				onInputChange={onInputChange}
 				disabled={disabled}
 				// ChipProps={chipProps}
@@ -159,8 +176,7 @@ const WebApiOptionPicker = memo(
 				{...rest}
 			/>
 		);
-	}),
-	arePropsEqual
+	})
 );
 
 WebApiOptionPicker.displayName = "WebApiOptionPicker";

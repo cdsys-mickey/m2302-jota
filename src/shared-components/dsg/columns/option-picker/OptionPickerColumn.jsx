@@ -26,7 +26,7 @@ const OptionPickerColumn = memo((props) => {
 		disabled,
 	} = props;
 	const ref = useRef();
-	console.log("rendering OptionPickerColumn");
+	// console.log("rendering OptionPickerColumn");
 
 	const handleChange = useCallback(
 		(newValue) => {

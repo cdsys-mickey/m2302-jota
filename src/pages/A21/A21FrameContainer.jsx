@@ -20,7 +20,7 @@ export const A21FrameContainer = () => {
 			<FrameBannerContainer></FrameBannerContainer>
 
 			{/* 工具列 */}
-			<A21Toolbar />
+			{/* <A21Toolbar /> */}
 			{/* <EmptyToolbar /> */}
 			{/* 表單 */}
 			<A21FormContainer />

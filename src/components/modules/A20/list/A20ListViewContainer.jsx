@@ -10,6 +10,7 @@ import { A20ListRowContainer } from "./A20ListRowContainer";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 
 export const A20ListViewContainer = () => {
+	console.log("rendering A20ListViewContainer");
 	const a20 = useContext(A20Context);
 	const { loadList } = a20;
 	const form = useFormContext();
