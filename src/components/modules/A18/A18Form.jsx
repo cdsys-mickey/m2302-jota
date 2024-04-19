@@ -33,7 +33,7 @@ const A18Form = memo((props) => {
 					})}>
 					<FormSectionBox py={2}>
 						<Grid container columns={12} spacing={2}>
-							{/* <Grid item xs={12}>
+							<Grid item xs={12}>
 								<AppDeptPicker
 									filterByOperator
 									label="查詢門市"
@@ -41,7 +41,7 @@ const A18Form = memo((props) => {
 									name="dept"
 									// readOnly={true}
 								/>
-							</Grid> */}
+							</Grid>
 
 							<Grid item xs={12}>
 								<RealFilePickerContainer

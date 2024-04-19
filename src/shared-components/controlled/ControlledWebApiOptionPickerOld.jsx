@@ -1,16 +1,16 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import WebApiOptionPicker from "@/shared-components/picker/WebApiOptionPicker";
-import WebApiOptionPickerOld from "@/shared-components/picker/WebApiOptionPickerOld";
 import { Controller } from "react-hook-form";
 import PropTypes from "prop-types";
 import { memo } from "react";
+import WebApiOptionPickerOld from "../picker/WebApiOptionPickerOld";
 
 /**
  * 由 name 屬性決定是否要使用 Controller 包覆
  * @param {*} param0
  * @returns
  */
-export const ControlledWebApiOptionPicker = memo(
+export const ControlledWebApiOptionPickerOld = memo(
 	({
 		name,
 		// disabled = false,
@@ -23,10 +23,10 @@ export const ControlledWebApiOptionPicker = memo(
 		onChange: onPickerChange,
 		...rest
 	}) => {
-		console.log("rendering ControlledWebApiOptionPicker");
+		console.log("rendering ControlledWebApiOptionPickerOld");
 		if (!name) {
 			return (
-				<WebApiOptionPicker
+				<WebApiOptionPickerOld
 					// required={required}
 					sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 					// disabled={disabled}
@@ -51,7 +51,7 @@ export const ControlledWebApiOptionPicker = memo(
 				}) => {
 					console.log("controller rendering");
 					return (
-						<WebApiOptionPicker
+						<WebApiOptionPickerOld
 							name={name}
 							// required={required}
 							value={value}
@@ -76,9 +76,9 @@ export const ControlledWebApiOptionPicker = memo(
 		);
 	}
 );
-ControlledWebApiOptionPicker.displayName = "ControlledWebApiOptionPicker";
+ControlledWebApiOptionPickerOld.displayName = "ControlledWebApiOptionPickerOld";
 
-ControlledWebApiOptionPicker.propTypes = {
+ControlledWebApiOptionPickerOld.propTypes = {
 	name: PropTypes.string,
 	// disabled: PropTypes.bool,
 	control: PropTypes.object,

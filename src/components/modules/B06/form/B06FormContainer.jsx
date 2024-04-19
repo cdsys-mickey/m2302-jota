@@ -16,7 +16,7 @@ export const B06FormContainer = () => {
 		b06.onSearchSubmitError
 	);
 
-	return <B06Form onSubmit={handleSubmit} {...form} />;
+	return <B06Form onSubmit={handleSubmit} />;
 };
 
 B06FormContainer.displayName = "B06FormContainer";

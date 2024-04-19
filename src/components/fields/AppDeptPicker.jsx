@@ -5,7 +5,6 @@ import queryString from "query-string";
 import { memo, useContext, useMemo } from "react";
 import Depts from "../../modules/md-depts";
 import { useCallback } from "react";
-import { WebApiOptionPickerWrapper } from "../../shared-components/picker/WebApiOptionPickerWrapper";
 
 const AppDeptPicker = memo((props) => {
 	console.log("rendering AppDeptPicker");
@@ -41,8 +40,7 @@ const AppDeptPicker = memo((props) => {
 	);
 
 	return (
-		// <OptionPickerWrapper
-		<WebApiOptionPickerWrapper
+		<OptionPickerWrapper
 			// ref={ref}
 			bearer={token}
 			url={`v1/app/depts`}

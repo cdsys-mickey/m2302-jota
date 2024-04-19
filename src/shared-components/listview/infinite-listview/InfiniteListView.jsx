@@ -13,6 +13,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 
 const InfiniteListView = memo((props) => {
+	console.log("rendering InfiniteListView");
 	const {
 		itemCount,
 		isItemLoaded,

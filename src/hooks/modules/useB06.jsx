@@ -20,6 +20,11 @@ export const useB06 = ({ token, logKey, deptId }) => {
 
 	const { postToBlank } = useHttpPost();
 
+	const handleSelect = useCallback((e, item) => {
+		e?.stopPropagation();
+		console.log("handleSelect", item);
+	}, []);
+
 	const onSearchSubmit = useCallback(
 		(data) => {
 			console.log(`onSearchSubmit`, data);
@@ -69,6 +74,7 @@ export const useB06 = ({ token, logKey, deptId }) => {
 		onSearchSubmitError,
 		onPrintSubmit,
 		onPrintSubmitError,
+		handleSelect,
 		...appModule,
 	};
 };

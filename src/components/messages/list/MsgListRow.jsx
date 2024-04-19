@@ -73,7 +73,10 @@ const MsgListRow = memo((props) => {
 					</MsgIDColumn>
 					<MsgJobColumn>
 						{value?.JobID && (
-							<Tooltip title={memoisedTitle}>
+							<Tooltip
+								title={memoisedTitle}
+								arrow
+								placement="right-start">
 								<ButtonWrapper onClick={handleGotoJob}>
 									{value?.JobID}
 								</ButtonWrapper>

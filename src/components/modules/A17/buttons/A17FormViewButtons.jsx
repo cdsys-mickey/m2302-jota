@@ -11,6 +11,7 @@ const A17FormViewButtons = memo(
 			<Fragment ref={ref} {...rest}>
 				{onEdit && (
 					<ResponsiveButton
+						variant="contained"
 						startIcon={<EditOutlinedIcon />}
 						color="primary"
 						onClick={onEdit}>
