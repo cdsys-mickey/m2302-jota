@@ -147,18 +147,7 @@ const AppRoute = () => {
 				/>
 
 				<Route path="modules">
-					{/* <Route
-						path="A01M"
-						element={
-							<ZZCrudProvider>
-								<MockProdsProvider>
-									<MockA01FrameContainer />
-								</MockProdsProvider>
-							</ZZCrudProvider>
-						}
-					/> */}
-					{/* <Route path="A" element={<ModuleARoute />} /> */}
-
+					{/* A */}
 					<Route
 						path="A01"
 						element={
@@ -179,6 +168,7 @@ const AppRoute = () => {
 							</CrudProvider>
 						}
 					/>
+
 					<Route
 						path="AA01"
 						element={
@@ -448,6 +438,7 @@ const AppRoute = () => {
 						}
 					/>
 
+					{/* B */}
 					<Route
 						path="B05"
 						element={
@@ -468,7 +459,7 @@ const AppRoute = () => {
 							</CrudProvider>
 						}
 					/>
-
+					{/* C */}
 					<Route
 						path="C04"
 						element={

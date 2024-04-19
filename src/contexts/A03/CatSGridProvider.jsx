@@ -54,7 +54,7 @@ const CatSGridProvider = (props) => {
 						url: `v1/prod/s-cats/${lgId},${mdId}`,
 						bearer: token,
 					});
-					if (status?.success) {
+					if (status.success) {
 						dsg.handleGridDataLoaded(payload.data || []);
 					} else {
 						switch (status.code) {
@@ -97,7 +97,7 @@ const CatSGridProvider = (props) => {
 					},
 				});
 				console.log("handleCreate response.payload", payload);
-				if (status?.success) {
+				if (status.success) {
 					dsg.commitChanges(newValue);
 					selectRow({ rowData });
 					toast.success(
@@ -130,7 +130,7 @@ const CatSGridProvider = (props) => {
 				});
 				console.log("handleCreate response.payload", payload);
 
-				if (status?.success) {
+				if (status.success) {
 					dsg.commitChanges(newValue);
 					selectRow({ rowData });
 					toast.success(
@@ -156,7 +156,7 @@ const CatSGridProvider = (props) => {
 					url: `v1/prod/s-cats/${key}`,
 					bearer: token,
 				});
-				if (status?.success) {
+				if (status.success) {
 					selectRow(undefined);
 					toast.success(
 						`小分類 ${rowData.SClas}/${rowData.ClassData} 刪除成功`

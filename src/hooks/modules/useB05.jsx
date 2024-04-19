@@ -57,6 +57,32 @@ export const useB05 = () => {
 		quoteGrid.handleGridDataLoaded(data.quotes);
 	}, [crud, quoteGrid]);
 
+	const handleCreate = useCallback(
+		async ({ data }) => {
+			try {
+				crud.startCreating();
+				const { status, error } = await httpPostAsync({
+					url: "v1/purchase/inquiries",
+					data: data,
+					bearer: token,
+				});
+				if (status.success) {
+					toast.success(`新增成功`);
+					crud.doneCreating();
+					crud.cancelReading();
+					listLoader.loadList({ refresh: true });
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				crud.failCreating();
+				console.error("handleCreate.failed", err);
+				toast.error(Errors.getMessage("新增失敗", err));
+			}
+		},
+		[crud, httpPostAsync, listLoader, token]
+	);
+
 	// READ
 	const loadItem = useCallback(
 		async ({ id, refresh = false }) => {
@@ -73,7 +99,7 @@ export const useB05 = () => {
 						id: itemId,
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					const data = B05.transformForReading(payload.data[0]);
 					crud.doneReading({
 						data: data,
@@ -130,6 +156,65 @@ export const useB05 = () => {
 		});
 	}, [crud, dialogs, loadItem]);
 
+	// UPDATE
+	const handleUpdate = useCallback(
+		async ({ data }) => {
+			try {
+				crud.startUpdating();
+				const { status, error } = await httpPutAsync({
+					url: "v1/purchase/inquiries",
+					data: data,
+					bearer: token,
+				});
+				if (status.success) {
+					toast.success(`修改成功`);
+					crud.doneUpdating();
+					//crud.cancelReading();
+					loadItem({ refresh: true });
+					listLoader.loadList({ refresh: true });
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				crud.failUpdating();
+				console.error("handleCreate.failed", err);
+				toast.error(Errors.getMessage("修改失敗", err));
+			}
+		},
+		[crud, httpPutAsync, listLoader, loadItem, token]
+	);
+
+	//DELETE
+	const confirmDelete = useCallback(() => {
+		dialogs.confirm({
+			message: `確認要删除詢價單「${crud.itemData?.InqID}」?`,
+			onConfirm: async () => {
+				try {
+					crud.startDeleting(crud.itemData);
+					const { status, error } = await httpDeleteAsync({
+						url: `v1/purchase/inquiries`,
+						bearer: token,
+						params: {
+							id: crud.itemData?.InqID,
+						},
+					});
+					// 關閉對話框
+					crud.cancelAction();
+					if (status.success) {
+						toast.success(`成功删除詢價單 ${crud.itemData?.InqID}`);
+						listLoader.loadList({ refresh: true });
+					} else {
+						throw error || `發生未預期例外`;
+					}
+				} catch (err) {
+					crud.failDeleting(err);
+					console.error("confirmDelete.failed", err);
+					toast.error(Errors.getMessage("刪除失敗", err));
+				}
+			},
+		});
+	}, [crud, dialogs, httpDeleteAsync, listLoader, token]);
+
 	const onSearchSubmit = useCallback((data) => {
 		console.log("onSearchSubmit", data);
 	}, []);
@@ -147,59 +232,6 @@ export const useB05 = () => {
 			quoteGrid.propagateGridChange(newValue, operations);
 		},
 		[quoteGrid]
-	);
-
-	const handleCreate = useCallback(
-		async ({ data }) => {
-			try {
-				crud.startCreating();
-				const { status, error } = await httpPostAsync({
-					url: "v1/purchase/inquiries",
-					data: data,
-					bearer: token,
-				});
-				if (status?.success) {
-					toast.success(`新增成功`);
-					crud.doneCreating();
-					crud.cancelReading();
-					listLoader.loadList({ refresh: true });
-				} else {
-					throw error || new Error("未預期例外");
-				}
-			} catch (err) {
-				crud.failCreating();
-				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
-			}
-		},
-		[crud, httpPostAsync, listLoader, token]
-	);
-
-	const handleUpdate = useCallback(
-		async ({ data }) => {
-			try {
-				crud.startUpdating();
-				const { status, error } = await httpPutAsync({
-					url: "v1/purchase/inquiries",
-					data: data,
-					bearer: token,
-				});
-				if (status?.success) {
-					toast.success(`修改成功`);
-					crud.doneUpdating();
-					//crud.cancelReading();
-					loadItem({ refresh: true });
-					listLoader.loadList({ refresh: true });
-				} else {
-					throw error || new Error("未預期例外");
-				}
-			} catch (err) {
-				crud.failUpdating();
-				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
-			}
-		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -278,7 +310,7 @@ export const useB05 = () => {
 						pk: 1,
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					setIpState((prev) => ({
 						...prev,
 						saveKey: payload.Select?.SaveKey,
@@ -313,7 +345,7 @@ export const useB05 = () => {
 						sk: ipState.saveKey,
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					const data = payload.data?.[0].FactInq_S || [];
 					console.log("data", data);
 					quoteGrid.handleGridDataLoaded(B05.transformForGrid(data));
@@ -353,6 +385,7 @@ export const useB05 = () => {
 		confirmQuitCreating,
 		confirmQuitUpdating,
 		confirmReturnReading,
+		confirmDelete,
 		promptCreating,
 		onEditorSubmit,
 		onEditorSubmitError,

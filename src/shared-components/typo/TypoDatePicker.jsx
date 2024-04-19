@@ -1,6 +1,5 @@
 import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
-import { format } from "date-fns";
 import { forwardRef, memo, useMemo } from "react";
 import DateTimes from "@/shared-modules/sd-date-times";
 import { useWatch } from "react-hook-form";
@@ -32,7 +31,9 @@ const TypoDatePicker = memo(
 			if (children) {
 				return children;
 			}
-			return value ? format(value, dateFormat) : null || emptyText;
+			return value
+				? DateTimes.format(value, dateFormat)
+				: null || emptyText;
 		}, [children, dateFormat, emptyText, value]);
 
 		if (!editing) {

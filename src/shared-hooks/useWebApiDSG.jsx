@@ -46,7 +46,7 @@ export const useWebApiDSG = ({
 						params: queryString.parse(querystring),
 					}),
 				});
-				if (status?.success) {
+				if (status.success) {
 					dsg.handleGridDataLoaded(transformForReading(payload));
 				} else {
 					switch (status.code) {
@@ -78,7 +78,7 @@ export const useWebApiDSG = ({
 					data: transformForSubmitting(rowData),
 				});
 				console.log("handleCreate response.payload", payload);
-				if (status?.success) {
+				if (status.success) {
 					dsg.commitChanges(newValue);
 					toast.success(
 						`${displayName} ${rowData[keyColumn]} 新增成功`
@@ -113,7 +113,7 @@ export const useWebApiDSG = ({
 					bearer: token,
 				});
 				console.log("handleCreate response.payload", payload);
-				if (status?.success) {
+				if (status.success) {
 					dsg.commitChanges(newValue);
 					toast.success(
 						`${displayName} ${rowData[keyColumn]}/${rowData[nameColumn]} 修改成功`
@@ -149,7 +149,7 @@ export const useWebApiDSG = ({
 					bearer: token,
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					toast.success(
 						`${displayName} ${rowData[keyColumn]} 刪除成功`
 					);

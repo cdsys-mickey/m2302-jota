@@ -78,7 +78,7 @@ export const useZA03 = () => {
 						dp: deptId,
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					const data = payload.map((x) =>
 						ZA03.transformForReading(x)
 					);
@@ -203,7 +203,7 @@ export const useZA03 = () => {
 					},
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					const data = Users.transformForReading(payload);
 					crud.doneReading({
 						data,
@@ -276,7 +276,7 @@ export const useZA03 = () => {
 					bearer: token,
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					const processed = Users.transformForReading(payload);
 					toast.success(
 						`使用者「${processed?.LoginName} ${processed?.UserName}」新增成功`
@@ -311,7 +311,7 @@ export const useZA03 = () => {
 					bearer: token,
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					toast.success(
 						`使用者 ${data?.LoginName} ${data?.UserName}」修改成功`
 					);
@@ -368,7 +368,7 @@ export const useZA03 = () => {
 						},
 					});
 					crud.cancelAction();
-					if (status?.success) {
+					if (status.success) {
 						toast.success(
 							`成功删除 ${crud.itemData?.LoginName} ${crud.itemData.UserName}`
 						);
@@ -436,7 +436,7 @@ export const useZA03 = () => {
 						dp: selectedDept?.DeptID,
 					},
 				});
-				if (!status?.success) {
+				if (!status.success) {
 					throw error || new Error("權限異動異常");
 				}
 			} catch (err) {
@@ -580,7 +580,7 @@ export const useZA03 = () => {
 					data: ZA03.transformModulesToIds(data.modules),
 					bearer: token,
 				});
-				if (status?.success) {
+				if (status.success) {
 					addAuthAction.finish();
 					reloadUserAuthorities();
 				} else {
@@ -636,7 +636,7 @@ export const useZA03 = () => {
 						uid: crud.itemData?.UID,
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					copyAuthAction.finish();
 					toast.success("權限複製成功");
 					// 若編輯中則需要重整
@@ -698,7 +698,7 @@ export const useZA03 = () => {
 					},
 					bearer: token,
 				});
-				if (status?.success) {
+				if (status.success) {
 					reloadUserAuthorities();
 				} else {
 					throw error || new Error("發生未預期例外");
@@ -754,7 +754,7 @@ export const useZA03 = () => {
 								},
 							}
 						);
-						if (status?.success) {
+						if (status.success) {
 							toast.success(
 								`${item.LoginName} 密碼已重設為「${payload.newPword}」`
 							);
@@ -794,7 +794,7 @@ export const useZA03 = () => {
 				data: ZA03.transformForSubmit(dirtyData),
 			});
 
-			if (status?.success) {
+			if (status.success) {
 				saveAuthAction.finish();
 				setAuthEditingMode(null);
 				reloadUserAuthorities();

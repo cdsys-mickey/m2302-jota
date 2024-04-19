@@ -9,7 +9,7 @@ import FlexToolbar from "../../../../../shared-components/listview/toolbar/FlexT
 
 const B05DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onReview, ...rest } = props;
+		const { onEdit, onDelete, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onDelete && (

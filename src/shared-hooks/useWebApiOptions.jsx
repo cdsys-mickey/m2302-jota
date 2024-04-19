@@ -90,7 +90,7 @@ export const useWebApiOptions = (opts = {}) => {
 						bearer,
 					}),
 				});
-				if (status?.success) {
+				if (status.success) {
 					setPickerState((prev) => ({
 						...prev,
 						// loading: false,
@@ -236,9 +236,11 @@ export const useWebApiOptions = (opts = {}) => {
 		clearOptions,
 		resetLoading,
 		// for OptionPicker
-		pickerState,
-		pickerCallback: {
-			onInputChange: handleInputChange,
-		},
+		...pickerState,
+		// pickerState,
+		// pickerCallback: {
+		// 	onInputChange: handleInputChange,
+		// },
+		onInputChange: handleInputChange,
 	};
 };

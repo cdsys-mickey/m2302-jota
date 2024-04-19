@@ -44,7 +44,7 @@ export const useMessaging = ({ token }) => {
 				url: `v1/my/messages/unread-count`,
 				bearer: token,
 			});
-			if (status?.success) {
+			if (status.success) {
 				setUnreadState((prev) => ({
 					...prev,
 					unreadCount: payload,
@@ -143,7 +143,7 @@ export const useMessaging = ({ token }) => {
 						MsgID: msgId,
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					loadUnreadCount();
 					clearListLoading();
 					if (reload) {
@@ -196,7 +196,7 @@ export const useMessaging = ({ token }) => {
 					connectionId,
 				},
 			});
-			if (status?.success) {
+			if (status.success) {
 				console.log(
 					`connectionId ${connectionId} registered for ${operator?.LogKey}`
 				);

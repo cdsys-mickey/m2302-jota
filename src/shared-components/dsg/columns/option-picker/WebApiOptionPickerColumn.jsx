@@ -1,6 +1,14 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import WebApiOptionPicker from "../../../picker/WebApiOptionPicker";
+import Objects from "../../../../shared-modules/sd-objects";
+
+const arePropsEqual = (oldProps, newProps) => {
+	return Objects.arePropsEqual(oldProps, newProps, {
+		fields: ["rowData", "active", "disabled", "focus"],
+		debug: true,
+	});
+};
 
 const WebApiOptionPickerColumn = memo((props) => {
 	const {
@@ -56,9 +64,9 @@ const WebApiOptionPickerColumn = memo((props) => {
 			ref.current?.focus();
 		} else {
 			ref.current?.blur();
-			handleClose();
+			// handleClose();
 		}
-	}, [focus, handleClose]);
+	}, [focus]);
 
 	return (
 		<WebApiOptionPicker
@@ -71,7 +79,7 @@ const WebApiOptionPickerColumn = memo((props) => {
 			{...componentProps}
 		/>
 	);
-});
+}, arePropsEqual);
 
 WebApiOptionPickerColumn.propTypes = {
 	focus: PropTypes.bool,

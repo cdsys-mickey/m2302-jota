@@ -25,6 +25,7 @@ export const useChangeTracking = (
 		if (debouncedJson !== prevRef.current) {
 			// dont fire on first render
 			if (prevRef.current) {
+				console.log("changed detected");
 				callback();
 			}
 			prevRef.current = debouncedJson;

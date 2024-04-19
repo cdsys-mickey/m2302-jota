@@ -8,6 +8,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import ListViewBox from "../../../../shared-components/listview/ListViewBox";
 import { useReactWindowScroll } from "../../../../shared-hooks/react-window/useReactWindowScroll";
 import { A05ListRowContainer } from "./A05ListRowContainer";
+import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 
 export const A05ListViewContainer = () => {
 	const a05 = useContext(A05Context);
@@ -27,7 +28,7 @@ export const A05ListViewContainer = () => {
 		a05.loadList();
 	}, []);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		console.log(`debouncedQs: ${debouncedQs}`);
 		if (debouncedQs !== undefined) {
 			const values = getValues();
@@ -36,7 +37,7 @@ export const A05ListViewContainer = () => {
 			});
 			setValue("qs", debouncedQs);
 		}
-	}, [debouncedQs, getValues, loadList, setValue]);
+	}, [debouncedQs]);
 
 	return (
 		<ListViewBox withHeader>

@@ -78,7 +78,7 @@ export const useProdGrid = ({
 						pk: 1,
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					setState((prev) => ({
 						...prev,
 						saveKey: payload.Select?.SaveKey,
@@ -127,7 +127,7 @@ export const useProdGrid = ({
 						}),
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					dsg.handleGridDataLoaded(transformForGridEdior(payload));
 				} else {
 					switch (status.code) {
@@ -187,7 +187,7 @@ export const useProdGrid = ({
 				data: collected,
 				bearer: token,
 			});
-			if (status?.success) {
+			if (status.success) {
 				toast.success(`${collected.length}筆商品資料已更新`);
 				reload();
 				saveAction.finish();

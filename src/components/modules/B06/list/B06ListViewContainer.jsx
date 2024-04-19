@@ -7,6 +7,7 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { B06ListRowContainer } from "./B06ListRowContainer";
+import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 
 export const B06ListViewContainer = () => {
 	const b06 = useContext(B06Context);
@@ -26,7 +27,7 @@ export const B06ListViewContainer = () => {
 		b06.loadList();
 	}, []);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		console.log(`debouncedQs: ${debouncedQs}`);
 		if (debouncedQs !== undefined) {
 			const values = getValues();
@@ -36,7 +37,7 @@ export const B06ListViewContainer = () => {
 			});
 			setValue("qs", debouncedQs);
 		}
-	}, [debouncedQs, getValues, loadList, setValue]);
+	}, [debouncedQs]);
 
 	return (
 		<ListViewBox withHeader>

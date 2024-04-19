@@ -62,7 +62,7 @@ export const useSignIn = () => {
 						console.error(error);
 					}
 
-					if (status?.success) {
+					if (status.success) {
 						// 1.儲存 Cookie
 						Cookies.set(
 							Auth.COOKIE_LOGKEY,

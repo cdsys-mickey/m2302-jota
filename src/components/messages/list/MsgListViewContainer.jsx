@@ -7,6 +7,7 @@ import { useContext, useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { MessagingContext } from "../../../contexts/MessagingContext";
 import { MsgListRowContainer } from "./MsgListRowContainer";
+import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
 
 export const MsgListViewContainer = () => {
 	const messaging = useContext(MessagingContext);
@@ -25,7 +26,7 @@ export const MsgListViewContainer = () => {
 		messaging.loadList();
 	}, []);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		console.log(`debouncedQs: ${debouncedQs}`);
 		if (debouncedQs !== undefined) {
 			const values = getValues();
@@ -35,7 +36,7 @@ export const MsgListViewContainer = () => {
 			});
 			setValue("qs", debouncedQs);
 		}
-	}, [debouncedQs, getValues, loadList, setValue]);
+	}, [debouncedQs]);
 
 	return (
 		<ListViewBox withHeader>

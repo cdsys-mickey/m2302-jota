@@ -5,6 +5,7 @@ import { ControlledOptionPicker } from "../../shared-components/controlled/Contr
 
 const StdPrintOutputModePicker = memo(
 	forwardRef((props, ref) => {
+		console.log("rendering StdPrintOutputModePicker");
 		const { label = "輸出格式", ...rest } = props;
 
 		return (

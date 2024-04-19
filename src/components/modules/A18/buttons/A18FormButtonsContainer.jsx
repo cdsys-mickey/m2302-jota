@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { A18Context } from "@/contexts/A18/A18Context";
 
 export const A18FormButtonsContainer = () => {
+	console.log("rendering A18FormButtonsContainer");
 	const a18 = useContext(A18Context);
 	return (
 		<>

@@ -55,7 +55,7 @@ export const useAuth = () => {
 					url: "v1/auth/authorities",
 					bearer: token,
 				});
-				if (status?.success) {
+				if (status.success) {
 					setAuthoritiesState((prev) => ({
 						...prev,
 						authorities: payload,
@@ -104,7 +104,7 @@ export const useAuth = () => {
 					url: "v1/auth/token",
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					// JOSE methods
 					// ** METHOD 1 ** → no validation
 					const token = payload.token;
@@ -232,7 +232,7 @@ export const useAuth = () => {
 					url: `v1/auth/switch-dept/${newDeptId}`,
 					bearer: state.token,
 				});
-				if (status?.success) {
+				if (status.success) {
 					validateCookie({ switching: true, doRedirect: false });
 					toLanding({
 						reloadAuthorities: true,
@@ -310,7 +310,7 @@ export const useAuth = () => {
 							newPword: data.newPword,
 						},
 					});
-					if (status?.success) {
+					if (status.success) {
 						toast.success("密碼已更新");
 						finsihChanging();
 						if (doRedirect) {

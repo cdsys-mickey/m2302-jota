@@ -7,6 +7,7 @@ import { useContext, useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import ListViewBox from "../../../../shared-components/listview/ListViewBox";
 import { A20ListRowContainer } from "./A20ListRowContainer";
+import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 
 export const A20ListViewContainer = () => {
 	const a20 = useContext(A20Context);
@@ -26,7 +27,7 @@ export const A20ListViewContainer = () => {
 		a20.loadList();
 	}, []);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		console.log(`debouncedQs: ${debouncedQs}`);
 		if (debouncedQs !== undefined) {
 			const values = getValues();
@@ -36,7 +37,7 @@ export const A20ListViewContainer = () => {
 			});
 			setValue("qs", debouncedQs);
 		}
-	}, [debouncedQs, getValues, loadList, setValue]);
+	}, [debouncedQs]);
 
 	return (
 		<ListViewBox withHeader>

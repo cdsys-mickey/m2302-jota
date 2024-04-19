@@ -54,7 +54,7 @@ export const usePersonalSettings = () => {
 							pw: data.ogPword,
 						},
 					});
-					if (status?.success) {
+					if (status.success) {
 						Cookies.set(
 							Auth.COOKIE_LOGKEY,
 							payload.LogKey || "",
@@ -107,7 +107,7 @@ export const usePersonalSettings = () => {
 							newPword: data.newPword,
 						},
 					});
-					if (status?.success) {
+					if (status.success) {
 						toast.success("密碼已更新");
 						finsihChanging();
 						Cookies.set(

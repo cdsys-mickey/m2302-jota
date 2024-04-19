@@ -6,6 +6,7 @@ import OptionPicker from "@/shared-components/picker/OptionPicker";
 
 const A18ActionPicker = memo(
 	forwardRef((props, ref) => {
+		console.log("rendering A18ActionPicker");
 		const { name, label = "輸出格式", ...rest } = props;
 
 		if (name) {

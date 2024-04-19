@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import { ControlledOptionPicker } from "../controlled/ControlledOptionPicker";
 import TypoOptionPickerContainer from "./TypoOptionPickerContainer";
 import { WebApiOptionPickerWrapper } from "./WebApiOptionPickerWrapper";
+import { memo } from "react";
 
 /**
  * OptionPicker 系列的綜合入口
  * @param {*} props
  * @returns
  */
-export const OptionPickerWrapper = (props) => {
+export const OptionPickerWrapper = memo((props) => {
 	const { typo = false, url, ...rest } = props;
 	// console.log("rendering OptionPickerWrapper");
 
@@ -25,7 +26,7 @@ export const OptionPickerWrapper = (props) => {
 	) : (
 		<ControlledOptionPicker {...rest} />
 	);
-};
+});
 
 OptionPickerWrapper.displayName = "OptionPickerWrapper";
 OptionPickerWrapper.propTypes = {

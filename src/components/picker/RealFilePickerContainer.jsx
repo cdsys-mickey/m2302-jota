@@ -4,27 +4,16 @@ import { useContext } from "react";
 import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
 import Database from "../../modules/md-database";
 import { ControlledWebApiOptionPicker } from "../../shared-components/controlled/ControlledWebApiOptionPicker";
+import { memo } from "react";
 
-export const RealFilePickerContainer = (props) => {
+export const RealFilePickerContainer = memo((props) => {
+	console.log("rendering RealFilePickerContainer");
 	const { name, label = "檔案", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
-	if (name) {
-		return (
-			<ControlledWebApiOptionPicker
-				name={name}
-				label={label}
-				bearer={token}
-				url={`v1/app/log/tables`}
-				getOptionLabel={Database.getOptionLabel}
-				isOptionEqualToValue={Database.isOptionEqualToValue}
-				{...rest}
-			/>
-		);
-	}
-
 	return (
-		<WebApiOptionPicker
+		<ControlledWebApiOptionPicker
+			name={name}
 			label={label}
 			bearer={token}
 			url={`v1/app/entities`}
@@ -33,7 +22,7 @@ export const RealFilePickerContainer = (props) => {
 			{...rest}
 		/>
 	);
-};
+});
 
 RealFilePickerContainer.propTypes = {
 	name: PropTypes.string,

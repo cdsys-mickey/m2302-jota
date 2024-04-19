@@ -27,19 +27,28 @@ const getById = (id) => {
 };
 
 const transformForSearchSubmitting = (payload) => {
-	const { supplier, supplier2, sprod, eprod, orderBy, ...rest } = payload;
-	return Forms.processDateFieldsForSubmit(
-		{
-			sp1: supplier?.FactID,
-			sp2: supplier2?.FactID,
-			pi: sprod?.ProdID,
-			pi2: eprod?.ProdID,
-			ob: orderBy?.id || "",
+	const {
+		supplier,
+		supplier2,
+		sprod,
+		eprod,
+		orderBy,
+		outputType,
+		date1,
+		date2,
+		...rest
+	} = payload;
+	console.log(`filtered props`, outputType);
 
-			...rest,
-		},
-		"date1,date2"
-	);
+	return {
+		sp1: supplier?.FactID,
+		sp2: supplier2?.FactID,
+		pi: sprod?.ProdID,
+		pi2: eprod?.ProdID,
+		ob: orderBy?.id || "",
+		dt1: Forms.formatDate(date1),
+		dt2: Forms.formatDate(date2),
+	};
 };
 
 const transformForPrinting = (payload) => {

@@ -1,16 +1,16 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import PropTypes from "prop-types";
-import { forwardRef, useContext } from "react";
-import Depts from "../../modules/md-depts";
 import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
-import { memo } from "react";
-import { useMemo } from "react";
+import PropTypes from "prop-types";
 import queryString from "query-string";
-import Auth from "../../modules/md-auth";
+import { memo, useContext, useMemo } from "react";
+import Depts from "../../modules/md-depts";
+import { useCallback } from "react";
+import { WebApiOptionPickerWrapper } from "../../shared-components/picker/WebApiOptionPickerWrapper";
 
 const AppDeptPicker = memo((props) => {
+	console.log("rendering AppDeptPicker");
 	const { uid, scope, filterByOperator, ...rest } = props;
-	const auth = useContext(AuthContext);
+	const { token } = useContext(AuthContext);
 
 	const qs = useMemo(() => {
 		return queryString.stringify({
@@ -26,14 +26,29 @@ const AppDeptPicker = memo((props) => {
 		});
 	}, [filterByOperator, scope, uid]);
 
+	const getOptionLabel = useCallback(
+		(option) => Depts.getOptionLabel(option),
+		[]
+	);
+
+	const isOptionEqualToValue = useCallback((option, value) => {
+		return Depts.isOptionEqualToValue(option, value);
+	}, []);
+
+	const getOptionKey = useCallback(
+		(option) => Depts.getOptionKey(option),
+		[]
+	);
+
 	return (
-		<OptionPickerWrapper
+		// <OptionPickerWrapper
+		<WebApiOptionPickerWrapper
 			// ref={ref}
-			bearer={auth.token}
+			bearer={token}
 			url={`v1/app/depts`}
-			getOptionLabel={Depts.getOptionLabel}
-			isOptionEqualToValue={Depts.isOptionEqualToValue}
-			getOptionKey={Depts.getOptionKey}
+			getOptionLabel={getOptionLabel}
+			isOptionEqualToValue={isOptionEqualToValue}
+			getOptionKey={getOptionKey}
 			querystring={qs}
 			{...rest}
 		/>

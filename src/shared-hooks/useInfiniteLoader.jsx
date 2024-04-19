@@ -23,13 +23,12 @@ export const useInfiniteLoader = (props = {}) => {
 	const loadingMap = useMemo(() => new Object(), []);
 	const [saveKey, setSaveKey] = useState();
 	const [state, setState] = useState({
-		loading: null,
-		forceLoading: false,
+		listLoading: null,
 	});
 
 	const [itemCount, setItemCount] = useState(0);
 	const [listError, setListError] = useState();
-	const debouncedLoading = useDebounce(state.loading, debounce);
+	const debouncedListLoading = useDebounce(state.listLoading, debounce);
 	const [listData, setListData] = useState();
 	const [viewportState, setViewportState] = useState({
 		visibleStartIndex: 0,
@@ -92,19 +91,15 @@ export const useInfiniteLoader = (props = {}) => {
 				stop !== undefined ? stop : startIndex + initialFetchSize;
 
 			if (refresh) {
-				// loadingMap.clear();
 				Object.keys(loadingMap).forEach((key) => {
-					// 删除对象的属性
 					delete loadingMap[key];
 				});
-				// console.log("loadingMap cleared", loadingMap);
+				console.log("loadingMap cleared", loadingMap);
 			}
 
 			for (let i = startIndex; i <= stopIndex; i++) {
 				loadingMap[i] = true;
 			}
-
-			// console.log("loadingMap before", loadingMap);
 
 			let activeParams;
 			if (!crud) {
@@ -126,13 +121,14 @@ export const useInfiniteLoader = (props = {}) => {
 				activeParams
 			);
 
-			const loading = (!start && !listData && !supressLoading) || refresh;
+			const loading =
+				((!start || !listData) && !supressLoading) || refresh;
+			console.log("loading", loading);
 
 			setListError(null);
 			setState((prev) => ({
 				...prev,
-				forceLoading: !!saveKey,
-				loading,
+				listLoading: loading,
 			}));
 			try {
 				const { status, payload, error } = await httpGetAsync({
@@ -148,7 +144,7 @@ export const useInfiniteLoader = (props = {}) => {
 						}),
 					},
 				});
-				if (status?.success) {
+				if (status.success) {
 					const newSaveKey = getSaveKey(payload);
 
 					// setState((prev) => ({
@@ -198,7 +194,7 @@ export const useInfiniteLoader = (props = {}) => {
 				// setLoading(false);
 				setState((prev) => ({
 					...prev,
-					loading: false,
+					listLoading: false,
 				}));
 			}
 		},
@@ -218,15 +214,15 @@ export const useInfiniteLoader = (props = {}) => {
 	);
 
 	const refreshList = useCallback(() => {
-		if (state.loading === null) {
+		if (state.listLoading === null) {
 			loadList();
 		}
-	}, [loadList, state.loading]);
+	}, [loadList, state.listLoading]);
 
 	const clearListLoading = useCallback(() => {
 		setState((prev) => ({
 			...prev,
-			loading: null,
+			listLoading: null,
 		}));
 	}, []);
 
@@ -259,23 +255,26 @@ export const useInfiniteLoader = (props = {}) => {
 	);
 
 	// const listLoading = useMemo(() => {
-	// 	return forceLoading ? loading : debouncedLoading;
-	// }, [debouncedLoading, forceLoading, loading]);
-	const listLoading = useMemo(() => {
-		return state.forceLoading || debounce === 0
-			? state.loading
-			: debouncedLoading;
-	}, [debounce, debouncedLoading, state.forceLoading, state.loading]);
+	// 	return debounce === 0
+	// 		? state.loading
+	// 		: debouncedLoading;
+	// }, [debounce, debouncedLoading, state.loading]);
 
 	const listFiltered = useMemo(() => {
 		return false;
 	}, []);
 
+	const debouncedListLoadingValue = useMemo(
+		() => (debounce === 0 ? state.listLoading : debouncedListLoading),
+		[debounce, debouncedListLoading, state.listLoading]
+	);
+
 	return {
 		// PROPS
 		saveKey,
 		listData,
-		listLoading,
+		...state,
+		debouncedListLoading: debouncedListLoadingValue,
 		listFiltered,
 		listError,
 		itemCount,

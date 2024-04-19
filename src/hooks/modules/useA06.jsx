@@ -69,7 +69,7 @@ export const useA06 = ({ token, mode }) => {
 					bearer: token,
 				});
 				console.log("payload", payload);
-				if (status?.success) {
+				if (status.success) {
 					const data = A06.transformForReading(payload);
 
 					crud.doneReading({
@@ -132,7 +132,7 @@ export const useA06 = ({ token, mode }) => {
 					bearer: token,
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					toast.success(
 						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
 							data?.CustData
@@ -167,7 +167,7 @@ export const useA06 = ({ token, mode }) => {
 					bearer: token,
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					toast.success(
 						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
 							data?.CustData
@@ -241,7 +241,7 @@ export const useA06 = ({ token, mode }) => {
 						bearer: token,
 					});
 					crud.cancelAction();
-					if (status?.success) {
+					if (status.success) {
 						toast.success(
 							`成功删除${
 								mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
@@ -278,7 +278,7 @@ export const useA06 = ({ token, mode }) => {
 					},
 					bearer: token,
 				});
-				if (status?.success) {
+				if (status.success) {
 					reviewAction.clear();
 					crud.cancelAction();
 					loader.loadList({

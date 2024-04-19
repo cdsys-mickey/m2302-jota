@@ -53,7 +53,7 @@ export const useA20 = ({ token }) => {
 					bearer: token,
 				});
 				console.log("payload", payload);
-				if (status?.success) {
+				if (status.success) {
 					const data = A20.transformForReading(payload);
 					materialsGrid.handleGridDataLoaded(data.materials);
 					crud.doneReading({
@@ -113,7 +113,7 @@ export const useA20 = ({ token }) => {
 					bearer: token,
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					toast.success(
 						`BOM「${data?.prod?.ProdID} ${data?.prod?.ProdData}」新增成功`
 					);
@@ -144,7 +144,7 @@ export const useA20 = ({ token }) => {
 					bearer: token,
 				});
 
-				if (status?.success) {
+				if (status.success) {
 					toast.success(
 						`BOM「${data?.ProdID} ${data?.ProdData}」修改成功`
 					);
@@ -224,9 +224,9 @@ export const useA20 = ({ token }) => {
 						bearer: token,
 					});
 					crud.cancelAction();
-					if (status?.success) {
+					if (status.success) {
 						toast.success(
-							`成功删除${crud.itemData?.prod?.ProdID} ${crud.itemData?.prod?.ProdData}`
+							`成功删除 ${crud.itemData?.prod?.ProdID} ${crud.itemData?.prod?.ProdData}`
 						);
 						loader.loadList({ refresh: true });
 					} else {

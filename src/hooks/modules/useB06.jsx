@@ -12,7 +12,7 @@ export const useB06 = ({ token, logKey, deptId }) => {
 		moduleId: "B06",
 	});
 
-	const loader = useInfiniteLoader({
+	const listLoader = useInfiniteLoader({
 		url: "v1/purchase/inquiry-quotes",
 		bearer: token,
 		initialFetchSize: 50,
@@ -26,11 +26,11 @@ export const useB06 = ({ token, logKey, deptId }) => {
 			const collected = B06.transformForSearchSubmitting(data);
 			console.log("collected", collected);
 
-			loader.loadList({
+			listLoader.loadList({
 				params: collected,
 			});
 		},
-		[loader]
+		[listLoader]
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -63,7 +63,7 @@ export const useB06 = ({ token, logKey, deptId }) => {
 	}, []);
 
 	return {
-		...loader,
+		...listLoader,
 		// Popper
 		onSearchSubmit,
 		onSearchSubmitError,

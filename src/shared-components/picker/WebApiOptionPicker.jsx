@@ -5,6 +5,14 @@ import OptionPicker from "./OptionPicker";
 import { useWebApiOptions } from "@/shared-hooks/useWebApiOptions";
 import { useRef } from "react";
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
+import Objects from "../../shared-modules/sd-objects";
+
+const arePropsEqual = (oldProps, newProps) => {
+	return Objects.arePropsEqual(oldProps, newProps, {
+		fields: "",
+		debug: true,
+	});
+};
 
 const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
@@ -44,7 +52,8 @@ const WebApiOptionPicker = memo(
 		const [open, setOpen] = useState(false);
 		const {
 			pickerState,
-			pickerCallback,
+			// pickerCallback,
+			onInputChange,
 			resetLoading,
 			loadOptionsTriggered,
 			loadOptions,
@@ -110,11 +119,13 @@ const WebApiOptionPicker = memo(
 		// }, [url, onChange, resetLoading, name]);
 
 		useChangeTracking(() => {
+			console.log("change1");
 			onChange(null);
 			resetLoading();
 		}, [url]);
 
 		useEffect(() => {
+			console.log("effect1");
 			if (filterByServer && !open) {
 				resetLoading();
 			}
@@ -124,6 +135,7 @@ const WebApiOptionPicker = memo(
 		 * 空白展開時 fetch options
 		 */
 		useEffect(() => {
+			console.log("effect2");
 			if (open && loadOptionsTriggered) {
 				loadOptions();
 			}
@@ -135,7 +147,7 @@ const WebApiOptionPicker = memo(
 				name={name}
 				// loading={loading}
 				{...pickerState}
-				{...pickerCallback}
+				onInputChange={onInputChange}
 				disabled={disabled}
 				// ChipProps={chipProps}
 				open={open}
@@ -147,7 +159,8 @@ const WebApiOptionPicker = memo(
 				{...rest}
 			/>
 		);
-	})
+	}),
+	arePropsEqual
 );
 
 WebApiOptionPicker.displayName = "WebApiOptionPicker";

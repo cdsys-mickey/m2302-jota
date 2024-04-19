@@ -33,7 +33,7 @@ const A18Form = memo((props) => {
 					})}>
 					<FormSectionBox py={2}>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12}>
+							{/* <Grid item xs={12}>
 								<AppDeptPicker
 									filterByOperator
 									label="查詢門市"
@@ -41,21 +41,9 @@ const A18Form = memo((props) => {
 									name="dept"
 									// readOnly={true}
 								/>
-							</Grid>
+							</Grid> */}
 
 							<Grid item xs={12}>
-								{/* <ControlledTextField
-									label="檔案"
-									name="RealFile"
-									size="small"
-								/> */}
-								{/* <DbTablePicker
-									label="檔案"
-									required
-									// name="RealFile"
-									name="table"
-									size="small"
-								/> */}
 								<RealFilePickerContainer
 									name="table"
 									label="檔案"
@@ -64,6 +52,7 @@ const A18Form = memo((props) => {
 									size="small"
 								/>
 							</Grid>
+
 							<Grid item xs={12}>
 								<StdPrintOutputModePicker
 									required
@@ -71,6 +60,7 @@ const A18Form = memo((props) => {
 									label="執行方式"
 								/>
 							</Grid>
+
 							<Grid item xs={12}>
 								<ControlledDatePicker
 									name="SDate"
@@ -86,6 +76,7 @@ const A18Form = memo((props) => {
 							<Grid item xs={12}>
 								<A18ActionPicker name="action" label="行為" />
 							</Grid>
+
 							<FlexToolbar align="right">
 								<A18FormButtonsContainer />
 							</FlexToolbar>
