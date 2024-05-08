@@ -13,12 +13,13 @@ import B05 from "../../modules/md-b05";
 import Errors from "../../shared-modules/sd-errors";
 import { toast } from "react-toastify";
 import Objects from "../../shared-modules/sd-objects";
+import useHttpPost from "../../shared-hooks/useHttpPost";
 
 export const useB05 = () => {
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
-
+	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -142,9 +143,10 @@ export const useB05 = () => {
 			message: "確定要放棄修改?",
 			onConfirm: () => {
 				crud.cancelAction();
+				loadItem({ refresh: true });
 			},
 		});
-	}, [crud, dialogs]);
+	}, [crud, dialogs, loadItem]);
 
 	const confirmReturnReading = useCallback(() => {
 		dialogs.confirm({
@@ -187,21 +189,21 @@ export const useB05 = () => {
 	//DELETE
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({
-			message: `確認要删除詢價單「${crud.itemData?.InqID}」?`,
+			message: `確認要删除詢價單「${itemData?.InqID}」?`,
 			onConfirm: async () => {
 				try {
-					crud.startDeleting(crud.itemData);
+					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
 						url: `v1/purchase/inquiries`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.InqID,
+							id: itemData?.InqID,
 						},
 					});
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除詢價單 ${crud.itemData?.InqID}`);
+						toast.success(`成功删除詢價單 ${itemData?.InqID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -213,7 +215,7 @@ export const useB05 = () => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, listLoader, token]);
+	}, [crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
 
 	const onSearchSubmit = useCallback((data) => {
 		console.log("onSearchSubmit", data);
@@ -225,11 +227,25 @@ export const useB05 = () => {
 
 	const handleQuoteGridChange = useCallback(
 		(newValue, operations) => {
-			// const operation = operations[0];
-			// console.log("operation", operation);
-			// console.log("newValue", newValue);
-
-			quoteGrid.propagateGridChange(newValue, operations);
+			console.log("handleQuoteGridChange", operations);
+			const newGridData = [...newValue];
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach((rowData, i) => {
+							const { prod } = rowData;
+							const rowIndex = operation.fromRowIndex + i;
+							console.log(`[${rowIndex}]prod changed`, prod);
+							newGridData[rowIndex] = {
+								...rowData,
+								["SPackData_N"]: prod?.PackData_N || "",
+							};
+						});
+				}
+			}
+			console.log("after changed", newGridData);
+			quoteGrid.setGridData(newGridData);
 		},
 		[quoteGrid]
 	);
@@ -373,6 +389,38 @@ export const useB05 = () => {
 		console.error("onImportProdsSubmitError", err);
 	}, []);
 
+	const onPrintSubmit = useCallback(
+		(data) => {
+			console.log("onPrintSubmit", data);
+			const jsonData = {
+				...(data.outputType && {
+					Action: data.outputType.id,
+				}),
+				DeptID: operator?.CurDeptID,
+				JobName: "B05",
+				IDs: crud.itemData?.InqID,
+			};
+			postToBlank(
+				`${import.meta.env.VITE_URL_REPORT}/WebB05Rep.aspx?LogKey=${
+					operator?.LogKey
+				}`,
+				{
+					jsonData: JSON.stringify(jsonData),
+				}
+			);
+		},
+		[
+			crud.itemData?.InqID,
+			operator?.CurDeptID,
+			operator?.LogKey,
+			postToBlank,
+		]
+	);
+
+	const onPrintSubmitError = useCallback((err) => {
+		console.error("onPrintSubmitError", err);
+	}, []);
+
 	return {
 		...crud,
 		...listLoader,
@@ -402,5 +450,8 @@ export const useB05 = () => {
 		onImportProdsSubmitError,
 		peekProds,
 		ipState,
+		// 列印
+		onPrintSubmit,
+		onPrintSubmitError,
 	};
 };

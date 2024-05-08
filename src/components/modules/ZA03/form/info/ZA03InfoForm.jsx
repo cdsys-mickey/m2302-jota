@@ -31,8 +31,8 @@ const ZA03InfoForm = memo((props) => {
 			<FlexToolbar RightComponent={ZA03InfoToolbarContainer} />
 
 			<FormSectionBox py={editing ? 2 : 1} mb={2}>
-				<Grid container columns={12} spacing={editing ? 2 : 1}>
-					<Grid item xs={12} sm={12} md={3}>
+				<Grid container columns={24} spacing={editing ? 2 : 1}>
+					<Grid item xs={24} sm={24} md={5}>
 						<TextFieldWrapper
 							typo
 							name="LoginName"
@@ -45,7 +45,7 @@ const ZA03InfoForm = memo((props) => {
 							readOnly={updating}
 						/>
 					</Grid>
-					<Grid item xs={12} sm={12} md={3}>
+					<Grid item xs={24} sm={24} md={6}>
 						<TextFieldWrapper
 							typo
 							name="UserName"
@@ -57,7 +57,7 @@ const ZA03InfoForm = memo((props) => {
 							}}
 						/>
 					</Grid>
-					<Grid item xs={12} sm={12} md={3}>
+					<Grid item xs={24} sm={24} md={7}>
 						<TextFieldWrapper
 							typo
 							name="Tel"
@@ -65,7 +65,7 @@ const ZA03InfoForm = memo((props) => {
 							fullWidth
 						/>
 					</Grid>
-					<Grid item xs={12} sm={12} md={3}>
+					<Grid item xs={24} sm={24} md={6}>
 						<TextFieldWrapper
 							typo
 							name="Cel"
@@ -74,7 +74,7 @@ const ZA03InfoForm = memo((props) => {
 						/>
 					</Grid>
 					<FlexBox fullWidth />
-					<Grid item xs={12} sm={12} md={5}>
+					<Grid item xs={24} sm={24} md={11}>
 						<TextFieldWrapper
 							typo
 							name="Email"
@@ -83,7 +83,7 @@ const ZA03InfoForm = memo((props) => {
 						/>
 					</Grid>
 
-					<Grid item xs={12} sm={12} md={4}>
+					<Grid item xs={24} sm={24} md={7}>
 						<AppDeptPicker
 							uid={data?.UID}
 							typo
@@ -93,7 +93,7 @@ const ZA03InfoForm = memo((props) => {
 							disabled={deptDisabled}
 						/>
 					</Grid>
-					<Grid item xs={12} sm={12} md={3}>
+					<Grid item xs={24} sm={24} md={6}>
 						<AuthScopePickerContainer
 							typo
 							name="userClass"
@@ -105,7 +105,7 @@ const ZA03InfoForm = memo((props) => {
 						</AuthScopePickerContainer>
 					</Grid>
 
-					<Grid item xs={12}>
+					<Grid item xs={24}>
 						<AppDeptPicker
 							typo
 							name="depts"

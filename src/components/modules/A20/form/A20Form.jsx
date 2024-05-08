@@ -11,6 +11,7 @@ import { TextFieldWrapper } from "../../../../shared-components/text-field/TextF
 import { PackageTypeLabelContainer } from "./fields/PackageTypeLabelContainer";
 import TypoProdPickerContainer from "./fields/TypoProdPickerContainer";
 import { ProdMaterialsGridContainer } from "./prods/ProdMaterialsGridContainer";
+import FormBox from "../../../../shared-components/form/FormBox";
 
 const A20Form = memo((props) => {
 	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
@@ -28,21 +29,7 @@ const A20Form = memo((props) => {
 				</Container>
 			)}
 			{itemDataReady && (
-				<Box
-					pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "120%",
-							// fontWeight: 500,
-							// color: "rgba(0, 0, 0, 0.8 )",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "120%",
-							fontWeight: 600,
-							left: "-2px",
-							// color: theme.palette.primary.main,
-						},
-					})}>
+				<FormBox pt={1}>
 					<FormSectionTitle>關連貨品基本資料</FormSectionTitle>
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
@@ -83,7 +70,7 @@ const A20Form = memo((props) => {
 						<FormSectionTitle>原物料</FormSectionTitle>
 						<ProdMaterialsGridContainer />
 					</FormSectionBox>
-				</Box>
+				</FormBox>
 			)}
 		</form>
 	);

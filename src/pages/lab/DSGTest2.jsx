@@ -1,19 +1,15 @@
-import { forwardRef, memo, useEffect, useState } from "react";
+import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useMemo, useState } from "react";
 import {
-	DataSheetGrid,
-	checkboxColumn,
+	DynamicDataSheetGrid,
 	keyColumn,
 	textColumn,
 } from "react-datasheet-grid";
-import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
-import { useMemo } from "react";
-import { DynamicDataSheetGrid } from "react-datasheet-grid";
-import PropTypes from "prop-types";
-import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
-import { createWebApiOptionPickerColumn } from "../../shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
 import Depts from "../../modules/md-depts";
 import Prods from "../../modules/md-prods";
-import OptionPickerColumn from "../../shared-components/dsg/columns/option-picker/OptionPickerColumn";
+import { createWebApiOptionPickerColumn } from "../../shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
+import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/optionPickerColumn";
 
 const DSGTest2 = memo(
 	forwardRef((props, ref) => {
@@ -46,7 +42,7 @@ const DSGTest2 = memo(
 				{
 					...keyColumn(
 						"abc",
-						createOptionPickerColumn(OptionPickerColumn, {
+						optionPickerColumn({
 							options: ["A", "B", "C"],
 						})
 					),

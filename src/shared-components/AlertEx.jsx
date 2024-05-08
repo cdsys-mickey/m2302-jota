@@ -15,6 +15,7 @@ const AlertEx = memo(
 			children,
 			flex,
 			maxWidth,
+			minWidth,
 			defaultText = "(空白)",
 			error,
 			...rest
@@ -61,7 +62,7 @@ const AlertEx = memo(
 			return (
 				children || error?.message || error?.statusText || defaultText
 			);
-		}, [children, error?.message, error?.statusText]);
+		}, [children, defaultText, error?.message, error?.statusText]);
 
 		return (
 			<Alert
@@ -80,6 +81,9 @@ const AlertEx = memo(
 					},
 					maxWidth && {
 						maxWidth,
+					},
+					minWidth && {
+						minWidth,
 					},
 					fontSize && {
 						fontSize,
@@ -103,6 +107,7 @@ const AlertEx = memo(
 
 AlertEx.displayName = "AlertEx";
 AlertEx.propTypes = {
+	minWidth: PropTypes.number,
 	maxWidth: PropTypes.number,
 	flex: PropTypes.bool,
 	transparent: PropTypes.bool,

@@ -58,7 +58,7 @@ const RWListboxComponent = forwardRef(function RWListboxComponent(props, ref) {
 		return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
 	};
 
-	const gridRef = useResetCache(itemCount);
+	const listRef = useResetCache(itemCount);
 
 	return (
 		<div ref={ref}>
@@ -68,7 +68,7 @@ const RWListboxComponent = forwardRef(function RWListboxComponent(props, ref) {
 					itemData={itemData}
 					height={getHeight() + 2 * LISTBOX_PADDING}
 					width="100%"
-					ref={gridRef}
+					ref={listRef}
 					outerElementType={RWOuterElementType}
 					innerElementType="ul"
 					itemSize={(index) => getChildSize(itemData[index])}

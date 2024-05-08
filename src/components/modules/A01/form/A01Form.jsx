@@ -20,9 +20,9 @@ import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import A01 from "../../../../modules/md-a01";
-import AlertEx from "../../../../shared-components/AlertEx";
-import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
+import A01 from "@/modules/md-a01";
+import AlertEx from "@/shared-components/AlertEx";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
 import { ProdComboGridContainer } from "./combo/ProdComboGridContainer";
 import TypoCmsTypePickerContainer from "./fields/TypoCmsTypePickerContainer";
@@ -34,6 +34,8 @@ import { TypoProdCatSPickerContainer } from "./fields/TypoProdCatSPickerContaine
 import { TypoProdTypeAPickerContainer } from "./fields/TypoProdTypeAPickerContainer";
 import { TypoProdTypeBPickerContainer } from "./fields/TypoProdTypeBPickerContainer";
 import { ProdTransGridContainer } from "./trans/ProdTransGridContainer";
+import FormBox from "../../../../shared-components/form/FormBox";
+import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const A01Form = memo((props) => {
 	const {
@@ -60,31 +62,9 @@ const A01Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && (
-				<Box pt="20%">
-					<AlertEx
-						variant="filled"
-						title="讀取失敗"
-						error={readError}
-					/>
-				</Box>
-			)}
+			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
-				<Box
-					pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "105%",
-							// fontWeight: 500,
-							// color: "rgba(0, 0, 0, 0.8 )",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "120%",
-							fontWeight: 600,
-							left: "-2px",
-							// color: theme.palette.primary.main,
-						},
-					})}>
+				<FormBox pt={1}>
 					<TabContext value={tabIndex}>
 						<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
 							<TabList
@@ -537,7 +517,7 @@ const A01Form = memo((props) => {
 							</Grid>
 						</Grid> */}
 					</TabContext>
-				</Box>
+				</FormBox>
 			)}
 		</form>
 	);

@@ -118,19 +118,23 @@ export const useMessaging = ({ token }) => {
 
 	const onClose = useCallback(() => {}, []);
 
-	const { connection, connectionId, connectionState, connect } = useSignalR({
-		url: import.meta.env.VITE_URL_MSG_HUB,
-		autoConnect: false,
-		onConnected: onConnected,
-		onReconnected: onReconnected,
-		onClose: onClose,
-	});
+	const { connection, connectionId, connectionState, connect, disconnect } =
+		useSignalR({
+			url: import.meta.env.VITE_URL_MSG_HUB,
+			autoConnect: false,
+			onConnected: onConnected,
+			onReconnected: onReconnected,
+			onClose: onClose,
+		});
 
 	useEffect(() => {
 		if (token && connection) {
 			connect();
 		}
-	}, [connect, connection, token]);
+		return () => {
+			disconnect();
+		};
+	}, [connect, connection, disconnect, token]);
 
 	const markAsRead = useCallback(
 		async (msgId, reload = false) => {
@@ -164,23 +168,19 @@ export const useMessaging = ({ token }) => {
 
 	useEffect(() => {
 		// notify
-		// console.log("notify handler registered");
 		connection?.on("notify", handlNotify);
 
 		// refresh
 		connection?.on("refresh", handleRefresh);
-		// console.log("refresh handler registered");
 
 		console.log("notify handlers registered");
 
 		return () => {
 			// notify
 			connection?.off("notify");
-			// console.log("notify handler un-registered");
 
 			// refresh
 			connection?.off("refresh");
-			// console.log("refresh handler un-registered");
 
 			console.log("notify handlers un-registered");
 		};
@@ -213,8 +213,6 @@ export const useMessaging = ({ token }) => {
 		...loader,
 		...unreadState,
 		loadUnreadCount,
-		// ...recentMessagesState,
-		// loadRecentMessages,
 		...popover,
 		markAsRead,
 		handleGotoJob,

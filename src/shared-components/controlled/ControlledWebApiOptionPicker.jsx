@@ -23,7 +23,7 @@ export const ControlledWebApiOptionPicker = memo(
 		onChange: onPickerChange,
 		...rest
 	}) => {
-		console.log("rendering ControlledWebApiOptionPicker");
+		// console.log("rendering ControlledWebApiOptionPicker");
 		if (!name) {
 			return (
 				<WebApiOptionPicker
@@ -49,7 +49,6 @@ export const ControlledWebApiOptionPicker = memo(
 					field: { value, onChange },
 					fieldState: { error },
 				}) => {
-					console.log("controller rendering");
 					return (
 						<WebApiOptionPicker
 							name={name}

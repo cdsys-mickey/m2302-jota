@@ -20,6 +20,7 @@ export const WebApiOptionPickerWrapper = memo(
 		defaultValue = null,
 		sx = [],
 		onChange: onPickerChange,
+		// disabled,
 		...rest
 	}) => {
 		if (!name) {
@@ -30,6 +31,8 @@ export const WebApiOptionPickerWrapper = memo(
 						...(labelShrink && { shrink: true }),
 					}}
 					defaultValue={defaultValue}
+					// disabled={disabled}
+					onChange={onPickerChange}
 					{...rest}
 				/>
 			);

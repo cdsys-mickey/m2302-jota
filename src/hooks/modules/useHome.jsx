@@ -21,7 +21,7 @@ export const useHome = () => {
 				reviewLoading: true,
 			}));
 			const { status, payload, error } = await httpGetAsync({
-				url: "v1/auth/review",
+				url: "v1/auth/to-review",
 				bearer: token,
 			});
 			if (status.success) {

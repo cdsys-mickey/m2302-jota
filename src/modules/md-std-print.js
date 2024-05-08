@@ -25,15 +25,15 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.id === value?.id;
 };
 
+const getById = (id) => {
+	return options.find((o) => o.id === id);
+};
+
 const droppableIdToType = (droppableId) => {
 	if (droppableId === SELECTED) {
 		return SELECTED;
 	}
 	return UNUSED;
-};
-
-const getById = (id) => {
-	return options.find((o) => o.id === id);
 };
 
 const StdPrint = {

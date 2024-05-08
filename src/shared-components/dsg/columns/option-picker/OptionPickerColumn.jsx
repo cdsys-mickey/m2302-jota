@@ -1,74 +1,14 @@
-import { memo } from "react";
-import OptionPicker from "@/shared-components/picker/OptionPicker";
-import PropTypes from "prop-types";
-import { useRef } from "react";
-import { useLayoutEffect } from "react";
-import { useCallback } from "react";
-import Objects from "@/shared-modules/sd-objects";
+import OptionPickerComponent from "./OptionPickerComponent";
 
-const arePropsEqual = (oldProps, newProps) => {
-	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData,active,focus",
-		debug: true,
-	});
+export const optionPickerColumn = (opts) => {
+	return {
+		component: OptionPickerComponent,
+		columnData: opts,
+		disableKeys: true,
+		keepFocus: true,
+		deleteValue: () => null,
+		copyValue: ({ rowData }) => rowData,
+		pasteValue: ({ value }) => value,
+		isCellEmpty: () => false,
+	};
 };
-
-const OptionPickerColumn = memo((props) => {
-	const {
-		options,
-		ComponentProps,
-		/** BUILT-IN PROPS */
-		focus,
-		rowData,
-		setRowData,
-		active,
-		stopEditing,
-		disabled,
-	} = props;
-	const ref = useRef();
-	// console.log("rendering OptionPickerColumn");
-
-	const handleChange = useCallback(
-		(newValue) => {
-			setRowData(newValue);
-		},
-		[setRowData]
-	);
-
-	// This function will be called only when `focus` changes
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
-
-	return (
-		<OptionPicker
-			readOnly={disabled}
-			inputRef={ref}
-			hideBorders
-			options={options}
-			value={rowData}
-			onChange={handleChange}
-			dense
-			disabled={disabled}
-			// onClose={stopEditing}
-			// sx={{
-			// 	"& .MuiInputBase-root": {
-			// 		padding: 0,
-			// 	},
-			// }}
-			{...ComponentProps}
-		/>
-	);
-}, arePropsEqual);
-
-OptionPickerColumn.propTypes = {
-	options: PropTypes.array,
-	ComponentProps: PropTypes.object,
-};
-
-OptionPickerColumn.displayName = "OptionPickerColumn";
-export default OptionPickerColumn;

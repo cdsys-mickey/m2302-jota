@@ -32,6 +32,34 @@ export const useA014 = ({ token } = {}) => {
 		[]
 	);
 
+	const handleGridChange = useCallback(
+		(newValue, operations) => {
+			const newGridData = [...newValue];
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach((rowData, i) => {
+							const { catL } = rowData;
+							const rowIndex = operation.fromRowIndex + i;
+							const ogRowData = prodGrid.gridData[rowIndex];
+							const { catL: oldCatL } = ogRowData;
+							if (catL?.LClas !== oldCatL?.LClas) {
+								console.log(`catL[rowIndex] changed`, catL);
+							}
+						});
+				} else if (operation.type === "DELETE") {
+					prodGrid.removeByRowIndex(
+						operation.fromRowIndex,
+						operation.toRowIndex
+					);
+				}
+				prodGrid.setGridData(newValue);
+			}
+		},
+		[prodGrid]
+	);
+
 	return {
 		...appModule,
 		...prodGrid,

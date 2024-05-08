@@ -1,4 +1,6 @@
 import HttpStatus from "@/shared-classes/HttpStatus";
+import { expect } from "vitest";
+import { it } from "vitest";
 
 it("should throw is status is not specified in constructor", () => {
 	expect(() => {

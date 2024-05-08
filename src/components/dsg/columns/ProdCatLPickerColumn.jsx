@@ -68,6 +68,11 @@ const ProdCatLPickerColumn = memo((props) => {
 			disabled={disabled}
 			value={name ? rowData[name] : rowData}
 			onChange={handleChange}
+			// DSG 專屬屬性
+			disablePointerEvents={!focus}
+			hidePopupIndicator={!focus}
+			fadeOutDisabled={false}
+			selectOnFocus
 			{...rest}
 		/>
 	);

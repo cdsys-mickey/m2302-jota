@@ -1,18 +1,14 @@
-import { forwardRef, memo, useEffect, useState } from "react";
+import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useMemo, useState } from "react";
 import {
-	DataSheetGrid,
-	checkboxColumn,
+	DynamicDataSheetGrid,
 	keyColumn,
 	textColumn,
 } from "react-datasheet-grid";
-import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
-import { useMemo } from "react";
-import { DynamicDataSheetGrid } from "react-datasheet-grid";
-import PropTypes from "prop-types";
-import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
-import { createFloatColumn } from "../../shared-components/dsg/columns/float/createFloatColumn";
-import OptionPickerColumn from "../../shared-components/dsg/columns/option-picker/OptionPickerColumn";
 import { checkboxColumn2 } from "../../shared-components/dsg/columns/checkbox/checkboxColumn2";
+import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/OptionPickerColumn";
+import { reactSelectColumn } from "../../shared-components/dsg/columns/react-select/reactSelectColumn";
 
 const DSGTest3 = memo(
 	forwardRef((props, ref) => {
@@ -76,14 +72,34 @@ const DSGTest3 = memo(
 				{
 					...keyColumn(
 						"abc",
-						createOptionPickerColumn((props) => (
-							<OptionPickerColumn
-								options={["A", "B", "C"]}
-								{...props}
-							/>
-						))
+						optionPickerColumn({
+							options: ["A", "B", "C"],
+						})
 					),
 					title: "OptionPicker",
+				},
+				{
+					...keyColumn(
+						"def",
+						reactSelectColumn({
+							options: [
+								{
+									value: "D",
+									label: "D",
+								},
+								{
+									value: "E",
+									label: "E",
+								},
+								{
+									value: "F",
+									label: "F",
+								},
+							],
+							placeholder: "請選擇...",
+						})
+					),
+					title: "React-Select",
 				},
 			],
 			[]

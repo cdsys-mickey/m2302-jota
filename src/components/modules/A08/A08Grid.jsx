@@ -9,10 +9,10 @@ import {
 	keyColumn,
 } from "react-datasheet-grid";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import ContainerEx from "../../../shared-components/ContainerEx";
-import { createOptionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/createOptionPickerColumn";
-import AreaTypePickerColumn from "../../dsg/columns/AreaTypePickerColumn";
-import AreaTypes from "../../../modules/md-area-types";
+import ContainerEx from "@/shared-components/ContainerEx";
+import AreaTypePickerColumn from "@/components/dsg/columns/AreaTypePickerColumn";
+import AreaTypes from "@/modules/md-area-types";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -47,7 +47,13 @@ const A08Grid = memo((props) => {
 			{
 				...keyColumn(
 					"areaType",
-					createOptionPickerColumn(AreaTypePickerColumn)
+					// optionPickerColumn(AreaTypePickerColumn)
+					optionPickerColumn({
+						name: "areaType",
+						options: AreaTypes.options,
+						getOptionLabel: AreaTypes.getOptionLabel,
+						isOptionEqualToValue: AreaTypes.isOptionEqualToValue,
+					})
 				),
 				title: "範圍",
 				minWidth: 200,

@@ -349,7 +349,8 @@ export const useAuth = () => {
 	}, []);
 
 	useEffect(() => {
-		if (state.validating == null) {
+		console.log("state.validating", state.validating);
+		if (state.validating === null) {
 			validateCookie({
 				doRedirect: true,
 			});

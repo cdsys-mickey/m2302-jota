@@ -22,7 +22,7 @@ const ControlledDatePicker = ({
 	variant = "outlined",
 	...rest
 }) => {
-	console.log("rendering ControlledDatePicker");
+	// console.log("rendering ControlledDatePicker");
 	const { setError, clearErrors } = useFormContext();
 	return (
 		<Controller

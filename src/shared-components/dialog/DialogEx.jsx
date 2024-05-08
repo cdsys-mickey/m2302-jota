@@ -53,6 +53,7 @@ const DialogEx = memo(
 			contentSx = [],
 			actionsStyle = defaultActionsStyle,
 			message,
+			placeholder,
 			children,
 			confirmText = "確定",
 			cancelText = "取消",
@@ -168,6 +169,9 @@ const DialogEx = memo(
 							...(!showTitle && {
 								minHeight: theme.spacing(3),
 							}),
+							"& button, & label, & .button": {
+								marginLeft: theme.spacing(0.2),
+							},
 						}),
 						...(Array.isArray(titleSx) ? titleSx : [titleSx]),
 					]}>
@@ -198,7 +202,7 @@ const DialogEx = memo(
 						<Box py={1}>
 							<TextField
 								inputRef={setInputRef}
-								placeholder={message}
+								placeholder={placeholder}
 								size="small"
 								fullWidth
 								InputLabelProps={
@@ -257,6 +261,7 @@ DialogEx.propTypes = {
 
 	title: PropTypes.string,
 	message: PropTypes.string,
+	placeholder: PropTypes.string,
 	children: PropTypes.node,
 	confirmText: PropTypes.string,
 	cancelText: PropTypes.string,

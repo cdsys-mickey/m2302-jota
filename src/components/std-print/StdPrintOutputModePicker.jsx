@@ -18,32 +18,6 @@ const StdPrintOutputModePicker = memo(
 				{...rest}
 			/>
 		);
-
-		// if (name) {
-		// 	return (
-		// 		<ControlledOptionPicker
-		// 			name={name}
-		// 			readOnly={readOnly}
-		// 			label={label}
-		// 			options={StdPrint.options}
-		// 			getOptionLabel={StdPrint.getOptionLabel}
-		// 			isOptionEqualToValue={StdPrint.isOptionEqualToValue}
-		// 			{...rest}
-		// 		/>
-		// 	);
-		// } else {
-		// 	return (
-		// 		<OptionPicker
-		// 			readOnly={readOnly}
-		// 			ref={ref}
-		// 			label={label}
-		// 			options={StdPrint.options}
-		// 			getOptionLabel={StdPrint.getOptionLabel}
-		// 			isOptionEqualToValue={StdPrint.isOptionEqualToValue}
-		// 			{...rest}
-		// 		/>
-		// 	);
-		// }
 	})
 );
 

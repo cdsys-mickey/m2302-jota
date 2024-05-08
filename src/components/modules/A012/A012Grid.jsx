@@ -13,6 +13,7 @@ import { createFloatColumn } from "@/shared-components/dsg/columns/float/createF
 import NoDataBox from "../../../shared-components/NoDataBox";
 import { createWebApiOptionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
 import PkgTypes from "../../../modules/md-pkg-types";
+import { pkgTypePickerColumn } from "../../dsg/columns/pkg-type-picker/pkgTypePickerColumn";
 
 const A012Grid = memo((props) => {
 	const {
@@ -55,12 +56,14 @@ const A012Grid = memo((props) => {
 			{
 				...keyColumn(
 					"bunit",
-					createWebApiOptionPickerColumn({
-						url: "v1/prod/pkg-types",
-						bearer: bearer,
-						getOptionLabel: PkgTypes.getOptionLabel,
-						isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
-						// getData: (p) => p["data"],
+					// createWebApiOptionPickerColumn({
+					// 	url: "v1/prod/pkg-types",
+					// 	bearer: bearer,
+					// 	getOptionLabel: PkgTypes.getOptionLabel,
+					// 	isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
+					// })
+					pkgTypePickerColumn({
+						// name: "bunit",
 					})
 				),
 				title: "庫存單位",
@@ -70,12 +73,14 @@ const A012Grid = memo((props) => {
 			{
 				...keyColumn(
 					"sunit",
-					createWebApiOptionPickerColumn({
-						url: "v1/prod/pkg-types",
-						bearer: bearer,
-						getOptionLabel: PkgTypes.getOptionLabel,
-						isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
-						// getData: (p) => p["data"],
+					// createWebApiOptionPickerColumn({
+					// 	url: "v1/prod/pkg-types",
+					// 	bearer: bearer,
+					// 	getOptionLabel: PkgTypes.getOptionLabel,
+					// 	isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
+					// })
+					pkgTypePickerColumn({
+						// name: "sunit",
 					})
 				),
 				title: "銷售單位",
@@ -85,12 +90,14 @@ const A012Grid = memo((props) => {
 			{
 				...keyColumn(
 					"iunit",
-					createWebApiOptionPickerColumn({
-						url: "v1/prod/pkg-types",
-						bearer: bearer,
-						getOptionLabel: PkgTypes.getOptionLabel,
-						isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
-						// getData: (p) => p["data"],
+					// createWebApiOptionPickerColumn({
+					// 	url: "v1/prod/pkg-types",
+					// 	bearer: bearer,
+					// 	getOptionLabel: PkgTypes.getOptionLabel,
+					// 	isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
+					// })
+					pkgTypePickerColumn({
+						// name: "iunit",
 					})
 				),
 				title: "進貨單位",
@@ -100,12 +107,14 @@ const A012Grid = memo((props) => {
 			{
 				...keyColumn(
 					"munit",
-					createWebApiOptionPickerColumn({
-						url: "v1/prod/pkg-types",
-						bearer: bearer,
-						getOptionLabel: PkgTypes.getOptionLabel,
-						isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
-						// getData: (p) => p["data"],
+					// createWebApiOptionPickerColumn({
+					// 	url: "v1/prod/pkg-types",
+					// 	bearer: bearer,
+					// 	getOptionLabel: PkgTypes.getOptionLabel,
+					// 	isOptionEqualToValue: PkgTypes.isOptionEqualToValue,
+					// })
+					pkgTypePickerColumn({
+						// name: "munit",
 					})
 				),
 				title: "BOM單位",

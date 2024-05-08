@@ -2,39 +2,25 @@ import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModeP
 import ContainerEx from "@/shared-components/ContainerEx";
 import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import FlexBox from "../../../shared-components/FlexBox";
-import ControlledCheckboxEx from "../../../shared-components/checkbox/ControlledCheckboxEx";
-import { ProdPickerContainer } from "../../picker/ProdPickerContainer";
-import A19DataTypePicker from "./picker/A19DataTypePicker";
-import UserDeptPicker from "../../UserDeptPicker";
-import AppDeptPicker from "../../fields/AppDeptPicker";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
-import { A19FormButtonsContainer } from "./buttons/A19FormButtonsContainer";
 import FlexGrid from "../../../shared-components/FlexGrid";
+import ControlledCheckboxEx from "../../../shared-components/checkbox/ControlledCheckboxEx";
+import FormBox from "../../../shared-components/form/FormBox";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import AppDeptPicker from "../../fields/AppDeptPicker";
+import { ProdPickerContainer } from "../../picker/ProdPickerContainer";
+import { A19FormButtonsContainer } from "./buttons/A19FormButtonsContainer";
+import A19DataTypePicker from "./picker/A19DataTypePicker";
 
 const A19Form = memo((props) => {
 	const { ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
 			<form {...rest}>
-				<Box
-					pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "105%",
-							// fontWeight: 500,
-							// color: "rgba(0, 0, 0, 0.8 )",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "120%",
-							fontWeight: 600,
-							left: "-2px",
-							// color: theme.palette.primary.main,
-						},
-					})}>
+				<FormBox pt={1}>
 					<FormSectionBox py={2}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={12}>
@@ -90,7 +76,7 @@ const A19Form = memo((props) => {
 							<Grid item xs={12} sm={6}>
 								{/* <AuthDeptPicker label="起始門市" name="sdept" /> */}
 								<AppDeptPicker
-									filterByOperator
+									// filterByOperator
 									label="起始門市"
 									name="sdept"
 								/>
@@ -98,7 +84,7 @@ const A19Form = memo((props) => {
 							<Grid item xs={12} sm={6}>
 								{/* <AuthDeptPicker label="截止門市" name="edept" /> */}
 								<AppDeptPicker
-									filterByOperator
+									// filterByOperator
 									label="截止門市"
 									name="edept"
 								/>
@@ -147,7 +133,7 @@ const A19Form = memo((props) => {
 							</Grid>
 						</Grid>
 					</FormSectionBox>
-				</Box>
+				</FormBox>
 			</form>
 		</ContainerEx>
 	);

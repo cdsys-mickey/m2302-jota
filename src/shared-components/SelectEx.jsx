@@ -149,4 +149,5 @@ const SelectEx = memo(
 		);
 	}
 );
+SelectEx.displayName = "SelectEx";
 export default SelectEx;

@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/sd-forms";
 
 const transformForGridImport = (data) => {
@@ -8,7 +9,7 @@ const transformForGridImport = (data) => {
 				ProdID: v.ProdID,
 				ProdData: v.ProdData_N,
 			},
-			SProdID: v.ProdID,
+			// SProdID: v.ProdID,
 			SProdData_N: v.ProdData_N,
 			SPackData_N: v.PackData_N,
 			SPrice: v.Price || null,
@@ -25,7 +26,7 @@ const transformForGrid = (data) => {
 				ProdID: v.SProdID,
 				ProdData: v.SProdData_N,
 			},
-			SProdID: v.SProdID,
+			// SProdID: v.SProdID,
 			SProdData_N: v.SProdData_N,
 			SPackData_N: v.SPackData_N,
 			SPrice: v.SPrice || null,
@@ -51,10 +52,12 @@ const transformForReading = (payload) => {
 				CodeID: EmplID,
 				CodeData: EmplData_N,
 			},
-			supplier: {
-				FactID,
-				FactData: FactData_N,
-			},
+			supplier: FactID
+				? {
+						FactID,
+						FactData: FactData_N,
+				  }
+				: null,
 			quotes: transformForGrid(FactInq_S),
 			remark: Remark.join("\n"),
 			...rest,

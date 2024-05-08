@@ -8,6 +8,7 @@ import LoadingTypography from "../../../shared-components/LoadingTypography";
 import FormSectionBox from "../../../shared-components/form/FormSectionBox";
 import AppDeptPicker from "../../fields/AppDeptPicker";
 import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
+import FormBox from "../../../shared-components/form/FormBox";
 
 const A17Form = memo((props) => {
 	const {
@@ -41,21 +42,7 @@ const A17Form = memo((props) => {
 					</FlexBox>
 				)}
 				{itemDataReady && (
-					<Box
-						pt={1}
-						sx={() => ({
-							"& .MuiInputLabel-root": {
-								fontSize: "105%",
-								// fontWeight: 500,
-								// color: "rgba(0, 0, 0, 0.8 )",
-							},
-							"& .MuiInputLabel-shrink": {
-								fontSize: "120%",
-								fontWeight: 600,
-								left: "-2px",
-								// color: theme.palette.primary.main,
-							},
-						})}>
+					<FormBox pt={1}>
 						<FormSectionBox py={1}>
 							<Grid
 								container
@@ -80,7 +67,7 @@ const A17Form = memo((props) => {
 								</Grid>
 							</Grid>
 						</FormSectionBox>
-					</Box>
+					</FormBox>
 				)}
 			</form>
 		</ContainerEx>

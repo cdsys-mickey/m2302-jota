@@ -9,27 +9,14 @@ import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
 import AuthDeptPicker from "../../AuthDeptPicker";
 import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 import { A21FormButtonsContainer } from "./buttons/A21FormButtonsContainer";
+import FormBox from "../../../shared-components/form/FormBox";
 
 const A21Form = memo((props) => {
 	const { ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form {...rest}>
-				<Box
-					pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "105%",
-							// fontWeight: 500,
-							// color: "rgba(0, 0, 0, 0.8 )",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "120%",
-							fontWeight: 600,
-							left: "-2px",
-							// color: theme.palette.primary.main,
-						},
-					})}>
+				<FormBox pt={1}>
 					<FormSectionBox py={2}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12}>
@@ -103,7 +90,7 @@ const A21Form = memo((props) => {
 							</Grid>
 						</Grid>
 					</FormSectionBox>
-				</Box>
+				</FormBox>
 			</form>
 		</ContainerEx>
 	);

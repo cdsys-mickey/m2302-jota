@@ -1,6 +1,9 @@
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { ProdID, ProdData } = option;
+	if (ProdID === "*") {
+		return "*";
+	}
 	return `${ProdID} ${ProdData}`;
 };
 

@@ -17,6 +17,7 @@ import { TypoCustomerLevelPickerContainer } from "./fields/TypoCustomerLevelPick
 import TypoEmployeePickerContainer from "./fields/TypoEmployeePickerContainer";
 import TypoPaymentPickerContainer from "./fields/TypoPaymentPickerContainer";
 import TypoTransportPickerContainer from "./fields/TypoTransportPickerContainer";
+import FormBox from "../../../../shared-components/form/FormBox";
 
 const A06Form = memo((props) => {
 	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
@@ -33,21 +34,7 @@ const A06Form = memo((props) => {
 				</Container>
 			)}
 			{itemDataReady && (
-				<Box
-					pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "106%",
-							// fontWeight: 500,
-							// color: "rgba(0, 0, 0, 0.8 )",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "120%",
-							fontWeight: 600,
-							left: "-2px",
-							// color: theme.palette.primary.main,
-						},
-					})}>
+				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
@@ -280,7 +267,7 @@ const A06Form = memo((props) => {
 							</Grid>
 						</Grid>
 					</FormSectionBox>
-				</Box>
+				</FormBox>
 			)}
 		</form>
 	);

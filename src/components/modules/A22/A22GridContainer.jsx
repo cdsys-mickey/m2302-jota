@@ -25,9 +25,10 @@ export const A22GridContainer = () => {
 					data={a22.gridData}
 					loading={a22.gridLoading}
 					height={gridHeight}
-					onChange={a22.handleGridChange({
-						onDelete: a22.handleDeleteRow,
-					})}
+					// onChange={a22.handleGridChange({
+					// 	onDelete: a22.handleDeleteRow,
+					// })}
+					onChange={a22.handleGridChange}
 					bearer={token}
 					getRowKey={a22.getRowKey}
 					handleCreateRow={a22.handleCreateRow}

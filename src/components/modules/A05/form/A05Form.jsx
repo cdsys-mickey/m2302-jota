@@ -11,6 +11,7 @@ import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
+import FormBox from "../../../../shared-components/form/FormBox";
 
 const A05Form = memo((props) => {
 	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
@@ -27,21 +28,7 @@ const A05Form = memo((props) => {
 				</Container>
 			)}
 			{itemDataReady && (
-				<Box
-					pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "105%",
-							// fontWeight: 500,
-							// color: "rgba(0, 0, 0, 0.8 )",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "120%",
-							fontWeight: 600,
-							left: "-2px",
-							// color: theme.palette.primary.main,
-						},
-					})}>
+				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
 					<FormSectionBox py={editing ? 2 : 1} mb={2}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
@@ -234,7 +221,7 @@ const A05Form = memo((props) => {
 							</Grid>
 						</Grid>
 					</FormSectionBox>
-				</Box>
+				</FormBox>
 			)}
 		</form>
 	);

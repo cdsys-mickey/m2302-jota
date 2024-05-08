@@ -1,4 +1,6 @@
+import { it } from "vitest";
 import DigitSeq from "./DigitSeq";
+import { expect } from "vitest";
 
 it("should increment correctly as NestedSeq", () => {
 	const seq = new DigitSeq();

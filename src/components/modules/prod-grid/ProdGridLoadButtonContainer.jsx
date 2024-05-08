@@ -4,20 +4,18 @@ import Objects from "@/shared-modules/sd-objects";
 import { LoadingButton } from "@mui/lab";
 import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
+import useDebounce from "../../../shared-hooks/useDebounce";
 
 export const ProdGridLoadButtonContainer = (props) => {
 	const { ...rest } = props;
 	const criteria = useWatch();
+	const debouncedCriteria = useDebounce(criteria, 300);
 	const prodGrid = useContext(ProdGridContext);
 	const { peek, totalElements, loading } = prodGrid;
 
-	useChangeTracking(
-		() => {
-			peek(criteria);
-		},
-		[criteria],
-		{ delay: 100 }
-	);
+	useChangeTracking(() => {
+		peek(debouncedCriteria);
+	}, [debouncedCriteria]);
 
 	// const debouncedValues = useDebounce(criteria, 300);
 

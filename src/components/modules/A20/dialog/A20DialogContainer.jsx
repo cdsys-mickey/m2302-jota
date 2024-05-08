@@ -7,6 +7,7 @@ import A20Form from "../form/A20Form";
 import { A20DialogButtonsContainer } from "./buttons/A20DialogButtonsContainer";
 import { useScrollable } from "../../../../shared-hooks/useScrollable";
 import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
+import { DialogExContainer } from "../../../../shared-components/dialog/DialogExContainer";
 
 export const A20DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -41,7 +42,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...forms}>
-			<DialogEx
+			<DialogExContainer
 				title={title}
 				ref={ref}
 				responsive
@@ -77,7 +78,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 					data={a20.itemData}
 					itemDataReady={a20.itemDataReady}
 				/>
-			</DialogEx>
+			</DialogExContainer>
 		</FormProvider>
 	);
 });

@@ -3,7 +3,7 @@ import ProdTypeBPickerColumn from "@/components/dsg/columns/ProdTypeBPickerColum
 import TaxTypePickerColumn from "@/components/dsg/columns/TaxTypePickerColumn";
 import NoDataBox from "@/shared-components/NoDataBox";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
@@ -16,6 +16,10 @@ import ProdCatLPickerColumn from "../../dsg/columns/ProdCatLPickerColumn";
 import ProdCatMPickerColumn from "../../dsg/columns/ProdCatMPickerColumn";
 import ProdCatSPickerColumn from "../../dsg/columns/ProdCatSPickerColumn";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import { prodCatLPickerColumn } from "../../dsg/columns/prod-cat-picker/prodCatLPickerColumn";
+import { prodCatMPickerColumn } from "../../dsg/columns/prod-cat-picker/prodCatMPickerColumn";
+import { prodCatSPickerColumn } from "../../dsg/columns/prod-cat-picker/prodCatSPickerColumn";
+import { createOptionPickerColumn } from "../../../shared-components/dsg/columns/createOptionPickerColumn";
 
 const A014Grid = memo((props) => {
 	const {
@@ -43,17 +47,42 @@ const A014Grid = memo((props) => {
 				grow: 2,
 				disabled: true,
 			},
+			// NEW STYLES
 			// {
 			// 	...keyColumn(
 			// 		"catL",
-			// 		createOptionPickerColumn((props) => (
-			// 			<ProdCatLPickerColumn {...props} />
-			// 		))
+			// 		prodCatLPickerColumn({
+			// 			name: "catL",
+			// 		})
 			// 	),
 			// 	title: "大分類",
-			// 	grow: 2,
+			// 	grow: 3,
 			// 	disabled: readOnly,
 			// },
+			// {
+			// 	...keyColumn(
+			// 		"catM",
+			// 		prodCatMPickerColumn({
+			// 			name: "catM",
+			// 		})
+			// 	),
+			// 	title: "中分類",
+			// 	grow: 3,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn(
+			// 		"catS",
+			// 		prodCatSPickerColumn({
+			// 			name: "catS",
+			// 		})
+			// 	),
+			// 	title: "小分類",
+			// 	grow: 3,
+			// 	disabled: readOnly,
+			// },
+
+			// OLD STYLES
 			{
 				...createOptionPickerColumn((props) => (
 					<ProdCatLPickerColumn name="catL" {...props} />
@@ -62,6 +91,7 @@ const A014Grid = memo((props) => {
 				grow: 3,
 				disabled: readOnly,
 			},
+
 			{
 				...createOptionPickerColumn((props) => (
 					<ProdCatMPickerColumn name="catM" {...props} />
@@ -70,6 +100,7 @@ const A014Grid = memo((props) => {
 				grow: 3,
 				disabled: readOnly,
 			},
+
 			{
 				...createOptionPickerColumn((props) => (
 					<ProdCatSPickerColumn name="catS" {...props} />
@@ -126,22 +157,20 @@ const A014Grid = memo((props) => {
 	}
 
 	return (
-		<Box>
-			<DynamicDataSheetGrid
-				lockRows
-				ref={setGridRef}
-				rowKey="ProdID"
-				// height={height + (readOnly ? 48 : 0)}
-				height={height + 48}
-				rowHeight={42}
-				value={data}
-				onChange={onChange}
-				columns={columns}
-				disableExpandSelection
-				disableContextMenu
-				createRow={handleCreateRow}
-			/>
-		</Box>
+		<DynamicDataSheetGrid
+			lockRows
+			ref={setGridRef}
+			rowKey="ProdID"
+			// height={height + (readOnly ? 48 : 0)}
+			height={height + 48}
+			rowHeight={42}
+			value={data}
+			onChange={onChange}
+			columns={columns}
+			disableExpandSelection
+			disableContextMenu
+			createRow={handleCreateRow}
+		/>
 	);
 });
 A014Grid.propTypes = {

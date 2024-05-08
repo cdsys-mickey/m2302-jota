@@ -228,6 +228,40 @@ export const useA22 = ({
 		[]
 	);
 
+	const handleGridChange = useCallback(
+		(newValue, operations) => {
+			const newGridData = [...newValue];
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach((rowData, i) => {
+							const { prod } = rowData;
+							const rowIndex = operation.fromRowIndex + i;
+							const ogRowData = gridData[rowIndex];
+							const { prod: ogProd } = ogRowData;
+							if (prod?.ProdID !== ogProd?.ProdID) {
+								console.log(`prod[${rowIndex}] changed`, prod);
+
+								newGridData[rowIndex] = {
+									...rowData,
+									["Barcode"]: prod?.Barcode || "",
+									["PackData"]: prod?.PackData_N || "",
+								};
+							}
+						});
+				} else if (operation.type === "DELETE") {
+					dsg.removeByRowIndex(
+						operation.fromRowIndex,
+						operation.toRowIndex
+					);
+				}
+				dsg.setGridData(newValue);
+			}
+		},
+		[dsg, gridData]
+	);
+
 	return {
 		load,
 		unload,
@@ -246,5 +280,6 @@ export const useA22 = ({
 		onGenReportSubmitError,
 		handleDeleteRow,
 		handleCreateRow,
+		handleGridChange,
 	};
 };

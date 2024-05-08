@@ -14,6 +14,8 @@ import PropTypes from "prop-types";
 import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 import { ZA03DialogTitleButtonsContainer } from "../dialog/buttons/ZA03DialogTitleButtonsContainer";
 import ZA03GridContainer from "./auth/ZA03GridContainer";
+import FormBox from "../../../../shared-components/form/FormBox";
+import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const ZA03Form = memo((props) => {
 	const {
@@ -42,32 +44,11 @@ const ZA03Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && (
-				<Box pt="20%">
-					<AlertEx
-						variant="filled"
-						title="讀取失敗"
-						error={readError}
-					/>
-				</Box>
-			)}
+			{readError && <FormErrorBox error={readError} />}
 			{dataLoaded && (
-				<Box
-					// pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "105%",
-							// fontWeight: 500,
-							// color: "rgba(0, 0, 0, 0.8 )",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "110%",
-							fontWeight: 600,
-							left: "-2px",
-							// top: "-1px",
-							// color: theme.palette.primary.main,
-						},
-					})}>
+				<FormBox
+				// pt={1}
+				>
 					<TabContext value={selectedTab}>
 						<Box
 							sx={{
@@ -209,7 +190,7 @@ const ZA03Form = memo((props) => {
 							</FormSectionBox>
 						</TabPanel>
 					</TabContext>
-				</Box>
+				</FormBox>
 			)}
 		</form>
 	);

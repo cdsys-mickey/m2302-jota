@@ -1,6 +1,5 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
@@ -12,7 +11,8 @@ import {
 } from "react-datasheet-grid";
 import NoDataBox from "../../../shared-components/NoDataBox";
 import { createIntColumn } from "../../../shared-components/dsg/columns/float/createIntColumn";
-import A22GridProdPickerColumn from "./columns/A22GridProdPickerColumn";
+import { optionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { prodPickerColumn } from "../../dsg/columns/prod-picker/prodPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -34,10 +34,21 @@ const A22Grid = memo((props) => {
 
 	const columns = useMemo(
 		() => [
+			// {
+			// 	...createOptionPickerColumn((props) => (
+			// 		<A22GridProdPickerColumn name="prod" {...props} />
+			// 	)),
+			// 	title: "商品",
+			// 	grow: 8,
+			// 	disabled: readOnly,
+			// },
 			{
-				...createOptionPickerColumn((props) => (
-					<A22GridProdPickerColumn name="prod" {...props} />
-				)),
+				...keyColumn(
+					"prod",
+					prodPickerColumn({
+						name: "prod",
+					})
+				),
 				title: "商品",
 				grow: 8,
 				disabled: readOnly,

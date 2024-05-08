@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserPicker } from "../../../picker/UserPicker";
+import { DeptUserPicker } from "../../../picker/DeptUserPicker";
 import { ZA03CopyAuthContext } from "../../../../contexts/ZA03/ZA03CopyAuthContext";
 import { useCallback } from "react";
 
@@ -14,7 +14,7 @@ export const ZA03CopyAuthUserPicker = (props) => {
 		[copyAuth]
 	);
 	return (
-		<UserPicker
+		<DeptUserPicker
 			filterByServer
 			// queryRequired
 			onChange={handleChange}

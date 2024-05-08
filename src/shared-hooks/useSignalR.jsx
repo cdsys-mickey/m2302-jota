@@ -66,7 +66,6 @@ export const useSignalR = ({
 		}
 		const newConn = builder.build();
 		setConnection(newConn);
-		// console.log(`[SignalR] hub connection [${url}] created`, newConn);
 	}, [logginLevel, nextRetryPolicy, reconnectDelays, url]);
 
 	const handleConnected = useCallback(
@@ -88,7 +87,6 @@ export const useSignalR = ({
 			setState((prev) => ({
 				...prev,
 				connectionState: signalR.HubConnectionState.Disconnected,
-				// connectionId: null,
 				error: err,
 			}));
 			if (onConnectFailed) {
@@ -119,7 +117,6 @@ export const useSignalR = ({
 			setState((prev) => ({
 				...prev,
 				connectionState: signalR.HubConnectionState.Connecting,
-				// connectionId: null,
 				error: error,
 			}));
 			if (onReconnecting) {
@@ -135,7 +132,6 @@ export const useSignalR = ({
 			setState((prev) => ({
 				...prev,
 				connectionState: signalR.HubConnectionState.Connected,
-				// connectionId: connectionId,
 				error: null,
 			}));
 			if (onReconnected) {
@@ -165,9 +161,6 @@ export const useSignalR = ({
 					retryIntervalIdRef.current = setInterval(() => {
 						if (retryIntervalIdRef.current) {
 							clearInterval(retryIntervalIdRef.current);
-							// console.log(
-							// 	`existing retryIntervalId: ${retryIntervalIdRef.current} cleared`
-							// );
 							retryIntervalIdRef.current = null;
 						}
 
@@ -182,6 +175,11 @@ export const useSignalR = ({
 				);
 				handleFailed(err);
 			}
+		} else {
+			console.warn(
+				"connection.state is not Disconnected",
+				connection.state
+			);
 		}
 	}, [connection, handleConnected, handleFailed, retryInterval, url]);
 
@@ -206,60 +204,54 @@ export const useSignalR = ({
 	}, [createConnection]);
 
 	const retryIntervalIdRef = useRef();
+
+	const disconnect = useCallback(() => {
+		if (retryIntervalIdRef.current) {
+			clearInterval(retryIntervalIdRef.current);
+		}
+
+		if (connection?.state === signalR.HubConnectionState.Connected) {
+			console.log(`[SignalR] disconnecting from Hub ${url} ...`);
+			setState((prev) => ({
+				...prev,
+				stopping: true,
+				error: null,
+			}));
+			connection
+				.stop()
+				.then(() => {
+					console.log(`[SignalR] Hub ${url} disconnected`);
+					setState((prev) => ({
+						...prev,
+						stopping: false,
+					}));
+				})
+				.catch((err) => {
+					console.error(`[SignalR] Hub ${url} disconnect error`, err);
+					setState((prev) => ({
+						...prev,
+						stopping: false,
+						error: err,
+					}));
+				});
+		}
+	}, [connection, url]);
+
 	useEffect(() => {
 		if (autoConnect && connection) {
 			connect();
 		}
 
 		return () => {
-			if (retryIntervalIdRef.current) {
-				clearInterval(retryIntervalIdRef.current);
-				// console.log(
-				// 	`retryIntervalIdRef: ${retryIntervalIdRef.current} cleared`
-				// );
-			}
-
-			if (connection?.state === signalR.HubConnectionState.Connected) {
-				console.log(`[SignalR] disconnecting from Hub ${url} ...`);
-				setState((prev) => ({
-					...prev,
-					stopping: true,
-					error: null,
-				}));
-				connection
-					.stop()
-					.then(() => {
-						console.log(`[SignalR] Hub ${url} disconnected`);
-						setState((prev) => ({
-							...prev,
-							stopping: false,
-						}));
-					})
-					.catch((err) => {
-						console.error(
-							`[SignalR] Hub ${url} disconnect error`,
-							err
-						);
-						setState((prev) => ({
-							...prev,
-							stopping: false,
-							error: err,
-						}));
-					});
+			if (autoConnect) {
+				disconnect();
 			}
 		};
-	}, [
-		autoConnect,
-		connect,
-		connection,
-		handleConnected,
-		handleFailed,
-		retryInterval,
-		url,
-	]);
+	}, [autoConnect, connect, connection, disconnect]);
 
 	return {
 		connect,
+		disconnect,
 		connection,
 		connectionId,
 		...state,

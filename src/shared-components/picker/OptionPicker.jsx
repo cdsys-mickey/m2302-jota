@@ -59,40 +59,85 @@ const noFilterOptions = (options) => {
 
 const PickerBox = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!["focusedBackgroundColor", "size", "hideBorders"].includes(prop),
-})(({ theme, focusedBackgroundColor, size, hideBorders, width }) => ({
-	...(hideBorders && {
-		"& fieldset": { border: "none" },
-	}),
-	"& .MuiAutocomplete-groupLabel": {
-		backgroundColor: theme.palette.primary.main,
-		...(size === "small" && {
-			lineHeight: "30px",
+		![
+			"focusedBackgroundColor",
+			"size",
+			"hideBorders",
+			"hidePopupIndicator",
+			"disablePointerEvents",
+			"fadeOutDisabled",
+		].includes(prop),
+})(
+	({
+		theme,
+		focusedBackgroundColor,
+		size,
+		hideBorders,
+		hidePopupIndicator,
+		width,
+		disablePointerEvents,
+		fadeOutDisabled,
+	}) => ({
+		/**
+		 * *** DSG adaptive support ****
+		 **/
+		...(hideBorders && {
+			"& fieldset": { border: "none" },
 		}),
-	},
-	"& .MuiAutocomplete-option[data-focus=true]": {
-		backgroundColor: focusedBackgroundColor || "#b6f0ff",
-	},
-	"& .MuiOutlinedInput-root.MuiInputBase-root.MuiInputBase-sizeSmall": {
-		// paddingTop: theme.spacing(2),
-	},
-	"& .MuiInputBase-root .MuiChip-root": {
-		marginTop: "4px",
-		marginRight: "2px",
-	},
-	"& ::-webkit-scrollbar": {
-		width: "8px",
-		borderRadius: theme.spacing(0.5),
-		backgroundColor: "rgba(0, 0, 0, .03)",
-	},
-	"& ::-webkit-scrollbar-thumb": {
-		borderRadius: theme.spacing(0.5),
-		backgroundColor: "rgba(0, 0, 0, .2)",
-	},
-	...(!width && {
-		width: "100%",
-	}),
-}));
+		...(hidePopupIndicator && {
+			"& .MuiAutocomplete-popupIndicator": {
+				opacity: 0,
+			},
+			"& .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root, & .MuiAutocomplete-hasPopupIcon .MuiOutlinedInput-root, & .MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root":
+				{
+					paddingRight: 0,
+				},
+		}),
+		...(disablePointerEvents && {
+			pointerEvents: "none",
+		}),
+		...(!fadeOutDisabled && {
+			"& .MuiInputBase-input.Mui-disabled": {
+				color: "initial",
+				// "-webkit-text-fill-color": "initial",
+				textFillColor: "initial",
+			},
+		}),
+		// "& .MuiInputBase-input.Mui-disabled": {
+		// 	color: "initial",
+		// 	"-webkit-text-fill-color": "initial",
+		// },
+		// others
+		"& .MuiAutocomplete-groupLabel": {
+			backgroundColor: theme.palette.primary.main,
+			...(size === "small" && {
+				lineHeight: "30px",
+			}),
+		},
+		"& .MuiAutocomplete-option[data-focus=true]": {
+			backgroundColor: focusedBackgroundColor || "#b6f0ff",
+		},
+		"& .MuiOutlinedInput-root.MuiInputBase-root.MuiInputBase-sizeSmall": {
+			// paddingTop: theme.spacing(2),
+		},
+		"& .MuiInputBase-root .MuiChip-root": {
+			marginTop: "4px",
+			marginRight: "2px",
+		},
+		"& ::-webkit-scrollbar": {
+			width: "8px",
+			borderRadius: theme.spacing(0.5),
+			backgroundColor: "rgba(0, 0, 0, .03)",
+		},
+		"& ::-webkit-scrollbar-thumb": {
+			borderRadius: theme.spacing(0.5),
+			backgroundColor: "rgba(0, 0, 0, .2)",
+		},
+		...(!width && {
+			width: "100%",
+		}),
+	})
+);
 
 const OptionPicker = memo(
 	forwardRef((props, ref) => {
@@ -104,6 +149,9 @@ const OptionPicker = memo(
 			dnd = false,
 			size = "small",
 			hideBorders = false,
+			hidePopupIndicator = false,
+			disablePointerEvents = false,
+			fadeOutDisabled = false,
 			name,
 			dontFilterOptions,
 			stringify,
@@ -124,6 +172,8 @@ const OptionPicker = memo(
 			ChipProps,
 			getOptionLabel,
 			getTitle,
+			// 自訂方法
+			renderOptionLabel,
 			// TextField
 			autoFocus,
 			placeholder,
@@ -152,11 +202,16 @@ const OptionPicker = memo(
 			// PopperComponent,
 			// ListboxComponent,
 			// disableListWrap = false,
-			renderOption,
+			renderOption: customRenderOption,
 			renderGroup,
 			// renderRow = defaultRenderRow,
+			optionLabelSize,
 			...rest
 		} = props;
+
+		if (dense && label) {
+			console.warn("dense 模式下強制不顯示 label");
+		}
 
 		const chipProps = useMemo(() => {
 			return ChipProps || MuiStyles.DEFAULT_MULTIPLE_OPTIONS_CHIP_PROPS;
@@ -178,7 +233,7 @@ const OptionPicker = memo(
 				return (
 					<TextField
 						required={required}
-						label={label}
+						label={dense ? "" : label}
 						size={size}
 						fullWidth={fullWidth}
 						error={error}
@@ -219,6 +274,7 @@ const OptionPicker = memo(
 				InputProps,
 				TextFieldProps,
 				autoFocus,
+				dense,
 				error,
 				fullWidth,
 				helperText,
@@ -331,7 +387,7 @@ const OptionPicker = memo(
 		// eslint-disable-next-line no-unused-vars
 		const handleChange = (event, value, reason) => {
 			if (onChange) {
-				console.log(`parent.onChange`, value);
+				// console.log(`parent.onChange`, value);
 				onChange(value);
 			}
 		};
@@ -351,12 +407,75 @@ const OptionPicker = memo(
 				: null;
 		}, [getOptionLabel, getTitle, multiple, value]);
 
+		const itemStyle = useMemo(() => {
+			switch (optionLabelSize) {
+				case "small":
+					return {
+						fontSize: "8px",
+					};
+				case "medium":
+					return {
+						fontSize: "80%",
+					};
+				default:
+					return {};
+			}
+		}, [optionLabelSize]);
+
+		const defaultGetOptionLabel = useCallback((option) => {
+			return option;
+		}, []);
+
+		const defaultRenderOption = useCallback(
+			(props2, option) => {
+				const renderOptionFunc =
+					renderOptionLabel ||
+					getOptionLabel ||
+					defaultGetOptionLabel;
+
+				return (
+					<li
+						{...props2}
+						key={props2.key}
+						style={{
+							...props2.style,
+							...itemStyle,
+						}}>
+						{renderOptionFunc(option)}
+					</li>
+				);
+			},
+			[
+				defaultGetOptionLabel,
+				getOptionLabel,
+				itemStyle,
+				renderOptionLabel,
+			]
+		);
+
 		const renderOptionForVirtualized = useCallback(
 			(props, option, state) => {
-				const label = getOptionLabel ? getOptionLabel(option) : option;
-				return [props, label, state.index];
+				const renderOptionFunc = renderOptionLabel || getOptionLabel;
+				const label = renderOptionFunc(option);
+
+				let variant;
+				if (optionLabelSize === "small") {
+					variant = "body2";
+				} else if (optionLabelSize === "medium") {
+					variant = "body1";
+				}
+				return [
+					{
+						...props,
+						...(variant && {
+							variant: variant,
+						}),
+					},
+					label,
+					state.index,
+				];
 			},
-			[getOptionLabel]
+			[getOptionLabel, optionLabelSize, renderOptionLabel]
 		);
 
 		const renderGroupForVirtualized = useCallback((params) => {
@@ -365,8 +484,12 @@ const OptionPicker = memo(
 
 		return (
 			<PickerBox
+				// DSG 支援屬性
 				hideBorders={hideBorders}
+				hidePopupIndicator={hidePopupIndicator}
 				focusedBackgroundColor={focusedBackgroundColor}
+				disablePointerEvents={disablePointerEvents}
+				fadeOutDisabled={fadeOutDisabled}
 				size={size}
 				title={memoisedTitle}
 				width={width}
@@ -398,7 +521,9 @@ const OptionPicker = memo(
 					options={options}
 					getOptionLabel={getOptionLabel}
 					renderOption={
-						virtualize ? renderOptionForVirtualized : renderOption
+						virtualize
+							? renderOptionForVirtualized
+							: customRenderOption || defaultRenderOption
 					}
 					renderGroup={
 						virtualize ? renderGroupForVirtualized : renderGroup
@@ -445,7 +570,12 @@ OptionPicker.propTypes = {
 	dnd: PropTypes.bool,
 	dense: PropTypes.bool,
 	size: PropTypes.string,
+	// DSG support
 	hideBorders: PropTypes.bool,
+	hidePopupIndicator: PropTypes.bool,
+	disablePointerEvents: PropTypes.bool,
+	fadeOutDisabled: PropTypes.bool,
+	//
 	name: PropTypes.string,
 	// Autocomplete
 	options: PropTypes.array,
@@ -493,8 +623,10 @@ OptionPicker.propTypes = {
 	labelShrink: PropTypes.bool,
 	renderOption: PropTypes.func,
 	renderGroup: PropTypes.func,
-	renderRow: PropTypes.func,
+	// renderRow: PropTypes.func,
 	dontFilterOptions: PropTypes.bool,
 	stringify: PropTypes.func,
+	renderOptionLabel: PropTypes.func,
+	optionLabelSize: PropTypes.string,
 };
 export default OptionPicker;

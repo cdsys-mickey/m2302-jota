@@ -1,6 +1,5 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
@@ -10,7 +9,7 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import BomProdPickerColumn from "./BomProdPickerColumn";
+import { prodPickerColumn } from "../../../../dsg/columns/prod-picker/prodPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -33,13 +32,20 @@ const ProdMaterialsGrid = memo((props) => {
 	const columns = useMemo(
 		() => [
 			{
-				...createOptionPickerColumn((props) => (
-					<BomProdPickerColumn
-						name="prod"
-						withBomPackageName
-						{...props}
-					/>
-				)),
+				// ...createOptionPickerColumn((props) => (
+				// 	<BomProdPickerColumn
+				// 		name="prod"
+				// 		withBomPackageName
+				// 		{...props}
+				// 	/>
+				// )),
+				...keyColumn(
+					"sprod",
+					prodPickerColumn({
+						name: "sprod",
+						withBomPackageName: true,
+					})
+				),
 				title: "商品",
 				grow: 8,
 				disabled: readOnly,

@@ -25,28 +25,28 @@ const AppDeptPicker = memo((props) => {
 		});
 	}, [filterByOperator, scope, uid]);
 
-	const getOptionLabel = useCallback(
-		(option) => Depts.getOptionLabel(option),
-		[]
-	);
+	// const getOptionLabel = useCallback(
+	// 	(option) => Depts.getOptionLabel(option),
+	// 	[]
+	// );
 
-	const isOptionEqualToValue = useCallback((option, value) => {
-		return Depts.isOptionEqualToValue(option, value);
-	}, []);
+	// const isOptionEqualToValue = useCallback((option, value) => {
+	// 	return Depts.isOptionEqualToValue(option, value);
+	// }, []);
 
-	const getOptionKey = useCallback(
-		(option) => Depts.getOptionKey(option),
-		[]
-	);
+	// const getOptionKey = useCallback(
+	// 	(option) => Depts.getOptionKey(option),
+	// 	[]
+	// );
 
 	return (
 		<OptionPickerWrapper
 			// ref={ref}
 			bearer={token}
 			url={`v1/app/depts`}
-			getOptionLabel={getOptionLabel}
-			isOptionEqualToValue={isOptionEqualToValue}
-			getOptionKey={getOptionKey}
+			getOptionLabel={Depts.getOptionLabel}
+			isOptionEqualToValue={Depts.isOptionEqualToValue}
+			getOptionKey={Depts.getOptionKey}
 			querystring={qs}
 			{...rest}
 		/>

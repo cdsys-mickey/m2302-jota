@@ -1,4 +1,6 @@
 import NestedSeq from "@/shared-classes/NestedSeq";
+import { expect } from "vitest";
+import { it } from "vitest";
 
 // it("should throw an error when level is not specified", () => {
 // 	const seq = new NestedSeq();

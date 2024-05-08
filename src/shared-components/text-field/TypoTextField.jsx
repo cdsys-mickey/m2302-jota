@@ -14,6 +14,7 @@ const TypoTextField = memo(
 			// Typography
 			typographyProps,
 			emptyText = "(空白)",
+			typoVariant = "body1",
 			// Input
 			name,
 			editing = false,
@@ -36,6 +37,7 @@ const TypoTextField = memo(
 			return (
 				<FormFieldLabel
 					label={label}
+					variant={typoVariant}
 					emptyText={emptyText}
 					{...typographyProps}>
 					{memoisedText}

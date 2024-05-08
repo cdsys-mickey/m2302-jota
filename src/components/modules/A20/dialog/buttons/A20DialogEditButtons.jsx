@@ -2,6 +2,7 @@ import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
+import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 
 const A20DialogEditButtons = memo(
 	forwardRef((props, ref) => {
@@ -18,14 +19,13 @@ const A20DialogEditButtons = memo(
 					{...rest}>
 					儲存
 				</ResponsiveLoadingButton>
-				<ResponsiveLoadingButton
+				<ResponsiveButton
 					onClick={onCancel}
 					color="neutral"
 					variant="contained"
-					loading={loading}
 					{...rest}>
 					取消
-				</ResponsiveLoadingButton>
+				</ResponsiveButton>
 			</Fragment>
 		);
 	})
@@ -33,6 +33,7 @@ const A20DialogEditButtons = memo(
 A20DialogEditButtons.displayName = "A20DialogEditButtons";
 A20DialogEditButtons.propTypes = {
 	onSave: PropTypes.func,
+	onCancel: PropTypes.func,
 	loading: PropTypes.bool,
 };
 export default A20DialogEditButtons;

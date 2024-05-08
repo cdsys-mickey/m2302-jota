@@ -48,10 +48,10 @@ export const useStdPrint = ({
 		try {
 			const { status, payload, error } = await httpGetAsync({
 				url: `v1/app/entities`,
+				bearer: token,
 				params: {
 					id: tableName,
 				},
-				bearer: token,
 			});
 			if (status.success) {
 				setState((prev) => ({

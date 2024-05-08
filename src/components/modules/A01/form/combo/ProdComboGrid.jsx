@@ -7,6 +7,7 @@ import { DynamicDataSheetGrid, keyColumn } from "react-datasheet-grid";
 import Prods from "@/modules/md-prods";
 import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import { prodPickerColumn } from "../../../../dsg/columns/prod-picker/prodPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -28,17 +29,23 @@ const ProdComboGrid = memo((props) => {
 			{
 				...keyColumn(
 					"prod",
-					createWebApiOptionPickerColumn({
-						url: "v1/prods",
-						querystring: "tp=50",
-						bearer: bearer,
-						queryParam: "qs",
-						getOptionLabel: Prods.getOptionLabel,
-						isOptionEqualToValue: Prods.isOptionEqualToValue,
-						filterByServer: true,
-						size: "small",
-						getData: (p) => p["data"],
-						// queryRequired: true,
+					// createWebApiOptionPickerColumn({
+					// 	url: "v1/prods",
+					// 	querystring: "tp=50",
+					// 	bearer: bearer,
+					// 	queryParam: "qs",
+					// 	getOptionLabel: Prods.getOptionLabel,
+					// 	isOptionEqualToValue: Prods.isOptionEqualToValue,
+					// 	filterByServer: true,
+					// 	size: "small",
+					// 	getData: (p) => p["data"],
+					// 	// queryRequired: true,
+					// 	placeholder: "組合商品",
+					// 	typeToSearchText: "請輸入商品編號或名稱進行搜尋",
+					// })
+					prodPickerColumn({
+						name: "prod",
+						triggerDelay: 100,
 						placeholder: "組合商品",
 						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
 					})

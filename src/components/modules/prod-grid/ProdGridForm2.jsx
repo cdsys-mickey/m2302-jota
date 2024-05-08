@@ -5,9 +5,9 @@ import { ControlledTextField } from "@/shared-components/controlled/ControlledTe
 import { Box, Collapse, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { ControlledProdCatLPicker } from "../../picker/ControlledProdCatLPicker";
-import ControlledProdCatMPicker from "../../picker/ControlledProdCatMPicker";
-import ControlledProdCatSPicker from "../../picker/ControlledProdCatSPicker";
+import ProdCatLPicker from "../../picker/ProdCatLPicker";
+import ProdCatMPicker from "../../picker/ProdCatMPicker";
+import ProdCatSPicker from "../../picker/ProdCatSPicker";
 import ProdTypeBPicker from "../../picker/ProdTypeBPicker";
 
 const ProdGridForm2 = memo((props) => {
@@ -19,13 +19,13 @@ const ProdGridForm2 = memo((props) => {
 					{cat && (
 						<>
 							<Grid item xs={12} sm={12} md={3}>
-								<ControlledProdCatLPicker name="catL" />
+								<ProdCatLPicker name="catL" />
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<ControlledProdCatMPicker name="catM" />
+								<ProdCatMPicker name="catM" />
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<ControlledProdCatSPicker name="catS" />
+								<ProdCatSPicker name="catS" />
 							</Grid>
 						</>
 					)}

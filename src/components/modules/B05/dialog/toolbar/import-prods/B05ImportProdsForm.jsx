@@ -1,13 +1,13 @@
-import { memo } from "react";
-import { Box, Grid } from "@mui/material";
-import PropTypes from "prop-types";
 import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
-import { ControlledProdCatLPicker } from "@/components/picker/ControlledProdCatLPicker";
-import ControlledProdCatMPicker from "@/components/picker/ControlledProdCatMPicker";
-import ControlledProdCatSPicker from "@/components/picker/ControlledProdCatSPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import { Box, Grid } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo } from "react";
+import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
+import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
+import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import { B05ImportProdsButtonContainer } from "./B05ImportProdsButtonContainer";
 
 const B05LoadProdsForm = memo((props) => {
@@ -43,13 +43,13 @@ const B05LoadProdsForm = memo((props) => {
 					</Grid>
 					<FlexBox fullWidth />
 					<Grid item xs={12} sm={12} md={4}>
-						<ControlledProdCatLPicker name="catL" />
+						<ProdCatLPicker name="catL" />
 					</Grid>
 					<Grid item xs={12} sm={12} md={4}>
-						<ControlledProdCatMPicker name="catM" />
+						<ProdCatMPicker name="catM" />
 					</Grid>
 					<Grid item xs={12} sm={12} md={4}>
-						<ControlledProdCatSPicker name="catS" />
+						<ProdCatSPicker name="catS" />
 					</Grid>
 				</Grid>
 				<FlexToolbar align="right">

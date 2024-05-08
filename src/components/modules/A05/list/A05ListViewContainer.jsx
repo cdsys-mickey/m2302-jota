@@ -34,6 +34,7 @@ export const A05ListViewContainer = () => {
 			const values = getValues();
 			loadList({
 				params: { ...values, qs: debouncedQs },
+				supressLoading: true,
 			});
 			setValue("qs", debouncedQs);
 		}

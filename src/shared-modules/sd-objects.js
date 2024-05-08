@@ -170,18 +170,19 @@ const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
 	}
 
 	for (const key of keys1) {
-		// const value1 = ignoresEmpty ? obj1[key] || "" : obj1[key];
-		// const value2 = ignoresEmpty ? obj2[key] || "" : obj2[key];
 		const value1 = ignoresEmpty ? _.get(obj1, key) || "" : _.get(obj1, key);
 		const value2 = ignoresEmpty ? _.get(obj2, key) || "" : _.get(obj2, key);
 
 		if (value1 !== value2) {
 			if (debug) {
-				console.log(`${header ? header + "." : ""}${key} mismatched`);
+				console.log(
+					`${header ? header + "." : ""}${key} mismatched:`,
+					`${value1} → ${value2}`
+				);
 			}
 			if (debugValues) {
-				console.log("old", value1);
-				console.log("new", value2);
+				console.log("\told", value1);
+				console.log("\tnew", value2);
 			}
 			return false;
 		}

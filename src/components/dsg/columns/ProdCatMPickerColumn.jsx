@@ -80,6 +80,11 @@ const ProdCatMPickerColumn = memo((props) => {
 			value={name ? rowData[name] : rowData}
 			onChange={handleChange}
 			catL={catL}
+			// DSG 專屬屬性
+			disablePointerEvents={!focus}
+			hidePopupIndicator={!focus}
+			fadeOutDisabled={false}
+			selectOnFocus
 			{...rest}
 		/>
 	);

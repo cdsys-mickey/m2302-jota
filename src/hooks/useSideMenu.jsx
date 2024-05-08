@@ -1,6 +1,6 @@
-import { useTheme } from "@emotion/react";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
+import { useTheme } from "@mui/material";
 
 export const useSideMenu = ({ bgcolor = "#fff" } = {}) => {
 	const theme = useTheme();

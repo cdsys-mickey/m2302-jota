@@ -8,8 +8,10 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import { OptionPickerProvider } from "@/shared-components/picker/listbox/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { EmployeePicker } from "@/components/picker/EmployeePicker";
-import { SupplierPicker } from "@/components/picker/SupplierPicker";
-import { InqQuoteGridContainer } from "./quotes/InqQuoteGridContainer";
+import { SupplierPickerContainer } from "@/components/picker/SupplierPickerContainer";
+import { B05QuoteGridContainer } from "./quotes/B05QuoteGridContainer";
+import FormBox from "../../../../shared-components/form/FormBox";
+import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const B05DialogForm = memo((props) => {
 	const {
@@ -34,31 +36,9 @@ const B05DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && (
-				<Box pt="20%">
-					<AlertEx
-						variant="filled"
-						title="讀取失敗"
-						error={readError}
-					/>
-				</Box>
-			)}
+			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
-				<Box
-					pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "105%",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "110%",
-							fontWeight: 600,
-							left: "-2px",
-						},
-						"& .MuiInputBase-root": {
-							backgroundColor: "rgb(255,255,255)",
-						},
-					})}>
+				<FormBox pt={1}>
 					<Grid container columns={24} spacing={editing ? 2 : 1}>
 						<Grid item xs={24} sm={24} md={5}>
 							<DatePickerWrapper
@@ -87,7 +67,7 @@ const B05DialogForm = memo((props) => {
 						</Grid>
 						<Grid item xs={24} sm={24} md={8}>
 							<OptionPickerProvider>
-								<SupplierPicker
+								<SupplierPickerContainer
 									typo
 									label="廠商代碼"
 									name="supplier"
@@ -104,7 +84,7 @@ const B05DialogForm = memo((props) => {
 								<TextFieldWrapper
 									typo
 									name="InqID"
-									label="單號"
+									label="詢價單號"
 									autoFocus
 									fullWidth
 									required
@@ -113,7 +93,7 @@ const B05DialogForm = memo((props) => {
 							</Grid>
 						)}
 						<Grid item xs={24}>
-							<InqQuoteGridContainer />
+							<B05QuoteGridContainer />
 						</Grid>
 						<Grid item xs={24}>
 							<TextFieldWrapper
@@ -127,7 +107,7 @@ const B05DialogForm = memo((props) => {
 							/>
 						</Grid>
 					</Grid>
-				</Box>
+				</FormBox>
 			)}
 		</>
 	);

@@ -19,15 +19,16 @@ FlexBoxBase.displayName = "FlexBoxBase";
  * 修改歷程:
  * 2021.09.30 初版
  */
-const FlexBox = styled(FlexBoxBase, {
+const FlexBox = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!`fullWidth,fullHeight,midWidth,maxWidth`
+		!`inline,block,fullWidth,fullHeight,midWidth,maxWidth`
 			.trim()
 			.split(/\s*,\s*/)
 			.includes(prop),
-})(({ theme, fullHeight, fullWidth, minWidth, maxWidth }) => ({
+})(({ theme, inline, block, fullHeight, fullWidth, minWidth, maxWidth }) => ({
+	display: block ? "block" : inline ? "inline-flex" : "flex",
 	...(fullHeight && {
-		height: "100%",
+		height: "100vh",
 	}),
 	...(fullWidth && {
 		width: "100%",

@@ -10,27 +10,14 @@ import StdPrintOutputModePicker from "../../std-print/StdPrintOutputModePicker";
 import A18ActionPicker from "./picker/A18ActionPicker";
 import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 import { A18FormButtonsContainer } from "./buttons/A18FormButtonsContainer";
+import FormBox from "../../../shared-components/form/FormBox";
 
 const A18Form = memo((props) => {
 	const { ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form {...rest}>
-				<Box
-					pt={1}
-					sx={() => ({
-						"& .MuiInputLabel-root": {
-							fontSize: "105%",
-							// fontWeight: 500,
-							// color: "rgba(0, 0, 0, 0.8 )",
-						},
-						"& .MuiInputLabel-shrink": {
-							fontSize: "120%",
-							fontWeight: 600,
-							left: "-2px",
-							// color: theme.palette.primary.main,
-						},
-					})}>
+				<FormBox pt={1}>
 					<FormSectionBox py={2}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12}>
@@ -82,7 +69,7 @@ const A18Form = memo((props) => {
 							</FlexToolbar>
 						</Grid>
 					</FormSectionBox>
-				</Box>
+				</FormBox>
 			</form>
 		</ContainerEx>
 	);

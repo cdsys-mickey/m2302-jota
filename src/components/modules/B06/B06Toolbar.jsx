@@ -1,16 +1,20 @@
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import LoadingTypography from "../../../shared-components/LoadingTypography";
+import LoadingTypography from "@/shared-components/LoadingTypography";
 import { B06FetchResultLabelContainer } from "./B06FetchResultLabelContainer";
-import { B06OutputModePicker } from "./B06OutputModePicker";
+import { B06OutputModePickerContainer } from "./B06OutputModePickerContainer";
 import B06PrintButtonContainer from "./B06PrintButtonContainer";
 
 const LeftButtons = memo(() => {
 	return (
 		<>
 			<B06PrintButtonContainer />
-			<B06OutputModePicker />
+			<B06OutputModePickerContainer
+				disableClearable
+				autoComplete
+				autoSelect
+			/>
 		</>
 	);
 });

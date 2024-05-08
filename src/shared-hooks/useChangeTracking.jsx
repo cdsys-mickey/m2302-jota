@@ -4,7 +4,8 @@ import useDebounce from "./useDebounce";
 import { useMemo } from "react";
 
 const defaultOpts = {
-	delay: 0,
+	// delay: 0,
+	debug: false,
 };
 
 export const useChangeTracking = (
@@ -12,7 +13,7 @@ export const useChangeTracking = (
 	dependencies,
 	opts = defaultOpts
 ) => {
-	const { tag = "" } = opts;
+	const { tag = "", debug } = opts;
 	const prevRef = useRef();
 
 	// const debouncedValues = useDebounce(dependencies, delay);
@@ -32,16 +33,20 @@ export const useChangeTracking = (
 		if (dependenciesJson !== prevRef.current) {
 			// dont fire on first render
 			if (prevRef.current) {
-				console.log(
-					`${head}useChangeTracking changed detected, dependencies:`,
-					dependencies
-				);
+				if (debug) {
+					console.log(
+						`${head}useChangeTracking changed detected, dependencies:`,
+						dependencies
+					);
+				}
 				callback();
 			} else {
-				console.log(
-					`${head}useChangeTracking init, dependencies:`,
-					dependencies
-				);
+				if (debug) {
+					console.log(
+						`${head}useChangeTracking init, dependencies:`,
+						dependencies
+					);
+				}
 			}
 			prevRef.current = dependenciesJson;
 		}

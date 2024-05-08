@@ -7,7 +7,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { ProdPickerContainer } from "../../components/picker/ProdPickerContainer";
-import { UserPicker } from "../../components/picker/UserPicker";
+import { DeptUserPicker } from "../../components/picker/DeptUserPicker";
 import FormSectionBox from "../../shared-components/form/FormSectionBox";
 import FormSectionTitle from "../../shared-components/form/FormSectionTitle";
 import OptionPicker from "../../shared-components/picker/OptionPicker";
@@ -131,7 +131,7 @@ const OptionPickerTest = () => {
 					</Grid>
 					<Grid item xs={6}>
 						{/* 使用者 */}
-						<UserPicker width={300} />
+						<DeptUserPicker width={300} />
 					</Grid>
 					<Grid item xs={6}>
 						{/* 產品 */}

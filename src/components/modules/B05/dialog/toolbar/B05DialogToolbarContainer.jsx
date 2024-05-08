@@ -3,12 +3,17 @@ import { B05Context } from "@/contexts/B05/B05Context";
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import B05DialogEditToolbar from "./B05DialogEditToolbar";
-import B05DialogTitleViewButtons from "./B05DialogViewToolbar";
+import B05DialogViewToolbar from "./B05DialogViewToolbar";
 
 export const B05DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
 	const b05 = useContext(B05Context);
-	const forms = useFormContext();
+	const form = useFormContext();
+
+	const handlePrint = form.handleSubmit(
+		b05.onPrintSubmit,
+		b05.onPrintSubmitError
+	);
 
 	if (!b05.itemDataReady) {
 		return false;
@@ -18,7 +23,7 @@ export const B05DialogToolbarContainer = (props) => {
 		return (
 			<B05DialogEditToolbar
 				onLoadProds={b05.promptImportProds}
-				onSave={forms.handleSubmit(
+				onSave={form.handleSubmit(
 					b05.onEditorSubmit,
 					b05.onEditorSubmitError
 				)}
@@ -34,9 +39,10 @@ export const B05DialogToolbarContainer = (props) => {
 	}
 
 	return (
-		<B05DialogTitleViewButtons
+		<B05DialogViewToolbar
 			onEdit={b05.canUpdate ? b05.promptUpdating : null}
 			onDelete={b05.canDelete ? b05.confirmDelete : null}
+			onPrint={b05.canPrint ? handlePrint : null}
 			{...rest}
 		/>
 	);

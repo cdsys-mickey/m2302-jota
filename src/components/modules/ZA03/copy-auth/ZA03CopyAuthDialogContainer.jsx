@@ -1,12 +1,10 @@
-import { useContext } from "react";
-import DialogEx from "../../../../shared-components/dialog/DialogEx";
-import { ZA03Context } from "../../../../contexts/ZA03/ZA03Context";
+import { Container } from "@mui/material";
+import { useContext, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
+import { ZA03CopyAuthContext } from "@/contexts/ZA03/ZA03CopyAuthContext";
+import DialogEx from "@/shared-components/dialog/DialogEx";
 import ZA03CopyAuthForm from "./ZA03CopyAuthForm";
-import { Container, Typography } from "@mui/material";
-import { useEffect } from "react";
-import { ZA03CopyAuthContext } from "../../../../contexts/ZA03/ZA03CopyAuthContext";
-import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
 
 export const ZA03CopyAuthDialogContainer = () => {
 	const za03 = useContext(ZA03Context);

@@ -6,12 +6,20 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import FlexToolbar from "../../../../../shared-components/listview/toolbar/FlexToolbar";
+import B05PrintButtonContainer from "./B05PrintButtonContainer";
+import { B05OutputModePickerContainer } from "./B05OutputModePickerContainer";
 
 const B05DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, ...rest } = props;
+		const { onEdit, onDelete, onPrint, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
+				{onPrint && (
+					<>
+						<B05OutputModePickerContainer />
+						<B05PrintButtonContainer />
+					</>
+				)}
 				{onDelete && (
 					<ResponsiveButton
 						startIcon={<DeleteIcon />}
@@ -37,7 +45,7 @@ const B05DialogViewToolbar = memo(
 B05DialogViewToolbar.propTypes = {
 	onEdit: PropTypes.func,
 	onDelete: PropTypes.func,
-	onReview: PropTypes.func,
+	onPrint: PropTypes.func,
 };
 
 export default B05DialogViewToolbar;

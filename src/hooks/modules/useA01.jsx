@@ -447,7 +447,7 @@ export const useA01 = ({ token, mode }) => {
 		dialogs.prompt({
 			title: "確認審核",
 			label: "正式商品編號",
-			message: "請輸入正式商品編號",
+			placeholder: "請輸入正式商品編號",
 			onConfirm: handleReview,
 			value: crud.itemData?.ProdID || "",
 			confirmText: "通過",
@@ -614,12 +614,10 @@ export const useA01 = ({ token, mode }) => {
 		// ProdTransGrid
 		setTransGridRef: transGrid.setGridRef,
 		transGridData: transGrid.gridData,
-		// handleTransGridChange: transGrid.propagateGridChange,
 		handleTransGridChange,
 		// ProdComboGrid
 		setComboGridRef: comboGrid.setGridRef,
 		comboGridData: comboGrid.gridData,
-		// handleComboGridChange: comboGrid.propagateGridChange,
 		handleComboGridChange,
 		// Store
 		onCounterSubmit,

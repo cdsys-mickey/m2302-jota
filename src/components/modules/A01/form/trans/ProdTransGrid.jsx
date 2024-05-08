@@ -7,6 +7,7 @@ import { DynamicDataSheetGrid, keyColumn } from "react-datasheet-grid";
 import Depts from "@/modules/md-depts";
 import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import { deptPickerColumn } from "../../../../dsg/columns/dept-picker/deptPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -28,12 +29,15 @@ const ProdTransGrid = memo((props) => {
 			{
 				...keyColumn(
 					"dept",
-					createWebApiOptionPickerColumn({
-						url: "v1/ou/depts",
-						bearer: bearer,
-						getOptionLabel: Depts.getOptionLabel,
-						isOptionEqualToValue: Depts.isOptionEqualToValue,
-						getData: (p) => p["data"],
+					// createWebApiOptionPickerColumn({
+					// 	url: "v1/ou/depts",
+					// 	bearer: bearer,
+					// 	getOptionLabel: Depts.getOptionLabel,
+					// 	isOptionEqualToValue: Depts.isOptionEqualToValue,
+					// 	getData: (p) => p["data"],
+					// })
+					deptPickerColumn({
+						name: "dept",
 					})
 				),
 				title: "門市",

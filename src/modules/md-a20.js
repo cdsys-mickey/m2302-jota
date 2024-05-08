@@ -28,7 +28,7 @@ const transformForReading = (data) => {
 		...(BomFile_S && {
 			materials: BomFile_S.map((v) => ({
 				id: uuidv4(),
-				prod: {
+				sprod: {
 					ProdID: v.SProdID,
 					ProdData: v.SProdData_N,
 				},
@@ -64,7 +64,7 @@ const transformForEditorSubmit = (data, materialsGridData) => {
 		...(materialsGridData && {
 			BomFile_S: materialsGridData.map((v, i) => ({
 				Seq: i,
-				SProdID: v.prod.ProdID,
+				SProdID: v.sprod.ProdID,
 				SProdQty: v.SProdQty,
 			})),
 		}),

@@ -15,6 +15,7 @@ export const ProdPickerContainer = (props) => {
 		withBomPackageName = false,
 		withSalesPackageName = false,
 		withPurchasePackageName = false,
+		withStock = false,
 		...rest
 	} = props;
 	const { token } = useContext(AuthContext);
@@ -32,9 +33,17 @@ export const ProdPickerContainer = (props) => {
 			...(withPurchasePackageName && {
 				pi: 1,
 			}),
+			...(withStock && {
+				ws: 1,
+			}),
 		};
 		return queryString.stringify(obj);
-	}, [withBomPackageName, withPurchasePackageName, withSalesPackageName]);
+	}, [
+		withBomPackageName,
+		withPurchasePackageName,
+		withSalesPackageName,
+		withStock,
+	]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return Prods.isOptionEqualToValue(option, value);
@@ -68,6 +77,7 @@ ProdPickerContainer.propTypes = {
 	withBomPackageName: PropTypes.bool,
 	withSalesPackageName: PropTypes.bool,
 	withPurchasePackageName: PropTypes.bool,
+	withStock: PropTypes.bool,
 };
 
 ProdPickerContainer.displayName = "ProdPickerContainer";

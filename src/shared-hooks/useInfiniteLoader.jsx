@@ -83,6 +83,7 @@ export const useInfiniteLoader = (props = {}) => {
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
 			refresh = false,
+			usePrevParams = false,
 			supressLoading = false,
 			// reset = false,
 		} = {}) => {
@@ -108,7 +109,7 @@ export const useInfiniteLoader = (props = {}) => {
 				);
 				activeParams = params;
 			} else {
-				if (refresh) {
+				if (refresh || usePrevParams) {
 					activeParams = crud.paramsRef?.current;
 				} else {
 					crud.paramsRef.current = params;
@@ -120,6 +121,9 @@ export const useInfiniteLoader = (props = {}) => {
 				`load(${startIndex} ~ ${stopIndex}), params:`,
 				activeParams
 			);
+			if (saveKey) {
+				console.log("saveKey", saveKey);
+			}
 
 			const loading =
 				((!start || !listData) && !supressLoading) || refresh;
@@ -146,20 +150,13 @@ export const useInfiniteLoader = (props = {}) => {
 				});
 				if (status.success) {
 					const newSaveKey = getSaveKey(payload);
+					setSaveKey(newSaveKey);
 
-					// setState((prev) => ({
-					// 	...prev,
-					// 	// saveKey: getSaveKey(payload),
-					// 	saveKey:
-					// (!startIndex || refresh) && !newSaveKey
-					// 	? uuidv4()
-					// 	: newSaveKey,
-					// }));
-					setSaveKey(
-						(!startIndex || refresh) && !newSaveKey
-							? uuidv4()
-							: newSaveKey
-					);
+					// setSaveKey(
+					// 	(!startIndex || refresh) && !newSaveKey
+					// 		? uuidv4()
+					// 		: newSaveKey
+					// );
 					const itemCount = getItemCount(payload);
 					if (itemCount !== undefined) {
 						setItemCount(itemCount);
@@ -169,9 +166,6 @@ export const useInfiniteLoader = (props = {}) => {
 					// console.log("newData", newData);
 
 					if (refresh) {
-						// setListData({
-						// 	...newData,
-						// });
 						setListData(newDataObj);
 					} else {
 						setListData((prev) => ({
@@ -231,8 +225,14 @@ export const useInfiniteLoader = (props = {}) => {
 			console.log(`loadMoreItems(${start}, ${stop})`);
 
 			return new Promise((resolve) => {
-				// loadList({ start, stop, saveKey: state.saveKey });
-				loadList({ start, stop, saveKey: saveKey });
+				loadList({
+					start,
+					stop,
+					usePrevParams: true,
+					...(saveKey && {
+						saveKey: saveKey,
+					}),
+				});
 				resolve();
 			});
 		},

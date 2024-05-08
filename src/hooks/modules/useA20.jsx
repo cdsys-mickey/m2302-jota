@@ -268,6 +268,34 @@ export const useA20 = ({ token }) => {
 		return rowData?.prod?.ProdID || rowIndex;
 	}, []);
 
+	const handleMaterialsGridChange = useCallback(
+		(newValue, operations) => {
+			const newGridData = [...newValue];
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach((rowData, i) => {
+							const { prod } = rowData;
+							const rowIndex = operation.fromRowIndex + i;
+							const ogRowData = materialsGrid.gridData[rowIndex];
+							const { prod: ogProd } = ogRowData;
+							if (prod?.ProdID !== ogProd?.ProdID) {
+								console.log(`prod[${rowIndex}] changed`, prod);
+
+								newGridData[rowIndex] = {
+									...rowData,
+									["SPackData_N"]: prod?.PackData_N || "",
+								};
+							}
+						});
+				}
+			}
+			materialsGrid.setGridData(newGridData);
+		},
+		[materialsGrid]
+	);
+
 	useInit(() => {
 		crud.cancelAction();
 	}, []);
@@ -291,7 +319,8 @@ export const useA20 = ({ token }) => {
 		// materialsGrid
 		setMaterialsGridRef: materialsGrid.setGridRef,
 		materialsGridData: materialsGrid.gridData,
-		handleMaterialsGridChange: materialsGrid.propagateGridChange,
+		// handleMaterialsGridChange: materialsGrid.propagateGridChange,
+		handleMaterialsGridChange,
 		getRowKey,
 		...appModule,
 		handleCreateRow,

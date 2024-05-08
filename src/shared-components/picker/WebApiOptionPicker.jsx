@@ -121,7 +121,7 @@ const WebApiOptionPicker = memo(
 		// }, [url, onChange, resetLoading, name]);
 
 		useChangeTracking(() => {
-			// console.log("changeTracking 1");
+			console.log(`url changed: ${url}`);
 			onChange(null);
 			resetLoading();
 		}, [url]);
@@ -133,7 +133,7 @@ const WebApiOptionPicker = memo(
 		// 	}
 		// }, [filterByServer, open, resetLoading]);
 		useChangeTracking(() => {
-			// console.log("changeTracking 2");
+			console.log("filterByServer+open changed");
 			if (filterByServer && !open) {
 				resetLoading();
 			}
@@ -149,7 +149,7 @@ const WebApiOptionPicker = memo(
 		// 	}
 		// }, [loadOptions, open, loadOptionsTriggered]);
 		useChangeTracking(() => {
-			// console.log("changeTracking 3");
+			console.log("open+loadOptionsTriggered changed");
 			if (open && loadOptionsTriggered) {
 				loadOptions();
 			}
@@ -164,15 +164,13 @@ const WebApiOptionPicker = memo(
 				loading={loading}
 				options={options}
 				noOptionsText={noOptionsText}
-				onInputChange={onInputChange}
 				disabled={disabled}
-				// ChipProps={chipProps}
+				// Controlled Props
+				onInputChange={onInputChange}
 				open={open}
 				onOpen={handleOpen}
 				onClose={handleClose}
 				onChange={onChange}
-				// onInputChange={handleInputChange}
-				// noOptionsText={noOptionsText}
 				{...rest}
 			/>
 		);
