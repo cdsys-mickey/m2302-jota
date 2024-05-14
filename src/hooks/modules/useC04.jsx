@@ -24,7 +24,7 @@ export const useC04 = () => {
 		moduleId: "C04",
 	});
 
-	const [selectedInq, setSelectedInq] = useState();
+	// const [selectedInq, setSelectedInq] = useState();
 
 	const {
 		httpGetAsync,
@@ -39,6 +39,12 @@ export const useC04 = () => {
 		url: "v1/purchase/restocks",
 		bearer: token,
 		initialFetchSize: 50,
+	});
+
+	const [expState, setExpState] = useState({
+		expProd: null,
+		expDate: null,
+		expPrompting: false,
 	});
 
 	const prodGrid = useDSG({
@@ -102,7 +108,7 @@ export const useC04 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					setSelectedInq(data);
+					// setSelectedInq(data);
 
 					prodGrid.handleGridDataLoaded(data.prods);
 				} else {
@@ -124,6 +130,17 @@ export const useC04 = () => {
 			loadItem({ id: rowData.進貨單號 });
 		},
 		[crud, loadItem]
+	);
+
+	const handleSupplierChanged = useCallback(
+		({ setValue }) =>
+			(newValue) => {
+				setValue("FactData", newValue.FactData);
+				setValue("Uniform", newValue.Uniform);
+				setValue("TaxType", newValue.TaxType);
+				setValue("FactAddr", newValue.FactAddr);
+			},
+		[]
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -356,13 +373,45 @@ export const useC04 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	// 有效日期查詢
+	const onExpDialogOpen = useCallback(() => {
+		setExpState((prev) => ({
+			...prev,
+			expPrompting: true,
+		}));
+	}, []);
+
+	const onExpDialogClose = useCallback(() => {
+		setExpState((prev) => ({
+			...prev,
+			expPrompting: false,
+		}));
+	}, []);
+
+	const onExpSubmit = useCallback((data) => {
+		console.log("onExpSubmit", data);
+	}, []);
+
+	const onExpSubmitError = useCallback((err) => {
+		console.error("onExpSubmitError", err);
+	}, []);
+
+	const cancelExpChecking = useCallback(() => {
+		setExpState({
+			expProd: null,
+			expDate: null,
+			expPrompting: false,
+		});
+	}, []);
+
 	return {
 		...crud,
 		...listLoader,
 		...appModule,
-		selectedInq,
+		// selectedInq,
 		loadItem,
 		handleSelect,
+		handleSupplierChanged,
 		onSearchSubmit,
 		onSearchSubmitError,
 		confirmQuitCreating,
@@ -382,5 +431,10 @@ export const useC04 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		// 有效日期查詢
+		...expState,
+		onExpDialogOpen,
+		onExpDialogClose,
+		cancelExpChecking,
 	};
 };

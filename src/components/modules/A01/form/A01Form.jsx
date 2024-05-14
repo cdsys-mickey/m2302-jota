@@ -3,6 +3,7 @@ import TaxTypes from "@/modules/md-tax-types";
 import { Box, Grid, Tab } from "@mui/material";
 import { memo } from "react";
 
+import A01 from "@/modules/md-a01";
 import CmsTypes from "@/modules/md-cms-types";
 import Counters from "@/modules/md-counters";
 import PkgTypes from "@/modules/md-pkg-types";
@@ -14,15 +15,15 @@ import Strings from "@/modules/md-strings";
 import YesNo from "@/modules/md-yes-no";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import A01 from "@/modules/md-a01";
-import AlertEx from "@/shared-components/AlertEx";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import CheckboxExWrapper from "../../../../shared-components/checkbox/CheckboxExWrapper";
+import FormBox from "../../../../shared-components/form/FormBox";
+import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
 import { ProdComboGridContainer } from "./combo/ProdComboGridContainer";
 import TypoCmsTypePickerContainer from "./fields/TypoCmsTypePickerContainer";
@@ -34,8 +35,6 @@ import { TypoProdCatSPickerContainer } from "./fields/TypoProdCatSPickerContaine
 import { TypoProdTypeAPickerContainer } from "./fields/TypoProdTypeAPickerContainer";
 import { TypoProdTypeBPickerContainer } from "./fields/TypoProdTypeBPickerContainer";
 import { ProdTransGridContainer } from "./trans/ProdTransGridContainer";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const A01Form = memo((props) => {
 	const {
@@ -122,7 +121,8 @@ const A01Form = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoCheckboxExContainer
+										<CheckboxExWrapper
+											typo
 											label="列印條碼"
 											defaultValue="N"
 											name="BarPR"
@@ -132,9 +132,9 @@ const A01Form = memo((props) => {
 											}
 											checkedToValue={
 												YesNo.checkedToValue
-											}>
-											{YesNo.getOptionLabel(data?.BarPR)}
-										</TypoCheckboxExContainer>
+											}
+											getLabel={YesNo.getOptionLabel}
+										/>
 									</Grid>
 								</Grid>
 							</FormSectionBox>

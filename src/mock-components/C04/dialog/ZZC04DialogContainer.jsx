@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { MockProducts } from "@/mocks/mock-products";
 import { FormProvider, useForm } from "react-hook-form";
 import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import C04Dialog from "./C04Dialog";
+import C04Dialog from "./ZZC04Dialog";
 
 import { forwardRef } from "react";
 import { MockPurchaseOrders } from "@/mocks/mock-purchase-orders";

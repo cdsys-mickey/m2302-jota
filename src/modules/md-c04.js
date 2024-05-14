@@ -19,9 +19,9 @@ const transformForReading = (payload) => {
 		GinDate,
 		EmplID,
 		EmplData_N,
-		PDlineID,
-		PDlineData_N,
-		GdsRqt_S,
+		FactID,
+		FactData,
+		GdsIn_S,
 		Remark,
 		...rest
 	} = payload;
@@ -32,13 +32,14 @@ const transformForReading = (payload) => {
 			CodeID: EmplID,
 			CodeData: EmplData_N,
 		},
-		pdline: PDlineID
+		supplier: FactID
 			? {
-					CodeID: PDlineID,
-					CodeData: PDlineData_N,
+					FactID: FactID,
+					FactData: FactData,
 			  }
 			: null,
-		prods: transformForGrid(GdsRqt_S),
+		FactData,
+		prods: transformForGrid(GdsIn_S),
 		remark: Remark.join("\n"),
 		...rest,
 	};
@@ -91,12 +92,6 @@ const C04 = {
 	transformForSubmitting,
 	transformAsQueryParams,
 	transformForGrid,
-	// 列表模式
-	ListModes,
-	options,
-	getOptionLabel,
-	isOptionEqualToValue,
-	getOptionById,
 };
 
 export default C04;

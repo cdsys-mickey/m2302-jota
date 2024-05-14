@@ -1,8 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 
-import { ZZCrudProvider } from "@/contexts/crud/ZZCrudProvider";
-import { PurchaseProvider } from "@/contexts/purchase/PurchaseProvider";
-import { MockC04FrameContainer } from "@/mock-pages/MockC04FrameContainer";
 import HomeContainer from "@/pages/home/HomeContainer";
 import { DSGTest2Container } from "@/pages/lab/DSGTest2Container";
 import { DSGTestContainer } from "@/pages/lab/DSGTestContainer";

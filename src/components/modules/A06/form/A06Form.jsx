@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { memo } from "react";
 
 import FlexBox from "@/shared-components/FlexBox";
@@ -7,9 +7,9 @@ import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import YesNo from "../../../../modules/md-yes-no";
-import { TypoCheckboxExContainer } from "../../../../shared-components/checkbox/TypoCheckboxExContainer";
+import FormBox from "../../../../shared-components/form/FormBox";
 import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
+import TaxTypeCheckbox from "../../../checkbox/TaxTypeCheckbox";
 import TypoBankPickerContainer from "../../../fields/TypoBankPickerContainer";
 import TypoAreaPickerContainer from "./fields/TypoAreaPickerContainer";
 import TypoChannelPickerContainer from "./fields/TypoChannelPickerContainer";
@@ -17,7 +17,6 @@ import { TypoCustomerLevelPickerContainer } from "./fields/TypoCustomerLevelPick
 import TypoEmployeePickerContainer from "./fields/TypoEmployeePickerContainer";
 import TypoPaymentPickerContainer from "./fields/TypoPaymentPickerContainer";
 import TypoTransportPickerContainer from "./fields/TypoTransportPickerContainer";
-import FormBox from "../../../../shared-components/form/FormBox";
 
 const A06Form = memo((props) => {
 	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
@@ -80,14 +79,10 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={4} sm={4} md={2}>
-								<TypoCheckboxExContainer
+								<TaxTypeCheckbox
 									label="稅外加"
-									defaultValue="N"
 									name="TaxType"
-									valueToChecked={YesNo.valueToChecked}
-									checkedToValue={YesNo.checkedToValue}>
-									{YesNo.getOptionLabel(data?.TaxType)}
-								</TypoCheckboxExContainer>
+								/>
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={2}>

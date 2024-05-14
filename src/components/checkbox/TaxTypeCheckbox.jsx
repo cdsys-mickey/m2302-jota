@@ -1,32 +1,20 @@
-import YesNo from "../../modules/md-yes-no";
-import { TypoCheckboxExContainer } from "../../shared-components/checkbox/TypoCheckboxExContainer";
 import PropTypes from "prop-types";
+import YesNo from "../../modules/md-yes-no";
+import CheckboxExWrapper from "../../shared-components/checkbox/CheckboxExWrapper";
 
 const TaxTypeCheckbox = (props) => {
-	const { typo, label = "稅外加", ...rest } = props;
-
-	if (!typo) {
-		return (
-			<CheckboxExContainer
-				label="稅外加"
-				defaultValue="N"
-				name="TaxType"
-				valueToChecked={YesNo.valueToChecked}
-				checkedToValue={YesNo.checkedToValue}>
-				{YesNo.getOptionLabel(data?.TaxType)}
-			</CheckboxExContainer>
-		);
-	}
+	const { label = "稅外加", ...rest } = props;
 
 	return (
-		<CheckboxWrapper
-			label="稅外加"
+		<CheckboxExWrapper
+			label={label}
 			defaultValue="N"
 			name="TaxType"
 			valueToChecked={YesNo.valueToChecked}
-			checkedToValue={YesNo.checkedToValue}>
-			{YesNo.getOptionLabel(data?.TaxType)}
-		</CheckboxWrapper>
+			checkedToValue={YesNo.checkedToValue}
+			getLabel={YesNo.getOptionLabel}
+			{...rest}
+		/>
 	);
 };
 

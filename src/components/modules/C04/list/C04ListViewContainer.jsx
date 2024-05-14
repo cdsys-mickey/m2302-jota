@@ -13,15 +13,9 @@ export const C04ListViewContainer = () => {
 	const c04 = useContext(C04Context);
 	const { loadList } = c04;
 	const form = useFormContext();
-	const { getValues, setValue } = form;
 	const { height } = useWindowSize();
 	const q = useWatch({
 		name: "q",
-		control: form.control,
-	});
-
-	const checker = useWatch({
-		name: "listMode",
 		control: form.control,
 	});
 
@@ -29,23 +23,16 @@ export const C04ListViewContainer = () => {
 
 	useInit(() => {
 		c04.loadList({
-			params: {
-				ck: checker?.id || "",
-			},
+			params: {},
 		});
 	}, []);
 
 	useChangeTracking(() => {
-		// if (debouncedQ !== undefined) {
-		// const values = getValues();
-		console.log("checker:", checker);
 		loadList({
-			params: { q: debouncedQ, ck: checker?.id || "" },
+			params: { q: debouncedQ },
 			supressLoading: true,
 		});
-		// setValue("q", debouncedQ);
-		// }
-	}, [debouncedQ, checker]);
+	}, [debouncedQ]);
 
 	return (
 		<ListViewBox withHeader>

@@ -5,13 +5,15 @@ import TypoBankPickerContainer from "@/components/fields/TypoBankPickerContainer
 import YesNo from "@/modules/md-yes-no";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import { TypoCheckboxExContainer } from "@/shared-components/checkbox/TypoCheckboxExContainer";
+
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
-import FormBox from "../../../../shared-components/form/FormBox";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import TaxTypeCheckbox from "../../../checkbox/TaxTypeCheckbox";
 
 const A05Form = memo((props) => {
 	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
@@ -156,14 +158,11 @@ const A05Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={4} sm={4} md={2}>
-								<TypoCheckboxExContainer
+								<TaxTypeCheckbox
+									typo
 									label="稅外加"
-									defaultValue="N"
 									name="TaxType"
-									valueToChecked={YesNo.valueToChecked}
-									checkedToValue={YesNo.checkedToValue}>
-									{YesNo.getOptionLabel(data?.TaxType)}
-								</TypoCheckboxExContainer>
+								/>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

@@ -1,18 +1,17 @@
 import { EmployeePicker } from "@/components/picker/EmployeePicker";
-import AlertEx from "@/shared-components/AlertEx";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FormLabelWrapper } from "@/shared-components/label/FormLabelWrapper";
+import FormBox from "@/shared-components/form/FormBox";
 import { OptionPickerProvider } from "@/shared-components/picker/listbox/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Box, Container, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
-import { C04ProdGridContainer } from "./prods/C04ProdGridContainer";
-import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
+import TaxTypeCheckbox from "../../../checkbox/TaxTypeCheckbox";
+import { C04ProdGridContainer } from "./prods/C04ProdGridContainer";
+import { SupplierIdPickerContainer } from "../../../picker/SupplierIdPickerContainer";
 
 const C04DialogForm = memo((props) => {
 	const {
@@ -24,6 +23,7 @@ const C04DialogForm = memo((props) => {
 		creating,
 		editing,
 		updating,
+		handleSupplierChanged,
 		...rest
 	} = props;
 	return (
@@ -80,6 +80,7 @@ const C04DialogForm = memo((props) => {
 								/>
 							</OptionPickerProvider>
 						</Grid>
+
 						<Grid item xs={24} sm={24} md={5}>
 							<OptionPickerProvider>
 								<SupplierIdPickerContainer
@@ -94,11 +95,11 @@ const C04DialogForm = memo((props) => {
 									disableClearable
 									virtualize
 									fadeOutDisabled
-									// onChanged={handleSupplierChanged}
+									onChanged={handleSupplierChanged}
 								/>
 							</OptionPickerProvider>
 						</Grid>
-						<Grid item xs={24} sm={24} md={10}>
+						<Grid item xs={24} sm={24} md={6}>
 							<TextFieldWrapper
 								typo
 								name="FactData"
@@ -112,6 +113,7 @@ const C04DialogForm = memo((props) => {
 								// disabled={supplierNameDisabled}
 							/>
 						</Grid>
+						<FlexBox fullWidth />
 						<Grid item xs={24} sm={24} md={4}>
 							<TextFieldWrapper
 								typo
@@ -123,15 +125,7 @@ const C04DialogForm = memo((props) => {
 								// disabled={supplierNameDisabled}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
-							<TextFieldWrapper
-								typo
-								name="InvNo"
-								label="發票號碼"
-								fullWidth
-								required
-							/>
-						</Grid>
+
 						<Grid item xs={24} sm={24} md={8}>
 							<TextFieldWrapper
 								typo
@@ -143,15 +137,21 @@ const C04DialogForm = memo((props) => {
 								// disabled={supplierNameDisabled}
 							/>
 						</Grid>
-						<Grid item xs={4} sm={4} md={2}>
-							<TypoCheckboxExContainer
+						<Grid item xs={4} sm={4} md={4}>
+							<TaxTypeCheckbox
+								typo
 								label="稅外加"
-								defaultValue="N"
 								name="TaxType"
-								valueToChecked={YesNo.valueToChecked}
-								checkedToValue={YesNo.checkedToValue}>
-								{YesNo.getOptionLabel(data?.TaxType)}
-							</TypoCheckboxExContainer>
+							/>
+						</Grid>
+						<Grid item xs={24} sm={24} md={4}>
+							<TextFieldWrapper
+								typo
+								name="InvNo"
+								label="發票號碼"
+								fullWidth
+								required
+							/>
 						</Grid>
 
 						<Grid item xs={24}>

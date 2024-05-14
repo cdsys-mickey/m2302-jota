@@ -9,6 +9,8 @@ import C04IdColumn from "./columns/C04IdColumn";
 import C04DeptColumn from "./columns/C04DeptColumn";
 import C04UserColumn from "./columns/C04UserColumn";
 import C04FlagColumn from "./columns/C04FlagColumn";
+import C04DeptIdColumn from "./columns/C04DeptIdColumn";
+import C04DeptNameColumn from "./columns/C04DeptNameColumn";
 
 const C04ListRow = memo((props) => {
 	const { index, style, value, loading, onClick } = props;
@@ -49,14 +51,17 @@ const C04ListRow = memo((props) => {
 							{value?.進貨單號}
 						</C04IdColumn>
 						<C04DateColumn loading={loading}>
-							{value?.進貨日}
+							{value?.進貨日期}
 						</C04DateColumn>
 						<C04UserColumn loading={loading}>
 							{value?.倉管人員}
 						</C04UserColumn>
-						<C04DeptColumn loading={loading}>
-							{value?.["廠商代碼+名稱"]}
-						</C04DeptColumn>
+						<C04DeptIdColumn loading={loading}>
+							{value?.廠商代碼}
+						</C04DeptIdColumn>
+						<C04DeptNameColumn loading={loading}>
+							{value?.廠商名稱}
+						</C04DeptNameColumn>
 					</Grid>
 				</Box>
 			</HoverableListItem>

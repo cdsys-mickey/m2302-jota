@@ -14,9 +14,7 @@ import C04 from "../../modules/md-c04";
 export const C04FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
 	const searchForm = useForm({
-		defaultValues: {
-			listMode: C04.getOptionById(C04.ListModes.NOT_REVIEWED),
-		},
+		defaultValues: {},
 	});
 	const theme = useTheme();
 	const boxStyles = useMemo(

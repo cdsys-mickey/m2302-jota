@@ -101,6 +101,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 						data={c04.itemData}
 						itemDataReady={c04.itemDataReady}
 						onSubmit={handleSubmit}
+						handleSupplierChanged={c04.handleSupplierChanged}
 					/>
 				</form>
 			</DialogExContainer>

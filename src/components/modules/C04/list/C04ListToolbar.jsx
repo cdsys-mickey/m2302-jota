@@ -4,12 +4,14 @@ import { forwardRef, memo } from "react";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import C04CreateButtonContainer from "../C04CreateButtonContainer";
 import { C04FetchResultLabelContainer } from "../C04FetchResultLabelContainer";
+import C04ExpCheckingButtonContainer from "../C04ExpCheckingButtonContainer";
 // import C04ListModePicker from "../C04ListModePicker";
 
 const LeftButtons = memo(() => {
 	return (
 		<>
 			<C04CreateButtonContainer />
+			<C04ExpCheckingButtonContainer />
 			{/* <C04ListModePicker
 				name="listMode"
 				placeholder="篩選模式"

@@ -1,14 +1,15 @@
 import React, { forwardRef, memo, useMemo } from "react";
 import ControlledCheckboxEx from "@/shared-components/checkbox/ControlledCheckboxEx";
 import FormFieldLabel from "../form/FormFieldLabel";
+import { useWatch } from "react-hook-form";
 
 const TypoCheckboxEx = memo(
 	forwardRef((props, ref) => {
 		const {
-			children,
+			// children,
 			// Typography
 			label,
-			value,
+			// value,
 			renderText,
 			typoVariant = "body1",
 			typographyProps,
@@ -18,12 +19,17 @@ const TypoCheckboxEx = memo(
 			editing = false,
 			variant = "outlined",
 			size = "small",
+			getLabel,
 			...rest
 		} = props;
 
+		const value = useWatch({
+			name,
+		});
+
 		const momoisedText = useMemo(() => {
-			return children || value;
-		}, [children, value]);
+			return getLabel ? getLabel(value) : value;
+		}, [getLabel, value]);
 
 		if (!editing) {
 			return (

@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
 import SupplierLabel from "../supplier/SupplierLabel";
-import { C04DialogTitleButtonsContainer } from "./C04DialogTitleButtonsContainer";
+import { C04DialogTitleButtonsContainer } from "./ZZC04DialogTitleButtonsContainer";
 
 const C04Dialog = memo(
 	forwardRef(({ data, ...rest }, ref) => {
