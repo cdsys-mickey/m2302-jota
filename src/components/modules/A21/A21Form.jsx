@@ -4,12 +4,12 @@ import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ControlledYesNoCheckbox from "../../../shared-components/controlled/ControlledYesNoCheckbox";
+import ControlledYesNoCheckbox from "@/shared-components/controlled/ControlledYesNoCheckbox";
 import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
 import AuthDeptPicker from "../../AuthDeptPicker";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { A21FormButtonsContainer } from "./buttons/A21FormButtonsContainer";
-import FormBox from "../../../shared-components/form/FormBox";
+import FormBox from "@/shared-components/form/FormBox";
 
 const A21Form = memo((props) => {
 	const { ...rest } = props;

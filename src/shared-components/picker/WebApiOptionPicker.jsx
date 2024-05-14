@@ -46,7 +46,7 @@ const WebApiOptionPicker = memo(
 			...rest
 		} = props;
 
-		// console.log("rendering WebApiOptionPicker");
+		console.log("rendering WebApiOptionPicker");
 
 		const [open, setOpen] = useState(false);
 		const {
