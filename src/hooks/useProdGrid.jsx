@@ -9,6 +9,7 @@ import Objects from "@/shared-modules/sd-objects";
 import { useContext } from "react";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 import { useRef } from "react";
+import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
 
 export const useProdGrid = ({
 	token,
@@ -20,6 +21,7 @@ export const useProdGrid = ({
 	transformForSubmit,
 	transformForGridEdior,
 }) => {
+	const dialogs = useContext(DialogsContext);
 	const { httpGetAsync, httpPutAsync } = useWebApi();
 	const [expanded, toggleExpanded] = useToggle(false);
 	const saveAction = useAction();
@@ -164,6 +166,13 @@ export const useProdGrid = ({
 		});
 	}, [load, state.criteria]);
 
+	const confirmCancelEdit = useCallback(() => {
+		dialogs.confirm({
+			message: "確定要放棄修改?",
+			onConfirm: dsg.rollbackChanges,
+		});
+	}, [dialogs, dsg.rollbackChanges]);
+
 	const onSubmit = useCallback(
 		(data) => {
 			console.log(`onSubmit`, data);
@@ -225,5 +234,6 @@ export const useProdGrid = ({
 		handleSave,
 		toggleEditorLock,
 		loading,
+		confirmCancelEdit,
 	};
 };

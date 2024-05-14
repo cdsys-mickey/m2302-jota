@@ -78,6 +78,8 @@ const DeptPickerComponent = memo((props) => {
 			placeholder="門市"
 			typeToSearchText="請輸入門市編號或名稱進行搜尋"
 			// filterByServer
+			// DSG 專屬屬性
+			dense
 			disablePointerEvents={!focus}
 			hidePopupIndicator={!focus}
 			fadeOutDisabled={false}

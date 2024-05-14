@@ -128,7 +128,7 @@ export const useZA03 = () => {
 			cancelAuthEditing();
 		} else {
 			dialogs.confirm({
-				message: `確定要放棄編輯?`,
+				message: `確定要放棄修改?`,
 				onConfirm: () => {
 					cancelAuthEditing();
 				},

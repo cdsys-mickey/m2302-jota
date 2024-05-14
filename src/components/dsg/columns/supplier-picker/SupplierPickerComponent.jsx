@@ -90,6 +90,11 @@ const SupplierPickerComponent = memo((props) => {
 			// filterByServer
 			// queryRequired
 			// virtualize
+			// DSG 專屬屬性
+			dense
+			disablePointerEvents={!focus}
+			hidePopupIndicator={!focus}
+			fadeOutDisabled={false}
 			{...rest}
 		/>
 	);

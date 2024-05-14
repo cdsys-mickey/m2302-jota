@@ -21,7 +21,8 @@ const A20Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			<FlexToolbar
-				pb={1}
+				// pb={1}
+				pr={1}
 				ref={ref}
 				leftComponents={
 					<>

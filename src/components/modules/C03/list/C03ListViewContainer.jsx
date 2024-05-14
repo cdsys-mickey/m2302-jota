@@ -32,7 +32,8 @@ export const C03ListViewContainer = () => {
 		loadList({
 			params: {
 				ck: 1,
-				rs: 1,
+				rs: 3,
+				// sq: 1,
 			},
 		});
 	}, []);
@@ -46,12 +47,19 @@ export const C03ListViewContainer = () => {
 		return null;
 	}, [listMode?.id]);
 
-	const memoisedRs = useMemo(() => {
-		if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
-			return 1;
-		}
-		return null;
-	}, [listMode?.id]);
+	// const memoisedRs = useMemo(() => {
+	// 	if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
+	// 		return 3;
+	// 	}
+	// 	return null;
+	// }, [listMode?.id]);
+
+	// const memoisedSq = useMemo(() => {
+	// 	if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
+	// 		return 1;
+	// 	}
+	// 	return null;
+	// }, [listMode?.id]);
 
 	useChangeTracking(() => {
 		loadList({
@@ -60,15 +68,11 @@ export const C03ListViewContainer = () => {
 				...(memoisedCk && {
 					ck: memoisedCk,
 				}),
-				...(memoisedRs && {
-					rs: memoisedRs,
-				}),
-				// ...(listMode.id === C03.ListModes.NOT_REVIEWED && {
-				// 	ck: 1,
-				// 	rs: 1,
+				// ...(memoisedRs && {
+				// 	rs: memoisedRs,
 				// }),
-				// ...(listMode.id === C03.ListModes.REVIEWED && {
-				// 	ck: 2,
+				// ...(memoisedSq && {
+				// 	sq: memoisedSq,
 				// }),
 			},
 			supressLoading: true,

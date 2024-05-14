@@ -348,21 +348,33 @@ export const useC01 = () => {
 
 			try {
 				transformAction.start();
-				const { status, error } = await httpPatchAsync({
+				const { status, payload, error } = await httpPatchAsync({
 					url: "v1/purchase/req-to-orders/to-order",
 					bearer: token,
 					params: {
 						id: crud.itemData?.RqtID,
-						ep: data.employee?.UID,
+						ep: data.employee?.CodeID,
 					},
 				});
 				if (status.success) {
-					toast.success("形成採購單成功");
-					transformAction.finish();
-					crud.cancelAction();
-					listLoader.loadList({
-						refresh: true,
-					});
+					console.log("to-order.payload", payload);
+
+					if (!payload.OrdIDs) {
+						toast.warn("沒有形成採購單，請檢查內容後重新執行");
+						transformAction.clear();
+					} else {
+						const ordIds = payload.OrdIDs.split("，");
+						toast.success(
+							`成功形成 ${
+								ordIds.length
+							} 張採購單，單號：${ordIds.join("、")}`
+						);
+						transformAction.finish();
+						crud.cancelAction();
+						listLoader.loadList({
+							refresh: true,
+						});
+					}
 				} else {
 					throw error || new Error("未預期例外");
 				}

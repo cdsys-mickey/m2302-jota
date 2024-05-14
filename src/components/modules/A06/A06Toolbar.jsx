@@ -4,13 +4,14 @@ import { A06FetchResultLabelContainer } from "./A06FetchResultLabelContainer";
 import A06PrintButtonContainer from "./A06PrintButtonContainer";
 import ModuleToolbar from "../ModuleToolbar";
 import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import Colors from "../../../modules/md-colors";
 
 const LeftButtons = memo(() => {
 	return (
-		<ModuleToolbar>
+		<>
 			<A06CreateButtonContainer />
 			<A06PrintButtonContainer />
-		</ModuleToolbar>
+		</>
 	);
 });
 
@@ -20,7 +21,10 @@ const A06Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			<FlexToolbar
-				pb={1}
+				// pb={1}
+				pr={1}
+				alignItems="flex-end"
+				// bgcolor={Colors.TOOLBAR}
 				ref={ref}
 				LeftComponent={LeftButtons}
 				// RightComponent={() => <FetchResultLabel totalElements={365} />}

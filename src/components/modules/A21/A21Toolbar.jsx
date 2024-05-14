@@ -10,6 +10,7 @@ const A21Toolbar = memo(
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
 				<FlexToolbar
+					bgcolor=""
 					ref={ref}
 					RightComponent={A21FormButtonsContainer}
 					{...rest}

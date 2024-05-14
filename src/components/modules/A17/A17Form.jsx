@@ -42,7 +42,7 @@ const A17Form = memo((props) => {
 					</FlexBox>
 				)}
 				{itemDataReady && (
-					<FormBox pt={1}>
+					<FormBox pt={0}>
 						<FormSectionBox py={1}>
 							<Grid
 								container

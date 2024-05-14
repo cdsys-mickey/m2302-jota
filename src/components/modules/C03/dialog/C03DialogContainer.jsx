@@ -58,6 +58,11 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		c03.onEditorSubmitError
 	);
 
+	const handleRefreshGridChangeSubmit = form.handleSubmit(
+		c03.onRefreshGridSubmit({ setValue: form.setValue }),
+		c03.onRefreshGridSubmitError
+	);
+
 	useEffect(() => {
 		if (c03.itemDataReady) {
 			console.log("c03 form reset", c03.itemData);
@@ -73,7 +78,7 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 				// fullScreen
 				responsive
 				fullWidth
-				maxWidth="md"
+				maxWidth="lg"
 				TitleButtonsComponent={C03DialogToolbarContainer}
 				open={c03.itemViewOpen}
 				onClose={handleClose}
@@ -105,7 +110,20 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 						onSubmit={handleSubmit}
 						handleSupplierChange={c03.handleSupplierChange({
 							setValue: form.setValue,
+							handleSubmit: handleRefreshGridChangeSubmit,
 						})}
+						handleSupplierChanged={c03.handleSupplierChanged({
+							setValue: form.setValue,
+							handleSubmit: handleRefreshGridChangeSubmit,
+						})}
+						handleOrdDateChanged={c03.handleOrdDateChanged({
+							setValue: form.setValue,
+							handleSubmit: handleRefreshGridChangeSubmit,
+						})}
+						supplierPickerDisabled={c03.supplierPickerDisabled}
+						supplierNameDisabled={c03.supplierNameDisabled}
+						squaredFlagDisabled={c03.squaredFlagDisabled}
+						sNotQtyDisabled={c03.sNotQtyDisabled}
 					/>
 				</form>
 			</DialogExContainer>

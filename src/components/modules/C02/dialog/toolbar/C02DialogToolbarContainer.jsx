@@ -11,6 +11,10 @@ export const C02DialogToolbarContainer = (props) => {
 	const c02 = useContext(C02Context);
 	const form = useFormContext();
 
+	const canEdit = useMemo(() => {
+		return c02.canUpdate && !c02.itemData?.Checker_N;
+	}, [c02.canUpdate, c02.itemData?.Checker_N]);
+
 	const canReview = useMemo(() => {
 		return c02.canReview && !c02.itemData?.Checker_N;
 	}, [c02.canReview, c02.itemData?.Checker_N]);
@@ -52,7 +56,7 @@ export const C02DialogToolbarContainer = (props) => {
 
 	return (
 		<C02DialogViewToolbar
-			onEdit={c02.canUpdate ? c02.promptUpdating : null}
+			onEdit={canEdit ? c02.promptUpdating : null}
 			onDelete={canDelete ? c02.confirmDelete : null}
 			onReview={canReview ? c02.promptReview : null}
 			onReject={canReject ? c02.promptReject : null}

@@ -5,7 +5,7 @@ import Objects from "../../../../shared-modules/sd-objects";
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		header: "CheckboxCompoent",
-		fields: "rowData,active,focus",
+		fields: "rowData,active,focus,disabled",
 		debug: true,
 	});
 };
@@ -14,9 +14,18 @@ const arePropsEqual = (oldProps, newProps) => {
  * 截自 GitHub 上的原始碼，用於參考
  * https://github.com/nick-keller/react-datasheet-grid/blob/master/src/columns/checkboxColumn.tsx
  */
-const CheckboxComponent2 = memo(
-	({ focus, rowData, setRowData, active, stopEditing, disabled }) => {
-		console.log("rendering CheckboxComponent2");
+const CheckboxComponent = memo(
+	({
+		columnData,
+		focus,
+		rowData,
+		setRowData,
+		active,
+		stopEditing,
+		disabled,
+	}) => {
+		console.log("rendering CheckboxComponent");
+		const { size } = columnData;
 
 		const ref = useRef(null);
 
@@ -34,6 +43,20 @@ const CheckboxComponent2 = memo(
 		return (
 			<input
 				className="dsg-checkbox"
+				style={{
+					...(size === "large" && {
+						height: "24px",
+						width: "24px",
+					}),
+					...(size === "medium" && {
+						height: "18px",
+						width: "18px",
+					}),
+					...(disabled && {
+						pointerEvents: "none",
+					}),
+					cursor: "pointer",
+				}}
 				// Important to prevent any undesired "tabbing"
 				tabIndex={-1}
 				type="checkbox"
@@ -50,5 +73,5 @@ const CheckboxComponent2 = memo(
 	arePropsEqual
 );
 
-CheckboxComponent2.displayName = "CheckboxComponent2";
-export default CheckboxComponent2;
+CheckboxComponent.displayName = "CheckboxComponent";
+export default CheckboxComponent;

@@ -6,6 +6,7 @@ import { A014GridContainer } from "../../components/modules/A014/A014GridContain
 import { ProdGridFormContainer } from "../../components/modules/prod-grid/ProdGridFormContainer";
 import ProdGridToolbar from "../../components/modules/prod-grid/ProdGridToolbar";
 import ContainerEx from "../../shared-components/ContainerEx";
+import { ProdGridToolbarContainer } from "../../components/modules/prod-grid/ProdGridToolbarContainer";
 
 const A014Frame = memo((props) => {
 	const { boxStyles } = props;
@@ -19,7 +20,7 @@ const A014Frame = memo((props) => {
 				</Box>
 			</ContainerEx>
 			<Box>
-				<ProdGridToolbar />
+				<ProdGridToolbarContainer />
 				<A014GridContainer />
 			</Box>
 		</Box>

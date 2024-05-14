@@ -97,7 +97,7 @@ const ZA03Form = memo((props) => {
 											label="帳號"
 											autoFocus
 											fullWidth
-											value={data?.LoginName}
+											// value={data?.LoginName}
 											required
 											rules={{ required: "帳號為必填" }}
 											readOnly={updating}

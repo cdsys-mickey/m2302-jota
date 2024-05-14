@@ -16,14 +16,17 @@ export const C03ProdGridContainer = (props) => {
 		<C03ProdGrid
 			gridRef={c03.setGridRef}
 			readOnly={!c03.editing}
-			data={c03.gridData}
+			data={c03.gridData || []}
 			handleGridChange={c03.handleGridChange({
 				getValues: form.getValues,
+				setValue: form.setValue,
 			})}
 			bearer={auth.token}
-			height={height - 390}
+			height={height - 408}
 			getRowKey={c03.getRowKey}
 			spriceDisabled={c03.spriceDisabled}
+			sqtyDisabled={c03.sqtyDisabled}
+			prodDisabled={c03.prodDisabled}
 			{...rest}
 		/>
 	);

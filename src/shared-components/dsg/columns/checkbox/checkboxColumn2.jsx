@@ -1,4 +1,4 @@
-import CheckboxComponent2 from "./CheckboxComponent2";
+import CheckboxComponent2 from "./CheckboxComponent";
 
 export const checkboxColumn2 = {
 	// component: CheckboxComponentContainer,

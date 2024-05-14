@@ -7,11 +7,15 @@ export const ProdGridCancelEditButtonContainer = (props) => {
 	const { ...rest } = props;
 	const prodGrid = useContext(ProdGridContext);
 
-	if (
-		prodGrid.gridLoading ||
-		!prodGrid.gridData ||
-		prodGrid.gridData?.length === 0
-	) {
+	// if (
+	// 	prodGrid.gridLoading ||
+	// 	!prodGrid.gridData ||
+	// 	prodGrid.gridData?.length === 0
+	// ) {
+	// 	return false;
+	// }
+
+	if (prodGrid.dirtyIds.size === 0) {
 		return false;
 	}
 	return (
@@ -20,7 +24,8 @@ export const ProdGridCancelEditButtonContainer = (props) => {
 			//
 			endIcon={<CloseIcon />}
 			color="primary"
-			onClick={prodGrid.unload}
+			// onClick={prodGrid.unload}
+			onClick={prodGrid.confirmCancelEdit}
 			{...rest}>
 			取消
 		</Button>

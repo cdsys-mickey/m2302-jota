@@ -1,15 +1,15 @@
-import MuiCheckboxColumn from "./MuiCheckboxColumn";
+import MuiCheckboxComponent from "./MuiCheckboxComponent";
 
 const DEFAULT_OPTS = {
-	trueValue: "1",
-	falseValue: "0",
+	trueValue: true,
+	falseValue: false,
 };
 
 export const createMuiCheckboxColumn = (opts = DEFAULT_OPTS) => {
 	const { trueValue, falseValue } = opts;
 
 	return {
-		component: MuiCheckboxColumn,
+		component: MuiCheckboxComponent,
 		columnData: {
 			trueValue,
 			falseValue,

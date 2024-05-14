@@ -5,6 +5,7 @@ import { A08LockSwitchContainer } from "./A08LockSwitchContainer";
 import A08PrintButtonContainer from "./A08PrintButtonContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
 import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import Colors from "../../../modules/md-colors";
 
 const A08Toolbar = memo(
 	forwardRef((props, ref) => {
@@ -12,6 +13,7 @@ const A08Toolbar = memo(
 		return (
 			<ContainerEx maxWidth="sm" alignLeft>
 				<FlexToolbar
+					bgcolor={Colors.TOOLBAR}
 					ref={ref}
 					LeftComponent={A08PrintButtonContainer}
 					RightComponent={A08LockSwitchContainer}

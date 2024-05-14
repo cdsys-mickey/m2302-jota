@@ -2,10 +2,12 @@ import FlexBox from "@/shared-components/FlexBox";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import { forwardRef, memo } from "react";
+import Colors from "../../../modules/md-colors";
 
 const FlexToolbar = memo(
 	forwardRef((props, ref) => {
 		const {
+			alignItems = "center",
 			align = "left",
 			children,
 			leftComponents,
@@ -18,7 +20,8 @@ const FlexToolbar = memo(
 			// Styles
 			boxSx = [],
 			bgcolor,
-			borderRadius,
+			minHeight = 36,
+			borderRadius = 1,
 			...rest
 		} = props;
 
@@ -35,12 +38,16 @@ const FlexToolbar = memo(
 				ref={ref}
 				inline
 				fullWidth
-				alignItems="flex-end"
-				pb={0.5}
+				alignItems={alignItems}
+				p={0.5}
+				my={0.5}
 				{...LeftProps}
 				sx={[
 					(theme) => ({
-						minHeight: "48px",
+						// minHeight: "48px",
+						...(minHeight && {
+							minHeight: minHeight,
+						}),
 						...(bgcolor && {
 							backgroundColor: bgcolor,
 						}),
@@ -106,7 +113,8 @@ FlexToolbar.propTypes = {
 	align: PropTypes.oneOf(["left", "right", "center"]),
 	bgcolor: PropTypes.string,
 	borderRadius: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-	children: PropTypes.element,
+	// children: PropTypes.element,
+	minHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	leftComponents: PropTypes.element,
 	LeftComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
 	RightComponent: PropTypes.oneOfType([

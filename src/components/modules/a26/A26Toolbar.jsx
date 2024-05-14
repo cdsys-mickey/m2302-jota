@@ -5,6 +5,7 @@ import { A26LockRowsSwitchContainer } from "./A26LockRowsSwitchContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
 import A26PrintButtonContainer from "./A26PrintButtonContainer";
 import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import Colors from "../../../modules/md-colors";
 
 const A26Toolbar = memo(
 	forwardRef((props, ref) => {
@@ -13,6 +14,7 @@ const A26Toolbar = memo(
 			<ContainerEx maxWidth="xs" alignLeft>
 				<FlexToolbar
 					ref={ref}
+					bgcolor={Colors.TOOLBAR}
 					LeftComponent={A26PrintButtonContainer}
 					RightComponent={A26LockRowsSwitchContainer}
 					// right={<Switch />}

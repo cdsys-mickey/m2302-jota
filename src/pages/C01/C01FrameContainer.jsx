@@ -16,9 +16,9 @@ import C01TransformToOrderDialogContainer from "../../components/modules/C01/dia
 
 export const C01FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
-	const searchForm = useForm({
+	const form = useForm({
 		defaultValues: {
-			listMode: C01.getOptionById(C01.ListModes.NOT_ORDERED),
+			listMode: C01.getOptionById(C01.ListModes.NOT_ORDERED_INCLUDED),
 		},
 	});
 
@@ -30,7 +30,7 @@ export const C01FrameContainer = () => {
 
 	return (
 		<Box sx={[boxStyles]}>
-			<FormProvider {...searchForm}>
+			<FormProvider {...form}>
 				{/* 標題 */}
 				<FrameBannerContainer>
 					{<C01SearchFieldContainer name="q" />}

@@ -10,10 +10,12 @@ export const ZA03AuthBatchCancelButtonContainer = (props) => {
 	if (za03.authEditingMode !== Users.AUTH_EDITING_MODE.SUBMIT) {
 		return false;
 	}
-
 	return (
-		<ResponsiveButton onClick={za03.confirmCancelAuthEditing} {...rest}>
-			取消批次編輯
+		<ResponsiveButton
+			// disabled={za03.isDirty}
+			onClick={za03.confirmCancelAuthEditing}
+			{...rest}>
+			放棄修改
 		</ResponsiveButton>
 	);
 };

@@ -10,10 +10,10 @@ import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar
 
 const LeftButtons = memo(() => {
 	return (
-		<ModuleToolbar>
+		<>
 			<A01CreateButtonContainer />
 			<A01PrintButtonContainer color="neutral" />
-		</ModuleToolbar>
+		</>
 	);
 });
 
@@ -23,7 +23,9 @@ const A01Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			<FlexToolbar
-				pb={1}
+				// pb={1}
+				alignItems="flex-end"
+				pr={1}
 				ref={ref}
 				LeftComponent={LeftButtons}
 				// RightComponent={() => <FetchResultLabel totalElements={365} />}

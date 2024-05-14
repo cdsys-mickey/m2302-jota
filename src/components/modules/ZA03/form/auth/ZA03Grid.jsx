@@ -10,6 +10,8 @@ import {
 } from "react-datasheet-grid";
 import DSGBox from "@/shared-components/dsg/DSGBox";
 import { checkboxColumn2 } from "@/shared-components/dsg/columns/checkbox/checkboxColumn2";
+import { createMuiCheckboxColumn } from "../../../../../shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
+import { createCheckboxColumn } from "../../../../../shared-components/dsg/columns/checkbox/createCheckboxColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -66,67 +68,123 @@ const ZA03Grid = memo((props) => {
 			},
 
 			{
-				...keyColumn("INQ", checkboxColumn2),
+				...keyColumn(
+					"INQ",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
+				// ...keyColumn("INQ", createMuiCheckboxColumn()),
 				title: "查",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("INS", checkboxColumn2),
+				...keyColumn(
+					"INS",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "增",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("UPD", checkboxColumn2),
+				...keyColumn(
+					"UPD",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "改",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("PRT", checkboxColumn2),
+				...keyColumn(
+					"PRT",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "印",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("DEL", checkboxColumn2),
+				...keyColumn(
+					"DEL",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "刪",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("USI", checkboxColumn2),
+				...keyColumn(
+					"USI",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "停",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("CHK", checkboxColumn2),
+				...keyColumn(
+					"CHK",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "審",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("NCK", checkboxColumn2),
+				...keyColumn(
+					"NCK",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "退",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("RUN", checkboxColumn2),
+				...keyColumn(
+					"RUN",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "執",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("EXP", checkboxColumn2),
+				...keyColumn(
+					"EXP",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "出",
 				minWidth: 30,
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("IMP", checkboxColumn2),
+				...keyColumn(
+					"IMP",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
 				title: "入",
 				minWidth: 30,
 				disabled: readOnly,

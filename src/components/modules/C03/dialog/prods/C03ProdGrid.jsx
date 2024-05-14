@@ -27,7 +27,10 @@ const C03ProdGrid = memo((props) => {
 		handleGridChange,
 		getRowClassName,
 		height = 300,
+		prodDisabled,
 		spriceDisabled,
+		sqtyDisabled,
+		sNotQtyDisabled,
 		rqtQtyDisabled,
 		supplierNameDisabled,
 		...rest
@@ -46,7 +49,7 @@ const C03ProdGrid = memo((props) => {
 				id: "SProdID",
 				title: "商品",
 				grow: 4,
-				disabled: readOnly,
+				disabled: readOnly || prodDisabled,
 			},
 
 			{
@@ -57,7 +60,8 @@ const C03ProdGrid = memo((props) => {
 			},
 			{
 				...keyColumn("SInqFlag", textColumn),
-				minWidth: 30,
+				minWidth: 38,
+				maxWidth: 38,
 				title: "詢",
 				disabled: true,
 			},
@@ -66,14 +70,14 @@ const C03ProdGrid = memo((props) => {
 				title: "單價",
 				minWidth: 100,
 				grow: 1,
-				disabled: spriceDisabled,
+				disabled: readOnly || spriceDisabled,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "數量",
 				minWidth: 90,
 				grow: 1,
-				disabled: readOnly,
+				disabled: readOnly || sqtyDisabled,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
@@ -87,10 +91,10 @@ const C03ProdGrid = memo((props) => {
 				title: "未進量",
 				minWidth: 90,
 				grow: 1,
-				disabled: true,
+				disabled: readOnly || sNotQtyDisabled,
 			},
 		],
-		[readOnly, spriceDisabled]
+		[readOnly, sNotQtyDisabled, spriceDisabled, sqtyDisabled]
 	);
 
 	const createRow = useCallback(
@@ -98,9 +102,15 @@ const C03ProdGrid = memo((props) => {
 			Pkey: nanoid(),
 			prod: null,
 			SOrdQty: null,
+			SQty: "",
+			SPrice: "",
+			SAmt: "",
+			SInqFlag: "",
 			SFactID: "",
 			SFactNa: "",
 			SOrdID: "*",
+			SInQty: "",
+			SNotQty: "",
 		}),
 		[]
 	);
@@ -120,7 +130,7 @@ const C03ProdGrid = memo((props) => {
 			rowKey={getRowKey}
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
-			rowHeight={42}
+			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}
@@ -139,6 +149,8 @@ const C03ProdGrid = memo((props) => {
 C03ProdGrid.propTypes = {
 	getRowKey: PropTypes.func,
 	spriceDisabled: PropTypes.func,
+	sqtyDisabled: PropTypes.func,
+	sNotQtyDisabled: PropTypes.func,
 };
 
 C03ProdGrid.displayName = "C03ProdGrid";

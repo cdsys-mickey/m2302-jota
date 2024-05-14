@@ -45,7 +45,7 @@ const A06Form = memo((props) => {
 									label="客戶代碼"
 									autoFocus
 									fullWidth
-									value={data?.CustID}
+									// value={data?.CustID}
 									required
 									rules={{ required: "客戶代碼為必填" }}
 									readOnly={updating}

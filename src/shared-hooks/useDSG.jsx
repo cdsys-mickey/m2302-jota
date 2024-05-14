@@ -130,12 +130,14 @@ export const useDSG = ({
 
 	const rollbackChanges = useCallback(() => {
 		console.log(`${gridId}.rollbackChanges`, state.prevGridData);
+
 		setState((prev) => ({
 			...prev,
 			gridData: state.prevGridData,
 			gridLoading: false,
 		}));
-	}, [gridId, state.prevGridData]);
+		dirtyIds.clear();
+	}, [dirtyIds, gridId, state.prevGridData]);
 
 	const setGridData = useCallback((newValue) => {
 		// console.log(`${gridId}.setGridData()`, newValue);

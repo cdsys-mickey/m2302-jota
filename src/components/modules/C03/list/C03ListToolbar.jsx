@@ -27,7 +27,8 @@ const C03ListToolbar = memo(
 	forwardRef(({ loading, ...rest }, ref) => {
 		return (
 			<FlexToolbar
-				pb={1}
+				pl={0}
+				alignItems="flex-end"
 				ref={ref}
 				LeftComponent={loading ? LoadingTypography : LeftButtons}
 				RightComponent={C03FetchResultLabelContainer}

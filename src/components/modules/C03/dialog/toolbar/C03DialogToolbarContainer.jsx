@@ -16,8 +16,16 @@ export const C03DialogToolbarContainer = (props) => {
 	}, [c03.canReview, c03.itemData?.Checker_N]);
 
 	const canReject = useMemo(() => {
-		return c03.canReject && !!c03.itemData?.Checker_N;
-	}, [c03.canReject, c03.itemData?.Checker_N]);
+		return (
+			c03.canReject &&
+			!!c03.itemData?.Checker_N &&
+			c03.itemData?.squared?.id !== "*"
+		);
+	}, [c03.canReject, c03.itemData?.Checker_N, c03.itemData?.squared?.id]);
+
+	const canEdit = useMemo(() => {
+		return c03.canUpdate && !c03.itemData?.Checker_N;
+	}, [c03.canUpdate, c03.itemData?.Checker_N]);
 
 	const canDelete = useMemo(() => {
 		return c03.canDelete && !c03.itemData?.Checker_N;
@@ -52,7 +60,7 @@ export const C03DialogToolbarContainer = (props) => {
 
 	return (
 		<C03DialogViewToolbar
-			onEdit={c03.canUpdate ? c03.promptUpdating : null}
+			onEdit={canEdit ? c03.promptUpdating : null}
 			onDelete={canDelete ? c03.confirmDelete : null}
 			onReview={canReview ? c03.promptReview : null}
 			onReject={canReject ? c03.promptReject : null}

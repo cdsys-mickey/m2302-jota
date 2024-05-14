@@ -21,6 +21,7 @@ export const ControlledWebApiOptionPicker = memo(
 		defaultValue = null,
 		sx = [],
 		onChange: onPickerChange,
+		onChanged,
 		...rest
 	}) => {
 		// console.log("rendering ControlledWebApiOptionPicker");
@@ -60,6 +61,9 @@ export const ControlledWebApiOptionPicker = memo(
 									onPickerChange(newValue);
 								}
 								onChange(newValue);
+								if (onChanged) {
+									onChanged(newValue);
+								}
 							}}
 							// disabled={disabled}
 							InputLabelProps={{
@@ -91,4 +95,5 @@ ControlledWebApiOptionPicker.propTypes = {
 	]),
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	onChange: PropTypes.func,
+	onChanged: PropTypes.func,
 };

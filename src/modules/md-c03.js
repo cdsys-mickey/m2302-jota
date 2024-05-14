@@ -1,5 +1,4 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { milliseconds } from "date-fns";
 import Forms from "../shared-modules/sd-forms";
 
 const SquaredState = Object.freeze({
@@ -10,8 +9,8 @@ const SquaredState = Object.freeze({
 
 const squaredOptions = [
 	{ id: SquaredState.NONE, label: "未結清" },
-	{ id: SquaredState.MARK_AS_SQUARED, label: "註記結清" },
-	{ id: SquaredState.SQUARED, label: "已結清" },
+	{ id: SquaredState.MARK_AS_SQUARED, label: "結清" },
+	{ id: SquaredState.SQUARED, label: "進貨已結清" },
 ];
 
 const getSquaredOptionLabel = (option) => {
@@ -22,6 +21,10 @@ const getSquaredOptionLabel = (option) => {
 
 const getSquaredOptionById = (id) => {
 	return squaredOptions.find((o) => o.id === id);
+};
+
+const getSquaredOptionDisabled = (option) => {
+	return option.id === SquaredState.SQUARED;
 };
 
 const ListModes = Object.freeze({
@@ -50,7 +53,7 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
-const transformForGrid = (data) => {
+const transformGridForReading = (data) => {
 	return (
 		data?.map(({ SProdID, ProdData_N, ...rest }) => ({
 			prod: {
@@ -63,9 +66,21 @@ const transformForGrid = (data) => {
 	);
 };
 
+const transformGridForSubmitting = (gridData) => {
+	return gridData
+		.filter((v) => v.prod?.ProdID)
+		.map(({ Pkey, prod, ...rest }, index) => ({
+			Pkey: Pkey?.length < 36 ? "" : Pkey,
+			SProdID: prod?.ProdID,
+			...rest,
+			Seq: index + 1,
+		}));
+};
+
 const transformForReading = (payload) => {
 	const {
 		OrdDate,
+		ArrDate,
 		EmplID,
 		EmplData_N,
 		FactID,
@@ -78,6 +93,7 @@ const transformForReading = (payload) => {
 
 	return {
 		OrdDate: Forms.parseDate(OrdDate),
+		ArrDate: Forms.parseDate(ArrDate),
 		employee: {
 			CodeID: EmplID,
 			CodeData: EmplData_N,
@@ -89,36 +105,38 @@ const transformForReading = (payload) => {
 			  }
 			: null,
 		FactData,
-		squared: CFlag ? getSquaredOptionById(CFlag) : null,
-		prods: transformForGrid(GdsOrd_S),
+		squared: getSquaredOptionById(CFlag),
+		prods: transformGridForReading(GdsOrd_S),
 		remark: Remark.join("\n"),
 		...rest,
 	};
 };
 
 const transformForSubmitting = (payload, gridData) => {
-	const { OrdID, OrdDate, employee, supplier, squared, remark, ...rest } =
-		payload;
-	return {
+	const {
 		OrdID,
 		OrdDate,
-		...rest,
+		ArrDate,
+		employee,
+		supplier,
+		FactData,
+		squared,
+		remark,
+		...rest
+	} = payload;
+	return {
+		OrdID,
+		OrdDate: Forms.formatDate(OrdDate),
+		ArrDate: Forms.formatDate(ArrDate),
 		FactID: supplier?.FactID || "",
+		FactData: FactData,
 		EmplID: employee?.CodeID || "",
 		CFlag: squared?.id || "",
 		Remark: remark?.split("\n") || [],
 		...(gridData && {
-			GdsOrd_S: gridData
-				.filter((v) => v.prod?.ProdID)
-				.map(({ Pkey, prod, SPrice, SQty, SAmt }, index) => ({
-					Pkey: Pkey?.length < 36 ? "" : Pkey,
-					SProdID: prod?.ProdID,
-					SPrice,
-					SQty,
-					SAmt,
-					Seq: index + 1,
-				})),
+			GdsOrd_S: transformGridForSubmitting(gridData),
 		}),
+		...rest,
 	};
 };
 
@@ -126,11 +144,25 @@ const transformAsQueryParams = (data) => {
 	return {};
 };
 
+const getSubtotal = (gridData) => {
+	let result = 0;
+	for (const rowData of gridData) {
+		const rowSubtotal = Number(rowData["SAmt"]);
+		console.log(`rowSubtotal`, rowSubtotal);
+		if (!isNaN(rowSubtotal)) {
+			result += rowSubtotal;
+		}
+	}
+	console.log("subtotal:", result);
+	return result;
+};
+
 const C03 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
-	transformForGrid,
+	transformGridForReading,
+	transformGridForSubmitting,
 	// 覆核註記
 	ListModes,
 	options,
@@ -142,6 +174,8 @@ const C03 = {
 	squaredOptions,
 	getSquaredOptionLabel,
 	getSquaredOptionById,
+	getSubtotal,
+	getSquaredOptionDisabled,
 };
 
 export default C03;

@@ -6,9 +6,9 @@ import { B05FetchResultLabelContainer } from "../B05FetchResultLabelContainer";
 
 const LeftButtons = memo(() => {
 	return (
-		<ModuleToolbar>
+		<>
 			<B05CreateButtonContainer />
-		</ModuleToolbar>
+		</>
 	);
 });
 
@@ -18,7 +18,10 @@ const B05ListToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			<FlexToolbar
-				pb={1}
+				// pb={1}
+				pl={0}
+				pr={1}
+				alignItems="flex-end"
 				ref={ref}
 				LeftComponent={LeftButtons}
 				RightComponent={B05FetchResultLabelContainer}

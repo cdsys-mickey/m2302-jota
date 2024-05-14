@@ -87,14 +87,16 @@ const SupplierIdPickerComponent = memo((props) => {
 			// onClose={handleClose}
 			placeholder="供應商"
 			typeToSearchText="請輸入編號或名稱進行搜尋"
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!focus}
-			fadeOutDisabled={false}
 			// filterByServer
 			// queryRequired
 			virtualize
 			autoSelect
 			blurOnSelect
+			// DSG 專屬屬性
+			dense
+			disablePointerEvents={!focus}
+			hidePopupIndicator={!focus}
+			fadeOutDisabled={false}
 			// disableClearable
 			{...rest}
 		/>

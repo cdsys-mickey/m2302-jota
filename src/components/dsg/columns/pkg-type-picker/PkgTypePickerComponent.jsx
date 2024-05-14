@@ -77,6 +77,8 @@ const PkgTypePickerComponent = memo((props) => {
 			placeholder="包裝單位"
 			typeToSearchText="請輸入編號或名稱進行搜尋"
 			// filterByServer
+			// DSG 專屬屬性
+			dense
 			disablePointerEvents={!focus}
 			hidePopupIndicator={!focus}
 			fadeOutDisabled={false}

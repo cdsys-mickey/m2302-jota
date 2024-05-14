@@ -25,7 +25,10 @@ const B06Toolbar = memo(
 	forwardRef(({ loading, ...rest }, ref) => {
 		return (
 			<FlexToolbar
-				pb={1}
+				// pb={1}
+				alignItems="flex-end"
+				pl={0}
+				pr={1}
 				ref={ref}
 				LeftComponent={loading ? LoadingTypography : LeftButtons}
 				// RightComponent={() => <FetchResultLabel totalElements={365} />}

@@ -13,7 +13,7 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useMemo } from "react";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import Forms from "../../shared-modules/sd-forms";
-import { addDays, isDate } from "date-fns";
+import { addDays, getYear, isDate, isValid } from "date-fns";
 
 export const useC03 = () => {
 	const crud = useContext(CrudContext);
@@ -25,8 +25,9 @@ export const useC03 = () => {
 		token,
 		moduleId: "C03",
 	});
+	const prevDataRef = useRef();
 
-	const [selectedInq, setSelectedInq] = useState();
+	// const [selectedInq, setSelectedInq] = useState();
 
 	const {
 		httpGetAsync,
@@ -47,6 +48,21 @@ export const useC03 = () => {
 		gridId: "prods",
 		keyColumn: "pkey",
 	});
+
+	const getPrevData = useCallback(() => {
+		return prevDataRef.current;
+	}, []);
+
+	const setPrevData = useCallback(
+		(updatingValues) => {
+			prevDataRef.current = {
+				...prevDataRef.current,
+				...updatingValues,
+			};
+			console.log("prevData", getPrevData());
+		},
+		[getPrevData]
+	);
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -107,7 +123,12 @@ export const useC03 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					setSelectedInq(data);
+					setPrevData({
+						supplier: data?.supplier,
+						ordDate: data?.OrdDate,
+					});
+
+					// setSelectedInq(data);
 
 					prodGrid.handleGridDataLoaded(data.prods);
 				} else {
@@ -117,7 +138,7 @@ export const useC03 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, prodGrid, token]
+		[crud, httpGetAsync, prodGrid, setPrevData, token]
 	);
 
 	const handleSelect = useCallback(
@@ -230,20 +251,76 @@ export const useC03 = () => {
 		return `${rowData?.Pkey || rowIndex}`;
 	}, []);
 
+	const prodDisabled = useCallback(({ rowData }) => {
+		return Number(rowData.SInQty) > 0;
+	}, []);
+
 	const spriceDisabled = useCallback(({ rowData }) => {
 		return rowData.SInqFlag === "*";
 	}, []);
 
-	const supplierNameDisabled = useCallback(({ rowData }) => {
-		return !!rowData.SOrdID && rowData.SOrdID !== "*";
+	const sqtyDisabled = useCallback(
+		({ rowData }) => {
+			return (
+				rowData.SInQty > 0 ||
+				(!!itemData?.GinID_N &&
+					rowData.SQty !== rowData.SNotQty &&
+					rowData.SNotQty) > 0
+			);
+		},
+		[itemData?.GinID_N]
+	);
+
+	const sNotQtyDisabled = useCallback(({ rowData }) => {
+		return Number(rowData?.SNotQty) <= 0;
 	}, []);
 
+	const supplierNameDisabled = useMemo(() => {
+		return !!itemData?.GinID_N || !!itemData?.RqtID_N;
+	}, [itemData?.GinID_N, itemData?.RqtID_N]);
+
+	const supplierPickerDisabled = useMemo(() => {
+		return !!itemData?.GinID_N || !!itemData?.RqtID_N;
+	}, [itemData?.GinID_N, itemData?.RqtID_N]);
+
+	const squaredFlagDisabled = useMemo(() => {
+		return itemData?.CFlag === "*";
+	}, [itemData?.CFlag]);
+
 	const handleSupplierChange = useCallback(
-		({ setValue }) =>
+		({ setValue, handleSubmit }) =>
 			(newValue) => {
-				console.log("supplier changed", newValue);
+				console.log("supplier change", newValue);
+				setValue("supplier", newValue);
 				setValue("FactData", newValue?.FactData || "");
 				// 重新計算報價
+				handleSubmit();
+			},
+		[]
+	);
+
+	const handleSupplierChanged = useCallback(
+		({ setValue, handleSubmit }) =>
+			(newValue) => {
+				if (newValue) {
+					console.log("supplier changed", newValue);
+					setValue("FactData", newValue?.FactData || "");
+					// 重新計算報價
+					handleSubmit();
+				}
+			},
+		[]
+	);
+
+	const handleOrdDateChanged = useCallback(
+		({ setValue, handleSubmit }) =>
+			(newValue) => {
+				console.log("ordDate changed", newValue);
+				// setValue("OrdDate", newValue);
+				// 重新計算報價
+				if (isValid(newValue) && getYear(newValue) > 1911) {
+					handleSubmit();
+				}
 			},
 		[]
 	);
@@ -291,7 +368,7 @@ export const useC03 = () => {
 	);
 
 	const handleGridChange = useCallback(
-		({ getValues }) =>
+		({ getValues, setValue }) =>
 			(newValue, operations) => {
 				console.log("handleGridChange", operations);
 				console.log("newValue", newValue);
@@ -302,36 +379,18 @@ export const useC03 = () => {
 						newValue
 							.slice(operation.fromRowIndex, operation.toRowIndex)
 							.forEach(async (rowData, i) => {
-								const { prod, SQty, SPrice } = rowData;
+								const { prod, SQty, SPrice, SInQty, SNotQty } =
+									rowData;
 								const rowIndex = operation.fromRowIndex + i;
 								const {
 									prod: oldProd,
 									SQty: oldSQty,
+									SNotQty: oldSNotQty,
 									SPrice: oldSPrice,
+									SInQty: oldSInQty,
 								} = prodGrid.gridData[rowIndex];
 
 								let processedRowData = { ...rowData };
-								// 單價
-								if (SPrice !== oldSPrice) {
-									processedRowData = {
-										...processedRowData,
-										["SAmt"]:
-											!SPrice || !SQty
-												? ""
-												: SPrice * SQty,
-									};
-								}
-								// 數量
-								if (SQty !== oldSQty) {
-									processedRowData = {
-										...processedRowData,
-										["SNotQty"]: SQty,
-										["SAmt"]:
-											!SPrice || !SQty
-												? ""
-												: SPrice * SQty,
-									};
-								}
 								// 商品
 								if (prod?.ProdID !== oldProd?.ProdID) {
 									console.log(
@@ -350,6 +409,9 @@ export const useC03 = () => {
 											["PackData_N"]:
 												prod?.PackData_N || "",
 											...quoted,
+											["SQty"]: "",
+											["SNotQty"]: "",
+											["SAmt"]: "",
 										};
 									} else {
 										processedRowData = {
@@ -357,34 +419,76 @@ export const useC03 = () => {
 											["PackData_N"]: "",
 											["SInqFlag"]: "",
 											["SPrice"]: "",
+											["SQty"]: "",
+											["SNotQty"]: "",
+											["SAmt"]: "",
 										};
 									}
+								}
+								// 單價
+								if (SPrice !== oldSPrice) {
+									const newSubtotal =
+										!SPrice || !SQty ? "" : SPrice * SQty;
+									processedRowData = {
+										...processedRowData,
+										["SAmt"]: newSubtotal,
+									};
+									console.log("SAmt→", newSubtotal);
+								}
+								// 數量改變
+								if (SQty !== oldSQty) {
+									processedRowData = {
+										...processedRowData,
+										["SAmt"]:
+											!SPrice || !SQty
+												? ""
+												: SPrice * SQty,
+									};
+									// 新增時, 數量會同步到未進量
+									if (crud.creating) {
+										processedRowData = {
+											...processedRowData,
+											["SNotQty"]: SQty,
+										};
+									}
+								}
+
+								// 未進量改變
+								if (SNotQty !== oldSNotQty) {
+									processedRowData = {
+										...processedRowData,
+										["SNotQty"]:
+											SNotQty === 0 ? 0 : SQty - SInQty,
+									};
 								}
 
 								newGridData[rowIndex] = processedRowData;
 							});
 					} else if (operation.type === "DELETE") {
 						// 列舉原資料
-						// checkFailed = prodGrid.gridData
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.some((rowData, i) => {
-						// 		if (prodDisabled({ rowData })) {
-						// 			const rowIndex = operation.fromRowIndex + i;
-						// 			toast.error(
-						// 				`不可刪除第 ${rowIndex + 1} 筆商品`
-						// 			);
-						// 			return true;
-						// 		}
-						// 		return false;
-						// 	});
+						checkFailed = prodGrid.gridData
+							.slice(operation.fromRowIndex, operation.toRowIndex)
+							.some((rowData, i) => {
+								if (prodDisabled({ rowData })) {
+									const rowIndex = operation.fromRowIndex + i;
+									toast.error(
+										`不可刪除第 ${rowIndex + 1} 筆商品`
+									);
+									return true;
+								}
+								return false;
+							});
 					}
 				}
 				console.log("after changed", newGridData);
 				if (!checkFailed) {
 					prodGrid.setGridData(newGridData);
+					const subtotal = C03.getSubtotal(newGridData);
+					setValue("OrdAmt_N", subtotal);
+					// setValue("OrdAmt_N", C03.getSubtotal(newGridData));
 				}
 			},
-		[getQuotedPrice, prodGrid]
+		[crud.creating, getQuotedPrice, prodDisabled, prodGrid]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -437,7 +541,10 @@ export const useC03 = () => {
 				});
 				if (status.success) {
 					reviewAction.clear();
-					crud.cancelAction();
+					// crud.cancelAction();
+					loadItem({
+						refresh: true,
+					});
 					listLoader.loadList({
 						refresh: true,
 					});
@@ -480,14 +587,17 @@ export const useC03 = () => {
 				const { status, error } = await httpPatchAsync({
 					url: `v1/purchase/orders/reviewed`,
 					data: {
-						OrdID: crud.itemData.OrdID,
+						OrdID: crud.itemData?.OrdID,
 						Checker: 1,
 					},
 					bearer: token,
 				});
 				if (status.success) {
 					rejectAction.clear();
-					crud.cancelAction();
+					// crud.cancelAction();
+					loadItem({
+						refresh: true,
+					});
 					listLoader.loadList({
 						refresh: true,
 					});
@@ -501,7 +611,14 @@ export const useC03 = () => {
 				toast.error(Errors.getMessage("解除覆核失敗", err));
 			}
 		},
-		[crud, httpPatchAsync, listLoader, rejectAction, token]
+		[
+			crud.itemData?.OrdID,
+			httpPatchAsync,
+			listLoader,
+			loadItem,
+			rejectAction,
+			token,
+		]
 	);
 
 	const promptReject = useCallback(() => {
@@ -546,11 +663,59 @@ export const useC03 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const onRefreshGridSubmit = useCallback(
+		({ setValue }) =>
+			async (data) => {
+				console.log("onRefreshGridSubmit", data);
+				try {
+					const collected = C03.transformForSubmitting(
+						data,
+						prodGrid.gridData
+					);
+					console.log("collected", collected);
+
+					const { status, payload, error } = await httpPatchAsync({
+						url: "v1/purchase/orders/refresh-grid",
+						bearer: token,
+						data: collected,
+					});
+					console.log("refresh-grid.payload", payload);
+					if (status.success) {
+						const data = C03.transformForReading(payload.data[0]);
+						console.log("data.prods", data.prods);
+						// 置換 grid 部分
+						prodGrid.handleGridDataLoaded(data.prods);
+						toast.info("商品單價已更新");
+						// 置換採購金額
+						setValue("OrdAmt_N", data.OrdAmt_N);
+						setPrevData({
+							supplier: data?.supplier,
+							OrdDate: data?.OrdDate,
+						});
+					} else {
+						throw error || new Error("未預期例外");
+					}
+				} catch (err) {
+					console.error("onRefreshGridSubmit failed", err);
+					toast.error(Errors.getMessage("單價重整失敗", err));
+					// 還原
+					const prevData = getPrevData();
+					setValue("supplier", prevData?.supplier);
+					setValue("OrdDate", prevData?.OrdDate);
+				}
+			},
+		[getPrevData, httpPatchAsync, prodGrid, setPrevData, token]
+	);
+
+	const onRefreshGridSubmitError = useCallback((err) => {
+		console.error("onRefreshGridSubmitError", err);
+	}, []);
+
 	return {
 		...crud,
 		...listLoader,
 		...appModule,
-		selectedInq,
+		// selectedInq,
 		loadItem,
 		handleSelect,
 		onSearchSubmit,
@@ -563,12 +728,19 @@ export const useC03 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		handleSupplierChange,
+		handleSupplierChanged,
+		handleOrdDateChanged,
 		// Grid
 		...prodGrid,
 		handleGridChange,
 		getRowKey,
+		prodDisabled,
 		spriceDisabled,
+		sqtyDisabled,
+		sNotQtyDisabled,
 		supplierNameDisabled,
+		supplierPickerDisabled,
+		squaredFlagDisabled,
 		// 覆核
 		reviewing,
 		handleReview,
@@ -581,5 +753,7 @@ export const useC03 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		onRefreshGridSubmit,
+		onRefreshGridSubmitError,
 	};
 };

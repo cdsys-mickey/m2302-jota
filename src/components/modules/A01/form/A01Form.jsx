@@ -89,7 +89,7 @@ const A01Form = memo((props) => {
 											label="貨品編號"
 											autoFocus
 											fullWidth
-											value={data?.ProdID}
+											// value={data?.ProdID}
 											required
 											rules={{
 												required: "貨品編號為必填",
@@ -117,7 +117,7 @@ const A01Form = memo((props) => {
 											label="條碼"
 											name="Barcode"
 											fullWidth
-											value={data?.Barcode}
+											// value={data?.Barcode}
 											readOnly={store}
 										/>
 									</Grid>
@@ -377,9 +377,9 @@ const A01Form = memo((props) => {
 											label="銷/存"
 											type="number"
 											name="SRate"
-											value={Strings.formatRate(
-												data?.SRate
-											)}
+											// value={Strings.formatRate(
+											// 	data?.SRate
+											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -389,9 +389,9 @@ const A01Form = memo((props) => {
 											label="進/存"
 											type="number"
 											name="IRate"
-											value={Strings.formatRate(
-												data?.IRate
-											)}
+											// value={Strings.formatRate(
+											// 	data?.IRate
+											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -401,9 +401,9 @@ const A01Form = memo((props) => {
 											label="BOM/存"
 											type="number"
 											name="MRate"
-											value={Strings.formatRate(
-												data?.MRate
-											)}
+											// value={Strings.formatRate(
+											// 	data?.MRate
+											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -422,9 +422,9 @@ const A01Form = memo((props) => {
 											label="建議售價"
 											name="Price"
 											type="number"
-											value={Strings.formatPrice(
-												data?.Price
-											)}
+											// value={Strings.formatPrice(
+											// 	data?.Price
+											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -434,9 +434,9 @@ const A01Form = memo((props) => {
 											label="售價A"
 											type="number"
 											name="PriceA"
-											value={Strings.formatPrice(
-												data?.PriceA
-											)}
+											// value={Strings.formatPrice(
+											// 	data?.PriceA
+											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -447,9 +447,9 @@ const A01Form = memo((props) => {
 											label="售價B"
 											type="number"
 											name="PriceB"
-											value={Strings.formatPrice(
-												data?.PriceB
-											)}
+											// value={Strings.formatPrice(
+											// 	data?.PriceB
+											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -459,9 +459,9 @@ const A01Form = memo((props) => {
 											label="售價C"
 											type="number"
 											name="PriceC"
-											value={Strings.formatPrice(
-												data?.PriceC
-											)}
+											// value={Strings.formatPrice(
+											// 	data?.PriceC
+											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -471,9 +471,9 @@ const A01Form = memo((props) => {
 											label="售價D"
 											type="number"
 											name="PriceD"
-											value={Strings.formatPrice(
-												data?.PriceD
-											)}
+											// value={Strings.formatPrice(
+											// 	data?.PriceD
+											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -483,9 +483,9 @@ const A01Form = memo((props) => {
 											label="售價E"
 											type="number"
 											name="PriceE"
-											value={Strings.formatPrice(
-												data?.PriceE
-											)}
+											// value={Strings.formatPrice(
+											// 	data?.PriceE
+											// )}
 											readOnly={store}
 										/>
 									</Grid>

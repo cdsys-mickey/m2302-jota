@@ -2,33 +2,31 @@ import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import C03 from "@/modules/md-c03";
 import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
-import { useCallback } from "react";
 
-const C03SquaredPicker = memo(
+const C03ListModePicker = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 
 		return (
 			<OptionPickerWrapper
 				ref={ref}
-				fullWidth
-				required
-				disableClearable
+				width="13rem"
+				dense
 				label=""
-				options={C03.squaredOptions}
-				getOptionLabel={C03.getSquaredOptionLabel}
+				options={C03.options}
+				getOptionLabel={C03.getOptionLabel}
 				isOptionEqualToValue={C03.isOptionEqualToValue}
-				getOptionDisabled={C03.getSquaredOptionDisabled}
+				// defaultValue={C03.getOptionById(C03.ListModes.NOT_REVIEWED)}
 				{...rest}
 			/>
 		);
 	})
 );
 
-C03SquaredPicker.propTypes = {
+C03ListModePicker.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
 };
 
-C03SquaredPicker.displayName = "C03SquaredPicker";
-export default C03SquaredPicker;
+C03ListModePicker.displayName = "C03ListModePicker";
+export default C03ListModePicker;

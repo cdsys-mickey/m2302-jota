@@ -78,6 +78,7 @@ const ProdCatMPickerComponent = memo((props) => {
 			// typeToSearchText="請輸入商品編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
+			dense
 			disablePointerEvents={!focus}
 			hidePopupIndicator={!focus}
 			fadeOutDisabled={false}

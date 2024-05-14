@@ -2,18 +2,18 @@ import { Checkbox } from "@mui/material";
 import PropTypes from "prop-types";
 import { useRef } from "react";
 import { memo, useCallback, useMemo } from "react";
-import Objects from "../../../../shared-modules/sd-objects";
+import Objects from "@/shared-modules/sd-objects";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		header: "MuiCheckboxColumn",
+		header: "MuiCheckboxComponent",
 		fields: "rowData,active,focus,disabled",
 		debug: true,
 	});
 };
 
-const MuiCheckboxColumn = memo((props) => {
-	console.log("rendering MuiCheckboxColumn");
+const MuiCheckboxComponent = memo((props) => {
+	console.log("rendering MuiCheckboxComponent");
 	const {
 		columnData,
 		// ComponentProps,
@@ -33,7 +33,7 @@ const MuiCheckboxColumn = memo((props) => {
 
 	const { trueValue, falseValue } = columnData;
 
-	// console.log("rendering MuiCheckboxColumn");
+	// console.log("rendering MuiCheckboxComponent");
 
 	const rowDataToChecked = useCallback(
 		(rowData) => {
@@ -99,7 +99,7 @@ const MuiCheckboxColumn = memo((props) => {
 	);
 }, arePropsEqual);
 
-MuiCheckboxColumn.propTypes = {
+MuiCheckboxComponent.propTypes = {
 	// disableRipple: PropTypes.bool,
 	disabled: PropTypes.bool,
 	columnData: PropTypes.object,
@@ -120,5 +120,5 @@ MuiCheckboxColumn.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
-MuiCheckboxColumn.displayName = "MuiCheckboxColumn";
-export default MuiCheckboxColumn;
+MuiCheckboxComponent.displayName = "MuiCheckboxComponent";
+export default MuiCheckboxComponent;

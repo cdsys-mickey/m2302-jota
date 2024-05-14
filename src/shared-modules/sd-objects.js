@@ -6,6 +6,7 @@ const DEFAULT_PROPS_OPTS = {
 	debug: false,
 	debugValues: false,
 	header: "",
+	nullishEquivalent: true, // 是否將 null 與 undefined 視為相同
 };
 
 /**
@@ -144,15 +145,47 @@ const isAnyPropNotEmpty = (obj, columnPattern) => {
 };
 
 const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
-	const { fields, ignoreFields, ignoresEmpty, debug, debugValues, header } =
-		opts;
+	const {
+		fields,
+		ignoreFields,
+		ignoresEmpty,
+		debug,
+		debugValues,
+		header,
+		nullishEquivalent,
+	} = opts;
 	// comapre null
-	if (obj1 === null && obj2 !== null) {
-		return false;
-	} else if (obj1 !== null && obj2 === null) {
-		return false;
-	} else if (obj1 === null && obj2 === null) {
-		return true;
+	if (nullishEquivalent) {
+		if (
+			(obj1 === null || obj1 === undefined) &&
+			(obj2 !== null || obj2 !== undefined)
+		) {
+			return false;
+		} else if (
+			(obj1 !== null || obj1 !== undefined) &&
+			(obj2 === null || obj2 === undefined)
+		) {
+			return false;
+		} else if (
+			(obj1 === null || obj1 === undefined) &&
+			(obj2 === null || obj2 === undefined)
+		) {
+			return true;
+		}
+	} else {
+		if (obj1 === null && obj2 !== null) {
+			return false;
+		} else if (obj1 === undefined && obj2 !== undefined) {
+			return false;
+		} else if (obj1 !== null && obj2 === null) {
+			return false;
+		} else if (obj1 !== undefined && obj2 === undefined) {
+			return false;
+		} else if (obj1 === null && obj2 === null) {
+			return true;
+		} else if (obj1 === undefined && obj2 === undefined) {
+			return true;
+		}
 	}
 
 	// compare key count

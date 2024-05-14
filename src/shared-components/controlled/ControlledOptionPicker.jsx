@@ -13,6 +13,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 		defaultValue = null,
 		sx = [],
 		onChange: onPickerChange,
+		onChanged,
 		...rest
 	} = props;
 
@@ -40,6 +41,9 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 								onPickerChange(newValue);
 							}
 							onChange(newValue);
+							if (onChanged) {
+								onChanged(newValue);
+							}
 						}}
 						// InputLabelProps={{
 						// 	...(labelShrink && { shrink: true }),
@@ -58,6 +62,7 @@ ControlledOptionPicker.propTypes = {
 	name: PropTypes.string,
 	control: PropTypes.object,
 	onChange: PropTypes.func,
+	onChanged: PropTypes.func,
 	rules: PropTypes.object,
 	// labelShrink: PropTypes.bool,
 	defaultValue: PropTypes.oneOfType([

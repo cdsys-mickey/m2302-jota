@@ -4,12 +4,16 @@ import { ProdGridLockRowsSwitchContainer } from "./ProdGridLockRowsSwitchContain
 import { ProdGridSaveButtonContainer } from "./ProdGridSaveButtonContainer";
 import { ProdGridCancelEditButtonContainer } from "./ProdGridCancelEditButtonContainer";
 import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import Colors from "../../../modules/md-colors";
 
 const ProdGridToolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
+
 		return (
 			<FlexToolbar
+				minHeight={38}
+				bgcolor={Colors.TOOLBAR}
 				ref={ref}
 				// RightComponent={ProdGridLockRowsSwitchContainer}
 				leftComponents={<></>}

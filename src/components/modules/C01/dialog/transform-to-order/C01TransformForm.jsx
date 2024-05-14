@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import FlexBox from "../../../../../shared-components/FlexBox";
-import { DeptUserPicker } from "../../../../picker/DeptUserPicker";
+import { EmployeePicker } from "../../../../picker/EmployeePicker";
 
 const C01TransformForm = (props) => {
 	const { ...rest } = props;
@@ -11,7 +11,7 @@ const C01TransformForm = (props) => {
 					<Typography>請選擇採購單的製單人員</Typography>
 				</Grid>
 				<Grid item xs={12}>
-					<DeptUserPicker
+					<EmployeePicker
 						required
 						name="employee"
 						label="製單人員"

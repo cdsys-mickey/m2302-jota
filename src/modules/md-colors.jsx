@@ -24,6 +24,7 @@ const Colors = {
 	SECONDARY: pink[500],
 	HEADING: "#777777",
 	HOVER: "rgba(0,0,0,0.05)",
+	TOOLBAR: "rgb(0,0,0,0.08)",
 	CONTRAST_TEXT: "rgba(255,255,255, 0.9)",
 	HEADER: "rgb(217 213 213)",
 	SUCCESS: green[400],

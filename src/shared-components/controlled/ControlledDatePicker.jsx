@@ -5,6 +5,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { isValid } from "date-fns";
 import { DatePicker, DesktopDatePicker } from "@mui/x-date-pickers";
 import DateFormats from "@/shared-modules/sd-date-formats";
+import PropTypes from "prop-types";
 
 const ControlledDatePicker = ({
 	label = "日期",
@@ -12,18 +13,24 @@ const ControlledDatePicker = ({
 	readOnly,
 	control,
 	defaultValue,
-	onChange: handleDateChange,
+	onChange: onPickerChange,
+	onChanged,
 	mask = "____/__/__",
 	format = DateFormats.DATEFNS_DATE,
 	invalidDateMessage = "日期格式錯誤",
 	required = false,
 	rules,
-	labelShrink,
-	variant = "outlined",
+	// labelShrink,
+	// variant = "outlined",
 	...rest
 }) => {
 	// console.log("rendering ControlledDatePicker");
 	const { setError, clearErrors } = useFormContext();
+
+	if (!name) {
+		return <DatePicker {...rest} />;
+	}
+
 	return (
 		<Controller
 			name={name}
@@ -49,12 +56,18 @@ const ControlledDatePicker = ({
 					onChange={
 						readOnly
 							? null
-							: (newValue, _) => {
+							: (newValue) => {
 									// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
-									onChange(newValue);
-									if (handleDateChange) {
-										handleDateChange(newValue);
+									if (onPickerChange) {
+										onPickerChange(newValue);
 									}
+
+									onChange(newValue);
+
+									if (onChanged) {
+										onChanged(newValue);
+									}
+
 									if (isValid(newValue)) {
 										if (clearErrors) {
 											clearErrors(name);
@@ -82,5 +95,24 @@ const ControlledDatePicker = ({
 		/>
 	);
 };
-
+ControlledDatePicker.propTypes = {
+	label: PropTypes.string,
+	name: PropTypes.string,
+	readOnly: PropTypes.bool,
+	control: PropTypes.object,
+	defaultValue: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+		PropTypes.object,
+	]),
+	onChange: PropTypes.func,
+	onChanged: PropTypes.func,
+	mask: PropTypes.string,
+	format: PropTypes.string,
+	invalidDateMessage: PropTypes.string,
+	required: PropTypes.bool,
+	rules: PropTypes.object,
+	// labelShrink: PropTypes.bool,
+	// variant: PropTypes.string,
+};
 export default ControlledDatePicker;

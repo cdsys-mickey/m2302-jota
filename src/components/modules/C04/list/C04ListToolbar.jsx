@@ -10,13 +10,13 @@ const LeftButtons = memo(() => {
 	return (
 		<>
 			<C04CreateButtonContainer />
-			<C04ListModePicker
+			{/* <C04ListModePicker
 				name="listMode"
 				placeholder="篩選模式"
 				disableClearable
 				autoComplete
 				autoSelect
-			/>
+			/> */}
 		</>
 	);
 });
@@ -27,7 +27,8 @@ const C04ListToolbar = memo(
 	forwardRef(({ loading, ...rest }, ref) => {
 		return (
 			<FlexToolbar
-				pb={1}
+				pl={0}
+				alignItems="flex-end"
 				ref={ref}
 				LeftComponent={loading ? LoadingTypography : LeftButtons}
 				RightComponent={C04FetchResultLabelContainer}

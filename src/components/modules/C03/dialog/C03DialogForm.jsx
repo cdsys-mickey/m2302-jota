@@ -1,30 +1,35 @@
 import { EmployeePicker } from "@/components/picker/EmployeePicker";
-import AlertEx from "@/shared-components/AlertEx";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FormLabelWrapper } from "@/shared-components/label/FormLabelWrapper";
 import { OptionPickerProvider } from "@/shared-components/picker/listbox/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
-import { C03ProdGridContainer } from "./prods/C03ProdGridContainer";
 import FormBox from "../../../../shared-components/form/FormBox";
 import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
-import { SupplierPickerContainer } from "../../../picker/SupplierPickerContainer";
 import { SupplierIdPickerContainer } from "../../../picker/SupplierIdPickerContainer";
 import C03SquaredPicker from "../C03SquaredPicker";
+import { C03ProdGridBottomToolbar } from "./prods/C03ProdGridBottomToolbar";
+import { C03ProdGridContainer } from "./prods/C03ProdGridContainer";
+import { C03DialogCheckerLabel } from "./C03DialogCheckerLabel";
+import { C03DialogRstLabel } from "./C03DialogRstLabel";
+import { FormFieldLabelContainer } from "../../../../shared-components/form/FormFieldLabelContainer";
 
 const C03DialogForm = memo((props) => {
 	const {
+		handleSupplierChanged,
+		handleOrdDateChanged,
 		handleSupplierChange,
 		onSubmit,
 		readError,
 		data,
 		readWorking,
 		itemDataReady,
+		supplierPickerDisabled,
+		supplierNameDisabled,
+		squaredFlagDisabled,
 		creating,
 		editing,
 		updating,
@@ -44,7 +49,7 @@ const C03DialogForm = memo((props) => {
 			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
-					<Grid container columns={24} spacing={editing ? 2 : 1}>
+					<Grid container columns={24} spacing={editing ? 1 : 1}>
 						{!creating && (
 							<Grid item xs={24} sm={24} md={5}>
 								<TextFieldWrapper
@@ -82,6 +87,7 @@ const C03DialogForm = memo((props) => {
 								fullWidth
 								required
 								variant="outlined"
+								onChanged={handleOrdDateChanged}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={6}>
@@ -105,8 +111,12 @@ const C03DialogForm = memo((props) => {
 									rules={{
 										required: "廠商代碼為必填",
 									}}
+									disabled={supplierPickerDisabled}
+									disableClearable
 									virtualize
-									onChange={handleSupplierChange}
+									fadeOutDisabled
+									// onChange={handleSupplierChange}
+									onChanged={handleSupplierChanged}
 								/>
 							</OptionPickerProvider>
 						</Grid>
@@ -121,6 +131,7 @@ const C03DialogForm = memo((props) => {
 								rules={{
 									required: "廠商名稱為必填",
 								}}
+								disabled={supplierNameDisabled}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={6}>
@@ -128,12 +139,36 @@ const C03DialogForm = memo((props) => {
 								typo
 								name="squared"
 								label="結清註記"
+								disabled={squaredFlagDisabled}
 							/>
 						</Grid>
-
-						<Grid item xs={24}>
-							<C03ProdGridContainer />
+						<Grid item xs={24} md={5}>
+							<C03DialogRstLabel
+								name="GinID_N"
+								label="進貨單"
+								flex
+							/>
 						</Grid>
+						<Grid item xs={24} md={5}>
+							<FormFieldLabelContainer
+								name="RqtID_N"
+								label="請購單"
+								flex
+							/>
+						</Grid>
+						<Grid item xs={24} md={14}>
+							<FormFieldLabelContainer
+								name="Checker_N"
+								label="覆核"
+								flex
+							/>
+						</Grid>
+					</Grid>
+					<Box py={1}>
+						<C03ProdGridContainer />
+					</Box>
+					<C03ProdGridBottomToolbar />
+					<Grid container columns={24}>
 						<Grid item xs={24}>
 							<TextFieldWrapper
 								typo
@@ -145,6 +180,14 @@ const C03DialogForm = memo((props) => {
 								fullWidth
 							/>
 						</Grid>
+						{/* <Grid item xs={24} md={10}>
+							<Box pl={1}>
+								<C03DialogCheckerLabel
+									label="審核"
+									name="Checker_N"
+								/>
+							</Box>
+						</Grid> */}
 					</Grid>
 				</FormBox>
 			)}
@@ -154,6 +197,8 @@ const C03DialogForm = memo((props) => {
 
 C03DialogForm.propTypes = {
 	handleSupplierChange: PropTypes.func,
+	handleSupplierChanged: PropTypes.func,
+	handleOrdDateChanged: PropTypes.func,
 	readWorking: PropTypes.bool,
 	readError: PropTypes.object,
 	data: PropTypes.object,
