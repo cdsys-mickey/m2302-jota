@@ -21,7 +21,7 @@ const TypoCheckboxEx = memo(
 			...rest
 		} = props;
 
-		const text = useMemo(() => {
+		const momoisedText = useMemo(() => {
 			return children || value;
 		}, [children, value]);
 
@@ -32,7 +32,7 @@ const TypoCheckboxEx = memo(
 					variant={typoVariant}
 					emptyText={emptyText}
 					{...typographyProps}>
-					{text}
+					{momoisedText}
 				</FormFieldLabel>
 			);
 		}

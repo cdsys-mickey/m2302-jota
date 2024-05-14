@@ -2,7 +2,7 @@ import ControlledCheckboxEx from "./ControlledCheckboxEx";
 import { TypoCheckboxExContainer } from "./TypoCheckboxExContainer";
 import PropTypes from "prop-types";
 
-const CheckboxExWrapper = (props) => {
+const CheckboxWrapper = (props) => {
 	const { typo, ...rest } = props;
 
 	if (typo) {
@@ -12,9 +12,9 @@ const CheckboxExWrapper = (props) => {
 	return <ControlledCheckboxEx {...rest} />;
 };
 
-CheckboxExWrapper.propTypes = {
+CheckboxWrapper.propTypes = {
 	typo: PropTypes.bool,
 };
 
-CheckboxExWrapper.displayName = "CheckboxExWrapper";
-export default CheckboxExWrapper;
+CheckboxWrapper.displayName = "CheckboxWrapper";
+export default CheckboxWrapper;

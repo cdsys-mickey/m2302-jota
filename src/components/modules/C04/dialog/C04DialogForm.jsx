@@ -45,8 +45,8 @@ const C04DialogForm = memo((props) => {
 							<Grid item xs={24} sm={24} md={4}>
 								<TextFieldWrapper
 									typo
-									name="RqtID"
-									label="請購單號"
+									name="GinID"
+									label="進貨單號"
 									autoFocus
 									fullWidth
 									required
@@ -57,8 +57,8 @@ const C04DialogForm = memo((props) => {
 						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
-								name="RqtDate"
-								label="請購日期"
+								name="GinDate"
+								label="進貨日期"
 								autoFocus
 								fullWidth
 								required
@@ -69,11 +69,11 @@ const C04DialogForm = memo((props) => {
 							<OptionPickerProvider>
 								<EmployeePicker
 									typo
-									label="製單人員"
+									label="倉管人員"
 									name="employee"
 									required
 									rules={{
-										required: "製單人員為必填",
+										required: "倉管人員為必填",
 									}}
 									virtualize
 									disableClearable
@@ -82,22 +82,78 @@ const C04DialogForm = memo((props) => {
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
 							<OptionPickerProvider>
-								<ProdLinePickerContainer
+								<SupplierIdPickerContainer
 									typo
-									label="請購單位"
-									name="pdline"
+									label="廠商代碼"
+									name="supplier"
 									required
 									rules={{
-										required: "請購單位為必填",
+										required: "廠商代碼為必填",
 									}}
+									// disabled={supplierPickerDisabled}
+									disableClearable
 									virtualize
+									fadeOutDisabled
+									// onChanged={handleSupplierChanged}
 								/>
 							</OptionPickerProvider>
 						</Grid>
-
-						<Grid item xs={24}>
-							<FormLabelWrapper label="覆核" name="Checker_N" />
+						<Grid item xs={24} sm={24} md={10}>
+							<TextFieldWrapper
+								typo
+								name="FactData"
+								label="廠商名稱"
+								fullWidth
+								// value={data?.FactData}
+								required
+								rules={{
+									required: "廠商名稱為必填",
+								}}
+								// disabled={supplierNameDisabled}
+							/>
 						</Grid>
+						<Grid item xs={24} sm={24} md={4}>
+							<TextFieldWrapper
+								typo
+								name="Uniform"
+								label="統編"
+								fullWidth
+								// value={data?.FactData}
+								required
+								// disabled={supplierNameDisabled}
+							/>
+						</Grid>
+						<Grid item xs={24} sm={24} md={4}>
+							<TextFieldWrapper
+								typo
+								name="InvNo"
+								label="發票號碼"
+								fullWidth
+								required
+							/>
+						</Grid>
+						<Grid item xs={24} sm={24} md={8}>
+							<TextFieldWrapper
+								typo
+								name="FactAddr"
+								label="地址"
+								fullWidth
+								// value={data?.FactData}
+								required
+								// disabled={supplierNameDisabled}
+							/>
+						</Grid>
+						<Grid item xs={4} sm={4} md={2}>
+							<TypoCheckboxExContainer
+								label="稅外加"
+								defaultValue="N"
+								name="TaxType"
+								valueToChecked={YesNo.valueToChecked}
+								checkedToValue={YesNo.checkedToValue}>
+								{YesNo.getOptionLabel(data?.TaxType)}
+							</TypoCheckboxExContainer>
+						</Grid>
+
 						<Grid item xs={24}>
 							<C04ProdGridContainer />
 						</Grid>
