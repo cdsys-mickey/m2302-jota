@@ -275,57 +275,85 @@ export const useC03 = () => {
 		return Number(rowData?.SNotQty) <= 0;
 	}, []);
 
-	const supplierNameDisabled = useMemo(() => {
-		return !!itemData?.GinID_N || !!itemData?.RqtID_N;
-	}, [itemData?.GinID_N, itemData?.RqtID_N]);
-
 	const supplierPickerDisabled = useMemo(() => {
 		return !!itemData?.GinID_N || !!itemData?.RqtID_N;
 	}, [itemData?.GinID_N, itemData?.RqtID_N]);
+
+	// const supplierNameDisabled = useMemo(() => {
+	// 	return supplierPickerDisabled || itemData?.supplier?.FactID !== "*";
+	// }, [itemData?.supplier?.FactID, supplierPickerDisabled]);
+
+	const isSupplierNameDisabled = useCallback(
+		(supplier) => {
+			return supplierPickerDisabled || supplier?.FactID !== "*";
+		},
+		[supplierPickerDisabled]
+	);
 
 	const squaredFlagDisabled = useMemo(() => {
 		return itemData?.CFlag === "*";
 	}, [itemData?.CFlag]);
 
-	const handleSupplierChange = useCallback(
-		({ setValue, handleSubmit }) =>
-			(newValue) => {
-				console.log("supplier change", newValue);
-				setValue("supplier", newValue);
-				setValue("FactData", newValue?.FactData || "");
-				// 重新計算報價
-				handleSubmit();
-			},
-		[]
-	);
-
 	const handleSupplierChanged = useCallback(
-		({ setValue, handleSubmit }) =>
+		({ setValue, handleSubmit, getValues }) =>
 			(newValue) => {
-				if (newValue) {
-					console.log("supplier changed", newValue);
-					setValue("FactData", newValue?.FactData || "");
+				console.log("supplier changed", newValue);
+				setValue("FactData", newValue?.FactData || "");
+
+				const ordDate = getValues("OrdDate");
+				console.log("OrdDate", ordDate);
+				if (
+					newValue &&
+					newValue.FactID !== "*" &&
+					prodGrid.gridData.length > 0 &&
+					isValid(ordDate) &&
+					getYear(ordDate) > 1911
+				) {
 					// 重新計算報價
 					handleSubmit();
+				} else {
+					// 清空「詢價註記」及「單價」
+					prodGrid.handleGridDataLoaded(
+						prodGrid.gridData.map((x) => ({
+							...x,
+							["SInqFlag"]: "",
+							["SPrice"]: null,
+						}))
+					);
 				}
 			},
-		[]
+		[prodGrid]
 	);
 
 	const handleOrdDateChanged = useCallback(
-		({ setValue, handleSubmit }) =>
+		({ handleSubmit, getValues }) =>
 			(newValue) => {
+				const supplier = getValues("supplier");
 				console.log("ordDate changed", newValue);
-				// setValue("OrdDate", newValue);
 				// 重新計算報價
-				if (isValid(newValue) && getYear(newValue) > 1911) {
+				if (
+					supplier &&
+					supplier.FactID !== "*" &&
+					prodGrid.gridData.length > 0 &&
+					isValid(newValue) &&
+					getYear(newValue) > 1911
+				) {
 					handleSubmit();
+				} else {
+					// 清空「詢價註記」及「單價」
+					prodGrid.handleGridDataLoaded(
+						prodGrid.gridData.map((x) => ({
+							...x,
+							["SInqFlag"]: "",
+							["SPrice"]: null,
+						}))
+					);
 				}
 			},
-		[]
+		[prodGrid]
 	);
 
-	const getQuotedPrice = useCallback(
+	const getProdInfo = useCallback(
 		async (prodId, getValues) => {
 			if (!prodId) {
 				toast.error("請先選擇商品");
@@ -346,7 +374,7 @@ export const useC03 = () => {
 
 			try {
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/purchase/orders/quoted",
+					url: "v1/purchase/orders/prod-info",
 					bearer: token,
 					params: {
 						pd: prodId,
@@ -399,7 +427,7 @@ export const useC03 = () => {
 									);
 
 									if (prod?.ProdID) {
-										const quoted = await getQuotedPrice(
+										const prodInfo = await getProdInfo(
 											prod?.ProdID,
 											getValues
 										);
@@ -408,7 +436,7 @@ export const useC03 = () => {
 											...processedRowData,
 											["PackData_N"]:
 												prod?.PackData_N || "",
-											...quoted,
+											...prodInfo,
 											["SQty"]: "",
 											["SNotQty"]: "",
 											["SAmt"]: "",
@@ -488,7 +516,7 @@ export const useC03 = () => {
 					// setValue("OrdAmt_N", C03.getSubtotal(newGridData));
 				}
 			},
-		[crud.creating, getQuotedPrice, prodDisabled, prodGrid]
+		[crud.creating, getProdInfo, prodDisabled, prodGrid]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -534,7 +562,7 @@ export const useC03 = () => {
 				const { status, error } = await httpPatchAsync({
 					url: `v1/purchase/orders/reviewed`,
 					data: {
-						OrdID: crud.itemData.OrdID,
+						OrdID: crud.itemData?.OrdID,
 						Checker: 2,
 					},
 					bearer: token,
@@ -556,7 +584,14 @@ export const useC03 = () => {
 				toast.error(Errors.getMessage("覆核失敗", err));
 			}
 		},
-		[crud, httpPatchAsync, listLoader, reviewAction, token]
+		[
+			crud.itemData?.OrdID,
+			httpPatchAsync,
+			listLoader,
+			loadItem,
+			reviewAction,
+			token,
+		]
 	);
 
 	const promptReview = useCallback(() => {
@@ -685,7 +720,7 @@ export const useC03 = () => {
 						console.log("data.prods", data.prods);
 						// 置換 grid 部分
 						prodGrid.handleGridDataLoaded(data.prods);
-						toast.info("商品單價已更新");
+						// toast.info("商品單價已更新");
 						// 置換採購金額
 						setValue("OrdAmt_N", data.OrdAmt_N);
 						setPrevData({
@@ -727,7 +762,6 @@ export const useC03 = () => {
 		promptCreating,
 		onEditorSubmit,
 		onEditorSubmitError,
-		handleSupplierChange,
 		handleSupplierChanged,
 		handleOrdDateChanged,
 		// Grid
@@ -738,7 +772,8 @@ export const useC03 = () => {
 		spriceDisabled,
 		sqtyDisabled,
 		sNotQtyDisabled,
-		supplierNameDisabled,
+		// supplierNameDisabled,
+		isSupplierNameDisabled,
 		supplierPickerDisabled,
 		squaredFlagDisabled,
 		// 覆核

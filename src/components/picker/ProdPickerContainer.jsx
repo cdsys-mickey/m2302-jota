@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
 import Prods from "@/modules/md-prods";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
@@ -10,7 +9,6 @@ import { useCallback } from "react";
 
 export const ProdPickerContainer = (props) => {
 	const {
-		name,
 		label = "商品",
 		withBomPackageName = false,
 		withSalesPackageName = false,
@@ -55,12 +53,9 @@ export const ProdPickerContainer = (props) => {
 
 	return (
 		<OptionPickerWrapper
-			name={name}
 			label={label}
 			bearer={token}
 			url={`v1/prods`}
-			// filterByServer
-			// queryRequired
 			queryParam="qs"
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
@@ -71,7 +66,6 @@ export const ProdPickerContainer = (props) => {
 };
 
 ProdPickerContainer.propTypes = {
-	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
 	withBomPackageName: PropTypes.bool,

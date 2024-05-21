@@ -1,22 +1,29 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/sd-forms";
 
-const transformForGrid = (data) => {
+const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, ...rest }) => ({
-			prod: {
-				ProdID: SProdID,
-				ProdData: ProdData_N,
-			},
-
-			...rest,
-		})) || []
+		data?.map(({ SProdID, ProdData_N, SExpDate, SOrdID, ...rest }) => {
+			const fields = SOrdID.split("#");
+			const ordId = fields.length > 0 ? fields[0] : "";
+			return {
+				prod: {
+					ProdID: SProdID,
+					ProdData: ProdData_N,
+				},
+				SExpDate: SExpDate ? Forms.parseDate(SExpDate) : "",
+				SOrdID,
+				ordId,
+				...rest,
+			};
+		}) || []
 	);
 };
 
 const transformForReading = (payload) => {
 	const {
 		GinDate,
+		OrdID,
 		EmplID,
 		EmplData_N,
 		FactID,
@@ -38,21 +45,37 @@ const transformForReading = (payload) => {
 					FactData: FactData,
 			  }
 			: null,
+		purchaseOrders:
+			OrdID?.split("|")
+				.filter((s) => !!s)
+				.map((x) => ({
+					["採購單號"]: x,
+				})) || [],
 		FactData,
-		prods: transformForGrid(GdsIn_S),
+		prods: transformGridForReading(GdsIn_S),
 		remark: Remark.join("\n"),
 		...rest,
 	};
 };
 
 const transformForSubmitting = (payload, gridData) => {
-	const { RqtID, RqtDate, employee, pdline, remark } = payload;
+	const {
+		GinID,
+		GinDate,
+		employee,
+		supplier,
+		remark,
+		purchaseOrders,
+		...rest
+	} = payload;
 	return {
-		RqtID,
-		RqtDate,
+		GinID,
+		GinDate: GinDate ? Forms.formatDate(GinDate) : "",
 		EmplID: employee?.CodeID || "",
-		PDlineID: pdline?.CodeID || "",
+		FactID: supplier?.FactID || "",
 		Remark: remark?.split("\n") || [],
+		OrdID: purchaseOrders.map((o) => o["採購單號"]).join(","),
+		...rest,
 		...(gridData && {
 			GdsRqt_S: gridData
 				.filter((v) => v.prod?.ProdID)
@@ -91,7 +114,7 @@ const C04 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
-	transformForGrid,
+	transformGridForReading,
 };
 
 export default C04;

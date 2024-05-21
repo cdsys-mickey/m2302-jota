@@ -58,7 +58,7 @@ const useResetCache = (data) => {
 };
 
 // Adapter for react-window
-const ListboxComponent = forwardRef(function ListboxComponent(props, ref) {
+const ZZListboxComponent = forwardRef(function ZZListboxComponent(props, ref) {
 	const { children, ...other } = props;
 
 	const itemData = [];
@@ -93,7 +93,7 @@ const ListboxComponent = forwardRef(function ListboxComponent(props, ref) {
 
 	return (
 		<div ref={ref}>
-			{/* 把傳遞給 ListboxComponent 的 props 都放置到 Provider 內 */}
+			{/* 把傳遞給 ZZListboxComponent 的 props 都放置到 Provider 內 */}
 			<RWOuterElementContext.Provider value={other}>
 				<VariableSizeList
 					itemData={itemData}
@@ -112,8 +112,8 @@ const ListboxComponent = forwardRef(function ListboxComponent(props, ref) {
 	);
 });
 
-ListboxComponent.propTypes = {
+ZZListboxComponent.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
-export default ListboxComponent;
+export default ZZListboxComponent;

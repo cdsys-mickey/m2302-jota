@@ -286,7 +286,7 @@ const ZA03Grid = memo((props) => {
 				// height={height + (readOnly ? 48 : 0)}
 				// height={height + 48}
 				height={height}
-				rowHeight={42}
+				// rowHeight={42}
 				value={data}
 				onChange={onChange}
 				columns={columns}

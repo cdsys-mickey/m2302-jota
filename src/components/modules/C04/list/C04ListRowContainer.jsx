@@ -16,6 +16,7 @@ export const C04ListRowContainer = (props) => {
 			loading={loading}
 			value={value}
 			onClick={(e) => c04.handleSelect(e, value)}
+			expChecking={c04.expChecking}
 			{...rest}
 		/>
 	);

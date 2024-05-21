@@ -21,22 +21,20 @@ const C03DialogForm = memo((props) => {
 	const {
 		handleSupplierChanged,
 		handleOrdDateChanged,
-		handleSupplierChange,
 		onSubmit,
 		readError,
-		data,
 		readWorking,
 		itemDataReady,
 		supplierPickerDisabled,
+		isSupplierNameDisabled,
 		supplierNameDisabled,
 		squaredFlagDisabled,
 		creating,
 		editing,
-		updating,
-		...rest
+		supplier,
 	} = props;
 	return (
-		<>
+		<form onSubmit={onSubmit}>
 			{readWorking && (
 				<Container maxWidth="xs">
 					<FlexBox justifyContent="center" minHeight="30em">
@@ -51,7 +49,7 @@ const C03DialogForm = memo((props) => {
 				<FormBox pt={1}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
 						{!creating && (
-							<Grid item xs={24} sm={24} md={5}>
+							<Grid item xs={24} sm={24} md={4}>
 								<TextFieldWrapper
 									typo
 									name="OrdID"
@@ -62,7 +60,7 @@ const C03DialogForm = memo((props) => {
 								/>
 							</Grid>
 						)}
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
 								<EmployeePicker
 									typo
@@ -79,7 +77,7 @@ const C03DialogForm = memo((props) => {
 							</OptionPickerProvider>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
 								name="OrdDate"
@@ -90,7 +88,7 @@ const C03DialogForm = memo((props) => {
 								onChanged={handleOrdDateChanged}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
+						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
 								name="ArrDate"
@@ -101,7 +99,7 @@ const C03DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
 								<SupplierIdPickerContainer
 									typo
@@ -120,7 +118,7 @@ const C03DialogForm = memo((props) => {
 								/>
 							</OptionPickerProvider>
 						</Grid>
-						<Grid item xs={24} sm={24} md={10}>
+						<Grid item xs={24} sm={24} md={8}>
 							<TextFieldWrapper
 								typo
 								name="FactData"
@@ -131,10 +129,10 @@ const C03DialogForm = memo((props) => {
 								rules={{
 									required: "廠商名稱為必填",
 								}}
-								disabled={supplierNameDisabled}
+								disabled={isSupplierNameDisabled(supplier)}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
+						<Grid item xs={24} sm={24} md={3}>
 							<C03SquaredPicker
 								typo
 								name="squared"
@@ -142,6 +140,8 @@ const C03DialogForm = memo((props) => {
 								disabled={squaredFlagDisabled}
 							/>
 						</Grid>
+						<FlexBox fullWidth />
+
 						<Grid item xs={24} md={5}>
 							<C03DialogRstLabel
 								name="GinID_N"
@@ -191,7 +191,7 @@ const C03DialogForm = memo((props) => {
 					</Grid>
 				</FormBox>
 			)}
-		</>
+		</form>
 	);
 });
 
@@ -199,10 +199,16 @@ C03DialogForm.propTypes = {
 	handleSupplierChange: PropTypes.func,
 	handleSupplierChanged: PropTypes.func,
 	handleOrdDateChanged: PropTypes.func,
+	onSubmit: PropTypes.func,
 	readWorking: PropTypes.bool,
 	readError: PropTypes.object,
 	data: PropTypes.object,
 	itemDataReady: PropTypes.bool,
+	supplierPickerDisabled: PropTypes.bool,
+	supplierNameDisabled: PropTypes.bool,
+	squaredFlagDisabled: PropTypes.bool,
+	creating: PropTypes.bool,
+	editing: PropTypes.bool,
 };
 
 C03DialogForm.displayName = "C03DialogForm";

@@ -169,7 +169,7 @@ const ZA03Form = memo((props) => {
 											name="depts"
 											label="可登入門市"
 											multiple
-											chip
+											typoChip
 											required
 										/>
 									</Grid>

@@ -5,14 +5,17 @@ import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 
 export const SupplierIdPickerContainer = (props) => {
-	const { label = "供應商", ...rest } = props;
+	const { label = "供應商", withAddr, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
 		return queryString.stringify({
 			tp: 10000,
+			...(withAddr && {
+				ad: 1,
+			}),
 		});
-	}, []);
+	}, [withAddr]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return option?.FactID === value?.FactID;

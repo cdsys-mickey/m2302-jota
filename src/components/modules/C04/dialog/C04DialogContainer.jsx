@@ -3,7 +3,7 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C04DialogForm from "./C04DialogForm";
 import { C04DialogToolbarContainer } from "./toolbar/C04DialogToolbarContainer";
 
@@ -16,6 +16,10 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
+	const supplier = useWatch({
+		name: "supplier",
+		control: form.control,
+	});
 
 	const c04 = useContext(C04Context);
 
@@ -57,6 +61,11 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		c04.onEditorSubmitError
 	);
 
+	const handleRefreshGridSubmit = form.handleSubmit(
+		c04.onRefreshGridSubmit({ setValue: form.setValue }),
+		c04.onRefreshGridSubmitError
+	);
+
 	useEffect(() => {
 		if (c04.itemDataReady) {
 			console.log("c04 form reset", c04.itemData);
@@ -92,18 +101,24 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<form onSubmit={handleSubmit}>
-					<C04DialogForm
-						creating={c04.creating}
-						editing={c04.editing}
-						updating={c04.updating}
-						readWorking={c04.readWorking}
-						data={c04.itemData}
-						itemDataReady={c04.itemDataReady}
-						onSubmit={handleSubmit}
-						handleSupplierChanged={c04.handleSupplierChanged}
-					/>
-				</form>
+				<C04DialogForm
+					onSubmit={handleSubmit}
+					creating={c04.creating}
+					editing={c04.editing}
+					updating={c04.updating}
+					readWorking={c04.readWorking}
+					data={c04.itemData}
+					itemDataReady={c04.itemDataReady}
+					handleSupplierChanged={c04.handleSupplierChanged({
+						setValue: form.setValue,
+					})}
+					handlePurchaseOrdersChanged={
+						c04.handlePurchaseOrdersChanged
+					}
+					supplier={supplier}
+					isSupplierNameDisabled={c04.isSupplierNameDisabled}
+					handleRefreshGridSubmit={handleRefreshGridSubmit}
+				/>
 			</DialogExContainer>
 		</FormProvider>
 	);

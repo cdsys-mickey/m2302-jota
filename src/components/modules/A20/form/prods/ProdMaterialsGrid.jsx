@@ -96,7 +96,7 @@ const ProdMaterialsGrid = memo((props) => {
 			rowKey={rowKey}
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
-			rowHeight={42}
+			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}

@@ -91,7 +91,7 @@ const A04Grid = memo((props) => {
 					ref={setGridRef}
 					rowKey="CodeID"
 					height={gridHeight}
-					rowHeight={42}
+					// rowHeight={42}
 					value={data}
 					onChange={handleChange}
 					columns={columns}

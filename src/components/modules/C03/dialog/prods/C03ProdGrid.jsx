@@ -94,7 +94,7 @@ const C03ProdGrid = memo((props) => {
 				disabled: readOnly || sNotQtyDisabled,
 			},
 		],
-		[readOnly, sNotQtyDisabled, spriceDisabled, sqtyDisabled]
+		[prodDisabled, readOnly, sNotQtyDisabled, spriceDisabled, sqtyDisabled]
 	);
 
 	const createRow = useCallback(
@@ -130,7 +130,7 @@ const C03ProdGrid = memo((props) => {
 			rowKey={getRowKey}
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
-			// rowHeight={42}
+			// // rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}

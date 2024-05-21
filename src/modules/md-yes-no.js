@@ -1,4 +1,4 @@
-import Types from "../shared-modules/sd-types";
+import Types from "@/shared-modules/sd-types";
 
 const getOptionLabel = (value) => {
 	return value === "Y" ? "是" : "否";

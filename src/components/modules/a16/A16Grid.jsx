@@ -115,7 +115,7 @@ const A16Grid = memo((props) => {
 					ref={gridRef}
 					rowKey="DeptID"
 					height={height + (readOnly ? 48 : 0)}
-					rowHeight={42}
+					// rowHeight={42}
 					value={data}
 					onChange={handleChange}
 					columns={columns}

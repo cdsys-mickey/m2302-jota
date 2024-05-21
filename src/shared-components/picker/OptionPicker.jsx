@@ -121,7 +121,8 @@ const PickerBox = styled(Box, {
 			// paddingTop: theme.spacing(2),
 		},
 		"& .MuiInputBase-root .MuiChip-root": {
-			marginTop: "4px",
+			marginTop: "1px",
+			marginBottom: "-1px",
 			marginRight: "2px",
 		},
 		"& ::-webkit-scrollbar": {
@@ -156,7 +157,7 @@ const OptionPicker = memo(
 			dontFilterOptions,
 			stringify,
 			// Autocomplete
-			filterSelectedOptions = true,
+			// filterSelectedOptions,
 			options,
 			sx = [],
 			noOptionsText = "無可用選項",
@@ -169,7 +170,6 @@ const OptionPicker = memo(
 			loading = false,
 			loadingText = "讀取中...",
 			multiple = false,
-			ChipProps,
 			getOptionLabel,
 			getTitle,
 			// 自訂方法
@@ -201,8 +201,7 @@ const OptionPicker = memo(
 			virtualize,
 			// PopperComponent,
 			// ListboxComponent,
-			// disableListWrap = false,
-			renderOption: customRenderOption,
+			renderOption,
 			renderGroup,
 			// renderRow = defaultRenderRow,
 			optionLabelSize,
@@ -213,12 +212,8 @@ const OptionPicker = memo(
 			console.warn("dense 模式下強制不顯示 label");
 		}
 
-		const chipProps = useMemo(() => {
-			return ChipProps || MuiStyles.DEFAULT_MULTIPLE_OPTIONS_CHIP_PROPS;
-		}, [ChipProps]);
-
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
-		const filterOptions = useMemo(() => {
+		const memoisedFilterOptions = useMemo(() => {
 			return dontFilterOptions
 				? noFilterOptions
 				: createFilterOptions({
@@ -307,7 +302,7 @@ const OptionPicker = memo(
 			[name, renderNormalInput]
 		);
 
-		const renderInput = useCallback(
+		const handleRenderInput = useCallback(
 			(textFieldProps) => {
 				if (!dnd) {
 					return renderNormalInput(textFieldProps);
@@ -385,12 +380,16 @@ const OptionPicker = memo(
 		);
 
 		// eslint-disable-next-line no-unused-vars
-		const handleChange = (event, value, reason) => {
-			if (onChange) {
-				// console.log(`parent.onChange`, value);
-				onChange(value);
-			}
-		};
+		const handleChange = useCallback(
+			(event, value, reason) => {
+				if (onChange) {
+					console.log(`[${name}].onChange`, value);
+					console.log(`reason: ${reason}, event: `, event);
+					onChange(value);
+				}
+			},
+			[name, onChange]
+		);
 
 		const memoisedTitle = useMemo(() => {
 			if (getTitle) {
@@ -427,7 +426,7 @@ const OptionPicker = memo(
 		}, []);
 
 		const defaultRenderOption = useCallback(
-			(props2, option) => {
+			({ key, style, ...defaultOptionProps }, option) => {
 				const renderOptionFunc =
 					renderOptionLabel ||
 					getOptionLabel ||
@@ -435,10 +434,10 @@ const OptionPicker = memo(
 
 				return (
 					<li
-						{...props2}
-						key={props2.key}
+						{...defaultOptionProps}
+						key={key}
 						style={{
-							...props2.style,
+							...style,
 							...itemStyle,
 						}}>
 						{renderOptionFunc(option)}
@@ -482,6 +481,21 @@ const OptionPicker = memo(
 			return params;
 		}, []);
 
+		const handleRenderOption = useMemo(() => {
+			return virtualize
+				? renderOptionForVirtualized
+				: renderOption || defaultRenderOption;
+		}, [
+			renderOption,
+			defaultRenderOption,
+			renderOptionForVirtualized,
+			virtualize,
+		]);
+
+		const handleRenderGroup = useMemo(() => {
+			return virtualize ? renderGroupForVirtualized : renderGroup;
+		}, [renderGroup, renderGroupForVirtualized, virtualize]);
+
 		return (
 			<PickerBox
 				// DSG 支援屬性
@@ -501,34 +515,23 @@ const OptionPicker = memo(
 					PaperComponent={({ ...rest }) => (
 						<Paper elevation={8} {...rest} />
 					)}
-					filterSelectedOptions={filterSelectedOptions}
-					ChipProps={chipProps}
+					// filterSelectedOptions={filterSelectedOptions}
 					disabled={disabled}
 					noOptionsText={noOptionsText}
 					clearText={clearText}
 					closeText={closeText}
 					openText={openText}
 					multiple={multiple}
-					renderInput={renderInput}
+					renderInput={handleRenderInput}
 					renderTags={renderTags}
 					loading={loading}
 					loadingText={loadingText}
 					value={value}
-					{...(virtualize && {
-						ListboxComponent: RWListboxComponent,
-						disableListWrap: true,
-					})}
 					options={options}
 					getOptionLabel={getOptionLabel}
-					renderOption={
-						virtualize
-							? renderOptionForVirtualized
-							: customRenderOption || defaultRenderOption
-					}
-					renderGroup={
-						virtualize ? renderGroupForVirtualized : renderGroup
-					}
-					filterOptions={filterOptions}
+					renderOption={handleRenderOption}
+					renderGroup={handleRenderGroup}
+					filterOptions={memoisedFilterOptions}
 					sx={[
 						{
 							...(disabled && {
@@ -558,6 +561,11 @@ const OptionPicker = memo(
 						...(Array.isArray(sx) ? sx : [sx]),
 					]}
 					{...rest}
+					// virtualize = true 時必須強制 override 部分屬性
+					{...(virtualize && {
+						ListboxComponent: RWListboxComponent,
+						disableListWrap: true,
+					})}
 				/>
 			</PickerBox>
 		);

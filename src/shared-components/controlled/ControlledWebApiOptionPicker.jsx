@@ -1,9 +1,8 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import WebApiOptionPicker from "@/shared-components/picker/WebApiOptionPicker";
-import WebApiOptionPickerOld from "@/shared-components/picker/WebApiOptionPickerOld";
-import { Controller } from "react-hook-form";
 import PropTypes from "prop-types";
 import { memo } from "react";
+import { Controller } from "react-hook-form";
 
 /**
  * 由 name 屬性決定是否要使用 Controller 包覆

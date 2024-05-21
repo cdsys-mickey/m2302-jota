@@ -97,6 +97,13 @@ const theme = createTheme({
 				},
 			},
 		},
+		MuiChip: {
+			styleOverrides: {
+				root: {
+					borderRadius: 4,
+				},
+			},
+		},
 	},
 });
 

@@ -11,9 +11,10 @@ import C04UserColumn from "./columns/C04UserColumn";
 import C04FlagColumn from "./columns/C04FlagColumn";
 import C04DeptIdColumn from "./columns/C04DeptIdColumn";
 import C04DeptNameColumn from "./columns/C04DeptNameColumn";
+import C04NumColumn from "./columns/C04NumColumn";
 
 const C04ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, loading, onClick, expChecking } = props;
 
 	return (
 		<div style={style}>
@@ -59,9 +60,24 @@ const C04ListRow = memo((props) => {
 						<C04DeptIdColumn loading={loading}>
 							{value?.廠商代碼}
 						</C04DeptIdColumn>
-						<C04DeptNameColumn loading={loading}>
+						<C04DeptNameColumn
+							loading={loading}
+							expChecking={expChecking}>
 							{value?.廠商名稱}
 						</C04DeptNameColumn>
+						{expChecking && (
+							<>
+								<C04IdColumn loading={loading}>
+									{value?.商品編號}
+								</C04IdColumn>
+								<C04NumColumn loading={loading}>
+									{value?.數量}
+								</C04NumColumn>
+								<C04DateColumn loading={loading}>
+									{value?.有效期限}
+								</C04DateColumn>
+							</>
+						)}
 					</Grid>
 				</Box>
 			</HoverableListItem>
@@ -74,6 +90,7 @@ C04ListRow.propTypes = {
 	style: PropTypes.object,
 	value: PropTypes.object,
 	loading: PropTypes.bool,
+	expChecking: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
 	confirmResetPword: PropTypes.func,

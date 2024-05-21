@@ -109,7 +109,7 @@ const A22Grid = memo((props) => {
 				// rowKey="ProdID"
 				rowKey={getRowKey}
 				height={height + (readOnly ? 48 : 0)}
-				rowHeight={42}
+				// rowHeight={42}
 				value={data}
 				onChange={onChange}
 				columns={columns}

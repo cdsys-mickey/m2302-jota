@@ -1,13 +1,8 @@
 import { Box, styled } from "@mui/material";
 
 const FormBox = styled(Box, {
-	// self props
-	shouldForwardProp: (prop) =>
-		!``
-			.trim()
-			.split(/\s*,\s*/)
-			.includes(prop),
-})(({ theme }) => ({
+	shouldForwardProp: (prop) => ![].includes(prop),
+})(() => ({
 	"& .MuiInputLabel-root": {
 		fontSize: "105%",
 	},

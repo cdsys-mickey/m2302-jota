@@ -84,7 +84,7 @@ const DSGTest = memo(
 					onChange={setData}
 					columns={columns}
 					height={500}
-					rowHeight={42}
+					// rowHeight={42}
 					disableExpandSelection
 				/>
 			</div>

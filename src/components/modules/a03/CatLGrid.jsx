@@ -80,7 +80,7 @@ const CatLGrid = memo((props) => {
 				ref={setGridRef}
 				rowKey="LClas"
 				height={gridHeight}
-				rowHeight={42}
+				// rowHeight={42}
 				value={data}
 				onChange={handleChange}
 				columns={columns}

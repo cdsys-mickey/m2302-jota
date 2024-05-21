@@ -3,6 +3,7 @@ import { useWebApi } from "./useWebApi";
 import { useRef } from "react";
 import queryString from "query-string";
 import { useMemo } from "react";
+import { useChangeTracking } from "./useChangeTracking";
 
 const defaultTriggerServerFilter = (q) => {
 	return !!q;
@@ -20,6 +21,7 @@ const defaultOnError = (err) => {
 export const useWebApiOptions = (opts = {}) => {
 	const {
 		// 辨識用, 與 OptionPicker.name 不同
+		multiple,
 		id = "NO_ID",
 		//http
 		url,
@@ -30,10 +32,12 @@ export const useWebApiOptions = (opts = {}) => {
 		// queryRequired = false,
 		// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
 		querystring,
+		params,
 		headers,
 		filterByServer = false,
-		// onChange,
-
+		onChange,
+		onOpen,
+		onClose,
 		// for OptionPicker
 		typeToSearchText = "請輸入關鍵字進行搜尋",
 		noOptionsText = "無可用選項",
@@ -44,10 +48,28 @@ export const useWebApiOptions = (opts = {}) => {
 		triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
 		getData = defaultGetData,
 		onError = defaultOnError,
+		disableClose,
 	} = opts;
 	const { sendAsync } = useWebApi();
 
 	// const [loading, setLoading] = useState(null);
+	const [open, setOpen] = useState(false);
+
+	const handleOpen = useCallback(() => {
+		if (onOpen) {
+			onOpen();
+		}
+		setOpen(true);
+	}, [onOpen]);
+
+	const handleClose = useCallback(() => {
+		if (onClose) {
+			onClose();
+		}
+		if (!disableClose) {
+			setOpen(false);
+		}
+	}, [disableClose, onClose]);
 
 	const [pickerState, setPickerState] = useState({
 		loading: null,
@@ -57,7 +79,7 @@ export const useWebApiOptions = (opts = {}) => {
 		noOptionsText: filterByServer ? typeToSearchText : noOptionsText,
 	});
 
-	const loadOptionsTriggered = useMemo(() => {
+	const lazyLoadingTriggered = useMemo(() => {
 		return (
 			url &&
 			!filterByServer &&
@@ -68,7 +90,7 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const loadOptions = useCallback(
 		async ({ q, onError: onMethodError } = {}) => {
-			console.log(`${id}.loadOptions(${q})`);
+			console.log(`${id}.loadOptions(${q || ""})`);
 			// 每次找之前回復 noOptionsText
 			// setLoading(true);
 			setPickerState((prev) => ({
@@ -84,6 +106,7 @@ export const useWebApiOptions = (opts = {}) => {
 					data: {
 						...(q && { [queryParam]: q }),
 						...(querystring && queryString.parse(querystring)),
+						...params,
 					},
 					headers,
 					...(bearer && {
@@ -134,6 +157,7 @@ export const useWebApiOptions = (opts = {}) => {
 			url,
 			queryParam,
 			querystring,
+			params,
 			headers,
 			bearer,
 			getData,
@@ -196,42 +220,47 @@ export const useWebApiOptions = (opts = {}) => {
 		]
 	);
 
-	// const handleChange = (value) => {
-	// 	if (
-	// 		queryRequired &&
-	// 		filterByServer &&
-	// 		((!multiple && !value) ||
-	// 			(multiple && Array.isArray(value) && value.length === 0))
-	// 	) {
-	// 		setPickerState((prevState) => ({
-	// 			...prevState,
-	// 			options: [],
-	// 			noOptionsText: typeToSearchText,
-	// 			loading: null,
-	// 		}));
-	// 		// setLoading(null);
-	// 	}
-	// 	if (onChange) {
-	// 		onChange(value);
-	// 	}
-	// };
+	/**
+	 * 來源條件改變, 清空目前值, resetLoading
+	 */
+	useChangeTracking(() => {
+		console.log(
+			`url changed: ${url}${
+				querystring ? " " + querystring : ""
+			}, params:`,
+			params
+		);
+		onChange(multiple ? [] : null);
+		resetLoading();
+	}, [url, querystring, params]);
 
-	// 當網址清空時, 重設 options, 退回到 loading = null 狀態
-	// useEffect(() => {
-	// 	if (!url) {
-	// 		if (onChange) {
-	// 			onChange(null, null);
-	// 		}
-	// 	}
-	// 	// setLoading(null);
-	// 	setPickerState((prev) => ({
-	// 		...prev,
-	// 		loading: null,
-	// 	}));
-	// }, [id, onChange, querystring, url]);
+	/** filterByServer 時, 關閉 popper 則重設 loading 狀態
+	 */
+	useChangeTracking(() => {
+		console.log(
+			"[filterByServer, open] changed:",
+			`${filterByServer}, ${open}`
+		);
+		if (filterByServer && !open) {
+			resetLoading();
+		}
+	}, [filterByServer, open]);
+
+	/**
+	 * 展開時 loadOptions
+	 */
+	useChangeTracking(() => {
+		console.log(
+			"[open, lazyLoadingTriggered] changed:",
+			`${open}, ${lazyLoadingTriggered}`
+		);
+		if (open && lazyLoadingTriggered) {
+			loadOptions();
+		}
+	}, [open, lazyLoadingTriggered]);
 
 	return {
-		loadOptionsTriggered,
+		lazyLoadingTriggered,
 		loadOptions,
 		clearOptions,
 		resetLoading,
@@ -242,5 +271,9 @@ export const useWebApiOptions = (opts = {}) => {
 		// 	onInputChange: handleInputChange,
 		// },
 		onInputChange: handleInputChange,
+		handleOpen,
+		handleClose,
+		open,
+		disableClose,
 	};
 };

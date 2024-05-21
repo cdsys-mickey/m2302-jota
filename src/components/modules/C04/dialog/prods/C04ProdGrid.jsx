@@ -1,4 +1,3 @@
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { memo, useMemo } from "react";
@@ -12,6 +11,8 @@ import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPicke
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
+import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
+import C04ProdGridAddRows from "./C04ProdGridAddRows";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -27,12 +28,16 @@ const C04ProdGrid = memo((props) => {
 		getRowClassName,
 		height = 300,
 		prodDisabled,
-		rqtQtyDisabled,
-		supplierNameDisabled,
-		...rest
 	} = props;
 	const columns = useMemo(
 		() => [
+			{
+				...keyColumn("SOrdFlag_N", textColumn),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "採",
+				disabled: true,
+			},
 			{
 				...keyColumn(
 					"prod",
@@ -47,7 +52,6 @@ const C04ProdGrid = memo((props) => {
 				grow: 4,
 				disabled: readOnly || prodDisabled,
 			},
-
 			{
 				...keyColumn("PackData_N", textColumn),
 				minWidth: 60,
@@ -55,46 +59,47 @@ const C04ProdGrid = memo((props) => {
 				disabled: true,
 			},
 			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "當下庫存",
+				...keyColumn("SInqFlag", textColumn),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "詢",
+				disabled: true,
+			},
+			{
+				...keyColumn("SPrice", createFloatColumn(2)),
+				title: "進貨單價",
 				minWidth: 100,
 				grow: 1,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SQty", createFloatColumn(2)),
+				title: "進貨數量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SAmt", createFloatColumn(2)),
+				title: "進貨金額",
+				minWidth: 90,
+				grow: 1,
 				disabled: true,
 			},
 			{
-				...keyColumn("SRqtQty", createFloatColumn(2)),
-				title: "請購量",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly || rqtQtyDisabled,
-			},
-			{
-				...keyColumn("SOrdQty", createFloatColumn(2)),
-				title: "採購量",
-				minWidth: 90,
-				grow: 1,
-				disabled: true,
-			},
-			{
-				...keyColumn("SFactID", textColumn),
-				title: "供應商",
+				...keyColumn("SExpDate", dateFNSDateColumn),
+				title: "有效日期",
 				grow: 2,
-				disabled: true,
+				disabled: readOnly,
 			},
 			{
-				...keyColumn("SFactNa", textColumn),
-				title: "名稱",
+				...keyColumn("ordId", textColumn),
+				title: "採購單號",
 				grow: 3,
 				disabled: true,
 			},
-			{
-				...keyColumn("SOrdID", textColumn),
-				title: "採購單",
-				minWidth: 120,
-				disabled: true,
-			},
 		],
-		[prodDisabled, readOnly, rqtQtyDisabled]
+		[prodDisabled, readOnly]
 	);
 
 	const createRow = useCallback(
@@ -124,11 +129,11 @@ const C04ProdGrid = memo((props) => {
 			rowKey={getRowKey}
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
-			rowHeight={42}
+			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}
-			addRowsComponent={DSGAddRowsToolbar}
+			addRowsComponent={C04ProdGridAddRows}
 			disableExpandSelection
 			// disableContextMenu
 			contextMenuComponent={ContextMenu}

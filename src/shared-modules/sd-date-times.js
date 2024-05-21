@@ -13,26 +13,10 @@ import {
 import { zhTW } from "date-fns/locale";
 import DateFormats from "./sd-date-formats";
 
-// const MOMENTS_FORMATS = Object.freeze({
-// 	MOMENTS_VERSION: "YYYYMMDD.HHmm",
-// 	MOMENTS_DATE: "YYYY/MM/DD",
-// 	MOMENTS_DATETIME: "YYYY/MM/DD HH:mm",
-// 	MOMENTS_DATETIME_SECONDS: "YYYY/MM/DD HH:mm:ss",
-// 	MOMENTS_TIME: "HH:mm",
-// 	MOMENTS_TIME_SECONDS: "HH:mm:ss",
-// });
-
-// const DATEFNS_FORMATS = Object.freeze({
-// 	DATEFNS_VERSION: "yyyyMMdd.HHmm",
-// 	DATEFNS_DATE: "yyyy/MM/dd",
-// 	DATEFNS_MONTH_AND_DAY: "yyyy/MM/dd",
-// 	DATEFNS_YEAR_AND_MONTH: "yyyyMM",
-// 	DATEFNS_DATETIME: "yyyy/MM/dd HH:mm",
-// 	DATEFNS_DATETIME_SECONDS: "yyyy/MM/dd HH:mm:ss",
-// 	DATEFNS_TIME: "HH:mm",
-// 	DATEFNS_TIME_SECONDS: "HH:mm:ss",
-// 	DATEFNS_MMDD_HHMMSS: "MM/dd HH:mm:ss",
-// });
+const DEFAULT_OPTS = {
+	invalidTimeMessage: "",
+	printError: false,
+};
 
 const getWeekdayNames = () => {
 	const firstDayOfWeek = startOfWeek(new Date());
@@ -88,8 +72,19 @@ const getPattern = (s) => {
 	}
 };
 
-const formatEx = (s, pattern = DateFormats.DATEFNS_DATE) => {
-	return s ? format(s, pattern) : "";
+const formatEx = (
+	s,
+	pattern = DateFormats.DATEFNS_DATE,
+	opts = DEFAULT_OPTS
+) => {
+	try {
+		return s ? format(s, pattern) : opts.invalidTimeMessage || "";
+	} catch (err) {
+		if (opts.printError) {
+			console.error("formatEx error", err);
+		}
+		return opts.invalidTimeMessage || "";
+	}
 };
 
 const parseEx = (s, pattern) => {

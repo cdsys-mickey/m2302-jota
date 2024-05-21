@@ -1,19 +1,17 @@
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import { DynamicDataSheetGrid, keyColumn } from "react-datasheet-grid";
-import Prods from "@/modules/md-prods";
-import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { prodPickerColumn } from "../../../../dsg/columns/prod-picker/prodPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
 });
 
-const ProdComboGrid = memo((props) => {
+const A01ProdComboGrid = memo((props) => {
 	const {
 		lockRows = false,
 		gridRef,
@@ -45,7 +43,7 @@ const ProdComboGrid = memo((props) => {
 					// })
 					prodPickerColumn({
 						name: "prod",
-						triggerDelay: 100,
+						triggerDelay: 300,
 						placeholder: "組合商品",
 						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
 					})
@@ -62,7 +60,7 @@ const ProdComboGrid = memo((props) => {
 				disabled: lockRows,
 			},
 		],
-		[bearer, lockRows]
+		[lockRows]
 	);
 
 	if (!data) {
@@ -87,7 +85,7 @@ const ProdComboGrid = memo((props) => {
 			rowKey="id"
 			lockRows={lockRows}
 			height={height + (lockRows ? 48 : 0)}
-			rowHeight={42}
+			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}
@@ -102,12 +100,12 @@ const ProdComboGrid = memo((props) => {
 	);
 });
 
-ProdComboGrid.propTypes = {
+A01ProdComboGrid.propTypes = {
 	lockRows: PropTypes.bool,
 	gridRef: PropTypes.func,
 	handleGridChange: PropTypes.func,
 	data: PropTypes.array,
 };
 
-ProdComboGrid.displayName = "ProdComboGrid";
-export default ProdComboGrid;
+A01ProdComboGrid.displayName = "ProdComboGrid";
+export default A01ProdComboGrid;

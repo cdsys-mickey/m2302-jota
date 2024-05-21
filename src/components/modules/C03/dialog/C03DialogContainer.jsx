@@ -3,7 +3,12 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useMemo } from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import {
+	FormProvider,
+	useForm,
+	useFormContext,
+	useWatch,
+} from "react-hook-form";
 import C03DialogForm from "./C03DialogForm";
 import { useEffect } from "react";
 import { C03DialogToolbarContainer } from "./toolbar/C03DialogToolbarContainer";
@@ -17,6 +22,10 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
+	const supplier = useWatch({
+		name: "supplier",
+		control: form.control,
+	});
 
 	const c03 = useContext(C03Context);
 
@@ -98,34 +107,30 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<form onSubmit={handleSubmit}>
-					<C03DialogForm
-						creating={c03.creating}
-						editing={c03.editing}
-						updating={c03.updating}
-						readWorking={c03.readWorking}
-						readError={c03.readError}
-						data={c03.itemData}
-						itemDataReady={c03.itemDataReady}
-						onSubmit={handleSubmit}
-						handleSupplierChange={c03.handleSupplierChange({
-							setValue: form.setValue,
-							handleSubmit: handleRefreshGridChangeSubmit,
-						})}
-						handleSupplierChanged={c03.handleSupplierChanged({
-							setValue: form.setValue,
-							handleSubmit: handleRefreshGridChangeSubmit,
-						})}
-						handleOrdDateChanged={c03.handleOrdDateChanged({
-							setValue: form.setValue,
-							handleSubmit: handleRefreshGridChangeSubmit,
-						})}
-						supplierPickerDisabled={c03.supplierPickerDisabled}
-						supplierNameDisabled={c03.supplierNameDisabled}
-						squaredFlagDisabled={c03.squaredFlagDisabled}
-						sNotQtyDisabled={c03.sNotQtyDisabled}
-					/>
-				</form>
+				<C03DialogForm
+					onSubmit={handleSubmit}
+					creating={c03.creating}
+					editing={c03.editing}
+					updating={c03.updating}
+					readWorking={c03.readWorking}
+					readError={c03.readError}
+					data={c03.itemData}
+					itemDataReady={c03.itemDataReady}
+					handleSupplierChanged={c03.handleSupplierChanged({
+						setValue: form.setValue,
+						getValues: form.getValues,
+						handleSubmit: handleRefreshGridChangeSubmit,
+					})}
+					handleOrdDateChanged={c03.handleOrdDateChanged({
+						getValues: form.getValues,
+						handleSubmit: handleRefreshGridChangeSubmit,
+					})}
+					supplierPickerDisabled={c03.supplierPickerDisabled}
+					squaredFlagDisabled={c03.squaredFlagDisabled}
+					sNotQtyDisabled={c03.sNotQtyDisabled}
+					supplier={supplier}
+					isSupplierNameDisabled={c03.isSupplierNameDisabled}
+				/>
 			</DialogExContainer>
 		</FormProvider>
 	);

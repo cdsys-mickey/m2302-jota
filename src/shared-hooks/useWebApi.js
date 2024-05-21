@@ -76,16 +76,16 @@ export const useWebApi = (props) => {
 			if (!apiUrl) {
 				throw `url cannot be null`;
 			}
-			if (params) {
-				console.log(
-					`${method.toUpperCase()} ${apiUrl}, params:`,
-					params
-				);
-			} else {
-				console.log(`${method.toUpperCase()} ${apiUrl}`);
-			}
 
-			if (data) {
+			const isUseDataAsParams =
+				method.toLowerCase() === "get" && !params && !!data;
+			const activeParams = isUseDataAsParams ? data : params;
+
+			console.log(
+				`${method.toUpperCase()} ${apiUrl}, params:`,
+				activeParams
+			);
+			if (!isUseDataAsParams) {
 				console.log("data:", data);
 			}
 
@@ -95,11 +95,13 @@ export const useWebApi = (props) => {
 				for (const prop in data) {
 					formData.append(prop, data[prop]);
 				}
+				console.log("formData", formData);
 			}
 
 			const isUseRawData = method !== "get" && mode !== "form";
-			const useDataAsParams = method === "get" && !params && !!data;
-			// console.log(`useDataAsParams`, useDataAsParams);
+
+			// const hasParams = isUseDataAsParams || params;
+			// console.log(`isUseDataAsParams`, isUseDataAsParams);
 			try {
 				const axiosResponse = await axios({
 					url: apiUrl,
@@ -110,12 +112,13 @@ export const useWebApi = (props) => {
 					...(mode === "form" && {
 						data: formData,
 					}),
-					...(useDataAsParams && {
-						params: data,
-					}),
-					...(params && {
-						params: params,
-					}),
+					params: activeParams,
+					// ...(hasParams && {
+					// 	params: isUseDataAsParams ? data : params,
+					// }),
+					// ...(isUseDataAsParams && {
+					// 	params: data,
+					// }),
 					headers: {
 						// 先列舉 props 內的 headers
 						...DEFAULT_HEADERS,

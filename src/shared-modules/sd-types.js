@@ -1,19 +1,24 @@
-const isString = (s) => {
-	return typeof s === "string" || s instanceof String;
+const isString = (v) => {
+	return typeof v === "string" || v instanceof String;
 };
 
-const isObject = (o) => {
-	return typeof s === "object";
+const isObject = (v) => {
+	return typeof v === "object";
 };
 
 const isNumber = (v) => {
 	return typeof v === "number";
 };
 
+const isArray = (v) => {
+	return Array.isArray(v);
+};
+
 const Types = {
 	isString,
 	isObject,
 	isNumber,
+	isArray,
 };
 
 export default Types;

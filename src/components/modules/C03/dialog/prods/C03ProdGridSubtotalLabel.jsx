@@ -16,7 +16,7 @@ export const C03ProdGridSubtotalLabel = (props) => {
 			<Typography color="primary" {...rest}>
 				{subtotal}
 			</Typography>
-			<FlexBox minWidth="80px" />
+			{/* <FlexBox minWidth="80px" /> */}
 		</FlexBox>
 	);
 };

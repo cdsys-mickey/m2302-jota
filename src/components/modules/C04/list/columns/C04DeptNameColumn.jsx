@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MuiStyles from "../../../../../shared-modules/sd-mui-styles";
 
 const C04DeptNameColumn = (props) => {
-	const { loading, children, ...rest } = props;
+	const { loading, children, expChecking, ...rest } = props;
 	const isLoading = loading && !children;
 	return (
 		<Grid
@@ -12,7 +12,7 @@ const C04DeptNameColumn = (props) => {
 			xs={9}
 			sm={9}
 			md={9}
-			lg={4}
+			lg={expChecking ? 4 : 6}
 			sx={[MuiStyles.ELLIPSIS]}
 			{...rest}>
 			{isLoading ? <Skeleton /> : children || ""}
@@ -22,6 +22,7 @@ const C04DeptNameColumn = (props) => {
 
 C04DeptNameColumn.propTypes = {
 	loading: PropTypes.bool,
+	expChecking: PropTypes.bool,
 	children: PropTypes.oneOfType([PropTypes.node]),
 };
 

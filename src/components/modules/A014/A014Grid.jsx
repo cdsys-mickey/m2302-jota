@@ -163,7 +163,7 @@ const A014Grid = memo((props) => {
 			rowKey="ProdID"
 			// height={height + (readOnly ? 48 : 0)}
 			height={height + 48}
-			rowHeight={42}
+			// rowHeight={42}
 			value={data}
 			onChange={onChange}
 			columns={columns}

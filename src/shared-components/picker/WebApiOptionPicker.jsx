@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 
-import { forwardRef, memo, useCallback, useEffect, useState } from "react";
-import OptionPicker from "./OptionPicker";
 import { useWebApiOptions } from "@/shared-hooks/useWebApiOptions";
+import { forwardRef, memo, useCallback, useState } from "react";
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
-import Objects from "../../shared-modules/sd-objects";
+import OptionPicker from "./OptionPicker";
 
 // const arePropsEqual = (oldProps, newProps) => {
 // 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -16,9 +15,11 @@ import Objects from "../../shared-modules/sd-objects";
 const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
+			multiple,
 			name, // → for debug purpose
 			onOpen,
 			onClose,
+			onChange,
 			disabled = false,
 			// for hook
 			//http
@@ -29,9 +30,9 @@ const WebApiOptionPicker = memo(
 			// queryRequired = false,
 			// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
 			querystring,
+			params,
 			headers,
 			filterByServer = false,
-			onChange,
 			bearer,
 			// for OptionPicker
 			typeToSearchText,
@@ -43,13 +44,14 @@ const WebApiOptionPicker = memo(
 			triggerServerFilter, // 是否驅動遠端搜尋
 			getData,
 			onError,
+			disableClose,
 			...rest
 		} = props;
 
 		console.log("rendering WebApiOptionPicker");
 
-		const [open, setOpen] = useState(false);
 		const {
+			open,
 			// pickerState,
 			loading,
 			options,
@@ -57,9 +59,13 @@ const WebApiOptionPicker = memo(
 			// pickerCallback,
 			onInputChange,
 			resetLoading,
-			loadOptionsTriggered,
+			lazyLoadingTriggered,
 			loadOptions,
+			handleOpen,
+			handleClose,
 		} = useWebApiOptions({
+			disableClose,
+			multiple,
 			url,
 			method,
 			bearer,
@@ -67,6 +73,7 @@ const WebApiOptionPicker = memo(
 			queryParam,
 			// queryRequired,
 			querystring,
+			params,
 			headers,
 			filterByServer,
 
@@ -79,21 +86,10 @@ const WebApiOptionPicker = memo(
 			triggerServerFilter,
 			getData,
 			onError,
+			onOpen,
+			onClose,
+			onChange,
 		});
-
-		const handleOpen = useCallback(() => {
-			if (onOpen) {
-				onOpen();
-			}
-			setOpen(true);
-		}, [onOpen]);
-
-		const handleClose = useCallback(() => {
-			if (onClose) {
-				onClose();
-			}
-			setOpen(false);
-		}, [onClose]);
 
 		// 當 filterByServer 時, 不會對輸出做任何篩選
 
@@ -120,43 +116,62 @@ const WebApiOptionPicker = memo(
 		// 	}
 		// }, [url, onChange, resetLoading, name]);
 
-		useChangeTracking(() => {
-			console.log(`url changed: ${url}`);
-			onChange(null);
-			resetLoading();
-		}, [url]);
-
 		// useEffect(() => {
 		// 	console.log("effect1");
 		// 	if (filterByServer && !open) {
 		// 		resetLoading();
 		// 	}
 		// }, [filterByServer, open, resetLoading]);
-		useChangeTracking(() => {
-			console.log("filterByServer+open changed");
-			if (filterByServer && !open) {
-				resetLoading();
-			}
-		}, [filterByServer, open]);
 
-		/**
-		 * 空白展開時 fetch options
-		 */
 		// useEffect(() => {
 		// 	console.log("effect2");
-		// 	if (open && loadOptionsTriggered) {
+		// 	if (open && lazyLoadingTriggered) {
 		// 		loadOptions();
 		// 	}
-		// }, [loadOptions, open, loadOptionsTriggered]);
-		useChangeTracking(() => {
-			console.log("open+loadOptionsTriggered changed");
-			if (open && loadOptionsTriggered) {
-				loadOptions();
-			}
-		}, [open, loadOptionsTriggered]);
+		// }, [loadOptions, open, lazyLoadingTriggered]);
+
+		// /**
+		//  * 來源條件改變, 清空目前值, resetLoading
+		//  */
+		// useChangeTracking(() => {
+		// 	console.log(
+		// 		`url changed: ${url}${
+		// 			querystring ? " " + querystring : ""
+		// 		}, params:`,
+		// 		params
+		// 	);
+		// 	onChange(multiple ? [] : null);
+		// 	resetLoading();
+		// }, [url, querystring, params]);
+
+		// /** filterByServer 時, 關閉 popper 則重設 loading 狀態
+		//  */
+		// useChangeTracking(() => {
+		// 	console.log(
+		// 		"[filterByServer, open] changed:",
+		// 		`${filterByServer}, ${open}`
+		// 	);
+		// 	if (filterByServer && !open) {
+		// 		resetLoading();
+		// 	}
+		// }, [filterByServer, open]);
+
+		// /**
+		//  * 展開時 loadOptions
+		//  */
+		// useChangeTracking(() => {
+		// 	console.log(
+		// 		"[open, lazyLoadingTriggered] changed:",
+		// 		`${open}, ${lazyLoadingTriggered}`
+		// 	);
+		// 	if (open && lazyLoadingTriggered) {
+		// 		loadOptions();
+		// 	}
+		// }, [open, lazyLoadingTriggered]);
 
 		return (
 			<OptionPicker
+				multiple={multiple}
 				ref={ref}
 				name={name}
 				// loading={loading}
@@ -196,6 +211,7 @@ WebApiOptionPicker.propTypes = {
 	// queryRequired: PropTypes.bool,
 	querystring: PropTypes.string,
 	headers: PropTypes.object,
+	params: PropTypes.object,
 	typeToSearchText: PropTypes.string,
 	noOptionsText: PropTypes.string,
 	fetchErrorText: PropTypes.string,
@@ -206,6 +222,8 @@ WebApiOptionPicker.propTypes = {
 	onError: PropTypes.func,
 	onClose: PropTypes.func,
 	onOpen: PropTypes.func,
+	multiple: PropTypes.bool,
+	disableClose: PropTypes.bool,
 };
 
 export default WebApiOptionPicker;

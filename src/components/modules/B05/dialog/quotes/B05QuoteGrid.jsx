@@ -82,7 +82,7 @@ const B05QuoteGrid = memo((props) => {
 			rowKey={getRowKey}
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
-			rowHeight={42}
+			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}

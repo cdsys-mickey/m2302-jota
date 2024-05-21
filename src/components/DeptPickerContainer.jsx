@@ -36,7 +36,7 @@ const DeptPickerContainer = memo((props) => {
 });
 
 DeptPickerContainer.propTypes = {
-	uid: PropTypes.string.isRequired,
+	uid: PropTypes.string,
 	scope: PropTypes.number,
 };
 

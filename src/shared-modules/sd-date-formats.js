@@ -10,6 +10,7 @@ const MOMENTS_FORMATS = Object.freeze({
 const DATEFNS_FORMATS = Object.freeze({
 	DATEFNS_VERSION: "yyMMdd.HHmm",
 	DATEFNS_DATE: "yyyy/MM/dd",
+	DATEFNS_DATE_DASH: "yyyy-MM-dd",
 	DATEFNS_MONTH_AND_DAY: "yyyy/MM/dd",
 	DATEFNS_YEAR_AND_MONTH: "yyyyMM",
 	DATEFNS_DATETIME: "yyyy/MM/dd HH:mm",

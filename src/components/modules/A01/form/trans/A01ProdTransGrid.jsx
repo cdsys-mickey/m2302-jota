@@ -13,7 +13,7 @@ const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
 });
 
-const ProdTransGrid = memo((props) => {
+const A01ProdTransGrid = memo((props) => {
 	const {
 		readOnly = false,
 		gridRef,
@@ -77,7 +77,7 @@ const ProdTransGrid = memo((props) => {
 			rowKey="id"
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
-			rowHeight={42}
+			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
 			columns={columns}
@@ -92,11 +92,11 @@ const ProdTransGrid = memo((props) => {
 	);
 });
 
-ProdTransGrid.propTypes = {
+A01ProdTransGrid.propTypes = {
 	readOnly: PropTypes.bool,
 	gridRef: PropTypes.func,
 	data: PropTypes.array,
 };
 
-ProdTransGrid.displayName = "ProdTransGrid";
-export default ProdTransGrid;
+A01ProdTransGrid.displayName = "ProdTransGrid";
+export default A01ProdTransGrid;

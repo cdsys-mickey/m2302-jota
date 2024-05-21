@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { C04ListRowContainer } from "./C04ListRowContainer";
+import Forms from "../../../../shared-modules/sd-forms";
 
 export const C04ListViewContainer = () => {
 	const c04 = useContext(C04Context);
@@ -29,10 +30,18 @@ export const C04ListViewContainer = () => {
 
 	useChangeTracking(() => {
 		loadList({
-			params: { q: debouncedQ },
+			params: {
+				q: debouncedQ,
+				...(c04.expProd && {
+					pd: c04.expProd?.ProdID,
+				}),
+				...(c04.expDate && {
+					ed: Forms.formatDate(c04.expDate),
+				}),
+			},
 			supressLoading: true,
 		});
-	}, [debouncedQ]);
+	}, [debouncedQ, c04.expProd, c04.expDate]);
 
 	return (
 		<ListViewBox withHeader>

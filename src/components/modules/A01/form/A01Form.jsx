@@ -25,7 +25,7 @@ import CheckboxExWrapper from "../../../../shared-components/checkbox/CheckboxEx
 import FormBox from "../../../../shared-components/form/FormBox";
 import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
-import { ProdComboGridContainer } from "./combo/ProdComboGridContainer";
+import { A01ProdComboGridContainer } from "./combo/A01ProdComboGridContainer";
 import TypoCmsTypePickerContainer from "./fields/TypoCmsTypePickerContainer";
 import { TypoCounterPickerContainer } from "./fields/TypoCounterPickerContainer";
 import { TypoPkgTypePickerContainer } from "./fields/TypoPkgTypePickerContainer";
@@ -34,7 +34,7 @@ import { TypoProdCatMPickerContainer } from "./fields/TypoProdCatMPickerContaine
 import { TypoProdCatSPickerContainer } from "./fields/TypoProdCatSPickerContainer";
 import { TypoProdTypeAPickerContainer } from "./fields/TypoProdTypeAPickerContainer";
 import { TypoProdTypeBPickerContainer } from "./fields/TypoProdTypeBPickerContainer";
-import { ProdTransGridContainer } from "./trans/ProdTransGridContainer";
+import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
 
 const A01Form = memo((props) => {
 	const {
@@ -493,10 +493,10 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 						</TabPanel>
 						<TabPanel value={A01.Tabs.TRANS}>
-							<ProdTransGridContainer store={store} />
+							<A01ProdTransGridContainer store={store} />
 						</TabPanel>
 						<TabPanel value={A01.Tabs.COMBO}>
-							<ProdComboGridContainer store={store} />
+							<A01ProdComboGridContainer store={store} />
 						</TabPanel>
 						{/* <Grid container columns={24} spacing={1}>
 							<Grid item xs={24} sm={24} md={24} lg={11} xl={11}>

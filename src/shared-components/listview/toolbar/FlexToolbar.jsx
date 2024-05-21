@@ -72,9 +72,10 @@ const FlexToolbar = memo(
 					flex={1}
 					sx={[
 						(theme) => ({
-							"& button, & label, & .button": {
-								marginRight: theme.spacing(0.5),
-							},
+							"& button:not(.no-margin-right), & label:not(.no-margin-right), & .toolbar-button:not(.no-margin-right)":
+								{
+									marginRight: theme.spacing(0.5),
+								},
 						}),
 					]}
 					{...LeftProps}>

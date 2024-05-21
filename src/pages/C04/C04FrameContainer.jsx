@@ -10,6 +10,8 @@ import { C04ListViewContainer } from "@/components/modules/C04/list/C04ListViewC
 import { C04SearchFieldContainer } from "@/components/modules/C04/C04SearchFieldContainer";
 import Styles from "@/modules/md-styles";
 import C04 from "../../modules/md-c04";
+import { C04ExpDialogContainer } from "../../components/modules/C04/exp-dialog/C04ExpDialogContainer";
+import { C04ListHeaderContainer } from "../../components/modules/C04/list/C04ListHeaderContainer";
 
 export const C04FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -33,12 +35,13 @@ export const C04FrameContainer = () => {
 				<C04ListToolbar />
 
 				{/* 列表 */}
-				<C04ListHeader />
+				<C04ListHeaderContainer />
 				<C04ListViewContainer />
 			</FormProvider>
 
 			{/* 對話框 */}
 			<C04DialogContainer />
+			<C04ExpDialogContainer />
 		</Box>
 	);
 };

@@ -5,13 +5,16 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FormBox from "@/shared-components/form/FormBox";
 import { OptionPickerProvider } from "@/shared-components/picker/listbox/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
-import TaxTypeCheckbox from "../../../checkbox/TaxTypeCheckbox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import TaxTypeCheckbox from "@/components/checkbox/TaxTypeCheckbox";
 import { C04ProdGridContainer } from "./prods/C04ProdGridContainer";
-import { SupplierIdPickerContainer } from "../../../picker/SupplierIdPickerContainer";
+import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
+import { SupplierPurchaseOrderPicker } from "@/components/purchase-order-picker/SupplierPurchaseOrderPicker";
+import FlexGrid from "../../../../shared-components/FlexGrid";
+import { C04ProdGridBottomToolbar } from "./prods/C04ProdGridBottomToolbar";
 
 const C04DialogForm = memo((props) => {
 	const {
@@ -24,10 +27,13 @@ const C04DialogForm = memo((props) => {
 		editing,
 		updating,
 		handleSupplierChanged,
+		handleRefreshGridSubmit,
+		isSupplierNameDisabled,
+		supplier,
 		...rest
 	} = props;
 	return (
-		<>
+		<form onSubmit={onSubmit}>
 			{readWorking && (
 				<Container maxWidth="xs">
 					<FlexBox justifyContent="center" minHeight="30em">
@@ -40,20 +46,18 @@ const C04DialogForm = memo((props) => {
 			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
-					<Grid container columns={24} spacing={editing ? 2 : 1}>
-						{!creating && (
-							<Grid item xs={24} sm={24} md={4}>
-								<TextFieldWrapper
-									typo
-									name="GinID"
-									label="進貨單號"
-									autoFocus
-									fullWidth
-									required
-									readOnly={true}
-								/>
-							</Grid>
-						)}
+					<Grid container columns={24} spacing={editing ? 1 : 1}>
+						<Grid item xs={24} sm={24} md={3}>
+							<TextFieldWrapper
+								typo
+								name="GinID"
+								label="進貨單號"
+								autoFocus
+								fullWidth
+								// required
+								readOnly={true}
+							/>
+						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
@@ -95,11 +99,12 @@ const C04DialogForm = memo((props) => {
 									disableClearable
 									virtualize
 									fadeOutDisabled
+									withAddr
 									onChanged={handleSupplierChanged}
 								/>
 							</OptionPickerProvider>
 						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
+						<Grid item xs={24} sm={24} md={5}>
 							<TextFieldWrapper
 								typo
 								name="FactData"
@@ -110,11 +115,11 @@ const C04DialogForm = memo((props) => {
 								rules={{
 									required: "廠商名稱為必填",
 								}}
-								// disabled={supplierNameDisabled}
+								disabled={isSupplierNameDisabled(supplier)}
 							/>
 						</Grid>
-						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={4}>
+
+						<Grid item xs={24} sm={24} md={3}>
 							<TextFieldWrapper
 								typo
 								name="Uniform"
@@ -125,25 +130,19 @@ const C04DialogForm = memo((props) => {
 								// disabled={supplierNameDisabled}
 							/>
 						</Grid>
-
-						<Grid item xs={24} sm={24} md={8}>
-							<TextFieldWrapper
-								typo
-								name="FactAddr"
-								label="地址"
-								fullWidth
-								// value={data?.FactData}
-								required
-								// disabled={supplierNameDisabled}
-							/>
-						</Grid>
-						<Grid item xs={4} sm={4} md={4}>
+						<FlexBox fullWidth />
+						<FlexGrid
+							item
+							xs={4}
+							sm={4}
+							md={3}
+							justifyContent="center">
 							<TaxTypeCheckbox
 								typo
 								label="稅外加"
 								name="TaxType"
 							/>
-						</Grid>
+						</FlexGrid>
 						<Grid item xs={24} sm={24} md={4}>
 							<TextFieldWrapper
 								typo
@@ -153,10 +152,38 @@ const C04DialogForm = memo((props) => {
 								required
 							/>
 						</Grid>
-
-						<Grid item xs={24}>
-							<C04ProdGridContainer />
+						<Grid item xs={24} sm={24} md={7}>
+							<TextFieldWrapper
+								typo
+								name="FactAddr"
+								label="地址"
+								fullWidth
+								// value={data?.FactData}
+								// required
+								// disabled={supplierNameDisabled}
+							/>
 						</Grid>
+
+						<Grid item xs={24} sm={24} md={10}>
+							{/* <OptionPickerProvider> */}
+							<SupplierPurchaseOrderPicker
+								typo
+								multiple
+								name="purchaseOrders"
+								label="採購單"
+								// virtualize
+								fadeOutDisabled
+								onChanged={handleRefreshGridSubmit}
+							/>
+							{/* </OptionPickerProvider> */}
+						</Grid>
+					</Grid>
+
+					<Box py={1}>
+						<C04ProdGridContainer />
+					</Box>
+					<C04ProdGridBottomToolbar />
+					<Grid container columns={24}>
 						<Grid item xs={24}>
 							<TextFieldWrapper
 								typo
@@ -171,7 +198,7 @@ const C04DialogForm = memo((props) => {
 					</Grid>
 				</FormBox>
 			)}
-		</>
+		</form>
 	);
 });
 
