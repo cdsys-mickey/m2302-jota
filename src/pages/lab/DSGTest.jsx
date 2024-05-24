@@ -8,7 +8,7 @@ import {
 	textColumn,
 } from "react-datasheet-grid";
 import { createFloatColumn } from "../../shared-components/dsg/columns/float/createFloatColumn";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/OptionPickerColumn";
+import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 
 const DSGTest = memo(
 	forwardRef((props, ref) => {
@@ -55,7 +55,7 @@ const DSGTest = memo(
 				{
 					...keyColumn(
 						"abc",
-						optionPickerColumn({
+						createOptionPickerColumn({
 							options: ["A", "B", "C"],
 						})
 					),

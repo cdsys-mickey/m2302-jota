@@ -44,7 +44,7 @@ export const SupplierIdPickerContainer = (props) => {
 			url="v1/purchase/suppliers"
 			// filterByServer
 			// queryRequired
-			optionLabelSize="small"
+
 			virtualize
 			queryParam="q"
 			querystring={querystring}

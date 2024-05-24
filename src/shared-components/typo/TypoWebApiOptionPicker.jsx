@@ -45,7 +45,7 @@ const TypoWebApiOptionPicker = memo(
 				if (!Types.isArray(value)) {
 					console.warn("value is not an array!", value);
 				}
-				console.log("multiple value", value);
+				// console.log("multiple value", value);
 				return value
 					?.map((i) => (renderOption ? renderOption(i) : i))
 					.join(", ");

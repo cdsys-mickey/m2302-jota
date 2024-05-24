@@ -113,6 +113,7 @@ const C03DialogForm = memo((props) => {
 									disableClearable
 									virtualize
 									fadeOutDisabled
+									optionLabelSize="small"
 									// onChange={handleSupplierChange}
 									onChanged={handleSupplierChanged}
 								/>

@@ -6,10 +6,10 @@ import {
 	keyColumn,
 	textColumn,
 } from "react-datasheet-grid";
-import Depts from "../../modules/md-depts";
-import Prods from "../../modules/md-prods";
-import { createWebApiOptionPickerColumn } from "../../shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
-import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/optionPickerColumn";
+import Depts from "@/modules/md-depts";
+import Prods from "@/modules/md-prods";
+import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
+import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 
 const DSGTest2 = memo(
 	forwardRef((props, ref) => {
@@ -42,7 +42,7 @@ const DSGTest2 = memo(
 				{
 					...keyColumn(
 						"abc",
-						optionPickerColumn({
+						createOptionPickerColumn({
 							options: ["A", "B", "C"],
 						})
 					),

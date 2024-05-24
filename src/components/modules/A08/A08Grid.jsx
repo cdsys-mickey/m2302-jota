@@ -10,9 +10,8 @@ import {
 } from "react-datasheet-grid";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import ContainerEx from "@/shared-components/ContainerEx";
-import AreaTypePickerColumn from "@/components/dsg/columns/AreaTypePickerColumn";
 import AreaTypes from "@/modules/md-area-types";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -47,8 +46,7 @@ const A08Grid = memo((props) => {
 			{
 				...keyColumn(
 					"areaType",
-					// optionPickerColumn(AreaTypePickerColumn)
-					optionPickerColumn({
+					createOptionPickerColumn({
 						name: "areaType",
 						options: AreaTypes.options,
 						getOptionLabel: AreaTypes.getOptionLabel,

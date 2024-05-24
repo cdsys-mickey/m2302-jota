@@ -8,7 +8,8 @@ const ControlledCheckboxEx = ({
 	readOnly,
 	control,
 	rules,
-	onChange: handleCheckChange,
+	onChange: onCheckChange,
+	onChanged,
 	checkedToValue,
 	valueToChecked,
 	defaultValue = null,
@@ -27,14 +28,16 @@ const ControlledCheckboxEx = ({
 						readOnly
 							? null
 							: (e) => {
-									if (handleCheckChange) {
-										handleCheckChange(e);
+									if (onCheckChange) {
+										onCheckChange(e);
 									}
-									onChange(
-										checkedToValue
-											? checkedToValue(e.target.checked)
-											: e.target.checked
-									);
+									const newValue = checkedToValue
+										? checkedToValue(e.target.checked)
+										: e.target.checked;
+									onChange(newValue);
+									if (onChanged) {
+										onChanged(newValue);
+									}
 							  }
 					}
 					inputProps={readOnly ? { readOnly: true } : null}
@@ -57,6 +60,7 @@ ControlledCheckboxEx.propTypes = {
 	control: PropTypes.object,
 	rules: PropTypes.object,
 	onChange: PropTypes.func,
+	onChanged: PropTypes.func,
 	checkedToValue: PropTypes.func,
 	valueToChecked: PropTypes.func,
 	defaultValue: PropTypes.oneOfType([

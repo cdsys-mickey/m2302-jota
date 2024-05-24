@@ -67,7 +67,7 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		c03.onEditorSubmitError
 	);
 
-	const handleRefreshGridChangeSubmit = form.handleSubmit(
+	const handleRefreshGridSubmit = form.handleSubmit(
 		c03.onRefreshGridSubmit({ setValue: form.setValue }),
 		c03.onRefreshGridSubmitError
 	);
@@ -119,11 +119,11 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 					handleSupplierChanged={c03.handleSupplierChanged({
 						setValue: form.setValue,
 						getValues: form.getValues,
-						handleSubmit: handleRefreshGridChangeSubmit,
+						handleSubmit: handleRefreshGridSubmit,
 					})}
 					handleOrdDateChanged={c03.handleOrdDateChanged({
 						getValues: form.getValues,
-						handleSubmit: handleRefreshGridChangeSubmit,
+						handleSubmit: handleRefreshGridSubmit,
 					})}
 					supplierPickerDisabled={c03.supplierPickerDisabled}
 					squaredFlagDisabled={c03.squaredFlagDisabled}

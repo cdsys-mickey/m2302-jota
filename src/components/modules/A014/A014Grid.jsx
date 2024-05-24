@@ -1,10 +1,8 @@
 import ProdTypeAPickerColumn from "@/components/dsg/columns/ProdTypeAPickerColumn";
 import ProdTypeBPickerColumn from "@/components/dsg/columns/ProdTypeBPickerColumn";
-import TaxTypePickerColumn from "@/components/dsg/columns/TaxTypePickerColumn";
+import TaxTypePickerComponent from "@/components/dsg/columns/TaxTypePickerComponent";
 import NoDataBox from "@/shared-components/NoDataBox";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import {
@@ -12,14 +10,10 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import ProdCatLPickerColumn from "../../dsg/columns/ProdCatLPickerColumn";
 import ProdCatMPickerColumn from "../../dsg/columns/ProdCatMPickerColumn";
 import ProdCatSPickerColumn from "../../dsg/columns/ProdCatSPickerColumn";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import { prodCatLPickerColumn } from "../../dsg/columns/prod-cat-picker/prodCatLPickerColumn";
-import { prodCatMPickerColumn } from "../../dsg/columns/prod-cat-picker/prodCatMPickerColumn";
-import { prodCatSPickerColumn } from "../../dsg/columns/prod-cat-picker/prodCatSPickerColumn";
-import { createOptionPickerColumn } from "../../../shared-components/dsg/columns/createOptionPickerColumn";
 
 const A014Grid = memo((props) => {
 	const {
@@ -84,7 +78,7 @@ const A014Grid = memo((props) => {
 
 			// OLD STYLES
 			{
-				...createOptionPickerColumn((props) => (
+				...optionPickerColumn((props) => (
 					<ProdCatLPickerColumn name="catL" {...props} />
 				)),
 				title: "大分類",
@@ -93,7 +87,7 @@ const A014Grid = memo((props) => {
 			},
 
 			{
-				...createOptionPickerColumn((props) => (
+				...optionPickerColumn((props) => (
 					<ProdCatMPickerColumn name="catM" {...props} />
 				)),
 				title: "中分類",
@@ -102,7 +96,7 @@ const A014Grid = memo((props) => {
 			},
 
 			{
-				...createOptionPickerColumn((props) => (
+				...optionPickerColumn((props) => (
 					<ProdCatSPickerColumn name="catS" {...props} />
 				)),
 				title: "小分類",
@@ -112,7 +106,7 @@ const A014Grid = memo((props) => {
 			{
 				...keyColumn(
 					"typeA",
-					createOptionPickerColumn(ProdTypeAPickerColumn)
+					optionPickerColumn(ProdTypeAPickerColumn)
 				),
 				title: "品別",
 				grow: 2,
@@ -121,7 +115,7 @@ const A014Grid = memo((props) => {
 			{
 				...keyColumn(
 					"typeB",
-					createOptionPickerColumn(ProdTypeBPickerColumn)
+					optionPickerColumn(ProdTypeBPickerColumn)
 				),
 				title: "品類",
 				grow: 2,
@@ -130,7 +124,7 @@ const A014Grid = memo((props) => {
 			{
 				...keyColumn(
 					"taxType",
-					createOptionPickerColumn(TaxTypePickerColumn)
+					optionPickerColumn(TaxTypePickerComponent)
 				),
 				title: "稅別",
 				grow: 2,

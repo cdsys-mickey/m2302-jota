@@ -9,7 +9,7 @@ import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import FormBox from "../../../../shared-components/form/FormBox";
 import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
-import TaxTypeCheckbox from "../../../checkbox/TaxTypeCheckbox";
+import TaxExcludedCheckbox from "../../../checkbox/TaxExcludedCheckbox";
 import TypoBankPickerContainer from "../../../fields/TypoBankPickerContainer";
 import TypoAreaPickerContainer from "./fields/TypoAreaPickerContainer";
 import TypoChannelPickerContainer from "./fields/TypoChannelPickerContainer";
@@ -79,7 +79,7 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={4} sm={4} md={2}>
-								<TaxTypeCheckbox
+								<TaxExcludedCheckbox
 									label="稅外加"
 									name="TaxType"
 								/>

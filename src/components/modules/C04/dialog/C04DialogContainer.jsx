@@ -61,9 +61,14 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		c04.onEditorSubmitError
 	);
 
-	const handleRefreshGridSubmit = form.handleSubmit(
-		c04.onRefreshGridSubmit({ setValue: form.setValue }),
-		c04.onRefreshGridSubmitError
+	// const handleRefreshGridSubmit = form.handleSubmit(
+	// 	c04.onRefreshGridSubmit2,
+	// 	c04.onRefreshGridSubmitError
+	// );
+
+	const handleLoadProdsSubmit = form.handleSubmit(
+		c04.onLoadProdsSubmit({ setValue: form.setValue }),
+		c04.onLoadProdsSubmitError
 	);
 
 	useEffect(() => {
@@ -111,13 +116,29 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					itemDataReady={c04.itemDataReady}
 					handleSupplierChanged={c04.handleSupplierChanged({
 						setValue: form.setValue,
+						getValues: form.getValues,
+						// handleRefreshGridSubmit,
 					})}
-					handlePurchaseOrdersChanged={
-						c04.handlePurchaseOrdersChanged
-					}
+					handleRstDateChanged={c04.handleRstDateChanged({
+						setValue: form.setValue,
+						getValues: form.getValues,
+						// handleRefreshGridSubmit,
+					})}
+					handlePurchaseOrdersChanged={c04.handlePurchaseOrdersChanged(
+						{
+							setValue: form.setValue,
+							getValues: form.getValues,
+						}
+					)}
 					supplier={supplier}
 					isSupplierNameDisabled={c04.isSupplierNameDisabled}
-					handleRefreshGridSubmit={handleRefreshGridSubmit}
+					purchaseOrdersDisabled={c04.purchaseOrdersDisabled}
+					// handleRefreshGridSubmit={handleRefreshGridSubmit}
+					handleLoadProdsSubmit={handleLoadProdsSubmit}
+					handleTaxTypeChanged={c04.handleTaxTypeChanged({
+						setValue: form.setValue,
+						getValues: form.getValues,
+					})}
 				/>
 			</DialogExContainer>
 		</FormProvider>

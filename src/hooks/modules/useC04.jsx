@@ -54,12 +54,39 @@ export const useC04 = () => {
 		keyColumn: "pkey",
 	});
 
+	const refreshAmt = useCallback(({ setValue, data, reset = false }) => {
+		if (reset) {
+			setValue("InAmt", "");
+			setValue("TaxAmt", "");
+			setValue("TotAmt", "");
+			setValue("PaidAmt", "");
+			setValue("PayAmt", "");
+		} else {
+			setValue("InAmt", data.InAmt);
+			setValue("TaxAmt", data.TaxAmt);
+			setValue("TotAmt", data.TotAmt);
+			setValue("PaidAmt", data.PaidAmt);
+			setValue("PayAmt", data.PayAmt);
+		}
+	}, []);
+
+	// const refreshSAmt = useCallback(
+	// 	({ processedRowData, SPrice, SQty, stype }) => {
+	// 		return {
+	// 			...processedRowData,
+	// 			["SAmt"]: !SPrice || !SQty ? "" : stype?.id ? 0 : SPrice * SQty,
+	// 		};
+	// 	},
+	// 	[]
+	// );
+
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
 			prods: [],
 			purchaseOrders: [],
 			GinDate: new Date(),
+			taxExcluded: false,
 		};
 		crud.promptCreating({ data });
 		prodGrid.handleGridDataLoaded(data.prods);
@@ -140,15 +167,76 @@ export const useC04 = () => {
 		return supplier?.FactID !== "*";
 	}, []);
 
-	const handleSupplierChanged = useCallback(
-		({ setValue }) =>
-			(newValue) => {
-				setValue("FactData", newValue.FactData);
-				setValue("Uniform", newValue.Uniform);
-				setValue("TaxType", newValue.TaxType);
-				setValue("FactAddr", newValue.CompAddr);
+	const refreshGrid = useCallback(
+		async ({ formData, setValue }) => {
+			const rstDate = formData.GinDate;
+			const supplier = formData.supplier;
+
+			if (supplier && rstDate && prodGrid.gridData.length > 0) {
+				const collected = C04.transformForSubmitting(
+					formData,
+					prodGrid.gridData
+				);
+				console.log("collected", collected);
+				const { status, payload, error } = await httpPatchAsync({
+					url: "v1/purchase/restocks/refresh-grid",
+					bearer: token,
+					data: collected,
+				});
+				console.log("refresh-grid.payload", payload);
+				if (status.success) {
+					const data = C04.transformForReading(payload.data[0]);
+					console.log("refresh-grid.data", data);
+					prodGrid.handleGridDataLoaded(data.prods);
+					refreshAmt({ setValue, data });
+					toast.info("商品單價已更新");
+				}
+			} else {
+				//clear
+				console.warn("clear values?");
+			}
+		},
+		[httpPatchAsync, prodGrid, refreshAmt, token]
+	);
+
+	const refreshAction = useAction();
+
+	const handleRefresh = useCallback(
+		({ setValue, getValues }) =>
+			async () => {
+				try {
+					refreshAction.start();
+					refreshGrid({ formData: getValues(), setValue });
+				} finally {
+					refreshAction.clear();
+				}
 			},
-		[]
+		[refreshGrid]
+	);
+
+	const handleSupplierChanged = useCallback(
+		({ setValue, getValues }) =>
+			(newValue) => {
+				console.log("handleSupplierChanged", newValue);
+				setValue("FactData", newValue?.FactData || "");
+				setValue("Uniform", newValue?.Uniform || "");
+				setValue("TaxType", newValue?.TaxType === "Y" ? "Y" : "");
+				setValue("FactAddr", newValue?.CompAddr || "");
+
+				refreshGrid({ formData: getValues(), setValue });
+
+				//refresh-grid
+			},
+		[refreshGrid]
+	);
+
+	const handleRstDateChanged = useCallback(
+		({ setValue, getValues }) =>
+			(newValue) => {
+				console.log("rstDate changed", newValue);
+				refreshGrid({ formData: getValues(), setValue });
+			},
+		[refreshGrid]
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -251,20 +339,19 @@ export const useC04 = () => {
 	}, []);
 
 	const getProdInfo = useCallback(
-		async (prodId, getValues) => {
+		async (prodId, { supplier, rstDate }) => {
 			if (!prodId) {
 				toast.error("請先選擇商品");
 				return;
 			}
 
-			const supplierId = getValues("supplier")?.FactID;
+			const supplierId = supplier?.FactID;
 			if (!supplierId) {
 				toast.error("請先選擇廠商");
 				return;
 			}
 
-			const ordDate = getValues("GinDate");
-			if (!isDate(ordDate)) {
+			if (!isDate(rstDate)) {
 				toast.error("請先輸入進貨日期");
 				return;
 			}
@@ -276,7 +363,7 @@ export const useC04 = () => {
 					params: {
 						pd: prodId,
 						spi: supplierId,
-						od: Forms.formatDate(ordDate),
+						od: Forms.formatDate(rstDate),
 					},
 				});
 
@@ -292,9 +379,67 @@ export const useC04 = () => {
 		[httpGetAsync, token]
 	);
 
+	const purchaseOrdersDisabled = useMemo(() => {
+		return !!crud.itemData?.GinID;
+	}, [crud.itemData?.GinID]);
+
+	const prodDisabled = useCallback(({ rowData }) => {
+		return !!rowData.ordId;
+	}, []);
+
+	const spriceDisabled = useCallback(({ rowData }) => {
+		return !!rowData.SInqFlag || !!rowData.stype;
+	}, []);
+
+	const fetchAmt = useCallback(
+		async ({ paid, taxType, gridData, setValue }) => {
+			const total = C04.getTotal(gridData);
+			try {
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/purchase/restocks/refresh-amt",
+					bearer: token,
+					data: {
+						tt: taxType,
+						ap: paid,
+						at: total,
+					},
+				});
+				if (status.success) {
+					console.log("refresh-amt", payload);
+					setValue("PayAmt", payload.PayAmt);
+					setValue("TaxAmt", payload.TaxAmt);
+					setValue("TotAmt", payload.TotAmt);
+					setValue("InAmt", total);
+				} else {
+					throw error || new Error("發生未預期例外");
+				}
+			} catch (err) {
+				toast.error(Errors.getMessage("計算合計失敗", err));
+			}
+		},
+		[httpGetAsync, token]
+	);
+
+	const handleTaxTypeChanged = useCallback(
+		({ setValue, getValues }) =>
+			async (newValue) => {
+				console.log("onTaxTypeChanged", newValue);
+				const paid = getValues("PaidAmt");
+				// console.log("formData", formData);
+				fetchAmt({
+					paid: paid,
+					taxType: newValue,
+					gridData: prodGrid.gridData,
+					setValue,
+				});
+			},
+		[fetchAmt, prodGrid.gridData]
+	);
+
 	const handleGridChange = useCallback(
 		({ getValues, setValue }) =>
 			(newValue, operations) => {
+				const formData = getValues();
 				console.log("handleGridChange", operations);
 				console.log("newValue", newValue);
 				const newGridData = [...newValue];
@@ -304,10 +449,14 @@ export const useC04 = () => {
 						newValue
 							.slice(operation.fromRowIndex, operation.toRowIndex)
 							.forEach(async (rowData, i) => {
-								const { prod } = rowData;
+								const { prod, SPrice, stype, SQty } = rowData;
 								const rowIndex = operation.fromRowIndex + i;
-								const { prod: oldProd } =
-									prodGrid.gridData[rowIndex];
+								const {
+									prod: oldProd,
+									SPrice: oldSPrice,
+									oldStype,
+									oldSQty,
+								} = prodGrid.gridData[rowIndex];
 
 								let processedRowData = { ...rowData };
 								// 商品
@@ -316,25 +465,34 @@ export const useC04 = () => {
 										`prod[${rowIndex}] changed`,
 										prod
 									);
+									let prodRetrieved = false;
 									if (prod?.ProdID) {
 										const prodInfo = await getProdInfo(
 											prod?.ProdID,
-											getValues
+											{
+												supplier: formData.supplier,
+												rstDate: formData.GinDate,
+											}
 										);
 										// 取得報價
+										if (prodInfo) {
+											processedRowData = {
+												...processedRowData,
+												["PackData_N"]:
+													prod?.PackData_N || "",
+												["SInqFlag"]: prodInfo.SInqFlag,
+												["SPrice"]: prodInfo.SPrice,
+												["SExpDate"]: Forms.parseDate(
+													prodInfo.MaxDate
+												),
+											};
+											prodRetrieved = true;
+										}
+									}
+									if (!prodRetrieved) {
 										processedRowData = {
 											...processedRowData,
-											["PackData_N"]:
-												prod?.PackData_N || "",
-											["SInqFlag"]: prodInfo.SInqFlag,
-											["SPrice"]: prodInfo.SPrice,
-											["SExpDate"]: Forms.parseDate(
-												prodInfo.MaxDate
-											),
-										};
-									} else {
-										processedRowData = {
-											...processedRowData,
+											prod: null,
 											["PackData_N"]: "",
 											["SInqFlag"]: "",
 											["SPrice"]: "",
@@ -343,6 +501,23 @@ export const useC04 = () => {
 									}
 								}
 
+								// 單價, 贈,  數量
+								if (
+									SPrice !== oldSPrice ||
+									stype?.id !== oldStype?.id ||
+									SQty !== oldSQty
+								) {
+									// 計算合計
+									processedRowData = {
+										...processedRowData,
+										["SAmt"]:
+											!SPrice || !SQty
+												? ""
+												: stype?.id
+												? 0
+												: SPrice * SQty,
+									};
+								}
 								newGridData[rowIndex] = processedRowData;
 							});
 					} else if (operation.type === "DELETE") {
@@ -361,12 +536,31 @@ export const useC04 = () => {
 						// 	});
 					}
 				}
-				console.log("after changed", newGridData);
+				console.log("prodGrid.changed", newGridData);
 				if (!checkFailed) {
+					// 檢查要不要改 purchaseOrders
+					/*
+					const newOrdIds = newGridData
+						.map((item) => item.ordId)
+						.filter((item) => item);
+					console.log("newOrdIds", newOrdIds);
+					const newPurchaseOrders = formData.purchaseOrders.filter(
+						(item) => newOrdIds.includes(item.採購單號)
+					);
+					console.log("newPurchaseOrders", newPurchaseOrders);
+					setValue("purchaseOrders", newPurchaseOrders);
+					*/
+
 					prodGrid.setGridData(newGridData);
+					fetchAmt({
+						paid: formData.PaidAmt,
+						taxType: formData.TaxType,
+						gridData: newGridData,
+						setValue,
+					});
 				}
 			},
-		[prodGrid]
+		[fetchAmt, getProdInfo, prodGrid]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -471,8 +665,35 @@ export const useC04 = () => {
 		return expState.expProd !== null;
 	}, [expState.expProd]);
 
-	const handlePurchaseOrdersChanged = useCallback((newValue) => {
-		console.log("handlePurchaseOrdersChanged", newValue);
+	const handlePurchaseOrdersChanged = useCallback(
+		({ setValue, getValues }) =>
+			async (newValue) => {
+				console.log("handlePurchaseOrdersChanged", newValue);
+				const formData = getValues();
+				const collected = C04.transformForSubmitting(
+					formData,
+					prodGrid.gridData
+				);
+				console.log("collected", collected);
+				const { status, payload, error } = await httpPatchAsync({
+					url: "v1/purchase/restocks/load-prods",
+					bearer: token,
+					data: collected,
+				});
+				console.log("load-prods.payload", payload);
+				if (status.success) {
+					const data = C04.transformForReading(payload.data[0]);
+					console.log("refreshed data", data);
+					prodGrid.handleGridDataLoaded(data.prods);
+					refreshAmt({ setValue, data });
+					// toast.info("採購單商品已載入");
+				}
+			},
+		[httpPatchAsync, prodGrid, refreshAmt, token]
+	);
+
+	const onRefreshGridSubmit2 = useCallback((data) => {
+		console.log("onRefreshGridSubmit2", data);
 	}, []);
 
 	const onRefreshGridSubmit = useCallback(
@@ -480,31 +701,110 @@ export const useC04 = () => {
 			async (data) => {
 				console.log("onRefreshGridSubmit", data);
 				try {
-					const collected = C04.transformForSubmitting(data);
+					if (prodGrid.gridData.length > 0) {
+						const collected = C04.transformForSubmitting(
+							data,
+							prodGrid.gridData
+						);
+						console.log("collected", collected);
+
+						const { status, payload, error } = await httpPatchAsync(
+							{
+								url: "v1/purchase/restocks/refresh-grid",
+								bearer: token,
+								data: collected,
+							}
+						);
+						console.log("refresh-grid.payload", payload);
+						if (status.success) {
+							const data = C04.transformForReading(
+								payload.data[0]
+							);
+							console.log("refreshed data", data);
+							prodGrid.handleGridDataLoaded(data.prods);
+							refreshAmt({ setValue, data });
+							toast.info("商品單價已更新");
+						}
+					} else {
+						refreshAmt({
+							setValue,
+							reset: true,
+						});
+					}
+				} catch (err) {
+					toast.error(Errors.getMessage("商品單價更新失敗", err));
+					// 還原
+				}
+			},
+		[httpPatchAsync, prodGrid, refreshAmt, token]
+	);
+
+	const onRefreshGridSubmitError = useCallback((err) => {
+		console.error("onRefreshGridSubmitError", err);
+	}, []);
+
+	const onLoadProdsSubmit = useCallback(
+		({ setValue }) =>
+			async (data) => {
+				console.log("onLoadProdsSubmit", data);
+				try {
+					const collected = C04.transformForSubmitting(
+						data,
+						prodGrid.gridData
+					);
 					console.log("collected", collected);
 
 					const { status, payload, error } = await httpPatchAsync({
-						url: "v1/purchase/restocks/refresh-grid",
+						url: "v1/purchase/restocks/load-prods",
 						bearer: token,
 						data: collected,
 					});
 					console.log("refresh-grid.payload", payload);
 					if (status.success) {
 						const data = C04.transformForReading(payload.data[0]);
-						console.log("data.prods", data.prods);
+						console.log("load-prods.data", data);
 						prodGrid.handleGridDataLoaded(data.prods);
-						toast.info("採購單商品已載入");
+						refreshAmt({ setValue, data });
+						// toast.info("採購單商品已載入");
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("重整商品失敗", err));
 					// 還原
 				}
 			},
-		[httpPatchAsync, prodGrid, token]
+		[httpPatchAsync, prodGrid, refreshAmt, token]
 	);
 
-	const onRefreshGridSubmitError = useCallback((err) => {
-		console.error("onRefreshGridSubmitError", err);
+	const onLoadProdsSubmitError = useCallback((err) => {
+		console.error("onLoadProdsSubmitError", err);
+	}, []);
+
+	const checkEditableAction = useAction();
+
+	const handleCheckEditable = useCallback(async () => {
+		try {
+			checkEditableAction.start();
+			const { status, error } = await httpGetAsync({
+				url: "v1/purchase/restocks/check-editable",
+				bearer: token,
+				params: {
+					id: crud.itemData.GinID,
+				},
+			});
+			if (status.success) {
+				crud.promptUpdating();
+			} else {
+				throw error || new Error("未預期例外");
+			}
+		} catch (err) {
+			toast.error(Errors.getMessage("編輯檢查失敗", err));
+		} finally {
+			checkEditableAction.clear();
+		}
+	}, [checkEditableAction, crud, httpGetAsync, token]);
+
+	const getSPriceClassName = useCallback(({ rowData }) => {
+		return rowData.stype?.id ? "line-through" : null;
 	}, []);
 
 	return {
@@ -528,6 +828,9 @@ export const useC04 = () => {
 		...prodGrid,
 		handleGridChange,
 		getRowKey,
+		prodDisabled,
+		purchaseOrdersDisabled,
+		spriceDisabled,
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
@@ -540,7 +843,19 @@ export const useC04 = () => {
 		onExpSubmit,
 		onExpSubmitError,
 		isSupplierNameDisabled,
+		onRefreshGridSubmit2,
 		onRefreshGridSubmit,
 		onRefreshGridSubmitError,
+		handleTaxTypeChanged,
+		onLoadProdsSubmit,
+		onLoadProdsSubmitError,
+		handleRstDateChanged,
+		handlePurchaseOrdersChanged,
+		// 檢查可否編輯
+		checkEditableWorking: checkEditableAction.working,
+		handleCheckEditable,
+		getSPriceClassName,
+		handleRefresh,
+		refreshWorking: refreshAction.working,
 	};
 };

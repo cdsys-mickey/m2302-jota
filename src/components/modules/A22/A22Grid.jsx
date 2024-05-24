@@ -9,9 +9,8 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import NoDataBox from "../../../shared-components/NoDataBox";
-import { createIntColumn } from "../../../shared-components/dsg/columns/float/createIntColumn";
-import { optionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/optionPickerColumn";
+import NoDataBox from "@/shared-components/NoDataBox";
+import { createIntColumn } from "@/shared-components/dsg/columns/float/createIntColumn";
 import { prodPickerColumn } from "../../dsg/columns/prod-picker/prodPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
@@ -35,7 +34,7 @@ const A22Grid = memo((props) => {
 	const columns = useMemo(
 		() => [
 			// {
-			// 	...createOptionPickerColumn((props) => (
+			// 	...optionPickerColumn((props) => (
 			// 		<A22GridProdPickerColumn name="prod" {...props} />
 			// 	)),
 			// 	title: "商品",

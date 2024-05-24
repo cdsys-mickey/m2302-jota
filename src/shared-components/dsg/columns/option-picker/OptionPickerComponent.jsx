@@ -52,15 +52,16 @@ const OptionPickerComponent = memo((props) => {
 
 	return (
 		<OptionPicker
+			label=""
 			readOnly={disabled}
 			inputRef={ref}
-			hideBorders
 			options={options}
 			value={rowData}
 			onChange={handleChange}
-			dense
 			disabled={disabled}
 			// DSG 專屬屬性
+			dense
+			hideBorders
 			disablePointerEvents={!focus}
 			hidePopupIndicator={!focus}
 			fadeOutDisabled={false}

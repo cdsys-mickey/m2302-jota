@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import WebApiOptionPicker from "@/shared-components/picker/WebApiOptionPicker";
 import PropTypes from "prop-types";
+import { useRef } from "react";
 import { memo } from "react";
 import { Controller } from "react-hook-form";
 
@@ -23,6 +24,8 @@ export const ControlledWebApiOptionPicker = memo(
 		onChanged,
 		...rest
 	}) => {
+		const prevValue = useRef();
+
 		// console.log("rendering ControlledWebApiOptionPicker");
 		if (!name) {
 			return (
@@ -49,6 +52,8 @@ export const ControlledWebApiOptionPicker = memo(
 					field: { value, onChange },
 					fieldState: { error },
 				}) => {
+					prevValue.current = JSON.stringify(value);
+
 					return (
 						<WebApiOptionPicker
 							name={name}
@@ -60,8 +65,15 @@ export const ControlledWebApiOptionPicker = memo(
 									onPickerChange(newValue);
 								}
 								onChange(newValue);
-								if (onChanged) {
+
+								const newValueJson = JSON.stringify(newValue);
+
+								if (
+									onChanged &&
+									newValueJson !== prevValue.current
+								) {
 									onChanged(newValue);
+									prevValue.current = newValueJson;
 								}
 							}}
 							// disabled={disabled}

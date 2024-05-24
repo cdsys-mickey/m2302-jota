@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useWatch } from "react-hook-form";
 
 export const C04ProdGridSubtotalLabel = (props) => {
-	const { name = "InAmt_N", ...rest } = props;
+	const { name = "InAmt", ...rest } = props;
 	const subtotal = useWatch({
 		name,
 	});
@@ -15,7 +15,7 @@ export const C04ProdGridSubtotalLabel = (props) => {
 			<Typography color="primary" {...rest}>
 				{subtotal}
 			</Typography>
-			<FlexBox minWidth="80px" />
+			{/* <FlexBox minWidth="80px" /> */}
 		</FlexBox>
 	);
 };

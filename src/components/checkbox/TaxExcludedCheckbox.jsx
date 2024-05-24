@@ -9,7 +9,6 @@ const TaxTypeCheckbox = (props) => {
 		<CheckboxExWrapper
 			label={label}
 			defaultValue=""
-			name="TaxType"
 			valueToChecked={YesEmpty.valueToChecked}
 			checkedToValue={YesEmpty.checkedToValue}
 			getLabel={YesEmpty.getOptionLabel}

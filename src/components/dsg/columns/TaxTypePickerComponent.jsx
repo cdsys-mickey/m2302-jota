@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import TaxTypePicker from "@/components/picker/TaxTypePicker";
 
-const TaxTypePickerColumn = memo((props) => {
+const TaxTypePickerComponent = memo((props) => {
 	const {
 		// Data
 		rowData,
@@ -21,17 +21,22 @@ const TaxTypePickerColumn = memo((props) => {
 		duplicateRow,
 		deleteRow,
 		getContextMenuItems,
-		...rest
 	} = props;
+
+	const { ...rest } = columnData;
 
 	const ref = useRef();
 
 	const handleChange = useCallback(
 		(newValue) => {
-			console.log(`[${rowIndex}, ${columnIndex}]rowData`, rowData);
+			console.log("handleChange", newValue);
 			setRowData(newValue);
+			if (!newValue) {
+				return;
+			}
+			setTimeout(() => stopEditing({ nextRow: false }), 50);
 		},
-		[columnIndex, rowData, rowIndex, setRowData]
+		[setRowData, stopEditing]
 	);
 
 	// focusing on the underlying input component when the cell is focused
@@ -56,7 +61,7 @@ const TaxTypePickerColumn = memo((props) => {
 	);
 });
 
-TaxTypePickerColumn.propTypes = {
+TaxTypePickerComponent.propTypes = {
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,
@@ -81,5 +86,5 @@ TaxTypePickerColumn.propTypes = {
 	getContextMenuItems: PropTypes.func,
 };
 
-TaxTypePickerColumn.displayName = "TaxTypePickerColumn";
-export default TaxTypePickerColumn;
+TaxTypePickerComponent.displayName = "TaxTypePickerComponent";
+export default TaxTypePickerComponent;

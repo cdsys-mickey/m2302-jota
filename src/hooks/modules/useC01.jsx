@@ -15,7 +15,6 @@ import useHttpPost from "../../shared-hooks/useHttpPost";
 
 export const useC01 = () => {
 	const crud = useContext(CrudContext);
-	const { itemData } = crud;
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);

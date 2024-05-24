@@ -1,14 +1,33 @@
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 
 const C04DialogEditToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onSave, onCancel, loading, ...rest } = props;
+		const {
+			onSave,
+			onCancel,
+			onRefresh,
+			editWorking,
+			refreshWorking,
+			...rest
+		} = props;
 		return (
 			<Fragment ref={ref} {...rest}>
+				{onRefresh && (
+					<ButtonWrapper
+						responsive
+						onClick={onRefresh}
+						type="button"
+						endIcon={<AutorenewIcon />}
+						color="info"
+						variant="contained"
+						loading={refreshWorking}>
+						更新單價
+					</ButtonWrapper>
+				)}
 				<ButtonWrapper
 					responsive
 					onClick={onSave}
@@ -16,7 +35,7 @@ const C04DialogEditToolbar = memo(
 					endIcon={<SendIcon />}
 					color="warning"
 					variant="contained"
-					loading={loading}>
+					loading={editWorking}>
 					儲存
 				</ButtonWrapper>
 				<ButtonWrapper
@@ -35,7 +54,9 @@ C04DialogEditToolbar.displayName = "C04DialogEditToolbar";
 C04DialogEditToolbar.propTypes = {
 	onCancel: PropTypes.func,
 	onSave: PropTypes.func,
+	onRefresh: PropTypes.func,
 	onLoadProds: PropTypes.func,
-	loading: PropTypes.bool,
+	refreshWorking: PropTypes.bool,
+	editWorking: PropTypes.bool,
 };
 export default C04DialogEditToolbar;

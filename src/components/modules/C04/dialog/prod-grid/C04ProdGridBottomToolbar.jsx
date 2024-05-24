@@ -7,8 +7,8 @@ import { C04ProdGridSubtotalLabel } from "./C04ProdGridSubtotalLabel";
 const RightComponent = () => {
 	return (
 		<>
-			<C04ProdGridSubtotalLabel name="OrdAmt_N" />
-			<FlexBox minWidth="10px" />
+			<C04ProdGridSubtotalLabel name="InAmt" />
+			{/* <FlexBox minWidth="10px" /> */}
 		</>
 	);
 };

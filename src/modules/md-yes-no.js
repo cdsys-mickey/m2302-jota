@@ -4,15 +4,15 @@ const getOptionLabel = (value) => {
 	return value === "Y" ? "是" : "否";
 };
 
-const valueToChecked = (v) => {
-	if (Types.isString(v)) {
-		return v?.toUpperCase() === "Y";
+const valueToChecked = (value) => {
+	if (Types.isString(value)) {
+		return value?.toUpperCase() === "Y";
 	}
 	return false;
 };
 
-const checkedToValue = (c) => {
-	return c ? "Y" : "N";
+const checkedToValue = (checked) => {
+	return checked ? "Y" : "N";
 };
 
 const YesNo = {

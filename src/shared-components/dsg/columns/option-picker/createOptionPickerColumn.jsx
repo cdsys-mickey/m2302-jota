@@ -1,12 +1,14 @@
-export const optionPickerColumn = (CellComponent, opts = {}) => {
+import OptionPickerComponent from "./OptionPickerComponent";
+
+export const createOptionPickerColumn = (opts) => {
 	return {
-		component: CellComponent,
+		component: OptionPickerComponent,
 		columnData: opts,
 		disableKeys: true,
 		keepFocus: true,
 		deleteValue: () => null,
 		copyValue: ({ rowData }) => rowData,
 		pasteValue: ({ value }) => value,
-		isCellEmpty: ({ rowData }) => !rowData,
+		isCellEmpty: () => false,
 	};
 };

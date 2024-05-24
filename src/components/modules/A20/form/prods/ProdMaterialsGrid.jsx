@@ -32,7 +32,7 @@ const ProdMaterialsGrid = memo((props) => {
 	const columns = useMemo(
 		() => [
 			{
-				// ...createOptionPickerColumn((props) => (
+				// ...optionPickerColumn((props) => (
 				// 	<BomProdPickerColumn
 				// 		name="prod"
 				// 		withBomPackageName

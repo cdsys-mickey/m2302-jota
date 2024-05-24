@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import TaxTypeCheckbox from "../../../checkbox/TaxTypeCheckbox";
+import TaxExcludedCheckbox from "../../../checkbox/TaxExcludedCheckbox";
 
 const A05Form = memo((props) => {
 	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
@@ -158,7 +158,7 @@ const A05Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={4} sm={4} md={2}>
-								<TaxTypeCheckbox
+								<TaxExcludedCheckbox
 									typo
 									label="稅外加"
 									name="TaxType"

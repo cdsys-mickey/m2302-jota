@@ -1,23 +1,49 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/sd-forms";
+import FreeProdTypes from "./md-free-prod-types";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, SExpDate, SOrdID, ...rest }) => {
-			const fields = SOrdID.split("#");
-			const ordId = fields.length > 0 ? fields[0] : "";
-			return {
-				prod: {
-					ProdID: SProdID,
-					ProdData: ProdData_N,
-				},
-				SExpDate: SExpDate ? Forms.parseDate(SExpDate) : "",
-				SOrdID,
-				ordId,
-				...rest,
-			};
-		}) || []
+		data?.map(
+			({ SProdID, ProdData_N, SExpDate, SOrdID, SType, ...rest }) => {
+				const fields = SOrdID?.split("#") || [];
+				const ordId = fields.length > 0 ? fields[0] : "";
+				return {
+					prod: {
+						ProdID: SProdID,
+						ProdData: ProdData_N,
+					},
+					SExpDate: SExpDate ? Forms.parseDate(SExpDate) : "",
+					SOrdID,
+					ordId,
+					stype: FreeProdTypes.getOptionById(SType),
+					...rest,
+				};
+			}
+		) || []
 	);
+};
+
+const transformGridForSubmit = (gridData) => {
+	return gridData
+		.filter((v) => v.prod?.ProdID)
+		.map(
+			(
+				{ Pkey, prod, stype, SExpDate, SQty, SPrice, SAmt, ...rest },
+				index
+			) => ({
+				Pkey: Pkey?.length < 36 ? "" : Pkey,
+				SProdID: prod?.ProdID,
+				ProdData_N: prod?.ProdData,
+				SType: stype?.id || "",
+				SExpDate: Forms.formatDate(SExpDate),
+				SQty: SQty?.toString() || "",
+				SPrice: SPrice?.toString() || "",
+				SAmt: SAmt?.toString() || "",
+				Seq: index + 1,
+				...rest,
+			})
+		);
 };
 
 const transformForReading = (payload) => {
@@ -30,6 +56,7 @@ const transformForReading = (payload) => {
 		FactData,
 		GdsIn_S,
 		Remark,
+		TaxType,
 		...rest
 	} = payload;
 
@@ -77,31 +104,7 @@ const transformForSubmitting = (payload, gridData) => {
 		OrdID: purchaseOrders.map((o) => o["採購單號"]).join(","),
 		...rest,
 		...(gridData && {
-			GdsRqt_S: gridData
-				.filter((v) => v.prod?.ProdID)
-				.map(
-					(
-						{
-							Pkey,
-							prod,
-							SRqtQty,
-							SOrdQty,
-							SFactID,
-							SFactNa,
-							SOrdID,
-						},
-						index
-					) => ({
-						Pkey: Pkey?.length < 36 ? "" : Pkey,
-						SProdID: prod?.ProdID,
-						SRqtQty,
-						SOrdQty,
-						SFactID,
-						SFactNa,
-						SOrdID,
-						Seq: index + 1,
-					})
-				),
+			GdsIn_S: transformGridForSubmit(gridData),
 		}),
 	};
 };
@@ -110,11 +113,24 @@ const transformAsQueryParams = (data) => {
 	return {};
 };
 
+const getTotal = (gridData) => {
+	if (!gridData) {
+		return 0;
+	}
+	let result = 0;
+	for (const rowData of gridData) {
+		const { SAmt } = rowData;
+		result += SAmt ? Number(SAmt) : 0;
+	}
+	return result;
+};
+
 const C04 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
 	transformGridForReading,
+	getTotal,
 };
 
 export default C04;

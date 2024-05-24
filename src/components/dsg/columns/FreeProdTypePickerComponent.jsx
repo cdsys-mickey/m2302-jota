@@ -1,29 +1,21 @@
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
-import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
+import FreeProdTypePicker from "@/components/picker/FreeProdTypePicker";
 
-const arePropsEqual = (oldProps, newProps) => {
-	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.ProdID,active,disabled,focus",
-		debug: true,
-	});
-};
-
-const ProdPickerComponent = memo((props) => {
+const FreeProdTypePickerComponent = memo((props) => {
 	const {
-		// Data
+		// Cell Data
 		rowData,
 		setRowData,
-		// Extra information
+		// Extra Information
 		rowIndex,
 		columnIndex,
 		columnData,
-		// Cell state
+		// Cell State
 		active,
 		focus,
 		disabled,
-		// Control functions
+		// Control Functions
 		stopEditing,
 		insertRowBelow,
 		duplicateRow,
@@ -31,16 +23,9 @@ const ProdPickerComponent = memo((props) => {
 		getContextMenuItems,
 	} = props;
 
-	const { name, ...rest } = columnData;
-
-	// console.log(
-	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
-	// 	rowData
-	// );
+	const { ...rest } = columnData;
 
 	const ref = useRef();
-	const rowDataRef = useRef(rowData);
-	rowDataRef.current = rowData;
 
 	const handleChange = useCallback(
 		(newValue) => {
@@ -64,21 +49,15 @@ const ProdPickerComponent = memo((props) => {
 	}, [focus]);
 
 	return (
-		<ProdPickerContainer
-			name={name}
-			queryParam="qs"
+		<FreeProdTypePicker
 			label=""
-			hideBorders
 			inputRef={ref}
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
-			// onClose={handleClose}
-			placeholder="商品"
-			typeToSearchText="輸入編號或名稱搜尋"
-			filterByServer
 			// DSG 專屬屬性
 			dense
+			hideBorders
 			disablePointerEvents={!focus}
 			hidePopupIndicator={!focus}
 			fadeOutDisabled={false}
@@ -86,10 +65,9 @@ const ProdPickerComponent = memo((props) => {
 			{...rest}
 		/>
 	);
-}, arePropsEqual);
+});
 
-ProdPickerComponent.propTypes = {
-	name: PropTypes.string,
+FreeProdTypePickerComponent.propTypes = {
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,
@@ -113,6 +91,6 @@ ProdPickerComponent.propTypes = {
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
 };
-ProdPickerComponent.propTypes = {};
-ProdPickerComponent.displayName = "ProdPickerComponent";
-export default ProdPickerComponent;
+
+FreeProdTypePickerComponent.displayName = "FreeProdTypePickerComponent";
+export default FreeProdTypePickerComponent;

@@ -13,6 +13,8 @@ import PropTypes from "prop-types";
 import { useCallback } from "react";
 import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
 import C04ProdGridAddRows from "./C04ProdGridAddRows";
+import FreeProdTypePickerComponent from "../../../../dsg/columns/FreeProdTypePickerComponent";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -28,6 +30,8 @@ const C04ProdGrid = memo((props) => {
 		getRowClassName,
 		height = 300,
 		prodDisabled,
+		spriceDisabled,
+		getSPriceClassName,
 	} = props;
 	const columns = useMemo(
 		() => [
@@ -44,7 +48,9 @@ const C04ProdGrid = memo((props) => {
 					prodPickerColumn({
 						name: "prod",
 						withStock: true,
-						triggerDelay: 100,
+						triggerDelay: 300,
+						dense: true,
+						optionLabelSize: "small",
 					})
 				),
 				id: "SProdID",
@@ -70,6 +76,19 @@ const C04ProdGrid = memo((props) => {
 				title: "進貨單價",
 				minWidth: 100,
 				grow: 1,
+				disabled: readOnly || spriceDisabled,
+				cellClassName: getSPriceClassName,
+			},
+			{
+				...keyColumn(
+					"stype",
+					optionPickerColumn(FreeProdTypePickerComponent, {
+						disableClearable: true,
+					})
+				),
+				title: "贈品",
+				minWidth: 80,
+				maxWidth: 80,
 				disabled: readOnly,
 			},
 			{
@@ -99,17 +118,18 @@ const C04ProdGrid = memo((props) => {
 				disabled: true,
 			},
 		],
-		[prodDisabled, readOnly]
+		[getSPriceClassName, prodDisabled, readOnly, spriceDisabled]
 	);
 
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
 			prod: null,
-			SOrdQty: null,
-			SFactID: "",
-			SFactNa: "",
-			SOrdID: "*",
+			stype: null,
+			SQty: "",
+			SPrice: "",
+			ChkQty: "",
+			SOrdID: "",
 		}),
 		[]
 	);
@@ -147,6 +167,13 @@ const C04ProdGrid = memo((props) => {
 
 C04ProdGrid.propTypes = {
 	getRowKey: PropTypes.func,
+	spriceDisabled: PropTypes.func,
+	prodDisabled: PropTypes.func,
+	handleGridChange: PropTypes.func,
+	getRowClassName: PropTypes.func,
+	getSPriceClassName: PropTypes.func,
+	readOnly: PropTypes.bool,
+	height: PropTypes.number,
 };
 
 C04ProdGrid.displayName = "C04ProdGrid";

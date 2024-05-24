@@ -14,6 +14,9 @@ const DSGBox = memo((props) => {
 							bgcolor || theme.palette.primary.main
 						),
 					},
+					"& .dsg-cell.line-through": {
+						textDecoration: "line-through",
+					},
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}

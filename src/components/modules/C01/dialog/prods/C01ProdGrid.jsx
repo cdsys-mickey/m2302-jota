@@ -86,6 +86,7 @@ const C01ProdGrid = memo((props) => {
 					supplierIdPickerColumn({
 						name: "supplier",
 						triggerDelay: 100,
+						optionLabelSize: "small",
 					})
 				),
 				title: "供應商",

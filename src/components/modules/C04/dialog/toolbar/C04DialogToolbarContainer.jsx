@@ -11,17 +11,9 @@ export const C04DialogToolbarContainer = (props) => {
 	const c04 = useContext(C04Context);
 	const form = useFormContext();
 
-	const canReview = useMemo(() => {
-		return c04.canReview && !c04.itemData?.Checker_N;
-	}, [c04.canReview, c04.itemData?.Checker_N]);
-
-	const canReject = useMemo(() => {
-		return c04.canReject && !!c04.itemData?.Checker_N;
-	}, [c04.canReject, c04.itemData?.Checker_N]);
-
 	const canDelete = useMemo(() => {
-		return c04.canDelete && !c04.itemData?.Checker_N;
-	}, [c04.canDelete, c04.itemData?.Checker_N]);
+		return c04.canDelete;
+	}, [c04.canDelete]);
 
 	const handlePrint = form.handleSubmit(
 		c04.onPrintSubmit,
@@ -35,16 +27,21 @@ export const C04DialogToolbarContainer = (props) => {
 	if (c04.editing) {
 		return (
 			<C04DialogEditToolbar
+				onRefresh={c04.handleRefresh({
+					setValue: form.setValue,
+					getValues: form.getValues,
+				})}
+				refreshWorking={c04.refreshWorking}
 				onSave={form.handleSubmit(
 					c04.onEditorSubmit,
 					c04.onEditorSubmitError
 				)}
+				editWorking={c04.editWorking}
 				onCancel={
 					c04.updating
 						? c04.confirmReturnReading
 						: c04.confirmQuitCreating
 				}
-				loading={c04.editWorking}
 				{...rest}
 			/>
 		);
@@ -52,11 +49,11 @@ export const C04DialogToolbarContainer = (props) => {
 
 	return (
 		<C04DialogViewToolbar
-			onEdit={c04.canUpdate ? c04.promptUpdating : null}
+			// onEdit={c04.canUpdate ? c04.promptUpdating : null}
+			onEdit={c04.canUpdate ? c04.handleCheckEditable : null}
 			onDelete={canDelete ? c04.confirmDelete : null}
-			onReview={canReview ? c04.promptReview : null}
-			onReject={canReject ? c04.promptReject : null}
 			onPrint={c04.canPrint ? handlePrint : null}
+			checkEditableWorking={c04.checkEditableWorking}
 			{...rest}
 		/>
 	);

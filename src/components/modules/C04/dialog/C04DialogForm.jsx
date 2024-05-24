@@ -9,12 +9,17 @@ import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import TaxTypeCheckbox from "@/components/checkbox/TaxTypeCheckbox";
-import { C04ProdGridContainer } from "./prods/C04ProdGridContainer";
+import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
+import { C04ProdGridContainer } from "./prod-grid/C04ProdGridContainer";
 import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
 import { SupplierPurchaseOrderPicker } from "@/components/purchase-order-picker/SupplierPurchaseOrderPicker";
 import FlexGrid from "../../../../shared-components/FlexGrid";
-import { C04ProdGridBottomToolbar } from "./prods/C04ProdGridBottomToolbar";
+import { C04ProdGridBottomToolbar } from "./prod-grid/C04ProdGridBottomToolbar";
+import { C04TaxAmtLabel } from "./bottom-toolbar/C04TaxAmtLabel";
+import { C04TotAmtLabel } from "./bottom-toolbar/C04TotAmtLabel";
+import { C04PaidAmtLabel } from "./bottom-toolbar/C04PaidAmtLabel";
+import { C04PayAmtLabel } from "./bottom-toolbar/C04PayAmtLabel";
+import { C04AmtToolbar } from "./prod-grid/C04AmtToolbar";
 
 const C04DialogForm = memo((props) => {
 	const {
@@ -27,8 +32,12 @@ const C04DialogForm = memo((props) => {
 		editing,
 		updating,
 		handleSupplierChanged,
-		handleRefreshGridSubmit,
+		handlePurchaseOrdersChanged,
+		handleRstDateChanged,
+		handleLoadProdsSubmit,
+		handleTaxTypeChanged,
 		isSupplierNameDisabled,
+		purchaseOrdersDisabled,
 		supplier,
 		...rest
 	} = props;
@@ -45,7 +54,7 @@ const C04DialogForm = memo((props) => {
 			)}
 			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
-				<FormBox pt={1}>
+				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
 						<Grid item xs={24} sm={24} md={3}>
 							<TextFieldWrapper
@@ -67,6 +76,7 @@ const C04DialogForm = memo((props) => {
 								fullWidth
 								required
 								variant="outlined"
+								onChanged={handleRstDateChanged}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
@@ -96,10 +106,11 @@ const C04DialogForm = memo((props) => {
 										required: "廠商代碼為必填",
 									}}
 									// disabled={supplierPickerDisabled}
-									disableClearable
+									// disableClearable
 									virtualize
 									fadeOutDisabled
 									withAddr
+									optionLabelSize="small"
 									onChanged={handleSupplierChanged}
 								/>
 							</OptionPickerProvider>
@@ -126,7 +137,7 @@ const C04DialogForm = memo((props) => {
 								label="統編"
 								fullWidth
 								// value={data?.FactData}
-								required
+								// required
 								// disabled={supplierNameDisabled}
 							/>
 						</Grid>
@@ -136,11 +147,13 @@ const C04DialogForm = memo((props) => {
 							xs={4}
 							sm={4}
 							md={3}
-							justifyContent="center">
-							<TaxTypeCheckbox
+							// justifyContent="center"
+						>
+							<TaxExcludedCheckbox
 								typo
 								label="稅外加"
 								name="TaxType"
+								onChanged={handleTaxTypeChanged}
 							/>
 						</FlexGrid>
 						<Grid item xs={24} sm={24} md={4}>
@@ -173,16 +186,18 @@ const C04DialogForm = memo((props) => {
 								label="採購單"
 								// virtualize
 								fadeOutDisabled
-								onChanged={handleRefreshGridSubmit}
+								// onChanged={handleLoadProdsSubmit}
+								onChanged={handlePurchaseOrdersChanged}
+								disabled={purchaseOrdersDisabled}
 							/>
 							{/* </OptionPickerProvider> */}
 						</Grid>
 					</Grid>
-
 					<Box py={1}>
 						<C04ProdGridContainer />
 					</Box>
 					<C04ProdGridBottomToolbar />
+					<C04AmtToolbar mb={1} />
 					<Grid container columns={24}>
 						<Grid item xs={24}>
 							<TextFieldWrapper
@@ -207,6 +222,8 @@ C04DialogForm.propTypes = {
 	readError: PropTypes.object,
 	data: PropTypes.object,
 	itemDataReady: PropTypes.bool,
+	purchaseOrdersDisabled: PropTypes.bool,
+	handleRstDateChanged: PropTypes.func,
 };
 
 C04DialogForm.displayName = "C04DialogForm";
