@@ -169,12 +169,12 @@ const C03 = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
+	getSubtotal,
 	// 結清
 	SquaredState,
 	squaredOptions,
 	getSquaredOptionLabel,
 	getSquaredOptionById,
-	getSubtotal,
 	getSquaredOptionDisabled,
 };
 

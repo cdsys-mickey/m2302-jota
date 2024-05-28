@@ -1,6 +1,14 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import FreeProdTypePicker from "@/components/picker/FreeProdTypePicker";
+import Objects from "../../../shared-modules/sd-objects";
+
+const arePropsEqual = (oldProps, newProps) => {
+	return Objects.arePropsEqual(oldProps, newProps, {
+		fields: "rowData.id,active,disable,focus",
+		debug: true,
+	});
+};
 
 const FreeProdTypePickerComponent = memo((props) => {
 	const {
@@ -29,14 +37,14 @@ const FreeProdTypePickerComponent = memo((props) => {
 
 	const handleChange = useCallback(
 		(newValue) => {
-			console.log("handleChange", newValue);
+			console.log(`[${columnData?.name}].handleChange`, newValue);
 			setRowData(newValue);
 			if (!newValue) {
 				return;
 			}
 			setTimeout(() => stopEditing({ nextRow: false }), 50);
 		},
-		[setRowData, stopEditing]
+		[columnData?.name, setRowData, stopEditing]
 	);
 
 	// focusing on the underlying input component when the cell is focused
@@ -65,7 +73,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 			{...rest}
 		/>
 	);
-});
+}, arePropsEqual);
 
 FreeProdTypePickerComponent.propTypes = {
 	// Data

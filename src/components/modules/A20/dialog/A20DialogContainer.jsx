@@ -1,13 +1,12 @@
 import { A20Context } from "@/contexts/A20/A20Context";
-import DialogEx from "@/shared-components/dialog/DialogEx";
-import ActionState from "@/shared-constants/action-state";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A20Form from "../form/A20Form";
 import { A20DialogButtonsContainer } from "./buttons/A20DialogButtonsContainer";
-import { useScrollable } from "../../../../shared-hooks/useScrollable";
-import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
-import { DialogExContainer } from "../../../../shared-components/dialog/DialogExContainer";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import Colors from "@/modules/md-colors";
 
 export const A20DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -56,7 +55,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 				// onReturn={a20.updating ? a20.confirmReturn : null}
 				sx={{
 					"& .MuiDialog-paper": {
-						backgroundColor: "rgb(241 241 241)",
+						backgroundColor: Colors.DIALOG_BG,
 					},
 				}}
 				contentSx={[

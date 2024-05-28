@@ -409,7 +409,7 @@ export const useC04 = () => {
 					setValue("PayAmt", payload.PayAmt);
 					setValue("TaxAmt", payload.TaxAmt);
 					setValue("TotAmt", payload.TotAmt);
-					setValue("InAmt", total);
+					setValue("InAmt", total.toFixed(2));
 				} else {
 					throw error || new Error("發生未預期例外");
 				}

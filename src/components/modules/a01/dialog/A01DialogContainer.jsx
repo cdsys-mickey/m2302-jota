@@ -1,15 +1,13 @@
 import { A01Context } from "@/contexts/A01/A01Context";
-import DialogEx from "@/shared-components/dialog/DialogEx";
-import { forwardRef, useContext, useMemo } from "react";
-import A01 from "../../../../modules/md-a01";
-import { A01DialogTitleContainer } from "./buttons/A01DialogTitleContainer";
+import A01 from "@/modules/md-a01";
+import Colors from "@/modules/md-colors";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A01Form from "../form/A01Form";
-import { useEffect } from "react";
-import ActionState from "../../../../shared-constants/action-state";
-import { useScrollable } from "../../../../shared-hooks/useScrollable";
-import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
-import { DialogExContainer } from "../../../../shared-components/dialog/DialogExContainer";
+import { A01DialogTitleContainer } from "./buttons/A01DialogTitleContainer";
 
 export const A01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -86,7 +84,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 				// onReturn={a01.updating ? a01.confirmReturn : null}
 				sx={{
 					"& .MuiDialog-paper": {
-						backgroundColor: "rgb(241 241 241)",
+						backgroundColor: Colors.DIALOG_BG,
 					},
 				}}
 				contentSx={[

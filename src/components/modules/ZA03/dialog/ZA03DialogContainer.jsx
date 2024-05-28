@@ -5,6 +5,7 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { ZA03DialogContentContainer } from "../form/ZA03DialogContentContainer";
+import Colors from "@/modules/md-colors";
 
 export const ZA03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -77,7 +78,7 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 			// onReturn={handleReturn}
 			sx={{
 				"& .MuiDialog-paper": {
-					backgroundColor: "rgb(241 241 241)",
+					backgroundColor: Colors.DIALOG_BG,
 				},
 			}}
 			contentSx={[

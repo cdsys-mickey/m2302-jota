@@ -6,8 +6,8 @@ import { forwardRef, memo, useContext } from "react";
 export const C04OutputModePickerContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
-		const c03 = useContext(C04Context);
-		const { canPrint } = c03;
+		const c04 = useContext(C04Context);
+		const { canPrint } = c04;
 
 		if (!canPrint) {
 			return false;

@@ -580,12 +580,13 @@ export const useA01 = ({ token, mode }) => {
 
 	return {
 		...loader,
-		// Popper
 		selectById,
-		popperOpen: popperOpen,
-		handlePopperToggle: handlePopperToggle,
-		handlePopperOpen: handlePopperOpen,
-		handlePopperClose: handlePopperClose,
+		// Popper
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+
 		onSearchSubmit,
 		onSearchSubmitError,
 		mode,

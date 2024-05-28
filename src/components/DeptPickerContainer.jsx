@@ -7,7 +7,7 @@ import Depts from "@/modules/md-depts";
 import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
 
 const DeptPickerContainer = memo((props) => {
-	const { uid, scope = Auth.SCOPES.HQ, ...rest } = props;
+	const { uid, scope = Auth.SCOPES.HQ, excludesSelf, ...rest } = props;
 	const auth = useContext(AuthContext);
 
 	const getData = useCallback((payload) => {
@@ -18,8 +18,11 @@ const DeptPickerContainer = memo((props) => {
 		return queryString.stringify({
 			uid: uid,
 			sp: scope,
+			...(excludesSelf && {
+				es: 1,
+			}),
 		});
-	}, [scope, uid]);
+	}, [excludesSelf, scope, uid]);
 
 	return (
 		<OptionPickerWrapper
@@ -28,7 +31,6 @@ const DeptPickerContainer = memo((props) => {
 			isOptionEqualToValue={Depts.isOptionEqualToValue}
 			bearer={auth.token}
 			getData={getData}
-			// params={params}
 			querystring={querystring}
 			{...rest}
 		/>
@@ -38,6 +40,7 @@ const DeptPickerContainer = memo((props) => {
 DeptPickerContainer.propTypes = {
 	uid: PropTypes.string,
 	scope: PropTypes.number,
+	excludesSelf: PropTypes.bool,
 };
 
 DeptPickerContainer.displayName = "DeptPickerContainer";

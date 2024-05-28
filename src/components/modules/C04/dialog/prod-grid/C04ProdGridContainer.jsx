@@ -18,11 +18,16 @@ export const C04ProdGridContainer = (props) => {
 		conrtol: form.control,
 	});
 
+	const rstDate = useWatch({
+		name: "GinDate",
+		control: form.control,
+	});
+
 	return (
 		<DSGBox>
 			<C04ProdGrid
 				gridRef={c04.setGridRef}
-				readOnly={!c04.editing || !supplier}
+				readOnly={!c04.editing || !supplier || !rstDate}
 				data={c04.gridData}
 				handleGridChange={c04.handleGridChange({
 					getValues: form.getValues,

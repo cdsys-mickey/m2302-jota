@@ -24,7 +24,7 @@ const transformGridForReading = (data) => {
 	);
 };
 
-const transformGridForSubmit = (gridData) => {
+const transformGridForSubmitting = (gridData) => {
 	return gridData
 		.filter((v) => v.prod?.ProdID)
 		.map(
@@ -56,7 +56,6 @@ const transformForReading = (payload) => {
 		FactData,
 		GdsIn_S,
 		Remark,
-		TaxType,
 		...rest
 	} = payload;
 
@@ -104,7 +103,7 @@ const transformForSubmitting = (payload, gridData) => {
 		OrdID: purchaseOrders.map((o) => o["採購單號"]).join(","),
 		...rest,
 		...(gridData && {
-			GdsIn_S: transformGridForSubmit(gridData),
+			GdsIn_S: transformGridForSubmitting(gridData),
 		}),
 	};
 };

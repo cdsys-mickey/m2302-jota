@@ -4,9 +4,8 @@ import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDS
 import { memo, useMemo } from "react";
 import {
 	DynamicDataSheetGrid,
-	keyColumn,
-	textColumn,
 	createTextColumn,
+	keyColumn,
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
@@ -47,7 +46,12 @@ const B05QuoteGrid = memo((props) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("SPackData_N", textColumn),
+				...keyColumn(
+					"SPackData_N",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				title: "包裝說明",
 				disabled: true,
 			},

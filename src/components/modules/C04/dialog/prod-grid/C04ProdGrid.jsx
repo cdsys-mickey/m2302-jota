@@ -3,18 +3,18 @@ import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDS
 import { memo, useMemo } from "react";
 import {
 	DynamicDataSheetGrid,
+	createTextColumn,
 	keyColumn,
-	textColumn,
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
+import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
-import C04ProdGridAddRows from "./C04ProdGridAddRows";
 import FreeProdTypePickerComponent from "../../../../dsg/columns/FreeProdTypePickerComponent";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import C04ProdGridAddRows from "./C04ProdGridAddRows";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -36,7 +36,12 @@ const C04ProdGrid = memo((props) => {
 	const columns = useMemo(
 		() => [
 			{
-				...keyColumn("SOrdFlag_N", textColumn),
+				...keyColumn(
+					"SOrdFlag_N",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				minWidth: 38,
 				maxWidth: 38,
 				title: "採",
@@ -59,13 +64,23 @@ const C04ProdGrid = memo((props) => {
 				disabled: readOnly || prodDisabled,
 			},
 			{
-				...keyColumn("PackData_N", textColumn),
+				...keyColumn(
+					"PackData_N",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				minWidth: 60,
 				title: "包裝",
 				disabled: true,
 			},
 			{
-				...keyColumn("SInqFlag", textColumn),
+				...keyColumn(
+					"SInqFlag",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				minWidth: 38,
 				maxWidth: 38,
 				title: "詢",
@@ -83,6 +98,7 @@ const C04ProdGrid = memo((props) => {
 				...keyColumn(
 					"stype",
 					optionPickerColumn(FreeProdTypePickerComponent, {
+						name: "stype",
 						disableClearable: true,
 					})
 				),
@@ -112,7 +128,12 @@ const C04ProdGrid = memo((props) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("ordId", textColumn),
+				...keyColumn(
+					"ordId",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				title: "採購單號",
 				grow: 3,
 				disabled: true,

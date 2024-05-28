@@ -162,7 +162,7 @@ const C04DialogForm = memo((props) => {
 								name="InvNo"
 								label="發票號碼"
 								fullWidth
-								required
+								// required
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={7}>

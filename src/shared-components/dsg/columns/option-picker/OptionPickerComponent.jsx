@@ -32,11 +32,12 @@ const OptionPickerComponent = memo((props) => {
 
 	const handleChange = useCallback(
 		(newValue) => {
+			console.log("OptionPickerComponent.handleChange", newValue);
 			setRowData(newValue);
 			if (!newValue) {
 				return;
 			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
+			setTimeout(() => stopEditing({ nextRow: false }), 100);
 		},
 		[setRowData, stopEditing]
 	);

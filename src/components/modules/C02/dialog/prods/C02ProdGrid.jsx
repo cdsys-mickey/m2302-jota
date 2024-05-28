@@ -4,16 +4,14 @@ import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDS
 import { memo, useMemo } from "react";
 import {
 	DynamicDataSheetGrid,
-	keyColumn,
-	textColumn,
 	createTextColumn,
+	keyColumn,
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { supplierPickerColumn } from "../../../../dsg/columns/supplier-picker/supplierPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -51,7 +49,12 @@ const C02ProdGrid = memo((props) => {
 			},
 
 			{
-				...keyColumn("PackData_N", textColumn),
+				...keyColumn(
+					"PackData_N",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				minWidth: 60,
 				title: "包裝",
 				disabled: true,
@@ -78,19 +81,34 @@ const C02ProdGrid = memo((props) => {
 				disabled: true,
 			},
 			{
-				...keyColumn("SFactID", textColumn),
+				...keyColumn(
+					"SFactID",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				title: "供應商",
 				grow: 2,
 				disabled: true,
 			},
 			{
-				...keyColumn("SFactNa", textColumn),
+				...keyColumn(
+					"SFactNa",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				title: "名稱",
 				grow: 3,
 				disabled: true,
 			},
 			{
-				...keyColumn("SOrdID", textColumn),
+				...keyColumn(
+					"SOrdID",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				title: "採購單",
 				minWidth: 120,
 				disabled: true,

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo, useState } from "react";
 import {
 	DynamicDataSheetGrid,
+	createTextColumn,
 	keyColumn,
 	textColumn,
 } from "react-datasheet-grid";
@@ -23,7 +24,12 @@ const DSGTest2 = memo(
 		const columns = useMemo(
 			() => [
 				{
-					...keyColumn("firstName", textColumn),
+					...keyColumn(
+						"firstName",
+						createTextColumn({
+							continuousUpdates: false,
+						})
+					),
 					title: "First name",
 					grow: 3,
 					minWidth: 120,

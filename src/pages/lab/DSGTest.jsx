@@ -4,6 +4,7 @@ import { forwardRef, memo, useMemo, useState } from "react";
 import {
 	DataSheetGrid,
 	checkboxColumn,
+	createTextColumn,
 	keyColumn,
 	textColumn,
 } from "react-datasheet-grid";
@@ -34,8 +35,24 @@ const DSGTest = memo(
 		const columns = useMemo(
 			() => [
 				{ ...keyColumn("active", checkboxColumn), title: "Active" },
-				{ ...keyColumn("firstName", textColumn), title: "First name" },
-				{ ...keyColumn("lastName", textColumn), title: "Last name" },
+				{
+					...keyColumn(
+						"firstName",
+						createTextColumn({
+							continuousUpdates: false,
+						})
+					),
+					title: "First name",
+				},
+				{
+					...keyColumn(
+						"lastName",
+						createTextColumn({
+							continuousUpdates: false,
+						})
+					),
+					title: "Last name",
+				},
 				{
 					...keyColumn(
 						"Using_N",

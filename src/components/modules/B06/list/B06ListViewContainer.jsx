@@ -50,7 +50,7 @@ export const B06ListViewContainer = () => {
 				loadMoreItems={b06.loadMoreItems}
 				isItemLoaded={b06.isItemLoaded}
 				RowComponent={B06ListRowContainer}
-				height={height ? height - 242 : 300}
+				height={height ? height - 246 : 300}
 				handleItemsRendered={b06.handleItemsRendered}
 				error={b06.listError}
 				// bottomReached={b06.bottomReached}

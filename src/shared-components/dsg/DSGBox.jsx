@@ -1,36 +1,23 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
 
-const DSGBox = memo((props) => {
-	const { children, sx = [], bgcolor, ...rest } = props;
-	return (
-		<Box
-			sx={[
-				(theme) => ({
-					"& .row-selected .dsg-cell-gutter": {
-						backgroundColor: bgcolor || theme.palette.primary.main,
-						color: theme.palette.getContrastText(
-							bgcolor || theme.palette.primary.main
-						),
-					},
-					"& .dsg-cell.line-through": {
-						textDecoration: "line-through",
-					},
-				}),
-				...(Array.isArray(sx) ? sx : [sx]),
-			]}
-			{...rest}>
-			{children}
-		</Box>
-	);
-});
+const DSGBox = styled(Box, {
+	// self props
+	shouldForwardProp: (prop) => !["bgcolor", "disableAddRow"].includes(prop),
+})(({ theme, bgcolor, disableAddRows }) => ({
+	"& .row-selected .dsg-cell-gutter": {
+		backgroundColor: bgcolor || theme.palette.primary.main,
+		color: theme.palette.getContrastText(
+			bgcolor || theme.palette.primary.main
+		),
+	},
+	"& .dsg-cell.line-through": {
+		textDecoration: "line-through",
+	},
+	...(disableAddRows && {
+		"& .dsg-add-row .add-control": {
+			opacity: 0,
+		},
+	}),
+}));
 
-DSGBox.propTypes = {
-	bgcolor: PropTypes.string,
-	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
-	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-};
-
-DSGBox.displayName = "DSGBox";
 export default DSGBox;

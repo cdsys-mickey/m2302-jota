@@ -4,16 +4,14 @@ import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDS
 import { memo, useMemo } from "react";
 import {
 	DynamicDataSheetGrid,
-	keyColumn,
-	textColumn,
 	createTextColumn,
+	keyColumn,
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { supplierPickerColumn } from "../../../../dsg/columns/supplier-picker/supplierPickerColumn";
 import { supplierIdPickerColumn } from "../../../../dsg/columns/supplier-picker/supplierIdPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
@@ -54,7 +52,12 @@ const C01ProdGrid = memo((props) => {
 			},
 
 			{
-				...keyColumn("PackData_N", textColumn),
+				...keyColumn(
+					"PackData_N",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				minWidth: 60,
 				title: "包裝",
 				disabled: true,
@@ -94,13 +97,23 @@ const C01ProdGrid = memo((props) => {
 				disabled: readOnly || supplierDisabled,
 			},
 			{
-				...keyColumn("SFactNa", textColumn),
+				...keyColumn(
+					"SFactNa",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				title: "名稱",
 				grow: 3,
 				disabled: readOnly || supplierNameDisabled,
 			},
 			{
-				...keyColumn("SOrdID", textColumn),
+				...keyColumn(
+					"SOrdID",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				title: "採購單",
 				minWidth: 120,
 				disabled: true,

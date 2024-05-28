@@ -11,14 +11,15 @@ export const createAddRowsComponentEx =
 
 		return (
 			<div className="dsg-add-row">
+				{/* <div style={{ display: "inline-flex" }}> */}
 				<button
 					type="button"
-					className="dsg-add-row-btn"
+					className="dsg-add-row-btn add-control"
 					onClick={() => addRows(value)}>
 					{translationKeys.button ?? "Add"}
 				</button>{" "}
 				<input
-					className="dsg-add-row-input"
+					className="dsg-add-row-input add-control"
 					value={rawValue}
 					onBlur={() => setRawValue(String(value))}
 					type="number"
@@ -38,9 +39,15 @@ export const createAddRowsComponentEx =
 						}
 					}}
 				/>
-				{translationKeys.unit ?? "rows"}
+				<span className="dsg-add-row-label add-control">
+					{translationKeys.unit ?? "rows"}
+				</span>
+				{/* </div> */}
 				{RightComponent && (
-					<FlexBox flexGrow={1} justifyContent="flex-end">
+					<FlexBox
+						className="dsg-add-row-right"
+						flexGrow={1}
+						justifyContent="flex-end">
 						<RightComponent />
 					</FlexBox>
 				)}

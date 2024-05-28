@@ -7,6 +7,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import C02DialogForm from "./C02DialogForm";
 import { useEffect } from "react";
 import { C02DialogToolbarContainer } from "./toolbar/C02DialogToolbarContainer";
+import Colors from "@/modules/md-colors";
 
 export const C02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -80,7 +81,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 				// onReturn={handleReturn}
 				sx={{
 					"& .MuiDialog-paper": {
-						backgroundColor: "rgb(241 241 241)",
+						backgroundColor: Colors.DIALOG_BG,
 					},
 				}}
 				contentSx={[

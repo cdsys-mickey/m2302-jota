@@ -209,8 +209,10 @@ const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
 		if (value1 !== value2) {
 			if (debug) {
 				console.log(
-					`${header ? header + "." : ""}${key} mismatched:`,
-					`${value1} → ${value2}`
+					`${
+						header ? header + "." : ""
+					}${key} mismatched: ${value1} → `,
+					value2
 				);
 			}
 			if (debugValues) {

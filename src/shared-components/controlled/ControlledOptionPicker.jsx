@@ -33,6 +33,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 			}) => (
 				<>
 					<OptionPicker
+						name={name}
 						ref={ref}
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}

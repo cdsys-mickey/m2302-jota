@@ -2,7 +2,6 @@
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useCallback } from "react";
 import B06 from "../../modules/md-b06";
-import { useAction } from "../../shared-hooks/useAction";
 import { useAppModule } from "./useAppModule";
 import useHttpPost from "../../shared-hooks/useHttpPost";
 
@@ -20,10 +19,10 @@ export const useB06 = ({ token, logKey, deptId }) => {
 
 	const { postToBlank } = useHttpPost();
 
-	const handleSelect = useCallback((e, item) => {
-		e?.stopPropagation();
-		console.log("handleSelect", item);
-	}, []);
+	// const handleSelect = useCallback((e, item) => {
+	// 	e?.stopPropagation();
+	// 	console.log("handleSelect", item);
+	// }, []);
 
 	const onSearchSubmit = useCallback(
 		(data) => {
@@ -74,7 +73,7 @@ export const useB06 = ({ token, logKey, deptId }) => {
 		onSearchSubmitError,
 		onPrintSubmit,
 		onPrintSubmitError,
-		handleSelect,
+		// handleSelect,
 		...appModule,
 	};
 };

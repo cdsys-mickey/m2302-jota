@@ -4,8 +4,8 @@ import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDS
 import { memo, useMemo } from "react";
 import {
 	DynamicDataSheetGrid,
+	createTextColumn,
 	keyColumn,
-	textColumn,
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
@@ -53,13 +53,23 @@ const C03ProdGrid = memo((props) => {
 			},
 
 			{
-				...keyColumn("PackData_N", textColumn),
+				...keyColumn(
+					"PackData_N",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				minWidth: 60,
 				title: "包裝",
 				disabled: true,
 			},
 			{
-				...keyColumn("SInqFlag", textColumn),
+				...keyColumn(
+					"SInqFlag",
+					createTextColumn({
+						continuousUpdates: false,
+					})
+				),
 				minWidth: 38,
 				maxWidth: 38,
 				title: "詢",

@@ -21,7 +21,7 @@ export const B06ListRowContainer = (props) => {
 			index={index}
 			loading={loading}
 			value={value}
-			onClick={(e) => b06.handleSelect(e, value)}
+			// onClick={(e) => b06.handleSelect(e, value)}
 			selected={selected}
 			{...rest}
 		/>

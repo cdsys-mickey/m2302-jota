@@ -12,6 +12,7 @@ const HoverableListItem = styled(Box, {
 })(
 	({
 		theme,
+		onClick,
 		disabled = false,
 		transparent = false,
 		borderBottom = false,
@@ -70,7 +71,7 @@ const HoverableListItem = styled(Box, {
 			...(borderBottom && {
 				borderBottom: `1px solid ${Colors.HOVER}`,
 			}),
-			cursor: "pointer",
+			cursor: onClick ? "pointer" : "inherit",
 		};
 	}
 );

@@ -1,13 +1,12 @@
 import { A05Context } from "@/contexts/A05/A05Context";
-import DialogEx from "@/shared-components/dialog/DialogEx";
-import ActionState from "@/shared-constants/action-state";
+import Colors from "@/modules/md-colors";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A05Form from "../form/A05Form";
 import { A05DialogButtonsContainer } from "./buttons/A05DialogButtonsContainer";
-import { useScrollable } from "../../../../shared-hooks/useScrollable";
-import { DialogExContainer } from "../../../../shared-components/dialog/DialogExContainer";
-import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
 
 export const A05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -58,7 +57,7 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 				// onReturn={a05.updating ? a05.confirmReturn : null}
 				sx={{
 					"& .MuiDialog-paper": {
-						backgroundColor: "rgb(241 241 241)",
+						backgroundColor: Colors.DIALOG_BG,
 					},
 				}}
 				contentSx={[

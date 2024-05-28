@@ -93,6 +93,10 @@ import { C04Provider } from "../contexts/C04/C04Provider";
 import { C04FrameContainer } from "../pages/C04/C04FrameContainer";
 import { C03Provider } from "../contexts/C03/C03Provider";
 import { C03FrameContainer } from "../pages/C03/C03FrameContainer";
+import { C05Provider } from "../contexts/C05/C05Provider";
+import { C05FrameContainer } from "../pages/C05/C05FrameContainer";
+import { C06Provider } from "../contexts/C06/C06Provider";
+import { C06FrameContainer } from "../pages/C06/C06FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -502,6 +506,26 @@ const AppRoute = () => {
 								<C04Provider>
 									<C04FrameContainer />
 								</C04Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="C05"
+						element={
+							<CrudProvider>
+								<C05Provider>
+									<C05FrameContainer />
+								</C05Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="C06"
+						element={
+							<CrudProvider>
+								<C06Provider>
+									<C06FrameContainer />
+								</C06Provider>
 							</CrudProvider>
 						}
 					/>

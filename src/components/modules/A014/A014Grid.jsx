@@ -106,7 +106,9 @@ const A014Grid = memo((props) => {
 			{
 				...keyColumn(
 					"typeA",
-					optionPickerColumn(ProdTypeAPickerColumn)
+					optionPickerColumn(ProdTypeAPickerColumn, {
+						name: "typeA",
+					})
 				),
 				title: "品別",
 				grow: 2,
@@ -115,7 +117,9 @@ const A014Grid = memo((props) => {
 			{
 				...keyColumn(
 					"typeB",
-					optionPickerColumn(ProdTypeBPickerColumn)
+					optionPickerColumn(ProdTypeBPickerColumn, {
+						name: "typeB",
+					})
 				),
 				title: "品類",
 				grow: 2,
@@ -124,7 +128,9 @@ const A014Grid = memo((props) => {
 			{
 				...keyColumn(
 					"taxType",
-					optionPickerColumn(TaxTypePickerComponent)
+					optionPickerColumn(TaxTypePickerComponent, {
+						name: "taxType",
+					})
 				),
 				title: "稅別",
 				grow: 2,

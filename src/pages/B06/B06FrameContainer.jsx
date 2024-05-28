@@ -23,11 +23,8 @@ export const B06FrameContainer = () => {
 		<FormProvider {...searchForm}>
 			<Box sx={[boxStyles]}>
 				<FrameBannerContainer></FrameBannerContainer>
-				{/* 查詢表單 */}
 				<B06FormContainer />
-				{/* 工具列 */}
-				<B06ToolbarContainer />
-				{/* 列表 */}
+				<B06ToolbarContainer minHeight="42px" />
 				<B06ListHeader />
 				<B06ListViewContainer />
 			</Box>
