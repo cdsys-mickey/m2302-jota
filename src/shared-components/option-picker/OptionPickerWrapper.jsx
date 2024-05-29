@@ -1,6 +1,6 @@
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import PropTypes from "prop-types";
-import { ControlledOptionPicker } from "../controlled/ControlledOptionPicker";
+import { ControlledOptionPicker } from "./ControlledOptionPicker";
 import TypoOptionPickerContainer from "./TypoOptionPickerContainer";
 import { WebApiOptionPickerWrapper } from "./WebApiOptionPickerWrapper";
 import { memo } from "react";

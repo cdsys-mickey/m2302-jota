@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import C03 from "@/modules/md-c03";
-import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const C03ListModePicker = memo(
 	forwardRef((props, ref) => {

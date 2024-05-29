@@ -4,7 +4,7 @@ import { memo, useCallback, useContext, useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "@/modules/md-auth";
 import Depts from "@/modules/md-depts";
-import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const DeptPickerContainer = memo((props) => {
 	const { uid, scope = Auth.SCOPES.HQ, excludesSelf, ...rest } = props;

@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import Counters from "../../modules/md-counters";
-import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
+import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
 
 const CounterPickerContainer = forwardRef((props, ref) => {
 	const { label = "櫃別", ...rest } = props;

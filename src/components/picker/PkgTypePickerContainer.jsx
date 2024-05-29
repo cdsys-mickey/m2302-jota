@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useCallback, useContext } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import PkgTypes from "../../modules/md-pkg-types";
-import { OptionPickerWrapper } from "../../shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
 export const PkgTypePickerContainer = (props) => {
 	const { name, label = "包裝單位", ...rest } = props;

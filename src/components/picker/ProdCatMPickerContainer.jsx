@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ProdMCats from "@/modules/md-prod-m-cats";
 import PropTypes from "prop-types";
 import { forwardRef, useContext, useMemo } from "react";
-import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
+import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
 
 export const ProdCatMPickerContainer = forwardRef((props, ref) => {
 	const { catL, ...rest } = props;

@@ -4,7 +4,7 @@ import Prods from "@/modules/md-prods";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import queryString from "query-string";
-import { OptionPickerWrapper } from "../../shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 import { useCallback } from "react";
 
 export const ProdPickerContainer = (props) => {

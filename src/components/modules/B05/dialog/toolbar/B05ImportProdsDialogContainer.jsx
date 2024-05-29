@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { B05Context } from "../../../../../contexts/B05/B05Context";
 import B05LoadProdsForm from "./import-prods/B05ImportProdsForm";
 import { FormProvider, useForm } from "react-hook-form";
-import { OptionPickerProvider } from "../../../../../shared-components/picker/listbox/OptionPickerProvider";
+import { OptionPickerProvider } from "../../../../../shared-components/option-picker/OptionPickerProvider";
 import { useChangeTracking } from "../../../../../shared-hooks/useChangeTracking";
 
 const B05ImportProdsDialogContainer = forwardRef((props, ref) => {

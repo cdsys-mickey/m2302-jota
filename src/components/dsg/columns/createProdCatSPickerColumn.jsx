@@ -1,4 +1,4 @@
-import WebApiOptionPicker from "../../../shared-components/picker/WebApiOptionPicker"
+import WebApiOptionPicker from "../../../shared-components/option-picker/WebApiOptionPicker"
 
 export const createProdCatSPickerColumn = (ComponentProps) => {
 	return {

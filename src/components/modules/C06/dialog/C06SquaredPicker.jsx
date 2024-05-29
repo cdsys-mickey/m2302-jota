@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import C06 from "@/modules/md-c06";
-import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
-import { useCallback } from "react";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const C06SquaredPicker = memo(
 	forwardRef((props, ref) => {

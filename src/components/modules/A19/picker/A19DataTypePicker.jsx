@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import A19 from "@/modules/md-a19";
-import { ControlledOptionPicker } from "@/shared-components/controlled/ControlledOptionPicker";
-import OptionPicker from "@/shared-components/picker/OptionPicker";
+import { ControlledOptionPicker } from "@/shared-components/option-picker/ControlledOptionPicker";
+import OptionPicker from "@/shared-components/option-picker/OptionPicker";
 
 const A19DataTypePicker = memo(
 	forwardRef((props, ref) => {

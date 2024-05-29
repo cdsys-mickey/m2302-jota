@@ -5,7 +5,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { A19FormContainer } from "@/components/modules/A19/A19FormContainer";
-import { OptionPickerProvider } from "../../shared-components/picker/listbox/OptionPickerProvider";
+import { OptionPickerProvider } from "../../shared-components/option-picker/OptionPickerProvider";
 
 export const A19FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);

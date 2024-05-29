@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import { memo } from "react";
 import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
-import { OptionPickerProvider } from "@/shared-components/picker/listbox/OptionPickerProvider";
+import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { SupplierPickerContainer } from "@/components/picker/SupplierPickerContainer";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import { B06SearchButtonContainer } from "./B06SearchButtonContainer";

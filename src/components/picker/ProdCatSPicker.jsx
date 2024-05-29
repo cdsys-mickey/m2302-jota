@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import ProdSCats from "@/modules/md-prod-s-cats";
-import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const ProdCatSPicker = (props) => {
 	const { name, readOnly = false, ...rest } = props;

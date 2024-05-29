@@ -1,6 +1,6 @@
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import ControlledDatePicker from "@/shared-components/controlled/ControlledDatePicker";
+import ControlledDatePicker from "@/shared-components/date-picker/ControlledDatePicker";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";

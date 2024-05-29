@@ -1,6 +1,6 @@
 import { memo, forwardRef } from "react";
 import PropTypes from "prop-types";
-import TypoOptionPickerContainer from "@/shared-components/picker/TypoOptionPickerContainer";
+import TypoOptionPickerContainer from "@/shared-components/option-picker/TypoOptionPickerContainer";
 import TaxTypes from "@/modules/md-tax-types";
 import { useWatch } from "react-hook-form";
 

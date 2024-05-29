@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
+import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
 import Prods from "@/modules/md-prods";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import queryString from "query-string";
-import { OptionPickerWrapper } from "../../shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 import { useCallback } from "react";
 import ProdLines from "../../modules/md-prod-lines";
 

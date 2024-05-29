@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import Database from "@/modules/md-database";
-import { ControlledOptionPicker } from "@/shared-components/controlled/ControlledOptionPicker";
-import OptionPicker from "@/shared-components/picker/OptionPicker";
+import { ControlledOptionPicker } from "@/shared-components/option-picker/ControlledOptionPicker";
+import OptionPicker from "@/shared-components/option-picker/OptionPicker";
 
 const DbTablePicker = memo(
 	forwardRef((props, ref) => {

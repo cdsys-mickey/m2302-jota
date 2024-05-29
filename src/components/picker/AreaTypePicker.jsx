@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import OptionPicker from "@/shared-components/picker/OptionPicker";
+import OptionPicker from "@/shared-components/option-picker/OptionPicker";
 import AreaTypes from "@/modules/md-area-types";
 
 const AreaTypePicker = forwardRef((props, ref) => {

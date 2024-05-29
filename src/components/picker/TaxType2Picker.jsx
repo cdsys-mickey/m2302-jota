@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import TaxTypes2 from "@/modules/md-tax-types2";
-import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const TaxType2Picker = memo(
 	forwardRef((props, ref) => {

@@ -178,7 +178,7 @@ export const useC04 = () => {
 					prodGrid.gridData
 				);
 				console.log("collected", collected);
-				const { status, payload, error } = await httpPatchAsync({
+				const { status, payload, error } = await httpPostAsync({
 					url: "v1/purchase/restocks/refresh-grid",
 					bearer: token,
 					data: collected,
@@ -190,6 +190,8 @@ export const useC04 = () => {
 					prodGrid.handleGridDataLoaded(data.prods);
 					refreshAmt({ setValue, data });
 					toast.info("商品單價已更新");
+				} else {
+					throw error || new Error("未預期例外");
 				}
 			} else {
 				//clear
@@ -675,18 +677,24 @@ export const useC04 = () => {
 					prodGrid.gridData
 				);
 				console.log("collected", collected);
-				const { status, payload, error } = await httpPatchAsync({
-					url: "v1/purchase/restocks/load-prods",
-					bearer: token,
-					data: collected,
-				});
-				console.log("load-prods.payload", payload);
-				if (status.success) {
-					const data = C04.transformForReading(payload.data[0]);
-					console.log("refreshed data", data);
-					prodGrid.handleGridDataLoaded(data.prods);
-					refreshAmt({ setValue, data });
-					// toast.info("採購單商品已載入");
+				try {
+					const { status, payload, error } = await httpPostAsync({
+						url: "v1/purchase/restocks/load-prods",
+						bearer: token,
+						data: collected,
+					});
+					console.log("load-prods.payload", payload);
+					if (status.success) {
+						const data = C04.transformForReading(payload.data[0]);
+						console.log("refreshed data", data);
+						prodGrid.handleGridDataLoaded(data.prods);
+						refreshAmt({ setValue, data });
+						// toast.info("採購單商品已載入");
+					} else {
+						throw error || new Error("未預期例外");
+					}
+				} catch (err) {
+					toast.error(Errors.getMessage("載入採購單商品失敗", err));
 				}
 			},
 		[httpPatchAsync, prodGrid, refreshAmt, token]
@@ -708,13 +716,11 @@ export const useC04 = () => {
 						);
 						console.log("collected", collected);
 
-						const { status, payload, error } = await httpPatchAsync(
-							{
-								url: "v1/purchase/restocks/refresh-grid",
-								bearer: token,
-								data: collected,
-							}
-						);
+						const { status, payload, error } = await httpPostAsync({
+							url: "v1/purchase/restocks/refresh-grid",
+							bearer: token,
+							data: collected,
+						});
 						console.log("refresh-grid.payload", payload);
 						if (status.success) {
 							const data = C04.transformForReading(
@@ -724,6 +730,8 @@ export const useC04 = () => {
 							prodGrid.handleGridDataLoaded(data.prods);
 							refreshAmt({ setValue, data });
 							toast.info("商品單價已更新");
+						} else {
+							throw error || new Error("未預期例外");
 						}
 					} else {
 						refreshAmt({
@@ -754,7 +762,7 @@ export const useC04 = () => {
 					);
 					console.log("collected", collected);
 
-					const { status, payload, error } = await httpPatchAsync({
+					const { status, payload, error } = await httpPostAsync({
 						url: "v1/purchase/restocks/load-prods",
 						bearer: token,
 						data: collected,
@@ -766,6 +774,8 @@ export const useC04 = () => {
 						prodGrid.handleGridDataLoaded(data.prods);
 						refreshAmt({ setValue, data });
 						// toast.info("採購單商品已載入");
+					} else {
+						throw error || new Error("發生未預期例外");
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("重整商品失敗", err));

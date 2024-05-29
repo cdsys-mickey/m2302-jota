@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import Auth from "@/modules/md-auth";
-import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const AuthScopePickerContainer = forwardRef((props, ref) => {
 	const { name, label = "門市", ...rest } = props;

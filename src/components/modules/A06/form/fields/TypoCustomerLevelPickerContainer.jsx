@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import TypoOptionPickerContainer from "@/shared-components/picker/TypoOptionPickerContainer";
+import TypoOptionPickerContainer from "@/shared-components/option-picker/TypoOptionPickerContainer";
 import { useWatch } from "react-hook-form";
 import CustomerLevels from "@/modules/md-customer-levels";
 

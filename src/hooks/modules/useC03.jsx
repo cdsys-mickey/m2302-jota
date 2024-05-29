@@ -709,7 +709,7 @@ export const useC03 = () => {
 					);
 					console.log("collected", collected);
 
-					const { status, payload, error } = await httpPatchAsync({
+					const { status, payload, error } = await httpPostAsync({
 						url: "v1/purchase/orders/refresh-grid",
 						bearer: token,
 						data: collected,

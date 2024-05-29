@@ -188,7 +188,7 @@ export const useC06 = () => {
 				);
 				console.log("collected", collected);
 				try {
-					const { status, payload, error } = await httpPatchAsync({
+					const { status, payload, error } = await httpPostAsync({
 						url: "v1/purchase/dep-orders/refresh-grid",
 						bearer: token,
 						data: collected,
@@ -661,13 +661,11 @@ export const useC06 = () => {
 						);
 						console.log("collected", collected);
 
-						const { status, payload, error } = await httpPatchAsync(
-							{
-								url: "v1/purchase/dep-orders/refresh-grid",
-								bearer: token,
-								data: collected,
-							}
-						);
+						const { status, payload, error } = await httpPostAsync({
+							url: "v1/purchase/dep-orders/refresh-grid",
+							bearer: token,
+							data: collected,
+						});
 						console.log("refresh-grid.payload", payload);
 						if (status.success) {
 							const data = C06.transformForReading(

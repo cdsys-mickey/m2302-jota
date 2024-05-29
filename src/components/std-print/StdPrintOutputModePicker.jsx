@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import StdPrint from "../../modules/md-std-print";
-import { ControlledOptionPicker } from "../../shared-components/controlled/ControlledOptionPicker";
+import { ControlledOptionPicker } from "../../shared-components/option-picker/ControlledOptionPicker";
 
 const StdPrintOutputModePicker = memo(
 	forwardRef((props, ref) => {

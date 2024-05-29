@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { ControlledOptionPicker } from "../../../../shared-components/controlled/ControlledOptionPicker";
-import { ZA03Context } from "../../../../contexts/ZA03/ZA03Context";
+import { ControlledOptionPicker } from "@/shared-components/option-picker/ControlledOptionPicker";
+import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { useMemo } from "react";
 import { useCallback } from "react";
 import { FormHelperText } from "@mui/material";

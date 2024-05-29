@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import ProdTypeA from "../../modules/md-prod-type-a";
-import { ControlledOptionPicker } from "../../shared-components/controlled/ControlledOptionPicker";
-import OptionPicker from "../../shared-components/picker/OptionPicker";
+import { ControlledOptionPicker } from "../../shared-components/option-picker/ControlledOptionPicker";
+import OptionPicker from "../../shared-components/option-picker/OptionPicker";
 import { memo } from "react";
 
 const ProdTypeAPicker = memo(

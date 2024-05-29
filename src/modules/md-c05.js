@@ -94,6 +94,13 @@ const transformAsQueryParams = (data) => {
 	};
 };
 
+const isFiltered = (criteria) => {
+	return Objects.isAnyPropNotEmpty(
+		criteria,
+		"supplier,spn,spa,spu,rd,employee,taxType"
+	);
+};
+
 const getTotal = (gridData) => {
 	if (!gridData) {
 		return 0;
@@ -104,13 +111,6 @@ const getTotal = (gridData) => {
 		result += SAmt ? Number(SAmt) : 0;
 	}
 	return result;
-};
-
-const isFiltered = (criteria) => {
-	return Objects.isAnyPropNotEmpty(
-		criteria,
-		"supplier,spn,spa,spu,rd,employee,tt"
-	);
 };
 
 const C05 = {

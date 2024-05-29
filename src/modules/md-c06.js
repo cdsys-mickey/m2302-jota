@@ -53,6 +53,7 @@ const transformForReading = (payload) => {
 	const {
 		OrdDate,
 		ArrDate,
+		CFlag,
 		EmplID,
 		EmplData_N,
 		OrdDeptID,
@@ -69,6 +70,7 @@ const transformForReading = (payload) => {
 	return {
 		OrdDate: Forms.parseDate(OrdDate),
 		ArrDate: Forms.parseDate(ArrDate),
+		squared: getSquaredOptionById(CFlag),
 		employee: {
 			CodeID: EmplID,
 			CodeData: EmplData_N,

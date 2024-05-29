@@ -1,7 +1,7 @@
 import TaxTypes from "@/modules/md-tax-types";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import OptionPicker from "@/shared-components/picker/OptionPicker";
+import OptionPicker from "@/shared-components/option-picker/OptionPicker";
 
 const TaxTypePicker = forwardRef((props, ref) => {
 	const { name, label = "稅別", ...rest } = props;

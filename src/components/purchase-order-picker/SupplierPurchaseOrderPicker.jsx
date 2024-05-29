@@ -3,7 +3,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import queryString from "query-string";
-import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import { useWatch } from "react-hook-form";
 import PurchaseOrders from "@/modules/md-purchase-orders";
 import { SupplierPurchaseOrderPaper } from "./SupplierPurchaseOrderPaper";

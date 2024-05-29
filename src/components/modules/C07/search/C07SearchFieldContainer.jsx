@@ -1,26 +1,25 @@
-import { A06Context } from "@/contexts/A06/A06Context";
+import { C07Context } from "@/contexts/C07/C07Context";
 import { ControlledSearchFieldContainer } from "@/shared-components/search-field/ControlledSearchFieldContainer";
 import useSearchField from "@/shared-hooks/useSearchField";
 import PropTypes from "prop-types";
 import { useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
+import C07SearchPopperContainer from "./C07SearchPopperContainer";
+import C07 from "@/modules/md-c07";
 
-export const CustomerSearchFieldContainer = (props) => {
-	const { name = "qs", ...rest } = props;
-	const forms = useFormContext();
-	// const { getValues } = forms;
-	// const forms = useForm();
+export const C07SearchFieldContainer = (props) => {
+	const { name = "q", ...rest } = props;
+	const form = useFormContext();
 
-	const a06 = useContext(A06Context);
-	const { popperOpen } = a06;
+	const c07 = useContext(C07Context);
 
 	const inputRef = useRef(null);
 
 	const searchField = useSearchField({
 		inputRef,
 		onChange: (v) => {
-			forms.setValue(name, v);
+			form.setValue(name, v);
 		},
 	});
 	useHotkeys("ctrl+F12", searchField.handleFocus, { enableOnFormTags: true });
@@ -31,36 +30,36 @@ export const CustomerSearchFieldContainer = (props) => {
 
 	return (
 		<form
-			onSubmit={forms.handleSubmit(
-				a06.onSearchSubmit,
-				a06.onSearchSubmitError
+			onSubmit={form.handleSubmit(
+				c07.onSearchSubmit,
+				c07.onSearchSubmitError
 			)}>
 			<div ref={escRef}>
 				<ControlledSearchFieldContainer
 					autoFocus
 					name={name}
-					placeholder="搜尋代碼/名稱(ctrl+F12)"
-					mobilePlaceholder="代碼/名稱"
+					placeholder="搜尋單號(ctrl+F12)"
+					mobilePlaceholder="單號"
 					// rightSquare
 					// square
 					borderRadius="8px"
-					// width="30ch"
+					width="30ch"
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}
 					// Popper
-					// PopperComponent={CustomerSearchPopperContainer}
-					// popperOpen={a06.popperOpen}
-					// onPopperToggle={a06.handlePopperToggle}
-					// onPopperOpen={a06.handlePopperOpen}
-					// onPopperClose={a06.handlePopperClose}
-					// filtered={A06.isFiltered(getValues())}
+					PopperComponent={C07SearchPopperContainer}
+					popperOpen={c07.popperOpen}
+					onPopperToggle={c07.handlePopperToggle}
+					onPopperOpen={c07.handlePopperOpen}
+					onPopperClose={c07.handlePopperClose}
+					filtered={C07.isFiltered(form.getValues())}
 				/>
 			</div>
 		</form>
 	);
 };
-CustomerSearchFieldContainer.propTypes = {
+C07SearchFieldContainer.propTypes = {
 	name: PropTypes.string,
 };
-CustomerSearchFieldContainer.displayName = "CustomerSearchFieldContainer";
+C07SearchFieldContainer.displayName = "C07SearchFieldContainer";

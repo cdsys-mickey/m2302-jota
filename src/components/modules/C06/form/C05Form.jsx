@@ -3,7 +3,7 @@ import Fieldset from "@/shared-components/Fieldset";
 import FlexGrid from "@/shared-components/FlexGrid";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
-import { OptionPickerProvider } from "@/shared-components/picker/listbox/OptionPickerProvider";
+import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";

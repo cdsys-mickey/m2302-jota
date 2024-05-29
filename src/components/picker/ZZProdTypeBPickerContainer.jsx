@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import ProdTypeB from "../../modules/md-prod-type-b";
 import TypoOptionPickerContainer from "../../shared-components/typo/TypoOptionPickerContainer";
-import OptionPicker from "../../shared-components/picker/OptionPicker";
-import { ControlledOptionPicker } from "../../shared-components/controlled/ControlledOptionPicker";
+import OptionPicker from "../../shared-components/option-picker/OptionPicker";
+import { ControlledOptionPicker } from "../../shared-components/option-picker/ControlledOptionPicker";
 
 const ProdTypeBPickerContainer = forwardRef((props, ref) => {
 	const { name, label = "品類", ...rest } = props;

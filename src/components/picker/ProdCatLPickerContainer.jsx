@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ProdLCats from "@/modules/md-prod-l-cats";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
+import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
 
 export const ProdCatLPickerContainer = (props) => {
 	const { label = "大分類", ...rest } = props;

@@ -1,4 +1,4 @@
-import { ControlledOptionPicker } from "@/shared-components/controlled/ControlledOptionPicker";
+import { ControlledOptionPicker } from "@/shared-components/option-picker/ControlledOptionPicker";
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import { forwardRef, memo, useMemo } from "react";
 import PropTypes from "prop-types";

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import OptionPicker from "@/shared-components/picker/OptionPicker";
+import OptionPicker from "@/shared-components/option-picker/OptionPicker";
 import PropTypes from "prop-types";
 import { useRef } from "react";
 import { useLayoutEffect } from "react";

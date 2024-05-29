@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import { TypoDatePickerContainer } from "../typo/TypoDatePickerContainer";
-import ControlledDatePicker from "../controlled/ControlledDatePicker";
+import { TypoDatePickerContainer } from "./TypoDatePickerContainer";
+import ControlledDatePicker from "./ControlledDatePicker";
 
 export const DatePickerWrapper = (props) => {
 	const { typo = false, size = "small", ...rest } = props;

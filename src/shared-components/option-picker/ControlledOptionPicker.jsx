@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Controller } from "react-hook-form";
-import OptionPicker from "../picker/OptionPicker";
+import OptionPicker from "./OptionPicker";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 

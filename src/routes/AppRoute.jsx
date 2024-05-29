@@ -81,22 +81,24 @@ import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
 import LockSwitchTest from "@/pages/lab/LockSwitchTest";
 import { B05Provider } from "@/contexts/B05/B05Provider";
 import { B05FrameContainer } from "@/pages/B05/B05FrameContainer";
-import OptionPickerTest from "../pages/lab/OptionPickerTest";
-import DSGTest3 from "../pages/lab/DSGTest3";
-import { B06Provider } from "../contexts/B06/B06Provider";
+import OptionPickerTest from "@/pages/lab/OptionPickerTest";
+import DSGTest3 from "@/pages/lab/DSGTest3";
+import { B06Provider } from "@/contexts/B06/B06Provider";
 import { B06FrameContainer } from "@/pages/B06/B06FrameContainer";
-import { C02Provider } from "../contexts/C02/C02Provider";
-import { C02FrameContainer } from "../pages/C02/C02FrameContainer";
-import { C01Provider } from "../contexts/C01/C01Provider";
-import { C01FrameContainer } from "../pages/C01/C01FrameContainer";
-import { C04Provider } from "../contexts/C04/C04Provider";
-import { C04FrameContainer } from "../pages/C04/C04FrameContainer";
-import { C03Provider } from "../contexts/C03/C03Provider";
-import { C03FrameContainer } from "../pages/C03/C03FrameContainer";
-import { C05Provider } from "../contexts/C05/C05Provider";
-import { C05FrameContainer } from "../pages/C05/C05FrameContainer";
-import { C06Provider } from "../contexts/C06/C06Provider";
-import { C06FrameContainer } from "../pages/C06/C06FrameContainer";
+import { C02Provider } from "@/contexts/C02/C02Provider";
+import { C02FrameContainer } from "@/pages/C02/C02FrameContainer";
+import { C01Provider } from "@/contexts/C01/C01Provider";
+import { C01FrameContainer } from "@/pages/C01/C01FrameContainer";
+import { C04Provider } from "@/contexts/C04/C04Provider";
+import { C04FrameContainer } from "@/pages/C04/C04FrameContainer";
+import { C03Provider } from "@/contexts/C03/C03Provider";
+import { C03FrameContainer } from "@/pages/C03/C03FrameContainer";
+import { C05Provider } from "@/contexts/C05/C05Provider";
+import { C05FrameContainer } from "@/pages/C05/C05FrameContainer";
+import { C06Provider } from "@/contexts/C06/C06Provider";
+import { C06FrameContainer } from "@/pages/C06/C06FrameContainer";
+import { C07Provider } from "@/contexts/C07/C07Provider";
+import { C07FrameContainer } from "@/pages/C07/C07FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -526,6 +528,16 @@ const AppRoute = () => {
 								<C06Provider>
 									<C06FrameContainer />
 								</C06Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="C07"
+						element={
+							<CrudProvider>
+								<C07Provider>
+									<C07FrameContainer />
+								</C07Provider>
 							</CrudProvider>
 						}
 					/>

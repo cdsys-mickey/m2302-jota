@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 
-import { OptionPickerWrapper } from "../../shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
 const ProdCatMPicker = (props) => {
 	const { name, readOnly = false, ...rest } = props;

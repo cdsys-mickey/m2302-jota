@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import CmsTypes from "../../modules/md-cms-types";
-import WebApiOptionPicker from "../../shared-components/picker/WebApiOptionPicker";
+import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
 
 const CmsTypePickerContainer = forwardRef((props, ref) => {
 	const { label = "佣金類別", ...rest } = props;

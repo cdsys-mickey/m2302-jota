@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import WebApiOptionPicker from "@/shared-components/picker/WebApiOptionPicker";
+import WebApiOptionPicker from "@/shared-components/option-picker/WebApiOptionPicker";
 import PropTypes from "prop-types";
 import { useRef } from "react";
 import { memo } from "react";

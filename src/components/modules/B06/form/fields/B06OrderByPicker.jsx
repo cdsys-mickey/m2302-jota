@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import { OptionPickerWrapper } from "@/shared-components/picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import B06 from "@/modules/md-b06";
 
 export const B06OrderByPicker = memo(
