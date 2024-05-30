@@ -1,0 +1,149 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+import Forms from "../shared-modules/sd-forms";
+import Objects from "../shared-modules/sd-objects";
+
+const transformGridForReading = (data) => {
+	return (
+		data?.map(({ SProdID, ProdData_N, ...rest }) => {
+			return {
+				prod: {
+					ProdID: SProdID,
+					ProdData: ProdData_N,
+				},
+				...rest,
+			};
+		}) || []
+	);
+};
+
+const transformGridForSubmitting = (gridData) => {
+	return gridData
+		.filter((v) => v.prod?.ProdID)
+		.map(({ Pkey, prod, SQty, SPrice, SAmt, ...rest }, index) => ({
+			Pkey: Pkey?.length < 36 ? "" : Pkey,
+			SProdID: prod?.ProdID,
+			ProdData_N: prod?.ProdData,
+			SQty: SQty?.toString() || "",
+			SPrice: SPrice?.toString() || "",
+			SAmt: SAmt?.toString() || "",
+			Seq: index + 1,
+			...rest,
+		}));
+};
+
+const transformForReading = (payload) => {
+	const {
+		TxoDate,
+		EmplID,
+		EmplData_N,
+		IDeptID,
+		IDeptName_N,
+		OrdIDs,
+		TrafID,
+		TrafData_N,
+		DyEmplID,
+		DyEmplData_N,
+		InvTxo_S,
+		Remark,
+		...rest
+	} = payload;
+
+	return {
+		TxoDate: Forms.parseDate(TxoDate),
+		employee: {
+			CodeID: EmplID,
+			CodeData: EmplData_N,
+		},
+		txiDept: {
+			DeptID: IDeptID,
+			AbbrName: IDeptName_N,
+		},
+		depOrders:
+			OrdIDs?.split("|")
+				.filter((s) => !!s)
+				.map((x) => ({
+					["單號"]: x,
+				})) || [],
+		transType: TrafID
+			? {
+					CodeID: TrafID,
+					CodeData: TrafData_N,
+			  }
+			: null,
+		deliveryEmployee: {
+			CodeID: DyEmplID,
+			CodeData: DyEmplData_N,
+		},
+		prods: transformGridForReading(InvTxo_S),
+		remark: Remark.join("\n"),
+		...rest,
+	};
+};
+
+const transformForSubmitting = (payload, gridData) => {
+	const { GrtID, GrtDate, employee, supplier, remark, ...rest } = payload;
+	return {
+		GrtID,
+		GrtDate: GrtDate ? Forms.formatDate(GrtDate) : "",
+		EmplID: employee?.CodeID || "",
+		FactID: supplier?.FactID || "",
+		Remark: remark?.split("\n") || [],
+		...rest,
+		...(gridData && {
+			GdsRt_S: transformGridForSubmitting(gridData),
+		}),
+	};
+};
+
+const transformAsQueryParams = (data) => {
+	const { txoDate, employee, deliveryEmployee, txiDept, transType, ...rest } =
+		data;
+	return {
+		...(txoDate && {
+			od: Forms.formatDate(txoDate),
+		}),
+		...(employee && {
+			emp: employee.CodeID,
+		}),
+		...(deliveryEmployee && {
+			dm: deliveryEmployee.CodeID,
+		}),
+		...(txiDept && {
+			ind: txiDept?.DeptID,
+		}),
+		...(transType && {
+			tt: transType.CodeID,
+		}),
+		...rest,
+	};
+};
+
+const isFiltered = (criteria) => {
+	return Objects.isAnyPropNotEmpty(
+		criteria,
+		"txoDate,employee,deliveryEmployee,txiDept,transType"
+	);
+};
+
+const getTotal = (gridData) => {
+	if (!gridData) {
+		return 0;
+	}
+	let result = 0;
+	for (const rowData of gridData) {
+		const { SAmt } = rowData;
+		result += SAmt ? Number(SAmt) : 0;
+	}
+	return result;
+};
+
+const C08 = {
+	transformForReading,
+	transformForSubmitting,
+	transformAsQueryParams,
+	transformGridForReading,
+	getTotal,
+	isFiltered,
+};
+
+export default C08;

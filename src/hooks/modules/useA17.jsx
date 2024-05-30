@@ -18,26 +18,41 @@ export const useA17 = () => {
 	});
 	const { httpGetAsync, httpPutAsync } = useWebApi();
 
-	const loadItem = useCallback(async () => {
-		try {
-			crud.startReading("讀取中...");
-			const { status, payload, error } = await httpGetAsync({
-				url: `v1/ou/dept/params`,
-				bearer: token,
-			});
-			console.log("payload", payload);
-			if (status.success) {
-				const data = A17.transformForReading(payload);
-				crud.doneReading({
-					data,
+	const loadItem = useCallback(
+		async (newDeptId) => {
+			try {
+				crud.startReading("讀取中...");
+				const { status, payload, error } = await httpGetAsync({
+					url: `v1/ou/dept/params`,
+					bearer: token,
+					params: {
+						dp: newDeptId,
+					},
 				});
-			} else {
-				throw error || new Error("讀取失敗");
+				console.log("payload", payload);
+				if (status.success) {
+					const data = A17.transformForReading(payload);
+					crud.doneReading({
+						data,
+					});
+				} else {
+					throw error || new Error("讀取失敗");
+				}
+			} catch (err) {
+				crud.failReading(err);
 			}
-		} catch (err) {
-			crud.failReading(err);
-		}
-	}, [crud, httpGetAsync, token]);
+		},
+		[crud, httpGetAsync, token]
+	);
+
+	const handleDeptChanged = useCallback(
+		(newValue) => {
+			if (newValue?.DeptID) {
+				loadItem(newValue?.DeptID);
+			}
+		},
+		[loadItem]
+	);
 
 	const onEditorSubmit = useCallback(
 		async (data) => {
@@ -82,5 +97,6 @@ export const useA17 = () => {
 		// form
 		onEditorSubmit,
 		onEditorSubmitError,
+		handleDeptChanged,
 	};
 };

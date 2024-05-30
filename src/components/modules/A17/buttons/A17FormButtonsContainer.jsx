@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { A17Context } from "../../../../contexts/A17/A17Context";
+import { A17Context } from "@/contexts/A17/A17Context";
 import A17FormEditButtons from "./A17FormEditButtons";
 import A17FormViewButtons from "./A17FormViewButtons";
 

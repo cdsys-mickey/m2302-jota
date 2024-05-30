@@ -94,10 +94,17 @@ const C05SearchPopper = memo(
 				</DialogContent>
 				<Divider />
 				<DialogActions>
-					<ButtonWrapper
+					{/* <ButtonWrapper
 						size="small"
 						variant="contained"
 						color="inherit"
+						onClick={onClear}>
+						清除
+					</ButtonWrapper> */}
+					<ButtonWrapper
+						size="small"
+						variant="contained"
+						color="warning"
 						onClick={onReset}>
 						清除
 					</ButtonWrapper>

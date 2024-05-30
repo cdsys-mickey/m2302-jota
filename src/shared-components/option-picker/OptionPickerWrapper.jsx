@@ -4,6 +4,7 @@ import { ControlledOptionPicker } from "./ControlledOptionPicker";
 import TypoOptionPickerContainer from "./TypoOptionPickerContainer";
 import { WebApiOptionPickerWrapper } from "./WebApiOptionPickerWrapper";
 import { memo } from "react";
+import { ControlledWebApiOptionPicker } from "../controlled/ControlledWebApiOptionPicker";
 
 /**
  * OptionPicker 系列的綜合入口
@@ -22,7 +23,8 @@ export const OptionPickerWrapper = memo((props) => {
 		);
 	}
 	return url ? (
-		<WebApiOptionPickerWrapper url={url} {...rest} />
+		// <WebApiOptionPickerWrapper url={url} {...rest} />
+		<ControlledWebApiOptionPicker url={url} {...rest} />
 	) : (
 		<ControlledOptionPicker {...rest} />
 	);

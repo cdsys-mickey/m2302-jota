@@ -58,5 +58,5 @@ AppDeptPicker.propTypes = {
 	filterByOperator: PropTypes.bool,
 };
 
-AppDeptPicker.displayName = "AppDeptPickerContainer";
+AppDeptPicker.displayName = "AppDeptPicker";
 export default AppDeptPicker;

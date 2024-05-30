@@ -324,6 +324,14 @@ export const useC07 = () => {
 		});
 	}, [crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
 
+	const handleClear = useCallback(
+		({ reset }) =>
+			() => {
+				reset({});
+			},
+		[]
+	);
+
 	const handleReset = useCallback(
 		({ reset }) =>
 			() => {
@@ -690,6 +698,7 @@ export const useC07 = () => {
 		handlePopperOpen,
 		handlePopperClose,
 		handleReset,
+		handleClear,
 		onSearchSubmit,
 		onSearchSubmitError,
 		confirmQuitCreating,

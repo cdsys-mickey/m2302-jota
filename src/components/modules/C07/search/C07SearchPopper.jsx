@@ -1,19 +1,15 @@
 // import CabinetTypes from "@/modules/md-cabinet-types";
 
-import { SupplierPickerContainer } from "@/components/picker/SupplierPickerContainer";
-import TaxType2Picker from "@/components/picker/TaxType2Picker";
+import { EmployeePicker } from "@/components/picker/EmployeePicker";
+import SquaredPicker from "@/components/picker/SquaredPicker";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
-import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
-import SquaredPicker from "@/components/picker/SquaredPicker";
 import DeptPickerContainer from "../../../DeptPickerContainer";
 
 const C07SearchPopper = memo(
@@ -22,6 +18,7 @@ const C07SearchPopper = memo(
 			width = "40ch",
 			onClose,
 			onReset,
+			onClear,
 			ContentProps,
 			// ...rest
 		} = props;
@@ -70,10 +67,17 @@ const C07SearchPopper = memo(
 					<ButtonWrapper
 						size="small"
 						variant="contained"
-						color="inherit"
+						color="warning"
 						onClick={onReset}>
-						清除
+						重設
 					</ButtonWrapper>
+					{/* <ButtonWrapper
+						size="small"
+						variant="contained"
+						color="inherit"
+						onClick={onClear}>
+						清除
+					</ButtonWrapper> */}
 					<ButtonWrapper
 						startIcon={<FilterAltIcon />}
 						type="submit"
@@ -91,6 +95,7 @@ C07SearchPopper.propTypes = {
 	width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 	onClose: PropTypes.func,
 	onReset: PropTypes.func,
+	onClear: PropTypes.func,
 	ContentProps: PropTypes.object,
 };
 C07SearchPopper.displayName = "C07SearchPopper";

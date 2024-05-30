@@ -8,7 +8,11 @@ const A17FormEditButtons = memo(
 		const { onSave, editWorking, onCancel, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				<ResponsiveLoadingButton onClick={onCancel} variant="outlined">
+				<ResponsiveLoadingButton
+					onClick={onCancel}
+					variant="outlined"
+					// color="neutral"
+				>
 					取消
 				</ResponsiveLoadingButton>
 				<ResponsiveLoadingButton

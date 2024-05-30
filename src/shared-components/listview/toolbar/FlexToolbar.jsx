@@ -54,11 +54,13 @@ const FlexToolbar = memo(
 						...(borderRadius && {
 							borderRadius,
 						}),
-						// "& button, & label, & .MuiBox-root": {
-						// 	marginRight: theme.spacing(0.5),
-						// },
 						"& .MuiInputBase-root": {
+							// "& .MuiInputBase-root": {
 							backgroundColor: "rgb(255,255,255)",
+						},
+						"& .MuiInputBase-root, .MuiButton-outlined": {
+							// "& .MuiInputBase-root": {
+							backgroundColor: "rgba(255,255,255, 0.8)",
 						},
 					}),
 					...(Array.isArray(boxSx) ? boxSx : [boxSx]),

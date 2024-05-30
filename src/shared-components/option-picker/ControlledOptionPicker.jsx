@@ -3,6 +3,7 @@ import { Controller } from "react-hook-form";
 import OptionPicker from "./OptionPicker";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
+import { useRef } from "react";
 
 export const ControlledOptionPicker = forwardRef((props, ref) => {
 	const {
@@ -17,6 +18,8 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 		...rest
 	} = props;
 
+	const prevValue = useRef();
+
 	if (!name) {
 		return <OptionPicker ref={ref} {...rest} />;
 	}
@@ -30,8 +33,9 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 			render={({
 				field: { ref, value, onChange },
 				fieldState: { error },
-			}) => (
-				<>
+			}) => {
+				prevValue.current = JSON.stringify(value);
+				return (
 					<OptionPicker
 						name={name}
 						ref={ref}
@@ -42,8 +46,15 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 								onPickerChange(newValue);
 							}
 							onChange(newValue);
-							if (onChanged) {
+							const newValueJson = JSON.stringify(newValue);
+
+							if (
+								onChanged &&
+								newValueJson !== prevValue.current
+							) {
 								onChanged(newValue);
+								prevValue.current = newValueJson;
+								console.log(`${name}.changed`, newValue);
 							}
 						}}
 						// InputLabelProps={{
@@ -53,8 +64,8 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						helperText={error?.message}
 						{...rest}
 					/>
-				</>
-			)}
+				);
+			}}
 		/>
 	);
 });

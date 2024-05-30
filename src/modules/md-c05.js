@@ -80,17 +80,19 @@ const transformForSubmitting = (payload, gridData) => {
 const transformAsQueryParams = (data) => {
 	const { taxType, supplier, rd, employee, ...rest } = data;
 	return {
-		...rest,
-		...(taxType?.id && {
+		...(taxType && {
 			tt: taxType?.id,
 		}),
-		...(supplier?.FactID && {
+		...(supplier && {
 			spi: supplier.FactID,
 		}),
 		...(employee && {
 			emi: employee.CodeData,
 		}),
-		rd: Forms.formatDate(rd),
+		...(rd && {
+			rd: Forms.formatDate(rd),
+		}),
+		...rest,
 	};
 };
 

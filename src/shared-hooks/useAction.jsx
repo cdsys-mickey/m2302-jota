@@ -41,6 +41,7 @@ export const useAction = (initState = null) => {
 		setActionState((prev) => ({
 			...prev,
 			state: ActionState.WORKING,
+			error: null,
 			// payload: null,
 			message: message,
 		}));

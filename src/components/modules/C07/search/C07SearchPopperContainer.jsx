@@ -12,6 +12,7 @@ const C07SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 			ref={ref}
 			onClose={c07.handlePopperClose}
 			onReset={c07.handleReset({ reset: form.reset })}
+			onClear={c07.handleClear({ reset: form.reset })}
 			{...rest}
 		/>
 	);

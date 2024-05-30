@@ -108,18 +108,22 @@ const getTotal = (gridData) => {
 const transformAsQueryParams = (data) => {
 	const { squared, arrDate, ordDate, employee, ordDept, ...rest } = data;
 	return {
-		...rest,
-		...(squared?.id !== undefined && {
-			sf: squared?.id,
+		...(squared && {
+			sf: squared.id,
 		}),
-		...(ordDept?.DeptID && {
+		...(ordDept && {
 			odp: ordDept.DeptID,
 		}),
 		...(employee && {
 			emp: employee.CodeID,
 		}),
-		od: Forms.formatDate(ordDate),
-		ad: Forms.formatDate(arrDate),
+		...(ordDate && {
+			od: Forms.formatDate(ordDate),
+		}),
+		...(arrDate && {
+			ad: Forms.formatDate(arrDate),
+		}),
+		...rest,
 	};
 };
 

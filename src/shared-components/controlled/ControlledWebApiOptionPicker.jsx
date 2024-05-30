@@ -26,7 +26,6 @@ export const ControlledWebApiOptionPicker = memo(
 	}) => {
 		const prevValue = useRef();
 
-		// console.log("rendering ControlledWebApiOptionPicker");
 		if (!name) {
 			return (
 				<WebApiOptionPicker
@@ -74,6 +73,7 @@ export const ControlledWebApiOptionPicker = memo(
 								) {
 									onChanged(newValue);
 									prevValue.current = newValueJson;
+									console.log(`[${name}].changed`, newValue);
 								}
 							}}
 							// disabled={disabled}

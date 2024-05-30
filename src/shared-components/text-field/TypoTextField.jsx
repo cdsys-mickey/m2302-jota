@@ -1,19 +1,22 @@
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
-import React, { forwardRef, memo, useMemo } from "react";
+import { forwardRef, memo, useMemo } from "react";
 
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
-import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { useWatch } from "react-hook-form";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
+import PropTypes from "prop-types";
 
 const TypoTextField = memo(
 	forwardRef((props, ref) => {
 		const {
 			// Common
 			children,
+			type,
 			label,
 			// Typography
 			typographyProps,
 			emptyText = "(空白)",
+			maskedText = "(已隱藏)",
 			typoVariant = "body1",
 			// Input
 			name,
@@ -30,8 +33,8 @@ const TypoTextField = memo(
 		});
 
 		const memoisedText = useMemo(() => {
-			return children || value;
-		}, [children, value]);
+			return children || type === "password" ? maskedText : value;
+		}, [children, maskedText, type, value]);
 
 		if (!editing) {
 			return (
@@ -48,6 +51,7 @@ const TypoTextField = memo(
 			<ControlledTextField
 				ref={ref}
 				label={label}
+				type={type}
 				name={name}
 				variant={variant}
 				size={size}
@@ -60,5 +64,18 @@ const TypoTextField = memo(
 );
 
 TypoTextField.displayName = "TypoTextField";
-
+TypoTextField.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+	type: PropTypes.string,
+	label: PropTypes.string,
+	typographyProps: PropTypes.object,
+	emptyText: PropTypes.string,
+	maskedText: PropTypes.string,
+	typoVariant: PropTypes.string,
+	name: PropTypes.string,
+	editing: PropTypes.bool,
+	size: PropTypes.string,
+	variant: PropTypes.string,
+	InputLabelProps: PropTypes.object,
+};
 export default TypoTextField;

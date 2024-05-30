@@ -27,7 +27,6 @@ export const C05FrameContainer = () => {
 				<FrameBannerContainer>
 					{<C05SearchFieldContainer name="q" />}
 				</FrameBannerContainer>
-				{/* <C05FormContainer /> */}
 				<C05ListToolbar />
 				<C05ListHeader />
 				<C05ListViewContainer />

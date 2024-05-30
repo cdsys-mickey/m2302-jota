@@ -19,6 +19,7 @@ const A17Form = memo((props) => {
 		updating,
 		readFailed,
 		readError,
+		handleDeptChanged,
 		...rest
 	} = props;
 
@@ -34,41 +35,41 @@ const A17Form = memo((props) => {
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form {...rest}>
 				{readFailed && <ErrorBox error={readError} />}
-				{readWorking && (
-					<FlexBox justifyContent="center" mt="20%">
-						<LoadingTypography iconSize="lg" variant="h5">
-							讀取中...
-						</LoadingTypography>
-					</FlexBox>
-				)}
-				{itemDataReady && (
-					<FormBox pt={0}>
-						<FormSectionBox py={1}>
-							<Grid
-								container
-								columns={12}
-								spacing={editing ? 2 : 1}>
-								<Grid item xs={12}>
-									<AppDeptPicker
-										typo
-										name="dept"
-										readOnly={true}
-									/>
-								</Grid>
+
+				<FormBox pt={0}>
+					<FormSectionBox py={1}>
+						<Grid container columns={12} spacing={editing ? 2 : 1}>
+							<Grid item xs={12}>
+								<AppDeptPicker
+									name="dept"
+									// readOnly={true}
+									onChanged={handleDeptChanged}
+								/>
+							</Grid>
+							{readWorking && (
+								<FlexBox justifyContent="center" mt="20%">
+									<LoadingTypography
+										iconSize="lg"
+										variant="h5">
+										讀取中...
+									</LoadingTypography>
+								</FlexBox>
+							)}
+							{itemDataReady && (
 								<Grid item xs={12}>
 									<TextFieldWrapper
+										type="password"
 										typo
 										name="StockPword"
 										label="強迫出貨密碼"
 										autoFocus
 										fullWidth
-										// readOnly={updating}
 									/>
 								</Grid>
-							</Grid>
-						</FormSectionBox>
-					</FormBox>
-				)}
+							)}
+						</Grid>
+					</FormSectionBox>
+				</FormBox>
 			</form>
 		</ContainerEx>
 	);
@@ -81,6 +82,7 @@ A17Form.propTypes = {
 	updating: PropTypes.bool,
 	readFailed: PropTypes.bool,
 	readError: PropTypes.object,
+	handleDeptChanged: PropTypes.func,
 };
 
 A17Form.displayName = "A17Form";

@@ -1,20 +1,22 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+import { A17Context } from "@/contexts/A17/A17Context";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { useInit } from "@/shared-hooks/useInit";
 import A17Form from "./A17Form";
-import { A17Context } from "../../../contexts/A17/A17Context";
-import { useInit } from "../../../shared-hooks/useInit";
-import { useEffect } from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import LoadingTypography from "../../../shared-components/LoadingTypography";
 
 export const A17FormContainer = () => {
 	const a17 = useContext(A17Context);
 	const { loadItem, itemDataReady, itemData } = a17;
+	const { operator } = useContext(AuthContext);
 
 	const { reset } = useFormContext();
 
 	useInit(() => {
-		loadItem();
-	}, []);
+		if (operator?.CurDeptID) {
+			loadItem(operator.CurDeptID);
+		}
+	}, [operator?.CurDeptID]);
 
 	useEffect(() => {
 		if (itemDataReady) {
@@ -32,6 +34,7 @@ export const A17FormContainer = () => {
 			updating={a17.updating}
 			readFailed={a17.readFailed}
 			readError={a17.readError}
+			handleDeptChanged={a17.handleDeptChanged}
 		/>
 	);
 };
