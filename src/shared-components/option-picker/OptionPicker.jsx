@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo, useCallback, useMemo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
-import RWListboxComponent from "./listbox/RWListboxComponent";
+import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
 
 const noFilterOptions = (options) => {
 	return options;
@@ -468,9 +468,6 @@ const OptionPicker = memo(
 				return renderOptionForVirtualized;
 			}
 			return renderOption || defaultRenderOption;
-			// return virtualize
-			// 	? renderOptionForVirtualized
-			// 	: renderOption || defaultRenderOption;
 		}, [
 			GridRowComponent,
 			virtualize,
@@ -564,7 +561,7 @@ const OptionPicker = memo(
 					{...rest}
 					// virtualize = true 時必須強制 override 部分屬性
 					{...(virtualize && {
-						ListboxComponent: RWListboxComponent,
+						ListboxComponent: VirtualizedPickerListbox,
 						disableListWrap: true,
 					})}
 				/>
@@ -627,7 +624,7 @@ OptionPicker.propTypes = {
 	renderTagLabel: PropTypes.func,
 	getOptionKey: PropTypes.func,
 	getTitle: PropTypes.func,
-	filterSelectedOptions: PropTypes.bool,
+	// filterSelectedOptions: PropTypes.bool,
 	virtualize: PropTypes.bool,
 	labelShrink: PropTypes.bool,
 	renderOption: PropTypes.func,

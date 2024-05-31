@@ -19,8 +19,13 @@ const useResetCache = (data) => {
 	return ref;
 };
 
-// Adapter for react-window
-const RWListboxComponent = forwardRef(function RWListboxComponent(props, ref) {
+/**
+ * 此為 renderRow 移至 Context 的版本
+ */
+const VirtualizedOptionListbox = forwardRef(function VirtualizedOptionListbox(
+	props,
+	ref
+) {
 	const { children, ...other } = props;
 	const optionPicker = useContext(OptionPickerContext);
 
@@ -83,8 +88,8 @@ const RWListboxComponent = forwardRef(function RWListboxComponent(props, ref) {
 	);
 });
 
-RWListboxComponent.propTypes = {
+VirtualizedOptionListbox.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
-export default RWListboxComponent;
+export default VirtualizedOptionListbox;

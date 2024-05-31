@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import RWListboxComponent from "./RWListboxComponent";
+import RWListboxComponent from "./VirtualizedPickerListbox";
 import { ListSubheader, Typography } from "@mui/material";
 
 const LISTBOX_PADDING = 8; // px
@@ -42,6 +42,9 @@ function renderRow(props) {
 	);
 }
 
+/**
+ * 此為 renderRow 方法內嵌的版本
+ */
 export const RWListboxComponent2 = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;

@@ -184,7 +184,7 @@ const C04DialogForm = memo((props) => {
 								fadeOutDisabled
 								// onChanged={handleLoadProdsSubmit}
 								onChanged={handlePurchaseOrdersChanged}
-								disabled={purchaseOrdersDisabled}
+								disabled={purchaseOrdersDisabled || !supplier}
 							/>
 							{/* </OptionPickerProvider> */}
 						</Grid>

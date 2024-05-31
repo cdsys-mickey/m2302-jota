@@ -17,8 +17,8 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
-	const supplier = useWatch({
-		name: "supplier",
+	const txiDept = useWatch({
+		name: "txiDept",
 		control: form.control,
 	});
 
@@ -32,11 +32,11 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 
 	const memoisedTitle = useMemo(() => {
 		if (c08.creating) {
-			return "建立退貨單";
+			return "建立撥出單";
 		} else if (c08.updating) {
-			return "修改退貨單";
+			return "修改撥出單";
 		} else {
-			return "退貨單內容";
+			return "撥出單內容";
 		}
 	}, [c08.creating, c08.updating]);
 
@@ -105,15 +105,15 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 					readWorking={c08.readWorking}
 					data={c08.itemData}
 					itemDataReady={c08.itemDataReady}
-					handleSupplierChanged={c08.handleSupplierChanged({
+					handleDepOrdersChanged={c08.handleDepOrdersChanged({
 						setValue: form.setValue,
 						getValues: form.getValues,
 					})}
-					handleRtnDateChanged={c08.handleRtnDateChanged({
+					handleTxiDeptChanged={c08.handleTxiDeptChanged({
 						setValue: form.setValue,
 						getValues: form.getValues,
 					})}
-					supplier={supplier}
+					txiDept={txiDept}
 					isSupplierNameDisabled={c08.isSupplierNameDisabled}
 					purchaseOrdersDisabled={c08.purchaseOrdersDisabled}
 					handleTaxTypeChanged={c08.handleTaxTypeChanged({

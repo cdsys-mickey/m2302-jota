@@ -11,7 +11,7 @@ export const PurchaseOrderGridHeader = memo(
 		return (
 			<Box
 				ref={ref}
-				px={2}
+				// px={2}
 				sx={[
 					(theme) => ({
 						borderBottom: "1px solid rgb(0,0,0,0.1)",

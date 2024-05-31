@@ -682,6 +682,49 @@ export const useC08 = () => {
 	// 	return !!crud.itemData?.GinID;
 	// }, [crud.itemData?.GinID]);
 
+	const handleDepOrdersChanged = useCallback(
+		({ setValue, getValues }) =>
+			async (newValue) => {
+				console.log("handleDepOrdersChanged", newValue);
+				const formData = getValues();
+				const collected = C08.transformForSubmitting(
+					formData,
+					prodGrid.gridData
+				);
+				console.log("collected", collected);
+				try {
+					const { status, payload, error } = await httpPostAsync({
+						url: "v1/purchase/trans-out-orders/load-prods",
+						bearer: token,
+						data: collected,
+					});
+					console.log("load-prods.payload", payload);
+					if (status.success) {
+						const data = C08.transformForReading(payload.data[0]);
+						console.log("refreshed data", data);
+						prodGrid.handleGridDataLoaded(data.prods);
+						refreshAmt({ setValue, data });
+						// toast.info("訂購單商品已載入");
+					} else {
+						throw error || new Error("未預期例外");
+					}
+				} catch (err) {
+					toast.error(Errors.getMessage("載入訂購單商品失敗", err));
+				}
+			},
+		[httpPostAsync, prodGrid, refreshAmt, token]
+	);
+
+	const handleTxiDeptChanged = useCallback(
+		({ setValue, getValues }) =>
+			(newValue) => {
+				console.log("handleTxiDeptChanged", newValue);
+
+				setValue("depOrders", []);
+			},
+		[]
+	);
+
 	return {
 		...crud,
 		...listLoader,
@@ -723,5 +766,7 @@ export const useC08 = () => {
 		handleCheckEditable,
 		handleRefresh,
 		refreshWorking: refreshAction.working,
+		handleDepOrdersChanged,
+		handleTxiDeptChanged,
 	};
 };

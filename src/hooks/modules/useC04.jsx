@@ -213,7 +213,7 @@ export const useC04 = () => {
 					refreshAction.clear();
 				}
 			},
-		[refreshGrid]
+		[refreshAction, refreshGrid]
 	);
 
 	const handleSupplierChanged = useCallback(
@@ -697,7 +697,7 @@ export const useC04 = () => {
 					toast.error(Errors.getMessage("載入採購單商品失敗", err));
 				}
 			},
-		[httpPatchAsync, prodGrid, refreshAmt, token]
+		[httpPostAsync, prodGrid, refreshAmt, token]
 	);
 
 	const onRefreshGridSubmit2 = useCallback((data) => {

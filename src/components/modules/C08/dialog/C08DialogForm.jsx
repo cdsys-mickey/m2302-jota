@@ -16,6 +16,7 @@ import { C08ProdGridBottomToolbar } from "./prod-grid/C08ProdGridBottomToolbar";
 import { C08ProdGridContainer } from "./prod-grid/C08ProdGridContainer";
 import DeptPickerContainer from "../../../DeptPickerContainer";
 import { DepOrderPicker } from "../../../dep-order-picker/DepOrderPicker";
+import TransportTypePicker from "../../../tranport-type-picker/TransportTypePicker";
 
 const C08DialogForm = memo((props) => {
 	const {
@@ -32,6 +33,7 @@ const C08DialogForm = memo((props) => {
 		txiDeptDisabled,
 		handleDepOrdersChanged,
 		purchaseOrdersDisabled,
+		txiDept,
 		...rest
 	} = props;
 	return (
@@ -77,6 +79,7 @@ const C08DialogForm = memo((props) => {
 								<EmployeePicker
 									typo
 									label="倉管人員"
+									autoFocus
 									name="employee"
 									required
 									rules={{
@@ -92,14 +95,12 @@ const C08DialogForm = memo((props) => {
 								typo
 								name="txiDept"
 								label="撥入門市"
-								autoFocus
 								excludesSelf
 								required
 								rules={{
 									required: "撥入門市為必填",
 								}}
 								onChanged={handleTxiDeptChanged}
-								disabled={txiDeptDisabled}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={17}>
@@ -111,7 +112,15 @@ const C08DialogForm = memo((props) => {
 								// virtualize
 								fadeOutDisabled
 								onChanged={handleDepOrdersChanged}
-								disabled={purchaseOrdersDisabled}
+								disabled={purchaseOrdersDisabled || !txiDept}
+							/>
+						</Grid>
+						<FlexBox fullWidth />
+						<Grid item xs={24} sm={24} md={3}>
+							<TransportTypePicker
+								typo
+								name="transType"
+								label="貨運方式"
 							/>
 						</Grid>
 					</Grid>
