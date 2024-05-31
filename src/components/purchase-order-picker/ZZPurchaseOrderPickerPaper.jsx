@@ -6,7 +6,7 @@ export const PurchaseOrderPickerPaper = memo(
 	forwardRef((props, ref) => {
 		const { children, loading = false, ...rest } = props;
 		return (
-			<Paper ref={ref} {...rest}>
+			<Paper ref={ref} elevation={8} {...rest}>
 				{!loading && (
 					<Box
 						px={2}

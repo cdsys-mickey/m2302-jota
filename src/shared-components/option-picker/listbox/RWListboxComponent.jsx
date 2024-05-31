@@ -62,7 +62,9 @@ const RWListboxComponent = forwardRef(function RWListboxComponent(props, ref) {
 
 	return (
 		<div ref={ref}>
-			{/* 把傳遞給 ListboxComponent 的 props 都放置到 Provider 內 */}
+			{/* 把傳遞給 ListboxComponent 的 props 都放置到 Provider 內
+				讓 RWOuterElementType 可以存取,
+			 */}
 			<RWOuterElementContext.Provider value={other}>
 				<VariableSizeList
 					itemData={itemData}

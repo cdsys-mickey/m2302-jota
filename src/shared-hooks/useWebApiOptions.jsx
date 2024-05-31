@@ -264,12 +264,7 @@ export const useWebApiOptions = (opts = {}) => {
 		loadOptions,
 		clearOptions,
 		resetLoading,
-		// for OptionPicker
 		...pickerState,
-		// pickerState,
-		// pickerCallback: {
-		// 	onInputChange: handleInputChange,
-		// },
 		onInputChange: handleInputChange,
 		handleOpen,
 		handleClose,

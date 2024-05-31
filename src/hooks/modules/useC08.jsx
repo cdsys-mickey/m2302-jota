@@ -79,6 +79,7 @@ export const useC08 = () => {
 			taxExcluded: false,
 			employee: null,
 			supplier: null,
+			depOrders: [],
 		};
 		crud.promptCreating({ data });
 		prodGrid.handleGridDataLoaded(data.prods);
@@ -676,6 +677,10 @@ export const useC08 = () => {
 			checkEditableAction.clear();
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
+
+	// const depOrdersDisabled = useMemo(() => {
+	// 	return !!crud.itemData?.GinID;
+	// }, [crud.itemData?.GinID]);
 
 	return {
 		...crud,

@@ -1,12 +1,12 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import PurchaseOrders from "@/modules/md-purchase-orders";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
-import { Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { useCallback, useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
-import { PurchaseOrderPickerPaper } from "./PurchaseOrderPickerPaper";
+import { PurchaseOrderGridHeader } from "./PurchaseOrderGridHeader";
+import { PurchaseOrderGridRow } from "./PurchaseOrderGridRow";
 
 export const PurchaseOrderPicker = (props) => {
 	const { label = "採購單", ...rest } = props;
@@ -32,32 +32,32 @@ export const PurchaseOrderPicker = (props) => {
 		return !supplier || !supplierName;
 	}, [supplier, supplierName]);
 
-	const renderOption = useCallback(
-		({ key, style, ...optionProps }, option) => {
-			return (
-				<li key={key} style={style} {...optionProps}>
-					<Grid container columns={24} spacing={2}>
-						<Grid item xs={24} sm={5}>
-							<Typography variant="body2">
-								{option["採購單號"]}
-							</Typography>
-						</Grid>
-						<Grid item xs={24} sm={5}>
-							<Typography variant="body2">
-								{option["採購日"]}
-							</Typography>
-						</Grid>
-						<Grid item xs={24} sm={14}>
-							<Typography variant="body2">
-								{option["覆核人員"]}
-							</Typography>
-						</Grid>
-					</Grid>
-				</li>
-			);
-		},
-		[]
-	);
+	// const renderOption = useCallback(
+	// 	({ key, style, ...optionProps }, option) => {
+	// 		return (
+	// 			<li key={key} style={style} {...optionProps}>
+	// 				<Grid container columns={24} spacing={2}>
+	// 					<Grid item xs={24} sm={5}>
+	// 						<Typography variant="body2">
+	// 							{option["採購單號"]}
+	// 						</Typography>
+	// 					</Grid>
+	// 					<Grid item xs={24} sm={5}>
+	// 						<Typography variant="body2">
+	// 							{option["採購日"]}
+	// 						</Typography>
+	// 					</Grid>
+	// 					<Grid item xs={24} sm={14}>
+	// 						<Typography variant="body2">
+	// 							{option["覆核人員"]}
+	// 						</Typography>
+	// 					</Grid>
+	// 				</Grid>
+	// 			</li>
+	// 		);
+	// 	},
+	// 	[]
+	// );
 
 	return (
 		<OptionPickerWrapper
@@ -70,12 +70,11 @@ export const PurchaseOrderPicker = (props) => {
 			isOptionEqualToValue={PurchaseOrders.isOptionEqualToValue}
 			renderTagLabel={PurchaseOrders.renderTagLabel}
 			disabled={disabled}
-			// disableCloseOnSelect
 			optionLabelSize="small"
-			PaperComponent={PurchaseOrderPickerPaper}
-			// ListboxComponent={PurchaseOrderPickerListbox}
-			// disableClose
-			renderOption={renderOption}
+			// PaperComponent={PurchaseOrderPickerPaper}
+			// renderOption={renderOption}
+			GridHeaderComponent={PurchaseOrderGridHeader}
+			GridRowComponent={PurchaseOrderGridRow}
 			{...rest}
 		/>
 	);

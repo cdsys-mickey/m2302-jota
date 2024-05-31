@@ -15,6 +15,7 @@ import FlexGrid from "@/shared-components/FlexGrid";
 import { C08ProdGridBottomToolbar } from "./prod-grid/C08ProdGridBottomToolbar";
 import { C08ProdGridContainer } from "./prod-grid/C08ProdGridContainer";
 import DeptPickerContainer from "../../../DeptPickerContainer";
+import { DepOrderPicker } from "../../../dep-order-picker/DepOrderPicker";
 
 const C08DialogForm = memo((props) => {
 	const {
@@ -26,14 +27,11 @@ const C08DialogForm = memo((props) => {
 		creating,
 		editing,
 		updating,
-		handleSupplierChanged,
 		handleTxiDeptChanged,
 		handleRtnDateChanged,
 		txiDeptDisabled,
-		handleTaxTypeChanged,
-		isSupplierNameDisabled,
+		handleDepOrdersChanged,
 		purchaseOrdersDisabled,
-		supplier,
 		...rest
 	} = props;
 	return (
@@ -102,6 +100,18 @@ const C08DialogForm = memo((props) => {
 								}}
 								onChanged={handleTxiDeptChanged}
 								disabled={txiDeptDisabled}
+							/>
+						</Grid>
+						<Grid item xs={24} sm={24} md={17}>
+							<DepOrderPicker
+								typo
+								multiple
+								name="depOrders"
+								label="訂貨單號"
+								// virtualize
+								fadeOutDisabled
+								onChanged={handleDepOrdersChanged}
+								disabled={purchaseOrdersDisabled}
 							/>
 						</Grid>
 					</Grid>

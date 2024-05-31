@@ -13,7 +13,7 @@ const C07FlagColumn = (props) => {
 
 C07FlagColumn.propTypes = {
 	loading: PropTypes.bool,
-	children: PropTypes.oneOfType([PropTypes.node]),
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
 C07FlagColumn.displayName = "C07FlagColumn";

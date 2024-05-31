@@ -11,47 +11,8 @@ import {
 import PropTypes from "prop-types";
 import { forwardRef, memo, useCallback, useMemo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import MuiStyles from "../../shared-modules/sd-mui-styles";
+import { OptionGridPaper } from "./grid/OptionGridPaper";
 import RWListboxComponent from "./listbox/RWListboxComponent";
-
-// const LISTBOX_PADDING = 8; // px
-
-// function defaultRenderRow(props) {
-// 	// Props from React Window
-// 	const { data, index, style } = props;
-
-// 	// Props from Autocomplete-renderOption
-// 	const dataSet = data[index];
-
-// 	const componentProps = dataSet[0];
-// 	const optionLabel = dataSet[1];
-
-// 	const inlineStyle = {
-// 		...style,
-// 		top: style.top + LISTBOX_PADDING,
-// 	};
-
-// 	if (dataSet.group !== undefined) {
-// 		return (
-// 			<ListSubheader
-// 				key={dataSet.key}
-// 				component="div"
-// 				style={inlineStyle}>
-// 				{dataSet.group}
-// 			</ListSubheader>
-// 		);
-// 	}
-
-// 	return (
-// 		<Typography
-// 			component="li"
-// 			{...componentProps}
-// 			noWrap
-// 			style={inlineStyle}>
-// 			{optionLabel}
-// 		</Typography>
-// 	);
-// }
 
 const noFilterOptions = (options) => {
 	return options;
@@ -205,6 +166,10 @@ const OptionPicker = memo(
 			renderGroup,
 			// renderRow = defaultRenderRow,
 			optionLabelSize,
+			// GRID support
+			PaperComponent: customPaperComponent,
+			GridHeaderComponent,
+			GridRowComponent,
 			...rest
 		} = props;
 
@@ -481,20 +446,50 @@ const OptionPicker = memo(
 			return params;
 		}, []);
 
+		/**
+		 * grid 版本 renderOption
+		 */
+		const renderGridOption = useCallback(
+			({ key, style, ...optionProps }, option) => {
+				return (
+					<li key={key} style={style} {...optionProps}>
+						<GridRowComponent value={option} />
+					</li>
+				);
+			},
+			[]
+		);
+
 		const handleRenderOption = useMemo(() => {
-			return virtualize
-				? renderOptionForVirtualized
-				: renderOption || defaultRenderOption;
+			if (GridRowComponent) {
+				return renderGridOption;
+			}
+			if (virtualize) {
+				return renderOptionForVirtualized;
+			}
+			return renderOption || defaultRenderOption;
+			// return virtualize
+			// 	? renderOptionForVirtualized
+			// 	: renderOption || defaultRenderOption;
 		}, [
+			GridRowComponent,
+			virtualize,
 			renderOption,
 			defaultRenderOption,
+			renderGridOption,
 			renderOptionForVirtualized,
-			virtualize,
 		]);
 
 		const handleRenderGroup = useMemo(() => {
 			return virtualize ? renderGroupForVirtualized : renderGroup;
 		}, [renderGroup, renderGroupForVirtualized, virtualize]);
+
+		const PaperComponent = useMemo(() => {
+			if (GridHeaderComponent) {
+				return OptionGridPaper;
+			}
+			return customPaperComponent || Paper;
+		}, [GridHeaderComponent, customPaperComponent]);
 
 		return (
 			<PickerBox
@@ -513,7 +508,13 @@ const OptionPicker = memo(
 					ref={ref}
 					size={size}
 					PaperComponent={({ ...rest }) => (
-						<Paper elevation={8} {...rest} />
+						<PaperComponent
+							elevation={8}
+							{...(GridHeaderComponent && {
+								HeaderComponent: GridHeaderComponent,
+							})}
+							{...rest}
+						/>
 					)}
 					// filterSelectedOptions={filterSelectedOptions}
 					disabled={disabled}
@@ -636,5 +637,9 @@ OptionPicker.propTypes = {
 	stringify: PropTypes.func,
 	renderOptionLabel: PropTypes.func,
 	optionLabelSize: PropTypes.string,
+	// GRID
+	GridHeaderComponent: PropTypes.elementType,
+	GridRowComponent: PropTypes.elementType,
+	PaperComponent: PropTypes.elementType,
 };
 export default OptionPicker;

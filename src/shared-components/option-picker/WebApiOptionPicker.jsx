@@ -27,8 +27,6 @@ const WebApiOptionPicker = memo(
 			method = "get",
 			lazy = true,
 			queryParam = "q",
-			// queryRequired = false,
-			// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
 			querystring,
 			params,
 			headers,
@@ -48,19 +46,14 @@ const WebApiOptionPicker = memo(
 			...rest
 		} = props;
 
-		console.log("rendering WebApiOptionPicker");
+		// console.log("rendering WebApiOptionPicker");
 
 		const {
 			open,
-			// pickerState,
 			loading,
 			options,
 			noOptionsText,
-			// pickerCallback,
 			onInputChange,
-			resetLoading,
-			lazyLoadingTriggered,
-			loadOptions,
 			handleOpen,
 			handleClose,
 		} = useWebApiOptions({
@@ -71,7 +64,6 @@ const WebApiOptionPicker = memo(
 			bearer,
 			lazy,
 			queryParam,
-			// queryRequired,
 			querystring,
 			params,
 			headers,
@@ -91,91 +83,11 @@ const WebApiOptionPicker = memo(
 			onChange,
 		});
 
-		// 當 filterByServer 時, 不會對輸出做任何篩選
-
-		// const prevUrlRef = useRef();
-
-		/**
-		 * 清除 options 時機
-		 * 1.filterByServer
-		 * 2.pickerState.open === false
-		 * 3. url 改變
-		 * 4. querystring 改變
-		 * 則
-		 * loading === NONE
-		 * query
-		 */
-		// useEffect(() => {
-		// 	console.log(`${name} url changed -> ${url}`);
-		// 	if (prevUrlRef.current !== url) {
-		// 		prevUrlRef.current = url;
-		// 		if (onChange) {
-		// 			onChange(null, null);
-		// 		}
-		// 		resetLoading();
-		// 	}
-		// }, [url, onChange, resetLoading, name]);
-
-		// useEffect(() => {
-		// 	console.log("effect1");
-		// 	if (filterByServer && !open) {
-		// 		resetLoading();
-		// 	}
-		// }, [filterByServer, open, resetLoading]);
-
-		// useEffect(() => {
-		// 	console.log("effect2");
-		// 	if (open && lazyLoadingTriggered) {
-		// 		loadOptions();
-		// 	}
-		// }, [loadOptions, open, lazyLoadingTriggered]);
-
-		// /**
-		//  * 來源條件改變, 清空目前值, resetLoading
-		//  */
-		// useChangeTracking(() => {
-		// 	console.log(
-		// 		`url changed: ${url}${
-		// 			querystring ? " " + querystring : ""
-		// 		}, params:`,
-		// 		params
-		// 	);
-		// 	onChange(multiple ? [] : null);
-		// 	resetLoading();
-		// }, [url, querystring, params]);
-
-		// /** filterByServer 時, 關閉 popper 則重設 loading 狀態
-		//  */
-		// useChangeTracking(() => {
-		// 	console.log(
-		// 		"[filterByServer, open] changed:",
-		// 		`${filterByServer}, ${open}`
-		// 	);
-		// 	if (filterByServer && !open) {
-		// 		resetLoading();
-		// 	}
-		// }, [filterByServer, open]);
-
-		// /**
-		//  * 展開時 loadOptions
-		//  */
-		// useChangeTracking(() => {
-		// 	console.log(
-		// 		"[open, lazyLoadingTriggered] changed:",
-		// 		`${open}, ${lazyLoadingTriggered}`
-		// 	);
-		// 	if (open && lazyLoadingTriggered) {
-		// 		loadOptions();
-		// 	}
-		// }, [open, lazyLoadingTriggered]);
-
 		return (
 			<OptionPicker
 				multiple={multiple}
 				ref={ref}
 				name={name}
-				// loading={loading}
-				// {...pickerState}
 				loading={loading}
 				options={options}
 				noOptionsText={noOptionsText}
