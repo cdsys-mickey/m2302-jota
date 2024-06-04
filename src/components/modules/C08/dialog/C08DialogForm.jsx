@@ -51,7 +51,7 @@ const C08DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={3}>
+						<Grid item xs={24} sm={24} md={4}>
 							<TextFieldWrapper
 								typo
 								name="TxoID"
@@ -74,7 +74,7 @@ const C08DialogForm = memo((props) => {
 								onChanged={handleRtnDateChanged}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5}>
 							<OptionPickerProvider>
 								<EmployeePicker
 									typo
@@ -90,7 +90,7 @@ const C08DialogForm = memo((props) => {
 								/>
 							</OptionPickerProvider>
 						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DeptPickerContainer
 								typo
 								name="txiDept"
@@ -103,7 +103,8 @@ const C08DialogForm = memo((props) => {
 								onChanged={handleTxiDeptChanged}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={17}>
+						<FlexBox fullWidth />
+						<Grid item xs={24} sm={24} md={13}>
 							<DepOrderPicker
 								typo
 								multiple
@@ -115,12 +116,33 @@ const C08DialogForm = memo((props) => {
 								disabled={purchaseOrdersDisabled || !txiDept}
 							/>
 						</Grid>
-						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={3}>
+						<Grid item xs={24} sm={24} md={4}>
 							<TransportTypePicker
 								typo
 								name="transType"
 								label="貨運方式"
+								required
+								rules={{
+									required: "貨運方式為必填",
+								}}
+							/>
+						</Grid>
+						<Grid item xs={24} sm={24} md={4}>
+							<OptionPickerProvider>
+								<EmployeePicker
+									typo
+									label="配送人"
+									name="deliveryEmployee"
+									virtualize
+								/>
+							</OptionPickerProvider>
+						</Grid>
+						<Grid item xs={24} sm={24} md={3}>
+							<TextFieldWrapper
+								typo
+								name="HDNo"
+								label="宅配通單號"
+								fullWidth
 							/>
 						</Grid>
 					</Grid>

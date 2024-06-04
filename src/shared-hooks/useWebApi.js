@@ -4,6 +4,7 @@ import axios from "axios";
 import HttpStatus from "@/shared-classes/HttpStatus";
 import querystring from "query-string";
 import WebApi from "@/shared-modules/sd-web-api";
+import { AxiosError } from "axios";
 
 const DEFAULT_HEADERS = {};
 
@@ -152,6 +153,12 @@ export const useWebApi = (props) => {
 				}
 			} catch (err) {
 				console.error(`sendAsync[${method}]`, err);
+				if (err instanceof AxiosError) {
+					return {
+						status: HttpStatus.from(500),
+						error: err,
+					};
+				}
 				return {
 					status: HttpStatus.from(err.response.status),
 					error: WebApi.getErrorFromPayload(err.response.data, {

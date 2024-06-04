@@ -1,3 +1,12 @@
+import { DeptUserPicker } from "@/components/picker/DeptUserPicker";
+import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
+import FormSectionBox from "@/shared-components/form/FormSectionBox";
+import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
+import OptionPicker from "@/shared-components/option-picker/OptionPicker";
+import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
+import RWPopper from "@/shared-components/option-picker/listbox/RWPopper";
+import VirtualizedPickerListbox from "@/shared-components/option-picker/listbox/VirtualizedPickerListbox";
+
 import {
 	Autocomplete,
 	Box,
@@ -6,15 +15,6 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
-import { DeptUserPicker } from "@/components/picker/DeptUserPicker";
-import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import OptionPicker from "@/shared-components/option-picker/OptionPicker";
-import RWListboxComponent from "@/shared-components/option-picker/listbox/RWListboxComponent";
-import RWPopper from "@/shared-components/option-picker/listbox/RWPopper";
-import ListboxComponent from "@/shared-components/option-picker/listbox/ZZListboxComponent";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -109,7 +109,7 @@ const OptionPickerTest = () => {
 							sx={{ width: 300 }}
 							disableListWrap
 							// PopperComponent={RWPopper}
-							ListboxComponent={RWListboxComponent}
+							ListboxComponent={VirtualizedPickerListbox}
 							options={OPTIONS}
 							groupBy={(option) => option[0].toUpperCase()}
 							// renderInput={(params) => (

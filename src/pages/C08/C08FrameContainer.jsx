@@ -9,9 +9,12 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useInit } from "../../shared-hooks/useInit";
+import { C08Context } from "../../contexts/C08/C08Context";
 
 export const C08FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
+	const c08 = useContext(C08Context);
 	const searchForm = useForm({
 		defaultValues: {},
 	});
@@ -20,6 +23,10 @@ export const C08FrameContainer = () => {
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
 	);
+
+	useInit(() => {
+		c08.loadStockPword();
+	}, []);
 
 	return (
 		<Box sx={[boxStyles]}>

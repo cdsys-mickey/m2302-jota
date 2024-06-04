@@ -6,6 +6,7 @@ import { VariableSizeList } from "react-window";
 import { OptionPickerContext } from "./OptionPickerContext";
 import { RWOuterElementContext } from "./RWOuterElementContext";
 import RWOuterElementType from "./RWOuterElementType";
+import { memo } from "react";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -22,72 +23,72 @@ const useResetCache = (data) => {
 /**
  * 此為 renderRow 移至 Context 的版本
  */
-const VirtualizedOptionListbox = forwardRef(function VirtualizedOptionListbox(
-	props,
-	ref
-) {
-	const { children, ...other } = props;
-	const optionPicker = useContext(OptionPickerContext);
+const VirtualizedOptionListbox = memo(
+	forwardRef((props, ref) => {
+		const { children, ...other } = props;
+		const optionPicker = useContext(OptionPickerContext);
 
-	if (!optionPicker) {
-		throw new Error("沒有偵測到 OptionPickerContext");
-	}
-
-	const { renderRow } = optionPicker;
-
-	const itemData = [];
-	children.forEach((item) => {
-		itemData.push(item);
-		itemData.push(...(item.children || []));
-	});
-
-	const theme = useTheme();
-	const smUp = useMediaQuery(theme.breakpoints.up("sm"), {
-		noSsr: true,
-	});
-	const itemCount = itemData.length;
-	const itemSize = smUp ? 36 : 48;
-
-	const getChildSize = (child) => {
-		if (child.group !== undefined) {
-			return 48;
+		if (!optionPicker) {
+			throw new Error("沒有偵測到 OptionPickerContext");
 		}
 
-		return itemSize;
-	};
+		const { renderRow } = optionPicker;
 
-	const getHeight = () => {
-		if (itemCount > 8) {
-			return 8 * itemSize;
-		}
-		return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
-	};
+		const itemData = [];
+		children.forEach((item) => {
+			itemData.push(item);
+			itemData.push(...(item.children || []));
+		});
 
-	const listRef = useResetCache(itemCount);
+		const theme = useTheme();
+		const smUp = useMediaQuery(theme.breakpoints.up("sm"), {
+			noSsr: true,
+		});
+		const itemCount = itemData.length;
+		const itemSize = smUp ? 36 : 48;
 
-	return (
-		<div ref={ref}>
-			{/* 把傳遞給 ListboxComponent 的 props 都放置到 Provider 內
+		const getChildSize = (child) => {
+			if (child.group !== undefined) {
+				return 48;
+			}
+
+			return itemSize;
+		};
+
+		const getHeight = () => {
+			if (itemCount > 8) {
+				return 8 * itemSize;
+			}
+			return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
+		};
+
+		const listRef = useResetCache(itemCount);
+
+		return (
+			<div ref={ref}>
+				{/* 把傳遞給 ListboxComponent 的 props 都放置到 Provider 內
 				讓 RWOuterElementType 可以存取,
 			 */}
-			<RWOuterElementContext.Provider value={other}>
-				<VariableSizeList
-					itemData={itemData}
-					height={getHeight() + 2 * LISTBOX_PADDING}
-					width="100%"
-					ref={listRef}
-					outerElementType={RWOuterElementType}
-					innerElementType="ul"
-					itemSize={(index) => getChildSize(itemData[index])}
-					overscanCount={5}
-					itemCount={itemCount}>
-					{renderRow}
-				</VariableSizeList>
-			</RWOuterElementContext.Provider>
-		</div>
-	);
-});
+				<RWOuterElementContext.Provider value={other}>
+					<VariableSizeList
+						itemData={itemData}
+						height={getHeight() + 2 * LISTBOX_PADDING}
+						width="100%"
+						ref={listRef}
+						outerElementType={RWOuterElementType}
+						innerElementType="ul"
+						itemSize={(index) => getChildSize(itemData[index])}
+						overscanCount={5}
+						itemCount={itemCount}>
+						{renderRow}
+					</VariableSizeList>
+				</RWOuterElementContext.Provider>
+			</div>
+		);
+	})
+);
 
+VirtualizedOptionListbox.displayName = "VirtualizedOptionListbox";
 VirtualizedOptionListbox.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };

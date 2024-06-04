@@ -8,6 +8,7 @@ import { DepOrderFlagColumn } from "./columns/DepOrderFlagColumn";
 import { DepOrderUserColumn } from "./columns/DepOrderUserColumn";
 import { DepOrderDeptIdColumn } from "./columns/DepOrderDeptIdColumn";
 import { DepOrderDeptNameColumn } from "./columns/DepOrderDeptNameColumn";
+import { DepOrderDeptColumn } from "./columns/DepOrderDeptColumn";
 
 export const DepOrderGridHeader = memo(
 	forwardRef((props, ref) => {
@@ -29,10 +30,7 @@ export const DepOrderGridHeader = memo(
 					<DepOrderDateColumn header>預到日期</DepOrderDateColumn>
 					<DepOrderUserColumn header>製單人員</DepOrderUserColumn>
 					<DepOrderDeptIdColumn header>出貨門市</DepOrderDeptIdColumn>
-					<DepOrderDeptIdColumn header>訂貨門市</DepOrderDeptIdColumn>
-					<DepOrderDeptNameColumn>
-						訂貨門市名稱
-					</DepOrderDeptNameColumn>
+					<DepOrderDeptColumn header>訂貨門市</DepOrderDeptColumn>
 				</Grid>
 			</Box>
 		);

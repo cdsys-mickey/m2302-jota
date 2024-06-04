@@ -5,7 +5,7 @@ const getMessage = (prompt, err, options) => {
 	if (err?.message && (!prod || always)) {
 		result += `: ${err.message}`;
 	} else if (err?.status) {
-		result += `: ${err.status}`;
+		result += `: HTTP ${err.status}`;
 	}
 	return result;
 };

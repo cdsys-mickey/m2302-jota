@@ -13,21 +13,16 @@ export const C08ProdGridContainer = (props) => {
 	const { height } = useWindowSize();
 	const form = useFormContext();
 
-	const supplier = useWatch({
-		name: "supplier",
+	const txiDept = useWatch({
+		name: "txiDept",
 		conrtol: form.control,
-	});
-
-	const rtnDate = useWatch({
-		name: "GrtDate",
-		control: form.control,
 	});
 
 	return (
 		<DSGBox>
 			<C08ProdGrid
 				gridRef={c08.setGridRef}
-				readOnly={!c08.editing || !supplier || !rtnDate}
+				readOnly={!c08.editing || !txiDept}
 				data={c08.gridData}
 				handleGridChange={c08.handleGridChange({
 					getValues: form.getValues,
@@ -36,6 +31,9 @@ export const C08ProdGridContainer = (props) => {
 				bearer={auth.token}
 				height={height - 390}
 				getRowKey={c08.getRowKey}
+				stypeDisabled={c08.stypeDisabled}
+				getSPriceClassName={c08.getSPriceClassName}
+				sprodDisabled={c08.sprodDisabled}
 				{...rest}
 			/>
 		</DSGBox>

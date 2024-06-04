@@ -1,15 +1,17 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
+import FreeProdTypes from "./md-free-prod-types";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, ...rest }) => {
+		data?.map(({ SProdID, ProdData_N, SType, ...rest }) => {
 			return {
 				prod: {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
 				},
+				stype: FreeProdTypes.getOptionById(SType),
 				...rest,
 			};
 		}) || []

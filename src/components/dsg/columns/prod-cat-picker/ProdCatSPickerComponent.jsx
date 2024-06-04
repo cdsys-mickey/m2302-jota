@@ -79,7 +79,8 @@ const ProdCatSPickerComponent = memo((props) => {
 			// DSG 專屬屬性
 			dense
 			disablePointerEvents={!focus}
-			hidePopupIndicator={!focus}
+			hidePopupIndicator={!active}
+			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus
 			{...rest}

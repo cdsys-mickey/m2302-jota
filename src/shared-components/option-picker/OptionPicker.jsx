@@ -111,6 +111,7 @@ const OptionPicker = memo(
 			dnd = false,
 			size = "small",
 			hideBorders = false,
+			hidePlaceholder = false,
 			hidePopupIndicator = false,
 			disablePointerEvents = false,
 			fadeOutDisabled = false,
@@ -200,7 +201,7 @@ const OptionPicker = memo(
 						helperText={helperText}
 						inputRef={inputRef}
 						variant={variant}
-						placeholder={placeholder}
+						placeholder={hidePlaceholder ? "" : placeholder}
 						autoFocus={autoFocus}
 						onChange={onInputChange}
 						// 在 Autocomplete 層 disabled 就可以
@@ -579,6 +580,7 @@ OptionPicker.propTypes = {
 	// DSG support
 	hideBorders: PropTypes.bool,
 	hidePopupIndicator: PropTypes.bool,
+	hidePlaceholder: PropTypes.bool,
 	disablePointerEvents: PropTypes.bool,
 	fadeOutDisabled: PropTypes.bool,
 	//

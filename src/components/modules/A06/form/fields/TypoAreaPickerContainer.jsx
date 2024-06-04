@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import { useWatch } from "react-hook-form";
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
-import Codes from "@/shared-modules/sd-codes";
+import Codes from "@/shared-modules/md-codes";
 
 const TypoAreaPickerContainer = forwardRef((props, ref) => {
 	const { name, children, label = "區域", ...rest } = props;

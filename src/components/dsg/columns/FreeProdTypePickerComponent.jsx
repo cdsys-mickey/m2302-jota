@@ -63,11 +63,13 @@ const FreeProdTypePickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			placeholder="試/贈/樣"
 			// DSG 專屬屬性
 			dense
 			hideBorders
 			disablePointerEvents={!focus}
 			hidePopupIndicator={!focus}
+			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus
 			{...rest}

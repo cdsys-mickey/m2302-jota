@@ -122,9 +122,9 @@ const DialogEx = memo(
 			return !!responsiveCtx && responsive && mobile;
 		}, [fullScreen, mobile, responsive, responsiveCtx]);
 
-		const showMessage = useMemo(() => {
-			return !!message && !prompt;
-		}, [message, prompt]);
+		// const showMessage = useMemo(() => {
+		// 	return !!message && !prompt;
+		// }, [message, prompt]);
 
 		const handleConfirm = useCallback(() => {
 			if (onSubmit) {
@@ -190,20 +190,18 @@ const DialogEx = memo(
 						...(Array.isArray(contentSx) ? contentSx : [contentSx]),
 					]}
 					{...contentProps}>
-					{showMessage &&
-						message
-							.split("\n")
-							.map((line, index) => (
-								<DialogContentText key={`line-${index}`}>
-									{line}
-								</DialogContentText>
-							))}
+					{message?.split("\n").map((line, index) => (
+						<DialogContentText key={`line-${index}`}>
+							{line}
+						</DialogContentText>
+					))}
 					{prompt && (
 						<Box py={1}>
 							<TextField
 								inputRef={setInputRef}
 								placeholder={placeholder}
 								size="small"
+								autoFocus
 								fullWidth
 								InputLabelProps={
 									MuiStyles.DEFAULT_INPUT_LABEL_PROPS

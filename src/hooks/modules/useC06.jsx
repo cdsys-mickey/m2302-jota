@@ -491,7 +491,7 @@ export const useC06 = () => {
 													prod?.PackData_N || "",
 												...(prodInfoRetrieved && {
 													SPrice: prodInfo.Price,
-													SNote: `庫存為 ${prodInfo.Stock}`,
+													SMsg: `庫存為 ${prodInfo.Stock}`,
 												}),
 											};
 										} else {

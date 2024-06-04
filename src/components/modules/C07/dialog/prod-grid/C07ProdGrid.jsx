@@ -12,7 +12,7 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C07ProdGridAddRows from "./C07ProdGridAddRows";
-import { optionPickerColumn } from "../../../../../shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import FreeProdTypePickerComponent from "../../../../dsg/columns/FreeProdTypePickerComponent";
 
 const ContextMenu = createDSGContextMenu({

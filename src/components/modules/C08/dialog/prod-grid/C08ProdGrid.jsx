@@ -5,6 +5,7 @@ import {
 	DynamicDataSheetGrid,
 	createTextColumn,
 	keyColumn,
+	textColumn,
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
@@ -12,6 +13,9 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C08ProdGridAddRows from "./C08ProdGridAddRows";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import FreeProdTypePickerComponent from "../../../../dsg/columns/FreeProdTypePickerComponent";
+import DisposalTypePickerComponent from "../../../../dsg/columns/disposal-type-picker/DisposalTypePickerComponent";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -26,12 +30,19 @@ const C08ProdGrid = memo((props) => {
 		handleGridChange,
 		getRowClassName,
 		height = 300,
-		prodDisabled,
-		spriceDisabled,
+		sprodDisabled,
+		stypeDisabled,
 		getSPriceClassName,
 	} = props;
 	const columns = useMemo(
 		() => [
+			{
+				...keyColumn("SOrdFlag_N", textColumn),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "訂",
+				disabled: true,
+			},
 			{
 				...keyColumn(
 					"prod",
@@ -46,7 +57,7 @@ const C08ProdGrid = memo((props) => {
 				id: "SProdID",
 				title: "商品",
 				grow: 4,
-				disabled: readOnly || prodDisabled,
+				disabled: readOnly || sprodDisabled,
 			},
 			{
 				...keyColumn(
@@ -59,52 +70,71 @@ const C08ProdGrid = memo((props) => {
 				title: "包裝",
 				disabled: true,
 			},
+
 			{
-				...keyColumn(
-					"SInqFlag",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "詢",
+				...keyColumn("SPrice", createFloatColumn(2)),
+				title: "調撥單價",
+				minWidth: 100,
+				grow: 1,
 				disabled: true,
 			},
 			{
-				...keyColumn("SPrice", createFloatColumn(2)),
-				title: "退貨單價",
-				minWidth: 100,
-				grow: 1,
-				disabled: readOnly,
+				...keyColumn("SQtyNote", textColumn),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "強",
+				disabled: true,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
-				title: "退貨數量",
+				title: "調撥數量",
 				minWidth: 90,
 				grow: 1,
 				disabled: readOnly,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
-				title: "退貨金額",
+				title: "金額",
 				minWidth: 90,
 				grow: 1,
 				disabled: true,
+				cellClassName: getSPriceClassName,
 			},
 			{
 				...keyColumn(
-					"SRemark",
-					createTextColumn({
-						continuousUpdates: false,
+					"stype",
+					optionPickerColumn(FreeProdTypePickerComponent, {
+						name: "stype",
+						disableClearable: true,
 					})
 				),
-				title: "備註",
-				grow: 5,
+				title: "贈品",
+				minWidth: 80,
+				maxWidth: 80,
+				disabled: readOnly || stypeDisabled,
+			},
+			{
+				...keyColumn(
+					"dtype",
+					optionPickerColumn(DisposalTypePickerComponent, {
+						name: "dtype",
+						// disableClearable: true,
+						optionLabelSize: "small",
+					})
+				),
+				title: "原因",
+				minWidth: 140,
+				maxWidth: 160,
 				disabled: readOnly,
 			},
+			{
+				...keyColumn("SMsg", textColumn),
+				title: "訊息",
+				minWidth: 140,
+				disabled: true,
+			},
 		],
-		[prodDisabled, readOnly]
+		[getSPriceClassName, sprodDisabled, readOnly, stypeDisabled]
 	);
 
 	const createRow = useCallback(
@@ -154,7 +184,7 @@ const C08ProdGrid = memo((props) => {
 C08ProdGrid.propTypes = {
 	getRowKey: PropTypes.func,
 	spriceDisabled: PropTypes.func,
-	prodDisabled: PropTypes.func,
+	sprodDisabled: PropTypes.func,
 	handleGridChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,
@@ -162,6 +192,7 @@ C08ProdGrid.propTypes = {
 	height: PropTypes.number,
 	gridRef: PropTypes.func,
 	data: PropTypes.array.isRequired,
+	stypeDisabled: PropTypes.func,
 };
 
 C08ProdGrid.displayName = "C08ProdGrid";

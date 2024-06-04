@@ -2,19 +2,19 @@ import { OptionGridColumn } from "@/shared-components/option-picker/grid/OptionG
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
-export const DepOrderDeptIdColumn = memo(
+export const DepOrderDeptColumn = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;
 		return (
-			<OptionGridColumn ref={ref} xs={24} sm={3} {...rest}>
+			<OptionGridColumn ref={ref} xs={24} sm={5} {...rest}>
 				{children}
 			</OptionGridColumn>
 		);
 	})
 );
 
-DepOrderDeptIdColumn.propTypes = {
+DepOrderDeptColumn.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
-DepOrderDeptIdColumn.displayName = "DepOrderDeptIdColumn";
+DepOrderDeptColumn.displayName = "DepOrderDeptColumn";

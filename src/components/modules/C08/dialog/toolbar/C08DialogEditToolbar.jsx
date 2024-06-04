@@ -16,18 +16,6 @@ const C08DialogEditToolbar = memo(
 		} = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				{onRefresh && (
-					<ButtonWrapper
-						responsive
-						onClick={onRefresh}
-						type="button"
-						endIcon={<AutorenewIcon />}
-						color="info"
-						variant="contained"
-						loading={refreshWorking}>
-						更新單價
-					</ButtonWrapper>
-				)}
 				<ButtonWrapper
 					responsive
 					onClick={onSave}

@@ -27,10 +27,6 @@ export const C08DialogToolbarContainer = (props) => {
 	if (c08.editing) {
 		return (
 			<C08DialogEditToolbar
-				onRefresh={c08.handleRefresh({
-					setValue: form.setValue,
-					getValues: form.getValues,
-				})}
 				refreshWorking={c08.refreshWorking}
 				onSave={form.handleSubmit(
 					c08.onEditorSubmit,

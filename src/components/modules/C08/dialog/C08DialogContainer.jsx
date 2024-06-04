@@ -114,12 +114,6 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 						getValues: form.getValues,
 					})}
 					txiDept={txiDept}
-					isSupplierNameDisabled={c08.isSupplierNameDisabled}
-					purchaseOrdersDisabled={c08.purchaseOrdersDisabled}
-					handleTaxTypeChanged={c08.handleTaxTypeChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
 				/>
 			</DialogExContainer>
 		</FormProvider>

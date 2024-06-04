@@ -148,7 +148,8 @@ const ZA03Form = memo((props) => {
 											name="dept"
 											label="隸屬門市"
 											required
-											disabled={deptDisabled}
+											// disabled={deptDisabled}
+											// disabled={readOnly}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>

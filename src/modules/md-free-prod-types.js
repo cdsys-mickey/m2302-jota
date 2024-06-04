@@ -14,7 +14,7 @@ const options = [
 ];
 
 const getOptionById = (id) => {
-	return options.find((o) => o.id === id);
+	return options.find((o) => o.id === id) || null;
 };
 
 const getOptionLabel = (option) => {

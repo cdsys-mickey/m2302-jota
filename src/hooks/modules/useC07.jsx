@@ -2,17 +2,17 @@ import C07 from "@/modules/md-C07";
 import { isDate } from "date-fns";
 import { useCallback, useContext, useRef } from "react";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import CrudContext from "../../contexts/crud/CrudContext";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { useAction } from "../../shared-hooks/useAction";
-import { useDSG } from "../../shared-hooks/useDSG";
-import useHttpPost from "../../shared-hooks/useHttpPost";
-import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
-import { useToggle } from "../../shared-hooks/useToggle";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import Errors from "../../shared-modules/sd-errors";
-import Forms from "../../shared-modules/sd-forms";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import CrudContext from "@/contexts/crud/CrudContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useAction } from "@/shared-hooks/useAction";
+import { useDSG } from "@/shared-hooks/useDSG";
+import useHttpPost from "@/shared-hooks/useHttpPost";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useToggle } from "@/shared-hooks/useToggle";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import Errors from "@/shared-modules/sd-errors";
+import Forms from "@/shared-modules/sd-forms";
 import { useAppModule } from "./useAppModule";
 
 export const useC07 = () => {

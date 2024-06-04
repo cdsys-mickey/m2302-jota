@@ -1,7 +1,7 @@
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import { PkgTypePickerContainer } from "../../../picker/PkgTypePickerContainer";
+import { OutboundTypePicker } from "../../../picker/OutboundTypePicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -10,7 +10,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	});
 };
 
-const PkgTypePickerComponent = memo((props) => {
+const DisposalTypePickerComponent = memo((props) => {
 	const {
 		// Data
 		rowData,
@@ -34,13 +34,11 @@ const PkgTypePickerComponent = memo((props) => {
 	const { name, ...rest } = columnData;
 
 	// console.log(
-	// 	`rendering PkgTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
+	// 	`rendering DisposalTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
 	// 	rowData
 	// );
 
 	const ref = useRef();
-	const rowDataRef = useRef(rowData);
-	rowDataRef.current = rowData;
 
 	const handleChange = useCallback(
 		(newValue) => {
@@ -49,7 +47,7 @@ const PkgTypePickerComponent = memo((props) => {
 			if (!newValue) {
 				return;
 			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
+			setTimeout(() => stopEditing({ nextRow: false }), 100);
 		},
 		[setRowData, stopEditing]
 	);
@@ -64,23 +62,22 @@ const PkgTypePickerComponent = memo((props) => {
 	}, [focus]);
 
 	return (
-		<PkgTypePickerContainer
+		<OutboundTypePicker
 			name={name}
-			queryParam="qs"
 			label=""
-			hideBorders
 			inputRef={ref}
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
 			// onClose={handleClose}
-			placeholder="包裝單位"
-			typeToSearchText="請輸入編號或名稱進行搜尋"
+			placeholder="銷退/報廢原因"
+			// typeToSearchText="請輸入編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
 			dense
+			hideBorders
 			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			hidePopupIndicator={!focus}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			disableClearable
@@ -90,7 +87,7 @@ const PkgTypePickerComponent = memo((props) => {
 	);
 }, arePropsEqual);
 
-PkgTypePickerComponent.propTypes = {
+DisposalTypePickerComponent.propTypes = {
 	name: PropTypes.string,
 	// Data
 	rowData: PropTypes.oneOfType([
@@ -115,6 +112,6 @@ PkgTypePickerComponent.propTypes = {
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
 };
-PkgTypePickerComponent.propTypes = {};
-PkgTypePickerComponent.displayName = "PkgTypePickerComponent";
-export default PkgTypePickerComponent;
+DisposalTypePickerComponent.propTypes = {};
+DisposalTypePickerComponent.displayName = "DisposalTypePickerComponent";
+export default DisposalTypePickerComponent;

@@ -115,7 +115,7 @@ const C06ProdGrid = memo((props) => {
 				disabled: readOnly || creating,
 			},
 			{
-				...keyColumn("SNote", textColumn),
+				...keyColumn("SMsg", textColumn),
 				title: "訊息",
 				minWidth: 140,
 				disabled: true,

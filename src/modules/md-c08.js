@@ -1,34 +1,65 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
+import FreeProdTypes from "./md-free-prod-types";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, ...rest }) => {
-			return {
-				prod: {
-					ProdID: SProdID,
-					ProdData: ProdData_N,
-				},
-				...rest,
-			};
-		}) || []
+		data?.map(
+			({
+				SProdID,
+				ProdData_N,
+				SType,
+				SRsnID,
+				RsnData_N,
+				SOrdID,
+				...rest
+			}) => {
+				const fields = SOrdID?.split("#") || [];
+				const ordId = fields.length > 0 ? fields[0] : "";
+
+				return {
+					prod: {
+						ProdID: SProdID,
+						ProdData: ProdData_N,
+					},
+					stype: FreeProdTypes.getOptionById(SType),
+					SOrdID,
+					// ordId,
+					SMsg: ordId,
+					dtype: SRsnID
+						? {
+								CodeID: SRsnID,
+								CodeData: RsnData_N,
+						  }
+						: null,
+					...rest,
+				};
+			}
+		) || []
 	);
 };
 
 const transformGridForSubmitting = (gridData) => {
 	return gridData
 		.filter((v) => v.prod?.ProdID)
-		.map(({ Pkey, prod, SQty, SPrice, SAmt, ...rest }, index) => ({
-			Pkey: Pkey?.length < 36 ? "" : Pkey,
-			SProdID: prod?.ProdID,
-			ProdData_N: prod?.ProdData,
-			SQty: SQty?.toString() || "",
-			SPrice: SPrice?.toString() || "",
-			SAmt: SAmt?.toString() || "",
-			Seq: index + 1,
-			...rest,
-		}));
+		.map(
+			(
+				{ Pkey, prod, SQty, SPrice, SAmt, stype, dtype, ...rest },
+				index
+			) => ({
+				Pkey: Pkey?.length < 36 ? "" : Pkey,
+				SProdID: prod?.ProdID,
+				ProdData_N: prod?.ProdData,
+				SQty: SQty?.toString() || "",
+				SPrice: SPrice?.toString() || "",
+				SAmt: SAmt?.toString() || "",
+				SType: stype?.id || "",
+				Seq: index + 1,
+				SRsnID: dtype?.id || "",
+				...rest,
+			})
+		);
 };
 
 const transformForReading = (payload) => {
@@ -62,7 +93,7 @@ const transformForReading = (payload) => {
 			OrdIDs?.split("|")
 				.filter((s) => !!s)
 				.map((x) => ({
-					["單號"]: x,
+					["訂貨單號"]: x,
 				})) || [],
 		transType: TrafID
 			? {
@@ -81,16 +112,30 @@ const transformForReading = (payload) => {
 };
 
 const transformForSubmitting = (payload, gridData) => {
-	const { GrtID, GrtDate, employee, supplier, remark, ...rest } = payload;
+	const {
+		TxoID,
+		TxoDate,
+		employee,
+		txiDept,
+		deliveryEmployee,
+		transType,
+		depOrders,
+		remark,
+		...rest
+	} = payload;
 	return {
-		GrtID,
-		GrtDate: GrtDate ? Forms.formatDate(GrtDate) : "",
+		TxoID,
+		TxoDate: TxoDate ? Forms.formatDate(TxoDate) : "",
 		EmplID: employee?.CodeID || "",
-		FactID: supplier?.FactID || "",
+		TrafID: transType?.CodeID || "",
+		IDeptID: txiDept?.DeptID || "",
+
+		DyEmplID: deliveryEmployee?.CodeID,
+		OrdIDs: depOrders.map((o) => o["訂貨單號"]).join(","),
 		Remark: remark?.split("\n") || [],
 		...rest,
 		...(gridData && {
-			GdsRt_S: transformGridForSubmitting(gridData),
+			InvTxo_S: transformGridForSubmitting(gridData),
 		}),
 	};
 };

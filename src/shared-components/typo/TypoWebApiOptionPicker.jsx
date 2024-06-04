@@ -43,7 +43,7 @@ const TypoWebApiOptionPicker = memo(
 			}
 			if (multiple) {
 				if (!Types.isArray(value)) {
-					console.warn("value is not an array!", value);
+					console.warn(`value is not an array!`, value);
 				}
 				// console.log("multiple value", value);
 				return value

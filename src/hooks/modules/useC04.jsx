@@ -451,13 +451,13 @@ export const useC04 = () => {
 						newValue
 							.slice(operation.fromRowIndex, operation.toRowIndex)
 							.forEach(async (rowData, i) => {
-								const { prod, SPrice, stype, SQty } = rowData;
+								const { prod, SPrice, SQty, stype } = rowData;
 								const rowIndex = operation.fromRowIndex + i;
 								const {
 									prod: oldProd,
 									SPrice: oldSPrice,
-									oldStype,
 									oldSQty,
+									oldStype,
 								} = prodGrid.gridData[rowIndex];
 
 								let processedRowData = { ...rowData };

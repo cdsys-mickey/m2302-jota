@@ -1,6 +1,5 @@
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApiDSG } from "../../shared-hooks/useWebApiDSG";
-import { useCallback } from "react";
+import { useWebApiDSG } from "@/shared-hooks/useWebApiDSG";
 import { useAppModule } from "./useAppModule";
 
 export const useA14 = ({ token }) => {
@@ -13,7 +12,7 @@ export const useA14 = ({ token }) => {
 		gridId: "A14",
 		keyColumn: "CodeID",
 		otherColumns: "CodeData",
-		baseUri: "v1/prod/scraps",
+		baseUri: "v1/prod/outbound-types",
 	});
 
 	useInit(() => {

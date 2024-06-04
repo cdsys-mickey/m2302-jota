@@ -81,6 +81,7 @@ const ProdPickerComponent = memo((props) => {
 			dense
 			disablePointerEvents={!focus}
 			hidePopupIndicator={!focus}
+			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus
 			{...rest}

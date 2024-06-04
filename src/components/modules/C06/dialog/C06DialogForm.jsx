@@ -74,7 +74,7 @@ const C06DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={6}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DeptPickerContainer
 								typo
 								name="spDept"
@@ -105,7 +105,7 @@ const C06DialogForm = memo((props) => {
 								/>
 							</OptionPickerProvider>
 						</Grid>
-						<Grid item xs={24} sm={24} md={3}>
+						<Grid item xs={24} sm={24} md={4}>
 							<C06SquaredPicker
 								typo
 								name="squared"

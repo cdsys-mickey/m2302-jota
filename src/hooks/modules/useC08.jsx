@@ -14,7 +14,7 @@ import { useMemo } from "react";
 import useHttpPost from "../../shared-hooks/useHttpPost";
 import { isDate } from "date-fns";
 import Forms from "../../shared-modules/sd-forms";
-import { useToggle } from "../../shared-hooks/useToggle";
+import { useToggle } from "@/shared-hooks/useToggle";
 
 export const useC08 = () => {
 	const crud = useContext(CrudContext);
@@ -26,6 +26,7 @@ export const useC08 = () => {
 		token,
 		moduleId: "C08",
 	});
+	const stockPwordRef = useRef();
 
 	const [
 		popperOpen,
@@ -54,21 +55,52 @@ export const useC08 = () => {
 		keyColumn: "pkey",
 	});
 
-	const refreshAmt = useCallback(({ setValue, data, reset = false }) => {
-		if (reset) {
-			setValue("InAmt", "");
-			setValue("TaxAmt", "");
-			setValue("TotAmt", "");
-			setValue("RcvdAmt", "");
-			setValue("PayAmt", "");
-		} else {
-			setValue("InAmt", data.InAmt);
-			setValue("TaxAmt", data.TaxAmt);
-			setValue("TotAmt", data.TotAmt);
-			setValue("RcvdAmt", data.RcvdAmt);
-			setValue("PayAmt", data.PayAmt);
+	// 挑戰
+	const challengingRowRef = useRef(null);
+	const stockPwordPassedRef = useRef(false);
+	const challengingProdRef = useRef(null);
+	const challengingQtyRef = useRef(null);
+	const challengingErrorRef = useRef(null);
+
+	const loadStockPword = useCallback(async () => {
+		try {
+			const { status, payload, error } = await httpGetAsync({
+				url: `v1/ou/dept/params`,
+				bearer: token,
+				params: {
+					id: "StockPword",
+				},
+			});
+			if (status.success) {
+				stockPwordRef.current = payload;
+			} else {
+				throw error || new Error("未預期例外");
+			}
+		} catch (err) {
+			toast.error(Errors.getMessage("讀取設定發生錯誤", err));
 		}
-	}, []);
+	}, [httpGetAsync, token]);
+
+	const refreshAmt = useCallback(
+		({ setValue, data, gridData, reset = false }) => {
+			if (reset) {
+				setValue("TxoAmt", "");
+			} else {
+				if (data) {
+					setValue("TxoAmt", data?.TxoAmt);
+					return;
+				}
+
+				if (gridData) {
+					const total = C08.getTotal(gridData);
+					setValue("TxoAmt", total);
+					return;
+				}
+				setValue("TxoAmt", "");
+			}
+		},
+		[]
+	);
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -160,84 +192,7 @@ export const useC08 = () => {
 		return supplier?.FactID !== "*";
 	}, []);
 
-	const refreshGrid = useCallback(
-		async ({ formData, setValue }) => {
-			const rtnDate = formData.TxoDate;
-			const supplier = formData.supplier;
-
-			if (supplier && rtnDate && prodGrid.gridData.length > 0) {
-				const collected = C08.transformForSubmitting(
-					formData,
-					prodGrid.gridData
-				);
-				console.log("collected", collected);
-				try {
-					const { status, payload, error } = await httpPostAsync({
-						url: "v1/purchase/trans-out-orders/refresh-grid",
-						bearer: token,
-						data: collected,
-					});
-					console.log("refresh-grid.payload", payload);
-					if (status.success) {
-						const data = C08.transformForReading(payload.data[0]);
-						console.log("refresh-grid.data", data);
-						prodGrid.handleGridDataLoaded(data.prods);
-						refreshAmt({ setValue, data });
-						toast.info("商品單價已更新");
-					} else {
-						throw error || new Error("未預期例外");
-					}
-				} catch (err) {
-					toast.error(Errors.getMessage("更新商品單價失敗", err));
-				}
-			} else {
-				//clear
-				console.warn("clear values?");
-			}
-		},
-		[httpPostAsync, prodGrid, refreshAmt, token]
-	);
-
 	const refreshAction = useAction();
-
-	const handleRefresh = useCallback(
-		({ setValue, getValues }) =>
-			async () => {
-				console.log("handleRefresh");
-				try {
-					refreshAction.start();
-					refreshGrid({ formData: getValues(), setValue });
-				} finally {
-					refreshAction.clear();
-				}
-			},
-		[refreshAction, refreshGrid]
-	);
-
-	const handleSupplierChanged = useCallback(
-		({ setValue, getValues }) =>
-			(newValue) => {
-				console.log("handleSupplierChanged", newValue);
-				setValue("FactData", newValue?.FactData || "");
-				setValue("Uniform", newValue?.Uniform || "");
-				setValue("TaxType", newValue?.TaxType === "Y" ? "Y" : "");
-				setValue("FactAddr", newValue?.CompAddr || "");
-
-				refreshGrid({ formData: getValues(), setValue });
-
-				//refresh-grid
-			},
-		[refreshGrid]
-	);
-
-	const handleRtnDateChanged = useCallback(
-		({ setValue, getValues }) =>
-			(newValue) => {
-				console.log("rtnDate changed", newValue);
-				refreshGrid({ formData: getValues(), setValue });
-			},
-		[refreshGrid]
-	);
 
 	const confirmQuitCreating = useCallback(() => {
 		dialogs.confirm({
@@ -358,20 +313,9 @@ export const useC08 = () => {
 	}, []);
 
 	const getProdInfo = useCallback(
-		async (prodId, { supplier, rtnDate }) => {
+		async (prodId) => {
 			if (!prodId) {
 				toast.error("請先選擇商品");
-				return;
-			}
-
-			const supplierId = supplier?.FactID;
-			if (!supplierId) {
-				toast.error("請先選擇廠商");
-				return;
-			}
-
-			if (!isDate(rtnDate)) {
-				toast.error("請先輸入撥出日期");
 				return;
 			}
 
@@ -380,9 +324,7 @@ export const useC08 = () => {
 					url: "v1/purchase/trans-out-orders/prod-info",
 					bearer: token,
 					params: {
-						spi: supplierId,
 						pd: prodId,
-						rd: Forms.formatDate(rtnDate),
 					},
 				});
 
@@ -392,7 +334,49 @@ export const useC08 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err));
+				toast.error(Errors.getMessage("查詢調撥成本失敗", err));
+			}
+		},
+		[httpGetAsync, token]
+	);
+
+	const commitSQty = useCallback(() => {
+		// 置換
+		console.log(
+			`commitSQty[${challengingProdRef.current?.ProdID}]→`,
+			challengingQtyRef.current
+		);
+	}, []);
+
+	const promptOverrideSQty = useCallback(() => {
+		const err = challengingErrorRef.current;
+		dialogs.confirm({
+			message: `${err?.message} 是否強迫銷貨？`,
+			onConfirm: () => {
+				commitSQty();
+			},
+		});
+	}, [commitSQty, dialogs]);
+
+	const checkStock = useCallback(
+		async ({ prod, pkey, chkQty }) => {
+			if (!prod?.ProdID) {
+				toast.error("請先選擇商品");
+				return;
+			}
+			challengingProdRef.current = prod;
+			challengingQtyRef.current = chkQty;
+			const { status, error } = await httpGetAsync({
+				url: "v1/purchase/trans-out-orders/check-stock",
+				bearer: token,
+				params: {
+					id: prod?.ProdID,
+					pkey: pkey,
+					chk: chkQty,
+				},
+			});
+			if (!status.success) {
+				throw error || new Error("未預期例外");
 			}
 		},
 		[httpGetAsync, token]
@@ -401,51 +385,6 @@ export const useC08 = () => {
 	const spriceDisabled = useCallback(({ rowData }) => {
 		return !!rowData.SInqFlag;
 	}, []);
-
-	const fetchAmt = useCallback(
-		async ({ received, taxType, gridData, setValue }) => {
-			const total = C08.getTotal(gridData);
-			try {
-				const { status, payload, error } = await httpGetAsync({
-					url: "v1/purchase/trans-out-orders/refresh-amt",
-					bearer: token,
-					data: {
-						tt: taxType,
-						arv: received,
-						art: total,
-					},
-				});
-				if (status.success) {
-					console.log("refresh-amt", payload);
-					setValue("RtnAmt", payload.RtnAmt);
-					setValue("TaxAmt", payload.TaxAmt);
-					setValue("TotAmt", payload.TotAmt);
-					setValue("RtAmt", total.toFixed(2));
-				} else {
-					throw error || new Error("發生未預期例外");
-				}
-			} catch (err) {
-				toast.error(Errors.getMessage("計算合計失敗", err));
-			}
-		},
-		[httpGetAsync, token]
-	);
-
-	const handleTaxTypeChanged = useCallback(
-		({ setValue, getValues }) =>
-			async (newValue) => {
-				console.log("onTaxTypeChanged", newValue);
-				const received = getValues("RecvAmt");
-				// console.log("formData", formData);
-				fetchAmt({
-					received: received,
-					taxType: newValue,
-					gridData: prodGrid.gridData,
-					setValue,
-				});
-			},
-		[fetchAmt, prodGrid.gridData]
-	);
 
 	const handleGridChange = useCallback(
 		({ getValues, setValue }) =>
@@ -460,12 +399,20 @@ export const useC08 = () => {
 						newValue
 							.slice(operation.fromRowIndex, operation.toRowIndex)
 							.forEach(async (rowData, i) => {
-								const { prod, SPrice, SQty } = rowData;
+								const {
+									prod,
+									SPrice,
+									SQty,
+									stype,
+									PKey,
+									chkQty,
+								} = rowData;
 								const rowIndex = operation.fromRowIndex + i;
 								const {
 									prod: oldProd,
 									SPrice: oldSPrice,
 									oldSQty,
+									oldSType,
 								} = prodGrid.gridData[rowIndex];
 
 								let processedRowData = { ...rowData };
@@ -491,27 +438,97 @@ export const useC08 = () => {
 											...processedRowData,
 											["PackData_N"]:
 												prod?.PackData_N || "",
-											...(prodInfoRetrieved && prodInfo),
+											...(prodInfoRetrieved && {
+												SPrice: prodInfo.Price,
+												SMsg: `庫存為 ${prodInfo.Stock}`,
+											}),
 										};
 									}
 									if (!prodInfoRetrieved) {
 										processedRowData = {
 											...processedRowData,
-											["SInqFlag"]: "",
+											["prod"]: null,
 											["SPrice"]: "",
+											["PackData_N"]: "",
+											["SMsg"]: "",
 										};
 									}
 								}
 
-								// 單價, 贈,  數量
-								if (SPrice !== oldSPrice || SQty !== oldSQty) {
+								let modifiedSQty = SQty;
+
+								// 數量, 且有選 prod
+								if (SQty !== oldSQty && !!prod && SQty) {
+									try {
+										challengingErrorRef.current = null;
+										challengingRowRef.current = rowIndex;
+										await checkStock({
+											prod: prod,
+											pkey: PKey,
+											chkQty: SQty,
+										});
+									} catch (err) {
+										challengingErrorRef.current = err;
+										modifiedSQty = 0;
+										processedRowData = {
+											...processedRowData,
+											["SQty"]: 0,
+										};
+										if (err.code === 103) {
+											prodGrid.gridRef.current.setActiveCell(
+												null
+											);
+											console.log("override SQty");
+
+											if (stockPwordPassedRef.current) {
+												dialogs.confirm({
+													message: `${err.message} 是否強迫銷貨？`,
+													onConfirm: () => {
+														commitSQty();
+													},
+												});
+											} else {
+												dialogs.prompt({
+													title: "庫存不足",
+													message: `${err.message} 請輸入密碼`,
+													label: "強迫銷貨密碼",
+													onConfirm: (value) => {
+														if (
+															value ===
+															stockPwordRef.current
+														) {
+															stockPwordPassedRef.current = true;
+														}
+													},
+													onCancel: () => {
+														prodGrid.gridRef.current.setActiveCell(
+															{
+																col: "SQty",
+																row: challengingRowRef.current,
+															}
+														);
+													},
+													// confirmText: "通過",
+												});
+											}
+										}
+									}
+								}
+
+								// 單價, 贈,  數量, 改用 sqty
+								if (
+									SPrice !== oldSPrice ||
+									modifiedSQty !== oldSQty
+								) {
 									// 計算合計
 									processedRowData = {
 										...processedRowData,
 										["SAmt"]:
-											!SPrice || !SQty
+											!SPrice || !modifiedSQty
 												? ""
-												: SPrice * SQty,
+												: stype?.id
+												? 0
+												: SPrice * modifiedSQty,
 									};
 								}
 								newGridData[rowIndex] = processedRowData;
@@ -535,15 +552,10 @@ export const useC08 = () => {
 				console.log("prodGrid.changed", newGridData);
 				if (!checkFailed) {
 					prodGrid.setGridData(newGridData);
-					fetchAmt({
-						received: formData.RecvAmt,
-						taxType: formData.TaxType,
-						gridData: newGridData,
-						setValue,
-					});
+					refreshAmt({ setValue, gridData: newGridData });
 				}
 			},
-		[fetchAmt, getProdInfo, prodGrid]
+		[checkStock, commitSQty, dialogs, getProdInfo, prodGrid, refreshAmt]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -607,53 +619,6 @@ export const useC08 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const onRefreshGridSubmit = useCallback(
-		({ setValue }) =>
-			async (data) => {
-				console.log("onRefreshGridSubmit", data);
-				try {
-					if (prodGrid.gridData.length > 0) {
-						const collected = C08.transformForSubmitting(
-							data,
-							prodGrid.gridData
-						);
-						console.log("collected", collected);
-
-						const { status, payload, error } = await httpPostAsync({
-							url: "v1/purchase/trans-out-orders/refresh-grid",
-							bearer: token,
-							data: collected,
-						});
-						console.log("refresh-grid.payload", payload);
-						if (status.success) {
-							const data = C08.transformForReading(
-								payload.data[0]
-							);
-							console.log("refreshed data", data);
-							prodGrid.handleGridDataLoaded(data.prods);
-							refreshAmt({ setValue, data });
-							toast.info("商品單價已更新");
-						} else {
-							throw error || new Error("未預期例外");
-						}
-					} else {
-						refreshAmt({
-							setValue,
-							reset: true,
-						});
-					}
-				} catch (err) {
-					toast.error(Errors.getMessage("商品單價更新失敗", err));
-					// 還原
-				}
-			},
-		[httpPatchAsync, prodGrid, refreshAmt, token]
-	);
-
-	const onRefreshGridSubmitError = useCallback((err) => {
-		console.error("onRefreshGridSubmitError", err);
-	}, []);
-
 	const checkEditableAction = useAction();
 
 	const handleCheckEditable = useCallback(async () => {
@@ -685,8 +650,14 @@ export const useC08 = () => {
 	const handleDepOrdersChanged = useCallback(
 		({ setValue, getValues }) =>
 			async (newValue) => {
+				if (newValue.length === 0) {
+					prodGrid.handleGridDataLoaded([]);
+					return;
+				}
+
 				console.log("handleDepOrdersChanged", newValue);
 				const formData = getValues();
+				console.log("formData", formData);
 				const collected = C08.transformForSubmitting(
 					formData,
 					prodGrid.gridData
@@ -703,7 +674,7 @@ export const useC08 = () => {
 						const data = C08.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
 						prodGrid.handleGridDataLoaded(data.prods);
-						refreshAmt({ setValue, data });
+						refreshAmt({ setValue, data, gridData: data.prods });
 						// toast.info("訂購單商品已載入");
 					} else {
 						throw error || new Error("未預期例外");
@@ -725,6 +696,25 @@ export const useC08 = () => {
 		[]
 	);
 
+	const stypeDisabled = useCallback(
+		({ rowData }) => {
+			return !!crud.itemData?.depOrders?.length > 0;
+		},
+		[crud.itemData?.depOrders?.length]
+	);
+
+	const getSPriceClassName = useCallback(({ rowData }) => {
+		return rowData.stype?.id ? "line-through" : null;
+	}, []);
+
+	const sprodDisabled = useCallback(({ rowData }) => {
+		return !!rowData?.SOrdFlag_N;
+	}, []);
+
+	// 挑戰處理
+
+	const stockPwordAction = useAction();
+
 	return {
 		...crud,
 		...listLoader,
@@ -732,7 +722,6 @@ export const useC08 = () => {
 		// selectedInq,
 		loadItem,
 		handleSelect,
-		handleSupplierChanged,
 		// Popper
 		popperOpen,
 		handlePopperToggle,
@@ -757,16 +746,15 @@ export const useC08 = () => {
 		onPrintSubmit,
 		onPrintSubmitError,
 		isSupplierNameDisabled,
-		onRefreshGridSubmit,
-		onRefreshGridSubmitError,
-		handleTaxTypeChanged,
-		handleRtnDateChanged,
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
-		handleRefresh,
 		refreshWorking: refreshAction.working,
 		handleDepOrdersChanged,
 		handleTxiDeptChanged,
+		stypeDisabled,
+		getSPriceClassName,
+		sprodDisabled,
+		loadStockPword,
 	};
 };

@@ -6,7 +6,7 @@ export const DepOrderDateColumn = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;
 		return (
-			<OptionGridColumn ref={ref} xs={24} sm={3} {...rest}>
+			<OptionGridColumn ref={ref} xs={24} sm={4} {...rest}>
 				{children}
 			</OptionGridColumn>
 		);

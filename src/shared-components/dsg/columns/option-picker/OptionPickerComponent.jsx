@@ -64,7 +64,8 @@ const OptionPickerComponent = memo((props) => {
 			dense
 			hideBorders
 			disablePointerEvents={!focus}
-			hidePopupIndicator={!focus}
+			hidePopupIndicator={!active}
+			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus
 			{...rest}

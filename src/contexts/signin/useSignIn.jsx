@@ -111,9 +111,12 @@ export const useSignIn = () => {
 								);
 								break;
 							default:
+								// toast.error(
+								// 	error?.message ||
+								// 		`登入發生未預期例外 HTTP ${status.code}，請稍後再試`
+								// );
 								toast.error(
-									error?.message ||
-										`登入發生未預期 HTTP ${status.code} 例外，請稍後再試`
+									Errors.getMessage("登入失敗", error)
 								);
 								break;
 						}
