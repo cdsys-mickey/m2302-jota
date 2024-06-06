@@ -21,6 +21,14 @@ const B05DialogEditToolbar = memo(
 				</ButtonWrapper>
 				<ButtonWrapper
 					responsive
+					onClick={onCancel}
+					color="neutral"
+					variant="contained"
+					{...rest}>
+					取消
+				</ButtonWrapper>
+				<ButtonWrapper
+					responsive
 					onClick={onSave}
 					type="submit"
 					endIcon={<SendIcon />}
@@ -28,14 +36,6 @@ const B05DialogEditToolbar = memo(
 					variant="contained"
 					loading={loading}>
 					儲存
-				</ButtonWrapper>
-				<ButtonWrapper
-					responsive
-					onClick={onCancel}
-					color="neutral"
-					variant="contained"
-					{...rest}>
-					取消
 				</ButtonWrapper>
 				{/* 帶入商品 */}
 				<B05ImportProdsDialogContainer />

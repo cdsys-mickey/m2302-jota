@@ -30,6 +30,14 @@ const C04DialogEditToolbar = memo(
 				)}
 				<ButtonWrapper
 					responsive
+					onClick={onCancel}
+					color="neutral"
+					variant="contained"
+					{...rest}>
+					取消
+				</ButtonWrapper>
+				<ButtonWrapper
+					responsive
 					onClick={onSave}
 					type="submit"
 					endIcon={<SendIcon />}
@@ -37,14 +45,6 @@ const C04DialogEditToolbar = memo(
 					variant="contained"
 					loading={editWorking}>
 					儲存
-				</ButtonWrapper>
-				<ButtonWrapper
-					responsive
-					onClick={onCancel}
-					color="neutral"
-					variant="contained"
-					{...rest}>
-					取消
 				</ButtonWrapper>
 			</Fragment>
 		);

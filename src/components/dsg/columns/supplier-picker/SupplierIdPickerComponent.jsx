@@ -2,6 +2,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { SupplierIdPickerContainer } from "../../../picker/SupplierIdPickerContainer";
+import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -16,8 +17,9 @@ const SupplierIdPickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		rowIndex,
-		columnIndex,
+		// rowIndex,
+		// columnIndex,
+		// Component Props
 		columnData,
 		// Cell state
 		active,
@@ -25,13 +27,13 @@ const SupplierIdPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const { name, ...rest } = columnData;
+	const { disableActiveControl, ...rest } = columnData;
 
 	// console.log(
 	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
@@ -51,18 +53,20 @@ const SupplierIdPickerComponent = memo((props) => {
 			}
 			setTimeout(() => {
 				stopEditing({ nextRow: false });
-			}, 50);
-			// stopEditing({ nextRow: false });
-			// ref.current?.blur();
+			}, 100);
 		},
 		[setRowData, stopEditing]
 	);
 
-	const handleClose = useCallback(() => {
-		stopEditing({ nextRow: false });
-		console.log("handleClose");
-		// ref.current?.blur();
-	}, [stopEditing]);
+	// const handleClose = useCallback(() => {
+	// 	stopEditing({ nextRow: false });
+	// 	console.log("handleClose");
+	// 	// ref.current?.blur();
+	// }, [stopEditing]);
+
+	const hideControls = useMemo(() => {
+		return disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
@@ -94,8 +98,9 @@ const SupplierIdPickerComponent = memo((props) => {
 			blurOnSelect
 			// DSG 專屬屬性
 			dense
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!active}
+			hideControls={hideControls}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			// disableClearable
@@ -105,7 +110,6 @@ const SupplierIdPickerComponent = memo((props) => {
 }, arePropsEqual);
 
 SupplierIdPickerComponent.propTypes = {
-	name: PropTypes.string,
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,

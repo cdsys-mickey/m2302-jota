@@ -10,19 +10,20 @@ const ProdCatSPickerColumn = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		rowIndex,
-		columnIndex,
+		// rowIndex,
+		// columnIndex,
+		// Component Props
 		columnData,
 		// Cell state
 		active,
 		focus,
 		disabled: columnDisabled,
 		// Control functions
-		stopEditing,
-		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// stopEditing,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 		...rest
 	} = props;
 
@@ -37,6 +38,8 @@ const ProdCatSPickerColumn = memo((props) => {
 	const disabled = useMemo(() => {
 		return !catL || !catM || columnDisabled;
 	}, [catL, catM, columnDisabled]);
+
+	// const { disableActiveControl, ...rest } = columnData;
 
 	const ref = useRef();
 	const rowDataRef = useRef(rowData);
@@ -62,6 +65,10 @@ const ProdCatSPickerColumn = memo((props) => {
 		[name, setRowData]
 	);
 
+	// const hideControls = useMemo(() => {
+	// 	return disableActiveControl ? !focus : !active;
+	// }, [active, disableActiveControl, focus]);
+
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
@@ -82,8 +89,9 @@ const ProdCatSPickerColumn = memo((props) => {
 			value={rowData[name]}
 			onChange={handleChange}
 			// DSG 專屬屬性
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!active}
+			hideControls={active}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus

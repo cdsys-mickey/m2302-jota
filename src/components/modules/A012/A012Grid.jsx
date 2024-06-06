@@ -133,7 +133,7 @@ const A012Grid = memo((props) => {
 				disabled: readOnly,
 			},
 		],
-		[bearer, readOnly]
+		[readOnly]
 	);
 
 	if (!data || data.legnth === 0) {
@@ -148,7 +148,7 @@ const A012Grid = memo((props) => {
 		return <DSGLoading height={height} />;
 	}
 
-	if (!data) {
+	if (loading == null) {
 		return false;
 	}
 

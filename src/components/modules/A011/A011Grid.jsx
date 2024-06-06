@@ -100,7 +100,7 @@ const A011Grid = memo((props) => {
 		return <DSGLoading height={height} />;
 	}
 
-	if (!data) {
+	if (loading == null) {
 		return false;
 	}
 
@@ -117,7 +117,7 @@ const A011Grid = memo((props) => {
 				onChange={onChange}
 				columns={columns}
 				addRowsComponent={DSGAddRowsToolbar}
-				disableExpandSelection
+				// disableExpandSelection
 				disableContextMenu
 			/>
 		</Box>

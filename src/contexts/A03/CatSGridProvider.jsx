@@ -210,12 +210,13 @@ const CatSGridProvider = (props) => {
 		(row, newValue) => {
 			// dsg.rollbackChanges();
 			toast.error(`小分類 ${row.rowData.SClas} 已存在`);
-			dsg.rewriteRowValue(row, newValue, {
-				SClas: "",
-			});
-			dsg.rewriteRowValue(row, newValue, {
-				SClas: "",
-			});
+			dsg.setValueByRowIndex(
+				row.rowIndex,
+				{
+					SClas: "",
+				},
+				newValue
+			);
 		},
 		[dsg]
 	);

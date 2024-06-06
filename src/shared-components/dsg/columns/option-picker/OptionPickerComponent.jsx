@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useLayoutEffect } from "react";
 import { useCallback } from "react";
 import Objects from "@/shared-modules/sd-objects";
+import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -25,7 +26,7 @@ const OptionPickerComponent = memo((props) => {
 		disabled,
 	} = props;
 
-	const { options, ...rest } = columnData;
+	const { disableActiveControl, options, ...rest } = columnData;
 
 	const ref = useRef();
 	// console.log("rendering OptionPickerComponent");
@@ -41,6 +42,10 @@ const OptionPickerComponent = memo((props) => {
 		},
 		[setRowData, stopEditing]
 	);
+
+	const hideControls = useMemo(() => {
+		return disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, focus]);
 
 	// This function will be called only when `focus` changes
 	useLayoutEffect(() => {
@@ -63,8 +68,9 @@ const OptionPickerComponent = memo((props) => {
 			// DSG 專屬屬性
 			dense
 			hideBorders
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!active}
+			hideControls={hideControls}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus
@@ -74,7 +80,28 @@ const OptionPickerComponent = memo((props) => {
 }, arePropsEqual);
 
 OptionPickerComponent.propTypes = {
+	// Data
+	rowData: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+		PropTypes.object,
+	]),
+	setRowData: PropTypes.func,
+	// Extra information
+	rowIndex: PropTypes.number,
+	columnIndex: PropTypes.number,
 	columnData: PropTypes.object,
+	// Cell state
+	active: PropTypes.bool,
+	focus: PropTypes.bool,
+	disabled: PropTypes.bool,
+
+	// Control functions
+	stopEditing: PropTypes.func,
+	insertRowBelow: PropTypes.func,
+	duplicateRow: PropTypes.func,
+	deleteRow: PropTypes.func,
+	getContextMenuItems: PropTypes.func,
 };
 
 OptionPickerComponent.displayName = "OptionPickerComponent";

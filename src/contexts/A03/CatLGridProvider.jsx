@@ -220,12 +220,13 @@ const CatLGridProvider = (props) => {
 		(row, newValue) => {
 			// dsg.rollbackChanges();
 			toast.error(`大分類 ${row.rowData.LClas} 已存在`);
-			dsg.rewriteRowValue(row, newValue, {
-				LClas: "",
-			});
-			dsg.rewriteRowValue(row, newValue, {
-				LClas: "",
-			});
+			dsg.setValueByRowIndex(
+				row.rowIndex,
+				{
+					LClas: "",
+				},
+				newValue
+			);
 		},
 		[dsg]
 	);

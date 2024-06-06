@@ -30,8 +30,8 @@ const transformForReading = (payload) => {
 const transformForSubmitting = (rowData) => {
 	const { areaType, ...rest } = rowData;
 	return {
-		...(areaType?.AreaType && {
-			Other1: areaType?.AreaType,
+		...(areaType?.id && {
+			Other1: areaType?.id,
 		}),
 		...rest,
 	};

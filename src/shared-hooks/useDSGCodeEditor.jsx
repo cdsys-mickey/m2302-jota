@@ -14,7 +14,7 @@ const defaultTransformForSubmmit = (payload) => {
 	return payload;
 };
 
-export const useWebApiDSG = ({
+export const useDSGCodeEditor = ({
 	token,
 	gridId,
 	keyColumn = "CodeID",
@@ -193,9 +193,13 @@ export const useWebApiDSG = ({
 		(row, newValue) => {
 			toast.error(`${displayName} ${row.rowData[keyColumn]} 已存在`);
 
-			dsg.rewriteRowValue(row, newValue, {
-				[keyColumn]: "",
-			});
+			dsg.setValueByRowIndex(
+				row.rowIndex,
+				{
+					[keyColumn]: "",
+				},
+				newValue
+			);
 			setTimeout(() => {
 				dsg.setActiveCell({ row: row.rowIndex, col: 0 });
 			}, 0);

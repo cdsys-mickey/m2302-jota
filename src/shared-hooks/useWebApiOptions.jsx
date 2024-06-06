@@ -190,7 +190,6 @@ export const useWebApiOptions = (opts = {}) => {
 	const handleInputChange = useCallback(
 		(event) => {
 			let qs = event.target.value;
-			// console.log(`text changed: `, qs); // for debug purpose, dont delete
 
 			if (timerIdRef.current) {
 				clearTimeout(timerIdRef.current);

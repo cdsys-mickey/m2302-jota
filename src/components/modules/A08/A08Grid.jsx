@@ -12,6 +12,8 @@ import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import ContainerEx from "@/shared-components/ContainerEx";
 import AreaTypes from "@/modules/md-area-types";
 import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
+import AreaTypePickerComponent from "../../dsg/columns/area-type-picker/AreaTypePickerComponent";
+import { optionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/optionPickerColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -43,14 +45,27 @@ const A08Grid = memo((props) => {
 				title: "代碼",
 				grow: 1,
 			},
+			// {
+			// 	...keyColumn(
+			// 		"areaType",
+			// 		createOptionPickerColumn({
+			// 			name: "areaType",
+			// 			options: AreaTypes.options,
+			// 			getOptionLabel: AreaTypes.getOptionLabel,
+			// 			isOptionEqualToValue: AreaTypes.isOptionEqualToValue,
+			// 		})
+			// 	),
+			// 	title: "範圍",
+			// 	minWidth: 200,
+			// 	disabled: lockRows,
+			// 	grow: 1,
+			// },
 			{
 				...keyColumn(
 					"areaType",
-					createOptionPickerColumn({
+					optionPickerColumn(AreaTypePickerComponent, {
 						name: "areaType",
-						options: AreaTypes.options,
-						getOptionLabel: AreaTypes.getOptionLabel,
-						isOptionEqualToValue: AreaTypes.isOptionEqualToValue,
+						disableActiveControl: true,
 					})
 				),
 				title: "範圍",
@@ -85,7 +100,7 @@ const A08Grid = memo((props) => {
 		);
 	}
 
-	if (!data) {
+	if (loading == null) {
 		return false;
 	}
 

@@ -486,7 +486,7 @@ export const useZA03 = () => {
 			// 	rowData.module &&
 			// 	authGrid.isDuplicating(rowData, newValue)
 			// ) {
-			// 	authGrid.rewriteRowValue(row, newValue, {
+			// 	authGrid.setValueByRowIndex(row, newValue, {
 			// 		dept: null,
 			// 	});
 			// 	toast.error(
@@ -780,8 +780,8 @@ export const useZA03 = () => {
 	const saveAuthAction = useAction();
 
 	const handleAuthSave = useCallback(async () => {
-		const dirtyData = authGrid.getDirtyData();
-		console.log(`handleAuthSave`, dirtyData);
+		const dirtyRows = authGrid.getDirtyRows();
+		console.log(`handleAuthSave`, dirtyRows);
 		try {
 			saveAuthAction.start("儲存中...");
 			const { status, error } = await httpPatchAsync({
@@ -791,7 +791,7 @@ export const useZA03 = () => {
 					uid: crud.itemData?.UID,
 					dp: selectedDept?.DeptID,
 				},
-				data: ZA03.transformForSubmit(dirtyData),
+				data: ZA03.transformForSubmit(dirtyRows),
 			});
 
 			if (status.success) {

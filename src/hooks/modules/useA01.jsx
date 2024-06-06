@@ -506,9 +506,13 @@ export const useA01 = ({ token, mode }) => {
 					rowData.dept &&
 					transGrid.isDuplicating(rowData, newValue)
 				) {
-					transGrid.rewriteRowValue(row, newValue, {
-						dept: null,
-					});
+					transGrid.setValueByRowIndex(
+						row.rowIndex,
+						{
+							dept: null,
+						},
+						newValue
+					);
 					toast.error(
 						`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
 					);
@@ -535,9 +539,13 @@ export const useA01 = ({ token, mode }) => {
 					rowData.prod &&
 					comboGrid.isDuplicating(rowData, newValue)
 				) {
-					comboGrid.rewriteRowValue(row, newValue, {
-						dept: null,
-					});
+					comboGrid.setValueByRowIndex(
+						row.rowIndex,
+						{
+							dept: null,
+						},
+						newValue
+					);
 					toast.error(
 						`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
 					);
@@ -556,7 +564,7 @@ export const useA01 = ({ token, mode }) => {
 	// 		case 1: //門市
 	// 			if (transGrid.isKeyDuplicated(rowData)) {
 	// 				toast.error(`門市「${rowData.dept?.DeptName}」不可重複選擇`);
-	// 				transGrid.rewriteRowValue(row, newValue, {
+	// 				transGrid.setValueByRowIndex(row, newValue, {
 	// 					dept: null,
 	// 				});
 	// 			}

@@ -15,6 +15,7 @@ const DialogTitleEx = memo(
 	forwardRef((props, ref) => {
 		const {
 			size = "medium",
+			hideCloseButton,
 			children,
 			onClose,
 			closeText = "",
@@ -38,6 +39,10 @@ const DialogTitleEx = memo(
 		const iconSize = useMemo(() => {
 			return closebuttonProps?.size || "small";
 		}, [closebuttonProps?.size]);
+
+		const hasCloseButton = useMemo(() => {
+			return !hideCloseButton && !!onClose;
+		}, [onClose]);
 
 		return (
 			<DialogTitle
@@ -92,7 +97,7 @@ const DialogTitleEx = memo(
 							right: xOffset,
 							top: yOffset,
 							minHeight: "40px",
-							...(!onClose && {
+							...(!hasCloseButton && {
 								paddingRight: "20px",
 							}),
 						}),
@@ -105,7 +110,7 @@ const DialogTitleEx = memo(
 							<ButtonsComponent />
 						</DialogTitleButtonsBox>
 					)}
-					{!!onClose && (
+					{hasCloseButton && (
 						<Tooltip title={closeText || ""}>
 							<IconButton
 								// disableRipple
@@ -127,6 +132,7 @@ const DialogTitleEx = memo(
 );
 DialogTitleEx.propTypes = {
 	size: PropTypes.oneOf(["medium", "small"]),
+	hideCloseButton: PropTypes.bool,
 };
 DialogTitleEx.displayName = "DialogTitleEx";
 

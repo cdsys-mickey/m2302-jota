@@ -166,9 +166,9 @@ export const useProdGrid = ({
 		});
 	}, [load, state.criteria]);
 
-	const confirmCancelEdit = useCallback(() => {
+	const confirmCancelChanges = useCallback(() => {
 		dialogs.confirm({
-			message: "確定要放棄修改?",
+			message: "確定要放棄變更?",
 			onConfirm: dsg.rollbackChanges,
 		});
 	}, [dialogs, dsg.rollbackChanges]);
@@ -234,6 +234,6 @@ export const useProdGrid = ({
 		handleSave,
 		toggleEditorLock,
 		loading,
-		confirmCancelEdit,
+		confirmCancelChanges,
 	};
 };

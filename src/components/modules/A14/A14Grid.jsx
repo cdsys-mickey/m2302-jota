@@ -67,7 +67,7 @@ const A14Grid = memo((props) => {
 		);
 	}
 
-	if (!data) {
+	if (loading == null) {
 		return false;
 	}
 

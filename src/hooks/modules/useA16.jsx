@@ -1,6 +1,6 @@
 import { useInit } from "@/shared-hooks/useInit";
 import { useCallback } from "react";
-import { useWebApiDSG } from "../../shared-hooks/useWebApiDSG";
+import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
 import queryString from "query-string";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import { toast } from "react-toastify";
@@ -13,7 +13,7 @@ export const useA16 = ({ token }) => {
 		moduleId: "A16",
 	});
 	const { httpPatchAsync } = useWebApi();
-	const dsgEditor = useWebApiDSG({
+	const dsgEditor = useDSGCodeEditor({
 		token,
 		gridId: "A16",
 		keyColumn: "DeptID",

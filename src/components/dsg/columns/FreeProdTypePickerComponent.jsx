@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import FreeProdTypePicker from "@/components/picker/FreeProdTypePicker";
 import Objects from "../../../shared-modules/sd-objects";
+import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -31,7 +32,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		getContextMenuItems,
 	} = props;
 
-	const { ...rest } = columnData;
+	const { disableActiveControl, ...rest } = columnData;
 
 	const ref = useRef();
 
@@ -56,6 +57,10 @@ const FreeProdTypePickerComponent = memo((props) => {
 		}
 	}, [focus]);
 
+	const hideControls = useMemo(() => {
+		return disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, focus]);
+
 	return (
 		<FreeProdTypePicker
 			label=""
@@ -67,8 +72,9 @@ const FreeProdTypePickerComponent = memo((props) => {
 			// DSG 專屬屬性
 			dense
 			hideBorders
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!focus}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!focus}
+			hideControls={hideControls}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus

@@ -71,7 +71,7 @@ const CatSGrid = memo((props) => {
 		);
 	}
 
-	if (!data) {
+	if (loading == null) {
 		return false;
 	}
 

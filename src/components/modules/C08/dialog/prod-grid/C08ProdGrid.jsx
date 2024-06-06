@@ -28,10 +28,13 @@ const C08ProdGrid = memo((props) => {
 		gridRef,
 		data,
 		handleGridChange,
+		handleGridSelectionChange,
 		getRowClassName,
 		height = 300,
 		sprodDisabled,
+		sqtyDisabled,
 		stypeDisabled,
+		dtypeDisabled,
 		getSPriceClassName,
 	} = props;
 	const columns = useMemo(
@@ -90,7 +93,7 @@ const C08ProdGrid = memo((props) => {
 				title: "調撥數量",
 				minWidth: 90,
 				grow: 1,
-				disabled: readOnly,
+				disabled: readOnly || sqtyDisabled,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
@@ -106,6 +109,7 @@ const C08ProdGrid = memo((props) => {
 					optionPickerColumn(FreeProdTypePickerComponent, {
 						name: "stype",
 						disableClearable: true,
+						// disableActiveControl: true,
 					})
 				),
 				title: "贈品",
@@ -120,12 +124,13 @@ const C08ProdGrid = memo((props) => {
 						name: "dtype",
 						// disableClearable: true,
 						optionLabelSize: "small",
+						// disableActiveControl: true,
 					})
 				),
 				title: "原因",
 				minWidth: 140,
 				maxWidth: 160,
-				disabled: readOnly,
+				disabled: readOnly || dtypeDisabled,
 			},
 			{
 				...keyColumn("SMsg", textColumn),
@@ -146,6 +151,8 @@ const C08ProdGrid = memo((props) => {
 			SRemark: "",
 			ChkQty: "",
 			SOrdID: "",
+			stype: null,
+			dtype: null,
 		}),
 		[]
 	);
@@ -168,6 +175,7 @@ const C08ProdGrid = memo((props) => {
 			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
+			onSelectionChange={handleGridSelectionChange}
 			columns={columns}
 			addRowsComponent={C08ProdGridAddRows}
 			disableExpandSelection
@@ -185,14 +193,17 @@ C08ProdGrid.propTypes = {
 	getRowKey: PropTypes.func,
 	spriceDisabled: PropTypes.func,
 	sprodDisabled: PropTypes.func,
+	sqtyDisabled: PropTypes.func,
+	stypeDisabled: PropTypes.func,
+	dtypeDisabled: PropTypes.func,
 	handleGridChange: PropTypes.func,
+	handleGridSelectionChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,
 	readOnly: PropTypes.bool,
 	height: PropTypes.number,
 	gridRef: PropTypes.func,
 	data: PropTypes.array.isRequired,
-	stypeDisabled: PropTypes.func,
 };
 
 C08ProdGrid.displayName = "C08ProdGrid";

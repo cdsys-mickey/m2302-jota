@@ -6,11 +6,7 @@ export const ProdGridToolbarContainer = (props) => {
 	const { ...rest } = props;
 	const prodGrid = useContext(ProdGridContext);
 
-	if (
-		prodGrid.gridLoading ||
-		!prodGrid.gridData ||
-		prodGrid.gridData?.length === 0
-	) {
+	if (prodGrid.gridLoading != false || !prodGrid.gridData) {
 		return false;
 	}
 

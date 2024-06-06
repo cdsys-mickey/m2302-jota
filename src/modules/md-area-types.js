@@ -3,32 +3,32 @@ const KEY_OTHER = "2";
 
 const options = [
 	{
-		AreaType: KEY_LOCAL,
-		AreaType_N: "本地",
+		id: "1",
+		label: "本地",
 	},
 	{
-		AreaType: KEY_OTHER,
-		AreaType_N: "外地",
+		id: KEY_OTHER,
+		label: "外地",
 	},
 ];
 
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { AreaType, AreaType_N } = option;
-	return `${AreaType} ${AreaType_N}`;
+	const { id, label } = option;
+	return `${id} ${label}`;
 };
 
 const isOptionEqualToValue = (option, value) => {
-	return option?.AreaType === value?.AreaType;
+	return option?.id === value?.id;
 };
 
 const getNameById = (id) => {
-	const option = options.find((opt) => opt.AreaType === id);
-	return option?.AreaType_N || "(未知)";
+	const option = options.find((opt) => opt.id === id);
+	return option?.label || "(未知)";
 };
 
 const getById = (id) => {
-	return options.find((opt) => opt.AreaType === id);
+	return options.find((opt) => opt.id === id);
 };
 
 const AreaTypes = {

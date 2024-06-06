@@ -78,6 +78,7 @@ export const useDialogs = ({ buttonProps }) => {
 			onConfirm,
 			onCancel,
 			label,
+			disableCloseOnConfirm,
 			...rest
 		}) => {
 			create({
@@ -90,7 +91,9 @@ export const useDialogs = ({ buttonProps }) => {
 				},
 				onConfirm: (v) => {
 					if (onConfirm) onConfirm(v);
-					closeLatest();
+					if (!disableCloseOnConfirm) {
+						closeLatest();
+					}
 				},
 				onCancel: () => {
 					if (onCancel) onCancel();

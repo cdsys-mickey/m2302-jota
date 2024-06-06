@@ -2,6 +2,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { PkgTypePickerContainer } from "../../../picker/PkgTypePickerContainer";
+import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -16,8 +17,9 @@ const PkgTypePickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		rowIndex,
-		columnIndex,
+		// rowIndex,
+		// columnIndex,
+		// Component Props
 		columnData,
 		// Cell state
 		active,
@@ -25,13 +27,13 @@ const PkgTypePickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const { name, ...rest } = columnData;
+	const { disableActiveControl, ...rest } = columnData;
 
 	// console.log(
 	// 	`rendering PkgTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
@@ -54,6 +56,10 @@ const PkgTypePickerComponent = memo((props) => {
 		[setRowData, stopEditing]
 	);
 
+	const hideControls = useMemo(() => {
+		return disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, focus]);
+
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
@@ -65,7 +71,6 @@ const PkgTypePickerComponent = memo((props) => {
 
 	return (
 		<PkgTypePickerContainer
-			name={name}
 			queryParam="qs"
 			label=""
 			hideBorders
@@ -79,8 +84,9 @@ const PkgTypePickerComponent = memo((props) => {
 			// filterByServer
 			// DSG 專屬屬性
 			dense
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!active}
+			hideControls={hideControls}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			disableClearable

@@ -152,7 +152,7 @@ const A014Grid = memo((props) => {
 		return <DSGLoading height={height} />;
 	}
 
-	if (!data) {
+	if (loading == null) {
 		return false;
 	}
 

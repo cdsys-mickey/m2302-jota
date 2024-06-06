@@ -2,27 +2,28 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
 import { useContext } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
+import RecyclingIcon from "@mui/icons-material/Recycling";
 
-export const ProdGridCancelEditButtonContainer = (props) => {
+export const ProdGridCancelChangesButtonContainer = (props) => {
 	const { ...rest } = props;
 	const prodGrid = useContext(ProdGridContext);
 
-	if (prodGrid.readOnly) {
+	if (prodGrid.dirtyIds.size === 0) {
 		return false;
 	}
 	return (
 		<Button
 			size="small"
 			//
-			// endIcon={<CloseIcon />}
+			endIcon={<RecyclingIcon />}
 			color="primary"
 			// onClick={prodGrid.unload}
-			onClick={prodGrid.toggleEditorLock}
+			onClick={prodGrid.confirmCancelChanges}
 			{...rest}>
-			取消
+			放棄變更
 		</Button>
 	);
 };
 
-ProdGridCancelEditButtonContainer.displayName =
-	"ProdGridCancelEditButtonContainer";
+ProdGridCancelChangesButtonContainer.displayName =
+	"ProdGridCancelChangesButtonContainer";

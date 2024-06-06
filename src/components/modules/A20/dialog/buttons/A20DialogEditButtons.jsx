@@ -9,6 +9,13 @@ const A20DialogEditButtons = memo(
 		const { onSave, onCancel, loading, ...rest } = props;
 		return (
 			<Fragment ref={ref}>
+				<ResponsiveButton
+					onClick={onCancel}
+					color="neutral"
+					variant="contained"
+					{...rest}>
+					取消
+				</ResponsiveButton>
 				<ResponsiveLoadingButton
 					onClick={onSave}
 					type="submit"
@@ -19,13 +26,6 @@ const A20DialogEditButtons = memo(
 					{...rest}>
 					儲存
 				</ResponsiveLoadingButton>
-				<ResponsiveButton
-					onClick={onCancel}
-					color="neutral"
-					variant="contained"
-					{...rest}>
-					取消
-				</ResponsiveButton>
 			</Fragment>
 		);
 	})

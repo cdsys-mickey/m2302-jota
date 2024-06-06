@@ -72,9 +72,10 @@ const DialogEx = memo(
 			titleProps,
 			otherActionButtons,
 			OtherActionButtonsComponent,
-
+			disableCancelOnClose = false,
 			responsive = false,
 			fullScreen,
+			hideCloseButton,
 			// METHODS
 			onConfirm,
 			onCancel,
@@ -136,6 +137,23 @@ const DialogEx = memo(
 			}
 		}, [onConfirm, onSubmit]);
 
+		const handleClose = useCallback(() => {
+			if (!disableCancelOnClose) {
+				onCancel();
+			}
+			onClose();
+		}, [disableCancelOnClose, onCancel, onClose]);
+
+		const handleKeyDown = useCallback(
+			(e) => {
+				if (e.key === "Enter") {
+					e.preventDefault();
+					handleConfirm();
+				}
+			},
+			[handleConfirm]
+		);
+
 		const showActions = useMemo(() => {
 			return (
 				!loading &&
@@ -153,12 +171,13 @@ const DialogEx = memo(
 		return (
 			<Dialog
 				ref={ref}
-				onClose={onClose}
+				onClose={handleClose}
 				fullScreen={isFullScreen}
 				sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 				{...rest}>
 				<DialogTitleEx
 					onClose={onClose}
+					hideCloseButton={hideCloseButton}
 					onReturn={onReturn}
 					buttons={titleButtons}
 					ButtonsComponent={TitleButtonsComponent}
@@ -207,6 +226,7 @@ const DialogEx = memo(
 									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
 								defaultValue={defaultPromptValue}
+								onKeyDown={handleKeyDown}
 								{...promptTextFieldProps}
 							/>
 						</Box>
@@ -296,6 +316,8 @@ DialogEx.propTypes = {
 	promptTextFieldProps: PropTypes.object,
 	onSubmit: PropTypes.func,
 	dense: PropTypes.bool,
+	hideCloseButton: PropTypes.bool,
+	disableCancelOnClose: PropTypes.bool,
 };
 
 export default DialogEx;

@@ -13,6 +13,13 @@ const ZA03DialogEditButtons = memo(
 				rightComponents={
 					<>
 						<ResponsiveLoadingButton
+							onClick={onCancel}
+							color="neutral"
+							variant="contained"
+							{...rest}>
+							取消
+						</ResponsiveLoadingButton>
+						<ResponsiveLoadingButton
 							onClick={onSave}
 							type="submit"
 							endIcon={<SendIcon />}
@@ -20,13 +27,6 @@ const ZA03DialogEditButtons = memo(
 							variant="contained"
 							loading={loading}>
 							儲存
-						</ResponsiveLoadingButton>
-						<ResponsiveLoadingButton
-							onClick={onCancel}
-							color="neutral"
-							variant="contained"
-							{...rest}>
-							取消
 						</ResponsiveLoadingButton>
 					</>
 				}></FlexToolbar>

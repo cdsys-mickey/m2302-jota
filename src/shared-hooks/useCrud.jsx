@@ -97,7 +97,7 @@ export const useCrud = () => {
 	// READ
 	const startReading = useCallback(
 		(message, opts) => {
-			console.log(`startReading${message}`, opts);
+			console.log(`startReading[${message}]`, opts);
 			readAction.start(message);
 			setOpts(opts);
 		},

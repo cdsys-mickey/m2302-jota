@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { ProdCatLPickerContainer } from "../../picker/ProdCatLPickerContainer";
+import { useMemo } from "react";
 
 const ProdCatLPickerColumn = memo((props) => {
 	const {
@@ -9,21 +10,23 @@ const ProdCatLPickerColumn = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		rowIndex,
-		columnIndex,
-		columnData,
+		// rowIndex,
+		// columnIndex,
+		// columnData,
 		// Cell state
 		active,
 		focus,
 		disabled,
 		// Control functions
-		stopEditing,
-		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// stopEditing,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 		...rest
 	} = props;
+
+	// const { disableActiveControl, ...rest } = columnData;
 
 	const ref = useRef();
 	const rowDataRef = useRef(rowData);
@@ -51,6 +54,10 @@ const ProdCatLPickerColumn = memo((props) => {
 		[name, setRowData]
 	);
 
+	// const hideControls = useMemo(() => {
+	// 	return disableActiveControl ? !focus : !active;
+	// }, [active, disableActiveControl, focus]);
+
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
@@ -69,8 +76,9 @@ const ProdCatLPickerColumn = memo((props) => {
 			value={name ? rowData[name] : rowData}
 			onChange={handleChange}
 			// DSG 專屬屬性
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!active}
+			hideControls={active}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus

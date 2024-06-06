@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Arrays from "@/shared-modules/sd-arrays";
 import Objects from "@/shared-modules/sd-objects";
-import { useCallback, useMemo, useRef, useState, useTransition } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useToggle } from "@/shared-hooks/useToggle";
 import _ from "lodash";
 import DSG from "../shared-modules/sd-dsg";
@@ -19,7 +19,7 @@ export const useDSG = ({
 		}
 	}, []);
 	const [readOnly, toggleReadOnly] = useToggle(initialReadOnly);
-	const [isPending, startTransition] = useTransition();
+	// const [isPending, startTransition] = useTransition();
 	// const selectedRowIndexRef = useRef();
 	// const [selectedRowIndex, setSelectedRowIndex] = useState();
 	// const [selectedRow, setSelectedRow] = useState();
@@ -27,11 +27,15 @@ export const useDSG = ({
 
 	const persistedIds = useMemo(() => new Set(), []);
 	const dirtyIds = useMemo(() => new Set(), []);
-	const [state, setState] = useState({
-		gridLoading: null,
-		prevGridData: [],
-		gridData: null,
-	});
+	// const [state, setState] = useState({
+	// 	gridLoading: null,
+	// 	prevGridData: [],
+	// 	gridData: null,
+	// });
+
+	const [gridLoading, setGridLoading] = useState(null);
+	const [prevGridData, setPrevGridData] = useState([]);
+	const [gridData, setGridData] = useState([]);
 
 	const [deletingRow, setDeletingRow] = useState();
 
@@ -39,23 +43,21 @@ export const useDSG = ({
 		return Arrays.parse(otherColumns);
 	}, [otherColumns]);
 
-	const setGridLoading = useCallback((value) => {
-		setState((prev) => ({
-			...prev,
-			gridLoading: value,
-		}));
-	}, []);
+	// const setGridLoading = useCallback((value) => {
+	// 	setState((prev) => ({
+	// 		...prev,
+	// 		gridLoading: value,
+	// 	}));
+	// }, []);
 
-	const clearDirtyIds = useCallback(() => {
-		Object.keys(dirtyIds).forEach((key) => {
-			// 删除对象的属性
-			delete dirtyIds[key];
-		});
-	}, [dirtyIds]);
+	const resetGridData = useCallback((newValue) => {
+		setPrevGridData(newValue);
+		setGridData(newValue);
+		setGridLoading(false);
+	}, []);
 
 	const handleGridDataLoaded = useCallback(
 		(payload) => {
-			// console.log(`data loaded`, payload);
 			console.log(`${gridId}.onDataLoaded`, payload);
 			dirtyIds.clear();
 			persistedIds.clear();
@@ -63,53 +65,56 @@ export const useDSG = ({
 				const key = _.get(i, keyColumn);
 				persistedIds.add(key);
 			});
-			setState((prev) => ({
-				...prev,
-				prevGridData: payload,
-				gridData: payload,
-				gridLoading: false,
-			}));
+			// setState((prev) => ({
+			// 	...prev,
+			// 	prevGridData: payload,
+			// 	gridData: payload,
+			// 	gridLoading: false,
+			// }));
+			resetGridData(payload);
 		},
-		[dirtyIds, gridId, keyColumn, persistedIds]
+		[dirtyIds, gridId, keyColumn, persistedIds, resetGridData]
 	);
 
 	const getRowDataByIndex = useCallback(
 		(rowIndex) => {
-			return state.gridData[rowIndex];
+			return gridData[rowIndex];
 		},
-		[state.gridData]
+		[gridData]
 	);
 
-	const removeByKey = useCallback(
+	const removeRowByKey = useCallback(
 		(key) => {
-			const newValue = state.prevGridData.filter((rowData) => {
+			const newValue = prevGridData.filter((rowData) => {
 				const value = _.get(rowData, keyColumn);
 				return value !== key;
 			});
-			setState((prev) => ({
-				...prev,
-				prevGridData: newValue,
-				gridData: newValue,
-				gridLoading: false,
-			}));
+			// setState((prev) => ({
+			// 	...prev,
+			// 	prevGridData: newValue,
+			// 	gridData: newValue,
+			// 	gridLoading: false,
+			// }));
+			resetGridData(newValue);
 		},
-		[keyColumn, state.prevGridData]
+		[keyColumn, prevGridData, resetGridData]
 	);
 
-	const removeByRowIndex = useCallback(
+	const removeRowByIndex = useCallback(
 		(fromRowIndex, toRowIndex) => {
-			console.log(`removeByRowIndex`, fromRowIndex, toRowIndex);
-			const newValue = state.prevGridData.filter((_, index) => {
+			console.log(`removeRowByIndex`, fromRowIndex, toRowIndex);
+			const newValue = prevGridData.filter((_, index) => {
 				return index < fromRowIndex || index >= toRowIndex;
 			});
-			setState((prev) => ({
-				...prev,
-				prevGridData: newValue,
-				gridData: newValue,
-				gridLoading: false,
-			}));
+			// setState((prev) => ({
+			// 	...prev,
+			// 	prevGridData: newValue,
+			// 	gridData: newValue,
+			// 	gridLoading: false,
+			// }));
+			resetGridData(newValue);
 		},
-		[state.prevGridData]
+		[prevGridData, resetGridData]
 	);
 
 	const commitChanges = useCallback(
@@ -120,66 +125,69 @@ export const useDSG = ({
 				const key = _.get(i, keyColumn);
 				persistedIds.add(key);
 			});
-			setState((prev) => ({
-				...prev,
-				prevGridData: newValue,
-			}));
+			// setState((prev) => ({
+			// 	...prev,
+			// 	prevGridData: newValue,
+			// }));
+			setPrevGridData(newValue || gridData);
 		},
-		[gridId, keyColumn, persistedIds]
+		[gridData, gridId, keyColumn, persistedIds]
 	);
 
 	const rollbackChanges = useCallback(() => {
-		console.log(`${gridId}.rollbackChanges`, state.prevGridData);
+		console.log(`${gridId}.rollbackChanges→`, prevGridData);
 
-		setState((prev) => ({
-			...prev,
-			gridData: state.prevGridData,
-			gridLoading: false,
-		}));
+		// setState((prev) => ({
+		// 	...prev,
+		// 	gridData: state.prevGridData,
+		// 	gridLoading: false,
+		// }));
+		setGridData(prevGridData);
+		setGridLoading(false);
 		dirtyIds.clear();
-	}, [dirtyIds, gridId, state.prevGridData]);
+	}, [dirtyIds, gridId, prevGridData]);
 
-	const setGridData = useCallback((newValue) => {
-		// console.log(`${gridId}.setGridData()`, newValue);
-		setState((prev) => ({
-			...prev,
-			gridData: newValue,
-			gridLoading: false,
-		}));
-	}, []);
+	// const setGridData = useCallback((newValue) => {
+	// 	// console.log(`${gridId}.setGridData()`, newValue);
+	// 	setState((prev) => ({
+	// 		...prev,
+	// 		gridData: newValue,
+	// 		gridLoading: false,
+	// 	}));
+	// }, []);
 
-	const isInPrevGridData = useCallback(
-		(rowData) => {
-			return state.prevGridData.some((i) => {
-				const prevKey = _.get(i, keyColumn);
+	const isExistingRow = useCallback(
+		({ rowData }) => {
+			return prevGridData.some((prevRowData) => {
+				const prevKey = _.get(prevRowData, keyColumn);
 				const key = _.get(rowData, keyColumn);
 				return prevKey === key;
 			});
 		},
-		[keyColumn, state.prevGridData]
+		[keyColumn, prevGridData]
 	);
 
 	const isUnchanged = useCallback(
 		(row) => {
-			const prevData = state.prevGridData[row.rowIndex];
-			const prevKey = _.get(prevData, keyColumn);
+			const prevRowData = prevGridData[row.rowIndex];
+			const prevKey = _.get(prevRowData, keyColumn);
 			const rowKey = _.get(row.rowData, keyColumn);
 
 			if (prevKey !== rowKey) {
 				throw `keys mismatched ${prevKey} → ${rowKey}`;
 			}
 
-			return Objects.arePropsEqual(prevData, row.rowData, {
+			return Objects.arePropsEqual(prevRowData, row.rowData, {
 				fields: otherColumnNames,
 			});
 		},
-		[keyColumn, otherColumnNames, state.prevGridData]
+		[keyColumn, otherColumnNames, prevGridData]
 	);
 
 	const isRowDataEquals = useCallback((prevRowData, rowData) => {
 		console.log("isRowDataEquals", prevRowData, rowData);
 		return !Objects.arePropsEqual(prevRowData, rowData, {
-			ignoresEmpty: true,
+			// ignoresEmpty: true,
 		});
 	}, []);
 
@@ -202,13 +210,13 @@ export const useDSG = ({
 				throw new Error(`key ${keyColumn} 為空`, rowData);
 			}
 			return (
-				state.gridData.filter((i) => {
+				gridData.filter((i) => {
 					const prevKey = _.get(i, keyColumn);
 					return prevKey === key;
 				}).length > 1
 			);
 		},
-		[keyColumn, state.gridData]
+		[gridData, keyColumn]
 	);
 
 	const isDuplicating = useCallback(
@@ -256,10 +264,10 @@ export const useDSG = ({
 				console.log("operation", operation);
 				if (operation.type === "DELETE") {
 					const fromRowIndex = operation.fromRowIndex;
-					const prevFromRowData = state.prevGridData[fromRowIndex];
+					const prevFromRowData = prevGridData[fromRowIndex];
 
 					const toRowIndex = operation.toRowIndex;
-					const prevToRowData = state.prevGridData[toRowIndex];
+					const prevToRowData = prevGridData[toRowIndex];
 
 					if (prevFromRowData) {
 						const fromRow = {
@@ -290,7 +298,7 @@ export const useDSG = ({
 				} else if (operation.type === "UPDATE") {
 					const rowIndex = operation.fromRowIndex;
 					const rowData = newValue[rowIndex];
-					const prevRowData = state.prevGridData[rowIndex];
+					const prevRowData = prevGridData[rowIndex];
 
 					const isDirty = isRowDataEquals(prevRowData, rowData);
 					console.log("isDirty", isDirty);
@@ -327,7 +335,7 @@ export const useDSG = ({
 								onDuplicatedError(row, newValue);
 							}
 						} else {
-							if (isInPrevGridData(rowData)) {
+							if (isExistingRow(row)) {
 								// 確認是否是額外欄位造成的異動
 								// Extra UPDATE
 								if (isUnchanged(row)) {
@@ -358,7 +366,7 @@ export const useDSG = ({
 						Objects.isAllPropsNull(rowData, [...otherColumnNames])
 					) {
 						// 刪除: Key 以外都是 null
-						const prevRowData = state.prevGridData[rowIndex];
+						const prevRowData = prevGridData[rowIndex];
 						if (prevRowData) {
 							console.log(`DELETE`, row);
 							if (onDelete) {
@@ -380,33 +388,37 @@ export const useDSG = ({
 			},
 		[
 			gridId,
-			state.prevGridData,
-			setGridData,
+			prevGridData,
 			isRowDataEquals,
 			keyColumn,
 			otherColumnNames,
 			dirtyIds,
 			isKeyDuplicated,
-			isInPrevGridData,
+			isExistingRow,
 			isUnchanged,
 		]
 	);
 
-	const rewriteRowValue = useCallback((row, newValue, newValues) => {
-		const rewritten = newValue.map((v, i) =>
-			i === row.rowIndex
-				? {
-						...v,
-						...newValues,
-				  }
-				: v
-		);
-		console.log(`rewrite(${row.rowIndex})`, rewritten);
-		setState((prev) => ({
-			...prev,
-			gridData: rewritten,
-		}));
-	}, []);
+	const setValueByRowIndex = useCallback(
+		(rowIndex, newValueObj, newGridData) => {
+			const newValue = newGridData || gridData;
+			const rewritten = newValue.map((rowData, i) =>
+				i === rowIndex
+					? {
+							...rowData,
+							...newValueObj,
+					  }
+					: rowData
+			);
+			console.log(`rewrite(${rowIndex})`, rewritten);
+			// setState((prev) => ({
+			// 	...prev,
+			// 	gridData: rewritten,
+			// }));
+			setGridData(rewritten);
+		},
+		[gridData]
+	);
 
 	const isPersisted = useCallback(
 		({ rowData, rowIndex }) => {
@@ -465,16 +477,9 @@ export const useDSG = ({
 	);
 
 	const getRowClassName = useCallback(({ rowIndex } = {}) => {
-		// console.log(
-		// 	`${gridId}.getRowClassName-rowInedx: ${rowIndex}: selected: ${selectedRowIndex}: `,
-		// 	rowIndex === selectedRowIndex
-		// );
 		if (rowIndex === undefined || rowIndex == null) {
 			return undefined;
 		}
-		// return rowIndex === selectedRow?.rowIndex
-		// 	? DSG.SELECTED_ROW_CLASSNAME
-		// 	: undefined;
 		return rowIndex === selectedRowRef.current?.rowIndex
 			? DSG.SELECTED_ROW_CLASSNAME
 			: undefined;
@@ -536,22 +541,33 @@ export const useDSG = ({
 	// 	setLockRows(!enabled);
 	// }, []);
 
-	const getDirtyData = useCallback(() => {
-		return state.gridData.filter((row) => {
+	const getDirtyRows = useCallback(() => {
+		return gridData.filter((row) => {
 			if (dirtyIds && dirtyIds.size > 0) {
 				const key = _.get(row, keyColumn);
 				return dirtyIds.has(key);
 			}
 			return false;
 		});
-	}, [dirtyIds, keyColumn, state.gridData]);
+	}, [dirtyIds, gridData, keyColumn]);
 
 	// const isDirty = useMemo(() => {
 	// 	return dirtyIds && dirtyIds.size > 0;
 	// }, [dirtyIds]);
 
+	const handleToggleReadOnly = useCallback(() => {
+		rollbackChanges();
+		toggleReadOnly();
+	}, [rollbackChanges, toggleReadOnly]);
+
 	return {
-		...state,
+		// STATES
+		// ...state,
+		gridData,
+		prevGridData,
+		gridLoading,
+		setGridData: resetGridData,
+		//
 		gridRef,
 		setGridRef,
 		gridId,
@@ -561,7 +577,7 @@ export const useDSG = ({
 		propagateGridChange, // 單純 passthrough data
 		commitChanges,
 		rollbackChanges,
-		setGridData,
+		// setGridData,
 		clearGridData,
 		handleGridChange,
 		isPersisted,
@@ -571,28 +587,26 @@ export const useDSG = ({
 		// DELETING
 		deletingRow,
 		setDeletingRow,
-		removeByKey,
-		removeByRowIndex,
+		removeRowByKey,
+		removeRowByIndex,
 		getRowDataByIndex,
-		rewriteRowValue,
+		setValueByRowIndex,
 		setActiveCell,
 		// 鎖定列
 		readOnly,
-		toggleReadOnly,
+		// toggleReadOnly,
+		toggleReadOnly: handleToggleReadOnly,
 		// dirty check
 		dirtyIds,
-		getDirtyData,
+		getDirtyRows,
 		isKeyDuplicated,
 		isDuplicated,
 		isDuplicating,
 		// 繪製選取列
 		getRowClassName,
-		// selectedRow,
 		setSelectedRow,
 		getSelectedRow,
 		selectedRowRef,
-		// onRowSelectionChange,
 		isDirty: dirtyIds && dirtyIds.size > 0,
-		clearDirtyIds,
 	};
 };

@@ -49,7 +49,7 @@ export const useA014 = ({ token } = {}) => {
 							}
 						});
 				} else if (operation.type === "DELETE") {
-					prodGrid.removeByRowIndex(
+					prodGrid.removeRowByIndex(
 						operation.fromRowIndex,
 						operation.toRowIndex
 					);

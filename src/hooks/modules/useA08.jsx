@@ -1,5 +1,5 @@
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApiDSG } from "../../shared-hooks/useWebApiDSG";
+import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
 import { useAppModule } from "./useAppModule";
 import A08 from "../../modules/md-a08";
 import { useCallback } from "react";
@@ -14,7 +14,7 @@ export const useA08 = ({ token }) => {
 	// 	return A08.transformForReading(opts);
 	// }, []);
 
-	const dsgEditor = useWebApiDSG({
+	const dsgEditor = useDSGCodeEditor({
 		token,
 		gridId: "A08",
 		keyColumn: "CodeID",

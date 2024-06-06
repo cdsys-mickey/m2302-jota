@@ -24,8 +24,9 @@ const PickerBox = styled(Box, {
 			"focusedBackgroundColor",
 			"size",
 			"hideBorders",
-			"hidePopupIndicator",
-			"disablePointerEvents",
+			"hideControls",
+			// "hidePopupIndicator",
+			// "disablePointerEvents",
 			"fadeOutDisabled",
 		].includes(prop),
 })(
@@ -34,9 +35,10 @@ const PickerBox = styled(Box, {
 		focusedBackgroundColor,
 		size,
 		hideBorders,
-		hidePopupIndicator,
 		width,
-		disablePointerEvents,
+		// hidePopupIndicator,
+		// disablePointerEvents,
+		hideControls,
 		fadeOutDisabled,
 	}) => ({
 		/**
@@ -45,7 +47,7 @@ const PickerBox = styled(Box, {
 		...(hideBorders && {
 			"& fieldset": { border: "none" },
 		}),
-		...(hidePopupIndicator && {
+		...(hideControls && {
 			"& .MuiAutocomplete-popupIndicator": {
 				opacity: 0,
 			},
@@ -54,7 +56,7 @@ const PickerBox = styled(Box, {
 					paddingRight: 0,
 				},
 		}),
-		...(disablePointerEvents && {
+		...(hideControls && {
 			pointerEvents: "none",
 		}),
 		...(!fadeOutDisabled && {
@@ -112,8 +114,9 @@ const OptionPicker = memo(
 			size = "small",
 			hideBorders = false,
 			hidePlaceholder = false,
-			hidePopupIndicator = false,
-			disablePointerEvents = false,
+			// hidePopupIndicator = false,
+			// disablePointerEvents = false,
+			hideControls = false,
 			fadeOutDisabled = false,
 			name,
 			dontFilterOptions,
@@ -239,6 +242,7 @@ const OptionPicker = memo(
 				error,
 				fullWidth,
 				helperText,
+				hidePlaceholder,
 				inputProps,
 				inputRef,
 				label,
@@ -493,9 +497,10 @@ const OptionPicker = memo(
 			<PickerBox
 				// DSG 支援屬性
 				hideBorders={hideBorders}
-				hidePopupIndicator={hidePopupIndicator}
 				focusedBackgroundColor={focusedBackgroundColor}
-				disablePointerEvents={disablePointerEvents}
+				// hidePopupIndicator={hidePopupIndicator}
+				// disablePointerEvents={disablePointerEvents}
+				hideControls={hideControls}
 				fadeOutDisabled={fadeOutDisabled}
 				size={size}
 				title={memoisedTitle}
@@ -579,8 +584,9 @@ OptionPicker.propTypes = {
 	size: PropTypes.string,
 	// DSG support
 	hideBorders: PropTypes.bool,
-	hidePopupIndicator: PropTypes.bool,
-	hidePlaceholder: PropTypes.bool,
+	// hidePopupIndicator: PropTypes.bool,
+	// hidePlaceholder: PropTypes.bool,
+	hideControls: PropTypes.bool,
 	disablePointerEvents: PropTypes.bool,
 	fadeOutDisabled: PropTypes.bool,
 	//
@@ -640,5 +646,6 @@ OptionPicker.propTypes = {
 	GridHeaderComponent: PropTypes.elementType,
 	GridRowComponent: PropTypes.elementType,
 	PaperComponent: PropTypes.elementType,
+	hidePlaceholder: PropTypes.bool,
 };
 export default OptionPicker;

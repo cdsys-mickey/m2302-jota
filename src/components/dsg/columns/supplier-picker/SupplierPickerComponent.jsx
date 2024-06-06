@@ -3,6 +3,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { SupplierPickerContainer } from "../../../picker/SupplierPickerContainer";
+import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -17,8 +18,8 @@ const SupplierPickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		rowIndex,
-		columnIndex,
+		// rowIndex,
+		// columnIndex,
 		columnData,
 		// Cell state
 		active,
@@ -26,13 +27,13 @@ const SupplierPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const { name, ...rest } = columnData;
+	const { disableActiveControl, ...rest } = columnData;
 
 	// console.log(
 	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
@@ -59,11 +60,15 @@ const SupplierPickerComponent = memo((props) => {
 		[setRowData, stopEditing]
 	);
 
-	const handleClose = useCallback(() => {
-		stopEditing({ nextRow: false });
-		console.log("handleClose");
-		// ref.current?.blur();
-	}, [stopEditing]);
+	// const handleClose = useCallback(() => {
+	// 	stopEditing({ nextRow: false });
+	// 	console.log("handleClose");
+	// 	// ref.current?.blur();
+	// }, [stopEditing]);
+
+	const hideControls = useMemo(() => {
+		return disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
@@ -76,7 +81,6 @@ const SupplierPickerComponent = memo((props) => {
 
 	return (
 		<SupplierPickerContainer
-			name={name}
 			queryParam="qs"
 			label=""
 			hideBorders
@@ -92,8 +96,9 @@ const SupplierPickerComponent = memo((props) => {
 			// virtualize
 			// DSG 專屬屬性
 			dense
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!active}
+			hideControls={hideControls}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			{...rest}
@@ -102,7 +107,6 @@ const SupplierPickerComponent = memo((props) => {
 }, arePropsEqual);
 
 SupplierPickerComponent.propTypes = {
-	name: PropTypes.string,
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,

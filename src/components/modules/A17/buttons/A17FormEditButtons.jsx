@@ -9,13 +9,6 @@ const A17FormEditButtons = memo(
 		return (
 			<Fragment ref={ref} {...rest}>
 				<ResponsiveLoadingButton
-					onClick={onCancel}
-					variant="outlined"
-					// color="neutral"
-				>
-					取消
-				</ResponsiveLoadingButton>
-				<ResponsiveLoadingButton
 					onClick={onSave}
 					type="submit"
 					endIcon={<SendIcon />}
@@ -23,6 +16,13 @@ const A17FormEditButtons = memo(
 					variant="contained"
 					loading={editWorking}>
 					儲存
+				</ResponsiveLoadingButton>
+				<ResponsiveLoadingButton
+					onClick={onCancel}
+					variant="outlined"
+					// color="neutral"
+				>
+					取消
 				</ResponsiveLoadingButton>
 			</Fragment>
 		);

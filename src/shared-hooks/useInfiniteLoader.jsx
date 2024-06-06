@@ -19,7 +19,6 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const crud = useContext(CrudContext);
 
-	// const loadingMap = useMemo(() => new Set(), []);
 	const loadingMap = useMemo(() => new Object(), []);
 	const [saveKey, setSaveKey] = useState();
 	const [state, setState] = useState({

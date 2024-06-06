@@ -575,7 +575,7 @@ export const useC06 = () => {
 				if (!checkFailed) {
 					prodGrid.setGridData(newGridData);
 					const total = C06.getTotal(newGridData);
-					setValue("OrdAmt", total);
+					setValue("OrdAmt", total.toFixed(2));
 					refreshAmt({ setValue, gridData: newGridData });
 					// fetchAmt({
 					// 	received: formData.RecvAmt,

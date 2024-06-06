@@ -2,6 +2,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { OutboundTypePicker } from "../../../picker/OutboundTypePicker";
+import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -16,8 +17,9 @@ const DisposalTypePickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		rowIndex,
-		columnIndex,
+		// rowIndex,
+		// columnIndex,
+		// Component Props
 		columnData,
 		// Cell state
 		active,
@@ -25,13 +27,13 @@ const DisposalTypePickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const { name, ...rest } = columnData;
+	const { disableActiveControl, ...rest } = columnData;
 
 	// console.log(
 	// 	`rendering DisposalTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
@@ -52,6 +54,10 @@ const DisposalTypePickerComponent = memo((props) => {
 		[setRowData, stopEditing]
 	);
 
+	const hideControls = useMemo(() => {
+		return disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, focus]);
+
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
@@ -63,7 +69,6 @@ const DisposalTypePickerComponent = memo((props) => {
 
 	return (
 		<OutboundTypePicker
-			name={name}
 			label=""
 			inputRef={ref}
 			disabled={disabled}
@@ -76,8 +81,9 @@ const DisposalTypePickerComponent = memo((props) => {
 			// DSG 專屬屬性
 			dense
 			hideBorders
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!focus}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!focus}
+			hideControls={hideControls}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			disableClearable

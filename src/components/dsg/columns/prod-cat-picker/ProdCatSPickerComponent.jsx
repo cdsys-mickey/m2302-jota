@@ -2,6 +2,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import ProdCatMPicker from "../../../picker/ProdCatMPicker";
+import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -16,8 +17,9 @@ const ProdCatSPickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		rowIndex,
-		columnIndex,
+		// rowIndex,
+		// columnIndex,
+		// Component Props
 		columnData,
 		// Cell state
 		active,
@@ -25,13 +27,13 @@ const ProdCatSPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const { ...rest } = columnData;
+	const { disableActiveControl, ...rest } = columnData;
 
 	// console.log(
 	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
@@ -53,6 +55,10 @@ const ProdCatSPickerComponent = memo((props) => {
 		},
 		[setRowData, stopEditing]
 	);
+
+	const hideControls = useMemo(() => {
+		return disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
@@ -78,8 +84,9 @@ const ProdCatSPickerComponent = memo((props) => {
 			// filterByServer
 			// DSG 專屬屬性
 			dense
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!active}
+			hideControls={hideControls}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			selectOnFocus
@@ -89,7 +96,6 @@ const ProdCatSPickerComponent = memo((props) => {
 }, arePropsEqual);
 
 ProdCatSPickerComponent.propTypes = {
-	name: PropTypes.string,
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,

@@ -3,6 +3,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import DeptPickerContainer from "../../../DeptPickerContainer";
+import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -17,8 +18,9 @@ const DeptPickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		rowIndex,
-		columnIndex,
+		// rowIndex,
+		// columnIndex,
+		// Component Props
 		columnData,
 		// Cell state
 		active,
@@ -26,13 +28,13 @@ const DeptPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const { name, ...rest } = columnData;
+	const { disableActiveControl, ...rest } = columnData;
 
 	// console.log(
 	// 	`rendering DeptPickerComponent active: ${active}, focus: ${focus}, rowData:`,
@@ -55,6 +57,10 @@ const DeptPickerComponent = memo((props) => {
 		[setRowData, stopEditing]
 	);
 
+	const hideControls = useMemo(() => {
+		return disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, focus]);
+
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
@@ -66,7 +72,6 @@ const DeptPickerComponent = memo((props) => {
 
 	return (
 		<DeptPickerContainer
-			name={name}
 			queryParam="qs"
 			label=""
 			hideBorders
@@ -80,8 +85,9 @@ const DeptPickerComponent = memo((props) => {
 			// filterByServer
 			// DSG 專屬屬性
 			dense
-			disablePointerEvents={!focus}
-			hidePopupIndicator={!active}
+			// disablePointerEvents={!focus}
+			// hidePopupIndicator={!active}
+			hideControls={hideControls}
 			hidePlaceholder={!active}
 			fadeOutDisabled={false}
 			// queryRequired

@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from "react";
 
 import axios from "axios";
@@ -153,19 +154,15 @@ export const useWebApi = (props) => {
 				}
 			} catch (err) {
 				console.error(`sendAsync[${method}]`, err);
-				if (err instanceof AxiosError) {
-					return {
-						status: HttpStatus.from(500),
-						error: err,
-					};
-				}
 				return {
-					status: HttpStatus.from(err.response.status),
-					error: WebApi.getErrorFromPayload(err.response.data, {
-						withStackTrace: withStackTrace,
-						status: err.response.status,
-						statusText: err.response.statusText,
-					}),
+					status: HttpStatus.from(err.response?.status || 500),
+					error: err.response?.data
+						? WebApi.getErrorFromPayload(err.response.data, {
+								withStackTrace: withStackTrace,
+								status: err.response.status,
+								statusText: err.response.statusText,
+						  })
+						: err,
 				};
 			}
 		},

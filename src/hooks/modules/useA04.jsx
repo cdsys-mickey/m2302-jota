@@ -1,5 +1,5 @@
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApiDSG } from "../../shared-hooks/useWebApiDSG";
+import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
 import { useContext } from "react";
 import { useAppModule } from "./useAppModule";
 import CrudContext from "../../contexts/crud/CrudContext";
@@ -12,7 +12,7 @@ export const useA04 = () => {
 		token,
 		moduleId: "A04",
 	});
-	const dsgEditor = useWebApiDSG({
+	const dsgEditor = useDSGCodeEditor({
 		token,
 		gridId: "A04",
 		keyColumn: "CodeID",

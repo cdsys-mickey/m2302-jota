@@ -12,6 +12,14 @@ const C02DialogEditToolbar = memo(
 			<Fragment ref={ref} {...rest}>
 				<ButtonWrapper
 					responsive
+					onClick={onCancel}
+					color="neutral"
+					variant="contained"
+					{...rest}>
+					取消
+				</ButtonWrapper>
+				<ButtonWrapper
+					responsive
 					onClick={onSave}
 					type="submit"
 					endIcon={<SendIcon />}
@@ -19,14 +27,6 @@ const C02DialogEditToolbar = memo(
 					variant="contained"
 					loading={loading}>
 					儲存
-				</ButtonWrapper>
-				<ButtonWrapper
-					responsive
-					onClick={onCancel}
-					color="neutral"
-					variant="contained"
-					{...rest}>
-					取消
 				</ButtonWrapper>
 			</Fragment>
 		);

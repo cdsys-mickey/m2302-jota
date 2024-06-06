@@ -34,6 +34,9 @@ export const C08ProdGridContainer = (props) => {
 				stypeDisabled={c08.stypeDisabled}
 				getSPriceClassName={c08.getSPriceClassName}
 				sprodDisabled={c08.sprodDisabled}
+				sqtyDisabled={c08.sqtyDisabled}
+				dtypeDisabled={c08.dtypeDisabled}
+				handleGridSelectionChange={c08.handleGridSelectionChange}
 				{...rest}
 			/>
 		</DSGBox>

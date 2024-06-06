@@ -1,5 +1,5 @@
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApiDSG } from "../../shared-hooks/useWebApiDSG";
+import { useDSGCodeEditor } from "@/shared-hooks/useDSGCodeEditor";
 import { useAppModule } from "./useAppModule";
 
 export const useA02 = ({ token }) => {
@@ -7,7 +7,7 @@ export const useA02 = ({ token }) => {
 		token,
 		moduleId: "A02",
 	});
-	const dsgEditor = useWebApiDSG({
+	const dsgEditor = useDSGCodeEditor({
 		token,
 		gridId: "A02",
 		keyColumn: "CodeID",

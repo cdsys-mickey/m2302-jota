@@ -9,6 +9,14 @@ const A05DialogEditButtons = memo(
 		return (
 			<Fragment ref={ref} {...rest}>
 				<ResponsiveLoadingButton
+					onClick={onCancel}
+					color="neutral"
+					variant="contained"
+					loading={loading}
+					{...rest}>
+					取消
+				</ResponsiveLoadingButton>
+				<ResponsiveLoadingButton
 					onClick={onSave}
 					type="submit"
 					endIcon={<SendIcon />}
@@ -16,14 +24,6 @@ const A05DialogEditButtons = memo(
 					variant="contained"
 					loading={loading}>
 					儲存
-				</ResponsiveLoadingButton>
-				<ResponsiveLoadingButton
-					onClick={onCancel}
-					color="neutral"
-					variant="contained"
-					loading={loading}
-					{...rest}>
-					取消
 				</ResponsiveLoadingButton>
 			</Fragment>
 		);

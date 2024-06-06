@@ -216,7 +216,7 @@ export const useA22 = ({
 		(fromRow, toRow) => {
 			const { rowIndex: fromRowIndex } = fromRow;
 			const { rowIndex: toRowIndex } = toRow || {};
-			dsg.removeByRowIndex(fromRowIndex, toRowIndex);
+			dsg.removeRowByIndex(fromRowIndex, toRowIndex);
 		},
 		[dsg]
 	);
@@ -251,7 +251,7 @@ export const useA22 = ({
 							}
 						});
 				} else if (operation.type === "DELETE") {
-					dsg.removeByRowIndex(
+					dsg.removeRowByIndex(
 						operation.fromRowIndex,
 						operation.toRowIndex
 					);
