@@ -28,7 +28,7 @@ export const ZA03InfoFormContainer = () => {
 				data={za03.itemData}
 				updating={za03.updating}
 				editing={za03.editing}
-				deptDisabled={true}
+				// deptDisabled={true}
 				onSubmit={form.handleSubmit(
 					za03.onEditorSubmit,
 					za03.onEditorSubmitError

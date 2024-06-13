@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import { DeptUserPicker } from "../../../picker/DeptUserPicker";
+import { useCallback, useContext } from "react";
 import { ZA03CopyAuthContext } from "../../../../contexts/ZA03/ZA03CopyAuthContext";
-import { useCallback } from "react";
+import { OptionPickerProvider } from "../../../../shared-components/option-picker/OptionPickerProvider";
+import { DeptUserPicker } from "../../../picker/DeptUserPicker";
 
 export const ZA03CopyAuthUserPicker = (props) => {
 	const { ...rest } = props;
@@ -14,12 +14,15 @@ export const ZA03CopyAuthUserPicker = (props) => {
 		[copyAuth]
 	);
 	return (
-		<DeptUserPicker
-			filterByServer
-			// queryRequired
-			onChange={handleChange}
-			{...rest}
-		/>
+		<OptionPickerProvider>
+			<DeptUserPicker
+				// filterByServer
+				// queryRequired
+				virtualize
+				onChange={handleChange}
+				{...rest}
+			/>
+		</OptionPickerProvider>
 	);
 };
 

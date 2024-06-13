@@ -11,7 +11,7 @@ const arePropsEqual = (oldProps, newProps) => {
 };
 
 /**
- * 截自 GitHub 上的原始碼，用於參考
+ * 截自 GitHub 上的原始碼，用於改寫加入新功能
  * https://github.com/nick-keller/react-datasheet-grid/blob/master/src/columns/checkboxColumn.tsx
  */
 const CheckboxComponent = memo(
@@ -24,7 +24,7 @@ const CheckboxComponent = memo(
 		stopEditing,
 		disabled,
 	}) => {
-		console.log("rendering CheckboxComponent");
+		// console.log("rendering CheckboxComponent");
 		const { size } = columnData;
 
 		const ref = useRef(null);

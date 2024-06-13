@@ -13,6 +13,7 @@ export const ZA03AuthBatchCancelButtonContainer = (props) => {
 	return (
 		<ResponsiveButton
 			// disabled={za03.isDirty}
+
 			onClick={za03.confirmCancelAuthEditing}
 			{...rest}>
 			放棄修改

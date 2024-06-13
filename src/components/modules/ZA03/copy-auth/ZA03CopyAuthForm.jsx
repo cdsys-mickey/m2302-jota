@@ -28,6 +28,10 @@ const ZA03CopyAuthForm = memo((props) => {
 						label="來源使用者"
 						name="fromUser"
 						typeToSearchText="以姓名,帳號或信箱搜尋"
+						required
+						rules={{
+							required: "來源使用者為必填欄位",
+						}}
 					/>
 				</Grid>
 				<Grid item xs={12}>

@@ -12,7 +12,7 @@ import { TextFieldWrapper } from "../../../../../shared-components/text-field/Te
 import ZA03InfoToolbarContainer from "./ZA03InfoToolbarContainer";
 
 const ZA03InfoForm = memo((props) => {
-	const { data, updating, editing, deptDisabled } = props;
+	const { data, updating, editing } = props;
 	return (
 		<TabPanel
 			value={Users.Tabs.INFO}
@@ -89,7 +89,7 @@ const ZA03InfoForm = memo((props) => {
 							name="dept"
 							label="隸屬門市"
 							required
-							disabled={deptDisabled}
+							// disabled={deptDisabled}
 						/>
 					</Grid>
 					<Grid item xs={24} sm={24} md={6}>
