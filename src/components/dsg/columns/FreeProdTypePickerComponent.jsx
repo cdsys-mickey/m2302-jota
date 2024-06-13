@@ -58,8 +58,8 @@ const FreeProdTypePickerComponent = memo((props) => {
 	}, [focus]);
 
 	const hideControls = useMemo(() => {
-		return disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, focus]);
+		return disabled || disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, disabled, focus]);
 
 	return (
 		<FreeProdTypePicker

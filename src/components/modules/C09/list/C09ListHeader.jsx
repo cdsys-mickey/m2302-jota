@@ -18,8 +18,8 @@ const C09ListHeader = memo(
 				<C09IdColumn>撥入單號</C09IdColumn>
 				<C09DateColumn>撥入日期</C09DateColumn>
 				<C09IdColumn>撥出單號</C09IdColumn>
-				<C09DeptIdColumn>撥出門市</C09DeptIdColumn>
-				<C09DeptNameColumn></C09DeptNameColumn>
+				<C09DeptColumn>撥出門市</C09DeptColumn>
+
 				<C09UserColumn>驗收人員</C09UserColumn>
 			</ListViewHeader>
 		);

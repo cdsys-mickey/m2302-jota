@@ -1,10 +1,9 @@
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import PropTypes from "prop-types";
-import { ControlledOptionPicker } from "./ControlledOptionPicker";
-import TypoOptionPickerContainer from "./TypoOptionPickerContainer";
-import { WebApiOptionPickerWrapper } from "./WebApiOptionPickerWrapper";
 import { memo } from "react";
 import { ControlledWebApiOptionPicker } from "../controlled/ControlledWebApiOptionPicker";
+import { ControlledOptionPicker } from "./ControlledOptionPicker";
+import TypoOptionPickerContainer from "./TypoOptionPickerContainer";
 
 /**
  * OptionPicker 系列的綜合入口
@@ -23,7 +22,6 @@ export const OptionPickerWrapper = memo((props) => {
 		);
 	}
 	return url ? (
-		// <WebApiOptionPickerWrapper url={url} {...rest} />
 		<ControlledWebApiOptionPicker url={url} {...rest} />
 	) : (
 		<ControlledOptionPicker {...rest} />

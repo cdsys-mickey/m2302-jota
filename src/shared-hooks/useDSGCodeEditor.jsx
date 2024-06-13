@@ -198,7 +198,9 @@ export const useDSGCodeEditor = ({
 				{
 					[keyColumn]: "",
 				},
-				newValue
+				{
+					data: newValue,
+				}
 			);
 			setTimeout(() => {
 				dsg.setActiveCell({ row: row.rowIndex, col: 0 });

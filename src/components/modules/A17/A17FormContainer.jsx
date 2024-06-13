@@ -27,13 +27,12 @@ export const A17FormContainer = () => {
 	return (
 		<A17Form
 			readWorking={a17.readWorking}
+			readError={a17.readError}
 			readMessage={a17.readMessage}
-			// readWorking={true}
 			itemDataReady={a17.itemDataReady}
 			editing={a17.editing}
 			updating={a17.updating}
 			readFailed={a17.readFailed}
-			readError={a17.readError}
 			handleDeptChanged={a17.handleDeptChanged}
 		/>
 	);

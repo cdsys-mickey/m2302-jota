@@ -100,6 +100,7 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 						editing={b05.editing}
 						updating={b05.updating}
 						readWorking={b05.readWorking}
+						readError={b05.readError}
 						data={b05.itemData}
 						itemDataReady={b05.itemDataReady}
 						onSubmit={handleSubmit}

@@ -1,6 +1,8 @@
+import DSGBox from "@/shared-components/dsg/DSGBox";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { createDSGContextMenu } from "@/shared-components/dsg/context-menu/useDSGContextMenu";
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import {
@@ -8,10 +10,6 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGBox from "@/shared-components/dsg/DSGBox";
-import { checkboxColumn2 } from "@/shared-components/dsg/columns/checkbox/checkboxColumn2";
-import { createMuiCheckboxColumn } from "../../../../../shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
-import { createCheckboxColumn } from "../../../../../shared-components/dsg/columns/checkbox/createCheckboxColumn";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),

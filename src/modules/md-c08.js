@@ -13,6 +13,7 @@ const transformGridForReading = (data) => {
 				SRsnID,
 				RsnData_N,
 				SOrdID,
+				SQtyNote,
 				...rest
 			}) => {
 				const fields = SOrdID?.split("#") || [];
@@ -25,8 +26,8 @@ const transformGridForReading = (data) => {
 					},
 					stype: FreeProdTypes.getOptionById(SType),
 					SOrdID,
-					// ordId,
-					SMsg: ordId,
+					ordId,
+					overrideSQty: SQtyNote === "*",
 					dtype: SRsnID
 						? {
 								CodeID: SRsnID,
@@ -45,7 +46,17 @@ const transformGridForSubmitting = (gridData) => {
 		.filter((v) => v.prod?.ProdID)
 		.map(
 			(
-				{ Pkey, prod, SQty, SPrice, SAmt, stype, dtype, ...rest },
+				{
+					Pkey,
+					prod,
+					SQty,
+					SPrice,
+					SAmt,
+					stype,
+					dtype,
+					overrideSQty,
+					...rest
+				},
 				index
 			) => ({
 				Pkey: Pkey?.length < 36 ? "" : Pkey,
@@ -57,6 +68,7 @@ const transformGridForSubmitting = (gridData) => {
 				SType: stype?.id || "",
 				Seq: index + 1,
 				SRsnID: dtype?.id || "",
+				SQtyNote: overrideSQty ? "*" : "",
 				...rest,
 			})
 		);
@@ -76,6 +88,7 @@ const transformForReading = (payload) => {
 		DyEmplData_N,
 		InvTxo_S,
 		Remark,
+		SQtyNote,
 		...rest
 	} = payload;
 
@@ -106,6 +119,7 @@ const transformForReading = (payload) => {
 			CodeData: DyEmplData_N,
 		},
 		prods: transformGridForReading(InvTxo_S),
+		overrideSQty: SQtyNote === "*",
 		remark: Remark.join("\n"),
 		...rest,
 	};
@@ -121,8 +135,14 @@ const transformForSubmitting = (payload, gridData) => {
 		transType,
 		depOrders,
 		remark,
+		// DROPPING PROPS
+		stock,
+		prods,
 		...rest
 	} = payload;
+
+	console.log("DROP props", { stock, prods });
+
 	return {
 		TxoID,
 		TxoDate: TxoDate ? Forms.formatDate(TxoDate) : "",

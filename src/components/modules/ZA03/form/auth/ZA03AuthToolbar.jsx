@@ -44,14 +44,14 @@ const ZA03AuthToolbarRightComponents = () => {
 			/>
 
 			<ZA03AuthBatchEditButtonContainer color="warning" />
-			<ZA03AuthBatchSubmitButtonContainer
-				variant="contained"
-				color="warning"
-				disableElevation
-			/>
 			<ZA03AuthBatchCancelButtonContainer
 				variant="contained"
 				color="neutral"
+				disableElevation
+			/>
+			<ZA03AuthBatchSubmitButtonContainer
+				variant="contained"
+				color="warning"
 				disableElevation
 			/>
 			{/* <ZA03AuthLockRowsSwitchContainer /> */}

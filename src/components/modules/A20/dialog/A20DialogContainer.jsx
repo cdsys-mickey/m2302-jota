@@ -74,6 +74,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 					editing={a20.editing}
 					updating={a20.updating}
 					readWorking={a20.readWorking}
+					readError={a20.readError}
 					data={a20.itemData}
 					itemDataReady={a20.itemDataReady}
 				/>

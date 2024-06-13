@@ -1,3 +1,6 @@
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
+
 import {
 	createTheme,
 	CssBaseline,
@@ -12,7 +15,6 @@ import { zhTW } from "date-fns/locale/zh-TW";
 // import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import zhTW from "dayjs/locale/zh-tw";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import { DialogsProvider } from "@/shared-contexts/dialog/DialogsProvider";
 import { AppProvider } from "@/contexts/app/AppProvider";

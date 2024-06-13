@@ -1,23 +1,29 @@
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { memo } from "react";
 
 import TypoBankPickerContainer from "@/components/fields/TypoBankPickerContainer";
-import YesNo from "@/modules/md-yes-no";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import FormBox from "@/shared-components/form/FormBox";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import TaxExcludedCheckbox from "../../../checkbox/TaxExcludedCheckbox";
 
 const A05Form = memo((props) => {
-	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
-		props;
+	const {
+		data,
+		readWorking,
+		readError,
+		itemDataReady,
+		editing,
+		updating,
+		...rest
+	} = props;
 	return (
 		<form {...rest}>
 			{readWorking && (
@@ -29,6 +35,7 @@ const A05Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
+			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
@@ -233,6 +240,7 @@ A05Form.propTypes = {
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,
+	readError: PropTypes.object,
 };
 
 A05Form.displayName = "A05Form";

@@ -100,6 +100,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 						editing={c02.editing}
 						updating={c02.updating}
 						readWorking={c02.readWorking}
+						readError={c02.readError}
 						data={c02.itemData}
 						itemDataReady={c02.itemDataReady}
 						onSubmit={handleSubmit}

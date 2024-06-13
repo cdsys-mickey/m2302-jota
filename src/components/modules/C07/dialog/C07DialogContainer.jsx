@@ -103,6 +103,7 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 					editing={c07.editing}
 					updating={c07.updating}
 					readWorking={c07.readWorking}
+					readError={c07.readError}
 					data={c07.itemData}
 					itemDataReady={c07.itemDataReady}
 					handleSupplierChanged={c07.handleSupplierChanged({

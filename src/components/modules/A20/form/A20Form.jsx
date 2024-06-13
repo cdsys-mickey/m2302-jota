@@ -12,10 +12,18 @@ import { PackageTypeLabelContainer } from "./fields/PackageTypeLabelContainer";
 import TypoProdPickerContainer from "./fields/TypoProdPickerContainer";
 import { ProdMaterialsGridContainer } from "./prods/ProdMaterialsGridContainer";
 import FormBox from "../../../../shared-components/form/FormBox";
+import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const A20Form = memo((props) => {
-	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
-		props;
+	const {
+		data,
+		readWorking,
+		readError,
+		itemDataReady,
+		editing,
+		updating,
+		...rest
+	} = props;
 
 	return (
 		<form {...rest}>
@@ -28,6 +36,7 @@ const A20Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
+			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionTitle>關連貨品基本資料</FormSectionTitle>
@@ -83,6 +92,7 @@ A20Form.propTypes = {
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,
+	readError: PropTypes.object,
 };
 
 A20Form.displayName = "A20Form";

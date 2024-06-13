@@ -125,7 +125,9 @@ export const useInfiniteLoader = (props = {}) => {
 			}
 
 			const loading =
-				((!start || !listData) && !supressLoading) || refresh;
+				// ((!start || !listData) && !supressLoading) || refresh;
+				// 依賴 start 或有誤顯示的風險
+				(!listData && !supressLoading) || refresh;
 			console.log("loading", loading);
 
 			setListError(null);

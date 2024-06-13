@@ -27,11 +27,6 @@ export const C09DialogToolbarContainer = (props) => {
 	if (c09.editing) {
 		return (
 			<C09DialogEditToolbar
-				onRefresh={c09.handleRefresh({
-					setValue: form.setValue,
-					getValues: form.getValues,
-				})}
-				refreshWorking={c09.refreshWorking}
 				onSave={form.handleSubmit(
 					c09.onEditorSubmit,
 					c09.onEditorSubmitError

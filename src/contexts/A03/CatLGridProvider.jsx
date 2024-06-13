@@ -40,16 +40,15 @@ const CatLGridProvider = (props) => {
 	});
 
 	const clear = useCallback(() => {
-		dsg.setGridData(null);
+		dsg.setGridData([], {
+			reset: true,
+			commit: true,
+		});
 	}, [dsg]);
 
 	const selectRow = useCallback(
 		({ rowData } = {}) => {
 			console.log(`catL.selectedRow`, rowData);
-			// setState((prev) => ({
-			// 	...prev,
-			// 	selected: rowData,
-			// }));
 			if (rowData?.LClas) {
 				catM.load({
 					lgId: rowData?.LClas,
@@ -225,7 +224,9 @@ const CatLGridProvider = (props) => {
 				{
 					LClas: "",
 				},
-				newValue
+				{
+					data: newValue,
+				}
 			);
 		},
 		[dsg]

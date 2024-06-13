@@ -35,7 +35,7 @@ const C08SearchPopper = memo(
 						<Grid item xs={12} sm={12}>
 							<DatePickerWrapper
 								name="txoDate"
-								label="撥出日期 >"
+								label="撥出日期(>)"
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
@@ -50,7 +50,7 @@ const C08SearchPopper = memo(
 						<Grid item xs={12} sm={12}>
 							<DeptPickerContainer
 								name="txiDept"
-								label="撥出門市"
+								label="撥入門市"
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>

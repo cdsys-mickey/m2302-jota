@@ -334,8 +334,14 @@ export const useA01 = ({ token, mode }) => {
 
 	const resetGridData = useCallback(
 		(data) => {
-			transGrid.setGridData(data?.trans || []);
-			comboGrid.setGridData(data?.combo || []);
+			transGrid.setGridData(data?.trans || [], {
+				reset: true,
+				commit: true,
+			});
+			comboGrid.setGridData(data?.combo || [], {
+				reset: true,
+				commit: true,
+			});
 		},
 		[comboGrid, transGrid]
 	);
@@ -511,7 +517,9 @@ export const useA01 = ({ token, mode }) => {
 						{
 							dept: null,
 						},
-						newValue
+						{
+							data: newValue,
+						}
 					);
 					toast.error(
 						`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
@@ -544,7 +552,9 @@ export const useA01 = ({ token, mode }) => {
 						{
 							dept: null,
 						},
-						newValue
+						{
+							data: newValue,
+						}
 					);
 					toast.error(
 						`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`

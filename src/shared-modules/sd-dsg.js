@@ -1,7 +1,12 @@
-const SELECTED_ROW_CLASSNAME = "row-selected";
+const CssClasses = Object.freeze({
+	ROW_SELECTED: "row-selected",
+	LINE_THROUGH: "line-through",
+	RED: "red",
+	STAR: "star",
+});
 
 const DSG = {
-	SELECTED_ROW_CLASSNAME,
+	CssClasses,
 };
 
 export default DSG;

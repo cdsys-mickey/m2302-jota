@@ -5,6 +5,7 @@ import {
 	DynamicDataSheetGrid,
 	createTextColumn,
 	keyColumn,
+	textColumn,
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
@@ -12,6 +13,9 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C09ProdGridAddRows from "./C09ProdGridAddRows";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import FreeProdTypePickerComponent from "@/components/dsg/columns/FreeProdTypePickerComponent";
+import OutboundTypePickerComponent from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponent";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -26,12 +30,22 @@ const C09ProdGrid = memo((props) => {
 		handleGridChange,
 		getRowClassName,
 		height = 300,
-		prodDisabled,
-		spriceDisabled,
+		stypeDisabled,
+		sprodDisabled,
 		getSPriceClassName,
+		dtypeDisabled,
+		sqtyDisabled,
 	} = props;
 	const columns = useMemo(
 		() => [
+			{
+				...keyColumn("SoFlag_N", textColumn),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "出",
+				disabled: true,
+				cellClassName: "star",
+			},
 			{
 				...keyColumn(
 					"prod",
@@ -46,7 +60,7 @@ const C09ProdGrid = memo((props) => {
 				id: "SProdID",
 				title: "商品",
 				grow: 4,
-				disabled: readOnly || prodDisabled,
+				disabled: readOnly || sprodDisabled,
 			},
 			{
 				...keyColumn(
@@ -59,52 +73,67 @@ const C09ProdGrid = memo((props) => {
 				title: "包裝",
 				disabled: true,
 			},
-			{
-				...keyColumn(
-					"SInqFlag",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "詢",
-				disabled: true,
-			},
+
 			{
 				...keyColumn("SPrice", createFloatColumn(2)),
-				title: "退貨單價",
+				title: "撥入單價",
 				minWidth: 100,
 				grow: 1,
-				disabled: readOnly,
+				disabled: true,
+				cellClassName: getSPriceClassName,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
-				title: "退貨數量",
+				title: "撥入數量",
 				minWidth: 90,
 				grow: 1,
-				disabled: readOnly,
+				disabled: readOnly || sqtyDisabled,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
-				title: "退貨金額",
+				title: "撥入金額",
 				minWidth: 90,
 				grow: 1,
 				disabled: true,
 			},
 			{
 				...keyColumn(
-					"SRemark",
-					createTextColumn({
-						continuousUpdates: false,
+					"stype",
+					optionPickerColumn(FreeProdTypePickerComponent, {
+						name: "stype",
+						disableClearable: true,
+						// disableActiveControl: true,
 					})
 				),
-				title: "備註",
-				grow: 5,
-				disabled: readOnly,
+				title: "贈品",
+				minWidth: 80,
+				maxWidth: 80,
+				disabled: readOnly || stypeDisabled,
+			},
+			{
+				...keyColumn(
+					"dtype",
+					optionPickerColumn(OutboundTypePickerComponent, {
+						name: "dtype",
+						// disableClearable: true,
+						optionLabelSize: "small",
+						// disableActiveControl: true,
+					})
+				),
+				title: "原因",
+				minWidth: 140,
+				maxWidth: 160,
+				disabled: readOnly || dtypeDisabled,
 			},
 		],
-		[prodDisabled, readOnly]
+		[
+			readOnly,
+			sprodDisabled,
+			getSPriceClassName,
+			sqtyDisabled,
+			stypeDisabled,
+			dtypeDisabled,
+		]
 	);
 
 	const createRow = useCallback(
@@ -113,9 +142,12 @@ const C09ProdGrid = memo((props) => {
 			prod: null,
 			SQty: "",
 			SPrice: "",
+			SAmt: "",
+			stype: null,
+			dtype: null,
 			SRemark: "",
 			ChkQty: "",
-			SOrdID: "",
+			SoQty: "",
 		}),
 		[]
 	);
@@ -134,7 +166,8 @@ const C09ProdGrid = memo((props) => {
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly}
-			height={height + (readOnly ? 48 : 0)}
+			// height={height + (readOnly ? 48 : 0)}
+			height={height}
 			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
@@ -153,8 +186,6 @@ const C09ProdGrid = memo((props) => {
 
 C09ProdGrid.propTypes = {
 	getRowKey: PropTypes.func,
-	spriceDisabled: PropTypes.func,
-	prodDisabled: PropTypes.func,
 	handleGridChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,
@@ -162,6 +193,10 @@ C09ProdGrid.propTypes = {
 	height: PropTypes.number,
 	gridRef: PropTypes.func,
 	data: PropTypes.array.isRequired,
+	stypeDisabled: PropTypes.func,
+	sprodDisabled: PropTypes.func,
+	dtypeDisabled: PropTypes.func,
+	sqtyDisabled: PropTypes.func,
 };
 
 C09ProdGrid.displayName = "C09ProdGrid";

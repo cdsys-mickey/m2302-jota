@@ -1,7 +1,7 @@
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import { OutboundTypePicker } from "../../../picker/OutboundTypePicker";
+import { OutboundTypePicker } from "@/components/picker/OutboundTypePicker";
 import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
@@ -11,7 +11,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	});
 };
 
-const DisposalTypePickerComponent = memo((props) => {
+const OutboundTypePickerComponent = memo((props) => {
 	const {
 		// Data
 		rowData,
@@ -36,7 +36,7 @@ const DisposalTypePickerComponent = memo((props) => {
 	const { disableActiveControl, ...rest } = columnData;
 
 	// console.log(
-	// 	`rendering DisposalTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
+	// 	`rendering OutboundTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
 	// 	rowData
 	// );
 
@@ -55,8 +55,8 @@ const DisposalTypePickerComponent = memo((props) => {
 	);
 
 	const hideControls = useMemo(() => {
-		return disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, focus]);
+		return disabled || disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, disabled, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
@@ -93,7 +93,7 @@ const DisposalTypePickerComponent = memo((props) => {
 	);
 }, arePropsEqual);
 
-DisposalTypePickerComponent.propTypes = {
+OutboundTypePickerComponent.propTypes = {
 	name: PropTypes.string,
 	// Data
 	rowData: PropTypes.oneOfType([
@@ -118,6 +118,6 @@ DisposalTypePickerComponent.propTypes = {
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
 };
-DisposalTypePickerComponent.propTypes = {};
-DisposalTypePickerComponent.displayName = "DisposalTypePickerComponent";
-export default DisposalTypePickerComponent;
+OutboundTypePickerComponent.propTypes = {};
+OutboundTypePickerComponent.displayName = "OutboundTypePickerComponent";
+export default OutboundTypePickerComponent;

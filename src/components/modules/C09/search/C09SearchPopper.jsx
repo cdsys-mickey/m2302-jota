@@ -13,6 +13,7 @@ import { forwardRef, memo } from "react";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { DatePickerWrapper } from "../../../../shared-components/date-picker/DatePickerWrapper";
 import { EmployeePicker } from "../../../picker/EmployeePicker";
+import DeptPickerContainer from "../../../DeptPickerContainer";
 
 const C09SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -31,64 +32,19 @@ const C09SearchPopper = memo(
 					<Divider sx={{ mt: 0, mb: 2 }} />
 					<Grid container spacing={1.5} columns={12}>
 						<Grid item xs={12} sm={12}>
-							<OptionPickerProvider>
-								<SupplierPickerContainer
-									label="廠商代碼"
-									name="supplier"
-									variant="outlined"
-									optionLabelSize="small"
-									virtualize
-								/>
-							</OptionPickerProvider>
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<ControlledTextField
-								name="spn"
-								label="廠商名稱"
-								variant="outlined"
-								size="small"
-								fullWidth
-								clearable
+							<DatePickerWrapper
+								name="tid"
+								label="撥入日期(大於)"
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<ControlledTextField
-								name="spa"
-								label="廠商地址"
-								variant="outlined"
-								size="small"
-								fullWidth
-								clearable
+							<EmployeePicker name="employee" label="驗收人員" />
+						</Grid>
+						<Grid item xs={12} sm={12}>
+							<DeptPickerContainer
+								name="txoDept"
+								label="撥出門市"
 							/>
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<ControlledTextField
-								name="spu"
-								label="統一編號"
-								variant="outlined"
-								size="small"
-								fullWidth
-								clearable
-							/>
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<ControlledTextField
-								name="inv"
-								label="發票號碼"
-								variant="outlined"
-								size="small"
-								fullWidth
-								clearable
-							/>
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<TaxType2Picker name="taxType" label="稅外加" />
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<DatePickerWrapper name="rd" label="退貨日期" />
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="倉管人員" />
 						</Grid>
 					</Grid>
 				</DialogContent>
@@ -106,7 +62,7 @@ const C09SearchPopper = memo(
 						variant="contained"
 						color="warning"
 						onClick={onReset}>
-						清除
+						重設
 					</ButtonWrapper>
 					<ButtonWrapper
 						startIcon={<FilterAltIcon />}

@@ -6,6 +6,12 @@ import { useToggle } from "@/shared-hooks/useToggle";
 import _ from "lodash";
 import DSG from "../shared-modules/sd-dsg";
 
+const DEFAULT_SET_OPTS = {
+	reset: false,
+	commit: false,
+	prev: null,
+};
+
 export const useDSG = ({
 	gridId = "NO_NAME",
 	keyColumn,
@@ -50,30 +56,36 @@ export const useDSG = ({
 	// 	}));
 	// }, []);
 
-	const resetGridData = useCallback((newValue) => {
-		setPrevGridData(newValue);
-		setGridData(newValue);
-		setGridLoading(false);
-	}, []);
+	const resetGridData = useCallback(
+		(newValue, opts = DEFAULT_SET_OPTS) => {
+			const { reset, prev, commit } = opts;
+			if (reset) {
+				dirtyIds.clear();
+				persistedIds.clear();
+				newValue?.map((item) => {
+					const key = _.get(item, keyColumn);
+					persistedIds.add(key);
+				});
+			}
+			if (commit) {
+				setPrevGridData(newValue);
+			} else if (prev) {
+				setPrevGridData(prev);
+			}
+			setGridData(newValue);
+			setGridLoading(false);
+
+			console.log("resetGridData", newValue);
+		},
+		[dirtyIds, keyColumn, persistedIds]
+	);
 
 	const handleGridDataLoaded = useCallback(
 		(payload) => {
 			console.log(`${gridId}.onDataLoaded`, payload);
-			dirtyIds.clear();
-			persistedIds.clear();
-			payload?.map((i) => {
-				const key = _.get(i, keyColumn);
-				persistedIds.add(key);
-			});
-			// setState((prev) => ({
-			// 	...prev,
-			// 	prevGridData: payload,
-			// 	gridData: payload,
-			// 	gridLoading: false,
-			// }));
-			resetGridData(payload);
+			resetGridData(payload, { reset: true, commit: true });
 		},
-		[dirtyIds, gridId, keyColumn, persistedIds, resetGridData]
+		[gridId, resetGridData]
 	);
 
 	const getRowDataByIndex = useCallback(
@@ -400,8 +412,8 @@ export const useDSG = ({
 	);
 
 	const setValueByRowIndex = useCallback(
-		(rowIndex, newValueObj, newGridData) => {
-			const newValue = newGridData || gridData;
+		(rowIndex, newValueObj, opts = {}) => {
+			const newValue = opts.data || gridData;
 			const rewritten = newValue.map((rowData, i) =>
 				i === rowIndex
 					? {
@@ -410,12 +422,12 @@ export const useDSG = ({
 					  }
 					: rowData
 			);
-			console.log(`rewrite(${rowIndex})`, rewritten);
+			console.log(`setValueByRowIndex(${rowIndex})`, rewritten);
 			// setState((prev) => ({
 			// 	...prev,
 			// 	gridData: rewritten,
 			// }));
-			setGridData(rewritten);
+			setGridData(rewritten, opts.callback);
 		},
 		[gridData]
 	);
@@ -476,22 +488,28 @@ export const useDSG = ({
 		[gridId, setSelectedRow]
 	);
 
-	const getRowClassName = useCallback(({ rowIndex } = {}) => {
+	const isRowSelected = useCallback((row = {}) => {
+		const { rowIndex } = row;
 		if (rowIndex === undefined || rowIndex == null) {
-			return undefined;
+			return false;
 		}
-		return rowIndex === selectedRowRef.current?.rowIndex
-			? DSG.SELECTED_ROW_CLASSNAME
-			: undefined;
+		return rowIndex === selectedRowRef.current?.rowIndex;
 	}, []);
+
+	const getRowClassName = useCallback(
+		(row) => {
+			return isRowSelected(row) ? DSG.CssClasses.ROW_SELECTED : undefined;
+		},
+		[isRowSelected]
+	);
 
 	const handleSelectionChange = useCallback(
 		({ onRowSelectionChange = defaultOnRowSelectionChange } = {}) =>
 			({ selection }) => {
-				// console.log(
-				// 	`${gridId}.handleSelectionChange, selection:`,
-				// 	selection
-				// );
+				console.log(
+					`${gridId}.handleSelectionChange, selection:`,
+					selection
+				);
 				if (selection) {
 					if (selection?.min?.row === selection?.max?.row) {
 						const rowIndex = selection?.min?.row;
@@ -507,7 +525,7 @@ export const useDSG = ({
 					}
 				}
 			},
-		[defaultOnRowSelectionChange, getRowDataByIndex]
+		[defaultOnRowSelectionChange, getRowDataByIndex, gridId]
 	);
 
 	const setActiveCell = useCallback(
@@ -603,6 +621,7 @@ export const useDSG = ({
 		isDuplicated,
 		isDuplicating,
 		// 繪製選取列
+		isRowSelected,
 		getRowClassName,
 		setSelectedRow,
 		getSelectedRow,

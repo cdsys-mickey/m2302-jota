@@ -42,7 +42,7 @@ const DialogTitleEx = memo(
 
 		const hasCloseButton = useMemo(() => {
 			return !hideCloseButton && !!onClose;
-		}, [onClose]);
+		}, [hideCloseButton, onClose]);
 
 		return (
 			<DialogTitle

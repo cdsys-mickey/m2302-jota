@@ -1,8 +1,8 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-import { ListItemIcon, MenuItem, Tooltip, Typography } from "@mui/material";
 import RepeatIcon from "@mui/icons-material/Repeat";
-import FlexBox from "../../../shared-components/FlexBox";
+import { ListItemIcon, MenuItem, Typography } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo } from "react";
+import FlexBox from "@/shared-components/FlexBox";
 
 const DeptSwitchMenuItem = memo((props) => {
 	const { title, bgcolor, sx = [], ...rest } = props;
@@ -37,7 +37,7 @@ const DeptSwitchMenuItem = memo((props) => {
 			<MenuItem
 				sx={[
 					(theme) => ({
-						// marginTop: theme.spacing(1),
+						marginTop: theme.spacing(1),
 					}),
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}

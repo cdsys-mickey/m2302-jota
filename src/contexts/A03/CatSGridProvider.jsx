@@ -27,7 +27,10 @@ const CatSGridProvider = (props) => {
 	});
 
 	const clear = useCallback(() => {
-		dsg.setGridData(null);
+		dsg.setGridData([], {
+			reset: true,
+			commit: true,
+		});
 	}, [dsg]);
 
 	const selectRow = useCallback(({ rowData } = {}) => {
@@ -215,7 +218,9 @@ const CatSGridProvider = (props) => {
 				{
 					SClas: "",
 				},
-				newValue
+				{
+					data: newValue,
+				}
 			);
 		},
 		[dsg]

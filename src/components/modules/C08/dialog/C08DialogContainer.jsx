@@ -7,6 +7,8 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C08DialogForm from "./C08DialogForm";
 import { C08DialogToolbarContainer } from "./toolbar/C08DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import useDebounce from "../../../../shared-hooks/useDebounce";
+import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 
 export const C08DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -23,6 +25,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 	});
 
 	const c08 = useContext(C08Context);
+	const { getSOrdId } = c08;
 
 	const scrollable = useScrollable({
 		height,
@@ -69,6 +72,16 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [c08.itemData, c08.itemDataReady, reset]);
 
+	// 非同步獲取 sord 資訊
+	const sordId = useMemo(() => {
+		return getSOrdId();
+	}, [getSOrdId]);
+	const debouncedSOrdId = useDebounce(sordId, 300);
+
+	useChangeTracking(() => {
+		console.log("sordId", debouncedSOrdId);
+	}, [debouncedSOrdId]);
+
 	return (
 		<FormProvider {...form}>
 			<DialogExContainer
@@ -103,6 +116,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 					editing={c08.editing}
 					updating={c08.updating}
 					readWorking={c08.readWorking}
+					readError={c08.readError}
 					data={c08.itemData}
 					itemDataReady={c08.itemDataReady}
 					handleDepOrdersChanged={c08.handleDepOrdersChanged({

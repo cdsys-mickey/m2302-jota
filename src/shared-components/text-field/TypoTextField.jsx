@@ -33,8 +33,8 @@ const TypoTextField = memo(
 		});
 
 		const memoisedText = useMemo(() => {
-			return children || type === "password" ? maskedText : value;
-		}, [children, maskedText, type, value]);
+			return value && type === "password" ? maskedText : value;
+		}, [maskedText, type, value]);
 
 		if (!editing) {
 			return (

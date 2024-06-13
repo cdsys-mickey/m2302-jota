@@ -70,6 +70,7 @@ const C05ProdGrid = memo((props) => {
 				maxWidth: 38,
 				title: "詢",
 				disabled: true,
+				cellClassName: "star",
 			},
 			{
 				...keyColumn("SPrice", createFloatColumn(2)),

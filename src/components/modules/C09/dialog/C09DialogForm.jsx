@@ -1,6 +1,4 @@
-import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import { EmployeePicker } from "@/components/picker/EmployeePicker";
-import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
@@ -11,7 +9,9 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexGrid from "@/shared-components/FlexGrid";
+import DeptPickerContainer from "@/components/DeptPickerContainer";
+import { DepOrderPicker } from "@/components/dep-order-picker/DepOrderPicker";
+import { TxoOrderPicker } from "@/components/txo-order-picker/TxoOrderPicker";
 import { C09ProdGridBottomToolbar } from "./prod-grid/C09ProdGridBottomToolbar";
 import { C09ProdGridContainer } from "./prod-grid/C09ProdGridContainer";
 
@@ -19,21 +19,13 @@ const C09DialogForm = memo((props) => {
 	const {
 		onSubmit,
 		readError,
-		data,
 		readWorking,
 		itemDataReady,
-		creating,
 		editing,
-		updating,
-		handleSupplierChanged,
-		handlePurchaseOrdersChanged,
-		handleRtnDateChanged,
-		handleLoadProdsSubmit,
-		handleTaxTypeChanged,
-		isSupplierNameDisabled,
-		purchaseOrdersDisabled,
-		supplier,
-		...rest
+		handleTxoOrdersChanged,
+		handleTxoDeptChanged,
+		// txoDeptDisabled,
+		remarkDisabled,
 	} = props;
 	return (
 		<form onSubmit={onSubmit}>
@@ -53,8 +45,8 @@ const C09DialogForm = memo((props) => {
 						<Grid item xs={24} sm={24} md={3}>
 							<TextFieldWrapper
 								typo
-								name="GrtID"
-								label="退貨單號"
+								name="TxiID"
+								label="撥入單號"
 								autoFocus
 								fullWidth
 								// required
@@ -64,24 +56,23 @@ const C09DialogForm = memo((props) => {
 						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
-								name="GrtDate"
-								label="退貨日期"
+								name="txiDate"
+								label="撥入日期"
 								autoFocus
 								fullWidth
 								required
 								variant="outlined"
-								onChanged={handleRtnDateChanged}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
 								<EmployeePicker
 									typo
-									label="倉管人員"
+									label="驗收人員"
 									name="employee"
 									required
 									rules={{
-										required: "倉管人員為必填",
+										required: "驗收人員為必填",
 									}}
 									virtualize
 									disableClearable
@@ -89,84 +80,40 @@ const C09DialogForm = memo((props) => {
 							</OptionPickerProvider>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={5}>
-							<OptionPickerProvider>
-								<SupplierIdPickerContainer
-									typo
-									label="廠商代碼"
-									name="supplier"
-									required
-									rules={{
-										required: "廠商代碼為必填",
-									}}
-									// disabled={supplierPickerDisabled}
-									// disableClearable
-									virtualize
-									fadeOutDisabled
-									withAddr
-									optionLabelSize="small"
-									onChanged={handleSupplierChanged}
-								/>
-							</OptionPickerProvider>
+						<FlexBox fullWidth />
+						<Grid item xs={24} sm={24} md={12}>
+							<TxoOrderPicker
+								typo
+								name="txoOrder"
+								label="撥出單號"
+								// virtualize
+								fadeOutDisabled
+								onChanged={handleTxoOrdersChanged}
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
-							<TextFieldWrapper
+							<DeptPickerContainer
 								typo
-								name="FactData"
-								label="廠商名稱"
-								fullWidth
-								// value={data?.FactData}
+								name="txoDept"
+								label="撥出門市"
+								excludesSelf
 								required
 								rules={{
-									required: "廠商名稱為必填",
+									required: "撥出門市為必填",
 								}}
-								disabled={isSupplierNameDisabled(supplier)}
+								onChange={handleTxoDeptChanged}
+								// disabled={txoDeptDisabled}
 							/>
 						</Grid>
-
-						<Grid item xs={24} sm={24} md={3}>
-							<TextFieldWrapper
+						<Grid item xs={24} sm={24} md={7}>
+							<DepOrderPicker
 								typo
-								name="Uniform"
-								label="統編"
-								fullWidth
-								// value={data?.FactData}
-								// required
-								// disabled={supplierNameDisabled}
-							/>
-						</Grid>
-						<FlexBox fullWidth />
-						<FlexGrid
-							item
-							xs={4}
-							sm={4}
-							md={3}
-							// justifyContent="center"
-						>
-							<TaxExcludedCheckbox
-								typo
-								label="稅外加"
-								name="TaxType"
-								onChanged={handleTaxTypeChanged}
-							/>
-						</FlexGrid>
-						<Grid item xs={24} sm={24} md={4}>
-							<TextFieldWrapper
-								typo
-								name="InvNo"
-								label="發票號碼"
-								fullWidth
-							/>
-						</Grid>
-						<Grid item xs={24} sm={24} md={9}>
-							<TextFieldWrapper
-								typo
-								name="FactAddr"
-								label="地址"
-								fullWidth
-								// value={data?.FactData}
-								// required
-								// disabled={supplierNameDisabled}
+								multiple
+								name="depOrders"
+								label="訂貨單號"
+								// virtualize
+								// fadeOutDisabled
+								disabled
 							/>
 						</Grid>
 					</Grid>
@@ -184,6 +131,7 @@ const C09DialogForm = memo((props) => {
 								maxRows={5}
 								label="備註"
 								fullWidth
+								disabled={remarkDisabled}
 							/>
 						</Grid>
 					</Grid>
@@ -200,6 +148,11 @@ C09DialogForm.propTypes = {
 	itemDataReady: PropTypes.bool,
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRtnDateChanged: PropTypes.func,
+	onSubmit: PropTypes.func,
+	editing: PropTypes.bool,
+	handleTxoOrdersChanged: PropTypes.func,
+	handleTxoDeptChanged: PropTypes.func,
+	remarkDisabled: PropTypes.bool,
 };
 
 C09DialogForm.displayName = "C09DialogForm";

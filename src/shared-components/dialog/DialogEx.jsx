@@ -72,7 +72,7 @@ const DialogEx = memo(
 			titleProps,
 			otherActionButtons,
 			OtherActionButtonsComponent,
-			disableCancelOnClose = false,
+			triggerCancelOnClose = false,
 			responsive = false,
 			fullScreen,
 			hideCloseButton,
@@ -138,11 +138,11 @@ const DialogEx = memo(
 		}, [onConfirm, onSubmit]);
 
 		const handleClose = useCallback(() => {
-			if (!disableCancelOnClose) {
+			if (triggerCancelOnClose && onCancel) {
 				onCancel();
 			}
 			onClose();
-		}, [disableCancelOnClose, onCancel, onClose]);
+		}, [triggerCancelOnClose, onCancel, onClose]);
 
 		const handleKeyDown = useCallback(
 			(e) => {
@@ -245,17 +245,6 @@ const DialogEx = memo(
 						{OtherActionButtonsComponent && (
 							<OtherActionButtonsComponent />
 						)}
-						{showConfirmButton && (
-							<ButtonWrapper
-								responsive
-								onClick={handleConfirm}
-								loading={working}
-								{...buttonProps}
-								{...confirmButtonProps}>
-								{confirmText}
-							</ButtonWrapper>
-						)}
-
 						{onCancel && (
 							<ButtonWrapper
 								responsive
@@ -264,6 +253,16 @@ const DialogEx = memo(
 								{...buttonProps}
 								{...cancelButtonProps}>
 								{cancelText}
+							</ButtonWrapper>
+						)}
+						{showConfirmButton && (
+							<ButtonWrapper
+								responsive
+								onClick={handleConfirm}
+								loading={working}
+								{...buttonProps}
+								{...confirmButtonProps}>
+								{confirmText}
 							</ButtonWrapper>
 						)}
 					</DialogActions>
@@ -317,7 +316,7 @@ DialogEx.propTypes = {
 	onSubmit: PropTypes.func,
 	dense: PropTypes.bool,
 	hideCloseButton: PropTypes.bool,
-	disableCancelOnClose: PropTypes.bool,
+	triggerCancelOnClose: PropTypes.bool,
 };
 
 export default DialogEx;

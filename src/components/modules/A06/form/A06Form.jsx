@@ -17,10 +17,18 @@ import { TypoCustomerLevelPickerContainer } from "./fields/TypoCustomerLevelPick
 import TypoEmployeePickerContainer from "./fields/TypoEmployeePickerContainer";
 import TypoPaymentPickerContainer from "./fields/TypoPaymentPickerContainer";
 import TypoTransportPickerContainer from "./fields/TypoTransportPickerContainer";
+import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const A06Form = memo((props) => {
-	const { data, readWorking, itemDataReady, editing, updating, ...rest } =
-		props;
+	const {
+		data,
+		readWorking,
+		readError,
+		itemDataReady,
+		editing,
+		updating,
+		...rest
+	} = props;
 	return (
 		<form {...rest}>
 			{readWorking && (
@@ -32,6 +40,7 @@ const A06Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
+			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
@@ -275,6 +284,7 @@ A06Form.propTypes = {
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,
+	readError: PropTypes.object,
 };
 
 A06Form.displayName = "A06Form";

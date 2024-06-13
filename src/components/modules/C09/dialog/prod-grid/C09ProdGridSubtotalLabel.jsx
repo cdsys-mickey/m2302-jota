@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import { useWatch } from "react-hook-form";
 
 export const C09ProdGridSubtotalLabel = (props) => {
-	const { name = "RtAmt", ...rest } = props;
+	const { name = "TxiAmt", ...rest } = props;
 	const subtotal = useWatch({
 		name,
 	});
 
 	return (
 		<FlexBox inline sx={{ fontWeight: 700 }}>
-			退貨合計：
+			撥入合計：
 			<Typography color="primary" {...rest}>
 				{subtotal}
 			</Typography>

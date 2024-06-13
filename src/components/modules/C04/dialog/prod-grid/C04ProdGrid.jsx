@@ -85,6 +85,7 @@ const C04ProdGrid = memo((props) => {
 				maxWidth: 38,
 				title: "詢",
 				disabled: true,
+				cellClassName: "star",
 			},
 			{
 				...keyColumn("SPrice", createFloatColumn(2)),

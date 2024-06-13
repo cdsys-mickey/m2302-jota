@@ -577,12 +577,6 @@ export const useC06 = () => {
 					const total = C06.getTotal(newGridData);
 					setValue("OrdAmt", total.toFixed(2));
 					refreshAmt({ setValue, gridData: newGridData });
-					// fetchAmt({
-					// 	received: formData.RecvAmt,
-					// 	taxType: formData.TaxType,
-					// 	gridData: newGridData,
-					// 	setValue,
-					// });
 				}
 			},
 		[crud.creating, getProdInfo, prodGrid, refreshAmt]
@@ -689,7 +683,7 @@ export const useC06 = () => {
 					// 還原
 				}
 			},
-		[httpPatchAsync, prodGrid, refreshAmt, token]
+		[httpPostAsync, prodGrid, refreshAmt, token]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {

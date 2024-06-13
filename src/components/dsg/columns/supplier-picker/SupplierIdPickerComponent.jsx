@@ -65,8 +65,8 @@ const SupplierIdPickerComponent = memo((props) => {
 	// }, [stopEditing]);
 
 	const hideControls = useMemo(() => {
-		return disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, focus]);
+		return disabled || disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, disabled, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {

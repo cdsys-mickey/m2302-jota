@@ -17,10 +17,6 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
-	const supplier = useWatch({
-		name: "supplier",
-		control: form.control,
-	});
 
 	const c09 = useContext(C09Context);
 
@@ -32,11 +28,11 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 
 	const memoisedTitle = useMemo(() => {
 		if (c09.creating) {
-			return "建立退貨單";
+			return "建立撥入單";
 		} else if (c09.updating) {
-			return "修改退貨單";
+			return "修改撥入單";
 		} else {
-			return "退貨單內容";
+			return "撥入單內容";
 		}
 	}, [c09.creating, c09.updating]);
 
@@ -68,6 +64,19 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 			reset(c09.itemData);
 		}
 	}, [c09.itemData, c09.itemDataReady, reset]);
+
+	// const txoDeptDisabled = useMemo(() => {
+	// 	return !!txoOrder;
+	// }, [txoOrder]);
+
+	const txoOrder = useWatch({
+		name: "txoOrder",
+		control: form.control,
+	});
+
+	const remarkDisabled = useMemo(() => {
+		return !!txoOrder;
+	}, [txoOrder]);
 
 	return (
 		<FormProvider {...form}>
@@ -103,23 +112,19 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 					editing={c09.editing}
 					updating={c09.updating}
 					readWorking={c09.readWorking}
+					readError={c09.readError}
 					data={c09.itemData}
 					itemDataReady={c09.itemDataReady}
-					handleSupplierChanged={c09.handleSupplierChanged({
+					handleTxoOrdersChanged={c09.handleTxoOrdersChanged({
 						setValue: form.setValue,
 						getValues: form.getValues,
 					})}
-					handleRtnDateChanged={c09.handleRtnDateChanged({
+					handleTxoDeptChanged={c09.handleTxoDeptChanged({
 						setValue: form.setValue,
 						getValues: form.getValues,
 					})}
-					supplier={supplier}
-					isSupplierNameDisabled={c09.isSupplierNameDisabled}
-					purchaseOrdersDisabled={c09.purchaseOrdersDisabled}
-					handleTaxTypeChanged={c09.handleTaxTypeChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
+					// txoDeptDisabled={txoDeptDisabled}
+					remarkDisabled={remarkDisabled}
 				/>
 			</DialogExContainer>
 		</FormProvider>

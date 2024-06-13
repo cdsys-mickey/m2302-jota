@@ -8,14 +8,16 @@ import {
 	textColumn,
 } from "react-datasheet-grid";
 
+import FreeProdTypePickerComponent from "@/components/dsg/columns/FreeProdTypePickerComponent";
+import OutboundTypePickerComponent from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponent";
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { tooltipColumn } from "@/shared-components/dsg/columns/tooltip/tooltipColumn";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C08ProdGridAddRows from "./C08ProdGridAddRows";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import FreeProdTypePickerComponent from "../../../../dsg/columns/FreeProdTypePickerComponent";
-import DisposalTypePickerComponent from "../../../../dsg/columns/disposal-type-picker/DisposalTypePickerComponent";
 
 const ContextMenu = createDSGContextMenu({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -28,14 +30,17 @@ const C08ProdGrid = memo((props) => {
 		gridRef,
 		data,
 		handleGridChange,
-		handleGridSelectionChange,
+		handleSelectionChange,
 		getRowClassName,
 		height = 300,
 		sprodDisabled,
 		sqtyDisabled,
 		stypeDisabled,
 		dtypeDisabled,
+		overrideSQtyDisabled,
 		getSPriceClassName,
+		getSQtyClassName,
+		getTooltip,
 	} = props;
 	const columns = useMemo(
 		() => [
@@ -45,6 +50,7 @@ const C08ProdGrid = memo((props) => {
 				maxWidth: 38,
 				title: "訂",
 				disabled: true,
+				cellClassName: "star",
 			},
 			{
 				...keyColumn(
@@ -55,6 +61,7 @@ const C08ProdGrid = memo((props) => {
 						triggerDelay: 300,
 						dense: true,
 						optionLabelSize: "small",
+						// disableActiveControl: true,
 					})
 				),
 				id: "SProdID",
@@ -80,13 +87,25 @@ const C08ProdGrid = memo((props) => {
 				minWidth: 100,
 				grow: 1,
 				disabled: true,
+				cellClassName: getSPriceClassName,
 			},
 			{
-				...keyColumn("SQtyNote", textColumn),
+				...keyColumn("StockQty_N", createFloatColumn(2)),
+				title: "庫存",
+				minWidth: 90,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"overrideSQty",
+					createCheckboxColumn({
+						size: "medium",
+					})
+				),
+				title: "強",
 				minWidth: 38,
 				maxWidth: 38,
-				title: "強",
-				disabled: true,
+				disabled: readOnly || overrideSQtyDisabled,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
@@ -94,6 +113,7 @@ const C08ProdGrid = memo((props) => {
 				minWidth: 90,
 				grow: 1,
 				disabled: readOnly || sqtyDisabled,
+				cellClassName: getSQtyClassName,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
@@ -101,7 +121,6 @@ const C08ProdGrid = memo((props) => {
 				minWidth: 90,
 				grow: 1,
 				disabled: true,
-				cellClassName: getSPriceClassName,
 			},
 			{
 				...keyColumn(
@@ -120,7 +139,7 @@ const C08ProdGrid = memo((props) => {
 			{
 				...keyColumn(
 					"dtype",
-					optionPickerColumn(DisposalTypePickerComponent, {
+					optionPickerColumn(OutboundTypePickerComponent, {
 						name: "dtype",
 						// disableClearable: true,
 						optionLabelSize: "small",
@@ -132,14 +151,24 @@ const C08ProdGrid = memo((props) => {
 				maxWidth: 160,
 				disabled: readOnly || dtypeDisabled,
 			},
-			{
-				...keyColumn("SMsg", textColumn),
-				title: "訊息",
-				minWidth: 140,
-				disabled: true,
-			},
+
+			// {
+			// 	...keyColumn("SMsg", textColumn),
+			// 	title: "訊息",
+			// 	minWidth: 140,
+			// 	disabled: true,
+			// },
 		],
-		[getSPriceClassName, sprodDisabled, readOnly, stypeDisabled]
+		[
+			readOnly,
+			sprodDisabled,
+			getSPriceClassName,
+			overrideSQtyDisabled,
+			sqtyDisabled,
+			getSQtyClassName,
+			stypeDisabled,
+			dtypeDisabled,
+		]
 	);
 
 	const createRow = useCallback(
@@ -171,11 +200,12 @@ const C08ProdGrid = memo((props) => {
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly}
-			height={height + (readOnly ? 48 : 0)}
+			// height={height + (readOnly ? 48 : 0)}
+			height={height}
 			// rowHeight={42}
 			value={data}
 			onChange={handleGridChange}
-			onSelectionChange={handleGridSelectionChange}
+			onSelectionChange={handleSelectionChange}
 			columns={columns}
 			addRowsComponent={C08ProdGridAddRows}
 			disableExpandSelection
@@ -185,6 +215,11 @@ const C08ProdGrid = memo((props) => {
 			duplicateRow={duplicateRow}
 			rowClassName={getRowClassName}
 			deleteRow={deleteRow}
+			stickyRightColumn={tooltipColumn({
+				arrow: true,
+				getLabel: getTooltip,
+				placement: "left",
+			})}
 		/>
 	);
 });
@@ -196,13 +231,16 @@ C08ProdGrid.propTypes = {
 	sqtyDisabled: PropTypes.func,
 	stypeDisabled: PropTypes.func,
 	dtypeDisabled: PropTypes.func,
+	overrideSQtyDisabled: PropTypes.func,
 	handleGridChange: PropTypes.func,
-	handleGridSelectionChange: PropTypes.func,
+	handleSelectionChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,
+	getSQtyClassName: PropTypes.func,
 	readOnly: PropTypes.bool,
 	height: PropTypes.number,
 	gridRef: PropTypes.func,
+	getTooltip: PropTypes.func,
 	data: PropTypes.array.isRequired,
 };
 

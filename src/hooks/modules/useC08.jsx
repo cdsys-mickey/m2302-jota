@@ -1,21 +1,20 @@
 import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import CrudContext from "../../contexts/crud/CrudContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import CrudContext from "@/contexts/crud/CrudContext";
 import C08 from "@/modules/md-C08";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { useDSG } from "../../shared-hooks/useDSG";
-import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import Errors from "../../shared-modules/sd-errors";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useDSG } from "@/shared-hooks/useDSG";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
-import { useAction } from "../../shared-hooks/useAction";
+import { useAction } from "@/shared-hooks/useAction";
 import { useMemo } from "react";
-import useHttpPost from "../../shared-hooks/useHttpPost";
-import { isDate } from "date-fns";
-import Forms from "../../shared-modules/sd-forms";
+import useHttpPost from "@/shared-hooks/useHttpPost";
+
 import { useToggle } from "@/shared-hooks/useToggle";
-import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
+import { RouteTwoTone } from "@mui/icons-material";
 
 export const useC08 = () => {
 	const crud = useContext(CrudContext);
@@ -27,7 +26,6 @@ export const useC08 = () => {
 		token,
 		moduleId: "C08",
 	});
-	const stockPwordRef = useRef();
 
 	const qtyMap = useMemo(() => new Map(), []);
 
@@ -106,6 +104,20 @@ export const useC08 = () => {
 		[]
 	);
 
+	const calcProdStock = useCallback(
+		({ prodId, rowIndex, gridData }) => {
+			const totalSQty = gridData
+				.filter(
+					(item, index) =>
+						item.prod.ProdID === prodId && index < rowIndex
+				)
+				.reduce((sum, item) => sum + parseFloat(item.SQty), 0);
+			const stock = qtyMap.get(prodId) || 0;
+			return stock - totalSQty;
+		},
+		[qtyMap]
+	);
+
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
@@ -119,8 +131,73 @@ export const useC08 = () => {
 		};
 		crud.promptCreating({ data });
 		qtyMap.clear();
-		prodGrid.handleGridDataLoaded(data.prods);
+		prodGrid.setGridData([], {
+			reset: true,
+			commit: true,
+		});
 	}, [crud, prodGrid, qtyMap]);
+
+	const loadStockMap = useCallback(
+		async (
+			data,
+			opts = {
+				mark: false,
+			}
+		) => {
+			const gridData = data || prodGrid.gridData;
+
+			if (!gridData || gridData.length === 0) {
+				return;
+			}
+			const prodIds = [
+				...new Set(
+					gridData
+						.filter((item) => item.prod?.ProdID)
+						.map((item) => item.prod.ProdID)
+				),
+			];
+			try {
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/purchase/trans-out-orders/stock",
+					bearer: token,
+					params: {
+						id: prodIds.join(","),
+					},
+				});
+				if (status.success) {
+					payload.Stock?.map((x) =>
+						qtyMap.set(x.ProdID, Number(x.Qty))
+					);
+					if (opts.mark) {
+						let newGridData = [...gridData];
+						gridData.forEach((rowData, rowIndex) => {
+							const prodId = rowData.prod.ProdID;
+							const sqty = Number(rowData.SQty);
+							const prodStock = calcProdStock({
+								rowIndex,
+								prodId,
+								gridData,
+							});
+							newGridData[rowIndex] = {
+								...rowData,
+								["StockQty_N"]: (
+									qtyMap.get(prodId) || 0
+								).toFixed(2),
+								sqtyError: sqty > prodStock,
+							};
+						});
+						prodGrid.setGridData(newGridData);
+					}
+					console.log("qtyMap:", qtyMap);
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				toast.error(Errors.getMessage("取得庫存失敗", err));
+			}
+		},
+		[calcProdStock, httpGetAsync, prodGrid, qtyMap, token]
+	);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -142,54 +219,15 @@ export const useC08 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
-			}
-		},
-		[crud, httpPostAsync, listLoader, token]
-	);
-
-	const loadQtyMap = useCallback(
-		async (gridData) => {
-			const prodIds = [
-				...new Set(
-					gridData
-						.filter((item) => item.prod?.ProdID)
-						.map((item) => item.prod.ProdID)
-				),
-			];
-			try {
-				const { status, payload, error } = await httpGetAsync({
-					url: "v1/purchase/trans-out-orders/stock",
-					bearer: token,
-					params: {
-						id: prodIds.join(","),
-					},
-				});
-				if (status.success) {
-					// do nothing
-					payload.Stock?.map((x) =>
-						qtyMap.set(x.ProdID, Number(x.Qty))
-					);
-					console.log("qtyMap:", qtyMap);
+				if (err.code === 102) {
+					loadStockMap(data.prods, { mark: true });
+					toast.error("部分商品庫存不足，請調整後再送出");
 				} else {
-					throw error || new Error("未預期例外");
+					toast.error(Errors.getMessage("新增失敗", err));
 				}
-			} catch (err) {
-				toast.error(Errors.getMessage("取得庫存失敗", err));
 			}
 		},
-		[httpGetAsync, qtyMap, token]
-	);
-
-	const getProdStock = useCallback(
-		(prodId, newValue) => {
-			const totalSQty = newValue
-				.filter((item) => item.prod.ProdID === prodId) // 過濾出 ProdID 為 "12305414" 的項目
-				.reduce((sum, item) => sum + parseFloat(item.SQty), 0); // 加總 SQty
-			const stock = qtyMap.get(prodId) || 0;
-			return stock - totalSQty;
-		},
-		[qtyMap]
+		[crud, httpPostAsync, listLoader, loadStockMap, token]
 	);
 
 	// READ
@@ -213,8 +251,11 @@ export const useC08 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					prodGrid.handleGridDataLoaded(data.prods);
-					loadQtyMap(data.prods);
+					prodGrid.setGridData(data.prods, {
+						reset: true,
+						commit: true,
+					});
+					loadStockMap(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -222,7 +263,7 @@ export const useC08 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, loadQtyMap, prodGrid, token]
+		[crud, httpGetAsync, loadStockMap, prodGrid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -235,10 +276,6 @@ export const useC08 = () => {
 		},
 		[crud, loadItem]
 	);
-
-	const isSupplierNameDisabled = useCallback((supplier) => {
-		return supplier?.FactID !== "*";
-	}, []);
 
 	const refreshAction = useAction();
 
@@ -389,44 +426,65 @@ export const useC08 = () => {
 		[httpGetAsync, token]
 	);
 
-	const commitSQty = useCallback(() => {
-		const sqtyLock = sqtyLockRef.current;
-		// 置換
-		console.log("commit");
-		prodGrid.setValueByRowIndex(sqtyLock.rowIndex, {
-			SQty: sqtyLock.demand,
-			SQtyNote: "*",
-		});
-		prodGrid.setActiveCell({
-			col: "SQty",
-			row: sqtyLock.rowIndex,
-		});
-		sqtyLockRef.current = null;
-	}, [prodGrid]);
+	const overrideSQtyDisabled = useCallback(({ rowData }) => {
+		return !rowData.sqtyError;
+	}, []);
 
 	const spriceDisabled = useCallback(({ rowData }) => {
-		return !!rowData.SInqFlag;
+		return !!rowData.SoFlag_N;
 	}, []);
 
-	const handleGridSelectionChange = useCallback(({ selection }) => {
-		console.log("selection", selection);
-	}, []);
+	const commitSQty = useCallback(
+		({ setValue }) => {
+			const sqtyLock = sqtyLockRef.current;
+			// 置換
+
+			const newRowData = {
+				SQty: sqtyLock.demand,
+				SAmt:
+					!sqtyLock.price || !sqtyLock.demand
+						? ""
+						: sqtyLock.stype?.id
+						? 0
+						: sqtyLock.price * sqtyLock.demand,
+				overrideSQty: true,
+			};
+			console.log("commitSQty", newRowData);
+
+			prodGrid.setValueByRowIndex(sqtyLock.rowIndex, newRowData);
+			const newGridData = [...prodGrid.gridData];
+			newGridData[sqtyLock.rowIndex] = newRowData;
+
+			const total = C08.getTotal(newGridData);
+			setValue("TxoAmt", total.toFixed(2));
+
+			prodGrid.setActiveCell({
+				col: "SQty",
+				row: sqtyLock.rowIndex,
+			});
+			sqtyLockRef.current = null;
+		},
+		[prodGrid]
+	);
 
 	/**
 	 * 確認強迫銷貨
 	 */
-	const promptOverrideSQty = useCallback(() => {
-		const sqtyLock = sqtyLockRef.current;
-		dialogs.confirm({
-			message: `[${sqtyLock.prod.ProdID} ${sqtyLock.prod.ProdData}] 庫存不足(${sqtyLock.stock})，是否強迫銷貨？`,
-			onConfirm: () => {
-				commitSQty();
-			},
-		});
-	}, [commitSQty, dialogs]);
+	const promptOverrideSQty = useCallback(
+		({ setValue }) => {
+			const sqtyLock = sqtyLockRef.current;
+			dialogs.confirm({
+				message: `[${sqtyLock.prod.ProdID} ${sqtyLock.prod.ProdData}] 庫存不足(${sqtyLock.stock})，是否強迫銷貨？`,
+				onConfirm: () => {
+					commitSQty({ setValue });
+				},
+			});
+		},
+		[commitSQty, dialogs]
+	);
 
 	const promptPwordEntry = useCallback(
-		({ promptOverrideSQty, first = true }) => {
+		({ promptOverrideSQty, setValue, first = true }) => {
 			console.log("promptPwordEntry, first:", first);
 			const sqtyLock = sqtyLockRef.current;
 			const pwordLock = pwordLockRef.current;
@@ -436,7 +494,7 @@ export const useC08 = () => {
 					? `[${sqtyLock.prod.ProdID} ${sqtyLock.prod.ProdData}] 庫存不足(${sqtyLock.stock}), 請輸入密碼`
 					: "密碼錯誤，請再次輸入或取消",
 				label: "強迫銷貨密碼",
-				disableCloseOnConfirm: true,
+				triggerCancelOnClose: true,
 				onConfirm: (value) => {
 					if (value === pwordLock.value) {
 						console.log("pword passed");
@@ -445,11 +503,15 @@ export const useC08 = () => {
 							passed: true,
 						};
 						dialogs.closeLatest();
-						promptOverrideSQty();
+						promptOverrideSQty({ setValue });
 					} else {
 						dialogs.closeLatest();
 						console.log("pword not passed");
-						promptPwordEntry({ promptOverrideSQty, first: false });
+						promptPwordEntry({
+							promptOverrideSQty,
+							setValue,
+							first: false,
+						});
 					}
 				},
 				onCancel: () => {
@@ -465,16 +527,131 @@ export const useC08 = () => {
 		[dialogs, prodGrid]
 	);
 
-	const handleOverrideSQty = useCallback(() => {
-		const pwordLock = pwordLockRef.current;
-		// 1.如果通過密碼判定(stockPwordPassedRef.current), 則直接跳確認
-		prodGrid.setActiveCell(null);
-		if (!pwordLock?.passed) {
-			promptPwordEntry({ promptOverrideSQty });
-			return;
-		}
-		promptOverrideSQty();
-	}, [prodGrid, promptOverrideSQty, promptPwordEntry]);
+	const handleOverrideSQty = useCallback(
+		({ setValue }) => {
+			const pwordLock = pwordLockRef.current;
+			// 1.如果通過密碼判定(stockPwordPassedRef.current), 則直接跳確認
+			prodGrid.setActiveCell(null);
+			if (!pwordLock?.passed) {
+				promptPwordEntry({ promptOverrideSQty, setValue });
+				return;
+			}
+			promptOverrideSQty({ setValue });
+		},
+		[prodGrid, promptOverrideSQty, promptPwordEntry]
+	);
+
+	const handleGridProdChange = useCallback(
+		async ({ rowData, txiDeptId }) => {
+			const { prod } = rowData;
+			rowData = {
+				...rowData,
+				["SQty"]: "",
+				["overrideSQty"]: false,
+				["dtype"]: null,
+				["stype"]: null,
+			};
+
+			let prodInfoRetrieved = false;
+			if (prod?.ProdID) {
+				const prodInfo = await getProdInfo(prod?.ProdID, {
+					txiDeptId,
+				});
+				// 取得報價
+				prodInfoRetrieved = prodInfo && !!prodInfo.Price;
+				qtyMap.set(prod.ProdID, prodInfo.Stock);
+				console.log("qtyMap updated", qtyMap);
+				rowData = {
+					...rowData,
+					["PackData_N"]: prod?.PackData_N || "",
+					...(prodInfoRetrieved && {
+						SPrice: prodInfo.Price,
+						// SMsg: `庫存為 ${prodInfo.Stock}`,
+						StockQty_N: prodInfo.Stock,
+					}),
+				};
+				if (!prodInfoRetrieved) {
+					toast.warn("商品未訂調撥成本，不得訂購");
+				}
+			}
+			if (!prodInfoRetrieved) {
+				rowData = {
+					...rowData,
+					["prod"]: null,
+					["SPrice"]: "",
+					["PackData_N"]: "",
+					["StockQty_N"]: "",
+				};
+			}
+			return rowData;
+		},
+		[getProdInfo, qtyMap]
+	);
+
+	const handleGridSQtyChange = useCallback(
+		({ rowData, rowIndex, setValue, gridData }) => {
+			if (!rowData.prod) {
+				return rowData;
+			}
+
+			const prodStock = calcProdStock({
+				rowIndex,
+				prodId: rowData.prod.ProdID,
+				gridData,
+			});
+
+			sqtyLockRef.current = {
+				rowIndex: rowIndex,
+				prod: rowData.prod,
+				demand: rowData.SQty,
+				price: rowData.SPrice,
+				stype: rowData.stype,
+				stock: prodStock,
+			};
+
+			if (prodStock < rowData.SQty && rowData.SQty > 0) {
+				rowData = {
+					...rowData,
+					["SQty"]: 0,
+				};
+
+				handleOverrideSQty({ setValue });
+			} else {
+				rowData = {
+					...rowData,
+					// ["SQtyNote"]: "",
+					overrideSQty: false,
+					sqtyError: false,
+				};
+			}
+			return rowData;
+		},
+		[calcProdStock, handleOverrideSQty]
+	);
+
+	const handleGridOverrideSQtyChange = useCallback(({ rowData }) => {
+		rowData = {
+			...rowData,
+			...(rowData.overrideSQty && {
+				sqtyError: false,
+			}),
+		};
+		return rowData;
+	}, []);
+
+	const handleGridSPriceChange = useCallback(({ rowData }) => {
+		// 計算合計
+		rowData = {
+			...rowData,
+			["SAmt"]:
+				!rowData.SPrice || !rowData.SQty
+					? ""
+					: rowData.stype?.id
+					? 0
+					: rowData.SPrice * rowData.SQty,
+		};
+		return rowData;
+	}, []);
 
 	const handleGridChange = useCallback(
 		({ getValues, setValue }) =>
@@ -489,130 +666,57 @@ export const useC08 = () => {
 						newValue
 							.slice(operation.fromRowIndex, operation.toRowIndex)
 							.forEach(async (rowData, i) => {
-								const {
-									prod,
-									SPrice,
-									SQty,
-									stype,
-									PKey,
-									chkQty,
-								} = rowData;
 								const rowIndex = operation.fromRowIndex + i;
-								const {
-									prod: oldProd,
-									SPrice: oldSPrice,
-									SQty: oldSQty,
-									stype: oldSType,
-								} = prodGrid.gridData[rowIndex];
+								const oldRowData = prodGrid.gridData[rowIndex];
 
 								let processedRowData = { ...rowData };
 								// 商品
-								if (prod?.ProdID !== oldProd?.ProdID) {
-									processedRowData = {
-										...processedRowData,
-										["SQtyNote"]: "",
-									};
-									console.log(
-										`prod[${rowIndex}] changed`,
-										prod
-									);
-									let prodInfoRetrieved = false;
-									if (prod?.ProdID) {
-										const prodInfo = await getProdInfo(
-											prod?.ProdID,
-											{
-												txiDeptId:
-													formData.txiDept.DeptID,
-											}
-										);
-										// 取得報價
-										prodInfoRetrieved =
-											prodInfo && !!prodInfo.Price;
-										qtyMap.set(prod.ProdID, prodInfo.Stock);
-										processedRowData = {
-											...processedRowData,
-											["PackData_N"]:
-												prod?.PackData_N || "",
-											...(prodInfoRetrieved && {
-												SPrice: prodInfo.Price,
-												// SMsg: `庫存為 ${prodInfo.Stock}`,
-											}),
-										};
-									}
-									if (!prodInfoRetrieved) {
-										processedRowData = {
-											...processedRowData,
-											["prod"]: null,
-											["SPrice"]: "",
-											["PackData_N"]: "",
-											["SMsg"]: "",
-										};
-									}
+								if (
+									rowData.prod?.ProdID !==
+									oldRowData.prod?.ProdID
+								) {
+									processedRowData =
+										await handleGridProdChange({
+											rowData,
+											txiDeptId: formData.txiDept.DeptID,
+										});
 								}
 
-								let modifiedSQty = SQty;
-
 								// 數量, 且有選 prod
-								if (SQty !== oldSQty && !!prod) {
-									const prodStock = getProdStock(
-										prod.ProdID,
-										newValue
-									);
-
-									if (prodStock < 0) {
-										processedRowData = {
-											...processedRowData,
-											["SQty"]: 0,
-										};
-										modifiedSQty = 0;
-										sqtyLockRef.current = {
-											rowIndex: rowIndex,
-											prod: prod,
-											demand: SQty,
-											stock: prodStock,
-										};
-
-										handleOverrideSQty();
-									} else {
-										processedRowData = {
-											...processedRowData,
-											["SQtyNote"]: "",
-										};
-									}
+								if (rowData.SQty !== oldRowData.SQty) {
+									processedRowData = handleGridSQtyChange({
+										rowData: processedRowData,
+										gridData: newValue,
+										rowIndex,
+										setValue,
+									});
 								}
 
 								// 單價, 贈,  數量, 改用 sqty
 								if (
-									SPrice !== oldSPrice ||
-									modifiedSQty !== oldSQty
+									rowData.SPrice !== oldRowData.SPrice ||
+									processedRowData.SQty !== oldRowData.SQty ||
+									rowData.stype?.id !== oldRowData.stype?.id
 								) {
-									// 計算合計
-									processedRowData = {
-										...processedRowData,
-										["SAmt"]:
-											!SPrice || !modifiedSQty
-												? ""
-												: stype?.id
-												? 0
-												: SPrice * modifiedSQty,
-									};
+									processedRowData = handleGridSPriceChange({
+										rowData: processedRowData,
+									});
+								}
+
+								// 強迫銷貨
+								if (
+									rowData.overrideSQty !==
+									oldRowData.overrideSQty
+								) {
+									processedRowData =
+										handleGridOverrideSQtyChange({
+											rowData: processedRowData,
+										});
 								}
 								newGridData[rowIndex] = processedRowData;
 							});
 					} else if (operation.type === "DELETE") {
-						// 列舉原資料
-						// checkFailed = prodGrid.gridData
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.some((rowData, i) => {
-						// 		if (prodDisabled({ rowData })) {
-						// 			const rowIndex = operation.fromRowIndex + i;
-						// 			toast.error(
-						// 				`不可刪除第 ${rowIndex + 1} 筆商品`
-						// 			);
-						// 			return true;
-						// 		}
-						// 		return false;
-						// 	});
+						// do nothing now
 					}
 				}
 				console.log("prodGrid.changed", newGridData);
@@ -622,11 +726,11 @@ export const useC08 = () => {
 				}
 			},
 		[
-			getProdInfo,
-			getProdStock,
-			handleOverrideSQty,
 			prodGrid,
-			qtyMap,
+			handleGridProdChange,
+			handleGridSQtyChange,
+			handleGridSPriceChange,
+			handleGridOverrideSQtyChange,
 			refreshAmt,
 		]
 	);
@@ -720,11 +824,37 @@ export const useC08 = () => {
 	// 	return !!crud.itemData?.GinID;
 	// }, [crud.itemData?.GinID]);
 
+	const checkAndRemoveDepOrders = useCallback(
+		({ gridData, message, setValue, newOrders }) => {
+			if (message) {
+				toast.warn(message);
+			}
+
+			const ordIds = [...new Set(gridData.map((item) => item.ordId))];
+			const filteredOrders = newOrders.filter((order) =>
+				ordIds.includes(order["訂貨單號"])
+			);
+
+			if (filteredOrders.length < newOrders.length) {
+				setValue("depOrders", filteredOrders);
+
+				const filteredOutOrdIds = newOrders
+					.filter((order) => !ordIds.includes(order["訂貨單號"]))
+					.map((order) => order["訂貨單號"]);
+
+				toast.warn(
+					`訂貨單號 ${filteredOutOrdIds.join(", ")} 已同步移除`
+				);
+			}
+		},
+		[]
+	);
+
 	const handleDepOrdersChanged = useCallback(
 		({ setValue, getValues }) =>
 			async (newValue) => {
 				if (newValue.length === 0) {
-					prodGrid.handleGridDataLoaded([]);
+					prodGrid.setGridData([]);
 					return;
 				}
 
@@ -746,9 +876,15 @@ export const useC08 = () => {
 					if (status.success) {
 						const data = C08.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
-						prodGrid.handleGridDataLoaded(data.prods);
+						prodGrid.setGridData(data.prods);
 						refreshAmt({ setValue, data, gridData: data.prods });
 						// toast.info("訂購單商品已載入");
+						checkAndRemoveDepOrders({
+							gridData: data.prods,
+							message: payload.ErrorMsg,
+							setValue,
+							newOrders: newValue,
+						});
 					} else {
 						throw error || new Error("未預期例外");
 					}
@@ -756,17 +892,48 @@ export const useC08 = () => {
 					toast.error(Errors.getMessage("載入訂購單商品失敗", err));
 				}
 			},
-		[httpPostAsync, prodGrid, refreshAmt, token]
+		[checkAndRemoveDepOrders, httpPostAsync, prodGrid, refreshAmt, token]
 	);
 
 	const handleTxiDeptChanged = useCallback(
 		({ setValue, getValues }) =>
-			(newValue) => {
-				console.log("handleTxiDeptChanged", newValue);
-
-				setValue("depOrders", []);
+			async (newValue) => {
+				const formData = getValues();
+				// 若有 depOrders 則完全清空
+				if (formData.depOrders?.length > 0 || newValue == null) {
+					console.log("handleTxiDeptChanged", newValue);
+					setValue("depOrders", []);
+					prodGrid.setGridData([]);
+				} else {
+					// 若沒有 depOrders 則 refresh-grid
+					const collected = C08.transformForSubmitting(
+						formData,
+						prodGrid.gridData
+					);
+					console.log("collected", collected);
+					try {
+						const { status, payload, error } = await httpPostAsync({
+							url: "v1/purchase/trans-out-orders/refresh-grid",
+							bearer: token,
+							data: collected,
+						});
+						if (status.success) {
+							const data = C08.transformForReading(
+								payload.data[0]
+							);
+							console.log("refreshed data", data);
+							prodGrid.setGridData(data.prods);
+							refreshAmt({ setValue, gridData: data.prods });
+							// toast.info("商品單價已更新");
+						} else {
+							throw error || new Error("未預期例外");
+						}
+					} catch (err) {
+						toast.error(Errors.getMessage("商品單價更新失敗", err));
+					}
+				}
 			},
-		[]
+		[httpPostAsync, prodGrid, refreshAmt, token]
 	);
 
 	const sqtyDisabled = useCallback(({ rowData }) => {
@@ -779,13 +946,17 @@ export const useC08 = () => {
 
 	const stypeDisabled = useCallback(
 		({ rowData }) => {
-			return !rowData.prod || !!crud.itemData?.depOrders?.length > 0;
+			return !rowData.prod || !!crud.itemData?.txoOrders?.length > 0;
 		},
-		[crud.itemData?.depOrders?.length]
+		[crud.itemData?.txoOrders?.length]
 	);
 
 	const getSPriceClassName = useCallback(({ rowData }) => {
 		return rowData.stype?.id ? "line-through" : null;
+	}, []);
+
+	const getSQtyClassName = useCallback(({ rowData }) => {
+		return rowData.sqtyError && !rowData.overrideSqty ? "red" : null;
 	}, []);
 
 	const sprodDisabled = useCallback(({ rowData }) => {
@@ -794,7 +965,96 @@ export const useC08 = () => {
 
 	// 挑戰處理
 
-	const stockPwordAction = useAction();
+	const sordIdRef = useRef(null);
+	const [sordId, setSOrdId] = useState();
+	const [depOrderInfo, setDepOrderInfo] = useState();
+	const loadDepOrderInfoAction = useAction();
+
+	const loadDepOrderInfo = useCallback(
+		async ({ txiDeptId, newId }) => {
+			if (txiDeptId && sordId !== newId) {
+				if (!sordId) {
+					setDepOrderInfo(null);
+					setSOrdId(null);
+					return;
+				}
+				try {
+					loadDepOrderInfoAction.start();
+					const { status, payload, error } = await httpGetAsync({
+						url: "v1/purchase/trans-out-orders/ord-info",
+						bearer: token,
+						params: {
+							id: sordId,
+							ind: txiDeptId,
+						},
+					});
+					if (status.success) {
+						console.log("payload", payload);
+						loadDepOrderInfoAction.finish();
+						setDepOrderInfo(payload);
+					} else {
+						throw error || new Error("發生未預期例外");
+					}
+				} catch (err) {
+					toast.error(Errors.getMessage("讀取訂單資訊失敗", err));
+					loadDepOrderInfoAction.fail(err);
+				}
+			}
+		},
+		[httpGetAsync, loadDepOrderInfoAction, sordId, token]
+	);
+
+	const getRowClassName = useCallback(
+		(row = {}) => {
+			const { rowId, rowData } = row;
+			// console.log("getRowClassName", row);
+			let sordId = null;
+			if (prodGrid.isRowSelected(row)) {
+				sordId = rowData?.SOrdID;
+				if (sordIdRef.current !== sordId) {
+					console.log(`sordId →`, sordId);
+					sordIdRef.current = sordId;
+				}
+			}
+		},
+		[prodGrid]
+	);
+
+	const handleGridCellFocusChange = useCallback(({ cell }) => {
+		console.log("focus", cell);
+	}, []);
+
+	const getSOrdId = useCallback(() => {
+		return sordIdRef.current;
+	}, []);
+
+	const getTooltip = useCallback((rowData) => {
+		let results = [];
+		// if (rowData?.StockQty_N !== null && rowData?.StockQty_N !== undefined) {
+		// 	results.push(`庫存: ${rowData?.StockQty_N || "0"}`);
+		// }
+		if (rowData?.ordId !== null && rowData?.ordId !== undefined) {
+			results.push(`訂單: ${rowData?.ordId || "(空白)"}`);
+		}
+
+		if (rowData?.OrdQty_N !== null && rowData?.OrdQty_N !== undefined) {
+			results.push(`訂貨量: ${rowData?.OrdQty_N || "0"}`);
+		}
+		if (
+			rowData?.OrdNotQty_N !== null &&
+			rowData?.OrdNotQty_N !== undefined
+		) {
+			results.push(`未出量: ${rowData?.OrdNotQty_N || "0"}`);
+		}
+		if (
+			rowData?.OrdRemark_N !== null &&
+			rowData?.OrdRemark_N !== undefined
+		) {
+			results.push(`備註: ${rowData?.OrdRemark_N || "(空白)"}`);
+		}
+
+		return results.join(", ");
+	}, []);
 
 	return {
 		...crud,
@@ -826,7 +1086,6 @@ export const useC08 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
-		isSupplierNameDisabled,
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
@@ -836,9 +1095,17 @@ export const useC08 = () => {
 		stypeDisabled,
 		dtypeDisabled,
 		sqtyDisabled,
+		overrideSQtyDisabled,
 		getSPriceClassName,
+		getSQtyClassName,
 		sprodDisabled,
 		loadStockPword,
-		handleGridSelectionChange,
+		// 門市訂單資訊
+		depOrderInfo,
+		loadDepOrderInfoWorking: loadDepOrderInfoAction.working,
+		getSOrdId,
+		handleGridCellFocusChange,
+		getRowClassName,
+		getTooltip,
 	};
 };

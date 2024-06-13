@@ -103,6 +103,17 @@ const C08DialogForm = memo((props) => {
 								onChanged={handleTxiDeptChanged}
 							/>
 						</Grid>
+						<Grid item xs={24} sm={24} md={5}>
+							<TransportTypePicker
+								typo
+								name="transType"
+								label="貨運方式"
+								required
+								rules={{
+									required: "貨運方式為必填",
+								}}
+							/>
+						</Grid>
 						<FlexBox fullWidth />
 						<Grid item xs={24} sm={24} md={13}>
 							<DepOrderPicker
@@ -116,18 +127,8 @@ const C08DialogForm = memo((props) => {
 								disabled={purchaseOrdersDisabled || !txiDept}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
-							<TransportTypePicker
-								typo
-								name="transType"
-								label="貨運方式"
-								required
-								rules={{
-									required: "貨運方式為必填",
-								}}
-							/>
-						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+
+						<Grid item xs={24} sm={24} md={5}>
 							<OptionPickerProvider>
 								<EmployeePicker
 									typo
@@ -137,7 +138,7 @@ const C08DialogForm = memo((props) => {
 								/>
 							</OptionPickerProvider>
 						</Grid>
-						<Grid item xs={24} sm={24} md={3}>
+						<Grid item xs={24} sm={24} md={5}>
 							<TextFieldWrapper
 								typo
 								name="HDNo"

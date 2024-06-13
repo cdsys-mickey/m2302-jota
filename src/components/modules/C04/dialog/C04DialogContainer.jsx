@@ -113,6 +113,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					editing={c04.editing}
 					updating={c04.updating}
 					readWorking={c04.readWorking}
+					readError={c04.readError}
 					data={c04.itemData}
 					itemDataReady={c04.itemDataReady}
 					handleSupplierChanged={c04.handleSupplierChanged({

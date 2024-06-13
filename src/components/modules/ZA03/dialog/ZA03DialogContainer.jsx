@@ -91,23 +91,6 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 				scrollable.scroller,
 			]}
 			{...rest}>
-			{/* <ZA03Form
-					ref={ref}
-					onSubmit={forms.handleSubmit(
-						za03.onEditorSubmit,
-						za03.onEditorSubmitError
-					)}
-					editing={za03.editing}
-					updating={za03.updating}
-					readWorking={za03.readWorking}
-					data={za03.itemData}
-					itemDataReady={za03.itemDataReady}
-					selectedTab={za03.selectedTab}
-					handleTabChange={za03.handleTabChange}
-					infoDisabled={infoDisabled}
-					authDisabled={authDisabled}
-					deptDisabled={deptDisabled}
-				/> */}
 			<ZA03DialogContentContainer />
 		</DialogExContainer>
 		// </FormProvider>

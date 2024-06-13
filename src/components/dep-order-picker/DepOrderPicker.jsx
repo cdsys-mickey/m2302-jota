@@ -7,7 +7,7 @@ import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import { DepOrderGridHeader } from "./DepOrderGridHeader";
 import { DepOrderGridRow } from "./DepOrderGridRow";
-import DepOrders from "../../modules/md-dep-orders";
+import DepOrders from "@/modules/md-dep-orders";
 
 export const DepOrderPicker = (props) => {
 	const { label = "採購單", ...rest } = props;

@@ -44,8 +44,8 @@ const OptionPickerComponent = memo((props) => {
 	);
 
 	const hideControls = useMemo(() => {
-		return disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, focus]);
+		return disabled || disableActiveControl ? !focus : !active;
+	}, [active, disableActiveControl, disabled, focus]);
 
 	// This function will be called only when `focus` changes
 	useLayoutEffect(() => {

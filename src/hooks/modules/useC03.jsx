@@ -513,7 +513,6 @@ export const useC03 = () => {
 					prodGrid.setGridData(newGridData);
 					const subtotal = C03.getSubtotal(newGridData);
 					setValue("OrdAmt_N", subtotal.toFixed(2));
-					// setValue("OrdAmt_N", C03.getSubtotal(newGridData));
 				}
 			},
 		[crud.creating, getProdInfo, prodDisabled, prodGrid]

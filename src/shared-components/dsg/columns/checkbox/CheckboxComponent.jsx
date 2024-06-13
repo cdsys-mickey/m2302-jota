@@ -1,6 +1,6 @@
+import Objects from "@/shared-modules/sd-objects";
 import { memo, useLayoutEffect, useRef } from "react";
-import _ from "lodash";
-import Objects from "../../../../shared-modules/sd-objects";
+import PropTypes from "prop-types";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -72,6 +72,14 @@ const CheckboxComponent = memo(
 	},
 	arePropsEqual
 );
-
+CheckboxComponent.propTypes = {
+	columnData: PropTypes.object,
+	rowData: PropTypes.bool,
+	focus: PropTypes.bool,
+	active: PropTypes.bool,
+	disabled: PropTypes.bool,
+	stopEditing: PropTypes.func,
+	setRowData: PropTypes.func,
+};
 CheckboxComponent.displayName = "CheckboxComponent";
 export default CheckboxComponent;

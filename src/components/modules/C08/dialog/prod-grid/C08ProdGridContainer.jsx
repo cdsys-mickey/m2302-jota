@@ -29,14 +29,19 @@ export const C08ProdGridContainer = (props) => {
 					setValue: form.setValue,
 				})}
 				bearer={auth.token}
-				height={height - 390}
+				height={height - 356}
 				getRowKey={c08.getRowKey}
 				stypeDisabled={c08.stypeDisabled}
 				getSPriceClassName={c08.getSPriceClassName}
+				getSQtyClassName={c08.getSQtyClassName}
 				sprodDisabled={c08.sprodDisabled}
 				sqtyDisabled={c08.sqtyDisabled}
 				dtypeDisabled={c08.dtypeDisabled}
-				handleGridSelectionChange={c08.handleGridSelectionChange}
+				overrideSQtyDisabled={c08.overrideSQtyDisabled}
+				handleSelectionChange={c08.handleSelectionChange()}
+				handleGridCellFocusChange={c08.handleGridCellFocusChange}
+				getRowClassName={c08.getRowClassName}
+				getTooltip={c08.getTooltip}
 				{...rest}
 			/>
 		</DSGBox>

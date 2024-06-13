@@ -21,9 +21,9 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import CheckboxExWrapper from "../../../../shared-components/checkbox/CheckboxExWrapper";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
+import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
 import { A01ProdComboGridContainer } from "./combo/A01ProdComboGridContainer";
 import TypoCmsTypePickerContainer from "./fields/TypoCmsTypePickerContainer";
@@ -532,6 +532,7 @@ A01Form.propTypes = {
 	store: PropTypes.bool,
 	tabIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	handleTabChange: PropTypes.func,
+	readError: PropTypes.object,
 };
 
 A01Form.displayName = "A01Form";

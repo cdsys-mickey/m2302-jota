@@ -4,7 +4,7 @@ import { useState } from "react";
 import FlexBox from "../../FlexBox";
 
 export const createAddRowsComponentEx =
-	({ translationKeys, RightComponent }) =>
+	({ translationKeys, CenterComponent, RightComponent }) =>
 	({ addRows }) => {
 		const [value, setValue] = useState(1);
 		const [rawValue, setRawValue] = useState(String(value));
@@ -43,14 +43,17 @@ export const createAddRowsComponentEx =
 					{translationKeys.unit ?? "rows"}
 				</span>
 				{/* </div> */}
-				{RightComponent && (
-					<FlexBox
-						className="dsg-add-row-right"
-						flexGrow={1}
-						justifyContent="flex-end">
-						<RightComponent />
+				{CenterComponent && (
+					<FlexBox>
+						<CenterComponent />
 					</FlexBox>
 				)}
+				<FlexBox
+					className="dsg-add-row-right"
+					flexGrow={1}
+					justifyContent="flex-end">
+					{RightComponent && <RightComponent />}
+				</FlexBox>
 			</div>
 		);
 	};

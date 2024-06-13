@@ -102,12 +102,12 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					editing={a01.editing}
 					updating={a01.updating}
 					readWorking={a01.readWorking}
+					readError={a01.readError}
 					data={a01.itemData}
 					itemDataReady={a01.itemDataReady}
 					store={store}
 					tabIndex={a01.tabIndex}
 					handleTabChange={a01.handleTabChange}
-					readError={a01.readError}
 				/>
 			</DialogExContainer>
 		</FormProvider>

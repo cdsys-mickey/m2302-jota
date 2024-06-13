@@ -97,6 +97,7 @@ ZA03DialogContent.propTypes = {
 	deptDisabled: PropTypes.bool,
 	selectedTab: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	onTabChange: PropTypes.func,
+	readError: PropTypes.object,
 };
 
 ZA03DialogContent.displayName = "ZA03DialogContent";
