@@ -16,7 +16,7 @@ export const A22GridCancelEditButtonContainer = () => {
 	return (
 		<Button
 			size="small"
-			// variant="contained"
+			variant="outlined"
 			endIcon={<CloseIcon />}
 			color="primary"
 			onClick={prodGrid.unload}>

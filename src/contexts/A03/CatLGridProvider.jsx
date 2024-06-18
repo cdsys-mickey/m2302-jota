@@ -14,6 +14,7 @@ import { CatSGridContext } from "./CatSGridContext";
 import { useTransition } from "react";
 import { useDSG } from "@/shared-hooks/useDSG";
 import DSG from "../../shared-modules/sd-dsg";
+import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
 
 const CatLGridProvider = (props) => {
 	const { children } = props;
@@ -23,7 +24,7 @@ const CatLGridProvider = (props) => {
 	const { token } = useContext(AuthContext);
 
 	// const dsg = useContext(DSGContext);
-	const dsg = useDSG({
+	const dsg = useDSGCodeEditor({
 		gridId: "CatL",
 		keyColumn: "LClas",
 		otherColumns: "ClassData",

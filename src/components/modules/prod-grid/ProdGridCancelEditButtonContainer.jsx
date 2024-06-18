@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 
 export const ProdGridCancelEditButtonContainer = (props) => {
-	const { ...rest } = props;
+	const { children = "取消", ...rest } = props;
 	const prodGrid = useContext(ProdGridContext);
 
 	if (prodGrid.readOnly) {
@@ -19,7 +19,7 @@ export const ProdGridCancelEditButtonContainer = (props) => {
 			// onClick={prodGrid.unload}
 			onClick={prodGrid.toggleEditorLock}
 			{...rest}>
-			取消
+			{children}
 		</Button>
 	);
 };

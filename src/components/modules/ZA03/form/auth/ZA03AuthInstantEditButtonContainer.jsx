@@ -1,12 +1,11 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import Users from "@/modules/md-users";
 import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 
 export const ZA03AuthInstantEditButtonContainer = () => {
 	const za03 = useContext(ZA03Context);
 
-	if (za03.authEditing) {
+	if (za03.authGridEditing) {
 		return false;
 	}
 

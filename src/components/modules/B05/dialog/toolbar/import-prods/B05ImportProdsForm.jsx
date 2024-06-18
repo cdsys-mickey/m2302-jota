@@ -25,6 +25,7 @@ const B05LoadProdsForm = memo((props) => {
 							// filterByServer
 							// queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
+							optionLabelSize="small"
 						/>
 					</Grid>
 					<Grid item xs={6}>
@@ -36,6 +37,7 @@ const B05LoadProdsForm = memo((props) => {
 							// filterByServer
 							// queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
+							optionLabelSize="small"
 						/>
 					</Grid>
 					<Grid item xs={12} sm={12} md={6}>

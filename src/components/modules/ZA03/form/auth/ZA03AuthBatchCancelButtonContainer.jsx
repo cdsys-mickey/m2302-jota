@@ -1,25 +1,30 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import Users from "@/modules/md-users";
-import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
+import UserAuth from "@/modules/md-user-auth";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import PropTypes from "prop-types";
 
 export const ZA03AuthBatchCancelButtonContainer = (props) => {
-	const { ...rest } = props;
+	const { children, ...rest } = props;
 	const za03 = useContext(ZA03Context);
 
-	if (za03.authEditingMode !== Users.AUTH_EDITING_MODE.SUBMIT) {
+	if (
+		za03.authGridEditingMode !== UserAuth.AUTH_EDITING_MODE.SUBMIT ||
+		za03.authGridLoading
+	) {
 		return false;
 	}
 	return (
-		<ResponsiveButton
+		<ButtonWrapper
 			// disabled={za03.isDirty}
-
 			onClick={za03.confirmCancelAuthEditing}
 			{...rest}>
-			放棄修改
-		</ResponsiveButton>
+			{children}
+		</ButtonWrapper>
 	);
 };
-
+ZA03AuthBatchCancelButtonContainer.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+};
 ZA03AuthBatchCancelButtonContainer.displayName =
 	"ZA03AuthBatchCancelButtonContainer";

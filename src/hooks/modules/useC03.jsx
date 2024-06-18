@@ -2,7 +2,7 @@ import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import C03 from "@/modules/md-C03";
+import C03 from "@/modules/md-c03";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/useDSG";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
@@ -395,7 +395,7 @@ export const useC03 = () => {
 		[httpGetAsync, token]
 	);
 
-	const handleGridChange = useCallback(
+	const buildGridChangeHandler = useCallback(
 		({ getValues, setValue }) =>
 			(newValue, operations) => {
 				console.log("handleGridChange", operations);
@@ -765,7 +765,7 @@ export const useC03 = () => {
 		handleOrdDateChanged,
 		// Grid
 		...prodGrid,
-		handleGridChange,
+		buildGridChangeHandler,
 		getRowKey,
 		prodDisabled,
 		spriceDisabled,

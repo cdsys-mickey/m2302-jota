@@ -27,7 +27,7 @@ export const useWebApiOptions = (opts = {}) => {
 		url,
 		method = "get",
 		bearer,
-		lazy = true,
+		disableLazy,
 		queryParam = "q",
 		// queryRequired = false,
 		// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
@@ -49,6 +49,8 @@ export const useWebApiOptions = (opts = {}) => {
 		getData = defaultGetData,
 		onError = defaultOnError,
 		disableClose,
+		disableOnSingleOption,
+		autoSelectSingleOption,
 	} = opts;
 	const { sendAsync } = useWebApi();
 
@@ -83,10 +85,10 @@ export const useWebApiOptions = (opts = {}) => {
 		return (
 			url &&
 			!filterByServer &&
-			lazy &&
+			!disableLazy &&
 			(pickerState.loading === null || pickerState.loading === undefined)
 		);
-	}, [lazy, pickerState.loading, filterByServer, url]);
+	}, [disableLazy, pickerState.loading, filterByServer, url]);
 
 	const loadOptions = useCallback(
 		async ({ q, onError: onMethodError } = {}) => {
@@ -114,13 +116,20 @@ export const useWebApiOptions = (opts = {}) => {
 					}),
 				});
 				if (status.success) {
+					const loadedOptions = getData(payload);
 					setPickerState((prev) => ({
 						...prev,
 						// loading: false,
-						options: getData(payload) || [],
+						options: loadedOptions || [],
 						// error: error,
 						noOptionsText,
 					}));
+					// if (autoSelectSingleOption && loadedOptions?.length === 1) {
+					// 	handleClose();
+					// 	setInterval(() => {
+					// 		onChange(loadedOptions[0]);
+					// 	}, 50);
+					// }
 				} else {
 					throw error || "load options failed";
 				}
@@ -161,7 +170,9 @@ export const useWebApiOptions = (opts = {}) => {
 			headers,
 			bearer,
 			getData,
+			autoSelectSingleOption,
 			noOptionsText,
+			onChange,
 			onError,
 			fetchErrorText,
 		]
@@ -219,6 +230,11 @@ export const useWebApiOptions = (opts = {}) => {
 		]
 	);
 
+	const disabled = useMemo(() => {
+		console.log("pickerState.options.length", pickerState.options.length);
+		return disableOnSingleOption && pickerState.options.length < 2;
+	}, [disableOnSingleOption, pickerState.options.length]);
+
 	/**
 	 * 來源條件改變, 清空目前值, resetLoading
 	 */
@@ -269,5 +285,6 @@ export const useWebApiOptions = (opts = {}) => {
 		handleClose,
 		open,
 		disableClose,
+		disabled,
 	};
 };

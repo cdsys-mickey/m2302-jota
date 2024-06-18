@@ -92,7 +92,7 @@ const ProdCatMPickerColumn = memo((props) => {
 			// hidePopupIndicator={!active}
 			hideControls={active}
 			hidePlaceholder={!active}
-			fadeOutDisabled={false}
+			disableFadeOut
 			selectOnFocus
 			{...rest}
 		/>

@@ -10,10 +10,12 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { createCheckboxColumn2 } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn2";
 
-const ContextMenu = createDSGContextMenu({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
-});
+// const ContextMenu = createDSGContextMenu({
+// 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+// });
 
 const ZA03Grid = memo((props) => {
 	const {
@@ -25,21 +27,26 @@ const ZA03Grid = memo((props) => {
 		loading,
 		height = 300,
 		// METHODS
-		onChange,
-		isPersisted,
-		handleCreateRow,
-		isKeyDisabled,
-		getOptionLabel,
-		isOptionEqualToValue,
-		getData,
-		// web api
-		bearer,
+		handleChange,
 		getRowClassName,
+		funcDisabled,
 		...rest
 	} = props;
 
 	const columns = useMemo(
 		() => [
+			{
+				...keyColumn(
+					"enabled",
+					createCheckboxColumn2({
+						size: "medium",
+					})
+				),
+				title: "",
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly,
+			},
 			{
 				...keyColumn(
 					"JobID",
@@ -51,6 +58,7 @@ const ZA03Grid = memo((props) => {
 				grow: 1,
 				disabled: true,
 				minWidth: 70,
+				maxWidth: 70,
 			},
 			{
 				...keyColumn(
@@ -68,199 +76,149 @@ const ZA03Grid = memo((props) => {
 			{
 				...keyColumn(
 					"INQ",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
-				// ...keyColumn("INQ", createMuiCheckboxColumn()),
 				title: "查",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"INS",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "增",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"UPD",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "改",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"PRT",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "印",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"DEL",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "刪",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"USI",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "停",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"CHK",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "審",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"NCK",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "退",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"RUN",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "執",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"EXP",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "出",
-				minWidth: 30,
-				disabled: readOnly,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
 			},
 			{
 				...keyColumn(
 					"IMP",
-					createCheckboxColumn({
+					createCheckboxColumn2({
 						size: "medium",
 					})
 				),
 				title: "入",
-				minWidth: 30,
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: readOnly || funcDisabled,
+			},
+			{
+				...keyColumn("Seq", createFloatColumn(2)),
+				title: "排序",
+				minWidth: 90,
+				maxWidth: 90,
 				disabled: readOnly,
 			},
-			// -------------------- Built-In Checkbox Column --------------------
-			// {
-			// 	...keyColumn("INQ", bheckboxColumn),
-			// 	title: "查",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("INS", bheckboxColumn),
-			// 	title: "增",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("UPD", bheckboxColumn),
-			// 	title: "改",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("PRT", bheckboxColumn),
-			// 	title: "印",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("DEL", bheckboxColumn),
-			// 	title: "刪",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("USI", bheckboxColumn),
-			// 	title: "停",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("CHK", bheckboxColumn),
-			// 	title: "審",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("NCK", bheckboxColumn),
-			// 	title: "退",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("RUN", bheckboxColumn),
-			// 	title: "執",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("EXP", bheckboxColumn),
-			// 	title: "出",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
-			// {
-			// 	...keyColumn("IMP", bheckboxColumn),
-			// 	title: "入",
-			// 	minWidth: 30,
-			// 	disabled: readOnly,
-			// },
 		],
-		[readOnly]
+		[funcDisabled, readOnly]
 	);
 
 	if (loading) {
 		return (
-			<Container maxWidth="md">
+			<Container maxWidth="lg">
 				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
 				<DSGLoading height={height} />
 			</Container>
@@ -286,12 +244,13 @@ const ZA03Grid = memo((props) => {
 				height={height}
 				// rowHeight={42}
 				value={data}
-				onChange={onChange}
+				onChange={handleChange}
 				columns={columns}
 				// addRowsComponent={DSGAddRowsToolbar}
 				addRowsComponent={null}
 				disableExpandSelection
-				contextMenuComponent={ContextMenu}
+				disableContextMenu
+				// contextMenuComponent={ContextMenu}
 				rowClassName={getRowClassName}
 				{...rest}
 			/>
@@ -306,10 +265,9 @@ ZA03Grid.propTypes = {
 	loading: PropTypes.bool,
 	height: PropTypes.number,
 	onChange: PropTypes.func,
-	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
-	handleCreateRow: PropTypes.func,
-	bearer: PropTypes.string,
+	getRowClassName: PropTypes.func,
+	funcDisabled: PropTypes.func,
+	handleChange: PropTypes.func,
 	rowKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,

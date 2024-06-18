@@ -3,9 +3,9 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { useCallback } from "react";
-
+import PropTypes from "prop-types";
 export const ZA03AuthCopyButtonContainer = forwardRef((props, ref) => {
-	const { ...rest } = props;
+	const { children = "複製自其他使用者", ...rest } = props;
 	const za03 = useContext(ZA03Context);
 
 	const handleClick = useCallback(
@@ -15,7 +15,7 @@ export const ZA03AuthCopyButtonContainer = forwardRef((props, ref) => {
 		[za03]
 	);
 
-	if (za03.authEditing) {
+	if (za03.authGridEditing) {
 		return false;
 	}
 
@@ -28,8 +28,11 @@ export const ZA03AuthCopyButtonContainer = forwardRef((props, ref) => {
 				fontWeight: 600,
 			}}
 			{...rest}>
-			複製自其他使用者
+			{children}
 		</ResponsiveButton>
 	);
 });
+ZA03AuthCopyButtonContainer.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+};
 ZA03AuthCopyButtonContainer.displayName = "ZA03AuthCopyButtonContainer";

@@ -4,7 +4,7 @@ import { forwardRef, memo } from "react";
 import { ZA03LockRowsSwitchContainer } from "./ZA03LockRowsSwitchContainer";
 import FlexToolbar from "../../../../../shared-components/listview/toolbar/FlexToolbar";
 
-const ZA03Toolbar = memo(
+const ZZZA03Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
@@ -20,7 +20,7 @@ const ZA03Toolbar = memo(
 	})
 );
 
-ZA03Toolbar.propTypes = {};
+ZZZA03Toolbar.propTypes = {};
 
-ZA03Toolbar.displayName = "ZA03Toolbar";
-export default ZA03Toolbar;
+ZZZA03Toolbar.displayName = "ZZZA03Toolbar";
+export default ZZZA03Toolbar;

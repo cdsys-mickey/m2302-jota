@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { CatSGridContext } from "./CatSGridContext";
 import { useDSG } from "../../shared-hooks/useDSG";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
+import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
 
 const CatSGridProvider = (props) => {
 	const { children } = props;
@@ -14,7 +15,7 @@ const CatSGridProvider = (props) => {
 	const { token } = useContext(AuthContext);
 
 	// const dsg = useContext(DSGContext);
-	const dsg = useDSG({
+	const dsg = useDSGCodeEditor({
 		gridId: "CatS",
 		keyColumn: "SClas",
 		otherColumns: "ClassData",
@@ -237,6 +238,7 @@ const CatSGridProvider = (props) => {
 	return (
 		<CatSGridContext.Provider
 			value={{
+				...dsg,
 				clear,
 				load,
 				// handleGridChange,
@@ -247,7 +249,6 @@ const CatSGridProvider = (props) => {
 				handleDelete,
 				handleDuplicatedError,
 				onRowSelectionChange,
-				...dsg,
 			}}>
 			{children}
 		</CatSGridContext.Provider>

@@ -15,7 +15,7 @@ const A16GridContainer = () => {
 			gridRef={a16.setGridRef}
 			data={a16.gridData}
 			loading={a16.gridLoading}
-			handleChange={a16.handleGridChange({
+			handleChange={a16.buildGridChangeHandler({
 				onCreate: a16.handleCreate,
 				onUpdate: a16.handleUpdate,
 				onPatch: a16.handlePatch,

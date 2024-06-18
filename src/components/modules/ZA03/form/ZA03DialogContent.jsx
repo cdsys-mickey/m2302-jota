@@ -1,7 +1,8 @@
 import { Box, Grid, Tab } from "@mui/material";
 import { memo } from "react";
 
-import Users from "@/modules/md-users";
+import ZA03 from "@/modules/md-za03";
+import AlertEx from "@/shared-components/AlertEx";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
@@ -10,7 +11,9 @@ import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { ZA03AuthFormContainer } from "./auth/ZA03AuthFormContainer";
 import { ZA03InfoFormContainer } from "./info/ZA03InfoFormContainer";
-import AlertEx from "../../../../shared-components/AlertEx";
+import { ZA03InfoToolbarContainer } from "./info/ZA03InfoToolbarContainer";
+import { ZA03AuthToolbarContainer } from "./auth/ZA03AuthToolbarContainer";
+import { ZA03AuthDeptPickerContainer } from "./auth/ZA03AuthDeptPickerContainer";
 
 const ZA03DialogContent = memo((props) => {
 	const {
@@ -49,34 +52,50 @@ const ZA03DialogContent = memo((props) => {
 	}
 
 	return (
-		<Box
-		// pt={1}
-		>
+		<Box mt={-1}>
 			<TabContext value={selectedTab}>
-				<Box
+				<FlexBox
 					sx={{
 						borderBottom: 1,
 						borderColor: "divider",
-					}}>
-					<Grid container>
-						<FlexGrid item xs={12}>
-							<TabList
-								onChange={onTabChange}
-								aria-label="lab API tabs example">
-								<Tab
-									label="基本資料"
-									value={Users.Tabs.INFO}
-									disabled={infoDisabled}
-								/>
-								<Tab
-									label="功能權限"
-									value={Users.Tabs.AUTH}
-									disabled={authDisabled}
-								/>
-							</TabList>
-						</FlexGrid>
-					</Grid>
-				</Box>
+					}}
+					pr={1}>
+					<TabList
+						onChange={onTabChange}
+						aria-label="lab API tabs example">
+						<Tab
+							label="基本資料"
+							value={ZA03.Tabs.INFO}
+							disabled={infoDisabled}
+						/>
+						<Tab
+							label="功能權限"
+							value={ZA03.Tabs.AUTH}
+							disabled={authDisabled}
+						/>
+					</TabList>
+					{/* <FlexBox
+						sx={{
+							position: "absolute",
+							left: "220px",
+							top: "50px",
+						}}>
+						<ZA03AuthDeptPickerContainer
+							name="dept"
+							width="14em"
+							sx={{
+								backgroundColor: "#fff",
+							}}
+						/>
+					</FlexBox> */}
+					<FlexBox
+						flexGrow={1}
+						justifyContent="flex-end"
+						alignItems="center">
+						<ZA03InfoToolbarContainer />
+						<ZA03AuthToolbarContainer />
+					</FlexBox>
+				</FlexBox>
 
 				<ZA03InfoFormContainer />
 				<ZA03AuthFormContainer />

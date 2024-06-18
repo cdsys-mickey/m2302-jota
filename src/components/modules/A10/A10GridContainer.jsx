@@ -14,7 +14,7 @@ const A10GridContainer = () => {
 			setGridRef={a10.setGridRef}
 			data={a10.gridData}
 			loading={a10.gridLoading}
-			handleChange={a10.handleGridChange({
+			handleChange={a10.buildGridChangeHandler({
 				onCreate: a10.handleCreate,
 				onUpdate: a10.handleUpdate,
 				onDelete: a10.canDelete ? a10.handleConfirmDelete : null,

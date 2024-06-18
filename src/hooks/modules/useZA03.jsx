@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import Users from "@/modules/md-users";
+import UserInfo from "@/modules/md-user-info";
 import ZA03 from "@/modules/md-za03";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useAction } from "@/shared-hooks/useAction";
@@ -10,11 +10,14 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import ActionState from "../../shared-constants/action-state";
+import ActionState from "@/shared-constants/action-state";
 import { useAppModule } from "./useAppModule";
-import { useInit } from "../../shared-hooks/useInit";
+import { useInit } from "@/shared-hooks/useInit";
 import { useRef } from "react";
-import CopyAuth from "../../modules/md-copy-auth";
+import CopyAuth from "@/modules/md-copy-auth";
+import Auth from "@/modules/md-auth";
+import DSG from "../../shared-modules/sd-dsg";
+import UserAuth from "../../modules/md-user-auth";
 
 export const useZA03 = () => {
 	const crud = useContext(CrudContext);
@@ -23,7 +26,7 @@ export const useZA03 = () => {
 	const { token, operator } = useContext(AuthContext);
 
 	const [selectedDept, setSelectedDept] = useState();
-	const [selectedTab, setSelectedTab] = useState(Users.Tabs.INFO);
+	const [selectedTab, setSelectedTab] = useState(ZA03.Tabs.INFO);
 
 	const appModule = useAppModule({
 		token,
@@ -59,69 +62,84 @@ export const useZA03 = () => {
 	// 	selectedModuleMax: null,
 	// });
 
-	const [authEditingMode, setAuthEditingMode] = useState();
-	const loadAuthAction = useAction();
-	const { clear: clearLoadAuth } = loadAuthAction;
+	const [authGridEditingMode, setAuthEditingMode] = useState();
+	const loadAuthGridAction = useAction();
+	const { clear: clearLoadAuth } = loadAuthGridAction;
 
 	const loadUserAuthorities = useCallback(
-		async (userId, deptId, opts = {}) => {
-			const { supressLoading } = opts;
+		async (opts = {}) => {
+			console.log(`loadUserAuthorities`, opts);
+			const {
+				userId,
+				deptId,
+				all = false,
+				supressLoading = false,
+			} = opts;
+
+			const activeUserId = userId || crud.itemData?.UID;
+			const activeDeptId = deptId || selectedDept?.DeptID;
+
+			if (!activeUserId || !activeDeptId) {
+				console.log("userId and deptId are mandatory");
+				return;
+			}
+
 			try {
 				if (!supressLoading) {
-					loadAuthAction.start();
+					loadAuthGridAction.start();
 				}
 				const { status, payload, error } = await httpGetAsync({
 					url: "v1/ou/user/authorities",
 					bearer: token,
 					params: {
-						uid: userId,
-						dp: deptId,
+						uid: activeUserId,
+						dp: activeDeptId,
+						...(all && {
+							edit: 1,
+						}),
 					},
 				});
 				if (status.success) {
 					const data = payload.map((x) =>
-						ZA03.transformForReading(x)
+						UserAuth.transformForReading(x)
 					);
-					authGrid.handleGridDataLoaded(data);
-					loadAuthAction.finish();
+					authGrid.setGridData(data, {
+						init: true,
+					});
+					loadAuthGridAction.finish();
 				} else {
 					throw error || new Error("讀取權限失敗");
 				}
 			} catch (err) {
-				loadAuthAction.fail(err);
+				loadAuthGridAction.fail(err);
 				toast.error(err?.message);
 			}
 		},
-		[authGrid, httpGetAsync, loadAuthAction, token]
-	);
-
-	const reloadUserAuthorities = useCallback(
-		(opts) => {
-			if (crud.itemData?.UID && selectedDept?.DeptID) {
-				loadUserAuthorities(
-					crud.itemData?.UID,
-					selectedDept?.DeptID,
-					opts
-				);
-			}
-		},
-		[crud.itemData?.UID, selectedDept?.DeptID, loadUserAuthorities]
+		[
+			authGrid,
+			crud.itemData?.UID,
+			httpGetAsync,
+			loadAuthGridAction,
+			selectedDept?.DeptID,
+			token,
+		]
 	);
 
 	const goAuthInstantEditing = useCallback(() => {
-		setAuthEditingMode(Users.AUTH_EDITING_MODE.CLICK);
+		setAuthEditingMode(UserAuth.AUTH_EDITING_MODE.CLICK);
 	}, []);
 
-	const goAuthBatchEditing = useCallback(() => {
-		setAuthEditingMode(Users.AUTH_EDITING_MODE.SUBMIT);
-	}, []);
+	const goAuthBatchEditing = useCallback(async () => {
+		setAuthEditingMode(UserAuth.AUTH_EDITING_MODE.SUBMIT);
+		loadUserAuthorities({ all: true });
+	}, [loadUserAuthorities]);
 
 	const cancelAuthEditing = useCallback(() => {
 		setAuthEditingMode(null);
-		reloadUserAuthorities({
+		loadUserAuthorities({
 			supressLoading: true,
 		});
-	}, [reloadUserAuthorities]);
+	}, [loadUserAuthorities]);
 
 	const confirmCancelAuthEditing = useCallback(() => {
 		if (!authGrid.isDirty) {
@@ -140,13 +158,13 @@ export const useZA03 = () => {
 		setAuthEditingMode(null);
 	}, []);
 
-	const authEditing = useMemo(() => {
-		return !!authEditingMode;
-	}, [authEditingMode]);
+	const authGridEditing = useMemo(() => {
+		return !!authGridEditingMode;
+	}, [authGridEditingMode]);
 
 	const authGridLoading = useMemo(() => {
-		return loadAuthAction.state === ActionState.WORKING;
-	}, [loadAuthAction.state]);
+		return loadAuthGridAction.state === ActionState.WORKING;
+	}, [loadAuthGridAction.state]);
 
 	const handleDeptChange = useCallback(
 		(dept) => {
@@ -154,12 +172,14 @@ export const useZA03 = () => {
 			setSelectedDept(dept);
 			if (itemData?.UID && dept?.DeptID) {
 				// 載入 grid
-				loadUserAuthorities(crud.itemData?.UID, dept?.DeptID);
+				loadUserAuthorities({
+					deptId: dept?.DeptID,
+				});
 			} else {
 				authGrid.clearGridData();
 			}
 		},
-		[authGrid, crud.itemData?.UID, itemData?.UID, loadUserAuthorities]
+		[authGrid, itemData?.UID, loadUserAuthorities]
 	);
 
 	const promptCreating = useCallback(async () => {
@@ -170,8 +190,7 @@ export const useZA03 = () => {
 				Tel: "",
 				Cel: "",
 				Email: "",
-				// DeptID: operator.CurDeptID,
-				// Dept_N: operator.CurDeptName,
+				userClass: Auth.getById(Auth.SCOPES.DEPT),
 				dept: {
 					DeptID: operator.CurDeptID,
 					AbbrName: operator.CurDeptName,
@@ -204,7 +223,7 @@ export const useZA03 = () => {
 				});
 
 				if (status.success) {
-					const data = Users.transformForReading(payload);
+					const data = UserInfo.transformForReading(payload);
 					crud.doneReading({
 						data,
 					});
@@ -267,26 +286,21 @@ export const useZA03 = () => {
 	}, []);
 
 	const handleCreate = useCallback(
-		async ({ data }) => {
+		async (payload) => {
 			try {
 				crud.startCreating();
 				const { status, error, payload } = await httpPostAsync({
 					url: "v1/ou/users",
-					data: data,
+					data: payload,
 					bearer: token,
 				});
 
 				if (status.success) {
-					const processed = Users.transformForReading(payload);
-					toast.success(
-						`使用者「${processed?.LoginName} ${processed?.UserName}」新增成功`
-					);
+					// const processed = Users.transformForReading(payload);
+					toast.success(`使用者新增成功`);
 
 					crud.doneCreating();
-					crud.doneReading({
-						data: processed,
-					});
-					// crud.cancelReading();
+					await loadItem({ id: payload?.UID });
 					// 重新整理
 					loader.loadList({ refresh: true });
 				} else {
@@ -295,25 +309,29 @@ export const useZA03 = () => {
 			} catch (err) {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				if (err.code === 8) {
+					toast.warn("帳號名稱重複，請確認後重新送出");
+				} else {
+					toast.error(Errors.getMessage("新增失敗", err));
+				}
 			}
 		},
-		[crud, httpPostAsync, loader, token]
+		[crud, httpPostAsync, loadItem, loader, token]
 	);
 
 	const handleUpdate = useCallback(
-		async ({ data }) => {
+		async (payload) => {
 			try {
 				crud.startUpdating();
 				const { status, error } = await httpPutAsync({
 					url: `v1/ou/users`,
-					data: data,
+					data: payload,
 					bearer: token,
 				});
 
 				if (status.success) {
 					toast.success(
-						`使用者 ${data?.LoginName} ${data?.UserName}」修改成功`
+						`使用者 ${payload.data?.LoginName} ${payload.data?.UserName}」修改成功`
 					);
 					crud.doneUpdating();
 					// await loadItem(data?.UID);
@@ -334,12 +352,13 @@ export const useZA03 = () => {
 
 	const onEditorSubmit = useCallback(
 		async (data) => {
-			const processed = Users.transformForEditorSubmit(data);
+			console.log("onEditorSubmit", data);
+			const processed = UserInfo.transformForEditorSubmit(data);
 			console.log(`processed`, processed);
 			if (crud.creating) {
-				handleCreate({ data: processed });
+				handleCreate(processed);
 			} else if (crud.updating) {
-				handleUpdate({ data: processed });
+				handleUpdate(processed);
 			} else {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
@@ -403,20 +422,19 @@ export const useZA03 = () => {
 		(e, newValue) => {
 			setSelectedTab(newValue);
 			if (
-				newValue === Users.Tabs.AUTH &&
-				loadAuthAction.state === null &&
+				newValue === ZA03.Tabs.AUTH &&
+				loadAuthGridAction.state === null &&
 				itemData?.UID &&
 				selectedDept?.DeptID
 			) {
 				// 載入 grid
-				loadUserAuthorities(crud.itemData?.UID, selectedDept?.DeptID);
+				loadUserAuthorities();
 			}
 		},
 		[
-			crud.itemData?.UID,
 			selectedDept?.DeptID,
 			itemData?.UID,
-			loadAuthAction.state,
+			loadAuthGridAction.state,
 			loadUserAuthorities,
 		]
 	);
@@ -469,33 +487,26 @@ export const useZA03 = () => {
 		[authGrid.gridData, handleFunctionEnabled]
 	);
 
-	const handleAuthGridChange = useCallback(
+	const handleGridChange = useCallback(
 		(newValue, operations) => {
-			const operation = operations[0];
-			console.log("operation", operation);
-			// console.log("newValue", newValue);
+			let checkFailed = false;
+			const newGridData = [...newValue];
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach(async (rowData, i) => {
+							const rowIndex = operation.fromRowIndex + i;
+							console.log(`DSG UPDATE[${rowIndex}]`);
+							const prevRowData = authGrid.prevGridData[rowIndex];
 
-			// if (operation.type === "UPDATE") {
-			// const rowIndex = operation.fromRowIndex;
-			// const rowData = newValue[rowIndex];
-			// const row = { rowIndex, rowData };
-			// const oldJobId = authGrid.gridData[rowIndex]["JobID"];
-			// const newJobId = rowData["JobID"];
-			// console.log(`${oldJobId} -> ${newJobId}`);
-			// if (
-			// 	rowData.module &&
-			// 	authGrid.isDuplicating(rowData, newValue)
-			// ) {
-			// 	authGrid.setValueByRowIndex(row, newValue, {
-			// 		dept: null,
-			// 	});
-			// 	toast.error(
-			// 		`「${rowData.prod?.ProdData}」已存在, 請選擇其他功能`
-			// 	);
-			// 	return;
-			// }
-			// }
-			authGrid.propagateGridChange(newValue, operations);
+							authGrid.handleDirtyRows({ rowData, prevRowData });
+						});
+				}
+			}
+			if (!checkFailed) {
+				authGrid.setGridData(newGridData);
+			}
 		},
 		[authGrid]
 	);
@@ -582,7 +593,7 @@ export const useZA03 = () => {
 				});
 				if (status.success) {
 					addAuthAction.finish();
-					reloadUserAuthorities();
+					loadUserAuthorities();
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -597,7 +608,7 @@ export const useZA03 = () => {
 			httpPostAsync,
 			crud.itemData?.UID,
 			token,
-			reloadUserAuthorities,
+			loadUserAuthorities,
 		]
 	);
 
@@ -641,7 +652,7 @@ export const useZA03 = () => {
 					toast.success("權限複製成功");
 					// 若編輯中則需要重整
 					if (crud.itemViewOpen) {
-						reloadUserAuthorities();
+						loadUserAuthorities();
 						//info 頁也需要重整
 						await loadItem({ id: crud.itemData?.UID });
 					}
@@ -659,7 +670,7 @@ export const useZA03 = () => {
 			crud.itemViewOpen,
 			httpPutAsync,
 			loadItem,
-			reloadUserAuthorities,
+			loadUserAuthorities,
 			token,
 		]
 	);
@@ -699,7 +710,7 @@ export const useZA03 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					reloadUserAuthorities();
+					loadUserAuthorities();
 				} else {
 					throw error || new Error("發生未預期例外");
 				}
@@ -713,7 +724,7 @@ export const useZA03 = () => {
 			crud.itemData?.UID,
 			dialogs,
 			httpDeleteAsync,
-			reloadUserAuthorities,
+			loadUserAuthorities,
 			token,
 		]
 	);
@@ -777,11 +788,16 @@ export const useZA03 = () => {
 		[authGrid]
 	);
 
+	const funcDisabled = useCallback(({ rowData }) => {
+		return !rowData.enabled;
+	}, []);
+
 	const saveAuthAction = useAction();
 
 	const handleAuthSave = useCallback(async () => {
 		const dirtyRows = authGrid.getDirtyRows();
 		console.log(`handleAuthSave`, dirtyRows);
+		// return;
 		try {
 			saveAuthAction.start("儲存中...");
 			const { status, error } = await httpPatchAsync({
@@ -791,13 +807,13 @@ export const useZA03 = () => {
 					uid: crud.itemData?.UID,
 					dp: selectedDept?.DeptID,
 				},
-				data: ZA03.transformForSubmit(dirtyRows),
+				data: UserAuth.transformForSubmit(dirtyRows),
 			});
 
 			if (status.success) {
 				saveAuthAction.finish();
 				setAuthEditingMode(null);
-				reloadUserAuthorities();
+				loadUserAuthorities();
 				toast.success("權限已更新");
 			} else {
 				throw error || new Error("權限異動異常");
@@ -818,7 +834,7 @@ export const useZA03 = () => {
 		crud.itemData?.LoginName,
 		crud.itemData?.UID,
 		httpPatchAsync,
-		reloadUserAuthorities,
+		loadUserAuthorities,
 		saveAuthAction,
 		selectedDept?.DeptID,
 		token,
@@ -842,6 +858,10 @@ export const useZA03 = () => {
 		},
 		[copyAuthAction, crud]
 	);
+
+	const getRowClassName = useCallback(({ rowData }) => {
+		return rowData?.group ? DSG.CssClasses.GROUP_ROW : undefined;
+	}, []);
 
 	useInit(() => {
 		crud.cancelAction();
@@ -877,7 +897,6 @@ export const useZA03 = () => {
 		authGridLoading,
 		...authGrid,
 		loadUserAuthorities,
-		handleAuthGridChange,
 		handleCreateRow,
 		handleConfirmDelete,
 		isKeyDisabled,
@@ -905,9 +924,9 @@ export const useZA03 = () => {
 		confirmResetPword,
 		onRowSelectionChange,
 		// AuthGrid
-		authEditingMode,
+		authGridEditingMode,
 		setAuthEditingMode,
-		authEditing,
+		authGridEditing,
 		goAuthInstantEditing,
 		goAuthBatchEditing,
 		cancelAuthEditing,
@@ -920,5 +939,8 @@ export const useZA03 = () => {
 		clearLoadAuth,
 		saveAuthState: saveAuthAction.state,
 		// 複製權限
+		getRowClassName,
+		handleGridChange,
+		funcDisabled,
 	};
 };

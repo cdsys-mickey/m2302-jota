@@ -40,6 +40,7 @@ const C02ProdGrid = memo((props) => {
 						name: "prod",
 						withStock: true,
 						triggerDelay: 100,
+						optionLabelSize: "small",
 					})
 				),
 				id: "SProdID",
@@ -88,7 +89,8 @@ const C02ProdGrid = memo((props) => {
 					})
 				),
 				title: "供應商",
-				grow: 2,
+				minWidth: 90,
+				grow: 1,
 				disabled: true,
 			},
 			{

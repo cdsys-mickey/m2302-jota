@@ -104,7 +104,7 @@ const C04DialogForm = memo((props) => {
 									// disabled={supplierPickerDisabled}
 									// disableClearable
 									virtualize
-									fadeOutDisabled
+									// fadeOutDisabled
 									withAddr
 									optionLabelSize="small"
 									onChanged={handleSupplierChanged}
@@ -181,7 +181,7 @@ const C04DialogForm = memo((props) => {
 								name="purchaseOrders"
 								label="採購單"
 								// virtualize
-								fadeOutDisabled
+								// fadeOutDisabled
 								// onChanged={handleLoadProdsSubmit}
 								onChanged={handlePurchaseOrdersChanged}
 								disabled={purchaseOrdersDisabled || !supplier}

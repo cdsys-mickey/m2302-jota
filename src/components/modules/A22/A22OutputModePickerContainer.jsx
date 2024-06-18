@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { A22Context } from "../../../contexts/A22/A22Context";
-import TxtExport from "../../../modules/md-txt-export";
+import { A22Context } from "@/contexts/A22/A22Context";
+import TxtExport from "@/modules/md-txt-export";
 import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
 
 export const A22OutputModePickerContainer = () => {

@@ -3,7 +3,7 @@ import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import CrudContext from "../../contexts/crud/CrudContext";
-import C09 from "@/modules/md-C09";
+import C09 from "@/modules/md-c09";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { useDSG } from "../../shared-hooks/useDSG";
 import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
@@ -450,7 +450,7 @@ export const useC09 = () => {
 		[getProdInfo]
 	);
 
-	const handleGridChange = useCallback(
+	const buildGridChangeHandler = useCallback(
 		({ getValues, setValue }) =>
 			(newValue, operations) => {
 				const formData = getValues();
@@ -666,7 +666,7 @@ export const useC09 = () => {
 		onEditorSubmitError,
 		// Grid
 		...prodGrid,
-		handleGridChange,
+		buildGridChangeHandler,
 		getRowKey,
 		// 列印
 		onPrintSubmit,

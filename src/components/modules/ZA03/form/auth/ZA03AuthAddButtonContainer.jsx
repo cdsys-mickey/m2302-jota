@@ -17,7 +17,7 @@ export const ZA03AuthAddButtonContainer = forwardRef((props, ref) => {
 	}, []);
 
 	// if (za03.readOnly) {
-	if (za03.authEditing) {
+	if (za03.authGridEditing) {
 		return false;
 	}
 

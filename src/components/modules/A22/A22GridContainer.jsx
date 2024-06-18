@@ -25,7 +25,7 @@ export const A22GridContainer = () => {
 					data={a22.gridData}
 					loading={a22.gridLoading}
 					height={gridHeight}
-					// onChange={a22.handleGridChange({
+					// onChange={a22.buildGridChangeHandler({
 					// 	onDelete: a22.handleDeleteRow,
 					// })}
 					onChange={a22.handleGridChange}

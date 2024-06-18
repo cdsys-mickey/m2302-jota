@@ -42,16 +42,25 @@ const TypoWebApiOptionPicker = memo(
 				return children;
 			}
 			if (multiple) {
-				if (!Types.isArray(value)) {
-					console.warn(`value is not an array!`, value);
+				if (!value || !Types.isArray(value) || value.length === 0) {
+					return emptyText;
 				}
-				// console.log("multiple value", value);
+
 				return value
 					?.map((i) => (renderOption ? renderOption(i) : i))
 					.join(", ");
 			}
-			return getOptionLabel ? getOptionLabel(value) : value;
-		}, [children, getOptionLabel, multiple, renderTagLabel, value]);
+			return (
+				(getOptionLabel ? getOptionLabel(value) : value) || emptyText
+			);
+		}, [
+			children,
+			emptyText,
+			getOptionLabel,
+			multiple,
+			renderTagLabel,
+			value,
+		]);
 
 		if (!editing) {
 			return (

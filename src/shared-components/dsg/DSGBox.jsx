@@ -1,17 +1,22 @@
 import { Box, styled } from "@mui/material";
 import DSG from "@/shared-modules/sd-dsg";
+import { cyan, lightBlue } from "@mui/material/colors";
 
 const DSGBox = styled(Box, {
 	// self props
 	shouldForwardProp: (prop) => !["bgcolor", "disableAddRow"].includes(prop),
-})(({ theme, bgcolor, disableAddRows }) => ({
+})(({ theme, groupColor = cyan[700], disableAddRows }) => ({
 	[`& .${DSG.CssClasses.ROW_SELECTED} .dsg-cell-gutter`]: {
-		backgroundColor: bgcolor || theme.palette.primary.main,
-		color: theme.palette.getContrastText(
-			bgcolor || theme.palette.primary.main
-		),
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.getContrastText(theme.palette.primary.main),
 	},
-	// "& .dsg-cell.line-through": {
+	[`& .dsg-row.${DSG.CssClasses.GROUP_ROW} .dsg-cell`]: {
+		backgroundColor: groupColor,
+		color: theme.palette.getContrastText(groupColor),
+	},
+	[`& .dsg-row.${DSG.CssClasses.GROUP_ROW} .dsg-cell input`]: {
+		color: theme.palette.getContrastText(groupColor),
+	},
 	[`& .dsg-cell.${DSG.CssClasses.LINE_THROUGH} *`]: {
 		textDecoration: "line-through",
 	},

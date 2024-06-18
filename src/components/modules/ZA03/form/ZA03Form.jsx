@@ -3,19 +3,18 @@ import { memo } from "react";
 
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import AuthScopePickerContainer from "@/components/fields/AuthScopePickerContainer";
-import Users from "@/modules/md-users";
-import AlertEx from "@/shared-components/AlertEx";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import PropTypes from "prop-types";
+import ZA03 from "../../../../modules/md-za03";
+import FormBox from "../../../../shared-components/form/FormBox";
+import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 import { ZA03DialogTitleButtonsContainer } from "../dialog/buttons/ZA03DialogTitleButtonsContainer";
 import ZA03GridContainer from "./auth/ZA03GridContainer";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const ZA03Form = memo((props) => {
 	const {
@@ -62,12 +61,12 @@ const ZA03Form = memo((props) => {
 										aria-label="lab API tabs example">
 										<Tab
 											label="基本資料"
-											value={Users.Tabs.INFO}
+											value={ZA03.Tabs.INFO}
 											disabled={infoDisabled}
 										/>
 										<Tab
 											label="功能權限"
-											value={Users.Tabs.AUTH}
+											value={ZA03.Tabs.AUTH}
 											disabled={authDisabled}
 										/>
 									</TabList>
@@ -83,9 +82,9 @@ const ZA03Form = memo((props) => {
 							</Grid>
 						</Box>
 
-						<TabPanel value={Users.Tabs.INFO}>
+						<TabPanel value={ZA03.Tabs.INFO}>
 							{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
-							<FormSectionBox py={editing ? 2 : 1} mb={2}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 								<Grid
 									container
 									columns={12}
@@ -178,7 +177,7 @@ const ZA03Form = memo((props) => {
 							</FormSectionBox>
 						</TabPanel>
 						<TabPanel
-							value={Users.Tabs.AUTH}
+							value={ZA03.Tabs.AUTH}
 							sx={{
 								paddingBottom: 0,
 								paddingLeft: 1,

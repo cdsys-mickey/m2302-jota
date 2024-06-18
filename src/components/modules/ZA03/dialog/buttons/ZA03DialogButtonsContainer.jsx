@@ -1,16 +1,15 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
-import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import ActionState from "@/shared-constants/action-state";
 import ZA03DialogEditButtons from "./ZA03DialogEditButtons";
 import ZA03DialogViewButtons from "./ZA03DialogViewButtons";
-import Users from "@/modules/md-users";
-import { ZA03AuthLockRowsSwitchContainer } from "../../form/auth/ZA03AuthLockRowsSwitchContainer";
-import { ZA03AuthAddButtonContainer } from "../../form/auth/ZA03AuthAddButtonContainer";
-import { Box } from "@mui/material";
+
 import FlexBox from "@/shared-components/FlexBox";
+import { ZA03AuthAddButtonContainer } from "../../form/auth/ZA03AuthAddButtonContainer";
 import { ZA03AuthDeptPickerContainer } from "../../form/auth/ZA03AuthDeptPickerContainer";
+import { ZA03AuthLockRowsSwitchContainer } from "../../form/auth/ZA03AuthLockRowsSwitchContainer";
+import ZA03 from "@/modules/md-za03";
 
 export const ZA03DialogButtonsContainer = (props) => {
 	const { ...rest } = props;
@@ -22,7 +21,7 @@ export const ZA03DialogButtonsContainer = (props) => {
 	}
 
 	// 功能權限
-	if (za03.selectedTab === Users.Tabs.AUTH) {
+	if (za03.selectedTab === ZA03.Tabs.AUTH) {
 		return (
 			<FlexBox
 				inline

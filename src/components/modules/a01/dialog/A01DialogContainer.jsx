@@ -59,6 +59,10 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		return a01.mode === A01.Mode.STORE;
 	}, [a01.mode]);
 
+	const formHeight = useMemo(() => {
+		return height - 190;
+	}, [height]);
+
 	useEffect(() => {
 		// if (a01.readState === ActionState.DONE && !!a01.itemData) {
 		if (a01.itemDataReady) {
@@ -89,6 +93,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 				}}
 				contentSx={[
 					{
+						paddingTop: 0,
 						minHeight: "30em",
 					},
 					scrollable.scroller,
@@ -108,6 +113,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					store={store}
 					tabIndex={a01.tabIndex}
 					handleTabChange={a01.handleTabChange}
+					height={formHeight}
 				/>
 			</DialogExContainer>
 		</FormProvider>

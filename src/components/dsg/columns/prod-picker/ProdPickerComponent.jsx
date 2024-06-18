@@ -88,7 +88,7 @@ const ProdPickerComponent = memo((props) => {
 			// hidePopupIndicator={!focus}
 			hideControls={hideControls}
 			hidePlaceholder={!active}
-			fadeOutDisabled={false}
+			disableFadeOut
 			// selectOnFocus
 			{...rest}
 		/>

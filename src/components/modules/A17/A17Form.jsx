@@ -37,7 +37,7 @@ const A17Form = memo((props) => {
 				{readFailed && <ErrorBox error={readError} />}
 
 				<FormBox pt={0}>
-					<FormSectionBox py={1}>
+					<FormSectionBox py={1} px={1}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12}>
 								<AppDeptPicker

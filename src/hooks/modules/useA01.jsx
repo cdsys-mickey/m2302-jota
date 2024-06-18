@@ -49,7 +49,7 @@ export const useA01 = ({ token, mode }) => {
 		handlePopperClose,
 	] = useToggle(false);
 
-	const loader = useInfiniteLoader({
+	const listLoader = useInfiniteLoader({
 		url: mode === A01.Mode.NEW_PROD ? "v1/new-prods" : "v1/prods",
 		bearer: token,
 		initialFetchSize: 50,
@@ -192,7 +192,7 @@ export const useA01 = ({ token, mode }) => {
 					crud.doneCreating();
 					crud.cancelReading();
 					// 重新整理
-					loader.loadList({ refresh: true });
+					listLoader.loadList({ refresh: true });
 				} else {
 					if (error.code) {
 						switch (error.code) {
@@ -219,7 +219,7 @@ export const useA01 = ({ token, mode }) => {
 				toast.error(Errors.getMessage("新增失敗", err));
 			}
 		},
-		[crud, httpPostAsync, loader, mode, token]
+		[crud, httpPostAsync, listLoader, mode, token]
 	);
 
 	const handleUpdate = useCallback(
@@ -246,7 +246,7 @@ export const useA01 = ({ token, mode }) => {
 					// crud.cancelReading();
 					loadItem(data?.ProdID);
 					// 重新整理
-					loader.loadList({
+					listLoader.loadList({
 						refresh: true,
 					});
 				} else {
@@ -258,7 +258,7 @@ export const useA01 = ({ token, mode }) => {
 				toast.error(Errors.getMessage("修改失敗", err));
 			}
 		},
-		[crud, httpPutAsync, loadItem, loader, mode, token]
+		[crud, httpPutAsync, loadItem, listLoader, mode, token]
 	);
 
 	const onCounterSubmit = useCallback(
@@ -383,7 +383,7 @@ export const useA01 = ({ token, mode }) => {
 								mode === A01.Mode.NEW_PROD ? "新" : ""
 							}商品${crud.itemData.ProdData}`
 						);
-						loader.loadList({
+						listLoader.loadList({
 							refresh: true,
 						});
 					} else {
@@ -396,7 +396,7 @@ export const useA01 = ({ token, mode }) => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, loader, mode, token]);
+	}, [crud, dialogs, httpDeleteAsync, listLoader, mode, token]);
 
 	// PRINT
 	const printAction = useAction();
@@ -433,7 +433,7 @@ export const useA01 = ({ token, mode }) => {
 				if (status.success) {
 					reviewAction.clear();
 					crud.cancelAction();
-					loader.loadList({
+					listLoader.loadList({
 						refresh: true,
 					});
 					toast.success(
@@ -446,7 +446,7 @@ export const useA01 = ({ token, mode }) => {
 				toast.error(Errors.getMessage("審核失敗", err));
 			}
 		},
-		[crud, httpPatchAsync, loader, reviewAction, token]
+		[crud, httpPatchAsync, listLoader, reviewAction, token]
 	);
 
 	const promptReview = useCallback(() => {
@@ -482,11 +482,11 @@ export const useA01 = ({ token, mode }) => {
 		(data) => {
 			handlePopperClose();
 			console.log(`onSearchSubmit`, data);
-			loader.loadList({
+			listLoader.loadList({
 				params: data,
 			});
 		},
-		[handlePopperClose, loader]
+		[handlePopperClose, listLoader]
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -586,6 +586,18 @@ export const useA01 = ({ token, mode }) => {
 
 	// }, []);
 
+	const handleReset = useCallback(
+		({ reset }) =>
+			() => {
+				handlePopperClose();
+				listLoader.loadList({
+					params: {},
+				});
+				reset({});
+			},
+		[handlePopperClose, listLoader]
+	);
+
 	const cancelAction = useCallback(() => {
 		crud.cancelAction();
 		// 清除 query params
@@ -597,7 +609,7 @@ export const useA01 = ({ token, mode }) => {
 	}, []);
 
 	return {
-		...loader,
+		...listLoader,
 		selectById,
 		// Popper
 		popperOpen,
@@ -651,5 +663,6 @@ export const useA01 = ({ token, mode }) => {
 		tabIndex,
 		handleTabChange,
 		setTabIndex,
+		handleReset,
 	};
 };

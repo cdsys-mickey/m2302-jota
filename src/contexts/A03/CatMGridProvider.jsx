@@ -10,6 +10,7 @@ import { CatSGridContext } from "./CatSGridContext";
 import { useRef } from "react";
 import { RoomTwoTone } from "@mui/icons-material";
 import { useDSG } from "@/shared-hooks/useDSG";
+import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
 
 const CatMGridProvider = (props) => {
 	const { children } = props;
@@ -18,7 +19,7 @@ const CatMGridProvider = (props) => {
 	const { token } = useContext(AuthContext);
 
 	// const dsg = useContext(DSGContext);
-	const dsg = useDSG({
+	const dsg = useDSGCodeEditor({
 		gridId: "CatM",
 		keyColumn: "MClas",
 		otherColumns: "ClassData",
@@ -256,6 +257,7 @@ const CatMGridProvider = (props) => {
 		<CatMGridContext.Provider
 			value={{
 				...state,
+				...dsg,
 				clear,
 				load,
 				onRowSelectionChange,
@@ -265,7 +267,6 @@ const CatMGridProvider = (props) => {
 				handleDelete,
 				handleDuplicatedError,
 				// isSelected,
-				...dsg,
 			}}>
 			{children}
 		</CatMGridContext.Provider>

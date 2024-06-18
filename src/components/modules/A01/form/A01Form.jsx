@@ -35,6 +35,7 @@ import { TypoProdCatSPickerContainer } from "./fields/TypoProdCatSPickerContaine
 import { TypoProdTypeAPickerContainer } from "./fields/TypoProdTypeAPickerContainer";
 import { TypoProdTypeBPickerContainer } from "./fields/TypoProdTypeBPickerContainer";
 import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
+import { useScrollable } from "../../../../shared-hooks/useScrollable";
 
 const A01Form = memo((props) => {
 	const {
@@ -48,8 +49,16 @@ const A01Form = memo((props) => {
 		// TAB
 		tabIndex,
 		handleTabChange,
+		height,
 		...rest
 	} = props;
+
+	const scrollable = useScrollable({
+		height: height,
+		alwaysShowThumb: true,
+		scrollerBackgroundColor: "transparent",
+	});
+
 	return (
 		<form {...rest}>
 			{readWorking && (
@@ -63,7 +72,7 @@ const A01Form = memo((props) => {
 			)}
 			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
-				<FormBox pt={1}>
+				<FormBox pt={0}>
 					<TabContext value={tabIndex}>
 						<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
 							<TabList
@@ -74,9 +83,11 @@ const A01Form = memo((props) => {
 								<Tab label="組合商品" value={A01.Tabs.COMBO} />
 							</TabList>
 						</Box>
-						<TabPanel value={A01.Tabs.INFO}>
+						<TabPanel
+							value={A01.Tabs.INFO}
+							sx={[scrollable.scroller]}>
 							{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
-							<FormSectionBox py={editing ? 2 : 1} mb={2}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 								<Grid
 									container
 									columns={12}
@@ -140,7 +151,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>分類</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 								<Grid
 									container
 									columns={12}
@@ -225,7 +236,7 @@ const A01Form = memo((props) => {
 								</Grid>
 							</FormSectionBox>
 							<FormSectionTitle>成本</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 								<Grid
 									container
 									columns={12}
@@ -277,7 +288,7 @@ const A01Form = memo((props) => {
 								</Grid>
 							</FormSectionBox>
 							<FormSectionTitle>安全存量</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 								<Grid
 									container
 									columns={12}
@@ -317,7 +328,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>包裝單位</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 								<Grid
 									container
 									columns={12}
@@ -366,7 +377,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>換算率</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 								<Grid
 									container
 									columns={12}
@@ -411,7 +422,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>售價</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2}>
+							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 								<Grid
 									container
 									columns={12}
@@ -533,6 +544,7 @@ A01Form.propTypes = {
 	tabIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	handleTabChange: PropTypes.func,
 	readError: PropTypes.object,
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 A01Form.displayName = "A01Form";

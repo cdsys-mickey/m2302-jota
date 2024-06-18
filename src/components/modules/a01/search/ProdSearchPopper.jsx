@@ -20,6 +20,7 @@ const ProdSearchPopper = memo(
 		const {
 			width = "40ch",
 			onClose,
+			onReset,
 			// onReset,
 			ContentProps,
 			...rest
@@ -82,6 +83,13 @@ const ProdSearchPopper = memo(
 						onClick={onReset}>
 						清除
 					</ButtonEx> */}
+					<ButtonWrapper
+						size="small"
+						variant="contained"
+						color="warning"
+						onClick={onReset}>
+						重設
+					</ButtonWrapper>
 					<ButtonWrapper
 						startIcon={<FilterAltIcon />}
 						type="submit"

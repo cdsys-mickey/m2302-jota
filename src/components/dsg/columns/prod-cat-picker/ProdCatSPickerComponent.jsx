@@ -88,7 +88,7 @@ const ProdCatSPickerComponent = memo((props) => {
 			// hidePopupIndicator={!active}
 			hideControls={hideControls}
 			hidePlaceholder={!active}
-			fadeOutDisabled={false}
+			disableFadeOut
 			selectOnFocus
 			{...rest}
 		/>

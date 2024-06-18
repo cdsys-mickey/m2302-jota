@@ -40,7 +40,7 @@ const A20Form = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionTitle>關連貨品基本資料</FormSectionTitle>
-					<FormSectionBox py={editing ? 2 : 1} mb={2}>
+					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TypoProdPickerContainer

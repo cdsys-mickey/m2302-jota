@@ -18,7 +18,7 @@ export const A015GridContainer = () => {
 			data={prodGrid.gridData}
 			loading={prodGrid.gridLoading}
 			height={gridHeight}
-			onChange={prodGrid.handleGridChange()}
+			onChange={prodGrid.handleGridChange}
 		/>
 	);
 };

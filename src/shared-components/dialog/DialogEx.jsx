@@ -204,6 +204,7 @@ const DialogEx = memo(
 							...(dense && {
 								paddingBottom: theme.spacing(1),
 							}),
+							paddingTop: 0,
 						}),
 
 						...(Array.isArray(contentSx) ? contentSx : [contentSx]),

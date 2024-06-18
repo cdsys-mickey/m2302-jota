@@ -117,7 +117,7 @@ const A011Grid = memo((props) => {
 				onChange={onChange}
 				columns={columns}
 				addRowsComponent={DSGAddRowsToolbar}
-				// disableExpandSelection
+				disableExpandSelection
 				disableContextMenu
 			/>
 		</Box>

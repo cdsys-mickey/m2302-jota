@@ -7,7 +7,7 @@ import { useCallback } from "react";
 
 const ProdSearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const a01 = useContext(A01Context);
-	// const form = useFormContext();
+	const form = useFormContext();
 
 	// const handleReset = useCallback(() => {
 	// 	form.reset({
@@ -19,6 +19,7 @@ const ProdSearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 		<ProdSearchPopper
 			ref={ref}
 			onClose={a01.handlePopperClose}
+			onReset={a01.handleReset({ reset: form.reset })}
 			// onReset={handleReset}
 			{...rest}
 		/>

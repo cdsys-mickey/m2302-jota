@@ -58,8 +58,8 @@ export const useDSG = ({
 
 	const resetGridData = useCallback(
 		(newValue, opts = DEFAULT_SET_OPTS) => {
-			const { reset, prev, commit } = opts;
-			if (reset) {
+			const { reset, prev, commit, init, debug } = opts;
+			if (reset || init) {
 				dirtyIds.clear();
 				persistedIds.clear();
 				newValue?.map((item) => {
@@ -67,7 +67,7 @@ export const useDSG = ({
 					persistedIds.add(key);
 				});
 			}
-			if (commit) {
+			if (commit || init) {
 				setPrevGridData(newValue);
 			} else if (prev) {
 				setPrevGridData(prev);
@@ -75,7 +75,9 @@ export const useDSG = ({
 			setGridData(newValue);
 			setGridLoading(false);
 
-			console.log("resetGridData", newValue);
+			if (debug) {
+				console.log("resetGridData", newValue);
+			}
 		},
 		[dirtyIds, keyColumn, persistedIds]
 	);
@@ -159,43 +161,6 @@ export const useDSG = ({
 		dirtyIds.clear();
 	}, [dirtyIds, gridId, prevGridData]);
 
-	// const setGridData = useCallback((newValue) => {
-	// 	// console.log(`${gridId}.setGridData()`, newValue);
-	// 	setState((prev) => ({
-	// 		...prev,
-	// 		gridData: newValue,
-	// 		gridLoading: false,
-	// 	}));
-	// }, []);
-
-	const isExistingRow = useCallback(
-		({ rowData }) => {
-			return prevGridData.some((prevRowData) => {
-				const prevKey = _.get(prevRowData, keyColumn);
-				const key = _.get(rowData, keyColumn);
-				return prevKey === key;
-			});
-		},
-		[keyColumn, prevGridData]
-	);
-
-	const isUnchanged = useCallback(
-		(row) => {
-			const prevRowData = prevGridData[row.rowIndex];
-			const prevKey = _.get(prevRowData, keyColumn);
-			const rowKey = _.get(row.rowData, keyColumn);
-
-			if (prevKey !== rowKey) {
-				throw `keys mismatched ${prevKey} → ${rowKey}`;
-			}
-
-			return Objects.arePropsEqual(prevRowData, row.rowData, {
-				fields: otherColumnNames,
-			});
-		},
-		[keyColumn, otherColumnNames, prevGridData]
-	);
-
 	const isRowDataEquals = useCallback((prevRowData, rowData) => {
 		console.log("isRowDataEquals", prevRowData, rowData);
 		return !Objects.arePropsEqual(prevRowData, rowData, {
@@ -255,160 +220,60 @@ export const useDSG = ({
 		[gridId, setGridData]
 	);
 
-	const handleGridChange = useCallback(
-		({
-				// C
-				onBeforeCreate,
-				onCreate,
-				// U
-				onBeforeUpdate,
-				onUpdate,
-				onPatch,
-				// D
-				onDelete,
-				// E
-				onDuplicatedError,
-			} = {}) =>
-			(newValue, operations) => {
-				console.log(`${gridId}.handleGridChange`, newValue);
-				// 只處理第一行
-				const operation = operations[0];
-				console.log("operation", operation);
-				if (operation.type === "DELETE") {
-					const fromRowIndex = operation.fromRowIndex;
-					const prevFromRowData = prevGridData[fromRowIndex];
+	const handleDirtyRows = useCallback(
+		({ prevRowData, rowData }) => {
+			const isDirty = isRowDataEquals(prevRowData, rowData);
+			console.log("isDirty", isDirty);
 
-					const toRowIndex = operation.toRowIndex;
-					const prevToRowData = prevGridData[toRowIndex];
-
-					if (prevFromRowData) {
-						const fromRow = {
-							rowIndex: fromRowIndex,
-							rowData: prevFromRowData,
-						};
-						const toRow =
-							fromRowIndex === toRowIndex
-								? null
-								: {
-										rowIndex: toRowIndex,
-										rowData: prevToRowData,
-								  };
-						console.log(`[DSG DELETE]`, fromRow, toRow);
-						if (onDelete) {
-							onDelete(fromRow, toRow);
-						}
-					} else {
-						setGridData(newValue);
-					}
-				} else if (operation.type === "CREATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((row) => {
-							console.log(`[DSG CREATE]`, row);
-						});
-					setGridData(newValue);
-				} else if (operation.type === "UPDATE") {
-					const rowIndex = operation.fromRowIndex;
-					const rowData = newValue[rowIndex];
-					const prevRowData = prevGridData[rowIndex];
-
-					const isDirty = isRowDataEquals(prevRowData, rowData);
-					console.log("isDirty", isDirty);
-
-					const row = {
-						rowIndex,
-						rowData,
-					};
-					console.log(`[DSG UPDATE]`, rowData);
-					const key = _.get(rowData, keyColumn);
-					if (key) {
-						if (isDirty) {
-							dirtyIds.add(key);
-							console.log(`dirtyId ${key} added`);
-						} else {
-							dirtyIds.delete(key);
-							console.log(`dirtyId ${key} removed`);
-						}
-					}
-					// 所有欄位都有值(包含 Key)
-					if (
-						Objects.isAllPropsNotNullOrEmpty(rowData, [
-							keyColumn,
-							...otherColumnNames,
-						])
-					) {
-						console.log("CREATE or UPDATE", rowData);
-
-						// 新增 或 修改
-
-						if (isKeyDuplicated(newValue, key)) {
-							console.log("[DSG]DuplicatedError detected", key);
-							if (onDuplicatedError) {
-								onDuplicatedError(row, newValue);
-							}
-						} else {
-							if (isExistingRow(row)) {
-								// 確認是否是額外欄位造成的異動
-								// Extra UPDATE
-								if (isUnchanged(row)) {
-									if (onPatch) {
-										onPatch(row, newValue);
-									}
-								} else {
-									// UPDATE
-									if (onBeforeUpdate) {
-										onBeforeUpdate(row);
-									}
-									if (onUpdate) {
-										onUpdate(row, newValue);
-									}
-								}
-							} else {
-								// CREATE
-								if (onBeforeCreate) {
-									onBeforeCreate(row);
-								}
-								if (onCreate) {
-									onCreate(row, newValue);
-								}
-							}
-						}
-						setGridData(newValue);
-					} else if (
-						Objects.isAllPropsNull(rowData, [...otherColumnNames])
-					) {
-						// 刪除: Key 以外都是 null
-						const prevRowData = prevGridData[rowIndex];
-						if (prevRowData) {
-							console.log(`DELETE`, row);
-							if (onDelete) {
-								onDelete(
-									{
-										rowIndex,
-										rowData: prevRowData,
-									},
-									newValue
-								);
-							}
-						}
-					} else {
-						setGridData(newValue);
-					}
+			const key = _.get(rowData, keyColumn);
+			if (key) {
+				if (isDirty) {
+					dirtyIds.add(key);
+					console.log(`dirtyId ${key} added`);
 				} else {
-					setGridData(newValue);
+					dirtyIds.delete(key);
+					console.log(`dirtyId ${key} removed`);
 				}
-			},
-		[
-			gridId,
-			prevGridData,
-			isRowDataEquals,
-			keyColumn,
-			otherColumnNames,
-			dirtyIds,
-			isKeyDuplicated,
-			isExistingRow,
-			isUnchanged,
-		]
+			}
+		},
+		[dirtyIds, isRowDataEquals, keyColumn]
+	);
+
+	const handleGridChange = useCallback(
+		(newValue, operations) => {
+			console.log(`${gridId}.handleGridChange`, newValue);
+			// 只處理第一行
+			const operation = operations[0];
+			console.log("operation", operation);
+			if (operation.type === "CREATE") {
+				setGridData(newValue);
+			} else if (operation.type === "UPDATE") {
+				const rowIndex = operation.fromRowIndex;
+				const rowData = newValue[rowIndex];
+				const prevRowData = prevGridData[rowIndex];
+				console.log(`[DSG UPDATE]`, rowData);
+
+				// *** MOVED TO handleDirtyRows ***
+				// const isDirty = isRowDataEquals(prevRowData, rowData);
+				// console.log("isDirty", isDirty);
+
+				// const key = _.get(rowData, keyColumn);
+				// if (key) {
+				// 	if (isDirty) {
+				// 		dirtyIds.add(key);
+				// 		console.log(`dirtyId ${key} added`);
+				// 	} else {
+				// 		dirtyIds.delete(key);
+				// 		console.log(`dirtyId ${key} removed`);
+				// 	}
+				// }
+				handleDirtyRows({ rowData, prevRowData });
+				setGridData(newValue);
+			} else {
+				setGridData(newValue);
+			}
+		},
+		[gridId, prevGridData, handleDirtyRows]
 	);
 
 	const setValueByRowIndex = useCallback(
@@ -569,10 +434,6 @@ export const useDSG = ({
 		});
 	}, [dirtyIds, gridData, keyColumn]);
 
-	// const isDirty = useMemo(() => {
-	// 	return dirtyIds && dirtyIds.size > 0;
-	// }, [dirtyIds]);
-
 	const handleToggleReadOnly = useCallback(() => {
 		rollbackChanges();
 		toggleReadOnly();
@@ -627,5 +488,7 @@ export const useDSG = ({
 		getSelectedRow,
 		selectedRowRef,
 		isDirty: dirtyIds && dirtyIds.size > 0,
+		handleDirtyRows,
+		otherColumnNames,
 	};
 };

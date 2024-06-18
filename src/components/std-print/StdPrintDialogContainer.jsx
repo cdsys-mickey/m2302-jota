@@ -64,6 +64,7 @@ export const StdPrintDialogContainer = forwardRef((props, ref) => {
 					}}
 					confirmButtonProps={{
 						endIcon: <OpenInNewIcon />,
+						variant: "contained",
 					}}
 					otherActionButtons={<StdPrintActionButtons />}
 					// otherActionButtons={

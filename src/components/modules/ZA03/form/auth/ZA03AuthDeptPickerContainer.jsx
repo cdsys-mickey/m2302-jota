@@ -7,11 +7,17 @@ export const ZA03AuthDeptPickerContainer = (props) => {
 	const za03 = useContext(ZA03Context);
 	return (
 		<UserDeptPicker
+			disableClearable
+			// filterSelectedOptions
+			blurOnSelect
+			selectOnFocus
+			// disableLazy
+			// disableOnSingleOption
 			label="目前門市"
 			uid={za03.itemData?.UID}
 			value={za03.selectedDept}
 			onChange={za03.handleDeptChange}
-			disabled={za03.authEditing}
+			disabled={za03.authGridEditing}
 			{...rest}
 		/>
 	);

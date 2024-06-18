@@ -13,7 +13,7 @@ const A26GridContainer = () => {
 			setGridRef={a26.setGridRef}
 			data={a26.gridData}
 			loading={a26.gridLoading}
-			onChange={a26.handleGridChange({
+			onChange={a26.buildGridChangeHandler({
 				onCreate: a26.handleCreate,
 				onUpdate: a26.handleUpdate,
 				onDelete: a26.canDelete ? a26.handleConfirmDelete : null,

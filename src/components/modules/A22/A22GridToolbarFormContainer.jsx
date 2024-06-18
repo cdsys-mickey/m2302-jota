@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@mui/material";
+import { Box, Grid, Paper } from "@mui/material";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { A22Context } from "../../../contexts/A22/A22Context";
@@ -27,10 +27,10 @@ export const A22GridToolbarFormContainer = () => {
 			<form>
 				<FlexBox component={Paper} my={1} py={0.7} px={1}>
 					<Grid container spacing={1}>
-						<Grid item xs={7}>
+						<Grid item xs={8}>
 							<A22GridLockRowsSwitchContainer />
 						</Grid>
-						<Grid item xs={3}>
+						<Grid item xs={2}>
 							<A22OutputModePickerContainer />
 							{/* <StdPrintOutputModePicker
 								required
@@ -44,8 +44,9 @@ export const A22GridToolbarFormContainer = () => {
 							alignItems="center"
 							justifyContent="flex-end">
 							<A22GenReportButtonContainer />
-
-							<A22GridCancelEditButtonContainer />
+							<Box ml={0.5}>
+								<A22GridCancelEditButtonContainer />
+							</Box>
 						</FlexGrid>
 					</Grid>
 				</FlexBox>

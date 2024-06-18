@@ -32,16 +32,20 @@ export const C09ProdGridContainer = (props) => {
 		return windowHeight - 356;
 	}, [windowHeight]);
 
+	const handleGridChange = useMemo(() => {
+		return c09.buildGridChangeHandler({
+			getValues: form.getValues,
+			setValue: form.setValue,
+		});
+	}, [c09, form.getValues, form.setValue]);
+
 	return (
 		<DSGBox>
 			<C09ProdGrid
 				gridRef={c09.setGridRef}
 				readOnly={readOnly}
 				data={c09.gridData}
-				handleGridChange={c09.handleGridChange({
-					getValues: form.getValues,
-					setValue: form.setValue,
-				})}
+				handleGridChange={handleGridChange}
 				bearer={auth.token}
 				height={height}
 				getRowKey={c09.getRowKey}

@@ -15,7 +15,7 @@ const arePropsEqual = (oldProps, newProps) => {
  * 截自 GitHub 上的原始碼，用於改寫加入新功能
  * https://github.com/nick-keller/react-datasheet-grid/blob/master/src/columns/checkboxColumn.tsx
  */
-const CheckboxComponent = memo(
+const CheckboxComponent2 = memo(
 	({
 		columnData,
 		focus,
@@ -25,31 +25,33 @@ const CheckboxComponent = memo(
 		stopEditing,
 		disabled,
 	}) => {
-		// console.log("rendering CheckboxComponent");
+		// console.log("rendering CheckboxComponent2");
 		const { size } = columnData;
 
 		const ref = useRef(null);
 
-		const handleMouseDown = useCallback(() => {
-			if (!active) {
-				setRowData(!rowData);
-			}
-		}, [active, rowData, setRowData]);
+		// const handleMouseDown = useCallback(() => {
+		// 	if (!active) {
+		// 		setRowData(!rowData);
+		// 	}
+		// }, [active, rowData, setRowData]);
 
-		const handleChange = useCallback(() => {
-			// do nothing
-		}, []);
+		const handleChange = useCallback(
+			(e) => {
+				// do nothing
+				setRowData(e.target.checked);
+				setTimeout(() => stopEditing({ nextRow: false }), 50);
+			},
+			[setRowData, stopEditing]
+		);
 
-		// When cell becomes focus we immediately toggle the checkbox and blur the cell by calling `stopEditing`
-		// Notice the `nextRow: false` to make sure the active cell does not go to the cell below and stays on this cell
-		// This way the user can keep pressing Enter to toggle the checkbox on and off multiple times
 		useLayoutEffect(() => {
 			if (focus) {
-				setRowData(!rowData);
-				stopEditing({ nextRow: false });
+				ref.current?.focus();
+			} else {
+				ref.current?.blur();
 			}
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, [focus, stopEditing]);
+		}, [focus]);
 
 		return (
 			<input
@@ -77,7 +79,7 @@ const CheckboxComponent = memo(
 				// When cell is not active, we allow the user to toggle the checkbox by clicking on it
 				// When cell becomes active, we disable this feature and rely on focus instead (see `useLayoutEffect` above)
 				// onMouseDown={() => !active && setRowData(!rowData)}
-				onMouseDown={handleMouseDown}
+				// onMouseDown={handleMouseDown}
 				// onChange={() => null}
 				onChange={handleChange}
 			/>
@@ -85,7 +87,7 @@ const CheckboxComponent = memo(
 	},
 	arePropsEqual
 );
-CheckboxComponent.propTypes = {
+CheckboxComponent2.propTypes = {
 	columnData: PropTypes.object,
 	rowData: PropTypes.bool,
 	focus: PropTypes.bool,
@@ -94,5 +96,5 @@ CheckboxComponent.propTypes = {
 	stopEditing: PropTypes.func,
 	setRowData: PropTypes.func,
 };
-CheckboxComponent.displayName = "CheckboxComponent";
-export default CheckboxComponent;
+CheckboxComponent2.displayName = "CheckboxComponent2";
+export default CheckboxComponent2;

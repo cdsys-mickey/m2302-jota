@@ -88,7 +88,7 @@ const PkgTypePickerComponent = memo((props) => {
 			// hidePopupIndicator={!active}
 			hideControls={hideControls}
 			hidePlaceholder={!active}
-			fadeOutDisabled={false}
+			disableFadeOut
 			disableClearable
 			// virtualize
 			{...rest}

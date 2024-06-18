@@ -1,5 +1,6 @@
 import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
@@ -11,7 +12,7 @@ const ZA03DialogViewButtons = memo(
 			<Fragment ref={ref} {...rest}>
 				{onDelete && (
 					<ResponsiveButton
-						startIcon={<DeleteIcon />}
+						startIcon={<DeleteOutlineIcon />}
 						color="secondary"
 						onClick={onDelete}>
 						刪除

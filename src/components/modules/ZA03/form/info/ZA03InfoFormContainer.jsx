@@ -10,32 +10,32 @@ export const ZA03InfoFormContainer = () => {
 			depts: [],
 		},
 	});
-	const { reset } = form;
+
 	const za03 = useContext(ZA03Context);
 
-	const { itemDataReady, itemData } = za03;
+	// const { itemDataReady, itemData } = za03;
 
-	useEffect(() => {
-		if (itemDataReady) {
-			console.log(`za03 form reset`, itemData);
-			reset(itemData);
-		}
-	}, [reset, itemData, itemDataReady]);
+	// useEffect(() => {
+	// 	if (itemDataReady) {
+	// 		console.log(`za03 form reset`, itemData);
+	// 		reset(itemData);
+	// 	}
+	// }, [reset, itemData, itemDataReady]);
 
 	return (
-		<FormProvider {...form}>
-			<ZA03InfoForm
-				data={za03.itemData}
-				updating={za03.updating}
-				editing={za03.editing}
-				// deptDisabled={true}
-				onSubmit={form.handleSubmit(
-					za03.onEditorSubmit,
-					za03.onEditorSubmitError
-				)}
-				readError={za03.readError}
-			/>
-		</FormProvider>
+		// <FormProvider {...form}>
+		<ZA03InfoForm
+			data={za03.itemData}
+			updating={za03.updating}
+			editing={za03.editing}
+			// deptDisabled={true}
+			onSubmit={form.handleSubmit(
+				za03.onEditorSubmit,
+				za03.onEditorSubmitError
+			)}
+			readError={za03.readError}
+		/>
+		// </FormProvider>
 	);
 };
 

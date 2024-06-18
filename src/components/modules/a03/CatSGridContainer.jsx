@@ -20,8 +20,8 @@ export const CatSGridContainer = () => {
 			lgId={catS.lgId}
 			mdId={catS.mdId}
 			data={catS.gridData}
-			loading={catS.loading}
-			handleChange={catS.handleGridChange({
+			loading={catS.gridLoading}
+			handleChange={catS.buildGridChangeHandler({
 				onCreate: catS.handleCreate,
 				onUpdate: catS.handleUpdate,
 				onDelete: canDelete ? catS.handleConfirmDelete : null,

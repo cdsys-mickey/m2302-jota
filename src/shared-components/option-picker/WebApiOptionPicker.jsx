@@ -20,12 +20,12 @@ const WebApiOptionPicker = memo(
 			onOpen,
 			onClose,
 			onChange,
-			disabled = false,
+			disabled: disabledByParent = false,
 			// for hook
 			//http
 			url,
 			method = "get",
-			lazy = true,
+			disableLazy,
 			queryParam = "q",
 			querystring,
 			params,
@@ -43,6 +43,8 @@ const WebApiOptionPicker = memo(
 			getData,
 			onError,
 			disableClose,
+			disableOnSingleOption,
+			autoSelectSingleOption,
 			...rest
 		} = props;
 
@@ -56,13 +58,15 @@ const WebApiOptionPicker = memo(
 			onInputChange,
 			handleOpen,
 			handleClose,
+			disabled,
 		} = useWebApiOptions({
+			disableOnSingleOption,
 			disableClose,
 			multiple,
 			url,
 			method,
 			bearer,
-			lazy,
+			disableLazy,
 			queryParam,
 			querystring,
 			params,
@@ -81,6 +85,7 @@ const WebApiOptionPicker = memo(
 			onOpen,
 			onClose,
 			onChange,
+			autoSelectSingleOption,
 		});
 
 		return (
@@ -91,7 +96,7 @@ const WebApiOptionPicker = memo(
 				loading={loading}
 				options={options}
 				noOptionsText={noOptionsText}
-				disabled={disabled}
+				disabled={disabledByParent || disabled}
 				// Controlled Props
 				onInputChange={onInputChange}
 				open={open}
@@ -118,7 +123,7 @@ WebApiOptionPicker.propTypes = {
 	filterByServer: PropTypes.bool,
 	url: PropTypes.string,
 	method: PropTypes.oneOf(["get", "post"]),
-	lazy: PropTypes.bool,
+	disableLazy: PropTypes.bool,
 	queryParam: PropTypes.string,
 	// queryRequired: PropTypes.bool,
 	querystring: PropTypes.string,
@@ -136,6 +141,8 @@ WebApiOptionPicker.propTypes = {
 	onOpen: PropTypes.func,
 	multiple: PropTypes.bool,
 	disableClose: PropTypes.bool,
+	disableOnSingleOption: PropTypes.bool,
+	autoSelectSingleOption: PropTypes.bool,
 };
 
 export default WebApiOptionPicker;

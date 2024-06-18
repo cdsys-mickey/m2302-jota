@@ -1,12 +1,8 @@
-import FetchResultLabel from "@/shared-components/listview/FetchResultLabel";
-import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
-import { Box } from "@mui/material";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { forwardRef, memo } from "react";
 import A01CreateButtonContainer from "./A01CreateButtonContainer";
 import { A01FetchResultLabelContainer } from "./A01FetchResultLabelContainer";
 import A01PrintButtonContainer from "./A01PrintButtonContainer";
-import ModuleToolbar from "../ModuleToolbar";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 
 const LeftButtons = memo(() => {
 	return (

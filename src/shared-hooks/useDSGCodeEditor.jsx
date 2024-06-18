@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from "react";
 import { useWebApi } from "./useWebApi";
 import { useDSG } from "./useDSG";
@@ -5,6 +6,8 @@ import { useContext } from "react";
 import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import Objects from "../shared-modules/sd-objects";
+import _ from "lodash";
 
 const defaultTransformForReading = (payload) => {
 	return payload?.data || [];
@@ -24,6 +27,7 @@ export const useDSGCodeEditor = ({
 	baseUri,
 	displayName = "代碼",
 	querystring,
+	disableAutoDelete = false,
 	transformForReading = defaultTransformForReading,
 	transformForSubmitting = defaultTransformForSubmmit,
 }) => {
@@ -167,6 +171,34 @@ export const useDSGCodeEditor = ({
 		[baseUri, displayName, dsg, httpDeleteAsync, keyColumn, reload, token]
 	);
 
+	const isExistingRow = useCallback(
+		({ rowData }) => {
+			return dsg.prevGridData.some((prevRowData) => {
+				const prevKey = _.get(prevRowData, keyColumn);
+				const key = _.get(rowData, keyColumn);
+				return prevKey === key;
+			});
+		},
+		[dsg.prevGridData, keyColumn]
+	);
+
+	const isUnchanged = useCallback(
+		({ rowData, rowIndex }) => {
+			const prevRowData = dsg.prevGridData[rowIndex];
+			const prevKey = _.get(prevRowData, keyColumn);
+			const rowKey = _.get(rowData, keyColumn);
+
+			if (prevKey !== rowKey) {
+				throw `keys mismatched ${prevKey} → ${rowKey}`;
+			}
+
+			return Objects.arePropsEqual(prevRowData, rowData, {
+				fields: dsg.otherColumnNames,
+			});
+		},
+		[dsg.otherColumnNames, dsg.prevGridData, keyColumn]
+	);
+
 	const handleConfirmDelete = useCallback(
 		async (row) => {
 			const { rowData } = row;
@@ -183,6 +215,7 @@ export const useDSGCodeEditor = ({
 					dsg.setDeletingRow(null);
 					dsg.rollbackChanges();
 					dialogs.closeLatest();
+					// 游標移回原來的位置
 				},
 			});
 		},
@@ -209,6 +242,187 @@ export const useDSGCodeEditor = ({
 		[displayName, dsg, keyColumn]
 	);
 
+	const handleDeleteOperation = useCallback(
+		({ operation, onDelete, newValue }) => {
+			const fromRowIndex = operation.fromRowIndex;
+			const prevFromRowData = dsg.prevGridData[fromRowIndex];
+
+			const toRowIndex = operation.toRowIndex;
+			const prevToRowData = dsg.prevGridData[toRowIndex];
+
+			if (prevFromRowData) {
+				const fromRow = {
+					rowIndex: fromRowIndex,
+					rowData: prevFromRowData,
+				};
+				const toRow =
+					fromRowIndex === toRowIndex
+						? null
+						: {
+								rowIndex: toRowIndex,
+								rowData: prevToRowData,
+						  };
+				console.log(`[DSG DELETE]`, fromRow, toRow);
+				if (onDelete) {
+					onDelete(fromRow, toRow);
+				}
+			} else {
+				dsg.setGridData(newValue);
+			}
+		},
+		[dsg]
+	);
+
+	const handleUpdateOperation = useCallback(
+		({
+			rowIndex,
+			rowData,
+			newValue,
+			onDuplicatedError,
+			onPatch,
+			onBeforeUpdate,
+			onUpdate,
+			onBeforeCreate,
+			onCreate,
+			onDelete,
+		}) => {
+			const row = {
+				rowIndex,
+				rowData,
+			};
+			if (
+				Objects.isAllPropsNotNullOrEmpty(rowData, [
+					keyColumn,
+					...dsg.otherColumnNames,
+				])
+			) {
+				// 所有欄位都有值(包含 Key)
+
+				console.log("CREATE or UPDATE", rowData);
+				const key = _.get(rowData, keyColumn);
+				// 新增 或 修改
+
+				if (dsg.isKeyDuplicated(newValue, key)) {
+					console.log("[DSG]DuplicatedError detected", key);
+					if (onDuplicatedError) {
+						onDuplicatedError(row, newValue);
+					}
+				} else {
+					if (isExistingRow(row)) {
+						// 確認是否是額外欄位造成的異動
+						// Extra UPDATE
+						if (isUnchanged(row)) {
+							if (onPatch) {
+								onPatch(row, newValue);
+							}
+						} else {
+							// UPDATE
+							if (onBeforeUpdate) {
+								onBeforeUpdate(row);
+							}
+							if (onUpdate) {
+								onUpdate(row, newValue);
+							}
+						}
+					} else {
+						// CREATE
+						if (onBeforeCreate) {
+							onBeforeCreate(row);
+						}
+						if (onCreate) {
+							onCreate(row, newValue);
+						}
+					}
+				}
+				dsg.setGridData(newValue);
+			} else if (
+				!disableAutoDelete &&
+				Objects.isAllPropsNull(rowData, [...dsg.otherColumnNames])
+			) {
+				// 刪除: Key 以外都是 null
+				const prevRowData = dsg.prevGridData[rowIndex];
+				if (prevRowData) {
+					console.log(`DELETE`, row);
+					if (onDelete) {
+						onDelete(
+							{
+								rowIndex,
+								rowData: prevRowData,
+							},
+							newValue
+						);
+					}
+				}
+			} else {
+				dsg.setGridData(newValue);
+			}
+		},
+		[disableAutoDelete, dsg, isExistingRow, isUnchanged, keyColumn]
+	);
+
+	const buildGridChangeHandler = useCallback(
+		({
+				// C
+				onBeforeCreate,
+				onCreate,
+				// U
+				onBeforeUpdate,
+				onUpdate,
+				onPatch,
+				// D
+				onDelete,
+				// E
+				onDuplicatedError,
+			} = {}) =>
+			(newValue, operations) => {
+				console.log(`${gridId}.handleGridChange`, newValue);
+				// 只處理第一行
+				const operation = operations[0];
+				console.log("operation", operation);
+				if (operation.type === "DELETE") {
+					handleDeleteOperation({ operation, newValue, onDelete });
+				} else if (operation.type === "CREATE") {
+					dsg.setGridData(newValue);
+				} else if (operation.type === "UPDATE") {
+					const rowIndex = operation.fromRowIndex;
+					const rowData = newValue[rowIndex];
+					const prevRowData = dsg.prevGridData[rowIndex];
+					console.log(`[DSG UPDATE]`, rowData);
+
+					// *** MOVED TO handleDirtyRows ***
+					// const isDirty = isRowDataEquals(prevRowData, rowData);
+					// console.log("isDirty", isDirty);
+
+					// const key = _.get(rowData, keyColumn);
+					// if (key) {
+					// 	if (isDirty) {
+					// 		dirtyIds.add(key);
+					// 		console.log(`dirtyId ${key} added`);
+					// 	} else {
+					// 		dirtyIds.delete(key);
+					// 		console.log(`dirtyId ${key} removed`);
+					// 	}
+					// }
+					dsg.handleDirtyRows({ rowData, prevRowData });
+					handleUpdateOperation({
+						rowIndex,
+						rowData,
+						newValue,
+						onDuplicatedError,
+						onPatch,
+						onBeforeUpdate,
+						onUpdate,
+						onBeforeCreate,
+						onCreate,
+						onDelete,
+					});
+				} else {
+					dsg.setGridData(newValue);
+				}
+			},
+		[gridId, handleDeleteOperation, dsg, handleUpdateOperation]
+	);
+
 	return {
 		load,
 		// handleGridChange,
@@ -219,5 +433,7 @@ export const useDSGCodeEditor = ({
 		handleDuplicatedError,
 		// onRowSelectionChange,
 		...dsg,
+		// override
+		buildGridChangeHandler,
 	};
 };

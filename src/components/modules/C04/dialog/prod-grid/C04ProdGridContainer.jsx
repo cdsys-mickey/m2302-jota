@@ -5,6 +5,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useFormContext, useWatch } from "react-hook-form";
 import DSGBox from "../../../../../shared-components/dsg/DSGBox";
+import { useMemo } from "react";
 
 export const C04ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -23,17 +24,21 @@ export const C04ProdGridContainer = (props) => {
 		control: form.control,
 	});
 
+	const handleGridChange = useMemo(() => {
+		return c04.buildGridChangeHandler({
+			getValues: form.getValues,
+			setValue: form.setValue,
+			// handleRefreshAmt: c04.handleRefreshAmt,
+		});
+	}, [c04, form.getValues, form.setValue]);
+
 	return (
 		<DSGBox>
 			<C04ProdGrid
 				gridRef={c04.setGridRef}
 				readOnly={!c04.editing || !supplier || !rstDate}
 				data={c04.gridData}
-				handleGridChange={c04.handleGridChange({
-					getValues: form.getValues,
-					setValue: form.setValue,
-					// handleRefreshAmt: c04.handleRefreshAmt,
-				})}
+				handleGridChange={handleGridChange}
 				bearer={auth.token}
 				height={height - 390}
 				getRowKey={c04.getRowKey}

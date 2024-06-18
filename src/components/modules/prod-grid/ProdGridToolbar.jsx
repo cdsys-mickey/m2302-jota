@@ -22,11 +22,13 @@ const ProdGridToolbar = memo(
 				leftComponents={
 					<>
 						{/* <ProdGridLockRowsSwitchContainer /> */}
-						<ProdGridCancelEditButtonContainer
-							variant="contained"
-							color="neutral"
-						/>
 						<ProdGridEditButtonContainer variant="contained" />
+
+						<ProdGridCancelEditButtonContainer
+							variant="outlined"
+							color="warning">
+							離開
+						</ProdGridCancelEditButtonContainer>
 
 						<ProdGridSaveButtonContainer
 							variant="contained"

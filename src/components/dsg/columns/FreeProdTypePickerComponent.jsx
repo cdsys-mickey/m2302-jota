@@ -76,7 +76,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 			// hidePopupIndicator={!focus}
 			hideControls={hideControls}
 			hidePlaceholder={!active}
-			fadeOutDisabled={false}
+			disableFadeOut
 			selectOnFocus
 			{...rest}
 		/>

@@ -18,7 +18,7 @@ const A18Form = memo((props) => {
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form {...rest}>
 				<FormBox pt={1}>
-					<FormSectionBox py={2}>
+					<FormSectionBox py={2} px={1}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12}>
 								<AppDeptPicker

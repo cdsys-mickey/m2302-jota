@@ -18,6 +18,7 @@ const TxtExportOutputModePicker = memo(
 					options={TxtExport.options}
 					getOptionLabel={TxtExport.getOptionLabel}
 					isOptionEqualToValue={TxtExport.isOptionEqualToValue}
+					disableClearable
 					{...rest}
 				/>
 			);
@@ -30,6 +31,7 @@ const TxtExportOutputModePicker = memo(
 					options={TxtExport.options}
 					getOptionLabel={TxtExport.getOptionLabel}
 					isOptionEqualToValue={TxtExport.isOptionEqualToValue}
+					disableClearable
 					{...rest}
 				/>
 			);

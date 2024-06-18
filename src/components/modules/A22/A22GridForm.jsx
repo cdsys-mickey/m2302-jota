@@ -7,6 +7,7 @@ import FlexGrid from "@/shared-components/FlexGrid";
 import { A22GridFormToggleButtonContainer } from "./A22GridFormToggleButtonContainer";
 import { A22GridForm2Container } from "./A22GridForm2Container";
 import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
+import { OptionPickerProvider } from "../../../shared-components/option-picker/OptionPickerProvider";
 
 const A22GridForm = (props) => {
 	const { cat = true, safeQty = false, handleSubmit, ...rest } = props;
@@ -16,15 +17,18 @@ const A22GridForm = (props) => {
 				<Grid container spacing={1} columns={24}>
 					{/* ROW 1 */}
 
-					<Grid item xs={24} sm={12} md={16} lg={7}>
+					<Grid item xs={24} sm={12} md={16} lg={8}>
+						{/* <OptionPickerProvider> */}
 						<ProdPickerContainer
 							name="prod1"
 							label="起始商品編號"
 							size="small"
 							filterByServer
-							// queryRequired
+							// virtualize
 							typeToSearchText="以編號,條碼或名稱搜尋"
+							optionLabelSize="small"
 						/>
+						{/* </OptionPickerProvider> */}
 					</Grid>
 					<Grid item xs={24} sm={12} md={16} lg={8}>
 						<ProdPickerContainer
@@ -34,6 +38,7 @@ const A22GridForm = (props) => {
 							filterByServer
 							// queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
+							optionLabelSize="small"
 						/>
 					</Grid>
 					<Grid item lg={2}>
@@ -49,7 +54,7 @@ const A22GridForm = (props) => {
 						xs={24}
 						sm={12}
 						md={16}
-						lg={7}
+						lg={6}
 						justifyContent="flex-end"
 						sx={{
 							"& button": {

@@ -14,8 +14,8 @@ const ZA03DialogEditButtons = memo(
 					<>
 						<ResponsiveLoadingButton
 							onClick={onCancel}
-							color="neutral"
-							variant="contained"
+							color="primary"
+							variant="outlined"
 							{...rest}>
 							取消
 						</ResponsiveLoadingButton>
@@ -23,7 +23,7 @@ const ZA03DialogEditButtons = memo(
 							onClick={onSave}
 							type="submit"
 							endIcon={<SendIcon />}
-							color="warning"
+							color="primary"
 							variant="contained"
 							loading={loading}>
 							儲存

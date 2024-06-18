@@ -64,9 +64,9 @@ const CatMGrid = memo((props) => {
 		return height + (lockRows || !canCreate ? 48 : 0);
 	}, [canCreate, height, lockRows]);
 
-	if (loading) {
-		return <DSGLoading height={height} />;
-	}
+	// if (loading) {
+	// 	return <DSGLoading height={height} />;
+	// }
 
 	if (loading == null) {
 		return false;

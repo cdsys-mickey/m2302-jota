@@ -77,7 +77,7 @@ const AreaTypePickerComponent = memo((props) => {
 			// hidePopupIndicator={!focus}
 			hideControls={hideControls}
 			hidePlaceholder={!focus}
-			fadeOutDisabled={false}
+			disableFadeOut
 			selectOnFocus
 			{...rest}
 		/>

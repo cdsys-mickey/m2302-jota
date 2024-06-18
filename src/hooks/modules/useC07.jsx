@@ -1,4 +1,4 @@
-import C07 from "@/modules/md-C07";
+import C07 from "@/modules/md-c07";
 import { isDate } from "date-fns";
 import { useCallback, useContext, useRef } from "react";
 import { toast } from "react-toastify";
@@ -453,11 +453,11 @@ export const useC07 = () => {
 		[fetchAmt, prodGrid.gridData]
 	);
 
-	const handleGridChange = useCallback(
+	const buildGridChangeHandler = useCallback(
 		({ getValues, setValue }) =>
 			(newValue, operations) => {
 				const formData = getValues();
-				console.log("handleGridChange", operations);
+				console.log("buildGridChangeHandler", operations);
 				console.log("newValue", newValue);
 				const newGridData = [...newValue];
 				let checkFailed = false;
@@ -710,7 +710,7 @@ export const useC07 = () => {
 		onEditorSubmitError,
 		// Grid
 		...prodGrid,
-		handleGridChange,
+		buildGridChangeHandler,
 		getRowKey,
 		spriceDisabled,
 		// 列印

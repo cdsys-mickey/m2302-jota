@@ -112,7 +112,7 @@ const C03DialogForm = memo((props) => {
 									disabled={supplierPickerDisabled}
 									disableClearable
 									virtualize
-									fadeOutDisabled
+									// fadeOutDisabled
 									optionLabelSize="small"
 									// onChange={handleSupplierChange}
 									onChanged={handleSupplierChanged}

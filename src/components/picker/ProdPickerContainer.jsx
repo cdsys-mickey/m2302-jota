@@ -60,6 +60,7 @@ export const ProdPickerContainer = (props) => {
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
+			autoSelectSingleOption
 			{...rest}
 		/>
 	);

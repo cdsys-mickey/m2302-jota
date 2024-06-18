@@ -71,6 +71,9 @@ const FlexToolbar = memo(
 					pr={1}
 					alignItems="center"
 					justifyContent="flex-start"
+					// {...(!hasRight && {
+					// 	flex: 1,
+					// })}
 					flex={1}
 					sx={[
 						(theme) => ({

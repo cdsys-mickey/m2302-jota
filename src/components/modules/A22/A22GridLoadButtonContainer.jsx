@@ -39,7 +39,7 @@ export const A22GridLoadButtonContainer = () => {
 		return Objects.isAllPropsEmpty(criteria, "prod1,prod2,catL,catM,catS")
 			? "請先輸入篩選條件"
 			: totalElements
-			? `讀取資料(目前符合${totalElements}筆)`
+			? `讀取(符合${totalElements}筆)`
 			: "(查無相符商品)";
 	}, [criteria, totalElements]);
 

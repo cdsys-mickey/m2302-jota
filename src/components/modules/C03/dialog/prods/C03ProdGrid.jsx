@@ -140,7 +140,7 @@ const C03ProdGrid = memo((props) => {
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly}
-			height={height + (readOnly ? 48 : 0)}
+			height={height}
 			// // rowHeight={42}
 			value={data}
 			onChange={handleGridChange}

@@ -87,7 +87,7 @@ const C09DialogForm = memo((props) => {
 								name="txoOrder"
 								label="撥出單號"
 								// virtualize
-								fadeOutDisabled
+								// fadeOutDisabled
 								onChanged={handleTxoOrdersChanged}
 							/>
 						</Grid>

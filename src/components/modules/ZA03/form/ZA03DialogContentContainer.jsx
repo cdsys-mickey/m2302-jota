@@ -7,8 +7,8 @@ export const ZA03DialogContentContainer = () => {
 	const za03 = useContext(ZA03Context);
 
 	const infoDisabled = useMemo(() => {
-		return !!za03.authEditingMode;
-	}, [za03.authEditingMode]);
+		return !!za03.authGridEditingMode;
+	}, [za03.authGridEditingMode]);
 
 	const authDisabled = useMemo(() => {
 		return za03.editing;

@@ -16,11 +16,8 @@ const ZA03CopyAuthForm = memo((props) => {
 		<FlexBox py={1}>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
-					{/* <FormHelperText>
-						*選擇要複製權限給 {user.UserName} 的使用者
-					</FormHelperText> */}
 					<Typography>
-						*選擇要複製權限給 {user.UserName} 的使用者
+						*選擇要複製權限給「{user.UserName}」的使用者
 					</Typography>
 				</Grid>
 				<Grid item xs={12}>
@@ -36,7 +33,7 @@ const ZA03CopyAuthForm = memo((props) => {
 				</Grid>
 				<Grid item xs={12}>
 					<ZA03CopyAuthDeptCheckboxGroupContainer
-						label="可用單位"
+						label="要複製的單位"
 						name="depts"
 						CheckboxExProps={{
 							size: "small",

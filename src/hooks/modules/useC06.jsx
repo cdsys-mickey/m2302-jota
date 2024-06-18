@@ -3,7 +3,7 @@ import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import C06 from "@/modules/md-C06";
+import C06 from "@/modules/md-c06";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/useDSG";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
@@ -436,11 +436,11 @@ export const useC06 = () => {
 	// 	[httpGetAsync, token]
 	// );
 
-	const handleGridChange = useCallback(
+	const buildGridChangeHandler = useCallback(
 		({ getValues, setValue }) =>
 			(newValue, operations) => {
 				const formData = getValues();
-				console.log("handleGridChange", operations);
+				console.log("buildGridChangeHandler", operations);
 				console.log("newValue", newValue);
 				const newGridData = [...newValue];
 				let checkFailed = false;
@@ -757,7 +757,7 @@ export const useC06 = () => {
 		onEditorSubmitError,
 		// Grid
 		...prodGrid,
-		handleGridChange,
+		buildGridChangeHandler,
 		getRowKey,
 		// 列印
 		onPrintSubmit,

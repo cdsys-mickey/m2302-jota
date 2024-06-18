@@ -2,7 +2,7 @@ import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import C08 from "@/modules/md-C08";
+import C08 from "@/modules/md-c08";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/useDSG";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
@@ -653,11 +653,11 @@ export const useC08 = () => {
 		return rowData;
 	}, []);
 
-	const handleGridChange = useCallback(
+	const buildGridChangeHandler = useCallback(
 		({ getValues, setValue }) =>
 			(newValue, operations) => {
 				const formData = getValues();
-				console.log("handleGridChange", operations);
+				console.log("buildGridChangeHandler", operations);
 				console.log("newValue", newValue);
 				const newGridData = [...newValue];
 				let checkFailed = false;
@@ -1005,11 +1005,9 @@ export const useC08 = () => {
 	);
 
 	const getRowClassName = useCallback(
-		(row = {}) => {
-			const { rowId, rowData } = row;
-			// console.log("getRowClassName", row);
+		({ rowData }) => {
 			let sordId = null;
-			if (prodGrid.isRowSelected(row)) {
+			if (prodGrid.isRowSelected({ rowData })) {
 				sordId = rowData?.SOrdID;
 				if (sordIdRef.current !== sordId) {
 					console.log(`sordId →`, sordId);
@@ -1080,7 +1078,7 @@ export const useC08 = () => {
 		onEditorSubmitError,
 		// Grid
 		...prodGrid,
-		handleGridChange,
+		buildGridChangeHandler,
 		getRowKey,
 		spriceDisabled,
 		// 列印

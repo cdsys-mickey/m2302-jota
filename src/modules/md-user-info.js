@@ -2,17 +2,6 @@
 
 import Auth from "./md-auth";
 
-const AUTH_EDITING_MODE = Object.freeze({
-	CLICK: "CLICK",
-	SUBMIT: "SUBMIT",
-});
-
-const Tabs = Object.freeze({
-	INFO: "INFO",
-	AUTH: "AUTH",
-	AUTH2: "AUTH2",
-});
-
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { UserName, AbbrName } = option;
@@ -24,7 +13,8 @@ const isOptionEqualToValue = (option, value) => {
 };
 
 const transformForReading = (payload) => {
-	const { DeptID, Dept_N, Class, ...rest } = payload;
+	const { data, depts } = payload;
+	const { DeptID, Dept_N, Class, ...rest } = data[0] || {};
 	return {
 		...rest,
 		dept: {
@@ -32,15 +22,19 @@ const transformForReading = (payload) => {
 			AbbrName: Dept_N,
 		},
 		userClass: Auth.getById(Class),
+		depts,
 	};
 };
 
-const transformForEditorSubmit = (payload) => {
-	const { dept, userClass, ...rest } = payload;
+const transformForEditorSubmit = (data) => {
+	const { dept, userClass, depts, ...rest } = data;
 	return {
-		...rest,
-		DeptID: dept?.DeptID || "",
-		Class: userClass?.id || Auth.SCOPES.DEPT,
+		data: {
+			...rest,
+			DeptID: dept?.DeptID || "",
+			Class: userClass?.id || Auth.SCOPES.DEPT,
+		},
+		depts,
 	};
 };
 
@@ -59,14 +53,12 @@ const paramsToJsonData = (params) => {
 	};
 };
 
-const Users = {
+const UserInfo = {
 	transformForReading,
 	transformForEditorSubmit,
 	paramsToJsonData,
 	getOptionLabel,
 	isOptionEqualToValue,
-	Tabs,
-	AUTH_EDITING_MODE,
 };
 
-export default Users;
+export default UserInfo;

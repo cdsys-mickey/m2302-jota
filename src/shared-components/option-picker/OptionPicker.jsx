@@ -27,7 +27,7 @@ const PickerBox = styled(Box, {
 			"hideControls",
 			// "hidePopupIndicator",
 			// "disablePointerEvents",
-			"fadeOutDisabled",
+			"disableFadeOut",
 		].includes(prop),
 })(
 	({
@@ -39,7 +39,7 @@ const PickerBox = styled(Box, {
 		// hidePopupIndicator,
 		// disablePointerEvents,
 		hideControls,
-		fadeOutDisabled,
+		disableFadeOut,
 	}) => ({
 		/**
 		 * *** DSG adaptive support ****
@@ -59,7 +59,7 @@ const PickerBox = styled(Box, {
 		...(hideControls && {
 			pointerEvents: "none",
 		}),
-		...(!fadeOutDisabled && {
+		...(disableFadeOut && {
 			"& .MuiInputBase-input.Mui-disabled": {
 				color: "initial",
 				// "-webkit-text-fill-color": "initial",
@@ -117,7 +117,7 @@ const OptionPicker = memo(
 			// hidePopupIndicator = false,
 			// disablePointerEvents = false,
 			hideControls = false,
-			fadeOutDisabled = false,
+			disableFadeOut = false,
 			name,
 			dontFilterOptions,
 			stringify,
@@ -501,7 +501,7 @@ const OptionPicker = memo(
 				// hidePopupIndicator={hidePopupIndicator}
 				// disablePointerEvents={disablePointerEvents}
 				hideControls={hideControls}
-				fadeOutDisabled={fadeOutDisabled}
+				disableFadeOut={disableFadeOut}
 				size={size}
 				title={memoisedTitle}
 				width={width}
@@ -588,7 +588,7 @@ OptionPicker.propTypes = {
 	// hidePlaceholder: PropTypes.bool,
 	hideControls: PropTypes.bool,
 	disablePointerEvents: PropTypes.bool,
-	fadeOutDisabled: PropTypes.bool,
+	disableFadeOut: PropTypes.bool,
 	//
 	name: PropTypes.string,
 	// Autocomplete

@@ -4,10 +4,15 @@ import { StdPrintAddAllFieldsButtonContainer } from "./StdPrintAddAllFieldsButto
 import { StdPrintRemoveAllFieldsButtonContainer } from "./StdPrintRemoveAllFieldsButtonContainer";
 import StdPrintOutputModePicker from "./StdPrintOutputModePicker";
 import StdPrint from "../../modules/md-std-print";
+import FlexBox from "../../shared-components/FlexBox";
 
 const StdPrintActionButtons = () => {
 	return (
 		<>
+			<StdPrintRemoveAllFieldsButtonContainer />
+			<StdPrintAddAllFieldsButtonContainer />
+			{/* <StdPrintResetButtonContainer /> */}
+			<FlexBox flexGrow={1} />
 			<StdPrintOutputModePicker
 				dense
 				variant="outlined"
@@ -16,14 +21,13 @@ const StdPrintActionButtons = () => {
 				name="mode"
 				label=""
 				placeholder="輸出格式"
-				BoxProps={{
-					mr: 1,
-				}}
+				BoxProps={
+					{
+						// ml: 1,
+					}
+				}
 				defaultValue={StdPrint.getById(StdPrint.OutputModes.HTML)}
 			/>
-			<StdPrintResetButtonContainer />
-			<StdPrintRemoveAllFieldsButtonContainer />
-			<StdPrintAddAllFieldsButtonContainer />
 		</>
 	);
 };

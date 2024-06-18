@@ -44,25 +44,35 @@ const DialogTitleEx = memo(
 			return !hideCloseButton && !!onClose;
 		}, [hideCloseButton, onClose]);
 
+		const hasNoChildren = useMemo(() => {
+			return !children;
+		}, [children]);
+
 		return (
-			<DialogTitle
-				ref={ref}
-				sx={[
-					(theme) => ({
-						display: "flex",
-						...(padding && {
-							padding,
+			<>
+				<DialogTitle
+					ref={ref}
+					sx={[
+						(theme) => ({
+							display: "flex",
+							...(hasNoChildren && {
+								position: "absolute",
+							}),
+							...(padding && {
+								padding,
+							}),
+							...(onReturn && {
+								paddingLeft: "50px",
+							}),
+							minHeight: `calc(${theme.spacing(5)} + ${
+								yOffset * 2
+							}px)`,
 						}),
-						...(onReturn && {
-							paddingLeft: "50px",
-						}),
-						minHeight: `calc(${theme.spacing(5)} + ${
-							yOffset * 2
-						}px)`,
-					}),
-					...(Array.isArray(sx) ? sx : [sx]),
-				]}
-				{...rest}>
+						...(Array.isArray(sx) ? sx : [sx]),
+					]}
+					{...rest}>
+					{children}
+				</DialogTitle>
 				{!!onReturn && (
 					<FlexBox
 						sx={[
@@ -87,8 +97,6 @@ const DialogTitleEx = memo(
 						</Tooltip>
 					</FlexBox>
 				)}
-
-				{children}
 				<FlexBox
 					alignItems="center"
 					sx={[
@@ -126,7 +134,7 @@ const DialogTitleEx = memo(
 						</Tooltip>
 					)}
 				</FlexBox>
-			</DialogTitle>
+			</>
 		);
 	})
 );

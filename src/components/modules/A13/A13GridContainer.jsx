@@ -14,7 +14,7 @@ const A13GridContainer = () => {
 			setGridRef={a13.setGridRef}
 			data={a13.gridData}
 			loading={a13.gridLoading}
-			handleChange={a13.handleGridChange({
+			handleChange={a13.buildGridChangeHandler({
 				onCreate: a13.handleCreate,
 				onUpdate: a13.handleUpdate,
 				onDelete: a13.canDelete ? a13.handleConfirmDelete : null,

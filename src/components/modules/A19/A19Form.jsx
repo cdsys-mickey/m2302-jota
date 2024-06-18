@@ -21,7 +21,7 @@ const A19Form = memo((props) => {
 		<ContainerEx maxWidth="sm" alignLeft>
 			<form {...rest}>
 				<FormBox pt={1}>
-					<FormSectionBox py={2}>
+					<FormSectionBox py={1} px={1}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={12}>
 								<ProdPickerContainer

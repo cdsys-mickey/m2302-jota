@@ -13,6 +13,10 @@ export const A012GridContainer = () => {
 		return prodGrid.expanded ? height - 330 : height - 230;
 	}, [prodGrid.expanded, height]);
 
+	const gridChangeHandler = useMemo(() => {
+		return prodGrid.handleGridChange;
+	}, [prodGrid]);
+
 	return (
 		<A012Grid
 			readOnly={prodGrid.readOnly}
@@ -20,7 +24,7 @@ export const A012GridContainer = () => {
 			data={prodGrid.gridData}
 			loading={prodGrid.gridLoading}
 			height={gridHeight}
-			onChange={prodGrid.handleGridChange()}
+			onChange={gridChangeHandler}
 			bearer={token}
 		/>
 	);

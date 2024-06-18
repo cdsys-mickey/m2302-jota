@@ -122,7 +122,7 @@ const C08DialogForm = memo((props) => {
 								name="depOrders"
 								label="訂貨單號"
 								// virtualize
-								fadeOutDisabled
+								// fadeOutDisabled
 								onChanged={handleDepOrdersChanged}
 								disabled={purchaseOrdersDisabled || !txiDept}
 							/>

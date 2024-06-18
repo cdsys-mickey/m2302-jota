@@ -1,16 +1,17 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
 import { TabPanel } from "@mui/lab";
-import FormSectionBox from "../../../../../shared-components/form/FormSectionBox";
+import PropTypes from "prop-types";
+import { memo } from "react";
+import ZA03 from "@/modules/md-za03";
+import FormSectionBox from "@/shared-components/form/FormSectionBox";
+import { ZA03AuthToolbarContainer } from "./ZA03AuthToolbarContainer";
 import ZA03GridContainer from "./ZA03GridContainer";
-import Users from "../../../../../modules/md-users";
-import ZA03AuthToolbar from "./ZA03AuthToolbar";
+import { ZA03AuthGridToolbarContainer } from "./ZA03AuthGridToolbarContainer";
 
 const ZA03AuthForm = memo((props) => {
 	const { editing } = props;
 	return (
 		<TabPanel
-			value={Users.Tabs.AUTH}
+			value={ZA03.Tabs.AUTH}
 			sx={{
 				padding: 0,
 				"& .MuiInputLabel-root": {
@@ -19,13 +20,13 @@ const ZA03AuthForm = memo((props) => {
 				"& .MuiInputLabel-shrink": {
 					fontSize: "110%",
 					fontWeight: 600,
-					left: "-7px",
+					left: "0px",
 				},
 			}}>
-			<ZA03AuthToolbar />
 			{/* 權限 */}
 			{/* <FormSectionTitle>權限</FormSectionTitle> */}
-			<FormSectionBox py={editing ? 2 : 1}>
+			<FormSectionBox pb={1} mt={1} px={1}>
+				<ZA03AuthGridToolbarContainer />
 				<ZA03GridContainer />
 			</FormSectionBox>
 		</TabPanel>
