@@ -61,7 +61,7 @@ const useAppRedirect = () => {
 		toRoot("messages");
 	}, [toRoot]);
 
-	const toSettings = useCallback(() => {
+	const gotoSettings = useCallback(() => {
 		toRoot("settings");
 	}, [toRoot]);
 
@@ -73,7 +73,7 @@ const useAppRedirect = () => {
 		toHome,
 		toMessages,
 		toRenew,
-		toSettings,
+		gotoSettings,
 	};
 };
 

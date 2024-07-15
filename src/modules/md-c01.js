@@ -136,7 +136,7 @@ const isFiltered = (criteria) => {
 };
 
 const transformAsQueryParams = (data) => {
-	const { employee, date, pdline, rqtId } = data;
+	const { employee, date, pdline, rqtId, listMode, ...rest } = data;
 	return {
 		...(rqtId && {
 			rid: rqtId,
@@ -150,6 +150,8 @@ const transformAsQueryParams = (data) => {
 		...(pdline && {
 			pdline: pdline.CodeID,
 		}),
+		of: listMode?.id ?? "",
+		...rest,
 	};
 };
 

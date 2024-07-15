@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
 import { DeptSwitchMenuItemContainer } from "./menu-items/DeptSwitchMenuItemContainer";
+import { GotoKitchenMenuItemContainer } from "./menu-items/GotoKitchecnMenuItemContainer";
 
 const AccountMenu = memo(
 	forwardRef(
@@ -16,7 +17,8 @@ const AccountMenu = memo(
 				headerColor,
 				onClose,
 				onSignOut,
-				toSettings,
+				gotoSettings,
+				gotoKitchen,
 				...rest
 			},
 			ref
@@ -62,30 +64,17 @@ const AccountMenu = memo(
 							"& .MuiList-root": {
 								paddingTop: 0,
 							},
-							"& .MuiDivider-root": {
-								marginTop: 0,
-								marginBottom: 0,
-							},
 						},
 					}}
 					transformOrigin={{ horizontal: "right", vertical: "top" }}
 					anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-					{/* <MenuItem onClick={onClose}>{title}</MenuItem> */}
+					{/* 切換門市 */}
 					<DeptSwitchMenuItemContainer onMenuClose={onClose} />
-					<Divider />
-					{/* <MenuItem onClick={onClose}>
-						<ListItemIcon>
-							<RepeatIcon fontSize="small" />
-						</ListItemIcon>
-						切換體系
-					</MenuItem> */}
-					{/* 切換體系 */}
-
 					<MenuItem
-						onClick={toSettings}
+						onClick={gotoSettings}
 						sx={[
 							(theme) => ({
-								marginTop: theme.spacing(1),
+								marginBottom: theme.spacing(1),
 							}),
 						]}>
 						<ListItemIcon>
@@ -93,6 +82,7 @@ const AccountMenu = memo(
 						</ListItemIcon>
 						個人設定
 					</MenuItem>
+					<Divider />
 
 					<MenuItem onClick={handleSignOut}>
 						<ListItemIcon>
@@ -100,6 +90,10 @@ const AccountMenu = memo(
 						</ListItemIcon>
 						登出
 					</MenuItem>
+					{/*  */}
+					<GotoKitchenMenuItemContainer>
+						元件測試
+					</GotoKitchenMenuItemContainer>
 				</Menu>
 			);
 		}

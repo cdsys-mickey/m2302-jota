@@ -174,13 +174,15 @@ export const useC01 = () => {
 	const onSearchSubmit = useCallback(
 		(data) => {
 			console.log("onSearchSubmit", data);
+			const collected = {
+				...C01.transformAsQueryParams(data),
+				// of: data?.listMode?.id,
+				ck: 2,
+			};
+			console.log("collected", collected);
 			handlePopperClose();
 			listLoader.loadList({
-				params: {
-					...C01.transformAsQueryParams(data),
-					of: data?.listMode?.id,
-					ck: 2,
-				},
+				params: collected,
 			});
 		},
 		[handlePopperClose, listLoader]

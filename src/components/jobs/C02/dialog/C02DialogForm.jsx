@@ -11,8 +11,8 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
 import { C02ProdGridContainer } from "./prods/C02ProdGridContainer";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 
 const C02DialogForm = memo((props) => {
 	const {

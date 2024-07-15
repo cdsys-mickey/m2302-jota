@@ -117,6 +117,8 @@ import { D06Provider } from "../contexts/D06/D06Provider";
 import { D06FrameContainer } from "../pages/D06/D06FrameContainer";
 import { D07Provider } from "../contexts/D07/D07Provider";
 import { D07FrameContainer } from "../pages/D07/D07FrameContainer";
+import { KitchenSink } from "../pages/lab/KitchenSink";
+import { KitchenSinkContainer } from "../pages/lab/KitchenSinkContainer";
 
 const AppRoute = () => {
 	return (
@@ -158,6 +160,7 @@ const AppRoute = () => {
 				/>
 			</Route>
 			<Route path="lab-protected" element={<ProtectedRoute />}>
+				<Route path="kitchen-sink" element={<KitchenSinkContainer />} />
 				<Route path="dsg" element={<DSGTest2Container />} />
 				<Route path="option-picker" element={<OptionPickerTest />} />
 			</Route>

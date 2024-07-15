@@ -57,12 +57,16 @@ export const useWebApiOptions = (opts = {}) => {
 	// const [loading, setLoading] = useState(null);
 	const [open, setOpen] = useState(false);
 
-	const handleOpen = useCallback(() => {
-		if (onOpen) {
-			onOpen();
-		}
-		setOpen(true);
-	}, [onOpen]);
+	const handleOpen = useCallback(
+		(e) => {
+			if (onOpen) {
+				onOpen(e);
+				console.log("onOpen", e);
+			}
+			setOpen(true);
+		},
+		[onOpen]
+	);
 
 	const handleClose = useCallback(() => {
 		if (onClose) {
@@ -170,9 +174,7 @@ export const useWebApiOptions = (opts = {}) => {
 			headers,
 			bearer,
 			getData,
-			autoSelectSingleOption,
 			noOptionsText,
-			onChange,
 			onError,
 			fetchErrorText,
 		]

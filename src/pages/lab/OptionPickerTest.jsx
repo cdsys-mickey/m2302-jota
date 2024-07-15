@@ -15,6 +15,7 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
+import ProdTypeAPicker from "../../components/picker/ProdTypeAPicker";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -85,7 +86,7 @@ const OptionPickerTest = () => {
 							sx={{ width: 300 }}
 							disableListWrap
 							PopperComponent={RWPopper}
-							ListboxComponent={ListboxComponent}
+							ListboxComponent={VirtualizedPickerListbox}
 							options={OPTIONS}
 							groupBy={(option) => option[0].toUpperCase()}
 							renderInput={(params) => (
@@ -98,33 +99,6 @@ const OptionPickerTest = () => {
 								props,
 								option,
 								state.index,
-							]}
-							renderGroup={(params) => params}
-						/>
-					</Grid>
-					<Grid item xs={12} md={6}>
-						<OptionPicker
-							label="OptionPicker powered"
-							id="virtualize-demo"
-							sx={{ width: 300 }}
-							disableListWrap
-							// PopperComponent={RWPopper}
-							ListboxComponent={VirtualizedPickerListbox}
-							options={OPTIONS}
-							groupBy={(option) => option[0].toUpperCase()}
-							// renderInput={(params) => (
-							// 	<TextField {...params} label="10,000 options" />
-							// )}
-							renderOption={(
-								props,
-								option,
-								state
-								// ownerState
-							) => [
-								props,
-								option,
-								state.index,
-								// ownerState.getOptionLabel,
 							]}
 							renderGroup={(params) => params}
 						/>
@@ -144,12 +118,15 @@ const OptionPickerTest = () => {
 						>
 							<ProdPickerContainer
 								virtualize
-								groupBy={(option) => option.ProdID[0]}
+								// groupBy={(option) => option.ProdID[0]}
 								label="WebApiOptionPicker with virtualize ON"
 
 								// renderGroup={(params) => params}
 							/>
 						</OptionPickerProvider>
+					</Grid>
+					<Grid item xs={6}>
+						<ProdTypeAPicker />
 					</Grid>
 				</Grid>
 			</FormSectionBox>
