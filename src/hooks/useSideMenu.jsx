@@ -67,7 +67,7 @@ export const useSideMenu = ({ bgcolor = "#fff" } = {}) => {
 		console.error("onSubmitError", err);
 	}, []);
 
-	const onAuthoritiesChanges = useCallback(
+	const onAuthoritiesChange = useCallback(
 		(authorities, q) => {
 			setFilteredAuthorities(
 				!q
@@ -95,7 +95,7 @@ export const useSideMenu = ({ bgcolor = "#fff" } = {}) => {
 		filteredAuthorities,
 		// inputRef,
 		// q,
-		onAuthoritiesChanges,
+		onAuthoritiesChange,
 		onSubmit,
 		onSubmitError,
 		handleItemsRendered,

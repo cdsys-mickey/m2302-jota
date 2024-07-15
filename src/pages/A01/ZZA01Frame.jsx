@@ -1,8 +1,8 @@
-import A01Toolbar from "@/components/modules/A01/A01Toolbar";
-import { A01DialogContainer } from "@/components/modules/A01/dialog/A01DialogContainer";
-import A01ListHeader from "@/components/modules/A01/list/A01ListHeader";
-import { A01ListViewContainer } from "@/components/modules/A01/list/A01ListViewContainer";
-import { ProdSearchFieldContainer } from "@/components/modules/A01/search/ProdSearchFieldContainer";
+import A01Toolbar from "@/components/jobs/A01/A01Toolbar";
+import { A01DialogContainer } from "@/components/jobs/A01/dialog/A01DialogContainer";
+import A01ListHeader from "@/components/jobs/A01/list/A01ListHeader";
+import { A01ListViewContainer } from "@/components/jobs/A01/list/A01ListViewContainer";
+import { ProdSearchFieldContainer } from "@/components/jobs/A01/search/ProdSearchFieldContainer";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";

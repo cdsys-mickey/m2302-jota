@@ -1,8 +1,8 @@
-import { C09SearchFieldContainer } from "@/components/modules/C09/search/C09SearchFieldContainer";
-import { C09DialogContainer } from "@/components/modules/C09/dialog/C09DialogContainer";
-import C09ListHeader from "@/components/modules/C09/list/C09ListHeader";
-import C09ListToolbar from "@/components/modules/C09/list/C09ListToolbar";
-import { C09ListViewContainer } from "@/components/modules/C09/list/C09ListViewContainer";
+import { C09SearchFieldContainer } from "@/components/jobs/C09/search/C09SearchFieldContainer";
+import { C09DialogContainer } from "@/components/jobs/C09/dialog/C09DialogContainer";
+import C09ListHeader from "@/components/jobs/C09/list/C09ListHeader";
+import C09ListToolbar from "@/components/jobs/C09/list/C09ListToolbar";
+import { C09ListViewContainer } from "@/components/jobs/C09/list/C09ListViewContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

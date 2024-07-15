@@ -62,11 +62,13 @@ const transformForEditorSubmit = (data, materialsGridData) => {
 		ProdID: prod?.ProdID || "",
 		ProdData: prod?.ProdData,
 		...(materialsGridData && {
-			BomFile_S: materialsGridData.map((v, i) => ({
-				Seq: i,
-				SProdID: v.sprod.ProdID,
-				SProdQty: v.SProdQty,
-			})),
+			BomFile_S: materialsGridData
+				.filter((v) => v.sprod)
+				.map((v, i) => ({
+					Seq: i,
+					SProdID: v.sprod?.ProdID,
+					SProdQty: v.SProdQty?.toString() || "",
+				})),
 		}),
 	};
 };

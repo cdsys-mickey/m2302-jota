@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { useA22 } from "../../hooks/modules/useA22";
+import { useA22 } from "../../hooks/jobs/useA22";
 import { A22Context } from "./A22Context";
 
 export const A22Provider = (props) => {

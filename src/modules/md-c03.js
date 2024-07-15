@@ -68,10 +68,11 @@ const transformGridForReading = (data) => {
 
 const transformGridForSubmitting = (gridData) => {
 	return gridData
-		.filter((v) => v.prod?.ProdID)
+		.filter((v) => v.prod)
 		.map(({ Pkey, prod, ...rest }, index) => ({
 			Pkey: Pkey?.length < 36 ? "" : Pkey,
-			SProdID: prod?.ProdID,
+			SProdID: prod?.ProdID || "",
+			ProdData_N: prod?.ProdData || "",
 			...rest,
 			Seq: index + 1,
 		}));

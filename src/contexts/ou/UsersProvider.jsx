@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useZA03 } from "@/hooks/modules/useZA03";
+import { useZA03 } from "@/hooks/jobs/useZA03";
 import { UsersContext } from "./UsersContext";
 
 export const UsersProvider = ({ children }) => {

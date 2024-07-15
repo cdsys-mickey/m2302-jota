@@ -3,6 +3,7 @@ import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPic
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
+import Suppliers from "../../modules/md-suppliers";
 
 export const SupplierPickerContainer = (props) => {
 	const { label = "供應商", ...rest } = props;
@@ -15,7 +16,7 @@ export const SupplierPickerContainer = (props) => {
 	}, []);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
-		return option?.FactID === value?.FactID;
+		return Suppliers.isOptionEqualToValue(option, value);
 	}, []);
 
 	const getData = useCallback((payload) => {
@@ -23,11 +24,11 @@ export const SupplierPickerContainer = (props) => {
 	}, []);
 
 	const getOptionLabel = useCallback((option) => {
-		return `${option?.FactID} ${option?.FactData}`;
+		return Suppliers.getOptionLabel(option);
 	}, []);
 
 	const getOptionKey = useCallback((option) => {
-		return `${option?.FactID}`;
+		return Suppliers.getOptionKey(option);
 	}, []);
 
 	return (

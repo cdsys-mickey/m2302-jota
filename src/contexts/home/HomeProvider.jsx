@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useHome } from "../../hooks/modules/useHome";
+import { useHome } from "../../hooks/jobs/useHome";
 import { HomeContext } from "./HomeContext";
 
 export const HomeProvider = ({ children }) => {

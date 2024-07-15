@@ -5,6 +5,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { useToggle } from "@/shared-hooks/useToggle";
 import _ from "lodash";
 import DSG from "../shared-modules/sd-dsg";
+import Types from "../shared-modules/sd-types";
 
 const DEFAULT_SET_OPTS = {
 	reset: false,
@@ -30,6 +31,7 @@ export const useDSG = ({
 	// const [selectedRowIndex, setSelectedRowIndex] = useState();
 	// const [selectedRow, setSelectedRow] = useState();
 	const selectedRowRef = useRef();
+	const selectionRef = useRef();
 
 	const persistedIds = useMemo(() => new Set(), []);
 	const dirtyIds = useMemo(() => new Set(), []);
@@ -56,9 +58,73 @@ export const useDSG = ({
 	// 	}));
 	// }, []);
 
+	const isRowDataEquals = useCallback((prevRowData, rowData) => {
+		// console.log("isRowDataEquals", prevRowData, rowData);
+		return !Objects.arePropsEqual(prevRowData, rowData, {
+			// ignoresEmpty: true,
+		});
+	}, []);
+
+	const handleDirtyCheck = useCallback(
+		({ prevRowData, rowData, debug }) => {
+			const key = _.get(rowData, keyColumn);
+			if (!key) {
+				return;
+			}
+
+			const isDirty = isRowDataEquals(prevRowData, rowData);
+			console.log("isDirty", isDirty);
+
+			if (isDirty) {
+				dirtyIds.add(key);
+				if (debug) {
+					console.log(`dirtyId ${key} added`);
+				}
+			} else {
+				dirtyIds.delete(key);
+				if (debug) {
+					console.log(`dirtyId ${key} removed`);
+				}
+			}
+		},
+		[dirtyIds, isRowDataEquals, keyColumn]
+	);
+
+	const fillRows = useCallback(({ createRow, data, length = 10 }) => {
+		if (!createRow) {
+			throw new Error("未提供 createRow");
+		}
+
+		if (!data) {
+			return Array.from({ length }, createRow);
+		} else {
+			if (!Types.isArray(data)) {
+				throw new Error("data 並非 array");
+			}
+
+			if (data.length >= length) {
+				return data;
+			}
+			return [
+				...data,
+				...Array.from({ length: length - data.length }, createRow),
+			];
+		}
+	}, []);
+
 	const resetGridData = useCallback(
 		(newValue, opts = DEFAULT_SET_OPTS) => {
-			const { reset, prev, commit, init, debug } = opts;
+			const {
+				reset,
+				prev,
+				commit,
+				init,
+				debug,
+				dirtyCheckByIndex,
+				dirtyCheckBy,
+				createRow,
+				length = 10,
+			} = opts;
 			if (reset || init) {
 				dirtyIds.clear();
 				persistedIds.clear();
@@ -66,26 +132,67 @@ export const useDSG = ({
 					const key = _.get(item, keyColumn);
 					persistedIds.add(key);
 				});
+			} else {
+				if (dirtyCheckByIndex || dirtyCheckBy) {
+					const newGridData = Types.isMethod(newValue)
+						? newValue(gridData)
+						: newValue;
+					dirtyIds.clear();
+					newGridData.forEach((rowData, rowIndex) => {
+						let prevRowData = prevGridData[rowIndex];
+						if (dirtyCheckBy) {
+							const key = _.get(rowData, keyColumn);
+							prevRowData = prevGridData.find((item) => {
+								const itemKey = _.get(item, keyColumn);
+								return itemKey === key;
+							});
+						}
+						handleDirtyCheck({ rowData, prevRowData, debug });
+					});
+				}
 			}
+
 			if (commit || init) {
 				setPrevGridData(newValue);
 			} else if (prev) {
 				setPrevGridData(prev);
 			}
-			setGridData(newValue);
+
+			setGridData(
+				createRow
+					? fillRows({ createRow, data: newValue, length })
+					: newValue
+			);
+
 			setGridLoading(false);
 
 			if (debug) {
 				console.log("resetGridData", newValue);
 			}
 		},
-		[dirtyIds, keyColumn, persistedIds]
+		[
+			dirtyIds,
+			fillRows,
+			gridData,
+			handleDirtyCheck,
+			keyColumn,
+			persistedIds,
+			prevGridData,
+		]
 	);
 
 	const handleGridDataLoaded = useCallback(
 		(payload) => {
 			console.log(`${gridId}.onDataLoaded`, payload);
 			resetGridData(payload, { reset: true, commit: true });
+		},
+		[gridId, resetGridData]
+	);
+
+	const initGridData = useCallback(
+		(payload, opts) => {
+			console.log(`${gridId}.onDataLoaded`, payload);
+			resetGridData(payload, { ...opts, reset: true, commit: true });
 		},
 		[gridId, resetGridData]
 	);
@@ -161,13 +268,6 @@ export const useDSG = ({
 		dirtyIds.clear();
 	}, [dirtyIds, gridId, prevGridData]);
 
-	const isRowDataEquals = useCallback((prevRowData, rowData) => {
-		console.log("isRowDataEquals", prevRowData, rowData);
-		return !Objects.arePropsEqual(prevRowData, rowData, {
-			// ignoresEmpty: true,
-		});
-	}, []);
-
 	const isKeyDuplicated = useCallback(
 		(gridData, key) => {
 			return (
@@ -220,25 +320,6 @@ export const useDSG = ({
 		[gridId, setGridData]
 	);
 
-	const handleDirtyRows = useCallback(
-		({ prevRowData, rowData }) => {
-			const isDirty = isRowDataEquals(prevRowData, rowData);
-			console.log("isDirty", isDirty);
-
-			const key = _.get(rowData, keyColumn);
-			if (key) {
-				if (isDirty) {
-					dirtyIds.add(key);
-					console.log(`dirtyId ${key} added`);
-				} else {
-					dirtyIds.delete(key);
-					console.log(`dirtyId ${key} removed`);
-				}
-			}
-		},
-		[dirtyIds, isRowDataEquals, keyColumn]
-	);
-
 	const handleGridChange = useCallback(
 		(newValue, operations) => {
 			console.log(`${gridId}.handleGridChange`, newValue);
@@ -253,7 +334,7 @@ export const useDSG = ({
 				const prevRowData = prevGridData[rowIndex];
 				console.log(`[DSG UPDATE]`, rowData);
 
-				// *** MOVED TO handleDirtyRows ***
+				// *** MOVED TO handleDirtyCheck ***
 				// const isDirty = isRowDataEquals(prevRowData, rowData);
 				// console.log("isDirty", isDirty);
 
@@ -267,13 +348,13 @@ export const useDSG = ({
 				// 		console.log(`dirtyId ${key} removed`);
 				// 	}
 				// }
-				handleDirtyRows({ rowData, prevRowData });
+				handleDirtyCheck({ rowData, prevRowData });
 				setGridData(newValue);
 			} else {
 				setGridData(newValue);
 			}
 		},
-		[gridId, prevGridData, handleDirtyRows]
+		[gridId, prevGridData, handleDirtyCheck]
 	);
 
 	const setValueByRowIndex = useCallback(
@@ -288,10 +369,6 @@ export const useDSG = ({
 					: rowData
 			);
 			console.log(`setValueByRowIndex(${rowIndex})`, rewritten);
-			// setState((prev) => ({
-			// 	...prev,
-			// 	gridData: rewritten,
-			// }));
 			setGridData(rewritten, opts.callback);
 		},
 		[gridData]
@@ -368,11 +445,18 @@ export const useDSG = ({
 		[isRowSelected]
 	);
 
-	const handleSelectionChange = useCallback(
+	const handleSelectionChange = useCallback(({ selection }) => {
+		if (selection) {
+			selectionRef.current = selection;
+		}
+		// console.log("selection", selection);
+	}, []);
+
+	const buildSelectionChangeHandler = useCallback(
 		({ onRowSelectionChange = defaultOnRowSelectionChange } = {}) =>
 			({ selection }) => {
 				console.log(
-					`${gridId}.handleSelectionChange, selection:`,
+					`${gridId}.buildSelectionChangeHandler, selection:`,
 					selection
 				);
 				if (selection) {
@@ -393,16 +477,32 @@ export const useDSG = ({
 		[defaultOnRowSelectionChange, getRowDataByIndex, gridId]
 	);
 
+	const getActiveCell = useCallback(
+		(opts = {}) => {
+			if (gridRef.current) {
+				return gridRef.current.activeCell;
+			}
+			if (opts.debug) {
+				console.log(
+					`${gridId}.getActiveCell failed, gridRef.current is null`
+				);
+			}
+		},
+		[gridId]
+	);
+
 	const setActiveCell = useCallback(
-		(newCell) => {
+		(newCell, opts = {}) => {
 			console.log(`${gridId}.setActiveCell`, newCell);
 			if (gridRef.current) {
 				gridRef.current?.setActiveCell(newCell);
-			} else {
+				return;
+			}
+
+			if (opts.debug) {
 				console.log(
-					`${gridId}.setActiveCell(${JSON.stringify(
-						newCell
-					)}) failed: gridRef.current is null`
+					`${gridId}.setActiveCell failed: gridRef.current is null`,
+					newCell
 				);
 			}
 		},
@@ -439,6 +539,33 @@ export const useDSG = ({
 		toggleReadOnly();
 	}, [rollbackChanges, toggleReadOnly]);
 
+	const getSelection = useCallback((opts = {}) => {
+		return selectionRef.current;
+		// if (gridRef.current) {
+		// 	return gridRef.current?.selection;
+		// }
+		// if (opts.debug) {
+		// 	console.log(
+		// 		`${gridId}.getSelection failed: gridRef.current is null`
+		// 	);
+		// }
+	}, []);
+
+	const setSelection = useCallback(
+		(selection, opts = {}) => {
+			if (gridRef.current) {
+				return gridRef.current.setSelection(selection);
+			}
+			if (opts.debug) {
+				console.log(
+					`${gridId}.setSelection failed: gridRef.current is null`,
+					selection
+				);
+			}
+		},
+		[gridId]
+	);
+
 	return {
 		// STATES
 		// ...state,
@@ -446,6 +573,7 @@ export const useDSG = ({
 		prevGridData,
 		gridLoading,
 		setGridData: resetGridData,
+		initGridData,
 		//
 		gridRef,
 		setGridRef,
@@ -461,7 +589,7 @@ export const useDSG = ({
 		handleGridChange,
 		isPersisted,
 		handleActiveCellChange,
-		handleSelectionChange,
+		buildSelectionChangeHandler,
 		// isAllFieldsNotNull,
 		// DELETING
 		deletingRow,
@@ -470,7 +598,7 @@ export const useDSG = ({
 		removeRowByIndex,
 		getRowDataByIndex,
 		setValueByRowIndex,
-		setActiveCell,
+
 		// 鎖定列
 		readOnly,
 		// toggleReadOnly,
@@ -488,7 +616,14 @@ export const useDSG = ({
 		getSelectedRow,
 		selectedRowRef,
 		isDirty: dirtyIds && dirtyIds.size > 0,
-		handleDirtyRows,
+		handleDirtyCheck,
 		otherColumnNames,
+		fillRows,
+		handleSelectionChange,
+		// Ref Methods
+		setActiveCell,
+		getActiveCell,
+		getSelection,
+		setSelection,
 	};
 };

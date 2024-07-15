@@ -1,5 +1,5 @@
-import A15GridContainer from "@/components/modules/A15/A15GridContainer";
-import A15Toolbar from "@/components/modules/A15/A15Toolbar";
+import A15GridContainer from "@/components/jobs/A15/A15GridContainer";
+import A15Toolbar from "@/components/jobs/A15/A15Toolbar";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";

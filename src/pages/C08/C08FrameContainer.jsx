@@ -1,8 +1,8 @@
-import { C08SearchFieldContainer } from "@/components/modules/C08/search/C08SearchFieldContainer";
-import { C08DialogContainer } from "@/components/modules/C08/dialog/C08DialogContainer";
-import C08ListHeader from "@/components/modules/C08/list/C08ListHeader";
-import C08ListToolbar from "@/components/modules/C08/list/C08ListToolbar";
-import { C08ListViewContainer } from "@/components/modules/C08/list/C08ListViewContainer";
+import { C08SearchFieldContainer } from "@/components/jobs/C08/search/C08SearchFieldContainer";
+import { C08DialogContainer } from "@/components/jobs/C08/dialog/C08DialogContainer";
+import C08ListHeader from "@/components/jobs/C08/list/C08ListHeader";
+import C08ListToolbar from "@/components/jobs/C08/list/C08ListToolbar";
+import { C08ListViewContainer } from "@/components/jobs/C08/list/C08ListViewContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
@@ -32,7 +32,7 @@ export const C08FrameContainer = () => {
 		<Box sx={[boxStyles]}>
 			<FormProvider {...searchForm}>
 				<FrameBannerContainer>
-					{<C08SearchFieldContainer name="q" />}
+					<C08SearchFieldContainer name="q" />
 				</FrameBannerContainer>
 				{/* <C08FormContainer /> */}
 				<C08ListToolbar />

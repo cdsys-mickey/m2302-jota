@@ -1,4 +1,4 @@
-import { useC01 } from "@/hooks/modules/useC01";
+import { useC01 } from "@/hooks/jobs/useC01";
 import { C01Context } from "./C01Context";
 import PropTypes from "prop-types";
 

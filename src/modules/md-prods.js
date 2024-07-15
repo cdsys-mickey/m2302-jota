@@ -10,9 +10,14 @@ const getOptionLabel = (option) => {
 const isOptionEqualToValue = (option, value) =>
 	option["ProdID"] === value["ProdID"];
 
+const stringify = (option) => {
+	return `${option.ProdID} ${option.ProdData} ${option.Barcode}`;
+};
+
 const Prods = {
 	getOptionLabel,
 	isOptionEqualToValue,
+	stringify,
 };
 
 export default Prods;

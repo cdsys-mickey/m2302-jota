@@ -12,7 +12,7 @@ const MsgJobColumn = (props) => {
 			xs={4}
 			sm={4}
 			md={4}
-			lg={3}
+			lg={2}
 			justifyContent="center"
 			{...rest}>
 			{isLoading ? <Skeleton /> : children || ""}

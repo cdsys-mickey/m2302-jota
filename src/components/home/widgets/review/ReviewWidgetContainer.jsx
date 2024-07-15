@@ -23,7 +23,7 @@ export const ReviewWidgetContainer = () => {
 			heading={
 				<ModuleHeading
 					icon={InboxIcon}
-					text="待審核"
+					text="待覆核"
 					cssColor={Colors.HEADING}
 				/>
 			}

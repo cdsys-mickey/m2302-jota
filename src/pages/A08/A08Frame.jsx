@@ -1,5 +1,5 @@
-import A08GridContainer from "@/components/modules/A08/A08GridContainer";
-import A08Toolbar from "@/components/modules/A08/A08Toolbar";
+import A08GridContainer from "@/components/jobs/A08/A08GridContainer";
+import A08Toolbar from "@/components/jobs/A08/A08Toolbar";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";

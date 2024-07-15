@@ -1,4 +1,4 @@
-import { useC06 } from "@/hooks/modules/useC06";
+import { useC06 } from "@/hooks/jobs/useC06";
 import { C06Context } from "./C06Context";
 import PropTypes from "prop-types";
 

@@ -7,6 +7,6 @@ export const optionPickerColumn = (CellComponent, opts = {}) => {
 		deleteValue: () => null,
 		copyValue: ({ rowData }) => rowData,
 		pasteValue: ({ value }) => value,
-		isCellEmpty: ({ rowData }) => !rowData,
+		isCellEmpty: ({ rowData }) => false,
 	};
 };

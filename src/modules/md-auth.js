@@ -56,15 +56,21 @@ const FUNCTIONS = Object.freeze({
 	INQ: "查詢",
 	INS: "新增",
 	UPD: "修改",
-	PRT: "列印",
 	DEL: "刪除",
+	PRT: "列印",
 	USI: "停用",
-	CHK: "審核",
-	NCK: "取消審核",
+	CHK: "覆核",
+	NCK: "取消覆核",
 	RUN: "執行",
 	EXP: "匯出",
 	IMP: "匯入",
 });
+
+const FUNCTION_START_INDEX = 3;
+const CHECKBOX_INDEXES = [
+	0,
+	...Object.keys(FUNCTIONS).map((_, i) => i + FUNCTION_START_INDEX),
+];
 
 const getItemById = (data, id) => {
 	let targetItem = null;
@@ -109,6 +115,17 @@ const getHeaderColor = (userClass) => {
 	}
 };
 
+const isCheckboxColumn = ({ col, row }) => {
+	return CHECKBOX_INDEXES.includes(col);
+};
+
+const getFunctionKeyByIndex = (index) => {
+	const keys = Object.keys(FUNCTIONS);
+	return index >= FUNCTION_START_INDEX
+		? keys[index - FUNCTION_START_INDEX]
+		: undefined;
+};
+
 const Auth = {
 	getItemById,
 	COOKIE_MODE,
@@ -126,6 +143,8 @@ const Auth = {
 	COOKIE_OPTS,
 	getById,
 	getHeaderColor,
+	isCheckboxColumn,
+	getFunctionKeyByIndex,
 };
 
 export default Auth;

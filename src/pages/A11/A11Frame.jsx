@@ -1,5 +1,5 @@
-import A11GridContainer from "@/components/modules/A11/A11GridContainer";
-import A11Toolbar from "@/components/modules/A11/A11Toolbar";
+import A11GridContainer from "@/components/jobs/A11/A11GridContainer";
+import A11Toolbar from "@/components/jobs/A11/A11Toolbar";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";

@@ -229,8 +229,11 @@ export const useAuth = () => {
 			try {
 				deptSwitchAction.start();
 				const { status, error } = await httpGetAsync({
-					url: `v1/auth/switch-dept/${newDeptId}`,
+					url: "v1/auth/switch-dept",
 					bearer: state.token,
+					params: {
+						id: newDeptId,
+					},
 				});
 				if (status.success) {
 					validateCookie({ switching: true, doRedirect: false });
@@ -238,6 +241,11 @@ export const useAuth = () => {
 						reloadAuthorities: true,
 					});
 					deptSwitchAction.clear();
+					toast.success(
+						`已成功切換至 ${
+							data?.newDept?.DeptName || data?.newDept?.AbbrName
+						}`
+					);
 				} else {
 					throw error || new Error("切換單位發生未預期例外");
 				}

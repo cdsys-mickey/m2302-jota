@@ -1,4 +1,4 @@
-import { useB05 } from "../../hooks/modules/useB05";
+import { useB05 } from "../../hooks/jobs/useB05";
 import { B05Context } from "./B05Context";
 import PropTypes from "prop-types";
 

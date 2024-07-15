@@ -1,7 +1,7 @@
-import A16GridContainer from "@/components/modules/A16/A16GridContainer";
+import A16GridContainer from "@/components/jobs/A16/A16GridContainer";
 import { Box, useTheme } from "@mui/material";
 import { memo, useMemo } from "react";
-import A16Toolbar from "@/components/modules/A16/A16Toolbar";
+import A16Toolbar from "@/components/jobs/A16/A16Toolbar";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import PropTypes from "prop-types";

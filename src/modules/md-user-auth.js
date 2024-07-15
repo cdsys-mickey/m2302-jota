@@ -4,19 +4,6 @@ const AUTH_EDITING_MODE = Object.freeze({
 	SUBMIT: "SUBMIT",
 });
 
-const FUNCTIONS = [
-	"INQ",
-	"INS",
-	"UPD",
-	"PRT",
-	"DEL",
-	"USI",
-	"CHK",
-	"NCK",
-	"RUN",
-	"EXP",
-	"IMP",
-];
 const getOptionKey = (option) => {
 	return option["JobID"];
 };
@@ -58,8 +45,8 @@ const transformForSubmit = (data) => {
 			INQ: INQ ? "1" : "0",
 			INS: INS ? "1" : "0",
 			UPD: UPD ? "1" : "0",
-			PRT: PRT ? "1" : "0",
 			DEL: DEL ? "1" : "0",
+			PRT: PRT ? "1" : "0",
 			USI: USI ? "1" : "0",
 			CHK: CHK ? "1" : "0",
 			NCK: NCK ? "1" : "0",
@@ -77,17 +64,19 @@ const transformForReading = (data) => {
 		data;
 
 	return {
+		enabled: true,
 		INQ: INQ === "1",
 		INS: INS === "1",
 		UPD: UPD === "1",
-		PRT: PRT === "1",
 		DEL: DEL === "1",
+		PRT: PRT === "1",
 		USI: USI === "1",
 		CHK: CHK === "1",
 		NCK: NCK === "1",
 		RUN: RUN === "1",
 		EXP: EXP === "1",
 		IMP: IMP === "1",
+		Using: "1",
 		...rest,
 	};
 };
@@ -107,7 +96,6 @@ const UserAuth = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	renderTagLabel,
-	FUNCTIONS,
 };
 
 export default UserAuth;

@@ -1,13 +1,9 @@
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
-import Prods from "@/modules/md-prods";
 import PropTypes from "prop-types";
-import { useMemo } from "react";
 import queryString from "query-string";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
-import { useCallback } from "react";
+import { useCallback, useContext, useMemo } from "react";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 import ProdLines from "../../modules/md-prod-lines";
+import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
 export const ProdLinePickerContainer = (props) => {
 	const { name, label = "生產線別", ...rest } = props;
@@ -35,7 +31,6 @@ export const ProdLinePickerContainer = (props) => {
 			bearer={token}
 			url={`v1/prod/pdlines`}
 			// filterByServer
-			// queryRequired
 			queryParam="qs"
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}

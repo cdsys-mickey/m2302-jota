@@ -87,7 +87,7 @@ export const useWebApi = (props) => {
 				`${method.toUpperCase()} ${apiUrl}, params:`,
 				activeParams
 			);
-			if (!isUseDataAsParams) {
+			if (!isUseDataAsParams && data) {
 				console.log("data:", data);
 			}
 

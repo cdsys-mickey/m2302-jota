@@ -56,7 +56,7 @@ const ChangePwordForm = memo((props) => {
 								</Grid>
 							</Grid>
 							<FormHelperText>
-								*基於安全性考量，密碼請包括英數
+								* 基於安全性考量，密碼請同時包含英數
 							</FormHelperText>
 						</>
 					) : (
@@ -67,9 +67,9 @@ const ChangePwordForm = memo((props) => {
 										name="ogPword"
 										type="password"
 										fullWidth
-										label="舊密碼"
+										label="原密碼"
 										autoFocus
-										placeholder="請輸入舊密碼"
+										placeholder="目前的密碼"
 										required
 										size="small"
 										rules={{
@@ -85,7 +85,7 @@ const ChangePwordForm = memo((props) => {
 								</Grid>
 							</Grid>
 							<FormHelperText>
-								*基於安全性考量，請先輸入您的密碼
+								* 修改密碼前，請先輸入您目前的密碼
 							</FormHelperText>
 						</>
 					)}

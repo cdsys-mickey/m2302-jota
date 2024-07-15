@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { useA01 } from "../../hooks/modules/useA01";
+import { useA01 } from "../../hooks/jobs/useA01";
 import A01 from "../../modules/md-a01";
 import { A01Context } from "./A01Context";
 

@@ -1,16 +1,16 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import { Grid, Tooltip, Typography } from "@mui/material";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import { Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import ChipEx from "../../../shared-components/ChipEx";
-import ButtonEx from "../../../shared-components/button/ButtonEx";
+import { ButtonWrapper } from "../../../shared-components/button/ButtonWrapper";
 import MsgIDColumn from "../columns/MsgIDColumn";
 import MsgJobColumn from "../columns/MsgJobColumn";
 import MsgNameColumn from "../columns/MsgNameColumn";
 import MsgNewColumn from "../columns/MsgNewColumn";
 import MsgTimeColumn from "../columns/MsgTimeColumn";
-import { ButtonWrapper } from "../../../shared-components/button/ButtonWrapper";
 
 const UnreadTypography = (props) => {
 	const { children, unread, ...rest } = props;
@@ -58,31 +58,36 @@ const MsgListRow = memo((props) => {
 					<IndexColumn title={index}></IndexColumn>
 
 					<MsgNewColumn loading={loading}>
-						{unread && (
-							<ChipEx
-								severity="warning"
-								size="small"
-								label="待辦"
+						{unread ? (
+							<RadioButtonUncheckedIcon
+								fontSize="small"
+								color="warning"
+							/>
+						) : (
+							<CheckCircleOutlineIcon
+								fontSize="small"
+								color="success"
 							/>
 						)}
 					</MsgNewColumn>
+
+					<MsgJobColumn>
+						{value?.JobID && (
+							// <Tooltip
+							// 	title={memoisedTitle}
+							// 	arrow
+							// 	placement="right-start">
+							<ButtonWrapper onClick={handleGotoJob}>
+								{value?.JobID}
+							</ButtonWrapper>
+							// </Tooltip>
+						)}
+					</MsgJobColumn>
 					<MsgIDColumn loading={loading}>
 						<UnreadTypography unread={unread}>
 							{value?.SendName}
 						</UnreadTypography>
 					</MsgIDColumn>
-					<MsgJobColumn>
-						{value?.JobID && (
-							<Tooltip
-								title={memoisedTitle}
-								arrow
-								placement="right-start">
-								<ButtonWrapper onClick={handleGotoJob}>
-									{value?.JobID}
-								</ButtonWrapper>
-							</Tooltip>
-						)}
-					</MsgJobColumn>
 					<MsgNameColumn loading={loading}>
 						<UnreadTypography unread={unread}>
 							{value?.MsgBody}

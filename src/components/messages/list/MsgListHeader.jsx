@@ -13,9 +13,9 @@ const MsgListHeader = memo(
 		return (
 			<ListViewHeader ref={ref} {...rest}>
 				<IndexColumn></IndexColumn>
-				<MsgNewColumn></MsgNewColumn>
-				<MsgIDColumn>來自</MsgIDColumn>
+				<MsgNewColumn>完成</MsgNewColumn>
 				<MsgJobColumn>作業</MsgJobColumn>
+				<MsgIDColumn>來自</MsgIDColumn>
 				<MsgNameColumn>內容</MsgNameColumn>
 				<MsgTimeColumn>發送時間</MsgTimeColumn>
 			</ListViewHeader>

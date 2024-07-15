@@ -18,8 +18,8 @@ const MockProdSearchPopper = memo(
 			// Box 的 ref 不能放到 Paper 上
 			<PopperBox width={width} ref={ref}>
 				<PopperTitle onClose={onClose}>進階搜尋</PopperTitle>
+				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<Divider sx={{ mt: 0, mb: 2 }} />
 					<Grid container spacing={2} columns={12}>
 						<Grid item xs={12} sm={12}>
 							<ControlledTextField

@@ -1,32 +1,22 @@
-import { useContext } from "react";
-import A01Frame from "./ZZA01Frame";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useMemo } from "react";
+import A01Toolbar from "@/components/jobs/A01/A01Toolbar";
+import A01ListHeader from "@/components/jobs/A01/list/A01ListHeader";
+import { A01ListViewContainer } from "@/components/jobs/A01/list/A01ListViewContainer";
+import { ProdSearchFieldContainer } from "@/components/jobs/A01/search/ProdSearchFieldContainer";
 import Styles from "@/modules/md-styles";
-import { Box, useTheme } from "@mui/material";
-import { FormProvider, useForm } from "react-hook-form";
-import { A01DialogContainer } from "../../components/modules/A01/dialog/A01DialogContainer";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
-import { ProdSearchFieldContainer } from "@/components/modules/A01/search/ProdSearchFieldContainer";
-import A01Toolbar from "@/components/modules/A01/A01Toolbar";
-import A01ListHeader from "@/components/modules/A01/list/A01ListHeader";
-import { A01ListViewContainer } from "@/components/modules/A01/list/A01ListViewContainer";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { Box, useTheme } from "@mui/material";
+import { useCallback, useContext, useMemo } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { A01DialogContainer } from "../../components/jobs/A01/dialog/A01DialogContainer";
 import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
+import { A01Context } from "../../contexts/A01/A01Context";
 import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
 import A01 from "../../modules/md-a01";
-import { A01Context } from "../../contexts/A01/A01Context";
-import { useMatch } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { useInit } from "../../shared-hooks/useInit";
-import { useEffect } from "react";
-import { useRef } from "react";
-import { useState } from "react";
-import { useSyncQuery } from "../../shared-hooks/useSyncQuery";
-import { useCallback } from "react";
+import { useQuerySync } from "../../shared-hooks/useQuerySync";
 
 export const A01FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
-	const { clearParams } = useContext(AppFrameContext);
 	const searchForm = useForm();
 	const theme = useTheme();
 	const a01 = useContext(A01Context);
@@ -45,7 +35,7 @@ export const A01FrameContainer = () => {
 		[selectById]
 	);
 
-	useSyncQuery("id", handleQuerySync);
+	useQuerySync("id", handleQuerySync);
 
 	return (
 		<Box sx={[boxStyles]}>

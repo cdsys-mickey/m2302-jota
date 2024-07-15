@@ -270,6 +270,52 @@ export const useInfiniteLoader = (props = {}) => {
 		[debounce, debouncedListLoading, state.listLoading]
 	);
 
+	const getIndexById = useCallback(
+		({ key, id }) => {
+			if (!listData) {
+				return null;
+			}
+			const entry = Object.entries(listData).find(
+				([_, value]) => value[key] === id
+			);
+			const index = entry ? parseInt(entry[0], 10) : null;
+			return index;
+		},
+		[listData]
+	);
+
+	const findAdjacentId = useCallback(
+		({ key, id, reverse = false } = {}) => {
+			const entry = Object.entries(listData).find(
+				([_, value]) => value[key] === id
+			);
+			const index = entry ? parseInt(entry[0], 10) : null;
+			if (index !== null && !isNaN(index)) {
+				const nextIndex = reverse ? index - 1 : index + 1;
+				const nextRowData = listData[nextIndex];
+				if (nextRowData) {
+					return nextRowData[key];
+				}
+			}
+			return null;
+		},
+		[listData]
+	);
+
+	const findNextId = useCallback(
+		({ ...opts }) => {
+			return findAdjacentId({ ...opts });
+		},
+		[findAdjacentId]
+	);
+
+	const findPrevId = useCallback(
+		({ key, id }) => {
+			return findAdjacentId({ key, id, reverse: true });
+		},
+		[findAdjacentId]
+	);
+
 	return {
 		// PROPS
 		saveKey,
@@ -288,5 +334,8 @@ export const useInfiniteLoader = (props = {}) => {
 		handleItemsRendered,
 		refreshList,
 		clearListLoading,
+		findNextId,
+		findPrevId,
+		getIndexById,
 	};
 };

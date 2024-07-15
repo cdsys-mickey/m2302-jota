@@ -1,3 +1,7 @@
 :root {
   --toastify-color-warning: rgb(255, 163, 24);
+  --dsg-cell-disabled-background-color: rgba(0, 0, 0, 0.04);
+  /* --dsg-border-color: rgba(0,0,0,0.15); */
+  /* --dsg-selection-border-color: rgb(69,128,230); */
+  --dsg-selection-border-color: #00bdd1;
 }

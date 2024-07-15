@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { useCallback } from "react";
 import { useState } from "react";
 
@@ -5,6 +6,7 @@ export const useDialogs = ({ buttonProps }) => {
 	const [entities, setEntities] = useState([]);
 
 	const closeLatest = useCallback(() => {
+		console.log("closeLatest");
 		setEntities((prev) => {
 			const latest = prev.pop();
 			if (!latest) {
@@ -18,18 +20,37 @@ export const useDialogs = ({ buttonProps }) => {
 	}, []);
 
 	const create = useCallback(
-		({ buttonProps: dialogbuttonProps, ...dialogProps }) => {
-			setEntities((prev) => [
-				...prev,
-				{
-					buttonProps: {
-						...buttonProps,
-						...dialogbuttonProps,
+		({
+			buttonProps: dialogbuttonProps,
+			closeOthers = false,
+			...dialogProps
+		}) => {
+			if (closeOthers) {
+				setEntities([
+					{
+						id: nanoid(),
+						buttonProps: {
+							...buttonProps,
+							...dialogbuttonProps,
+						},
+						open: true,
+						...dialogProps,
 					},
-					open: true,
-					...dialogProps,
-				},
-			]);
+				]);
+			} else {
+				setEntities((prev) => [
+					...prev,
+					{
+						id: nanoid(),
+						buttonProps: {
+							...buttonProps,
+							...dialogbuttonProps,
+						},
+						open: true,
+						...dialogProps,
+					},
+				]);
+			}
 		},
 		[buttonProps]
 	);
@@ -51,6 +72,7 @@ export const useDialogs = ({ buttonProps }) => {
 			onConfirm,
 			onCancel,
 			closeOnConfirm = true,
+			...rest
 		}) => {
 			create({
 				title: title,
@@ -65,6 +87,7 @@ export const useDialogs = ({ buttonProps }) => {
 					if (onCancel) onCancel();
 					closeLatest();
 				},
+				...rest,
 			});
 		},
 		[closeLatest, create]
@@ -78,7 +101,7 @@ export const useDialogs = ({ buttonProps }) => {
 			onConfirm,
 			onCancel,
 			label,
-			disableCloseOnConfirm,
+			disableCloseOnConfirm = false,
 			...rest
 		}) => {
 			create({
@@ -106,7 +129,7 @@ export const useDialogs = ({ buttonProps }) => {
 	);
 
 	const alert = useCallback(
-		({ title = "提醒", message = "[訊息]", onConfirm }) => {
+		({ title = "提醒", message = "[訊息]", onConfirm, ...rest }) => {
 			create({
 				title: title,
 				message: message,
@@ -114,6 +137,7 @@ export const useDialogs = ({ buttonProps }) => {
 					if (onConfirm) onConfirm();
 					closeLatest();
 				},
+				...rest,
 			});
 		},
 		[create, closeLatest]

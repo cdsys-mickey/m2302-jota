@@ -245,8 +245,8 @@ const isFiltered = (criteria) => {
 const paramsToJsonData = (mode) => (params) => {
 	const where =
 		mode === A01.Mode.NEW_PROD
-			? [Reports.addParam("審核人員", "=", "")]
-			: [Reports.addParam("審核人員", "<>", "")];
+			? [Reports.addParam("覆核人員", "=", "")]
+			: [Reports.addParam("覆核人員", "<>", "")];
 
 	if (params?.bc) {
 		where.push({

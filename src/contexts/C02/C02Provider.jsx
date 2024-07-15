@@ -1,4 +1,4 @@
-import { useC02 } from "../../hooks/modules/useC02";
+import { useC02 } from "../../hooks/jobs/useC02";
 import { C02Context } from "./C02Context";
 import PropTypes from "prop-types";
 

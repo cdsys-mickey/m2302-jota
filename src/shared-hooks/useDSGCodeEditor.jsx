@@ -389,7 +389,7 @@ export const useDSGCodeEditor = ({
 					const prevRowData = dsg.prevGridData[rowIndex];
 					console.log(`[DSG UPDATE]`, rowData);
 
-					// *** MOVED TO handleDirtyRows ***
+					// *** MOVED TO handleDirtyCheck ***
 					// const isDirty = isRowDataEquals(prevRowData, rowData);
 					// console.log("isDirty", isDirty);
 
@@ -403,7 +403,7 @@ export const useDSGCodeEditor = ({
 					// 		console.log(`dirtyId ${key} removed`);
 					// 	}
 					// }
-					dsg.handleDirtyRows({ rowData, prevRowData });
+					dsg.handleDirtyCheck({ rowData, prevRowData });
 					handleUpdateOperation({
 						rowIndex,
 						rowData,

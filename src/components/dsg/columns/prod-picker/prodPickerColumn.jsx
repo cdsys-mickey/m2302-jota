@@ -9,6 +9,6 @@ export const prodPickerColumn = (opts) => {
 		deleteValue: () => null,
 		copyValue: ({ rowData }) => JSON.stringify(rowData),
 		pasteValue: ({ value }) => JSON.parse(value),
-		isCellEmpty: ({ rowData }) => false,
+		isCellEmpty: ({ rowData }) => !rowData,
 	};
 };

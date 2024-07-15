@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { useA26 } from "../../hooks/modules/useA26";
+import { useA26 } from "../../hooks/jobs/useA26";
 import { A26Context } from "./A26Context";
 
 export const A26Provider = (props) => {

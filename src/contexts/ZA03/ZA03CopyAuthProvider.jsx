@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useZA03CopyAuth } from "../../hooks/modules/useZA03CopyAuth";
+import { useZA03CopyAuth } from "../../hooks/jobs/useZA03CopyAuth";
 import { ZA03CopyAuthContext } from "./ZA03CopyAuthContext";
 import PropTypes from "prop-types";
 import { AuthContext } from "../auth/AuthContext";

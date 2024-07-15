@@ -108,6 +108,7 @@ const OptionPicker = memo(
 		// console.log("redenring OptionPicker");
 		const {
 			// Global
+			tagDisabled,
 			onChange,
 			dense = false,
 			dnd = false,
@@ -293,6 +294,7 @@ const OptionPicker = memo(
 						: getOptionLabel
 						? getOptionLabel(v)
 						: v;
+
 					return (
 						<Chip
 							key={key}
@@ -300,11 +302,15 @@ const OptionPicker = memo(
 							size="small"
 							color="primary"
 							{...getTagProps({ index })}
+							{...(tagDisabled && {
+								disabled: tagDisabled(v),
+							})}
+							// disabled={index === 0}
 						/>
 					);
 				});
 			},
-			[getOptionKey, getOptionLabel, renderTagLabel]
+			[getOptionKey, getOptionLabel, renderTagLabel, tagDisabled]
 		);
 
 		const renderDndTags = useCallback(
@@ -328,6 +334,9 @@ const OptionPicker = memo(
 									{...provided.draggableProps}
 									{...provided.dragHandleProps}
 									{...getTagProps({ index })}
+									{...(tagDisabled && {
+										disabled: tagDisabled(v),
+									})}
 								/>
 								// </div>
 							)}
@@ -335,18 +344,23 @@ const OptionPicker = memo(
 					);
 				});
 			},
-			[getOptionKey, getOptionLabel, renderTagLabel]
+			[getOptionKey, getOptionLabel, renderTagLabel, tagDisabled]
 		);
 
 		const renderTags = useCallback(
 			(value, getTagProps, ownerState) => {
 				if (dnd) {
-					return renderDndTags(value, getTagProps, ownerState);
+					return renderDndTags(
+						value,
+						getTagProps,
+						ownerState,
+						tagDisabled
+					);
 				} else {
 					return renderNormalTags(value, getTagProps, ownerState);
 				}
 			},
-			[dnd, renderDndTags, renderNormalTags]
+			[dnd, renderDndTags, renderNormalTags, tagDisabled]
 		);
 
 		// eslint-disable-next-line no-unused-vars
@@ -378,13 +392,15 @@ const OptionPicker = memo(
 
 		const itemStyle = useMemo(() => {
 			switch (optionLabelSize) {
-				case "small":
-					return {
-						fontSize: "8px",
-					};
-				case "medium":
+				case "xs":
+					return { fontSize: "70%" };
+				case "sm":
 					return {
 						fontSize: "80%",
+					};
+				case "md":
+					return {
+						fontSize: "90%",
 					};
 				default:
 					return {};
@@ -558,7 +574,7 @@ const OptionPicker = memo(
 										paddingTop: "2px",
 										paddingBottom: "2px",
 										paddingLeft: "2px",
-										paddingRight: "40px",
+										// paddingRight: "40px",
 									},
 							}),
 						},
@@ -647,5 +663,6 @@ OptionPicker.propTypes = {
 	GridRowComponent: PropTypes.elementType,
 	PaperComponent: PropTypes.elementType,
 	hidePlaceholder: PropTypes.bool,
+	tagDisabled: PropTypes.func,
 };
 export default OptionPicker;

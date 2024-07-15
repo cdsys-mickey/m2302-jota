@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { useA11 } from "@/hooks/modules/useA11";
+import { useA11 } from "@/hooks/jobs/useA11";
 import { A11Context } from "./A11Context";
 
 export const A11Provider = (props) => {

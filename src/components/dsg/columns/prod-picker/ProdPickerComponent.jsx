@@ -71,9 +71,8 @@ const ProdPickerComponent = memo((props) => {
 
 	return (
 		<ProdPickerContainer
-			queryParam="qs"
 			label=""
-			hideBorders
+			queryParam="qs"
 			inputRef={ref}
 			disabled={disabled}
 			value={rowData}
@@ -83,6 +82,7 @@ const ProdPickerComponent = memo((props) => {
 			typeToSearchText="輸入編號或名稱搜尋"
 			filterByServer
 			// DSG 專屬屬性
+			hideBorders
 			dense
 			// disablePointerEvents={!focus}
 			// hidePopupIndicator={!focus}

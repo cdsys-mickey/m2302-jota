@@ -66,8 +66,8 @@ const transformGridForSubmitting = (gridData) => {
 				SPrice: SPrice?.toString() || "",
 				SAmt: SAmt?.toString() || "",
 				SType: stype?.id || "",
+				SRsnID: dtype?.CodeID || "",
 				Seq: index + 1,
-				SRsnID: dtype?.id || "",
 				SQtyNote: overrideSQty ? "*" : "",
 				...rest,
 			})

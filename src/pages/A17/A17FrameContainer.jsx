@@ -1,10 +1,10 @@
-import A17Toolbar from "@/components/modules/A17/A17Toolbar";
+import A17Toolbar from "@/components/jobs/A17/A17Toolbar";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
-import { A17FormContainer } from "../../components/modules/A17/A17FormContainer";
+import { A17FormContainer } from "../../components/jobs/A17/A17FormContainer";
 import { eachHourOfInterval } from "date-fns";
 import { useEffect } from "react";
 import CrudContext from "../../contexts/crud/CrudContext";

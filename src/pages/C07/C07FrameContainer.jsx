@@ -1,8 +1,8 @@
-import { C07SearchFieldContainer } from "@/components/modules/C07/search/C07SearchFieldContainer";
-import { C07DialogContainer } from "@/components/modules/C07/dialog/C07DialogContainer";
-import C07ListHeader from "@/components/modules/C07/list/C07ListHeader";
-import C07ListToolbar from "@/components/modules/C07/list/C07ListToolbar";
-import { C07ListViewContainer } from "@/components/modules/C07/list/C07ListViewContainer";
+import { C07SearchFieldContainer } from "@/components/jobs/C07/search/C07SearchFieldContainer";
+import { C07DialogContainer } from "@/components/jobs/C07/dialog/C07DialogContainer";
+import C07ListHeader from "@/components/jobs/C07/list/C07ListHeader";
+import C07ListToolbar from "@/components/jobs/C07/list/C07ListToolbar";
+import { C07ListViewContainer } from "@/components/jobs/C07/list/C07ListViewContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

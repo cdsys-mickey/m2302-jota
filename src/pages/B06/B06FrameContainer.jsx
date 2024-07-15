@@ -1,14 +1,15 @@
-import B06Toolbar from "@/components/modules/B06/B06Toolbar";
-import B06ListHeader from "@/components/modules/B06/list/B06ListHeader";
-import { B06ListViewContainer } from "@/components/modules/B06/list/B06ListViewContainer";
+import B06Toolbar from "@/components/jobs/B06/B06Toolbar";
+import B06ListHeader from "@/components/jobs/B06/list/B06ListHeader";
+import { B06ListViewContainer } from "@/components/jobs/B06/list/B06ListViewContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { B06FormContainer } from "../../components/modules/B06/form/B06FormContainer";
-import { B06ToolbarContainer } from "../../components/modules/B06/B06ToolbarContainer";
+import { B06FormContainer } from "../../components/jobs/B06/form/B06FormContainer";
+import { B06ToolbarContainer } from "../../components/jobs/B06/B06ToolbarContainer";
+import ContainerEx from "../../shared-components/ContainerEx";
 
 export const B06FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -23,7 +24,9 @@ export const B06FrameContainer = () => {
 		<FormProvider {...searchForm}>
 			<Box sx={[boxStyles]}>
 				<FrameBannerContainer></FrameBannerContainer>
-				<B06FormContainer />
+				<ContainerEx maxWidth="md" alignLeft>
+					<B06FormContainer />
+				</ContainerEx>
 				<B06ToolbarContainer minHeight="42px" />
 				<B06ListHeader />
 				<B06ListViewContainer />

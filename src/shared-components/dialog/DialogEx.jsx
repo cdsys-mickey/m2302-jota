@@ -57,7 +57,7 @@ const DialogEx = memo(
 			children,
 			confirmText = "確定",
 			cancelText = "取消",
-
+			index = 0,
 			minWidth = "20em",
 			// maxWidth = "100vw",
 			// minHeight,
@@ -137,6 +137,13 @@ const DialogEx = memo(
 			}
 		}, [onConfirm, onSubmit]);
 
+		const handleCancel = useCallback(() => {
+			if (onCancel) {
+				onCancel();
+			}
+			onClose();
+		}, [onCancel, onClose]);
+
 		const handleClose = useCallback(() => {
 			if (triggerCancelOnClose && onCancel) {
 				onCancel();
@@ -173,7 +180,14 @@ const DialogEx = memo(
 				ref={ref}
 				onClose={handleClose}
 				fullScreen={isFullScreen}
-				sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
+				sx={[
+					{
+						"& .MuiDialog-paper": {
+							zIndex: 1300 + index,
+						},
+					},
+					...(Array.isArray(sx) ? sx : [sx]),
+				]}
 				{...rest}>
 				<DialogTitleEx
 					onClose={onClose}
@@ -202,7 +216,8 @@ const DialogEx = memo(
 						(theme) => ({
 							...(minWidth && { minWidth: minWidth }),
 							...(dense && {
-								paddingBottom: theme.spacing(1),
+								// paddingBottom: theme.spacing(1),
+								paddingBottom: 0,
 							}),
 							paddingTop: 0,
 						}),
@@ -246,24 +261,29 @@ const DialogEx = memo(
 						{OtherActionButtonsComponent && (
 							<OtherActionButtonsComponent />
 						)}
-						{onCancel && (
-							<ButtonWrapper
-								responsive
-								color="primary"
-								onClick={onCancel}
-								{...buttonProps}
-								{...cancelButtonProps}>
-								{cancelText}
-							</ButtonWrapper>
-						)}
 						{showConfirmButton && (
 							<ButtonWrapper
 								responsive
 								onClick={handleConfirm}
 								loading={working}
+								{...(!prompt && {
+									autoFocus: true,
+								})}
+								// autoFocus
 								{...buttonProps}
 								{...confirmButtonProps}>
 								{confirmText}
+							</ButtonWrapper>
+						)}
+						{onCancel && (
+							<ButtonWrapper
+								responsive
+								color="primary"
+								// onClick={onCancel}
+								onClick={handleCancel}
+								{...buttonProps}
+								{...cancelButtonProps}>
+								{cancelText}
 							</ButtonWrapper>
 						)}
 					</DialogActions>

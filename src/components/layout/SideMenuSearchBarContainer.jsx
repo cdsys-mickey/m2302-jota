@@ -13,7 +13,7 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 
 	const inputRef = useRef(null);
 	const sideMenu = useContext(SideMenuContext);
-	const { onAuthoritiesChanges } = sideMenu;
+	const { onAuthoritiesChange } = sideMenu;
 
 	const auth = useContext(AuthContext);
 	const { authorities } = auth;
@@ -47,8 +47,8 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		// console.log("authorities fetched from AuthContext", authorities);
-		onAuthoritiesChanges(authorities, q);
-	}, [authorities, onAuthoritiesChanges, q]);
+		onAuthoritiesChange(authorities, q);
+	}, [authorities, onAuthoritiesChange, q]);
 
 	return (
 		<div ref={escRef}>

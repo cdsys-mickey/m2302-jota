@@ -51,6 +51,10 @@ export const ProdPickerContainer = (props) => {
 		return Prods.getOptionLabel(option);
 	}, []);
 
+	const stringify = useCallback((option) => {
+		return Prods.stringify(option);
+	}, []);
+
 	return (
 		<OptionPickerWrapper
 			label={label}
@@ -60,6 +64,7 @@ export const ProdPickerContainer = (props) => {
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
+			stringify={stringify}
 			autoSelectSingleOption
 			{...rest}
 		/>

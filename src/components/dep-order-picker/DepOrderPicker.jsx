@@ -40,7 +40,7 @@ export const DepOrderPicker = (props) => {
 			isOptionEqualToValue={DepOrders.isOptionEqualToValue}
 			renderTagLabel={DepOrders.renderTagLabel}
 			disabled={disabled}
-			optionLabelSize="small"
+			optionLabelSize="md"
 			GridHeaderComponent={DepOrderGridHeader}
 			GridRowComponent={DepOrderGridRow}
 			// disableClose

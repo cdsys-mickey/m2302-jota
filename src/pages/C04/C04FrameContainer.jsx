@@ -1,17 +1,15 @@
+import { C04SearchFieldContainer } from "@/components/jobs/C04/C04SearchFieldContainer";
+import { C04DialogContainer } from "@/components/jobs/C04/dialog/C04DialogContainer";
+import C04ListToolbar from "@/components/jobs/C04/list/C04ListToolbar";
+import { C04ListViewContainer } from "@/components/jobs/C04/list/C04ListViewContainer";
+import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import C04ListToolbar from "@/components/modules/C04/list/C04ListToolbar";
-import { C04DialogContainer } from "@/components/modules/C04/dialog/C04DialogContainer";
-import C04ListHeader from "@/components/modules/C04/list/C04ListHeader";
-import { C04ListViewContainer } from "@/components/modules/C04/list/C04ListViewContainer";
-import { C04SearchFieldContainer } from "@/components/modules/C04/C04SearchFieldContainer";
-import Styles from "@/modules/md-styles";
-import C04 from "../../modules/md-c04";
-import { C04ExpDialogContainer } from "../../components/modules/C04/exp-dialog/C04ExpDialogContainer";
-import { C04ListHeaderContainer } from "../../components/modules/C04/list/C04ListHeaderContainer";
+import { C04ExpDialogContainer } from "../../components/jobs/C04/exp-dialog/C04ExpDialogContainer";
+import { C04ListHeaderContainer } from "../../components/jobs/C04/list/C04ListHeaderContainer";
 
 export const C04FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);

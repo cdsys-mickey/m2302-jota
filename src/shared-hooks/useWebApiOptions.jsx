@@ -205,8 +205,8 @@ export const useWebApiOptions = (opts = {}) => {
 			if (timerIdRef.current) {
 				clearTimeout(timerIdRef.current);
 			}
-			timerIdRef.current = setTimeout(() => {
-				if (filterByServer) {
+			if (filterByServer) {
+				timerIdRef.current = setTimeout(() => {
 					if (qs) {
 						if (triggerServerFilter(qs)) {
 							loadOptions({ q: qs });
@@ -214,8 +214,8 @@ export const useWebApiOptions = (opts = {}) => {
 					} else {
 						clearOptions();
 					}
-				}
-			}, triggerDelay);
+				}, triggerDelay);
+			}
 			setPickerState((prev) => ({
 				...prev,
 				query: qs,

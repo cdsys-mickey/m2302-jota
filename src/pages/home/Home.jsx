@@ -45,7 +45,7 @@ const Home = memo((props) => {
 									/>
 								}></BulletinWidgetContainer>
 						</Grid>
-						{/* 待審核 */}
+						{/* 待覆核 */}
 						<Grid item xl={3} lg={4} md={6} sm={12} xs={12}>
 							<ReviewWidgetContainer />
 						</Grid>

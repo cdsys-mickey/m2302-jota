@@ -42,6 +42,8 @@ const CheckboxExGroup = memo((props) => {
 		loading,
 		error,
 		rules,
+		fullWidth,
+		borderRadius = "4px",
 		CheckboxExProps,
 		...rest
 	} = props;
@@ -80,10 +82,23 @@ const CheckboxExGroup = memo((props) => {
 		<FormControl
 			component="fieldset"
 			sx={[
-				() => ({
+				(theme) => ({
 					"& .MuiFormControlLabel-label": {
 						whiteSpace: "noWrap",
 					},
+					"& legend": {
+						paddingLeft: theme.spacing(1),
+						paddingRight: theme.spacing(1),
+					},
+					border: `1px solid rgba(0,0,0,0.3)`,
+					...(borderRadius && {
+						borderRadius,
+					}),
+					paddingLeft: theme.spacing(1),
+					paddingRight: theme.spacing(1),
+					...(fullWidth && {
+						width: "100%",
+					}),
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}
@@ -93,9 +108,15 @@ const CheckboxExGroup = memo((props) => {
 				pl={1}
 				sx={[
 					scrollable.scroller,
-					{
-						backgroundColor: "rgb(0,0,0,0.05)",
-					},
+					(theme) => ({
+						// backgroundColor: "rgb(0,0,0,0.05)",
+						paddingTop: 0,
+						paddingLeft: theme.spacing(1.5),
+						paddingRight: theme.spacing(0.5),
+						...(borderRadius && {
+							borderRadius,
+						}),
+					}),
 				]}>
 				{error && <ErrorBox error={error} />}
 				{loading === false && (
@@ -142,8 +163,10 @@ CheckboxExGroup.propTypes = {
 	getData: PropTypes.func,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	loading: PropTypes.bool,
+	fullWidth: PropTypes.bool,
 	error: PropTypes.object,
 	height: PropTypes.number,
+	borderRadius: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 CheckboxExGroup.displayName = "CheckboxExGroup";

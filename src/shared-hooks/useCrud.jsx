@@ -2,10 +2,18 @@ import { useCallback, useMemo, useState } from "react";
 import ActionState from "../shared-constants/action-state";
 import { useAction } from "./useAction";
 import { useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+const DEFAULT_CANCEL_OPTS = {
+	clearParams: false,
+};
 
 export const useCrud = () => {
 	const paramsRef = useRef({});
-	// const [itemData, setItemData] = useState();
+	const location = useLocation();
+	const navigate = useNavigate();
+
 	const [state, setState] = useState({
 		itemId: null,
 		itemData: null,
@@ -23,13 +31,44 @@ export const useCrud = () => {
 		}));
 	}, []);
 
-	const cancelAction = useCallback(() => {
-		console.log(`crud.cancelAction`);
-		createAction.clear();
-		readAction.clear();
-		updateAction.clear();
-		deleteAction.clear();
-	}, [createAction, deleteAction, readAction, updateAction]);
+	const cancelAction = useCallback(
+		(opts = DEFAULT_CANCEL_OPTS) => {
+			console.log(`crud.cancelAction`);
+			createAction.clear();
+			readAction.clear();
+			updateAction.clear();
+			deleteAction.clear();
+
+			// 清除 id
+
+			// 刪除指定的查詢參數
+			if (opts.clearParams && location.search) {
+				// 更新 URL，移除查詢參數
+				navigate(
+					{
+						pathname: location.pathname,
+						search: "",
+					},
+					{ replace: true }
+				);
+			}
+		},
+		[
+			createAction,
+			deleteAction,
+			location.pathname,
+			location.search,
+			navigate,
+			readAction,
+			updateAction,
+		]
+	);
+
+	const reset = useCallback(() => {
+		cancelAction({
+			clearParams: true,
+		});
+	}, [cancelAction]);
 
 	const setOpts = useCallback((opts) => {
 		if (opts) {
@@ -269,6 +308,7 @@ export const useCrud = () => {
 		// Common Props/Methods
 		...state,
 		cancelAction,
+		reset,
 		setItemData,
 		// Create Props
 		createMessage: createAction.message,

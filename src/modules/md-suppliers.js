@@ -6,13 +6,11 @@ const data = [
 ];
 
 const getOptionLabel = (option) => {
-	if (!option) return "";
-	const { id, name } = option;
-	return `${id} ${name}`;
+	return `${option?.FactID} ${option?.FactData}`;
 };
 
 const isOptionEqualToValue = (option, value) =>
-	option["Code"] === value["Code"];
+	option?.FactID === value?.FactID;
 
 const renderText = (value) => {
 	if (!value) return "";
@@ -20,11 +18,16 @@ const renderText = (value) => {
 	return `${id}\t${name}\t${address}`;
 };
 
+const getOptionKey = (option) => {
+	return `${option?.FactID}`;
+};
+
 const Suppliers = {
 	data,
 	getOptionLabel,
 	isOptionEqualToValue,
 	renderText,
+	getOptionKey,
 };
 
 export default Suppliers;

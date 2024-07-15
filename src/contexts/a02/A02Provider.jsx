@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { useA02 } from "../../hooks/modules/useA02";
+import { useA02 } from "../../hooks/jobs/useA02";
 import { A02Context } from "./A02Context";
 
 export const A02Provider = (props) => {

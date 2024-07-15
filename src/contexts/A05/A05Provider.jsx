@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { useA05 } from "../../hooks/modules/useA05";
+import { useA05 } from "../../hooks/jobs/useA05";
 import { AuthContext } from "../auth/AuthContext";
 import { A05Context } from "./A05Context";
 

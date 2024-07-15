@@ -8,8 +8,8 @@ const ListModes = Object.freeze({
 });
 
 const options = [
-	{ id: ListModes.NOT_REVIEWED, label: "待審核" },
-	{ id: ListModes.REVIEWED, label: "已審核" },
+	{ id: ListModes.NOT_REVIEWED, label: "待覆核" },
+	{ id: ListModes.REVIEWED, label: "已覆核" },
 	{ id: ListModes.ALL, label: "全部" },
 ];
 
@@ -74,7 +74,7 @@ const transformForSubmitting = (payload, gridData) => {
 	const { RqtID, RqtDate, employee, pdline, remark } = payload;
 	return {
 		RqtID,
-		RqtDate,
+		RqtDate: Forms.formatDate(RqtDate),
 		EmplID: employee?.CodeID || "",
 		PDlineID: pdline?.CodeID || "",
 		Remark: remark?.split("\n") || [],

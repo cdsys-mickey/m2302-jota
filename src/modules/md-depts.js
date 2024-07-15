@@ -1,7 +1,7 @@
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { DeptID, DeptName, AbbrName } = option;
-	return `${DeptID} ${AbbrName || DeptName || "(未知)"}`;
+	return `${DeptID} ${AbbrName || DeptName || ""}`;
 };
 
 const isOptionEqualToValue = (option, value) => {

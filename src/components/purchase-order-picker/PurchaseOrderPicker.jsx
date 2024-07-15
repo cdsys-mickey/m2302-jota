@@ -70,7 +70,7 @@ export const PurchaseOrderPicker = (props) => {
 			isOptionEqualToValue={PurchaseOrders.isOptionEqualToValue}
 			renderTagLabel={PurchaseOrders.renderTagLabel}
 			disabled={disabled}
-			optionLabelSize="small"
+			optionLabelSize="md"
 			// PaperComponent={PurchaseOrderPickerPaper}
 			// renderOption={renderOption}
 			GridHeaderComponent={PurchaseOrderGridHeader}

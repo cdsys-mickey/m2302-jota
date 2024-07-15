@@ -14,11 +14,16 @@ const isArray = (v) => {
 	return Array.isArray(v);
 };
 
+const isMethod = (v) => {
+	return typeof v === "function";
+};
+
 const Types = {
 	isString,
 	isObject,
 	isNumber,
 	isArray,
+	isMethod,
 };
 
 export default Types;

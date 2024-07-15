@@ -7,7 +7,7 @@ import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.SDeptID,active,disabled,focus",
+		fields: "rowData.DeptID,active,disabled,focus",
 		debug: true,
 	});
 };

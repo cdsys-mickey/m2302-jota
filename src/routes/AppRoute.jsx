@@ -103,6 +103,20 @@ import { C08Provider } from "../contexts/C08/C08Provider";
 import { C08FrameContainer } from "../pages/C08/C08FrameContainer";
 import { C09Provider } from "../contexts/C09/C09Provider";
 import { C09FrameContainer } from "../pages/C09/C09FrameContainer";
+import { D01Provider } from "../contexts/D01/D01Provider";
+import { D01FrameContainer } from "../pages/D01/D01FrameContainer";
+import { DialogsProvider } from "../shared-contexts/dialog/DialogsProvider";
+import DialogsTest from "../pages/lab/DialogsTest";
+import { D02Provider } from "../contexts/D02/D02Provider";
+import { D02FrameContainer } from "../pages/D02/D02FrameContainer";
+import { D041Provider } from "../contexts/D041/D041Provider";
+import { D041FrameContainer } from "../pages/D04/D041FrameContainer";
+import { D05Provider } from "../contexts/D05/D05Provider";
+import { D05FrameContainer } from "../pages/D05/D05FrameContainer";
+import { D06Provider } from "../contexts/D06/D06Provider";
+import { D06FrameContainer } from "../pages/D06/D06FrameContainer";
+import { D07Provider } from "../contexts/D07/D07Provider";
+import { D07FrameContainer } from "../pages/D07/D07FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -134,6 +148,14 @@ const AppRoute = () => {
 				/>
 				<Route path="dsg3" element={<DSGTest3 />} />
 				<Route path="signalr" element={<SignalRTest />} />
+				<Route
+					path="dialogs"
+					element={
+						<DialogsProvider>
+							<DialogsTest />
+						</DialogsProvider>
+					}
+				/>
 			</Route>
 			<Route path="lab-protected" element={<ProtectedRoute />}>
 				<Route path="dsg" element={<DSGTest2Container />} />
@@ -566,7 +588,67 @@ const AppRoute = () => {
 							</CrudProvider>
 						}
 					/>
-
+					{/* D */}
+					<Route
+						path="D01"
+						element={
+							<CrudProvider>
+								<D01Provider>
+									<D01FrameContainer />
+								</D01Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="D02"
+						element={
+							<CrudProvider>
+								<D02Provider>
+									<D02FrameContainer />
+								</D02Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="D041"
+						element={
+							<CrudProvider>
+								<D041Provider>
+									<D041FrameContainer />
+								</D041Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="D05"
+						element={
+							<CrudProvider>
+								<D05Provider>
+									<D05FrameContainer />
+								</D05Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="D06"
+						element={
+							<CrudProvider>
+								<D06Provider>
+									<D06FrameContainer />
+								</D06Provider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="D07"
+						element={
+							<CrudProvider>
+								<D07Provider>
+									<D07FrameContainer />
+								</D07Provider>
+							</CrudProvider>
+						}
+					/>
 					<Route
 						path="ZA03"
 						element={

@@ -1,18 +1,19 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/sd-forms";
+import Objects from "../shared-modules/sd-objects";
 
 const ListModes = Object.freeze({
 	NOT_ORDERED_INCLUDED: 3,
-	ORDERED: 2,
-	ALL_NOT_ORDERED: 1,
+	ORDERED: 1,
+	ALL_NOT_ORDERED: 2,
 	ALL: 0,
 });
 
 const options = [
 	{ id: ListModes.NOT_ORDERED_INCLUDED, label: "包含未採購" },
 	{ id: ListModes.ORDERED, label: "整單已採購" },
-	{ id: ListModes.ALL, label: "全部" },
 	{ id: ListModes.ALL_NOT_ORDERED, label: "整單未採購" },
+	{ id: ListModes.ALL, label: "全部" },
 ];
 
 const getOptionLabel = (option) => {
@@ -120,9 +121,9 @@ const transformForSubmitting = (payload, gridData) => {
 						SProdID: prod?.ProdID,
 						SRqtQty: SRqtQty?.toString() || "",
 						SOrdQty: SOrdQty?.toString() || "",
-						SFactID: supplier?.FactID,
-						SFactNa,
-						SOrdID,
+						SFactID: supplier?.FactID || "",
+						SFactNa: SFactNa || "",
+						SOrdID: SOrdID || "",
 						Seq: index + 1,
 					})
 				),
@@ -130,8 +131,26 @@ const transformForSubmitting = (payload, gridData) => {
 	};
 };
 
+const isFiltered = (criteria) => {
+	return Objects.isAnyPropNotEmpty(criteria, "rqtId,employee,date,pdline");
+};
+
 const transformAsQueryParams = (data) => {
-	return {};
+	const { employee, date, pdline, rqtId } = data;
+	return {
+		...(rqtId && {
+			rid: rqtId,
+		}),
+		...(employee && {
+			empi: employee.CodeID,
+		}),
+		...(date && {
+			dt: Forms.formatDate(date),
+		}),
+		...(pdline && {
+			pdline: pdline.CodeID,
+		}),
+	};
 };
 
 const C01 = {
@@ -145,6 +164,7 @@ const C01 = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
+	isFiltered,
 };
 
 export default C01;

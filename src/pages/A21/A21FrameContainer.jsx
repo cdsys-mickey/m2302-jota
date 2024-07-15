@@ -1,10 +1,10 @@
-import A21Toolbar from "@/components/modules/A21/A21Toolbar";
+import A21Toolbar from "@/components/jobs/A21/A21Toolbar";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
-import { A21FormContainer } from "@/components/modules/A21/A21FormContainer";
+import { A21FormContainer } from "@/components/jobs/A21/A21FormContainer";
 
 export const A21FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);

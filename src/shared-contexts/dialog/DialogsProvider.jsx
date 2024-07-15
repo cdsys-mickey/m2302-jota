@@ -1,8 +1,7 @@
-import { useCallback, useState } from "react";
 import DialogEx from "@/shared-components/dialog/DialogEx";
-import { DialogsContext } from "./DialogsContext";
+import { useDialogs } from "@/shared-hooks/dialog/useDialogs";
 import PropTypes from "prop-types";
-import { useDialogs } from "../../shared-hooks/dialog/useDialogs";
+import { DialogsContext } from "./DialogsContext";
 
 export const DialogsProvider = ({ children, buttonProps }) => {
 	const dialogs = useDialogs({ buttonProps });
@@ -15,26 +14,45 @@ export const DialogsProvider = ({ children, buttonProps }) => {
 			}}>
 			{children}
 			{entities.map((d, i) => {
-				const { onClose, destroyOnClose = true, ...dialogProps } = d;
+				const {
+					id,
+					onClose,
+					onCancel,
+					destroyOnClose = true,
+					...dialogProps
+				} = d;
 
-				const handleClose = () => {
-					closeLatest();
+				const houseKeeping = () => {
 					if (destroyOnClose) {
 						setEntities((prev) =>
 							prev.slice(0, entities.length - 1)
 						);
-						console.log("dialog destroyed");
+						console.log(`dialog[${i}] destroyed`);
 					} else {
-						console.log("dialog not destroyed");
+						console.log(`dialog[${i}] closed but not destroyed`);
 					}
+				};
+
+				const handleClose = () => {
+					if (onClose) {
+						onClose();
+					}
+					houseKeeping();
+				};
+
+				const handleCancel = () => {
+					if (onCancel) {
+						onCancel();
+					}
+					// houseKeeping();
 				};
 
 				return (
 					<DialogEx
-						key={i}
-						onClose={onClose || handleClose}
-						onCancel={handleClose}
-						// onDestroy={handleDestroy}
+						key={id || i}
+						index={i}
+						onClose={handleClose}
+						onCancel={handleCancel}
 						{...dialogProps}
 					/>
 				);
@@ -44,6 +62,6 @@ export const DialogsProvider = ({ children, buttonProps }) => {
 };
 
 DialogsProvider.propTypes = {
-	children: PropTypes.oneOfType([PropTypes.elementType, PropTypes.array]),
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	buttonProps: PropTypes.object,
 };

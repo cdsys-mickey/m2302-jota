@@ -31,7 +31,7 @@ export const TxoOrderPicker = (props) => {
 			getOptionLabel={TxoOrders.getOptionLabel}
 			isOptionEqualToValue={TxoOrders.isOptionEqualToValue}
 			renderTagLabel={TxoOrders.renderTagLabel}
-			optionLabelSize="small"
+			optionLabelSize="md"
 			GridHeaderComponent={TxoOrderGridHeader}
 			GridRowComponent={TxoOrderGridRow}
 			// disableClose

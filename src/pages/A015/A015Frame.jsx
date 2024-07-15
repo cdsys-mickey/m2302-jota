@@ -2,11 +2,11 @@ import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBa
 import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { A015GridContainer } from "../../components/modules/A015/A015GridContainer";
-import { ProdGridFormContainer } from "../../components/modules/prod-grid/ProdGridFormContainer";
-import ProdGridToolbar from "../../components/modules/prod-grid/ProdGridToolbar";
+import { A015GridContainer } from "../../components/jobs/A015/A015GridContainer";
+import { ProdGridFormContainer } from "../../components/jobs/prod-grid/ProdGridFormContainer";
+import ProdGridToolbar from "../../components/jobs/prod-grid/ProdGridToolbar";
 import ContainerEx from "../../shared-components/ContainerEx";
-import { ProdGridToolbarContainer } from "../../components/modules/prod-grid/ProdGridToolbarContainer";
+import { ProdGridToolbarContainer } from "../../components/jobs/prod-grid/ProdGridToolbarContainer";
 
 const A015Frame = memo((props) => {
 	const { boxStyles } = props;

@@ -13,7 +13,7 @@ const TransportTypePicker = forwardRef((props, ref) => {
 			label={label}
 			ref={ref}
 			bearer={token}
-			url={`v1/sale/customer/transports`}
+			url={`v1/sales/customer/transports`}
 			getOptionLabel={Codes.getOptionLabel}
 			isOptionEqualToValue={Codes.isOptionEqualToValue}
 			getOptionKey={Codes.getOptionKey}

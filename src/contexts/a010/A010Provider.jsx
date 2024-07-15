@@ -1,13 +1,10 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useCallback, useState } from "react";
-import { A01Context } from "../A01/A01Context";
 import PropTypes from "prop-types";
-import { useA01 } from "../../hooks/modules/useA01";
 import { useContext } from "react";
-import { useCrud } from "../../shared-hooks/useCrud";
-import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import A01 from "../../modules/md-a01";
 import { FormProvider, useForm } from "react-hook-form";
+import { useA01 } from "../../hooks/jobs/useA01";
+import A01 from "../../modules/md-a01";
+import { A01Context } from "../A01/A01Context";
 
 export const A010Provider = ({ children }) => {
 	const auth = useContext(AuthContext);
