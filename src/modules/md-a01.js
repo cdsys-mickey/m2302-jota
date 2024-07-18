@@ -112,9 +112,9 @@ const transformForReading = (data) => {
 					CodeData: MUnit_N,
 			  }
 			: null,
-		taxType: Tax ? TaxTypes.getById(Tax) : null,
-		typeA: TypeA ? ProdTypeA.getById(TypeA) : null,
-		typeB: TypeB ? ProdTypeB.getById(TypeB) : null,
+		taxType: Tax ? TaxTypes.findById(Tax) : null,
+		typeA: TypeA ? ProdTypeA.findById(TypeA) : null,
+		typeB: TypeB ? ProdTypeB.findById(TypeB) : null,
 		...(StoreTrans_S && {
 			trans: StoreTrans_S.map((v, i) => ({
 				id: uuidv4(),

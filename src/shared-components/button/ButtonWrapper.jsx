@@ -11,11 +11,14 @@ export const ButtonWrapper = forwardRef((props, ref) => {
 
 	const buttonRef = useRef();
 
-	useImperativeHandle(ref, () => ({
-		focus: () => {
-			buttonRef.current?.focus();
-		},
-	}));
+	// useImperativeHandle(ref, () => ({
+	// 	focus: () => {
+	// 		buttonRef.current?.focus();
+	// 	},
+	// }));
+	useImperativeHandle(ref, () => {
+		return buttonRef.current;
+	});
 
 	useEffect(() => {
 		if (buttonRef.current && autoFocus) {

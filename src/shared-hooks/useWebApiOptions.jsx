@@ -29,15 +29,17 @@ export const useWebApiOptions = (opts = {}) => {
 		bearer,
 		disableLazy,
 		queryParam = "q",
-		// queryRequired = false,
 		// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
 		querystring,
 		params,
 		headers,
 		filterByServer = false,
+		queryRequired = false,
 		onChange,
+		open,
 		onOpen,
 		onClose,
+		disableOpenOnInput,
 		// for OptionPicker
 		typeToSearchText = "請輸入關鍵字進行搜尋",
 		noOptionsText = "無可用選項",
@@ -50,60 +52,131 @@ export const useWebApiOptions = (opts = {}) => {
 		onError = defaultOnError,
 		disableClose,
 		disableOnSingleOption,
-		autoSelectSingleOption,
+		debug = false,
+		// Enter & Tab
+		findByInput,
+		pressToFind,
 	} = opts;
 	const { sendAsync } = useWebApi();
 
 	// const [loading, setLoading] = useState(null);
-	const [open, setOpen] = useState(false);
+	// const [open, setOpen] = useState(false);
 
-	const handleOpen = useCallback(
-		(e) => {
-			if (onOpen) {
-				onOpen(e);
-				console.log("onOpen", e);
-			}
-			setOpen(true);
-		},
-		[onOpen]
-	);
+	// const handleOpen = useCallback(
+	// 	(e) => {
+	// 		console.log("WebApiOptions.onOpen", e);
+	// 		if (open) {
+	// 			return;
+	// 		}
+	// 		if (onOpen) {
+	// 			onOpen(e);
+	// 		}
+	// 		setOpen(true);
+	// 	},
+	// 	[onOpen, open]
+	// );
 
-	const handleClose = useCallback(() => {
-		if (onClose) {
-			onClose();
-		}
-		if (!disableClose) {
-			setOpen(false);
-		}
-	}, [disableClose, onClose]);
+	// const handleClose = useCallback(() => {
+	// 	if (onClose) {
+	// 		onClose();
+	// 	}
+	// 	if (!disableClose) {
+	// 		setOpen(false);
+	// 	}
+	// }, [disableClose, onClose]);
 
 	const [pickerState, setPickerState] = useState({
 		loading: null,
-		// query: null,
+		query: null,
 		options: defaultOptions,
 		// open: false,
-		noOptionsText: filterByServer ? typeToSearchText : noOptionsText,
+		// noOptionsText: queryRequired ? typeToSearchText : noOptionsText,
 	});
 
-	const lazyLoadingTriggered = useMemo(() => {
+	const [_noOptionsText, setNoOptionsText] = useState(
+		queryRequired ? typeToSearchText : noOptionsText
+	);
+
+	const [popperOpen, setPopperOpen] = useState(open || false);
+
+	const handleOpen = useCallback(
+		(e) => {
+			// console.log("OptionPicker.onOpen", e);
+			// console.log("open", open);
+			if (popperOpen) {
+				return;
+			}
+			if (!disableOpenOnInput || e.type === "click") {
+				if (onOpen) {
+					onOpen(e);
+				}
+				setPopperOpen(true);
+			}
+		},
+		[popperOpen, disableOpenOnInput, onOpen]
+	);
+
+	const handleClose = useCallback(
+		(e) => {
+			// console.log("OptionPicker.onClose", e);
+			// console.log("open", popperOpen);
+			if (!popperOpen) {
+				return;
+			}
+			if (onClose) {
+				onClose(e);
+			}
+			setPopperOpen(false);
+		},
+		[onClose, popperOpen]
+	);
+
+	const shouldLoadOptions = useMemo(() => {
 		return (
 			url &&
-			!filterByServer &&
+			popperOpen &&
+			!queryRequired &&
 			!disableLazy &&
 			(pickerState.loading === null || pickerState.loading === undefined)
 		);
-	}, [disableLazy, pickerState.loading, filterByServer, url]);
+	}, [url, popperOpen, queryRequired, disableLazy, pickerState.loading]);
+
+	const getById = useCallback(
+		async (id) => {
+			try {
+				const { status, payload, error } = await sendAsync({
+					method,
+					url,
+					data: {
+						id,
+					},
+					headers,
+					...(bearer && {
+						bearer,
+					}),
+				});
+				if (status.success) {
+					return payload;
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				console.error("getById failed", err);
+			}
+			return null;
+		},
+		[bearer, headers, method, sendAsync, url]
+	);
 
 	const loadOptions = useCallback(
-		async ({ q, onError: onMethodError } = {}) => {
+		async (q, { onError: onMethodError } = {}) => {
 			console.log(`${id}.loadOptions(${q || ""})`);
 			// 每次找之前回復 noOptionsText
 			// setLoading(true);
 			setPickerState((prev) => ({
 				...prev,
-				// query: q,
 				loading: true,
-				noOptionsText: typeToSearchText,
+				// noOptionsText: typeToSearchText,
 			}));
 			try {
 				const { status, payload, error } = await sendAsync({
@@ -126,20 +199,15 @@ export const useWebApiOptions = (opts = {}) => {
 						// loading: false,
 						options: loadedOptions || [],
 						// error: error,
-						noOptionsText,
+						// noOptionsText,
 					}));
-					// if (autoSelectSingleOption && loadedOptions?.length === 1) {
-					// 	handleClose();
-					// 	setInterval(() => {
-					// 		onChange(loadedOptions[0]);
-					// 	}, 50);
-					// }
+					setNoOptionsText(noOptionsText);
 				} else {
 					throw error || "load options failed";
 				}
 			} catch (err) {
 				// 正常情況不該跑到這裡
-				console.error(`${id}.loadOptions failed`);
+				console.error(`${id}.loadOptions failed`, err);
 				if (onMethodError) {
 					onMethodError(err);
 				} else {
@@ -152,8 +220,9 @@ export const useWebApiOptions = (opts = {}) => {
 					error: {
 						message: "unexpected error",
 					},
-					noOptionsText: fetchErrorText,
+					// noOptionsText: fetchErrorText,
 				}));
+				setNoOptionsText(fetchErrorText);
 			} finally {
 				// setLoading(false);
 				setPickerState((prev) => ({
@@ -164,7 +233,6 @@ export const useWebApiOptions = (opts = {}) => {
 		},
 		[
 			id,
-			typeToSearchText,
 			sendAsync,
 			method,
 			url,
@@ -184,11 +252,12 @@ export const useWebApiOptions = (opts = {}) => {
 		setPickerState((prev) => ({
 			...prev,
 			options: [],
-			...(filterByServer && {
-				noOptionsText: typeToSearchText,
-			}),
+			// ...(queryRequired && {
+			// 	noOptionsText: typeToSearchText,
+			// }),
 		}));
-	}, [filterByServer, typeToSearchText]);
+		setNoOptionsText(queryRequired ? typeToSearchText : noOptionsText);
+	}, [noOptionsText, queryRequired, typeToSearchText]);
 
 	const timerIdRef = useRef();
 
@@ -202,6 +271,10 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const handleInputChange = useCallback(
 		(event) => {
+			// if (pressToFind) {
+			// 	return;
+			// }
+
 			let qs = event.target.value;
 
 			if (timerIdRef.current) {
@@ -209,10 +282,8 @@ export const useWebApiOptions = (opts = {}) => {
 			}
 			if (filterByServer) {
 				timerIdRef.current = setTimeout(() => {
-					if (qs) {
-						if (triggerServerFilter(qs)) {
-							loadOptions({ q: qs });
-						}
+					if (triggerServerFilter(qs)) {
+						loadOptions(qs);
 					} else {
 						clearOptions();
 					}
@@ -241,12 +312,14 @@ export const useWebApiOptions = (opts = {}) => {
 	 * 來源條件改變, 清空目前值, resetLoading
 	 */
 	useChangeTracking(() => {
-		console.log(
-			`url changed: ${url}${
-				querystring ? " " + querystring : ""
-			}, params:`,
-			params
-		);
+		if (debug) {
+			console.log(
+				`url changed: ${url}${
+					querystring ? " " + querystring : ""
+				}, params:`,
+				params
+			);
+		}
 		onChange(multiple ? [] : null);
 		resetLoading();
 	}, [url, querystring, params]);
@@ -254,10 +327,12 @@ export const useWebApiOptions = (opts = {}) => {
 	/** filterByServer 時, 關閉 popper 則重設 loading 狀態
 	 */
 	useChangeTracking(() => {
-		console.log(
-			"[filterByServer, open] changed:",
-			`${filterByServer}, ${open}`
-		);
+		if (debug) {
+			console.log(
+				"[filterByServer, open] changed:",
+				`${filterByServer}, ${open}`
+			);
+		}
 		if (filterByServer && !open) {
 			resetLoading();
 		}
@@ -267,26 +342,39 @@ export const useWebApiOptions = (opts = {}) => {
 	 * 展開時 loadOptions
 	 */
 	useChangeTracking(() => {
-		console.log(
-			"[open, lazyLoadingTriggered] changed:",
-			`${open}, ${lazyLoadingTriggered}`
-		);
-		if (open && lazyLoadingTriggered) {
+		if (debug) {
+			console.log("[shouldLoadOptions] changed:", `${shouldLoadOptions}`);
+		}
+		if (shouldLoadOptions) {
 			loadOptions();
 		}
-	}, [open, lazyLoadingTriggered]);
+	}, [shouldLoadOptions]);
+
+	const _findByInput = useMemo(() => {
+		if (!pressToFind) {
+			return null;
+		}
+		return filterByServer ? getById : findByInput;
+	}, [filterByServer, findByInput, getById, pressToFind]);
 
 	return {
-		lazyLoadingTriggered,
+		shouldLoadOptions,
 		loadOptions,
 		clearOptions,
 		resetLoading,
 		...pickerState,
+		noOptionsText: _noOptionsText,
 		onInputChange: handleInputChange,
-		handleOpen,
-		handleClose,
-		open,
+		// handleOpen,
+		// handleClose,
+		onChange,
+		// open,
 		disableClose,
 		disabled,
+		pressToFind,
+		findByInput: _findByInput,
+		open: popperOpen,
+		onOpen: handleOpen,
+		onClose: handleClose,
 	};
 };

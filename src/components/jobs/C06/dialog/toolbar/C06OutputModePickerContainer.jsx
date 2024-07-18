@@ -16,7 +16,7 @@ export const C06OutputModePickerContainer = memo(
 		return (
 			<StdPrintOutputModePicker
 				ref={ref}
-				defaultValue={StdPrint.getById(StdPrint.OutputModes.HTML)}
+				defaultValue={StdPrint.findById(StdPrint.OutputModes.HTML)}
 				width="8rem"
 				required
 				name="outputType"

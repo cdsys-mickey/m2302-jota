@@ -24,6 +24,7 @@ const A22GridForm = (props) => {
 							label="起始商品編號"
 							size="small"
 							filterByServer
+							queryRequired
 							// virtualize
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							optionLabelSize="md"
@@ -36,7 +37,7 @@ const A22GridForm = (props) => {
 							label="截止商品編號"
 							size="small"
 							filterByServer
-							// queryRequired
+							queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							optionLabelSize="md"
 						/>

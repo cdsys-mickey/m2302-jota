@@ -1,9 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import WebApiOptionPicker from "@/shared-components/option-picker/WebApiOptionPicker";
 import PropTypes from "prop-types";
+import { useCallback } from "react";
 import { useRef } from "react";
 import { memo } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 /**
  * 由 name 屬性決定是否要使用 Controller 包覆
@@ -24,7 +25,24 @@ export const ControlledWebApiOptionPicker = memo(
 		onChanged,
 		...rest
 	}) => {
+		const form = useFormContext();
 		const prevValue = useRef();
+
+		const getError = useCallback(
+			async (opts = { debug: false }) => {
+				if (!name) {
+					return;
+				}
+				const result = await form.trigger(name);
+				if (result) {
+					return false;
+				}
+				const fieldState = form.getFieldState(name);
+				console.error(`${name}.fieldState.error`, fieldState.error);
+				return fieldState.error;
+			},
+			[form, name]
+		);
 
 		if (!name) {
 			return (
@@ -59,6 +77,9 @@ export const ControlledWebApiOptionPicker = memo(
 							// required={required}
 							value={value}
 							sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
+							getError={getError}
+							setError={form.setError}
+							clearErrors={form.clearErrors}
 							onChange={(newValue) => {
 								if (onPickerChange) {
 									onPickerChange(newValue);

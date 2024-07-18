@@ -13,7 +13,7 @@ import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer
 export const A22GridToolbarFormContainer = () => {
 	const form = useForm({
 		defaultValues: {
-			outputType: TxtExport.getById(TxtExport.OutputModes.HTML),
+			outputType: TxtExport.findById(TxtExport.OutputModes.HTML),
 		},
 	});
 	const a22 = useContext(A22Context);

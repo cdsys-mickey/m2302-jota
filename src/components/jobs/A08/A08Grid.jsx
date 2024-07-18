@@ -123,7 +123,7 @@ const A08Grid = memo((props) => {
 					// onActiveCellChange={handleActiveCellChange}
 					// autoAddRow
 					createRow={() => ({
-						areaType: AreaTypes.getById(AreaTypes.KEY_OTHER),
+						areaType: AreaTypes.findById(AreaTypes.KEY_OTHER),
 					})}
 				/>
 			</Box>

@@ -10,7 +10,7 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.RealFile === value?.RealFile;
 };
 
-const getById = (id) => {
+const findById = (id) => {
 	return TABLES.find((o) => o.RealFile === id);
 };
 
@@ -19,7 +19,7 @@ const Database = {
 	...TABLES,
 	getOptionLabel,
 	isOptionEqualToValue,
-	getById,
+	findById,
 };
 
 export default Database;

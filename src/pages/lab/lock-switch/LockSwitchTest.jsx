@@ -1,8 +1,8 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { Box } from "@mui/material";
-import LockSwitch from "../../shared-components/LockSwitch";
-import { useToggle } from "../../shared-hooks/useToggle";
+import LockSwitch from "../../../shared-components/LockSwitch";
+import { useToggle } from "../../../shared-hooks/useToggle";
 
 const LockSwitchTest = memo((props) => {
 	const { ...rest } = props;

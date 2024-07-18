@@ -12,6 +12,7 @@ import { TaskListViewContainer } from "../messages/list/TaskListViewContainer";
 import { FrameMenuGroupHeader } from "@/components/layout/FrameMenuGroupHeader";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
 import { ButtonWrapper } from "../../shared-components/button/ButtonWrapper";
+import { blue } from "@mui/material/colors";
 
 const PushMessagesPopover = memo(
 	forwardRef((props, ref) => {
@@ -59,25 +60,12 @@ const PushMessagesPopover = memo(
 				}}
 				{...rest}>
 				<Box>
-					{/* <FlexBox
-						fullWidth
-						my={1}
-						px={1}
-						sx={(theme) => ({
-							bgcolor: "primary.main",
-							"& .typo": {
-								color: theme.palette.getContrastText(
-									theme.palette.primary.main
-								),
-							},
-						})}>
-						<Typography variant="h6" className="typo">
-							待辦項目
-						</Typography>
-					</FlexBox> */}
 					<FrameMenuGroupHeader
 						text="待辦項目"
 						iconComponent={TaskAltRoundedIcon}
+						py={3}
+						px={2}
+						bgcolor={blue[500]}
 					/>
 				</Box>
 				{/* <Box sx={[scrollable.scroller]}>
@@ -98,6 +86,7 @@ const PushMessagesPopover = memo(
 						<FlexBox>
 							<ButtonWrapper
 								variant="outlined"
+								color="info"
 								startIcon={<AllInboxIcon />}
 								onClick={gotoMessages}>
 								前往訊息匣

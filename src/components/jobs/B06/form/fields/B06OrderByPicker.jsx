@@ -12,7 +12,7 @@ export const B06OrderByPicker = memo(
 				options={B06.options}
 				getOptionLabel={B06.getOptionLabel}
 				isOptionEqualToValue={B06.isOptionEqualToValue}
-				defaultValue={B06.getById(B06.OrderBy.PROD)}
+				defaultValue={B06.findById(B06.OrderBy.PROD)}
 				{...rest}
 			/>
 		);

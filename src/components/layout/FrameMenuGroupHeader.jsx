@@ -6,7 +6,14 @@ import Colors from "@/modules/md-colors";
 
 export const FrameMenuGroupHeader = memo(
 	forwardRef((props, ref) => {
-		const { iconComponent, text, variant = "h6", sx = [], ...rest } = props;
+		const {
+			iconComponent,
+			text,
+			variant = "h6",
+			bgcolor = "primary.main",
+			sx = [],
+			...rest
+		} = props;
 		const Icon = iconComponent;
 		return (
 			<FlexBox
@@ -18,7 +25,7 @@ export const FrameMenuGroupHeader = memo(
 				pl={0.5}
 				sx={[
 					{
-						bgcolor: "primary.main",
+						bgcolor,
 						height: "34px",
 					},
 					...(Array.isArray(sx) ? sx : [sx]),
@@ -45,6 +52,7 @@ FrameMenuGroupHeader.propTypes = {
 	text: PropTypes.string.isRequired,
 	variant: PropTypes.string,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	bgcolor: PropTypes.string,
 };
 
 FrameMenuGroupHeader.displayName = "FrameMenuGroupHeader";

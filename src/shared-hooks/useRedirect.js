@@ -29,16 +29,16 @@ const useRedirect = () => {
 	}, []);
 
 	const redirectStub = useCallback(
-		(path, { params, replace = false, interval = -1, ...rest } = {}) => {
+		(path, { params, replace = false, timeout = -1, ...rest } = {}) => {
 			const fullPath = buildPath(path, params);
 			console.log(`redirecting to ${fullPath}`);
-			if (interval > -1) {
-				return setInterval(() => {
+			if (timeout > -1) {
+				return setTimeout(() => {
 					navigate(fullPath, {
 						replace: replace,
 						...rest,
 					});
-				}, interval);
+				}, timeout);
 			} else {
 				navigate(fullPath, {
 					replace: replace,

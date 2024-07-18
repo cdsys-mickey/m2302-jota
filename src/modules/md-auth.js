@@ -48,7 +48,7 @@ const getOptionKey = (option) => {
 	return option?.id;
 };
 
-const getById = (id) => {
+const findById = (id) => {
 	return AUTH_SCOPE_OPTIONS.find((o) => o.id === id);
 };
 
@@ -141,7 +141,7 @@ const Auth = {
 	isOptionEqualToValue,
 	getOptionKey,
 	COOKIE_OPTS,
-	getById,
+	findById,
 	getHeaderColor,
 	isCheckboxColumn,
 	getFunctionKeyByIndex,

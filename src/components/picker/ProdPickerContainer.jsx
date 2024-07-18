@@ -65,7 +65,6 @@ export const ProdPickerContainer = (props) => {
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
 			stringify={stringify}
-			autoSelectSingleOption
 			{...rest}
 		/>
 	);

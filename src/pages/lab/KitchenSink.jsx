@@ -1,41 +1,50 @@
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
-import { Box, Tab, Tabs } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import OptionPickerTest from "./OptionPickerTest";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { LoadingFrame } from "../../shared-components/protected-page/LoadingFrame";
-import { OptionPickerContext } from "../../shared-components/option-picker/listbox/OptionPickerContext";
-import { OptionPickerProvider } from "../../shared-components/option-picker/OptionPickerProvider";
+import { Box, Paper, Tab } from "@mui/material";
+import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
+import FrameBanner from "../../shared-components/protected-page/FrameBanner";
+import { useMemo } from "react";
+import { useScrollable } from "../../shared-hooks/useScrollable";
 
 export const KitchenSink = memo(
 	forwardRef((props, ref) => {
-		const { handleTabChange, selectedTab, ...rest } = props;
+		const { tabs, handleTabChange, selectedTab, height } = props;
+
+		const scrollable = useScrollable({ height });
 
 		return (
-			<Box ref={ref}>
-				<Link to="/home">回首頁</Link>
+			<Box ref={ref} py={1} px={3}>
+				<FrameBanner title="元件測試" alt="kitchen-sink" />
 				<TabContext value={selectedTab}>
-					<Box
-						sx={{
-							backgroundColor: "#fff",
-						}}>
-						<TabList
-							value={selectedTab}
-							onChange={handleTabChange}
-							variant="scrollable"
-							scrollButtons>
-							<Tab label="OptionPicker" value={0}></Tab>
-							<Tab label="LoadingFrame" value={1}></Tab>
-						</TabList>
+					<Box mt={1}>
+						<Paper sx={[scrollable.scroller]}>
+							<TabList
+								value={selectedTab}
+								onChange={handleTabChange}
+								variant="scrollable"
+								scrollButtons>
+								{tabs &&
+									tabs.map((tab) => (
+										<Tab
+											key={tab.value}
+											label={tab.label}
+											value={tab.value}
+										/>
+									))}
+							</TabList>
 
-						<TabPanel value={0}>
-							<OptionPickerTest />
-						</TabPanel>
-						<TabPanel value={1}>
-							<LoadingFrame />
-						</TabPanel>
+							{tabs &&
+								tabs.map((tab) => {
+									const TabPanelComponent = tab.component;
+									return (
+										<TabPanel
+											key={tab.value}
+											value={tab.value}>
+											<TabPanelComponent />
+										</TabPanel>
+									);
+								})}
+						</Paper>
 					</Box>
 				</TabContext>
 			</Box>
@@ -44,6 +53,8 @@ export const KitchenSink = memo(
 );
 
 KitchenSink.propTypes = {
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	tabs: PropTypes.array,
 	handleTabChange: PropTypes.func,
 	selectedTab: PropTypes.number,
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),

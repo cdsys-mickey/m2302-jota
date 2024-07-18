@@ -14,7 +14,7 @@ export const A22OutputModePickerContainer = () => {
 		<TxtExportOutputModePicker
 			name="outputType"
 			label="執行方式"
-			defaultValue={TxtExport.getById(TxtExport.OutputModes.HTML)}
+			defaultValue={TxtExport.findById(TxtExport.OutputModes.HTML)}
 		/>
 	);
 };

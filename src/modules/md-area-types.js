@@ -27,7 +27,7 @@ const getNameById = (id) => {
 	return option?.label || "(未知)";
 };
 
-const getById = (id) => {
+const findById = (id) => {
 	return options.find((opt) => opt.id === id);
 };
 
@@ -38,7 +38,7 @@ const AreaTypes = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getNameById,
-	getById,
+	findById,
 };
 
 export default AreaTypes;

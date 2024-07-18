@@ -18,6 +18,7 @@ const D07ExpDialogForm = memo((props) => {
 							name="expProd"
 							required
 							filterByServer
+							queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							triggerDelay={100}
 							rules={{
@@ -40,7 +41,3 @@ D07ExpDialogForm.propTypes = {
 
 D07ExpDialogForm.displayName = "D07ExpDialogForm";
 export default D07ExpDialogForm;
-
-
-
-

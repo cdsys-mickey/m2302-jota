@@ -14,7 +14,7 @@ const options = [
 	},
 ];
 
-const getById = (id) => {
+const findById = (id) => {
 	return options.find((o) => o.Tax === id);
 };
 
@@ -32,7 +32,7 @@ const TaxTypes = {
 	data,
 	options,
 	// METHODS
-	getById,
+	findById,
 	getOptionLabel,
 	isOptionEqualToValue,
 };

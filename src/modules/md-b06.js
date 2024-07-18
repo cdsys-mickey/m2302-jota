@@ -22,7 +22,7 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.id === value?.id;
 };
 
-const getById = (id) => {
+const findById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
@@ -102,7 +102,7 @@ const B06 = {
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
-	getById,
+	findById,
 };
 
 export default B06;

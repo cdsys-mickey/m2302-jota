@@ -190,7 +190,7 @@ export const useZA03 = () => {
 				Tel: "",
 				Cel: "",
 				Email: "",
-				userClass: Auth.getById(Auth.SCOPES.DEPT),
+				userClass: Auth.findById(Auth.SCOPES.DEPT),
 				dept: {
 					DeptID: operator.CurDeptID,
 					AbbrName: operator.CurDeptName,

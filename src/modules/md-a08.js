@@ -21,7 +21,7 @@ const transformForReading = (payload) => {
 	return payload.data.map((i) => {
 		const { Other1, ...rest } = i;
 		return {
-			areaType: AreaTypes.getById(Other1),
+			areaType: AreaTypes.findById(Other1),
 			...rest,
 		};
 	});

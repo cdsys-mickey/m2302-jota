@@ -15,8 +15,10 @@ import OptionPicker from "./OptionPicker";
 const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
+			debug,
 			multiple,
 			name, // → for debug purpose
+			open,
 			onOpen,
 			onClose,
 			onChange,
@@ -25,16 +27,17 @@ const WebApiOptionPicker = memo(
 			//http
 			url,
 			method = "get",
-			disableLazy,
+			disableLazy = false,
 			queryParam = "q",
 			querystring,
 			params,
 			headers,
 			filterByServer = false,
+			queryRequired = false,
 			bearer,
 			// for OptionPicker
 			typeToSearchText,
-			noOptionsText: noOptionsTextValue,
+			noOptionsText,
 			fetchErrorText,
 			triggerDelay,
 			defaultOptions = [],
@@ -44,21 +47,27 @@ const WebApiOptionPicker = memo(
 			onError,
 			disableClose,
 			disableOnSingleOption,
-			autoSelectSingleOption,
+			// autoSelectSingleOption,
+			// Enter & Tab
+			pressToFind,
+			findByInput,
 			...rest
 		} = props;
 
 		// console.log("rendering WebApiOptionPicker");
 
 		const {
-			open,
+			open: _open,
+			onOpen: _onOpen,
+			onClose: _onClose,
+			onChange: _onChange,
 			loading,
 			options,
-			noOptionsText,
+			noOptionsText: _noOptionsText,
 			onInputChange,
-			handleOpen,
-			handleClose,
 			disabled,
+			findByInput: _findByInput,
+			pressToFind: _pressToFind,
 		} = useWebApiOptions({
 			disableOnSingleOption,
 			disableClose,
@@ -72,20 +81,25 @@ const WebApiOptionPicker = memo(
 			params,
 			headers,
 			filterByServer,
-
+			queryRequired,
 			// for OptionPicker
 			typeToSearchText,
-			noOptionsText: noOptionsTextValue,
+			noOptionsText,
 			fetchErrorText,
 			triggerDelay,
 			defaultOptions,
 			triggerServerFilter,
 			getData,
 			onError,
+			open,
 			onOpen,
 			onClose,
 			onChange,
-			autoSelectSingleOption,
+			// autoSelectSingleOption,
+			// Enter & Tab
+			pressToFind,
+			findByInput,
+			debug,
 		});
 
 		return (
@@ -95,14 +109,18 @@ const WebApiOptionPicker = memo(
 				name={name}
 				loading={loading}
 				options={options}
-				noOptionsText={noOptionsText}
+				noOptionsText={_noOptionsText}
 				disabled={disabledByParent || disabled}
 				// Controlled Props
 				onInputChange={onInputChange}
-				open={open}
-				onOpen={handleOpen}
-				onClose={handleClose}
-				onChange={onChange}
+				open={_open}
+				onOpen={_onOpen}
+				onClose={_onClose}
+				onChange={_onChange}
+				pressToFind={_pressToFind}
+				findByInput={_findByInput}
+				// queryRequired={queryRequired}
+				// filterByServer={filterByServer}
 				{...rest}
 			/>
 		);
@@ -121,11 +139,11 @@ WebApiOptionPicker.propTypes = {
 	onChange: PropTypes.func,
 	ChipProps: PropTypes.object,
 	filterByServer: PropTypes.bool,
+	queryRequired: PropTypes.bool,
 	url: PropTypes.string,
 	method: PropTypes.oneOf(["get", "post"]),
 	disableLazy: PropTypes.bool,
 	queryParam: PropTypes.string,
-	// queryRequired: PropTypes.bool,
 	querystring: PropTypes.string,
 	headers: PropTypes.object,
 	params: PropTypes.object,
@@ -143,6 +161,11 @@ WebApiOptionPicker.propTypes = {
 	disableClose: PropTypes.bool,
 	disableOnSingleOption: PropTypes.bool,
 	autoSelectSingleOption: PropTypes.bool,
+	// Enter & Tab
+	open: PropTypes.bool,
+	pressToFind: PropTypes.bool,
+	debug: PropTypes.bool,
+	findByInput: PropTypes.func,
 };
 
 export default WebApiOptionPicker;

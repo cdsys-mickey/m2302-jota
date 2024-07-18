@@ -39,7 +39,7 @@ const options = [
 	},
 ];
 
-const getById = (id) => {
+const findById = (id) => {
 	return options.find((o) => o.TypeA === id);
 };
 
@@ -55,7 +55,7 @@ const Types = Object.freeze({
 
 const ProdTypeA = {
 	Types,
-	getById,
+	findById,
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,

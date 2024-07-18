@@ -15,7 +15,7 @@ export const A21Provider = ({ children }) => {
 				DeptID: operator.CurDeptID,
 				AbbrName: operator.CurDeptName,
 			},
-			outputType: StdPrint.getById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},
 	});
 

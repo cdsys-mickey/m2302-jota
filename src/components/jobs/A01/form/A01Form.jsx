@@ -218,7 +218,9 @@ const A01Form = memo((props) => {
 											typo
 											name="taxType"
 											label="稅別"
-											defaultValue={TaxTypes.getById("T")}
+											defaultValue={TaxTypes.findById(
+												"T"
+											)}
 											readOnly={store}>
 											{TaxTypes.getOptionLabel(
 												data?.taxType
@@ -227,7 +229,7 @@ const A01Form = memo((props) => {
 										{/* <TypoTaxTypePickerContainer
 											name="taxType"
 											label="稅別"
-											defaultValue={TaxTypes.getById("T")}
+											defaultValue={TaxTypes.findById("T")}
 											readOnly={store}>
 											{TaxTypes.getOptionLabel(
 												data?.taxType

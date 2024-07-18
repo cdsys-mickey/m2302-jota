@@ -26,7 +26,7 @@ const StdPrintActionButtons = () => {
 						// ml: 1,
 					}
 				}
-				defaultValue={StdPrint.getById(StdPrint.OutputModes.HTML)}
+				defaultValue={StdPrint.findById(StdPrint.OutputModes.HTML)}
 			/>
 		</>
 	);

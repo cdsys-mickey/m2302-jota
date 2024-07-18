@@ -3,23 +3,95 @@ import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import PropTypes from "prop-types";
 import ClearInputButton from "../input/ClearInputButton";
+import { useMemo } from "react";
+import { useCallback } from "react";
+import { useRef } from "react";
+import { useImperativeHandle } from "react";
 
 export const ControlledTextField = ({
 	name,
+	inputRef,
 	readOnly = false,
 	control,
-	onChange: handleTextChange,
-	required = false,
+	onChange: onTextChange,
+	nextInputRef,
+	prevInputRef,
+	onKeyDown,
 	rules,
 	labelShrink = false,
 	defaultValue = "",
 	sx = [],
 	clearable,
 	EndAdornmentComponent,
+	selectNext,
 	...rest
 }) => {
+	const innerInputRef = useRef();
+
+	useImperativeHandle(inputRef, () => innerInputRef.current);
+
+	const renderEndAdornment = useMemo(() => {
+		return EndAdornmentComponent || clearable;
+	}, [EndAdornmentComponent, clearable]);
+
+	const handleKeyDown = useCallback(
+		(e) => {
+			if (onKeyDown) {
+				onKeyDown(e);
+			}
+			if (e.key === "Enter" || e.key === "Tab") {
+				e.preventDefault();
+				if (e.shiftKey && prevInputRef.current) {
+					prevInputRef.current.focus();
+					prevInputRef.current.select();
+				} else if (nextInputRef.current) {
+					nextInputRef.current.focus();
+					nextInputRef.current.select();
+				}
+			}
+		},
+		[nextInputRef, onKeyDown, prevInputRef]
+	);
+
 	if (!name) {
-		return <TextField {...rest} />;
+		return (
+			<TextField
+				inputRef={innerInputRef}
+				sx={[
+					(theme) => ({
+						"&:has(.MuiInputBase-input:focus)": {
+							// backgroundColor: "rgb(253 253 253)",
+						},
+						"& .MuiOutlinedInput-root": {
+							paddingRight: theme.spacing(1),
+						},
+					}),
+					...(Array.isArray(sx) ? sx : [sx]),
+				]}
+				onChange={onTextChange}
+				onKeyDown={handleKeyDown}
+				InputLabelProps={{
+					...(labelShrink && { shrink: true }),
+				}}
+				InputProps={{
+					...(readOnly && {
+						readOnly: true,
+						// disableUnderline: true,
+					}),
+					...(renderEndAdornment && {
+						endAdornment: (
+							<>
+								{EndAdornmentComponent && (
+									<EndAdornmentComponent />
+								)}
+							</>
+						),
+					}),
+				}}
+				disabled={readOnly}
+				{...rest}
+			/>
+		);
 	}
 
 	return (
@@ -30,8 +102,8 @@ export const ControlledTextField = ({
 			rules={rules}
 			render={({ field: { value, onChange }, fieldState: { error } }) => (
 				<TextField
-					required={required}
 					value={value}
+					inputRef={innerInputRef}
 					sx={[
 						(theme) => ({
 							"&:has(.MuiInputBase-input:focus)": {
@@ -43,42 +115,41 @@ export const ControlledTextField = ({
 						}),
 						...(Array.isArray(sx) ? sx : [sx]),
 					]}
-					onChange={
-						readOnly
-							? null
-							: (e) => {
-									onChange(e.target.value);
-									if (handleTextChange) {
-										handleTextChange(e.target.value);
-									}
-							  }
-					}
+					onChange={(e) => {
+						if (readOnly) {
+							return;
+						}
+						onChange(e.target.value);
+						if (onTextChange) {
+							onTextChange(e.target.value);
+						}
+					}}
+					onKeyDown={handleKeyDown}
+					InputLabelProps={{
+						...(labelShrink && { shrink: true }),
+					}}
 					InputProps={{
 						...(readOnly && {
 							readOnly: true,
 							// disableUnderline: true,
 						}),
-						...(EndAdornmentComponent && {
+						...(renderEndAdornment && {
 							endAdornment: (
-								<EndAdornmentComponent
-									value={value}
-									onChange={onChange}
-								/>
-							),
-						}),
-						...(clearable && {
-							endAdornment: (
-								<ClearInputButton
-									value={value}
-									onChange={onChange}
-								/>
+								<>
+									{clearable && (
+										<ClearInputButton
+											value={value}
+											onChange={onChange}
+										/>
+									)}
+									{EndAdornmentComponent && (
+										<EndAdornmentComponent />
+									)}
+								</>
 							),
 						}),
 					}}
 					disabled={readOnly}
-					InputLabelProps={{
-						...(labelShrink && { shrink: true }),
-					}}
 					error={!!error}
 					helperText={error?.message}
 					{...rest}
@@ -89,8 +160,23 @@ export const ControlledTextField = ({
 };
 
 ControlledTextField.propTypes = {
+	name: PropTypes.string,
+	readOnly: PropTypes.bool,
+	control: PropTypes.object,
+	onChange: PropTypes.func,
+	required: PropTypes.bool,
+	rules: PropTypes.object,
+	labelShrink: PropTypes.bool,
+	defaultValue: PropTypes.string,
+	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	clearable: PropTypes.bool,
 	EndAdornmentComponent: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.elementType,
 	]),
+	nextInputRef: PropTypes.object,
+	prevInputRef: PropTypes.object,
+	onKeyDown: PropTypes.func,
+	inputRef: PropTypes.object,
+	selectNext: PropTypes.bool,
 };

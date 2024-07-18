@@ -31,7 +31,7 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.CodeID === value?.CodeID;
 };
 
-const getById = (id) => {
+const findById = (id) => {
 	return options.find((o) => o.CodeID === id);
 };
 
@@ -39,7 +39,7 @@ const CustomerLevels = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	options,
-	getById,
+	findById,
 };
 
 export default CustomerLevels;

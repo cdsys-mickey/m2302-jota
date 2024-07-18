@@ -21,7 +21,7 @@ const transformForReading = (payload) => {
 			DeptID,
 			AbbrName: Dept_N,
 		},
-		userClass: Auth.getById(Class),
+		userClass: Auth.findById(Class),
 		depts,
 	};
 };

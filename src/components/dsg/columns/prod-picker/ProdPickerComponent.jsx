@@ -81,6 +81,7 @@ const ProdPickerComponent = memo((props) => {
 			placeholder="商品"
 			typeToSearchText="輸入編號或名稱搜尋"
 			filterByServer
+			queryRequired
 			// DSG 專屬屬性
 			hideBorders
 			dense

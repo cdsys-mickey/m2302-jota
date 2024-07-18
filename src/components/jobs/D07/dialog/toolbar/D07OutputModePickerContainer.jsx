@@ -16,7 +16,7 @@ export const D07OutputModePickerContainer = memo(
 		return (
 			<StdPrintOutputModePicker
 				ref={ref}
-				defaultValue={StdPrint.getById(StdPrint.OutputModes.HTML)}
+				defaultValue={StdPrint.findById(StdPrint.OutputModes.HTML)}
 				width="8rem"
 				required
 				name="outputType"
@@ -34,7 +34,3 @@ export const D07OutputModePickerContainer = memo(
 D07OutputModePickerContainer.propTypes = {};
 
 D07OutputModePickerContainer.displayName = "D07OutputModePickerContainer";
-
-
-
-

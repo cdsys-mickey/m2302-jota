@@ -78,10 +78,8 @@ import { MsgFrameContainer } from "@/pages/messages/MsgFrameContainer";
 import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
 import { SettingsFrameContainer } from "@/pages/settings/SettingsFrameContainer";
 import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
-import LockSwitchTest from "@/pages/lab/LockSwitchTest";
 import { B05Provider } from "@/contexts/B05/B05Provider";
 import { B05FrameContainer } from "@/pages/B05/B05FrameContainer";
-import OptionPickerTest from "@/pages/lab/OptionPickerTest";
 import DSGTest3 from "@/pages/lab/DSGTest3";
 import { B06Provider } from "@/contexts/B06/B06Provider";
 import { B06FrameContainer } from "@/pages/B06/B06FrameContainer";
@@ -117,7 +115,6 @@ import { D06Provider } from "../contexts/D06/D06Provider";
 import { D06FrameContainer } from "../pages/D06/D06FrameContainer";
 import { D07Provider } from "../contexts/D07/D07Provider";
 import { D07FrameContainer } from "../pages/D07/D07FrameContainer";
-import { KitchenSink } from "../pages/lab/KitchenSink";
 import { KitchenSinkContainer } from "../pages/lab/KitchenSinkContainer";
 
 const AppRoute = () => {
@@ -139,7 +136,7 @@ const AppRoute = () => {
 			{/* Lab */}
 			<Route path="lab">
 				<Route path="loading" element={<LoadingFrame />} />
-				<Route path="lock-switch" element={<LockSwitchTest />} />
+				{/* <Route path="lock-switch" element={<LockSwitchTest />} /> */}
 				<Route
 					path="dsg"
 					element={
@@ -162,7 +159,7 @@ const AppRoute = () => {
 			<Route path="lab-protected" element={<ProtectedRoute />}>
 				<Route path="kitchen-sink" element={<KitchenSinkContainer />} />
 				<Route path="dsg" element={<DSGTest2Container />} />
-				<Route path="option-picker" element={<OptionPickerTest />} />
+				{/* <Route path="option-picker" element={<OptionPickerTest />} /> */}
 			</Route>
 
 			{/* PROTECTED */}

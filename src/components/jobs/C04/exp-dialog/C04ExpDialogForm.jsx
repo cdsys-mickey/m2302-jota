@@ -18,6 +18,7 @@ const C04ExpDialogForm = memo((props) => {
 							name="expProd"
 							required
 							filterByServer
+							queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							triggerDelay={100}
 							rules={{

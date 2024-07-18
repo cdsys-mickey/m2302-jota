@@ -1,27 +1,46 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React from "react";
-import { TextField } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
-import { isValid } from "date-fns";
-import { DateField, DatePicker, DesktopDatePicker } from "@mui/x-date-pickers";
 import DateFormats from "@/shared-modules/sd-date-formats";
+import { DateField } from "@mui/x-date-pickers";
+import { isValid } from "date-fns";
+import { de } from "date-fns/locale";
+import PropTypes from "prop-types";
+import { Controller, useFormContext } from "react-hook-form";
 
 const ControlledDateField = ({
-	label = "日期",
+	// for Controller
 	name,
-	readOnly,
 	control,
+	rules,
 	defaultValue,
-	onChange: handleDateChange,
+	// for TextField
+	label = "日期",
+	readOnly,
+	onChange: onDateChange,
 	mask = "____/__/__",
 	format = DateFormats.DATEFNS_DATE,
 	invalidDateMessage = "日期格式錯誤",
 	required = false,
-	rules,
 	labelShrink,
 	...rest
 }) => {
 	const { setError, clearErrors } = useFormContext();
+
+	if (!name) {
+		return (
+			<DateField
+				defaultValue={defaultValue}
+				label={label}
+				readOnly={readOnly}
+				onChange={onDateChange}
+				mask={mask}
+				format={format}
+				invalidDateMessage={invalidDateMessage}
+				required={required}
+				{...rest}
+			/>
+		);
+	}
+
 	return (
 		<Controller
 			name={name}
@@ -39,56 +58,33 @@ const ControlledDateField = ({
 					mask={mask}
 					format={format}
 					value={value}
-					onChange={
-						readOnly
-							? null
-							: (newValue, _) => {
-									// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
-									onChange(newValue);
-									if (handleDateChange) {
-										handleDateChange(newValue);
-									}
-									if (isValid(newValue)) {
-										if (clearErrors) {
-											clearErrors(name);
-										}
-									} else {
-										if (setError) {
-											setError(name, {
-												message: "日期格式錯誤",
-											});
-										}
-									}
-							  }
-					}
-					InputProps={
-						readOnly
-							? {
-									readOnly: true,
-									// disableUnderline: true
-							  }
-							: null
-					}
+					required={required}
+					onChange={(newValue) => {
+						if (readOnly) {
+							return;
+						}
+						// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
+						onChange(newValue);
+						if (onDateChange) {
+							onDateChange(newValue);
+						}
+						if (isValid(newValue)) {
+							if (clearErrors) {
+								clearErrors(name);
+							}
+						} else {
+							setError(name, {
+								message: invalidDateMessage,
+							});
+						}
+					}}
+					InputProps={{
+						readOnly,
+					}}
 					disabled={readOnly}
 					onError={(err) => {
 						console.error(err);
 					}}
-					// renderInput={(textFieldProps) => {
-					// 	// console.log(TextFieldProps, "TextFieldProps");
-					// 	return (
-					// 		<TextField
-					// 			{...textFieldProps}
-					// 			// 必須 override TextFieldProps 傳來的 error 屬性
-					// 			error={!!error}
-					// 			helperText={error?.message}
-					// 			InputLabelProps={{
-					// 				...(labelShrink && { shrink: true }),
-					// 			}}
-					// 			{...rest}
-					// 			variant={variant}
-					// 		/>
-					// 	);
-					// }}
 					invalidDateMessage={invalidDateMessage}
 					{...rest}
 				/>
@@ -96,5 +92,18 @@ const ControlledDateField = ({
 		/>
 	);
 };
-
+ControlledDateField.propTypes = {
+	label: PropTypes.string,
+	name: PropTypes.string,
+	control: PropTypes.object,
+	rules: PropTypes.object,
+	defaultValue: PropTypes.object,
+	readOnly: PropTypes.bool,
+	onChange: PropTypes.func,
+	mask: PropTypes.string,
+	format: PropTypes.string,
+	invalidDateMessage: PropTypes.string,
+	labelShrink: PropTypes.bool,
+	required: PropTypes.bool,
+};
 export default ControlledDateField;

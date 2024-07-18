@@ -19,12 +19,12 @@ const options = [
 	},
 ];
 
-const getById = (id) => {
+const findById = (id) => {
 	return options.find((o) => o.TypeB === id);
 };
 
 const ProdTypeB = {
-	getById,
+	findById,
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
