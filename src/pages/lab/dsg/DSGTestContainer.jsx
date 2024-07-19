@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import DSGTest from "./DSGTest";
 import { DSGTestContext } from "./DSGTestContext";
+import { useRef } from "react";
 
 export const DSGTestContainer = () => {
-	const dsg = useContext(DSGTestContext);
-	return <DSGTest gridRef={dsg.gridRef} />;
+	const gridRef = useRef();
+	return <DSGTest gridRef={gridRef} />;
 };
 
 DSGTestContainer.displayName = "DSGTestContainer";

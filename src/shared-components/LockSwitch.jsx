@@ -6,6 +6,9 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { green, grey, pink, red } from "@mui/material/colors";
 import FlexBox from "./FlexBox";
 import { Box, Typography } from "@mui/material";
+import { useCallback } from "react";
+import { useToggle } from "../shared-hooks/useToggle";
+import { useMemo } from "react";
 
 const LockSwitch = memo((props) => {
 	const {
@@ -13,8 +16,21 @@ const LockSwitch = memo((props) => {
 		lockedLabel = "鎖定",
 		unlockedLabel = "解鎖",
 		locked,
+
+		onChange,
 		...rest
 	} = props;
+
+	const [_locked, _toggleLocked] = useToggle(locked);
+
+	const innerLocked = useMemo(() => {
+		return onChange ? locked : _locked;
+	}, [_locked, locked, onChange]);
+
+	const handleChange = useMemo(() => {
+		return onChange ? onChange : _toggleLocked;
+	}, [onChange, _toggleLocked]);
+
 	return (
 		<Box
 			className="button"
@@ -41,7 +57,7 @@ const LockSwitch = memo((props) => {
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}>
 			<Switch
-				checked={!locked}
+				checked={!innerLocked}
 				borderRadius={6}
 				height={32}
 				width={70}
@@ -109,6 +125,7 @@ const LockSwitch = memo((props) => {
 						<LockOpenIcon fontSize="small" htmlColor="#fff" />
 					</FlexBox>
 				}
+				onChange={handleChange}
 				{...rest}
 			/>
 		</Box>
@@ -120,6 +137,7 @@ LockSwitch.propTypes = {
 	lockedLabel: PropTypes.string,
 	unlockedLabel: PropTypes.string,
 	locked: PropTypes.bool,
+	onChange: PropTypes.func,
 };
 
 LockSwitch.displayName = "LockSwitch";

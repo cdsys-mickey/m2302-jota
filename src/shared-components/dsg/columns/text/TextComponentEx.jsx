@@ -5,6 +5,14 @@ import { useEffect } from "react";
 import { useLayoutEffect } from "react";
 import classNames from "classnames";
 import { useFirstRender } from "../../hooks/useFirstRender";
+import Objects from "@/shared-modules/sd-objects";
+
+const arePropsEqual = (oldProps, newProps) => {
+	return Objects.arePropsEqual(oldProps, newProps, {
+		fields: "rowData,active,disabled,focus",
+		debug: true,
+	});
+};
 
 const TextComponentEx = memo(
 	({
@@ -120,7 +128,9 @@ const TextComponentEx = memo(
 				// and the user cannot click and edit the input (this part is handled by DataSheetGrid itself)
 				style={{
 					pointerEvents: focus ? "auto" : "none",
-					...opts.style,
+					...(opts && {
+						...opts?.style,
+					}),
 				}}
 				onChange={(e) => {
 					asyncRef.current.changedAt = Date.now();
@@ -138,12 +148,13 @@ const TextComponentEx = memo(
 				}}
 			/>
 		);
-	}
+	},
+	arePropsEqual
 );
 TextComponentEx.propTypes = {
 	active: PropTypes.bool,
 	focus: PropTypes.bool,
-	rowData: PropTypes.object,
+	rowData: PropTypes.string,
 	setRowData: PropTypes.func,
 	columnData: PropTypes.object,
 };

@@ -97,14 +97,16 @@ const DSGTest2 = memo(
 		return (
 			<div
 				ref={ref}
-				style={{
-					// margin: "50px",
-					padding: "50px",
-					paddingLeft: "10px",
-					paddingRight: "10px",
-					// maxWidth: "900px",
-					// background: "#f3f3f3",
-				}}>
+				style={
+					{
+						// margin: "50px",
+						// padding: "50px",
+						// paddingLeft: "10px",
+						// paddingRight: "10px",
+						// maxWidth: "900px",
+						// background: "#f3f3f3",
+					}
+				}>
 				<DynamicDataSheetGrid
 					ref={gridRef}
 					value={data}

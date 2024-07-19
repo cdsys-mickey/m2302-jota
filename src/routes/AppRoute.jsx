@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
 import HomeContainer from "@/pages/home/HomeContainer";
-import { DSGTest2Container } from "@/pages/lab/DSGTest2Container";
-import { DSGTestContainer } from "@/pages/lab/DSGTestContainer";
-import { DSGTestProvider } from "@/pages/lab/DSGTestProvider";
+import { DSGTest2Container } from "@/pages/lab/dsg/DSGTest2Container";
+import { DSGTestContainer } from "@/pages/lab/dsg/DSGTestContainer";
+import { DSGTestProvider } from "@/pages/lab/dsg/DSGTestProvider";
 import { SignInContainer } from "@/pages/signin/SignInContainer";
 import { SignInXContainer } from "@/pages/signin/SignInXContainer";
 import ProtectedRoute from "@/routes/ProtectedRoute";
@@ -80,7 +80,7 @@ import { SettingsFrameContainer } from "@/pages/settings/SettingsFrameContainer"
 import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
 import { B05Provider } from "@/contexts/B05/B05Provider";
 import { B05FrameContainer } from "@/pages/B05/B05FrameContainer";
-import DSGTest3 from "@/pages/lab/DSGTest3";
+import DSGTest3 from "@/pages/lab/dsg/DSGTest3";
 import { B06Provider } from "@/contexts/B06/B06Provider";
 import { B06FrameContainer } from "@/pages/B06/B06FrameContainer";
 import { C02Provider } from "@/contexts/C02/C02Provider";

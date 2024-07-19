@@ -8,37 +8,29 @@ import {
 	keyColumn,
 	textColumn,
 } from "react-datasheet-grid";
-import { createFloatColumn } from "../../shared-components/dsg/columns/float/createFloatColumn";
+import { createFloatColumn } from "../../../shared-components/dsg/columns/float/createFloatColumn";
 import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
+import { createTextColumnEx } from "../../../shared-components/dsg/columns/text/createTextColumnEx";
 
-const DSGTest = memo(
+const DSGTest4 = memo(
 	forwardRef((props, ref) => {
 		const { gridRef } = props;
 
 		const [data, setData] = useState([
 			{
-				active: true,
-				firstName: "Elon",
-				lastName: "Musk",
-				abc: "A",
-				SCost: "0",
-			},
-			{
-				active: false,
 				firstName: "Jeff",
 				lastName: "Bezos",
-				abc: "B",
-				SCost: 0,
 			},
+			{},
+			{},
 		]);
 
 		const columns = useMemo(
 			() => [
-				{ ...keyColumn("active", checkboxColumn), title: "Active" },
 				{
 					...keyColumn(
 						"firstName",
-						createTextColumn({
+						createTextColumnEx({
 							continuousUpdates: false,
 						})
 					),
@@ -47,36 +39,21 @@ const DSGTest = memo(
 				{
 					...keyColumn(
 						"lastName",
-						createTextColumn({
+						createTextColumnEx({
 							continuousUpdates: false,
 						})
 					),
-					title: "Last name",
+					title: "Disable",
+					disabled: true,
 				},
 				{
 					...keyColumn(
-						"Using_N",
-						createMuiCheckboxColumn({
-							trueValue: "1",
-							falseValue: "0",
+						"col3",
+						createTextColumnEx({
+							continuousUpdates: false,
 						})
 					),
-					title: "使用中",
-				},
-				{
-					...keyColumn("SCost", createFloatColumn(2)),
-					title: "調撥成本",
-					grow: 1,
-					// disabled: lockRows,
-				},
-				{
-					...keyColumn(
-						"abc",
-						createOptionPickerColumn({
-							options: ["A", "B", "C"],
-						})
-					),
-					title: "OptionPicker",
+					title: "Col3",
 				},
 			],
 			[]
@@ -90,9 +67,9 @@ const DSGTest = memo(
 			<div
 				ref={ref}
 				style={{
-					margin: "50px",
-					padding: "50px",
-					maxWidth: "900px",
+					// margin: "50px",
+					// padding: "50px",
+					// maxWidth: "900px",
 					background: "#f3f3f3",
 				}}>
 				<DataSheetGrid
@@ -109,9 +86,9 @@ const DSGTest = memo(
 	})
 );
 
-DSGTest.propTypes = {
+DSGTest4.propTypes = {
 	gridRef: PropTypes.object,
 };
 
-DSGTest.displayName = "DSGTest";
-export default DSGTest;
+DSGTest4.displayName = "DSGTest4";
+export default DSGTest4;

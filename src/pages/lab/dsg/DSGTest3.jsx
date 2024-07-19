@@ -6,9 +6,9 @@ import {
 	keyColumn,
 	textColumn,
 } from "react-datasheet-grid";
-import { checkboxColumn2 } from "../../shared-components/dsg/columns/checkbox/checkboxColumn2";
-import { createOptionPickerColumn } from "../../shared-components/dsg/columns/option-picker/createOptionPickerColumn";
-import { reactSelectColumn } from "../../shared-components/dsg/columns/react-select/reactSelectColumn";
+import { checkboxColumn2 } from "../../../shared-components/dsg/columns/checkbox/checkboxColumn2";
+import { createOptionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/createOptionPickerColumn";
+import { reactSelectColumn } from "../../../shared-components/dsg/columns/react-select/reactSelectColumn";
 
 const DSGTest3 = memo(
 	forwardRef((props, ref) => {

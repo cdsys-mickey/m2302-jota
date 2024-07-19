@@ -19,6 +19,7 @@ import ProdTypeAPicker from "../../../components/picker/ProdTypeAPicker";
 import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
 import { useRef } from "react";
 import ProdTypeA from "../../../modules/md-prod-type-a";
+import LockSwitch from "../../../shared-components/LockSwitch";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -77,9 +78,7 @@ const OPTIONS = Array.from(new Array(10000))
 	.map(() => random(10 + Math.ceil(Math.random() * 20)))
 	.sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase()));
 
-const OptionPickerTest = (props) => {
-	const { findOption } = props;
-
+const OptionPickerTest = () => {
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
 	const inputRef3 = useRef();
@@ -89,6 +88,15 @@ const OptionPickerTest = (props) => {
 	return (
 		<form>
 			<Box px={3}>
+				<FormSectionTitle>OptionPicker</FormSectionTitle>
+				<FormSectionBox p={1} mb={1}>
+					<Grid container spacing={2}>
+						<Grid item xs={12} md={6}>
+							<LockSwitch />
+						</Grid>
+					</Grid>
+				</FormSectionBox>
+
 				<FormSectionTitle>OptionPicker</FormSectionTitle>
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={2}>
