@@ -1,16 +1,16 @@
 import { FormProvider, useForm } from "react-hook-form";
-import OptionPickerTest from "./OptionPickerTest";
+import InputTest from "./InputTest";
 import { useCallback } from "react";
 
-export const OptionPickerTestContainer = (props) => {
+export const InputTestContainer = (props) => {
 	const { ...rest } = props;
 	const form = useForm();
 
 	return (
 		<FormProvider {...form}>
-			<OptionPickerTest {...rest} />
+			<InputTest {...rest} />
 		</FormProvider>
 	);
 };
 
-OptionPickerTestContainer.displayName = "OptionPickerTestContainer";
+InputTestContainer.displayName = "OptionPickerTestContainer";

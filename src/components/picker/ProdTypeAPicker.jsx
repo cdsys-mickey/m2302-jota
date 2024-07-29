@@ -17,6 +17,7 @@ const ProdTypeAPicker = memo(
 				options={ProdTypeA.options}
 				getOptionLabel={ProdTypeA.getOptionLabel}
 				isOptionEqualToValue={ProdTypeA.isOptionEqualToValue}
+				findByInput={ProdTypeA.findById}
 				{...rest}
 			/>
 		);

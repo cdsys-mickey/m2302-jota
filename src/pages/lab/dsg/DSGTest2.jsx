@@ -11,29 +11,19 @@ import Depts from "@/modules/md-depts";
 import Prods from "@/modules/md-prods";
 import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
 import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
+import { prodPickerColumn } from "../../../components/dsg/columns/prod-picker/prodPickerColumn";
 
 const DSGTest2 = memo(
 	forwardRef((props, ref) => {
 		const { gridRef, bearer } = props;
 
 		const [data, setData] = useState([
-			{ active: true, firstName: "Elon", lastName: "Musk" },
-			{ active: false, firstName: "Jeff", lastName: "Bezos" },
+			{ active: true, firstName: "Elon", lastName: "Musk", prod: null },
+			{ active: false, firstName: "Jeff", lastName: "Bezos", prod: null },
 		]);
 
 		const columns = useMemo(
 			() => [
-				{
-					...keyColumn(
-						"firstName",
-						createTextColumn({
-							continuousUpdates: false,
-						})
-					),
-					title: "First name",
-					grow: 3,
-					minWidth: 120,
-				},
 				{
 					...keyColumn(
 						"Using_N",
@@ -55,39 +45,34 @@ const DSGTest2 = memo(
 					title: "ABC",
 					minWidth: 100,
 				},
+
 				{
 					...keyColumn(
-						"dept",
-						createWebApiOptionPickerColumn({
-							url: "v1/ou/depts",
-							bearer: bearer,
-							getOptionLabel: Depts.getOptionLabel,
-							isOptionEqualToValue: Depts.isOptionEqualToValue,
-							getData: (p) => p["data"],
+						"firstName",
+						createTextColumn({
+							continuousUpdates: false,
 						})
 					),
-					title: "門市",
-					grow: 6,
+					title: "First name",
+					grow: 3,
+					minWidth: 120,
 				},
 				{
 					...keyColumn(
 						"prod",
-						createWebApiOptionPickerColumn({
-							url: "v1/prods",
-							querystring: "tp=20",
-							bearer: bearer,
-							queryParam: "qs",
-							getOptionLabel: Prods.getOptionLabel,
-							isOptionEqualToValue: Prods.isOptionEqualToValue,
-							filterByServer: true,
-							getData: (p) => p["data"],
+						prodPickerColumn({
+							name: "prod",
+							withStock: true,
+							triggerDelay: 100,
 						})
 					),
+					id: "SProdID",
 					title: "商品",
-					grow: 8,
+					grow: 4,
+					disabled: false,
 				},
 			],
-			[bearer]
+			[]
 		);
 
 		// useEffect(() => {
@@ -121,7 +106,7 @@ const DSGTest2 = memo(
 );
 
 DSGTest2.propTypes = {
-	gridRef: PropTypes.func,
+	gridRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	bearer: PropTypes.string,
 };
 

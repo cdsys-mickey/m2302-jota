@@ -1,4 +1,5 @@
 import TextComponentEx from "./TextComponentEx";
+import { TextComponentExContainer } from "./TextComponentExContainer";
 
 export const createTextColumnEx = ({
 	placeholder,
@@ -13,7 +14,7 @@ export const createTextColumnEx = ({
 	parsePastedValue = (value) => value.replace(/[\n\r]+/g, " ").trim() || null,
 }) => {
 	return {
-		component: TextComponentEx,
+		component: TextComponentExContainer,
 		columnData: {
 			placeholder,
 			alignRight,

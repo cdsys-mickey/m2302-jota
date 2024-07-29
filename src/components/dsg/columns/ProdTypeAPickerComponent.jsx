@@ -1,41 +1,44 @@
-import { memo } from "react";
-import OptionPicker from "@/shared-components/option-picker/OptionPicker";
 import PropTypes from "prop-types";
-import { useRef } from "react";
-import { useLayoutEffect } from "react";
+import { memo, useLayoutEffect, useRef } from "react";
+import ProdTypeAPicker from "@/components//picker/ProdTypeAPicker";
+import { useMemo } from "react";
 import { useCallback } from "react";
 import Objects from "@/shared-modules/sd-objects";
-import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData,active,focus",
+		fields: "rowData.TypeA,active,disabled,focus",
 		debug: true,
 	});
 };
 
-const OptionPickerComponent = memo((props) => {
+const ProdTypeAPickerComponent = memo((props) => {
 	const {
-		columnData,
-		/** BUILT-IN PROPS */
-		focus,
+		// Data
 		rowData,
 		setRowData,
-		active,
-		stopEditing,
-		disabled,
+		// Extra information
 		rowIndex,
 		columnIndex,
+		columnData,
+		// Cell state
+		active,
+		focus,
+		disabled,
+		// Control functions
+		stopEditing,
+		// insertRowBelow,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const { disableActiveControl, options, ...rest } = columnData;
-
-	const inputRef = useRef();
-	// console.log("rendering OptionPickerComponent");
+	const ref = useRef();
+	const { disableActiveControl, ...rest } = columnData;
 
 	const handleChange = useCallback(
 		(newValue) => {
-			console.log("OptionPickerComponent.handleChange", newValue);
+			console.log("handleChange", newValue);
 			setRowData(newValue);
 			if (!newValue) {
 				return;
@@ -49,6 +52,24 @@ const OptionPickerComponent = memo((props) => {
 		return disabled || disableActiveControl ? !focus : !active;
 	}, [active, disableActiveControl, disabled, focus]);
 
+	// focusing on the underlying input component when the cell is focused
+	useLayoutEffect(() => {
+		if (focus) {
+			ref.current?.focus();
+		} else {
+			ref.current?.blur();
+		}
+	}, [focus]);
+
+	useLayoutEffect(() => {
+		if (active) {
+			ref.current?.focus();
+			ref.current?.select();
+		} else {
+			ref.current?.blur();
+		}
+	}, [active, focus]);
+
 	const cell = useMemo(() => {
 		return {
 			row: rowIndex,
@@ -56,28 +77,17 @@ const OptionPickerComponent = memo((props) => {
 		};
 	}, [columnIndex, rowIndex]);
 
-	// This function will be called only when `focus` changes
-	useLayoutEffect(() => {
-		if (focus) {
-			inputRef.current?.focus();
-		} else {
-			inputRef.current?.blur();
-		}
-	}, [focus]);
-
 	return (
-		<OptionPicker
+		<ProdTypeAPicker
 			label=""
-			readOnly={disabled}
-			inputRef={inputRef}
-			options={options}
+			inputRef={ref}
+			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
-			disabled={disabled}
-			// DSG 專屬屬性
-			dense
-			hideBorders
+			// DSG 專屬
 			toastError
+			hideBorders
+			dense
 			hideControls={hideControls}
 			hidePlaceholder={!active}
 			disableFadeOut
@@ -87,7 +97,7 @@ const OptionPickerComponent = memo((props) => {
 	);
 }, arePropsEqual);
 
-OptionPickerComponent.propTypes = {
+ProdTypeAPickerComponent.propTypes = {
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,
@@ -112,5 +122,5 @@ OptionPickerComponent.propTypes = {
 	getContextMenuItems: PropTypes.func,
 };
 
-OptionPickerComponent.displayName = "OptionPickerComponent";
-export default OptionPickerComponent;
+ProdTypeAPickerComponent.displayName = "ProdTypeAPickerComponent";
+export default ProdTypeAPickerComponent;

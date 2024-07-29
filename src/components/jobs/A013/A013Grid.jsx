@@ -113,7 +113,7 @@ A013Grid.propTypes = {
 	height: PropTypes.number,
 	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
+	// handleActiveCellChange: PropTypes.func,
 };
 
 A013Grid.displayName = "A013Grid";

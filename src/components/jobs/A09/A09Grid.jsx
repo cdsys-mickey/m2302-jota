@@ -87,7 +87,6 @@ const A09Grid = memo((props) => {
 					disableExpandSelection
 					// disableContextMenu
 					contextMenuComponent={ContextMenu}
-					// onActiveCellChange={handleActiveCellChange}
 					// autoAddRow
 				/>
 			</Box>
@@ -103,7 +102,7 @@ A09Grid.propTypes = {
 	height: PropTypes.number,
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
+	// handleActiveCellChange: PropTypes.func,
 };
 
 A09Grid.displayName = "A09Grid";

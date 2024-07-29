@@ -6,7 +6,7 @@ import { useWindowSize } from "../../shared-hooks/useWindowSize";
 
 export const KitchenSinkContainer = (props) => {
 	const { ...rest } = props;
-	const [selectedTab, setSelectedTab] = useState("option-picker");
+	const [selectedTab, setSelectedTab] = useState(Lab.Tabs[0].value);
 	const { height } = useWindowSize();
 
 	const handleTabChange = useCallback((e, newTab) => {

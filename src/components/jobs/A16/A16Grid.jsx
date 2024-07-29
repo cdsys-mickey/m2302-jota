@@ -122,7 +122,6 @@ const A16Grid = memo((props) => {
 					addRowsComponent={DSGAddRowsToolbar}
 					disableExpandSelection
 					contextMenuComponent={ContextMenu}
-					// onActiveCellChange={handleActiveCellChange}
 					// autoAddRow
 					createRow={handleCreateRow}
 					duplicateRow={({ rowData }) => ({
@@ -144,7 +143,7 @@ A16Grid.propTypes = {
 	height: PropTypes.number,
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
+	// handleActiveCellChange: PropTypes.func,
 	handleCreateRow: PropTypes.func,
 };
 

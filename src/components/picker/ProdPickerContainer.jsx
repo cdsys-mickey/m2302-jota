@@ -14,6 +14,8 @@ export const ProdPickerContainer = (props) => {
 		withSalesPackageName = false,
 		withPurchasePackageName = false,
 		withStock = false,
+		forId = false,
+		fuzzy = false,
 		...rest
 	} = props;
 	const { token } = useContext(AuthContext);
@@ -34,9 +36,13 @@ export const ProdPickerContainer = (props) => {
 			...(withStock && {
 				ws: 1,
 			}),
+			...(fuzzy && {
+				fuzzy: 1,
+			}),
 		};
 		return queryString.stringify(obj);
 	}, [
+		fuzzy,
 		withBomPackageName,
 		withPurchasePackageName,
 		withSalesPackageName,
@@ -47,8 +53,17 @@ export const ProdPickerContainer = (props) => {
 		return Prods.isOptionEqualToValue(option, value);
 	}, []);
 
-	const getOptionLabel = useCallback((option) => {
-		return Prods.getOptionLabel(option);
+	const getOptionLabel = useCallback(
+		(option) => {
+			return forId
+				? Prods.getOptionLabelForId(option)
+				: Prods.getOptionLabel(option);
+		},
+		[forId]
+	);
+
+	const getTitle = useCallback((option) => {
+		return Prods.getTitle(option);
 	}, []);
 
 	const stringify = useCallback((option) => {
@@ -64,6 +79,7 @@ export const ProdPickerContainer = (props) => {
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
+			getTitle={getTitle}
 			stringify={stringify}
 			{...rest}
 		/>
@@ -77,6 +93,8 @@ ProdPickerContainer.propTypes = {
 	withSalesPackageName: PropTypes.bool,
 	withPurchasePackageName: PropTypes.bool,
 	withStock: PropTypes.bool,
+	forId: PropTypes.bool,
+	fuzzy: PropTypes.bool,
 };
 
 ProdPickerContainer.displayName = "ProdPickerContainer";

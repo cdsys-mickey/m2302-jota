@@ -3,7 +3,6 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { CatMGridContext } from "./CatMGridContext";
 import { CatSGridContext } from "./CatSGridContext";

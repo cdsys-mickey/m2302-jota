@@ -78,7 +78,7 @@ const OPTIONS = Array.from(new Array(10000))
 	.map(() => random(10 + Math.ceil(Math.random() * 20)))
 	.sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase()));
 
-const OptionPickerTest = () => {
+const InputTest = () => {
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
 	const inputRef3 = useRef();
@@ -88,7 +88,7 @@ const OptionPickerTest = () => {
 	return (
 		<form>
 			<Box px={3}>
-				<FormSectionTitle>OptionPicker</FormSectionTitle>
+				<FormSectionTitle>LockSwitch</FormSectionTitle>
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} md={6}>
@@ -165,7 +165,6 @@ const OptionPickerTest = () => {
 								disableOpenOnInput
 								pressToFind
 								findByInput={ProdTypeA.findById}
-								// selectNext
 							/>
 						</Grid>
 						<Grid item xs={4}>
@@ -199,7 +198,6 @@ const OptionPickerTest = () => {
 								prevInputRef={inputRef2}
 								disableOpenOnInput
 								pressToFind
-								findByInput={ProdTypeA.findById}
 
 								// selectNext
 							/>
@@ -235,9 +233,9 @@ const OptionPickerTest = () => {
 	);
 };
 
-OptionPickerTest.propTypes = {
+InputTest.propTypes = {
 	findOption: PropTypes.func,
 };
 
-OptionPickerTest.displayName = "OptionPickerTest";
-export default OptionPickerTest;
+InputTest.displayName = "OptionPickerTest";
+export default InputTest;
