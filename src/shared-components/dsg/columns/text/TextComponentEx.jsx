@@ -38,6 +38,7 @@ const TextComponentEx = memo(
 		nextCell,
 	}) => {
 		const ref = useRef(null);
+		const { style, ...rest } = opts;
 		const firstRender = useFirstRender();
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
 		const asyncRef = useRef({

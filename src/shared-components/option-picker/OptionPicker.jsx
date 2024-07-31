@@ -304,6 +304,7 @@ const OptionPicker = memo(
 				e.stopPropagation(); // 防止往下傳遞給 DSG
 
 				e.preventDefault();
+				e.stopPropagation(); // 防止往下傳遞給 DSG
 				const input = e.target.value;
 
 				// 重設
