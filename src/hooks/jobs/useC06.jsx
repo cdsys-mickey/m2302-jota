@@ -228,7 +228,7 @@ export const useC06 = () => {
 				console.warn("clear values?");
 			}
 		},
-		[httpPatchAsync, prodGrid, refreshAmt, token]
+		[createRow, httpPostAsync, prodGrid, refreshAmt, token]
 	);
 
 	const refreshAction = useAction();

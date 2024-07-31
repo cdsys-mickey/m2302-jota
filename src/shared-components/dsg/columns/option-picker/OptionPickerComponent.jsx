@@ -24,11 +24,13 @@ const OptionPickerComponent = memo((props) => {
 		active,
 		stopEditing,
 		disabled,
+		rowIndex,
+		columnIndex,
 	} = props;
 
 	const { disableActiveControl, options, ...rest } = columnData;
 
-	const ref = useRef();
+	const inputRef = useRef();
 	// console.log("rendering OptionPickerComponent");
 
 	const handleChange = useCallback(
@@ -38,7 +40,7 @@ const OptionPickerComponent = memo((props) => {
 			if (!newValue) {
 				return;
 			}
-			setTimeout(() => stopEditing({ nextRow: false }), 100);
+			setTimeout(() => stopEditing({ nextRow: false }), 50);
 		},
 		[setRowData, stopEditing]
 	);
@@ -47,12 +49,19 @@ const OptionPickerComponent = memo((props) => {
 		return disabled || disableActiveControl ? !focus : !active;
 	}, [active, disableActiveControl, disabled, focus]);
 
+	const cell = useMemo(() => {
+		return {
+			row: rowIndex,
+			col: columnIndex,
+		};
+	}, [columnIndex, rowIndex]);
+
 	// This function will be called only when `focus` changes
 	useLayoutEffect(() => {
 		if (focus) {
-			ref.current?.focus();
+			inputRef.current?.focus();
 		} else {
-			ref.current?.blur();
+			inputRef.current?.blur();
 		}
 	}, [focus]);
 
@@ -60,7 +69,7 @@ const OptionPickerComponent = memo((props) => {
 		<OptionPicker
 			label=""
 			readOnly={disabled}
-			inputRef={ref}
+			inputRef={inputRef}
 			options={options}
 			value={rowData}
 			onChange={handleChange}
@@ -68,12 +77,11 @@ const OptionPickerComponent = memo((props) => {
 			// DSG 專屬屬性
 			dense
 			hideBorders
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!active}
+			toastError
 			hideControls={hideControls}
 			hidePlaceholder={!active}
 			disableFadeOut
-			selectOnFocus
+			cell={cell}
 			{...rest}
 		/>
 	);

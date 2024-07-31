@@ -15,12 +15,11 @@ const ControlledDateField = ({
 	// for TextField
 	label = "日期",
 	readOnly,
-	onChange: onDateChange,
+	onChange: _onChange,
 	mask = "____/__/__",
 	format = DateFormats.DATEFNS_DATE,
 	invalidDateMessage = "日期格式錯誤",
 	required = false,
-	labelShrink,
 	...rest
 }) => {
 	const { setError, clearErrors } = useFormContext();
@@ -31,7 +30,7 @@ const ControlledDateField = ({
 				defaultValue={defaultValue}
 				label={label}
 				readOnly={readOnly}
-				onChange={onDateChange}
+				onChange={_onChange}
 				mask={mask}
 				format={format}
 				invalidDateMessage={invalidDateMessage}
@@ -65,8 +64,8 @@ const ControlledDateField = ({
 						}
 						// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
 						onChange(newValue);
-						if (onDateChange) {
-							onDateChange(newValue);
+						if (_onChange) {
+							_onChange(newValue);
 						}
 						if (isValid(newValue)) {
 							if (clearErrors) {

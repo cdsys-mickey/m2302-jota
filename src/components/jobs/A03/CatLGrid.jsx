@@ -27,7 +27,6 @@ const CatLGrid = memo((props) => {
 		// METHODS
 		handleChange,
 		isPersisted,
-		// handleActiveCellChange,
 		onSelectionChange,
 		getRowClassName,
 	} = props;
@@ -103,7 +102,7 @@ CatLGrid.propTypes = {
 	height: PropTypes.number,
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
+	// handleActiveCellChange: PropTypes.func,
 	onSelectionChange: PropTypes.func,
 	// isSelected: PropTypes.func,
 	getRowClassName: PropTypes.func,

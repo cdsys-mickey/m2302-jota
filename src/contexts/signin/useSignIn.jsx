@@ -1,13 +1,13 @@
-import Cookies from "js-cookie";
-import _ from "lodash";
-import PropTypes from "prop-types";
-import { useCallback, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Auth from "../../modules/md-auth";
-import Errors from "../../shared-modules/sd-errors";
+import Cookies from "js-cookie";
+import _ from "lodash";
+import { useCallback, useState } from "react";
+import { toast } from "react-toastify";
+import Auth from "@/modules/md-auth";
+import { useCaptcha } from "@/shared-components/captcha-field/useCaptcha";
+import Errors from "@/shared-modules/sd-errors";
+import { useFormManager } from "@/shared-contexts/form-manager/useFormManager";
 
 const pageCookieOpts = {
 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
@@ -15,10 +15,16 @@ const pageCookieOpts = {
 };
 
 const PARAM_ACCOUNT = "ac";
-const PARAM_PWROD = "pw";
+const PARAM_PWORD = "pw";
+const PARAM_CAPTCHA = "captcha";
 
 export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
+	const formManager = useFormManager(`ac,pw,captcha`);
+	const captcha = useCaptcha({
+		numbersOnly: true,
+		length: 4,
+	});
 
 	const [state, setState] = useState({
 		data: null,
@@ -29,19 +35,26 @@ export const useSignIn = () => {
 		mode: "form",
 	});
 
-	const handleSignInSubmit = useCallback(
-		async (data, isImpersonate) => {
+	const signinStub = useCallback(
+		async (data, opts = {}) => {
+			const { impersonate = false, setFocus } = opts;
 			const collected = _.pick(data, [
 				PARAM_ACCOUNT,
-				PARAM_PWROD,
+				PARAM_PWORD,
 				"captchaPassed",
 			]);
 
 			if (
-				isImpersonate &&
-				collected[PARAM_PWROD] !== import.meta.env.VITE_PWORDX
+				impersonate &&
+				collected[PARAM_PWORD] !== import.meta.env.VITE_PWORDX
 			) {
 				toast.error("通行碼驗證失敗, 請重新輸入");
+				if (setFocus) {
+					setFocus(PARAM_PWORD, {
+						shouldSelect: true,
+					});
+				}
+				captcha.handleRefresh();
 				return;
 			}
 			if (collected.captchaPassed) {
@@ -51,7 +64,7 @@ export const useSignIn = () => {
 				}));
 				try {
 					const { status, payload, error } = await httpPostAsync({
-						url: isImpersonate
+						url: impersonate
 							? "/v1/auth/signinx"
 							: "/v1/auth/signin",
 						data: collected,
@@ -69,7 +82,7 @@ export const useSignIn = () => {
 							payload.LogKey || "",
 							Auth.COOKIE_OPTS
 						);
-						if (!isImpersonate) {
+						if (!impersonate) {
 							Cookies.remove(Auth.COOKIE_MODE);
 						} else {
 							Cookies.set(
@@ -123,7 +136,7 @@ export const useSignIn = () => {
 						Cookies.remove(Auth.COOKIE_LOGKEY);
 					}
 				} catch (err) {
-					console.error("handleSignInSubmit failed", err);
+					console.error("signinStub failed", err);
 					toast.error(Errors.getMessage("登入發生異常", err));
 				} finally {
 					setState((prev) => ({
@@ -133,41 +146,64 @@ export const useSignIn = () => {
 				}
 			} else {
 				toast.warn("請輸入正確的驗證碼");
+				if (setFocus) {
+					setFocus(PARAM_CAPTCHA, {
+						shouldSelect: true,
+					});
+				}
 			}
 		},
-		[httpPostAsync, toLanding]
+		[captcha, httpPostAsync, toLanding]
 	);
 
-	const onSignInSubmit = useCallback(
-		(data) => {
-			console.log("onSignInSubmit", data);
-			handleSignInSubmit(data, false);
-		},
-		[handleSignInSubmit]
+	const signInSubmitHandler = useCallback(
+		({ setFocus }) =>
+			(data) => {
+				console.log("onSignInSubmit", data);
+				const collected = {
+					...data,
+					captchaPassed: captcha.validate(data.captcha),
+				};
+				signinStub(collected, {
+					impersonate: false,
+					setFocus,
+				});
+			},
+		[captcha, signinStub]
 	);
 
 	const onSignInSubmitError = useCallback((err) => {
 		console.error("onSignInSubmitError", err);
 	}, []);
 
-	const onSignInXSubmit = useCallback(
-		(data) => {
-			console.log("onSignInXSubmit", data);
-			handleSignInSubmit(data, true);
-		},
-		[handleSignInSubmit]
+	const signInXSubmitHandler = useCallback(
+		({ setFocus }) =>
+			(data) => {
+				console.log("onSignInXSubmit", data);
+				const collected = {
+					...data,
+					captchaPassed: captcha.validate(data.captcha),
+				};
+				signinStub(collected, {
+					impersonate: true,
+					setFocus,
+				});
+			},
+		[captcha, signinStub]
 	);
 
 	const onSignInXSubmitError = useCallback((err) => {
 		console.error("onSignInXError", err);
-		toast.error("登入發生驗證異常，請稍後再弒");
+		// toast.error("登入發生驗證異常，請稍後再弒");
 	}, []);
 
 	return {
 		...state,
-		onSignInSubmit,
+		signInSubmitHandler,
 		onSignInSubmitError,
-		onSignInXSubmit,
+		signInXSubmitHandler,
 		onSignInXSubmitError,
+		captcha,
+		formManager,
 	};
 };

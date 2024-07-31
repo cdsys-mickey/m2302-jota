@@ -1,10 +1,7 @@
 import PropTypes from "prop-types";
-import { forwardRef } from "react";
-import ProdTypeA from "../../modules/md-prod-type-a";
-import { ControlledOptionPicker } from "../../shared-components/option-picker/ControlledOptionPicker";
-import OptionPicker from "../../shared-components/option-picker/OptionPicker";
-import { memo } from "react";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import { forwardRef, memo } from "react";
+import ProdTypeA from "@/modules/md-prod-type-a";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const ProdTypeAPicker = memo(
 	forwardRef((props, ref) => {
@@ -17,6 +14,7 @@ const ProdTypeAPicker = memo(
 				options={ProdTypeA.options}
 				getOptionLabel={ProdTypeA.getOptionLabel}
 				isOptionEqualToValue={ProdTypeA.isOptionEqualToValue}
+				findByInput={ProdTypeA.findById}
 				{...rest}
 			/>
 		);

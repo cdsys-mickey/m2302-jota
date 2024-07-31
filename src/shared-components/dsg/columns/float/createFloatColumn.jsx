@@ -1,10 +1,10 @@
 import { createTextColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "../text/createTextColumnEx";
 
-export const createFloatColumn = (fixedDigit = 1, opts = {}) =>
-	createTextColumn({
+export const createFloatColumn = (fixedDigit = 1, opts) =>
+	createTextColumnEx({
 		alignRight: true,
 		continuousUpdates: false,
-		opts,
 		formatBlurredInput: (value) => {
 			if (value === "" || value === null || value === undefined) {
 				return "";
@@ -24,4 +24,5 @@ export const createFloatColumn = (fixedDigit = 1, opts = {}) =>
 			const number = Number(value);
 			return !isNaN(number) ? number : null;
 		},
+		...opts,
 	});

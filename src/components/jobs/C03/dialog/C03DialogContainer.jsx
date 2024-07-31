@@ -73,6 +73,10 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		c03.onRefreshGridSubmitError
 	);
 
+	const supplierNameDisabled = useMemo(() => {
+		return c03.isSupplierNameDisabled(supplier);
+	}, [c03, supplier]);
+
 	useEffect(() => {
 		if (c03.itemDataReady) {
 			console.log("c03 form reset", c03.itemData);
@@ -117,7 +121,7 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 					readError={c03.readError}
 					data={c03.itemData}
 					itemDataReady={c03.itemDataReady}
-					handleSupplierChanged={c03.handleSupplierChanged({
+					handleSupplierChanged={c03.supplierChangedHandler({
 						setValue: form.setValue,
 						getValues: form.getValues,
 						handleSubmit: handleRefreshGridSubmit,
@@ -130,8 +134,9 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 					supplierPickerDisabled={c03.supplierPickerDisabled}
 					squaredFlagDisabled={c03.squaredFlagDisabled}
 					sNotQtyDisabled={c03.sNotQtyDisabled}
-					supplier={supplier}
-					isSupplierNameDisabled={c03.isSupplierNameDisabled}
+					// supplier={supplier}
+					// isSupplierNameDisabled={c03.isSupplierNameDisabled}
+					supplierNameDisabled={supplierNameDisabled}
 				/>
 			</DialogExContainer>
 		</FormProvider>

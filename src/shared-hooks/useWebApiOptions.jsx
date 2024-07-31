@@ -29,6 +29,7 @@ export const useWebApiOptions = (opts = {}) => {
 		bearer,
 		disableLazy,
 		queryParam = "q",
+		idParam = "id",
 		// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
 		querystring,
 		params,
@@ -50,7 +51,7 @@ export const useWebApiOptions = (opts = {}) => {
 		triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
 		getData = defaultGetData,
 		onError = defaultOnError,
-		disableClose,
+		// disableClose,
 		disableOnSingleOption,
 		debug = false,
 		// Enter & Tab
@@ -60,6 +61,8 @@ export const useWebApiOptions = (opts = {}) => {
 	const { sendAsync } = useWebApi();
 
 	// const [loading, setLoading] = useState(null);
+
+	// ***** open/close 邏輯交由 OptionPicker 處理 *****
 	// const [open, setOpen] = useState(false);
 
 	// const handleOpen = useCallback(
@@ -148,7 +151,9 @@ export const useWebApiOptions = (opts = {}) => {
 					method,
 					url,
 					data: {
-						id,
+						[idParam]: id,
+						...(querystring && queryString.parse(querystring)),
+						...params,
 					},
 					headers,
 					...(bearer && {
@@ -156,7 +161,7 @@ export const useWebApiOptions = (opts = {}) => {
 					}),
 				});
 				if (status.success) {
-					return payload;
+					return getData(payload)?.[0];
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -165,7 +170,17 @@ export const useWebApiOptions = (opts = {}) => {
 			}
 			return null;
 		},
-		[bearer, headers, method, sendAsync, url]
+		[
+			bearer,
+			getData,
+			headers,
+			idParam,
+			method,
+			params,
+			querystring,
+			sendAsync,
+			url,
+		]
 	);
 
 	const loadOptions = useCallback(
@@ -369,7 +384,7 @@ export const useWebApiOptions = (opts = {}) => {
 		// handleClose,
 		onChange,
 		// open,
-		disableClose,
+		// disableClose,
 		disabled,
 		pressToFind,
 		findByInput: _findByInput,

@@ -331,7 +331,7 @@ export const useC03 = () => {
 		return itemData?.CFlag === "*";
 	}, [itemData?.CFlag]);
 
-	const handleSupplierChanged = useCallback(
+	const supplierChangedHandler = useCallback(
 		({ setValue, handleSubmit, getValues }) =>
 			(newValue) => {
 				console.log("supplier changed", newValue);
@@ -808,7 +808,7 @@ export const useC03 = () => {
 		promptCreating,
 		onEditorSubmit,
 		onEditorSubmitError,
-		handleSupplierChanged,
+		supplierChangedHandler,
 		buildOrdDateChangeHandler,
 		// Grid
 		...prodGrid,

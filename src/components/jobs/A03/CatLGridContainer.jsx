@@ -1,5 +1,4 @@
 import { CatLGridContext } from "@/contexts/A03/CatLGridContext";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import { A03Context } from "@/contexts/A03/A03Context";

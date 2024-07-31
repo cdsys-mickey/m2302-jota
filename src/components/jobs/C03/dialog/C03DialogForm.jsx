@@ -25,12 +25,10 @@ const C03DialogForm = memo((props) => {
 		readWorking,
 		itemDataReady,
 		supplierPickerDisabled,
-		isSupplierNameDisabled,
 		supplierNameDisabled,
 		squaredFlagDisabled,
 		creating,
 		editing,
-		supplier,
 	} = props;
 	return (
 		<form onSubmit={onSubmit}>
@@ -113,7 +111,6 @@ const C03DialogForm = memo((props) => {
 									virtualize
 									// fadeOutDisabled
 									optionLabelSize="md"
-									// onChange={handleSupplierChange}
 									onChanged={handleSupplierChanged}
 								/>
 							</OptionPickerProvider>
@@ -129,7 +126,8 @@ const C03DialogForm = memo((props) => {
 								rules={{
 									required: "廠商名稱為必填",
 								}}
-								disabled={isSupplierNameDisabled(supplier)}
+								// disabled={isSupplierNameDisabled(supplier)}
+								disabled={supplierNameDisabled}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={3}>

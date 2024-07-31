@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import { useWatch } from "react-hook-form";
 import ProdLCats from "@/modules/md-prod-l-cats";
+import { OptionPickerWrapper } from "../../../../../shared-components/option-picker/OptionPickerWrapper";
 
 export const TypoProdCatLPickerContainer = forwardRef((props, ref) => {
 	const { name, children, label = "大分類", ...rest } = props;
@@ -14,7 +15,7 @@ export const TypoProdCatLPickerContainer = forwardRef((props, ref) => {
 	});
 
 	return (
-		<TypoWebApiOptionPickerContainer
+		<OptionPickerWrapper
 			name={name}
 			label={label}
 			ref={ref}
@@ -22,9 +23,8 @@ export const TypoProdCatLPickerContainer = forwardRef((props, ref) => {
 			url={`v1/prod/l-cats`}
 			getOptionLabel={ProdLCats.getOptionLabel}
 			isOptionEqualToValue={ProdLCats.isOptionEqualToValue}
-			{...rest}>
-			{children || ProdLCats.getOptionLabel(value)}
-		</TypoWebApiOptionPickerContainer>
+			{...rest}
+		/>
 	);
 });
 TypoProdCatLPickerContainer.propTypes = {

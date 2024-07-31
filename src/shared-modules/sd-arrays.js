@@ -6,7 +6,10 @@ const parse = (s) => {
 		return s;
 	}
 	if (Types.isString(s)) {
-		return s.split(/\s*,\s*/);
+		return s
+			.trim()
+			.split(/\s*,\s*/)
+			.filter((x) => x);
 	}
 	return [];
 };

@@ -8,7 +8,7 @@ import {
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
-import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
+import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
@@ -73,7 +73,7 @@ const D041ProdGrid = memo((props) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("SExpDate", dateFNSDateColumn),
+				...keyColumn("SExpDate", dateFnsDateColumn),
 				title: "有效日期",
 				minWidth: 140,
 				maxWidth: 160,

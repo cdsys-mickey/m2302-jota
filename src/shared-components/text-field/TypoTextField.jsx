@@ -10,7 +10,6 @@ const TypoTextField = memo(
 	forwardRef((props, ref) => {
 		const {
 			// Common
-			children,
 			type,
 			label,
 			// Typography
@@ -23,8 +22,6 @@ const TypoTextField = memo(
 			editing = false,
 			size = "small",
 			variant = "outlined",
-			InputLabelProps = MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
-
 			...rest
 		} = props;
 
@@ -55,8 +52,6 @@ const TypoTextField = memo(
 				name={name}
 				variant={variant}
 				size={size}
-				InputLabelProps={InputLabelProps}
-				// fullWidth
 				{...rest}
 			/>
 		);

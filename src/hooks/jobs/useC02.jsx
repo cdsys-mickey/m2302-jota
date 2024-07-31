@@ -129,7 +129,7 @@ export const useC02 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, listLoader, prodGrid, token]
+		[crud, httpGetAsync, prodGrid, token]
 	);
 
 	const selectById = useCallback(
@@ -314,23 +314,8 @@ export const useC02 = () => {
 							newGridData[rowIndex] = processedRowData;
 						});
 				} else if (operation.type === "DELETE") {
-					// 列舉原資料
 					checkFailed = prodGrid.gridData
 						.slice(operation.fromRowIndex, operation.toRowIndex)
-						// .forEach((rowData, i) => {
-						// 	const rowIndex = operation.fromRowIndex + i;
-						// 	// const { prod, SOrdID } = rowData;
-						// 	// if (SOrdID !== "*") {
-						// 	if (prodDisabled({ rowData })) {
-						// 		toast.error(
-						// 			`第 ${rowIndex + 1} 筆已形成採購單不可刪除`
-						// 		);
-						// 		const rowIndex = operation.fromRowIndex + i;
-						// 		newGridData[rowIndex] = {
-						// 			...rowData,
-						// 		};
-						// 	}
-						// });
 						.some((rowData, i) => {
 							if (prodDisabled({ rowData })) {
 								const rowIndex = operation.fromRowIndex + i;
@@ -431,7 +416,7 @@ export const useC02 = () => {
 				toast.error(Errors.getMessage("覆核失敗", err));
 			}
 		},
-		[crud, httpPatchAsync, listLoader, reviewAction, token]
+		[crud, httpPatchAsync, listLoader, reviewAction, selectById, token]
 	);
 
 	const promptReview = useCallback(() => {

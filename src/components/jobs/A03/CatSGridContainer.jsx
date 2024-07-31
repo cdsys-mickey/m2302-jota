@@ -1,5 +1,4 @@
 import { CatSGridContext } from "@/contexts/A03/CatSGridContext";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import CatSGrid from "./CatSGrid";
@@ -30,7 +29,6 @@ export const CatSGridContainer = () => {
 			// handleChange={catS.handleGridChange}
 			height={height - 176}
 			isPersisted={catS.isPersisted}
-			// handleActiveCellChange={catS.handleActiveCellChange}
 			onSelectionChange={catS.buildSelectionChangeHandler({
 				onRowSelectionChange: catS.onRowSelectionChange,
 			})}

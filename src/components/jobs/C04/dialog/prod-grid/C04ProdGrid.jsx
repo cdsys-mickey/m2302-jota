@@ -8,7 +8,7 @@ import {
 } from "react-datasheet-grid";
 
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
-import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
+import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
@@ -124,7 +124,7 @@ const C04ProdGrid = memo((props) => {
 				disabled: true,
 			},
 			{
-				...keyColumn("SExpDate", dateFNSDateColumn),
+				...keyColumn("SExpDate", dateFnsDateColumn),
 				title: "有效日期",
 				grow: 2,
 				disabled: readOnly,

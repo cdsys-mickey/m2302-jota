@@ -12,7 +12,7 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexGrid from "../../../../shared-components/FlexGrid";
+import FlexGrid from "@/shared-components/FlexGrid";
 import { C04AmtToolbar } from "./prod-grid/C04AmtToolbar";
 import { C04ProdGridBottomToolbar } from "./prod-grid/C04ProdGridBottomToolbar";
 import { C04ProdGridContainer } from "./prod-grid/C04ProdGridContainer";

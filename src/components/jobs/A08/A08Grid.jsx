@@ -120,7 +120,6 @@ const A08Grid = memo((props) => {
 					disableExpandSelection
 					// disableContextMenu
 					contextMenuComponent={ContextMenu}
-					// onActiveCellChange={handleActiveCellChange}
 					// autoAddRow
 					createRow={() => ({
 						areaType: AreaTypes.findById(AreaTypes.KEY_OTHER),
@@ -139,7 +138,7 @@ A08Grid.propTypes = {
 	height: PropTypes.number,
 	handleChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
+	// handleActiveCellChange: PropTypes.func,
 };
 
 A08Grid.displayName = "A08Grid";

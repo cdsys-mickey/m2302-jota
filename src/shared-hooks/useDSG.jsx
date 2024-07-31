@@ -17,7 +17,9 @@ export const useDSG = ({
 	gridId = "NO_NAME",
 	keyColumn,
 	otherColumns,
+	columns,
 	initialReadOnly = true,
+	skipDisabled,
 }) => {
 	const gridRef = useRef();
 	const setGridRef = useCallback((node) => {
@@ -26,10 +28,11 @@ export const useDSG = ({
 		}
 	}, []);
 	const [readOnly, toggleReadOnly] = useToggle(initialReadOnly);
-	// const [isPending, startTransition] = useTransition();
-	// const selectedRowIndexRef = useRef();
-	// const [selectedRowIndex, setSelectedRowIndex] = useState();
-	// const [selectedRow, setSelectedRow] = useState();
+	const asyncRef = useRef({
+		prevCell: null,
+		cell: null,
+		forward: true,
+	});
 	const selectedRowRef = useRef();
 	const selectionRef = useRef();
 
@@ -386,9 +389,44 @@ export const useDSG = ({
 		[keyColumn, persistedIds]
 	);
 
-	const handleActiveCellChange = useCallback(({ cell }) => {
-		console.log(`DSG.onActiveCellChange →`, cell);
+	const isForward = useCallback((prev, next) => {
+		if (!next) {
+			return null;
+		}
+		if (!prev) {
+			return true;
+		}
+
+		if (next?.row === prev.row) {
+			return next.col >= prev.col;
+		}
+		return next.row > prev.row;
 	}, []);
+
+	const handleActiveCellChange = useCallback(
+		({ cell }) => {
+			console.log("handleActiveCellChange", cell);
+			asyncRef.current = {
+				prevCell: {
+					...asyncRef.current?.cell,
+				},
+				cell: cell,
+				forward: isForward(asyncRef.current?.cell, cell),
+			};
+			// console.log(
+			// 	`DSG.onActiveCellChange: (${
+			// 		asyncRef.current.prevCell
+			// 			? `${asyncRef.current.prevCell.row},${asyncRef.current.prevCell.col}`
+			// 			: null
+			// 	}) → (${
+			// 		asyncRef.current.cell
+			// 			? `${asyncRef.current.cell.row},${asyncRef.current.cell.col}`
+			// 			: null
+			// 	}), forward: ${asyncRef.current.forward}`
+			// );
+		},
+		[isForward]
+	);
 
 	// const isAllFieldsNotNull = useCallback(
 	// 	(row) => {
@@ -566,6 +604,102 @@ export const useDSG = ({
 		[gridId]
 	);
 
+	const isCellDisabled = useCallback(
+		(cell) => {
+			const disabled = columns[cell.col].disabled;
+
+			return Boolean(
+				typeof disabled === "function"
+					? disabled({
+							rowData: gridData[cell.row],
+							rowIndex: cell.row,
+					  })
+					: disabled
+			);
+		},
+		[columns, gridData]
+	);
+
+	/**
+	 * private method used by nextCell
+	 */
+	const getNextCell = useCallback(
+		(cell, opts = { forward: undefined }) => {
+			// const { forward } = asyncRef.current;
+			let col = cell.col;
+			let row = cell.row;
+			let forward =
+				opts.forward !== undefined
+					? opts.forward
+					: isForward(asyncRef.current.cell, cell);
+			let searching = forward !== null && forward !== undefined;
+			while (searching) {
+				if (forward) {
+					col++;
+					if (col >= columns.length) {
+						col = 0;
+						row++;
+						if (row >= gridData.length) {
+							return null; // Return null if reached the end
+						}
+					}
+				} else {
+					col--;
+					if (col < 0) {
+						col = columns.length - 1;
+						row--;
+						if (row < 0) {
+							return null; // Return null if reached the start
+						}
+					}
+				}
+
+				const newCell = { row, col };
+				if (!isCellDisabled(newCell)) {
+					return newCell;
+				}
+			}
+			return null;
+		},
+		[columns?.length, gridData.length, isCellDisabled, isForward]
+	);
+
+	const nextCell = useCallback(
+		(cell, opts = { next: undefined }) => {
+			if (!cell) {
+				throw new Error("必須提供 cell 參數");
+			}
+			const newCell = getNextCell(cell, opts);
+			console.log(
+				`nextCell for ${JSON.stringify(cell)}`,
+				newCell ? JSON.stringify(newCell) : null
+			);
+			setActiveCell(newCell);
+		},
+		[getNextCell, setActiveCell]
+	);
+
+	const toColumn = useCallback(
+		(colIndex, opts = {}) => {
+			const { nextRow = true } = opts;
+			const newRow = nextRow
+				? gridData.length - 1
+				: asyncRef.current?.cell?.row;
+			setActiveCell({
+				row: newRow,
+				col: colIndex,
+			});
+		},
+		[gridData.length, setActiveCell]
+	);
+
+	const toFirstColumn = useCallback(
+		(opts = {}) => {
+			toColumn(0, opts);
+		},
+		[toColumn]
+	);
+
 	return {
 		// STATES
 		// ...state,
@@ -625,5 +759,10 @@ export const useDSG = ({
 		getActiveCell,
 		getSelection,
 		setSelection,
+		isCellDisabled,
+		columns,
+		nextCell,
+		skipDisabled,
+		toFirstColumn,
 	};
 };

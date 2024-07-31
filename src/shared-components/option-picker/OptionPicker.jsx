@@ -18,8 +18,10 @@ import OptionPickerBox from "./listbox/OptionPickerBox";
 import { useState } from "react";
 import { useRef } from "react";
 import { useImperativeHandle } from "react";
+import { toast } from "react-toastify";
+import MuiStyles from "../../shared-modules/sd-mui-styles";
 
-const MSG_NOT_FOUND = "${id} 找不到";
+const MSG_NOT_FOUND = "${id} 不存在";
 
 const noFilterOptions = (options) => {
 	return options;
@@ -91,16 +93,18 @@ const OptionPicker = memo(
 			open,
 			onOpen,
 			onClose,
+			disableClose,
 			// Tab & Enter,
 			disableOpenOnInput,
 			findByInput,
 			pressToFind,
-			nextInputRef,
-			prevInputRef,
+			// nextInputRef,
+			// prevInputRef,
 			getError,
 			setError,
 			clearErrors,
 			notFoundText = MSG_NOT_FOUND,
+			toastError,
 			// VIRTUALIZATION
 			virtualize,
 			// PopperComponent,
@@ -113,6 +117,11 @@ const OptionPicker = memo(
 			PaperComponent: customPaperComponent,
 			GridHeaderComponent,
 			GridRowComponent,
+			nextCell,
+			cell,
+			getNextEnabled,
+			isDisabled,
+			setFocus,
 			...rest
 		} = props;
 
@@ -191,42 +200,12 @@ const OptionPicker = memo(
 				if (onClose) {
 					onClose(e);
 				}
-				setPopperOpen(false);
+				if (!disableClose) {
+					setPopperOpen(false);
+				}
 			},
-			[onClose, popperOpen]
+			[disableClose, onClose, popperOpen]
 		);
-
-		// const zzFindByInput = useCallback(
-		// 	async (input, opts = {}) => {
-		// 		console.log("findByInput", input);
-
-		// 		if (timerIdRef.current) {
-		// 			clearTimeout(timerIdRef.current);
-		// 		}
-		// 		asyncRef.current.dirty = false;
-		// 		const found = await findById(input);
-		// 		if (found) {
-		// 			console.log("found", found);
-		// 			onChange(found);
-		// 		} else {
-		// 			console.log(`${input} not found`);
-		// 			onChange(null);
-		// 			if (name && setError) {
-		// 				setError(name, {
-		// 					type: "manual",
-		// 					message: notFoundMsg({ id: input }),
-		// 				});
-		// 			}
-		// 			if (opts.refocus) {
-		// 				timerIdRef.current = setTimeout(() => {
-		// 					innerInputRef.current?.focus();
-		// 				}, focusDelay);
-		// 			}
-		// 		}
-		// 		return found;
-		// 	},
-		// 	[findById, onChange, name, setError, notFoundMsg, focusDelay]
-		// );
 
 		const refocus = useCallback((focusDelay) => {
 			timerIdRef.current = setTimeout(() => {
@@ -234,31 +213,70 @@ const OptionPicker = memo(
 			}, focusDelay);
 		}, []);
 
+		/**
+		 * 先判斷 DsgContext.nextCell, 再判斷 FieldsContext.getNextEnabled
+		 */
+
 		const nextInput = useCallback(
 			(e) => {
-				if (e.shiftKey) {
-					if (prevInputRef?.current) {
-						prevInputRef.current.focus();
-						prevInputRef.current.select();
-						return;
-					} else {
-						console.warn("prevInputRef not assigned");
+				if (nextCell) {
+					if (!cell) {
+						throw new Error("nextCell 無法使用, 因為 cell 未定義");
 					}
-				} else {
-					if (nextInputRef?.current) {
-						nextInputRef.current.focus();
-						nextInputRef.current.select();
-					} else {
-						console.warn("nextInputRef not assigned");
+					nextCell(cell, { forward: !e.shiftKey });
+				} else if (getNextEnabled) {
+					const nextField = getNextEnabled(name, {
+						forward: !e.shiftKey,
+						isDisabled,
+					});
+					console.log("nextField", nextField);
+					if (nextField) {
+						e.preventDefault();
+						setFocus(nextField.name, {
+							shouldSelect: nextField.select,
+						});
 					}
 				}
 			},
-			[nextInputRef, prevInputRef]
+			[nextCell, getNextEnabled, cell, name, isDisabled, setFocus]
 		);
+		// const nextInput = useCallback(
+		// 	(e) => {
+		// 		console.log("nextInput", e);
+		// 		// e.preventDefault();
+		// 		if (e.shiftKey) {
+		// 			if (prevInputRef?.current) {
+		// 				prevInputRef.current.focus();
+		// 				prevInputRef.current.select();
+		// 				return;
+		// 			} else if (nextCell && cell) {
+		// 				nextCell(cell, {
+		// 					forward: false,
+		// 				});
+		// 			} else {
+		// 				console.warn("prevInputRef/nextCell/cell not assigned");
+		// 			}
+		// 		} else {
+		// 			if (nextInputRef?.current) {
+		// 				nextInputRef.current.focus();
+		// 				nextInputRef.current.select();
+		// 			} else if (nextCell && cell) {
+		// 				nextCell(cell, {
+		// 					forward: true,
+		// 				});
+		// 			} else {
+		// 				console.warn("nextInputRef/nextCell not assigned");
+		// 			}
+		// 		}
+		// 	},
+		// 	[prevInputRef, nextCell, cell, nextInputRef]
+		// );
 
 		const inputNotFound = useCallback(
 			(input) => {
-				if (name && setError) {
+				if (name && toastError) {
+					toast.error(notFoundMsg({ id: input }));
+				} else if (name && setError) {
 					setError(name, {
 						type: "manual",
 						message: notFoundMsg({ id: input }),
@@ -270,17 +288,20 @@ const OptionPicker = memo(
 					);
 				}
 			},
-			[name, notFoundMsg, setError]
+			[name, notFoundMsg, setError, toastError]
 		);
 
 		const timerIdRef = useRef();
 
 		const handleEnter = useCallback(
-			async (e, opts = { validate: false }) => {
+			async (e, opts = {}) => {
+				const { validate = false } = opts;
 				// console.log("handleEnter", event);
 				if (!pressToFind || popperOpen) {
 					return;
 				}
+
+				e.stopPropagation(); // 防止往下傳遞給 DSG
 
 				e.preventDefault();
 				const input = e.target.value;
@@ -294,74 +315,27 @@ const OptionPicker = memo(
 					asyncRef.current.dirty = false;
 					const found = await findByInput(input);
 					onChange(found);
-					if (found) {
-						nextInput(e);
-					} else {
+					if (!found) {
 						inputNotFound(input);
+						return;
 					}
 				} else {
-					if (opts.validate) {
+					if (validate) {
 						const error = await getError();
 						console.log("error:", error);
 						if (error) {
 							if (name && setError) {
 								setError(name, error);
-								return;
-							}
-							{
+							} else {
 								console.warn(
 									"getError failed, but [name] or [setError] is not set"
 								);
 							}
-						} else {
-							nextInput(e);
+							return;
 						}
-					} else {
-						nextInput(e);
 					}
 				}
-
-				// *************** OLD **************
-
-				// Shift-Tab
-				// if (
-				// 	event.key === "Tab" &&
-				// 	event.shiftKey &&
-				// 	prevInputRef?.current
-				// ) {
-				// 	event.preventDefault();
-				// 	prevInputRef.current.focus();
-				// 	prevInputRef.current.select();
-				// 	return;
-				// }
-
-				// if (findById) {
-				// 	event.preventDefault();
-				// 	let found = true;
-				// 	if (asyncRef.current.dirty) {
-				// 		console.log("findById", event.target.value);
-				// 		found = await findByInput(event.target.value);
-				// 	}
-
-				// 	if (!found) {
-				// 		return;
-				// 	}
-
-				// 	// 介入驗證
-				// 	if (opts.validate) {
-				// 		const error = await getError();
-				// 		console.log("error:", error);
-				// 		if (error && name && setError) {
-				// 			setError(name, error);
-				// 			return;
-				// 		}
-				// 	}
-
-				// 	if (nextInputRef?.current) {
-				// 		nextInputRef.current.focus();
-				// 		nextInputRef.current.select();
-				// 	}
-				// }
+				nextInput(e);
 			},
 			[
 				pressToFind,
@@ -389,13 +363,17 @@ const OptionPicker = memo(
 
 		const handleKeyDown = useCallback(
 			(e) => {
-				// console.log("e.key", e.key);
+				console.log("e.key", e.key);
 				switch (e.key) {
 					case "Enter":
-						handleEnter(e, { validate: true });
+						handleEnter(e, {
+							validate: true,
+						});
 						break;
 					case "Tab":
-						handleEnter(e, { validate: false });
+						handleEnter(e, {
+							validate: false,
+						});
 						break;
 					case "ArrowDown":
 						handleArrowDown(e);
@@ -406,7 +384,7 @@ const OptionPicker = memo(
 		);
 
 		const handleBlur = useCallback(
-			(e) => {
+			async (e) => {
 				if (!pressToFind) {
 					return;
 				}
@@ -416,7 +394,7 @@ const OptionPicker = memo(
 				if (asyncRef.current.dirty) {
 					asyncRef.current.dirty = false;
 					console.log("handleBlur:", input);
-					const found = findByInput(input);
+					const found = await findByInput(input);
 					if (!found) {
 						inputNotFound(input);
 						refocus(focusDelay);
@@ -438,8 +416,6 @@ const OptionPicker = memo(
 						fullWidth={fullWidth}
 						error={error}
 						helperText={helperText}
-						// error={!!error}
-						// helperText={error?.message}
 						// inputRef={inputRef}
 						inputRef={innerInputRef}
 						variant={variant}
@@ -465,6 +441,7 @@ const OptionPicker = memo(
 						}}
 						{...TextFieldProps}
 						InputLabelProps={{
+							...MuiStyles.DEFAULT_OPTION_PICKER_INPUT_LABEL_PROPS,
 							...props.InputLabelProps,
 							...InputLabelProps,
 							...(labelShrink && { shrink: true }),
@@ -615,7 +592,9 @@ const OptionPicker = memo(
 				if (name && clearErrors) {
 					clearErrors(name);
 				}
-				nextInput(event);
+				if (value) {
+					nextInput(event);
+				}
 			},
 			[clearErrors, name, nextInput, onChange]
 		);
@@ -927,7 +906,14 @@ OptionPicker.propTypes = {
 	setError: PropTypes.func,
 	clearErrors: PropTypes.func,
 	notFoundText: PropTypes.string,
-	nextInputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-	prevInputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+	// nextInputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+	// prevInputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+	nextCell: PropTypes.func,
+	cell: PropTypes.object,
+	toastError: PropTypes.bool,
+	disableClose: PropTypes.bool,
+	getNextEnabled: PropTypes.func,
+	isDisabled: PropTypes.func,
+	setFocus: PropTypes.func,
 };
 export default OptionPicker;

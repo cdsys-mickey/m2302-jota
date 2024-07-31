@@ -1,12 +1,10 @@
 import { A03Context } from "@/contexts/A03/A03Context";
 import { CatMGridContext } from "@/contexts/A03/CatMGridContext";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import CatMGrid from "./CatMGrid";
 
 export const CatMGridContainer = () => {
-	// const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const catM = useContext(CatMGridContext);
 	const a03 = useContext(A03Context);

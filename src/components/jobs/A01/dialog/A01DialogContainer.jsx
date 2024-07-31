@@ -6,6 +6,7 @@ import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { FormManagerProvider } from "@/shared-contexts/form-manager/FormManagerProvider";
 import A01Form from "../form/A01Form";
 import { A01DialogToolbarContainer } from "./buttons/A01DialogToolbarContainer";
 
@@ -100,24 +101,26 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<A01Form
-					onSubmit={forms.handleSubmit(
-						a01.onEditorSubmit,
-						a01.onEditorSubmitError
-					)}
-					editing={a01.editing}
-					updating={a01.updating}
-					readWorking={a01.readWorking}
-					readError={a01.readError}
-					data={a01.itemData}
-					itemDataReady={a01.itemDataReady}
-					store={store}
-					selectedTab={a01.selectedTab}
-					handleTabChange={a01.handleTabChange}
-					height={formHeight}
-					transTabDisabled={a01.transTabDisabled}
-					comboTabDisabled={a01.comboTabDisabled}
-				/>
+				<FormManagerProvider {...a01.formManager}>
+					<A01Form
+						onSubmit={forms.handleSubmit(
+							a01.onEditorSubmit,
+							a01.onEditorSubmitError
+						)}
+						editing={a01.editing}
+						updating={a01.updating}
+						readWorking={a01.readWorking}
+						readError={a01.readError}
+						data={a01.itemData}
+						itemDataReady={a01.itemDataReady}
+						store={store}
+						selectedTab={a01.selectedTab}
+						handleTabChange={a01.handleTabChange}
+						height={formHeight}
+						transTabDisabled={a01.transTabDisabled}
+						comboTabDisabled={a01.comboTabDisabled}
+					/>
+				</FormManagerProvider>
 			</DialogExContainer>
 		</FormProvider>
 	);

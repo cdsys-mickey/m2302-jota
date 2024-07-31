@@ -152,7 +152,7 @@ export const useAuth = () => {
 					}
 					if (doRedirect) {
 						toast.success(
-							`${jwtPayload.entity.LoginName || "(帳號)"}/${
+							`${jwtPayload.entity.LoginName || "(帳號)"} / ${
 								jwtPayload.entity.UserName || ""
 							} 已成功${switching ? "切換" : "登入"}到${
 								jwtPayload.entity.CurDeptName

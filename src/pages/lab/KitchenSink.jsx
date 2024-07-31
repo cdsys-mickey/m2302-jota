@@ -15,7 +15,7 @@ export const KitchenSink = memo(
 
 		return (
 			<Box ref={ref} py={1} px={3}>
-				<ContainerEx maxWidth="md">
+				<ContainerEx maxWidth="lg">
 					<FrameBanner title="元件測試" alt="kitchen-sink" />
 					<TabContext value={selectedTab}>
 						<Box mt={1}>
@@ -37,12 +37,15 @@ export const KitchenSink = memo(
 
 								{tabs &&
 									tabs.map((tab) => {
-										const TabPanelComponent = tab.component;
+										const TabPanelComponent = tab.Component;
 										return (
 											<TabPanel
 												key={tab.value}
 												value={tab.value}>
-												<TabPanelComponent />
+												{tab.component}
+												{TabPanelComponent && (
+													<TabPanelComponent />
+												)}
 											</TabPanel>
 										);
 									})}
@@ -59,7 +62,7 @@ KitchenSink.propTypes = {
 	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	tabs: PropTypes.array,
 	handleTabChange: PropTypes.func,
-	selectedTab: PropTypes.number,
+	selectedTab: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 

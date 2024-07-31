@@ -130,7 +130,7 @@ A22Grid.propTypes = {
 	height: PropTypes.number,
 	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
+	// handleActiveCellChange: PropTypes.func,
 };
 
 A22Grid.displayName = "A22Grid";

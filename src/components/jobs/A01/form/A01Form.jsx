@@ -168,12 +168,10 @@ const A01Form = memo((props) => {
 									spacing={editing ? 2 : 1}>
 									<Grid item xs={12} sm={12} md={4}>
 										<TypoProdCatLPickerContainer
+											typo
 											name="catL"
-											readOnly={store}>
-											{ProdLCats.getOptionLabel(
-												data?.catL
-											)}
-										</TypoProdCatLPickerContainer>
+											readOnly={store}
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={4}>
 										<TypoProdCatMPickerContainer

@@ -1,11 +1,8 @@
-import { memo } from "react";
-import { useRef } from "react";
-import PropTypes from "prop-types";
-import { useEffect } from "react";
-import { useLayoutEffect } from "react";
-import classNames from "classnames";
-import { useFirstRender } from "../../hooks/useFirstRender";
 import Objects from "@/shared-modules/sd-objects";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+import { memo, useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useFirstRender } from "../../forked/hooks/useFirstRender";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -18,8 +15,11 @@ const TextComponentEx = memo(
 	({
 		active,
 		focus,
+		disabled,
 		rowData,
 		setRowData,
+		rowIndex,
+		columnIndex,
 		columnData: {
 			placeholder,
 			alignRight,
@@ -27,8 +27,15 @@ const TextComponentEx = memo(
 			formatBlurredInput,
 			parseUserInput,
 			continuousUpdates,
-			opts,
+			// additional opts
+			style,
+			enterToNext,
+			...rest
 		},
+		// Control functions
+		// Context methods
+		skipDisabled,
+		nextCell,
 	}) => {
 		const ref = useRef(null);
 		const firstRender = useFirstRender();
@@ -62,6 +69,43 @@ const TextComponentEx = memo(
 			changedAt: asyncRef.current.changedAt,
 			escPressed: asyncRef.current.escPressed,
 		};
+
+		const handleChange = useCallback(
+			(e) => {
+				asyncRef.current.changedAt = Date.now();
+
+				// Only update the row's value as the user types if continuousUpdates is true
+				if (continuousUpdates) {
+					setRowData(parseUserInput(e.target.value));
+				}
+			},
+			[continuousUpdates, parseUserInput, setRowData]
+		);
+
+		const handleKeyDown = useCallback(
+			(e) => {
+				// Track when user presses the Esc key
+				console.log("handleKeyDown", e);
+				switch (e.key) {
+					case "Escape":
+						asyncRef.current.escPressed = true;
+						break;
+					case "Enter":
+						e.preventDefault();
+						if (enterToNext) {
+							e.stopPropagation();
+							nextCell(
+								{ row: rowIndex, col: columnIndex },
+								{
+									forward: !e.shiftKey,
+								}
+							);
+						}
+						break;
+				}
+			},
+			[columnIndex, enterToNext, nextCell, rowIndex]
+		);
 
 		useLayoutEffect(() => {
 			// When the cell gains focus we make sure to immediately select the text in the input:
@@ -111,6 +155,16 @@ const TextComponentEx = memo(
 			}
 		}, [focus, rowData]);
 
+		useLayoutEffect(() => {
+			if (skipDisabled && active && disabled) {
+				if (nextCell) {
+					nextCell({ row: rowIndex, col: columnIndex });
+				} else {
+					console.log("nextCell is null");
+				}
+			}
+		}, [active, columnIndex, disabled, nextCell, rowIndex, skipDisabled]);
+
 		return (
 			<input
 				// We use an uncontrolled component for better performance
@@ -128,24 +182,13 @@ const TextComponentEx = memo(
 				// and the user cannot click and edit the input (this part is handled by DataSheetGrid itself)
 				style={{
 					pointerEvents: focus ? "auto" : "none",
-					...(opts && {
-						...opts?.style,
+					...(style && {
+						...style,
 					}),
 				}}
-				onChange={(e) => {
-					asyncRef.current.changedAt = Date.now();
-
-					// Only update the row's value as the user types if continuousUpdates is true
-					if (continuousUpdates) {
-						setRowData(parseUserInput(e.target.value));
-					}
-				}}
-				onKeyDown={(e) => {
-					// Track when user presses the Esc key
-					if (e.key === "Escape") {
-						asyncRef.current.escPressed = true;
-					}
-				}}
+				onChange={handleChange}
+				onKeyDown={handleKeyDown}
+				{...rest}
 			/>
 		);
 	},
@@ -154,9 +197,15 @@ const TextComponentEx = memo(
 TextComponentEx.propTypes = {
 	active: PropTypes.bool,
 	focus: PropTypes.bool,
-	rowData: PropTypes.string,
+	disabled: PropTypes.bool,
+	rowData: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	setRowData: PropTypes.func,
+	stopEditing: PropTypes.func,
 	columnData: PropTypes.object,
+	skipDisabled: PropTypes.bool,
+	nextCell: PropTypes.func,
+	rowIndex: PropTypes.number,
+	columnIndex: PropTypes.number,
 };
 TextComponentEx.displayName = "TextComponentEx";
 export default TextComponentEx;

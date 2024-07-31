@@ -1,34 +1,32 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { TextField } from "@mui/material";
-import { Controller } from "react-hook-form";
 import PropTypes from "prop-types";
+import { useCallback, useContext, useMemo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import ClearInputButton from "../input/ClearInputButton";
-import { useMemo } from "react";
-import { useCallback } from "react";
-import { useRef } from "react";
-import { useImperativeHandle } from "react";
+import { FormManagerContext } from "@/shared-contexts/form-manager/FormManagerContext";
+import MuiStyles from "../../shared-modules/sd-mui-styles";
 
 export const ControlledTextField = ({
 	name,
-	inputRef,
+	// inputRef,
 	readOnly = false,
 	control,
-	onChange: onTextChange,
-	nextInputRef,
-	prevInputRef,
-	onKeyDown,
+	onChange: _onChange,
+	// onKeyDown,
 	rules,
 	labelShrink = false,
 	defaultValue = "",
 	sx = [],
 	clearable,
+	disabled,
+	disabledBackgroundColor = "rgba(0,0,0,0.05)",
 	EndAdornmentComponent,
-	selectNext,
+	InputLabelProps,
 	...rest
 }) => {
-	const innerInputRef = useRef();
-
-	useImperativeHandle(inputRef, () => innerInputRef.current);
+	const { getNextEnabled, isDisabled } = useContext(FormManagerContext) || {};
+	const { setFocus } = useFormContext() || {};
 
 	const renderEndAdornment = useMemo(() => {
 		return EndAdornmentComponent || clearable;
@@ -36,27 +34,32 @@ export const ControlledTextField = ({
 
 	const handleKeyDown = useCallback(
 		(e) => {
-			if (onKeyDown) {
-				onKeyDown(e);
-			}
+			// if (onKeyDown) {
+			// 	onKeyDown(e);
+			// }
 			if (e.key === "Enter" || e.key === "Tab") {
-				e.preventDefault();
-				if (e.shiftKey && prevInputRef.current) {
-					prevInputRef.current.focus();
-					prevInputRef.current.select();
-				} else if (nextInputRef.current) {
-					nextInputRef.current.focus();
-					nextInputRef.current.select();
+				if (getNextEnabled) {
+					const nextField = getNextEnabled(name, {
+						forward: !e.shiftKey,
+						isDisabled,
+					});
+					console.log("nextField", nextField);
+					if (nextField) {
+						e.preventDefault();
+						setFocus(nextField.name, {
+							shouldSelect: nextField.select,
+						});
+					}
 				}
 			}
 		},
-		[nextInputRef, onKeyDown, prevInputRef]
+		[getNextEnabled, name, isDisabled, setFocus]
 	);
 
 	if (!name) {
 		return (
 			<TextField
-				inputRef={innerInputRef}
+				// inputRef={innerInputRef}
 				sx={[
 					(theme) => ({
 						"&:has(.MuiInputBase-input:focus)": {
@@ -68,9 +71,11 @@ export const ControlledTextField = ({
 					}),
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
-				onChange={onTextChange}
+				onChange={_onChange}
 				onKeyDown={handleKeyDown}
 				InputLabelProps={{
+					...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+					...InputLabelProps,
 					...(labelShrink && { shrink: true }),
 				}}
 				InputProps={{
@@ -88,7 +93,7 @@ export const ControlledTextField = ({
 						),
 					}),
 				}}
-				disabled={readOnly}
+				disabled={disabled}
 				{...rest}
 			/>
 		);
@@ -100,10 +105,14 @@ export const ControlledTextField = ({
 			defaultValue={defaultValue}
 			control={control}
 			rules={rules}
-			render={({ field: { value, onChange }, fieldState: { error } }) => (
+			render={({
+				field: { value, onChange, ref },
+				fieldState: { error },
+			}) => (
 				<TextField
 					value={value}
-					inputRef={innerInputRef}
+					// inputRef={innerInputRef}
+					inputRef={ref}
 					sx={[
 						(theme) => ({
 							"&:has(.MuiInputBase-input:focus)": {
@@ -111,6 +120,15 @@ export const ControlledTextField = ({
 							},
 							"& .MuiOutlinedInput-root": {
 								paddingRight: theme.spacing(1),
+							},
+							...(disabled && {
+								backgroundColor: disabledBackgroundColor,
+							}),
+							"&:hover .clearable": {
+								visibility: "visible",
+							},
+							"& .clearable": {
+								visibility: "hidden",
 							},
 						}),
 						...(Array.isArray(sx) ? sx : [sx]),
@@ -120,12 +138,14 @@ export const ControlledTextField = ({
 							return;
 						}
 						onChange(e.target.value);
-						if (onTextChange) {
-							onTextChange(e.target.value);
+						if (_onChange) {
+							_onChange(e.target.value);
 						}
 					}}
 					onKeyDown={handleKeyDown}
 					InputLabelProps={{
+						...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+						...InputLabelProps,
 						...(labelShrink && { shrink: true }),
 					}}
 					InputProps={{
@@ -138,6 +158,7 @@ export const ControlledTextField = ({
 								<>
 									{clearable && (
 										<ClearInputButton
+											className="clearable"
 											value={value}
 											onChange={onChange}
 										/>
@@ -149,7 +170,7 @@ export const ControlledTextField = ({
 							),
 						}),
 					}}
-					disabled={readOnly}
+					disabled={disabled}
 					error={!!error}
 					helperText={error?.message}
 					{...rest}
@@ -170,13 +191,16 @@ ControlledTextField.propTypes = {
 	defaultValue: PropTypes.string,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	clearable: PropTypes.bool,
+	disabled: PropTypes.bool,
+	disabledBackgroundColor: PropTypes.string,
 	EndAdornmentComponent: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.elementType,
 	]),
-	nextInputRef: PropTypes.object,
-	prevInputRef: PropTypes.object,
-	onKeyDown: PropTypes.func,
-	inputRef: PropTypes.object,
-	selectNext: PropTypes.bool,
+	// nextInputRef: PropTypes.object,
+	// prevInputRef: PropTypes.object,
+	// onKeyDown: PropTypes.func,
+	// inputRef: PropTypes.object,
+	// shouldSelect: PropTypes.bool,
+	InputLabelProps: PropTypes.object,
 };

@@ -1,19 +1,21 @@
 import TextComponentEx from "./TextComponentEx";
+import { TextComponentExContainer } from "./TextComponentExContainer";
 
 export const createTextColumnEx = ({
 	placeholder,
 	alignRight = false,
-	continuousUpdates = true,
+	continuousUpdates = false,
 	deletedValue = null,
-	opts,
+	enterToNext = true,
 	parseUserInput = (value) => value.trim() || null,
 	formatBlurredInput = (value) => String(value ?? ""),
 	formatInputOnFocus = (value) => String(value ?? ""),
 	formatForCopy = (value) => String(value ?? ""),
 	parsePastedValue = (value) => value.replace(/[\n\r]+/g, " ").trim() || null,
-}) => {
+	...rest
+} = {}) => {
 	return {
-		component: TextComponentEx,
+		component: TextComponentExContainer,
 		columnData: {
 			placeholder,
 			alignRight,
@@ -21,7 +23,8 @@ export const createTextColumnEx = ({
 			formatInputOnFocus,
 			formatBlurredInput,
 			parseUserInput,
-			opts,
+			enterToNext,
+			...rest,
 		},
 		deleteValue: () => deletedValue,
 		copyValue: ({ rowData }) => formatForCopy(rowData),

@@ -1,4 +1,4 @@
-import ProdTypeAPickerColumn from "@/components/dsg/columns/ProdTypeAPickerColumn";
+import ProdTypeAPickerComponent from "@/components/dsg/columns/ProdTypeAPickerComponent";
 import ProdTypeBPickerColumn from "@/components/dsg/columns/ProdTypeBPickerColumn";
 import TaxTypePickerComponent from "@/components/dsg/columns/TaxTypePickerComponent";
 import NoDataBox from "@/shared-components/NoDataBox";
@@ -106,7 +106,7 @@ const A014Grid = memo((props) => {
 			{
 				...keyColumn(
 					"typeA",
-					optionPickerColumn(ProdTypeAPickerColumn, {
+					optionPickerColumn(ProdTypeAPickerComponent, {
 						name: "typeA",
 					})
 				),
@@ -183,7 +183,7 @@ A014Grid.propTypes = {
 	height: PropTypes.number,
 	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	handleActiveCellChange: PropTypes.func,
+	// handleActiveCellChange: PropTypes.func,
 	handleCreateRow: PropTypes.func,
 };
 

@@ -14,6 +14,7 @@ import { useToggle } from "@/shared-hooks/useToggle";
 import Errors from "@/shared-modules/sd-errors";
 import WebApi from "@/shared-modules/sd-web-api";
 import { useAppModule } from "./useAppModule";
+import { useFormManager } from "@/shared-contexts/form-manager/useFormManager";
 
 /**
  * 適用三種情境
@@ -23,6 +24,17 @@ import { useAppModule } from "./useAppModule";
  */
 export const useA01 = ({ token, mode }) => {
 	const [selectedTab, setSelectedTab] = useState(A01.Tabs.INFO);
+	const formManager = useFormManager(
+		`
+		ProdID,
+		ProdData:{select: false},
+		Barcode,
+		BarPR,
+		catL,
+		catM,
+		catS
+		`
+	);
 	const crud = useContext(CrudContext);
 	const moduleId = useMemo(() => {
 		switch (mode) {
@@ -699,5 +711,6 @@ export const useA01 = ({ token, mode }) => {
 		createComboRow,
 		transTabDisabled,
 		comboTabDisabled,
+		formManager,
 	};
 };

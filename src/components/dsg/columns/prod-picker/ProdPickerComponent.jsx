@@ -17,8 +17,8 @@ const ProdPickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		// rowIndex,
-		// columnIndex,
+		rowIndex,
+		columnIndex,
 		// Component Props
 		columnData,
 		// Cell state
@@ -60,14 +60,31 @@ const ProdPickerComponent = memo((props) => {
 		return disabled || disableActiveControl ? !focus : !active;
 	}, [active, disableActiveControl, disabled, focus]);
 
+	const cell = useMemo(() => {
+		return {
+			row: rowIndex,
+			col: columnIndex,
+		};
+	}, [columnIndex, rowIndex]);
+
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
 			ref.current?.focus();
+			ref.current?.select();
 		} else {
 			ref.current?.blur();
 		}
 	}, [focus]);
+
+	// useLayoutEffect(() => {
+	// 	if (active) {
+	// 		ref.current?.focus();
+	// 		ref.current?.select();
+	// 	} else {
+	// 		ref.current?.blur();
+	// 	}
+	// }, [active, focus]);
 
 	return (
 		<ProdPickerContainer
@@ -79,17 +96,17 @@ const ProdPickerComponent = memo((props) => {
 			onChange={handleChange}
 			// onClose={handleClose}
 			placeholder="商品"
-			typeToSearchText="輸入編號或名稱搜尋"
+			typeToSearchText="輸入編號、條碼或名稱搜尋..."
 			filterByServer
 			queryRequired
-			// DSG 專屬屬性
-			hideBorders
+			// DSG 專屬
 			dense
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!focus}
+			hideBorders
+			toastError
 			hideControls={hideControls}
 			hidePlaceholder={!active}
 			disableFadeOut
+			cell={cell}
 			// selectOnFocus
 			{...rest}
 		/>
@@ -120,6 +137,7 @@ ProdPickerComponent.propTypes = {
 	duplicateRow: PropTypes.func,
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
+	nextCell: PropTypes.func,
 };
 ProdPickerComponent.propTypes = {};
 ProdPickerComponent.displayName = "ProdPickerComponent";

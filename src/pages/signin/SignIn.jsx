@@ -8,6 +8,8 @@ import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckbo
 import ControlledPwordField from "@/components/auth/ControlledPwordField";
 import LoginIcon from "@mui/icons-material/Login";
 import { LoadingButton } from "@mui/lab";
+import { CaptchaFieldContainer } from "../../components/auth/CaptchaFieldContainer";
+import { ControlledTextField } from "../../shared-components/controlled/ControlledTextField";
 
 const SignIn = memo(
 	forwardRef((props, ref) => {
@@ -21,9 +23,11 @@ const SignIn = memo(
 				<Box pt={3} pb={1} px={2}>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
-							<ControlledAccountField
-								fullWidth
+							<ControlledTextField
 								name="ac"
+								autoFocus
+								label="帳號"
+								fullWidth
 								required
 								size="small"
 								sx={{
@@ -34,10 +38,13 @@ const SignIn = memo(
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<ControlledPwordField
+							<ControlledTextField
+								type="password"
 								fullWidth
 								name="pw"
+								label="通行碼"
 								required
+								rules={{ required: "請輸入通行碼" }}
 								size="small"
 								sx={{
 									"& .MuiInputBase-root": {
@@ -63,11 +70,10 @@ const SignIn = memo(
 						justifyContent="center"
 						mt={0}
 						mb={2}>
-						<ControlledLocalCaptchaField
-							name="captchaPassed"
+						<CaptchaFieldContainer
+							name="captcha"
 							length={4}
 							placeholder="請輸入驗證碼"
-							onInputChange={() => {}}
 						/>
 					</FlexBox>
 					<Divider />

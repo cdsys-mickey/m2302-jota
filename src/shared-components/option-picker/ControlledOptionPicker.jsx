@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { useRef } from "react";
 import { useCallback } from "react";
+import { useContext } from "react";
+import { FormManagerContext } from "@/shared-contexts/form-manager/FormManagerContext";
 
 export const ControlledOptionPicker = forwardRef((props, ref) => {
 	const {
@@ -20,10 +22,15 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 	} = props;
 
 	const form = useFormContext();
+	const { setFocus } = form || {};
+	const formManager = useContext(FormManagerContext);
+	const { getNextEnabled, isDisabled } = formManager || {};
+
 	const prevValue = useRef();
 
 	const getError = useCallback(
-		async (opts = { debug: false }) => {
+		async (opts = {}) => {
+			const { debug = false } = opts;
 			if (!name) {
 				return;
 			}
@@ -39,7 +46,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 	);
 
 	if (!name) {
-		return <OptionPicker ref={ref} {...rest} />;
+		return <OptionPicker ref={ref} setFocus={setFocus} {...rest} />;
 	}
 
 	return (
@@ -56,12 +63,13 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 				return (
 					<OptionPicker
 						name={name}
-						ref={ref}
+						inputRef={ref}
 						value={value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 						getError={getError}
 						setError={form.setError}
 						clearErrors={form.clearErrors}
+						setFocus={setFocus}
 						onChange={(newValue) => {
 							if (onPickerChange) {
 								onPickerChange(newValue);
@@ -83,6 +91,8 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						// }}
 						error={!!error}
 						helperText={error?.message}
+						getNextEnabled={getNextEnabled}
+						isDisabled={isDisabled}
 						{...rest}
 					/>
 				);

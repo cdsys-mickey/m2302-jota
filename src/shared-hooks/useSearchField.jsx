@@ -11,10 +11,10 @@ const useSearchField = ({ onChange, inputRef, doubleFocusToClear = false }) => {
 
 	const handleFocus = useCallback(
 		(e) => {
-			console.log("handleFocus");
+			// console.log("handleFocus");
 			e?.preventDefault();
 			if (inputRef?.current) {
-				console.log(`document.activeElement:`, document.activeElement);
+				// console.log(`document.activeElement:`, document.activeElement);
 				if (
 					document.activeElement === inputRef.current &&
 					doubleFocusToClear

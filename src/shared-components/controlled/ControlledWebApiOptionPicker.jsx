@@ -1,10 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import WebApiOptionPicker from "@/shared-components/option-picker/WebApiOptionPicker";
 import PropTypes from "prop-types";
+import { useContext } from "react";
 import { useCallback } from "react";
 import { useRef } from "react";
 import { memo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { FormManagerContext } from "@/shared-contexts/form-manager/FormManagerContext";
 
 /**
  * 由 name 屬性決定是否要使用 Controller 包覆
@@ -14,18 +16,20 @@ import { Controller, useFormContext } from "react-hook-form";
 export const ControlledWebApiOptionPicker = memo(
 	({
 		name,
-		// disabled = false,
 		control,
-		// required = false,
 		rules,
 		labelShrink = false,
 		defaultValue = null,
 		sx = [],
-		onChange: onPickerChange,
+		onChange: _onChange,
 		onChanged,
 		...rest
 	}) => {
 		const form = useFormContext();
+		const { setFocus } = form || {};
+		const { getNextEnabled, isDisabled } =
+			useContext(FormManagerContext) || {};
+
 		const prevValue = useRef();
 
 		const getError = useCallback(
@@ -47,9 +51,7 @@ export const ControlledWebApiOptionPicker = memo(
 		if (!name) {
 			return (
 				<WebApiOptionPicker
-					// required={required}
 					sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
-					// disabled={disabled}
 					InputLabelProps={{
 						...(labelShrink && { shrink: true }),
 					}}
@@ -66,7 +68,7 @@ export const ControlledWebApiOptionPicker = memo(
 				control={control}
 				rules={rules}
 				render={({
-					field: { value, onChange },
+					field: { value, onChange, ref },
 					fieldState: { error },
 				}) => {
 					prevValue.current = JSON.stringify(value);
@@ -74,15 +76,19 @@ export const ControlledWebApiOptionPicker = memo(
 					return (
 						<WebApiOptionPicker
 							name={name}
-							// required={required}
+							inputRef={ref}
 							value={value}
 							sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 							getError={getError}
 							setError={form.setError}
 							clearErrors={form.clearErrors}
+							// Focus Control
+							setFocus={setFocus}
+							getNextEnabled={getNextEnabled}
+							isDisabled={isDisabled}
 							onChange={(newValue) => {
-								if (onPickerChange) {
-									onPickerChange(newValue);
+								if (_onChange) {
+									_onChange(newValue);
 								}
 								onChange(newValue);
 

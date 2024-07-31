@@ -78,17 +78,11 @@ const OPTIONS = Array.from(new Array(10000))
 	.map(() => random(10 + Math.ceil(Math.random() * 20)))
 	.sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase()));
 
-const OptionPickerTest = () => {
-	const inputRef1 = useRef();
-	const inputRef2 = useRef();
-	const inputRef3 = useRef();
-	const inputRef4 = useRef();
-	const inputRef5 = useRef();
-
+const InputTest = () => {
 	return (
 		<form>
 			<Box px={3}>
-				<FormSectionTitle>OptionPicker</FormSectionTitle>
+				<FormSectionTitle>LockSwitch</FormSectionTitle>
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} md={6}>
@@ -156,73 +150,59 @@ const OptionPickerTest = () => {
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={1}>
 						<Grid item xs={4}>
-							<ProdTypeAPicker
-								name="disableOpenOnInput"
-								label="disableOpenOnInput+findByInput"
-								clearable
-								inputRef={inputRef1}
-								nextInputRef={inputRef2}
-								disableOpenOnInput
-								pressToFind
-								findByInput={ProdTypeA.findById}
-								// selectNext
-							/>
+							<OptionPickerProvider>
+								<ProdPickerContainer
+									debug={true}
+									name="picker2"
+									label="picker2"
+									labelShrink
+									placeholder="輸入商品編號"
+									filterByServer
+									rules={{
+										required: "此項必填",
+									}}
+									// queryRequired
+									virtualize
+									// 新增屬性
+									disableOpenOnInput
+									pressToFind
+									notFoundText="商品代號 ${id} 不存在"
+								/>
+							</OptionPickerProvider>
 						</Grid>
 						<Grid item xs={4}>
-							<ProdPickerContainer
-								debug={true}
-								name="disableOpenOnInput2"
-								label="filterByServer+pressToFind"
-								labelShrink
-								placeholder="輸入商品編號"
-								filterByServer
-								rules={{
-									required: "此項必填",
-								}}
-								queryRequired
+							<ProdTypeAPicker
+								name="picker1"
+								label="picker1"
 								// 新增屬性
 								disableOpenOnInput
 								pressToFind
-								inputRef={inputRef2}
-								nextInputRef={inputRef3}
-								prevInputRef={inputRef1}
-								notFoundText="找不到商品 ${id}"
+								findByInput={ProdTypeA.findById}
 							/>
 						</Grid>
+
 						<Grid item xs={4}>
 							<ProdTypeAPicker
-								name="disableOpenOnInput3"
-								label="disableOpenOnInput+findByInput(next)"
-								clearable
-								inputRef={inputRef3}
-								nextInputRef={inputRef4}
-								prevInputRef={inputRef2}
+								name="picker3"
+								label="picker3"
 								disableOpenOnInput
 								pressToFind
-								findByInput={ProdTypeA.findById}
 
 								// selectNext
 							/>
 						</Grid>
 						<Grid item xs={4}>
 							<TextFieldWrapper
-								name="nextField"
-								label="next field"
-								inputRef={inputRef4}
-								nextInputRef={inputRef5}
-								prevInputRef={inputRef3}
+								name="text1"
+								label="text1"
 								size="small"
 								clearable
-								// selectNext
 							/>
 						</Grid>
 						<Grid item xs={4}>
 							<TextFieldWrapper
-								name="nextField2"
-								label="next field"
-								inputRef={inputRef5}
-								nextInputRef={inputRef1}
-								prevInputRef={inputRef4}
+								name="text2"
+								label="text2"
 								size="small"
 								clearable
 								// selectNext
@@ -235,9 +215,9 @@ const OptionPickerTest = () => {
 	);
 };
 
-OptionPickerTest.propTypes = {
+InputTest.propTypes = {
 	findOption: PropTypes.func,
 };
 
-OptionPickerTest.displayName = "OptionPickerTest";
-export default OptionPickerTest;
+InputTest.displayName = "OptionPickerTest";
+export default InputTest;
