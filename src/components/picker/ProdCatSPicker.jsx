@@ -6,7 +6,7 @@ import ProdSCats from "@/modules/md-prod-s-cats";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const ProdCatSPicker = (props) => {
-	const { name, readOnly = false, ...rest } = props;
+	const { name, label = "小分類", readOnly = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const catL = useWatch({ name: "catL" });
 	const catM = useWatch({ name: "catM" });
@@ -21,12 +21,13 @@ const ProdCatSPicker = (props) => {
 	return (
 		<OptionPickerWrapper
 			name={name}
-			label="小分類"
+			label={label}
 			bearer={token}
 			disabled={disabled}
 			url={url}
 			getOptionLabel={ProdSCats.getOptionLabel}
 			isOptionEqualToValue={ProdSCats.isOptionEqualToValue}
+			notFoundText="小分類 ${id} 不存在"
 			{...rest}
 		/>
 	);
@@ -34,6 +35,7 @@ const ProdCatSPicker = (props) => {
 
 ProdCatSPicker.propTypes = {
 	name: PropTypes.string,
+	label: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 

@@ -58,7 +58,7 @@ const AlertEx = memo(
 			return error ? "error" : severity;
 		}, [error, severity]);
 
-		const memoisedChildren = useMemo(() => {
+		const memoisedMessage = useMemo(() => {
 			return (
 				children || error?.message || error?.statusText || defaultText
 			);
@@ -99,7 +99,7 @@ const AlertEx = memo(
 				]}
 				{...rest}>
 				{title && <AlertTitle>{title}</AlertTitle>}
-				{memoisedChildren}
+				{memoisedMessage}
 			</Alert>
 		);
 	})
@@ -107,8 +107,8 @@ const AlertEx = memo(
 
 AlertEx.displayName = "AlertEx";
 AlertEx.propTypes = {
-	minWidth: PropTypes.number,
-	maxWidth: PropTypes.number,
+	minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	flex: PropTypes.bool,
 	transparent: PropTypes.bool,
 	error: PropTypes.object,

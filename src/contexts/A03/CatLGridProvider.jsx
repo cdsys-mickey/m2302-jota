@@ -11,9 +11,9 @@ import { CatLGridContext } from "./CatLGridContext";
 import { CatMGridContext } from "./CatMGridContext";
 import { CatSGridContext } from "./CatSGridContext";
 import { useTransition } from "react";
-import { useDSG } from "@/shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import DSG from "../../shared-modules/sd-dsg";
-import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
+import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 
 const CatLGridProvider = (props) => {
 	const { children } = props;

@@ -28,7 +28,7 @@ const OptionPickerComponent = memo((props) => {
 		columnIndex,
 	} = props;
 
-	const { disableActiveControl, options, ...rest } = columnData;
+	const { hideControlsOnActive, options, ...rest } = columnData;
 
 	const inputRef = useRef();
 	// console.log("rendering OptionPickerComponent");
@@ -46,8 +46,8 @@ const OptionPickerComponent = memo((props) => {
 	);
 
 	const hideControls = useMemo(() => {
-		return disabled || disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, disabled, focus]);
+		return disabled || hideControlsOnActive ? !focus : !active;
+	}, [active, hideControlsOnActive, disabled, focus]);
 
 	const cell = useMemo(() => {
 		return {

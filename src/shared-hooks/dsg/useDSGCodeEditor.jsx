@@ -1,12 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback } from "react";
-import { useWebApi } from "./useWebApi";
+import { useWebApi } from "../useWebApi";
 import { useDSG } from "./useDSG";
 import { useContext } from "react";
-import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
+import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { toast } from "react-toastify";
 import queryString from "query-string";
-import Objects from "../shared-modules/sd-objects";
+import Objects from "../../shared-modules/sd-objects";
 import _ from "lodash";
 
 const defaultTransformForReading = (payload) => {

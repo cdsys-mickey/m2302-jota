@@ -23,8 +23,13 @@ const findById = (id) => {
 	return options.find((o) => o.TypeB === id);
 };
 
+const findByInput = (input) => {
+	return options.find((o) => o.TypeB === input);
+};
+
 const ProdTypeB = {
 	findById,
+	findByInput,
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,

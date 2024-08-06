@@ -1,13 +1,13 @@
 import { useContext } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 import Prods from "@/modules/md-prods";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import queryString from "query-string";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import { useCallback } from "react";
 
-export const ProdPickerContainer = (props) => {
+const ProdPicker = (props) => {
 	const {
 		label = "商品",
 		withBomPackageName = false,
@@ -19,7 +19,6 @@ export const ProdPickerContainer = (props) => {
 		...rest
 	} = props;
 	const { token } = useContext(AuthContext);
-	// console.log("rendering ProdPickerContainer");
 
 	const querystring = useMemo(() => {
 		const obj = {
@@ -77,21 +76,22 @@ export const ProdPickerContainer = (props) => {
 	return (
 		<OptionPickerWrapper
 			label={label}
-			bearer={token}
 			url={`v1/prods`}
+			bearer={token}
 			queryParam="qs"
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
-			renderOptionLabel={renderOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
+			renderOptionLabel={renderOptionLabel}
 			getTitle={getTitle}
 			stringify={stringify}
+			notFoundText="商品代號 ${id} 不存在"
 			{...rest}
 		/>
 	);
 };
 
-ProdPickerContainer.propTypes = {
+ProdPicker.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
 	withBomPackageName: PropTypes.bool,
@@ -102,4 +102,6 @@ ProdPickerContainer.propTypes = {
 	fuzzy: PropTypes.bool,
 };
 
-ProdPickerContainer.displayName = "ProdPickerContainer";
+ProdPicker.displayName = "ProdPicker";
+
+export default ProdPicker;

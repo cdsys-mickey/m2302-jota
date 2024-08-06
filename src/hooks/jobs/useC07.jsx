@@ -6,7 +6,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useAction } from "@/shared-hooks/useAction";
-import { useDSG } from "@/shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useToggle } from "@/shared-hooks/useToggle";

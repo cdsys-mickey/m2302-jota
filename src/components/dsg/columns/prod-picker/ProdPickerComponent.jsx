@@ -1,8 +1,8 @@
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { useMemo } from "react";
-import { memo, useCallback, useLayoutEffect, useRef } from "react";
+import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import ProdPicker from "@/components/picker/ProdPicker";
+import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -33,16 +33,20 @@ const ProdPickerComponent = memo((props) => {
 		// getContextMenuItems,
 	} = props;
 
-	const { disableActiveControl, ...rest } = columnData;
-
-	// console.log(
-	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
-	// 	rowData
-	// );
-
-	const ref = useRef();
 	const rowDataRef = useRef(rowData);
 	rowDataRef.current = rowData;
+
+	const { hideControlsOnActive, selectOnFocus, ...rest } = columnData;
+
+	const { ref, hideControls, cell } = useOptionPickerComponent({
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		rowIndex,
+		columnIndex,
+	});
 
 	const handleChange = useCallback(
 		(newValue) => {
@@ -56,38 +60,8 @@ const ProdPickerComponent = memo((props) => {
 		[setRowData, stopEditing]
 	);
 
-	const hideControls = useMemo(() => {
-		return disabled || disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, disabled, focus]);
-
-	const cell = useMemo(() => {
-		return {
-			row: rowIndex,
-			col: columnIndex,
-		};
-	}, [columnIndex, rowIndex]);
-
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-			ref.current?.select();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
-
-	// useLayoutEffect(() => {
-	// 	if (active) {
-	// 		ref.current?.focus();
-	// 		ref.current?.select();
-	// 	} else {
-	// 		ref.current?.blur();
-	// 	}
-	// }, [active, focus]);
-
 	return (
-		<ProdPickerContainer
+		<ProdPicker
 			label=""
 			queryParam="qs"
 			inputRef={ref}
@@ -100,14 +74,13 @@ const ProdPickerComponent = memo((props) => {
 			filterByServer
 			queryRequired
 			// DSG 專屬
-			dense
-			hideBorders
-			toastError
-			hideControls={hideControls}
-			hidePlaceholder={!active}
-			disableFadeOut
 			cell={cell}
-			// selectOnFocus
+			dense
+			hideControls={hideControls}
+			// hidePlaceholder={!active}
+			hideBorders
+			disableFadeOut
+			toastError
 			{...rest}
 		/>
 	);

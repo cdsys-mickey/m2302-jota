@@ -18,6 +18,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 		sx = [],
 		onChange: onPickerChange,
 		onChanged,
+		options = [],
 		...rest
 	} = props;
 
@@ -70,6 +71,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						setError={form.setError}
 						clearErrors={form.clearErrors}
 						setFocus={setFocus}
+						options={options}
 						onChange={(newValue) => {
 							if (onPickerChange) {
 								onPickerChange(newValue);
@@ -107,6 +109,7 @@ ControlledOptionPicker.propTypes = {
 	onChange: PropTypes.func,
 	onChanged: PropTypes.func,
 	rules: PropTypes.object,
+	options: PropTypes.array,
 	// labelShrink: PropTypes.bool,
 	defaultValue: PropTypes.oneOfType([
 		PropTypes.string,

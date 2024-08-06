@@ -89,7 +89,7 @@ const OptionPicker = memo(
 			focusedBackgroundColor = "#b6f0ff",
 			// Popper open 控制
 			// selectNext = false,
-			focusDelay = 100,
+			focusDelay = 70,
 			open,
 			onOpen,
 			onClose,
@@ -97,9 +97,6 @@ const OptionPicker = memo(
 			// Tab & Enter,
 			disableOpenOnInput,
 			findByInput,
-			pressToFind,
-			// nextInputRef,
-			// prevInputRef,
 			getError,
 			setError,
 			clearErrors,
@@ -147,9 +144,6 @@ const OptionPicker = memo(
 		useImperativeHandle(inputRef, () => innerInputRef.current);
 
 		const [popperOpen, setPopperOpen] = useState(open || false);
-		// const [textFieldError, setTextFieldError] = useState(error);
-		// const [textFieldHelperText, setTextFieldHelperText] =
-		// 	useState(helperText);
 
 		const handleInputChange = useCallback(
 			(event) => {
@@ -175,8 +169,6 @@ const OptionPicker = memo(
 
 		const handleOpen = useCallback(
 			(e) => {
-				// console.log("OptionPicker.onOpen", e);
-				// console.log("open", open);
 				if (popperOpen) {
 					return;
 				}
@@ -207,6 +199,18 @@ const OptionPicker = memo(
 			[disableClose, onClose, popperOpen]
 		);
 
+		const _open = useMemo(() => {
+			return open !== null && open !== undefined ? open : popperOpen;
+		}, [open, popperOpen]);
+
+		const _onOpen = useMemo(() => {
+			return onOpen || handleOpen;
+		}, [handleOpen, onOpen]);
+
+		const _onClose = useMemo(() => {
+			return onClose || handleClose;
+		}, [handleClose, onClose]);
+
 		const refocus = useCallback((focusDelay) => {
 			timerIdRef.current = setTimeout(() => {
 				innerInputRef.current?.focus();
@@ -232,45 +236,24 @@ const OptionPicker = memo(
 					console.log("nextField", nextField);
 					if (nextField) {
 						e.preventDefault();
-						setFocus(nextField.name, {
-							shouldSelect: nextField.select,
-						});
+						setTimeout(() => {
+							setFocus(nextField.name, {
+								shouldSelect: nextField.select,
+							});
+						}, focusDelay);
 					}
 				}
 			},
-			[nextCell, getNextEnabled, cell, name, isDisabled, setFocus]
+			[
+				nextCell,
+				getNextEnabled,
+				cell,
+				name,
+				isDisabled,
+				focusDelay,
+				setFocus,
+			]
 		);
-		// const nextInput = useCallback(
-		// 	(e) => {
-		// 		console.log("nextInput", e);
-		// 		// e.preventDefault();
-		// 		if (e.shiftKey) {
-		// 			if (prevInputRef?.current) {
-		// 				prevInputRef.current.focus();
-		// 				prevInputRef.current.select();
-		// 				return;
-		// 			} else if (nextCell && cell) {
-		// 				nextCell(cell, {
-		// 					forward: false,
-		// 				});
-		// 			} else {
-		// 				console.warn("prevInputRef/nextCell/cell not assigned");
-		// 			}
-		// 		} else {
-		// 			if (nextInputRef?.current) {
-		// 				nextInputRef.current.focus();
-		// 				nextInputRef.current.select();
-		// 			} else if (nextCell && cell) {
-		// 				nextCell(cell, {
-		// 					forward: true,
-		// 				});
-		// 			} else {
-		// 				console.warn("nextInputRef/nextCell not assigned");
-		// 			}
-		// 		}
-		// 	},
-		// 	[prevInputRef, nextCell, cell, nextInputRef]
-		// );
 
 		const inputNotFound = useCallback(
 			(input) => {
@@ -295,9 +278,10 @@ const OptionPicker = memo(
 
 		const handleEnter = useCallback(
 			async (e, opts = {}) => {
+				console.log("handleEnter", e);
 				const { validate = false } = opts;
 				// console.log("handleEnter", event);
-				if (!pressToFind || popperOpen) {
+				if (!findByInput || _open) {
 					return;
 				}
 
@@ -339,11 +323,10 @@ const OptionPicker = memo(
 				nextInput(e);
 			},
 			[
-				pressToFind,
-				popperOpen,
 				findByInput,
-				onChange,
+				_open,
 				nextInput,
+				onChange,
 				inputNotFound,
 				getError,
 				name,
@@ -353,13 +336,14 @@ const OptionPicker = memo(
 
 		const handleArrowDown = useCallback(
 			(e) => {
-				if (!pressToFind) {
+				if (!findByInput) {
 					return;
 				}
 				e.preventDefault();
-				setPopperOpen(true);
+				// setPopperOpen(true);
+				_onOpen(e);
 			},
-			[pressToFind]
+			[_onOpen, findByInput]
 		);
 
 		const handleKeyDown = useCallback(
@@ -386,7 +370,7 @@ const OptionPicker = memo(
 
 		const handleBlur = useCallback(
 			async (e) => {
-				if (!pressToFind) {
+				if (!findByInput) {
 					return;
 				}
 				e.preventDefault();
@@ -402,7 +386,7 @@ const OptionPicker = memo(
 					}
 				}
 			},
-			[pressToFind, findByInput, inputNotFound, refocus, focusDelay]
+			[findByInput, inputNotFound, refocus, focusDelay]
 		);
 
 		const renderNormalInput = useCallback(
@@ -420,7 +404,8 @@ const OptionPicker = memo(
 						// inputRef={inputRef}
 						inputRef={innerInputRef}
 						variant={variant}
-						placeholder={hidePlaceholder ? "" : placeholder}
+						// placeholder={hidePlaceholder ? "" : placeholder}
+						placeholder={hideControls ? "" : placeholder}
 						autoFocus={autoFocus}
 						// onChange={onInputChange}
 						onChange={handleInputChange}
@@ -778,9 +763,12 @@ const OptionPicker = memo(
 					renderGroup={handleRenderGroup}
 					filterOptions={memoisedFilterOptions}
 					// Popper Open 控制
-					open={popperOpen}
-					onOpen={handleOpen}
-					onClose={handleClose}
+					// open={popperOpen}
+					// onOpen={handleOpen}
+					// onClose={handleClose}
+					open={_open}
+					onOpen={_onOpen}
+					onClose={_onClose}
 					sx={[
 						{
 							...(disabled && {
@@ -902,13 +890,11 @@ OptionPicker.propTypes = {
 	focusDelay: PropTypes.number,
 	// selectNext: PropTypes.bool,
 	disableOpenOnInput: PropTypes.bool,
-	pressToFind: PropTypes.bool,
+	// pressToFind: PropTypes.bool,
 	getError: PropTypes.func,
 	setError: PropTypes.func,
 	clearErrors: PropTypes.func,
 	notFoundText: PropTypes.string,
-	// nextInputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-	// prevInputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	nextCell: PropTypes.func,
 	cell: PropTypes.object,
 	toastError: PropTypes.bool,

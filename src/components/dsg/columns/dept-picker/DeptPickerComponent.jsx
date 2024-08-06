@@ -1,9 +1,7 @@
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useRef } from "react";
+import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import DeptPickerContainer from "../../../DeptPickerContainer";
-import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -18,8 +16,8 @@ const DeptPickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		// rowIndex,
-		// columnIndex,
+		rowIndex,
+		columnIndex,
 		// Component Props
 		columnData,
 		// Cell state
@@ -34,12 +32,7 @@ const DeptPickerComponent = memo((props) => {
 		// getContextMenuItems,
 	} = props;
 
-	const { disableActiveControl, ...rest } = columnData;
-
-	// console.log(
-	// 	`rendering DeptPickerComponent active: ${active}, focus: ${focus}, rowData:`,
-	// 	rowData
-	// );
+	const { hideControlsOnActive, selectOnFocus, ...rest } = columnData;
 
 	const ref = useRef();
 	const rowDataRef = useRef(rowData);
@@ -58,23 +51,32 @@ const DeptPickerComponent = memo((props) => {
 	);
 
 	const hideControls = useMemo(() => {
-		return disabled || disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, disabled, focus]);
+		return disabled || hideControlsOnActive ? !focus : !active;
+	}, [active, hideControlsOnActive, disabled, focus]);
+
+	const cell = useMemo(() => {
+		return {
+			row: rowIndex,
+			col: columnIndex,
+		};
+	}, [columnIndex, rowIndex]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
 			ref.current?.focus();
+			if (selectOnFocus) {
+				ref.current?.select();
+			}
 		} else {
 			ref.current?.blur();
 		}
-	}, [focus]);
+	}, [focus, selectOnFocus]);
 
 	return (
 		<DeptPickerContainer
 			queryParam="qs"
 			label=""
-			hideBorders
 			inputRef={ref}
 			disabled={disabled}
 			value={rowData}
@@ -84,14 +86,13 @@ const DeptPickerComponent = memo((props) => {
 			typeToSearchText="請輸入門市編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
+			cell={cell}
 			dense
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!active}
 			hideControls={hideControls}
 			hidePlaceholder={!active}
+			hideBorders
 			disableFadeOut
-			// queryRequired
-			// virtualize
+			toastError
 			{...rest}
 		/>
 	);

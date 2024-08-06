@@ -5,7 +5,7 @@ import { useWatch } from "react-hook-form";
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import CmsTypes from "@/modules/md-cms-types";
 
-const TypoCmsTypePickerContainer = forwardRef((props, ref) => {
+const ZZTypoCmsTypePickerContainer = forwardRef((props, ref) => {
 	const { name, children, label = "佣金類別", ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const value = useWatch({
@@ -26,11 +26,11 @@ const TypoCmsTypePickerContainer = forwardRef((props, ref) => {
 		</TypoWebApiOptionPickerContainer>
 	);
 });
-TypoCmsTypePickerContainer.propTypes = {
+ZZTypoCmsTypePickerContainer.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
 };
 
-TypoCmsTypePickerContainer.displayName = "TypoCmsTypePickerContainer";
-export default TypoCmsTypePickerContainer;
+ZZTypoCmsTypePickerContainer.displayName = "ZZTypoCmsTypePickerContainer";
+export default ZZTypoCmsTypePickerContainer;

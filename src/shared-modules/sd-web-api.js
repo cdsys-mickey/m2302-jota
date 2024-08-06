@@ -56,13 +56,24 @@ const getErrorFromPayload = (payload, options) => {
 };
 
 const mapStatusText = (err, mapping) => {
+	if (err instanceof Error) {
+		const { name, message, stack } = err;
+		return {
+			name,
+			message,
+			stack,
+		};
+	}
+
 	const overrideText = mapping[err.status];
-	return {
+	const result = {
 		...err,
 		...(overrideText && {
 			statusText: overrideText,
 		}),
 	};
+	console.log("result", result);
+	return result;
 };
 
 const WebApi = {

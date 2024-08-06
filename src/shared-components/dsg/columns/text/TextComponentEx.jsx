@@ -20,7 +20,15 @@ const TextComponentEx = memo(
 		setRowData,
 		rowIndex,
 		columnIndex,
-		columnData: {
+		columnData,
+		// Control functions
+		// Context methods
+		skipDisabled,
+		nextCell,
+	}) => {
+		const ref = useRef(null);
+		const firstRender = useFirstRender();
+		const {
 			placeholder,
 			alignRight,
 			formatInputOnFocus,
@@ -31,15 +39,7 @@ const TextComponentEx = memo(
 			style,
 			enterToNext,
 			...rest
-		},
-		// Control functions
-		// Context methods
-		skipDisabled,
-		nextCell,
-	}) => {
-		const ref = useRef(null);
-		const { style, ...rest } = opts;
-		const firstRender = useFirstRender();
+		} = columnData;
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
 		const asyncRef = useRef({
 			rowData,

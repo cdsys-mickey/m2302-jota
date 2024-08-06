@@ -4,7 +4,7 @@ import UserInfo from "@/modules/md-user-info";
 import ZA03 from "@/modules/md-za03";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useAction } from "@/shared-hooks/useAction";
-import { useDSG } from "@/shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";

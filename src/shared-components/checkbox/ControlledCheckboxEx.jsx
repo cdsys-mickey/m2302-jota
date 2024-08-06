@@ -20,7 +20,18 @@ const ControlledCheckboxEx = ({
 	...rest
 }) => {
 	const { getNextEnabled, isDisabled } = useContext(FormManagerContext) || {};
-	const { setFocus } = useFormContext() || {};
+	const { setFocus, setValue } = useFormContext() || {};
+
+	const toggleChecked = useCallback(
+		(e) => {
+			console.log("e.target.checked", e.target.checked);
+			const newValue = checkedToValue
+				? checkedToValue(!e.target.checked)
+				: !e.target.checked;
+			setValue(name, newValue);
+		},
+		[checkedToValue, name, setValue]
+	);
 
 	const handleKeyDown = useCallback(
 		(e) => {
@@ -28,7 +39,10 @@ const ControlledCheckboxEx = ({
 			// 	onKeyDown(e);
 			// }
 			console.log("handleKeyDown:", `"${e.key}"`);
-			if (e.key === "Enter" || e.key === "Tab") {
+			if (e.key === "Enter" || e.key === "Tab" || e.key === " ") {
+				if (e.key === " ") {
+					toggleChecked(e);
+				}
 				if (getNextEnabled) {
 					const nextField = getNextEnabled(name, {
 						forward: !e.shiftKey,
@@ -44,7 +58,7 @@ const ControlledCheckboxEx = ({
 				}
 			}
 		},
-		[getNextEnabled, name, isDisabled, setFocus]
+		[getNextEnabled, toggleChecked, name, isDisabled, setFocus]
 	);
 
 	// const handleKeyUp = useCallback(
@@ -95,9 +109,6 @@ const ControlledCheckboxEx = ({
 										? checkedToValue(e.target.checked)
 										: e.target.checked;
 									onChange(newValue);
-									if (onChanged) {
-										onChanged(newValue);
-									}
 							  }
 					}
 					inputProps={readOnly ? { readOnly: true } : null}

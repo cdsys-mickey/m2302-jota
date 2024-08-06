@@ -1,6 +1,6 @@
 import { useInit } from "@/shared-hooks/useInit";
 import { useCallback } from "react";
-import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
+import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 import queryString from "query-string";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import { toast } from "react-toastify";

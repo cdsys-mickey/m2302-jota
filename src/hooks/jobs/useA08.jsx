@@ -1,5 +1,5 @@
 import { useInit } from "@/shared-hooks/useInit";
-import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
+import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 import { useAppModule } from "./useAppModule";
 import A08 from "../../modules/md-a08";
 import { useCallback } from "react";

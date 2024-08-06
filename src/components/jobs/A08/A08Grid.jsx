@@ -65,7 +65,7 @@ const A08Grid = memo((props) => {
 					"areaType",
 					optionPickerColumn(AreaTypePickerComponent, {
 						name: "areaType",
-						disableActiveControl: true,
+						hideControlsOnActive: true,
 					})
 				),
 				title: "範圍",

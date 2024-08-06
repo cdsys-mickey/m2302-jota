@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { CatSGridContext } from "./CatSGridContext";
-import { useDSG } from "../../shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
+import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 
 const CatSGridProvider = (props) => {
 	const { children } = props;

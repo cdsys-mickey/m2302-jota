@@ -1,41 +1,34 @@
-import ProdTypeA from "@/modules/md-prod-type-a";
 import TaxTypes from "@/modules/md-tax-types";
 import { Box, Grid, Tab } from "@mui/material";
 import { memo } from "react";
 
 import A01 from "@/modules/md-a01";
-import CmsTypes from "@/modules/md-cms-types";
-import Counters from "@/modules/md-counters";
-import PkgTypes from "@/modules/md-pkg-types";
-import ProdLCats from "@/modules/md-prod-l-cats";
-import ProdMCats from "@/modules/md-prod-m-cats";
-import ProdSCats from "@/modules/md-prod-s-cats";
-import ProdTypeB from "@/modules/md-prod-type-b";
 import Strings from "@/modules/md-strings";
 import YesNo from "@/modules/md-yes-no";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
+import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import FormBox from "@/shared-components/form/FormBox";
-import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import TaxTypePickerContainer from "../../../picker/TaxTypePickerContainer";
-import { A01ProdComboGridContainer } from "./combo/A01ProdComboGridContainer";
-import TypoCmsTypePickerContainer from "./fields/TypoCmsTypePickerContainer";
-import { TypoCounterPickerContainer } from "./fields/TypoCounterPickerContainer";
-import { TypoPkgTypePickerContainer } from "./fields/TypoPkgTypePickerContainer";
-import { TypoProdCatLPickerContainer } from "./fields/TypoProdCatLPickerContainer";
-import { TypoProdCatMPickerContainer } from "./fields/TypoProdCatMPickerContainer";
-import { TypoProdCatSPickerContainer } from "./fields/TypoProdCatSPickerContainer";
-import { TypoProdTypeAPickerContainer } from "./fields/TypoProdTypeAPickerContainer";
-import { TypoProdTypeBPickerContainer } from "./fields/TypoProdTypeBPickerContainer";
-import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
 import { useScrollable } from "../../../../shared-hooks/useScrollable";
+import CmsTypePicker from "../../../picker/CmsTypePicker";
+import CounterPicker from "../../../picker/CounterPicker";
+import { PkgTypePicker } from "../../../picker/PkgTypePicker";
+import ProdCatLPicker from "../../../picker/ProdCatLPicker";
+import ProdCatMPicker from "../../../picker/ProdCatMPicker";
+import ProdCatSPicker from "../../../picker/ProdCatSPicker";
+import ProdTypeAPicker from "../../../picker/ProdTypeAPicker";
+import ProdTypeBPicker from "../../../picker/ProdTypeBPicker";
+import TaxTypePicker from "../../../picker/TaxTypePicker";
+import { A01ProdComboGridContainer } from "./combo/A01ProdComboGridContainer";
+import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
+import ContainerEx from "../../../../shared-components/ContainerEx";
 
 const A01Form = memo((props) => {
 	const {
@@ -43,6 +36,7 @@ const A01Form = memo((props) => {
 		data,
 		readWorking,
 		itemDataReady,
+		creating,
 		editing,
 		updating,
 		store,
@@ -97,17 +91,21 @@ const A01Form = memo((props) => {
 							value={A01.Tabs.INFO}
 							sx={[scrollable.scroller]}>
 							{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
-							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
+							<FormSectionBox
+								pt={editing ? 1.5 : 1}
+								pb={1}
+								mb={1}
+								px={1}>
 								<Grid
 									container
 									columns={12}
-									spacing={editing ? 2 : 1}>
-									<Grid item xs={12} sm={12} md={4}>
+									spacing={editing ? 1 : 1}>
+									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
 											typo
 											name="ProdID"
 											label="貨品編號"
-											autoFocus
+											autoFocus={creating}
 											fullWidth
 											// value={data?.ProdID}
 											required
@@ -117,7 +115,7 @@ const A01Form = memo((props) => {
 											readOnly={updating}
 										/>
 									</Grid>
-									<Grid item xs={12} sm={12} md={8}>
+									<Grid item xs={12} sm={12} md={6}>
 										<TextFieldWrapper
 											typo
 											name="ProdData"
@@ -131,7 +129,7 @@ const A01Form = memo((props) => {
 											{data?.ProdData}
 										</TextFieldWrapper>
 									</Grid>
-									<Grid item xs={12} sm={12} md={4}>
+									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
 											typo
 											label="條碼"
@@ -141,6 +139,7 @@ const A01Form = memo((props) => {
 											readOnly={store}
 										/>
 									</Grid>
+									<FlexBox fullWidth />
 									<Grid item xs={12} sm={12} md={3}>
 										<CheckboxExWrapper
 											typo
@@ -161,105 +160,98 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>分類</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
+							<FormSectionBox
+								pt={editing ? 1.5 : 1}
+								pb={1}
+								mb={1}
+								px={1}>
 								<Grid
 									container
 									columns={12}
-									spacing={editing ? 2 : 1}>
+									spacing={editing ? 1 : 1}>
 									<Grid item xs={12} sm={12} md={4}>
-										<TypoProdCatLPickerContainer
+										<ProdCatLPicker
 											typo
 											name="catL"
 											readOnly={store}
+											disableOpenOnInput
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={4}>
-										<TypoProdCatMPickerContainer
+										<ProdCatMPicker
+											typo
 											name="catM"
-											readOnly={store}>
-											{ProdMCats.getOptionLabel(
-												data?.catM
-											)}
-										</TypoProdCatMPickerContainer>
+											readOnly={store}
+											disableOpenOnInput
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={4}>
-										<TypoProdCatSPickerContainer
-											name="catS"
-											readOnly={store}>
-											{ProdSCats.getOptionLabel(
-												data?.catS
-											)}
-										</TypoProdCatSPickerContainer>
-									</Grid>
-									<FlexBox fullWidth />
-									<Grid item xs={12} sm={12} md={3}>
-										<TypoProdTypeAPickerContainer
-											name="typeA"
-											readOnly={store}>
-											{ProdTypeA.getOptionLabel(
-												data?.typeA
-											)}
-										</TypoProdTypeAPickerContainer>
-									</Grid>
-
-									<Grid item xs={12} sm={12} md={3}>
-										<TypoProdTypeBPickerContainer
-											name="typeB"
-											readOnly={store}>
-											{ProdTypeB.getOptionLabel(
-												data?.typeB
-											)}
-										</TypoProdTypeBPickerContainer>
-									</Grid>
-									<Grid item xs={12} sm={12} md={3}>
-										<TaxTypePickerContainer
+										<ProdCatSPicker
 											typo
-											name="taxType"
-											label="稅別"
-											defaultValue={TaxTypes.findById(
-												"T"
-											)}
-											readOnly={store}>
-											{TaxTypes.getOptionLabel(
-												data?.taxType
-											)}
-										</TaxTypePickerContainer>
-										{/* <TypoTaxTypePickerContainer
-											name="taxType"
-											label="稅別"
-											defaultValue={TaxTypes.findById("T")}
-											readOnly={store}>
-											{TaxTypes.getOptionLabel(
-												data?.taxType
-											)}
-										</TypoTaxTypePickerContainer> */}
-									</Grid>
-									<Grid item xs={12} sm={12} md={3}>
-										<TypoCounterPickerContainer
-											name="counter"
-											autoFocus={store}>
-											{Counters.getOptionLabel(
-												data?.counter
-											)}
-										</TypoCounterPickerContainer>
+											name="catS"
+											readOnly={store}
+											disableOpenOnInput
+										/>
 									</Grid>
 								</Grid>
 							</FormSectionBox>
 							<FormSectionTitle>成本</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
+							<FormSectionBox
+								pt={editing ? 1.5 : 1}
+								pb={1}
+								mb={1}
+								px={1}>
 								<Grid
 									container
 									columns={12}
 									spacing={editing ? 2 : 1}>
+									<Grid item xs={12} sm={12} md={3}>
+										<ProdTypeAPicker
+											typo
+											name="typeA"
+											readOnly={store}
+											disableOpenOnInput
+										/>
+									</Grid>
+
+									<Grid item xs={12} sm={12} md={3}>
+										<ProdTypeBPicker
+											typo
+											name="typeB"
+											readOnly={store}
+											disableOpenOnInput
+										/>
+									</Grid>
+									<Grid item xs={12} sm={12} md={3}>
+										<TaxTypePicker
+											typo
+											name="taxType"
+											label="稅別"
+											// defaultValue={TaxTypes.findById(
+											// 	"T"
+											// )}
+											readOnly={store}
+											disableOpenOnInput
+										/>
+									</Grid>
+									<Grid item xs={12} sm={12} md={3}>
+										<CounterPicker
+											label="櫃別"
+											typo
+											name="counter"
+											autoFocus={store}
+											disableOpenOnInput
+										/>
+									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
 											typo
 											name="StdCost"
 											label="標準成本"
 											type="number"
-											readOnly={store}>
-											{Strings.formatPrice(data?.StdCost)}
-										</TextFieldWrapper>
+											readOnly={store}
+											renderLabel={Strings.formatPrice}
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
@@ -267,11 +259,9 @@ const A01Form = memo((props) => {
 											name="TranCost"
 											label="調撥成本"
 											type="number"
-											readOnly={store}>
-											{Strings.formatPrice(
-												data?.TranCost
-											)}
-										</TextFieldWrapper>
+											readOnly={store}
+											renderLabel={Strings.formatPrice}
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
@@ -279,11 +269,9 @@ const A01Form = memo((props) => {
 											name="LocalCost"
 											label="批發成本(本)"
 											type="number"
-											readOnly={store}>
-											{Strings.formatPrice(
-												data?.LocalCost
-											)}
-										</TextFieldWrapper>
+											readOnly={store}
+											renderLabel={Strings.formatPrice}
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
@@ -291,14 +279,18 @@ const A01Form = memo((props) => {
 											name="OutCost"
 											label="批發成本(外)"
 											type="number"
-											readOnly={store}>
-											{Strings.formatPrice(data?.OutCost)}
-										</TextFieldWrapper>
+											readOnly={store}
+											renderLabel={Strings.formatPrice}
+										/>
 									</Grid>
 								</Grid>
 							</FormSectionBox>
 							<FormSectionTitle>安全存量</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
+							<FormSectionBox
+								pt={editing ? 1.5 : 1}
+								pb={1}
+								mb={1}
+								px={1}>
 								<Grid
 									container
 									columns={12}
@@ -310,9 +302,9 @@ const A01Form = memo((props) => {
 											label="平日安全存量"
 											type="number"
 											readOnly={store}
-											fullWidth>
-											{Strings.formatPrice(data?.SafeQty)}
-										</TextFieldWrapper>
+											fullWidth
+											renderLabel={Strings.formatPrice}
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
@@ -320,74 +312,77 @@ const A01Form = memo((props) => {
 											label="儲位"
 											name="Location"
 											readOnly={store}
-											fullWidth>
-											{data?.Location}
-										</TextFieldWrapper>
+											fullWidth
+											renderLabel={Strings.formatPrice}
+										/>
 									</Grid>
 
 									<Grid item xs={12} sm={12} md={4}>
-										<TypoCmsTypePickerContainer
+										<CmsTypePicker
+											typo
 											name="cmsType"
-											readOnly={store}>
-											{CmsTypes.getOptionLabel(
-												data?.cmsType
-											)}
-										</TypoCmsTypePickerContainer>
+											readOnly={store}
+											disableOpenOnInput
+										/>
 									</Grid>
 								</Grid>
 							</FormSectionBox>
 
 							<FormSectionTitle>包裝單位</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
+							<FormSectionBox
+								pt={editing ? 1.5 : 1}
+								pb={1}
+								mb={1}
+								px={1}>
 								<Grid
 									container
 									columns={12}
 									spacing={editing ? 2 : 1}>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoPkgTypePickerContainer
+										<PkgTypePicker
+											typo
 											name="bunit"
 											label="庫存"
-											readOnly={store}>
-											{PkgTypes.getOptionLabel(
-												data?.bunit
-											)}
-										</TypoPkgTypePickerContainer>
+											readOnly={store}
+											disableOpenOnInput
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoPkgTypePickerContainer
+										<PkgTypePicker
+											typo
 											name="sunit"
 											label="銷售"
-											readOnly={store}>
-											{PkgTypes.getOptionLabel(
-												data?.sunit
-											)}
-										</TypoPkgTypePickerContainer>
+											readOnly={store}
+											disableOpenOnInput
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoPkgTypePickerContainer
+										<PkgTypePicker
+											typo
 											name="iunit"
 											label="進貨"
-											readOnly={store}>
-											{PkgTypes.getOptionLabel(
-												data?.iunit
-											)}
-										</TypoPkgTypePickerContainer>
+											readOnly={store}
+											disableOpenOnInput
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<TypoPkgTypePickerContainer
+										<PkgTypePicker
+											typo
 											name="munit"
 											label="BOM"
-											readOnly={store}>
-											{PkgTypes.getOptionLabel(
-												data?.munit
-											)}
-										</TypoPkgTypePickerContainer>
+											readOnly={store}
+											disableOpenOnInput
+										/>
 									</Grid>
 								</Grid>
 							</FormSectionBox>
 
 							<FormSectionTitle>換算率</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
+							<FormSectionBox
+								pt={editing ? 1.5 : 1}
+								pb={1}
+								mb={1}
+								px={1}>
 								<Grid
 									container
 									columns={12}
@@ -398,9 +393,6 @@ const A01Form = memo((props) => {
 											label="銷/存"
 											type="number"
 											name="SRate"
-											// value={Strings.formatRate(
-											// 	data?.SRate
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -410,9 +402,6 @@ const A01Form = memo((props) => {
 											label="進/存"
 											type="number"
 											name="IRate"
-											// value={Strings.formatRate(
-											// 	data?.IRate
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -422,9 +411,6 @@ const A01Form = memo((props) => {
 											label="BOM/存"
 											type="number"
 											name="MRate"
-											// value={Strings.formatRate(
-											// 	data?.MRate
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -432,7 +418,11 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>售價</FormSectionTitle>
-							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
+							<FormSectionBox
+								pt={editing ? 1.5 : 1}
+								pb={1}
+								mb={1}
+								px={1}>
 								<Grid
 									container
 									columns={12}
@@ -443,9 +433,6 @@ const A01Form = memo((props) => {
 											label="建議售價"
 											name="Price"
 											type="number"
-											// value={Strings.formatPrice(
-											// 	data?.Price
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -455,9 +442,6 @@ const A01Form = memo((props) => {
 											label="售價A"
 											type="number"
 											name="PriceA"
-											// value={Strings.formatPrice(
-											// 	data?.PriceA
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -468,9 +452,6 @@ const A01Form = memo((props) => {
 											label="售價B"
 											type="number"
 											name="PriceB"
-											// value={Strings.formatPrice(
-											// 	data?.PriceB
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -480,9 +461,6 @@ const A01Form = memo((props) => {
 											label="售價C"
 											type="number"
 											name="PriceC"
-											// value={Strings.formatPrice(
-											// 	data?.PriceC
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -492,9 +470,6 @@ const A01Form = memo((props) => {
 											label="售價D"
 											type="number"
 											name="PriceD"
-											// value={Strings.formatPrice(
-											// 	data?.PriceD
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -504,9 +479,6 @@ const A01Form = memo((props) => {
 											label="售價E"
 											type="number"
 											name="PriceE"
-											// value={Strings.formatPrice(
-											// 	data?.PriceE
-											// )}
 											readOnly={store}
 										/>
 									</Grid>
@@ -514,29 +486,15 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 						</TabPanel>
 						<TabPanel value={A01.Tabs.TRANS}>
-							<A01ProdTransGridContainer store={store} />
+							<ContainerEx maxWidth="sm" alignLeft>
+								<A01ProdTransGridContainer store={store} />
+							</ContainerEx>
 						</TabPanel>
 						<TabPanel value={A01.Tabs.COMBO}>
-							<A01ProdComboGridContainer store={store} />
+							<ContainerEx maxWidth="sm" alignLeft>
+								<A01ProdComboGridContainer store={store} />
+							</ContainerEx>
 						</TabPanel>
-						{/* <Grid container columns={24} spacing={1}>
-							<Grid item xs={24} sm={24} md={24} lg={11} xl={11}>
-								<FormSectionBox p={1} pt={0} mb={2}>
-									<FormSectionTitle>
-										調撥成本
-									</FormSectionTitle>
-									<ProdTransGridContainer store={store} />
-								</FormSectionBox>
-							</Grid>
-							<Grid item xs={24} sm={24} md={6} lg={13} xl={13}>
-								<FormSectionBox p={1} pt={0} mb={2}>
-									<FormSectionTitle>
-										組合細項
-									</FormSectionTitle>
-									<ProdComboGridContainer store={store} />
-								</FormSectionBox>
-							</Grid>
-						</Grid> */}
 					</TabContext>
 				</FormBox>
 			)}
@@ -548,6 +506,7 @@ A01Form.propTypes = {
 	data: PropTypes.object,
 	readWorking: PropTypes.bool,
 	itemDataReady: PropTypes.bool,
+	creating: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	store: PropTypes.bool,

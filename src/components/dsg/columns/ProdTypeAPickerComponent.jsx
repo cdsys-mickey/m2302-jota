@@ -34,7 +34,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 	} = props;
 
 	const ref = useRef();
-	const { disableActiveControl, ...rest } = columnData;
+	const { hideControlsOnActive, ...rest } = columnData;
 
 	const handleChange = useCallback(
 		(newValue) => {
@@ -49,8 +49,8 @@ const ProdTypeAPickerComponent = memo((props) => {
 	);
 
 	const hideControls = useMemo(() => {
-		return disabled || disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, disabled, focus]);
+		return disabled || hideControlsOnActive ? !focus : !active;
+	}, [active, hideControlsOnActive, disabled, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {

@@ -25,6 +25,32 @@ const hasEmptyError = (criteria) => {
 	return true;
 };
 
+const transformTransGridForReading = (data) => {
+	return data.map((v, i) => ({
+		id: uuidv4(),
+		dept: {
+			DeptID: v.SDeptID,
+			DeptName: v.SDept_N,
+		},
+		SDept_N: v.SDept_N,
+		// SCost: Number(v.SCost),
+		SCost: v.SCost,
+	}));
+};
+
+const transformComboGridForReading = (data) => {
+	return data.map((v, i) => ({
+		id: uuidv4(),
+		prod: {
+			ProdID: v.SProdID,
+			ProdData: v.Prod_N,
+		},
+		Prod_N: v.Prod_N,
+		// SProdQty: Number(v.SProdQty),
+		SProdQty: v.SProdQty,
+	}));
+};
+
 const transformForReading = (data) => {
 	const {
 		BUnit,
@@ -116,26 +142,10 @@ const transformForReading = (data) => {
 		typeA: TypeA ? ProdTypeA.findById(TypeA) : null,
 		typeB: TypeB ? ProdTypeB.findById(TypeB) : null,
 		...(StoreTrans_S && {
-			trans: StoreTrans_S.map((v, i) => ({
-				id: uuidv4(),
-				dept: {
-					DeptID: v.SDeptID,
-					DeptName: v.SDept_N,
-				},
-				// SCost: Number(v.SCost),
-				SCost: v.SCost,
-			})),
+			trans: transformTransGridForReading(StoreTrans_S),
 		}),
 		...(StoreCom_S && {
-			combo: StoreCom_S.map((v, i) => ({
-				id: uuidv4(),
-				prod: {
-					ProdID: v.SProdID,
-					ProdData: v.Prod_N,
-				},
-				// SProdQty: Number(v.SProdQty),
-				SProdQty: v.SProdQty,
-			})),
+			combo: transformComboGridForReading(StoreCom_S),
 		}),
 		...rest,
 	};
@@ -151,6 +161,26 @@ const transformForCounterSubmit = (data) => {
 		ProdID,
 		NewCaseID: counter?.CodeID || "",
 	};
+};
+
+const transformTransGridForSubmit = (data) => {
+	return data
+		.filter((x) => !!x.dept)
+		.map((v, i) => ({
+			Seq: i,
+			SDeptID: v.dept?.DeptID,
+			SCost: v.SCost,
+		}));
+};
+
+const transformComboGridForSubmit = (data) => {
+	return data
+		.filter((x) => !!x.prod)
+		.map((v, i) => ({
+			Seq: i,
+			SProdID: v.prod?.ProdID,
+			SProdQty: v.SProdQty,
+		}));
 };
 
 const transformForEditorSubmit = (data, transGridData, comboGridData) => {
@@ -218,22 +248,10 @@ const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 		TypeA: typeA?.TypeA || "",
 		TypeB: typeB?.TypeB || "",
 		...(transGridData && {
-			StoreTrans_S: transGridData
-				.filter((x) => !!x.dept)
-				.map((v, i) => ({
-					Seq: i,
-					SDeptID: v.dept?.DeptID,
-					SCost: v.SCost,
-				})),
+			StoreTrans_S: transformTransGridForSubmit(transGridData),
 		}),
 		...(comboGridData && {
-			StoreCom_S: comboGridData
-				.filter((x) => !!x.prod)
-				.map((v, i) => ({
-					Seq: i,
-					SProdID: v.prod?.ProdID,
-					SProdQty: v.SProdQty,
-				})),
+			StoreCom_S: transformComboGridForSubmit(comboGridData),
 		}),
 	};
 };

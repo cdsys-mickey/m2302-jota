@@ -8,7 +8,7 @@ import A20 from "@/modules/md-a20";
 import { toast } from "react-toastify";
 import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
-import { useDSG } from "../../shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useInit } from "../../shared-hooks/useInit";
 
 export const useA20 = ({ token }) => {

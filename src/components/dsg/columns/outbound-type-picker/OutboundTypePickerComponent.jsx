@@ -33,7 +33,7 @@ const OutboundTypePickerComponent = memo((props) => {
 		// getContextMenuItems,
 	} = props;
 
-	const { disableActiveControl, ...rest } = columnData;
+	const { hideControlsOnActive, ...rest } = columnData;
 
 	// console.log(
 	// 	`rendering OutboundTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
@@ -55,8 +55,8 @@ const OutboundTypePickerComponent = memo((props) => {
 	);
 
 	const hideControls = useMemo(() => {
-		return disabled || disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, disabled, focus]);
+		return disabled || hideControlsOnActive ? !focus : !active;
+	}, [active, hideControlsOnActive, disabled, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {

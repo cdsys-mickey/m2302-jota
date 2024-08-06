@@ -43,6 +43,10 @@ const findById = (id) => {
 	return options.find((o) => o.TypeA === id);
 };
 
+const findByInput = (input) => {
+	return options.find((o) => o.TypeA === input);
+};
+
 const Types = Object.freeze({
 	1: "成品",
 	2: "半成品",
@@ -56,6 +60,7 @@ const Types = Object.freeze({
 const ProdTypeA = {
 	Types,
 	findById,
+	findByInput,
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,

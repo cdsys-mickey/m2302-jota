@@ -8,8 +8,8 @@ import { CatMGridContext } from "./CatMGridContext";
 import { CatSGridContext } from "./CatSGridContext";
 import { useRef } from "react";
 import { RoomTwoTone } from "@mui/icons-material";
-import { useDSG } from "@/shared-hooks/useDSG";
-import { useDSGCodeEditor } from "../../shared-hooks/useDSGCodeEditor";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 
 const CatMGridProvider = (props) => {
 	const { children } = props;

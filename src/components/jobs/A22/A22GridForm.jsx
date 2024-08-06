@@ -1,13 +1,12 @@
-import { Box, Collapse, Grid, Paper } from "@mui/material";
-import PropTypes from "prop-types";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
+import { Box, Grid, Paper } from "@mui/material";
+import PropTypes from "prop-types";
 
-import { A22GridLoadButtonContainer } from "./A22GridLoadButtonContainer";
 import FlexGrid from "@/shared-components/FlexGrid";
-import { A22GridFormToggleButtonContainer } from "./A22GridFormToggleButtonContainer";
+import ProdPicker from "@/components/picker/ProdPicker";
 import { A22GridForm2Container } from "./A22GridForm2Container";
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
-import { OptionPickerProvider } from "../../../shared-components/option-picker/OptionPickerProvider";
+import { A22GridFormToggleButtonContainer } from "./A22GridFormToggleButtonContainer";
+import { A22GridLoadButtonContainer } from "./A22GridLoadButtonContainer";
 
 const A22GridForm = (props) => {
 	const { cat = true, safeQty = false, handleSubmit, ...rest } = props;
@@ -19,7 +18,7 @@ const A22GridForm = (props) => {
 
 					<Grid item xs={24} sm={12} md={16} lg={8}>
 						{/* <OptionPickerProvider> */}
-						<ProdPickerContainer
+						<ProdPicker
 							name="prod1"
 							label="起始商品編號"
 							size="small"
@@ -32,7 +31,7 @@ const A22GridForm = (props) => {
 						{/* </OptionPickerProvider> */}
 					</Grid>
 					<Grid item xs={24} sm={12} md={16} lg={8}>
-						<ProdPickerContainer
+						<ProdPicker
 							name="prod2"
 							label="截止商品編號"
 							size="small"

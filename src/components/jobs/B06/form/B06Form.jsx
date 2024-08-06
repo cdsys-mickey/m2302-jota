@@ -1,6 +1,5 @@
 import { Box, Grid } from "@mui/material";
 import { memo } from "react";
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { SupplierPickerContainer } from "@/components/picker/SupplierPickerContainer";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
@@ -11,6 +10,7 @@ import PropTypes from "prop-types";
 import FormBox from "@/shared-components/form/FormBox";
 import Fieldset from "@/shared-components/Fieldset";
 import Colors from "../../../../modules/md-colors";
+import ProdPicker from "../../../picker/ProdPicker";
 
 const B06Form = memo((props) => {
 	const { onSubmit } = props;
@@ -70,7 +70,7 @@ const B06Form = memo((props) => {
 
 						<Grid item xs={24} sm={7}>
 							<OptionPickerProvider>
-								<ProdPickerContainer
+								<ProdPicker
 									name="sprod"
 									label="起始商品編號"
 									size="small"
@@ -82,7 +82,7 @@ const B06Form = memo((props) => {
 						</Grid>
 						<Grid item xs={24} sm={7}>
 							<OptionPickerProvider>
-								<ProdPickerContainer
+								<ProdPicker
 									name="eprod"
 									label="截止商品編號"
 									size="small"

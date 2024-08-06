@@ -39,7 +39,7 @@ const ProdCatSPickerColumn = memo((props) => {
 		return !catL || !catM || columnDisabled;
 	}, [catL, catM, columnDisabled]);
 
-	// const { disableActiveControl, ...rest } = columnData;
+	// const { hideControlsOnActive, ...rest } = columnData;
 
 	const ref = useRef();
 	const rowDataRef = useRef(rowData);
@@ -66,8 +66,8 @@ const ProdCatSPickerColumn = memo((props) => {
 	);
 
 	// const hideControls = useMemo(() => {
-	// 	return disableActiveControl ? !focus : !active;
-	// }, [active, disableActiveControl, focus]);
+	// 	return hideControlsOnActive ? !focus : !active;
+	// }, [active, hideControlsOnActive, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {

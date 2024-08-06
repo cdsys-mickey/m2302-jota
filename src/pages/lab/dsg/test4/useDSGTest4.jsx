@@ -4,7 +4,7 @@ import { createDateFnsColumn } from "@/shared-components/dsg/columns/date/create
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { useDSG } from "@/shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { nanoid } from "nanoid";
 import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
@@ -19,16 +19,15 @@ export const useDSGTest4 = () => {
 						name: "prod",
 						withStock: true,
 						withSalesPackageName: true,
-						notFoundText: "商品代號 ${id} 不存在",
 						queryRequired: true,
 						filterByServer: true,
 						disableOpenOnInput: true,
-						disableActiveControl: true,
-						pressToFind: true,
+						hideControlsOnActive: true,
+						// pressToFind: true,
 						forId: true,
 						disableClearable: true,
 						fuzzy: true,
-						disableClose: true,
+						// disableClose: true,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -71,10 +70,9 @@ export const useDSGTest4 = () => {
 					optionPickerColumn(ProdTypeAPickerComponentContainer, {
 						name: "typeA",
 						disableOpenOnInput: true,
-						pressToFind: true,
+						// pressToFind: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						notFoundText: "品別代號 ${id} 不存在",
 						componentsProps: {
 							paper: {
 								sx: {

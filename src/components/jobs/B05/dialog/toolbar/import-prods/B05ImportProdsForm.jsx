@@ -1,13 +1,13 @@
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
+import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
+import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
+import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
-import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
-import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
+import ProdPicker from "../../../../../picker/ProdPicker";
 import { B05ImportProdsButtonContainer } from "./B05ImportProdsButtonContainer";
 
 const B05LoadProdsForm = memo((props) => {
@@ -17,7 +17,7 @@ const B05LoadProdsForm = memo((props) => {
 			<Box pt={1}>
 				<Grid container spacing={2}>
 					<Grid item xs={6}>
-						<ProdPickerContainer
+						<ProdPicker
 							name="sprod"
 							label="起始商品編號"
 							size="small"
@@ -29,7 +29,7 @@ const B05LoadProdsForm = memo((props) => {
 						/>
 					</Grid>
 					<Grid item xs={6}>
-						<ProdPickerContainer
+						<ProdPicker
 							name="eprod"
 							label="截止商品編號"
 							size="small"

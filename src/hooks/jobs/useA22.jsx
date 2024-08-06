@@ -1,7 +1,7 @@
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
-import { useDSG } from "@/shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useToggle } from "@/shared-hooks/useToggle";
 import Errors from "@/shared-modules/sd-errors";
 import Objects from "@/shared-modules/sd-objects";

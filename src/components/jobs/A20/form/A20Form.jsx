@@ -9,10 +9,10 @@ import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 import { PackageTypeLabelContainer } from "./fields/PackageTypeLabelContainer";
-import TypoProdPickerContainer from "./fields/TypoProdPickerContainer";
 import { ProdMaterialsGridContainer } from "./prods/ProdMaterialsGridContainer";
 import FormBox from "../../../../shared-components/form/FormBox";
 import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
+import ProdPicker from "../../../picker/ProdPicker";
 
 const A20Form = memo((props) => {
 	const {
@@ -43,7 +43,8 @@ const A20Form = memo((props) => {
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12} sm={12} md={6}>
-								<TypoProdPickerContainer
+								<ProdPicker
+									typo
 									name="prod"
 									label="貨品"
 									autoFocus

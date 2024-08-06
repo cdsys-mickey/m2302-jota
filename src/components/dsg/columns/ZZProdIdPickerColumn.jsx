@@ -1,11 +1,17 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
+import { ProdIdPickerContainer } from "../../picker/ProdIdPickerContainer";
 
-const BomProdPickerColumn = memo((props) => {
+const arePropsEqual = (oldProps, newProps) => {
+	if (oldProps.ProdID === newProps.ProdID) {
+		return true;
+	}
+	return false;
+};
+
+const ZZProdIdPickerColumn = memo((props) => {
 	const {
 		name,
-		// withBomPackageName = false,
 		// Data
 		rowData,
 		setRowData,
@@ -25,6 +31,8 @@ const BomProdPickerColumn = memo((props) => {
 		getContextMenuItems,
 		...rest
 	} = props;
+
+	// console.log("rendering ZZProdIdPickerColumn", rowData);
 
 	const ref = useRef();
 	const rowDataRef = useRef(rowData);
@@ -52,6 +60,11 @@ const BomProdPickerColumn = memo((props) => {
 		[name, setRowData]
 	);
 
+	const handleClose = useCallback(() => {
+		stopEditing();
+		console.log("stopEditing");
+	}, [stopEditing]);
+
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
@@ -62,9 +75,8 @@ const BomProdPickerColumn = memo((props) => {
 	}, [focus]);
 
 	return (
-		<ProdPickerContainer
+		<ProdIdPickerContainer
 			name={name}
-			withBomPackageName
 			queryParam="qs"
 			label=""
 			hideBorders
@@ -72,16 +84,16 @@ const BomProdPickerColumn = memo((props) => {
 			disabled={disabled}
 			value={name ? rowData[name] : rowData}
 			onChange={handleChange}
-			placeholder="關連商品"
+			placeholder="商品"
 			typeToSearchText="請輸入商品編號或名稱進行搜尋"
 			filterByServer
 			queryRequired
 			{...rest}
 		/>
 	);
-});
+}, arePropsEqual);
 
-BomProdPickerColumn.propTypes = {
+ZZProdIdPickerColumn.propTypes = {
 	name: PropTypes.string,
 	// Data
 	rowData: PropTypes.oneOfType([
@@ -106,8 +118,6 @@ BomProdPickerColumn.propTypes = {
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
 };
-BomProdPickerColumn.propTypes = {
-	withBomPackageName: PropTypes.bool,
-};
-BomProdPickerColumn.displayName = "BomProdPickerColumn";
-export default BomProdPickerColumn;
+ZZProdIdPickerColumn.propTypes = {};
+ZZProdIdPickerColumn.displayName = "ZZProdIdPickerColumn";
+export default ZZProdIdPickerColumn;

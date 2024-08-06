@@ -14,8 +14,12 @@ const isArray = (v) => {
 	return Array.isArray(v);
 };
 
-const isMethod = (v) => {
+const isFunction = (v) => {
 	return typeof v === "function";
+};
+
+const isBoolean = (v) => {
+	return typeof v === "boolean";
 };
 
 const Types = {
@@ -23,7 +27,8 @@ const Types = {
 	isObject,
 	isNumber,
 	isArray,
-	isMethod,
+	isFunction,
+	isBoolean,
 };
 
 export default Types;

@@ -26,7 +26,7 @@ const ProdCatLPickerColumn = memo((props) => {
 		...rest
 	} = props;
 
-	// const { disableActiveControl, ...rest } = columnData;
+	// const { hideControlsOnActive, ...rest } = columnData;
 
 	const ref = useRef();
 	const rowDataRef = useRef(rowData);
@@ -55,8 +55,8 @@ const ProdCatLPickerColumn = memo((props) => {
 	);
 
 	// const hideControls = useMemo(() => {
-	// 	return disableActiveControl ? !focus : !active;
-	// }, [active, disableActiveControl, focus]);
+	// 	return hideControlsOnActive ? !focus : !active;
+	// }, [active, hideControlsOnActive, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {

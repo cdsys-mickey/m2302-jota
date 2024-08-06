@@ -107,6 +107,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 							a01.onEditorSubmit,
 							a01.onEditorSubmitError
 						)}
+						creating={a01.creating}
 						editing={a01.editing}
 						updating={a01.updating}
 						readWorking={a01.readWorking}

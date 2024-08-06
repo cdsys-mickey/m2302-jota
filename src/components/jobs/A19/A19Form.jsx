@@ -5,15 +5,16 @@ import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexBox from "../../../shared-components/FlexBox";
-import FlexGrid from "../../../shared-components/FlexGrid";
-import ControlledCheckboxEx from "../../../shared-components/checkbox/ControlledCheckboxEx";
-import FormBox from "../../../shared-components/form/FormBox";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
-import AppDeptPicker from "../../fields/AppDeptPicker";
-import { ProdPickerContainer } from "../../picker/ProdPickerContainer";
+import FlexBox from "@/shared-components/FlexBox";
+import FlexGrid from "@/shared-components/FlexGrid";
+import ControlledCheckboxEx from "@/shared-components/checkbox/ControlledCheckboxEx";
+import FormBox from "@/shared-components/form/FormBox";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import AppDeptPicker from "@/components/fields/AppDeptPicker";
+
 import { A19FormButtonsContainer } from "./buttons/A19FormButtonsContainer";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
+import ProdPicker from "../../picker/ProdPicker";
 
 const A19Form = memo((props) => {
 	const { ...rest } = props;
@@ -24,7 +25,7 @@ const A19Form = memo((props) => {
 					<FormSectionBox py={1} px={1}>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={12}>
-								<ProdPickerContainer
+								<ProdPicker
 									name="sprod"
 									label="起始商品編號"
 									size="small"
@@ -35,7 +36,7 @@ const A19Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12}>
-								<ProdPickerContainer
+								<ProdPicker
 									name="eprod"
 									label="截止商品編號"
 									size="small"

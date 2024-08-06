@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
 import { memo } from "react";
 import PropTypes from "prop-types";
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FormBox from "../../../../shared-components/form/FormBox";
+import FormBox from "@/shared-components/form/FormBox";
+import ProdPicker from "@/components/picker/ProdPicker";
 
 const D01ExpDialogForm = memo((props) => {
 	const { onSubmit } = props;
@@ -12,7 +12,7 @@ const D01ExpDialogForm = memo((props) => {
 			<FormBox pt={1}>
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
-						<ProdPickerContainer
+						<ProdPicker
 							autoFocus
 							label="商品"
 							name="expProd"

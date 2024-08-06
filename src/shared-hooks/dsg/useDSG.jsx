@@ -4,8 +4,8 @@ import Objects from "@/shared-modules/sd-objects";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useToggle } from "@/shared-hooks/useToggle";
 import _ from "lodash";
-import DSG from "../shared-modules/sd-dsg";
-import Types from "../shared-modules/sd-types";
+import DSG from "../../shared-modules/sd-dsg";
+import Types from "../../shared-modules/sd-types";
 
 const DEFAULT_SET_OPTS = {
 	reset: false,
@@ -93,7 +93,7 @@ export const useDSG = ({
 		[dirtyIds, isRowDataEquals, keyColumn]
 	);
 
-	const fillRows = useCallback(({ createRow, data, length = 10 }) => {
+	const fillRows = useCallback(({ createRow, data, length = 8 }) => {
 		if (!createRow) {
 			throw new Error("未提供 createRow");
 		}
@@ -137,7 +137,7 @@ export const useDSG = ({
 				});
 			} else {
 				if (dirtyCheckByIndex || dirtyCheckBy) {
-					const newGridData = Types.isMethod(newValue)
+					const newGridData = Types.isFunction(newValue)
 						? newValue(gridData)
 						: newValue;
 					dirtyIds.clear();
@@ -661,11 +661,11 @@ export const useDSG = ({
 			}
 			return null;
 		},
-		[columns?.length, gridData.length, isCellDisabled, isForward]
+		[columns?.length, gridData?.length, isCellDisabled, isForward]
 	);
 
 	const nextCell = useCallback(
-		(cell, opts = { next: undefined }) => {
+		(cell, opts = { forward: undefined }) => {
 			if (!cell) {
 				throw new Error("必須提供 cell 參數");
 			}
@@ -674,7 +674,7 @@ export const useDSG = ({
 				`nextCell for ${JSON.stringify(cell)}`,
 				newCell ? JSON.stringify(newCell) : null
 			);
-			setActiveCell(newCell);
+			if (newCell) setActiveCell(newCell);
 		},
 		[getNextCell, setActiveCell]
 	);
@@ -690,7 +690,7 @@ export const useDSG = ({
 				col: colIndex,
 			});
 		},
-		[gridData.length, setActiveCell]
+		[gridData?.length, setActiveCell]
 	);
 
 	const toFirstColumn = useCallback(

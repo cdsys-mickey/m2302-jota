@@ -103,7 +103,7 @@ const C09ProdGrid = memo((props) => {
 					optionPickerColumn(FreeProdTypePickerComponent, {
 						name: "stype",
 						disableClearable: true,
-						// disableActiveControl: true,
+						// hideControlsOnActive: true,
 					})
 				),
 				title: "贈品",
@@ -118,7 +118,7 @@ const C09ProdGrid = memo((props) => {
 						name: "dtype",
 						// disableClearable: true,
 						// optionLabelSize: "md",
-						// disableActiveControl: true,
+						// hideControlsOnActive: true,
 					})
 				),
 				title: "原因",

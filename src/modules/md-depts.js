@@ -4,6 +4,15 @@ const getOptionLabel = (option) => {
 	return `${DeptID} ${AbbrName || DeptName || ""}`;
 };
 
+const getOptionLabelForId = (option) => {
+	if (!option) return "";
+	const { DeptID } = option;
+	if (DeptID === "*") {
+		return "*";
+	}
+	return `${DeptID}`;
+};
+
 const isOptionEqualToValue = (option, value) => {
 	return option?.DeptID === value?.DeptID;
 };
@@ -18,6 +27,7 @@ const isOptionChecked = (option, value) => {
 
 const Depts = {
 	getOptionLabel,
+	getOptionLabelForId,
 	isOptionEqualToValue,
 	getOptionKey,
 	isOptionChecked,

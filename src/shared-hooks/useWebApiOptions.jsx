@@ -1,9 +1,8 @@
-import { useCallback, useState } from "react";
-import { useWebApi } from "./useWebApi";
-import { useRef } from "react";
 import queryString from "query-string";
-import { useMemo } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import Types from "../shared-modules/sd-types";
 import { useChangeTracking } from "./useChangeTracking";
+import { useWebApi } from "./useWebApi";
 
 const defaultTriggerServerFilter = (q) => {
 	return !!q;
@@ -29,7 +28,7 @@ export const useWebApiOptions = (opts = {}) => {
 		bearer,
 		disableLazy,
 		queryParam = "q",
-		idParam = "id",
+		inputParam = "id",
 		// paramsJson, //為了要讓參數被異動偵測機制判定為有異動，必須將參數序列化為 json 字串再傳進來
 		querystring,
 		params,
@@ -51,12 +50,13 @@ export const useWebApiOptions = (opts = {}) => {
 		triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
 		getData = defaultGetData,
 		onError = defaultOnError,
-		// disableClose,
+		disableClose,
 		disableOnSingleOption,
 		debug = false,
 		// Enter & Tab
-		findByInput,
-		pressToFind,
+		findByInput = false,
+		// pressToFind,
+		...rest
 	} = opts;
 	const { sendAsync } = useWebApi();
 
@@ -109,7 +109,11 @@ export const useWebApiOptions = (opts = {}) => {
 			if (popperOpen) {
 				return;
 			}
-			if (!disableOpenOnInput || e.type === "click") {
+			if (
+				!disableOpenOnInput ||
+				e.type === "click" ||
+				(e.type === "keydown" && e.key === "ArrowDown")
+			) {
 				if (onOpen) {
 					onOpen(e);
 				}
@@ -121,37 +125,50 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const handleClose = useCallback(
 		(e) => {
-			// console.log("OptionPicker.onClose", e);
-			// console.log("open", popperOpen);
 			if (!popperOpen) {
 				return;
 			}
 			if (onClose) {
 				onClose(e);
 			}
-			setPopperOpen(false);
+			if (!disableClose) {
+				setPopperOpen(false);
+			}
+			// 若有讀取失敗, 則清除讀取狀態
+			setPickerState((prev) => ({
+				...prev,
+				...(prev.error && {
+					loading: null,
+				}),
+			}));
 		},
-		[onClose, popperOpen]
+		[disableClose, onClose, popperOpen]
 	);
 
 	const shouldLoadOptions = useMemo(() => {
 		return (
 			url &&
-			popperOpen &&
-			!queryRequired &&
-			!disableLazy &&
+			(disableLazy ||
+				(popperOpen && (!queryRequired || pickerState.query))) &&
 			(pickerState.loading === null || pickerState.loading === undefined)
 		);
-	}, [url, popperOpen, queryRequired, disableLazy, pickerState.loading]);
+	}, [
+		url,
+		disableLazy,
+		popperOpen,
+		queryRequired,
+		pickerState.query,
+		pickerState.loading,
+	]);
 
-	const getById = useCallback(
-		async (id) => {
+	const getByInput = useCallback(
+		async (input) => {
 			try {
 				const { status, payload, error } = await sendAsync({
 					method,
 					url,
 					data: {
-						[idParam]: id,
+						[inputParam]: input,
 						...(querystring && queryString.parse(querystring)),
 						...params,
 					},
@@ -166,7 +183,7 @@ export const useWebApiOptions = (opts = {}) => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				console.error("getById failed", err);
+				console.error("getByInput failed", err);
 			}
 			return null;
 		},
@@ -174,7 +191,7 @@ export const useWebApiOptions = (opts = {}) => {
 			bearer,
 			getData,
 			headers,
-			idParam,
+			inputParam,
 			method,
 			params,
 			querystring,
@@ -184,13 +201,14 @@ export const useWebApiOptions = (opts = {}) => {
 	);
 
 	const loadOptions = useCallback(
-		async (q, { onError: onMethodError } = {}) => {
-			console.log(`${id}.loadOptions(${q || ""})`);
+		async (query, { onError: onMethodError } = {}) => {
+			console.log(`${id}.loadOptions(${query || ""})`);
 			// 每次找之前回復 noOptionsText
 			// setLoading(true);
 			setPickerState((prev) => ({
 				...prev,
 				loading: true,
+				error: null,
 				// noOptionsText: typeToSearchText,
 			}));
 			try {
@@ -198,7 +216,7 @@ export const useWebApiOptions = (opts = {}) => {
 					method,
 					url,
 					data: {
-						...(q && { [queryParam]: q }),
+						...(query && { [queryParam]: query }),
 						...(querystring && queryString.parse(querystring)),
 						...params,
 					},
@@ -209,12 +227,11 @@ export const useWebApiOptions = (opts = {}) => {
 				});
 				if (status.success) {
 					const loadedOptions = getData(payload);
+					// 只有成功才會將 loading 註記為 false
 					setPickerState((prev) => ({
 						...prev,
-						// loading: false,
 						options: loadedOptions || [],
-						// error: error,
-						// noOptionsText,
+						loading: false,
 					}));
 					setNoOptionsText(noOptionsText);
 				} else {
@@ -231,7 +248,6 @@ export const useWebApiOptions = (opts = {}) => {
 				setPickerState((prev) => ({
 					...prev,
 					options: [],
-					// loading: false,
 					error: {
 						message: "unexpected error",
 					},
@@ -290,7 +306,15 @@ export const useWebApiOptions = (opts = {}) => {
 			// 	return;
 			// }
 
-			let qs = event.target.value;
+			const qs = event.target.value;
+			setPickerState((prev) => ({
+				...prev,
+				query: qs,
+			}));
+
+			if (!popperOpen) {
+				return;
+			}
 
 			if (timerIdRef.current) {
 				clearTimeout(timerIdRef.current);
@@ -304,15 +328,12 @@ export const useWebApiOptions = (opts = {}) => {
 					}
 				}, triggerDelay);
 			}
-			setPickerState((prev) => ({
-				...prev,
-				query: qs,
-			}));
 		},
 		[
 			clearOptions,
 			filterByServer,
 			loadOptions,
+			popperOpen,
 			triggerDelay,
 			triggerServerFilter,
 		]
@@ -358,19 +379,23 @@ export const useWebApiOptions = (opts = {}) => {
 	 */
 	useChangeTracking(() => {
 		if (debug) {
-			console.log("[shouldLoadOptions] changed:", `${shouldLoadOptions}`);
+			console.log(
+				`${id}.[shouldLoadOptions] changed:`,
+				`${shouldLoadOptions}`
+			);
 		}
 		if (shouldLoadOptions) {
-			loadOptions();
+			// loadOptions();
+			// 嘗試 popperOpen 時同步 options
+			loadOptions(queryRequired ? pickerState.query : null);
 		}
 	}, [shouldLoadOptions]);
 
 	const _findByInput = useMemo(() => {
-		if (!pressToFind) {
-			return null;
-		}
-		return filterByServer ? getById : findByInput;
-	}, [filterByServer, findByInput, getById, pressToFind]);
+		return Types.isBoolean(findByInput) && !findByInput
+			? getByInput
+			: findByInput;
+	}, [findByInput, getByInput]);
 
 	return {
 		shouldLoadOptions,
@@ -386,10 +411,11 @@ export const useWebApiOptions = (opts = {}) => {
 		// open,
 		// disableClose,
 		disabled,
-		pressToFind,
+		// pressToFind,
 		findByInput: _findByInput,
 		open: popperOpen,
 		onOpen: handleOpen,
 		onClose: handleClose,
+		...rest,
 	};
 };

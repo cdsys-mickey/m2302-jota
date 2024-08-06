@@ -4,7 +4,7 @@ import { useWatch } from "react-hook-form";
 import ProdTypeB from "@/modules/md-prod-type-b";
 import TypoOptionPickerContainer from "@/shared-components/option-picker/TypoOptionPickerContainer";
 
-export const TypoProdTypeBPickerContainer = forwardRef((props, ref) => {
+export const ZZTypoProdTypeBPickerContainer = forwardRef((props, ref) => {
 	const { name, children, label = "品類", ...rest } = props;
 	const value = useWatch({
 		name,
@@ -23,10 +23,10 @@ export const TypoProdTypeBPickerContainer = forwardRef((props, ref) => {
 		</TypoOptionPickerContainer>
 	);
 });
-TypoProdTypeBPickerContainer.propTypes = {
+ZZTypoProdTypeBPickerContainer.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
 };
 
-TypoProdTypeBPickerContainer.displayName = "TypoProdTypeBPickerContainer";
+ZZTypoProdTypeBPickerContainer.displayName = "ZZTypoProdTypeBPickerContainer";

@@ -86,7 +86,7 @@ const D041ProdGrid = memo((props) => {
 						name: "dtype",
 						// disableClearable: true,
 						// optionLabelSize: "md",
-						// disableActiveControl: true,
+						// hideControlsOnActive: true,
 					})
 				),
 				title: "不良",

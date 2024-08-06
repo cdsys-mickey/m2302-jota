@@ -1,10 +1,7 @@
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import { SupplierPickerContainer } from "../../../picker/SupplierPickerContainer";
-import { useMemo } from "react";
-import { CustomerPickerContainer } from "../../../picker/CustomerPickerContainer";
+import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import { CustomerPickerContainer } from "@/components/picker/CustomerPickerContainer";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -31,7 +28,7 @@ const CustomerPickerComponent = memo((props) => {
 		placeholder = "供應商",
 	} = props;
 
-	const { disableActiveControl, ...rest } = columnData;
+	const { hideControlsOnActive, ...rest } = columnData;
 
 	// console.log(
 	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
@@ -65,8 +62,8 @@ const CustomerPickerComponent = memo((props) => {
 	// }, [stopEditing]);
 
 	const hideControls = useMemo(() => {
-		return disabled || disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, disabled, focus]);
+		return disabled || hideControlsOnActive ? !focus : !active;
+	}, [active, hideControlsOnActive, disabled, focus]);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {

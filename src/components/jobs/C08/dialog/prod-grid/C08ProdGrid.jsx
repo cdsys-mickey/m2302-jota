@@ -62,7 +62,7 @@ const C08ProdGrid = memo((props) => {
 						triggerDelay: 300,
 						dense: true,
 						// optionLabelSize: "md",
-						// disableActiveControl: true,
+						// hideControlsOnActive: true,
 					})
 				),
 				id: "SProdID",
@@ -129,7 +129,7 @@ const C08ProdGrid = memo((props) => {
 					optionPickerColumn(FreeProdTypePickerComponent, {
 						name: "stype",
 						disableClearable: true,
-						// disableActiveControl: true,
+						// hideControlsOnActive: true,
 					})
 				),
 				title: "贈品",

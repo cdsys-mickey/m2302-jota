@@ -6,7 +6,7 @@ import { useAppModule } from "./useAppModule";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
-import { useDSG } from "../../shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "../../shared-hooks/useAction";
 import { useRef } from "react";
 import B05 from "../../modules/md-b05";

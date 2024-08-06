@@ -1,5 +1,4 @@
 import { DeptUserPicker } from "@/components/picker/DeptUserPicker";
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
@@ -20,6 +19,8 @@ import { TextFieldWrapper } from "../../../shared-components/text-field/TextFiel
 import { useRef } from "react";
 import ProdTypeA from "../../../modules/md-prod-type-a";
 import LockSwitch from "../../../shared-components/LockSwitch";
+import ProdTypeBPicker from "../../../components/picker/ProdTypeBPicker";
+import ProdPicker from "../../../components/picker/ProdPicker";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -128,14 +129,14 @@ const InputTest = () => {
 						</Grid>
 						<Grid item xs={6}>
 							{/* 產品 */}
-							<ProdPickerContainer label="WebApiOptionPicker" />
+							<ProdPicker label="WebApiOptionPicker" />
 						</Grid>
 						<Grid item xs={6}>
 							{/* 產品 */}
 							<OptionPickerProvider
 							// renderRow={renderRow}
 							>
-								<ProdPickerContainer
+								<ProdPicker
 									virtualize
 									// groupBy={(option) => option.ProdID[0]}
 									label="WebApiOptionPicker with virtualize ON"
@@ -151,10 +152,10 @@ const InputTest = () => {
 					<Grid container spacing={1}>
 						<Grid item xs={4}>
 							<OptionPickerProvider>
-								<ProdPickerContainer
+								<ProdPicker
 									debug={true}
 									name="picker2"
-									label="picker2"
+									label="商品"
 									labelShrink
 									placeholder="輸入商品編號"
 									filterByServer
@@ -165,7 +166,7 @@ const InputTest = () => {
 									virtualize
 									// 新增屬性
 									disableOpenOnInput
-									pressToFind
+									// pressToFind
 									notFoundText="商品代號 ${id} 不存在"
 								/>
 							</OptionPickerProvider>
@@ -176,19 +177,14 @@ const InputTest = () => {
 								label="picker1"
 								// 新增屬性
 								disableOpenOnInput
-								pressToFind
-								findByInput={ProdTypeA.findById}
 							/>
 						</Grid>
 
 						<Grid item xs={4}>
-							<ProdTypeAPicker
+							<ProdTypeBPicker
 								name="picker3"
 								label="picker3"
 								disableOpenOnInput
-								pressToFind
-
-								// selectNext
 							/>
 						</Grid>
 						<Grid item xs={4}>
@@ -205,6 +201,7 @@ const InputTest = () => {
 								label="text2"
 								size="small"
 								clearable
+								type="number"
 								// selectNext
 							/>
 						</Grid>

@@ -7,7 +7,14 @@ import Depts from "@/modules/md-depts";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const DeptPickerContainer = memo((props) => {
-	const { uid, scope = Auth.SCOPES.HQ, excludesSelf, ...rest } = props;
+	const {
+		label = "門市",
+		uid,
+		scope = Auth.SCOPES.HQ,
+		excludesSelf,
+		forId = false,
+		...rest
+	} = props;
 	const auth = useContext(AuthContext);
 
 	const getData = useCallback((payload) => {
@@ -24,23 +31,37 @@ const DeptPickerContainer = memo((props) => {
 		});
 	}, [excludesSelf, scope, uid]);
 
+	const getOptionLabel = useCallback(
+		(option) => {
+			return forId
+				? Depts.getOptionLabelForId(option)
+				: Depts.getOptionLabel(option);
+		},
+		[forId]
+	);
+
 	return (
 		<OptionPickerWrapper
+			label={label}
 			url="v1/ou/depts"
-			getOptionLabel={Depts.getOptionLabel}
-			isOptionEqualToValue={Depts.isOptionEqualToValue}
 			bearer={auth.token}
+			getOptionLabel={getOptionLabel}
+			renderOptionLabel={Depts.getOptionLabel}
+			isOptionEqualToValue={Depts.isOptionEqualToValue}
 			getData={getData}
 			querystring={querystring}
+			notFoundText="門市代號 ${id} 不存在"
 			{...rest}
 		/>
 	);
 });
 
 DeptPickerContainer.propTypes = {
+	label: PropTypes.string,
 	uid: PropTypes.string,
 	scope: PropTypes.number,
 	excludesSelf: PropTypes.bool,
+	forId: PropTypes.bool,
 };
 
 DeptPickerContainer.displayName = "DeptPickerContainer";

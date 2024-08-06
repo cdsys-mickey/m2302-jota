@@ -14,10 +14,6 @@ const options = [
 	},
 ];
 
-const findById = (id) => {
-	return options.find((o) => o.Tax === id);
-};
-
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { Tax, Tax_N } = option;
@@ -28,13 +24,21 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.Tax === value?.Tax;
 };
 
+const findById = (id) => {
+	return options.find((o) => o.Tax === id);
+};
+
+const findByInput = (id) => {
+	return options.find((o) => o.Tax?.toLowerCase() === id?.toLowerCase());
+};
+
 const TaxTypes = {
 	data,
 	options,
-	// METHODS
-	findById,
 	getOptionLabel,
 	isOptionEqualToValue,
+	findById,
+	findByInput,
 };
 
 export default TaxTypes;

@@ -7,7 +7,7 @@ import { useWatch } from "react-hook-form";
 import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
 const ProdCatMPicker = (props) => {
-	const { name, readOnly = false, ...rest } = props;
+	const { name, label = "中分類", readOnly = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const catL = useWatch({ name: "catL" });
 	const disabled = useMemo(() => {
@@ -21,12 +21,13 @@ const ProdCatMPicker = (props) => {
 	return (
 		<OptionPickerWrapper
 			name={name}
-			label="中分類"
+			label={label}
 			bearer={token}
 			disabled={disabled}
 			url={url}
 			getOptionLabel={ProdMCats.getOptionLabel}
 			isOptionEqualToValue={ProdMCats.isOptionEqualToValue}
+			notFoundText="中分類 ${id} 不存在"
 			{...rest}
 		/>
 	);
@@ -34,6 +35,7 @@ const ProdCatMPicker = (props) => {
 
 ProdCatMPicker.propTypes = {
 	name: PropTypes.string,
+	label: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 

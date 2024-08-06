@@ -7,7 +7,7 @@ import Prods from "@/modules/md-prods";
 import { useMemo } from "react";
 import queryString from "query-string";
 
-const TypoProdPickerContainer = forwardRef((props, ref) => {
+const ZZTypoProdPickerContainer = forwardRef((props, ref) => {
 	const {
 		name,
 		children,
@@ -55,12 +55,12 @@ const TypoProdPickerContainer = forwardRef((props, ref) => {
 		</TypoWebApiOptionPickerContainer>
 	);
 });
-TypoProdPickerContainer.propTypes = {
+ZZTypoProdPickerContainer.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
 	withBomPackageName: PropTypes.bool,
 };
 
-TypoProdPickerContainer.displayName = "TypoProdPickerContainer";
-export default TypoProdPickerContainer;
+ZZTypoProdPickerContainer.displayName = "ZZTypoProdPickerContainer";
+export default ZZTypoProdPickerContainer;

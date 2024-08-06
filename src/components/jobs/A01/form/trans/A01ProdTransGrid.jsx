@@ -18,42 +18,37 @@ const A01ProdTransGrid = memo((props) => {
 		readOnly = false,
 		gridRef,
 		data,
+		columns,
+		onActiveCellChange,
 		handleGridChange,
 		height = 600,
 		createRow,
 		...rest
 	} = props;
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"dept",
-					// createWebApiOptionPickerColumn({
-					// 	url: "v1/ou/depts",
-					// 	bearer: bearer,
-					// 	getOptionLabel: Depts.getOptionLabel,
-					// 	isOptionEqualToValue: Depts.isOptionEqualToValue,
-					// 	getData: (p) => p["data"],
-					// })
-					deptPickerColumn({
-						name: "dept",
-					})
-				),
-				title: "門市",
-				grow: 6,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("SCost", createFloatColumn(2)),
-				title: "調撥成本",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly,
-			},
-		],
-		[readOnly]
-	);
+	// const columns = useMemo(
+	// 	() => [
+	// 		{
+	// 			...keyColumn(
+	// 				"dept",
+	// 				deptPickerColumn({
+	// 					name: "dept",
+	// 				})
+	// 			),
+	// 			title: "門市",
+	// 			grow: 6,
+	// 			disabled: readOnly,
+	// 		},
+	// 		{
+	// 			...keyColumn("SCost", createFloatColumn(2)),
+	// 			title: "調撥成本",
+	// 			minWidth: 90,
+	// 			grow: 1,
+	// 			disabled: readOnly,
+	// 		},
+	// 	],
+	// 	[readOnly]
+	// );
 
 	if (!data) {
 		return (
@@ -77,9 +72,10 @@ const A01ProdTransGrid = memo((props) => {
 			rowKey="id"
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
-			// rowHeight={42}
+			rowHeight={34}
 			value={data}
 			onChange={handleGridChange}
+			onActiveCellChange={onActiveCellChange}
 			columns={columns}
 			addRowsComponent={DSGAddRowsToolbar}
 			disableExpandSelection
@@ -92,6 +88,7 @@ const A01ProdTransGrid = memo((props) => {
 A01ProdTransGrid.propTypes = {
 	readOnly: PropTypes.bool,
 	gridRef: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
 	data: PropTypes.array,
 };
 

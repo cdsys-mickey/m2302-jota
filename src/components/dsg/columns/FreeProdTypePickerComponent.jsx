@@ -32,7 +32,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		getContextMenuItems,
 	} = props;
 
-	const { disableActiveControl, ...rest } = columnData;
+	const { hideControlsOnActive, ...rest } = columnData;
 
 	const ref = useRef();
 
@@ -58,8 +58,8 @@ const FreeProdTypePickerComponent = memo((props) => {
 	}, [focus]);
 
 	const hideControls = useMemo(() => {
-		return disabled || disableActiveControl ? !focus : !active;
-	}, [active, disableActiveControl, disabled, focus]);
+		return disabled || hideControlsOnActive ? !focus : !active;
+	}, [active, hideControlsOnActive, disabled, focus]);
 
 	return (
 		<FreeProdTypePicker
@@ -78,6 +78,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 			hidePlaceholder={!active}
 			disableFadeOut
 			selectOnFocus
+			toastError
 			{...rest}
 		/>
 	);

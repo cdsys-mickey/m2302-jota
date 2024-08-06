@@ -1,36 +1,23 @@
-import PropTypes from "prop-types";
-import { forwardRef } from "react";
 import ProdTypeB from "@/modules/md-prod-type-b";
-import OptionPicker from "@/shared-components/option-picker/OptionPicker";
-import { memo } from "react";
-import { ControlledOptionPicker } from "../../shared-components/option-picker/ControlledOptionPicker";
+import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
+import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
 const ProdTypeBPicker = memo(
 	forwardRef((props, ref) => {
 		const { name, label = "品類", ...rest } = props;
-		if (name) {
-			return (
-				<ControlledOptionPicker
-					name={name}
-					label={label}
-					options={ProdTypeB.options}
-					getOptionLabel={ProdTypeB.getOptionLabel}
-					isOptionEqualToValue={ProdTypeB.isOptionEqualToValue}
-					{...rest}
-				/>
-			);
-		} else {
-			return (
-				<OptionPicker
-					ref={ref}
-					label={label}
-					options={ProdTypeB.options}
-					getOptionLabel={ProdTypeB.getOptionLabel}
-					isOptionEqualToValue={ProdTypeB.isOptionEqualToValue}
-					{...rest}
-				/>
-			);
-		}
+		return (
+			<OptionPickerWrapper
+				ref={ref}
+				name={name}
+				label={label}
+				options={ProdTypeB.options}
+				getOptionLabel={ProdTypeB.getOptionLabel}
+				isOptionEqualToValue={ProdTypeB.isOptionEqualToValue}
+				findByInput={ProdTypeB.findByInput}
+				{...rest}
+			/>
+		);
 	})
 );
 

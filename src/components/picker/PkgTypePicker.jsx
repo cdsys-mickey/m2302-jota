@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { useCallback, useContext } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import PkgTypes from "../../modules/md-pkg-types";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import PkgTypes from "@/modules/md-pkg-types";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
-export const PkgTypePickerContainer = (props) => {
+export const PkgTypePicker = (props) => {
 	const { name, label = "包裝單位", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
@@ -22,10 +22,7 @@ export const PkgTypePickerContainer = (props) => {
 			label={label}
 			bearer={token}
 			url={`v1/prod/pkg-types`}
-			// filterByServer
-			// queryRequired
 			queryParam="qs"
-			// querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
 			{...rest}
@@ -33,9 +30,9 @@ export const PkgTypePickerContainer = (props) => {
 	);
 };
 
-PkgTypePickerContainer.propTypes = {
+PkgTypePicker.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
 };
 
-PkgTypePickerContainer.displayName = "PkgTypePickerContainer";
+PkgTypePicker.displayName = "PkgTypePicker";

@@ -2,14 +2,14 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import CmsTypes from "../../modules/md-cms-types";
-import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
+import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
-const CmsTypePickerContainer = forwardRef((props, ref) => {
+const CmsTypePicker = forwardRef((props, ref) => {
 	const { label = "佣金類別", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
-		<WebApiOptionPicker
+		<OptionPickerWrapper
 			label={label}
 			ref={ref}
 			bearer={token}
@@ -20,10 +20,10 @@ const CmsTypePickerContainer = forwardRef((props, ref) => {
 		/>
 	);
 });
-CmsTypePickerContainer.propTypes = {
+CmsTypePicker.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
 };
 
-CmsTypePickerContainer.displayName = "CmsTypePickerContainer";
-export default CmsTypePickerContainer;
+CmsTypePicker.displayName = "CmsTypePicker";
+export default CmsTypePicker;

@@ -17,6 +17,7 @@ const TypoTextField = memo(
 			emptyText = "(空白)",
 			maskedText = "(已隱藏)",
 			typoVariant = "body1",
+			renderLabel,
 			// Input
 			name,
 			editing = false,
@@ -30,8 +31,12 @@ const TypoTextField = memo(
 		});
 
 		const memoisedText = useMemo(() => {
-			return value && type === "password" ? maskedText : value;
-		}, [maskedText, type, value]);
+			return value && type === "password"
+				? maskedText
+				: renderLabel
+				? renderLabel(value)
+				: value;
+		}, [maskedText, renderLabel, type, value]);
 
 		if (!editing) {
 			return (
@@ -72,5 +77,6 @@ TypoTextField.propTypes = {
 	size: PropTypes.string,
 	variant: PropTypes.string,
 	InputLabelProps: PropTypes.object,
+	renderLabel: PropTypes.func,
 };
 export default TypoTextField;

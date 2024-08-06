@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import { ProdPickerContainer } from "@/components/picker/ProdPickerContainer";
+import ProdPicker from "../../../picker/ProdPicker";
 
 const A22GridProdPickerColumn = memo((props) => {
 	const {
@@ -62,7 +62,7 @@ const A22GridProdPickerColumn = memo((props) => {
 	}, [focus]);
 
 	return (
-		<ProdPickerContainer
+		<ProdPicker
 			name={name}
 			withSalesPackageName
 			queryParam="qs"

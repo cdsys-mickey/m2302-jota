@@ -1,14 +1,14 @@
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
-import TaxTypePickerContainer from "@/components/picker/TaxTypePickerContainer";
 import FlexBox from "@/shared-components/FlexBox";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import { Box, Collapse, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
+import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
 import ProdCatLPicker from "../../picker/ProdCatLPicker";
 import ProdCatMPicker from "../../picker/ProdCatMPicker";
 import ProdCatSPicker from "../../picker/ProdCatSPicker";
 import ProdTypeBPicker from "../../picker/ProdTypeBPicker";
+import TaxTypePicker from "../../picker/TaxTypePicker";
 
 const ProdGridForm2 = memo((props) => {
 	const { expanded, cat, safeQty } = props;
@@ -39,11 +39,11 @@ const ProdGridForm2 = memo((props) => {
 						<ProdTypeBPicker name="typeB" />
 					</Grid>
 					<Grid item xs={12} sm={12} md={3}>
-						<TaxTypePickerContainer name="taxType" label="稅別" />
+						<TaxTypePicker name="taxType" label="稅別" />
 					</Grid>
 					{safeQty && (
 						<Grid item xs={12} sm={12} md={3}>
-							<ControlledTextField
+							<TextFieldWrapper
 								name="safeQty"
 								label="安全存量"
 								type="number"

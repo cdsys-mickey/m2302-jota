@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
 
 import { useWebApiOptions } from "@/shared-hooks/useWebApiOptions";
-import { forwardRef, memo, useCallback, useState } from "react";
-import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
+import { forwardRef, memo } from "react";
 import OptionPicker from "./OptionPicker";
 
 // const arePropsEqual = (oldProps, newProps) => {
@@ -15,9 +14,9 @@ import OptionPicker from "./OptionPicker";
 const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
-			debug,
+			// debug,
 			multiple,
-			name, // → for debug purpose
+			name,
 			open,
 			onOpen,
 			onClose,
@@ -49,8 +48,9 @@ const WebApiOptionPicker = memo(
 			disableOnSingleOption,
 			// autoSelectSingleOption,
 			// Enter & Tab
-			pressToFind,
+			// pressToFind,
 			findByInput,
+			disableOpenOnInput,
 			...rest
 		} = props;
 
@@ -67,7 +67,7 @@ const WebApiOptionPicker = memo(
 			onInputChange,
 			disabled,
 			findByInput: _findByInput,
-			pressToFind: _pressToFind,
+			// pressToFind: _pressToFind,
 		} = useWebApiOptions({
 			disableOnSingleOption,
 			disableClose,
@@ -97,9 +97,9 @@ const WebApiOptionPicker = memo(
 			onChange,
 			// autoSelectSingleOption,
 			// Enter & Tab
-			pressToFind,
+			// pressToFind,
 			findByInput,
-			debug,
+			disableOpenOnInput,
 		});
 
 		return (
@@ -117,8 +117,9 @@ const WebApiOptionPicker = memo(
 				onOpen={_onOpen}
 				onClose={_onClose}
 				onChange={_onChange}
-				pressToFind={_pressToFind}
+				// pressToFind={_pressToFind}
 				findByInput={_findByInput}
+				disableOpenOnInput={disableOpenOnInput}
 				// queryRequired={queryRequired}
 				// filterByServer={filterByServer}
 				{...rest}
@@ -163,8 +164,9 @@ WebApiOptionPicker.propTypes = {
 	autoSelectSingleOption: PropTypes.bool,
 	// Enter & Tab
 	open: PropTypes.bool,
-	pressToFind: PropTypes.bool,
-	debug: PropTypes.bool,
+	disableOpenOnInput: PropTypes.bool,
+	// pressToFind: PropTypes.bool,
+	// debug: PropTypes.bool,
 	findByInput: PropTypes.func,
 };
 

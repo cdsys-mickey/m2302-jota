@@ -1,20 +1,28 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import { useCallback, useContext, useMemo, useState } from "react";
-import { toast } from "react-toastify";
+import { DeptPickerComponentContainer } from "@/components/dsg/columns/dept-picker/DeptPickerComponentContainer";
+import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
 import CrudContext from "@/contexts/crud/CrudContext";
 import A01 from "@/modules/md-a01";
+import TaxTypes from "@/modules/md-tax-types";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useFormManager } from "@/shared-contexts/form-manager/useFormManager";
 import { useAction } from "@/shared-hooks/useAction";
-import { useDSG } from "@/shared-hooks/useDSG";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
+import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
 import WebApi from "@/shared-modules/sd-web-api";
+import { useCallback, useContext, useMemo, useState } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { toast } from "react-toastify";
 import { useAppModule } from "./useAppModule";
-import { useFormManager } from "@/shared-contexts/form-manager/useFormManager";
+import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
 
 /**
  * 適用三種情境
@@ -27,12 +35,36 @@ export const useA01 = ({ token, mode }) => {
 	const formManager = useFormManager(
 		`
 		ProdID,
-		ProdData:{select: false},
+		ProdData,
 		Barcode,
 		BarPR,
 		catL,
 		catM,
-		catS
+		catS,
+		typeA,
+		typeB,
+		taxType,
+		counter,
+		StdCost,
+		TranCost,
+		LocalCost,
+		OutCost,
+		SafeQty,
+		Location,
+		cmsType,
+		bunit,
+		sunit,
+		iunit,
+		munit,
+		SRate,
+		IRate,
+		MRate,
+		Price,
+		PriceA,
+		PriceB,
+		PriceC,
+		PriceD,
+		PriceE,
 		`
 	);
 	const crud = useContext(CrudContext);
@@ -90,15 +122,136 @@ export const useA01 = ({ token, mode }) => {
 	}
 
 	//ProdTransGrid
+	const transGridDisabled = useMemo(() => {
+		return !crud.editing || mode === A01.Mode.STORE;
+	}, [crud.editing, mode]);
+
+	const transColumns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"dept",
+					optionPickerColumn(DeptPickerComponentContainer, {
+						name: "dept",
+						disableOpenOnInput: true,
+						hideControlsOnActive: true,
+						// selectOnFocus: true,
+						forId: true,
+						disableClearable: true,
+						selectOnFocus: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 200,
+								},
+							},
+						},
+					})
+				),
+				title: "門市代碼",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: transGridDisabled,
+			},
+			{
+				...keyColumn(
+					"SDept_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "門市名稱",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"SCost",
+					createFloatColumn(2, { enterToNext: true })
+				),
+				title: "調撥成本",
+				minWidth: 110,
+				maxWidth: 110,
+				disabled: transGridDisabled,
+			},
+		],
+		[transGridDisabled]
+	);
+
 	const transGrid = useDSG({
 		gridId: "trans",
 		keyColumn: "dept.DeptID",
+		columns: transColumns,
+		skipDisabled: true,
+		createRow: createTransRow,
 	});
 
 	//ProdComboGrid
+	const comboGridDisabled = useMemo(() => {
+		return !crud.editing || mode === A01.Mode.STORE;
+	}, [crud.editing, mode]);
+
+	const comboColumns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						selectOnFocus: true,
+						triggerDelay: 300,
+						placeholder: "組合商品",
+						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: true,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 170,
+				maxWidth: 170,
+				disabled: comboGridDisabled,
+			},
+			{
+				...keyColumn(
+					"SProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "商品名稱",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn("SProdQty", createFloatColumn(2)),
+				title: "數量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: comboGridDisabled,
+			},
+		],
+		[comboGridDisabled]
+	);
 	const comboGrid = useDSG({
 		gridId: "combo",
 		keyColumn: "prod.ProdID",
+		columns: comboColumns,
+		skipDisabled: true,
+		createRow: createComboRow,
 	});
 
 	const confirmReturn = useCallback(() => {
@@ -124,7 +277,7 @@ export const useA01 = ({ token, mode }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A01.transformForReading(payload);
+					const data = A01.transformForReading(payload.data[0]);
 
 					transGrid.initGridData(data.trans);
 					comboGrid.initGridData(data.combo);
@@ -386,8 +539,9 @@ export const useA01 = ({ token, mode }) => {
 			e?.stopPropagation();
 			setSelectedTab(A01.Tabs.INFO);
 			const data = {
-				trans: Array.from({ length: 10 }, createTransRow),
-				combo: Array.from({ length: 10 }, createComboRow),
+				taxType: TaxTypes.findById("T"),
+				trans: transGrid.fillRows({ createRow: createTransRow }),
+				combo: comboGrid.fillRows({ createRow: createComboRow }),
 			};
 			crud.promptCreating({
 				data,
@@ -533,74 +687,187 @@ export const useA01 = ({ token, mode }) => {
 	}, []);
 
 	// TRANS GRID
+	const handleGridDeptChange = useCallback(({ rowData }) => {
+		return {
+			...rowData,
+			["SDept_N"]: rowData?.dept?.DeptName || "",
+		};
+	}, []);
+
 	const handleTransGridChange = useCallback(
 		(newValue, operations) => {
-			const operation = operations[0];
-			console.log("operation", operation);
-			console.log("newValue", newValue);
-
-			if (operation.type === "UPDATE") {
-				const rowIndex = operation.fromRowIndex;
-				const rowData = newValue[rowIndex];
-				const row = { rowIndex, rowData };
-				if (
-					rowData.dept &&
-					transGrid.isDuplicating(rowData, newValue)
-				) {
-					transGrid.setValueByRowIndex(
-						row.rowIndex,
-						{
-							dept: null,
-						},
-						{
-							data: newValue,
-						}
-					);
-					toast.error(
-						`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
-					);
-					return;
+			const newGridData = [...newValue];
+			let checkFailed = false;
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					console.log("dsg.UPDATE");
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach((rowData, i) => {
+							const rowIndex = operation.fromRowIndex + i;
+							const oldRowData = transGrid.gridData[rowIndex];
+							let processedRowData = { ...rowData };
+							// process UPDATE here
+							if (
+								rowData.dept?.DeptID !== oldRowData.dept?.DeptID
+							) {
+								processedRowData = handleGridDeptChange({
+									rowData: processedRowData,
+								});
+							}
+							newGridData[rowIndex] = processedRowData;
+						});
+				} else if (operation.type === "DELETE") {
+					console.log("dsg.DELETE");
+					checkFailed = transGrid.gridData
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.some((rowData, i) => {
+							// process DELETE check here
+							// if(xxxDisabled(rowData)){ return true }
+							return false;
+						});
+				} else if (operation.type === "CREATE") {
+					console.log("dsg.CREATE");
+					// process CREATE here
+					transGrid.toFirstColumn({ nextRow: true });
 				}
 			}
-			transGrid.propagateGridChange(newValue, operations);
+			if (!checkFailed) {
+				transGrid.setGridData(newGridData);
+			}
 		},
-		[transGrid]
+		[handleGridDeptChange, transGrid]
 	);
+	// const handleTransGridChange = useCallback(
+	// 	(newValue, operations) => {
+	// 		const operation = operations[0];
+	// 		console.log("operation", operation);
+	// 		console.log("newValue", newValue);
+
+	// 		if (operation.type === "UPDATE") {
+	// 			const rowIndex = operation.fromRowIndex;
+	// 			const rowData = newValue[rowIndex];
+	// 			const row = { rowIndex, rowData };
+	// 			if (
+	// 				rowData.dept &&
+	// 				transGrid.isDuplicating(rowData, newValue)
+	// 			) {
+	// 				transGrid.setValueByRowIndex(
+	// 					row.rowIndex,
+	// 					{
+	// 						dept: null,
+	// 					},
+	// 					{
+	// 						data: newValue,
+	// 					}
+	// 				);
+	// 				toast.error(
+	// 					`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
+	// 				);
+	// 				return;
+	// 			}
+	// 		}
+	// 		transGrid.propagateGridChange(newValue, operations);
+	// 	},
+	// 	[transGrid]
+	// );
 
 	// COMBO GRID
+	const handleGridProdChange = useCallback(({ rowData }) => {
+		const { prod } = rowData;
+		return {
+			...rowData,
+			["SProdData"]: prod?.ProdData || "",
+		};
+	}, []);
+
 	const handleComboGridChange = useCallback(
 		(newValue, operations) => {
-			const operation = operations[0];
-			console.log("operation", operation);
-			console.log("newValue", newValue);
+			const newGridData = [...newValue];
+			let checkFailed = false;
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					console.log("dsg.UPDATE");
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach((rowData, i) => {
+							const rowIndex = operation.fromRowIndex + i;
+							const ogRowData = comboGrid.gridData[rowIndex];
+							let processedRowData = { ...rowData };
 
-			if (operation.type === "UPDATE") {
-				const rowIndex = operation.fromRowIndex;
-				const rowData = newValue[rowIndex];
-				const row = { rowIndex, rowData };
-				if (
-					rowData.prod &&
-					comboGrid.isDuplicating(rowData, newValue)
-				) {
-					comboGrid.setValueByRowIndex(
-						row.rowIndex,
-						{
-							dept: null,
-						},
-						{
-							data: newValue,
-						}
-					);
-					toast.error(
-						`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
-					);
-					return;
+							if (
+								rowData.prod?.ProdID !== ogRowData.prod?.ProdID
+							) {
+								processedRowData = handleGridProdChange({
+									rowData: processedRowData,
+								});
+
+								if (
+									rowData.prod &&
+									comboGrid.isDuplicating(rowData, newValue)
+								) {
+									toast.error(
+										`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
+									);
+								}
+							}
+							newGridData[rowIndex] = processedRowData;
+						});
+				} else if (operation.type === "DELETE") {
+					console.log("dsg.DELETE");
+					checkFailed = comboGrid.gridData
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.some((rowData, i) => {
+							// process DELETE check here
+							// if(xxxDisabled(rowData)){ return true }
+							return false;
+						});
+				} else if (operation.type === "CREATE") {
+					console.log("dsg.CREATE");
+					// process CREATE here
+					comboGrid.toFirstColumn({ nextRow: true });
 				}
 			}
-			comboGrid.propagateGridChange(newValue, operations);
+			if (!checkFailed) {
+				comboGrid.setGridData(newGridData);
+			}
 		},
-		[comboGrid]
+		[comboGrid, handleGridProdChange]
 	);
+
+	// const handleComboGridChangeOld = useCallback(
+	// 	(newValue, operations) => {
+	// 		const operation = operations[0];
+	// 		console.log("operation", operation);
+	// 		console.log("newValue", newValue);
+
+	// 		if (operation.type === "UPDATE") {
+	// 			const rowIndex = operation.fromRowIndex;
+	// 			const rowData = newValue[rowIndex];
+	// 			const row = { rowIndex, rowData };
+	// 			if (
+	// 				rowData.prod &&
+	// 				comboGrid.isDuplicating(rowData, newValue)
+	// 			) {
+	// 				comboGrid.setValueByRowIndex(
+	// 					row.rowIndex,
+	// 					{
+	// 						dept: null,
+	// 					},
+	// 					{
+	// 						data: newValue,
+	// 					}
+	// 				);
+	// 				toast.error(
+	// 					`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
+	// 				);
+	// 				return;
+	// 			}
+	// 		}
+	// 		comboGrid.propagateGridChange(newValue, operations);
+	// 	},
+	// 	[comboGrid]
+	// );
 
 	// const handleTransGridDeptBlur = useCallback(({cell}) => {
 	// 	const {col, row} =  cell;
@@ -685,14 +952,20 @@ export const useA01 = ({ token, mode }) => {
 		startReview,
 		finishReview,
 		failReview,
+
 		// ProdTransGrid
+		transGrid,
 		setTransGridRef: transGrid.setGridRef,
 		transGridData: transGrid.gridData,
 		handleTransGridChange,
+		transGridDisabled,
 		// ProdComboGrid
+		comboGrid,
 		setComboGridRef: comboGrid.setGridRef,
 		comboGridData: comboGrid.gridData,
 		handleComboGridChange,
+		comboGridDisabled,
+
 		// Store
 		onCounterSubmit,
 		onCounterSubmitError,
