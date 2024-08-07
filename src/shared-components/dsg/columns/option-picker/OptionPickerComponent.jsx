@@ -40,7 +40,9 @@ const OptionPickerComponent = memo((props) => {
 			if (!newValue) {
 				return;
 			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
+			// setTimeout(() => stopEditing({ nextRow: false }), 50);
+			// stopEditing in next event cycle
+			setTimeout(() => stopEditing({ nextRow: false }));
 		},
 		[setRowData, stopEditing]
 	);

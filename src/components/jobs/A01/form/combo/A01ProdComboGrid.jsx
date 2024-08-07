@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import { DynamicDataSheetGrid, keyColumn } from "react-datasheet-grid";
 import { prodPickerColumn } from "../../../../dsg/columns/prod-picker/prodPickerColumn";
+import { DSGGrid } from "../../../../../shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -68,7 +69,7 @@ const A01ProdComboGrid = memo((props) => {
 	}
 
 	return (
-		<DynamicDataSheetGrid
+		<DSGGrid
 			ref={gridRef}
 			rowKey="id"
 			lockRows={lockRows}

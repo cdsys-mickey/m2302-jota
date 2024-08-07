@@ -1,17 +1,23 @@
-import { useContext } from "react";
-import { DsgContext } from "@/shared-contexts/datasheet-grid/DsgContext";
+import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
 import TextComponentEx from "./TextComponentEx";
 
 export const TextComponentExContainer = (props) => {
-	const { ...rest } = props;
-	const { skipDisabled, nextCell } = useContext(DsgContext) || {};
-	return (
-		<TextComponentEx
-			skipDisabled={skipDisabled}
-			nextCell={nextCell}
-			{...rest}
-		/>
-	);
+	const { columnData, ...rest } = props;
+	const cellControls = useCellControls();
+
+	const _columnData = useMemo(() => {
+		return {
+			...columnData,
+			...cellControls,
+		};
+	}, [cellControls, columnData]);
+	return <TextComponentEx columnData={_columnData} {...rest} />;
 };
 
 TextComponentExContainer.displayName = "TextComponentExContainer";
+
+TextComponentExContainer.propTypes = {
+	columnData: PropTypes.object,
+};

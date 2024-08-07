@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const DsgContext = createContext();
+export const DSGContext = createContext();

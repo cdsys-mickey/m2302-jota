@@ -1,17 +1,19 @@
 import PropTypes from "prop-types";
-import { useContext, useMemo } from "react";
-import { DsgContext } from "@/shared-contexts/datasheet-grid/DsgContext";
+import { useMemo } from "react";
+import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
 import DeptPickerComponent from "./DeptPickerComponent";
 
 export const DeptPickerComponentContainer = (props) => {
 	const { columnData, ...rest } = props;
-	const dsg = useContext(DsgContext);
+	const cellControls = useCellControls();
+
 	const _columnData = useMemo(() => {
 		return {
 			...columnData,
-			nextCell: dsg.nextCell,
+			...cellControls,
 		};
-	}, [columnData, dsg.nextCell]);
+	}, [cellControls, columnData]);
+
 	return <DeptPickerComponent columnData={_columnData} {...rest} />;
 };
 

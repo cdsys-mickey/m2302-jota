@@ -1,17 +1,22 @@
-import { useContext } from "react";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
+import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
 import DateFnsComponent from "./DateFnsComponent";
-import { DsgContext } from "@/shared-contexts/datasheet-grid/DsgContext";
 
 export const DateFnsComponentContainer = (props) => {
-	const { ...rest } = props;
-	const dsg = useContext(DsgContext);
-	return (
-		<DateFnsComponent
-			skipDisabled={dsg.skipDisabled}
-			nextCell={dsg.nextCell}
-			{...rest}
-		/>
-	);
-};
+	const { columnData, ...rest } = props;
+	const cellControls = useCellControls();
 
+	const _columnData = useMemo(() => {
+		return {
+			...columnData,
+			...cellControls,
+		};
+	}, [cellControls, columnData]);
+
+	return <DateFnsComponent columnData={_columnData} {...rest} />;
+};
+DateFnsComponentContainer.propTypes = {
+	columnData: PropTypes.object,
+};
 DateFnsComponentContainer.displayName = "DateFnsComponentContainer";

@@ -1,16 +1,12 @@
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
-import { DynamicDataSheetGrid, keyColumn } from "react-datasheet-grid";
-import Depts from "@/modules/md-depts";
-import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import { deptPickerColumn } from "../../../../dsg/columns/dept-picker/deptPickerColumn";
+import { memo } from "react";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const A01ProdTransGrid = memo((props) => {
@@ -67,7 +63,7 @@ const A01ProdTransGrid = memo((props) => {
 	}
 
 	return (
-		<DynamicDataSheetGrid
+		<DSGGrid
 			ref={gridRef}
 			rowKey="id"
 			lockRows={readOnly}

@@ -7,6 +7,7 @@ import { useCallback } from "react";
 import { useMemo } from "react";
 import PropTypes from "prop-types";
 import Events from "@/shared-modules/sd-events";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const DATE_FORMAT = "yyyy-MM-dd";
 
@@ -20,11 +21,19 @@ const DateFnsComponent = memo((props) => {
 		columnIndex,
 		rowIndex,
 		columnData = {},
-		skipDisabled,
-		nextCell,
+		stopEditing,
+		insertRowBelow,
 	} = props;
 	const ref = useRef(null);
-	const { enterToNext = true, ...rest } = columnData;
+	const {
+		// Context Methods
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		...rest
+	} = columnData;
 
 	useLayoutEffect(() => {
 		if (focus) {
@@ -33,6 +42,21 @@ const DateFnsComponent = memo((props) => {
 			ref.current?.blur();
 		}
 	}, [focus]);
+
+	const { handleNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		stopEditing,
+		insertRowBelow,
+	});
+
+	const cell = useMemo(() => {
+		return {
+			row: rowIndex,
+			col: columnIndex,
+		};
+	}, [columnIndex, rowIndex]);
 
 	const value = useMemo(() => {
 		return DateTimes.format(rowData, DATE_FORMAT);
@@ -52,24 +76,14 @@ const DateFnsComponent = memo((props) => {
 			switch (e.key) {
 				case "Enter":
 					e.preventDefault();
-					if (enterToNext) {
-						e.stopPropagation();
-						if (nextCell) {
-							nextCell(
-								{
-									row: rowIndex,
-									col: columnIndex,
-								},
-								{ forward: !e.shiftKey }
-							);
-						} else {
-							console.log("nextCell is undefined");
-						}
-					}
+					setTimeout(() => {
+						stopEditing({ nextRow: false });
+					});
+					handleNextCell(cell);
 					break;
 			}
 		},
-		[columnIndex, enterToNext, nextCell, rowIndex]
+		[cell, handleNextCell]
 	);
 
 	useLayoutEffect(() => {
@@ -96,12 +110,13 @@ const DateFnsComponent = memo((props) => {
 			value={value}
 			onChange={handleChange}
 			onKeyDown={handleKeyDown}
-			// {...rest}
+			{...rest}
 		/>
 	);
 });
 
 DateFnsComponent.propTypes = {
+	// Cell Props
 	focus: PropTypes.bool,
 	active: PropTypes.bool,
 	rowData: PropTypes.oneOfType([
@@ -110,13 +125,20 @@ DateFnsComponent.propTypes = {
 		PropTypes.bool,
 		PropTypes.object,
 	]),
-	setRowData: PropTypes.func,
-	columnData: PropTypes.object,
-	disabled: PropTypes.bool,
-	skipDisabled: PropTypes.bool,
-	nextCell: PropTypes.func,
 	rowIndex: PropTypes.number,
 	columnIndex: PropTypes.number,
+	disabled: PropTypes.bool,
+	columnData: PropTypes.object,
+	// Cell Methods
+	setRowData: PropTypes.func,
+	stopEditing: PropTypes.func,
+	insertRowBelow: PropTypes.func,
+	// Context
+	skipDisabled: PropTypes.bool,
+	nextCell: PropTypes.func,
+	getNextCell: PropTypes.func,
+	lastCell: PropTypes.symbol,
+	setActiveCell: PropTypes.func,
 };
 
 DateFnsComponent.displayName = "DateFnsComponent";

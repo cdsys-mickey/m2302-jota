@@ -1,11 +1,11 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { useToggle } from "@/shared-hooks/useToggle";
 import Arrays from "@/shared-modules/sd-arrays";
 import Objects from "@/shared-modules/sd-objects";
-import { useCallback, useMemo, useRef, useState } from "react";
-import { useToggle } from "@/shared-hooks/useToggle";
 import _ from "lodash";
-import DSG from "../../shared-modules/sd-dsg";
-import Types from "../../shared-modules/sd-types";
+import { useCallback, useMemo, useRef, useState } from "react";
+import DSG from "@/shared-modules/sd-dsg";
+import Types from "@/shared-modules/sd-types";
 
 const DEFAULT_SET_OPTS = {
 	reset: false,
@@ -20,6 +20,8 @@ export const useDSG = ({
 	columns,
 	initialReadOnly = true,
 	skipDisabled,
+	lastCell,
+	createRow: _createRow,
 }) => {
 	const gridRef = useRef();
 	const setGridRef = useCallback((node) => {
@@ -93,27 +95,34 @@ export const useDSG = ({
 		[dirtyIds, isRowDataEquals, keyColumn]
 	);
 
-	const fillRows = useCallback(({ createRow, data, length = 8 }) => {
-		if (!createRow) {
-			throw new Error("未提供 createRow");
-		}
-
-		if (!data) {
-			return Array.from({ length }, createRow);
-		} else {
-			if (!Types.isArray(data)) {
-				throw new Error("data 並非 array");
+	const fillRows = useCallback(
+		({ createRow, data, length = 8 }) => {
+			const createRowStub = createRow || _createRow;
+			if (!createRowStub) {
+				throw new Error("未提供 createRow");
 			}
 
-			if (data.length >= length) {
-				return data;
+			if (!data) {
+				return Array.from({ length }, createRowStub);
+			} else {
+				if (!Types.isArray(data)) {
+					throw new Error("data 並非 array");
+				}
+
+				if (data.length >= length) {
+					return data;
+				}
+				return [
+					...data,
+					...Array.from(
+						{ length: length - data.length },
+						createRowStub
+					),
+				];
 			}
-			return [
-				...data,
-				...Array.from({ length: length - data.length }, createRow),
-			];
-		}
-	}, []);
+		},
+		[_createRow]
+	);
 
 	const resetGridData = useCallback(
 		(newValue, opts = DEFAULT_SET_OPTS) => {
@@ -535,6 +544,10 @@ export const useDSG = ({
 			if (gridRef.current) {
 				gridRef.current?.setActiveCell(newCell);
 				return;
+			} else {
+				console.error(
+					`${gridId}.setActiveCell failed, gridRef is null`
+				);
 			}
 
 			if (opts.debug) {
@@ -674,7 +687,7 @@ export const useDSG = ({
 				`nextCell for ${JSON.stringify(cell)}`,
 				newCell ? JSON.stringify(newCell) : null
 			);
-			if (newCell) setActiveCell(newCell);
+			setActiveCell(newCell);
 		},
 		[getNextCell, setActiveCell]
 	);
@@ -761,8 +774,10 @@ export const useDSG = ({
 		setSelection,
 		isCellDisabled,
 		columns,
+		getNextCell,
 		nextCell,
 		skipDisabled,
 		toFirstColumn,
+		lastCell,
 	};
 };

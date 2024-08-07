@@ -1,4 +1,5 @@
 import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
+import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo, useState } from "react";
 import {
@@ -6,10 +7,8 @@ import {
 	checkboxColumn,
 	createTextColumn,
 	keyColumn,
-	textColumn,
 } from "react-datasheet-grid";
 import { createFloatColumn } from "../../../shared-components/dsg/columns/float/createFloatColumn";
-import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 
 const DSGTest = memo(
 	forwardRef((props, ref) => {

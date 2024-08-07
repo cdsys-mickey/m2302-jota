@@ -8,6 +8,7 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { nanoid } from "nanoid";
 import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 export const useDSGTest4 = () => {
 	const columns = useMemo(
@@ -27,7 +28,8 @@ export const useDSGTest4 = () => {
 						forId: true,
 						disableClearable: true,
 						fuzzy: true,
-						// disableClose: true,
+						autoHighlight: true,
+						selectOnFocus: true,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -70,9 +72,9 @@ export const useDSGTest4 = () => {
 					optionPickerColumn(ProdTypeAPickerComponentContainer, {
 						name: "typeA",
 						disableOpenOnInput: true,
-						// pressToFind: true,
 						disableClearable: true,
 						selectOnFocus: true,
+						hideControlsOnActive: true,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -115,6 +117,7 @@ export const useDSGTest4 = () => {
 	const grid = useDSG({
 		columns,
 		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
 	});
 
 	const handleGridProdChange = useCallback(({ rowData }) => {

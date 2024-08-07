@@ -1,6 +1,9 @@
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import AreaTypes from "@/modules/md-area-types";
+import ContainerEx from "@/shared-components/ContainerEx";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import {
@@ -8,12 +11,8 @@ import {
 	createTextColumn,
 	keyColumn,
 } from "react-datasheet-grid";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import ContainerEx from "@/shared-components/ContainerEx";
-import AreaTypes from "@/modules/md-area-types";
-import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
-import AreaTypePickerComponent from "../../dsg/columns/area-type-picker/AreaTypePickerComponent";
-import { optionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import AreaTypePickerComponent from "@/components/dsg/columns/area-type-picker/AreaTypePickerComponent";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),

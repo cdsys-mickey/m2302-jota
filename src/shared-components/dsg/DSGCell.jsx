@@ -1,9 +1,10 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
+import { Box } from "@mui/system";
 
 const DSGCell = memo((props) => {
 	const { ...rest } = props;
-	return <Wrapper {...rest}></Wrapper>;
+	return <Box {...rest}></Box>;
 });
 
 DSGCell.propTypes = {};

@@ -1,25 +1,33 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import _ from "lodash";
 import {
 	Autocomplete,
-	Box,
 	Chip,
 	Paper,
 	TextField,
 	createFilterOptions,
-	styled,
 } from "@mui/material";
+import _ from "lodash";
 import PropTypes from "prop-types";
-import { forwardRef, memo, useCallback, useMemo } from "react";
+import {
+	forwardRef,
+	memo,
+	useCallback,
+	useImperativeHandle,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { OptionGridPaper } from "./grid/OptionGridPaper";
-import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
-import OptionPickerBox from "./listbox/OptionPickerBox";
-import { useState } from "react";
-import { useRef } from "react";
-import { useImperativeHandle } from "react";
 import { toast } from "react-toastify";
+import { useCellComponent } from "../../shared-hooks/dsg/useCellComponent";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
+import { OptionGridPaper } from "./grid/OptionGridPaper";
+import OptionPickerBox from "./listbox/OptionPickerBox";
+import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
+
+const AUTO_COMPLETE_DEFAULTS = {
+	autoHighlight: true,
+};
 
 const MSG_NOT_FOUND = "${id} 不存在";
 
@@ -38,9 +46,7 @@ const OptionPicker = memo(
 			dnd = false,
 			size = "small",
 			hideBorders = false,
-			hidePlaceholder = false,
-			// hidePopupIndicator = false,
-			// disablePointerEvents = false,
+			// hidePlaceholder = false,
 			hideControls = false,
 			disableFadeOut = false,
 			name,
@@ -89,7 +95,7 @@ const OptionPicker = memo(
 			focusedBackgroundColor = "#b6f0ff",
 			// Popper open 控制
 			// selectNext = false,
-			focusDelay = 70,
+			// focusDelay = 20,
 			open,
 			onOpen,
 			onClose,
@@ -114,7 +120,9 @@ const OptionPicker = memo(
 			PaperComponent: customPaperComponent,
 			GridHeaderComponent,
 			GridRowComponent,
-			nextCell,
+			inDSG,
+			cellComponentRef,
+			// nextCell,
 			cell,
 			getNextEnabled,
 			isDisabled,
@@ -122,9 +130,7 @@ const OptionPicker = memo(
 			...rest
 		} = props;
 
-		// if (dense && label) {
-		// 	console.warn("dense 模式下強制不顯示 label");
-		// }
+		const { handleNextCell } = useCellComponent(cellComponentRef?.current);
 		const notFoundMsg = _.template(notFoundText);
 
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
@@ -161,18 +167,17 @@ const OptionPicker = memo(
 				if (name && clearErrors) {
 					clearErrors(name);
 				}
-				// setTextFieldError(false);
-				// setTextFieldHelperText(null);
 			},
 			[clearErrors, name, onInputChange]
 		);
 
 		const handleOpen = useCallback(
-			(e) => {
+			(e, opts = {}) => {
+				const { override = false } = opts;
 				if (popperOpen) {
 					return;
 				}
-				if (!disableOpenOnInput || e.type === "click") {
+				if (!disableOpenOnInput || e.type === "click" || override) {
 					if (onOpen) {
 						onOpen(e);
 					}
@@ -211,49 +216,76 @@ const OptionPicker = memo(
 			return onClose || handleClose;
 		}, [handleClose, onClose]);
 
-		const refocus = useCallback((focusDelay) => {
-			timerIdRef.current = setTimeout(() => {
-				innerInputRef.current?.focus();
-			}, focusDelay);
-		}, []);
-
 		/**
-		 * 先判斷 DsgContext.nextCell, 再判斷 FieldsContext.getNextEnabled
+		 * 先判斷 DSGContext.nextCell, 再判斷 FieldsContext.getNextEnabled
 		 */
 
 		const nextInput = useCallback(
 			(e) => {
-				if (nextCell) {
-					if (!cell) {
-						throw new Error("nextCell 無法使用, 因為 cell 未定義");
-					}
-					nextCell(cell, { forward: !e.shiftKey });
+				if (inDSG) {
+					// if (!cell) {
+					// 	throw new Error("nextCell 無法使用, 因為 cell 未定義");
+					// }
+					// nextCell(cell, { forward: !e.shiftKey });
+					handleNextCell(cell, { forward: !e.shiftKey });
 				} else if (getNextEnabled) {
 					const nextField = getNextEnabled(name, {
-						forward: !e.shiftKey,
+						forward: !e?.shiftKey,
 						isDisabled,
 					});
 					console.log("nextField", nextField);
 					if (nextField) {
-						e.preventDefault();
+						e?.preventDefault();
+						// setFocus(nextField.name, {
+						// 	shouldSelect: nextField.select,
+						// });
+						// setFocus in next event cycle
 						setTimeout(() => {
 							setFocus(nextField.name, {
 								shouldSelect: nextField.select,
 							});
-						}, focusDelay);
+						});
 					}
 				}
 			},
 			[
-				nextCell,
+				inDSG,
 				getNextEnabled,
+				handleNextCell,
 				cell,
 				name,
 				isDisabled,
-				focusDelay,
 				setFocus,
 			]
 		);
+
+		const handleChange = useCallback(
+			(event, value, reason) => {
+				asyncRef.current.dirty = false;
+				if (onChange) {
+					console.log(`[${name}].onChange`, value);
+					console.log(`reason: ${reason}, event: `, event);
+					onChange(value);
+				}
+
+				if (name && clearErrors) {
+					clearErrors(name);
+				}
+				if (value) {
+					nextInput(event);
+				}
+			},
+			[clearErrors, name, nextInput, onChange]
+		);
+
+		const refocus = useCallback(() => {
+			// focusTimeoutRef.current = setTimeout(() => {
+			// 	innerInputRef.current?.focus();
+			// }, focusDelay);
+			focusTimeoutRef.current = setTimeout(() => {
+				innerInputRef.current?.focus();
+			});
+		}, []);
 
 		const inputNotFound = useCallback(
 			(input) => {
@@ -274,7 +306,7 @@ const OptionPicker = memo(
 			[name, notFoundMsg, setError, toastError]
 		);
 
-		const timerIdRef = useRef();
+		const focusTimeoutRef = useRef();
 
 		const handleEnter = useCallback(
 			async (e, opts = {}) => {
@@ -285,30 +317,36 @@ const OptionPicker = memo(
 					return;
 				}
 
-				e.stopPropagation(); // 防止往下傳遞給 DSG
-
 				e.preventDefault();
-				e.stopPropagation(); // 防止往下傳遞給 DSG
-				const input = e.target.value;
+				e.stopPropagation();
 
-				// 重設
-				if (timerIdRef.current) {
-					clearTimeout(timerIdRef.current);
+				// 重設 focusTimeout
+				if (focusTimeoutRef.current) {
+					clearTimeout(focusTimeoutRef.current);
 				}
 
+				// dirty check 是為了避免 option label 把 id+name 當作 id
 				if (asyncRef.current.dirty) {
 					asyncRef.current.dirty = false;
+					const input = e.target.value;
 					const found = await findByInput(input);
-					onChange(found);
+
+					// handleChange(e, found);
 					if (!found) {
 						inputNotFound(input);
+						// 沒找到則不往下傳遞給 DSGGrid
+						// e.stopPropagation();
 						return;
 					}
+
+					onChange(found);
 				} else {
 					if (validate) {
 						const error = await getError();
 						console.log("error:", error);
 						if (error) {
+							// 錯誤則不往下傳遞給 DSGGrid
+							// e.stopPropagation();
 							if (name && setError) {
 								setError(name, error);
 							} else {
@@ -325,12 +363,12 @@ const OptionPicker = memo(
 			[
 				findByInput,
 				_open,
-				nextInput,
 				onChange,
 				inputNotFound,
 				getError,
 				name,
 				setError,
+				nextInput,
 			]
 		);
 
@@ -340,15 +378,14 @@ const OptionPicker = memo(
 					return;
 				}
 				e.preventDefault();
-				// setPopperOpen(true);
-				_onOpen(e);
+				_onOpen(e, { override: true });
 			},
 			[_onOpen, findByInput]
 		);
 
 		const handleKeyDown = useCallback(
 			(e) => {
-				console.log("e.key", e.key);
+				// console.log("e.key", e.key);
 				switch (e.key) {
 					case "Enter":
 						handleEnter(e, {
@@ -382,11 +419,12 @@ const OptionPicker = memo(
 					const found = await findByInput(input);
 					if (!found) {
 						inputNotFound(input);
-						refocus(focusDelay);
+						// refocus(focusDelay);
+						refocus();
 					}
 				}
 			},
-			[findByInput, inputNotFound, refocus, focusDelay]
+			[findByInput, inputNotFound, refocus]
 		);
 
 		const renderNormalInput = useCallback(
@@ -447,7 +485,7 @@ const OptionPicker = memo(
 				handleInputChange,
 				handleKeyDown,
 				helperText,
-				hidePlaceholder,
+				hideControls,
 				inputProps,
 				label,
 				labelShrink,
@@ -566,24 +604,6 @@ const OptionPicker = memo(
 		);
 
 		// eslint-disable-next-line no-unused-vars
-		const handleChange = useCallback(
-			(event, value, reason) => {
-				asyncRef.current.dirty = false;
-				if (onChange) {
-					console.log(`[${name}].onChange`, value);
-					console.log(`reason: ${reason}, event: `, event);
-					onChange(value);
-				}
-
-				if (name && clearErrors) {
-					clearErrors(name);
-				}
-				if (value) {
-					nextInput(event);
-				}
-			},
-			[clearErrors, name, nextInput, onChange]
-		);
 
 		const memoisedTitle = useMemo(() => {
 			if (getTitle) {
@@ -797,6 +817,7 @@ const OptionPicker = memo(
 						},
 						...(Array.isArray(sx) ? sx : [sx]),
 					]}
+					{...AUTO_COMPLETE_DEFAULTS}
 					{...rest}
 					// virtualize = true 時必須強制 override 部分屬性
 					{...(virtualize && {
@@ -887,7 +908,7 @@ OptionPicker.propTypes = {
 	onOpen: PropTypes.func,
 	onClose: PropTypes.func,
 	open: PropTypes.bool,
-	focusDelay: PropTypes.number,
+	// focusDelay: PropTypes.number,
 	// selectNext: PropTypes.bool,
 	disableOpenOnInput: PropTypes.bool,
 	// pressToFind: PropTypes.bool,
@@ -902,5 +923,7 @@ OptionPicker.propTypes = {
 	getNextEnabled: PropTypes.func,
 	isDisabled: PropTypes.func,
 	setFocus: PropTypes.func,
+	inDSG: PropTypes.bool,
+	cellComponentRef: PropTypes.ref,
 };
 export default OptionPicker;

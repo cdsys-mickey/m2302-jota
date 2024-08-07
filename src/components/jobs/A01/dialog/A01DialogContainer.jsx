@@ -5,10 +5,11 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { FormManagerProvider } from "@/shared-contexts/form-manager/FormManagerProvider";
 import A01Form from "../form/A01Form";
 import { A01DialogToolbarContainer } from "./buttons/A01DialogToolbarContainer";
+import { useCallback } from "react";
 
 export const A01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -28,10 +29,10 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 
 	const a01 = useContext(A01Context);
 
-	const forms = useForm({
+	const form = useForm({
 		defaultValues: {},
 	});
-	const { reset } = forms;
+	const { reset } = form;
 
 	const title = useMemo(() => {
 		if (a01.mode === A01.Mode.NEW_PROD) {
@@ -55,7 +56,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [a01.creating, a01.mode, a01.updating]);
 
-	const store = useMemo(() => {
+	const storeMode = useMemo(() => {
 		return a01.mode === A01.Mode.STORE;
 	}, [a01.mode]);
 
@@ -63,20 +64,43 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		return height - 190;
 	}, [height]);
 
+	const handleClose = useMemo(() => {
+		return a01.editing ? a01.confirmDialogClose : a01.reset;
+	}, [a01.confirmDialogClose, a01.editing, a01.reset]);
+
+	const catL = useWatch({
+		name: "catL",
+		control: form.control,
+	});
+
+	const catM = useWatch({
+		name: "catM",
+		control: form.control,
+	});
+
+	const isDisabled = useCallback(
+		(name) => {
+			switch (name) {
+				case "catM":
+					return !catL;
+				case "catS":
+					return !catM;
+				default:
+					return false;
+			}
+		},
+		[catL, catM]
+	);
+
 	useEffect(() => {
-		// if (a01.readState === ActionState.DONE && !!a01.itemData) {
 		if (a01.itemDataReady) {
 			console.log(`a01 form reset`, a01.itemData);
 			reset(a01.itemData);
 		}
 	}, [a01.itemData, a01.itemDataReady, a01.readState, reset]);
 
-	const handleClose = useMemo(() => {
-		return a01.editing ? a01.confirmDialogClose : a01.reset;
-	}, [a01.confirmDialogClose, a01.editing, a01.reset]);
-
 	return (
-		<FormProvider {...forms}>
+		<FormProvider {...form}>
 			<DialogExContainer
 				title={title}
 				ref={ref}
@@ -101,9 +125,11 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<FormManagerProvider {...a01.formManager}>
+				<FormManagerProvider
+					{...a01.formManager}
+					isDisabled={isDisabled}>
 					<A01Form
-						onSubmit={forms.handleSubmit(
+						onSubmit={form.handleSubmit(
 							a01.onEditorSubmit,
 							a01.onEditorSubmitError
 						)}
@@ -114,7 +140,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 						readError={a01.readError}
 						data={a01.itemData}
 						itemDataReady={a01.itemDataReady}
-						store={store}
+						storeMode={storeMode}
 						selectedTab={a01.selectedTab}
 						handleTabChange={a01.handleTabChange}
 						height={formHeight}

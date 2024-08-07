@@ -121,6 +121,22 @@ export const useA01 = ({ token, mode }) => {
 		throw `mode 未指定`;
 	}
 
+	const createTransRow = useCallback(
+		() => ({
+			dept: null,
+			SCost: "",
+		}),
+		[]
+	);
+
+	const createComboRow = useCallback(
+		() => ({
+			prod: null,
+			SProdQty: "",
+		}),
+		[]
+	);
+
 	//ProdTransGrid
 	const transGridDisabled = useMemo(() => {
 		return !crud.editing || mode === A01.Mode.STORE;
@@ -518,30 +534,14 @@ export const useA01 = ({ token, mode }) => {
 		[comboGrid, transGrid]
 	);
 
-	const createTransRow = useCallback(
-		() => ({
-			dept: null,
-			SCost: "",
-		}),
-		[]
-	);
-
-	const createComboRow = useCallback(
-		() => ({
-			prod: null,
-			SProdQty: "",
-		}),
-		[]
-	);
-
 	const promptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			setSelectedTab(A01.Tabs.INFO);
 			const data = {
 				taxType: TaxTypes.findById("T"),
-				trans: transGrid.fillRows({ createRow: createTransRow }),
-				combo: comboGrid.fillRows({ createRow: createComboRow }),
+				trans: transGrid.fillRows({}),
+				combo: comboGrid.fillRows({}),
 			};
 			crud.promptCreating({
 				data,
@@ -549,7 +549,7 @@ export const useA01 = ({ token, mode }) => {
 			transGrid.initGridData(data.trans);
 			comboGrid.initGridData(data.combo);
 		},
-		[comboGrid, createComboRow, createTransRow, crud, transGrid]
+		[comboGrid, crud, transGrid]
 	);
 
 	const confirmDelete = useCallback(() => {
@@ -714,6 +714,22 @@ export const useA01 = ({ token, mode }) => {
 								processedRowData = handleGridDeptChange({
 									rowData: processedRowData,
 								});
+
+								if (
+									rowData.dept &&
+									transGrid.isDuplicating(rowData, newValue)
+								) {
+									toast.error(
+										`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
+									);
+									setTimeout(() => {
+										transGrid.setActiveCell({
+											col: 0,
+											row: rowIndex,
+										});
+									});
+									checkFailed = true;
+								}
 							}
 							newGridData[rowIndex] = processedRowData;
 						});
@@ -809,6 +825,13 @@ export const useA01 = ({ token, mode }) => {
 									toast.error(
 										`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
 									);
+									setTimeout(() => {
+										comboGrid.setActiveCell({
+											col: 0,
+											row: rowIndex,
+										});
+									});
+									checkFailed = true;
 								}
 							}
 							newGridData[rowIndex] = processedRowData;

@@ -2,6 +2,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import DeptPickerContainer from "../../../DeptPickerContainer";
+import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -26,52 +27,49 @@ const DeptPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		// insertRowBelow,
+		insertRowBelow,
 		// duplicateRow,
 		// deleteRow,
 		// getContextMenuItems,
 	} = props;
 
-	const { hideControlsOnActive, selectOnFocus, ...rest } = columnData;
-
-	const ref = useRef();
 	const rowDataRef = useRef(rowData);
 	rowDataRef.current = rowData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
-		},
-		[setRowData, stopEditing]
-	);
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		...rest
+	} = columnData;
 
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+	});
 
-	const cell = useMemo(() => {
-		return {
-			row: rowIndex,
-			col: columnIndex,
-		};
-	}, [columnIndex, rowIndex]);
-
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-			if (selectOnFocus) {
-				ref.current?.select();
-			}
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus, selectOnFocus]);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled: skipDisabled,
+		nextCell: nextCell,
+		getNextCell: getNextCell,
+		lastCell: lastCell,
+		setActiveCell: setActiveCell,
+	});
 
 	return (
 		<DeptPickerContainer
@@ -86,6 +84,7 @@ const DeptPickerComponent = memo((props) => {
 			typeToSearchText="請輸入門市編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
+			cellComponentRef={cellComponentRef}
 			cell={cell}
 			dense
 			hideControls={hideControls}

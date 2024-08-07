@@ -5,6 +5,7 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { AuthContext } from "../../../contexts/auth/AuthContext";
+import Auth from "../../../modules/md-auth";
 
 export const GotoKitchenMenuItemContainer = (props) => {
 	const { children = "元件測試", ...rest } = props;
@@ -22,7 +23,7 @@ export const GotoKitchenMenuItemContainer = (props) => {
 		);
 	}, [navigate]);
 
-	if (auth.operator?.LoginName !== "mickey") {
+	if (auth.operator?.Class < Auth.SCOPES.ROOT) {
 		return false;
 	}
 

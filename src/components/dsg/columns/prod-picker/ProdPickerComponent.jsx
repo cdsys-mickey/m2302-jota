@@ -1,8 +1,8 @@
+import ProdPicker from "@/components/picker/ProdPicker";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
-import ProdPicker from "@/components/picker/ProdPicker";
-import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
+import { memo, useRef } from "react";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -27,38 +27,49 @@ const ProdPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		// insertRowBelow,
+		insertRowBelow,
 		// duplicateRow,
 		// deleteRow,
 		// getContextMenuItems,
+		// Context
 	} = props;
 
 	const rowDataRef = useRef(rowData);
 	rowDataRef.current = rowData;
 
-	const { hideControlsOnActive, selectOnFocus, ...rest } = columnData;
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		...rest
+	} = columnData;
 
-	const { ref, hideControls, cell } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
 		focus,
 		active,
 		disabled,
 		hideControlsOnActive,
 		selectOnFocus,
-		rowIndex,
-		columnIndex,
+		setRowData,
+		stopEditing,
 	});
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
-		},
-		[setRowData, stopEditing]
-	);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		skipDisabled: skipDisabled,
+		nextCell: nextCell,
+		getNextCell: getNextCell,
+		lastCell: lastCell,
+		setActiveCell: setActiveCell,
+	});
 
 	return (
 		<ProdPicker
@@ -68,12 +79,14 @@ const ProdPickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			// onKeyDown={handleKeyDown}
 			// onClose={handleClose}
 			placeholder="商品"
 			typeToSearchText="輸入編號、條碼或名稱搜尋..."
 			filterByServer
 			queryRequired
 			// DSG 專屬
+			cellComponentRef={cellComponentRef}
 			cell={cell}
 			dense
 			hideControls={hideControls}
@@ -111,6 +124,8 @@ ProdPickerComponent.propTypes = {
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
 	nextCell: PropTypes.func,
+	skipDisabled: PropTypes.bool,
+	lastCell: PropTypes.symbol,
 };
 ProdPickerComponent.propTypes = {};
 ProdPickerComponent.displayName = "ProdPickerComponent";

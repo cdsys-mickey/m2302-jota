@@ -4,7 +4,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import A01ProdComboGrid from "./A01ProdComboGrid";
 import PropTypes from "prop-types";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { DsgContext } from "@/shared-contexts/datasheet-grid/DsgContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 export const A01ProdComboGridContainer = (props) => {
 	const { store, ...rest } = props;
@@ -12,7 +12,7 @@ export const A01ProdComboGridContainer = (props) => {
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
 	return (
-		<DsgContext.Provider
+		<DSGContext.Provider
 			value={{
 				...a01.comboGrid,
 			}}>
@@ -28,7 +28,7 @@ export const A01ProdComboGridContainer = (props) => {
 				createRow={a01.createComboRow}
 				{...rest}
 			/>
-		</DsgContext.Provider>
+		</DSGContext.Provider>
 	);
 };
 A01ProdComboGridContainer.propTypes = {

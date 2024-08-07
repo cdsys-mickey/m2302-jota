@@ -1,9 +1,8 @@
-import { Box, styled } from "@mui/material";
 import DSG from "@/shared-modules/sd-dsg";
-import { cyan, lightBlue } from "@mui/material/colors";
+import { Box, styled } from "@mui/material";
+import { cyan } from "@mui/material/colors";
 
 const DSGBox = styled(Box, {
-	// self props
 	shouldForwardProp: (prop) => !["bgcolor", "disableAddRow"].includes(prop),
 })(({ theme, groupColor = cyan[700], disableAddRows }) => ({
 	[`& .${DSG.CssClasses.ROW_SELECTED} .dsg-cell-gutter`]: {

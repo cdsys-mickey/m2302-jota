@@ -1,18 +1,19 @@
-import { useContext } from "react";
-import ProdTypeAPickerComponent from "./ProdTypeAPickerComponent";
-import { DsgContext } from "@/shared-contexts/datasheet-grid/DsgContext";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
+import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
+import ProdTypeAPickerComponent from "./ProdTypeAPickerComponent";
 
 export const ProdTypeAPickerComponentContainer = (props) => {
 	const { columnData, ...rest } = props;
-	const dsg = useContext(DsgContext);
+	const cellControls = useCellControls();
+
 	const _columnData = useMemo(() => {
 		return {
 			...columnData,
-			nextCell: dsg.nextCell,
+			...cellControls,
 		};
-	}, [columnData, dsg.nextCell]);
+	}, [cellControls, columnData]);
+
 	return <ProdTypeAPickerComponent columnData={_columnData} {...rest} />;
 };
 

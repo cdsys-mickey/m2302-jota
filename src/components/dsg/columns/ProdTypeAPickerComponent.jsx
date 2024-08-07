@@ -4,6 +4,7 @@ import ProdTypeAPicker from "@/components//picker/ProdTypeAPicker";
 import { useMemo } from "react";
 import { useCallback } from "react";
 import Objects from "@/shared-modules/sd-objects";
+import { useOptionPickerComponent } from "../../../shared-hooks/dsg/useOptionPickerComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -27,55 +28,49 @@ const ProdTypeAPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		// insertRowBelow,
+		insertRowBelow,
 		// duplicateRow,
 		// deleteRow,
 		// getContextMenuItems,
 	} = props;
 
-	const ref = useRef();
-	const { hideControlsOnActive, ...rest } = columnData;
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
-		},
-		[setRowData, stopEditing]
-	);
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		...rest
+	} = columnData;
 
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+	});
 
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
-
-	useLayoutEffect(() => {
-		if (active) {
-			ref.current?.focus();
-			ref.current?.select();
-		} else {
-			ref.current?.blur();
-		}
-	}, [active, focus]);
-
-	const cell = useMemo(() => {
-		return {
-			row: rowIndex,
-			col: columnIndex,
-		};
-	}, [columnIndex, rowIndex]);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled: skipDisabled,
+		nextCell: nextCell,
+		getNextCell: getNextCell,
+		lastCell: lastCell,
+		setActiveCell: setActiveCell,
+	});
 
 	return (
 		<ProdTypeAPicker
@@ -85,13 +80,14 @@ const ProdTypeAPickerComponent = memo((props) => {
 			value={rowData}
 			onChange={handleChange}
 			// DSG 專屬
-			toastError
-			hideBorders
+			cellComponentRef={cellComponentRef}
 			dense
-			hideControls={hideControls}
-			hidePlaceholder={!active}
-			disableFadeOut
 			cell={cell}
+			hideControls={hideControls}
+			// hidePlaceholder={!active}
+			hideBorders
+			disableFadeOut
+			toastError
 			{...rest}
 		/>
 	);

@@ -39,7 +39,7 @@ const A01Form = memo((props) => {
 		creating,
 		editing,
 		updating,
-		store,
+		storeMode,
 		// TAB
 		selectedTab,
 		handleTabChange,
@@ -125,7 +125,7 @@ const A01Form = memo((props) => {
 											rules={{
 												required: "品名規格為必填",
 											}}
-											readOnly={store}>
+											readOnly={storeMode}>
 											{data?.ProdData}
 										</TextFieldWrapper>
 									</Grid>
@@ -136,7 +136,7 @@ const A01Form = memo((props) => {
 											name="Barcode"
 											fullWidth
 											// value={data?.Barcode}
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 									<FlexBox fullWidth />
@@ -146,7 +146,7 @@ const A01Form = memo((props) => {
 											label="列印條碼"
 											defaultValue="N"
 											name="BarPR"
-											readOnly={store}
+											readOnly={storeMode}
 											valueToChecked={
 												YesNo.valueToChecked
 											}
@@ -173,7 +173,7 @@ const A01Form = memo((props) => {
 										<ProdCatLPicker
 											typo
 											name="catL"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -181,7 +181,7 @@ const A01Form = memo((props) => {
 										<ProdCatMPicker
 											typo
 											name="catM"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -189,7 +189,7 @@ const A01Form = memo((props) => {
 										<ProdCatSPicker
 											typo
 											name="catS"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -201,15 +201,12 @@ const A01Form = memo((props) => {
 								pb={1}
 								mb={1}
 								px={1}>
-								<Grid
-									container
-									columns={12}
-									spacing={editing ? 2 : 1}>
+								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={3}>
 										<ProdTypeAPicker
 											typo
 											name="typeA"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -218,7 +215,7 @@ const A01Form = memo((props) => {
 										<ProdTypeBPicker
 											typo
 											name="typeB"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -230,7 +227,7 @@ const A01Form = memo((props) => {
 											// defaultValue={TaxTypes.findById(
 											// 	"T"
 											// )}
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -239,7 +236,7 @@ const A01Form = memo((props) => {
 											label="櫃別"
 											typo
 											name="counter"
-											autoFocus={store}
+											autoFocus={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -249,7 +246,7 @@ const A01Form = memo((props) => {
 											name="StdCost"
 											label="標準成本"
 											type="number"
-											readOnly={store}
+											readOnly={storeMode}
 											renderLabel={Strings.formatPrice}
 										/>
 									</Grid>
@@ -259,7 +256,7 @@ const A01Form = memo((props) => {
 											name="TranCost"
 											label="調撥成本"
 											type="number"
-											readOnly={store}
+											readOnly={storeMode}
 											renderLabel={Strings.formatPrice}
 										/>
 									</Grid>
@@ -269,7 +266,7 @@ const A01Form = memo((props) => {
 											name="LocalCost"
 											label="批發成本(本)"
 											type="number"
-											readOnly={store}
+											readOnly={storeMode}
 											renderLabel={Strings.formatPrice}
 										/>
 									</Grid>
@@ -279,7 +276,7 @@ const A01Form = memo((props) => {
 											name="OutCost"
 											label="批發成本(外)"
 											type="number"
-											readOnly={store}
+											readOnly={storeMode}
 											renderLabel={Strings.formatPrice}
 										/>
 									</Grid>
@@ -291,17 +288,14 @@ const A01Form = memo((props) => {
 								pb={1}
 								mb={1}
 								px={1}>
-								<Grid
-									container
-									columns={12}
-									spacing={editing ? 2 : 1}>
+								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
 											typo
 											name="SafeQty"
 											label="平日安全存量"
 											type="number"
-											readOnly={store}
+											readOnly={storeMode}
 											fullWidth
 											renderLabel={Strings.formatPrice}
 										/>
@@ -311,7 +305,7 @@ const A01Form = memo((props) => {
 											typo
 											label="儲位"
 											name="Location"
-											readOnly={store}
+											readOnly={storeMode}
 											fullWidth
 											renderLabel={Strings.formatPrice}
 										/>
@@ -321,7 +315,7 @@ const A01Form = memo((props) => {
 										<CmsTypePicker
 											typo
 											name="cmsType"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -329,21 +323,14 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>包裝單位</FormSectionTitle>
-							<FormSectionBox
-								pt={editing ? 1.5 : 1}
-								pb={1}
-								mb={1}
-								px={1}>
-								<Grid
-									container
-									columns={12}
-									spacing={editing ? 2 : 1}>
+							<FormSectionBox pt={1} pb={1} mb={1} px={1}>
+								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={3}>
 										<PkgTypePicker
 											typo
 											name="bunit"
 											label="庫存"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -352,7 +339,7 @@ const A01Form = memo((props) => {
 											typo
 											name="sunit"
 											label="銷售"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -361,7 +348,7 @@ const A01Form = memo((props) => {
 											typo
 											name="iunit"
 											label="進貨"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -370,7 +357,7 @@ const A01Form = memo((props) => {
 											typo
 											name="munit"
 											label="BOM"
-											readOnly={store}
+											readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>
@@ -383,17 +370,14 @@ const A01Form = memo((props) => {
 								pb={1}
 								mb={1}
 								px={1}>
-								<Grid
-									container
-									columns={12}
-									spacing={editing ? 2 : 1}>
+								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
 											typo
 											label="銷/存"
 											type="number"
 											name="SRate"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
@@ -402,7 +386,7 @@ const A01Form = memo((props) => {
 											label="進/存"
 											type="number"
 											name="IRate"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
@@ -411,7 +395,7 @@ const A01Form = memo((props) => {
 											label="BOM/存"
 											type="number"
 											name="MRate"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 								</Grid>
@@ -423,17 +407,14 @@ const A01Form = memo((props) => {
 								pb={1}
 								mb={1}
 								px={1}>
-								<Grid
-									container
-									columns={12}
-									spacing={editing ? 2 : 1}>
+								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={2}>
 										<TextFieldWrapper
 											typo
 											label="建議售價"
 											name="Price"
 											type="number"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={2}>
@@ -442,7 +423,7 @@ const A01Form = memo((props) => {
 											label="售價A"
 											type="number"
 											name="PriceA"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 
@@ -452,7 +433,7 @@ const A01Form = memo((props) => {
 											label="售價B"
 											type="number"
 											name="PriceB"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={2}>
@@ -461,7 +442,7 @@ const A01Form = memo((props) => {
 											label="售價C"
 											type="number"
 											name="PriceC"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={2}>
@@ -470,7 +451,7 @@ const A01Form = memo((props) => {
 											label="售價D"
 											type="number"
 											name="PriceD"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={2}>
@@ -479,7 +460,7 @@ const A01Form = memo((props) => {
 											label="售價E"
 											type="number"
 											name="PriceE"
-											readOnly={store}
+											readOnly={storeMode}
 										/>
 									</Grid>
 								</Grid>
@@ -487,12 +468,12 @@ const A01Form = memo((props) => {
 						</TabPanel>
 						<TabPanel value={A01.Tabs.TRANS}>
 							<ContainerEx maxWidth="sm" alignLeft>
-								<A01ProdTransGridContainer store={store} />
+								<A01ProdTransGridContainer />
 							</ContainerEx>
 						</TabPanel>
 						<TabPanel value={A01.Tabs.COMBO}>
 							<ContainerEx maxWidth="sm" alignLeft>
-								<A01ProdComboGridContainer store={store} />
+								<A01ProdComboGridContainer />
 							</ContainerEx>
 						</TabPanel>
 					</TabContext>
@@ -509,7 +490,7 @@ A01Form.propTypes = {
 	creating: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
-	store: PropTypes.bool,
+	storeMode: PropTypes.bool,
 	selectedTab: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	handleTabChange: PropTypes.func,
 	readError: PropTypes.object,

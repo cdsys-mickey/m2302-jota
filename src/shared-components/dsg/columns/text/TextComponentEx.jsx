@@ -3,6 +3,9 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
+import { useMemo } from "react";
+import { DSGLastCellBehavior } from "../../../../shared-hooks/dsg/DSGLastCellBehavior";
+import { useCellComponent } from "../../../../shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -21,10 +24,9 @@ const TextComponentEx = memo(
 		rowIndex,
 		columnIndex,
 		columnData,
-		// Control functions
-		// Context methods
-		skipDisabled,
-		nextCell,
+		// Control Functions
+		stopEditing,
+		insertRowBelow,
 	}) => {
 		const ref = useRef(null);
 		const firstRender = useFirstRender();
@@ -37,7 +39,12 @@ const TextComponentEx = memo(
 			continuousUpdates,
 			// additional opts
 			style,
-			enterToNext,
+			// Context Methods
+			skipDisabled,
+			nextCell,
+			getNextCell,
+			lastCell,
+			setActiveCell,
 			...rest
 		} = columnData;
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
@@ -83,6 +90,21 @@ const TextComponentEx = memo(
 			[continuousUpdates, parseUserInput, setRowData]
 		);
 
+		const cell = useMemo(() => {
+			return {
+				row: rowIndex,
+				col: columnIndex,
+			};
+		}, [columnIndex, rowIndex]);
+
+		const { handleNextCell } = useCellComponent({
+			getNextCell,
+			lastCell,
+			setActiveCell,
+			stopEditing,
+			insertRowBelow,
+		});
+
 		const handleKeyDown = useCallback(
 			(e) => {
 				// Track when user presses the Esc key
@@ -93,19 +115,15 @@ const TextComponentEx = memo(
 						break;
 					case "Enter":
 						e.preventDefault();
-						if (enterToNext) {
-							e.stopPropagation();
-							nextCell(
-								{ row: rowIndex, col: columnIndex },
-								{
-									forward: !e.shiftKey,
-								}
-							);
-						}
+						setTimeout(() => {
+							stopEditing({ nextRow: false });
+						});
+
+						handleNextCell(cell);
 						break;
 				}
 			},
-			[columnIndex, enterToNext, nextCell, rowIndex]
+			[cell, handleNextCell, stopEditing]
 		);
 
 		useLayoutEffect(() => {
@@ -202,9 +220,13 @@ TextComponentEx.propTypes = {
 	rowData: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	setRowData: PropTypes.func,
 	stopEditing: PropTypes.func,
+	insertRowBelow: PropTypes.func,
 	columnData: PropTypes.object,
 	skipDisabled: PropTypes.bool,
 	nextCell: PropTypes.func,
+	getNextCell: PropTypes.func,
+	setActiveCell: PropTypes.func,
+	lastCell: PropTypes.symbol,
 	rowIndex: PropTypes.number,
 	columnIndex: PropTypes.number,
 };
