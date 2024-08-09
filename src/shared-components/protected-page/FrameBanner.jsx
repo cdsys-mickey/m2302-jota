@@ -64,8 +64,8 @@ const FrameBanner = memo(
 
 						{/* 通知按鈕 */}
 						<PushMessagesIconButtonContainer />
-						{/* 通知小視窗 */}
 
+						{/* 通知小視窗 */}
 						<PushMessagesPopoverContainer />
 
 						{/* 帳號 */}

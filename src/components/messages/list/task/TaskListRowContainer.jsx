@@ -5,16 +5,23 @@ import { MessagingContext } from "../../../../contexts/MessagingContext";
 import { useCallback } from "react";
 import { AppFrameContext } from "../../../../shared-contexts/app-frame/AppFrameContext";
 import { AuthContext } from "../../../../contexts/auth/AuthContext";
+import { PushMessagesContext } from "../../../../contexts/PushMessagesContext";
 
 export const TaskListRowContainer = (props) => {
-	const auth = useContext(AuthContext);
+	// const auth = useContext(AuthContext);
 	// const { selectJobById } = useContext(AppFrameContext);
 	const messaging = useContext(MessagingContext);
 	// const { handlePopoverClose } = messaging;
 	const { index, ...rest } = props;
 	// const { isItemLoading } = auth;
 	// const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
-	const value = useMemo(() => auth.listData[index], [auth.listData, index]);
+
+	// const value = useMemo(() => auth.listData[index], [auth.listData, index]);
+	const pushMessages = useContext(PushMessagesContext);
+	const value = useMemo(
+		() => pushMessages.listData[index],
+		[pushMessages.listData, index]
+	);
 	const loading = useMemo(() => !value, [value]);
 
 	// const handleGotoJob = useCallback(() => {

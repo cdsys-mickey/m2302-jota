@@ -34,14 +34,14 @@ export const useAuth = () => {
 		authoritiesLoading: null,
 	});
 
-	const taskListLoader = useInfiniteLoader({
-		url: "v1/my/messages",
-		bearer: state.token,
-		initialFetchSize: 30,
-		params: {
-			ur: 1,
-		},
-	});
+	// const taskListLoader = useInfiniteLoader({
+	// 	url: "v1/my/messages",
+	// 	bearer: state.token,
+	// 	initialFetchSize: 30,
+	// 	params: {
+	// 		ur: 1,
+	// 	},
+	// });
 
 	const loadAuthorities = useCallback(
 		async ({ token }) => {
@@ -390,6 +390,6 @@ export const useAuth = () => {
 		onChangeSubmit,
 		onChangeSubmitError,
 		changePrompting,
-		...taskListLoader,
+		// ...taskListLoader,
 	};
 };

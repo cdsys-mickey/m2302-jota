@@ -8,10 +8,12 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { MessagingContext } from "../../../contexts/MessagingContext";
 import { MsgListRowContainer } from "./MsgListRowContainer";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
+import { MessagesContext } from "../../../contexts/MessagesContext";
 
 export const MsgListViewContainer = () => {
-	const messaging = useContext(MessagingContext);
-	const { loadList } = messaging;
+	// const messaging = useContext(MessagingContext);
+	// const { loadList } = messaging;
+	const messages = useContext(MessagesContext);
 	const form = useFormContext();
 	const { getValues, setValue } = form;
 	const { height } = useWindowSize();
@@ -23,14 +25,14 @@ export const MsgListViewContainer = () => {
 	const debouncedQs = useDebounce(qs, 300);
 
 	useInit(() => {
-		messaging.loadList();
+		messages.loadList();
 	}, []);
 
 	useChangeTracking(() => {
 		console.log(`debouncedQs: ${debouncedQs}`);
 		if (debouncedQs !== undefined) {
 			const values = getValues();
-			loadList({
+			messages.loadList({
 				params: { ...values, qs: debouncedQs },
 				supressLoading: true,
 			});
@@ -41,15 +43,15 @@ export const MsgListViewContainer = () => {
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
-				loading={messaging.listLoading}
-				data={messaging.listData}
-				itemCount={messaging.itemCount}
-				loadMoreItems={messaging.loadMoreItems}
-				isItemLoaded={messaging.isItemLoaded}
+				loading={messages.listLoading}
+				data={messages.listData}
+				itemCount={messages.itemCount}
+				loadMoreItems={messages.loadMoreItems}
+				isItemLoaded={messages.isItemLoaded}
 				RowComponent={MsgListRowContainer}
 				height={height ? height - 142 : 300}
-				handleItemsRendered={messaging.handleItemsRendered}
-				error={messaging.listError}
+				handleItemsRendered={messages.handleItemsRendered}
+				error={messages.listError}
 				// bottomReached={users.bottomReached}
 				bottomReached={true}
 			/>

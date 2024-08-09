@@ -9,11 +9,16 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/auth/AuthContext";
 import Messaging from "../modules/md-messaging";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
+import { PushMessagesContext } from "../contexts/PushMessagesContext";
 
-export const useMessaging = ({ token }) => {
+export const useMessaging = () => {
 	const { httpGetAsync, httpPutAsync, httpPatchAsync } = useWebApi();
 	const auth = useContext(AuthContext);
-	const { operator, clearListLoading } = auth;
+	const { token } = auth;
+	// const { operator, clearListLoading } = auth;
+	const { operator } = auth;
+	const pushMessages = useContext(PushMessagesContext);
+	const { clearListLoading } = pushMessages;
 	const popover = usePopover();
 	const { handlePopoverClose } = popover;
 	const { selectJobById } = useContext(AppFrameContext);

@@ -1,16 +1,10 @@
 import { useContext } from "react";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 import { MessagingContext } from "../../contexts/MessagingContext";
 import PushMessagesIconButton from "./PushMessagesIconButton";
-import { useInit } from "../../shared-hooks/useInit";
-import { useEffect } from "react";
-import { LocalLaundryService } from "@mui/icons-material";
-import { AuthContext } from "../../contexts/auth/AuthContext";
 
-export const PushMessagesIconButtonContainer = (props) => {
-	const { ...rest } = props;
-	const { token } = useContext(AuthContext);
+export const PushMessagesIconButtonContainer = () => {
 	const messaging = useContext(MessagingContext);
-	const { loadUnreadCount } = messaging;
 
 	// useInit(() => {
 	// 	loadUnreadCount();

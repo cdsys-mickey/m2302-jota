@@ -1,20 +1,37 @@
-import { useContext } from "react";
-import { AuthContext } from "../contexts/auth/AuthContext";
+import { useCallback, useState } from "react";
 import { useInfiniteLoader } from "../shared-hooks/useInfiniteLoader";
+import { AuthContext } from "../contexts/auth/AuthContext";
+import { useContext } from "react";
+import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 
 export const useMessages = () => {
 	const auth = useContext(AuthContext);
-
-	const taskListLoader = useInfiniteLoader({
+	const appFrame = useContext(AppFrameContext);
+	const loader = useInfiniteLoader({
 		url: "v1/my/messages",
 		bearer: auth.token,
-		initialFetchSize: 30,
-		params: {
-			ur: 1,
-		},
+		initialFetchSize: 50,
 	});
 
+	const handleGotoJob = useCallback(
+		(payload) => {
+			console.log("handleGotoJob", payload);
+			const jobId = payload?.jobID || payload?.JobID;
+			const targetId = payload?.id || payload?.ID;
+
+			if (jobId) {
+				appFrame.selectJobById(jobId, {
+					...(targetId && {
+						id: targetId,
+					}),
+				});
+			}
+		},
+		[appFrame]
+	);
+
 	return {
-		...taskListLoader,
+		...loader,
+		handleGotoJob,
 	};
 };

@@ -1,12 +1,9 @@
-import { useContext } from "react";
-import { MessagingContext } from "./MessagingContext";
 import PropTypes from "prop-types";
 import { useMessaging } from "../hooks/useMessaging";
-import { AuthContext } from "./auth/AuthContext";
+import { MessagingContext } from "./MessagingContext";
 
 export const MessagingProvider = ({ children }) => {
-	const { token } = useContext(AuthContext);
-	const messaging = useMessaging({ token });
+	const messaging = useMessaging();
 
 	return (
 		<MessagingContext.Provider

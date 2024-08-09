@@ -117,6 +117,7 @@ import { D07Provider } from "../contexts/D07/D07Provider";
 import { D07FrameContainer } from "../pages/D07/D07FrameContainer";
 import { KitchenSinkContainer } from "../pages/lab/KitchenSinkContainer";
 import { InfiniteLoaderProvider } from "../contexts/infinite-loader/InfiniteLoaderProvider";
+import { MessagesProvider } from "../contexts/MessagesProvider";
 
 const AppRoute = () => {
 	return (
@@ -173,7 +174,16 @@ const AppRoute = () => {
 						</HomeProvider>
 					}
 				/>
-				<Route path="messages" element={<MsgFrameContainer />} />
+				<Route
+					path="messages"
+					element={
+						<InfiniteLoaderProvider>
+							<MessagesProvider>
+								<MsgFrameContainer />
+							</MessagesProvider>
+						</InfiniteLoaderProvider>
+					}
+				/>
 				<Route path="renew" element={<RenewFrameContainer />} />
 				<Route
 					path="settings"

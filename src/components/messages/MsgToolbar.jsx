@@ -11,7 +11,7 @@ const LeftButtons = memo(() => {
 
 LeftButtons.displayName = "LeftButtons";
 
-const ZA03Toolbar = memo(
+const MsgToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			<FlexToolbar
@@ -26,5 +26,5 @@ const ZA03Toolbar = memo(
 	})
 );
 
-ZA03Toolbar.displayName = "ZA03ListViewToolbar";
-export default ZA03Toolbar;
+MsgToolbar.displayName = "MsgToolbar";
+export default MsgToolbar;

@@ -13,6 +13,7 @@ import { memo, useMemo } from "react";
 import Styles from "@/modules/md-styles";
 import { ReviewWidgetContainer } from "../../components/home/widgets/review/ReviewWidgetContainer";
 import BackgroundImage from "@/images/v748-toon-103-bright-20-1920.png";
+import { FrameBannerContainer } from "../../shared-components/protected-page/FrameBannerContainer";
 
 const Home = memo((props) => {
 	const { boxStyles } = props;
@@ -30,7 +31,8 @@ const Home = memo((props) => {
 						minHeight: "100vh",
 					},
 				]}>
-				<HomeFrameBanner />
+				{/* <HomeFrameBanner /> */}
+				<FrameBannerContainer title="首頁" />
 				<Box pt={3}>
 					<Grid container spacing={3}>
 						<Grid item xl={3} lg={5} md={6} sm={12} xs={12}>

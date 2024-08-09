@@ -1,17 +1,13 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { MessagingContext } from "../../contexts/MessagingContext";
-import PushMessagesPopover from "./PushMessagesPopover";
-import { useEffect } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import { useMemo } from "react";
-import { useWindowSize } from "../../shared-hooks/useWindowSize";
 import useAppRedirect from "../../hooks/useAppRedirect";
-import { useCallback } from "react";
 import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
-import { useInit } from "../../shared-hooks/useInit";
+import { useWindowSize } from "../../shared-hooks/useWindowSize";
+import PushMessagesPopover from "./PushMessagesPopover";
+import { PushMessagesProvider } from "../../contexts/PushMessagesProvider";
 
 export const PushMessagesPopoverContainer = () => {
-	const auth = useContext(AuthContext);
+	// const auth = useContext(AuthContext);
 	const messaging = useContext(MessagingContext);
 	const appFrame = useContext(AppFrameContext);
 	const { handleSelect } = appFrame;
@@ -35,6 +31,7 @@ export const PushMessagesPopoverContainer = () => {
 	// }, []);
 
 	return (
+		// <PushMessagesProvider>
 		<PushMessagesPopover
 			open={messaging.popoverOpen}
 			anchorEl={messaging.popoverAnchorEl}
@@ -44,6 +41,7 @@ export const PushMessagesPopoverContainer = () => {
 			width={width - 90}
 			gotoMessages={gotoMessages}
 		/>
+		// </PushMessagesProvider>
 	);
 };
 

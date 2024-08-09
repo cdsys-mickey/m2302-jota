@@ -5,10 +5,14 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { TaskListRowContainer } from "./task/TaskListRowContainer";
+import { PushMessagesContext } from "../../../contexts/PushMessagesContext";
+import { InfiniteLoaderProvider } from "../../../contexts/infinite-loader/InfiniteLoaderProvider";
 
 export const TaskListViewContainer = () => {
-	const auth = useContext(AuthContext);
-	const { refreshList } = auth;
+	// const auth = useContext(AuthContext);
+	// const { refreshList } = auth;
+	const pushMessages = useContext(PushMessagesContext);
+	const { refreshList } = pushMessages;
 
 	const { height } = useWindowSize();
 
@@ -17,21 +21,23 @@ export const TaskListViewContainer = () => {
 	}, []);
 
 	return (
-		<ListViewBox square>
-			<InfiniteListView
-				loading={auth.listLoading}
-				data={auth.listData}
-				itemCount={auth.itemCount}
-				loadMoreItems={auth.loadMoreItems}
-				isItemLoaded={auth.isItemLoaded}
-				RowComponent={TaskListRowContainer}
-				height={height ? height - 200 : 300}
-				handleItemsRendered={auth.handleItemsRendered}
-				error={auth.listError}
-				// bottomReached={users.bottomReached}
-				bottomReached={true}
-			/>
-		</ListViewBox>
+		<InfiniteLoaderProvider>
+			<ListViewBox square>
+				<InfiniteListView
+					loading={pushMessages.listLoading}
+					data={pushMessages.listData}
+					itemCount={pushMessages.itemCount}
+					loadMoreItems={pushMessages.loadMoreItems}
+					isItemLoaded={pushMessages.isItemLoaded}
+					RowComponent={TaskListRowContainer}
+					height={height ? height - 200 : 300}
+					handleItemsRendered={pushMessages.handleItemsRendered}
+					error={pushMessages.listError}
+					// bottomReached={users.bottomReached}
+					bottomReached={true}
+				/>
+			</ListViewBox>
+		</InfiniteLoaderProvider>
 	);
 };
 
