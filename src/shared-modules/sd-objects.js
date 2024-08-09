@@ -46,6 +46,20 @@ const isAllPropsNull = (obj, columnPattern) => {
 	return columns.every((prop) => obj[prop] === null);
 };
 
+const isAllPropsNullOrEmpty = (obj, columnPattern) => {
+	if (!obj) {
+		throw "obj cabnot be null";
+	}
+	if (!columnPattern) {
+		return Object.keys(obj).filter((key) => !!obj[key]).length === 0;
+	}
+	const columns = Arrays.parse(columnPattern);
+	return columns.every((key) => {
+		const value = obj[key];
+		return value === null || value === undefined || value === "";
+	});
+};
+
 const isAllPropsEmpty = (obj, columnPattern) => {
 	if (!obj) {
 		throw "obj cabnot be null";
@@ -226,6 +240,7 @@ const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
 };
 
 const Objects = {
+	isAllPropsNullOrEmpty,
 	isAllPropsNotNull,
 	isAllPropsNull,
 	isAllPropsEmpty,

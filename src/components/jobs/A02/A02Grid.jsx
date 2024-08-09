@@ -1,59 +1,30 @@
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
-} from "react-datasheet-grid";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import ContainerEx from "../../../shared-components/ContainerEx";
+import ContainerEx from "@/shared-components/ContainerEx";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const A02Grid = memo((props) => {
 	const {
 		canCreate,
 		lockRows,
-		setGridRef,
+		gridRef,
 		data,
 		loading,
 		height = 300,
 		// METHODS
-		handleChange,
-		isPersisted,
+		onChange,
+		onActiveCellChange,
+		// isPersisted
+		columns,
 	} = props;
-
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"CodeID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: isPersisted,
-				title: "代碼",
-			},
-			{
-				...keyColumn(
-					"CodeData",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "包裝名稱",
-				grow: 4,
-				disabled: lockRows,
-			},
-		],
-		[isPersisted, lockRows]
-	);
 
 	const gridHeight = useMemo(() => {
 		return height + (lockRows || !canCreate ? 48 : 0);
@@ -74,14 +45,15 @@ const A02Grid = memo((props) => {
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<Box>
-				<DynamicDataSheetGrid
+				<DSGGrid
 					lockRows={lockRows}
-					ref={setGridRef}
+					ref={gridRef}
 					rowKey="CodeID"
 					height={gridHeight}
 					// rowHeight={42}
 					value={data}
-					onChange={handleChange}
+					onChange={onChange}
+					onActiveCellChange={onActiveCellChange}
 					columns={columns}
 					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 					disableExpandSelection
@@ -94,13 +66,15 @@ const A02Grid = memo((props) => {
 A02Grid.propTypes = {
 	canCreate: PropTypes.bool,
 	lockRows: PropTypes.bool,
-	setGridRef: PropTypes.func,
+	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
+	onChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
 	isPersisted: PropTypes.func,
+	columns: PropTypes.array,
 	// handleActiveCellChange: PropTypes.func,
 };
 

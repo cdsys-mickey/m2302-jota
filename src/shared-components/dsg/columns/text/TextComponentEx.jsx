@@ -4,8 +4,7 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
 import { useMemo } from "react";
-import { DSGLastCellBehavior } from "../../../../shared-hooks/dsg/DSGLastCellBehavior";
-import { useCellComponent } from "../../../../shared-hooks/dsg/useCellComponent";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -45,6 +44,8 @@ const TextComponentEx = memo(
 			getNextCell,
 			lastCell,
 			setActiveCell,
+			enterToNext,
+			inDSG,
 			...rest
 		} = columnData;
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
@@ -118,12 +119,13 @@ const TextComponentEx = memo(
 						setTimeout(() => {
 							stopEditing({ nextRow: false });
 						});
-
-						handleNextCell(cell);
+						if (enterToNext) {
+							handleNextCell(cell);
+						}
 						break;
 				}
 			},
-			[cell, handleNextCell, stopEditing]
+			[cell, enterToNext, handleNextCell, stopEditing]
 		);
 
 		useLayoutEffect(() => {

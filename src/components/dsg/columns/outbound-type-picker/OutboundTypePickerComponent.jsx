@@ -84,7 +84,7 @@ const OutboundTypePickerComponent = memo((props) => {
 			// disablePointerEvents={!focus}
 			// hidePopupIndicator={!focus}
 			hideControls={hideControls}
-			hidePlaceholder={!active}
+			// hidePlaceholder={!active}
 			disableFadeOut
 			disableClearable
 			// virtualize

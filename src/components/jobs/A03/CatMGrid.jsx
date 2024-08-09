@@ -20,6 +20,7 @@ const CatMGrid = memo((props) => {
 		canCreate,
 		lockRows,
 		setGridRef,
+		columns,
 		data,
 		loading,
 		height,
@@ -30,34 +31,6 @@ const CatMGrid = memo((props) => {
 		// isSelected,
 		getRowClassName,
 	} = props;
-
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"MClas",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: isPersisted,
-				title: "代碼",
-				minWidth: 60,
-			},
-			{
-				...keyColumn(
-					"ClassData",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "中分類名稱",
-				grow: 5,
-				disabled: lockRows,
-			},
-		],
-		[isPersisted, lockRows]
-	);
 
 	const gridHeight = useMemo(() => {
 		return height + (lockRows || !canCreate ? 48 : 0);
@@ -106,6 +79,7 @@ CatMGrid.propTypes = {
 	// handleActiveCellChange: PropTypes.func,
 	onSelectionChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
+	columns: PropTypes.array,
 };
 
 CatMGrid.displayName = "CatMGrid";

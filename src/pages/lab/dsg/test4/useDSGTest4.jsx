@@ -9,6 +9,7 @@ import { nanoid } from "nanoid";
 import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "../../../../shared-hooks/dsg/useDSGMeta";
 
 export const useDSGTest4 = () => {
 	const columns = useMemo(
@@ -68,6 +69,18 @@ export const useDSGTest4 = () => {
 			},
 			{
 				...keyColumn(
+					"SOrdQty",
+					// createFloatColumn(2, { enterToNext: true })
+					createFloatColumn(2, { enterToNext: true })
+				),
+				title: "數字欄位",
+				// minWidth: 90,
+				// maxWidth: 90,
+				grow: 1,
+				// disabled: true,
+			},
+			{
+				...keyColumn(
 					"typeA",
 					optionPickerColumn(ProdTypeAPickerComponentContainer, {
 						name: "typeA",
@@ -84,6 +97,7 @@ export const useDSGTest4 = () => {
 						},
 					})
 				),
+				disabled: false,
 				title: "品別",
 				minWidth: 160,
 				maxWidth: 160,
@@ -99,25 +113,17 @@ export const useDSGTest4 = () => {
 				minWidth: 140,
 				maxWidth: 140,
 			},
-			{
-				...keyColumn(
-					"SOrdQty",
-					createFloatColumn(2, { enterToNext: true })
-				),
-				title: "數字欄位",
-				// minWidth: 90,
-				// maxWidth: 90,
-				grow: 1,
-				// disabled: true,
-			},
 		],
 		[]
 	);
 
-	const grid = useDSG({
+	const grid = useDSG({});
+
+	const gridMeta = useDSGMeta({
 		columns,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW,
+		data: grid.gridData,
 	});
 
 	const handleGridProdChange = useCallback(({ rowData }) => {
@@ -185,6 +191,7 @@ export const useDSGTest4 = () => {
 
 	return {
 		grid,
+		gridMeta,
 		handleGridChange,
 		createRow,
 	};

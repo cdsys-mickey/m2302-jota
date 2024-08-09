@@ -1,12 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useCallback, useState } from "react";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import { useMemo } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
+import CrudContext from "../contexts/crud/CrudContext";
 import Arrays from "../shared-modules/sd-arrays";
 import useDebounce from "./useDebounce";
-import { useContext } from "react";
-import CrudContext from "../contexts/crud/CrudContext";
-import { v4 as uuidv4 } from "uuid";
+import { InfiniteLoaderContext } from "../contexts/infinite-loader/InfiniteLoaderContext";
 
 export const useInfiniteLoader = (props = {}) => {
 	const {
@@ -17,7 +15,8 @@ export const useInfiniteLoader = (props = {}) => {
 		debounce = 0,
 	} = props;
 
-	const crud = useContext(CrudContext);
+	// const crud = useContext(CrudContext);
+	const context = useContext(InfiniteLoaderContext);
 
 	const loadingMap = useMemo(() => new Object(), []);
 	const [saveKey, setSaveKey] = useState();
@@ -102,16 +101,16 @@ export const useInfiniteLoader = (props = {}) => {
 			}
 
 			let activeParams;
-			if (!crud) {
+			if (!context) {
 				console.warn(
-					"CrudContext not found, params cannot be memorized"
+					"InfiniteLoaderContext not found, params cannot be memorized"
 				);
 				activeParams = params;
 			} else {
 				if (refresh || usePrevParams) {
-					activeParams = crud.paramsRef?.current;
+					activeParams = context.paramsRef?.current;
 				} else {
-					crud.paramsRef.current = params;
+					context.paramsRef.current = params;
 					activeParams = params;
 				}
 			}
@@ -198,7 +197,7 @@ export const useInfiniteLoader = (props = {}) => {
 			defaultGetSaveKey,
 			defaultGetItemCount,
 			initialFetchSize,
-			crud,
+			context,
 			listData,
 			loadingMap,
 			httpGetAsync,

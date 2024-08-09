@@ -116,6 +116,7 @@ import { D06FrameContainer } from "../pages/D06/D06FrameContainer";
 import { D07Provider } from "../contexts/D07/D07Provider";
 import { D07FrameContainer } from "../pages/D07/D07FrameContainer";
 import { KitchenSinkContainer } from "../pages/lab/KitchenSinkContainer";
+import { InfiniteLoaderProvider } from "../contexts/infinite-loader/InfiniteLoaderProvider";
 
 const AppRoute = () => {
 	return (
@@ -189,9 +190,11 @@ const AppRoute = () => {
 						path="A01"
 						element={
 							<CrudProvider>
-								<A01Provider>
-									<A01FrameContainer />
-								</A01Provider>
+								<InfiniteLoaderProvider>
+									<A01Provider>
+										<A01FrameContainer />
+									</A01Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -199,9 +202,11 @@ const AppRoute = () => {
 						path="A010"
 						element={
 							<CrudProvider>
-								<A010Provider>
-									<A01FrameContainer />
-								</A010Provider>
+								<InfiniteLoaderProvider>
+									<A010Provider>
+										<A01FrameContainer />
+									</A010Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -210,9 +215,11 @@ const AppRoute = () => {
 						path="AA01"
 						element={
 							<CrudProvider>
-								<AA01Provider>
-									<A01FrameContainer />
-								</AA01Provider>
+								<InfiniteLoaderProvider>
+									<AA01Provider>
+										<A01FrameContainer />
+									</AA01Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -260,9 +267,11 @@ const AppRoute = () => {
 						path="A02"
 						element={
 							<CrudProvider>
-								<A02Provider>
-									<A02FrameContainer />
-								</A02Provider>
+								<InfiniteLoaderProvider>
+									<A02Provider>
+										<A02FrameContainer />
+									</A02Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -270,9 +279,11 @@ const AppRoute = () => {
 						path="A03"
 						element={
 							<CrudProvider>
-								<A03Provider>
-									<A03FrameContainer />
-								</A03Provider>
+								<InfiniteLoaderProvider>
+									<A03Provider>
+										<A03FrameContainer />
+									</A03Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -280,9 +291,11 @@ const AppRoute = () => {
 						path="A04"
 						element={
 							<CrudProvider>
-								<A04Provider>
-									<A04FrameContainer />
-								</A04Provider>
+								<InfiniteLoaderProvider>
+									<A04Provider>
+										<A04FrameContainer />
+									</A04Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -290,9 +303,11 @@ const AppRoute = () => {
 						path="A05"
 						element={
 							<CrudProvider>
-								<A05Provider>
-									<A05FrameContainer />
-								</A05Provider>
+								<InfiniteLoaderProvider>
+									<A05Provider>
+										<A05FrameContainer />
+									</A05Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -300,9 +315,11 @@ const AppRoute = () => {
 						path="A06"
 						element={
 							<CrudProvider>
-								<A06Provider>
-									<A06FrameContainer />
-								</A06Provider>
+								<InfiniteLoaderProvider>
+									<A06Provider>
+										<A06FrameContainer />
+									</A06Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -310,9 +327,11 @@ const AppRoute = () => {
 						path="A07"
 						element={
 							<CrudProvider>
-								<A07Provider>
-									<A06FrameContainer />
-								</A07Provider>
+								<InfiniteLoaderProvider>
+									<A07Provider>
+										<A06FrameContainer />
+									</A07Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -320,9 +339,11 @@ const AppRoute = () => {
 						path="A08"
 						element={
 							<CrudProvider>
-								<A08Provider>
-									<A08FrameContainer />
-								</A08Provider>
+								<InfiniteLoaderProvider>
+									<A08Provider>
+										<A08FrameContainer />
+									</A08Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -330,9 +351,11 @@ const AppRoute = () => {
 						path="A09"
 						element={
 							<CrudProvider>
-								<A09Provider>
-									<A09FrameContainer />
-								</A09Provider>
+								<InfiniteLoaderProvider>
+									<A09Provider>
+										<A09FrameContainer />
+									</A09Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -340,9 +363,11 @@ const AppRoute = () => {
 						path="A10"
 						element={
 							<CrudProvider>
-								<A10Provider>
-									<A10FrameContainer />
-								</A10Provider>
+								<InfiniteLoaderProvider>
+									<A10Provider>
+										<A10FrameContainer />
+									</A10Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -350,9 +375,11 @@ const AppRoute = () => {
 						path="A11"
 						element={
 							<CrudProvider>
-								<A11Provider>
-									<A11FrameContainer />
-								</A11Provider>
+								<InfiniteLoaderProvider>
+									<A11Provider>
+										<A11FrameContainer />
+									</A11Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -360,9 +387,11 @@ const AppRoute = () => {
 						path="A12"
 						element={
 							<CrudProvider>
-								<A12Provider>
-									<A12FrameContainer />
-								</A12Provider>
+								<InfiniteLoaderProvider>
+									<A12Provider>
+										<A12FrameContainer />
+									</A12Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -370,9 +399,11 @@ const AppRoute = () => {
 						path="A13"
 						element={
 							<CrudProvider>
-								<A13Provider>
-									<A13FrameContainer />
-								</A13Provider>
+								<InfiniteLoaderProvider>
+									<A13Provider>
+										<A13FrameContainer />
+									</A13Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -380,9 +411,11 @@ const AppRoute = () => {
 						path="A14"
 						element={
 							<CrudProvider>
-								<A14Provider>
-									<A14FrameContainer />
-								</A14Provider>
+								<InfiniteLoaderProvider>
+									<A14Provider>
+										<A14FrameContainer />
+									</A14Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -390,9 +423,11 @@ const AppRoute = () => {
 						path="A15"
 						element={
 							<CrudProvider>
-								<A15Provider>
-									<A15FrameContainer />
-								</A15Provider>
+								<InfiniteLoaderProvider>
+									<A15Provider>
+										<A15FrameContainer />
+									</A15Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -400,9 +435,11 @@ const AppRoute = () => {
 						path="A16"
 						element={
 							<CrudProvider>
-								<A16Provider>
-									<A16FrameContainer />
-								</A16Provider>
+								<InfiniteLoaderProvider>
+									<A16Provider>
+										<A16FrameContainer />
+									</A16Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -410,9 +447,11 @@ const AppRoute = () => {
 						path="A17"
 						element={
 							<CrudProvider>
-								<A17Provider>
-									<A17FrameContainer />
-								</A17Provider>
+								<InfiniteLoaderProvider>
+									<A17Provider>
+										<A17FrameContainer />
+									</A17Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -420,9 +459,11 @@ const AppRoute = () => {
 						path="A18"
 						element={
 							<CrudProvider>
-								<A18Provider>
-									<A18FrameContainer />
-								</A18Provider>
+								<InfiniteLoaderProvider>
+									<A18Provider>
+										<A18FrameContainer />
+									</A18Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -430,9 +471,11 @@ const AppRoute = () => {
 						path="A19"
 						element={
 							<CrudProvider>
-								<A19Provider>
-									<A19FrameContainer />
-								</A19Provider>
+								<InfiniteLoaderProvider>
+									<A19Provider>
+										<A19FrameContainer />
+									</A19Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -440,9 +483,11 @@ const AppRoute = () => {
 						path="A20"
 						element={
 							<CrudProvider>
-								<A20Provider>
-									<A20FrameContainer />
-								</A20Provider>
+								<InfiniteLoaderProvider>
+									<A20Provider>
+										<A20FrameContainer />
+									</A20Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -450,9 +495,11 @@ const AppRoute = () => {
 						path="A21"
 						element={
 							<CrudProvider>
-								<A21Provider>
-									<A21FrameContainer />
-								</A21Provider>
+								<InfiniteLoaderProvider>
+									<A21Provider>
+										<A21FrameContainer />
+									</A21Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -468,9 +515,11 @@ const AppRoute = () => {
 						path="A26"
 						element={
 							<CrudProvider>
-								<A26Provider>
-									<A26FrameContainer />
-								</A26Provider>
+								<InfiniteLoaderProvider>
+									<A26Provider>
+										<A26FrameContainer />
+									</A26Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -480,9 +529,11 @@ const AppRoute = () => {
 						path="B05"
 						element={
 							<CrudProvider>
-								<B05Provider>
-									<B05FrameContainer />
-								</B05Provider>
+								<InfiniteLoaderProvider>
+									<B05Provider>
+										<B05FrameContainer />
+									</B05Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -490,9 +541,11 @@ const AppRoute = () => {
 						path="B06"
 						element={
 							<CrudProvider>
-								<B06Provider>
-									<B06FrameContainer />
-								</B06Provider>
+								<InfiniteLoaderProvider>
+									<B06Provider>
+										<B06FrameContainer />
+									</B06Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -501,9 +554,11 @@ const AppRoute = () => {
 						path="C01"
 						element={
 							<CrudProvider>
-								<C01Provider>
-									<C01FrameContainer />
-								</C01Provider>
+								<InfiniteLoaderProvider>
+									<C01Provider>
+										<C01FrameContainer />
+									</C01Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -511,9 +566,11 @@ const AppRoute = () => {
 						path="C02"
 						element={
 							<CrudProvider>
-								<C02Provider>
-									<C02FrameContainer />
-								</C02Provider>
+								<InfiniteLoaderProvider>
+									<C02Provider>
+										<C02FrameContainer />
+									</C02Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -521,9 +578,11 @@ const AppRoute = () => {
 						path="C03"
 						element={
 							<CrudProvider>
-								<C03Provider>
-									<C03FrameContainer />
-								</C03Provider>
+								<InfiniteLoaderProvider>
+									<C03Provider>
+										<C03FrameContainer />
+									</C03Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -531,9 +590,11 @@ const AppRoute = () => {
 						path="C04"
 						element={
 							<CrudProvider>
-								<C04Provider>
-									<C04FrameContainer />
-								</C04Provider>
+								<InfiniteLoaderProvider>
+									<C04Provider>
+										<C04FrameContainer />
+									</C04Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -541,9 +602,11 @@ const AppRoute = () => {
 						path="C05"
 						element={
 							<CrudProvider>
-								<C05Provider>
-									<C05FrameContainer />
-								</C05Provider>
+								<InfiniteLoaderProvider>
+									<C05Provider>
+										<C05FrameContainer />
+									</C05Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -552,9 +615,11 @@ const AppRoute = () => {
 						path="C06"
 						element={
 							<CrudProvider>
-								<C06Provider>
-									<C06FrameContainer />
-								</C06Provider>
+								<InfiniteLoaderProvider>
+									<C06Provider>
+										<C06FrameContainer />
+									</C06Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -562,9 +627,11 @@ const AppRoute = () => {
 						path="C07"
 						element={
 							<CrudProvider>
-								<C07Provider>
-									<C07FrameContainer />
-								</C07Provider>
+								<InfiniteLoaderProvider>
+									<C07Provider>
+										<C07FrameContainer />
+									</C07Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -572,9 +639,11 @@ const AppRoute = () => {
 						path="C08"
 						element={
 							<CrudProvider>
-								<C08Provider>
-									<C08FrameContainer />
-								</C08Provider>
+								<InfiniteLoaderProvider>
+									<C08Provider>
+										<C08FrameContainer />
+									</C08Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -582,9 +651,11 @@ const AppRoute = () => {
 						path="C09"
 						element={
 							<CrudProvider>
-								<C09Provider>
-									<C09FrameContainer />
-								</C09Provider>
+								<InfiniteLoaderProvider>
+									<C09Provider>
+										<C09FrameContainer />
+									</C09Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -593,9 +664,11 @@ const AppRoute = () => {
 						path="D01"
 						element={
 							<CrudProvider>
-								<D01Provider>
-									<D01FrameContainer />
-								</D01Provider>
+								<InfiniteLoaderProvider>
+									<D01Provider>
+										<D01FrameContainer />
+									</D01Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -603,9 +676,11 @@ const AppRoute = () => {
 						path="D02"
 						element={
 							<CrudProvider>
-								<D02Provider>
-									<D02FrameContainer />
-								</D02Provider>
+								<InfiniteLoaderProvider>
+									<D02Provider>
+										<D02FrameContainer />
+									</D02Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -613,9 +688,11 @@ const AppRoute = () => {
 						path="D041"
 						element={
 							<CrudProvider>
-								<D041Provider>
-									<D041FrameContainer />
-								</D041Provider>
+								<InfiniteLoaderProvider>
+									<D041Provider>
+										<D041FrameContainer />
+									</D041Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -623,9 +700,11 @@ const AppRoute = () => {
 						path="D05"
 						element={
 							<CrudProvider>
-								<D05Provider>
-									<D05FrameContainer />
-								</D05Provider>
+								<InfiniteLoaderProvider>
+									<D05Provider>
+										<D05FrameContainer />
+									</D05Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -633,9 +712,11 @@ const AppRoute = () => {
 						path="D06"
 						element={
 							<CrudProvider>
-								<D06Provider>
-									<D06FrameContainer />
-								</D06Provider>
+								<InfiniteLoaderProvider>
+									<D06Provider>
+										<D06FrameContainer />
+									</D06Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -643,9 +724,11 @@ const AppRoute = () => {
 						path="D07"
 						element={
 							<CrudProvider>
-								<D07Provider>
-									<D07FrameContainer />
-								</D07Provider>
+								<InfiniteLoaderProvider>
+									<D07Provider>
+										<D07FrameContainer />
+									</D07Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>
@@ -653,9 +736,11 @@ const AppRoute = () => {
 						path="ZA03"
 						element={
 							<CrudProvider>
-								<ZA03Provider>
-									<ZA03FrameContainer />
-								</ZA03Provider>
+								<InfiniteLoaderProvider>
+									<ZA03Provider>
+										<ZA03FrameContainer />
+									</ZA03Provider>
+								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
 					/>

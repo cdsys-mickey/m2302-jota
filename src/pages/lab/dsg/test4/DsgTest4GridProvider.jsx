@@ -10,6 +10,7 @@ export const DsgTest4GridProvider = ({ children }) => {
 		<DSGContext.Provider
 			value={{
 				...dsgTest4.grid,
+				...dsgTest4.gridMeta,
 			}}>
 			{children}
 		</DSGContext.Provider>

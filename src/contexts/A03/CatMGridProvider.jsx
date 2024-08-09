@@ -10,6 +10,12 @@ import { useRef } from "react";
 import { RoomTwoTone } from "@mui/icons-material";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
+import { useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
+import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
+import { A03Context } from "./A03Context";
 
 const CatMGridProvider = (props) => {
 	const { children } = props;
@@ -17,12 +23,52 @@ const CatMGridProvider = (props) => {
 		useWebApi();
 	const { token } = useContext(AuthContext);
 
-	// const dsg = useContext(DSGContext);
-	const dsg = useDSGCodeEditor({
+	const a03 = useContext(A03Context);
+	const grid = useDSG({
 		gridId: "CatM",
 		keyColumn: "MClas",
 		otherColumns: "ClassData",
 	});
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"MClas",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				disabled: grid.isPersisted,
+				title: "代碼",
+				minWidth: 60,
+			},
+			{
+				...keyColumn(
+					"ClassData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "中分類名稱",
+				grow: 5,
+				disabled: a03.readOnly,
+			},
+		],
+		[a03.readOnly, grid.isPersisted]
+	);
+
+	const gridMeta = useDSGMeta({
+		columns,
+		data: grid.gridData,
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
+	});
+
+	const codeEditor = useDSGCodeEditor({
+		grid,
+		gridMeta,
+	});
+
 	const dialogs = useContext(DialogsContext);
 	const catS = useContext(CatSGridContext);
 
@@ -36,11 +82,11 @@ const CatMGridProvider = (props) => {
 	});
 
 	const clear = useCallback(() => {
-		dsg.setGridData([], {
+		grid.setGridData([], {
 			reset: true,
 			commit: true,
 		});
-	}, [dsg]);
+	}, [grid]);
 
 	const selectRow = useCallback(
 		({ rowData } = {}) => {
@@ -72,8 +118,8 @@ const CatMGridProvider = (props) => {
 			}));
 			if (lgId) {
 				if (!supressLoading) {
-					dsg.setGridLoading(true);
-					dsg.setSelectedRow(null);
+					grid.setGridLoading(true);
+					gridMeta.setSelectedRow(null);
 				}
 				try {
 					setState((prev) => ({
@@ -85,7 +131,7 @@ const CatMGridProvider = (props) => {
 						bearer: token,
 					});
 					if (status.success) {
-						dsg.handleGridDataLoaded(payload.data);
+						grid.handleGridDataLoaded(payload.data);
 					} else {
 						switch (status.code) {
 							default:
@@ -100,13 +146,13 @@ const CatMGridProvider = (props) => {
 						error: err,
 					}));
 				} finally {
-					dsg.setGridLoading(false);
+					grid.setGridLoading(false);
 				}
 			} else {
-				dsg.clear();
+				grid.clear();
 			}
 		},
-		[dsg, httpGetAsync, token]
+		[grid, httpGetAsync, token]
 	);
 
 	const reload = useCallback(() => {
@@ -128,13 +174,13 @@ const CatMGridProvider = (props) => {
 				console.log("handleCreate response.payload", payload);
 				reload();
 				if (status.success) {
-					dsg.commitChanges(newValue);
+					grid.commitChanges(newValue);
 					selectRow({ rowData, rowIndex });
 					toast.success(
 						`中分類 ${rowData.MClas}/${rowData.ClassData} 新增成功`
 					);
 				} else {
-					//dsg.rollbackChanges();
+					//grid.rollbackChanges();
 					throw error?.message || new Error("新增失敗");
 				}
 			} catch (err) {
@@ -142,7 +188,7 @@ const CatMGridProvider = (props) => {
 				reload();
 			}
 		},
-		[httpPostAsync, token, state.lgId, reload, dsg, selectRow]
+		[httpPostAsync, token, state.lgId, reload, grid, selectRow]
 	);
 
 	const handleUpdate = useCallback(
@@ -160,7 +206,7 @@ const CatMGridProvider = (props) => {
 				});
 				console.log("handleCreate response.payload", payload);
 				if (status.success) {
-					dsg.commitChanges(newValue);
+					grid.commitChanges(newValue);
 					selectRow({ rowData, rowIndex });
 					toast.success(
 						`中分類 ${rowData.MClas}/${rowData.ClassData} 修改成功`
@@ -173,7 +219,7 @@ const CatMGridProvider = (props) => {
 				reload();
 			}
 		},
-		[state.lgId, httpPutAsync, token, dsg, selectRow, reload]
+		[state.lgId, httpPutAsync, token, grid, selectRow, reload]
 	);
 
 	const handleDelete = useCallback(
@@ -200,19 +246,19 @@ const CatMGridProvider = (props) => {
 				console.error(err);
 				toast.error(`刪除中分類發生例外: ${err.message}`);
 			} finally {
-				dsg.setDeletingRow(null);
+				// grid.setDeletingRow(null);
 				dialogs.closeLatest();
 				reload();
 			}
 		},
-		[state.lgId, httpDeleteAsync, token, reload, selectRow, dialogs, dsg]
+		[state.lgId, httpDeleteAsync, token, reload, selectRow, dialogs]
 	);
 
 	const handleConfirmDelete = useCallback(
 		async (row) => {
 			const { rowData } = row;
 			console.log(`confirm DELETE`, rowData);
-			dsg.setDeletingRow(row);
+			// grid.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除中分類 ${rowData.MClas}/${rowData.ClassData} ?`,
@@ -220,20 +266,20 @@ const CatMGridProvider = (props) => {
 					handleDelete(RoomTwoTone);
 				},
 				onCancel: () => {
-					dsg.setDeletingRow(null);
-					dsg.rollbackChanges();
+					// grid.setDeletingRow(null);
+					grid.rollbackChanges();
 					dialogs.closeLatest();
 				},
 			});
 		},
-		[dialogs, handleDelete, dsg]
+		[dialogs, handleDelete, grid]
 	);
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
 			//dsg.rollbackChanges();
 			toast.error(`中分類 ${row.rowData.MClas} 已存在`);
-			dsg.setValueByRowIndex(
+			grid.setValueByRowIndex(
 				row.rowIndex,
 				{
 					MClas: "",
@@ -241,22 +287,25 @@ const CatMGridProvider = (props) => {
 				{ data: newValue }
 			);
 		},
-		[dsg]
+		[grid]
 	);
 
 	const onRowSelectionChange = useCallback(
 		(row) => {
-			dsg.setSelectedRow(row);
+			gridMeta.setSelectedRow(row);
 			selectRow(row);
 		},
-		[dsg, selectRow]
+		[grid, selectRow]
 	);
 
 	return (
 		<CatMGridContext.Provider
 			value={{
 				...state,
-				...dsg,
+				grid,
+				gridMeta,
+				codeEditor,
+
 				clear,
 				load,
 				onRowSelectionChange,

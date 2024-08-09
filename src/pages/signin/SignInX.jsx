@@ -40,6 +40,9 @@ const SignInX = memo((props) => {
 					<Grid item xs={12}>
 						<ControlledTextField
 							type="password"
+							inputProps={{
+								autocomplete: "current-password",
+							}}
 							fullWidth
 							name="pw"
 							label="通行碼"

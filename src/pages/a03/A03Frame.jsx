@@ -10,6 +10,9 @@ import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import ContainerEx from "../../shared-components/ContainerEx";
+import { CatSProvider } from "../../contexts/A03/CatSProvider";
+import { CatMProvider } from "../../contexts/A03/CatMProvider";
+import { CatLProvider } from "../../contexts/A03/CatLProvider";
 
 const A03Frame = memo((props) => {
 	const { drawerOpen, boxStyles } = props;
@@ -20,21 +23,27 @@ const A03Frame = memo((props) => {
 			<A03Toolbar />
 			<ContainerEx maxWidth="lg" alignLeft>
 				<Grid container spacing={1}>
-					<CatSGridProvider>
-						<CatMGridProvider>
+					<CatSProvider>
+						{/* <CatSGridProvider> */}
+						<CatMProvider>
+							{/* <CatMGridProvider> */}
 							<Grid item xs={12} sm={6} md={4}>
-								<CatLGridProvider>
+								<CatLProvider>
+									{/* <CatLGridProvider> */}
 									<CatLGridContainer />
-								</CatLGridProvider>
+									{/* </CatLGridProvider> */}
+								</CatLProvider>
 							</Grid>
 							<Grid item xs={12} sm={6} md={4}>
 								<CatMGridContainer />
 							</Grid>
-						</CatMGridProvider>
+							{/* </CatMGridProvider> */}
+						</CatMProvider>
 						<Grid item xs={12} sm={6} md={4}>
 							<CatSGridContainer />
 						</Grid>
-					</CatSGridProvider>
+						{/* </CatSGridProvider> */}
+					</CatSProvider>
 				</Grid>
 			</ContainerEx>
 		</Box>

@@ -12,6 +12,7 @@ import { DeptSwitchDialogContainer } from "@/components/account/DeptSwitchDialog
 import { useMemo } from "react";
 import { PushMessagesIconButtonContainer } from "@/components/push-messages/PushMessagesIconButtonContainer";
 import { PushMessagesPopoverContainer } from "@/components/push-messages/PushMessagesPopoverContainer";
+import { InfiniteLoaderProvider } from "../../contexts/infinite-loader/InfiniteLoaderProvider";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
@@ -64,7 +65,9 @@ const FrameBanner = memo(
 						{/* 通知按鈕 */}
 						<PushMessagesIconButtonContainer />
 						{/* 通知小視窗 */}
+
 						<PushMessagesPopoverContainer />
+
 						{/* 帳號 */}
 						<AvatarButtonContainer />
 					</Stack>

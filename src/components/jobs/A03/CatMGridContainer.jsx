@@ -1,36 +1,62 @@
 import { A03Context } from "@/contexts/A03/A03Context";
-import { CatMGridContext } from "@/contexts/A03/CatMGridContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
+import { CatMContext } from "@/contexts/A03/CatMContext";
 import CatMGrid from "./CatMGrid";
 
 export const CatMGridContainer = () => {
 	const { height } = useWindowSize();
-	const catM = useContext(CatMGridContext);
+	// const catM = useContext(CatMGridContext);
+	const catM = useContext(CatMContext);
 	const a03 = useContext(A03Context);
 	const { canDelete } = a03;
 
 	return (
-		<CatMGrid
-			lockRows={a03.readOnly}
-			setGridRef={catM.setGridRef}
-			lgId={catM.lgId}
-			data={catM.gridData}
-			loading={catM.gridLoading}
-			handleChange={catM.buildGridChangeHandler({
-				onCreate: catM.handleCreate,
-				onUpdate: catM.handleUpdate,
-				onDelete: canDelete ? catM.handleConfirmDelete : null,
-				onDuplicatedError: catM.handleDuplicatedError,
-			})}
-			height={height - 176}
-			isPersisted={catM.isPersisted}
-			onSelectionChange={catM.buildSelectionChangeHandler({
-				onRowSelectionChange: catM.onRowSelectionChange,
-			})}
-			canCreate={a03.canCreate}
-			getRowClassName={catM.getRowClassName}
-		/>
+		<DSGContext.Provider value={{ ...catM.grid, ...catM.gridMeta }}>
+			<CatMGrid
+				lockRows={a03.readOnly}
+				setGridRef={catM.gridMeta.setGridRef}
+				columns={catM.gridMeta.columns}
+				data={catM.grid.gridData}
+				loading={catM.grid.gridLoading}
+				handleChange={catM.codeEditor.buildGridChangeHandler({
+					onCreate: catM.codeEditor.handleCreate,
+					onUpdate: catM.codeEditor.handleUpdate,
+					onDelete: canDelete
+						? catM.codeEditor.handleConfirmDelete
+						: null,
+					onDuplicatedError: catM.codeEditor.handleDuplicatedError,
+				})}
+				height={height - 176}
+				onSelectionChange={catM.gridMeta.buildSelectionChangeHandler({
+					onRowSelectionChange: catM.onRowSelectionChange,
+				})}
+				onActiveCellChange={catM.gridMeta}
+				canCreate={a03.canCreate}
+				getRowClassName={catM.grid.getRowClassName}
+			/>
+			{/* <CatMGrid
+				lockRows={a03.readOnly}
+				setGridRef={catM.setGridRef}
+				lgId={catM.lgId}
+				columns={catM.gridMeta.columns}
+				data={catM.grid.gridData}
+				loading={catM.grid.gridLoading}
+				handleChange={catM.codeEditor.buildGridChangeHandler({
+					onCreate: catM.handleCreate,
+					onUpdate: catM.handleUpdate,
+					onDelete: canDelete ? catM.handleConfirmDelete : null,
+					onDuplicatedError: catM.handleDuplicatedError,
+				})}
+				height={height - 176}
+				onSelectionChange={catM.gridMeta.buildSelectionChangeHandler({
+					onRowSelectionChange: catM.onRowSelectionChange,
+				})}
+				canCreate={a03.canCreate}
+				getRowClassName={catM.grid.getRowClassName}
+			/> */}
+		</DSGContext.Provider>
 	);
 };
 

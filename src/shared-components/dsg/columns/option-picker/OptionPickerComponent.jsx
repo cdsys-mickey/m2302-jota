@@ -81,7 +81,7 @@ const OptionPickerComponent = memo((props) => {
 			hideBorders
 			toastError
 			hideControls={hideControls}
-			hidePlaceholder={!active}
+			// hidePlaceholder={!active}
 			disableFadeOut
 			cell={cell}
 			{...rest}

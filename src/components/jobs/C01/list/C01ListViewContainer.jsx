@@ -9,10 +9,12 @@ import { C01ListRowContainer } from "./C01ListRowContainer";
 import { C01Context } from "@/contexts/C01/C01Context";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import CrudContext from "../../../../contexts/crud/CrudContext";
+import { InfiniteLoaderContext } from "../../../../contexts/infinite-loader/InfiniteLoaderContext";
 
 export const C01ListViewContainer = () => {
 	const c01 = useContext(C01Context);
 	const crud = useContext(CrudContext);
+	const infiniteLoader = useContext(InfiniteLoaderContext);
 	const { loadList } = c01;
 	const form = useFormContext();
 	const { getValues, setValue } = form;

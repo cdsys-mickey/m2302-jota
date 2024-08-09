@@ -7,6 +7,12 @@ import { CatSGridContext } from "./CatSGridContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
+import { useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
+import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
+import { A03Context } from "./A03Context";
 
 const CatSGridProvider = (props) => {
 	const { children } = props;
@@ -14,12 +20,53 @@ const CatSGridProvider = (props) => {
 		useWebApi();
 	const { token } = useContext(AuthContext);
 
-	// const dsg = useContext(DSGContext);
-	const dsg = useDSGCodeEditor({
+	const a03 = useContext(A03Context);
+	const grid = useDSG({
 		gridId: "CatS",
 		keyColumn: "SClas",
 		otherColumns: "ClassData",
 	});
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"SClas",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				disabled: grid.isPersisted,
+				title: "代碼",
+				grow: 1,
+				minWidth: 60,
+			},
+			{
+				...keyColumn(
+					"ClassData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "小分類名稱",
+				grow: 5,
+				disabled: a03.readOnly,
+			},
+		],
+		[grid.isPersisted, a03.readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		columns,
+		data: grid.gridData,
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
+	});
+
+	const codeEditor = useDSGCodeEditor({
+		grid,
+		gridMeta,
+	});
+
 	const dialogs = useContext(DialogsContext);
 	const [state, setState] = useState({
 		lgId: null,
@@ -28,11 +75,11 @@ const CatSGridProvider = (props) => {
 	});
 
 	const clear = useCallback(() => {
-		dsg.setGridData([], {
+		grid.setGridData([], {
 			reset: true,
 			commit: true,
 		});
-	}, [dsg]);
+	}, [grid]);
 
 	const selectRow = useCallback(({ rowData } = {}) => {
 		setState((prev) => ({
@@ -51,7 +98,7 @@ const CatSGridProvider = (props) => {
 			}));
 			if (lgId && mdId) {
 				if (!supressLoading) {
-					dsg.setGridLoading(true);
+					grid.setGridLoading(true);
 				}
 				try {
 					const { status, payload } = await httpGetAsync({
@@ -59,7 +106,7 @@ const CatSGridProvider = (props) => {
 						bearer: token,
 					});
 					if (status.success) {
-						dsg.handleGridDataLoaded(payload.data || []);
+						grid.handleGridDataLoaded(payload.data || []);
 					} else {
 						switch (status.code) {
 							default:
@@ -74,13 +121,13 @@ const CatSGridProvider = (props) => {
 						error: err,
 					}));
 				} finally {
-					dsg.setGridLoading(false);
+					grid.setGridLoading(false);
 				}
 			} else {
-				dsg.clear();
+				grid.clear();
 			}
 		},
-		[dsg, httpGetAsync, token]
+		[grid, httpGetAsync, token]
 	);
 
 	const reload = useCallback(() => {
@@ -102,7 +149,7 @@ const CatSGridProvider = (props) => {
 				});
 				console.log("handleCreate response.payload", payload);
 				if (status.success) {
-					dsg.commitChanges(newValue);
+					grid.commitChanges(newValue);
 					selectRow({ rowData });
 					toast.success(
 						`小分類 ${rowData.SClas}/${rowData.ClassData} 新增成功`
@@ -115,7 +162,7 @@ const CatSGridProvider = (props) => {
 				reload();
 			}
 		},
-		[httpPostAsync, token, state.lgId, state.mdId, dsg, selectRow, reload]
+		[httpPostAsync, token, state.lgId, state.mdId, grid, selectRow, reload]
 	);
 
 	const handleUpdate = useCallback(
@@ -135,7 +182,7 @@ const CatSGridProvider = (props) => {
 				console.log("handleCreate response.payload", payload);
 
 				if (status.success) {
-					dsg.commitChanges(newValue);
+					grid.commitChanges(newValue);
 					selectRow({ rowData });
 					toast.success(
 						`小分類 ${rowData.SClas}/${rowData.ClassData} 修改成功`
@@ -148,7 +195,7 @@ const CatSGridProvider = (props) => {
 				reload();
 			}
 		},
-		[state.lgId, state.mdId, httpPutAsync, token, reload, dsg, selectRow]
+		[state.lgId, state.mdId, httpPutAsync, token, reload, grid, selectRow]
 	);
 
 	const handleDelete = useCallback(
@@ -172,14 +219,13 @@ const CatSGridProvider = (props) => {
 				console.error(err);
 				toast.error(`刪除小分類發生例外: ${err.message}`);
 			} finally {
-				dsg.setDeletingRow(null);
+				// grid.setDeletingRow(null);
 				dialogs.closeLatest();
 				reload();
 			}
 		},
 		[
 			dialogs,
-			dsg,
 			httpDeleteAsync,
 			reload,
 			selectRow,
@@ -193,7 +239,7 @@ const CatSGridProvider = (props) => {
 		async (row) => {
 			const { rowData } = row;
 			console.log(`confirm DELETE`, rowData);
-			dsg.setDeletingRow(row);
+			// grid.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除小分類 ${rowData.SClas}/${rowData.ClassData} ?`,
@@ -201,20 +247,20 @@ const CatSGridProvider = (props) => {
 					handleDelete(row);
 				},
 				onCancel: () => {
-					dsg.setDeletingRow(null);
-					dsg.rollbackChanges();
+					// grid.setDeletingRow(null);
+					grid.rollbackChanges();
 					dialogs.closeLatest();
 				},
 			});
 		},
-		[dialogs, handleDelete, dsg]
+		[dialogs, handleDelete, grid]
 	);
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
-			// dsg.rollbackChanges();
+			// grid.rollbackChanges();
 			toast.error(`小分類 ${row.rowData.SClas} 已存在`);
-			dsg.setValueByRowIndex(
+			grid.setValueByRowIndex(
 				row.rowIndex,
 				{
 					SClas: "",
@@ -224,21 +270,24 @@ const CatSGridProvider = (props) => {
 				}
 			);
 		},
-		[dsg]
+		[grid]
 	);
 
 	const onRowSelectionChange = useCallback(
 		(row) => {
-			dsg.setSelectedRow(row);
+			gridMeta.setSelectedRow(row);
 			selectRow(row);
 		},
-		[dsg, selectRow]
+		[grid, selectRow]
 	);
 
 	return (
 		<CatSGridContext.Provider
 			value={{
-				...dsg,
+				grid,
+				gridMeta,
+				codeEditor,
+
 				clear,
 				load,
 				// handleGridChange,

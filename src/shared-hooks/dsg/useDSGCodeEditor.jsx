@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import queryString from "query-string";
 import Objects from "../../shared-modules/sd-objects";
 import _ from "lodash";
+import { useState } from "react";
 
 const defaultTransformForReading = (payload) => {
 	return payload?.data || [];
@@ -18,13 +19,16 @@ const defaultTransformForSubmmit = (payload) => {
 };
 
 export const useDSGCodeEditor = ({
-	token,
-	gridId,
-	keyColumn = "CodeID",
-	nameColumn = "CodeData",
-	otherColumns,
-	initialLockRows = true,
+	// 要餵給 useDSG 的參數
+	// gridId,
+	// keyColumn = "CodeID",
+	// // nameColumn = "CodeData",
+	// otherColumns,
+	// initialLockRows = true,
+	grid,
+	gridMeta,
 	baseUri,
+	token,
 	displayName = "代碼",
 	querystring,
 	disableAutoDelete = false,
@@ -34,24 +38,40 @@ export const useDSGCodeEditor = ({
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 
-	const dsg = useDSG({ gridId, keyColumn, otherColumns, initialLockRows });
 	const dialogs = useContext(DialogsContext);
+	const [state, setState] = useState({
+		baseUri: baseUri,
+	});
 
 	const load = useCallback(
-		async ({ supressLoading = false } = {}) => {
+		async ({ params: _params, baseUri, supressLoading = false } = {}) => {
 			if (!supressLoading) {
-				dsg.setGridLoading(true);
+				grid.setGridLoading(true);
 			}
+
+			// 更新 baseUri
+			if (baseUri) {
+				setState((prev) => ({
+					...prev,
+					baseUri,
+				}));
+			}
+
+			const updatedBaseUri = baseUri || state.baseUri;
+
 			try {
 				const { status, payload } = await httpGetAsync({
-					url: baseUri,
+					url: updatedBaseUri,
 					bearer: token,
-					...(querystring && {
-						params: queryString.parse(querystring),
-					}),
+					params: {
+						..._params,
+						...(querystring && {
+							params: queryString.parse(querystring),
+						}),
+					},
 				});
 				if (status.success) {
-					dsg.handleGridDataLoaded(transformForReading(payload));
+					grid.handleGridDataLoaded(transformForReading(payload));
 				} else {
 					switch (status.code) {
 						default:
@@ -62,10 +82,10 @@ export const useDSGCodeEditor = ({
 			} catch (err) {
 				console.error("load", err);
 			} finally {
-				dsg.setGridLoading(false);
+				grid.setGridLoading(false);
 			}
 		},
-		[baseUri, dsg, httpGetAsync, querystring, token, transformForReading]
+		[baseUri, grid, httpGetAsync, querystring, token, transformForReading]
 	);
 
 	const reload = useCallback(() => {
@@ -73,7 +93,7 @@ export const useDSGCodeEditor = ({
 	}, [load]);
 
 	const handleCreate = useCallback(
-		async ({ rowData }, newValue) => {
+		async ({ rowIndex, rowData }, newValue) => {
 			console.log(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
@@ -83,9 +103,9 @@ export const useDSGCodeEditor = ({
 				});
 				console.log("handleCreate response.payload", payload);
 				if (status.success) {
-					dsg.commitChanges(newValue);
+					grid.commitChanges(newValue);
 					toast.success(
-						`${displayName} ${rowData[keyColumn]} 新增成功`
+						`${displayName} ${rowData[grid.keyColumn]} 新增成功`
 					);
 				} else {
 					throw error?.message || new Error("新增失敗");
@@ -98,9 +118,8 @@ export const useDSGCodeEditor = ({
 		[
 			baseUri,
 			displayName,
-			dsg,
+			grid,
 			httpPostAsync,
-			keyColumn,
 			reload,
 			token,
 			transformForSubmitting,
@@ -118,9 +137,9 @@ export const useDSGCodeEditor = ({
 				});
 				console.log("handleCreate response.payload", payload);
 				if (status.success) {
-					dsg.commitChanges(newValue);
+					grid.commitChanges(newValue);
 					toast.success(
-						`${displayName} ${rowData[keyColumn]}/${rowData[nameColumn]} 修改成功`
+						`${displayName} ${rowData[grid.keyColumn]} 修改成功`
 					);
 				} else {
 					throw error?.message || new Error("修改失敗");
@@ -133,10 +152,8 @@ export const useDSGCodeEditor = ({
 		[
 			baseUri,
 			displayName,
-			dsg,
+			grid,
 			httpPutAsync,
-			keyColumn,
-			nameColumn,
 			reload,
 			token,
 			transformForSubmitting,
@@ -144,139 +161,153 @@ export const useDSGCodeEditor = ({
 	);
 
 	const handleDelete = useCallback(
-		async ({ rowData }) => {
-			console.log(`DELETE`, rowData);
+		async (rows) => {
+			console.log(`DELETE`, rows);
 			try {
-				const key = rowData[keyColumn];
-				const { status, error } = await httpDeleteAsync({
-					url: `${baseUri}/${key}`,
-					bearer: token,
-				});
+				let success = 0;
+				let error;
+				await Promise.all(
+					rows.map(async (rowData) => {
+						const key = rowData[grid.keyColumn];
+						try {
+							const { status, error } = await httpDeleteAsync({
+								url: `${baseUri}/${key}`,
+								bearer: token,
+							});
 
-				if (status.success) {
-					toast.success(
-						`${displayName} ${rowData[keyColumn]} 刪除成功`
-					);
+							if (status.success) {
+								success++;
+							} else {
+								throw error || new Error();
+							}
+						} catch (err) {
+							error = err;
+						}
+					})
+				);
+				if (success > 0) {
+					toast.success(`刪除成功 ${success} 筆${displayName || ""}`);
 				} else {
-					throw error?.message || new Error("刪除失敗");
+					toast.warn(
+						"沒有刪除任何資料" + error?.message
+							? ": " + error.message
+							: ""
+					);
 				}
 			} catch (err) {
 				console.error(err);
 				toast.error(`刪除${displayName}發生例外: ${err.message}`);
 			} finally {
-				dsg.setDeletingRow(null);
+				// grid.setDeletingRow(null);
 				reload();
 			}
 		},
-		[baseUri, displayName, dsg, httpDeleteAsync, keyColumn, reload, token]
+		[baseUri, displayName, grid?.keyColumn, httpDeleteAsync, reload, token]
 	);
 
 	const isExistingRow = useCallback(
 		({ rowData }) => {
-			return dsg.prevGridData.some((prevRowData) => {
-				const prevKey = _.get(prevRowData, keyColumn);
-				const key = _.get(rowData, keyColumn);
+			return grid.prevGridData.some((prevRowData) => {
+				const prevKey = _.get(prevRowData, grid.keyColumn);
+				const key = _.get(rowData, grid.keyColumn);
 				return prevKey === key;
 			});
 		},
-		[dsg.prevGridData, keyColumn]
+		[grid?.keyColumn, grid?.prevGridData]
 	);
 
 	const isUnchanged = useCallback(
 		({ rowData, rowIndex }) => {
-			const prevRowData = dsg.prevGridData[rowIndex];
-			const prevKey = _.get(prevRowData, keyColumn);
-			const rowKey = _.get(rowData, keyColumn);
+			const prevRowData = grid.prevGridData[rowIndex];
+			const prevKey = _.get(prevRowData, grid.keyColumn);
+			const rowKey = _.get(rowData, grid.keyColumn);
 
 			if (prevKey !== rowKey) {
 				throw `keys mismatched ${prevKey} → ${rowKey}`;
 			}
 
 			return Objects.arePropsEqual(prevRowData, rowData, {
-				fields: dsg.otherColumnNames,
+				fields: grid.otherColumnNames,
 			});
 		},
-		[dsg.otherColumnNames, dsg.prevGridData, keyColumn]
+		[grid?.keyColumn, grid?.otherColumnNames, grid?.prevGridData]
 	);
 
 	const handleConfirmDelete = useCallback(
-		async (row) => {
-			const { rowData } = row;
-			console.log(`confirm DELETE`, rowData);
-			dsg.setDeletingRow(row);
+		async (rows) => {
+			if (!rows || rows.length === 0) {
+				throw new Error("未指定 rows");
+			}
+
+			let message;
+
+			if (rows.length > 1) {
+				message = ` ${rows.length} 筆代碼`;
+			} else {
+				const firstRow = rows[0];
+				message = `${displayName}「${firstRow[grid.keyColumn]}」`;
+			}
+
 			dialogs.create({
 				title: "刪除確認",
-				message: `確定要刪除${displayName} ${rowData[keyColumn]}?`,
+				message: `確定要刪除${message}?`,
 				onConfirm: () => {
-					handleDelete(row);
+					handleDelete(rows);
 					dialogs.closeLatest();
 				},
 				onCancel: () => {
-					dsg.setDeletingRow(null);
-					dsg.rollbackChanges();
+					// dsg.setDeletingRow(null);
+					grid.rollbackChanges();
 					dialogs.closeLatest();
 					// 游標移回原來的位置
 				},
 			});
 		},
-		[dialogs, displayName, dsg, handleDelete, keyColumn]
+		[dialogs, displayName, grid, handleDelete]
 	);
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
-			toast.error(`${displayName} ${row.rowData[keyColumn]} 已存在`);
+			toast.error(`${displayName} ${row.rowData[grid.keyColumn]} 已存在`);
 
-			dsg.setValueByRowIndex(
+			grid.setValueByRowIndex(
 				row.rowIndex,
 				{
-					[keyColumn]: "",
+					[grid.keyColumn]: "",
 				},
 				{
 					data: newValue,
 				}
 			);
 			setTimeout(() => {
-				dsg.setActiveCell({ row: row.rowIndex, col: 0 });
+				gridMeta.setActiveCell({ row: row.rowIndex, col: 0 });
 			}, 0);
 		},
-		[displayName, dsg, keyColumn]
+		[displayName, grid, gridMeta]
 	);
 
 	const handleDeleteOperation = useCallback(
 		({ operation, onDelete, newValue }) => {
-			const fromRowIndex = operation.fromRowIndex;
-			const prevFromRowData = dsg.prevGridData[fromRowIndex];
+			const rows = grid.prevGridData.slice(
+				operation.fromRowIndex,
+				operation.toRowIndex
+			);
 
-			const toRowIndex = operation.toRowIndex;
-			const prevToRowData = dsg.prevGridData[toRowIndex];
-
-			if (prevFromRowData) {
-				const fromRow = {
-					rowIndex: fromRowIndex,
-					rowData: prevFromRowData,
-				};
-				const toRow =
-					fromRowIndex === toRowIndex
-						? null
-						: {
-								rowIndex: toRowIndex,
-								rowData: prevToRowData,
-						  };
-				console.log(`[DSG DELETE]`, fromRow, toRow);
-				if (onDelete) {
-					onDelete(fromRow, toRow);
-				}
+			if (onDelete) {
+				onDelete(rows);
 			} else {
-				dsg.setGridData(newValue);
+				grid.setGridData(newValue);
 			}
 		},
-		[dsg]
+		[grid]
 	);
 
+	/**
+	 * 行為判斷都是靠第一行, 但處理時資料要餵全部
+	 */
 	const handleUpdateOperation = useCallback(
 		({
-			rowIndex,
-			rowData,
+			operation,
 			newValue,
 			onDuplicatedError,
 			onPatch,
@@ -286,78 +317,77 @@ export const useDSGCodeEditor = ({
 			onCreate,
 			onDelete,
 		}) => {
-			const row = {
-				rowIndex,
-				rowData,
+			const firstRow = {
+				rowIndex: operation.fromRowIndex,
+				rowData: newValue[operation.fromRowIndex],
 			};
+			const prevRowData = grid.prevGridData[operation.fromRowIndex];
 			if (
-				Objects.isAllPropsNotNullOrEmpty(rowData, [
-					keyColumn,
-					...dsg.otherColumnNames,
+				Objects.isAllPropsNotNullOrEmpty(firstRow.rowData, [
+					grid.keyColumn,
+					...grid.otherColumnNames,
 				])
 			) {
 				// 所有欄位都有值(包含 Key)
-
-				console.log("CREATE or UPDATE", rowData);
-				const key = _.get(rowData, keyColumn);
+				grid.handleDirtyCheck(firstRow.rowData, prevRowData);
+				console.log("CREATE or UPDATE", firstRow.rowData);
+				const key = _.get(firstRow.rowData, grid.keyColumn);
 				// 新增 或 修改
 
-				if (dsg.isKeyDuplicated(newValue, key)) {
+				if (grid.isKeyDuplicated(newValue, key)) {
 					console.log("[DSG]DuplicatedError detected", key);
 					if (onDuplicatedError) {
-						onDuplicatedError(row, newValue);
+						onDuplicatedError(firstRow, newValue);
 					}
 				} else {
-					if (isExistingRow(row)) {
+					if (isExistingRow(firstRow)) {
 						// 確認是否是額外欄位造成的異動
 						// Extra UPDATE
-						if (isUnchanged(row)) {
+						if (isUnchanged(firstRow)) {
 							if (onPatch) {
-								onPatch(row, newValue);
+								onPatch(firstRow, newValue);
 							}
 						} else {
 							// UPDATE
 							if (onBeforeUpdate) {
-								onBeforeUpdate(row);
+								onBeforeUpdate(firstRow);
 							}
 							if (onUpdate) {
-								onUpdate(row, newValue);
+								onUpdate(firstRow, newValue);
 							}
 						}
 					} else {
 						// CREATE
 						if (onBeforeCreate) {
-							onBeforeCreate(row);
+							onBeforeCreate(firstRow);
 						}
 						if (onCreate) {
-							onCreate(row, newValue);
+							onCreate(firstRow, newValue);
 						}
 					}
 				}
-				dsg.setGridData(newValue);
+				grid.setGridData(newValue);
 			} else if (
 				!disableAutoDelete &&
-				Objects.isAllPropsNull(rowData, [...dsg.otherColumnNames])
+				Objects.isAllPropsNull(firstRow.rowData, [
+					...grid.otherColumnNames,
+				])
 			) {
-				// 刪除: Key 以外都是 null
-				const prevRowData = dsg.prevGridData[rowIndex];
-				if (prevRowData) {
-					console.log(`DELETE`, row);
-					if (onDelete) {
-						onDelete(
-							{
-								rowIndex,
-								rowData: prevRowData,
-							},
-							newValue
-						);
-					}
+				// 刪除: Key 以外都是 null, 因為 createRow 好的時候是 undefined,
+				// 按下 DELETE 才會清成 null
+				const rows = grid.prevGridData.slice(
+					operation.fromRowIndex,
+					operation.toRowIndex
+				);
+				console.log(`DELETE`, rows);
+				if (onDelete) {
+					onDelete(rows);
 				}
 			} else {
-				dsg.setGridData(newValue);
+				grid.setGridData(newValue);
 			}
 		},
-		[disableAutoDelete, dsg, isExistingRow, isUnchanged, keyColumn]
+		[disableAutoDelete, grid, isExistingRow, isUnchanged]
 	);
 
 	const buildGridChangeHandler = useCallback(
@@ -373,40 +403,30 @@ export const useDSGCodeEditor = ({
 				onDelete,
 				// E
 				onDuplicatedError,
+				// Support Methods
+				toFirstColumn,
 			} = {}) =>
 			(newValue, operations) => {
-				console.log(`${gridId}.handleGridChange`, newValue);
+				console.log(`${grid.gridId}.handleGridChange`, newValue);
 				// 只處理第一行
 				const operation = operations[0];
 				console.log("operation", operation);
 				if (operation.type === "DELETE") {
 					handleDeleteOperation({ operation, newValue, onDelete });
 				} else if (operation.type === "CREATE") {
-					dsg.setGridData(newValue);
+					grid.setGridData(newValue);
+					if (toFirstColumn) {
+						toFirstColumn({ nextRow: true });
+					}
 				} else if (operation.type === "UPDATE") {
-					const rowIndex = operation.fromRowIndex;
-					const rowData = newValue[rowIndex];
-					const prevRowData = dsg.prevGridData[rowIndex];
-					console.log(`[DSG UPDATE]`, rowData);
+					// const rowIndex = operation.fromRowIndex;
+					// const rowData = newValue[rowIndex];
+					// const prevRowData = dsg.prevGridData[rowIndex];
+					// console.log(`[DSG UPDATE]`, rowData);
 
-					// *** MOVED TO handleDirtyCheck ***
-					// const isDirty = isRowDataEquals(prevRowData, rowData);
-					// console.log("isDirty", isDirty);
-
-					// const key = _.get(rowData, keyColumn);
-					// if (key) {
-					// 	if (isDirty) {
-					// 		dirtyIds.add(key);
-					// 		console.log(`dirtyId ${key} added`);
-					// 	} else {
-					// 		dirtyIds.delete(key);
-					// 		console.log(`dirtyId ${key} removed`);
-					// 	}
-					// }
-					dsg.handleDirtyCheck({ rowData, prevRowData });
+					// dsg.handleDirtyCheck({ rowData, prevRowData });
 					handleUpdateOperation({
-						rowIndex,
-						rowData,
+						operation,
 						newValue,
 						onDuplicatedError,
 						onPatch,
@@ -417,10 +437,10 @@ export const useDSGCodeEditor = ({
 						onDelete,
 					});
 				} else {
-					dsg.setGridData(newValue);
+					grid.setGridData(newValue);
 				}
 			},
-		[gridId, handleDeleteOperation, dsg, handleUpdateOperation]
+		[grid, handleDeleteOperation, handleUpdateOperation]
 	);
 
 	return {
@@ -432,7 +452,7 @@ export const useDSGCodeEditor = ({
 		handleDelete,
 		handleDuplicatedError,
 		// onRowSelectionChange,
-		...dsg,
+		// ...grid,
 		// override
 		buildGridChangeHandler,
 	};

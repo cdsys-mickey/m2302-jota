@@ -505,7 +505,7 @@ export const useZA03 = () => {
 							console.log(`DSG UPDATE[${rowIndex}]`);
 							const prevRowData = authGrid.prevGridData[rowIndex];
 
-							authGrid.handleDirtyCheck({ rowData, prevRowData });
+							authGrid.handleDirtyCheck(rowData, prevRowData);
 						});
 				}
 			}

@@ -9,8 +9,8 @@ export const A02LockRowsSwitchContainer = (props) => {
 	return (
 		<LockSwitch
 			unlockedLabel="編輯"
-			locked={a02.readOnly}
-			onChange={a02.toggleReadOnly}
+			locked={a02.grid.readOnly}
+			onChange={a02.grid.toggleReadOnly}
 			disabled={!a02.canUpdate}
 			{...rest}
 		/>

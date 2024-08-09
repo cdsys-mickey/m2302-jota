@@ -17,7 +17,7 @@ export const useA16 = ({ token }) => {
 		token,
 		gridId: "A16",
 		keyColumn: "DeptID",
-		nameColumn: "DeptName",
+		// nameColumn: "DeptName",
 		otherColumns: "GroupKey,DeptName,AbbrName",
 		baseUri: "v1/ou/depts",
 		displayName: "門市代碼",

@@ -901,7 +901,7 @@ OptionPicker.propTypes = {
 	GridHeaderComponent: PropTypes.elementType,
 	GridRowComponent: PropTypes.elementType,
 	PaperComponent: PropTypes.elementType,
-	hidePlaceholder: PropTypes.bool,
+	// hidePlaceholder: PropTypes.bool,
 	tagDisabled: PropTypes.func,
 	// Popper Open 控制
 	findByInput: PropTypes.func,
@@ -924,6 +924,6 @@ OptionPicker.propTypes = {
 	isDisabled: PropTypes.func,
 	setFocus: PropTypes.func,
 	inDSG: PropTypes.bool,
-	cellComponentRef: PropTypes.ref,
+	cellComponentRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 export default OptionPicker;

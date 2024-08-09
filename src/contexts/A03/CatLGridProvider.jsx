@@ -14,6 +14,12 @@ import { useTransition } from "react";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import DSG from "../../shared-modules/sd-dsg";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
+import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
+import { useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
+import { A03Context } from "./A03Context";
 
 const CatLGridProvider = (props) => {
 	const { children } = props;
@@ -23,10 +29,51 @@ const CatLGridProvider = (props) => {
 	const { token } = useContext(AuthContext);
 
 	// const dsg = useContext(DSGContext);
-	const dsg = useDSGCodeEditor({
+	const grid = useDSG({
 		gridId: "CatL",
 		keyColumn: "LClas",
 		otherColumns: "ClassData",
+	});
+	const a03 = useContext(A03Context);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"LClas",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				disabled: grid.isPersisted,
+				title: "代碼",
+				grow: 1,
+				minWidth: 60,
+			},
+			{
+				...keyColumn(
+					"ClassData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "大分類名稱",
+				grow: 5,
+				disabled: a03.readOnly,
+			},
+		],
+		[a03.readOnly, grid.isPersisted]
+	);
+
+	const gridMeta = useDSGMeta({
+		columns,
+		data: grid.gridData,
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
+	});
+
+	const codeEditor = useDSGCodeEditor({
+		grid,
+		gridMeta,
 	});
 
 	const dialogs = useContext(DialogsContext);
@@ -40,11 +87,11 @@ const CatLGridProvider = (props) => {
 	});
 
 	const clear = useCallback(() => {
-		dsg.setGridData([], {
+		grid.setGridData([], {
 			reset: true,
 			commit: true,
 		});
-	}, [dsg]);
+	}, [grid]);
 
 	const selectRow = useCallback(
 		({ rowData } = {}) => {
@@ -65,7 +112,7 @@ const CatLGridProvider = (props) => {
 	const load = useCallback(
 		async ({ supressLoading = false } = {}) => {
 			if (!supressLoading) {
-				dsg.setGridLoading(true);
+				grid.setGridLoading(true);
 			}
 			try {
 				setState((prev) => ({
@@ -77,7 +124,7 @@ const CatLGridProvider = (props) => {
 					bearer: token,
 				});
 				if (status.success) {
-					dsg.handleGridDataLoaded(payload.data);
+					grid.handleGridDataLoaded(payload.data);
 					// setState((prev) => ({
 					// 	...prev,
 					// 	selected: null,
@@ -96,10 +143,10 @@ const CatLGridProvider = (props) => {
 					error: err,
 				}));
 			} finally {
-				dsg.setGridLoading(false);
+				grid.setGridLoading(false);
 			}
 		},
-		[dsg, httpGetAsync, token]
+		[grid, httpGetAsync, token]
 	);
 
 	const reload = useCallback(() => {
@@ -117,7 +164,7 @@ const CatLGridProvider = (props) => {
 				});
 				console.log("handleCreate response.payload", payload);
 				if (status.success) {
-					dsg.commitChanges(newValue);
+					grid.commitChanges(newValue);
 					selectRow({ rowIndex, rowData });
 					toast.success(
 						`大分類 ${rowData.LClas}/${rowData.ClassData} 新增成功`
@@ -130,7 +177,7 @@ const CatLGridProvider = (props) => {
 				reload();
 			}
 		},
-		[dsg, httpPostAsync, reload, selectRow, token]
+		[grid, httpPostAsync, reload, selectRow, token]
 	);
 
 	const handleUpdate = useCallback(
@@ -146,7 +193,7 @@ const CatLGridProvider = (props) => {
 				console.log("handleCreate response.payload", payload);
 
 				if (status.success) {
-					dsg.commitChanges(newValue);
+					grid.commitChanges(newValue);
 					selectRow({ rowIndex, rowData });
 					toast.success(
 						`大分類 ${rowData.LClas}/${rowData.ClassData} 修改成功`
@@ -159,7 +206,7 @@ const CatLGridProvider = (props) => {
 				reload();
 			}
 		},
-		[dsg, httpPutAsync, reload, selectRow, token]
+		[grid, httpPutAsync, reload, selectRow, token]
 	);
 
 	const handleDelete = useCallback(
@@ -185,41 +232,50 @@ const CatLGridProvider = (props) => {
 				console.error(err);
 				toast.error(`刪除大分類發生例外: ${err.message}`);
 			} finally {
-				dsg.setDeletingRow(null);
+				// grid.setDeletingRow(null);
 				dialogs.closeLatest();
 				reload();
 			}
 		},
-		[dialogs, dsg, httpDeleteAsync, reload, token, selectRow]
+		[dialogs, httpDeleteAsync, reload, token, selectRow]
 	);
 
 	const handleConfirmDelete = useCallback(
-		async (row) => {
-			const { rowData } = row;
-			console.log(`confirm DELETE`, rowData);
-			dsg.setDeletingRow(row);
+		async (rows) => {
+			if (!rows || rows.length === 0) {
+				throw new Error("未指定 rows");
+			}
+
+			let message;
+
+			if (rows.length > 1) {
+				message = ` ${rows.length} 筆代碼`;
+			} else {
+				const firstRow = rows[0];
+				message = `大分類「${firstRow[grid.keyColumn]}」`;
+			}
 
 			dialogs.create({
 				title: "刪除確認",
-				message: `確定要刪除大分類 ${rowData.LClas}/${rowData.ClassData} ?`,
+				message: `確定要刪除${message}?`,
 				onConfirm: () => {
-					handleDelete(row);
+					handleDelete(rows);
 				},
 				onCancel: () => {
-					dsg.setDeletingRow(null);
-					dsg.rollbackChanges();
+					// grid.setDeletingRow(null);
+					grid.rollbackChanges();
 					dialogs.closeLatest();
 				},
 			});
 		},
-		[dialogs, dsg, handleDelete]
+		[dialogs, grid, handleDelete]
 	);
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
-			// dsg.rollbackChanges();
+			// grid.rollbackChanges();
 			toast.error(`大分類 ${row.rowData.LClas} 已存在`);
-			dsg.setValueByRowIndex(
+			grid.setValueByRowIndex(
 				row.rowIndex,
 				{
 					LClas: "",
@@ -229,7 +285,7 @@ const CatLGridProvider = (props) => {
 				}
 			);
 		},
-		[dsg]
+		[grid]
 	);
 
 	const onRowSelectionChange = useCallback(
@@ -238,22 +294,11 @@ const CatLGridProvider = (props) => {
 			// 	...prev,
 			// 	selected: opts,
 			// }));
-			dsg.setSelectedRow(row);
+			gridMeta.setSelectedRow(row);
 			selectRow(row);
 		},
-		[dsg, selectRow]
+		[grid, selectRow]
 	);
-
-	// const isSelected = useCallback(
-	// 	(rowIndex) => {
-	// 		console.log(
-	// 			`state.selectedRowIndex: ${state.selectedRowIndex}, rowIndex: ${rowIndex}`,
-	// 			rowIndex
-	// 		);
-	// 		return state.selectedRowIndex === rowIndex;
-	// 	},
-	// 	[state.selectedRowIndex]
-	// );
 
 	useInit(() => {
 		load();
@@ -263,6 +308,10 @@ const CatLGridProvider = (props) => {
 		<CatLGridContext.Provider
 			value={{
 				...state,
+				grid,
+				gridMeta,
+				codeEditor,
+
 				load,
 				clear,
 				onRowSelectionChange,
@@ -273,7 +322,6 @@ const CatLGridProvider = (props) => {
 				handleDuplicatedError,
 				// isSelected,
 				// getRowClassName,
-				...dsg,
 			}}>
 			{children}
 		</CatLGridContext.Provider>

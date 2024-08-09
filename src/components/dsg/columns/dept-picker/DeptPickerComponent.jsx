@@ -88,7 +88,7 @@ const DeptPickerComponent = memo((props) => {
 			cell={cell}
 			dense
 			hideControls={hideControls}
-			hidePlaceholder={!active}
+			// hidePlaceholder={!active}
 			hideBorders
 			disableFadeOut
 			toastError
