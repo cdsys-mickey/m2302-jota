@@ -11,7 +11,7 @@ const A08Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<ContainerEx maxWidth="sm" alignLeft>
+			<ContainerEx maxWidth="xs" alignLeft>
 				<FlexToolbar
 					bgcolor={Colors.TOOLBAR}
 					ref={ref}

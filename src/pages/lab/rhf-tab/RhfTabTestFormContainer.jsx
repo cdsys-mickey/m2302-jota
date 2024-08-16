@@ -3,11 +3,11 @@ import { RhfTabTestForm } from "./RhfTabTestForm";
 import { useContext, useMemo } from "react";
 import { RHFTabTestContext } from "./RHFTabTestContext";
 import { useCallback } from "react";
-import { FormManagerProvider } from "@/shared-contexts/form-manager/FormManagerProvider";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const RhfTabTestFormContainer = () => {
 	const form = useForm();
-	const { formManager, ...rest } = useContext(RHFTabTestContext);
+	const { formMeta, ...rest } = useContext(RHFTabTestContext);
 
 	const text2 = useWatch({ name: "text2", control: form.control });
 
@@ -15,7 +15,7 @@ export const RhfTabTestFormContainer = () => {
 		return !text2 || isNaN(text2);
 	}, [text2]);
 
-	const isDisabled = useCallback(
+	const isFieldDisabled = useCallback(
 		(field) => {
 			switch (field.name) {
 				case "text3":
@@ -29,9 +29,9 @@ export const RhfTabTestFormContainer = () => {
 
 	return (
 		<FormProvider {...form}>
-			<FormManagerProvider {...formManager} isDisabled={isDisabled}>
+			<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
 				<RhfTabTestForm text3Disabled={text3Disabled} {...rest} />
-			</FormManagerProvider>
+			</FormMetaProvider>
 		</FormProvider>
 	);
 };

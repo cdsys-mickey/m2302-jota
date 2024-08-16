@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { useRef } from "react";
 import { memo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { FormManagerContext } from "@/shared-contexts/form-manager/FormManagerContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 /**
  * 由 name 屬性決定是否要使用 Controller 包覆
@@ -27,8 +27,8 @@ export const ControlledWebApiOptionPicker = memo(
 	}) => {
 		const form = useFormContext();
 		const { setFocus } = form || {};
-		const { getNextEnabled, isDisabled } =
-			useContext(FormManagerContext) || {};
+		const { getNextField, nextField, isFieldDisabled } =
+			useContext(FormMetaContext) || {};
 
 		const prevValue = useRef();
 
@@ -84,8 +84,9 @@ export const ControlledWebApiOptionPicker = memo(
 							clearErrors={form.clearErrors}
 							// Focus Control
 							setFocus={setFocus}
-							getNextEnabled={getNextEnabled}
-							isDisabled={isDisabled}
+							getNextField={getNextField}
+							nextField={nextField}
+							isFieldDisabled={isFieldDisabled}
 							onChange={(newValue) => {
 								if (_onChange) {
 									_onChange(newValue);

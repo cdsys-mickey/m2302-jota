@@ -130,8 +130,8 @@ function App() {
 						theme="colored"
 						hideProgressBar
 						// position="top-center"
-						position="bottom-left"
-						// position="top-right"
+						position="bottom-right"
+					// position="top-right"
 					/>
 				</LocalizationProvider>
 			</ThemeProvider>

@@ -13,6 +13,7 @@ import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import ContainerEx from "../../../shared-components/ContainerEx";
 import { cyan } from "@mui/material/colors";
 import DSGBox from "../../../shared-components/dsg/DSGBox";
+import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
@@ -22,13 +23,14 @@ const A04Grid = memo((props) => {
 	const {
 		canCreate,
 		lockRows,
-		setGridRef,
+		gridRef,
 		drawerOpen,
 		data,
 		loading,
 		height = 300,
+		columns,
 		// METHODS
-		handleChange,
+		onChange,
 		isPersisted,
 		onSelectionChange,
 		getRowClassName,
@@ -38,33 +40,6 @@ const A04Grid = memo((props) => {
 	const boxStyles = useMemo(
 		() => Styles.ofFrameBox({ theme, drawerOpen }),
 		[drawerOpen, theme]
-	);
-
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"CodeID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: isPersisted,
-				title: "代碼",
-			},
-			{
-				...keyColumn(
-					"CodeData",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "櫃位名稱",
-				grow: 4,
-				disabled: lockRows,
-			},
-		],
-		[isPersisted, lockRows]
 	);
 
 	const gridHeight = useMemo(() => {
@@ -85,36 +60,34 @@ const A04Grid = memo((props) => {
 
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			<DSGBox>
-				<DynamicDataSheetGrid
-					lockRows={lockRows}
-					ref={setGridRef}
-					rowKey="CodeID"
-					height={gridHeight}
-					// rowHeight={42}
-					value={data}
-					onChange={handleChange}
-					columns={columns}
-					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
-					disableExpandSelection
-					// disableContextMenu
-					onSelectionChange={onSelectionChange}
-					// autoAddRow
-					contextMenuComponent={ContextMenu}
-					rowClassName={getRowClassName}
-				/>
-			</DSGBox>
+			<DSGGrid
+				lockRows={lockRows}
+				ref={gridRef}
+				rowKey="CodeID"
+				height={gridHeight}
+				// rowHeight={42}
+				value={data}
+				onChange={onChange}
+				columns={columns}
+				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
+				disableExpandSelection
+				// disableContextMenu
+				onSelectionChange={onSelectionChange}
+				// autoAddRow
+				contextMenuComponent={ContextMenu}
+				rowClassName={getRowClassName}
+			/>
 		</ContainerEx>
 	);
 });
 A04Grid.propTypes = {
 	lockRows: PropTypes.bool,
-	setGridRef: PropTypes.func,
+	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
+	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	onSelectionChange: PropTypes.func,
 };

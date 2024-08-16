@@ -2,29 +2,40 @@ import { A09Context } from "@/contexts/A09/A09Context";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import A09Grid from "./A09Grid";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { useMemo } from "react";
 
 const A09GridContainer = () => {
 	const { height } = useWindowSize();
 	const a09 = useContext(A09Context);
 
+	const onChange = useMemo(() => {
+		return a09.codeEditor.buildGridChangeHandler({
+			onCreate: a09.codeEditor.handleCreate,
+			onUpdate: a09.codeEditor.handleUpdate,
+			onDelete: a09.canDelete ? a09.codeEditor.handleConfirmDelete : null,
+			onDuplicatedError: a09.codeEditor.handleDuplicatedError,
+		})
+	}, [a09]);
+
+	const onSelectionChange = useMemo(() => {
+		return a09.gridMeta.buildSelectionChangeHandler({});
+	}, [a09.gridMeta]);
 	return (
-		<A09Grid
-			lockRows={a09.readOnly}
-			gridRef={a09.gridRef}
-			setGridRef={a09.setGridRef}
-			data={a09.gridData}
-			loading={a09.gridLoading}
-			handleChange={a09.buildGridChangeHandler({
-				onCreate: a09.handleCreate,
-				onUpdate: a09.handleUpdate,
-				onDelete: a09.canDelete ? a09.handleConfirmDelete : null,
-				onDuplicatedError: a09.handleDuplicatedError,
-			})}
-			height={height - 176}
-			isPersisted={a09.isPersisted}
-			onSelectionChange={a09.buildSelectionChangeHandler({})}
-			canCreate={a09.canCreate}
-		/>
+		<DSGContext.Provider value={{ ...a09.gridMeta }}>
+			<A09Grid
+				// columns={a09.gridMeta.columns}
+				lockRows={a09.grid.readOnly}
+				gridRef={a09.gridMeta.setGridRef}
+				data={a09.grid.gridData}
+				loading={a09.grid.gridLoading}
+				height={height - 176}
+				onChange={onChange}
+				onSelectionChange={onSelectionChange}
+				onActiveCellChange={a09.gridMeta.handleActiveCellChange}
+				canCreate={a09.canCreate}
+			/>
+		</DSGContext.Provider>
 	);
 };
 

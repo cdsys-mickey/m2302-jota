@@ -24,6 +24,8 @@ import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
+import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
+import { useEffect } from "react";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -95,7 +97,7 @@ const OptionPicker = memo(
 			focusedBackgroundColor = "#b6f0ff",
 			// Popper open 控制
 			// selectNext = false,
-			// focusDelay = 20,
+			focusDelay = 20,
 			open,
 			onOpen,
 			onClose,
@@ -124,13 +126,14 @@ const OptionPicker = memo(
 			cellComponentRef,
 			// nextCell,
 			cell,
-			getNextEnabled,
-			isDisabled,
+			nextField,
+			getNextField,
+			isFieldDisabled,
 			setFocus,
 			...rest
 		} = props;
 
-		const { handleNextCell } = useCellComponent(cellComponentRef?.current);
+		const { nextCell } = useCellComponent(cellComponentRef?.current);
 		const notFoundMsg = _.template(notFoundText);
 
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
@@ -138,8 +141,8 @@ const OptionPicker = memo(
 			return dontFilterOptions
 				? noFilterOptions
 				: createFilterOptions({
-						stringify,
-				  });
+					stringify,
+				});
 		}, [dontFilterOptions, stringify]);
 
 		// OPEN Control
@@ -217,46 +220,37 @@ const OptionPicker = memo(
 		}, [handleClose, onClose]);
 
 		/**
-		 * 先判斷 DSGContext.nextCell, 再判斷 FieldsContext.getNextEnabled
+		 * 先判斷 DSGContext.nextCell, 再判斷 FieldsContext.getNextField
 		 */
 
-		const nextInput = useCallback(
+		const nextCellOrField = useCallback(
 			(e) => {
 				if (inDSG) {
-					// if (!cell) {
-					// 	throw new Error("nextCell 無法使用, 因為 cell 未定義");
-					// }
-					// nextCell(cell, { forward: !e.shiftKey });
-					handleNextCell(cell, { forward: !e.shiftKey });
-				} else if (getNextEnabled) {
-					const nextField = getNextEnabled(name, {
+					nextCell(cell, { forward: !e?.shiftKey });
+				} else if (nextField) {
+					e?.preventDefault();
+					nextField(name, {
+						setFocus,
+						isFieldDisabled,
 						forward: !e?.shiftKey,
-						isDisabled,
 					});
-					console.log("nextField", nextField);
-					if (nextField) {
-						e?.preventDefault();
-						// setFocus(nextField.name, {
-						// 	shouldSelect: nextField.select,
-						// });
-						// setFocus in next event cycle
-						setTimeout(() => {
-							setFocus(nextField.name, {
-								shouldSelect: nextField.select,
-							});
-						});
-					}
 				}
+				// } else if (getNextField) {
+				// 	const nextField = getNextField(name, {
+				// 		forward: !e?.shiftKey,
+				// 		isFieldDisabled,
+				// 	});
+				// 	console.log("nextField", nextField);
+				// 	if (nextField) {
+				// 		e?.preventDefault();
+
+				// 		setFocus(nextField.name, {
+				// 			shouldSelect: nextField.select,
+				// 		});
+				// 	}
+				// }
 			},
-			[
-				inDSG,
-				getNextEnabled,
-				handleNextCell,
-				cell,
-				name,
-				isDisabled,
-				setFocus,
-			]
+			[inDSG, nextField, nextCell, cell, name, setFocus, isFieldDisabled]
 		);
 
 		const handleChange = useCallback(
@@ -271,11 +265,12 @@ const OptionPicker = memo(
 				if (name && clearErrors) {
 					clearErrors(name);
 				}
-				if (value) {
-					nextInput(event);
-				}
+				// if (value) {
+				// 	nextCellOrField(event);
+				// }
+				// nextCellOrField(event);
 			},
-			[clearErrors, name, nextInput, onChange]
+			[clearErrors, name, onChange]
 		);
 
 		const refocus = useCallback(() => {
@@ -290,7 +285,9 @@ const OptionPicker = memo(
 		const inputNotFound = useCallback(
 			(input) => {
 				if (name && toastError) {
-					toast.error(notFoundMsg({ id: input }));
+					toast.error(notFoundMsg({ id: input }), {
+						position: "top-center",
+					});
 				} else if (name && setError) {
 					setError(name, {
 						type: "manual",
@@ -338,7 +335,12 @@ const OptionPicker = memo(
 						// e.stopPropagation();
 						return;
 					}
-
+					// 有改變會透過 ChangeTracking 觸發, 
+					// 這裡處理 dirty 之後卻沒改變的狀況
+					if (_.isEqual(found, value)) {
+						asyncRef.current.dirty = false;
+						nextCellOrField(e);
+					}
 					onChange(found);
 				} else {
 					if (validate) {
@@ -357,19 +359,11 @@ const OptionPicker = memo(
 							return;
 						}
 					}
+					nextCellOrField(e);
 				}
-				nextInput(e);
+				// nextCellOrField(e);
 			},
-			[
-				findByInput,
-				_open,
-				onChange,
-				inputNotFound,
-				getError,
-				name,
-				setError,
-				nextInput,
-			]
+			[findByInput, _open, value, onChange, inputNotFound, nextCellOrField, getError, name, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -532,8 +526,8 @@ const OptionPicker = memo(
 					const label = renderTagLabel
 						? renderTagLabel(v)
 						: getOptionLabel
-						? getOptionLabel(v)
-						: v;
+							? getOptionLabel(v)
+							: v;
 
 					return (
 						<Chip
@@ -545,7 +539,7 @@ const OptionPicker = memo(
 							{...(tagDisabled && {
 								disabled: tagDisabled(v),
 							})}
-							// disabled={index === 0}
+						// disabled={index === 0}
 						/>
 					);
 				});
@@ -560,8 +554,8 @@ const OptionPicker = memo(
 					const label = renderTagLabel
 						? renderTagLabel(v)
 						: getOptionLabel
-						? getOptionLabel(v)
-						: null;
+							? getOptionLabel(v)
+							: null;
 					return (
 						<Draggable key={key} draggableId={key} index={index}>
 							{/* {(provided, snapshot) => ( */}
@@ -739,6 +733,12 @@ const OptionPicker = memo(
 			return customPaperComponent || Paper;
 		}, [GridHeaderComponent, customPaperComponent]);
 
+		useChangeTracking(() => {
+			if (nextCellOrField && value) {
+				nextCellOrField();
+			}
+		}, [value]);
+
 		return (
 			<OptionPickerBox
 				// DSG 支援屬性
@@ -793,26 +793,26 @@ const OptionPicker = memo(
 						{
 							...(disabled && {
 								"&.MuiAutocomplete-root .MuiAutocomplete-popupIndicator":
-									{
-										// opacity: 0,
-										display: "none",
-									},
+								{
+									// opacity: 0,
+									display: "none",
+								},
 								"&.MuiAutocomplete-root .MuiInputBase-root.Mui-disabled ":
-									{
-										paddingRight: 0,
-									},
+								{
+									paddingRight: 0,
+								},
 							}),
 							...(dense && {
 								// "& .MuiAutocomplete-root ": {
 								// 	padding: 0,
 								// },
 								"&.MuiAutocomplete-root .MuiInputBase-root.MuiInputBase-sizeSmall":
-									{
-										paddingTop: "2px",
-										paddingBottom: "2px",
-										paddingLeft: "2px",
-										// paddingRight: "40px",
-									},
+								{
+									paddingTop: "2px",
+									paddingBottom: "2px",
+									paddingLeft: "2px",
+									// paddingRight: "40px",
+								},
 							}),
 						},
 						...(Array.isArray(sx) ? sx : [sx]),
@@ -908,7 +908,7 @@ OptionPicker.propTypes = {
 	onOpen: PropTypes.func,
 	onClose: PropTypes.func,
 	open: PropTypes.bool,
-	// focusDelay: PropTypes.number,
+	focusDelay: PropTypes.number,
 	// selectNext: PropTypes.bool,
 	disableOpenOnInput: PropTypes.bool,
 	// pressToFind: PropTypes.bool,
@@ -920,8 +920,9 @@ OptionPicker.propTypes = {
 	cell: PropTypes.object,
 	toastError: PropTypes.bool,
 	disableClose: PropTypes.bool,
-	getNextEnabled: PropTypes.func,
-	isDisabled: PropTypes.func,
+	getNextField: PropTypes.func,
+	nextField: PropTypes.func,
+	isFieldDisabled: PropTypes.func,
 	setFocus: PropTypes.func,
 	inDSG: PropTypes.bool,
 	cellComponentRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),

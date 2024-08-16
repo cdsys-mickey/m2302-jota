@@ -40,13 +40,13 @@ const TextComponentEx = memo(
 			style,
 			// Context Methods
 			skipDisabled,
-			nextCell,
+			// nextCell,
 			getNextCell,
 			lastCell,
 			setActiveCell,
-			enterToNext,
-			inDSG,
-			...rest
+			// enterToNext,
+			// inDSG,
+			// ...rest
 		} = columnData;
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
 		const asyncRef = useRef({
@@ -98,7 +98,7 @@ const TextComponentEx = memo(
 			};
 		}, [columnIndex, rowIndex]);
 
-		const { handleNextCell } = useCellComponent({
+		const { nextCell } = useCellComponent({
 			getNextCell,
 			lastCell,
 			setActiveCell,
@@ -118,14 +118,15 @@ const TextComponentEx = memo(
 						e.preventDefault();
 						setTimeout(() => {
 							stopEditing({ nextRow: false });
+							if (nextCell) {
+								nextCell(cell);
+							}
 						});
-						if (enterToNext) {
-							handleNextCell(cell);
-						}
+
 						break;
 				}
 			},
-			[cell, enterToNext, handleNextCell, stopEditing]
+			[cell, nextCell, stopEditing]
 		);
 
 		useLayoutEffect(() => {
@@ -209,7 +210,7 @@ const TextComponentEx = memo(
 				}}
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}
-				{...rest}
+			// {...rest}
 			/>
 		);
 	},

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import CheckboxEx from "./CheckboxEx";
 import { useCallback } from "react";
 import { useContext } from "react";
-import { FormManagerContext } from "@/shared-contexts/form-manager/FormManagerContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 const ControlledCheckboxEx = ({
 	name,
@@ -19,7 +19,7 @@ const ControlledCheckboxEx = ({
 	defaultValue = null,
 	...rest
 }) => {
-	const { getNextEnabled, isDisabled } = useContext(FormManagerContext) || {};
+	const { isFieldDisabled, nextField } = useContext(FormMetaContext) || {};
 	const { setFocus, setValue } = useFormContext() || {};
 
 	const toggleChecked = useCallback(
@@ -43,32 +43,38 @@ const ControlledCheckboxEx = ({
 				if (e.key === " ") {
 					toggleChecked(e);
 				}
-				if (getNextEnabled) {
-					const nextField = getNextEnabled(name, {
-						forward: !e.shiftKey,
-						isDisabled,
-					});
-					console.log("nextField", nextField);
-					if (nextField) {
-						e.preventDefault();
-						setFocus(nextField.name, {
-							shouldSelect: nextField.select,
-						});
-					}
-				}
+				// if (getNextField) {
+				// 	const nextField = getNextField(name, {
+				// 		forward: !e.shiftKey,
+				// 		isFieldDisabled,
+				// 	});
+				// 	console.log("nextField", nextField);
+				// 	if (nextField) {
+				// 		e.preventDefault();
+				// 		setFocus(nextField.name, {
+				// 			shouldSelect: nextField.select,
+				// 		});
+				// 	}
+				// }
+				e.preventDefault();
+				nextField(name, {
+					setFocus,
+					isFieldDisabled,
+					forward: !e.shiftKey,
+				});
 			}
 		},
-		[getNextEnabled, toggleChecked, name, isDisabled, setFocus]
+		[nextField, name, setFocus, isFieldDisabled, toggleChecked]
 	);
 
 	// const handleKeyUp = useCallback(
 	// 	(e) => {
 	// 		console.log("handleKeyUp:", `"${e.key}"`);
 	// 		if (e.key === " ") {
-	// 			if (getNextEnabled) {
-	// 				const nextField = getNextEnabled(name, {
+	// 			if (getNextField) {
+	// 				const nextField = getNextField(name, {
 	// 					forward: !e.shiftKey,
-	// 					isDisabled,
+	// 					isFieldDisabled,
 	// 				});
 	// 				console.log("nextField", nextField);
 	// 				if (nextField) {
@@ -80,7 +86,7 @@ const ControlledCheckboxEx = ({
 	// 			}
 	// 		}
 	// 	},
-	// 	[getNextEnabled, isDisabled, name, setFocus]
+	// 	[getNextField, isFieldDisabled, name, setFocus]
 	// );
 
 	return (

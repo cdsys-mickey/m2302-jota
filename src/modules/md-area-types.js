@@ -31,6 +31,10 @@ const findById = (id) => {
 	return options.find((opt) => opt.id === id);
 };
 
+const findByInput = (input) => {
+	return options.find((opt) => opt.id === input);
+};
+
 const AreaTypes = {
 	KEY_LOCAL,
 	KEY_OTHER,
@@ -39,6 +43,7 @@ const AreaTypes = {
 	isOptionEqualToValue,
 	getNameById,
 	findById,
+	findByInput,
 };
 
 export default AreaTypes;

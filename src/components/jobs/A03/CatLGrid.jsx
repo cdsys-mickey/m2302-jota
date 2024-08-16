@@ -19,7 +19,7 @@ const CatLGrid = memo((props) => {
 		loading,
 		height = 300,
 		// METHODS
-		handleChange,
+		onChange,
 		onSelectionChange,
 		onActiveCellChange,
 		getRowClassName,
@@ -45,7 +45,7 @@ const CatLGrid = memo((props) => {
 			height={gridHeight}
 			// rowHeight={42}
 			value={data}
-			onChange={handleChange}
+			onChange={onChange}
 			columns={columns}
 			addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 			disableExpandSelection
@@ -64,7 +64,7 @@ CatLGrid.propTypes = {
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
+	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	// handleActiveCellChange: PropTypes.func,
 	onSelectionChange: PropTypes.func,

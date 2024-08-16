@@ -7,9 +7,37 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
-import { useInit } from "../../shared-hooks/useInit";
+import { useInit } from "@/shared-hooks/useInit";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
 
 export const useA05 = ({ token }) => {
+	const formMeta = useFormMeta(
+		`
+		FactID,
+		FactData,
+		AbbrName,
+		Boss,
+		Contact,
+		Tel,
+		Uniform,
+		bank,
+		PayGroup,
+		BankAcct,
+		CompAddr,
+		CompTel,
+		CompFax,
+		TaxType,
+		FactAddr,
+		FactTel,
+		FactFax,
+		mainProd,
+		remark
+		`,
+		{
+			lastField: LastFieldBehavior.PROMPT,
+		}
+	);
 	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
 		token,
@@ -261,5 +289,6 @@ export const useA05 = ({ token }) => {
 		promptCreating,
 		confirmDelete,
 		...appModule,
+		formMeta,
 	};
 };

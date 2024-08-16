@@ -17,7 +17,9 @@ const TypoWebApiOptionPicker = memo(
 			// for Typography
 			typoVariant = "body1",
 			typographyProps,
-			emptyText = "(空白)",
+			// 這裡先指定 emptyText 會導致下層誤判為有內容
+			// emptyText = "(空白)",
+			emptyText,
 			// Input
 			name,
 			editing = true,

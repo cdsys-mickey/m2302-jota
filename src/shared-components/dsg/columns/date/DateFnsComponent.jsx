@@ -28,7 +28,7 @@ const DateFnsComponent = memo((props) => {
 	const {
 		// Context Methods
 		skipDisabled,
-		nextCell,
+		// nextCell,
 		getNextCell,
 		lastCell,
 		setActiveCell,
@@ -43,7 +43,7 @@ const DateFnsComponent = memo((props) => {
 		}
 	}, [focus]);
 
-	const { handleNextCell } = useCellComponent({
+	const { nextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		setActiveCell,
@@ -79,11 +79,11 @@ const DateFnsComponent = memo((props) => {
 					setTimeout(() => {
 						stopEditing({ nextRow: false });
 					});
-					handleNextCell(cell);
+					nextCell(cell);
 					break;
 			}
 		},
-		[cell, handleNextCell]
+		[cell, nextCell]
 	);
 
 	useLayoutEffect(() => {

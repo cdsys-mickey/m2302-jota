@@ -1,13 +1,10 @@
 import FlexBox from "@/shared-components/FlexBox";
-import { ControlledLocalCaptchaField } from "@/shared-components/local-captcha/controlled-local-captcha-field";
 
-import { Box, Divider, Grid, Link, Paper } from "@mui/material";
-import { forwardRef, memo } from "react";
-import ControlledAccountField from "@/components/auth/ControlledAccountField";
 import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
-import ControlledPwordField from "@/components/auth/ControlledPwordField";
 import LoginIcon from "@mui/icons-material/Login";
 import { LoadingButton } from "@mui/lab";
+import { Box, Divider, Grid, Paper } from "@mui/material";
+import { forwardRef, memo } from "react";
 import { CaptchaFieldContainer } from "../../components/auth/CaptchaFieldContainer";
 import { ControlledTextField } from "../../shared-components/controlled/ControlledTextField";
 

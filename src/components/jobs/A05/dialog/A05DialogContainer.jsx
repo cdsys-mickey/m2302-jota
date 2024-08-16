@@ -7,6 +7,7 @@ import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A05Form from "../form/A05Form";
 import { A05DialogButtonsContainer } from "./buttons/A05DialogButtonsContainer";
+import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 
 export const A05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -26,11 +27,16 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 			return "內容";
 		}
 	}, [a05.creating, a05.updating]);
+
 	const scrollable = useScrollable({
 		height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
+
+	const onSubmit = useMemo(() => {
+		return forms.handleSubmit(a05.onEditorSubmit, a05.onEditorSubmitError);
+	}, [a05.onEditorSubmit, a05.onEditorSubmitError, forms]);
 
 	useEffect(() => {
 		// if (a05.readState === ActionState.DONE && !!a05.itemData) {
@@ -67,19 +73,18 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<A05Form
-					ref={ref}
-					onSubmit={forms.handleSubmit(
-						a05.onEditorSubmit,
-						a05.onEditorSubmitError
-					)}
-					editing={a05.editing}
-					updating={a05.updating}
-					readWorking={a05.readWorking}
-					readError={a05.readError}
-					data={a05.itemData}
-					itemDataReady={a05.itemDataReady}
-				/>
+				<FormMetaProvider {...a05.formMeta}>
+					<A05Form
+						ref={ref}
+						onSubmit={onSubmit}
+						editing={a05.editing}
+						updating={a05.updating}
+						readWorking={a05.readWorking}
+						readError={a05.readError}
+						data={a05.itemData}
+						itemDataReady={a05.itemDataReady}
+					/>
+				</FormMetaProvider>
 			</DialogExContainer>
 		</FormProvider>
 	);

@@ -60,34 +60,6 @@ export const useWebApiOptions = (opts = {}) => {
 	} = opts;
 	const { sendAsync } = useWebApi();
 
-	// const [loading, setLoading] = useState(null);
-
-	// ***** open/close 邏輯交由 OptionPicker 處理 *****
-	// const [open, setOpen] = useState(false);
-
-	// const handleOpen = useCallback(
-	// 	(e) => {
-	// 		console.log("WebApiOptions.onOpen", e);
-	// 		if (open) {
-	// 			return;
-	// 		}
-	// 		if (onOpen) {
-	// 			onOpen(e);
-	// 		}
-	// 		setOpen(true);
-	// 	},
-	// 	[onOpen, open]
-	// );
-
-	// const handleClose = useCallback(() => {
-	// 	if (onClose) {
-	// 		onClose();
-	// 	}
-	// 	if (!disableClose) {
-	// 		setOpen(false);
-	// 	}
-	// }, [disableClose, onClose]);
-
 	const [pickerState, setPickerState] = useState({
 		loading: null,
 		query: null,
@@ -104,8 +76,6 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const handleOpen = useCallback(
 		(e) => {
-			// console.log("OptionPicker.onOpen", e);
-			// console.log("open", open);
 			if (popperOpen) {
 				return;
 			}
@@ -290,7 +260,7 @@ export const useWebApiOptions = (opts = {}) => {
 		setNoOptionsText(queryRequired ? typeToSearchText : noOptionsText);
 	}, [noOptionsText, queryRequired, typeToSearchText]);
 
-	const timerIdRef = useRef();
+	const lazyLoadingRef = useRef();
 
 	const resetLoading = useCallback(() => {
 		setPickerState((prevState) => ({
@@ -307,20 +277,30 @@ export const useWebApiOptions = (opts = {}) => {
 			// }
 
 			const qs = event.target.value;
-			setPickerState((prev) => ({
-				...prev,
-				query: qs,
-			}));
+			if (disableOpenOnInput) {
+				setPickerState((prev) => ({
+					...prev,
+					query: qs,
+				}));
+			}
 
 			if (!popperOpen) {
+				if (filterByServer) {
+					setPickerState((prev) => ({
+						...prev,
+						loading: null,
+					}));
+				}
 				return;
 			}
 
-			if (timerIdRef.current) {
-				clearTimeout(timerIdRef.current);
-			}
+			// 當 filterByServer 時才 loadOptions
 			if (filterByServer) {
-				timerIdRef.current = setTimeout(() => {
+				if (lazyLoadingRef.current) {
+					clearTimeout(lazyLoadingRef.current);
+				}
+
+				lazyLoadingRef.current = setTimeout(() => {
 					if (triggerServerFilter(qs)) {
 						loadOptions(qs);
 					} else {
@@ -405,8 +385,6 @@ export const useWebApiOptions = (opts = {}) => {
 		...pickerState,
 		noOptionsText: _noOptionsText,
 		onInputChange: handleInputChange,
-		// handleOpen,
-		// handleClose,
 		onChange,
 		// open,
 		// disableClose,

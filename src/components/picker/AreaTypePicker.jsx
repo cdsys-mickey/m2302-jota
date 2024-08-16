@@ -1,19 +1,20 @@
+import AreaTypes from "@/modules/md-area-types";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import OptionPicker from "@/shared-components/option-picker/OptionPicker";
-import AreaTypes from "@/modules/md-area-types";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const AreaTypePicker = forwardRef((props, ref) => {
-	const { name, label = "地區", ...rest } = props;
+	const { label = "地區", ...rest } = props;
 
 	return (
-		<OptionPicker
-			name={name}
+		<OptionPickerWrapper
 			ref={ref}
 			label={label}
 			options={AreaTypes.options}
 			getOptionLabel={AreaTypes.getOptionLabel}
 			isOptionEqualToValue={AreaTypes.isOptionEqualToValue}
+			findByInput={AreaTypes.findByInput}
+			notFoundText="地區 ${id} 不存在"
 			{...rest}
 		/>
 	);

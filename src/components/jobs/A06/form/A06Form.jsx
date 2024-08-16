@@ -3,21 +3,21 @@ import { memo } from "react";
 
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import FormBox from "../../../../shared-components/form/FormBox";
-import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 import TaxExcludedCheckbox from "../../../checkbox/TaxExcludedCheckbox";
-import TypoBankPickerContainer from "../../../fields/TypoBankPickerContainer";
-import TypoAreaPickerContainer from "./fields/TypoAreaPickerContainer";
-import TypoChannelPickerContainer from "./fields/TypoChannelPickerContainer";
-import { TypoCustomerLevelPickerContainer } from "./fields/TypoCustomerLevelPickerContainer";
-import TypoEmployeePickerContainer from "./fields/TypoEmployeePickerContainer";
-import TypoPaymentPickerContainer from "./fields/TypoPaymentPickerContainer";
-import TypoTransportPickerContainer from "./fields/TypoTransportPickerContainer";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
+import BankPicker from "../../../fields/BankPicker";
+import { EmployeePicker } from "../../../picker/EmployeePicker";
+import AreaPicker from "./fields/AreaPicker";
+import ChannelPicker from "./fields/ChannelPicker";
+import PaymentPicker from "./fields/PaymentPicker";
+import TransportPicker from "./fields/TransportPicker";
+import { CustomerLevelPicker } from "./fields/CustomerLevelPicker";
 
 const A06Form = memo((props) => {
 	const {
@@ -45,7 +45,7 @@ const A06Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
@@ -81,10 +81,13 @@ const A06Form = memo((props) => {
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoEmployeePickerContainer
+								<EmployeePicker
+									typo
 									name="employee"
 									label="業務員"
 									fullWidth
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={4} sm={4} md={2}>
@@ -95,29 +98,37 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12} md={2}>
-								<TypoCustomerLevelPickerContainer
+							<Grid item xs={12} sm={12} md={3}>
+								<CustomerLevelPicker
+									typo
 									name="level"
 									fullWidth
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={4}>
-								<TypoAreaPickerContainer
+								<AreaPicker
+									typo
 									name="area"
 									fullWidth
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={4}>
-								<TypoChannelPickerContainer
+								<ChannelPicker
 									name="channel"
 									fullWidth
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<FlexBox fullWidth />
 						</Grid>
 					</FormSectionBox>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
@@ -127,17 +138,23 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoPaymentPickerContainer
+								<PaymentPicker
+									typo
 									name="payment"
 									label="收款方式"
 									fullWidth
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoBankPickerContainer
+								<BankPicker
+									typo
 									name="bank"
 									label="銀行"
 									fullWidth
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
@@ -151,7 +168,7 @@ const A06Form = memo((props) => {
 						</Grid>
 					</FormSectionBox>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
 									typo
@@ -205,7 +222,7 @@ const A06Form = memo((props) => {
 					</FormSectionBox>
 					<FormSectionTitle>出貨</FormSectionTitle>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={8}>
 								<TextFieldWrapper
 									typo
@@ -239,17 +256,20 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12} md={4}>
-								<TypoTransportPickerContainer
+							<Grid item xs={12} sm={12} md={3}>
+								<TransportPicker
+									typo
 									name="transport"
 									label="貨運類別"
 									fullWidth
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 						</Grid>
 					</FormSectionBox>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
 									typo

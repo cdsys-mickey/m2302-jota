@@ -7,12 +7,13 @@ export const useCellComponent = (props = {}) => {
 		getNextCell,
 		lastCell,
 		setActiveCell,
+		toFirstColumn,
 		// from Cell Component
 		stopEditing,
 		insertRowBelow,
 	} = props;
 
-	const handleNextCell = useCallback(
+	const nextCell = useCallback(
 		(cell, opts) => {
 			if (!getNextCell) {
 				throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
@@ -28,6 +29,9 @@ export const useCellComponent = (props = {}) => {
 						break;
 					case DSGLastCellBehavior.CREATE_ROW:
 						insertRowBelow();
+						// setTimeout(() => {
+						// 	toFirstColumn();
+						// }, 50);
 						break;
 				}
 			}
@@ -35,5 +39,5 @@ export const useCellComponent = (props = {}) => {
 		[getNextCell, insertRowBelow, lastCell, setActiveCell]
 	);
 
-	return { handleNextCell };
+	return { nextCell };
 };

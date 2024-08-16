@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import InputTest from "./InputTest";
 import { InputTestContext } from "./InputTestContext";
-import { FormManagerProvider } from "@/shared-contexts/form-manager/FormManagerProvider";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const InputTestContainer = (props) => {
 	const { ...rest } = props;
@@ -11,9 +11,9 @@ export const InputTestContainer = (props) => {
 
 	return (
 		<FormProvider {...form}>
-			<FormManagerProvider {...inputTest.formManager}>
+			<FormMetaProvider {...inputTest.formMeta}>
 				<InputTest {...rest} />
-			</FormManagerProvider>
+			</FormMetaProvider>
 		</FormProvider>
 	);
 };

@@ -1,7 +1,7 @@
-import { useFormManager } from "@/shared-contexts/form-manager/useFormManager";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 
 export const useRHFTabTest = () => {
-	const formManager = useFormManager(
+	const formMeta = useFormMeta(
 		`
 		text1,
 		text2,
@@ -11,7 +11,7 @@ export const useRHFTabTest = () => {
 	);
 
 	return {
-		formManager,
+		formMeta,
 		// text3Disabled,
 	};
 };

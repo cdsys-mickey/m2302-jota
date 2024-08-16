@@ -270,9 +270,9 @@ export const useDSG = ({
 	}, [dirtyIds, gridId, prevGridData]);
 
 	const isKeyDuplicated = useCallback(
-		(gridData, key) => {
+		(newValue, key) => {
 			return (
-				gridData.filter((i) => {
+				newValue.filter((i) => {
 					const prevKey = _.get(i, keyColumn);
 					return prevKey === key;
 				}).length > 1
@@ -431,21 +431,6 @@ export const useDSG = ({
 		rollbackChanges();
 		toggleReadOnly();
 	}, [rollbackChanges, toggleReadOnly]);
-
-	// const nextCell = useCallback(
-	// 	(cell, opts = { forward: undefined }) => {
-	// 		if (!cell) {
-	// 			throw new Error("必須提供 cell 參數");
-	// 		}
-	// 		const newCell = getNextCell(cell, opts);
-	// 		console.log(
-	// 			`nextCell for ${JSON.stringify(cell)}`,
-	// 			newCell ? JSON.stringify(newCell) : null
-	// 		);
-	// 		setActiveCell(newCell);
-	// 	},
-	// 	[getNextCell, setActiveCell]
-	// );
 
 	return {
 		// STATES

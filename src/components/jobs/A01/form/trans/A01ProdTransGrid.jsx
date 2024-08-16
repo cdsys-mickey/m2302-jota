@@ -86,6 +86,7 @@ A01ProdTransGrid.propTypes = {
 	gridRef: PropTypes.func,
 	onActiveCellChange: PropTypes.func,
 	data: PropTypes.array,
+	columns: PropTypes.array,
 };
 
 A01ProdTransGrid.displayName = "ProdTransGrid";

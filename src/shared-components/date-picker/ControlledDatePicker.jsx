@@ -6,6 +6,17 @@ import { isValid } from "date-fns";
 import { DatePicker, DesktopDatePicker } from "@mui/x-date-pickers";
 import DateFormats from "@/shared-modules/sd-date-formats";
 import PropTypes from "prop-types";
+import { useCallback } from "react";
+import { useContext } from "react";
+import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
+import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
+
+const DEFAULT_PROPS = {
+	size: "small",
+	InputLabelProps: {
+		shrink: true,
+	},
+};
 
 const ControlledDatePicker = ({
 	label = "日期",
@@ -13,7 +24,7 @@ const ControlledDatePicker = ({
 	readOnly,
 	control,
 	defaultValue,
-	onChange: onPickerChange,
+	onChange: _onChange,
 	onChanged,
 	mask = "____/__/__",
 	format = DateFormats.DATEFNS_DATE,
@@ -26,6 +37,23 @@ const ControlledDatePicker = ({
 }) => {
 	// console.log("rendering ControlledDatePicker");
 	const { setError, clearErrors } = useFormContext();
+	const { isFieldDisabled, nextField } = useContext(FormMetaContext) || {};
+	const { setFocus } = useFormContext() || {};
+	const { InputProps, ...opts } = DEFAULT_PROPS;
+
+	const handleKeyDown = useCallback(
+		(e) => {
+			if (e.key === "Enter" || e.key === "Tab") {
+				e.preventDefault();
+				nextField(name, {
+					setFocus,
+					isFieldDisabled,
+					forward: !e.shiftKey,
+				});
+			}
+		},
+		[nextField, name, setFocus, isFieldDisabled]
+	);
 
 	if (!name) {
 		return <DatePicker {...rest} />;
@@ -50,6 +78,7 @@ const ControlledDatePicker = ({
 					slotProps={{
 						textField: {
 							size: "small",
+							onKeyDown: handleKeyDown,
 						},
 					}}
 					value={value}
@@ -58,8 +87,8 @@ const ControlledDatePicker = ({
 							? null
 							: (newValue) => {
 									// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
-									if (onPickerChange) {
-										onPickerChange(newValue);
+									if (_onChange) {
+										_onChange(newValue);
 									}
 
 									onChange(newValue);
@@ -81,9 +110,12 @@ const ControlledDatePicker = ({
 									}
 							  }
 					}
+					onKeyDown={handleKeyDown}
 					InputProps={{
+						...InputProps,
 						...(readOnly && { readOnly: true }),
 					}}
+					{...opts}
 					disabled={readOnly}
 					// onError={(err) => {
 					// 	console.error(err);

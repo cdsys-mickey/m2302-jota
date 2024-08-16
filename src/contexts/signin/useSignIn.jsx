@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Auth from "@/modules/md-auth";
 import { useCaptcha } from "@/shared-components/captcha-field/useCaptcha";
 import Errors from "@/shared-modules/sd-errors";
-import { useFormManager } from "@/shared-contexts/form-manager/useFormManager";
+import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
 
 const pageCookieOpts = {
 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
@@ -20,7 +20,7 @@ const PARAM_CAPTCHA = "captcha";
 
 export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
-	const formManager = useFormManager(`ac,pw,captcha`);
+	const formMeta = useFormMeta(`ac,pw,rememberMe,captcha`);
 	const captcha = useCaptcha({
 		numbersOnly: true,
 		length: 4,
@@ -204,6 +204,6 @@ export const useSignIn = () => {
 		signInXSubmitHandler,
 		onSignInXSubmitError,
 		captcha,
-		formManager,
+		formMeta,
 	};
 };

@@ -7,6 +7,7 @@ import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A06Form from "../form/A06Form";
 import { A06DialogButtonsContainer } from "./buttons/A06DialogButtonsContainer";
+import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 
 export const A06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -31,6 +32,13 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 			return "內容";
 		}
 	}, [a06.creating, a06.updating]);
+
+	const onSubmit = useMemo(() => {
+		return forms.handleSubmit(
+			a06.onEditorSubmit,
+			a06.onEditorSubmitError
+		)
+	}, [a06.onEditorSubmit, a06.onEditorSubmitError, forms]);
 
 	useEffect(() => {
 		// if (a06.readState === ActionState.DONE && !!a06.itemData) {
@@ -66,19 +74,18 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<A06Form
-					ref={ref}
-					onSubmit={forms.handleSubmit(
-						a06.onEditorSubmit,
-						a06.onEditorSubmitError
-					)}
-					editing={a06.editing}
-					updating={a06.updating}
-					readWorking={a06.readWorking}
-					readError={a06.readError}
-					data={a06.itemData}
-					itemDataReady={a06.itemDataReady}
-				/>
+				<FormMetaProvider {...a06.formMeta}>
+					<A06Form
+						ref={ref}
+						onSubmit={onSubmit}
+						editing={a06.editing}
+						updating={a06.updating}
+						readWorking={a06.readWorking}
+						readError={a06.readError}
+						data={a06.itemData}
+						itemDataReady={a06.itemDataReady}
+					/>
+				</FormMetaProvider>
 			</DialogExContainer>
 		</FormProvider>
 	);

@@ -73,15 +73,19 @@ export const useCatL = () => {
 			reset: true,
 			commit: true,
 		});
-	}, [grid]);
+		gridMeta.setSelectedRow(null);
+	}, [grid, gridMeta]);
 
 	const onRowSelectionChange = useCallback(
 		(row) => {
+			if (!row) {
+				return;
+			}
 			const { rowData } = row;
 			console.log(`catL.selectedRow`, rowData);
-			a03.setLgId(rowData?.LClas);
 			gridMeta.setSelectedRow(row);
-			if (rowData?.LClas) {
+			a03.setLgId(rowData?.LClas);
+			if (rowData?.LClas && grid.isPersisted(row)) {
 				catM.codeEditor.load({
 					params: {
 						lgId: rowData?.LClas,
@@ -89,12 +93,22 @@ export const useCatL = () => {
 					baseUri: `v1/prod/m-cats/${rowData?.LClas}`,
 					supressLoading: false,
 				});
+				catM.gridMeta.setSelectedRow(null);
 			} else {
 				catM.clear();
 			}
 			catS.clear();
 		},
-		[a03, catM, catS, grid]
+		[a03, catM, catS, grid, gridMeta]
+	);
+
+	const onDeleted = useCallback(
+		(rows) => {
+			console.log(`${grid.gridId}.onDeleted`, rows);
+			catM.clear();
+			catS.clear();
+		},
+		[catM, catS, grid.gridId]
 	);
 
 	useInit(() => {
@@ -107,5 +121,6 @@ export const useCatL = () => {
 		codeEditor,
 		clear,
 		onRowSelectionChange,
+		onDeleted,
 	};
 };

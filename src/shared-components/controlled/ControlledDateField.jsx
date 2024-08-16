@@ -4,7 +4,17 @@ import { DateField } from "@mui/x-date-pickers";
 import { isValid } from "date-fns";
 import { de } from "date-fns/locale";
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { useCallback } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
+
+const DEFAULT_PROPS = {
+	size: "small",
+	InputLabelProps: {
+		shrink: true,
+	},
+};
 
 const ControlledDateField = ({
 	// for Controller
@@ -23,6 +33,24 @@ const ControlledDateField = ({
 	...rest
 }) => {
 	const { setError, clearErrors } = useFormContext();
+	const { isFieldDisabled, nextField } = useContext(FormMetaContext) || {};
+	const { setFocus } = useFormContext() || {};
+
+	const { InputProps, ...opts } = DEFAULT_PROPS;
+
+	const handleKeyDown = useCallback(
+		(e) => {
+			if (e.key === "Enter" || e.key === "Tab") {
+				e.preventDefault();
+				nextField(name, {
+					setFocus,
+					isFieldDisabled,
+					forward: !e.shiftKey,
+				});
+			}
+		},
+		[nextField, name, setFocus, isFieldDisabled]
+	);
 
 	if (!name) {
 		return (
@@ -31,6 +59,7 @@ const ControlledDateField = ({
 				label={label}
 				readOnly={readOnly}
 				onChange={_onChange}
+				onKeyDown={handleKeyDown}
 				mask={mask}
 				format={format}
 				invalidDateMessage={invalidDateMessage}
@@ -77,7 +106,10 @@ const ControlledDateField = ({
 							});
 						}
 					}}
+					onKeyDown={handleKeyDown}
+					{...opts}
 					InputProps={{
+						...InputProps,
 						readOnly,
 					}}
 					disabled={readOnly}

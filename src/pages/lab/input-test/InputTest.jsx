@@ -21,6 +21,9 @@ import ProdTypeA from "../../../modules/md-prod-type-a";
 import LockSwitch from "../../../shared-components/LockSwitch";
 import ProdTypeBPicker from "../../../components/picker/ProdTypeBPicker";
 import ProdPicker from "../../../components/picker/ProdPicker";
+import CheckboxExWrapper from "../../../shared-components/checkbox/CheckboxExWrapper";
+import { DateFieldWrapper } from "../../../shared-components/date-field/DateFieldWrapper";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -133,15 +136,10 @@ const InputTest = () => {
 						</Grid>
 						<Grid item xs={6}>
 							{/* 產品 */}
-							<OptionPickerProvider
-							// renderRow={renderRow}
-							>
+							<OptionPickerProvider>
 								<ProdPicker
 									virtualize
-									// groupBy={(option) => option.ProdID[0]}
 									label="WebApiOptionPicker with virtualize ON"
-
-									// renderGroup={(params) => params}
 								/>
 							</OptionPickerProvider>
 						</Grid>
@@ -188,11 +186,24 @@ const InputTest = () => {
 							/>
 						</Grid>
 						<Grid item xs={4}>
+							<CheckboxExWrapper name="check1" label="check1" />
+						</Grid>
+						<Grid item xs={4}>
 							<TextFieldWrapper
 								name="text1"
 								label="text1"
 								size="small"
 								clearable
+								fullWidth
+							/>
+						</Grid>
+						<Grid item xs={4}>
+							<DateFieldWrapper name="date1" label="date1" />
+						</Grid>
+						<Grid item xs={4}>
+							<DatePickerWrapper
+								name="datepicker1"
+								label="date-picker1"
 							/>
 						</Grid>
 						<Grid item xs={4}>
@@ -201,7 +212,8 @@ const InputTest = () => {
 								label="text2"
 								size="small"
 								clearable
-								type="number"
+								// type="number"
+								fullWidth
 								// selectNext
 							/>
 						</Grid>

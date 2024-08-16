@@ -5,6 +5,7 @@ import { A03Context } from "@/contexts/A03/A03Context";
 import CatLGrid from "./CatLGrid";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { CatLContext } from "../../../contexts/A03/CatLContext";
+import { useMemo } from "react";
 
 export const CatLGridContainer = () => {
 	const { height } = useWindowSize();
@@ -12,6 +13,22 @@ export const CatLGridContainer = () => {
 	const catL = useContext(CatLContext);
 	const a03 = useContext(A03Context);
 	const { canDelete } = a03;
+
+	const onChange = useMemo(() => {
+		return catL.codeEditor.buildGridChangeHandler({
+			onCreate: catL.codeEditor.handleCreate,
+			onUpdate: catL.codeEditor.handleUpdate,
+			onDelete: canDelete ? catL.codeEditor.handleConfirmDelete : null,
+			onDeleted: catL.onDeleted,
+			onDuplicatedError: catL.codeEditor.handleDuplicatedError,
+		});
+	}, [canDelete, catL.codeEditor, catL.onDeleted]);
+
+	const onSelectionChange = useMemo(() => {
+		return catL.gridMeta.buildSelectionChangeHandler({
+			onRowSelectionChange: catL.onRowSelectionChange,
+		});
+	}, [catL.gridMeta, catL.onRowSelectionChange]);
 
 	return (
 		<DSGContext.Provider value={{ ...catL.grid, ...catL.gridMeta }}>
@@ -21,21 +38,12 @@ export const CatLGridContainer = () => {
 				columns={catL.gridMeta.columns}
 				data={catL.grid.gridData}
 				loading={catL.grid.gridLoading}
-				handleChange={catL.codeEditor.buildGridChangeHandler({
-					onCreate: catL.codeEditor.handleCreate,
-					onUpdate: catL.codeEditor.handleUpdate,
-					onDelete: canDelete
-						? catL.codeEditor.handleConfirmDelete
-						: null,
-					onDuplicatedError: catL.codeEditor.handleDuplicatedError,
-				})}
+				onChange={onChange}
 				height={height - 176}
-				onSelectionChange={catL.gridMeta.buildSelectionChangeHandler({
-					onRowSelectionChange: catL.onRowSelectionChange,
-				})}
+				onSelectionChange={onSelectionChange}
 				onActiveCellChange={catL.gridMeta.handleActiveCellChange}
 				canCreate={a03.canCreate}
-				getRowClassName={catL.grid.getRowClassName}
+				getRowClassName={catL.gridMeta.getRowClassName}
 			/>
 			{/* <CatLGrid
 				lockRows={a03.readOnly}
@@ -55,7 +63,7 @@ export const CatLGridContainer = () => {
 					onRowSelectionChange: catL.onRowSelectionChange,
 				})}
 				canCreate={a03.canCreate}
-				getRowClassName={catL.grid.getRowClassName}
+				getRowClassName={catL.gridMeta.getRowClassName}
 			/> */}
 		</DSGContext.Provider>
 	);

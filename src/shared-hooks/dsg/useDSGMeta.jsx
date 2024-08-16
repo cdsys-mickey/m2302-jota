@@ -4,7 +4,7 @@ import DSG from "../../shared-modules/sd-dsg";
 
 export const useDSGMeta = ({
 	columns,
-	skipDisabled = true,
+	skipDisabled = false,
 	lastCell,
 	data,
 }) => {
@@ -19,7 +19,11 @@ export const useDSGMeta = ({
 		prevCell: null,
 		cell: null,
 		forward: true,
+		activeCell: null,
 	});
+
+	const prevActiveCellRef = useRef();
+	const prevSelectionRef = useRef();
 
 	const selectedRowRef = useRef();
 	const selectionRef = useRef();
@@ -39,17 +43,16 @@ export const useDSGMeta = ({
 	const defaultOnRowSelectionChange = useCallback(
 		(row) => {
 			setSelectedRow(row);
-			// selectedRowRef.current = row;
 
-			const { rowIndex, rowData } = row || {};
-			if (rowIndex === undefined || rowIndex == null) {
-				console.log("defaultOnRowSelectionChange: de-selected");
-			} else {
-				console.log(
-					`defaultOnRowSelectionChange.rows[${rowIndex}] selected, rowData:`,
-					rowData
-				);
-			}
+			// const { rowIndex, rowData } = row || {};
+			// if (rowIndex === undefined || rowIndex == null) {
+			// 	console.log("defaultOnRowSelectionChange: de-selected");
+			// } else {
+			// 	console.log(
+			// 		`defaultOnRowSelectionChange.rows[${rowIndex}] selected, rowData:`,
+			// 		rowData
+			// 	);
+			// }
 		},
 		[setSelectedRow]
 	);
@@ -84,10 +87,11 @@ export const useDSGMeta = ({
 					selection
 				);
 				if (selection) {
+					// 當只有選取一列時
 					if (selection?.min?.row === selection?.max?.row) {
 						const rowIndex = selection?.min?.row;
 						const rowData = data[rowIndex];
-						// setSelectedRowIndex(rowIndex);
+
 						onRowSelectionChange({
 							rowIndex,
 							rowData,
@@ -168,17 +172,6 @@ export const useDSGMeta = ({
 				cell: cell,
 				forward: isForward(asyncRef.current?.cell, cell),
 			};
-			// console.log(
-			// 	`DSG.onActiveCellChange: (${
-			// 		asyncRef.current.prevCell
-			// 			? `${asyncRef.current.prevCell.row},${asyncRef.current.prevCell.col}`
-			// 			: null
-			// 	}) → (${
-			// 		asyncRef.current.cell
-			// 			? `${asyncRef.current.cell.row},${asyncRef.current.cell.col}`
-			// 			: null
-			// 	}), forward: ${asyncRef.current.forward}`
-			// );
 		},
 		[isForward]
 	);
@@ -247,7 +240,7 @@ export const useDSGMeta = ({
 
 	const getSelection = useCallback((opts = {}) => {
 		if (gridRef.current) {
-			return gridRef.current.getSelection();
+			return gridRef.current.selection;
 		}
 
 		if (opts.debug) {
@@ -267,6 +260,44 @@ export const useDSGMeta = ({
 		}
 	}, []);
 
+	const resetSelection = useCallback(() => {
+		prevActiveCellRef.current = null;
+		prevSelectionRef.current = null;
+	}, []);
+
+	const saveSelection = useCallback(() => {
+		prevActiveCellRef.current = getActiveCell();
+		prevSelectionRef.current = getSelection();
+		console.log("prevActiveCellRef", prevActiveCellRef.current);
+		console.log("prevSelectionRef", prevSelectionRef.current);
+
+		setActiveCell(null);
+	}, [getActiveCell, getSelection, setActiveCell]);
+
+	const restoreSelection = useCallback(() => {
+		const maxRow = data.length - 1;
+		if (prevActiveCellRef.current) {
+			let activeCell = prevActiveCellRef.current;
+			if (activeCell.row > maxRow) {
+				activeCell.row = maxRow;
+				setActiveCell(activeCell);
+			}
+			prevActiveCellRef.current = null;
+		}
+		if (prevSelectionRef.current) {
+			let selection = prevSelectionRef.current;
+			// 限制 row 的值不能超過 gridData.length - 1
+			if (selection.min.row > maxRow) {
+				selection.min.row = maxRow;
+			}
+			if (selection.max.row > maxRow) {
+				selection.max.row = maxRow;
+			}
+			setSelection(selection);
+			prevSelectionRef.current = null;
+		}
+	}, [data.length, setActiveCell, setSelection]);
+
 	return {
 		// Meta
 		gridRef,
@@ -276,6 +307,7 @@ export const useDSGMeta = ({
 		skipDisabled,
 		lastCell,
 		getNextCell,
+		// nextCell,
 		// Ref Methods
 		handleActiveCellChange,
 		setActiveCell,
@@ -292,5 +324,9 @@ export const useDSGMeta = ({
 		selectedRowRef,
 		handleSelectionChange,
 		buildSelectionChangeHandler,
+		// 選取位置記憶
+		saveSelection,
+		restoreSelection,
+		resetSelection,
 	};
 };

@@ -6,7 +6,7 @@ import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { FormManagerProvider } from "@/shared-contexts/form-manager/FormManagerProvider";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import A01Form from "../form/A01Form";
 import { A01DialogToolbarContainer } from "./buttons/A01DialogToolbarContainer";
 import { useCallback } from "react";
@@ -78,19 +78,23 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		control: form.control,
 	});
 
-	const isDisabled = useCallback(
-		(name) => {
-			switch (name) {
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
 				case "catM":
-					return !catL;
+					return !catL || !a01.editing;
 				case "catS":
-					return !catM;
+					return !catM || !a01.editing;
 				default:
-					return false;
+					return !a01.editing;
 			}
 		},
-		[catL, catM]
+		[a01.editing, catL, catM]
 	);
+
+	const onSubmit = useMemo(() => {
+		return form.handleSubmit(a01.onEditorSubmit, a01.onEditorSubmitError);
+	}, [a01.onEditorSubmit, a01.onEditorSubmitError, form]);
 
 	useEffect(() => {
 		if (a01.itemDataReady) {
@@ -125,14 +129,11 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<FormManagerProvider
-					{...a01.formManager}
-					isDisabled={isDisabled}>
+				<FormMetaProvider
+					{...a01.formMeta}
+					isFieldDisabled={isFieldDisabled}>
 					<A01Form
-						onSubmit={form.handleSubmit(
-							a01.onEditorSubmit,
-							a01.onEditorSubmitError
-						)}
+						onSubmit={onSubmit}
 						creating={a01.creating}
 						editing={a01.editing}
 						updating={a01.updating}
@@ -147,7 +148,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 						transTabDisabled={a01.transTabDisabled}
 						comboTabDisabled={a01.comboTabDisabled}
 					/>
-				</FormManagerProvider>
+				</FormMetaProvider>
 			</DialogExContainer>
 		</FormProvider>
 	);

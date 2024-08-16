@@ -15,14 +15,15 @@ export const A01ProdComboGridContainer = (props) => {
 		<DSGContext.Provider
 			value={{
 				...a01.comboGrid,
+				...a01.comboMeta,
 			}}>
 			<A01ProdComboGrid
-				gridRef={a01.setComboGridRef}
+				gridRef={a01.comboMeta.setGridRef}
 				lockRows={!a01.editing || store}
-				columns={a01.comboGrid.columns}
-				data={a01.comboGridData}
+				columns={a01.comboMeta.columns}
+				data={a01.comboGrid.gridData}
 				handleGridChange={a01.handleComboGridChange}
-				onActiveCellChange={a01.comboGrid.handleActiveCellChange}
+				onActiveCellChange={a01.comboMeta.handleActiveCellChange}
 				bearer={auth.token}
 				height={height - 278}
 				createRow={a01.createComboRow}

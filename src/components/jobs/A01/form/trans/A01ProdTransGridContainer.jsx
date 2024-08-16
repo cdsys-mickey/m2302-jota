@@ -16,15 +16,15 @@ export const A01ProdTransGridContainer = (props) => {
 		<DSGContext.Provider
 			value={{
 				...a01.transGrid,
+				...a01.transMeta,
 			}}>
 			<A01ProdTransGrid
-				gridRef={a01.setTransGridRef}
+				gridRef={a01.transMeta.setGridRef}
 				readOnly={a01.transGridDisabled}
-				// data={a01.transGridData}
-				columns={a01.transGrid.columns}
+				columns={a01.transMeta.columns}
 				data={a01.transGrid.gridData}
 				handleGridChange={a01.handleTransGridChange}
-				onActiveCellChange={a01.transGrid.handleActiveCellChange}
+				onActiveCellChange={a01.transMeta.handleActiveCellChange}
 				bearer={auth.token}
 				height={height - 278}
 				createRow={a01.createTransRow}

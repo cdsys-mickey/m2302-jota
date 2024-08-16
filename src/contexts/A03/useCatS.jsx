@@ -1,15 +1,13 @@
-import { useContext } from "react";
-import { useCallback, useState } from "react";
-import { AuthContext } from "../auth/AuthContext";
-import { useDSG } from "../../shared-hooks/dsg/useDSG";
-import { A03Context } from "./A03Context";
-import { useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSG } from "../../shared-hooks/dsg/useDSG";
 import { useDSGCodeEditor } from "../../shared-hooks/dsg/useDSGCodeEditor";
-import { RunCircleOutlined } from "@mui/icons-material";
+import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { AuthContext } from "../auth/AuthContext";
+import { A03Context } from "./A03Context";
+import { RestaurantRounded } from "@mui/icons-material";
 
 export const useCatS = () => {
 	const { token } = useContext(AuthContext);
@@ -68,15 +66,26 @@ export const useCatS = () => {
 			reset: true,
 			commit: true,
 		});
-	}, [grid]);
+		gridMeta.setSelectedRow(null);
+	}, [grid, gridMeta]);
 
 	const onRowSelectionChange = useCallback(
 		(row) => {
+			if (!row) {
+				return;
+			}
 			const { rowData } = row;
 			a03.setSmId(rowData?.SClas);
 			gridMeta.setSelectedRow(row);
 		},
-		[a03, grid]
+		[a03, gridMeta]
+	);
+
+	const onDeleted = useCallback(
+		(rows) => {
+			console.log(`${grid.gridId}.onDeleted`, rows);
+		},
+		[grid.gridId]
 	);
 
 	return {
@@ -85,5 +94,6 @@ export const useCatS = () => {
 		codeEditor,
 		clear,
 		onRowSelectionChange,
+		onDeleted,
 	};
 };

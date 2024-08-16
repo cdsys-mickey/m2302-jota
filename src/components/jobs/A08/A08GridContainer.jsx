@@ -2,29 +2,46 @@ import { A08Context } from "@/contexts/A08/A08Context";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import A08Grid from "./A08Grid";
+import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
+import { useMemo } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
 const A08GridContainer = () => {
 	const { height } = useWindowSize();
 	const a08 = useContext(A08Context);
+	const form = useForm();
+
+	const onChange = useMemo(() => {
+		return a08.codeEditor.buildGridChangeHandler({
+			onCreate: a08.codeEditor.handleCreate,
+			onUpdate: a08.codeEditor.handleUpdate,
+			onDelete: a08.canDelete ? a08.codeEditor.handleConfirmDelete : null,
+			onDuplicatedError: a08.codeEditor.handleDuplicatedError,
+		})
+	}, [a08]);
+
+	const onSelectionChange = useMemo(() => {
+		return a08.gridMeta.buildSelectionChangeHandler()
+	}, [a08]);
 
 	return (
-		<A08Grid
-			lockRows={a08.readOnly}
-			gridRef={a08.gridRef}
-			setGridRef={a08.setGridRef}
-			data={a08.gridData}
-			loading={a08.gridLoading}
-			handleChange={a08.buildGridChangeHandler({
-				onCreate: a08.handleCreate,
-				onUpdate: a08.handleUpdate,
-				onDelete: a08.canDelete ? a08.handleConfirmDelete : null,
-				onDuplicatedError: a08.handleDuplicatedError,
-			})}
-			height={height - 176}
-			isPersisted={a08.isPersisted}
-			onSelectionChange={a08.buildSelectionChangeHandler({})}
-			canCreate={a08.canCreate}
-		/>
+		<FormProvider {...form}>
+			<DSGContext.Provider value={{ ...a08.gridMeta }}>
+				<A08Grid
+					columns={a08.gridMeta.columns}
+					lockRows={a08.grid.readOnly}
+					gridRef={a08.gridMeta.setGridRef}
+					data={a08.grid.gridData}
+					loading={a08.grid.gridLoading}
+					height={height - 176}
+					onChange={onChange}
+					onActiveCellChange={a08.gridMeta.handleActiveCellChange}
+					onSelectionChange={onSelectionChange}
+					// isPersisted={a08.isPersisted}
+					canCreate={a08.canCreate}
+				/>
+			</DSGContext.Provider>
+		</FormProvider>
 	);
 };
 

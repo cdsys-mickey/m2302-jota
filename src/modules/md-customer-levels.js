@@ -35,11 +35,16 @@ const findById = (id) => {
 	return options.find((o) => o.CodeID === id);
 };
 
+const findByInput = (input) => {
+	return options.find((o) => o.CodeID === input);
+};
+
 const CustomerLevels = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	options,
 	findById,
+	findByInput,
 };
 
 export default CustomerLevels;

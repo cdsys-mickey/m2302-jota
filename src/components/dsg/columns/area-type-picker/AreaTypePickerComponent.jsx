@@ -1,9 +1,8 @@
-import PropTypes from "prop-types";
-import { memo, useLayoutEffect, useRef } from "react";
 import AreaTypePicker from "@/components/picker/AreaTypePicker";
-import { useCallback } from "react";
-import Objects from "../../../../shared-modules/sd-objects";
-import { useMemo } from "react";
+import PropTypes from "prop-types";
+import { memo, useRef } from "react";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+import Objects from "@/shared-modules/sd-objects";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -18,8 +17,8 @@ const AreaTypePickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		// rowIndex,
-		// columnIndex,
+		rowIndex,
+		columnIndex,
 		// Component Props
 		columnData,
 		// Cell state
@@ -28,40 +27,49 @@ const AreaTypePickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		// insertRowBelow,
+		insertRowBelow,
 		// duplicateRow,
 		// deleteRow,
 		// getContextMenuItems,
 	} = props;
 
-	const { hideControlsOnActive, ...rest } = columnData;
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
 
-	const ref = useRef();
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		...rest
+	} = columnData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log(`[${columnData?.name}].handleChange`, newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 100);
-		},
-		[columnData?.name, setRowData, stopEditing]
-	);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+	});
 
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
-
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled: skipDisabled,
+		nextCell: nextCell,
+		getNextCell: getNextCell,
+		lastCell: lastCell,
+		setActiveCell: setActiveCell,
+	});
 
 	return (
 		<AreaTypePicker
@@ -71,14 +79,13 @@ const AreaTypePickerComponent = memo((props) => {
 			value={rowData}
 			onChange={handleChange}
 			// DSG 專屬屬性
+			cellComponentRef={cellComponentRef}
+			cell={cell}
 			dense
-			hideBorders
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!focus}
 			hideControls={hideControls}
-			// hidePlaceholder={!focus}
+			hideBorders
 			disableFadeOut
-			selectOnFocus
+			toastError
 			{...rest}
 		/>
 	);

@@ -15,31 +15,28 @@ const A02GridContainer = () => {
 			onUpdate: a02.codeEditor.handleUpdate,
 			onDelete: a02.canDelete ? a02.codeEditor.handleConfirmDelete : null,
 			onDuplicatedError: a02.codeEditor.handleDuplicatedError,
-			toFirstColumn: a02.gridMeta.toFirstColumn,
 		});
 	}, [a02]);
 
 	const onSelectionChange = useMemo(() => {
-		return a02.gridMeta.buildSelectionChangeHandler({});
+		return a02.gridMeta.buildSelectionChangeHandler();
 	}, [a02.gridMeta]);
 
 	return (
 		<DSGContext.Provider
 			value={{
-				...a02.grid,
 				...a02.gridMeta,
 			}}>
 			<A02Grid
 				columns={a02.gridMeta.columns}
 				lockRows={a02.grid.readOnly}
-				gridRef={a02.gridMeta.gridRef}
-				setGridRef={a02.gridMeta.setGridRef}
+				gridRef={a02.gridMeta.setGridRef}
+				// setGridRef={a02.gridMeta.setGridRef}
 				data={a02.grid.gridData}
+				height={height - 176}
 				loading={a02.grid.gridLoading}
 				onChange={onChange}
 				onActiveCellChange={a02.gridMeta.handleActiveCellChange}
-				height={height - 176}
-				// isPersisted={a02.isPersisted}
 				onSelectionChange={onSelectionChange}
 				canCreate={a02.canCreate}
 			/>

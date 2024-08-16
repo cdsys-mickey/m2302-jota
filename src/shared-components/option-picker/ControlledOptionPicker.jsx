@@ -6,7 +6,7 @@ import { forwardRef } from "react";
 import { useRef } from "react";
 import { useCallback } from "react";
 import { useContext } from "react";
-import { FormManagerContext } from "@/shared-contexts/form-manager/FormManagerContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 export const ControlledOptionPicker = forwardRef((props, ref) => {
 	const {
@@ -24,8 +24,8 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 
 	const form = useFormContext();
 	const { setFocus } = form || {};
-	const formManager = useContext(FormManagerContext);
-	const { getNextEnabled, isDisabled } = formManager || {};
+	const formMeta = useContext(FormMetaContext);
+	const { getNextField, isFieldDisabled, nextField } = formMeta || {};
 
 	const prevValue = useRef();
 
@@ -93,8 +93,9 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						// }}
 						error={!!error}
 						helperText={error?.message}
-						getNextEnabled={getNextEnabled}
-						isDisabled={isDisabled}
+						getNextField={getNextField}
+						nextField={nextField}
+						isFieldDisabled={isFieldDisabled}
 						{...rest}
 					/>
 				);

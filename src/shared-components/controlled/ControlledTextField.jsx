@@ -4,11 +4,12 @@ import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import ClearInputButton from "../input/ClearInputButton";
-import { FormManagerContext } from "@/shared-contexts/form-manager/FormManagerContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 
 export const ControlledTextField = ({
 	name,
+	multiline,
 	// inputRef,
 	readOnly = false,
 	control,
@@ -23,9 +24,10 @@ export const ControlledTextField = ({
 	disabledBackgroundColor = "rgba(0,0,0,0.05)",
 	EndAdornmentComponent,
 	InputLabelProps,
+
 	...rest
 }) => {
-	const { getNextEnabled, isDisabled } = useContext(FormManagerContext) || {};
+	const { isFieldDisabled, nextField } = useContext(FormMetaContext) || {};
 	const { setFocus } = useFormContext() || {};
 
 	const renderEndAdornment = useMemo(() => {
@@ -34,32 +36,25 @@ export const ControlledTextField = ({
 
 	const handleKeyDown = useCallback(
 		(e) => {
-			// if (onKeyDown) {
-			// 	onKeyDown(e);
-			// }
-			if (e.key === "Enter" || e.key === "Tab") {
-				if (getNextEnabled) {
-					const nextField = getNextEnabled(name, {
+			if ((e.key === "Enter" && !e.shiftKey) || e.key === "Tab") {
+				if (nextField) {
+					e.preventDefault();
+
+					nextField(name, {
+						setFocus,
+						isFieldDisabled,
 						forward: !e.shiftKey,
-						isDisabled,
 					});
-					console.log("nextField", nextField);
-					if (nextField) {
-						e.preventDefault();
-						setFocus(nextField.name, {
-							shouldSelect: nextField.select,
-						});
-					}
 				}
 			}
 		},
-		[getNextEnabled, name, isDisabled, setFocus]
+		[nextField, name, setFocus, isFieldDisabled]
 	);
 
 	if (!name) {
 		return (
 			<TextField
-				// inputRef={innerInputRef}
+				multiline={multiline}
 				sx={[
 					(theme) => ({
 						"&:has(.MuiInputBase-input:focus)": {
@@ -111,7 +106,7 @@ export const ControlledTextField = ({
 			}) => (
 				<TextField
 					value={value}
-					// inputRef={innerInputRef}
+					multiline={multiline}
 					inputRef={ref}
 					sx={[
 						(theme) => ({

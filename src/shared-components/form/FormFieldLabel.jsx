@@ -101,6 +101,8 @@ FormFieldLabel.propTypes = {
 	labelProps: PropTypes.object,
 	labelStyles: PropTypes.object,
 	emptyText: PropTypes.string,
+	title: PropTypes.string,
+	arrow: PropTypes.bool,
 	typographySx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	flex: PropTypes.bool,

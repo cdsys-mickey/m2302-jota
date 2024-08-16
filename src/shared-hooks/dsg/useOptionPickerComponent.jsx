@@ -1,6 +1,4 @@
-import { useCallback } from "react";
-import { useLayoutEffect, useMemo, useRef } from "react";
-import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
+import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 
 export const useOptionPickerComponent = (opts) => {
 	const {
@@ -104,6 +102,7 @@ export const useOptionPickerComponent = (opts) => {
 	// 	[nextCell2]
 	// );
 
+	// 跳過停用 Cell
 	useLayoutEffect(() => {
 		if (skipDisabled && active && disabled) {
 			if (nextCell) {

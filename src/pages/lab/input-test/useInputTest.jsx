@@ -1,17 +1,24 @@
-import { useFormManager } from "@/shared-contexts/form-manager/useFormManager";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { LastFieldBehavior } from "../../../shared-contexts/form-meta/LastFieldBehavior";
 
 export const useInputTest = () => {
-	const formManager = useFormManager(
+	const formMeta = useFormMeta(
 		`
 		picker2,
 		picker1,
 		picker3,
+		check1,
 		text1,
-		text2
-		`
+		date1,
+		datepicker1,
+		text2,
+		`,
+		{
+			lastField: LastFieldBehavior.PROMPT,
+		}
 	);
 
 	return {
-		formManager,
+		formMeta,
 	};
 };

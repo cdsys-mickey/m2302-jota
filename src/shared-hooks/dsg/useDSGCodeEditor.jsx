@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useWebApi } from "../useWebApi";
 import { useDSG } from "./useDSG";
 import { useContext } from "react";
@@ -9,6 +9,7 @@ import queryString from "query-string";
 import Objects from "../../shared-modules/sd-objects";
 import _ from "lodash";
 import { useState } from "react";
+import Errors from "../../shared-modules/sd-errors";
 
 const defaultTransformForReading = (payload) => {
 	return payload?.data || [];
@@ -41,6 +42,10 @@ export const useDSGCodeEditor = ({
 	const dialogs = useContext(DialogsContext);
 	const [state, setState] = useState({
 		baseUri: baseUri,
+	});
+
+	const deletingRef = useRef({
+		rows: 0,
 	});
 
 	const load = useCallback(
@@ -85,7 +90,14 @@ export const useDSGCodeEditor = ({
 				grid.setGridLoading(false);
 			}
 		},
-		[baseUri, grid, httpGetAsync, querystring, token, transformForReading]
+		[
+			grid,
+			httpGetAsync,
+			querystring,
+			state.baseUri,
+			token,
+			transformForReading,
+		]
 	);
 
 	const reload = useCallback(() => {
@@ -97,7 +109,7 @@ export const useDSGCodeEditor = ({
 			console.log(`CREATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPostAsync({
-					url: baseUri,
+					url: state.baseUri,
 					bearer: token,
 					data: transformForSubmitting(rowData),
 				});
@@ -111,16 +123,21 @@ export const useDSGCodeEditor = ({
 					throw error?.message || new Error("新增失敗");
 				}
 			} catch (err) {
-				toast.error(`新增${displayName}發生例外: ${err.message}`);
+				toast.error(
+					Errors.getMessage(`新增${displayName}發生例外`, err),
+					{
+						position: "top-center",
+					}
+				);
 				reload();
 			}
 		},
 		[
-			baseUri,
 			displayName,
 			grid,
 			httpPostAsync,
 			reload,
+			state.baseUri,
 			token,
 			transformForSubmitting,
 		]
@@ -131,7 +148,7 @@ export const useDSGCodeEditor = ({
 			console.log(`UPDATE`, rowData);
 			try {
 				const { status, payload, error } = await httpPutAsync({
-					url: baseUri,
+					url: state.baseUri,
 					data: transformForSubmitting(rowData),
 					bearer: token,
 				});
@@ -145,23 +162,27 @@ export const useDSGCodeEditor = ({
 					throw error?.message || new Error("修改失敗");
 				}
 			} catch (err) {
-				toast.error(`修改${displayName}發生例外: ${err.message}`);
+				toast.error(
+					Errors.getMessage(`修改${displayName}發生例外`, err),
+					{ position: "top-center" }
+				);
 				reload();
 			}
 		},
 		[
-			baseUri,
 			displayName,
 			grid,
 			httpPutAsync,
 			reload,
+			state.baseUri,
 			token,
 			transformForSubmitting,
 		]
 	);
 
 	const handleDelete = useCallback(
-		async (rows) => {
+		async (rows, opts = {}) => {
+			const { onDeleted } = opts;
 			console.log(`DELETE`, rows);
 			try {
 				let success = 0;
@@ -171,7 +192,7 @@ export const useDSGCodeEditor = ({
 						const key = rowData[grid.keyColumn];
 						try {
 							const { status, error } = await httpDeleteAsync({
-								url: `${baseUri}/${key}`,
+								url: `${state.baseUri}/${key}`,
 								bearer: token,
 							});
 
@@ -187,22 +208,38 @@ export const useDSGCodeEditor = ({
 				);
 				if (success > 0) {
 					toast.success(`刪除成功 ${success} 筆${displayName || ""}`);
+					if (onDeleted) {
+						onDeleted(rows);
+					}
 				} else {
 					toast.warn(
 						"沒有刪除任何資料" + error?.message
 							? ": " + error.message
-							: ""
+							: "",
+						{ position: "top-center" }
 					);
 				}
 			} catch (err) {
 				console.error(err);
-				toast.error(`刪除${displayName}發生例外: ${err.message}`);
+				toast.error(
+					Errors.getMessage(`刪除${displayName}發生例外`, err),
+					{
+						position: "top-center",
+					}
+				);
 			} finally {
 				// grid.setDeletingRow(null);
 				reload();
 			}
 		},
-		[baseUri, displayName, grid?.keyColumn, httpDeleteAsync, reload, token]
+		[
+			displayName,
+			grid.keyColumn,
+			httpDeleteAsync,
+			reload,
+			state.baseUri,
+			token,
+		]
 	);
 
 	const isExistingRow = useCallback(
@@ -234,41 +271,63 @@ export const useDSGCodeEditor = ({
 	);
 
 	const handleConfirmDelete = useCallback(
-		async (rows) => {
+		async (rows, opts = {}) => {
+			const { onDeleted } = opts;
 			if (!rows || rows.length === 0) {
 				throw new Error("未指定 rows");
 			}
 
 			let message;
 
+			const firstRow = rows[0];
 			if (rows.length > 1) {
-				message = ` ${rows.length} 筆代碼`;
+				const lastRow = rows[rows.length - 1];
+				message = ` ${rows.length} 筆代碼 (${
+					firstRow[grid.keyColumn]
+				} ~ ${lastRow[grid.keyColumn]})`;
 			} else {
-				const firstRow = rows[0];
-				message = `${displayName}「${firstRow[grid.keyColumn]}」`;
+				const key = firstRow[grid.keyColumn];
+				message = `${displayName}${!key ? "" : "「" + key + "」"}`;
 			}
-
+			// deletingRef.current.rows = grid.gridData?.length || 0;
+			gridMeta.saveSelection();
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除${message}?`,
+				triggerCancelOnClose: true,
 				onConfirm: () => {
-					handleDelete(rows);
+					handleDelete(rows, {
+						onDeleted,
+					});
+					// 下列順序不可改變, 否則會導致對話框未正常關閉
 					dialogs.closeLatest();
+					gridMeta.resetSelection();
 				},
 				onCancel: () => {
-					// dsg.setDeletingRow(null);
 					grid.rollbackChanges();
-					dialogs.closeLatest();
+					// dialogs.closeLatest();
 					// 游標移回原來的位置
+					gridMeta.restoreSelection();
 				},
+				// onClose: () => {
+				// 	if (grid.gridData?.length < deletingRef.current.rows) {
+				// 		return;
+				// 	}
+				// 	gridMeta.restoreSelection();
+				// },
 			});
 		},
-		[dialogs, displayName, grid, handleDelete]
+		[dialogs, displayName, grid, gridMeta, handleDelete]
 	);
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
-			toast.error(`${displayName} ${row.rowData[grid.keyColumn]} 已存在`);
+			toast.error(
+				`${displayName} ${row.rowData[grid.keyColumn]} 已存在`,
+				{
+					position: "top-center",
+				}
+			);
 
 			grid.setValueByRowIndex(
 				row.rowIndex,
@@ -287,14 +346,14 @@ export const useDSGCodeEditor = ({
 	);
 
 	const handleDeleteOperation = useCallback(
-		({ operation, onDelete, newValue }) => {
+		({ operation, newValue, onDelete, onDeleted }) => {
 			const rows = grid.prevGridData.slice(
 				operation.fromRowIndex,
 				operation.toRowIndex
 			);
 
 			if (onDelete) {
-				onDelete(rows);
+				onDelete(rows, { onDeleted });
 			} else {
 				grid.setGridData(newValue);
 			}
@@ -316,6 +375,7 @@ export const useDSGCodeEditor = ({
 			onBeforeCreate,
 			onCreate,
 			onDelete,
+			onDeleted,
 		}) => {
 			const firstRow = {
 				rowIndex: operation.fromRowIndex,
@@ -381,7 +441,7 @@ export const useDSGCodeEditor = ({
 				);
 				console.log(`DELETE`, rows);
 				if (onDelete) {
-					onDelete(rows);
+					onDelete(rows, { onDeleted });
 				}
 			} else {
 				grid.setGridData(newValue);
@@ -401,10 +461,11 @@ export const useDSGCodeEditor = ({
 				onPatch,
 				// D
 				onDelete,
+				onDeleted,
 				// E
 				onDuplicatedError,
 				// Support Methods
-				toFirstColumn,
+				// toFirstColumn,
 			} = {}) =>
 			(newValue, operations) => {
 				console.log(`${grid.gridId}.handleGridChange`, newValue);
@@ -412,12 +473,20 @@ export const useDSGCodeEditor = ({
 				const operation = operations[0];
 				console.log("operation", operation);
 				if (operation.type === "DELETE") {
-					handleDeleteOperation({ operation, newValue, onDelete });
+					handleDeleteOperation({
+						operation,
+						newValue,
+						onDelete,
+						onDeleted,
+					});
 				} else if (operation.type === "CREATE") {
 					grid.setGridData(newValue);
-					if (toFirstColumn) {
-						toFirstColumn({ nextRow: true });
-					}
+					setTimeout(() => {
+						gridMeta?.setActiveCell({
+							row: newValue.length - 1,
+							col: 0,
+						});
+					});
 				} else if (operation.type === "UPDATE") {
 					// const rowIndex = operation.fromRowIndex;
 					// const rowData = newValue[rowIndex];
@@ -435,12 +504,13 @@ export const useDSGCodeEditor = ({
 						onBeforeCreate,
 						onCreate,
 						onDelete,
+						onDeleted,
 					});
 				} else {
 					grid.setGridData(newValue);
 				}
 			},
-		[grid, handleDeleteOperation, handleUpdateOperation]
+		[grid, gridMeta, handleDeleteOperation, handleUpdateOperation]
 	);
 
 	return {

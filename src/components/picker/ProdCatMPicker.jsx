@@ -2,21 +2,30 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ProdMCats from "@/modules/md-prod-m-cats";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
-import { useWatch } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 
 const ProdCatMPicker = (props) => {
-	const { name, label = "中分類", readOnly = false, ...rest } = props;
+	const { name, label = "中分類", ...rest } = props;
 	const { token } = useContext(AuthContext);
+	const form = useFormContext();
+	const { setValue } = form;
 	const catL = useWatch({ name: "catL" });
 	const disabled = useMemo(() => {
-		return !catL?.LClas || readOnly;
-	}, [catL?.LClas, readOnly]);
+		return !catL?.LClas;
+	}, [catL?.LClas]);
 
 	const url = useMemo(() => {
-		return disabled ? null : `v1/prod/m-cats/${catL?.LClas}`;
-	}, [catL?.LClas, disabled]);
+		return `v1/prod/m-cats/${catL?.LClas}`;
+	}, [catL?.LClas]);
+
+	useChangeTracking(() => {
+		if (!catL) {
+			setValue(name, null);
+		}
+	}, [catL]);
 
 	return (
 		<OptionPickerWrapper

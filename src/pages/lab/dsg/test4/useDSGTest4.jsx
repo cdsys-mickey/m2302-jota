@@ -71,7 +71,9 @@ export const useDSGTest4 = () => {
 				...keyColumn(
 					"SOrdQty",
 					// createFloatColumn(2, { enterToNext: true })
-					createFloatColumn(2, { enterToNext: true })
+					createFloatColumn(2, {
+						// enterToNext: true
+					})
 				),
 				title: "數字欄位",
 				// minWidth: 90,
@@ -106,7 +108,7 @@ export const useDSGTest4 = () => {
 				...keyColumn(
 					"SExpDate",
 					createDateFnsColumn({
-						enterToNext: true,
+						// enterToNext: true,
 					})
 				),
 				title: "有效日期",
@@ -167,14 +169,14 @@ export const useDSGTest4 = () => {
 				} else if (operation.type === "CREATE") {
 					console.log("dsg.CREATE");
 					// process CREATE here
-					grid.toFirstColumn({ nextRow: true });
+					gridMeta.toFirstColumn({ nextRow: true });
 				}
 			}
 			if (!checkFailed) {
 				grid.setGridData(newGridData);
 			}
 		},
-		[grid, handleGridProdChange]
+		[grid, gridMeta, handleGridProdChange]
 	);
 
 	const createRow = useCallback(

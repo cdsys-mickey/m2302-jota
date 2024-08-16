@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import { SignInContext } from "@/contexts/signin/SignInContext";
-import { FormManagerProvider } from "@/shared-contexts/form-manager/FormManagerProvider";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import SignIn from "./SignIn";
 
 export const SignInContainer = (props) => {
@@ -9,7 +9,7 @@ export const SignInContainer = (props) => {
 	const form = useFormContext();
 	const signin = useContext(SignInContext);
 	return (
-		<FormManagerProvider {...signin.formManager}>
+		<FormMetaProvider {...signin.formMeta}>
 			<form
 				noValidate
 				autoComplete="off"
@@ -19,6 +19,6 @@ export const SignInContainer = (props) => {
 				)}>
 				<SignIn loading={signin.loading} {...rest} />
 			</form>
-		</FormManagerProvider>
+		</FormMetaProvider>
 	);
 };

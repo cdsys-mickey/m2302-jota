@@ -11,8 +11,42 @@ import { useToggle } from "@/shared-hooks/useToggle";
 import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
 import { useInit } from "../../shared-hooks/useInit";
+import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
+import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
 
 export const useA06 = ({ token, mode }) => {
+	const formMeta = useFormMeta(
+		`
+		CustID,
+		CustData,
+		AbbrName,
+		employee,
+		TaxType,
+		level,
+		area,
+		channel,
+		RecGroup,
+		payment,
+		bank,
+		BankAcct,
+		Boss,
+		Contact,
+		UniForm,
+		CompTel,
+		CompFax,
+		Cel,
+		RecAddr,
+		RecTel,
+		InvAddr,
+		InvTel,
+		transport,
+		mainProd,
+		remark
+	`,
+		{
+			lastField: LastFieldBehavior.PROMPT,
+		}
+	);
 	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
 		token,
@@ -134,8 +168,7 @@ export const useA06 = ({ token, mode }) => {
 
 				if (status.success) {
 					toast.success(
-						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
-							data?.CustData
+						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${data?.CustData
 						}」新增成功`
 					);
 					crud.doneCreating();
@@ -169,8 +202,7 @@ export const useA06 = ({ token, mode }) => {
 
 				if (status.success) {
 					toast.success(
-						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
-							data?.CustData
+						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${data?.CustData
 						}」修改成功`
 					);
 					crud.doneUpdating();
@@ -243,8 +275,7 @@ export const useA06 = ({ token, mode }) => {
 					crud.cancelAction();
 					if (status.success) {
 						toast.success(
-							`成功删除${
-								mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
+							`成功删除${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
 							}商品${crud.itemData.CustData}`
 						);
 						loader.loadList({ refresh: true });
@@ -374,5 +405,6 @@ export const useA06 = ({ token, mode }) => {
 		finishReview,
 		failReview,
 		...appModule,
+		formMeta,
 	};
 };

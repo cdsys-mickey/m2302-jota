@@ -1,6 +1,5 @@
-import { useContext } from "react";
-import SwitchEx from "@/shared-components/SwitchEx";
 import { A09Context } from "@/contexts/A09/A09Context";
+import { useContext } from "react";
 import LockSwitch from "../../../shared-components/LockSwitch";
 
 export const A09LockRowsSwitchContainer = (props) => {
@@ -9,8 +8,8 @@ export const A09LockRowsSwitchContainer = (props) => {
 	return (
 		<LockSwitch
 			unlockedLabel="編輯"
-			locked={a09.readOnly}
-			onChange={a09.toggleReadOnly}
+			locked={a09.grid.readOnly}
+			onChange={a09.grid.toggleReadOnly}
 			disabled={!a09.canUpdate}
 			{...rest}
 		/>

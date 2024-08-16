@@ -3,89 +3,28 @@ import AreaTypes from "@/modules/md-area-types";
 import ContainerEx from "@/shared-components/ContainerEx";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
-} from "react-datasheet-grid";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import AreaTypePickerComponent from "@/components/dsg/columns/area-type-picker/AreaTypePickerComponent";
+import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const A08Grid = memo((props) => {
 	const {
 		canCreate,
+		columns,
 		lockRows,
-		setGridRef,
+		gridRef,
 		data,
 		loading,
 		height = 300,
 		// METHODS
-		handleChange,
-		isPersisted,
+		onChange,
 	} = props;
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"CodeID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: isPersisted,
-				title: "代碼",
-				grow: 1,
-			},
-			// {
-			// 	...keyColumn(
-			// 		"areaType",
-			// 		createOptionPickerColumn({
-			// 			name: "areaType",
-			// 			options: AreaTypes.options,
-			// 			getOptionLabel: AreaTypes.getOptionLabel,
-			// 			isOptionEqualToValue: AreaTypes.isOptionEqualToValue,
-			// 		})
-			// 	),
-			// 	title: "範圍",
-			// 	minWidth: 200,
-			// 	disabled: lockRows,
-			// 	grow: 1,
-			// },
-			{
-				...keyColumn(
-					"areaType",
-					optionPickerColumn(AreaTypePickerComponent, {
-						name: "areaType",
-						hideControlsOnActive: true,
-					})
-				),
-				title: "範圍",
-				minWidth: 200,
-				disabled: lockRows,
-				grow: 1,
-			},
-			{
-				...keyColumn(
-					"CodeData",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "客戶區域",
-				grow: 4,
-				disabled: lockRows,
-			},
-		],
-		[isPersisted, lockRows]
-	);
+
 
 	const gridHeight = useMemo(() => {
 		return height + (lockRows || !canCreate ? 48 : 0);
@@ -93,7 +32,7 @@ const A08Grid = memo((props) => {
 
 	if (loading) {
 		return (
-			<ContainerEx maxWidth="sm" alignLeft>
+			<ContainerEx maxWidth="xs" alignLeft>
 				<DSGLoading height={height} />
 			</ContainerEx>
 		);
@@ -104,38 +43,37 @@ const A08Grid = memo((props) => {
 	}
 
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
-			<Box>
-				<DynamicDataSheetGrid
-					lockRows={lockRows}
-					ref={setGridRef}
-					rowKey="CodeID"
-					height={gridHeight}
-					// rowHeight={42}
-					value={data}
-					onChange={handleChange}
-					columns={columns}
-					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
-					disableExpandSelection
-					// disableContextMenu
-					contextMenuComponent={ContextMenu}
-					// autoAddRow
-					createRow={() => ({
-						areaType: AreaTypes.findById(AreaTypes.KEY_OTHER),
-					})}
-				/>
-			</Box>
+		<ContainerEx maxWidth="xs" alignLeft>
+			<DSGGrid
+				lockRows={lockRows}
+				ref={gridRef}
+				rowKey="CodeID"
+				height={gridHeight}
+				// rowHeight={42}
+				value={data}
+				onChange={onChange}
+				columns={columns}
+				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
+				disableExpandSelection
+				// disableContextMenu
+				contextMenuComponent={ContextMenu}
+				// autoAddRow
+				createRow={() => ({
+					areaType: AreaTypes.findById(AreaTypes.KEY_OTHER),
+				})}
+			/>
 		</ContainerEx>
 	);
 });
 A08Grid.propTypes = {
+	columns: PropTypes.array,
 	lockRows: PropTypes.bool,
-	setGridRef: PropTypes.func,
+	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
+	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	// handleActiveCellChange: PropTypes.func,
 };

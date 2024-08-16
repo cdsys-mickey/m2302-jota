@@ -13,6 +13,7 @@ const parse = (input) => {
 	const result = input
 		.trim()
 		.split(/\s*,\s*(?![^{]*\})/)
+		.filter((x) => x)
 		.map((item) => {
 			// console.log("item→", item);
 			const [name, extra] = item.split(/\s*:\s*(?=\{)/);
@@ -40,8 +41,8 @@ const parse = (input) => {
 	return result;
 };
 
-const FormManager = {
+const FormMeta = {
 	parse,
 };
 
-export default FormManager;
+export default FormMeta;

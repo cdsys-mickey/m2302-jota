@@ -8,7 +8,7 @@ import { createFloatColumn } from "@/shared-components/dsg/columns/float/createF
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useFormManager } from "@/shared-contexts/form-manager/useFormManager";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useAction } from "@/shared-hooks/useAction";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
@@ -23,6 +23,8 @@ import { toast } from "react-toastify";
 import { useAppModule } from "./useAppModule";
 import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
+import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
 
 /**
  * 適用三種情境
@@ -32,7 +34,7 @@ import { createTextColumnEx } from "../../shared-components/dsg/columns/text/cre
  */
 export const useA01 = ({ token, mode }) => {
 	const [selectedTab, setSelectedTab] = useState(A01.Tabs.INFO);
-	const formManager = useFormManager(
+	const formMeta = useFormMeta(
 		`
 		ProdID,
 		ProdData,
@@ -65,7 +67,10 @@ export const useA01 = ({ token, mode }) => {
 		PriceC,
 		PriceD,
 		PriceE,
-		`
+		`,
+		{
+			lastField: LastFieldBehavior.PROMPT,
+		}
 	);
 	const crud = useContext(CrudContext);
 	const moduleId = useMemo(() => {
@@ -151,7 +156,6 @@ export const useA01 = ({ token, mode }) => {
 						name: "dept",
 						disableOpenOnInput: true,
 						hideControlsOnActive: true,
-						// selectOnFocus: true,
 						forId: true,
 						disableClearable: true,
 						selectOnFocus: true,
@@ -184,7 +188,9 @@ export const useA01 = ({ token, mode }) => {
 			{
 				...keyColumn(
 					"SCost",
-					createFloatColumn(2, { enterToNext: true })
+					createFloatColumn(2, {
+						// enterToNext: true
+					})
 				),
 				title: "調撥成本",
 				minWidth: 110,
@@ -198,9 +204,14 @@ export const useA01 = ({ token, mode }) => {
 	const transGrid = useDSG({
 		gridId: "trans",
 		keyColumn: "dept.DeptID",
-		columns: transColumns,
 		skipDisabled: true,
 		createRow: createTransRow,
+	});
+
+	const transMeta = useDSGMeta({
+		data: transGrid.gridData,
+		columns: transColumns,
+		skipDisabled: true,
 	});
 
 	//ProdComboGrid
@@ -265,9 +276,13 @@ export const useA01 = ({ token, mode }) => {
 	const comboGrid = useDSG({
 		gridId: "combo",
 		keyColumn: "prod.ProdID",
+		createRow: createComboRow,
+	});
+
+	const comboMeta = useDSGMeta({
+		data: comboGrid.gridData,
 		columns: comboColumns,
 		skipDisabled: true,
-		createRow: createComboRow,
 	});
 
 	const confirmReturn = useCallback(() => {
@@ -307,9 +322,8 @@ export const useA01 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failReading(
 					WebApi.mapStatusText(err, {
-						404: `找不到${
-							mode === A01.Mode.NEW_PROD ? "新" : ""
-						}商品 ${id}`,
+						404: `找不到${mode === A01.Mode.NEW_PROD ? "新" : ""
+							}商品 ${id}`,
 					})
 				);
 			}
@@ -376,8 +390,7 @@ export const useA01 = ({ token, mode }) => {
 
 				if (status.success) {
 					toast.success(
-						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${
-							data?.ProdData
+						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${data?.ProdData
 						}」新增成功`
 					);
 					crud.doneCreating();
@@ -407,7 +420,9 @@ export const useA01 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center",
+				});
 			}
 		},
 		[crud, httpPostAsync, listLoader, mode, token, url]
@@ -426,8 +441,7 @@ export const useA01 = ({ token, mode }) => {
 
 				if (status.success) {
 					toast.success(
-						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${
-							data?.ProdData
+						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${data?.ProdData
 						}」修改成功`
 					);
 					crud.doneUpdating();
@@ -443,7 +457,9 @@ export const useA01 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center",
+				});
 			}
 		},
 		[crud, httpPutAsync, url, token, mode, loadItem, listLoader]
@@ -471,7 +487,9 @@ export const useA01 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("onCounterSubmit.failed", err);
-				toast.error(Errors.getMessage("櫃位更新失敗", err));
+				toast.error(Errors.getMessage("櫃位更新失敗", err), {
+					position: "top-center",
+				});
 			}
 		},
 		[crud, httpPatchAsync, loadItem, token]
@@ -480,7 +498,10 @@ export const useA01 = ({ token, mode }) => {
 	const onCounterSubmitError = useCallback((err) => {
 		console.error(`A01.onCounterSubmitError`, err);
 		toast.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-center",
+			}
 		);
 	}, []);
 
@@ -516,7 +537,10 @@ export const useA01 = ({ token, mode }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A01.onSubmitError`, err);
 		toast.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-center",
+			}
 		);
 	}, []);
 
@@ -568,8 +592,7 @@ export const useA01 = ({ token, mode }) => {
 					crud.cancelAction();
 					if (status.success) {
 						toast.success(
-							`成功删除${
-								mode === A01.Mode.NEW_PROD ? "新" : ""
+							`成功删除${mode === A01.Mode.NEW_PROD ? "新" : ""
 							}商品${crud.itemData.ProdData}`
 						);
 						listLoader.loadList({
@@ -581,7 +604,9 @@ export const useA01 = ({ token, mode }) => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center",
+					});
 				}
 			},
 		});
@@ -632,7 +657,9 @@ export const useA01 = ({ token, mode }) => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("覆核失敗", err));
+				toast.error(Errors.getMessage("覆核失敗", err), {
+					position: "top-center",
+				});
 			}
 		},
 		[crud, httpPatchAsync, listLoader, reviewAction, token]
@@ -720,10 +747,13 @@ export const useA01 = ({ token, mode }) => {
 									transGrid.isDuplicating(rowData, newValue)
 								) {
 									toast.error(
-										`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
+										`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`,
+										{
+											position: "top-center",
+										}
 									);
 									setTimeout(() => {
-										transGrid.setActiveCell({
+										transMeta.setActiveCell({
 											col: 0,
 											row: rowIndex,
 										});
@@ -745,14 +775,14 @@ export const useA01 = ({ token, mode }) => {
 				} else if (operation.type === "CREATE") {
 					console.log("dsg.CREATE");
 					// process CREATE here
-					transGrid.toFirstColumn({ nextRow: true });
+					transMeta.toFirstColumn({ nextRow: true });
 				}
 			}
 			if (!checkFailed) {
 				transGrid.setGridData(newGridData);
 			}
 		},
-		[handleGridDeptChange, transGrid]
+		[handleGridDeptChange, transGrid, transMeta]
 	);
 	// const handleTransGridChange = useCallback(
 	// 	(newValue, operations) => {
@@ -823,10 +853,11 @@ export const useA01 = ({ token, mode }) => {
 									comboGrid.isDuplicating(rowData, newValue)
 								) {
 									toast.error(
-										`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
+										`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`,
+										{ position: "top-center" }
 									);
 									setTimeout(() => {
-										comboGrid.setActiveCell({
+										comboMeta.setActiveCell({
 											col: 0,
 											row: rowIndex,
 										});
@@ -848,14 +879,14 @@ export const useA01 = ({ token, mode }) => {
 				} else if (operation.type === "CREATE") {
 					console.log("dsg.CREATE");
 					// process CREATE here
-					comboGrid.toFirstColumn({ nextRow: true });
+					comboMeta.toFirstColumn({ nextRow: true });
 				}
 			}
 			if (!checkFailed) {
 				comboGrid.setGridData(newGridData);
 			}
 		},
-		[comboGrid, handleGridProdChange]
+		[comboGrid, comboMeta, handleGridProdChange]
 	);
 
 	// const handleComboGridChangeOld = useCallback(
@@ -978,12 +1009,14 @@ export const useA01 = ({ token, mode }) => {
 
 		// ProdTransGrid
 		transGrid,
-		setTransGridRef: transGrid.setGridRef,
-		transGridData: transGrid.gridData,
+		transMeta,
+		// setTransGridRef: transGrid.setGridRef,
+		// transGridData: transGrid.gridData,
 		handleTransGridChange,
 		transGridDisabled,
 		// ProdComboGrid
 		comboGrid,
+		comboMeta,
 		setComboGridRef: comboGrid.setGridRef,
 		comboGridData: comboGrid.gridData,
 		handleComboGridChange,
@@ -1007,6 +1040,6 @@ export const useA01 = ({ token, mode }) => {
 		createComboRow,
 		transTabDisabled,
 		comboTabDisabled,
-		formManager,
+		formMeta,
 	};
 };

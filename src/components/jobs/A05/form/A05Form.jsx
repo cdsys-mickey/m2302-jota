@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { memo } from "react";
 
-import TypoBankPickerContainer from "@/components/fields/TypoBankPickerContainer";
+import BankPicker from "@/components/fields/BankPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 
@@ -40,7 +40,7 @@ const A05Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
@@ -110,10 +110,20 @@ const A05Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TypoBankPickerContainer
+								<BankPicker
+									typo
 									name="bank"
 									label="銀行"
 									fullWidth
+									disableOpenOnInput
+									selectOnFocus
+									componentsProps={{
+										paper: {
+											sx: {
+												width: 260,
+											},
+										},
+									}}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
@@ -139,7 +149,7 @@ const A05Form = memo((props) => {
 					{/* 公司 */}
 					<FormSectionTitle>公司</FormSectionTitle>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
 									typo
@@ -176,7 +186,7 @@ const A05Form = memo((props) => {
 					{/* 工廠 */}
 					<FormSectionTitle>工廠</FormSectionTitle>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
 									typo
@@ -204,7 +214,7 @@ const A05Form = memo((props) => {
 						</Grid>
 					</FormSectionBox>
 					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
 									typo

@@ -22,6 +22,7 @@ const A02Grid = memo((props) => {
 		// METHODS
 		onChange,
 		onActiveCellChange,
+		onSelectionChange,
 		// isPersisted
 		columns,
 	} = props;
@@ -54,6 +55,7 @@ const A02Grid = memo((props) => {
 					value={data}
 					onChange={onChange}
 					onActiveCellChange={onActiveCellChange}
+					onSelectionChange={onSelectionChange}
 					columns={columns}
 					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 					disableExpandSelection
@@ -73,6 +75,7 @@ A02Grid.propTypes = {
 	height: PropTypes.number,
 	onChange: PropTypes.func,
 	onActiveCellChange: PropTypes.func,
+	onSelectionChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	columns: PropTypes.array,
 	// handleActiveCellChange: PropTypes.func,

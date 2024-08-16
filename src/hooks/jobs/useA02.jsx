@@ -1,14 +1,19 @@
-import { useInit } from "@/shared-hooks/useInit";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
-import { useAppModule } from "./useAppModule";
+import { useInit } from "@/shared-hooks/useInit";
 import { useMemo } from "react";
-import { createTextColumn, keyColumn } from "react-datasheet-grid";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
-import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSG } from "../../shared-hooks/dsg/useDSG";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useAppModule } from "./useAppModule";
+import { useContext } from "react";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import CrudContext from "@/contexts/crud/CrudContext";
 
-export const useA02 = ({ token }) => {
+export const useA02 = () => {
+	const { token } = useContext(AuthContext);
+	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "A02",
@@ -60,10 +65,12 @@ export const useA02 = ({ token }) => {
 	});
 
 	useInit(() => {
+		crud.cancelAction();
 		codeEditor.load();
 	}, []);
 
 	return {
+		...crud,
 		...appModule,
 		grid,
 		gridMeta,
