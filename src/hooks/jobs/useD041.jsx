@@ -617,8 +617,7 @@ export const useD041 = () => {
 				IDs: crud.itemData?.EntID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebD041Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebD041Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

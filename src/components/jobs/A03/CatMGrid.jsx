@@ -1,18 +1,11 @@
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
-} from "react-datasheet-grid";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import DSGBox from "../../../shared-components/dsg/DSGBox";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const CatMGrid = memo((props) => {
@@ -25,9 +18,10 @@ const CatMGrid = memo((props) => {
 		loading,
 		height,
 		// METHODS
-		handleChange,
-		isPersisted,
+		onChange,
 		onSelectionChange,
+		onActiveCellChange,
+		createRow,
 		// isSelected,
 		getRowClassName,
 	} = props;
@@ -45,24 +39,23 @@ const CatMGrid = memo((props) => {
 	}
 
 	return (
-		<DSGBox>
-			{/* <LoadingBackdrop open={loading} /> */}
-			<DynamicDataSheetGrid
-				lockRows={lockRows}
-				ref={setGridRef}
-				rowKey="MClas"
-				height={gridHeight}
-				// rowHeight={42}
-				value={data}
-				onChange={handleChange}
-				columns={columns}
-				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
-				disableExpandSelection
-				contextMenuComponent={ContextMenu}
-				onSelectionChange={onSelectionChange}
-				rowClassName={getRowClassName}
-			/>
-		</DSGBox>
+		<DSGGrid
+			lockRows={lockRows}
+			ref={setGridRef}
+			rowKey="MClas"
+			height={gridHeight}
+			// rowHeight={42}
+			value={data}
+			columns={columns}
+			addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
+			disableExpandSelection
+			contextMenuComponent={ContextMenu}
+			onChange={onChange}
+			onSelectionChange={onSelectionChange}
+			onActiveCellChange={onActiveCellChange}
+			createRow={createRow}
+			rowClassName={getRowClassName}
+		/>
 	);
 });
 
@@ -74,10 +67,12 @@ CatMGrid.propTypes = {
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
+	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	// handleActiveCellChange: PropTypes.func,
 	onSelectionChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
+	createRow: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	columns: PropTypes.array,
 };

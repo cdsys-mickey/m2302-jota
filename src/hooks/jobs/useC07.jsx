@@ -593,8 +593,7 @@ export const useC07 = () => {
 				IDs: crud.itemData?.GrtID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC07Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC07Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

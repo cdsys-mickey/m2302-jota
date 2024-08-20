@@ -1,20 +1,13 @@
-import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box, Container } from "@mui/material";
-import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
-import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
-} from "react-datasheet-grid";
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import ContainerEx from "../../../shared-components/ContainerEx";
-import { checkboxColumn2 } from "../../../shared-components/dsg/columns/checkbox/checkboxColumn2";
+import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
+import DSGLoading from "@/shared-components/dsg/DSGLoading";
+import PropTypes from "prop-types";
+import { memo } from "react";
+import ContainerEx from "@/shared-components/ContainerEx";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const A16Grid = memo((props) => {
@@ -25,73 +18,13 @@ const A16Grid = memo((props) => {
 		loading,
 		height = 300,
 		// METHODS
-		handleChange,
-		isPersisted,
-		handleCreateRow,
+		onChange,
+		onSelectionChange,
+		onActiveCellChange,
+		createRow,
 	} = props;
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"DeptID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: isPersisted,
-				title: "門市代碼",
-				grow: 2,
-			},
-			{
-				...keyColumn(
-					"GroupKey",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "群組",
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"DeptName",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "門市名稱",
-				grow: 4,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"AbbrName",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "簡稱",
-				grow: 2,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"Using_N",
-					createMuiCheckboxColumn({
-						trueValue: "1",
-						falseValue: "0",
-					})
-					// checkboxColumn2
-				),
-				title: "使用中",
-				minWidth: 60,
-				disabled: readOnly,
-			},
-		],
-		[isPersisted, readOnly]
-	);
+
 
 	if (loading) {
 		return (
@@ -108,29 +41,23 @@ const A16Grid = memo((props) => {
 
 	return (
 		<ContainerEx maxWidth="md" alignLeft>
-			<Box>
-				{/* <LoadingBackdrop open={loading} /> */}
-				<DynamicDataSheetGrid
-					lockRows={readOnly}
-					ref={gridRef}
-					rowKey="DeptID"
-					height={height + (readOnly ? 48 : 0)}
-					// rowHeight={42}
-					value={data}
-					onChange={handleChange}
-					columns={columns}
-					addRowsComponent={DSGAddRowsToolbar}
-					disableExpandSelection
-					contextMenuComponent={ContextMenu}
-					// autoAddRow
-					createRow={handleCreateRow}
-					duplicateRow={({ rowData }) => ({
-						...rowData,
-						age: rowData.int ?? 25,
-						date: rowData.date ?? new Date(),
-					})}
-				/>
-			</Box>
+			<DSGGrid
+				lockRows={readOnly}
+				ref={gridRef}
+				// rowKey="DeptID"
+				rowKey="id"
+				height={height + (readOnly ? 48 : 0)}
+				// rowHeight={42}
+				value={data}
+				onChange={onChange}
+				onSelectionChange={onSelectionChange}
+				onActiveCellChange={onActiveCellChange}
+				addRowsComponent={DSGAddRowsToolbar}
+				disableExpandSelection
+				contextMenuComponent={ContextMenu}
+				createRow={createRow}
+
+			/>
 		</ContainerEx>
 	);
 });
@@ -141,10 +68,10 @@ A16Grid.propTypes = {
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
-	isPersisted: PropTypes.func,
-	// handleActiveCellChange: PropTypes.func,
-	handleCreateRow: PropTypes.func,
+	onChange: PropTypes.func,
+	onSelectionChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
+	createRow: PropTypes.func,
 };
 
 A16Grid.displayName = "A16Grid";

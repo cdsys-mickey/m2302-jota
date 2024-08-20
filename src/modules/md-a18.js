@@ -1,6 +1,6 @@
 import Forms from "../shared-modules/sd-forms";
 
-const transformForSubmit = (payload) => {
+const transformForSubmitting = (payload) => {
 	const { outputType, dept, action, table, ...rest } = payload;
 	return {
 		DeptID: dept?.DeptID || "",
@@ -14,7 +14,7 @@ const transformForSubmit = (payload) => {
 const Actions = ["新增", "修改", "刪除", "狀態", "替換", "其他"];
 
 const A18 = {
-	transformForSubmit,
+	transformForSubmitting,
 	Actions,
 };
 

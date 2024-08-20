@@ -11,82 +11,22 @@ import {
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import NoDataBox from "../../../shared-components/NoDataBox";
+import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
 
 const A011Grid = memo((props) => {
 	const {
 		canCreate,
 		readOnly,
-		setGridRef,
+		gridRef,
 		data,
 		loading,
 		height = 300,
 		// METHODS
 		onChange,
+		...rest
 	} = props;
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"ProdID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: true,
-				grow: 2,
-				title: "商品代碼",
-			},
-			{
-				...keyColumn(
-					"ProdData_N",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "品名規格",
-				grow: 4,
-				disabled: true,
-			},
-			{
-				...keyColumn("Price", createFloatColumn(2)),
-				title: "建議售價",
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("PriceA", createFloatColumn(2)),
-				title: "售價A",
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("PriceB", createFloatColumn(2)),
-				title: "售價B",
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("PriceC", createFloatColumn(2)),
-				title: "售價C",
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("PriceD", createFloatColumn(2)),
-				title: "售價D",
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("PriceE", createFloatColumn(2)),
-				title: "售價E",
-				grow: 1,
-				disabled: readOnly,
-			},
-		],
-		[readOnly]
-	);
+
 
 	if (!data || data.legnth === 0) {
 		return (
@@ -106,26 +46,27 @@ const A011Grid = memo((props) => {
 
 	return (
 		<Box>
-			<DynamicDataSheetGrid
+			<DSGGrid
 				lockRows
-				ref={setGridRef}
+				ref={gridRef}
 				rowKey="ProdID"
 				// height={height + (readOnly ? 48 : 0)}
 				height={height + 48}
 				// rowHeight={42}
 				value={data}
 				onChange={onChange}
-				columns={columns}
+				// columns={columns}
 				addRowsComponent={DSGAddRowsToolbar}
 				disableExpandSelection
 				disableContextMenu
+				{...rest}
 			/>
 		</Box>
 	);
 });
 A011Grid.propTypes = {
 	readOnly: PropTypes.bool,
-	setGridRef: PropTypes.func,
+	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,

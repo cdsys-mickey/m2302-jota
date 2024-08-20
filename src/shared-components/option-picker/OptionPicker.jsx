@@ -224,31 +224,18 @@ const OptionPicker = memo(
 		 */
 
 		const nextCellOrField = useCallback(
-			(e) => {
+			(e, opts = {}) => {
+				const { forward } = opts;
 				if (inDSG) {
-					nextCell(cell, { forward: !e?.shiftKey });
+					nextCell(cell, { forward: forward || !e?.shiftKey });
 				} else if (nextField) {
 					e?.preventDefault();
 					nextField(name, {
 						setFocus,
 						isFieldDisabled,
-						forward: !e?.shiftKey,
+						forward: forward || !e?.shiftKey,
 					});
 				}
-				// } else if (getNextField) {
-				// 	const nextField = getNextField(name, {
-				// 		forward: !e?.shiftKey,
-				// 		isFieldDisabled,
-				// 	});
-				// 	console.log("nextField", nextField);
-				// 	if (nextField) {
-				// 		e?.preventDefault();
-
-				// 		setFocus(nextField.name, {
-				// 			shouldSelect: nextField.select,
-				// 		});
-				// 	}
-				// }
 			},
 			[inDSG, nextField, nextCell, cell, name, setFocus, isFieldDisabled]
 		);
@@ -308,7 +295,7 @@ const OptionPicker = memo(
 		const handleEnter = useCallback(
 			async (e, opts = {}) => {
 				console.log("handleEnter", e);
-				const { validate = false } = opts;
+				const { validate = false, } = opts;
 				// console.log("handleEnter", event);
 				if (!findByInput || _open) {
 					return;
@@ -339,7 +326,7 @@ const OptionPicker = memo(
 					// 這裡處理 dirty 之後卻沒改變的狀況
 					if (_.isEqual(found, value)) {
 						asyncRef.current.dirty = false;
-						nextCellOrField(e);
+						nextCellOrField(e, opts);
 					}
 					onChange(found);
 				} else {
@@ -359,7 +346,7 @@ const OptionPicker = memo(
 							return;
 						}
 					}
-					nextCellOrField(e);
+					nextCellOrField(e, opts);
 				}
 				// nextCellOrField(e);
 			},
@@ -384,6 +371,7 @@ const OptionPicker = memo(
 					case "Enter":
 						handleEnter(e, {
 							validate: true,
+							forward: true
 						});
 						break;
 					case "Tab":

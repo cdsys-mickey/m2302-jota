@@ -369,9 +369,9 @@ export const useC09 = () => {
 					"txoDept",
 					newValue?.撥出門市
 						? {
-								DeptID: newValue.撥出門市,
-								AbbrName: newValue.撥出門市名稱,
-						  }
+							DeptID: newValue.撥出門市,
+							AbbrName: newValue.撥出門市名稱,
+						}
 						: null
 				);
 
@@ -416,8 +416,8 @@ export const useC09 = () => {
 				!rowData.SPrice || !rowData.SQty
 					? ""
 					: rowData.stype?.id
-					? 0
-					: rowData.SPrice * rowData.SQty,
+						? 0
+						: rowData.SPrice * rowData.SQty,
 		};
 		return newRowData;
 	}, []);
@@ -564,8 +564,7 @@ export const useC09 = () => {
 				IDs: crud.itemData?.TxiID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC09Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC09Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

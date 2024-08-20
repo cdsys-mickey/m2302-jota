@@ -24,7 +24,7 @@ const findById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
-const transformForSubmit = (payload) => {
+const transformForSubmitting = (payload) => {
 	const { outputType, dept, withTrackingNumber, ...rest } = payload;
 	return {
 		DeptID: dept?.DeptID || "",
@@ -37,7 +37,7 @@ const transformForSubmit = (payload) => {
 const Actions = ["新增", "修改", "刪除", "狀態", "替換", "其他"];
 
 const A21 = {
-	transformForSubmit,
+	transformForSubmitting,
 	Actions,
 	OutputModes,
 	options,

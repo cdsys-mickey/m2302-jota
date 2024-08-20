@@ -25,7 +25,7 @@ const renderTagLabel = (option) => {
 	return `${JobID}`;
 };
 
-const transformForSubmit = (data) => {
+const transformForSubmitting = (data) => {
 	return data.map((i) => {
 		const {
 			INQ,
@@ -87,8 +87,8 @@ const transformModulesToIds = (modules) => {
 
 const UserAuth = {
 	AUTH_EDITING_MODE,
-	// transformForGridEdior,
-	transformForSubmit,
+	// transformForReading,
+	transformForSubmitting,
 	transformForReading,
 	transformModulesToIds,
 	// PICKER

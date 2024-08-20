@@ -1,18 +1,14 @@
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
+	DynamicDataSheetGrid
 } from "react-datasheet-grid";
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import DSGBox from "../../../shared-components/dsg/DSGBox";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const CatSGrid = memo((props) => {
@@ -26,8 +22,9 @@ const CatSGrid = memo((props) => {
 		height = 300,
 		// METHODS
 		onChange,
-		isPersisted,
+		createRow,
 		onSelectionChange,
+		onActiveCellChange,
 		getRowClassName,
 	} = props;
 
@@ -55,13 +52,14 @@ const CatSGrid = memo((props) => {
 				height={gridHeight}
 				// rowHeight={42}
 				value={data}
-				onChange={onChange}
-				onSelectionChange={onSelectionChange}
 				columns={columns}
 				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 				disableExpandSelection
 				contextMenuComponent={ContextMenu}
-				// onActiveCellChange={handleActiveCellChange}
+				onChange={onChange}
+				onSelectionChange={onSelectionChange}
+				onActiveCellChange={onActiveCellChange}
+				createRow={createRow}
 				// autoAddRow
 				rowClassName={getRowClassName}
 			/>
@@ -70,6 +68,7 @@ const CatSGrid = memo((props) => {
 	);
 });
 CatSGrid.propTypes = {
+	canCreate: PropTypes.bool,
 	lockRows: PropTypes.bool,
 	setGridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
@@ -77,8 +76,9 @@ CatSGrid.propTypes = {
 	loading: PropTypes.bool,
 	height: PropTypes.number,
 	onChange: PropTypes.func,
-	isPersisted: PropTypes.func,
 	onSelectionChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
+	createRow: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	columns: PropTypes.array,
 };

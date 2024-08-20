@@ -532,8 +532,8 @@ export const useC04 = () => {
 											!SPrice || !SQty
 												? ""
 												: stype?.id
-												? 0
-												: SPrice * SQty,
+													? 0
+													: SPrice * SQty,
 									};
 								}
 								newGridData[rowIndex] = processedRowData;
@@ -622,8 +622,7 @@ export const useC04 = () => {
 				IDs: crud.itemData?.GinID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC04Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC04Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

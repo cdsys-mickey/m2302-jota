@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const transformForGridEdior = (payload) => {
+const transformForReading = (payload) => {
 	if (!payload.data) {
 		return [];
 	}
@@ -45,7 +45,7 @@ const transformForGridEdior = (payload) => {
 	});
 };
 
-const transformForSubmit = (data, dirtyIds) => {
+const transformForSubmitting = (data, dirtyIds) => {
 	return data
 		.filter((x) => {
 			if (dirtyIds && dirtyIds.size > 0) {
@@ -78,8 +78,8 @@ const transformForSubmit = (data, dirtyIds) => {
 };
 
 const A012 = {
-	transformForGridEdior,
-	transformForSubmit,
+	transformForReading,
+	transformForSubmitting,
 };
 
 export default A012;

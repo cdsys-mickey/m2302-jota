@@ -1,4 +1,4 @@
-const transformForGridEdior = (payload) => {
+const transformForReading = (payload) => {
 	if (!payload.data) {
 		return [];
 	}
@@ -28,7 +28,7 @@ const transformAsQueryParams = (data) => {
 	};
 };
 
-const transformForSubmit = (gridData, data) => {
+const transformForSubmitting = (gridData, data) => {
 	return {
 		Action: data?.outputType?.id || "1",
 		JobName: "A22",
@@ -52,8 +52,8 @@ const transformForSubmit = (gridData, data) => {
 
 const A22 = {
 	transformAsQueryParams,
-	transformForGridEdior,
-	transformForSubmit,
+	transformForReading,
+	transformForSubmitting,
 };
 
 export default A22;

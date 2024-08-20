@@ -40,13 +40,9 @@ const TextComponentEx = memo(
 			style,
 			// Context Methods
 			skipDisabled,
-			// nextCell,
 			getNextCell,
 			lastCell,
 			setActiveCell,
-			// enterToNext,
-			// inDSG,
-			// ...rest
 		} = columnData;
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
 		const asyncRef = useRef({
@@ -119,7 +115,7 @@ const TextComponentEx = memo(
 						setTimeout(() => {
 							stopEditing({ nextRow: false });
 							if (nextCell) {
-								nextCell(cell);
+								nextCell(cell, { forward: true });
 							}
 						});
 

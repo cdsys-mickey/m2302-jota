@@ -20,6 +20,7 @@ const A02Grid = memo((props) => {
 		loading,
 		height = 300,
 		// METHODS
+		createRow,
 		onChange,
 		onActiveCellChange,
 		onSelectionChange,
@@ -49,13 +50,16 @@ const A02Grid = memo((props) => {
 				<DSGGrid
 					lockRows={lockRows}
 					ref={gridRef}
-					rowKey="CodeID"
+					// rowKey="CodeID"
+					rowKey="id"
+					createRow={createRow}
 					height={gridHeight}
 					// rowHeight={42}
 					value={data}
 					onChange={onChange}
 					onActiveCellChange={onActiveCellChange}
 					onSelectionChange={onSelectionChange}
+					createRow={createRow}
 					columns={columns}
 					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 					disableExpandSelection
@@ -69,6 +73,7 @@ A02Grid.propTypes = {
 	canCreate: PropTypes.bool,
 	lockRows: PropTypes.bool,
 	gridRef: PropTypes.func,
+	vreateRow: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,
@@ -76,6 +81,7 @@ A02Grid.propTypes = {
 	onChange: PropTypes.func,
 	onActiveCellChange: PropTypes.func,
 	onSelectionChange: PropTypes.func,
+	createRow: PropTypes.func,
 	isPersisted: PropTypes.func,
 	columns: PropTypes.array,
 	// handleActiveCellChange: PropTypes.func,

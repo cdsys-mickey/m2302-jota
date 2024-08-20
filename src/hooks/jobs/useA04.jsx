@@ -73,8 +73,9 @@ export const useA04 = () => {
 	return {
 		...crud,
 		...appModule,
-		grid,
+		...grid,
+		...gridMeta,
 		gridMeta,
-		codeEditor,
+		...codeEditor,
 	};
 };

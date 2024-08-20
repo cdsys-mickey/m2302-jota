@@ -335,20 +335,6 @@ export const useDSG = ({
 				const prevRowData = prevGridData[rowIndex];
 				console.log(`[DSG UPDATE]`, rowData);
 
-				// *** MOVED TO handleDirtyCheck ***
-				// const isDirty = isRowDataEquals(prevRowData, rowData);
-				// console.log("isDirty", isDirty);
-
-				// const key = _.get(rowData, keyColumn);
-				// if (key) {
-				// 	if (isDirty) {
-				// 		dirtyIds.add(key);
-				// 		console.log(`dirtyId ${key} added`);
-				// 	} else {
-				// 		dirtyIds.delete(key);
-				// 		console.log(`dirtyId ${key} removed`);
-				// 	}
-				// }
 				handleDirtyCheck(rowData, prevRowData);
 				setGridData(newValue);
 			} else {
@@ -364,9 +350,9 @@ export const useDSG = ({
 			const rewritten = newValue.map((rowData, i) =>
 				i === rowIndex
 					? {
-							...rowData,
-							...newValueObj,
-					  }
+						...rowData,
+						...newValueObj,
+					}
 					: rowData
 			);
 			console.log(`setValueByRowIndex(${rowIndex})`, rewritten);

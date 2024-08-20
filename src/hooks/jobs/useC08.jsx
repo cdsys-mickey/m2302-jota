@@ -460,8 +460,8 @@ export const useC08 = () => {
 					!sqtyLock.price || !sqtyLock.demand
 						? ""
 						: sqtyLock.stype?.id
-						? 0
-						: sqtyLock.price * sqtyLock.demand,
+							? 0
+							: sqtyLock.price * sqtyLock.demand,
 				overrideSQty: true,
 			};
 			console.log("commitSQty", newRowData);
@@ -673,8 +673,8 @@ export const useC08 = () => {
 				!rowData.SPrice || !rowData.SQty
 					? ""
 					: rowData.stype?.id
-					? 0
-					: rowData.SPrice * rowData.SQty,
+						? 0
+						: rowData.SPrice * rowData.SQty,
 		};
 		return rowData;
 	}, []);
@@ -803,8 +803,7 @@ export const useC08 = () => {
 				IDs: crud.itemData?.TxoID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC08Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC08Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

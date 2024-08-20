@@ -3,7 +3,7 @@ import ProdTypeA from "./md-prod-type-a";
 import ProdTypeB from "./md-prod-type-b";
 import TaxTypes from "./md-tax-types";
 
-const transformForGridEdior = (payload) => {
+const transformForReading = (payload) => {
 	return payload.data[0][`A014_W1`].map((i) => {
 		const {
 			LClas,
@@ -53,7 +53,7 @@ const transformForGridEdior = (payload) => {
 	});
 };
 
-const transformForSubmit = (data, dirtyIds) => {
+const transformForSubmitting = (data, dirtyIds) => {
 	return data
 		.filter((x) => {
 			if (dirtyIds && dirtyIds.size > 0) {
@@ -86,8 +86,8 @@ const transformForSubmit = (data, dirtyIds) => {
 };
 
 const A014 = {
-	transformForGridEdior,
-	transformForSubmit,
+	transformForReading,
+	transformForSubmitting,
 };
 
 export default A014;

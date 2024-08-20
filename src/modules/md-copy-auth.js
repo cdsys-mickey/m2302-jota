@@ -4,7 +4,7 @@ const getOptionLabel = (option) => {
 	return `${DeptID} ${AbbrName || DeptName || ""}`;
 };
 
-const transformForSubmit = (payload) => {
+const transformForSubmitting = (payload) => {
 	const { fromUser, ...rest } = payload;
 	return {
 		fromUserId: fromUser.UID,
@@ -13,7 +13,7 @@ const transformForSubmit = (payload) => {
 };
 
 const CopyAuth = {
-	transformForSubmit,
+	transformForSubmitting,
 };
 
 export default CopyAuth;

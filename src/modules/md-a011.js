@@ -1,8 +1,8 @@
-const transformForGridEdior = (payload) => {
+const transformForReading = (payload) => {
 	return payload.data[0][`A011_W1`];
 };
 
-const transformForSubmit = (data, dirtyIds) => {
+const transformForSubmitting = (data, dirtyIds) => {
 	console.log(`data`, data);
 	console.log(`dirtyIds`, dirtyIds);
 	return data
@@ -27,8 +27,8 @@ const transformForSubmit = (data, dirtyIds) => {
 };
 
 const A011 = {
-	transformForGridEdior,
-	transformForSubmit,
+	transformForReading,
+	transformForSubmitting,
 };
 
 export default A011;

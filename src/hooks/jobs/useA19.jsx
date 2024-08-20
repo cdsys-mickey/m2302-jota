@@ -15,11 +15,10 @@ export const useA19 = () => {
 	const onSubmit = useCallback(
 		(payload) => {
 			console.log("onSubmit", payload);
-			const data = A19.transformForSubmit(payload);
+			const data = A19.transformForSubmitting(payload);
 			console.log("data", data);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx?LogKey=${
-					operator.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx?LogKey=${operator.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(data),

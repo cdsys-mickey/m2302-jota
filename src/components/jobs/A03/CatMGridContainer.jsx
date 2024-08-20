@@ -34,17 +34,18 @@ export const CatMGridContainer = () => {
 	}, [a03.lgId, a03.readOnly]);
 
 	return (
-		<DSGContext.Provider value={{ ...catM.grid, ...catM.gridMeta }}>
+		<DSGContext.Provider value={{ ...catM.gridMeta }}>
 			<CatMGrid
 				lockRows={lockRows}
 				setGridRef={catM.gridMeta.setGridRef}
 				columns={catM.gridMeta.columns}
 				data={catM.grid.gridData}
 				loading={catM.grid.gridLoading}
-				handleChange={onChange}
 				height={height - 176}
+				onChange={onChange}
 				onSelectionChange={onSelectionChange}
-				onActiveCellChange={catM.gridMeta}
+				onActiveCellChange={catM.gridMeta.handleActiveCellChange}
+				createRow={catM.codeEditor.createRow}
 				canCreate={a03.canCreate}
 				getRowClassName={catM.gridMeta.getRowClassName}
 			/>

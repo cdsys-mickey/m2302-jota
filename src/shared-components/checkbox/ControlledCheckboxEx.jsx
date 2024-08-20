@@ -5,6 +5,7 @@ import CheckboxEx from "./CheckboxEx";
 import { useCallback } from "react";
 import { useContext } from "react";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useMemo } from "react";
 
 const ControlledCheckboxEx = ({
 	name,
@@ -12,6 +13,7 @@ const ControlledCheckboxEx = ({
 	control,
 	rules,
 	onChange: _onChange,
+	value: _value,
 	// onKeyDown,
 	onChanged,
 	checkedToValue,
@@ -40,22 +42,9 @@ const ControlledCheckboxEx = ({
 			// }
 			console.log("handleKeyDown:", `"${e.key}"`);
 			if (e.key === "Enter" || e.key === "Tab" || e.key === " ") {
-				if (e.key === " ") {
+				if (e.key === " " || e.key === "Enter") {
 					toggleChecked(e);
 				}
-				// if (getNextField) {
-				// 	const nextField = getNextField(name, {
-				// 		forward: !e.shiftKey,
-				// 		isFieldDisabled,
-				// 	});
-				// 	console.log("nextField", nextField);
-				// 	if (nextField) {
-				// 		e.preventDefault();
-				// 		setFocus(nextField.name, {
-				// 			shouldSelect: nextField.select,
-				// 		});
-				// 	}
-				// }
 				e.preventDefault();
 				nextField(name, {
 					setFocus,
@@ -89,6 +78,17 @@ const ControlledCheckboxEx = ({
 	// 	[getNextField, isFieldDisabled, name, setFocus]
 	// );
 
+	const checked = useMemo(() => {
+		return valueToChecked ? valueToChecked(_value) : _value
+	}, [_value, valueToChecked]);
+
+	if (!name) {
+		return <CheckboxEx
+			onKeyDown={handleKeyDown}
+			checked={checked}
+		/>
+	}
+
 	return (
 		<Controller
 			name={name}
@@ -108,14 +108,14 @@ const ControlledCheckboxEx = ({
 						readOnly
 							? null
 							: (e) => {
-									if (_onChange) {
-										_onChange(e);
-									}
-									const newValue = checkedToValue
-										? checkedToValue(e.target.checked)
-										: e.target.checked;
-									onChange(newValue);
-							  }
+								if (_onChange) {
+									_onChange(e);
+								}
+								const newValue = checkedToValue
+									? checkedToValue(e.target.checked)
+									: e.target.checked;
+								onChange(newValue);
+							}
 					}
 					inputProps={readOnly ? { readOnly: true } : null}
 					// InputProps={readOnly ? { disableUnderline: true } : null}
@@ -141,6 +141,12 @@ ControlledCheckboxEx.propTypes = {
 	onChanged: PropTypes.func,
 	checkedToValue: PropTypes.func,
 	valueToChecked: PropTypes.func,
+	value: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.bool,
+		PropTypes.number,
+		PropTypes.object,
+	]),
 	defaultValue: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.bool,

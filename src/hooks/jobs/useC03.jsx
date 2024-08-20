@@ -718,8 +718,7 @@ export const useC03 = () => {
 				IDs: crud.itemData?.OrdID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC03Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC03Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

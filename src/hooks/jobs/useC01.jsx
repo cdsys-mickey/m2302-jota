@@ -346,8 +346,7 @@ export const useC01 = () => {
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC01Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC01Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
@@ -416,8 +415,7 @@ export const useC01 = () => {
 					} else {
 						const ordIds = payload.OrdIDs.split("，");
 						toast.success(
-							`成功形成 ${
-								ordIds.length
+							`成功形成 ${ordIds.length
 							} 張採購單，單號：${ordIds.join("、")}`
 						);
 						transformAction.finish();
@@ -495,8 +493,7 @@ export const useC01 = () => {
 					} else {
 						const ordIds = payload.OrdIDs.split("，");
 						toast.success(
-							`成功形成 ${
-								ordIds.length
+							`成功形成 ${ordIds.length
 							} 張採購單，單號：${ordIds.join("、")}`
 						);
 						transformListAction.finish();

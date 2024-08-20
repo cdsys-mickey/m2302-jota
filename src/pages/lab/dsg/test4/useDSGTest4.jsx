@@ -10,6 +10,7 @@ import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "../../../../shared-hooks/dsg/useDSGMeta";
+import { createCheckboxExColumn } from "../../../../shared-components/dsg/columns/checkbox/createCheckboxExColumn";
 
 export const useDSGTest4 = () => {
 	const columns = useMemo(
@@ -55,17 +56,28 @@ export const useDSGTest4 = () => {
 				disabled: true,
 				grow: 2,
 			},
+			// {
+			// 	...keyColumn(
+			// 		"PackData_N",
+			// 		createTextColumnEx({
+			// 			continuousUpdates: false,
+			// 		})
+			// 	),
+			// 	title: "包裝單位",
+			// 	disabled: true,
+			// 	minWidth: 90,
+			// 	maxWidth: 90,
+			// },
 			{
 				...keyColumn(
-					"PackData_N",
-					createTextColumnEx({
-						continuousUpdates: false,
+					"check1",
+					createCheckboxExColumn({
+						size: "medium"
 					})
 				),
-				title: "包裝單位",
-				disabled: true,
-				minWidth: 90,
-				maxWidth: 90,
+				minWidth: 48,
+				maxWidth: 48,
+				// disabled: true
 			},
 			{
 				...keyColumn(

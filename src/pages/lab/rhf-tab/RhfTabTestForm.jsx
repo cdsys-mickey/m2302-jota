@@ -14,7 +14,7 @@ export const RhfTabTestForm = memo(
 				<Box>
 					<FormSectionTitle>React Hook Form</FormSectionTitle>
 					<FormSectionBox p={1} mb={1}>
-						<Grid container spacing={2}>
+						<Grid container spacing={1}>
 							<Grid item xs={12} md={2}>
 								<TextFieldWrapper
 									name="text1"

@@ -548,8 +548,7 @@ export const useD01 = () => {
 						prod: null,
 					};
 					toast.warn(
-						`「"${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
-							existedRowIndex + 1
+						`「"${prod.ProdID} / ${prod.ProdData}」已存在於第 ${existedRowIndex + 1
 						} 筆, 請重新選擇`
 					);
 				} else {
@@ -733,8 +732,7 @@ export const useD01 = () => {
 				IDs: crud.itemData?.OutID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebD01Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebD01Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

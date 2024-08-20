@@ -1,7 +1,8 @@
 import { useContext, useMemo } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
-import { useWindowSize } from "../../../shared-hooks/useWindowSize";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import A011Grid from "./A011Grid";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 export const A011GridContainer = () => {
 	const { height } = useWindowSize();
@@ -11,19 +12,18 @@ export const A011GridContainer = () => {
 		return prodGrid.expanded ? height - 330 : height - 230;
 	}, [prodGrid.expanded, height]);
 
-	const gridChangeHandler = useMemo(() => {
-		return prodGrid.handleGridChange;
-	}, [prodGrid]);
-
 	return (
-		<A011Grid
-			readOnly={prodGrid.readOnly}
-			setGridRef={prodGrid.setGridRef}
-			data={prodGrid.gridData}
-			loading={prodGrid.gridLoading}
-			height={gridHeight}
-			onChange={gridChangeHandler}
-		/>
+		<DSGContext.Provider value={{ ...prodGrid.gridMeta }}>
+			<A011Grid
+				readOnly={prodGrid.readOnly}
+				gridRef={prodGrid.setGridRef}
+				data={prodGrid.gridData}
+				loading={prodGrid.gridLoading}
+				height={gridHeight}
+				onChange={prodGrid.handleGridChange}
+				onActveCellChange={prodGrid.gridMeta.handleActiveCellChange}
+			/>
+		</DSGContext.Provider>
 	);
 };
 

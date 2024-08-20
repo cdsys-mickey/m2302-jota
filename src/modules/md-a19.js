@@ -26,7 +26,7 @@ const getDataTypeById = (id) => {
 	return dataTypeOptions.find((o) => o.id === id);
 };
 
-const transformForSubmit = (payload) => {
+const transformForSubmitting = (payload) => {
 	const {
 		outputType,
 		sdept,
@@ -56,7 +56,7 @@ const transformForSubmit = (payload) => {
 const Actions = ["新增", "修改", "刪除", "狀態", "替換", "其他"];
 
 const A19 = {
-	transformForSubmit,
+	transformForSubmitting,
 	Actions,
 	DataType,
 	dataTypeOptions,

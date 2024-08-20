@@ -15,8 +15,8 @@ export const useA012 = ({ token } = {}) => {
 		otherColumns: "ProdData,SafeQty,StdCost,bunit,sunit,iunit,munit",
 		baseUri: "v1/prod/data-grid/A012",
 		transformAsQueryParams: ProdGrid.transformAsQueryParams,
-		transformForSubmit: A012.transformForSubmit,
-		transformForGridEdior: A012.transformForGridEdior,
+		transformForSubmitting: A012.transformForSubmitting,
+		transformForReading: A012.transformForReading,
 	});
 
 	return {

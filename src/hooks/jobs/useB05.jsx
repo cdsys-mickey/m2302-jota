@@ -451,8 +451,7 @@ export const useB05 = () => {
 				IDs: crud.itemData?.InqID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB05Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebB05Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

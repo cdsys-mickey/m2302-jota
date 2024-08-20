@@ -31,8 +31,9 @@ const A04Grid = memo((props) => {
 		columns,
 		// METHODS
 		onChange,
-		isPersisted,
+		createRow,
 		onSelectionChange,
+		onActiveCellChange,
 		getRowClassName,
 		...rest
 	} = props;
@@ -63,16 +64,19 @@ const A04Grid = memo((props) => {
 			<DSGGrid
 				lockRows={lockRows}
 				ref={gridRef}
-				rowKey="CodeID"
+				// rowKey="CodeID"
+				rowKey="id"
 				height={gridHeight}
 				// rowHeight={42}
 				value={data}
-				onChange={onChange}
 				columns={columns}
 				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 				disableExpandSelection
 				// disableContextMenu
+				onChange={onChange}
 				onSelectionChange={onSelectionChange}
+				onActiveCellChange={onActiveCellChange}
+				createRow={createRow}
 				// autoAddRow
 				contextMenuComponent={ContextMenu}
 				rowClassName={getRowClassName}

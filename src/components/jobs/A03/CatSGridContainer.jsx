@@ -36,16 +36,18 @@ export const CatSGridContainer = () => {
 	}, [a03.mdId, a03.readOnly]);
 
 	return (
-		<DSGContext.Provider value={{ ...catS.grid, ...catS.gridMeta }}>
+		<DSGContext.Provider value={{ ...catS.gridMeta }}>
 			<CatSGrid
 				lockRows={lockRows}
 				setGridRef={catS.gridMeta.setGridRef}
 				columns={catS.gridMeta.columns}
 				data={catS.grid.gridData}
 				loading={catS.grid.gridLoading}
-				onChange={onChange}
 				height={height - 176}
+				onChange={onChange}
 				onSelectionChange={onSelectionChange}
+				onActiveCellChange={catS.gridMeta.handleActiveCellChange}
+				createRow={catS.codeEditor.createRow}
 				canCreate={a03.canCreate}
 				getRowClassName={catS.gridMeta.getRowClassName}
 			/>

@@ -663,8 +663,7 @@ export const useD05 = () => {
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebD05Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebD05Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

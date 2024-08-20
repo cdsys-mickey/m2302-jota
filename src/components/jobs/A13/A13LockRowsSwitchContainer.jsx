@@ -1,6 +1,6 @@
 import { A13Context } from "@/contexts/A13/A13Context";
 import { useContext } from "react";
-import LockSwitch from "../../../shared-components/LockSwitch";
+import LockSwitch from "@/shared-components/LockSwitch";
 
 export const A13LockRowsSwitchContainer = (props) => {
 	const { ...rest } = props;

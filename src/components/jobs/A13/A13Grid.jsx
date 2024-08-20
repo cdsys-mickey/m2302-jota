@@ -1,59 +1,32 @@
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
+	DynamicDataSheetGrid
 } from "react-datasheet-grid";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import ContainerEx from "../../../shared-components/ContainerEx";
+import ContainerEx from "@/shared-components/ContainerEx";
+import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const A13Grid = memo((props) => {
 	const {
 		canCreate,
 		lockRows,
-		setGridRef,
+		gridRef,
 		data,
 		loading,
 		height = 300,
 		// METHODS
-		handleChange,
-		isPersisted,
+		onChange,
 	} = props;
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"CodeID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: isPersisted,
-				title: "代碼",
-			},
-			{
-				...keyColumn(
-					"CodeData",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "生產線別",
-				grow: 4,
-				disabled: lockRows,
-			},
-		],
-		[isPersisted, lockRows]
-	);
+
 
 	const gridHeight = useMemo(() => {
 		return height + (lockRows || !canCreate ? 48 : 0);
@@ -73,34 +46,32 @@ const A13Grid = memo((props) => {
 
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
-			<Box>
-				<DynamicDataSheetGrid
-					lockRows={lockRows}
-					ref={setGridRef}
-					rowKey="CodeID"
-					height={gridHeight}
-					// rowHeight={42}
-					value={data}
-					onChange={handleChange}
-					columns={columns}
-					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
-					disableExpandSelection
-					// disableContextMenu
-					contextMenuComponent={ContextMenu}
-					// autoAddRow
-				/>
-			</Box>
+			<DSGGrid
+				lockRows={lockRows}
+				ref={gridRef}
+				rowKey="CodeID"
+				height={gridHeight}
+				// rowHeight={42}
+				value={data}
+				onChange={onChange}
+				// columns={columns}
+				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
+				disableExpandSelection
+				// disableContextMenu
+				contextMenuComponent={ContextMenu}
+			/>
 		</ContainerEx>
 	);
 });
 A13Grid.propTypes = {
+	canCreate: PropTypes.bool,
 	lockRows: PropTypes.bool,
-	setGridRef: PropTypes.func,
+	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 	height: PropTypes.number,
-	handleChange: PropTypes.func,
+	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
 	// handleActiveCellChange: PropTypes.func,
 };

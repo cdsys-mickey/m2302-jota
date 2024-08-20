@@ -108,9 +108,9 @@ export const useC06 = () => {
 			},
 			spDept: spDeptId
 				? {
-						DeptID: spDeptId,
-						AbbrName: deptName,
-				  }
+					DeptID: spDeptId,
+					AbbrName: deptName,
+				}
 				: null,
 		};
 		crud.promptCreating({ data });
@@ -566,8 +566,8 @@ export const useC06 = () => {
 											!SPrice || !SQty
 												? ""
 												: stype
-												? 0
-												: SPrice * SQty,
+													? 0
+													: SPrice * SQty,
 									};
 								}
 								newGridData[rowIndex] = processedRowData;
@@ -640,8 +640,7 @@ export const useC06 = () => {
 				IDs: crud.itemData?.OrdID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC06Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC06Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

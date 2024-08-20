@@ -10,6 +10,7 @@ import Objects from "../../shared-modules/sd-objects";
 import _ from "lodash";
 import { useState } from "react";
 import Errors from "../../shared-modules/sd-errors";
+import { nanoid } from "nanoid";
 
 const defaultTransformForReading = (payload) => {
 	return payload?.data || [];
@@ -42,10 +43,6 @@ export const useDSGCodeEditor = ({
 	const dialogs = useContext(DialogsContext);
 	const [state, setState] = useState({
 		baseUri: baseUri,
-	});
-
-	const deletingRef = useRef({
-		rows: 0,
 	});
 
 	const load = useCallback(
@@ -120,7 +117,7 @@ export const useDSGCodeEditor = ({
 						`${displayName} ${rowData[grid.keyColumn]} 新增成功`
 					);
 				} else {
-					throw error?.message || new Error("新增失敗");
+					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
 				toast.error(
@@ -130,17 +127,12 @@ export const useDSGCodeEditor = ({
 					}
 				);
 				reload();
+				setTimeout(() => {
+					gridMeta.setActiveCell(null);
+				});
 			}
 		},
-		[
-			displayName,
-			grid,
-			httpPostAsync,
-			reload,
-			state.baseUri,
-			token,
-			transformForSubmitting,
-		]
+		[displayName, grid, gridMeta, httpPostAsync, reload, state.baseUri, token, transformForSubmitting]
 	);
 
 	const handleUpdate = useCallback(
@@ -282,9 +274,8 @@ export const useDSGCodeEditor = ({
 			const firstRow = rows[0];
 			if (rows.length > 1) {
 				const lastRow = rows[rows.length - 1];
-				message = ` ${rows.length} 筆代碼 (${
-					firstRow[grid.keyColumn]
-				} ~ ${lastRow[grid.keyColumn]})`;
+				message = ` ${rows.length} 筆代碼 (${firstRow[grid.keyColumn]
+					} ~ ${lastRow[grid.keyColumn]})`;
 			} else {
 				const key = firstRow[grid.keyColumn];
 				message = `${displayName}${!key ? "" : "「" + key + "」"}`;
@@ -329,20 +320,31 @@ export const useDSGCodeEditor = ({
 				}
 			);
 
-			grid.setValueByRowIndex(
-				row.rowIndex,
-				{
-					[grid.keyColumn]: "",
-				},
-				{
-					data: newValue,
+			// 先把重複那筆的 key 清掉
+			newValue[row.rowIndex][grid.keyColumn] = "";
+
+			// 使用 reducer 過濾掉 CodeID 為空字串的物件(會因此清掉重複那筆)
+			const filteredData = newValue.reduce((acc, item) => {
+				if (item.CodeID !== "") {
+					acc.push(item);
 				}
-			);
-			setTimeout(() => {
-				gridMeta.setActiveCell({ row: row.rowIndex, col: 0 });
-			}, 0);
+				return acc;
+			}, []);
+			grid.setGridData(filteredData);
+			// grid.setValueByRowIndex(
+			// 	row.rowIndex,
+			// 	{
+			// 		[grid.keyColumn]: "",
+			// 	},
+			// 	{
+			// 		data: newValue,
+			// 	}
+			// );
+			// setTimeout(() => {
+			// 	gridMeta.setActiveCell({ row: row.rowIndex, col: 0 });
+			// }, 100);
 		},
-		[displayName, grid, gridMeta]
+		[displayName, grid]
 	);
 
 	const handleDeleteOperation = useCallback(
@@ -395,7 +397,7 @@ export const useDSGCodeEditor = ({
 				// 新增 或 修改
 
 				if (grid.isKeyDuplicated(newValue, key)) {
-					console.log("[DSG]DuplicatedError detected", key);
+					console.log(`[DSG]${key} duplicated`, firstRow);
 					if (onDuplicatedError) {
 						onDuplicatedError(firstRow, newValue);
 					}
@@ -425,8 +427,9 @@ export const useDSGCodeEditor = ({
 							onCreate(firstRow, newValue);
 						}
 					}
+					grid.setGridData(newValue);
 				}
-				grid.setGridData(newValue);
+
 			} else if (
 				!disableAutoDelete &&
 				Objects.isAllPropsNull(firstRow.rowData, [
@@ -452,21 +455,21 @@ export const useDSGCodeEditor = ({
 
 	const buildGridChangeHandler = useCallback(
 		({
-				// C
-				onBeforeCreate,
-				onCreate,
-				// U
-				onBeforeUpdate,
-				onUpdate,
-				onPatch,
-				// D
-				onDelete,
-				onDeleted,
-				// E
-				onDuplicatedError,
-				// Support Methods
-				// toFirstColumn,
-			} = {}) =>
+			// C
+			onBeforeCreate,
+			onCreate,
+			// U
+			onBeforeUpdate,
+			onUpdate,
+			onPatch,
+			// D
+			onDelete,
+			onDeleted,
+			// E
+			onDuplicatedError,
+			// Support Methods
+			// toFirstColumn,
+		} = {}) =>
 			(newValue, operations) => {
 				console.log(`${grid.gridId}.handleGridChange`, newValue);
 				// 只處理第一行
@@ -513,6 +516,10 @@ export const useDSGCodeEditor = ({
 		[grid, gridMeta, handleDeleteOperation, handleUpdateOperation]
 	);
 
+	const createRow = useCallback(() => ({
+		id: nanoid()
+	}), []);
+
 	return {
 		load,
 		// handleGridChange,
@@ -525,5 +532,6 @@ export const useDSGCodeEditor = ({
 		// ...grid,
 		// override
 		buildGridChangeHandler,
+		createRow
 	};
 };

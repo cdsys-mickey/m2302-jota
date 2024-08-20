@@ -609,8 +609,7 @@ export const useC05 = () => {
 				IDs: crud.itemData?.GrtID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC05Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC05Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

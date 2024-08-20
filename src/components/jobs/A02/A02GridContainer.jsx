@@ -39,6 +39,7 @@ const A02GridContainer = () => {
 				onActiveCellChange={a02.gridMeta.handleActiveCellChange}
 				onSelectionChange={onSelectionChange}
 				canCreate={a02.canCreate}
+				createRow={a02.codeEditor.createRow}
 			/>
 		</DSGContext.Provider>
 	);

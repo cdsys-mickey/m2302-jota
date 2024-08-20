@@ -44,12 +44,14 @@ const ControlledDatePicker = ({
 	const handleKeyDown = useCallback(
 		(e) => {
 			if (e.key === "Enter" || e.key === "Tab") {
-				e.preventDefault();
-				nextField(name, {
-					setFocus,
-					isFieldDisabled,
-					forward: !e.shiftKey,
-				});
+				if (nextField) {
+					e.preventDefault();
+					nextField(name, {
+						setFocus,
+						isFieldDisabled,
+						forward: !e.shiftKey,
+					});
+				}
 			}
 		},
 		[nextField, name, setFocus, isFieldDisabled]
@@ -86,29 +88,29 @@ const ControlledDatePicker = ({
 						readOnly
 							? null
 							: (newValue) => {
-									// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
-									if (_onChange) {
-										_onChange(newValue);
-									}
+								// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
+								if (_onChange) {
+									_onChange(newValue);
+								}
 
-									onChange(newValue);
+								onChange(newValue);
 
-									if (onChanged) {
-										onChanged(newValue);
-									}
+								if (onChanged) {
+									onChanged(newValue);
+								}
 
-									if (isValid(newValue)) {
-										if (clearErrors) {
-											clearErrors(name);
-										}
-									} else {
-										if (setError) {
-											setError(name, {
-												message: "日期格式錯誤",
-											});
-										}
+								if (isValid(newValue)) {
+									if (clearErrors) {
+										clearErrors(name);
 									}
-							  }
+								} else {
+									if (setError) {
+										setError(name, {
+											message: "日期格式錯誤",
+										});
+									}
+								}
+							}
 					}
 					onKeyDown={handleKeyDown}
 					InputProps={{

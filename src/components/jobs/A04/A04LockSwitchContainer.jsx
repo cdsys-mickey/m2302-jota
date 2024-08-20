@@ -8,8 +8,8 @@ export const A04LockSwitchContainer = (props) => {
 	return (
 		<LockSwitch
 			unlockedLabel="編輯"
-			locked={a04.grid.readOnly}
-			onChange={a04.grid.toggleReadOnly}
+			locked={a04.readOnly}
+			onChange={a04.toggleReadOnly}
 			disabled={!a04.canUpdate}
 			{...rest}
 		/>

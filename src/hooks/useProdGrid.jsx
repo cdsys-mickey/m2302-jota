@@ -13,13 +13,11 @@ import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
 
 export const useProdGrid = ({
 	token,
-	gridId,
-	keyColumn,
-	otherColumns,
+	grid,
 	baseUri,
 	transformAsQueryParams,
-	transformForSubmit,
-	transformForGridEdior,
+	transformForSubmitting,
+	transformForReading,
 }) => {
 	const dialogs = useContext(DialogsContext);
 	const { httpGetAsync, httpPutAsync } = useWebApi();
@@ -34,15 +32,11 @@ export const useProdGrid = ({
 		saveKey: null,
 		totalElements: null,
 	});
-	const dsg = useDSG({
-		gridId,
-		keyColumn,
-		otherColumns,
-	});
-	const { gridData, dirtyIds } = dsg;
+
+	const { gridData, dirtyIds } = grid;
 
 	const toggleEditorLock = useCallback(() => {
-		if (dsg.readOnly) {
+		if (grid.readOnly) {
 			recoverDrawerOpen.current = appFrame.drawerOpen;
 			console.log(`og drawer opened memoised`);
 			appFrame.handleDrawerClose();
@@ -51,8 +45,8 @@ export const useProdGrid = ({
 				appFrame.handleDrawerOpen();
 			}
 		}
-		dsg.toggleReadOnly();
-	}, [appFrame, dsg]);
+		grid.toggleReadOnly();
+	}, [appFrame, grid]);
 
 	const peek = useCallback(
 		async (criteria) => {
@@ -100,8 +94,8 @@ export const useProdGrid = ({
 	);
 
 	const unload = useCallback(() => {
-		dsg.handleGridDataLoaded(null);
-	}, [dsg]);
+		grid.handleGridDataLoaded(null);
+	}, [grid]);
 
 	const load = useCallback(
 		async ({ criteria, reload = false }) => {
@@ -111,7 +105,7 @@ export const useProdGrid = ({
 			}
 
 			if (!reload) {
-				dsg.setGridLoading(true);
+				grid.setGridLoading(true);
 				setState((prev) => ({
 					...prev,
 					criteria,
@@ -130,7 +124,7 @@ export const useProdGrid = ({
 					},
 				});
 				if (status.success) {
-					dsg.handleGridDataLoaded(transformForGridEdior(payload));
+					grid.handleGridDataLoaded(transformForReading(payload));
 				} else {
 					switch (status.code) {
 						default:
@@ -141,7 +135,7 @@ export const useProdGrid = ({
 			} catch (err) {
 				console.error("load", err);
 			} finally {
-				dsg.setGridLoading(false);
+				grid.setGridLoading(false);
 				setState((prev) => ({
 					...prev,
 					saveKey: null,
@@ -150,12 +144,12 @@ export const useProdGrid = ({
 		},
 		[
 			baseUri,
-			dsg,
+			grid,
 			httpGetAsync,
 			state.saveKey,
 			token,
 			transformAsQueryParams,
-			transformForGridEdior,
+			transformForReading,
 		]
 	);
 
@@ -169,9 +163,9 @@ export const useProdGrid = ({
 	const confirmCancelChanges = useCallback(() => {
 		dialogs.confirm({
 			message: "確定要放棄變更?",
-			onConfirm: dsg.rollbackChanges,
+			onConfirm: grid.rollbackChanges,
 		});
-	}, [dialogs, dsg.rollbackChanges]);
+	}, [dialogs, grid.rollbackChanges]);
 
 	const onSubmit = useCallback(
 		(data) => {
@@ -187,7 +181,7 @@ export const useProdGrid = ({
 
 	const handleSave = useCallback(async () => {
 		console.log(`handleSave`, gridData);
-		const collected = transformForSubmit(gridData, dirtyIds);
+		const collected = transformForSubmitting(gridData, dirtyIds);
 		console.log("collected", collected);
 		try {
 			saveAction.start();
@@ -215,14 +209,14 @@ export const useProdGrid = ({
 		reload,
 		saveAction,
 		token,
-		transformForSubmit,
+		transformForSubmitting,
 	]);
 
 	return {
 		load,
 		reload,
 		unload,
-		...dsg,
+		...grid,
 		// form
 		onSubmit,
 		onSubmitError,

@@ -494,8 +494,7 @@ export const useC02 = () => {
 			};
 			console.log("[C02]jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC02Rep.aspx?LogKey=${
-					operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebC02Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

@@ -448,9 +448,8 @@ export const useZA03 = () => {
 		async (moduleId, funcId, enabled) => {
 			try {
 				const { status, error } = await httpPatchAsync({
-					url: `v1/ou/user/authorities/${
-						enabled ? "enable" : "disable"
-					}`,
+					url: `v1/ou/user/authorities/${enabled ? "enable" : "disable"
+						}`,
 					bearer: token,
 					params: {
 						uid: crud.itemData?.UID,
@@ -642,7 +641,7 @@ export const useZA03 = () => {
 	const onCopyAuthSubmit = useCallback(
 		async (payload) => {
 			console.log("onCopyAuthSubmit", payload);
-			const data = CopyAuth.transformForSubmit(payload);
+			const data = CopyAuth.transformForSubmitting(payload);
 			console.log("transformed", data);
 			try {
 				copyAuthAction.start();
@@ -819,7 +818,7 @@ export const useZA03 = () => {
 					uid: crud.itemData?.UID,
 					dp: selectedDept?.DeptID,
 				},
-				data: UserAuth.transformForSubmit(dirtyRows),
+				data: UserAuth.transformForSubmitting(dirtyRows),
 			});
 
 			if (status.success) {

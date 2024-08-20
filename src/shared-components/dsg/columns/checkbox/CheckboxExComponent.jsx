@@ -2,8 +2,6 @@ import Objects from "@/shared-modules/sd-objects";
 import { memo, useLayoutEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { useMemo } from "react";
-import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -17,71 +15,26 @@ const arePropsEqual = (oldProps, newProps) => {
  * 截自 GitHub 上的原始碼，用於改寫加入新功能
  * https://github.com/nick-keller/react-datasheet-grid/blob/master/src/columns/checkboxColumn.tsx
  */
-const CheckboxComponent = memo(
+const CheckboxExComponent = memo(
 	({
 		columnData,
 		focus,
 		rowData,
-		rowIndex,
-		columnIndex,
 		setRowData,
 		active,
 		stopEditing,
-		insertRowBelow,
 		disabled,
 	}) => {
+		// console.log("rendering CheckboxExComponent");
+		const { size } = columnData;
+
 		const ref = useRef(null);
-		// console.log("rendering CheckboxComponent");
-		const { size,
-			valueToChecked,
-			checkedToValue,
-			// Context Methods
-			skipDisabled,
-			getNextCell,
-			lastCell,
-			setActiveCell } = columnData;
 
-		const toggleChecked = useCallback(
-			(e) => {
-				console.log("e.target.checked", e.target.checked);
-				const newValue = checkedToValue
-					? checkedToValue(!e.target.checked)
-					: !e.target.checked;
-				setRowData(newValue);
-			},
-			[checkedToValue, setRowData]
-		);
-
-		const checked = useMemo(() => {
-			return valueToChecked ? valueToChecked(rowData) : rowData
-		}, [rowData, valueToChecked]);
-
-
-		const cell = useMemo(() => {
-			return {
-				row: rowIndex,
-				col: columnIndex,
-			};
-		}, [columnIndex, rowIndex]);
-
-		const { nextCell } = useCellComponent({
-			getNextCell,
-			lastCell,
-			setActiveCell,
-			stopEditing,
-			insertRowBelow,
-		});
-
-		const handleKeyDown = useCallback((e) => {
-			console.log("handleKeyDown", e);
-		}, []);
-
-		const handleMouseDown = useCallback((e) => {
+		const handleMouseDown = useCallback(() => {
 			if (!active) {
-				// setRowData(!rowData);
-				toggleChecked(e);
+				setRowData(!rowData);
 			}
-		}, [active, toggleChecked]);
+		}, [active, rowData, setRowData]);
 
 		const handleChange = useCallback(() => {
 			// do nothing
@@ -94,22 +47,9 @@ const CheckboxComponent = memo(
 			if (focus) {
 				setRowData(!rowData);
 				stopEditing({ nextRow: false });
-				if (nextCell) {
-					nextCell(cell, { forward: true });
-				}
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [focus, stopEditing]);
-
-		useLayoutEffect(() => {
-			if (skipDisabled && active && disabled) {
-				if (nextCell) {
-					nextCell({ row: rowIndex, col: columnIndex });
-				} else {
-					console.log("nextCell is null");
-				}
-			}
-		}, [active, columnIndex, disabled, nextCell, rowIndex, skipDisabled]);
 
 		return (
 			<input
@@ -133,21 +73,19 @@ const CheckboxComponent = memo(
 				type="checkbox"
 				ref={ref}
 				disabled={disabled}
-				// checked={Boolean(rowData)}
-				checked={checked}
+				checked={Boolean(rowData)}
 				// When cell is not active, we allow the user to toggle the checkbox by clicking on it
 				// When cell becomes active, we disable this feature and rely on focus instead (see `useLayoutEffect` above)
 				// onMouseDown={() => !active && setRowData(!rowData)}
 				onMouseDown={handleMouseDown}
+				// onChange={() => null}
 				onChange={handleChange}
-				onKeyDown={handleKeyDown}
-			// onChange={() => null}
 			/>
 		);
 	},
 	arePropsEqual
 );
-CheckboxComponent.propTypes = {
+CheckboxExComponent.propTypes = {
 	columnData: PropTypes.object,
 	rowData: PropTypes.bool,
 	focus: PropTypes.bool,
@@ -156,5 +94,5 @@ CheckboxComponent.propTypes = {
 	stopEditing: PropTypes.func,
 	setRowData: PropTypes.func,
 };
-CheckboxComponent.displayName = "CheckboxComponent";
-export default CheckboxComponent;
+CheckboxExComponent.displayName = "CheckboxExComponent";
+export default CheckboxExComponent;

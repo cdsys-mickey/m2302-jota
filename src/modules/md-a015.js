@@ -1,8 +1,8 @@
-const transformForGridEdior = (payload) => {
+const transformForReading = (payload) => {
 	return payload.data[0][`A015_W1`];
 };
 
-const transformForSubmit = (data, dirtyIds) => {
+const transformForSubmitting = (data, dirtyIds) => {
 	return data
 		.filter((x) => {
 			if (dirtyIds && dirtyIds.size > 0) {
@@ -20,8 +20,8 @@ const transformForSubmit = (data, dirtyIds) => {
 };
 
 const A015 = {
-	transformForGridEdior,
-	transformForSubmit,
+	transformForReading,
+	transformForSubmitting,
 };
 
 export default A015;

@@ -1,26 +1,24 @@
-import { useCallback } from "react";
+import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
 import CheckboxComponent from "./CheckboxComponent";
 
-export const CheckboxComponentContainer = (props) => {
-	const { ...rest } = props;
+const CheckboxComponentContainer = (props) => {
+	const { columnData, ...rest } = props;
+	const cellControls = useCellControls();
 
-	const deleteRow = useCallback(() => {}, []);
+	const _columnData = useMemo(() => {
+		return {
+			...columnData,
+			...cellControls,
+		};
+	}, [cellControls, columnData]);
+	return <CheckboxComponent columnData={_columnData} {...rest} />;
+}
 
-	const duplicateRow = useCallback(() => {}, []);
-
-	const getContextMenuItems = useCallback(() => {}, []);
-
-	const insertRowBelow = useCallback(() => {}, []);
-
-	return (
-		<CheckboxComponent
-			deleteRow={deleteRow}
-			duplicateRow={duplicateRow}
-			getContextMenuItems={getContextMenuItems}
-			insertRowBelow={insertRowBelow}
-			{...rest}
-		/>
-	);
-};
+CheckboxComponentContainer.propTypes = {
+	columnData: PropTypes.object,
+}
 
 CheckboxComponentContainer.displayName = "CheckboxComponentContainer";
+export default CheckboxComponentContainer;

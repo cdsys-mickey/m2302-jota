@@ -3,10 +3,10 @@ import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-m
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const CatLGrid = memo((props) => {
@@ -22,6 +22,7 @@ const CatLGrid = memo((props) => {
 		onChange,
 		onSelectionChange,
 		onActiveCellChange,
+		createRow,
 		getRowClassName,
 	} = props;
 
@@ -52,6 +53,7 @@ const CatLGrid = memo((props) => {
 			contextMenuComponent={ContextMenu}
 			onSelectionChange={onSelectionChange}
 			onActiveCellChange={onActiveCellChange}
+			createRow={createRow}
 			rowClassName={getRowClassName}
 		/>
 	);
@@ -69,6 +71,7 @@ CatLGrid.propTypes = {
 	// handleActiveCellChange: PropTypes.func,
 	onSelectionChange: PropTypes.func,
 	onActiveCellChange: PropTypes.func,
+	createRow: PropTypes.func,
 	// isSelected: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	columns: PropTypes.array,

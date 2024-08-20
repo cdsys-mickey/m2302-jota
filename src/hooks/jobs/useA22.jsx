@@ -18,8 +18,8 @@ export const useA22 = ({
 	// keyColumn,
 	// otherColumns,
 	// transformAsQueryParams,
-	// transformForSubmit,
-	// transformForGridEdior,
+	// transformForSubmitting,
+	// transformForReading,
 }) => {
 	const { operator } = useContext(AuthContext);
 	const { httpGetAsync } = useWebApi();
@@ -132,7 +132,7 @@ export const useA22 = ({
 				});
 				if (status.success) {
 					dsg.handleGridDataLoaded(
-						A22.transformForGridEdior(payload)
+						A22.transformForReading(payload)
 					);
 				} else {
 					switch (status.code) {
@@ -168,7 +168,7 @@ export const useA22 = ({
 
 	const genReport = useCallback(async () => {
 		console.log(`handleSave`, gridData);
-		const collected = A22.transformForSubmit(gridData);
+		const collected = A22.transformForSubmitting(gridData);
 		console.log("collected", collected);
 		// const payload = {
 		// 	Action,
@@ -190,15 +190,14 @@ export const useA22 = ({
 	const onGenReportSubmit = useCallback(
 		(data) => {
 			console.log("onGenReportSubmit", data);
-			const collected = A22.transformForSubmit(gridData, data);
+			const collected = A22.transformForSubmitting(gridData, data);
 			console.log("collected", collected);
 			const payload = {
 				...collected,
 				DeptId: operator.CurDeptID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebA22Rep.aspx?LogKey=${
-					operator.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebA22Rep.aspx?LogKey=${operator.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(payload),
