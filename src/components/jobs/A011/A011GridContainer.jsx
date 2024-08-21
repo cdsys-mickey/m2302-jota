@@ -13,7 +13,7 @@ export const A011GridContainer = () => {
 	}, [prodGrid.expanded, height]);
 
 	return (
-		<DSGContext.Provider value={{ ...prodGrid.gridMeta }}>
+		<DSGContext.Provider value={{ ...prodGrid.grid, ...prodGrid.gridMeta }}>
 			<A011Grid
 				readOnly={prodGrid.readOnly}
 				gridRef={prodGrid.setGridRef}
@@ -21,7 +21,7 @@ export const A011GridContainer = () => {
 				loading={prodGrid.gridLoading}
 				height={gridHeight}
 				onChange={prodGrid.handleGridChange}
-				onActveCellChange={prodGrid.gridMeta.handleActiveCellChange}
+				onActveCellChange={prodGrid.handleActiveCellChange}
 			/>
 		</DSGContext.Provider>
 	);

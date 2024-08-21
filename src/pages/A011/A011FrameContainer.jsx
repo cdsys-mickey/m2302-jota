@@ -1,9 +1,8 @@
-import A011Frame from "./A011Frame";
-import { useContext } from "react";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useMemo } from "react";
 import Styles from "@/modules/md-styles";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useTheme } from "@mui/material";
+import { useContext, useMemo } from "react";
+import A011Frame from "./A011Frame";
 
 export const A011FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -12,7 +11,11 @@ export const A011FrameContainer = () => {
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
 	);
-	return <A011Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+	return (
+		<div >
+			<A011Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />
+		</div>
+	);
 };
 
 A011FrameContainer.displayName = "A011Frame";

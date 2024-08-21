@@ -9,10 +9,10 @@ import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createT
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useCallback } from "react";
 
-export const useA011 = ({ token } = {}) => {
+export const useA011 = () => {
 	const appModule = useAppModule({
-		token,
 		moduleId: "A011",
 	});
 	const grid = useDSG({
@@ -89,21 +89,25 @@ export const useA011 = ({ token } = {}) => {
 		columns,
 		data: grid.gridData,
 		lastCell: DSGLastCellBehavior.STOP_EDITING,
+		skipDisabled: true
 	});
 
 	const prodGrid = useProdGrid({
 		grid,
-		token,
 		baseUri: "v1/prod/data-grid/A011",
 		transformAsQueryParams: ProdGrid.transformAsQueryParams,
 		transformForSubmitting: A011.transformForSubmitting,
 		transformForReading: A011.transformForReading,
 	});
 
+
+
 	return {
-		gridMeta,
 		...appModule,
 		...prodGrid,
-		...grid
+		...grid,
+		...gridMeta,
+		gridMeta,
+
 	};
 };

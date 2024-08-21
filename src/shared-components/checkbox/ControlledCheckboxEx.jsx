@@ -45,12 +45,15 @@ const ControlledCheckboxEx = ({
 				if (e.key === " " || e.key === "Enter") {
 					toggleChecked(e);
 				}
-				e.preventDefault();
-				nextField(name, {
-					setFocus,
-					isFieldDisabled,
-					forward: !e.shiftKey,
-				});
+				if (nextField) {
+					e.preventDefault();
+					nextField(name, {
+						setFocus,
+						isFieldDisabled,
+						forward: !e.shiftKey,
+						e
+					});
+				}
 			}
 		},
 		[nextField, name, setFocus, isFieldDisabled, toggleChecked]

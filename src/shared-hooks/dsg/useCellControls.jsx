@@ -14,5 +14,6 @@ export const useCellControls = () => {
 		lastCell: dsg.lastCell,
 		setActiveCell: dsg.setActiveCell,
 		inDSG: !!dsg,
+		readOnly: dsg.readOnly
 	};
 };

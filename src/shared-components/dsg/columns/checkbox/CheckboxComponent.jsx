@@ -39,7 +39,8 @@ const CheckboxComponent = memo(
 			skipDisabled,
 			getNextCell,
 			lastCell,
-			setActiveCell } = columnData;
+			setActiveCell,
+			readOnly } = columnData;
 
 		const toggleChecked = useCallback(
 			(e) => {
@@ -102,14 +103,14 @@ const CheckboxComponent = memo(
 		}, [focus, stopEditing]);
 
 		useLayoutEffect(() => {
-			if (skipDisabled && active && disabled) {
+			if (skipDisabled && active && disabled && !readOnly) {
 				if (nextCell) {
 					nextCell({ row: rowIndex, col: columnIndex });
 				} else {
 					console.log("nextCell is null");
 				}
 			}
-		}, [active, columnIndex, disabled, nextCell, rowIndex, skipDisabled]);
+		}, [active, columnIndex, disabled, nextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<input

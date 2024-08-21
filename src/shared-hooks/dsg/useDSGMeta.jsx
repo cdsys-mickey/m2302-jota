@@ -139,9 +139,9 @@ export const useDSGMeta = ({
 			return Boolean(
 				typeof disabled === "function"
 					? disabled({
-							rowData: data[cell.row],
-							rowIndex: cell.row,
-					  })
+						rowData: data[cell.row],
+						rowIndex: cell.row,
+					})
 					: disabled
 			);
 		},
@@ -178,7 +178,9 @@ export const useDSGMeta = ({
 
 	const getNextCell = useCallback(
 		(cell, opts = { forward: undefined }) => {
-			// const { forward } = asyncRef.current;
+			if (!cell) {
+				throw new Error("沒有傳入 cell");
+			}
 			let col = cell.col;
 			let row = cell.row;
 			let forward =

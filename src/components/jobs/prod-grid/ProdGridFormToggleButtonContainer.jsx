@@ -2,6 +2,9 @@ import TuneIcon from "@mui/icons-material/Tune";
 import { ToggleButton, Tooltip } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreButton from "../../../shared-components/ExpandMoreButton";
 
 export const ProdGridFormToggleButtonContainer = (props) => {
 	const { ...rest } = props;
@@ -11,14 +14,18 @@ export const ProdGridFormToggleButtonContainer = (props) => {
 	}, [prodGrid.expanded]);
 	return (
 		<Tooltip title={title}>
-			<ToggleButton
+			{/* <ToggleButton
 				value="1"
 				size="small"
 				selected={prodGrid.expanded}
 				onClick={prodGrid.toggleExpanded}
 				{...rest}>
-				<TuneIcon fontSize="small" />
-			</ToggleButton>
+				{prodGrid.expanded ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+
+			</ToggleButton> */}
+			<ExpandMoreButton expanded={prodGrid.expanded} onClick={prodGrid.toggleExpanded} {...rest}>
+				<ExpandMoreIcon fontSize="small" />
+			</ExpandMoreButton>
 		</Tooltip>
 	);
 };

@@ -15,8 +15,6 @@ import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
 
 const A011Grid = memo((props) => {
 	const {
-		canCreate,
-		readOnly,
 		gridRef,
 		data,
 		loading,
@@ -45,23 +43,21 @@ const A011Grid = memo((props) => {
 	}
 
 	return (
-		<Box>
-			<DSGGrid
-				lockRows
-				ref={gridRef}
-				rowKey="ProdID"
-				// height={height + (readOnly ? 48 : 0)}
-				height={height + 48}
-				// rowHeight={42}
-				value={data}
-				onChange={onChange}
-				// columns={columns}
-				addRowsComponent={DSGAddRowsToolbar}
-				disableExpandSelection
-				disableContextMenu
-				{...rest}
-			/>
-		</Box>
+		<DSGGrid
+			lockRows
+			ref={gridRef}
+			rowKey="ProdID"
+			// height={height + (readOnly ? 48 : 0)}
+			height={height + 48}
+			// rowHeight={42}
+			value={data}
+			onChange={onChange}
+			// columns={columns}
+			// addRowsComponent={DSGAddRowsToolbar}
+			disableExpandSelection
+			disableContextMenu
+			{...rest}
+		/>
 	);
 });
 A011Grid.propTypes = {

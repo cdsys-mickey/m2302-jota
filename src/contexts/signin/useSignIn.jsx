@@ -20,7 +20,7 @@ const PARAM_CAPTCHA = "captcha";
 
 export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
-	const formMeta = useFormMeta(`ac,pw,rememberMe,captcha`);
+	const formMeta = useFormMeta(`ac,pw,rememberMe:{skipEnter: true},captcha`);
 	const captcha = useCaptcha({
 		numbersOnly: true,
 		length: 4,

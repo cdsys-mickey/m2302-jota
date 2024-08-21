@@ -32,6 +32,7 @@ const DateFnsComponent = memo((props) => {
 		getNextCell,
 		lastCell,
 		setActiveCell,
+		readOnly,
 		...rest
 	} = columnData;
 
@@ -83,18 +84,18 @@ const DateFnsComponent = memo((props) => {
 					break;
 			}
 		},
-		[cell, nextCell]
+		[cell, nextCell, stopEditing]
 	);
 
 	useLayoutEffect(() => {
-		if (skipDisabled && active && disabled) {
+		if (skipDisabled && active && disabled && !readOnly) {
 			if (nextCell) {
 				nextCell({ row: rowIndex, col: columnIndex });
 			} else {
 				console.log("nextCell is null");
 			}
 		}
-	}, [active, columnIndex, disabled, nextCell, rowIndex, skipDisabled]);
+	}, [active, columnIndex, disabled, nextCell, readOnly, rowIndex, skipDisabled]);
 
 	return (
 		<input

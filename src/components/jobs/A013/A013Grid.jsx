@@ -1,21 +1,17 @@
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box, Container } from "@mui/material";
-import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
-import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
-} from "react-datasheet-grid";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import DSGLoading from "@/shared-components/dsg/DSGLoading";
+import { Box } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo } from "react";
+import {
+	DynamicDataSheetGrid
+} from "react-datasheet-grid";
 import NoDataBox from "../../../shared-components/NoDataBox";
+import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
 
 const A013Grid = memo((props) => {
 	const {
-		readOnly,
-		setGridRef,
+		gridRef,
 		data,
 		loading,
 		height = 300,
@@ -23,51 +19,7 @@ const A013Grid = memo((props) => {
 		onChange,
 	} = props;
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"ProdID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: true,
-				grow: 2,
-				title: "商品代碼",
-			},
-			{
-				...keyColumn(
-					"ProdData",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "品名規格",
-				grow: 4,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("SRate", createFloatColumn(4)),
-				title: "銷/存",
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("IRate", createFloatColumn(4)),
-				title: "進/存",
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("MRate", createFloatColumn(4)),
-				title: "BOM/存",
-				grow: 1,
-				disabled: readOnly,
-			},
-		],
-		[readOnly]
-	);
+
 
 	if (!data || data.legnth === 0) {
 		return (
@@ -86,27 +38,24 @@ const A013Grid = memo((props) => {
 	}
 
 	return (
-		<Box>
-			<DynamicDataSheetGrid
-				lockRows
-				ref={setGridRef}
-				rowKey="ProdID"
-				// height={height + (readOnly ? 48 : 0)}
-				height={height + 48}
-				// rowHeight={42}
-				value={data}
-				onChange={onChange}
-				columns={columns}
-				addRowsComponent={DSGAddRowsToolbar}
-				disableExpandSelection
-				disableContextMenu
-			/>
-		</Box>
+		<DSGGrid
+			lockRows
+			ref={gridRef}
+			rowKey="ProdID"
+			// height={height + (readOnly ? 48 : 0)}
+			height={height + 48}
+			// rowHeight={42}
+			value={data}
+			onChange={onChange}
+			addRowsComponent={DSGAddRowsToolbar}
+			disableExpandSelection
+			disableContextMenu
+		/>
 	);
 });
 A013Grid.propTypes = {
 	readOnly: PropTypes.bool,
-	setGridRef: PropTypes.func,
+	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
 	data: PropTypes.array,
 	loading: PropTypes.bool,

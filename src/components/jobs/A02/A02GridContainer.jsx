@@ -31,7 +31,6 @@ const A02GridContainer = () => {
 				columns={a02.gridMeta.columns}
 				lockRows={a02.grid.readOnly}
 				gridRef={a02.gridMeta.setGridRef}
-				// setGridRef={a02.gridMeta.setGridRef}
 				data={a02.grid.gridData}
 				height={height - 176}
 				loading={a02.grid.gridLoading}

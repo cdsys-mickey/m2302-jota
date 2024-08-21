@@ -11,11 +11,11 @@ import {
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import NoDataBox from "../../../shared-components/NoDataBox";
+import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
 
 const A015Grid = memo((props) => {
 	const {
-		readOnly,
-		setGridRef,
+		gridRef,
 		data,
 		loading,
 		height = 300,
@@ -23,51 +23,7 @@ const A015Grid = memo((props) => {
 		onChange,
 	} = props;
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"ProdID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				disabled: true,
-				grow: 1,
-				title: "商品代碼",
-			},
-			{
-				...keyColumn(
-					"PackData_N",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "包裝單位",
-				grow: 1,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"ProdData_N",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "品名規格",
-				grow: 4,
-				disabled: true,
-			},
 
-			{
-				...keyColumn("SafeQty", createFloatColumn(2)),
-				title: "安全存量",
-				grow: 1,
-				disabled: readOnly,
-			},
-		],
-		[readOnly]
-	);
 
 	if (!data || data.legnth === 0) {
 		return (
@@ -86,22 +42,19 @@ const A015Grid = memo((props) => {
 	}
 
 	return (
-		<Box>
-			<DynamicDataSheetGrid
-				lockRows
-				ref={setGridRef}
-				rowKey="ProdID"
-				// height={height + (readOnly ? 48 : 0)}
-				height={height + 48}
-				// rowHeight={42}
-				value={data}
-				onChange={onChange}
-				columns={columns}
-				addRowsComponent={DSGAddRowsToolbar}
-				disableExpandSelection
-				disableContextMenu
-			/>
-		</Box>
+		<DSGGrid
+			lockRows
+			ref={gridRef}
+			rowKey="ProdID"
+			// height={height + (readOnly ? 48 : 0)}
+			height={height + 48}
+			// rowHeight={42}
+			value={data}
+			onChange={onChange}
+			// addRowsComponent={DSGAddRowsToolbar}
+			disableExpandSelection
+			disableContextMenu
+		/>
 	);
 });
 A015Grid.propTypes = {

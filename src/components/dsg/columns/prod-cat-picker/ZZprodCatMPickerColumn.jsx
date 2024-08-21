@@ -1,4 +1,4 @@
-import ProdCatMPickerComponent from "./ProdCatMPickerComponent";
+import ProdCatMPickerComponent from "./ZZProdCatMPickerComponent";
 
 export const prodCatMPickerColumn = (opts = {}) => {
 	return {

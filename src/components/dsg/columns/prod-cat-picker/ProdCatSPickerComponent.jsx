@@ -1,24 +1,26 @@
-import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import ProdCatMPicker from "../../../picker/ProdCatMPicker";
+import ProdCatSPickerContainer from "../../../picker/ProdCatSPickerContainer";
 import { useMemo } from "react";
+import Objects from "../../../../shared-modules/sd-objects";
+import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
+import ProdCatSPicker from "../../../picker/ProdCatSPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		fields: "rowData.SClas,active,disabled,focus",
-		debug: true,
+		// debug: true,
 	});
 };
 
-const ProdCatSPickerComponent = memo((props) => {
+const ProdCatSPickerColumn = memo((props) => {
 	const {
 		// Data
 		rowData,
 		setRowData,
 		// Extra information
-		// rowIndex,
-		// columnIndex,
+		rowIndex,
+		columnIndex,
 		// Component Props
 		columnData,
 		// Cell state
@@ -27,75 +29,132 @@ const ProdCatSPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		// insertRowBelow,
+		insertRowBelow,
 		// duplicateRow,
 		// deleteRow,
 		// getContextMenuItems,
 	} = props;
 
-	const { hideControlsOnActive, ...rest } = columnData;
+	// const catL = useMemo(() => {
+	// 	return rowData["catL"]?.LClas;
+	// }, [rowData]);
 
-	// console.log(
-	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
-	// 	rowData
-	// );
+	// const catM = useMemo(() => {
+	// 	return rowData["catM"]?.MClas;
+	// }, [rowData]);
 
-	const ref = useRef();
+	// const disabled = useMemo(() => {
+	// 	return !catL || !catM || _disabled;
+	// }, [catL, catM, _disabled]);
+
+
 	const rowDataRef = useRef(rowData);
 	rowDataRef.current = rowData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
-		},
-		[setRowData, stopEditing]
-	);
+	const {
+		name,
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		readOnly,
+		...rest
+	} = columnData;
 
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
+	// const handleChange = useCallback(
+	// 	(newValue) => {
+	// 		if (name) {
+	// 			console.log(`${name}.rowData`, rowDataRef.current);
+	// 			console.log(`${name}.handleChange, newValue`, newValue);
+	// 			const ogValue = rowDataRef.current[name];
+	// 			if (newValue?.SClas !== ogValue?.SClas) {
+	// 				setRowData({
+	// 					...rowDataRef.current,
+	// 					[name]: newValue,
+	// 				});
+	// 			}
+	// 			if (!newValue?.SClas) {
+	// 				return;
+	// 			}
+	// 			setTimeout(() => stopEditing({ nextRow: false }));
+	// 		} else {
+	// 			console.log(`rowData`, rowDataRef.current);
+	// 			console.log(`handleChange, newValue`, newValue);
 
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
+	// 			setRowData(newValue);
+	// 		}
+	// 	},
+	// 	[name, setRowData, stopEditing]
+	// );
+
+	const { ref, hideControls, handleChange, cell } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+		readOnly
+	});
+
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
+
+	// const value = useMemo(() => {
+	// 	return name ? rowData[name] : rowData;
+	// }, [name, rowData]);
 
 	return (
-		<ProdCatMPicker
-			queryParam="qs"
+		<ProdCatSPicker
 			label=""
-			hideBorders
 			inputRef={ref}
-			disabled={disabled}
+			// catL={catL}
+			// catM={catM}
+			// disabled={disabled}
 			value={rowData}
+			// value={value}
 			onChange={handleChange}
-			// onClose={handleClose}
-			placeholder="小分類"
-			// typeToSearchText="請輸入商品編號或名稱進行搜尋"
-			// filterByServer
 			// DSG 專屬屬性
+			cellComponentRef={cellComponentRef}
 			dense
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!active}
+			cell={cell}
 			hideControls={hideControls}
-			// hidePlaceholder={!active}
+			hideBorders
 			disableFadeOut
-			selectOnFocus
+			disableClearable
+			toastError
 			{...rest}
 		/>
 	);
 }, arePropsEqual);
 
-ProdCatSPickerComponent.propTypes = {
+ProdCatSPickerColumn.propTypes = {
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,
@@ -119,6 +178,6 @@ ProdCatSPickerComponent.propTypes = {
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
 };
-ProdCatSPickerComponent.propTypes = {};
-ProdCatSPickerComponent.displayName = "ProdCatSPickerComponent";
-export default ProdCatSPickerComponent;
+
+ProdCatSPickerColumn.displayName = "ProdCatSPickerColumn";
+export default ProdCatSPickerColumn;

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import TaxTypePicker from "@/components/picker/TaxTypePicker";
+import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
 
 const TaxTypePickerComponent = memo((props) => {
 	const {
@@ -18,35 +19,61 @@ const TaxTypePickerComponent = memo((props) => {
 		// Control functions
 		stopEditing,
 		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const { ...rest } = columnData;
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
 
-	const ref = useRef();
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		readOnly,
+		...rest
+	} = columnData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
-		},
-		[setRowData, stopEditing]
-	);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+		readOnly
+	});
 
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
 		<TaxTypePicker
@@ -55,7 +82,14 @@ const TaxTypePickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			// DSG 專屬
+			cellComponentRef={cellComponentRef}
+			dense
+			cell={cell}
+			hideControls={hideControls}
 			hideBorders
+			disableFadeOut
+			toastError
 			{...rest}
 		/>
 	);

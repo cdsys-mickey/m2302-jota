@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
-import ProdTypeAPickerComponent from "./ProdTypeAPickerComponent";
+import TaxTypePickerComponent from "./TaxTypePickerComponent";
 
-export const ProdTypeAPickerComponentContainer = (props) => {
+export const TaxTypePickerComponentContainer = (props) => {
 	const { columnData, ...rest } = props;
 	const cellControls = useCellControls();
 
@@ -14,11 +14,12 @@ export const ProdTypeAPickerComponentContainer = (props) => {
 		};
 	}, [cellControls, columnData]);
 
-	return <ProdTypeAPickerComponent columnData={_columnData} {...rest} />;
+	return <TaxTypePickerComponent columnData={_columnData} {...rest} />;
 };
 
-ProdTypeAPickerComponentContainer.displayName =
-	"ProdTypeAPickerComponentContainer";
-ProdTypeAPickerComponentContainer.propTypes = {
+TaxTypePickerComponentContainer.displayName =
+	"TaxTypePickerComponentContainer";
+
+TaxTypePickerComponentContainer.propTypes = {
 	columnData: PropTypes.object,
 };

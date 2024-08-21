@@ -9,6 +9,7 @@ export const useFormMeta = (value, opts = {}) => {
 	const form = useFormContext();
 	const { setFocus } = form || {};
 	const {
+		disableEnter = false,
 		lastField = LastFieldBehavior.BLUR,
 		lastFieldMessage = "已是最後一個欄位",
 		firstFieldMessage = "已是第一個欄位",
@@ -20,7 +21,7 @@ export const useFormMeta = (value, opts = {}) => {
 
 	const getNextField = useCallback(
 		(currentFieldName, opts = {}) => {
-			const { forward = true, isFieldDisabled } = opts;
+			const { forward = true, isFieldDisabled, e } = opts;
 			const currentIndex = fields.findIndex(
 				(item) => item.name === currentFieldName
 			);
@@ -30,14 +31,22 @@ export const useFormMeta = (value, opts = {}) => {
 
 			if (forward) {
 				for (let i = currentIndex + 1; i < fields.length; i++) {
-					if (!isFieldDisabled || !isFieldDisabled(fields[i])) {
-						return fields[i];
+					const field = fields[i];
+					if (e?.key === "Enter" && field.skipEnter) {
+						continue;
+					}
+					if (!isFieldDisabled || !isFieldDisabled(field)) {
+						return field;
 					}
 				}
 			} else {
 				for (let i = currentIndex - 1; i >= 0; i--) {
-					if (!isFieldDisabled || !isFieldDisabled(fields[i])) {
-						return fields[i];
+					const field = fields[i];
+					if (e?.key === "Enter" && field.skipEnter) {
+						continue;
+					}
+					if (!isFieldDisabled || !isFieldDisabled(field)) {
+						return field;
 					}
 				}
 			}
@@ -49,10 +58,8 @@ export const useFormMeta = (value, opts = {}) => {
 
 	const nextEnabled = useCallback(
 		(currentFieldName, opts = {}) => {
-			const { forward = true, shouldSelect = true } = opts;
-			const nextField = getNextField(currentFieldName, {
-				forward,
-			});
+			const { shouldSelect = true } = opts;
+			const nextField = getNextField(currentFieldName, opts);
 			console.log("nextField:", nextField);
 			if (nextField && setFocus) {
 				setFocus(nextField, {
@@ -68,11 +75,9 @@ export const useFormMeta = (value, opts = {}) => {
 	);
 
 	const nextField = useCallback(
-		(name, { setFocus, isFieldDisabled, forward = true }) => {
-			const nextField = getNextField(name, {
-				forward,
-				isFieldDisabled,
-			});
+		(name, opts = {}) => {
+			const { setFocus, forward = true } = opts;
+			const nextField = getNextField(name, opts);
 			console.log("nextField", nextField);
 			if (nextField) {
 				setFocus(nextField.name, {
@@ -102,7 +107,7 @@ export const useFormMeta = (value, opts = {}) => {
 				}
 			}
 		},
-		[getNextField, lastField, lastFieldMessage]
+		[firstFieldMessage, getNextField, lastField, lastFieldMessage]
 	);
 
 	return {
@@ -110,5 +115,6 @@ export const useFormMeta = (value, opts = {}) => {
 		getNextField,
 		nextEnabled,
 		nextField,
+		disableEnter
 	};
 };

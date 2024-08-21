@@ -1,19 +1,18 @@
-import PropTypes from "prop-types";
-import { memo, useLayoutEffect, useRef } from "react";
 import ProdTypeAPicker from "@/components//picker/ProdTypeAPicker";
-import { useMemo } from "react";
-import { useCallback } from "react";
 import Objects from "@/shared-modules/sd-objects";
-import { useOptionPickerComponent } from "../../../shared-hooks/dsg/useOptionPickerComponent";
+import PropTypes from "prop-types";
+import { memo, useRef } from "react";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+import ProdTypeBPicker from "../../../picker/ProdTypeBPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.TypeA,active,disabled,focus",
+		fields: "rowData.TypeB,active,disabled,focus",
 		debug: true,
 	});
 };
 
-const ProdTypeAPickerComponent = memo((props) => {
+const ProdTypeBPickerComponent = memo((props) => {
 	const {
 		// Data
 		rowData,
@@ -46,6 +45,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 		skipDisabled,
 		nextCell,
 		setActiveCell,
+		readOnly,
 		...rest
 	} = columnData;
 
@@ -59,21 +59,33 @@ const ProdTypeAPickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
+		readOnly
 	});
 
 	const cellComponentRef = useRef({
 		stopEditing,
 		insertRowBelow,
 		cell,
-		skipDisabled: skipDisabled,
-		nextCell: nextCell,
-		getNextCell: getNextCell,
-		lastCell: lastCell,
-		setActiveCell: setActiveCell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
 	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
-		<ProdTypeAPicker
+		<ProdTypeBPicker
 			label=""
 			inputRef={ref}
 			disabled={disabled}
@@ -84,7 +96,6 @@ const ProdTypeAPickerComponent = memo((props) => {
 			dense
 			cell={cell}
 			hideControls={hideControls}
-			// hidePlaceholder={!active}
 			hideBorders
 			disableFadeOut
 			toastError
@@ -93,7 +104,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 	);
 }, arePropsEqual);
 
-ProdTypeAPickerComponent.propTypes = {
+ProdTypeBPickerComponent.propTypes = {
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,
@@ -118,5 +129,5 @@ ProdTypeAPickerComponent.propTypes = {
 	getContextMenuItems: PropTypes.func,
 };
 
-ProdTypeAPickerComponent.displayName = "ProdTypeAPickerComponent";
-export default ProdTypeAPickerComponent;
+ProdTypeBPickerComponent.displayName = "ProdTypeBPickerComponent";
+export default ProdTypeBPickerComponent;

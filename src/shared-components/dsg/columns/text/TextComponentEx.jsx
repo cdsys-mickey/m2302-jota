@@ -43,6 +43,7 @@ const TextComponentEx = memo(
 			getNextCell,
 			lastCell,
 			setActiveCell,
+			readOnly
 		} = columnData;
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
 		const asyncRef = useRef({
@@ -100,6 +101,7 @@ const TextComponentEx = memo(
 			setActiveCell,
 			stopEditing,
 			insertRowBelow,
+
 		});
 
 		const handleKeyDown = useCallback(
@@ -112,8 +114,8 @@ const TextComponentEx = memo(
 						break;
 					case "Enter":
 						e.preventDefault();
+						stopEditing({ nextRow: false });
 						setTimeout(() => {
-							stopEditing({ nextRow: false });
 							if (nextCell) {
 								nextCell(cell, { forward: true });
 							}
@@ -174,14 +176,14 @@ const TextComponentEx = memo(
 		}, [focus, rowData]);
 
 		useLayoutEffect(() => {
-			if (skipDisabled && active && disabled) {
+			if (skipDisabled && active && disabled && !readOnly) {
 				if (nextCell) {
 					nextCell({ row: rowIndex, col: columnIndex });
 				} else {
 					console.log("nextCell is null");
 				}
 			}
-		}, [active, columnIndex, disabled, nextCell, rowIndex, skipDisabled]);
+		}, [active, columnIndex, disabled, nextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<input

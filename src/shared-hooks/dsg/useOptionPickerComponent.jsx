@@ -13,6 +13,7 @@ export const useOptionPickerComponent = (opts) => {
 		nextCell,
 		setRowData,
 		stopEditing,
+		readOnly
 		// Control Mehotds
 		// insertRowBelow,
 		// Context Method,
@@ -46,34 +47,6 @@ export const useOptionPickerComponent = (opts) => {
 		}
 	}, [focus, selectOnFocus]);
 
-	// const nextCell2 = useCallback(() => {
-	// 	if (getNextCell) {
-	// 		const next = getNextCell(cell);
-	// 		if (next) {
-	// 			setActiveCell(next);
-	// 		} else {
-	// 			switch (lastCell) {
-	// 				case DSGLastCellBehavior.BLUR:
-	// 					setActiveCell(null);
-	// 					break;
-	// 				case DSGLastCellBehavior.STOP_EDITING:
-	// 					stopEditing();
-	// 					break;
-	// 				case DSGLastCellBehavior.CREATE_ROW:
-	// 					insertRowBelow();
-	// 					break;
-	// 			}
-	// 		}
-	// 	}
-	// }, [
-	// 	cell,
-	// 	getNextCell,
-	// 	insertRowBelow,
-	// 	lastCell,
-	// 	setActiveCell,
-	// 	stopEditing,
-	// ]);
-
 	const handleChange = useCallback(
 		(newValue) => {
 			console.log("handleChange", newValue);
@@ -87,31 +60,16 @@ export const useOptionPickerComponent = (opts) => {
 		[setRowData, stopEditing]
 	);
 
-	// const handleKeyDown = useCallback(
-	// 	(e) => {
-	// 		console.log("handleKeyDown", e);
-	// 		switch (e.key) {
-	// 			case "Enter":
-	// 				nextCell2();
-	// 				break;
-	// 			case "Tab":
-	// 				nextCell2();
-	// 				break;
-	// 		}
-	// 	},
-	// 	[nextCell2]
-	// );
-
 	// 跳過停用 Cell
 	useLayoutEffect(() => {
-		if (skipDisabled && active && disabled) {
+		if (skipDisabled && active && disabled && !readOnly) {
 			if (nextCell) {
 				nextCell({ row: rowIndex, col: columnIndex });
 			} else {
 				console.log("nextCell is null");
 			}
 		}
-	}, [active, columnIndex, disabled, nextCell, rowIndex, skipDisabled]);
+	}, [active, columnIndex, disabled, nextCell, readOnly, rowIndex, skipDisabled]);
 
 	return {
 		ref,

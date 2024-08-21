@@ -9,7 +9,7 @@ import MuiStyles from "../../shared-modules/sd-mui-styles";
 
 export const ControlledTextField = ({
 	name,
-	multiline,
+	// multiline,
 	// inputRef,
 	readOnly = false,
 	control,
@@ -27,7 +27,7 @@ export const ControlledTextField = ({
 
 	...rest
 }) => {
-	const { isFieldDisabled, nextField } = useContext(FormMetaContext) || {};
+	const { isFieldDisabled, nextField, disableEnter } = useContext(FormMetaContext) || {};
 	const { setFocus } = useFormContext() || {};
 
 	const renderEndAdornment = useMemo(() => {
@@ -36,7 +36,8 @@ export const ControlledTextField = ({
 
 	const handleKeyDown = useCallback(
 		(e) => {
-			if ((e.key === "Enter" && !e.shiftKey) || e.key === "Tab") {
+			// 按下 Shift 時必須略過不處理
+			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
 				if (nextField) {
 					e.preventDefault();
 
@@ -44,17 +45,18 @@ export const ControlledTextField = ({
 						setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
+						e
 					});
 				}
 			}
 		},
-		[nextField, name, setFocus, isFieldDisabled]
+		[disableEnter, nextField, name, setFocus, isFieldDisabled]
 	);
 
 	if (!name) {
 		return (
 			<TextField
-				multiline={multiline}
+				// multiline={multiline}
 				sx={[
 					(theme) => ({
 						"&:has(.MuiInputBase-input:focus)": {
@@ -106,7 +108,7 @@ export const ControlledTextField = ({
 			}) => (
 				<TextField
 					value={value}
-					multiline={multiline}
+					// multiline={multiline}
 					inputRef={ref}
 					sx={[
 						(theme) => ({
@@ -177,6 +179,7 @@ export const ControlledTextField = ({
 
 ControlledTextField.propTypes = {
 	name: PropTypes.string,
+	// multiline: PropTypes.bool,
 	readOnly: PropTypes.bool,
 	control: PropTypes.object,
 	onChange: PropTypes.func,

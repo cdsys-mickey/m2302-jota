@@ -1,11 +1,8 @@
-import { styled } from "@mui/system";
 import { IconButton } from "@mui/material";
-import { forwardRef } from "react";
+import { styled } from "@mui/system";
 
 const ExpandMoreButton = styled(
-	forwardRef(({ expanded, ...rest }, ref) => {
-		return <IconButton ref={ref} {...rest} />;
-	})
+	IconButton
 )(({ theme, expanded }) => ({
 	transform: !expanded ? "rotate(0deg)" : "rotate(180deg)",
 	marginLeft: "auto",

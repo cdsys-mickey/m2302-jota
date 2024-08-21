@@ -20,12 +20,11 @@ import {
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { toast } from "react-toastify";
 import { useCellComponent } from "../../shared-hooks/dsg/useCellComponent";
+import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
-import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
-import { useEffect } from "react";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -126,8 +125,11 @@ const OptionPicker = memo(
 			cellComponentRef,
 			// nextCell,
 			cell,
+			// FormMeta
+			inFormMeta,
 			nextField,
-			getNextField,
+			disableEnter,
+			// getNextField,
 			isFieldDisabled,
 			setFocus,
 			...rest
@@ -228,16 +230,17 @@ const OptionPicker = memo(
 				const { forward } = opts;
 				if (inDSG) {
 					nextCell(cell, { forward: forward || !e?.shiftKey });
-				} else if (nextField) {
+				} else if (inFormMeta) {
 					e?.preventDefault();
 					nextField(name, {
 						setFocus,
 						isFieldDisabled,
 						forward: forward || !e?.shiftKey,
+						e
 					});
 				}
 			},
-			[inDSG, nextField, nextCell, cell, name, setFocus, isFieldDisabled]
+			[inDSG, inFormMeta, nextCell, cell, nextField, name, setFocus, isFieldDisabled]
 		);
 
 		const handleChange = useCallback(
@@ -297,7 +300,7 @@ const OptionPicker = memo(
 				console.log("handleEnter", e);
 				const { validate = false, } = opts;
 				// console.log("handleEnter", event);
-				if (!findByInput || _open) {
+				if (!findByInput || _open || (!inFormMeta && !inDSG)) {
 					return;
 				}
 
@@ -350,7 +353,7 @@ const OptionPicker = memo(
 				}
 				// nextCellOrField(e);
 			},
-			[findByInput, _open, value, onChange, inputNotFound, nextCellOrField, getError, name, setError]
+			[findByInput, _open, inFormMeta, inDSG, value, onChange, inputNotFound, nextCellOrField, getError, name, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -369,6 +372,10 @@ const OptionPicker = memo(
 				// console.log("e.key", e.key);
 				switch (e.key) {
 					case "Enter":
+						// 按下 Shift 時必須略過不處理
+						if (disableEnter || e.shiftKey) {
+							return;
+						}
 						handleEnter(e, {
 							validate: true,
 							forward: true
@@ -384,7 +391,7 @@ const OptionPicker = memo(
 						break;
 				}
 			},
-			[handleArrowDown, handleEnter]
+			[disableEnter, handleArrowDown, handleEnter]
 		);
 
 		const handleBlur = useCallback(
@@ -913,6 +920,8 @@ OptionPicker.propTypes = {
 	isFieldDisabled: PropTypes.func,
 	setFocus: PropTypes.func,
 	inDSG: PropTypes.bool,
+	inFormMeta: PropTypes.bool,
+	disableEnter: PropTypes.bool,
 	cellComponentRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 export default OptionPicker;

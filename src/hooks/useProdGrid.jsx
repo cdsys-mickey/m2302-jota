@@ -10,21 +10,28 @@ import { useContext } from "react";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 import { useRef } from "react";
 import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
+import { useFormMeta } from "../shared-contexts/form-meta/useFormMeta";
+import { LastFieldBehavior } from "../shared-contexts/form-meta/LastFieldBehavior";
+import { AuthContext } from "../contexts/auth/AuthContext";
 
 export const useProdGrid = ({
-	token,
 	grid,
 	baseUri,
 	transformAsQueryParams,
 	transformForSubmitting,
 	transformForReading,
+	safeQty
 }) => {
+	const { token } = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);
 	const { httpGetAsync, httpPutAsync } = useWebApi();
-	const [expanded, toggleExpanded] = useToggle(false);
+	const [expanded, toggleExpanded] = useToggle(true);
 	const saveAction = useAction();
 	const appFrame = useContext(AppFrameContext);
-	const recoverDrawerOpen = useRef();
+	const beforeToggleRef = useRef({
+		drawerOpen: null,
+		expanded: null
+	});
 
 	const [loading, setLoading] = useState();
 	const [state, setState] = useState({
@@ -35,18 +42,54 @@ export const useProdGrid = ({
 
 	const { gridData, dirtyIds } = grid;
 
+	const formMeta = useFormMeta(
+		safeQty ?
+			`
+		prodId,
+		prodName,
+		catL,
+		catM,
+		catS,
+		typeA,
+		typeB,
+		taxType,
+		safeQty
+		` : `
+		prodId,
+		prodName,
+		catL,
+		catM,
+		catS,
+		typeA,
+		typeB,
+		taxType
+		`, {
+		// disableEnter: true
+		lastField: LastFieldBehavior.PROMPT
+	}
+	);
+
 	const toggleEditorLock = useCallback(() => {
 		if (grid.readOnly) {
-			recoverDrawerOpen.current = appFrame.drawerOpen;
+			beforeToggleRef.current = {
+				drawerOpen: appFrame.drawerOpen,
+				expanded: expanded
+			}
 			console.log(`og drawer opened memoised`);
 			appFrame.handleDrawerClose();
+			if (expanded) {
+				toggleExpanded();
+			}
 		} else {
-			if (recoverDrawerOpen.current === true) {
+			if (beforeToggleRef.current.drawerOpen) {
 				appFrame.handleDrawerOpen();
+			}
+			if (beforeToggleRef.current.expanded) {
+				toggleExpanded()
 			}
 		}
 		grid.toggleReadOnly();
-	}, [appFrame, grid]);
+	}, [appFrame, expanded, grid, toggleExpanded]);
 
 	const peek = useCallback(
 		async (criteria) => {
@@ -55,13 +98,18 @@ export const useProdGrid = ({
 			}
 			if (Objects.isAllPropsEmpty(criteria)) {
 				console.log("criteria is empty");
-				if (state.saveKey) {
-					setState((prev) => ({
-						...prev,
-						saveKey: null,
-						totalElements: null,
-					}));
-				}
+				// if (state.saveKey) {
+				// 	setState((prev) => ({
+				// 		...prev,
+				// 		saveKey: null,
+				// 		totalElements: null,
+				// 	}));
+				// }
+				setState((prev) => ({
+					...prev,
+					saveKey: null,
+					totalElements: null,
+				}));
 				return;
 			}
 			setLoading(true);
@@ -90,7 +138,7 @@ export const useProdGrid = ({
 				setLoading(false);
 			}
 		},
-		[baseUri, httpGetAsync, state.saveKey, token, transformAsQueryParams]
+		[baseUri, httpGetAsync, token, transformAsQueryParams]
 	);
 
 	const unload = useCallback(() => {
@@ -98,7 +146,8 @@ export const useProdGrid = ({
 	}, [grid]);
 
 	const load = useCallback(
-		async ({ criteria, reload = false }) => {
+		async (opts = {}) => {
+			const { criteria, reload = false } = opts;
 			console.log(`saveKey`, state.saveKey);
 			if (!token) {
 				throw new Error("token not specified");
@@ -229,5 +278,6 @@ export const useProdGrid = ({
 		toggleEditorLock,
 		loading,
 		confirmCancelChanges,
+		formMeta
 	};
 };

@@ -50,6 +50,7 @@ const ControlledDatePicker = ({
 						setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
+						e
 					});
 				}
 			}

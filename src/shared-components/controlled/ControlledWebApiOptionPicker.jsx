@@ -27,8 +27,10 @@ export const ControlledWebApiOptionPicker = memo(
 	}) => {
 		const form = useFormContext();
 		const { setFocus } = form || {};
-		const { getNextField, nextField, isFieldDisabled } =
-			useContext(FormMetaContext) || {};
+		const formMeta = useContext(FormMetaContext);
+		const { nextField, isFieldDisabled, disableEnter } =
+			formMeta || {};
+		const inFormMeta = !!formMeta;
 
 		const prevValue = useRef();
 
@@ -82,9 +84,12 @@ export const ControlledWebApiOptionPicker = memo(
 							getError={getError}
 							setError={form.setError}
 							clearErrors={form.clearErrors}
+							// FormMeta
+							inFormMeta={inFormMeta}
 							// Focus Control
 							setFocus={setFocus}
-							getNextField={getNextField}
+							// getNextField={getNextField}
+							disableEnter={disableEnter}
 							nextField={nextField}
 							isFieldDisabled={isFieldDisabled}
 							onChange={(newValue) => {

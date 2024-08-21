@@ -1,12 +1,13 @@
+import { PkgTypePicker } from "@/components/picker/PkgTypePicker";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
-import { PkgTypePicker } from "@/components/picker/PkgTypePicker";
+import { memo, useRef } from "react";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		fields: "rowData.CodeID,active,disabled,focus",
-		debug: true,
+		// debug: true,
 	});
 };
 
@@ -16,8 +17,8 @@ const PkgTypePickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		// rowIndex,
-		// columnIndex,
+		rowIndex,
+		columnIndex,
 		// Component Props
 		columnData,
 		// Cell state
@@ -26,53 +27,67 @@ const PkgTypePickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		// insertRowBelow,
+		insertRowBelow,
 		// duplicateRow,
 		// deleteRow,
 		// getContextMenuItems,
 	} = props;
 
-	const { hideControlsOnActive, ...rest } = columnData;
-
-	// console.log(
-	// 	`rendering PkgTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
-	// 	rowData
-	// );
-
-	const ref = useRef();
 	const rowDataRef = useRef(rowData);
 	rowDataRef.current = rowData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
-		},
-		[setRowData, stopEditing]
-	);
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		readOnly,
+		...rest
+	} = columnData;
 
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+		readOnly
+	});
 
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
 		<PkgTypePicker
 			queryParam="qs"
 			label=""
-			hideBorders
 			inputRef={ref}
 			disabled={disabled}
 			value={rowData}
@@ -82,13 +97,14 @@ const PkgTypePickerComponent = memo((props) => {
 			typeToSearchText="請輸入編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
+			cellComponentRef={cellComponentRef}
 			dense
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!active}
+			cell={cell}
 			hideControls={hideControls}
-			// hidePlaceholder={!active}
+			hideBorders
 			disableFadeOut
 			disableClearable
+			toastError
 			// virtualize
 			{...rest}
 		/>

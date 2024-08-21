@@ -1,7 +1,6 @@
-import { useContext } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
-import LockSwitch from "../../../shared-components/LockSwitch";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import { useContext } from "react";
 
 export const ProdGridEditButtonContainer = (props) => {
 	const { ...rest } = props;

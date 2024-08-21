@@ -1,11 +1,11 @@
-import { Box, Collapse, Grid, Paper } from "@mui/material";
+import { Box, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 
-import { ProdGridLoadButtonContainer } from "./ProdGridLoadButtonContainer";
-import FlexGrid from "../../../shared-components/FlexGrid";
-import { ProdGridFormToggleButtonContainer } from "./ProdGridFormToggleButtonContainer";
+import FlexGrid from "@/shared-components/FlexGrid";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { ProdGridForm2Container } from "./ProdGridForm2Container";
+import { ProdGridFormToggleButtonContainer } from "./ProdGridFormToggleButtonContainer";
+import { ProdGridLoadButtonContainer } from "./ProdGridLoadButtonContainer";
 
 const ProdGridForm = (props) => {
 	const { cat = true, safeQty = false, handleSubmit, ...rest } = props;
@@ -16,7 +16,7 @@ const ProdGridForm = (props) => {
 					{/* ROW 1 */}
 
 					<Grid item xs={12} sm={6} md={8} lg={3}>
-						<ControlledTextField
+						<TextFieldWrapper
 							name="prodId"
 							label="貨品編號"
 							size="small"
@@ -24,8 +24,8 @@ const ProdGridForm = (props) => {
 							clearable
 						/>
 					</Grid>
-					<Grid item xs={12} sm={6} md={8} lg={4}>
-						<ControlledTextField
+					<Grid item xs={12} sm={6} md={8} lg={3}>
+						<TextFieldWrapper
 							name="prodName"
 							label="品名規格"
 							size="small"
@@ -38,8 +38,9 @@ const ProdGridForm = (props) => {
 						xs={12}
 						sm={6}
 						md={8}
-						lg={5}
+						lg={6}
 						justifyContent="flex-end"
+						alignItems="flex-start"
 						sx={{
 							"& button": {
 								marginLeft: "4px",
@@ -49,7 +50,7 @@ const ProdGridForm = (props) => {
 							variant="contained"
 							color="primary"
 						/>
-						<ProdGridFormToggleButtonContainer color="warning" />
+						<ProdGridFormToggleButtonContainer />
 					</FlexGrid>
 				</Grid>
 				{/* ROW 2 */}

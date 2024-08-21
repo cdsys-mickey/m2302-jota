@@ -2,9 +2,12 @@ import { useCallback, useState } from "react";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import { useInit } from "../../shared-hooks/useInit";
 import Auth from "@/modules/md-auth";
+import { AuthContext } from "../../contexts/auth/AuthContext";
+import { useContext } from "react";
 
 export const useAppModule = (props = {}) => {
-	const { token, moduleId } = props;
+	const { token } = useContext(AuthContext);
+	const { moduleId } = props;
 	const [error, setError] = useState();
 	const [state, setState] = useState({
 		moduleAuthorityLoading: null,

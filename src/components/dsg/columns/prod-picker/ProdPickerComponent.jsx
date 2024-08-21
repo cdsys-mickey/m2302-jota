@@ -46,6 +46,7 @@ const ProdPickerComponent = memo((props) => {
 		skipDisabled,
 		nextCell,
 		setActiveCell,
+		readOnly,
 		...rest
 	} = columnData;
 
@@ -59,17 +60,30 @@ const ProdPickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
+		readOnly
 	});
 
 	const cellComponentRef = useRef({
 		stopEditing,
 		insertRowBelow,
-		skipDisabled: skipDisabled,
-		nextCell: nextCell,
-		getNextCell: getNextCell,
-		lastCell: lastCell,
-		setActiveCell: setActiveCell,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
 	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
 		<ProdPicker

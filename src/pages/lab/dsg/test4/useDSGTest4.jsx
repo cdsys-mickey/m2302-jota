@@ -13,6 +13,8 @@ import { useDSGMeta } from "../../../../shared-hooks/dsg/useDSGMeta";
 import { createCheckboxExColumn } from "../../../../shared-components/dsg/columns/checkbox/createCheckboxExColumn";
 
 export const useDSGTest4 = () => {
+	const grid = useDSG({});
+
 	const columns = useMemo(
 		() => [
 			{
@@ -44,6 +46,7 @@ export const useDSGTest4 = () => {
 				title: "商品",
 				minWidth: 170,
 				maxWidth: 170,
+				disabled: grid.readOnly
 			},
 			{
 				...keyColumn(
@@ -77,7 +80,7 @@ export const useDSGTest4 = () => {
 				),
 				minWidth: 48,
 				maxWidth: 48,
-				// disabled: true
+				disabled: grid.readOnly
 			},
 			{
 				...keyColumn(
@@ -91,7 +94,7 @@ export const useDSGTest4 = () => {
 				// minWidth: 90,
 				// maxWidth: 90,
 				grow: 1,
-				// disabled: true,
+				disabled: grid.readOnly
 			},
 			{
 				...keyColumn(
@@ -111,7 +114,7 @@ export const useDSGTest4 = () => {
 						},
 					})
 				),
-				disabled: false,
+				disabled: grid.readOnly,
 				title: "品別",
 				minWidth: 160,
 				maxWidth: 160,
@@ -126,12 +129,13 @@ export const useDSGTest4 = () => {
 				title: "有效日期",
 				minWidth: 140,
 				maxWidth: 140,
+				disabled: grid.readOnly
 			},
 		],
-		[]
+		[grid.readOnly]
 	);
 
-	const grid = useDSG({});
+
 
 	const gridMeta = useDSGMeta({
 		columns,

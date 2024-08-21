@@ -45,6 +45,7 @@ const AreaTypePickerComponent = memo((props) => {
 		skipDisabled,
 		nextCell,
 		setActiveCell,
+		readOnly,
 		...rest
 	} = columnData;
 
@@ -58,18 +59,30 @@ const AreaTypePickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
+		readOnly
 	});
 
 	const cellComponentRef = useRef({
 		stopEditing,
 		insertRowBelow,
 		cell,
-		skipDisabled: skipDisabled,
-		nextCell: nextCell,
-		getNextCell: getNextCell,
-		lastCell: lastCell,
-		setActiveCell: setActiveCell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
 	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
 		<AreaTypePicker
