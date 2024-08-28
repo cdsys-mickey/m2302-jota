@@ -85,7 +85,7 @@ const ZZZA03Form = memo((props) => {
 
 						<TabPanel value={ZA03.Tabs.INFO}>
 							{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
-							<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
+							<FormSectionBox editing={editing}>
 								<Grid
 									container
 									columns={12}
@@ -148,8 +148,8 @@ const ZZZA03Form = memo((props) => {
 											name="dept"
 											label="隸屬門市"
 											required
-											// disabled={deptDisabled}
-											// disabled={readOnly}
+										// disabled={deptDisabled}
+										// disabled={readOnly}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>

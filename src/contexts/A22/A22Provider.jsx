@@ -1,21 +1,26 @@
-import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { useA22 } from "../../hooks/jobs/useA22";
 import { A22Context } from "./A22Context";
 
 export const A22Provider = (props) => {
 	const { children } = props;
-	const auth = useContext(AuthContext);
-	const a22 = useA22({ token: auth.token });
+	const form = useForm({
+		defaultValues: {
+			qty: "1",
+		},
+	});
+	const a22 = useA22({ form });
 
 	return (
-		<A22Context.Provider
-			value={{
-				...a22,
-			}}>
-			{children}
-		</A22Context.Provider>
+		<FormProvider {...form}>
+			<A22Context.Provider
+				value={{
+					...a22,
+				}}>
+				{children}
+			</A22Context.Provider>
+		</FormProvider>
 	);
 };
 

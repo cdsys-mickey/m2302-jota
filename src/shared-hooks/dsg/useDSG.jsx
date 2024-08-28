@@ -52,7 +52,7 @@ export const useDSG = ({
 	const isRowDataEquals = useCallback((prevRowData, rowData) => {
 		// console.log("isRowDataEquals", prevRowData, rowData);
 		return !Objects.arePropsEqual(prevRowData, rowData, {
-			// ignoresEmpty: true,
+			ignoresEmpty: true,
 		});
 	}, []);
 
@@ -270,10 +270,10 @@ export const useDSG = ({
 	}, [dirtyIds, gridId, prevGridData]);
 
 	const isKeyDuplicated = useCallback(
-		(newValue, key) => {
+		(newValue, key, _keyColumn) => {
 			return (
 				newValue.filter((i) => {
-					const prevKey = _.get(i, keyColumn);
+					const prevKey = _.get(i, _keyColumn || keyColumn);
 					return prevKey === key;
 				}).length > 1
 			);

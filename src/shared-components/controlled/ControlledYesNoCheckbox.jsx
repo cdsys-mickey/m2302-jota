@@ -1,6 +1,6 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
-import YesNo from "../../modules/md-yes-no";
+import YesNo from "@/modules/md-yes-no";
 import ControlledCheckboxEx from "../checkbox/ControlledCheckboxEx";
 
 const ControlledYesNoCheckbox = memo((props) => {

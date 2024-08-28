@@ -1,4 +1,3 @@
-import TextComponentEx from "./TextComponentEx";
 import { TextComponentExContainer } from "./TextComponentExContainer";
 
 export const createTextColumnEx = ({

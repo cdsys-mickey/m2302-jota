@@ -9,6 +9,7 @@ const transformForReading = (payload) => {
 			Barcode: v.Barcode,
 			PackData: v.PackData,
 		},
+		ProdData: v.ProdData,
 		Barcode: v.Barcode,
 		Qty: v.Qty,
 		PackData: v.PackData,

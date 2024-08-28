@@ -42,7 +42,9 @@ const ControlledCheckboxEx = ({
 			// }
 			console.log("handleKeyDown:", `"${e.key}"`);
 			if (e.key === "Enter" || e.key === "Tab" || e.key === " ") {
-				if (e.key === " " || e.key === "Enter") {
+				// if (e.key === " " || e.key === "Enter") {
+				// 不要讓 Enter 送出
+				if (e.key === " ") {
 					toggleChecked(e);
 				}
 				if (nextField) {

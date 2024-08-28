@@ -153,6 +153,7 @@ export const useDSGMeta = ({
 			return null;
 		}
 		if (!prev) {
+			console.warn("prev cell is null, probably onActiveCellChange is not assigned");
 			return true;
 		}
 

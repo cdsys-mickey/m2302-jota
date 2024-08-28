@@ -28,21 +28,47 @@ export const ControlledTextField = ({
 	...rest
 }) => {
 	const { isFieldDisabled, nextField, disableEnter } = useContext(FormMetaContext) || {};
-	const { setFocus } = useFormContext() || {};
+	// const { setFocus } = useFormContext() || {};
+	const form = useFormContext();
 
 	const renderEndAdornment = useMemo(() => {
 		return EndAdornmentComponent || clearable;
 	}, [EndAdornmentComponent, clearable]);
 
+	const getError = useCallback(
+		async (opts = { debug: false }) => {
+			if (!name) {
+				return;
+			}
+			const result = await form.trigger(name);
+			if (result) {
+				return false;
+			}
+			const fieldState = form.getFieldState(name);
+			if (opts.debug) {
+				console.error(`${name}.fieldState.error`, fieldState.error);
+			}
+			return fieldState.error;
+		},
+		[form, name]
+	);
+
 	const handleKeyDown = useCallback(
-		(e) => {
+		async (e) => {
 			// 按下 Shift 時必須略過不處理
 			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
+				const error = await getError();
+				if (error) {
+					// 錯誤則不往下傳遞給 DSGGrid
+					// e.stopPropagation();
+					form.setError(name, error);
+					return;
+				}
 				if (nextField) {
 					e.preventDefault();
 
 					nextField(name, {
-						setFocus,
+						setFocus: form.setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
 						e
@@ -50,7 +76,7 @@ export const ControlledTextField = ({
 				}
 			}
 		},
-		[disableEnter, nextField, name, setFocus, isFieldDisabled]
+		[disableEnter, getError, nextField, form, name, isFieldDisabled]
 	);
 
 	if (!name) {

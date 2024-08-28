@@ -52,7 +52,6 @@ const A02Grid = memo((props) => {
 					ref={gridRef}
 					// rowKey="CodeID"
 					rowKey="id"
-					createRow={createRow}
 					height={gridHeight}
 					// rowHeight={42}
 					value={data}
@@ -60,7 +59,7 @@ const A02Grid = memo((props) => {
 					onActiveCellChange={onActiveCellChange}
 					onSelectionChange={onSelectionChange}
 					createRow={createRow}
-					columns={columns}
+					// columns={columns}
 					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 					disableExpandSelection
 					contextMenuComponent={ContextMenu}

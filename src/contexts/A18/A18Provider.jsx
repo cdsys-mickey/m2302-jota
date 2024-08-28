@@ -24,10 +24,6 @@ export const A18Provider = ({ children }) => {
 			<A18Context.Provider
 				value={{
 					...a18,
-					handleSubmit: form.handleSubmit(
-						a18.onSubmit,
-						a18.onSubmitError
-					),
 				}}>
 				{children}
 			</A18Context.Provider>

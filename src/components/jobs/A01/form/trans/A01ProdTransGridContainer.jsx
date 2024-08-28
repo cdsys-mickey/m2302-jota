@@ -17,6 +17,7 @@ export const A01ProdTransGridContainer = (props) => {
 			value={{
 				...a01.transGrid,
 				...a01.transMeta,
+				readOnly: !a01.editing
 			}}>
 			<A01ProdTransGrid
 				gridRef={a01.transMeta.setGridRef}

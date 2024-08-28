@@ -1,12 +1,10 @@
-import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
 import { forwardRef, memo } from "react";
-import { ProdGridLockRowsSwitchContainer } from "./ProdGridLockRowsSwitchContainer";
-import { ProdGridSaveButtonContainer } from "./ProdGridSaveButtonContainer";
-import { ProdGridCancelEditButtonContainer } from "./ProdGridCancelEditButtonContainer";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
-import Colors from "../../../modules/md-colors";
-import { ProdGridEditButtonContainer } from "./ProdGridEditButtonContainer";
+import Colors from "@/modules/md-colors";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { ProdGridCancelChangesButtonContainer } from "./ProdGridCancelChangesButtonContainer";
+import { ProdGridCancelEditButtonContainer } from "./ProdGridCancelEditButtonContainer";
+import { ProdGridEditButtonContainer } from "./ProdGridEditButtonContainer";
+import { ProdGridSaveButtonContainer } from "./ProdGridSaveButtonContainer";
 
 const ProdGridToolbar = memo(
 	forwardRef((props, ref) => {

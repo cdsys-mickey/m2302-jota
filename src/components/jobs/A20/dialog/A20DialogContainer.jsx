@@ -7,6 +7,7 @@ import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import Colors from "@/modules/md-colors";
+import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 
 export const A20DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -65,21 +66,24 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<A20Form
-					ref={ref}
-					onSubmit={forms.handleSubmit(
-						a20.onEditorSubmit,
-						a20.onEditorSubmitError
-					)}
-					editing={a20.editing}
-					updating={a20.updating}
-					readWorking={a20.readWorking}
-					readError={a20.readError}
-					data={a20.itemData}
-					itemDataReady={a20.itemDataReady}
-				/>
+				<FormMetaProvider
+					{...a20.formMeta}>
+					<A20Form
+						ref={ref}
+						onSubmit={forms.handleSubmit(
+							a20.onEditorSubmit,
+							a20.onEditorSubmitError
+						)}
+						editing={a20.editing}
+						updating={a20.updating}
+						readWorking={a20.readWorking}
+						readError={a20.readError}
+						data={a20.itemData}
+						itemDataReady={a20.itemDataReady}
+					/>
+				</FormMetaProvider>
 			</DialogExContainer>
-		</FormProvider>
+		</FormProvider >
 	);
 });
 

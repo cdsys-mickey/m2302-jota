@@ -3,6 +3,8 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import A19 from "@/modules/md-a19";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useAppModule } from "./useAppModule";
+import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
+import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
 
 export const useA19 = () => {
 	const { token, operator } = useContext(AuthContext);
@@ -11,6 +13,22 @@ export const useA19 = () => {
 		token,
 		moduleId: "A19",
 	});
+
+	const formMeta = useFormMeta(
+		`
+		sprod,
+		eprod,
+		sdept,
+		edept,
+		SDate,
+		EDate,
+		dataType,
+		outputType,
+		transIncluded
+		`, {
+		lastField: LastFieldBehavior.PROMPT
+	}
+	)
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -36,6 +54,7 @@ export const useA19 = () => {
 		...appModule,
 		onSubmit,
 		onSubmitError,
+		formMeta
 	};
 };
 [];

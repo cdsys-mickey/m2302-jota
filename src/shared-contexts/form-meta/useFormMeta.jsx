@@ -89,21 +89,23 @@ export const useFormMeta = (value, opts = {}) => {
 						position: "bottom-center",
 					});
 					return;
-				}
-
-				switch (lastField) {
-					case LastFieldBehavior.PROMPT:
-						toast.warn(
-							forward ? lastFieldMessage : firstFieldMessage,
-							{
-								position: "bottom-center",
-							}
-						);
-						break;
-					case LastFieldBehavior.BLUR:
-					default:
-						document.activeElement.blur();
-						break;
+				} else if (typeof lastField === "function") {
+					lastField(opts);
+				} else {
+					switch (lastField) {
+						case LastFieldBehavior.PROMPT:
+							toast.warn(
+								forward ? lastFieldMessage : firstFieldMessage,
+								{
+									position: "bottom-center",
+								}
+							);
+							break;
+						case LastFieldBehavior.BLUR:
+						default:
+							document.activeElement.blur();
+							break;
+					}
 				}
 			}
 		},

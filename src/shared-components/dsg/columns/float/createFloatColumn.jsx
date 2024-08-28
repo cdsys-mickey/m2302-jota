@@ -5,7 +5,7 @@ export const createFloatColumn = (fixedDigit = 1, opts) =>
 		alignRight: true,
 		continuousUpdates: false,
 		formatBlurredInput: (value) => {
-			if (value === "" || value === null || value === undefined) {
+			if (value === "" || value == null) {
 				return "";
 			}
 			let number = Number(value);

@@ -16,6 +16,7 @@ export const A01ProdComboGridContainer = (props) => {
 			value={{
 				...a01.comboGrid,
 				...a01.comboMeta,
+				readOnly: !a01.editing
 			}}>
 			<A01ProdComboGrid
 				gridRef={a01.comboMeta.setGridRef}

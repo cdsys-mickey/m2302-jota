@@ -300,7 +300,8 @@ const OptionPicker = memo(
 				console.log("handleEnter", e);
 				const { validate = false, } = opts;
 				// console.log("handleEnter", event);
-				if (!findByInput || _open || (!inFormMeta && !inDSG)) {
+				// if (!findByInput || _open || (!inFormMeta && !inDSG)) {
+				if (_open || (!inFormMeta && !inDSG)) {
 					return;
 				}
 
@@ -313,7 +314,7 @@ const OptionPicker = memo(
 				}
 
 				// dirty check 是為了避免 option label 把 id+name 當作 id
-				if (asyncRef.current.dirty) {
+				if (asyncRef.current.dirty && findByInput) {
 					asyncRef.current.dirty = false;
 					const input = e.target.value;
 					const found = await findByInput(input);
@@ -361,15 +362,19 @@ const OptionPicker = memo(
 				if (!findByInput) {
 					return;
 				}
+				console.log("popperOpen", open);
 				e.preventDefault();
+				// 由於 Column.disableKeys 設為 true 會干擾 tab 運作，
+				// 因此必須防止 arrow down 往下傳遞
+				// e.stopPropagation();
 				_onOpen(e, { override: true });
 			},
-			[_onOpen, findByInput]
+			[_onOpen, findByInput, open]
 		);
 
 		const handleKeyDown = useCallback(
 			(e) => {
-				// console.log("e.key", e.key);
+				console.log("e.key", e.key);
 				switch (e.key) {
 					case "Enter":
 						// 按下 Shift 時必須略過不處理
@@ -393,6 +398,17 @@ const OptionPicker = memo(
 			},
 			[disableEnter, handleArrowDown, handleEnter]
 		);
+
+		const handleAutocompleteKeyDown = useCallback((e) => {
+			// console.log("handleAutocompleteKeyDown", e);
+			switch (e.key) {
+				case "ArrowUp":
+				case "ArrowDown":
+				case "Enter":
+					e.stopPropagation();
+					break;
+			}
+		}, [])
 
 		const handleBlur = useCallback(
 			async (e) => {
@@ -728,6 +744,7 @@ const OptionPicker = memo(
 			return customPaperComponent || Paper;
 		}, [GridHeaderComponent, customPaperComponent]);
 
+
 		useChangeTracking(() => {
 			if (nextCellOrField && value) {
 				nextCellOrField();
@@ -748,6 +765,7 @@ const OptionPicker = memo(
 				width={width}
 				{...BoxProps}>
 				<Autocomplete
+					onKeyDown={handleAutocompleteKeyDown}
 					onChange={handleChange}
 					ref={ref}
 					size={size}

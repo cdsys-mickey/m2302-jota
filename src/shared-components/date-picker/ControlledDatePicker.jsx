@@ -37,17 +37,44 @@ const ControlledDatePicker = ({
 }) => {
 	// console.log("rendering ControlledDatePicker");
 	const { setError, clearErrors } = useFormContext();
-	const { isFieldDisabled, nextField } = useContext(FormMetaContext) || {};
-	const { setFocus } = useFormContext() || {};
+	const { isFieldDisabled, nextField, disableEnter } = useContext(FormMetaContext) || {};
+	// const { setFocus } = useFormContext() || {};
+	const form = useFormContext();
 	const { InputProps, ...opts } = DEFAULT_PROPS;
 
+	const getError = useCallback(
+		async (opts = { debug: false }) => {
+			if (!name) {
+				return;
+			}
+			const result = await form.trigger(name);
+			if (result) {
+				return false;
+			}
+			const fieldState = form.getFieldState(name);
+			if (opts.debug) {
+				console.error(`${name}.fieldState.error`, fieldState.error);
+			}
+			return fieldState.error;
+		},
+		[form, name]
+	);
+
 	const handleKeyDown = useCallback(
-		(e) => {
-			if (e.key === "Enter" || e.key === "Tab") {
+		async (e) => {
+			//if (e.key === "Enter" || e.key === "Tab") {
+			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
+				const error = await getError();
+				if (error) {
+					// 錯誤則不往下傳遞給 DSGGrid
+					// e.stopPropagation();
+					form.setError(name, error);
+					return;
+				}
 				if (nextField) {
 					e.preventDefault();
 					nextField(name, {
-						setFocus,
+						setFocus: form.setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
 						e
@@ -55,7 +82,7 @@ const ControlledDatePicker = ({
 				}
 			}
 		},
-		[nextField, name, setFocus, isFieldDisabled]
+		[disableEnter, getError, nextField, form, name, isFieldDisabled]
 	);
 
 	if (!name) {

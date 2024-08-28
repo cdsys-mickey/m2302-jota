@@ -2,7 +2,7 @@ export const optionPickerColumn = (CellComponent, opts = {}) => {
 	return {
 		component: CellComponent,
 		columnData: opts,
-		disableKeys: true,
+		disableKeys: false,
 		keepFocus: true,
 		deleteValue: ({ rowData }) => {
 			return opts.fullRowData ? {

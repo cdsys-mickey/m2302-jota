@@ -1,10 +1,8 @@
 import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import ProdCatSPickerContainer from "../../../picker/ProdCatSPickerContainer";
-import { useMemo } from "react";
-import Objects from "../../../../shared-modules/sd-objects";
-import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
-import ProdCatSPicker from "../../../picker/ProdCatSPicker";
+import { memo, useRef } from "react";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+import Objects from "@/shared-modules/sd-objects";
+import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -132,6 +130,7 @@ const ProdCatSPickerColumn = memo((props) => {
 
 	return (
 		<ProdCatSPicker
+			name={name}
 			label=""
 			inputRef={ref}
 			// catL={catL}

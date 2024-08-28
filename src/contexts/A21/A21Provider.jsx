@@ -7,7 +7,6 @@ import { AuthContext } from "../auth/AuthContext";
 import StdPrint from "../../modules/md-std-print";
 
 export const A21Provider = ({ children }) => {
-	const a21 = useA21();
 	const { operator } = useContext(AuthContext);
 	const form = useForm({
 		defaultValues: {
@@ -15,19 +14,23 @@ export const A21Provider = ({ children }) => {
 				DeptID: operator.CurDeptID,
 				AbbrName: operator.CurDeptName,
 			},
+			Name: "Y",
+			Tel: "Y",
+			InvAddr: "Y",
+			ToAddr: "Y",
+			SalesID: "Y",
+			InvNo: "Y",
+			DelyNo: "Y",
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},
 	});
+	const a21 = useA21({ form });
 
 	return (
 		<FormProvider {...form}>
 			<A21Context.Provider
 				value={{
 					...a21,
-					handleSubmit: form.handleSubmit(
-						a21.onSubmit,
-						a21.onSubmitError
-					),
 				}}>
 				{children}
 			</A21Context.Provider>

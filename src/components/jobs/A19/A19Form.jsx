@@ -1,20 +1,21 @@
+import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import ControlledDatePicker from "@/shared-components/date-picker/ControlledDatePicker";
+import FlexBox from "@/shared-components/FlexBox";
+import FlexGrid from "@/shared-components/FlexGrid";
+import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexBox from "@/shared-components/FlexBox";
-import FlexGrid from "@/shared-components/FlexGrid";
-import ControlledCheckboxEx from "@/shared-components/checkbox/ControlledCheckboxEx";
-import FormBox from "@/shared-components/form/FormBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import AppDeptPicker from "@/components/fields/AppDeptPicker";
 
-import { A19FormButtonsContainer } from "./buttons/A19FormButtonsContainer";
-import A19DataTypePicker from "./picker/A19DataTypePicker";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import ProdPicker from "../../picker/ProdPicker";
+import A19DataTypePicker from "./picker/A19DataTypePicker";
 
 const A19Form = memo((props) => {
 	const { ...rest } = props;
@@ -22,9 +23,9 @@ const A19Form = memo((props) => {
 		<ContainerEx maxWidth="sm" alignLeft>
 			<form {...rest}>
 				<FormBox pt={1}>
-					<FormSectionBox py={1} px={1}>
+					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={12}>
+							<Grid item xs={12} sm={6}>
 								<ProdPicker
 									name="sprod"
 									label="起始商品編號"
@@ -33,9 +34,11 @@ const A19Form = memo((props) => {
 									// filterByServer
 									// queryRequired
 									typeToSearchText="以編號,條碼或名稱搜尋"
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12}>
+							<Grid item xs={12} sm={6}>
 								<ProdPicker
 									name="eprod"
 									label="截止商品編號"
@@ -44,6 +47,8 @@ const A19Form = memo((props) => {
 									// filterByServer
 									// queryRequired
 									typeToSearchText="以編號,條碼或名稱搜尋"
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							{/* 條碼 */}
@@ -80,6 +85,8 @@ const A19Form = memo((props) => {
 									// filterByOperator
 									label="起始門市"
 									name="sdept"
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -88,17 +95,19 @@ const A19Form = memo((props) => {
 									// filterByOperator
 									label="截止門市"
 									name="edept"
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<ControlledDatePicker
+								<DatePickerWrapper
 									name="SDate"
 									label="起始日期"
 									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<ControlledDatePicker
+								<DatePickerWrapper
 									name="EDate"
 									label="截止日期"
 									fullWidth
@@ -121,7 +130,7 @@ const A19Form = memo((props) => {
 						</Grid>
 						<Grid container>
 							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<ControlledCheckboxEx
+								<CheckboxExWrapper
 									label="含撥出入"
 									name="transIncluded"
 									defaultValue={true}
@@ -129,7 +138,17 @@ const A19Form = memo((props) => {
 							</FlexGrid>
 							<Grid item xs={12} sm={6}>
 								<FlexToolbar align="right">
-									<A19FormButtonsContainer />
+									{/* <A19FormButtonsContainer /> */}
+									<ButtonWrapper
+										name="submit"
+										responsive
+										startIcon={<OpenInNewIcon />}
+										variant="contained"
+										color="primary"
+										type="submit"
+									>
+										執行
+									</ButtonWrapper>
 								</FlexToolbar>
 							</Grid>
 						</Grid>

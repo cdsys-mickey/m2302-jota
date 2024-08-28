@@ -1,40 +1,41 @@
 import ContainerEx from "@/shared-components/ContainerEx";
-import ControlledDatePicker from "@/shared-components/date-picker/ControlledDatePicker";
+import ControlledYesNoCheckbox from "@/shared-components/controlled/ControlledYesNoCheckbox";
+import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import { Box, Grid } from "@mui/material";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ControlledYesNoCheckbox from "@/shared-components/controlled/ControlledYesNoCheckbox";
-import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import AuthDeptPicker from "../../AuthDeptPicker";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { A21FormButtonsContainer } from "./buttons/A21FormButtonsContainer";
-import FormBox from "@/shared-components/form/FormBox";
+import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
 
 const A21Form = memo((props) => {
-	const { ...rest } = props;
+	const { onSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
-			<form {...rest}>
+			<form onSubmit={onSubmit} {...rest}>
 				<FormBox pt={1}>
-					<FormSectionBox py={2} px={1}>
+					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12}>
 								<AuthDeptPicker
 									label="門市編號"
 									required
 									name="dept"
-									// readOnly={true}
+									disableOpenOnInput
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<ControlledDatePicker
+								<DatePickerWrapper
 									name="SDate"
 									label="起始日期"
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<ControlledDatePicker
+								<DatePickerWrapper
 									name="EDate"
 									label="截止日期"
 								/>
@@ -85,7 +86,14 @@ const A21Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12}>
 								<FlexToolbar align="right">
-									<A21FormButtonsContainer />
+									{/* <A21FormButtonsContainer /> */}
+									<ButtonWrapper
+										startIcon={<OpenInNewIcon />}
+										variant="contained"
+										color="primary"
+										onClick={onSubmit}>
+										執行
+									</ButtonWrapper>
 								</FlexToolbar>
 							</Grid>
 						</Grid>
@@ -97,6 +105,7 @@ const A21Form = memo((props) => {
 });
 
 A21Form.propTypes = {
+	onSubmit: PropTypes.func,
 	readWorking: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,

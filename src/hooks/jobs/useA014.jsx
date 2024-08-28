@@ -4,7 +4,6 @@ import { keyColumn } from "react-datasheet-grid";
 import { ProdCatLPickerComponentContainer } from "../../components/dsg/columns/prod-cat-picker/ProdCatLPickerComponentContainer";
 import { ProdCatMPickerComponentContainer } from "../../components/dsg/columns/prod-cat-picker/ProdCatMPickerComponentContainer";
 import { ProdCatSPickerComponentContainer } from "../../components/dsg/columns/prod-cat-picker/ProdCatSPickerComponentContainer";
-import { ProdTypeAPickerComponentContainer } from "../../components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
 import { ProdTypeBPickerComponentContainer } from "../../components/dsg/columns/prod-type-b-picker/ProdTypeBPickerComponentContainer";
 import { TaxTypePickerComponentContainer } from "../../components/dsg/columns/tax-type-picker/TaxTypePickerComponentContainer";
 import A014 from "../../modules/md-a014";
@@ -16,6 +15,7 @@ import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "./useAppModule";
 import { useCallback } from "react";
+import { ProdTypeAPickerComponentContainer } from "../../components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
 
 export const useA014 = () => {
 	const appModule = useAppModule({
@@ -50,7 +50,7 @@ export const useA014 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						hideControlsOnActive: false,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -71,7 +71,7 @@ export const useA014 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						hideControlsOnActive: false,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -94,7 +94,7 @@ export const useA014 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						hideControlsOnActive: false,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -117,7 +117,7 @@ export const useA014 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						hideControlsOnActive: false,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -140,7 +140,7 @@ export const useA014 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						hideControlsOnActive: false,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -163,7 +163,7 @@ export const useA014 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						hideControlsOnActive: false,
 						componentsProps: {
 							paper: {
 								sx: {
@@ -271,6 +271,7 @@ export const useA014 = () => {
 		...appModule,
 		...prodGrid,
 		...grid,
+		grid,
 		...gridMeta,
 		gridMeta,
 		// handleCreateRow,

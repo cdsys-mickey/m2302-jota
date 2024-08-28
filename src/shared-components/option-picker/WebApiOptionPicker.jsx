@@ -4,13 +4,6 @@ import { useWebApiOptions } from "@/shared-hooks/useWebApiOptions";
 import { forwardRef, memo } from "react";
 import OptionPicker from "./OptionPicker";
 
-// const arePropsEqual = (oldProps, newProps) => {
-// 	return Objects.arePropsEqual(oldProps, newProps, {
-// 		fields: "",
-// 		debug: true,
-// 	});
-// };
-
 const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {

@@ -1,4 +1,4 @@
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -9,14 +9,14 @@ import { A22GridFormToggleButtonContainer } from "./A22GridFormToggleButtonConta
 import { A22GridLoadButtonContainer } from "./A22GridLoadButtonContainer";
 
 const A22GridForm = (props) => {
-	const { cat = true, safeQty = false, handleSubmit, ...rest } = props;
+	const { cat = true, safeQty = false, onSubmit, ...rest } = props;
 	return (
-		<Paper component="form" onSubmit={handleSubmit} {...rest}>
+		<Paper component="form" onSubmit={onSubmit} {...rest}>
 			<Box p={1}>
 				<Grid container spacing={1} columns={24}>
 					{/* ROW 1 */}
 
-					<Grid item xs={24} sm={12} md={16} lg={8}>
+					<Grid item xs={24} sm={12} md={16} lg={7}>
 						{/* <OptionPickerProvider> */}
 						<ProdPicker
 							name="prod1"
@@ -27,10 +27,12 @@ const A22GridForm = (props) => {
 							// virtualize
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							optionLabelSize="md"
+							disableOpenOnInput
+							selectOnFocus
 						/>
 						{/* </OptionPickerProvider> */}
 					</Grid>
-					<Grid item xs={24} sm={12} md={16} lg={8}>
+					<Grid item xs={24} sm={12} md={16} lg={7}>
 						<ProdPicker
 							name="prod2"
 							label="截止商品編號"
@@ -39,10 +41,12 @@ const A22GridForm = (props) => {
 							queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							optionLabelSize="md"
+							disableOpenOnInput
+							selectOnFocus
 						/>
 					</Grid>
-					<Grid item lg={2}>
-						<ControlledTextField
+					<Grid item lg={4}>
+						<TextFieldWrapper
 							name="qty"
 							label="張數"
 							type="number"
@@ -56,6 +60,7 @@ const A22GridForm = (props) => {
 						md={16}
 						lg={6}
 						justifyContent="flex-end"
+						alignItems="flex-start"
 						sx={{
 							"& button": {
 								marginLeft: "4px",
@@ -73,7 +78,7 @@ const A22GridForm = (props) => {
 };
 
 A22GridForm.propTypes = {
-	handleSubmit: PropTypes.func,
+	onSubmit: PropTypes.func,
 	cat: PropTypes.bool,
 	safeQty: PropTypes.bool,
 };

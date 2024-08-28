@@ -1,18 +1,15 @@
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import { useCallback, useState } from "react";
-import { toast } from "react-toastify";
 import { useAction } from "@/shared-hooks/useAction";
-import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useToggle } from "@/shared-hooks/useToggle";
+import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
 import Objects from "@/shared-modules/sd-objects";
-import { useContext } from "react";
-import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
-import { useRef } from "react";
-import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
-import { useFormMeta } from "../shared-contexts/form-meta/useFormMeta";
-import { LastFieldBehavior } from "../shared-contexts/form-meta/LastFieldBehavior";
+import { useCallback, useContext, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/auth/AuthContext";
+import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
+import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
+import { LastFieldBehavior } from "../shared-contexts/form-meta/LastFieldBehavior";
+import { useFormMeta } from "../shared-contexts/form-meta/useFormMeta";
 
 export const useProdGrid = ({
 	grid,
@@ -265,7 +262,7 @@ export const useProdGrid = ({
 		load,
 		reload,
 		unload,
-		...grid,
+		// ...grid,
 		// form
 		onSubmit,
 		onSubmitError,

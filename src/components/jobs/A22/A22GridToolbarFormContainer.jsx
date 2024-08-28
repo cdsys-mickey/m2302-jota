@@ -25,24 +25,20 @@ export const A22GridToolbarFormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<form>
-				<FlexBox component={Paper} my={1} py={0.7} px={1}>
+				<FlexBox component={Paper} my={1} py={0.8} px={1}>
 					<Grid container spacing={1}>
-						<Grid item xs={8}>
+						<FlexGrid alignItems="center" item xs={7} >
 							<A22GridLockRowsSwitchContainer />
-						</Grid>
-						<Grid item xs={2}>
-							<A22OutputModePickerContainer />
-							{/* <StdPrintOutputModePicker
-								required
-								name="outputType"
-								label="執行方式" 
-							/>*/}
-						</Grid>
+						</FlexGrid>
+
 						<FlexGrid
 							item
-							xs={2}
+							xs={5}
 							alignItems="center"
 							justifyContent="flex-end">
+							<Box mr={0.5}>
+								<A22OutputModePickerContainer dense width="8rem" />
+							</Box>
 							<A22GenReportButtonContainer />
 							<Box ml={0.5}>
 								<A22GridCancelEditButtonContainer />

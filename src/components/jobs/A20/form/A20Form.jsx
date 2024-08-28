@@ -7,11 +7,11 @@ import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { PackageTypeLabelContainer } from "./fields/PackageTypeLabelContainer";
-import { ProdMaterialsGridContainer } from "./prods/ProdMaterialsGridContainer";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
+import { A20ProdMaterialsGridContainer } from "./prods/A20ProdMaterialsGridContainer";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import ProdPicker from "../../../picker/ProdPicker";
 
 const A20Form = memo((props) => {
@@ -40,8 +40,9 @@ const A20Form = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionTitle>關連貨品基本資料</FormSectionTitle>
-					<FormSectionBox py={editing ? 2 : 1} mb={2} px={1}>
-						<Grid container columns={12} spacing={editing ? 2 : 1}>
+					{/* <FormSectionBox pt={editing ? 1.5 : 0.5} pb={editing ? 0 : 1} mb={2} px={1}> */}
+					<FormSectionBox editing={editing}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<ProdPicker
 									typo
@@ -53,6 +54,8 @@ const A20Form = memo((props) => {
 									withBomPackageName
 									rules={{ required: "對應貨品為必填" }}
 									readOnly={updating}
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={2}>
@@ -73,12 +76,11 @@ const A20Form = memo((props) => {
 									{data?.PackData_N}
 								</PackageTypeLabelContainer>
 							</Grid>
-							<FlexBox fullWidth />
 						</Grid>
 					</FormSectionBox>
 					<FormSectionBox p={1} pt={0} mb={2}>
 						<FormSectionTitle>原物料</FormSectionTitle>
-						<ProdMaterialsGridContainer />
+						<A20ProdMaterialsGridContainer />
 					</FormSectionBox>
 				</FormBox>
 			)}

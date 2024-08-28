@@ -58,7 +58,8 @@ const ProdTypeAPickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled
 	});
 
 	const cellComponentRef = useRef({

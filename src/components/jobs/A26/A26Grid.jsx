@@ -1,21 +1,16 @@
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import Styles from "@/modules/md-styles";
 import LoadingBackdrop from "@/shared-components/LoadingBackdrop";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { Box, Container, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
-} from "react-datasheet-grid";
-import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import ContainerEx from "../../../shared-components/ContainerEx";
+import ContainerEx from "@/shared-components/ContainerEx";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW"].includes(item.type),
+	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
 const A26Grid = memo((props) => {
@@ -39,39 +34,7 @@ const A26Grid = memo((props) => {
 		[drawerOpen, theme]
 	);
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"CodeID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 70,
-				title: "代碼",
-				disabled: isPersisted,
-			},
-			{
-				...keyColumn(
-					"CodeData",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "佣金類別",
-				grow: 5,
-				disabled: lockRows,
-			},
-			{
-				...keyColumn("Other1", createFloatColumn(1)),
-				title: "佣金比例",
-				minWidth: 120,
-				disabled: lockRows,
-			},
-		],
-		[isPersisted, lockRows]
-	);
+
 
 	const gridHeight = useMemo(() => {
 		return height + (lockRows || !canCreate ? 48 : 0);
@@ -95,7 +58,7 @@ const A26Grid = memo((props) => {
 			<LoadingBackdrop open={loading} />
 			{/* <Box sx={boxStyles} {...rest}> */}
 			<ContainerEx maxWidth="xs" alignLeft>
-				<DynamicDataSheetGrid
+				<DSGGrid
 					lockRows={lockRows}
 					ref={setGridRef}
 					rowKey="CodeID"
@@ -103,12 +66,12 @@ const A26Grid = memo((props) => {
 					// rowHeight={42}
 					value={data}
 					onChange={onChange}
-					columns={columns}
+					// columns={columns}
 					addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
 					disableExpandSelection
 					contextMenuComponent={ContextMenu}
 					onSelectionChange={onSelectionChange}
-					// autoAddRow
+				// autoAddRow
 				/>
 			</ContainerEx>
 			{/* </Box> */}

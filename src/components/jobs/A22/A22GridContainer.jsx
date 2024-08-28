@@ -5,6 +5,7 @@ import A22Grid from "./A22Grid";
 import { A22Context } from "@/contexts/A22/A22Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { FormProvider, useForm } from "react-hook-form";
+import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
 
 export const A22GridContainer = () => {
 	const { height } = useWindowSize();
@@ -19,20 +20,24 @@ export const A22GridContainer = () => {
 	return (
 		<form>
 			<FormProvider {...form}>
-				<A22Grid
-					readOnly={a22.readOnly}
-					setGridRef={a22.setGridRef}
-					data={a22.gridData}
-					loading={a22.gridLoading}
-					height={gridHeight}
-					// onChange={a22.buildGridChangeHandler({
-					// 	onDelete: a22.handleDeleteRow,
-					// })}
-					onChange={a22.handleGridChange}
-					bearer={token}
-					getRowKey={a22.getRowKey}
-					handleCreateRow={a22.handleCreateRow}
-				/>
+				<DSGContext.Provider value={{
+					...a22.grid,
+					...a22.gridMeta,
+					readOnly: a22.readOnly
+				}}>
+					<A22Grid
+						readOnly={a22.readOnly}
+						gridRef={a22.setGridRef}
+						data={a22.gridData}
+						loading={a22.gridLoading}
+						height={gridHeight}
+						onChange={a22.handleGridChange}
+						onActiveCellChange={a22.handleActiveCellChange}
+						bearer={token}
+						getRowKey={a22.getRowKey}
+						handleCreateRow={a22.handleCreateRow}
+					/>
+				</DSGContext.Provider>
 			</FormProvider>
 		</form>
 	);

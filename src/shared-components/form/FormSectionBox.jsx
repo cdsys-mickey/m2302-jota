@@ -1,31 +1,36 @@
 import { Box, styled } from "@mui/material";
+import Arrays from "../../shared-modules/sd-arrays";
 
 const FormSectionBox = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!``
-			.trim()
-			.split(/\s*,\s*/)
+		!Arrays.parse(`editing`)
 			.includes(prop),
 })(
 	({
 		theme,
 		bgcolor = "rgba(255, 255, 255, 100.0)",
 		borderColor = "rgb(16 160 215)",
-		// borderLeft = "5px solid",
+		editing = false,
+		pt,
+		pb,
+		pl,
+		pr,
+		mb
 	}) => ({
 		backgroundColor: bgcolor,
 		borderRadius: theme.spacing(1),
 		// borderBottom: `1px solid ${borderColor}`,
 		borderLeft: `5px solid ${borderColor}`,
 		boxShadow: "rgba(0, 0, 0, 0.16) 1px 1px 6px",
-		// paddingTop: theme.spacing(1),
-		// paddingBottom: theme.spacing(1),
-		// paddingLeft: theme.spacing(1),
-		// paddingRight: theme.spacing(1),
+		paddingTop: theme.spacing(pt != null ? pt : (editing ? 1.5 : 0.5)),
+		// paddingBottom: theme.spacing(pb != null ? pb : (editing ? 0 : 1)),
+		paddingBottom: theme.spacing(pb != null ? pb : 1),
+		paddingLeft: theme.spacing(pl != null ? pl : 1),
+		paddingRight: theme.spacing(pr != null ? pr : 1),
 		// marginTop: theme.spacing(1),
 		// marginTop: theme.spacing(0),
-		// marginBottom: theme.spacing(2),
+		marginBottom: theme.spacing(mb != null ? mb : 2),
 	})
 );
-
+FormSectionBox.displayName = "FormSectionBox";
 export default FormSectionBox;

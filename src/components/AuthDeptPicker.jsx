@@ -1,10 +1,7 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-import { ControlledWebApiOptionPicker } from "../shared-components/controlled/ControlledWebApiOptionPicker";
-import Depts from "../modules/md-depts";
-import { useContext } from "react";
+import { memo, useCallback, useContext } from "react";
 import { AuthContext } from "../contexts/auth/AuthContext";
-import { useCallback } from "react";
+import Depts from "../modules/md-depts";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const AuthDeptPicker = memo((props) => {
 	const { ...rest } = props;
@@ -15,7 +12,7 @@ const AuthDeptPicker = memo((props) => {
 	}, []);
 
 	return (
-		<ControlledWebApiOptionPicker
+		<OptionPickerWrapper
 			url="v1/auth/depts"
 			getOptionLabel={Depts.getOptionLabel}
 			isOptionEqualToValue={Depts.isOptionEqualToValue}

@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
+import { toast } from "react-toastify";
 
 export const useCellComponent = (props = {}) => {
 	const {
@@ -23,17 +24,26 @@ export const useCellComponent = (props = {}) => {
 			if (next) {
 				setActiveCell(next);
 			} else {
-				switch (lastCell) {
-					case DSGLastCellBehavior.BLUR:
-						setActiveCell(null);
-						break;
-					case DSGLastCellBehavior.CREATE_ROW:
-						insertRowBelow();
-						// setTimeout(() => {
-						// 	toFirstColumn();
-						// }, 50);
-						break;
+				if (typeof lastCell === "string") {
+					toast.error(lastCell, {
+						position: "top-center",
+					});
+				} else if (typeof lastCell === "function") {
+					lastCell(opts);
+				} else {
+					switch (lastCell) {
+						case DSGLastCellBehavior.BLUR:
+							setActiveCell(null);
+							break;
+						case DSGLastCellBehavior.CREATE_ROW:
+							insertRowBelow();
+							// setTimeout(() => {
+							// 	toFirstColumn();
+							// }, 50);
+							break;
+					}
 				}
+
 			}
 		},
 		[getNextCell, insertRowBelow, lastCell, setActiveCell]

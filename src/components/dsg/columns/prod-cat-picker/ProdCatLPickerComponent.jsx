@@ -118,6 +118,7 @@ const ProdCatLPickerComponent = memo((props) => {
 
 	return (
 		<ProdCatLPicker
+			name={name}
 			label=""
 			inputRef={ref}
 			// disabled={disabled}

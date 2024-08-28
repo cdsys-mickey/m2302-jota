@@ -32,6 +32,7 @@ const transformForReading = (data) => {
 					ProdID: v.SProdID,
 					ProdData: v.SProdData_N,
 				},
+				SProdData: v.SProdData_N,
 				// SCost: Number(v.SCost),
 				SProdQty: v.SProdQty,
 				SPackData_N: v.SPackData_N,

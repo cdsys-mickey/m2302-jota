@@ -1,24 +1,25 @@
-import { Box, Grid } from "@mui/material";
+import ContainerEx from "@/shared-components/ContainerEx";
+import FormBox from "@/shared-components/form/FormBox";
+import FormSectionBox from "@/shared-components/form/FormSectionBox";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ContainerEx from "@/shared-components/ContainerEx";
-import ControlledDatePicker from "@/shared-components/date-picker/ControlledDatePicker";
-import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import AppDeptPicker from "../../fields/AppDeptPicker";
-import { RealFilePickerContainer } from "../../picker/RealFilePickerContainer";
-import StdPrintOutputModePicker from "../../std-print/StdPrintOutputModePicker";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import AppDeptPicker from "@/components/fields/AppDeptPicker";
+import { RealFilePicker } from "@/components/picker/RealFilePicker";
+import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import A18ActionPicker from "./picker/A18ActionPicker";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { A18FormButtonsContainer } from "./buttons/A18FormButtonsContainer";
-import FormBox from "@/shared-components/form/FormBox";
 
 const A18Form = memo((props) => {
-	const { ...rest } = props;
+	const { onSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
-			<form {...rest}>
+			<form onSubmit={onSubmit} {...rest}>
 				<FormBox pt={1}>
-					<FormSectionBox py={2} px={1}>
+					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12}>
 								<AppDeptPicker
@@ -26,17 +27,20 @@ const A18Form = memo((props) => {
 									label="查詢門市"
 									required
 									name="dept"
-									// readOnly={true}
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 
 							<Grid item xs={12}>
-								<RealFilePickerContainer
+								<RealFilePicker
 									name="table"
 									label="檔案"
 									// required
 									// name="RealFile"
 									size="small"
+									// disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 
@@ -49,13 +53,13 @@ const A18Form = memo((props) => {
 							</Grid>
 
 							<Grid item xs={12}>
-								<ControlledDatePicker
+								<DatePickerWrapper
 									name="SDate"
 									label="起始日期"
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<ControlledDatePicker
+								<DatePickerWrapper
 									name="EDate"
 									label="截止日期"
 								/>
@@ -65,7 +69,17 @@ const A18Form = memo((props) => {
 							</Grid>
 
 							<FlexToolbar align="right">
-								<A18FormButtonsContainer />
+								{/* <A18FormButtonsContainer /> */}
+								<ButtonWrapper
+									responsive
+									startIcon={<OpenInNewIcon />}
+									variant="contained"
+									color="primary"
+									type="submit"
+								// onClick={a18.handleSubmit}
+								>
+									執行
+								</ButtonWrapper>
 							</FlexToolbar>
 						</Grid>
 					</FormSectionBox>
@@ -76,6 +90,7 @@ const A18Form = memo((props) => {
 });
 
 A18Form.propTypes = {
+	onSubmit: PropTypes.func,
 	readWorking: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,

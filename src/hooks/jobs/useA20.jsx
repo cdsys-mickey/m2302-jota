@@ -9,7 +9,17 @@ import { toast } from "react-toastify";
 import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useInit } from "../../shared-hooks/useInit";
+import { useInit } from "@/shared-hooks/useInit";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
+import { useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
 
 export const useA20 = ({ token }) => {
 	const crud = useContext(CrudContext);
@@ -17,6 +27,9 @@ export const useA20 = ({ token }) => {
 		token,
 		moduleId: "A20",
 	});
+
+
+
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 	const [selectedItem, setSelectedItem] = useState();
@@ -30,10 +43,99 @@ export const useA20 = ({ token }) => {
 	});
 
 	//ProdComboGrid
-	const prodGrid = useDSG({
+	const grid = useDSG({
 		gridId: "prods",
-		keyColumn: "prod.ProdID",
+		keyColumn: "sprod.ProdID",
 	});
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"sprod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "sprod",
+						withBomPackageName: true,
+						selectOnFocus: true,
+						triggerDelay: 300,
+						placeholder: "組合商品",
+						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: true,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 170,
+				maxWidth: 170,
+				disabled: !crud.editing,
+			},
+			{
+				...keyColumn(
+					"SProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "商品名稱",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"SPackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "包裝說明",
+				minWidth: 90,
+				grow: 1,
+				disabled: true,
+			},
+			{
+				...keyColumn("SProdQty", createFloatColumn(2)),
+				title: "標準用量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: !crud.editing,
+			},
+		],
+		[crud.editing]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	});
+
+	const handleLastField = useCallback(() => {
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [gridMeta]);
+
+	const formMeta = useFormMeta(
+		`
+		prod,
+		ProdQty
+		`,
+		{
+			lastField: handleLastField
+		}
+	);
 
 	const confirmReturn = useCallback(() => {
 		dialogs.confirm({
@@ -55,7 +157,7 @@ export const useA20 = ({ token }) => {
 				console.log("payload", payload);
 				if (status.success) {
 					const data = A20.transformForReading(payload);
-					prodGrid.handleGridDataLoaded(data.materials);
+					grid.handleGridDataLoaded(data.materials);
 					crud.doneReading({
 						data,
 					});
@@ -66,7 +168,7 @@ export const useA20 = ({ token }) => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, prodGrid, token]
+		[crud, httpGetAsync, grid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -169,10 +271,10 @@ export const useA20 = ({ token }) => {
 	const onEditorSubmit = useCallback(
 		async (data) => {
 			console.log(`A20.onEditorSubmit()`, data);
-			console.log(`prodGrid.gridData`, prodGrid.gridData);
+			console.log(`grid.gridData`, grid.gridData);
 			const processed = A20.transformForEditorSubmit(
 				data,
-				prodGrid.gridData
+				grid.gridData
 			);
 			console.log(`processed`, processed);
 			if (crud.creating) {
@@ -188,7 +290,7 @@ export const useA20 = ({ token }) => {
 			crud.updating,
 			handleCreate,
 			handleUpdate,
-			prodGrid.gridData,
+			grid.gridData,
 		]
 	);
 
@@ -210,14 +312,14 @@ export const useA20 = ({ token }) => {
 		(e) => {
 			e?.stopPropagation();
 			const data = {
-				materials: prodGrid.fillRows({ createRow }),
+				materials: grid.fillRows({ createRow }),
 			};
 			crud.promptCreating({
 				data,
 			});
-			prodGrid.handleGridDataLoaded(data.materials);
+			grid.handleGridDataLoaded(data.materials);
 		},
-		[createRow, crud, prodGrid]
+		[createRow, crud, grid]
 	);
 
 	const confirmDelete = useCallback(() => {
@@ -233,7 +335,7 @@ export const useA20 = ({ token }) => {
 					crud.cancelAction();
 					if (status.success) {
 						toast.success(
-							`成功删除 ${crud.itemData?.prod?.ProdID} ${crud.itemData?.prod?.ProdData}`
+							`成功删除 BOM ${crud.itemData?.prod?.ProdID} ${crud.itemData?.prod?.ProdData}`
 						);
 						loader.loadList({ refresh: true });
 					} else {
@@ -268,32 +370,68 @@ export const useA20 = ({ token }) => {
 		return rowData?.prod?.ProdID || rowIndex;
 	}, []);
 
+	const handleGridProdChange = useCallback(({ rowData }) => {
+		const { sprod } = rowData;
+		return {
+			...rowData,
+			["SProdData"]: sprod?.ProdData || "",
+			["SPackData_N"]: sprod?.PackData_N || "",
+			["SProdQty"]: ""
+		};
+	}, []);
+
+
 	const handleGridChange = useCallback(
 		(newValue, operations) => {
 			const newGridData = [...newValue];
+			let checkFailed = false;
 			for (const operation of operations) {
 				if (operation.type === "UPDATE") {
+					console.log("dsg.UPDATE");
 					newValue
 						.slice(operation.fromRowIndex, operation.toRowIndex)
 						.forEach((rowData, i) => {
-							const { sprod } = rowData;
 							const rowIndex = operation.fromRowIndex + i;
-							const ogRowData = prodGrid.gridData[rowIndex];
-							const { sprod: ogProd } = ogRowData;
-							if (sprod?.ProdID !== ogProd?.ProdID) {
-								console.log(`prod[${rowIndex}] changed`, sprod);
+							const ogRowData = grid.gridData[rowIndex];
+							let processedRowData = { ...rowData };
 
-								newGridData[rowIndex] = {
-									...rowData,
-									["SPackData_N"]: sprod?.PackData_N || "",
-								};
+							if (rowData?.sprod?.ProdID !== ogRowData?.sprod?.ProdID) {
+								console.log(`prod[${rowIndex}] changed`, rowData?.sprod);
+
+								processedRowData = handleGridProdChange({
+									rowData: processedRowData,
+								});
+
+								if (
+									rowData.sprod &&
+									grid.isDuplicating(rowData, newValue)
+								) {
+									toast.error(
+										`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`,
+										{ position: "top-center" }
+									);
+									setTimeout(() => {
+										gridMeta.setActiveCell({
+											col: 0,
+											row: rowIndex,
+										});
+									});
+									checkFailed = true;
+								}
 							}
+							newGridData[rowIndex] = processedRowData;
 						});
+				} else if (operation.type === "CREATE") {
+					console.log("dsg.CREATE");
+					// process CREATE here
+					gridMeta.toFirstColumn({ nextRow: true });
 				}
 			}
-			prodGrid.setGridData(newGridData);
+			if (!checkFailed) {
+				grid.setGridData(newGridData);
+			}
 		},
-		[prodGrid]
+		[grid, gridMeta, handleGridProdChange]
 	);
 
 	useInit(() => {
@@ -316,12 +454,15 @@ export const useA20 = ({ token }) => {
 		// CRUD overrides
 		promptCreating,
 		confirmDelete,
-		// prodGrid
-		setGridRef: prodGrid.setGridRef,
-		gridData: prodGrid.gridData,
+		// grid
+		setGridRef: grid.setGridRef,
+		gridData: grid.gridData,
 		handleGridChange,
 		getRowKey,
 		...appModule,
 		createRow,
+		formMeta,
+		grid,
+		gridMeta
 	};
 };

@@ -1,7 +1,8 @@
 import { createTextColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "../text/createTextColumnEx";
 
 export const createIntColumn = () =>
-	createTextColumn({
+	createTextColumnEx({
 		alignRight: true,
 		continuousUpdates: false,
 		formatBlurredInput: (value) => {

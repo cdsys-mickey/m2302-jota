@@ -90,12 +90,8 @@ const A01Form = memo((props) => {
 						<TabPanel
 							value={A01.Tabs.INFO}
 							sx={[scrollable.scroller]}>
-							{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
-							<FormSectionBox
-								pt={editing ? 1.5 : 1}
-								pb={1}
-								mb={1}
-								px={1}>
+							<FormSectionTitle>品名及規格</FormSectionTitle>
+							<FormSectionBox editing={editing}>
 								<Grid
 									container
 									columns={12}
@@ -160,11 +156,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>分類</FormSectionTitle>
-							<FormSectionBox
-								pt={editing ? 1.5 : 1}
-								pb={1}
-								mb={1}
-								px={1}>
+							<FormSectionBox editing={editing}>
 								<Grid
 									container
 									columns={12}
@@ -196,11 +188,7 @@ const A01Form = memo((props) => {
 								</Grid>
 							</FormSectionBox>
 							<FormSectionTitle>成本</FormSectionTitle>
-							<FormSectionBox
-								pt={editing ? 1.5 : 1}
-								pb={1}
-								mb={1}
-								px={1}>
+							<FormSectionBox editing={editing}>
 								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={3}>
 										<ProdTypeAPicker
@@ -283,11 +271,7 @@ const A01Form = memo((props) => {
 								</Grid>
 							</FormSectionBox>
 							<FormSectionTitle>安全存量</FormSectionTitle>
-							<FormSectionBox
-								pt={editing ? 1.5 : 1}
-								pb={1}
-								mb={1}
-								px={1}>
+							<FormSectionBox editing={editing}>
 								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
@@ -365,11 +349,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>換算率</FormSectionTitle>
-							<FormSectionBox
-								pt={editing ? 1.5 : 1}
-								pb={1}
-								mb={1}
-								px={1}>
+							<FormSectionBox editing={editing}>
 								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
@@ -402,11 +382,7 @@ const A01Form = memo((props) => {
 							</FormSectionBox>
 
 							<FormSectionTitle>售價</FormSectionTitle>
-							<FormSectionBox
-								pt={editing ? 1.5 : 1}
-								pb={1}
-								mb={1}
-								px={1}>
+							<FormSectionBox editing={editing}>
 								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={12} md={2}>
 										<TextFieldWrapper

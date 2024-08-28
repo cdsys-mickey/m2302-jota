@@ -1,41 +1,22 @@
-import PropTypes from "prop-types";
-import { forwardRef } from "react";
-import { ControlledOptionPicker } from "@/shared-components/option-picker/ControlledOptionPicker";
-import OptionPicker from "@/shared-components/option-picker/OptionPicker";
-import { memo } from "react";
 import TxtExport from "@/modules/md-txt-export";
+import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const TxtExportOutputModePicker = memo(
 	forwardRef((props, ref) => {
-		const { name, readOnly = false, label = "輸出格式", ...rest } = props;
+		const { label = "輸出格式", ...rest } = props;
 
-		if (name) {
-			return (
-				<ControlledOptionPicker
-					name={name}
-					readOnly={readOnly}
-					label={label}
-					options={TxtExport.options}
-					getOptionLabel={TxtExport.getOptionLabel}
-					isOptionEqualToValue={TxtExport.isOptionEqualToValue}
-					disableClearable
-					{...rest}
-				/>
-			);
-		} else {
-			return (
-				<OptionPicker
-					readOnly={readOnly}
-					ref={ref}
-					label={label}
-					options={TxtExport.options}
-					getOptionLabel={TxtExport.getOptionLabel}
-					isOptionEqualToValue={TxtExport.isOptionEqualToValue}
-					disableClearable
-					{...rest}
-				/>
-			);
-		}
+		return (
+			<OptionPickerWrapper
+				label={label}
+				options={TxtExport.options}
+				getOptionLabel={TxtExport.getOptionLabel}
+				isOptionEqualToValue={TxtExport.isOptionEqualToValue}
+				disableClearable
+				{...rest}
+			/>
+		);
 	})
 );
 

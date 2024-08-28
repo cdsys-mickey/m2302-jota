@@ -309,14 +309,7 @@ export const useWebApiOptions = (opts = {}) => {
 				}, triggerDelay);
 			}
 		},
-		[
-			clearOptions,
-			filterByServer,
-			loadOptions,
-			popperOpen,
-			triggerDelay,
-			triggerServerFilter,
-		]
+		[clearOptions, disableOpenOnInput, filterByServer, loadOptions, popperOpen, triggerDelay, triggerServerFilter]
 	);
 
 	const disabled = useMemo(() => {
@@ -330,8 +323,7 @@ export const useWebApiOptions = (opts = {}) => {
 	useChangeTracking(() => {
 		if (debug) {
 			console.log(
-				`url changed: ${url}${
-					querystring ? " " + querystring : ""
+				`url changed: ${url}${querystring ? " " + querystring : ""
 				}, params:`,
 				params
 			);

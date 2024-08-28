@@ -1,27 +1,32 @@
 import { useContext } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import A22GridForm from "./A22GridForm";
 import { A22Context } from "@/contexts/A22/A22Context";
+import { useMemo } from "react";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const A22GridFormContainer = (props) => {
 	const { ...rest } = props;
-	const form = useForm({
-		defaultValues: {
-			qty: "1",
-		},
-	});
+
 	const a22 = useContext(A22Context);
+	const form = useFormContext();
+
+	const onSubmit = useMemo(() => {
+		return form.handleSubmit(
+			a22.onSubmit,
+			a22.onSubmitError
+		)
+	}, [a22.onSubmit, a22.onSubmitError, form]);
 
 	return (
-		<FormProvider {...form}>
+		// <FormProvider {...form}>
+		<FormMetaProvider {...a22.formMeta}>
 			<A22GridForm
-				handleSubmit={form.handleSubmit(
-					a22.onSubmit,
-					a22.onSubmitError
-				)}
+				onSubmit={onSubmit}
 				{...rest}
 			/>
-		</FormProvider>
+		</FormMetaProvider>
+		// </FormProvider>
 	);
 };
 

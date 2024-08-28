@@ -5,6 +5,7 @@ import useDebounce from "@/shared-hooks/useDebounce";
 import Objects from "@/shared-modules/sd-objects";
 import { A22Context } from "@/contexts/A22/A22Context";
 import { useState } from "react";
+import { Tooltip } from "@mui/material";
 
 export const A22GridLoadButtonContainer = () => {
 	const criteria = useWatch();
@@ -39,8 +40,8 @@ export const A22GridLoadButtonContainer = () => {
 		return Objects.isAllPropsEmpty(criteria, "prod1,prod2,catL,catM,catS")
 			? "請先輸入篩選條件"
 			: totalElements
-			? `讀取(符合${totalElements}筆)`
-			: "(查無相符商品)";
+				? `讀取(符合${totalElements}筆)`
+				: "(查無相符商品)";
 	}, [criteria, totalElements]);
 
 	const disabled = useMemo(() => {
@@ -53,21 +54,23 @@ export const A22GridLoadButtonContainer = () => {
 	// }, [a22, getValues]);
 
 	return (
-		<LoadingButton
-			type="submit"
-			variant="contained"
-			color="warning"
-			disabled={disabled}
-			size="small"
-			loading={loading}
-			sx={{
-				fontWeight: 600,
-			}}
+		<Tooltip title="shift-Enter">
+			<LoadingButton
+				type="submit"
+				variant="contained"
+				color="warning"
+				disabled={disabled}
+				size="small"
+				loading={loading}
+				sx={{
+					fontWeight: 600,
+				}}
 			// fullWidth
 			// onClick={handleClick}
-		>
-			{buttonText}
-		</LoadingButton>
+			>
+				{buttonText}
+			</LoadingButton>
+		</Tooltip>
 	);
 };
 

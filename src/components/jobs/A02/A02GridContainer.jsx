@@ -25,10 +25,11 @@ const A02GridContainer = () => {
 	return (
 		<DSGContext.Provider
 			value={{
+				...a02.grid,
 				...a02.gridMeta,
 			}}>
 			<A02Grid
-				columns={a02.gridMeta.columns}
+				// columns={a02.gridMeta.columns}
 				lockRows={a02.grid.readOnly}
 				gridRef={a02.gridMeta.setGridRef}
 				data={a02.grid.gridData}

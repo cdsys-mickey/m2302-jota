@@ -1,12 +1,10 @@
 import {
 	Checkbox,
 	FormControlLabel,
-	FormGroup,
-	FormHelperText,
+	FormHelperText
 } from "@mui/material";
-import { forwardRef } from "react";
-import { memo } from "react";
 import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
 
 const CheckboxEx = memo(
 	forwardRef((props, ref) => {
