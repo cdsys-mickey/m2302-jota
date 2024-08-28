@@ -23,7 +23,7 @@ const isOptionEqualToValue = (option, value) => {
 };
 
 const findById = (id) => {
-	return options.find((o) => o.id === id);
+	return options.find((o) => String(o.id) === String(id));
 };
 
 const transformForSearchSubmitting = (payload) => {

@@ -7,6 +7,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	TextField,
+	Tooltip,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import {
@@ -86,6 +87,8 @@ const DialogEx = memo(
 			defaultPromptValue = "",
 			promptTextFieldProps,
 			onSubmit,
+			confirmTooltip = "",
+			cancelTooltip = "",
 			...rest
 		} = props;
 
@@ -262,29 +265,33 @@ const DialogEx = memo(
 							<OtherActionButtonsComponent />
 						)}
 						{showConfirmButton && (
-							<ButtonWrapper
-								responsive
-								onClick={handleConfirm}
-								loading={working}
-								{...(!prompt && {
-									autoFocus: true,
-								})}
-								// autoFocus
-								{...buttonProps}
-								{...confirmButtonProps}>
-								{confirmText}
-							</ButtonWrapper>
+							<Tooltip title={confirmTooltip}>
+								<ButtonWrapper
+									responsive
+									onClick={handleConfirm}
+									loading={working}
+									{...(!prompt && {
+										autoFocus: true,
+									})}
+									// autoFocus
+									{...buttonProps}
+									{...confirmButtonProps}>
+									{confirmText}
+								</ButtonWrapper>
+							</Tooltip>
 						)}
 						{onCancel && (
-							<ButtonWrapper
-								responsive
-								color="primary"
-								// onClick={onCancel}
-								onClick={handleCancel}
-								{...buttonProps}
-								{...cancelButtonProps}>
-								{cancelText}
-							</ButtonWrapper>
+							<Tooltip title={cancelTooltip}>
+								<ButtonWrapper
+									responsive
+									color="primary"
+									// onClick={onCancel}
+									onClick={handleCancel}
+									{...buttonProps}
+									{...cancelButtonProps}>
+									{cancelText}
+								</ButtonWrapper>
+							</Tooltip>
 						)}
 					</DialogActions>
 				)}
@@ -338,6 +345,8 @@ DialogEx.propTypes = {
 	dense: PropTypes.bool,
 	hideCloseButton: PropTypes.bool,
 	triggerCancelOnClose: PropTypes.bool,
+	confirmTooltip: PropTypes.string,
+	cancelTooltip: PropTypes.string,
 };
 
 export default DialogEx;

@@ -5,7 +5,7 @@ import A22Grid from "./A22Grid";
 import { A22Context } from "@/contexts/A22/A22Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { FormProvider, useForm } from "react-hook-form";
-import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 export const A22GridContainer = () => {
 	const { height } = useWindowSize();

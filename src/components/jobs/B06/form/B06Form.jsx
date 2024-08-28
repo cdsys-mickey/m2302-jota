@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import { memo } from "react";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
-import { SupplierPickerContainer } from "@/components/picker/SupplierPickerContainer";
+import SupplierPicker from "@/components/picker/SupplierPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import { B06SearchButtonContainer } from "./B06SearchButtonContainer";
 import FlexGrid from "@/shared-components/FlexGrid";
@@ -35,21 +35,39 @@ const B06Form = memo((props) => {
 					<Grid container columns={24} spacing={1}>
 						<Grid item xs={24} sm={7}>
 							<OptionPickerProvider>
-								<SupplierPickerContainer
+								<SupplierPicker
 									label="廠商代碼起"
 									name="supplier"
 									virtualize
 									optionLabelSize="md"
+									disableOpenOnInput
+									selectOnFocus
+									componentsProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</OptionPickerProvider>
 						</Grid>
 						<Grid item xs={24} sm={7}>
 							<OptionPickerProvider>
-								<SupplierPickerContainer
+								<SupplierPicker
 									label="廠商代碼迄"
 									name="supplier2"
 									virtualize
 									optionLabelSize="md"
+									disableOpenOnInput
+									selectOnFocus
+									componentsProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</OptionPickerProvider>
 						</Grid>
@@ -77,6 +95,15 @@ const B06Form = memo((props) => {
 									virtualize
 									optionLabelSize="md"
 									typeToSearchText="以編號,條碼或名稱搜尋"
+									disableOpenOnInput
+									selectOnFocus
+									componentsProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</OptionPickerProvider>
 						</Grid>
@@ -89,12 +116,23 @@ const B06Form = memo((props) => {
 									virtualize
 									optionLabelSize="md"
 									typeToSearchText="以編號,條碼或名稱搜尋"
+									disableOpenOnInput
+									selectOnFocus
+									componentsProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</OptionPickerProvider>
 						</Grid>
 
 						<Grid item xs={24} sm={5}>
-							<B06OrderByPicker name="orderBy" label="排序" />
+							<B06OrderByPicker name="orderBy" label="排序"
+								disableOpenOnInput
+								selectOnFocus />
 						</Grid>
 						<FlexGrid
 							item

@@ -1,7 +1,6 @@
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import B06 from "@/modules/md-b06";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { forwardRef, memo } from "react";
 
 export const B06OrderByPicker = memo(
 	forwardRef((props, ref) => {
@@ -13,6 +12,8 @@ export const B06OrderByPicker = memo(
 				getOptionLabel={B06.getOptionLabel}
 				isOptionEqualToValue={B06.isOptionEqualToValue}
 				defaultValue={B06.findById(B06.OrderBy.PROD)}
+				findByInput={B06.findById}
+				notFoundText="排序 ${id} 不存在"
 				{...rest}
 			/>
 		);

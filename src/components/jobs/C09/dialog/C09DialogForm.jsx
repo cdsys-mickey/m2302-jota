@@ -1,4 +1,4 @@
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
@@ -102,7 +102,7 @@ const C09DialogForm = memo((props) => {
 									required: "撥出門市為必填",
 								}}
 								onChange={handleTxoDeptChanged}
-								// disabled={txoDeptDisabled}
+							// disabled={txoDeptDisabled}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={7}>

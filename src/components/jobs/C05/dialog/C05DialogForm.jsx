@@ -1,5 +1,5 @@
 import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
@@ -131,9 +131,9 @@ const C05DialogForm = memo((props) => {
 								name="Uniform"
 								label="統編"
 								fullWidth
-								// value={data?.FactData}
-								// required
-								// disabled={supplierNameDisabled}
+							// value={data?.FactData}
+							// required
+							// disabled={supplierNameDisabled}
 							/>
 						</Grid>
 						<FlexBox fullWidth />
@@ -142,7 +142,7 @@ const C05DialogForm = memo((props) => {
 							xs={4}
 							sm={4}
 							md={3}
-							// justifyContent="center"
+						// justifyContent="center"
 						>
 							<TaxExcludedCheckbox
 								typo
@@ -165,9 +165,9 @@ const C05DialogForm = memo((props) => {
 								name="FactAddr"
 								label="地址"
 								fullWidth
-								// value={data?.FactData}
-								// required
-								// disabled={supplierNameDisabled}
+							// value={data?.FactData}
+							// required
+							// disabled={supplierNameDisabled}
 							/>
 						</Grid>
 					</Grid>

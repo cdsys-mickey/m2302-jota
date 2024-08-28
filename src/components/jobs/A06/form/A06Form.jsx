@@ -12,7 +12,7 @@ import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import TaxExcludedCheckbox from "../../../checkbox/TaxExcludedCheckbox";
 import BankPicker from "../../../fields/BankPicker";
-import { EmployeePicker } from "../../../picker/EmployeePicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import AreaPicker from "./fields/AreaPicker";
 import ChannelPicker from "./fields/ChannelPicker";
 import PaymentPicker from "./fields/PaymentPicker";

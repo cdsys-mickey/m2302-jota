@@ -1,4 +1,4 @@
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import C06 from "@/modules/md-c06";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";

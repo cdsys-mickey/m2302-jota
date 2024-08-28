@@ -354,7 +354,7 @@ export const useDSGCodeEditor = ({
 				operation.toRowIndex
 			);
 
-			if (onDelete) {
+			if (onDelete && rows && rows.length > 0) {
 				onDelete(rows, { onDeleted });
 			} else {
 				grid.setGridData(newValue);

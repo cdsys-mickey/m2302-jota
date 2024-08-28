@@ -14,7 +14,6 @@ const A26GridContainer = () => {
 			onCreate: a26.handleCreate,
 			onUpdate: a26.handleUpdate,
 			onDelete: a26.canDelete ? a26.handleConfirmDelete : null,
-			// onConfirmDelete: handleConfirmDelete,
 			onDuplicatedError: a26.handleDuplicatedError,
 		})
 	}, [a26]);

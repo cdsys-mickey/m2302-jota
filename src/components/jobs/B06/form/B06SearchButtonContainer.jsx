@@ -1,7 +1,6 @@
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import { useContext } from "react";
-import { B06Context } from "../../../../contexts/B06/B06Context";
-import { useFormContext } from "react-hook-form";
+import { B06Context } from "@/contexts/B06/B06Context";
 
 export const B06SearchButtonContainer = (props) => {
 	const { ...rest } = props;

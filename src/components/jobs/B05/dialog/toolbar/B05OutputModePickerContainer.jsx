@@ -19,11 +19,12 @@ export const B05OutputModePickerContainer = memo(
 			<StdPrintOutputModePicker
 				ref={ref}
 				defaultValue={StdPrint.findById(StdPrint.OutputModes.HTML)}
-				width="9rem"
+				width="8rem"
 				required
 				name="outputType"
 				label=""
 				dense
+				disableClearable
 				{...rest}
 			/>
 		);

@@ -2,9 +2,9 @@ import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 
-import B05ImportProdsDialogContainer from "./B05ImportProdsDialogContainer";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import SearchIcon from "@mui/icons-material/Search";
-import { ButtonWrapper } from "../../../../../shared-components/button/ButtonWrapper";
+import B05ImportProdsDialogContainer from "./B05ImportProdsDialogContainer";
 
 const B05DialogEditToolbar = memo(
 	forwardRef((props, ref) => {

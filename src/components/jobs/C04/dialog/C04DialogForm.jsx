@@ -1,5 +1,5 @@
 import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
 import { PurchaseOrderPicker } from "@/components/purchase-order-picker/PurchaseOrderPicker";
 import FlexBox from "@/shared-components/FlexBox";
@@ -132,9 +132,9 @@ const C04DialogForm = memo((props) => {
 								name="Uniform"
 								label="統編"
 								fullWidth
-								// value={data?.FactData}
-								// required
-								// disabled={supplierNameDisabled}
+							// value={data?.FactData}
+							// required
+							// disabled={supplierNameDisabled}
 							/>
 						</Grid>
 						<FlexBox fullWidth />
@@ -143,7 +143,7 @@ const C04DialogForm = memo((props) => {
 							xs={4}
 							sm={4}
 							md={3}
-							// justifyContent="center"
+						// justifyContent="center"
 						>
 							<TaxExcludedCheckbox
 								typo
@@ -158,7 +158,7 @@ const C04DialogForm = memo((props) => {
 								name="InvNo"
 								label="發票號碼"
 								fullWidth
-								// required
+							// required
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={7}>
@@ -167,9 +167,9 @@ const C04DialogForm = memo((props) => {
 								name="FactAddr"
 								label="地址"
 								fullWidth
-								// value={data?.FactData}
-								// required
-								// disabled={supplierNameDisabled}
+							// value={data?.FactData}
+							// required
+							// disabled={supplierNameDisabled}
 							/>
 						</Grid>
 

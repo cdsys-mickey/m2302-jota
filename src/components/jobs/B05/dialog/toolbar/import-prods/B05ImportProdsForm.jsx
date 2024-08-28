@@ -4,10 +4,10 @@ import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ProdPicker from "../../../../../picker/ProdPicker";
+import ProdPicker from "@/components/picker/ProdPicker";
 import { B05ImportProdsButtonContainer } from "./B05ImportProdsButtonContainer";
 
 const B05LoadProdsForm = memo((props) => {
@@ -15,17 +15,20 @@ const B05LoadProdsForm = memo((props) => {
 	return (
 		<form onSubmit={handleSubmit} {...rest}>
 			<Box pt={1}>
-				<Grid container spacing={2}>
+				<Grid container spacing={1}>
 					<Grid item xs={6}>
 						<ProdPicker
 							name="sprod"
 							label="起始商品編號"
 							size="small"
 							virtualize
+							autoFocus
 							// filterByServer
 							// queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							optionLabelSize="md"
+							disableOpenOnInput
+							selectOnFocus
 						/>
 					</Grid>
 					<Grid item xs={6}>
@@ -38,27 +41,37 @@ const B05LoadProdsForm = memo((props) => {
 							// queryRequired
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							optionLabelSize="md"
+							disableOpenOnInput
+							selectOnFocus
 						/>
 					</Grid>
 					<Grid item xs={12} sm={12} md={6}>
-						<ProdTypeAPicker name="typeA" />
+						<ProdTypeAPicker name="typeA"
+							disableOpenOnInput
+							selectOnFocus />
 					</Grid>
 					<FlexBox fullWidth />
-					<Grid item xs={12} sm={12} md={4}>
-						<ProdCatLPicker name="catL" />
+					<Grid item xs={12} sm={12} md={6}>
+						<ProdCatLPicker name="catL"
+							disableOpenOnInput
+							selectOnFocus />
 					</Grid>
-					<Grid item xs={12} sm={12} md={4}>
-						<ProdCatMPicker name="catM" />
+					<Grid item xs={12} sm={12} md={6}>
+						<ProdCatMPicker name="catM" disableOpenOnInput
+							selectOnFocus />
 					</Grid>
-					<Grid item xs={12} sm={12} md={4}>
-						<ProdCatSPicker name="catS" />
+					<Grid item xs={12} sm={12} md={6}>
+						<ProdCatSPicker name="catS" disableOpenOnInput
+							selectOnFocus />
 					</Grid>
 				</Grid>
 				<FlexToolbar align="right">
-					<B05ImportProdsButtonContainer
-						variant="contained"
-						color="primary"
-					/>
+					<Tooltip title="shift+Enter">
+						<B05ImportProdsButtonContainer
+							variant="contained"
+							color="primary"
+						/>
+					</Tooltip>
 				</FlexToolbar>
 			</Box>
 		</form>

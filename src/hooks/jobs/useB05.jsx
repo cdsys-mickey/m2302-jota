@@ -1,20 +1,29 @@
 import { useContext } from "react";
 import { useCallback, useState } from "react";
-import CrudContext from "../../contexts/crud/CrudContext";
-import { AuthContext } from "../../contexts/auth/AuthContext";
+import CrudContext from "@/contexts/crud/CrudContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useAppModule } from "./useAppModule";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useAction } from "../../shared-hooks/useAction";
+import { useAction } from "@/shared-hooks/useAction";
 import { useRef } from "react";
-import B05 from "../../modules/md-b05";
-import Errors from "../../shared-modules/sd-errors";
+import B05 from "@/modules/md-b05";
+import Errors from "@/shared-modules/sd-errors";
 import { toast } from "react-toastify";
-import Objects from "../../shared-modules/sd-objects";
-import useHttpPost from "../../shared-hooks/useHttpPost";
+import Objects from "@/shared-modules/sd-objects";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import { nanoid } from "nanoid";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 export const useB05 = () => {
 	const crud = useContext(CrudContext);
@@ -44,10 +53,84 @@ export const useB05 = () => {
 		initialFetchSize: 50,
 	});
 
-	const quoteGrid = useDSG({
+	const grid = useDSG({
 		gridId: "quotes",
 		keyColumn: "pkey",
 	});
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						selectOnFocus: true,
+						triggerDelay: 300,
+						placeholder: "商品",
+						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: true,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 170,
+				maxWidth: 170,
+				disabled: !crud.editing,
+			},
+			{
+				...keyColumn(
+					"SProdData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"SPackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "包裝說明",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: true,
+			},
+			{
+				...keyColumn("SPrice", createFloatColumn(2)),
+				title: "廠商報價",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: !crud.editing,
+			},
+		],
+		[crud.editing]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
 
 	const createRow = useCallback(
 		() => ({
@@ -65,8 +148,8 @@ export const useB05 = () => {
 			quotes: [],
 		};
 		crud.promptCreating({ data });
-		quoteGrid.initGridData(data.quotes, { createRow });
-	}, [createRow, crud, quoteGrid]);
+		grid.initGridData(data.quotes, { createRow });
+	}, [createRow, crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -117,7 +200,7 @@ export const useB05 = () => {
 					});
 					setSelectedInq(data);
 
-					quoteGrid.handleGridDataLoaded(data.quotes);
+					grid.handleGridDataLoaded(data.quotes);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -125,7 +208,7 @@ export const useB05 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, quoteGrid, token]
+		[crud, httpGetAsync, grid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -236,26 +319,16 @@ export const useB05 = () => {
 	}, []);
 
 	const handleGridProdChange = useCallback(
-		({ rowData, oldRowData }) => {
+		({ rowData }) => {
 			let processedRowData = { ...rowData };
 			processedRowData = {
 				...processedRowData,
 				["SPrice"]: "",
+				["SPackData_N"]: rowData?.prod?.PackData_N || "",
+				["SProdData_N"]: rowData?.prod?.ProdData || ""
 			};
-			if (rowData?.prod) {
-				processedRowData = {
-					...processedRowData,
-					["SPackData_N"]: rowData?.prod?.PackData_N,
-				};
-			} else {
-				processedRowData = {
-					...processedRowData,
-					["SPackData_N"]: "",
-				};
-			}
 			return processedRowData;
 		},
-
 		[]
 	);
 
@@ -269,7 +342,7 @@ export const useB05 = () => {
 						.slice(operation.fromRowIndex, operation.toRowIndex)
 						.forEach((rowData, i) => {
 							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = quoteGrid.gridData[rowIndex];
+							const oldRowData = grid.gridData[rowIndex];
 
 							let processedRowData = { ...rowData };
 
@@ -289,12 +362,18 @@ export const useB05 = () => {
 
 							newGridData[rowIndex] = processedRowData;
 						});
+				} else if (operation.type === "DELETE") {
+					newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
+				} else if (operation.type === "CREATE") {
+					console.log("dsg.CREATE");
+					// process CREATE here
+					gridMeta.toFirstColumn({ nextRow: true });
 				}
 			}
 			console.log("after changed", newGridData);
-			quoteGrid.setGridData(newGridData);
+			grid.setGridData(newGridData);
 		},
-		[handleGridProdChange, quoteGrid]
+		[grid, handleGridProdChange, gridMeta]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -302,7 +381,7 @@ export const useB05 = () => {
 			console.log("onEditorSubmit", data);
 			const collected = B05.transformForSubmitting(
 				data,
-				quoteGrid.gridData
+				grid.gridData
 			);
 			console.log("collected", collected);
 			if (crud.creating) {
@@ -318,7 +397,7 @@ export const useB05 = () => {
 			crud.updating,
 			handleCreate,
 			handleUpdate,
-			quoteGrid.gridData,
+			grid.gridData,
 		]
 	);
 
@@ -411,7 +490,7 @@ export const useB05 = () => {
 				if (status.success) {
 					const data = payload.data?.[0].FactInq_S || [];
 					console.log("data", data);
-					quoteGrid.initGridData(B05.transformForGridImport(data), {
+					grid.initGridData(B05.transformForGridImport(data), {
 						createRow,
 					});
 					toast.success(`成功帶入 ${data.length} 筆商品`);
@@ -430,7 +509,7 @@ export const useB05 = () => {
 			importProdsAction,
 			ipState.criteria,
 			ipState.saveKey,
-			quoteGrid,
+			grid,
 			token,
 		]
 	);
@@ -470,6 +549,32 @@ export const useB05 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handleLastField = useCallback(() => {
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [gridMeta]);
+
+	const formMeta = useFormMeta(
+		`
+		InqDate,
+		employee,
+		supplier
+		`,
+		{
+			lastField: handleLastField
+		}
+	);
+
+	const loadProdFormMeta = useFormMeta(
+		`
+		sprod,
+		eprod,
+		typeA,
+		catL,
+		catM,
+		catS
+		`
+	)
+
 	return {
 		...crud,
 		...listLoader,
@@ -487,7 +592,10 @@ export const useB05 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// 報價 Grid
-		...quoteGrid,
+		...grid,
+		...gridMeta,
+		grid,
+		gridMeta,
 		handleGridChange,
 		getRowKey,
 		// 帶入商品
@@ -502,5 +610,7 @@ export const useB05 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		formMeta,
+		loadProdFormMeta
 	};
 };

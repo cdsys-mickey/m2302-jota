@@ -12,6 +12,7 @@ import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPicke
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -24,48 +25,13 @@ const B05QuoteGrid = memo((props) => {
 		readOnly,
 		gridRef,
 		data,
-		handleGridChange,
+		onChange,
 		getRowClassName,
 		height = 300,
 		bearer,
 		...rest
 	} = props;
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"prod",
-					prodPickerColumn({
-						name: "prod",
-						withPurchasePackageName: true,
-						triggerDelay: 200,
-					})
-				),
-				id: "SProdID",
-				title: "商品",
-				grow: 4,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"SPackData_N",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "包裝說明",
-				disabled: true,
-			},
-			{
-				...keyColumn("SPrice", createFloatColumn(2)),
-				title: "廠商報價",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly,
-			},
-		],
-		[readOnly]
-	);
+
 
 	const duplicateRow = useCallback(
 		({ rowData }) => ({ ...rowData, Pkey: nanoid() }),
@@ -74,15 +40,15 @@ const B05QuoteGrid = memo((props) => {
 	);
 
 	return (
-		<DynamicDataSheetGrid
+		<DSGGrid
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
 			// rowHeight={42}
 			value={data}
-			onChange={handleGridChange}
-			columns={columns}
+			onChange={onChange}
+			// columns={columns}
 			addRowsComponent={DSGAddRowsToolbar}
 			disableExpandSelection
 			contextMenuComponent={ContextMenu}
@@ -95,6 +61,7 @@ const B05QuoteGrid = memo((props) => {
 
 B05QuoteGrid.propTypes = {
 	getRowKey: PropTypes.func,
+	onChange: PropTypes.func
 };
 
 B05QuoteGrid.displayName = "B05QuoteGrid";

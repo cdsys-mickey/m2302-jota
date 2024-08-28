@@ -4,6 +4,7 @@ import { B05Context } from "../../../../../contexts/B05/B05Context";
 import { DialogExContainer } from "../../../../../shared-components/dialog/DialogExContainer";
 import { OptionPickerProvider } from "../../../../../shared-components/option-picker/OptionPickerProvider";
 import B05LoadProdsForm from "./import-prods/B05ImportProdsForm";
+import { FormMetaProvider } from "../../../../../shared-contexts/form-meta/FormMetaProvider";
 
 const B05ImportProdsDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -33,11 +34,15 @@ const B05ImportProdsDialogContainer = forwardRef((props, ref) => {
 			title="帶入商品"
 			open={b05.importProdsDialogOpen}
 			onClose={b05.cancelImportProds}
+			hideCloseButton={false}
+			confirmTooltip="shift+Enter"
 			{...rest}>
 			<FormProvider {...form}>
-				<OptionPickerProvider>
-					<B05LoadProdsForm handleSubmit={handleSubmit} />
-				</OptionPickerProvider>
+				<FormMetaProvider {...b05.loadProdFormMeta}>
+					<OptionPickerProvider>
+						<B05LoadProdsForm handleSubmit={handleSubmit} />
+					</OptionPickerProvider>
+				</FormMetaProvider>
 			</FormProvider>
 		</DialogExContainer>
 	);

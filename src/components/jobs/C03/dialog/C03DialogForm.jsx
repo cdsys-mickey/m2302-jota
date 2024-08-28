@@ -1,4 +1,4 @@
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";

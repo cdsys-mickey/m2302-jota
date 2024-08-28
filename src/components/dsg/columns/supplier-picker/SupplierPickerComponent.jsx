@@ -1,7 +1,7 @@
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
-import { SupplierPickerContainer } from "../../../picker/SupplierPickerContainer";
+import SupplierPicker from "@/components/picker/SupplierPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -78,7 +78,7 @@ const SupplierPickerComponent = memo((props) => {
 	}, [focus]);
 
 	return (
-		<SupplierPickerContainer
+		<SupplierPicker
 			queryParam="qs"
 			label=""
 			hideBorders

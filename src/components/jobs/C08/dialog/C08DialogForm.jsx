@@ -1,5 +1,5 @@
 import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";

@@ -8,6 +8,7 @@ import B05DialogForm from "./B05DialogForm";
 import { useEffect } from "react";
 import { B05DialogToolbarContainer } from "./toolbar/B05DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 
 export const B05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -41,10 +42,10 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 		return b05.creating
 			? b05.confirmQuitCreating
 			: b05.updating
-			? b05.confirmQuitUpdating
-			: b05.reading
-			? b05.cancelAction
-			: null;
+				? b05.confirmQuitUpdating
+				: b05.reading
+					? b05.cancelAction
+					: null;
 	}, [
 		b05.cancelAction,
 		b05.confirmQuitCreating,
@@ -95,16 +96,18 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 			{...rest}>
 			<FormProvider {...form}>
 				<form onSubmit={handleSubmit}>
-					<B05DialogForm
-						creating={b05.creating}
-						editing={b05.editing}
-						updating={b05.updating}
-						readWorking={b05.readWorking}
-						readError={b05.readError}
-						data={b05.itemData}
-						itemDataReady={b05.itemDataReady}
-						onSubmit={handleSubmit}
-					/>
+					<FormMetaProvider {...b05.formMeta}>
+						<B05DialogForm
+							creating={b05.creating}
+							editing={b05.editing}
+							updating={b05.updating}
+							readWorking={b05.readWorking}
+							readError={b05.readError}
+							data={b05.itemData}
+							itemDataReady={b05.itemDataReady}
+							onSubmit={handleSubmit}
+						/>
+					</FormMetaProvider>
 				</form>
 			</FormProvider>
 		</DialogExContainer>

@@ -54,7 +54,7 @@ export const A22GridLoadButtonContainer = () => {
 	// }, [a22, getValues]);
 
 	return (
-		<Tooltip title="shift-Enter">
+		<Tooltip title="shift+Enter">
 			<LoadingButton
 				type="submit"
 				variant="contained"

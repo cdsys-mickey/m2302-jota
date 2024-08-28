@@ -1,17 +1,16 @@
-import { Box, Container, Grid } from "@mui/material";
-import PropTypes from "prop-types";
-import { memo } from "react";
-import AlertEx from "@/shared-components/AlertEx";
+import EmployeePicker from "@/components/picker/EmployeePicker";
+import SupplierPicker from "@/components/picker/SupplierPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
-import { SupplierPickerContainer } from "@/components/picker/SupplierPickerContainer";
+import { Container, Grid } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo } from "react";
 import { B05QuoteGridContainer } from "./quotes/B05QuoteGridContainer";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const B05DialogForm = memo((props) => {
 	const {
@@ -45,7 +44,10 @@ const B05DialogForm = memo((props) => {
 								typo
 								name="InqDate"
 								label="詢價日期"
-								autoFocus
+								{...(editing && {
+									autoFocus: true
+								})}
+
 								fullWidth
 								required
 								variant="outlined"
@@ -62,12 +64,15 @@ const B05DialogForm = memo((props) => {
 										required: "詢價人員為必填",
 									}}
 									virtualize
+									disableOpenOnInput
+									selectOnFocus
+									disableClearable
 								/>
 							</OptionPickerProvider>
 						</Grid>
 						<Grid item xs={24} sm={24} md={8}>
 							<OptionPickerProvider>
-								<SupplierPickerContainer
+								<SupplierPicker
 									typo
 									label="廠商代碼"
 									name="supplier"
@@ -76,6 +81,9 @@ const B05DialogForm = memo((props) => {
 										required: "廠商為必填",
 									}}
 									virtualize
+									disableOpenOnInput
+									selectOnFocus
+									disableClearable
 								/>
 							</OptionPickerProvider>
 						</Grid>
@@ -85,10 +93,10 @@ const B05DialogForm = memo((props) => {
 									typo
 									name="InqID"
 									label="詢價單號"
-									autoFocus
+									// autoFocus
 									fullWidth
 									required
-									readOnly={true}
+									readOnly
 								/>
 							</Grid>
 						)}

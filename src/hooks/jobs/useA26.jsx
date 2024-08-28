@@ -76,7 +76,8 @@ export const useA26 = ({ token }) => {
 		...codeEditor,
 		...grid,
 		...gridMeta,
+		...codeEditor,
 		grid,
-		gridMeta
+		gridMeta,
 	};
 };

@@ -1,4 +1,4 @@
-import { EmployeePicker } from "@/components/picker/EmployeePicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
@@ -100,8 +100,8 @@ const D06DialogForm = memo((props) => {
 								rules={{
 									required: "生產線別為必填",
 								}}
-								// virtualize
-								// optionLabelSize="md"
+							// virtualize
+							// optionLabelSize="md"
 							/>
 							{/* </OptionPickerProvider> */}
 						</Grid>

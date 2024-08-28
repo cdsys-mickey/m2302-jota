@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 import Suppliers from "../../modules/md-suppliers";
 
-export const SupplierPickerContainer = (props) => {
+const SupplierPicker = (props) => {
 	const { label = "供應商", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
@@ -44,12 +44,15 @@ export const SupplierPickerContainer = (props) => {
 			isOptionEqualToValue={isOptionEqualToValue}
 			getData={getData}
 			getOptionKey={getOptionKey}
+			notFoundText="廠商 ${id} 不存在"
 			{...rest}
 		/>
 	);
 };
 
-SupplierPickerContainer.displayName = "SupplierPickerContainer";
-SupplierPickerContainer.propTypes = {
+SupplierPicker.displayName = "SupplierPicker";
+SupplierPicker.propTypes = {
 	label: PropTypes.string,
 };
+
+export default SupplierPicker;

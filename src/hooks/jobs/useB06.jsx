@@ -1,9 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import B06 from "@/modules/md-b06";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useCallback } from "react";
-import B06 from "@/modules/md-b06";
 import { useAppModule } from "./useAppModule";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 
 export const useB06 = ({ token, logKey, deptId }) => {
 	const appModule = useAppModule({
@@ -51,8 +51,7 @@ export const useB06 = ({ token, logKey, deptId }) => {
 			console.log("collected", collected);
 
 			postToBlank(
-				`${
-					import.meta.env.VITE_URL_REPORT
+				`${import.meta.env.VITE_URL_REPORT
 				}/WebB06Rep.aspx?LogKey=${logKey}`,
 				{
 					jsonData: JSON.stringify(collected),
