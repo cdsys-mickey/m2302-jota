@@ -124,7 +124,9 @@ export const useA20 = ({ token }) => {
 	});
 
 	const handleLastField = useCallback(() => {
-		gridMeta.setActiveCell({ col: 0, row: 0 });
+		setTimeout(() => {
+			gridMeta.setActiveCell({ col: 0, row: 0 });
+		})
 	}, [gridMeta]);
 
 	const formMeta = useFormMeta(

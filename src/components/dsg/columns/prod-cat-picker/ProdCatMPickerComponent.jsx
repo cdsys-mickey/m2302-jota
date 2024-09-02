@@ -1,8 +1,6 @@
-import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import ProdCatMPickerContainer from "../../../picker/ProdCatMPickerContainer";
-import { useMemo } from "react";
 import Objects from "@/shared-modules/sd-objects";
+import PropTypes from "prop-types";
+import { memo, useMemo, useRef } from "react";
 import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
 import ProdCatMPicker from "../../../picker/ProdCatMPicker";
 

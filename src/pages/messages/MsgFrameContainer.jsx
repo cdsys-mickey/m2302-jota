@@ -22,7 +22,7 @@ export const MsgFrameContainer = () => {
 		<FormProvider {...searchForm}>
 			<Box sx={[boxStyles]}>
 				{/* 標題 */}
-				<FrameBanner title="推播訊息通知" alt="推播" />
+				<FrameBannerContainer title="推播訊息通知" alt="推播" />
 				{/* 工具列 */}
 				<MsgToolbar />
 				{/* 列表 */}

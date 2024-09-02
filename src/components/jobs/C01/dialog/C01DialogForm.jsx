@@ -9,7 +9,7 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import { C01ProdGridContainer } from "./prods/C01ProdGridContainer";
 import FormBox from "../../../../shared-components/form/FormBox";
 import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
@@ -40,14 +40,14 @@ const C01DialogForm = memo((props) => {
 			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
-					<Grid container columns={24} spacing={editing ? 2 : 1}>
+					<Grid container columns={24} spacing={1}>
 						{!creating && (
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item xs={24} sm={24} md={3}>
 								<TextFieldWrapper
 									typo
 									name="RqtID"
 									label="請購單號"
-									autoFocus
+									// autoFocus
 									fullWidth
 									required
 									readOnly={true}
@@ -78,12 +78,13 @@ const C01DialogForm = memo((props) => {
 									}}
 									virtualize
 									readOnly={true}
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={editing ? 5 : 4}>
 							<OptionPickerProvider>
-								<ProdLinePickerContainer
+								<ProdLinePicker
 									typo
 									label="請購單位"
 									name="pdline"
@@ -93,11 +94,19 @@ const C01DialogForm = memo((props) => {
 									}}
 									virtualize
 									readOnly={true}
+									disableOpenOnInput
+									componentsProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</OptionPickerProvider>
 						</Grid>
 
-						<Grid item xs={24}>
+						<Grid item xs={8}>
 							<FormLabelWrapper label="覆核" name="Checker_N" />
 						</Grid>
 						<Grid item xs={24}>

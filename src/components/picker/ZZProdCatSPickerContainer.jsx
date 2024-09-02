@@ -4,7 +4,7 @@ import { forwardRef, useContext, useMemo } from "react";
 import ProdSCats from "../../modules/md-prod-s-cats";
 import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
 
-export const ProdCatSPickerContainer = forwardRef((props, ref) => {
+export const ZZProdCatSPickerContainer = forwardRef((props, ref) => {
 	const { catL, catM, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
@@ -30,11 +30,11 @@ export const ProdCatSPickerContainer = forwardRef((props, ref) => {
 	);
 });
 
-ProdCatSPickerContainer.propTypes = {
+ZZProdCatSPickerContainer.propTypes = {
 	catL: PropTypes.string,
 	catM: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 
-ProdCatSPickerContainer.displayName = "ProdCatSPickerContainer";
-export default ProdCatSPickerContainer;
+ZZProdCatSPickerContainer.displayName = "ProdCatSPickerContainer";
+export default ZZProdCatSPickerContainer;

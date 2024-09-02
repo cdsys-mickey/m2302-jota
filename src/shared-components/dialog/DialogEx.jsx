@@ -216,10 +216,9 @@ const DialogEx = memo(
 
 				<DialogContent
 					sx={[
-						(theme) => ({
+						() => ({
 							...(minWidth && { minWidth: minWidth }),
 							...(dense && {
-								// paddingBottom: theme.spacing(1),
 								paddingBottom: 0,
 							}),
 							paddingTop: 0,

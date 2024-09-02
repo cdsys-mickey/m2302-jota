@@ -13,6 +13,8 @@ import C03 from "@/modules/md-c03";
 import { C03Context } from "../../contexts/C03/C03Context";
 import { useCallback } from "react";
 import { useQuerySync } from "../../shared-hooks/useQuerySync";
+import C03Drawer from "@/components/jobs/C03/C03Drawer";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 export const C03FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -57,6 +59,7 @@ export const C03FrameContainer = () => {
 
 			{/* 對話框 */}
 			<C03DialogContainer />
+			<C03Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 		</Box>
 	);
 };

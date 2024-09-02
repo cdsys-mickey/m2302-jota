@@ -7,7 +7,7 @@ import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Container, Grid } from "@mui/material";
+import { Container, Drawer, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { B05QuoteGridContainer } from "./quotes/B05QuoteGridContainer";
@@ -37,85 +37,88 @@ const B05DialogForm = memo((props) => {
 			)}
 			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
-				<FormBox pt={1}>
-					<Grid container columns={24} spacing={editing ? 2 : 1}>
-						<Grid item xs={24} sm={24} md={5}>
-							<DatePickerWrapper
-								typo
-								name="InqDate"
-								label="詢價日期"
-								{...(editing && {
-									autoFocus: true
-								})}
-
-								fullWidth
-								required
-								variant="outlined"
-							/>
-						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="詢價人員"
-									name="employee"
-									required
-									rules={{
-										required: "詢價人員為必填",
-									}}
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
-									disableClearable
-								/>
-							</OptionPickerProvider>
-						</Grid>
-						<Grid item xs={24} sm={24} md={8}>
-							<OptionPickerProvider>
-								<SupplierPicker
-									typo
-									label="廠商代碼"
-									name="supplier"
-									required
-									rules={{
-										required: "廠商為必填",
-									}}
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
-									disableClearable
-								/>
-							</OptionPickerProvider>
-						</Grid>
-						{!creating && (
+				<>
+					<FormBox pt={1}>
+						<Grid container columns={24} spacing={1}>
 							<Grid item xs={24} sm={24} md={5}>
-								<TextFieldWrapper
+								<DatePickerWrapper
 									typo
-									name="InqID"
-									label="詢價單號"
-									// autoFocus
+									name="InqDate"
+									label="詢價日期"
+									{...(editing && {
+										autoFocus: true
+									})}
+
 									fullWidth
 									required
-									readOnly
+									variant="outlined"
 								/>
 							</Grid>
-						)}
-						<Grid item xs={24}>
-							<B05QuoteGridContainer />
+							<Grid item xs={24} sm={24} md={6}>
+								<OptionPickerProvider>
+									<EmployeePicker
+										typo
+										label="詢價人員"
+										name="employee"
+										required
+										rules={{
+											required: "詢價人員為必填",
+										}}
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										disableClearable
+									/>
+								</OptionPickerProvider>
+							</Grid>
+							<Grid item xs={24} sm={24} md={8}>
+								<OptionPickerProvider>
+									<SupplierPicker
+										typo
+										label="廠商代碼"
+										name="supplier"
+										required
+										rules={{
+											required: "廠商為必填",
+										}}
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										disableClearable
+									/>
+								</OptionPickerProvider>
+							</Grid>
+							{!creating && (
+								<Grid item xs={24} sm={24} md={5}>
+									<TextFieldWrapper
+										typo
+										name="InqID"
+										label="詢價單號"
+										// autoFocus
+										fullWidth
+										required
+										readOnly
+									/>
+								</Grid>
+							)}
+							<Grid item xs={24}>
+								<B05QuoteGridContainer />
+							</Grid>
+							<Grid item xs={24}>
+								<TextFieldWrapper
+									typo
+									name="remark"
+									multiline
+									minRows={2}
+									maxRows={5}
+									label="備註"
+									fullWidth
+								/>
+							</Grid>
 						</Grid>
-						<Grid item xs={24}>
-							<TextFieldWrapper
-								typo
-								name="remark"
-								multiline
-								minRows={2}
-								maxRows={5}
-								label="備註"
-								fullWidth
-							/>
-						</Grid>
-					</Grid>
-				</FormBox>
+					</FormBox>
+
+				</>
 			)}
 		</>
 	);

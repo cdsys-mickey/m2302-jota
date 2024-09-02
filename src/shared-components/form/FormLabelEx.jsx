@@ -22,7 +22,7 @@ export const FormLabelEx = memo((props) => {
 		size = "small",
 		IconComponent,
 		children,
-		variant = "subtitle1",
+		variant = "subtitle2",
 		sx = [],
 	} = props;
 	return (

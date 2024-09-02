@@ -43,7 +43,7 @@ export const C08ProdGridContainer = (props) => {
 				sqtyDisabled={c08.sqtyDisabled}
 				dtypeDisabled={c08.dtypeDisabled}
 				overrideSQtyDisabled={c08.overrideSQtyDisabled}
-				buildSelectionChangeHandler={c08.buildSelectionChangeHandler()}
+				// buildSelectionChangeHandler={c08.buildSelectionChangeHandler()}
 				handleGridCellFocusChange={c08.handleGridCellFocusChange}
 				getRowClassName={c08.getRowClassName}
 				getTooltip={c08.getTooltip}

@@ -1,15 +1,16 @@
 import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { IconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import FlexToolbar from "../../../../../shared-components/listview/toolbar/FlexToolbar";
-import B05PrintButtonContainer from "./B05PrintButtonContainer";
 import { B05OutputModePickerContainer } from "./B05OutputModePickerContainer";
+import B05PrintButtonContainer from "./B05PrintButtonContainer";
 
 const B05DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onPrint, ...rest } = props;
+		const { onEdit, onDelete, onPrint, onSideDrawerOpen, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onPrint && (
@@ -35,6 +36,9 @@ const B05DialogViewToolbar = memo(
 						編輯
 					</ResponsiveButton>
 				)}
+				<IconButton onClick={onSideDrawerOpen}>
+					<HelpCenterIcon />
+				</IconButton>
 			</Fragment>
 		);
 	})
@@ -44,6 +48,7 @@ B05DialogViewToolbar.propTypes = {
 	onEdit: PropTypes.func,
 	onDelete: PropTypes.func,
 	onPrint: PropTypes.func,
+	onSideDrawerOpen: PropTypes.func,
 };
 
 export default B05DialogViewToolbar;

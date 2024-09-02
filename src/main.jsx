@@ -3,13 +3,19 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 
 import { BrowserRouter as Router } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorPage from "./pages/ErrorPage.jsx";
 
 // import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	// <React.StrictMode>
 	<Router basename={import.meta.env.VITE_PUBLIC_URL}>
-		<App />
+		{import.meta.env.VITE_PROFILE === "prod" ?
+			(<ErrorBoundary FallbackComponent={ErrorPage}>
+				<App />
+			</ErrorBoundary>)
+			: (<App />)}
 	</Router>
 	// </React.StrictMode>
 );

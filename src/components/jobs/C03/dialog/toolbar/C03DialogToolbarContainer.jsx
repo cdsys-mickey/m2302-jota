@@ -65,6 +65,7 @@ export const C03DialogToolbarContainer = (props) => {
 			onReview={canReview ? c03.promptReview : null}
 			onReject={canReject ? c03.promptReject : null}
 			onPrint={c03.canPrint ? handlePrint : null}
+			onSideDrawerOpen={c03.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

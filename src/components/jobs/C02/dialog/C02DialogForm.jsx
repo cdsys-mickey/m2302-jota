@@ -1,30 +1,25 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import AlertEx from "@/shared-components/AlertEx";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { FormLabelWrapper } from "@/shared-components/label/FormLabelWrapper";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Box, Container, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import { C02ProdGridContainer } from "./prods/C02ProdGridContainer";
-import FormBox from "@/shared-components/form/FormBox";
-import FormErrorBox from "@/shared-components/form/FormErrorBox";
 
 const C02DialogForm = memo((props) => {
 	const {
-		onSubmit,
 		readError,
-		data,
 		readWorking,
 		itemDataReady,
 		creating,
 		editing,
-		updating,
-		...rest
 	} = props;
 	return (
 		<>
@@ -40,9 +35,9 @@ const C02DialogForm = memo((props) => {
 			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
-					<Grid container columns={24} spacing={editing ? 2 : 1}>
+					<Grid container columns={24} spacing={1}>
 						{!creating && (
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item xs={24} sm={24} md={3}>
 								<TextFieldWrapper
 									typo
 									name="RqtID"
@@ -77,12 +72,13 @@ const C02DialogForm = memo((props) => {
 									}}
 									virtualize
 									disableClearable
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={editing ? 5 : 4}>
 							<OptionPickerProvider>
-								<ProdLinePickerContainer
+								<ProdLinePicker
 									typo
 									label="請購單位"
 									name="pdline"
@@ -91,13 +87,22 @@ const C02DialogForm = memo((props) => {
 										required: "請購單位為必填",
 									}}
 									virtualize
+									disableOpenOnInput
+									componentsProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</OptionPickerProvider>
 						</Grid>
-
-						<Grid item xs={24}>
-							<FormLabelWrapper label="覆核" name="Checker_N" />
-						</Grid>
+						{
+							!editing && (<Grid item xs={24} md={8}>
+								<FormLabelWrapper label="覆核" name="Checker_N" />
+							</Grid>)
+						}
 						<Grid item xs={24}>
 							<C02ProdGridContainer />
 						</Grid>
@@ -124,6 +129,8 @@ C02DialogForm.propTypes = {
 	readError: PropTypes.object,
 	data: PropTypes.object,
 	itemDataReady: PropTypes.bool,
+	creating: PropTypes.bool,
+	editing: PropTypes.bool,
 };
 
 C02DialogForm.displayName = "C02DialogForm";

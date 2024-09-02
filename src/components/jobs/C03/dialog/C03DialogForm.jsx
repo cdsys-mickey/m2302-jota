@@ -7,14 +7,15 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
-import { FormFieldLabelContainer } from "../../../../shared-components/form/FormFieldLabelContainer";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
 import { SupplierIdPickerContainer } from "../../../picker/SupplierIdPickerContainer";
 import C03SquaredPicker from "../C03SquaredPicker";
 import { C03DialogRstLabel } from "./C03DialogRstLabel";
 import { C03ProdGridBottomToolbar } from "./prods/C03ProdGridBottomToolbar";
 import { C03ProdGridContainer } from "./prods/C03ProdGridContainer";
+import SupplierPicker from "@/components/picker/SupplierPicker";
 
 const C03DialogForm = memo((props) => {
 	const {
@@ -45,18 +46,18 @@ const C03DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<Grid container columns={24} spacing={editing ? 1 : 0}>
-						{!creating && (
-							<Grid item xs={24} sm={24} md={4}>
-								<TextFieldWrapper
-									typo
-									name="OrdID"
-									label="採購單號"
-									fullWidth
-									required
-									readOnly={true}
-								/>
-							</Grid>
-						)}
+						{/* {!creating && ( */}
+						<Grid item xs={24} sm={24} md={4}>
+							<TextFieldWrapper
+								typo
+								name="OrdID"
+								label="採購單號"
+								fullWidth
+								// required
+								readOnly={true}
+							/>
+						</Grid>
+						{/* )} */}
 						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
 								<EmployeePicker
@@ -70,8 +71,18 @@ const C03DialogForm = memo((props) => {
 									}}
 									virtualize
 									disableClearable
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
+						</Grid>
+						<Grid item xs={24} sm={24} md={4}>
+							<C03SquaredPicker
+								typo
+								name="squared"
+								label="結清註記"
+								disabled={squaredFlagDisabled}
+								disableOpenOnInput
+							/>
 						</Grid>
 
 						<Grid item xs={24} sm={24} md={4}>
@@ -98,7 +109,9 @@ const C03DialogForm = memo((props) => {
 						<FlexBox fullWidth />
 						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
-								<SupplierIdPickerContainer
+								{/* <SupplierIdPickerContainer */}
+								<SupplierPicker
+									forId
 									typo
 									label="廠商代碼"
 									name="supplier"
@@ -112,6 +125,14 @@ const C03DialogForm = memo((props) => {
 									// fadeOutDisabled
 									optionLabelSize="md"
 									onChanged={handleSupplierChanged}
+									disableOpenOnInput
+									slotProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</OptionPickerProvider>
 						</Grid>
@@ -130,37 +151,38 @@ const C03DialogForm = memo((props) => {
 								disabled={supplierNameDisabled}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={3}>
-							<C03SquaredPicker
-								typo
-								name="squared"
-								label="結清註記"
-								disabled={squaredFlagDisabled}
-							/>
-						</Grid>
+
 						<FlexBox fullWidth />
 
-						<Grid item xs={24} md={5}>
-							<C03DialogRstLabel
-								name="GinID_N"
-								label="進貨單"
-								flex
-							/>
-						</Grid>
-						<Grid item xs={24} md={5}>
-							<FormFieldLabelContainer
-								name="RqtID_N"
-								label="請購單"
-								flex
-							/>
-						</Grid>
-						<Grid item xs={24} md={14}>
+						{!editing &&
+							(
+								<>
+									<Grid item xs={24} md={8}>
+										<C03DialogRstLabel
+											name="GinID_N"
+											label="進貨單"
+										// flex
+										/>
+									</Grid>
+									<Grid item xs={24} md={15}>
+										<FormFieldLabelContainer
+											name="RqtID_N"
+											label="請購單"
+											// flex
+											noWrap
+										/>
+									</Grid>
+								</>
+							)
+						}
+
+						{/* <Grid item xs={24} md={14}>
 							<FormFieldLabelContainer
 								name="Checker_N"
 								label="覆核"
-								flex
+							// flex
 							/>
-						</Grid>
+						</Grid> */}
 					</Grid>
 					<Box py={1}>
 						<C03ProdGridContainer />

@@ -1,5 +1,8 @@
 import { Box, styled } from "@mui/material";
 
+/**
+ * 讓其下的 UI 元件可以有一致的 L&F
+ */
 const FormBox = styled(Box, {
 	shouldForwardProp: (prop) => ![].includes(prop),
 })(() => ({

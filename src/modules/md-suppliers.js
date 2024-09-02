@@ -9,8 +9,18 @@ const getOptionLabel = (option) => {
 	return `${option?.FactID} ${option?.FactData}`;
 };
 
-const isOptionEqualToValue = (option, value) =>
-	option?.FactID === value?.FactID;
+const getOptionLabelForId = (option) => {
+	return `${option?.FactID || ""}`;
+};
+
+const renderOptionLabel = (option) => {
+	return getOptionLabel(option);
+};
+
+const isOptionEqualToValue = (option, value) => {
+	if (!value) return false;
+	return option?.FactID === value?.FactID;
+};
 
 const renderText = (value) => {
 	if (!value) return "";
@@ -28,6 +38,8 @@ const Suppliers = {
 	isOptionEqualToValue,
 	renderText,
 	getOptionKey,
+	getOptionLabelForId,
+	renderOptionLabel,
 };
 
 export default Suppliers;

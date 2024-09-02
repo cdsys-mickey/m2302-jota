@@ -15,7 +15,7 @@ import {
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
 
 const C01SearchPopper = memo(
@@ -34,6 +34,7 @@ const C01SearchPopper = memo(
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
 					<Grid container spacing={1.5} columns={12}>
+
 						<Grid item xs={12} sm={12}>
 							<TextFieldWrapper
 								name="rqtId"
@@ -43,9 +44,7 @@ const C01SearchPopper = memo(
 								clearable
 							/>
 						</Grid>
-						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="製單人員" />
-						</Grid>
+
 						<Grid item xs={12} sm={12}>
 							<DatePickerWrapper
 								name="date"
@@ -53,10 +52,13 @@ const C01SearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<ProdLinePickerContainer
+							<ProdLinePicker
 								name="pdline"
-								label="請購生產線別"
+								label="請購部門"
 							/>
+						</Grid>
+						<Grid item xs={12} sm={12}>
+							<EmployeePicker name="employee" label="請購人員" />
 						</Grid>
 					</Grid>
 				</DialogContent>

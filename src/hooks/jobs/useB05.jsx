@@ -24,6 +24,7 @@ import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picke
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useB05 = () => {
 	const crud = useContext(CrudContext);
@@ -35,6 +36,9 @@ export const useB05 = () => {
 		token,
 		moduleId: "B05",
 	});
+
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	const [selectedInq, setSelectedInq] = useState();
 
@@ -67,12 +71,10 @@ export const useB05 = () => {
 						name: "prod",
 						selectOnFocus: true,
 						triggerDelay: 300,
-						placeholder: "商品",
-						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
 						queryRequired: true,
 						filterByServer: true,
 						disableOpenOnInput: true,
-						hideControlsOnActive: true,
+						hideControlsOnActive: false,
 						forId: true,
 						disableClearable: true,
 						fuzzy: true,
@@ -87,8 +89,8 @@ export const useB05 = () => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 170,
-				maxWidth: 170,
+				minWidth: 180,
+				maxWidth: 180,
 				disabled: !crud.editing,
 			},
 			{
@@ -550,19 +552,10 @@ export const useB05 = () => {
 	}, []);
 
 	const handleLastField = useCallback(() => {
-		gridMeta.setActiveCell({ col: 0, row: 0 });
+		setTimeout(() => {
+			gridMeta.setActiveCell({ col: 0, row: 0 });
+		});
 	}, [gridMeta]);
-
-	const formMeta = useFormMeta(
-		`
-		InqDate,
-		employee,
-		supplier
-		`,
-		{
-			lastField: handleLastField
-		}
-	);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -610,7 +603,8 @@ export const useB05 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
-		formMeta,
-		loadProdFormMeta
+		handleLastField,
+		loadProdFormMeta,
+		...sideDrawer
 	};
 };

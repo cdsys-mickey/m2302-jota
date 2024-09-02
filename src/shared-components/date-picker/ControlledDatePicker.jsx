@@ -10,6 +10,7 @@ import { useCallback } from "react";
 import { useContext } from "react";
 import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -21,8 +22,9 @@ const DEFAULT_PROPS = {
 const ControlledDatePicker = ({
 	label = "日期",
 	name,
-	readOnly,
 	control,
+	readOnly,
+	dense,
 	defaultValue,
 	onChange: _onChange,
 	onChanged,
@@ -106,10 +108,34 @@ const ControlledDatePicker = ({
 					mask={mask}
 					format={format}
 					slotProps={{
+						inputAdornment: {
+							sx: {
+								...(dense && {
+									'& .MuiSvgIcon-root': { fontSize: '18px' }
+								})
+							}
+						},
 						textField: {
 							size: "small",
 							onKeyDown: handleKeyDown,
+							InputLabelProps: {
+								...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+								...(dense && {
+									shrink: true,
+								})
+							},
 						},
+						sx: {
+							...(dense && {
+								"& .MuiInputBase-input":
+								{
+									paddingTop: "4px",
+									paddingBottom: "4px",
+									// paddingLeft: "2px",
+									// paddingRight: "40px",
+								},
+							})
+						}
 					}}
 					value={value}
 					onChange={
@@ -153,15 +179,17 @@ const ControlledDatePicker = ({
 					{...rest}
 					invalidDateMessage={invalidDateMessage}
 				/>
-			)}
+			)
+			}
 		/>
 	);
 };
 ControlledDatePicker.propTypes = {
 	label: PropTypes.string,
 	name: PropTypes.string,
-	readOnly: PropTypes.bool,
 	control: PropTypes.object,
+	dense: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	defaultValue: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.number,

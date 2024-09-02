@@ -55,6 +55,7 @@ const B05QuoteGrid = memo((props) => {
 			createRow={createRow}
 			duplicateRow={duplicateRow}
 			rowClassName={getRowClassName}
+			{...rest}
 		/>
 	);
 });

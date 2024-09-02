@@ -13,6 +13,10 @@ import C03DialogForm from "./C03DialogForm";
 import { useEffect } from "react";
 import { C03DialogToolbarContainer } from "./toolbar/C03DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useCallback } from "react";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { toast } from "react-toastify";
 
 export const C03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -27,6 +31,11 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		name: "supplier",
 		control: form.control,
 	});
+
+	const ordDate = useWatch({
+		name: "OrdDate",
+		control: form.control
+	})
 
 	const c03 = useContext(C03Context);
 
@@ -50,10 +59,10 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		return c03.creating
 			? c03.confirmQuitCreating
 			: c03.updating
-			? c03.confirmQuitUpdating
-			: c03.reading
-			? c03.reset
-			: null;
+				? c03.confirmQuitUpdating
+				: c03.reading
+					? c03.reset
+					: null;
 	}, [
 		c03.confirmQuitCreating,
 		c03.confirmQuitUpdating,
@@ -76,6 +85,50 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 	const supplierNameDisabled = useMemo(() => {
 		return c03.isSupplierNameDisabled(supplier);
 	}, [c03, supplier]);
+
+	const isFieldDisabled = useCallback((field) => {
+		switch (field.name) {
+			case "FactData":
+				return supplierNameDisabled;
+			default:
+				return !c03.editing;
+		}
+	}, [c03.editing, supplierNameDisabled]);
+
+	const handleLastField = useCallback(() => {
+		if (!ordDate) {
+			toast.error("請先輸入採購日期", {
+				position: "top-center",
+			});
+			form.setFocus("OrdDate");
+			return;
+		}
+
+
+		if (!supplier) {
+			toast.error("請先輸入供應商", {
+				position: "top-center",
+			});
+			form.setFocus("supplier");
+			return;
+		}
+
+		c03.setActiveCell({ col: 0, row: 0 });
+	}, [c03, form, ordDate, supplier]);
+
+	const formMeta = useFormMeta(
+		`
+		employee,
+		squared,
+		OrdDate,
+		ArrDate,
+		supplier,
+		FactData,
+		`,
+		{
+			lastField: handleLastField
+		}
+	)
 
 	useEffect(() => {
 		if (c03.itemDataReady) {
@@ -112,32 +165,34 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<C03DialogForm
-					onSubmit={handleSubmit}
-					creating={c03.creating}
-					editing={c03.editing}
-					updating={c03.updating}
-					readWorking={c03.readWorking}
-					readError={c03.readError}
-					data={c03.itemData}
-					itemDataReady={c03.itemDataReady}
-					handleSupplierChanged={c03.supplierChangedHandler({
-						setValue: form.setValue,
-						getValues: form.getValues,
-						handleSubmit: handleRefreshGridSubmit,
-					})}
-					handleOrdDateChanged={c03.buildOrdDateChangeHandler({
-						getValues: form.getValues,
-						setValue: form.setValue,
-						handleSubmit: handleRefreshGridSubmit,
-					})}
-					supplierPickerDisabled={c03.supplierPickerDisabled}
-					squaredFlagDisabled={c03.squaredFlagDisabled}
-					sNotQtyDisabled={c03.sNotQtyDisabled}
-					// supplier={supplier}
-					// isSupplierNameDisabled={c03.isSupplierNameDisabled}
-					supplierNameDisabled={supplierNameDisabled}
-				/>
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
+					<C03DialogForm
+						onSubmit={handleSubmit}
+						creating={c03.creating}
+						editing={c03.editing}
+						updating={c03.updating}
+						readWorking={c03.readWorking}
+						readError={c03.readError}
+						data={c03.itemData}
+						itemDataReady={c03.itemDataReady}
+						handleSupplierChanged={c03.supplierChangedHandler({
+							setValue: form.setValue,
+							getValues: form.getValues,
+							handleSubmit: handleRefreshGridSubmit,
+						})}
+						handleOrdDateChanged={c03.buildOrdDateChangeHandler({
+							getValues: form.getValues,
+							setValue: form.setValue,
+							handleSubmit: handleRefreshGridSubmit,
+						})}
+						supplierPickerDisabled={c03.supplierPickerDisabled}
+						squaredFlagDisabled={c03.squaredFlagDisabled}
+						sNotQtyDisabled={c03.sNotQtyDisabled}
+						// supplier={supplier}
+						// isSupplierNameDisabled={c03.isSupplierNameDisabled}
+						supplierNameDisabled={supplierNameDisabled}
+					/>
+				</FormMetaProvider>
 			</DialogExContainer>
 		</FormProvider>
 	);

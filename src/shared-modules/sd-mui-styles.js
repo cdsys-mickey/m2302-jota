@@ -29,11 +29,25 @@ const STYLES = Object.freeze({
 			fontWeight: 600,
 		},
 	},
+	FORM_LABEL_STYLES_NOWRAP: {
+		"& .MuiFormLabel-root ": {
+			whiteSpace: "nowrap",
+		},
+		"& .MuiTypography-root": {
+			fontWeight: 600,
+			textOverflow: "ellipsis",
+			whiteSpace: "nowrap",
+			overflow: "hidden",
+		},
+	},
 	DEFAULT_INPUT_LABEL_PROPS: {
 		shrink: true,
 	},
 	DEFAULT_OPTION_PICKER_INPUT_LABEL_PROPS: {
 		shrink: true,
+	},
+	BACKDROP_TRANSPARENT: {
+		backgroundColor: "transparent", // 設置背景為透明
 	},
 });
 

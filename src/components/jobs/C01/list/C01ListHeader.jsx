@@ -18,7 +18,7 @@ const C01ListHeader = memo(
 				<C01FlagColumn>採</C01FlagColumn>
 				<C01DateColumn>請購日</C01DateColumn>
 				<C01DeptColumn>請購部門</C01DeptColumn>
-				<C01UserColumn>製單人員</C01UserColumn>
+				<C01UserColumn>請購人員</C01UserColumn>
 			</ListViewHeader>
 		);
 	})

@@ -153,7 +153,7 @@ export const useDSGMeta = ({
 			return null;
 		}
 		if (!prev) {
-			console.warn("prev cell is null, probably onActiveCellChange is not assigned");
+			// console.warn("prev cell is null, probably onActiveCellChange is not assigned");
 			return true;
 		}
 
@@ -196,7 +196,10 @@ export const useDSGMeta = ({
 						col = 0;
 						row++;
 						if (row >= data.length) {
-							return null; // Return null if reached the end
+							return {
+								field: null,
+								isForward: forward
+							}; // Return null if reached the end
 						}
 					}
 				} else {
@@ -205,17 +208,26 @@ export const useDSGMeta = ({
 						col = columns.length - 1;
 						row--;
 						if (row < 0) {
-							return null; // Return null if reached the start
+							return {
+								field: null,
+								isForward: forward
+							}; // Return null if reached the start
 						}
 					}
 				}
 
 				const newCell = { row, col };
 				if (!isCellDisabled(newCell)) {
-					return newCell;
+					return {
+						field: newCell,
+						isForward: forward
+					};
 				}
 			}
-			return null;
+			return {
+				field: null,
+				isForward: forward
+			};
 		},
 		[columns?.length, data?.length, isCellDisabled, isForward]
 	);

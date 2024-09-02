@@ -26,7 +26,7 @@ export const A20ProdMaterialsGridContainer = (props) => {
 				onChange={a20.handleGridChange}
 				onActiveCellChange={a20.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
-				height={height - 370}
+				height={height - 350}
 				createRow={a20.createRow}
 				{...rest}
 			/>

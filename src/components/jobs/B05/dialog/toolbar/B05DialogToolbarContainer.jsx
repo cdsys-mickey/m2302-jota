@@ -43,6 +43,7 @@ export const B05DialogToolbarContainer = (props) => {
 			onEdit={b05.canUpdate ? b05.promptUpdating : null}
 			onDelete={b05.canDelete ? b05.confirmDelete : null}
 			onPrint={b05.canPrint ? handlePrint : null}
+			onSideDrawerOpen={b05.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

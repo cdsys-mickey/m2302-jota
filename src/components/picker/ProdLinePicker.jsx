@@ -5,7 +5,7 @@ import { AuthContext } from "../../contexts/auth/AuthContext";
 import ProdLines from "../../modules/md-prod-lines";
 import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
-export const ProdLinePickerContainer = (props) => {
+const ProdLinePicker = (props) => {
 	const { name, label = "生產線別", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
@@ -35,12 +35,13 @@ export const ProdLinePickerContainer = (props) => {
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
+			placeholder="生產線代號"
 			{...rest}
 		/>
 	);
 };
 
-ProdLinePickerContainer.propTypes = {
+ProdLinePicker.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
@@ -49,4 +50,5 @@ ProdLinePickerContainer.propTypes = {
 	withPurchasePackageName: PropTypes.bool,
 };
 
-ProdLinePickerContainer.displayName = "ProdLinePickerContainer";
+ProdLinePicker.displayName = "ProdLinePicker";
+export default ProdLinePicker;

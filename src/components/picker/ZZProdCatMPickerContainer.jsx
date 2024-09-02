@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { forwardRef, useContext, useMemo } from "react";
 import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
 
-export const ProdCatMPickerContainer = forwardRef((props, ref) => {
+export const ZZProdCatMPickerContainer = forwardRef((props, ref) => {
 	const { catL, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
@@ -31,10 +31,10 @@ export const ProdCatMPickerContainer = forwardRef((props, ref) => {
 	);
 });
 
-ProdCatMPickerContainer.propTypes = {
+ZZProdCatMPickerContainer.propTypes = {
 	catL: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 
-ProdCatMPickerContainer.displayName = "ProdCatMPickerContainer";
-export default ProdCatMPickerContainer;
+ZZProdCatMPickerContainer.displayName = "ProdCatMPickerContainer";
+export default ZZProdCatMPickerContainer;

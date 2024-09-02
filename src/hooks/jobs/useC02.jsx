@@ -13,6 +13,14 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useMemo } from "react";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { nanoid } from "nanoid";
+import { useSideDrawer } from "../useSideDrawer";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 export const useC02 = () => {
 	const crud = useContext(CrudContext);
@@ -24,6 +32,9 @@ export const useC02 = () => {
 		token,
 		moduleId: "C02",
 	});
+
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	const [selectedInq, setSelectedInq] = useState();
 
@@ -37,15 +48,145 @@ export const useC02 = () => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/purchase/requests",
+		url: "v1/purchase/req-orders",
 		bearer: token,
 		initialFetchSize: 50,
 	});
 
-	const prodGrid = useDSG({
+	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
 	});
+
+	/**
+	 * 由於 columns 需要所以往前提
+	 */
+	const rqtQtyDisabled = useCallback(({ rowData }) => {
+		return (
+			(!!rowData.SOrdID && rowData.SOrdID !== "*") || !!rowData.SOrdQty
+		);
+	}, []);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						selectOnFocus: true,
+						withStock: true,
+						triggerDelay: 300,
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: false,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 140,
+				maxWidth: 140,
+				disabled: !crud.editing,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "單位",
+				minWidth: 60,
+				maxWidth: 60,
+				disabled: true,
+			},
+			{
+				...keyColumn("StockQty_N", createFloatColumn(2)),
+				title: "庫存",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: true,
+			},
+			{
+				...keyColumn("SRqtQty", createFloatColumn(2)),
+				title: "請購量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: !crud.editing || rqtQtyDisabled,
+			},
+			{
+				...keyColumn("SOrdQty", createFloatColumn(2)),
+				title: "採購量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SFactID",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "供應商",
+				minWidth: 80,
+				maxWidth: 80,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SFactNa",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "名稱",
+				grow: 2,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SOrdID",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "採購單",
+				minWidth: 120,
+				disabled: true,
+			},
+		],
+		[crud.editing, rqtQtyDisabled]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
 
 	const [selectedItem, setSelectedItem] = useState();
 
@@ -65,18 +206,18 @@ export const useC02 = () => {
 	const promptCreating = useCallback(() => {
 		const data = {
 			RqtDate: new Date(),
-			quotes: prodGrid.fillRows({ createRow }),
+			quotes: grid.fillRows({ createRow }),
 		};
 		crud.promptCreating({ data });
-		prodGrid.initGridData(data.quotes);
-	}, [createRow, crud, prodGrid]);
+		grid.initGridData(data.quotes);
+	}, [createRow, crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
 			try {
 				crud.startCreating();
 				const { status, error, payload } = await httpPostAsync({
-					url: "v1/purchase/requests",
+					url: "v1/purchase/req-orders",
 					data: data,
 					bearer: token,
 				});
@@ -107,7 +248,7 @@ export const useC02 = () => {
 					crud.startReading("讀取中...", { id });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/purchase/requests",
+					url: "v1/purchase/req-orders",
 					bearer: token,
 					params: {
 						id: itemId,
@@ -117,7 +258,7 @@ export const useC02 = () => {
 					const data = C02.transformForReading(payload.data[0]);
 					setSelectedInq(data);
 
-					prodGrid.initGridData(data.prods);
+					grid.initGridData(data.prods);
 
 					crud.doneReading({
 						data: data,
@@ -129,7 +270,7 @@ export const useC02 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, prodGrid, token]
+		[crud, httpGetAsync, grid, token]
 	);
 
 	const selectById = useCallback(
@@ -191,7 +332,7 @@ export const useC02 = () => {
 			try {
 				crud.startUpdating();
 				const { status, error } = await httpPutAsync({
-					url: "v1/purchase/requests",
+					url: "v1/purchase/req-orders",
 					data: data,
 					bearer: token,
 				});
@@ -221,7 +362,7 @@ export const useC02 = () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/purchase/requests`,
+						url: `v1/purchase/req-orders`,
 						bearer: token,
 						params: {
 							id: itemData?.RqtID,
@@ -262,11 +403,7 @@ export const useC02 = () => {
 		);
 	}, []);
 
-	const rqtQtyDisabled = useCallback(({ rowData }) => {
-		return (
-			(!!rowData.SOrdID && rowData.SOrdID !== "*") || !!rowData.SOrdQty
-		);
-	}, []);
+
 
 	const supplierNameDisabled = useCallback(({ rowData }) => {
 		return !!rowData.SOrdID && rowData.SOrdID !== "*";
@@ -276,7 +413,8 @@ export const useC02 = () => {
 		const { prod } = rowData;
 		rowData = {
 			...rowData,
-			["PackData_N"]: prod?.PackData_N || "",
+			["ProdData"]: prod?.ProdData || "",
+			["PackData_N"]: prod?.PackData || "",
 			["StockQty_N"]: prod?.StockQty || "",
 			["SRqtQty"]: "",
 		};
@@ -295,7 +433,7 @@ export const useC02 = () => {
 						.slice(operation.fromRowIndex, operation.toRowIndex)
 						.forEach((rowData, i) => {
 							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = prodGrid.gridData[rowIndex];
+							const oldRowData = grid.gridData[rowIndex];
 
 							let processedRowData = { ...rowData };
 
@@ -314,7 +452,7 @@ export const useC02 = () => {
 							newGridData[rowIndex] = processedRowData;
 						});
 				} else if (operation.type === "DELETE") {
-					checkFailed = prodGrid.gridData
+					checkFailed = grid.gridData
 						.slice(operation.fromRowIndex, operation.toRowIndex)
 						.some((rowData, i) => {
 							if (prodDisabled({ rowData })) {
@@ -326,14 +464,18 @@ export const useC02 = () => {
 							}
 							return false;
 						});
+				} else if (operation.type === "CREATE") {
+					console.log("dsg.CREATE");
+					// process CREATE here
+					gridMeta.toFirstColumn({ nextRow: true });
 				}
 			}
 			console.log("after changed", newGridData);
 			if (!checkFailed) {
-				prodGrid.setGridData(newGridData);
+				grid.setGridData(newGridData);
 			}
 		},
-		[handleGridProdChange, prodDisabled, prodGrid]
+		[grid, handleGridProdChange, prodDisabled, gridMeta]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -341,7 +483,7 @@ export const useC02 = () => {
 			console.log("onEditorSubmit", data);
 			const collected = C02.transformForSubmitting(
 				data,
-				prodGrid.gridData
+				grid.gridData
 			);
 			console.log("collected", collected);
 			if (crud.creating) {
@@ -357,7 +499,7 @@ export const useC02 = () => {
 			crud.updating,
 			handleCreate,
 			handleUpdate,
-			prodGrid.gridData,
+			grid.gridData,
 		]
 	);
 
@@ -390,7 +532,7 @@ export const useC02 = () => {
 			try {
 				reviewAction.start();
 				const { status, error } = await httpPatchAsync({
-					url: `v1/purchase/requests/reviewed`,
+					url: `v1/purchase/req-orders/reviewed`,
 					data: {
 						RqtID: crud.itemData.RqtID,
 						Checker: 2,
@@ -445,7 +587,7 @@ export const useC02 = () => {
 			try {
 				rejectAction.start();
 				const { status, error } = await httpPatchAsync({
-					url: `v1/purchase/requests/reviewed`,
+					url: `v1/purchase/req-orders/reviewed`,
 					data: {
 						RqtID: crud.itemData.RqtID,
 						Checker: 1,
@@ -530,7 +672,10 @@ export const useC02 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
-		...prodGrid,
+		...grid,
+		...gridMeta,
+		grid,
+		gridMeta,
 		handleGridChange,
 		getRowKey,
 		prodDisabled,
@@ -552,5 +697,6 @@ export const useC02 = () => {
 		// 推播
 		selectedItem,
 		selectById,
+		...sideDrawer
 	};
 };

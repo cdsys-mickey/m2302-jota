@@ -7,6 +7,7 @@ import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { useMemo } from "react";
 import Types from "../../shared-modules/sd-types";
 import FlexBox from "../FlexBox";
+import { now } from "lodash";
 
 /**
  * 增加 label 功能的 Typography
@@ -17,15 +18,20 @@ const FormFieldLabel = memo(
 			label,
 			children,
 			labelProps,
-			labelStyles = MuiStyles.DEFAULT_FORM_LABEL_STYLES,
+			labelStyles,
 			typographySx,
 			emptyText = "(空白)",
 			sx = [],
 			flex = false,
 			title,
 			arrow,
+			noWrap = false,
 			...rest
 		} = props;
+
+		const _labelStyles = useMemo(() => {
+			return labelStyles || (noWrap ? MuiStyles.FORM_LABEL_STYLES_NOWRAP : MuiStyles.DEFAULT_FORM_LABEL_STYLES)
+		}, [labelStyles, noWrap]);
 
 		const useEmptyText = useMemo(() => {
 			return !children && emptyText;
@@ -50,43 +56,44 @@ const FormFieldLabel = memo(
 
 		return (
 			<Tooltip title={title} arrow={arrow}>
-				<BoxComponent ref={ref} {...defaultBoxProps}>
+				<BoxComponent ref={ref} {...defaultBoxProps} sx={[
+					{},
+					_labelStyles,
+					...(Array.isArray(sx) ? sx : [sx]),
+				]}>
 					{label && (
 						<FormLabelEx
 							{...labelProps}
-							sx={[
-								{},
-								labelStyles,
-								...(Array.isArray(sx) ? sx : [sx]),
-							]}>
+						>
 							{label}
 						</FormLabelEx>
 					)}
 
 					{Types.isString(body)
 						? body?.split("\n").map((s, index) => (
-								<Typography
-									key={`${s}_${index}`}
-									color="text.secondary"
-									variant={typoVariant}
-									sx={[
-										(theme) => ({
-											fontWeight: 600,
-											marginLeft: theme.spacing(
-												flex ? 1 : 0.5
-											),
-											...(!useEmptyText && {
-												color: theme.palette.primary
-													.main,
-											}),
+							<Typography
+								key={`${s}_${index}`}
+								color="text.secondary"
+								variant={typoVariant}
+								sx={[
+									(theme) => ({
+										marginTop: theme.spacing(-0.5),
+										fontWeight: 400,
+										marginLeft: theme.spacing(
+											flex ? 1 : 0.5
+										),
+										...(!useEmptyText && {
+											color: theme.palette.primary
+												.main,
 										}),
-										...(Array.isArray(typographySx)
-											? typographySx
-											: [typographySx]),
-									]}>
-									{s}
-								</Typography>
-						  ))
+									}),
+									...(Array.isArray(typographySx)
+										? typographySx
+										: [typographySx]),
+								]}>
+								{s}
+							</Typography>
+						))
 						: body}
 				</BoxComponent>
 			</Tooltip>
@@ -106,6 +113,7 @@ FormFieldLabel.propTypes = {
 	typographySx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	flex: PropTypes.bool,
+	noWrap: PropTypes.bool
 };
 
 export default FormFieldLabel;

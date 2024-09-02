@@ -104,7 +104,7 @@ export const useA06 = ({ token, mode }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A06.transformForReading(payload);
+					const data = A06.transformForReading(payload.data[0]);
 
 					crud.doneReading({
 						data,

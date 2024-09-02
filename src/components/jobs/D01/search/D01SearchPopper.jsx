@@ -9,7 +9,7 @@ import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
 
 const D01SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -37,7 +37,7 @@ const D01SearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<ProdLinePickerContainer
+							<ProdLinePicker
 								name="pdline"
 								label="領料線別"
 							/>

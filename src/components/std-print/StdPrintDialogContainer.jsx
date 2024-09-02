@@ -9,11 +9,13 @@ import DialogEx from "../../shared-components/dialog/DialogEx";
 import StdPrintActionButtons from "./StdPrintActionButtons";
 import { StdPrintFormContainer } from "./StdPrintFormContainer";
 import { useWindowSize } from "../../shared-hooks/useWindowSize";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 
 export const StdPrintDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
-	const crud = useContext(CrudContext);
+	// const crud = useContext(CrudContext);
+	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const stdPrint = useContext(StdPrintContext);
 	const { loadDef, printing } = stdPrint;
 	const form = useForm();
@@ -24,9 +26,9 @@ export const StdPrintDialogContainer = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		if (printing) {
-			loadDef({ params: crud.paramsRef.current });
+			loadDef({ params: listLoaderCtx.paramsRef.current });
 		}
-	}, [crud.paramsRef, loadDef, printing]);
+	}, [listLoaderCtx.paramsRef, loadDef, printing]);
 
 	return (
 		<FormProvider {...form}>

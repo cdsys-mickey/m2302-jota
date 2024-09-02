@@ -69,7 +69,7 @@ export const useInfiniteLoader = (props = {}) => {
 	);
 
 	/**
-	 * 必須使用 crud.paramsRef 來避免 re-render
+	 * 必須使用 listLoaderCtx.paramsRef 來避免 re-render
 	 */
 	const loadList = useCallback(
 		async ({

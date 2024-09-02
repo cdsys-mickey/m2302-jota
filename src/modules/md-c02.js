@@ -34,7 +34,7 @@ const transformForGrid = (data) => {
 				ProdID: SProdID,
 				ProdData: ProdData_N,
 			},
-
+			ProdData: ProdData_N,
 			...rest,
 		})) || []
 	);

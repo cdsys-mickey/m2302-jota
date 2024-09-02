@@ -10,7 +10,7 @@ import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { D02ProdGridContainer } from "./prod-grid/D02ProdGridContainer";
-import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
 
 const D02DialogForm = memo((props) => {
 	const {
@@ -81,7 +81,7 @@ const D02DialogForm = memo((props) => {
 
 						<Grid item xs={24} sm={24} md={6}>
 							{/* <OptionPickerProvider> */}
-							<ProdLinePickerContainer
+							<ProdLinePicker
 								typo
 								label="退料線別"
 								name="pdline"

@@ -45,7 +45,9 @@ export const B06FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta}>
-				<B06Form onSubmit={handleSubmit} />
+				<form onSubmit={handleSubmit}>
+					<B06Form />
+				</form>
 			</FormMetaProvider>
 		</FormProvider>
 	);

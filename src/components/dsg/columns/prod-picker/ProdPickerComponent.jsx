@@ -95,8 +95,8 @@ const ProdPickerComponent = memo((props) => {
 			onChange={handleChange}
 			// onKeyDown={handleKeyDown}
 			// onClose={handleClose}
-			placeholder="商品"
-			typeToSearchText="輸入編號、條碼或名稱搜尋..."
+			// placeholder="輸入編號、條碼或名稱搜尋"
+			// typeToSearchText="輸入編號、條碼或名稱搜尋..."
 			filterByServer
 			queryRequired
 			// DSG 專屬

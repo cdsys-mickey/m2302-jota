@@ -8,7 +8,9 @@ import B05DialogForm from "./B05DialogForm";
 import { useEffect } from "react";
 import { B05DialogToolbarContainer } from "./toolbar/B05DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
-import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { Drawer } from "@mui/material";
 
 export const B05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -60,6 +62,17 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 		b05.onEditorSubmitError
 	);
 
+	const formMeta = useFormMeta(
+		`
+		InqDate,
+		employee,
+		supplier,
+		`,
+		{
+			lastField: b05.handleLastField
+		}
+	);
+
 	useEffect(() => {
 		if (b05.itemDataReady) {
 			console.log("b05 form reset", b05.itemData);
@@ -96,7 +109,7 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 			{...rest}>
 			<FormProvider {...form}>
 				<form onSubmit={handleSubmit}>
-					<FormMetaProvider {...b05.formMeta}>
+					<FormMetaProvider {...formMeta}>
 						<B05DialogForm
 							creating={b05.creating}
 							editing={b05.editing}
@@ -107,9 +120,11 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 							itemDataReady={b05.itemDataReady}
 							onSubmit={handleSubmit}
 						/>
+
 					</FormMetaProvider>
 				</form>
 			</FormProvider>
+
 		</DialogExContainer>
 	);
 });

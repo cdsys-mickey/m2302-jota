@@ -7,10 +7,13 @@ import { Fragment, forwardRef, memo } from "react";
 import { C02OutputModePickerContainer } from "./C02OutputModePickerContainer";
 import C02PrintButtonContainer from "./C02PrintButtonContainer";
 import { C02ReviewButtonContainer } from "./C02ReviewButtonContainer";
+import { IconButton, Tooltip } from "@mui/material";
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const C02DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onReview, onReject, onPrint, ...rest } =
+		const { onEdit, onDelete, onSideDrawerOpen, onReject, onPrint, ...rest } =
 			props;
 		return (
 			<Fragment ref={ref} {...rest}>
@@ -56,6 +59,11 @@ const C02DialogViewToolbar = memo(
 						編輯
 					</ResponsiveButton>
 				)}
+				<Tooltip title="詳細資訊">
+					<IconButton onClick={onSideDrawerOpen} size="small">
+						<HelpOutlineIcon />
+					</IconButton>
+				</Tooltip>
 			</Fragment>
 		);
 	})
@@ -67,6 +75,7 @@ C02DialogViewToolbar.propTypes = {
 	onReview: PropTypes.func,
 	onReject: PropTypes.func,
 	onPrint: PropTypes.func,
+	onSideDrawerOpen: PropTypes.func,
 };
 
 export default C02DialogViewToolbar;

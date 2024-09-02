@@ -42,6 +42,7 @@ const WebApiOptionPicker = memo(
 			// autoSelectSingleOption,
 			// Enter & Tab
 			// pressToFind,
+			inputParam,
 			findByInput,
 			disableOpenOnInput,
 			...rest
@@ -91,6 +92,7 @@ const WebApiOptionPicker = memo(
 			// autoSelectSingleOption,
 			// Enter & Tab
 			// pressToFind,
+			inputParam,
 			findByInput,
 			disableOpenOnInput,
 		});
@@ -161,6 +163,7 @@ WebApiOptionPicker.propTypes = {
 	// pressToFind: PropTypes.bool,
 	// debug: PropTypes.bool,
 	findByInput: PropTypes.func,
+	inputParam: PropTypes.string,
 };
 
 export default WebApiOptionPicker;

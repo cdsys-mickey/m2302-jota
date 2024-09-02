@@ -60,7 +60,7 @@ const transformGridForReading = (data) => {
 				ProdID: SProdID,
 				ProdData: ProdData_N,
 			},
-
+			ProdData: ProdData_N,
 			...rest,
 		})) || []
 	);
@@ -72,7 +72,7 @@ const transformGridForSubmitting = (gridData) => {
 		.map(({ Pkey, prod, ...rest }, index) => ({
 			Pkey: Pkey?.length < 36 ? "" : Pkey,
 			SProdID: prod?.ProdID || "",
-			ProdData_N: prod?.ProdData || "",
+			ProdData: prod?.ProdData || "",
 			...rest,
 			Seq: index + 1,
 		}));

@@ -13,9 +13,21 @@ import { useAction } from "../../shared-hooks/useAction";
 import { useMemo } from "react";
 import useHttpPost from "../../shared-hooks/useHttpPost";
 import { useToggle } from "../../shared-hooks/useToggle";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { SupplierPickerComponentContainer } from "@/components/dsg/columns/supplier-picker/SupplierPickerComponentContainer";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { nanoid } from "nanoid";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useC01 = () => {
 	const crud = useContext(CrudContext);
+	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
@@ -23,6 +35,9 @@ export const useC01 = () => {
 		token,
 		moduleId: "C01",
 	});
+
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	const [selected, setSelected] = useState();
 
@@ -43,15 +58,189 @@ export const useC01 = () => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/purchase/requests",
+		url: "v1/purchase/req-orders",
 		bearer: token,
 		initialFetchSize: 50,
 	});
 
-	const prodGrid = useDSG({
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			SOrdQty: null,
+			supplier: null,
+			SFactNa: "",
+			SOrdID: "*",
+		}),
+		[]
+	);
+
+	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
+		createRow
 	});
+
+	const prodDisabled = useCallback(({ rowData }) => {
+		return (
+			!!rowData.Pkey && rowData.Pkey.length === 36 && !!rowData.SRqtQty
+		);
+	}, []);
+
+	const supplierNameDisabled = useCallback(({ rowData }) => {
+		return rowData.SOrdID !== "*" || rowData.supplier?.FactID !== "*";
+	}, []);
+
+	const rqtQtyDisabled = useCallback(({ rowData }) => {
+		return !!rowData.Pkey;
+	}, []);
+
+	const orderQtyDisabled = useCallback(({ rowData }) => {
+		return rowData.SOrdID !== "*";
+	}, []);
+
+	const supplierDisabled = useCallback(({ rowData }) => {
+		return rowData.SOrdID !== "*";
+	}, []);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						selectOnFocus: true,
+						withStock: true,
+						triggerDelay: 300,
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: false,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				id: "SProdID",
+				title: "商品編號",
+				minWidth: 140,
+				maxWidth: 140,
+				disabled: !crud.editing || prodDisabled,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "單位",
+				minWidth: 60,
+				maxWidth: 60,
+				disabled: true,
+			},
+			{
+				...keyColumn("StockQty_N", createFloatColumn(2)),
+				title: "當下庫存",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: true,
+			},
+			{
+				...keyColumn("SRqtQty", createFloatColumn(2)),
+				title: "請購量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: !crud.editing || rqtQtyDisabled,
+			},
+			{
+				...keyColumn("SOrdQty", createFloatColumn(2)),
+				title: "採購量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: !crud.editing || orderQtyDisabled,
+			},
+			{
+				...keyColumn(
+					"supplier",
+					optionPickerColumn(SupplierPickerComponentContainer, {
+						name: "supplier",
+						selectOnFocus: true,
+						triggerDelay: 300,
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: false,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "供應商",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: !crud.editing || supplierDisabled,
+			},
+			{
+				...keyColumn(
+					"SFactNa",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "名稱",
+				grow: 2,
+				disabled: !crud.editing || supplierNameDisabled,
+			},
+			{
+				...keyColumn(
+					"SOrdID",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "採購單",
+				minWidth: 120,
+				disabled: true,
+			},
+		],
+		[crud.editing, orderQtyDisabled, prodDisabled, rqtQtyDisabled, supplierDisabled, supplierNameDisabled]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
 
 	// READ
 	const loadItem = useCallback(
@@ -76,7 +265,7 @@ export const useC01 = () => {
 					});
 					setSelected(data);
 
-					prodGrid.handleGridDataLoaded(data.prods);
+					grid.handleGridDataLoaded(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -84,7 +273,7 @@ export const useC01 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, prodGrid, token]
+		[crud, httpGetAsync, grid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -192,28 +381,6 @@ export const useC01 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const prodDisabled = useCallback(({ rowData }) => {
-		return (
-			!!rowData.Pkey && rowData.Pkey.length === 36 && !!rowData.SRqtQty
-		);
-	}, []);
-
-	const rqtQtyDisabled = useCallback(({ rowData }) => {
-		return !!rowData.Pkey;
-	}, []);
-
-	const orderQtyDisabled = useCallback(({ rowData }) => {
-		return rowData.SOrdID !== "*";
-	}, []);
-
-	const supplierDisabled = useCallback(({ rowData }) => {
-		return rowData.SOrdID !== "*";
-	}, []);
-
-	const supplierNameDisabled = useCallback(({ rowData }) => {
-		return rowData.SOrdID !== "*" || rowData.supplier?.FactID !== "*";
-	}, []);
-
 	const handleGridProdChange = useCallback(({ rowData, rowIndex }) => {
 		const { prod } = rowData;
 		console.log(`prod[${rowIndex}] changed`, prod);
@@ -221,6 +388,7 @@ export const useC01 = () => {
 
 		processedRowData = {
 			...processedRowData,
+			["ProdData"]: prod?.ProdData || "",
 			["PackData_N"]: prod?.PackData_N || "",
 			["StockQty_N"]: prod?.StockQty || "",
 		};
@@ -253,7 +421,7 @@ export const useC01 = () => {
 							const rowIndex = operation.fromRowIndex + i;
 
 							const { prod: oldProd, supplier: oldSupplier } =
-								prodGrid.gridData[rowIndex];
+								grid.gridData[rowIndex];
 
 							let processedRowData = { ...rowData };
 
@@ -274,7 +442,7 @@ export const useC01 = () => {
 							newGridData[rowIndex] = processedRowData;
 						});
 				} else if (operation.type === "DELETE") {
-					checkFailed = prodGrid.gridData
+					checkFailed = grid.gridData
 						.slice(operation.fromRowIndex, operation.toRowIndex)
 						// .forEach((rowData, i) => {
 						// 	// const { prod } = rowData;
@@ -296,16 +464,20 @@ export const useC01 = () => {
 							}
 							return false;
 						});
+				} else if (operation.type === "CREATE") {
+					console.log("dsg.CREATE");
+					// process CREATE here
+					gridMeta.toFirstColumn({ nextRow: true });
 				}
 			}
 			if (!checkFailed) {
 				console.log("after changed", newGridData);
-				prodGrid.setGridData(newGridData);
+				grid.setGridData(newGridData);
 			} else {
 				console.log("checkFailed");
 			}
 		},
-		[handleGridProdChange, handleGridSupplierChange, prodDisabled, prodGrid]
+		[handleGridProdChange, handleGridSupplierChange, prodDisabled, grid]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -313,7 +485,7 @@ export const useC01 = () => {
 			console.log("onEditorSubmit", data);
 			const collected = C01.transformForSubmitting(
 				data,
-				prodGrid.gridData
+				grid.gridData
 			);
 			console.log("collected", collected);
 			if (crud.updating) {
@@ -322,7 +494,7 @@ export const useC01 = () => {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
 		},
-		[crud.updating, handleUpdate, prodGrid.gridData]
+		[crud.updating, handleUpdate, grid.gridData]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -470,7 +642,7 @@ export const useC01 = () => {
 		async (data) => {
 			console.log("onTransformListSubmit", data);
 			console.log("params", {
-				...crud.paramsRef.current,
+				...listLoaderCtx.paramsRef.current,
 				empi: data.employee?.CodeID,
 			});
 
@@ -480,7 +652,7 @@ export const useC01 = () => {
 					url: "v1/purchase/req-to-orders/to-orders",
 					bearer: token,
 					params: {
-						...crud.paramsRef.current,
+						...listLoaderCtx.paramsRef.current,
 						empi: data.employee?.CodeID,
 					},
 				});
@@ -533,7 +705,11 @@ export const useC01 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
-		...prodGrid,
+		...grid,
+		...gridMeta,
+		createRow,
+		grid,
+		gridMeta,
 		handleGridChange,
 		getRowKey,
 		prodDisabled,
@@ -564,5 +740,6 @@ export const useC01 = () => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
+		...sideDrawer
 	};
 };

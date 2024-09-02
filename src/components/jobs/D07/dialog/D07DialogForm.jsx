@@ -10,7 +10,7 @@ import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { D07ProdGridContainer } from "./prod-grid/D07ProdGridContainer";
-import { ProdLinePickerContainer } from "../../../picker/ProdLinePickerContainer";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
 
 const D07DialogForm = memo((props) => {
 	const {

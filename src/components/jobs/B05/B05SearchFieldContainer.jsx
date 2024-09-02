@@ -5,6 +5,7 @@ import { useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import { B05Context } from "@/contexts/B05/B05Context";
+import { useMemo } from "react";
 
 export const B05SearchFieldContainer = (props) => {
 	const { name = "q", ...rest } = props;
@@ -13,6 +14,13 @@ export const B05SearchFieldContainer = (props) => {
 	const b05 = useContext(B05Context);
 
 	const inputRef = useRef(null);
+
+	const onSubmit = useMemo(() => {
+		return forms.handleSubmit(
+			b05.onSearchSubmit,
+			b05.onSearchSubmitError
+		)
+	}, [b05.onSearchSubmit, b05.onSearchSubmitError, forms]);
 
 	const searchField = useSearchField({
 		inputRef,
@@ -28,10 +36,7 @@ export const B05SearchFieldContainer = (props) => {
 
 	return (
 		<form
-			onSubmit={forms.handleSubmit(
-				b05.onSearchSubmit,
-				b05.onSearchSubmitError
-			)}>
+			onSubmit={onSubmit}>
 			<div ref={escRef}>
 				<ControlledSearchFieldContainer
 					autoFocus
@@ -47,7 +52,7 @@ export const B05SearchFieldContainer = (props) => {
 					onClear={searchField.handleClear}
 				/>
 			</div>
-		</form>
+		</form >
 	);
 };
 B05SearchFieldContainer.propTypes = {

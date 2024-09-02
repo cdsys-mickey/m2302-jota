@@ -22,6 +22,7 @@ export const B05QuoteGridContainer = (props) => {
 				readOnly={!b05.editing}
 				data={b05.gridData}
 				onChange={b05.handleGridChange}
+				onActiveCellChange={b05.handleActiveCellChange}
 				bearer={auth.token}
 				height={height - 330}
 				getRowKey={b05.getRowKey}

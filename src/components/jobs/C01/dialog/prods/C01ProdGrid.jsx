@@ -12,7 +12,8 @@ import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPicke
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { supplierIdPickerColumn } from "../../../../dsg/columns/supplier-picker/supplierIdPickerColumn";
+import { supplierIdPickerColumn } from "@/components/dsg/columns/supplier-picker/supplierIdPickerColumn";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -24,7 +25,7 @@ const C01ProdGrid = memo((props) => {
 		readOnly,
 		gridRef,
 		data,
-		handleGridChange,
+		// onChange,
 		getRowClassName,
 		height = 300,
 		prodDisabled,
@@ -34,112 +35,9 @@ const C01ProdGrid = memo((props) => {
 		supplierNameDisabled,
 		...rest
 	} = props;
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"prod",
-					prodPickerColumn({
-						name: "prod",
-						withStock: true,
-						triggerDelay: 100,
-					})
-				),
-				id: "SProdID",
-				title: "商品",
-				grow: 4,
-				disabled: readOnly || prodDisabled,
-			},
 
-			{
-				...keyColumn(
-					"PackData_N",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 60,
-				title: "包裝",
-				disabled: true,
-			},
-			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "當下庫存",
-				minWidth: 100,
-				grow: 1,
-				disabled: true,
-			},
-			{
-				...keyColumn("SRqtQty", createFloatColumn(2)),
-				title: "請購量",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly || rqtQtyDisabled,
-			},
-			{
-				...keyColumn("SOrdQty", createFloatColumn(2)),
-				title: "採購量",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly || orderQtyDisabled,
-			},
-			{
-				...keyColumn(
-					"supplier",
-					supplierIdPickerColumn({
-						name: "supplier",
-						triggerDelay: 100,
-						// optionLabelSize: "sm",
-					})
-				),
-				title: "供應商",
-				grow: 3,
-				disabled: readOnly || supplierDisabled,
-			},
-			{
-				...keyColumn(
-					"SFactNa",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "名稱",
-				grow: 3,
-				disabled: readOnly || supplierNameDisabled,
-			},
-			{
-				...keyColumn(
-					"SOrdID",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "採購單",
-				minWidth: 120,
-				disabled: true,
-			},
-		],
-		[
-			orderQtyDisabled,
-			prodDisabled,
-			readOnly,
-			rqtQtyDisabled,
-			supplierDisabled,
-			supplierNameDisabled,
-		]
-	);
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			SOrdQty: null,
-			SFactID: "",
-			SFactNa: "",
-			SOrdID: "*",
-		}),
-		[]
-	);
+
 	const duplicateRow = useCallback(
 		({ rowData }) => ({ ...rowData, Pkey: nanoid() }),
 
@@ -147,21 +45,23 @@ const C01ProdGrid = memo((props) => {
 	);
 
 	return (
-		<DynamicDataSheetGrid
+		<DSGGrid
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
 			// rowHeight={42}
 			value={data}
-			onChange={handleGridChange}
-			columns={columns}
+			// onChange={onChange}
+			// onActiveCellChange={onActiveCellChange}
+			// columns={columns}
 			addRowsComponent={DSGAddRowsToolbar}
 			disableExpandSelection
 			contextMenuComponent={ContextMenu}
-			createRow={createRow}
+			// createRow={createRow}
 			duplicateRow={duplicateRow}
-			rowClassName={getRowClassName}
+			// rowClassName={getRowClassName}
+			{...rest}
 		/>
 	);
 });

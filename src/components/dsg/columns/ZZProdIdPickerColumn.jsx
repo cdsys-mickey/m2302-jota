@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import { ProdIdPickerContainer } from "../../picker/ProdIdPickerContainer";
+import { ZZProdIdPickerContainer } from "../../picker/ZZProdIdPickerContainer";
 
 const arePropsEqual = (oldProps, newProps) => {
 	if (oldProps.ProdID === newProps.ProdID) {
@@ -75,7 +75,7 @@ const ZZProdIdPickerColumn = memo((props) => {
 	}, [focus]);
 
 	return (
-		<ProdIdPickerContainer
+		<ZZProdIdPickerContainer
 			name={name}
 			queryParam="qs"
 			label=""

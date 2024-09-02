@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import queryString from "query-string";
 import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
-export const ProdIdPickerContainer = (props) => {
+export const ZZProdIdPickerContainer = (props) => {
 	const {
 		name,
 		label = "商品編號",
@@ -50,7 +50,7 @@ export const ProdIdPickerContainer = (props) => {
 		/>
 	);
 };
-ProdIdPickerContainer.propTypes = {
+ZZProdIdPickerContainer.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
@@ -59,4 +59,4 @@ ProdIdPickerContainer.propTypes = {
 	withPurchasePackageName: PropTypes.bool,
 };
 
-ProdIdPickerContainer.displayName = "ProdIdPickerContainer";
+ZZProdIdPickerContainer.displayName = "ProdIdPickerContainer";

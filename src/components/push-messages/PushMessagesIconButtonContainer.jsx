@@ -12,8 +12,8 @@ export const PushMessagesIconButtonContainer = () => {
 
 	return (
 		<PushMessagesIconButton
-			unreadCount={messaging.unreadCount}
-			togglePopoverOpen={messaging.togglePopoverOpen}
+			unreadCount={messaging?.unreadCount}
+			togglePopoverOpen={messaging?.togglePopoverOpen}
 		/>
 	);
 };

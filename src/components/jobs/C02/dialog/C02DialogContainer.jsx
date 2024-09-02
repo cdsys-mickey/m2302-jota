@@ -1,13 +1,15 @@
 import { C02Context } from "@/contexts/C02/C02Context";
+import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useMemo } from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { forwardRef, useContext, useEffect, useMemo } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import C02DialogForm from "./C02DialogForm";
-import { useEffect } from "react";
 import { C02DialogToolbarContainer } from "./toolbar/C02DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
+import { useFormMeta } from "../../../../shared-contexts/form-meta/useFormMeta";
+import { useCallback } from "react";
+import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 
 export const C02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -41,10 +43,10 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 		return c02.creating
 			? c02.confirmQuitCreating
 			: c02.updating
-			? c02.confirmQuitUpdating
-			: c02.reading
-			? c02.reset
-			: null;
+				? c02.confirmQuitUpdating
+				: c02.reading
+					? c02.reset
+					: null;
 	}, [
 		c02.reset,
 		c02.confirmQuitCreating,
@@ -54,10 +56,28 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 		c02.updating,
 	]);
 
-	const handleSubmit = form.handleSubmit(
-		c02.onEditorSubmit,
-		c02.onEditorSubmitError
-	);
+	const handleSubmit = useMemo(() => {
+		return form.handleSubmit(
+			c02.onEditorSubmit,
+			c02.onEditorSubmitError
+		)
+	}, [c02.onEditorSubmit, c02.onEditorSubmitError, form]);
+
+	const handleLastField = useCallback(() => {
+		setTimeout(() => {
+			c02.gridMeta.setActiveCell({ col: 0, row: 0 });
+		});
+	}, [c02.gridMeta]);
+
+	const formMeta = useFormMeta(
+		`
+		RqtDate,
+		employee,
+		pdline,
+		`, {
+		lastField: handleLastField
+	}
+	)
 
 	useEffect(() => {
 		if (c02.itemDataReady) {
@@ -94,18 +114,21 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<form onSubmit={handleSubmit}>
-					<C02DialogForm
-						creating={c02.creating}
-						editing={c02.editing}
-						updating={c02.updating}
-						readWorking={c02.readWorking}
-						readError={c02.readError}
-						data={c02.itemData}
-						itemDataReady={c02.itemDataReady}
-						onSubmit={handleSubmit}
-					/>
-				</form>
+				<FormMetaProvider {...formMeta}>
+					<form onSubmit={handleSubmit}>
+						<C02DialogForm
+							reading={c02.reading}
+							creating={c02.creating}
+							editing={c02.editing}
+							updating={c02.updating}
+							readWorking={c02.readWorking}
+							readError={c02.readError}
+							data={c02.itemData}
+							itemDataReady={c02.itemDataReady}
+							onSubmit={handleSubmit}
+						/>
+					</form>
+				</FormMetaProvider>
 			</DialogExContainer>
 		</FormProvider>
 	);

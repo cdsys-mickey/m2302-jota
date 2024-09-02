@@ -58,9 +58,11 @@ export const C02DialogToolbarContainer = (props) => {
 		<C02DialogViewToolbar
 			onEdit={canEdit ? c02.promptUpdating : null}
 			onDelete={canDelete ? c02.confirmDelete : null}
-			onReview={canReview ? c02.promptReview : null}
+			// 移到 C02ReviewButtonContainer
+			// onReview={canReview ? c02.promptReview : null}
 			onReject={canReject ? c02.promptReject : null}
 			onPrint={c02.canPrint ? handlePrint : null}
+			onSideDrawerOpen={c02.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

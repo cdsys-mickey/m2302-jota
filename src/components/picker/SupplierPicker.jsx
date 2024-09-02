@@ -6,7 +6,7 @@ import { useCallback, useContext, useMemo } from "react";
 import Suppliers from "../../modules/md-suppliers";
 
 const SupplierPicker = (props) => {
-	const { label = "供應商", ...rest } = props;
+	const { forId, label = "供應商", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
@@ -24,11 +24,15 @@ const SupplierPicker = (props) => {
 	}, []);
 
 	const getOptionLabel = useCallback((option) => {
-		return Suppliers.getOptionLabel(option);
-	}, []);
+		return forId ? Suppliers.getOptionLabelForId(option) : Suppliers.getOptionLabel(option);
+	}, [forId]);
 
 	const getOptionKey = useCallback((option) => {
 		return Suppliers.getOptionKey(option);
+	}, []);
+
+	const renderOptionLabel = useCallback((option) => {
+		return Suppliers.renderOptionLabel(option);
 	}, []);
 
 	return (
@@ -42,6 +46,7 @@ const SupplierPicker = (props) => {
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
+			renderOptionLabel={renderOptionLabel}
 			getData={getData}
 			getOptionKey={getOptionKey}
 			notFoundText="廠商 ${id} 不存在"
@@ -53,6 +58,7 @@ const SupplierPicker = (props) => {
 SupplierPicker.displayName = "SupplierPicker";
 SupplierPicker.propTypes = {
 	label: PropTypes.string,
+	forId: PropTypes.bool
 };
 
 export default SupplierPicker;

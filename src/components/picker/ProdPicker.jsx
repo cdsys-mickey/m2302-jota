@@ -86,6 +86,8 @@ const ProdPicker = (props) => {
 			getTitle={getTitle}
 			stringify={stringify}
 			notFoundText="商品代號 ${id} 不存在"
+			placeholder="商品編號/條碼"
+			typeToSearchText="輸入編號、條碼或名稱搜尋..."
 			{...rest}
 		/>
 	);

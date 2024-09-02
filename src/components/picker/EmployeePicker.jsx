@@ -37,6 +37,7 @@ const EmployeePicker = (props) => {
 			isOptionEqualToValue={Employees.isOptionEqualToValue}
 			getData={getData}
 			getOptionKey={getOptionKey}
+			placeholder="員工編號"
 			notFoundText="員工 ${id} 不存在"
 			{...rest}
 		/>

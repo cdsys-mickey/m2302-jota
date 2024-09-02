@@ -1,12 +1,11 @@
+import FlexBox from "@/shared-components/FlexBox";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import LoadingTypography from "../../../../shared-components/LoadingTypography";
+import LoadingTypography from "@/shared-components/LoadingTypography";
 import { C01FetchResultLabelContainer } from "../C01FetchResultLabelContainer";
 import C01ListModePicker from "../C01ListModePicker";
 import { C01TransformButtonContainer } from "./C01TransformButtonContainer";
-import { Box } from "@mui/material";
-import FlexBox from "../../../../shared-components/FlexBox";
 
 const LeftButtons = memo(() => {
 	return (
@@ -17,12 +16,14 @@ const LeftButtons = memo(() => {
 				},
 			})}>
 			<C01ListModePicker
+				dense
 				name="listMode"
 				placeholder="篩選模式"
 				disableClearable
 				autoComplete
 				autoSelect
 				blurOnSelect
+				width="9rem"
 			/>
 			<C01TransformButtonContainer variant="contained" />
 		</FlexBox>

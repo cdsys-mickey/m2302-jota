@@ -10,8 +10,8 @@ export const optionPickerColumn = (CellComponent, opts = {}) => {
 				[opts.fullRowData]: null
 			} : null
 		},
-		copyValue: ({ rowData }) => rowData,
-		pasteValue: ({ value }) => value,
+		copyValue: ({ rowData }) => JSON.stringify(rowData),
+		pasteValue: ({ value }) => JSON.parse(value),
 		isCellEmpty: ({ rowData }) => false,
 	};
 };

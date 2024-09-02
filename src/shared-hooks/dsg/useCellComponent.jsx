@@ -15,14 +15,14 @@ export const useCellComponent = (props = {}) => {
 	} = props;
 
 	const nextCell = useCallback(
-		(cell, opts) => {
+		(cell, opts = {}) => {
 			if (!getNextCell) {
 				throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
 			}
 
 			const next = getNextCell(cell, opts);
-			if (next) {
-				setActiveCell(next);
+			if (next.field) {
+				setActiveCell(next.field);
 			} else {
 				if (typeof lastCell === "string") {
 					toast.error(lastCell, {
@@ -36,10 +36,9 @@ export const useCellComponent = (props = {}) => {
 							setActiveCell(null);
 							break;
 						case DSGLastCellBehavior.CREATE_ROW:
-							insertRowBelow();
-							// setTimeout(() => {
-							// 	toFirstColumn();
-							// }, 50);
+							if (next.isForward) {
+								insertRowBelow();
+							}
 							break;
 					}
 				}

@@ -8,6 +8,8 @@ import C01DialogForm from "./C01DialogForm";
 import { useEffect } from "react";
 import { C01DialogToolbarContainer } from "./toolbar/C01DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const C01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -41,10 +43,10 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 		return c01.creating
 			? c01.confirmQuitCreating
 			: c01.updating
-			? c01.confirmQuitUpdating
-			: c01.reading
-			? c01.cancelAction
-			: null;
+				? c01.confirmQuitUpdating
+				: c01.reading
+					? c01.cancelAction
+					: null;
 	}, [
 		c01.cancelAction,
 		c01.confirmQuitCreating,
@@ -58,6 +60,12 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 		c01.onEditorSubmit,
 		c01.onEditorSubmitError
 	);
+
+	const formMeta = useFormMeta(
+		`
+		remark
+		`
+	)
 
 	useEffect(() => {
 		if (c01.itemDataReady) {
@@ -95,16 +103,18 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 				]}
 				{...rest}>
 				<form onSubmit={handleSubmit}>
-					<C01DialogForm
-						creating={c01.creating}
-						editing={c01.editing}
-						updating={c01.updating}
-						readWorking={c01.readWorking}
-						readError={c01.readError}
-						data={c01.itemData}
-						itemDataReady={c01.itemDataReady}
-						onSubmit={handleSubmit}
-					/>
+					<FormMetaProvider {...formMeta}>
+						<C01DialogForm
+							creating={c01.creating}
+							editing={c01.editing}
+							updating={c01.updating}
+							readWorking={c01.readWorking}
+							readError={c01.readError}
+							data={c01.itemData}
+							itemDataReady={c01.itemDataReady}
+							onSubmit={handleSubmit}
+						/>
+					</FormMetaProvider>
 				</form>
 			</DialogExContainer>
 		</FormProvider>

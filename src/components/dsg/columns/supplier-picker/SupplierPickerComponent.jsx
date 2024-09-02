@@ -1,11 +1,12 @@
+import SupplierPicker from "@/components/picker/SupplierPicker";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
-import SupplierPicker from "@/components/picker/SupplierPicker";
+import { memo, useRef } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.SFactID,active,disabled,focus",
+		fields: "rowData.FactID,active,disabled,focus",
 		debug: true,
 	});
 };
@@ -16,8 +17,8 @@ const SupplierPickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		// rowIndex,
-		// columnIndex,
+		rowIndex,
+		columnIndex,
 		columnData,
 		// Cell state
 		active,
@@ -25,63 +26,67 @@ const SupplierPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		// insertRowBelow,
+		insertRowBelow,
 		// duplicateRow,
 		// deleteRow,
 		// getContextMenuItems,
 	} = props;
 
-	const { hideControlsOnActive, ...rest } = columnData;
-
-	// console.log(
-	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
-	// 	rowData
-	// );
-
-	const ref = useRef();
 	const rowDataRef = useRef(rowData);
 	rowDataRef.current = rowData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => {
-				stopEditing({ nextRow: false });
-			}, 50);
-			// stopEditing({ nextRow: false });
-			// ref.current?.blur();
-		},
-		[setRowData, stopEditing]
-	);
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		readOnly,
+		...rest
+	} = columnData;
 
-	// const handleClose = useCallback(() => {
-	// 	stopEditing({ nextRow: false });
-	// 	console.log("handleClose");
-	// 	// ref.current?.blur();
-	// }, [stopEditing]);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+		readOnly
+	});
 
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
-
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
 		<SupplierPicker
 			queryParam="qs"
 			label=""
-			hideBorders
 			inputRef={ref}
 			disabled={disabled}
 			value={rowData}
@@ -93,12 +98,16 @@ const SupplierPickerComponent = memo((props) => {
 			// queryRequired
 			// virtualize
 			// DSG 專屬屬性
+			cellComponentRef={cellComponentRef}
+			cell={cell}
 			dense
+			hideControls={hideControls}
+			hideBorders
+			disableFadeOut
+			toastError
 			// disablePointerEvents={!focus}
 			// hidePopupIndicator={!active}
-			hideControls={hideControls}
 			// hidePlaceholder={!active}
-			disableFadeOut
 			{...rest}
 		/>
 	);

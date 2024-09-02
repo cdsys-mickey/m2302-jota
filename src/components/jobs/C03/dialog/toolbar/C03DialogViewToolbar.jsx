@@ -6,10 +6,12 @@ import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import { C03OutputModePickerContainer } from "./C03OutputModePickerContainer";
 import C03PrintButtonContainer from "./C03PrintButtonContainer";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { IconButton, Tooltip } from "@mui/material";
 
 const C03DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onReview, onReject, onPrint, ...rest } =
+		const { onEdit, onDelete, onReview, onReject, onPrint, onSideDrawerOpen, ...rest } =
 			props;
 		return (
 			<Fragment ref={ref} {...rest}>
@@ -54,6 +56,12 @@ const C03DialogViewToolbar = memo(
 						編輯
 					</ResponsiveButton>
 				)}
+
+				<Tooltip title="詳細資訊">
+					<IconButton onClick={onSideDrawerOpen} size="small">
+						<HelpOutlineIcon />
+					</IconButton>
+				</Tooltip>
 			</Fragment>
 		);
 	})
@@ -65,6 +73,7 @@ C03DialogViewToolbar.propTypes = {
 	onReview: PropTypes.func,
 	onReject: PropTypes.func,
 	onPrint: PropTypes.func,
+	onSideDrawerOpen: PropTypes.func,
 };
 
 export default C03DialogViewToolbar;

@@ -39,9 +39,9 @@ const A20Form = memo((props) => {
 			{readError && <FormErrorBox error={readError} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
-					<FormSectionTitle>關連貨品基本資料</FormSectionTitle>
+					<FormSectionTitle>基本資料</FormSectionTitle>
 					{/* <FormSectionBox pt={editing ? 1.5 : 0.5} pb={editing ? 0 : 1} mb={2} px={1}> */}
-					<FormSectionBox editing={editing}>
+					<FormSectionBox editing={editing} pb={0}>
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<ProdPicker

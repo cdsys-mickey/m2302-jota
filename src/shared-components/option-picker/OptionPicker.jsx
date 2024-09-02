@@ -412,7 +412,10 @@ const OptionPicker = memo(
 
 		const handleBlur = useCallback(
 			async (e) => {
-				if (!findByInput) {
+				// if (!findByInput) {
+				// 	return;
+				// }
+				if (_open || (!inFormMeta && !inDSG)) {
 					return;
 				}
 				e.preventDefault();
@@ -429,7 +432,7 @@ const OptionPicker = memo(
 					}
 				}
 			},
-			[findByInput, inputNotFound, refocus]
+			[_open, findByInput, inDSG, inFormMeta, inputNotFound, refocus]
 		);
 
 		const renderNormalInput = useCallback(
@@ -439,7 +442,8 @@ const OptionPicker = memo(
 				return (
 					<TextField
 						required={required}
-						label={dense ? "" : label}
+						label={label}
+						// label={dense ? "" : label}
 						size={size}
 						fullWidth={fullWidth}
 						error={error}
@@ -478,27 +482,7 @@ const OptionPicker = memo(
 					/>
 				);
 			},
-			[
-				InputLabelProps,
-				InputProps,
-				TextFieldProps,
-				autoFocus,
-				dense,
-				error,
-				fullWidth,
-				handleBlur,
-				handleInputChange,
-				handleKeyDown,
-				helperText,
-				hideControls,
-				inputProps,
-				label,
-				labelShrink,
-				placeholder,
-				required,
-				size,
-				variant,
-			]
+			[InputLabelProps, InputProps, TextFieldProps, autoFocus, error, fullWidth, handleBlur, handleInputChange, handleKeyDown, helperText, hideControls, inputProps, label, labelShrink, placeholder, required, size, variant]
 		);
 
 		const renderDndInput = useCallback(

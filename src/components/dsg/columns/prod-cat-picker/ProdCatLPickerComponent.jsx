@@ -2,7 +2,7 @@ import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComp
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useMemo, useRef } from "react";
-import { ProdCatLPickerContainer } from "../../../picker/ProdCatLPickerContainer";
+import { ZZProdCatLPickerContainer } from "../../../picker/ZZProdCatLPickerContainer";
 import ProdCatLPicker from "../../../picker/ProdCatLPicker";
 
 const arePropsEqual = (oldProps, newProps) => {

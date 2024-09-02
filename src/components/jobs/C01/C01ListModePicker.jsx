@@ -5,14 +5,14 @@ import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPic
 
 const C01ListModePicker = memo(
 	forwardRef((props, ref) => {
-		const { ...rest } = props;
+		const { label = "", ...rest } = props;
 
 		return (
 			<OptionPickerWrapper
+				label={label}
 				ref={ref}
-				width="9rem"
-				dense
-				label=""
+				// width="9rem"
+				// dense
 				options={C01.options}
 				getOptionLabel={C01.getOptionLabel}
 				isOptionEqualToValue={C01.isOptionEqualToValue}
