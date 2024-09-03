@@ -2,6 +2,7 @@ import Colors from "./md-colors";
 
 const COOKIE_MODE = "md";
 const COOKIE_ACCOUNT = "ac";
+// const COOKIE_LOGKEY = "m2302-token";
 const COOKIE_LOGKEY = "LogKey";
 const COOKIE_REMEMBER_ME = "rememberMe";
 

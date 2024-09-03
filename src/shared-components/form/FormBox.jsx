@@ -10,7 +10,7 @@ const FormBox = styled(Box, {
 		fontSize: "105%",
 	},
 	"& .MuiInputLabel-shrink": {
-		fontSize: "110%",
+		fontSize: "115%",
 		fontWeight: 600,
 		left: "-2px",
 	},

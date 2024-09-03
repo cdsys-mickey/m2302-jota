@@ -84,7 +84,7 @@ export const useC03 = () => {
 	);
 
 	const sNotQtyDisabled = useCallback(({ rowData }) => {
-		return Number(rowData?.SNotQty) <= 0;
+		return rowData?.SNotQty && Number(rowData?.SNotQty) <= 0;
 	}, []);
 
 	const supplierPickerDisabled = useMemo(() => {
@@ -178,7 +178,6 @@ export const useC03 = () => {
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "單價",
 				minWidth: 100,
-				grow: 1,
 				disabled: !crud.editing || spriceDisabled,
 			},
 			{
@@ -254,7 +253,8 @@ export const useC03 = () => {
 		const data = {
 			OrdDate: today,
 			ArrDate: addDays(today, 7),
-			prods: grid.fillRows({ createRow }),
+			squared: C03.getSquaredOptionById(C03.SquaredState.NONE),
+			prods: grid.fillRows({ createRow, length: 10 }),
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.prods);
@@ -562,6 +562,7 @@ export const useC03 = () => {
 			rowData?.prod?.ProdID,
 			{ getValues }
 		) : null;
+
 		return {
 			...rowData,
 			["ProdData"]: rowData.prod?.ProdData || "",

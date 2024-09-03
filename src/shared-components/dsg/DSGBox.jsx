@@ -33,6 +33,10 @@ const DSGBox = styled(Box, {
 			opacity: 0,
 		},
 	}),
+	borderTop: "1px solid rgba(0,0,0,0.1)",
+	borderLeft: "1px solid rgba(0,0,0,0.1)",
+	borderRight: "1px solid rgba(0,0,0,0.25)",
+	borderBottom: "1px solid rgba(0,0,0,0.25)",
 }));
 
 export default DSGBox;

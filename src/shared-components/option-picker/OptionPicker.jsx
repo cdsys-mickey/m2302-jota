@@ -96,7 +96,7 @@ const OptionPicker = memo(
 			focusedBackgroundColor = "#b6f0ff",
 			// Popper open 控制
 			// selectNext = false,
-			focusDelay = 20,
+			// focusDelay = 20,
 			open,
 			onOpen,
 			onClose,
@@ -129,7 +129,7 @@ const OptionPicker = memo(
 			inFormMeta,
 			nextField,
 			disableEnter,
-			// getNextField,
+			emptyId,
 			isFieldDisabled,
 			setFocus,
 			...rest
@@ -150,6 +150,7 @@ const OptionPicker = memo(
 		// OPEN Control
 		const asyncRef = useRef({
 			dirty: false,
+			skipBlur: false
 		});
 		const innerInputRef = useRef();
 		useImperativeHandle(inputRef, () => innerInputRef.current);
@@ -158,13 +159,18 @@ const OptionPicker = memo(
 
 		const handleInputChange = useCallback(
 			(event) => {
-				const input = event.target.value;
-				// console.log("handleInputChange", input);
-				if (input) {
-					asyncRef.current.dirty = true;
-				} else {
-					asyncRef.current.dirty = false;
-				}
+				// const input = event.target.value;
+				// console.log(`handleInputChange: "${input}"`);
+				// 原本輸入框刪到空白則取消 dirty 狀態,
+				// 但為了支援空 id, 因此這裡改成允許空白時保留 dirty 狀態
+				asyncRef.current.dirty = true;
+				// if (input) {
+				// 	asyncRef.current.dirty = true;
+				// } else {
+				// 	if (!emptyId) {
+				// 		asyncRef.current.dirty = false;
+				// 	}
+				// }
 
 				if (onInputChange) {
 					onInputChange(event);
@@ -297,6 +303,7 @@ const OptionPicker = memo(
 
 		const handleEnter = useCallback(
 			async (e, opts = {}) => {
+				asyncRef.current.skipBlur = true;
 				console.log("handleEnter", e);
 				const { validate = false, } = opts;
 				// console.log("handleEnter", event);
@@ -314,16 +321,16 @@ const OptionPicker = memo(
 				}
 
 				// dirty check 是為了避免 option label 把 id+name 當作 id
-				if (asyncRef.current.dirty && findByInput) {
+				// if ((asyncRef.current.dirty) && findByInput) {
+				const input = e.target.value;
+				if ((asyncRef.current.dirty) && findByInput) {
 					asyncRef.current.dirty = false;
-					const input = e.target.value;
+
 					const found = await findByInput(input);
 
 					// handleChange(e, found);
-					if (!found) {
+					if (!found && validate) {
 						inputNotFound(input);
-						// 沒找到則不往下傳遞給 DSGGrid
-						// e.stopPropagation();
 						return;
 					}
 					// 有改變會透過 ChangeTracking 觸發, 
@@ -354,7 +361,7 @@ const OptionPicker = memo(
 				}
 				// nextCellOrField(e);
 			},
-			[findByInput, _open, inFormMeta, inDSG, value, onChange, inputNotFound, nextCellOrField, getError, name, setError]
+			[_open, inFormMeta, inDSG, findByInput, emptyId, value, onChange, inputNotFound, nextCellOrField, getError, name, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -412,9 +419,12 @@ const OptionPicker = memo(
 
 		const handleBlur = useCallback(
 			async (e) => {
-				// if (!findByInput) {
-				// 	return;
-				// }
+				if (asyncRef.current.skipBlur) {
+					asyncRef.current.skipBlur = false;
+					return;
+				}
+				asyncRef.current.skipBlur = false;
+
 				if (_open || (!inFormMeta && !inDSG)) {
 					return;
 				}
@@ -457,7 +467,7 @@ const OptionPicker = memo(
 						// onChange={onInputChange}
 						onChange={handleInputChange}
 						onKeyDown={handleKeyDown}
-						onBlur={handleBlur}
+						// onBlur={handleBlur}
 						{...props}
 						InputProps={{
 							...props.InputProps,
@@ -730,10 +740,14 @@ const OptionPicker = memo(
 
 
 		useChangeTracking(() => {
-			if (nextCellOrField && value) {
+			console.log(`${name} changed`, value);
+			// if (nextCellOrField && (value || emptyId)) {
+			// 當選項改變, 且有值, 且非 multiple
+			if (nextCellOrField && value && !multiple) {
+				// if (nextCellOrField) {
 				nextCellOrField();
 			}
-		}, [value]);
+		}, [value, emptyId]);
 
 		return (
 			<OptionPickerBox
@@ -924,6 +938,7 @@ OptionPicker.propTypes = {
 	inDSG: PropTypes.bool,
 	inFormMeta: PropTypes.bool,
 	disableEnter: PropTypes.bool,
+	emptyId: PropTypes.bool,
 	cellComponentRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 export default OptionPicker;

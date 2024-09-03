@@ -13,6 +13,7 @@ const transformGridForReading = (data) => {
 						ProdID: SProdID,
 						ProdData: ProdData_N,
 					},
+					ProdData: ProdData_N,
 					SExpDate: SExpDate ? Forms.parseDate(SExpDate) : "",
 					SOrdID,
 					ordId,

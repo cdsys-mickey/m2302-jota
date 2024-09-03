@@ -21,6 +21,7 @@ const ProdCatSPicker = (props) => {
 		return disabled ? null : `v1/prod/s-cats/${catL?.LClas},${catM?.MClas}`;
 	}, [catL?.LClas, catM?.MClas, disabled]);
 
+	// 中分類清空則同步
 	useChangeTracking(() => {
 		if (!catM) {
 			setValue(name, null);

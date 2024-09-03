@@ -82,7 +82,7 @@ export const useDSG = ({
 	);
 
 	const fillRows = useCallback(
-		({ createRow, data, length = 8 }) => {
+		({ createRow, data, length = 10 }) => {
 			const createRowStub = createRow || _createRow;
 			if (!createRowStub) {
 				throw new Error("未提供 createRow");

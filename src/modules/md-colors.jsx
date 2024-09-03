@@ -40,7 +40,9 @@ const Colors = {
 	PURPLE: "#7e5a9f",
 	YELLOW: "yellow",
 	DISABLED: grey[300],
-	DIALOG_BG: "rgb(238 238 238)",
+	DIALOG_BG: "rgb(235 235 235)",
+	// DIALOG_BG: "rgb(228 228 228)",
+
 };
 
 export default Colors;

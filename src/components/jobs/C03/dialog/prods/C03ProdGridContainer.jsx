@@ -22,34 +22,34 @@ export const C03ProdGridContainer = (props) => {
 		});
 	}, [c03, form.getValues, form.setValue]);
 
-	const supplier = useWatch({
-		name: "supplier",
-		control: form.control
-	})
+	// const supplier = useWatch({
+	// 	name: "supplier",
+	// 	control: form.control
+	// })
 
-	const ordDate = useWatch({
-		name: "OrdDate",
-		control: form.control
-	})
+	// const ordDate = useWatch({
+	// 	name: "OrdDate",
+	// 	control: form.control
+	// })
 
-	const readOnly = useMemo(() => {
-		return !c03.editing || !supplier || ordDate;
-	}, [c03.editing, ordDate, supplier]);
+	// const readOnly = useMemo(() => {
+	// 	return !c03.editing || !supplier || ordDate;
+	// }, [c03.editing, ordDate, supplier]);
 
 	return (
 		<DSGContext.Provider value={{
 			...c03.grid,
 			...c03.gridMeta,
-			readOnly
+			readOnly: !c03.editing
 		}}>
 			<C03ProdGrid
 				gridRef={c03.setGridRef}
-				// readOnly={!c03.editing}
-				readOnly={readOnly}
+				readOnly={!c03.editing}
+				// readOnly={readOnly}
 				data={c03.gridData || []}
 
 				bearer={auth.token}
-				height={c03.editing ? height - 360 : height - 408}
+				height={c03.editing ? height - 358 : height - 408}
 				getRowKey={c03.getRowKey}
 				spriceDisabled={c03.spriceDisabled}
 				sqtyDisabled={c03.sqtyDisabled}

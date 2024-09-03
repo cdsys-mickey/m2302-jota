@@ -11,13 +11,15 @@ const C03SquaredPicker = memo(
 			<OptionPickerWrapper
 				ref={ref}
 				fullWidth
-				required
+				// required
 				disableClearable
 				label=""
 				options={C03.squaredOptions}
 				getOptionLabel={C03.getSquaredOptionLabel}
 				isOptionEqualToValue={C03.isOptionEqualToValue}
 				getOptionDisabled={C03.getSquaredOptionDisabled}
+				findByInput={C03.findSquaredOptionByInput}
+				emptyId
 				{...rest}
 			/>
 		);

@@ -23,6 +23,10 @@ const getSquaredOptionById = (id) => {
 	return squaredOptions.find((o) => o.id === id);
 };
 
+const findSquaredOptionByInput = (s) => {
+	return squaredOptions.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
+};
+
 const getSquaredOptionDisabled = (option) => {
 	return option.id === SquaredState.SQUARED;
 };
@@ -177,6 +181,7 @@ const C03 = {
 	getSquaredOptionLabel,
 	getSquaredOptionById,
 	getSquaredOptionDisabled,
+	findSquaredOptionByInput,
 };
 
 export default C03;

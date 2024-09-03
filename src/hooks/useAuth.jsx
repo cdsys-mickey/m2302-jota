@@ -92,7 +92,7 @@ export const useAuth = () => {
 					validating: true,
 				}));
 				// 檢查 cookie
-				const logKey = Cookies.get("LogKey");
+				const logKey = Cookies.get(Auth.COOKIE_LOGKEY);
 				if (!logKey) {
 					toast.error("您尚未登入");
 					if (doRedirect) {
@@ -152,10 +152,8 @@ export const useAuth = () => {
 					}
 					if (doRedirect) {
 						toast.success(
-							`${jwtPayload.entity.LoginName || "(帳號)"} / ${
-								jwtPayload.entity.UserName || ""
-							} 已成功${switching ? "切換" : "登入"}到${
-								jwtPayload.entity.CurDeptName
+							`${jwtPayload.entity.LoginName || "(帳號)"} / ${jwtPayload.entity.UserName || ""
+							} 已成功${switching ? "切換" : "登入"}到${jwtPayload.entity.CurDeptName
 							}`
 						);
 					}
@@ -206,7 +204,7 @@ export const useAuth = () => {
 				bearer: state.token,
 			});
 			toast.success("您已成功登出");
-			Cookies.remove("LogKey");
+			Cookies.remove(Auth.COOKIE_LOGKEY);
 		} catch (err) {
 			console.error("handleSignOut.failed", err);
 		}
@@ -242,8 +240,7 @@ export const useAuth = () => {
 					});
 					deptSwitchAction.clear();
 					toast.success(
-						`已成功切換至 ${
-							data?.newDept?.DeptName || data?.newDept?.AbbrName
+						`已成功切換至 ${data?.newDept?.DeptName || data?.newDept?.AbbrName
 						}`
 					);
 				} else {

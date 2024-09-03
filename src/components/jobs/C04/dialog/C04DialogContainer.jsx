@@ -7,6 +7,9 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C04DialogForm from "./C04DialogForm";
 import { C04DialogToolbarContainer } from "./toolbar/C04DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useCallback } from "react";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const C04DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -44,10 +47,10 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		return c04.creating
 			? c04.confirmQuitCreating
 			: c04.updating
-			? c04.confirmQuitUpdating
-			: c04.reading
-			? c04.cancelAction
-			: null;
+				? c04.confirmQuitUpdating
+				: c04.reading
+					? c04.cancelAction
+					: null;
 	}, [
 		c04.cancelAction,
 		c04.confirmQuitCreating,
@@ -71,6 +74,33 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		c04.onLoadProdsSubmit({ setValue: form.setValue }),
 		c04.onLoadProdsSubmitError
 	);
+
+	const supplierNameDisable = useMemo(() => {
+		return c04.isSupplierNameDisabled(supplier)
+	}, [c04, supplier]);
+
+	const isFieldDisabled = useCallback((field) => {
+		switch (field.name) {
+			case "FactData":
+				return supplierNameDisable;
+			default:
+				return false;
+		}
+	}, [supplierNameDisable]);
+
+	const formMeta = useFormMeta(
+		`
+		GinDate,
+		employee,
+		supplier,
+		FactData,
+		Uniform,
+		TaxType,
+		InvNo,
+		FactAddr,
+		purchaseOrders
+		`
+	)
 
 	useEffect(() => {
 		if (c04.itemDataReady) {
@@ -107,41 +137,43 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<C04DialogForm
-					onSubmit={handleSubmit}
-					creating={c04.creating}
-					editing={c04.editing}
-					updating={c04.updating}
-					readWorking={c04.readWorking}
-					readError={c04.readError}
-					data={c04.itemData}
-					itemDataReady={c04.itemDataReady}
-					handleSupplierChanged={c04.handleSupplierChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-						// handleRefreshGridSubmit,
-					})}
-					handleRstDateChanged={c04.handleRstDateChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-						// handleRefreshGridSubmit,
-					})}
-					handlePurchaseOrdersChanged={c04.handlePurchaseOrdersChanged(
-						{
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
+					<C04DialogForm
+						onSubmit={handleSubmit}
+						creating={c04.creating}
+						editing={c04.editing}
+						updating={c04.updating}
+						readWorking={c04.readWorking}
+						readError={c04.readError}
+						data={c04.itemData}
+						itemDataReady={c04.itemDataReady}
+						handleSupplierChanged={c04.handleSupplierChanged({
 							setValue: form.setValue,
 							getValues: form.getValues,
-						}
-					)}
-					supplier={supplier}
-					isSupplierNameDisabled={c04.isSupplierNameDisabled}
-					purchaseOrdersDisabled={c04.purchaseOrdersDisabled}
-					// handleRefreshGridSubmit={handleRefreshGridSubmit}
-					handleLoadProdsSubmit={handleLoadProdsSubmit}
-					handleTaxTypeChanged={c04.handleTaxTypeChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
-				/>
+							// handleRefreshGridSubmit,
+						})}
+						handleRstDateChanged={c04.handleRstDateChanged({
+							setValue: form.setValue,
+							getValues: form.getValues,
+							// handleRefreshGridSubmit,
+						})}
+						handlePurchaseOrdersChanged={c04.handlePurchaseOrdersChanged(
+							{
+								setValue: form.setValue,
+								getValues: form.getValues,
+							}
+						)}
+						supplier={supplier}
+						isSupplierNameDisabled={c04.isSupplierNameDisabled}
+						purchaseOrdersDisabled={c04.purchaseOrdersDisabled}
+						// handleRefreshGridSubmit={handleRefreshGridSubmit}
+						handleLoadProdsSubmit={handleLoadProdsSubmit}
+						handleTaxTypeChanged={c04.handleTaxTypeChanged({
+							setValue: form.setValue,
+							getValues: form.getValues,
+						})}
+					/>
+				</FormMetaProvider>
 			</DialogExContainer>
 		</FormProvider>
 	);

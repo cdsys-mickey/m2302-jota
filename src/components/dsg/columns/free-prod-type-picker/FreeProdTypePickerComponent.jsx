@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import FreeProdTypePicker from "@/components/picker/FreeProdTypePicker";
-import Objects from "../../../shared-modules/sd-objects";
+import Objects from "@/shared-modules/sd-objects";
 import { useMemo } from "react";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -32,34 +33,56 @@ const FreeProdTypePickerComponent = memo((props) => {
 		getContextMenuItems,
 	} = props;
 
-	const { hideControlsOnActive, ...rest } = columnData;
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
 
-	const ref = useRef();
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		nextCell,
+		setActiveCell,
+		readOnly,
+		...rest
+	} = columnData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log(`[${columnData?.name}].handleChange`, newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 50);
-		},
-		[columnData?.name, setRowData, stopEditing]
-	);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+		readOnly
+	});
 
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
-
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		nextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
 		<FreeProdTypePicker
@@ -70,14 +93,13 @@ const FreeProdTypePickerComponent = memo((props) => {
 			onChange={handleChange}
 			placeholder="試/贈/樣"
 			// DSG 專屬屬性
+			cellComponentRef={cellComponentRef}
 			dense
-			hideBorders
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!focus}
+			cell={cell}
 			hideControls={hideControls}
-			// hidePlaceholder={!active}
+			hideBorders
 			disableFadeOut
-			selectOnFocus
+			toastError
 			{...rest}
 		/>
 	);

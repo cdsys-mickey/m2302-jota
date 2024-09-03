@@ -6,6 +6,7 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useFormContext, useWatch } from "react-hook-form";
 import DSGBox from "../../../../../shared-components/dsg/DSGBox";
 import { useMemo } from "react";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 export const C04ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -24,7 +25,7 @@ export const C04ProdGridContainer = (props) => {
 		control: form.control,
 	});
 
-	const handleGridChange = useMemo(() => {
+	const onChange = useMemo(() => {
 		return c04.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
@@ -33,22 +34,27 @@ export const C04ProdGridContainer = (props) => {
 	}, [c04, form.getValues, form.setValue]);
 
 	return (
-		<DSGBox>
+		<DSGContext.Provider value={{
+			...c04.grid,
+			...c04.gridMeta,
+			readOnly: !c04.editing
+		}}>
 			<C04ProdGrid
 				gridRef={c04.setGridRef}
 				readOnly={!c04.editing || !supplier || !rstDate}
 				data={c04.gridData}
-				handleGridChange={handleGridChange}
 				bearer={auth.token}
 				height={height - 390}
 				getRowKey={c04.getRowKey}
 				prodDisabled={c04.prodDisabled}
 				spriceDisabled={c04.spriceDisabled}
 				getSPriceClassName={c04.getSPriceClassName}
+				onChange={onChange}
+				onActiveCellChange={c04.handleActiveCellChange}
 				createRow={c04.createRow}
 				{...rest}
 			/>
-		</DSGBox>
+		</DSGContext.Provider>
 	);
 };
 

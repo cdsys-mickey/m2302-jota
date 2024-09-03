@@ -14,6 +14,7 @@ import { useCallback } from "react";
 import { useQuerySync } from "../../shared-hooks/useQuerySync";
 import { C02Context } from "../../contexts/C02/C02Context";
 import C02Drawer from "../../components/jobs/C02/C02Drawer";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 export const C02FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -58,7 +59,7 @@ export const C02FrameContainer = () => {
 
 			{/* 對話框 */}
 			<C02DialogContainer />
-			<C02Drawer />
+			<C02Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 		</Box>
 	);
 };

@@ -134,6 +134,10 @@ export const useWebApiOptions = (opts = {}) => {
 	const getByInput = useCallback(
 		async (input) => {
 			try {
+				// 避免使用空 input 進行搜尋
+				if (!input) {
+					return null;
+				}
 				const { status, payload, error } = await sendAsync({
 					method,
 					url,

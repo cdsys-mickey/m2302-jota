@@ -30,11 +30,6 @@ const CustomerPickerComponent = memo((props) => {
 
 	const { hideControlsOnActive, ...rest } = columnData;
 
-	// console.log(
-	// 	`rendering ProdPickerComponent active: ${active}, focus: ${focus}, rowData:`,
-	// 	rowData
-	// );
-
 	const ref = useRef();
 	const rowDataRef = useRef(rowData);
 	rowDataRef.current = rowData;
@@ -49,17 +44,9 @@ const CustomerPickerComponent = memo((props) => {
 			setTimeout(() => {
 				stopEditing({ nextRow: false });
 			}, 50);
-			// stopEditing({ nextRow: false });
-			// ref.current?.blur();
 		},
 		[setRowData, stopEditing]
 	);
-
-	// const handleClose = useCallback(() => {
-	// 	stopEditing({ nextRow: false });
-	// 	console.log("handleClose");
-	// 	// ref.current?.blur();
-	// }, [stopEditing]);
 
 	const hideControls = useMemo(() => {
 		return disabled || hideControlsOnActive ? !focus : !active;

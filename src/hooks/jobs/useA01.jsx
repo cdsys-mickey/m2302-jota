@@ -25,6 +25,7 @@ import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-
 import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
 import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 /**
  * 適用三種情境
@@ -212,6 +213,7 @@ export const useA01 = ({ token, mode }) => {
 		data: transGrid.gridData,
 		columns: transColumns,
 		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
 	});
 
 	//ProdComboGrid
@@ -283,6 +285,7 @@ export const useA01 = ({ token, mode }) => {
 		data: comboGrid.gridData,
 		columns: comboColumns,
 		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
 	});
 
 	const confirmReturn = useCallback(() => {

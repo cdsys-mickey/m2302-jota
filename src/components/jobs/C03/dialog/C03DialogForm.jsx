@@ -1,21 +1,20 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
+import SupplierPicker from "@/components/picker/SupplierPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FormBox from "@/shared-components/form/FormBox";
-import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
-import { SupplierIdPickerContainer } from "../../../picker/SupplierIdPickerContainer";
 import C03SquaredPicker from "../C03SquaredPicker";
 import { C03DialogRstLabel } from "./C03DialogRstLabel";
 import { C03ProdGridBottomToolbar } from "./prods/C03ProdGridBottomToolbar";
 import { C03ProdGridContainer } from "./prods/C03ProdGridContainer";
-import SupplierPicker from "@/components/picker/SupplierPicker";
 
 const C03DialogForm = memo((props) => {
 	const {
@@ -46,18 +45,7 @@ const C03DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<Grid container columns={24} spacing={editing ? 1 : 0}>
-						{/* {!creating && ( */}
-						<Grid item xs={24} sm={24} md={4}>
-							<TextFieldWrapper
-								typo
-								name="OrdID"
-								label="採購單號"
-								fullWidth
-								// required
-								readOnly={true}
-							/>
-						</Grid>
-						{/* )} */}
+
 						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
 								<EmployeePicker
@@ -106,6 +94,18 @@ const C03DialogForm = memo((props) => {
 								variant="outlined"
 							/>
 						</Grid>
+						{!creating && (
+							<Grid item xs={24} sm={24} md={4}>
+								<TextFieldWrapper
+									typo
+									name="OrdID"
+									label="採購單號"
+									fullWidth
+									// required
+									readOnly={true}
+								/>
+							</Grid>
+						)}
 						<FlexBox fullWidth />
 						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
@@ -121,6 +121,7 @@ const C03DialogForm = memo((props) => {
 									}}
 									disabled={supplierPickerDisabled}
 									disableClearable
+									clearOnEscape
 									virtualize
 									// fadeOutDisabled
 									optionLabelSize="md"
