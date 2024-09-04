@@ -4,7 +4,7 @@ import FreeProdTypes from "@/modules/md-free-prod-types";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const FreeProdTypePicker = forwardRef((props, ref) => {
-	const { label = "免費", ...rest } = props;
+	const { label = "試贈樣", ...rest } = props;
 
 	return (
 		<OptionPickerWrapper
@@ -13,6 +13,7 @@ const FreeProdTypePicker = forwardRef((props, ref) => {
 			options={FreeProdTypes.options}
 			getOptionLabel={FreeProdTypes.getOptionLabel}
 			isOptionEqualToValue={FreeProdTypes.isOptionEqualToValue}
+			findByInput={FreeProdTypes.findByInput}
 			{...rest}
 		/>
 	);

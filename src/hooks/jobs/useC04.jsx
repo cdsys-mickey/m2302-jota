@@ -24,6 +24,7 @@ import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/f
 import { DateFnsComponentContainer } from "@/shared-components/dsg/columns/date/DateFnsComponentContainer";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
 
 export const useC04 = () => {
 	const crud = useContext(CrudContext);
@@ -59,9 +60,23 @@ export const useC04 = () => {
 		expPrompting: false,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			stype: null,
+			SQty: "",
+			SPrice: "",
+			ChkQty: "",
+			SOrdID: "",
+		}),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
+		createRow
 	});
 
 	const getSPriceClassName = useCallback(({ rowData }) => {
@@ -136,8 +151,8 @@ export const useC04 = () => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 180,
-				maxWidth: 180,
+				minWidth: 170,
+				maxWidth: 170,
 				disabled: !crud.editing || prodDisabled,
 			},
 			{
@@ -158,9 +173,9 @@ export const useC04 = () => {
 						continuousUpdates: false,
 					})
 				),
-				title: "包裝說明",
-				minWidth: 120,
-				maxWidth: 120,
+				title: "包裝",
+				minWidth: 80,
+				maxWidth: 80,
 				disabled: true,
 			},
 			{
@@ -189,31 +204,34 @@ export const useC04 = () => {
 					optionPickerColumn(FreeProdTypePickerComponentContainer, {
 						name: "stype",
 						disableClearable: true,
+						disableOpenOnInput: true,
+						autoHighlight: true,
+						selectOnFocus: true,
+						forcePopupIcon: false
 					})
 				),
-				title: "贈品",
-				minWidth: 80,
-				maxWidth: 80,
+				title: "試贈樣",
+				minWidth: 70,
+				maxWidth: 70,
 				disabled: !crud.editing,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "進貨數量",
 				minWidth: 90,
-				grow: 1,
 				disabled: !crud.editing,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
 				title: "進貨金額",
 				minWidth: 90,
-				grow: 1,
 				disabled: true,
 			},
 			{
-				...keyColumn("SExpDate", DateFnsComponentContainer),
+				...keyColumn("SExpDate", dateFnsDateColumn),
 				title: "有效日期",
-				grow: 2,
+				minWidth: 140,
+				maxWidth: 140,
 				disabled: !crud.editing,
 			},
 			{
@@ -224,7 +242,8 @@ export const useC04 = () => {
 					})
 				),
 				title: "採購單號",
-				grow: 3,
+				minWidth: 120,
+				maxWidth: 120,
 				disabled: true,
 			},
 		],
@@ -264,18 +283,7 @@ export const useC04 = () => {
 	// 	[]
 	// );
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			stype: null,
-			SQty: "",
-			SPrice: "",
-			ChkQty: "",
-			SOrdID: "",
-		}),
-		[]
-	);
+
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -725,6 +733,10 @@ export const useC04 = () => {
 						// 		}
 						// 		return false;
 						// 	});
+					} else if (operation.type === "CREATE") {
+						console.log("dsg.CREATE");
+						// process CREATE here
+						gridMeta.toFirstColumn({ nextRow: true });
 					}
 				}
 				console.log("grid.changed", newGridData);
@@ -875,8 +887,11 @@ export const useC04 = () => {
 					if (status.success) {
 						const data = C04.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
-						grid.handleGridDataLoaded(
-							grid.fillRows({ createRow, data: data.prods })
+						grid.setGridData(
+							// grid.fillRows({ createRow, data: data.prods })
+							grid.fillRows({ data: data.prods }), {
+							supressEvents: true
+						}
 						);
 						refreshAmt({ setValue, data });
 						// toast.info("採購單商品已載入");
@@ -887,7 +902,7 @@ export const useC04 = () => {
 					toast.error(Errors.getMessage("載入採購單商品失敗", err));
 				}
 			},
-		[httpPostAsync, grid, refreshAmt, token]
+		[grid, httpPostAsync, token, refreshAmt]
 	);
 
 	const onRefreshGridSubmit2 = useCallback((data) => {
@@ -974,7 +989,7 @@ export const useC04 = () => {
 					// 還原
 				}
 			},
-		[httpPostAsync, grid, refreshAmt, token]
+		[grid, httpPostAsync, token, createRow, refreshAmt]
 	);
 
 	const onLoadProdsSubmitError = useCallback((err) => {

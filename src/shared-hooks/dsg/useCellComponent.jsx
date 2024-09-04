@@ -14,7 +14,7 @@ export const useCellComponent = (props = {}) => {
 		insertRowBelow,
 	} = props;
 
-	const nextCell = useCallback(
+	const focusNextCell = useCallback(
 		(cell, opts = {}) => {
 			if (!getNextCell) {
 				throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
@@ -48,5 +48,5 @@ export const useCellComponent = (props = {}) => {
 		[getNextCell, insertRowBelow, lastCell, setActiveCell]
 	);
 
-	return { nextCell };
+	return { focusNextCell };
 };

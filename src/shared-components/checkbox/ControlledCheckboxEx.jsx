@@ -21,7 +21,7 @@ const ControlledCheckboxEx = ({
 	defaultValue = null,
 	...rest
 }) => {
-	const { isFieldDisabled, nextField } = useContext(FormMetaContext) || {};
+	const { isFieldDisabled, focusNextField } = useContext(FormMetaContext) || {};
 	const { setFocus, setValue } = useFormContext() || {};
 
 	const toggleChecked = useCallback(
@@ -47,9 +47,9 @@ const ControlledCheckboxEx = ({
 				if (e.key === " ") {
 					toggleChecked(e);
 				}
-				if (nextField) {
+				if (focusNextField) {
 					e.preventDefault();
-					nextField(name, {
+					focusNextField(name, {
 						setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
@@ -58,7 +58,7 @@ const ControlledCheckboxEx = ({
 				}
 			}
 		},
-		[nextField, name, setFocus, isFieldDisabled, toggleChecked]
+		[focusNextField, name, setFocus, isFieldDisabled, toggleChecked]
 	);
 
 	// const handleKeyUp = useCallback(

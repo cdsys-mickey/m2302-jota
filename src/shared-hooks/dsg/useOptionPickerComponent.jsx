@@ -10,7 +10,7 @@ export const useOptionPickerComponent = (opts) => {
 		rowIndex,
 		columnIndex,
 		skipDisabled,
-		nextCell,
+		focusNextCell,
 		setRowData,
 		stopEditing,
 		readOnly
@@ -63,13 +63,13 @@ export const useOptionPickerComponent = (opts) => {
 	// 跳過停用 Cell
 	useLayoutEffect(() => {
 		if (skipDisabled && active && disabled && !readOnly) {
-			if (nextCell) {
-				nextCell({ row: rowIndex, col: columnIndex });
+			if (focusNextCell) {
+				focusNextCell({ row: rowIndex, col: columnIndex });
 			} else {
-				console.log("nextCell is null");
+				console.log("focusNextCell is null");
 			}
 		}
-	}, [active, columnIndex, disabled, nextCell, readOnly, rowIndex, skipDisabled]);
+	}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
 
 	return {
 		ref,

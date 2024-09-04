@@ -21,6 +21,7 @@ const C04ProdGrid = memo((props) => {
 		gridRef,
 		data,
 		onChange,
+		onActiveCellChange,
 		getRowClassName,
 		height = 300,
 		prodDisabled,
@@ -49,6 +50,7 @@ const C04ProdGrid = memo((props) => {
 			// rowHeight={42}
 			value={data}
 			onChange={onChange}
+			onActiveCellChange={onActiveCellChange}
 			// columns={columns}
 			addRowsComponent={C04ProdGridAddRows}
 			disableExpandSelection
@@ -67,6 +69,7 @@ C04ProdGrid.propTypes = {
 	spriceDisabled: PropTypes.func,
 	prodDisabled: PropTypes.func,
 	onChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,
 	readOnly: PropTypes.bool,

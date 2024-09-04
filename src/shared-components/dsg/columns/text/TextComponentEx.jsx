@@ -95,7 +95,7 @@ const TextComponentEx = memo(
 			};
 		}, [columnIndex, rowIndex]);
 
-		const { nextCell } = useCellComponent({
+		const { focusNextCell } = useCellComponent({
 			getNextCell,
 			lastCell,
 			setActiveCell,
@@ -116,15 +116,15 @@ const TextComponentEx = memo(
 						e.preventDefault();
 						stopEditing({ nextRow: false });
 						setTimeout(() => {
-							if (nextCell) {
-								nextCell(cell, { forward: true });
+							if (focusNextCell) {
+								focusNextCell(cell, { forward: true });
 							}
 						});
 
 						break;
 				}
 			},
-			[cell, nextCell, stopEditing]
+			[cell, focusNextCell, stopEditing]
 		);
 
 		useLayoutEffect(() => {
@@ -177,13 +177,13 @@ const TextComponentEx = memo(
 
 		useLayoutEffect(() => {
 			if (skipDisabled && active && disabled && !readOnly) {
-				if (nextCell) {
-					nextCell({ row: rowIndex, col: columnIndex });
+				if (focusNextCell) {
+					focusNextCell({ row: rowIndex, col: columnIndex });
 				} else {
-					console.log("nextCell is null");
+					console.log("focusNextCell is null");
 				}
 			}
-		}, [active, columnIndex, disabled, nextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<input
@@ -224,7 +224,7 @@ TextComponentEx.propTypes = {
 	insertRowBelow: PropTypes.func,
 	columnData: PropTypes.object,
 	skipDisabled: PropTypes.bool,
-	nextCell: PropTypes.func,
+	focusNextCell: PropTypes.func,
 	getNextCell: PropTypes.func,
 	setActiveCell: PropTypes.func,
 	lastCell: PropTypes.symbol,

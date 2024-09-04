@@ -16,7 +16,7 @@ import D041ProdGridAddRows from "./D041ProdGridAddRows";
 import { createCheckboxColumn2 } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn2";
 import OutboundTypePickerComponent from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponent";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import FreeProdTypePickerComponent from "../../../../dsg/columns/free-prod-type-picker/FreeProdTypePickerComponent";
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -109,7 +109,7 @@ const D041ProdGrid = memo((props) => {
 			{
 				...keyColumn(
 					"stype",
-					optionPickerColumn(FreeProdTypePickerComponent, {
+					optionPickerColumn(FreeProdTypePickerComponentContainer, {
 						name: "stype",
 						disableClearable: true,
 					})

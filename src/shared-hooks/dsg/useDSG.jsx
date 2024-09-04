@@ -4,6 +4,8 @@ import Arrays from "@/shared-modules/sd-arrays";
 import Objects from "@/shared-modules/sd-objects";
 import Types from "@/shared-modules/sd-types";
 import _ from "lodash";
+import { useEffect } from "react";
+import { useRef } from "react";
 import { useCallback, useMemo, useState } from "react";
 
 const DEFAULT_SET_OPTS = {
@@ -21,6 +23,9 @@ export const useDSG = ({
 
 	createRow: _createRow,
 }) => {
+	const asyncRef = useRef({
+		supressEvents: false
+	});
 	const [readOnly, toggleReadOnly] = useToggle(initialLockRows);
 
 	const persistedIds = useMemo(() => new Set(), []);
@@ -122,7 +127,11 @@ export const useDSG = ({
 				dirtyCheckBy,
 				createRow,
 				length = 10,
+				supressEvents
 			} = opts;
+			if (supressEvents) {
+				asyncRef.current.supressEvents = true;
+			}
 			if (reset || init) {
 				dirtyIds.clear();
 				persistedIds.clear();
@@ -417,6 +426,11 @@ export const useDSG = ({
 		toggleReadOnly();
 	}, [rollbackChanges, toggleReadOnly]);
 
+	useEffect(() => {
+		console.log("gridData changed, supressEvents reset to false");
+		asyncRef.current.supressEvents = false;
+	}, [gridData]);
+
 	return {
 		// STATES
 		// ...state,
@@ -475,5 +489,6 @@ export const useDSG = ({
 		// skipDisabled,
 		// toFirstColumn,
 		// lastCell,
+		asyncRef
 	};
 };

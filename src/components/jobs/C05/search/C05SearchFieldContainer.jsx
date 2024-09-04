@@ -7,6 +7,8 @@ import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import C05SearchPopperContainer from "./C05SearchPopperContainer";
 import C05 from "@/modules/md-c05";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const C05SearchFieldContainer = (props) => {
 	const { name = "q", ...rest } = props;
@@ -28,6 +30,8 @@ export const C05SearchFieldContainer = (props) => {
 		enableOnFormTags: true,
 	});
 
+
+
 	return (
 		<form
 			onSubmit={form.handleSubmit(
@@ -35,6 +39,7 @@ export const C05SearchFieldContainer = (props) => {
 				c05.onSearchSubmitError
 			)}>
 			<div ref={escRef}>
+
 				<ControlledSearchFieldContainer
 					autoFocus
 					name={name}
@@ -56,7 +61,7 @@ export const C05SearchFieldContainer = (props) => {
 					filtered={C05.isFiltered(form.getValues())}
 				/>
 			</div>
-		</form>
+		</form >
 	);
 };
 C05SearchFieldContainer.propTypes = {

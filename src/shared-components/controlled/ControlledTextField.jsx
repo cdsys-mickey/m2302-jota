@@ -27,7 +27,9 @@ export const ControlledTextField = ({
 
 	...rest
 }) => {
-	const { isFieldDisabled, nextField, disableEnter } = useContext(FormMetaContext) || {};
+	const formMeta = useContext(FormMetaContext);
+	const { isFieldDisabled, focusNextField, disableEnter } = formMeta || {};
+	const inFormMeta = !!formMeta;
 	// const { setFocus } = useFormContext() || {};
 	const form = useFormContext();
 
@@ -57,17 +59,19 @@ export const ControlledTextField = ({
 		async (e) => {
 			// 按下 Shift 時必須略過不處理
 			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
-				const error = await getError();
-				if (error) {
-					// 錯誤則不往下傳遞給 DSGGrid
-					// e.stopPropagation();
-					form.setError(name, error);
-					return;
+				if (e.key === "Enter") {
+					const error = await getError();
+					if (error) {
+						// 錯誤則不往下傳遞給 DSGGrid
+						// e.stopPropagation();
+						form.setError(name, error);
+						return;
+					}
 				}
-				if (nextField) {
+				if (inFormMeta) {
 					e.preventDefault();
 
-					nextField(name, {
+					focusNextField(name, {
 						setFocus: form.setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
@@ -76,7 +80,7 @@ export const ControlledTextField = ({
 				}
 			}
 		},
-		[disableEnter, getError, nextField, form, name, isFieldDisabled]
+		[disableEnter, inFormMeta, getError, form, name, focusNextField, isFieldDisabled]
 	);
 
 	if (!name) {

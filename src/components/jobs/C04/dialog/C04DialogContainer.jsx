@@ -88,6 +88,12 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [supplierNameDisable]);
 
+	const handleLastField = useCallback(() => {
+		setTimeout(() => {
+			c04.gridMeta.setActiveCell({ col: 0, row: 0 });
+		});
+	}, [c04.gridMeta]);
+
 	const formMeta = useFormMeta(
 		`
 		GinDate,
@@ -99,7 +105,10 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		InvNo,
 		FactAddr,
 		purchaseOrders
-		`
+		`,
+		{
+			lastField: handleLastField
+		}
 	)
 
 	useEffect(() => {

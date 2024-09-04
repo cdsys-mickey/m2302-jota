@@ -8,13 +8,13 @@ import {
 	textColumn,
 } from "react-datasheet-grid";
 
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C06ProdGridAddRows from "./C06ProdGridAddRows";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import FreeProdTypePickerComponent from "@/components/dsg/columns/FreeProdTypePickerComponent";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -87,7 +87,7 @@ const C06ProdGrid = memo((props) => {
 			{
 				...keyColumn(
 					"stype",
-					optionPickerColumn(FreeProdTypePickerComponent, {
+					optionPickerColumn(FreeProdTypePickerComponentContainer, {
 						name: "stype",
 						disableClearable: true,
 					})

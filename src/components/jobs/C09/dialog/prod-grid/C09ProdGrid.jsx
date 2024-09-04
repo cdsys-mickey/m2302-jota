@@ -14,8 +14,8 @@ import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C09ProdGridAddRows from "./C09ProdGridAddRows";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import FreeProdTypePickerComponent from "@/components/dsg/columns/FreeProdTypePickerComponent";
 import OutboundTypePickerComponent from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponent";
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -100,7 +100,7 @@ const C09ProdGrid = memo((props) => {
 			{
 				...keyColumn(
 					"stype",
-					optionPickerColumn(FreeProdTypePickerComponent, {
+					optionPickerColumn(FreeProdTypePickerComponentContainer, {
 						name: "stype",
 						disableClearable: true,
 						// hideControlsOnActive: true,
@@ -183,6 +183,7 @@ C09ProdGrid.propTypes = {
 	sprodDisabled: PropTypes.func,
 	dtypeDisabled: PropTypes.func,
 	sqtyDisabled: PropTypes.func,
+	createRow: PropTypes.func,
 };
 
 C09ProdGrid.displayName = "C09ProdGrid";

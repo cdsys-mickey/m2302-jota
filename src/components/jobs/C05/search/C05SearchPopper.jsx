@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import EmployeePicker from "@/components/picker/EmployeePicker";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 
 const C05SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -36,11 +37,12 @@ const C05SearchPopper = memo(
 									variant="outlined"
 									optionLabelSize="md"
 									virtualize
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<ControlledTextField
+							<TextFieldWrapper
 								name="spn"
 								label="廠商名稱"
 								variant="outlined"
@@ -50,7 +52,7 @@ const C05SearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<ControlledTextField
+							<TextFieldWrapper
 								name="spa"
 								label="廠商地址"
 								variant="outlined"
@@ -60,7 +62,7 @@ const C05SearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<ControlledTextField
+							<TextFieldWrapper
 								name="spu"
 								label="統一編號"
 								variant="outlined"
@@ -70,7 +72,7 @@ const C05SearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<ControlledTextField
+							<TextFieldWrapper
 								name="inv"
 								label="發票號碼"
 								variant="outlined"
@@ -80,13 +82,13 @@ const C05SearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<TaxType2Picker name="taxType" label="稅外加" />
+							<TaxType2Picker name="taxType" label="稅外加" disableOpenOnInput />
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<DatePickerWrapper name="rd" label="退貨日期" />
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="倉管人員" />
+							<EmployeePicker name="employee" label="倉管人員" disableOpenOnInput />
 						</Grid>
 					</Grid>
 				</DialogContent>

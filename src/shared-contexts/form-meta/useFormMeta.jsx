@@ -10,7 +10,9 @@ export const useFormMeta = (value, opts = {}) => {
 	const { setFocus } = form || {};
 	const {
 		disableEnter = false,
-		lastField = LastFieldBehavior.BLUR,
+		// lastField = LastFieldBehavior.BLUR,
+		// 預設改為 null, 當沒有指定 lastField 時焦點應留在原位
+		lastField = null,
 		lastFieldMessage = "已是最後一個欄位",
 		firstFieldMessage = "已是第一個欄位",
 	} = opts;
@@ -74,11 +76,12 @@ export const useFormMeta = (value, opts = {}) => {
 		[getNextField, setFocus]
 	);
 
-	const nextField = useCallback(
+	const focusNextField = useCallback(
 		(name, opts = {}) => {
 			const { setFocus, forward = true } = opts;
 			const nextField = getNextField(name, opts);
 			console.log("nextField", nextField);
+			console.log("opts", opts);
 			if (nextField) {
 				setFocus(nextField.name, {
 					shouldSelect: nextField.select,
@@ -102,7 +105,7 @@ export const useFormMeta = (value, opts = {}) => {
 							);
 							break;
 						case LastFieldBehavior.BLUR:
-						default:
+							// default:
 							document.activeElement.blur();
 							break;
 					}
@@ -116,7 +119,7 @@ export const useFormMeta = (value, opts = {}) => {
 		fields,
 		getNextField,
 		nextEnabled,
-		nextField,
+		focusNextField,
 		disableEnter
 	};
 };

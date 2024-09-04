@@ -75,6 +75,7 @@ export const PurchaseOrderPicker = (props) => {
 			// renderOption={renderOption}
 			GridHeaderComponent={PurchaseOrderGridHeader}
 			GridRowComponent={PurchaseOrderGridRow}
+			notFoundText="採購單號 ${id} 不存在"
 			{...rest}
 		/>
 	);

@@ -15,6 +15,7 @@ const TaxType2Picker = memo(
 				options={TaxTypes2.options}
 				getOptionLabel={TaxTypes2.getOptionLabel}
 				isOptionEqualToValue={TaxTypes2.isOptionEqualToValue}
+				findByInput={TaxTypes2.findByInput}
 				{...rest}
 			/>
 		);

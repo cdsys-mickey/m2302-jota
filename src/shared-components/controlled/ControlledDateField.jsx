@@ -2,7 +2,6 @@
 import DateFormats from "@/shared-modules/sd-date-formats";
 import { DateField } from "@mui/x-date-pickers";
 import { isValid } from "date-fns";
-import { de } from "date-fns/locale";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { useCallback } from "react";
@@ -33,7 +32,7 @@ const ControlledDateField = ({
 	...rest
 }) => {
 	const { setError, clearErrors } = useFormContext();
-	const { isFieldDisabled, nextField, disableEnter } = useContext(FormMetaContext) || {};
+	const { isFieldDisabled, focusNextField, disableEnter } = useContext(FormMetaContext) || {};
 	const { setFocus } = useFormContext() || {};
 
 	const { InputProps, ...opts } = DEFAULT_PROPS;
@@ -43,7 +42,7 @@ const ControlledDateField = ({
 			// if (e.key === "Enter" || e.key === "Tab") {
 			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
 				e.preventDefault();
-				nextField(name, {
+				focusNextField(name, {
 					setFocus,
 					isFieldDisabled,
 					forward: !e.shiftKey,
@@ -51,7 +50,7 @@ const ControlledDateField = ({
 				});
 			}
 		},
-		[disableEnter, nextField, name, setFocus, isFieldDisabled]
+		[disableEnter, focusNextField, name, setFocus, isFieldDisabled]
 	);
 
 	if (!name) {

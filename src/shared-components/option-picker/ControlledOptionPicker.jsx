@@ -25,7 +25,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 	const form = useFormContext();
 	const { setFocus } = form || {};
 	const formMeta = useContext(FormMetaContext);
-	const { getNextField, isFieldDisabled, nextField, disableEnter } = formMeta || {};
+	const { getNextField, isFieldDisabled, focusNextField, disableEnter } = formMeta || {};
 	const inFormMeta = !!formMeta;
 
 	const prevValue = useRef();
@@ -97,7 +97,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						// FormMeta
 						inFormMeta={inFormMeta}
 						getNextField={getNextField}
-						nextField={nextField}
+						focusNextField={focusNextField}
 						isFieldDisabled={isFieldDisabled}
 						disableEnter={disableEnter}
 						{...rest}

@@ -39,7 +39,7 @@ const ControlledDatePicker = ({
 }) => {
 	// console.log("rendering ControlledDatePicker");
 	const { setError, clearErrors } = useFormContext();
-	const { isFieldDisabled, nextField, disableEnter } = useContext(FormMetaContext) || {};
+	const { isFieldDisabled, focusNextField, disableEnter } = useContext(FormMetaContext) || {};
 	// const { setFocus } = useFormContext() || {};
 	const form = useFormContext();
 	const { InputProps, ...opts } = DEFAULT_PROPS;
@@ -73,9 +73,9 @@ const ControlledDatePicker = ({
 					form.setError(name, error);
 					return;
 				}
-				if (nextField) {
+				if (focusNextField) {
 					e.preventDefault();
-					nextField(name, {
+					focusNextField(name, {
 						setFocus: form.setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
@@ -84,7 +84,7 @@ const ControlledDatePicker = ({
 				}
 			}
 		},
-		[disableEnter, getError, nextField, form, name, isFieldDisabled]
+		[disableEnter, getError, focusNextField, form, name, isFieldDisabled]
 	);
 
 	if (!name) {

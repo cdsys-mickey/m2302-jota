@@ -17,6 +17,10 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id === id) || null;
 };
 
+const findByInput = (id) => {
+	return options.find((o) => o.id === id) || null;
+};
+
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { id, label } = option;
@@ -32,6 +36,7 @@ const FreeProdTypes = {
 	getOptionById,
 	getOptionLabel,
 	isOptionEqualToValue,
+	findByInput,
 };
 
 export default FreeProdTypes;

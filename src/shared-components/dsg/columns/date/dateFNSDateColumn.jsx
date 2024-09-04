@@ -1,9 +1,8 @@
-import DateFnsComponent from "./DateFnsComponent";
-import DateTimes from "@/shared-modules/sd-date-times";
-import DateFormats from "@/shared-modules/sd-date-times";
+import { default as DateFormats, default as DateTimes } from "@/shared-modules/sd-date-times";
+import { DateFnsComponentContainer } from "./DateFnsComponentContainer";
 
 export const dateFnsDateColumn = {
-	component: DateFnsComponent,
+	component: DateFnsComponentContainer,
 	deleteValue: () => null,
 	copyValue: ({ rowData }) =>
 		rowData ? rowData.toISOString().substr(0, 10) : null,

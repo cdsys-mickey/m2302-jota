@@ -9,11 +9,12 @@ export const useCellControls = () => {
 	}
 	return {
 		skipDisabled: dsg.skipDisabled,
-		nextCell: dsg.nextCell,
+		focusNextCell: dsg.focusNextCell,
 		getNextCell: dsg.getNextCell,
 		lastCell: dsg.lastCell,
 		setActiveCell: dsg.setActiveCell,
 		inDSG: !!dsg,
-		readOnly: dsg.readOnly
+		readOnly: dsg.readOnly,
+		supressEvents: dsg.asyncRef.current?.supressEvents
 	};
 };

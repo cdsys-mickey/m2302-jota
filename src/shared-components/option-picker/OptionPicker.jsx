@@ -123,19 +123,19 @@ const OptionPicker = memo(
 			GridRowComponent,
 			inDSG,
 			cellComponentRef,
-			// nextCell,
 			cell,
 			// FormMeta
 			inFormMeta,
-			nextField,
+			focusNextField,
 			disableEnter,
 			emptyId,
 			isFieldDisabled,
 			setFocus,
+			supressEvents,
 			...rest
 		} = props;
 
-		const { nextCell } = useCellComponent(cellComponentRef?.current);
+		const { focusNextCell } = useCellComponent(cellComponentRef?.current);
 		const notFoundMsg = _.template(notFoundText);
 
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
@@ -228,17 +228,17 @@ const OptionPicker = memo(
 		}, [handleClose, onClose]);
 
 		/**
-		 * 先判斷 DSGContext.nextCell, 再判斷 FieldsContext.getNextField
+		 * 先判斷 DSGContext.focusNextCell, 再判斷 FieldsContext.getNextField
 		 */
 
-		const nextCellOrField = useCallback(
+		const focusNextCellOrField = useCallback(
 			(e, opts = {}) => {
 				const { forward } = opts;
 				if (inDSG) {
-					nextCell(cell, { forward: forward || !e?.shiftKey });
+					focusNextCell(cell, { forward: forward || !e?.shiftKey });
 				} else if (inFormMeta) {
 					e?.preventDefault();
-					nextField(name, {
+					focusNextField(name, {
 						setFocus,
 						isFieldDisabled,
 						forward: forward || !e?.shiftKey,
@@ -246,7 +246,7 @@ const OptionPicker = memo(
 					});
 				}
 			},
-			[inDSG, inFormMeta, nextCell, cell, nextField, name, setFocus, isFieldDisabled]
+			[inDSG, inFormMeta, focusNextCell, cell, focusNextField, name, setFocus, isFieldDisabled]
 		);
 
 		const handleChange = useCallback(
@@ -262,9 +262,9 @@ const OptionPicker = memo(
 					clearErrors(name);
 				}
 				// if (value) {
-				// 	nextCellOrField(event);
+				// 	focusNextCellOrField(event);
 				// }
-				// nextCellOrField(event);
+				// focusNextCellOrField(event);
 			},
 			[clearErrors, name, onChange]
 		);
@@ -335,11 +335,18 @@ const OptionPicker = memo(
 					}
 					// 有改變會透過 ChangeTracking 觸發, 
 					// 這裡處理 dirty 之後卻沒改變的狀況
-					if (_.isEqual(found, value)) {
-						asyncRef.current.dirty = false;
-						nextCellOrField(e, opts);
+					if (multiple) {
+						onChange([
+							...value,
+							found
+						])
+					} else {
+						if (_.isEqual(found, value)) {
+							asyncRef.current.dirty = false;
+							focusNextCellOrField(e, opts);
+						}
+						onChange(found);
 					}
-					onChange(found);
 				} else {
 					if (validate) {
 						const error = await getError();
@@ -357,11 +364,11 @@ const OptionPicker = memo(
 							return;
 						}
 					}
-					nextCellOrField(e, opts);
+					focusNextCellOrField(e, opts);
 				}
-				// nextCellOrField(e);
+				// focusNextCellOrField(e);
 			},
-			[_open, inFormMeta, inDSG, findByInput, emptyId, value, onChange, inputNotFound, nextCellOrField, getError, name, setError]
+			[_open, inFormMeta, inDSG, findByInput, multiple, inputNotFound, onChange, value, focusNextCellOrField, getError, name, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -467,7 +474,7 @@ const OptionPicker = memo(
 						// onChange={onInputChange}
 						onChange={handleInputChange}
 						onKeyDown={handleKeyDown}
-						// onBlur={handleBlur}
+						onBlur={handleBlur}
 						{...props}
 						InputProps={{
 							...props.InputProps,
@@ -741,11 +748,11 @@ const OptionPicker = memo(
 
 		useChangeTracking(() => {
 			console.log(`${name} changed`, value);
-			// if (nextCellOrField && (value || emptyId)) {
+			// if (focusNextCellOrField && (value || emptyId)) {
 			// 當選項改變, 且有值, 且非 multiple
-			if (nextCellOrField && value && !multiple) {
-				// if (nextCellOrField) {
-				nextCellOrField();
+			if (focusNextCellOrField && value && !multiple && !supressEvents) {
+				// if (focusNextCellOrField) {
+				focusNextCellOrField();
 			}
 		}, [value, emptyId]);
 
@@ -927,18 +934,19 @@ OptionPicker.propTypes = {
 	setError: PropTypes.func,
 	clearErrors: PropTypes.func,
 	notFoundText: PropTypes.string,
-	nextCell: PropTypes.func,
+	focusNextCell: PropTypes.func,
 	cell: PropTypes.object,
 	toastError: PropTypes.bool,
 	disableClose: PropTypes.bool,
 	getNextField: PropTypes.func,
-	nextField: PropTypes.func,
+	focusNextField: PropTypes.func,
 	isFieldDisabled: PropTypes.func,
 	setFocus: PropTypes.func,
 	inDSG: PropTypes.bool,
 	inFormMeta: PropTypes.bool,
 	disableEnter: PropTypes.bool,
 	emptyId: PropTypes.bool,
+	supressEvents: PropTypes.bool,
 	cellComponentRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 export default OptionPicker;

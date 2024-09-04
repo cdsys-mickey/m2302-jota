@@ -1,9 +1,8 @@
-import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import FreeProdTypePicker from "@/components/picker/FreeProdTypePicker";
-import Objects from "@/shared-modules/sd-objects";
-import { useMemo } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+import Objects from "@/shared-modules/sd-objects";
+import PropTypes from "prop-types";
+import { memo, useRef } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -43,7 +42,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		nextCell,
+		focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
@@ -67,7 +66,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		nextCell,
+		focusNextCell,
 		getNextCell,
 		lastCell,
 		setActiveCell,
@@ -78,7 +77,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		nextCell,
+		focusNextCell,
 		getNextCell,
 		lastCell,
 		setActiveCell,
@@ -91,7 +90,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
-			placeholder="試/贈/樣"
+			// placeholder="試贈樣"
 			// DSG 專屬屬性
 			cellComponentRef={cellComponentRef}
 			dense

@@ -13,7 +13,8 @@ import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C07ProdGridAddRows from "./C07ProdGridAddRows";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import FreeProdTypePickerComponent from "../../../../dsg/columns/free-prod-type-picker/FreeProdTypePickerComponent";
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
+
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -82,7 +83,7 @@ const C07ProdGrid = memo((props) => {
 			{
 				...keyColumn(
 					"stype",
-					optionPickerColumn(FreeProdTypePickerComponent, {
+					optionPickerColumn(FreeProdTypePickerComponentContainer, {
 						name: "stype",
 						disableClearable: true,
 					})

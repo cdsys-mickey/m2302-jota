@@ -194,7 +194,7 @@ const C04DialogForm = memo((props) => {
 								// onChanged={handleLoadProdsSubmit}
 								onChanged={handlePurchaseOrdersChanged}
 								disabled={purchaseOrdersDisabled || !supplier}
-							// disableOpenOnInput
+								disableOpenOnInput
 							/>
 							{/* </OptionPickerProvider> */}
 						</Grid>

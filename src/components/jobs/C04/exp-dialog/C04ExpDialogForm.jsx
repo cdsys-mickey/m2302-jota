@@ -24,6 +24,7 @@ const C04ExpDialogForm = memo((props) => {
 							rules={{
 								required: "商品為必填",
 							}}
+							disableOpenOnInput
 						/>
 					</Grid>
 					<Grid item xs={12}>

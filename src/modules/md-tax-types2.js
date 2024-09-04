@@ -13,6 +13,10 @@ const findById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
+const findByInput = (id) => {
+	return options.find((o) => o.id === id);
+};
+
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { id, label } = option;
@@ -27,6 +31,7 @@ const TaxTypes2 = {
 	options,
 	// METHODS
 	findById,
+	findByInput,
 	getOptionLabel,
 	isOptionEqualToValue,
 };

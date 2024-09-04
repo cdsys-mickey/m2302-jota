@@ -8,7 +8,7 @@ import {
 	textColumn,
 } from "react-datasheet-grid";
 
-import FreeProdTypePickerComponent from "@/components/dsg/columns/FreeProdTypePickerComponent";
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import OutboundTypePickerComponent from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponent";
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
@@ -126,7 +126,7 @@ const C08ProdGrid = memo((props) => {
 			{
 				...keyColumn(
 					"stype",
-					optionPickerColumn(FreeProdTypePickerComponent, {
+					optionPickerColumn(FreeProdTypePickerComponentContainer, {
 						name: "stype",
 						disableClearable: true,
 						// hideControlsOnActive: true,
