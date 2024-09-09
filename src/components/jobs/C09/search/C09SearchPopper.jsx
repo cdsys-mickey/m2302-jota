@@ -13,7 +13,7 @@ import { forwardRef, memo } from "react";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { DatePickerWrapper } from "../../../../shared-components/date-picker/DatePickerWrapper";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import DeptPickerContainer from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPickerContainer";
 
 const C09SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -41,7 +41,7 @@ const C09SearchPopper = memo(
 							<EmployeePicker name="employee" label="驗收人員" />
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<DeptPickerContainer
+							<DeptPicker
 								name="txoDept"
 								label="撥出門市"
 							/>

@@ -37,6 +37,7 @@ export const A05DialogButtonsContainer = (props) => {
 		<A05DialogViewButtons
 			onEdit={a05.canUpdate ? a05.promptUpdating : null}
 			onDelete={a05.canDelete ? a05.confirmDelete : null}
+			onSideDrawerOpen={a05.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

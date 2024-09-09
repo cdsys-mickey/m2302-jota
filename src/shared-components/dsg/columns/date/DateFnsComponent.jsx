@@ -33,7 +33,7 @@ const DateFnsComponent = memo((props) => {
 		lastCell,
 		setActiveCell,
 		readOnly,
-		...rest
+		// ...rest
 	} = columnData;
 
 	useLayoutEffect(() => {
@@ -113,7 +113,7 @@ const DateFnsComponent = memo((props) => {
 			value={value}
 			onChange={handleChange}
 			onKeyDown={handleKeyDown}
-			{...rest}
+		// {...rest}
 		/>
 	);
 });

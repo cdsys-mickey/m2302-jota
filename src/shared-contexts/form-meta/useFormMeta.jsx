@@ -37,8 +37,13 @@ export const useFormMeta = (value, opts = {}) => {
 					if (e?.key === "Enter" && field.skipEnter) {
 						continue;
 					}
+
 					if (!isFieldDisabled || !isFieldDisabled(field)) {
 						return field;
+					} else {
+						if (isFieldDisabled) {
+							console.log(`field [${field.name}] is disabled`, field);
+						}
 					}
 				}
 			} else {
@@ -49,6 +54,10 @@ export const useFormMeta = (value, opts = {}) => {
 					}
 					if (!isFieldDisabled || !isFieldDisabled(field)) {
 						return field;
+					} else {
+						if (isFieldDisabled) {
+							console.log(`field [${field.name}] is disabled`, field);
+						}
 					}
 				}
 			}
@@ -93,7 +102,11 @@ export const useFormMeta = (value, opts = {}) => {
 					});
 					return;
 				} else if (typeof lastField === "function") {
-					lastField(opts);
+					// 為了避免 lastField 自訂函式沒加 setTimeout, 因此在這裡統一處理
+					// 沒加 setTimeout 會造成 keyDown 事件同步觸發到 grid 裡面多移一格
+					setTimeout(() => {
+						lastField(opts);
+					});
 				} else {
 					switch (lastField) {
 						case LastFieldBehavior.PROMPT:

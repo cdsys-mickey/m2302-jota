@@ -1,8 +1,9 @@
 import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
+import SupplierPicker from "@/components/picker/SupplierPicker";
 import { PurchaseOrderPicker } from "@/components/purchase-order-picker/PurchaseOrderPicker";
 import FlexBox from "@/shared-components/FlexBox";
+import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
@@ -12,7 +13,6 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexGrid from "@/shared-components/FlexGrid";
 import { C04AmtToolbar } from "./prod-grid/C04AmtToolbar";
 import { C04ProdGridBottomToolbar } from "./prod-grid/C04ProdGridBottomToolbar";
 import { C04ProdGridContainer } from "./prod-grid/C04ProdGridContainer";
@@ -53,7 +53,7 @@ const C04DialogForm = memo((props) => {
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
 						{!creating && (
-							<Grid item xs={24} sm={24} md={3}>
+							<Grid item xs={24} sm={24} md={4}>
 								<TextFieldWrapper
 									typo
 									name="GinID"
@@ -90,14 +90,16 @@ const C04DialogForm = memo((props) => {
 									virtualize
 									disableClearable
 									disableOpenOnInput
+									clearOnEscape
 								/>
 							</OptionPickerProvider>
 						</Grid>
 
 						<Grid item xs={24} sm={24} md={3}>
 							<OptionPickerProvider>
-								<SupplierIdPickerContainer
+								<SupplierPicker
 									typo
+									forId
 									label="廠商代碼"
 									name="supplier"
 									required
@@ -110,6 +112,7 @@ const C04DialogForm = memo((props) => {
 									onChanged={handleSupplierChanged}
 									disableClearable
 									disableOpenOnInput
+									clearOnEscape
 									componentsProps={{
 										paper: {
 											sx: {
@@ -151,7 +154,7 @@ const C04DialogForm = memo((props) => {
 							item
 							xs={4}
 							sm={4}
-							md={3}
+							md={4}
 						// justifyContent="center"
 						>
 							<TaxExcludedCheckbox
@@ -170,7 +173,7 @@ const C04DialogForm = memo((props) => {
 							// required
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={7}>
+						<Grid item xs={24} sm={24} md={8}>
 							<TextFieldWrapper
 								typo
 								name="FactAddr"
@@ -182,7 +185,7 @@ const C04DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={10}>
+						<Grid item xs={24} sm={24} md={8}>
 							{/* <OptionPickerProvider> */}
 							<PurchaseOrderPicker
 								typo
@@ -195,6 +198,16 @@ const C04DialogForm = memo((props) => {
 								onChanged={handlePurchaseOrdersChanged}
 								disabled={purchaseOrdersDisabled || !supplier}
 								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 480,
+										},
+									},
+									popper: {
+										placement: "bottom"
+									}
+								}}
 							/>
 							{/* </OptionPickerProvider> */}
 						</Grid>

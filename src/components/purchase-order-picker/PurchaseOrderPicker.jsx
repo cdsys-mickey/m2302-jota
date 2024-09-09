@@ -76,6 +76,7 @@ export const PurchaseOrderPicker = (props) => {
 			GridHeaderComponent={PurchaseOrderGridHeader}
 			GridRowComponent={PurchaseOrderGridRow}
 			notFoundText="採購單號 ${id} 不存在"
+			inputParam="fz"
 			{...rest}
 		/>
 	);

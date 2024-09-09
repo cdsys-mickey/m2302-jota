@@ -34,8 +34,7 @@ export const B05FrameContainer = () => {
 				<B05ListViewContainer />
 				{/* 對話框 */}
 				<B05DialogContainer />
-				{/* 側邊欄 */}
-				<B05Drawer />
+
 			</Box>
 		</FormProvider>
 	);

@@ -59,7 +59,7 @@ export const C03FrameContainer = () => {
 
 			{/* 對話框 */}
 			<C03DialogContainer />
-			<C03Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
+
 		</Box>
 	);
 };

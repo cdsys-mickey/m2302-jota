@@ -9,9 +9,10 @@ import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { BomSearchFieldContainer } from "@/components/jobs/A20/search/BomSearchFieldContainer";
-import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
-import A20 from "../../modules/md-a20";
-import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
+import { StdPrintProvider } from "@/contexts/std-print/StdPrintProvider";
+import A20 from "@/modules/md-a20";
+import { StdPrintDialogContainer } from "@/components/std-print/StdPrintDialogContainer";
+import A20Drawer from "@/components/jobs/A20/A20Drawer";
 
 export const A20FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -39,6 +40,7 @@ export const A20FrameContainer = () => {
 					<A20ListViewContainer />
 					{/* 對話框 */}
 					<A20DialogContainer />
+
 					<StdPrintDialogContainer />
 				</StdPrintProvider>
 			</Box>

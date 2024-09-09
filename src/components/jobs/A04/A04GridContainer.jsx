@@ -4,10 +4,12 @@ import { useContext } from "react";
 import A04Grid from "./A04Grid";
 import { useMemo } from "react";
 import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 const A04GridContainer = () => {
 	const { height } = useWindowSize();
 	const a04 = useContext(A04Context);
+	const formMeta = useContext(FormMetaContext);
 
 	const onChange = useMemo(() => {
 		return a04.buildGridChangeHandler({
@@ -29,7 +31,7 @@ const A04GridContainer = () => {
 			}}>
 			<A04Grid
 				columns={a04.columns}
-				lockRows={a04.readOnly}
+				lockRows={formMeta.readOnly}
 				gridRef={a04.setGridRef}
 				data={a04.gridData}
 				loading={a04.gridLoading}

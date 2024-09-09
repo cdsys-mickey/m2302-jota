@@ -11,7 +11,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	});
 };
 
-const SupplierIdPickerComponent = memo((props) => {
+const ZZSupplierIdPickerComponent = memo((props) => {
 	const {
 		// Data
 		rowData,
@@ -109,7 +109,7 @@ const SupplierIdPickerComponent = memo((props) => {
 	);
 }, arePropsEqual);
 
-SupplierIdPickerComponent.propTypes = {
+ZZSupplierIdPickerComponent.propTypes = {
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,
@@ -133,6 +133,6 @@ SupplierIdPickerComponent.propTypes = {
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
 };
-SupplierIdPickerComponent.propTypes = {};
-SupplierIdPickerComponent.displayName = "SupplierIdPickerComponent";
-export default SupplierIdPickerComponent;
+ZZSupplierIdPickerComponent.propTypes = {};
+ZZSupplierIdPickerComponent.displayName = "ZZSupplierIdPickerComponent";
+export default ZZSupplierIdPickerComponent;

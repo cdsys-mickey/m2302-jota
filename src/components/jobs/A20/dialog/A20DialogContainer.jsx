@@ -8,6 +8,8 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import Colors from "@/modules/md-colors";
 import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
+import A20Drawer from "../A20Drawer";
 
 export const A20DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -82,6 +84,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 						itemDataReady={a20.itemDataReady}
 					/>
 				</FormMetaProvider>
+				<A20Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogExContainer>
 		</FormProvider >
 	);

@@ -10,6 +10,8 @@ import { C02DialogToolbarContainer } from "./toolbar/C02DialogToolbarContainer";
 import { useFormMeta } from "../../../../shared-contexts/form-meta/useFormMeta";
 import { useCallback } from "react";
 import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
+import C02Drawer from "../C02Drawer";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 export const C02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -64,9 +66,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 	}, [c02.onEditorSubmit, c02.onEditorSubmitError, form]);
 
 	const handleLastField = useCallback(() => {
-		setTimeout(() => {
-			c02.gridMeta.setActiveCell({ col: 0, row: 0 });
-		});
+		c02.gridMeta.setActiveCell({ col: 0, row: 0 });
 	}, [c02.gridMeta]);
 
 	const formMeta = useFormMeta(
@@ -127,6 +127,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 							itemDataReady={c02.itemDataReady}
 							onSubmit={handleSubmit}
 						/>
+						<C02Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 					</form>
 				</FormMetaProvider>
 			</DialogExContainer>

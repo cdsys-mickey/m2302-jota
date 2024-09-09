@@ -8,6 +8,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import A05Form from "../form/A05Form";
 import { A05DialogButtonsContainer } from "./buttons/A05DialogButtonsContainer";
 import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
+import A05Drawer from "../A05Drawer";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 export const A05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -85,6 +87,7 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 						itemDataReady={a05.itemDataReady}
 					/>
 				</FormMetaProvider>
+				<A05Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogExContainer>
 		</FormProvider>
 	);

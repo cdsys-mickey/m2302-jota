@@ -11,7 +11,7 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import DeptPickerContainer from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPickerContainer";
 import C06SquaredPicker from "./C06SquaredPicker";
 import { C06ProdGridBottomToolbar } from "./prod-grid/C06ProdGridBottomToolbar";
 import { C06ProdGridContainer } from "./prod-grid/C06ProdGridContainer";
@@ -43,7 +43,7 @@ const C06DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={3}>
+						{!creating && (<Grid item xs={24} sm={24} md={3}>
 							<TextFieldWrapper
 								typo
 								name="OrdID"
@@ -52,10 +52,11 @@ const C06DialogForm = memo((props) => {
 								// required
 								readOnly={true}
 							/>
-						</Grid>
+						</Grid>)}
 						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
+								autoFocus
 								name="OrdDate"
 								label="訂貨日期"
 								fullWidth
@@ -75,11 +76,11 @@ const C06DialogForm = memo((props) => {
 						</Grid>
 
 						<Grid item xs={24} sm={24} md={5}>
-							<DeptPickerContainer
+							<DeptPicker
 								typo
 								name="spDept"
 								label="出貨部門"
-								autoFocus
+								// autoFocus
 								excludesSelf
 								required
 								rules={{
@@ -87,6 +88,7 @@ const C06DialogForm = memo((props) => {
 								}}
 								onChanged={handleSpDeptChanged}
 								disabled={spDeptDisabled}
+								disableOpenOnInput
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
@@ -102,6 +104,7 @@ const C06DialogForm = memo((props) => {
 									}}
 									virtualize
 									disableClearable
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>
@@ -111,6 +114,7 @@ const C06DialogForm = memo((props) => {
 								name="squared"
 								label="結清註記"
 								disabled={squaredFlagDisabled}
+								disableOpenOnInput
 							/>
 						</Grid>
 						{!creating && (

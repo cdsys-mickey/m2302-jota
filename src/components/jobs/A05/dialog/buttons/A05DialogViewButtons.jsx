@@ -3,10 +3,12 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { IconButton, Tooltip } from "@mui/material";
 
 const A05DialogTitleViewButtons = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, ...rest } = props;
+		const { onEdit, onDelete, onSideDrawerOpen, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onDelete && (
@@ -26,6 +28,12 @@ const A05DialogTitleViewButtons = memo(
 						編輯
 					</ResponsiveButton>
 				)}
+
+				<Tooltip title="詳細資訊">
+					<IconButton onClick={onSideDrawerOpen} size="small">
+						<HelpOutlineIcon />
+					</IconButton>
+				</Tooltip>
 			</Fragment>
 		);
 	})
@@ -34,6 +42,7 @@ const A05DialogTitleViewButtons = memo(
 A05DialogTitleViewButtons.propTypes = {
 	onEdit: PropTypes.func,
 	onDelete: PropTypes.func,
+	onSideDrawerOpen: PropTypes.func,
 };
 
 export default A05DialogTitleViewButtons;

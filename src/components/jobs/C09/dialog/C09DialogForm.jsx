@@ -9,7 +9,7 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import DeptPickerContainer from "@/components/DeptPickerContainer";
+import DeptPicker from "@/components/DeptPickerContainer";
 import { DepOrderPicker } from "@/components/dep-order-picker/DepOrderPicker";
 import { TxoOrderPicker } from "@/components/txo-order-picker/TxoOrderPicker";
 import { C09ProdGridBottomToolbar } from "./prod-grid/C09ProdGridBottomToolbar";
@@ -92,7 +92,7 @@ const C09DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
-							<DeptPickerContainer
+							<DeptPicker
 								typo
 								name="txoDept"
 								label="撥出門市"

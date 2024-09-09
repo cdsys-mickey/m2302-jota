@@ -1,23 +1,20 @@
-import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
+import C07 from "@/modules/md-c07";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexGrid from "../../../../shared-components/FlexGrid";
+import DeptPicker from "../../../DeptPickerContainer";
+import SquaredPicker from "../../../picker/SquaredPicker";
 import { C07ProdGridBottomToolbar } from "./prod-grid/C07ProdGridBottomToolbar";
 import { C07ProdGridContainer } from "./prod-grid/C07ProdGridContainer";
-import DeptPickerContainer from "../../../DeptPickerContainer";
-import SquaredPicker from "../../../picker/SquaredPicker";
-import { FormFieldLabelContainer } from "../../../../shared-components/form/FormFieldLabelContainer";
-import C07 from "../../../../modules/md-c07";
 
 const C07DialogForm = memo((props) => {
 	const {
@@ -54,7 +51,7 @@ const C07DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={3}>
+						{!creating && (<Grid item xs={24} sm={24} md={3}>
 							<TextFieldWrapper
 								typo
 								name="OrdID"
@@ -64,7 +61,8 @@ const C07DialogForm = memo((props) => {
 								// required
 								readOnly={true}
 							/>
-						</Grid>
+						</Grid>)}
+
 						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
@@ -99,11 +97,12 @@ const C07DialogForm = memo((props) => {
 									}}
 									virtualize
 									disableClearable
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>
 						<Grid item xs={24} sm={24} md={6}>
-							<DeptPickerContainer
+							<DeptPicker
 								typo
 								name="ordDept"
 								label="訂貨部門"
@@ -113,6 +112,7 @@ const C07DialogForm = memo((props) => {
 								rules={{
 									required: "訂貨部門為必填",
 								}}
+								disableOpenOnInput
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={3}>
@@ -120,6 +120,7 @@ const C07DialogForm = memo((props) => {
 								typo
 								name="squared"
 								label="結清註記"
+								disableOpenOnInput
 							/>
 						</Grid>
 						<Grid item xs={24} md={5}>

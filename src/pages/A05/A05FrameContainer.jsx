@@ -14,6 +14,7 @@ import A05 from "../../modules/md-a05";
 import { StdPrintDialogContainer } from "../../components/std-print/StdPrintDialogContainer";
 import { useInit } from "../../shared-hooks/useInit";
 import { A05Context } from "../../contexts/A05/A05Context";
+import A05Drawer from "@/components/jobs/A05/A05Drawer";
 
 export const A05FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -43,6 +44,7 @@ export const A05FrameContainer = () => {
 					{/* 對話框 */}
 					<A05DialogContainer />
 					<StdPrintDialogContainer />
+
 				</StdPrintProvider>
 			</Box>
 		</FormProvider>

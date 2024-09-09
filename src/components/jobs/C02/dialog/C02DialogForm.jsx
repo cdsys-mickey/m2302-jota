@@ -82,6 +82,8 @@ const C02DialogForm = memo((props) => {
 									typo
 									label="請購單位"
 									name="pdline"
+									// D3 非必填，但 API 要求必填, 近幾年的資料都有填，
+									// 等客戶要求再調整
 									required
 									rules={{
 										required: "請購單位為必填",

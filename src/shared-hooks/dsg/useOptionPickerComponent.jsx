@@ -60,16 +60,17 @@ export const useOptionPickerComponent = (opts) => {
 		[setRowData, stopEditing]
 	);
 
+	// 先單純靠 OptionPicker 內的
 	// 跳過停用 Cell
 	useLayoutEffect(() => {
 		if (skipDisabled && active && disabled && !readOnly) {
 			if (focusNextCell) {
-				focusNextCell({ row: rowIndex, col: columnIndex });
+				focusNextCell(cell);
 			} else {
 				console.log("focusNextCell is null");
 			}
 		}
-	}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+	}, [active, cell, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
 
 	return {
 		ref,

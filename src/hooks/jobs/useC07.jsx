@@ -14,6 +14,8 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
 import Forms from "@/shared-modules/sd-forms";
 import { useAppModule } from "./useAppModule";
+import { nanoid } from "nanoid";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useC07 = () => {
 	const crud = useContext(CrudContext);
@@ -25,6 +27,9 @@ export const useC07 = () => {
 		token,
 		moduleId: "C07",
 	});
+
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	const [
 		popperOpen,
@@ -48,7 +53,7 @@ export const useC07 = () => {
 		initialFetchSize: 50,
 	});
 
-	const prodGrid = useDSG({
+	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
 	});
@@ -80,8 +85,21 @@ export const useC07 = () => {
 			supplier: null,
 		};
 		crud.promptCreating({ data });
-		prodGrid.handleGridDataLoaded(data.prods);
-	}, [crud, prodGrid]);
+		grid.handleGridDataLoaded(data.prods);
+	}, [crud, grid]);
+
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			SQty: "",
+			SPrice: "",
+			SRemark: "",
+			ChkQty: "",
+			SOrdID: "",
+		}),
+		[]
+	);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -132,7 +150,7 @@ export const useC07 = () => {
 					});
 					// setSelectedInq(data);
 
-					prodGrid.handleGridDataLoaded(data.prods);
+					grid.handleGridDataLoaded(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -140,7 +158,7 @@ export const useC07 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, prodGrid, token]
+		[crud, httpGetAsync, grid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -163,10 +181,10 @@ export const useC07 = () => {
 			const rtnDate = formData.GrtDate;
 			const supplier = formData.supplier;
 
-			if (supplier && rtnDate && prodGrid.gridData.length > 0) {
+			if (supplier && rtnDate && grid.gridData.length > 0) {
 				const collected = C07.transformForSubmitting(
 					formData,
-					prodGrid.gridData
+					grid.gridData
 				);
 				console.log("collected", collected);
 				try {
@@ -179,7 +197,7 @@ export const useC07 = () => {
 					if (status.success) {
 						const data = C07.transformForReading(payload.data[0]);
 						console.log("refresh-grid.data", data);
-						prodGrid.handleGridDataLoaded(data.prods);
+						grid.handleGridDataLoaded(data.prods);
 						refreshAmt({ setValue, data });
 						toast.info("商品單價已更新");
 					} else {
@@ -193,7 +211,7 @@ export const useC07 = () => {
 				console.warn("clear values?");
 			}
 		},
-		[httpPostAsync, prodGrid, refreshAmt, token]
+		[httpPostAsync, grid, refreshAmt, token]
 	);
 
 	const refreshAction = useAction();
@@ -446,11 +464,11 @@ export const useC07 = () => {
 				fetchAmt({
 					received: received,
 					taxType: newValue,
-					gridData: prodGrid.gridData,
+					gridData: grid.gridData,
 					setValue,
 				});
 			},
-		[fetchAmt, prodGrid.gridData]
+		[fetchAmt, grid.gridData]
 	);
 
 	const buildGridChangeHandler = useCallback(
@@ -472,7 +490,7 @@ export const useC07 = () => {
 									prod: oldProd,
 									SPrice: oldSPrice,
 									oldSQty,
-								} = prodGrid.gridData[rowIndex];
+								} = grid.gridData[rowIndex];
 
 								let processedRowData = { ...rowData };
 								// 商品
@@ -540,7 +558,7 @@ export const useC07 = () => {
 				}
 				console.log("prodGrid.changed", newGridData);
 				if (!checkFailed) {
-					prodGrid.setGridData(newGridData);
+					grid.setGridData(newGridData);
 					fetchAmt({
 						received: formData.RecvAmt,
 						taxType: formData.TaxType,
@@ -549,7 +567,7 @@ export const useC07 = () => {
 					});
 				}
 			},
-		[fetchAmt, getProdInfo, prodGrid]
+		[fetchAmt, getProdInfo, grid]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -557,7 +575,7 @@ export const useC07 = () => {
 			console.log("onEditorSubmit", data);
 			const collected = C07.transformForSubmitting(
 				data,
-				prodGrid.gridData
+				grid.gridData
 			);
 			console.log("collected", collected);
 			if (crud.creating) {
@@ -573,7 +591,7 @@ export const useC07 = () => {
 			crud.updating,
 			handleCreate,
 			handleUpdate,
-			prodGrid.gridData,
+			grid.gridData,
 		]
 	);
 
@@ -590,7 +608,7 @@ export const useC07 = () => {
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "C07",
-				IDs: crud.itemData?.GrtID,
+				IDs: crud.itemData?.OrdID,
 			};
 			postToBlank(
 				`${import.meta.env.VITE_URL_REPORT}/WebC07Rep.aspx?LogKey=${operator?.LogKey
@@ -600,12 +618,7 @@ export const useC07 = () => {
 				}
 			);
 		},
-		[
-			crud.itemData?.GrtID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[crud.itemData?.OrdID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -617,10 +630,10 @@ export const useC07 = () => {
 			async (data) => {
 				console.log("onRefreshGridSubmit", data);
 				try {
-					if (prodGrid.gridData.length > 0) {
+					if (grid.gridData.length > 0) {
 						const collected = C07.transformForSubmitting(
 							data,
-							prodGrid.gridData
+							grid.gridData
 						);
 						console.log("collected", collected);
 
@@ -635,7 +648,7 @@ export const useC07 = () => {
 								payload.data[0]
 							);
 							console.log("refreshed data", data);
-							prodGrid.handleGridDataLoaded(data.prods);
+							grid.handleGridDataLoaded(data.prods);
 							refreshAmt({ setValue, data });
 							toast.info("商品單價已更新");
 						} else {
@@ -652,7 +665,7 @@ export const useC07 = () => {
 					// 還原
 				}
 			},
-		[httpPostAsync, prodGrid, refreshAmt, token]
+		[httpPostAsync, grid, refreshAmt, token]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {
@@ -708,7 +721,8 @@ export const useC07 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
-		...prodGrid,
+		grid,
+		...grid,
 		buildGridChangeHandler,
 		getRowKey,
 		spriceDisabled,
@@ -725,5 +739,7 @@ export const useC07 = () => {
 		handleCheckEditable,
 		handleRefresh,
 		refreshWorking: refreshAction.working,
+		createRow,
+		...sideDrawer
 	};
 };

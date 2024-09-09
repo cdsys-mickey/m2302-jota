@@ -10,6 +10,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { C04ExpDialogContainer } from "../../components/jobs/C04/exp-dialog/C04ExpDialogContainer";
 import { C04ListHeaderContainer } from "../../components/jobs/C04/list/C04ListHeaderContainer";
+import C04Drawer from "@/components/jobs/C04/C04Drawer";
 
 export const C04FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -40,6 +41,7 @@ export const C04FrameContainer = () => {
 			{/* 對話框 */}
 			<C04DialogContainer />
 			<C04ExpDialogContainer />
+
 		</Box>
 	);
 };

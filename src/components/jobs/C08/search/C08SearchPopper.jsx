@@ -9,7 +9,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import DeptPickerContainer from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPickerContainer";
 import TransportTypePicker from "../../../tranport-type-picker/TransportTypePicker";
 
 const C08SearchPopper = memo(
@@ -32,27 +32,31 @@ const C08SearchPopper = memo(
 							<DatePickerWrapper
 								name="txoDate"
 								label="撥出日期(>)"
+								autoFocus
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="倉管人員" />
+							<EmployeePicker name="employee" label="倉管人員" disableOpenOnInput />
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<EmployeePicker
 								name="deliveryEmployee"
 								label="配送人員"
+								disableOpenOnInput
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<DeptPickerContainer
+							<DeptPicker
 								name="txiDept"
 								label="撥入門市"
+								disableOpenOnInput
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<TransportTypePicker
 								name="transType"
 								label="貨運類別"
+								disableOpenOnInput
 							/>
 						</Grid>
 					</Grid>

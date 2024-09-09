@@ -17,6 +17,8 @@ import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useCallback } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { toast } from "react-toastify";
+import C03Drawer from "../C03Drawer";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 export const C03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -193,6 +195,7 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 						supplierNameDisabled={supplierNameDisabled}
 					/>
 				</FormMetaProvider>
+				<C03Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogExContainer>
 		</FormProvider>
 	);

@@ -20,6 +20,7 @@ import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createT
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useA20 = ({ token }) => {
 	const crud = useContext(CrudContext);
@@ -28,7 +29,8 @@ export const useA20 = ({ token }) => {
 		moduleId: "A20",
 	});
 
-
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
@@ -124,9 +126,7 @@ export const useA20 = ({ token }) => {
 	});
 
 	const handleLastField = useCallback(() => {
-		setTimeout(() => {
-			gridMeta.setActiveCell({ col: 0, row: 0 });
-		})
+		gridMeta.setActiveCell({ col: 0, row: 0 });
 	}, [gridMeta]);
 
 	const formMeta = useFormMeta(
@@ -465,6 +465,7 @@ export const useA20 = ({ token }) => {
 		createRow,
 		formMeta,
 		grid,
-		gridMeta
+		gridMeta,
+		...sideDrawer
 	};
 };

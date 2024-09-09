@@ -59,7 +59,7 @@ export const C02FrameContainer = () => {
 
 			{/* 對話框 */}
 			<C02DialogContainer />
-			<C02Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
+
 		</Box>
 	);
 };

@@ -7,6 +7,20 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C07DialogForm from "./C07DialogForm";
 import { C07DialogToolbarContainer } from "./toolbar/C07DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useCallback } from "react";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
+import C07Drawer from "../C07Drawer";
 
 export const C07DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -44,10 +58,10 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 		return c07.creating
 			? c07.confirmQuitCreating
 			: c07.updating
-			? c07.confirmQuitUpdating
-			: c07.reading
-			? c07.cancelAction
-			: null;
+				? c07.confirmQuitUpdating
+				: c07.reading
+					? c07.cancelAction
+					: null;
 	}, [
 		c07.cancelAction,
 		c07.confirmQuitCreating,
@@ -56,6 +70,155 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 		c07.reading,
 		c07.updating,
 	]);
+
+	const readOnly = useMemo(() => {
+		return !c07.editing;
+	}, [c07.editing]);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withStock: true,
+						selectOnFocus: true,
+						triggerDelay: 300,
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: false,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 140,
+				maxWidth: 140,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 60,
+				maxWidth: 60,
+				title: "包裝",
+				disabled: true,
+			},
+			{
+				...keyColumn("SPrice", createFloatColumn(2)),
+				title: "單價",
+				minWidth: 100,
+				grow: 1,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SQty", createFloatColumn(2)),
+				title: "訂貨量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SAmt", createFloatColumn(2)),
+				title: "金額",
+				minWidth: 100,
+				grow: 1,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"stype",
+					optionPickerColumn(FreeProdTypePickerComponentContainer, {
+						name: "stype",
+						disableClearable: true,
+					})
+				),
+				title: "贈品",
+				minWidth: 80,
+				maxWidth: 80,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"SRemark",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "備註",
+				grow: 2,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SNotQty", createFloatColumn(2)),
+				title: "未到量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly,
+			},
+		],
+		[readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: c07.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
+	const handleLastField = useCallback(() => {
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [gridMeta]);
+
+	const formMeta = useFormMeta(
+		`
+		OrdDate,
+		ArrDate,
+		employee,
+		ordDept,
+		squared
+		`,
+		{
+			lastField: handleLastField,
+		}
+	)
+
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
+				default:
+					return false;
+			}
+		},
+		[]
+	);
 
 	const handleSubmit = form.handleSubmit(
 		c07.onEditorSubmit,
@@ -97,31 +260,34 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<C07DialogForm
-					onSubmit={handleSubmit}
-					creating={c07.creating}
-					editing={c07.editing}
-					updating={c07.updating}
-					readWorking={c07.readWorking}
-					readError={c07.readError}
-					data={c07.itemData}
-					itemDataReady={c07.itemDataReady}
-					handleSupplierChanged={c07.handleSupplierChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
-					handleRtnDateChanged={c07.handleRtnDateChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
-					supplier={supplier}
-					isSupplierNameDisabled={c07.isSupplierNameDisabled}
-					purchaseOrdersDisabled={c07.purchaseOrdersDisabled}
-					handleTaxTypeChanged={c07.handleTaxTypeChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
-				/>
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled} gridMeta={gridMeta} readOnly={readOnly}>
+					<C07DialogForm
+						onSubmit={handleSubmit}
+						creating={c07.creating}
+						editing={c07.editing}
+						updating={c07.updating}
+						readWorking={c07.readWorking}
+						readError={c07.readError}
+						data={c07.itemData}
+						itemDataReady={c07.itemDataReady}
+						handleSupplierChanged={c07.handleSupplierChanged({
+							setValue: form.setValue,
+							getValues: form.getValues,
+						})}
+						handleRtnDateChanged={c07.handleRtnDateChanged({
+							setValue: form.setValue,
+							getValues: form.getValues,
+						})}
+						supplier={supplier}
+						isSupplierNameDisabled={c07.isSupplierNameDisabled}
+						purchaseOrdersDisabled={c07.purchaseOrdersDisabled}
+						handleTaxTypeChanged={c07.handleTaxTypeChanged({
+							setValue: form.setValue,
+							getValues: form.getValues,
+						})}
+					/>
+				</FormMetaProvider>
+				<C07Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogExContainer>
 		</FormProvider>
 	);

@@ -54,6 +54,7 @@ export const C07DialogToolbarContainer = (props) => {
 			// onDelete={canDelete ? c07.confirmDelete : null}
 			onPrint={c07.canPrint ? handlePrint : null}
 			// checkEditableWorking={c07.checkEditableWorking}
+			onSideDrawerOpen={c07.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

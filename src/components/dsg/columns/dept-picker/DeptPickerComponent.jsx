@@ -1,8 +1,9 @@
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
-import DeptPickerContainer from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPickerContainer";
 import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -43,11 +44,18 @@ const DeptPickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
+
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
 		rowIndex,
@@ -59,7 +67,9 @@ const DeptPickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -67,7 +77,7 @@ const DeptPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		getNextCell,
 		lastCell,
 		setActiveCell,
@@ -78,14 +88,14 @@ const DeptPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		getNextCell,
 		lastCell,
 		setActiveCell,
 	}
 
 	return (
-		<DeptPickerContainer
+		<DeptPicker
 			queryParam="qs"
 			label=""
 			inputRef={ref}
@@ -97,7 +107,8 @@ const DeptPickerComponent = memo((props) => {
 			typeToSearchText="請輸入門市編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
-			cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
+			// cellComponentRef={cellComponentRef}
 			cell={cell}
 			dense
 			hideControls={hideControls}

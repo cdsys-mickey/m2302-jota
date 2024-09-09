@@ -40,8 +40,16 @@ const Colors = {
 	PURPLE: "#7e5a9f",
 	YELLOW: "yellow",
 	DISABLED: grey[300],
-	DIALOG_BG: "rgb(235 235 235)",
-	// DIALOG_BG: "rgb(228 228 228)",
+	// DIALOG_BG: "rgb(235 235 235)",
+	// lightYellow
+	DIALOG_BG: "rgb(253 249 235)",
+	// lightBrown
+	// DIALOG_BG: "rgb(252 242 225)",
+	// white
+	// DIALOG_BG: "rgb(255 255 255)",
+	// lightBlue
+	// DIALOG_BG: "#effdff",
+	// DIALOG_BG: cyan[50],
 
 };
 

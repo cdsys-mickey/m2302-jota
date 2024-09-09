@@ -1,19 +1,8 @@
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { memo, useMemo } from "react";
-import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
-	textColumn,
-} from "react-datasheet-grid";
+import { memo } from "react";
 
-import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
-import OutboundTypePickerComponent from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponent";
-import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
-import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { tooltipColumn } from "@/shared-components/dsg/columns/tooltip/tooltipColumn";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
@@ -30,8 +19,9 @@ const C08ProdGrid = memo((props) => {
 		readOnly,
 		gridRef,
 		data,
-		handleGridChange,
-		handleSelectionChange,
+		onChange,
+		onActiveCellChange,
+		// handleSelectionChange,
 		getRowClassName,
 		height = 300,
 		sprodDisabled,
@@ -43,132 +33,7 @@ const C08ProdGrid = memo((props) => {
 		getSQtyClassName,
 		getTooltip,
 	} = props;
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn("SOrdFlag_N", textColumn),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "訂",
-				disabled: true,
-				cellClassName: "star",
-			},
-			{
-				...keyColumn(
-					"prod",
-					prodPickerColumn({
-						name: "prod",
-						withStock: true,
-						triggerDelay: 300,
-						dense: true,
-						// optionLabelSize: "md",
-						// hideControlsOnActive: true,
-					})
-				),
-				id: "SProdID",
-				title: "商品",
-				grow: 4,
-				disabled: readOnly || sprodDisabled,
-			},
-			{
-				...keyColumn(
-					"PackData_N",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 60,
-				title: "包裝",
-				disabled: true,
-			},
 
-			{
-				...keyColumn("SPrice", createFloatColumn(2)),
-				title: "調撥單價",
-				minWidth: 100,
-				grow: 1,
-				disabled: true,
-				cellClassName: getSPriceClassName,
-			},
-			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "庫存",
-				minWidth: 90,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"overrideSQty",
-					createCheckboxColumn({
-						size: "medium",
-					})
-				),
-				title: "註",
-				minWidth: 38,
-				maxWidth: 38,
-				disabled: readOnly || overrideSQtyDisabled,
-			},
-			{
-				...keyColumn("SQty", createFloatColumn(2)),
-				title: "調撥數量",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly || sqtyDisabled,
-				cellClassName: getSQtyClassName,
-			},
-			{
-				...keyColumn("SAmt", createFloatColumn(2)),
-				title: "金額",
-				minWidth: 90,
-				grow: 1,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"stype",
-					optionPickerColumn(FreeProdTypePickerComponentContainer, {
-						name: "stype",
-						disableClearable: true,
-						// hideControlsOnActive: true,
-					})
-				),
-				title: "贈品",
-				minWidth: 80,
-				maxWidth: 80,
-				disabled: readOnly || stypeDisabled,
-			},
-			{
-				...keyColumn(
-					"dtype",
-					optionPickerColumn(OutboundTypePickerComponent, {
-						name: "dtype",
-						// optionLabelSize: "md",
-					})
-				),
-				title: "原因",
-				minWidth: 140,
-				maxWidth: 160,
-				disabled: readOnly || dtypeDisabled,
-			},
-
-			// {
-			// 	...keyColumn("SMsg", textColumn),
-			// 	title: "訊息",
-			// 	minWidth: 140,
-			// 	disabled: true,
-			// },
-		],
-		[
-			readOnly,
-			sprodDisabled,
-			getSPriceClassName,
-			overrideSQtyDisabled,
-			sqtyDisabled,
-			getSQtyClassName,
-			stypeDisabled,
-			dtypeDisabled,
-		]
-	);
 
 	const duplicateRow = useCallback(
 		({ rowData }) => ({ ...rowData, Pkey: nanoid() }),
@@ -181,7 +46,7 @@ const C08ProdGrid = memo((props) => {
 	}, []);
 
 	return (
-		<DynamicDataSheetGrid
+		<DSGGrid
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly}
@@ -189,9 +54,10 @@ const C08ProdGrid = memo((props) => {
 			height={height}
 			// rowHeight={42}
 			value={data}
-			onChange={handleGridChange}
-			onSelectionChange={handleSelectionChange}
-			columns={columns}
+			onChange={onChange}
+			onActiveCellChange={onActiveCellChange}
+			// onSelectionChange={handleSelectionChange}
+			// columns={columns}
 			addRowsComponent={C08ProdGridAddRows}
 			disableExpandSelection
 			// disableContextMenu
@@ -217,7 +83,8 @@ C08ProdGrid.propTypes = {
 	stypeDisabled: PropTypes.func,
 	dtypeDisabled: PropTypes.func,
 	overrideSQtyDisabled: PropTypes.func,
-	handleGridChange: PropTypes.func,
+	onChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
 	handleSelectionChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,

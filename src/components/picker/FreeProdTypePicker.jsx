@@ -14,6 +14,7 @@ const FreeProdTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={FreeProdTypes.getOptionLabel}
 			isOptionEqualToValue={FreeProdTypes.isOptionEqualToValue}
 			findByInput={FreeProdTypes.findByInput}
+			notFoundText="試贈樣 ${id} 不存在"
 			{...rest}
 		/>
 	);

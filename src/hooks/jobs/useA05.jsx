@@ -10,6 +10,7 @@ import Errors from "@/shared-modules/sd-errors";
 import { useInit } from "@/shared-hooks/useInit";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useA05 = ({ token }) => {
 	const formMeta = useFormMeta(
@@ -43,6 +44,8 @@ export const useA05 = ({ token }) => {
 		token,
 		moduleId: "A05",
 	});
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 	const [selectedItem, setSelectedItem] = useState();
@@ -67,7 +70,7 @@ export const useA05 = ({ token }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A05.transformForReading(payload);
+					const data = A05.transformForReading(payload.data[0]);
 
 					crud.doneReading({
 						data,
@@ -290,5 +293,6 @@ export const useA05 = ({ token }) => {
 		confirmDelete,
 		...appModule,
 		formMeta,
+		...sideDrawer
 	};
 };

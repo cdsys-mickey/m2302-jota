@@ -6,7 +6,7 @@ import Auth from "@/modules/md-auth";
 import Depts from "@/modules/md-depts";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
-const DeptPickerContainer = memo((props) => {
+const DeptPicker = memo((props) => {
 	const {
 		label = "門市",
 		uid,
@@ -56,7 +56,7 @@ const DeptPickerContainer = memo((props) => {
 	);
 });
 
-DeptPickerContainer.propTypes = {
+DeptPicker.propTypes = {
 	label: PropTypes.string,
 	uid: PropTypes.string,
 	scope: PropTypes.number,
@@ -64,5 +64,5 @@ DeptPickerContainer.propTypes = {
 	forId: PropTypes.bool,
 };
 
-DeptPickerContainer.displayName = "DeptPickerContainer";
-export default DeptPickerContainer;
+DeptPicker.displayName = "DeptPicker";
+export default DeptPicker;

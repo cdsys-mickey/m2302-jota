@@ -1,4 +1,5 @@
 import FreeProdTypePicker from "@/components/picker/FreeProdTypePicker";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
@@ -42,11 +43,18 @@ const FreeProdTypePickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
+
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
 		rowIndex,
@@ -58,7 +66,9 @@ const FreeProdTypePickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -66,7 +76,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		getNextCell,
 		lastCell,
 		setActiveCell,
@@ -77,7 +87,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		getNextCell,
 		lastCell,
 		setActiveCell,
@@ -92,7 +102,8 @@ const FreeProdTypePickerComponent = memo((props) => {
 			onChange={handleChange}
 			// placeholder="試贈樣"
 			// DSG 專屬屬性
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

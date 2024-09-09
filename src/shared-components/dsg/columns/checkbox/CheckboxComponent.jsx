@@ -65,7 +65,7 @@ const CheckboxComponent = memo(
 			};
 		}, [columnIndex, rowIndex]);
 
-		const { nextCell } = useCellComponent({
+		const { focusNextCell } = useCellComponent({
 			getNextCell,
 			lastCell,
 			setActiveCell,
@@ -95,8 +95,8 @@ const CheckboxComponent = memo(
 			if (focus) {
 				setRowData(!rowData);
 				stopEditing({ nextRow: false });
-				if (nextCell) {
-					nextCell(cell, { forward: true });
+				if (focusNextCell) {
+					focusNextCell(cell, { forward: true });
 				}
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -104,13 +104,13 @@ const CheckboxComponent = memo(
 
 		useLayoutEffect(() => {
 			if (skipDisabled && active && disabled && !readOnly) {
-				if (nextCell) {
-					nextCell({ row: rowIndex, col: columnIndex });
+				if (focusNextCell) {
+					focusNextCell({ row: rowIndex, col: columnIndex });
 				} else {
-					console.log("nextCell is null");
+					console.log("focusNextCell is null");
 				}
 			}
-		}, [active, columnIndex, disabled, nextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<input

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import TaxTypePicker from "@/components/picker/TaxTypePicker";
 import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const TaxTypePickerComponent = memo((props) => {
 	const {
@@ -34,11 +35,18 @@ const TaxTypePickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
+
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
 		rowIndex,
@@ -50,7 +58,9 @@ const TaxTypePickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -83,7 +93,8 @@ const TaxTypePickerComponent = memo((props) => {
 			value={rowData}
 			onChange={handleChange}
 			// DSG 專屬
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

@@ -1,8 +1,8 @@
 import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import { B05OutputModePickerContainer } from "./B05OutputModePickerContainer";
@@ -36,9 +36,11 @@ const B05DialogViewToolbar = memo(
 						編輯
 					</ResponsiveButton>
 				)}
-				<IconButton onClick={onSideDrawerOpen}>
-					<HelpCenterIcon />
-				</IconButton>
+				<Tooltip title="詳細資訊">
+					<IconButton onClick={onSideDrawerOpen} size="small">
+						<HelpOutlineIcon />
+					</IconButton>
+				</Tooltip>
 			</Fragment>
 		);
 	})

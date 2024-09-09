@@ -7,6 +7,19 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C05DialogForm from "./C05DialogForm";
 import { C05DialogToolbarContainer } from "./toolbar/C05DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useCallback } from "react";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { toast } from "react-toastify";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
+import C05Drawer from "../C05Drawer";
 
 export const C05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -17,12 +30,23 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
+	const c05 = useContext(C05Context);
+
 	const supplier = useWatch({
 		name: "supplier",
 		control: form.control,
 	});
 
-	const c05 = useContext(C05Context);
+	const rtnDate = useWatch({
+		name: "GrtDate",
+		control: form.control
+	})
+
+	const readOnly = useMemo(() => {
+		return !c05.editing || !supplier || !rtnDate;
+	}, [c05.editing, rtnDate, supplier]);
+
+
 
 	const scrollable = useScrollable({
 		height,
@@ -44,10 +68,10 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 		return c05.creating
 			? c05.confirmQuitCreating
 			: c05.updating
-			? c05.confirmQuitUpdating
-			: c05.reading
-			? c05.cancelAction
-			: null;
+				? c05.confirmQuitUpdating
+				: c05.reading
+					? c05.cancelAction
+					: null;
 	}, [
 		c05.cancelAction,
 		c05.confirmQuitCreating,
@@ -57,10 +81,166 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 		c05.updating,
 	]);
 
+	// -------------------- GRID --------------------
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withStock: true,
+						selectOnFocus: true,
+						triggerDelay: 300,
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: false,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 180,
+				maxWidth: 180,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "包裝說明",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SInqFlag",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "詢",
+				disabled: true,
+				cellClassName: "star",
+			},
+			{
+				...keyColumn("SPrice", createFloatColumn(2)),
+				title: "退貨單價",
+				minWidth: 100,
+				grow: 1,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SQty", createFloatColumn(2)),
+				title: "退貨數量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SAmt", createFloatColumn(2)),
+				title: "退貨金額",
+				minWidth: 100,
+				grow: 1,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SRemark",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "備註",
+				grow: 5,
+				disabled: readOnly,
+			},
+		],
+		[readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: c05.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
 	const handleSubmit = form.handleSubmit(
 		c05.onEditorSubmit,
 		c05.onEditorSubmitError
 	);
+
+	const handleLastField = useCallback(() => {
+		if (!rtnDate) {
+			toast.error("請先輸入退貨日期", {
+				position: "top-center",
+			});
+			form.setFocus("GrtDate");
+			return;
+		}
+		if (!supplier) {
+			toast.error("請先輸入供應商", {
+				position: "top-center",
+			});
+			form.setFocus("supplier");
+			return;
+		}
+
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [form, gridMeta, rtnDate, supplier]);
+
+	const formMeta = useFormMeta(
+		`
+		GrtDate,
+		employee,
+		InvNo,
+		supplier,
+		FactData,
+		Uniform,
+		TaxType,
+		FactAddr,
+		`,
+		{
+			lastField: handleLastField
+		}
+	)
+
+	const isFieldDisabled = useCallback((field) => {
+		switch (field.name) {
+			case "FactData":
+				return c05.isSupplierNameDisabled(supplier);
+			default:
+				return false;
+		}
+	}, [c05, supplier]);
 
 	useEffect(() => {
 		if (c05.itemDataReady) {
@@ -97,32 +277,35 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<C05DialogForm
-					onSubmit={handleSubmit}
-					creating={c05.creating}
-					editing={c05.editing}
-					updating={c05.updating}
-					readWorking={c05.readWorking}
-					readError={c05.readError}
-					data={c05.itemData}
-					itemDataReady={c05.itemDataReady}
-					handleSupplierChanged={c05.handleSupplierChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
-					handleRtnDateChanged={c05.handleRtnDateChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
-					supplier={supplier}
-					isSupplierNameDisabled={c05.isSupplierNameDisabled}
-					purchaseOrdersDisabled={c05.purchaseOrdersDisabled}
-					handleTaxTypeChanged={c05.handleTaxTypeChanged({
-						setValue: form.setValue,
-						getValues: form.getValues,
-					})}
-				/>
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled} gridMeta={gridMeta} readOnly={readOnly}>
+					<C05DialogForm
+						onSubmit={handleSubmit}
+						creating={c05.creating}
+						editing={c05.editing}
+						updating={c05.updating}
+						readWorking={c05.readWorking}
+						readError={c05.readError}
+						data={c05.itemData}
+						itemDataReady={c05.itemDataReady}
+						handleSupplierChanged={c05.handleSupplierChanged({
+							setValue: form.setValue,
+							getValues: form.getValues,
+						})}
+						handleRtnDateChanged={c05.handleRtnDateChanged({
+							setValue: form.setValue,
+							getValues: form.getValues,
+						})}
+						supplier={supplier}
+						isSupplierNameDisabled={c05.isSupplierNameDisabled}
+						purchaseOrdersDisabled={c05.purchaseOrdersDisabled}
+						handleTaxTypeChanged={c05.handleTaxTypeChanged({
+							setValue: form.setValue,
+							getValues: form.getValues,
+						})}
+					/>
+				</FormMetaProvider>
 			</DialogExContainer>
+			<C05Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 		</FormProvider>
 	);
 });

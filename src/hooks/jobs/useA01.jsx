@@ -26,6 +26,7 @@ import { createTextColumnEx } from "../../shared-components/dsg/columns/text/cre
 import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useSideDrawer } from "../useSideDrawer";
 
 /**
  * 適用三種情境
@@ -89,6 +90,8 @@ export const useA01 = ({ token, mode }) => {
 		token,
 		moduleId: moduleId,
 	});
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 	const { clearParams } = useContext(AppFrameContext);
 
 	const {
@@ -1044,5 +1047,6 @@ export const useA01 = ({ token, mode }) => {
 		transTabDisabled,
 		comboTabDisabled,
 		formMeta,
+		...sideDrawer
 	};
 };

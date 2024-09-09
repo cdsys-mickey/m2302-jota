@@ -1,6 +1,6 @@
 import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
+import SupplierPicker from "@/components/picker/SupplierPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
@@ -51,7 +51,7 @@ const C05DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={3}>
+						{!creating && (<Grid item xs={24} sm={24} md={3}>
 							<TextFieldWrapper
 								typo
 								name="GrtID"
@@ -61,7 +61,8 @@ const C05DialogForm = memo((props) => {
 								// required
 								readOnly={true}
 							/>
-						</Grid>
+						</Grid>)}
+
 						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
@@ -72,6 +73,7 @@ const C05DialogForm = memo((props) => {
 								required
 								variant="outlined"
 								onChanged={handleRtnDateChanged}
+								disableOpenOnInput
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
@@ -86,13 +88,24 @@ const C05DialogForm = memo((props) => {
 									}}
 									virtualize
 									disableClearable
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>
+						<Grid item xs={24} sm={24} md={3}>
+							<TextFieldWrapper
+								typo
+								name="InvNo"
+								label="發票號碼"
+								fullWidth
+							/>
+						</Grid>
+						<FlexBox fullWidth />
 
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={3}>
 							<OptionPickerProvider>
-								<SupplierIdPickerContainer
+								{/* <SupplierIdPickerContainer */}
+								<SupplierPicker
 									typo
 									label="廠商代碼"
 									name="supplier"
@@ -104,9 +117,19 @@ const C05DialogForm = memo((props) => {
 									// disableClearable
 									virtualize
 									// fadeOutDisabled
+									forId
 									withAddr
 									optionLabelSize="md"
 									onChanged={handleSupplierChanged}
+									disableOpenOnInput
+									disableClearable
+									slotProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</OptionPickerProvider>
 						</Grid>
@@ -136,7 +159,6 @@ const C05DialogForm = memo((props) => {
 							// disabled={supplierNameDisabled}
 							/>
 						</Grid>
-						<FlexBox fullWidth />
 						<FlexGrid
 							item
 							xs={4}
@@ -151,15 +173,7 @@ const C05DialogForm = memo((props) => {
 								onChanged={handleTaxTypeChanged}
 							/>
 						</FlexGrid>
-						<Grid item xs={24} sm={24} md={4}>
-							<TextFieldWrapper
-								typo
-								name="InvNo"
-								label="發票號碼"
-								fullWidth
-							/>
-						</Grid>
-						<Grid item xs={24} sm={24} md={9}>
+						<Grid item xs={24} sm={24} md={10}>
 							<TextFieldWrapper
 								typo
 								name="FactAddr"
@@ -170,6 +184,9 @@ const C05DialogForm = memo((props) => {
 							// disabled={supplierNameDisabled}
 							/>
 						</Grid>
+
+
+
 					</Grid>
 					<Box py={1}>
 						<C05ProdGridContainer />

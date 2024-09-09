@@ -11,6 +11,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useInit } from "../../shared-hooks/useInit";
 import { C08Context } from "../../contexts/C08/C08Context";
+import C08Drawer from "@/components/jobs/C08/C08Drawer";
 
 export const C08FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -40,6 +41,7 @@ export const C08FrameContainer = () => {
 				<C08ListViewContainer />
 			</FormProvider>
 			<C08DialogContainer />
+
 		</Box>
 	);
 };

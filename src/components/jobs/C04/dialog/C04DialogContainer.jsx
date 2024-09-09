@@ -10,6 +10,18 @@ import Colors from "@/modules/md-colors";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useCallback } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { toast } from "react-toastify";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
+import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
+import C04Drawer from "../C04Drawer";
 
 export const C04DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -20,8 +32,19 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
+
+	const ordId = useWatch({
+		name: "GinID",
+		control: form.control,
+	})
+
 	const supplier = useWatch({
 		name: "supplier",
+		control: form.control,
+	});
+
+	const rstDate = useWatch({
+		name: "GinDate",
 		control: form.control,
 	});
 
@@ -75,6 +98,157 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		c04.onLoadProdsSubmitError
 	);
 
+	// -------------------- CELL --------------------
+	const readOnly = useMemo(() => {
+		return !c04.editing || !supplier || !rstDate;
+	}, [c04.editing, rstDate, supplier]);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"SOrdFlag_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "採",
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withStock: true,
+						selectOnFocus: true,
+						triggerDelay: 300,
+						queryRequired: true,
+						filterByServer: true,
+						disableOpenOnInput: true,
+						hideControlsOnActive: false,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 170,
+				maxWidth: 170,
+				disabled: readOnly || c04.prodDisabled,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "包裝",
+				minWidth: 80,
+				maxWidth: 80,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SInqFlag",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "詢",
+				disabled: true,
+				cellClassName: "star",
+			},
+			{
+				...keyColumn("SPrice", createFloatColumn(2)),
+				title: "進貨單價",
+				minWidth: 100,
+				disabled: readOnly || c04.spriceDisabled,
+				cellClassName: c04.getSPriceClassName,
+			},
+			{
+				...keyColumn(
+					"stype",
+					optionPickerColumn(FreeProdTypePickerComponentContainer, {
+						name: "stype",
+						disableClearable: true,
+						disableOpenOnInput: true,
+						autoHighlight: true,
+						selectOnFocus: true,
+						forcePopupIcon: false
+					})
+				),
+				title: "試贈樣",
+				minWidth: 70,
+				maxWidth: 70,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SQty", createFloatColumn(2)),
+				title: "進貨數量",
+				minWidth: 90,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SAmt", createFloatColumn(2)),
+				title: "進貨金額",
+				minWidth: 90,
+				disabled: true,
+			},
+			{
+				...keyColumn("SExpDate", dateFnsDateColumn),
+				title: "有效日期",
+				minWidth: 140,
+				maxWidth: 140,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"ordId",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "採購單號",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: true,
+			},
+		],
+		[c04.getSPriceClassName, c04.prodDisabled, c04.spriceDisabled, readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: c04.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+	// -------------------- FormMeta --------------------
 	const supplierNameDisable = useMemo(() => {
 		return c04.isSupplierNameDisabled(supplier)
 	}, [c04, supplier]);
@@ -83,16 +257,31 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		switch (field.name) {
 			case "FactData":
 				return supplierNameDisable;
+			case "purchaseOrders":
+				return !!ordId || !supplier;
 			default:
 				return false;
 		}
-	}, [supplierNameDisable]);
+	}, [ordId, supplier, supplierNameDisable]);
 
 	const handleLastField = useCallback(() => {
-		setTimeout(() => {
-			c04.gridMeta.setActiveCell({ col: 0, row: 0 });
-		});
-	}, [c04.gridMeta]);
+		if (!rstDate) {
+			toast.error("請先輸入進貨日期", {
+				position: "top-center",
+			});
+			form.setFocus("GinDate");
+			return;
+		}
+		if (!supplier) {
+			toast.error("請先輸入供應商", {
+				position: "top-center",
+			});
+			form.setFocus("supplier");
+			return;
+		}
+
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [gridMeta, form, rstDate, supplier]);
 
 	const formMeta = useFormMeta(
 		`
@@ -146,7 +335,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled} gridMeta={gridMeta} readOnly={readOnly}>
 					<C04DialogForm
 						onSubmit={handleSubmit}
 						creating={c04.creating}
@@ -183,6 +372,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 						})}
 					/>
 				</FormMetaProvider>
+				<C04Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogExContainer>
 		</FormProvider>
 	);

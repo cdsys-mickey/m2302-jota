@@ -50,6 +50,7 @@ export const C08DialogToolbarContainer = (props) => {
 			onDelete={canDelete ? c08.confirmDelete : null}
 			onPrint={c08.canPrint ? handlePrint : null}
 			checkEditableWorking={c08.checkEditableWorking}
+			onSideDrawerOpen={c08.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

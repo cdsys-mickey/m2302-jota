@@ -1,12 +1,11 @@
-import { useContext } from "react";
-import C04ProdGrid from "./C04ProdGrid";
 import { C04Context } from "@/contexts/C04/C04Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useFormContext, useWatch } from "react-hook-form";
-import DSGBox from "../../../../../shared-components/dsg/DSGBox";
-import { useMemo } from "react";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { useContext, useMemo } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import C04ProdGrid from "./C04ProdGrid";
 
 export const C04ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -14,6 +13,7 @@ export const C04ProdGridContainer = (props) => {
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
 	const form = useFormContext();
+	const formMeta = useContext(FormMetaContext);
 
 	const supplier = useWatch({
 		name: "supplier",
@@ -24,6 +24,8 @@ export const C04ProdGridContainer = (props) => {
 		name: "GinDate",
 		control: form.control,
 	});
+
+
 
 	const onChange = useMemo(() => {
 		return c04.buildGridChangeHandler({
@@ -36,12 +38,13 @@ export const C04ProdGridContainer = (props) => {
 	return (
 		<DSGContext.Provider value={{
 			...c04.grid,
-			...c04.gridMeta,
+			...formMeta.gridMeta,
 			readOnly: !c04.editing
 		}}>
 			<C04ProdGrid
-				gridRef={c04.setGridRef}
-				readOnly={!c04.editing || !supplier || !rstDate}
+				gridRef={formMeta.gridMeta.setGridRef}
+				// readOnly={!c04.editing || !supplier || !rstDate}
+				readOnly={formMeta.readOnly}
 				data={c04.gridData}
 				bearer={auth.token}
 				height={height - 390}
@@ -50,7 +53,7 @@ export const C04ProdGridContainer = (props) => {
 				spriceDisabled={c04.spriceDisabled}
 				getSPriceClassName={c04.getSPriceClassName}
 				onChange={onChange}
-				onActiveCellChange={c04.handleActiveCellChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				createRow={c04.createRow}
 				{...rest}
 			/>

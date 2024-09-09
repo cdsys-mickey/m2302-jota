@@ -1,6 +1,4 @@
-import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { SupplierIdPickerContainer } from "@/components/picker/SupplierIdPickerContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
@@ -11,12 +9,11 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexGrid from "@/shared-components/FlexGrid";
-import { C08ProdGridBottomToolbar } from "./prod-grid/C08ProdGridBottomToolbar";
-import { C08ProdGridContainer } from "./prod-grid/C08ProdGridContainer";
-import DeptPickerContainer from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPickerContainer";
 import { DepOrderPicker } from "../../../dep-order-picker/DepOrderPicker";
 import TransportTypePicker from "../../../tranport-type-picker/TransportTypePicker";
+import { C08ProdGridBottomToolbar } from "./prod-grid/C08ProdGridBottomToolbar";
+import { C08ProdGridContainer } from "./prod-grid/C08ProdGridContainer";
 
 const C08DialogForm = memo((props) => {
 	const {
@@ -33,7 +30,6 @@ const C08DialogForm = memo((props) => {
 		txiDeptDisabled,
 		handleDepOrdersChanged,
 		purchaseOrdersDisabled,
-		txiDept,
 		...rest
 	} = props;
 	return (
@@ -51,7 +47,7 @@ const C08DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={4}>
+						{!creating && (<Grid item xs={24} sm={24} md={4}>
 							<TextFieldWrapper
 								typo
 								name="TxoID"
@@ -61,7 +57,7 @@ const C08DialogForm = memo((props) => {
 								// required
 								readOnly={true}
 							/>
-						</Grid>
+						</Grid>)}
 						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
@@ -79,7 +75,6 @@ const C08DialogForm = memo((props) => {
 								<EmployeePicker
 									typo
 									label="倉管人員"
-									autoFocus
 									name="employee"
 									required
 									rules={{
@@ -87,11 +82,12 @@ const C08DialogForm = memo((props) => {
 									}}
 									virtualize
 									disableClearable
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
-							<DeptPickerContainer
+							<DeptPicker
 								typo
 								name="txiDept"
 								label="撥入門市"
@@ -101,8 +97,32 @@ const C08DialogForm = memo((props) => {
 									required: "撥入門市為必填",
 								}}
 								onChanged={handleTxiDeptChanged}
+								disableOpenOnInput
 							/>
 						</Grid>
+						<FlexBox fullWidth />
+						<Grid item xs={24} sm={24} md={9}>
+							<DepOrderPicker
+								typo
+								multiple
+								name="depOrders"
+								label="訂貨單號"
+								// virtualize
+								// fadeOutDisabled
+								onChanged={handleDepOrdersChanged}
+								disabled={purchaseOrdersDisabled}
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 660,
+										},
+									},
+								}}
+							/>
+						</Grid>
+
+
 						<Grid item xs={24} sm={24} md={5}>
 							<TransportTypePicker
 								typo
@@ -112,19 +132,7 @@ const C08DialogForm = memo((props) => {
 								rules={{
 									required: "貨運方式為必填",
 								}}
-							/>
-						</Grid>
-						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={13}>
-							<DepOrderPicker
-								typo
-								multiple
-								name="depOrders"
-								label="訂貨單號"
-								// virtualize
-								// fadeOutDisabled
-								onChanged={handleDepOrdersChanged}
-								disabled={purchaseOrdersDisabled || !txiDept}
+								disableOpenOnInput
 							/>
 						</Grid>
 
@@ -135,6 +143,7 @@ const C08DialogForm = memo((props) => {
 									label="配送人"
 									name="deliveryEmployee"
 									virtualize
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>

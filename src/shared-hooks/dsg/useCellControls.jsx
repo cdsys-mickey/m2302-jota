@@ -11,10 +11,11 @@ export const useCellControls = () => {
 		skipDisabled: dsg.skipDisabled,
 		focusNextCell: dsg.focusNextCell,
 		getNextCell: dsg.getNextCell,
+		isLastCell: dsg.isLastCell,
 		lastCell: dsg.lastCell,
 		setActiveCell: dsg.setActiveCell,
 		inDSG: !!dsg,
 		readOnly: dsg.readOnly,
-		supressEvents: dsg.asyncRef.current?.supressEvents
+		supressEvents: dsg.asyncRef?.current?.supressEvents || false
 	};
 };

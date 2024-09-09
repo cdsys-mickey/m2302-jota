@@ -10,6 +10,8 @@ import { C01DialogToolbarContainer } from "./toolbar/C01DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import C01Drawer from "../C01Drawer";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 export const C01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -116,6 +118,7 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 						/>
 					</FormMetaProvider>
 				</form>
+				<C01Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogExContainer>
 		</FormProvider>
 	);

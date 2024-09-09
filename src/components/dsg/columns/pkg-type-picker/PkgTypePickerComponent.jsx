@@ -3,6 +3,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -43,11 +44,18 @@ const PkgTypePickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
+
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
 		rowIndex,
@@ -59,7 +67,9 @@ const PkgTypePickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -97,7 +107,8 @@ const PkgTypePickerComponent = memo((props) => {
 			typeToSearchText="請輸入編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

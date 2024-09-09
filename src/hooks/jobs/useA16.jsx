@@ -32,6 +32,19 @@ export const useA16 = () => {
 		() => [
 			{
 				...keyColumn(
+					"Using_N",
+					createCheckboxExColumn({
+						trueValue: "1",
+						falseValue: "0",
+						size: "medium"
+					})
+				),
+				title: "使用中",
+				minWidth: 60,
+				disabled: grid.readOnly,
+			},
+			{
+				...keyColumn(
 					"DeptID",
 					createTextColumnEx({
 						continuousUpdates: false,
@@ -74,19 +87,7 @@ export const useA16 = () => {
 				grow: 2,
 				disabled: grid.readOnly,
 			},
-			{
-				...keyColumn(
-					"Using_N",
-					createCheckboxExColumn({
-						trueValue: "1",
-						falseValue: "0",
-						size: "medium"
-					})
-				),
-				title: "使用中",
-				minWidth: 60,
-				disabled: grid.readOnly,
-			},
+
 		],
 		[grid.isPersisted, grid.readOnly]
 	);

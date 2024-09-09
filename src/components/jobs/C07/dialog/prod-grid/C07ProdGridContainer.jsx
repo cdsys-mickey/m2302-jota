@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import C07ProdGrid from "./C07ProdGrid";
 import { C07Context } from "@/contexts/C07/C07Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import DSGBox from "@/shared-components/dsg/DSGBox";
-import { useMemo } from "react";
+import C07ProdGrid from "./C07ProdGrid";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 export const C07ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -13,6 +13,7 @@ export const C07ProdGridContainer = (props) => {
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
 	const form = useFormContext();
+	const formMeta = useContext(FormMetaContext);
 
 	const supplier = useWatch({
 		name: "supplier",
@@ -24,7 +25,7 @@ export const C07ProdGridContainer = (props) => {
 		control: form.control,
 	});
 
-	const handleGridChange = useMemo(() => {
+	const onChange = useMemo(() => {
 		return c07.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
@@ -32,18 +33,20 @@ export const C07ProdGridContainer = (props) => {
 	}, [c07, form.getValues, form.setValue]);
 
 	return (
-		<DSGBox>
+		<DSGContext.Provider value={{ ...c07.grid, ...formMeta.gridMeta, readOnly: formMeta.readOnly }}>
 			<C07ProdGrid
-				gridRef={c07.setGridRef}
-				readOnly={!c07.editing || !supplier || !rtnDate}
+				gridRef={formMeta.gridMeta.setGridRef}
+				// readOnly={!c07.editing || !supplier || !rtnDate}
+				readOnly={formMeta.readOnly}
 				data={c07.gridData}
-				handleGridChange={handleGridChange}
+				onChange={onChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
 				height={height - 390}
 				getRowKey={c07.getRowKey}
 				{...rest}
 			/>
-		</DSGBox>
+		</DSGContext.Provider>
 	);
 };
 

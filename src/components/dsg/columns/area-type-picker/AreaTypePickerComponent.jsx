@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -43,11 +44,18 @@ const AreaTypePickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
+
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
 		rowIndex,
@@ -59,7 +67,9 @@ const AreaTypePickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({

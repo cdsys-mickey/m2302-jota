@@ -1,30 +1,20 @@
-import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import C04 from "@/modules/md-c04";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useAction } from "@/shared-hooks/useAction";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
-import { useAction } from "@/shared-hooks/useAction";
-import { useMemo } from "react";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { isDate } from "date-fns";
 import Forms from "@/shared-modules/sd-forms";
+import { isDate } from "date-fns";
 import { nanoid } from "nanoid";
-import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
-import { DateFnsComponentContainer } from "@/shared-components/dsg/columns/date/DateFnsComponentContainer";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import { useAppModule } from "./useAppModule";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useC04 = () => {
 	const crud = useContext(CrudContext);
@@ -36,6 +26,8 @@ export const useC04 = () => {
 		token,
 		moduleId: "C04",
 	});
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	// const [selectedInq, setSelectedInq] = useState();
 
@@ -95,167 +87,9 @@ export const useC04 = () => {
 		return !!rowData.SInqFlag || !!rowData.stype;
 	}, []);
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"SOrdFlag_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "採",
-				disabled: true,
-			},
-			// {
-			// 	...keyColumn(
-			// 		"prod",
-			// 		prodPickerColumn({
-			// 			name: "prod",
-			// 			withStock: true,
-			// 			triggerDelay: 300,
-			// 			dense: true,
-			// 			// optionLabelSize: "md",
-			// 		})
-			// 	),
-			// 	id: "SProdID",
-			// 	title: "商品",
-			// 	grow: 4,
-			// 	disabled: readOnly || prodDisabled,
-			// },
-			{
-				...keyColumn(
-					"prod",
-					optionPickerColumn(ProdPickerComponentContainer, {
-						name: "prod",
-						withStock: true,
-						selectOnFocus: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
-						forId: true,
-						disableClearable: true,
-						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						},
-					})
-				),
-				title: "商品編號",
-				minWidth: 170,
-				maxWidth: 170,
-				disabled: !crud.editing || prodDisabled,
-			},
-			{
-				...keyColumn(
-					"ProdData",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "品名規格",
-				disabled: true,
-				grow: 2,
-			},
-			{
-				...keyColumn(
-					"PackData_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "包裝",
-				minWidth: 80,
-				maxWidth: 80,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"SInqFlag",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "詢",
-				disabled: true,
-				cellClassName: "star",
-			},
-			{
-				...keyColumn("SPrice", createFloatColumn(2)),
-				title: "進貨單價",
-				minWidth: 100,
-				disabled: !crud.editing || spriceDisabled,
-				cellClassName: getSPriceClassName,
-			},
-			{
-				...keyColumn(
-					"stype",
-					optionPickerColumn(FreeProdTypePickerComponentContainer, {
-						name: "stype",
-						disableClearable: true,
-						disableOpenOnInput: true,
-						autoHighlight: true,
-						selectOnFocus: true,
-						forcePopupIcon: false
-					})
-				),
-				title: "試贈樣",
-				minWidth: 70,
-				maxWidth: 70,
-				disabled: !crud.editing,
-			},
-			{
-				...keyColumn("SQty", createFloatColumn(2)),
-				title: "進貨數量",
-				minWidth: 90,
-				disabled: !crud.editing,
-			},
-			{
-				...keyColumn("SAmt", createFloatColumn(2)),
-				title: "進貨金額",
-				minWidth: 90,
-				disabled: true,
-			},
-			{
-				...keyColumn("SExpDate", dateFnsDateColumn),
-				title: "有效日期",
-				minWidth: 140,
-				maxWidth: 140,
-				disabled: !crud.editing,
-			},
-			{
-				...keyColumn(
-					"ordId",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "採購單號",
-				minWidth: 120,
-				maxWidth: 120,
-				disabled: true,
-			},
-		],
-		[crud.editing, getSPriceClassName, prodDisabled, spriceDisabled]
-	);
 
-	const gridMeta = useDSGMeta({
-		data: grid.gridData,
-		columns,
-		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROWC
-	})
+
+
 
 	const refreshAmt = useCallback(({ setValue, data, reset = false }) => {
 		if (reset) {
@@ -431,8 +265,10 @@ export const useC04 = () => {
 				setValue("Uniform", newValue?.Uniform || "");
 				setValue("TaxType", newValue?.TaxType === "Y" ? "Y" : "");
 				setValue("FactAddr", newValue?.CompAddr || "");
-
-				refreshGrid({ formData: getValues(), setValue });
+				const formData = getValues();
+				if (formData.length > 0) {
+					refreshGrid({ formData, setValue });
+				}
 
 				//refresh-grid
 			},
@@ -635,9 +471,80 @@ export const useC04 = () => {
 		[fetchAmt, grid.gridData]
 	);
 
+
+
+	const handleGridProdChange = useCallback(async ({ rowData, formData }) => {
+		let processedRowData = {
+			...rowData
+		};
+		const prodInfo = await getProdInfo(
+			rowData.prod?.ProdID,
+			{
+				supplier: formData.supplier,
+				rstDate: formData.GinDate,
+			}
+		);
+		processedRowData = {
+			...processedRowData,
+			["PackData_N"]:
+				rowData.prod?.PackData_N || "",
+			["SInqFlag"]: prodInfo?.SInqFlag || "",
+			["SPrice"]: prodInfo?.SPrice || "",
+			["SExpDate"]: prodInfo?.MaxDate ? Forms.parseDate(
+				prodInfo.MaxDate
+			) : null,
+			["stype"]: null,
+			["SQty"]: "",
+			["SAmt"]: "",
+			["ordId"]: "",
+		};
+
+		return processedRowData;
+
+	}, [getProdInfo]);
+
+	const updateGridRow = useCallback(({ fromIndex, formData }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// 商品
+		if (rowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+			console.log(
+				`prod[${rowIndex}] changed`,
+				rowData.prod
+			);
+			processedRowData = await handleGridProdChange({
+				rowData: processedRowData,
+				formData
+			})
+		}
+
+		// 單價, 贈,  數量
+		if (
+			rowData.SPrice !== oldRowData.SPrice ||
+			rowData.stype?.id !== oldRowData.Stype?.id ||
+			rowData.SQty !== oldRowData.SQty
+		) {
+			// 計算合計
+			processedRowData = {
+				...processedRowData,
+				["SAmt"]:
+					!rowData.SPrice || !rowData.SQty
+						? ""
+						: rowData.stype?.id
+							? 0
+							: rowData.SPrice * rowData.SQty,
+			};
+		}
+		return processedRowData;
+	}, [grid.gridData, handleGridProdChange]);
+
 	const buildGridChangeHandler = useCallback(
-		({ getValues, setValue }) =>
-			(newValue, operations) => {
+		({ getValues, setValue, gridMeta }) =>
+			async (newValue, operations) => {
 				const formData = getValues();
 				console.log("buildGridChangeHandler", operations);
 				console.log("newValue", newValue);
@@ -645,80 +552,71 @@ export const useC04 = () => {
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						newValue
-							.slice(operation.fromRowIndex, operation.toRowIndex)
-							.forEach(async (rowData, i) => {
-								const { prod, SPrice, SQty, stype } = rowData;
-								const rowIndex = operation.fromRowIndex + i;
-								const {
-									prod: oldProd,
-									SPrice: oldSPrice,
-									oldSQty,
-									oldStype,
-								} = grid.gridData[rowIndex];
+						const updatedRows = await Promise.all(
+							newValue
+								.slice(
+									operation.fromRowIndex,
+									operation.toRowIndex
+								)
+								.map(async (item, index) => {
+									const updatedRow = await updateGridRow({
+										formData,
+										fromIndex: operation.fromRowIndex,
+									})(item, index);
+									return updatedRow;
+								})
+						)
+						console.log("updatedRows", updatedRows);
 
-								let processedRowData = { ...rowData };
-								// 商品
-								if (prod?.ProdID !== oldProd?.ProdID) {
-									console.log(
-										`prod[${rowIndex}] changed`,
-										prod
-									);
-									let prodRetrieved = false;
-									if (prod?.ProdID) {
-										const prodInfo = await getProdInfo(
-											prod?.ProdID,
-											{
-												supplier: formData.supplier,
-												rstDate: formData.GinDate,
-											}
-										);
-										// 取得報價
-										if (prodInfo) {
-											processedRowData = {
-												...processedRowData,
-												["PackData_N"]:
-													prod?.PackData_N || "",
-												["SInqFlag"]: prodInfo.SInqFlag,
-												["SPrice"]: prodInfo.SPrice,
-												["SExpDate"]: Forms.parseDate(
-													prodInfo.MaxDate
-												),
-											};
-											prodRetrieved = true;
-										}
-									}
-									if (!prodRetrieved) {
-										processedRowData = {
-											...processedRowData,
-											prod: null,
-											["PackData_N"]: "",
-											["SInqFlag"]: "",
-											["SPrice"]: "",
-											["SExpDate"]: "",
-										};
-									}
-								}
+						newGridData.splice(
+							operation.fromRowIndex,
+							updatedRows.length,
+							...updatedRows
+						)
+						// newValue
+						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+						// 	.forEach( (rowData, i) => {
+						// 		const { prod, SPrice, SQty, stype } = rowData;
+						// 		const rowIndex = operation.fromRowIndex + i;
+						// 		const {
+						// 			prod: oldProd,
+						// 			SPrice: oldSPrice,
+						// 			oldSQty,
+						// 			oldStype,
+						// 		} = grid.gridData[rowIndex];
 
-								// 單價, 贈,  數量
-								if (
-									SPrice !== oldSPrice ||
-									stype?.id !== oldStype?.id ||
-									SQty !== oldSQty
-								) {
-									// 計算合計
-									processedRowData = {
-										...processedRowData,
-										["SAmt"]:
-											!SPrice || !SQty
-												? ""
-												: stype?.id
-													? 0
-													: SPrice * SQty,
-									};
-								}
-								newGridData[rowIndex] = processedRowData;
-							});
+						// 		let processedRowData = { ...rowData };
+						// 		// 商品
+						// 		if (prod?.ProdID !== oldProd?.ProdID) {
+						// 			console.log(
+						// 				`prod[${rowIndex}] changed`,
+						// 				prod
+						// 			);
+						// 			processedRowData = await handleGridProdChange({
+						// 				rowData: processedRowData,
+						// 				formData
+						// 			})
+						// 		}
+
+						// 		// 單價, 贈,  數量
+						// 		if (
+						// 			SPrice !== oldSPrice ||
+						// 			stype?.id !== oldStype?.id ||
+						// 			SQty !== oldSQty
+						// 		) {
+						// 			// 計算合計
+						// 			processedRowData = {
+						// 				...processedRowData,
+						// 				["SAmt"]:
+						// 					!SPrice || !SQty
+						// 						? ""
+						// 						: stype?.id
+						// 							? 0
+						// 							: SPrice * SQty,
+						// 			};
+						// 		}
+						// 		newGridData[rowIndex] = processedRowData;
+						// 	});
 					} else if (operation.type === "DELETE") {
 						// 列舉原資料
 						// checkFailed = grid.gridData
@@ -741,19 +639,6 @@ export const useC04 = () => {
 				}
 				console.log("grid.changed", newGridData);
 				if (!checkFailed) {
-					// 檢查要不要改 purchaseOrders
-					/*
-					const newOrdIds = newGridData
-						.map((item) => item.ordId)
-						.filter((item) => item);
-					console.log("newOrdIds", newOrdIds);
-					const newPurchaseOrders = formData.purchaseOrders.filter(
-						(item) => newOrdIds.includes(item.採購單號)
-					);
-					console.log("newPurchaseOrders", newPurchaseOrders);
-					setValue("purchaseOrders", newPurchaseOrders);
-					*/
-
 					grid.setGridData(newGridData);
 					fetchAmt({
 						paid: formData.PaidAmt,
@@ -763,7 +648,7 @@ export const useC04 = () => {
 					});
 				}
 			},
-		[fetchAmt, getProdInfo, grid]
+		[fetchAmt, grid, updateGridRow]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -1041,9 +926,9 @@ export const useC04 = () => {
 		onEditorSubmitError,
 		// Grid
 		...grid,
-		...gridMeta,
+		// ...gridMeta,
 		grid,
-		gridMeta,
+		// gridMeta,
 		buildGridChangeHandler,
 		getRowKey,
 		prodDisabled,
@@ -1075,5 +960,6 @@ export const useC04 = () => {
 		getSPriceClassName,
 		handleRefresh,
 		refreshWorking: refreshAction.working,
+		...sideDrawer
 	};
 };

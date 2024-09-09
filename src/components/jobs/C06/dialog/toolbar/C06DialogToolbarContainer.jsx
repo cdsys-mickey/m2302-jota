@@ -52,6 +52,7 @@ export const C06DialogToolbarContainer = (props) => {
 			onEdit={c06.canUpdate ? c06.promptUpdating : null}
 			onDelete={c06.canDelete ? c06.confirmDelete : null}
 			onPrint={c06.canPrint ? handlePrint : null}
+			onSideDrawerOpen={c06.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

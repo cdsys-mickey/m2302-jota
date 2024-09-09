@@ -35,6 +35,7 @@ export const A20DialogButtonsContainer = (props) => {
 		<A20DialogViewButtons
 			onEdit={a20.canUpdate ? a20.promptUpdating : null}
 			onDelete={a20.canDelete ? a20.confirmDelete : null}
+			onSideDrawerOpen={a20.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

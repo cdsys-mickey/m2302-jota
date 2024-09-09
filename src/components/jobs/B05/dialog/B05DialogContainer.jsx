@@ -11,6 +11,8 @@ import Colors from "@/modules/md-colors";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { Drawer } from "@mui/material";
+import B05Drawer from "../B05Drawer";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 export const B05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -124,7 +126,8 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 					</FormMetaProvider>
 				</form>
 			</FormProvider>
-
+			{/* 側邊欄 */}
+			<B05Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 		</DialogExContainer>
 	);
 });

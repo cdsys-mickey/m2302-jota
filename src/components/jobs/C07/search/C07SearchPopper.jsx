@@ -10,7 +10,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import DeptPickerContainer from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPickerContainer";
 
 const C07SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -49,16 +49,17 @@ const C07SearchPopper = memo(
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<DeptPickerContainer
+							<DeptPicker
 								name="ordDept"
 								label="訂貨門市"
+								disableOpenOnInput
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="製單人員" />
+							<EmployeePicker name="employee" label="製單人員" disableOpenOnInput />
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<SquaredPicker name="squared" label="結清註記" />
+							<SquaredPicker name="squared" label="結清註記" disableOpenOnInput />
 						</Grid>
 					</Grid>
 				</DialogContent>

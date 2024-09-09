@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import ProdTypeBPicker from "../../../picker/ProdTypeBPicker";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -43,11 +44,18 @@ const ProdTypeBPickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
+
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
 		rowIndex,
@@ -59,7 +67,9 @@ const ProdTypeBPickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -92,7 +102,8 @@ const ProdTypeBPickerComponent = memo((props) => {
 			value={rowData}
 			onChange={handleChange}
 			// DSG 專屬
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

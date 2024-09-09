@@ -1,38 +1,37 @@
-import { useContext } from "react";
-import C08ProdGrid from "./C08ProdGrid";
 import { C08Context } from "@/contexts/C08/C08Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useFormContext, useWatch } from "react-hook-form";
-import DSGBox from "@/shared-components/dsg/DSGBox";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
+import { useFormContext } from "react-hook-form";
+import C08ProdGrid from "./C08ProdGrid";
 
 export const C08ProdGridContainer = (props) => {
 	const { ...rest } = props;
 	const c08 = useContext(C08Context);
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
+	const formMeta = useContext(FormMetaContext);
 	const form = useFormContext();
 
-	const txiDept = useWatch({
-		name: "txiDept",
-		conrtol: form.control,
-	});
-
-	const handleGridChange = useMemo(() => {
+	const onChange = useMemo(() => {
 		return c08.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
+			gridMeta: formMeta.gridMeta
 		});
-	}, [c08, form.getValues, form.setValue]);
+	}, [c08, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	return (
-		<DSGBox>
+		<DSGContext.Provider value={{ ...c08.grid, ...formMeta.gridMeta, readOnly: formMeta.readOnly }}>
 			<C08ProdGrid
-				gridRef={c08.setGridRef}
-				readOnly={!c08.editing || !txiDept}
+				gridRef={formMeta.gridMeta.setGridRef}
+				// readOnly={!c08.editing || !txiDept}
+				readOnly={formMeta.readOnly}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				data={c08.gridData}
-				handleGridChange={handleGridChange}
+				onChange={onChange}
 				bearer={auth.token}
 				height={height - 356}
 				getRowKey={c08.getRowKey}
@@ -45,12 +44,12 @@ export const C08ProdGridContainer = (props) => {
 				overrideSQtyDisabled={c08.overrideSQtyDisabled}
 				// buildSelectionChangeHandler={c08.buildSelectionChangeHandler()}
 				handleGridCellFocusChange={c08.handleGridCellFocusChange}
-				getRowClassName={c08.getRowClassName}
+				// getRowClassName={c08.getRowClassName}
 				getTooltip={c08.getTooltip}
 				createRow={c08.createRow}
 				{...rest}
 			/>
-		</DSGBox>
+		</DSGContext.Provider>
 	);
 };
 

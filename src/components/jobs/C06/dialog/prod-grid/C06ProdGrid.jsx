@@ -15,6 +15,7 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C06ProdGridAddRows from "./C06ProdGridAddRows";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -28,7 +29,8 @@ const C06ProdGrid = memo((props) => {
 		readOnly,
 		gridRef,
 		data,
-		handleGridChange,
+		onChange,
+		onActiveCellChange,
 		getRowClassName,
 		height = 300,
 		sprodDisabled,
@@ -37,100 +39,7 @@ const C06ProdGrid = memo((props) => {
 		creating,
 		getSPriceClassName,
 	} = props;
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"prod",
-					prodPickerColumn({
-						name: "prod",
-						withStock: true,
-						triggerDelay: 300,
-						dense: true,
-						// optionLabelSize: "md",
-					})
-				),
-				id: "SProdID",
-				title: "商品",
-				grow: 4,
-				disabled: readOnly || sprodDisabled,
-			},
 
-			{
-				...keyColumn("SPrice", createFloatColumn(2)),
-				title: "單價",
-				minWidth: 100,
-				grow: 1,
-				disabled: true,
-				cellClassName: getSPriceClassName,
-			},
-			{
-				...keyColumn("SQty", createFloatColumn(2)),
-				title: "訂貨量",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly || sqtyDisabled,
-			},
-			{
-				...keyColumn("PackData_N", textColumn),
-				minWidth: 60,
-				title: "包裝",
-				disabled: true,
-			},
-			{
-				...keyColumn("SAmt", createFloatColumn(2)),
-				title: "金額",
-				minWidth: 90,
-				grow: 1,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"stype",
-					optionPickerColumn(FreeProdTypePickerComponentContainer, {
-						name: "stype",
-						disableClearable: true,
-					})
-				),
-				title: "贈品",
-				minWidth: 80,
-				maxWidth: 80,
-				disabled: readOnly || stypeDisabled,
-			},
-			{
-				...keyColumn(
-					"SRemark",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "備註",
-				grow: 4,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("SNotQty", createFloatColumn(2)),
-				title: "未到量",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly || creating,
-			},
-			{
-				...keyColumn("SMsg", textColumn),
-				title: "訊息",
-				minWidth: 140,
-				disabled: true,
-			},
-		],
-		[
-			creating,
-			getSPriceClassName,
-			sprodDisabled,
-			readOnly,
-			sqtyDisabled,
-			stypeDisabled,
-		]
-	);
 
 	const duplicateRow = useCallback(
 		({ rowData }) => ({ ...rowData, Pkey: nanoid() }),
@@ -143,15 +52,16 @@ const C06ProdGrid = memo((props) => {
 	}, []);
 
 	return (
-		<DynamicDataSheetGrid
+		<DSGGrid
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly || disableAddRows}
 			height={height + (readOnly ? 48 : 0)}
 			// rowHeight={42}
 			value={data}
-			onChange={handleGridChange}
-			columns={columns}
+			onChange={onChange}
+			onActiveCellChange={onActiveCellChange}
+			// columns={columns}
 			addRowsComponent={C06ProdGridAddRows}
 			disableExpandSelection
 			// disableContextMenu
@@ -168,7 +78,8 @@ C06ProdGrid.propTypes = {
 	getRowKey: PropTypes.func,
 	spriceDisabled: PropTypes.func,
 	sprodDisabled: PropTypes.func,
-	handleGridChange: PropTypes.func,
+	onChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,
 	readOnly: PropTypes.bool,

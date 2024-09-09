@@ -18,6 +18,8 @@ const C06SquaredPicker = memo(
 				getOptionLabel={C06.getSquaredOptionLabel}
 				isOptionEqualToValue={C06.isOptionEqualToValue}
 				getOptionDisabled={C06.getSquaredOptionDisabled}
+				findByInput={C06.findSquaredOptionByInput}
+				emptyId
 				{...rest}
 			/>
 		);

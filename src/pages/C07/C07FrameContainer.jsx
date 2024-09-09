@@ -9,6 +9,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import C07Drawer from "@/components/jobs/C07/C07Drawer";
 
 export const C07FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -33,6 +34,7 @@ export const C07FrameContainer = () => {
 				<C07ListViewContainer />
 			</FormProvider>
 			<C07DialogContainer />
+
 		</Box>
 	);
 };

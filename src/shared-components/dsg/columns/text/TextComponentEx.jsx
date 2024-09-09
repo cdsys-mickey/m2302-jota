@@ -41,6 +41,7 @@ const TextComponentEx = memo(
 			// Context Methods
 			skipDisabled,
 			getNextCell,
+			isLastCell,
 			lastCell,
 			setActiveCell,
 			readOnly
@@ -112,12 +113,15 @@ const TextComponentEx = memo(
 					case "Escape":
 						asyncRef.current.escPressed = true;
 						break;
+					case "Tab":
 					case "Enter":
 						e.preventDefault();
-						stopEditing({ nextRow: false });
+						e.stopPropagation();
 						setTimeout(() => {
+							stopEditing({ nextRow: false });
+							// 透過輸入方式觸發的 focusNextCell
 							if (focusNextCell) {
-								focusNextCell(cell, { forward: true });
+								focusNextCell(cell, { forward: true, e });
 							}
 						});
 
@@ -175,15 +179,23 @@ const TextComponentEx = memo(
 			}
 		}, [focus, rowData]);
 
+		// 當 active 為 disalbed 時跳到下一個 enabled cell
 		useLayoutEffect(() => {
-			if (skipDisabled && active && disabled && !readOnly) {
+			if (skipDisabled && disabled && !readOnly && active) {
 				if (focusNextCell) {
-					focusNextCell({ row: rowIndex, col: columnIndex });
+					focusNextCell(cell);
 				} else {
 					console.log("focusNextCell is null");
 				}
 			}
-		}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, cell, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+
+		// 當要離開最後一個 cell 時
+		// useLayoutEffect(() => {
+		// 	if (isLastCell(cell) && !active) {
+		// 		focusNextCell(cell);
+		// 	}
+		// }, [active, cell, focusNextCell, isLastCell]);
 
 		return (
 			<input
@@ -226,6 +238,7 @@ TextComponentEx.propTypes = {
 	skipDisabled: PropTypes.bool,
 	focusNextCell: PropTypes.func,
 	getNextCell: PropTypes.func,
+	isLastCell: PropTypes.func,
 	setActiveCell: PropTypes.func,
 	lastCell: PropTypes.symbol,
 	rowIndex: PropTypes.number,

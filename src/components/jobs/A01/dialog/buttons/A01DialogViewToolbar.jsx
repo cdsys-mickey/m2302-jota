@@ -4,10 +4,12 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { IconButton, Tooltip } from "@mui/material";
 
 const A01DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onReview, editLabel, ...rest } = props;
+		const { onEdit, onDelete, onReview, editLabel, onSideDrawerOpen, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onDelete && (
@@ -41,6 +43,12 @@ const A01DialogViewToolbar = memo(
 						{editLabel}
 					</ResponsiveButton>
 				)}
+
+				<Tooltip title="詳細資訊">
+					<IconButton onClick={onSideDrawerOpen} size="small">
+						<HelpOutlineIcon />
+					</IconButton>
+				</Tooltip>
 			</Fragment>
 		);
 	})
@@ -50,6 +58,7 @@ A01DialogViewToolbar.propTypes = {
 	onEdit: PropTypes.func,
 	onDelete: PropTypes.func,
 	onReview: PropTypes.func,
+	onSideDrawerOpen: PropTypes.func,
 	editLabel: PropTypes.string.isRequired,
 };
 

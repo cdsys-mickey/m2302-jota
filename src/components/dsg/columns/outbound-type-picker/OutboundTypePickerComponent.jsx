@@ -1,8 +1,8 @@
+import { OutboundTypePicker } from "@/components/picker/OutboundTypePicker";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useRef } from "react";
-import { OutboundTypePicker } from "@/components/picker/OutboundTypePicker";
-import { useMemo } from "react";
+import { memo, useRef } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -17,8 +17,8 @@ const OutboundTypePickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		// rowIndex,
-		// columnIndex,
+		rowIndex,
+		columnIndex,
 		// Component Props
 		columnData,
 		// Cell state
@@ -27,45 +27,71 @@ const OutboundTypePickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
-		// insertRowBelow,
+		insertRowBelow,
 		// duplicateRow,
 		// deleteRow,
 		// getContextMenuItems,
 	} = props;
 
-	const { hideControlsOnActive, ...rest } = columnData;
+	const rowDataRef = useRef(rowData);
+	rowDataRef.current = rowData;
 
-	// console.log(
-	// 	`rendering OutboundTypePickerComponent active: ${active}, focus: ${focus}, rowData:`,
-	// 	rowData
-	// );
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		// focusNextCell,
+		setActiveCell,
+		readOnly,
+		...rest
+	} = columnData;
 
-	const ref = useRef();
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }), 100);
-		},
-		[setRowData, stopEditing]
-	);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+		readOnly,
+		skipDisabled,
+		focusNextCell
+	});
 
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
-
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		// focusNextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		// focusNextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
 		<OutboundTypePicker
@@ -78,15 +104,15 @@ const OutboundTypePickerComponent = memo((props) => {
 			placeholder="銷退/報廢原因"
 			// typeToSearchText="請輸入編號或名稱進行搜尋"
 			// filterByServer
-			// DSG 專屬屬性
+			// DSG 專屬
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
-			hideBorders
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!focus}
+			cell={cell}
 			hideControls={hideControls}
-			// hidePlaceholder={!active}
+			hideBorders
 			disableFadeOut
-			disableClearable
+			toastError
 			// virtualize
 			{...rest}
 		/>

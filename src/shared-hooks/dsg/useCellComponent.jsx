@@ -20,9 +20,9 @@ export const useCellComponent = (props = {}) => {
 				throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
 			}
 
-			const next = getNextCell(cell, opts);
-			if (next.field) {
-				setActiveCell(next.field);
+			const nextCell = getNextCell(cell, opts);
+			if (nextCell.field) {
+				setActiveCell(nextCell.field);
 			} else {
 				if (typeof lastCell === "string") {
 					toast.error(lastCell, {
@@ -36,7 +36,7 @@ export const useCellComponent = (props = {}) => {
 							setActiveCell(null);
 							break;
 						case DSGLastCellBehavior.CREATE_ROW:
-							if (next.isForward) {
+							if (nextCell.isForward) {
 								insertRowBelow();
 							}
 							break;

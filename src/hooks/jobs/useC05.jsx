@@ -1,21 +1,21 @@
-import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import C05 from "@/modules/md-c05";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useAction } from "@/shared-hooks/useAction";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
-import { useAction } from "@/shared-hooks/useAction";
-import { useMemo } from "react";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { isDate } from "date-fns";
 import Forms from "@/shared-modules/sd-forms";
-import { useToggle } from "@/shared-hooks/useToggle";
+import { isDate } from "date-fns";
 import { nanoid } from "nanoid";
+import { useCallback, useContext, useRef } from "react";
+import { toast } from "react-toastify";
+import { useAppModule } from "./useAppModule";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useC05 = () => {
 	const crud = useContext(CrudContext);
@@ -27,6 +27,9 @@ export const useC05 = () => {
 		token,
 		moduleId: "C05",
 	});
+
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	const [
 		popperOpen,
@@ -50,10 +53,12 @@ export const useC05 = () => {
 		initialFetchSize: 50,
 	});
 
-	const prodGrid = useDSG({
+	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
 	});
+
+
 
 	const refreshAmt = useCallback(({ setValue, data, reset = false }) => {
 		if (reset) {
@@ -87,16 +92,16 @@ export const useC05 = () => {
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
-			prods: prodGrid.fillRows({ createRow }),
+			prods: grid.fillRows({ createRow }),
 			GrtDate: new Date(),
 			RecvAmt: "",
-			taxExcluded: false,
+			TaxType: "",
 			employee: null,
 			supplier: null,
 		};
 		crud.promptCreating({ data });
-		prodGrid.handleGridDataLoaded(data.prods);
-	}, [createRow, crud, prodGrid]);
+		grid.handleGridDataLoaded(data.prods);
+	}, [createRow, crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -147,7 +152,7 @@ export const useC05 = () => {
 					});
 					// setSelectedInq(data);
 
-					prodGrid.handleGridDataLoaded(data.prods);
+					grid.handleGridDataLoaded(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -155,7 +160,7 @@ export const useC05 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, prodGrid, token]
+		[crud, httpGetAsync, grid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -181,11 +186,11 @@ export const useC05 = () => {
 			if (
 				supplier &&
 				rtnDate &&
-				prodGrid.gridData.filter((x) => x.prod).length > 0
+				grid.gridData.filter((x) => x.prod).length > 0
 			) {
 				const collected = C05.transformForSubmitting(
 					formData,
-					prodGrid.gridData
+					grid.gridData
 				);
 				console.log("collected", collected);
 				try {
@@ -198,8 +203,8 @@ export const useC05 = () => {
 					if (status.success) {
 						const data = C05.transformForReading(payload.data[0]);
 						console.log("refresh-grid.data", data);
-						prodGrid.handleGridDataLoaded(
-							prodGrid.fillRows({
+						grid.handleGridDataLoaded(
+							grid.fillRows({
 								createRow,
 								data: data.prods,
 							})
@@ -217,7 +222,7 @@ export const useC05 = () => {
 				console.warn("clear values?");
 			}
 		},
-		[httpPostAsync, prodGrid, refreshAmt, token]
+		[httpPostAsync, grid, refreshAmt, token]
 	);
 
 	const refreshAction = useAction();
@@ -462,16 +467,66 @@ export const useC05 = () => {
 				fetchAmt({
 					received: received,
 					taxType: newValue,
-					gridData: prodGrid.gridData,
+					gridData: grid.gridData,
 					setValue,
 				});
 			},
-		[fetchAmt, prodGrid.gridData]
+		[fetchAmt, grid.gridData]
 	);
 
+	const updateGridRow = useCallback(({ formData, fromIndex }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// prod
+		if (rowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+			console.log(
+				`prod[rowIndex] changed`,
+				rowData?.prod
+			);
+
+			const prodInfo = rowData.prod?.ProdID ? await getProdInfo(
+				rowData.prod.ProdID,
+				{
+					supplier: formData.supplier,
+					rtnDate: formData.GrtDate,
+				}
+			) : null;
+			console.log("prodInfo", prodInfo);
+			// 取得報價
+
+			processedRowData = {
+				...processedRowData,
+				["ProdData"]: rowData.prod?.ProdData || "",
+				["PackData_N"]:
+					rowData.prod?.PackData_N || "",
+				["SInqFlag"]: prodInfo?.SInqFlag || "",
+				["SPrice"]: prodInfo?.SPrice || "",
+			};
+		}
+
+		// 單價, 贈,  數量
+		if (rowData.SPrice !== oldRowData.SPrice || rowData.SQty !== oldRowData.SQty) {
+			// 計算合計
+			processedRowData = {
+				...processedRowData,
+				["SAmt"]:
+					!rowData.SPrice || !rowData.SQty
+						? ""
+						: rowData.SPrice * rowData.SQty,
+			};
+		}
+
+
+		return processedRowData;
+	}, [getProdInfo, grid.gridData]);
+
 	const buildGridChangeHandler = useCallback(
-		({ getValues, setValue }) =>
-			(newValue, operations) => {
+		({ getValues, setValue, gridMeta }) =>
+			async (newValue, operations) => {
 				const formData = getValues();
 				console.log("buildGridChangeHandler", operations);
 				console.log("newValue", newValue);
@@ -479,68 +534,90 @@ export const useC05 = () => {
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						newValue
-							.slice(operation.fromRowIndex, operation.toRowIndex)
-							.forEach(async (rowData, i) => {
-								const { prod, SPrice, SQty } = rowData;
-								const rowIndex = operation.fromRowIndex + i;
-								const {
-									prod: oldProd,
-									SPrice: oldSPrice,
-									oldSQty,
-								} = prodGrid.gridData[rowIndex];
+						const updatedRows = await Promise.all(
+							newValue
+								.slice(
+									operation.fromRowIndex,
+									operation.toRowIndex
+								)
+								.map(async (item, index) => {
+									const updatedRow = await updateGridRow({
+										formData,
+										fromIndex: operation.fromRowIndex,
+									})(item, index);
+									return updatedRow;
+								})
+						)
+						console.log("updatedRows", updatedRows);
 
-								let processedRowData = { ...rowData };
-								// 商品
-								if (prod?.ProdID !== oldProd?.ProdID) {
-									console.log(
-										`prod[${rowIndex}] changed`,
-										prod
-									);
-									let prodInfoRetrieved = false;
-									if (prod?.ProdID) {
-										const prodInfo = await getProdInfo(
-											prod?.ProdID,
-											{
-												supplier: formData.supplier,
-												rtnDate: formData.GrtDate,
-											}
-										);
-										// 取得報價
-										prodInfoRetrieved =
-											prodInfo && prodInfo.SPrice !== "";
-										processedRowData = {
-											...processedRowData,
-											["PackData_N"]:
-												prod?.PackData_N || "",
-											...(prodInfoRetrieved && prodInfo),
-										};
-									}
-									if (!prodInfoRetrieved) {
-										processedRowData = {
-											...processedRowData,
-											["SInqFlag"]: "",
-											["SPrice"]: "",
-										};
-									}
-								}
+						newGridData.splice(
+							operation.fromRowIndex,
+							updatedRows.length,
+							...updatedRows
+						)
 
-								// 單價, 贈,  數量
-								if (SPrice !== oldSPrice || SQty !== oldSQty) {
-									// 計算合計
-									processedRowData = {
-										...processedRowData,
-										["SAmt"]:
-											!SPrice || !SQty
-												? ""
-												: SPrice * SQty,
-									};
-								}
-								newGridData[rowIndex] = processedRowData;
-							});
+						// newValue
+						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+						// 	.forEach(async (rowData, i) => {
+						// 		const { prod, SPrice, SQty } = rowData;
+						// 		const rowIndex = operation.fromRowIndex + i;
+						// 		const {
+						// 			prod: oldProd,
+						// 			SPrice: oldSPrice,
+						// 			oldSQty,
+						// 		} = grid.gridData[rowIndex];
+
+						// 		let processedRowData = { ...rowData };
+						// 		// 商品
+						// 		if (prod?.ProdID !== oldProd?.ProdID) {
+						// 			console.log(
+						// 				`prod[${rowIndex}] changed`,
+						// 				prod
+						// 			);
+						// 			let prodInfoRetrieved = false;
+						// 			if (prod?.ProdID) {
+						// 				const prodInfo = await getProdInfo(
+						// 					prod?.ProdID,
+						// 					{
+						// 						supplier: formData.supplier,
+						// 						rtnDate: formData.GrtDate,
+						// 					}
+						// 				);
+						// 				// 取得報價
+						// 				prodInfoRetrieved =
+						// 					prodInfo && prodInfo.SPrice !== "";
+						// 				processedRowData = {
+						// 					...processedRowData,
+						// 					["PackData_N"]:
+						// 						prod?.PackData_N || "",
+						// 					...(prodInfoRetrieved && prodInfo),
+						// 				};
+						// 			}
+						// 			if (!prodInfoRetrieved) {
+						// 				processedRowData = {
+						// 					...processedRowData,
+						// 					["SInqFlag"]: "",
+						// 					["SPrice"]: "",
+						// 				};
+						// 			}
+						// 		}
+
+						// 		// 單價, 贈,  數量
+						// 		if (SPrice !== oldSPrice || SQty !== oldSQty) {
+						// 			// 計算合計
+						// 			processedRowData = {
+						// 				...processedRowData,
+						// 				["SAmt"]:
+						// 					!SPrice || !SQty
+						// 						? ""
+						// 						: SPrice * SQty,
+						// 			};
+						// 		}
+						// 		newGridData[rowIndex] = processedRowData;
+						// 	});
 					} else if (operation.type === "DELETE") {
 						// 列舉原資料
-						// checkFailed = prodGrid.gridData
+						// checkFailed = grid.gridData
 						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
 						// 	.some((rowData, i) => {
 						// 		if (prodDisabled({ rowData })) {
@@ -552,11 +629,15 @@ export const useC05 = () => {
 						// 		}
 						// 		return false;
 						// 	});
+					} else if (operation.type === "CREATE") {
+						console.log("dsg.CREATE");
+						// process CREATE here
+						gridMeta.toFirstColumn({ nextRow: true });
 					}
 				}
-				console.log("prodGrid.changed", newGridData);
+				console.log("grid.changed", newGridData);
 				if (!checkFailed) {
-					prodGrid.setGridData(newGridData);
+					grid.setGridData(newGridData);
 					fetchAmt({
 						received: formData.RecvAmt,
 						taxType: formData.TaxType,
@@ -565,7 +646,7 @@ export const useC05 = () => {
 					});
 				}
 			},
-		[fetchAmt, getProdInfo, prodGrid]
+		[fetchAmt, grid, updateGridRow]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -573,7 +654,7 @@ export const useC05 = () => {
 			console.log("onEditorSubmit", data);
 			const collected = C05.transformForSubmitting(
 				data,
-				prodGrid.gridData
+				grid.gridData
 			);
 			console.log("collected", collected);
 			if (crud.creating) {
@@ -589,7 +670,7 @@ export const useC05 = () => {
 			crud.updating,
 			handleCreate,
 			handleUpdate,
-			prodGrid.gridData,
+			grid.gridData,
 		]
 	);
 
@@ -633,10 +714,10 @@ export const useC05 = () => {
 			async (data) => {
 				console.log("onRefreshGridSubmit", data);
 				try {
-					if (prodGrid.gridData.length > 0) {
+					if (grid.gridData.length > 0) {
 						const collected = C05.transformForSubmitting(
 							data,
-							prodGrid.gridData
+							grid.gridData
 						);
 						console.log("collected", collected);
 
@@ -651,8 +732,8 @@ export const useC05 = () => {
 								payload.data[0]
 							);
 							console.log("refreshed data", data);
-							prodGrid.handleGridDataLoaded(
-								prodGrid.fillRows({
+							grid.handleGridDataLoaded(
+								grid.fillRows({
 									createRow,
 									data: data.prods,
 								})
@@ -673,7 +754,7 @@ export const useC05 = () => {
 					// 還原
 				}
 			},
-		[httpPatchAsync, prodGrid, refreshAmt, token]
+		[httpPatchAsync, grid, refreshAmt, token]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {
@@ -728,7 +809,9 @@ export const useC05 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
-		...prodGrid,
+		createRow,
+		...grid,
+		grid,
 		buildGridChangeHandler,
 		getRowKey,
 		spriceDisabled,
@@ -745,5 +828,6 @@ export const useC05 = () => {
 		handleCheckEditable,
 		handleRefresh,
 		refreshWorking: refreshAction.working,
+		...sideDrawer
 	};
 };

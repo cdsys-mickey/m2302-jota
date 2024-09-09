@@ -2,6 +2,8 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { CustomerPickerContainer } from "@/components/picker/CustomerPickerContainer";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -15,8 +17,8 @@ const CustomerPickerComponent = memo((props) => {
 		rowData,
 		setRowData,
 		// Extra information
-		// rowIndex,
-		// columnIndex,
+		rowIndex,
+		columnIndex,
 		columnData,
 		// Cell state
 		active,
@@ -24,48 +26,75 @@ const CustomerPickerComponent = memo((props) => {
 		disabled,
 		// Control functions
 		stopEditing,
+		insertRowBelow,
 		// rest
 		placeholder = "供應商",
 	} = props;
 
-	const { hideControlsOnActive, ...rest } = columnData;
-
-	const ref = useRef();
 	const rowDataRef = useRef(rowData);
 	rowDataRef.current = rowData;
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log("handleChange", newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => {
-				stopEditing({ nextRow: false });
-			}, 50);
-		},
-		[setRowData, stopEditing]
-	);
+	const {
+		hideControlsOnActive,
+		selectOnFocus,
+		// from Context
+		lastCell,
+		getNextCell,
+		skipDisabled,
+		// focusNextCell,
+		setActiveCell,
+		readOnly,
+		...rest
+	} = columnData;
 
-	const hideControls = useMemo(() => {
-		return disabled || hideControlsOnActive ? !focus : !active;
-	}, [active, hideControlsOnActive, disabled, focus]);
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
-	// focusing on the underlying input component when the cell is focused
-	useLayoutEffect(() => {
-		if (focus) {
-			ref.current?.focus();
-		} else {
-			ref.current?.blur();
-		}
-	}, [focus]);
+	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		rowIndex,
+		columnIndex,
+		focus,
+		active,
+		disabled,
+		hideControlsOnActive,
+		selectOnFocus,
+		setRowData,
+		stopEditing,
+		readOnly,
+		skipDisabled,
+		focusNextCell
+	});
+
+	const cellComponentRef = useRef({
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		// focusNextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	});
+	// sync asyncRef
+	cellComponentRef.current = {
+		stopEditing,
+		insertRowBelow,
+		cell,
+		skipDisabled,
+		// focusNextCell,
+		getNextCell,
+		lastCell,
+		setActiveCell,
+	}
 
 	return (
 		<CustomerPickerContainer
 			queryParam="qs"
 			label=""
-			hideBorders
 			inputRef={ref}
 			disabled={disabled}
 			value={rowData}
@@ -77,12 +106,14 @@ const CustomerPickerComponent = memo((props) => {
 			// queryRequired
 			// virtualize
 			// DSG 專屬屬性
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!active}
+			cell={cell}
 			hideControls={hideControls}
-			// hidePlaceholder={!active}
+			hideBorders
 			disableFadeOut
+			toastError
 			{...rest}
 		/>
 	);

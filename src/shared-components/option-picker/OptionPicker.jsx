@@ -123,6 +123,7 @@ const OptionPicker = memo(
 			GridRowComponent,
 			inDSG,
 			cellComponentRef,
+			focusNextCell,
 			cell,
 			// FormMeta
 			inFormMeta,
@@ -135,7 +136,7 @@ const OptionPicker = memo(
 			...rest
 		} = props;
 
-		const { focusNextCell } = useCellComponent(cellComponentRef?.current);
+		// const { focusNextCell } = useCellComponent(cellComponentRef?.current);
 		const notFoundMsg = _.template(notFoundText);
 
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
@@ -159,11 +160,20 @@ const OptionPicker = memo(
 
 		const handleInputChange = useCallback(
 			(event) => {
-				// const input = event.target.value;
+				const input = event.target.value;
 				// console.log(`handleInputChange: "${input}"`);
 				// 原本輸入框刪到空白則取消 dirty 狀態,
 				// 但為了支援空 id, 因此這裡改成允許空白時保留 dirty 狀態
+
+				if (!input && value) {
+					onChange(multiple ? [] : null);
+					if (name && clearErrors) {
+						clearErrors(name);
+					}
+				}
+
 				asyncRef.current.dirty = true;
+
 				// if (input) {
 				// 	asyncRef.current.dirty = true;
 				// } else {
@@ -179,7 +189,7 @@ const OptionPicker = memo(
 					clearErrors(name);
 				}
 			},
-			[clearErrors, name, onInputChange]
+			[clearErrors, name, onChange, onInputChange, value]
 		);
 
 		const handleOpen = useCallback(
@@ -326,9 +336,12 @@ const OptionPicker = memo(
 				if ((asyncRef.current.dirty) && findByInput) {
 					asyncRef.current.dirty = false;
 
-					const found = await findByInput(input);
+					const found = input || emptyId ? await findByInput(input) : null;
 
-					// handleChange(e, found);
+					if (!input && !found) {
+						asyncRef.current.focusNextWhenEmpty = true;
+					}
+
 					if (!found && validate) {
 						inputNotFound(input);
 						return;
@@ -368,7 +381,7 @@ const OptionPicker = memo(
 				}
 				// focusNextCellOrField(e);
 			},
-			[_open, inFormMeta, inDSG, findByInput, multiple, inputNotFound, onChange, value, focusNextCellOrField, getError, name, setError]
+			[_open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, onChange, value, focusNextCellOrField, getError, name, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -388,7 +401,7 @@ const OptionPicker = memo(
 
 		const handleKeyDown = useCallback(
 			(e) => {
-				console.log("e.key", e.key);
+				// console.log("e.key", e.key);
 				switch (e.key) {
 					case "Enter":
 						// 按下 Shift 時必須略過不處理
@@ -750,8 +763,8 @@ const OptionPicker = memo(
 			console.log(`${name} changed`, value);
 			// if (focusNextCellOrField && (value || emptyId)) {
 			// 當選項改變, 且有值, 且非 multiple
-			if (focusNextCellOrField && value && !multiple && !supressEvents) {
-				// if (focusNextCellOrField) {
+			if (focusNextCellOrField && (value || asyncRef.current.focusNextWhenEmpty) && !multiple && !supressEvents) {
+				asyncRef.current.focusNextWhenEmpty = false;
 				focusNextCellOrField();
 			}
 		}, [value, emptyId]);

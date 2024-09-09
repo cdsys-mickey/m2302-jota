@@ -54,7 +54,7 @@ export const C01FrameContainer = () => {
 			<OptionPickerProvider>
 				<C01DialogContainer />
 			</OptionPickerProvider>
-			<C01Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
+
 		</Box>
 	);
 };

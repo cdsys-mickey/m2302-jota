@@ -14,6 +14,7 @@ import { A01Context } from "../../contexts/A01/A01Context";
 import { StdPrintProvider } from "../../contexts/std-print/StdPrintProvider";
 import A01 from "../../modules/md-a01";
 import { useQuerySync } from "../../shared-hooks/useQuerySync";
+import A01Drawer from "@/components/jobs/A01/A01Drawer";
 
 export const A01FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -57,6 +58,7 @@ export const A01FrameContainer = () => {
 				{/* 對話框 */}
 				<A01DialogContainer />
 				<StdPrintDialogContainer />
+				<A01Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</StdPrintProvider>
 		</Box>
 	);

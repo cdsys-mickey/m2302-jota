@@ -43,6 +43,9 @@ export const DepOrderPicker = (props) => {
 			optionLabelSize="md"
 			GridHeaderComponent={DepOrderGridHeader}
 			GridRowComponent={DepOrderGridRow}
+			notFoundText="單位訂單 ${id} 不存在"
+			inputParam="fz"
+
 			// disableClose
 			{...rest}
 		/>

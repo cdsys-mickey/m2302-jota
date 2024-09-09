@@ -87,6 +87,7 @@ export const A01DialogToolbarContainer = (props) => {
 			onDelete={handleDelete}
 			onReview={handleReview}
 			editLabel={editLabel}
+			onSideDrawerOpen={a01.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

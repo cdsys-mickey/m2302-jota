@@ -552,9 +552,7 @@ export const useB05 = () => {
 	}, []);
 
 	const handleLastField = useCallback(() => {
-		setTimeout(() => {
-			gridMeta.setActiveCell({ col: 0, row: 0 });
-		});
+		gridMeta.setActiveCell({ col: 0, row: 0 });
 	}, [gridMeta]);
 
 	const loadProdFormMeta = useFormMeta(

@@ -10,6 +10,7 @@ const transformGridForReading = (data) => {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
 				},
+				ProdData: ProdData_N,
 				...rest,
 			};
 		}) || []
@@ -63,7 +64,9 @@ const transformForReading = (payload) => {
 };
 
 const transformForSubmitting = (payload, gridData) => {
-	const { GrtID, GrtDate, employee, supplier, remark, ...rest } = payload;
+	const { GrtID, GrtDate, employee, supplier, remark, prod, prods, ...rest } =
+		payload;
+	console.log("dropped props", prod, prods);
 	return {
 		GrtID,
 		GrtDate: GrtDate ? Forms.formatDate(GrtDate) : "",

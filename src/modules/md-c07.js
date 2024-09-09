@@ -11,6 +11,7 @@ const transformGridForReading = (data) => {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
 				},
+				ProdData: ProdData_N,
 				...rest,
 			};
 		}) || []
@@ -60,6 +61,7 @@ const transformForReading = (payload) => {
 			DeptID: OrdDeptID,
 			AbbrName: OrdDeptName_N,
 		},
+		TxoID,
 		transOutOrders:
 			TxoID?.split("|")
 				.filter((s) => !!s)

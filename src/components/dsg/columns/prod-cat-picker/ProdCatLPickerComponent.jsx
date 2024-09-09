@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useMemo, useRef } from "react";
 import { ZZProdCatLPickerContainer } from "../../../picker/ZZProdCatLPickerContainer";
 import ProdCatLPicker from "../../../picker/ProdCatLPicker";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -45,11 +46,18 @@ const ProdCatLPickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
+
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	// const handleChange = useCallback(
 	// 	(newValue) => {
@@ -87,7 +95,9 @@ const ProdCatLPickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -126,7 +136,8 @@ const ProdCatLPickerComponent = memo((props) => {
 			value={rowData}
 			onChange={handleChange}
 			// DSG 專屬屬性
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

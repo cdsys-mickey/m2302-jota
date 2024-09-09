@@ -15,6 +15,7 @@ const SquaredPicker = memo(
 				options={Squared.squaredOptions}
 				getOptionLabel={Squared.getSquaredOptionLabel}
 				isOptionEqualToValue={Squared.isOptionEqualToValue}
+				findByInput={Squared.findSquaredOptionByInput}
 				// getOptionDisabled={Squared.getSquaredOptionDisabled}
 				{...rest}
 			/>

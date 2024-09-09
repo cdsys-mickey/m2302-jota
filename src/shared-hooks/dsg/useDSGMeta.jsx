@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback, useRef } from "react";
-import DSG from "../../shared-modules/sd-dsg";
+import DSG from "@/shared-modules/sd-dsg";
 
 export const useDSGMeta = ({
 	columns,
@@ -185,10 +185,10 @@ export const useDSGMeta = ({
 			let col = cell.col;
 			let row = cell.row;
 			let forward =
-				opts.forward !== undefined
+				opts.forward != null
 					? opts.forward
 					: isForward(asyncRef.current.cell, cell);
-			let searching = forward !== null && forward !== undefined;
+			let searching = forward !== null && forward != null;
 			while (searching) {
 				if (forward) {
 					col++;
@@ -196,6 +196,11 @@ export const useDSGMeta = ({
 						col = 0;
 						row++;
 						if (row >= data.length) {
+							// 若當初 forward 是自動判斷的, 且判斷結果為反向搜尋, 當找不到時, 就改成往下找
+							if (opts.forward == null && forward) {
+								console.log("cannot find next cell while using direction auto detection and result is reversing, try force forwarding...")
+								return getNextCell(cell, { forward: false });
+							}
 							return {
 								field: null,
 								isForward: forward
@@ -208,6 +213,11 @@ export const useDSGMeta = ({
 						col = columns.length - 1;
 						row--;
 						if (row < 0) {
+							// 若當初 forward 是自動判斷的, 且判斷結果為反向搜尋, 當找不到時, 就改成往下找
+							if (opts.forward == null && !forward) {
+								console.log("cannot find next cell while using direction auto detection and result is reversing, try force forwarding...")
+								return getNextCell(cell, { forward: true });
+							}
 							return {
 								field: null,
 								isForward: forward
@@ -313,11 +323,19 @@ export const useDSGMeta = ({
 		}
 	}, [data.length, setActiveCell, setSelection]);
 
+	const isLastCell = useCallback((cell) => {
+		if (!cell) {
+			throw new Error("current cell cannot be null");
+		}
+		return cell.row === data.length - 1 && cell.col === columns.length - 1;
+	}, [columns.length, data.length]);
+
 	return {
 		// Meta
 		gridRef,
 		setGridRef,
 		columns,
+		isLastCell,
 		// Focus Controls
 		skipDisabled,
 		lastCell,

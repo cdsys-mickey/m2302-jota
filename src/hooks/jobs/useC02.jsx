@@ -672,6 +672,7 @@ export const useC02 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
+		createRow,
 		...grid,
 		...gridMeta,
 		grid,

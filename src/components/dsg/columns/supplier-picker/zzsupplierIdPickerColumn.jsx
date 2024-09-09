@@ -1,8 +1,8 @@
-import SupplierIdPickerComponent from "./SupplierIdPickerComponent";
+import ZZSupplierIdPickerComponent from "./ZZSupplierIdPickerComponent";
 
 export const supplierIdPickerColumn = (opts) => {
 	return {
-		component: SupplierIdPickerComponent,
+		component: ZZSupplierIdPickerComponent,
 		columnData: opts,
 		disableKeys: true,
 		keepFocus: true,

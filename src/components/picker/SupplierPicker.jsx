@@ -6,14 +6,17 @@ import { useCallback, useContext, useMemo } from "react";
 import Suppliers from "../../modules/md-suppliers";
 
 const SupplierPicker = (props) => {
-	const { forId, label = "供應商", ...rest } = props;
+	const { label = "供應商", forId, withAddr, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
 		return queryString.stringify({
 			tp: 10000,
+			...(withAddr && {
+				ad: 1,
+			}),
 		});
-	}, []);
+	}, [withAddr]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return Suppliers.isOptionEqualToValue(option, value);
@@ -58,7 +61,8 @@ const SupplierPicker = (props) => {
 SupplierPicker.displayName = "SupplierPicker";
 SupplierPicker.propTypes = {
 	label: PropTypes.string,
-	forId: PropTypes.bool
+	forId: PropTypes.bool,
+	withAddr: PropTypes.bool
 };
 
 export default SupplierPicker;
