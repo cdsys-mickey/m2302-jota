@@ -105,18 +105,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 
 	const columns = useMemo(
 		() => [
-			{
-				...keyColumn(
-					"SOrdFlag_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "採",
-				disabled: true,
-			},
+
 			{
 				...keyColumn(
 					"prod",
@@ -236,6 +225,18 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 				title: "採購單號",
 				minWidth: 120,
 				maxWidth: 120,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SOrdFlag_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "採",
 				disabled: true,
 			},
 		],

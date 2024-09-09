@@ -6,6 +6,8 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useFormContext, useWatch } from "react-hook-form";
 import DSGBox from "@/shared-components/dsg/DSGBox";
 import { useMemo } from "react";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 export const C09ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -13,51 +15,44 @@ export const C09ProdGridContainer = (props) => {
 	const auth = useContext(AuthContext);
 	const { height: windowHeight } = useWindowSize();
 	const form = useFormContext();
-
-	const txoDept = useWatch({
-		name: "txoDept",
-		conrtol: form.control,
-	});
-
-	const txoOrder = useWatch({
-		name: "txoOrder",
-		conrtol: form.control,
-	});
-
-	const readOnly = useMemo(() => {
-		return !c09.editing || !txoDept || !!txoOrder;
-	}, [c09.editing, txoDept, txoOrder]);
+	const formMeta = useContext(FormMetaContext);
 
 	const height = useMemo(() => {
 		return windowHeight - 356;
 	}, [windowHeight]);
 
-	const handleGridChange = useMemo(() => {
+	const onChange = useMemo(() => {
 		return c09.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
+			gridMeta: formMeta.gridMeta
 		});
-	}, [c09, form.getValues, form.setValue]);
+	}, [c09, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	return (
-		<DSGBox>
+		<DSGContext.Provider value={{
+			...c09.grid,
+			...formMeta.gridMeta,
+			readOnly: formMeta.readOnly
+		}}>
 			<C09ProdGrid
-				gridRef={c09.setGridRef}
-				readOnly={readOnly}
+				gridRef={formMeta.gridMeta.setGridRef}
+				readOnly={formMeta.readOnly}
 				data={c09.gridData}
-				handleGridChange={handleGridChange}
+				onChange={onChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
 				height={height}
 				getRowKey={c09.getRowKey}
-				dtypeDisabled={c09.dtypeDisabled}
-				stypeDisabled={c09.stypeDisabled}
-				sprodDisabled={c09.sprodDisabled}
-				sqtyDisabled={c09.sqtyDisabled}
-				getSPriceClassName={c09.getSPriceClassName}
+				// dtypeDisabled={c09.dtypeDisabled}
+				// stypeDisabled={c09.stypeDisabled}
+				// sprodDisabled={c09.sprodDisabled}
+				// sqtyDisabled={c09.sqtyDisabled}
+				// getSPriceClassName={c09.getSPriceClassName}
 				createRow={c09.createRow}
 				{...rest}
 			/>
-		</DSGBox>
+		</DSGContext.Provider>
 	);
 };
 

@@ -15,25 +15,14 @@ export const C04ProdGridContainer = (props) => {
 	const form = useFormContext();
 	const formMeta = useContext(FormMetaContext);
 
-	const supplier = useWatch({
-		name: "supplier",
-		conrtol: form.control,
-	});
-
-	const rstDate = useWatch({
-		name: "GinDate",
-		control: form.control,
-	});
-
-
-
 	const onChange = useMemo(() => {
 		return c04.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
+			gridMeta: formMeta.gridMeta
 			// handleRefreshAmt: c04.handleRefreshAmt,
 		});
-	}, [c04, form.getValues, form.setValue]);
+	}, [c04, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	return (
 		<DSGContext.Provider value={{

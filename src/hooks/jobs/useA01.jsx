@@ -817,7 +817,7 @@ export const useA01 = ({ token, mode }) => {
 	// 					`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
 	// 				);
 	// 				return;
-	// 			}
+	// 			}c
 	// 		}
 	// 		transGrid.propagateGridChange(newValue, operations);
 	// 	},

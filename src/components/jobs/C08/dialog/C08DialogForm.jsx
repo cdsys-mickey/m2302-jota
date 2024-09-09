@@ -70,7 +70,7 @@ const C08DialogForm = memo((props) => {
 								onChanged={handleRtnDateChanged}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
 								<EmployeePicker
 									typo
@@ -101,7 +101,7 @@ const C08DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={9}>
+						<Grid item xs={24} sm={24} md={8}>
 							<DepOrderPicker
 								typo
 								multiple
@@ -123,7 +123,7 @@ const C08DialogForm = memo((props) => {
 						</Grid>
 
 
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4}>
 							<TransportTypePicker
 								typo
 								name="transType"

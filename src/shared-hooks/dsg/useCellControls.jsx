@@ -9,7 +9,7 @@ export const useCellControls = () => {
 	}
 	return {
 		skipDisabled: dsg.skipDisabled,
-		focusNextCell: dsg.focusNextCell,
+		// focusNextCell: dsg.focusNextCell,
 		getNextCell: dsg.getNextCell,
 		isLastCell: dsg.isLastCell,
 		lastCell: dsg.lastCell,

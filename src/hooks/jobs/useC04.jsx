@@ -386,7 +386,7 @@ export const useC04 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { supplier, rstDate }) => {
 			if (!prodId) {
-				toast.error("請先選擇商品");
+				// toast.error("請先選擇商品");
 				return;
 			}
 
@@ -477,15 +477,16 @@ export const useC04 = () => {
 		let processedRowData = {
 			...rowData
 		};
-		const prodInfo = await getProdInfo(
+		const prodInfo = rowData.prod?.ProdID ? await getProdInfo(
 			rowData.prod?.ProdID,
 			{
 				supplier: formData.supplier,
 				rstDate: formData.GinDate,
 			}
-		);
+		) : null;
 		processedRowData = {
 			...processedRowData,
+			["ProdData"]: rowData.prod?.ProdData || "",
 			["PackData_N"]:
 				rowData.prod?.PackData_N || "",
 			["SInqFlag"]: prodInfo?.SInqFlag || "",
@@ -925,6 +926,7 @@ export const useC04 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
+		createRow,
 		...grid,
 		// ...gridMeta,
 		grid,

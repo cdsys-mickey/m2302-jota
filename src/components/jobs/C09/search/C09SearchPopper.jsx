@@ -35,15 +35,17 @@ const C09SearchPopper = memo(
 							<DatePickerWrapper
 								name="tid"
 								label="撥入日期(大於)"
+								autoFocus
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="驗收人員" />
+							<EmployeePicker name="employee" label="驗收人員" disableOpenOnInput />
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<DeptPicker
 								name="txoDept"
 								label="撥出門市"
+								disableOpenOnInput
 							/>
 						</Grid>
 					</Grid>

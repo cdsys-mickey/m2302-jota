@@ -21,6 +21,7 @@ const C09DialogForm = memo((props) => {
 		readError,
 		readWorking,
 		itemDataReady,
+		creating,
 		editing,
 		handleTxoOrdersChanged,
 		handleTxoDeptChanged,
@@ -42,7 +43,7 @@ const C09DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={3}>
+						{!creating && (<Grid item xs={24} sm={24} md={3}>
 							<TextFieldWrapper
 								typo
 								name="TxiID"
@@ -52,7 +53,7 @@ const C09DialogForm = memo((props) => {
 								// required
 								readOnly={true}
 							/>
-						</Grid>
+						</Grid>)}
 						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
@@ -76,12 +77,13 @@ const C09DialogForm = memo((props) => {
 									}}
 									virtualize
 									disableClearable
+									disableOpenOnInput
 								/>
 							</OptionPickerProvider>
 						</Grid>
 
 						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={12}>
+						<Grid item xs={24} sm={24} md={4}>
 							<TxoOrderPicker
 								typo
 								name="txoOrder"
@@ -89,6 +91,26 @@ const C09DialogForm = memo((props) => {
 								// virtualize
 								// fadeOutDisabled
 								onChanged={handleTxoOrdersChanged}
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 700,
+										},
+									},
+								}}
+							/>
+						</Grid>
+
+						<Grid item xs={24} sm={24} md={7}>
+							<DepOrderPicker
+								typo
+								multiple
+								name="depOrders"
+								label="訂貨單號"
+								// virtualize
+								// fadeOutDisabled
+								disabled
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
@@ -102,18 +124,8 @@ const C09DialogForm = memo((props) => {
 									required: "撥出門市為必填",
 								}}
 								onChange={handleTxoDeptChanged}
+								disableOpenOnInput
 							// disabled={txoDeptDisabled}
-							/>
-						</Grid>
-						<Grid item xs={24} sm={24} md={7}>
-							<DepOrderPicker
-								typo
-								multiple
-								name="depOrders"
-								label="訂貨單號"
-								// virtualize
-								// fadeOutDisabled
-								disabled
 							/>
 						</Grid>
 					</Grid>
@@ -149,6 +161,7 @@ C09DialogForm.propTypes = {
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRtnDateChanged: PropTypes.func,
 	onSubmit: PropTypes.func,
+	creating: PropTypes.bool,
 	editing: PropTypes.bool,
 	handleTxoOrdersChanged: PropTypes.func,
 	handleTxoDeptChanged: PropTypes.func,

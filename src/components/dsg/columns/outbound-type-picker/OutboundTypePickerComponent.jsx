@@ -1,4 +1,5 @@
 import { OutboundTypePicker } from "@/components/picker/OutboundTypePicker";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
@@ -107,6 +108,7 @@ const OutboundTypePickerComponent = memo((props) => {
 			// DSG 專屬
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
+
 			dense
 			cell={cell}
 			hideControls={hideControls}

@@ -83,16 +83,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 
 	const columns = useMemo(
 		() => [
-			{
-				...keyColumn("SOrdFlag_N", createTextColumnEx({
-					continuousUpdates: false,
-				})),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "訂",
-				disabled: true,
-				cellClassName: "star",
-			},
+
 			{
 				...keyColumn(
 					"prod",
@@ -119,8 +110,8 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 180,
-				maxWidth: 180,
+				minWidth: 160,
+				maxWidth: 160,
 				disabled: readOnly || c08.sprodDisabled,
 			},
 			{
@@ -210,6 +201,18 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(OutboundTypePickerComponentContainer, {
 						name: "dtype",
 						// optionLabelSize: "md",
+						disableOpenOnInput: true,
+						disableClearable: true,
+						selectOnFocus: true,
+						forcePopupIcon: false,
+						autoHighlight: true,
+						componentsProps: {
+							paper: {
+								sx: {
+									width: 260,
+								},
+							},
+						},
 					})
 				),
 				title: "原因",
@@ -217,7 +220,16 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 				maxWidth: 160,
 				disabled: readOnly || c08.dtypeDisabled,
 			},
-
+			{
+				...keyColumn("SOrdFlag_N", createTextColumnEx({
+					continuousUpdates: false,
+				})),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "訂",
+				disabled: true,
+				cellClassName: "star",
+			},
 			// {
 			// 	...keyColumn("SMsg", textColumn),
 			// 	title: "訊息",

@@ -95,7 +95,7 @@ const C04DialogForm = memo((props) => {
 							</OptionPickerProvider>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={3}>
+						<Grid item xs={24} sm={24} md={4}>
 							<OptionPickerProvider>
 								<SupplierPicker
 									typo

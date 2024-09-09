@@ -729,30 +729,35 @@ export const useC08 = () => {
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						const updatedRows = await Promise.all(
-							newValue
-								.slice(
-									operation.fromRowIndex,
-									operation.toRowIndex
-								)
-								.map(async (item, index) => {
-									const updatedRow = await updateGridRow({
-										formData,
-										newValue,
-										setValue,
-										fromIndex: operation.fromRowIndex,
-										gridMeta
-									})(item, index);
-									return updatedRow;
-								})
-						)
-						console.log("updatedRows", updatedRows);
+						if (!grid.asyncRef.supressEvents) {
+							const updatedRows = await Promise.all(
+								newValue
+									.slice(
+										operation.fromRowIndex,
+										operation.toRowIndex
+									)
+									.map(async (item, index) => {
+										const updatedRow = await updateGridRow({
+											formData,
+											newValue,
+											setValue,
+											fromIndex: operation.fromRowIndex,
+											gridMeta
+										})(item, index);
+										return updatedRow;
+									})
+							)
+							console.log("updatedRows", updatedRows);
 
-						newGridData.splice(
-							operation.fromRowIndex,
-							updatedRows.length,
-							...updatedRows
-						)
+							newGridData.splice(
+								operation.fromRowIndex,
+								updatedRows.length,
+								...updatedRows
+							)
+						} else {
+							console.log("grid.asyncRef.supressEvents is TRUE, grid changes not triggered");
+						}
+
 						// newValue
 						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
 						// 	.forEach(async (rowData, i) => {
@@ -807,6 +812,10 @@ export const useC08 = () => {
 						// 	});
 					} else if (operation.type === "DELETE") {
 						// do nothing now
+					} else if (operation.type === "CREATE") {
+						console.log("dsg.CREATE");
+						// process CREATE here
+						gridMeta.toFirstColumn({ nextRow: true });
 					}
 				}
 				console.log("prodGrid.changed", newGridData);
@@ -966,7 +975,10 @@ export const useC08 = () => {
 						const data = C08.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
 						grid.setGridData(
-							grid.fillRows({ createRow, data: data.prods })
+							grid.fillRows({ createRow, data: data.prods }),
+							{
+								supressEvents: true
+							}
 						);
 						refreshAmt({ setValue, data, gridData: data.prods });
 						// toast.info("訂購單商品已載入");
@@ -1174,6 +1186,7 @@ export const useC08 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
+		createRow,
 		...grid,
 		grid,
 		buildGridChangeHandler,
