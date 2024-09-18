@@ -1,11 +1,8 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
-import { DynamicDataSheetGrid, keyColumn } from "react-datasheet-grid";
-import { prodPickerColumn } from "../../../../dsg/columns/prod-picker/prodPickerColumn";
+import { memo } from "react";
 import { DSGGrid } from "../../../../../shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({

@@ -246,10 +246,10 @@ export const useB011 = () => {
 	}, []);
 
 	const handleGridProdChange = useCallback(
-		({ rowData, getValues }) => {
+		({ rowData, formData }) => {
 			let processedRowData = { ...rowData };
-			let employee = rowData?.prod ? getValues("employee") : null;
-			let date = rowData?.prod ? getValues("Date") : null;
+			let employee = rowData?.prod ? formData["employee"] : null;
+			let date = rowData?.prod ? formData["Date"] : null;
 
 			processedRowData = {
 				...processedRowData,
@@ -265,7 +265,31 @@ export const useB011 = () => {
 		[]
 	);
 
-	const buildGridChangeHandler = useCallback(
+	const onUpdateRow = useCallback(({ fromIndex, formData }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		if (
+			rowData.prod?.ProdID !==
+			oldRowData?.prod?.ProdID
+		) {
+			console.log(
+				`[${rowIndex}]prod changed`,
+				rowData?.prod
+			);
+			processedRowData = handleGridProdChange({
+				rowData,
+				oldRowData,
+				formData
+			});
+		}
+		return processedRowData;
+	}, [grid.gridData, handleGridProdChange]);
+
+	const buildGridChangeHandlerOld = useCallback(
 		({ gridMeta, getValues }) => (newValue, operations) => {
 			console.log("buildGridChangeHandler", operations);
 			const newGridData = [...newValue];
@@ -516,7 +540,7 @@ export const useB011 = () => {
 		// 報價 Grid
 		...grid,
 		grid,
-		buildGridChangeHandler,
+		onUpdateRow,
 		getRowKey,
 		// 帶入商品
 		importProdsWorking: importProdsAction.working,
