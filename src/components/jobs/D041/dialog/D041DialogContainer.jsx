@@ -13,7 +13,7 @@ import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picke
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
+import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
 import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
 import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
@@ -152,7 +152,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("SExpDate", dateFnsDateColumn),
+				...keyColumn("SExpDate", dateFNSDateColumn),
 				title: "有效日期",
 				minWidth: 140,
 				maxWidth: 160,

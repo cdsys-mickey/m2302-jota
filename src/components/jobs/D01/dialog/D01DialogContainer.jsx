@@ -10,7 +10,7 @@ import Colors from "@/modules/md-colors";
 import { keyColumn } from "react-datasheet-grid";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
+import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -139,7 +139,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("SExpDate", dateFnsDateColumn),
+				...keyColumn("SExpDate", dateFNSDateColumn),
 				title: "有效日期",
 				minWidth: 150,
 				maxWidth: 150,

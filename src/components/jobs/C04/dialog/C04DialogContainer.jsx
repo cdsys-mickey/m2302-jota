@@ -17,7 +17,7 @@ import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picke
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
-import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
+import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
@@ -210,7 +210,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 				disabled: true,
 			},
 			{
-				...keyColumn("SExpDate", dateFnsDateColumn),
+				...keyColumn("SExpDate", dateFNSDateColumn),
 				title: "有效日期",
 				minWidth: 140,
 				maxWidth: 140,

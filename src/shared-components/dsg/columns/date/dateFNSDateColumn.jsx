@@ -1,7 +1,7 @@
 import { default as DateFormats, default as DateTimes } from "@/shared-modules/sd-date-times";
 import { DateFnsComponentContainer } from "./DateFnsComponentContainer";
 
-export const dateFnsDateColumn = {
+export const dateFNSDateColumn = {
 	component: DateFnsComponentContainer,
 	deleteValue: () => null,
 	copyValue: ({ rowData }) =>

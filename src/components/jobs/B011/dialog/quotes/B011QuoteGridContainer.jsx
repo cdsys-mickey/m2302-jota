@@ -17,7 +17,7 @@ export const B011QuoteGridContainer = (props) => {
 	const form = useFormContext();
 
 	const onChange = useMemo(() => {
-		return b011.buildGridChangeHandler({
+		return b011.grid.buildGridChangeHandler({
 			gridMeta: formMeta.gridMeta,
 			getValues: form.getValues
 		})
