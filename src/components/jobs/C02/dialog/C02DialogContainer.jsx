@@ -4,14 +4,21 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C02DialogForm from "./C02DialogForm";
 import { C02DialogToolbarContainer } from "./toolbar/C02DialogToolbarContainer";
-import { useFormMeta } from "../../../../shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useCallback } from "react";
-import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import C02Drawer from "../C02Drawer";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 export const C02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -65,19 +72,162 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 		)
 	}, [c02.onEditorSubmit, c02.onEditorSubmitError, form]);
 
+	const rqtDate = useWatch({
+		name: "RqtDate",
+		control: form.control
+	})
+	const employee = useWatch({
+		name: "employee",
+		control: form.control
+	})
+	const pdline = useWatch({
+		name: "pdline",
+		control: form.control
+	})
+
+	const readOnly = useMemo(() => {
+		return !c02.editing || !employee || !rqtDate || !pdline;
+	}, [c02.editing, employee, pdline, rqtDate]);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withStock: true,
+						withPurchasePackageName: true,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 140,
+				maxWidth: 140,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "單位",
+				minWidth: 60,
+				maxWidth: 60,
+				disabled: true,
+			},
+			{
+				...keyColumn("StockQty_N", createFloatColumn(2)),
+				title: "庫存",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: true,
+			},
+			{
+				...keyColumn("SRqtQty", createFloatColumn(2)),
+				title: "請購量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: readOnly || c02.rqtQtyDisabled,
+			},
+			{
+				...keyColumn("SOrdQty", createFloatColumn(2)),
+				title: "採購量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SFactID",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "供應商",
+				minWidth: 80,
+				maxWidth: 80,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SFactNa",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "名稱",
+				grow: 2,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SOrdID",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "採購單",
+				minWidth: 120,
+				disabled: true,
+			},
+		],
+		[c02.rqtQtyDisabled, readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: c02.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
 	const handleLastField = useCallback(() => {
-		c02.gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [c02.gridMeta]);
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [gridMeta]);
 
 	const formMeta = useFormMeta(
 		`
 		RqtDate,
 		employee,
 		pdline,
-		`, {
-		lastField: handleLastField
-	}
+		`,
+		{
+			lastField: handleLastField
+		}
 	)
+
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
+				default:
+					return false;
+			}
+		},
+		[]
+	);
 
 	useEffect(() => {
 		if (c02.itemDataReady) {
@@ -114,7 +264,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<FormMetaProvider {...formMeta}>
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled} gridMeta={gridMeta} readOnly={readOnly}>
 					<form onSubmit={handleSubmit}>
 						<C02DialogForm
 							reading={c02.reading}

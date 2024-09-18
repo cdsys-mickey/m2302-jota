@@ -98,22 +98,25 @@ export const useFormMeta = (value, opts = {}) => {
 			} else {
 				if (typeof lastField === "string") {
 					toast.warn(lastField, {
-						position: "bottom-center",
+						position: "top-center",
 					});
 					return;
 				} else if (typeof lastField === "function") {
 					// 為了避免 lastField 自訂函式沒加 setTimeout, 因此在這裡統一處理
 					// 沒加 setTimeout 會造成 keyDown 事件同步觸發到 grid 裡面多移一格
-					setTimeout(() => {
-						lastField(opts);
-					});
+					// 只有順向才會觸發
+					if (forward) {
+						setTimeout(() => {
+							lastField(opts);
+						});
+					}
 				} else {
 					switch (lastField) {
 						case LastFieldBehavior.PROMPT:
 							toast.warn(
 								forward ? lastFieldMessage : firstFieldMessage,
 								{
-									position: "bottom-center",
+									position: "top-center",
 								}
 							);
 							break;

@@ -67,126 +67,7 @@ export const useC02 = () => {
 		);
 	}, []);
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"prod",
-					optionPickerColumn(ProdPickerComponentContainer, {
-						name: "prod",
-						selectOnFocus: true,
-						withStock: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
-						forId: true,
-						disableClearable: true,
-						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						},
-					})
-				),
-				title: "商品編號",
-				minWidth: 140,
-				maxWidth: 140,
-				disabled: !crud.editing,
-			},
-			{
-				...keyColumn(
-					"ProdData",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "品名規格",
-				disabled: true,
-				grow: 2,
-			},
-			{
-				...keyColumn(
-					"PackData_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "單位",
-				minWidth: 60,
-				maxWidth: 60,
-				disabled: true,
-			},
-			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "庫存",
-				minWidth: 90,
-				maxWidth: 90,
-				disabled: true,
-			},
-			{
-				...keyColumn("SRqtQty", createFloatColumn(2)),
-				title: "請購量",
-				minWidth: 90,
-				maxWidth: 90,
-				disabled: !crud.editing || rqtQtyDisabled,
-			},
-			{
-				...keyColumn("SOrdQty", createFloatColumn(2)),
-				title: "採購量",
-				minWidth: 90,
-				maxWidth: 90,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"SFactID",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "供應商",
-				minWidth: 80,
-				maxWidth: 80,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"SFactNa",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "名稱",
-				grow: 2,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"SOrdID",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "採購單",
-				minWidth: 120,
-				disabled: true,
-			},
-		],
-		[crud.editing, rqtQtyDisabled]
-	);
 
-	const gridMeta = useDSGMeta({
-		data: grid.gridData,
-		columns,
-		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
-	})
 
 	const [selectedItem, setSelectedItem] = useState();
 
@@ -414,16 +295,16 @@ export const useC02 = () => {
 		rowData = {
 			...rowData,
 			["ProdData"]: prod?.ProdData || "",
-			["PackData_N"]: prod?.PackData || "",
+			["PackData_N"]: prod?.PackData_N || "",
 			["StockQty_N"]: prod?.StockQty || "",
 			["SRqtQty"]: "",
 		};
 		return rowData;
 	}, []);
 
-	const handleGridChange = useCallback(
-		(newValue, operations) => {
-			console.log("handleGridChange", operations);
+	const buildGridChangeHandler = useCallback(
+		({ gridMeta }) => (newValue, operations) => {
+			console.log("buildGridChangeHandler", operations);
 			console.log("newValue", newValue);
 			const newGridData = [...newValue];
 			let checkFailed = false;
@@ -475,7 +356,7 @@ export const useC02 = () => {
 				grid.setGridData(newGridData);
 			}
 		},
-		[grid, handleGridProdChange, prodDisabled, gridMeta]
+		[grid, handleGridProdChange, prodDisabled]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -674,10 +555,8 @@ export const useC02 = () => {
 		// Grid
 		createRow,
 		...grid,
-		...gridMeta,
 		grid,
-		gridMeta,
-		handleGridChange,
+		buildGridChangeHandler,
 		getRowKey,
 		prodDisabled,
 		rqtQtyDisabled,

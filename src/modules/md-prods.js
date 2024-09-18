@@ -1,8 +1,8 @@
-const getTitle = (option) => {
-	if (!option) return "";
-	const { ProdData } = option;
-	return `${ProdData}`;
-};
+// const getTitle = (option) => {
+// 	if (!option) return "";
+// 	const { ProdData } = option;
+// 	return `${ProdData}`;
+// };
 
 const getOptionLabel = (option) => {
 	if (!option) return "";
@@ -10,16 +10,19 @@ const getOptionLabel = (option) => {
 	if (ProdID === "*") {
 		return "*";
 	}
-	return `${ProdID} ${ProdData}`;
+	return [ProdID, ProdData].filter(Boolean).join(" ");
 };
 
 const getOptionLabelForId = (option) => {
 	if (!option) return "";
 	const { ProdID } = option;
-	if (ProdID === "*") {
-		return "*";
-	}
 	return `${ProdID}`;
+};
+
+const getTitle = (option) => {
+	return option
+		? getOptionLabel(option)
+		: "直接輸入編號後按 Enter, 或按↓後以編號/條碼/名稱搜尋";
 };
 
 const renderOptionLabel = (option) => {

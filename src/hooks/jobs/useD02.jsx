@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { nanoid } from "nanoid";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useD02 = () => {
 	const crud = useContext(CrudContext);
@@ -25,6 +26,8 @@ export const useD02 = () => {
 		token,
 		moduleId: "D02",
 	});
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	// const qtyMap = useMemo(() => new Map(), []);
 
@@ -51,7 +54,7 @@ export const useD02 = () => {
 		expPrompting: false,
 	});
 
-	const prodGrid = useDSG({
+	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
 	});
@@ -118,8 +121,8 @@ export const useD02 = () => {
 		};
 		crud.promptCreating({ data });
 		// qtyMap.clear();
-		prodGrid.initGridData(data.prods, { createRow });
-	}, [createRow, crud, prodGrid]);
+		grid.initGridData(data.prods, { createRow });
+	}, [createRow, crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -175,7 +178,7 @@ export const useD02 = () => {
 					});
 					// setSelectedInq(data);
 
-					prodGrid.handleGridDataLoaded(data.prods);
+					grid.handleGridDataLoaded(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -183,7 +186,7 @@ export const useD02 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, prodGrid, token]
+		[crud, httpGetAsync, grid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -454,50 +457,33 @@ export const useD02 = () => {
 	const handleGridProdChange = useCallback(
 		async ({ rowData, rowIndex, newValue }) => {
 			const { prod } = rowData;
+
+			const prodRowIndex = rowData.prod?.ProdID ? D02.findProdIndex({
+				newValue,
+				rowData,
+				rowIndex,
+			}) : null;
+
+			const found = rowData.prod?.ProdID && prodRowIndex !== -1;
+
+			// 檢查是否已存在
+			if (found) {
+				toast.error(
+					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${prodRowIndex + 1
+					} 筆, 請重新選擇`,
+					{
+						position: "top-center",
+					}
+				);
+			}
+
 			rowData = {
 				...rowData,
+				prod: found ? null : rowData.prod,
+				["ProdData"]: found ? "" : rowData.prod?.ProdData,
+				["PackData_N"]: found ? "" : prod?.PackData_N || "",
 				["SQty"]: "",
-				["PackData_N"]: "",
 			};
-
-			let prodInfoRetrieved = false;
-			if (prod?.ProdID) {
-				const existedRowIndex = D02.isProdExists({
-					newValue,
-					rowData,
-					rowIndex,
-				});
-				// 檢查是否已存在
-				if (existedRowIndex !== -1) {
-					rowData = {
-						...rowData,
-						prod: null,
-					};
-					toast.warn(
-						`「"${prod.ProdID} / ${prod.ProdData}」已存在於第 ${existedRowIndex + 1
-						} 筆, 請重新選擇`
-					);
-				} else {
-					// qtyMap.set(prod.ProdID, prod.StockQty);
-					prodInfoRetrieved = true;
-					// console.log("qtyMap updated", qtyMap);
-					rowData = {
-						...rowData,
-						["PackData_N"]: prod?.PackData_N || "",
-						// ...(prodInfoRetrieved && {
-						// 	StockQty_N: prod.StockQty,
-						// }),
-					};
-				}
-			}
-			if (!prodInfoRetrieved) {
-				rowData = {
-					...rowData,
-					["prod"]: null,
-					["PackData_N"]: "",
-					// ["StockQty_N"]: "",
-				};
-			}
 			return rowData;
 		},
 		[]
@@ -553,68 +539,115 @@ export const useD02 = () => {
 	// 	return rowData;
 	// }, []);
 
+	const updateGridRow = useCallback(({ fromIndex, newValue }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// 商品
+		if (
+			rowData.prod?.ProdID !==
+			oldRowData.prod?.ProdID
+		) {
+			processedRowData =
+				await handleGridProdChange({
+					rowIndex,
+					rowData: processedRowData,
+					newValue,
+				});
+		}
+
+		return processedRowData;
+	}, [grid.gridData, handleGridProdChange]);
+
 	const buildGridChangeHandler = useCallback(
-		({ getValues, setValue }) =>
-			(newValue, operations) => {
-				// const formData = getValues();
+		({ gridMeta }) =>
+			async (newValue, operations) => {
 				console.log("buildGridChangeHandler", operations);
 				console.log("newValue", newValue);
 				const newGridData = [...newValue];
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						newValue
-							.slice(operation.fromRowIndex, operation.toRowIndex)
-							.forEach(async (rowData, i) => {
-								const rowIndex = operation.fromRowIndex + i;
-								const oldRowData = prodGrid.gridData[rowIndex];
+						const updatedRows = await Promise.all(
+							newValue
+								.slice(
+									operation.fromRowIndex,
+									operation.toRowIndex
+								)
+								.map(async (item, index) => {
+									const updatedRow = await updateGridRow({
+										fromIndex: operation.fromRowIndex,
+										newValue,
+									})(item, index);
+									return updatedRow;
+								})
+						)
+						console.log("updatedRows", updatedRows);
 
-								let processedRowData = { ...rowData };
-								// 商品
-								if (
-									rowData.prod?.ProdID !==
-									oldRowData.prod?.ProdID
-								) {
-									processedRowData =
-										await handleGridProdChange({
-											rowIndex,
-											rowData: processedRowData,
-											newValue,
-										});
-								}
+						newGridData.splice(
+							operation.fromRowIndex,
+							updatedRows.length,
+							...updatedRows
+						)
+						// newValue
+						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+						// 	.forEach(async (rowData, i) => {
+						// 		const rowIndex = operation.fromRowIndex + i;
+						// 		const oldRowData = grid.gridData[rowIndex];
 
-								// 數量, 且有選 prod
-								// if (rowData.SQty !== oldRowData.SQty) {
-								// 	processedRowData = handleGridSQtyChange({
-								// 		rowData: processedRowData,
-								// 		gridData: newValue,
-								// 		rowIndex,
-								// 		setValue,
-								// 	});
-								// }
+						// 		let processedRowData = { ...rowData };
+						// 		// 商品
+						// 		if (
+						// 			rowData.prod?.ProdID !==
+						// 			oldRowData.prod?.ProdID
+						// 		) {
+						// 			processedRowData =
+						// 				await handleGridProdChange({
+						// 					rowIndex,
+						// 					rowData: processedRowData,
+						// 					newValue,
+						// 				});
+						// 		}
 
-								// 強迫銷貨
-								// if (
-								// 	rowData.overrideSQty !==
-								// 	oldRowData.overrideSQty
-								// ) {
-								// 	processedRowData =
-								// 		handleGridOverrideSQtyChange({
-								// 			rowData: processedRowData,
-								// 		});
-								// }
-								newGridData[rowIndex] = processedRowData;
-							});
+						// 		// 數量, 且有選 prod
+						// 		// if (rowData.SQty !== oldRowData.SQty) {
+						// 		// 	processedRowData = handleGridSQtyChange({
+						// 		// 		rowData: processedRowData,
+						// 		// 		gridData: newValue,
+						// 		// 		rowIndex,
+						// 		// 		setValue,
+						// 		// 	});
+						// 		// }
+
+						// 		// 強迫銷貨
+						// 		// if (
+						// 		// 	rowData.overrideSQty !==
+						// 		// 	oldRowData.overrideSQty
+						// 		// ) {
+						// 		// 	processedRowData =
+						// 		// 		handleGridOverrideSQtyChange({
+						// 		// 			rowData: processedRowData,
+						// 		// 		});
+						// 		// }
+						// 		newGridData[rowIndex] = processedRowData;
+						// 	});
 					} else if (operation.type === "DELETE") {
 						// do nothing now
+					} else if (operation.type === "CREATE") {
+						console.log("dsg.CREATE");
+						// process CREATE here
+						gridMeta.toFirstColumn({ nextRow: true });
 					}
 				}
 				console.log("prodGrid.changed", newGridData);
 				if (!checkFailed) {
-					prodGrid.setGridData(newGridData);
+					grid.setGridData(newGridData);
 				}
 			},
-		[handleGridProdChange, prodGrid]
+		[updateGridRow, grid]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -622,7 +655,7 @@ export const useD02 = () => {
 			console.log("onEditorSubmit", data);
 			const collected = D02.transformForSubmitting(
 				data,
-				prodGrid.gridData
+				grid.gridData
 			);
 			console.log("collected", collected);
 			if (crud.creating) {
@@ -638,7 +671,7 @@ export const useD02 = () => {
 			crud.updating,
 			handleCreate,
 			handleUpdate,
-			prodGrid.gridData,
+			grid.gridData,
 		]
 	);
 
@@ -760,7 +793,9 @@ export const useD02 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
-		...prodGrid,
+		...grid,
+		grid,
+		createRow,
 		buildGridChangeHandler,
 		getRowKey,
 		prodDisabled,
@@ -786,5 +821,6 @@ export const useD02 = () => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
+		...sideDrawer
 	};
 };

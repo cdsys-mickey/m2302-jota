@@ -58,7 +58,7 @@ export const A01FrameContainer = () => {
 				{/* 對話框 */}
 				<A01DialogContainer />
 				<StdPrintDialogContainer />
-				<A01Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
+				<A01Drawer />
 			</StdPrintProvider>
 		</Box>
 	);

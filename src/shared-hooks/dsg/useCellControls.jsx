@@ -11,7 +11,7 @@ export const useCellControls = () => {
 		skipDisabled: dsg.skipDisabled,
 		// focusNextCell: dsg.focusNextCell,
 		getNextCell: dsg.getNextCell,
-		isLastCell: dsg.isLastCell,
+		// isLastCell: dsg.isLastCell,
 		lastCell: dsg.lastCell,
 		setActiveCell: dsg.setActiveCell,
 		inDSG: !!dsg,

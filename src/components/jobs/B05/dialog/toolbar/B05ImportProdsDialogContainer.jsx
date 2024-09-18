@@ -39,9 +39,7 @@ const B05ImportProdsDialogContainer = forwardRef((props, ref) => {
 			{...rest}>
 			<FormProvider {...form}>
 				<FormMetaProvider {...b05.loadProdFormMeta}>
-					<OptionPickerProvider>
-						<B05LoadProdsForm handleSubmit={handleSubmit} />
-					</OptionPickerProvider>
+					<B05LoadProdsForm handleSubmit={handleSubmit} />
 				</FormMetaProvider>
 			</FormProvider>
 		</DialogExContainer>

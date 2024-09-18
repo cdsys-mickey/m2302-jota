@@ -314,7 +314,11 @@ export const useZA03 = () => {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
 				if (err.code === 8) {
-					toast.warn("帳號名稱重複，請確認後重新送出");
+					toast.error("帳號名稱重複，請確認後重新送出",
+						{
+							position: "top-center",
+						}
+					);
 				} else {
 					toast.error(Errors.getMessage("新增失敗", err));
 				}

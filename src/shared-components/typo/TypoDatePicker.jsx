@@ -3,6 +3,7 @@ import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import { forwardRef, memo, useMemo } from "react";
 import DateTimes from "@/shared-modules/sd-date-times";
 import { useWatch } from "react-hook-form";
+import PropTypes from "prop-types";
 
 const TypoDatePicker = memo(
 	forwardRef((props, ref) => {
@@ -33,14 +34,15 @@ const TypoDatePicker = memo(
 			}
 			return value
 				? DateTimes.format(value, dateFormat)
-				: null || emptyText;
-		}, [children, dateFormat, emptyText, value]);
+				: null;
+		}, [children, dateFormat, value]);
 
 		if (!editing) {
 			return (
 				<FormFieldLabel
 					label={label}
 					variant={typoVariant}
+					emptyText={emptyText}
 					{...typographyProps}>
 					{memoisedText}
 				</FormFieldLabel>
@@ -61,7 +63,22 @@ const TypoDatePicker = memo(
 		);
 	})
 );
-
+TypoDatePicker.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+	type: PropTypes.string,
+	label: PropTypes.string,
+	typographyProps: PropTypes.object,
+	emptyText: PropTypes.string,
+	maskedText: PropTypes.string,
+	typoVariant: PropTypes.string,
+	name: PropTypes.string,
+	editing: PropTypes.bool,
+	size: PropTypes.string,
+	variant: PropTypes.string,
+	InputLabelProps: PropTypes.object,
+	renderLabel: PropTypes.func,
+	dateFormat: PropTypes.string
+}
 TypoDatePicker.displayName = "TypoDatePicker";
 
 export default TypoDatePicker;

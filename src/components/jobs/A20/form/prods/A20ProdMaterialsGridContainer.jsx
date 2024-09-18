@@ -5,26 +5,33 @@ import A20ProdMaterialsGrid from "./A20ProdMaterialsGrid";
 import PropTypes from "prop-types";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useMemo } from "react";
 
 export const A20ProdMaterialsGridContainer = (props) => {
 	const { ...rest } = props;
 	const a20 = useContext(A20Context);
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
+	const formMeta = useContext(FormMetaContext);
+
+	const onChange = useMemo(() => {
+		return a20.buildGridChangeHandler({ gridMeta: formMeta.gridMeta })
+	}, [])
 
 	return (
 		<DSGContext.Provider value={{
 			...a20.grid,
-			...a20.gridMeta,
-			readOnly: !a20.editing
+			...formMeta.gridMeta,
+			readOnly: formMeta.readOnly
 		}}>
 			<A20ProdMaterialsGrid
 				rowKey={a20.getRowKey}
-				gridRef={a20.gridMeta.setGridRef}
-				readOnly={!a20.editing}
+				gridRef={formMeta.gridMeta.setGridRef}
+				readOnly={formMeta.readOnly}
 				data={a20.gridData}
-				onChange={a20.handleGridChange}
-				onActiveCellChange={a20.gridMeta.handleActiveCellChange}
+				onChange={onChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
 				height={height - 350}
 				createRow={a20.createRow}

@@ -110,24 +110,25 @@ export const useC01 = () => {
 					"prod",
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
-						selectOnFocus: true,
-						withStock: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
 						forId: true,
+						withStock: true,
+						withPurchasePackageName: true,
+						// queryRequired: true,
 						disableClearable: true,
 						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 360,
 								},
 							},
 						},
+						selectOnFocus: true,
+						// triggerDelay: 300,
+						// filterByServer: true,
+						// disableOpenOnInput: true,
+						// hideControlsOnActive: false,
+						// autoHighlight: true,
 					})
 				),
 				id: "SProdID",
@@ -186,16 +187,16 @@ export const useC01 = () => {
 					optionPickerColumn(SupplierPickerComponentContainer, {
 						name: "supplier",
 						selectOnFocus: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
+						// triggerDelay: 300,
+						// queryRequired: true,
+						// filterByServer: true,
+						// disableOpenOnInput: true,
+						// hideControlsOnActive: false,
 						forId: true,
 						disableClearable: true,
 						fuzzy: true,
 						autoHighlight: true,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 360,
@@ -582,7 +583,9 @@ export const useC01 = () => {
 					console.log("to-order.payload", payload);
 
 					if (!payload.OrdIDs) {
-						toast.warn("沒有形成採購單，請檢查內容後重新執行");
+						toast.error("沒有形成採購單，請檢查內容後重新執行", {
+							position: "top-center",
+						});
 						transformAction.clear();
 					} else {
 						const ordIds = payload.OrdIDs.split("，");
@@ -660,7 +663,9 @@ export const useC01 = () => {
 					console.log("to-order.payload", payload);
 
 					if (!payload.OrdIDs) {
-						toast.warn("沒有形成採購單，請檢查內容後重新執行");
+						toast.error("沒有形成採購單，請檢查內容後重新執行", {
+							position: "top-center",
+						});
 						transformListAction.clear();
 					} else {
 						const ordIds = payload.OrdIDs.split("，");

@@ -41,7 +41,7 @@ const TextComponentEx = memo(
 			// Context Methods
 			skipDisabled,
 			getNextCell,
-			isLastCell,
+			// isLastCell,
 			lastCell,
 			setActiveCell,
 			readOnly
@@ -238,7 +238,7 @@ TextComponentEx.propTypes = {
 	skipDisabled: PropTypes.bool,
 	focusNextCell: PropTypes.func,
 	getNextCell: PropTypes.func,
-	isLastCell: PropTypes.func,
+	// isLastCell: PropTypes.func,
 	setActiveCell: PropTypes.func,
 	lastCell: PropTypes.symbol,
 	rowIndex: PropTypes.number,

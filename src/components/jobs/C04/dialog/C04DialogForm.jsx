@@ -78,50 +78,46 @@ const C04DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="倉管人員"
-									name="employee"
-									required
-									rules={{
-										required: "倉管人員為必填",
-									}}
-									virtualize
-									disableClearable
-									disableOpenOnInput
-									clearOnEscape
-								/>
-							</OptionPickerProvider>
+							<EmployeePicker
+								typo
+								label="倉管人員"
+								name="employee"
+								required
+								rules={{
+									required: "倉管人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+								clearOnEscape
+							/>
 						</Grid>
 
 						<Grid item xs={24} sm={24} md={4}>
-							<OptionPickerProvider>
-								<SupplierPicker
-									typo
-									forId
-									label="廠商代碼"
-									name="supplier"
-									required
-									rules={{
-										required: "廠商代碼為必填",
-									}}
-									virtualize
-									withAddr
-									optionLabelSize="md"
-									onChanged={handleSupplierChanged}
-									disableClearable
-									disableOpenOnInput
-									clearOnEscape
-									componentsProps={{
-										paper: {
-											sx: {
-												width: 360,
-											},
+							<SupplierPicker
+								typo
+								forId
+								label="廠商代碼"
+								name="supplier"
+								required
+								rules={{
+									required: "廠商代碼為必填",
+								}}
+								virtualize
+								withAddr
+								optionLabelSize="md"
+								onChanged={handleSupplierChanged}
+								disableClearable
+								disableOpenOnInput
+								clearOnEscape
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
 										},
-									}}
-								/>
-							</OptionPickerProvider>
+									},
+								}}
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
 							<TextFieldWrapper
@@ -186,7 +182,6 @@ const C04DialogForm = memo((props) => {
 						</Grid>
 
 						<Grid item xs={24} sm={24} md={8}>
-							{/* <OptionPickerProvider> */}
 							<PurchaseOrderPicker
 								typo
 								multiple
@@ -209,7 +204,6 @@ const C04DialogForm = memo((props) => {
 									}
 								}}
 							/>
-							{/* </OptionPickerProvider> */}
 						</Grid>
 					</Grid>
 					<Box py={1}>

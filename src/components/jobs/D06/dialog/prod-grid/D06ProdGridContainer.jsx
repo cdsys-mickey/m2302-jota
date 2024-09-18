@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import D06ProdGrid from "./D06ProdGrid";
 import { D06Context } from "@/contexts/D06/D06Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useFormContext, useWatch } from "react-hook-form";
-import DSGBox from "../../../../../shared-components/dsg/DSGBox";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
+import { useFormContext } from "react-hook-form";
+import D06ProdGrid from "./D06ProdGrid";
 
 export const D06ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -13,29 +13,36 @@ export const D06ProdGridContainer = (props) => {
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
 	const form = useFormContext();
+	const formMeta = useContext(FormMetaContext);
 
-	const handleGridChange = useMemo(() => {
+	const onChange = useMemo(() => {
 		return d06.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
+			gridMeta: formMeta.gridMeta
 			// handleRefreshAmt: d06.handleRefreshAmt,
 		});
-	}, [d06, form.getValues, form.setValue]);
+	}, [d06, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	return (
-		<DSGBox>
+		<DSGContext.Provider value={{
+			...d06.grid,
+			...formMeta.gridMeta,
+			readOnly: formMeta.readOnly
+		}}>
 			<D06ProdGrid
-				gridRef={d06.setGridRef}
-				readOnly={!d06.editing}
+				gridRef={formMeta.gridMeta.setGridRef}
+				readOnly={formMeta.readOnly}
 				data={d06.gridData}
-				handleGridChange={handleGridChange}
+				onChange={onChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
 				height={height - 360}
 				getRowKey={d06.getRowKey}
 				createRow={d06.createRow}
 				{...rest}
 			/>
-		</DSGBox>
+		</DSGContext.Provider>
 	);
 };
 

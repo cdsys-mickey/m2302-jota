@@ -99,32 +99,31 @@ const InputTest = () => {
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} md={6}>
-							<OptionPickerProvider>
-								<Autocomplete
-									id="use autocomplete"
-									sx={{ width: 300 }}
-									disableListWrap
-									PopperComponent={RWPopper}
-									ListboxComponent={VirtualizedPickerListbox}
-									options={OPTIONS}
-									groupBy={(option) =>
-										option[0].toUpperCase()
-									}
-									renderInput={(params) => (
-										<TextField
-											{...params}
-											label="native Autocomplete"
-											size="small"
-										/>
-									)}
-									renderOption={(props, option, state) => [
-										props,
-										option,
-										state.index,
-									]}
-									renderGroup={(params) => params}
-								/>
-							</OptionPickerProvider>
+							<Autocomplete
+								id="use autocomplete"
+								sx={{ width: 300 }}
+								disableListWrap
+								PopperComponent={RWPopper}
+								ListboxComponent={VirtualizedPickerListbox}
+								options={OPTIONS}
+								groupBy={(option) =>
+									option[0].toUpperCase()
+								}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										label="native Autocomplete"
+										size="small"
+									/>
+								)}
+								renderOption={(props, option, state) => [
+									props,
+									option,
+									state.index,
+								]}
+								renderGroup={(params) => params}
+							/>
+
 						</Grid>
 						<Grid item xs={6}>
 							{/* 使用者 */}
@@ -136,12 +135,10 @@ const InputTest = () => {
 						</Grid>
 						<Grid item xs={6}>
 							{/* 產品 */}
-							<OptionPickerProvider>
-								<ProdPicker
-									virtualize
-									label="WebApiOptionPicker with virtualize ON"
-								/>
-							</OptionPickerProvider>
+							<ProdPicker
+								virtualize
+								label="WebApiOptionPicker with virtualize ON"
+							/>
 						</Grid>
 					</Grid>
 				</FormSectionBox>
@@ -149,25 +146,24 @@ const InputTest = () => {
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={1}>
 						<Grid item xs={4}>
-							<OptionPickerProvider>
-								<ProdPicker
-									debug={true}
-									name="picker2"
-									label="商品"
-									labelShrink
-									placeholder="輸入商品編號"
-									filterByServer
-									rules={{
-										required: "此項必填",
-									}}
-									// queryRequired
-									virtualize
-									// 新增屬性
-									disableOpenOnInput
-									// pressToFind
-									notFoundText="商品代號 ${id} 不存在"
-								/>
-							</OptionPickerProvider>
+							<ProdPicker
+								debug={true}
+								name="picker2"
+								label="商品"
+								labelShrink
+								placeholder="輸入商品編號"
+								filterByServer
+								rules={{
+									required: "此項必填",
+								}}
+								// queryRequired
+								virtualize
+								// 新增屬性
+								disableOpenOnInput
+								// pressToFind
+								notFoundText="商品代號 ${id} 不存在"
+							/>
+
 						</Grid>
 						<Grid item xs={4}>
 							<ProdTypeAPicker
@@ -214,7 +210,7 @@ const InputTest = () => {
 								clearable
 								// type="number"
 								fullWidth
-								// selectNext
+							// selectNext
 							/>
 						</Grid>
 					</Grid>

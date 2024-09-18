@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import { useCallback } from "react";
 import D01ProdGridAddRows from "./D01ProdGridAddRows";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -25,75 +26,13 @@ const D01ProdGrid = memo((props) => {
 		readOnly,
 		gridRef,
 		data,
-		handleGridChange,
+		onChange,
+		onActiveCellChange,
 		getRowClassName,
 		height = 300,
 		createRow,
 	} = props;
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"prod",
-					prodPickerColumn({
-						name: "prod",
-						withStock: true,
-						triggerDelay: 300,
-						dense: true,
-						// optionLabelSize: "sm",
-					})
-				),
-				id: "SProdID",
-				title: "商品",
-				grow: 4,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"PackData_N",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 60,
-				title: "包裝",
-				disabled: true,
-			},
-			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "庫存",
-				minWidth: 90,
-				disabled: true,
-			},
-			{
-				...keyColumn("SQty", createFloatColumn(2)),
-				title: "進貨數量",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn("SExpDate", dateFnsDateColumn),
-				title: "有效日期",
-				grow: 2,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"SQtyNote",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				title: "註",
-				minWidth: 38,
-				maxWidth: 38,
-				disabled: true,
-				cellClassName: "star",
-			},
-		],
-		[readOnly]
-	);
+
 
 	const duplicateRow = useCallback(
 		({ rowData }) => ({ ...rowData, Pkey: nanoid() }),
@@ -106,15 +45,16 @@ const D01ProdGrid = memo((props) => {
 	}, []);
 
 	return (
-		<DynamicDataSheetGrid
+		<DSGGrid
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly}
 			height={height + (readOnly ? 48 : 0)}
 			// rowHeight={42}
 			value={data}
-			onChange={handleGridChange}
-			columns={columns}
+			onChange={onChange}
+			onActiveCellChange={onActiveCellChange}
+			// columns={columns}
 			addRowsComponent={D01ProdGridAddRows}
 			disableExpandSelection
 			// disableContextMenu
@@ -131,7 +71,8 @@ D01ProdGrid.propTypes = {
 	getRowKey: PropTypes.func,
 	spriceDisabled: PropTypes.func,
 	prodDisabled: PropTypes.func,
-	handleGridChange: PropTypes.func,
+	onChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,
 	readOnly: PropTypes.bool,

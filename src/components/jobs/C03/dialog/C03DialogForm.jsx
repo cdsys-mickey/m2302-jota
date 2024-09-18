@@ -31,7 +31,7 @@ const C03DialogForm = memo((props) => {
 		editing,
 	} = props;
 	return (
-		<form onSubmit={onSubmit}>
+		<>
 			{readWorking && (
 				<Container maxWidth="xs">
 					<FlexBox justifyContent="center" minHeight="30em">
@@ -45,23 +45,32 @@ const C03DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<Grid container columns={24} spacing={editing ? 1 : 0}>
-
-						<Grid item xs={24} sm={24} md={4}>
-							<OptionPickerProvider>
-								<EmployeePicker
+						{!creating && (
+							<Grid item xs={24} sm={24} md={4}>
+								<TextFieldWrapper
 									typo
-									autoFocus
-									label="製單人員"
-									name="employee"
-									required
-									rules={{
-										required: "製單人員為必填",
-									}}
-									virtualize
-									disableClearable
-									disableOpenOnInput
+									name="OrdID"
+									label="採購單號"
+									fullWidth
+									// required
+									readOnly={true}
 								/>
-							</OptionPickerProvider>
+							</Grid>
+						)}
+						<Grid item xs={24} sm={24} md={4}>
+							<EmployeePicker
+								typo
+								autoFocus
+								label="製單人員"
+								name="employee"
+								required
+								rules={{
+									required: "製單人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
 							<C03SquaredPicker
@@ -94,47 +103,34 @@ const C03DialogForm = memo((props) => {
 								variant="outlined"
 							/>
 						</Grid>
-						{!creating && (
-							<Grid item xs={24} sm={24} md={4}>
-								<TextFieldWrapper
-									typo
-									name="OrdID"
-									label="採購單號"
-									fullWidth
-									// required
-									readOnly={true}
-								/>
-							</Grid>
-						)}
+
 						<FlexBox fullWidth />
 						<Grid item xs={24} sm={24} md={4}>
-							<OptionPickerProvider>
-								<SupplierPicker
-									forId
-									typo
-									label="廠商代碼"
-									name="supplier"
-									required
-									rules={{
-										required: "廠商代碼為必填",
-									}}
-									disabled={supplierPickerDisabled}
-									disableClearable
-									clearOnEscape
-									virtualize
-									// fadeOutDisabled
-									optionLabelSize="md"
-									onChanged={handleSupplierChanged}
-									disableOpenOnInput
-									slotProps={{
-										paper: {
-											sx: {
-												width: 360,
-											},
+							<SupplierPicker
+								forId
+								typo
+								label="廠商代碼"
+								name="supplier"
+								required
+								rules={{
+									required: "廠商代碼為必填",
+								}}
+								disabled={supplierPickerDisabled}
+								disableClearable
+								clearOnEscape
+								virtualize
+								// fadeOutDisabled
+								optionLabelSize="md"
+								onChanged={handleSupplierChanged}
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
 										},
-									}}
-								/>
-							</OptionPickerProvider>
+									},
+								}}
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={8}>
 							<TextFieldWrapper
@@ -211,7 +207,7 @@ const C03DialogForm = memo((props) => {
 					</Grid>
 				</FormBox>
 			)}
-		</form>
+		</>
 	);
 });
 

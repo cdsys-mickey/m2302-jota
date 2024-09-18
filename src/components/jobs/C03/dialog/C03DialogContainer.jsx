@@ -19,6 +19,13 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { toast } from "react-toastify";
 import C03Drawer from "../C03Drawer";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 export const C03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -29,10 +36,19 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
+	const employee = useWatch({
+		name: "employee",
+		control: form.control,
+	});
 	const supplier = useWatch({
 		name: "supplier",
 		control: form.control,
 	});
+
+	const supplierName = useWatch({
+		name: "FactData",
+		control: form.control
+	})
 
 	const ordDate = useWatch({
 		name: "OrdDate",
@@ -88,6 +104,117 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		return c03.isSupplierNameDisabled(supplier);
 	}, [c03, supplier]);
 
+	const readOnly = useMemo(() => {
+		return !c03.editing || !employee || !supplier || !ordDate || !supplier || (supplier?.FactID === "*" && !supplierName);
+	}, [c03.editing, employee, ordDate, supplier, supplierName]);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withStock: true,
+						withPurchasePackageName: true,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+						// selectOnFocus: true,
+						// triggerDelay: 300,
+						// queryRequired: true,
+						// filterByServer: true,
+						// disableOpenOnInput: true,
+						// hideControlsOnActive: false,
+						// autoHighlight: true,
+					})
+				),
+				title: "商品編號",
+				minWidth: 180,
+				maxWidth: 180,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "包裝說明",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"SInqFlag",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "詢",
+				disabled: true,
+				cellClassName: "star",
+			},
+			{
+				...keyColumn("SPrice", createFloatColumn(2)),
+				title: "單價",
+				minWidth: 100,
+				disabled: readOnly || c03.spriceDisabled,
+			},
+			{
+				...keyColumn("SQty", createFloatColumn(2)),
+				title: "數量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly || c03.sqtyDisabled,
+			},
+			{
+				...keyColumn("SAmt", createFloatColumn(2)),
+				title: "金額",
+				minWidth: 90,
+				grow: 1,
+				disabled: true,
+			},
+			{
+				...keyColumn("SNotQty", createFloatColumn(2)),
+				title: "未進量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly || c03.sNotQtyDisabled,
+			},
+		],
+		[c03.sNotQtyDisabled, c03.spriceDisabled, c03.sqtyDisabled, readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: c03.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
 	const isFieldDisabled = useCallback((field) => {
 		switch (field.name) {
 			case "FactData":
@@ -106,7 +233,6 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 			return;
 		}
 
-
 		if (!supplier) {
 			toast.error("請先輸入供應商", {
 				position: "top-center",
@@ -115,8 +241,8 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 			return;
 		}
 
-		c03.setActiveCell({ col: 0, row: 0 });
-	}, [c03, form, ordDate, supplier]);
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [form, gridMeta, ordDate, supplier]);
 
 	const formMeta = useFormMeta(
 		`
@@ -167,33 +293,39 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
-					<C03DialogForm
-						onSubmit={handleSubmit}
-						creating={c03.creating}
-						editing={c03.editing}
-						updating={c03.updating}
-						readWorking={c03.readWorking}
-						readError={c03.readError}
-						data={c03.itemData}
-						itemDataReady={c03.itemDataReady}
-						handleSupplierChanged={c03.supplierChangedHandler({
-							setValue: form.setValue,
-							getValues: form.getValues,
-							handleSubmit: handleRefreshGridSubmit,
-						})}
-						handleOrdDateChanged={c03.buildOrdDateChangeHandler({
-							getValues: form.getValues,
-							setValue: form.setValue,
-							handleSubmit: handleRefreshGridSubmit,
-						})}
-						supplierPickerDisabled={c03.supplierPickerDisabled}
-						squaredFlagDisabled={c03.squaredFlagDisabled}
-						sNotQtyDisabled={c03.sNotQtyDisabled}
-						// supplier={supplier}
-						// isSupplierNameDisabled={c03.isSupplierNameDisabled}
-						supplierNameDisabled={supplierNameDisabled}
-					/>
+				<FormMetaProvider
+					{...formMeta}
+					isFieldDisabled={isFieldDisabled}
+					gridMeta={gridMeta}
+					readOnly={readOnly}
+				>
+					<form onSubmit={handleSubmit}>
+						<C03DialogForm
+							creating={c03.creating}
+							editing={c03.editing}
+							updating={c03.updating}
+							readWorking={c03.readWorking}
+							readError={c03.readError}
+							data={c03.itemData}
+							itemDataReady={c03.itemDataReady}
+							handleSupplierChanged={c03.supplierChangedHandler({
+								setValue: form.setValue,
+								getValues: form.getValues,
+								handleSubmit: handleRefreshGridSubmit,
+							})}
+							handleOrdDateChanged={c03.buildOrdDateChangeHandler({
+								getValues: form.getValues,
+								setValue: form.setValue,
+								handleSubmit: handleRefreshGridSubmit,
+							})}
+							supplierPickerDisabled={c03.supplierPickerDisabled}
+							squaredFlagDisabled={c03.squaredFlagDisabled}
+							sNotQtyDisabled={c03.sNotQtyDisabled}
+							// supplier={supplier}
+							// isSupplierNameDisabled={c03.isSupplierNameDisabled}
+							supplierNameDisabled={supplierNameDisabled}
+						/>
+					</form>
 				</FormMetaProvider>
 				<C03Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogExContainer>

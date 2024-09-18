@@ -17,8 +17,9 @@ const D06ExpDialogForm = memo((props) => {
 							label="商品"
 							name="expProd"
 							required
-							filterByServer
-							queryRequired
+							// filterByServer
+							// queryRequired
+							virtualize
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							triggerDelay={100}
 							rules={{

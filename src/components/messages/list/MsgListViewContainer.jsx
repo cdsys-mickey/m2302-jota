@@ -3,17 +3,16 @@ import InfiniteListView from "@/shared-components/listview/infinite-listview/Inf
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { MessagingContext } from "../../../contexts/MessagingContext";
+import { MessagesContext } from "@/contexts/msgs/MessagesContext";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { MsgListRowContainer } from "./MsgListRowContainer";
-import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
-import { MessagesContext } from "../../../contexts/MessagesContext";
 
 export const MsgListViewContainer = () => {
 	// const messaging = useContext(MessagingContext);
 	// const { loadList } = messaging;
-	const messages = useContext(MessagesContext);
+	const msgs = useContext(MessagesContext);
 	const form = useFormContext();
 	const { getValues, setValue } = form;
 	const { height } = useWindowSize();
@@ -25,14 +24,14 @@ export const MsgListViewContainer = () => {
 	const debouncedQs = useDebounce(qs, 300);
 
 	useInit(() => {
-		messages.loadList();
+		msgs.loadList();
 	}, []);
 
 	useChangeTracking(() => {
 		console.log(`debouncedQs: ${debouncedQs}`);
 		if (debouncedQs !== undefined) {
 			const values = getValues();
-			messages.loadList({
+			msgs.loadList({
 				params: { ...values, qs: debouncedQs },
 				supressLoading: true,
 			});
@@ -43,15 +42,15 @@ export const MsgListViewContainer = () => {
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
-				loading={messages.listLoading}
-				data={messages.listData}
-				itemCount={messages.itemCount}
-				loadMoreItems={messages.loadMoreItems}
-				isItemLoaded={messages.isItemLoaded}
+				loading={msgs.listLoading}
+				data={msgs.listData}
+				itemCount={msgs.itemCount}
+				loadMoreItems={msgs.loadMoreItems}
+				isItemLoaded={msgs.isItemLoaded}
 				RowComponent={MsgListRowContainer}
 				height={height ? height - 142 : 300}
-				handleItemsRendered={messages.handleItemsRendered}
-				error={messages.listError}
+				handleItemsRendered={msgs.handleItemsRendered}
+				error={msgs.listError}
 				// bottomReached={users.bottomReached}
 				bottomReached={true}
 			/>

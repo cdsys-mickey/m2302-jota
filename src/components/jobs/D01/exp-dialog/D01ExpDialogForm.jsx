@@ -17,13 +17,15 @@ const D01ExpDialogForm = memo((props) => {
 							label="商品"
 							name="expProd"
 							required
-							filterByServer
-							queryRequired
+							// filterByServer
+							// queryRequired
+							virtualize
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							triggerDelay={100}
 							rules={{
 								required: "商品為必填",
 							}}
+							disableOpenOnInput
 						/>
 					</Grid>
 					<Grid item xs={12}>

@@ -15,8 +15,8 @@ const B05LoadProdsForm = memo((props) => {
 	return (
 		<form onSubmit={handleSubmit} {...rest}>
 			<Box pt={1}>
-				<Grid container spacing={1}>
-					<Grid item xs={6}>
+				<Grid container spacing={1} columns={24}>
+					<Grid item xs={9}>
 						<ProdPicker
 							name="sprod"
 							label="起始商品編號"
@@ -29,9 +29,16 @@ const B05LoadProdsForm = memo((props) => {
 							optionLabelSize="md"
 							disableOpenOnInput
 							selectOnFocus
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
+								},
+							}}
 						/>
 					</Grid>
-					<Grid item xs={6}>
+					<Grid item xs={9}>
 						<ProdPicker
 							name="eprod"
 							label="截止商品編號"
@@ -43,26 +50,67 @@ const B05LoadProdsForm = memo((props) => {
 							optionLabelSize="md"
 							disableOpenOnInput
 							selectOnFocus
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
+								},
+							}}
 						/>
 					</Grid>
-					<Grid item xs={12} sm={12} md={6}>
+					<Grid item xs={24} sm={24} md={6}>
 						<ProdTypeAPicker name="typeA"
 							disableOpenOnInput
-							selectOnFocus />
+							selectOnFocus
+							slotProps={{
+								paper: {
+									sx: {
+										width: 240,
+									},
+								},
+							}}
+						/>
 					</Grid>
 					<FlexBox fullWidth />
-					<Grid item xs={12} sm={12} md={6}>
+					<Grid item xs={12} sm={12} md={8}>
 						<ProdCatLPicker name="catL"
 							disableOpenOnInput
-							selectOnFocus />
+							selectOnFocus
+							slotProps={{
+								paper: {
+									sx: {
+										width: 240,
+									},
+								},
+							}}
+						/>
 					</Grid>
-					<Grid item xs={12} sm={12} md={6}>
-						<ProdCatMPicker name="catM" disableOpenOnInput
-							selectOnFocus />
+					<Grid item xs={12} sm={12} md={8}>
+						<ProdCatMPicker name="catM"
+							disableOpenOnInput
+							selectOnFocus
+							slotProps={{
+								paper: {
+									sx: {
+										width: 240,
+									},
+								},
+							}}
+						/>
 					</Grid>
-					<Grid item xs={12} sm={12} md={6}>
-						<ProdCatSPicker name="catS" disableOpenOnInput
-							selectOnFocus />
+					<Grid item xs={12} sm={12} md={8}>
+						<ProdCatSPicker name="catS"
+							disableOpenOnInput
+							selectOnFocus
+							slotProps={{
+								paper: {
+									sx: {
+										width: 240,
+									},
+								},
+							}}
+						/>
 					</Grid>
 				</Grid>
 				<FlexToolbar align="right">

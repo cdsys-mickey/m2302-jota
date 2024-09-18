@@ -3,7 +3,7 @@ import AvatarButton from "./AvatarButton";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { AccountMenuContainer } from "@/components/account/AccountMenuContainer";
-import { MessagingContext } from "@/contexts/MessagingContext";
+import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 import Colors from "@/modules/md-colors";
 import Auth from "@/modules/md-auth";
 

@@ -50,95 +50,6 @@ export const useA20 = ({ token }) => {
 		keyColumn: "sprod.ProdID",
 	});
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"sprod",
-					optionPickerColumn(ProdPickerComponentContainer, {
-						name: "sprod",
-						withBomPackageName: true,
-						selectOnFocus: true,
-						triggerDelay: 300,
-						placeholder: "組合商品",
-						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: true,
-						forId: true,
-						disableClearable: true,
-						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						},
-					})
-				),
-				title: "商品編號",
-				minWidth: 170,
-				maxWidth: 170,
-				disabled: !crud.editing,
-			},
-			{
-				...keyColumn(
-					"SProdData",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "商品名稱",
-				disabled: true,
-				grow: 2,
-			},
-			{
-				...keyColumn(
-					"SPackData_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "包裝說明",
-				minWidth: 90,
-				grow: 1,
-				disabled: true,
-			},
-			{
-				...keyColumn("SProdQty", createFloatColumn(2)),
-				title: "標準用量",
-				minWidth: 90,
-				maxWidth: 90,
-				disabled: !crud.editing,
-			},
-		],
-		[crud.editing]
-	);
-
-	const gridMeta = useDSGMeta({
-		data: grid.gridData,
-		columns,
-		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
-	});
-
-	const handleLastField = useCallback(() => {
-		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [gridMeta]);
-
-	const formMeta = useFormMeta(
-		`
-		prod,
-		ProdQty
-		`,
-		{
-			lastField: handleLastField
-		}
-	);
-
 	const confirmReturn = useCallback(() => {
 		dialogs.confirm({
 			message: "確認要結束編輯?",
@@ -383,57 +294,58 @@ export const useA20 = ({ token }) => {
 	}, []);
 
 
-	const handleGridChange = useCallback(
-		(newValue, operations) => {
-			const newGridData = [...newValue];
-			let checkFailed = false;
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					console.log("dsg.UPDATE");
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const ogRowData = grid.gridData[rowIndex];
-							let processedRowData = { ...rowData };
+	const buildGridChangeHandler = useCallback(
+		({ gridMeta }) =>
+			(newValue, operations) => {
+				const newGridData = [...newValue];
+				let checkFailed = false;
+				for (const operation of operations) {
+					if (operation.type === "UPDATE") {
+						console.log("dsg.UPDATE");
+						newValue
+							.slice(operation.fromRowIndex, operation.toRowIndex)
+							.forEach((rowData, i) => {
+								const rowIndex = operation.fromRowIndex + i;
+								const ogRowData = grid.gridData[rowIndex];
+								let processedRowData = { ...rowData };
 
-							if (rowData?.sprod?.ProdID !== ogRowData?.sprod?.ProdID) {
-								console.log(`prod[${rowIndex}] changed`, rowData?.sprod);
+								if (rowData?.sprod?.ProdID !== ogRowData?.sprod?.ProdID) {
+									console.log(`prod[${rowIndex}] changed`, rowData?.sprod);
 
-								processedRowData = handleGridProdChange({
-									rowData: processedRowData,
-								});
-
-								if (
-									rowData.sprod &&
-									grid.isDuplicating(rowData, newValue)
-								) {
-									toast.error(
-										`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`,
-										{ position: "top-center" }
-									);
-									setTimeout(() => {
-										gridMeta.setActiveCell({
-											col: 0,
-											row: rowIndex,
-										});
+									processedRowData = handleGridProdChange({
+										rowData: processedRowData,
 									});
-									checkFailed = true;
+
+									if (
+										rowData.sprod &&
+										grid.isDuplicating(rowData, newValue)
+									) {
+										toast.error(
+											`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`,
+											{ position: "top-center" }
+										);
+										setTimeout(() => {
+											gridMeta.setActiveCell({
+												col: 0,
+												row: rowIndex,
+											});
+										});
+										checkFailed = true;
+									}
 								}
-							}
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
+								newGridData[rowIndex] = processedRowData;
+							});
+					} else if (operation.type === "CREATE") {
+						console.log("dsg.CREATE");
+						// process CREATE here
+						gridMeta.toFirstColumn({ nextRow: true });
+					}
 				}
-			}
-			if (!checkFailed) {
-				grid.setGridData(newGridData);
-			}
-		},
-		[grid, gridMeta, handleGridProdChange]
+				if (!checkFailed) {
+					grid.setGridData(newGridData);
+				}
+			},
+		[grid, handleGridProdChange]
 	);
 
 	useInit(() => {
@@ -457,15 +369,12 @@ export const useA20 = ({ token }) => {
 		promptCreating,
 		confirmDelete,
 		// grid
-		setGridRef: grid.setGridRef,
-		gridData: grid.gridData,
-		handleGridChange,
+		grid,
+		...grid,
+		buildGridChangeHandler,
 		getRowKey,
 		...appModule,
 		createRow,
-		formMeta,
-		grid,
-		gridMeta,
 		...sideDrawer
 	};
 };

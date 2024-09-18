@@ -26,7 +26,7 @@ const A20Form = memo((props) => {
 	} = props;
 
 	return (
-		<form {...rest}>
+		<>
 			{readWorking && (
 				<Container maxWidth="xs">
 					<FlexBox justifyContent="center" minHeight="30em">
@@ -42,8 +42,8 @@ const A20Form = memo((props) => {
 					<FormSectionTitle>基本資料</FormSectionTitle>
 					{/* <FormSectionBox pt={editing ? 1.5 : 0.5} pb={editing ? 0 : 1} mb={2} px={1}> */}
 					<FormSectionBox editing={editing} pb={0}>
-						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={6}>
+						<Grid container columns={24} spacing={1}>
+							<Grid item xs={24} sm={24} md={9}>
 								<ProdPicker
 									typo
 									name="prod"
@@ -55,10 +55,18 @@ const A20Form = memo((props) => {
 									rules={{ required: "對應貨品為必填" }}
 									readOnly={updating}
 									disableOpenOnInput
-									selectOnFocus
+									virtualize
+									fuzzy
+									slotProps={{
+										paper: {
+											sx: {
+												width: 360,
+											},
+										},
+									}}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={2}>
+							<Grid item xs={24} sm={24} md={4}>
 								<TextFieldWrapper
 									typo
 									name="ProdQty"
@@ -69,7 +77,7 @@ const A20Form = memo((props) => {
 									rules={{ required: "製造量為必填" }}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={2}>
+							<Grid item xs={24} sm={24} md={4}>
 								<PackageTypeLabelContainer
 									name="prod.PackData_N"
 									label="包裝說明">
@@ -84,7 +92,7 @@ const A20Form = memo((props) => {
 					</FormSectionBox>
 				</FormBox>
 			)}
-		</form>
+		</>
 	);
 });
 

@@ -14,15 +14,13 @@ export const ZA03CopyAuthUserPicker = (props) => {
 		[copyAuth]
 	);
 	return (
-		<OptionPickerProvider>
-			<DeptUserPicker
-				// filterByServer
-				// queryRequired
-				virtualize
-				onChange={handleChange}
-				{...rest}
-			/>
-		</OptionPickerProvider>
+		<DeptUserPicker
+			// filterByServer
+			// queryRequired
+			virtualize
+			onChange={handleChange}
+			{...rest}
+		/>
 	);
 };
 

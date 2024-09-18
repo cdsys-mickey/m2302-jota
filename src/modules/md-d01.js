@@ -10,6 +10,7 @@ const transformGridForReading = (data) => {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
 				},
+				ProdData: ProdData_N,
 				SExpDate: SExpDate ? Forms.parseDate(SExpDate) : "",
 				// overrideSQty: SQtyNote === "*",
 				...rest,
@@ -106,10 +107,10 @@ const getTotal = (gridData) => {
 };
 
 const isFiltered = (criteria) => {
-	return Objects.isAnyPropNotEmpty(criteria, "employee,bdate");
+	return Objects.isAnyPropNotEmpty(criteria, "employee,pdate,pdline");
 };
 
-const isProdExists = ({ newValue, rowData, rowIndex }) => {
+const findProdIndex = ({ newValue, rowData, rowIndex }) => {
 	if (!rowData?.prod?.ProdID) {
 		return -1;
 	}
@@ -132,7 +133,7 @@ const D01 = {
 	transformGridForReading,
 	getTotal,
 	isFiltered,
-	isProdExists,
+	findProdIndex,
 };
 
 export default D01;

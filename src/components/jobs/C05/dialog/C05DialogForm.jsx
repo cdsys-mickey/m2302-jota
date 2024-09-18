@@ -77,20 +77,18 @@ const C05DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="倉管人員"
-									name="employee"
-									required
-									rules={{
-										required: "倉管人員為必填",
-									}}
-									virtualize
-									disableClearable
-									disableOpenOnInput
-								/>
-							</OptionPickerProvider>
+							<EmployeePicker
+								typo
+								label="倉管人員"
+								name="employee"
+								required
+								rules={{
+									required: "倉管人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={3}>
 							<TextFieldWrapper
@@ -103,35 +101,32 @@ const C05DialogForm = memo((props) => {
 						<FlexBox fullWidth />
 
 						<Grid item xs={24} sm={24} md={3}>
-							<OptionPickerProvider>
-								{/* <SupplierIdPickerContainer */}
-								<SupplierPicker
-									typo
-									label="廠商代碼"
-									name="supplier"
-									required
-									rules={{
-										required: "廠商代碼為必填",
-									}}
-									// disabled={supplierPickerDisabled}
-									// disableClearable
-									virtualize
-									// fadeOutDisabled
-									forId
-									withAddr
-									optionLabelSize="md"
-									onChanged={handleSupplierChanged}
-									disableOpenOnInput
-									disableClearable
-									slotProps={{
-										paper: {
-											sx: {
-												width: 360,
-											},
+							<SupplierPicker
+								typo
+								label="廠商代碼"
+								name="supplier"
+								required
+								rules={{
+									required: "廠商代碼為必填",
+								}}
+								// disabled={supplierPickerDisabled}
+								// disableClearable
+								virtualize
+								// fadeOutDisabled
+								forId
+								withAddr
+								optionLabelSize="md"
+								onChanged={handleSupplierChanged}
+								disableOpenOnInput
+								disableClearable
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
 										},
-									}}
-								/>
-							</OptionPickerProvider>
+									},
+								}}
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
 							<TextFieldWrapper

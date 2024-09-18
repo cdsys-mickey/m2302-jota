@@ -32,11 +32,28 @@ import { A13Provider } from "@/contexts/A13/A13Provider";
 import { A14Provider } from "@/contexts/A14/A14Provider";
 import { A15Provider } from "@/contexts/A15/A15Provider";
 import { A16Provider } from "@/contexts/A16/A16Provider";
+import { A17Provider } from "@/contexts/A17/A17Provider";
+import { A18Provider } from "@/contexts/A18/A18Provider";
+import { A19Provider } from "@/contexts/A19/A19Provider";
 import { A20Provider } from "@/contexts/A20/A20Provider";
+import { A21Provider } from "@/contexts/A21/A21Provider";
+import { A22Provider } from "@/contexts/A22/A22Provider";
 import { A26Provider } from "@/contexts/A26/A26Provider";
 import { AA01Provider } from "@/contexts/AA01/AA01Provider";
+import { B05Provider } from "@/contexts/B05/B05Provider";
+import { B06Provider } from "@/contexts/B06/B06Provider";
+import { C01Provider } from "@/contexts/C01/C01Provider";
+import { C02Provider } from "@/contexts/C02/C02Provider";
+import { C03Provider } from "@/contexts/C03/C03Provider";
+import { C04Provider } from "@/contexts/C04/C04Provider";
+import { C05Provider } from "@/contexts/C05/C05Provider";
+import { C06Provider } from "@/contexts/C06/C06Provider";
+import { C07Provider } from "@/contexts/C07/C07Provider";
+import { ZA03Provider } from "@/contexts/ZA03/ZA03Provider";
 import { A010Provider } from "@/contexts/a010/A010Provider";
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
+import { HomeProvider } from "@/contexts/home/HomeProvider";
+import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
 import { A01FrameContainer } from "@/pages/A01/A01FrameContainer";
 import { A011FrameContainer } from "@/pages/A011/A011FrameContainer";
 import { A012FrameContainer } from "@/pages/A012/A012FrameContainer";
@@ -57,67 +74,56 @@ import { A13FrameContainer } from "@/pages/A13/A13FrameContainer";
 import { A14FrameContainer } from "@/pages/A14/A14FrameContainer";
 import { A15FrameContainer } from "@/pages/A15/A15FrameContainer";
 import { A16FrameContainer } from "@/pages/A16/A16FrameContainer";
-import { A20FrameContainer } from "@/pages/A20/A20FrameContainer";
-import { A26FrameContainer } from "@/pages/A26/A26FrameContainer";
-import SignalRTest from "@/pages/lab/SignalRTest";
-import { ZA03Provider } from "@/contexts/ZA03/ZA03Provider";
-import { HomeProvider } from "@/contexts/home/HomeProvider";
-import { ZA03FrameContainer } from "@/pages/ZA03/ZA03FrameContainer";
-import CheckAuthRoute from "./CheckAuthRoute";
-import { A17Provider } from "@/contexts/A17/A17Provider";
 import { A17FrameContainer } from "@/pages/A17/A17FrameContainer";
-import { A18Provider } from "@/contexts/A18/A18Provider";
-import { A21Provider } from "@/contexts/A21/A21Provider";
 import { A18FrameContainer } from "@/pages/A18/A18FrameContainer";
-import { A19Provider } from "@/contexts/A19/A19Provider";
 import { A19FrameContainer } from "@/pages/A19/A19FrameContainer";
+import { A20FrameContainer } from "@/pages/A20/A20FrameContainer";
 import { A21FrameContainer } from "@/pages/A21/A21FrameContainer";
-import { A22Provider } from "@/contexts/A22/A22Provider";
 import { A22FrameContainer } from "@/pages/A22/A22FrameContainer";
-import { MsgFrameContainer } from "@/pages/messages/MsgFrameContainer";
-import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
-import { SettingsFrameContainer } from "@/pages/settings/SettingsFrameContainer";
-import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
-import { B05Provider } from "@/contexts/B05/B05Provider";
+import { A26FrameContainer } from "@/pages/A26/A26FrameContainer";
 import { B05FrameContainer } from "@/pages/B05/B05FrameContainer";
-import DSGTest3 from "@/pages/lab/dsg/DSGTest3";
-import { B06Provider } from "@/contexts/B06/B06Provider";
 import { B06FrameContainer } from "@/pages/B06/B06FrameContainer";
-import { C02Provider } from "@/contexts/C02/C02Provider";
-import { C02FrameContainer } from "@/pages/C02/C02FrameContainer";
-import { C01Provider } from "@/contexts/C01/C01Provider";
 import { C01FrameContainer } from "@/pages/C01/C01FrameContainer";
-import { C04Provider } from "@/contexts/C04/C04Provider";
-import { C04FrameContainer } from "@/pages/C04/C04FrameContainer";
-import { C03Provider } from "@/contexts/C03/C03Provider";
+import { C02FrameContainer } from "@/pages/C02/C02FrameContainer";
 import { C03FrameContainer } from "@/pages/C03/C03FrameContainer";
-import { C05Provider } from "@/contexts/C05/C05Provider";
+import { C04FrameContainer } from "@/pages/C04/C04FrameContainer";
 import { C05FrameContainer } from "@/pages/C05/C05FrameContainer";
-import { C06Provider } from "@/contexts/C06/C06Provider";
 import { C06FrameContainer } from "@/pages/C06/C06FrameContainer";
-import { C07Provider } from "@/contexts/C07/C07Provider";
 import { C07FrameContainer } from "@/pages/C07/C07FrameContainer";
+import { ZA03FrameContainer } from "@/pages/ZA03/ZA03FrameContainer";
+import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
+import SignalRTest from "@/pages/lab/SignalRTest";
+import DSGTest3 from "@/pages/lab/dsg/DSGTest3";
+import { MessagesFrameContainer } from "@/pages/messages/MessagesFrameContainer";
+import { SettingsFrameContainer } from "@/pages/settings/SettingsFrameContainer";
 import { C08Provider } from "../contexts/C08/C08Provider";
-import { C08FrameContainer } from "../pages/C08/C08FrameContainer";
 import { C09Provider } from "../contexts/C09/C09Provider";
-import { C09FrameContainer } from "../pages/C09/C09FrameContainer";
 import { D01Provider } from "../contexts/D01/D01Provider";
-import { D01FrameContainer } from "../pages/D01/D01FrameContainer";
-import { DialogsProvider } from "../shared-contexts/dialog/DialogsProvider";
-import DialogsTest from "../pages/lab/DialogsTest";
 import { D02Provider } from "../contexts/D02/D02Provider";
-import { D02FrameContainer } from "../pages/D02/D02FrameContainer";
 import { D041Provider } from "../contexts/D041/D041Provider";
-import { D041FrameContainer } from "../pages/D04/D041FrameContainer";
 import { D05Provider } from "../contexts/D05/D05Provider";
-import { D05FrameContainer } from "../pages/D05/D05FrameContainer";
 import { D06Provider } from "../contexts/D06/D06Provider";
-import { D06FrameContainer } from "../pages/D06/D06FrameContainer";
 import { D07Provider } from "../contexts/D07/D07Provider";
-import { D07FrameContainer } from "../pages/D07/D07FrameContainer";
-import { KitchenSinkContainer } from "../pages/lab/KitchenSinkContainer";
 import { InfiniteLoaderProvider } from "../contexts/infinite-loader/InfiniteLoaderProvider";
-import { MessagesProvider } from "../contexts/MessagesProvider";
+import { C08FrameContainer } from "../pages/C08/C08FrameContainer";
+import { C09FrameContainer } from "../pages/C09/C09FrameContainer";
+import { D01FrameContainer } from "../pages/D01/D01FrameContainer";
+import { D02FrameContainer } from "../pages/D02/D02FrameContainer";
+import { D041FrameContainer } from "../pages/D04/D041FrameContainer";
+import { D05FrameContainer } from "../pages/D05/D05FrameContainer";
+import { D06FrameContainer } from "../pages/D06/D06FrameContainer";
+import { D07FrameContainer } from "../pages/D07/D07FrameContainer";
+import DialogsTest from "../pages/lab/DialogsTest";
+import { KitchenSinkContainer } from "../pages/lab/KitchenSinkContainer";
+import { DialogsProvider } from "../shared-contexts/dialog/DialogsProvider";
+import CheckAuthRoute from "./CheckAuthRoute";
+import { MessagesProvider } from "@/contexts/msgs/MesssagesProvider";
+import { B011Provider } from "@/contexts/B011/B011Provider";
+import { B011FrameContainer } from "@/pages/B011/B011FrameContainer";
+import { B02Provider } from "@/contexts/B02/B02Provider";
+import { B02FrameContainer } from "@/pages/B02/B02FrameContainer";
+import { B04Provider } from "@/contexts/B04/B04Provider";
+import { B04FrameContainer } from "@/pages/B04/B04FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -175,11 +181,11 @@ const AppRoute = () => {
 					}
 				/>
 				<Route
-					path="messages"
+					path="msgs"
 					element={
 						<InfiniteLoaderProvider>
 							<MessagesProvider>
-								<MsgFrameContainer />
+								<MessagesFrameContainer />
 							</MessagesProvider>
 						</InfiniteLoaderProvider>
 					}
@@ -535,6 +541,42 @@ const AppRoute = () => {
 					/>
 
 					{/* B */}
+					<Route
+						path="B011"
+						element={
+							<CrudProvider>
+								<InfiniteLoaderProvider>
+									<B011Provider>
+										<B011FrameContainer />
+									</B011Provider>
+								</InfiniteLoaderProvider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="B02"
+						element={
+							<CrudProvider>
+								<InfiniteLoaderProvider>
+									<B02Provider>
+										<B02FrameContainer />
+									</B02Provider>
+								</InfiniteLoaderProvider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="B04"
+						element={
+							<CrudProvider>
+								<InfiniteLoaderProvider>
+									<B04Provider>
+										<B04FrameContainer />
+									</B04Provider>
+								</InfiniteLoaderProvider>
+							</CrudProvider>
+						}
+					/>
 					<Route
 						path="B05"
 						element={

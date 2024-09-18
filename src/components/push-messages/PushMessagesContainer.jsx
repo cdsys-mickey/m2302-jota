@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MessagingContext } from "../../contexts/MessagingContext";
+import { MessagingContext } from "../../contexts/messaging/MessagingContext";
 import PushMessages from "./PushMessages";
 
 export const PushMessagesContainer = () => {

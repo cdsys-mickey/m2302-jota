@@ -21,6 +21,7 @@ const transformGridForReading = (data) => {
 						ProdID: SProdID,
 						ProdData: ProdData_N,
 					},
+					ProdData: ProdData_N,
 					dtype: SRsnID
 						? {
 								CodeID: SRsnID,

@@ -112,17 +112,18 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						selectOnFocus: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
+						withPurchasePackageName: true,
+						// selectOnFocus: true,
 						forId: true,
 						disableClearable: true,
 						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
+						// triggerDelay: 300,
+						// queryRequired: true,
+						// filterByServer: true,
+						// disableOpenOnInput: true,
+						// hideControlsOnActive: false,
+						// autoHighlight: true,
+						slotProps: {
 							paper: {
 								sx: {
 									width: 360,

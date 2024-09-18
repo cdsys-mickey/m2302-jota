@@ -321,14 +321,14 @@ export const useDSGMeta = ({
 			setSelection(selection);
 			prevSelectionRef.current = null;
 		}
-	}, [data.length, setActiveCell, setSelection]);
+	}, [data?.length, setActiveCell, setSelection]);
 
 	const isLastCell = useCallback((cell) => {
 		if (!cell) {
 			throw new Error("current cell cannot be null");
 		}
 		return cell.row === data.length - 1 && cell.col === columns.length - 1;
-	}, [columns.length, data.length]);
+	}, [columns.length, data?.length]);
 
 	return {
 		// Meta

@@ -1,4 +1,5 @@
 import SupplierPicker from "@/components/picker/SupplierPicker";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
@@ -42,11 +43,18 @@ const SupplierPickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
+
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
 		rowIndex,
@@ -96,15 +104,21 @@ const SupplierPickerComponent = memo((props) => {
 			typeToSearchText="請輸入編號或名稱進行搜尋"
 			// filterByServer
 			// queryRequired
-			// virtualize
 			// DSG 專屬屬性
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			cell={cell}
 			dense
 			hideControls={hideControls}
 			hideBorders
 			disableFadeOut
 			toastError
+			autoHighlight
+			disableOpenOnInput
+			selectOnFocus
+			// 大量資料專用
+			virtualize
+			triggerDelay={100}
 			// disablePointerEvents={!focus}
 			// hidePopupIndicator={!active}
 			// hidePlaceholder={!active}

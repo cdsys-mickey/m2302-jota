@@ -24,11 +24,16 @@ const D06SearchPopper = memo(
 			// Box 的 ref 不能放到 Paper 上
 			<PopperBox width={width} ref={ref}>
 				<PopperTitle onClose={onClose}>進階篩選</PopperTitle>
+				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<Divider sx={{ mt: 0, mb: 0 }} />
 					<Grid container spacing={1.5} columns={12}>
 						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="製單人員" />
+							<EmployeePicker
+								autoFocus
+								name="employee"
+								label="製單人員"
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<DatePickerWrapper

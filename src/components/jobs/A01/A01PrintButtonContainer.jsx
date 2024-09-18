@@ -1,12 +1,8 @@
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
-import { useMemo } from "react";
-import { useContext } from "react";
-import { A01Context } from "../../../contexts/A01/A01Context";
-import A01 from "../../../modules/md-a01";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
-import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
-import { StdPrintContext } from "../../../contexts/std-print/StdPrintContext";
+import { forwardRef, memo, useContext } from "react";
+import { A01Context } from "@/contexts/A01/A01Context";
+import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 
 const A01PrintButtonContainer = memo(
 	forwardRef((props, ref) => {
@@ -24,7 +20,8 @@ const A01PrintButtonContainer = memo(
 		}
 
 		return (
-			<ResponsiveButton
+			<ButtonWrapper
+				responsive
 				ref={ref}
 				variant="contained"
 				startIcon={<LocalPrintshopIcon />}
@@ -34,7 +31,7 @@ const A01PrintButtonContainer = memo(
 				onClick={stdPrint.promptPrint}
 				{...rest}>
 				列印
-			</ResponsiveButton>
+			</ButtonWrapper>
 		);
 	})
 );

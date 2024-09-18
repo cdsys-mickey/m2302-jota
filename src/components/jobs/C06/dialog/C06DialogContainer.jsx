@@ -66,28 +66,29 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						selectOnFocus: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
+						withPurchasePackageName: true,
 						forId: true,
 						disableClearable: true,
 						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 360,
 								},
 							},
 						},
+						// selectOnFocus: true,
+						// triggerDelay: 300,
+						// queryRequired: true,
+						// filterByServer: true,
+						// disableOpenOnInput: true,
+						// hideControlsOnActive: false,
+						// autoHighlight: true,
 					})
 				),
 				title: "商品編號",
-				minWidth: 180,
-				maxWidth: 180,
+				minWidth: 140,
+				maxWidth: 140,
 				disabled: readOnly || c06.sprodDisabled,
 			},
 			{
@@ -104,7 +105,8 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 			{
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "單價",
-				minWidth: 100,
+				minWidth: 90,
+				maxnWidth: 90,
 				grow: 1,
 				disabled: true,
 				cellClassName: c06.getSPriceClassName,
@@ -128,6 +130,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SAmt", createFloatColumn(2)),
 				title: "金額",
 				minWidth: 90,
+				maxnWidth: 90,
 				grow: 1,
 				disabled: true,
 			},
@@ -156,14 +159,14 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "備註",
-				grow: 4,
+				grow: 2,
 				disabled: readOnly,
 			},
 			{
 				...keyColumn("SNotQty", createFloatColumn(2)),
 				title: "未到量",
 				minWidth: 90,
-				grow: 1,
+				maxnWidth: 90,
 				disabled: readOnly || c06.creating,
 			},
 			{

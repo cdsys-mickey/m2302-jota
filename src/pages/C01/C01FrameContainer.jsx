@@ -38,10 +38,9 @@ export const C01FrameContainer = () => {
 				<FrameBannerContainer>
 					{/* <C01SearchFieldContainer name="q" /> */}
 				</FrameBannerContainer>
-				{/* 搜尋列 */}
+				{/* 搜尋列 + 工具列 */}
 				<C01ListFormContainer />
-				{/* 工具列 */}
-				<C01ListToolbar />
+
 
 				{/* 列表 */}
 				<C01ListHeader />
@@ -51,9 +50,7 @@ export const C01FrameContainer = () => {
 			{/* 對話框 */}
 			<C01TransformToOrdersDialogContainer />
 			<C01TransformToOrderDialogContainer />
-			<OptionPickerProvider>
-				<C01DialogContainer />
-			</OptionPickerProvider>
+			<C01DialogContainer />
 
 		</Box>
 	);

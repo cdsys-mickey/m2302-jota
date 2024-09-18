@@ -5,26 +5,28 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useMemo } from "react";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 export const C02ProdGridContainer = (props) => {
 	const { ...rest } = props;
 	const c02 = useContext(C02Context);
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
+	const formMeta = useContext(FormMetaContext);
 
 	const onChange = useMemo(() => {
-		return c02.handleGridChange;
-	}, [c02.handleGridChange]);
+		return c02.buildGridChangeHandler({ gridMeta: formMeta.gridMeta });
+	}, [c02, formMeta.gridMeta]);
 
 	return (
 		<DSGContext.Provider value={{
 			...c02.grid,
-			...c02.gridMeta,
-			readOnly: !c02.editing
+			...formMeta.gridMeta,
+			readOnly: formMeta.readOnly
 		}}>
 			<C02ProdGrid
-				gridRef={c02.setGridRef}
-				readOnly={!c02.editing}
+				gridRef={formMeta.gridMeta.setGridRef}
+				readOnly={formMeta.readOnly}
 				data={c02.gridData}
 				bearer={auth.token}
 				height={height - 326}
@@ -34,7 +36,7 @@ export const C02ProdGridContainer = (props) => {
 				supplierNameDisabled={c02.supplierNameDisabled}
 				createRow={c02.createRow}
 				onChange={onChange}
-				onActiveCellChange={c02.handleActiveCellChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				{...rest}
 			/>
 		</DSGContext.Provider>

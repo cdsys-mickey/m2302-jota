@@ -106,111 +106,7 @@ export const useC03 = () => {
 		return itemData?.CFlag === "*";
 	}, [itemData?.CFlag]);
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"prod",
-					optionPickerColumn(ProdPickerComponentContainer, {
-						name: "prod",
-						withStock: true,
-						selectOnFocus: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
-						forId: true,
-						disableClearable: true,
-						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						},
-					})
-				),
-				title: "商品編號",
-				minWidth: 180,
-				maxWidth: 180,
-				disabled: !crud.editing,
-			},
-			{
-				...keyColumn(
-					"ProdData",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "品名規格",
-				disabled: true,
-				grow: 2,
-			},
-			{
-				...keyColumn(
-					"PackData_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "包裝說明",
-				minWidth: 120,
-				maxWidth: 120,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"SInqFlag",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "詢",
-				disabled: true,
-				cellClassName: "star",
-			},
-			{
-				...keyColumn("SPrice", createFloatColumn(2)),
-				title: "單價",
-				minWidth: 100,
-				disabled: !crud.editing || spriceDisabled,
-			},
-			{
-				...keyColumn("SQty", createFloatColumn(2)),
-				title: "數量",
-				minWidth: 90,
-				grow: 1,
-				disabled: !crud.editing || sqtyDisabled,
-			},
-			{
-				...keyColumn("SAmt", createFloatColumn(2)),
-				title: "金額",
-				minWidth: 90,
-				grow: 1,
-				disabled: true,
-			},
-			{
-				...keyColumn("SNotQty", createFloatColumn(2)),
-				title: "未進量",
-				minWidth: 90,
-				grow: 1,
-				disabled: !crud.editing || sNotQtyDisabled,
-			},
-		],
-		[crud.editing, sNotQtyDisabled, spriceDisabled, sqtyDisabled]
-	);
 
-	const gridMeta = useDSGMeta({
-		data: grid.gridData,
-		columns,
-		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
-	})
 
 	const [selectedItem, setSelectedItem] = useState();
 
@@ -637,7 +533,7 @@ export const useC03 = () => {
 	}, []);
 
 	const buildGridChangeHandler = useCallback(
-		({ setValue, getValues }) =>
+		({ setValue, getValues, gridMeta }) =>
 			async (newValue, operations) => {
 				console.log("handleGridChange", operations);
 				console.log("newValue", newValue);
@@ -693,7 +589,7 @@ export const useC03 = () => {
 					refreshAmt({ gridData: newGridData, setValue });
 				}
 			},
-		[grid, refreshAmt, updateGridRow, prodDisabled, gridMeta]
+		[grid, refreshAmt, updateGridRow, prodDisabled]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -898,7 +794,7 @@ export const useC03 = () => {
 						grid.initGridData(
 							grid.fillRows({
 								data: data.prods,
-								length: DEFAULT_ROWS,
+								// length: DEFAULT_ROWS,
 								createRow,
 							})
 						);
@@ -949,9 +845,7 @@ export const useC03 = () => {
 		// Grid
 		createRow,
 		...grid,
-		...gridMeta,
 		grid,
-		gridMeta,
 		buildGridChangeHandler,
 		getRowKey,
 		prodDisabled,

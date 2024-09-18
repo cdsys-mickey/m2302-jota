@@ -4,25 +4,32 @@ import { B05Context } from "@/contexts/B05/B05Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useMemo } from "react";
 
 export const B05QuoteGridContainer = (props) => {
 	const { ...rest } = props;
 	const b05 = useContext(B05Context);
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
+	const formMeta = useContext(FormMetaContext);
+
+	const onChange = useMemo(() => {
+		return b05.buildGridChangeHandler({ gridMeta: formMeta.gridMeta })
+	}, [b05, formMeta.gridMeta])
 
 	return (
 		<DSGContext.Provider value={{
 			...b05.grid,
-			...b05.gridMeta,
-			readOnly: !b05.editing
+			...formMeta.gridMeta,
+			readOnly: formMeta.readOnly
 		}}>
 			<B05QuoteGrid
-				gridRef={b05.setGridRef}
-				readOnly={!b05.editing}
+				gridRef={formMeta.gridMeta.setGridRef}
+				readOnly={formMeta.readOnly}
 				data={b05.gridData}
-				onChange={b05.handleGridChange}
-				onActiveCellChange={b05.handleActiveCellChange}
+				onChange={onChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
 				height={height - 330}
 				getRowKey={b05.getRowKey}

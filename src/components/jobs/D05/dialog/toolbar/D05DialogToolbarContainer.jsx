@@ -48,6 +48,7 @@ export const D05DialogToolbarContainer = (props) => {
 			onEdit={d05.canUpdate ? d05.handleCheckEditable : null}
 			onDelete={canDelete ? d05.confirmDelete : null}
 			onPrint={d05.canPrint ? handlePrint : null}
+			onSideDrawerOpen={d05.handleSideDrawerOpen}
 			checkEditableWorking={d05.checkEditableWorking}
 			{...rest}
 		/>

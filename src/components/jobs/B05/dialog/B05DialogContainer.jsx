@@ -3,7 +3,7 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useMemo } from "react";
-import { FormProvider, useFormContext } from "react-hook-form";
+import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import B05DialogForm from "./B05DialogForm";
 import { useEffect } from "react";
 import { B05DialogToolbarContainer } from "./toolbar/B05DialogToolbarContainer";
@@ -13,6 +13,15 @@ import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { Drawer } from "@mui/material";
 import B05Drawer from "../B05Drawer";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useCallback } from "react";
+import { toast } from "react-toastify";
 
 export const B05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -25,6 +34,19 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 	const { reset } = form;
 
 	const b05 = useContext(B05Context);
+	const inqDate = useWatch({
+		name: "InqDate",
+		control: form.control
+	})
+
+	const employee = useWatch({
+		name: "employee",
+		control: form.control
+	})
+	const supplier = useWatch({
+		name: "supplier",
+		control: form.control
+	})
 
 	const scrollable = useScrollable({
 		height,
@@ -64,6 +86,101 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 		b05.onEditorSubmitError
 	);
 
+	const readOnly = useMemo(() => {
+		return !b05.editing || !supplier || !inqDate || !employee;
+	}, [b05.editing, employee, inqDate, supplier]);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withSalesPackageName: true,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 180,
+				maxWidth: 180,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"SProdData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"SPackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "包裝說明",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: true,
+			},
+			{
+				...keyColumn("SPrice", createFloatColumn(2)),
+				title: "廠商報價",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: readOnly,
+			},
+		],
+		[readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: b05.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
+	const handleLastField = useCallback(() => {
+		if (!inqDate) {
+			toast.error("請先輸入詢價日期", {
+				position: "top-center",
+			});
+			form.setFocus("InqDate");
+			return;
+		}
+		if (!employee) {
+			toast.error("請先輸入詢價人員", {
+				position: "top-center",
+			});
+			form.setFocus("employee");
+			return;
+		}
+		if (!supplier) {
+			toast.error("請先輸入廠商代碼", {
+				position: "top-center",
+			});
+			form.setFocus("supplier");
+			return;
+		}
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [employee, form, gridMeta, inqDate, supplier]);
+
 	const formMeta = useFormMeta(
 		`
 		InqDate,
@@ -71,7 +188,7 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 		supplier,
 		`,
 		{
-			lastField: b05.handleLastField
+			lastField: handleLastField
 		}
 	);
 
@@ -111,7 +228,7 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 			{...rest}>
 			<FormProvider {...form}>
 				<form onSubmit={handleSubmit}>
-					<FormMetaProvider {...formMeta}>
+					<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
 						<B05DialogForm
 							creating={b05.creating}
 							editing={b05.editing}
@@ -120,14 +237,13 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 							readError={b05.readError}
 							data={b05.itemData}
 							itemDataReady={b05.itemDataReady}
-							onSubmit={handleSubmit}
 						/>
 
 					</FormMetaProvider>
 				</form>
 			</FormProvider>
 			{/* 側邊欄 */}
-			<B05Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
+			<B05Drawer />
 		</DialogExContainer>
 	);
 });

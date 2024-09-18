@@ -3,12 +3,19 @@ import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import PropTypes from "prop-types";
 import { memo, useContext } from "react";
 import SideDrawer from "@/shared-components/side-drawer/SideDrawer";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 const B05Drawer = memo((props) => {
 	const { anchor = "right", ...rest } = props;
 	const b05 = useContext(B05Context);
 	return (
-		<SideDrawer anchor={anchor} open={b05.sideDrawerOpen} onClose={b05.handleSideDrawerClose} {...rest} >
+		<SideDrawer anchor={anchor} open={b05.sideDrawerOpen} onClose={b05.handleSideDrawerClose}
+			slotProps={{
+				backdrop: {
+					sx: [MuiStyles.BACKDROP_TRANSPARENT]
+				}
+			}}
+			{...rest} >
 			<FormFieldLabel label="最後修改時間">
 				{b05.itemData?.WriteDate}
 			</FormFieldLabel>

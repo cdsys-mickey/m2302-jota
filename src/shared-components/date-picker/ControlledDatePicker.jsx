@@ -25,6 +25,7 @@ const ControlledDatePicker = ({
 	control,
 	readOnly,
 	dense,
+	clearable = false,
 	defaultValue,
 	onChange: _onChange,
 	onChanged,
@@ -135,6 +136,9 @@ const ControlledDatePicker = ({
 									// paddingRight: "40px",
 								},
 							})
+						},
+						field: {
+							clearable
 						}
 					}}
 					value={value}
@@ -202,7 +206,7 @@ ControlledDatePicker.propTypes = {
 	invalidDateMessage: PropTypes.string,
 	required: PropTypes.bool,
 	rules: PropTypes.object,
-	// labelShrink: PropTypes.bool,
+	clearable: PropTypes.bool,
 	// variant: PropTypes.string,
 };
 export default ControlledDatePicker;

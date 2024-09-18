@@ -40,34 +40,42 @@ const D041DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={5}>
-							<TextFieldWrapper
+						{!creating && (
+							<Grid item xs={24} sm={24} md={5}>
+								<TextFieldWrapper
+									typo
+									name="EntID"
+									label="入庫單號"
+									autoFocus
+									fullWidth
+									// required
+									readOnly={true}
+								/>
+							</Grid>
+						)}
+						<Grid item xs={24} sm={24} md={4}>
+							<EmployeePicker
 								typo
-								name="EntID"
-								label="入庫單號"
+								label="倉管人員"
+								name="employee"
 								autoFocus
-								fullWidth
-								// required
-								readOnly={true}
+								required
+								rules={{
+									required: "倉管人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 240,
+										},
+									},
+								}}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="倉管人員"
-									name="employee"
-									autoFocus
-									required
-									rules={{
-										required: "倉管人員為必填",
-									}}
-									virtualize
-									disableClearable
-								/>
-							</OptionPickerProvider>
-						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4}>
 							<DatePickerWrapper
 								typo
 								name="EntDate"
@@ -79,8 +87,7 @@ const D041DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={6}>
-							{/* <OptionPickerProvider> */}
+						<Grid item xs={24} sm={24} md={5}>
 							<ProdLinePicker
 								typo
 								label="生產線別"
@@ -89,10 +96,16 @@ const D041DialogForm = memo((props) => {
 								rules={{
 									required: "入庫線別為必填",
 								}}
-							// virtualize
-							// optionLabelSize="md"
+								// virtualize
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 240,
+										},
+									},
+								}}
 							/>
-							{/* </OptionPickerProvider> */}
 						</Grid>
 
 						<FlexBox fullWidth />

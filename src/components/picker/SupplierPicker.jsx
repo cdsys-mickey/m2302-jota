@@ -34,6 +34,14 @@ const SupplierPicker = (props) => {
 		return Suppliers.getOptionKey(option);
 	}, []);
 
+	const getTitle = useCallback((option) => {
+		return Suppliers.getTitle(option);
+	}, []);
+
+	const stringify = useCallback((option) => {
+		return Suppliers.stringify(option);
+	}, []);
+
 	const renderOptionLabel = useCallback((option) => {
 		return Suppliers.renderOptionLabel(option);
 	}, []);
@@ -51,6 +59,8 @@ const SupplierPicker = (props) => {
 			isOptionEqualToValue={isOptionEqualToValue}
 			renderOptionLabel={renderOptionLabel}
 			getData={getData}
+			getTitle={getTitle}
+			stringify={stringify}
 			getOptionKey={getOptionKey}
 			notFoundText="廠商 ${id} 不存在"
 			{...rest}

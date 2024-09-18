@@ -1,5 +1,5 @@
 import { useCallback, useContext } from "react";
-import { MessagingContext } from "../../contexts/MessagingContext";
+import { MessagingContext } from "../../contexts/messaging/MessagingContext";
 import useAppRedirect from "../../hooks/useAppRedirect";
 import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
 import { useWindowSize } from "../../shared-hooks/useWindowSize";

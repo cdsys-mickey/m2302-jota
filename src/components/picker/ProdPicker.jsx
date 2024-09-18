@@ -14,6 +14,7 @@ const ProdPicker = (props) => {
 		withSalesPackageName = false,
 		withPurchasePackageName = false,
 		withStock = false,
+		withPrice = false,
 		forId = false,
 		fuzzy = false,
 		...rest
@@ -35,18 +36,20 @@ const ProdPicker = (props) => {
 			...(withStock && {
 				ws: 1,
 			}),
-			...(fuzzy && {
-				fuzzy: 1,
+			...(withPrice && {
+				wp: 1,
 			}),
+			// 原本 fuzzy 參數的功能為是否啟用條碼搜尋, 
+			// 後來演變為是否啟用 findByInput
+			// 透過 option-picker 的 API call 應該都是要帶回 fuzzy 版本
+			// ...(fuzzy && {
+			// 	fuzzy: 1,
+			// }),
+			fuzzy: 1,
+
 		};
 		return queryString.stringify(obj);
-	}, [
-		fuzzy,
-		withBomPackageName,
-		withPurchasePackageName,
-		withSalesPackageName,
-		withStock,
-	]);
+	}, [withBomPackageName, withPrice, withPurchasePackageName, withSalesPackageName, withStock]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return Prods.isOptionEqualToValue(option, value);
@@ -73,6 +76,10 @@ const ProdPicker = (props) => {
 		return Prods.renderOptionLabel(option);
 	}, []);
 
+	const getData = useCallback((payload) => {
+		return payload["data"];
+	}, []);
+
 	return (
 		<OptionPickerWrapper
 			label={label}
@@ -83,10 +90,11 @@ const ProdPicker = (props) => {
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
 			renderOptionLabel={renderOptionLabel}
+			getData={getData}
 			getTitle={getTitle}
 			stringify={stringify}
 			notFoundText="商品代號 ${id} 不存在"
-			placeholder="商品編號/條碼"
+			placeholder="搜尋商品"
 			typeToSearchText="輸入編號、條碼或名稱搜尋..."
 			{...rest}
 		/>

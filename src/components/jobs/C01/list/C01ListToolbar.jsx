@@ -24,6 +24,7 @@ const LeftButtons = memo(() => {
 				autoSelect
 				blurOnSelect
 				width="9rem"
+				disableOpenOnInput
 			/>
 			<C01TransformButtonContainer variant="contained" />
 		</FlexBox>

@@ -61,44 +61,40 @@ const C02DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="製單人員"
-									name="employee"
-									required
-									rules={{
-										required: "製單人員為必填",
-									}}
-									virtualize
-									disableClearable
-									disableOpenOnInput
-								/>
-							</OptionPickerProvider>
+							<EmployeePicker
+								typo
+								label="製單人員"
+								name="employee"
+								required
+								rules={{
+									required: "製單人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={editing ? 5 : 4}>
-							<OptionPickerProvider>
-								<ProdLinePicker
-									typo
-									label="請購單位"
-									name="pdline"
-									// D3 非必填，但 API 要求必填, 近幾年的資料都有填，
-									// 等客戶要求再調整
-									required
-									rules={{
-										required: "請購單位為必填",
-									}}
-									virtualize
-									disableOpenOnInput
-									componentsProps={{
-										paper: {
-											sx: {
-												width: 360,
-											},
+							<ProdLinePicker
+								typo
+								label="請購單位"
+								name="pdline"
+								// D3 非必填，但 API 要求必填, 近幾年的資料都有填，
+								// 等客戶要求再調整
+								required
+								rules={{
+									required: "請購單位為必填",
+								}}
+								virtualize
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
 										},
-									}}
-								/>
-							</OptionPickerProvider>
+									},
+								}}
+							/>
 						</Grid>
 						{
 							!editing && (<Grid item xs={24} md={8}>

@@ -49,6 +49,7 @@ export const D02DialogToolbarContainer = (props) => {
 			onDelete={canDelete ? d02.confirmDelete : null}
 			onPrint={d02.canPrint ? handlePrint : null}
 			checkEditableWorking={d02.checkEditableWorking}
+			onSideDrawerOpen={d02.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

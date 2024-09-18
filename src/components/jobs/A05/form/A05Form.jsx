@@ -117,7 +117,7 @@ const A05Form = memo((props) => {
 									fullWidth
 									disableOpenOnInput
 									selectOnFocus
-									componentsProps={{
+									slotProps={{
 										paper: {
 											sx: {
 												width: 260,

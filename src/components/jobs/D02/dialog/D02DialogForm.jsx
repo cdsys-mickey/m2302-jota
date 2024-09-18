@@ -40,32 +40,33 @@ const D02DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={5}>
-							<TextFieldWrapper
-								typo
-								name="RetID"
-								label="退料單號"
-								autoFocus
-								fullWidth
-								// required
-								readOnly={true}
-							/>
-						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
-							<OptionPickerProvider>
-								<EmployeePicker
+						{!creating && (
+							<Grid item xs={24} sm={24} md={5}>
+								<TextFieldWrapper
 									typo
-									label="製單人員"
-									name="employee"
+									name="RetID"
+									label="退料單號"
 									autoFocus
-									required
-									rules={{
-										required: "製單人員為必填",
-									}}
-									virtualize
-									disableClearable
+									fullWidth
+									// required
+									readOnly={true}
 								/>
-							</OptionPickerProvider>
+							</Grid>
+						)}
+						<Grid item xs={24} sm={24} md={6}>
+							<EmployeePicker
+								typo
+								label="製單人員"
+								name="employee"
+								autoFocus
+								required
+								rules={{
+									required: "製單人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={6}>
 							<DatePickerWrapper
@@ -74,13 +75,15 @@ const D02DialogForm = memo((props) => {
 								label="退料日期"
 								fullWidth
 								required
+								rules={{
+									required: "退料日期為必填",
+								}}
 								variant="outlined"
 								onChanged={handleRstDateChanged}
 							/>
 						</Grid>
 
 						<Grid item xs={24} sm={24} md={6}>
-							{/* <OptionPickerProvider> */}
 							<ProdLinePicker
 								typo
 								label="退料線別"
@@ -89,10 +92,10 @@ const D02DialogForm = memo((props) => {
 								rules={{
 									required: "退料線別為必填",
 								}}
-							// virtualize
+								disableOpenOnInput
+								virtualize
 							// optionLabelSize="md"
 							/>
-							{/* </OptionPickerProvider> */}
 						</Grid>
 
 						<FlexBox fullWidth />

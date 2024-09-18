@@ -17,6 +17,7 @@ import { D05ProdGridContainer } from "./prod-grid/D05ProdGridContainer";
 
 const D05DialogForm = memo((props) => {
 	const {
+		creating,
 		onSubmit,
 		readError,
 		readWorking,
@@ -40,42 +41,42 @@ const D05DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
+						{!creating && (
+							<Grid item xs={24} sm={24} md={4}>
+								<TextFieldWrapper
+									typo
+									name="CxlID"
+									label="報廢單號"
+									fullWidth
+									// required
+									readOnly={true}
+								/>
+							</Grid>
+						)}
 						<Grid item xs={24} sm={24} md={4}>
-							<TextFieldWrapper
-								typo
-								name="CxlID"
-								label="報廢單號"
-								autoFocus
-								fullWidth
-								// required
-								readOnly={true}
-							/>
-						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
 							<DatePickerWrapper
+								autoFocus
 								typo
 								name="wdate"
 								label="報廢日期"
-								autoFocus
 								fullWidth
 								required
 								variant="outlined"
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="倉管人員"
-									name="employee"
-									required
-									rules={{
-										required: "倉管人員為必填",
-									}}
-									virtualize
-									disableClearable
-								/>
-							</OptionPickerProvider>
+						<Grid item xs={24} sm={24} md={5}>
+							<EmployeePicker
+								typo
+								label="倉管人員"
+								name="employee"
+								required
+								rules={{
+									required: "倉管人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+							/>
 						</Grid>
 					</Grid>
 					<Box py={1}>

@@ -5,6 +5,8 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { forwardRef } from "react";
 import D01ExpDialogForm from "./D01ExpDialogForm";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const D01ExpDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -17,6 +19,16 @@ export const D01ExpDialogContainer = forwardRef((props, ref) => {
 		d01.onExpSubmit,
 		d01.onExpSubmitError
 	);
+
+	const formMeta = useFormMeta(
+		`
+		expProd,
+		expDate
+		`,
+		{
+			lastField: handleSubmit
+		}
+	)
 
 	useChangeTracking(() => {
 		if (open) {
@@ -40,7 +52,9 @@ export const D01ExpDialogContainer = forwardRef((props, ref) => {
 				onSubmit={handleSubmit}
 				confirmText="執行"
 				onCancel={d01.onExpDialogClose}>
-				<D01ExpDialogForm onSubmit={handleSubmit} />
+				<FormMetaProvider {...formMeta}>
+					<D01ExpDialogForm onSubmit={handleSubmit} />
+				</FormMetaProvider>
 			</DialogExContainer>
 		</FormProvider>
 	);

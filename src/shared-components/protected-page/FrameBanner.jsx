@@ -34,7 +34,7 @@ const FrameBanner = memo(
 		return (
 			<FlexBox ref={ref} {...rest}>
 				<FlexBox
-					ml={-2}
+					ml={-3}
 					alignItems="center"
 					justifyContent="flex-start"
 					flex={leftFlex}>
@@ -53,7 +53,7 @@ const FrameBanner = memo(
 					alignItems="center"
 					justifyContent="flex-end"
 					flex={1}
-					mr={-2}>
+					mr={-3}>
 					<Stack
 						spacing={1}
 						direction="row"
@@ -69,7 +69,9 @@ const FrameBanner = memo(
 						<PushMessagesPopoverContainer />
 
 						{/* 帳號 */}
-						<AvatarButtonContainer />
+						<AvatarButtonContainer
+							edge="end"
+						/>
 					</Stack>
 					{/* 門市切換 */}
 					<DeptSwitchDialogContainer />

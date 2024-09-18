@@ -593,7 +593,9 @@ export const useC08 = () => {
 				["StockQty_N"]: prodInfo?.Stock || "",
 			};
 			if (prod && !prodInfo?.Price) {
-				toast.warn("商品未訂調撥成本，不得訂購");
+				toast.error("商品未訂調撥成本，不得訂購", {
+					position: "top-center",
+				});
 			}
 			return rowData;
 		},
@@ -919,7 +921,9 @@ export const useC08 = () => {
 	const checkAndRemoveDepOrders = useCallback(
 		({ gridData, message, setValue, newOrders }) => {
 			if (message) {
-				toast.warn(message);
+				toast.warn(message, {
+					position: "top-center",
+				});
 			}
 
 			const ordIds = [...new Set(gridData.map((item) => item.ordId))];
@@ -935,7 +939,10 @@ export const useC08 = () => {
 					.map((order) => order["訂貨單號"]);
 
 				toast.warn(
-					`訂貨單號 ${filteredOutOrdIds.join(", ")} 已同步移除`
+					`訂貨單號 ${filteredOutOrdIds.join(", ")} 已同步移除`,
+					{
+						position: "top-center",
+					}
 				);
 			}
 		},

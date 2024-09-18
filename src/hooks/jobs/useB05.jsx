@@ -62,78 +62,6 @@ export const useB05 = () => {
 		keyColumn: "pkey",
 	});
 
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"prod",
-					optionPickerColumn(ProdPickerComponentContainer, {
-						name: "prod",
-						selectOnFocus: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
-						forId: true,
-						disableClearable: true,
-						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						},
-					})
-				),
-				title: "商品編號",
-				minWidth: 180,
-				maxWidth: 180,
-				disabled: !crud.editing,
-			},
-			{
-				...keyColumn(
-					"SProdData_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "品名規格",
-				disabled: true,
-				grow: 2,
-			},
-			{
-				...keyColumn(
-					"SPackData_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "包裝說明",
-				minWidth: 120,
-				maxWidth: 120,
-				disabled: true,
-			},
-			{
-				...keyColumn("SPrice", createFloatColumn(2)),
-				title: "廠商報價",
-				minWidth: 120,
-				maxWidth: 120,
-				disabled: !crud.editing,
-			},
-		],
-		[crud.editing]
-	);
-
-	const gridMeta = useDSGMeta({
-		data: grid.gridData,
-		columns,
-		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
-	})
-
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
@@ -334,9 +262,9 @@ export const useB05 = () => {
 		[]
 	);
 
-	const handleGridChange = useCallback(
-		(newValue, operations) => {
-			console.log("handleGridChange", operations);
+	const buildGridChangeHandler = useCallback(
+		({ gridMeta }) => (newValue, operations) => {
+			console.log("buildGridChangeHandler", operations);
 			const newGridData = [...newValue];
 			for (const operation of operations) {
 				if (operation.type === "UPDATE") {
@@ -375,7 +303,7 @@ export const useB05 = () => {
 			console.log("after changed", newGridData);
 			grid.setGridData(newGridData);
 		},
-		[grid, handleGridProdChange, gridMeta]
+		[grid, handleGridProdChange]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -551,9 +479,7 @@ export const useB05 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handleLastField = useCallback(() => {
-		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [gridMeta]);
+
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -584,10 +510,8 @@ export const useB05 = () => {
 		onEditorSubmitError,
 		// 報價 Grid
 		...grid,
-		...gridMeta,
 		grid,
-		gridMeta,
-		handleGridChange,
+		buildGridChangeHandler,
 		getRowKey,
 		// 帶入商品
 		importProdsWorking: importProdsAction.working,
@@ -601,7 +525,7 @@ export const useB05 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
-		handleLastField,
+		// handleLastField,
 		loadProdFormMeta,
 		...sideDrawer
 	};

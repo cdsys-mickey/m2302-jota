@@ -32,6 +32,14 @@ const getOptionKey = (option) => {
 	return `${option?.FactID}`;
 };
 
+const getTitle = (option) => {
+	return getOptionLabel(option);
+};
+
+const stringify = (option) => {
+	return `${option.FactID} ${option.FactData}`;
+};
+
 const Suppliers = {
 	data,
 	getOptionLabel,
@@ -40,6 +48,8 @@ const Suppliers = {
 	getOptionKey,
 	getOptionLabelForId,
 	renderOptionLabel,
+	stringify,
+	getTitle,
 };
 
 export default Suppliers;

@@ -5,10 +5,12 @@ import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import { D01OutputModePickerContainer } from "./D01OutputModePickerContainer";
 import D01PrintButtonContainer from "./D01PrintButtonContainer";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { IconButton, Tooltip } from "@mui/material";
 
 const D01DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, checkEditableWorking, onDelete, onPrint, ...rest } =
+		const { onEdit, checkEditableWorking, onDelete, onPrint, onSideDrawerOpen, ...rest } =
 			props;
 		return (
 			<Fragment ref={ref} {...rest}>
@@ -39,6 +41,12 @@ const D01DialogViewToolbar = memo(
 						編輯
 					</ButtonWrapper>
 				)}
+
+				<Tooltip title="詳細資訊">
+					<IconButton onClick={onSideDrawerOpen} size="small">
+						<HelpOutlineIcon />
+					</IconButton>
+				</Tooltip>
 			</Fragment>
 		);
 	})
@@ -48,6 +56,7 @@ D01DialogViewToolbar.propTypes = {
 	onEdit: PropTypes.func,
 	onDelete: PropTypes.func,
 	onPrint: PropTypes.func,
+	onSideDrawerOpen: PropTypes.func,
 	checkEditableWorking: PropTypes.bool,
 };
 

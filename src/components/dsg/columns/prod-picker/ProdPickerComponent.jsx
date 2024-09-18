@@ -40,7 +40,7 @@ const ProdPickerComponent = memo((props) => {
 
 	const {
 		hideControlsOnActive,
-		selectOnFocus,
+		selectOnFocus = true,
 		// from Context
 		lastCell,
 		getNextCell,
@@ -107,18 +107,24 @@ const ProdPickerComponent = memo((props) => {
 			// onClose={handleClose}
 			// placeholder="輸入編號、條碼或名稱搜尋"
 			// typeToSearchText="輸入編號、條碼或名稱搜尋..."
-			filterByServer
-			queryRequired
-			// DSG 專屬
+			// filterByServer
+			// queryRequired
+
+			// FocusControl
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
 			cell={cell}
 			dense
 			hideControls={hideControls}
-			// hidePlaceholder={!active}
 			hideBorders
 			disableFadeOut
 			toastError
+			autoHighlight
+			disableOpenOnInput
+			selectOnFocus
+			// 大量資料專用
+			virtualize
+			triggerDelay={100}
 			{...rest}
 		/>
 	);

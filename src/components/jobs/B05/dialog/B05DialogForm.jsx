@@ -14,7 +14,6 @@ import { B05QuoteGridContainer } from "./quotes/B05QuoteGridContainer";
 
 const B05DialogForm = memo((props) => {
 	const {
-		onSubmit,
 		readError,
 		data,
 		readWorking,
@@ -40,6 +39,19 @@ const B05DialogForm = memo((props) => {
 				<>
 					<FormBox pt={1}>
 						<Grid container columns={24} spacing={1}>
+							{!creating && (
+								<Grid item xs={24} sm={24} md={5}>
+									<TextFieldWrapper
+										typo
+										name="InqID"
+										label="詢價單號"
+										// autoFocus
+										fullWidth
+										required
+										readOnly
+									/>
+								</Grid>
+							)}
 							<Grid item xs={24} sm={24} md={5}>
 								<DatePickerWrapper
 									typo
@@ -55,52 +67,36 @@ const B05DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={6}>
-								<OptionPickerProvider>
-									<EmployeePicker
-										typo
-										label="詢價人員"
-										name="employee"
-										required
-										rules={{
-											required: "詢價人員為必填",
-										}}
-										virtualize
-										disableOpenOnInput
-										selectOnFocus
-										disableClearable
-									/>
-								</OptionPickerProvider>
+								<EmployeePicker
+									typo
+									label="詢價人員"
+									name="employee"
+									required
+									rules={{
+										required: "詢價人員為必填",
+									}}
+									virtualize
+									disableOpenOnInput
+									selectOnFocus
+									disableClearable
+								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={8}>
-								<OptionPickerProvider>
-									<SupplierPicker
-										typo
-										label="廠商代碼"
-										name="supplier"
-										required
-										rules={{
-											required: "廠商為必填",
-										}}
-										virtualize
-										disableOpenOnInput
-										selectOnFocus
-										disableClearable
-									/>
-								</OptionPickerProvider>
+								<SupplierPicker
+									typo
+									label="廠商代碼"
+									name="supplier"
+									required
+									rules={{
+										required: "廠商為必填",
+									}}
+									virtualize
+									disableOpenOnInput
+									selectOnFocus
+									disableClearable
+								/>
 							</Grid>
-							{!creating && (
-								<Grid item xs={24} sm={24} md={5}>
-									<TextFieldWrapper
-										typo
-										name="InqID"
-										label="詢價單號"
-										// autoFocus
-										fullWidth
-										required
-										readOnly
-									/>
-								</Grid>
-							)}
+
 							<Grid item xs={24}>
 								<B05QuoteGridContainer />
 							</Grid>

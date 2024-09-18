@@ -1,9 +1,9 @@
-import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
 import { forwardRef, memo } from "react";
 
-import { MsgFetchResultLabelContainer } from "./MsgFetchResultLabelContainer";
-import ModuleToolbar from "../jobs/ModuleToolbar";
 import FlexToolbar from "../../shared-components/listview/toolbar/FlexToolbar";
+import ModuleToolbar from "../jobs/ModuleToolbar";
+import { MsgFetchResultLabelContainer } from "./MsgFetchResultLabelContainer";
+
 
 const LeftButtons = memo(() => {
 	return <ModuleToolbar></ModuleToolbar>;

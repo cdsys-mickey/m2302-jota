@@ -49,6 +49,7 @@ const transformForGrid = (data) => {
 					PackData_N,
 					StockQty: StockQty_N,
 				},
+				ProdData: ProdData_N,
 				PackData_N,
 				StockQty_N,
 				supplier: {

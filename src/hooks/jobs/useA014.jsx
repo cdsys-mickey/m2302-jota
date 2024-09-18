@@ -51,7 +51,7 @@ export const useA014 = () => {
 						disableClearable: true,
 						selectOnFocus: true,
 						hideControlsOnActive: false,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 240,
@@ -72,7 +72,7 @@ export const useA014 = () => {
 						disableClearable: true,
 						selectOnFocus: true,
 						hideControlsOnActive: false,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 240,
@@ -95,7 +95,7 @@ export const useA014 = () => {
 						disableClearable: true,
 						selectOnFocus: true,
 						hideControlsOnActive: false,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 160,
@@ -118,7 +118,7 @@ export const useA014 = () => {
 						disableClearable: true,
 						selectOnFocus: true,
 						hideControlsOnActive: false,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 160,
@@ -141,7 +141,7 @@ export const useA014 = () => {
 						disableClearable: true,
 						selectOnFocus: true,
 						hideControlsOnActive: false,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 140,
@@ -164,7 +164,7 @@ export const useA014 = () => {
 						disableClearable: true,
 						selectOnFocus: true,
 						hideControlsOnActive: false,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 120,

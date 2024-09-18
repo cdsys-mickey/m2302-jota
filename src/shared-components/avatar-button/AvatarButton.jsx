@@ -20,7 +20,7 @@ const AvatarButton = memo((props) => {
 	return (
 		<>
 			<Tooltip title={title}>
-				<IconButton onClick={handleClick}>
+				<IconButton onClick={handleClick} {...rest}>
 					<ConnStateBadge
 						state={state}
 						overlap="circular"

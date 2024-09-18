@@ -33,7 +33,7 @@ const C01ListForm = memo((props) => {
 						label="請購單號 (≧)"
 						name="reqOrder"
 						autoFocus
-						// dense
+						placeholder="可僅輸入單號數字"
 						disableOpenOnInput
 					/>
 				</Grid>

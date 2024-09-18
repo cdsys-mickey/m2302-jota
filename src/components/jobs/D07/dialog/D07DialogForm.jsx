@@ -58,29 +58,35 @@ const D07DialogForm = memo((props) => {
 							<TextFieldWrapper
 								typo
 								name="CalData"
-								label="單號名稱"
+								label="試算單名稱"
 								fullWidth
 								required
 								rules={{
-									required: "單號名稱為必填",
+									required: "試算單名稱為必填",
 								}}
 								readOnly={!editing}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={6}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="編輯人員"
-									name="employee"
-									required
-									rules={{
-										required: "編輯人員為必填",
-									}}
-									virtualize
-									disableClearable
-								/>
-							</OptionPickerProvider>
+							<EmployeePicker
+								typo
+								label="編輯人員"
+								name="employee"
+								required
+								rules={{
+									required: "編輯人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
+									},
+								}}
+							/>
 						</Grid>
 					</Grid>
 					<Box py={1}>

@@ -7,6 +7,18 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D01DialogForm from "./D01DialogForm";
 import { D01DialogToolbarContainer } from "./toolbar/D01DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { dateFnsDateColumn } from "@/shared-components/dsg/columns/date/dateFnsDateColumn";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { useCallback } from "react";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import D01Drawer from "../D01Drawer";
 
 export const D01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -17,8 +29,8 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
-	const supplier = useWatch({
-		name: "supplier",
+	const pdline = useWatch({
+		name: "pdline",
 		control: form.control,
 	});
 
@@ -44,10 +56,10 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 		return d01.creating
 			? d01.confirmQuitCreating
 			: d01.updating
-			? d01.confirmQuitUpdating
-			: d01.reading
-			? d01.cancelAction
-			: null;
+				? d01.confirmQuitUpdating
+				: d01.reading
+					? d01.cancelAction
+					: null;
 	}, [
 		d01.cancelAction,
 		d01.confirmQuitCreating,
@@ -61,6 +73,116 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 		d01.onEditorSubmit,
 		d01.onEditorSubmitError
 	);
+
+	const readOnly = useMemo(() => {
+		return !d01.editing || !pdline;
+	}, [d01.editing, pdline]);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withStock: true,
+						withBomPackageName: true,
+						forId: true,
+						fuzzy: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 160,
+				maxWidth: 160,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 60,
+				title: "包裝",
+				disabled: true,
+			},
+			{
+				...keyColumn("StockQty_N", createFloatColumn(2)),
+				title: "庫存",
+				minWidth: 90,
+				disabled: true,
+			},
+			{
+				...keyColumn("SQty", createFloatColumn(2)),
+				title: "進貨數量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn("SExpDate", dateFnsDateColumn),
+				title: "有效日期",
+				minWidth: 150,
+				maxWidth: 150,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"SQtyNote",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "註",
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: true,
+				cellClassName: "star",
+			},
+		],
+		[readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: d01.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
+	const handleLastField = useCallback(() => {
+		gridMeta.setActiveCell({ row: 0, col: 0 });
+	}, [gridMeta]);
+
+	const formMeta = useFormMeta(
+		`
+		employee,
+		OutDate,
+		pdline
+		`, {
+		lastField: handleLastField
+	}
+	)
+
 
 	useEffect(() => {
 		if (d01.itemDataReady) {
@@ -77,7 +199,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 				// fullScreen
 				responsive
 				fullWidth
-				maxWidth="lg"
+				maxWidth="md"
 				TitleButtonsComponent={D01DialogToolbarContainer}
 				open={d01.itemViewOpen}
 				onClose={handleClose}
@@ -97,16 +219,19 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<D01DialogForm
-					onSubmit={handleSubmit}
-					creating={d01.creating}
-					editing={d01.editing}
-					updating={d01.updating}
-					readWorking={d01.readWorking}
-					readError={d01.readError}
-					data={d01.itemData}
-					itemDataReady={d01.itemDataReady}
-				/>
+				<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
+					<D01DialogForm
+						onSubmit={handleSubmit}
+						creating={d01.creating}
+						editing={d01.editing}
+						updating={d01.updating}
+						readWorking={d01.readWorking}
+						readError={d01.readError}
+						data={d01.itemData}
+						itemDataReady={d01.itemDataReady}
+					/>
+				</FormMetaProvider>
+				<D01Drawer />
 			</DialogExContainer>
 		</FormProvider>
 	);

@@ -64,7 +64,7 @@ export const useAuth = () => {
 				} else {
 					switch (status.code) {
 						case 401:
-							toast.warn(Messages.SESSION_EXPIRED);
+							toast.error(Messages.SESSION_EXPIRED);
 							toLogin();
 					}
 				}

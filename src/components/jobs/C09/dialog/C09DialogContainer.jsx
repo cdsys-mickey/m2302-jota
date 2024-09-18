@@ -93,23 +93,24 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						selectOnFocus: true,
-						triggerDelay: 300,
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: false,
+						withPurchasePackageName: true,
 						forId: true,
 						disableClearable: true,
 						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 360,
 								},
 							},
 						},
+						// selectOnFocus: true,
+						// triggerDelay: 300,
+						// queryRequired: true,
+						// filterByServer: true,
+						// disableOpenOnInput: true,
+						// hideControlsOnActive: false,
+						// autoHighlight: true,
 					})
 				),
 				title: "商品編號",
@@ -189,7 +190,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 						selectOnFocus: true,
 						forcePopupIcon: false,
 						autoHighlight: true,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 260,

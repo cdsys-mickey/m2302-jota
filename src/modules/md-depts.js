@@ -1,7 +1,8 @@
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { DeptID, DeptName, AbbrName } = option;
-	return `${DeptID} ${AbbrName || DeptName || ""}`;
+	// return `${DeptID} ${AbbrName || DeptName || ""}`;
+	return [DeptID, AbbrName || DeptName || ""].filter(Boolean).join(" ");
 };
 
 const getOptionLabelForId = (option) => {

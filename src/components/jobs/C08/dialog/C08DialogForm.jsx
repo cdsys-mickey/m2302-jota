@@ -71,20 +71,18 @@ const C08DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="倉管人員"
-									name="employee"
-									required
-									rules={{
-										required: "倉管人員為必填",
-									}}
-									virtualize
-									disableClearable
-									disableOpenOnInput
-								/>
-							</OptionPickerProvider>
+							<EmployeePicker
+								typo
+								label="倉管人員"
+								name="employee"
+								required
+								rules={{
+									required: "倉管人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
 							<DeptPicker
@@ -137,15 +135,13 @@ const C08DialogForm = memo((props) => {
 						</Grid>
 
 						<Grid item xs={24} sm={24} md={5}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="配送人"
-									name="deliveryEmployee"
-									virtualize
-									disableOpenOnInput
-								/>
-							</OptionPickerProvider>
+							<EmployeePicker
+								typo
+								label="配送人"
+								name="deliveryEmployee"
+								virtualize
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
 							<TextFieldWrapper

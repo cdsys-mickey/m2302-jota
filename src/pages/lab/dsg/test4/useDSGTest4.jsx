@@ -35,7 +35,7 @@ export const useDSGTest4 = () => {
 						fuzzy: true,
 						autoHighlight: true,
 						selectOnFocus: true,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 360,
@@ -119,7 +119,7 @@ export const useDSGTest4 = () => {
 						disableClearable: true,
 						selectOnFocus: true,
 						hideControlsOnActive: false,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 160,

@@ -17,32 +17,45 @@ const A22GridForm = (props) => {
 					{/* ROW 1 */}
 
 					<Grid item xs={24} sm={12} md={16} lg={7}>
-						{/* <OptionPickerProvider> */}
 						<ProdPicker
 							name="prod1"
 							label="起始商品編號"
 							size="small"
-							filterByServer
-							queryRequired
-							// virtualize
+							// filterByServer
+							// queryRequired
+							virtualize
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							optionLabelSize="md"
 							disableOpenOnInput
 							selectOnFocus
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
+								},
+							}}
 						/>
-						{/* </OptionPickerProvider> */}
 					</Grid>
 					<Grid item xs={24} sm={12} md={16} lg={7}>
 						<ProdPicker
 							name="prod2"
 							label="截止商品編號"
 							size="small"
-							filterByServer
-							queryRequired
+							// filterByServer
+							// queryRequired
+							virtualize
 							typeToSearchText="以編號,條碼或名稱搜尋"
 							optionLabelSize="md"
 							disableOpenOnInput
 							selectOnFocus
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
+								},
+							}}
 						/>
 					</Grid>
 					<Grid item lg={4}>

@@ -7,6 +7,17 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D02DialogForm from "./D02DialogForm";
 import { D02DialogToolbarContainer } from "./toolbar/D02DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import D02Drawer from "../D02Drawer";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useCallback } from "react";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const D02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -17,8 +28,8 @@ export const D02DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
-	const supplier = useWatch({
-		name: "supplier",
+	const pdline = useWatch({
+		name: "pdline",
 		control: form.control,
 	});
 
@@ -44,10 +55,10 @@ export const D02DialogContainer = forwardRef((props, ref) => {
 		return d02.creating
 			? d02.confirmQuitCreating
 			: d02.updating
-			? d02.confirmQuitUpdating
-			: d02.reading
-			? d02.cancelAction
-			: null;
+				? d02.confirmQuitUpdating
+				: d02.reading
+					? d02.cancelAction
+					: null;
 	}, [
 		d02.cancelAction,
 		d02.confirmQuitCreating,
@@ -56,6 +67,97 @@ export const D02DialogContainer = forwardRef((props, ref) => {
 		d02.reading,
 		d02.updating,
 	]);
+
+	const readOnly = useMemo(() => {
+		return !d02.editing || !pdline;
+	}, [d02.editing, pdline]);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withStock: true,
+						withBomPackageName: true,
+						forId: true,
+						disableClearable: true,
+						fuzzy: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+						// selectOnFocus: true,
+						// triggerDelay: 300,
+						// queryRequired: true,
+						// filterByServer: true,
+						// disableOpenOnInput: true,
+						// hideControlsOnActive: false,
+						// autoHighlight: true,
+					})
+				),
+				title: "商品編號",
+				minWidth: 160,
+				maxWidth: 160,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 60,
+				title: "包裝",
+				disabled: true,
+			},
+			{
+				...keyColumn("SQty", createFloatColumn(2)),
+				title: "數量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly,
+			},
+		],
+		[readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: d02.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
+	const handleLastField = useCallback(() => {
+		gridMeta.setActiveCell({ row: 0, col: 0 })
+	}, [gridMeta]);
+
+	const formMeta = useFormMeta(
+		`
+		employee,
+		RetDate,
+		pdline
+		`, {
+		lastField: handleLastField
+	}
+	)
 
 	const handleSubmit = form.handleSubmit(
 		d02.onEditorSubmit,
@@ -97,16 +199,19 @@ export const D02DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<D02DialogForm
-					onSubmit={handleSubmit}
-					creating={d02.creating}
-					editing={d02.editing}
-					updating={d02.updating}
-					readWorking={d02.readWorking}
-					readError={d02.readError}
-					data={d02.itemData}
-					itemDataReady={d02.itemDataReady}
-				/>
+				<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
+					<D02DialogForm
+						onSubmit={handleSubmit}
+						creating={d02.creating}
+						editing={d02.editing}
+						updating={d02.updating}
+						readWorking={d02.readWorking}
+						readError={d02.readError}
+						data={d02.itemData}
+						itemDataReady={d02.itemDataReady}
+					/>
+				</FormMetaProvider>
+				<D02Drawer />
 			</DialogExContainer>
 		</FormProvider>
 	);

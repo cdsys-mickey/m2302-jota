@@ -7,6 +7,17 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D06DialogForm from "./D06DialogForm";
 import { D06DialogToolbarContainer } from "./toolbar/D06DialogToolbarContainer";
 import Colors from "@/modules/md-colors";
+import D06Drawer from "../D06Drawer";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useCallback } from "react";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const D06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -40,10 +51,10 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 		return d06.creating
 			? d06.confirmQuitCreating
 			: d06.updating
-			? d06.confirmQuitUpdating
-			: d06.reading
-			? d06.cancelAction
-			: null;
+				? d06.confirmQuitUpdating
+				: d06.reading
+					? d06.cancelAction
+					: null;
 	}, [
 		d06.cancelAction,
 		d06.confirmQuitCreating,
@@ -56,6 +67,105 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 	const handleSubmit = form.handleSubmit(
 		d06.onEditorSubmit,
 		d06.onEditorSubmitError
+	);
+
+	const readOnly = useMemo(() => {
+		return !d06.editing;
+	}, [d06.editing]);
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						withStock: true,
+						withBomPackageName: true,
+						forId: true,
+						fuzzy: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "商品編號",
+				minWidth: 160,
+				maxWidth: 160,
+				disabled: readOnly,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				minWidth: 60,
+				title: "包裝",
+				disabled: true,
+			},
+			{
+				...keyColumn("SQty", createFloatColumn(2)),
+				title: "數量",
+				minWidth: 90,
+				grow: 1,
+				disabled: readOnly,
+			},
+		],
+		[readOnly]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: d06.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
+	const handleLastField = useCallback(() => {
+
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [gridMeta]);
+
+	const formMeta = useFormMeta(
+		`
+		employee,
+		RemDate,
+		InitDate,
+		pdline,
+
+		`,
+		{
+			lastField: handleLastField
+		}
+	)
+
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
+				case "InitDate":
+					return true;
+				default:
+					return false;
+			}
+		},
+		[]
 	);
 
 	useEffect(() => {
@@ -93,19 +203,27 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<D06DialogForm
-					onSubmit={handleSubmit}
-					creating={d06.creating}
-					editing={d06.editing}
-					updating={d06.updating}
-					readWorking={d06.readWorking}
-					readError={d06.readError}
-					data={d06.itemData}
-					itemDataReady={d06.itemDataReady}
-					handleRemDateChanged={d06.handleRemDateChanged({
-						setValue: form.setValue,
-					})}
-				/>
+				<FormMetaProvider
+					{...formMeta}
+					isFieldDisabled={isFieldDisabled}
+					gridMeta={gridMeta}
+					readOnly={readOnly}
+				>
+					<D06DialogForm
+						onSubmit={handleSubmit}
+						creating={d06.creating}
+						editing={d06.editing}
+						updating={d06.updating}
+						readWorking={d06.readWorking}
+						readError={d06.readError}
+						data={d06.itemData}
+						itemDataReady={d06.itemDataReady}
+						handleRemDateChanged={d06.handleRemDateChanged({
+							setValue: form.setValue,
+						})}
+					/>
+				</FormMetaProvider>
+				<D06Drawer />
 			</DialogExContainer>
 		</FormProvider>
 	);

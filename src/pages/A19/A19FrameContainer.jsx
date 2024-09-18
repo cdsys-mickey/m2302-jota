@@ -23,9 +23,7 @@ export const A19FrameContainer = () => {
 			{/* 工具列 */}
 			{/* <A19Toolbar /> */}
 			{/* 表單 */}
-			<OptionPickerProvider>
-				<A19FormContainer />
-			</OptionPickerProvider>
+			<A19FormContainer />
 		</Box>
 	);
 };

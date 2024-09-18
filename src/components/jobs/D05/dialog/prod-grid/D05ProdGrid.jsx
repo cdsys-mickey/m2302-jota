@@ -17,6 +17,7 @@ import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picke
 import OutboundTypePickerComponent from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponent";
 import { deptPickerColumn } from "@/components/dsg/columns/dept-picker/deptPickerColumn";
 import { customerPickerColumn } from "@/components/dsg/columns/customer-picker/customerPickerColumn";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -29,7 +30,8 @@ const D05ProdGrid = memo((props) => {
 		readOnly,
 		gridRef,
 		data,
-		handleGridChange,
+		onChange,
+		onActiveCellChange,
 		getRowClassName,
 		height = 300,
 		customerDisabled,
@@ -37,96 +39,7 @@ const D05ProdGrid = memo((props) => {
 		sqtyDisabled,
 		dtypeDisabled,
 	} = props;
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"prod",
-					prodPickerColumn({
-						name: "prod",
-						withStock: true,
-						triggerDelay: 300,
-						dense: true,
-						// optionLabelSize: "md",
-					})
-				),
-				id: "SProdID",
-				title: "商品",
-				grow: 5,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"PackData_N",
-					createTextColumn({
-						continuousUpdates: false,
-					})
-				),
-				minWidth: 60,
-				title: "包裝",
-				disabled: true,
-			},
-			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "庫存",
-				minWidth: 90,
-				disabled: true,
-			},
-			{
-				...keyColumn("SQty", createFloatColumn(2)),
-				title: "數量",
-				minWidth: 90,
-				grow: 1,
-				disabled: readOnly || sqtyDisabled,
-			},
-			{
-				...keyColumn(
-					"dtype",
-					optionPickerColumn(OutboundTypePickerComponent, {
-						name: "dtype",
-						// disableClearable: true,
-						// optionLabelSize: "md",
-						// hideControlsOnActive: true,
-					})
-				),
-				title: "原因",
-				minWidth: 140,
-				maxWidth: 160,
-				disabled: readOnly || dtypeDisabled,
-			},
-			{
-				...keyColumn(
-					"customer",
-					customerPickerColumn({
-						name: "customer",
-						// optionLabelSize: "md",
-					})
-				),
-				title: "客戶代碼",
-				grow: 4,
-				disabled: readOnly || customerDisabled,
-			},
-			{
-				...keyColumn(
-					"dept",
-					deptPickerColumn({
-						name: "dept",
-					})
-				),
-				title: "門市碼",
-				grow: 4,
-				disabled: readOnly || deptDisabled,
-			},
-			{
-				...keyColumn("SAmt", createFloatColumn(2)),
-				title: "金額",
-				minWidth: 90,
-				grow: 1,
-				disabled: true,
-			},
-		],
-		[customerDisabled, deptDisabled, dtypeDisabled, readOnly, sqtyDisabled]
-	);
+
 
 	const duplicateRow = useCallback(
 		({ rowData }) => ({ ...rowData, Pkey: nanoid() }),
@@ -139,7 +52,7 @@ const D05ProdGrid = memo((props) => {
 	}, []);
 
 	return (
-		<DynamicDataSheetGrid
+		<DSGGrid
 			ref={gridRef}
 			rowKey={getRowKey}
 			lockRows={readOnly}
@@ -147,15 +60,16 @@ const D05ProdGrid = memo((props) => {
 			height={height}
 			// rowHeight={42}
 			value={data}
-			onChange={handleGridChange}
-			columns={columns}
+			onChange={onChange}
+			onActiveCellChange={onActiveCellChange}
+			// columns={columns}
 			addRowsComponent={D05ProdGridAddRows}
 			disableExpandSelection
 			// disableContextMenu
 			contextMenuComponent={ContextMenu}
 			createRow={createRow}
 			duplicateRow={duplicateRow}
-			rowClassName={getRowClassName}
+			// rowClassName={getRowClassName}
 			deleteRow={deleteRow}
 		/>
 	);
@@ -163,7 +77,8 @@ const D05ProdGrid = memo((props) => {
 
 D05ProdGrid.propTypes = {
 	getRowKey: PropTypes.func,
-	handleGridChange: PropTypes.func,
+	onChange: PropTypes.func,
+	onActiveCellChange: PropTypes.func,
 	getRowClassName: PropTypes.func,
 	getSPriceClassName: PropTypes.func,
 	readOnly: PropTypes.bool,

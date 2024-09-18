@@ -1,9 +1,9 @@
-import Objects from "@/shared-modules/sd-objects";
-import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
-import { CustomerPickerContainer } from "@/components/picker/CustomerPickerContainer";
+import CustomerPicker from "@/components/picker/CustomerPicker";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+import Objects from "@/shared-modules/sd-objects";
+import PropTypes from "prop-types";
+import { memo, useRef } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -28,7 +28,7 @@ const CustomerPickerComponent = memo((props) => {
 		stopEditing,
 		insertRowBelow,
 		// rest
-		placeholder = "供應商",
+		placeholder = "客戶代碼",
 	} = props;
 
 	const rowDataRef = useRef(rowData);
@@ -92,7 +92,7 @@ const CustomerPickerComponent = memo((props) => {
 	}
 
 	return (
-		<CustomerPickerContainer
+		<CustomerPicker
 			queryParam="qs"
 			label=""
 			inputRef={ref}
@@ -114,6 +114,9 @@ const CustomerPickerComponent = memo((props) => {
 			hideBorders
 			disableFadeOut
 			toastError
+			// 大量資料專用
+			virtualize
+			triggerDelay={100}
 			{...rest}
 		/>
 	);

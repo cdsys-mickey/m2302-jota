@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import RWListboxComponent from "./VirtualizedPickerListbox";
+import VirtualizedPickerListbox from "./VirtualizedPickerListbox";
 import { ListSubheader, Typography } from "@mui/material";
 
 const LISTBOX_PADDING = 8; // px
@@ -49,9 +49,9 @@ export const RWListboxComponent2 = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;
 		return (
-			<RWListboxComponent ref={ref} renderRow={renderRow} {...rest}>
+			<VirtualizedPickerListbox ref={ref} renderRow={renderRow} {...rest}>
 				{children}
-			</RWListboxComponent>
+			</VirtualizedPickerListbox>
 		);
 	})
 );

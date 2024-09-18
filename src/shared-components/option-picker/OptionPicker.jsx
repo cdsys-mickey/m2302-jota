@@ -19,7 +19,6 @@ import {
 } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { toast } from "react-toastify";
-import { useCellComponent } from "../../shared-hooks/dsg/useCellComponent";
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
@@ -36,6 +35,11 @@ const noFilterOptions = (options) => {
 	return options;
 };
 
+/**
+ * getOptionLabel: 預設用於繪製選擇及選定的 option
+ * renderOptionLabel: 單獨繪製選擇的 option
+ * stringify: 繪製用於過濾用的文字
+ */
 const OptionPicker = memo(
 	forwardRef((props, ref) => {
 		// console.log("redenring OptionPicker");

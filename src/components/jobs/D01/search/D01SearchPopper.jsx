@@ -28,7 +28,11 @@ const D01SearchPopper = memo(
 				<DialogContent {...ContentProps}>
 					<Grid container spacing={1.5} columns={12}>
 						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="製單人員" />
+							<EmployeePicker
+								name="employee"
+								label="製單人員"
+								autoFocus
+								disableOpenOnInput />
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<DatePickerWrapper
@@ -40,6 +44,7 @@ const D01SearchPopper = memo(
 							<ProdLinePicker
 								name="pdline"
 								label="領料線別"
+								disableOpenOnInput
 							/>
 						</Grid>
 					</Grid>

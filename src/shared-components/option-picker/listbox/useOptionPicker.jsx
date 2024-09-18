@@ -4,9 +4,9 @@ import { useCallback, useState } from "react";
 const LISTBOX_PADDING = 8; // px
 
 export const useOptionPicker = () => {
-	const renderRow = useCallback((props) => {
+	const renderRow = useCallback((opts) => {
 		// Props from React Window
-		const { data, index, style } = props;
+		const { data, index, style } = opts;
 
 		// Props from Autocomplete-renderOption
 		const dataSet = data[index];

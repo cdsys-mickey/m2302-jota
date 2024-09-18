@@ -7,6 +7,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useMemo } from "react";
 import DSGBox from "@/shared-components/dsg/DSGBox";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 export const C03ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -14,13 +15,15 @@ export const C03ProdGridContainer = (props) => {
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
 	const form = useFormContext();
+	const formMeta = useContext(FormMetaContext);
 
 	const onChange = useMemo(() => {
 		return c03.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
+			gridMeta: formMeta.gridMeta
 		});
-	}, [c03, form.getValues, form.setValue]);
+	}, [c03, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	// const supplier = useWatch({
 	// 	name: "supplier",
@@ -39,12 +42,12 @@ export const C03ProdGridContainer = (props) => {
 	return (
 		<DSGContext.Provider value={{
 			...c03.grid,
-			...c03.gridMeta,
-			readOnly: !c03.editing
+			...formMeta.gridMeta,
+			readOnly: formMeta.readOnly
 		}}>
 			<C03ProdGrid
-				gridRef={c03.setGridRef}
-				readOnly={!c03.editing}
+				gridRef={formMeta.gridMeta.setGridRef}
+				readOnly={formMeta.readOnly}
 				// readOnly={readOnly}
 				data={c03.gridData || []}
 
@@ -55,7 +58,7 @@ export const C03ProdGridContainer = (props) => {
 				sqtyDisabled={c03.sqtyDisabled}
 				prodDisabled={c03.prodDisabled}
 				onChange={onChange}
-				onActiveCellChange={c03.handleActiveCellChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				createRow={c03.createRow}
 				{...rest}
 			/>

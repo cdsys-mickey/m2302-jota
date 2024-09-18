@@ -13,7 +13,7 @@ const D07ListHeader = memo(
 			<ListViewHeader ref={ref} {...rest}>
 				<IndexColumn></IndexColumn>
 				<D07IdColumn>試算單號</D07IdColumn>
-				<D07OrderNameColumn>名稱</D07OrderNameColumn>
+				<D07OrderNameColumn>試算單名稱</D07OrderNameColumn>
 				<D07UserColumn>編輯人員</D07UserColumn>
 			</ListViewHeader>
 		);

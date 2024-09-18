@@ -164,7 +164,7 @@ export const useA01 = ({ token, mode }) => {
 						disableClearable: true,
 						selectOnFocus: true,
 						autoHighlight: true,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 200,
@@ -231,25 +231,25 @@ export const useA01 = ({ token, mode }) => {
 					"prod",
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
-						selectOnFocus: true,
-						triggerDelay: 300,
 						placeholder: "組合商品",
 						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
-						queryRequired: true,
-						filterByServer: true,
-						disableOpenOnInput: true,
-						hideControlsOnActive: true,
 						forId: true,
 						disableClearable: true,
 						fuzzy: true,
-						autoHighlight: true,
-						componentsProps: {
+						slotProps: {
 							paper: {
 								sx: {
 									width: 360,
 								},
 							},
 						},
+						// selectOnFocus: true,
+						// triggerDelay: 300,
+						// queryRequired: true,
+						// filterByServer: true,
+						// disableOpenOnInput: true,
+						// hideControlsOnActive: true,
+						// autoHighlight: true,
 					})
 				),
 				title: "商品編號",

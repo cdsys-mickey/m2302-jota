@@ -11,6 +11,7 @@ import MsgJobColumn from "../columns/MsgJobColumn";
 import MsgNameColumn from "../columns/MsgNameColumn";
 import MsgNewColumn from "../columns/MsgNewColumn";
 import MsgTimeColumn from "../columns/MsgTimeColumn";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const UnreadTypography = (props) => {
 	const { children, unread, ...rest } = props;
@@ -64,7 +65,7 @@ const MsgListRow = memo((props) => {
 								color="warning"
 							/>
 						) : (
-							<CheckCircleOutlineIcon
+							<CheckCircleIcon
 								fontSize="small"
 								color="success"
 							/>

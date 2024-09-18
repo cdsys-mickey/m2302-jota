@@ -1,12 +1,11 @@
+import { ListSubheader, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PropTypes from "prop-types";
-import { forwardRef, useContext, useEffect, useRef } from "react";
+import { forwardRef, memo, useCallback, useEffect, useMemo, useRef } from "react";
 import { VariableSizeList } from "react-window";
-import { OptionPickerContext } from "./OptionPickerContext";
 import { RWOuterElementContext } from "./RWOuterElementContext";
 import RWOuterElementType from "./RWOuterElementType";
-import { memo } from "react";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -23,16 +22,57 @@ const useResetCache = (data) => {
 /**
  * 此為 renderRow 移至 Context 的版本
  */
-const VirtualizedOptionListbox = memo(
+const VirtualizedPickerListbox = memo(
 	forwardRef((props, ref) => {
-		const { children, ...other } = props;
-		const optionPicker = useContext(OptionPickerContext);
+		const { children, renderRow, ...other } = props;
+		// const optionPicker = useContext(OptionPickerContext);
 
-		if (!optionPicker) {
-			throw new Error("沒有偵測到 OptionPickerContext");
-		}
+		// if (!optionPicker) {
+		// 	throw new Error("沒有偵測到 OptionPickerContext");
+		// }
 
-		const { renderRow } = optionPicker;
+		const defaultRenderRow = useCallback((opts) => {
+			// opts from React Window
+			const { data, index, style } = opts;
+
+			// Props from Autocomplete-renderOption
+			const dataSet = data[index];
+
+			const componentProps = dataSet[0];
+			const optionLabel = dataSet[1];
+
+			const inlineStyle = {
+				...style,
+				top: style.top + LISTBOX_PADDING,
+			};
+
+			if (dataSet.group !== undefined) {
+				return (
+					<ListSubheader
+						key={dataSet.key}
+						component="div"
+						style={inlineStyle}>
+						{dataSet.group}
+					</ListSubheader>
+				);
+			}
+
+			return (
+				<Typography
+					component="li"
+					{...componentProps}
+					noWrap
+					style={inlineStyle}>
+					{optionLabel}
+				</Typography>
+			);
+		}, []);
+
+		const _renderRow = useMemo(() => {
+			return renderRow || defaultRenderRow;
+		}, [defaultRenderRow, renderRow])
+
+		// const { renderRow } = optionPicker;
 
 		const itemData = [];
 		children.forEach((item) => {
@@ -80,7 +120,7 @@ const VirtualizedOptionListbox = memo(
 						itemSize={(index) => getChildSize(itemData[index])}
 						overscanCount={5}
 						itemCount={itemCount}>
-						{renderRow}
+						{_renderRow}
 					</VariableSizeList>
 				</RWOuterElementContext.Provider>
 			</div>
@@ -88,9 +128,10 @@ const VirtualizedOptionListbox = memo(
 	})
 );
 
-VirtualizedOptionListbox.displayName = "VirtualizedOptionListbox";
-VirtualizedOptionListbox.propTypes = {
+VirtualizedPickerListbox.displayName = "VirtualizedPickerListbox";
+VirtualizedPickerListbox.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+	renderRow: PropTypes.func
 };
 
-export default VirtualizedOptionListbox;
+export default VirtualizedPickerListbox;

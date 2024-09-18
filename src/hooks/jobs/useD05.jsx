@@ -1,22 +1,20 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import CrudContext from "../../contexts/crud/CrudContext";
 import D05 from "@/modules/md-d05";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import Errors from "../../shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
-import { useAction } from "../../shared-hooks/useAction";
-import { useMemo } from "react";
-import useHttpPost from "../../shared-hooks/useHttpPost";
-import { isDate } from "date-fns";
-import Forms from "../../shared-modules/sd-forms";
-import { useToggle } from "../../shared-hooks/useToggle";
 import { nanoid } from "nanoid";
+import { useCallback, useContext, useMemo, useRef } from "react";
+import { toast } from "react-toastify";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import CrudContext from "@/contexts/crud/CrudContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useAction } from "@/shared-hooks/useAction";
+import useHttpPost from "@/shared-hooks/useHttpPost";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useToggle } from "@/shared-hooks/useToggle";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import Errors from "@/shared-modules/sd-errors";
+import { useAppModule } from "./useAppModule";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useD05 = () => {
 	const crud = useContext(CrudContext);
@@ -28,6 +26,8 @@ export const useD05 = () => {
 		token,
 		moduleId: "D05",
 	});
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 
 	const qtyMap = useMemo(() => new Map(), []);
 
@@ -53,9 +53,13 @@ export const useD05 = () => {
 		initialFetchSize: 50,
 	});
 
-	const prodGrid = useDSG({
+	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
+	});
+
+	const asyncRef = useRef({
+		sqtyCell: null
 	});
 
 	const refreshAmt = useCallback(
@@ -117,8 +121,8 @@ export const useD05 = () => {
 		};
 		crud.promptCreating({ data });
 		qtyMap.clear();
-		prodGrid.initGridData(data.prods, { createRow });
-	}, [createRow, crud, prodGrid, qtyMap]);
+		grid.initGridData(data.prods, { createRow });
+	}, [createRow, crud, grid, qtyMap]);
 
 	const loadStockMap = useCallback(
 		async (
@@ -127,7 +131,7 @@ export const useD05 = () => {
 				mark: false,
 			}
 		) => {
-			const gridData = data || prodGrid.gridData;
+			const gridData = data || grid.gridData;
 
 			if (!gridData || gridData.length === 0) {
 				return;
@@ -169,7 +173,7 @@ export const useD05 = () => {
 								sqtyError: sqty > prodStock,
 							};
 						});
-						prodGrid.setGridData(newGridData);
+						grid.setGridData(newGridData);
 					}
 					console.log("qtyMap:", qtyMap);
 				} else {
@@ -179,7 +183,7 @@ export const useD05 = () => {
 				toast.error(Errors.getMessage("取得庫存失敗", err));
 			}
 		},
-		[calcProdStock, httpGetAsync, prodGrid, qtyMap, token]
+		[calcProdStock, httpGetAsync, grid, qtyMap, token]
 	);
 
 	const handleCreate = useCallback(
@@ -236,7 +240,7 @@ export const useD05 = () => {
 					});
 					// setSelectedInq(data);
 
-					prodGrid.initGridData(data.prods);
+					grid.initGridData(data.prods);
 					loadStockMap(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
@@ -245,7 +249,7 @@ export const useD05 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, loadStockMap, prodGrid, token]
+		[crud, httpGetAsync, loadStockMap, grid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -383,7 +387,8 @@ export const useD05 = () => {
 	}, []);
 
 	const handleGridSQtyChange = useCallback(
-		async ({ rowData, rowIndex, gridData }) => {
+		async ({ rowData, rowIndex, gridData, gridMeta }) => {
+
 			let newRowData = {
 				...rowData,
 			};
@@ -407,7 +412,15 @@ export const useD05 = () => {
 					["SQty"]: 0,
 					["SAmt"]: 0,
 				};
-				toast.warn(`第 ${rowIndex + 1} 筆庫存量 (${prodStock}) 不足!`);
+				toast.error(`第 ${rowIndex + 1} 筆庫存量 (${prodStock}) 不足!`,
+					{
+						position: "top-center",
+					}
+				);
+				gridMeta.setActiveCell({
+					col: "SQty",
+					row: rowIndex
+				})
 				return newRowData;
 			}
 
@@ -441,47 +454,37 @@ export const useD05 = () => {
 		[calcProdStock, httpGetAsync, token]
 	);
 
+	/**
+	 * D3 此作業沒有做重複判斷, 數量也不足也不會提示密碼
+	 */
 	const handleGridProdChange = useCallback(
 		async ({ rowData }) => {
 			const { prod } = rowData;
+			if (prod?.ProdID) {
+				qtyMap.set(prod.ProdID, prod.StockQty);
+			}
+
 			let newRowData = {
 				...rowData,
+				["ProdData"]: prod?.ProdData || "",
+				["PackData_N"]: prod?.PackData_N || "",
+				["StockQty_N"]: prod?.StockQty || "",
 				["SQty"]: "",
 				["SAmt"]: "",
-				["StockQty_N"]: "",
 				["dtype"]: null,
 				["dept"]: null,
 				["customer"]: null,
 			};
-
-			let prodInfoRetrieved = false;
-			if (prod?.ProdID) {
-				// 取得報價
-				prodInfoRetrieved = true;
-				qtyMap.set(prod.ProdID, prod.StockQty);
-				console.log("qtyMap updated", qtyMap);
-			}
-			newRowData = {
-				...newRowData,
-				["PackData_N"]: prod?.PackData_N || "",
-				["StockQty_N"]: prod?.StockQty || "",
-			};
-			if (!prodInfoRetrieved) {
-				newRowData = {
-					...newRowData,
-					["prod"]: null,
-				};
-			}
 			return newRowData;
 		},
 		[qtyMap]
 	);
 
-	const updateRowHandler = useCallback(
-		({ newValue, fromIndex }) =>
+	const updateGridRow = useCallback(
+		({ newValue, fromIndex, gridMeta }) =>
 			async (rowData, index) => {
 				const rowIndex = fromIndex + index;
-				const oldRowData = prodGrid.gridData[rowIndex];
+				const oldRowData = grid.gridData[rowIndex];
 				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 				let processedRowData = {
 					...rowData,
@@ -503,26 +506,26 @@ export const useD05 = () => {
 						rowData: processedRowData,
 						rowIndex,
 						gridData: newValue,
+						gridMeta
 					});
 					// console.log("handleGridSQtyChange done", processedRowData);
 				}
 				console.log(`第 ${rowIndex} 列處理完成`, processedRowData);
 				return processedRowData;
 			},
-		[handleGridProdChange, handleGridSQtyChange, prodGrid.gridData]
+		[handleGridProdChange, handleGridSQtyChange, grid.gridData]
 	);
 
 	const buildGridChangeHandler = useCallback(
-		({ getValues, setValue }) =>
+		({ getValues, setValue, gridMeta }) =>
 			async (newValue, operations) => {
 				// const formData = getValues();
 				console.log("handleGridChange", operations);
 				console.log("newValue", newValue);
 				const newGridData = [...newValue];
-
+				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						const allRows = [...newValue];
 						const updatedRows = await Promise.all(
 							newValue
 								.slice(
@@ -531,25 +534,22 @@ export const useD05 = () => {
 								)
 								.map(async (item, index) => {
 									console.log("before update", item);
-									const updatedRow = await updateRowHandler({
+									const updatedRow = await updateGridRow({
 										fromIndex: operation.fromRowIndex,
 										newValue,
+										gridMeta
 									})(item, index);
 									console.log("updated", updatedRow);
 									return updatedRow;
 								})
 						);
-						allRows.splice(
+						newGridData.splice(
 							operation.fromRowIndex,
 							updatedRows.length,
 							...updatedRows
 						);
-						console.log(allRows);
-						prodGrid.setGridData(allRows);
-						refreshAmt({
-							gridData: allRows,
-							setValue,
-						});
+						console.log(newGridData);
+
 
 						// newValue
 						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
@@ -608,17 +608,28 @@ export const useD05 = () => {
 						// 	});
 					} else if (operation.type === "DELETE") {
 						// do nothing
-						prodGrid.setGridData(newGridData);
+						grid.setGridData(newGridData);
 						refreshAmt({
 							gridData: newGridData,
 							setValue,
 						});
-					} else {
-						prodGrid.setGridData(newGridData);
+					} else if (operation.type === "CREATE") {
+						console.log("dsg.CREATE");
+						// process CREATE here
+						gridMeta.toFirstColumn({ nextRow: true });
 					}
 				}
+
+				console.log("prodGrid.changed", newGridData);
+				if (!checkFailed) {
+					grid.setGridData(newGridData);
+					refreshAmt({
+						gridData: newGridData,
+						setValue,
+					});
+				}
 			},
-		[prodGrid, refreshAmt, updateRowHandler]
+		[grid, refreshAmt, updateGridRow]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -626,7 +637,7 @@ export const useD05 = () => {
 			console.log("onEditorSubmit", data);
 			const collected = D05.transformForSubmitting(
 				data,
-				prodGrid.gridData
+				grid.gridData
 			);
 			console.log("collected", collected);
 			if (crud.creating) {
@@ -642,7 +653,7 @@ export const useD05 = () => {
 			crud.updating,
 			handleCreate,
 			handleUpdate,
-			prodGrid.gridData,
+			grid.gridData,
 		]
 	);
 
@@ -687,10 +698,10 @@ export const useD05 = () => {
 			async (data) => {
 				console.log("onRefreshGridSubmit", data);
 				try {
-					if (prodGrid.gridData.length > 0) {
+					if (grid.gridData.length > 0) {
 						const collected = D05.transformForSubmitting(
 							data,
-							prodGrid.gridData
+							grid.gridData
 						);
 						console.log("collected", collected);
 
@@ -705,7 +716,7 @@ export const useD05 = () => {
 								payload.data[0]
 							);
 							console.log("refreshed data", data);
-							prodGrid.handleGridDataLoaded(data.prods);
+							grid.handleGridDataLoaded(data.prods);
 							refreshAmt({ setValue, data });
 							toast.info("商品單價已更新");
 						} else {
@@ -722,7 +733,7 @@ export const useD05 = () => {
 					// 還原
 				}
 			},
-		[httpPostAsync, prodGrid, refreshAmt, token]
+		[httpPostAsync, grid, refreshAmt, token]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {
@@ -792,7 +803,9 @@ export const useD05 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
-		...prodGrid,
+		...grid,
+		grid,
+		createRow,
 		buildGridChangeHandler,
 		getRowKey,
 		// 列印
@@ -808,5 +821,6 @@ export const useD05 = () => {
 		deptDisabled,
 		sqtyDisabled,
 		dtypeDisabled,
+		...sideDrawer
 	};
 };

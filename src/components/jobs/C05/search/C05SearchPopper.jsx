@@ -30,16 +30,14 @@ const C05SearchPopper = memo(
 				<DialogContent {...ContentProps}>
 					<Grid container spacing={1.5} columns={12}>
 						<Grid item xs={12} sm={12}>
-							<OptionPickerProvider>
-								<SupplierPicker
-									label="廠商代碼"
-									name="supplier"
-									variant="outlined"
-									optionLabelSize="md"
-									virtualize
-									disableOpenOnInput
-								/>
-							</OptionPickerProvider>
+							<SupplierPicker
+								label="廠商代碼"
+								name="supplier"
+								variant="outlined"
+								optionLabelSize="md"
+								virtualize
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<TextFieldWrapper

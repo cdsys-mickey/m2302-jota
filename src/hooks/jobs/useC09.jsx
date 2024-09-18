@@ -447,7 +447,11 @@ export const useC09 = () => {
 			};
 
 			if (prod && !prodInfo?.Price) {
-				toast.warn("商品未訂調撥成本，不得訂購");
+				toast.error("商品未訂調撥成本，不得訂購",
+					{
+						position: "top-center",
+					}
+				);
 			}
 			return newRowData;
 		},

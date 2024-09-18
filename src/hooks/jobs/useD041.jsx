@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { nanoid } from "nanoid";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useD041 = () => {
 	const crud = useContext(CrudContext);
@@ -25,7 +26,8 @@ export const useD041 = () => {
 		token,
 		moduleId: "D041",
 	});
-
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
 	// const qtyMap = useMemo(() => new Map(), []);
 
 	const [
@@ -51,7 +53,7 @@ export const useD041 = () => {
 		expPrompting: false,
 	});
 
-	const prodGrid = useDSG({
+	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
 	});
@@ -120,8 +122,8 @@ export const useD041 = () => {
 		};
 		crud.promptCreating({ data });
 		// qtyMap.clear();
-		prodGrid.initGridData(data.prods, { createRow });
-	}, [createRow, crud, prodGrid]);
+		grid.initGridData(data.prods, { createRow });
+	}, [createRow, crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -177,7 +179,7 @@ export const useD041 = () => {
 					});
 					// setSelectedInq(data);
 
-					prodGrid.handleGridDataLoaded(data.prods);
+					grid.handleGridDataLoaded(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -185,7 +187,7 @@ export const useD041 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, prodGrid, token]
+		[crud, httpGetAsync, grid, token]
 	);
 
 	const handleSelect = useCallback(
@@ -459,24 +461,10 @@ export const useD041 = () => {
 			rowData = {
 				...rowData,
 				["SQty"]: "",
-				["PackData_N"]: "",
+				["ProdData"]: prod?.ProdData || "",
+				["PackData_N"]: prod?.PackData_N || "",
 			};
 
-			let prodInfoEntrieved = false;
-			if (prod?.ProdID) {
-				prodInfoEntrieved = true;
-				rowData = {
-					...rowData,
-					["PackData_N"]: prod?.PackData_N || "",
-				};
-			}
-			if (!prodInfoEntrieved) {
-				rowData = {
-					...rowData,
-					["prod"]: null,
-					["PackData_N"]: "",
-				};
-			}
 			return rowData;
 		},
 		[]
@@ -532,9 +520,31 @@ export const useD041 = () => {
 	// 	return rowData;
 	// }, []);
 
+	const updateGridRow = useCallback(({ fromIndex, newValue }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// 商品
+		if (
+			rowData.prod?.ProdID !==
+			oldRowData.prod?.ProdID
+		) {
+			processedRowData =
+				await handleGridProdChange({
+					rowIndex,
+					rowData: processedRowData,
+					newValue,
+				});
+		}
+		return processedRowData;
+	}, [grid.gridData, handleGridProdChange]);
+
 	const buildGridChangeHandler = useCallback(
-		({ getValues, setValue }) =>
-			(newValue, operations) => {
+		({ gridMeta }) =>
+			async (newValue, operations) => {
 				// const formData = getValues();
 				console.log("buildGridChangeHandler", operations);
 				console.log("newValue", newValue);
@@ -542,38 +552,63 @@ export const useD041 = () => {
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						newValue
-							.slice(operation.fromRowIndex, operation.toRowIndex)
-							.forEach(async (rowData, i) => {
-								const rowIndex = operation.fromRowIndex + i;
-								const oldRowData = prodGrid.gridData[rowIndex];
+						const updatedRows = await Promise.all(
+							newValue
+								.slice(
+									operation.fromRowIndex,
+									operation.toRowIndex
+								)
+								.map(async (item, index) => {
+									const updatedRow = await updateGridRow({
+										fromIndex: operation.fromRowIndex,
+										newValue,
+									})(item, index);
+									return updatedRow;
+								})
+						)
+						console.log("updatedRows", updatedRows);
 
-								let processedRowData = { ...rowData };
-								// 商品
-								if (
-									rowData.prod?.ProdID !==
-									oldRowData.prod?.ProdID
-								) {
-									processedRowData =
-										await handleGridProdChange({
-											rowIndex,
-											rowData: processedRowData,
-											newValue,
-										});
-								}
+						newGridData.splice(
+							operation.fromRowIndex,
+							updatedRows.length,
+							...updatedRows
+						)
+						// newValue
+						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+						// 	.forEach(async (rowData, i) => {
+						// 		const rowIndex = operation.fromRowIndex + i;
+						// 		const oldRowData = grid.gridData[rowIndex];
 
-								newGridData[rowIndex] = processedRowData;
-							});
+						// 		let processedRowData = { ...rowData };
+						// 		// 商品
+						// 		if (
+						// 			rowData.prod?.ProdID !==
+						// 			oldRowData.prod?.ProdID
+						// 		) {
+						// 			processedRowData =
+						// 				await handleGridProdChange({
+						// 					rowIndex,
+						// 					rowData: processedRowData,
+						// 					newValue,
+						// 				});
+						// 		}
+
+						// 		newGridData[rowIndex] = processedRowData;
+						// 	});
 					} else if (operation.type === "DELETE") {
 						// do nothing now
+					} else if (operation.type === "CREATE") {
+						console.log("dsg.CREATE");
+						// process CREATE here
+						gridMeta.toFirstColumn({ nextRow: true });
 					}
 				}
 				console.log("prodGrid.changed", newGridData);
 				if (!checkFailed) {
-					prodGrid.setGridData(newGridData);
+					grid.setGridData(newGridData);
 				}
 			},
-		[handleGridProdChange, prodGrid]
+		[updateGridRow, grid]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -581,7 +616,7 @@ export const useD041 = () => {
 			console.log("onEditorSubmit", data);
 			const collected = D041.transformForSubmitting(
 				data,
-				prodGrid.gridData
+				grid.gridData
 			);
 			console.log("collected", collected);
 			if (crud.creating) {
@@ -597,7 +632,7 @@ export const useD041 = () => {
 			crud.updating,
 			handleCreate,
 			handleUpdate,
-			prodGrid.gridData,
+			grid.gridData,
 		]
 	);
 
@@ -731,7 +766,9 @@ export const useD041 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
-		...prodGrid,
+		...grid,
+		grid,
+		createRow,
 		buildGridChangeHandler,
 		getRowKey,
 		prodDisabled,
@@ -760,5 +797,6 @@ export const useD041 = () => {
 		dtypeDisabled,
 		stypeDisabled,
 		reworkedDisabled,
+		...sideDrawer
 	};
 };

@@ -25,42 +25,38 @@ const B06Form = memo(() => {
 		<FormBox>
 			<Grid container columns={24} spacing={1}>
 				<Grid item xs={24} sm={7}>
-					<OptionPickerProvider>
-						<SupplierPicker
-							label="廠商代碼起"
-							name="supplier"
-							virtualize
-							optionLabelSize="md"
-							disableOpenOnInput
-							selectOnFocus
-							componentsProps={{
-								paper: {
-									sx: {
-										width: 360,
-									},
+					<SupplierPicker
+						label="廠商代碼起"
+						name="supplier"
+						virtualize
+						optionLabelSize="md"
+						disableOpenOnInput
+						selectOnFocus
+						slotProps={{
+							paper: {
+								sx: {
+									width: 360,
 								},
-							}}
-						/>
-					</OptionPickerProvider>
+							},
+						}}
+					/>
 				</Grid>
 				<Grid item xs={24} sm={7}>
-					<OptionPickerProvider>
-						<SupplierPicker
-							label="廠商代碼迄"
-							name="supplier2"
-							virtualize
-							optionLabelSize="md"
-							disableOpenOnInput
-							selectOnFocus
-							componentsProps={{
-								paper: {
-									sx: {
-										width: 360,
-									},
+					<SupplierPicker
+						label="廠商代碼迄"
+						name="supplier2"
+						virtualize
+						optionLabelSize="md"
+						disableOpenOnInput
+						selectOnFocus
+						slotProps={{
+							paper: {
+								sx: {
+									width: 360,
 								},
-							}}
-						/>
-					</OptionPickerProvider>
+							},
+						}}
+					/>
 				</Grid>
 				<Grid item xs={24} sm={5}>
 					<DatePickerWrapper
@@ -78,46 +74,42 @@ const B06Form = memo(() => {
 				</Grid>
 
 				<Grid item xs={24} sm={7}>
-					<OptionPickerProvider>
-						<ProdPicker
-							name="sprod"
-							label="起始商品編號"
-							size="small"
-							virtualize
-							optionLabelSize="md"
-							typeToSearchText="以編號,條碼或名稱搜尋"
-							disableOpenOnInput
-							selectOnFocus
-							componentsProps={{
-								paper: {
-									sx: {
-										width: 360,
-									},
+					<ProdPicker
+						name="sprod"
+						label="起始商品編號"
+						size="small"
+						virtualize
+						optionLabelSize="md"
+						typeToSearchText="以編號,條碼或名稱搜尋"
+						disableOpenOnInput
+						selectOnFocus
+						slotProps={{
+							paper: {
+								sx: {
+									width: 360,
 								},
-							}}
-						/>
-					</OptionPickerProvider>
+							},
+						}}
+					/>
 				</Grid>
 				<Grid item xs={24} sm={7}>
-					<OptionPickerProvider>
-						<ProdPicker
-							name="eprod"
-							label="截止商品編號"
-							size="small"
-							virtualize
-							optionLabelSize="md"
-							typeToSearchText="以編號,條碼或名稱搜尋"
-							disableOpenOnInput
-							selectOnFocus
-							componentsProps={{
-								paper: {
-									sx: {
-										width: 360,
-									},
+					<ProdPicker
+						name="eprod"
+						label="截止商品編號"
+						size="small"
+						virtualize
+						optionLabelSize="md"
+						typeToSearchText="以編號,條碼或名稱搜尋"
+						disableOpenOnInput
+						selectOnFocus
+						slotProps={{
+							paper: {
+								sx: {
+									width: 360,
 								},
-							}}
-						/>
-					</OptionPickerProvider>
+							},
+						}}
+					/>
 				</Grid>
 
 				<Grid item xs={24} sm={5}>

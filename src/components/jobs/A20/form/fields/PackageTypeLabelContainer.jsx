@@ -39,7 +39,7 @@ export const PackageTypeLabelContainer = (props) => {
 			typographySx={{
 				...(editing && {
 					position: "relative",
-					top: -12,
+					// top: -12,
 				}),
 			}}
 			{...typographyProps}>

@@ -113,13 +113,14 @@ export const useSignIn = () => {
 						// 2.重導至首頁
 						toLanding();
 					} else {
+						captcha.handleRefresh();
 						console.error(`status: ${status}`);
 						switch (status.code) {
 							case 401:
-								toast.warn(`登入失敗，請檢查帳號密碼是否正確`);
+								toast.error(`登入失敗，請檢查帳號密碼是否正確`);
 								break;
 							case 429:
-								toast.warn(
+								toast.error(
 									`帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`
 								);
 								break;
@@ -145,7 +146,8 @@ export const useSignIn = () => {
 					}));
 				}
 			} else {
-				toast.warn("請輸入正確的驗證碼");
+				toast.error("請輸入正確的驗證碼");
+				captcha.handleRefresh();
 				if (setFocus) {
 					setFocus(PARAM_CAPTCHA, {
 						shouldSelect: true,

@@ -40,34 +40,36 @@ const D06DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						<Grid item xs={24} sm={24} md={5}>
-							<TextFieldWrapper
+						{!creating && (
+							<Grid item xs={24} sm={24} md={5}>
+								<TextFieldWrapper
+									typo
+									name="RemID"
+									label="結餘單號"
+									autoFocus
+									fullWidth
+									// required
+									readOnly={true}
+								/>
+							</Grid>
+						)}
+
+						<Grid item xs={24} sm={24} md={6}>
+							<EmployeePicker
 								typo
-								name="RemID"
-								label="結餘單號"
+								label="製單人員"
+								name="employee"
 								autoFocus
-								fullWidth
-								// required
-								readOnly={true}
+								required
+								rules={{
+									required: "製單人員為必填",
+								}}
+								virtualize
+								disableClearable
+								disableOpenOnInput
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="製單人員"
-									name="employee"
-									autoFocus
-									required
-									rules={{
-										required: "製單人員為必填",
-									}}
-									virtualize
-									disableClearable
-								/>
-							</OptionPickerProvider>
-						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DatePickerWrapper
 								typo
 								name="RemDate"
@@ -78,7 +80,7 @@ const D06DialogForm = memo((props) => {
 								onChanged={handleRemDateChanged}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DatePickerWrapper
 								typo
 								name="InitDate"
@@ -90,8 +92,7 @@ const D06DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={7}>
-							{/* <OptionPickerProvider> */}
+						<Grid item xs={24} sm={24} md={6}>
 							<ProdLinePicker
 								typo
 								label="生產線別"
@@ -100,10 +101,11 @@ const D06DialogForm = memo((props) => {
 								rules={{
 									required: "生產線別為必填",
 								}}
+								disableOpenOnInput
+								disableClearable
 							// virtualize
 							// optionLabelSize="md"
 							/>
-							{/* </OptionPickerProvider> */}
 						</Grid>
 
 						<FlexBox fullWidth />

@@ -67,43 +67,39 @@ const C01DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
-							<OptionPickerProvider>
-								<EmployeePicker
-									typo
-									label="製單人員"
-									name="employee"
-									required
-									rules={{
-										required: "製單人員為必填",
-									}}
-									virtualize
-									readOnly={true}
-									disableOpenOnInput
-								/>
-							</OptionPickerProvider>
+							<EmployeePicker
+								typo
+								label="製單人員"
+								name="employee"
+								required
+								rules={{
+									required: "製單人員為必填",
+								}}
+								virtualize
+								readOnly={true}
+								disableOpenOnInput
+							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={editing ? 5 : 4}>
-							<OptionPickerProvider>
-								<ProdLinePicker
-									typo
-									label="請購單位"
-									name="pdline"
-									required
-									rules={{
-										required: "請購單位為必填",
-									}}
-									virtualize
-									readOnly={true}
-									disableOpenOnInput
-									componentsProps={{
-										paper: {
-											sx: {
-												width: 360,
-											},
+							<ProdLinePicker
+								typo
+								label="請購單位"
+								name="pdline"
+								required
+								rules={{
+									required: "請購單位為必填",
+								}}
+								virtualize
+								readOnly={true}
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
 										},
-									}}
-								/>
-							</OptionPickerProvider>
+									},
+								}}
+							/>
 						</Grid>
 
 						<Grid item xs={8}>

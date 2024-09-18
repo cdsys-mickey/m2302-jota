@@ -6,6 +6,9 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useFormContext, useWatch } from "react-hook-form";
 import DSGBox from "@/shared-components/dsg/DSGBox";
 import { useMemo } from "react";
+import FormMeta from "@/shared-modules/sd-form-meta";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 export const D05ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -13,6 +16,7 @@ export const D05ProdGridContainer = (props) => {
 	const auth = useContext(AuthContext);
 	const { height: windowHeight } = useWindowSize();
 	const form = useFormContext();
+	const formMeta = useContext(FormMetaContext);
 
 	const readOnly = useMemo(() => {
 		return !d05.editing;
@@ -22,24 +26,27 @@ export const D05ProdGridContainer = (props) => {
 		return windowHeight - 310;
 	}, [windowHeight]);
 
-	// const handleGridChange = useMemo(() => {
-	// 	return d05.buildGridChangeHandler({
-	// 		getValues: form.getValues,
-	// 		setValue: form.setValue,
-	// 	});
-	// }, [d05, form.getValues, form.setValue]);
+	const onChange = useMemo(() => {
+		return d05.buildGridChangeHandler({
+			getValues: form.getValues,
+			setValue: form.setValue,
+			gridMeta: formMeta.gridMeta
+		})
+	}, [d05, form.getValues, form.setValue, formMeta.gridMeta])
 
 	return (
-		<DSGBox>
+		<DSGContext.Provider value={{
+			...d05.grid,
+			...formMeta.gridMeta,
+			readOnly: formMeta.readOnly
+		}}>
 			<D05ProdGrid
-				gridRef={d05.setGridRef}
-				readOnly={readOnly}
+				gridRef={formMeta.gridMeta.setGridRef}
+				readOnly={formMeta.readOnly}
 				data={d05.gridData}
 				// handleGridChange={handleGridChange}
-				handleGridChange={d05.buildGridChangeHandler({
-					getValues: form.getValues,
-					setValue: form.setValue,
-				})}
+				onChange={onChange}
+				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
 				height={height}
 				getRowKey={d05.getRowKey}
@@ -50,7 +57,7 @@ export const D05ProdGridContainer = (props) => {
 				createRow={d05.createRow}
 				{...rest}
 			/>
-		</DSGBox>
+		</DSGContext.Provider>
 	);
 };
 

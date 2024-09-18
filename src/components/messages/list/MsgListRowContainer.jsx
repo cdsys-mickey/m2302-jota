@@ -1,21 +1,18 @@
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
+import { MessagesContext } from "@/contexts/msgs/MessagesContext";
 import MsgListRow from "./MsgListRow";
-import { MessagingContext } from "../../../contexts/MessagingContext";
-import { useCallback } from "react";
-import { AppFrameContext } from "../../../shared-contexts/app-frame/AppFrameContext";
-import { MessagesContext } from "../../../contexts/MessagesContext";
 
 export const MsgListRowContainer = (props) => {
 	// const messaging = useContext(MessagingContext);
-	const messages = useContext(MessagesContext);
+	const msgs = useContext(MessagesContext);
 	// const { selectJobById } = useContext(AppFrameContext);
 	const { index, ...rest } = props;
 	// const { isItemLoading } = messaging;
 	// const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
 	const value = useMemo(
-		() => messages.listData[index],
-		[messages.listData, index]
+		() => msgs.listData[index],
+		[msgs.listData, index]
 	);
 	const loading = useMemo(() => !value, [value]);
 
@@ -31,7 +28,7 @@ export const MsgListRowContainer = (props) => {
 			index={index}
 			loading={loading}
 			value={value}
-			handleGotoJob={() => messages.handleGotoJob(value)}
+			handleGotoJob={() => msgs.handleGotoJob(value)}
 			{...rest}
 		/>
 	);
