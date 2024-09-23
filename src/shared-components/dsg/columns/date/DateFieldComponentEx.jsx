@@ -48,18 +48,9 @@ const DateFieldComponentEx = memo((props) => {
 
 	useLayoutEffect(() => {
 		if (focus) {
-			console.log("focus");
-			if (ref.current) {
-				console.log("ref.current");
-				ref.current.focus();
-				ref.current.select();
-				console.log("ref.current.value", ref.current.value)
-			} else {
-				console.log("ref.current not set");
-			}
+			ref.current?.select();
 		} else {
 			ref.current?.blur();
-			console.log("ref.current?.blur()");
 		}
 	}, [focus]);
 
