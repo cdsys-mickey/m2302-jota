@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import Types from "../../shared-modules/sd-types";
 import FlexBox from "../FlexBox";
 import { now } from "lodash";
+import { useWatch } from "react-hook-form";
 
 /**
  * 增加 label 功能的 Typography
@@ -15,6 +16,7 @@ import { now } from "lodash";
 const FormFieldLabel = memo(
 	forwardRef((props, ref) => {
 		const {
+			name,
 			label,
 			children,
 			labelProps,
@@ -29,21 +31,25 @@ const FormFieldLabel = memo(
 			...rest
 		} = props;
 
+		const value = useWatch({
+			name,
+		});
+
 		const _labelStyles = useMemo(() => {
 			return labelStyles || (noWrap ? MuiStyles.FORM_LABEL_STYLES_NOWRAP : MuiStyles.DEFAULT_FORM_LABEL_STYLES)
 		}, [labelStyles, noWrap]);
 
 		const useEmptyText = useMemo(() => {
-			return !children && emptyText;
-		}, [children, emptyText]);
+			return (name ? !value : !children) && emptyText;
+		}, [children, emptyText, name, value]);
 
 		const typoVariant = useMemo(() => {
 			return useEmptyText ? "body1" : "body1";
 		}, [useEmptyText]);
 
 		const body = useMemo(
-			() => children || emptyText,
-			[children, emptyText]
+			() => (name ? value : children) || emptyText,
+			[children, emptyText, name, value]
 		);
 
 		const BoxComponent = useMemo(() => {
@@ -103,6 +109,7 @@ const FormFieldLabel = memo(
 
 FormFieldLabel.displayName = "FormFieldLabel";
 FormFieldLabel.propTypes = {
+	name: PropTypes.string,
 	label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 	children: PropTypes.node,
 	labelProps: PropTypes.object,

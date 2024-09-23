@@ -14,14 +14,6 @@ import ProdPicker from "@/components/picker/ProdPicker";
 
 const B06Form = memo(() => {
 	return (
-		// <Fieldset
-		// 	// label="搜尋條件"
-		// 	labelSize="small"
-		// 	p={1}
-		// 	labelStyles={{
-		// 		fontWeight: 600,
-		// 	}}
-		// 	sx={{ backgroundColor: Colors.DIALOG_BG }}>
 		<FormBox>
 			<Grid container columns={24} spacing={1}>
 				<Grid item xs={24} sm={7}>
@@ -131,7 +123,6 @@ const B06Form = memo(() => {
 				</FlexGrid>
 			</Grid>
 		</FormBox>
-		// </Fieldset>
 	);
 });
 

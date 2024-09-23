@@ -41,7 +41,7 @@ const B011ListForm = memo((props) => {
 				<Grid item xs={24} sm={24} md={6}>
 					<ProdPicker
 						name="lvProd"
-						forId
+						// forId
 						label="商品編號起"
 						autoFocus
 						disableOpenOnInput
@@ -58,7 +58,7 @@ const B011ListForm = memo((props) => {
 				<Grid item xs={24} sm={24} md={6}>
 					<ProdPicker
 						name="lvProd2"
-						forId
+						// forId
 						label="商品編號訖"
 						autoFocus
 						disableOpenOnInput

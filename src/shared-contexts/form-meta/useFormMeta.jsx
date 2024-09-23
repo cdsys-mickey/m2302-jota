@@ -24,10 +24,10 @@ export const useFormMeta = (value, opts = {}) => {
 	const getNextField = useCallback(
 		(currentFieldName, opts = {}) => {
 			const { forward = true, isFieldDisabled, e } = opts;
-			const currentIndex = fields.findIndex(
+			const currentIndex = currentFieldName ? fields.findIndex(
 				(item) => item.name === currentFieldName
-			);
-			if (currentIndex === -1) {
+			) : -1;
+			if (currentIndex === -1 && (!fields || fields.length === 0)) {
 				return null;
 			}
 

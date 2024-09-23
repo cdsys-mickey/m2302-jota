@@ -1,8 +1,6 @@
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import B02ListForm from "./B02ListForm";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
-import B02ListToolbar from "./B02ListToolbar";
+import B02ListForm from "./B02ListForm";
 
 export const B02ListFormContainer = (props) => {
 	const { ...rest } = props;

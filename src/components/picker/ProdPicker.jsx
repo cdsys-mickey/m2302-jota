@@ -22,7 +22,7 @@ const ProdPicker = (props) => {
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
-		const obj = {
+		return queryString.stringify({
 			tp: 10000,
 			...(withBomPackageName && {
 				pb: 1,
@@ -47,8 +47,7 @@ const ProdPicker = (props) => {
 			// }),
 			fuzzy: 1,
 
-		};
-		return queryString.stringify(obj);
+		});
 	}, [withBomPackageName, withPrice, withPurchasePackageName, withSalesPackageName, withStock]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
@@ -103,11 +102,12 @@ const ProdPicker = (props) => {
 
 ProdPicker.propTypes = {
 	label: PropTypes.string,
-	children: PropTypes.node,
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	withBomPackageName: PropTypes.bool,
 	withSalesPackageName: PropTypes.bool,
 	withPurchasePackageName: PropTypes.bool,
 	withStock: PropTypes.bool,
+	withPrice: PropTypes.bool,
 	forId: PropTypes.bool,
 	fuzzy: PropTypes.bool,
 };

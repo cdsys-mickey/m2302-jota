@@ -7,6 +7,7 @@ import _ from "lodash";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useCallback, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 const DEFAULT_SET_OPTS = {
 	reset: false,
@@ -183,15 +184,7 @@ export const useDSG = ({
 				console.log("resetGridData", newValue);
 			}
 		},
-		[
-			dirtyIds,
-			fillRows,
-			gridData,
-			handleDirtyCheck,
-			keyColumn,
-			persistedIds,
-			prevGridData,
-		]
+		[deletedIds, dirtyIds, fillRows, gridData, handleDirtyCheck, keyColumn, persistedIds, prevGridData]
 	);
 
 	const handleGridDataLoaded = useCallback(
@@ -273,15 +266,17 @@ export const useDSG = ({
 	);
 
 	const isDuplicated = useCallback(
-		(rowData) => {
-			const key = _.get(rowData, keyColumn);
-			if (!key) {
+		(rowData, opts) => {
+			const { key: _keyColumn } = opts;
+			const activeKeyColumn = _keyColumn || keyColumn;
+			const keyValue = _.get(rowData, activeKeyColumn);
+			if (!keyValue) {
 				throw new Error(`key ${keyColumn} 為空`, rowData);
 			}
 			return (
 				gridData.filter((i) => {
-					const prevKey = _.get(i, keyColumn);
-					return prevKey === key;
+					const prevKey = _.get(i, activeKeyColumn);
+					return prevKey === keyValue;
 				}).length > 1
 			);
 		},
@@ -289,15 +284,17 @@ export const useDSG = ({
 	);
 
 	const isDuplicating = useCallback(
-		(rowData, newValues) => {
-			const key = _.get(rowData, keyColumn);
-			if (!key) {
+		(rowData, newValues, opts) => {
+			const { key: _keyColumn } = opts;
+			const activeKeyColumn = _keyColumn || keyColumn;
+			const keyValue = _.get(rowData, activeKeyColumn);
+			if (!keyValue) {
 				throw new Error(`key ${keyColumn} 為空`, rowData);
 			}
 			return (
 				newValues.filter((i) => {
-					const prevKey = _.get(i, keyColumn);
-					return prevKey === key;
+					const prevKey = _.get(i, activeKeyColumn);
+					return prevKey === keyValue;
 				}).length > 1
 			);
 		},
@@ -338,7 +335,8 @@ export const useDSG = ({
 	const buildGridChangeHandler = useCallback(
 		({ setValue, getValues, gridMeta, onUpdateRow, onDeleteRowFailed, onGridChanged, ...opts }) =>
 			async (newValue, operations) => {
-
+				// console.log("prevGridData", prevGridData);
+				// console.log("gridData", gridData);
 				const { focusFirstColumnOnCreate = true, dirtyCheckOpts = {
 					debug: true
 				} } = opts;
@@ -350,6 +348,7 @@ export const useDSG = ({
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
+
 						const updatingRows = newValue
 							.slice(
 								operation.fromRowIndex,
@@ -361,14 +360,16 @@ export const useDSG = ({
 									const updatedRow = await onUpdateRow({
 										formData,
 										fromIndex: operation.fromRowIndex,
+										newValue
 									})(item, index);
 									return updatedRow;
 								})
 						) : updatingRows;
 
 						updatedRows.forEach((updatedRowData, index) => {
-							const prevRowData = grid.gridData[operation.fromRowIndex + index];
+							const prevRowData = gridData[operation.fromRowIndex + index];
 							handleDirtyCheck(updatedRowData, prevRowData, dirtyCheckOpts);
+
 						});
 
 						// 替換成處理過的 rows
@@ -379,7 +380,7 @@ export const useDSG = ({
 						);
 					} else if (operation.type === "DELETE") {
 						// 列舉原資料
-						const deletingRows = grid.gridData
+						const deletingRows = gridData
 							.slice(operation.fromRowIndex, operation.toRowIndex);
 						checkFailed = deletingRows
 							.some((rowData, i) => {
@@ -395,9 +396,13 @@ export const useDSG = ({
 						if (!checkFailed) {
 							deletingRows.forEach((rowData, index) => {
 								const key = _.get(rowData, keyColumn);
-								if (!deletedIds.has(key)) {
-									deletedIds.add(key);
-									console.log(`deletedIds added: ${key}`);
+								if (!key) {
+									console.error(`key(${keyColumn}) 的內容是空的`);
+								} else {
+									if (!deletedIds.has(key)) {
+										deletedIds.add(key);
+										console.log(`deletedIds added: ${key}`);
+									}
 								}
 							});
 						}
@@ -414,13 +419,13 @@ export const useDSG = ({
 				}
 				console.log("after changed", newGridData);
 				if (!checkFailed) {
-					grid.setGridData(newGridData);
+					setGridData(newGridData);
 					if (onGridChanged) {
 						onGridChanged({ gridData: newGridData, setValue });
 					}
 				}
 			},
-		[grid, refreshAmt, updateGridRow, prodDisabled]
+		[deletedIds, gridData, handleDirtyCheck, keyColumn]
 	);
 
 	const setValueByRowIndex = useCallback(
@@ -493,14 +498,14 @@ export const useDSG = ({
 	}, [dirtyIds, gridData, keyColumn]);
 
 	const getDeletedRows = useCallback(() => {
-		return gridData.filter((row) => {
+		return prevGridData.filter((row) => {
 			if (deletedIds && deletedIds.size > 0) {
 				const key = _.get(row, keyColumn);
 				return deletedIds.has(key);
 			}
 			return false;
 		});
-	}, []);
+	}, [deletedIds, keyColumn, prevGridData]);
 
 	const handleToggleReadOnly = useCallback(() => {
 		rollbackChanges();
@@ -508,7 +513,7 @@ export const useDSG = ({
 	}, [rollbackChanges, toggleReadOnly]);
 
 	useEffect(() => {
-		console.log("gridData changed, supressEvents reset to false");
+		// gridData changed, supressEvents reset to false
 		asyncRef.current.supressEvents = false;
 	}, [gridData]);
 
@@ -531,6 +536,7 @@ export const useDSG = ({
 		// setGridData,
 		clearGridData,
 		handleGridChange,
+		buildGridChangeHandler,
 		isPersisted,
 		// handleActiveCellChange,
 		// buildSelectionChangeHandler,
@@ -549,7 +555,9 @@ export const useDSG = ({
 		toggleReadOnly: handleToggleReadOnly,
 		// dirty check
 		dirtyIds,
+		deletedIds,
 		getDirtyRows,
+		getDeletedRows,
 		isKeyDuplicated,
 		isDuplicated,
 		isDuplicating,

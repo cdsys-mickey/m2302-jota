@@ -13,7 +13,8 @@ const B04ListForm = memo((props) => {
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
 				<Grid item xs={24} sm={24} md={6}>
-					<NewCustomerPicker
+					<CustomerPicker
+						forNew
 						name="customer"
 						label="新客戶代碼起"
 						disableOpenOnInput
@@ -27,7 +28,8 @@ const B04ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item xs={24} sm={24} md={6}>
-					<NewCustomerPicker
+					<CustomerPicker
+						forNew
 						name="customer2"
 						label="新客戶代碼訖"
 						disableOpenOnInput

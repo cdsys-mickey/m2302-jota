@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { useCallback } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
+import DateFieldBox from "../date-field/DateFieldBox";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -21,6 +22,7 @@ const ControlledDateField = ({
 	control,
 	rules,
 	defaultValue,
+	inputRef,
 	// for TextField
 	label = "日期",
 	readOnly,
@@ -29,6 +31,8 @@ const ControlledDateField = ({
 	format = DateFormats.DATEFNS_DATE,
 	invalidDateMessage = "日期格式錯誤",
 	required = false,
+	hideBorders,
+	hideControls,
 	...rest
 }) => {
 	const { setError, clearErrors } = useFormContext();
@@ -55,18 +59,21 @@ const ControlledDateField = ({
 
 	if (!name) {
 		return (
-			<DateField
-				defaultValue={defaultValue}
-				label={label}
-				readOnly={readOnly}
-				onChange={_onChange}
-				onKeyDown={handleKeyDown}
-				mask={mask}
-				format={format}
-				invalidDateMessage={invalidDateMessage}
-				required={required}
-				{...rest}
-			/>
+			<DateFieldBox hideBorders={hideBorders} hideControls={hideControls}>
+				<DateField
+					inputRef={inputRef}
+					defaultValue={defaultValue}
+					label={label}
+					readOnly={readOnly}
+					onChange={_onChange}
+					onKeyDown={handleKeyDown}
+					mask={mask}
+					format={format}
+					invalidDateMessage={invalidDateMessage}
+					required={required}
+					{...rest}
+				/>
+			</DateFieldBox>
 		);
 	}
 
@@ -80,46 +87,52 @@ const ControlledDateField = ({
 				field: { ref, value, onChange },
 				fieldState: { error },
 			}) => (
-				<DateField
-					// autoOk
-					inputRef={ref}
-					label={label ? `${label}${required ? "*" : ""}` : ""}
-					mask={mask}
-					format={format}
-					value={value}
-					required={required}
-					onChange={(newValue) => {
-						if (readOnly) {
-							return;
-						}
-						// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
-						onChange(newValue);
-						if (_onChange) {
-							_onChange(newValue);
-						}
-						if (isValid(newValue)) {
-							if (clearErrors) {
-								clearErrors(name);
+				<DateFieldBox hideBorders={hideBorders} hideControls={hideControls}>
+					<DateField
+						// autoOk
+						inputRef={ref}
+						// inputRef={(instance) => {
+						// 	if (ref) ref(instance);
+						// 	if (inputRef) inputRef.current = instance;
+						// }}
+						label={label ? `${label}${required ? "*" : ""}` : ""}
+						mask={mask}
+						format={format}
+						value={value}
+						required={required}
+						onChange={(newValue) => {
+							if (readOnly) {
+								return;
 							}
-						} else {
-							setError(name, {
-								message: invalidDateMessage,
-							});
-						}
-					}}
-					onKeyDown={handleKeyDown}
-					{...opts}
-					InputProps={{
-						...InputProps,
-						readOnly,
-					}}
-					disabled={readOnly}
-					onError={(err) => {
-						console.error(err);
-					}}
-					invalidDateMessage={invalidDateMessage}
-					{...rest}
-				/>
+							// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
+							onChange(newValue);
+							if (_onChange) {
+								_onChange(newValue);
+							}
+							if (isValid(newValue)) {
+								if (clearErrors) {
+									clearErrors(name);
+								}
+							} else {
+								setError(name, {
+									message: invalidDateMessage,
+								});
+							}
+						}}
+						onKeyDown={handleKeyDown}
+						{...opts}
+						InputProps={{
+							...InputProps,
+							readOnly,
+						}}
+						disabled={readOnly}
+						onError={(err) => {
+							console.error(err);
+						}}
+						invalidDateMessage={invalidDateMessage}
+						{...rest}
+					/>
+				</DateFieldBox>
 			)}
 		/>
 	);
@@ -137,5 +150,8 @@ ControlledDateField.propTypes = {
 	invalidDateMessage: PropTypes.string,
 	labelShrink: PropTypes.bool,
 	required: PropTypes.bool,
+	hideBorders: PropTypes.bool,
+	hideControls: PropTypes.bool,
+	inputRef: PropTypes.object,
 };
 export default ControlledDateField;

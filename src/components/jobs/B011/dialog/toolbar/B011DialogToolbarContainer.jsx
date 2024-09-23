@@ -4,12 +4,13 @@ import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import B011DialogEditToolbar from "./B011DialogEditToolbar";
 import B011DialogViewToolbar from "./B011DialogViewToolbar";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useMemo } from "react";
 
 export const B011DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
 	const b011 = useContext(B011Context);
 	const form = useFormContext();
-
 	const handlePrint = form.handleSubmit(
 		b011.onPrintSubmit,
 		b011.onPrintSubmitError
@@ -22,7 +23,7 @@ export const B011DialogToolbarContainer = (props) => {
 	if (b011.editing) {
 		return (
 			<B011DialogEditToolbar
-				onLoadProds={b011.promptImportProds}
+				onLoadProds={b011.creating ? b011.promptImportProds : null}
 				onSave={form.handleSubmit(
 					b011.onEditorSubmit,
 					b011.onEditorSubmitError

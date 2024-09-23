@@ -15,8 +15,16 @@ export const C04ProdGridContainer = (props) => {
 	const form = useFormContext();
 	const formMeta = useContext(FormMetaContext);
 
+	// const onChange = useMemo(() => {
+	// 	return c04.buildGridChangeHandler({
+	// 		getValues: form.getValues,
+	// 		setValue: form.setValue,
+	// 		gridMeta: formMeta.gridMeta
+	// 		// handleRefreshAmt: c04.handleRefreshAmt,
+	// 	});
+	// }, [c04, form.getValues, form.setValue, formMeta.gridMeta]);
 	const onChange = useMemo(() => {
-		return c04.buildGridChangeHandler({
+		return c04.handleGridChangeAsync({
 			getValues: form.getValues,
 			setValue: form.setValue,
 			gridMeta: formMeta.gridMeta

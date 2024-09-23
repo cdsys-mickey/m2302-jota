@@ -11,12 +11,12 @@ import ProdPicker from "@/components/picker/ProdPicker";
 import { B011ImportProdsButtonContainer } from "./B011ImportProdsButtonContainer";
 
 const B011LoadProdsForm = memo((props) => {
-	const { handleSubmit, ...rest } = props;
+	const { onSubmit, ...rest } = props;
 	return (
-		<form onSubmit={handleSubmit} {...rest}>
+		<form onSubmit={onSubmit} {...rest}>
 			<Box pt={1}>
 				<Grid container spacing={1} columns={24}>
-					<Grid item xs={9}>
+					<Grid item xs={12}>
 						<ProdPicker
 							name="sprod"
 							label="起始商品編號"
@@ -38,7 +38,7 @@ const B011LoadProdsForm = memo((props) => {
 							}}
 						/>
 					</Grid>
-					<Grid item xs={9}>
+					<Grid item xs={12}>
 						<ProdPicker
 							name="eprod"
 							label="截止商品編號"
@@ -59,17 +59,17 @@ const B011LoadProdsForm = memo((props) => {
 							}}
 						/>
 					</Grid>
-					<Grid item xs={24} sm={24} md={6}>
+					<Grid item xs={24} sm={24} md={12}>
 						<ProdTypeAPicker name="typeA"
 							disableOpenOnInput
 							selectOnFocus
-							slotProps={{
-								paper: {
-									sx: {
-										width: 240,
-									},
-								},
-							}}
+						// slotProps={{
+						// 	paper: {
+						// 		sx: {
+						// 			width: 240,
+						// 		},
+						// 	},
+						// }}
 						/>
 					</Grid>
 					<FlexBox fullWidth />
@@ -127,7 +127,7 @@ const B011LoadProdsForm = memo((props) => {
 });
 
 B011LoadProdsForm.propTypes = {
-	handleSubmit: PropTypes.func,
+	onSubmit: PropTypes.func,
 };
 
 B011LoadProdsForm.displayName = "B011LoadProdsForm";

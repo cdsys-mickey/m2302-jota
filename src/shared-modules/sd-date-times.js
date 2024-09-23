@@ -72,7 +72,7 @@ const getPattern = (s) => {
 	}
 };
 
-const formatEx = (
+const _format = (
 	s,
 	pattern = DateFormats.DATEFNS_DATE,
 	opts = DEFAULT_OPTS
@@ -81,13 +81,13 @@ const formatEx = (
 		return s ? format(s, pattern) : opts.invalidTimeMessage || "";
 	} catch (err) {
 		if (opts.printError) {
-			console.error("formatEx error", err);
+			console.error("_format error", err);
 		}
 		return opts.invalidTimeMessage || "";
 	}
 };
 
-const parseEx = (s, pattern) => {
+const _parse = (s, pattern) => {
 	if (!s) {
 		return null;
 	}
@@ -125,7 +125,7 @@ const formatAsRocDate = (s, pattern) => {
 		date = s;
 	} else {
 		try {
-			date = parseEx(s, pattern);
+			date = _parse(s, pattern);
 		} catch (err) {
 			throw new Error(`failed to parse: ${err?.message}`);
 		}
@@ -148,7 +148,7 @@ const formatDateTimeAsDate = (s) => {
 		date = s;
 	} else {
 		try {
-			date = parseEx(s);
+			date = _parse(s);
 		} catch (err) {
 			throw new Error(`failed to parse: ${err?.message}`);
 		}
@@ -171,8 +171,8 @@ const DateTimes = {
 	getWeekdayNames,
 	formatEndTime,
 	formatDuration,
-	parse: parseEx,
-	format: formatEx,
+	parse: _parse,
+	format: _format,
 	formatAsRocDate,
 	formatDateTimeAsRocDate,
 	formatDateTimeAsDate,

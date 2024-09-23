@@ -8,6 +8,7 @@ export const ControlledCaptchaField = ({
 	rules,
 	defaultValue = null,
 	onInputChange,
+	validate,
 	// onChange: _onChange,
 	...rest
 }) => {
@@ -30,6 +31,9 @@ export const ControlledCaptchaField = ({
 							onInputChange(s);
 						}
 					}}
+					rules={{
+						validate
+					}}
 					error={error}
 					{...rest}
 				/>
@@ -46,4 +50,5 @@ ControlledCaptchaField.propTypes = {
 	defaultValue: PropTypes.string,
 	onChange: PropTypes.func,
 	onInputChange: PropTypes.func,
+	validate: PropTypes.func,
 };

@@ -8,6 +8,7 @@ import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
+		header: "text",
 		fields: "rowData,active,disabled,focus",
 		debug: true,
 	});

@@ -1,4 +1,3 @@
-import { B011SearchFieldContainer } from "@/components/jobs/B011/B011SearchFieldContainer";
 import { B011DialogContainer } from "@/components/jobs/B011/dialog/B011DialogContainer";
 import { B011ListFormContainer } from "@/components/jobs/B011/list/B011ListFormContainer";
 import B011ListHeader from "@/components/jobs/B011/list/B011ListHeader";

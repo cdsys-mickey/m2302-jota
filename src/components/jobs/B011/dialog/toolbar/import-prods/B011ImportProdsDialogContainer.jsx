@@ -1,29 +1,22 @@
+import { B011Context } from "@/contexts/B011/B011Context";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { forwardRef, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { B011Context } from "../../../../../contexts/B011/B011Context";
-import { DialogExContainer } from "../../../../../shared-components/dialog/DialogExContainer";
-import { OptionPickerProvider } from "../../../../../shared-components/option-picker/OptionPickerProvider";
-import B011LoadProdsForm from "./import-prods/B011ImportProdsForm";
-import { FormMetaProvider } from "../../../../../shared-contexts/form-meta/FormMetaProvider";
+import B011ImportProdsForm from "./B011ImportProdsForm";
 
 const B011ImportProdsDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const b011 = useContext(B011Context);
-	const { importProdsDialogOpen } = b011;
+	// const formMeta = useContext(FormMetaContext);
 	const form = useForm({
 		defaultValues: {},
 	});
 
 	const handleSubmit = form.handleSubmit(
-		b011.onImportProdsSubmit,
+		b011.onImportProdsSubmit({ form }),
 		b011.onImportProdsSubmitError
 	);
-
-	// useChangeTracking(() => {
-	// 	if (!importProdsDialogOpen) {
-	// 		form.reset({});
-	// 	}
-	// }, [importProdsDialogOpen]);
 
 	return (
 		<DialogExContainer
@@ -39,7 +32,7 @@ const B011ImportProdsDialogContainer = forwardRef((props, ref) => {
 			{...rest}>
 			<FormProvider {...form}>
 				<FormMetaProvider {...b011.loadProdFormMeta}>
-					<B011LoadProdsForm handleSubmit={handleSubmit} />
+					<B011ImportProdsForm onSubmit={handleSubmit} />
 				</FormMetaProvider>
 			</FormProvider>
 		</DialogExContainer>

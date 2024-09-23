@@ -124,6 +124,12 @@ import { B02Provider } from "@/contexts/B02/B02Provider";
 import { B02FrameContainer } from "@/pages/B02/B02FrameContainer";
 import { B04Provider } from "@/contexts/B04/B04Provider";
 import { B04FrameContainer } from "@/pages/B04/B04FrameContainer";
+import { B012Provider } from "@/contexts/B012/B012Provider";
+import { B012FrameContainer } from "@/pages/B012/B012FrameContainer";
+import { B031Provider } from "@/contexts/B031/B031Provider";
+import { B031FrameContainer } from "@/pages/B031/B031FrameContainer";
+import { B032Provider } from "@/contexts/B032/B032Provider";
+import { B032FrameContainer } from "@/pages/B032/B032FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -553,6 +559,19 @@ const AppRoute = () => {
 							</CrudProvider>
 						}
 					/>
+
+					<Route
+						path="B012"
+						element={
+							<CrudProvider>
+								<InfiniteLoaderProvider>
+									<B012Provider>
+										<B012FrameContainer />
+									</B012Provider>
+								</InfiniteLoaderProvider>
+							</CrudProvider>
+						}
+					/>
 					<Route
 						path="B02"
 						element={
@@ -561,6 +580,30 @@ const AppRoute = () => {
 									<B02Provider>
 										<B02FrameContainer />
 									</B02Provider>
+								</InfiniteLoaderProvider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="B031"
+						element={
+							<CrudProvider>
+								<InfiniteLoaderProvider>
+									<B031Provider>
+										<B031FrameContainer />
+									</B031Provider>
+								</InfiniteLoaderProvider>
+							</CrudProvider>
+						}
+					/>
+					<Route
+						path="B032"
+						element={
+							<CrudProvider>
+								<InfiniteLoaderProvider>
+									<B032Provider>
+										<B032FrameContainer />
+									</B032Provider>
 								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}

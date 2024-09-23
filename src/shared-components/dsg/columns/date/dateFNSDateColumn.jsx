@@ -3,7 +3,7 @@ import { DateFnsComponentContainer } from "./DateFnsComponentContainer";
 
 export const dateFNSDateColumn = {
 	component: DateFnsComponentContainer,
-	deleteValue: () => null,
+	deleteValue: () => "",
 	copyValue: ({ rowData }) =>
 		rowData ? rowData.toISOString().substr(0, 10) : null,
 	pasteValue: ({ value }) => {

@@ -24,10 +24,8 @@ export const B06FrameContainer = () => {
 		<FormProvider {...searchForm}>
 			<Box sx={[boxStyles]}>
 				<FrameBannerContainer></FrameBannerContainer>
-				<ContainerEx maxWidth="md" alignLeft>
-					<B06FormContainer />
-				</ContainerEx>
-				<B06ToolbarContainer minHeight="42px" />
+				<B06FormContainer />
+				<B06ToolbarContainer />
 				<B06ListHeader />
 				<B06ListViewContainer />
 			</Box>

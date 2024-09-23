@@ -169,6 +169,7 @@ const OptionPicker = memo(
 				// 原本輸入框刪到空白則取消 dirty 狀態,
 				// 但為了支援空 id, 因此這裡改成允許空白時保留 dirty 狀態
 
+				// 清除值就清除錯誤
 				if (!input && value) {
 					onChange(multiple ? [] : null);
 					if (name && clearErrors) {
@@ -193,7 +194,7 @@ const OptionPicker = memo(
 					clearErrors(name);
 				}
 			},
-			[clearErrors, name, onChange, onInputChange, value]
+			[clearErrors, multiple, name, onChange, onInputChange, value]
 		);
 
 		const handleOpen = useCallback(
@@ -443,6 +444,11 @@ const OptionPicker = memo(
 
 		const handleBlur = useCallback(
 			async (e) => {
+				// 離開輸入焦點就清除錯誤
+				if (name && clearErrors) {
+					clearErrors(name);
+				}
+
 				if (asyncRef.current.skipBlur) {
 					asyncRef.current.skipBlur = false;
 					return;
@@ -466,7 +472,7 @@ const OptionPicker = memo(
 					}
 				}
 			},
-			[_open, findByInput, inDSG, inFormMeta, inputNotFound, refocus]
+			[_open, clearErrors, findByInput, inDSG, inFormMeta, inputNotFound, name, refocus]
 		);
 
 		const renderNormalInput = useCallback(
@@ -767,7 +773,7 @@ const OptionPicker = memo(
 			console.log(`${name} changed`, value);
 			// if (focusNextCellOrField && (value || emptyId)) {
 			// 當選項改變, 且有值, 且非 multiple
-			if (focusNextCellOrField && (value || asyncRef.current.focusNextWhenEmpty) && !multiple && !supressEvents) {
+			if (focusNextCellOrField && (value || asyncRef.current.focusNextWhenEmpty) && !multiple && !supressEvents && !disabled) {
 				asyncRef.current.focusNextWhenEmpty = false;
 				focusNextCellOrField();
 			}

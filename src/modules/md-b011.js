@@ -2,19 +2,23 @@
 import { nanoid } from "nanoid";
 import Forms from "../shared-modules/sd-forms";
 
-const transformForGridImport = (data) => {
+const transformForGridImport = (data, employee, date) => {
 	return (
-		data?.map((v) => ({
-			Pkey: nanoid(),
-			prod: {
-				ProdID: v.SProdID,
-				ProdData: v.SProdData_N,
-			},
-			SProdData_N: v.SProdData_N,
-			SPackData_N: v.SPackData_N,
-			SPrice: v.SPrice || null,
-			Seq: v.Seq,
-		})) || []
+		data?.map((v) => {
+			const { ProdID, ProdData_N, PackData_N, Price_N } = v;
+			return {
+				Pkey: nanoid(),
+				prod: {
+					ProdID,
+					ProdData: ProdData_N,
+				},
+				ProdData_N,
+				PackData_N,
+				Price: Price_N,
+				employee: ProdID ? employee : null,
+				QDate: ProdID ? date : null,
+			};
+		}) || []
 	);
 };
 
@@ -37,16 +41,19 @@ const transformGridForReading = (data) => {
 	});
 };
 
-const transformGridForSubmitting = (data) => {
+const transformGridForSubmitting = (data, qdate, employeeId) => {
 	return data
 		.filter((v) => v.prod?.ProdID)
-		.map((v, index) => ({
-			Pkey: v.Pkey?.length < 36 ? "" : v.Pkey,
-			SProdID: v.prod?.ProdID,
-			SPrice: v.SPrice,
-			// Seq: v.Seq,
-			Seq: index + 1,
-		}));
+		.map((v) => {
+			const { Pkey, prod, QPrice } = v;
+			return {
+				Pkey: /^\d+$/.test(Pkey) ? Pkey : "",
+				ProdID: prod ? prod.ProdID : "",
+				QPrice: QPrice,
+				QDate: qdate || "",
+				QEmplID: employeeId || "",
+			};
+		});
 };
 
 const transformForReading = (payload) => {
@@ -77,20 +84,32 @@ const transformForReading = (payload) => {
 	};
 };
 
-const transformForSubmitting = (payload, quoteGridData) => {
-	const { InqID, InqDate, employee, supplier, remark } = payload;
-	return Forms.processDateFieldsForSubmit(
-		{
-			InqID,
-			InqDate,
-			EmplID: employee?.CodeID || "",
-			FactID: supplier?.FactID || "",
-			...(quoteGridData && {
-				FactInq_S: transformGridForSubmitting(quoteGridData),
-			}),
-		},
-		"InqDate"
-	);
+const transformForCreating = (payload, gridData) => {
+	const { customer, employee, Date } = payload;
+
+	const qdate = Forms.formatDate(Date);
+	const employeeId = employee?.CodeID || "";
+
+	return {
+		CustID: customer?.CustID || "",
+		QEmplID: employeeId,
+		QDate: qdate,
+		...(gridData && {
+			B011031_W1: transformGridForSubmitting(gridData, qdate, employeeId),
+		}),
+	};
+};
+
+const transformForUpdating = (payload, gridData) => {
+	const { customer, employee, Date } = payload;
+	return {
+		CustID: customer?.CustID || "",
+		QEmplID: employee?.CodeID || "",
+		QDate: Forms.formatDate(Date),
+		...(gridData && {
+			B011031_W1: transformGridForSubmitting(gridData),
+		}),
+	};
 };
 
 const transformAsQueryParams = (data) => {
@@ -106,12 +125,26 @@ const transformAsQueryParams = (data) => {
 	};
 };
 
+const transformProdCriteriaAsQueryParams = (data) => {
+	return {
+		pi: data.sprod?.ProdID,
+		pi2: data.eprod?.ProdID,
+		pn: data.prodName,
+		cl: data.catL?.LClas,
+		cm: data.catM?.MClas,
+		cs: data.catS?.SClas,
+		ta: data.typeA?.TypeA,
+	};
+};
+
 const B011 = {
 	transformForReading,
-	transformForSubmitting,
+	transformForCreating,
+	transformForUpdating,
 	transformAsQueryParams,
 	transformForGridImport,
 	transformGridForReading,
+	transformProdCriteriaAsQueryParams,
 };
 
 export default B011;

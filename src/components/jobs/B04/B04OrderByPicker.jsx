@@ -11,7 +11,7 @@ export const B04OrderByPicker = memo(
 				options={B04.options}
 				getOptionLabel={B04.getOptionLabel}
 				isOptionEqualToValue={B04.isOptionEqualToValue}
-				defaultValue={B04.findById(B04.OrderBy.PROD)}
+				defaultValue={B04.findById(B04.OrderBy.SUPPLIER)}
 				findByInput={B04.findById}
 				notFoundText="排序 ${id} 不存在"
 				{...rest}

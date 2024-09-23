@@ -15,23 +15,24 @@ import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { FormProvider, useFormContext, useWatch } from "react-hook-form";
+import { FormProvider, useForm, useFormContext, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import B011Drawer from "../B011Drawer";
 import B011DialogForm from "./B011DialogForm";
 import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
-	const form = useFormContext({
+	const form = useForm({
 		defaultValues: {
 			quotes: [],
 		},
 	});
-	const { reset } = form;
 
 	const b011 = useContext(B011Context);
+	const { importProdsDialogOpen } = b011;
 	const date = useWatch({
 		name: "Date",
 		control: form.control
@@ -158,7 +159,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 				title: "報價日",
 				minWidth: 140,
 				maxWidth: 140,
-				disabled: true,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn(
@@ -232,38 +233,47 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 	useEffect(() => {
 		if (b011.itemDataReady) {
 			console.log("b011 form reset", b011.itemData);
-			reset(b011.itemData);
+			form.reset(b011.itemData);
 		}
-	}, [b011.itemData, b011.itemDataReady, reset]);
+	}, [b011.itemData, b011.itemDataReady, form]);
+
+	useEffect(() => {
+		if (!importProdsDialogOpen) {
+			form.setFocus("customer", {
+				shouldSelect: true
+			});
+		}
+	}, [importProdsDialogOpen]);
 
 	return (
-		<DialogExContainer
-			ref={ref}
-			title={memoisedTitle}
-			// fullScreen
-			responsive
-			fullWidth
-			maxWidth="lg"
-			TitleButtonsComponent={B011DialogToolbarContainer}
-			open={b011.itemViewOpen}
-			onClose={handleClose}
-			// onReturn={handleReturn}
-			sx={{
-				"& .MuiDialog-paper": {
-					backgroundColor: Colors.DIALOG_BG,
-				},
-			}}
-			contentSx={[
-				{
-					minHeight: "30em",
-					paddingTop: 0,
-					// paddingLeft: 0,
-					// paddingRight: 0,
-				},
-				scrollable.scroller,
-			]}
-			{...rest}>
-			<FormProvider {...form}>
+		<FormProvider {...form}>
+			<DialogExContainer
+				ref={ref}
+				title={memoisedTitle}
+				// fullScreen
+				responsive
+				fullWidth
+				maxWidth="lg"
+				TitleButtonsComponent={B011DialogToolbarContainer}
+				open={b011.itemViewOpen}
+				onClose={handleClose}
+				// onReturn={handleReturn}
+				sx={{
+					"& .MuiDialog-paper": {
+						backgroundColor: Colors.DIALOG_BG,
+					},
+				}}
+				contentSx={[
+					{
+						minHeight: "30em",
+						paddingTop: 0,
+						// paddingLeft: 0,
+						// paddingRight: 0,
+					},
+					scrollable.scroller,
+				]}
+				{...rest}>
+
 				<form onSubmit={handleSubmit}>
 					<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
 						<B011DialogForm
@@ -278,10 +288,11 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 
 					</FormMetaProvider>
 				</form>
-			</FormProvider>
-			{/* 側邊欄 */}
-			<B011Drawer />
-		</DialogExContainer>
+
+				{/* 側邊欄 */}
+				<B011Drawer />
+			</DialogExContainer>
+		</FormProvider>
 	);
 });
 

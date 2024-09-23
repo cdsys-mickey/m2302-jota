@@ -61,6 +61,8 @@ export const useC04 = () => {
 			SPrice: "",
 			ChkQty: "",
 			SOrdID: "",
+			// 雖然型態是字串，但日期初始值一定要是 null, 否則會有第一個輸入字元被吃掉的問題
+			SExpDate: null,
 		}),
 		[]
 	);
@@ -484,6 +486,12 @@ export const useC04 = () => {
 				rstDate: formData.GinDate,
 			}
 		) : null;
+		console.log("prodInfo", prodInfo);
+
+		// let finalDate = prodInfo?.MaxDate ? Forms.parseDate(
+		// 	prodInfo.MaxDate
+		// ) : null,
+
 		processedRowData = {
 			...processedRowData,
 			["ProdData"]: rowData.prod?.ProdData || "",
@@ -493,7 +501,7 @@ export const useC04 = () => {
 			["SPrice"]: prodInfo?.SPrice || "",
 			["SExpDate"]: prodInfo?.MaxDate ? Forms.parseDate(
 				prodInfo.MaxDate
-			) : null,
+			) : rowData.SExpDate,
 			["stype"]: null,
 			["SQty"]: "",
 			["SAmt"]: "",
@@ -507,7 +515,7 @@ export const useC04 = () => {
 	const updateGridRow = useCallback(({ fromIndex, formData }) => async (rowData, index) => {
 		const rowIndex = fromIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
 		let processedRowData = {
 			...rowData,
 		};
@@ -526,18 +534,18 @@ export const useC04 = () => {
 		// 單價, 贈,  數量
 		if (
 			rowData.SPrice !== oldRowData.SPrice ||
-			rowData.stype?.id !== oldRowData.Stype?.id ||
+			rowData.stype?.id !== oldRowData.stype?.id ||
 			rowData.SQty !== oldRowData.SQty
 		) {
 			// 計算合計
 			processedRowData = {
 				...processedRowData,
 				["SAmt"]:
-					!rowData.SPrice || !rowData.SQty
+					!processedRowData.SPrice || !processedRowData.SQty
 						? ""
-						: rowData.stype?.id
+						: processedRowData.stype?.id
 							? 0
-							: rowData.SPrice * rowData.SQty,
+							: processedRowData.SPrice * processedRowData.SQty,
 			};
 		}
 		return processedRowData;
@@ -553,85 +561,49 @@ export const useC04 = () => {
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						const updatedRows = await Promise.all(
-							newValue
-								.slice(
-									operation.fromRowIndex,
-									operation.toRowIndex
-								)
-								.map(async (item, index) => {
-									const updatedRow = await updateGridRow({
-										formData,
-										fromIndex: operation.fromRowIndex,
-									})(item, index);
-									return updatedRow;
-								})
-						)
-						console.log("updatedRows", updatedRows);
+						// const updatedRows = await Promise.all(
+						// 	newValue
+						// 		.slice(
+						// 			operation.fromRowIndex,
+						// 			operation.toRowIndex
+						// 		)
+						// 		.map(async (item, index) => {
+						// 			const updatedRow = await updateGridRow({
+						// 				formData,
+						// 				fromIndex: operation.fromRowIndex,
+						// 			})(item, index);
+						// 			return updatedRow;
+						// 		})
+						// )
+						// console.log("updatedRows", updatedRows);
 
-						newGridData.splice(
-							operation.fromRowIndex,
-							updatedRows.length,
-							...updatedRows
-						)
-						// newValue
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.forEach( (rowData, i) => {
-						// 		const { prod, SPrice, SQty, stype } = rowData;
-						// 		const rowIndex = operation.fromRowIndex + i;
-						// 		const {
-						// 			prod: oldProd,
-						// 			SPrice: oldSPrice,
-						// 			oldSQty,
-						// 			oldStype,
-						// 		} = grid.gridData[rowIndex];
+						// newGridData.splice(
+						// 	operation.fromRowIndex,
+						// 	updatedRows.length,
+						// 	...updatedRows
+						// )
 
-						// 		let processedRowData = { ...rowData };
-						// 		// 商品
-						// 		if (prod?.ProdID !== oldProd?.ProdID) {
-						// 			console.log(
-						// 				`prod[${rowIndex}] changed`,
-						// 				prod
-						// 			);
-						// 			processedRowData = await handleGridProdChange({
-						// 				rowData: processedRowData,
-						// 				formData
-						// 			})
-						// 		}
-
-						// 		// 單價, 贈,  數量
-						// 		if (
-						// 			SPrice !== oldSPrice ||
-						// 			stype?.id !== oldStype?.id ||
-						// 			SQty !== oldSQty
-						// 		) {
-						// 			// 計算合計
-						// 			processedRowData = {
-						// 				...processedRowData,
-						// 				["SAmt"]:
-						// 					!SPrice || !SQty
-						// 						? ""
-						// 						: stype?.id
-						// 							? 0
-						// 							: SPrice * SQty,
-						// 			};
-						// 		}
-						// 		newGridData[rowIndex] = processedRowData;
-						// 	});
+						const promises = newValue
+							.slice(
+								operation.fromRowIndex,
+								operation.toRowIndex
+							)
+							.map(async (item, index) => {
+								const updatedRow = await updateGridRow({
+									formData,
+									fromIndex: operation.fromRowIndex,
+								})(item, index);
+								newGridData[operation.fromRowIndex + index] = updatedRow;
+							})
+						await Promise.all(promises);
 					} else if (operation.type === "DELETE") {
-						// 列舉原資料
-						// checkFailed = grid.gridData
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.some((rowData, i) => {
-						// 		if (prodDisabled({ rowData })) {
-						// 			const rowIndex = operation.fromRowIndex + i;
-						// 			toast.error(
-						// 				`不可刪除第 ${rowIndex + 1} 筆商品`
-						// 			);
-						// 			return true;
-						// 		}
-						// 		return false;
-						// 	});
+						// do nothing
+						fetchAmt({
+							paid: formData.PaidAmt,
+							taxType: formData.TaxType,
+							gridData: newGridData,
+							setValue,
+						});
 					} else if (operation.type === "CREATE") {
 						console.log("dsg.CREATE");
 						// process CREATE here
@@ -639,8 +611,9 @@ export const useC04 = () => {
 					}
 				}
 				console.log("grid.changed", newGridData);
+				console.log("newGridData", newGridData);
+				grid.setGridData(newGridData);
 				if (!checkFailed) {
-					grid.setGridData(newGridData);
 					fetchAmt({
 						paid: formData.PaidAmt,
 						taxType: formData.TaxType,
@@ -649,6 +622,77 @@ export const useC04 = () => {
 					});
 				}
 			},
+		[fetchAmt, grid, updateGridRow]
+	);
+
+	const handleGridChangeAsync = useCallback(
+		({ getValues, setValue, gridMeta }) => (newValue, operations) => {
+			const newGridData = [...newValue];
+
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					const formData = getValues();
+					const updateRowFunc = updateGridRow({
+						formData,
+						fromIndex: operation.fromRowIndex,
+					});
+
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach(async (rowData, i) => {
+							const rowIndex = operation.fromRowIndex + i;
+							const oldRowData = grid.gridData[rowIndex];
+							let processedRowData = { ...rowData };
+
+							if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID ||
+								rowData.SPrice !== oldRowData.SPrice ||
+								rowData.stype?.id !== oldRowData.stype?.id ||
+								rowData.SQty !== oldRowData.SQty
+							) {
+								processedRowData = await updateRowFunc(processedRowData, i);
+								newGridData[rowIndex] = processedRowData;
+								fetchAmt({
+									paid: formData.PaidAmt,
+									taxType: formData.TaxType,
+									gridData: newGridData,
+									setValue,
+								});
+							}
+							grid.setGridData(newGridData);
+							// 觸發重新合計
+							// if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID ||
+							// 	rowData.SPrice !== oldRowData.SPrice ||
+							// 	rowData.prod?.ProdID !== oldRowData.prod?.ProdID ||
+							// 	rowData.stype?.id !== oldRowData.stype?.id ||
+							// 	rowData.SQty !== oldRowData.SQty
+							// ) {
+							// if (oldRowData.SAmt !== processedRowData.SAmt) {
+
+							// 	fetchAmt({
+							// 		paid: formData.PaidAmt,
+							// 		taxType: formData.TaxType,
+							// 		gridData: newGridData,
+							// 		setValue,
+							// 	});
+							// }
+						});
+				} else if (operation.type === "DELETE") {
+					grid.setGridData(newGridData);
+					const formData = getValues();
+					fetchAmt({
+						paid: formData.PaidAmt,
+						taxType: formData.TaxType,
+						gridData: newGridData,
+						setValue,
+					});
+				} else if (operation.type === "CREATE") {
+					console.log("dsg.CREATE");
+					grid.setGridData(newGridData);
+					// process CREATE here
+					gridMeta.toFirstColumn({ nextRow: true });
+				}
+			}
+		},
 		[fetchAmt, grid, updateGridRow]
 	);
 
@@ -932,6 +976,7 @@ export const useC04 = () => {
 		grid,
 		// gridMeta,
 		buildGridChangeHandler,
+		handleGridChangeAsync,
 		getRowKey,
 		prodDisabled,
 		purchaseOrdersDisabled,

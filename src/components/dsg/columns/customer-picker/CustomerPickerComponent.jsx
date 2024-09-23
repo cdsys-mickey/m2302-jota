@@ -108,12 +108,15 @@ const CustomerPickerComponent = memo((props) => {
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
-			dense
 			cell={cell}
+			dense
 			hideControls={hideControls}
 			hideBorders
 			disableFadeOut
 			toastError
+			autoHighlight
+			disableOpenOnInput
+			selectOnFocus
 			// 大量資料專用
 			virtualize
 			triggerDelay={100}

@@ -1,7 +1,7 @@
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import StdPrint from "../../modules/md-std-print";
-import { ControlledOptionPicker } from "../../shared-components/option-picker/ControlledOptionPicker";
+import StdPrint from "@/modules/md-std-print";
 
 const StdPrintOutputModePicker = memo(
 	forwardRef((props, ref) => {
@@ -9,7 +9,7 @@ const StdPrintOutputModePicker = memo(
 		const { label = "輸出格式", ...rest } = props;
 
 		return (
-			<ControlledOptionPicker
+			<OptionPickerWrapper
 				ref={ref}
 				label={label}
 				options={StdPrint.options}

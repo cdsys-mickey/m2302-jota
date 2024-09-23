@@ -9,7 +9,7 @@ export const CaptchaField = memo(
 			canvasRef,
 			input,
 			handleRefresh,
-			handleChange,
+			onChange,
 			playAudio,
 			placeholder,
 			...rest
@@ -75,7 +75,7 @@ export const CaptchaField = memo(
 					<input
 						ref={inputRef}
 						value={input}
-						onChange={handleChange}
+						onChange={onChange}
 						placeholder={placeholder}
 						className="rnc-input"
 						data-testid="captcha-input"

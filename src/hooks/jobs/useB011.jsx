@@ -15,6 +15,7 @@ import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import B02 from "@/modules/md-b02";
 
 export const useB011 = () => {
 	const crud = useContext(CrudContext);
@@ -36,6 +37,7 @@ export const useB011 = () => {
 		httpGetAsync,
 		httpPostAsync,
 		httpPutAsync,
+		httpPatchAsync,
 		httpDeleteAsync,
 	} = useWebApi();
 	const dialogs = useContext(DialogsContext);
@@ -44,18 +46,26 @@ export const useB011 = () => {
 		url: "v1/quote/customer-quotes",
 		bearer: token,
 		initialFetchSize: 50,
+		params: {
+			sort: B02.OrderBy.SUPPLIER
+		}
 	});
 
 	const grid = useDSG({
 		gridId: "quotes",
-		keyColumn: "pkey",
+		keyColumn: "Pkey",
+		// keyColumn: "prod.ProdID",
 	});
 
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
 			prod: null,
-			SPrice: "",
+			ProdData_N: "",
+			PackData_N: "",
+			Price: "",
+			QPrice: "",
+			QDate: null,
 			employee: null
 		}),
 		[]
@@ -120,7 +130,7 @@ export const useB011 = () => {
 					});
 					setSelectedInq(data);
 
-					grid.handleGridDataLoaded(data.quotes);
+					grid.initGridData(data.quotes);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -179,13 +189,40 @@ export const useB011 = () => {
 	}, [crud, dialogs, loadItem]);
 
 	// UPDATE
-	const handleUpdate = useCallback(
+	// const handleUpdate = useCallback(
+	// 	async ({ data }) => {
+	// 		try {
+	// 			crud.startUpdating();
+	// 			const { status, error } = await httpPutAsync({
+	// 				url: "v1/quote/customer-quotes/by-cust",
+	// 				data,
+	// 				bearer: token,
+	// 			});
+	// 			if (status.success) {
+	// 				toast.success(`修改成功`);
+	// 				crud.doneUpdating();
+	// 				//crud.cancelReading();
+	// 				loadItem({ refresh: true });
+	// 				listLoader.loadList({ refresh: true });
+	// 			} else {
+	// 				throw error || new Error("未預期例外");
+	// 			}
+	// 		} catch (err) {
+	// 			crud.failUpdating();
+	// 			console.error("handleCreate.failed", err);
+	// 			toast.error(Errors.getMessage("修改失敗", err));
+	// 		}
+	// 	},
+	// 	[crud, httpPutAsync, listLoader, loadItem, token]
+	// );
+
+	const handlePatch = useCallback(
 		async ({ data }) => {
 			try {
 				crud.startUpdating();
-				const { status, error } = await httpPutAsync({
+				const { status, error } = await httpPatchAsync({
 					url: "v1/quote/customer-quotes/by-cust",
-					data: data,
+					data,
 					bearer: token,
 				});
 				if (status.success) {
@@ -203,7 +240,7 @@ export const useB011 = () => {
 				toast.error(Errors.getMessage("修改失敗", err));
 			}
 		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
+		[crud, httpPatchAsync, listLoader, loadItem, token]
 	);
 
 	//DELETE
@@ -246,32 +283,49 @@ export const useB011 = () => {
 	}, []);
 
 	const handleGridProdChange = useCallback(
-		({ rowData, formData }) => {
+		({ rowData, newValue }) => {
 			let processedRowData = { ...rowData };
-			let employee = rowData?.prod ? formData["employee"] : null;
-			let date = rowData?.prod ? formData["Date"] : null;
+
+			// 建立時檢查是否重複
+			if (
+				crud.creating &&
+				processedRowData.prod &&
+				grid.isDuplicating(rowData, newValue, { key: "prod.ProdID" })
+			) {
+				toast.error(
+					`「${processedRowData.prod?.ProdData}」已存在, 請選擇其他商品`,
+					{ position: "top-center" }
+				);
+				processedRowData.prod = null;
+			}
 
 			processedRowData = {
 				...processedRowData,
 				["QPrice"]: "",
-				["Price"]: rowData?.prod?.Price || "",
-				["PackData_N"]: rowData?.prod?.PackData_N || "",
-				["ProdData_N"]: rowData?.prod?.ProdData || "",
-				["employee"]: rowData?.prod ? employee : null,
-				["QDate"]: rowData?.prod ? date : null
+				["Price"]: processedRowData?.prod?.Price || "",
+				["PackData_N"]: processedRowData?.prod?.PackData_N || "",
+				["ProdData_N"]: processedRowData?.prod?.ProdData || "",
+
+
+
 			};
 			return processedRowData;
 		},
-		[]
+		[grid]
 	);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData }) => async (rowData, index) => {
+	const onUpdateRow = useCallback(({ fromIndex, formData, newValue }) => async (rowData, index) => {
 		const rowIndex = fromIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+
 		let processedRowData = {
 			...rowData,
 		};
+
+		// let employee = formData["employee"];
+		// let date = formData["Date"];
+
 		if (
 			rowData.prod?.ProdID !==
 			oldRowData?.prod?.ProdID
@@ -283,14 +337,17 @@ export const useB011 = () => {
 			processedRowData = handleGridProdChange({
 				rowData,
 				oldRowData,
-				formData
+				formData,
+				newValue
 			});
 		}
 		return processedRowData;
 	}, [grid.gridData, handleGridProdChange]);
 
 	const buildGridChangeHandlerOld = useCallback(
-		({ gridMeta, getValues }) => (newValue, operations) => {
+		({ gridMeta, getValues }) => async (newValue, operations) => {
+			console.log("prevGridData", grid.prevGridData);
+			console.log("gridData", grid.gridData);
 			console.log("buildGridChangeHandler", operations);
 			const newGridData = [...newValue];
 			for (const operation of operations) {
@@ -337,26 +394,34 @@ export const useB011 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = B011.transformForSubmitting(
-				data,
-				grid.gridData
-			);
-			console.log("collected", collected);
+
 			if (crud.creating) {
+				const collected = B011.transformForCreating(
+					data,
+					grid.gridData
+				);
+				console.log("collected", collected);
 				handleCreate({ data: collected });
 			} else if (crud.updating) {
-				handleUpdate({ data: collected });
+				const collected = B011.transformForUpdating(
+					data,
+					grid.getDirtyRows()
+				);
+				const submitted = {
+					data: [
+						collected
+					],
+					delete: [
+						...grid.deletedIds
+					]
+				}
+				console.log("submitted", submitted);
+				handlePatch({ data: submitted });
 			} else {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
 		},
-		[
-			crud.creating,
-			crud.updating,
-			handleCreate,
-			handleUpdate,
-			grid.gridData,
-		]
+		[crud.creating, crud.updating, grid, handleCreate, handlePatch]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -406,7 +471,7 @@ export const useB011 = () => {
 					url: "v1/prod/data-grid/B011",
 					bearer: token,
 					params: {
-						...B011.transformAsQueryParams(criteria),
+						...B011.transformProdCriteriaAsQueryParams(criteria),
 						pk: 1,
 					},
 				});
@@ -433,7 +498,7 @@ export const useB011 = () => {
 	);
 
 	const onImportProdsSubmit = useCallback(
-		async (data) => {
+		({ form }) => async (data) => {
 			console.log("onImportProdsSubmit", data);
 			try {
 				importProdsAction.start();
@@ -441,14 +506,15 @@ export const useB011 = () => {
 					url: "v1/prod/data-grid/B011",
 					bearer: token,
 					params: {
-						...B011.transformAsQueryParams(ipState.criteria),
+						...B011.transformProdCriteriaAsQueryParams(ipState.criteria),
 						sk: ipState.saveKey,
 					},
 				});
 				if (status.success) {
-					const data = payload.data?.[0].FactInq_S || [];
+					const data = payload.data?.[0].B011031_W1 || [];
 					console.log("data", data);
-					grid.initGridData(B011.transformForGridImport(data), {
+					const formData = form.getValues();
+					grid.initGridData(B011.transformForGridImport(data, formData?.employee, formData?.Date), {
 						createRow,
 					});
 					toast.success(`成功帶入 ${data.length} 筆商品`);
@@ -538,6 +604,8 @@ export const useB011 = () => {
 		onEditorSubmit,
 		onEditorSubmitError,
 		// 報價 Grid
+		createRow,
+		buildGridChangeHandlerOld,
 		...grid,
 		grid,
 		onUpdateRow,

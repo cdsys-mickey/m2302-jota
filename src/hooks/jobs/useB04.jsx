@@ -45,6 +45,9 @@ export const useB04 = () => {
 		url: "v1/quote/new-customer-quotes",
 		bearer: token,
 		initialFetchSize: 50,
+		params: {
+			sort: B04.OrderBy.SUPPLIER
+		}
 	});
 
 	const grid = useDSG({

@@ -6,6 +6,24 @@ const formatDate = (value, pattern) => {
 	return DateTimes.format(value, pattern);
 };
 
+const reformatDate2 = (value) => {
+	return formatDate(DateTimes.parse(value), DateTimes.DATEFNS_DATE_DASH);
+};
+
+const reformatDate = (value, format) => {
+	let result = "";
+	switch (typeof value) {
+		case "Date":
+			result = formatDate(value, format);
+			break;
+		default:
+			result = value.replaceAll("/", "-");
+			break;
+	}
+	console.log(`reformat ${value} as ${result}`);
+	return result;
+};
+
 const parseDate = (value, pattern) => {
 	return DateTimes.parse(value, pattern);
 };
@@ -132,6 +150,7 @@ const Forms = {
 	processDateFieldsForReset,
 	// processNumberFieldsForSubmit,
 	assignDefaultValues,
+	reformatDate,
 };
 
 export default Forms;

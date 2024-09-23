@@ -26,6 +26,7 @@ const DateFnsComponent = memo((props) => {
 	} = props;
 	const ref = useRef(null);
 	const {
+		// pattern = "\\d{4}-\\d{2}-\\d{2}",
 		// Context Methods
 		skipDisabled,
 		// focusNextCell,
@@ -59,17 +60,30 @@ const DateFnsComponent = memo((props) => {
 		};
 	}, [columnIndex, rowIndex]);
 
-	const value = useMemo(() => {
-		return DateTimes.format(rowData, DATE_FORMAT);
-	}, [rowData]);
+	// const value = useMemo(() => {
+	// 	return DateTimes.format(rowData, DATE_FORMAT);
+	// }, [rowData]);
 
+	// const handleChange = useCallback(
+	// 	(e) => {
+	// 		console.log("handleChange", e.target.value)
+	// 		const date = DateTimes.parse(e.target.value, DATE_FORMAT);
+	// 		setRowData(isNaN(date?.getTime()) ? null : date);
+	// 	},
+	// 	[setRowData]
+	// );
 	const handleChange = useCallback(
 		(e) => {
-			const date = DateTimes.parse(e.target.value, DATE_FORMAT);
-			setRowData(isNaN(date?.getTime()) ? null : date);
+			console.log("handleChange", e);
+			setRowData(e.target.value);
 		},
 		[setRowData]
 	);
+
+	const handleInput = useCallback((e) => {
+		console.log("handleInput", e.target.value);
+		setRowData(e.target.value);
+	}, [setRowData]);
 
 	const handleKeyDown = useCallback(
 		(e) => {
@@ -105,13 +119,17 @@ const DateFnsComponent = memo((props) => {
 			type="date"
 			tabIndex={-1}
 			max="9999-12-31"
+			// pattern={pattern}
+			pattern="\d{4}-\d{2}-\d{2}"
 			ref={ref}
 			style={{
 				pointerEvents: focus ? "auto" : "none",
 				opacity: rowData || active ? undefined : 0,
 			}}
-			value={value}
-			onChange={handleChange}
+			// value={value}
+			value={rowData}
+			// onChange={handleChange}
+			onInput={handleInput}
 			onKeyDown={handleKeyDown}
 		// {...rest}
 		/>

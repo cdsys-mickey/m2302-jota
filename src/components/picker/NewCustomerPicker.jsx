@@ -12,6 +12,7 @@ const NewCustomerPicker = (props) => {
 	const querystring = useMemo(() => {
 		return queryString.stringify({
 			tp: 10000,
+			fuzzy: 1,
 		});
 	}, []);
 

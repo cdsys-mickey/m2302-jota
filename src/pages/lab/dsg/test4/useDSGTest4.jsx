@@ -12,6 +12,10 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
 import { ProdTypeAPickerComponentContainer } from "@/components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
+import { createDateFieldColumnEx } from "@/shared-components/dsg/columns/date/createDateFieldColumnEx";
+import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import { muiDateColumn } from "@/shared-components/dsg/columns/date/muiDateColumn";
+import { createMuiDateColumn } from "@/shared-components/dsg/columns/date/createMuiDateColumn";
 
 export const useDSGTest4 = () => {
 	const grid = useDSG({});
@@ -86,30 +90,39 @@ export const useDSGTest4 = () => {
 			{
 				...keyColumn(
 					"SOrdQty",
-					// createFloatColumn(2, { enterToNext: true })
 					createFloatColumn(2, {
 						// enterToNext: true
 					})
 				),
 				title: "數字欄位",
-				// minWidth: 90,
-				// maxWidth: 90,
-				grow: 1,
+				minWidth: 90,
+				maxWidth: 90,
 				disabled: grid.readOnly
 			},
 
 			{
 				...keyColumn(
 					"SExpDate",
-					createDateFnsColumn({
-						// enterToNext: true,
-					})
+					// createDateFnsColumn()
+					dateFieldColumnEx
 				),
 				title: "有效日期",
 				minWidth: 140,
 				maxWidth: 140,
 				disabled: grid.readOnly
 			},
+			// {
+			// 	...keyColumn(
+			// 		"SExpDate2",
+			// 		createMuiDateColumn({
+			// 			name: "SExpDate2"
+			// 		})
+			// 	),
+			// 	title: "有效日期2",
+			// 	minWidth: 140,
+			// 	maxWidth: 140,
+			// 	disabled: grid.readOnly
+			// },
 			{
 				...keyColumn(
 					"typeA",
@@ -192,6 +205,7 @@ export const useDSGTest4 = () => {
 			}
 			if (!checkFailed) {
 				grid.setGridData(newGridData);
+				console.log("newGridData", newGridData);
 			}
 		},
 		[grid, gridMeta, handleGridProdChange]

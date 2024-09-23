@@ -1,18 +1,11 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { memo, useMemo } from "react";
-import {
-	DynamicDataSheetGrid,
-	createTextColumn,
-	keyColumn,
-} from "react-datasheet-grid";
+import { memo } from "react";
 
-import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
