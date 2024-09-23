@@ -153,7 +153,9 @@ export const useC04 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -219,22 +221,31 @@ export const useC04 = () => {
 					grid.gridData
 				);
 				console.log("collected", collected);
-				const { status, payload, error } = await httpPostAsync({
-					url: "v1/purchase/restocks/refresh-grid",
-					bearer: token,
-					data: collected,
-				});
-				console.log("refresh-grid.payload", payload);
-				if (status.success) {
-					const data = C04.transformForReading(payload.data[0]);
-					console.log("refresh-grid.data", data);
-					grid.handleGridDataLoaded(
-						grid.fillRows({ createRow, data: data.prods })
-					);
-					refreshAmt({ setValue, data });
-					toast.info("商品單價已更新");
-				} else {
-					throw error || new Error("未預期例外");
+				try {
+					const { status, payload, error } = await httpPostAsync({
+						url: "v1/purchase/restocks/refresh-grid",
+						bearer: token,
+						data: collected,
+					});
+					console.log("refresh-grid.payload", payload);
+					if (status.success) {
+						const data = C04.transformForReading(payload.data[0]);
+						console.log("refresh-grid.data", data);
+						grid.handleGridDataLoaded(
+							grid.fillRows({ createRow, data: data.prods })
+						);
+						refreshAmt({ setValue, data });
+						toast.info("商品單價已更新", {
+							position: "top-center"
+						});
+					} else {
+						throw error || new Error("未預期例外");
+					}
+				} catch (e) {
+					console.error(e);
+					toast.error("商品單價更新失敗, 請檢查各欄位是否完整", {
+						position: "top-center"
+					});
 				}
 			} else {
 				//clear
@@ -336,7 +347,9 @@ export const useC04 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -367,7 +380,9 @@ export const useC04 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -394,12 +409,16 @@ export const useC04 = () => {
 
 			const supplierId = supplier?.FactID;
 			if (!supplierId) {
-				toast.error("請先選擇廠商");
+				toast.error("請先選擇廠商", {
+					position: "top-center"
+				});
 				return;
 			}
 
 			if (!isDate(rstDate)) {
-				toast.error("請先輸入進貨日期");
+				toast.error("請先輸入進貨日期", {
+					position: "top-center"
+				});
 				return;
 			}
 
@@ -420,7 +439,9 @@ export const useC04 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err));
+				toast.error(Errors.getMessage("查詢報價失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[httpGetAsync, token]
@@ -451,7 +472,9 @@ export const useC04 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("計算合計失敗", err));
+				toast.error(Errors.getMessage("計算合計失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[httpGetAsync, token]
@@ -561,28 +584,6 @@ export const useC04 = () => {
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						// const updatedRows = await Promise.all(
-						// 	newValue
-						// 		.slice(
-						// 			operation.fromRowIndex,
-						// 			operation.toRowIndex
-						// 		)
-						// 		.map(async (item, index) => {
-						// 			const updatedRow = await updateGridRow({
-						// 				formData,
-						// 				fromIndex: operation.fromRowIndex,
-						// 			})(item, index);
-						// 			return updatedRow;
-						// 		})
-						// )
-						// console.log("updatedRows", updatedRows);
-
-						// newGridData.splice(
-						// 	operation.fromRowIndex,
-						// 	updatedRows.length,
-						// 	...updatedRows
-						// )
-
 						const promises = newValue
 							.slice(
 								operation.fromRowIndex,
@@ -596,6 +597,12 @@ export const useC04 = () => {
 								newGridData[operation.fromRowIndex + index] = updatedRow;
 							})
 						await Promise.all(promises);
+						fetchAmt({
+							paid: formData.PaidAmt,
+							taxType: formData.TaxType,
+							gridData: newGridData,
+							setValue,
+						});
 					} else if (operation.type === "DELETE") {
 						// do nothing
 						fetchAmt({
@@ -613,14 +620,14 @@ export const useC04 = () => {
 				console.log("grid.changed", newGridData);
 				console.log("newGridData", newGridData);
 				grid.setGridData(newGridData);
-				if (!checkFailed) {
-					fetchAmt({
-						paid: formData.PaidAmt,
-						taxType: formData.TaxType,
-						gridData: newGridData,
-						setValue,
-					});
-				}
+				// if (!checkFailed) {
+				// 	fetchAmt({
+				// 		paid: formData.PaidAmt,
+				// 		taxType: formData.TaxType,
+				// 		gridData: newGridData,
+				// 		setValue,
+				// 	});
+				// }
 			},
 		[fetchAmt, grid, updateGridRow]
 	);
@@ -829,7 +836,9 @@ export const useC04 = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("載入採購單商品失敗", err));
+					toast.error(Errors.getMessage("載入採購單商品失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		[grid, httpPostAsync, token, refreshAmt]
@@ -875,7 +884,9 @@ export const useC04 = () => {
 						});
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("商品單價更新失敗", err));
+					toast.error(Errors.getMessage("商品單價更新失敗", err), {
+						position: "top-center"
+					});
 					// 還原
 				}
 			},
@@ -915,7 +926,9 @@ export const useC04 = () => {
 						throw error || new Error("發生未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("重整商品失敗", err));
+					toast.error(Errors.getMessage("重整商品失敗", err), {
+						position: "top-center"
+					});
 					// 還原
 				}
 			},
@@ -944,7 +957,9 @@ export const useC04 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err));
+			toast.error(Errors.getMessage("編輯檢查失敗", err), {
+				position: "top-center"
+			});
 		} finally {
 			checkEditableAction.clear();
 		}

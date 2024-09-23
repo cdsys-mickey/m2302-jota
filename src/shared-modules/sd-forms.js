@@ -2,26 +2,22 @@ import DateTimes from "./sd-date-times";
 import DateFormats from "./sd-date-formats";
 import Types from "./sd-types";
 
-const formatDate = (value, pattern) => {
-	return DateTimes.format(value, pattern);
-};
-
-const reformatDate2 = (value) => {
-	return formatDate(DateTimes.parse(value), DateTimes.DATEFNS_DATE_DASH);
-};
-
-const reformatDate = (value, format) => {
-	let result = "";
-	switch (typeof value) {
-		case "Date":
-			result = formatDate(value, format);
-			break;
-		default:
-			result = value.replaceAll("/", "-");
-			break;
+const formatDate = (value, format) => {
+	if (!value) {
+		return null;
+	}
+	let result = null;
+	if (value instanceof Date) {
+		result = DateTimes.format(value, format);
+	} else if (typeof value === "string") {
+		result = value?.replace(/\.\s?|\//g, "-");
 	}
 	console.log(`reformat ${value} as ${result}`);
 	return result;
+};
+
+const reformatDate = (value) => {
+	return formatDate(value, DateFormats.DATEFNS_DATE_DASH);
 };
 
 const parseDate = (value, pattern) => {

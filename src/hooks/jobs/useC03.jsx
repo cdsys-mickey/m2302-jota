@@ -176,7 +176,9 @@ export const useC03 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -296,7 +298,9 @@ export const useC03 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -327,7 +331,9 @@ export const useC03 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -414,19 +420,25 @@ export const useC03 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { getValues }) => {
 			if (!prodId) {
-				toast.error("請先選擇商品");
+				toast.error("請先選擇商品", {
+					position: "top-center"
+				});
 				return;
 			}
 
 			const supplierId = getValues("supplier")?.FactID;
 			if (!supplierId) {
-				toast.error("請先選擇廠商");
+				toast.error("請先選擇廠商", {
+					position: "top-center"
+				});
 				return;
 			}
 
 			const ordDate = getValues("OrdDate");
 			if (!isDate(ordDate)) {
-				toast.error("請先輸入採購日期");
+				toast.error("請先輸入採購日期", {
+					position: "top-center"
+				});
 				return;
 			}
 
@@ -447,7 +459,9 @@ export const useC03 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err));
+				toast.error(Errors.getMessage("查詢報價失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[httpGetAsync, token]
@@ -568,9 +582,9 @@ export const useC03 = () => {
 							.some((rowData, i) => {
 								if (prodDisabled({ rowData })) {
 									const rowIndex = operation.fromRowIndex + i;
-									toast.error(
-										`不可刪除第 ${rowIndex + 1} 筆商品`
-									);
+									toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
+										position: "top-center"
+									});
 									return true;
 								}
 								return false;
@@ -654,7 +668,9 @@ export const useC03 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("覆核失敗", err));
+				toast.error(Errors.getMessage("覆核失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[
@@ -716,7 +732,9 @@ export const useC03 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("解除覆核失敗", err));
+				toast.error(Errors.getMessage("解除覆核失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[
@@ -810,7 +828,9 @@ export const useC03 = () => {
 					}
 				} catch (err) {
 					console.error("onRefreshGridSubmit failed", err);
-					toast.error(Errors.getMessage("單價重整失敗", err));
+					toast.error(Errors.getMessage("單價重整失敗", err), {
+						position: "top-center"
+					});
 					// 還原
 					const prevData = getPrevData();
 					setValue("supplier", prevData?.supplier);

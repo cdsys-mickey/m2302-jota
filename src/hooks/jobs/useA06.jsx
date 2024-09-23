@@ -181,7 +181,9 @@ export const useA06 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, loader, mode, token]
@@ -216,7 +218,9 @@ export const useA06 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, loadItem, loader, mode, token]
@@ -241,7 +245,9 @@ export const useA06 = ({ token, mode }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A06.onSubmitError`, err);
 		toast.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
+			position: "top-center"
+		}
 		);
 	}, []);
 
@@ -285,7 +291,9 @@ export const useA06 = ({ token, mode }) => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -322,7 +330,9 @@ export const useA06 = ({ token, mode }) => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("轉換失敗", err));
+				toast.error(Errors.getMessage("轉換失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPatchAsync, loader, reviewAction, token]

@@ -142,7 +142,9 @@ export const useA20 = ({ token }) => {
 			} catch (err) {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, loader, token]
@@ -175,7 +177,9 @@ export const useA20 = ({ token }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, loadItem, loader, token]
@@ -210,7 +214,9 @@ export const useA20 = ({ token }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A20.onSubmitError`, err);
 		toast.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
+			position: "top-center"
+		}
 		);
 	}, []);
 
@@ -257,7 +263,9 @@ export const useA20 = ({ token }) => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -321,8 +329,9 @@ export const useA20 = ({ token }) => {
 										grid.isDuplicating(rowData, newValue)
 									) {
 										toast.error(
-											`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`,
-											{ position: "top-center" }
+											`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`, {
+											position: "top-center"
+										}
 										);
 										setTimeout(() => {
 											gridMeta.setActiveCell({

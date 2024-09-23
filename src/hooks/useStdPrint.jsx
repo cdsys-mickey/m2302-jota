@@ -163,7 +163,9 @@ export const useStdPrint = ({
 	const handlePrint = useCallback(
 		(mode) => {
 			if (!state.selectedFields || state.selectedFields.length === 0) {
-				toast.error("請至少選擇一個欄位");
+				toast.error("請至少選擇一個欄位", {
+					position: "top-center"
+				});
 				return;
 			}
 
@@ -184,8 +186,7 @@ export const useStdPrint = ({
 			};
 			console.log(`jsonData`, jsonData);
 			postToBlank(
-				`${
-					import.meta.env.VITE_URL_REPORT
+				`${import.meta.env.VITE_URL_REPORT
 				}/WebStdReport.aspx?LogKey=${logKey}`,
 				{
 					jsonData: JSON.stringify(jsonData),

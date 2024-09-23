@@ -121,7 +121,7 @@ export const useMessaging = () => {
 		clearListLoading();
 	}, [clearListLoading, loadUnreadCount]);
 
-	const onClose = useCallback(() => {}, []);
+	const onClose = useCallback(() => { }, []);
 
 	const { connection, connectionId, connectionState, connect, disconnect } =
 		useSignalR({
@@ -165,7 +165,9 @@ export const useMessaging = () => {
 					throw error || new Error("為預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("標示已讀失敗", err));
+				toast.error(Errors.getMessage("標示已讀失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[clearListLoading, httpPatchAsync, loadUnreadCount, loader, token]

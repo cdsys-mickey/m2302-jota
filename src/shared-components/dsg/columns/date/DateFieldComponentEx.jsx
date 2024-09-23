@@ -143,8 +143,9 @@ const DateFieldComponentEx = memo((props) => {
 	}, [setRowData]);
 
 	useEffect(() => {
-		// if (!rowData && dateValue) {
-		if (!rowData && isValid(new Date(dateValue))) {
+		// null 才是透過 del 清空的
+		// if (rowData == null && isValid(new Date(dateValue))) {
+		if (rowData == null) {
 			console.log("sync dateValue to empty");
 			setDateValue("");
 		} else if (rowData && !dateValue) {

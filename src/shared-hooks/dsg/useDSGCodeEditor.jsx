@@ -77,7 +77,9 @@ export const useDSGCodeEditor = ({
 				} else {
 					switch (status.code) {
 						default:
-							toast.error(`發生未預期例外 ${status.code}`);
+							toast.error(`發生未預期例外 ${status.code}`, {
+								position: "top-center"
+							});
 							break;
 					}
 				}
@@ -120,12 +122,9 @@ export const useDSGCodeEditor = ({
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(
-					Errors.getMessage(`新增${displayName}發生例外`, err),
-					{
-						position: "top-center",
-					}
-				);
+				toast.error(Errors.getMessage(`新增${displayName}發生例外`, err), {
+					position: "top-center"
+				});
 				reload();
 				setTimeout(() => {
 					gridMeta.setActiveCell(null);
@@ -154,10 +153,9 @@ export const useDSGCodeEditor = ({
 					throw error?.message || new Error("修改失敗");
 				}
 			} catch (err) {
-				toast.error(
-					Errors.getMessage(`修改${displayName}發生例外`, err),
-					{ position: "top-center" }
-				);
+				toast.error(Errors.getMessage(`修改${displayName}發生例外`, err), {
+					position: "top-center"
+				});
 				reload();
 			}
 		},
@@ -204,21 +202,15 @@ export const useDSGCodeEditor = ({
 						onDeleted(rows);
 					}
 				} else {
-					toast.warn(
-						"沒有刪除任何資料" + error?.message
-							? ": " + error.message
-							: "",
-						{ position: "top-center" }
-					);
+					toast.warn("沒有刪除任何資料" + error?.message ? ": " + error.message : "", {
+						position: "top-center"
+					});
 				}
 			} catch (err) {
 				console.error(err);
-				toast.error(
-					Errors.getMessage(`刪除${displayName}發生例外`, err),
-					{
-						position: "top-center",
-					}
-				);
+				toast.error(Errors.getMessage(`刪除${displayName}發生例外`, err), {
+					position: "top-center",
+				});
 			} finally {
 				// grid.setDeletingRow(null);
 				reload();
@@ -313,12 +305,9 @@ export const useDSGCodeEditor = ({
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
-			toast.error(
-				`${displayName} ${row.rowData[grid.keyColumn]} 已存在`,
-				{
-					position: "top-center",
-				}
-			);
+			toast.error(`${displayName} ${row.rowData[grid.keyColumn]} 已存在`, {
+				position: "top-center",
+			});
 
 			// 先把重複那筆的 key 清掉
 			newValue[row.rowIndex][grid.keyColumn] = "";

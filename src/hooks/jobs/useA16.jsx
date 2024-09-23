@@ -141,7 +141,9 @@ export const useA16 = () => {
 				}
 			} catch (err) {
 				reload();
-				toast.error(Errors.getMessage("變更狀態失敗", err));
+				toast.error(Errors.getMessage("變更狀態失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[httpPatchAsync, reload, token]

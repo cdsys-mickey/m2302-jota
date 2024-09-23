@@ -180,7 +180,9 @@ export const useD05 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("取得庫存失敗", err));
+				toast.error(Errors.getMessage("取得庫存失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[calcProdStock, httpGetAsync, grid, qtyMap, token]
@@ -208,9 +210,13 @@ export const useD05 = () => {
 				console.error("handleCreate.failed", err);
 				if (err.code === 102) {
 					loadStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出");
+					toast.error("部分商品庫存不足，請調整後再送出", {
+						position: "top-center"
+					});
 				} else {
-					toast.error(Errors.getMessage("新增失敗", err));
+					toast.error(Errors.getMessage("新增失敗", err), {
+						position: "top-center"
+					});
 				}
 			}
 		},
@@ -315,9 +321,13 @@ export const useD05 = () => {
 				console.error("handleUpdate.failed", err);
 				if (err.code === 102) {
 					loadStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出");
+					toast.error("部分商品庫存不足，請調整後再送出", {
+						position: "top-center"
+					});
 				} else {
-					toast.error(Errors.getMessage("修改失敗", err));
+					toast.error(Errors.getMessage("修改失敗", err), {
+						position: "top-center"
+					});
 				}
 			}
 		},
@@ -349,7 +359,9 @@ export const useD05 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -446,7 +458,9 @@ export const useD05 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err));
+				toast.error(Errors.getMessage("查詢報價失敗", err), {
+					position: "top-center"
+				});
 			}
 			console.log("newRowData→", newRowData);
 			return newRowData;
@@ -729,7 +743,9 @@ export const useD05 = () => {
 						});
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("商品單價更新失敗", err));
+					toast.error(Errors.getMessage("商品單價更新失敗", err), {
+						position: "top-center"
+					});
 					// 還原
 				}
 			},
@@ -758,7 +774,9 @@ export const useD05 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err));
+			toast.error(Errors.getMessage("編輯檢查失敗", err), {
+				position: "top-center"
+			});
 		} finally {
 			checkEditableAction.clear();
 		}

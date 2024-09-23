@@ -121,7 +121,9 @@ export const useC07 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -204,7 +206,9 @@ export const useC07 = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("更新商品單價失敗", err));
+					toast.error(Errors.getMessage("更新商品單價失敗", err), {
+						position: "top-center"
+					});
 				}
 			} else {
 				//clear
@@ -305,7 +309,9 @@ export const useC07 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -336,7 +342,9 @@ export const useC07 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -384,18 +392,24 @@ export const useC07 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { supplier, rtnDate }) => {
 			if (!prodId) {
-				toast.error("請先選擇商品");
+				toast.error("請先選擇商品", {
+					position: "top-center"
+				});
 				return;
 			}
 
 			const supplierId = supplier?.FactID;
 			if (!supplierId) {
-				toast.error("請先選擇廠商");
+				toast.error("請先選擇廠商", {
+					position: "top-center"
+				});
 				return;
 			}
 
 			if (!isDate(rtnDate)) {
-				toast.error("請先輸入訂貨日期");
+				toast.error("請先輸入訂貨日期", {
+					position: "top-center"
+				});
 				return;
 			}
 
@@ -416,7 +430,9 @@ export const useC07 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err));
+				toast.error(Errors.getMessage("查詢報價失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[httpGetAsync, token]
@@ -449,7 +465,9 @@ export const useC07 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("計算合計失敗", err));
+				toast.error(Errors.getMessage("計算合計失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[httpGetAsync, token]
@@ -661,7 +679,9 @@ export const useC07 = () => {
 						});
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("商品單價更新失敗", err));
+					toast.error(Errors.getMessage("商品單價更新失敗", err), {
+						position: "top-center"
+					});
 					// 還原
 				}
 			},
@@ -690,7 +710,9 @@ export const useC07 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err));
+			toast.error(Errors.getMessage("編輯檢查失敗", err), {
+				position: "top-center"
+			});
 		} finally {
 			checkEditableAction.clear();
 		}

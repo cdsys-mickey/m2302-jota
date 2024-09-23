@@ -113,7 +113,9 @@ export const useC02 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("請購單新增失敗", err));
+				toast.error(Errors.getMessage("請購單新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -229,7 +231,9 @@ export const useC02 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -260,7 +264,9 @@ export const useC02 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -338,9 +344,9 @@ export const useC02 = () => {
 						.some((rowData, i) => {
 							if (prodDisabled({ rowData })) {
 								const rowIndex = operation.fromRowIndex + i;
-								toast.error(
-									`不可刪除第 ${rowIndex + 1} 筆商品`
-								);
+								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
+									position: "top-center"
+								});
 								return true;
 							}
 							return false;
@@ -436,7 +442,9 @@ export const useC02 = () => {
 				}
 			} catch (err) {
 				reviewAction.fail(err);
-				toast.error(Errors.getMessage("覆核失敗", err));
+				toast.error(Errors.getMessage("覆核失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPatchAsync, listLoader, reviewAction, selectById, token]
@@ -488,7 +496,9 @@ export const useC02 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("解除覆核失敗", err));
+				toast.error(Errors.getMessage("解除覆核失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPatchAsync, listLoader, rejectAction, token]

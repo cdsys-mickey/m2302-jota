@@ -135,7 +135,9 @@ const CatMGridProvider = (props) => {
 					} else {
 						switch (status.code) {
 							default:
-								toast.error(`發生未預期例外 ${status.code}`);
+								toast.error(`發生未預期例外 ${status.code}`, {
+									position: "top-center"
+								});
 								break;
 						}
 					}
@@ -184,7 +186,9 @@ const CatMGridProvider = (props) => {
 					throw error?.message || new Error("新增失敗");
 				}
 			} catch (err) {
-				toast.error(`新增中分類發生例外: ${err.message}`);
+				toast.error(`新增中分類發生例外: ${err.message}`, {
+					position: "top-center"
+				});
 				reload();
 			}
 		},
@@ -215,7 +219,9 @@ const CatMGridProvider = (props) => {
 					throw error?.message || new Error("修改失敗");
 				}
 			} catch (err) {
-				toast.error(`新增中分類發生例外: ${err.message}`);
+				toast.error(`新增中分類發生例外: ${err.message}`, {
+					position: "top-center"
+				});
 				reload();
 			}
 		},
@@ -244,7 +250,9 @@ const CatMGridProvider = (props) => {
 				}
 			} catch (err) {
 				console.error(err);
-				toast.error(`刪除中分類發生例外: ${err.message}`);
+				toast.error(`刪除中分類發生例外: ${err.message}`, {
+					position: "top-center"
+				});
 			} finally {
 				// grid.setDeletingRow(null);
 				dialogs.closeLatest();
@@ -278,7 +286,9 @@ const CatMGridProvider = (props) => {
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
 			//dsg.rollbackChanges();
-			toast.error(`中分類 ${row.rowData.MClas} 已存在`);
+			toast.error(`中分類 ${row.rowData.MClas} 已存在`, {
+				position: "top-center"
+			});
 			grid.setValueByRowIndex(
 				row.rowIndex,
 				{

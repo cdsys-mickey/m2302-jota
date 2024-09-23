@@ -94,7 +94,9 @@ export const useB04 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -197,7 +199,9 @@ export const useB04 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -228,7 +232,9 @@ export const useB04 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -387,7 +393,9 @@ export const useB04 = () => {
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err));
+				toast.error(Errors.getMessage("篩選失敗", err), {
+					position: "top-center"
+				});
 			} finally {
 				setIpState((prev) => ({
 					...prev,
@@ -424,7 +432,9 @@ export const useB04 = () => {
 				}
 			} catch (err) {
 				importProdsAction.fail(err);
-				toast.error(Errors.getMessage("帶入商品發生錯誤", err));
+				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[

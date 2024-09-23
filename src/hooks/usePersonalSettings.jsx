@@ -71,7 +71,9 @@ export const usePersonalSettings = () => {
 						throw error || new Error("發生未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("驗證失敗", err));
+					toast.error(Errors.getMessage("驗證失敗", err), {
+						position: "top-center"
+					});
 					setError("ogPword", {
 						type: "manual",
 						message: "密碼驗證失敗",
@@ -123,7 +125,9 @@ export const usePersonalSettings = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("變更密碼失敗", err));
+					toast.error(Errors.getMessage("變更密碼失敗", err), {
+						position: "top-center"
+					});
 					failChanging(err);
 				}
 			},

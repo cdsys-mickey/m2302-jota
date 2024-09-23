@@ -14,8 +14,6 @@ const transformGridForReading = (data) => {
 						ProdData: ProdData_N,
 					},
 					ProdData: ProdData_N,
-					// SExpDate: SExpDate ? Forms.parseDate(SExpDate) : null,
-					// SExpDate: SExpDate ? Forms.reformatDate(SExpDate) : null,
 					SExpDate: Forms.reformatDate(SExpDate),
 					SOrdID,
 					ordId,

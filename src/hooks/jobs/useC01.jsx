@@ -339,7 +339,9 @@ export const useC01 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -458,9 +460,9 @@ export const useC01 = () => {
 						.some((rowData, i) => {
 							if (prodDisabled({ rowData })) {
 								const rowIndex = operation.fromRowIndex + i;
-								toast.error(
-									`不可刪除第 ${rowIndex + 1} 筆商品`
-								);
+								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
+									position: "top-center"
+								});
 								return true;
 							}
 							return false;
@@ -604,7 +606,9 @@ export const useC01 = () => {
 				}
 			} catch (err) {
 				transformAction.fail(err);
-				toast.error(Errors.getMessage("形成採購單失敗", err));
+				toast.error(Errors.getMessage("形成採購單失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPatchAsync, listLoader, token, transformAction]
@@ -684,10 +688,12 @@ export const useC01 = () => {
 				}
 			} catch (err) {
 				transformListAction.fail(err);
-				toast.error(Errors.getMessage("形成採購單失敗", err));
+				toast.error(Errors.getMessage("形成採購單失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
-		[crud, httpPatchAsync, listLoader, token, transformListAction]
+		[crud, httpPatchAsync, listLoader, listLoaderCtx.paramsRef, token, transformListAction]
 	);
 
 	const onTransformListSubmitError = useCallback((err) => {

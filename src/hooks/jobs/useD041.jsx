@@ -147,9 +147,13 @@ export const useD041 = () => {
 				console.error("handleCreate.failed", err);
 				if (err.code === 102) {
 					// loadStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出");
+					toast.error("部分商品庫存不足，請調整後再送出", {
+						position: "top-center"
+					});
 				} else {
-					toast.error(Errors.getMessage("新增失敗", err));
+					toast.error(Errors.getMessage("新增失敗", err), {
+						position: "top-center"
+					});
 				}
 			}
 		},
@@ -251,7 +255,9 @@ export const useD041 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -282,7 +288,9 @@ export const useD041 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -730,7 +738,9 @@ export const useD041 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err));
+			toast.error(Errors.getMessage("編輯檢查失敗", err), {
+				position: "top-center"
+			});
 		} finally {
 			checkEditableAction.clear();
 		}

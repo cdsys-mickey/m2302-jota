@@ -15,6 +15,7 @@ export const C04ProdGridContainer = (props) => {
 	const form = useFormContext();
 	const formMeta = useContext(FormMetaContext);
 
+	// 這個方式日期會亂跳
 	// const onChange = useMemo(() => {
 	// 	return c04.buildGridChangeHandler({
 	// 		getValues: form.getValues,

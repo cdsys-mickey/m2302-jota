@@ -126,7 +126,9 @@ export const useC09 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -227,7 +229,9 @@ export const useC09 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -258,7 +262,9 @@ export const useC09 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -298,7 +304,9 @@ export const useC09 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { txoDeptId }) => {
 			if (!prodId) {
-				toast.error("請先選擇商品");
+				toast.error("請先選擇商品", {
+					position: "top-center"
+				});
 				return;
 			}
 
@@ -318,7 +326,9 @@ export const useC09 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err));
+				toast.error(Errors.getMessage("查詢報價失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[httpGetAsync, token]
@@ -403,7 +413,9 @@ export const useC09 = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("載入撥出單商品失敗", err));
+					toast.error(Errors.getMessage("載入撥出單商品失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		[createRow, httpPostAsync, grid, refreshAmt, token]
@@ -447,11 +459,9 @@ export const useC09 = () => {
 			};
 
 			if (prod && !prodInfo?.Price) {
-				toast.error("商品未訂調撥成本，不得訂購",
-					{
-						position: "top-center",
-					}
-				);
+				toast.error("商品未訂調撥成本，不得訂購", {
+					position: "top-center",
+				});
 			}
 			return newRowData;
 		},
@@ -673,7 +683,9 @@ export const useC09 = () => {
 						});
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("商品單價更新失敗", err));
+					toast.error(Errors.getMessage("商品單價更新失敗", err), {
+						position: "top-center"
+					});
 					// 還原
 				}
 			},
@@ -702,7 +714,9 @@ export const useC09 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err));
+			toast.error(Errors.getMessage("編輯檢查失敗", err), {
+				position: "top-center"
+			});
 		} finally {
 			checkEditableAction.clear();
 		}

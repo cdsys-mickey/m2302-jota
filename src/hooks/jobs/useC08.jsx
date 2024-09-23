@@ -80,7 +80,9 @@ export const useC08 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("讀取設定發生錯誤", err));
+			toast.error(Errors.getMessage("讀取設定發生錯誤", err), {
+				position: "top-center"
+			});
 		}
 	}, [httpGetAsync, token]);
 
@@ -207,7 +209,9 @@ export const useC08 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("取得庫存失敗", err));
+				toast.error(Errors.getMessage("取得庫存失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[calcProdStock, httpGetAsync, grid, qtyMap, token]
@@ -235,9 +239,13 @@ export const useC08 = () => {
 				console.error("handleCreate.failed", err);
 				if (err.code === 102) {
 					loadStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出");
+					toast.error("部分商品庫存不足，請調整後再送出", {
+						position: "top-center"
+					});
 				} else {
-					toast.error(Errors.getMessage("新增失敗", err));
+					toast.error(Errors.getMessage("新增失敗", err), {
+						position: "top-center"
+					});
 				}
 			}
 		},
@@ -342,9 +350,13 @@ export const useC08 = () => {
 				console.error("handleCreate.failed", err);
 				if (err.code === 102) {
 					loadStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出");
+					toast.error("部分商品庫存不足，請調整後再送出", {
+						position: "top-center"
+					});
 				} else {
-					toast.error(Errors.getMessage("修改失敗", err));
+					toast.error(Errors.getMessage("修改失敗", err), {
+						position: "top-center"
+					});
 				}
 			}
 		},
@@ -376,7 +388,9 @@ export const useC08 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -416,7 +430,9 @@ export const useC08 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { txiDeptId }) => {
 			if (!prodId) {
-				toast.error("請先選擇商品");
+				toast.error("請先選擇商品", {
+					position: "top-center"
+				});
 				return;
 			}
 
@@ -436,7 +452,9 @@ export const useC08 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢調撥成本失敗", err));
+				toast.error(Errors.getMessage("查詢調撥成本失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[httpGetAsync, token]
@@ -533,7 +551,9 @@ export const useC08 = () => {
 					} else {
 						// dialogs.closeLatest();
 						console.log("pword not passed");
-						toast.error("密碼錯誤, 請重新輸入");
+						toast.error("密碼錯誤, 請重新輸入", {
+							position: "top-center"
+						});
 						promptPwordEntry({
 							promptOverrideSQty,
 							setValue,
@@ -908,7 +928,9 @@ export const useC08 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err));
+			toast.error(Errors.getMessage("編輯檢查失敗", err), {
+				position: "top-center"
+			});
 		} finally {
 			checkEditableAction.clear();
 		}
@@ -938,12 +960,9 @@ export const useC08 = () => {
 					.filter((order) => !ordIds.includes(order["訂貨單號"]))
 					.map((order) => order["訂貨單號"]);
 
-				toast.warn(
-					`訂貨單號 ${filteredOutOrdIds.join(", ")} 已同步移除`,
-					{
-						position: "top-center",
-					}
-				);
+				toast.warn(`訂貨單號 ${filteredOutOrdIds.join(", ")} 已同步移除`, {
+					position: "top-center",
+				});
 			}
 		},
 		[]
@@ -999,7 +1018,9 @@ export const useC08 = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("載入訂購單商品失敗", err));
+					toast.error(Errors.getMessage("載入訂購單商品失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		[grid, crud.creating, createRow, httpPostAsync, token, refreshAmt, checkAndRemoveDepOrders]
@@ -1044,7 +1065,9 @@ export const useC08 = () => {
 							throw error || new Error("未預期例外");
 						}
 					} catch (err) {
-						toast.error(Errors.getMessage("商品單價更新失敗", err));
+						toast.error(Errors.getMessage("商品單價更新失敗", err), {
+							position: "top-center"
+						});
 					}
 				}
 			},

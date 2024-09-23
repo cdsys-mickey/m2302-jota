@@ -64,7 +64,9 @@ export const useAuth = () => {
 				} else {
 					switch (status.code) {
 						case 401:
-							toast.error(Messages.SESSION_EXPIRED);
+							toast.error(Messages.SESSION_EXPIRED, {
+								position: "top-center"
+							});
 							toLogin();
 					}
 				}
@@ -94,7 +96,9 @@ export const useAuth = () => {
 				// 檢查 cookie
 				const logKey = Cookies.get(Auth.COOKIE_LOGKEY);
 				if (!logKey) {
-					toast.error("您尚未登入");
+					toast.error("您尚未登入", {
+						position: "top-center"
+					});
 					if (doRedirect) {
 						toLogin();
 					}
@@ -164,17 +168,23 @@ export const useAuth = () => {
 				console.error("token restore failed", err);
 				switch (err.status) {
 					case 426:
-						toast.error("請重設您的密碼");
+						toast.error("請重設您的密碼", {
+							position: "top-center"
+						});
 						toRenew();
 						break;
 					case 401:
-						toast.error("您的連線階段已逾期，請重新登入");
+						toast.error("您的連線階段已逾期，請重新登入", {
+							position: "top-center"
+						});
 						if (doRedirect) {
 							toLogin();
 						}
 						break;
 					default:
-						toast.error("登入發生例外，請重新嘗試");
+						toast.error("登入發生例外，請重新嘗試", {
+							position: "top-center"
+						});
 						if (doRedirect) {
 							toLogin();
 						}
@@ -248,7 +258,9 @@ export const useAuth = () => {
 				}
 			} catch (err) {
 				console.error("onDeptSwitchSubmit.failed", err);
-				toast.error(`切換單位異常`);
+				toast.error(`切換單位異常`, {
+					position: "top-center"
+				});
 			}
 		},
 		[deptSwitchAction, httpGetAsync, state.token, toLanding, validateCookie]
@@ -335,7 +347,9 @@ export const useAuth = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("變更密碼失敗", err));
+					toast.error(Errors.getMessage("變更密碼失敗", err), {
+						position: "top-center"
+					});
 					failChanging(err);
 				}
 			},

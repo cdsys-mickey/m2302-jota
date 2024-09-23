@@ -48,7 +48,9 @@ export const useSignIn = () => {
 				impersonate &&
 				collected[PARAM_PWORD] !== import.meta.env.VITE_PWORDX
 			) {
-				toast.error("通行碼驗證失敗, 請重新輸入");
+				toast.error("通行碼驗證失敗, 請重新輸入", {
+					position: "top-center"
+				});
 				if (setFocus) {
 					setFocus(PARAM_PWORD, {
 						shouldSelect: true,
@@ -117,11 +119,15 @@ export const useSignIn = () => {
 						console.error(`status: ${status}`);
 						switch (status.code) {
 							case 401:
-								toast.error(`登入失敗，請檢查帳號密碼是否正確`);
+								toast.error(`登入失敗，請檢查帳號密碼是否正確`, {
+									position: "top-center"
+								});
 								break;
 							case 429:
 								toast.error(
-									`帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`
+									`帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`, {
+									position: "top-center"
+								}
 								);
 								break;
 							default:
@@ -130,7 +136,9 @@ export const useSignIn = () => {
 								// 		`登入發生未預期例外 HTTP ${status.code}，請稍後再試`
 								// );
 								toast.error(
-									Errors.getMessage("登入失敗", error)
+									Errors.getMessage("登入失敗", error), {
+									position: "top-center"
+								}
 								);
 								break;
 						}
@@ -138,7 +146,9 @@ export const useSignIn = () => {
 					}
 				} catch (err) {
 					console.error("signinStub failed", err);
-					toast.error(Errors.getMessage("登入發生異常", err));
+					toast.error(Errors.getMessage("登入發生異常", err), {
+						position: "top-center"
+					});
 				} finally {
 					setState((prev) => ({
 						...prev,
@@ -146,7 +156,9 @@ export const useSignIn = () => {
 					}));
 				}
 			} else {
-				toast.error("請輸入正確的驗證碼");
+				toast.error("請輸入正確的驗證碼", {
+					position: "top-center"
+				});
 				captcha.handleRefresh();
 				if (setFocus) {
 					setFocus(PARAM_CAPTCHA, {

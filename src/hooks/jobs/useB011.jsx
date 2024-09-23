@@ -101,7 +101,9 @@ export const useB011 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err));
+				toast.error(Errors.getMessage("新增失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -237,7 +239,9 @@ export const useB011 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPatchAsync, listLoader, loadItem, token]
@@ -268,7 +272,9 @@ export const useB011 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -292,10 +298,9 @@ export const useB011 = () => {
 				processedRowData.prod &&
 				grid.isDuplicating(rowData, newValue, { key: "prod.ProdID" })
 			) {
-				toast.error(
-					`「${processedRowData.prod?.ProdData}」已存在, 請選擇其他商品`,
-					{ position: "top-center" }
-				);
+				toast.error(`「${processedRowData.prod?.ProdData}」已存在, 請選擇其他商品`, {
+					position: "top-center"
+				});
 				processedRowData.prod = null;
 			}
 
@@ -486,7 +491,9 @@ export const useB011 = () => {
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err));
+				toast.error(Errors.getMessage("篩選失敗", err), {
+					position: "top-center"
+				});
 			} finally {
 				setIpState((prev) => ({
 					...prev,
@@ -524,7 +531,9 @@ export const useB011 = () => {
 				}
 			} catch (err) {
 				importProdsAction.fail(err);
-				toast.error(Errors.getMessage("帶入商品發生錯誤", err));
+				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[

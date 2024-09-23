@@ -112,7 +112,9 @@ export const useZA03 = () => {
 				}
 			} catch (err) {
 				loadAuthGridAction.fail(err);
-				toast.error(err?.message);
+				toast.error(err?.message, {
+					position: "top-center"
+				});
 			}
 		},
 		[
@@ -320,7 +322,9 @@ export const useZA03 = () => {
 						}
 					);
 				} else {
-					toast.error(Errors.getMessage("新增失敗", err));
+					toast.error(Errors.getMessage("新增失敗", err), {
+						position: "top-center"
+					});
 				}
 			}
 		},
@@ -353,7 +357,9 @@ export const useZA03 = () => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err));
+				toast.error(Errors.getMessage("修改失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud, httpPutAsync, loadAuthGridAction, loadItem, loader, token]
@@ -377,9 +383,9 @@ export const useZA03 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`ZA03.onSubmitError`, err);
-		toast.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-		);
+		toast.error("資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
+			position: "top-center"
+		});
 	}, []);
 
 	const confirmDelete = useCallback(() => {
@@ -407,7 +413,9 @@ export const useZA03 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err));
+					toast.error(Errors.getMessage("刪除失敗", err), {
+						position: "top-center"
+					});
 				}
 			},
 		});
@@ -466,9 +474,9 @@ export const useZA03 = () => {
 					throw error || new Error("權限異動異常");
 				}
 			} catch (err) {
-				toast.error(
-					Errors.getMessage(`更新 ${moduleId} 權限異常`, err)
-				);
+				toast.error(Errors.getMessage(`更新 ${moduleId} 權限異常`, err), {
+					position: "top-center"
+				});
 			}
 		},
 		[crud.itemData?.UID, httpPatchAsync, selectedDept?.DeptID, token]
@@ -607,7 +615,9 @@ export const useZA03 = () => {
 				}
 			} catch (err) {
 				addAuthAction.fail(err);
-				toast.error(Errors.getMessage("新增權限失敗", err));
+				toast.error(Errors.getMessage("新增權限失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[
@@ -675,7 +685,9 @@ export const useZA03 = () => {
 				}
 			} catch (err) {
 				copyAuthAction.fail(err);
-				toast.error(Errors.getMessage("複製權限失敗", err));
+				toast.error(Errors.getMessage("複製權限失敗", err), {
+					position: "top-center"
+				});
 			}
 		},
 		[
@@ -730,7 +742,9 @@ export const useZA03 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("刪除權限失敗", err));
+				toast.error(Errors.getMessage("刪除權限失敗", err), {
+					position: "top-center"
+				});
 			} finally {
 				dialogs.closeLatest();
 			}
@@ -788,7 +802,9 @@ export const useZA03 = () => {
 							throw error || new Error("未預期例外");
 						}
 					} catch (err) {
-						toast.error(Errors.getMessage("重設密碼失敗", err));
+						toast.error(Errors.getMessage("重設密碼失敗", err), {
+							position: "top-center"
+						});
 					}
 				},
 			});
@@ -835,12 +851,9 @@ export const useZA03 = () => {
 			}
 		} catch (err) {
 			saveAuthAction.fail("儲存失敗");
-			toast.error(
-				Errors.getMessage(
-					`更新 ${crud.itemData?.LoginName} 權限發生錯誤`,
-					err
-				)
-			);
+			toast.error(Errors.getMessage(`更新 ${crud.itemData?.LoginName} 權限發生錯誤`, err), {
+				position: "top-center"
+			});
 		} finally {
 			saveAuthAction.clear();
 		}
