@@ -118,6 +118,7 @@ export const useD01 = () => {
 			SPrice: "",
 			ChkQty: "",
 			SOrdID: "",
+			SExpDate: null
 		}),
 		[]
 	);

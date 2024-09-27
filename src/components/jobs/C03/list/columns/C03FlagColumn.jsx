@@ -1,6 +1,6 @@
 import { Grid, Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
-import FlexGrid from "../../../../../shared-components/FlexGrid";
+import FlexGrid from "@/shared-components/FlexGrid";
 
 const C03FlagColumn = (props) => {
 	const { loading, children, ...rest } = props;

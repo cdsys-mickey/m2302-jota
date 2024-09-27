@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import DialogEx from "./DialogEx";
-import CrudContext from "../../contexts/crud/CrudContext";
+import CrudContext from "@/contexts/crud/CrudContext";
 
 export const DialogExContainer = (props) => {
 	const { ...rest } = props;

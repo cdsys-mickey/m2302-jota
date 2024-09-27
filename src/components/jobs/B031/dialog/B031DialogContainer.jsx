@@ -3,7 +3,6 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { B031Context } from "@/contexts/B031/B031Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -13,15 +12,15 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { isValid } from "date-fns";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { FormProvider, useForm, useFormContext, useWatch } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import B031Drawer from "../B031Drawer";
 import B031DialogForm from "./B031DialogForm";
 import { B031DialogToolbarContainer } from "./toolbar/B031DialogToolbarContainer";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import { isDate, isValid } from "date-fns";
+import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
 
 export const B031DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -99,10 +98,9 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 					"prod",
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
-						withSalesPackageName: true,
+						packageType: "s",
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						withPrice: true,
 						slotProps: {
 							paper: {
@@ -156,7 +154,7 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("QDate", dateFNSDateColumn),
+				...keyColumn("QDate", dateFieldColumnEx),
 				title: "報價日",
 				minWidth: 140,
 				maxWidth: 140,

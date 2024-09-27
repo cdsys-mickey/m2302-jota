@@ -1,7 +1,7 @@
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { forwardRef, useContext } from "react";
-import { C03Context } from "../../../../../contexts/C03/C03Context";
-import FlexBox from "../../../../../shared-components/FlexBox";
+import { C03Context } from "@/contexts/C03/C03Context";
+import FlexBox from "@/shared-components/FlexBox";
 import { C03ProdGridSubtotalLabel } from "./C03ProdGridSubtotalLabel";
 
 const RightComponent = () => {

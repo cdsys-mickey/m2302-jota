@@ -69,12 +69,11 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 					"sprod",
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "sprod",
-						withBomPackageName: true,
+						packageType: "m",
 						placeholder: "組合商品",
 						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						slotProps: {
 							paper: {
 								sx: {

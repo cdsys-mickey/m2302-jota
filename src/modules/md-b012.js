@@ -28,7 +28,7 @@ const transformGridForReading = (data) => {
 				CustData: CustData_N,
 			},
 			CustData_N,
-			QDate: QDate ? Forms.parseDate(QDate) : "",
+			QDate: Forms.reformatDate(QDate),
 			employee: {
 				CodeID: QEmplID,
 				CodeData: EmplData_N,

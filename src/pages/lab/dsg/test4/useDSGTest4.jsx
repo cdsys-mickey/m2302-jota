@@ -28,7 +28,7 @@ export const useDSGTest4 = () => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						withSalesPackageName: true,
+						packageType: "s",
 						queryRequired: true,
 						filterByServer: true,
 						disableOpenOnInput: true,
@@ -36,7 +36,6 @@ export const useDSGTest4 = () => {
 						// pressToFind: true,
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						autoHighlight: true,
 						selectOnFocus: true,
 						slotProps: {

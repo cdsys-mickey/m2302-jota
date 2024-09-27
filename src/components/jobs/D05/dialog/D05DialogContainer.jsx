@@ -91,7 +91,7 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						withBomPackageName: true,
+						packageType: "m",
 						forId: true,
 						disableClearable: true,
 						slotProps: {
@@ -180,7 +180,6 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 						// queryRequired: true,
 						disableOpenOnInput: true,
 						disableClearable: true,
-						fuzzy: true,
 						autoHighlight: true,
 						slotProps: {
 							paper: {

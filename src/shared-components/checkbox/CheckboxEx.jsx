@@ -8,13 +8,14 @@ import { forwardRef, memo } from "react";
 
 const CheckboxEx = memo(
 	forwardRef((props, ref) => {
-		const { label, error, helperText, ...rest } = props;
+		const { label, labelSlotProps, error, helperText, ...rest } = props;
 		return (
 			<>
 				<FormControlLabel
 					label={label}
 					error={error}
 					control={<Checkbox ref={ref} color="default" {...rest} />}
+					slotProps={labelSlotProps}
 				/>
 				{helperText && (
 					<FormHelperText error={!!error}>
@@ -28,6 +29,7 @@ const CheckboxEx = memo(
 CheckboxEx.displayName = "CheckboxEx";
 CheckboxEx.propTypes = {
 	label: PropTypes.string,
+	labelSlotProps: PropTypes.object,
 	error: PropTypes.object,
 	helperText: PropTypes.string,
 };

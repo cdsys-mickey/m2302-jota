@@ -6,7 +6,7 @@ import { useCallback, useContext, useMemo } from "react";
 import Customers from "@/modules/md-customers";
 
 const CustomerPicker = (props) => {
-	const { label = "客戶", forId = false, forNew = false, ...rest } = props;
+	const { label, placeholder, forId = false, forNew = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
@@ -52,12 +52,36 @@ const CustomerPicker = (props) => {
 	}, [forNew])
 
 	const notFoundText = useMemo(() => {
-		return forNew ? "新客戶代號 ${id} 不存在" : "客戶代號 ${id} 不存在";
+		return forNew ? "新客戶編號 ${id} 不存在" : "客戶編號 ${id} 不存在";
 	}, [forNew])
+
+	const _label = useMemo(() => {
+		if (label) {
+			return label;
+		}
+		let result = (forNew ? "新客戶" : "客戶");
+		if (forId) {
+			result += "編號";
+		}
+		return result;
+	}, [forId, forNew, label])
+
+
+	const _placeholder = useMemo(() => {
+		if (placeholder) {
+			return placeholder;
+		}
+		// let result = (forNew ? "新客戶" : "客戶");
+		let result = "編號";
+		if (!forId) {
+			result += "/名稱";
+		}
+		return result;
+	}, [forId, placeholder])
 
 	return (
 		<OptionPickerWrapper
-			label={label}
+			label={_label}
 			bearer={token}
 			url={url}
 			// filterByServer
@@ -72,7 +96,7 @@ const CustomerPicker = (props) => {
 			stringify={stringify}
 			getOptionKey={getOptionKey}
 			notFoundText={notFoundText}
-			placeholder="客戶編號/名稱"
+			placeholder={_placeholder}
 			typeToSearchText="輸入代號或名稱搜尋..."
 			{...rest}
 		/>
@@ -82,7 +106,8 @@ const CustomerPicker = (props) => {
 CustomerPicker.displayName = "CustomerPicker";
 CustomerPicker.propTypes = {
 	label: PropTypes.string,
-	forId: PropTypes.bool
+	forId: PropTypes.bool,
+	forNew: PropTypes.bool
 };
 
 export default CustomerPicker;

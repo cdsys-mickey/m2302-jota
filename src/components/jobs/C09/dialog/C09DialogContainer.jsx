@@ -93,10 +93,9 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						withPurchasePackageName: true,
+						packageType: "i",
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -104,13 +103,6 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
-						// selectOnFocus: true,
-						// triggerDelay: 300,
-						// queryRequired: true,
-						// filterByServer: true,
-						// disableOpenOnInput: true,
-						// hideControlsOnActive: false,
-						// autoHighlight: true,
 					})
 				),
 				title: "商品編號",

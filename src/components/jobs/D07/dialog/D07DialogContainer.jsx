@@ -82,9 +82,8 @@ export const D07DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						withBomPackageName: true,
+						packageType: "m",
 						forId: true,
-						fuzzy: true,
 						slotProps: {
 							paper: {
 								sx: {

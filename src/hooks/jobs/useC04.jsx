@@ -522,7 +522,7 @@ export const useC04 = () => {
 				rowData.prod?.PackData_N || "",
 			["SInqFlag"]: prodInfo?.SInqFlag || "",
 			["SPrice"]: prodInfo?.SPrice || "",
-			["SExpDate"]: prodInfo?.MaxDate ? Forms.parseDate(
+			["SExpDate"]: prodInfo?.MaxDate ? Forms.reformatDate(
 				prodInfo.MaxDate
 			) : rowData.SExpDate,
 			["stype"]: null,

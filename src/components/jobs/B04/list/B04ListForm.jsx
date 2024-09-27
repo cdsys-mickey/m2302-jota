@@ -5,7 +5,7 @@ import FormBox from "@/shared-components/form/FormBox";
 import { Grid } from "@mui/material";
 import { memo } from "react";
 import { B04OrderByPicker } from "../B04OrderByPicker";
-import NewCustomerPicker from "@/components/picker/NewCustomerPicker";
+import NewCustomerPicker from "@/components/picker/ZZNewCustomerPicker";
 
 const B04ListForm = memo((props) => {
 	const { ...rest } = props;

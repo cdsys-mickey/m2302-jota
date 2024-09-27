@@ -37,6 +37,9 @@ const A01ListRow = memo((props) => {
 					<A01ProdNameColumn loading={loading}>
 						{value?.ProdData}
 					</A01ProdNameColumn>
+					<A01ProdNameColumn loading={loading}>
+						{value?.Barcode}
+					</A01ProdNameColumn>
 					{/* <A01ClassNColumn loading={loading}>
 						{value?.Clas_N}
 					</A01ClassNColumn> */}

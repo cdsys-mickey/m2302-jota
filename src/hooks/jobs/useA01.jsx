@@ -124,6 +124,9 @@ export const useA01 = ({ token, mode }) => {
 		url: url,
 		bearer: token,
 		initialFetchSize: 50,
+		parans: {
+			all: 1
+		}
 	});
 
 	if (!mode) {
@@ -235,7 +238,6 @@ export const useA01 = ({ token, mode }) => {
 						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -243,13 +245,6 @@ export const useA01 = ({ token, mode }) => {
 								},
 							},
 						},
-						// selectOnFocus: true,
-						// triggerDelay: 300,
-						// queryRequired: true,
-						// filterByServer: true,
-						// disableOpenOnInput: true,
-						// hideControlsOnActive: true,
-						// autoHighlight: true,
 					})
 				),
 				title: "商品編號",

@@ -93,10 +93,9 @@ export const B04DialogContainer = forwardRef((props, ref) => {
 					"prod",
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
-						withSalesPackageName: true,
+						packageType: "s",
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						slotProps: {
 							paper: {
 								sx: {

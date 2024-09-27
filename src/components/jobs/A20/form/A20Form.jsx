@@ -56,7 +56,6 @@ const A20Form = memo((props) => {
 									readOnly={updating}
 									disableOpenOnInput
 									virtualize
-									fuzzy
 									slotProps={{
 										paper: {
 											sx: {

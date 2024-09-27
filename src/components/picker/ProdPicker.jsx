@@ -10,13 +10,16 @@ import { useCallback } from "react";
 const ProdPicker = (props) => {
 	const {
 		label = "商品",
-		withBomPackageName = false,
-		withSalesPackageName = false,
-		withPurchasePackageName = false,
+		packageType,
+		// withBomPackageName = false,
+		// withSalesPackageName = false,
+		// withPurchasePackageName = false,
 		withStock = false,
 		withPrice = false,
 		forId = false,
-		fuzzy = false,
+		// ** 已報價商品專用參數
+		retail,
+		cst,
 		...rest
 	} = props;
 	const { token } = useContext(AuthContext);
@@ -24,15 +27,18 @@ const ProdPicker = (props) => {
 	const querystring = useMemo(() => {
 		return queryString.stringify({
 			tp: 10000,
-			...(withBomPackageName && {
-				pb: 1,
+			...(packageType && {
+				pkg: packageType
 			}),
-			...(withSalesPackageName && {
-				ps: 1,
-			}),
-			...(withPurchasePackageName && {
-				pi: 1,
-			}),
+			// ...(withBomPackageName && {
+			// 	pb: 1,
+			// }),
+			// ...(withSalesPackageName && {
+			// 	ps: 1,
+			// }),
+			// ...(withPurchasePackageName && {
+			// 	pi: 1,
+			// }),
 			...(withStock && {
 				ws: 1,
 			}),
@@ -40,15 +46,18 @@ const ProdPicker = (props) => {
 				wp: 1,
 			}),
 			// 原本 fuzzy 參數的功能為是否啟用條碼搜尋, 
-			// 後來演變為是否啟用 findByInput
+			// 後來演變成是否啟用 findByInput 的判斷
 			// 透過 option-picker 的 API call 應該都是要帶回 fuzzy 版本
-			// ...(fuzzy && {
-			// 	fuzzy: 1,
-			// }),
 			fuzzy: 1,
-
+			// ** 已報價商品專用參數
+			...(retail && {
+				retail
+			}),
+			...(cst && {
+				cst
+			})
 		});
-	}, [withBomPackageName, withPrice, withPurchasePackageName, withSalesPackageName, withStock]);
+	}, [cst, packageType, retail, withPrice, withStock]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return Prods.isOptionEqualToValue(option, value);
@@ -79,6 +88,16 @@ const ProdPicker = (props) => {
 		return payload["data"];
 	}, []);
 
+	const getNotFoundText = useCallback((params = {}) => {
+		const { id, error } = params;
+		console.log("params", params);
+		return "getNotFoundText";
+	}, []);
+
+	const notFoundText = useMemo(() => {
+		return retail != null ? getNotFoundText : "商品代號 ${id} 不存在"
+	}, [getNotFoundText, retail])
+
 	return (
 		<OptionPickerWrapper
 			label={label}
@@ -92,7 +111,8 @@ const ProdPicker = (props) => {
 			getData={getData}
 			getTitle={getTitle}
 			stringify={stringify}
-			notFoundText="商品代號 ${id} 不存在"
+			// notFoundText="商品代號 ${id} 不存在"
+			notFoundText={notFoundText}
 			placeholder="搜尋商品"
 			typeToSearchText="輸入編號、條碼或名稱搜尋..."
 			{...rest}
@@ -102,6 +122,7 @@ const ProdPicker = (props) => {
 
 ProdPicker.propTypes = {
 	label: PropTypes.string,
+	packageType: PropTypes.string,
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	withBomPackageName: PropTypes.bool,
 	withSalesPackageName: PropTypes.bool,
@@ -110,6 +131,8 @@ ProdPicker.propTypes = {
 	withPrice: PropTypes.bool,
 	forId: PropTypes.bool,
 	fuzzy: PropTypes.bool,
+	retail: PropTypes.bool,
+	cst: PropTypes.string
 };
 
 ProdPicker.displayName = "ProdPicker";

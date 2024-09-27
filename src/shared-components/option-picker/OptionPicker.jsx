@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Types from "@/shared-modules/sd-types";
 import {
 	Autocomplete,
 	Chip,
@@ -29,7 +30,7 @@ const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
 };
 
-const MSG_NOT_FOUND = "${id} 不存在";
+const MSG_NOT_FOUND_DEFAULT = "${id} 不存在";
 
 const noFilterOptions = (options) => {
 	return options;
@@ -111,7 +112,7 @@ const OptionPicker = memo(
 			getError,
 			setError,
 			clearErrors,
-			notFoundText = MSG_NOT_FOUND,
+			notFoundText = MSG_NOT_FOUND_DEFAULT,
 			toastError,
 			// VIRTUALIZATION
 			virtualize,
@@ -141,7 +142,16 @@ const OptionPicker = memo(
 		} = props;
 
 		// const { focusNextCell } = useCellComponent(cellComponentRef?.current);
-		const notFoundMsg = _.template(notFoundText);
+
+
+		const getNotFoundMessage = useCallback((params) => {
+			if (Types.isString(notFoundText)) {
+				const notFoundMsg = _.template(notFoundText);
+				return notFoundMsg(params);
+			} else if (Types.isFunction(notFoundText)) {
+				return notFoundText(params);
+			}
+		}, [notFoundText]);
 
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
 		const memoisedFilterOptions = useMemo(() => {
@@ -155,7 +165,8 @@ const OptionPicker = memo(
 		// OPEN Control
 		const asyncRef = useRef({
 			dirty: false,
-			skipBlur: false
+			skipBlur: false,
+			focusNextWhenEmpty: false
 		});
 		const innerInputRef = useRef();
 		useImperativeHandle(inputRef, () => innerInputRef.current);
@@ -178,14 +189,6 @@ const OptionPicker = memo(
 				}
 
 				asyncRef.current.dirty = true;
-
-				// if (input) {
-				// 	asyncRef.current.dirty = true;
-				// } else {
-				// 	if (!emptyId) {
-				// 		asyncRef.current.dirty = false;
-				// 	}
-				// }
 
 				if (onInputChange) {
 					onInputChange(event);
@@ -294,15 +297,15 @@ const OptionPicker = memo(
 		}, []);
 
 		const inputNotFound = useCallback(
-			(input) => {
+			(input, error) => {
 				if (name && toastError) {
-					toast.error(notFoundMsg({ id: input }), {
+					toast.error(getNotFoundMessage({ id: input, error }), {
 						position: "top-center",
 					});
 				} else if (name && setError) {
 					setError(name, {
 						type: "manual",
-						message: notFoundMsg({ id: input }),
+						message: getNotFoundMessage({ id: input, error }),
 					});
 					return;
 				} else {
@@ -311,7 +314,7 @@ const OptionPicker = memo(
 					);
 				}
 			},
-			[name, notFoundMsg, setError, toastError]
+			[getNotFoundMessage, name, setError, toastError]
 		);
 
 		const focusTimeoutRef = useRef();
@@ -340,19 +343,23 @@ const OptionPicker = memo(
 				const input = e.target.value;
 				if ((asyncRef.current.dirty) && findByInput) {
 					asyncRef.current.dirty = false;
-
-					const found = input || emptyId ? await findByInput(input) : null;
-
+					let found;
+					let error;
+					try {
+						found = input || emptyId ? await findByInput(input) : null;
+					} catch (err) {
+						error = err;
+					}
+					// 處理沒有輸入、沒有改變, 卻必須跳下一個欄位的狀況
 					if (!input && !found) {
 						asyncRef.current.focusNextWhenEmpty = true;
 					}
-
 					if (!found && validate) {
-						inputNotFound(input);
+						inputNotFound(input, error);
 						return;
 					}
-					// 有改變會透過 ChangeTracking 觸發, 
-					// 這裡處理 dirty 之後卻沒改變的狀況
+					// 有改變會透過 ChangeTracking 觸發,
+					// 這裡處理 dirty 之後, 卻沒改變, 仍要跳到下一個欄位的狀況
 					if (multiple) {
 						onChange([
 							...value,
@@ -777,7 +784,7 @@ const OptionPicker = memo(
 				asyncRef.current.focusNextWhenEmpty = false;
 				focusNextCellOrField();
 			}
-		}, [value, emptyId]);
+		}, [value]);
 
 		return (
 			<OptionPickerBox

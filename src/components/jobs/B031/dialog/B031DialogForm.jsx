@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { B031QuoteGridContainer } from "./quotes/B031QuoteGridContainer";
 import CustomerPicker from "@/components/picker/CustomerPicker";
-import NewCustomerPicker from "@/components/picker/NewCustomerPicker";
+import NewCustomerPicker from "@/components/picker/ZZNewCustomerPicker";
 
 const B031DialogForm = memo((props) => {
 	const {
@@ -43,7 +43,7 @@ const B031DialogForm = memo((props) => {
 						<Grid container columns={24} spacing={1}>
 
 							<Grid item xs={24} sm={24} md={8}>
-								<NewCustomerPicker
+								<CustomerPicker
 									autoFocus
 									forNew
 									typo

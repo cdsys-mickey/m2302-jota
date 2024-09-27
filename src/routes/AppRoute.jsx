@@ -130,6 +130,8 @@ import { B031Provider } from "@/contexts/B031/B031Provider";
 import { B031FrameContainer } from "@/pages/B031/B031FrameContainer";
 import { B032Provider } from "@/contexts/B032/B032Provider";
 import { B032FrameContainer } from "@/pages/B032/B032FrameContainer";
+import { E01Provider } from "@/contexts/E01/E01Provider";
+import { E01FrameContainer } from "@/pages/E01/E01FrameContainer";
 
 const AppRoute = () => {
 	return (
@@ -827,6 +829,20 @@ const AppRoute = () => {
 							</CrudProvider>
 						}
 					/>
+					{/* E */}
+					<Route
+						path="E01"
+						element={
+							<CrudProvider>
+								<InfiniteLoaderProvider>
+									<E01Provider>
+										<E01FrameContainer />
+									</E01Provider>
+								</InfiniteLoaderProvider>
+							</CrudProvider>
+						}
+					/>
+					{/* ZA */}
 					<Route
 						path="ZA03"
 						element={

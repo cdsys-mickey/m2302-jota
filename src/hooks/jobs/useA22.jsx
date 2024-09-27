@@ -69,7 +69,6 @@ export const useA22 = ({
 						hideControlsOnActive: true,
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						autoHighlight: true,
 						slotProps: {
 							paper: {

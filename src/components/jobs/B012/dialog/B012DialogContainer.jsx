@@ -3,7 +3,7 @@ import { EmployeePickerComponentContainer } from "@/components/dsg/columns/emplo
 import { B012Context } from "@/contexts/B012/B012Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
+import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -132,7 +132,7 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("QDate", dateFNSDateColumn),
+				...keyColumn("QDate", dateFieldColumnEx),
 				title: "報價日",
 				minWidth: 140,
 				maxWidth: 140,

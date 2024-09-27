@@ -3,7 +3,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { B011Context } from "@/contexts/B011/B011Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
+import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -15,12 +15,11 @@ import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { FormProvider, useForm, useFormContext, useWatch } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import B011Drawer from "../B011Drawer";
 import B011DialogForm from "./B011DialogForm";
 import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -98,10 +97,9 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 					"prod",
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
-						withSalesPackageName: true,
+						packageType: "s",
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						withPrice: true,
 						slotProps: {
 							paper: {
@@ -155,7 +153,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("QDate", dateFNSDateColumn),
+				...keyColumn("QDate", dateFieldColumnEx),
 				title: "報價日",
 				minWidth: 140,
 				maxWidth: 140,

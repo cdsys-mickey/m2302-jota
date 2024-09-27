@@ -1,4 +1,5 @@
 import { Grid } from "@mui/material";
+import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
 const FlexGrid = memo(
@@ -24,8 +25,8 @@ const FlexGrid = memo(
 							display: block
 								? "block"
 								: inline
-								? "inline-flex"
-								: "flex",
+									? "inline-flex"
+									: "flex",
 							...(justifyContent && {
 								justifyContent,
 							}),
@@ -43,5 +44,11 @@ const FlexGrid = memo(
 );
 
 FlexGrid.displayName = "FlexGrid";
-
+FlexGrid.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+	justifyContent: PropTypes.string,
+	alignItems: PropTypes.bool,
+	inline: PropTypes.bool,
+	block: PropTypes.bool
+}
 export default FlexGrid;

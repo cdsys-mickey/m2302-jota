@@ -1,7 +1,12 @@
-import React, { forwardRef, memo, useMemo } from "react";
+import { forwardRef, memo, useMemo } from "react";
 import ControlledCheckboxEx from "@/shared-components/checkbox/ControlledCheckboxEx";
 import FormFieldLabel from "../form/FormFieldLabel";
 import { useWatch } from "react-hook-form";
+import PropTypes from "prop-types";
+
+const DEFAULT_GET_LABEL = (value) => {
+	return value ? "是" : "否";
+}
 
 const TypoCheckboxEx = memo(
 	forwardRef((props, ref) => {
@@ -19,7 +24,7 @@ const TypoCheckboxEx = memo(
 			editing = false,
 			variant = "outlined",
 			size = "small",
-			getLabel,
+			getLabel = DEFAULT_GET_LABEL,
 			...rest
 		} = props;
 
@@ -58,5 +63,7 @@ const TypoCheckboxEx = memo(
 );
 
 TypoCheckboxEx.displayName = "TypoCheckboxEx";
-
+TypoCheckboxEx.propTypes = {
+	getLabel: PropTypes.func
+}
 export default TypoCheckboxEx;

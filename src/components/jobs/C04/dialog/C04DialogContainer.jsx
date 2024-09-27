@@ -111,17 +111,10 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						withPurchasePackageName: true,
+						packageType: "i",
 						// selectOnFocus: true,
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
-						// triggerDelay: 300,
-						// queryRequired: true,
-						// filterByServer: true,
-						// disableOpenOnInput: true,
-						// hideControlsOnActive: false,
-						// autoHighlight: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -209,7 +202,6 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 				disabled: true,
 			},
 			{
-				// ...keyColumn("SExpDate", dateFNSDateColumn),
 				...keyColumn("SExpDate", dateFieldColumnEx),
 				title: "有效日期",
 				minWidth: 140,
@@ -239,6 +231,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 				maxWidth: 38,
 				title: "採",
 				disabled: true,
+				cellClassName: "star",
 			},
 		],
 		[c04.getSPriceClassName, c04.prodDisabled, c04.spriceDisabled, readOnly]

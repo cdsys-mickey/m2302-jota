@@ -1000,12 +1000,9 @@ export const useC08 = () => {
 					if (status.success) {
 						const data = C08.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
-						grid.setGridData(
-							grid.fillRows({ createRow, data: data.prods }),
-							{
-								supressEvents: true
-							}
-						);
+						grid.setGridData(grid.fillRows({ createRow, data: data.prods }), {
+							supressEvents: true
+						});
 						refreshAmt({ setValue, data, gridData: data.prods });
 						// toast.info("訂購單商品已載入");
 						checkAndRemoveDepOrders({

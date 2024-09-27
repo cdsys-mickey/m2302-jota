@@ -133,33 +133,28 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const getByInput = useCallback(
 		async (input) => {
-			try {
-				// 避免使用空 input 進行搜尋
-				if (!input) {
-					return null;
-				}
-				const { status, payload, error } = await sendAsync({
-					method,
-					url,
-					data: {
-						[inputParam]: input,
-						...(querystring && queryString.parse(querystring)),
-						...params,
-					},
-					headers,
-					...(bearer && {
-						bearer,
-					}),
-				});
-				if (status.success) {
-					return getData(payload)?.[0];
-				} else {
-					throw error || new Error("未預期例外");
-				}
-			} catch (err) {
-				console.error("getByInput failed", err);
+			// 避免使用空 input 進行搜尋
+			if (!input) {
+				return null;
 			}
-			return null;
+			const { status, payload, error } = await sendAsync({
+				method,
+				url,
+				data: {
+					[inputParam]: input,
+					...(querystring && queryString.parse(querystring)),
+					...params,
+				},
+				headers,
+				...(bearer && {
+					bearer,
+				}),
+			});
+			if (status.success) {
+				return getData(payload)?.[0];
+			} else {
+				throw error || new Error("未預期例外");
+			}
 		},
 		[
 			bearer,

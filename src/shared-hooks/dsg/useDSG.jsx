@@ -514,7 +514,10 @@ export const useDSG = ({
 
 	useEffect(() => {
 		// gridData changed, supressEvents reset to false
-		asyncRef.current.supressEvents = false;
+		if (asyncRef.current.supressEvents) {
+			asyncRef.current.supressEvents = false;
+			console.log("supressEvents reset to false"); e
+		}
 	}, [gridData]);
 
 	return {

@@ -1,24 +1,23 @@
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { D01Context } from "@/contexts/D01/D01Context";
+import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
+import D01Drawer from "../D01Drawer";
 import D01DialogForm from "./D01DialogForm";
 import { D01DialogToolbarContainer } from "./toolbar/D01DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
-import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { dateFNSDateColumn } from "@/shared-components/dsg/columns/date/dateFNSDateColumn";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { useCallback } from "react";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import D01Drawer from "../D01Drawer";
 
 export const D01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -86,9 +85,8 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						withBomPackageName: true,
+						packageType: "m",
 						forId: true,
-						fuzzy: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -139,7 +137,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("SExpDate", dateFNSDateColumn),
+				...keyColumn("SExpDate", dateFieldColumnEx),
 				title: "有效日期",
 				minWidth: 150,
 				maxWidth: 150,

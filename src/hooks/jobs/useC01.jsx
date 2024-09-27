@@ -112,10 +112,9 @@ export const useC01 = () => {
 						name: "prod",
 						forId: true,
 						withStock: true,
-						withPurchasePackageName: true,
+						packageType: "i",
 						// queryRequired: true,
 						disableClearable: true,
-						fuzzy: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -124,11 +123,6 @@ export const useC01 = () => {
 							},
 						},
 						selectOnFocus: true,
-						// triggerDelay: 300,
-						// filterByServer: true,
-						// disableOpenOnInput: true,
-						// hideControlsOnActive: false,
-						// autoHighlight: true,
 					})
 				),
 				id: "SProdID",
@@ -187,14 +181,8 @@ export const useC01 = () => {
 					optionPickerColumn(SupplierPickerComponentContainer, {
 						name: "supplier",
 						selectOnFocus: true,
-						// triggerDelay: 300,
-						// queryRequired: true,
-						// filterByServer: true,
-						// disableOpenOnInput: true,
-						// hideControlsOnActive: false,
 						forId: true,
 						disableClearable: true,
-						fuzzy: true,
 						autoHighlight: true,
 						slotProps: {
 							paper: {
