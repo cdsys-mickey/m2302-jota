@@ -1,17 +1,14 @@
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
 import { Grid } from "@mui/material";
-import { DepOrderIdColumn } from "./columns/DepOrderIdColumn";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useMemo } from "react";
 import { DepOrderDateColumn } from "./columns/DepOrderDateColumn";
-import { DepOrderCheckerColumn } from "./columns/DepOrderCheckerColumn";
-import { DepOrderFlagColumn } from "./columns/DepOrderFlagColumn";
-import { DepOrderUserColumn } from "./columns/DepOrderUserColumn";
-import { DepOrderDeptIdColumn } from "./columns/DepOrderDeptIdColumn";
-import { DepOrderDeptNameColumn } from "./columns/DepOrderDeptNameColumn";
 import { DepOrderDeptColumn } from "./columns/DepOrderDeptColumn";
-import { useMemo } from "react";
+import { DepOrderDeptIdColumn } from "./columns/DepOrderDeptIdColumn";
+import { DepOrderFlagColumn } from "./columns/DepOrderFlagColumn";
+import { DepOrderIdColumn } from "./columns/DepOrderIdColumn";
+import { DepOrderUserColumn } from "./columns/DepOrderUserColumn";
 
-export const DepOrderGridRow = memo(
+const PurchaseDepOrderGridRow = memo(
 	forwardRef((props, ref) => {
 		const { value } = props;
 
@@ -32,8 +29,9 @@ export const DepOrderGridRow = memo(
 	})
 );
 
-DepOrderGridRow.propTypes = {
+PurchaseDepOrderGridRow.propTypes = {
 	value: PropTypes.object,
 };
 
-DepOrderGridRow.displayName = "DepOrderGridRow";
+PurchaseDepOrderGridRow.displayName = "DepOrderGridRow";
+export default PurchaseDepOrderGridRow;

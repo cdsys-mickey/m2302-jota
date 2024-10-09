@@ -1,8 +1,16 @@
-import PropTypes from "prop-types";
-import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import TaxTypePicker from "@/components/picker/TaxTypePicker";
-import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import Objects from "@/shared-modules/sd-objects";
+import PropTypes from "prop-types";
+import { memo, useRef } from "react";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+
+const arePropsEqual = (oldProps, newProps) => {
+	return Objects.arePropsEqual(oldProps, newProps, {
+		fields: "rowData.taxType,active,disabled,focus",
+		debug: true,
+	});
+}
 
 const TaxTypePickerComponent = memo((props) => {
 	const {
@@ -29,6 +37,7 @@ const TaxTypePickerComponent = memo((props) => {
 	rowDataRef.current = rowData;
 
 	const {
+		name,
 		hideControlsOnActive,
 		selectOnFocus,
 		// from Context
@@ -49,6 +58,7 @@ const TaxTypePickerComponent = memo((props) => {
 	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -87,6 +97,7 @@ const TaxTypePickerComponent = memo((props) => {
 
 	return (
 		<TaxTypePicker
+			name={name}
 			label=""
 			inputRef={ref}
 			disabled={disabled}
@@ -104,7 +115,7 @@ const TaxTypePickerComponent = memo((props) => {
 			{...rest}
 		/>
 	);
-});
+}, arePropsEqual);
 
 TaxTypePickerComponent.propTypes = {
 	// Data

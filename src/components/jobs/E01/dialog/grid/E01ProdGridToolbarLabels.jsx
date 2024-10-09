@@ -12,7 +12,7 @@ const E01ProdGridToolbarLabels = memo(() => {
 			})
 		]}>
 			<DSGToolbarLabel label="外加稅額" name="TaxAmt" />
-			<DSGToolbarLabel label="訂貨合計" name="SalAmt" />
+			<DSGToolbarLabel label="訂貨合計" name="OrdAmt" />
 			<DSGToolbarLabel label="總計金額" name="TotAmt" />
 
 		</Box>

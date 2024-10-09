@@ -37,6 +37,7 @@ const SupplierPickerComponent = memo((props) => {
 	rowDataRef.current = rowData;
 
 	const {
+		name,
 		hideControlsOnActive,
 		selectOnFocus,
 		// from Context
@@ -57,6 +58,7 @@ const SupplierPickerComponent = memo((props) => {
 	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -93,6 +95,7 @@ const SupplierPickerComponent = memo((props) => {
 
 	return (
 		<SupplierPicker
+			name={name}
 			queryParam="qs"
 			label=""
 			inputRef={ref}

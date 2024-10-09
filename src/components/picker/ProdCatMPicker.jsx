@@ -8,21 +8,29 @@ import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPic
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 
 const ProdCatMPicker = (props) => {
-	const { name, label = "中分類", ...rest } = props;
+	const { name, label = "中分類", catL, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const form = useFormContext();
 	const { setValue } = form;
-	const catL = useWatch({ name: "catL" });
+
+	const catLValue = useWatch({ name: "catL" });
+
+	const _catL = useMemo(() => {
+		return catL || catLValue?.LClas;
+	}, [catL, catLValue?.LClas])
+
+
 	const disabled = useMemo(() => {
-		return !catL?.LClas;
-	}, [catL?.LClas]);
+		return !_catL;
+	}, [_catL]);
 
 	const url = useMemo(() => {
-		return `v1/prod/m-cats/${catL?.LClas}`;
-	}, [catL?.LClas]);
+		return `v1/prod/m-cats/${_catL}`;
+	}, [_catL]);
 
+	// 大分類清空則同步
 	useChangeTracking(() => {
-		if (!catL) {
+		if (_catL == null) {
 			setValue(name, null);
 		}
 	}, [catL]);
@@ -37,6 +45,7 @@ const ProdCatMPicker = (props) => {
 			getOptionLabel={ProdMCats.getOptionLabel}
 			isOptionEqualToValue={ProdMCats.isOptionEqualToValue}
 			notFoundText="中分類 ${id} 不存在"
+			resetOnChange
 			{...rest}
 		/>
 	);
@@ -45,6 +54,7 @@ const ProdCatMPicker = (props) => {
 ProdCatMPicker.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
+	catL: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 

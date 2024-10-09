@@ -55,6 +55,7 @@ export const useWebApiOptions = (opts = {}) => {
 		debug = false,
 		// Enter & Tab
 		findByInput = false,
+		resetOnChange = false,
 		// pressToFind,
 		...rest
 	} = opts;
@@ -312,7 +313,7 @@ export const useWebApiOptions = (opts = {}) => {
 	);
 
 	const disabled = useMemo(() => {
-		console.log("pickerState.options.length", pickerState.options.length);
+		// console.log("pickerState.options.length", pickerState.options.length);
 		return disableOnSingleOption && pickerState.options.length < 2;
 	}, [disableOnSingleOption, pickerState.options.length]);
 
@@ -320,15 +321,17 @@ export const useWebApiOptions = (opts = {}) => {
 	 * 來源條件改變, 清空目前值, resetLoading
 	 */
 	useChangeTracking(() => {
-		if (debug) {
-			console.log(
-				`url changed: ${url}${querystring ? " " + querystring : ""
-				}, params:`,
-				params
-			);
+		if (resetOnChange) {
+			if (debug) {
+				console.log(
+					`url changed: ${url}${querystring ? " " + querystring : ""
+					}, params:`,
+					params
+				);
+			}
+			onChange(multiple ? [] : null);
+			resetLoading();
 		}
-		onChange(multiple ? [] : null);
-		resetLoading();
 	}, [url, querystring, params]);
 
 	/** filterByServer 時, 關閉 popper 則重設 loading 狀態

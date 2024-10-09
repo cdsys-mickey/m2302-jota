@@ -31,7 +31,7 @@ const C04DialogForm = memo((props) => {
 		handlePurchaseOrdersChanged,
 		handleRstDateChanged,
 		handleLoadProdsSubmit,
-		handleTaxTypeChanged,
+		handleTaxTypeChange,
 		isSupplierNameDisabled,
 		purchaseOrdersDisabled,
 		supplier,
@@ -157,7 +157,7 @@ const C04DialogForm = memo((props) => {
 								typo
 								label="稅外加"
 								name="TaxType"
-								onChanged={handleTaxTypeChanged}
+								onChange={handleTaxTypeChange}
 							/>
 						</FlexGrid>
 						<Grid item xs={24} sm={24} md={4}>

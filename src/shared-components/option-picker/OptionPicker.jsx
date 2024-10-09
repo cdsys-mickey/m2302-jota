@@ -1,5 +1,5 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import Types from "@/shared-modules/sd-types";
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {
 	Autocomplete,
 	Chip,
@@ -138,6 +138,7 @@ const OptionPicker = memo(
 			isFieldDisabled,
 			setFocus,
 			supressEvents,
+			isTouched,
 			...rest
 		} = props;
 
@@ -165,8 +166,11 @@ const OptionPicker = memo(
 		// OPEN Control
 		const asyncRef = useRef({
 			dirty: false,
+			// 忽略下一次 blur 事件
 			skipBlur: false,
-			focusNextWhenEmpty: false
+			// 沒有值仍觸發 focusNext
+			// focusNextWhenEmpty: false,
+			performFocusNext: false
 		});
 		const innerInputRef = useRef();
 		useImperativeHandle(inputRef, () => innerInputRef.current);
@@ -350,9 +354,10 @@ const OptionPicker = memo(
 					} catch (err) {
 						error = err;
 					}
-					// 處理沒有輸入、沒有改變, 卻必須跳下一個欄位的狀況
+					// 處理輸入清成空，卻必須跳下一個欄位的狀況
 					if (!input && !found) {
-						asyncRef.current.focusNextWhenEmpty = true;
+						// asyncRef.current.focusNextWhenEmpty = true;
+						asyncRef.current.performFocusNext = true;
 					}
 					if (!found && validate) {
 						inputNotFound(input, error);
@@ -777,11 +782,16 @@ const OptionPicker = memo(
 
 
 		useChangeTracking(() => {
-			console.log(`${name} changed`, value);
-			// if (focusNextCellOrField && (value || emptyId)) {
 			// 當選項改變, 且有值, 且非 multiple
-			if (focusNextCellOrField && (value || asyncRef.current.focusNextWhenEmpty) && !multiple && !supressEvents && !disabled) {
-				asyncRef.current.focusNextWhenEmpty = false;
+			if (focusNextCellOrField
+				&& (
+					(value || asyncRef.current.performFocusNext)
+					&& (isTouched !== true)
+				)
+				&& !multiple && !supressEvents && !disabled
+			) {
+				console.log(`${name} changed, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`, value);
+				asyncRef.current.performFocusNext = false;
 				focusNextCellOrField();
 			}
 		}, [value]);
@@ -963,7 +973,7 @@ OptionPicker.propTypes = {
 	getError: PropTypes.func,
 	setError: PropTypes.func,
 	clearErrors: PropTypes.func,
-	notFoundText: PropTypes.string,
+	notFoundText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 	focusNextCell: PropTypes.func,
 	cell: PropTypes.object,
 	toastError: PropTypes.bool,
@@ -978,5 +988,6 @@ OptionPicker.propTypes = {
 	emptyId: PropTypes.bool,
 	supressEvents: PropTypes.bool,
 	cellComponentRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+	isTouched: PropTypes.bool,
 };
 export default OptionPicker;

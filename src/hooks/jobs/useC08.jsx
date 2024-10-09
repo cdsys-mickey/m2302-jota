@@ -530,7 +530,7 @@ export const useC08 = () => {
 			console.log("promptPwordEntry, first:", first);
 			const sqtyLock = sqtyLockRef.current;
 			const pwordLock = pwordLockRef.current;
-			dialogs.prompt({
+			dialogs.confirm({
 				title: "庫存不足",
 				message: first
 					? `[${sqtyLock.prod.ProdID} ${sqtyLock.prod.ProdData}] 庫存不足(${sqtyLock.stock}), 請輸入密碼`
@@ -751,7 +751,7 @@ export const useC08 = () => {
 				let checkFailed = false;
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
-						if (!grid.asyncRef.supressEvents) {
+						if (!grid.asyncRef.current.supressEvents) {
 							const updatedRows = await Promise.all(
 								newValue
 									.slice(

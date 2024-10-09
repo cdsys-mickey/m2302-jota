@@ -7,7 +7,7 @@ import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.TypeA,active,disabled,focus",
+		fields: "rowData.typeA,active,disabled,focus",
 		debug: true,
 	});
 };
@@ -37,6 +37,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 	rowDataRef.current = rowData;
 
 	const {
+		name,
 		hideControlsOnActive,
 		selectOnFocus,
 		// from Context
@@ -57,6 +58,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -95,6 +97,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 
 	return (
 		<ProdTypeAPicker
+			name={name}
 			label=""
 			inputRef={ref}
 			disabled={disabled}

@@ -274,7 +274,7 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 						supplier={supplier}
 						isSupplierNameDisabled={c07.isSupplierNameDisabled}
 						purchaseOrdersDisabled={c07.purchaseOrdersDisabled}
-						handleTaxTypeChanged={c07.handleTaxTypeChanged({
+						handleTaxTypeChange={c07.handleTaxTypeChange({
 							setValue: form.setValue,
 							getValues: form.getValues,
 						})}

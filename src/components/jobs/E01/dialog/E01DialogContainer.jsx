@@ -99,7 +99,6 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 	);
 
 	const readOnly = useMemo(() => {
-		// return !e01.editing || !ordDate || !arrDate || !compTel || !custName;
 		return !e01.editing || !ordDate || !arrDate || !compTel || !custName || (!retail && !customer);
 	}, [arrDate, compTel, custName, customer, e01.editing, ordDate, retail]);
 
@@ -112,6 +111,8 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 						name: "prod",
 						packageType: "s",
 						forId: true,
+						cst: customer?.CustID || "",
+						retail: retail,
 						disableClearable: true,
 						withPrice: true,
 						slotProps: {
@@ -166,21 +167,22 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 				title: "單價",
 				minWidth: 120,
 				maxWidth: 120,
-				disabled: true,
+				disabled: readOnly || e01.spriceDisabled,
+				cellClassName: e01.getSPriceClassName,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "訂貨數量",
 				minWidth: 100,
 				maxWidth: 100,
-				disabled: true,
+				disabled: readOnly || e01.sqtyDisabled,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
 				title: "訂貨金額",
 				minWidth: 120,
 				maxWidth: 120,
-				disabled: readOnly,
+				disabled: true,
 			},
 			{
 				...keyColumn(
@@ -216,10 +218,10 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 				title: "未出量",
 				minWidth: 90,
 				grow: 1,
-				disabled: readOnly,
+				disabled: readOnly || e01.sNotQtyDisalbed,
 			},
 		],
-		[readOnly]
+		[customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisalbed, e01.spriceDisabled, e01.sqtyDisabled, readOnly, retail]
 	);
 
 	const gridMeta = useDSGMeta({
@@ -237,8 +239,29 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 			form.setFocus("OrdDate");
 			return;
 		}
-		if (!customer) {
-			toast.error("請先輸入客戶代碼", {
+		if (!arrDate) {
+			toast.error("請先輸入到貨日期", {
+				position: "top-center",
+			});
+			form.setFocus("ArrDate");
+			return;
+		}
+		if (!compTel) {
+			toast.error("請先輸入電話", {
+				position: "top-center",
+			});
+			form.setFocus("CompTel");
+			return;
+		}
+		if (!custName) {
+			toast.error("請先輸入客戶名稱", {
+				position: "top-center",
+			});
+			form.setFocus("CustName");
+			return;
+		}
+		if (!retail && !customer) {
+			toast.error("非零售請先輸入客戶代碼", {
 				position: "top-center",
 			});
 			form.setFocus("customer");
@@ -246,20 +269,21 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 		}
 
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [customer, form, gridMeta, ordDate]);
+	}, [arrDate, compTel, custName, customer, form, gridMeta, ordDate, retail]);
 
 	const formMeta = useFormMeta(
 		`
 		OrdDate,
 		ArrDate,
 		squared,
+		dontPrtAmt,
 		retail,
 		customer,
 		CustName,
 		paymentType,
 		CompTel,
 		employee,
-		taxType,
+		taxExcluded,
 		RecAddr,
 		transType,
 		InvAddr,
@@ -340,10 +364,11 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 							data={e01.itemData}
 							itemDataReady={e01.itemDataReady}
 							squaredDisabled={e01.squaredDisabled}
-							handleCustomerChange={e01.handleCustomerChange({ setValue: form.setValue, getValues: form.getValues })}
+							handleCustomerChange={e01.handleCustomerChange({ setValue: form.setValue, getValues: form.getValues, formMeta })}
 							handleRetailChange={e01.handleRetailChange({ setValue: form.setValue })}
 							validateCustomer={validateCustomer}
 							customerRequired={customerRequired}
+							handleTaxTypeChange={e01.handleTaxTypeChange({ setValue: form.setValue, getValues: form.getValues })}
 						/>
 
 					</FormMetaProvider>

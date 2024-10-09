@@ -38,10 +38,10 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 		return za03.creating
 			? za03.confirmQuitCreating
 			: za03.updating
-			? za03.confirmQuitUpdating
-			: za03.reading
-			? za03.cancelAction
-			: null;
+				? za03.confirmQuitUpdating
+				: za03.reading
+					? za03.cancelAction
+					: null;
 	}, [
 		za03.cancelAction,
 		za03.confirmQuitCreating,
@@ -83,6 +83,8 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 	const hideCloseButton = useMemo(() => {
 		return editing || authGridEditing;
 	}, [authGridEditing, editing]);
+
+
 
 	return (
 		<FormProvider {...form}>

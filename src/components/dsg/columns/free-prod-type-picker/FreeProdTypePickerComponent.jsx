@@ -37,6 +37,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 	rowDataRef.current = rowData;
 
 	const {
+		name,
 		hideControlsOnActive,
 		selectOnFocus,
 		// from Context
@@ -57,6 +58,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -95,6 +97,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 
 	return (
 		<FreeProdTypePicker
+			name={name}
 			label=""
 			inputRef={ref}
 			disabled={disabled}

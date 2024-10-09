@@ -20,7 +20,7 @@ export const ProdGridCancelChangesButtonContainer = (props) => {
 			// onClick={prodGrid.unload}
 			onClick={prodGrid.confirmCancelChanges}
 			{...rest}>
-			放棄變更
+			回復變更
 		</Button>
 	);
 };

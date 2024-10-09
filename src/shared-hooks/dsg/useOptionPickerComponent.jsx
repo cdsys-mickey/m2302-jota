@@ -2,6 +2,7 @@ import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 
 export const useOptionPickerComponent = (opts) => {
 	const {
+		name,
 		focus,
 		active,
 		disabled,
@@ -49,7 +50,7 @@ export const useOptionPickerComponent = (opts) => {
 
 	const handleChange = useCallback(
 		(newValue) => {
-			console.log("handleChange", newValue);
+			console.log(`${name}.handleChange`, newValue);
 			setRowData(newValue);
 			if (!newValue) {
 				return;
@@ -57,7 +58,7 @@ export const useOptionPickerComponent = (opts) => {
 			// setTimeout(() => stopEditing({ nextRow: false }), 50);
 			setTimeout(() => stopEditing({ nextRow: false }));
 		},
-		[setRowData, stopEditing]
+		[name, setRowData, stopEditing]
 	);
 
 	// 先單純靠 OptionPicker 內的
@@ -70,7 +71,7 @@ export const useOptionPickerComponent = (opts) => {
 				console.log("focusNextCell is null");
 			}
 		}
-	}, [active, cell, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+	}, [active, cell, columnIndex, disabled, focusNextCell, rowIndex, skipDisabled]);
 
 	return {
 		ref,

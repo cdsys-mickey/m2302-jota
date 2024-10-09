@@ -38,7 +38,7 @@ const VirtualizedPickerListbox = memo(
 			// Props from Autocomplete-renderOption
 			const dataSet = data[index];
 
-			const componentProps = dataSet[0];
+			const { key, ...componentProps } = dataSet[0];
 			const optionLabel = dataSet[1];
 
 			const inlineStyle = {
@@ -59,6 +59,7 @@ const VirtualizedPickerListbox = memo(
 
 			return (
 				<Typography
+					key={key}
 					component="li"
 					{...componentProps}
 					noWrap

@@ -31,8 +31,11 @@ const ControlledCheckboxEx = ({
 				? checkedToValue(!e.target.checked)
 				: !e.target.checked;
 			setValue(name, newValue);
+			if (_onChange) {
+				_onChange(newValue);
+			}
 		},
-		[checkedToValue, name, setValue]
+		[_onChange, checkedToValue, name, setValue]
 	);
 
 	const handleKeyDown = useCallback(
@@ -113,15 +116,29 @@ const ControlledCheckboxEx = ({
 						readOnly
 							? null
 							: (e) => {
-								if (_onChange) {
-									_onChange(e);
-								}
 								const newValue = checkedToValue
 									? checkedToValue(e.target.checked)
 									: e.target.checked;
+								if (_onChange) {
+									_onChange(newValue);
+								}
+
 								onChange(newValue);
 							}
 					}
+					// onChange={
+					// 	readOnly
+					// 		? null
+					// 		: (newChecked) => {
+					// 			if (_onChange) {
+					// 				_onChange(newChecked);
+					// 			}
+					// 			const newValue = checkedToValue
+					// 				? checkedToValue(newChecked)
+					// 				: newChecked;
+					// 			onChange(newValue);
+					// 		}
+					// }
 					inputProps={readOnly ? { readOnly: true } : null}
 					// InputProps={readOnly ? { disableUnderline: true } : null}
 					disabled={readOnly}

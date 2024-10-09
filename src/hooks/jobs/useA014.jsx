@@ -1,9 +1,10 @@
+import { RowProdCatMPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/RowProdCatMPickerComponentContainer";
+import { RowProdCatSPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/RowProdCatSPickerComponentContainer";
 import ProdGrid from "@/modules/md-prod-grid";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { ProdCatLPickerComponentContainer } from "../../components/dsg/columns/prod-cat-picker/ProdCatLPickerComponentContainer";
-import { ProdCatMPickerComponentContainer } from "../../components/dsg/columns/prod-cat-picker/ProdCatMPickerComponentContainer";
-import { ProdCatSPickerComponentContainer } from "../../components/dsg/columns/prod-cat-picker/ProdCatSPickerComponentContainer";
+import { ProdTypeAPickerComponentContainer } from "../../components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
 import { ProdTypeBPickerComponentContainer } from "../../components/dsg/columns/prod-type-b-picker/ProdTypeBPickerComponentContainer";
 import { TaxTypePickerComponentContainer } from "../../components/dsg/columns/tax-type-picker/TaxTypePickerComponentContainer";
 import A014 from "../../modules/md-a014";
@@ -14,8 +15,7 @@ import { useDSG } from "../../shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "./useAppModule";
-import { useCallback } from "react";
-import { ProdTypeAPickerComponentContainer } from "../../components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
+import { rowOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/rowOptionPickerColumn";
 
 export const useA014 = () => {
 	const appModule = useAppModule({
@@ -25,7 +25,6 @@ export const useA014 = () => {
 	const grid = useDSG({
 		gridId: "A014",
 		keyColumn: "ProdID",
-		otherColumns: "ProdData,Price,PriceA,PriceB,PriceC,PriceD,PriceE",
 	});
 
 	const columns = useMemo(
@@ -58,52 +57,80 @@ export const useA014 = () => {
 								},
 							},
 						},
-					}),
-					title: "大分類",
-					grow: 3,
-					disabled: grid.readOnly,
-				})
-			},
-			{
-				...keyColumn("catM", {
-					...optionPickerColumn(ProdCatMPickerComponentContainer, {
-						name: "catM",
-						disableOpenOnInput: true,
-						disableClearable: true,
-						selectOnFocus: true,
-						hideControlsOnActive: false,
-						slotProps: {
-							paper: {
-								sx: {
-									width: 240,
-								},
-							},
-						},
 					})
 				})
 				,
+				title: "大分類",
+				grow: 3,
+				disabled: grid.readOnly,
+			},
+			{
+				// ...keyColumn("catM", {
+				// 	...optionPickerColumn(ProdCatMPickerComponentContainer, {
+				// 		name: "catM",
+				// 		disableOpenOnInput: true,
+				// 		disableClearable: true,
+				// 		selectOnFocus: true,
+				// 		hideControlsOnActive: false,
+				// 		slotProps: {
+				// 			paper: {
+				// 				sx: {
+				// 					width: 240,
+				// 				},
+				// 			},
+				// 		},
+				// 	})
+				// })
+				...rowOptionPickerColumn(RowProdCatMPickerComponentContainer, {
+					name: "catM",
+					disableOpenOnInput: true,
+					disableClearable: true,
+					selectOnFocus: true,
+					hideControlsOnActive: false,
+					slotProps: {
+						paper: {
+							sx: {
+								width: 240,
+							},
+						},
+					},
+				}),
 				title: "中分類",
 				grow: 3,
 				disabled: grid.readOnly,
 			},
 
 			{
-				...keyColumn("catS", {
-					...optionPickerColumn(ProdCatSPickerComponentContainer, {
-						name: "catS",
-						disableOpenOnInput: true,
-						disableClearable: true,
-						selectOnFocus: true,
-						hideControlsOnActive: false,
-						slotProps: {
-							paper: {
-								sx: {
-									width: 160,
-								},
+				// ...keyColumn("catS", {
+				// 	...optionPickerColumn(ProdCatSPickerComponentContainer, {
+				// 		name: "catS",
+				// 		disableOpenOnInput: true,
+				// 		disableClearable: true,
+				// 		selectOnFocus: true,
+				// 		hideControlsOnActive: false,
+				// 		slotProps: {
+				// 			paper: {
+				// 				sx: {
+				// 					width: 160,
+				// 				},
+				// 			},
+				// 		},
+				// 	}
+				// 	)
+				// }),
+				...rowOptionPickerColumn(RowProdCatSPickerComponentContainer, {
+					name: "catS",
+					disableOpenOnInput: true,
+					disableClearable: true,
+					selectOnFocus: true,
+					hideControlsOnActive: false,
+					slotProps: {
+						paper: {
+							sx: {
+								width: 160,
 							},
 						},
-					}
-					)
+					},
 				}),
 				title: "小分類",
 				grow: 2,
@@ -221,51 +248,105 @@ export const useA014 = () => {
 	// 	[]
 	// );
 
+	const onUpdateRow = useCallback(({ fromIndex, formData }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+
+		const { catL, catM } = rowData;
+		const { catL: oldCatL, catM: oldCatM } = oldRowData;
+
+		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+
+		if (catL?.LClas !== oldCatL?.LClas) {
+			processedRowData["catM"] = null;
+			processedRowData["catS"] = null;
+		} else if (catM?.MClas !== oldCatM?.MClas) {
+			processedRowData["catS"] = null;
+		}
+		return processedRowData;
+	}, [grid.gridData]);
+
 	const handleGridChange = useCallback(
 		(newValue, operations) => {
-			const newGridData = [...newValue];
-			let checkFailed = false;
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					console.log("dsg.UPDATE");
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const { catL, catM } = rowData;
-							const rowIndex = operation.fromRowIndex + i;
-							const { catL: oldCatL, catM: oldCatM } = grid.gridData[rowIndex];
-							let processedRowData = { ...rowData };
-							// process UPDATE here
-							if (catL?.LClas !== oldCatL?.LClas) {
-								processedRowData["catM"] = null;
-								processedRowData["catS"] = null;
-							} else if (catM?.MClas !== oldCatM?.MClas) {
-								processedRowData["catS"] = null;
-							}
+			console.log(`A014.handleGridChange`, newValue);
+			// 只處理第一個 operation 的第一行
+			const operation = operations[0];
+			console.log("operation", operation);
+			if (operation.type === "CREATE") {
+				grid.setGridData(newValue);
+			} else if (operation.type === "UPDATE") {
+				const rowIndex = operation.fromRowIndex;
+				const rowData = newValue[rowIndex];
+				const prevRowData = grid.prevGridData[rowIndex];
+				console.log(`[DSG UPDATE]`, rowData);
+				const { catL, catM } = rowData;
+				const { catL: oldCatL, catM: oldCatM } = prevRowData;
 
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "DELETE") {
-					console.log("dsg.DELETE");
-					checkFailed = grid.gridData
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.some((rowData, i) => {
-							// process DELETE check here
-							// if(xxxDisabled(rowData)){ return true }
-							return false;
-						});
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					grid.toFirstColumn({ nextRow: true });
+				let newGridData = [...newValue];
+				let processedRowData = { ...rowData };
+
+				// process UPDATE here
+				if (catL?.LClas !== oldCatL?.LClas) {
+					processedRowData["catM"] = null;
+					processedRowData["catS"] = null;
+				} else if (catM?.MClas !== oldCatM?.MClas) {
+					processedRowData["catS"] = null;
 				}
-			}
-			if (!checkFailed) {
+
+				const dirty = grid.handleDirtyCheck(prevRowData, processedRowData);
+				console.log("dirty", dirty);
+
+				newGridData[rowIndex] = processedRowData;
 				grid.setGridData(newGridData);
+				console.log("newGridData", newGridData)
+			} else {
+				grid.setGridData(newValue);
 			}
 		},
 		[grid]
 	);
+
+	// const handleGridChange = useCallback(
+	// 	(newValue, operations) => {
+	// 		const newGridData = [...newValue];
+	// 		let checkFailed = false;
+	// 		for (const operation of operations) {
+	// 			if (operation.type === "UPDATE") {
+	// 				console.log("dsg.UPDATE");
+	// 				newValue
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.forEach((rowData, i) => {
+	// 						// const { catL, catM } = rowData;
+	// 						const rowIndex = operation.fromRowIndex + i;
+	// 						let prevRowData = grid.prevGridData[rowIndex];
+	// 						let processedRowData = { ...rowData };
+
+	// 						// const { catL: oldCatL, catM: oldCatM } = grid.gridData[rowIndex];
+	// 						// // process UPDATE here
+	// 						// if (catL?.LClas !== oldCatL?.LClas) {
+	// 						// 	processedRowData["catM"] = null;
+	// 						// 	processedRowData["catS"] = null;
+	// 						// } else if (catM?.MClas !== oldCatM?.MClas) {
+	// 						// 	processedRowData["catS"] = null;
+	// 						// }
+	// 						grid.handleDirtyCheck(prevRowData, processedRowData)
+	// 						newGridData[rowIndex] = processedRowData;
+	// 					});
+	// 			} else if (operation.type === "DELETE") {
+	// 				console.log("dsg.DELETE");
+	// 			} else if (operation.type === "CREATE") {
+	// 				console.log("dsg.CREATE");
+	// 			}
+	// 		}
+	// 		if (!checkFailed) {
+	// 			grid.setGridData(newGridData);
+	// 		}
+	// 	},
+	// 	[grid]
+	// );
 
 	return {
 		...appModule,
@@ -275,6 +356,7 @@ export const useA014 = () => {
 		...gridMeta,
 		gridMeta,
 		// handleCreateRow,
-		handleGridChange
+		// handleGridChange
+		onUpdateRow
 	};
 };

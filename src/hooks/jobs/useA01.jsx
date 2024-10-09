@@ -667,7 +667,7 @@ export const useA01 = ({ token, mode }) => {
 	);
 
 	const promptReview = useCallback(() => {
-		dialogs.prompt({
+		dialogs.confirm({
 			title: "確認覆核",
 			label: "正式商品編號",
 			placeholder: "請輸入正式商品編號",

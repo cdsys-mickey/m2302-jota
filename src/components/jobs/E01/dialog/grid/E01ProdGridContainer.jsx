@@ -20,13 +20,15 @@ export const E01ProdGridContainer = (props) => {
 		return e01.buildGridChangeHandler({
 			gridMeta: formMeta.gridMeta,
 			getValues: form.getValues,
+			setValue: form.setValue,
 			onUpdateRow: e01.onUpdateRow,
+			onGridChanged: e01.onGridChanged,
 			onCheckRow: e01.onCheckRow
 		})
-	}, [e01, form.getValues, formMeta.gridMeta])
+	}, [e01, form.getValues, form.setValue, formMeta.gridMeta])
 
 	const _height = useMemo(() => {
-		return formMeta.readOnly ? height - 460 : height - 414;
+		return formMeta.readOnly ? height - 460 : height - 430;
 	}, [formMeta.readOnly, height])
 
 	return (

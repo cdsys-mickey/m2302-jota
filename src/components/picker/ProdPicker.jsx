@@ -30,15 +30,6 @@ const ProdPicker = (props) => {
 			...(packageType && {
 				pkg: packageType
 			}),
-			// ...(withBomPackageName && {
-			// 	pb: 1,
-			// }),
-			// ...(withSalesPackageName && {
-			// 	ps: 1,
-			// }),
-			// ...(withPurchasePackageName && {
-			// 	pi: 1,
-			// }),
 			...(withStock && {
 				ws: 1,
 			}),
@@ -50,8 +41,8 @@ const ProdPicker = (props) => {
 			// 透過 option-picker 的 API call 應該都是要帶回 fuzzy 版本
 			fuzzy: 1,
 			// ** 已報價商品專用參數
-			...(retail && {
-				retail
+			...(retail != null && {
+				retail: retail ? 1 : 0
 			}),
 			...(cst && {
 				cst
@@ -91,7 +82,7 @@ const ProdPicker = (props) => {
 	const getNotFoundText = useCallback((params = {}) => {
 		const { id, error } = params;
 		console.log("params", params);
-		return "getNotFoundText";
+		return error?.message || "商品代號 ${id} 不存在";
 	}, []);
 
 	const notFoundText = useMemo(() => {

@@ -5,11 +5,11 @@ import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
-import { DepOrderGridHeader } from "./DepOrderGridHeader";
-import { DepOrderGridRow } from "./DepOrderGridRow";
+import PurchaseDepOrderGridHeader from "./PurchaseDepOrderGridHeader";
+import PurchaseDepOrderGridRow from "./PurchaseDepOrderGridRow";
 import DepOrders from "@/modules/md-dep-orders";
 
-export const DepOrderPicker = (props) => {
+export const PurchaseDepOrderPicker = (props) => {
 	const { label = "採購單", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
@@ -41,8 +41,8 @@ export const DepOrderPicker = (props) => {
 			renderTagLabel={DepOrders.renderTagLabel}
 			disabled={disabled}
 			optionLabelSize="md"
-			GridHeaderComponent={DepOrderGridHeader}
-			GridRowComponent={DepOrderGridRow}
+			GridHeaderComponent={PurchaseDepOrderGridHeader}
+			GridRowComponent={PurchaseDepOrderGridRow}
 			notFoundText="單位訂單 ${id} 不存在"
 			inputParam="fz"
 
@@ -52,9 +52,9 @@ export const DepOrderPicker = (props) => {
 	);
 };
 
-DepOrderPicker.propTypes = {
+PurchaseDepOrderPicker.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
 };
 
-DepOrderPicker.displayName = "DepOrderPicker";
+PurchaseDepOrderPicker.displayName = "DepOrderPicker";

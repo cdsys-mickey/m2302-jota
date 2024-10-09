@@ -1,14 +1,13 @@
-import ProdTypeAPicker from "@/components//picker/ProdTypeAPicker";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
-import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import ProdTypeBPicker from "../../../picker/ProdTypeBPicker";
-import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.TypeB,active,disabled,focus",
+		fields: "rowData.typeB,active,disabled,focus",
 		debug: true,
 	});
 };
@@ -38,6 +37,7 @@ const ProdTypeBPickerComponent = memo((props) => {
 	rowDataRef.current = rowData;
 
 	const {
+		name,
 		hideControlsOnActive,
 		selectOnFocus,
 		// from Context
@@ -58,6 +58,7 @@ const ProdTypeBPickerComponent = memo((props) => {
 	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -96,6 +97,7 @@ const ProdTypeBPickerComponent = memo((props) => {
 
 	return (
 		<ProdTypeBPicker
+			name={name}
 			label=""
 			inputRef={ref}
 			disabled={disabled}

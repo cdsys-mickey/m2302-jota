@@ -10,7 +10,7 @@ import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import DeptPicker from "../../../DeptPickerContainer";
-import { DepOrderPicker } from "../../../dep-order-picker/DepOrderPicker";
+import { PurchaseDepOrderPicker } from "../../../purchase-dep-order-picker/PurchaseDepOrderPicker";
 import TransportTypePicker from "../../../tranport-type-picker/TransportTypePicker";
 import { C08ProdGridBottomToolbar } from "./prod-grid/C08ProdGridBottomToolbar";
 import { C08ProdGridContainer } from "./prod-grid/C08ProdGridContainer";
@@ -100,7 +100,7 @@ const C08DialogForm = memo((props) => {
 						</Grid>
 						<FlexBox fullWidth />
 						<Grid item xs={24} sm={24} md={8}>
-							<DepOrderPicker
+							<PurchaseDepOrderPicker
 								typo
 								multiple
 								name="depOrders"

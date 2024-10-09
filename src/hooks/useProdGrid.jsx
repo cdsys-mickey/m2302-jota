@@ -212,7 +212,7 @@ export const useProdGrid = ({
 
 	const confirmCancelChanges = useCallback(() => {
 		dialogs.confirm({
-			message: "確定要放棄變更?",
+			message: "確定要回復變更?",
 			onConfirm: grid.rollbackChanges,
 		});
 	}, [dialogs, grid.rollbackChanges]);

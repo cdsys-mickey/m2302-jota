@@ -447,8 +447,6 @@ export const useC04 = () => {
 		[httpGetAsync, token]
 	);
 
-
-
 	const fetchAmt = useCallback(
 		async ({ paid, taxType, gridData, setValue }) => {
 			const total = C04.getTotal(gridData);
@@ -480,7 +478,7 @@ export const useC04 = () => {
 		[httpGetAsync, token]
 	);
 
-	const handleTaxTypeChanged = useCallback(
+	const handleTaxTypeChange = useCallback(
 		({ setValue, getValues }) =>
 			async (newValue) => {
 				console.log("onTaxTypeChanged", newValue);
@@ -1011,7 +1009,7 @@ export const useC04 = () => {
 		onRefreshGridSubmit2,
 		onRefreshGridSubmit,
 		onRefreshGridSubmitError,
-		handleTaxTypeChanged,
+		handleTaxTypeChange,
 		onLoadProdsSubmit,
 		onLoadProdsSubmitError,
 		handleRstDateChanged,

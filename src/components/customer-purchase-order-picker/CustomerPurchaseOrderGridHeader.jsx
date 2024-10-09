@@ -1,16 +1,15 @@
 import { Box, Grid } from "@mui/material";
-import { forwardRef, memo } from "react";
-import { DepOrderCheckerColumn } from "./columns/DepOrderCheckerColumn";
-import { DepOrderDateColumn } from "./columns/DepOrderDateColumn";
-import { DepOrderIdColumn } from "./columns/DepOrderIdColumn";
 import PropTypes from "prop-types";
-import { DepOrderFlagColumn } from "./columns/DepOrderFlagColumn";
-import { DepOrderUserColumn } from "./columns/DepOrderUserColumn";
-import { DepOrderDeptIdColumn } from "./columns/DepOrderDeptIdColumn";
-import { DepOrderDeptNameColumn } from "./columns/DepOrderDeptNameColumn";
+import { forwardRef, memo } from "react";
+import { DepOrderDateColumn } from "./columns/DepOrderDateColumn";
 import { DepOrderDeptColumn } from "./columns/DepOrderDeptColumn";
+import { DepOrderDeptIdColumn } from "./columns/DepOrderDeptIdColumn";
+import { DepOrderFlagColumn } from "./columns/DepOrderFlagColumn";
+import { DepOrderIdColumn } from "./columns/DepOrderIdColumn";
+import { DepOrderUserColumn } from "./columns/DepOrderUserColumn";
+import { DepOrderDeptNameColumn } from "./columns/DepOrderDeptNameColumn";
 
-export const DepOrderGridHeader = memo(
+const CustomerPurchaseOrderGridHeader = memo(
 	forwardRef((props, ref) => {
 		const { sx = [], ...rest } = props;
 		return (
@@ -24,21 +23,22 @@ export const DepOrderGridHeader = memo(
 				]}
 				{...rest}>
 				<Grid container columns={24} spacing={0}>
-					<DepOrderFlagColumn header>結</DepOrderFlagColumn>
 					<DepOrderIdColumn header>訂貨單號</DepOrderIdColumn>
+					<DepOrderFlagColumn header justifyContent="center">結</DepOrderFlagColumn>
 					<DepOrderDateColumn header>訂貨日期</DepOrderDateColumn>
-					<DepOrderDateColumn header>預到日期</DepOrderDateColumn>
-					<DepOrderUserColumn header>製單人員</DepOrderUserColumn>
-					<DepOrderDeptIdColumn header>出貨門市</DepOrderDeptIdColumn>
-					<DepOrderDeptColumn header>訂貨門市</DepOrderDeptColumn>
+					<DepOrderUserColumn header>業務員</DepOrderUserColumn>
+					<DepOrderFlagColumn header justifyContent="center">零售</DepOrderFlagColumn>
+					<DepOrderDeptIdColumn header>客戶代碼</DepOrderDeptIdColumn>
+					<DepOrderDeptNameColumn header>客戶名稱</DepOrderDeptNameColumn>
 				</Grid>
 			</Box>
 		);
 	})
 );
 
-DepOrderGridHeader.propTypes = {
+CustomerPurchaseOrderGridHeader.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
-DepOrderGridHeader.displayName = "DepOrderGridHeader";
+CustomerPurchaseOrderGridHeader.displayName = "PurchaseDepOrderGridHeader";
+export default CustomerPurchaseOrderGridHeader;

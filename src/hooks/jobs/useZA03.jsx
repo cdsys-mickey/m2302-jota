@@ -18,6 +18,7 @@ import CopyAuth from "@/modules/md-copy-auth";
 import Auth from "@/modules/md-auth";
 import DSG from "../../shared-modules/sd-dsg";
 import UserAuth from "../../modules/md-user-auth";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 
 export const useZA03 = () => {
 	const crud = useContext(CrudContext);
@@ -50,10 +51,13 @@ export const useZA03 = () => {
 	const itemIdRef = useRef();
 
 	// Auth Grid
-	const authGrid = useDSG({
+	const grid = useDSG({
 		gridId: "auth",
 		// keyColumn: "module.JobID",
 		keyColumn: "JobID",
+	});
+	const gridMeta = useDSGMeta({
+
 	});
 	// const { clearGridData, getRowDataByIndex } = authGrid;
 
@@ -103,7 +107,7 @@ export const useZA03 = () => {
 					const data = payload.map((x) =>
 						UserAuth.transformForReading(x)
 					);
-					authGrid.setGridData(data, {
+					grid.setGridData(data, {
 						init: true,
 					});
 					loadAuthGridAction.finish();
@@ -118,7 +122,7 @@ export const useZA03 = () => {
 			}
 		},
 		[
-			authGrid,
+			grid,
 			crud.itemData?.UID,
 			httpGetAsync,
 			loadAuthGridAction,
@@ -144,7 +148,7 @@ export const useZA03 = () => {
 	}, [loadUserAuthorities]);
 
 	const confirmCancelAuthEditing = useCallback(() => {
-		if (!authGrid.isDirty) {
+		if (!grid.isDirty) {
 			cancelAuthEditing();
 		} else {
 			dialogs.confirm({
@@ -154,7 +158,7 @@ export const useZA03 = () => {
 				},
 			});
 		}
-	}, [authGrid.isDirty, cancelAuthEditing, dialogs]);
+	}, [grid.isDirty, cancelAuthEditing, dialogs]);
 
 	const stopInstantEditing = useCallback(() => {
 		setAuthEditingMode(null);
@@ -178,10 +182,10 @@ export const useZA03 = () => {
 					deptId: dept?.DeptID,
 				});
 			} else {
-				authGrid.clearGridData();
+				grid.clearGridData();
 			}
 		},
-		[authGrid, itemData?.UID, loadUserAuthorities]
+		[grid, itemData?.UID, loadUserAuthorities]
 	);
 
 	const promptCreating = useCallback(async () => {
@@ -484,7 +488,7 @@ export const useZA03 = () => {
 
 	const handlePatch = useCallback(
 		async ({ rowIndex, rowData }) => {
-			const ogRowData = authGrid.gridData[rowIndex];
+			const ogRowData = grid.gridData[rowIndex];
 			console.log(`OG [${rowIndex}]`, ogRowData);
 
 			console.log(`PATCH [${rowIndex}]`, rowData);
@@ -500,32 +504,32 @@ export const useZA03 = () => {
 				}
 			});
 		},
-		[authGrid.gridData, handleFunctionEnabled]
+		[grid.gridData, handleFunctionEnabled]
 	);
 
-	const handleGridChange = useCallback(
-		(newValue, operations) => {
-			let checkFailed = false;
-			const newGridData = [...newValue];
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach(async (rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							console.log(`DSG UPDATE[${rowIndex}]`);
-							const prevRowData = authGrid.prevGridData[rowIndex];
+	// const handleGridChange = useCallback(
+	// 	(newValue, operations) => {
+	// 		let checkFailed = false;
+	// 		const newGridData = [...newValue];
+	// 		for (const operation of operations) {
+	// 			if (operation.type === "UPDATE") {
+	// 				newValue
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.forEach(async (rowData, i) => {
+	// 						const rowIndex = operation.fromRowIndex + i;
+	// 						console.log(`DSG UPDATE[${rowIndex}]`);
+	// 						const prevRowData = grid.prevGridData[rowIndex];
 
-							authGrid.handleDirtyCheck(rowData, prevRowData);
-						});
-				}
-			}
-			if (!checkFailed) {
-				authGrid.setGridData(newGridData);
-			}
-		},
-		[authGrid]
-	);
+	// 						grid.handleDirtyCheck(rowData, prevRowData);
+	// 					});
+	// 			}
+	// 		}
+	// 		if (!checkFailed) {
+	// 			grid.setGridData(newGridData);
+	// 		}
+	// 	},
+	// 	[grid]
+	// );
 
 	// const handleModuleSelectionChange = useCallback(
 	// 	({ selection } = {}) => {
@@ -564,10 +568,10 @@ export const useZA03 = () => {
 	const isKeyDisabled = useCallback(
 		({ rowData, rowIndex }) => {
 			return (
-				authGrid.readOnly || authGrid.isPersisted({ rowData, rowIndex })
+				grid.readOnly || grid.isPersisted({ rowData, rowIndex })
 			);
 		},
-		[authGrid]
+		[grid]
 	);
 
 	const getOptionLabel = useCallback((option) => {
@@ -590,7 +594,7 @@ export const useZA03 = () => {
 			console.log("onAddAuthSubmit", data);
 			addAuthAction.start();
 
-			let newSeq = authGrid.selectedRow?.rowData?.Seq || 0;
+			let newSeq = grid.selectedRow?.rowData?.Seq || 0;
 			if (data.position === 0) {
 				newSeq -= 0.5;
 			} else {
@@ -622,7 +626,7 @@ export const useZA03 = () => {
 		},
 		[
 			addAuthAction,
-			authGrid.selectedRow?.rowData?.Seq,
+			grid.selectedRow?.rowData?.Seq,
 			httpPostAsync,
 			crud.itemData?.UID,
 			token,
@@ -762,7 +766,7 @@ export const useZA03 = () => {
 		async (row) => {
 			const { rowData } = row;
 			console.log(`confirm DELETE`, rowData);
-			authGrid.setDeletingRow(row);
+			grid.setDeletingRow(row);
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要移除 ${rowData.JobID} 所有作業權限?`,
@@ -770,12 +774,12 @@ export const useZA03 = () => {
 					handleDelAuth(rowData.JobID);
 				},
 				onCancel: () => {
-					authGrid.setDeletingRow(null);
+					grid.setDeletingRow(null);
 					dialogs.closeLatest();
 				},
 			});
 		},
-		[authGrid, dialogs, handleDelAuth]
+		[grid, dialogs, handleDelAuth]
 	);
 
 	const confirmResetPword = useCallback(
@@ -814,9 +818,9 @@ export const useZA03 = () => {
 
 	const onRowSelectionChange = useCallback(
 		(row) => {
-			authGrid.setSelectedRow(row);
+			grid.setSelectedRow(row);
 		},
-		[authGrid]
+		[grid]
 	);
 
 	const funcDisabled = useCallback(({ rowData }) => {
@@ -826,7 +830,7 @@ export const useZA03 = () => {
 	const saveAuthAction = useAction();
 
 	const handleAuthSave = useCallback(async () => {
-		const dirtyRows = authGrid.getDirtyRows();
+		const dirtyRows = grid.getDirtyRows();
 		console.log(`handleAuthSave`, dirtyRows);
 		// return;
 		try {
@@ -858,7 +862,7 @@ export const useZA03 = () => {
 			saveAuthAction.clear();
 		}
 	}, [
-		authGrid,
+		grid,
 		crud.itemData?.LoginName,
 		crud.itemData?.UID,
 		httpPatchAsync,
@@ -892,11 +896,11 @@ export const useZA03 = () => {
 	}, []);
 
 	const setSelectionChecked = useCallback(
-		(checked) => {
-			const selection = authGrid.getSelection({ debug: true });
+		(gridMeta, checked) => {
+			const selection = gridMeta.getSelection({ debug: true });
 			console.log("selected", selection);
 
-			authGrid.setGridData(
+			grid.setGridData(
 				(prev) =>
 					prev.map((rowData, rowIndex) => {
 						// 只更新指定行
@@ -924,21 +928,21 @@ export const useZA03 = () => {
 				{ dirtyCheckByIndex: true, debug: true }
 			);
 
-			authGrid.setSelection(selection);
+			gridMeta.setSelection(selection);
 		},
-		[authGrid]
+		[grid]
 	);
 
-	const checkSelection = useCallback(() => {
-		setSelectionChecked(true);
+	const checkSelection = useCallback(({ gridMeta }) => () => {
+		setSelectionChecked(gridMeta, true);
 	}, [setSelectionChecked]);
 
-	const clearSelection = useCallback(() => {
-		setSelectionChecked(false);
+	const clearSelection = useCallback(({ gridMeta }) => () => {
+		setSelectionChecked(gridMeta, false);
 	}, [setSelectionChecked]);
 
 	const checkAll = useCallback(() => {
-		authGrid.setGridData(
+		grid.setGridData(
 			(prev) =>
 				prev.map((rowData) => {
 					const updatedRowData = { ...rowData, enabled: true };
@@ -949,10 +953,10 @@ export const useZA03 = () => {
 				}),
 			{ dirtyCheckByIndex: true, debug: true }
 		);
-	}, [authGrid]);
+	}, [grid]);
 
 	const clearAll = useCallback(() => {
-		authGrid.setGridData(
+		grid.setGridData(
 			(prev) =>
 				prev.map((rowData) => {
 					const updatedRowData = { ...rowData, enabled: false };
@@ -963,7 +967,7 @@ export const useZA03 = () => {
 				}),
 			{ dirtyCheckByIndex: true, debug: true }
 		);
-	}, [authGrid]);
+	}, [grid]);
 
 	useInit(() => {
 		crud.cancelAction();
@@ -997,7 +1001,8 @@ export const useZA03 = () => {
 		selectedDept,
 		getRowKey,
 		authGridLoading,
-		...authGrid,
+		grid,
+		...grid,
 		loadUserAuthorities,
 		handleCreateRow,
 		handleConfirmDelete,
@@ -1042,7 +1047,7 @@ export const useZA03 = () => {
 		saveAuthState: saveAuthAction.state,
 		// 複製權限
 		getRowClassName,
-		handleGridChange,
+		// handleGridChange,
 		funcDisabled,
 		checkAll,
 		clearAll,

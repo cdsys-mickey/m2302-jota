@@ -1,15 +1,16 @@
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { memo, useCallback, useMemo, useRef } from "react";
-import { ZZProdCatLPickerContainer } from "../../../picker/ZZProdCatLPickerContainer";
-import ProdCatLPicker from "../../../picker/ProdCatLPicker";
-import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import { memo, useRef } from "react";
+import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
+		header: ProdCatLPickerComponent.displayName,
 		fields: "rowData.LClas,active,disabled,focus",
 		// debug: true,
+		// deepCompare: true
 	});
 };
 
@@ -59,33 +60,8 @@ const ProdCatLPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	// const handleChange = useCallback(
-	// 	(newValue) => {
-	// 		if (name) {
-	// 			console.log(`${name}.rowData`, rowDataRef.current);
-	// 			console.log(`${name}.handleChange, newValue`, newValue);
-	// 			const ogValue = rowDataRef.current[name];
-	// 			if (newValue?.LClas !== ogValue?.LClas) {
-	// 				setRowData({
-	// 					...rowDataRef.current,
-	// 					[name]: newValue,
-	// 					catM: null,
-	// 				});
-	// 			}
-	// 			if (!newValue?.LClas) {
-	// 				return;
-	// 			}
-	// 			setTimeout(() => stopEditing({ nextRow: false }));
-	// 		} else {
-	// 			console.log(`rowData`, rowDataRef.current);
-	// 			console.log(`handleChange, newValue`, newValue);
-	// 			setRowData(newValue);
-	// 		}
-	// 	},
-	// 	[name, setRowData, stopEditing]
-	// );
-
 	const { ref, hideControls, handleChange, cell } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,

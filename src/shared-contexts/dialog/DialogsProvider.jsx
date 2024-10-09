@@ -18,26 +18,32 @@ export const DialogsProvider = ({ children, buttonProps }) => {
 					id,
 					onClose,
 					onCancel,
-					destroyOnClose = true,
+
 					...dialogProps
 				} = d;
 
+				// const houseKeeping = () => {
+				// 	if (destroyOnClose) {
+				// 		setEntities((prev) =>
+				// 			prev.slice(0, entities.length - 1)
+				// 		);
+				// 		console.log(`dialog[${i}] destroyed`);
+				// 	} else {
+				// 		console.log(`dialog[${i}] closed but not destroyed`);
+				// 	}
+				// };
+
 				const houseKeeping = () => {
-					if (destroyOnClose) {
-						setEntities((prev) =>
-							prev.slice(0, entities.length - 1)
-						);
-						console.log(`dialog[${i}] destroyed`);
-					} else {
-						console.log(`dialog[${i}] closed but not destroyed`);
-					}
+					setEntities((prev) =>
+						prev.filter(x => x.open)
+					);
 				};
 
 				const handleClose = () => {
 					if (onClose) {
 						onClose();
 					}
-					houseKeeping();
+					// houseKeeping();
 				};
 
 				const handleCancel = () => {

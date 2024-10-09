@@ -480,7 +480,7 @@ export const useD01 = () => {
 			console.log("promptPwordEntry, first:", first);
 			const sqtyLock = sqtyLockRef.current;
 			const pwordLock = pwordLockRef.current;
-			dialogs.prompt({
+			dialogs.confirm({
 				title: "庫存不足",
 				message: first
 					? `[${sqtyLock.prod.ProdID} ${sqtyLock.prod.ProdData}] 庫存不足(${sqtyLock.stock}), 請輸入密碼`

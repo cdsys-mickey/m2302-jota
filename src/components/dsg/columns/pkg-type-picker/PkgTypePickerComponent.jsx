@@ -38,6 +38,7 @@ const PkgTypePickerComponent = memo((props) => {
 	rowDataRef.current = rowData;
 
 	const {
+		name,
 		hideControlsOnActive,
 		selectOnFocus,
 		// from Context
@@ -58,6 +59,7 @@ const PkgTypePickerComponent = memo((props) => {
 	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -96,6 +98,7 @@ const PkgTypePickerComponent = memo((props) => {
 
 	return (
 		<PkgTypePicker
+			name={name}
 			queryParam="qs"
 			label=""
 			inputRef={ref}

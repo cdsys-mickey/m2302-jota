@@ -1,8 +1,9 @@
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useMemo, useRef } from "react";
-import { useOptionPickerComponent } from "../../../../shared-hooks/dsg/useOptionPickerComponent";
-import ProdCatMPicker from "../../../picker/ProdCatMPicker";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -55,42 +56,21 @@ const ProdCatMPickerComponent = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
 
-
-	// const handleChange = useCallback(
-	// 	(newValue) => {
-	// 		if (name) {
-	// 			console.log(`${name}.rowData`, rowDataRef.current);
-	// 			console.log(`${name}.handleChange, newValue`, newValue);
-	// 			const ogValue = rowDataRef.current[name];
-	// 			if (newValue?.MClas !== ogValue?.MClas) {
-	// 				setRowData({
-	// 					...rowDataRef.current,
-	// 					[name]: newValue,
-	// 					// ...(newValue && {
-	// 					catS: null,
-	// 					// }),
-	// 				});
-	// 			}
-	// 			if (!newValue?.MClas) {
-	// 				return;
-	// 			}
-	// 			setTimeout(() => stopEditing({ nextRow: false }));
-	// 		} else {
-	// 			console.log(`rowData`, rowDataRef.current);
-	// 			console.log(`handleChange, newValue`, newValue);
-	// 			setRowData(newValue);
-	// 		}
-	// 	},
-	// 	[name, setRowData, stopEditing]
-	// );
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	const { ref, hideControls, handleChange, cell } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -100,7 +80,9 @@ const ProdCatMPickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -140,7 +122,8 @@ const ProdCatMPickerComponent = memo((props) => {
 			onChange={handleChange}
 			// catL={catL}
 			// DSG 專屬屬性
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

@@ -1,22 +1,21 @@
-import CustomerPicker from "@/components/picker/CustomerPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
+import SquaredPicker from "@/components/picker/SquaredPicker";
+import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
+import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Container, Grid } from "@mui/material";
+import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { E01ProdGridContainer } from "./grid/E01ProdGridContainer";
-import E01SquaredPicker from "../E01SquaredPicker";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import { E01CustomerPicker } from "../E01CustomerPicker";
 import PaymentPicker from "../../A06/form/fields/PaymentPicker";
-import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
-import { Box, typography } from "@mui/system";
+import { E01CustomerPicker } from "../E01CustomerPicker";
 import { E01ProdGridBottomToolbar } from "./grid/E01ProdGridBottomToolbar";
+import { E01ProdGridContainer } from "./grid/E01ProdGridContainer";
 
 const E01DialogForm = memo((props) => {
 	const {
@@ -31,6 +30,7 @@ const E01DialogForm = memo((props) => {
 		handleCustomerChange,
 		validateCustomer,
 		customerRequired,
+		handleTaxTypeChange,
 		...rest
 	} = props;
 	return (
@@ -54,12 +54,12 @@ const E01DialogForm = memo((props) => {
 									typo
 									name="OrdID"
 									label="單號"
-									autoFocus
+									// autoFocus
 									// fullWidth
 									readOnly={true}
 								/>
 							</Grid>)}
-							<Grid item xs={24} sm={24} md={creating ? 5 : 6}>
+							<Grid item xs={24} sm={24} md={creating ? 5 : 5}>
 								<DatePickerWrapper
 									typo
 									autoFocus
@@ -68,10 +68,10 @@ const E01DialogForm = memo((props) => {
 									fullWidth
 									required
 									variant="outlined"
-									disabled={!creating}
+								// disabled={!creating}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={creating ? 6 : 7}>
+							<Grid item xs={24} sm={24} md={creating ? 5 : 7}>
 								<DatePickerWrapper
 									typo
 									name="ArrDate"
@@ -79,16 +79,33 @@ const E01DialogForm = memo((props) => {
 									fullWidth
 									required
 									variant="outlined"
-									disabled={!creating}
+								// disabled={!creating}
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={4}>
-								<E01SquaredPicker
+								<SquaredPicker
 									typo
 									name="squared"
 									label="結清註記"
 									disabled={squaredDisabled}
 									disableOpenOnInput
+								/>
+							</Grid>
+							<Grid item xs={24} sm={24} md={3}>
+								<CheckboxExWrapper
+									typo
+									label="詢貨單不列印金額"
+									name="dontPrtAmt"
+									size="medium"
+									color="secondary"
+									labelSlotProps={{
+										typography: {
+											variant: "body2",
+											// sx: {
+											// 	fontSize: 10
+											// }
+										}
+									}}
 								/>
 							</Grid>
 							<FlexBox fullWidth />
@@ -110,7 +127,7 @@ const E01DialogForm = memo((props) => {
 									disableOpenOnInput
 									selectOnFocus
 									disableClearable
-									onChange={handleCustomerChange}
+									onChanged={handleCustomerChange}
 									required={customerRequired}
 									rules={{
 										validate: validateCustomer
@@ -124,7 +141,7 @@ const E01DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={6}>
+							<Grid item xs={24} sm={24} md={5}>
 								<TextFieldWrapper
 									typo
 									label="客戶名稱"
@@ -165,23 +182,24 @@ const E01DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									disableClearable
-									disabled={!creating}
+								// disabled={!creating}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={2}>
+							<Grid item xs={24} sm={24} md={3}>
 								<CheckboxExWrapper
 									typo
 									label="稅外加"
 									name="taxExcluded"
-									size="small"
-									labelSlotProps={{
-										typography: {
-											variant: "subtitle2"
-										}
-									}}
+									size="medium"
+									// labelSlotProps={{
+									// 	typography: {
+									// 		variant: "subtitle2"
+									// 	}
+									// }}
+									onChange={handleTaxTypeChange}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={7}>
+							<Grid item xs={24} sm={24} md={8}>
 								<TextFieldWrapper
 									typo
 									label="送貨地址"
@@ -198,7 +216,7 @@ const E01DialogForm = memo((props) => {
 
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={7}>
+							<Grid item xs={24} sm={24} md={8}>
 								<TextFieldWrapper
 									typo
 									label="發票地址"
@@ -250,6 +268,7 @@ E01DialogForm.propTypes = {
 	itemDataReady: PropTypes.bool,
 	squaredDisabled: PropTypes.bool,
 	handleRetailChange: PropTypes.func,
+	handleTaxTypeChange: PropTypes.func,
 	handleCustomerChange: PropTypes.func,
 	validateCustomer: PropTypes.func,
 	customerRequired: PropTypes.bool,

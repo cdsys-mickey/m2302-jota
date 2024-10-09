@@ -1,16 +1,22 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { nanoid } from "nanoid";
 import Forms from "../shared-modules/sd-forms";
+import FreeProdTypes from "./md-free-prod-types";
+import Squared from "./md-squared";
 
 const createRow = () => ({
 	Pkey: nanoid(),
 	prod: null,
 	ProdData_N: "",
 	PackData_N: "",
-	Price: "",
-	QPrice: "",
-	QDate: null,
-	employee: null,
+	SQflag: "",
+	SPrice: "",
+	SOutQty: "",
+	SQty: "",
+	SAmt: "",
+	stype: null,
+	SRemark: "",
+	SNotQty: "",
 });
 
 const SalesType = Object.freeze({
@@ -41,6 +47,10 @@ const findSalesTypeOptionByInput = (s) => {
 	);
 };
 
+const isSalesTypeOptionEqualToValue = (option, value) => {
+	return option?.id == value?.id;
+};
+
 const SquaredState = Object.freeze({
 	NONE: "",
 	NOT: "N",
@@ -69,6 +79,10 @@ const findSquaredOptionByInput = (s) => {
 	return squaredOptions.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
 };
 
+const isSquaredOptionEqualToValue = (option, value) => {
+	return option?.id == value?.id;
+};
+
 const getSquaredOptionDisabled = (option) => {
 	return false;
 };
@@ -95,8 +109,27 @@ const transformForGridImport = (data, employee, date) => {
 
 const transformGridForReading = (data) => {
 	return data?.map((v) => {
-		const { SProdID, ProdData_N, QEmplID, EmplData_N, QDate, ...rest } = v;
+		const {
+			// Pkey,
+			// SQflag,
+			// SPrice,
+			// SQty,
+			// SAmt,
+			// SRemark,
+			// SNotQty,
+
+			// prod
+			SProdID,
+			ProdData_N,
+			PackData_N,
+
+			// stype
+			SType,
+
+			...rest
+		} = v;
 		return {
+			// Pkey,
 			prod: SProdID
 				? {
 						ProdID: SProdID,
@@ -104,27 +137,46 @@ const transformGridForReading = (data) => {
 				  }
 				: null,
 			ProdData_N,
-			QDate: Forms.reformatDate(QDate),
-			employee: {
-				CodeID: QEmplID,
-				CodeData: EmplData_N,
-			},
+			PackData_N,
+			// SQflag,
+			// SPrice,
+			// SQty,
+			// SAmt,
+			stype: FreeProdTypes.getOptionById(SType),
+			// SRemark,
+			// SNotQty,
 			...rest,
 		};
 	});
 };
 
-const transformGridForSubmitting = (data, qdate, employeeId) => {
+const transformGridForSubmitting = (data) => {
 	return data
 		.filter((v) => v.prod?.ProdID)
-		.map((v) => {
-			const { Pkey, prod, QPrice } = v;
+		.map((v, index) => {
+			const {
+				Pkey,
+				prod,
+				SPrice,
+				SQty,
+				SAmt,
+				stype,
+				SNotQty,
+				SOutQty,
+				...rest
+			} = v;
 			return {
-				Pkey: /^\d+$/.test(Pkey) ? Pkey : "",
-				ProdID: prod ? prod.ProdID : "",
-				QPrice: QPrice,
-				QDate: qdate || "",
-				QEmplID: employeeId || "",
+				// Pkey: /^\d+$/.test(Pkey) ? Pkey : "",
+				Pkey: Pkey?.length < 36 ? "" : Pkey,
+				SProdID: prod ? prod.ProdID : "",
+				SQty: SQty?.toString() || "",
+				SPrice: SPrice?.toString() || "",
+				SAmt: SAmt?.toString() || "",
+				SType: stype?.id || "",
+				SNotQty: SNotQty?.toString() || "",
+				SOutQty: SOutQty?.toString() || "",
+				Seq: index + 1,
+				...rest,
 			};
 		});
 };
@@ -187,14 +239,16 @@ const transformForReading = (payload) => {
 		TaxType,
 		TrafID,
 		TrafData_N,
+		PrtAmt,
 		SaleOrd_S,
+		Remark,
 		...rest
 	} = payload;
 
 	return {
 		OrdDate: Forms.parseDate(OrdDate),
 		ArrDate: Forms.parseDate(ArrDate),
-		squared: getSquaredOptionById(CFlag),
+		squared: Squared.getSquaredOptionById(CFlag),
 		retail: getRetail({ SalType }),
 		customer: CustID
 			? {
@@ -207,33 +261,44 @@ const transformForReading = (payload) => {
 		employee: getEmployee({ EmplID, EmplData_N }),
 		transType: getTransType({ TrafID, TrafData_N }),
 		taxExcluded: getTaxExcluded({ TaxType }),
+		dontPrtAmt: PrtAmt === "N",
 		prods: transformGridForReading(SaleOrd_S),
+		remark: Remark.join("\n"),
 		...rest,
 	};
 };
 
-const transformForCreating = (payload, gridData) => {
-	const { customer, employee, Date } = payload;
-
-	const qdate = Forms.formatDate(Date);
-	const employeeId = employee?.CodeID || "";
+const transformForSubmitting = (payload, gridData) => {
+	const {
+		OrdDate,
+		ArrDate,
+		squared,
+		retail,
+		customer,
+		CustName,
+		paymentType,
+		employee,
+		transType,
+		dontPrtAmt,
+		taxExcluded,
+		remark,
+		...rest
+	} = payload;
 
 	return {
+		OrdDate: Forms.formatDate(OrdDate),
+		ArrDate: Forms.formatDate(ArrDate),
+		CFlag: squared?.id || "",
+		SalType: retail ? "Y" : "",
 		CustID: customer?.CustID || "",
-		QEmplID: employeeId,
-		QDate: qdate,
-		...(gridData && {
-			E01031_W1: transformGridForSubmitting(gridData, qdate, employeeId),
-		}),
-	};
-};
-
-const transformForUpdating = (payload, gridData) => {
-	const { customer, employee, Date } = payload;
-	return {
-		CustID: customer?.CustID || "",
-		QEmplID: employee?.CodeID || "",
-		QDate: Forms.formatDate(Date),
+		CustName,
+		RecvID: paymentType?.CodeID || "",
+		EmplID: employee?.CodeID || "",
+		PrtAmt: dontPrtAmt ? "N" : "Y",
+		Remark: remark.split("\n"),
+		TrafID: transType?.CodeID || "",
+		TaxType: taxExcluded ? "Y" : "",
+		...rest,
 		...(gridData && {
 			SaleOrd_S: transformGridForSubmitting(gridData),
 		}),
@@ -298,11 +363,22 @@ const transformProdCriteriaAsQueryParams = (data) => {
 	};
 };
 
+const getTotal = (gridData) => {
+	if (!gridData) {
+		return 0;
+	}
+	let result = 0;
+	for (const rowData of gridData) {
+		const { SAmt } = rowData;
+		result += SAmt ? Number(SAmt) : 0;
+	}
+	return result;
+};
+
 const E01 = {
 	createRow,
 	transformForReading,
-	transformForCreating,
-	transformForUpdating,
+	transformForSubmitting,
 	transformAsQueryParams,
 	transformForGridImport,
 	transformGridForReading,
@@ -314,16 +390,19 @@ const E01 = {
 	getSquaredOptionById,
 	getSquaredOptionDisabled,
 	findSquaredOptionByInput,
+	isSquaredOptionEqualToValue,
 	// 零售
 	SalesType,
 	salesTypeOptions,
 	getSalesTypeOptionLabel,
 	getSalesTypeOptionById,
 	findSalesTypeOptionByInput,
+	isSalesTypeOptionEqualToValue,
 	getTransType,
 	getTaxExcluded,
 	getPaymentType,
 	getEmployee,
+	getTotal,
 };
 
 export default E01;

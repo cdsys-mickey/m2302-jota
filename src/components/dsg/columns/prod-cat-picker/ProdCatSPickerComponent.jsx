@@ -3,6 +3,7 @@ import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -57,39 +58,22 @@ const ProdCatSPickerColumn = memo((props) => {
 		lastCell,
 		getNextCell,
 		skipDisabled,
-		focusNextCell,
+		// focusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
 
-	// const handleChange = useCallback(
-	// 	(newValue) => {
-	// 		if (name) {
-	// 			console.log(`${name}.rowData`, rowDataRef.current);
-	// 			console.log(`${name}.handleChange, newValue`, newValue);
-	// 			const ogValue = rowDataRef.current[name];
-	// 			if (newValue?.SClas !== ogValue?.SClas) {
-	// 				setRowData({
-	// 					...rowDataRef.current,
-	// 					[name]: newValue,
-	// 				});
-	// 			}
-	// 			if (!newValue?.SClas) {
-	// 				return;
-	// 			}
-	// 			setTimeout(() => stopEditing({ nextRow: false }));
-	// 		} else {
-	// 			console.log(`rowData`, rowDataRef.current);
-	// 			console.log(`handleChange, newValue`, newValue);
+	const { focusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		setActiveCell,
+		insertRowBelow
+	});
 
-	// 			setRowData(newValue);
-	// 		}
-	// 	},
-	// 	[name, setRowData, stopEditing]
-	// );
 
 	const { ref, hideControls, handleChange, cell } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -99,7 +83,9 @@ const ProdCatSPickerColumn = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		skipDisabled,
+		focusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -140,7 +126,8 @@ const ProdCatSPickerColumn = memo((props) => {
 			// value={value}
 			onChange={handleChange}
 			// DSG 專屬屬性
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
+			focusNextCell={focusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

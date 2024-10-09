@@ -7,26 +7,35 @@ import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPic
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 
 const ProdCatSPicker = (props) => {
-	const { name, label = "小分類", readOnly = false, ...rest } = props;
+	const { name, label = "小分類", readOnly = false, catL, catM, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const form = useFormContext();
 	const { setValue } = form;
-	const catL = useWatch({ name: "catL" });
-	const catM = useWatch({ name: "catM" });
+	const catLValue = useWatch({ name: "catL" });
+	const catMValue = useWatch({ name: "catM" });
+
+	const _catL = useMemo(() => {
+		return catL || catLValue?.LClas;
+	}, [catL, catLValue?.LClas])
+
+	const _catM = useMemo(() => {
+		return catM || catMValue?.MClas;
+	}, [catM, catMValue?.MClas])
+
 	const disabled = useMemo(() => {
-		return !catL?.LClas || !catM?.MClas || readOnly;
-	}, [catL?.LClas, catM?.MClas, readOnly]);
+		return !_catL || !_catM || readOnly;
+	}, [_catL, _catM, readOnly]);
 
 	const url = useMemo(() => {
-		return disabled ? null : `v1/prod/s-cats/${catL?.LClas},${catM?.MClas}`;
-	}, [catL?.LClas, catM?.MClas, disabled]);
+		return disabled ? null : `v1/prod/s-cats/${_catL},${_catM}`;
+	}, [_catL, _catM, disabled]);
 
 	// 中分類清空則同步
 	useChangeTracking(() => {
-		if (!catM) {
+		if (_catM == null) {
 			setValue(name, null);
 		}
-	}, [catM]);
+	}, [_catM]);
 
 	return (
 		<OptionPickerWrapper
@@ -38,6 +47,7 @@ const ProdCatSPicker = (props) => {
 			getOptionLabel={ProdSCats.getOptionLabel}
 			isOptionEqualToValue={ProdSCats.isOptionEqualToValue}
 			notFoundText="小分類 ${id} 不存在"
+			resetOnChange
 			{...rest}
 		/>
 	);
@@ -46,6 +56,8 @@ const ProdCatSPicker = (props) => {
 ProdCatSPicker.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
+	catL: PropTypes.string,
+	catM: PropTypes.string,
 	readOnly: PropTypes.bool,
 };
 

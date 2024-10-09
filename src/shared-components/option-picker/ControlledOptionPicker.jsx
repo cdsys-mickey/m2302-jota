@@ -16,7 +16,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 		// labelShrink = false,
 		defaultValue = null,
 		sx = [],
-		onChange: onPickerChange,
+		onChange: _onChange,
 		onChanged,
 		options = [],
 		...rest
@@ -59,7 +59,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 			rules={rules}
 			render={({
 				field: { ref, value, onChange },
-				fieldState: { error },
+				fieldState: { isTouched, isDirty, error },
 			}) => {
 				prevValue.current = JSON.stringify(value);
 				return (
@@ -74,8 +74,9 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 
 						options={options}
 						onChange={(newValue) => {
-							if (onPickerChange) {
-								onPickerChange(newValue);
+							console.log(`${ControlledOptionPicker.displayName}.onChange`, newValue);
+							if (_onChange) {
+								_onChange(newValue);
 							}
 							onChange(newValue);
 							const newValueJson = JSON.stringify(newValue);
@@ -96,13 +97,15 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						helperText={error?.message}
 						// FormMeta
 						inFormMeta={inFormMeta}
+						// formMeta={formMeta}
+						isTouched={isTouched}
+						isDirty={isDirty}
 						// Focus Control
 						setFocus={setFocus}
 						// getNextField={getNextField}
 						focusNextField={focusNextField}
 						isFieldDisabled={isFieldDisabled}
 						disableEnter={disableEnter}
-
 						{...rest}
 					/>
 				);

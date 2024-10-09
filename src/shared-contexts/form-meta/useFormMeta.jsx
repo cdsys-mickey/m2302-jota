@@ -4,8 +4,13 @@ import { useFormContext } from "react-hook-form";
 import { LastFieldBehavior } from "./LastFieldBehavior";
 import { toast } from "react-toastify";
 import FormMeta from "../../shared-modules/sd-form-meta";
+import { useRef } from "react";
 
 export const useFormMeta = (value, opts = {}) => {
+	const asyncRef = useRef({
+		supressEvents: false
+	});
+
 	const form = useFormContext();
 	const { setFocus } = form || {};
 	const {
@@ -136,6 +141,7 @@ export const useFormMeta = (value, opts = {}) => {
 		getNextField,
 		nextEnabled,
 		focusNextField,
-		disableEnter
+		disableEnter,
+		asyncRef
 	};
 };

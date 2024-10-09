@@ -15,6 +15,10 @@ export const A014GridContainer = () => {
 		return prodGrid.expanded ? height - 330 : height - 230;
 	}, [prodGrid.expanded, height]);
 
+	const onChange = useMemo(() => {
+		return prodGrid.buildGridChangeHandler({ onUpdateRow: prodGrid.onUpdateRow })
+	}, [prodGrid])
+
 	return (
 		<FormProvider {...form}>
 			<DSGContext.Provider value={{ ...prodGrid.grid, ...prodGrid.gridMeta }}>
@@ -24,7 +28,8 @@ export const A014GridContainer = () => {
 					data={prodGrid.gridData}
 					loading={prodGrid.gridLoading}
 					height={gridHeight}
-					onChange={prodGrid.handleGridChange}
+					// onChange={prodGrid.handleGridChange}
+					onChange={onChange}
 					// bearer={token}
 					handleCreateRow={prodGrid.handleCreateRow}
 				/>

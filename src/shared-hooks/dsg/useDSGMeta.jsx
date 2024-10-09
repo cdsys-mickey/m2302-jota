@@ -74,9 +74,9 @@ export const useDSGMeta = ({
 
 	const handleSelectionChange = useCallback(({ selection }) => {
 		if (selection) {
+			console.log("handleSelectionChange", selection);
 			selectionRef.current = selection;
 		}
-		// console.log("selection", selection);
 	}, []);
 
 	const buildSelectionChangeHandler = useCallback(
@@ -264,13 +264,14 @@ export const useDSGMeta = ({
 	);
 
 	const getSelection = useCallback((opts = {}) => {
-		if (gridRef.current) {
-			return gridRef.current.selection;
-		}
+		// if (gridRef.current) {
+		// 	return gridRef.current.selection;
+		// }
+		return selectionRef.current;
 
-		if (opts.debug) {
-			console.log(`getSelection failed: gridRef.current is null`);
-		}
+		// if (opts.debug) {
+		// 	console.log(`getSelection failed: gridRef.current is null`);
+		// }
 	}, []);
 
 	const setSelection = useCallback((selection, opts = {}) => {
@@ -328,7 +329,7 @@ export const useDSGMeta = ({
 			throw new Error("current cell cannot be null");
 		}
 		return cell.row === data.length - 1 && cell.col === columns.length - 1;
-	}, [columns.length, data?.length]);
+	}, [columns?.length, data?.length]);
 
 	return {
 		// Meta

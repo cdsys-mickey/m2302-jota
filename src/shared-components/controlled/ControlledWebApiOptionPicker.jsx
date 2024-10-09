@@ -71,7 +71,7 @@ export const ControlledWebApiOptionPicker = memo(
 				rules={rules}
 				render={({
 					field: { value, onChange, ref },
-					fieldState: { error },
+					fieldState: { isTouched, isDirty, error },
 				}) => {
 					prevValue.current = JSON.stringify(value);
 
@@ -86,6 +86,9 @@ export const ControlledWebApiOptionPicker = memo(
 							clearErrors={form.clearErrors}
 							// FormMeta
 							inFormMeta={inFormMeta}
+							// formMeta={formMeta}
+							isTouched={isTouched}
+							isDirty={isDirty}
 							// Focus Control
 							setFocus={setFocus}
 							// getNextField={getNextField}

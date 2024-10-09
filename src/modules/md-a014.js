@@ -23,17 +23,23 @@ const transformForReading = (payload) => {
 			catL: LClas
 				? {
 						LClas,
+						MClas: "",
+						SClas: "",
 						ClassData: LClas_N,
 				  }
 				: null,
 			catM: MClas
 				? {
+						LClas,
 						MClas,
+						SClas: "",
 						ClassData: MClas_N,
 				  }
 				: null,
 			catS: SClas
 				? {
+						LClas,
+						MClas,
 						SClas,
 						ClassData: SClas_N,
 				  }

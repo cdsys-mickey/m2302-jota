@@ -476,7 +476,7 @@ export const useC05 = () => {
 		[httpGetAsync, token]
 	);
 
-	const handleTaxTypeChanged = useCallback(
+	const handleTaxTypeChange = useCallback(
 		({ setValue, getValues }) =>
 			async (newValue) => {
 				console.log("onTaxTypeChanged", newValue);
@@ -843,7 +843,7 @@ export const useC05 = () => {
 		isSupplierNameDisabled,
 		onRefreshGridSubmit,
 		onRefreshGridSubmitError,
-		handleTaxTypeChanged,
+		handleTaxTypeChange,
 		handleRtnDateChanged,
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,

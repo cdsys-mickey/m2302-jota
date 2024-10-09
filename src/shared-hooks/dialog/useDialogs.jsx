@@ -5,6 +5,33 @@ import { useState } from "react";
 export const useDialogs = ({ buttonProps }) => {
 	const [entities, setEntities] = useState([]);
 
+	const close = useCallback((opts = {}) => {
+		console.log("close dialog", opts);
+		const { id, dontDestory = false } = opts;
+
+		setEntities(prev => {
+			if (id) {
+				const selected = prev.find(x => x.id === id);
+				if (selected) {
+					if (selected.onClose) {
+						selected.onClose();
+					}
+					if (dontDestory) {
+						return prev.map(x => x.id === opts.id ? { ...x, open: false, working: false } : x);
+					} else {
+						return prev.filter(x => x.id !== opts.id);
+					}
+				} else {
+					console.warn(`由於沒有找到 opts.id [${opts.id}], 清除了所有 dialogs`)
+					return [];
+				}
+			} else {
+				console.warn("由於 opts.id 為空, 清除了所有 dialogs")
+				return [];
+			}
+		})
+	}, []);
+
 	const closeLatest = useCallback(() => {
 		console.log("closeLatest");
 		setEntities((prev) => {
@@ -21,36 +48,45 @@ export const useDialogs = ({ buttonProps }) => {
 
 	const create = useCallback(
 		({
-			buttonProps: dialogbuttonProps,
+			buttonProps: _buttonProps,
 			closeOthers = false,
+			onConfirm,
+			onCancel,
 			...dialogProps
 		}) => {
+			const newId = nanoid();
+			const handleConfirm = (v) => {
+				onConfirm({ id: newId, value: v });
+			}
+
+			const handleCancel = () => {
+				onCancel({ id: newId });
+			}
+
+			console.log("closeOthers", closeOthers);
+
+			const newDialog = {
+				id: newId,
+				buttonProps: {
+					...buttonProps,
+					..._buttonProps,
+				},
+				open: true,
+				onConfirm: handleConfirm,
+				onCancel: handleCancel,
+				...dialogProps,
+			}
 			if (closeOthers) {
 				setEntities([
-					{
-						id: nanoid(),
-						buttonProps: {
-							...buttonProps,
-							...dialogbuttonProps,
-						},
-						open: true,
-						...dialogProps,
-					},
+					newDialog,
 				]);
 			} else {
 				setEntities((prev) => [
 					...prev,
-					{
-						id: nanoid(),
-						buttonProps: {
-							...buttonProps,
-							...dialogbuttonProps,
-						},
-						open: true,
-						...dialogProps,
-					},
+					newDialog,
 				]);
 			}
+			return newId;
 		},
 		[buttonProps]
 	);
@@ -74,23 +110,23 @@ export const useDialogs = ({ buttonProps }) => {
 			closeOnConfirm = true,
 			...rest
 		}) => {
-			create({
+			return create({
 				title: title,
 				message: message,
-				onConfirm: () => {
-					if (onConfirm) onConfirm();
+				onConfirm: (opts) => {
+					if (onConfirm) onConfirm(opts);
 					if (closeOnConfirm) {
-						closeLatest();
+						close(opts);
 					}
 				},
-				onCancel: () => {
-					if (onCancel) onCancel();
-					closeLatest();
+				onCancel: (opts) => {
+					if (onCancel) onCancel(opts);
+					close(opts);
 				},
 				...rest,
 			});
 		},
-		[closeLatest, create]
+		[close, create]
 	);
 
 	const prompt = useCallback(
@@ -101,10 +137,10 @@ export const useDialogs = ({ buttonProps }) => {
 			onConfirm,
 			onCancel,
 			label,
-			disableCloseOnConfirm = false,
+			closeOnConfirm = true,
 			...rest
 		}) => {
-			create({
+			return create({
 				title: title,
 				message: message,
 				prompt: true,
@@ -112,35 +148,36 @@ export const useDialogs = ({ buttonProps }) => {
 				promptTextFieldProps: {
 					label: label,
 				},
-				onConfirm: (v) => {
-					if (onConfirm) onConfirm(v);
-					if (!disableCloseOnConfirm) {
-						closeLatest();
+				onConfirm: (opts) => {
+					if (onConfirm) onConfirm(opts);
+					if (closeOnConfirm) {
+						close(opts);
 					}
 				},
-				onCancel: () => {
-					if (onCancel) onCancel();
-					closeLatest();
+				onCancel: (opts) => {
+					if (onCancel) onCancel(opts);
+					close(opts);
 				},
 				...rest,
 			});
 		},
-		[closeLatest, create]
+		[close, create]
 	);
 
 	const alert = useCallback(
 		({ title = "提醒", message = "[訊息]", onConfirm, ...rest }) => {
-			create({
+			return create({
 				title: title,
 				message: message,
-				onConfirm: () => {
-					if (onConfirm) onConfirm();
-					closeLatest();
+				onConfirm: (opts) => {
+					if (onConfirm) onConfirm(opts);
+					// closeLatest();
+					close(opts);
 				},
 				...rest,
 			});
 		},
-		[create, closeLatest]
+		[create, close]
 	);
 
 	return {
@@ -152,5 +189,6 @@ export const useDialogs = ({ buttonProps }) => {
 		setWorking,
 		closeLatest,
 		prompt,
+		close
 	};
 };

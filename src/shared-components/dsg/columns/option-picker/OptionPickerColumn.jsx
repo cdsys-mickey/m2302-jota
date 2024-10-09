@@ -4,12 +4,7 @@ export const optionPickerColumn = (CellComponent, opts = {}) => {
 		columnData: opts,
 		disableKeys: false,
 		keepFocus: true,
-		deleteValue: ({ rowData }) => {
-			return opts.fullRowData ? {
-				...rowData,
-				[opts.fullRowData]: null
-			} : null
-		},
+		deleteValue: ({ rowData }) => null,
 		copyValue: ({ rowData }) => JSON.stringify(rowData),
 		pasteValue: ({ value }) => JSON.parse(value),
 		isCellEmpty: ({ rowData }) => false,

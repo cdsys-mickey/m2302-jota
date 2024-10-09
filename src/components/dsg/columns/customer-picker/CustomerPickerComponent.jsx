@@ -35,6 +35,7 @@ const CustomerPickerComponent = memo((props) => {
 	rowDataRef.current = rowData;
 
 	const {
+		name,
 		hideControlsOnActive,
 		selectOnFocus,
 		// from Context
@@ -55,6 +56,7 @@ const CustomerPickerComponent = memo((props) => {
 	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -93,6 +95,7 @@ const CustomerPickerComponent = memo((props) => {
 
 	return (
 		<CustomerPicker
+			name={name}
 			queryParam="qs"
 			label=""
 			inputRef={ref}

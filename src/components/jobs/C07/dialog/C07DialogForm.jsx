@@ -30,7 +30,7 @@ const C07DialogForm = memo((props) => {
 		handlePurchaseOrdersChanged,
 		handleRtnDateChanged,
 		handleLoadProdsSubmit,
-		handleTaxTypeChanged,
+		handleTaxTypeChange,
 		isSupplierNameDisabled,
 		purchaseOrdersDisabled,
 		supplier,

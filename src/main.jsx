@@ -6,7 +6,10 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "./pages/ErrorPage.jsx";
 
-// import "react-toastify/dist/ReactToastify.css";
+// 只有 prod 時才移除 log
+if (import.meta.env.VITE_PROFILE === "prod") {
+	console.log = function () { };
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	// <React.StrictMode>

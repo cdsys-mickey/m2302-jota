@@ -103,7 +103,7 @@ const E01ListForm = memo((props) => {
 						label="電話"
 						size="small"
 						clearable
-						placeholder="請輸入單號尾碼"
+						placeholder="請輸入電話片段"
 						fullWidth
 					/>
 				</Grid>

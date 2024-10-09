@@ -1,24 +1,16 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
-import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Box, Grid, IconButton, Tooltip } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo } from "react";
-import E01IdColumn from "./columns/E01IdColumn";
-import E01DateColumn from "./columns/E01DateColumn";
-import LockResetIcon from "@mui/icons-material/LockReset";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import E01SupplierColumn from "./columns/E01SupplierColumn";
-import E01UserColumn from "./columns/E01UserColumn";
+import { memo, useMemo } from "react";
 import E01CustomerColumn from "./columns/E01CustomerColumn";
-import { useMemo } from "react";
-import E01ProdColumn from "./columns/E01ProdColumn";
-import E01PriceColumn from "./columns/E01PriceColumn";
+import E01DateColumn from "./columns/E01DateColumn";
 import E01FlagColumn from "./columns/E01FlagColumn";
+import E01IdColumn from "./columns/E01IdColumn";
+import E01UserColumn from "./columns/E01UserColumn";
 
 const E01ListRow = memo((props) => {
-	const { index, style, value, loading, onClick, handleSelectDate } = props;
+	const { index, style, value, loading, onClick } = props;
 
 	const customer = useMemo(() => {
 		const { 客戶代碼, 客戶簡稱 } = value || "";
@@ -60,7 +52,7 @@ const E01ListRow = memo((props) => {
 						<E01FlagColumn loading={loading}>
 							{value?.結清 || ""}
 						</E01FlagColumn>
-						<E01DateColumn loading={loading} onClick={handleSelectDate}>
+						<E01DateColumn loading={loading} >
 							{value?.訂貨日期 || ""}
 						</E01DateColumn>
 

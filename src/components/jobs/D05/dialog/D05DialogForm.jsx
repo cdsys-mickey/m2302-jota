@@ -10,7 +10,7 @@ import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import DeptPicker from "@/components/DeptPickerContainer";
-import { DepOrderPicker } from "@/components/dep-order-picker/DepOrderPicker";
+import { PurchaseDepOrderPicker } from "@/components/purchase-dep-order-picker/PurchaseDepOrderPicker";
 import { TxoOrderPicker } from "@/components/txo-order-picker/TxoOrderPicker";
 import { D05ProdGridBottomToolbar } from "./prod-grid/D05ProdGridBottomToolbar";
 import { D05ProdGridContainer } from "./prod-grid/D05ProdGridContainer";

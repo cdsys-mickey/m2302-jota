@@ -22,6 +22,7 @@ import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveCo
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import DialogTitleEx from "./DialogTitleEx";
 import { ButtonWrapper } from "../button/ButtonWrapper";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 
 const defaultActionsStyle = {};
 
@@ -89,8 +90,10 @@ const DialogEx = memo(
 			onSubmit,
 			confirmTooltip = "",
 			cancelTooltip = "",
+			id,
 			...rest
 		} = props;
+		const dialogs = useContext(DialogsContext);
 
 		const inputRef = useRef();
 		const setInputRef = useCallback((node) => {
@@ -346,6 +349,8 @@ DialogEx.propTypes = {
 	triggerCancelOnClose: PropTypes.bool,
 	confirmTooltip: PropTypes.string,
 	cancelTooltip: PropTypes.string,
+	close: PropTypes.func,
+	id: PropTypes.string
 };
 
 export default DialogEx;

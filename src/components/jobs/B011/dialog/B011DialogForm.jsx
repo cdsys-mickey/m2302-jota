@@ -41,7 +41,7 @@ const B011DialogForm = memo((props) => {
 					<FormBox pt={1}>
 						<Grid container columns={24} spacing={1}>
 
-							<Grid item xs={24} sm={24} md={8}>
+							<Grid item xs={24} sm={24} md={6}>
 								<CustomerPicker
 									autoFocus
 									typo
@@ -56,10 +56,17 @@ const B011DialogForm = memo((props) => {
 									selectOnFocus
 									disableClearable
 									disabled={!creating}
+								// slotProps={{
+								// 	paper: {
+								// 		sx: {
+								// 			width: 360,
+								// 		},
+								// 	},
+								// }}
 								/>
 							</Grid>
 
-							<Grid item xs={24} sm={24} md={6}>
+							<Grid item xs={24} sm={24} md={4}>
 								<EmployeePicker
 									typo
 									label="報價人員"
@@ -73,6 +80,13 @@ const B011DialogForm = memo((props) => {
 									selectOnFocus
 									disableClearable
 									disabled={!creating}
+								// slotProps={{
+								// 	paper: {
+								// 		sx: {
+								// 			width: 240,
+								// 		},
+								// 	},
+								// }}
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={5}>

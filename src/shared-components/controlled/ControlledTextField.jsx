@@ -154,9 +154,9 @@ export const ControlledTextField = ({
 							"&:hover .clearable": {
 								visibility: "visible",
 							},
-							"& .clearable": {
-								visibility: "hidden",
-							},
+							// "& .clearable": {
+							// 	visibility: "hidden",
+							// },
 						}),
 						...(Array.isArray(sx) ? sx : [sx]),
 					]}

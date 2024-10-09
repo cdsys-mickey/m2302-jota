@@ -361,7 +361,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 						purchaseOrdersDisabled={c04.purchaseOrdersDisabled}
 						// handleRefreshGridSubmit={handleRefreshGridSubmit}
 						handleLoadProdsSubmit={handleLoadProdsSubmit}
-						handleTaxTypeChanged={c04.handleTaxTypeChanged({
+						handleTaxTypeChange={c04.handleTaxTypeChange({
 							setValue: form.setValue,
 							getValues: form.getValues,
 						})}

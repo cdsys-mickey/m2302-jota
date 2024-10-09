@@ -74,7 +74,9 @@ const FlexToolbar = memo(
 					// {...(!hasRight && {
 					// 	flex: 1,
 					// })}
-					flex={1}
+					{...(!hasLeft && {
+						flex: 0,
+					})}
 					sx={[
 						(theme) => ({
 							"& button:not(.no-margin-right), & label:not(.no-margin-right), & .toolbar-button:not(.no-margin-right), &>*:not(.no-margin-right)":

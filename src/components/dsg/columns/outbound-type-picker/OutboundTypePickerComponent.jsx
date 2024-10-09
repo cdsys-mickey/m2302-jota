@@ -38,6 +38,7 @@ const OutboundTypePickerComponent = memo((props) => {
 	rowDataRef.current = rowData;
 
 	const {
+		name,
 		hideControlsOnActive,
 		selectOnFocus,
 		// from Context
@@ -58,6 +59,7 @@ const OutboundTypePickerComponent = memo((props) => {
 	});
 
 	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+		name,
 		rowIndex,
 		columnIndex,
 		focus,
@@ -96,6 +98,7 @@ const OutboundTypePickerComponent = memo((props) => {
 
 	return (
 		<OutboundTypePicker
+			name={name}
 			label=""
 			inputRef={ref}
 			disabled={disabled}

@@ -339,7 +339,7 @@ export const useA06 = ({ token, mode }) => {
 	);
 
 	const promptReview = useCallback(() => {
-		dialogs.prompt({
+		dialogs.confirm({
 			title: "轉正式客戶",
 			label: "正式客戶編號",
 			message: "請輸入正式客戶編號",

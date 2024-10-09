@@ -6,15 +6,16 @@ import { useCallback, useContext, useMemo } from "react";
 import Customers from "@/modules/md-customers";
 
 const CustomerPicker = (props) => {
-	const { label, placeholder, forId = false, forNew = false, ...rest } = props;
+	const { label, placeholder, forId = false, forNew = false, fullName = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
 		return queryString.stringify({
 			tp: 10000,
 			fuzzy: 1,
+			abbr: fullName ? 0 : 1
 		});
-	}, []);
+	}, [fullName]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return Customers.isOptionEqualToValue(option, value);
@@ -106,7 +107,9 @@ const CustomerPicker = (props) => {
 CustomerPicker.displayName = "CustomerPicker";
 CustomerPicker.propTypes = {
 	label: PropTypes.string,
+	placeholder: PropTypes.string,
 	forId: PropTypes.bool,
+	fullName: PropTypes.bool,
 	forNew: PropTypes.bool
 };
 

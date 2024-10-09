@@ -32,7 +32,8 @@ const CheckboxComponent = memo(
 	}) => {
 		const ref = useRef(null);
 		// console.log("rendering CheckboxComponent");
-		const { size,
+		const {
+			size,
 			valueToChecked,
 			checkedToValue,
 			// Context Methods
@@ -40,7 +41,9 @@ const CheckboxComponent = memo(
 			getNextCell,
 			lastCell,
 			setActiveCell,
-			readOnly } = columnData;
+			readOnly,
+			disableFocusNext
+		} = columnData;
 
 		const toggleChecked = useCallback(
 			(e) => {
@@ -96,21 +99,25 @@ const CheckboxComponent = memo(
 				setRowData(!rowData);
 				stopEditing({ nextRow: false });
 				if (focusNextCell) {
-					focusNextCell(cell, { forward: true });
+					setTimeout(() => {
+						focusNextCell(cell, { forward: true });
+					});
 				}
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [focus, stopEditing]);
 
 		useLayoutEffect(() => {
-			if (skipDisabled && active && disabled && !readOnly) {
+			if (skipDisabled && active && disabled && !readOnly && !disableFocusNext) {
 				if (focusNextCell) {
-					focusNextCell({ row: rowIndex, col: columnIndex });
+					setTimeout(() => {
+						focusNextCell({ row: rowIndex, col: columnIndex });
+					})
 				} else {
 					console.log("focusNextCell is null");
 				}
 			}
-		}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, columnIndex, disableFocusNext, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<input

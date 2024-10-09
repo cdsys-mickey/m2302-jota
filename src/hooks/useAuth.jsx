@@ -174,9 +174,9 @@ export const useAuth = () => {
 						toRenew();
 						break;
 					case 401:
-						toast.error("您的連線階段已逾期，請重新登入", {
-							position: "top-center"
-						});
+						// toast.error("您的連線階段已逾期，請重新登入", {
+						// 	position: "top-center"
+						// });
 						if (doRedirect) {
 							toLogin();
 						}
