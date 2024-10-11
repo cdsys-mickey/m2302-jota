@@ -35,6 +35,7 @@ const E021DialogForm = memo((props) => {
 		validateCustomer,
 		customerRequired,
 		handleTaxTypeChange,
+		// handleRecdAmtChange,
 		...rest
 	} = props;
 	return (
@@ -175,7 +176,7 @@ const E021DialogForm = memo((props) => {
 
 							<Grid item xs={24} sm={24} md={5}>
 								<TextFieldWrapper
-									dense
+									// dense
 									typo
 									label="客戶名稱"
 									name="CustName"
@@ -339,6 +340,7 @@ E021DialogForm.propTypes = {
 	squaredDisabled: PropTypes.bool,
 	handleRetailChange: PropTypes.func,
 	handleTaxTypeChange: PropTypes.func,
+	// handleRecdAmtChange: PropTypes.func,
 	handleCustomerChange: PropTypes.func,
 	validateCustomer: PropTypes.func,
 	customerRequired: PropTypes.bool,

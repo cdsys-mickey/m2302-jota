@@ -13,7 +13,7 @@ export const PackageTypeLabelContainer = (props) => {
 		typoVariant = "body1",
 		children,
 		emptyText = "(空白)",
-		typographyProps,
+		typoProps,
 		...rest
 	} = props;
 	const { editing } = useContext(CrudContext);
@@ -42,7 +42,7 @@ export const PackageTypeLabelContainer = (props) => {
 					// top: -12,
 				}),
 			}}
-			{...typographyProps}>
+			{...typoProps}>
 			{labelText}
 		</FormFieldLabel>
 	);

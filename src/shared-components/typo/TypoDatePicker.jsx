@@ -15,7 +15,7 @@ const TypoDatePicker = memo(
 			dateFormat = DateTimes.DATEFNS_DATE,
 			emptyText = "(空白)",
 			typoVariant = "body1",
-			typographyProps,
+			typoProps,
 			// Input
 			name,
 			editing = false,
@@ -43,7 +43,7 @@ const TypoDatePicker = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
-					{...typographyProps}>
+					{...typoProps}>
 					{memoisedText}
 				</FormFieldLabel>
 			);
@@ -67,7 +67,7 @@ TypoDatePicker.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	type: PropTypes.string,
 	label: PropTypes.string,
-	typographyProps: PropTypes.object,
+	typoProps: PropTypes.object,
 	emptyText: PropTypes.string,
 	maskedText: PropTypes.string,
 	typoVariant: PropTypes.string,

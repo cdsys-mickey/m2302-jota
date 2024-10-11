@@ -16,7 +16,7 @@ const TypoWebApiOptionPicker = memo(
 			readOnly = false,
 			// for Typography
 			typoVariant = "body1",
-			typographyProps,
+			typoProps,
 			// 這裡先指定 emptyText 會導致下層誤判為有內容
 			// emptyText = "(空白)",
 			emptyText,
@@ -70,7 +70,7 @@ const TypoWebApiOptionPicker = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
-					{...typographyProps}>
+					{...typoProps}>
 					{typoChip ? (
 						<TypoChips
 							value={value}
@@ -119,7 +119,7 @@ TypoWebApiOptionPicker.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	label: PropTypes.string,
 	typoVariant: PropTypes.string,
-	typographyProps: PropTypes.object,
+	typoProps: PropTypes.object,
 	emptyText: PropTypes.string,
 	typoChip: PropTypes.bool,
 

@@ -14,7 +14,7 @@ const TypoA01TransferPicker = memo(
 			renderText,
 			emptyText = "(空白)",
 			typoVariant = "body1",
-			typographyProps,
+			typoProps,
 			// Input
 			name,
 			editing = true,

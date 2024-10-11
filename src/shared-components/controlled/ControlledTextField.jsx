@@ -6,11 +6,15 @@ import { Controller, useFormContext } from "react-hook-form";
 import ClearInputButton from "../input/ClearInputButton";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
+import FlexBox from "../FlexBox";
+import FormLabelEx from "../form/FormLabelEx";
+import { Box } from "@mui/system";
 
 export const ControlledTextField = ({
 	name,
 	// multiline,
 	// inputRef,
+	label,
 	readOnly = false,
 	control,
 	onChange: _onChange,
@@ -24,7 +28,8 @@ export const ControlledTextField = ({
 	disabledBackgroundColor = "rgba(0,0,0,0.05)",
 	EndAdornmentComponent,
 	InputLabelProps,
-
+	dense,
+	inline,
 	...rest
 }) => {
 	const formMeta = useContext(FormMetaContext);
@@ -32,6 +37,10 @@ export const ControlledTextField = ({
 	const inFormMeta = !!formMeta;
 	// const { setFocus } = useFormContext() || {};
 	const form = useFormContext();
+
+	const _label = useMemo(() => {
+		return inline ? "" : label;
+	}, [inline, label])
 
 	const renderEndAdornment = useMemo(() => {
 		return EndAdornmentComponent || clearable;
@@ -83,18 +92,23 @@ export const ControlledTextField = ({
 		[disableEnter, inFormMeta, getError, form, name, focusNextField, isFieldDisabled]
 	);
 
+	const BoxComponent = useMemo(() => {
+		return inline ? FlexBox : Box;
+	}, [inline]);
+
 	if (!name) {
 		return (
 			<TextField
 				// multiline={multiline}
+				label={_label}
 				sx={[
 					(theme) => ({
 						"&:has(.MuiInputBase-input:focus)": {
 							// backgroundColor: "rgb(253 253 253)",
 						},
-						"& .MuiOutlinedInput-root": {
-							paddingRight: theme.spacing(1),
-						},
+						// "& .MuiOutlinedInput-root": {
+						// 	paddingRight: theme.spacing(1),
+						// },
 					}),
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
@@ -136,72 +150,86 @@ export const ControlledTextField = ({
 				field: { value, onChange, ref },
 				fieldState: { error },
 			}) => (
-				<TextField
-					value={value}
-					// multiline={multiline}
-					inputRef={ref}
-					sx={[
-						(theme) => ({
-							"&:has(.MuiInputBase-input:focus)": {
-								// backgroundColor: "rgb(253 253 253)",
-							},
-							"& .MuiOutlinedInput-root": {
-								paddingRight: theme.spacing(1),
-							},
-							...(disabled && {
-								backgroundColor: disabledBackgroundColor,
+				<BoxComponent inline sx={{ fontWeight: 700 }}>
+					{inline &&
+						label
+					}
+					<TextField
+						value={value}
+						// multiline={multiline}
+						label={_label}
+						inputRef={ref}
+						sx={[
+							(theme) => ({
+								"&:has(.MuiInputBase-input:focus)": {
+									// backgroundColor: "rgb(253 253 253)",
+								},
+								// "& .MuiOutlinedInput-root": {
+								// 	paddingRight: theme.spacing(1),
+								// },
+								...(disabled && {
+									backgroundColor: disabledBackgroundColor,
+								}),
+								"&:hover .clearable": {
+									visibility: "visible",
+								},
+								// "& .clearable": {
+								// 	visibility: "hidden",
+								// },
+								...(dense && {
+									"& .MuiInputBase-input": {
+										paddingLeft: 1,
+										paddingTop: 0.2,
+										paddingBottom: 0.2,
+										paddingRight: 0
+									}
+								})
 							}),
-							"&:hover .clearable": {
-								visibility: "visible",
-							},
-							// "& .clearable": {
-							// 	visibility: "hidden",
-							// },
-						}),
-						...(Array.isArray(sx) ? sx : [sx]),
-					]}
-					onChange={(e) => {
-						if (readOnly) {
-							return;
-						}
-						onChange(e.target.value);
-						if (_onChange) {
-							_onChange(e.target.value);
-						}
-					}}
-					onKeyDown={handleKeyDown}
-					InputLabelProps={{
-						...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
-						...InputLabelProps,
-						...(labelShrink && { shrink: true }),
-					}}
-					InputProps={{
-						...(readOnly && {
-							readOnly: true,
-							// disableUnderline: true,
-						}),
-						...(renderEndAdornment && {
-							endAdornment: (
-								<>
-									{clearable && (
-										<ClearInputButton
-											className="clearable"
-											value={value}
-											onChange={onChange}
-										/>
-									)}
-									{EndAdornmentComponent && (
-										<EndAdornmentComponent />
-									)}
-								</>
-							),
-						}),
-					}}
-					disabled={disabled}
-					error={!!error}
-					helperText={error?.message}
-					{...rest}
-				/>
+							...(Array.isArray(sx) ? sx : [sx]),
+						]}
+						onChange={(e) => {
+							if (readOnly) {
+								return;
+							}
+							onChange(e.target.value);
+							if (_onChange) {
+								_onChange(e.target.value);
+							}
+						}}
+						onKeyDown={handleKeyDown}
+						InputLabelProps={{
+							...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+							...InputLabelProps,
+							...(labelShrink && { shrink: true }),
+						}}
+						InputProps={{
+							...(readOnly && {
+								readOnly: true,
+								// disableUnderline: true,
+							}),
+							...(renderEndAdornment && {
+								endAdornment: (
+									<>
+										{clearable && (
+											<ClearInputButton
+												className="clearable"
+												value={value}
+												onChange={onChange}
+											/>
+										)}
+										{EndAdornmentComponent && (
+											<EndAdornmentComponent />
+										)}
+									</>
+								),
+							}),
+						}}
+						disabled={disabled}
+						error={!!error}
+						helperText={error?.message}
+						{...rest}
+					/>
+				</BoxComponent>
 			)}
 		/>
 	);
@@ -209,6 +237,7 @@ export const ControlledTextField = ({
 
 ControlledTextField.propTypes = {
 	name: PropTypes.string,
+	label: PropTypes.string,
 	// multiline: PropTypes.bool,
 	readOnly: PropTypes.bool,
 	control: PropTypes.object,
@@ -231,4 +260,6 @@ ControlledTextField.propTypes = {
 	// inputRef: PropTypes.object,
 	// shouldSelect: PropTypes.bool,
 	InputLabelProps: PropTypes.object,
+	dense: PropTypes.bool,
+	inline: PropTypes.bool,
 };

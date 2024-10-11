@@ -1,8 +1,17 @@
+import { E021Context } from "@/contexts/E021/E021Context";
+import Strings from "@/modules/md-strings";
 import { DSGToolbarLabel } from "@/shared-components/dsg/DSGToolbarLabel";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { minWidth } from "@mui/system";
 import { Box } from "@mui/system";
+import { useContext } from "react";
 import { memo } from "react";
+import { useFormContext } from "react-hook-form";
 
 const E021ProdGridToolbarLabels = memo(() => {
+	const e021 = useContext(E021Context);
+	const form = useFormContext();
+
 	return (
 		<Box sx={[
 			(theme) => ({
@@ -11,11 +20,37 @@ const E021ProdGridToolbarLabels = memo(() => {
 				}
 			})
 		]}>
-			<DSGToolbarLabel label="銷貨" name="SalAmt" />
-			<DSGToolbarLabel label="稅額" name="TaxAmt" />
-			<DSGToolbarLabel label="總計" name="TotAmt" />
-			<DSGToolbarLabel label="已收" name="RecdAmt" />
-			<DSGToolbarLabel label="應收金額" name="ArecAmt" />
+			<DSGToolbarLabel label="銷貨" name="SalAmt" sx={{ minWidth: "9rem" }} />
+			<DSGToolbarLabel label="稅額" name="TaxAmt" sx={{ minWidth: "9rem" }} />
+			<DSGToolbarLabel label="總計" name="TotAmt" sx={{ minWidth: "9rem" }} />
+			{/* <DSGToolbarLabel label="已收" name="RecdAmt" sx={{ minWidth: "9rem" }} /> */}
+			<TextFieldWrapper
+				typo
+				slotProps={{
+					label: {
+						flex: true,
+						inline: true,
+						sx: {
+							minWidth: "9rem"
+						},
+						labelProps: {
+							variant: "body1",
+						}
+					},
+				}}
+				inline
+				dense
+				name="RecdAmt"
+				label="已收："
+				type="number"
+				renderLabel={Strings.formatPrice}
+				sx={{
+					width: "9rem",
+
+				}}
+				onChange={e021.handleRecdAmtChange({ setValue: form.setValue, getValues: form.getValues })}
+			/>
+			<DSGToolbarLabel label="應收金額" name="ArecAmt" sx={{ minWidth: "9rem" }} />
 
 		</Box>
 	);

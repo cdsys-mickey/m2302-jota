@@ -16,7 +16,7 @@ const TypoOptionPicker = memo(
 			label,
 			// Typography
 			typoVariant = "body1",
-			typographyProps,
+			typoProps,
 			emptyText = "(空白)",
 			// Input
 			editing = true,
@@ -54,7 +54,7 @@ const TypoOptionPicker = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
-					{...typographyProps}>
+					{...typoProps}>
 					{/* {text} */}
 					{memoisedText}
 				</FormFieldLabel>

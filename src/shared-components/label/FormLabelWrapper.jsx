@@ -11,7 +11,7 @@ export const FormLabelWrapper = memo(
 			label,
 			children,
 			emptyText = "(空白)",
-			typographyProps,
+			typoProps,
 			...rest
 		} = props;
 
@@ -28,7 +28,7 @@ export const FormLabelWrapper = memo(
 				ref={ref}
 				label={label}
 				emptyText={emptyText}
-				{...typographyProps}
+				{...typoProps}
 				{...rest}>
 				{memoisedText}
 			</FormFieldLabel>
@@ -41,7 +41,7 @@ FormLabelWrapper.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	emptyText: PropTypes.string,
-	typographyProps: PropTypes.object,
+	typoProps: PropTypes.object,
 };
 
 FormLabelWrapper.displayName = "FormLabelWrapper";

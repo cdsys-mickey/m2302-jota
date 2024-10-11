@@ -12,8 +12,9 @@ const TypoTextField = memo(
 			// Common
 			type,
 			label,
+			slotProps,
 			// Typography
-			typographyProps,
+			typoProps,
 			emptyText = "(空白)",
 			maskedText = "(已隱藏)",
 			typoVariant = "body1",
@@ -34,8 +35,8 @@ const TypoTextField = memo(
 			return value && type === "password"
 				? maskedText
 				: renderLabel
-				? renderLabel(value)
-				: value;
+					? renderLabel(value)
+					: value;
 		}, [maskedText, renderLabel, type, value]);
 
 		if (!editing) {
@@ -44,7 +45,9 @@ const TypoTextField = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
-					{...typographyProps}>
+					{...slotProps?.label}
+					{...typoProps}
+				>
 					{memoisedText}
 				</FormFieldLabel>
 			);
@@ -68,7 +71,7 @@ TypoTextField.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	type: PropTypes.string,
 	label: PropTypes.string,
-	typographyProps: PropTypes.object,
+	typoProps: PropTypes.object,
 	emptyText: PropTypes.string,
 	maskedText: PropTypes.string,
 	typoVariant: PropTypes.string,
@@ -77,6 +80,7 @@ TypoTextField.propTypes = {
 	size: PropTypes.string,
 	variant: PropTypes.string,
 	InputLabelProps: PropTypes.object,
+	slotProps: PropTypes.object,
 	renderLabel: PropTypes.func,
 };
 export default TypoTextField;

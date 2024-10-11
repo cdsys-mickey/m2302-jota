@@ -25,6 +25,7 @@ const FormFieldLabel = memo(
 			emptyText = "(空白)",
 			sx = [],
 			flex = false,
+			inline = false,
 			title,
 			arrow,
 			noWrap = false,
@@ -61,48 +62,51 @@ const FormFieldLabel = memo(
 		}, [flex]);
 
 		return (
-			<Tooltip title={title} arrow={arrow}>
-				<BoxComponent ref={ref} {...defaultBoxProps} sx={[
-					{},
-					_labelStyles,
-					...(Array.isArray(sx) ? sx : [sx]),
-				]}>
-					{label && (
-						<FormLabelEx
-							{...labelProps}
-						>
-							{label}
-						</FormLabelEx>
-					)}
+			<BoxComponent ref={ref} inline={inline} {...defaultBoxProps} sx={[
+				{
+					...(flex && {
+						alignItems: "center"
+					})
+				},
+				_labelStyles,
+				...(Array.isArray(sx) ? sx : [sx]),
+			]}>
+				{label && (
+					<FormLabelEx
+						{...labelProps}
+					>
+						{label}
+					</FormLabelEx>
+				)}
 
-					{Types.isString(body)
-						? body?.split("\n").map((s, index) => (
-							<Typography
-								key={`${s}_${index}`}
-								color="text.secondary"
-								variant={typoVariant}
-								sx={[
-									(theme) => ({
-										marginTop: theme.spacing(-0.5),
-										fontWeight: 400,
-										marginLeft: theme.spacing(
-											flex ? 1 : 0.5
-										),
-										...(!useEmptyText && {
-											color: theme.palette.primary
-												.main,
-										}),
+				{Types.isString(body)
+					? body?.split("\n").map((s, index) => (
+						<Typography
+							key={`${s}_${index}`}
+							color="text.secondary"
+							variant={typoVariant}
+							sx={[
+								(theme) => ({
+									// marginTop: theme.spacing(-0.5),
+									fontWeight: 400,
+									// marginLeft: theme.spacing(
+									// 	inline ? 1 : 0.5
+									// ),
+									...(!useEmptyText && {
+										color: theme.palette.primary
+											.main,
 									}),
-									...(Array.isArray(typographySx)
-										? typographySx
-										: [typographySx]),
-								]}>
-								{s}
-							</Typography>
-						))
-						: body}
-				</BoxComponent>
-			</Tooltip>
+								}),
+								...(Array.isArray(typographySx)
+									? typographySx
+									: [typographySx]),
+							]}>
+							{s}
+						</Typography>
+					))
+					: body}
+			</BoxComponent>
+
 		);
 	})
 );

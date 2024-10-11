@@ -98,6 +98,7 @@ export const useE021 = () => {
 			taxExcluded: false,
 			customerOrders: [],
 			retail: false,
+			RecdAmt: 0,
 			prods: [],
 		};
 		crud.promptCreating({ data });
@@ -121,14 +122,14 @@ export const useE021 = () => {
 	}, []);
 
 	const handleRefreshAmt = useCallback(
-		async ({ taxExcluded, gridData, setValue, formData }) => {
+		async ({ gridData, setValue, formData }) => {
 			const total = E021.getTotal(gridData);
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: "v1/sales/customer-invoices/refresh-amt",
 					bearer: token,
 					data: {
-						taxExcluded: taxExcluded ? 1 : 0,
+						taxExcluded: formData.taxExcluded ? 1 : 0,
 						salesAmt: total,
 						receivedAmt: formData.RecdAmt
 					},
@@ -168,10 +169,12 @@ export const useE021 = () => {
 					},
 				});
 				if (status.success) {
+
 					const data = E021.transformForReading(payload.data[0]);
 					crud.doneReading({
 						data: data,
 					});
+					overrideSQty.loadStockMap(data.prods);
 					setSelectedOrd(data);
 
 					grid.initGridData(data.prods);
@@ -182,7 +185,7 @@ export const useE021 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, grid, token]
+		[httpGetAsync, token, crud, overrideSQty, grid]
 	);
 
 	const handleSave = useCallback(
@@ -230,21 +233,16 @@ export const useE021 = () => {
 					const rowData = grid.gridData[rowIndex];
 					const stock = Number(err.data.StockQty);
 
-					dialogs.confirm({
-						message: `第 ${err.data.Row} 筆庫存(${err.data.StockQty})不足, 是否強迫銷貨?`,
-						onConfirm: () => {
-							overrideSQty.handleOverrideSQty({
-								setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, refreshAmt: ({ gridData }) => {
-									handleRefreshAmt({
-										gridData,
-										taxExcluded: data.taxExcluded,
-										setValue,
-										formData: data
-									})
-								}
-							});
+					overrideSQty.handleOverrideSQty({
+						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, refreshAmt: ({ gridData }) => {
+							handleRefreshAmt({
+								gridData,
+								taxExcluded: data.taxExcluded,
+								setValue,
+								formData: data
+							})
 						}
-					})
+					});
 				} else {
 					toast.error(Errors.getMessage(creating ? `新增失敗` : `修改失敗`, err), {
 						position: "top-center"
@@ -252,10 +250,8 @@ export const useE021 = () => {
 				}
 			}
 		},
-		[crud, dialogs, grid.gridData, httpPostAsync, httpPutAsync, listLoader, loadItem, overrideSQty, handleRefreshAmt, token]
+		[crud, grid.gridData, httpPostAsync, httpPutAsync, listLoader, loadItem, overrideSQty, handleRefreshAmt, token]
 	);
-
-
 
 	const handleSelect = useCallback(
 		async (e, rowData) => {
@@ -416,6 +412,7 @@ export const useE021 = () => {
 				});
 
 				if (status.success) {
+					overrideSQty.setStockQty(prodId, payload.StockQty);
 					return {
 						...payload,
 						...(payload.Price && {
@@ -431,7 +428,7 @@ export const useE021 = () => {
 				});
 			}
 		},
-		[httpGetAsync, token]
+		[httpGetAsync, overrideSQty, token]
 	);
 
 
@@ -444,9 +441,11 @@ export const useE021 = () => {
 				console.log("formData", formData);
 				handleRefreshAmt({
 					gridData: grid.gridData,
-					taxExcluded: newValue,
 					setValue,
-					formData
+					formData: {
+						...formData,
+						taxExcluded: newValue
+					}
 				});
 			},
 		[handleRefreshAmt, grid.gridData]
@@ -528,7 +527,7 @@ export const useE021 = () => {
 				refreshAmt: ({ gridData }) => {
 					handleRefreshAmt({
 						gridData,
-						taxExcluded: formData.taxExcluded,
+						// taxExcluded: formData.taxExcluded,
 						setValue,
 						formData
 					});
@@ -572,13 +571,13 @@ export const useE021 = () => {
 			};
 		}
 		return processedRowData;
-	}, [crud.creating, grid.gridData, handleGridProdChange, overrideSQty]);
+	}, [crud.creating, grid.gridData, handleGridProdChange, handleRefreshAmt, overrideSQty]);
 
 	const onGridChanged = useCallback(({ gridData, formData, setValue }) => {
 		console.log("onGridChanged", gridData);
 		handleRefreshAmt({
 			gridData,
-			taxExcluded: formData.taxExcluded,
+			// taxExcluded: formData.taxExcluded,
 			setValue,
 			formData
 		});
@@ -955,6 +954,17 @@ export const useE021 = () => {
 		[grid, httpGetAsync, updateAmt, token]
 	);
 
+	const handleRecdAmtChange = useCallback(({ setValue, getValues }) => (newValue) => {
+		console.log("handleRecdAmtChange", newValue);
+		const formData = getValues();
+		console.log("formData", formData);
+		handleRefreshAmt({
+			gridData: grid.gridData,
+			setValue,
+			formData
+		});
+	}, [grid.gridData, handleRefreshAmt]);
+
 	return {
 		...crud,
 		...listLoader,
@@ -1002,6 +1012,7 @@ export const useE021 = () => {
 		sNotQtyDisabled,
 		onGridChanged,
 		handleTaxTypeChange,
+		handleRecdAmtChange,
 		getTooltip,
 		handleCustomerOrdersChanged,
 		committed

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import { useState } from "react";
 
-const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", samtColumn = "SAmt", sqtyColumn = "SQty", sqtyNoteColumn = "SQtyNote", stockQtyColumn = "StockQty_N", prodIdKey = "prod.ProdID", prodNameKey = "prod.ProdData" }) => {
+const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", samtColumn = "SAmt", sqtyColumn = "SQty", sqtyNoteColumn = "SQtyNote", stockQtyColumn = "StockQty_N", markColumn = "sqtyError", prodIdKey = "prod.ProdID", prodNameKey = "prod.ProdData" }) => {
 	const { token } = useContext(AuthContext);
 	const stockQtyMap = useMemo(() => new Map(), []);
 	const [committed, setCommitted] = useState(false);
@@ -22,6 +22,10 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 
 	const getStockQty = useCallback((prodId) => {
 		return stockQtyMap.get(prodId) || 0;
+	}, [stockQtyMap]);
+
+	const setStockQty = useCallback((prodId, value) => {
+		stockQtyMap.set(prodId, Number(value));
 	}, [stockQtyMap]);
 
 	// 讀取密碼
@@ -130,14 +134,14 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 			const { gridMeta } = sqtyLock;
 
 			dialogs.prompt({
-				title: "庫存不足",
+				title: "貨品庫存不足",
 				// message: first
 				// 	? `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.stock})` : ""}, 請輸入密碼`
 				// 	: "密碼錯誤，請再次輸入或取消",
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.stock})` : ""}, 請輸入密碼`,
+				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.demand} > ${sqtyLock.stock})` : ""}，若要強迫銷貨請輸入密碼`,
 				label: "強迫銷貨密碼",
 				triggerCancelOnClose: true,
-				disableCloseOnConfirm: true,
+				// disableCloseOnConfirm: true,
 				onConfirm: ({ value }) => {
 					if (value === pwordLock.value) {
 						console.log("pword passed");
@@ -222,27 +226,30 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 	/**
 	 * 計算商品即時庫存, 扣除 grid 內 rowIndex 之前的所有需求資料
 	 */
-	const calcProdStock = useCallback(
+	const getCalculatedStock = useCallback(
 		({ prodId, rowIndex, gridData }) => {
-			const totalSQty = gridData
+			const demandTotal = gridData
 				.filter(
 					(item, index) =>
 						item.prod?.ProdID === prodId && index < rowIndex
 				)
 				.reduce((sum, item) => sum + parseFloat(item[sqtyColumn]), 0);
-			const stock = stockQtyMap.get(prodId) || 0;
-			return stock - totalSQty;
+			const stock = getStockQty(prodId);
+			return stock - demandTotal;
 		},
-		[stockQtyMap, sqtyColumn]
+		[getStockQty, sqtyColumn]
 	);
 
+	/**
+	 * 當 grid sqty 欄位發生異動時的處理函式
+	 */
 	const handleGridSQtyChange = useCallback(
 		({ rowData, rowIndex, setValue, gridData, gridMeta, refreshAmt }) => {
 			if (!rowData.prod) {
 				return rowData;
 			}
 
-			const stock = calcProdStock({
+			const stock = getCalculatedStock({
 				rowIndex,
 				prodId: rowData.prod.ProdID,
 				gridData,
@@ -280,24 +287,24 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 			}
 			return rowData;
 		},
-		[calcProdStock, handleOverrideSQty, sqtyColumn, sqtyNoteColumn]
+		[getCalculatedStock, handleOverrideSQty, sqtyColumn, sqtyNoteColumn]
 	);
 
+	// loadItem 及 save 拋出 102 時呼叫
 	const loadStockMap = useCallback(
 		async (
-			data,
-			opts = {
-				mark: false,
-			}
+			gridData,
+			opts = {}
 		) => {
-			const gridData = data || grid.gridData;
+			const { mark = false } = opts;
+			const _gridData = gridData || grid.gridData;
 
 			if (!gridData || gridData.length === 0) {
 				return;
 			}
 			const prodIds = [
 				...new Set(
-					gridData
+					_gridData
 						.filter((item) => item.prod?.ProdID)
 						.map((item) => item.prod.ProdID)
 				),
@@ -314,22 +321,22 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 					payload.Stock?.map((x) =>
 						stockQtyMap.set(x.ProdID, Number(x.Qty))
 					);
-					if (opts.mark) {
-						let newGridData = [...gridData];
-						gridData.forEach((rowData, rowIndex) => {
+					if (mark) {
+						let newGridData = [..._gridData];
+						_gridData.forEach((rowData, rowIndex) => {
 							const prodId = rowData.prod.ProdID;
 							const sqty = Number(rowData[sqtyColumn]);
-							const prodStock = calcProdStock({
+							const calculatedStock = getCalculatedStock({
 								rowIndex,
 								prodId,
-								gridData,
+								_gridData,
 							});
 							newGridData[rowIndex] = {
 								...rowData,
 								[stockQtyColumn]: (
 									stockQtyMap.get(prodId) || 0
 								).toFixed(2),
-								sqtyError: sqty > prodStock,
+								[markColumn]: sqty > calculatedStock,
 							};
 						});
 						grid.setGridData(newGridData);
@@ -344,8 +351,24 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 				});
 			}
 		},
-		[grid, httpGetAsync, token, stockQtyMap, sqtyColumn, calcProdStock, stockQtyColumn]
+		[grid, httpGetAsync, token, stockQtyMap, sqtyColumn, getCalculatedStock, stockQtyColumn, markColumn]
 	);
+
+	const getErrorInfo = useCallback((err) => {
+		if (err.code !== 102) {
+			console.error("只能處理 code 為 102 的錯誤");
+			return;
+		}
+		const rowIndex = Number(err.data.Row) - 1;
+		const rowData = grid.gridData[rowIndex];
+		const stock = Number(err.data.StockQty);
+		return {
+			rowIndex,
+			rowData,
+			stock,
+			submitAfterCommitted: true
+		}
+	}, [grid.gridData]);
 
 	useInit(() => {
 		loadStockPword();
@@ -353,12 +376,14 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 
 	return {
 		getStockQty,
+		setStockQty,
 		handleOverrideSQty,
 		promptOverrideSQty,
 		handleGridSQtyChange,
 		loadStockMap,
 		committed,
-		setCommitted
+		setCommitted,
+		getErrorInfo
 	}
 
 }

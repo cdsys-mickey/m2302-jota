@@ -17,6 +17,7 @@ const createRow = () => ({
 	SRemark: "",
 	SNotQty: "",
 	SOrdID: "",
+	SQtyOrig: "",
 });
 
 const SalesType = Object.freeze({

@@ -396,7 +396,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 							validateCustomer={validateCustomer}
 							customerRequired={customerRequired}
 							handleTaxTypeChange={e021.handleTaxTypeChange({ setValue: form.setValue, getValues: form.getValues })}
-
+							// handleRecdAmtChange={e021.handleRecdAmtChange({ setValue: form.setValue, getValues: form.getValues })}
 							customerOrdersDisabled={customerOrdersDisabled}
 							handleCustomerOrdersChanged={e021.handleCustomerOrdersChanged({
 								setValue: form.setValue,

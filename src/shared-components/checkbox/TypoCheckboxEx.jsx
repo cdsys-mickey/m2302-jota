@@ -17,7 +17,7 @@ const TypoCheckboxEx = memo(
 			// value,
 			renderText,
 			typoVariant = "body1",
-			typographyProps,
+			typoProps,
 			emptyText = "(空白)",
 			// Input
 			name,
@@ -42,7 +42,7 @@ const TypoCheckboxEx = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
-					{...typographyProps}>
+					{...typoProps}>
 					{momoisedText}
 				</FormFieldLabel>
 			);

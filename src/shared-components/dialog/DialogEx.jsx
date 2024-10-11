@@ -117,7 +117,7 @@ const DialogEx = memo(
 			return !!onConfirm || !!onSubmit;
 		}, [onConfirm, onSubmit]);
 
-		const isFullScreen = useMemo(() => {
+		const _fullScreen = useMemo(() => {
 			if (fullScreen) {
 				return true;
 			}
@@ -185,7 +185,7 @@ const DialogEx = memo(
 			<Dialog
 				ref={ref}
 				onClose={handleClose}
-				fullScreen={isFullScreen}
+				fullScreen={_fullScreen}
 				sx={[
 					{
 						"& .MuiDialog-paper": {

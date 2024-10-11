@@ -17,7 +17,7 @@ const TypoDateField = memo(
 			// Typography
 			emptyText = "(空白)",
 			typoVariant = "body1",
-			typographyProps,
+			typoProps,
 			// Input
 			name,
 			editing = false,
@@ -40,7 +40,7 @@ const TypoDateField = memo(
 					label={label}
 					variant={typoVariant}
 					color="text.secondary"
-					{...typographyProps}>
+					{...typoProps}>
 					{memoisedText}
 				</FormFieldLabel>
 			);

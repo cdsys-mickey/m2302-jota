@@ -50,7 +50,7 @@ export const CustomerPurchaseOrderPicker = (props) => {
 			GridRowComponent={CustomerPurchaseOrderGridRow}
 			notFoundText="訂貨單號 ${id} 不存在"
 			inputParam="fz"
-
+			resetOnChange
 			// disableClose
 			{...rest}
 		/>
