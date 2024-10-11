@@ -2,6 +2,7 @@ import { C08Context } from "@/contexts/C08/C08Context";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { forwardRef, useContext } from "react";
 import { C08ProdGridSubtotalLabel } from "./C08ProdGridSubtotalLabel";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 const RightComponent = () => {
 	return (
@@ -14,12 +15,11 @@ const RightComponent = () => {
 
 export const C08ProdGridBottomToolbar = forwardRef((props, ref) => {
 	const { ...rest } = props;
-	const c08 = useContext(C08Context);
+	const formMeta = useContext(FormMetaContext);
 
-	if (c08.editing) {
+	if (!formMeta.readOnly) {
 		return false;
 	}
-
 	return <FlexToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 

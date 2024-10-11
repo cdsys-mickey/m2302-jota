@@ -305,7 +305,10 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 			const prodIds = [
 				...new Set(
 					_gridData
-						.filter((item) => item.prod?.ProdID)
+						.filter((item) => {
+							const key = _.get(item, prodIdKey);
+							return key != null && key != "";
+						})
 						.map((item) => item.prod.ProdID)
 				),
 			];

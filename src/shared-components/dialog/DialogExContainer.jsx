@@ -9,7 +9,7 @@ export const DialogExContainer = (props) => {
 		<DialogEx
 			disableEscapeKeyDown={crud?.editing}
 			hideCloseButton={crud?.editing}
-			// fullScreen={crud?.editing}
+			fullScreen={crud?.editing}
 			{...rest}
 		/>
 	);
