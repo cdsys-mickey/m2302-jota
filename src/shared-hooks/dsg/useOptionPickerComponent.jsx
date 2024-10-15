@@ -55,7 +55,6 @@ export const useOptionPickerComponent = (opts) => {
 			if (!newValue) {
 				return;
 			}
-			// setTimeout(() => stopEditing({ nextRow: false }), 50);
 			setTimeout(() => stopEditing({ nextRow: false }));
 		},
 		[name, setRowData, stopEditing]
@@ -71,7 +70,7 @@ export const useOptionPickerComponent = (opts) => {
 				console.log("focusNextCell is null");
 			}
 		}
-	}, [active, cell, columnIndex, disabled, focusNextCell, rowIndex, skipDisabled]);
+	}, [active, cell, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
 
 	return {
 		ref,

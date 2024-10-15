@@ -897,7 +897,9 @@ export const useZA03 = () => {
 
 	const setSelectionChecked = useCallback(
 		(gridMeta, checked) => {
-			const selection = gridMeta.getSelection({ debug: true });
+			const selection = gridMeta.getSelection({
+				// debug: true 
+			});
 			console.log("selected", selection);
 
 			grid.setGridData(
@@ -925,7 +927,10 @@ export const useZA03 = () => {
 						}
 						return rowData;
 					}),
-				{ dirtyCheckByIndex: true, debug: true }
+				{
+					dirtyCheckByIndex: true,
+					// debug: true 
+				}
 			);
 
 			gridMeta.setSelection(selection);

@@ -16,7 +16,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		header: "date",
 		fields: "rowData,active,disable,focus",
-		debug: true,
+		// debug: true,
 	});
 }
 

@@ -6,7 +6,7 @@ import { useCallback, useContext, useMemo } from "react";
 import Customers from "@/modules/md-customers";
 
 const CustomerPicker = (props) => {
-	const { label, placeholder, forId = false, forNew = false, fullName = false, ...rest } = props;
+	const { label, autoLabel, placeholder, forId = false, forNew = false, fullName = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
@@ -57,15 +57,15 @@ const CustomerPicker = (props) => {
 	}, [forNew])
 
 	const _label = useMemo(() => {
-		if (label) {
-			return label;
+		if (autoLabel) {
+			let result = (forNew ? "新客戶" : "客戶");
+			if (forId) {
+				result += "編號";
+			}
+			return result;
 		}
-		let result = (forNew ? "新客戶" : "客戶");
-		if (forId) {
-			result += "編號";
-		}
-		return result;
-	}, [forId, forNew, label])
+		return label;
+	}, [autoLabel, forId, forNew, label])
 
 
 	const _placeholder = useMemo(() => {
@@ -99,6 +99,7 @@ const CustomerPicker = (props) => {
 			notFoundText={notFoundText}
 			placeholder={_placeholder}
 			typeToSearchText="輸入代號或名稱搜尋..."
+			resetOnChange
 			{...rest}
 		/>
 	);

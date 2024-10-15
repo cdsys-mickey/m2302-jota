@@ -56,6 +56,8 @@ export const useWebApiOptions = (opts = {}) => {
 		// Enter & Tab
 		findByInput = false,
 		resetOnChange = false,
+		resetValueOnChange = false,
+		resetOptionsOnChange = false,
 		// pressToFind,
 		...rest
 	} = opts;
@@ -321,18 +323,32 @@ export const useWebApiOptions = (opts = {}) => {
 	 * 來源條件改變, 清空目前值, resetLoading
 	 */
 	useChangeTracking(() => {
-		if (resetOnChange) {
-			if (debug) {
-				console.log(
-					`url changed: ${url}${querystring ? " " + querystring : ""
-					}, params:`,
-					params
-				);
-			}
+		if (resetOnChange || resetValueOnChange) {
+			// if (debug) {
+			console.log(
+				`${id}.resetValueOnChange: ${url}${querystring ? " " + querystring : ""
+				}, params:`,
+				params
+			);
+			// }
 			onChange(multiple ? [] : null);
-			resetLoading();
+			// resetLoading();
 		}
 	}, [url, querystring, params]);
+
+	useChangeTracking(() => {
+		if (resetOnChange || resetOptionsOnChange) {
+			// if (debug) {
+			console.log(
+				`${id}.resetOptionsOnChange: ${url}${querystring ? " " + querystring : ""
+				}, params:`,
+				params
+			);
+			// }
+			// onChange(multiple ? [] : null);
+			resetLoading();
+		}
+	}, [url, querystring, params])
 
 	/** filterByServer 時, 關閉 popper 則重設 loading 狀態
 	 */

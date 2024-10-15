@@ -63,7 +63,6 @@ export const useE021 = () => {
 	const overrideSQty = useOverrideSQty({
 		grid,
 	});
-
 	const { committed } = overrideSQty;
 
 	const getSPriceClassName = useCallback(({ rowData }) => {
@@ -543,7 +542,7 @@ export const useE021 = () => {
 			}
 		}
 
-		// 單價
+		// 試贈樣、單價或數量改變
 		if (
 			processedRowData.stype?.id !== oldRowData.stype?.id ||
 			processedRowData.SPrice !== oldRowData.SPrice ||
@@ -821,7 +820,7 @@ export const useE021 = () => {
 		return itemData?.CFlag === "*" || crud.creating;
 	}, [crud.creating, itemData?.CFlag]);
 
-	const handleRetailChange = useCallback(({ setValue }) => (newValue) => {
+	const handleRetailChange = useCallback(({ setValue, gridMeta }) => (newValue) => {
 		console.log("handleRetailChange", newValue);
 		setValue("customer", null);
 		setValue("CustName", "");
@@ -841,9 +840,11 @@ export const useE021 = () => {
 		setValue("employee", null, {
 			shouldTouch: true
 		});
-	}, []);
+		gridMeta.setActiveCell(null);
+		grid.initGridData([], { createRow });
+	}, [createRow, grid]);
 
-	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta }) => async (newValue) => {
+	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta }) => async (newValue) => {
 		console.log("handleCustomerChange", newValue);
 		formMeta.asyncRef.current.supressEvents = true;
 		setValue("CustName", newValue?.CustData || "");
@@ -890,7 +891,8 @@ export const useE021 = () => {
 		setValue("employee", E021.getEmployee(customerInfo), {
 			shouldTouch: true
 		});
-
+		// grid.initGridData([], { createRow });
+		gridMeta.setActiveCell(null);
 		formMeta.asyncRef.current.supressEvents = false;
 	}, [httpGetAsync, token]);
 
@@ -965,6 +967,31 @@ export const useE021 = () => {
 		});
 	}, [grid.gridData, handleRefreshAmt]);
 
+	const checkEditableAction = useAction();
+	const handleCheckEditable = useCallback(async () => {
+		try {
+			checkEditableAction.start();
+			const { status, error } = await httpGetAsync({
+				url: "v1/sales/customer-invoices/check-editable",
+				bearer: token,
+				params: {
+					id: crud.itemData.SalID,
+				},
+			});
+			if (status.success) {
+				crud.promptUpdating();
+			} else {
+				throw error || new Error("未預期例外");
+			}
+		} catch (err) {
+			toast.error(Errors.getMessage("編輯檢查失敗", err), {
+				position: "top-center"
+			});
+		} finally {
+			checkEditableAction.clear();
+		}
+	}, [checkEditableAction, crud, httpGetAsync, token]);
+
 	return {
 		...crud,
 		...listLoader,
@@ -1015,6 +1042,9 @@ export const useE021 = () => {
 		handleRecdAmtChange,
 		getTooltip,
 		handleCustomerOrdersChanged,
-		committed
+		committed,
+		// 檢查可否編輯
+		checkEditableWorking: checkEditableAction.working,
+		handleCheckEditable,
 	};
 };

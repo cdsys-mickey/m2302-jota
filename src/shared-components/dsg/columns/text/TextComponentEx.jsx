@@ -10,7 +10,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		header: TextComponentEx.displayName,
 		fields: "rowData,active,disabled,focus",
-		debug: true,
+		// debug: true,
 	});
 };
 

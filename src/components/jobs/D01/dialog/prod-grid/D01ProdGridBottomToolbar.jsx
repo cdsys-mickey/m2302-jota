@@ -3,6 +3,7 @@ import { forwardRef, useContext } from "react";
 import { D01Context } from "@/contexts/D01/D01Context";
 import FlexBox from "@/shared-components/FlexBox";
 import { D01ProdGridSubtotalLabel } from "./D01ProdGridSubtotalLabel";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 const RightComponent = () => {
 	return (
@@ -15,9 +16,9 @@ const RightComponent = () => {
 
 export const D01ProdGridBottomToolbar = forwardRef((props, ref) => {
 	const { ...rest } = props;
-	const c04 = useContext(D01Context);
+	const formMeta = useContext(FormMetaContext);
 
-	if (c04.editing) {
+	if (!formMeta.readOnly) {
 		return false;
 	}
 

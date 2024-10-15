@@ -72,10 +72,10 @@ const transformForSubmitting = (payload, gridData) => {
 		EmplID: employee?.CodeID || "",
 		PDlineID: pdline?.CodeID || "",
 		Remark: remark?.split("\n") || [],
-		...rest,
 		...(gridData && {
 			MatOut_S: transformGridForSubmitting(gridData),
 		}),
+		...rest,
 	};
 };
 

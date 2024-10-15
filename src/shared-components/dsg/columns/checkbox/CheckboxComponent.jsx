@@ -9,7 +9,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		header: "CheckboxCompoent",
 		fields: "rowData,active,focus,disabled",
-		debug: true,
+		// debug: true,
 	});
 };
 
@@ -99,8 +99,10 @@ const CheckboxComponent = memo(
 				setRowData(!rowData);
 				stopEditing({ nextRow: false });
 				if (focusNextCell) {
+					// focusNextCell(cell);
 					setTimeout(() => {
-						focusNextCell(cell, { forward: true });
+						// focusNextCell(cell, { forward: true });
+						focusNextCell(cell);
 					});
 				}
 			}
@@ -110,14 +112,13 @@ const CheckboxComponent = memo(
 		useLayoutEffect(() => {
 			if (skipDisabled && active && disabled && !readOnly && !disableFocusNext) {
 				if (focusNextCell) {
-					setTimeout(() => {
-						focusNextCell({ row: rowIndex, col: columnIndex });
-					})
+					// 這裡不能等到下個 cycle
+					focusNextCell(cell);
 				} else {
 					console.log("focusNextCell is null");
 				}
 			}
-		}, [active, columnIndex, disableFocusNext, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, cell, columnIndex, disableFocusNext, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<input

@@ -29,8 +29,8 @@ export const E01DialogToolbarContainer = (props) => {
 	}, [e01.confirmQuitCreating, e01.confirmReturnReading, e01.updating])
 
 	const onEdit = useMemo(() => {
-		return e01.canUpdate ? e01.promptUpdating : null
-	}, [e01.canUpdate, e01.promptUpdating])
+		return e01.canUpdate ? e01.handleCheckEditable : null
+	}, [e01.canUpdate, e01.handleCheckEditable])
 
 	if (!e01.itemDataReady) {
 		return false;

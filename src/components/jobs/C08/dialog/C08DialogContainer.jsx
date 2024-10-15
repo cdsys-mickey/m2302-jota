@@ -103,8 +103,8 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 160,
-				maxWidth: 160,
+				minWidth: 140,
+				maxWidth: 140,
 				disabled: readOnly || c08.sprodDisabled,
 			},
 			{
@@ -138,23 +138,33 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 				disabled: true,
 				cellClassName: c08.getSPriceClassName,
 			},
+			// {
+			// 	...keyColumn("StockQty_N", createFloatColumn(2)),
+			// 	title: "庫存",
+			// 	minWidth: 90,
+			// 	disabled: true,
+			// },
+			// {
+			// 	...keyColumn(
+			// 		"SQtyNote",
+			// 		createCheckboxExColumn({
+			// 			size: "medium",
+			// 		})
+			// 	),
+			// 	title: "註",
+			// 	minWidth: 38,
+			// 	maxWidth: 38,
+			// 	disabled: readOnly || c08.overrideSQtyDisabled,
+			// },
 			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "庫存",
-				minWidth: 90,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"overrideSQty",
-					createCheckboxExColumn({
-						size: "medium",
-					})
-				),
-				title: "註",
+				...keyColumn("SQtyNote", createTextColumnEx({
+					continuousUpdates: false,
+				})),
 				minWidth: 38,
 				maxWidth: 38,
-				disabled: readOnly || c08.overrideSQtyDisabled,
+				title: "強",
+				disabled: true,
+				cellClassName: "star",
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
@@ -183,10 +193,10 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 						forcePopupIcon: false
 					})
 				),
-				title: "贈品",
-				minWidth: 80,
-				maxWidth: 80,
-				disabled: readOnly || c08.stypeDisabled,
+				title: "試贈樣",
+				minWidth: 70,
+				maxWidth: 70,
+				disabled: readOnly,
 			},
 			{
 				...keyColumn(
@@ -214,23 +224,15 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly || c08.dtypeDisabled,
 			},
 			{
-				...keyColumn("SOrdFlag_N", createTextColumnEx({
+				...keyColumn("SRemark", createTextColumnEx({
 					continuousUpdates: false,
 				})),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "訂",
+				title: "訊息",
+				minWidth: 140,
 				disabled: true,
-				cellClassName: "star",
 			},
-			// {
-			// 	...keyColumn("SMsg", textColumn),
-			// 	title: "訊息",
-			// 	minWidth: 140,
-			// 	disabled: true,
-			// },
 		],
-		[readOnly, c08.sprodDisabled, c08.getSPriceClassName, c08.overrideSQtyDisabled, c08.sqtyDisabled, c08.getSQtyClassName, c08.stypeDisabled, c08.dtypeDisabled]
+		[readOnly, c08.sprodDisabled, c08.getSPriceClassName, c08.sqtyDisabled, c08.getSQtyClassName, c08.dtypeDisabled]
 	);
 
 	const gridMeta = useDSGMeta({
@@ -254,7 +256,10 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 
 
 	const handleSubmit = form.handleSubmit(
-		c08.onEditorSubmit,
+		c08.onEditorSubmit({
+			setValue: form.setValue,
+			gridMeta
+		}),
 		c08.onEditorSubmitError
 	);
 
@@ -302,35 +307,43 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 	// 	console.log("sordId", debouncedSOrdId);
 	// }, [debouncedSOrdId]);
 
+	useEffect(() => {
+		if (c08.committed) {
+			console.log("committed", c08.grid.gridData);
+			handleSubmit();
+		}
+	}, [c08.committed, c08.grid.gridData, handleSubmit]);
+
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
-				ref={ref}
-				title={memoisedTitle}
-				// fullScreen
-				responsive
-				fullWidth
-				maxWidth="lg"
-				TitleButtonsComponent={C08DialogToolbarContainer}
-				open={c08.itemViewOpen}
-				onClose={handleClose}
-				// onReturn={handleReturn}
-				sx={{
-					"& .MuiDialog-paper": {
-						backgroundColor: Colors.DIALOG_BG,
-					},
-				}}
-				contentSx={[
-					{
-						minHeight: "30em",
-						paddingTop: 0,
-						// paddingLeft: 0,
-						// paddingRight: 0,
-					},
-					scrollable.scroller,
-				]}
-				{...rest}>
-				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled} gridMeta={gridMeta} readOnly={readOnly}>
+			<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled} gridMeta={gridMeta} readOnly={readOnly}>
+				<DialogExContainer
+					ref={ref}
+					title={memoisedTitle}
+					// fullScreen
+					responsive
+					fullWidth
+					maxWidth="lg"
+					TitleButtonsComponent={C08DialogToolbarContainer}
+					open={c08.itemViewOpen}
+					onClose={handleClose}
+					// onReturn={handleReturn}
+					sx={{
+						"& .MuiDialog-paper": {
+							backgroundColor: Colors.DIALOG_BG,
+						},
+					}}
+					contentSx={[
+						{
+							minHeight: "30em",
+							paddingTop: 0,
+							// paddingLeft: 0,
+							// paddingRight: 0,
+						},
+						scrollable.scroller,
+					]}
+					{...rest}>
+
 					<C08DialogForm
 						onSubmit={handleSubmit}
 						creating={c08.creating}
@@ -350,9 +363,10 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 						})}
 						purchaseOrdersDisabled={!txiDept}
 					/>
-				</FormMetaProvider>
-				<C08Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+
+					<C08Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
+				</DialogExContainer>
+			</FormMetaProvider>
 		</FormProvider>
 	);
 });

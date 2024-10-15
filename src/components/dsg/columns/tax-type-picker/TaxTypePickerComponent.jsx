@@ -8,7 +8,7 @@ import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComp
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		fields: "rowData.taxType,active,disabled,focus",
-		debug: true,
+		// debug: true,
 	});
 }
 

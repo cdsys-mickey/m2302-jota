@@ -10,7 +10,7 @@ import { useMemo } from "react";
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		fields: "rowData,active,focus",
-		debug: true,
+		// debug: true,
 	});
 };
 

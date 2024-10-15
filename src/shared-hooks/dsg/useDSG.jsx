@@ -15,6 +15,14 @@ const DEFAULT_SET_OPTS = {
 	prev: null,
 };
 
+const defaultOnDeleteRow = ({
+	key,
+	rowData,
+	updateResult
+}) => {
+
+}
+
 export const useDSG = ({
 	gridId = "NO_NAME",
 	keyColumn,
@@ -346,7 +354,7 @@ export const useDSG = ({
 		({ setValue, getValues, gridMeta, onUpdateRow, onDeleteRow, onDeleteRowFailed, onGridChanged, ...opts }) =>
 			async (newValue, operations) => {
 				const { focusFirstColumnOnCreate = true, dirtyCheckOpts = {
-					debug: true
+					// debug: true
 				} } = opts;
 
 				console.log("onGridChange.operations", operations);

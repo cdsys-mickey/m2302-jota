@@ -25,9 +25,9 @@ export const D01FrameContainer = () => {
 		[appFrame.drawerOpen, theme]
 	);
 
-	useInit(() => {
-		d01.loadStockPword();
-	}, []);
+	// useInit(() => {
+	// 	d01.loadStockPword();
+	// }, []);
 
 	return (
 		<Box sx={[boxStyles]}>

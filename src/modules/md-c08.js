@@ -28,7 +28,8 @@ const transformGridForReading = (data) => {
 					stype: FreeProdTypes.getOptionById(SType),
 					SOrdID,
 					ordId,
-					overrideSQty: SQtyNote === "*",
+					// overrideSQty: SQtyNote === "*",
+					SQtyNote,
 					dtype: SRsnID
 						? {
 								CodeID: SRsnID,
@@ -55,7 +56,7 @@ const transformGridForSubmitting = (gridData) => {
 					SAmt,
 					stype,
 					dtype,
-					overrideSQty,
+					// overrideSQty,
 					...rest
 				},
 				index
@@ -69,7 +70,7 @@ const transformGridForSubmitting = (gridData) => {
 				SType: stype?.id || "",
 				SRsnID: dtype?.CodeID || "",
 				Seq: index + 1,
-				SQtyNote: overrideSQty ? "*" : "",
+				// SQtyNote: overrideSQty ? "*" : "",
 				...rest,
 			})
 		);
@@ -120,7 +121,8 @@ const transformForReading = (payload) => {
 			CodeData: DyEmplData_N,
 		},
 		prods: transformGridForReading(InvTxo_S),
-		overrideSQty: SQtyNote === "*",
+		// overrideSQty: SQtyNote === "*",
+		SQtyNote,
 		remark: Remark.join("\n"),
 		...rest,
 	};

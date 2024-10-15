@@ -4,6 +4,7 @@ import { forwardRef, useContext } from "react";
 import { D05ProdGridSubtotalLabel } from "./D05ProdGridSubtotalLabel";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useMemo } from "react";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 const RightComponent = () => {
 	return (
@@ -16,13 +17,13 @@ const RightComponent = () => {
 
 export const D05ProdGridBottomToolbar = forwardRef((props, ref) => {
 	const { ...rest } = props;
-	const d05 = useContext(D05Context);
+	const formMeta = useContext(FormMetaContext);
 
-	const readOnly = useMemo(() => {
-		return !d05.editing;
-	}, [d05.editing]);
+	if (!formMeta.readOnly) {
+		return false;
+	}
 
-	if (!readOnly) {
+	if (!formMeta.readOnly) {
 		return false;
 	}
 

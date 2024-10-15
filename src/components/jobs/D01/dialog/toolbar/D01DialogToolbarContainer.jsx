@@ -5,11 +5,20 @@ import { useFormContext } from "react-hook-form";
 import D01DialogEditToolbar from "./D01DialogEditToolbar";
 import D01DialogViewToolbar from "./D01DialogViewToolbar";
 import { useMemo } from "react";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 export const D01DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
 	const d01 = useContext(D01Context);
 	const form = useFormContext();
+	const formMeta = useContext(FormMetaContext);
+
+	const onSave = useMemo(() => {
+		return form.handleSubmit(
+			d01.onEditorSubmit({ setValue: form.setValue, gridMeta: formMeta.gridMeta }),
+			d01.onEditorSubmitError
+		)
+	}, [d01, form, formMeta.gridMeta])
 
 	const canDelete = useMemo(() => {
 		return d01.canDelete;
@@ -27,10 +36,7 @@ export const D01DialogToolbarContainer = (props) => {
 	if (d01.editing) {
 		return (
 			<D01DialogEditToolbar
-				onSave={form.handleSubmit(
-					d01.onEditorSubmit,
-					d01.onEditorSubmitError
-				)}
+				onSave={onSave}
 				editWorking={d01.editWorking}
 				onCancel={
 					d01.updating

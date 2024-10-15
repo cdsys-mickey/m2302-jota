@@ -268,7 +268,7 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 	);
 
 	const handleSubmit = form.handleSubmit(
-		d05.onEditorSubmit,
+		d05.onEditorSubmit({ setValue: form.setValue, gridMeta }),
 		d05.onEditorSubmitError
 	);
 
@@ -281,37 +281,38 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
-				ref={ref}
-				title={memoisedTitle}
-				// fullScreen
-				responsive
-				fullWidth
-				maxWidth="lg"
-				TitleButtonsComponent={D05DialogToolbarContainer}
-				open={d05.itemViewOpen}
-				onClose={handleClose}
-				// onReturn={handleReturn}
-				sx={{
-					"& .MuiDialog-paper": {
-						backgroundColor: Colors.DIALOG_BG,
-					},
-				}}
-				contentSx={[
-					{
-						minHeight: "30em",
-						paddingTop: 0,
-						// paddingLeft: 0,
-						// paddingRight: 0,
-					},
-					scrollable.scroller,
-				]}
-				{...rest}>
-				<FormMetaProvider
-					{...formMeta}
-					gridMeta={gridMeta}
-					readOnly={readOnly}
-				>
+			<FormMetaProvider
+				{...formMeta}
+				gridMeta={gridMeta}
+				readOnly={readOnly}
+			>
+				<DialogExContainer
+					ref={ref}
+					title={memoisedTitle}
+					// fullScreen
+					responsive
+					fullWidth
+					maxWidth="lg"
+					TitleButtonsComponent={D05DialogToolbarContainer}
+					open={d05.itemViewOpen}
+					onClose={handleClose}
+					// onReturn={handleReturn}
+					sx={{
+						"& .MuiDialog-paper": {
+							backgroundColor: Colors.DIALOG_BG,
+						},
+					}}
+					contentSx={[
+						{
+							minHeight: "30em",
+							paddingTop: 0,
+							// paddingLeft: 0,
+							// paddingRight: 0,
+						},
+						scrollable.scroller,
+					]}
+					{...rest}>
+
 					<D05DialogForm
 						onSubmit={handleSubmit}
 						creating={d05.creating}
@@ -322,9 +323,9 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 						data={d05.itemData}
 						itemDataReady={d05.itemDataReady}
 					/>
-				</FormMetaProvider>
-				<D05Drawer />
-			</DialogExContainer>
+					<D05Drawer />
+				</DialogExContainer>
+			</FormMetaProvider>
 		</FormProvider>
 	);
 });

@@ -7,7 +7,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		header: "CheckboxCompoent",
 		fields: "rowData,active,focus,disabled",
-		debug: true,
+		// debug: true,
 	});
 };
 

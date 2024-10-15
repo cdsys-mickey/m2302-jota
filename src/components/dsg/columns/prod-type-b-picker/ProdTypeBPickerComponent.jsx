@@ -8,7 +8,7 @@ import ProdTypeBPicker from "../../../picker/ProdTypeBPicker";
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		fields: "rowData.typeB,active,disabled,focus",
-		debug: true,
+		// debug: true,
 	});
 };
 

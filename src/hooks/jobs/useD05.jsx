@@ -15,6 +15,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
 import { useSideDrawer } from "../useSideDrawer";
+import useOverrideSQty from "../useOverrideSQty";
 
 export const useD05 = () => {
 	const crud = useContext(CrudContext);
@@ -58,9 +59,10 @@ export const useD05 = () => {
 		keyColumn: "pkey",
 	});
 
-	const asyncRef = useRef({
-		sqtyCell: null
+	const overrideSQty = useOverrideSQty({
+		grid,
 	});
+	const { committed } = overrideSQty;
 
 	const refreshAmt = useCallback(
 		({ setValue, data, gridData, reset = false }) => {
@@ -124,104 +126,70 @@ export const useD05 = () => {
 		grid.initGridData(data.prods, { createRow });
 	}, [createRow, crud, grid, qtyMap]);
 
-	const loadStockMap = useCallback(
-		async (
-			data,
-			opts = {
-				mark: false,
-			}
-		) => {
-			const gridData = data || grid.gridData;
+	// const loadStockMap = useCallback(
+	// 	async (
+	// 		data,
+	// 		opts = {
+	// 			mark: false,
+	// 		}
+	// 	) => {
+	// 		const gridData = data || grid.gridData;
 
-			if (!gridData || gridData.length === 0) {
-				return;
-			}
-			const prodIds = [
-				...new Set(
-					gridData
-						.filter((item) => item.prod?.ProdID)
-						.map((item) => item.prod.ProdID)
-				),
-			];
-			try {
-				const { status, payload, error } = await httpGetAsync({
-					url: "v1/inventory/stock-map",
-					bearer: token,
-					params: {
-						id: prodIds.join(","),
-					},
-				});
-				if (status.success) {
-					payload.Stock?.map((x) =>
-						qtyMap.set(x.ProdID, Number(x.Qty))
-					);
-					if (opts.mark) {
-						let newGridData = [...gridData];
-						gridData.forEach((rowData, rowIndex) => {
-							const prodId = rowData.prod.ProdID;
-							const sqty = Number(rowData.SQty);
-							const prodStock = calcProdStock({
-								rowIndex,
-								prodId,
-								gridData,
-							});
-							newGridData[rowIndex] = {
-								...rowData,
-								["StockQty_N"]: (
-									qtyMap.get(prodId) || 0
-								).toFixed(2),
-								sqtyError: sqty > prodStock,
-							};
-						});
-						grid.setGridData(newGridData);
-					}
-					console.log("qtyMap:", qtyMap);
-				} else {
-					throw error || new Error("未預期例外");
-				}
-			} catch (err) {
-				toast.error(Errors.getMessage("取得庫存失敗", err), {
-					position: "top-center"
-				});
-			}
-		},
-		[calcProdStock, httpGetAsync, grid, qtyMap, token]
-	);
+	// 		if (!gridData || gridData.length === 0) {
+	// 			return;
+	// 		}
+	// 		const prodIds = [
+	// 			...new Set(
+	// 				gridData
+	// 					.filter((item) => item.prod?.ProdID)
+	// 					.map((item) => item.prod.ProdID)
+	// 			),
+	// 		];
+	// 		try {
+	// 			const { status, payload, error } = await httpGetAsync({
+	// 				url: "v1/inventory/stock-map",
+	// 				bearer: token,
+	// 				params: {
+	// 					id: prodIds.join(","),
+	// 				},
+	// 			});
+	// 			if (status.success) {
+	// 				payload.Stock?.map((x) =>
+	// 					qtyMap.set(x.ProdID, Number(x.Qty))
+	// 				);
+	// 				if (opts.mark) {
+	// 					let newGridData = [...gridData];
+	// 					gridData.forEach((rowData, rowIndex) => {
+	// 						const prodId = rowData.prod.ProdID;
+	// 						const sqty = Number(rowData.SQty);
+	// 						const prodStock = calcProdStock({
+	// 							rowIndex,
+	// 							prodId,
+	// 							gridData,
+	// 						});
+	// 						newGridData[rowIndex] = {
+	// 							...rowData,
+	// 							["StockQty_N"]: (
+	// 								qtyMap.get(prodId) || 0
+	// 							).toFixed(2),
+	// 							sqtyError: sqty > prodStock,
+	// 						};
+	// 					});
+	// 					grid.setGridData(newGridData);
+	// 				}
+	// 				console.log("qtyMap:", qtyMap);
+	// 			} else {
+	// 				throw error || new Error("未預期例外");
+	// 			}
+	// 		} catch (err) {
+	// 			toast.error(Errors.getMessage("取得庫存失敗", err), {
+	// 				position: "top-center"
+	// 			});
+	// 		}
+	// 	},
+	// 	[calcProdStock, httpGetAsync, grid, qtyMap, token]
+	// );
 
-	const handleCreate = useCallback(
-		async ({ data }) => {
-			try {
-				crud.startCreating();
-				const { status, error } = await httpPostAsync({
-					url: "v1/material/waste-orders",
-					data: data,
-					bearer: token,
-				});
-				if (status.success) {
-					toast.success(`新增成功`);
-					crud.doneCreating();
-					crud.cancelReading();
-					listLoader.loadList({ refresh: true });
-				} else {
-					throw error || new Error("未預期例外");
-				}
-			} catch (err) {
-				crud.failCreating();
-				console.error("handleCreate.failed", err);
-				if (err.code === 102) {
-					loadStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出", {
-						position: "top-center"
-					});
-				} else {
-					toast.error(Errors.getMessage("新增失敗", err), {
-						position: "top-center"
-					});
-				}
-			}
-		},
-		[crud, httpPostAsync, listLoader, loadStockMap, token]
-	);
 
 	// READ
 	const loadItem = useCallback(
@@ -244,10 +212,12 @@ export const useD05 = () => {
 					crud.doneReading({
 						data: data,
 					});
+					overrideSQty.loadStockMap(data.prods);
+
 					// setSelectedInq(data);
 
 					grid.initGridData(data.prods);
-					loadStockMap(data.prods);
+					// loadStockMap(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
 				}
@@ -255,8 +225,70 @@ export const useD05 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, loadStockMap, grid, token]
+		[httpGetAsync, token, crud, overrideSQty, grid]
 	);
+
+	/**
+	 * CREATE / UPDATE
+	 */
+	const handleSave = useCallback(
+		async ({ data, setValue, gridMeta }) => {
+			const creating = crud.creating;
+			try {
+				if (creating) {
+					crud.startCreating();
+				} else {
+					crud.startUpdating();
+				}
+
+				const { status, error } = creating ? await httpPostAsync({
+					url: "v1/material/waste-orders",
+					data: data,
+					bearer: token,
+				}) : await httpPutAsync({
+					url: "v1/material/waste-orders",
+					data: data,
+					bearer: token,
+				});
+				if (status.success) {
+					toast.success(creating ? `新增成功` : `修改成功`);
+					if (creating) {
+						crud.doneCreating();
+						crud.cancelReading();
+					} else {
+						crud.doneUpdating();
+						loadItem({ refresh: true });
+					}
+
+					listLoader.loadList({ refresh: true });
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				crud.failCreating();
+				console.error("handleCreate.failed", err);
+				if (err.code === 102) {
+					const rowIndex = Number(err.data.Row) - 1;
+					const rowData = grid.gridData[rowIndex];
+					const stock = Number(err.data.StockQty);
+
+					overrideSQty.handleOverrideSQty({
+						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true
+					});
+					// loadStockMap(data.prods, { mark: true });
+					// toast.error("部分商品庫存不足，請調整後再送出", {
+					// 	position: "top-center"
+					// });
+				} else {
+					toast.error(Errors.getMessage("新增失敗", err), {
+						position: "top-center"
+					});
+				}
+			}
+		},
+		[crud, grid.gridData, httpPostAsync, httpPutAsync, listLoader, loadItem, overrideSQty, token]
+	);
+
 
 	const handleSelect = useCallback(
 		async (e, rowData) => {
@@ -298,41 +330,41 @@ export const useD05 = () => {
 	}, [crud, dialogs, loadItem]);
 
 	// UPDATE
-	const handleUpdate = useCallback(
-		async ({ data }) => {
-			try {
-				crud.startUpdating();
-				const { status, error } = await httpPutAsync({
-					url: "v1/material/waste-orders",
-					data: data,
-					bearer: token,
-				});
-				if (status.success) {
-					toast.success(`修改成功`);
-					crud.doneUpdating();
-					//crud.cancelReading();
-					loadItem({ refresh: true });
-					listLoader.loadList({ refresh: true });
-				} else {
-					throw error || new Error("未預期例外");
-				}
-			} catch (err) {
-				crud.failUpdating();
-				console.error("handleUpdate.failed", err);
-				if (err.code === 102) {
-					loadStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出", {
-						position: "top-center"
-					});
-				} else {
-					toast.error(Errors.getMessage("修改失敗", err), {
-						position: "top-center"
-					});
-				}
-			}
-		},
-		[crud, httpPutAsync, listLoader, loadItem, loadStockMap, token]
-	);
+	// const handleUpdate = useCallback(
+	// 	async ({ data }) => {
+	// 		try {
+	// 			crud.startUpdating();
+	// 			const { status, error } = await httpPutAsync({
+	// 				url: "v1/material/waste-orders",
+	// 				data: data,
+	// 				bearer: token,
+	// 			});
+	// 			if (status.success) {
+	// 				toast.success(`修改成功`);
+	// 				crud.doneUpdating();
+	// 				//crud.cancelReading();
+	// 				loadItem({ refresh: true });
+	// 				listLoader.loadList({ refresh: true });
+	// 			} else {
+	// 				throw error || new Error("未預期例外");
+	// 			}
+	// 		} catch (err) {
+	// 			crud.failUpdating();
+	// 			console.error("handleUpdate.failed", err);
+	// 			if (err.code === 102) {
+	// 				loadStockMap(data.prods, { mark: true });
+	// 				toast.error("部分商品庫存不足，請調整後再送出", {
+	// 					position: "top-center"
+	// 				});
+	// 			} else {
+	// 				toast.error(Errors.getMessage("修改失敗", err), {
+	// 					position: "top-center"
+	// 				});
+	// 			}
+	// 		}
+	// 	},
+	// 	[crud, httpPutAsync, listLoader, loadItem, loadStockMap, token]
+	// );
 
 	//DELETE
 	const confirmDelete = useCallback(() => {
@@ -436,32 +468,44 @@ export const useD05 = () => {
 				return newRowData;
 			}
 
-			try {
-				const { status, payload, error } = await httpGetAsync({
-					url: "v1/material/waste-orders/samt",
-					bearer: token,
-					params: {
-						prdi: rowData?.prod?.ProdID,
-						qty: rowData?.SQty || 0,
-						csti: rowData?.customer?.CustID || "",
-						depi: rowData?.dept?.DeptID || "",
-					},
-				});
+			const prodId = rowData?.prod?.ProdID;
+			const customerId = rowData?.customer?.CustID || "";
+			const deptId = rowData?.dept?.DeptID || "";
 
-				if (status.success) {
-					console.log("payload", payload);
-					newRowData = {
-						...newRowData,
-						["SAmt"]: (parseFloat(payload["SAmt"]) || 0).toFixed(2),
-					};
-				} else {
-					throw error || new Error("未預期例外");
+			if (prodId && (customerId || deptId)) {
+				try {
+					const { status, payload, error } = await httpGetAsync({
+						url: "v1/material/waste-orders/samt",
+						bearer: token,
+						params: {
+							prdi: rowData?.prod?.ProdID,
+							qty: rowData?.SQty || 0,
+							csti: customerId,
+							depi: deptId,
+						},
+					});
+
+					if (status.success) {
+						console.log("payload", payload);
+						newRowData = {
+							...newRowData,
+							["SAmt"]: (parseFloat(payload["SAmt"]) || 0).toFixed(2),
+						};
+					} else {
+						throw error || new Error("未預期例外");
+					}
+				} catch (err) {
+					toast.error(Errors.getMessage("查詢報價失敗", err), {
+						position: "top-center"
+					});
 				}
-			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-center"
-				});
+			} else {
+				newRowData = {
+					...newRowData,
+					["SAmt"]: "",
+				};
 			}
+
 			console.log("newRowData→", newRowData);
 			return newRowData;
 		},
@@ -647,28 +691,16 @@ export const useD05 = () => {
 	);
 
 	const onEditorSubmit = useCallback(
-		(data) => {
+		({ setValue, gridMeta }) => (data) => {
 			console.log("onEditorSubmit", data);
 			const collected = D05.transformForSubmitting(
 				data,
 				grid.gridData
 			);
 			console.log("collected", collected);
-			if (crud.creating) {
-				handleCreate({ data: collected });
-			} else if (crud.updating) {
-				handleUpdate({ data: collected });
-			} else {
-				console.error("UNKNOWN SUBMIT TYPE");
-			}
+			handleSave({ data: collected, setValue, gridMeta })
 		},
-		[
-			crud.creating,
-			crud.updating,
-			handleCreate,
-			handleUpdate,
-			grid.gridData,
-		]
+		[grid.gridData, handleSave]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -834,11 +866,12 @@ export const useD05 = () => {
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
-		loadStockMap,
+		// loadStockMap,
 		customerDisabled,
 		deptDisabled,
 		sqtyDisabled,
 		dtypeDisabled,
-		...sideDrawer
+		...sideDrawer,
+		committed
 	};
 };

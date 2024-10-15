@@ -96,9 +96,10 @@ const FlexToolbar = memo(
 					pl={1}
 					alignItems="center"
 					justifyContent="flex-end"
-					{...(!hasLeft && {
-						flex: 1,
-					})}
+					flex={1}
+					// {...(!hasLeft && {
+					// 	flex: 1,
+					// })}
 					sx={[
 						(theme) => ({
 							"& button, & label, & .button": {

@@ -8,7 +8,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		header: "MuiCheckboxComponent",
 		fields: "rowData,active,focus,disabled",
-		debug: true,
+		// debug: true,
 	});
 };
 
@@ -94,7 +94,7 @@ const MuiCheckboxComponent = memo((props) => {
 				},
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}
-			// {...ComponentProps}
+		// {...ComponentProps}
 		/>
 	);
 }, arePropsEqual);

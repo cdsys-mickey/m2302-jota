@@ -1,13 +1,11 @@
-import { useContext } from "react";
-import D01ProdGrid from "./D01ProdGrid";
 import { D01Context } from "@/contexts/D01/D01Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useFormContext, useWatch } from "react-hook-form";
-import DSGBox from "../../../../../shared-components/dsg/DSGBox";
-import { useMemo } from "react";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { useContext, useMemo } from "react";
+import { useFormContext } from "react-hook-form";
+import D01ProdGrid from "./D01ProdGrid";
 
 export const D01ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -21,7 +19,8 @@ export const D01ProdGridContainer = (props) => {
 		return d01.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
-			gridMeta: formMeta.gridMeta
+			gridMeta: formMeta.gridMeta,
+			onUpdateRow: d01.onUpdateRow,
 			// handleRefreshAmt: d01.handleRefreshAmt,
 		});
 	}, [d01, form.getValues, form.setValue, formMeta.gridMeta]);

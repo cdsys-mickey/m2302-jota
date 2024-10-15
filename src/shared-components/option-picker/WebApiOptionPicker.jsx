@@ -46,6 +46,8 @@ const WebApiOptionPicker = memo(
 			findByInput,
 			disableOpenOnInput,
 			resetOnChange,
+			resetOptionsOnChange,
+			resetValueOnChange,
 			...rest
 		} = props;
 
@@ -96,7 +98,9 @@ const WebApiOptionPicker = memo(
 			inputParam,
 			findByInput,
 			disableOpenOnInput,
-			resetOnChange
+			resetOnChange,
+			resetOptionsOnChange,
+			resetValueOnChange,
 		});
 
 		return (
@@ -164,6 +168,8 @@ WebApiOptionPicker.propTypes = {
 	disableOpenOnInput: PropTypes.bool,
 	// pressToFind: PropTypes.bool,
 	resetOnChange: PropTypes.bool,
+	resetValueOnChange: PropTypes.bool,
+	resetOptionsOnChange: PropTypes.bool,
 	findByInput: PropTypes.func,
 	inputParam: PropTypes.string,
 };

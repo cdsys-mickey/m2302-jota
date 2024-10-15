@@ -1,21 +1,18 @@
-import { C08SearchFieldContainer } from "@/components/jobs/C08/search/C08SearchFieldContainer";
 import { C08DialogContainer } from "@/components/jobs/C08/dialog/C08DialogContainer";
 import C08ListHeader from "@/components/jobs/C08/list/C08ListHeader";
 import C08ListToolbar from "@/components/jobs/C08/list/C08ListToolbar";
 import { C08ListViewContainer } from "@/components/jobs/C08/list/C08ListViewContainer";
+import { C08SearchFieldContainer } from "@/components/jobs/C08/search/C08SearchFieldContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useInit } from "../../shared-hooks/useInit";
-import { C08Context } from "../../contexts/C08/C08Context";
-import C08Drawer from "@/components/jobs/C08/C08Drawer";
 
 export const C08FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
-	const c08 = useContext(C08Context);
+	// const c08 = useContext(C08Context);
 	const searchForm = useForm({
 		defaultValues: {},
 	});
@@ -25,9 +22,9 @@ export const C08FrameContainer = () => {
 		[appFrame.drawerOpen, theme]
 	);
 
-	useInit(() => {
-		c08.loadStockPword();
-	}, []);
+	// useInit(() => {
+	// 	c08.loadStockPword();
+	// }, []);
 
 	return (
 		<Box sx={[boxStyles]}>

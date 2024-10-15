@@ -1,6 +1,5 @@
 import { forwardRef, memo } from "react";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import ModuleToolbar from "../../ModuleToolbar";
 import E021CreateButtonContainer from "../E021CreateButtonContainer";
 import { E021FetchResultLabelContainer } from "../E021FetchResultLabelContainer";
 

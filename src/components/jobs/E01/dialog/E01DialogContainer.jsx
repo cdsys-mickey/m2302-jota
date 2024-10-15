@@ -113,6 +113,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 						forId: true,
 						cst: customer?.CustID || "",
 						retail: retail,
+						compTel: compTel,
 						disableClearable: true,
 						withPrice: true,
 						slotProps: {
@@ -122,6 +123,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
+						resetOptionsOnChange: true,
 					})
 				),
 				title: "商品編號",
@@ -221,7 +223,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly || e01.sNotQtyDisalbed,
 			},
 		],
-		[customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisalbed, e01.spriceDisabled, e01.sqtyDisabled, readOnly, retail]
+		[compTel, customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisalbed, e01.spriceDisabled, e01.sqtyDisabled, readOnly, retail]
 	);
 
 	const gridMeta = useDSGMeta({
@@ -364,8 +366,8 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 							data={e01.itemData}
 							itemDataReady={e01.itemDataReady}
 							squaredDisabled={e01.squaredDisabled}
-							handleCustomerChange={e01.handleCustomerChange({ setValue: form.setValue, getValues: form.getValues, formMeta })}
-							handleRetailChange={e01.handleRetailChange({ setValue: form.setValue })}
+							handleCustomerChange={e01.handleCustomerChange({ setValue: form.setValue, getValues: form.getValues, formMeta, gridMeta })}
+							handleRetailChange={e01.handleRetailChange({ setValue: form.setValue, gridMeta })}
 							validateCustomer={validateCustomer}
 							customerRequired={customerRequired}
 							handleTaxTypeChange={e01.handleTaxTypeChange({ setValue: form.setValue, getValues: form.getValues })}

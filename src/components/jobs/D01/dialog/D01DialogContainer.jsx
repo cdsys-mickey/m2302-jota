@@ -68,10 +68,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 		d01.updating,
 	]);
 
-	const handleSubmit = form.handleSubmit(
-		d01.onEditorSubmit,
-		d01.onEditorSubmitError
-	);
+
 
 	const readOnly = useMemo(() => {
 		return !d01.editing || !pdline;
@@ -130,6 +127,19 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 				disabled: true,
 			},
 			{
+				...keyColumn(
+					"SQtyNote",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "強",
+				minWidth: 38,
+				maxWidth: 38,
+				disabled: true,
+				cellClassName: "star",
+			},
+			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "進貨數量",
 				minWidth: 90,
@@ -143,19 +153,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 				maxWidth: 150,
 				disabled: readOnly,
 			},
-			{
-				...keyColumn(
-					"SQtyNote",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "註",
-				minWidth: 38,
-				maxWidth: 38,
-				disabled: true,
-				cellClassName: "star",
-			},
+
 		],
 		[readOnly]
 	);
@@ -181,6 +179,11 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 	}
 	)
 
+	const handleSubmit = form.handleSubmit(
+		d01.onEditorSubmit({ setValue: form.setValue, gridMeta }),
+		d01.onEditorSubmitError
+	);
+
 
 	useEffect(() => {
 		if (d01.itemDataReady) {
@@ -189,35 +192,43 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [d01.itemData, d01.itemDataReady, reset]);
 
+	useEffect(() => {
+		if (d01.committed) {
+			console.log("committed", d01.grid.gridData);
+			handleSubmit();
+		}
+	}, [d01.committed, d01.grid.gridData, handleSubmit]);
+
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
-				ref={ref}
-				title={memoisedTitle}
-				// fullScreen
-				responsive
-				fullWidth
-				maxWidth="md"
-				TitleButtonsComponent={D01DialogToolbarContainer}
-				open={d01.itemViewOpen}
-				onClose={handleClose}
-				// onReturn={handleReturn}
-				sx={{
-					"& .MuiDialog-paper": {
-						backgroundColor: Colors.DIALOG_BG,
-					},
-				}}
-				contentSx={[
-					{
-						minHeight: "30em",
-						paddingTop: 0,
-						// paddingLeft: 0,
-						// paddingRight: 0,
-					},
-					scrollable.scroller,
-				]}
-				{...rest}>
-				<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
+			<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
+				<DialogExContainer
+					ref={ref}
+					title={memoisedTitle}
+					// fullScreen
+					responsive
+					fullWidth
+					maxWidth="md"
+					TitleButtonsComponent={D01DialogToolbarContainer}
+					open={d01.itemViewOpen}
+					onClose={handleClose}
+					// onReturn={handleReturn}
+					sx={{
+						"& .MuiDialog-paper": {
+							backgroundColor: Colors.DIALOG_BG,
+						},
+					}}
+					contentSx={[
+						{
+							minHeight: "30em",
+							paddingTop: 0,
+							// paddingLeft: 0,
+							// paddingRight: 0,
+						},
+						scrollable.scroller,
+					]}
+					{...rest}>
+
 					<D01DialogForm
 						onSubmit={handleSubmit}
 						creating={d01.creating}
@@ -228,9 +239,10 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 						data={d01.itemData}
 						itemDataReady={d01.itemDataReady}
 					/>
-				</FormMetaProvider>
-				<D01Drawer />
-			</DialogExContainer>
+
+					<D01Drawer />
+				</DialogExContainer>
+			</FormMetaProvider>
 		</FormProvider>
 	);
 });

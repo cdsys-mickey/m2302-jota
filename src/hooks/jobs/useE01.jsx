@@ -747,7 +747,7 @@ export const useE01 = () => {
 		return itemData?.CFlag === "*" || crud.creating;
 	}, [crud.creating, itemData?.CFlag]);
 
-	const handleRetailChange = useCallback(({ setValue }) => (newValue) => {
+	const handleRetailChange = useCallback(({ setValue, gridMeta }) => (newValue) => {
 		console.log("handleRetailChange", newValue);
 		setValue("customer", null);
 		setValue("CustName", "");
@@ -767,9 +767,11 @@ export const useE01 = () => {
 		setValue("employee", null, {
 			shouldTouch: true
 		});
-	}, []);
+		gridMeta.setActiveCell(null);
+		grid.initGridData([], { createRow });
+	}, [createRow, grid]);
 
-	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta }) => async (newValue) => {
+	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta }) => async (newValue) => {
 		console.log("handleCustomerChange", newValue);
 		formMeta.asyncRef.current.supressEvents = true;
 		setValue("CustName", newValue?.CustData || "");
@@ -816,9 +818,35 @@ export const useE01 = () => {
 		setValue("employee", E01.getEmployee(customerInfo), {
 			shouldTouch: true
 		});
-
+		// grid.initGridData([], { createRow });
+		gridMeta.setActiveCell(null);
 		formMeta.asyncRef.current.supressEvents = false;
 	}, [httpGetAsync, token]);
+
+	const checkEditableAction = useAction();
+	const handleCheckEditable = useCallback(async () => {
+		try {
+			checkEditableAction.start();
+			const { status, error } = await httpGetAsync({
+				url: "v1/sales/customer-orders/check-editable",
+				bearer: token,
+				params: {
+					id: crud.itemData.OrdID,
+				},
+			});
+			if (status.success) {
+				crud.promptUpdating();
+			} else {
+				throw error || new Error("未預期例外");
+			}
+		} catch (err) {
+			toast.error(Errors.getMessage("編輯檢查失敗", err), {
+				position: "top-center"
+			});
+		} finally {
+			checkEditableAction.clear();
+		}
+	}, [checkEditableAction, crud, httpGetAsync, token]);
 
 	return {
 		...crud,
@@ -866,6 +894,9 @@ export const useE01 = () => {
 		sqtyDisabled,
 		sNotQtyDisabled,
 		onGridChanged,
-		handleTaxTypeChange
+		handleTaxTypeChange,
+		// 檢查可否編輯
+		checkEditableWorking: checkEditableAction.working,
+		handleCheckEditable,
 	};
 };

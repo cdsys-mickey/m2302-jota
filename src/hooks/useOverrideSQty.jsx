@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import { useState } from "react";
 
-const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", samtColumn = "SAmt", sqtyColumn = "SQty", sqtyNoteColumn = "SQtyNote", stockQtyColumn = "StockQty_N", markColumn = "sqtyError", prodIdKey = "prod.ProdID", prodNameKey = "prod.ProdData" }) => {
+const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", priceColumn = "SPrice", samtColumn = "SAmt", sqtyColumn = "SQty", sqtyNoteColumn = "SQtyNote", stockQtyColumn = "StockQty_N", markColumn = "sqtyError", prodIdKey = "prod.ProdID", prodNameKey = "prod.ProdData" }) => {
 	const { token } = useContext(AuthContext);
 	const stockQtyMap = useMemo(() => new Map(), []);
 	const [committed, setCommitted] = useState(false);
@@ -107,7 +107,7 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 			const sqtyLock = sqtyLockRef.current;
 			const { gridMeta } = sqtyLock;
 			dialogs.confirm({
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足( ${sqtyLock.demand} > ${sqtyLock.stock} )，是否強迫銷貨？`,
+				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足( ${sqtyLock.demand} > ${sqtyLock.stock} )，是否強迫${action}？`,
 				onConfirm: () => {
 					commitSQty({});
 				},
@@ -138,8 +138,8 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 				// message: first
 				// 	? `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.stock})` : ""}, 請輸入密碼`
 				// 	: "密碼錯誤，請再次輸入或取消",
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.demand} > ${sqtyLock.stock})` : ""}，若要強迫銷貨請輸入密碼`,
-				label: "強迫銷貨密碼",
+				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.demand} > ${sqtyLock.stock})` : ""}，若要強迫${action}請輸入密碼`,
+				label: `強迫${action}密碼`,
 				triggerCancelOnClose: true,
 				// disableCloseOnConfirm: true,
 				onConfirm: ({ value }) => {
@@ -354,7 +354,7 @@ const useOverrideSQty = ({ grid, stypeColumn = "stype", priceColumn = "SPrice", 
 				});
 			}
 		},
-		[grid, httpGetAsync, token, stockQtyMap, sqtyColumn, getCalculatedStock, stockQtyColumn, markColumn]
+		[grid, prodIdKey, httpGetAsync, token, stockQtyMap, sqtyColumn, getCalculatedStock, stockQtyColumn, markColumn]
 	);
 
 	const getErrorInfo = useCallback((err) => {
