@@ -257,15 +257,19 @@ const OptionPicker = memo(
 			(e, opts = {}) => {
 				const { forward } = opts;
 				if (inDSG) {
-					focusNextCell(cell, { forward: forward || !e?.shiftKey });
+					if (focusNextCell) {
+						focusNextCell(cell, { forward: forward || !e?.shiftKey });
+					}
 				} else if (inFormMeta) {
-					e?.preventDefault();
-					focusNextField(name, {
-						setFocus,
-						isFieldDisabled,
-						forward: forward || !e?.shiftKey,
-						e
-					});
+					if (focusNextField) {
+						e?.preventDefault();
+						focusNextField(name, {
+							setFocus,
+							isFieldDisabled,
+							forward: forward || !e?.shiftKey,
+							e
+						});
+					}
 				}
 			},
 			[inDSG, inFormMeta, focusNextCell, cell, focusNextField, name, setFocus, isFieldDisabled]

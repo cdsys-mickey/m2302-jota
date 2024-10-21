@@ -13,29 +13,22 @@ const SCOPES = Object.freeze({
 	ROOT: 3,
 });
 
+const SCOPE_LABELS = Object.freeze({
+	[SCOPES.DEPT]: "門市",
+	[SCOPES.BRANCH_HQ]: "分公司",
+	[SCOPES.HQ]: "總公司",
+	[SCOPES.ROOT]: "系統",
+});
+
 const COOKIE_OPTS = {
 	path: "/",
 	expires: 365,
 };
 
-const AUTH_SCOPE_OPTIONS = [
-	{
-		id: SCOPES.DEPT,
-		label: "門市",
-	},
-	{
-		id: SCOPES.BRANCH_HQ,
-		label: "分公司",
-	},
-	{
-		id: SCOPES.HQ,
-		label: "總公司",
-	},
-	{
-		id: SCOPES.ROOT,
-		label: "系統",
-	},
-];
+const AUTH_SCOPE_OPTIONS = Object.keys(SCOPE_LABELS).map((key) => ({
+	id: parseInt(key),
+	label: SCOPE_LABELS[key],
+}));
 
 const getOptionLabel = (option) => {
 	if (!option) return "";
@@ -137,6 +130,7 @@ const Auth = {
 	...FUNCTIONS,
 	transformPayloadToAuthority,
 	SCOPES,
+	SCOPE_LABELS,
 	AUTH_SCOPE_OPTIONS,
 	getOptionLabel,
 	isOptionEqualToValue,

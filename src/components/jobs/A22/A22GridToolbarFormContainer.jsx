@@ -37,7 +37,7 @@ export const A22GridToolbarFormContainer = () => {
 							alignItems="center"
 							justifyContent="flex-end">
 							<Box mr={0.5}>
-								<A22OutputModePickerContainer dense width="8rem" />
+								<A22OutputModePickerContainer dense width="10rem" disableClearable />
 							</Box>
 							<A22GenReportButtonContainer />
 							<Box ml={0.5}>

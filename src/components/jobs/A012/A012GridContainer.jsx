@@ -15,7 +15,7 @@ export const A012GridContainer = () => {
 	}, [prodGrid.expanded, height]);
 
 	const gridChangeHandler = useMemo(() => {
-		return prodGrid.grid.handleGridChange;
+		return prodGrid.handleGridChange;
 	}, [prodGrid]);
 
 	return (
@@ -27,12 +27,12 @@ export const A012GridContainer = () => {
 			}}>
 				<A012Grid
 					// readOnly={prodGrid.grid.readOnly}
-					gridRef={prodGrid.gridMeta.setGridRef}
-					data={prodGrid.grid.gridData}
-					loading={prodGrid.grid.gridLoading}
+					gridRef={prodGrid.setGridRef}
+					data={prodGrid.gridData}
+					loading={prodGrid.gridLoading}
 					height={gridHeight}
 					onChange={gridChangeHandler}
-					onActveCellChange={prodGrid.gridMeta.handleActiveCellChange}
+					onActveCellChange={prodGrid.handleActiveCellChange}
 				/>
 			</DSGContext.Provider>
 		</FormProvider>

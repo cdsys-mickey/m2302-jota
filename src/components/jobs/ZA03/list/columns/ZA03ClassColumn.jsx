@@ -1,20 +1,20 @@
 import { Grid, Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
 
-const ZA03NameColumn = (props) => {
+const ZA03ClassColumn = (props) => {
 	const { loading, children, ...rest } = props;
 	const isLoading = loading && !children;
 	return (
-		<Grid item pr={1} xs={12} sm={12} md={6} {...rest}>
+		<Grid item pr={1} xs={9} sm={9} md={2} {...rest}>
 			{isLoading ? <Skeleton /> : children || ""}
 		</Grid>
 	);
 };
 
-ZA03NameColumn.propTypes = {
+ZA03ClassColumn.propTypes = {
 	loading: PropTypes.bool,
 	children: PropTypes.oneOfType([PropTypes.node]),
 };
 
-ZA03NameColumn.displayName = "ZA03NameColumn";
-export default ZA03NameColumn;
+ZA03ClassColumn.displayName = "ZA03ClassColumn";
+export default ZA03ClassColumn;

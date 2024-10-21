@@ -3,7 +3,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 function ErrorPage() {
 	const handleBackHome = () => {
-		window.location.href = '/'; // 或使用 react-router 的 useNavigate 回到主頁
+		window.location.href = import.meta.env.VITE_PUBLIC_URL; // 或使用 react-router 的 useNavigate 回到主頁
 	};
 
 	return (

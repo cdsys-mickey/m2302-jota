@@ -258,6 +258,27 @@ export const useB05 = () => {
 		[]
 	);
 
+	const onUpdateRow = useCallback(({ fromIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// prod
+		if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+			console.log(
+				`prod[${rowIndex}] changed`,
+				processedRowData?.prod
+			);
+			processedRowData = await handleGridProdChange({
+				rowData: processedRowData,
+				formData
+			});
+		}
+		return processedRowData;
+	}, [grid.gridData, handleGridProdChange]);
+
 	const buildGridChangeHandler = useCallback(
 		({ gridMeta }) => (newValue, operations) => {
 			console.log("buildGridChangeHandler", operations);
@@ -527,6 +548,7 @@ export const useB05 = () => {
 		onPrintSubmitError,
 		// handleLastField,
 		loadProdFormMeta,
-		...sideDrawer
+		...sideDrawer,
+		onUpdateRow
 	};
 };

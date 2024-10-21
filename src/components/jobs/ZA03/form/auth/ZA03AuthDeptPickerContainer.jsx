@@ -16,7 +16,7 @@ export const ZA03AuthDeptPickerContainer = (props) => {
 
 			uid={za03.itemData?.UID}
 			value={za03.selectedDept}
-			onChange={za03.handleDeptChange}
+			onChange={za03.handleAuthDeptChange}
 			disabled={za03.authGridEditing}
 			{...rest}
 		/>

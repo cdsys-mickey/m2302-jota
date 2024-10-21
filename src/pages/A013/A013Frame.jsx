@@ -15,9 +15,7 @@ const A22Frame = memo((props) => {
 		<Box sx={[boxStyles]}>
 			<FrameBannerContainer />
 			<ContainerEx maxWidth="md" alignLeft>
-				<Box>
-					<ProdGridFormContainer />
-				</Box>
+				<ProdGridFormContainer />
 			</ContainerEx>
 			<Box>
 				<ProdGridToolbarContainer />

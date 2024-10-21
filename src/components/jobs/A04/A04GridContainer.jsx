@@ -31,7 +31,7 @@ const A04GridContainer = () => {
 			}}>
 			<A04Grid
 				columns={a04.columns}
-				lockRows={formMeta.readOnly}
+				lockRows={a04.readOnly}
 				gridRef={a04.setGridRef}
 				data={a04.gridData}
 				loading={a04.gridLoading}

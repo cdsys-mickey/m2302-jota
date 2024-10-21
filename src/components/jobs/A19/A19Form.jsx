@@ -16,6 +16,7 @@ import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import ProdPicker from "../../picker/ProdPicker";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
+import Auth from "@/modules/md-auth";
 
 const A19Form = memo((props) => {
 	const { ...rest } = props;
@@ -87,6 +88,7 @@ const A19Form = memo((props) => {
 									name="sdept"
 									disableOpenOnInput
 									selectOnFocus
+									scope={Auth.SCOPES.BRANCH_HQ}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -97,6 +99,7 @@ const A19Form = memo((props) => {
 									name="edept"
 									disableOpenOnInput
 									selectOnFocus
+									scope={Auth.SCOPES.BRANCH_HQ}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>

@@ -1,41 +1,60 @@
-import { useContext } from "react";
-import ZA03InfoForm from "./ZA03InfoForm";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import { FormProvider, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useContext } from "react";
+import { useForm } from "react-hook-form";
+import ZA03InfoForm from "./ZA03InfoForm";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useCallback } from "react";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const ZA03InfoFormContainer = () => {
+	const za03 = useContext(ZA03Context);
+
 	const form = useForm({
 		defaultValues: {
 			depts: [],
 		},
 	});
 
-	const za03 = useContext(ZA03Context);
+	const formMeta = useFormMeta(
+		`
+		LoginName,
+		UserName,
+		Tel,
+		Cel,
+		Email,
+		dept,
+		userClass,
+		depts
+		`
+	)
 
-	// const { itemDataReady, itemData } = za03;
-
-	// useEffect(() => {
-	// 	if (itemDataReady) {
-	// 		console.log(`za03 form reset`, itemData);
-	// 		reset(itemData);
-	// 	}
-	// }, [reset, itemData, itemDataReady]);
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
+				case "LoginName":
+					return za03.updating;
+				default:
+					return false;
+			}
+		},
+		[za03.updating]
+	);
 
 	return (
-		// <FormProvider {...form}>
-		<ZA03InfoForm
-			data={za03.itemData}
-			updating={za03.updating}
-			editing={za03.editing}
-			// deptDisabled={true}
-			onSubmit={form.handleSubmit(
-				za03.onEditorSubmit,
-				za03.onEditorSubmitError
-			)}
-			readError={za03.readError}
-		/>
-		// </FormProvider>
+		<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
+			<ZA03InfoForm
+				data={za03.itemData}
+				creating={za03.creating}
+				updating={za03.updating}
+				editing={za03.editing}
+				onSubmit={form.handleSubmit(
+					za03.onEditorSubmit,
+					za03.onEditorSubmitError
+				)}
+				readError={za03.readError}
+			// handleDeptChange={za03.handleDeptChange({ setValue: form.setValue, getValues: form.getValues })}
+			/>
+		</FormMetaProvider>
 	);
 };
 

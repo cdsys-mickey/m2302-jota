@@ -301,7 +301,7 @@ export const useDSG = ({
 	);
 
 	const isDuplicating = useCallback(
-		(rowData, newValues, opts) => {
+		(rowData, newValues, opts = {}) => {
 			const { key: _keyColumn } = opts;
 			const activeKeyColumn = _keyColumn || keyColumn;
 			const keyValue = _.get(rowData, activeKeyColumn);

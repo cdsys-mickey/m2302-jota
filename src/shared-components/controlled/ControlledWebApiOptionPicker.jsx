@@ -96,10 +96,16 @@ export const ControlledWebApiOptionPicker = memo(
 							focusNextField={focusNextField}
 							isFieldDisabled={isFieldDisabled}
 							onChange={(newValue) => {
+								let returnValue;
 								if (_onChange) {
-									_onChange(newValue);
+									returnValue = _onChange(newValue);
 								}
-								onChange(newValue);
+
+								if (returnValue !== undefined) {
+									onChange(returnValue);
+								} else {
+									onChange(newValue);
+								}
 
 								const newValueJson = JSON.stringify(newValue);
 

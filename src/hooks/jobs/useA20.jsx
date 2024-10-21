@@ -1,26 +1,15 @@
-import { useContext } from "react";
-import { useCallback, useState } from "react";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import A20 from "@/modules/md-a20";
-import { toast } from "react-toastify";
-import Errors from "@/shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
-import { useMemo } from "react";
-import { keyColumn } from "react-datasheet-grid";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import Errors from "@/shared-modules/sd-errors";
+import { useCallback, useContext, useState } from "react";
+import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
+import { useAppModule } from "./useAppModule";
 
 export const useA20 = ({ token }) => {
 	const crud = useContext(CrudContext);
@@ -301,61 +290,104 @@ export const useA20 = ({ token }) => {
 		};
 	}, []);
 
+	const onUpdateRow = useCallback(({ fromIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// prod
+		if (processedRowData.sprod?.ProdID != oldRowData.sprod?.ProdID) {
+			console.log(
+				`sprod[${rowIndex}] changed`,
+				processedRowData?.sprod
+			);
+			processedRowData = await handleGridProdChange({
+				rowData: processedRowData,
+				formData
+			});
 
-	const buildGridChangeHandler = useCallback(
-		({ gridMeta }) =>
-			(newValue, operations) => {
-				const newGridData = [...newValue];
-				let checkFailed = false;
-				for (const operation of operations) {
-					if (operation.type === "UPDATE") {
-						console.log("dsg.UPDATE");
-						newValue
-							.slice(operation.fromRowIndex, operation.toRowIndex)
-							.forEach((rowData, i) => {
-								const rowIndex = operation.fromRowIndex + i;
-								const ogRowData = grid.gridData[rowIndex];
-								let processedRowData = { ...rowData };
-
-								if (rowData?.sprod?.ProdID !== ogRowData?.sprod?.ProdID) {
-									console.log(`prod[${rowIndex}] changed`, rowData?.sprod);
-
-									processedRowData = handleGridProdChange({
-										rowData: processedRowData,
-									});
-
-									if (
-										rowData.sprod &&
-										grid.isDuplicating(rowData, newValue)
-									) {
-										toast.error(
-											`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`, {
-											position: "top-center"
-										}
-										);
-										setTimeout(() => {
-											gridMeta.setActiveCell({
-												col: 0,
-												row: rowIndex,
-											});
-										});
-										checkFailed = true;
-									}
-								}
-								newGridData[rowIndex] = processedRowData;
-							});
-					} else if (operation.type === "CREATE") {
-						console.log("dsg.CREATE");
-						// process CREATE here
-						gridMeta.toFirstColumn({ nextRow: true });
-					}
+			if (
+				rowData.sprod &&
+				grid.isDuplicating(rowData, newValue)
+			) {
+				toast.error(
+					`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`, {
+					position: "top-center"
 				}
-				if (!checkFailed) {
-					grid.setGridData(newGridData);
+				);
+				// setTimeout(() => {
+				// 	gridMeta.setActiveCell({
+				// 		col: 0,
+				// 		row: rowIndex,
+				// 	});
+				// });
+				processedRowData = {
+					...processedRowData,
+					["sprod"]: null,
+					["SProdData"]: "",
+					["SPackData_N"]: ""
 				}
-			},
-		[grid, handleGridProdChange]
-	);
+			}
+		}
+		return processedRowData;
+	}, [grid, handleGridProdChange]);
+
+	// const buildGridChangeHandler = useCallback(
+	// 	({ gridMeta }) =>
+	// 		(newValue, operations) => {
+	// 			const newGridData = [...newValue];
+	// 			let checkFailed = false;
+	// 			for (const operation of operations) {
+	// 				if (operation.type === "UPDATE") {
+	// 					console.log("dsg.UPDATE");
+	// 					newValue
+	// 						.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 						.forEach((rowData, i) => {
+	// 							const rowIndex = operation.fromRowIndex + i;
+	// 							const ogRowData = grid.gridData[rowIndex];
+	// 							let processedRowData = { ...rowData };
+
+	// 							if (rowData?.sprod?.ProdID !== ogRowData?.sprod?.ProdID) {
+	// 								console.log(`prod[${rowIndex}] changed`, rowData?.sprod);
+
+	// 								processedRowData = handleGridProdChange({
+	// 									rowData: processedRowData,
+	// 								});
+
+	// 								if (
+	// 									rowData.sprod &&
+	// 									grid.isDuplicating(rowData, newValue)
+	// 								) {
+	// 									toast.error(
+	// 										`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`, {
+	// 										position: "top-center"
+	// 									}
+	// 									);
+	// 									setTimeout(() => {
+	// 										gridMeta.setActiveCell({
+	// 											col: 0,
+	// 											row: rowIndex,
+	// 										});
+	// 									});
+	// 									checkFailed = true;
+	// 								}
+	// 							}
+	// 							newGridData[rowIndex] = processedRowData;
+	// 						});
+	// 				} else if (operation.type === "CREATE") {
+	// 					console.log("dsg.CREATE");
+	// 					// process CREATE here
+	// 					gridMeta.toFirstColumn({ nextRow: true });
+	// 				}
+	// 			}
+	// 			if (!checkFailed) {
+	// 				grid.setGridData(newGridData);
+	// 			}
+	// 		},
+	// 	[grid, handleGridProdChange]
+	// );
 
 	useInit(() => {
 		crud.cancelAction();
@@ -380,10 +412,11 @@ export const useA20 = ({ token }) => {
 		// grid
 		grid,
 		...grid,
-		buildGridChangeHandler,
+		// buildGridChangeHandler,
 		getRowKey,
 		...appModule,
 		createRow,
+		onUpdateRow,
 		...sideDrawer
 	};
 };

@@ -172,9 +172,41 @@ export const useZA03 = () => {
 		return loadAuthGridAction.state === ActionState.WORKING;
 	}, [loadAuthGridAction.state]);
 
-	const handleDeptChange = useCallback(
+	const handleDeptChange = useCallback(({ setValue, getValues }) => (newValue) => {
+		// console.log("getValues", getValues());
+
+		if (crud.creating) {
+			if (newValue) {
+				setValue("depts", [
+					newValue
+				])
+			} else {
+				setValue("depts", [
+
+				])
+			}
+		}
+	}, [crud.creating]);
+
+	/**
+	 * 防止隸屬門市被刪除
+	 */
+	const handleDeptsChange = useCallback(({ setValue, getValues }) => (newValue) => {
+		// console.log("getValues", getValues());
+		const dept = getValues("dept");
+
+		if (!newValue.find(x => x.DeptID === dept.DeptID)) {
+			return [
+				dept,
+				...newValue,
+			]
+		}
+	}, []);
+
+
+	const handleAuthDeptChange = useCallback(
 		(dept) => {
-			console.log("handleDeptChange", dept);
+			console.log("handleAuthDeptChange", dept);
 			setSelectedDept(dept);
 			if (itemData?.UID && dept?.DeptID) {
 				// 載入 grid
@@ -1002,7 +1034,7 @@ export const useZA03 = () => {
 		setSelectedTab,
 		handleTabChange,
 		// Auth Grid
-		handleDeptChange,
+		handleAuthDeptChange,
 		selectedDept,
 		getRowKey,
 		authGridLoading,
@@ -1058,5 +1090,7 @@ export const useZA03 = () => {
 		clearAll,
 		checkSelection,
 		clearSelection,
+		handleDeptChange,
+		handleDeptsChange
 	};
 };

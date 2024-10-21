@@ -22,10 +22,7 @@ export const useA18 = () => {
 		SDate,
 		EDate,
 		action
-		`,
-		{
-			lastField: LastFieldBehavior.PROMPT
-		});
+		`);
 
 	const onSubmit = useCallback(
 		(payload) => {

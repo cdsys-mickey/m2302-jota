@@ -467,14 +467,14 @@ export const useB04 = () => {
 				CustID2: data.customer2?.CustID || "",
 				ProdID1: data.prod?.ProdID || "",
 				ProdID2: data.prod2?.ProdID || "",
-				QDate1: Forms.formatDate(data.date),
-				QDate2: Forms.formatDate(data.date2),
+				QDate1: Forms.formatDate(data.date) || "",
+				QDate2: Forms.formatDate(data.date2) || "",
 				// OrderBy: data.orderBy?.id == 2 ? "ZA.ProdID, ZA.QDate DESC" : ""
 				OrderBy: data.orderBy?.id
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB0404Rep.aspx?LogKey=${operator?.LogKey}`,
+				`${import.meta.env.VITE_URL_REPORT}/WebB0204Rep.aspx?LogKey=${operator?.LogKey}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}

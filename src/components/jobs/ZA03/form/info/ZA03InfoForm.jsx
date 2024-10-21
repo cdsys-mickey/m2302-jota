@@ -10,9 +10,11 @@ import { memo } from "react";
 import ZA03 from "@/modules/md-za03";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { ZA03DeptsPickerContainer } from "../depts-picker/ZA03DeptsPickerContainer";
+import Auth from "@/modules/md-auth";
+import ZA03DeptPicker from "../depts-picker/ZA03DeptPicker";
 
 const ZA03InfoForm = memo((props) => {
-	const { data, updating, editing } = props;
+	const { data, creating, updating, editing, handleDeptChange } = props;
 	return (
 		<TabPanel
 			value={ZA03.Tabs.INFO}
@@ -30,25 +32,30 @@ const ZA03InfoForm = memo((props) => {
 			})}>
 			{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
 			{/* <FlexToolbar RightComponent={ZA03InfoToolbarContainer} /> */}
-			<ContainerEx maxWidth="md">
+			<ContainerEx maxWidth="sm">
 				<FormSectionBox pt={3} pb={4} px={3} mb={2} mt={3}>
 					<Grid container columns={12} spacing={editing ? 2 : 2}>
-						<Grid item xs={12} sm={12} md={5}>
+						<Grid item xs={12} sm={12} md={6}>
 							<TextFieldWrapper
 								typo
 								name="LoginName"
 								label="帳號"
-								autoFocus
+								{...(creating && {
+									autoFocus: true
+								})}
 								fullWidth
 								required
 								rules={{ required: "帳號為必填" }}
 								readOnly={updating}
 							/>
 						</Grid>
-						<Grid item xs={12} sm={12} md={7}>
+						<Grid item xs={12} sm={12} md={6}>
 							<TextFieldWrapper
 								typo
 								name="UserName"
+								{...(updating && {
+									autoFocus: true
+								})}
 								label="姓名"
 								fullWidth
 								required
@@ -57,7 +64,7 @@ const ZA03InfoForm = memo((props) => {
 								}}
 							/>
 						</Grid>
-						<Grid item xs={12} sm={12} md={5}>
+						<Grid item xs={12} sm={12} md={6}>
 							<TextFieldWrapper
 								typo
 								name="Tel"
@@ -65,7 +72,7 @@ const ZA03InfoForm = memo((props) => {
 								fullWidth
 							/>
 						</Grid>
-						<Grid item xs={12} sm={12} md={7}>
+						<Grid item xs={12} sm={12} md={6}>
 							<TextFieldWrapper
 								typo
 								name="Cel"
@@ -74,7 +81,7 @@ const ZA03InfoForm = memo((props) => {
 							/>
 						</Grid>
 						<FlexBox fullWidth />
-						<Grid item xs={12} sm={12} md={5}>
+						<Grid item xs={12} sm={12} md={6}>
 							<TextFieldWrapper
 								typo
 								name="Email"
@@ -83,35 +90,42 @@ const ZA03InfoForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={7}>
-							<AppDeptPicker
+						<Grid item xs={12} sm={12} md={6}>
+							<ZA03DeptPicker
 								uid={data?.UID}
 								typo
 								name="dept"
 								label="隸屬門市"
 								required
-								// disabled={deptDisabled}
+								disableOpenOnInput
+								scope={Auth.SCOPES.BRANCH_HQ}
 							/>
+							{/* <ZA03DeptPicker
+								uid={data?.UID}
+								typo
+								name="dept"
+								label="隸屬門市"
+								required
+								disableOpenOnInput
+								scope={Auth.SCOPES.BRANCH_HQ}
+								onChange={handleDeptChange}
+							/> */}
+
 						</Grid>
-						<Grid item xs={12} sm={12} md={5}>
+						{/* <Grid item xs={12} sm={12} md={6}>
 							<AuthScopePickerContainer
 								typo
 								name="userClass"
 								label="權限等級"
-								required>
-								{/* {Auth.getOptionLabel(
-												data?.userClass
-											)} */}
-							</AuthScopePickerContainer>
-						</Grid>
+								required
+							/>
+						</Grid> */}
 
 						<Grid item xs={12}>
 							<ZA03DeptsPickerContainer
 								typo
 								name="depts"
 								label="可登入門市"
-								multiple
-								typoChip
 								required
 							/>
 						</Grid>
@@ -127,6 +141,7 @@ ZA03InfoForm.propTypes = {
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	deptDisabled: PropTypes.bool,
+	handleDeptChange: PropTypes.func,
 };
 
 ZA03InfoForm.displayName = "ZA03InfoForm";

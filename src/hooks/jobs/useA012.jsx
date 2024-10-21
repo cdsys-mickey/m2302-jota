@@ -1,23 +1,19 @@
 import A012 from "@/modules/md-a012";
 import ProdGrid from "@/modules/md-prod-grid";
-import { useProdGrid } from "../useProdGrid";
-import { useAppModule } from "./useAppModule";
-import { useDSG } from "../../shared-hooks/dsg/useDSG";
 import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
+import { PkgTypePickerComponentContainer } from "../../components/dsg/columns/pkg-type-picker/PkgTypePickerComponentContainer";
 import { createFloatColumn } from "../../shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { PkgTypePickerComponentContainer } from "../../components/dsg/columns/pkg-type-picker/PkgTypePickerComponentContainer";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
 import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
+import { useDSG } from "../../shared-hooks/dsg/useDSG";
+import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { useProdGrid } from "../useProdGrid";
+import { useAppModule } from "./useAppModule";
 
 export const useA012 = () => {
-	const { token } = useContext(AuthContext);
 	const appModule = useAppModule({
-		token,
 		moduleId: "A012",
 	});
 
@@ -185,7 +181,8 @@ export const useA012 = () => {
 	return {
 		...appModule,
 		...prodGrid,
-		grid,
+		...grid,
+		...gridMeta,
 		gridMeta
 	};
 };

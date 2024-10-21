@@ -9,6 +9,9 @@ import ZA03IDColumn from "./columns/ZA03IDColumn";
 import ZA03NameColumn from "./columns/ZA03NameColumn";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import ZA03ClassColumn from "./columns/ZA03ClassColumn";
+import ZA03DeptColumn from "./columns/ZA03DeptColumny";
+import AuthScopeChip from "@/components/AuthScopeChip";
 
 const ZA03ListRow = memo((props) => {
 	const {
@@ -58,9 +61,12 @@ const ZA03ListRow = memo((props) => {
 						<ZA03NameColumn loading={loading}>
 							{value?.UserName}
 						</ZA03NameColumn>
-						{/* <ZA03ClassNColumn loading={loading}>
-						{value?.Clas_N}
-					</ZA03ClassNColumn> */}
+						<ZA03DeptColumn loading={loading}>
+							{value?.AbbrName}
+						</ZA03DeptColumn>
+						{/* <ZA03ClassColumn loading={loading}>
+							{value?.Class && <AuthScopeChip scope={value?.Class} size="small" />}
+						</ZA03ClassColumn> */}
 					</Grid>
 				</Box>
 			</HoverableListItem>

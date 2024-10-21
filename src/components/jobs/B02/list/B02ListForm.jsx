@@ -14,7 +14,7 @@ const B02ListForm = memo((props) => {
 				<Grid item xs={24} sm={24} md={6}>
 					<CustomerPicker
 						name="customer"
-						label="新客戶代碼起"
+						label="客戶代碼起"
 						disableOpenOnInput
 						slotProps={{
 							paper: {

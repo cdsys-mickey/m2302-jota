@@ -17,6 +17,12 @@ export const A22GridContainer = () => {
 		return a22.expanded ? height - 278 : height - 236;
 	}, [a22.expanded, height]);
 
+	const onChange = useMemo(() => {
+		return a22.buildGridChangeHandler({
+			onUpdateRow: a22.onUpdateRow
+		})
+	}, [a22])
+
 	return (
 		<form>
 			<FormProvider {...form}>
@@ -31,7 +37,8 @@ export const A22GridContainer = () => {
 						data={a22.gridData}
 						loading={a22.gridLoading}
 						height={gridHeight}
-						onChange={a22.handleGridChange}
+						// onChange={a22.handleGridChange}
+						onChange={onChange}
 						onActiveCellChange={a22.handleActiveCellChange}
 						bearer={token}
 						getRowKey={a22.getRowKey}

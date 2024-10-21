@@ -43,7 +43,7 @@ const A20Form = memo((props) => {
 					{/* <FormSectionBox pt={editing ? 1.5 : 0.5} pb={editing ? 0 : 1} mb={2} px={1}> */}
 					<FormSectionBox editing={editing} pb={0}>
 						<Grid container columns={24} spacing={1}>
-							<Grid item xs={24} sm={24} md={9}>
+							<Grid item xs={24} sm={24} md={10}>
 								<ProdPicker
 									typo
 									name="prod"
@@ -51,7 +51,7 @@ const A20Form = memo((props) => {
 									autoFocus
 									fullWidth
 									required
-									withBomPackageName
+									packageType="m"
 									rules={{ required: "對應貨品為必填" }}
 									readOnly={updating}
 									disableOpenOnInput

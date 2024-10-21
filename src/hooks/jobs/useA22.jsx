@@ -9,15 +9,15 @@ import Errors from "@/shared-modules/sd-errors";
 import Objects from "@/shared-modules/sd-objects";
 import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { createIntColumn } from "../../shared-components/dsg/columns/float/createIntColumn";
-import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
+import { createIntColumn } from "@/shared-components/dsg/columns/float/createIntColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 export const useA22 = ({
 	form
@@ -102,7 +102,7 @@ export const useA22 = ({
 						continuousUpdates: false,
 					})
 				),
-				title: "條碼",
+				title: "原印條碼",
 				minWidth: 220,
 				maxWidth: 220,
 				disabled: true,
@@ -327,6 +327,27 @@ export const useA22 = ({
 		};
 	}, []);
 
+	const onUpdateRow = useCallback(({ fromIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// prod
+		if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+			console.log(
+				`prod[${rowIndex}] changed`,
+				processedRowData?.prod
+			);
+			processedRowData = await handleGridProdChange({
+				rowData: processedRowData,
+				formData
+			});
+		}
+		return processedRowData;
+	}, [grid.gridData, handleGridProdChange]);
+
 	const handleGridChange = useCallback(
 		(newValue, operations) => {
 			const newGridData = [...newValue];
@@ -419,6 +440,7 @@ export const useA22 = ({
 		handleDeleteRow,
 		handleCreateRow,
 		handleGridChange,
-		formMeta
+		formMeta,
+		onUpdateRow
 	};
 };

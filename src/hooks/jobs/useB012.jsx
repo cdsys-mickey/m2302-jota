@@ -314,7 +314,7 @@ export const useB012 = () => {
 			};
 			return processedRowData;
 		},
-		[]
+		[crud.creating, grid]
 	);
 
 	const onUpdateRow = useCallback(({ fromIndex, formData, newValue }) => async (rowData, index) => {

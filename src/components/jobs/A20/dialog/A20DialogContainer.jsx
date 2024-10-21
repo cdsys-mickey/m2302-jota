@@ -51,7 +51,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 			a20.onEditorSubmit,
 			a20.onEditorSubmitError
 		)
-	}, [])
+	}, [a20.onEditorSubmit, a20.onEditorSubmitError, form])
 
 	const prod = useWatch({
 		name: "prod",
@@ -70,8 +70,8 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "sprod",
 						packageType: "m",
-						placeholder: "組合商品",
-						typeToSearchText: "請輸入商品編號或名稱進行搜尋",
+						// placeholder: "組合商品",
+						// typeToSearchText: "請輸入商品編號或名稱進行搜尋",
 						forId: true,
 						disableClearable: true,
 						slotProps: {

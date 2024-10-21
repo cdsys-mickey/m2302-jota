@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import A20IDColumn from "./columns/A20IDColumn";
 import A20NameColumn from "./columns/A20NameColumn";
+import TypographyEx from "@/shared-components/typography/TypographyEx";
 
 const A20ListRow = memo((props) => {
 	const { index, style, value, loading, onClick } = props;
@@ -33,7 +34,10 @@ const A20ListRow = memo((props) => {
 					<IndexColumn title={index}></IndexColumn>
 					<A20IDColumn loading={loading}>{value?.ProdID}</A20IDColumn>
 					<A20NameColumn loading={loading}>
-						{value?.ProdData}
+						{/* {value?.ProdData || "(無對應名稱)"} */}
+						<TypographyEx emptyText="(空白)">
+							{value?.ProdData}
+						</TypographyEx>
 					</A20NameColumn>
 					{/* <A20ClassNColumn loading={loading}>
 						{value?.Clas_N}

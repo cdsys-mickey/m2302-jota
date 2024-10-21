@@ -32,12 +32,16 @@ const A21Form = memo((props) => {
 								<DatePickerWrapper
 									name="SDate"
 									label="起始日期"
+									clearable
+									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12}>
 								<DatePickerWrapper
 									name="EDate"
 									label="截止日期"
+									clearable
+									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12}>

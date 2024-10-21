@@ -8,22 +8,19 @@ import { useCallback } from "react";
 
 const AppDeptPicker = memo((props) => {
 	console.log("rendering AppDeptPicker");
-	const { uid, scope, filterByOperator, ...rest } = props;
+	const { scope, scopeByOperator, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const qs = useMemo(() => {
 		return queryString.stringify({
-			...(uid && {
-				uid: uid,
-			}),
 			...(scope && {
 				sp: scope,
 			}),
-			...(filterByOperator && {
+			...(scopeByOperator && {
 				as: 1,
 			}),
 		});
-	}, [filterByOperator, scope, uid]);
+	}, [scopeByOperator, scope]);
 
 	// const getOptionLabel = useCallback(
 	// 	(option) => Depts.getOptionLabel(option),
@@ -53,10 +50,11 @@ const AppDeptPicker = memo((props) => {
 		/>
 	);
 });
+
 AppDeptPicker.propTypes = {
 	uid: PropTypes.string,
 	scope: PropTypes.number,
-	filterByOperator: PropTypes.bool,
+	scopeByOperator: PropTypes.bool,
 };
 
 AppDeptPicker.displayName = "AppDeptPicker";

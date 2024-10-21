@@ -80,44 +80,49 @@ const ChipEx = memo(
 				}),
 			[borderRadius, htmlColor, htmlTextColor]
 		);
-		let severityClass;
-		if (severity) {
-			if (variant === VARIANT_OUTLINED) {
-				switch (severity) {
-					case MuiSeverity.ERROR:
-						severityClass = classes.outlinedError;
-						break;
-					case MuiSeverity.WARNING:
-						severityClass = classes.outlinedWarning;
-						break;
-					case MuiSeverity.INFO:
-						severityClass = classes.outlinedInfo;
-						break;
-					case MuiSeverity.SUCCESS:
-						severityClass = classes.outlinedSuccess;
-						break;
-					default:
-						break;
-				}
-			} else if (variant === VARIANT_DEFAULT) {
-				switch (severity) {
-					case MuiSeverity.ERROR:
-						severityClass = classes.defaultError;
-						break;
-					case MuiSeverity.WARNING:
-						severityClass = classes.defaultWarning;
-						break;
-					case MuiSeverity.INFO:
-						severityClass = classes.defaultInfo;
-						break;
-					case MuiSeverity.SUCCESS:
-						severityClass = classes.defaultSuccess;
-						break;
-					default:
-						break;
+
+		const _severityClass = useMemo(() => {
+			let severityClass;
+			if (severity) {
+				if (variant === VARIANT_OUTLINED) {
+					switch (severity) {
+						case MuiSeverity.ERROR:
+							severityClass = classes.outlinedError;
+							break;
+						case MuiSeverity.WARNING:
+							severityClass = classes.outlinedWarning;
+							break;
+						case MuiSeverity.INFO:
+							severityClass = classes.outlinedInfo;
+							break;
+						case MuiSeverity.SUCCESS:
+							severityClass = classes.outlinedSuccess;
+							break;
+						default:
+							break;
+					}
+				} else if (variant === VARIANT_DEFAULT) {
+					switch (severity) {
+						case MuiSeverity.ERROR:
+							severityClass = classes.defaultError;
+							break;
+						case MuiSeverity.WARNING:
+							severityClass = classes.defaultWarning;
+							break;
+						case MuiSeverity.INFO:
+							severityClass = classes.defaultInfo;
+							break;
+						case MuiSeverity.SUCCESS:
+							severityClass = classes.defaultSuccess;
+							break;
+						default:
+							break;
+					}
 				}
 			}
-		}
+			return severityClass;
+		}, [classes.defaultError, classes.defaultInfo, classes.defaultSuccess, classes.defaultWarning, classes.outlinedError, classes.outlinedInfo, classes.outlinedSuccess, classes.outlinedWarning, severity, variant])
+
 		// console.log(`severityClass: ${severityClass}`);
 		return (
 			<Chip
@@ -125,7 +130,7 @@ const ChipEx = memo(
 				color={color}
 				variant={variant}
 				sx={[
-					severityClass,
+					_severityClass,
 					!!square && classes.square,
 					!!htmlColor && {
 						backgroundColor: htmlColor,

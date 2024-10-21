@@ -14,9 +14,13 @@ export const B05QuoteGridContainer = (props) => {
 	const { height } = useWindowSize();
 	const formMeta = useContext(FormMetaContext);
 
+	// const onChange = useMemo(() => {
+	// 	return b05.buildGridChangeHandler({ gridMeta: formMeta.gridMeta })
+	// }, [b05, formMeta.gridMeta])
+
 	const onChange = useMemo(() => {
-		return b05.buildGridChangeHandler({ gridMeta: formMeta.gridMeta })
-	}, [b05, formMeta.gridMeta])
+		return b05.buildGridChangeHandler({ onUpdateRow: b05.onUpdateRow })
+	}, [b05])
 
 	return (
 		<DSGContext.Provider value={{
