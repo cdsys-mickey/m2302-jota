@@ -10,7 +10,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import DeptPicker from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPicker";
 
 const C07SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -34,6 +34,7 @@ const C07SearchPopper = memo(
 								name="ordDate"
 								label="訂貨日期"
 								size="small"
+								validate
 							// slotProps={{
 							// 	field: {
 							// 		clearable: true,
@@ -46,6 +47,7 @@ const C07SearchPopper = memo(
 							<DatePickerWrapper
 								name="arrDate"
 								label="預計到貨日期"
+								validate
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>

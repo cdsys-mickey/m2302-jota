@@ -1,6 +1,8 @@
 import DateTimes from "./sd-date-times";
 import DateFormats from "./sd-date-formats";
 import Types from "./sd-types";
+import { toast } from "react-toastify";
+import { isValid } from "date-fns";
 
 const formatDate = (value, format) => {
 	if (!value) {
@@ -139,6 +141,41 @@ const assignDefaultValues = (obj, fieldNames, defaultValue = "") => {
 	return resultObj;
 };
 
+const onSubmitError = (err) => {
+	toast.error("資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出", {
+		position: "top-center",
+	});
+};
+
+const getDateValidator =
+	(opts = {}) =>
+	(value) => {
+		const {
+			errorMessage = "日期格式錯誤",
+			required = false,
+			fieldName = "日期",
+			requiredMessage,
+		} = opts;
+		if (!value) {
+			if (required) {
+				if (fieldName) {
+					return `${fieldName}為必填`;
+				}
+				if (requiredMessage) {
+					return requiredMessage;
+				}
+				return "日期為必填";
+			}
+		} else if (!isValid(value)) {
+			return errorMessage;
+		}
+		return true;
+	};
+
+const validateDate = (value) => {
+	return getDateValidator()(value);
+};
+
 const Forms = {
 	formatDate,
 	parseDate,
@@ -147,6 +184,9 @@ const Forms = {
 	// processNumberFieldsForSubmit,
 	assignDefaultValues,
 	reformatDate,
+	onSubmitError,
+	getDateValidator,
+	validateDate,
 };
 
 export default Forms;

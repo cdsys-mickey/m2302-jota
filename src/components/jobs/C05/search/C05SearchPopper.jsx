@@ -83,7 +83,7 @@ const C05SearchPopper = memo(
 							<TaxType2Picker name="taxType" label="稅外加" disableOpenOnInput />
 						</Grid>
 						<Grid item xs={12} sm={12}>
-							<DatePickerWrapper name="rd" label="退貨日期" />
+							<DatePickerWrapper name="rd" label="退貨日期" validate />
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<EmployeePicker name="employee" label="倉管人員" disableOpenOnInput />

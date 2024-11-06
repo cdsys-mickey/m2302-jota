@@ -7,45 +7,27 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import A01ProdIDColumn from "./columns/A01ProdIDColumn";
 import A01ProdNameColumn from "./columns/A01ProdNameColumn";
+import ListRow from "@/shared-components/listview/ListRow";
 
 const A01ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, value, ...rest } = props;
 
 	return (
-		<div style={style}>
-			<HoverableListItem borderBottom onClick={onClick}>
-				{/* <HoverableListItemSecondaryAction>
-					<Tooltip arrow title="編輯">
-						<IconButton>
-							<EditOutlinedIcon htmlColor="#000" />
-						</IconButton>
-					</Tooltip>
-				</HoverableListItemSecondaryAction> */}
-				<Grid
-					container
-					columns={24}
-					sx={[
-						{
-							minHeight: "36px",
-							alignItems: "center",
-						},
-					]}>
-					<IndexColumn title={index}></IndexColumn>
-					<A01ProdIDColumn loading={loading}>
-						{value?.ProdID}
-					</A01ProdIDColumn>
-					<A01ProdNameColumn loading={loading}>
-						{value?.ProdData}
-					</A01ProdNameColumn>
-					<A01ProdNameColumn loading={loading}>
-						{value?.Barcode}
-					</A01ProdNameColumn>
-					{/* <A01ClassNColumn loading={loading}>
-						{value?.Clas_N}
-					</A01ClassNColumn> */}
-				</Grid>
-			</HoverableListItem>
-		</div>
+		<ListRow {...rest}>
+			<IndexColumn title={index}></IndexColumn>
+			<A01ProdIDColumn>
+				{value?.ProdID}
+			</A01ProdIDColumn>
+			<A01ProdNameColumn>
+				{value?.ProdData}
+			</A01ProdNameColumn>
+			<A01ProdNameColumn>
+				{value?.Barcode}
+			</A01ProdNameColumn>
+			{/* <A01ClassNColumn loading={loading}>
+				{value?.Clas_N}
+			</A01ClassNColumn> */}
+		</ListRow>
 	);
 });
 

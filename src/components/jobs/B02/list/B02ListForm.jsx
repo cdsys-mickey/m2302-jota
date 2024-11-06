@@ -5,16 +5,28 @@ import FormBox from "@/shared-components/form/FormBox";
 import { Grid } from "@mui/material";
 import { memo } from "react";
 import { B02OrderByPicker } from "../B02OrderByPicker";
+import { useContext } from "react";
+import { BContext } from "@/contexts/B/BContext";
+import { B04Context } from "@/contexts/B04/B04Context";
+import { B02Context } from "@/contexts/B02/B02Context";
+import { useMemo } from "react";
 
 const B02ListForm = memo((props) => {
 	const { ...rest } = props;
+	const b = useContext(BContext);
+	const b02 = useContext(b.forNew ? B04Context : B02Context);
+	const cust = useMemo(() => {
+		return b.forNew ? "新客戶" : "客戶"
+	}, [b.forNew])
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
 				<Grid item xs={24} sm={24} md={6}>
 					<CustomerPicker
 						name="customer"
-						label="客戶代碼起"
+						forNew={b.forNew}
+						autoFocus
+						label={`${cust}代碼起`}
 						disableOpenOnInput
 						slotProps={{
 							paper: {
@@ -27,8 +39,9 @@ const B02ListForm = memo((props) => {
 				</Grid>
 				<Grid item xs={24} sm={24} md={6}>
 					<CustomerPicker
+						forNew={b.forNew}
 						name="customer2"
-						label="客戶代碼訖"
+						label={`${cust}代碼訖`}
 						disableOpenOnInput
 						slotProps={{
 							paper: {
@@ -44,7 +57,7 @@ const B02ListForm = memo((props) => {
 						name="prod"
 						forId
 						label="商品編號起"
-						autoFocus
+
 						disableOpenOnInput
 						virtualize
 						slotProps={{
@@ -78,6 +91,7 @@ const B02ListForm = memo((props) => {
 						name="date"
 						label="報價日期起"
 						clearable
+						validate
 					// dense
 					/>
 				</Grid>
@@ -86,6 +100,7 @@ const B02ListForm = memo((props) => {
 						name="date2"
 						label="報價日期訖"
 						clearable
+						validate
 					// dense
 					/>
 				</Grid>

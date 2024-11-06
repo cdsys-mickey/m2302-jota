@@ -45,13 +45,14 @@ const transformGridForSubmitting = (data, qdate, employeeId) => {
 	return data
 		.filter((v) => v.prod?.ProdID)
 		.map((v) => {
-			const { Pkey, prod, QPrice } = v;
+			const { Pkey, prod, QPrice, QDate, employee, ...rest } = v;
 			return {
 				Pkey: /^\d+$/.test(Pkey) ? Pkey : "",
 				ProdID: prod ? prod.ProdID : "",
 				QPrice: QPrice,
-				QDate: qdate || "",
-				QEmplID: employeeId || "",
+				QDate: qdate || QDate,
+				QEmplID: employeeId || employee?.CodeID || "",
+				...rest,
 			};
 		});
 };
@@ -68,12 +69,12 @@ const transformForReading = (payload) => {
 	} = payload;
 
 	return {
-		Date: Forms.parseDate(Date),
-		employee: {
+		dlgDate: Forms.parseDate(Date),
+		dlgEmployee: {
 			CodeID: EmplID,
 			CodeData: EmplData_N,
 		},
-		customer: CustID
+		dlgCustomer: CustID
 			? {
 					CustID,
 					CustData: CustData_N,
@@ -85,27 +86,27 @@ const transformForReading = (payload) => {
 };
 
 const transformForCreating = (payload, gridData) => {
-	const { customer, employee, Date } = payload;
+	const { dlgCustomer, dlgEmployee, dlgDate } = payload;
 
-	const qdate = Forms.formatDate(Date);
-	const employeeId = employee?.CodeID || "";
+	const customerId = dlgCustomer?.CustID || "";
+	const date = Forms.formatDate(dlgDate);
+	const employeeId = dlgEmployee?.CodeID || "";
 
 	return {
-		CustID: customer?.CustID || "",
+		CustID: customerId,
 		QEmplID: employeeId,
-		QDate: qdate,
+		QDate: date,
 		...(gridData && {
-			B011031_W1: transformGridForSubmitting(gridData, qdate, employeeId),
+			B011031_W1: transformGridForSubmitting(gridData, date, employeeId),
 		}),
 	};
 };
 
 const transformForUpdating = (payload, gridData) => {
-	const { customer, employee, Date } = payload;
+	const { dlgCustomer, dlgEmployee } = payload;
 	return {
-		CustID: customer?.CustID || "",
-		QEmplID: employee?.CodeID || "",
-		QDate: Forms.formatDate(Date),
+		CustID: dlgCustomer?.CustID || "",
+		QEmplID: dlgEmployee?.CodeID || "",
 		...(gridData && {
 			B011031_W1: transformGridForSubmitting(gridData),
 		}),
@@ -114,14 +115,9 @@ const transformForUpdating = (payload, gridData) => {
 
 const transformAsQueryParams = (data) => {
 	return {
-		emp: data.emp?.EmplID,
-		emp2: data.emp2?.EmplID,
-		cst: data.cust?.CustID,
-		cst2: data.cust2?.CustID,
-		prd: data.prod?.ProdID,
-		prd2: data.prod2?.ProdID,
-		dat: Forms.formatDate(data.date),
-		dat2: Forms.formatDate(data.date2),
+		emp: data.lvEmployee?.CodeID,
+		cst: data.lvCust?.CustID,
+		dat: Forms.formatDate(data.lvDate),
 	};
 };
 

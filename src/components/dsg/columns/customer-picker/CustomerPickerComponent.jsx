@@ -45,6 +45,7 @@ const CustomerPickerComponent = memo((props) => {
 		// focusNextCell,
 		setActiveCell,
 		readOnly,
+		focusOnDisabled,
 		...rest
 	} = columnData;
 
@@ -68,7 +69,8 @@ const CustomerPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell
+		focusNextCell,
+		focusOnDisabled
 	});
 
 	const cellComponentRef = useRef({

@@ -121,7 +121,7 @@ export const useE021 = () => {
 	}, []);
 
 	const handleRefreshAmt = useCallback(
-		async ({ gridData, setValue, formData }) => {
+		async ({ formData, gridData, setValue }) => {
 			const total = E021.getTotal(gridData);
 			try {
 				const { status, payload, error } = await httpGetAsync({
@@ -439,12 +439,12 @@ export const useE021 = () => {
 				const formData = getValues();
 				console.log("formData", formData);
 				handleRefreshAmt({
-					gridData: grid.gridData,
-					setValue,
 					formData: {
 						...formData,
 						taxExcluded: newValue
-					}
+					},
+					gridData: grid.gridData,
+					setValue,
 				});
 			},
 		[handleRefreshAmt, grid.gridData]
@@ -485,8 +485,8 @@ export const useE021 = () => {
 		[getProdInfo]
 	);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
 
@@ -525,10 +525,9 @@ export const useE021 = () => {
 				// 透過對話框等操作直接更新 SQty 不會觸發 GridChange, 所以必須帶上 refreshAmt 處理函式
 				refreshAmt: ({ gridData }) => {
 					handleRefreshAmt({
+						formData,
 						gridData,
-						// taxExcluded: formData.taxExcluded,
 						setValue,
-						formData
 					});
 				}
 			});
@@ -751,7 +750,7 @@ export const useE021 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				importProdsAction.fail(err);
+				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
 					position: "top-center"
 				});

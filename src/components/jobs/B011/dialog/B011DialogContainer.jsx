@@ -1,4 +1,3 @@
-import { EmployeePickerComponentContainer } from "@/components/dsg/columns/employee-picker/EmployeePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { B011Context } from "@/contexts/B011/B011Context";
 import Colors from "@/modules/md-colors";
@@ -20,29 +19,32 @@ import { toast } from "react-toastify";
 import B011Drawer from "../B011Drawer";
 import B011DialogForm from "./B011DialogForm";
 import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer";
+import PropTypes from "prop-types";
+import { B031Context } from "@/contexts/B031/B031Context";
+import { BContext } from "@/contexts/B/BContext";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
-	const { ...rest } = props;
+	const { forNew = false, ...rest } = props;
 	const { height } = useWindowSize();
 	const form = useForm({
 		defaultValues: {
 			quotes: [],
 		},
 	});
-
-	const b011 = useContext(B011Context);
+	const b = useContext(BContext);
+	const b011 = useContext(b.forNew ? B031Context : B011Context);
 	const { importProdsDialogOpen } = b011;
-	const date = useWatch({
-		name: "Date",
+	const dlgDate = useWatch({
+		name: "dlgDate",
 		control: form.control
 	})
 
-	const employee = useWatch({
-		name: "employee",
+	const dlgEmployee = useWatch({
+		name: "dlgEmployee",
 		control: form.control
 	})
-	const customer = useWatch({
-		name: "customer",
+	const dlgCustomer = useWatch({
+		name: "dlgCustomer",
 		control: form.control
 	})
 
@@ -54,13 +56,13 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 
 	const memoisedTitle = useMemo(() => {
 		if (b011.creating) {
-			return "建立詢價單";
+			return b.forNew ? "新增新客戶報價" : "新增客戶報價";
 		} else if (b011.updating) {
-			return "修改詢價單";
+			return b.forNew ? "修改新客戶報價" : "修改客戶報價";
 		} else {
-			return "詢價單內容";
+			return b.forNew ? "目前新客戶報價" : "目前客戶報價";
 		}
-	}, [b011.creating, b011.updating]);
+	}, [b.forNew, b011.creating, b011.updating]);
 
 	const handleClose = useMemo(() => {
 		return b011.creating
@@ -86,9 +88,12 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 
 	const readOnly = useMemo(() => {
 		return !b011.editing
-			|| (b011.creating && (!customer || !employee || !date))
-			|| (b011.updating && (!customer || !employee));
-	}, [b011.editing, b011.creating, b011.updating, customer, employee, date]);
+			|| (b011.editing && (!dlgCustomer || !dlgEmployee));
+	}, [b011.editing, dlgCustomer, dlgEmployee]);
+
+	const qpriceTitle = useMemo(() => {
+		return b.forNew ? "新客戶報價" : "客戶報價";
+	}, [b.forNew])
 
 	const columns = useMemo(
 		() => [
@@ -108,12 +113,13 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
+						focusOnDisabled: true
 					})
 				),
 				title: "商品編號",
 				minWidth: 180,
 				maxWidth: 180,
-				disabled: readOnly,
+				disabled: readOnly || !b011.creating,
 			},
 			{
 				...keyColumn(
@@ -147,65 +153,67 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 			},
 			{
 				...keyColumn("QPrice", createFloatColumn(2)),
-				title: "客戶報價",
+				title: qpriceTitle,
 				minWidth: 120,
 				maxWidth: 120,
 				disabled: readOnly,
 			},
-			{
-				...keyColumn("QDate", dateFieldColumnEx),
-				title: "報價日",
-				minWidth: 140,
-				maxWidth: 140,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"employee",
-					optionPickerColumn(EmployeePickerComponentContainer, {
-						name: "employee",
-						disableClearable: true,
-						slotProps: {
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						},
-					})
-				),
-				title: "報價人",
-				minWidth: 140,
-				maxWidth: 140,
-				disabled: true,
-			},
+			...(!b011.creating ? [
+				{
+					...keyColumn("QDate", dateFieldColumnEx),
+					title: "報價日",
+					minWidth: 140,
+					maxWidth: 140,
+					disabled: true,
+				},
+				// {
+				// 	...keyColumn(
+				// 		"dlgEmployee",
+				// 		optionPickerColumn(EmployeePickerComponentContainer, {
+				// 			name: "dlgEmployee",
+				// 			disableClearable: true,
+				// 			slotProps: {
+				// 				paper: {
+				// 					sx: {
+				// 						width: 360,
+				// 					},
+				// 				},
+				// 			},
+				// 		})
+				// 	),
+				// 	title: "報價人",
+				// 	minWidth: 140,
+				// 	maxWidth: 140,
+				// 	disabled: true,
+				// },
+			] : [])
 		],
-		[readOnly]
+		[b011.creating, qpriceTitle, readOnly]
 	);
 
 	const gridMeta = useDSGMeta({
 		data: b011.grid.gridData,
 		columns,
 		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
+		lastCell: b011.creating ? DSGLastCellBehavior.CREATE_ROW : DSGLastCellBehavior.STOP_EDITING
 	})
 
 	const handleLastField = useCallback(() => {
-		if (!customer) {
+		if (!dlgCustomer) {
 			toast.error("請先輸入客戶代碼", {
 				position: "top-center",
 			});
-			form.setFocus("customer");
+			form.setFocus("dlgCustomer");
 			return;
 		}
-		if (!employee) {
+		if (!dlgEmployee) {
 			toast.error("請先輸入報價人員", {
 				position: "top-center",
 			});
-			form.setFocus("employee");
+			form.setFocus("dlgEmployee");
 			return;
 		}
-		if (!date) {
+		if (!dlgDate) {
 			toast.error("請先輸入報價日期", {
 				position: "top-center",
 			});
@@ -215,13 +223,13 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 
 
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [customer, date, employee, form, gridMeta]);
+	}, [dlgCustomer, dlgDate, dlgEmployee, form, gridMeta]);
 
 	const formMeta = useFormMeta(
 		`
-		customer,
-		employee,
-		Date,
+		dlgCustomer,
+		dlgEmployee,
+		dlgDate,
 		`,
 		{
 			lastField: handleLastField
@@ -237,11 +245,15 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		if (!importProdsDialogOpen) {
-			form.setFocus("customer", {
+			form.setFocus("dlgCustomer", {
 				shouldSelect: true
 			});
 		}
-	}, [importProdsDialogOpen]);
+	}, [form, importProdsDialogOpen]);
+
+	const _maxWidth = useMemo(() => {
+		return b011.creating ? "md" : "lg";
+	}, [b011.creating])
 
 	return (
 		<FormProvider {...form}>
@@ -251,7 +263,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 				// fullScreen
 				responsive
 				fullWidth
-				maxWidth="lg"
+				maxWidth={_maxWidth}
 				TitleButtonsComponent={B011DialogToolbarContainer}
 				open={b011.itemViewOpen}
 				onClose={handleClose}
@@ -293,6 +305,8 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 		</FormProvider>
 	);
 });
-
+B011DialogContainer.propTypes = {
+	forNew: PropTypes.bool
+}
 B011DialogContainer.displayName = "B011DialogContainer";
 

@@ -39,6 +39,7 @@ const D06SearchPopper = memo(
 							<DatePickerWrapper
 								name="bdate"
 								label="結餘日期(大於)"
+								validate
 							/>
 						</Grid>
 					</Grid>

@@ -55,6 +55,7 @@ const B06Form = memo(() => {
 						name="date1"
 						label="起始日期"
 						fullWidth
+						validate
 					/>
 				</Grid>
 				<Grid item xs={24} sm={5}>
@@ -62,6 +63,7 @@ const B06Form = memo(() => {
 						name="date2"
 						label="截止日期"
 						fullWidth
+						validate
 					/>
 				</Grid>
 

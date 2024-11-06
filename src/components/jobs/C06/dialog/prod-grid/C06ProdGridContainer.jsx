@@ -19,7 +19,9 @@ export const C06ProdGridContainer = (props) => {
 		return c06.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
-			gridMeta: formMeta.gridMeta
+			gridMeta: formMeta.gridMeta,
+			onUpdateRow: c06.onUpdateRow,
+			onGridChanged: c06.onGridChanged
 		});
 	}, [c06, form.getValues, form.setValue, formMeta.gridMeta]);
 

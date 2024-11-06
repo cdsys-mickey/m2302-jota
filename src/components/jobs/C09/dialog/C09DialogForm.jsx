@@ -1,17 +1,16 @@
+import DeptPicker from "@/components/DeptPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
+import { PurchaseDepOrderPicker } from "@/components/purchase-dep-order-picker/PurchaseDepOrderPicker";
+import { TxoOrderPicker } from "@/components/txo-order-picker/TxoOrderPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import DeptPicker from "@/components/DeptPickerContainer";
-import { PurchaseDepOrderPicker } from "@/components/purchase-dep-order-picker/PurchaseDepOrderPicker";
-import { TxoOrderPicker } from "@/components/txo-order-picker/TxoOrderPicker";
 import { C09ProdGridBottomToolbar } from "./prod-grid/C09ProdGridBottomToolbar";
 import { C09ProdGridContainer } from "./prod-grid/C09ProdGridContainer";
 
@@ -23,7 +22,7 @@ const C09DialogForm = memo((props) => {
 		itemDataReady,
 		creating,
 		editing,
-		handleTxoOrdersChanged,
+		handleTxoOrderChanged,
 		handleTxoDeptChanged,
 		// txoDeptDisabled,
 		remarkDisabled,
@@ -62,6 +61,7 @@ const C09DialogForm = memo((props) => {
 								autoFocus
 								fullWidth
 								required
+								validate
 								variant="outlined"
 							/>
 						</Grid>
@@ -88,7 +88,7 @@ const C09DialogForm = memo((props) => {
 								label="撥出單號"
 								// virtualize
 								// fadeOutDisabled
-								onChanged={handleTxoOrdersChanged}
+								onChanged={handleTxoOrderChanged}
 								disableOpenOnInput
 								slotProps={{
 									paper: {
@@ -161,7 +161,7 @@ C09DialogForm.propTypes = {
 	onSubmit: PropTypes.func,
 	creating: PropTypes.bool,
 	editing: PropTypes.bool,
-	handleTxoOrdersChanged: PropTypes.func,
+	handleTxoOrderChanged: PropTypes.func,
 	handleTxoDeptChanged: PropTypes.func,
 	remarkDisabled: PropTypes.bool,
 };

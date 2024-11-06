@@ -9,9 +9,12 @@ import { B032ListRowContainer } from "./B032ListRowContainer";
 import { B032Context } from "@/contexts/B032/B032Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import B032 from "@/modules/md-b032";
+import { BContext } from "@/contexts/B/BContext";
+import { B012Context } from "@/contexts/B012/B012Context";
 
 export const B032ListViewContainer = () => {
-	const b032 = useContext(B032Context);
+	const b = useContext(BContext);
+	const b032 = useContext(b.forNew ? B032Context : B012Context);
 	const { loadList } = b032;
 	const form = useFormContext();
 	// const { getValues, setValue } = form;

@@ -29,7 +29,7 @@ const B02ListRow = memo((props) => {
 	const prod = useMemo(() => {
 		const { ProdID, ProdData_N, PackData_N } = value || "";
 		return [
-			// ProdID, 
+			ProdID,
 			ProdData_N]
 			.filter(Boolean).join(" ").concat(PackData_N ? `(${PackData_N})` : "");
 	}, [value])
@@ -79,15 +79,16 @@ const B02ListRow = memo((props) => {
 						<B02ProdColumn loading={loading}>
 							{prod}
 						</B02ProdColumn>
-						<B02DateColumn loading={loading}>
-							{value?.QDate}
-						</B02DateColumn>
-						<B02PriceColumn loading={loading}>
+
+						{/* <B02PriceColumn loading={loading}>
 							{value?.Price}
-						</B02PriceColumn>
+						</B02PriceColumn> */}
 						<B02PriceColumn loading={loading}>
 							{value?.QPrice}
 						</B02PriceColumn>
+						<B02DateColumn loading={loading}>
+							{value?.QDate}
+						</B02DateColumn>
 						<B02UserColumn loading={loading}>
 							{employee}
 						</B02UserColumn>

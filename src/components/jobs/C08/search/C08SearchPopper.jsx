@@ -9,7 +9,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import DeptPicker from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPicker";
 import TransportTypePicker from "../../../tranport-type-picker/TransportTypePicker";
 
 const C08SearchPopper = memo(
@@ -33,6 +33,7 @@ const C08SearchPopper = memo(
 								name="txoDate"
 								label="撥出日期(>)"
 								autoFocus
+								validate
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>

@@ -7,7 +7,7 @@ import {
 	textColumn,
 } from "react-datasheet-grid";
 import { checkboxColumn2 } from "../../../shared-components/dsg/columns/checkbox/checkboxColumn2";
-import { createOptionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/createOptionPickerColumn";
+import { ZZcreateOptionPickerColumn } from "../../../shared-components/dsg/columns/option-picker/ZZcreateOptionPickerColumn";
 import { reactSelectColumn } from "../../../shared-components/dsg/columns/react-select/reactSelectColumn";
 
 const DSGTest3 = memo(
@@ -72,7 +72,7 @@ const DSGTest3 = memo(
 				{
 					...keyColumn(
 						"abc",
-						createOptionPickerColumn({
+						ZZcreateOptionPickerColumn({
 							options: ["A", "B", "C"],
 						})
 					),

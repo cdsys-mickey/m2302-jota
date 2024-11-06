@@ -59,6 +59,7 @@ const ProdCatMPickerComponent = memo((props) => {
 		// focusNextCell,
 		setActiveCell,
 		readOnly,
+		focusOnDisabled,
 		...rest
 	} = columnData;
 
@@ -82,7 +83,8 @@ const ProdCatMPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell
+		focusNextCell,
+		focusOnDisabled
 	});
 
 	const cellComponentRef = useRef({

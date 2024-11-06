@@ -249,17 +249,17 @@ export const useB05 = () => {
 			let processedRowData = { ...rowData };
 			processedRowData = {
 				...processedRowData,
-				["SPrice"]: "",
+				["SProdData_N"]: rowData?.prod?.ProdData || "",
 				["SPackData_N"]: rowData?.prod?.PackData_N || "",
-				["SProdData_N"]: rowData?.prod?.ProdData || ""
+				["SPrice"]: "",
 			};
 			return processedRowData;
 		},
 		[]
 	);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
 		let processedRowData = {
@@ -279,49 +279,49 @@ export const useB05 = () => {
 		return processedRowData;
 	}, [grid.gridData, handleGridProdChange]);
 
-	const buildGridChangeHandler = useCallback(
-		({ gridMeta }) => (newValue, operations) => {
-			console.log("buildGridChangeHandler", operations);
-			const newGridData = [...newValue];
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = grid.gridData[rowIndex];
+	// const buildGridChangeHandler = useCallback(
+	// 	({ gridMeta }) => (newValue, operations) => {
+	// 		console.log("buildGridChangeHandler", operations);
+	// 		const newGridData = [...newValue];
+	// 		for (const operation of operations) {
+	// 			if (operation.type === "UPDATE") {
+	// 				newValue
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.forEach((rowData, i) => {
+	// 						const rowIndex = operation.fromRowIndex + i;
+	// 						const oldRowData = grid.gridData[rowIndex];
 
-							let processedRowData = { ...rowData };
+	// 						let processedRowData = { ...rowData };
 
-							if (
-								rowData.prod?.ProdID !==
-								oldRowData?.prod?.ProdID
-							) {
-								console.log(
-									`[${rowIndex}]prod changed`,
-									rowData?.prod
-								);
-								processedRowData = handleGridProdChange({
-									rowData,
-									oldRowData,
-								});
-							}
+	// 						if (
+	// 							rowData.prod?.ProdID !==
+	// 							oldRowData?.prod?.ProdID
+	// 						) {
+	// 							console.log(
+	// 								`[${rowIndex}]prod changed`,
+	// 								rowData?.prod
+	// 							);
+	// 							processedRowData = handleGridProdChange({
+	// 								rowData,
+	// 								oldRowData,
+	// 							});
+	// 						}
 
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "DELETE") {
-					newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
-				}
-			}
-			console.log("after changed", newGridData);
-			grid.setGridData(newGridData);
-		},
-		[grid, handleGridProdChange]
-	);
+	// 						newGridData[rowIndex] = processedRowData;
+	// 					});
+	// 			} else if (operation.type === "DELETE") {
+	// 				newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
+	// 			} else if (operation.type === "CREATE") {
+	// 				console.log("dsg.CREATE");
+	// 				// process CREATE here
+	// 				gridMeta.toFirstColumn({ nextRow: true });
+	// 			}
+	// 		}
+	// 		console.log("after changed", newGridData);
+	// 		grid.setGridData(newGridData);
+	// 	},
+	// 	[grid, handleGridProdChange]
+	// );
 
 	const onEditorSubmit = useCallback(
 		(data) => {
@@ -448,7 +448,7 @@ export const useB05 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				importProdsAction.fail(err);
+				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
 					position: "top-center"
 				});
@@ -532,7 +532,7 @@ export const useB05 = () => {
 		// 報價 Grid
 		...grid,
 		grid,
-		buildGridChangeHandler,
+		// buildGridChangeHandler,
 		getRowKey,
 		// 帶入商品
 		importProdsWorking: importProdsAction.working,
@@ -549,6 +549,7 @@ export const useB05 = () => {
 		// handleLastField,
 		loadProdFormMeta,
 		...sideDrawer,
-		onUpdateRow
+		onUpdateRow,
+		createRow
 	};
 };

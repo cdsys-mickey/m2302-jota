@@ -89,6 +89,7 @@ const C03DialogForm = memo((props) => {
 								label="採購日期"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 								onChanged={handleOrdDateChanged}
 							/>
@@ -100,6 +101,7 @@ const C03DialogForm = memo((props) => {
 								label="預計到貨日期"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 							/>
 						</Grid>
@@ -148,29 +150,27 @@ const C03DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<FlexBox fullWidth />
-
-						{!editing &&
+						{/* {!editing &&
 							(
-								<>
-									<Grid item xs={24} md={8}>
-										<C03DialogRstLabel
-											name="GinID_N"
-											label="進貨單"
-										// flex
-										/>
-									</Grid>
-									<Grid item xs={24} md={15}>
-										<FormFieldLabelContainer
-											name="RqtID_N"
-											label="請購單"
-											// flex
-											noWrap
-										/>
-									</Grid>
-								</>
-							)
-						}
+								<> */}
+						<Grid item xs={24} md={4}>
+							<C03DialogRstLabel
+								name="GinID_N"
+								label="進貨單"
+							// flex
+							/>
+						</Grid>
+						<Grid item xs={24} md={4}>
+							<FormFieldLabelContainer
+								name="RqtID_N"
+								label="請購單"
+								// flex
+								noWrap
+							/>
+						</Grid>
+						{/* </>
+						// 	)
+						// } */}
 
 						{/* <Grid item xs={24} md={14}>
 							<FormFieldLabelContainer

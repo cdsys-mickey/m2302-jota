@@ -4,10 +4,13 @@ import PropTypes from "prop-types";
 import { memo, useContext } from "react";
 import SideDrawer from "@/shared-components/side-drawer/SideDrawer";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { BContext } from "@/contexts/B/BContext";
+import { B04Context } from "@/contexts/B04/B04Context";
 
 const B02Drawer = memo((props) => {
 	const { anchor = "right", ...rest } = props;
-	const b02 = useContext(B02Context);
+	const b = useContext(BContext);
+	const b02 = useContext(b.forNew ? B04Context : B02Context);
 	return (
 		<SideDrawer anchor={anchor} open={b02.sideDrawerOpen} onClose={b02.handleSideDrawerClose}
 			slotProps={{

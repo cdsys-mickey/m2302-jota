@@ -23,6 +23,7 @@ const D01DialogForm = memo((props) => {
 		editing,
 		updating,
 		handleRstDateChanged,
+		validateDate,
 		...rest
 	} = props;
 	return (
@@ -75,8 +76,14 @@ const D01DialogForm = memo((props) => {
 								label="領料日期"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 								onChanged={handleRstDateChanged}
+							// rules={{
+							// 	validate: {
+							// 		validateDate
+							// 	}
+							// }}
 							// clearable
 							/>
 						</Grid>
@@ -132,6 +139,7 @@ D01DialogForm.propTypes = {
 	itemDataReady: PropTypes.bool,
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRstDateChanged: PropTypes.func,
+	validateDate: PropTypes.func,
 };
 
 D01DialogForm.displayName = "D01DialogForm";

@@ -31,6 +31,7 @@ const E01ListForm = memo((props) => {
 						name="lvOrdDate"
 						label="訂貨日"
 						clearable
+						validate
 					// dense
 					/>
 				</Grid>
@@ -39,6 +40,7 @@ const E01ListForm = memo((props) => {
 						name="lvArrDate"
 						label="到貨日≤"
 						clearable
+						validate
 					// dense
 					/>
 				</Grid>

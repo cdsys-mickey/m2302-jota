@@ -19,8 +19,8 @@ const B031ListHeader = memo(
 				<B031ProdColumn>商品</B031ProdColumn>
 				<B031PriceColumn>建議售價</B031PriceColumn>
 				<B031PriceColumn>客戶報價</B031PriceColumn>
-				<B031DateColumn>詢價日期</B031DateColumn>
-				<B031UserColumn>詢價人員</B031UserColumn>
+				<B031DateColumn>報價日期</B031DateColumn>
+				<B031UserColumn>報價人員</B031UserColumn>
 			</ListViewHeader>
 		);
 	})

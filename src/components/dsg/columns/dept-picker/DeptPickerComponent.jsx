@@ -3,7 +3,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
-import DeptPicker from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -48,6 +48,7 @@ const DeptPickerComponent = memo((props) => {
 		// focusNextCell,
 		setActiveCell,
 		readOnly,
+		focusOnDisabled,
 		...rest
 	} = columnData;
 
@@ -71,7 +72,8 @@ const DeptPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell
+		focusNextCell,
+		focusOnDisabled
 	});
 
 	const cellComponentRef = useRef({

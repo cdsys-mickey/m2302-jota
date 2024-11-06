@@ -16,6 +16,7 @@ const ProdPicker = (props) => {
 		// withPurchasePackageName = false,
 		withStock = false,
 		withPrice = false,
+		withQuotes = false,
 		forId = false,
 		// ** 已報價商品專用參數
 		retail,
@@ -37,6 +38,9 @@ const ProdPicker = (props) => {
 			...(withPrice && {
 				wp: 1,
 			}),
+			...(withQuotes && {
+				wq: 1
+			}),
 			// 原本 fuzzy 參數的功能為是否啟用條碼搜尋, 
 			// 後來演變成是否啟用 findByInput 的判斷
 			// 透過 option-picker 的 API call 應該都是要帶回 fuzzy 版本
@@ -54,7 +58,7 @@ const ProdPicker = (props) => {
 			cst,
 			compTel,
 		});
-	}, [compTel, cst, packageType, retail, withPrice, withStock]);
+	}, [compTel, cst, packageType, retail, withPrice, withQuotes, withStock]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return Prods.isOptionEqualToValue(option, value);
@@ -126,6 +130,7 @@ ProdPicker.propTypes = {
 	withPurchasePackageName: PropTypes.bool,
 	withStock: PropTypes.bool,
 	withPrice: PropTypes.bool,
+	withQuotes: PropTypes.bool,
 	forId: PropTypes.bool,
 	fuzzy: PropTypes.bool,
 	retail: PropTypes.bool,

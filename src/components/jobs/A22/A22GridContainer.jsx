@@ -6,6 +6,7 @@ import { A22Context } from "@/contexts/A22/A22Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { FormProvider, useForm } from "react-hook-form";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 export const A22GridContainer = () => {
 	const { height } = useWindowSize();
@@ -19,6 +20,7 @@ export const A22GridContainer = () => {
 
 	const onChange = useMemo(() => {
 		return a22.buildGridChangeHandler({
+			gridMeta: a22.gridMeta,
 			onUpdateRow: a22.onUpdateRow
 		})
 	}, [a22])

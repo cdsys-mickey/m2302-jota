@@ -13,7 +13,7 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useMemo } from "react";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useToggle } from "../../shared-hooks/useToggle";
-import { addDays, isDate } from "date-fns";
+import { addDays, isDate, isValid } from "date-fns";
 import { nanoid } from "nanoid";
 import { useSideDrawer } from "../useSideDrawer";
 
@@ -314,8 +314,8 @@ export const useD06 = () => {
 		[]
 	);
 
-	const updateGridRow = useCallback(({ fromIndex, newValue }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const updateGridRow = useCallback(({ fromRowIndex, newValue }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -354,7 +354,7 @@ export const useD06 = () => {
 								)
 								.map(async (item, index) => {
 									const updatedRow = await updateGridRow({
-										fromIndex: operation.fromRowIndex,
+										fromRowIndex: operation.fromRowIndex,
 										newValue,
 									})(item, index);
 									return updatedRow;
@@ -402,7 +402,7 @@ export const useD06 = () => {
 					grid.setGridData(newGridData);
 				}
 			},
-		[handleGridProdChange, grid]
+		[updateGridRow, grid]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -477,6 +477,13 @@ export const useD06 = () => {
 		[]
 	);
 
+	// const validateDate = useCallback((value) => {
+	// 	if (value != null && !isValid(value)) {
+	// 		return "日期格式錯誤";
+	// 	}
+	// 	return true;
+	// }, []);
+
 	return {
 		...crud,
 		...listLoader,
@@ -511,6 +518,7 @@ export const useD06 = () => {
 		handlePopperOpen,
 		handlePopperClose,
 		handleRemDateChanged,
-		...sideDrawer
+		...sideDrawer,
+		// validateDate
 	};
 };

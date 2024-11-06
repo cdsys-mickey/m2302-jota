@@ -40,7 +40,7 @@ const transformGridForSubmitting = (data) => {
 		.map((v, index) => ({
 			Pkey: v.Pkey?.length < 36 ? "" : v.Pkey,
 			SProdID: v.prod?.ProdID,
-			SPrice: v.SPrice,
+			SPrice: v.SPrice?.toString(),
 			// Seq: v.Seq,
 			Seq: index + 1,
 		}));

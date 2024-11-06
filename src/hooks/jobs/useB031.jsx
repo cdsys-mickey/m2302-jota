@@ -316,11 +316,11 @@ export const useB031 = () => {
 			};
 			return processedRowData;
 		},
-		[grid]
+		[]
 	);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData, newValue }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 
@@ -530,7 +530,7 @@ export const useB031 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				importProdsAction.fail(err);
+				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
 					position: "top-center"
 				});
@@ -563,7 +563,7 @@ export const useB031 = () => {
 				IDs: crud.itemData?.InqID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB031Rep.aspx?LogKey=${operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebB011031Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

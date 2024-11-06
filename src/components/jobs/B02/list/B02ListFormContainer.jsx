@@ -11,7 +11,8 @@ export const B02ListFormContainer = (props) => {
 		prod,
 		prod2,
 		date,
-		date2
+		date2,
+		orderBy
 		`
 
 	)

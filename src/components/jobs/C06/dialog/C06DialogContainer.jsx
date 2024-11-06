@@ -46,11 +46,11 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 
 	const memoisedTitle = useMemo(() => {
 		if (c06.creating) {
-			return "建立訂貨單";
+			return "建立門市訂貨單";
 		} else if (c06.updating) {
-			return "修改訂貨單";
+			return "修改門市訂貨單";
 		} else {
-			return "訂貨單內容";
+			return "門市訂貨單內容";
 		}
 	}, [c06.creating, c06.updating]);
 
@@ -83,6 +83,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 						// disableOpenOnInput: true,
 						// hideControlsOnActive: false,
 						// autoHighlight: true,
+						focusOnDisabled: true
 					})
 				),
 				title: "商品編號",
@@ -166,18 +167,18 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 				title: "未到量",
 				minWidth: 90,
 				maxnWidth: 90,
-				disabled: readOnly || c06.creating,
+				disabled: readOnly || c06.sNotQtyDisabled,
 			},
-			{
-				...keyColumn("SMsg", createTextColumnEx({
-					continuousUpdates: false,
-				})),
-				title: "訊息",
-				minWidth: 140,
-				disabled: true,
-			},
+			// {
+			// 	...keyColumn("SMsg", createTextColumnEx({
+			// 		continuousUpdates: false,
+			// 	})),
+			// 	title: "訊息",
+			// 	minWidth: 140,
+			// 	disabled: true,
+			// },
 		],
-		[readOnly, c06.sprodDisabled, c06.getSPriceClassName, c06.sqtyDisabled, c06.stypeDisabled, c06.creating]
+		[readOnly, c06.sprodDisabled, c06.getSPriceClassName, c06.sqtyDisabled, c06.stypeDisabled, c06.sNotQtyDisabled]
 	);
 
 	const gridMeta = useDSGMeta({

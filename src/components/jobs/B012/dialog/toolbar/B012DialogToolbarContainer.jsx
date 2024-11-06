@@ -6,15 +6,18 @@ import B012DialogEditToolbar from "./B012DialogEditToolbar";
 import B012DialogViewToolbar from "./B012DialogViewToolbar";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useMemo } from "react";
+import { BContext } from "@/contexts/B/BContext";
+import { B032Context } from "@/contexts/B032/B032Context";
 
 export const B012DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
-	const b012 = useContext(B012Context);
+	const b = useContext(BContext);
+	const b012 = useContext(b.forNew ? B032Context : B012Context);
 	const form = useFormContext();
-	const handlePrint = form.handleSubmit(
-		b012.onPrintSubmit,
-		b012.onPrintSubmitError
-	);
+	// const handlePrint = form.handleSubmit(
+	// 	b012.onPrintSubmit,
+	// 	b012.onPrintSubmitError
+	// );
 
 	if (!b012.itemDataReady) {
 		return false;
@@ -43,7 +46,7 @@ export const B012DialogToolbarContainer = (props) => {
 		<B012DialogViewToolbar
 			onEdit={b012.canUpdate ? b012.promptUpdating : null}
 			onDelete={b012.canDelete ? b012.confirmDelete : null}
-			onPrint={b012.canPrint ? handlePrint : null}
+			// onPrint={b012.canPrint ? handlePrint : null}
 			onSideDrawerOpen={b012.handleSideDrawerOpen}
 			{...rest}
 		/>

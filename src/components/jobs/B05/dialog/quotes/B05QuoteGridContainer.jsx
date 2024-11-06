@@ -19,8 +19,8 @@ export const B05QuoteGridContainer = (props) => {
 	// }, [b05, formMeta.gridMeta])
 
 	const onChange = useMemo(() => {
-		return b05.buildGridChangeHandler({ onUpdateRow: b05.onUpdateRow })
-	}, [b05])
+		return b05.buildGridChangeHandler({ gridMeta: formMeta.gridMeta, onUpdateRow: b05.onUpdateRow })
+	}, [b05, formMeta.gridMeta])
 
 	return (
 		<DSGContext.Provider value={{

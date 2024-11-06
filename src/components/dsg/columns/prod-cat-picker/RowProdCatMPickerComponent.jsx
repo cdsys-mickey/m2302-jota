@@ -53,6 +53,7 @@ const RowProdCatMPickerComponent = memo((props) => {
 		// focusNextCell,
 		setActiveCell,
 		readOnly,
+		focusOnDisabled,
 		...rest
 	} = columnData;
 
@@ -76,7 +77,8 @@ const RowProdCatMPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell
+		focusNextCell,
+		focusOnDisabled
 	});
 
 

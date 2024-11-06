@@ -163,6 +163,13 @@ export const useDSGMeta = ({
 		return next.row > prev.row;
 	}, []);
 
+	const focusPrevCell = useCallback(() => {
+		console.log("focusPrevCell, prevCell:", asyncRef.current.prevCell)
+		if (asyncRef.current.prevCell) {
+			setActiveCell(asyncRef.current.prevCell);
+		}
+	}, [setActiveCell]);
+
 	const handleActiveCellChange = useCallback(
 		({ cell }) => {
 			console.log("handleActiveCellChange", cell);
@@ -362,5 +369,6 @@ export const useDSGMeta = ({
 		saveSelection,
 		restoreSelection,
 		resetSelection,
+		focusPrevCell
 	};
 };

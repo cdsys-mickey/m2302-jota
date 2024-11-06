@@ -45,7 +45,7 @@ const B012DialogForm = memo((props) => {
 									autoFocus
 									typo
 									label="貨品編號"
-									name="prod"
+									name="dlgProd"
 									required
 									rules={{
 										required: "貨品為必填",
@@ -57,6 +57,13 @@ const B012DialogForm = memo((props) => {
 									withPrice
 									disabled={!creating}
 									onChange={handleProdChange}
+									slotProps={{
+										paper: {
+											sx: {
+												width: 360,
+											}
+										},
+									}}
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={5}>
@@ -66,7 +73,7 @@ const B012DialogForm = memo((props) => {
 								<EmployeePicker
 									typo
 									label="報價人員"
-									name="employee"
+									name="dlgEmployee"
 									required
 									rules={{
 										required: "詢價人員為必填",
@@ -78,17 +85,20 @@ const B012DialogForm = memo((props) => {
 									disabled={!creating}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={5}>
-								<DatePickerWrapper
-									typo
-									name="Date"
-									label="報價日期"
-									fullWidth
-									required
-									variant="outlined"
-									disabled={!creating}
-								/>
-							</Grid>
+							{creating &&
+								<Grid item xs={24} sm={24} md={5}>
+									<DatePickerWrapper
+										typo
+										name="dlgDate"
+										label="報價日期"
+										fullWidth
+										required
+										variant="outlined"
+										disabled={!creating}
+										validate
+									/>
+								</Grid>
+							}
 							<Grid item xs={24}>
 								<B012QuoteGridContainer />
 							</Grid>

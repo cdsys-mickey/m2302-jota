@@ -16,16 +16,35 @@ import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 import B02 from "@/modules/md-b02";
+import Forms from "@/shared-modules/sd-forms";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
+import { useMemo } from "react";
 
-export const useB011 = () => {
+export const useB011 = (opts = {}) => {
+	const { forNew } = opts;
+
+	const API_URL = useMemo(() => {
+		return forNew ? "v1/quote/new-customer-quotes" : "v1/quote/customer-quotes"
+	}, [forNew]);
+
+	const GRID_URL = useMemo(() => {
+		return forNew ? "v1/prod/data-grid/B031" : "v1/prod/data-grid/B011"
+	}, [forNew]);
+
+	const JOB_NAME = useMemo(() => {
+		return forNew ? "B031" : "B011"
+	}, [forNew]);
+
 	const crud = useContext(CrudContext);
+	const auth = useContext(AuthContext);
+	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
-		moduleId: "B011",
+		moduleId: JOB_NAME,
 	});
 
 	// 側邊欄
@@ -36,14 +55,15 @@ export const useB011 = () => {
 	const {
 		httpGetAsync,
 		httpPostAsync,
-		httpPutAsync,
 		httpPatchAsync,
 		httpDeleteAsync,
 	} = useWebApi();
 	const dialogs = useContext(DialogsContext);
 
+
+
 	const listLoader = useInfiniteLoader({
-		url: "v1/quote/customer-quotes",
+		url: `${API_URL}/find-by-cust`,
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
@@ -74,7 +94,7 @@ export const useB011 = () => {
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
-			InqDate: new Date(),
+			dlgDate: new Date(),
 			quotes: [],
 		};
 		crud.promptCreating({ data });
@@ -86,7 +106,7 @@ export const useB011 = () => {
 			try {
 				crud.startCreating();
 				const { status, error } = await httpPostAsync({
-					url: "v1/quote/customer-quotes/by-cust",
+					url: `${API_URL}/by-cust`,
 					data: data,
 					bearer: token,
 				});
@@ -106,7 +126,7 @@ export const useB011 = () => {
 				});
 			}
 		},
-		[crud, httpPostAsync, listLoader, token]
+		[API_URL, crud, httpPostAsync, listLoader, token]
 	);
 
 	// READ
@@ -119,7 +139,7 @@ export const useB011 = () => {
 					crud.startReading("讀取中...", { itemId });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/quote/customer-quotes/by-cust",
+					url: `${API_URL}/by-cust`,
 					bearer: token,
 					params: {
 						...itemId,
@@ -140,7 +160,7 @@ export const useB011 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, grid, token]
+		[httpGetAsync, API_URL, token, crud, grid]
 	);
 
 	const handleSelect = useCallback(
@@ -223,7 +243,7 @@ export const useB011 = () => {
 			try {
 				crud.startUpdating();
 				const { status, error } = await httpPatchAsync({
-					url: "v1/quote/customer-quotes/by-cust",
+					url: `${API_URL}/by-cust`,
 					data,
 					bearer: token,
 				});
@@ -244,7 +264,7 @@ export const useB011 = () => {
 				});
 			}
 		},
-		[crud, httpPatchAsync, listLoader, loadItem, token]
+		[API_URL, crud, httpPatchAsync, listLoader, loadItem, token]
 	);
 
 	//DELETE
@@ -255,7 +275,7 @@ export const useB011 = () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/quote/customer-quotes/by-cust`,
+						url: `${API_URL}/by-cust`,
 						bearer: token,
 						params: {
 							id: itemData?.InqID,
@@ -278,7 +298,7 @@ export const useB011 = () => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
+	}, [API_URL, crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
 
 	const onSearchSubmit = useCallback((data) => {
 		console.log("onSearchSubmit", data);
@@ -289,7 +309,7 @@ export const useB011 = () => {
 	}, []);
 
 	const handleGridProdChange = useCallback(
-		({ rowData, newValue }) => {
+		({ rowData, newValue, formData }) => {
 			let processedRowData = { ...rowData };
 
 			// 建立時檢查是否重複
@@ -310,17 +330,17 @@ export const useB011 = () => {
 				["Price"]: processedRowData?.prod?.Price || "",
 				["PackData_N"]: processedRowData?.prod?.PackData_N || "",
 				["ProdData_N"]: processedRowData?.prod?.ProdData || "",
-
-
+				// ["QDate"]: processedRowData?.prod ? Forms.reformatDate(formData.dlgDate) : null,
+				// ["employee"]: processedRowData?.prod ? formData.dlgEmployee : null,
 
 			};
 			return processedRowData;
 		},
-		[grid]
+		[crud.creating, grid]
 	);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData, newValue }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 
@@ -438,6 +458,8 @@ export const useB011 = () => {
 		return `${rowData?.Pkey || rowIndex}`;
 	}, []);
 
+
+
 	// 帶入商品
 	const importProdsAction = useAction();
 
@@ -473,7 +495,7 @@ export const useB011 = () => {
 
 			try {
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/prod/data-grid/B011",
+					url: GRID_URL,
 					bearer: token,
 					params: {
 						...B011.transformProdCriteriaAsQueryParams(criteria),
@@ -501,7 +523,7 @@ export const useB011 = () => {
 				}));
 			}
 		},
-		[httpGetAsync, ipState.saveKey, token]
+		[GRID_URL, httpGetAsync, ipState.saveKey, token]
 	);
 
 	const onImportProdsSubmit = useCallback(
@@ -510,7 +532,7 @@ export const useB011 = () => {
 			try {
 				importProdsAction.start();
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/prod/data-grid/B011",
+					url: GRID_URL,
 					bearer: token,
 					params: {
 						...B011.transformProdCriteriaAsQueryParams(ipState.criteria),
@@ -530,52 +552,94 @@ export const useB011 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				importProdsAction.fail(err);
+				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
 					position: "top-center"
 				});
 			}
 		},
-		[
-			createRow,
-			httpGetAsync,
-			importProdsAction,
-			ipState.criteria,
-			ipState.saveKey,
-			grid,
-			token,
-		]
+		[importProdsAction, httpGetAsync, GRID_URL, token, ipState.criteria, ipState.saveKey, grid, createRow]
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {
 		console.error("onImportProdsSubmitError", err);
 	}, []);
 
+	// const handlePrint = useCallback(() => {
+	// 	printAction.prompt();
+	// }, [printAction]);
+
+	//列印
+	const printAction = useAction();
+
+	const onPrintPromptSubmit = useCallback((data) => {
+		console.log("onPrintPromptSubmit", data);
+		printAction.prompt({
+			params: data
+		});
+	}, [printAction])
+
+	const onPrintPromptSubmitError = useCallback((err) => {
+		console.error("onPrintPromptSubmitError", err);
+	}, [])
+
 	const onPrintSubmit = useCallback(
-		(data) => {
+		async (data) => {
 			console.log("onPrintSubmit", data);
+
+			// fetch ListView data
+			const { status, payload, error } = await httpGetAsync({
+				bearer: auth.token,
+				url: `${API_URL}/find-by-cust`,
+				params: {
+					sort: B02.OrderBy.SUPPLIER,
+					...listLoaderCtx.paramsRef.current,
+				}
+			});
+			if (status.success) {
+				console.log("payload", payload.data);
+				if (!payload.data?.length) {
+					toast.error("目前查詢沒有資料", {
+						position: "top-center"
+					})
+					return;
+				}
+			} else {
+				toast.error(Errors.getMessage("讀取資料發生錯誤", error), {
+					position: "top-center"
+				})
+				return;
+			}
+
+			const { prtEmployee, prtDate } = data;
 			const jsonData = {
 				...(data.outputType && {
 					Action: data.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
-				JobName: "B011",
-				IDs: crud.itemData?.InqID,
+				JobName: JOB_NAME,
+				CustID: printAction.params?.lvCust?.CustID || "",
+				QEmplID: prtEmployee?.CodeID || "",
+				QDate: Forms.formatDate(prtDate),
+				B011031_W1: payload.data ?
+					payload.data?.map(x => ({
+						ProdID: x.ProdID,
+						Price: x.Price,
+						QPrice: x.QPrice
+					}))
+					: []
+
 			};
+			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB011Rep.aspx?LogKey=${operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebB011031Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.InqID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[API_URL, JOB_NAME, auth.token, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvCust?.CustID]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -629,10 +693,16 @@ export const useB011 = () => {
 		peekProds,
 		ipState,
 		// 列印
+		// handlePrint,
+		onPrintPromptSubmit,
+		onPrintPromptSubmitError,
+		cancelPrint: printAction.clear,
+		printDialogOpen: printAction.active,
 		onPrintSubmit,
 		onPrintSubmitError,
 		// handleLastField,
 		loadProdFormMeta,
-		...sideDrawer
+		...sideDrawer,
+		forNew
 	};
 };

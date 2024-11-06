@@ -69,9 +69,10 @@ const E021DialogForm = memo((props) => {
 									autoFocus
 									name="SalDate"
 									label="銷貨日"
+									variant="outlined"
 									fullWidth
 									required
-									variant="outlined"
+									validate
 								// disabled={!creating}
 								/>
 							</Grid>
@@ -80,9 +81,10 @@ const E021DialogForm = memo((props) => {
 									typo
 									name="ArrDate"
 									label="到貨日"
+									variant="outlined"
 									fullWidth
 									required
-									variant="outlined"
+									validate
 								// disabled={!creating}
 								/>
 							</Grid>
@@ -91,9 +93,10 @@ const E021DialogForm = memo((props) => {
 									typo
 									name="RetDate"
 									label="退貨期限日"
+									variant="outlined"
 									fullWidth
 									required
-									variant="outlined"
+									validate
 								// disabled={!creating}
 								/>
 							</Grid>

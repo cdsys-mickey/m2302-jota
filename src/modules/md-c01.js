@@ -133,17 +133,17 @@ const transformForSubmitting = (payload, gridData) => {
 };
 
 const isFiltered = (criteria) => {
-	return Objects.isAnyPropNotEmpty(criteria, "rqtId,employee,date,pdline");
+	return Objects.isAnyPropNotEmpty(criteria, "rqtId,reqEmployee,date,pdline");
 };
 
 const transformAsQueryParams = (data) => {
-	const { employee, date, pdline, rqtId, listMode, ...rest } = data;
+	const { reqEmployee, date, pdline, rqtId, listMode, ...rest } = data;
 	return {
 		...(rqtId && {
 			rid: rqtId,
 		}),
-		...(employee && {
-			empi: employee.CodeID,
+		...(reqEmployee && {
+			rempi: reqEmployee.CodeID,
 		}),
 		...(date && {
 			dt: Forms.formatDate(date),

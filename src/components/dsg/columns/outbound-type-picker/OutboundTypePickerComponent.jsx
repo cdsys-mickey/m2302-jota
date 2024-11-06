@@ -48,6 +48,7 @@ const OutboundTypePickerComponent = memo((props) => {
 		// focusNextCell,
 		setActiveCell,
 		readOnly,
+		focusOnDisabled,
 		...rest
 	} = columnData;
 
@@ -71,7 +72,8 @@ const OutboundTypePickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell
+		focusNextCell,
+		focusOnDisabled
 	});
 
 	const cellComponentRef = useRef({

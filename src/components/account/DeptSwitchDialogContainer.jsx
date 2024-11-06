@@ -38,6 +38,7 @@ export const DeptSwitchDialogContainer = () => {
 								required: "請選擇要前往的門市",
 							}}
 							onError={auth.handleError}
+						// fullWidth
 						/>
 					</FlexBox>
 				</DialogEx>

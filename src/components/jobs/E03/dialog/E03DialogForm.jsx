@@ -66,6 +66,7 @@ const E03DialogForm = memo((props) => {
 									fullWidth
 									required
 									variant="outlined"
+									validate
 								// disabled={!creating}
 								/>
 							</Grid>

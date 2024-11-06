@@ -22,8 +22,13 @@ export const C08ProdGridContainer = (props) => {
 			gridMeta: formMeta.gridMeta,
 			onUpdateRow: c08.onUpdateRow,
 			onGridChanged: c08.onGridChanged,
+			isRowDeletable: c08.isRowDeletable
 		});
 	}, [c08, form.getValues, form.setValue, formMeta.gridMeta]);
+
+	const _height = useMemo(() => {
+		return height - 360;
+	}, [height])
 
 	return (
 		<DSGContext.Provider value={{ ...c08.grid, ...formMeta.gridMeta, readOnly: formMeta.readOnly }}>
@@ -35,7 +40,7 @@ export const C08ProdGridContainer = (props) => {
 				data={c08.gridData}
 				onChange={onChange}
 				bearer={auth.token}
-				height={height - 356}
+				height={_height}
 				getRowKey={c08.getRowKey}
 				stypeDisabled={c08.stypeDisabled}
 				getSPriceClassName={c08.getSPriceClassName}

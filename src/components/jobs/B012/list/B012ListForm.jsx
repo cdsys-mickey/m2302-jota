@@ -1,4 +1,5 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import ProdPicker from "@/components/picker/ProdPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
@@ -11,14 +12,15 @@ const B012ListForm = memo((props) => {
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
 
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item xs={24} sm={24} md={8}>
 					<ProdPicker
 						name="lvProd"
 						// forId
-						label="商品編號起"
+						label="商品編號"
 						autoFocus
 						disableOpenOnInput
 						virtualize
+						withQuotes
 						slotProps={{
 							paper: {
 								sx: {
@@ -29,64 +31,22 @@ const B012ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item xs={24} sm={24} md={6}>
-					<ProdPicker
-						name="lvProd2"
-						// forId
-						label="商品編號訖"
-						autoFocus
-						disableOpenOnInput
+					<EmployeePicker
+						label="報價人員"
+						name="lvEmployee"
 						virtualize
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						}}
-					/>
-				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<CustomerPicker
-						name="lvCust"
-						label="客戶代碼起"
 						disableOpenOnInput
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						}}
-					/>
-				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<CustomerPicker
-						name="lvCust2"
-						label="客戶代碼訖"
-						disableOpenOnInput
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						}}
-					/>
-				</Grid>
-
-				<Grid item xs={24} sm={24} md={6}>
-					<DatePickerWrapper
-						name="lvDate"
-						label="報價日期起"
-						clearable
-					// dense
+						selectOnFocus
+						withQuotes
+					// disableClearable
 					/>
 				</Grid>
 				<Grid item xs={24} sm={24} md={6}>
 					<DatePickerWrapper
-						name="lvDate2"
-						label="報價日期訖"
+						name="lvDate"
+						label="報價日期"
 						clearable
+						validate
 					// dense
 					/>
 				</Grid>

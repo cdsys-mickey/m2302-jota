@@ -429,8 +429,8 @@ export const useE01 = () => {
 		[getProdInfo]
 	);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData, newValue, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
 
@@ -678,7 +678,7 @@ export const useE01 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				importProdsAction.fail(err);
+				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
 					position: "top-center"
 				});

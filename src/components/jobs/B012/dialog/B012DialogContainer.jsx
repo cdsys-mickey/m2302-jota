@@ -1,5 +1,4 @@
 import { CustomerPickerComponentContainer } from "@/components/dsg/columns/customer-picker/CustomerPickerComponentContainer";
-import { EmployeePickerComponentContainer } from "@/components/dsg/columns/employee-picker/EmployeePickerComponentContainer";
 import { B012Context } from "@/contexts/B012/B012Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
@@ -20,6 +19,8 @@ import { toast } from "react-toastify";
 import B012Drawer from "../B012Drawer";
 import B012DialogForm from "./B012DialogForm";
 import { B012DialogToolbarContainer } from "./toolbar/B012DialogToolbarContainer";
+import { BContext } from "@/contexts/B/BContext";
+import { B032Context } from "@/contexts/B032/B032Context";
 
 export const B012DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -30,19 +31,20 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 
-	const b012 = useContext(B012Context);
+	const b = useContext(BContext);
+	const b012 = useContext(b.forNew ? B032Context : B012Context);
 	const { importCustsDialogOpen } = b012;
-	const date = useWatch({
-		name: "Date",
+	const dlgDate = useWatch({
+		name: "dlgDate",
 		control: form.control
 	})
 
-	const employee = useWatch({
-		name: "employee",
+	const dlgEmployee = useWatch({
+		name: "dlgEmployee",
 		control: form.control
 	})
-	const prod = useWatch({
-		name: "prod",
+	const dlgProd = useWatch({
+		name: "dlgProd",
 		control: form.control
 	})
 
@@ -54,13 +56,25 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 
 	const memoisedTitle = useMemo(() => {
 		if (b012.creating) {
-			return "建立詢價單";
+			return b.forNew ? "新增貨品新客戶報價" : "新增貨品客戶報價";
 		} else if (b012.updating) {
-			return "修改詢價單";
+			return b.forNew ? "修改貨品新客戶報價" : "修改貨品客戶報價";
 		} else {
-			return "詢價單內容";
+			return b.forNew ? "目前貨品新客戶報價" : "目前貨品客戶報價";
 		}
-	}, [b012.creating, b012.updating]);
+	}, [b.forNew, b012.creating, b012.updating]);
+
+	const qpriceTitle = useMemo(() => {
+		return b.forNew ? "新客戶報價" : "客戶報價";
+	}, [b.forNew])
+
+	const cust = useMemo(() => {
+		return b.forNew ? "新客戶編號" : "客戶編號";
+	}, [b.forNew])
+
+	const custName = useMemo(() => {
+		return b.forNew ? "新客戶名稱" : "客戶名稱";
+	}, [b.forNew])
 
 	const handleClose = useMemo(() => {
 		return b012.creating
@@ -86,9 +100,8 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 
 	const readOnly = useMemo(() => {
 		return !b012.editing
-			|| (b012.creating && (!prod || !employee || !date))
-			|| (b012.updating && (!prod || !employee));
-	}, [b012.editing, b012.creating, b012.updating, prod, employee, date]);
+			|| (b012.editing && (!dlgProd || !dlgEmployee));
+	}, [b012.editing, dlgProd, dlgEmployee]);
 
 	const columns = useMemo(
 		() => [
@@ -99,6 +112,7 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 						name: "customer",
 						forId: true,
 						disableClearable: true,
+						forNew: b.forNew,
 						slotProps: {
 							paper: {
 								sx: {
@@ -106,12 +120,13 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
+						focusOnDisabled: true
 					})
 				),
-				title: "客戶代碼",
+				title: cust,
 				minWidth: 180,
 				maxWidth: 180,
-				disabled: readOnly,
+				disabled: readOnly || !b012.creating,
 			},
 			{
 				...keyColumn(
@@ -120,71 +135,73 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 						continuousUpdates: false,
 					})
 				),
-				title: "客戶名稱",
+				title: custName,
 				disabled: true,
 				grow: 2,
 			},
 			{
 				...keyColumn("QPrice", createFloatColumn(2)),
-				title: "客戶報價",
+				title: qpriceTitle,
 				minWidth: 120,
 				maxWidth: 120,
 				disabled: readOnly,
 			},
-			{
-				...keyColumn("QDate", dateFieldColumnEx),
-				title: "報價日",
-				minWidth: 140,
-				maxWidth: 140,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"employee",
-					optionPickerColumn(EmployeePickerComponentContainer, {
-						name: "employee",
-						disableClearable: true,
-						slotProps: {
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						},
-					})
-				),
-				title: "報價人",
-				minWidth: 140,
-				maxWidth: 140,
-				disabled: true,
-			},
+			...(!b012.creating ? [
+				{
+					...keyColumn("QDate", dateFieldColumnEx),
+					title: "報價日",
+					minWidth: 140,
+					maxWidth: 140,
+					disabled: true,
+				},
+			] : [])
+			// {
+			// 	...keyColumn(
+			// 		"dlgEmployee",
+			// 		optionPickerColumn(EmployeePickerComponentContainer, {
+			// 			name: "dlgEmployee",
+			// 			disableClearable: true,
+			// 			slotProps: {
+			// 				paper: {
+			// 					sx: {
+			// 						width: 360,
+			// 					},
+			// 				},
+			// 			},
+			// 		})
+			// 	),
+			// 	title: "報價人",
+			// 	minWidth: 140,
+			// 	maxWidth: 140,
+			// 	disabled: true,
+			// },
 		],
-		[readOnly]
+		[b.forNew, b012.creating, cust, custName, qpriceTitle, readOnly]
 	);
 
 	const gridMeta = useDSGMeta({
 		data: b012.grid.gridData,
 		columns,
 		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
+		lastCell: b012.creating ? DSGLastCellBehavior.CREATE_ROW : DSGLastCellBehavior.STOP_EDITING
 	})
 
 	const handleLastField = useCallback(() => {
-		if (!prod) {
+		if (!dlgProd) {
 			toast.error("請先輸入貨品編號", {
 				position: "top-center",
 			});
-			form.setFocus("prod");
+			form.setFocus("dlgProd");
 			return;
 		}
-		if (!employee) {
+		if (!dlgEmployee) {
 			toast.error("請先輸入報價人員", {
 				position: "top-center",
 			});
-			form.setFocus("employee");
+			form.setFocus("dlgEmployee");
 			return;
 		}
-		if (!date) {
+		if (!dlgDate) {
 			toast.error("請先輸入報價日期", {
 				position: "top-center",
 			});
@@ -194,13 +211,13 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 
 
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [prod, date, employee, form, gridMeta]);
+	}, [dlgProd, dlgDate, dlgEmployee, form, gridMeta]);
 
 	const formMeta = useFormMeta(
 		`
-		prod,
-		employee,
-		Date,
+		dlgProd,
+		dlgEmployee,
+		dlgDate,
 		`,
 		{
 			lastField: handleLastField
@@ -216,7 +233,7 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		if (!importCustsDialogOpen) {
-			form.setFocus("prod", {
+			form.setFocus("dlgProd", {
 				shouldSelect: true
 			});
 		}

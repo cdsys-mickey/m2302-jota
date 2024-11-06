@@ -22,7 +22,7 @@ const getOptionLabelForId = (option) => {
 const getTitle = (option) => {
 	return option
 		? getOptionLabel(option)
-		: "直接輸入編號後按 Enter, 或按↓後以編號/條碼/名稱搜尋";
+		: "直接輸入編號後按 Enter, 或按↓後以編號/條碼/名稱搜尋, Esc 結束搜尋";
 };
 
 const renderOptionLabel = (option) => {
@@ -33,7 +33,8 @@ const isOptionEqualToValue = (option, value) =>
 	option?.["ProdID"] === value?.["ProdID"];
 
 const stringify = (option) => {
-	return `${option.ProdID} ${option.ProdData} ${option.Barcode}`;
+	// return `${option.ProdID} ${option.ProdData} ${option.Barcode}`;
+	return `${option.ProdID} ${option.ProdData}`;
 };
 
 const Prods = {

@@ -82,7 +82,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						packageType: "m",
+						packageType: "b",
 						forId: true,
 						slotProps: {
 							paper: {
@@ -120,12 +120,12 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 				title: "包裝",
 				disabled: true,
 			},
-			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "庫存",
-				minWidth: 90,
-				disabled: true,
-			},
+			// {
+			// 	...keyColumn("StockQty_N", createFloatColumn(2)),
+			// 	title: "庫存",
+			// 	minWidth: 90,
+			// 	disabled: true,
+			// },
 			{
 				...keyColumn(
 					"SQtyNote",
@@ -141,7 +141,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
-				title: "進貨數量",
+				title: "領料數量",
 				minWidth: 90,
 				grow: 1,
 				disabled: readOnly,
@@ -238,6 +238,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 						readError={d01.readError}
 						data={d01.itemData}
 						itemDataReady={d01.itemDataReady}
+					// validateDate={d01.validateDate}
 					/>
 
 					<D01Drawer />

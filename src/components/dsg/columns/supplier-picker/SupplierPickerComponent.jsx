@@ -47,6 +47,7 @@ const SupplierPickerComponent = memo((props) => {
 		// focusNextCell,
 		setActiveCell,
 		readOnly,
+		focusOnDisabled,
 		...rest
 	} = columnData;
 
@@ -68,7 +69,8 @@ const SupplierPickerComponent = memo((props) => {
 		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		focusOnDisabled
 	});
 
 	const cellComponentRef = useRef({

@@ -9,9 +9,12 @@ import { B02ListRowContainer } from "./B02ListRowContainer";
 import { B02Context } from "@/contexts/B02/B02Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import B02 from "@/modules/md-b02";
+import { BContext } from "@/contexts/B/BContext";
+import { B04Context } from "@/contexts/B04/B04Context";
 
 export const B02ListViewContainer = () => {
-	const b02 = useContext(B02Context);
+	const b = useContext(BContext);
+	const b02 = useContext(b.forNew ? B04Context : B02Context);
 	const { loadList } = b02;
 	const form = useFormContext();
 	const { height } = useWindowSize();

@@ -60,19 +60,19 @@ export const useC05 = () => {
 
 
 
-	const refreshAmt = useCallback(({ setValue, data, reset = false }) => {
+	const updateAmt = useCallback(({ setValue, data, reset = false }) => {
 		if (reset) {
 			setValue("InAmt", "");
 			setValue("TaxAmt", "");
 			setValue("TotAmt", "");
-			setValue("RcvdAmt", "");
-			setValue("PayAmt", "");
+			setValue("RecvAmt", "");
+			setValue("RtnAmt", "");
 		} else {
 			setValue("InAmt", data.InAmt);
 			setValue("TaxAmt", data.TaxAmt);
 			setValue("TotAmt", data.TotAmt);
-			setValue("RcvdAmt", data.RcvdAmt);
-			setValue("PayAmt", data.PayAmt);
+			setValue("RecvAmt", data.RecvAmt);
+			setValue("RtnAmt", data.RtnAmt);
 		}
 	}, []);
 
@@ -206,12 +206,15 @@ export const useC05 = () => {
 						const data = C05.transformForReading(payload.data[0]);
 						console.log("refresh-grid.data", data);
 						grid.handleGridDataLoaded(
-							grid.fillRows({
+							crud.creating ? grid.fillRows({
 								createRow,
 								data: data.prods,
-							})
+							}) : data.prods,
+							{
+								supressEvents: true
+							}
 						);
-						refreshAmt({ setValue, data });
+						updateAmt({ setValue, data });
 						toast.info("商品單價已更新");
 					} else {
 						throw error || new Error("未預期例外");
@@ -226,7 +229,7 @@ export const useC05 = () => {
 				console.warn("clear values?");
 			}
 		},
-		[grid, httpPostAsync, token, createRow, refreshAmt]
+		[grid, httpPostAsync, token, crud.creating, createRow, updateAmt]
 	);
 
 	const refreshAction = useAction();
@@ -261,14 +264,15 @@ export const useC05 = () => {
 		[refreshGrid]
 	);
 
-	const handleRtnDateChanged = useCallback(
-		({ setValue, getValues }) =>
-			(newValue) => {
-				console.log("rtnDate changed", newValue);
-				refreshGrid({ formData: getValues(), setValue });
-			},
-		[refreshGrid]
-	);
+	// 直接於值變動時呼叫太頻繁
+	// const handleRtnDateChanged = useCallback(
+	// 	({ setValue, getValues }) =>
+	// 		(newValue) => {
+	// 			console.log("rtnDate changed", newValue);
+	// 			refreshGrid({ formData: getValues(), setValue });
+	// 		},
+	// 	[refreshGrid]
+	// );
 
 	const confirmQuitCreating = useCallback(() => {
 		dialogs.confirm({
@@ -445,16 +449,16 @@ export const useC05 = () => {
 		return !!rowData.SInqFlag;
 	}, []);
 
-	const fetchAmt = useCallback(
-		async ({ received, taxType, gridData, setValue }) => {
+	const handleRefreshAmt = useCallback(
+		async ({ formData, gridData, setValue }) => {
 			const total = C05.getTotal(gridData);
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: "v1/purchase/returns/refresh-amt",
 					bearer: token,
 					data: {
-						tt: taxType,
-						arv: received,
+						tt: formData?.TaxType,
+						arv: formData?.RecvAmt,
 						art: total,
 					},
 				});
@@ -480,20 +484,23 @@ export const useC05 = () => {
 		({ setValue, getValues }) =>
 			async (newValue) => {
 				console.log("onTaxTypeChanged", newValue);
-				const received = getValues("RecvAmt");
+				const formData = getValues();
+				// const received = getValues("RecvAmt");
 				// console.log("formData", formData);
-				fetchAmt({
-					received: received,
-					taxType: newValue,
+				handleRefreshAmt({
+					formData: {
+						...formData,
+						TaxType: newValue
+					},
 					gridData: grid.gridData,
 					setValue,
 				});
 			},
-		[fetchAmt, grid.gridData]
+		[handleRefreshAmt, grid.gridData]
 	);
 
-	const updateGridRow = useCallback(({ formData, fromIndex }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ formData, fromRowIndex, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -536,13 +543,22 @@ export const useC05 = () => {
 						? ""
 						: rowData.SPrice * rowData.SQty,
 			};
+			updateResult.rows++;
 		}
 
 
 		return processedRowData;
 	}, [getProdInfo, grid.gridData]);
 
-	const buildGridChangeHandler = useCallback(
+	const onGridChanged = useCallback(({ gridData, formData, setValue, updateResult }) => {
+		handleRefreshAmt({
+			formData,
+			gridData,
+			setValue,
+		});
+	}, [handleRefreshAmt]);
+
+	const buildGridChangeHandlerOld = useCallback(
 		({ getValues, setValue, gridMeta }) =>
 			async (newValue, operations) => {
 				const formData = getValues();
@@ -559,9 +575,9 @@ export const useC05 = () => {
 									operation.toRowIndex
 								)
 								.map(async (item, index) => {
-									const updatedRow = await updateGridRow({
+									const updatedRow = await onUpdateRow({
 										formData,
-										fromIndex: operation.fromRowIndex,
+										fromRowIndex: operation.fromRowIndex,
 									})(item, index);
 									return updatedRow;
 								})
@@ -656,15 +672,14 @@ export const useC05 = () => {
 				console.log("grid.changed", newGridData);
 				if (!checkFailed) {
 					grid.setGridData(newGridData);
-					fetchAmt({
-						received: formData.RecvAmt,
-						taxType: formData.TaxType,
+					handleRefreshAmt({
+						formData,
 						gridData: newGridData,
 						setValue,
 					});
 				}
 			},
-		[fetchAmt, grid, updateGridRow]
+		[handleRefreshAmt, grid, onUpdateRow]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -751,18 +766,21 @@ export const useC05 = () => {
 							);
 							console.log("refreshed data", data);
 							grid.handleGridDataLoaded(
-								grid.fillRows({
+								crud.creating ? grid.fillRows({
 									createRow,
 									data: data.prods,
-								})
+								}) : data.prods,
+								{
+									supressEvents: true
+								}
 							);
-							refreshAmt({ setValue, data });
+							updateAmt({ setValue, data });
 							toast.info("商品單價已更新");
 						} else {
 							throw error || new Error("未預期例外");
 						}
 					} else {
-						refreshAmt({
+						updateAmt({
 							setValue,
 							reset: true,
 						});
@@ -774,7 +792,7 @@ export const useC05 = () => {
 					// 還原
 				}
 			},
-		[grid, httpPostAsync, token, createRow, refreshAmt]
+		[grid, httpPostAsync, token, crud.creating, createRow, updateAmt]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {
@@ -807,6 +825,17 @@ export const useC05 = () => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
+	const handleRecvAmtChange = useCallback(({ setValue, getValues }) => (newValue) => {
+		console.log("handleRecvAmtChange", newValue);
+		const formData = getValues();
+		console.log("formData", formData);
+		handleRefreshAmt({
+			formData,
+			gridData: grid.gridData,
+			setValue,
+		});
+	}, [grid.gridData, handleRefreshAmt]);
+
 	return {
 		...crud,
 		...listLoader,
@@ -834,7 +863,7 @@ export const useC05 = () => {
 		createRow,
 		...grid,
 		grid,
-		buildGridChangeHandler,
+		// buildGridChangeHandler,
 		getRowKey,
 		spriceDisabled,
 		// 列印
@@ -844,12 +873,16 @@ export const useC05 = () => {
 		onRefreshGridSubmit,
 		onRefreshGridSubmitError,
 		handleTaxTypeChange,
-		handleRtnDateChanged,
+		// handleRtnDateChanged,
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
 		handleRefresh,
 		refreshWorking: refreshAction.working,
-		...sideDrawer
+		...sideDrawer,
+		onUpdateRow,
+		onGridChanged,
+		handleRecvAmtChange,
+		refreshGrid
 	};
 };

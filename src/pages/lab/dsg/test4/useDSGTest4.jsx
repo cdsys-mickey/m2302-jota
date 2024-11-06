@@ -1,21 +1,18 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 
-import { createDateFnsColumn } from "@/shared-components/dsg/columns/date/createDateFnsColumn";
+import { ProdTypeAPickerComponentContainer } from "@/components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
+import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
+import { createDateFieldColumnEx } from "@/shared-components/dsg/columns/date/createDateFieldColumnEx";
+import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import createOptionPickerColumn from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { nanoid } from "nanoid";
 import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
-import { ProdTypeAPickerComponentContainer } from "@/components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
-import { createDateFieldColumnEx } from "@/shared-components/dsg/columns/date/createDateFieldColumnEx";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
-import { muiDateColumn } from "@/shared-components/dsg/columns/date/muiDateColumn";
-import { createMuiDateColumn } from "@/shared-components/dsg/columns/date/createMuiDateColumn";
 
 export const useDSGTest4 = () => {
 	const grid = useDSG({});
@@ -25,7 +22,7 @@ export const useDSGTest4 = () => {
 			{
 				...keyColumn(
 					"prod",
-					optionPickerColumn(ProdPickerComponentContainer, {
+					createOptionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
 						packageType: "s",
@@ -103,7 +100,11 @@ export const useDSGTest4 = () => {
 				...keyColumn(
 					"SExpDate",
 					// createDateFnsColumn()
-					dateFieldColumnEx
+					//dateFieldColumnEx
+					createDateFieldColumnEx({
+						validate: true,
+						// required: true
+					})
 				),
 				title: "有效日期",
 				minWidth: 140,
@@ -125,7 +126,7 @@ export const useDSGTest4 = () => {
 			{
 				...keyColumn(
 					"typeA",
-					optionPickerColumn(ProdTypeAPickerComponentContainer, {
+					createOptionPickerColumn(ProdTypeAPickerComponentContainer, {
 						name: "typeA",
 						disableOpenOnInput: true,
 						disableClearable: true,

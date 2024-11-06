@@ -2,9 +2,12 @@ import { B032Context } from "@/contexts/B032/B032Context";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import B032ListRow from "./B032ListRow";
+import { B012Context } from "@/contexts/B012/B012Context";
+import { BContext } from "@/contexts/B/BContext";
 
 export const B032ListRowContainer = (props) => {
-	const b032 = useContext(B032Context);
+	const b = useContext(BContext);
+	const b032 = useContext(b.forNew ? B032Context : B012Context);
 	const { isItemLoading } = b032;
 	const { index, ...rest } = props;
 	const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);

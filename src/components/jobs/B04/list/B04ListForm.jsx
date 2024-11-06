@@ -81,6 +81,7 @@ const B04ListForm = memo((props) => {
 						name="date"
 						label="報價日期起"
 						clearable
+						validate
 					// dense
 					/>
 				</Grid>
@@ -89,6 +90,7 @@ const B04ListForm = memo((props) => {
 						name="date2"
 						label="報價日期訖"
 						clearable
+						validate
 					// dense
 					/>
 				</Grid>

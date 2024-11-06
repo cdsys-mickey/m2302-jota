@@ -15,6 +15,7 @@ import B011CustomerColumn from "./columns/B011CustomerColumn";
 import { useMemo } from "react";
 import B011ProdColumn from "./columns/B011ProdColumn";
 import B011PriceColumn from "./columns/B011PriceColumn";
+import { orange } from "@mui/material/colors";
 
 const B011ListRow = memo((props) => {
 	const { index, style, value, loading, onClick, handleSelectDate } = props;
@@ -62,7 +63,11 @@ const B011ListRow = memo((props) => {
 					</Tooltip>
 					*/}
 				</HoverableListItemSecondaryAction>
-				<Box>
+				<Box sx={{
+					"&:hover .mark": {
+						color: orange[500]
+					}
+				}}>
 					<Grid
 						container
 						columns={24}
@@ -73,7 +78,7 @@ const B011ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<B011CustomerColumn loading={loading}>
+						<B011CustomerColumn className="mark" loading={loading}>
 							{customer}
 						</B011CustomerColumn>
 						<B011ProdColumn loading={loading}>
@@ -89,7 +94,7 @@ const B011ListRow = memo((props) => {
 						<B011DateColumn loading={loading} onClick={handleSelectDate}>
 							{value?.QDate}
 						</B011DateColumn>
-						<B011UserColumn loading={loading}>
+						<B011UserColumn className="mark" loading={loading}>
 							{employee}
 						</B011UserColumn>
 						{/* <B011ClassNColumn loading={loading}>

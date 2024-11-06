@@ -14,6 +14,7 @@ const ResponsiveLoadingButton = memo(
 			// hideIcon = true,
 			// hideText = false,
 			useIconButton = false,
+			sx = [],
 			...rest
 		} = props;
 		const { mobile } = useContext(ResponsiveContext);
@@ -59,6 +60,9 @@ const ResponsiveLoadingButton = memo(
 			<LoadingButton
 				ref={ref}
 				size="small"
+				sx={[
+					...(Array.isArray(sx) ? sx : [sx]),
+				]}
 				{...(doStartIcon && {
 					startIcon,
 				})}
@@ -78,6 +82,7 @@ ResponsiveLoadingButton.propTypes = {
 	endIcon: PropTypes.object,
 	mobileText: PropTypes.string,
 	useIconButton: PropTypes.bool,
+	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 
 export default ResponsiveLoadingButton;

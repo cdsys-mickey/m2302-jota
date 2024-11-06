@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useState } from "react";
 import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import { useFirstRender } from "../../forked/hooks/useFirstRender";
 
 const DATE_FORMAT = "yyyy-MM-dd";
 
@@ -34,6 +35,7 @@ const DateFieldComponentEx = memo((props) => {
 		insertRowBelow,
 	} = props;
 	const ref = useRef(null);
+	const firstRender = useFirstRender();
 	const {
 		// pattern = "\\d{4}-\\d{2}-\\d{2}",
 		// Context Methods
@@ -43,8 +45,28 @@ const DateFieldComponentEx = memo((props) => {
 		lastCell,
 		setActiveCell,
 		readOnly,
+		continuousUpdates,
 		// ...rest
 	} = columnData;
+
+	const asyncRef = useRef({
+		rowData,
+		setRowData,
+		continuousUpdates,
+		firstRender,
+		focusedAt: 0,
+		changedAt: 0,
+		escPressed: false,
+	})
+	asyncRef.current = {
+		rowData,
+		setRowData,
+		continuousUpdates,
+		firstRender,
+		focusedAt: asyncRef.current.focusedAt,
+		changedAt: asyncRef.current.changedAt,
+		escPressed: asyncRef.current.escPressed,
+	}
 
 	useLayoutEffect(() => {
 		if (focus) {
@@ -118,43 +140,78 @@ const DateFieldComponentEx = memo((props) => {
 		}
 	}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
 
-	const [dateValue, setDateValue] = useState(null);
+	// const [dateValue, setDateValue] = useState(null);
 
 	// 雖然是監聽輸入字串, 但還是要等到可以解析為正式日期時才會觸發
-	const handleInputChange = useCallback((e) => {
-		console.log("handleInputChange", e.target.value);
-		const inputValue = e.target.value.replace(/-/g, ''); // 去除 '-' 符號
-		if (inputValue.length === 8) {
-			setDateValue(e.target.value);
-			// 可以在這裡執行 onChange 的邏輯
-			console.log('Date input completed:', e.target.value);
-			// setRowData(e.target.value);
-		} else if (inputValue.length === 0) {
-			// setRowData(null);
-		}
-		setRowData(e.target.value);
-	}, [setRowData]);
+	// const handleInputChange = useCallback((e) => {
+	// 	console.log("handleInputChange", e.target.value);
+	// 	// const inputValue = e.target.value.replace(/-/g, ''); // 去除 '-' 符號
+	// 	setDateValue(e.target.value);
+	// 	// if (inputValue.length === 8) {
+	// 	// 	setDateValue(e.target.value);
+	// 	// 	// 可以在這裡執行 onChange 的邏輯
+	// 	// 	console.log('Date input completed:', e.target.value);
+	// 	// }
+	// 	// setRowData(e.target.value);
+	// }, []);
 
 	const handleChange = useCallback((e) => {
-		console.log("handleChange", e.target.value);
-		// setDateValue(e.target.value)
-		setRowData(e.target.value);
-		// setDateValue(Forms.formatDate(e.target.value));
-	}, [setRowData]);
+		// console.log("handleChange", e.target.value);
+		asyncRef.current.changedAt = Date.now();
+
+		if (continuousUpdates) {
+			setRowData(e.target.value);
+			console.log("rowData updated", e.target.value)
+		}
+	}, [continuousUpdates, setRowData]);
 
 	useEffect(() => {
 		// null 才是透過 del 清空的
 		// if (rowData == null && isValid(new Date(dateValue))) {
 		if (rowData == null) {
 			console.log("sync dateValue to empty");
-			setDateValue("");
-		} else if (rowData && !dateValue) {
+			// setDateValue("");
+			ref.value = "";
+		} else if (rowData && !ref.value) {
 			const newDateValue = Forms.reformatDate(rowData, DateTimes.DATEFNS_DATE_DASH);
 			console.log(`sync dateValue to ${newDateValue}`);
-			setDateValue(newDateValue);
+			ref.value = newDateValue;
 		}
-	}, [dateValue, rowData]);
+	}, [rowData]);
 
+	useLayoutEffect(() => {
+		if (focus) {
+			if (ref.current) {
+				// ref.current.value = asyncRef.current.formatInputOnFocus(
+				// 	asyncRef.current.rowData
+				// );
+				ref.current.focus();
+				ref.current.select();
+			}
+			asyncRef.current.escPressed = false;
+			asyncRef.current.focusedAt = Date.now();
+		} else {
+			if (ref.current) {
+				if (
+					!asyncRef.current.escPressed &&
+					!asyncRef.current.continuousUpdates &&
+					!asyncRef.current.firstRender &&
+					asyncRef.current.changedAt >= asyncRef.current.focusedAt
+				) {
+					console.log("setRowDate", ref.current.value);
+					asyncRef.current.setRowData(ref.current.value);
+				}
+				ref.current.blur();
+			}
+		}
+	}, [focus]);
+
+	useEffect(() => {
+		if (!focus && ref.current) {
+			// On blur or when the data changes, format it for display
+			ref.current.value = rowData;
+		}
+	}, [focus, rowData]);
 
 	return (
 		<input
@@ -179,9 +236,9 @@ const DateFieldComponentEx = memo((props) => {
 			// 	setRowData(isNaN(date.getTime()) ? null : date)
 			// }}
 
-			value={dateValue}
+			// value={dateValue}
 			onChange={handleChange} // 用來更新顯示的值
-			onInput={handleInputChange} // 攔截輸入動作
+			// onInput={handleInputChange} // 攔截輸入動作
 			onKeyDown={handleKeyDown}
 
 		// {...rest}

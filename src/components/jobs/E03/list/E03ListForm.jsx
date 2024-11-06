@@ -32,6 +32,7 @@ const E03ListForm = memo((props) => {
 						name="lvRtnDate"
 						label="銷退日"
 						clearable
+						validate
 					// dense
 					/>
 				</Grid>

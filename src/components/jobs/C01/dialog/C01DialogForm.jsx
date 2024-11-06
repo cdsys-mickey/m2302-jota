@@ -62,6 +62,7 @@ const C01DialogForm = memo((props) => {
 								autoFocus
 								fullWidth
 								required
+								validate
 								variant="outlined"
 								readOnly={true}
 							/>

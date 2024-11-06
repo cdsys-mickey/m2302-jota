@@ -1,45 +1,38 @@
+import { B011Context } from "@/contexts/B011/B011Context";
+import B011 from "@/modules/md-b011";
 import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import PropTypes from "prop-types";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
-import { B011ListRowContainer } from "./B011ListRowContainer";
-import { B011Context } from "@/contexts/B011/B011Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
-import B011 from "@/modules/md-b011";
+import { B011ListRowContainer } from "./B011ListRowContainer";
+import { B031Context } from "@/contexts/B031/B031Context";
+import { BContext } from "@/contexts/B/BContext";
 
-export const B011ListViewContainer = () => {
-	const b011 = useContext(B011Context);
+export const B011ListViewContainer = (props) => {
+	const { forNew = false } = props;
+	const b = useContext(BContext);
+	const b011 = useContext(b.forNew ? B031Context : B011Context);
 	const { loadList } = b011;
 	const form = useFormContext();
 	// const { getValues, setValue } = form;
 	const { height } = useWindowSize();
-	const cust = useWatch({
+	const lvCust = useWatch({
 		name: "lvCust",
 		control: form.control,
 	});
-	const cust2 = useWatch({
-		name: "lvCust2",
-		control: form.control,
-	});
-	const prod = useWatch({
-		name: "lvProd",
-		control: form.control,
-	});
-	const prod2 = useWatch({
-		name: "lvProd2",
-		control: form.control,
-	});
-	const date = useWatch({
+
+	const lvDate = useWatch({
 		name: "lvDate",
 		control: form.control,
 	});
-	const date2 = useWatch({
-		name: "lvDate2",
-		control: form.control,
-	});
+	const lvEmployee = useWatch({
+		name: "lvEmployee",
+		control: form.control
+	})
 
 	useInit(() => {
 		b011.loadList();
@@ -48,16 +41,17 @@ export const B011ListViewContainer = () => {
 	useChangeTracking(() => {
 		loadList({
 			params: B011.transformAsQueryParams({
-				cust,
-				cust2,
-				prod,
-				prod2,
-				date,
-				date2
+				lvCust,
+				lvDate,
+				lvEmployee
 			}),
 			supressLoading: true,
 		});
-	}, [cust, cust2, prod, prod2, date, date2]);
+	}, [lvCust, lvDate, lvEmployee]);
+
+	const _height = useMemo(() => {
+		return height - 180
+	}, [height])
 
 	return (
 		<ListViewBox withHeader>
@@ -70,7 +64,7 @@ export const B011ListViewContainer = () => {
 				loadMoreItems={b011.loadMoreItems}
 				isItemLoaded={b011.isItemLoaded}
 				RowComponent={B011ListRowContainer}
-				height={height ? height - 232 : 300}
+				height={_height}
 				handleItemsRendered={b011.handleItemsRendered}
 				error={b011.listError}
 				// bottomReached={b011.bottomReached}
@@ -79,6 +73,8 @@ export const B011ListViewContainer = () => {
 		</ListViewBox>
 	);
 };
-
+B011ListViewContainer.propTypes = {
+	forNew: PropTypes.bool
+}
 B011ListViewContainer.displayName = "B011ListViewContainer";
 

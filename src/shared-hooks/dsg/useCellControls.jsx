@@ -14,6 +14,7 @@ export const useCellControls = () => {
 		// isLastCell: dsg.isLastCell,
 		lastCell: dsg.lastCell,
 		setActiveCell: dsg.setActiveCell,
+		focusPrevCell: dsg.focusPrevCell,
 		inDSG: !!dsg,
 		readOnly: dsg.readOnly,
 		supressEvents: dsg.asyncRef?.current?.supressEvents || false

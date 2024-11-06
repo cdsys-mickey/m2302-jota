@@ -64,6 +64,7 @@ const B02DialogForm = memo((props) => {
 									fullWidth
 									required
 									variant="outlined"
+									validate
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={6}>

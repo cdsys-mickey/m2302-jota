@@ -23,6 +23,7 @@ const D06DialogForm = memo((props) => {
 		editing,
 		updating,
 		handleRemDateChanged,
+		validateDate,
 		...rest
 	} = props;
 	return (
@@ -76,8 +77,14 @@ const D06DialogForm = memo((props) => {
 								label="結餘日期"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 								onChanged={handleRemDateChanged}
+							// rules={{
+							// 	validate: {
+							// 		validateDate
+							// 	}
+							// }}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
@@ -87,6 +94,7 @@ const D06DialogForm = memo((props) => {
 								label="轉期初日期"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 								readOnly={true}
 							/>
@@ -139,6 +147,7 @@ D06DialogForm.propTypes = {
 	itemDataReady: PropTypes.bool,
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRemDateChanged: PropTypes.func,
+	validateDate: PropTypes.func,
 };
 
 D06DialogForm.displayName = "D06DialogForm";

@@ -82,8 +82,10 @@ const D041DialogForm = memo((props) => {
 								label="入庫日期"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 								onChanged={handleRstDateChanged}
+
 							/>
 						</Grid>
 

@@ -4,10 +4,13 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { forwardRef, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import B012ImportCustsForm from "./B012ImportCustsForm";
+import { BContext } from "@/contexts/B/BContext";
+import { B032Context } from "@/contexts/B032/B032Context";
 
 const B012ImportCustsDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
-	const b012 = useContext(B012Context);
+	const b = useContext(BContext);
+	const b012 = useContext(b.forNew ? B032Context : B012Context);
 	// const formMeta = useContext(FormMetaContext);
 	const form = useForm({
 		defaultValues: {},

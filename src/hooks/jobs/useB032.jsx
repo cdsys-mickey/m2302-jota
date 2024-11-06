@@ -305,8 +305,8 @@ export const useB032 = () => {
 		[]
 	);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData, newValue }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 
@@ -469,7 +469,7 @@ export const useB032 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				importCustsAction.fail(err);
+				importCustsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入新客戶發生錯誤", err), {
 					position: "top-center"
 				});
@@ -502,7 +502,7 @@ export const useB032 = () => {
 				IDs: crud.itemData?.InqID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB032Rep.aspx?LogKey=${operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebB012032Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),

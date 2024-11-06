@@ -136,6 +136,7 @@ import { E021Provider } from "@/contexts/E021/E021Provider";
 import { E021FrameContainer } from "@/pages/E021/E021FrameContainer";
 import { E03Provider } from "@/contexts/E03/E03Provider";
 import { E03FrameContainer } from "@/pages/E03/E03FrameContainer";
+import { BProvider } from "@/contexts/B/BProvider";
 
 const AppRoute = () => {
 	return (
@@ -558,9 +559,11 @@ const AppRoute = () => {
 						element={
 							<CrudProvider>
 								<InfiniteLoaderProvider>
-									<B011Provider>
-										<B011FrameContainer />
-									</B011Provider>
+									<BProvider>
+										<B011Provider>
+											<B011FrameContainer />
+										</B011Provider>
+									</BProvider>
 								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
@@ -571,9 +574,11 @@ const AppRoute = () => {
 						element={
 							<CrudProvider>
 								<InfiniteLoaderProvider>
-									<B012Provider>
-										<B012FrameContainer />
-									</B012Provider>
+									<BProvider >
+										<B012Provider>
+											<B012FrameContainer />
+										</B012Provider>
+									</BProvider>
 								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
@@ -583,9 +588,11 @@ const AppRoute = () => {
 						element={
 							<CrudProvider>
 								<InfiniteLoaderProvider>
-									<B02Provider>
-										<B02FrameContainer />
-									</B02Provider>
+									<BProvider>
+										<B02Provider>
+											<B02FrameContainer />
+										</B02Provider>
+									</BProvider>
 								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
@@ -595,9 +602,11 @@ const AppRoute = () => {
 						element={
 							<CrudProvider>
 								<InfiniteLoaderProvider>
-									<B031Provider>
-										<B031FrameContainer />
-									</B031Provider>
+									<BProvider forNew>
+										<B031Provider>
+											<B011FrameContainer />
+										</B031Provider>
+									</BProvider>
 								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
@@ -607,9 +616,11 @@ const AppRoute = () => {
 						element={
 							<CrudProvider>
 								<InfiniteLoaderProvider>
-									<B032Provider>
-										<B032FrameContainer />
-									</B032Provider>
+									<BProvider forNew>
+										<B032Provider>
+											<B012FrameContainer />
+										</B032Provider>
+									</BProvider>
 								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}
@@ -619,9 +630,11 @@ const AppRoute = () => {
 						element={
 							<CrudProvider>
 								<InfiniteLoaderProvider>
-									<B04Provider>
-										<B04FrameContainer />
-									</B04Provider>
+									<BProvider forNew>
+										<B04Provider>
+											<B02FrameContainer />
+										</B04Provider>
+									</BProvider>
 								</InfiniteLoaderProvider>
 							</CrudProvider>
 						}

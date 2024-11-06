@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import ActionState from "../shared-constants/action-state";
 import { useMemo } from "react";
+import { useRef } from "react";
 
 export const useAction = (initState = null) => {
 	const [actionState, setActionState] = useState({
@@ -8,7 +9,9 @@ export const useAction = (initState = null) => {
 		// payload: null,
 		message: null,
 		error: null,
+		params: null
 	});
+
 	// const [error, setError] = useState();
 	// const [errorState, setErrorState] = useState({
 	// 	error: null,
@@ -17,13 +20,14 @@ export const useAction = (initState = null) => {
 	// const [payload, setPayload] = useState();
 	// const [message, setMessage] = useState();
 
-	const prompt = useCallback((message) => {
+	const prompt = useCallback(({ message, params } = {}) => {
 		console.log(`prompt`, message);
 
 		setActionState((prev) => ({
 			...prev,
 			state: ActionState.PROMPT,
-			message: message,
+			message,
+			params
 		}));
 	}, []);
 	// const prompt = useCallback((data, message) => {
@@ -37,33 +41,35 @@ export const useAction = (initState = null) => {
 	// 	}));
 	// }, []);
 
-	const start = useCallback((message) => {
+	const start = useCallback(({ message, params } = {}) => {
 		setActionState((prev) => ({
 			...prev,
 			state: ActionState.WORKING,
 			error: null,
 			// payload: null,
-			message: message,
+			message,
+			params
 		}));
 	}, []);
 
-	const finish = useCallback(() => {
+	const finish = useCallback(({ message, params } = {}) => {
 		// setActionState(ActionState.DONE);
 		// setPayload(payload);
 		setActionState((prev) => ({
 			...prev,
 			state: ActionState.DONE,
 			// payload: payload,
-			message: null,
+			message,
+			params
 		}));
 	}, []);
 
-	const fail = useCallback((err, message) => {
+	const fail = useCallback(({ error, message } = {}) => {
 		setActionState((prev) => ({
 			...prev,
 			state: ActionState.FAILED,
-			message: message,
-			error: err,
+			message,
+			error,
 		}));
 	}, []);
 
@@ -73,6 +79,7 @@ export const useAction = (initState = null) => {
 			// payload: null,
 			message: null,
 			error: null,
+			params: null
 		});
 	}, []);
 

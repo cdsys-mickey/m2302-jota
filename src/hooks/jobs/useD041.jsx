@@ -528,8 +528,8 @@ export const useD041 = () => {
 	// 	return rowData;
 	// }, []);
 
-	const updateGridRow = useCallback(({ fromIndex, newValue }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const updateGridRow = useCallback(({ fromRowIndex, newValue }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -568,7 +568,7 @@ export const useD041 = () => {
 								)
 								.map(async (item, index) => {
 									const updatedRow = await updateGridRow({
-										fromIndex: operation.fromRowIndex,
+										fromRowIndex: operation.fromRowIndex,
 										newValue,
 									})(item, index);
 									return updatedRow;
@@ -747,15 +747,15 @@ export const useD041 = () => {
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
 	const dtypeDisabled = useCallback(({ rowData }) => {
-		return !rowData.prod || !!rowData.reworked;
+		return !rowData.prod || !!rowData.reworked || !!rowData.stype;
 	}, []);
 
 	const stypeDisabled = useCallback(({ rowData }) => {
-		return !rowData.prod;
+		return !rowData.prod || !!rowData.reworked || !!rowData.dtype;
 	}, []);
 
 	const reworkedDisabled = useCallback(({ rowData }) => {
-		return !rowData.prod || !!rowData.dtype;
+		return !rowData.prod || !!rowData.dtype || !!rowData.stype;
 	}, []);
 
 	return {

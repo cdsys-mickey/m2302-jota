@@ -52,32 +52,43 @@ export const useC03 = () => {
 
 	const grid = useDSG({
 		gridId: "prods",
-		keyColumn: "pkey",
+		keyColumn: "Pkey",
 	});
 
+	// 有進貨連結
 	const prodDisabled = useCallback(({ rowData }) => {
-		return Number(rowData.SInQty) > 0;
-	}, []);
+		// return !!itemData?.GinID_N || Number(rowData.SInQty) > 0;
+		return !!itemData?.GinID_N;
+	}, [itemData?.GinID_N]);
 
+	// 有進貨連結 或 有詢價記錄
 	const spriceDisabled = useCallback(({ rowData }) => {
-		return rowData.SInqFlag === "*";
-	}, []);
+		return !!itemData?.GinID_N || rowData.SInqFlag === "*";
+	}, [itemData?.GinID_N]);
 
+	// 有進貨單連結
 	const sqtyDisabled = useCallback(
 		({ rowData }) => {
 			return (
-				rowData.SInQty > 0 ||
-				(!!itemData?.GinID_N &&
-					rowData.SQty !== rowData.SNotQty &&
-					rowData.SNotQty) > 0
+				!!itemData?.GinID_N
+				// Number(rowData.SInQty) > 0
+				// (!!itemData?.GinID_N &&
+				// 	rowData.SQty !== rowData.SNotQty &&
+				// 	rowData.SNotQty) > 0
 			);
 		},
 		[itemData?.GinID_N]
 	);
 
+	// 沒有進貨連結
 	const sNotQtyDisabled = useCallback(({ rowData }) => {
-		return rowData?.SNotQty && Number(rowData?.SNotQty) <= 0;
-	}, []);
+		return (
+			!itemData?.GinID_N
+			// !(Number(rowData.SInQty) > 0 ||
+			// 	!!itemData?.GinID_N)
+			// (rowData?.SNotQty && Number(rowData?.SNotQty) <= 0)
+		);
+	}, [itemData?.GinID_N]);
 
 	const supplierPickerDisabled = useMemo(() => {
 		return !!itemData?.GinID_N || !!itemData?.RqtID_N;
@@ -410,7 +421,7 @@ export const useC03 = () => {
 	);
 
 	const getProdInfo = useCallback(
-		async (prodId, { getValues }) => {
+		async (prodId, { formData }) => {
 			if (!prodId) {
 				toast.error("請先選擇商品", {
 					position: "top-center"
@@ -418,7 +429,7 @@ export const useC03 = () => {
 				return;
 			}
 
-			const supplierId = getValues("supplier")?.FactID;
+			const supplierId = formData.supplier?.FactID;
 			if (!supplierId) {
 				toast.error("請先選擇廠商", {
 					position: "top-center"
@@ -426,7 +437,7 @@ export const useC03 = () => {
 				return;
 			}
 
-			const ordDate = getValues("OrdDate");
+			const ordDate = formData?.OrdDate;
 			if (!isDate(ordDate)) {
 				toast.error("請先輸入採購日期", {
 					position: "top-center"
@@ -459,10 +470,10 @@ export const useC03 = () => {
 		[httpGetAsync, token]
 	);
 
-	const handleGridProdChange = useCallback(async ({ rowData, getValues }) => {
+	const handleGridProdChange = useCallback(async ({ rowData, formData }) => {
 		const prodInfo = rowData?.prod ? await getProdInfo(
 			rowData?.prod?.ProdID,
-			{ getValues }
+			{ formData }
 		) : null;
 
 		return {
@@ -478,48 +489,44 @@ export const useC03 = () => {
 		};
 	}, [getProdInfo]);
 
-	const updateGridRow = useCallback(({ newValue, fromIndex, getValues }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const isRowDeletable = useCallback(({ key, rowData }) => {
+		return !prodDisabled({ rowData });
+	}, [prodDisabled]);
+
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
 			...rowData,
 		};
 		// 商品
-		if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID) {
+		if (processedRowData.prod?.ProdID !== oldRowData.prod?.ProdID) {
 			processedRowData = await handleGridProdChange({
 				rowData: processedRowData,
-				getValues
+				formData
 			});
 			// console.log("handleGridProdChange done", processedRowData);
 		}
 
-		// 單價
-		if (rowData.SPrice !== oldRowData.SPrice) {
+		// 單價、數量改變, 同步金額
+		if (processedRowData.SQty !== oldRowData.SQty || processedRowData.SPrice !== oldRowData.SPrice) {
 			const newSubtotal =
-				!rowData.SPrice || !rowData.SQty ? "" : rowData.SPrice * rowData.SQty;
+				!processedRowData.SPrice || !processedRowData.SQty ? "" : processedRowData.SPrice * rowData.SQty;
 			processedRowData = {
 				...processedRowData,
 				["SAmt"]: newSubtotal,
 			};
 			console.log("SAmt→", newSubtotal);
+			updateResult.rows++;
 		}
-		// 數量改變
-		if (rowData.SQty !== oldRowData.SQty) {
+
+		// 數量改變同步未進量
+		if (processedRowData.SQty !== oldRowData.SQty) {
 			processedRowData = {
 				...processedRowData,
-				["SAmt"]:
-					!rowData.SPrice || !rowData.SQty
-						? ""
-						: rowData.SPrice * rowData.SQty,
+				["SNotQty"]: processedRowData.SQty,
 			};
-			// 新增時, 數量會同步到未進量
-			if (crud.creating) {
-				processedRowData = {
-					...processedRowData,
-					["SNotQty"]: rowData.SQty,
-				};
-			}
 		}
 
 		// 未進量改變
@@ -531,72 +538,76 @@ export const useC03 = () => {
 			};
 		}
 		return processedRowData;
-	}, [crud.creating, grid.gridData, handleGridProdChange]);
+	}, [grid.gridData, handleGridProdChange]);
 
-	const refreshAmt = useCallback(({ setValue, gridData }) => {
+	const updateAmt = useCallback(({ setValue, gridData }) => {
 		const subtotal = C03.getSubtotal(gridData);
 		setValue("OrdAmt_N", subtotal.toFixed(2));
 	}, []);
 
-	const buildGridChangeHandler = useCallback(
-		({ setValue, getValues, gridMeta }) =>
-			async (newValue, operations) => {
-				console.log("handleGridChange", operations);
-				console.log("newValue", newValue);
-				const newGridData = [...newValue];
-				let checkFailed = false;
-				for (const operation of operations) {
-					if (operation.type === "UPDATE") {
-						const updatedRows = await Promise.all(
-							newValue
-								.slice(
-									operation.fromRowIndex,
-									operation.toRowIndex
-								)
-								.map(async (item, index) => {
-									const updatedRow = await updateGridRow({
-										getValues,
-										fromIndex: operation.fromRowIndex,
-										newValue,
-									})(item, index);
-									return updatedRow;
-								})
-						)
-						newGridData.splice(
-							operation.fromRowIndex,
-							updatedRows.length,
-							...updatedRows
-						);
-					} else if (operation.type === "DELETE") {
-						// 列舉原資料
-						checkFailed = grid.gridData
-							.slice(operation.fromRowIndex, operation.toRowIndex)
-							.some((rowData, i) => {
-								if (prodDisabled({ rowData })) {
-									const rowIndex = operation.fromRowIndex + i;
-									toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
-										position: "top-center"
-									});
-									return true;
-								}
-								return false;
-							});
-					} else if (operation.type === "CREATE") {
-						console.log("dsg.CREATE");
-						// process CREATE here
-						gridMeta.toFirstColumn({ nextRow: true });
-					}
-				}
-				console.log("after changed", newGridData);
-				if (!checkFailed) {
-					grid.setGridData(newGridData);
-					// const subtotal = C03.getSubtotal(newGridData);
-					// setValue("OrdAmt_N", subtotal.toFixed(2));
-					refreshAmt({ gridData: newGridData, setValue });
-				}
-			},
-		[grid, refreshAmt, updateGridRow, prodDisabled]
-	);
+	const onGridChanged = useCallback(({ gridData, formData, setValue, updateResult }) => {
+		updateAmt({ setValue, gridData });
+	}, [updateAmt]);
+
+	// const buildGridChangeHandler = useCallback(
+	// 	({ setValue, getValues, gridMeta }) =>
+	// 		async (newValue, operations) => {
+	// 			console.log("handleGridChange", operations);
+	// 			console.log("newValue", newValue);
+	// 			const newGridData = [...newValue];
+	// 			let checkFailed = false;
+	// 			for (const operation of operations) {
+	// 				if (operation.type === "UPDATE") {
+	// 					const updatedRows = await Promise.all(
+	// 						newValue
+	// 							.slice(
+	// 								operation.fromRowIndex,
+	// 								operation.toRowIndex
+	// 							)
+	// 							.map(async (item, index) => {
+	// 								const updatedRow = await updateGridRow({
+	// 									getValues,
+	// 									fromIndex: operation.fromRowIndex,
+	// 									newValue,
+	// 								})(item, index);
+	// 								return updatedRow;
+	// 							})
+	// 					)
+	// 					newGridData.splice(
+	// 						operation.fromRowIndex,
+	// 						updatedRows.length,
+	// 						...updatedRows
+	// 					);
+	// 				} else if (operation.type === "DELETE") {
+	// 					// 列舉原資料
+	// 					checkFailed = grid.gridData
+	// 						.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 						.some((rowData, i) => {
+	// 							if (prodDisabled({ rowData })) {
+	// 								const rowIndex = operation.fromRowIndex + i;
+	// 								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
+	// 									position: "top-center"
+	// 								});
+	// 								return true;
+	// 							}
+	// 							return false;
+	// 						});
+	// 				} else if (operation.type === "CREATE") {
+	// 					console.log("dsg.CREATE");
+	// 					// process CREATE here
+	// 					gridMeta.toFirstColumn({ nextRow: true });
+	// 				}
+	// 			}
+	// 			console.log("after changed", newGridData);
+	// 			if (!checkFailed) {
+	// 				grid.setGridData(newGridData);
+	// 				// const subtotal = C03.getSubtotal(newGridData);
+	// 				// setValue("OrdAmt_N", subtotal.toFixed(2));
+	// 				updateAmt({ gridData: newGridData, setValue });
+	// 			}
+	// 		},
+	// 	[grid, updateAmt, prodDisabled]
+	// );
 
 	const onEditorSubmit = useCallback(
 		(data) => {
@@ -691,9 +702,9 @@ export const useC03 = () => {
 
 	// REJECT
 	const rejectAction = useAction();
-	const rejecting = useMemo(() => {
-		return !!rejectAction.state;
-	}, [rejectAction.state]);
+	// const rejecting = useMemo(() => {
+	// 	return !!rejectAction.state;
+	// }, [rejectAction.state]);
 
 	const handleReject = useCallback(
 		async (value) => {
@@ -745,9 +756,9 @@ export const useC03 = () => {
 			message: `確定要解除覆核採購單「${crud.itemData?.OrdID}」?`,
 			onConfirm: handleReject,
 			confirmText: "解除",
-			working: rejecting,
+			working: rejectAction.working,
 		});
-	}, [crud.itemData?.OrdID, dialogs, handleReject, rejecting]);
+	}, [crud.itemData?.OrdID, dialogs, handleReject, rejectAction.working]);
 
 	const onPrintSubmit = useCallback(
 		(data) => {
@@ -858,7 +869,7 @@ export const useC03 = () => {
 		createRow,
 		...grid,
 		grid,
-		buildGridChangeHandler,
+		// buildGridChangeHandler,
 		getRowKey,
 		prodDisabled,
 		spriceDisabled,
@@ -874,7 +885,7 @@ export const useC03 = () => {
 		promptReview,
 		cancelReview,
 		// 解除覆核
-		rejecting,
+		// rejecting,
 		handleReject,
 		promptReject,
 		// 列印
@@ -884,6 +895,9 @@ export const useC03 = () => {
 		onRefreshGridSubmitError,
 		selectById,
 		selectedItem,
-		...sideDrawer
+		...sideDrawer,
+		onGridChanged,
+		onUpdateRow,
+		isRowDeletable
 	};
 };

@@ -115,7 +115,7 @@ export const useZA03 = () => {
 					throw error || new Error("讀取權限失敗");
 				}
 			} catch (err) {
-				loadAuthGridAction.fail(err);
+				loadAuthGridAction.fail({ error: err });
 				toast.error(err?.message, {
 					position: "top-center"
 				});
@@ -650,7 +650,7 @@ export const useZA03 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				addAuthAction.fail(err);
+				addAuthAction.fail({ error: err });
 				toast.error(Errors.getMessage("新增權限失敗", err), {
 					position: "top-center"
 				});
@@ -720,7 +720,7 @@ export const useZA03 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				copyAuthAction.fail(err);
+				copyAuthAction.fail({ error: err });
 				toast.error(Errors.getMessage("複製權限失敗", err), {
 					position: "top-center"
 				});
@@ -866,7 +866,7 @@ export const useZA03 = () => {
 		console.log(`handleAuthSave`, dirtyRows);
 		// return;
 		try {
-			saveAuthAction.start("儲存中...");
+			saveAuthAction.start({ message: "儲存中..." });
 			const { status, error } = await httpPatchAsync({
 				url: `v1/ou/user/authorities`,
 				bearer: token,

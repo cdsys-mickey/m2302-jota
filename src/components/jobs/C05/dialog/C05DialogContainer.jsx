@@ -20,6 +20,8 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { toast } from "react-toastify";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
 import C05Drawer from "../C05Drawer";
+import useDebounce from "@/shared-hooks/useDebounce";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -46,7 +48,11 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 		return !c05.editing || !supplier || !rtnDate;
 	}, [c05.editing, rtnDate, supplier]);
 
+	const debouncedRtnDate = useDebounce(rtnDate, 800);
 
+	useChangeTracking(() => {
+		c05.refreshGrid({ formData: form.getValues(), setValue: form.setValue });
+	}, [debouncedRtnDate]);
 
 	const scrollable = useScrollable({
 		height,
@@ -284,10 +290,10 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 							setValue: form.setValue,
 							getValues: form.getValues,
 						})}
-						handleRtnDateChanged={c05.handleRtnDateChanged({
-							setValue: form.setValue,
-							getValues: form.getValues,
-						})}
+						// handleRtnDateChanged={c05.handleRtnDateChanged({
+						// 	setValue: form.setValue,
+						// 	getValues: form.getValues,
+						// })}
 						supplier={supplier}
 						isSupplierNameDisabled={c05.isSupplierNameDisabled}
 						purchaseOrdersDisabled={c05.purchaseOrdersDisabled}

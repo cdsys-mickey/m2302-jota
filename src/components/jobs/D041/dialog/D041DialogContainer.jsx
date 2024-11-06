@@ -96,7 +96,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						packageType: "m",
+						packageType: "b",
 						forId: true,
 						disableClearable: true,
 						slotProps: {
@@ -180,7 +180,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 						size: "medium",
 					})
 				),
-				title: "重",
+				title: "重工",
 				minWidth: 38,
 				maxWidth: 38,
 				disabled: readOnly || d041.reworkedDisabled,
@@ -198,8 +198,8 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "試贈樣",
-				minWidth: 80,
-				maxWidth: 80,
+				minWidth: 70,
+				maxWidth: 70,
 				disabled: readOnly || d041.stypeDisabled,
 			},
 			{

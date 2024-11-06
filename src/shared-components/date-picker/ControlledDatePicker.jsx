@@ -1,16 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React from "react";
-import { TextField } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
-import { isValid } from "date-fns";
-import { DatePicker, DesktopDatePicker } from "@mui/x-date-pickers";
 import DateFormats from "@/shared-modules/sd-date-formats";
-import PropTypes from "prop-types";
-import { useCallback } from "react";
-import { useContext } from "react";
-import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
-import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { DatePicker } from "@mui/x-date-pickers";
+import PropTypes from "prop-types";
+import React, { useCallback, useContext } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
+import { useMemo } from "react";
+import Forms from "@/shared-modules/sd-forms";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -34,12 +31,13 @@ const ControlledDatePicker = ({
 	invalidDateMessage = "日期格式錯誤",
 	required = false,
 	rules,
+	validate,
 	// labelShrink,
 	// variant = "outlined",
 	...rest
 }) => {
 	// console.log("rendering ControlledDatePicker");
-	const { setError, clearErrors } = useFormContext();
+	// const { setError, clearErrors } = useFormContext();
 	const { isFieldDisabled, focusNextField, disableEnter } = useContext(FormMetaContext) || {};
 	// const { setFocus } = useFormContext() || {};
 	const form = useFormContext();
@@ -67,6 +65,7 @@ const ControlledDatePicker = ({
 		async (e) => {
 			//if (e.key === "Enter" || e.key === "Tab") {
 			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
+				e.preventDefault();
 				const error = await getError();
 				if (error) {
 					// 錯誤則不往下傳遞給 DSGGrid
@@ -88,6 +87,19 @@ const ControlledDatePicker = ({
 		[disableEnter, getError, focusNextField, form, name, isFieldDisabled]
 	);
 
+	const _rules = useMemo(() => {
+		return {
+			...rules,
+			validate: {
+				...rules?.validate,
+				validateDate: Forms.getDateValidator({
+					fieldName: label,
+					required
+				})
+			}
+		}
+	}, [label, required, rules])
+
 	if (!name) {
 		return <DatePicker {...rest} />;
 	}
@@ -97,7 +109,8 @@ const ControlledDatePicker = ({
 			name={name}
 			defaultValue={defaultValue || null}
 			control={control}
-			rules={rules}
+			// rules={rules}
+			rules={_rules}
 			render={({
 				field: { ref, value, onChange },
 				fieldState: { error },
@@ -125,6 +138,8 @@ const ControlledDatePicker = ({
 									shrink: true,
 								})
 							},
+							error: !!error,
+							helperText: error?.message
 						},
 						sx: {
 							...(dense && {
@@ -157,17 +172,18 @@ const ControlledDatePicker = ({
 									onChanged(newValue);
 								}
 
-								if (isValid(newValue)) {
-									if (clearErrors) {
-										clearErrors(name);
-									}
-								} else {
-									if (setError) {
-										setError(name, {
-											message: "日期格式錯誤",
-										});
-									}
-								}
+								// if (isValid(newValue)) {
+								// 	if (clearErrors) {
+								// 		clearErrors(name);
+								// 	}
+								// }
+								// else {
+								// 	if (setError) {
+								// 		setError(name, {
+								// 			message: "日期格式錯誤",
+								// 		});
+								// 	}
+								// }
 							}
 					}
 					onKeyDown={handleKeyDown}
@@ -182,6 +198,7 @@ const ControlledDatePicker = ({
 					// }}
 					{...rest}
 					invalidDateMessage={invalidDateMessage}
+
 				/>
 			)
 			}
@@ -207,6 +224,7 @@ ControlledDatePicker.propTypes = {
 	required: PropTypes.bool,
 	rules: PropTypes.object,
 	clearable: PropTypes.bool,
+	validate: PropTypes.bool,
 	// variant: PropTypes.string,
 };
 export default ControlledDatePicker;

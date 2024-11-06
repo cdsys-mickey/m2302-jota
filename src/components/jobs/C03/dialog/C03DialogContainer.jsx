@@ -105,8 +105,8 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 	}, [c03, supplier]);
 
 	const readOnly = useMemo(() => {
-		return !c03.editing || !employee || !supplier || !ordDate || !supplier || (supplier?.FactID === "*" && !supplierName);
-	}, [c03.editing, employee, ordDate, supplier, supplierName]);
+		return !c03.editing || !!c03.itemData?.GinID_N || !employee || !supplier || !ordDate || !supplier || (supplier?.FactID === "*" && !supplierName);
+	}, [c03.editing, c03.itemData?.GinID_N, employee, ordDate, supplier, supplierName]);
 
 	const columns = useMemo(
 		() => [
@@ -133,12 +133,16 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 						// disableOpenOnInput: true,
 						// hideControlsOnActive: false,
 						// autoHighlight: true,
+						focusOnDisabled: true,
 					})
 				),
 				title: "商品編號",
 				minWidth: 180,
 				maxWidth: 180,
-				disabled: readOnly,
+
+				disabled: !c03.editing || c03.prodDisabled,
+				// 第一個 column 不能唯讀
+				// disabled: readOnly,
 			},
 			{
 				...keyColumn(
@@ -180,14 +184,14 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "單價",
 				minWidth: 100,
-				disabled: readOnly || c03.spriceDisabled,
+				disabled: !c03.editing || c03.spriceDisabled,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "數量",
 				minWidth: 90,
 				grow: 1,
-				disabled: readOnly || c03.sqtyDisabled,
+				disabled: !c03.editing || c03.sqtyDisabled,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
@@ -201,17 +205,17 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 				title: "未進量",
 				minWidth: 90,
 				grow: 1,
-				disabled: readOnly || c03.sNotQtyDisabled,
+				disabled: !c03.editing || c03.sNotQtyDisabled,
 			},
 		],
-		[c03.sNotQtyDisabled, c03.spriceDisabled, c03.sqtyDisabled, readOnly]
+		[c03.editing, c03.prodDisabled, c03.sNotQtyDisabled, c03.spriceDisabled, c03.sqtyDisabled]
 	);
 
 	const gridMeta = useDSGMeta({
 		data: c03.grid.gridData,
 		columns,
 		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
+		lastCell: c03.creating ? DSGLastCellBehavior.CREATE_ROW : DSGLastCellBehavior.STOP_EDITING
 	})
 
 	const isFieldDisabled = useCallback((field) => {

@@ -111,7 +111,7 @@ export const useA01 = ({ token, mode }) => {
 		handlePopperClose,
 	] = useToggle(false);
 
-	const url = useMemo(() => {
+	const API_URL = useMemo(() => {
 		switch (mode) {
 			case A01.Mode.NEW_PROD:
 				return "v1/new-prods";
@@ -120,8 +120,12 @@ export const useA01 = ({ token, mode }) => {
 		}
 	}, [mode]);
 
+	const PROD = useMemo(() => {
+		return mode === A01.Mode.NEW_PROD ? "新商品" : "商品";
+	}, [mode])
+
 	const listLoader = useInfiniteLoader({
-		url: url,
+		url: API_URL,
 		bearer: token,
 		initialFetchSize: 50,
 		parans: {
@@ -301,7 +305,7 @@ export const useA01 = ({ token, mode }) => {
 			try {
 				// const encodedProdId = encodeURIComponent(prodId);
 				const { status, payload, error } = await httpGetAsync({
-					url: url,
+					url: API_URL,
 					data: {
 						id,
 					},
@@ -329,7 +333,7 @@ export const useA01 = ({ token, mode }) => {
 				);
 			}
 		},
-		[comboGrid, crud, httpGetAsync, mode, token, transGrid, url]
+		[comboGrid, crud, httpGetAsync, mode, token, transGrid, API_URL]
 	);
 
 	const handleSelect = useCallback(
@@ -384,7 +388,7 @@ export const useA01 = ({ token, mode }) => {
 			try {
 				crud.startCreating();
 				const { status, error } = await httpPostAsync({
-					url: url,
+					url: API_URL,
 					data: data,
 					bearer: token,
 				});
@@ -426,7 +430,7 @@ export const useA01 = ({ token, mode }) => {
 				});
 			}
 		},
-		[crud, httpPostAsync, listLoader, mode, token, url]
+		[crud, httpPostAsync, listLoader, mode, token, API_URL]
 	);
 
 	const handleUpdate = useCallback(
@@ -435,7 +439,7 @@ export const useA01 = ({ token, mode }) => {
 				crud.startUpdating();
 				// const oldId = crud.itemData?.ProdID;
 				const { status, error } = await httpPutAsync({
-					url: url,
+					url: API_URL,
 					data: data,
 					bearer: token,
 				});
@@ -463,7 +467,7 @@ export const useA01 = ({ token, mode }) => {
 				});
 			}
 		},
-		[crud, httpPutAsync, url, token, mode, loadItem, listLoader]
+		[crud, httpPutAsync, API_URL, token, mode, loadItem, listLoader]
 	);
 
 	const onCounterSubmit = useCallback(
@@ -538,7 +542,7 @@ export const useA01 = ({ token, mode }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A01.onSubmitError`, err);
 		toast.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出",
 			{
 				position: "top-center",
 			}
@@ -584,17 +588,16 @@ export const useA01 = ({ token, mode }) => {
 				try {
 					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
-						url:
-							mode === A01.Mode.NEW_PROD
-								? `v1/new-prods/${crud.itemData?.ProdID}`
-								: `v1/prods/${crud.itemData?.ProdID}`,
+						url: API_URL,
+						params: {
+							id: crud.itemData?.ProdID
+						},
 						bearer: token,
 					});
 					crud.cancelAction();
 					if (status.success) {
 						toast.success(
-							`成功删除${mode === A01.Mode.NEW_PROD ? "新" : ""
-							}商品${crud.itemData.ProdData}`
+							`成功删除${PROD}${crud.itemData.ProdData}`
 						);
 						listLoader.loadList({
 							refresh: true,
@@ -611,7 +614,7 @@ export const useA01 = ({ token, mode }) => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, listLoader, mode, token]);
+	}, [API_URL, PROD, crud, dialogs, httpDeleteAsync, listLoader, token]);
 
 	// PRINT
 	const printAction = useAction();
@@ -634,11 +637,12 @@ export const useA01 = ({ token, mode }) => {
 	}, [reviewAction.state]);
 
 	const handleReview = useCallback(
-		async (value) => {
+		async (data) => {
+			const { value } = data;
 			console.log(`handleReview`, value);
 			try {
 				const { status, error } = await httpPatchAsync({
-					url: `v1/new-prods/reviewed`,
+					url: `${API_URL}/reviewed`,
 					data: {
 						...crud.itemData,
 						OfficialProdID: value,
@@ -663,14 +667,14 @@ export const useA01 = ({ token, mode }) => {
 				});
 			}
 		},
-		[crud, httpPatchAsync, listLoader, reviewAction, token]
+		[API_URL, crud, httpPatchAsync, listLoader, reviewAction, token]
 	);
 
 	const promptReview = useCallback(() => {
-		dialogs.confirm({
+		dialogs.prompt({
 			title: "確認覆核",
 			label: "正式商品編號",
-			placeholder: "請輸入正式商品編號",
+			message: "請輸入正式商品編號",
 			onConfirm: handleReview,
 			value: crud.itemData?.ProdID || "",
 			confirmText: "通過",
@@ -827,6 +831,8 @@ export const useA01 = ({ token, mode }) => {
 			["SProdData"]: prod?.ProdData || "",
 		};
 	}, []);
+
+
 
 	const handleComboGridChange = useCallback(
 		(newValue, operations) => {

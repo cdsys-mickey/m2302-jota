@@ -112,7 +112,7 @@ export const useC01 = () => {
 						name: "prod",
 						forId: true,
 						withStock: true,
-						packageType: "i",
+						packageType: "b",
 						// queryRequired: true,
 						disableClearable: true,
 						slotProps: {
@@ -468,7 +468,7 @@ export const useC01 = () => {
 				console.log("checkFailed");
 			}
 		},
-		[handleGridProdChange, handleGridSupplierChange, prodDisabled, grid]
+		[grid, handleGridProdChange, handleGridSupplierChange, prodDisabled, gridMeta]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -573,7 +573,7 @@ export const useC01 = () => {
 					console.log("to-order.payload", payload);
 
 					if (!payload.OrdIDs) {
-						toast.error("沒有形成採購單，請檢查內容後重新執行", {
+						toast.error("沒有形成採購單，請確認供應商等欄位是否有確實填寫", {
 							position: "top-center",
 						});
 						transformAction.clear();
@@ -593,7 +593,7 @@ export const useC01 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				transformAction.fail(err);
+				transformAction.fail({ error: err });
 				toast.error(Errors.getMessage("形成採購單失敗", err), {
 					position: "top-center"
 				});
@@ -655,7 +655,7 @@ export const useC01 = () => {
 					console.log("to-order.payload", payload);
 
 					if (!payload.OrdIDs) {
-						toast.error("沒有形成採購單，請檢查內容後重新執行", {
+						toast.error("沒有形成採購單，請確認供應商等欄位是否有確實填寫", {
 							position: "top-center",
 						});
 						transformListAction.clear();
@@ -675,7 +675,7 @@ export const useC01 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				transformListAction.fail(err);
+				transformListAction.fail({ error: err });
 				toast.error(Errors.getMessage("形成採購單失敗", err), {
 					position: "top-center"
 				});

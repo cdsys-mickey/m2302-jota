@@ -7,10 +7,13 @@ import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
+import { B012Context } from "@/contexts/B012/B012Context";
+import { BContext } from "@/contexts/B/BContext";
 
 export const B032QuoteGridContainer = (props) => {
 	const { ...rest } = props;
-	const b032 = useContext(B032Context);
+	const b = useContext(BContext);
+	const b032 = useContext(b.forNew ? B032Context : B012Context);
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
 	const formMeta = useContext(FormMetaContext);

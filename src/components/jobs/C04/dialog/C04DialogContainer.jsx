@@ -21,6 +21,8 @@ import C04Drawer from "../C04Drawer";
 import C04DialogForm from "./C04DialogForm";
 import { C04DialogToolbarContainer } from "./toolbar/C04DialogToolbarContainer";
 import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import useDebounce from "@/shared-hooks/useDebounce";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C04DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -42,7 +44,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		control: form.control,
 	});
 
-	const rstDate = useWatch({
+	const stkDate = useWatch({
 		name: "GinDate",
 		control: form.control,
 	});
@@ -99,8 +101,8 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 
 	// -------------------- CELL --------------------
 	const readOnly = useMemo(() => {
-		return !c04.editing || !supplier || !rstDate;
-	}, [c04.editing, rstDate, supplier]);
+		return !c04.editing || !supplier || !stkDate;
+	}, [c04.editing, stkDate, supplier]);
 
 	const columns = useMemo(
 		() => [
@@ -260,7 +262,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 	}, [ordId, supplier, supplierNameDisable]);
 
 	const handleLastField = useCallback(() => {
-		if (!rstDate) {
+		if (!stkDate) {
 			toast.error("請先輸入進貨日期", {
 				position: "top-center",
 			});
@@ -276,7 +278,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		}
 
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [gridMeta, form, rstDate, supplier]);
+	}, [gridMeta, form, stkDate, supplier]);
 
 	const formMeta = useFormMeta(
 		`
@@ -294,6 +296,14 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 			lastField: handleLastField
 		}
 	)
+
+	// const debounced = useDebounce({
+	// 	stkDate
+	// }, 300);
+
+	// useChangeTracking(() => {
+	// 	c04.refreshGrid({ formData: form.getValues(), setValue: form.setValue });
+	// }, [debounced]);
 
 	useEffect(() => {
 		if (c04.itemDataReady) {
@@ -345,7 +355,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 							getValues: form.getValues,
 							// handleRefreshGridSubmit,
 						})}
-						handleRstDateChanged={c04.handleRstDateChanged({
+						handleStkDateChanged={c04.handleStkDateChanged({
 							setValue: form.setValue,
 							getValues: form.getValues,
 							// handleRefreshGridSubmit,

@@ -1,26 +1,20 @@
-import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import C02 from "@/modules/md-c02";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useAction } from "@/shared-hooks/useAction";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
-import { useAction } from "@/shared-hooks/useAction";
-import { useMemo } from "react";
-import useHttpPost from "@/shared-hooks/useHttpPost";
+import Forms from "@/shared-modules/sd-forms";
+import { isValid } from "date-fns";
 import { nanoid } from "nanoid";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
-import { keyColumn } from "react-datasheet-grid";
-import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useAppModule } from "./useAppModule";
 
 export const useC02 = () => {
 	const crud = useContext(CrudContext);
@@ -392,6 +386,7 @@ export const useC02 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error("onEditorSubmitError", err);
+		Forms.onSubmitError(err);
 	}, []);
 
 	// REVIEW
@@ -441,7 +436,7 @@ export const useC02 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				reviewAction.fail(err);
+				reviewAction.fail({ error: err });
 				toast.error(Errors.getMessage("覆核失敗", err), {
 					position: "top-center"
 				});
@@ -466,9 +461,9 @@ export const useC02 = () => {
 
 	// REJECT
 	const rejectAction = useAction();
-	const rejecting = useMemo(() => {
-		return !!rejectAction.state;
-	}, [rejectAction.state]);
+	// const rejecting = useMemo(() => {
+	// 	return !!rejectAction.state;
+	// }, [rejectAction.state]);
 
 	const handleReject = useCallback(
 		async (value) => {
@@ -496,6 +491,7 @@ export const useC02 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
+				rejectAction.fail({ error: err });
 				toast.error(Errors.getMessage("解除覆核失敗", err), {
 					position: "top-center"
 				});
@@ -510,9 +506,9 @@ export const useC02 = () => {
 			message: `確定要解除覆核請購單「${crud.itemData?.RqtID}」?`,
 			onConfirm: handleReject,
 			confirmText: "解除",
-			working: rejecting,
+			working: rejectAction.working,
 		});
-	}, [crud.itemData?.RqtID, dialogs, handleReject, rejecting]);
+	}, [crud.itemData?.RqtID, dialogs, handleReject, rejectAction.working]);
 
 	const onPrintSubmit = useCallback(
 		(data) => {
@@ -546,6 +542,13 @@ export const useC02 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	// const validateDate = useCallback((value) => {
+	// 	if (value != null && !isValid(value)) {
+	// 		return "日期格式錯誤";
+	// 	}
+	// 	return true;
+	// }, []);
+
 	return {
 		...crud,
 		...listLoader,
@@ -578,7 +581,6 @@ export const useC02 = () => {
 		cancelReview,
 		getCurrentIndex,
 		// 解除覆核
-		rejecting,
 		handleReject,
 		promptReject,
 		// 列印
@@ -587,6 +589,7 @@ export const useC02 = () => {
 		// 推播
 		selectedItem,
 		selectById,
-		...sideDrawer
+		...sideDrawer,
+		// validateDate
 	};
 };

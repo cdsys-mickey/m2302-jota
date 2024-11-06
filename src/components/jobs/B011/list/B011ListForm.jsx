@@ -1,20 +1,31 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
-import ProdPicker from "@/components/picker/ProdPicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
+import { B011Context } from "@/contexts/B011/B011Context";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import { Grid } from "@mui/material";
+import { useContext } from "react";
 import { memo } from "react";
+import PropTypes from "prop-types";
+import { B031Context } from "@/contexts/B031/B031Context";
+import { BContext } from "@/contexts/B/BContext";
+import { useMemo } from "react";
 
 const B011ListForm = memo((props) => {
-	const { ...rest } = props;
+	const { forNew = false, ...rest } = props;
+	const b = useContext(BContext);
+	const b011 = useContext(b.forNew ? B031Context : B011Context);
+
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
 				<Grid item xs={24} sm={24} md={6}>
 					<CustomerPicker
+						forNew={b.forNew}
 						name="lvCust"
-						label="客戶代碼起"
+						label={b.forNew ? "新客戶代碼" : "客戶代碼"}
 						disableOpenOnInput
+						withQuotes
 						slotProps={{
 							paper: {
 								sx: {
@@ -25,66 +36,22 @@ const B011ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item xs={24} sm={24} md={6}>
-					<CustomerPicker
-						name="lvCust2"
-						label="客戶代碼訖"
-						disableOpenOnInput
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						}}
-					/>
-				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<ProdPicker
-						name="lvProd"
-						// forId
-						label="商品編號起"
-						autoFocus
-						disableOpenOnInput
+					<EmployeePicker
+						label="報價人員"
+						name="lvEmployee"
 						virtualize
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						}}
-					/>
-				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<ProdPicker
-						name="lvProd2"
-						// forId
-						label="商品編號訖"
-						autoFocus
 						disableOpenOnInput
-						virtualize
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						}}
+						selectOnFocus
+						withQuotes
+					// disableClearable
 					/>
 				</Grid>
 				<Grid item xs={24} sm={24} md={6}>
 					<DatePickerWrapper
 						name="lvDate"
-						label="報價日期起"
+						label="報價日期"
 						clearable
-					// dense
-					/>
-				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<DatePickerWrapper
-						name="lvDate2"
-						label="報價日期訖"
-						clearable
+						validate
 					// dense
 					/>
 				</Grid>
@@ -95,7 +62,7 @@ const B011ListForm = memo((props) => {
 })
 
 B011ListForm.propTypes = {
-
+	forNew: PropTypes.bool
 }
 
 B011ListForm.displayName = "B011ListForm";

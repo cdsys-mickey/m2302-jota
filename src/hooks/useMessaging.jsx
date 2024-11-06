@@ -96,6 +96,10 @@ export const useMessaging = () => {
 			toast(msg, {
 				type: Messaging.asToastifyType(payload.type),
 				onClick: () => handleGotoJob(payload),
+				// 警告或錯誤才將訊息顯示於上方
+				// ...(["WARNING", "ERROR"].includes(payload.type) && {
+				// 	position: "top-center",
+				// })
 			});
 
 			loadUnreadCount();

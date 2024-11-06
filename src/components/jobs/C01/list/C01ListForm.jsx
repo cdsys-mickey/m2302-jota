@@ -41,6 +41,7 @@ const C01ListForm = memo((props) => {
 					<DatePickerWrapper
 						name="date"
 						label="請購日期 (≧)"
+						validate
 					// dense
 					/>
 				</Grid>
@@ -53,7 +54,7 @@ const C01ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item xs={12} sm={6}>
-					<EmployeePicker name="employee" label="請購人員" disableOpenOnInput
+					<EmployeePicker name="reqEmployee" label="請購人員" disableOpenOnInput
 					// dense 
 					/>
 				</Grid>

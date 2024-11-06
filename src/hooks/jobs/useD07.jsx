@@ -499,8 +499,8 @@ export const useD07 = () => {
 		[]
 	);
 
-	const updateGridRow = useCallback(({ fromIndex, newValue }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const updateGridRow = useCallback(({ fromRowIndex, newValue }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -539,7 +539,7 @@ export const useD07 = () => {
 								)
 								.map(async (item, index) => {
 									const updatedRow = await updateGridRow({
-										fromIndex: operation.fromRowIndex,
+										fromRowIndex: operation.fromRowIndex,
 										newValue,
 									})(item, index);
 									return updatedRow;

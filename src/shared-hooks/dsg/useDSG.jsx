@@ -15,13 +15,11 @@ const DEFAULT_SET_OPTS = {
 	prev: null,
 };
 
-const defaultOnDeleteRow = ({
-	key,
-	rowData,
-	updateResult
-}) => {
-
-}
+const DEFAULT_ON_DELETE_ROW = ({ fromRowIndex, updateResult }) => (rowData, index) => {
+	const rowIndex = fromRowIndex + index;
+	console.log(`刪除第 ${rowIndex + 1} 列...`, rowData);
+	updateResult.rows++;
+};
 
 export const useDSG = ({
 	gridId = "NO_NAME",
@@ -350,8 +348,10 @@ export const useDSG = ({
 		[gridId, prevGridData, handleDirtyCheck]
 	);
 
+
+
 	const buildGridChangeHandler = useCallback(
-		({ setValue, getValues, gridMeta, onUpdateRow, onDeleteRow, onDeleteRowFailed, onGridChanged, ...opts }) =>
+		({ setValue, getValues, gridMeta, onUpdateRow, onDeleteRow = DEFAULT_ON_DELETE_ROW, isRowDeletable, onDeleteRowFailed, onGridChanged, isRowCreatable = true, ...opts }) =>
 			async (newValue, operations) => {
 				const { focusFirstColumnOnCreate = true, dirtyCheckOpts = {
 					// debug: true
@@ -379,7 +379,7 @@ export const useDSG = ({
 										const updatedRow = await onUpdateRow({
 											formData,
 											setValue,
-											fromIndex: operation.fromRowIndex,
+											fromRowIndex: operation.fromRowIndex,
 											newValue,
 											gridMeta,
 											updateResult
@@ -411,7 +411,8 @@ export const useDSG = ({
 						// 檢查是否可刪除
 						checkFailed = deletingRows
 							.some((rowData, i) => {
-								if (onDeleteRowFailed && onDeleteRowFailed({ rowData })) {
+								const key = _.get(rowData, keyColumn);
+								if (isRowDeletable && !isRowDeletable({ key, rowData })) {
 									const rowIndex = operation.fromRowIndex + i;
 									toast.error(
 										`不可刪除第 ${rowIndex + 1} 筆商品`
@@ -422,17 +423,24 @@ export const useDSG = ({
 							});
 						if (!checkFailed) {
 							const promises = deletingRows.map(async (rowData, index) => {
-
 								const key = _.get(rowData, keyColumn);
 								if (!key) {
 									console.error(`key(${keyColumn}) 的內容是空的`);
 								} else {
 									if (onDeleteRow) {
-										await onDeleteRow({
-											key,
-											rowData,
-											updateResult
-										});
+										try {
+											await onDeleteRow({
+												fromRowIndex: operation.fromRowIndex,
+												updateResult
+											})(rowData, index);
+										} catch (err) {
+											if (onDeleteRowFailed) {
+												await onDeleteRowFailed({
+													fromRowIndex: operation.fromRowIndex,
+													updateResult
+												})(rowData, index);
+											}
+										}
 									}
 									if (!deletedIds.has(key)) {
 										deletedIds.add(key);
@@ -443,13 +451,29 @@ export const useDSG = ({
 							await Promise.all(promises);
 						}
 					} else if (operation.type === "CREATE") {
-						console.log("dsg.CREATE");
-						// process CREATE here
-						if (focusFirstColumnOnCreate) {
-							if (!gridMeta) {
-								console.warn("focusFirstColumnOnCreate is TRUE, but gridMeta is not provided");
+						if (isRowCreatable) {
+							console.log("dsg.CREATE");
+							// process CREATE here
+							if (focusFirstColumnOnCreate) {
+								if (!gridMeta) {
+									console.warn("focusFirstColumnOnCreate is TRUE, but gridMeta is not provided");
+								}
+								gridMeta?.toFirstColumn({ nextRow: true });
 							}
-							gridMeta?.toFirstColumn({ nextRow: true });
+						} else {
+							checkFailed = true;
+							if (!gridMeta) {
+								console.warn("isRowCreatable is FALSE, but gridMeta is not provided, setActiveCell failed");
+							}
+							const activeCell = gridMeta.getActiveCell();
+							console.log("getActiveCell", activeCell);
+							// setActiveCell back to prev in next render cycle
+							toast.error("新增功能目前已停用", {
+								position: "top-center"
+							})
+							setTimeout(() => {
+								gridMeta.setActiveCell(activeCell)
+							});
 						}
 					}
 				}
@@ -458,7 +482,8 @@ export const useDSG = ({
 					setGridData(newGridData);
 				}
 				if (onGridChanged && !asyncRef.current.supressEvents && updateResult.rows > 0) {
-					onGridChanged({ gridData: newGridData, formData, setValue, result: updateResult });
+					console.log("onGridChanged", updateResult.rows);
+					onGridChanged({ gridData: newGridData, formData, setValue, updateResult });
 				}
 			},
 		[deletedIds, gridData, handleDirtyCheck, keyColumn, prevGridData]

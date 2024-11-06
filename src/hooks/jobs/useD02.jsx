@@ -15,6 +15,7 @@ import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { nanoid } from "nanoid";
 import { useSideDrawer } from "../useSideDrawer";
+import usePwordCheck from "../usePwordCheck";
 
 export const useD02 = () => {
 	const crud = useContext(CrudContext);
@@ -22,6 +23,7 @@ export const useD02 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+
 	const appModule = useAppModule({
 		token,
 		moduleId: "D02",
@@ -29,6 +31,7 @@ export const useD02 = () => {
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 
+	const pwordCheck = usePwordCheck();
 	// const qtyMap = useMemo(() => new Map(), []);
 
 	const [
@@ -120,9 +123,12 @@ export const useD02 = () => {
 			RetDate: new Date(),
 		};
 		crud.promptCreating({ data });
-		// qtyMap.clear();
 		grid.initGridData(data.prods, { createRow });
 	}, [createRow, crud, grid]);
+
+	const promptCreatingWithCheck = useCallback(() => {
+		pwordCheck.performCheck({ callback: promptCreating })
+	}, [promptCreating, pwordCheck]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -294,6 +300,10 @@ export const useD02 = () => {
 			},
 		});
 	}, [crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
+
+	const confirmDeleteWithCheck = useCallback(() => {
+		pwordCheck.performCheck({ callback: confirmDelete })
+	}, [confirmDelete, pwordCheck]);
 
 	const handleReset = useCallback(
 		({ reset }) =>
@@ -547,8 +557,8 @@ export const useD02 = () => {
 	// 	return rowData;
 	// }, []);
 
-	const updateGridRow = useCallback(({ fromIndex, newValue }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const updateGridRow = useCallback(({ fromRowIndex, newValue }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -587,7 +597,7 @@ export const useD02 = () => {
 								)
 								.map(async (item, index) => {
 									const updatedRow = await updateGridRow({
-										fromIndex: operation.fromRowIndex,
+										fromRowIndex: operation.fromRowIndex,
 										newValue,
 									})(item, index);
 									return updatedRow;
@@ -785,6 +795,10 @@ export const useD02 = () => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
+	const handleCheckEditableWithCheck = useCallback(() => {
+		pwordCheck.performCheck({ callback: handleCheckEditable });
+	}, [handleCheckEditable, pwordCheck]);
+
 	return {
 		...crud,
 		...listLoader,
@@ -799,7 +813,9 @@ export const useD02 = () => {
 		confirmQuitUpdating,
 		confirmReturnReading,
 		confirmDelete,
+		confirmDeleteWithCheck,
 		promptCreating,
+		promptCreatingWithCheck,
 		onEditorSubmit,
 		onEditorSubmitError,
 		// Grid
@@ -825,6 +841,7 @@ export const useD02 = () => {
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
+		handleCheckEditableWithCheck,
 		// loadStockPword,
 		// Popper
 		popperOpen,

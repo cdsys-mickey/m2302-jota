@@ -4,7 +4,8 @@ import { LastFieldBehavior } from "../../../shared-contexts/form-meta/LastFieldB
 export const useInputTest = () => {
 	const formMeta = useFormMeta(
 		`
-		picker2,
+		prodPicker,
+		prodPicker2,
 		picker1,
 		picker3,
 		check1,

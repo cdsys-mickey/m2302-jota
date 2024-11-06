@@ -78,7 +78,9 @@ export const usePersonalSettings = () => {
 						type: "manual",
 						message: "密碼驗證失敗",
 					});
-					verifyAction.fail(err);
+					verifyAction.fail({
+						error: err
+					});
 				}
 			},
 		[httpPostAsync, operator, verifyAction]

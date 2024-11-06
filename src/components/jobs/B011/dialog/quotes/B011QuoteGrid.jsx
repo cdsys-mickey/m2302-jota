@@ -18,6 +18,7 @@ const B011QuoteGrid = memo((props) => {
 		readOnly,
 		gridRef,
 		data,
+		creating,
 		onChange,
 		getRowClassName,
 		height = 300,
@@ -42,7 +43,7 @@ const B011QuoteGrid = memo((props) => {
 			value={data}
 			onChange={onChange}
 			// columns={columns}
-			addRowsComponent={DSGAddRowsToolbar}
+
 			disableExpandSelection
 			contextMenuComponent={ContextMenu}
 			createRow={createRow}
@@ -55,7 +56,8 @@ const B011QuoteGrid = memo((props) => {
 
 B011QuoteGrid.propTypes = {
 	getRowKey: PropTypes.func,
-	onChange: PropTypes.func
+	onChange: PropTypes.func,
+	creating: PropTypes.bool
 };
 
 B011QuoteGrid.displayName = "B011QuoteGrid";

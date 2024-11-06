@@ -14,7 +14,8 @@ export const useOptionPickerComponent = (opts) => {
 		focusNextCell,
 		setRowData,
 		stopEditing,
-		readOnly
+		readOnly,
+		focusOnDisabled = false,
 		// Control Mehotds
 		// insertRowBelow,
 		// Context Method,
@@ -63,14 +64,14 @@ export const useOptionPickerComponent = (opts) => {
 	// 先單純靠 OptionPicker 內的
 	// 跳過停用 Cell
 	useLayoutEffect(() => {
-		if (skipDisabled && active && disabled && !readOnly) {
+		if (skipDisabled && active && disabled && !focusOnDisabled && !readOnly) {
 			if (focusNextCell) {
 				focusNextCell(cell);
 			} else {
 				console.log("focusNextCell is null");
 			}
 		}
-	}, [active, cell, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+	}, [active, cell, columnIndex, disabled, focusNextCell, focusOnDisabled, readOnly, rowIndex, skipDisabled]);
 
 	return {
 		ref,

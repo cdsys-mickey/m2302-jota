@@ -25,6 +25,7 @@ const FormFieldLabel = memo(
 			emptyText = "(空白)",
 			sx = [],
 			flex = false,
+			stringify,
 			inline = false,
 			title,
 			arrow,
@@ -40,8 +41,9 @@ const FormFieldLabel = memo(
 			return labelStyles || (noWrap ? MuiStyles.FORM_LABEL_STYLES_NOWRAP : MuiStyles.DEFAULT_FORM_LABEL_STYLES)
 		}, [labelStyles, noWrap]);
 
+		// 加入陣列空白判斷
 		const useEmptyText = useMemo(() => {
-			return (name ? !value : !children) && emptyText;
+			return (name ? (!value || (Array.isArray(value) && value.length == 0)) : !children) && !!emptyText;
 		}, [children, emptyText, name, value]);
 
 		const typoVariant = useMemo(() => {
@@ -49,8 +51,8 @@ const FormFieldLabel = memo(
 		}, [useEmptyText]);
 
 		const body = useMemo(
-			() => (name ? value : children) || emptyText,
-			[children, emptyText, name, value]
+			() => (name ? (stringify ? stringify(value) : value) : (stringify ? stringify(children) : children)) || emptyText,
+			[children, emptyText, name, stringify, value]
 		);
 
 		const BoxComponent = useMemo(() => {
@@ -124,7 +126,8 @@ FormFieldLabel.propTypes = {
 	typographySx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	flex: PropTypes.bool,
-	noWrap: PropTypes.bool
+	noWrap: PropTypes.bool,
+	stringify: PropTypes.func
 };
 
 export default FormFieldLabel;

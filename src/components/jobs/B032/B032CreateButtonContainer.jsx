@@ -2,11 +2,14 @@ import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import AddIcon from "@mui/icons-material/Add";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { B032Context } from "@/contexts/B032/B032Context";
+import { BContext } from "@/contexts/B/BContext";
+import { B012Context } from "@/contexts/B012/B012Context";
 
 const B032CreateButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
-		const b032 = useContext(B032Context);
+		const b = useContext(BContext);
+		const b032 = useContext(b.forNew ? B032Context : B012Context);
 		const text = useMemo(() => {
 			return "新增";
 		}, []);

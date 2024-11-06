@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 
 export const DSGToolbarLabel = (props) => {
-	const { label = "(LabelName)", name = "TxoAmt", sx = [], ...rest } = props;
+	const { label = "(LabelName)", name = "TxoAmt", delimiter = "：", sx = [], ...rest } = props;
 	const subtotal = useWatch({
 		name,
 	});
@@ -17,8 +17,8 @@ export const DSGToolbarLabel = (props) => {
 	}, [subtotal]);
 
 	const _label = useMemo(() => {
-		return label ? `${label}：` : "";
-	}, [label])
+		return label ? `${label}${delimiter}` : "";
+	}, [delimiter, label])
 
 	return (
 		<FlexBox inline sx={[
@@ -38,6 +38,7 @@ export const DSGToolbarLabel = (props) => {
 DSGToolbarLabel.propTypes = {
 	label: PropTypes.string,
 	name: PropTypes.string,
+	delimiter: PropTypes.string,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 

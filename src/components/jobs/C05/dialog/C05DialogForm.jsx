@@ -15,6 +15,7 @@ import { memo } from "react";
 import { C05AmtToolbar } from "./prod-grid/C05AmtToolbar";
 import { C05ProdGridBottomToolbar } from "./prod-grid/C05ProdGridBottomToolbar";
 import { C05ProdGridContainer } from "./prod-grid/C05ProdGridContainer";
+import C05ProdGridBottomToolbar2 from "./toolbar/C05ProdGridBottomToolbar2";
 
 const C05DialogForm = memo((props) => {
 	const {
@@ -28,7 +29,7 @@ const C05DialogForm = memo((props) => {
 		updating,
 		handleSupplierChanged,
 		handlePurchaseOrdersChanged,
-		handleRtnDateChanged,
+		// handleRtnDateChanged,
 		handleLoadProdsSubmit,
 		handleTaxTypeChange,
 		isSupplierNameDisabled,
@@ -71,8 +72,9 @@ const C05DialogForm = memo((props) => {
 								autoFocus
 								fullWidth
 								required
+								validate
 								variant="outlined"
-								onChanged={handleRtnDateChanged}
+								// onChanged={handleRtnDateChanged}
 								disableOpenOnInput
 							/>
 						</Grid>
@@ -165,7 +167,7 @@ const C05DialogForm = memo((props) => {
 								typo
 								label="稅外加"
 								name="TaxType"
-								onChanged={handleTaxTypeChange}
+								onChange={handleTaxTypeChange}
 							/>
 						</FlexGrid>
 						<Grid item xs={24} sm={24} md={10}>
@@ -187,7 +189,8 @@ const C05DialogForm = memo((props) => {
 						<C05ProdGridContainer />
 					</Box>
 					<C05ProdGridBottomToolbar />
-					<C05AmtToolbar mb={1} />
+					{/* <C05AmtToolbar mb={1} /> */}
+					<C05ProdGridBottomToolbar2 mb={1} />
 					<Grid container columns={24}>
 						<Grid item xs={24}>
 							<TextFieldWrapper

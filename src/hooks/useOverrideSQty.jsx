@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import { useState } from "react";
 
-const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", priceColumn = "SPrice", samtColumn = "SAmt", sqtyColumn = "SQty", sqtyNoteColumn = "SQtyNote", stockQtyColumn = "StockQty_N", markColumn = "sqtyError", prodIdKey = "prod.ProdID", prodNameKey = "prod.ProdData" }) => {
+const useOverrideSQty = ({ grid, action = "強迫銷貨", stypeColumn = "stype", priceColumn = "SPrice", samtColumn = "SAmt", sqtyColumn = "SQty", sqtyNoteColumn = "SQtyNote", stockQtyColumn = "StockQty_N", markColumn = "sqtyError", prodIdKey = "prod.ProdID", prodNameKey = "prod.ProdData" }) => {
 	const { token } = useContext(AuthContext);
 	const stockQtyMap = useMemo(() => new Map(), []);
 	const [committed, setCommitted] = useState(false);
@@ -100,14 +100,14 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 	);
 
 	/**
-	 * 確認強迫銷貨
+	 * 確認強迫
 	 */
 	const promptOverrideSQty = useCallback(
-		({ }) => {
+		() => {
 			const sqtyLock = sqtyLockRef.current;
 			const { gridMeta } = sqtyLock;
 			dialogs.confirm({
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足( ${sqtyLock.demand} > ${sqtyLock.stock} )，是否強迫${action}？`,
+				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足( ${sqtyLock.stock} < ${sqtyLock.demand} )，是否${action}？`,
 				onConfirm: () => {
 					commitSQty({});
 				},
@@ -120,13 +120,14 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 				},
 			});
 		},
-		[commitSQty, dialogs, sqtyColumn]
+		[action, commitSQty, dialogs, sqtyColumn]
 	);
 
 
 
 	const promptPwordEntry = useCallback(
-		({ first = false }) => {
+		(opts = {}) => {
+			const { first = false } = opts;
 			console.log("promptPwordEntry, first:", first);
 			const sqtyLock = sqtyLockRef.current;
 			const pwordLock = pwordLockRef.current;
@@ -135,13 +136,9 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 
 			dialogs.prompt({
 				title: "貨品庫存不足",
-				// message: first
-				// 	? `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.stock})` : ""}, 請輸入密碼`
-				// 	: "密碼錯誤，請再次輸入或取消",
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.demand} > ${sqtyLock.stock})` : ""}，若要強迫${action}請輸入密碼`,
-				label: `強迫${action}密碼`,
+				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.demand} > ${sqtyLock.stock})` : ""}，若要${action}請輸入密碼`,
+				label: `${action}密碼`,
 				triggerCancelOnClose: true,
-				// disableCloseOnConfirm: true,
 				onConfirm: ({ value }) => {
 					if (value === pwordLock.value) {
 						console.log("pword passed");
@@ -149,17 +146,14 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 							...pwordLockRef.current,
 							passed: true,
 						};
-						// dialogs.closeLatest();
-						promptOverrideSQty({});
+						promptOverrideSQty();
 					} else {
 						// dialogs.closeLatest();
 						console.log("pword not passed");
 						toast.error("密碼錯誤, 請重新輸入", {
 							position: "top-center"
 						});
-						promptPwordEntry({
-
-						});
+						promptPwordEntry();
 					}
 				},
 				onCancel: () => {
@@ -174,7 +168,7 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 				// confirmText: "通過",
 			});
 		},
-		[dialogs, promptOverrideSQty]
+		[action, dialogs, promptOverrideSQty]
 	);
 
 	// 儲存時偵測到庫存不足, 提示 override 的進入點
@@ -218,7 +212,7 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 				promptPwordEntry({ first: true });
 				return;
 			}
-			promptOverrideSQty({});
+			promptOverrideSQty();
 		},
 		[priceColumn, prodIdKey, prodNameKey, promptOverrideSQty, promptPwordEntry, sqtyColumn, stypeColumn]
 	);
@@ -226,12 +220,26 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 	/**
 	 * 計算商品即時庫存, 扣除 grid 內 rowIndex 之前的所有需求資料
 	 */
-	const getCalculatedStock = useCallback(
+	const getStockBeforeCurrent = useCallback(
 		({ prodId, rowIndex, gridData }) => {
 			const demandTotal = gridData
 				.filter(
 					(item, index) =>
 						item.prod?.ProdID === prodId && index < rowIndex
+				)
+				.reduce((sum, item) => sum + parseFloat(item[sqtyColumn]), 0);
+			const stock = getStockQty(prodId);
+			return stock - demandTotal;
+		},
+		[getStockQty, sqtyColumn]
+	);
+
+	const getStockExcludingCurrent = useCallback(
+		({ prodId, rowIndex, gridData }) => {
+			const demandTotal = gridData
+				.filter(
+					(item, index) =>
+						item.prod?.ProdID === prodId && index != rowIndex
 				)
 				.reduce((sum, item) => sum + parseFloat(item[sqtyColumn]), 0);
 			const stock = getStockQty(prodId);
@@ -249,45 +257,33 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 				return rowData;
 			}
 
-			const stock = getCalculatedStock({
+			let newRowData = { ...rowData };
+
+			const stock = getStockExcludingCurrent({
 				rowIndex,
 				prodId: rowData.prod.ProdID,
 				gridData,
 			});
 
-			// const prodId = rowData[prodIdKey];
-			// const prodName = rowData[prodNameKey];
 			const demand = rowData[sqtyColumn];
-			// const price = rowData[priceColumn];
-			// const stype = rowData[stypeColumn];
-
-			// sqtyLockRef.current = {
-			// 	rowIndex: rowIndex,
-			// 	prodId,
-			// 	prodName,
-			// 	demand,
-			// 	price,
-			// 	stype,
-			// 	stock,
-			// };
 
 			if (demand > 0 && stock < demand) {
-				rowData = {
-					...rowData,
+				newRowData = {
+					...newRowData,
 					[sqtyColumn]: 0,
 				};
 
 				handleOverrideSQty({ setValue, gridMeta, rowData, rowIndex, demand, stock, refreshAmt });
 			} else {
-				rowData = {
-					...rowData,
+				newRowData = {
+					...newRowData,
 					[sqtyNoteColumn]: "",
 					sqtyError: false,
 				};
 			}
-			return rowData;
+			return newRowData;
 		},
-		[getCalculatedStock, handleOverrideSQty, sqtyColumn, sqtyNoteColumn]
+		[getStockExcludingCurrent, handleOverrideSQty, sqtyColumn, sqtyNoteColumn]
 	);
 
 	// loadItem 及 save 拋出 102 時呼叫
@@ -321,29 +317,39 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 					},
 				});
 				if (status.success) {
+					stockQtyMap.clear();
 					payload.Stock?.map((x) =>
 						stockQtyMap.set(x.ProdID, Number(x.Qty))
 					);
-					if (mark) {
-						let newGridData = [..._gridData];
-						_gridData.forEach((rowData, rowIndex) => {
-							const prodId = rowData.prod.ProdID;
-							const sqty = Number(rowData[sqtyColumn]);
-							const calculatedStock = getCalculatedStock({
-								rowIndex,
-								prodId,
-								_gridData,
-							});
-							newGridData[rowIndex] = {
-								...rowData,
-								[stockQtyColumn]: (
-									stockQtyMap.get(prodId) || 0
-								).toFixed(2),
-								[markColumn]: sqty > calculatedStock,
-							};
-						});
-						grid.setGridData(newGridData);
-					}
+					// 把目前庫存加回去
+					// let newGridData = [..._gridData];
+					_gridData.forEach((rowData, rowIndex) => {
+						const prodId = rowData.prod.ProdID;
+						const sqty = Number(rowData[sqtyColumn]);
+						const stock = stockQtyMap.get(prodId);
+						stockQtyMap.set(prodId, stock + sqty)
+					});
+					// grid.setGridData(newGridData);
+					// if (mark) {
+					// 	let newGridData = [..._gridData];
+					// 	_gridData.forEach((rowData, rowIndex) => {
+					// 		const prodId = rowData.prod.ProdID;
+					// 		const sqty = Number(rowData[sqtyColumn]);
+					// 		const calculatedStock = getStockBeforeCurrent({
+					// 			rowIndex,
+					// 			prodId,
+					// 			_gridData,
+					// 		});
+					// 		newGridData[rowIndex] = {
+					// 			...rowData,
+					// 			[stockQtyColumn]: (
+					// 				stockQtyMap.get(prodId) || 0
+					// 			).toFixed(2),
+					// 			[markColumn]: sqty > calculatedStock,
+					// 		};
+					// 	});
+					// 	grid.setGridData(newGridData);
+					// }
 					console.log("qtyMap:", stockQtyMap);
 				} else {
 					throw error || new Error("未預期例外");
@@ -353,8 +359,9 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 					position: "top-center"
 				});
 			}
+			return stockQtyMap;
 		},
-		[grid, prodIdKey, httpGetAsync, token, stockQtyMap, sqtyColumn, getCalculatedStock, stockQtyColumn, markColumn]
+		[grid, prodIdKey, httpGetAsync, token, stockQtyMap, sqtyColumn]
 	);
 
 	const getErrorInfo = useCallback((err) => {
@@ -373,6 +380,18 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 		}
 	}, [grid.gridData]);
 
+	const updateQty = useCallback((key, value) => {
+		stockQtyMap.set(key, value);
+	}, [stockQtyMap]);
+
+	const clearQty = useCallback(() => {
+		stockQtyMap.clear();
+	}, [stockQtyMap]);
+
+	const hasQty = useCallback((prodId) => {
+		return stockQtyMap.has(prodId);
+	}, [stockQtyMap]);
+
 	useInit(() => {
 		loadStockPword();
 	}, []);
@@ -386,7 +405,12 @@ const useOverrideSQty = ({ grid, action = "銷貨", stypeColumn = "stype", price
 		loadStockMap,
 		committed,
 		setCommitted,
-		getErrorInfo
+		getErrorInfo,
+		getStockExcludingCurrent,
+		getStockBeforeCurrent,
+		updateQty,
+		clearQty,
+		hasQty
 	}
 
 }

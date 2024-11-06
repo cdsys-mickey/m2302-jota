@@ -1,13 +1,12 @@
 import {
 	Box,
-	Button,
 	Dialog,
 	DialogActions,
 	// Checkbox,
 	DialogContent,
 	DialogContentText,
 	TextField,
-	Tooltip,
+	Tooltip
 } from "@mui/material";
 import PropTypes from "prop-types";
 import {
@@ -20,11 +19,8 @@ import {
 } from "react";
 import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
-import DialogTitleEx from "./DialogTitleEx";
 import { ButtonWrapper } from "../button/ButtonWrapper";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-
-const defaultActionsStyle = {};
+import DialogTitleEx from "./DialogTitleEx";
 
 const defaultConfirmButtonProps = {
 	type: "submit",
@@ -48,12 +44,12 @@ const defaultCancelButtonProps = {
 const DialogEx = memo(
 	forwardRef((props = {}, ref) => {
 		const {
+			slotProps,
 			dense = false,
 			sx = [],
 			title,
 			titleSx = [],
 			contentSx = [],
-			actionsStyle = defaultActionsStyle,
 			message,
 			placeholder,
 			children,
@@ -69,6 +65,8 @@ const DialogEx = memo(
 			cancelButtonProps = defaultCancelButtonProps,
 			loading = false,
 			working = false,
+			cancelDisabled,
+			confirmDisabled = false,
 			titleButtons,
 			TitleButtonsComponent,
 			titleProps,
@@ -93,7 +91,13 @@ const DialogEx = memo(
 			id,
 			...rest
 		} = props;
-		const dialogs = useContext(DialogsContext);
+		// const dialogs = useContext(DialogsContext);
+
+		const _cancelDisabled = useMemo(() => {
+			return cancelDisabled != null ? cancelDisabled : working;
+		}, [cancelDisabled, working])
+
+
 
 		const inputRef = useRef();
 		const setInputRef = useCallback((node) => {
@@ -257,11 +261,7 @@ const DialogEx = memo(
 				</DialogContent>
 				{showActions && (
 					<DialogActions
-						sx={[
-							...(Array.isArray(actionsStyle)
-								? actionsStyle
-								: [actionsStyle]),
-						]}>
+						{...slotProps?.actions}>
 						{otherActionButtons}
 						{OtherActionButtonsComponent && (
 							<OtherActionButtonsComponent />
@@ -275,7 +275,7 @@ const DialogEx = memo(
 									{...(!prompt && {
 										autoFocus: true,
 									})}
-									// autoFocus
+									disabled={confirmDisabled}
 									{...buttonProps}
 									{...confirmButtonProps}>
 									{confirmText}
@@ -289,6 +289,7 @@ const DialogEx = memo(
 									color="primary"
 									// onClick={onCancel}
 									onClick={handleCancel}
+									disabled={_cancelDisabled}
 									{...buttonProps}
 									{...cancelButtonProps}>
 									{cancelText}
@@ -350,7 +351,10 @@ DialogEx.propTypes = {
 	confirmTooltip: PropTypes.string,
 	cancelTooltip: PropTypes.string,
 	close: PropTypes.func,
-	id: PropTypes.string
+	id: PropTypes.string,
+	confirmDisabled: PropTypes.bool,
+	cancelDisabled: PropTypes.bool,
+	slotProps: PropTypes.object
 };
 
 export default DialogEx;

@@ -16,7 +16,8 @@ const D02CreateButtonContainer = memo(
 				ref={ref}
 				variant="contained"
 				startIcon={<AddIcon />}
-				onClick={c04.promptCreating}
+				// onClick={c04.promptCreating}
+				onClick={c04.promptCreatingWithCheck}
 				sx={{
 					fontWeight: 600,
 				}}

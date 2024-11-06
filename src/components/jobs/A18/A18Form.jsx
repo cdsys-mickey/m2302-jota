@@ -12,6 +12,7 @@ import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import { RealFilePicker } from "@/components/picker/RealFilePicker";
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import A18ActionPicker from "./picker/A18ActionPicker";
+import Forms from "@/shared-modules/sd-forms";
 
 const A18Form = memo((props) => {
 	const { onSubmit, ...rest } = props;
@@ -56,12 +57,20 @@ const A18Form = memo((props) => {
 								<DatePickerWrapper
 									name="SDate"
 									label="起始日期"
+									validate
+								// required
+								// rules={{
+								// 	validate: {
+								// 		validateDate: Forms.getDateValidator({ fieldName: "起始日期", required: true })
+								// 	}
+								// }}
 								/>
 							</Grid>
 							<Grid item xs={12}>
 								<DatePickerWrapper
 									name="EDate"
 									label="截止日期"
+									validate
 								/>
 							</Grid>
 							<Grid item xs={12}>

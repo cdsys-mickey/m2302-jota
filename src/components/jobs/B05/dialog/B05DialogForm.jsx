@@ -60,10 +60,11 @@ const B05DialogForm = memo((props) => {
 									{...(editing && {
 										autoFocus: true
 									})}
+									variant="outlined"
 
 									fullWidth
 									required
-									variant="outlined"
+									validate
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={6}>

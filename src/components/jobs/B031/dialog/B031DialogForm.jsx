@@ -86,6 +86,7 @@ const B031DialogForm = memo((props) => {
 									required
 									variant="outlined"
 									disabled={!creating}
+									validate
 								/>
 							</Grid>
 							<Grid item xs={24}>

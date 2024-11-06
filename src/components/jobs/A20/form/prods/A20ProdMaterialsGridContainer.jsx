@@ -21,9 +21,10 @@ export const A20ProdMaterialsGridContainer = (props) => {
 
 	const onChange = useMemo(() => {
 		return a20.buildGridChangeHandler({
+			gridMeta: formMeta.gridMeta,
 			onUpdateRow: a20.onUpdateRow
 		})
-	}, [a20])
+	}, [a20, formMeta.gridMeta])
 
 	return (
 		<DSGContext.Provider value={{

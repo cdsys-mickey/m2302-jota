@@ -29,7 +29,7 @@ const D01ExpDialogForm = memo((props) => {
 						/>
 					</Grid>
 					<Grid item xs={12}>
-						<DatePickerWrapper label="有效日期" name="expDate" />
+						<DatePickerWrapper label="有效日期" name="expDate" validate />
 					</Grid>
 				</Grid>
 			</FormBox>

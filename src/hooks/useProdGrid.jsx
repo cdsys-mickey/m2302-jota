@@ -248,7 +248,9 @@ export const useProdGrid = ({
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			saveAction.fail(err);
+			saveAction.fail({
+				error: err
+			});
 			toast.error(Errors.getMessage("儲存失敗", err), {
 				position: "top-center"
 			});

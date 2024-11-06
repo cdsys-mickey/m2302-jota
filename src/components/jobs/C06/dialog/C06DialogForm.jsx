@@ -6,15 +6,15 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import DeptPicker from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPicker";
 import C06SquaredPicker from "./C06SquaredPicker";
 import { C06ProdGridBottomToolbar } from "./prod-grid/C06ProdGridBottomToolbar";
 import { C06ProdGridContainer } from "./prod-grid/C06ProdGridContainer";
+import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 
 const C06DialogForm = memo((props) => {
 	const {
@@ -61,6 +61,7 @@ const C06DialogForm = memo((props) => {
 								label="訂貨日期"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 							/>
 						</Grid>
@@ -71,6 +72,7 @@ const C06DialogForm = memo((props) => {
 								label="預計到貨"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 							/>
 						</Grid>
@@ -117,7 +119,7 @@ const C06DialogForm = memo((props) => {
 						</Grid>
 						{!creating && (
 							<Grid item xs={24} md={5}>
-								<FormFieldLabelContainer
+								<FormFieldLabel
 									name="transOutOrders"
 									label="來源撥出單號"
 									stringify={C06.stringifyOrders}

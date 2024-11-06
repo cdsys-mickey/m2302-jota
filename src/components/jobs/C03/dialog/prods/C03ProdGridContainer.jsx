@@ -21,7 +21,10 @@ export const C03ProdGridContainer = (props) => {
 		return c03.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
-			gridMeta: formMeta.gridMeta
+			gridMeta: formMeta.gridMeta,
+			onUpdateRow: c03.onUpdateRow,
+			isRowDeletable: c03.isRowDeletable,
+			onGridChanged: c03.onGridChanged
 		});
 	}, [c03, form.getValues, form.setValue, formMeta.gridMeta]);
 

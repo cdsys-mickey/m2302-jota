@@ -17,13 +17,26 @@ export const C05ProdGridContainer = (props) => {
 	const { height } = useWindowSize();
 	const form = useFormContext();
 
+	// const onChange = useMemo(() => {
+	// 	return c05.buildGridChangeHandler({
+	// 		getValues: form.getValues,
+	// 		setValue: form.setValue,
+	// 		gridMeta: formMeta.gridMeta
+	// 	});
+	// }, [c05, form.getValues, form.setValue, formMeta.gridMeta]);
 	const onChange = useMemo(() => {
 		return c05.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
-			gridMeta: formMeta.gridMeta
+			gridMeta: formMeta.gridMeta,
+			onUpdateRow: c05.onUpdateRow,
+			onGridChanged: c05.onGridChanged
 		});
 	}, [c05, form.getValues, form.setValue, formMeta.gridMeta]);
+
+	const _height = useMemo(() => {
+		return formMeta.readOnly ? height - 410 : height - 410;
+	}, [formMeta.readOnly, height])
 
 	return (
 		<DSGContext.Provider value={{
@@ -36,7 +49,7 @@ export const C05ProdGridContainer = (props) => {
 				readOnly={formMeta.readOnly}
 				data={c05.gridData}
 				bearer={auth.token}
-				height={height - 390}
+				height={_height}
 				getRowKey={c05.getRowKey}
 				createRow={c05.createRow}
 				onChange={onChange}

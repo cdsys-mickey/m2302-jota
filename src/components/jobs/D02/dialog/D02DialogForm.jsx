@@ -75,9 +75,10 @@ const D02DialogForm = memo((props) => {
 								label="退料日期"
 								fullWidth
 								required
-								rules={{
-									required: "退料日期為必填",
-								}}
+								validate
+								// rules={{
+								// 	required: "退料日期為必填",
+								// }}
 								variant="outlined"
 								onChanged={handleRstDateChanged}
 							/>

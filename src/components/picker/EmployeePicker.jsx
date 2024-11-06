@@ -6,15 +6,18 @@ import { useCallback, useContext, useMemo } from "react";
 import Employees from "../../modules/md-employees";
 
 const EmployeePicker = (props) => {
-	const { label = "員工", ...rest } = props;
+	const { label = "員工", withQuotes = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
 		const obj = {
 			tp: 1000,
+			...(withQuotes && {
+				wq: 1
+			})
 		};
 		return queryString.stringify(obj);
-	}, []);
+	}, [withQuotes]);
 
 	const getData = useCallback((payload) => {
 		return payload["data"];
@@ -47,6 +50,7 @@ const EmployeePicker = (props) => {
 EmployeePicker.displayName = "EmployeePicker";
 EmployeePicker.propTypes = {
 	label: PropTypes.string,
+	withQuotes: PropTypes.bool
 };
 
 export default EmployeePicker;

@@ -1,29 +1,21 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
-import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Box, Grid, IconButton, Tooltip } from "@mui/material";
+import { Box, Grid } from "@mui/material";
+import { orange } from "@mui/material/colors";
 import PropTypes from "prop-types";
-import { memo } from "react";
-import B012IdColumn from "./columns/B012IdColumn";
-import B012DateColumn from "./columns/B012DateColumn";
-import LockResetIcon from "@mui/icons-material/LockReset";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import B012SupplierColumn from "./columns/B012SupplierColumn";
-import B012UserColumn from "./columns/B012UserColumn";
+import { memo, useMemo } from "react";
 import B012CustomerColumn from "./columns/B012CustomerColumn";
-import { useMemo } from "react";
-import B012ProdColumn from "./columns/B012ProdColumn";
+import B012DateColumn from "./columns/B012DateColumn";
 import B012PriceColumn from "./columns/B012PriceColumn";
+import B012ProdColumn from "./columns/B012ProdColumn";
+import B012UserColumn from "./columns/B012UserColumn";
 
 const B012ListRow = memo((props) => {
 	const { index, style, value, loading, onClick, handleSelectDate } = props;
 
 	const customer = useMemo(() => {
 		const { CustID, CustData_N } = value || "";
-		return [
-			// CustID, 
-			CustData_N].filter(Boolean).join(" ");
+		return [CustData_N].filter(Boolean).join(" ");
 	}, [value])
 
 	const prod = useMemo(() => {
@@ -44,7 +36,11 @@ const B012ListRow = memo((props) => {
 	return (
 		<div style={style}>
 			<HoverableListItem borderBottom onClick={onClick}>
-				<Box>
+				<Box sx={{
+					"&:hover .mark": {
+						color: orange[500]
+					}
+				}}>
 					<Grid
 						container
 						columns={24}
@@ -55,23 +51,19 @@ const B012ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<B012ProdColumn loading={loading}>
+						<B012ProdColumn className="mark" loading={loading}>
 							{prod}
 						</B012ProdColumn>
 						<B012CustomerColumn loading={loading}>
 							{customer}
 						</B012CustomerColumn>
-
-						<B012PriceColumn loading={loading}>
-							{value?.Price}
-						</B012PriceColumn>
 						<B012PriceColumn loading={loading}>
 							{value?.QPrice}
 						</B012PriceColumn>
-						<B012DateColumn loading={loading} onClick={handleSelectDate}>
+						<B012DateColumn loading={loading}>
 							{value?.QDate}
 						</B012DateColumn>
-						<B012UserColumn loading={loading}>
+						<B012UserColumn className="mark" loading={loading}>
 							{employee}
 						</B012UserColumn>
 						{/* <B012ClassNColumn loading={loading}>

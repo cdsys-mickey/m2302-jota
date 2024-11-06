@@ -66,8 +66,9 @@ const E01DialogForm = memo((props) => {
 									name="OrdDate"
 									label="訂貨日"
 									fullWidth
-									required
 									variant="outlined"
+									required
+									validate
 								// disabled={!creating}
 								/>
 							</Grid>
@@ -76,9 +77,10 @@ const E01DialogForm = memo((props) => {
 									typo
 									name="ArrDate"
 									label="到貨日"
+									variant="outlined"
 									fullWidth
 									required
-									variant="outlined"
+									validate
 								// disabled={!creating}
 								/>
 							</Grid>

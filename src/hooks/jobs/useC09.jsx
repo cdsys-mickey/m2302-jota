@@ -88,7 +88,7 @@ export const useC09 = () => {
 			dtype: null,
 			SRemark: "",
 			ChkQty: "",
-			SoQty: "",
+			SoQty: 0,
 		}),
 		[]
 	);
@@ -348,23 +348,14 @@ export const useC09 = () => {
 		return !!rowData.SoFlag_N;
 	}, []);
 
-	const handleTxoDeptChanged = useCallback(
+	/**
+	 * 撥出單號改變
+	 * → 指定撥出門市
+	 */
+	const handleTxoOrderChanged = useCallback(
 		({ setValue, getValues }) =>
 			async (newValue) => {
-				setValue("txoOrder", null);
-
-				grid.setGridData([], { createRow });
-				setValue("depOrders", []);
-				setValue("remark", "");
-
-				setValue("TxiAmt", "0.00");
-			},
-		[createRow, grid]
-	);
-
-	const handleTxoOrdersChanged = useCallback(
-		({ setValue, getValues }) =>
-			async (newValue) => {
+				console.log("handleTxoOrderChanged", newValue);
 				if (!newValue) {
 					setValue("txoDept", null);
 
@@ -373,19 +364,18 @@ export const useC09 = () => {
 					setValue("remark", "");
 					setValue("TxiAmt", "0.00");
 					return;
+				} else {
+					setValue(
+						"txoDept",
+						newValue?.撥出門市
+							? {
+								DeptID: newValue.撥出門市,
+								AbbrName: newValue.撥出門市名稱,
+							}
+							: null
+					);
 				}
 
-				setValue(
-					"txoDept",
-					newValue?.撥出門市
-						? {
-							DeptID: newValue.撥出門市,
-							AbbrName: newValue.撥出門市名稱,
-						}
-						: null
-				);
-
-				console.log("handleTxoOrdersChanged", newValue);
 				const formData = getValues();
 				console.log("formData", formData);
 				const collected = C09.transformForSubmitting(
@@ -420,6 +410,28 @@ export const useC09 = () => {
 			},
 		[createRow, httpPostAsync, grid, refreshAmt, token]
 	);
+
+	/**
+	 * 改變撥出門市
+	 * → 清空 撥出單號
+	 */
+	const handleTxoDeptChanged = useCallback(
+		({ setValue, getValues }) =>
+			async (newValue) => {
+				console.log("handleTxoDeptChanged", newValue);
+				setValue("txoOrder", null, {
+					shouldTouch: true
+				});
+
+				grid.setGridData([], { createRow });
+				setValue("depOrders", []);
+				setValue("remark", "");
+
+				setValue("TxiAmt", "0.00");
+			},
+		[createRow, grid]
+	);
+
 
 	const handleGridSQtyChange = useCallback(({ rowData }) => {
 		let newRowData = {
@@ -468,8 +480,8 @@ export const useC09 = () => {
 		[getProdInfo]
 	);
 
-	const updateGridRow = useCallback(({ fromIndex, formData }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const updateGridRow = useCallback(({ fromRowIndex, formData }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -521,7 +533,7 @@ export const useC09 = () => {
 											formData,
 											newValue,
 											setValue,
-											fromIndex: operation.fromRowIndex,
+											fromRowIndex: operation.fromRowIndex,
 											gridMeta
 										})(item, index);
 										return updatedRow;
@@ -762,7 +774,7 @@ export const useC09 = () => {
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
-		handleTxoOrdersChanged,
+		handleTxoOrderChanged,
 		getSPriceClassName,
 		handleTxoDeptChanged,
 		sprodDisabled,

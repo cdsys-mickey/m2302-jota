@@ -26,11 +26,20 @@ export const D05ProdGridContainer = (props) => {
 		return windowHeight - 310;
 	}, [windowHeight]);
 
+	// const onChange = useMemo(() => {
+	// 	return d05.buildGridChangeHandler({
+	// 		getValues: form.getValues,
+	// 		setValue: form.setValue,
+	// 		gridMeta: formMeta.gridMeta
+	// 	})
+	// }, [d05, form.getValues, form.setValue, formMeta.gridMeta])
 	const onChange = useMemo(() => {
 		return d05.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
-			gridMeta: formMeta.gridMeta
+			gridMeta: formMeta.gridMeta,
+			onUpdateRow: d05.onUpdateRow,
+			onGridChanged: d05.onGridChanged
 		})
 	}, [d05, form.getValues, form.setValue, formMeta.gridMeta])
 

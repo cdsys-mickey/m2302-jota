@@ -1,18 +1,18 @@
-import { useWatch } from "react-hook-form";
-import useDebounce from "@/shared-hooks/useDebounce";
-import { useContext } from "react";
+import { BContext } from "@/contexts/B/BContext";
 import { B011Context } from "@/contexts/B011/B011Context";
-import { useState } from "react";
-import { useMemo } from "react";
-import { useEffect } from "react";
-import Objects from "@/shared-modules/sd-objects";
+import { B031Context } from "@/contexts/B031/B031Context";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
-import Constants from "@/modules/md-constants";
+import useDebounce from "@/shared-hooks/useDebounce";
+import Objects from "@/shared-modules/sd-objects";
+import PropTypes from "prop-types";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { useWatch } from "react-hook-form";
 
 export const B011ImportProdsButtonContainer = (props) => {
-	const { ...rest } = props;
+	const { forNew = false, ...rest } = props;
 	const criteria = useWatch();
-	const b011 = useContext(B011Context);
+	const b = useContext(BContext);
+	const b011 = useContext(b.forNew ? B031Context : B011Context);
 	const {
 		peekProds,
 		importProdsWorking,
@@ -39,8 +39,8 @@ export const B011ImportProdsButtonContainer = (props) => {
 		return Objects.isAllPropsEmpty(criteria)
 			? "請先輸入篩選條件"
 			: totalElements
-			? `帶入商品(目前符合${totalElements}筆)`
-			: "(查無相符商品)";
+				? `帶入商品(目前符合${totalElements}筆)`
+				: "(查無相符商品)";
 	}, [criteria, totalElements]);
 
 	const disabled = useMemo(() => {
@@ -63,6 +63,8 @@ export const B011ImportProdsButtonContainer = (props) => {
 		</ButtonWrapper>
 	);
 };
-
+B011ImportProdsButtonContainer.propTypes = {
+	forNew: PropTypes.bool
+}
 B011ImportProdsButtonContainer.displayName = "B011ImportProdsButtonContainer";
 

@@ -4,10 +4,14 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { forwardRef, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import B011ImportProdsForm from "./B011ImportProdsForm";
+import PropTypes from "prop-types";
+import { B031Context } from "@/contexts/B031/B031Context";
+import { BContext } from "@/contexts/B/BContext";
 
 const B011ImportProdsDialogContainer = forwardRef((props, ref) => {
-	const { ...rest } = props;
-	const b011 = useContext(B011Context);
+	const { forNew = false, ...rest } = props;
+	const b = useContext(BContext);
+	const b011 = useContext(b.forNew ? B031Context : B011Context);
 	// const formMeta = useContext(FormMetaContext);
 	const form = useForm({
 		defaultValues: {},
@@ -39,7 +43,9 @@ const B011ImportProdsDialogContainer = forwardRef((props, ref) => {
 	);
 });
 
-B011ImportProdsDialogContainer.propTypes = {};
+B011ImportProdsDialogContainer.propTypes = {
+	forNew: PropTypes.bool
+};
 
 B011ImportProdsDialogContainer.displayName = "B011ImportProdsDialogContainer";
 export default B011ImportProdsDialogContainer;

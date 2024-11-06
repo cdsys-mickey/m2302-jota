@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 
 export const C05ProdGridSubtotalLabel = (props) => {
-	const { name = "RtAmt", ...rest } = props;
+	const { name = "RtnAmt", ...rest } = props;
 	const subtotal = useWatch({
 		name,
 	});
@@ -17,7 +17,7 @@ export const C05ProdGridSubtotalLabel = (props) => {
 	}, [subtotal]);
 
 	return (
-		<FlexBox inline sx={{ fontWeight: 700 }}>
+		<FlexBox inline sx={{ fontWeight: 700 }} {...rest}>
 			退貨合計：
 			<Typography color="primary" {...rest}>
 				{formattedSubtotal}

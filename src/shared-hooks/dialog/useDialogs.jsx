@@ -104,7 +104,8 @@ export const useDialogs = ({ buttonProps }) => {
 	const confirm = useCallback(
 		({
 			title = "確認",
-			message = "[訊息]",
+			// message = "[訊息]",
+			message,
 			onConfirm,
 			onCancel,
 			closeOnConfirm = true,
@@ -132,7 +133,8 @@ export const useDialogs = ({ buttonProps }) => {
 	const prompt = useCallback(
 		({
 			title = "確認",
-			message = "[訊息]",
+			// message = "[訊息]",
+			message,
 			value = "",
 			onConfirm,
 			onCancel,

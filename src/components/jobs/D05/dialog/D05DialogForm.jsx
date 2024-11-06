@@ -9,7 +9,7 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import DeptPicker from "@/components/DeptPickerContainer";
+import DeptPicker from "@/components/DeptPicker";
 import { PurchaseDepOrderPicker } from "@/components/purchase-dep-order-picker/PurchaseDepOrderPicker";
 import { TxoOrderPicker } from "@/components/txo-order-picker/TxoOrderPicker";
 import { D05ProdGridBottomToolbar } from "./prod-grid/D05ProdGridBottomToolbar";
@@ -61,6 +61,7 @@ const D05DialogForm = memo((props) => {
 								label="報廢日期"
 								fullWidth
 								required
+								validate
 								variant="outlined"
 							/>
 						</Grid>

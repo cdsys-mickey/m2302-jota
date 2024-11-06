@@ -6,12 +6,15 @@ import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import { B012Context } from "@/contexts/B012/B012Context";
 import { useMemo } from "react";
+import { BContext } from "@/contexts/B/BContext";
+import { B032Context } from "@/contexts/B032/B032Context";
 
 export const B012SearchFieldContainer = (props) => {
 	const { name = "q", ...rest } = props;
 	const forms = useFormContext();
 
-	const b012 = useContext(B012Context);
+	const b = useContext(BContext);
+	const b012 = useContext(b.forNew ? B032Context : B012Context);
 
 	const inputRef = useRef(null);
 

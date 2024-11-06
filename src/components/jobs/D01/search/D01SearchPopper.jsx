@@ -38,6 +38,7 @@ const D01SearchPopper = memo(
 							<DatePickerWrapper
 								name="pdate"
 								label="領料日期(大於)"
+								validate
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>

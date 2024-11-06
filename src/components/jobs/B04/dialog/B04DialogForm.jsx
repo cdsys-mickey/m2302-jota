@@ -56,14 +56,14 @@ const B04DialogForm = memo((props) => {
 								<DatePickerWrapper
 									typo
 									name="InqDate"
+									variant="outlined"
 									label="詢價日期"
 									{...(editing && {
 										autoFocus: true
 									})}
-
 									fullWidth
 									required
-									variant="outlined"
+									validate
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={6}>

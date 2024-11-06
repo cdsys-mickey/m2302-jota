@@ -11,6 +11,7 @@ const transformGridForReading = (data) => {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
 				},
+				ProdData: ProdData_N,
 				stype: FreeProdTypes.getOptionById(SType),
 				...rest,
 			};

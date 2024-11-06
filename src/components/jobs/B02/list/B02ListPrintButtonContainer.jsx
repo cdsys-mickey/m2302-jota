@@ -6,12 +6,15 @@ import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import { useFormContext } from "react-hook-form";
 import { useMemo } from "react";
+import { BContext } from "@/contexts/B/BContext";
+import { B04Context } from "@/contexts/B04/B04Context";
 
 const B02ListPrintButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		const form = useFormContext();
-		const b02 = useContext(B02Context);
+		const b = useContext(BContext);
+		const b02 = useContext(b.forNew ? B04Context : B02Context);
 		const { moduleAuthorityLoading, canPrint } = b02;
 
 		const handleSubmit = useMemo(() => {
@@ -24,8 +27,8 @@ const B02ListPrintButtonContainer = memo(
 
 		return (
 			<ButtonWrapper
-				className="button"
 				responsive
+				className="button"
 				ref={ref}
 				variant="contained"
 				startIcon={<LocalPrintshopIcon />}

@@ -8,7 +8,6 @@ const RightComponent = () => {
 	return (
 		<>
 			<C04ProdGridSubtotalLabel name="InAmt" />
-			{/* <FlexBox minWidth="10px" /> */}
 		</>
 	);
 };

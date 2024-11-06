@@ -4,11 +4,14 @@ import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModeP
 import StdPrint from "@/modules/md-std-print";
 import { useContext } from "react";
 import { B032Context } from "@/contexts/B032/B032Context";
+import { B012Context } from "@/contexts/B012/B012Context";
+import { BContext } from "@/contexts/B/BContext";
 
 export const B032OutputModePickerContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
-		const b032 = useContext(B032Context);
+		const b = useContext(BContext);
+		const b032 = useContext(b.forNew ? B032Context : B012Context);
 		const { canPrint } = b032;
 
 		if (!canPrint) {

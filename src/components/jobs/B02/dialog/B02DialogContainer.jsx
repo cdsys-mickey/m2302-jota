@@ -22,6 +22,8 @@ import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useCallback } from "react";
 import { toast } from "react-toastify";
+import { BContext } from "@/contexts/B/BContext";
+import { B04Context } from "@/contexts/B04/B04Context";
 
 export const B02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -33,7 +35,8 @@ export const B02DialogContainer = forwardRef((props, ref) => {
 	});
 	const { reset } = form;
 
-	const b02 = useContext(B02Context);
+	const b = useContext(BContext);
+	const b02 = useContext(b.forNew ? B04Context : B02Context);
 	const inqDate = useWatch({
 		name: "InqDate",
 		control: form.control

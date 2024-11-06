@@ -99,7 +99,7 @@ export const useCrud = () => {
 
 	const startCreating = useCallback(
 		(message, opts) => {
-			createAction.start(message);
+			createAction.start({ message });
 			setOpts(opts);
 		},
 		[createAction, setOpts]
@@ -115,7 +115,9 @@ export const useCrud = () => {
 
 	const failCreating = useCallback(
 		(err, opts) => {
-			createAction.fail(err);
+			createAction.fail({
+				error: err
+			});
 			setOpts(opts);
 		},
 		[createAction, setOpts]
@@ -137,7 +139,7 @@ export const useCrud = () => {
 	const startReading = useCallback(
 		(message, opts) => {
 			console.log(`startReading[${message}]`, opts);
-			readAction.start(message);
+			readAction.start({ message });
 			setOpts(opts);
 		},
 		[readAction, setOpts]
@@ -159,7 +161,7 @@ export const useCrud = () => {
 	const failReading = useCallback(
 		(err, opts) => {
 			console.log("failReading", err);
-			readAction.fail(err);
+			readAction.fail({ error: err });
 			setOpts(opts);
 		},
 		[readAction, setOpts]
@@ -181,7 +183,7 @@ export const useCrud = () => {
 	// 打開編輯器
 	const promptUpdating = useCallback(
 		(message, opts) => {
-			updateAction.prompt(message);
+			updateAction.prompt({ message });
 			setOpts(opts);
 		},
 		[setOpts, updateAction]
@@ -189,7 +191,7 @@ export const useCrud = () => {
 
 	const startUpdating = useCallback(
 		(message, opts) => {
-			updateAction.start(message);
+			updateAction.start({ message });
 			setOpts(opts);
 		},
 		[setOpts, updateAction]
@@ -205,7 +207,7 @@ export const useCrud = () => {
 
 	const failUpdating = useCallback(
 		(err, opts) => {
-			updateAction.fail(err);
+			updateAction.fail({ error: err });
 			setOpts(opts);
 		},
 		[setOpts, updateAction]
@@ -227,7 +229,7 @@ export const useCrud = () => {
 	// DELETE
 	const promptDeleting = useCallback(
 		(message, opts) => {
-			deleteAction.prompt(message);
+			deleteAction.prompt({ message });
 			setOpts(opts);
 		},
 		[deleteAction, setOpts]
@@ -235,7 +237,7 @@ export const useCrud = () => {
 
 	const startDeleting = useCallback(
 		(message, opts) => {
-			deleteAction.start(message);
+			deleteAction.start({ message });
 			setOpts(opts);
 		},
 		[deleteAction, setOpts]
@@ -251,7 +253,9 @@ export const useCrud = () => {
 
 	const failDeleting = useCallback(
 		(err, opts) => {
-			deleteAction.fail(err);
+			deleteAction.fail({
+				error: err
+			});
 			setOpts(opts);
 		},
 		[deleteAction, setOpts]

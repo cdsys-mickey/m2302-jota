@@ -72,8 +72,8 @@ const transformForPrinting = (payload) => {
 			SProdID1: sprod?.ProdID || "",
 			SProdID2: eprod?.ProdID || "",
 			OrderBy: orderBy?.id || "",
-			InqDate1: Forms.formatDate(date1),
-			InqDate2: Forms.formatDate(date2),
+			InqDate1: Forms.formatDate(date1) || "",
+			InqDate2: Forms.formatDate(date2) || "",
 			...rest,
 		},
 		"date1,date2"

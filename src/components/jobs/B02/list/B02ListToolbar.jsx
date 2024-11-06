@@ -8,8 +8,8 @@ const LeftButtons = memo(() => {
 	return (
 		<>
 			{/* <B02CreateButtonContainer /> */}
-			<B02ListOutputModePickerContainer />
 			<B02ListPrintButtonContainer />
+			<B02ListOutputModePickerContainer />
 		</>
 	);
 });

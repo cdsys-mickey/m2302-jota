@@ -4,7 +4,6 @@ import { Fragment, forwardRef, memo } from "react";
 
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import SearchIcon from "@mui/icons-material/Search";
-import B02ImportProdsDialogContainer from "./B02ImportProdsDialogContainer";
 
 const B02DialogEditToolbar = memo(
 	forwardRef((props, ref) => {
@@ -38,7 +37,7 @@ const B02DialogEditToolbar = memo(
 					儲存
 				</ButtonWrapper>
 				{/* 帶入商品 */}
-				<B02ImportProdsDialogContainer />
+				{/* <B02ImportProdsDialogContainer /> */}
 			</Fragment>
 		);
 	})

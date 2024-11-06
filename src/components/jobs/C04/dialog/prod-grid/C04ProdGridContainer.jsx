@@ -24,14 +24,28 @@ export const C04ProdGridContainer = (props) => {
 	// 		// handleRefreshAmt: c04.handleRefreshAmt,
 	// 	});
 	// }, [c04, form.getValues, form.setValue, formMeta.gridMeta]);
+
+	// const onChange = useMemo(() => {
+	// 	return c04.handleGridChangeAsync({
+	// 		getValues: form.getValues,
+	// 		setValue: form.setValue,
+	// 		gridMeta: formMeta.gridMeta
+	// 		// handleRefreshAmt: c04.handleRefreshAmt,
+	// 	});
+	// }, [c04, form.getValues, form.setValue, formMeta.gridMeta]);
 	const onChange = useMemo(() => {
-		return c04.handleGridChangeAsync({
+		return c04.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
-			gridMeta: formMeta.gridMeta
-			// handleRefreshAmt: c04.handleRefreshAmt,
+			gridMeta: formMeta.gridMeta,
+			onUpdateRow: c04.onUpdateRow,
+			onGridChanged: c04.onGridChanged
 		});
 	}, [c04, form.getValues, form.setValue, formMeta.gridMeta]);
+
+	const _height = useMemo(() => {
+		return formMeta.readOnly ? height - 410 : height - 410;
+	}, [formMeta.readOnly, height])
 
 	return (
 		<DSGContext.Provider value={{
@@ -45,7 +59,7 @@ export const C04ProdGridContainer = (props) => {
 				readOnly={formMeta.readOnly}
 				data={c04.gridData}
 				bearer={auth.token}
-				height={height - 390}
+				height={_height}
 				getRowKey={c04.getRowKey}
 				prodDisabled={c04.prodDisabled}
 				spriceDisabled={c04.spriceDisabled}

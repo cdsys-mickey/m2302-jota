@@ -40,6 +40,7 @@ const D02SearchPopper = memo(
 								name="rdate"
 								label="退料日期(大於)"
 								clearable
+								validate
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>

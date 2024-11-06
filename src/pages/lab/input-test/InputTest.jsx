@@ -148,8 +148,9 @@ const InputTest = () => {
 						<Grid item xs={4}>
 							<ProdPicker
 								debug={true}
-								name="picker2"
-								label="商品"
+								name="prodPicker"
+								label="必填商品"
+								required
 								labelShrink
 								placeholder="輸入商品編號"
 								filterByServer
@@ -163,12 +164,30 @@ const InputTest = () => {
 								// pressToFind
 								notFoundText="商品代號 ${id} 不存在"
 							/>
-
+						</Grid>
+						<Grid item xs={4}>
+							<ProdPicker
+								debug={true}
+								name="prodPicker2"
+								label="非必填商品"
+								labelShrink
+								placeholder="輸入商品編號"
+								filterByServer
+								// rules={{
+								// 	required: "此項必填",
+								// }}
+								// queryRequired
+								virtualize
+								// 新增屬性
+								disableOpenOnInput
+								// pressToFind
+								notFoundText="商品代號 ${id} 不存在"
+							/>
 						</Grid>
 						<Grid item xs={4}>
 							<ProdTypeAPicker
 								name="picker1"
-								label="picker1"
+								label="typeA"
 								// 新增屬性
 								disableOpenOnInput
 							/>
@@ -177,7 +196,7 @@ const InputTest = () => {
 						<Grid item xs={4}>
 							<ProdTypeBPicker
 								name="picker3"
-								label="picker3"
+								label="typeB"
 								disableOpenOnInput
 							/>
 						</Grid>
@@ -200,6 +219,7 @@ const InputTest = () => {
 							<DatePickerWrapper
 								name="datepicker1"
 								label="date-picker1"
+								validate
 							/>
 						</Grid>
 						<Grid item xs={4}>

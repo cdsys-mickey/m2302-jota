@@ -48,7 +48,17 @@ const transformGridForSubmitting = (gridData) => {
 		.filter((v) => v.prod?.ProdID)
 		.map(
 			(
-				{ Pkey, prod, SQty, SAmt, dept, dtype, customer, ...rest },
+				{
+					Pkey,
+					prod,
+					SQty,
+					SAmt,
+					dept,
+					dtype,
+					customer,
+					StockQty_N,
+					...rest
+				},
 				index
 			) => ({
 				Pkey: Pkey?.length < 36 ? "" : Pkey,
@@ -60,6 +70,7 @@ const transformGridForSubmitting = (gridData) => {
 				SDeptID: dept?.DeptID || "",
 				SCustID: customer?.CustID || "",
 				Seq: index + 1,
+				StockQty_N: StockQty_N?.toString(),
 				...rest,
 			})
 		);

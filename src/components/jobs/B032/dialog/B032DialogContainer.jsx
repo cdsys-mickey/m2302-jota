@@ -20,6 +20,8 @@ import { toast } from "react-toastify";
 import B032Drawer from "../B032Drawer";
 import B032DialogForm from "./B032DialogForm";
 import { B032DialogToolbarContainer } from "./toolbar/B032DialogToolbarContainer";
+import { B012Context } from "@/contexts/B012/B012Context";
+import { BContext } from "@/contexts/B/BContext";
 
 export const B032DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -30,7 +32,8 @@ export const B032DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 
-	const b032 = useContext(B032Context);
+	const b = useContext(BContext);
+	const b032 = useContext(b.forNew ? B032Context : B012Context);
 	const { importCustsDialogOpen } = b032;
 	const date = useWatch({
 		name: "Date",

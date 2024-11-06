@@ -6,10 +6,13 @@ import B032DialogEditToolbar from "./B032DialogEditToolbar";
 import B032DialogViewToolbar from "./B032DialogViewToolbar";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useMemo } from "react";
+import { B012Context } from "@/contexts/B012/B012Context";
+import { BContext } from "@/contexts/B/BContext";
 
 export const B032DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
-	const b032 = useContext(B032Context);
+	const b = useContext(BContext);
+	const b032 = useContext(b.forNew ? B032Context : B012Context);
 	const form = useFormContext();
 	const handlePrint = form.handleSubmit(
 		b032.onPrintSubmit,

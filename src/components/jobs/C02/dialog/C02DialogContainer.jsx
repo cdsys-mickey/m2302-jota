@@ -24,6 +24,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
 	const form = useForm({
+		mode: "onSubmit",
 		defaultValues: {
 			prods: [],
 		},
@@ -275,6 +276,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 							data={c02.itemData}
 							itemDataReady={c02.itemDataReady}
 							onSubmit={handleSubmit}
+						// validateDate={c02.validateDate}
 						/>
 						<C02Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 					</form>

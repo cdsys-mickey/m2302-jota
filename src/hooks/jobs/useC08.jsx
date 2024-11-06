@@ -55,7 +55,7 @@ export const useC08 = () => {
 
 	const grid = useDSG({
 		gridId: "prods",
-		keyColumn: "pkey",
+		keyColumn: "Pkey",
 	});
 
 	const overrideSQty = useOverrideSQty({
@@ -94,14 +94,14 @@ export const useC08 = () => {
 	// }, [httpGetAsync, token]);
 
 	const handleRefreshAmt = useCallback(
-		({ setValue, data, gridData, reset = false }) => {
+		({ setValue, formData, gridData, reset = false }) => {
 			if (reset) {
 				setValue("TxoAmt", "");
 			} else {
-				if (data) {
-					setValue("TxoAmt", data?.TxoAmt);
-					return;
-				}
+				// if (formData) {
+				// 	setValue("TxoAmt", formData?.TxoAmt);
+				// 	return;
+				// }
 
 				if (gridData) {
 					const total = C08.getTotal(gridData);
@@ -309,7 +309,6 @@ export const useC08 = () => {
 						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, refreshAmt: ({ gridData }) => {
 							handleRefreshAmt({
 								gridData,
-								taxExcluded: data.taxExcluded,
 								setValue,
 								formData: data
 							})
@@ -509,6 +508,11 @@ export const useC08 = () => {
 		return !!rowData.SoFlag_N;
 	}, []);
 
+	const sprodDisabled = useCallback(({ rowData }) => {
+		return !!rowData?.SOrdFlag_N;
+	}, []);
+
+
 	// const commitSQty = useCallback(
 	// 	({ setValue, gridMeta }) => {
 	// 		const sqtyLock = sqtyLockRef.current;
@@ -632,38 +636,40 @@ export const useC08 = () => {
 
 	const handleGridProdChange = useCallback(
 		async ({ rowData, txiDeptId }) => {
+			let processedRowData = { ...rowData };
+
 			const prodInfo = rowData.prod?.ProdID ? await getProdInfo(rowData.prod?.ProdID, {
 				txiDeptId,
 			}) : null;
 
-			let processedRowData = { ...rowData };
+			// D3 調撥成本只有判斷是否為空白, 若為 0 算是有填
+			let transferPriceEmpty = !prodInfo?.Price;
 
+			// 未設定調撥成本不可輸入
+			if (processedRowData.prod && transferPriceEmpty) {
+				toast.error(`「${processedRowData.prod?.ProdData}」未設定調撥成本不可輸入`, {
+					position: "top-center"
+				});
+			}
 
-			// // 取得報價
-			// qtyMap.set(prod.ProdID, prodInfo.Stock);
-			console.log("qtyMap updated", qtyMap);
 			processedRowData = {
 				...processedRowData,
-				["prod"]: prodInfo?.Price != null ? processedRowData.prod : null,
-				["ProdData"]: prodInfo?.Price != null ? processedRowData.prod?.ProdData || "" : "",
-				["PackData_N"]: prodInfo?.Price != null ? processedRowData?.prod?.PackData_N || "" : "",
+				["prod"]: transferPriceEmpty ? null : processedRowData.prod,
+				["ProdData"]: transferPriceEmpty ? "" : processedRowData.prod?.ProdData || "",
+				["PackData_N"]: transferPriceEmpty ? "" : processedRowData?.prod?.PackData_N || "",
+				["SPrice"]: transferPriceEmpty ? "" : prodInfo?.Price,
 				["SQty"]: "",
-				// ["overrideSQty"]: false,
 				["SQtyNote"]: "",
 				["dtype"]: null,
 				["stype"]: null,
-				["SPrice"]: prodInfo?.Price || "",
 				// SMsg: `庫存為 ${prodInfo.Stock}`,
-				["StockQty_N"]: prodInfo?.Stock || "",
+				//["StockQty_N"]: prodInfo?.Stock || "",
+				["SAmt"]: ""
 			};
-			if (processedRowData?.prod && prodInfo?.Price == null) {
-				toast.error("商品未訂調撥成本，不得訂購", {
-					position: "top-center",
-				});
-			}
+
 			return processedRowData;
 		},
-		[getProdInfo, qtyMap]
+		[getProdInfo]
 	);
 
 	// const handleGridSQtyChange = useCallback(
@@ -731,8 +737,14 @@ export const useC08 = () => {
 		return rowData;
 	}, []);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+
+
+	const isRowDeletable = useCallback(({ key, rowData }) => {
+		return !sprodDisabled({ rowData });
+	}, [sprodDisabled]);
+
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -1018,7 +1030,7 @@ export const useC08 = () => {
 						grid.setGridData(grid.fillRows({ createRow, data: data.prods }), {
 							supressEvents: true
 						});
-						handleRefreshAmt({ setValue, data, gridData: data.prods });
+						handleRefreshAmt({ setValue, formData: data, gridData: data.prods });
 						// toast.info("訂購單商品已載入");
 						checkAndRemoveDepOrders({
 							gridData: data.prods,
@@ -1109,9 +1121,6 @@ export const useC08 = () => {
 		return rowData.sqtyError && !rowData.overrideSqty ? "red" : null;
 	}, []);
 
-	const sprodDisabled = useCallback(({ rowData }) => {
-		return !!rowData?.SOrdFlag_N;
-	}, []);
 
 	// 挑戰處理
 
@@ -1261,6 +1270,7 @@ export const useC08 = () => {
 		...sideDrawer,
 		committed,
 		onUpdateRow,
-		onGridChanged
+		onGridChanged,
+		isRowDeletable
 	};
 };

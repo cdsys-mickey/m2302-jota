@@ -1,4 +1,6 @@
+import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
+import { B032Context } from "@/contexts/B032/B032Context";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import useDebounce from "@/shared-hooks/useDebounce";
 import Objects from "@/shared-modules/sd-objects";
@@ -8,7 +10,8 @@ import { useWatch } from "react-hook-form";
 export const B012ImportCustsButtonContainer = (props) => {
 	const { ...rest } = props;
 	const criteria = useWatch();
-	const b012 = useContext(B012Context);
+	const b = useContext(BContext);
+	const b012 = useContext(b.forNew ? B032Context : B012Context);
 	const {
 		peekCusts,
 		importCustsWorking,

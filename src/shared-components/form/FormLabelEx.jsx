@@ -31,6 +31,7 @@ export const FormLabelEx = memo((props) => {
 				(theme) => ({
 					color: theme.palette.text.primary,
 					fontWeight: 400,
+					marginRight: theme.spacing(1)
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}>

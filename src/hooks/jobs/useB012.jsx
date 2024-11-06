@@ -16,16 +16,35 @@ import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 import B02 from "@/modules/md-b02";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
+import Forms from "@/shared-modules/sd-forms";
+import { useMemo } from "react";
 
-export const useB012 = () => {
+export const useB012 = (opts = {}) => {
+	const { forNew } = opts;
+
+	const JOB_NAME = useMemo(() => {
+		return forNew ? "B032" : "B012"
+	}, [forNew]);
+
+	const API_URL = useMemo(() => {
+		return forNew ? "v1/quote/new-customer-quotes" : "v1/quote/customer-quotes"
+	}, [forNew]);
+
+	const GRID_URL = useMemo(() => {
+		return forNew ? "v1/sales/customer/data-grid/B032" : "v1/sales/customer/data-grid/B012"
+	}, [forNew]);
+
 	const crud = useContext(CrudContext);
+	const auth = useContext(AuthContext);
+	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
-		moduleId: "B012",
+		moduleId: JOB_NAME,
 	});
 
 	// 側邊欄
@@ -36,14 +55,15 @@ export const useB012 = () => {
 	const {
 		httpGetAsync,
 		httpPostAsync,
-		httpPutAsync,
 		httpPatchAsync,
 		httpDeleteAsync,
 	} = useWebApi();
 	const dialogs = useContext(DialogsContext);
 
+
+
 	const listLoader = useInfiniteLoader({
-		url: "v1/quote/customer-quotes",
+		url: `${API_URL}/find-by-prod`,
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
@@ -85,7 +105,7 @@ export const useB012 = () => {
 			try {
 				crud.startCreating();
 				const { status, error } = await httpPostAsync({
-					url: "v1/quote/customer-quotes/by-prod",
+					url: `${API_URL}/by-prod`,
 					data: data,
 					bearer: token,
 				});
@@ -118,7 +138,7 @@ export const useB012 = () => {
 					crud.startReading("讀取中...", { itemId });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/quote/customer-quotes/by-prod",
+					url: `${API_URL}/by-prod`,
 					bearer: token,
 					params: {
 						...itemId,
@@ -226,7 +246,7 @@ export const useB012 = () => {
 			try {
 				crud.startUpdating();
 				const { status, error } = await httpPatchAsync({
-					url: "v1/quote/customer-quotes/by-prod",
+					url: `${API_URL}/by-prod`,
 					data,
 					bearer: token,
 				});
@@ -258,7 +278,7 @@ export const useB012 = () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/quote/customer-quotes/by-prod`,
+						url: `${API_URL}/by-prod`,
 						bearer: token,
 						params: {
 							id: itemData?.InqID,
@@ -317,8 +337,8 @@ export const useB012 = () => {
 		[crud.creating, grid]
 	);
 
-	const onUpdateRow = useCallback(({ fromIndex, formData, newValue }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 
@@ -424,7 +444,7 @@ export const useB012 = () => {
 
 			try {
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/sales/customer/data-grid/B012",
+					url: GRID_URL,
 					bearer: token,
 					params: {
 						...B012.transformCustCriteriaAsQueryParams(criteria),
@@ -452,7 +472,7 @@ export const useB012 = () => {
 				}));
 			}
 		},
-		[httpGetAsync, ipState.saveKey, token]
+		[GRID_URL, httpGetAsync, ipState.saveKey, token]
 	);
 
 	const onImportCustsSubmit = useCallback(
@@ -461,7 +481,7 @@ export const useB012 = () => {
 			try {
 				importCustsAction.start();
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/sales/customer/data-grid/B012",
+					url: GRID_URL,
 					bearer: token,
 					params: {
 						...B012.transformCustCriteriaAsQueryParams(ipState.criteria),
@@ -481,52 +501,87 @@ export const useB012 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				importCustsAction.fail(err);
+				importCustsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入客戶發生錯誤", err), {
 					position: "top-center"
 				});
 			}
 		},
-		[
-			createRow,
-			httpGetAsync,
-			importCustsAction,
-			ipState.criteria,
-			ipState.saveKey,
-			grid,
-			token,
-		]
+		[importCustsAction, httpGetAsync, GRID_URL, token, ipState.criteria, ipState.saveKey, grid, createRow]
 	);
 
 	const onImportCustsSubmitError = useCallback((err) => {
 		console.error("onImportCustsSubmitError", err);
 	}, []);
 
+	//列印
+	const printAction = useAction();
+
+	const onPrintPromptSubmit = useCallback((data) => {
+		console.log("onPrintPromptSubmit", data);
+		printAction.prompt({
+			params: data
+		});
+	}, [printAction])
+
+	const onPrintPromptSubmitError = useCallback((err) => {
+		console.error("onPrintPromptSubmitError", err);
+	}, [])
+
 	const onPrintSubmit = useCallback(
-		(data) => {
+		async (data) => {
 			console.log("onPrintSubmit", data);
+			// fetch ListView data
+			const { status, payload, error } = await httpGetAsync({
+				bearer: auth.token,
+				url: `${API_URL}/find-by-prod`,
+				params: {
+					sort: B02.OrderBy.PROD,
+					...listLoaderCtx.paramsRef.current,
+				}
+			});
+			if (status.success) {
+				console.log("payload", payload.data);
+				if (!payload.data?.length) {
+					toast.error("目前查詢沒有資料", {
+						position: "top-center"
+					})
+					return;
+				}
+			} else {
+				toast.error(Errors.getMessage("讀取資料發生錯誤", error), {
+					position: "top-center"
+				})
+				return;
+			}
+			const { prtEmployee, prtDate } = data;
 			const jsonData = {
 				...(data.outputType && {
 					Action: data.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
-				JobName: "B012",
-				IDs: crud.itemData?.InqID,
+				JobName: JOB_NAME,
+				ProdID: printAction.params?.lvProd?.ProdID || "",
+				QEmplID: prtEmployee?.CodeID || "",
+				QDate: Forms.formatDate(prtDate),
+				B012032_W1: payload.data ?
+					payload.data?.map(x => ({
+						CustID: x.CustID,
+						Price: x.Price,
+						QPrice: x.QPrice
+					}))
+					: []
 			};
+			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB012Rep.aspx?LogKey=${operator?.LogKey
+				`${import.meta.env.VITE_URL_REPORT}/WebB012032Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.InqID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[JOB_NAME, auth.token, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvProd?.ProdID]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -577,11 +632,16 @@ export const useB012 = () => {
 		peekCusts,
 		ipState,
 		// 列印
+		cancelPrint: printAction.clear,
+		printDialogOpen: printAction.active,
+		onPrintPromptSubmit,
+		onPrintPromptSubmitError,
 		onPrintSubmit,
 		onPrintSubmitError,
 		// handleLastField,
 		importCustsFormMeta,
 		handleProdChange,
-		...sideDrawer
+		...sideDrawer,
+		forNew
 	};
 };

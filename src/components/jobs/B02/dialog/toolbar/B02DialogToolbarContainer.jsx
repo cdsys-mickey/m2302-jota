@@ -4,10 +4,13 @@ import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import B02DialogEditToolbar from "./B02DialogEditToolbar";
 import B02DialogViewToolbar from "./B02DialogViewToolbar";
+import { BContext } from "@/contexts/B/BContext";
+import { B04Context } from "@/contexts/B04/B04Context";
 
 export const B02DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
-	const b02 = useContext(B02Context);
+	const b = useContext(BContext);
+	const b02 = useContext(b.forNew ? B04Context : B02Context);
 	const form = useFormContext();
 
 	const handlePrint = form.handleSubmit(

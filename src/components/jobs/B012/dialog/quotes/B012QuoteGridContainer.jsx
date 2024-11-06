@@ -7,10 +7,14 @@ import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
+import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import { BContext } from "@/contexts/B/BContext";
+import { B032Context } from "@/contexts/B032/B032Context";
 
 export const B012QuoteGridContainer = (props) => {
 	const { ...rest } = props;
-	const b012 = useContext(B012Context);
+	const b = useContext(BContext);
+	const b012 = useContext(b.forNew ? B032Context : B012Context);
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
 	const formMeta = useContext(FormMetaContext);
@@ -21,7 +25,8 @@ export const B012QuoteGridContainer = (props) => {
 			gridMeta: formMeta.gridMeta,
 			getValues: form.getValues,
 			onUpdateRow: b012.onUpdateRow,
-			onCheckRow: b012.onCheckRow
+			onCheckRow: b012.onCheckRow,
+			isRowCreatable: false
 		})
 	}, [b012, form.getValues, formMeta.gridMeta])
 	// const onChange = useMemo(() => {
@@ -31,6 +36,10 @@ export const B012QuoteGridContainer = (props) => {
 	// 		onUpdateRow: b012.onUpdateRow
 	// 	})
 	// }, [b012, form.getValues, formMeta.gridMeta])
+
+	const _height = useMemo(() => {
+		return height - 250;
+	}, [height])
 
 	return (
 		<DSGContext.Provider value={{
@@ -50,9 +59,11 @@ export const B012QuoteGridContainer = (props) => {
 				// })}
 				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
-				height={height - 240}
+				height={_height}
 				getRowKey={b012.getRowKey}
 				createRow={b012.createRow}
+				autoAddRow={false}
+				addRowsComponent={b012.creating ? DSGAddRowsToolbar : null}
 				{...rest}
 			/>
 		</DSGContext.Provider>

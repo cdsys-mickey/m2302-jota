@@ -4,11 +4,14 @@ import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModeP
 import StdPrint from "@/modules/md-std-print";
 import { useContext } from "react";
 import { B011Context } from "@/contexts/B011/B011Context";
+import { B031Context } from "@/contexts/B031/B031Context";
+import { BContext } from "@/contexts/B/BContext";
 
 export const B011OutputModePickerContainer = memo(
 	forwardRef((props, ref) => {
-		const { ...rest } = props;
-		const b011 = useContext(B011Context);
+		const { forNew = false, ...rest } = props;
+		const b = useContext(BContext);
+		const b011 = useContext(b.forNew ? B031Context : B011Context);
 		const { canPrint } = b011;
 
 		if (!canPrint) {
@@ -22,8 +25,7 @@ export const B011OutputModePickerContainer = memo(
 				width="8rem"
 				required
 				name="outputType"
-				label=""
-				dense
+				// dense
 				disableClearable
 				{...rest}
 			/>
@@ -31,7 +33,9 @@ export const B011OutputModePickerContainer = memo(
 	})
 );
 
-B011OutputModePickerContainer.propTypes = {};
+B011OutputModePickerContainer.propTypes = {
+	forNew: PropTypes.bool
+};
 
 B011OutputModePickerContainer.displayName = "B011OutputModePickerContainer";
 

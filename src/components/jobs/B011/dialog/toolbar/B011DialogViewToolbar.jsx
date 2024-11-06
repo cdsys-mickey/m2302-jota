@@ -13,12 +13,12 @@ const B011DialogViewToolbar = memo(
 		const { onEdit, onDelete, onPrint, onSideDrawerOpen, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				{onPrint && (
+				{/* {onPrint && (
 					<>
 						<B011OutputModePickerContainer />
 						<B011PrintButtonContainer />
 					</>
-				)}
+				)} */}
 				{onDelete && (
 					<ResponsiveButton
 						startIcon={<HighlightOffIcon />}

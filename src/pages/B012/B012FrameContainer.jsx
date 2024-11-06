@@ -3,6 +3,7 @@ import { B012ListFormContainer } from "@/components/jobs/B012/list/B012ListFormC
 import B012ListHeader from "@/components/jobs/B012/list/B012ListHeader";
 import B012ListToolbar from "@/components/jobs/B012/list/B012ListToolbar";
 import { B012ListViewContainer } from "@/components/jobs/B012/list/B012ListViewContainer";
+import B012PrintDialogContainer from "@/components/jobs/B012/print/B012PrintDialogContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
@@ -35,6 +36,7 @@ export const B012FrameContainer = () => {
 				<B012ListViewContainer />
 				{/* 對話框 */}
 				<B012DialogContainer />
+				<B012PrintDialogContainer />
 			</Box>
 		</FormProvider>
 	);

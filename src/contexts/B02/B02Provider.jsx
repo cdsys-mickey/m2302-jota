@@ -2,8 +2,8 @@ import { useB02 } from "../../hooks/jobs/useB02";
 import { B02Context } from "./B02Context";
 import PropTypes from "prop-types";
 
-export const B02Provider = ({ children }) => {
-	const b02 = useB02();
+export const B02Provider = ({ children, forNew = false }) => {
+	const b02 = useB02({ forNew });
 
 	return (
 		<B02Context.Provider

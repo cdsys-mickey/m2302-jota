@@ -1,13 +1,14 @@
-import { forwardRef, memo } from "react";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import ModuleToolbar from "../../ModuleToolbar";
+import { forwardRef, memo } from "react";
 import B012CreateButtonContainer from "../B012CreateButtonContainer";
 import { B012FetchResultLabelContainer } from "../B012FetchResultLabelContainer";
+import B012PrintButtonContainer from "../dialog/toolbar/B012PrintButtonContainer";
 
 const LeftButtons = memo(() => {
 	return (
 		<>
 			<B012CreateButtonContainer />
+			<B012PrintButtonContainer />
 		</>
 	);
 });

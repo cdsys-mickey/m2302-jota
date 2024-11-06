@@ -16,6 +16,8 @@ import { memo } from "react";
 import { C04AmtToolbar } from "./prod-grid/C04AmtToolbar";
 import { C04ProdGridBottomToolbar } from "./prod-grid/C04ProdGridBottomToolbar";
 import { C04ProdGridContainer } from "./prod-grid/C04ProdGridContainer";
+import C04ProdGridBottomToolbar2 from "./prod-grid/C04ProdGridBottomToolbar2";
+import Forms from "@/shared-modules/sd-forms";
 
 const C04DialogForm = memo((props) => {
 	const {
@@ -29,7 +31,7 @@ const C04DialogForm = memo((props) => {
 		updating,
 		handleSupplierChanged,
 		handlePurchaseOrdersChanged,
-		handleRstDateChanged,
+		handleStkDateChanged,
 		handleLoadProdsSubmit,
 		handleTaxTypeChange,
 		isSupplierNameDisabled,
@@ -73,8 +75,14 @@ const C04DialogForm = memo((props) => {
 								autoFocus
 								fullWidth
 								required
+								validate
 								variant="outlined"
-								onChanged={handleRstDateChanged}
+								onChanged={handleStkDateChanged}
+							// rules={{
+							// 	validate: {
+							// 		validateDate: Forms.validateDate
+							// 	}
+							// }}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
@@ -190,6 +198,7 @@ const C04DialogForm = memo((props) => {
 								// virtualize
 								// fadeOutDisabled
 								// onChanged={handleLoadProdsSubmit}
+
 								onChanged={handlePurchaseOrdersChanged}
 								disabled={purchaseOrdersDisabled || !supplier}
 								disableOpenOnInput
@@ -209,8 +218,9 @@ const C04DialogForm = memo((props) => {
 					<Box py={1}>
 						<C04ProdGridContainer />
 					</Box>
-					<C04ProdGridBottomToolbar />
-					<C04AmtToolbar mb={1} />
+					<C04ProdGridBottomToolbar pr={1} />
+					{/* <C04AmtToolbar mb={1} /> */}
+					<C04ProdGridBottomToolbar2 mb={1} />
 					<Grid container columns={24}>
 						<Grid item xs={24}>
 							<TextFieldWrapper
@@ -236,7 +246,7 @@ C04DialogForm.propTypes = {
 	data: PropTypes.object,
 	itemDataReady: PropTypes.bool,
 	purchaseOrdersDisabled: PropTypes.bool,
-	handleRstDateChanged: PropTypes.func,
+	handleStkDateChanged: PropTypes.func,
 };
 
 C04DialogForm.displayName = "C04DialogForm";

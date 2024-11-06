@@ -9,37 +9,29 @@ import { B012ListRowContainer } from "./B012ListRowContainer";
 import { B012Context } from "@/contexts/B012/B012Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import B012 from "@/modules/md-b012";
+import { useMemo } from "react";
+import { BContext } from "@/contexts/B/BContext";
+import { B032Context } from "@/contexts/B032/B032Context";
 
 export const B012ListViewContainer = () => {
-	const b012 = useContext(B012Context);
+	const b = useContext(BContext);
+	const b012 = useContext(b.forNew ? B032Context : B012Context);
 	const { loadList } = b012;
 	const form = useFormContext();
 	// const { getValues, setValue } = form;
 	const { height } = useWindowSize();
-	const cust = useWatch({
-		name: "lvCust",
-		control: form.control,
-	});
-	const cust2 = useWatch({
-		name: "lvCust2",
-		control: form.control,
-	});
-	const prod = useWatch({
+	const lvProd = useWatch({
 		name: "lvProd",
 		control: form.control,
 	});
-	const prod2 = useWatch({
-		name: "lvProd2",
-		control: form.control,
-	});
-	const date = useWatch({
+	const lvDate = useWatch({
 		name: "lvDate",
 		control: form.control,
 	});
-	const date2 = useWatch({
-		name: "lvDate2",
-		control: form.control,
-	});
+	const lvEmployee = useWatch({
+		name: "lvEmployee",
+		control: form.control
+	})
 
 	useInit(() => {
 		b012.loadList();
@@ -48,16 +40,17 @@ export const B012ListViewContainer = () => {
 	useChangeTracking(() => {
 		loadList({
 			params: B012.transformAsQueryParams({
-				cust,
-				cust2,
-				prod,
-				prod2,
-				date,
-				date2
+				lvProd,
+				lvDate,
+				lvEmployee
 			}),
 			supressLoading: true,
 		});
-	}, [cust, cust2, prod, prod2, date, date2]);
+	}, [lvProd, lvDate, lvEmployee]);
+
+	const _height = useMemo(() => {
+		return height - 180
+	}, [height])
 
 	return (
 		<ListViewBox withHeader>
@@ -70,7 +63,7 @@ export const B012ListViewContainer = () => {
 				loadMoreItems={b012.loadMoreItems}
 				isItemLoaded={b012.isItemLoaded}
 				RowComponent={B012ListRowContainer}
-				height={height ? height - 232 : 300}
+				height={_height}
 				handleItemsRendered={b012.handleItemsRendered}
 				error={b012.listError}
 				// bottomReached={b012.bottomReached}

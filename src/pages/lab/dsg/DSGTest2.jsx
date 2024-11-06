@@ -1,16 +1,12 @@
 import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
+import { ZZcreateOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/ZZcreateOptionPickerColumn";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo, useState } from "react";
 import {
-	DynamicDataSheetGrid,
 	createTextColumn,
-	keyColumn,
-	textColumn,
+	DynamicDataSheetGrid,
+	keyColumn
 } from "react-datasheet-grid";
-import Depts from "@/modules/md-depts";
-import Prods from "@/modules/md-prods";
-import { createWebApiOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createWebApiOptionPickerColumn";
-import { createOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 import { prodPickerColumn } from "../../../components/dsg/columns/prod-picker/prodPickerColumn";
 
 const DSGTest2 = memo(
@@ -38,7 +34,7 @@ const DSGTest2 = memo(
 				{
 					...keyColumn(
 						"abc",
-						createOptionPickerColumn({
+						ZZcreateOptionPickerColumn({
 							options: ["A", "B", "C"],
 						})
 					),
@@ -98,7 +94,7 @@ const DSGTest2 = memo(
 					onChange={setData}
 					columns={columns}
 					height={500}
-					// rowHeight={42}
+				// rowHeight={42}
 				/>
 			</div>
 		);

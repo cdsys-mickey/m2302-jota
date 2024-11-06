@@ -39,6 +39,7 @@ const D041SearchPopper = memo(
 							<DatePickerWrapper
 								name="sdate"
 								label="入庫日期(大於)"
+								validate
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>

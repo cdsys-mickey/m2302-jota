@@ -13,7 +13,7 @@ import { forwardRef, memo } from "react";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { DatePickerWrapper } from "../../../../shared-components/date-picker/DatePickerWrapper";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import DeptPicker from "../../../DeptPickerContainer";
+import DeptPicker from "../../../DeptPicker";
 
 const C09SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -36,6 +36,7 @@ const C09SearchPopper = memo(
 								name="tid"
 								label="撥入日期(大於)"
 								autoFocus
+								validate
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>

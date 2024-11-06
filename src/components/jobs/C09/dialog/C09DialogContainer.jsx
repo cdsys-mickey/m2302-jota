@@ -305,7 +305,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 						readError={c09.readError}
 						data={c09.itemData}
 						itemDataReady={c09.itemDataReady}
-						handleTxoOrdersChanged={c09.handleTxoOrdersChanged({
+						handleTxoOrderChanged={c09.handleTxoOrderChanged({
 							setValue: form.setValue,
 							getValues: form.getValues,
 						})}

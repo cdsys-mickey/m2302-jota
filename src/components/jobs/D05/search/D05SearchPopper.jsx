@@ -33,6 +33,7 @@ const D05SearchPopper = memo(
 								label="報廢日期(大於)"
 								clearable
 								clearOnEscape
+								validate
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>

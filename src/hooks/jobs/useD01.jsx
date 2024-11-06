@@ -15,6 +15,7 @@ import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 import useOverrideSQty from "../useOverrideSQty";
+import { isValid } from "date-fns";
 
 const DEFAULT_ROWS = 10;
 
@@ -673,8 +674,8 @@ export const useD01 = () => {
 	// 	return rowData;
 	// }, []);
 
-	const onUpdateRow = useCallback(({ fromIndex, setValue, newValue, gridMeta }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, setValue, newValue, gridMeta }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -921,6 +922,13 @@ export const useD01 = () => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
+	// const validateDate = useCallback((value) => {
+	// 	if (value != null && !isValid(value)) {
+	// 		return "日期格式錯誤";
+	// 	}
+	// 	return true;
+	// }, []);
+
 	return {
 		...crud,
 		...listLoader,
@@ -969,6 +977,7 @@ export const useD01 = () => {
 		handlePopperOpen,
 		handlePopperClose,
 		...sideDrawer,
-		committed
+		committed,
+		// validateDate
 	};
 };

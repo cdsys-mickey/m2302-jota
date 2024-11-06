@@ -197,28 +197,39 @@ const TextComponentEx = memo(
 		// 		focusNextCell(cell);
 		// 	}
 		// }, [active, cell, focusNextCell, isLastCell]);
+		const _placeholder = useMemo(() => {
+			return active ? placeholder : undefined;
+		}, [active, placeholder])
+
+		const _className = useMemo(() => {
+			return classNames(
+				"dsg-input",
+				alignRight && "dsg-input-align-right"
+			)
+		}, [alignRight])
+
+		const _style = useMemo(() => {
+			return {
+				pointerEvents: focus ? "auto" : "none",
+				...(style && {
+					...style,
+				}),
+			}
+		}, [focus, style])
 
 		return (
 			<input
 				// We use an uncontrolled component for better performance
 				defaultValue={formatBlurredInput(rowData)}
-				className={classNames(
-					"dsg-input",
-					alignRight && "dsg-input-align-right"
-				)}
-				placeholder={active ? placeholder : undefined}
+				className={_className}
+				placeholder={_placeholder}
 				// Important to prevent any undesired "tabbing"
 				tabIndex={-1}
 				ref={ref}
 				// Make sure that while the cell is not focus, the user cannot interact with the input
 				// The cursor will not change to "I", the style of the input will not change,
 				// and the user cannot click and edit the input (this part is handled by DataSheetGrid itself)
-				style={{
-					pointerEvents: focus ? "auto" : "none",
-					...(style && {
-						...style,
-					}),
-				}}
+				style={_style}
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}
 			// {...rest}

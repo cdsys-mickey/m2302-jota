@@ -47,6 +47,8 @@ const AreaTypePickerComponent = memo((props) => {
 		skipDisabled,
 		// focusNextCell,
 		setActiveCell,
+		focusPrevCell,
+		focusOnDisabled,
 		readOnly,
 		...rest
 	} = columnData;
@@ -71,30 +73,31 @@ const AreaTypePickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell
+		focusNextCell,
+		focusOnDisabled
 	});
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		focusNextCell,
-		getNextCell,
-		lastCell,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		focusNextCell,
-		getNextCell,
-		lastCell,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	focusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	focusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	setActiveCell,
+	// }
 
 	return (
 		<AreaTypePicker
@@ -104,7 +107,7 @@ const AreaTypePickerComponent = memo((props) => {
 			value={rowData}
 			onChange={handleChange}
 			// DSG 專屬屬性
-			cellComponentRef={cellComponentRef}
+			// cellComponentRef={cellComponentRef}
 			cell={cell}
 			dense
 			hideControls={hideControls}

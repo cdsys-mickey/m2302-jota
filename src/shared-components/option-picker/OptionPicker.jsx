@@ -43,7 +43,7 @@ const noFilterOptions = (options) => {
  */
 const OptionPicker = memo(
 	forwardRef((props, ref) => {
-		// console.log("redenring OptionPicker");
+
 		const {
 			// Global
 			tagDisabled,
@@ -129,6 +129,7 @@ const OptionPicker = memo(
 			inDSG,
 			cellComponentRef,
 			focusNextCell,
+			focusPrevCell,
 			cell,
 			// FormMeta
 			inFormMeta,
@@ -141,6 +142,8 @@ const OptionPicker = memo(
 			isTouched,
 			...rest
 		} = props;
+
+		// console.log(`redenring OptionPicker: ${name}`);
 
 		// const { focusNextCell } = useCellComponent(cellComponentRef?.current);
 
@@ -181,6 +184,7 @@ const OptionPicker = memo(
 			(event) => {
 				const input = event.target.value;
 				// console.log(`handleInputChange: "${input}"`);
+
 				// 原本輸入框刪到空白則取消 dirty 狀態,
 				// 但為了支援空 id, 因此這裡改成允許空白時保留 dirty 狀態
 
@@ -249,10 +253,10 @@ const OptionPicker = memo(
 			return onClose || handleClose;
 		}, [handleClose, onClose]);
 
+
 		/**
 		 * 先判斷 DSGContext.focusNextCell, 再判斷 FieldsContext.getNextField
 		 */
-
 		const focusNextCellOrField = useCallback(
 			(e, opts = {}) => {
 				const { forward } = opts;
@@ -295,17 +299,29 @@ const OptionPicker = memo(
 			[clearErrors, name, onChange]
 		);
 
-		const refocus = useCallback(() => {
-			// focusTimeoutRef.current = setTimeout(() => {
-			// 	innerInputRef.current?.focus();
-			// }, focusDelay);
-			focusTimeoutRef.current = setTimeout(() => {
-				innerInputRef.current?.focus();
-			});
+		const selectField = useCallback(() => {
+			innerInputRef.current?.select();
 		}, []);
 
+		const refocus = useCallback((doSelect = true) => {
+			console.log("refocus", doSelect);
+
+			if (inDSG) {
+				focusPrevCell();
+			}
+
+			innerInputRef.current?.focus();
+			if (doSelect) {
+				innerInputRef.current?.select();
+			}
+
+
+
+		}, [focusPrevCell, inDSG]);
+
 		const inputNotFound = useCallback(
-			(input, error) => {
+			(input, opts = {}) => {
+				const { error } = opts;
 				if (name && toastError) {
 					toast.error(getNotFoundMessage({ id: input, error }), {
 						position: "top-center",
@@ -325,32 +341,33 @@ const OptionPicker = memo(
 			[getNotFoundMessage, name, setError, toastError]
 		);
 
-		const focusTimeoutRef = useRef();
+		// const focusTimeoutRef = useRef();
 
-		const handleEnter = useCallback(
+		const handleLookup = useCallback(
 			async (e, opts = {}) => {
-				asyncRef.current.skipBlur = true;
-				console.log("handleEnter", e);
+				// asyncRef.current.skipBlur = true;
 				const { validate = false, } = opts;
-				// console.log("handleEnter", event);
+
 				// if (!findByInput || _open || (!inFormMeta && !inDSG)) {
 				if (_open || (!inFormMeta && !inDSG)) {
 					return;
 				}
 
+				console.log("handleLookup", e.key);
+
 				e.preventDefault();
 				e.stopPropagation();
 
 				// 重設 focusTimeout
-				if (focusTimeoutRef.current) {
-					clearTimeout(focusTimeoutRef.current);
-				}
+				// if (focusTimeoutRef.current) {
+				// 	clearTimeout(focusTimeoutRef.current);
+				// }
 
 				// dirty check 是為了避免 option label 把 id+name 當作 id
 				// if ((asyncRef.current.dirty) && findByInput) {
 				const input = e.target.value;
-				if ((asyncRef.current.dirty) && findByInput) {
-					asyncRef.current.dirty = false;
+				if (asyncRef.current.dirty && findByInput && (input || emptyId)) {
+
 					let found;
 					let error;
 					try {
@@ -358,15 +375,23 @@ const OptionPicker = memo(
 					} catch (err) {
 						error = err;
 					}
-					// 處理輸入清成空，卻必須跳下一個欄位的狀況
-					if (!input && !found) {
-						// asyncRef.current.focusNextWhenEmpty = true;
-						asyncRef.current.performFocusNext = true;
-					}
-					if (!found && validate) {
-						inputNotFound(input, error);
+
+					if (found) {
+						asyncRef.current.dirty = false;
+					} else {
+						// 處理輸入清成空，卻必須跳下一個欄位的狀況
+						if (!input) {
+							asyncRef.current.performFocusNext = true;
+						}
+
+						inputNotFound(input, {
+							error
+						});
+						selectField();
 						return;
 					}
+
+
 					// 有改變會透過 ChangeTracking 觸發,
 					// 這裡處理 dirty 之後, 卻沒改變, 仍要跳到下一個欄位的狀況
 					if (multiple) {
@@ -402,7 +427,7 @@ const OptionPicker = memo(
 				}
 				// focusNextCellOrField(e);
 			},
-			[_open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, onChange, value, focusNextCellOrField, getError, name, setError]
+			[_open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, selectField, onChange, value, focusNextCellOrField, getError, name, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -429,13 +454,13 @@ const OptionPicker = memo(
 						if (disableEnter || e.shiftKey) {
 							return;
 						}
-						handleEnter(e, {
+						handleLookup(e, {
 							validate: true,
 							forward: true
 						});
 						break;
 					case "Tab":
-						handleEnter(e, {
+						handleLookup(e, {
 							validate: false,
 						});
 						break;
@@ -444,7 +469,7 @@ const OptionPicker = memo(
 						break;
 				}
 			},
-			[disableEnter, handleArrowDown, handleEnter]
+			[disableEnter, handleArrowDown, handleLookup]
 		);
 
 		const handleAutocompleteKeyDown = useCallback((e) => {
@@ -465,11 +490,11 @@ const OptionPicker = memo(
 					clearErrors(name);
 				}
 
-				if (asyncRef.current.skipBlur) {
-					asyncRef.current.skipBlur = false;
-					return;
-				}
-				asyncRef.current.skipBlur = false;
+				// if (asyncRef.current.skipBlur) {
+				// 	asyncRef.current.skipBlur = false;
+				// 	return;
+				// }
+				// asyncRef.current.skipBlur = false;
 
 				if (_open || (!inFormMeta && !inDSG)) {
 					return;
@@ -477,18 +502,20 @@ const OptionPicker = memo(
 				e.preventDefault();
 				const input = e.target.value;
 
-				if (asyncRef.current.dirty) {
-					asyncRef.current.dirty = false;
-					console.log("handleBlur:", input);
-					const found = await findByInput(input);
-					if (!found) {
+				if (asyncRef.current.dirty && findByInput && (input || emptyId)) {
+					console.log("handleBlur: ", input);
+					let found;
+					// found = await findByInput(input);
+					found = input || emptyId ? await findByInput(input) : null;
+					if (found) {
+						asyncRef.current.dirty = false;
+					} else {
 						inputNotFound(input);
-						// refocus(focusDelay);
 						refocus();
 					}
 				}
 			},
-			[_open, clearErrors, findByInput, inDSG, inFormMeta, inputNotFound, name, refocus]
+			[_open, clearErrors, emptyId, findByInput, inDSG, inFormMeta, inputNotFound, name, refocus]
 		);
 
 		const renderNormalInput = useCallback(
@@ -784,6 +811,10 @@ const OptionPicker = memo(
 			return customPaperComponent || Paper;
 		}, [GridHeaderComponent, customPaperComponent]);
 
+		const _width = useMemo(() => {
+			return fullWidth ? "100%" : (width || "fill-available");
+		}, [fullWidth, width])
+
 
 		useChangeTracking(() => {
 			// 當選項改變, 且有值, 且非 multiple
@@ -811,7 +842,7 @@ const OptionPicker = memo(
 				disableFadeOut={disableFadeOut}
 				size={size}
 				title={memoisedTitle}
-				width={width}
+				width={_width}
 				{...BoxProps}>
 				<Autocomplete
 					onKeyDown={handleAutocompleteKeyDown}
@@ -979,6 +1010,7 @@ OptionPicker.propTypes = {
 	clearErrors: PropTypes.func,
 	notFoundText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 	focusNextCell: PropTypes.func,
+	focusPrevCell: PropTypes.func,
 	cell: PropTypes.object,
 	toastError: PropTypes.bool,
 	disableClose: PropTypes.bool,

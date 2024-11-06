@@ -100,6 +100,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
+						focusOnDisabled: true
 					})
 				),
 				title: "商品編號",
@@ -205,7 +206,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 						name: "dtype",
 						// optionLabelSize: "md",
 						disableOpenOnInput: true,
-						disableClearable: true,
+						// disableClearable: true,
 						selectOnFocus: true,
 						forcePopupIcon: false,
 						autoHighlight: true,
@@ -222,14 +223,6 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 				minWidth: 140,
 				maxWidth: 160,
 				disabled: readOnly || c08.dtypeDisabled,
-			},
-			{
-				...keyColumn("SRemark", createTextColumnEx({
-					continuousUpdates: false,
-				})),
-				title: "訊息",
-				minWidth: 140,
-				disabled: true,
 			},
 		],
 		[readOnly, c08.sprodDisabled, c08.getSPriceClassName, c08.sqtyDisabled, c08.getSQtyClassName, c08.dtypeDisabled]

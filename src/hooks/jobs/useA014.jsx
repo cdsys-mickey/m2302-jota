@@ -248,8 +248,8 @@ export const useA014 = () => {
 	// 	[]
 	// );
 
-	const onUpdateRow = useCallback(({ fromIndex, formData }) => async (rowData, index) => {
-		const rowIndex = fromIndex + index;
+	const onUpdateRow = useCallback(({ fromRowIndex, formData }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 
 		const { catL, catM } = rowData;

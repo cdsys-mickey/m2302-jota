@@ -23,6 +23,7 @@ const STYLES = Object.freeze({
 	ONE_LINER: {
 		overflow: "hidden",
 		textOverflow: "ellipsis",
+		whiteSpace: "nowrap",
 	},
 	DEFAULT_FORM_LABEL_STYLES: {
 		"& .MuiTypography-root": {

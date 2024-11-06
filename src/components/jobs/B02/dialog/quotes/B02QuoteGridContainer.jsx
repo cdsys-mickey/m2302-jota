@@ -6,10 +6,13 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useMemo } from "react";
+import { BContext } from "@/contexts/B/BContext";
+import { B04Context } from "@/contexts/B04/B04Context";
 
 export const B02QuoteGridContainer = (props) => {
 	const { ...rest } = props;
-	const b02 = useContext(B02Context);
+	const b = useContext(BContext);
+	const b02 = useContext(b.forNew ? B04Context : B02Context);
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
 	const formMeta = useContext(FormMetaContext);

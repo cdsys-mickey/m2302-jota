@@ -95,14 +95,15 @@ export const ControlledWebApiOptionPicker = memo(
 							disableEnter={disableEnter}
 							focusNextField={focusNextField}
 							isFieldDisabled={isFieldDisabled}
-							onChange={(newValue) => {
-								let returnValue;
+							onChange={async (newValue) => {
+								let returnedValue;
+								// _onChange 可能是 async 方法, 這裡必須 await 否則得到的 returnedValue 可能是 Promise
 								if (_onChange) {
-									returnValue = _onChange(newValue);
+									returnedValue = await _onChange(newValue);
 								}
 
-								if (returnValue !== undefined) {
-									onChange(returnValue);
+								if (returnedValue !== undefined) {
+									onChange(returnedValue);
 								} else {
 									onChange(newValue);
 								}

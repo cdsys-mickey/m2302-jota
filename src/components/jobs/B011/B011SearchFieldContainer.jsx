@@ -6,12 +6,14 @@ import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import { B011Context } from "@/contexts/B011/B011Context";
 import { useMemo } from "react";
+import { B031Context } from "@/contexts/B031/B031Context";
+import { BContext } from "@/contexts/B/BContext";
 
 export const B011SearchFieldContainer = (props) => {
-	const { name = "q", ...rest } = props;
+	const { name = "q", forNew = false, ...rest } = props;
 	const forms = useFormContext();
-
-	const b011 = useContext(B011Context);
+	const b = useContext(BContext);
+	const b011 = useContext(b.forNew ? B031Context : B011Context);
 
 	const inputRef = useRef(null);
 
@@ -57,6 +59,7 @@ export const B011SearchFieldContainer = (props) => {
 };
 B011SearchFieldContainer.propTypes = {
 	name: PropTypes.string,
+	forNew: PropTypes.bool
 };
 B011SearchFieldContainer.displayName = "B011SearchFieldContainer";
 

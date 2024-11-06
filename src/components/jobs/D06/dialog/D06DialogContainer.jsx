@@ -81,7 +81,7 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						packageType: "m",
+						packageType: "b",
 						forId: true,
 						slotProps: {
 							paper: {
@@ -220,6 +220,7 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 						handleRemDateChanged={d06.handleRemDateChanged({
 							setValue: form.setValue,
 						})}
+					// validateDate={d06.validateDate}
 					/>
 				</FormMetaProvider>
 				<D06Drawer />

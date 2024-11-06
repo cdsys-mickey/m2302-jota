@@ -20,6 +20,7 @@ const C02DialogForm = memo((props) => {
 		itemDataReady,
 		creating,
 		editing,
+		validateDate,
 	} = props;
 	return (
 		<>
@@ -58,6 +59,12 @@ const C02DialogForm = memo((props) => {
 								fullWidth
 								required
 								variant="outlined"
+								validate
+							// rules={{
+							// 	validate: {
+							// 		validateDate
+							// 	}
+							// }}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={4}>
@@ -129,6 +136,7 @@ C02DialogForm.propTypes = {
 	itemDataReady: PropTypes.bool,
 	creating: PropTypes.bool,
 	editing: PropTypes.bool,
+	validateDate: PropTypes.func
 };
 
 C02DialogForm.displayName = "C02DialogForm";

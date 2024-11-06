@@ -91,7 +91,7 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						packageType: "m",
+						packageType: "b",
 						forId: true,
 						disableClearable: true,
 						slotProps: {
@@ -130,12 +130,12 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 				title: "包裝",
 				disabled: true,
 			},
-			{
-				...keyColumn("StockQty_N", createFloatColumn(2)),
-				title: "庫存",
-				minWidth: 90,
-				disabled: true,
-			},
+			// {
+			// 	...keyColumn("StockQty_N", createFloatColumn(2)),
+			// 	title: "庫存",
+			// 	minWidth: 90,
+			// 	disabled: true,
+			// },
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "數量",

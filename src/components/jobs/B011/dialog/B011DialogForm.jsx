@@ -12,6 +12,8 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { B011QuoteGridContainer } from "./quotes/B011QuoteGridContainer";
 import CustomerPicker from "@/components/picker/CustomerPicker";
+import { useContext } from "react";
+import { BContext } from "@/contexts/B/BContext";
 
 const B011DialogForm = memo((props) => {
 	const {
@@ -24,6 +26,8 @@ const B011DialogForm = memo((props) => {
 		updating,
 		...rest
 	} = props;
+	const b = useContext(BContext);
+
 	return (
 		<>
 			{readWorking && (
@@ -41,15 +45,16 @@ const B011DialogForm = memo((props) => {
 					<FormBox pt={1}>
 						<Grid container columns={24} spacing={1}>
 
-							<Grid item xs={24} sm={24} md={6}>
+							<Grid item xs={24} sm={24} md={8}>
 								<CustomerPicker
 									autoFocus
 									typo
-									label="客戶代碼"
-									name="customer"
+									forNew={b.forNew}
+									label={b.forNew ? "新客戶代碼" : "客戶代碼"}
+									name="dlgCustomer"
 									required
 									rules={{
-										required: "廠商為必填",
+										required: b.forNew ? "新客戶代碼為必填" : "客戶代碼為必填",
 									}}
 									virtualize
 									disableOpenOnInput
@@ -66,11 +71,11 @@ const B011DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item xs={24} sm={24} md={6}>
 								<EmployeePicker
 									typo
 									label="報價人員"
-									name="employee"
+									name="dlgEmployee"
 									required
 									rules={{
 										required: "詢價人員為必填",
@@ -80,26 +85,24 @@ const B011DialogForm = memo((props) => {
 									selectOnFocus
 									disableClearable
 									disabled={!creating}
-								// slotProps={{
-								// 	paper: {
-								// 		sx: {
-								// 			width: 240,
-								// 		},
-								// 	},
-								// }}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={5}>
-								<DatePickerWrapper
-									typo
-									name="Date"
-									label="報價日期"
-									fullWidth
-									required
-									variant="outlined"
-									disabled={!creating}
-								/>
-							</Grid>
+							{creating &&
+								<Grid item xs={24} sm={24} md={5}>
+									<DatePickerWrapper
+										typo
+										name="dlgDate"
+										label="報價日期"
+										fullWidth
+										required
+										variant="outlined"
+										disabled={!creating}
+										validate
+									/>
+								</Grid>
+							}
+
+
 							<Grid item xs={24}>
 								<B011QuoteGridContainer />
 							</Grid>
