@@ -18,7 +18,7 @@ const formatDate = (value, format) => {
 	return result;
 };
 
-const reformatDate = (value) => {
+const reformatDateAsDash = (value) => {
 	return formatDate(value, DateFormats.DATEFNS_DATE_DASH);
 };
 
@@ -183,7 +183,7 @@ const Forms = {
 	processDateFieldsForReset,
 	// processNumberFieldsForSubmit,
 	assignDefaultValues,
-	reformatDate,
+	reformatDateAsDash,
 	onSubmitError,
 	getDateValidator,
 	validateDate,

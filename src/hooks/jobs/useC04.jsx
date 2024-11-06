@@ -525,7 +525,7 @@ export const useC04 = () => {
 				rowData.prod?.PackData_N || "",
 			["SInqFlag"]: prodInfo?.SInqFlag || "",
 			["SPrice"]: prodInfo?.SPrice || "",
-			["SExpDate"]: prodInfo?.SExpDate ? Forms.reformatDate(
+			["SExpDate"]: prodInfo?.SExpDate ? Forms.reformatDateAsDash(
 				prodInfo.SExpDate
 			) : rowData.SExpDate,
 			["stype"]: null,

@@ -330,7 +330,7 @@ export const useB011 = (opts = {}) => {
 				["Price"]: processedRowData?.prod?.Price || "",
 				["PackData_N"]: processedRowData?.prod?.PackData_N || "",
 				["ProdData_N"]: processedRowData?.prod?.ProdData || "",
-				// ["QDate"]: processedRowData?.prod ? Forms.reformatDate(formData.dlgDate) : null,
+				// ["QDate"]: processedRowData?.prod ? Forms.reformatDateAsDash(formData.dlgDate) : null,
 				// ["employee"]: processedRowData?.prod ? formData.dlgEmployee : null,
 
 			};

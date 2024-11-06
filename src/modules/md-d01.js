@@ -11,7 +11,7 @@ const transformGridForReading = (data) => {
 					ProdData: ProdData_N,
 				},
 				ProdData: ProdData_N,
-				SExpDate: Forms.reformatDate(SExpDate),
+				SExpDate: Forms.reformatDateAsDash(SExpDate),
 				// overrideSQty: SQtyNote === "*",
 				...rest,
 			};

@@ -173,7 +173,7 @@ const DateFieldComponentEx = memo((props) => {
 			// setDateValue("");
 			ref.value = "";
 		} else if (rowData && !ref.value) {
-			const newDateValue = Forms.reformatDate(rowData, DateTimes.DATEFNS_DATE_DASH);
+			const newDateValue = Forms.reformatDateAsDash(rowData, DateTimes.DATEFNS_DATE_DASH);
 			console.log(`sync dateValue to ${newDateValue}`);
 			ref.value = newDateValue;
 		}
