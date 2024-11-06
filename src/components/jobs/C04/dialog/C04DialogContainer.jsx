@@ -297,13 +297,17 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		}
 	)
 
-	// const debounced = useDebounce({
-	// 	stkDate
-	// }, 300);
+	const debouncedStkDate = useDebounce(stkDate, 1000);
 
-	// useChangeTracking(() => {
-	// 	c04.refreshGrid({ formData: form.getValues(), setValue: form.setValue });
-	// }, [debounced]);
+	useChangeTracking(() => {
+		// 進入編輯後的變更才算
+		if (c04.editing) {
+			c04.refreshGrid({ formData: form.getValues(), setValue: form.setValue });
+		}
+	}, [debouncedStkDate], {
+		debug: true,
+		tag: C04DialogContainer.displayName
+	});
 
 	useEffect(() => {
 		if (c04.itemDataReady) {

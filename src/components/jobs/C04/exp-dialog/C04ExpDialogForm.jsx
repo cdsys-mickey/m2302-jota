@@ -13,18 +13,19 @@ const C04ExpDialogForm = memo((props) => {
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
 						<ProdPicker
+							name="expProd"
 							autoFocus
 							label="商品"
-							name="expProd"
 							required
-							filterByServer
-							queryRequired
-							typeToSearchText="以編號,條碼或名稱搜尋"
+							// filterByServer
+							// queryRequired
+							// typeToSearchText="以編號,條碼或名稱搜尋"
 							triggerDelay={100}
 							rules={{
 								required: "商品為必填",
 							}}
 							disableOpenOnInput
+							virtualize
 						/>
 					</Grid>
 					<Grid item xs={12}>

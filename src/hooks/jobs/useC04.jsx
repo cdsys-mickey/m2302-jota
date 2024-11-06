@@ -238,9 +238,7 @@ export const useC04 = () => {
 							}
 						);
 						updateAmt({ setValue, data });
-						toast.info("商品單價已更新", {
-							position: "top-center"
-						});
+						toast.info("商品單價已更新");
 					} else {
 						throw error || new Error("未預期例外");
 					}
@@ -525,9 +523,9 @@ export const useC04 = () => {
 				rowData.prod?.PackData_N || "",
 			["SInqFlag"]: prodInfo?.SInqFlag || "",
 			["SPrice"]: prodInfo?.SPrice || "",
-			["SExpDate"]: prodInfo?.SExpDate ? Forms.reformatDateAsDash(
+			["SExpDate"]: rowData.prod ? (prodInfo?.SExpDate ? Forms.reformatDateAsDash(
 				prodInfo.SExpDate
-			) : rowData.SExpDate,
+			) : rowData.SExpDate) : "",
 			["stype"]: null,
 			["SQty"]: "",
 			["SAmt"]: "",

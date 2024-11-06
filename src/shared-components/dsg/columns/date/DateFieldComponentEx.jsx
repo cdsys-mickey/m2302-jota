@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
+import { validate } from "uuid";
+import { toast } from "react-toastify";
 
 const DATE_FORMAT = "yyyy-MM-dd";
 
@@ -41,6 +43,7 @@ const DateFieldComponentEx = memo((props) => {
 		// Context Methods
 		skipDisabled,
 		// focusNextCell,
+		focusPrevCell,
 		getNextCell,
 		lastCell,
 		setActiveCell,
@@ -155,6 +158,13 @@ const DateFieldComponentEx = memo((props) => {
 	// 	// setRowData(e.target.value);
 	// }, []);
 
+	const isValidDate = useCallback((value) => {
+		console.log(`date value ${value}`);
+		const date = new Date(value);
+		console.log("date", date);
+		return !isNaN(new Date(value).getTime());
+	}, []);
+
 	const handleChange = useCallback((e) => {
 		// console.log("handleChange", e.target.value);
 		asyncRef.current.changedAt = Date.now();
@@ -167,17 +177,27 @@ const DateFieldComponentEx = memo((props) => {
 
 	useEffect(() => {
 		// null 才是透過 del 清空的
-		// if (rowData == null && isValid(new Date(dateValue))) {
 		if (rowData == null) {
 			console.log("sync dateValue to empty");
-			// setDateValue("");
 			ref.value = "";
 		} else if (rowData && !ref.value) {
+			// 透過選擇方式改變
 			const newDateValue = Forms.reformatDateAsDash(rowData, DateTimes.DATEFNS_DATE_DASH);
 			console.log(`sync dateValue to ${newDateValue}`);
 			ref.value = newDateValue;
 		}
 	}, [rowData]);
+
+	const refocus = useCallback((doSelect = true) => {
+		console.log("refocus", doSelect);
+
+		focusPrevCell();
+
+		ref.current?.focus();
+		if (doSelect) {
+			ref.current?.select();
+		}
+	}, [focusPrevCell]);
 
 	useLayoutEffect(() => {
 		if (focus) {
@@ -198,13 +218,23 @@ const DateFieldComponentEx = memo((props) => {
 					!asyncRef.current.firstRender &&
 					asyncRef.current.changedAt >= asyncRef.current.focusedAt
 				) {
-					console.log("setRowDate", ref.current.value);
+					console.log(`${DateFieldComponentEx.displayName}.setRowDate`, ref.current.value);
 					asyncRef.current.setRowData(ref.current.value);
+					const validationResult = isValidDate(ref.current.value);
+					console.log("isValidDate", validationResult);
+					if (!validationResult) {
+						toast.error("日期格式錯誤", {
+							position: "top-center"
+						})
+						setTimeout(() => {
+							refocus({ select: true });
+						})
+					}
 				}
 				ref.current.blur();
 			}
 		}
-	}, [focus]);
+	}, [focus, isValidDate]);
 
 	useEffect(() => {
 		if (!focus && ref.current) {

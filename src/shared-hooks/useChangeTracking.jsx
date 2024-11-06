@@ -13,7 +13,7 @@ export const useChangeTracking = (
 	dependencies,
 	opts = defaultOpts
 ) => {
-	const { tag = "", debug } = opts;
+	const { tag, debug } = opts;
 	const prevRef = useRef();
 
 	// const debouncedValues = useDebounce(dependencies, delay);
@@ -33,20 +33,14 @@ export const useChangeTracking = (
 		if (dependenciesJson !== prevRef.current) {
 			// dont fire on first render
 			if (prevRef.current) {
-				if (debug) {
-					console.log(
-						`${head}useChangeTracking changed detected, dependencies:`,
-						dependencies
-					);
-				}
 				callback();
-			} else {
-				if (debug) {
-					console.log(
-						`${head}useChangeTracking init, dependencies:`,
-						dependencies
-					);
-				}
+			}
+			if (debug) {
+				console.log(
+					`${head}useChangeTracking changed detected, dependencies:`,
+					dependencies
+				);
+				console.log("prevRef.current", prevRef.current);
 			}
 			prevRef.current = dependenciesJson;
 		}

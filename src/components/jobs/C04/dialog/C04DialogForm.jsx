@@ -77,7 +77,8 @@ const C04DialogForm = memo((props) => {
 								required
 								validate
 								variant="outlined"
-								onChanged={handleStkDateChanged}
+							// onChanged={handleStkDateChanged}
+							// onBlur={handleStkDateChanged}
 							// rules={{
 							// 	validate: {
 							// 		validateDate: Forms.validateDate
