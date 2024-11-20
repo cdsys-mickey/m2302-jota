@@ -11,7 +11,7 @@ import {
 	TableRow,
 	styled,
 } from "@mui/material";
-import Strings from "@/modules/md-strings";
+import Strings from "@/shared-modules/sd-strings";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	"&:nth-of-type(odd)": {

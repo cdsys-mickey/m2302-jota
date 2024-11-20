@@ -153,7 +153,7 @@ export const useA05 = ({ token }) => {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -186,7 +186,7 @@ export const useA05 = ({ token }) => {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -215,7 +215,7 @@ export const useA05 = ({ token }) => {
 		toast.error(
 			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
 			, {
-				position: "top-center"
+				position: "top-right"
 			});
 	}, []);
 
@@ -256,7 +256,7 @@ export const useA05 = ({ token }) => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},

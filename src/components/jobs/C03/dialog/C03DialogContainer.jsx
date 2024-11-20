@@ -230,7 +230,7 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!ordDate) {
 			toast.error("請先輸入採購日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("OrdDate");
 			return;
@@ -238,7 +238,7 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 
 		if (!supplier) {
 			toast.error("請先輸入供應商", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("supplier");
 			return;

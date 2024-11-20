@@ -14,10 +14,10 @@ export const C01ListFormContainer = (props) => {
 		employee,
 		listMode
 		`,
-		{
-			lastField: LastFieldBehavior.PROMPT,
-			lastFieldMessage: "篩選完成後請按「形成採購單」"
-		}
+		// {
+		// 	lastField: LastFieldBehavior.PROMPT,
+		// 	lastFieldMessage: "篩選完成後請按「形成採購單」"
+		// }
 	)
 	return (
 		<FormMetaProvider {...formMeta}>

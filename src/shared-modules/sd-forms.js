@@ -143,7 +143,7 @@ const assignDefaultValues = (obj, fieldNames, defaultValue = "") => {
 
 const onSubmitError = (err) => {
 	toast.error("資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出", {
-		position: "top-center",
+		position: "top-right",
 	});
 };
 

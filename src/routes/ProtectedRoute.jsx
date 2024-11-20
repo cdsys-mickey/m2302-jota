@@ -6,7 +6,7 @@ import AppFrameProvider from "@/shared-contexts/app-frame/AppFrameProvider";
 const ProtectedRoute = () => {
 	return (
 		<AuthProvider>
-			<AppFrameProvider drawerWidth={350}>
+			<AppFrameProvider drawerWidth={320}>
 				<BasePageContainer />
 			</AppFrameProvider>
 		</AuthProvider>

@@ -58,7 +58,7 @@ export const A01FrameContainer = () => {
 				{/* 對話框 */}
 				<A01DialogContainer />
 				<StdPrintDialogContainer />
-				<A01Drawer />
+
 			</StdPrintProvider>
 		</Box>
 	);

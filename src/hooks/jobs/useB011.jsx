@@ -122,7 +122,7 @@ export const useB011 = (opts = {}) => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -260,7 +260,7 @@ export const useB011 = (opts = {}) => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -293,7 +293,7 @@ export const useB011 = (opts = {}) => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -319,7 +319,7 @@ export const useB011 = (opts = {}) => {
 				grid.isDuplicating(rowData, newValue, { key: "prod.ProdID" })
 			) {
 				toast.error(`「${processedRowData.prod?.ProdData}」已存在, 請選擇其他商品`, {
-					position: "top-center"
+					position: "top-right"
 				});
 				processedRowData.prod = null;
 			}
@@ -514,7 +514,7 @@ export const useB011 = (opts = {}) => {
 			} catch (err) {
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				setIpState((prev) => ({
@@ -554,7 +554,7 @@ export const useB011 = (opts = {}) => {
 			} catch (err) {
 				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -600,13 +600,13 @@ export const useB011 = (opts = {}) => {
 				console.log("payload", payload.data);
 				if (!payload.data?.length) {
 					toast.error("目前查詢沒有資料", {
-						position: "top-center"
+						position: "top-right"
 					})
 					return;
 				}
 			} else {
 				toast.error(Errors.getMessage("讀取資料發生錯誤", error), {
-					position: "top-center"
+					position: "top-right"
 				})
 				return;
 			}

@@ -9,8 +9,8 @@ const SquaredState = Object.freeze({
 
 const squaredOptions = [
 	{ id: SquaredState.NONE, label: "未結清" },
-	{ id: SquaredState.MARK_AS_SQUARED, label: "結清" },
-	{ id: SquaredState.SQUARED, label: "進貨已結清" },
+	{ id: SquaredState.MARK_AS_SQUARED, label: "註記結清" },
+	{ id: SquaredState.SQUARED, label: "已結清" },
 ];
 
 const getSquaredOptionLabel = (option) => {
@@ -73,13 +73,23 @@ const transformGridForReading = (data) => {
 const transformGridForSubmitting = (gridData) => {
 	return gridData
 		.filter((v) => v.prod)
-		.map(({ Pkey, prod, ...rest }, index) => ({
-			Pkey: Pkey?.length < 36 ? "" : Pkey,
-			SProdID: prod?.ProdID || "",
-			ProdData: prod?.ProdData || "",
-			...rest,
-			Seq: index + 1,
-		}));
+		.map(
+			(
+				{ Pkey, prod, SQty, SAmt, SNotQty, SPrice, SInQty, ...rest },
+				index
+			) => ({
+				Pkey: Pkey?.length < 36 ? "" : Pkey,
+				SProdID: prod?.ProdID || "",
+				ProdData: prod?.ProdData || "",
+				SQty: SQty?.toString() || "",
+				SAmt: SAmt?.toString() || "",
+				SNotQty: SNotQty?.toString() || "",
+				SPrice: SPrice?.toString() || "",
+				SInQty: SInQty?.toString() || "",
+				...rest,
+				Seq: index + 1,
+			})
+		);
 };
 
 const transformForReading = (payload) => {

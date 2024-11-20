@@ -241,14 +241,14 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!wdate) {
 			toast.error("請先輸入報廢日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("wdate");
 			return;
 		}
 		if (!employee) {
 			toast.error("請先輸入倉管人員", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("employee");
 			return;

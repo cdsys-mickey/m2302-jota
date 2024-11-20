@@ -95,7 +95,7 @@ const E021DialogForm = memo((props) => {
 									label="退貨期限日"
 									variant="outlined"
 									fullWidth
-									required
+									// required
 									validate
 								// disabled={!creating}
 								/>
@@ -208,6 +208,10 @@ const E021DialogForm = memo((props) => {
 									typo
 									label="業務員"
 									name="employee"
+									required
+									rules={{
+										required: "業務員為必填"
+									}}
 									virtualize
 									disableOpenOnInput
 									disableClearable
@@ -311,8 +315,8 @@ const E021DialogForm = memo((props) => {
 						</Grid>
 						<Box py={1}>
 							<E021ProdGridContainer />
+							<E021ProdGridBottomToolbar />
 						</Box>
-						<E021ProdGridBottomToolbar my={0} />
 						<Grid container columns={24}>
 							<Grid item xs={24}>
 								<TextFieldWrapper

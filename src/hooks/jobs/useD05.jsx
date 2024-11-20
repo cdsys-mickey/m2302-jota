@@ -15,7 +15,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
 import { useSideDrawer } from "../useSideDrawer";
-import useOverrideSQty from "../useOverrideSQty";
+import useSQtyManager from "../useSQtyManager";
 
 export const useD05 = () => {
 	const crud = useContext(CrudContext);
@@ -59,10 +59,10 @@ export const useD05 = () => {
 		keyColumn: "pkey",
 	});
 
-	const overrideSQty = useOverrideSQty({
+	const sqtyManager = useSQtyManager({
 		grid,
 	});
-	const { committed } = overrideSQty;
+	const { committed } = sqtyManager;
 
 	const updateAmt = useCallback(
 		({ setValue, gridData, reset = false }) => {
@@ -123,9 +123,9 @@ export const useD05 = () => {
 		};
 		crud.promptCreating({ data });
 		// qtyMap.clear();
-		overrideSQty.clearQty();
+		sqtyManager.clearQty();
 		grid.initGridData(data.prods, { createRow });
-	}, [createRow, crud, grid, overrideSQty]);
+	}, [createRow, crud, grid, sqtyManager]);
 
 	// const loadStockMap = useCallback(
 	// 	async (
@@ -184,7 +184,7 @@ export const useD05 = () => {
 	// 			}
 	// 		} catch (err) {
 	// 			toast.error(Errors.getMessage("取得庫存失敗", err), {
-	// 				position: "top-center"
+	// 				position: "top-right"
 	// 			});
 	// 		}
 	// 	},
@@ -213,8 +213,8 @@ export const useD05 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					await overrideSQty.loadStockMap(data.prods);
-					// const newQtyMap = await overrideSQty.loadStockMap(data.prods);
+					await sqtyManager.loadStockMap(data.prods);
+					// const newQtyMap = await sqtyManager.loadStockMap(data.prods);
 					// qtyMap.clear();
 					// for (const [key, value] of newQtyMap.entries()) {
 					// 	qtyMap.set(key, value);
@@ -229,7 +229,7 @@ export const useD05 = () => {
 				crud.failReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, overrideSQty, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid]
 	);
 
 	/**
@@ -276,19 +276,19 @@ export const useD05 = () => {
 				}
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 				// if (err.code === 102) {
 				// 	const rowIndex = Number(err.data.Row) - 1;
 				// 	const rowData = grid.gridData[rowIndex];
 				// 	const stock = Number(err.data.StockQty);
 
-				// 	overrideSQty.handleOverrideSQty({
+				// 	sqtyManager.handleOverrideSQty({
 				// 		setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true
 				// 	});
 				// } else {
 				// 	toast.error(Errors.getMessage("新增失敗", err), {
-				// 		position: "top-center"
+				// 		position: "top-right"
 				// 	});
 				// }
 			}
@@ -361,11 +361,11 @@ export const useD05 = () => {
 	// 			if (err.code === 102) {
 	// 				loadStockMap(data.prods, { mark: true });
 	// 				toast.error("部分商品庫存不足，請調整後再送出", {
-	// 					position: "top-center"
+	// 					position: "top-right"
 	// 				});
 	// 			} else {
 	// 				toast.error(Errors.getMessage("修改失敗", err), {
-	// 					position: "top-center"
+	// 					position: "top-right"
 	// 				});
 	// 			}
 	// 		}
@@ -399,7 +399,7 @@ export const useD05 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -457,7 +457,7 @@ export const useD05 = () => {
 			// 	gridData,
 			// });
 
-			const prodStock = overrideSQty.getStockExcludingCurrent({
+			const prodStock = sqtyManager.getStockExcludingCurrent({
 				rowIndex,
 				prodId: rowData.prod.ProdID,
 				gridData,
@@ -471,7 +471,7 @@ export const useD05 = () => {
 				};
 				toast.error(`第 ${rowIndex + 1} 筆庫存量不足(${prodStock} < ${rowData.SQty})！`,
 					{
-						position: "top-center",
+						position: "top-right",
 					}
 				);
 				gridMeta.setActiveCell({
@@ -509,7 +509,7 @@ export const useD05 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("查詢報價失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			} else {
@@ -522,7 +522,7 @@ export const useD05 = () => {
 			console.log("newRowData→", newRowData);
 			return newRowData;
 		},
-		[httpGetAsync, overrideSQty, token]
+		[httpGetAsync, sqtyManager, token]
 	);
 
 	const handleGridSAmtChange = useCallback(
@@ -567,7 +567,7 @@ export const useD05 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("查詢報價失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			} else {
@@ -590,9 +590,9 @@ export const useD05 = () => {
 		async ({ rowData }) => {
 			const { prod } = rowData;
 			// 只有當原本沒有此項商品時才更新
-			if (prod?.ProdID && !overrideSQty.hasQty(prod?.ProdID)) {
+			if (prod?.ProdID && !sqtyManager.hasQty(prod?.ProdID)) {
 				// qtyMap.set(prod.ProdID, parseFloat(prod.StockQty));
-				overrideSQty.updateQty(prod.ProdID, parseFloat(prod.StockQty))
+				sqtyManager.updateQty(prod.ProdID, parseFloat(prod.StockQty))
 			}
 
 			let newRowData = {
@@ -608,7 +608,7 @@ export const useD05 = () => {
 			};
 			return newRowData;
 		},
-		[overrideSQty]
+		[sqtyManager]
 	);
 
 	const onUpdateRow = useCallback(
@@ -869,7 +869,7 @@ export const useD05 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("商品單價更新失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 					// 還原
 				}
@@ -900,7 +900,7 @@ export const useD05 = () => {
 			}
 		} catch (err) {
 			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		} finally {
 			checkEditableAction.clear();

@@ -238,7 +238,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!txiDept) {
 			toast.error("請先輸入退貨日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("GrtDate");
 			return;

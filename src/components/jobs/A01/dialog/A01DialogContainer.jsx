@@ -10,6 +10,7 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import A01Form from "../form/A01Form";
 import { A01DialogToolbarContainer } from "./buttons/A01DialogToolbarContainer";
 import { useCallback } from "react";
+import A01Drawer from "../A01Drawer";
 
 export const A01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -149,6 +150,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 						comboTabDisabled={a01.comboTabDisabled}
 					/>
 				</FormMetaProvider>
+				<A01Drawer />
 			</DialogExContainer>
 		</FormProvider>
 	);

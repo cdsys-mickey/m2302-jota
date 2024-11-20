@@ -77,7 +77,7 @@ export const useA17 = () => {
 			} catch (err) {
 				crud.failUpdating(err);
 				toast.error(Errors.getMessage("參數設定失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},

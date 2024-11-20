@@ -194,21 +194,21 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!customer) {
 			toast.error("請先輸入客戶代碼", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("customer");
 			return;
 		}
 		if (!employee) {
 			toast.error("請先輸入報價人員", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("employee");
 			return;
 		}
 		if (!date) {
 			toast.error("請先輸入報價日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("Date");
 			return;

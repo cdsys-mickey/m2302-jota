@@ -31,7 +31,7 @@ export const useC03 = () => {
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 
-	const prevDataRef = useRef();
+
 
 	// const [selectedInq, setSelectedInq] = useState();
 
@@ -113,6 +113,10 @@ export const useC03 = () => {
 
 	const [selectedItem, setSelectedItem] = useState();
 
+	/**
+	 * 變更前備份
+	 */
+	const prevDataRef = useRef();
 	const getPrevData = useCallback(() => {
 		return prevDataRef.current;
 	}, []);
@@ -180,7 +184,7 @@ export const useC03 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -302,7 +306,7 @@ export const useC03 = () => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -335,7 +339,7 @@ export const useC03 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -424,7 +428,7 @@ export const useC03 = () => {
 		async (prodId, { formData }) => {
 			if (!prodId) {
 				toast.error("請先選擇商品", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
@@ -432,7 +436,7 @@ export const useC03 = () => {
 			const supplierId = formData.supplier?.FactID;
 			if (!supplierId) {
 				toast.error("請先選擇廠商", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
@@ -440,7 +444,7 @@ export const useC03 = () => {
 			const ordDate = formData?.OrdDate;
 			if (!isDate(ordDate)) {
 				toast.error("請先輸入採購日期", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
@@ -463,7 +467,7 @@ export const useC03 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -586,7 +590,7 @@ export const useC03 = () => {
 	// 							if (prodDisabled({ rowData })) {
 	// 								const rowIndex = operation.fromRowIndex + i;
 	// 								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
-	// 									position: "top-center"
+	// 									position: "top-right"
 	// 								});
 	// 								return true;
 	// 							}
@@ -672,7 +676,7 @@ export const useC03 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("覆核失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -736,7 +740,7 @@ export const useC03 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("解除覆核失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -832,7 +836,7 @@ export const useC03 = () => {
 				} catch (err) {
 					console.error("onRefreshGridSubmit failed", err);
 					toast.error(Errors.getMessage("單價重整失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 					// 還原
 					const prevData = getPrevData();

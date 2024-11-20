@@ -133,7 +133,7 @@ const CatLGridProvider = (props) => {
 					switch (status.code) {
 						default:
 							toast.error(`發生未預期例外 ${status.code}`, {
-								position: "top-center"
+								position: "top-right"
 							});
 							break;
 					}
@@ -176,7 +176,7 @@ const CatLGridProvider = (props) => {
 				}
 			} catch (err) {
 				toast.error(`新增大分類發生例外: ${err.message}`, {
-					position: "top-center"
+					position: "top-right"
 				});
 				reload();
 			}
@@ -207,7 +207,7 @@ const CatLGridProvider = (props) => {
 				}
 			} catch (err) {
 				toast.error(`新增大分類發生例外: ${err.message}`, {
-					position: "top-center"
+					position: "top-right"
 				});
 				reload();
 			}
@@ -237,7 +237,7 @@ const CatLGridProvider = (props) => {
 			} catch (err) {
 				console.error(err);
 				toast.error(`刪除大分類發生例外: ${err.message}`, {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				// grid.setDeletingRow(null);
@@ -283,7 +283,7 @@ const CatLGridProvider = (props) => {
 		(row, newValue) => {
 			// grid.rollbackChanges();
 			toast.error(`大分類 ${row.rowData.LClas} 已存在`, {
-				position: "top-center"
+				position: "top-right"
 			});
 			grid.setValueByRowIndex(
 				row.rowIndex,

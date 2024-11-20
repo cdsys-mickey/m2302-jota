@@ -55,7 +55,7 @@ const usePwordCheck = (opts = {}) => {
 			}
 		} catch (err) {
 			toast.error(Errors.getMessage("讀取設定發生錯誤", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		}
 	}, [httpGetAsync, token]);
@@ -83,7 +83,7 @@ const usePwordCheck = (opts = {}) => {
 					} else {
 						console.log("pword not passed");
 						toast.error(getEntryErrorText({ action }), {
-							position: "top-center"
+							position: "top-right"
 						});
 						promptPwordEntry();
 					}

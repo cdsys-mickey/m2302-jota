@@ -50,11 +50,6 @@ const E03ProdGrid = memo((props) => {
 			createRow={createRow}
 			duplicateRow={duplicateRow}
 			rowClassName={getRowClassName}
-			stickyRightColumn={tooltipColumn({
-				arrow: true,
-				getLabel: getTooltip,
-				placement: "left",
-			})}
 			{...rest}
 		/>
 	);

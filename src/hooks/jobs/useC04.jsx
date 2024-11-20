@@ -77,9 +77,9 @@ export const useC04 = () => {
 		return rowData.stype?.id ? "line-through" : null;
 	}, []);
 
-	const purchaseOrdersDisabled = useMemo(() => {
-		return !!crud.itemData?.GinID;
-	}, [crud.itemData?.GinID]);
+	// const purchaseOrdersDisabled = useMemo(() => {
+	// 	return !!crud.itemData?.GinID;
+	// }, [crud.itemData?.GinID]);
 
 	const prodDisabled = useCallback(({ rowData }) => {
 		return !!rowData.ordId;
@@ -154,7 +154,7 @@ export const useC04 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -206,6 +206,11 @@ export const useC04 = () => {
 		[crud, loadItem]
 	);
 
+
+	const supplierDisabled = useMemo(() => {
+		return crud.itemData?.purchaseOrders?.length > 0 && crud.updating;
+	}, [crud.itemData?.purchaseOrders?.length, crud.updating]);
+
 	const isSupplierNameDisabled = useCallback((supplier) => {
 		return supplier?.FactID !== "*";
 	}, []);
@@ -245,7 +250,7 @@ export const useC04 = () => {
 				} catch (e) {
 					console.error(e);
 					toast.error("商品單價更新失敗, 請檢查各欄位是否完整", {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			} else {
@@ -349,7 +354,7 @@ export const useC04 = () => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -382,7 +387,7 @@ export const useC04 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -411,14 +416,14 @@ export const useC04 = () => {
 			const supplierId = supplier?.FactID;
 			if (!supplierId) {
 				toast.error("請先選擇廠商", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
 
 			if (!isDate(rstDate)) {
 				toast.error("請先輸入進貨日期", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
@@ -441,7 +446,7 @@ export const useC04 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -472,7 +477,7 @@ export const useC04 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("計算合計失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -573,6 +578,14 @@ export const useC04 = () => {
 			};
 			updateResult.rows++;
 		}
+
+		// 數量改變同步未進量
+		// if (processedRowData.SQty !== oldRowData.SQty) {
+		// 	processedRowData = {
+		// 		...processedRowData,
+		// 		["SNotQty"]: processedRowData.SQty,
+		// 	};
+		// }
 		return processedRowData;
 	}, [grid.gridData, handleGridProdChange]);
 
@@ -819,7 +832,7 @@ export const useC04 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("載入採購單商品失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -867,7 +880,7 @@ export const useC04 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("商品單價更新失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 					// 還原
 				}
@@ -912,7 +925,7 @@ export const useC04 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("重整商品失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 					// 還原
 				}
@@ -943,7 +956,7 @@ export const useC04 = () => {
 			}
 		} catch (err) {
 			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		} finally {
 			checkEditableAction.clear();
@@ -988,7 +1001,7 @@ export const useC04 = () => {
 		// handleGridChangeAsync,
 		getRowKey,
 		prodDisabled,
-		purchaseOrdersDisabled,
+		// purchaseOrdersDisabled,
 		spriceDisabled,
 		// 列印
 		onPrintSubmit,
@@ -1020,6 +1033,7 @@ export const useC04 = () => {
 		handlePaidAmtChange,
 		onUpdateRow,
 		onGridChanged,
-		refreshGrid
+		refreshGrid,
+		supplierDisabled
 	};
 };

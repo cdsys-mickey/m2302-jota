@@ -131,7 +131,7 @@ export const useProdGrid = ({
 			} catch (err) {
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				setLoading(false);
@@ -177,7 +177,7 @@ export const useProdGrid = ({
 					switch (status.code) {
 						default:
 							toast.error(`發生未預期例外 ${status.code}`, {
-								position: "top-center"
+								position: "top-right"
 							});
 							break;
 					}
@@ -252,7 +252,7 @@ export const useProdGrid = ({
 				error: err
 			});
 			toast.error(Errors.getMessage("儲存失敗", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		}
 	}, [

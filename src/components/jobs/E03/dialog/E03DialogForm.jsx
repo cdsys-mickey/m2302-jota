@@ -48,12 +48,12 @@ const E03DialogForm = memo((props) => {
 				<>
 					<FormBox pt={1}>
 						<Grid container columns={24} spacing={0.8}>
-							{!creating && (<Grid item xs={24} sm={24} md={5}>
+							{!creating && (<Grid item xs={24} sm={24} md={6}>
 								<TextFieldWrapper
 									typo
 									name="RetID"
 									label="單號"
-									// fullWidth
+									fullWidth
 									readOnly={true}
 								/>
 							</Grid>)}
@@ -71,7 +71,7 @@ const E03DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<FlexBox fullWidth />
+
 							<Grid item xs={24} sm={24} md={2}>
 								<CheckboxExWrapper
 									typo
@@ -80,7 +80,7 @@ const E03DialogForm = memo((props) => {
 									onChange={handleRetailChange}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={3}>
+							<Grid item xs={24} sm={24} md={4}>
 								<E03CustomerPicker
 									retailName="retail"
 									forId
@@ -104,7 +104,7 @@ const E03DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={5}>
+							<Grid item xs={24} sm={24} md={4}>
 								<PaymentPicker
 									typo
 									label="收款方式"
@@ -114,7 +114,7 @@ const E03DialogForm = memo((props) => {
 									disableClearable
 								/>
 							</Grid>
-
+							<FlexBox fullWidth />
 							<Grid item xs={24} sm={24} md={6}>
 								<TextFieldWrapper
 									// dense
@@ -146,6 +146,10 @@ const E03DialogForm = memo((props) => {
 									typo
 									label="業務員"
 									name="employee"
+									required
+									rules={{
+										required: "業務員為必填"
+									}}
 									virtualize
 									disableOpenOnInput
 									disableClearable
@@ -169,8 +173,8 @@ const E03DialogForm = memo((props) => {
 									onChange={handleTaxTypeChange}
 								/>
 							</Grid>
-
-							<Grid item xs={24} sm={24} md={8}>
+							<FlexBox fullWidth />
+							<Grid item xs={24} sm={24} md={6}>
 								<TextFieldWrapper
 									typo
 									label="送貨地址"
@@ -220,12 +224,11 @@ const E03DialogForm = memo((props) => {
 									name="UniForm"
 								/>
 							</Grid>
-
 						</Grid>
 						<Box py={1}>
 							<E03ProdGridContainer />
+							<E03ProdGridBottomToolbar />
 						</Box>
-						<E03ProdGridBottomToolbar my={0} />
 						<Grid container columns={24}>
 							<Grid item xs={24}>
 								<TextFieldWrapper

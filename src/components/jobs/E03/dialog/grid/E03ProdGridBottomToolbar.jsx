@@ -1,4 +1,4 @@
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import DSGBottomToolbar from "@/shared-components/listview/toolbar/DSGBottomToolbar";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { forwardRef, useContext } from "react";
 import E03ProdGridToolbarLabels from "./E03ProdGridToolbarLabels";
@@ -13,7 +13,7 @@ export const E03ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <FlexToolbar ref={ref} RightComponent={E03ProdGridToolbarLabels} {...rest} />;
+	return <DSGBottomToolbar ref={ref} RightComponent={E03ProdGridToolbarLabels} {...rest} />;
 });
 
 E03ProdGridBottomToolbar.propTypes = {};

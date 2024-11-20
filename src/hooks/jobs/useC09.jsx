@@ -127,7 +127,7 @@ export const useC09 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -230,7 +230,7 @@ export const useC09 = () => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -263,7 +263,7 @@ export const useC09 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -305,7 +305,7 @@ export const useC09 = () => {
 		async (prodId, { txoDeptId }) => {
 			if (!prodId) {
 				toast.error("請先選擇商品", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
@@ -327,7 +327,7 @@ export const useC09 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -404,7 +404,7 @@ export const useC09 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("載入撥出單商品失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -472,7 +472,7 @@ export const useC09 = () => {
 
 			if (prod && !prodInfo?.Price) {
 				toast.error("商品未訂調撥成本，不得訂購", {
-					position: "top-center",
+					position: "top-right",
 				});
 			}
 			return newRowData;
@@ -696,7 +696,7 @@ export const useC09 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("商品單價更新失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 					// 還原
 				}
@@ -727,7 +727,7 @@ export const useC09 = () => {
 			}
 		} catch (err) {
 			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		} finally {
 			checkEditableAction.clear();

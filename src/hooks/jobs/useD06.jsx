@@ -99,11 +99,11 @@ export const useD06 = () => {
 				if (err.code === 102) {
 					// loadStockMap(data.prods, { mark: true });
 					toast.error("部分商品庫存不足，請調整後再送出", {
-						position: "top-center"
+						position: "top-right"
 					});
 				} else {
 					toast.error(Errors.getMessage("新增失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			}
@@ -207,7 +207,7 @@ export const useD06 = () => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -240,7 +240,7 @@ export const useD06 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -296,7 +296,7 @@ export const useD06 = () => {
 					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${prodRowIndex + 1
 					} 筆, 請重新選擇`,
 					{
-						position: "top-center",
+						position: "top-right",
 					}
 				);
 			}

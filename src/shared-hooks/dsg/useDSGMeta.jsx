@@ -7,6 +7,7 @@ export const useDSGMeta = ({
 	skipDisabled = false,
 	lastCell,
 	data,
+	// onActiveCellChange
 }) => {
 	const gridRef = useRef();
 	const setGridRef = useCallback((node) => {
@@ -180,6 +181,9 @@ export const useDSGMeta = ({
 				cell: cell,
 				forward: isForward(asyncRef.current?.cell, cell),
 			};
+			// if (onActiveCellChange) {
+			// 	onActiveCellChange(cell);
+			// }
 		},
 		[isForward]
 	);

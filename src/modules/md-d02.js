@@ -29,7 +29,6 @@ const transformGridForSubmitting = (gridData) => {
 			SExpDate: Forms.formatDate(SExpDate),
 			SQty: SQty?.toString() || "",
 			StockQty_N: StockQty_N?.toString() || "",
-			// SQtyNote: overrideSQty ? "*" : "",
 			Seq: index + 1,
 			...rest,
 		}));

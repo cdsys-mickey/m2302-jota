@@ -3,6 +3,7 @@ import { ListItemButton, ListItemText, Typography } from "@mui/material";
 import FlexBox from "@/shared-components/FlexBox";
 import PropTypes from "prop-types";
 import { grey } from "@mui/material/colors";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 const FrameMenuItemButton = memo(
 	forwardRef((props, ref) => {
@@ -23,11 +24,8 @@ const FrameMenuItemButton = memo(
 					(theme) => ({
 						paddingTop: 0,
 						paddingBottom: 0,
-						// transition: theme.transitions.create("fontSize", {
-						// 	easing: theme.transitions.easing.sharp,
-						// 	duration: theme.transitions.duration.enteringScreen,
-						// }),
 					}),
+
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				selected={selected}
@@ -50,23 +48,29 @@ const FrameMenuItemButton = memo(
 					</FlexBox>
 					<FlexBox
 						flex={1}
-						sx={{
-							borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
-						}}>
+						sx={[
+							{
+								borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
+							},
+
+						]}>
 						<ListItemText
 							primary={value.JobName}
 							primaryTypographyProps={{
 								// variant: selected ? "body1" : "body2",
 								fontSize: 16,
 							}}
-							sx={{
-								color: disabled
-									? "text.secondary"
-									: "text.primary",
-								"& .MuiTypography-root": {
-									fontWeight: selected ? 800 : 400,
+							sx={[
+								{
+									color: disabled
+										? "text.secondary"
+										: "text.primary",
+									"& .MuiTypography-root": {
+										fontWeight: selected ? 800 : 400,
+									},
 								},
-							}}
+								MuiStyles.ELLIPSIS,
+							]}
 						/>
 					</FlexBox>
 				</FlexBox>

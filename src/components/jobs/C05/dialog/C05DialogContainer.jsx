@@ -200,14 +200,14 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!rtnDate) {
 			toast.error("請先輸入退貨日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("GrtDate");
 			return;
 		}
 		if (!supplier) {
 			toast.error("請先輸入供應商", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("supplier");
 			return;

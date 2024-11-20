@@ -49,7 +49,7 @@ const transformGridForSubmitting = (data, qdate, employeeId) => {
 			return {
 				Pkey: /^\d+$/.test(Pkey) ? Pkey : "",
 				ProdID: prod ? prod.ProdID : "",
-				QPrice: QPrice,
+				QPrice: QPrice?.toString() || "",
 				QDate: qdate || QDate,
 				QEmplID: employeeId || employee?.CodeID || "",
 				...rest,

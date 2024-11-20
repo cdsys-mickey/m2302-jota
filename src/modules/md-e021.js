@@ -2,6 +2,7 @@
 import { nanoid } from "nanoid";
 import Forms from "../shared-modules/sd-forms";
 import FreeProdTypes from "./md-free-prod-types";
+import Strings from "@/shared-modules/sd-strings";
 
 const createRow = () => ({
 	Pkey: nanoid(),
@@ -108,8 +109,44 @@ const transformForGridImport = (data, employee, date) => {
 	);
 };
 
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push(`庫存量（${stockQty || 0}）`);
+		}
+
+		// 應該沒有
+		if (!Strings.isNullOrEmpty(rowData?.OrdQty_N)) {
+			const demandOfOtherRows = rowData.OrdQty_N;
+			results.push(`目前訂購量（${demandOfOtherRows || 0}）`);
+		}
+		// 應該沒有
+		if (!Strings.isNullOrEmpty(rowData?.LaveQty_N)) {
+			const remaining = rowData.LaveQty_N;
+			results.push(`剩餘量（${remaining || 0}）`);
+		}
+
+		if (!Strings.isNullOrEmpty(rowData?.SOrdID)) {
+			if (rowData.SOrdID) {
+				results.push(
+					`訂貨單號: ${
+						rowData.SOrdID.includes("#")
+							? rowData.SOrdID.split("#")[0]
+							: rowData.SOrdID || ""
+					}`
+				);
+			}
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
+};
+
 const transformGridForReading = (data) => {
-	return data?.map((v) => {
+	return data?.map((rowData, rowIndex) => {
 		const {
 			Pkey,
 			ProdData_N,
@@ -125,9 +162,10 @@ const transformGridForReading = (data) => {
 			SRemark,
 			SType,
 			Seq,
-			// ...rest
-		} = v;
-		return {
+			...rest
+		} = rowData;
+
+		let processedRowData = {
 			Pkey,
 			prod: SProdID
 				? {
@@ -147,8 +185,15 @@ const transformGridForReading = (data) => {
 			SRemark,
 			Seq,
 			SOrdID,
-			// ...rest,
+			...rest,
 		};
+
+		processedRowData.tooltip = getTooltip({
+			rowData: processedRowData,
+			rowIndex,
+		});
+
+		return processedRowData;
 	});
 };
 
@@ -351,8 +396,12 @@ const transformAsQueryParams = (data) => {
 		...(salesTypes != null && {
 			retail: salesTypes,
 		}),
-		cust: data.cust?.CustID,
-		custName: data.custName,
+		...(data.cust && {
+			cust: data.cust?.CustID,
+		}),
+		...(data.custName && {
+			custName: data.custName,
+		}),
 		...(data.compTel && {
 			compTel: data.compTel,
 		}),
@@ -412,6 +461,7 @@ const E021 = {
 	getPaymentType,
 	getEmployee,
 	getTotal,
+	getTooltip,
 };
 
 export default E021;

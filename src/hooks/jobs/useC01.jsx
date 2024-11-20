@@ -328,7 +328,7 @@ export const useC01 = () => {
 				crud.failUpdating();
 				console.error("handleUpdate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -449,7 +449,7 @@ export const useC01 = () => {
 							if (prodDisabled({ rowData })) {
 								const rowIndex = operation.fromRowIndex + i;
 								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
-									position: "top-center"
+									position: "top-right"
 								});
 								return true;
 							}
@@ -574,7 +574,7 @@ export const useC01 = () => {
 
 					if (!payload.OrdIDs) {
 						toast.error("沒有形成採購單，請確認供應商等欄位是否有確實填寫", {
-							position: "top-center",
+							position: "top-right",
 						});
 						transformAction.clear();
 					} else {
@@ -595,7 +595,7 @@ export const useC01 = () => {
 			} catch (err) {
 				transformAction.fail({ error: err });
 				toast.error(Errors.getMessage("形成採購單失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -656,7 +656,7 @@ export const useC01 = () => {
 
 					if (!payload.OrdIDs) {
 						toast.error("沒有形成採購單，請確認供應商等欄位是否有確實填寫", {
-							position: "top-center",
+							position: "top-right",
 						});
 						transformListAction.clear();
 					} else {
@@ -677,7 +677,7 @@ export const useC01 = () => {
 			} catch (err) {
 				transformListAction.fail({ error: err });
 				toast.error(Errors.getMessage("形成採購單失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},

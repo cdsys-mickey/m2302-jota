@@ -1,4 +1,4 @@
-import Types from "../shared-modules/sd-types";
+import Types from "./sd-types";
 
 const PRICE_FIXED_DIGITS = 2;
 const RATE_FIXED_DIGITS = 4;
@@ -15,12 +15,17 @@ const containsNumberOnly = (v) => {
 	return /^\d+$/.test(v);
 };
 
+function isNullOrEmpty(value) {
+	return value === null || value === undefined || value === "";
+}
+
 const Strings = {
 	PRICE_DIGITS: PRICE_FIXED_DIGITS,
 	RATE_DIGITS: RATE_FIXED_DIGITS,
 	formatPrice,
 	formatRate,
 	containsNumberOnly,
+	isNullOrEmpty,
 };
 
 export default Strings;

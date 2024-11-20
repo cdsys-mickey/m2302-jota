@@ -132,7 +132,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!prod) {
 			toast.error("請先選擇商品", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("prod");
 			return;

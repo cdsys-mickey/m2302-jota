@@ -1,5 +1,5 @@
 import { E03Context } from "@/contexts/E03/E03Context";
-import Strings from "@/modules/md-strings";
+import Strings from "@/shared-modules/sd-strings";
 import { DSGToolbarLabel } from "@/shared-components/dsg/DSGToolbarLabel";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { minWidth } from "@mui/system";

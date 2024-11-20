@@ -72,7 +72,7 @@ export const usePersonalSettings = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("驗證失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 					setError("ogPword", {
 						type: "manual",
@@ -128,7 +128,7 @@ export const usePersonalSettings = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("變更密碼失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 					failChanging(err);
 				}

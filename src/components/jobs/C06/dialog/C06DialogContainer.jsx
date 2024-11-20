@@ -214,7 +214,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 		console.log("handleLastField");
 		if (!spDept) {
 			toast.error("請先輸入出貨部門", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("spDept");
 			return;

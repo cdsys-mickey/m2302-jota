@@ -9,7 +9,7 @@ import { useRef } from "react";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
-const DEFAULT_SET_OPTS = {
+const DEFAULT_SET_DATA_OPTS = {
 	reset: false,
 	commit: false,
 	prev: null,
@@ -133,22 +133,27 @@ export const useDSG = ({
 	);
 
 	const resetGridData = useCallback(
-		(newValue, opts = DEFAULT_SET_OPTS) => {
+		(newValue, opts) => {
 			const {
-				reset,
-				prev,
-				commit,
+				reset = false,
+				prev = null,
+				commit = false,
 				init,
 				debug,
 				dirtyCheckByIndex,
 				dirtyCheckBy,
 				createRow,
 				length = 10,
-				supressEvents
-			} = opts;
+				supressEvents,
+				fillRows: _fillRows
+			} = opts || DEFAULT_SET_DATA_OPTS;
 			if (supressEvents) {
 				asyncRef.current.supressEvents = true;
 			}
+
+			const createRowStub = createRow || _createRow;
+
+			let _length = Types.isNumber(fillRows) ? fillRows : length;
 
 			dirtyIds.clear();
 			persistedIds.clear();
@@ -188,8 +193,12 @@ export const useDSG = ({
 			}
 
 			setGridData(
-				createRow
-					? fillRows({ createRow, data: newValue, length })
+				_fillRows
+					? fillRows({
+						createRow: createRowStub,
+						data: newValue,
+						length: _length
+					})
 					: newValue
 			);
 
@@ -199,7 +208,7 @@ export const useDSG = ({
 				console.log("resetGridData", newValue);
 			}
 		},
-		[deletedIds, dirtyIds, fillRows, gridData, handleDirtyCheck, keyColumn, persistedIds, prevGridData]
+		[_createRow, deletedIds, dirtyIds, fillRows, gridData, handleDirtyCheck, keyColumn, persistedIds, prevGridData]
 	);
 
 	const handleGridDataLoaded = useCallback(
@@ -363,7 +372,9 @@ export const useDSG = ({
 				const newGridData = [...newValue];
 				let checkFailed = false;
 				let updateResult = {
-					rows: 0
+					rows: 0,
+					rowIndex: -1,
+					cols: []
 				}
 				for (const operation of operations) {
 					if (operation.type === "UPDATE") {
@@ -469,7 +480,7 @@ export const useDSG = ({
 							console.log("getActiveCell", activeCell);
 							// setActiveCell back to prev in next render cycle
 							toast.error("新增功能目前已停用", {
-								position: "top-center"
+								position: "top-right"
 							})
 							setTimeout(() => {
 								gridMeta.setActiveCell(activeCell)
@@ -478,12 +489,20 @@ export const useDSG = ({
 					}
 				}
 				console.log("Promise.all after changed", newGridData);
-				if (!checkFailed) {
-					setGridData(newGridData);
+				let updated = null;
+				if (onGridChanged &&
+					!asyncRef.current.supressEvents &&
+					(updateResult.rows > 0 || updateResult.cols.length > 0)) {
+					console.log("onGridChanged", newGridData);
+					updated = await onGridChanged({ prevGridData, gridData: newGridData, formData, setValue, updateResult });
 				}
-				if (onGridChanged && !asyncRef.current.supressEvents && updateResult.rows > 0) {
-					console.log("onGridChanged", updateResult.rows);
-					onGridChanged({ gridData: newGridData, formData, setValue, updateResult });
+
+				if (!checkFailed) {
+					if (updated) {
+						setGridData(updated);
+					} else {
+						setGridData(newGridData);
+					}
 				}
 			},
 		[deletedIds, gridData, handleDirtyCheck, keyColumn, prevGridData]

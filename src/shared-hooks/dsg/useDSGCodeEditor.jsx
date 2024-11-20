@@ -78,7 +78,7 @@ export const useDSGCodeEditor = ({
 					switch (status.code) {
 						default:
 							toast.error(`發生未預期例外 ${status.code}`, {
-								position: "top-center"
+								position: "top-right"
 							});
 							break;
 					}
@@ -123,7 +123,7 @@ export const useDSGCodeEditor = ({
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage(`新增${displayName}發生例外`, err), {
-					position: "top-center"
+					position: "top-right"
 				});
 				reload();
 				setTimeout(() => {
@@ -154,7 +154,7 @@ export const useDSGCodeEditor = ({
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage(`修改${displayName}發生例外`, err), {
-					position: "top-center"
+					position: "top-right"
 				});
 				reload();
 			}
@@ -203,13 +203,13 @@ export const useDSGCodeEditor = ({
 					}
 				} else {
 					toast.warn("沒有刪除任何資料" + error?.message ? ": " + error.message : "", {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			} catch (err) {
 				console.error(err);
 				toast.error(Errors.getMessage(`刪除${displayName}發生例外`, err), {
-					position: "top-center",
+					position: "top-right",
 				});
 			} finally {
 				// grid.setDeletingRow(null);
@@ -306,7 +306,7 @@ export const useDSGCodeEditor = ({
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
 			toast.error(`${displayName} ${row.rowData[grid.keyColumn]} 已存在`, {
-				position: "top-center",
+				position: "top-right",
 			});
 
 			// 先把重複那筆的 key 清掉

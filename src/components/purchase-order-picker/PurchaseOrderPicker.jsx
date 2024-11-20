@@ -32,33 +32,6 @@ export const PurchaseOrderPicker = (props) => {
 		return !supplier || !supplierName;
 	}, [supplier, supplierName]);
 
-	// const renderOption = useCallback(
-	// 	({ key, style, ...optionProps }, option) => {
-	// 		return (
-	// 			<li key={key} style={style} {...optionProps}>
-	// 				<Grid container columns={24} spacing={2}>
-	// 					<Grid item xs={24} sm={5}>
-	// 						<Typography variant="body2">
-	// 							{option["採購單號"]}
-	// 						</Typography>
-	// 					</Grid>
-	// 					<Grid item xs={24} sm={5}>
-	// 						<Typography variant="body2">
-	// 							{option["採購日"]}
-	// 						</Typography>
-	// 					</Grid>
-	// 					<Grid item xs={24} sm={14}>
-	// 						<Typography variant="body2">
-	// 							{option["覆核人員"]}
-	// 						</Typography>
-	// 					</Grid>
-	// 				</Grid>
-	// 			</li>
-	// 		);
-	// 	},
-	// 	[]
-	// );
-
 	return (
 		<OptionPickerWrapper
 			label={label}
@@ -77,6 +50,7 @@ export const PurchaseOrderPicker = (props) => {
 			GridRowComponent={PurchaseOrderGridRow}
 			notFoundText="採購單號 ${id} 不存在"
 			inputParam="fz"
+			resetOnChange
 			{...rest}
 		/>
 	);

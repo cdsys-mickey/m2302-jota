@@ -15,7 +15,7 @@ import { useAppModule } from "./useAppModule";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { nanoid } from "nanoid";
 import { useSideDrawer } from "../useSideDrawer";
-import useOverrideSQty from "../useOverrideSQty";
+import useSQtyManager from "../useSQtyManager";
 
 export const useC08 = () => {
 	const crud = useContext(CrudContext);
@@ -58,11 +58,11 @@ export const useC08 = () => {
 		keyColumn: "Pkey",
 	});
 
-	const overrideSQty = useOverrideSQty({
+	const sqtyManager = useSQtyManager({
 		grid,
 		action: "撥出"
 	});
-	const { committed } = overrideSQty;
+	const { committed } = sqtyManager;
 
 	// 挑戰
 	// const pwordLockRef = useRef(null);
@@ -88,7 +88,7 @@ export const useC08 = () => {
 	// 		}
 	// 	} catch (err) {
 	// 		toast.error(Errors.getMessage("讀取設定發生錯誤", err), {
-	// 			position: "top-center"
+	// 			position: "top-right"
 	// 		});
 	// 	}
 	// }, [httpGetAsync, token]);
@@ -218,7 +218,7 @@ export const useC08 = () => {
 	// 			}
 	// 		} catch (err) {
 	// 			toast.error(Errors.getMessage("取得庫存失敗", err), {
-	// 				position: "top-center"
+	// 				position: "top-right"
 	// 			});
 	// 		}
 	// 	},
@@ -248,7 +248,7 @@ export const useC08 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					overrideSQty.loadStockMap(data.prods);
+					sqtyManager.loadStockMap(data.prods);
 					grid.initGridData(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
@@ -257,7 +257,7 @@ export const useC08 = () => {
 				crud.failReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, overrideSQty, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid]
 	);
 
 	const handleSave = useCallback(
@@ -305,7 +305,7 @@ export const useC08 = () => {
 					const rowData = grid.gridData[rowIndex];
 					const stock = Number(err.data.StockQty);
 
-					overrideSQty.handleOverrideSQty({
+					sqtyManager.handleOverrideSQty({
 						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, refreshAmt: ({ gridData }) => {
 							handleRefreshAmt({
 								gridData,
@@ -316,12 +316,12 @@ export const useC08 = () => {
 					});
 				} else {
 					toast.error(Errors.getMessage("新增失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			}
 		},
-		[crud, grid.gridData, handleRefreshAmt, httpPostAsync, httpPutAsync, listLoader, loadItem, overrideSQty, token]
+		[crud, grid.gridData, handleRefreshAmt, httpPostAsync, httpPutAsync, listLoader, loadItem, sqtyManager, token]
 	);
 
 	const handleSelect = useCallback(
@@ -390,11 +390,11 @@ export const useC08 = () => {
 	// 			if (err.code === 102) {
 	// 				loadStockMap(data.prods, { mark: true });
 	// 				toast.error("部分商品庫存不足，請調整後再送出", {
-	// 					position: "top-center"
+	// 					position: "top-right"
 	// 				});
 	// 			} else {
 	// 				toast.error(Errors.getMessage("修改失敗", err), {
-	// 					position: "top-center"
+	// 					position: "top-right"
 	// 				});
 	// 			}
 	// 		}
@@ -428,7 +428,7 @@ export const useC08 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -470,7 +470,7 @@ export const useC08 = () => {
 		async (prodId, { txiDeptId }) => {
 			if (!prodId) {
 				toast.error("請先選擇商品", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
@@ -486,18 +486,18 @@ export const useC08 = () => {
 				});
 
 				if (status.success) {
-					overrideSQty.setStockQty(prodId, payload.Stock);
+					sqtyManager.setStockQty(prodId, payload.Stock);
 					return payload;
 				} else {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("查詢調撥成本失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
-		[httpGetAsync, overrideSQty, token]
+		[httpGetAsync, sqtyManager, token]
 	);
 
 	const overrideSQtyDisabled = useCallback(({ rowData }) => {
@@ -597,7 +597,7 @@ export const useC08 = () => {
 	// 					// dialogs.closeLatest();
 	// 					console.log("pword not passed");
 	// 					toast.error("密碼錯誤, 請重新輸入", {
-	// 						position: "top-center"
+	// 						position: "top-right"
 	// 					});
 	// 					promptPwordEntry({
 	// 						promptOverrideSQty,
@@ -648,7 +648,7 @@ export const useC08 = () => {
 			// 未設定調撥成本不可輸入
 			if (processedRowData.prod && transferPriceEmpty) {
 				toast.error(`「${processedRowData.prod?.ProdData}」未設定調撥成本不可輸入`, {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 
@@ -771,7 +771,7 @@ export const useC08 = () => {
 			// 	setValue,
 			// 	gridMeta
 			// });
-			processedRowData = overrideSQty.handleGridSQtyChange({
+			processedRowData = sqtyManager.handleGridSQtyChange({
 				rowData: processedRowData,
 				gridData: newValue,
 				rowIndex,
@@ -812,7 +812,7 @@ export const useC08 = () => {
 		// 	updateResult.rows++;
 		// }
 		return processedRowData;
-	}, [grid.gridData, handleGridProdChange, handleGridSPriceChange, handleRefreshAmt, overrideSQty]);
+	}, [grid.gridData, handleGridProdChange, handleGridSPriceChange, handleRefreshAmt, sqtyManager]);
 
 	// const buildGridChangeHandler = useCallback(
 	// 	({ getValues, setValue, gridMeta }) =>
@@ -869,20 +869,22 @@ export const useC08 = () => {
 	// 	[updateGridRow, grid, handleRefreshAmt]
 	// );
 
-
-	const onGridChanged = useCallback(({ gridData, formData, setValue }) => {
+	const onGridChanged = useCallback(({ gridData, formData, setValue, updateResult, prevGridData }) => {
 		console.log("onGridChanged", gridData);
-		handleRefreshAmt({
-			gridData,
-			// taxExcluded: formData.taxExcluded,
-			setValue,
-			formData
-		});
+		if (updateResult.rows > 0 && !updateResult.cols.includes("prod")) {
+			handleRefreshAmt({
+				gridData,
+				// taxExcluded: formData.taxExcluded,
+				setValue,
+				formData
+			});
+		}
+
 	}, [handleRefreshAmt]);
 
 	const onEditorSubmit = useCallback(
 		({ setValue, gridMeta }) => (data) => {
-			overrideSQty.setCommitted(false);
+			sqtyManager.setCommitted(false);
 			console.log("onEditorSubmit", data);
 			console.log("prodGrid.gridData", grid.gridData);
 			const collected = C08.transformForSubmitting(
@@ -899,7 +901,7 @@ export const useC08 = () => {
 			// 	console.error("UNKNOWN SUBMIT TYPE");
 			// }
 		},
-		[overrideSQty, grid.gridData, handleSave]
+		[sqtyManager, grid.gridData, handleSave]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -956,7 +958,7 @@ export const useC08 = () => {
 			}
 		} catch (err) {
 			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		} finally {
 			checkEditableAction.clear();
@@ -971,7 +973,7 @@ export const useC08 = () => {
 		({ gridData, message, setValue, newOrders }) => {
 			if (message) {
 				toast.warn(message, {
-					position: "top-center",
+					position: "top-right",
 				});
 			}
 
@@ -988,7 +990,7 @@ export const useC08 = () => {
 					.map((order) => order["訂貨單號"]);
 
 				toast.warn(`訂貨單號 ${filteredOutOrdIds.join(", ")} 已同步移除`, {
-					position: "top-center",
+					position: "top-right",
 				});
 			}
 		},
@@ -1043,7 +1045,7 @@ export const useC08 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("載入訂購單商品失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -1090,7 +1092,7 @@ export const useC08 = () => {
 						}
 					} catch (err) {
 						toast.error(Errors.getMessage("商品單價更新失敗", err), {
-							position: "top-center"
+							position: "top-right"
 						});
 					}
 				}
@@ -1186,33 +1188,7 @@ export const useC08 = () => {
 	// 	return sordIdRef.current;
 	// }, []);
 
-	const getTooltip = useCallback((rowData) => {
-		let results = [];
-		// if (rowData?.StockQty_N !== null && rowData?.StockQty_N !== undefined) {
-		// 	results.push(`庫存: ${rowData?.StockQty_N || "0"}`);
-		// }
-		if (rowData?.ordId !== null && rowData?.ordId !== undefined) {
-			results.push(`訂單: ${rowData?.ordId || "(空白)"}`);
-		}
 
-		if (rowData?.OrdQty_N !== null && rowData?.OrdQty_N !== undefined) {
-			results.push(`訂貨量: ${rowData?.OrdQty_N || "0"}`);
-		}
-		if (
-			rowData?.OrdNotQty_N !== null &&
-			rowData?.OrdNotQty_N !== undefined
-		) {
-			results.push(`未出量: ${rowData?.OrdNotQty_N || "0"}`);
-		}
-		if (
-			rowData?.OrdRemark_N !== null &&
-			rowData?.OrdRemark_N !== undefined
-		) {
-			results.push(`備註: ${rowData?.OrdRemark_N || "(空白)"}`);
-		}
-
-		return results.join(", ");
-	}, []);
 
 	return {
 		...crud,
@@ -1266,7 +1242,7 @@ export const useC08 = () => {
 		// getSOrdId,
 		handleGridCellFocusChange,
 		// getRowClassName,
-		getTooltip,
+		// getTooltip,
 		...sideDrawer,
 		committed,
 		onUpdateRow,

@@ -1,7 +1,7 @@
-import E01 from "@/modules/md-e01";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import E01 from "@/modules/md-e01";
 
 const E01SquaredPicker = memo(
 	forwardRef((props, ref) => {
@@ -11,15 +11,14 @@ const E01SquaredPicker = memo(
 			<OptionPickerWrapper
 				ref={ref}
 				fullWidth
-				// required
+				required
 				disableClearable
 				label=""
 				options={E01.squaredOptions}
 				getOptionLabel={E01.getSquaredOptionLabel}
-				isOptionEqualToValue={E01.isSquaredOptionEqualToValue}
+				isOptionEqualToValue={E01.isOptionEqualToValue}
 				getOptionDisabled={E01.getSquaredOptionDisabled}
 				findByInput={E01.findSquaredOptionByInput}
-				notFoundText="結清註記 ${id} 不存在"
 				emptyId
 				{...rest}
 			/>

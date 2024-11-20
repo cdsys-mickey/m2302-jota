@@ -324,7 +324,7 @@ const OptionPicker = memo(
 				const { error } = opts;
 				if (name && toastError) {
 					toast.error(getNotFoundMessage({ id: input, error }), {
-						position: "top-center",
+						position: "top-right",
 					});
 				} else if (name && setError) {
 					setError(name, {

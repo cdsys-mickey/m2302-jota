@@ -160,7 +160,7 @@ const C03DialogForm = memo((props) => {
 							// flex
 							/>
 						</Grid>
-						<Grid item xs={24} md={4}>
+						<Grid item xs={24} md={8}>
 							<FormFieldLabelContainer
 								name="RqtID_N"
 								label="請購單"

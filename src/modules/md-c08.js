@@ -5,8 +5,8 @@ import FreeProdTypes from "./md-free-prod-types";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(
-			({
+		data?.map((rowData, rowIndex) => {
+			const {
 				SProdID,
 				ProdData_N,
 				SType,
@@ -15,31 +15,37 @@ const transformGridForReading = (data) => {
 				SOrdID,
 				SQtyNote,
 				...rest
-			}) => {
-				const fields = SOrdID?.split("#") || [];
-				const ordId = fields.length > 0 ? fields[0] : "";
+			} = rowData;
+			const fields = SOrdID?.split("#") || [];
+			const ordId = fields.length > 0 ? fields[0] : "";
 
-				return {
-					prod: {
-						ProdID: SProdID,
-						ProdData: ProdData_N,
-					},
+			let processedRowData = {
+				prod: {
+					ProdID: SProdID,
 					ProdData: ProdData_N,
-					stype: FreeProdTypes.getOptionById(SType),
-					SOrdID,
-					ordId,
-					// overrideSQty: SQtyNote === "*",
-					SQtyNote,
-					dtype: SRsnID
-						? {
-								CodeID: SRsnID,
-								CodeData: RsnData_N,
-						  }
-						: null,
-					...rest,
-				};
-			}
-		) || []
+				},
+				ProdData: ProdData_N,
+				stype: FreeProdTypes.getOptionById(SType),
+				SOrdID,
+				ordId,
+				// overrideSQty: SQtyNote === "*",
+				SQtyNote,
+				dtype: SRsnID
+					? {
+							CodeID: SRsnID,
+							CodeData: RsnData_N,
+					  }
+					: null,
+				...rest,
+			};
+
+			processedRowData.tooltip = getTooltip({
+				rowData: processedRowData,
+				rowIndex,
+			});
+
+			return processedRowData;
+		}) || []
 	);
 };
 
@@ -70,7 +76,6 @@ const transformGridForSubmitting = (gridData) => {
 				SType: stype?.id || "",
 				SRsnID: dtype?.CodeID || "",
 				Seq: index + 1,
-				// SQtyNote: overrideSQty ? "*" : "",
 				...rest,
 			})
 		);
@@ -205,6 +210,32 @@ const getTotal = (gridData) => {
 	return result;
 };
 
+const getTooltip = ({ rowData }) => {
+	if (!rowData.SOrdID) {
+		return "";
+	}
+
+	let results = [];
+	// if (rowData?.StockQty_N !== null && rowData?.StockQty_N !== undefined) {
+	// 	results.push(`庫存: ${rowData?.StockQty_N || "0"}`);
+	// }
+	if (rowData?.ordId !== null && rowData?.ordId !== undefined) {
+		results.push(`訂單: ${rowData?.ordId || "(空白)"}`);
+	}
+
+	if (rowData?.OrdQty_N !== null && rowData?.OrdQty_N !== undefined) {
+		results.push(`訂貨量: ${rowData?.OrdQty_N || "0"}`);
+	}
+	if (rowData?.OrdNotQty_N !== null && rowData?.OrdNotQty_N !== undefined) {
+		results.push(`未出量: ${rowData?.OrdNotQty_N || "0"}`);
+	}
+	if (rowData?.OrdRemark_N !== null && rowData?.OrdRemark_N !== undefined) {
+		results.push(`備註: ${rowData?.OrdRemark_N || "(空白)"}`);
+	}
+
+	return results.join(", ");
+};
+
 const C08 = {
 	transformForReading,
 	transformForSubmitting,
@@ -212,6 +243,7 @@ const C08 = {
 	transformGridForReading,
 	getTotal,
 	isFiltered,
+	getTooltip,
 };
 
 export default C08;

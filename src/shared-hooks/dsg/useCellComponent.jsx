@@ -16,6 +16,7 @@ export const useCellComponent = (props = {}) => {
 
 	const focusNextCell = useCallback(
 		(cell, opts = {}) => {
+			console.log("focusNextCell", cell);
 			if (!getNextCell) {
 				throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
 			}
@@ -26,7 +27,7 @@ export const useCellComponent = (props = {}) => {
 			} else {
 				if (typeof lastCell === "string") {
 					toast.error(lastCell, {
-						position: "top-center",
+						position: "top-right",
 					});
 				} else if (typeof lastCell === "function") {
 					lastCell(opts);

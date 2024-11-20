@@ -49,6 +49,11 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		control: form.control,
 	});
 
+	const purchaseOrders = useWatch({
+		name: "purchaseOrders",
+		control: form.control
+	})
+
 	const c04 = useContext(C04Context);
 
 	const scrollable = useScrollable({
@@ -250,28 +255,38 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		return c04.isSupplierNameDisabled(supplier)
 	}, [c04, supplier]);
 
+	// const supplierDisabled = useMemo(() => {
+	// 	return purchaseOrders?.length > 0 && c04.updating
+	// }, [c04.updating, purchaseOrders?.length])
+
+	const purchaseOrdersDisabled = useMemo(() => {
+		return !!c04.itemData?.GinID || !supplier;
+	}, [c04.itemData?.GinID, supplier]);
+
 	const isFieldDisabled = useCallback((field) => {
 		switch (field.name) {
+			case "supplier":
+				return c04.supplierDisabled;
 			case "FactData":
 				return supplierNameDisable;
 			case "purchaseOrders":
-				return !!ordId || !supplier;
+				return purchaseOrdersDisabled;
 			default:
 				return false;
 		}
-	}, [ordId, supplier, supplierNameDisable]);
+	}, [c04.supplierDisabled, supplierNameDisable, purchaseOrdersDisabled]);
 
 	const handleLastField = useCallback(() => {
 		if (!stkDate) {
 			toast.error("請先輸入進貨日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("GinDate");
 			return;
 		}
 		if (!supplier) {
 			toast.error("請先輸入供應商", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("supplier");
 			return;
@@ -298,6 +313,11 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 	)
 
 	const debouncedStkDate = useDebounce(stkDate, 1000);
+
+	const supplierNameDisabled = useMemo(() => {
+		return c04.isSupplierNameDisabled(supplier);
+	}, [c04, supplier])
+
 
 	useChangeTracking(() => {
 		// 進入編輯後的變更才算
@@ -371,14 +391,16 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 							}
 						)}
 						supplier={supplier}
-						isSupplierNameDisabled={c04.isSupplierNameDisabled}
-						purchaseOrdersDisabled={c04.purchaseOrdersDisabled}
+						// isSupplierNameDisabled={c04.isSupplierNameDisabled}
+						supplierNameDisabled={supplierNameDisabled}
+						purchaseOrdersDisabled={purchaseOrdersDisabled}
 						// handleRefreshGridSubmit={handleRefreshGridSubmit}
 						handleLoadProdsSubmit={handleLoadProdsSubmit}
 						handleTaxTypeChange={c04.handleTaxTypeChange({
 							setValue: form.setValue,
 							getValues: form.getValues,
 						})}
+						supplierDisabled={c04.supplierDisabled}
 					/>
 				</FormMetaProvider>
 				<C04Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />

@@ -71,12 +71,10 @@ export const useE03 = () => {
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
-			SalDate: new Date(),
-			ArrDate: new Date(),
+			RetDate: new Date(),
 			taxExcluded: false,
-			customerOrders: [],
 			retail: false,
-			RecdAmt: 0,
+			RetAmt: 0,
 			prods: [],
 		};
 		crud.promptCreating({ data });
@@ -123,7 +121,7 @@ export const useE03 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("計算合計失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -205,7 +203,7 @@ export const useE03 = () => {
 
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
 				toast.error(Errors.getMessage(creating ? `新增失敗` : `修改失敗`, err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -286,7 +284,7 @@ export const useE03 = () => {
 	// 					})
 	// 			} else {
 	// 				toast.error(Errors.getMessage("修改失敗", err), {
-	// 					position: "top-center"
+	// 					position: "top-right"
 	// 				});
 	// 			}
 	// 		}
@@ -320,7 +318,7 @@ export const useE03 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -339,24 +337,24 @@ export const useE03 = () => {
 		async (prodId, { formData }) => {
 			if (!prodId) {
 				toast.error("請先選擇商品", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
 
 			if (!isDate(formData.RetDate)) {
 				toast.error("請先輸入銷退日", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
 
-			if (!formData.customer) {
-				toast.error("請先輸入客戶代碼", {
-					position: "top-center"
-				});
-				return;
-			}
+			// if (!formData.customer) {
+			// 	toast.error("請先輸入客戶代碼", {
+			// 		position: "top-right"
+			// 	});
+			// 	return;
+			// }
 
 			try {
 				const { status, payload, error } = await httpGetAsync({
@@ -384,7 +382,7 @@ export const useE03 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -415,14 +413,13 @@ export const useE03 = () => {
 		async ({ rowData, formData }) => {
 			let processedRowData = { ...rowData };
 
-			const customer = formData.customer;
+			// const customer = formData.customer;
+			const retail = formData.retail;
 
 			const prodInfo = rowData?.prod?.ProdID
-				? customer ? await getProdInfo(rowData?.prod?.ProdID, {
+				? await getProdInfo(rowData?.prod?.ProdID, {
 					formData
-				}) : {
-					Price: rowData.prod.Price
-				}
+				})
 				: null;
 
 			processedRowData = {
@@ -430,7 +427,7 @@ export const useE03 = () => {
 				["prod"]: prodInfo ? processedRowData.prod : null,
 				["ProdData_N"]: prodInfo ? processedRowData.prod?.ProdData || "" : "",
 				["PackData_N"]: prodInfo ? processedRowData?.prod?.PackData_N || "" : "",
-				["SQflag"]: prodInfo?.SQflag || "",
+				["SQflag"]: (prodInfo && !retail) ? "*" : "",
 				["SPrice"]: prodInfo?.SPrice || "",
 				["SQty"]: "",
 				["SAmt"]: "",
@@ -623,7 +620,7 @@ export const useE03 = () => {
 			} catch (err) {
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				setIpState((prev) => ({
@@ -663,7 +660,7 @@ export const useE03 = () => {
 			} catch (err) {
 				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -779,7 +776,7 @@ export const useE03 = () => {
 			} catch (err) {
 				console.error(err);
 				toast.error(Errors.getMessage("讀取客戶資料發生錯誤", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		}
@@ -810,7 +807,11 @@ export const useE03 = () => {
 	}, [httpGetAsync, token]);
 
 
-	const getTooltip = useCallback((rowData) => {
+	const getTooltip = useCallback(({ rowData }) => {
+		if (!rowData.SOrdID) {
+			return "";
+		}
+
 		let results = [];
 
 		if (rowData?.SOrdID != null) {
@@ -849,7 +850,7 @@ export const useE03 = () => {
 			}
 		} catch (err) {
 			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		} finally {
 			checkEditableAction.clear();

@@ -115,8 +115,14 @@ const transformForSubmitting = (payload, gridData) => {
 		spDept,
 		squared,
 		remark,
+		// OMIT
+		prod,
+		stype,
 		...rest
 	} = payload;
+
+	console.log("omit", prod, stype);
+
 	return {
 		OrdID,
 		OrdDate: OrdDate ? Forms.formatDate(OrdDate) : "",
@@ -178,8 +184,8 @@ const SquaredState = Object.freeze({
 
 const squaredOptions = [
 	{ id: SquaredState.NONE, label: "未結清" },
-	{ id: SquaredState.MARK_AS_SQUARED, label: "結清" },
-	{ id: SquaredState.SQUARED, label: "進貨已結清" },
+	{ id: SquaredState.MARK_AS_SQUARED, label: "註記結清" },
+	{ id: SquaredState.SQUARED, label: "已結清" },
 ];
 
 const getSquaredOptionLabel = (option) => {

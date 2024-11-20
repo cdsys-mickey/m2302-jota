@@ -117,7 +117,7 @@ export const useZA03 = () => {
 			} catch (err) {
 				loadAuthGridAction.fail({ error: err });
 				toast.error(err?.message, {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -354,12 +354,12 @@ export const useZA03 = () => {
 				if (err.code === 8) {
 					toast.error("帳號名稱重複，請確認後重新送出",
 						{
-							position: "top-center",
+							position: "top-right",
 						}
 					);
 				} else {
 					toast.error(Errors.getMessage("新增失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			}
@@ -394,7 +394,7 @@ export const useZA03 = () => {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -420,7 +420,7 @@ export const useZA03 = () => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`ZA03.onSubmitError`, err);
 		toast.error("資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
-			position: "top-center"
+			position: "top-right"
 		});
 	}, []);
 
@@ -450,7 +450,7 @@ export const useZA03 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -511,7 +511,7 @@ export const useZA03 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage(`更新 ${moduleId} 權限異常`, err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -652,7 +652,7 @@ export const useZA03 = () => {
 			} catch (err) {
 				addAuthAction.fail({ error: err });
 				toast.error(Errors.getMessage("新增權限失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -722,7 +722,7 @@ export const useZA03 = () => {
 			} catch (err) {
 				copyAuthAction.fail({ error: err });
 				toast.error(Errors.getMessage("複製權限失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -779,7 +779,7 @@ export const useZA03 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("刪除權限失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				dialogs.closeLatest();
@@ -839,7 +839,7 @@ export const useZA03 = () => {
 						}
 					} catch (err) {
 						toast.error(Errors.getMessage("重設密碼失敗", err), {
-							position: "top-center"
+							position: "top-right"
 						});
 					}
 				},
@@ -888,7 +888,7 @@ export const useZA03 = () => {
 		} catch (err) {
 			saveAuthAction.fail("儲存失敗");
 			toast.error(Errors.getMessage(`更新 ${crud.itemData?.LoginName} 權限發生錯誤`, err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		} finally {
 			saveAuthAction.clear();

@@ -1,16 +1,14 @@
-import CustomerPicker from "@/components/picker/CustomerPicker";
-import ProdPicker from "@/components/picker/ProdPicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
+import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Grid } from "@mui/material";
 import { memo } from "react";
-import E01SquaredPicker from "../E01SquaredPicker";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import EmployeePicker from "@/components/picker/EmployeePicker";
 import { E01CustomerPicker } from "../E01CustomerPicker";
 import E01SalesTypePicker from "../E01SalesTypePicker";
-import FlexGrid from "@/shared-components/FlexGrid";
+import E01ListSquaredPicker from "./E01ListSquaredPicker";
 
 const E01ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -45,7 +43,7 @@ const E01ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item xs={24} sm={24} md={4}>
-					<E01SquaredPicker
+					<E01ListSquaredPicker
 						name="lvSquared"
 						label="結清註記"
 						clearable

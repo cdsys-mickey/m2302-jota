@@ -106,27 +106,25 @@ const transformForGridImport = (data, employee, date) => {
 };
 
 const transformGridForReading = (data) => {
-	return data?.map((v) => {
+	return data?.map((rowData, rowIndex) => {
 		const {
 			Pkey,
 			ProdData_N,
 			PackData_N,
 			SAmt,
-			SOrdID,
 			SPrice,
 			SProdID,
 			SQflag,
 			SQty,
 			SQtyNote,
-			SQtyOrig,
 			SRemark,
 			SType,
 			SRsnID,
 			RsnData_N,
 			Seq,
-			// ...rest
-		} = v;
-		return {
+			...rest
+		} = rowData;
+		let processedRowData = {
 			Pkey,
 			prod: SProdID
 				? {
@@ -145,8 +143,15 @@ const transformGridForReading = (data) => {
 			dtype: getDType({ SRsnID, RsnData_N }),
 			SRemark,
 			Seq,
-			// ...rest,
+			...rest,
 		};
+
+		processedRowData.tooltip = getTooltip({
+			rowData: processedRowData,
+			rowIndex,
+		});
+
+		return processedRowData;
 	});
 };
 
@@ -233,6 +238,24 @@ const getEmployee = (data) => {
 		CodeID: EmplID,
 		CodeData: EmplData_N,
 	};
+};
+
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (rowData.SOrdID) {
+			results.push(
+				`訂貨單號: ${
+					rowData.SOrdID.includes("#")
+						? rowData.SOrdID.split("#")[0]
+						: rowData.SOrdID || ""
+				}`
+			);
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
 };
 
 const transformForReading = (payload) => {

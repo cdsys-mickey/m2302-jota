@@ -16,8 +16,9 @@ import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 import { useMemo } from "react";
-import { isDate } from "lodash";
+import { isDate, result } from "lodash";
 import Forms from "@/shared-modules/sd-forms";
+import useSQtyManager from "../useSQtyManager";
 
 export const useE01 = () => {
 	const crud = useContext(CrudContext);
@@ -56,6 +57,27 @@ export const useE01 = () => {
 		// keyColumn: "prod.ProdID",
 	});
 
+	const sqtyManager = useSQtyManager({ grid, disablePwordCheck: true });
+
+	/**
+	 * 變更前備份
+	 */
+	const prevDataRef = useRef();
+	const getPrevData = useCallback(() => {
+		return prevDataRef.current;
+	}, []);
+
+	const setPrevData = useCallback(
+		(updatingValues) => {
+			prevDataRef.current = {
+				...prevDataRef.current,
+				...updatingValues,
+			};
+			console.log("prevData", getPrevData());
+		},
+		[getPrevData]
+	);
+
 	const createRow = useCallback(
 		() => E01.createRow(),
 		[]
@@ -82,7 +104,14 @@ export const useE01 = () => {
 	);
 
 	const sNotQtyDisabled = useCallback(({ rowData }) => {
-		return rowData?.SNotQty && Number(rowData?.SNotQty) <= 0;
+		// return rowData?.SNotQty && Number(rowData?.SNotQty) <= 0;
+		return !rowData?.SalIDs ||
+			(rowData?.SOutQty && Number(rowData?.SOutQty) >= Number(rowData?.SQty));
+	}, []);
+
+	const stypeDisabled = useCallback(({ rowData }) => {
+		return rowData?.SalIDs ||
+			(rowData?.SOutQty && Number(rowData?.SOutQty) > 0)
 	}, []);
 
 	// CREATE
@@ -119,7 +148,7 @@ export const useE01 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -147,8 +176,18 @@ export const useE01 = () => {
 					crud.doneReading({
 						data: data,
 					});
+					sqtyManager.loadStockMap(data.prods, {
+						stock: {
+							addSelf: false
+						},
+						prepared: {
+							excludeSelf: true
+						}
+					});
 					setSelectedOrd(data);
+					// const newGridData = data.prods.map(async (rowData, rowIndex) => {
 
+					// })
 					grid.initGridData(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
@@ -157,7 +196,7 @@ export const useE01 = () => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, grid, token]
+		[httpGetAsync, token, crud, sqtyManager, grid]
 	);
 
 	const handleSelect = useCallback(
@@ -250,7 +289,7 @@ export const useE01 = () => {
 	// 			crud.failUpdating();
 	// 			console.error("handleCreate.failed", err);
 	// 			toast.error(Errors.getMessage("修改失敗", err), {
-	// 				position: "top-center"
+	// 				position: "top-right"
 	// 			});
 	// 		}
 	// 	},
@@ -283,7 +322,7 @@ export const useE01 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -302,24 +341,24 @@ export const useE01 = () => {
 		async (prodId, { formData }) => {
 			if (!prodId) {
 				toast.error("請先選擇商品", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
 
 			if (!isDate(formData.OrdDate)) {
 				toast.error("請先輸入訂貨日", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
 
-			if (!formData.customer) {
-				toast.error("請先輸入客戶代碼", {
-					position: "top-center"
-				});
-				return;
-			}
+			// if (!formData.customer) {
+			// 	toast.error("請先輸入客戶代碼", {
+			// 		position: "top-right"
+			// 	});
+			// 	return;
+			// }
 
 			try {
 				const { status, payload, error } = await httpGetAsync({
@@ -337,7 +376,7 @@ export const useE01 = () => {
 					return {
 						...payload,
 						...(payload.Price && {
-							["SQflag"]: "*"
+							["SQflag"]: payload.QFlag
 						})
 					};
 				} else {
@@ -345,7 +384,7 @@ export const useE01 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -374,7 +413,7 @@ export const useE01 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("計算合計失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -395,51 +434,67 @@ export const useE01 = () => {
 		[fetchAmt, grid.gridData]
 	);
 
+	const onActiveCellChange = useCallback(({ setValue }) => (cell) => {
+		console.log("onActiveCellChange", cell);
+		// setValue("activeCell", cell ? {
+		// 	row: cell.row,
+		// 	col: cell.col
+		// } : null);
+	}, []);
+
 	const handleGridProdChange = useCallback(
-		async ({ rowData, formData }) => {
+		async ({ rowData, rowIndex, formData, newValue, updateResult }) => {
 			let processedRowData = { ...rowData };
 
-			const customer = formData.customer;
+			// const customer = formData.customer;
 
-			const prodInfo = rowData?.prod?.ProdID
-				? customer ? await getProdInfo(rowData?.prod?.ProdID, {
+
+			const prodId = rowData?.prod?.ProdID;
+			const prodInfo = prodId
+				? await getProdInfo(prodId, {
 					formData
-				}) : {
-					Price: rowData.prod.Price
-				}
+				})
 				: null;
+
+			if (prodId) {
+				sqtyManager.setStockQty(prodId, Number(prodInfo?.StockQty));
+				sqtyManager.setPreparedQty(prodId, Number(prodInfo?.NotQty));
+			}
 
 			processedRowData = {
 				...processedRowData,
 				["prod"]: prodInfo ? processedRowData.prod : null,
 				["ProdData_N"]: prodInfo ? processedRowData.prod?.ProdData || "" : "",
 				["PackData_N"]: processedRowData?.prod?.PackData_N || "",
-				["SQflag"]: prodInfo?.SQflag || "",
+				["SQflag"]: prodInfo?.QFlag || "",
 				["SPrice"]: prodInfo?.Price || "",
-				["StockQty"]: prodInfo?.StockQty || "",
 				["SQty"]: "",
 				["SAmt"]: "",
 				["stype"]: null,
 				["SRemark"]: "",
 				["SNotQty"]: "",
-
+				["SOutQty"]: "",
+				["StockQty"]: "",
+				["OrdQty_N"]: "",
+				["LaveQty_N"]: "",
+				["tooltip"]: ""
 			};
+
 			return processedRowData;
 		},
-		[getProdInfo]
+		[getProdInfo, sqtyManager]
 	);
 
 	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, updateResult }) => async (rowData, index) => {
 		const rowIndex = fromRowIndex + index;
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+		updateResult.rowIndex = rowIndex;
 
 		let processedRowData = {
 			...rowData,
 		};
 
-		// let employee = formData["employee"];
-		// let date = formData["Date"];
 		let dirty = false;
 		// 商品
 		if (
@@ -452,21 +507,25 @@ export const useE01 = () => {
 			);
 			processedRowData = await handleGridProdChange({
 				rowData: processedRowData,
+				rowIndex,
 				oldRowData,
 				formData,
 				newValue
 			});
+
+			updateResult.cols.push("prod")
 		}
 
 		// 數量改變
 		if (processedRowData.SQty !== oldRowData.SQty) {
-			// 新增時, 數量會同步到未進量
-			if (crud.creating) {
-				processedRowData = {
-					...processedRowData,
-					["SNotQty"]: rowData.SQty,
-				};
-			}
+			updateResult.cols.push("SQty")
+			// 會同步到未進量
+			processedRowData = {
+				...processedRowData,
+				["SNotQty"]: rowData.SQty,
+			};
+			updateResult.cols.push("SNotQty")
+
 		}
 
 		// 單價
@@ -475,6 +534,7 @@ export const useE01 = () => {
 			processedRowData.SPrice !== oldRowData.SPrice ||
 			processedRowData.SQty !== oldRowData.SQty
 		) {
+			dirty = true;
 			// 計算合計
 			processedRowData = {
 				...processedRowData,
@@ -485,7 +545,7 @@ export const useE01 = () => {
 							? 0
 							: processedRowData.SPrice * processedRowData.SQty,
 			};
-			dirty = true;
+			updateResult.cols.push("SAmt")
 		}
 
 		// 未進量改變
@@ -495,21 +555,91 @@ export const useE01 = () => {
 				["SNotQty"]:
 					rowData.SNotQty === 0 ? 0 : rowData.SQty - rowData.SOutQty,
 			};
+			updateResult.cols.push("SNotQty")
 		}
 		if (dirty) {
 			updateResult.rows++;
 		}
 		return processedRowData;
-	}, [crud.creating, grid.gridData, handleGridProdChange]);
+	}, [grid.gridData, handleGridProdChange]);
 
-	const onGridChanged = useCallback(({ gridData, formData, setValue }) => {
-		console.log("onGridChanged", gridData);
-		fetchAmt({
-			gridData,
-			taxExcluded: formData.taxExcluded,
-			setValue
+	const updateTooltip = useCallback(({ prevGridData, gridData, rowIndex }) => {
+		const targetRow = gridData[rowIndex];
+		let targetProdID = targetRow.prod?.ProdID;
+		// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
+		if (!targetProdID) {
+			targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+		}
+
+		// 若 targetProdID 仍為空，則不執行更新
+		if (!targetProdID) {
+			return gridData;
+		}
+
+		// 計算其他符合條件列的 SQty 加總
+		return gridData.map((row, index) => {
+			if (row.prod?.ProdID === targetProdID) {
+				if ((row.SNotQty && row.SNotQty <= 0) || (row.SOutQty && row.SOutQty != 0)) {
+					return {
+						...row,
+						StockQty_N: "",
+						OrdQty_N: "",
+						LaveQty_N: "",
+						tooltip: ""
+					};
+				}
+
+				// 加總其他與 index 不同的 SQty
+				let otherRowsTotalSQty = gridData.reduce((acc, innerRow, innerIndex) => {
+					if (innerIndex !== index && innerRow.prod?.ProdID === targetProdID) {
+						return acc + Number(innerRow.SQty || 0);
+					}
+					return acc;
+				}, 0);
+
+				const stock = sqtyManager.getStockQty(targetProdID);
+				const prepared = sqtyManager.getPreparedQty(targetProdID);
+				const ordQty = prepared + otherRowsTotalSQty;
+				const remaining = stock - ordQty;
+
+				let processedRowData = {
+					...row,
+					StockQty_N: stock,
+					OrdQty_N: ordQty,
+					LaveQty_N: remaining
+				};
+
+				processedRowData = {
+					...processedRowData,
+					["tooltip"]: E01.getTooltip({
+						rowData: processedRowData,
+						rowIndex
+					}),
+				}
+
+				return processedRowData;
+			}
+			return row; // 不符合條件則返回原本的列
 		});
-	}, [fetchAmt]);
+	}, [sqtyManager]);
+
+	const onGridChanged = useCallback(async ({ gridData, formData, setValue, updateResult, prevGridData }) => {
+		console.log(`useE01.onGridChanged`, updateResult);
+		if (updateResult.rows > 0 && !updateResult.cols.includes("prod")) {
+			await fetchAmt({
+				gridData,
+				taxExcluded: formData.taxExcluded,
+				setValue
+			});
+		}
+
+		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty")) {
+			console.log("before reduce", gridData);
+			const updated = updateTooltip({ prevGridData, gridData, rowIndex: updateResult.rowIndex })
+			console.log("after reduce", updated);
+			return updated;
+		}
+	}, [fetchAmt, updateTooltip]);
 
 	const buildGridChangeHandlerOld = useCallback(
 		({ gridMeta, getValues }) => async (newValue, operations) => {
@@ -640,7 +770,7 @@ export const useE01 = () => {
 			} catch (err) {
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				setIpState((prev) => ({
@@ -680,7 +810,7 @@ export const useE01 = () => {
 			} catch (err) {
 				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -747,6 +877,10 @@ export const useE01 = () => {
 		return itemData?.CFlag === "*" || crud.creating;
 	}, [crud.creating, itemData?.CFlag]);
 
+	/**
+	 * 變更零售註記 → 清空所有商品,
+	 * 部分加上 shouldTouch 註記, 避免 event propagation
+	 */
 	const handleRetailChange = useCallback(({ setValue, gridMeta }) => (newValue) => {
 		console.log("handleRetailChange", newValue);
 		setValue("customer", null);
@@ -771,7 +905,68 @@ export const useE01 = () => {
 		grid.initGridData([], { createRow });
 	}, [createRow, grid]);
 
-	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta }) => async (newValue) => {
+	const onRefreshGridSubmit = useCallback(
+		({ setValue }) =>
+			async (data) => {
+				console.log("onRefreshGridSubmit", data);
+				try {
+					const collected = E01.transformForSubmitting(
+						data,
+						grid.gridData
+					);
+					console.log("collected", collected);
+
+					const { status, payload, error } = await httpPostAsync({
+						url: "v1/sales/customer-orders/refresh-grid",
+						bearer: token,
+						data: collected,
+					});
+					console.log("refresh-grid.payload", payload);
+					if (status.success) {
+						const data = E01.transformForReading(payload.data[0]);
+						console.log("data.prods", data.prods);
+						// 置換 grid 部分
+						grid.initGridData(
+							grid.fillRows({
+								data: data.prods,
+								// length: DEFAULT_ROWS,
+								createRow,
+							})
+						);
+						// toast.info("商品單價已更新");
+						// 置換採購金額
+						setValue("TaxAmt", data.TaxAmt);
+						setValue("OrdAmt", data.OrdAmt);
+						setValue("TotAmt", data.TotAmt);
+						setPrevData({
+							customer: data?.customer,
+						});
+					} else {
+						throw error || new Error("未預期例外");
+					}
+				} catch (err) {
+					console.error("onRefreshGridSubmit failed", err);
+					toast.error(Errors.getMessage("單價重整失敗", err), {
+						position: "top-right"
+					});
+					// 還原
+					const prevData = getPrevData();
+					setValue("customer", prevData?.customer);
+				}
+			},
+		[grid, httpPostAsync, token, createRow, setPrevData, getPrevData]
+	);
+
+	const onRefreshGridSubmitError = useCallback((err) => {
+		console.error("onRefreshGridSubmitError", err);
+	}, []);
+
+	/**
+	 * 變更客戶編號
+	 * - 正式客戶 → 重新抓取報價 + 清除無報價資料
+	 * - 零售客戶 → 重新抓取報價
+	 */
+	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta, handleSubmit }) => async (newValue) => {
 		console.log("handleCustomerChange", newValue);
 		formMeta.asyncRef.current.supressEvents = true;
 		setValue("CustName", newValue?.CustData || "");
@@ -795,7 +990,7 @@ export const useE01 = () => {
 			} catch (err) {
 				console.error(err);
 				toast.error(Errors.getMessage("讀取客戶資料發生錯誤", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		}
@@ -818,10 +1013,18 @@ export const useE01 = () => {
 		setValue("employee", E01.getEmployee(customerInfo), {
 			shouldTouch: true
 		});
+
 		// grid.initGridData([], { createRow });
+		if (grid.gridData.filter(rowData => rowData.prod?.ProdID).length > 0) {
+			handleSubmit();
+		} else {
+			console.log("grid is empty, refresh-grid not triggered")
+		}
+
+
 		gridMeta.setActiveCell(null);
 		formMeta.asyncRef.current.supressEvents = false;
-	}, [httpGetAsync, token]);
+	}, [grid.gridData, httpGetAsync, token]);
 
 	const checkEditableAction = useAction();
 	const handleCheckEditable = useCallback(async () => {
@@ -841,12 +1044,31 @@ export const useE01 = () => {
 			}
 		} catch (err) {
 			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		} finally {
 			checkEditableAction.clear();
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
+
+	// const getTooltip = useCallback(({ rowData, rowIndex }) => {
+	// 	console.log(`getTooltip(${rowIndex})`, rowData);
+	// 	let results = [];
+	// 	if (rowData.prod?.ProdID) {
+	// 		const stockQty = rowData.stock;
+	// 		results.push(`庫存量（${stockQty || 0}）`);
+
+	// 		const demandOfOtherRows = rowData.prepared;
+	// 		results.push(`目前訂購量（${demandOfOtherRows || 0}）`);
+
+	// 		const remaining = rowData.remaining;
+
+	// 		results.push(`剩餘量（${remaining || 0}）`);
+	// 	}
+	// 	const result = results.join(", ");
+	// 	console.log(`${getTooltip.name}`, result);
+	// 	return result;
+	// }, []);
 
 	return {
 		...crud,
@@ -893,10 +1115,17 @@ export const useE01 = () => {
 		spriceDisabled,
 		sqtyDisabled,
 		sNotQtyDisabled,
+		stypeDisabled,
 		onGridChanged,
 		handleTaxTypeChange,
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
+		// getTooltip,
+		onActiveCellChange,
+		// activeCell
+		// Grid 重整
+		onRefreshGridSubmit,
+		onRefreshGridSubmitError
 	};
 };

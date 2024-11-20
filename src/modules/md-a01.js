@@ -169,7 +169,7 @@ const transformTransGridForSubmit = (data) => {
 		.map((v, i) => ({
 			Seq: i,
 			SDeptID: v.dept?.DeptID,
-			SCost: v.SCost,
+			SCost: v.SCost?.toString() || "",
 		}));
 };
 
@@ -179,7 +179,7 @@ const transformComboGridForSubmit = (data) => {
 		.map((v, i) => ({
 			Seq: i,
 			SProdID: v.prod?.ProdID,
-			SProdQty: v.SProdQty,
+			SProdQty: v.SProdQty?.toString() || "",
 		}));
 };
 

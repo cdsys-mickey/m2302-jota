@@ -156,21 +156,21 @@ export const D07DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!calId) {
 			toast.error("請先輸入試算單號", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("CalID");
 			return;
 		}
 		if (!calData) {
 			toast.error("請先輸入試算單名稱", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("CalData");
 			return;
 		}
 		if (!employee) {
 			toast.error("請先輸入編輯人員", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("employee");
 			return;

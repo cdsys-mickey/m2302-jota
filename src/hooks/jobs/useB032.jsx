@@ -101,7 +101,7 @@ export const useB032 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -243,7 +243,7 @@ export const useB032 = () => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -276,7 +276,7 @@ export const useB032 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -431,7 +431,7 @@ export const useB032 = () => {
 			} catch (err) {
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				setIpState((prev) => ({
@@ -471,7 +471,7 @@ export const useB032 = () => {
 			} catch (err) {
 				importCustsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入新客戶發生錯誤", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},

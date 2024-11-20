@@ -154,21 +154,21 @@ export const B04DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!inqDate) {
 			toast.error("請先輸入詢價日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("InqDate");
 			return;
 		}
 		if (!employee) {
 			toast.error("請先輸入詢價人員", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("employee");
 			return;
 		}
 		if (!supplier) {
 			toast.error("請先輸入廠商代碼", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("supplier");
 			return;

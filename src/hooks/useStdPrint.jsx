@@ -164,7 +164,7 @@ export const useStdPrint = ({
 		(mode) => {
 			if (!state.selectedFields || state.selectedFields.length === 0) {
 				toast.error("請至少選擇一個欄位", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}

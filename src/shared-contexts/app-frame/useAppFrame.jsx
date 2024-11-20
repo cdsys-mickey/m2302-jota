@@ -4,7 +4,8 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { ResponsiveContext } from "../responsive/ResponsiveContext";
 
-export const useAppFrame = ({ drawerWidth } = {}) => {
+export const useAppFrame = (opts = {}) => {
+	const { drawerWidth = 300 } = opts;
 	const auth = useContext(AuthContext);
 	const { mobile } = useContext(ResponsiveContext);
 	const { toModule, toLanding } = useAppRedirect();
@@ -12,7 +13,7 @@ export const useAppFrame = ({ drawerWidth } = {}) => {
 
 	const [drawerState, setDrawerState] = useState({
 		drawerOpen: null,
-		drawerWidth: drawerWidth || 300,
+		drawerWidth,
 	});
 
 	const [menuState, setMenuState] = useState({

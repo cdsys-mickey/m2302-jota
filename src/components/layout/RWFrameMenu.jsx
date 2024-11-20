@@ -2,7 +2,7 @@ import ErrorBox from "@/shared-components/ErrorBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { FixedSizeList as List } from "react-window";
+import { FixedSizeList } from "react-window";
 import RWFrameMenuRow from "./RWFrameMenuRow";
 import { forwardRef } from "react";
 import "./RWFrameMenu.scss";
@@ -53,9 +53,9 @@ const RWFrameMenu = memo((props) => {
 				// "rw-top-shadow": scrollOffset > 0,
 				"rw-bottom-shadow": !bottomReached,
 			})}
-			// style={scrollable.scroller}
+		// style={scrollable.scroller}
 		>
-			<List
+			<FixedSizeList
 				onScroll={onScroll}
 				className={clsx("rw-scrollable", {
 					"rw-top-shadow": scrollOffset > 0,
@@ -68,7 +68,7 @@ const RWFrameMenu = memo((props) => {
 				// innerElementType={innerElementType}
 				onItemsRendered={onItemsRendered}>
 				{RWFrameMenuRow}
-			</List>
+			</FixedSizeList>
 		</div>
 	);
 });

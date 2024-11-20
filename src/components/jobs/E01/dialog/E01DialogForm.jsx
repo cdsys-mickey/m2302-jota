@@ -16,6 +16,7 @@ import PaymentPicker from "../../A06/form/fields/PaymentPicker";
 import { E01CustomerPicker } from "../E01CustomerPicker";
 import { E01ProdGridBottomToolbar } from "./grid/E01ProdGridBottomToolbar";
 import { E01ProdGridContainer } from "./grid/E01ProdGridContainer";
+import E01SquaredPicker from "./E01SquaredPicker";
 
 const E01DialogForm = memo((props) => {
 	const {
@@ -85,7 +86,7 @@ const E01DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={4}>
-								<SquaredPicker
+								<E01SquaredPicker
 									typo
 									name="squared"
 									label="結清註記"
@@ -239,8 +240,8 @@ const E01DialogForm = memo((props) => {
 						</Grid>
 						<Box py={1}>
 							<E01ProdGridContainer />
+							<E01ProdGridBottomToolbar />
 						</Box>
-						<E01ProdGridBottomToolbar />
 						<Grid container columns={24}>
 							<Grid item xs={24}>
 								<TextFieldWrapper

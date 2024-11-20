@@ -21,6 +21,9 @@ import E01Drawer from "../E01Drawer";
 import E01DialogForm from "./E01DialogForm";
 import { E01DialogToolbarContainer } from "./toolbar/E01DialogToolbarContainer";
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
+import useDebounce from "@/shared-hooks/useDebounce";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 
 export const E01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -32,6 +35,17 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 	});
 
 	const e01 = useContext(E01Context);
+
+	// const activeCell = useWatch({
+	// 	name: "activeCell",
+	// 	control: form.control
+	// })
+
+	// const debouncedActiveCell = useDebounceObject(activeCell, 800);
+
+	// useChangeTracking(() => {
+	// 	form.setValue("msg", `col: ${debouncedActiveCell.col}, row: ${debouncedActiveCell.row}`);
+	// }, [debouncedActiveCell]);
 
 	const ordDate = useWatch({
 		name: "OrdDate",
@@ -98,6 +112,11 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 		e01.onEditorSubmitError
 	);
 
+	const handleRefreshGridSubmit = form.handleSubmit(
+		e01.onRefreshGridSubmit({ setValue: form.setValue }),
+		e01.onRefreshGridSubmitError
+	);
+
 	const readOnly = useMemo(() => {
 		return !e01.editing || !ordDate || !arrDate || !compTel || !custName || (!retail && !customer);
 	}, [arrDate, compTel, custName, customer, e01.editing, ordDate, retail]);
@@ -116,6 +135,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 						compTel: compTel,
 						disableClearable: true,
 						withPrice: true,
+						withStock: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -201,7 +221,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 				title: "試贈樣",
 				minWidth: 70,
 				maxWidth: 70,
-				disabled: readOnly,
+				disabled: readOnly || e01.stypeDisabled,
 			},
 			{
 				...keyColumn(
@@ -220,51 +240,52 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 				title: "未出量",
 				minWidth: 90,
 				grow: 1,
-				disabled: readOnly || e01.sNotQtyDisalbed,
+				disabled: readOnly || e01.sNotQtyDisabled,
 			},
 		],
-		[compTel, customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisalbed, e01.spriceDisabled, e01.sqtyDisabled, readOnly, retail]
+		[compTel, customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisabled, e01.spriceDisabled, e01.sqtyDisabled, e01.stypeDisabled, readOnly, retail]
 	);
 
 	const gridMeta = useDSGMeta({
 		data: e01.grid.gridData,
 		columns,
 		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
+		// onActiveCellChange: e01.onActiveCellChange({ setValue: form.setValue })
 	})
 
 	const handleLastField = useCallback(() => {
 		if (!ordDate) {
 			toast.error("請先輸入訂貨日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("OrdDate");
 			return;
 		}
 		if (!arrDate) {
 			toast.error("請先輸入到貨日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("ArrDate");
 			return;
 		}
 		if (!compTel) {
 			toast.error("請先輸入電話", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("CompTel");
 			return;
 		}
 		if (!custName) {
 			toast.error("請先輸入客戶名稱", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("CustName");
 			return;
 		}
 		if (!retail && !customer) {
 			toast.error("非零售請先輸入客戶代碼", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("customer");
 			return;
@@ -366,11 +387,20 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 							data={e01.itemData}
 							itemDataReady={e01.itemDataReady}
 							squaredDisabled={e01.squaredDisabled}
-							handleCustomerChange={e01.handleCustomerChange({ setValue: form.setValue, getValues: form.getValues, formMeta, gridMeta })}
+							handleCustomerChange={e01.handleCustomerChange({
+								setValue: form.setValue,
+								getValues: form.getValues,
+								formMeta,
+								gridMeta,
+								handleSubmit: handleRefreshGridSubmit
+							})}
 							handleRetailChange={e01.handleRetailChange({ setValue: form.setValue, gridMeta })}
 							validateCustomer={validateCustomer}
 							customerRequired={customerRequired}
-							handleTaxTypeChange={e01.handleTaxTypeChange({ setValue: form.setValue, getValues: form.getValues })}
+							handleTaxTypeChange={e01.handleTaxTypeChange({
+								setValue: form.setValue,
+								getValues: form.getValues
+							})}
 						/>
 
 					</FormMetaProvider>

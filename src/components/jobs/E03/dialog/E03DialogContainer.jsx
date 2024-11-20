@@ -94,9 +94,14 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 
 
 
+	// const readOnly = useMemo(() => {
+	// 	return !e03.editing;
+	// }, [e03.editing]);
+
 	const readOnly = useMemo(() => {
-		return !e03.editing || !returnDate || !compTel || !custName || !employee || (!retail && !customer);
-	}, [e03.editing, returnDate, compTel, custName, employee, retail, customer]);
+		// console.log("readOnly changed", e03.editing);
+		return !e03.editing || !returnDate || !compTel || !custName || !employee?.CodeID || (!retail && !customer?.CustID);
+	}, [compTel, custName, customer?.CustID, e03.editing, employee?.CodeID, retail, returnDate]);
 
 	const columns = useMemo(
 		() => [
@@ -250,28 +255,28 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!returnDate) {
 			toast.error("請先輸入銷退日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("OrdDate");
 			return;
 		}
 		if (!compTel) {
 			toast.error("請先輸入電話", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("CompTel");
 			return;
 		}
 		if (!custName) {
 			toast.error("請先輸入客戶名稱", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("CustName");
 			return;
 		}
 		if (!retail && !customer) {
 			toast.error("非零售請先輸入客戶代碼", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("customer");
 			return;

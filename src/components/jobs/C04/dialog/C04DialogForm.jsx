@@ -36,7 +36,9 @@ const C04DialogForm = memo((props) => {
 		handleTaxTypeChange,
 		isSupplierNameDisabled,
 		purchaseOrdersDisabled,
-		supplier,
+		supplierDisabled,
+		// supplier,
+		supplierNameDisabled,
 		...rest
 	} = props;
 	return (
@@ -126,6 +128,7 @@ const C04DialogForm = memo((props) => {
 										},
 									},
 								}}
+								disabled={supplierDisabled}
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
@@ -139,7 +142,7 @@ const C04DialogForm = memo((props) => {
 								rules={{
 									required: "廠商名稱為必填",
 								}}
-								disabled={isSupplierNameDisabled(supplier)}
+								disabled={supplierNameDisabled}
 							/>
 						</Grid>
 
@@ -201,7 +204,7 @@ const C04DialogForm = memo((props) => {
 								// onChanged={handleLoadProdsSubmit}
 
 								onChanged={handlePurchaseOrdersChanged}
-								disabled={purchaseOrdersDisabled || !supplier}
+								disabled={purchaseOrdersDisabled}
 								disableOpenOnInput
 								slotProps={{
 									paper: {

@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 import B02 from "@/modules/md-b02";
-import Strings from "@/modules/md-strings";
+import Strings from "@/shared-modules/sd-strings";
 
 export const useB031 = () => {
 	const crud = useContext(CrudContext);
@@ -103,7 +103,7 @@ export const useB031 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -241,7 +241,7 @@ export const useB031 = () => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -274,7 +274,7 @@ export const useB031 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -299,7 +299,7 @@ export const useB031 = () => {
 			// ) {
 			// 	toast.error(
 			// 		`「${processedRowData.prod?.ProdData}」已存在, 請選擇其他商品`,
-			// 		{ position: "top-center" }
+			// 		{ position: "top-right" }
 			// 	);
 			// 	processedRowData.prod = null;
 			// }
@@ -492,7 +492,7 @@ export const useB031 = () => {
 			} catch (err) {
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				setIpState((prev) => ({
@@ -532,7 +532,7 @@ export const useB031 = () => {
 			} catch (err) {
 				importProdsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},

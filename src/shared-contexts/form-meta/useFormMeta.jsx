@@ -103,7 +103,7 @@ export const useFormMeta = (value, opts = {}) => {
 			} else {
 				if (typeof lastField === "string") {
 					toast.warn(lastField, {
-						position: "top-center",
+						position: "top-right",
 					});
 					return;
 				} else if (typeof lastField === "function") {
@@ -121,7 +121,7 @@ export const useFormMeta = (value, opts = {}) => {
 							toast.warn(
 								forward ? lastFieldMessage : firstFieldMessage,
 								{
-									position: "top-center",
+									position: "top-right",
 								}
 							);
 							break;

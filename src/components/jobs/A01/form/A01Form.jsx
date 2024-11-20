@@ -3,7 +3,7 @@ import { Box, Grid, Tab } from "@mui/material";
 import { memo } from "react";
 
 import A01 from "@/modules/md-a01";
-import Strings from "@/modules/md-strings";
+import Strings from "@/shared-modules/sd-strings";
 import YesNo from "@/modules/md-yes-no";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";

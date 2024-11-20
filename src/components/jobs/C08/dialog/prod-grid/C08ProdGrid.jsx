@@ -7,6 +7,9 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C08ProdGridAddRows from "./C08ProdGridAddRows";
+import { keyColumn } from "react-datasheet-grid";
+import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
+import { useMemo } from "react";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -24,14 +27,7 @@ const C08ProdGrid = memo((props) => {
 		// handleSelectionChange,
 		getRowClassName,
 		height = 300,
-		sprodDisabled,
-		sqtyDisabled,
-		stypeDisabled,
-		dtypeDisabled,
-		overrideSQtyDisabled,
-		getSPriceClassName,
-		getSQtyClassName,
-		getTooltip,
+		...rest
 	} = props;
 
 
@@ -44,6 +40,8 @@ const C08ProdGrid = memo((props) => {
 	const deleteRow = useCallback(({ rowData }) => {
 		console.log("deleteRow", rowData);
 	}, []);
+
+
 
 	return (
 		<DSGGrid
@@ -66,11 +64,7 @@ const C08ProdGrid = memo((props) => {
 			duplicateRow={duplicateRow}
 			rowClassName={getRowClassName}
 			deleteRow={deleteRow}
-			stickyRightColumn={tooltipColumn({
-				arrow: true,
-				getLabel: getTooltip,
-				placement: "left",
-			})}
+			{...rest}
 		/>
 	);
 });

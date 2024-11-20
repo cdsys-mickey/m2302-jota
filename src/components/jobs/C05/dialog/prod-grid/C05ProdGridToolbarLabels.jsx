@@ -1,5 +1,5 @@
 import { C05Context } from "@/contexts/C05/C05Context";
-import Strings from "@/modules/md-strings";
+import Strings from "@/shared-modules/sd-strings";
 import DSGToolbar from "@/shared-components/dsg/DSGToolbar";
 import { DSGToolbarLabel } from "@/shared-components/dsg/DSGToolbarLabel";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";

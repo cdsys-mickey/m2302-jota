@@ -44,20 +44,6 @@ export const useC06 = () => {
 		initialFetchSize: 50,
 	});
 
-	const grid = useDSG({
-		gridId: "prods",
-		keyColumn: "Pkey",
-	});
-
-	const updateAmt = useCallback(({ setValue, gridData, reset = false }) => {
-		if (reset) {
-			setValue("OrdAmt", "");
-		} else {
-			const total = C06.getTotal(gridData);
-			setValue("OrdAmt", total.toFixed(2));
-		}
-	}, []);
-
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
@@ -71,6 +57,23 @@ export const useC06 = () => {
 		}),
 		[]
 	);
+
+	const grid = useDSG({
+		gridId: "prods",
+		keyColumn: "Pkey",
+		createRow
+	});
+
+	const updateAmt = useCallback(({ setValue, gridData, reset = false }) => {
+		if (reset) {
+			setValue("OrdAmt", "");
+		} else {
+			const total = C06.getTotal(gridData);
+			setValue("OrdAmt", total.toFixed(2));
+		}
+	}, []);
+
+
 
 	// CREATE
 	const promptCreating = useCallback(async () => {
@@ -95,13 +98,14 @@ export const useC06 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("讀取總公司失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		}
 
 		const data = {
-			prods: grid.fillRows({ createRow }),
+			// prods: grid.fillRows({ createRow }),
+			prods: [],
 			OrdDate: new Date(),
 			ArrDate: new Date(),
 			stype: null,
@@ -116,8 +120,8 @@ export const useC06 = () => {
 				: null,
 		};
 		crud.promptCreating({ data });
-		grid.handleGridDataLoaded(data.prods);
-	}, [createRow, crud, httpGetAsync, operator, grid, token]);
+		grid.setGridData(data.prods, { fillRows: true });
+	}, [crud, httpGetAsync, operator, grid, token]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -140,7 +144,7 @@ export const useC06 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -216,8 +220,13 @@ export const useC06 = () => {
 					if (status.success) {
 						const data = C06.transformForReading(payload.data[0]);
 						console.log("refresh-grid.data", data);
-						grid.handleGridDataLoaded(
-							grid.fillRows({ createRow, data: data.prods })
+						grid.setGridData(
+							data.prods,
+							crud.creating
+								? {
+									fillRows: true
+								}
+								: null
 						);
 						updateAmt({ setValue, gridData: data.prods });
 						toast.info("商品單價已更新");
@@ -226,7 +235,7 @@ export const useC06 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("更新商品單價失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			} else {
@@ -320,7 +329,7 @@ export const useC06 = () => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -353,7 +362,7 @@ export const useC06 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -382,7 +391,7 @@ export const useC06 = () => {
 		async (prodId, { spDept }) => {
 			if (!prodId) {
 				toast.error("請先選擇商品", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
@@ -390,7 +399,7 @@ export const useC06 = () => {
 			const spDeptId = spDept?.DeptID;
 			if (!spDeptId) {
 				toast.error("請先選擇出貨門市", {
-					position: "top-center"
+					position: "top-right"
 				});
 				return;
 			}
@@ -412,7 +421,7 @@ export const useC06 = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -498,7 +507,7 @@ export const useC06 = () => {
 		// 未設定調撥成本不可輸入
 		if (processedRowData.prod && transferPriceEmpty) {
 			toast.error(`「${processedRowData.prod?.ProdData}」未設定調撥成本不可輸入`, {
-				position: "top-center"
+				position: "top-right"
 			});
 		}
 
@@ -560,7 +569,7 @@ export const useC06 = () => {
 		// 單價, 贈, 數量
 		if (
 			rowData.SPrice !== oldRowData.SPrice ||
-			rowData.stype?.id !== oldRowData.Stype?.id ||
+			rowData.stype?.id !== oldRowData.stype?.id ||
 			rowData.SQty !== oldRowData.SQty
 		) {
 			// 計算合計
@@ -855,7 +864,7 @@ export const useC06 = () => {
 					}
 				} catch (err) {
 					toast.error(Errors.getMessage("商品單價更新失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 					// 還原
 				}
@@ -886,7 +895,7 @@ export const useC06 = () => {
 			}
 		} catch (err) {
 			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-center"
+				position: "top-right"
 			});
 		} finally {
 			checkEditableAction.clear();

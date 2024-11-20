@@ -220,7 +220,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!txoDept) {
 			toast.error("請先輸入撥出門市", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("txoDept");
 			return;

@@ -240,35 +240,35 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		if (!salesDate) {
 			toast.error("請先輸入銷貨日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("OrdDate");
 			return;
 		}
 		if (!arrDate) {
 			toast.error("請先輸入到貨日期", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("ArrDate");
 			return;
 		}
 		if (!compTel) {
 			toast.error("請先輸入電話", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("CompTel");
 			return;
 		}
 		if (!custName) {
 			toast.error("請先輸入客戶名稱", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("CustName");
 			return;
 		}
 		if (!retail && !customer) {
 			toast.error("非零售請先輸入客戶代碼", {
-				position: "top-center",
+				position: "top-right",
 			});
 			form.setFocus("customer");
 			return;
@@ -338,6 +338,12 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		e021.onEditorSubmitError
 	);
 
+	const handleRefreshGridSubmit = form.handleSubmit(
+		e021.onRefreshGridSubmit({ setValue: form.setValue }),
+		e021.onRefreshGridSubmitError
+	);
+
+
 	useEffect(() => {
 		if (e021.itemDataReady) {
 			console.log("e021 form reset", e021.itemData);
@@ -359,6 +365,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 					ref={ref}
 					title={memoisedTitle}
 					// fullScreen
+					// fullScreen={e021.editing}
 					responsive
 					fullWidth
 					maxWidth="lg"
@@ -393,7 +400,13 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 							data={e021.itemData}
 							itemDataReady={e021.itemDataReady}
 							squaredDisabled={e021.squaredDisabled}
-							handleCustomerChange={e021.handleCustomerChange({ setValue: form.setValue, getValues: form.getValues, formMeta, gridMeta })}
+							handleCustomerChange={e021.handleCustomerChange({
+								setValue: form.setValue,
+								getValues: form.getValues,
+								formMeta,
+								gridMeta,
+								handleSubmit: handleRefreshGridSubmit
+							})}
 							handleRetailChange={e021.handleRetailChange({ setValue: form.setValue, gridMeta })}
 							validateCustomer={validateCustomer}
 							customerRequired={customerRequired}

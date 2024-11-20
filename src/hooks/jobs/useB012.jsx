@@ -121,7 +121,7 @@ export const useB012 = (opts = {}) => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -263,7 +263,7 @@ export const useB012 = (opts = {}) => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -296,7 +296,7 @@ export const useB012 = (opts = {}) => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -322,7 +322,7 @@ export const useB012 = (opts = {}) => {
 				grid.isDuplicating(rowData, newValue, { key: "customer.CustID" })
 			) {
 				toast.error(`「${processedRowData.customer?.CustData}」已存在, 請選擇其他客戶`, {
-					position: "top-center"
+					position: "top-right"
 				});
 				processedRowData.customer = null;
 			}
@@ -463,7 +463,7 @@ export const useB012 = (opts = {}) => {
 			} catch (err) {
 				console.error("peek failed", err);
 				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			} finally {
 				setIpState((prev) => ({
@@ -503,7 +503,7 @@ export const useB012 = (opts = {}) => {
 			} catch (err) {
 				importCustsAction.fail({ error: err });
 				toast.error(Errors.getMessage("帶入客戶發生錯誤", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -544,13 +544,13 @@ export const useB012 = (opts = {}) => {
 				console.log("payload", payload.data);
 				if (!payload.data?.length) {
 					toast.error("目前查詢沒有資料", {
-						position: "top-center"
+						position: "top-right"
 					})
 					return;
 				}
 			} else {
 				toast.error(Errors.getMessage("讀取資料發生錯誤", error), {
-					position: "top-center"
+					position: "top-right"
 				})
 				return;
 			}

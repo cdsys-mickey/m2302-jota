@@ -70,7 +70,7 @@ const transformGridForSubmitting = (gridData) => {
 				SDeptID: dept?.DeptID || "",
 				SCustID: customer?.CustID || "",
 				Seq: index + 1,
-				StockQty_N: StockQty_N?.toString(),
+				StockQty_N: StockQty_N?.toString() || "",
 				...rest,
 			})
 		);

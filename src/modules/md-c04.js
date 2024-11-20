@@ -78,6 +78,7 @@ const transformForReading = (payload) => {
 				.map((x) => ({
 					["採購單號"]: x,
 				})) || [],
+		OrdID,
 		FactData,
 		prods: transformGridForReading(GdsIn_S),
 		remark: Remark.join("\n"),

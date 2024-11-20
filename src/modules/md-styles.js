@@ -1,3 +1,5 @@
+const GRID_BOTTOM_TOOLBAR_HEIGHT = 48;
+
 const ofHomeBox = ({ theme, drawerOpen }) => ({
 	paddingTop: theme.spacing(1),
 	// transition: theme.transitions.create("paddingRight", {
@@ -83,9 +85,17 @@ const ofFrameBox = ({ theme, drawerOpen }) => ({
 	}),
 });
 
+const ofGridBottomToolbar = () => ({
+	my: 0,
+	pr: 2.5,
+	minHeight: GRID_BOTTOM_TOOLBAR_HEIGHT,
+});
+
 const Styles = {
 	ofFrameBox,
 	ofHomeBox,
+	ofGridBottomToolbar,
+	GRID_BOTTOM_TOOLBAR_HEIGHT,
 };
 
 export default Styles;

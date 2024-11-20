@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import FrameMenuItemButton from "./FrameMenuItemButton";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import ErrorBox from "@/shared-components/ErrorBox";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 /**
  * 目前由 React Window 版本取代，暫不刪除
@@ -32,7 +33,7 @@ const FrameMenu = memo(
 					<List dense disablePadding sx={{ width: "100%" }}>
 						{authorities &&
 							authorities.map((a) => (
-								<ListItem key={a.JobID} dense disablePadding>
+								<ListItem key={a.JobID} dense disablePadding sx={[MuiStyles.ELLIPSIS_BOX]}>
 									<FrameMenuItemButton
 										code={a.JobID}
 										primary={a.JobName}

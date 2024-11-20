@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import Forms from "../shared-modules/sd-forms";
 import FreeProdTypes from "./md-free-prod-types";
 import Squared from "./md-squared";
+import Strings from "@/shared-modules/sd-strings";
 
 const createRow = () => ({
 	Pkey: nanoid(),
@@ -58,10 +59,16 @@ const SquaredState = Object.freeze({
 	SQUARED: "*",
 });
 
-const squaredOptions = [
+const listSquaredOptions = [
 	{ id: SquaredState.NONE, label: "不篩選" },
 	{ id: SquaredState.NOT, label: "未結清" },
-	{ id: SquaredState.MARK_AS_SQUARED, label: "已結清" },
+	{ id: SquaredState.MARK_AS_SQUARED, label: "結清" },
+	{ id: SquaredState.SQUARED, label: "銷貨已結清" },
+];
+
+const squaredOptions = [
+	{ id: SquaredState.NONE, label: "未結清" },
+	{ id: SquaredState.MARK_AS_SQUARED, label: "結清" },
 	{ id: SquaredState.SQUARED, label: "銷貨已結清" },
 ];
 
@@ -107,17 +114,32 @@ const transformForGridImport = (data, employee, date) => {
 	);
 };
 
-const transformGridForReading = (data) => {
-	return data?.map((v) => {
-		const {
-			// Pkey,
-			// SQflag,
-			// SPrice,
-			// SQty,
-			// SAmt,
-			// SRemark,
-			// SNotQty,
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push(`庫存量（${stockQty || 0}）`);
+		}
 
+		if (!Strings.isNullOrEmpty(rowData?.OrdQty_N)) {
+			const demandOfOtherRows = rowData.OrdQty_N;
+			results.push(`目前訂購量（${demandOfOtherRows || 0}）`);
+		}
+
+		if (!Strings.isNullOrEmpty(rowData?.LaveQty_N)) {
+			const remaining = rowData.LaveQty_N;
+			results.push(`剩餘量（${remaining || 0}）`);
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
+};
+
+const transformGridForReading = (data) => {
+	return data?.map((rowData, rowIndex) => {
+		const {
 			// prod
 			SProdID,
 			ProdData_N,
@@ -127,9 +149,9 @@ const transformGridForReading = (data) => {
 			SType,
 
 			...rest
-		} = v;
-		return {
-			// Pkey,
+		} = rowData;
+
+		let processedRowData = {
 			prod: SProdID
 				? {
 						ProdID: SProdID,
@@ -138,15 +160,16 @@ const transformGridForReading = (data) => {
 				: null,
 			ProdData_N,
 			PackData_N,
-			// SQflag,
-			// SPrice,
-			// SQty,
-			// SAmt,
 			stype: FreeProdTypes.getOptionById(SType),
-			// SRemark,
-			// SNotQty,
 			...rest,
 		};
+
+		processedRowData.tooltip = getTooltip({
+			rowData: processedRowData,
+			rowIndex,
+		});
+
+		return processedRowData;
 	});
 };
 
@@ -248,7 +271,7 @@ const transformForReading = (payload) => {
 	return {
 		OrdDate: Forms.parseDate(OrdDate),
 		ArrDate: Forms.parseDate(ArrDate),
-		squared: Squared.getSquaredOptionById(CFlag),
+		squared: getSquaredOptionById(CFlag),
 		retail: getRetail({ SalType }),
 		customer: CustID
 			? {
@@ -385,6 +408,7 @@ const E01 = {
 	transformProdCriteriaAsQueryParams,
 	// 結清
 	SquaredState,
+	listSquaredOptions,
 	squaredOptions,
 	getSquaredOptionLabel,
 	getSquaredOptionById,
@@ -403,6 +427,7 @@ const E01 = {
 	getPaymentType,
 	getEmployee,
 	getTotal,
+	getTooltip,
 };
 
 export default E01;

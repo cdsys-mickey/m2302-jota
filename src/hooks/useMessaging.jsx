@@ -98,7 +98,7 @@ export const useMessaging = () => {
 				onClick: () => handleGotoJob(payload),
 				// 警告或錯誤才將訊息顯示於上方
 				// ...(["WARNING", "ERROR"].includes(payload.type) && {
-				// 	position: "top-center",
+				// 	position: "top-right",
 				// })
 			});
 
@@ -170,7 +170,7 @@ export const useMessaging = () => {
 				}
 			} catch (err) {
 				toast.error(Errors.getMessage("標示已讀失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},

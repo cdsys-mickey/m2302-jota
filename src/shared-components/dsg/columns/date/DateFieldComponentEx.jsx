@@ -224,7 +224,7 @@ const DateFieldComponentEx = memo((props) => {
 					console.log("isValidDate", validationResult);
 					if (!validationResult) {
 						toast.error("日期格式錯誤", {
-							position: "top-center"
+							position: "top-right"
 						})
 						setTimeout(() => {
 							refocus({ select: true });

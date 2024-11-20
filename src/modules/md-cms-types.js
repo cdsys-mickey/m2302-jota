@@ -1,4 +1,4 @@
-import Strings from "./md-strings";
+import Strings from "../shared-modules/sd-strings";
 
 const getOptionLabel = (option) => {
 	if (!option) return "";

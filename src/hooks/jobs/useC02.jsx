@@ -108,7 +108,7 @@ export const useC02 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("請購單新增失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -226,7 +226,7 @@ export const useC02 = () => {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
 				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -259,7 +259,7 @@ export const useC02 = () => {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-center"
+						position: "top-right"
 					});
 				}
 			},
@@ -339,7 +339,7 @@ export const useC02 = () => {
 							if (prodDisabled({ rowData })) {
 								const rowIndex = operation.fromRowIndex + i;
 								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
-									position: "top-center"
+									position: "top-right"
 								});
 								return true;
 							}
@@ -438,7 +438,7 @@ export const useC02 = () => {
 			} catch (err) {
 				reviewAction.fail({ error: err });
 				toast.error(Errors.getMessage("覆核失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},
@@ -493,7 +493,7 @@ export const useC02 = () => {
 			} catch (err) {
 				rejectAction.fail({ error: err });
 				toast.error(Errors.getMessage("解除覆核失敗", err), {
-					position: "top-center"
+					position: "top-right"
 				});
 			}
 		},

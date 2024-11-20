@@ -6,6 +6,8 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import C08ProdGrid from "./C08ProdGrid";
+import { keyColumn } from "react-datasheet-grid";
+import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
 
 export const C08ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -29,6 +31,15 @@ export const C08ProdGridContainer = (props) => {
 	const _height = useMemo(() => {
 		return height - 360;
 	}, [height])
+
+	const prodInfoColumn = useMemo(() => {
+		return {
+			...keyColumn("tooltip", createTooltipColumn({
+				arrow: true,
+				placement: "bottom-end",
+			}))
+		}
+	}, [])
 
 	return (
 		<DSGContext.Provider value={{ ...c08.grid, ...formMeta.gridMeta, readOnly: formMeta.readOnly }}>
@@ -54,6 +65,7 @@ export const C08ProdGridContainer = (props) => {
 				// getRowClassName={c08.getRowClassName}
 				getTooltip={c08.getTooltip}
 				createRow={c08.createRow}
+				stickyRightColumn={prodInfoColumn}
 				{...rest}
 			/>
 		</DSGContext.Provider>
