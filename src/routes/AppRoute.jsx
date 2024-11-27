@@ -137,6 +137,7 @@ import { E021FrameContainer } from "@/pages/E021/E021FrameContainer";
 import { E03Provider } from "@/contexts/E03/E03Provider";
 import { E03FrameContainer } from "@/pages/E03/E03FrameContainer";
 import { BProvider } from "@/contexts/B/BProvider";
+import { CrudProvider2 } from "@/contexts/crud/CrudProvider2";
 
 const AppRoute = () => {
 	return (

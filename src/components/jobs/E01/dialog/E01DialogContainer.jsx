@@ -1,9 +1,8 @@
-import { EmployeePickerComponentContainer } from "@/components/dsg/columns/employee-picker/EmployeePickerComponentContainer";
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { E01Context } from "@/contexts/E01/E01Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -20,10 +19,6 @@ import { toast } from "react-toastify";
 import E01Drawer from "../E01Drawer";
 import E01DialogForm from "./E01DialogForm";
 import { E01DialogToolbarContainer } from "./toolbar/E01DialogToolbarContainer";
-import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
-import useDebounce from "@/shared-hooks/useDebounce";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
 
 export const E01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -132,7 +127,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 						forId: true,
 						cst: customer?.CustID || "",
 						retail: retail,
-						compTel: compTel,
+						// compTel: compTel,
 						disableClearable: true,
 						withPrice: true,
 						withStock: true,

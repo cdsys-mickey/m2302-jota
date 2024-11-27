@@ -39,8 +39,8 @@ const AreaTypePickerComponent = memo((props) => {
 
 	const {
 		name,
-		hideControlsOnActive,
-		selectOnFocus,
+		hideControlsOnActive = true,
+		selectOnFocus = true,
 		// from Context
 		lastCell,
 		getNextCell,
@@ -108,12 +108,14 @@ const AreaTypePickerComponent = memo((props) => {
 			onChange={handleChange}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			cell={cell}
+			focusNextCell={focusNextCell}
 			dense
+			cell={cell}
 			hideControls={hideControls}
 			hideBorders
 			disableFadeOut
 			toastError
+			virtualize
 			{...rest}
 		/>
 	);

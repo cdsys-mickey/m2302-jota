@@ -82,13 +82,16 @@ export const useWebApi = (props) => {
 				method.toLowerCase() === "get" && !params && !!data;
 			const activeParams = isUseDataAsParams ? data : params;
 
-			console.log(
-				`${method.toUpperCase()} ${apiUrl}, params:`,
-				activeParams
-			);
-			if (!isUseDataAsParams && data) {
-				console.log("data:", data);
+			console.log(`${method.toUpperCase()} ${apiUrl}`);
+			if (params) {
+				console.log("\tparams", params);
 			}
+			if (data) {
+				console.log("\tdata", data);
+			}
+			// if (!isUseDataAsParams && data) {
+			// 	console.log("data:", data);
+			// }
 
 			let formData;
 			if (mode === "form") {

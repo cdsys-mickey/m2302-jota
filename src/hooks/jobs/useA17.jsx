@@ -1,17 +1,18 @@
-import { useContext } from "react";
-import { useCallback, useState } from "react";
-import { useAppModule } from "./useAppModule";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import CrudContext from "../../contexts/crud/CrudContext";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import A17 from "../../modules/md-a17";
-import Errors from "../../shared-modules/sd-errors";
+import CrudContext2 from "@/contexts/crud/CrudContext2";
+import { useCallback, useContext } from "react";
 import { toast } from "react-toastify";
-import { useInit } from "../../shared-hooks/useInit";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import A17 from "@/modules/md-a17";
+import { useInit } from "@/shared-hooks/useInit";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import Errors from "@/shared-modules/sd-errors";
+import { useAppModule } from "./useAppModule";
+import CrudContext from "@/contexts/crud/CrudContext";
 
 export const useA17 = () => {
 	const crud = useContext(CrudContext);
 	const { token } = useContext(AuthContext);
+
 	const appModule = useAppModule({
 		token,
 		moduleId: "A17",
@@ -21,7 +22,7 @@ export const useA17 = () => {
 	const loadItem = useCallback(
 		async ({ id }) => {
 			try {
-				crud.startReading("讀取中...");
+				crud.startLoading("讀取中...");
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/ou/dept/params`,
 					bearer: token,
@@ -32,14 +33,14 @@ export const useA17 = () => {
 				console.log("payload", payload);
 				if (status.success) {
 					const data = A17.transformForReading(payload);
-					crud.doneReading({
+					crud.doneLoading({
 						data,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failLoading(err);
 			}
 		},
 		[crud, httpGetAsync, token]

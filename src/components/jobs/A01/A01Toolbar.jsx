@@ -3,12 +3,14 @@ import { forwardRef, memo } from "react";
 import A01CreateButtonContainer from "./A01CreateButtonContainer";
 import { A01FetchResultLabelContainer } from "./A01FetchResultLabelContainer";
 import A01PrintButtonContainer from "./A01PrintButtonContainer";
+import { A01LockSwitchContainer } from "./A01LockSwitchContainer";
 
 const LeftButtons = memo(() => {
 	return (
 		<>
 			<A01CreateButtonContainer />
 			<A01PrintButtonContainer color="neutral" />
+			<A01LockSwitchContainer />
 		</>
 	);
 });

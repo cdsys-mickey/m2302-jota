@@ -47,11 +47,6 @@ export const useB05 = () => {
 		initialFetchSize: 50,
 	});
 
-	const grid = useDSG({
-		gridId: "quotes",
-		keyColumn: "pkey",
-	});
-
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
@@ -61,6 +56,12 @@ export const useB05 = () => {
 		[]
 	);
 
+	const grid = useDSG({
+		gridId: "quotes",
+		keyColumn: "pkey",
+		createRow
+	});
+
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
@@ -68,8 +69,10 @@ export const useB05 = () => {
 			quotes: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.quotes, { createRow });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.quotes, {
+			fillRows: true
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -440,7 +443,7 @@ export const useB05 = () => {
 					const data = payload.data?.[0].FactInq_S || [];
 					console.log("data", data);
 					grid.initGridData(B05.transformForGridImport(data), {
-						createRow,
+						fillRows: true,
 					});
 					toast.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
@@ -454,15 +457,7 @@ export const useB05 = () => {
 				});
 			}
 		},
-		[
-			createRow,
-			httpGetAsync,
-			importProdsAction,
-			ipState.criteria,
-			ipState.saveKey,
-			grid,
-			token,
-		]
+		[httpGetAsync, importProdsAction, ipState.criteria, ipState.saveKey, grid, token]
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {

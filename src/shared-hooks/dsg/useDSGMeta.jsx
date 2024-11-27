@@ -16,7 +16,7 @@ export const useDSGMeta = ({
 		}
 	}, []);
 
-	const asyncRef = useRef({
+	const asyncMetaRef = useRef({
 		prevCell: null,
 		cell: null,
 		forward: true,
@@ -165,21 +165,21 @@ export const useDSGMeta = ({
 	}, []);
 
 	const focusPrevCell = useCallback(() => {
-		console.log("focusPrevCell, prevCell:", asyncRef.current.prevCell)
-		if (asyncRef.current.prevCell) {
-			setActiveCell(asyncRef.current.prevCell);
+		console.log("focusPrevCell, prevCell:", asyncMetaRef.current.prevCell)
+		if (asyncMetaRef.current.prevCell) {
+			setActiveCell(asyncMetaRef.current.prevCell);
 		}
 	}, [setActiveCell]);
 
 	const handleActiveCellChange = useCallback(
 		({ cell }) => {
 			console.log("handleActiveCellChange", cell);
-			asyncRef.current = {
+			asyncMetaRef.current = {
 				prevCell: {
-					...asyncRef.current?.cell,
+					...asyncMetaRef.current?.cell,
 				},
 				cell: cell,
-				forward: isForward(asyncRef.current?.cell, cell),
+				forward: isForward(asyncMetaRef.current?.cell, cell),
 			};
 			// if (onActiveCellChange) {
 			// 	onActiveCellChange(cell);
@@ -198,7 +198,7 @@ export const useDSGMeta = ({
 			let forward =
 				opts.forward != null
 					? opts.forward
-					: isForward(asyncRef.current.cell, cell);
+					: isForward(asyncMetaRef.current.cell, cell);
 			let searching = forward !== null && forward != null;
 			while (searching) {
 				if (forward) {
@@ -258,7 +258,7 @@ export const useDSGMeta = ({
 			const { nextRow = true } = opts;
 			const newRow = nextRow
 				? data.length - 1
-				: asyncRef.current?.cell?.row;
+				: asyncMetaRef.current?.cell?.row;
 			setActiveCell({
 				row: newRow,
 				col: colIndex,

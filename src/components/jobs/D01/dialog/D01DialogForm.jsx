@@ -88,7 +88,7 @@ const D01DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={6}>
 							<ProdLinePicker
 								typo
 								label="領料線別"
@@ -98,6 +98,7 @@ const D01DialogForm = memo((props) => {
 									required: "領料線別為必填",
 								}}
 								disableOpenOnInput
+								disableClearable
 								slotProps={{
 									paper: {
 										sx: {

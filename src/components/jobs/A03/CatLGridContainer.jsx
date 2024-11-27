@@ -35,7 +35,7 @@ export const CatLGridContainer = () => {
 			<CatLGrid
 				lockRows={a03.readOnly}
 				setGridRef={catL.gridMeta.setGridRef}
-				columns={catL.gridMeta.columns}
+				columns={catL.columns}
 				data={catL.grid.gridData}
 				loading={catL.grid.gridLoading}
 				height={height - 176}
@@ -46,26 +46,6 @@ export const CatLGridContainer = () => {
 				canCreate={a03.canCreate}
 				getRowClassName={catL.gridMeta.getRowClassName}
 			/>
-			{/* <CatLGrid
-				lockRows={a03.readOnly}
-				gridRef={catL.gridMeta.gridRef}
-				setGridRef={catL.gridMeta.setGridRef}
-				columns={catL.gridMeta.columns}
-				data={catL.grid.gridData}
-				loading={catL.grid.gridLoading}
-				handleChange={catL.codeEditor.buildGridChangeHandler({
-					onCreate: catL.handleCreate,
-					onUpdate: catL.handleUpdate,
-					onDelete: canDelete ? catL.handleConfirmDelete : null,
-					onDuplicatedError: catL.handleDuplicatedError,
-				})}
-				height={height - 176}
-				onSelectionChange={catL.gridMeta.buildSelectionChangeHandler({
-					onRowSelectionChange: catL.onRowSelectionChange,
-				})}
-				canCreate={a03.canCreate}
-				getRowClassName={catL.gridMeta.getRowClassName}
-			/> */}
 		</DSGContext.Provider>
 	);
 };

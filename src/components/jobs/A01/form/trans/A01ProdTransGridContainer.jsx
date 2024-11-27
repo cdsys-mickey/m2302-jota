@@ -5,12 +5,21 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import A01ProdTransGrid from "./A01ProdTransGrid";
+import { useMemo } from "react";
 
 export const A01ProdTransGridContainer = (props) => {
 	const { ...rest } = props;
 	const a01 = useContext(A01Context);
 	const auth = useContext(AuthContext);
 	const { height } = useWindowSize();
+
+	const readOnly = useMemo(() => {
+		return a01.transGridDisabled;
+	}, [a01.transGridDisabled])
+
+	const _height = useMemo(() => {
+		return height - 278 + (readOnly ? 48 : 0)
+	}, [height, readOnly])
 
 	return (
 		<DSGContext.Provider
@@ -24,10 +33,10 @@ export const A01ProdTransGridContainer = (props) => {
 				readOnly={a01.transGridDisabled}
 				columns={a01.transMeta.columns}
 				data={a01.transGrid.gridData}
-				handleGridChange={a01.handleTransGridChange}
+				onChange={a01.handleTransGridChange}
 				onActiveCellChange={a01.transMeta.handleActiveCellChange}
 				bearer={auth.token}
-				height={height - 278}
+				height={_height}
 				createRow={a01.createTransRow}
 				{...rest}
 			/>

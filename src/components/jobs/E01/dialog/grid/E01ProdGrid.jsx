@@ -21,7 +21,6 @@ const E01ProdGrid = memo((props) => {
 		onChange,
 		getRowClassName,
 		height = 300,
-		bearer,
 		...rest
 	} = props;
 

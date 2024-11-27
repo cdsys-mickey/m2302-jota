@@ -1,11 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Strings from "@/shared-modules/sd-strings";
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(
-			({
+		data?.map((rowData, rowIndex) => {
+			const {
 				SProdID,
 				ProdData_N,
 				SRsnID,
@@ -15,31 +16,38 @@ const transformGridForReading = (data) => {
 				SDeptID,
 				DeptData_N,
 				...rest
-			}) => {
-				return {
-					prod: {
-						ProdID: SProdID,
-						ProdData: ProdData_N,
-					},
+			} = rowData;
+			let processedRowData = {
+				prod: {
+					ProdID: SProdID,
 					ProdData: ProdData_N,
-					dtype: SRsnID
-						? {
-								CodeID: SRsnID,
-								CodeData: RsnData_N,
-						  }
-						: null,
-					...rest,
-					customer: {
-						CustID: SCustID,
-						CustData: CustData_N,
-					},
-					dept: {
-						DeptID: SDeptID,
-						DeptName: DeptData_N,
-					},
-				};
-			}
-		) || []
+				},
+				ProdData: ProdData_N,
+				dtype: SRsnID
+					? {
+							CodeID: SRsnID,
+							CodeData: RsnData_N,
+					  }
+					: null,
+				...rest,
+				customer: {
+					CustID: SCustID,
+					CustData: CustData_N,
+				},
+				dept: {
+					DeptID: SDeptID,
+					DeptName: DeptData_N,
+				},
+				...rest,
+			};
+
+			processedRowData.tooltip = getTooltip({
+				rowData: processedRowData,
+				rowIndex,
+			});
+
+			return processedRowData;
+		}) || []
 	);
 };
 
@@ -133,6 +141,19 @@ const getTotal = (gridData) => {
 	return result;
 };
 
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push(`庫存量（${stockQty || 0}）`);
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
+};
+
 const D05 = {
 	transformForReading,
 	transformForSubmitting,
@@ -140,6 +161,7 @@ const D05 = {
 	transformGridForReading,
 	getTotal,
 	isFiltered,
+	getTooltip,
 };
 
 export default D05;

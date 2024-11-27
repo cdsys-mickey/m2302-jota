@@ -56,7 +56,6 @@ export const E01ProdGridContainer = (props) => {
 				data={e01.grid.gridData}
 				onChange={onChange}
 				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
-				bearer={auth.token}
 				height={_height}
 				getRowKey={e01.getRowKey}
 				createRow={e01.createRow}

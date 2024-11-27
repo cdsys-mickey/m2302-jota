@@ -53,9 +53,22 @@ export const useC07 = () => {
 		initialFetchSize: 50,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			SQty: "",
+			SPrice: "",
+			SRemark: "",
+			ChkQty: "",
+			SOrdID: "",
+		}),
+		[]
+	);
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
+		createRow
 	});
 
 	const refreshAmt = useCallback(({ setValue, data, reset = false }) => {
@@ -88,18 +101,7 @@ export const useC07 = () => {
 		grid.handleGridDataLoaded(data.prods);
 	}, [crud, grid]);
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			SQty: "",
-			SPrice: "",
-			SRemark: "",
-			ChkQty: "",
-			SOrdID: "",
-		}),
-		[]
-	);
+
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -718,6 +720,10 @@ export const useC07 = () => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
+	const getSPriceClassName = useCallback(({ rowData }) => {
+		return rowData.stype?.id ? "line-through" : null;
+	}, []);
+
 	return {
 		...crud,
 		...listLoader,
@@ -762,6 +768,7 @@ export const useC07 = () => {
 		handleRefresh,
 		refreshWorking: refreshAction.working,
 		createRow,
-		...sideDrawer
+		...sideDrawer,
+		getSPriceClassName
 	};
 };

@@ -33,10 +33,18 @@ export const useA20 = ({ token }) => {
 		// debounce: 500,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			sprod: null,
+		}),
+		[]
+	);
+
 	//ProdComboGrid
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "sprod.ProdID",
+		createRow
 	});
 
 	const confirmReturn = useCallback(() => {
@@ -209,25 +217,22 @@ export const useA20 = ({ token }) => {
 		);
 	}, []);
 
-	const createRow = useCallback(
-		() => ({
-			sprod: null,
-		}),
-		[]
-	);
+
 
 	const promptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			const data = {
-				materials: grid.fillRows({ createRow }),
+				materials: [],
 			};
 			crud.promptCreating({
 				data,
 			});
-			grid.handleGridDataLoaded(data.materials);
+			grid.setGridDataLoaded(data.materials, {
+				fillRows: true
+			});
 		},
-		[createRow, crud, grid]
+		[crud, grid]
 	);
 
 	const confirmDelete = useCallback(() => {

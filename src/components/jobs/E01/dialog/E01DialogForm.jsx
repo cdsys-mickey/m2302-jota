@@ -1,5 +1,4 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import SquaredPicker from "@/components/picker/SquaredPicker";
 import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
@@ -14,9 +13,9 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import PaymentPicker from "../../A06/form/fields/PaymentPicker";
 import { E01CustomerPicker } from "../E01CustomerPicker";
+import E01SquaredPicker from "./E01SquaredPicker";
 import { E01ProdGridBottomToolbar } from "./grid/E01ProdGridBottomToolbar";
 import { E01ProdGridContainer } from "./grid/E01ProdGridContainer";
-import E01SquaredPicker from "./E01SquaredPicker";
 
 const E01DialogForm = memo((props) => {
 	const {

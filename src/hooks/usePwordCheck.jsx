@@ -9,24 +9,22 @@ import { useRef } from "react";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-const DEFAULT_GET_PROMPT = ({ action }) => {
-	return `請輸入密碼後繼續`;
-}
+const DEFAULT_PROMPT = `請輸入密碼後繼續`;
 
-const DEFAULT_GET_LABEL = ({ action }) => {
+const DEFAULT_LABEL = ({ action }) => {
 	return `${action}密碼`;
 }
 
-const DEFAULT_ENTRY_ERROR_TEXT = ({ action }) => {
+const DEFAULT_ENTRY_ERROR_MESSAGE = ({ action }) => {
 	return "密碼錯誤, 請重新輸入";
 }
 
-const DEFAULT_GET_TITLE = ({ action }) => {
+const DEFAULT_TITLE = ({ action }) => {
 	return "此作業受到密碼保護";
 }
 
 const usePwordCheck = (opts = {}) => {
-	const { action = "執行", getPromptMessage = DEFAULT_GET_PROMPT, getLabel = DEFAULT_GET_LABEL, getEntryErrorText = DEFAULT_ENTRY_ERROR_TEXT, getTitle = DEFAULT_GET_TITLE, } = opts;
+	const { action = "執行", label = DEFAULT_LABEL, entryErrorMessage = DEFAULT_ENTRY_ERROR_MESSAGE } = opts;
 	const { token } = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);
 	const pwordLockRef = useRef(null);
@@ -62,13 +60,17 @@ const usePwordCheck = (opts = {}) => {
 
 	const promptPwordEntry = useCallback(
 		(opts = {}) => {
-			const { first = false, callback } = opts;
+			const { first = false, callback, message = DEFAULT_PROMPT, title = DEFAULT_TITLE, label = DEFAULT_LABEL } = opts;
 			console.log("promptPwordEntry, first:", first);
 
+			const _message = typeof message === "function" ? message({ action }) : message;
+			const _title = typeof title === "function" ? title({ action }) : title;
+			const _label = typeof label === "function" ? label({ action }) : label;
+
 			dialogs.prompt({
-				title: getTitle({ action }),
-				message: getPromptMessage({ action }),
-				label: getLabel({ action }),
+				title: _title,
+				message: _message,
+				label: _label,
 				triggerCancelOnClose: true,
 				onConfirm: ({ value }) => {
 					if (value === pwordLockRef.current.value) {
@@ -82,7 +84,8 @@ const usePwordCheck = (opts = {}) => {
 						}
 					} else {
 						console.log("pword not passed");
-						toast.error(getEntryErrorText({ action }), {
+						const _entryErrorMessage = typeof entryErrorMessage === "function" ? entryErrorMessage({ action }) : entryErrorMessage;
+						toast.error(_entryErrorMessage, {
 							position: "top-right"
 						});
 						promptPwordEntry();
@@ -95,12 +98,12 @@ const usePwordCheck = (opts = {}) => {
 				// confirmText: "通過",
 			});
 		},
-		[action, dialogs, getEntryErrorText, getLabel, getPromptMessage, getTitle]
+		[action, dialogs, entryErrorMessage]
 	);
 
-	const performCheck = useCallback(({ callback }) => {
+	const performCheck = useCallback(({ callback, ...rest }) => {
 		if (!pwordLockRef.current.passed) {
-			promptPwordEntry({ first: true, callback });
+			promptPwordEntry({ first: true, callback, ...rest });
 			return;
 		}
 		if (callback) {

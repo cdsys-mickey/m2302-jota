@@ -55,7 +55,6 @@ export const useE03 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "Pkey",
-		// keyColumn: "prod.ProdID",
 		createRow
 	});
 
@@ -78,8 +77,10 @@ export const useE03 = () => {
 			prods: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.prods, { createRow, length: 13 });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.prods, {
+			fillRows: 13
+		});
+	}, [crud, grid]);
 
 	const updateAmt = useCallback(({ setValue, formData, reset = false }) => {
 		if (reset) {
@@ -650,7 +651,7 @@ export const useE03 = () => {
 					console.log("data", data);
 					const formData = form.getValues();
 					grid.initGridData(E03.transformForGridImport(data, formData?.employee, formData?.Date), {
-						createRow,
+						fillRows: true,
 					});
 					toast.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
@@ -664,15 +665,7 @@ export const useE03 = () => {
 				});
 			}
 		},
-		[
-			createRow,
-			httpGetAsync,
-			importProdsAction,
-			ipState.criteria,
-			ipState.saveKey,
-			grid,
-			token,
-		]
+		[httpGetAsync, importProdsAction, ipState.criteria, ipState.saveKey, grid, token]
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {
@@ -749,8 +742,10 @@ export const useE03 = () => {
 		});
 		setValue("RfdAmt", "");
 		gridMeta.setActiveCell(null);
-		grid.initGridData([], { createRow });
-	}, [createRow, grid]);
+		grid.initGridData([], {
+			fillRows: true
+		});
+	}, [grid]);
 
 	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta }) => async (newValue) => {
 		console.log("handleCustomerChange", newValue);
@@ -801,7 +796,6 @@ export const useE03 = () => {
 		});
 
 		setValue("RfdAmt", "");
-		// grid.initGridData([], { createRow });
 		gridMeta.setActiveCell(null);
 		formMeta.asyncRef.current.supressEvents = false;
 	}, [httpGetAsync, token]);

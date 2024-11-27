@@ -1,14 +1,14 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-import Switch from "react-switch";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { green, grey, pink, red } from "@mui/material/colors";
-import FlexBox from "./FlexBox";
 import { Box, Typography } from "@mui/material";
-import { useCallback } from "react";
+import { green, red } from "@mui/material/colors";
+import PropTypes from "prop-types";
+import { memo, useMemo } from "react";
+import Switch from "react-switch";
 import { useToggle } from "../shared-hooks/useToggle";
-import { useMemo } from "react";
+import FlexBox from "./FlexBox";
+
+const ICON_WIDTH = 30;
 
 const LockSwitch = memo((props) => {
 	const {
@@ -16,7 +16,7 @@ const LockSwitch = memo((props) => {
 		lockedLabel = "鎖定",
 		unlockedLabel = "解鎖",
 		locked,
-
+		width = 70,
 		onChange,
 		...rest
 	} = props;
@@ -30,6 +30,14 @@ const LockSwitch = memo((props) => {
 	const handleChange = useMemo(() => {
 		return onChange ? onChange : _toggleLocked;
 	}, [onChange, _toggleLocked]);
+
+	const boxWidth = useMemo(() => {
+		return width - ICON_WIDTH;
+	}, [width])
+
+	const uncheckOffset = useMemo(() => {
+		return width > 70 ? (0 - width + 25) / 2 : 0;
+	}, [width])
 
 	return (
 		<Box
@@ -60,7 +68,7 @@ const LockSwitch = memo((props) => {
 				checked={!innerLocked}
 				borderRadius={6}
 				height={32}
-				width={70}
+				width={width}
 				boxShadow="0px 1px 3px rgba(0, 0, 0, 0.6)"
 				activeBoxShadow="0px 0px 1px 3px rgba(0, 0, 0, 0.2)"
 				// 鎖定
@@ -70,7 +78,7 @@ const LockSwitch = memo((props) => {
 					<FlexBox
 						sx={{
 							height: "30px",
-							width: "30px",
+							width: `${ICON_WIDTH}px`,
 							alignItems: "center",
 							justifyContent: "center",
 						}}>
@@ -81,9 +89,10 @@ const LockSwitch = memo((props) => {
 					<FlexBox
 						sx={{
 							height: "30px",
-							width: "42px",
+							width: `${boxWidth}px`,
 							alignItems: "center",
 							justifyContent: "center",
+							marginLeft: `${uncheckOffset}px`
 						}}>
 						<Typography
 							color="text.secondary"
@@ -100,7 +109,7 @@ const LockSwitch = memo((props) => {
 					<FlexBox
 						sx={{
 							height: "30px",
-							width: "42px",
+							width: `${boxWidth}px`,
 							alignItems: "center",
 							justifyContent: "center",
 						}}>
@@ -118,7 +127,7 @@ const LockSwitch = memo((props) => {
 					<FlexBox
 						sx={{
 							height: "30px",
-							width: "30px",
+							width: `${ICON_WIDTH}px`,
 							alignItems: "center",
 							justifyContent: "center",
 						}}>
@@ -138,6 +147,7 @@ LockSwitch.propTypes = {
 	unlockedLabel: PropTypes.string,
 	locked: PropTypes.bool,
 	onChange: PropTypes.func,
+	width: PropTypes.number
 };
 
 LockSwitch.displayName = "LockSwitch";

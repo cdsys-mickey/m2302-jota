@@ -18,7 +18,8 @@ export const B011ListRowContainer = (props) => {
 			index={index}
 			loading={loading}
 			value={value}
-			onClick={(e) => b011.handleSelect(e, value)}
+			// onClick={(e) => b011.handleSelect(e, value)}
+			onClick={(e) => b011.handleSelectDate(e, value)}
 			handleSelectDate={(e) => b011.handleSelectDate(e, value)}
 			{...rest}
 		/>

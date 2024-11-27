@@ -11,8 +11,8 @@ export const A014GridContainer = () => {
 	const prodGrid = useContext(ProdGridContext);
 	const form = useForm();
 
-	const gridHeight = useMemo(() => {
-		return prodGrid.expanded ? height - 330 : height - 230;
+	const _height = useMemo(() => {
+		return prodGrid.expanded ? height - 282 : height - 182;
 	}, [prodGrid.expanded, height]);
 
 	const onChange = useMemo(() => {
@@ -23,15 +23,11 @@ export const A014GridContainer = () => {
 		<FormProvider {...form}>
 			<DSGContext.Provider value={{ ...prodGrid.grid, ...prodGrid.gridMeta }}>
 				<A014Grid
-					// readOnly={prodGrid.readOnly}
 					gridRef={prodGrid.setGridRef}
 					data={prodGrid.gridData}
 					loading={prodGrid.gridLoading}
-					height={gridHeight}
-					// onChange={prodGrid.handleGridChange}
+					height={_height}
 					onChange={onChange}
-					// bearer={token}
-					handleCreateRow={prodGrid.handleCreateRow}
 				/>
 			</DSGContext.Provider>
 		</FormProvider>

@@ -29,6 +29,7 @@ import TaxTypePicker from "@/components/picker/TaxTypePicker";
 import { A01ProdComboGridContainer } from "./combo/A01ProdComboGridContainer";
 import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
 import ContainerEx from "@/shared-components/ContainerEx";
+import FlexGrid from "@/shared-components/FlexGrid";
 
 const A01Form = memo((props) => {
 	const {
@@ -345,12 +346,9 @@ const A01Form = memo((props) => {
 											disableOpenOnInput
 										/>
 									</Grid>
-								</Grid>
-							</FormSectionBox>
-
-							<FormSectionTitle>換算率</FormSectionTitle>
-							<FormSectionBox editing={editing}>
-								<Grid container columns={12} spacing={1}>
+									<FlexGrid item xs={12} sm={12} md={3} justifyContent="flex-end">
+										<FormSectionTitle>換算率</FormSectionTitle>
+									</FlexGrid>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
 											typo

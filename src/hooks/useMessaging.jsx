@@ -10,6 +10,7 @@ import { AuthContext } from "../contexts/auth/AuthContext";
 import Messaging from "../modules/md-messaging";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 import { PushMessagesContext } from "../contexts/PushMessagesContext";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const useMessaging = () => {
 	const { httpGetAsync, httpPutAsync, httpPatchAsync } = useWebApi();
@@ -197,9 +198,9 @@ export const useMessaging = () => {
 		};
 	}, [connection, handlNotify, handleRefresh]);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		const handleConnected = async () => {
-			console.log(`registering connection id: ${connectionId}`);
+			console.log(`connected, registering connection ${connectionId} for ${operator?.LoginName}(${operator?.LogKey})`);
 			const { status } = await httpPutAsync({
 				url: "v1/auth/register",
 				bearer: token,
@@ -209,14 +210,34 @@ export const useMessaging = () => {
 			});
 			if (status.success) {
 				console.log(
-					`connectionId ${connectionId} registered for ${operator?.LogKey}`
+					`registeration done.`
 				);
 			}
 		};
 		if (connectionId && operator?.LogKey) {
 			handleConnected();
 		}
-	}, [connectionId, httpPutAsync, operator?.LogKey, token]);
+	}, [connectionId, operator?.LogKey, token]);
+	// useEffect(() => {
+	// 	const handleConnected = async () => {
+	// 		console.log(`connected, registering connection ${connectionId} for ${operator?.LoginName}(${operator?.LogKey})`);
+	// 		const { status } = await httpPutAsync({
+	// 			url: "v1/auth/register",
+	// 			bearer: token,
+	// 			data: {
+	// 				connectionId,
+	// 			},
+	// 		});
+	// 		if (status.success) {
+	// 			console.log(
+	// 				`registeration done.`
+	// 			);
+	// 		}
+	// 	};
+	// 	if (connectionId && operator?.LogKey) {
+	// 		handleConnected();
+	// 	}
+	// }, [connectionId, httpPutAsync, operator?.LogKey, operator?.LoginName, token]);
 
 	return {
 		connectionState,

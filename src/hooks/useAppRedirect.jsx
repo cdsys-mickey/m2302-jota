@@ -3,9 +3,12 @@ import useRedirect from "@/shared-hooks/useRedirect";
 import AppRoutes from "../modules/md-app-routes";
 import Cookies from "js-cookie";
 import Auth from "../modules/md-auth";
+import { useContext } from "react";
+import CrudContext from "@/contexts/crud/CrudContext";
 
 const useAppRedirect = () => {
 	const { redirectTo } = useRedirect();
+	const crud = useContext(CrudContext);
 
 	const toRenew = useCallback(() => {
 		redirectTo("/renew");
@@ -26,6 +29,7 @@ const useAppRedirect = () => {
 	);
 
 	const toLogin = useCallback(() => {
+
 		const impersonte = Cookies.get(Auth.COOKIE_MODE) === "im";
 		redirectTo(
 			impersonte
@@ -37,13 +41,14 @@ const useAppRedirect = () => {
 
 	const toModule = useCallback(
 		(moduleId, params) => {
+			crud?.cancelAction();
 			redirectTo(`/${AppRoutes.MODULES}/${moduleId}`, {
 				...(params && {
 					params,
 				}),
 			});
 		},
-		[redirectTo]
+		[crud, redirectTo]
 	);
 
 	const toRoot = useCallback(
@@ -58,7 +63,7 @@ const useAppRedirect = () => {
 	}, [toRoot]);
 
 	const toMessages = useCallback(() => {
-		toRoot("messages");
+		toRoot("msgs");
 	}, [toRoot]);
 
 	const gotoSettings = useCallback(() => {

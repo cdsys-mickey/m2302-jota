@@ -12,121 +12,8 @@ const A014Grid = memo((props) => {
 		data,
 		loading,
 		height = 300,
-		// METHODS
-		onChange,
+		...rest
 	} = props;
-
-	// const columns = useMemo(
-	// 	() => [
-	// 		{
-	// 			...keyColumn(
-	// 				"ProdData_N",
-	// 				createTextColumn({
-	// 					continuousUpdates: false,
-	// 				})
-	// 			),
-	// 			title: "品名規格",
-	// 			grow: 2,
-	// 			disabled: true,
-	// 		},
-	// 		// NEW STYLES
-	// 		// {
-	// 		// 	...keyColumn(
-	// 		// 		"catL",
-	// 		// 		prodCatLPickerColumn({
-	// 		// 			name: "catL",
-	// 		// 		})
-	// 		// 	),
-	// 		// 	title: "大分類",
-	// 		// 	grow: 3,
-	// 		// 	disabled: readOnly,
-	// 		// },
-	// 		// {
-	// 		// 	...keyColumn(
-	// 		// 		"catM",
-	// 		// 		prodCatMPickerColumn({
-	// 		// 			name: "catM",
-	// 		// 		})
-	// 		// 	),
-	// 		// 	title: "中分類",
-	// 		// 	grow: 3,
-	// 		// 	disabled: readOnly,
-	// 		// },
-	// 		// {
-	// 		// 	...keyColumn(
-	// 		// 		"catS",
-	// 		// 		prodCatSPickerColumn({
-	// 		// 			name: "catS",
-	// 		// 		})
-	// 		// 	),
-	// 		// 	title: "小分類",
-	// 		// 	grow: 3,
-	// 		// 	disabled: readOnly,
-	// 		// },
-
-	// 		// OLD STYLES
-	// 		{
-	// 			...optionPickerColumn((props) => (
-	// 				<ProdCatLPickerColumn name="catL" {...props} />
-	// 			)),
-	// 			title: "大分類",
-	// 			grow: 3,
-	// 			disabled: readOnly,
-	// 		},
-
-	// 		{
-	// 			...optionPickerColumn((props) => (
-	// 				<ProdCatMPickerColumn name="catM" {...props} />
-	// 			)),
-	// 			title: "中分類",
-	// 			grow: 3,
-	// 			disabled: readOnly,
-	// 		},
-
-	// 		{
-	// 			...optionPickerColumn((props) => (
-	// 				<ProdCatSPickerColumn name="catS" {...props} />
-	// 			)),
-	// 			title: "小分類",
-	// 			grow: 3,
-	// 			disabled: readOnly,
-	// 		},
-	// 		{
-	// 			...keyColumn(
-	// 				"typeA",
-	// 				optionPickerColumn(ProdTypeAPickerComponent, {
-	// 					name: "typeA",
-	// 				})
-	// 			),
-	// 			title: "品別",
-	// 			grow: 2,
-	// 			disabled: readOnly,
-	// 		},
-	// 		{
-	// 			...keyColumn(
-	// 				"typeB",
-	// 				optionPickerColumn(ProdTypeBPickerColumn, {
-	// 					name: "typeB",
-	// 				})
-	// 			),
-	// 			title: "品類",
-	// 			grow: 2,
-	// 			disabled: readOnly,
-	// 		},
-	// 		{
-	// 			...keyColumn(
-	// 				"taxType",
-	// 				optionPickerColumn(TaxTypePickerComponent, {
-	// 					name: "taxType",
-	// 				})
-	// 			),
-	// 			title: "稅別",
-	// 			grow: 2,
-	// 			disabled: readOnly,
-	// 		},
-	// 	],
-	// 	[readOnly]
-	// );
 
 	if (!data || data.legnth === 0) {
 		return (
@@ -149,15 +36,12 @@ const A014Grid = memo((props) => {
 			lockRows
 			ref={gridRef}
 			rowKey="ProdID"
-			// height={height + (readOnly ? 48 : 0)}
-			height={height + 48}
-			// rowHeight={42}
+			height={height}
 			value={data}
-			onChange={onChange}
 			// columns={columns}
 			disableExpandSelection
 			disableContextMenu
-		// createRow={handleCreateRow}
+			{...rest}
 		/>
 	);
 });
@@ -171,8 +55,6 @@ A014Grid.propTypes = {
 	height: PropTypes.number,
 	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
-	// handleActiveCellChange: PropTypes.func,
-	// handleCreateRow: PropTypes.func,
 };
 
 A014Grid.displayName = "A014Grid";

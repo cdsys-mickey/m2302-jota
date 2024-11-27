@@ -79,8 +79,10 @@ export const useB031 = () => {
 			quotes: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.quotes, { createRow, length: 13 });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.quotes, {
+			fillRows: 13
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -522,7 +524,7 @@ export const useB031 = () => {
 					console.log("data", data);
 					const formData = form.getValues();
 					grid.initGridData(B031.transformForGridImport(data, formData?.employee, formData?.Date), {
-						createRow,
+						fillRows: true,
 					});
 					toast.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
@@ -536,15 +538,7 @@ export const useB031 = () => {
 				});
 			}
 		},
-		[
-			createRow,
-			httpGetAsync,
-			importProdsAction,
-			ipState.criteria,
-			ipState.saveKey,
-			grid,
-			token,
-		]
+		[httpGetAsync, importProdsAction, ipState.criteria, ipState.saveKey, grid, token]
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {

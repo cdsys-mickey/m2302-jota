@@ -30,6 +30,23 @@ const isAllPropsNotNull = (obj, columnPattern) => {
 	});
 };
 
+const isAllPropsNotUndefined = (obj, columnPattern) => {
+	if (!obj) {
+		throw "obj 為 null";
+	}
+	if (!columnPattern) {
+		return (
+			Object.keys(obj).filter((key) => {
+				return obj[key] !== undefined;
+			}).length === 0
+		);
+	}
+	const columns = Arrays.parse(columnPattern);
+	return columns.every((prop) => {
+		return obj[prop] !== undefined;
+	});
+};
+
 /**
  * 所有欄位存在且皆為 null
  * @param {*} obj
@@ -69,6 +86,30 @@ const isAllPropsEmpty = (obj, columnPattern) => {
 	}
 	const columns = Arrays.parse(columnPattern);
 	return columns.every((key) => !obj[key]);
+};
+
+const isAllPropsNotEmpty = (obj, columnPattern, opts = {}) => {
+	const { nullAsNotEmpty = false } = opts;
+
+	if (!obj) {
+		throw new Error("obj cannot be null");
+	}
+
+	// 檢查所有屬性是否符合條件
+	const isValueNotEmpty = (value) =>
+		(nullAsNotEmpty && value === null) ||
+		(value !== undefined && value !== "");
+
+	if (!columnPattern) {
+		// 檢查 `obj` 所有屬性
+		return Object.values(obj).every(isValueNotEmpty);
+	}
+
+	// 解析 `columnPattern` 並檢查指定屬性
+	const columns = Array.isArray(columnPattern)
+		? columnPattern
+		: columnPattern.split(",");
+	return columns.every((prop) => isValueNotEmpty(obj[prop]));
 };
 
 const isAllPropsNotNullOrEmpty = (obj, columnPattern) => {
@@ -252,6 +293,8 @@ const Objects = {
 	hasNoProps,
 	hasAnyProp,
 	arePropsEqual,
+	isAllPropsNotEmpty,
+	isAllPropsNotUndefined,
 };
 
 export default Objects;

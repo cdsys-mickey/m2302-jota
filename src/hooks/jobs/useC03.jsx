@@ -50,9 +50,28 @@ export const useC03 = () => {
 		initialFetchSize: 50,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			SOrdQty: null,
+			SQty: "",
+			SPrice: "",
+			SAmt: "",
+			SInqFlag: "",
+			SFactID: "",
+			SFactNa: "",
+			SOrdID: "*",
+			SInQty: "",
+			SNotQty: "",
+		}),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "Pkey",
+		createRow
 	});
 
 	// 有進貨連結
@@ -132,23 +151,7 @@ export const useC03 = () => {
 		[getPrevData]
 	);
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			SOrdQty: null,
-			SQty: "",
-			SPrice: "",
-			SAmt: "",
-			SInqFlag: "",
-			SFactID: "",
-			SFactNa: "",
-			SOrdID: "*",
-			SInQty: "",
-			SNotQty: "",
-		}),
-		[]
-	);
+
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -157,11 +160,13 @@ export const useC03 = () => {
 			OrdDate: today,
 			ArrDate: addDays(today, 7),
 			squared: C03.getSquaredOptionById(C03.SquaredState.NONE),
-			prods: grid.fillRows({ createRow, length: 10 }),
+			prods: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.prods);
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.prods, {
+			fillRows: true
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -816,14 +821,10 @@ export const useC03 = () => {
 						const data = C03.transformForReading(payload.data[0]);
 						console.log("data.prods", data.prods);
 						// 置換 grid 部分
-						grid.initGridData(
-							grid.fillRows({
-								data: data.prods,
-								// length: DEFAULT_ROWS,
-								createRow,
-							})
-						);
-						// toast.info("商品單價已更新");
+						grid.initGridData(data.prods, {
+							fillRows: crud.creating
+						});
+						toast.info("商品單價已更新");
 						// 置換採購金額
 						setValue("OrdAmt_N", data.OrdAmt_N);
 						setPrevData({
@@ -844,7 +845,7 @@ export const useC03 = () => {
 					setValue("OrdDate", prevData?.OrdDate);
 				}
 			},
-		[grid, httpPostAsync, token, createRow, setPrevData, getPrevData]
+		[grid, httpPostAsync, token, setPrevData, getPrevData]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {

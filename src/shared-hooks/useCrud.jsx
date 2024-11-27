@@ -23,6 +23,7 @@ export const useCrud = () => {
 	const readAction = useAction();
 	const updateAction = useAction();
 	const deleteAction = useAction();
+	const loadAction = useAction();
 
 	const setItemData = useCallback((data) => {
 		setState((prev) => ({
@@ -38,6 +39,7 @@ export const useCrud = () => {
 			readAction.clear();
 			updateAction.clear();
 			deleteAction.clear();
+			loadAction.clear();
 
 			// 清除 id
 
@@ -53,15 +55,7 @@ export const useCrud = () => {
 				);
 			}
 		},
-		[
-			createAction,
-			deleteAction,
-			location.pathname,
-			location.search,
-			navigate,
-			readAction,
-			updateAction,
-		]
+		[createAction, deleteAction, loadAction, location.pathname, location.search, navigate, readAction, updateAction]
 	);
 
 	const reset = useCallback(() => {
@@ -179,6 +173,50 @@ export const useCrud = () => {
 		return readAction.failed || !!readAction.error;
 	}, [readAction.error, readAction.failed]);
 
+	// LOAD
+	const startLoading = useCallback(
+		(message, opts) => {
+			console.log(`startLoading[${message}]`, opts);
+			loadAction.start({ message });
+			setOpts(opts);
+		},
+		[loadAction, setOpts]
+	);
+
+	const doneLoading = useCallback(
+		(opts) => {
+			console.log("doneLoading", opts);
+			loadAction.finish();
+			setOpts(opts);
+		},
+		[loadAction, setOpts]
+	);
+
+	const cancelLoading = useCallback(() => {
+		loadAction.clear();
+	}, [loadAction]);
+
+	const failLoading = useCallback(
+		(err, opts) => {
+			console.log("failLoading", err);
+			loadAction.fail({ error: err });
+			setOpts(opts);
+		},
+		[loadAction, setOpts]
+	);
+
+	const loading = useMemo(() => {
+		return !!loadAction.state;
+	}, [loadAction.state]);
+
+	const loadWorking = useMemo(() => {
+		return loadAction.state === ActionState.WORKING;
+	}, [loadAction.state]);
+
+	const loadingFailed = useMemo(() => {
+		return loadAction.failed || !!loadAction.error;
+	}, [loadAction.error, loadAction.failed]);
+
 	// UPDATE
 	// 打開編輯器
 	const promptUpdating = useCallback(
@@ -277,19 +315,20 @@ export const useCrud = () => {
 	// 資料已讀取完成
 	const itemDataLoaded = useMemo(() => {
 		return (
-			(readAction.state === ActionState.DONE && !!state.itemData) ||
+			(readAction.state === ActionState.DONE || loadAction.state === ActionState.DONE && !!state.itemData) ||
 			(!!createAction.state && !!state.itemData)
 		);
-	}, [createAction.state, readAction.state, state.itemData]);
+	}, [createAction.state, loadAction.state, readAction.state, state.itemData]);
 
 	// 資料已就緒 → 配合新增等狀況
 	const itemDataReady = useMemo(() => {
 		return (
+			(loading && !loadWorking && !loadingFailed) ||
 			(reading && !readWorking && !readingFailed) ||
 			creating ||
 			(updating && !readWorking && !readingFailed)
 		);
-	}, [creating, readWorking, reading, readingFailed, updating]);
+	}, [creating, loadWorking, loading, loadingFailed, readWorking, reading, readingFailed, updating]);
 
 	const editing = useMemo(() => {
 		return !!createAction.state || !!updateAction.state;
@@ -339,6 +378,18 @@ export const useCrud = () => {
 		doneReading,
 		cancelReading,
 		failReading,
+		// LOAD Props
+		loadMessage: loadAction.message,
+		loadState: loadAction.state,
+		loadError: loadAction.error,
+		loadingFailed,
+		loading,
+		loadWorking,
+		// LOAD Methods
+		startLoading,
+		doneLoading,
+		cancelLoading,
+		failLoading,
 		// UPDATE Props
 		updateMessage: updateAction.message,
 		updateState: updateAction.state,

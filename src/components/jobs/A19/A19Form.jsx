@@ -17,12 +17,13 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import ProdPicker from "../../picker/ProdPicker";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
 import Auth from "@/modules/md-auth";
+import DebugDialogButtonContainer from "@/components/home/debug/DebugDialogButtonContainer";
 
 const A19Form = memo((props) => {
-	const { ...rest } = props;
+	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			<form {...rest}>
+			<form onSubmit={onSubmit} {...rest}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
@@ -144,6 +145,7 @@ const A19Form = memo((props) => {
 							<Grid item xs={12} sm={6}>
 								<FlexToolbar align="right">
 									{/* <A19FormButtonsContainer /> */}
+									<DebugDialogButtonContainer onClick={onDebugSubmit} />
 									<ButtonWrapper
 										name="submit"
 										responsive
@@ -170,6 +172,8 @@ A19Form.propTypes = {
 	updating: PropTypes.bool,
 	readFailed: PropTypes.bool,
 	readError: PropTypes.object,
+	onSubmit: PropTypes.func,
+	onDebugSubmit: PropTypes.func,
 };
 
 A19Form.displayName = "A19Form";

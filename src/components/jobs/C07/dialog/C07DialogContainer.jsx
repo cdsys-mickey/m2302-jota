@@ -129,6 +129,7 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 				minWidth: 100,
 				grow: 1,
 				disabled: readOnly,
+				cellClassName: c07.getSPriceClassName,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),

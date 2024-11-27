@@ -61,12 +61,29 @@ export const useD01 = () => {
 		expPrompting: false,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			stype: null,
+			SQtyNote: "",
+			SQty: "",
+			SPrice: "",
+			ChkQty: "",
+			SOrdID: "",
+			SExpDate: null,
+		}),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
+		createRow
 	});
 
 	const sqtyManager = useSQtyManager({
+		action: "強迫領料",
 		grid,
 	});
 	const { committed } = sqtyManager;
@@ -115,30 +132,19 @@ export const useD01 = () => {
 	// 	[qtyMap]
 	// );
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			stype: null,
-			SQtyNote: "",
-			SQty: "",
-			SPrice: "",
-			ChkQty: "",
-			SOrdID: "",
-			SExpDate: null,
-		}),
-		[]
-	);
+
 
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
-			prods: grid.fillRows({ createRow }),
+			prods: [],
 			OutDate: new Date(),
 		};
 		crud.promptCreating({ data });
-		grid.handleGridDataLoaded(data.prods);
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.prods, {
+			fillRows: true
+		});
+	}, [crud, grid]);
 
 	// const loadStockMap = useCallback(
 	// 	async (
@@ -474,7 +480,7 @@ export const useD01 = () => {
 	// 		};
 	// 		console.log("commitSQty", newRowData);
 
-	// 		grid.setValueByRowIndex(sqtyLock.rowIndex, newRowData);
+	// 		grid.spreadOnRow(sqtyLock.rowIndex, newRowData);
 	// 		const newGridData = [...grid.gridData];
 	// 		newGridData[sqtyLock.rowIndex] = newRowData;
 

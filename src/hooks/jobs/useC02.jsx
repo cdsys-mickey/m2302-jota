@@ -47,9 +47,22 @@ export const useC02 = () => {
 		initialFetchSize: 50,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			SOrdQty: null,
+			SFactID: "",
+			SFactNa: "",
+			SOrdID: "*",
+		}),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
+		createRow
 	});
 
 	/**
@@ -65,27 +78,18 @@ export const useC02 = () => {
 
 	const [selectedItem, setSelectedItem] = useState();
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			SOrdQty: null,
-			SFactID: "",
-			SFactNa: "",
-			SOrdID: "*",
-		}),
-		[]
-	);
 
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
 			RqtDate: new Date(),
-			quotes: grid.fillRows({ createRow }),
+			quotes: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.quotes);
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.quotes, {
+			fillRows: true
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {

@@ -7,6 +7,7 @@ import { useCallback, useContext, useMemo, useRef } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { useState } from "react";
+import SQtyUtils from "@/modules/md-sqty";
 
 export default function useSQtyManager({ grid, action = "強迫銷貨", stypeColumn = "stype", priceColumn = "SPrice", samtColumn = "SAmt", sqtyColumn = "SQty", sqtyNoteColumn = "SQtyNote", stockQtyColumn = "StockQty_N", markColumn = "sqtyError", prodIdKey = "prod.ProdID", prodNameKey = "prod.ProdData", disablePwordCheck = false }) {
 	if (!grid) {
@@ -75,23 +76,19 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			const newRowData = {
 				...rowData,
 				[sqtyColumn]: sqtyLock.demand,
-				[samtColumn]:
-					!sqtyLock.price || !sqtyLock.demand
-						? ""
-						: sqtyLock.stype?.id
-							? 0
-							: sqtyLock.price * sqtyLock.demand,
+				[samtColumn]: SQtyUtils.getAmt(parseFloat(sqtyLock.price), sqtyLock.demand, sqtyLock.stype?.id),
 				[sqtyNoteColumn]: "*",
 			};
 			console.log("commitSQty", newRowData);
 
-			grid.setValueByRowIndex(sqtyLock.rowIndex, newRowData);
+			// 回寫 grid 是非同步的
+			grid.spreadOnRow(sqtyLock.rowIndex, newRowData);
+
+			// 先組成新的 gridData 用來計算合計, 餵給 refreshAmt
 			let newGridData = [...grid.gridData];
 			newGridData[sqtyLock.rowIndex] = newRowData;
 
 			// 寫總計
-			// const total = C08.getTotal(newGridData);
-			// setValue("TxoAmt", total.toFixed(2));
 			if (refreshAmt) {
 				refreshAmt({ gridData: newGridData });
 			} else {
@@ -119,7 +116,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			const sqtyLock = sqtyLockRef.current;
 			const { gridMeta } = sqtyLock;
 			dialogs.confirm({
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足( ${sqtyLock.stock} < ${sqtyLock.demand} )，是否${action}？`,
+				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足(${sqtyLock.stock} < ${sqtyLock.demand})，是否${action}？`,
 				onConfirm: () => {
 					commitSQty({});
 				},
@@ -139,7 +136,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 
 	const promptPwordEntry = useCallback(
 		(opts = {}) => {
-			const { first = false } = opts;
+			const { first = false, callback } = opts;
 			console.log("promptPwordEntry, first:", first);
 			const sqtyLock = sqtyLockRef.current;
 			const pwordLock = pwordLockRef.current;
@@ -148,7 +145,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 
 			dialogs.prompt({
 				title: "貨品庫存不足",
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.demand} > ${sqtyLock.stock})` : ""}，若要${action}請輸入密碼`,
+				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.stock} < ${sqtyLock.demand})` : ""}，若要${action}請輸入密碼`,
 				label: `${action}密碼`,
 				triggerCancelOnClose: true,
 				onConfirm: ({ value }) => {
@@ -158,14 +155,16 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 							...pwordLockRef.current,
 							passed: true,
 						};
-						promptOverrideSQty();
+						if (callback) {
+							callback();
+						}
 					} else {
 						// dialogs.closeLatest();
 						console.log("pword not passed");
 						toast.error("密碼錯誤, 請重新輸入", {
 							position: "top-right"
 						});
-						promptPwordEntry();
+						promptPwordEntry({ callback: promptOverrideSQty });
 					}
 				},
 				onCancel: () => {
@@ -222,7 +221,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			gridMeta.setActiveCell(null);
 			// 尚未通過或是尚未讀取密碼
 			if (!pwordLockRef.current.passed) {
-				promptPwordEntry({ first: true });
+				promptPwordEntry({ first: true, callback: promptOverrideSQty });
 				return;
 			}
 			promptOverrideSQty();
@@ -280,6 +279,20 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		[getStockQty, sqtyColumn]
 	);
 
+	const getRemainingStock = useCallback(
+		({ prodId, gridData }) => {
+			const demandTotal = gridData
+				.filter(
+					(item, index) =>
+						item.prod?.ProdID === prodId
+				)
+				.reduce((sum, item) => sum + parseFloat(item[sqtyColumn] || 0), 0);
+			const stock = getStockQty(prodId) || 0;
+			return stock - demandTotal;
+		},
+		[getStockQty, sqtyColumn]
+	);
+
 	/**
 	 * 當 grid sqty 欄位發生異動時的處理函式
 	 */
@@ -325,7 +338,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			opts = {}
 		) => {
 			const {
-				stock = true, prepared = false
+				stock: stockOpts = true, prepared: preparedOpts = false
 			} = opts;
 			const _gridData = gridData || grid.gridData;
 
@@ -348,8 +361,8 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 					bearer: token,
 					params: {
 						id: prodIds.join(","),
-						stock: stock ? 1 : 0,
-						prepared: prepared ? 1 : 0
+						stock: stockOpts ? 1 : 0,
+						prepared: preparedOpts ? 1 : 0
 					},
 				});
 				if (status.success) {
@@ -368,12 +381,12 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 						// 若不加回本張單的數量, 則為 0
 						const sqty = Number(rowData[sqtyColumn]) || 0;
 						const stock = stockQtyMap.get(prodId) || 0;
-						if (stock?.addSelf) {
+						if (stockOpts?.addSelf) {
 							stockQtyMap.set(prodId, stock + sqty)
 						}
 
 						const notSQty = preparedQtyMap.get(prodId) || 0;
-						if (prepared?.excludeSelf) {
+						if (preparedOpts?.excludeSelf) {
 							preparedQtyMap.set(prodId, notSQty - sqty);
 						}
 					});
@@ -459,7 +472,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		}
 	}, [grid.gridData]);
 
-	const updateQty = useCallback((key, value) => {
+	const updateStockQty = useCallback((key, value) => {
 		stockQtyMap.set(key, value);
 	}, [stockQtyMap]);
 
@@ -490,14 +503,15 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		getStockExcludingCurrent,
 		getSQtyExcludingCurrent,
 		getStockBeforeCurrent,
-		updateQty,
+		updateStockQty,
 		clearQty,
 		hasQty,
 		// 目前訂購量
 		loadPreparedMap,
 		getPreparedQty,
 		setPreparedQty,
-		getPreparedQtyExcludingCurrent
+		getPreparedQtyExcludingCurrent,
+		getRemainingStock
 	}
 
 }

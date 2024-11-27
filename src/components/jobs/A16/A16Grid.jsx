@@ -21,14 +21,14 @@ const A16Grid = memo((props) => {
 		onChange,
 		onSelectionChange,
 		onActiveCellChange,
-		createRow,
+		...rest
 	} = props;
 
 
 
 	if (loading) {
 		return (
-			<ContainerEx maxWidth="md" alginLeft>
+			<ContainerEx maxWidth="md" alignLeft>
 				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
 				<DSGLoading height={height} />
 			</ContainerEx>
@@ -47,7 +47,6 @@ const A16Grid = memo((props) => {
 				// rowKey="DeptID"
 				rowKey="id"
 				height={height + (readOnly ? 48 : 0)}
-				// rowHeight={42}
 				value={data}
 				onChange={onChange}
 				onSelectionChange={onSelectionChange}
@@ -55,7 +54,7 @@ const A16Grid = memo((props) => {
 				addRowsComponent={DSGAddRowsToolbar}
 				disableExpandSelection
 				contextMenuComponent={ContextMenu}
-				createRow={createRow}
+				{...rest}
 
 			/>
 		</ContainerEx>
@@ -71,7 +70,6 @@ A16Grid.propTypes = {
 	onChange: PropTypes.func,
 	onSelectionChange: PropTypes.func,
 	onActiveCellChange: PropTypes.func,
-	createRow: PropTypes.func,
 };
 
 A16Grid.displayName = "A16Grid";

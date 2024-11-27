@@ -25,19 +25,12 @@ const ContextMenu = createDSGContextMenuComponent({
 
 const D05ProdGrid = memo((props) => {
 	const {
-		createRow,
 		getRowKey,
 		readOnly,
 		gridRef,
 		data,
-		onChange,
-		onActiveCellChange,
-		getRowClassName,
 		height = 300,
-		customerDisabled,
-		deptDisabled,
-		sqtyDisabled,
-		dtypeDisabled,
+		...rest
 	} = props;
 
 
@@ -60,17 +53,16 @@ const D05ProdGrid = memo((props) => {
 			height={height}
 			// rowHeight={42}
 			value={data}
-			onChange={onChange}
-			onActiveCellChange={onActiveCellChange}
 			// columns={columns}
 			addRowsComponent={D05ProdGridAddRows}
 			disableExpandSelection
 			// disableContextMenu
 			contextMenuComponent={ContextMenu}
-			createRow={createRow}
+
 			duplicateRow={duplicateRow}
 			// rowClassName={getRowClassName}
 			deleteRow={deleteRow}
+			{...rest}
 		/>
 	);
 });

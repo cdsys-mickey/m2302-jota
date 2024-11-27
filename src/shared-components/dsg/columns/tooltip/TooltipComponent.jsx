@@ -23,18 +23,12 @@ export const TooltipComponent = memo(
 			return title || rowData;
 		}, [rowData, title]);
 
-		// const _open = useMemo(() => {
-		// 	return activeRow != null ? activeRow == rowIndex : null;
-		// }, [activeRow, rowIndex])
-
 		return rowData ? (
 			<Tooltip
 				ref={ref}
 				title={_title}
 				{...rest}
-			// {...(_open != null && {
-			// 	open: _open
-			// })}
+			// open={true}
 			>
 				<HelpOutlineIcon
 					sx={{

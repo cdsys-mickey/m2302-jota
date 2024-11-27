@@ -1,17 +1,19 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
+import FreeProdTypes from "./md-free-prod-types";
 import Squared from "./md-squared";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, ...rest }) => {
+		data?.map(({ SProdID, ProdData_N, SType, ...rest }) => {
 			return {
 				prod: {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
 				},
 				ProdData: ProdData_N,
+				stype: FreeProdTypes.getOptionById(SType),
 				...rest,
 			};
 		}) || []
@@ -21,13 +23,14 @@ const transformGridForReading = (data) => {
 const transformGridForSubmitting = (gridData) => {
 	return gridData
 		.filter((v) => v.prod?.ProdID)
-		.map(({ Pkey, prod, SQty, SPrice, SAmt, ...rest }, index) => ({
+		.map(({ Pkey, prod, SQty, SPrice, SAmt, stype, ...rest }, index) => ({
 			Pkey: Pkey?.length < 36 ? "" : Pkey,
 			SProdID: prod?.ProdID,
 			ProdData_N: prod?.ProdData,
 			SQty: SQty?.toString() || "",
 			SPrice: SPrice?.toString() || "",
 			SAmt: SAmt?.toString() || "",
+			SType: stype?.id || "",
 			Seq: index + 1,
 			...rest,
 		}));

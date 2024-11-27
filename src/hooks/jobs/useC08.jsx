@@ -16,6 +16,7 @@ import { useToggle } from "@/shared-hooks/useToggle";
 import { nanoid } from "nanoid";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
+import usePwordCheck from "../usePwordCheck";
 
 export const useC08 = () => {
 	const crud = useContext(CrudContext);
@@ -53,9 +54,27 @@ export const useC08 = () => {
 		initialFetchSize: 50,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			SQty: "",
+			SPrice: "",
+			SRemark: "",
+			ChkQty: "",
+			SOrdID: "",
+			stype: null,
+			dtype: null,
+			// overrideSQty: null
+			SQtyNote: ""
+		}),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "Pkey",
+		createRow
 	});
 
 	const sqtyManager = useSQtyManager({
@@ -63,6 +82,8 @@ export const useC08 = () => {
 		action: "撥出"
 	});
 	const { committed } = sqtyManager;
+
+	const pwordCheck = usePwordCheck()
 
 	// 挑戰
 	// const pwordLockRef = useRef(null);
@@ -128,27 +149,11 @@ export const useC08 = () => {
 	// 	[qtyMap]
 	// );
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			SQty: "",
-			SPrice: "",
-			SRemark: "",
-			ChkQty: "",
-			SOrdID: "",
-			stype: null,
-			dtype: null,
-			// overrideSQty: null
-			SQtyNote: ""
-		}),
-		[]
-	);
 
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
-			prods: grid.fillRows({ createRow }),
+			prods: [],
 			TxoDate: new Date(),
 			RecvAmt: "",
 			taxExcluded: false,
@@ -158,8 +163,10 @@ export const useC08 = () => {
 		};
 		crud.promptCreating({ data });
 		qtyMap.clear();
-		grid.initGridData(data.prods);
-	}, [createRow, crud, grid, qtyMap]);
+		grid.initGridData(data.prods, {
+			fillRows: true
+		});
+	}, [crud, grid, qtyMap]);
 
 	// const loadStockMap = useCallback(
 	// 	async (
@@ -261,7 +268,7 @@ export const useC08 = () => {
 	);
 
 	const handleSave = useCallback(
-		async ({ data, setValue, gridMeta }) => {
+		async ({ data, setValue, gridMeta, overrideCheckDate = false }) => {
 			const creating = crud.creating;
 			try {
 				if (creating) {
@@ -274,10 +281,20 @@ export const useC08 = () => {
 					url: "v1/purchase/trans-out-orders",
 					data: data,
 					bearer: token,
+					...(overrideCheckDate && {
+						params: {
+							override: 1
+						}
+					})
 				}) : await httpPutAsync({
 					url: "v1/purchase/trans-out-orders",
 					data: data,
 					bearer: token,
+					...(overrideCheckDate && {
+						params: {
+							override: 1
+						}
+					})
 				});
 				if (status.success) {
 					toast.success(creating ? `新增成功` : `修改成功`);
@@ -314,6 +331,13 @@ export const useC08 = () => {
 							})
 						}
 					});
+				} else if (err.code === 4 && !overrideCheckDate) {
+					pwordCheck.performCheck({
+						title: err.message || "撥出日期不得小於系統日減７天。",
+						callback: () => {
+							handleSave({ data, setValue, gridMeta, overrideCheckDate: true })
+						}
+					})
 				} else {
 					toast.error(Errors.getMessage("新增失敗", err), {
 						position: "top-right"
@@ -321,7 +345,7 @@ export const useC08 = () => {
 				}
 			}
 		},
-		[crud, grid.gridData, handleRefreshAmt, httpPostAsync, httpPutAsync, listLoader, loadItem, sqtyManager, token]
+		[crud, grid.gridData, handleRefreshAmt, httpPostAsync, httpPutAsync, listLoader, loadItem, pwordCheck, sqtyManager, token]
 	);
 
 	const handleSelect = useCallback(
@@ -530,7 +554,7 @@ export const useC08 = () => {
 	// 		};
 	// 		console.log("commitSQty", newRowData);
 
-	// 		grid.setValueByRowIndex(sqtyLock.rowIndex, newRowData);
+	// 		grid.spreadOnRow(sqtyLock.rowIndex, newRowData);
 	// 		const newGridData = [...grid.gridData];
 	// 		newGridData[sqtyLock.rowIndex] = newRowData;
 
@@ -1001,13 +1025,9 @@ export const useC08 = () => {
 		({ setValue, getValues }) =>
 			async (newValue) => {
 				if (newValue.length === 0) {
-					if (crud.creating) {
-						grid.setGridData(
-							grid.fillRows({ createRow, data: [] })
-						);
-					} else {
-						grid.setGridData([]);
-					}
+					grid.setGridData([], {
+						fillRows: crud.creating
+					});
 					return;
 				}
 
@@ -1029,7 +1049,8 @@ export const useC08 = () => {
 					if (status.success) {
 						const data = C08.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
-						grid.setGridData(grid.fillRows({ createRow, data: data.prods }), {
+						grid.setGridData(data.prods, {
+							fillRows: true,
 							supressEvents: true
 						});
 						handleRefreshAmt({ setValue, formData: data, gridData: data.prods });
@@ -1049,7 +1070,7 @@ export const useC08 = () => {
 					});
 				}
 			},
-		[grid, crud.creating, createRow, httpPostAsync, token, handleRefreshAmt, checkAndRemoveDepOrders]
+		[grid, crud.creating, httpPostAsync, token, handleRefreshAmt, checkAndRemoveDepOrders]
 	);
 
 	const handleTxiDeptChanged = useCallback(
@@ -1060,7 +1081,9 @@ export const useC08 = () => {
 				if (formData.depOrders?.length > 0 || newValue == null) {
 					console.log("handleTxiDeptChanged", newValue);
 					setValue("depOrders", []);
-					grid.setGridData(grid.fillRows({ createRow }));
+					grid.setGridData([], {
+						fillRows: true
+					});
 				} else {
 					// 若沒有 depOrders 則 refresh-grid
 					const collected = C08.transformForSubmitting(
@@ -1079,12 +1102,9 @@ export const useC08 = () => {
 								payload.data[0]
 							);
 							console.log("refreshed data", data);
-							grid.setGridData(
-								grid.fillRows({
-									createRow,
-									data: data.prods,
-								})
-							);
+							grid.setGridData(data.prods, {
+								fillRows: true
+							});
 							handleRefreshAmt({ setValue, gridData: data.prods });
 							// toast.info("商品單價已更新");
 						} else {
@@ -1097,7 +1117,7 @@ export const useC08 = () => {
 					}
 				}
 			},
-		[createRow, httpPostAsync, grid, handleRefreshAmt, token]
+		[httpPostAsync, grid, handleRefreshAmt, token]
 	);
 
 	const sqtyDisabled = useCallback(({ rowData }) => {

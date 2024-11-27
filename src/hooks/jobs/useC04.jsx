@@ -124,14 +124,16 @@ export const useC04 = () => {
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
-			prods: grid.fillRows({ createRow }),
+			prods: [],
 			purchaseOrders: [],
 			GinDate: new Date(),
 			taxExcluded: false,
 		};
 		crud.promptCreating({ data });
-		grid.handleGridDataLoaded(data.prods);
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.prods, {
+			fillRows: true
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -236,12 +238,10 @@ export const useC04 = () => {
 					if (status.success) {
 						const data = C04.transformForReading(payload.data[0]);
 						console.log("refresh-grid.data", data);
-						grid.handleGridDataLoaded(
-							crud.creating ? grid.fillRows({ createRow, data: data.prods }) : data.prods,
-							{
-								supressEvents: true
-							}
-						);
+						grid.initGridData(data.prods, {
+							fillRows: crud.creating,
+							supressEvents: true
+						});
 						updateAmt({ setValue, data });
 						toast.info("商品單價已更新");
 					} else {
@@ -258,7 +258,7 @@ export const useC04 = () => {
 				console.warn("clear values?");
 			}
 		},
-		[grid, httpPostAsync, token, crud.creating, createRow, updateAmt]
+		[grid, httpPostAsync, token, crud.creating, updateAmt]
 	);
 
 	const refreshAction = useAction();
@@ -819,12 +819,10 @@ export const useC04 = () => {
 					if (status.success) {
 						const data = C04.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
-						grid.setGridData(
-							crud.creating ? grid.fillRows({ data: data.prods }) : data.prods,
-							{
-								supressEvents: true
-							}
-						);
+						grid.setGridData(data.prods, {
+							fillRows: crud.creating,
+							supressEvents: true
+						});
 						updateAmt({ setValue, data });
 						// toast.info("採購單商品已載入");
 					} else {
@@ -912,12 +910,10 @@ export const useC04 = () => {
 					if (status.success) {
 						const data = C04.transformForReading(payload.data[0]);
 						console.log("load-prods.data", data);
-						grid.handleGridDataLoaded(
-							crud.creating ? grid.fillRows({ createRow, data: data.prods }) : data.prods,
-							{
-								supressEvents: true
-							}
-						);
+						grid.handleGridDataLoaded(data.prods, {
+							fillRows: true,
+							supressEvents: true,
+						});
 						updateAmt({ setValue, data });
 						// toast.info("採購單商品已載入");
 					} else {
@@ -930,7 +926,7 @@ export const useC04 = () => {
 					// 還原
 				}
 			},
-		[grid, httpPostAsync, token, crud.creating, createRow, updateAmt]
+		[grid, httpPostAsync, token, updateAmt]
 	);
 
 	const onLoadProdsSubmitError = useCallback((err) => {

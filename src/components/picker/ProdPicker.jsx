@@ -21,7 +21,7 @@ const ProdPicker = (props) => {
 		// ** 已報價商品專用參數
 		retail,
 		cst,
-		compTel,
+		// compTel,
 		...rest
 	} = props;
 	const { token } = useContext(AuthContext);
@@ -49,16 +49,10 @@ const ProdPicker = (props) => {
 			...(retail != null && {
 				retail: retail ? 1 : 0
 			}),
-			// ...(cst && {
-			// 	cst
-			// }),
-			// ...(compTel && {
-			// 	compTel: compTel,
-			// }),
 			cst,
-			compTel,
+			// compTel,
 		});
-	}, [compTel, cst, packageType, retail, withPrice, withQuotes, withStock]);
+	}, [cst, packageType, retail, withPrice, withQuotes, withStock]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return Prods.isOptionEqualToValue(option, value);
@@ -135,7 +129,7 @@ ProdPicker.propTypes = {
 	fuzzy: PropTypes.bool,
 	retail: PropTypes.bool,
 	cst: PropTypes.string,
-	compTel: PropTypes.string
+	// compTel: PropTypes.string
 };
 
 ProdPicker.displayName = "ProdPicker";

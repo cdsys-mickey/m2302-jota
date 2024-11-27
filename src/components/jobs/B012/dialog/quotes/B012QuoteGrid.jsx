@@ -7,9 +7,9 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 
-const ContextMenu = createDSGContextMenuComponent({
-	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
-});
+// const ContextMenu = createDSGContextMenuComponent({
+// 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
+// });
 
 const B012QuoteGrid = memo((props) => {
 	const {
@@ -44,7 +44,7 @@ const B012QuoteGrid = memo((props) => {
 			// columns={columns}
 			addRowsComponent={DSGAddRowsToolbar}
 			disableExpandSelection
-			contextMenuComponent={ContextMenu}
+			// contextMenuComponent={ContextMenu}
 			createRow={createRow}
 			duplicateRow={duplicateRow}
 			rowClassName={getRowClassName}

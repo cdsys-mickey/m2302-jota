@@ -803,7 +803,7 @@ export const useA01 = ({ token, mode }) => {
 	// 				rowData.dept &&
 	// 				transGrid.isDuplicating(rowData, newValue)
 	// 			) {
-	// 				transGrid.setValueByRowIndex(
+	// 				transGrid.spreadOnRow(
 	// 					row.rowIndex,
 	// 					{
 	// 						dept: null,
@@ -910,7 +910,7 @@ export const useA01 = ({ token, mode }) => {
 	// 				rowData.prod &&
 	// 				comboGrid.isDuplicating(rowData, newValue)
 	// 			) {
-	// 				comboGrid.setValueByRowIndex(
+	// 				comboGrid.spreadOnRow(
 	// 					row.rowIndex,
 	// 					{
 	// 						dept: null,
@@ -937,7 +937,7 @@ export const useA01 = ({ token, mode }) => {
 	// 		case 1: //門市
 	// 			if (transGrid.isKeyDuplicated(rowData)) {
 	// 				toast.error(`門市「${rowData.dept?.DeptName}」不可重複選擇`);
-	// 				transGrid.setValueByRowIndex(row, newValue, {
+	// 				transGrid.spreadOnRow(row, newValue, {
 	// 					dept: null,
 	// 				});
 	// 			}

@@ -1,5 +1,6 @@
 const KEY_LOCAL = "1";
 const KEY_OTHER = "2";
+const KEY_EMPTY = "";
 
 const options = [
 	{
@@ -38,6 +39,7 @@ const findByInput = (input) => {
 const AreaTypes = {
 	KEY_LOCAL,
 	KEY_OTHER,
+	KEY_EMPTY,
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,

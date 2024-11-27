@@ -16,8 +16,8 @@ export const DialogsProvider = ({ children, buttonProps }) => {
 			{entities.map((d, i) => {
 				const {
 					id,
-					onClose,
-					onCancel,
+					// onClose,
+					// onCancel,
 
 					...dialogProps
 				} = d;
@@ -33,32 +33,32 @@ export const DialogsProvider = ({ children, buttonProps }) => {
 				// 	}
 				// };
 
-				const houseKeeping = () => {
-					setEntities((prev) =>
-						prev.filter(x => x.open)
-					);
-				};
+				// const houseKeeping = () => {
+				// 	setEntities((prev) =>
+				// 		prev.filter(x => x.open)
+				// 	);
+				// };
 
-				const handleClose = () => {
-					if (onClose) {
-						onClose();
-					}
-					// houseKeeping();
-				};
+				// const handleClose = () => {
+				// 	if (onClose) {
+				// 		onClose();
+				// 	}
+				// 	// houseKeeping();
+				// };
 
-				const handleCancel = () => {
-					if (onCancel) {
-						onCancel();
-					}
-					// houseKeeping();
-				};
+				// const handleCancel = () => {
+				// 	if (onCancel) {
+				// 		onCancel();
+				// 	}
+				// 	// houseKeeping();
+				// };
 
 				return (
 					<DialogEx
 						key={id || i}
 						index={i}
-						onClose={handleClose}
-						onCancel={handleCancel}
+						// onClose={handleClose}
+						// onCancel={handleCancel}
 						{...dialogProps}
 					/>
 				);

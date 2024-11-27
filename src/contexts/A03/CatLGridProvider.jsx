@@ -285,7 +285,7 @@ const CatLGridProvider = (props) => {
 			toast.error(`大分類 ${row.rowData.LClas} 已存在`, {
 				position: "top-right"
 			});
-			grid.setValueByRowIndex(
+			grid.spreadOnRow(
 				row.rowIndex,
 				{
 					LClas: "",

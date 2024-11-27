@@ -10,6 +10,7 @@ import { useFormContext } from "react-hook-form";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { BContext } from "@/contexts/B/BContext";
 import { B032Context } from "@/contexts/B032/B032Context";
+import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 
 export const B012QuoteGridContainer = (props) => {
 	const { ...rest } = props;
@@ -41,6 +42,14 @@ export const B012QuoteGridContainer = (props) => {
 		return height - 250;
 	}, [height])
 
+	const contextMenu = useMemo(() => {
+		return b012.canDelete ? createDSGContextMenuComponent({
+			filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
+		}) : createDSGContextMenuComponent({
+			filterItem: (item) => [].includes(item.type),
+		})
+	}, [b012.canDelete])
+
 	return (
 		<DSGContext.Provider value={{
 			...b012.grid,
@@ -64,6 +73,7 @@ export const B012QuoteGridContainer = (props) => {
 				createRow={b012.createRow}
 				autoAddRow={false}
 				addRowsComponent={b012.creating ? DSGAddRowsToolbar : null}
+				contextMenuComponent={contextMenu}
 				{...rest}
 			/>
 		</DSGContext.Provider>

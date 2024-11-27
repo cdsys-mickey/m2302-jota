@@ -7,6 +7,9 @@ import { useRef } from "react";
 import { useCallback } from "react";
 import { useContext } from "react";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useState } from "react";
+import useDebounce from "@/shared-hooks/useDebounce";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const ControlledOptionPicker = forwardRef((props, ref) => {
 	const {
@@ -18,7 +21,9 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 		sx = [],
 		onChange: _onChange,
 		onChanged,
-		options = [],
+		debounce = 800,
+		readOnly,
+		// options = [],
 		...rest
 	} = props;
 
@@ -28,7 +33,18 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 	const { isFieldDisabled, focusNextField, disableEnter } = formMeta || {};
 	const inFormMeta = !!formMeta;
 
-	const prevValue = useRef();
+	const [innerValue, setInnerValue] = useState();
+	const debouncedValue = useDebounce(innerValue, debounce);
+
+	useChangeTracking(() => {
+		if (!readOnly && onChanged) {
+			onChanged(debouncedValue);
+		}
+	}, [debouncedValue], {
+		debug: true
+	});
+
+	// const prevValue = useRef();
 
 	const getError = useCallback(
 		async (opts = {}) => {
@@ -48,7 +64,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 	);
 
 	if (!name) {
-		return <OptionPicker ref={ref} setFocus={setFocus} {...rest} />;
+		return <OptionPicker ref={ref} setFocus={setFocus} onChange={_onChange} {...rest} />;
 	}
 
 	return (
@@ -61,7 +77,8 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 				field: { ref, value, onChange },
 				fieldState: { isTouched, isDirty, error },
 			}) => {
-				prevValue.current = JSON.stringify(value);
+				// prevValue.current = JSON.stringify(value);
+
 				return (
 					<OptionPicker
 						name={name}
@@ -72,23 +89,24 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						setError={form.setError}
 						clearErrors={form.clearErrors}
 
-						options={options}
+						// options={options}
 						onChange={(newValue) => {
+							setInnerValue(newValue);
 							console.log(`${ControlledOptionPicker.displayName}.onChange`, newValue);
 							if (_onChange) {
 								_onChange(newValue);
 							}
 							onChange(newValue);
-							const newValueJson = JSON.stringify(newValue);
+							// const newValueJson = JSON.stringify(newValue);
 
-							if (
-								onChanged &&
-								newValueJson !== prevValue.current
-							) {
-								onChanged(newValue);
-								prevValue.current = newValueJson;
-								console.log(`${name}.changed`, newValue);
-							}
+							// if (
+							// 	onChanged &&
+							// 	newValueJson !== prevValue.current
+							// ) {
+							// 	onChanged(newValue);
+							// 	prevValue.current = newValueJson;
+							// 	console.log(`${name}.changed`, newValue);
+							// }
 						}}
 						// InputLabelProps={{
 						// 	...(labelShrink && { shrink: true }),
@@ -106,6 +124,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						focusNextField={focusNextField}
 						isFieldDisabled={isFieldDisabled}
 						disableEnter={disableEnter}
+						readOnly={readOnly}
 						{...rest}
 					/>
 				);
@@ -120,7 +139,7 @@ ControlledOptionPicker.propTypes = {
 	onChange: PropTypes.func,
 	onChanged: PropTypes.func,
 	rules: PropTypes.object,
-	options: PropTypes.array,
+	// options: PropTypes.array,
 	// labelShrink: PropTypes.bool,
 	defaultValue: PropTypes.oneOfType([
 		PropTypes.string,

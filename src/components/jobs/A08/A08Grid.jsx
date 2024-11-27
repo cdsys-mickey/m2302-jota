@@ -6,6 +6,7 @@ import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-m
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
+import A08 from "@/modules/md-a08";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -58,9 +59,7 @@ const A08Grid = memo((props) => {
 				// disableContextMenu
 				contextMenuComponent={ContextMenu}
 				// autoAddRow
-				createRow={() => ({
-					areaType: AreaTypes.findById(AreaTypes.KEY_OTHER),
-				})}
+				createRow={A08.createRow}
 			/>
 		</ContainerEx>
 	);

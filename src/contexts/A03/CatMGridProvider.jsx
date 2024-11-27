@@ -289,7 +289,7 @@ const CatMGridProvider = (props) => {
 			toast.error(`中分類 ${row.rowData.MClas} 已存在`, {
 				position: "top-right"
 			});
-			grid.setValueByRowIndex(
+			grid.spreadOnRow(
 				row.rowIndex,
 				{
 					MClas: "",

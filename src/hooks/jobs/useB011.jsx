@@ -71,12 +71,6 @@ export const useB011 = (opts = {}) => {
 		}
 	});
 
-	const grid = useDSG({
-		gridId: "quotes",
-		keyColumn: "Pkey",
-		// keyColumn: "prod.ProdID",
-	});
-
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
@@ -91,6 +85,14 @@ export const useB011 = (opts = {}) => {
 		[]
 	);
 
+	const grid = useDSG({
+		gridId: "quotes",
+		keyColumn: "Pkey",
+		createRow,
+	});
+
+
+
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
@@ -98,8 +100,8 @@ export const useB011 = (opts = {}) => {
 			quotes: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.quotes, { createRow, length: 13 });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.quotes, { fillRows: 13 });
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -270,7 +272,7 @@ export const useB011 = (opts = {}) => {
 	//DELETE
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({
-			message: `確認要删除詢價單「${itemData?.InqID}」?`,
+			message: `確認要删除客戶報價單「${itemData?.InqID}」?`,
 			onConfirm: async () => {
 				try {
 					crud.startDeleting(itemData);
@@ -284,7 +286,7 @@ export const useB011 = (opts = {}) => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除詢價單 ${itemData?.InqID}`);
+						toast.success(`成功删除客戶報價單 ${itemData?.InqID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -544,7 +546,7 @@ export const useB011 = (opts = {}) => {
 					console.log("data", data);
 					const formData = form.getValues();
 					grid.initGridData(B011.transformForGridImport(data, formData?.employee, formData?.Date), {
-						createRow,
+						fillRows: true,
 					});
 					toast.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
@@ -558,7 +560,7 @@ export const useB011 = (opts = {}) => {
 				});
 			}
 		},
-		[importProdsAction, httpGetAsync, GRID_URL, token, ipState.criteria, ipState.saveKey, grid, createRow]
+		[importProdsAction, httpGetAsync, GRID_URL, token, ipState.criteria, ipState.saveKey, grid]
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {

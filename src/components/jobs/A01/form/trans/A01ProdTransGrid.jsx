@@ -4,6 +4,7 @@ import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { pt } from "date-fns/locale";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -16,35 +17,10 @@ const A01ProdTransGrid = memo((props) => {
 		data,
 		columns,
 		onActiveCellChange,
-		handleGridChange,
 		height = 600,
-		createRow,
 		...rest
 	} = props;
 
-	// const columns = useMemo(
-	// 	() => [
-	// 		{
-	// 			...keyColumn(
-	// 				"dept",
-	// 				deptPickerColumn({
-	// 					name: "dept",
-	// 				})
-	// 			),
-	// 			title: "門市",
-	// 			grow: 6,
-	// 			disabled: readOnly,
-	// 		},
-	// 		{
-	// 			...keyColumn("SCost", createFloatColumn(2)),
-	// 			title: "調撥成本",
-	// 			minWidth: 90,
-	// 			grow: 1,
-	// 			disabled: readOnly,
-	// 		},
-	// 	],
-	// 	[readOnly]
-	// );
 
 	if (!data) {
 		return (
@@ -67,16 +43,14 @@ const A01ProdTransGrid = memo((props) => {
 			ref={gridRef}
 			rowKey="id"
 			lockRows={readOnly}
-			height={height + (readOnly ? 48 : 0)}
 			rowHeight={34}
 			value={data}
-			onChange={handleGridChange}
 			onActiveCellChange={onActiveCellChange}
 			columns={columns}
 			addRowsComponent={DSGAddRowsToolbar}
 			disableExpandSelection
 			contextMenuComponent={ContextMenu}
-			createRow={createRow}
+			{...rest}
 		/>
 	);
 });
@@ -87,6 +61,7 @@ A01ProdTransGrid.propTypes = {
 	onActiveCellChange: PropTypes.func,
 	data: PropTypes.array,
 	columns: PropTypes.array,
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 A01ProdTransGrid.displayName = "ProdTransGrid";

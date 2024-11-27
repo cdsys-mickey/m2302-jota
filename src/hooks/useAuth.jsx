@@ -143,7 +143,10 @@ export const useAuth = () => {
 					setState((prev) => ({
 						...prev,
 						token,
-						operator: jwtPayload.entity,
+						operator: {
+							...jwtPayload.entity,
+							isRoot: jwtPayload.entity?.Class >= Auth.SCOPES.ROOT
+						},
 						roles: jwtPayload.roles,
 					}));
 

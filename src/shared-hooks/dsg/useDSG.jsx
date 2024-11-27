@@ -151,15 +151,14 @@ export const useDSG = ({
 				asyncRef.current.supressEvents = true;
 			}
 
-			const createRowStub = createRow || _createRow;
-
-			let _length = Types.isNumber(fillRows) ? fillRows : length;
-
-			dirtyIds.clear();
-			persistedIds.clear();
-			deletedIds.clear();
+			const doFillRows = !!_fillRows;
+			const _length = Types.isNumber(_fillRows) ? _fillRows : length;
 
 			if (reset || init) {
+				dirtyIds.clear();
+				persistedIds.clear();
+				deletedIds.clear();
+
 				newValue?.map((item) => {
 					const key = _.get(item, keyColumn);
 					persistedIds.add(key);
@@ -193,9 +192,9 @@ export const useDSG = ({
 			}
 
 			setGridData(
-				_fillRows
+				doFillRows
 					? fillRows({
-						createRow: createRowStub,
+						createRow,
 						data: newValue,
 						length: _length
 					})
@@ -208,7 +207,7 @@ export const useDSG = ({
 				console.log("resetGridData", newValue);
 			}
 		},
-		[_createRow, deletedIds, dirtyIds, fillRows, gridData, handleDirtyCheck, keyColumn, persistedIds, prevGridData]
+		[deletedIds, dirtyIds, fillRows, gridData, handleDirtyCheck, keyColumn, persistedIds, prevGridData]
 	);
 
 	const handleGridDataLoaded = useCallback(
@@ -508,7 +507,7 @@ export const useDSG = ({
 		[deletedIds, gridData, handleDirtyCheck, keyColumn, prevGridData]
 	);
 
-	const setValueByRowIndex = useCallback(
+	const spreadOnRow = useCallback(
 		(rowIndex, newValueObj, opts = {}) => {
 			const newValue = opts.data || gridData;
 			const rewritten = newValue.map((rowData, i) =>
@@ -519,8 +518,8 @@ export const useDSG = ({
 					}
 					: rowData
 			);
-			console.log(`setValueByRowIndex(${rowIndex})`, rewritten);
-			setGridData(rewritten, opts.callback);
+			console.log(`spreadOnRow(${rowIndex})`, rewritten);
+			setGridData(rewritten);
 		},
 		[gridData]
 	);
@@ -630,7 +629,7 @@ export const useDSG = ({
 		removeRowByKey,
 		removeRowByIndex,
 		getRowDataByIndex,
-		setValueByRowIndex,
+		spreadOnRow,
 
 		// 鎖定列
 		readOnly,

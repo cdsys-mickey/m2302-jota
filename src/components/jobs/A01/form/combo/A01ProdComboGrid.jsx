@@ -18,36 +18,9 @@ const A01ProdComboGrid = memo((props) => {
 		onActiveCellChange,
 		columns,
 		height = 600,
-		createRow,
 		...rest
 	} = props;
 
-	// const columns = useMemo(
-	// 	() => [
-	// 		{
-	// 			...keyColumn(
-	// 				"prod",
-	// 				prodPickerColumn({
-	// 					name: "prod",
-	// 					triggerDelay: 300,
-	// 					placeholder: "組合商品",
-	// 					typeToSearchText: "請輸入商品編號或名稱進行搜尋",
-	// 				})
-	// 			),
-	// 			title: "商品",
-	// 			grow: 8,
-	// 			disabled: lockRows,
-	// 		},
-	// 		{
-	// 			...keyColumn("SProdQty", createFloatColumn(2)),
-	// 			title: "數量",
-	// 			minWidth: 90,
-	// 			grow: 1,
-	// 			disabled: lockRows,
-	// 		},
-	// 	],
-	// 	[lockRows]
-	// );
 
 	if (!data) {
 		return (
@@ -69,8 +42,7 @@ const A01ProdComboGrid = memo((props) => {
 		<DSGGrid
 			ref={gridRef}
 			rowKey="id"
-			lockRows={lockRows}
-			height={height + (lockRows ? 48 : 0)}
+			height={height}
 			rowHeight={34}
 			value={data}
 			onChange={handleGridChange}
@@ -79,7 +51,7 @@ const A01ProdComboGrid = memo((props) => {
 			addRowsComponent={DSGAddRowsToolbar}
 			disableExpandSelection
 			contextMenuComponent={ContextMenu}
-			createRow={createRow}
+			{...rest}
 		/>
 	);
 });
@@ -91,6 +63,7 @@ A01ProdComboGrid.propTypes = {
 	onActiveCellChange: PropTypes.func,
 	data: PropTypes.array,
 	columns: PropTypes.array,
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 A01ProdComboGrid.displayName = "ProdComboGrid";

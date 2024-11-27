@@ -291,10 +291,6 @@ const OptionPicker = memo(
 				if (name && clearErrors) {
 					clearErrors(name);
 				}
-				// if (value) {
-				// 	focusNextCellOrField(event);
-				// }
-				// focusNextCellOrField(event);
 			},
 			[clearErrors, name, onChange]
 		);

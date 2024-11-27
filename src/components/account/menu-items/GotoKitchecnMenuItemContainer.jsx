@@ -23,7 +23,7 @@ export const GotoKitchenMenuItemContainer = (props) => {
 		);
 	}, [navigate]);
 
-	if (auth.operator?.Class < Auth.SCOPES.ROOT) {
+	if (!auth.operator.isRoot) {
 		return false;
 	}
 

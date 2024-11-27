@@ -50,7 +50,7 @@ export const useSignalR = ({
 	);
 
 	const createConnection = useCallback(() => {
-		// console.log(`[SignalR] creating hub connection [${url}]...`);
+		console.log(`[SignalR] creating hub connection [${url}]...`);
 		const builder = new signalR.HubConnectionBuilder().withUrl(url, {
 			// skipNegotiation: true,
 			// transport: signalR.HttpTransportType.WebSockets,
@@ -177,7 +177,7 @@ export const useSignalR = ({
 			}
 		} else {
 			console.warn(
-				"connection.state is not Disconnected",
+				"connection.state is not Disconnected: ",
 				connection.state
 			);
 		}
@@ -187,21 +187,7 @@ export const useSignalR = ({
 		return connection?.connectionId;
 	}, [connection?.connectionId]);
 
-	useEffect(() => {
-		connection?.onclose(handleClose);
-	}, [connection, handleClose]);
 
-	useEffect(() => {
-		connection?.onreconnecting(handleReconnecting);
-	}, [connection, handleReconnecting]);
-
-	useEffect(() => {
-		connection?.onreconnected(handleReconnected);
-	}, [connection, handleReconnected]);
-
-	useEffect(() => {
-		createConnection();
-	}, [createConnection]);
 
 	const retryIntervalIdRef = useRef();
 
@@ -236,6 +222,22 @@ export const useSignalR = ({
 				});
 		}
 	}, [connection, url]);
+
+	useEffect(() => {
+		connection?.onclose(handleClose);
+	}, [connection, handleClose]);
+
+	useEffect(() => {
+		connection?.onreconnecting(handleReconnecting);
+	}, [connection, handleReconnecting]);
+
+	useEffect(() => {
+		connection?.onreconnected(handleReconnected);
+	}, [connection, handleReconnected]);
+
+	useEffect(() => {
+		createConnection();
+	}, [createConnection]);
 
 	useEffect(() => {
 		if (autoConnect && connection) {

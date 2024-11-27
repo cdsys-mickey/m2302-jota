@@ -11,6 +11,7 @@ import _ from "lodash";
 import { useState } from "react";
 import Errors from "../../shared-modules/sd-errors";
 import { nanoid } from "nanoid";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 const defaultTransformForReading = (payload) => {
 	return payload?.data || [];
@@ -30,13 +31,14 @@ export const useDSGCodeEditor = ({
 	grid,
 	gridMeta,
 	baseUri,
-	token,
+	// token,
 	displayName = "代碼",
 	querystring,
-	disableAutoDelete = false,
+	autoDelete = false,
 	transformForReading = defaultTransformForReading,
 	transformForSubmitting = defaultTransformForSubmmit,
 }) => {
+	const { token } = useContext(AuthContext);
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 
@@ -320,7 +322,7 @@ export const useDSGCodeEditor = ({
 				return acc;
 			}, []);
 			grid.setGridData(filteredData);
-			// grid.setValueByRowIndex(
+			// grid.spreadOnRow(
 			// 	row.rowIndex,
 			// 	{
 			// 		[grid.keyColumn]: "",
@@ -374,7 +376,8 @@ export const useDSGCodeEditor = ({
 			};
 			const prevRowData = grid.prevGridData[operation.fromRowIndex];
 			if (
-				Objects.isAllPropsNotNullOrEmpty(firstRow.rowData, [
+				// Objects.isAllPropsNotNullOrEmpty(firstRow.rowData, [
+				Objects.isAllPropsNotEmpty(firstRow.rowData, [
 					grid.keyColumn,
 					...grid.otherColumnNames,
 				])
@@ -420,7 +423,7 @@ export const useDSGCodeEditor = ({
 				}
 
 			} else if (
-				!disableAutoDelete &&
+				autoDelete &&
 				Objects.isAllPropsNull(firstRow.rowData, [
 					...grid.otherColumnNames,
 				])
@@ -439,7 +442,7 @@ export const useDSGCodeEditor = ({
 				grid.setGridData(newValue);
 			}
 		},
-		[disableAutoDelete, grid, isExistingRow, isUnchanged]
+		[autoDelete, grid, isExistingRow, isUnchanged]
 	);
 
 	const buildGridChangeHandler = useCallback(

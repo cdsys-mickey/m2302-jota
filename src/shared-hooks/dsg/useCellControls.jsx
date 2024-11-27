@@ -8,6 +8,7 @@ export const useCellControls = () => {
 		return null;
 	}
 	return {
+		// from useDSGMeta
 		skipDisabled: dsg.skipDisabled,
 		// focusNextCell: dsg.focusNextCell,
 		getNextCell: dsg.getNextCell,
@@ -16,6 +17,7 @@ export const useCellControls = () => {
 		setActiveCell: dsg.setActiveCell,
 		focusPrevCell: dsg.focusPrevCell,
 		inDSG: !!dsg,
+		// from useDSG
 		readOnly: dsg.readOnly,
 		supressEvents: dsg.asyncRef?.current?.supressEvents || false
 	};

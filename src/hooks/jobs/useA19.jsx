@@ -5,6 +5,8 @@ import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useAppModule } from "./useAppModule";
 import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
 import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
+import useDebugDialog from "../useDebugDialog";
+import { useMemo } from "react";
 
 export const useA19 = () => {
 	const { token, operator } = useContext(AuthContext);
@@ -13,6 +15,7 @@ export const useA19 = () => {
 		token,
 		moduleId: "A19",
 	});
+	const debugDialog = useDebugDialog();
 
 	const formMeta = useFormMeta(
 		`
@@ -30,20 +33,28 @@ export const useA19 = () => {
 	}
 	)
 
+	const reportUrl = useMemo(() => {
+		return `${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx?LogKey=${operator.LogKey}`
+	}, [operator.LogKey])
+
+	const onDebugSubmit = useCallback((payload) => {
+		console.log("onSubmit", payload);
+		const data = A19.transformForSubmitting(payload);
+		debugDialog.show({ data, url: reportUrl })
+	}, [debugDialog, reportUrl]);
+
 	const onSubmit = useCallback(
 		(payload) => {
 			console.log("onSubmit", payload);
 			const data = A19.transformForSubmitting(payload);
 			console.log("data", data);
-			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx?LogKey=${operator.LogKey
-				}`,
+			postToBlank(reportUrl,
 				{
 					jsonData: JSON.stringify(data),
 				}
 			);
 		},
-		[operator.LogKey, postToBlank]
+		[postToBlank, reportUrl]
 	);
 
 	const onSubmitError = useCallback((err) => {
@@ -54,7 +65,8 @@ export const useA19 = () => {
 		...appModule,
 		onSubmit,
 		onSubmitError,
-		formMeta
+		onDebugSubmit,
+		formMeta,
 	};
 };
 [];

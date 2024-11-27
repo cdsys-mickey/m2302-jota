@@ -71,12 +71,6 @@ export const useB012 = (opts = {}) => {
 		}
 	});
 
-	const grid = useDSG({
-		gridId: "quotes",
-		keyColumn: "Pkey",
-		// keyColumn: "customer.CustID",
-	});
-
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
@@ -90,6 +84,12 @@ export const useB012 = (opts = {}) => {
 		[]
 	);
 
+	const grid = useDSG({
+		gridId: "quotes",
+		keyColumn: "Pkey",
+		createRow
+	});
+
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
@@ -97,8 +97,10 @@ export const useB012 = (opts = {}) => {
 			quotes: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.quotes, { createRow, length: 13 });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.quotes, {
+			fillRows: 13
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -159,7 +161,7 @@ export const useB012 = (opts = {}) => {
 				crud.failReading(err);
 			}
 		},
-		[crud, httpGetAsync, grid, token]
+		[httpGetAsync, API_URL, token, crud, grid]
 	);
 
 	const handleSelect = useCallback(
@@ -493,7 +495,7 @@ export const useB012 = (opts = {}) => {
 					console.log("data", data);
 					const formData = form.getValues();
 					grid.initGridData(B012.transformForGridImport(data, formData?.employee, formData?.Date), {
-						createRow,
+						fillRows: true,
 					});
 					toast.success(`成功帶入 ${data.length} 筆客戶`);
 					importCustsAction.clear();
@@ -507,7 +509,7 @@ export const useB012 = (opts = {}) => {
 				});
 			}
 		},
-		[importCustsAction, httpGetAsync, GRID_URL, token, ipState.criteria, ipState.saveKey, grid, createRow]
+		[importCustsAction, httpGetAsync, GRID_URL, token, ipState.criteria, ipState.saveKey, grid]
 	);
 
 	const onImportCustsSubmitError = useCallback((err) => {

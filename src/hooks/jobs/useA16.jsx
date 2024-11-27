@@ -22,10 +22,20 @@ export const useA16 = () => {
 		moduleId: "A16",
 	});
 	const { httpPatchAsync } = useWebApi();
+
+	const createRow = useCallback(
+		() => ({
+			id: nanoid(),
+			Using_N: "1",
+		}),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "A16",
 		keyColumn: "DeptID",
 		otherColumns: "GroupKey,DeptName,AbbrName",
+		createRow
 	});
 
 	const columns = useMemo(
@@ -111,13 +121,7 @@ export const useA16 = () => {
 
 	const { load, reload } = codeEditor;
 
-	const createRow = useCallback(
-		() => ({
-			id: nanoid(),
-			Using_N: "1",
-		}),
-		[]
-	);
+
 
 	const handlePatch = useCallback(
 		async ({ rowData }) => {

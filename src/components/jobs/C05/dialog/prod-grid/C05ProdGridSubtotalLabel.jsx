@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 
 export const C05ProdGridSubtotalLabel = (props) => {
-	const { name = "RtnAmt", ...rest } = props;
+	const { name = "RtAmt", ...rest } = props;
 	const subtotal = useWatch({
 		name,
 	});

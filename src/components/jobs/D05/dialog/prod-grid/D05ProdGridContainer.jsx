@@ -9,6 +9,8 @@ import { useMemo } from "react";
 import FormMeta from "@/shared-modules/sd-form-meta";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
+import { keyColumn } from "react-datasheet-grid";
 
 export const D05ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -43,6 +45,15 @@ export const D05ProdGridContainer = (props) => {
 		})
 	}, [d05, form.getValues, form.setValue, formMeta.gridMeta])
 
+	const prodInfoColumn = useMemo(() => {
+		return {
+			...keyColumn("tooltip", createTooltipColumn({
+				arrow: true,
+				placement: "bottom-end",
+			}))
+		}
+	}, [])
+
 	return (
 		<DSGContext.Provider value={{
 			...d05.grid,
@@ -64,6 +75,7 @@ export const D05ProdGridContainer = (props) => {
 				sqtyDisabled={d05.sqtyDisabled}
 				dtypeDisabled={d05.dtypeDisabled}
 				createRow={d05.createRow}
+				stickyRightColumn={prodInfoColumn}
 				{...rest}
 			/>
 		</DSGContext.Provider>

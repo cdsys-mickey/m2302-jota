@@ -104,7 +104,6 @@ export const useC06 = () => {
 		}
 
 		const data = {
-			// prods: grid.fillRows({ createRow }),
 			prods: [],
 			OrdDate: new Date(),
 			ArrDate: new Date(),
@@ -120,20 +119,22 @@ export const useC06 = () => {
 				: null,
 		};
 		crud.promptCreating({ data });
-		grid.setGridData(data.prods, { fillRows: true });
+		grid.initGridData(data.prods, {
+			fillRows: true
+		});
 	}, [crud, httpGetAsync, operator, grid, token]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
 			try {
 				crud.startCreating();
-				const { status, error } = await httpPostAsync({
+				const { status, error, payload } = await httpPostAsync({
 					url: "v1/purchase/dep-orders",
 					data: data,
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toast.success(`新增成功，單號「${payload.OrdID}」`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -243,7 +244,7 @@ export const useC06 = () => {
 				console.warn("clear values?");
 			}
 		},
-		[createRow, httpPostAsync, grid, updateAmt, token]
+		[grid, httpPostAsync, token, crud.creating, updateAmt]
 	);
 
 	const refreshAction = useAction();
@@ -524,6 +525,7 @@ export const useC06 = () => {
 			["SNotQty"]: "",
 			["SInQty"]: "",
 			["SAmt"]: "",
+			["stype"]: null
 			// ["SMsg"]: prodInfo?.Stock ? `庫存為 ${prodInfo.Stock}` : "",
 		};
 		return processedRowData;
@@ -845,12 +847,10 @@ export const useC06 = () => {
 								payload.data[0]
 							);
 							console.log("refreshed data", data);
-							grid.handleGridDataLoaded(
-								grid.fillRows({
-									createRow,
-									data: data.prods,
-								})
-							);
+							grid.initGridData(data.prods, {
+								fillRows: true
+
+							})
 							updateAmt({ setValue, gridData: data.prods });
 							toast.info("商品單價已更新");
 						} else {
@@ -869,7 +869,7 @@ export const useC06 = () => {
 					// 還原
 				}
 			},
-		[grid, httpPostAsync, token, createRow, updateAmt]
+		[grid, httpPostAsync, token, updateAmt]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {

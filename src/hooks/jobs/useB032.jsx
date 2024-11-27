@@ -77,8 +77,10 @@ export const useB032 = () => {
 			quotes: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.quotes, { createRow, length: 13 });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.quotes, {
+			fillRows: 13
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -461,7 +463,7 @@ export const useB032 = () => {
 					console.log("data", data);
 					const formData = form.getValues();
 					grid.initGridData(B032.transformForGridImport(data, formData?.employee, formData?.Date), {
-						createRow,
+						fillRows: true,
 					});
 					toast.success(`成功帶入 ${data.length} 筆客戶`);
 					importCustsAction.clear();
@@ -475,15 +477,7 @@ export const useB032 = () => {
 				});
 			}
 		},
-		[
-			createRow,
-			httpGetAsync,
-			importCustsAction,
-			ipState.criteria,
-			ipState.saveKey,
-			grid,
-			token,
-		]
+		[httpGetAsync, importCustsAction, ipState.criteria, ipState.saveKey, grid, token]
 	);
 
 	const onImportCustsSubmitError = useCallback((err) => {

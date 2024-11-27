@@ -51,7 +51,7 @@ export const useDialogs = ({ buttonProps }) => {
 			buttonProps: _buttonProps,
 			closeOthers = false,
 			onConfirm,
-			onCancel,
+			// onCancel,
 			...dialogProps
 		}) => {
 			const newId = nanoid();
@@ -59,8 +59,15 @@ export const useDialogs = ({ buttonProps }) => {
 				onConfirm({ id: newId, value: v });
 			}
 
-			const handleCancel = () => {
-				onCancel({ id: newId });
+			// const handleCancel = (opts) => {
+			// 	if (onCancel) {
+			// 		onCancel({ id: newId });
+			// 	}
+			// 	close(opts);
+			// }
+
+			const handleClose = (opts) => {
+				close(opts);
 			}
 
 			console.log("closeOthers", closeOthers);
@@ -73,7 +80,8 @@ export const useDialogs = ({ buttonProps }) => {
 				},
 				open: true,
 				onConfirm: handleConfirm,
-				onCancel: handleCancel,
+				// onCancel: handleCancel,
+				onClose: handleClose,
 				...dialogProps,
 			}
 			if (closeOthers) {
@@ -88,7 +96,7 @@ export const useDialogs = ({ buttonProps }) => {
 			}
 			return newId;
 		},
-		[buttonProps]
+		[buttonProps, close]
 	);
 
 	const setWorking = useCallback((working) => {

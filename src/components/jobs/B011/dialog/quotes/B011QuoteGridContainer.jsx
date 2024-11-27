@@ -11,6 +11,7 @@ import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { B031Context } from "@/contexts/B031/B031Context";
 import PropTypes from "prop-types";
 import { BContext } from "@/contexts/B/BContext";
+import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 
 export const B011QuoteGridContainer = (props) => {
 	const { forNew = false, ...rest } = props;
@@ -42,6 +43,16 @@ export const B011QuoteGridContainer = (props) => {
 		return height - 250;
 	}, [height])
 
+
+	const contextMenu = useMemo(() => {
+		return b011.canDelete ? createDSGContextMenuComponent({
+			filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
+		}) : createDSGContextMenuComponent({
+			filterItem: (item) => [].includes(item.type),
+		});
+	}, [b011.canDelete])
+
+
 	return (
 		<DSGContext.Provider value={{
 			...b011.grid,
@@ -67,6 +78,7 @@ export const B011QuoteGridContainer = (props) => {
 				creating={b011.creating}
 				autoAddRow={false}
 				addRowsComponent={b011.creating ? DSGAddRowsToolbar : null}
+				contextMenuComponent={contextMenu}
 				{...rest}
 			/>
 		</DSGContext.Provider>

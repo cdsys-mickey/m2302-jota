@@ -49,11 +49,6 @@ export const useD06 = () => {
 		initialFetchSize: 50,
 	});
 
-	const grid = useDSG({
-		gridId: "prods",
-		keyColumn: "pkey",
-	});
-
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
@@ -62,6 +57,12 @@ export const useD06 = () => {
 		}),
 		[]
 	);
+
+	const grid = useDSG({
+		gridId: "prods",
+		keyColumn: "pkey",
+		createRow
+	});
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -73,8 +74,10 @@ export const useD06 = () => {
 		};
 		crud.promptCreating({ data });
 		// qtyMap.clear();
-		grid.initGridData(data.prods, { createRow });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.prods, {
+			fillRows: true
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {

@@ -48,11 +48,12 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 		return !c05.editing || !supplier || !rtnDate;
 	}, [c05.editing, rtnDate, supplier]);
 
-	const debouncedRtnDate = useDebounce(rtnDate, 800);
+	// const debouncedRtnDate = useDebounce(rtnDate, 800);
 
-	useChangeTracking(() => {
-		c05.refreshGrid({ formData: form.getValues(), setValue: form.setValue });
-	}, [debouncedRtnDate]);
+	// useChangeTracking(() => {
+	// 	console.log(`${c05.itemData?.GrtID}.debouncedRtnDate`, debouncedRtnDate);
+	// 	c05.refreshGrid({ formData: form.getValues(), setValue: form.setValue });
+	// }, [debouncedRtnDate]);
 
 	const scrollable = useScrollable({
 		height,

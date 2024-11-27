@@ -7,11 +7,8 @@ export const B011ListFormContainer = (props) => {
 	const formMeta = useFormMeta(
 		`
 		lvCust,
-		lvCust2,
-		lvProd,
-		lvProd2,
+		lvEmployee,
 		lvDate,
-		lvDate2
 		`
 
 	)

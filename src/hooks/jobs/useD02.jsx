@@ -57,9 +57,23 @@ export const useD02 = () => {
 		expPrompting: false,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			stype: null,
+			SQty: "",
+			SPrice: "",
+			ChkQty: "",
+			SOrdID: "",
+		}),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
+		createRow
 	});
 
 	// 挑戰
@@ -103,18 +117,7 @@ export const useD02 = () => {
 	// 	[qtyMap]
 	// );
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			stype: null,
-			SQty: "",
-			SPrice: "",
-			ChkQty: "",
-			SOrdID: "",
-		}),
-		[]
-	);
+
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -123,8 +126,10 @@ export const useD02 = () => {
 			RetDate: new Date(),
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.prods, { createRow });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.prods, {
+			fillRows: true
+		});
+	}, [crud, grid]);
 
 	const promptCreatingWithCheck = useCallback(() => {
 		pwordCheck.performCheck({ callback: promptCreating })
@@ -370,7 +375,7 @@ export const useD02 = () => {
 	// 		};
 	// 		console.log("commitSQty", newRowData);
 
-	// 		prodGrid.setValueByRowIndex(sqtyLock.rowIndex, newRowData);
+	// 		prodGrid.spreadOnRow(sqtyLock.rowIndex, newRowData);
 	// 		const newGridData = [...prodGrid.gridData];
 	// 		newGridData[sqtyLock.rowIndex] = newRowData;
 

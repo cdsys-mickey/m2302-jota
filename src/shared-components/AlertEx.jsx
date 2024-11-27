@@ -7,6 +7,7 @@ import { memo } from "react";
 const AlertEx = memo(
 	forwardRef((props, ref) => {
 		const {
+			dense = false,
 			severity,
 			size = "small",
 			sx = [],
@@ -54,7 +55,7 @@ const AlertEx = memo(
 			}
 		}, [size]);
 
-		const memoisedSeverity = useMemo(() => {
+		const _severity = useMemo(() => {
 			return error ? "error" : severity;
 		}, [error, severity]);
 
@@ -67,10 +68,22 @@ const AlertEx = memo(
 		return (
 			<Alert
 				ref={ref}
-				severity={memoisedSeverity}
+				severity={_severity}
 				sx={[
 					{
 						justifyContent: "center",
+					},
+					dense && {
+						"&.MuiPaper-root": {
+							padding: 0
+						},
+						"& .MuiAlert-icon": {
+							padding: "4px 0 4px 8px",
+							marginRight: "4px"
+						},
+						"& .MuiAlert-message": {
+							padding: "4px 12px 4px 4px"
+						}
 					},
 					transparent && {
 						padding: 0,
@@ -111,6 +124,7 @@ AlertEx.propTypes = {
 	maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	flex: PropTypes.bool,
 	transparent: PropTypes.bool,
+	dense: PropTypes.bool,
 	error: PropTypes.object,
 	severity: PropTypes.string,
 	defaultText: PropTypes.string,

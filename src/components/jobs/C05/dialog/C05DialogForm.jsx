@@ -16,6 +16,7 @@ import { C05AmtToolbar } from "./prod-grid/C05AmtToolbar";
 import { C05ProdGridBottomToolbar } from "./prod-grid/C05ProdGridBottomToolbar";
 import { C05ProdGridContainer } from "./prod-grid/C05ProdGridContainer";
 import C05ProdGridBottomToolbar2 from "./toolbar/C05ProdGridBottomToolbar2";
+import C05RtnDatePickerContainer from "./C05RtnDatePicker";
 
 const C05DialogForm = memo((props) => {
 	const {
@@ -65,7 +66,7 @@ const C05DialogForm = memo((props) => {
 						</Grid>)}
 
 						<Grid item xs={24} sm={24} md={4}>
-							<DatePickerWrapper
+							<C05RtnDatePickerContainer
 								typo
 								name="GrtDate"
 								label="退貨日期"
@@ -74,7 +75,6 @@ const C05DialogForm = memo((props) => {
 								required
 								validate
 								variant="outlined"
-								// onChanged={handleRtnDateChanged}
 								disableOpenOnInput
 							/>
 						</Grid>

@@ -51,10 +51,15 @@ export const useE01 = () => {
 		initialFetchSize: 50,
 	});
 
+	const createRow = useCallback(
+		() => E01.createRow(),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "Pkey",
-		// keyColumn: "prod.ProdID",
+		createRow
 	});
 
 	const sqtyManager = useSQtyManager({ grid, disablePwordCheck: true });
@@ -78,10 +83,7 @@ export const useE01 = () => {
 		[getPrevData]
 	);
 
-	const createRow = useCallback(
-		() => E01.createRow(),
-		[]
-	);
+
 
 	const getSPriceClassName = useCallback(({ rowData }) => {
 		return rowData.stype?.id ? "line-through" : null;
@@ -124,8 +126,10 @@ export const useE01 = () => {
 			prods: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.prods, { createRow, length: 13 });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.prods, {
+			fillRows: 13
+		});
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -563,7 +567,7 @@ export const useE01 = () => {
 		return processedRowData;
 	}, [grid.gridData, handleGridProdChange]);
 
-	const updateTooltip = useCallback(({ prevGridData, gridData, rowIndex }) => {
+	const mapTooltip = useCallback(({ prevGridData, gridData, rowIndex }) => {
 		const targetRow = gridData[rowIndex];
 		let targetProdID = targetRow.prod?.ProdID;
 		// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
@@ -635,11 +639,11 @@ export const useE01 = () => {
 
 		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty")) {
 			console.log("before reduce", gridData);
-			const updated = updateTooltip({ prevGridData, gridData, rowIndex: updateResult.rowIndex })
+			const updated = mapTooltip({ prevGridData, gridData, rowIndex: updateResult.rowIndex })
 			console.log("after reduce", updated);
 			return updated;
 		}
-	}, [fetchAmt, updateTooltip]);
+	}, [fetchAmt, mapTooltip]);
 
 	const buildGridChangeHandlerOld = useCallback(
 		({ gridMeta, getValues }) => async (newValue, operations) => {
@@ -902,8 +906,10 @@ export const useE01 = () => {
 			shouldTouch: true
 		});
 		gridMeta.setActiveCell(null);
-		grid.initGridData([], { createRow });
-	}, [createRow, grid]);
+		grid.initGridData([], {
+			fillRows: true
+		});
+	}, [grid]);
 
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
@@ -1014,7 +1020,6 @@ export const useE01 = () => {
 			shouldTouch: true
 		});
 
-		// grid.initGridData([], { createRow });
 		if (grid.gridData.filter(rowData => rowData.prod?.ProdID).length > 0) {
 			handleSubmit();
 		} else {

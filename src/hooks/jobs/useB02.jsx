@@ -40,23 +40,13 @@ export const useB02 = (opts = {}) => {
 
 	const [selectedInq, setSelectedInq] = useState();
 
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-	} = useWebApi();
-	const dialogs = useContext(DialogsContext);
-
 	const listLoader = useInfiniteLoader({
 		url: API_URL,
 		bearer: token,
 		initialFetchSize: 50,
-	});
-
-	const grid = useDSG({
-		gridId: "quotes",
-		keyColumn: "pkey",
+		params: {
+			sort: 1
+		}
 	});
 
 	const createRow = useCallback(
@@ -68,6 +58,14 @@ export const useB02 = (opts = {}) => {
 		[]
 	);
 
+	const grid = useDSG({
+		gridId: "quotes",
+		keyColumn: "pkey",
+		createRow
+	});
+
+
+
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
@@ -75,8 +73,8 @@ export const useB02 = (opts = {}) => {
 			quotes: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.quotes, { createRow });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.quotes, { fillRows: true });
+	}, [crud, grid]);
 
 	const onSearchSubmit = useCallback((data) => {
 		console.log("onSearchSubmit", data);

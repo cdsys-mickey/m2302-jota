@@ -44,7 +44,7 @@ export const B011DialogToolbarContainer = (props) => {
 	return (
 		<B011DialogViewToolbar
 			onEdit={b011.canUpdate ? b011.promptUpdating : null}
-			onDelete={b011.canDelete ? b011.confirmDelete : null}
+			// onDelete={b011.canDelete ? b011.confirmDelete : null}
 			// onPrint={b011.canPrint ? handlePrint : null}
 			onSideDrawerOpen={b011.handleSideDrawerOpen}
 			{...rest}

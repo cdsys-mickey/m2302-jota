@@ -24,7 +24,6 @@ const A09GridContainer = () => {
 	return (
 		<DSGContext.Provider value={{ ...a09.gridMeta }}>
 			<A09Grid
-				// columns={a09.gridMeta.columns}
 				lockRows={a09.grid.readOnly}
 				gridRef={a09.gridMeta.setGridRef}
 				data={a09.grid.gridData}

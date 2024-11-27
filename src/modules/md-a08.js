@@ -21,7 +21,7 @@ const transformForReading = (payload) => {
 	return payload.data.map((i) => {
 		const { Other1, ...rest } = i;
 		return {
-			areaType: AreaTypes.findById(Other1),
+			areaType: AreaTypes.findById(Other1) || null,
 			...rest,
 		};
 	});
@@ -30,17 +30,22 @@ const transformForReading = (payload) => {
 const transformForSubmitting = (rowData) => {
 	const { areaType, ...rest } = rowData;
 	return {
-		...(areaType?.id && {
-			Other1: areaType?.id,
-		}),
+		Other1: areaType?.id,
 		...rest,
 	};
 };
+
+const createRow = () => ({
+	// CodeID: "",
+	areaType: null,
+	// CodeData: "",
+});
 
 const A08 = {
 	paramsToJsonData,
 	transformForReading,
 	transformForSubmitting,
+	createRow,
 };
 
 export default A08;

@@ -51,9 +51,26 @@ export const useC09 = () => {
 		initialFetchSize: 50,
 	});
 
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			prod: null,
+			SQty: "",
+			SPrice: "",
+			SAmt: "",
+			stype: null,
+			dtype: null,
+			SRemark: "",
+			ChkQty: "",
+			SoQty: 0,
+		}),
+		[]
+	);
+
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
+		createRow
 	});
 
 	const refreshAmt = useCallback(
@@ -77,21 +94,7 @@ export const useC09 = () => {
 		[]
 	);
 
-	const createRow = useCallback(
-		() => ({
-			Pkey: nanoid(),
-			prod: null,
-			SQty: "",
-			SPrice: "",
-			SAmt: "",
-			stype: null,
-			dtype: null,
-			SRemark: "",
-			ChkQty: "",
-			SoQty: 0,
-		}),
-		[]
-	);
+
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -103,8 +106,8 @@ export const useC09 = () => {
 			depOrders: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.prods, { createRow });
-	}, [createRow, crud, grid]);
+		grid.initGridData(data.prods, { fillRows: true });
+	}, [crud, grid]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -359,7 +362,7 @@ export const useC09 = () => {
 				if (!newValue) {
 					setValue("txoDept", null);
 
-					grid.setGridData([], { createRow });
+					grid.setGridData([], { fillRows: true });
 					setValue("depOrders", []);
 					setValue("remark", "");
 					setValue("TxiAmt", "0.00");
@@ -393,7 +396,7 @@ export const useC09 = () => {
 					if (status.success) {
 						const data = C09.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
-						grid.setGridData(data.prods, { createRow, supressEvents: true });
+						grid.setGridData(data.prods, { fillRows: true, supressEvents: true });
 						setValue("depOrders", data.depOrders);
 						setValue("TxoChk", data.TxoChk);
 						setValue("remark", data.remark);
@@ -408,7 +411,7 @@ export const useC09 = () => {
 					});
 				}
 			},
-		[createRow, httpPostAsync, grid, refreshAmt, token]
+		[httpPostAsync, grid, refreshAmt, token]
 	);
 
 	/**
@@ -423,13 +426,13 @@ export const useC09 = () => {
 					shouldTouch: true
 				});
 
-				grid.setGridData([], { createRow });
+				grid.setGridData([], { fillRows: true });
 				setValue("depOrders", []);
 				setValue("remark", "");
 
 				setValue("TxiAmt", "0.00");
 			},
-		[createRow, grid]
+		[grid]
 	);
 
 
@@ -454,24 +457,25 @@ export const useC09 = () => {
 			}) : null;
 
 			// 取得報價
+			let quoted = !!prodInfo?.Price;
 
 			let newRowData = {
 				...rowData,
-				["prod"]: prodInfo?.Price ? rowData.prod : null,
-				["ProdData"]: prod?.ProdData || "",
-				["PackData_N"]: prod?.PackData_N || "",
-				["SPrice"]: prodInfo?.Price || "",
+				["prod"]: quoted ? rowData.prod : null,
+				["ProdData"]: quoted ? prod?.ProdData || "" : "",
+				["PackData_N"]: quoted ? prod?.PackData_N || "" : "",
+				["SPrice"]: quoted ? prodInfo?.Price || "" : "",
 				["SQty"]: "",
 				["SAmt"]: "",
 				["stype"]: null,
 				["dtype"]: null,
-				["SoFlag_N"]: prodInfo?.SoFlag_N || "",
-				["StockQty_N"]: prodInfo?.Stock || "",
+				["SoFlag_N"]: quoted ? prodInfo?.SoFlag_N || "" : "",
+				["StockQty_N"]: quoted ? prodInfo?.Stock || "" : "",
 
 			};
 
-			if (prod && !prodInfo?.Price) {
-				toast.error("商品未訂調撥成本，不得訂購", {
+			if (prod && !quoted) {
+				toast.error(`「${prod.ProdData}」未訂調撥成本，不得輸入`, {
 					position: "top-right",
 				});
 			}
@@ -682,7 +686,9 @@ export const useC09 = () => {
 								payload.data[0]
 							);
 							console.log("refreshed data", data);
-							grid.initGridData(data.prods, { createRow });
+							grid.initGridData(data.prods, {
+								fillRows: true
+							});
 							refreshAmt({ setValue, data });
 							toast.info("商品單價已更新");
 						} else {
@@ -701,7 +707,7 @@ export const useC09 = () => {
 					// 還原
 				}
 			},
-		[createRow, httpPostAsync, grid, refreshAmt, token]
+		[httpPostAsync, grid, refreshAmt, token]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {

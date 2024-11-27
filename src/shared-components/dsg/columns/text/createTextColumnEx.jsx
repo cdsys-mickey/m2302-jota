@@ -4,7 +4,7 @@ export const createTextColumnEx = ({
 	placeholder,
 	alignRight = false,
 	continuousUpdates = false,
-	deletedValue = null,
+	deletedValue = "",
 	parseUserInput = (value) => value.trim() || null,
 	formatBlurredInput = (value) => String(value ?? ""),
 	formatInputOnFocus = (value) => String(value ?? ""),
