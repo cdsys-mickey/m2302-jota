@@ -3,6 +3,7 @@ import { B02DialogContainer } from "@/components/jobs/B02/dialog/B02DialogContai
 import { B02ListFormContainer } from "@/components/jobs/B02/list/B02ListFormContainer";
 import B02ListHeader from "@/components/jobs/B02/list/B02ListHeader";
 import B02ListToolbar from "@/components/jobs/B02/list/B02ListToolbar";
+import B02ListToolbarContainer from "@/components/jobs/B02/list/B02ListToolbarContainer";
 import { B02ListViewContainer } from "@/components/jobs/B02/list/B02ListViewContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
@@ -30,7 +31,7 @@ export const B02FrameContainer = () => {
 				{/* 篩選工具列 */}
 				<B02ListFormContainer />
 				{/* 工具列 */}
-				<B02ListToolbar />
+				<B02ListToolbarContainer />
 				{/* 列表 */}
 				<B02ListHeader />
 				<B02ListViewContainer />

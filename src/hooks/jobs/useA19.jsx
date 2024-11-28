@@ -7,6 +7,8 @@ import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
 import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
 import useDebugDialog from "../useDebugDialog";
 import { useMemo } from "react";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import queryString from "query-string";
 
 export const useA19 = () => {
 	const { token, operator } = useContext(AuthContext);
@@ -15,6 +17,7 @@ export const useA19 = () => {
 		token,
 		moduleId: "A19",
 	});
+	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
 	const formMeta = useFormMeta(
@@ -34,21 +37,27 @@ export const useA19 = () => {
 	)
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx?LogKey=${operator.LogKey}`
-	}, [operator.LogKey])
+		return `${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx`
+	}, [])
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
 		const data = A19.transformForSubmitting(payload);
-		debugDialog.show({ data, url: reportUrl })
-	}, [debugDialog, reportUrl]);
+		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
+	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, reportUrl]);
 
 	const onSubmit = useCallback(
 		(payload) => {
 			console.log("onSubmit", payload);
 			const data = A19.transformForSubmitting(payload);
 			console.log("data", data);
-			postToBlank(reportUrl,
+			postToBlank(
+				queryString.stringifyUrl({
+					url: reportUrl,
+					query: {
+						LogKey: operator.LogKey
+					}
+				}),
 				{
 					jsonData: JSON.stringify(data),
 				}

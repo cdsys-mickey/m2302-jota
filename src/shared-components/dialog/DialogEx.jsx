@@ -143,23 +143,34 @@ const DialogEx = memo(
 				return;
 			}
 			if (onConfirm) {
-				onConfirm(inputRef.current?.value);
+				onConfirm({
+					value: inputRef.current?.value,
+					id
+				});
 			}
-		}, [onConfirm, onSubmit]);
+		}, [id, onConfirm, onSubmit]);
 
 		const handleCancel = useCallback(() => {
 			if (onCancel) {
 				onCancel();
 			}
-			onClose();
-		}, [onCancel, onClose]);
+			if (onClose) {
+				onClose({
+					id
+				});
+			}
+		}, [id, onCancel, onClose]);
 
 		const handleClose = useCallback(() => {
 			if (triggerCancelOnClose && onCancel) {
 				onCancel();
 			}
-			onClose();
-		}, [triggerCancelOnClose, onCancel, onClose]);
+			if (onClose) {
+				onClose({
+					id
+				});
+			}
+		}, [triggerCancelOnClose, onCancel, onClose, id]);
 
 		const handleKeyDown = useCallback(
 			(e) => {

@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { useCallback } from "react";
 import { useState } from "react";
 
-export const useDialogs = ({ buttonProps }) => {
+export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 	const [entities, setEntities] = useState([]);
 
 	const close = useCallback((opts = {}) => {
@@ -13,9 +13,9 @@ export const useDialogs = ({ buttonProps }) => {
 			if (id) {
 				const selected = prev.find(x => x.id === id);
 				if (selected) {
-					if (selected.onClose) {
-						selected.onClose();
-					}
+					// if (selected.onClose) {
+					// 	selected.onClose();
+					// }
 					if (dontDestory) {
 						return prev.map(x => x.id === opts.id ? { ...x, open: false, working: false } : x);
 					} else {
@@ -48,15 +48,22 @@ export const useDialogs = ({ buttonProps }) => {
 
 	const create = useCallback(
 		({
-			buttonProps: _buttonProps,
+			buttonProps,
 			closeOthers = false,
 			onConfirm,
 			// onCancel,
+			closeOnConfirm = true,
 			...dialogProps
 		}) => {
 			const newId = nanoid();
-			const handleConfirm = (v) => {
-				onConfirm({ id: newId, value: v });
+			const handleConfirm = (opts) => {
+				const { value } = opts;
+				if (onConfirm) {
+					onConfirm({ id: newId, value });
+				}
+				if (closeOnConfirm) {
+					close({ id: newId });
+				}
 			}
 
 			// const handleCancel = (opts) => {
@@ -66,17 +73,15 @@ export const useDialogs = ({ buttonProps }) => {
 			// 	close(opts);
 			// }
 
-			const handleClose = (opts) => {
-				close(opts);
+			const handleClose = () => {
+				close({ id: newId });
 			}
-
-			console.log("closeOthers", closeOthers);
 
 			const newDialog = {
 				id: newId,
 				buttonProps: {
+					...baseButtonProps,
 					...buttonProps,
-					..._buttonProps,
 				},
 				open: true,
 				onConfirm: handleConfirm,
@@ -96,7 +101,7 @@ export const useDialogs = ({ buttonProps }) => {
 			}
 			return newId;
 		},
-		[buttonProps, close]
+		[baseButtonProps, close]
 	);
 
 	const setWorking = useCallback((working) => {
@@ -144,10 +149,10 @@ export const useDialogs = ({ buttonProps }) => {
 			// message = "[訊息]",
 			message,
 			value = "",
-			onConfirm,
+			// onConfirm,
 			onCancel,
 			label,
-			closeOnConfirm = true,
+			// closeOnConfirm = true,
 			...rest
 		}) => {
 			return create({
@@ -158,12 +163,12 @@ export const useDialogs = ({ buttonProps }) => {
 				promptTextFieldProps: {
 					label: label,
 				},
-				onConfirm: (opts) => {
-					if (onConfirm) onConfirm(opts);
-					if (closeOnConfirm) {
-						close(opts);
-					}
-				},
+				// onConfirm: (opts) => {
+				// 	if (onConfirm) onConfirm(opts);
+				// 	if (closeOnConfirm) {
+				// 		close(opts);
+				// 	}
+				// },
 				onCancel: (opts) => {
 					if (onCancel) onCancel(opts);
 					close(opts);
@@ -179,15 +184,15 @@ export const useDialogs = ({ buttonProps }) => {
 			return create({
 				title: title,
 				message: message,
-				onConfirm: (opts) => {
-					if (onConfirm) onConfirm(opts);
-					// closeLatest();
-					close(opts);
-				},
+				// onConfirm: (opts) => {
+				// 	if (onConfirm) onConfirm(opts);
+				// 	// closeLatest();
+				// 	close(opts);
+				// },
 				...rest,
 			});
 		},
-		[create, close]
+		[create]
 	);
 
 	return {

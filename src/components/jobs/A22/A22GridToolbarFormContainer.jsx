@@ -9,6 +9,8 @@ import { A22GenReportButtonContainer } from "./A22GenReportButtonContainer";
 import { A22GridCancelEditButtonContainer } from "./A22GridCancelEditButtonContainer";
 import { A22OutputModePickerContainer } from "./A22OutputModePickerContainer";
 import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer";
+import { useMemo } from "react";
+import DebugDialogButtonContainer from "@/components/home/debug/DebugDialogButtonContainer";
 
 export const A22GridToolbarFormContainer = () => {
 	const form = useForm({
@@ -17,6 +19,12 @@ export const A22GridToolbarFormContainer = () => {
 		},
 	});
 	const a22 = useContext(A22Context);
+
+	const onDebugSubmit = useMemo(() => {
+		return form.handleSubmit(
+			a22.onDebugSubmit,
+		)
+	}, [a22.onDebugSubmit, form]);
 
 	if (a22.gridLoading || !a22.gridData || a22.gridData?.length === 0) {
 		return false;
@@ -27,19 +35,22 @@ export const A22GridToolbarFormContainer = () => {
 			<form>
 				<FlexBox component={Paper} my={1} py={0.8} px={1}>
 					<Grid container spacing={1}>
-						<FlexGrid alignItems="center" item xs={7} >
+						<FlexGrid alignItems="center" item xs={3} >
 							<A22GridLockRowsSwitchContainer />
 						</FlexGrid>
 
 						<FlexGrid
 							item
-							xs={5}
+							xs={9}
 							alignItems="center"
 							justifyContent="flex-end">
 							<Box mr={0.5}>
 								<A22OutputModePickerContainer dense width="10rem" disableClearable />
 							</Box>
 							<A22GenReportButtonContainer />
+							<Box ml={0.5}>
+								<DebugDialogButtonContainer onClick={onDebugSubmit} />
+							</Box>
 							<Box ml={0.5}>
 								<A22GridCancelEditButtonContainer />
 							</Box>

@@ -306,7 +306,7 @@ export const useA06 = ({ token, mode }) => {
 	}, [reviewAction.state]);
 
 	const handleReview = useCallback(
-		async (value) => {
+		async ({ value }) => {
 			console.log(`handleReview`, value);
 			try {
 				const { status, error } = await httpPatchAsync({

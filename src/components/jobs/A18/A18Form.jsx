@@ -13,9 +13,10 @@ import { RealFilePicker } from "@/components/picker/RealFilePicker";
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import A18ActionPicker from "./picker/A18ActionPicker";
 import Forms from "@/shared-modules/sd-forms";
+import DebugDialogButtonContainer from "@/components/home/debug/DebugDialogButtonContainer";
 
 const A18Form = memo((props) => {
-	const { onSubmit, ...rest } = props;
+	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest}>
@@ -79,6 +80,7 @@ const A18Form = memo((props) => {
 
 							<FlexToolbar align="right">
 								{/* <A18FormButtonsContainer /> */}
+								<DebugDialogButtonContainer onClick={onDebugSubmit} />
 								<ButtonWrapper
 									responsive
 									startIcon={<OpenInNewIcon />}
@@ -100,6 +102,7 @@ const A18Form = memo((props) => {
 
 A18Form.propTypes = {
 	onSubmit: PropTypes.func,
+	onDebugSubmit: PropTypes.func,
 	readWorking: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,

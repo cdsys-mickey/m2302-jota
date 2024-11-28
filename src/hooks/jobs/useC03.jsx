@@ -654,7 +654,7 @@ export const useC03 = () => {
 	}, [reviewAction.state]);
 
 	const handleReview = useCallback(
-		async (value) => {
+		async ({ value }) => {
 			console.log(`handleReview`, value);
 			try {
 				reviewAction.start();

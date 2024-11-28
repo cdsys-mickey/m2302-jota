@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import queryString from "query-string";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import { useCallback } from "react";
+import _ from "lodash";
 
 const ProdPicker = (props) => {
 	const {
@@ -84,9 +85,10 @@ const ProdPicker = (props) => {
 	}, []);
 
 	const getNotFoundText = useCallback((params = {}) => {
-		const { id, error } = params;
-		console.log("params", params);
-		return error?.message || "商品代號 ${id} 不存在";
+		const { error } = params;
+		const notFoundMsgTemplate = _.template("商品代號 ${id} 不存在");
+		const notFoundMsg = notFoundMsgTemplate(params);
+		return error?.message || notFoundMsg;
 	}, []);
 
 	const notFoundText = useMemo(() => {

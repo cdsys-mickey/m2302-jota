@@ -12,7 +12,7 @@ export default function useDebugDialog() {
 		toast.info("報表資訊已複製到剪貼簿");
 	}, []);
 
-	const show = useCallback(({ data, url }) => {
+	const show = useCallback(({ data, url, title = "報表資訊" }) => {
 		const message =
 			"呼叫網址:\n" +
 			`\t${url}\n` +
@@ -21,7 +21,7 @@ export default function useDebugDialog() {
 			JSON.stringify(data, null, 2);
 
 		dialogs.create({
-			title: "報表",
+			title: title,
 			onConfirm: () => {
 				copyToClipboard(message);
 			},
@@ -41,7 +41,11 @@ export default function useDebugDialog() {
 					<br />
 					<b>使用參數:</b>
 					<ul style={{ listStyle: "none" }}>
-						<li>{JSON.stringify(data, null, 2)}</li>
+						<li>
+							<pre>
+								{JSON.stringify(data, null, 2)}
+							</pre>
+						</li>
 					</ul>
 				</div>
 			),

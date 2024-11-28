@@ -18,6 +18,8 @@ import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picke
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import useDebugDialog from "../useDebugDialog";
+import queryString from "query-string";
 
 export const useA22 = ({
 	form
@@ -28,6 +30,7 @@ export const useA22 = ({
 	const { postToBlank } = useHttpPost();
 
 	const appFrame = useContext(AppFrameContext);
+	const debugDialog = useDebugDialog();
 	const recoverDrawerOpen = useRef();
 
 	const [state, setState] = useState({
@@ -277,6 +280,20 @@ export const useA22 = ({
 		return rowData?.prod?.ProdID || rowIndex;
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${import.meta.env.VITE_URL_REPORT}/WebA22Rep.aspx`
+	}, [])
+
+	const onDebugSubmit = useCallback((payload) => {
+		console.log("onSubmit", payload);
+		const collected = A22.transformForSubmitting(grid.gridData, payload);
+		const data = {
+			...collected,
+			DeptId: operator.CurDeptID,
+		};
+		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
+	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, grid.gridData, operator.CurDeptID, reportUrl]);
+
 	const onGenReportSubmit = useCallback(
 		(data) => {
 			console.log("onGenReportSubmit", data);
@@ -287,14 +304,18 @@ export const useA22 = ({
 				DeptId: operator.CurDeptID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebA22Rep.aspx?LogKey=${operator.LogKey
-				}`,
+				queryString.stringifyUrl({
+					url: reportUrl,
+					query: {
+						LogKey: operator.LogKey
+					}
+				}),
 				{
 					jsonData: JSON.stringify(payload),
 				}
 			);
 		},
-		[grid.gridData, operator.CurDeptID, operator.LogKey, postToBlank]
+		[grid.gridData, operator.CurDeptID, operator.LogKey, postToBlank, reportUrl]
 	);
 
 	const onGenReportSubmitError = useCallback((err) => {
@@ -441,6 +462,7 @@ export const useA22 = ({
 		handleCreateRow,
 		handleGridChange,
 		formMeta,
-		onUpdateRow
+		onUpdateRow,
+		onDebugSubmit
 	};
 };

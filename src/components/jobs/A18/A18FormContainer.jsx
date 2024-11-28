@@ -15,10 +15,17 @@ export const A18FormContainer = () => {
 			a18.onSubmitError
 		)
 	}, [a18.onSubmit, a18.onSubmitError, form]);
+
+	const onDebugSubmit = useMemo(() => {
+		return form.handleSubmit(
+			a18.onDebugSubmit,
+		)
+	}, [a18.onDebugSubmit, form]);
+
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...a18.formMeta}>
-				<A18Form onSubmit={onSubmit} />
+				<A18Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

@@ -407,7 +407,7 @@ export const useC02 = () => {
 	}, [reviewAction.state]);
 
 	const handleReview = useCallback(
-		async (value) => {
+		async ({ value }) => {
 			console.log(`handleReview`, value);
 			const nextId = listLoader.findNextId({
 				id: crud.itemData?.RqtID,

@@ -12,6 +12,10 @@ import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import useDebugDialog from "../useDebugDialog";
+import queryString from "query-string";
+import B02 from "@/modules/md-b02";
 
 export const useB02 = (opts = {}) => {
 	const { forNew } = opts;
@@ -34,6 +38,8 @@ export const useB02 = (opts = {}) => {
 		token,
 		moduleId: JOB_NAME,
 	});
+	const appFrame = useContext(AppFrameContext);
+	const debugDialog = useDebugDialog();
 
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
@@ -157,35 +163,70 @@ export const useB02 = (opts = {}) => {
 		loading: false,
 	});
 
+	const transformForPrinting = useCallback((data) => {
+		return {
+			...(data.outputType && {
+				Action: data.outputType.id,
+			}),
+			DeptID: operator?.CurDeptID,
+			JobName: JOB_NAME,
+
+			CustID1: data.customer?.CustID || "",
+			CustID2: data.customer2?.CustID || "",
+			ProdID1: data.prod?.ProdID || "",
+			ProdID2: data.prod2?.ProdID || "",
+			QDate1: Forms.formatDate(data.date) || "",
+			QDate2: Forms.formatDate(data.date2) || "",
+			// OrderBy: data.orderBy?.id == 2 ? "ZA.ProdID, ZA.QDate DESC" : ""
+			OrderBy: data.orderBy?.id,
+		};
+	}, [JOB_NAME, operator?.CurDeptID]);
+
+	const reportUrl = useMemo(() => {
+		return `${import.meta.env.VITE_URL_REPORT}/WebB0204Rep.aspx`
+	}, [])
+
+	const onDebugSubmit = useCallback((payload) => {
+		console.log("onSubmit", payload);
+		const data = transformForPrinting(payload);
+		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
+	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, reportUrl, transformForPrinting]);
+
 	const onPrintSubmit = useCallback(
 		(data) => {
 			console.log("onPrintSubmit", data);
 			const { outputType } = data;
-			const jsonData = {
-				...(data.outputType && {
-					Action: data.outputType.id,
-				}),
-				DeptID: operator?.CurDeptID,
-				JobName: JOB_NAME,
+			// const jsonData = {
+			// 	...(data.outputType && {
+			// 		Action: data.outputType.id,
+			// 	}),
+			// 	DeptID: operator?.CurDeptID,
+			// 	JobName: JOB_NAME,
 
-				CustID1: data.customer?.CustID || "",
-				CustID2: data.customer2?.CustID || "",
-				ProdID1: data.prod?.ProdID || "",
-				ProdID2: data.prod2?.ProdID || "",
-				QDate1: Forms.formatDate(data.date) || "",
-				QDate2: Forms.formatDate(data.date2) || "",
-				// OrderBy: data.orderBy?.id == 2 ? "ZA.ProdID, ZA.QDate DESC" : ""
-				OrderBy: data.orderBy?.id
-			};
+			// 	CustID1: data.customer?.CustID || "",
+			// 	CustID2: data.customer2?.CustID || "",
+			// 	ProdID1: data.prod?.ProdID || "",
+			// 	ProdID2: data.prod2?.ProdID || "",
+			// 	QDate1: Forms.formatDate(data.date) || "",
+			// 	QDate2: Forms.formatDate(data.date2) || "",
+			// 	// OrderBy: data.orderBy?.id == 2 ? "ZA.ProdID, ZA.QDate DESC" : ""
+			// 	OrderBy: data.orderBy?.id
+			// };
+			const jsonData = transformForPrinting(data);
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB0204Rep.aspx?LogKey=${operator?.LogKey}`,
+				queryString.stringifyUrl({
+					url: reportUrl,
+					query: {
+						LogKey: operator.LogKey
+					},
+				}),
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[operator?.CurDeptID, operator?.LogKey, postToBlank]
+		[operator.LogKey, postToBlank, reportUrl, transformForPrinting]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -230,6 +271,7 @@ export const useB02 = (opts = {}) => {
 		// handleLastField,
 		loadProdFormMeta,
 		...sideDrawer,
-		forNew
+		forNew,
+		onDebugSubmit
 	};
 };

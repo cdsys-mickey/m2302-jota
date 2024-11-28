@@ -109,6 +109,7 @@ const A19Form = memo((props) => {
 									label="起始日期"
 									fullWidth
 									validate
+									clearable
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -117,6 +118,7 @@ const A19Form = memo((props) => {
 									label="截止日期"
 									fullWidth
 									validate
+									clearable
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
