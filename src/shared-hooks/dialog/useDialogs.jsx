@@ -22,8 +22,9 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 						return prev.filter(x => x.id !== opts.id);
 					}
 				} else {
-					console.warn(`由於沒有找到 opts.id [${opts.id}], 清除了所有 dialogs`)
-					return [];
+					console.warn(`由於沒有找到 opts.id [${opts.id}], 忽略關閉視窗動作`)
+					return prev;
+					// return [];
 				}
 			} else {
 				console.warn("由於 opts.id 為空, 清除了所有 dialogs")
@@ -48,6 +49,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 
 	const create = useCallback(
 		({
+			id,
 			buttonProps,
 			closeOthers = false,
 			onConfirm,
@@ -55,7 +57,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 			closeOnConfirm = true,
 			...dialogProps
 		}) => {
-			const newId = nanoid();
+			const newId = id || nanoid();
 			const handleConfirm = (opts) => {
 				const { value } = opts;
 				if (onConfirm) {
@@ -124,7 +126,9 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 			closeOnConfirm = true,
 			...rest
 		}) => {
+			const newId = nanoid();
 			return create({
+				id: newId,
 				title: title,
 				message: message,
 				onConfirm: (opts) => {
@@ -155,7 +159,9 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 			// closeOnConfirm = true,
 			...rest
 		}) => {
+			const newId = nanoid();
 			return create({
+				id: newId,
 				title: title,
 				message: message,
 				prompt: true,
@@ -180,8 +186,10 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 	);
 
 	const alert = useCallback(
-		({ title = "提醒", message = "[訊息]", onConfirm, ...rest }) => {
+		({ title = "提醒", message = "[訊息]", ...rest }) => {
+			const newId = nanoid();
 			return create({
+				id: newId,
 				title: title,
 				message: message,
 				// onConfirm: (opts) => {

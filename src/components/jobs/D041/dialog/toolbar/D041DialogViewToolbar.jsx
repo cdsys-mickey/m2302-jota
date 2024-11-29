@@ -10,7 +10,7 @@ import { IconButton, Tooltip } from "@mui/material";
 
 const D041DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onPrint, onSideDrawerOpen, ...rest } = props;
+		const { onEdit, onDelete, onPrint, onSideDrawerOpen, checkEditableWorking, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onPrint && (
@@ -35,7 +35,8 @@ const D041DialogViewToolbar = memo(
 						responsive
 						startIcon={<EditOutlinedIcon />}
 						color="primary"
-						onClick={onEdit}>
+						onClick={onEdit}
+						loading={checkEditableWorking}>
 						編輯
 					</ButtonWrapper>
 				)}

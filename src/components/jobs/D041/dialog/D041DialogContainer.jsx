@@ -21,6 +21,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D041Drawer from "../D041Drawer";
 import D041DialogForm from "./D041DialogForm";
 import { D041DialogToolbarContainer } from "./toolbar/D041DialogToolbarContainer";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 
 export const D041DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -143,10 +144,11 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("SExpDate", dateFieldColumnEx),
+				// ...keyColumn("SExpDate", dateFieldColumnEx),
+				...keyColumn("SExpDate", dateInputColumn),
 				title: "有效日期",
-				minWidth: 140,
-				maxWidth: 160,
+				minWidth: 110,
+				maxWidth: 110,
 				disabled: readOnly,
 			},
 			{

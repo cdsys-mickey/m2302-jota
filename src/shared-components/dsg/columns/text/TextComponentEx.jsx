@@ -116,6 +116,9 @@ const TextComponentEx = memo(
 						break;
 					case "Tab":
 					case "Enter":
+						// 下面這段不要隨意修改, 
+						// stopEditing 必須在下個 thread 執行, 
+						// 否則密碼焦點會因為 focusNextCell 執行而被 grid 搶走
 						e.preventDefault();
 						e.stopPropagation();
 						setTimeout(() => {

@@ -150,8 +150,8 @@ const OptionPicker = memo(
 
 		const getNotFoundMessage = useCallback((params) => {
 			if (Types.isString(notFoundText)) {
-				const notFoundMsg = _.template(notFoundText);
-				return notFoundMsg(params);
+				const notFoundTemplete = _.template(notFoundText);
+				return notFoundTemplete(params);
 			} else if (Types.isFunction(notFoundText)) {
 				return notFoundText(params);
 			}

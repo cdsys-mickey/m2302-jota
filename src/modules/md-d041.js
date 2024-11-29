@@ -23,7 +23,8 @@ const transformGridForReading = (data) => {
 					},
 					ProdData: ProdData_N,
 					reworked: SFlag === "Y",
-					SExpDate: Forms.reformatDateAsDash(SExpDate),
+					// SExpDate: Forms.reformatDateAsDash(SExpDate),
+					SExpDate: SExpDate,
 					stype: FreeProdTypes.getOptionById(SType),
 					dtype: SRsnID
 						? {

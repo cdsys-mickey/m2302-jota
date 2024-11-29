@@ -2,8 +2,9 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 
 import { ProdTypeAPickerComponentContainer } from "@/components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
 import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
+import { createDateInputColumn } from "@/shared-components/dsg/columns/date-input/createDateInputColumn";
 import { createDateFieldColumnEx } from "@/shared-components/dsg/columns/date/createDateFieldColumnEx";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import { createMuiDateColumn } from "@/shared-components/dsg/columns/date/createMuiDateColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import createOptionPickerColumn from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -83,18 +84,18 @@ export const useDSGTest4 = () => {
 				maxWidth: 48,
 				disabled: grid.readOnly
 			},
-			{
-				...keyColumn(
-					"SOrdQty",
-					createFloatColumn(2, {
-						// enterToNext: true
-					})
-				),
-				title: "數字欄位",
-				minWidth: 90,
-				maxWidth: 90,
-				disabled: grid.readOnly
-			},
+			// {
+			// 	...keyColumn(
+			// 		"SOrdQty",
+			// 		createFloatColumn(2, {
+			// 			// enterToNext: true
+			// 		})
+			// 	),
+			// 	title: "數字欄位",
+			// 	minWidth: 90,
+			// 	maxWidth: 90,
+			// 	disabled: grid.readOnly
+			// },
 
 			{
 				...keyColumn(
@@ -106,7 +107,7 @@ export const useDSGTest4 = () => {
 						// required: true
 					})
 				),
-				title: "有效日期",
+				title: "DateField",
 				minWidth: 140,
 				maxWidth: 140,
 				disabled: grid.readOnly
@@ -118,7 +119,7 @@ export const useDSGTest4 = () => {
 			// 			name: "SExpDate2"
 			// 		})
 			// 	),
-			// 	title: "有效日期2",
+			// 	title: "MuiDate",
 			// 	minWidth: 140,
 			// 	maxWidth: 140,
 			// 	disabled: grid.readOnly
@@ -146,6 +147,20 @@ export const useDSGTest4 = () => {
 				minWidth: 160,
 				maxWidth: 160,
 			},
+			{
+				...keyColumn(
+					"SExpDate3",
+					createDateInputColumn({
+						// required: true,
+						// requiredMessage: "有效日期為必填"
+					})
+				),
+				title: "DateInput",
+				minWidth: 110,
+				maxWidth: 110,
+				disabled: grid.readOnly
+			},
+
 		],
 		[grid.readOnly]
 	);

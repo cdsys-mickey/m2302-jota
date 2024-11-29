@@ -16,7 +16,7 @@ export const useCellComponent = (props = {}) => {
 
 	const focusNextCell = useCallback(
 		(cell, opts = {}) => {
-			console.log("focusNextCell", cell);
+			console.log("focusNextCell from: ", cell);
 			if (!getNextCell) {
 				throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
 			}

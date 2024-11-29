@@ -6,7 +6,7 @@ const data = [
 ];
 
 const getOptionLabel = (option) => {
-	return `${option?.FactID} ${option?.FactData}`;
+	return [option?.FactID, option?.FactData].filter(Boolean).join(" ");
 };
 
 const getOptionLabelForId = (option) => {

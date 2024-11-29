@@ -1,15 +1,18 @@
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
-import DateTimes from "@/shared-modules/sd-date-times";
-import Events from "@/shared-modules/sd-events";
-import Forms from "@/shared-modules/sd-forms";
 import Objects from "@/shared-modules/sd-objects";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import InputMask from "react-input-mask";
 import { toast } from "react-toastify";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
+import Types from "@/shared-modules/sd-types";
+import _ from "lodash";
+import { useState } from "react";
 
-const DATE_FORMAT = "yyyy-MM-dd";
+const DATE_FORMAT = "yyyy/MM/dd";
+const EMPTY = "____/__/__";
+const MSG_REQUIRED = "必須輸入日期"
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -19,7 +22,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	});
 }
 
-const DateFieldComponentEx = memo((props) => {
+const DateInputMaskComponent = memo((props) => {
 	const {
 		focus,
 		active,
@@ -32,7 +35,8 @@ const DateFieldComponentEx = memo((props) => {
 		stopEditing,
 		insertRowBelow,
 	} = props;
-	const ref = useRef(null);
+	const inputRef = useRef(null);
+
 	const firstRender = useFirstRender();
 	const {
 		// pattern = "\\d{4}-\\d{2}-\\d{2}",
@@ -45,6 +49,8 @@ const DateFieldComponentEx = memo((props) => {
 		setActiveCell,
 		readOnly,
 		continuousUpdates,
+		required,
+		requiredMessage = MSG_REQUIRED
 		// ...rest
 	} = columnData;
 
@@ -69,9 +75,9 @@ const DateFieldComponentEx = memo((props) => {
 
 	useLayoutEffect(() => {
 		if (focus) {
-			ref.current?.select();
+			inputRef.current?.select();
 		} else {
-			ref.current?.blur();
+			inputRef.current?.blur();
 		}
 	}, [focus]);
 
@@ -113,7 +119,7 @@ const DateFieldComponentEx = memo((props) => {
 
 	const handleKeyDown = useCallback(
 		(e) => {
-			console.log("handleKeyDown", Events.forKey(e));
+			// console.log("handleKeyDown", Events.forKey(e));
 			switch (e.key) {
 				case "Enter":
 					e.preventDefault();
@@ -172,107 +178,142 @@ const DateFieldComponentEx = memo((props) => {
 	}, [continuousUpdates, setRowData]);
 
 	useEffect(() => {
-		// null 才是透過 del 清空的
-		if (rowData == null) {
-			console.log("sync dateValue to empty");
-			ref.value = "";
-		} else if (rowData && !ref.value) {
-			// 透過選擇方式改變
-			const newDateValue = Forms.reformatDateAsDash(rowData, DateTimes.DATEFNS_DATE_DASH);
-			console.log(`sync dateValue to ${newDateValue}`);
-			ref.value = newDateValue;
+		if (rowData == null && inputRef.value) {
+			// DEL 時同步到 inputRef
+			console.log("同步清空 ref");
+			// inputRef.value = EMPTY;
+			inputRef.value = "";
+		} else if (rowData && !inputRef.value) {
+			// 選擇時同步到 ref
+			// const newDateValue = Forms.reformatDateAsDash(rowData, DateTimes.DATEFNS_DATE_DASH);
+			console.log(`sync ref to ${rowData}`);
+			inputRef.value = rowData;
 		}
 	}, [rowData]);
 
-	const refocus = useCallback((doSelect = true) => {
-		console.log("refocus", doSelect);
+	const refocus = useCallback((opts = {}) => {
+		const { select = true } = opts;
+		console.log("refocus", select);
 
 		focusPrevCell();
 
-		ref.current?.focus();
-		if (doSelect) {
-			ref.current?.select();
+		inputRef.current?.focus();
+		if (select) {
+			inputRef.current?.select();
 		}
 	}, [focusPrevCell]);
 
+	const getRequiredMessage = useCallback((params) => {
+		if (Types.isFunction(requiredMessage)) {
+			return requiredMessage(params);
+		} else {
+			const notFoundTemplete = _.template(requiredMessage || MSG_REQUIRED);
+			return notFoundTemplete(params);
+		}
+
+	}, [requiredMessage]);
+
 	useLayoutEffect(() => {
 		if (focus) {
-			if (ref.current) {
+			if (inputRef.current) {
 				// ref.current.value = asyncRef.current.formatInputOnFocus(
 				// 	asyncRef.current.rowData
 				// );
-				ref.current.focus();
-				ref.current.select();
+				inputRef.current.focus();
+				inputRef.current.select();
 			}
 			asyncRef.current.escPressed = false;
 			asyncRef.current.focusedAt = Date.now();
 		} else {
-			if (ref.current) {
+			if (inputRef.current) {
 				if (
 					!asyncRef.current.escPressed &&
 					!asyncRef.current.continuousUpdates &&
 					!asyncRef.current.firstRender &&
 					asyncRef.current.changedAt >= asyncRef.current.focusedAt
 				) {
-					console.log(`${DateFieldComponentEx.displayName}.setRowDate`, ref.current.value);
-					asyncRef.current.setRowData(ref.current.value);
-					const validationResult = isValidDate(ref.current.value);
-					console.log("isValidDate", validationResult);
-					if (!validationResult) {
-						toast.error("日期格式錯誤", {
-							position: "top-right"
-						})
-						setTimeout(() => {
-							refocus({ select: true });
-						})
+					if (!inputRef.current.value) {
+						if (required) {
+							const message = getRequiredMessage({ value: inputRef.current.value })
+
+							toast.error(message, {
+								position: "top-right"
+							})
+							setTimeout(() => {
+								refocus();
+							})
+						}
+					} else {
+						const validationResult = isValidDate(inputRef.current.value);
+						console.log("isValidDate", validationResult);
+						if (!validationResult) {
+							toast.error(`${inputRef.current.value}不是正確的日期格式`, {
+								position: "top-right"
+							})
+							setTimeout(() => {
+								refocus();
+							})
+						}
 					}
+
+					console.log(`${DateInputMaskComponent.displayName}.setRowDate`, inputRef.current.value);
+					asyncRef.current.setRowData(inputRef.current.value);
 				}
-				ref.current.blur();
+				inputRef.current.blur();
 			}
 		}
-	}, [focus, isValidDate, refocus]);
+	}, [focus, getRequiredMessage, isValidDate, refocus, required]);
 
 	useEffect(() => {
-		if (!focus && ref.current) {
+		if (!focus && inputRef.current && inputRef.current?.value != rowData) {
+			console.log(`sync when not focused: ${inputRef.current.value} → ${rowData}`);
 			// On blur or when the data changes, format it for display
-			ref.current.value = rowData;
+			inputRef.current.value = rowData;
 		}
 	}, [focus, rowData]);
 
 	return (
-		<input
-			className={clsx('dsg-input', !active && 'dsg-hide-date-picker')}
-			type="date"
-			// Important to prevent any undesired "tabbing"
-			tabIndex={-1}
-			max="9999-12-31"
-			ref={ref}
-			// The `pointerEvents` trick is the same than in `textColumn`
-			// Only show the calendar symbol on non-empty cells, or when cell is active, otherwise set opacity to 0
-			style={{
-				// pointerEvents: focus ? 'auto' : 'none',
-				pointerEvents: active ? 'auto' : 'none',
-				opacity: rowData || active ? undefined : 0,
-			}}
-			// value={value}
+		<InputMask mask="9999/99/99" placeholder="YYYY/MM/DD"
+			onChange={handleChange}
+		>
+			{(inputProps) => (
+				<input
+					className={clsx('dsg-input')}
 
-			// value={rowData?.toISOString().substr(0, 10) ?? ''}
-			// onChange={(e) => {
-			// 	const date = new Date(e.target.value)
-			// 	setRowData(isNaN(date.getTime()) ? null : date)
-			// }}
+					tabIndex={-1}
+					// onChange={handleChange} // 用來更新顯示的值
+					onKeyDown={handleKeyDown}
+					style={{
+						// pointerEvents: focus ? 'auto' : 'none',
+						pointerEvents: active ? 'auto' : 'none',
+						opacity: rowData || active ? undefined : 0,
+					}}
+					{...inputProps}
+					ref={inputRef}
+				/>
+			)}
+			{/* <input
+				className={clsx('dsg-input')}
+				// Important to prevent any undesired "tabbing"
+				tabIndex={-1}
+				max="9999-12-31"
+				ref={ref}
+				// The `pointerEvents` trick is the same than in `textColumn`
+				// Only show the calendar symbol on non-empty cells, or when cell is active, otherwise set opacity to 0
+				style={{
+					// pointerEvents: focus ? 'auto' : 'none',
+					pointerEvents: active ? 'auto' : 'none',
+					opacity: rowData || active ? undefined : 0,
+				}}
 
-			// value={dateValue}
-			onChange={handleChange} // 用來更新顯示的值
-			// onInput={handleInputChange} // 攔截輸入動作
-			onKeyDown={handleKeyDown}
-
-		// {...rest}
-		/>
+				onChange={handleChange} // 用來更新顯示的值
+				onKeyDown={handleKeyDown}
+			/> */}
+		</InputMask>
 	);
 }, arePropsEqual);
 
-DateFieldComponentEx.propTypes = {
+DateInputMaskComponent.propTypes = {
 	// Cell Props
 	focus: PropTypes.bool,
 	active: PropTypes.bool,
@@ -298,5 +339,5 @@ DateFieldComponentEx.propTypes = {
 	setActiveCell: PropTypes.func,
 };
 
-DateFieldComponentEx.displayName = "DateFieldComponentEx";
-export default DateFieldComponentEx;
+DateInputMaskComponent.displayName = "DateInputMaskComponent";
+export default DateInputMaskComponent;

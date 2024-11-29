@@ -13,7 +13,7 @@ const parse = (input) => {
 	const result = input
 		.trim()
 		.split(/\s*,\s*(?![^{]*\})/)
-		.filter((x) => x)
+		.filter(Boolean)
 		.map((item) => {
 			// console.log("item→", item);
 			const [name, extra] = item.split(/\s*:\s*(?=\{)/);

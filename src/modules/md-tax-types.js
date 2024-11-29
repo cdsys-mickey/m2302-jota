@@ -17,7 +17,7 @@ const options = [
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { Tax, Tax_N } = option;
-	return `${Tax} ${Tax_N}`;
+	return [Tax, Tax_N].filter(Boolean).join(" ");
 };
 
 const isOptionEqualToValue = (option, value) => {

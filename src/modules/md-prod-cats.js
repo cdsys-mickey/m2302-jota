@@ -6,7 +6,7 @@ const data = Object.freeze({
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { id, name } = option;
-	return `${id} ${name}`;
+	return [id, name].filter(Boolean).join(" ");
 };
 
 const isOptionEqualToValue = (option, value) => {

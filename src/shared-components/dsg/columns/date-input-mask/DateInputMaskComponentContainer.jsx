@@ -1,9 +1,9 @@
 import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
-import DateFieldComponentEx from "./DateFieldComponentEx";
+import DateInputComponent from "./DateInputMaskComponent";
 
-export const DateFieldComponentExContainer = (props) => {
+export const DateInputMaskComponentContainer = (props) => {
 	const { columnData, ...rest } = props;
 	const cellControls = useCellControls();
 
@@ -14,9 +14,9 @@ export const DateFieldComponentExContainer = (props) => {
 		};
 	}, [cellControls, columnData]);
 
-	return <DateFieldComponentEx columnData={_columnData} {...rest} />;
+	return <DateInputComponent columnData={_columnData} {...rest} />;
 };
-DateFieldComponentExContainer.propTypes = {
+DateInputMaskComponentContainer.propTypes = {
 	columnData: PropTypes.object,
 };
-DateFieldComponentExContainer.displayName = "DateComponentExContainer";
+DateInputMaskComponentContainer.displayName = "DateComponentExContainer";

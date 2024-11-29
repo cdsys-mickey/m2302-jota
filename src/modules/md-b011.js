@@ -31,7 +31,8 @@ const transformGridForReading = (data) => {
 				ProdData: ProdData_N,
 			},
 			ProdData_N,
-			QDate: Forms.reformatDateAsDash(QDate),
+			// QDate: Forms.reformatDateAsDash(QDate),
+			QDate: QDate,
 			employee: {
 				CodeID: QEmplID,
 				CodeData: EmplData_N,

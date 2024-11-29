@@ -21,6 +21,7 @@ export const useDSGMeta = ({
 		cell: null,
 		forward: true,
 		activeCell: null,
+		refocus: false
 	});
 
 	const prevActiveCellRef = useRef();
@@ -164,26 +165,36 @@ export const useDSGMeta = ({
 		return next.row > prev.row;
 	}, []);
 
-	const focusPrevCell = useCallback(() => {
-		console.log("focusPrevCell, prevCell:", asyncMetaRef.current.prevCell)
+	const focusPrevCell = useCallback((newCell) => {
+		console.log("focusPrevCell, prevCell:", newCell || asyncMetaRef.current.prevCell)
 		if (asyncMetaRef.current.prevCell) {
-			setActiveCell(asyncMetaRef.current.prevCell);
+			asyncMetaRef.current.refocus = true;
+			setActiveCell(newCell || asyncMetaRef.current.prevCell);
 		}
 	}, [setActiveCell]);
 
+	/**
+	 * refocus 時不要記錄 cell 移動
+	 */
 	const handleActiveCellChange = useCallback(
 		({ cell }) => {
-			console.log("handleActiveCellChange", cell);
-			asyncMetaRef.current = {
-				prevCell: {
-					...asyncMetaRef.current?.cell,
-				},
-				cell: cell,
-				forward: isForward(asyncMetaRef.current?.cell, cell),
-			};
-			// if (onActiveCellChange) {
-			// 	onActiveCellChange(cell);
-			// }
+			if (
+				(asyncMetaRef.current?.cell?.col != cell?.col || asyncMetaRef.current?.cell?.row != cell?.row)
+
+			) {
+				console.log(`ActiveCellChange(prev->new), refocus: ${asyncMetaRef.current?.refocus}`, asyncMetaRef.current?.cell, cell);
+				if (!asyncMetaRef.current.refocus) {
+					asyncMetaRef.current = {
+						prevCell: asyncMetaRef.current?.cell,
+						cell: cell,
+						forward: isForward(asyncMetaRef.current?.cell, cell),
+						refocus: false
+					};
+					console.log("forward", asyncMetaRef.current.forward)
+				} else {
+					asyncMetaRef.current.refocus = false;
+				}
+			}
 		},
 		[isForward]
 	);

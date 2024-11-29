@@ -2,7 +2,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { D01Context } from "@/contexts/D01/D01Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -18,6 +18,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D01Drawer from "../D01Drawer";
 import D01DialogForm from "./D01DialogForm";
 import { D01DialogToolbarContainer } from "./toolbar/D01DialogToolbarContainer";
+import { createDateInputColumn } from "@/shared-components/dsg/columns/date-input/createDateInputColumn";
 
 export const D01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -147,10 +148,12 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				...keyColumn("SExpDate", dateFieldColumnEx),
+				// ...keyColumn("SExpDate", dateFieldColumnEx),
+				// ...keyColumn("SExpDate", createDateInputColumn({ disablePlaceholder: true })),
+				...keyColumn("SExpDate", dateInputColumn),
 				title: "有效日期",
-				minWidth: 150,
-				maxWidth: 150,
+				minWidth: 110,
+				maxWidth: 110,
 				disabled: readOnly,
 			},
 

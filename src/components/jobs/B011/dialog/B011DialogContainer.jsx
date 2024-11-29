@@ -22,6 +22,7 @@ import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer
 import PropTypes from "prop-types";
 import { B031Context } from "@/contexts/B031/B031Context";
 import { BContext } from "@/contexts/B/BContext";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
 	const { forNew = false, ...rest } = props;
@@ -160,10 +161,11 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 			},
 			...(!b011.creating ? [
 				{
-					...keyColumn("QDate", dateFieldColumnEx),
+					// ...keyColumn("QDate", dateFieldColumnEx),
+					...keyColumn("QDate", dateInputColumn),
 					title: "報價日",
-					minWidth: 140,
-					maxWidth: 140,
+					minWidth: 110,
+					maxWidth: 110,
 					disabled: true,
 				},
 				// {

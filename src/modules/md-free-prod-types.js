@@ -24,7 +24,7 @@ const findByInput = (id) => {
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { id, label } = option;
-	return `${id} ${label}`;
+	return [id, label].filter(Boolean).join(" ");
 };
 
 const isOptionEqualToValue = (option, value) => {

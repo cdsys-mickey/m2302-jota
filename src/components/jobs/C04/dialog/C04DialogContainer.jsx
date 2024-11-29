@@ -23,6 +23,7 @@ import { C04DialogToolbarContainer } from "./toolbar/C04DialogToolbarContainer";
 import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 
 export const C04DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -209,10 +210,11 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 				disabled: true,
 			},
 			{
-				...keyColumn("SExpDate", dateFieldColumnEx),
+				// ...keyColumn("SExpDate", dateFieldColumnEx),
+				...keyColumn("SExpDate", dateInputColumn),
 				title: "有效日期",
-				minWidth: 140,
-				maxWidth: 140,
+				minWidth: 110,
+				maxWidth: 110,
 				disabled: readOnly,
 			},
 			{

@@ -9,7 +9,7 @@ const parse = (s) => {
 		return s
 			.trim()
 			.split(/\s*,\s*/)
-			.filter((x) => x);
+			.filter(Boolean);
 	}
 	return [];
 };

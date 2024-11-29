@@ -1,7 +1,7 @@
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { LClas, ClassData } = option;
-	return `${LClas} ${ClassData}`;
+	return [LClas, ClassData].filter(Boolean).join(" ");
 };
 
 const isOptionEqualToValue = (option, value) => {
