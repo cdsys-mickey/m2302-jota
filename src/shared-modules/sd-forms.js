@@ -2,7 +2,7 @@ import DateTimes from "./sd-date-times";
 import DateFormats from "./sd-date-formats";
 import Types from "./sd-types";
 import { toast } from "react-toastify";
-import { isValid } from "date-fns";
+import { isValid, parse } from "date-fns";
 
 const formatDate = (value, format) => {
 	if (!value) {
@@ -18,12 +18,39 @@ const formatDate = (value, format) => {
 	return result;
 };
 
+const formatYearMonth = (value) => {
+	if (!value) {
+		return null;
+	}
+	let result = null;
+	if (value instanceof Date) {
+		result = DateTimes.format(value, DateFormats.DATEFNS_YEAR_AND_MONTH);
+	} else if (typeof value === "string") {
+		result = value;
+	}
+	return result;
+};
+
 const reformatDateAsDash = (value) => {
 	return formatDate(value, DateFormats.DATEFNS_DATE_DASH);
 };
 
 const parseDate = (value, pattern) => {
 	return DateTimes.parse(value, pattern);
+};
+
+const formatTime = (value, format = "HH:mm") => {
+	if (!value) {
+		return null;
+	}
+	let result = null;
+	if (value instanceof Date) {
+		result = DateTimes.format(value, format);
+	} else if (typeof value === "string") {
+		result = value;
+	}
+	console.log(`reformat ${value} as ${result}`);
+	return result;
 };
 
 const processDateFieldsForSubmit = (
@@ -176,6 +203,37 @@ const validateDate = (value) => {
 	return getDateValidator()(value);
 };
 
+const getTimeValidator =
+	(opts = {}) =>
+	(value) => {
+		const {
+			errorMessage = "時間格式錯誤",
+			required = false,
+			fieldName = "時間",
+			requiredMessage,
+		} = opts;
+		if (!value) {
+			if (required) {
+				if (fieldName) {
+					return `${fieldName}為必填`;
+				}
+				if (requiredMessage) {
+					return requiredMessage;
+				}
+				return "時間為必填";
+			}
+		} else {
+			if (!isValid(value)) {
+				return errorMessage;
+			}
+		}
+		return true;
+	};
+
+const validateTime = (value) => {
+	return getTimeValidator()(value);
+};
+
 const Forms = {
 	formatDate,
 	parseDate,
@@ -187,6 +245,10 @@ const Forms = {
 	onSubmitError,
 	getDateValidator,
 	validateDate,
+	getTimeValidator,
+	validateTime,
+	formatTime,
+	formatYearMonth,
 };
 
 export default Forms;

@@ -1,14 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { TextField } from "@mui/material";
+import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import ClearInputButton from "../input/ClearInputButton";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import FlexBox from "../FlexBox";
-import FormLabelEx from "../form/FormLabelEx";
-import { Box } from "@mui/system";
+import ClearInputButton from "../input/ClearInputButton";
 
 export const ControlledTextField = ({
 	name,

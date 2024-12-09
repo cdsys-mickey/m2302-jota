@@ -4,6 +4,8 @@ import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useCallback } from "react";
 import { useAppModule } from "./useAppModule";
+import { useMemo } from "react";
+import useJotaReports from "../useJotaReports";
 
 export const useB06 = ({ token, logKey, deptId }) => {
 	const appModule = useAppModule({
@@ -41,6 +43,12 @@ export const useB06 = ({ token, logKey, deptId }) => {
 		console.error(`onSearchSubmitError`, err);
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${import.meta.env.VITE_URL_REPORT}/WebB06Rep.aspx`
+	}, [])
+
+	const reports = useJotaReports({ from: "InqDate1", to: "InqDate2" });
+
 	const onPrintSubmit = useCallback(
 		(data) => {
 			console.log("onPrintSubmit", data);
@@ -50,15 +58,16 @@ export const useB06 = ({ token, logKey, deptId }) => {
 			};
 			console.log("collected", collected);
 
-			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT
-				}/WebB06Rep.aspx?LogKey=${logKey}`,
-				{
-					jsonData: JSON.stringify(collected),
-				}
-			);
+			// postToBlank(
+			// 	`${import.meta.env.VITE_URL_REPORT
+			// 	}/WebB06Rep.aspx?LogKey=${logKey}`,
+			// 	{
+			// 		jsonData: JSON.stringify(collected),
+			// 	}
+			// );
+			reports.open(reportUrl, collected);
 		},
-		[deptId, logKey, postToBlank]
+		[deptId, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

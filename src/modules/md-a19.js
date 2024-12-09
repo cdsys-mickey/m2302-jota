@@ -29,6 +29,8 @@ const getDataTypeById = (id) => {
 const transformForSubmitting = (payload) => {
 	const {
 		outputType,
+		SDate,
+		EDate,
 		sdept,
 		edept,
 		sprod,
@@ -42,14 +44,16 @@ const transformForSubmitting = (payload) => {
 	} = payload;
 	return {
 		JobName: "A19",
+		Action: outputType?.id?.toString() || "",
+		SDate: Forms.formatDate(SDate) || "",
+		EDate: Forms.formatDate(EDate) || "",
 		SDeptID: sdept?.DeptID || "",
 		EDeptID: edept?.DeptID || "",
-		Action: outputType?.id?.toString() || "",
 		SProdID: sprod?.ProdID || "",
 		EProdID: eprod?.ProdID || "",
 		DataType: dataType.id?.toString() || "3",
 		InclInv: transIncluded ? "Y" : "N",
-		...(rest && Forms.processDateFieldsForSubmit(rest, "SDate,EDate")),
+		...rest,
 	};
 };
 

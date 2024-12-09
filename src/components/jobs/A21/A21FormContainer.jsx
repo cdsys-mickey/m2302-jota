@@ -27,6 +27,12 @@ export const A21FormContainer = () => {
 	// 	},
 	// });
 
+	const onDebugSubmit = useMemo(() => {
+		return form.handleSubmit(
+			a21.onDebugSubmit,
+		)
+	}, [a21.onDebugSubmit, form]);
+
 	const onSubmit = useMemo(() => {
 		return form.handleSubmit(
 			a21.onSubmit,
@@ -37,7 +43,7 @@ export const A21FormContainer = () => {
 	return (
 		// <FormProvider {...form}>
 		<FormMetaProvider {...a21.formMeta}>
-			<A21Form onSubmit={onSubmit} />
+			<A21Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 		// </FormProvider>
 	);

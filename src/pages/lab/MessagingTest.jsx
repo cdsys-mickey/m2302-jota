@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 
-const SignalRTest = memo(() => {
+const MessagingTest = memo(() => {
 	const form = useForm();
 	const { register } = form;
 
@@ -95,7 +95,7 @@ const SignalRTest = memo(() => {
 	);
 });
 
-SignalRTest.propTypes = {};
+MessagingTest.propTypes = {};
 
-SignalRTest.displayName = "SignalRTest";
-export default SignalRTest;
+MessagingTest.displayName = "MessagingTest";
+export default MessagingTest;

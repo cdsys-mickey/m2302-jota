@@ -3,8 +3,9 @@ import { forwardRef, memo } from "react";
 import { B02FetchResultLabelContainer } from "../B02FetchResultLabelContainer";
 import { B02ListOutputModePickerContainer } from "./B02ListOutputModePickerContainer";
 import B02ListPrintButtonContainer from "./B02ListPrintButtonContainer";
-import DebugDialogButtonContainer from "@/components/home/debug/DebugDialogButtonContainer";
+import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
 import PropTypes from "prop-types";
+import { ButtonGroup } from "@mui/material";
 
 const LeftButtons = memo(() => {
 	return (
@@ -28,8 +29,12 @@ const B02ListToolbar = memo(
 				ref={ref}
 				LeftComponent={() => (<>
 					<B02ListOutputModePickerContainer />
-					<B02ListPrintButtonContainer />
-					<DebugDialogButtonContainer onClick={onDebugSubmit} />
+					<ButtonGroup>
+						<DebugDialogButtonContainer
+							className="no-margin-right"
+							onClick={onDebugSubmit} />
+						<B02ListPrintButtonContainer />
+					</ButtonGroup>
 				</>)}
 				RightComponent={B02FetchResultLabelContainer}
 				{...rest}

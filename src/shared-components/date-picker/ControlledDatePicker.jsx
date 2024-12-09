@@ -6,7 +6,7 @@ import Forms from "@/shared-modules/sd-forms";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
 import { DatePicker } from "@mui/x-date-pickers";
 import PropTypes from "prop-types";
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
 
@@ -110,10 +110,6 @@ const ControlledDatePicker = ({
 			}
 		}
 	}, [label, required, rules])
-
-	useChangeTracking(() => {
-
-	}, []);
 
 	if (!name) {
 		return <DatePicker {...rest} />;

@@ -1,21 +1,17 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useWebApi } from "@/shared-hooks/useWebApi";
 import Forms from "@/shared-modules/sd-forms";
 import { nanoid } from "nanoid";
-import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
+import useDebugDialog from "../useDebugDialog";
+import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import useDebugDialog from "../useDebugDialog";
-import queryString from "query-string";
-import B02 from "@/modules/md-b02";
 
 export const useB02 = (opts = {}) => {
 	const { forNew } = opts;
@@ -30,9 +26,6 @@ export const useB02 = (opts = {}) => {
 
 
 	const crud = useContext(CrudContext);
-	const { itemData } = crud;
-	const itemIdRef = useRef();
-	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -186,6 +179,8 @@ export const useB02 = (opts = {}) => {
 		return `${import.meta.env.VITE_URL_REPORT}/WebB0204Rep.aspx`
 	}, [])
 
+	const reports = useJotaReports({ from: "QDate1", to: "QDate2" });
+
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
 		const data = transformForPrinting(payload);
@@ -214,19 +209,9 @@ export const useB02 = (opts = {}) => {
 			// };
 			const jsonData = transformForPrinting(data);
 			console.log("jsonData", jsonData);
-			postToBlank(
-				queryString.stringifyUrl({
-					url: reportUrl,
-					query: {
-						LogKey: operator.LogKey
-					},
-				}),
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
+			reports.open(reportUrl, jsonData);
 		},
-		[operator.LogKey, postToBlank, reportUrl, transformForPrinting]
+		[reportUrl, reports, transformForPrinting]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

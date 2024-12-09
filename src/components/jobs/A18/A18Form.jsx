@@ -3,7 +3,7 @@ import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { Grid } from "@mui/material";
+import { ButtonGroup, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
@@ -13,7 +13,7 @@ import { RealFilePicker } from "@/components/picker/RealFilePicker";
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import A18ActionPicker from "./picker/A18ActionPicker";
 import Forms from "@/shared-modules/sd-forms";
-import DebugDialogButtonContainer from "@/components/home/debug/DebugDialogButtonContainer";
+import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
 
 const A18Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -79,18 +79,19 @@ const A18Form = memo((props) => {
 							</Grid>
 
 							<FlexToolbar align="right">
-								{/* <A18FormButtonsContainer /> */}
-								<DebugDialogButtonContainer onClick={onDebugSubmit} />
-								<ButtonWrapper
-									responsive
-									startIcon={<OpenInNewIcon />}
-									variant="contained"
-									color="primary"
-									type="submit"
-								// onClick={a18.handleSubmit}
-								>
-									執行
-								</ButtonWrapper>
+								<ButtonGroup>
+									<DebugDialogButtonContainer onClick={onDebugSubmit} />
+									<ButtonWrapper
+										responsive
+										startIcon={<OpenInNewIcon />}
+										variant="contained"
+										color="primary"
+										type="submit"
+									// onClick={a18.handleSubmit}
+									>
+										執行
+									</ButtonWrapper>
+								</ButtonGroup>
 							</FlexToolbar>
 						</Grid>
 					</FormSectionBox>

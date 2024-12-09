@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import { useA19 } from "../../hooks/jobs/useA19";
+import { useA19 } from "@/hooks/jobs/useA19";
 import { A19Context } from "./A19Context";
 import { FormProvider, useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
-import StdPrint from "../../modules/md-std-print";
-import A19 from "../../modules/md-a19";
+import StdPrint from "@/modules/md-std-print";
+import A19 from "@/modules/md-a19";
 
 export const A19Provider = ({ children }) => {
 	const a19 = useA19();

@@ -1,4 +1,4 @@
-import { Box, Grid, Paper } from "@mui/material";
+import { Box, ButtonGroup, Grid, Paper } from "@mui/material";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { A22Context } from "../../../contexts/A22/A22Context";
@@ -10,7 +10,7 @@ import { A22GridCancelEditButtonContainer } from "./A22GridCancelEditButtonConta
 import { A22OutputModePickerContainer } from "./A22OutputModePickerContainer";
 import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer";
 import { useMemo } from "react";
-import DebugDialogButtonContainer from "@/components/home/debug/DebugDialogButtonContainer";
+import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
 
 export const A22GridToolbarFormContainer = () => {
 	const form = useForm({
@@ -47,9 +47,11 @@ export const A22GridToolbarFormContainer = () => {
 							<Box mr={0.5}>
 								<A22OutputModePickerContainer dense width="10rem" disableClearable />
 							</Box>
-							<A22GenReportButtonContainer />
 							<Box ml={0.5}>
-								<DebugDialogButtonContainer onClick={onDebugSubmit} />
+								<ButtonGroup>
+									<DebugDialogButtonContainer onClick={onDebugSubmit} />
+									<A22GenReportButtonContainer />
+								</ButtonGroup>
 							</Box>
 							<Box ml={0.5}>
 								<A22GridCancelEditButtonContainer />

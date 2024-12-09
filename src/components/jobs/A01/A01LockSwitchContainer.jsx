@@ -33,8 +33,6 @@ export const A01LockSwitchContainer = (props) => {
 		<LockSwitch
 			unlockedLabel="POS下載開放"
 			lockedLabel="POS下載鎖定"
-			// locked={a01.readOnly}
-			// onChange={a01.toggleReadOnly}
 			locked={!serviceStatus.enabled}
 			onChange={serviceStatus.toggle}
 			disabled={disabled}

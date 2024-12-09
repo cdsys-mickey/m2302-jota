@@ -1092,6 +1092,16 @@ export const useE021 = () => {
 							grid.fillRows({ data: data.prods }), {
 							supressEvents: true
 						});
+						setValue("CustName", data?.CustName || "");
+						setValue("CompTel", data?.CompTel || "");
+						setValue("RecAddr", data?.RecAddr || "");
+						setValue("InvAddr", data?.InvAddr || "");
+						setValue("UniForm", data?.UniForm || "");
+						setValue("transType", data?.transType || "");
+						setValue("employee", data?.employee || "");
+						setValue("taxExcluded", data?.taxExcluded || "");
+						setValue("paymentType", data?.paymentType || "");
+
 						// 更新列印註記
 						setValue("dontPrtAmt", data.dontPrtAmt);
 						// 更新數字

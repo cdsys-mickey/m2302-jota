@@ -1,16 +1,16 @@
 import { forwardRef, memo } from "react";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
 import A06CreateButtonContainer from "./A06CreateButtonContainer";
 import { A06FetchResultLabelContainer } from "./A06FetchResultLabelContainer";
+import { A06LockSwitchContainer } from "./A06LockSwitchContainer";
 import A06PrintButtonContainer from "./A06PrintButtonContainer";
-import ModuleToolbar from "../ModuleToolbar";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
-import Colors from "../../../modules/md-colors";
 
 const LeftButtons = memo(() => {
 	return (
 		<>
 			<A06CreateButtonContainer />
 			<A06PrintButtonContainer />
+			<A06LockSwitchContainer />
 		</>
 	);
 });

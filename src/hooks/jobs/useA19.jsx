@@ -1,18 +1,15 @@
-import { useCallback, useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import A19 from "@/modules/md-a19";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { useAppModule } from "./useAppModule";
-import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
-import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
-import useDebugDialog from "../useDebugDialog";
-import { useMemo } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import queryString from "query-string";
+import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useCallback, useContext, useMemo } from "react";
+import useDebugDialog from "../useDebugDialog";
+import useJotaReports from "../useJotaReports";
+import { useAppModule } from "./useAppModule";
 
 export const useA19 = () => {
-	const { token, operator } = useContext(AuthContext);
-	const { postToBlank } = useHttpPost();
+	const { token } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "A19",
@@ -40,6 +37,8 @@ export const useA19 = () => {
 		return `${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx`
 	}, [])
 
+	const reports = useJotaReports({ from: "SDate", to: "EDate" });
+
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
 		const data = A19.transformForSubmitting(payload);
@@ -51,19 +50,9 @@ export const useA19 = () => {
 			console.log("onSubmit", payload);
 			const data = A19.transformForSubmitting(payload);
 			console.log("data", data);
-			postToBlank(
-				queryString.stringifyUrl({
-					url: reportUrl,
-					query: {
-						LogKey: operator.LogKey
-					}
-				}),
-				{
-					jsonData: JSON.stringify(data),
-				}
-			);
+			reports.open(reportUrl, data);
 		},
-		[postToBlank, reportUrl]
+		[reportUrl, reports]
 	);
 
 	const onSubmitError = useCallback((err) => {

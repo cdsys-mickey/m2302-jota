@@ -4,16 +4,17 @@ import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { Grid } from "@mui/material";
+import { ButtonGroup, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import AuthDeptPicker from "../../AuthDeptPicker";
 import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
+import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
 
 const A21Form = memo((props) => {
-	const { onSubmit, ...rest } = props;
+	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest}>
@@ -93,13 +94,16 @@ const A21Form = memo((props) => {
 							<Grid item xs={12}>
 								<FlexToolbar align="right">
 									{/* <A21FormButtonsContainer /> */}
-									<ButtonWrapper
-										startIcon={<OpenInNewIcon />}
-										variant="contained"
-										color="primary"
-										onClick={onSubmit}>
-										執行
-									</ButtonWrapper>
+									<ButtonGroup>
+										<DebugDialogButtonContainer onClick={onDebugSubmit} />
+										<ButtonWrapper
+											startIcon={<OpenInNewIcon />}
+											variant="contained"
+											color="primary"
+											onClick={onSubmit}>
+											執行
+										</ButtonWrapper>
+									</ButtonGroup>
 								</FlexToolbar>
 							</Grid>
 						</Grid>

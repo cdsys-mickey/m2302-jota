@@ -6,7 +6,7 @@ import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { Grid } from "@mui/material";
+import { ButtonGroup, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
@@ -17,7 +17,7 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import ProdPicker from "../../picker/ProdPicker";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
 import Auth from "@/modules/md-auth";
-import DebugDialogButtonContainer from "@/components/home/debug/DebugDialogButtonContainer";
+import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
 
 const A19Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -38,6 +38,10 @@ const A19Form = memo((props) => {
 									typeToSearchText="以編號,條碼或名稱搜尋"
 									disableOpenOnInput
 									selectOnFocus
+									required
+									rules={{
+										required: "起始商品為必填"
+									}}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -147,17 +151,21 @@ const A19Form = memo((props) => {
 							<Grid item xs={12} sm={6}>
 								<FlexToolbar align="right">
 									{/* <A19FormButtonsContainer /> */}
-									<DebugDialogButtonContainer onClick={onDebugSubmit} />
-									<ButtonWrapper
-										name="submit"
-										responsive
-										startIcon={<OpenInNewIcon />}
-										variant="contained"
-										color="primary"
-										type="submit"
-									>
-										執行
-									</ButtonWrapper>
+									<ButtonGroup>
+										<DebugDialogButtonContainer onClick={onDebugSubmit} />
+
+										<ButtonWrapper
+											name="submit"
+											responsive
+											startIcon={<OpenInNewIcon />}
+											variant="contained"
+											color="primary"
+											type="submit"
+											onClick={onSubmit}
+										>
+											執行
+										</ButtonWrapper>
+									</ButtonGroup>
 								</FlexToolbar>
 							</Grid>
 						</Grid>

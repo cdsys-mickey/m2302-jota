@@ -12,7 +12,7 @@ const DATEFNS_FORMATS = Object.freeze({
 	DATEFNS_DATE: "yyyy/MM/dd",
 	DATEFNS_DATE_DASH: "yyyy-MM-dd",
 	DATEFNS_MONTH_AND_DAY: "yyyy/MM/dd",
-	DATEFNS_YEAR_AND_MONTH: "yyyyMM",
+	DATEFNS_YEAR_AND_MONTH: "yyyy/MM",
 	DATEFNS_DATETIME: "yyyy/MM/dd HH:mm",
 	DATEFNS_DATETIME_SECONDS: "yyyy/MM/dd HH:mm:ss",
 	DATEFNS_TIME: "HH:mm",

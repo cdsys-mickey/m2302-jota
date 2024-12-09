@@ -5,12 +5,17 @@ import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useMemo } from "react";
 
 const ZA03GridContainer = () => {
 	const { height } = useWindowSize();
 	const za03 = useContext(ZA03Context);
 	const { token } = useContext(AuthContext);
 	const formMeta = useContext(FormMetaContext);
+
+	const _height = useMemo(() => {
+		return height - 263
+	}, [height])
 
 	return (
 		<DSGContext.Provider value={{
@@ -33,7 +38,7 @@ const ZA03GridContainer = () => {
 				onSelectionChange={formMeta.gridMeta.handleSelectionChange}
 
 				funcDisabled={za03.funcDisabled}
-				height={height - 250}
+				height={_height}
 				isPersisted={za03.isPersisted}
 				handleCreateRow={za03.handleCreateRow}
 				isKeyDisabled={za03.isKeyDisabled}
