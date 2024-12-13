@@ -59,4 +59,3 @@ export const useA18 = () => {
 		onDebugSubmit
 	};
 };
-[];

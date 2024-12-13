@@ -9,6 +9,8 @@ import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
+import FlexBox from "../FlexBox";
+import { Box } from "@mui/system";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -34,6 +36,7 @@ const ControlledDatePicker = ({
 	rules,
 	onBlur,
 	debounce = 800,
+	inline = false,
 	// labelShrink,
 	// variant = "outlined",
 	...rest
@@ -111,6 +114,10 @@ const ControlledDatePicker = ({
 		}
 	}, [label, required, rules])
 
+	const BoxComponent = useMemo(() => {
+		return inline ? FlexBox : Box;
+	}, [inline]);
+
 	if (!name) {
 		return <DatePicker {...rest} />;
 	}
@@ -127,80 +134,86 @@ const ControlledDatePicker = ({
 				fieldState: { error },
 			}) => {
 				return (
-					<DatePicker
-						// autoOk
-						inputRef={ref}
-						label={label ? `${label}${required ? "*" : ""}` : ""}
-						mask={mask}
-						format={format}
-						slotProps={{
-							inputAdornment: {
+					<BoxComponent inline sx={{ fontWeight: 700 }}>
+						{inline &&
+							label
+						}
+						<DatePicker
+							// autoOk
+							inputRef={ref}
+							label={label ? `${label}${required ? "*" : ""}` : ""}
+							mask={mask}
+							format={format}
+							slotProps={{
+								inputAdornment: {
+									sx: {
+										...(dense && {
+											'& .MuiSvgIcon-root': { fontSize: '18px' }
+										})
+									}
+								},
+								textField: {
+									size: "small",
+									onKeyDown: handleKeyDown,
+									InputLabelProps: {
+										...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+										...(dense && {
+											shrink: true,
+										})
+									},
+									error: !!error,
+									helperText: error?.message,
+									onBlur: onBlur
+								},
 								sx: {
 									...(dense && {
-										'& .MuiSvgIcon-root': { fontSize: '18px' }
-									})
-								}
-							},
-							textField: {
-								size: "small",
-								onKeyDown: handleKeyDown,
-								InputLabelProps: {
-									...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
-									...(dense && {
-										shrink: true,
+										"& .MuiInputBase-input":
+										{
+											paddingTop: "4px",
+											paddingBottom: "4px",
+											// paddingLeft: "2px",
+											// paddingRight: "40px",
+										},
 									})
 								},
-								error: !!error,
-								helperText: error?.message,
-								onBlur: onBlur
-							},
-							sx: {
-								...(dense && {
-									"& .MuiInputBase-input":
-									{
-										paddingTop: "4px",
-										paddingBottom: "4px",
-										// paddingLeft: "2px",
-										// paddingRight: "40px",
-									},
-								})
-							},
-							field: {
-								clearable
-							}
-						}}
-						value={value}
-						onChange={
-							readOnly
-								? null
-								: (newValue) => {
-									// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
-									if (_onChange) {
-										_onChange(newValue);
-									}
-
-									onChange(newValue);
-
-									if (onChanged) {
-										// onChanged(newValue);
-										setInnerValue(newValue);
-									}
+								field: {
+									clearable
 								}
-						}
-						onKeyDown={handleKeyDown}
-						InputProps={{
-							...InputProps,
-							...(readOnly && { readOnly: true }),
-						}}
-						{...opts}
-						disabled={readOnly}
-						// onError={(err) => {
-						// 	console.error(err);
-						// }}
-						{...rest}
-						invalidDateMessage={invalidDateMessage}
+							}}
+							value={value}
+							onChange={
+								readOnly
+									? null
+									: (newValue) => {
+										// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
+										if (_onChange) {
+											_onChange(newValue);
+										}
 
-					/>)
+										onChange(newValue);
+
+										if (onChanged) {
+											// onChanged(newValue);
+											setInnerValue(newValue);
+										}
+									}
+							}
+							onKeyDown={handleKeyDown}
+							InputProps={{
+								...InputProps,
+								...(readOnly && { readOnly: true }),
+							}}
+							{...opts}
+							disabled={readOnly}
+							// onError={(err) => {
+							// 	console.error(err);
+							// }}
+							{...rest}
+							invalidDateMessage={invalidDateMessage}
+
+						/>
+					</BoxComponent>
+				)
 			}}
 		/>
 	);
@@ -226,6 +239,7 @@ ControlledDatePicker.propTypes = {
 	rules: PropTypes.object,
 	clearable: PropTypes.bool,
 	validate: PropTypes.bool,
+	inline: PropTypes.bool,
 	debounce: PropTypes.number
 };
 export default ControlledDatePicker;

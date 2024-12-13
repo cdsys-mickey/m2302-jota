@@ -81,8 +81,6 @@ const CatLGridProvider = (props) => {
 	const catS = useContext(CatSGridContext);
 
 	const [state, setState] = useState({
-		// selected: null,
-		// selectedRowIndex: null,
 		error: null,
 	});
 

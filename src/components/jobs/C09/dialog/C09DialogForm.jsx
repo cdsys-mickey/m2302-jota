@@ -1,4 +1,4 @@
-import DeptPicker from "@/components/DeptPicker";
+import DeptPicker from "@/components/picker/DeptPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import { PurchaseDepOrderPicker } from "@/components/purchase-dep-order-picker/PurchaseDepOrderPicker";
 import { TxoOrderPicker } from "@/components/txo-order-picker/TxoOrderPicker";

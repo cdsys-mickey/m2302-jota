@@ -357,7 +357,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			];
 			try {
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/inventory/qty-map",
+					url: "v1/inv/qty-map",
 					bearer: token,
 					params: {
 						id: prodIds.join(","),

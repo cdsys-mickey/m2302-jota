@@ -22,6 +22,10 @@ const A14GridContainer = () => {
 		return a14.buildSelectionChangeHandler({})
 	}, [a14]);
 
+	const _height = useMemo(() => {
+		return height - 182;
+	}, [height])
+
 	return (
 		<DSGContext.Provider value={{ ...a14.gridMeta }}>
 			<A14Grid
@@ -30,7 +34,7 @@ const A14GridContainer = () => {
 				setGridRef={a14.setGridRef}
 				data={a14.gridData}
 				loading={a14.gridLoading}
-				height={height - 176}
+				height={_height}
 				onChange={onChange}
 				onSelectionChange={onSelectionChange}
 				onActiveCellChange={a14.handleActiveCellChange}

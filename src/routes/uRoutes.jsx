@@ -5,11 +5,11 @@ import { U05Provider } from "@/contexts/U05/U05Provider";
 import { U051Provider } from "@/contexts/U051/U051Provider";
 import { U06Provider } from "@/contexts/U06/U06Provider";
 import { U061Provider } from "@/contexts/U061/U061Provider";
-import { U01FrameContainer } from "@/pages/U01/U01FrameContainer";
-import { U05FrameContainer } from "@/pages/U05/U05FrameContainer";
-import { U051FrameContainer } from "@/pages/U051/U051FrameContainer";
-import { U06FrameContainer } from "@/pages/U06/U06FrameContainer";
-import { U061FrameContainer } from "@/pages/U061/U061FrameContainer";
+import { U01FrameContainer } from "@/pages/modules/U01/U01FrameContainer";
+import { U05FrameContainer } from "@/pages/modules/U05/U05FrameContainer";
+import { U051FrameContainer } from "@/pages/modules/U051/U051FrameContainer";
+import { U06FrameContainer } from "@/pages/modules/U06/U06FrameContainer";
+import { U061FrameContainer } from "@/pages/modules/U061/U061FrameContainer";
 import { Route } from "react-router-dom";
 
 const uRoutes = (

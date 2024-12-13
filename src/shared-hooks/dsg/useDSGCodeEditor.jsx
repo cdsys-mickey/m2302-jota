@@ -37,6 +37,7 @@ export const useDSGCodeEditor = ({
 	autoDelete = false,
 	transformForReading = defaultTransformForReading,
 	transformForSubmitting = defaultTransformForSubmmit,
+	onLoaded
 }) => {
 	const { token } = useContext(AuthContext);
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
@@ -61,11 +62,11 @@ export const useDSGCodeEditor = ({
 				}));
 			}
 
-			const updatedBaseUri = baseUri || state.baseUri;
+			const _uri = baseUri || state.baseUri;
 
 			try {
 				const { status, payload } = await httpGetAsync({
-					url: updatedBaseUri,
+					url: _uri,
 					bearer: token,
 					params: {
 						..._params,
@@ -75,6 +76,9 @@ export const useDSGCodeEditor = ({
 					},
 				});
 				if (status.success) {
+					if (onLoaded) {
+						onLoaded(payload);
+					}
 					grid.handleGridDataLoaded(transformForReading(payload));
 				} else {
 					switch (status.code) {
@@ -91,14 +95,7 @@ export const useDSGCodeEditor = ({
 				grid.setGridLoading(false);
 			}
 		},
-		[
-			grid,
-			httpGetAsync,
-			querystring,
-			state.baseUri,
-			token,
-			transformForReading,
-		]
+		[grid, httpGetAsync, onLoaded, querystring, state.baseUri, token, transformForReading]
 	);
 
 	const reload = useCallback(() => {
@@ -145,7 +142,7 @@ export const useDSGCodeEditor = ({
 					data: transformForSubmitting(rowData),
 					bearer: token,
 				});
-				console.log("handleCreate response.payload", payload);
+				console.log("handleUpdate response.payload", payload);
 				if (status.success) {
 					grid.commitChanges(newValue);
 					toast.success(
@@ -184,8 +181,11 @@ export const useDSGCodeEditor = ({
 						const key = rowData[grid.keyColumn];
 						try {
 							const { status, error } = await httpDeleteAsync({
-								url: `${state.baseUri}/${key}`,
+								url: `${state.baseUri}`,
 								bearer: token,
+								params: {
+									id: key
+								}
 							});
 
 							if (status.success) {
@@ -376,8 +376,7 @@ export const useDSGCodeEditor = ({
 			};
 			const prevRowData = grid.prevGridData[operation.fromRowIndex];
 			if (
-				// Objects.isAllPropsNotNullOrEmpty(firstRow.rowData, [
-				Objects.isAllPropsNotEmpty(firstRow.rowData, [
+				Objects.isAllPropsNotNull(firstRow.rowData, [
 					grid.keyColumn,
 					...grid.otherColumnNames,
 				])

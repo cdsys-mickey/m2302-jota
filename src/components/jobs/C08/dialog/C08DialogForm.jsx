@@ -9,7 +9,7 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import DeptPicker from "../../../DeptPicker";
+import DeptPicker from "../../../picker/DeptPicker";
 import { PurchaseDepOrderPicker } from "../../../purchase-dep-order-picker/PurchaseDepOrderPicker";
 import TransportTypePicker from "../../../tranport-type-picker/TransportTypePicker";
 import { C08ProdGridBottomToolbar } from "./prod-grid/C08ProdGridBottomToolbar";

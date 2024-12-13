@@ -29,33 +29,33 @@ import { A22Provider } from "@/contexts/A22/A22Provider";
 import { A26Provider } from "@/contexts/A26/A26Provider";
 import { AA01Provider } from "@/contexts/AA01/AA01Provider";
 import { A010Provider } from "@/contexts/a010/A010Provider";
-import { A01FrameContainer } from "@/pages/A01/A01FrameContainer";
-import { A011FrameContainer } from "@/pages/A011/A011FrameContainer";
-import { A012FrameContainer } from "@/pages/A012/A012FrameContainer";
-import { A013FrameContainer } from "@/pages/A013/A013FrameContainer";
-import { A014FrameContainer } from "@/pages/A014/A014FrameContainer";
-import { A015FrameContainer } from "@/pages/A015/A015FrameContainer";
-import { A02FrameContainer } from "@/pages/A02/A02FrameContainer";
-import { A03FrameContainer } from "@/pages/A03/A03FrameContainer";
-import { A04FrameContainer } from "@/pages/A04/A04FrameContainer";
-import { A05FrameContainer } from "@/pages/A05/A05FrameContainer";
-import { A06FrameContainer } from "@/pages/A06/A06FrameContainer";
-import { A08FrameContainer } from "@/pages/A08/A08FrameContainer";
-import { A09FrameContainer } from "@/pages/A09/A09FrameContainer";
-import { A10FrameContainer } from "@/pages/A10/A10FrameContainer";
-import { A11FrameContainer } from "@/pages/A11/A11FrameContainer";
-import { A12FrameContainer } from "@/pages/A12/A12FrameContainer";
-import { A13FrameContainer } from "@/pages/A13/A13FrameContainer";
-import { A14FrameContainer } from "@/pages/A14/A14FrameContainer";
-import { A15FrameContainer } from "@/pages/A15/A15FrameContainer";
-import { A16FrameContainer } from "@/pages/A16/A16FrameContainer";
-import { A17FrameContainer } from "@/pages/A17/A17FrameContainer";
-import { A18FrameContainer } from "@/pages/A18/A18FrameContainer";
-import { A19FrameContainer } from "@/pages/A19/A19FrameContainer";
-import { A20FrameContainer } from "@/pages/A20/A20FrameContainer";
-import { A21FrameContainer } from "@/pages/A21/A21FrameContainer";
-import { A22FrameContainer } from "@/pages/A22/A22FrameContainer";
-import { A26FrameContainer } from "@/pages/A26/A26FrameContainer";
+import { A01FrameContainer } from "@/pages/modules/A01/A01FrameContainer";
+import { A011FrameContainer } from "@/pages/modules/A011/A011FrameContainer";
+import { A012FrameContainer } from "@/pages/modules/A012/A012FrameContainer";
+import { A013FrameContainer } from "@/pages/modules/A013/A013FrameContainer";
+import { A014FrameContainer } from "@/pages/modules/A014/A014FrameContainer";
+import { A015FrameContainer } from "@/pages/modules/A015/A015FrameContainer";
+import { A02FrameContainer } from "@/pages/modules/A02/A02FrameContainer";
+import { A03FrameContainer } from "@/pages/modules/A03/A03FrameContainer";
+import { A04FrameContainer } from "@/pages/modules/A04/A04FrameContainer";
+import { A05FrameContainer } from "@/pages/modules/A05/A05FrameContainer";
+import { A06FrameContainer } from "@/pages/modules/A06/A06FrameContainer";
+import { A08FrameContainer } from "@/pages/modules/A08/A08FrameContainer";
+import { A09FrameContainer } from "@/pages/modules/A09/A09FrameContainer";
+import { A10FrameContainer } from "@/pages/modules/A10/A10FrameContainer";
+import { A11FrameContainer } from "@/pages/modules/A11/A11FrameContainer";
+import { A12FrameContainer } from "@/pages/modules/A12/A12FrameContainer";
+import { A13FrameContainer } from "@/pages/modules/A13/A13FrameContainer";
+import { A14FrameContainer } from "@/pages/modules/A14/A14FrameContainer";
+import { A15FrameContainer } from "@/pages/modules/A15/A15FrameContainer";
+import { A16FrameContainer } from "@/pages/modules/A16/A16FrameContainer";
+import { A17FrameContainer } from "@/pages/modules/A17/A17FrameContainer";
+import { A18FrameContainer } from "@/pages/modules/A18/A18FrameContainer";
+import { A19FrameContainer } from "@/pages/modules/A19/A19FrameContainer";
+import { A20FrameContainer } from "@/pages/modules/A20/A20FrameContainer";
+import { A21FrameContainer } from "@/pages/modules/A21/A21FrameContainer";
+import { A22FrameContainer } from "@/pages/modules/A22/A22FrameContainer";
+import { A26FrameContainer } from "@/pages/modules/A26/A26FrameContainer";
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
 
@@ -399,6 +399,6 @@ const aRoutes = (
 			}
 		/>
 	</>
-);
+)
 
 export default aRoutes;

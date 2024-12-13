@@ -9,7 +9,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import DeptPicker from "../../../DeptPicker";
+import DeptPicker from "../../../picker/DeptPicker";
 import TransportTypePicker from "../../../tranport-type-picker/TransportTypePicker";
 
 const C08SearchPopper = memo(

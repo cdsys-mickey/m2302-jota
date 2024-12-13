@@ -7,6 +7,9 @@ const ContainerEx = styled(Container, {
 		"&": {
 			marginLeft: 0,
 			paddingLeft: 0,
+		},
+		"& .MuiPaper-root": {
+			justifyContent: "flex-start"
 		}
 	}),
 }));

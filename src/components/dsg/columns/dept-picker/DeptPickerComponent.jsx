@@ -3,7 +3,7 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
-import DeptPicker from "../../../DeptPicker";
+import DeptPicker from "@/components/picker/DeptPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {

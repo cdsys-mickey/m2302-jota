@@ -14,7 +14,6 @@ import { useMemo } from "react";
 const B02ListForm = memo((props) => {
 	const { ...rest } = props;
 	const b = useContext(BContext);
-	const b02 = useContext(b.forNew ? B04Context : B02Context);
 	const cust = useMemo(() => {
 		return b.forNew ? "新客戶" : "客戶"
 	}, [b.forNew])

@@ -15,7 +15,7 @@ import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
 
 
 
-import { ZA03FrameContainer } from "@/pages/ZA03/ZA03FrameContainer";
+import { ZA03FrameContainer } from "@/pages/modules/ZA03/ZA03FrameContainer";
 import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
 import { MessagesFrameContainer } from "@/pages/messages/MessagesFrameContainer";
 import { SettingsFrameContainer } from "@/pages/settings/SettingsFrameContainer";
@@ -33,6 +33,7 @@ import eRoutes from "./eRoutes";
 import hRoutes from "./hRoutes";
 import pRoutes from "./pRoutes";
 import uRoutes from "./uRoutes";
+import fRoutes from "./fRoutes";
 
 const AppRoute = () => {
 	return (
@@ -86,6 +87,7 @@ const AppRoute = () => {
 					{cRoutes}
 					{dRoutes}
 					{eRoutes}
+					{fRoutes}
 					{hRoutes}
 					{pRoutes}
 					{uRoutes}

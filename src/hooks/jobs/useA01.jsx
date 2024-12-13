@@ -1,6 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { DeptPickerComponentContainer } from "@/components/dsg/columns/dept-picker/DeptPickerComponentContainer";
-import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
 import CrudContext from "@/contexts/crud/CrudContext";
 import A01 from "@/modules/md-a01";
 import TaxTypes from "@/modules/md-tax-types";
@@ -9,8 +8,9 @@ import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picke
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { useAction } from "@/shared-hooks/useAction";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
@@ -20,13 +20,12 @@ import WebApi from "@/shared-modules/sd-web-api";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { toast } from "react-toastify";
-import { useAppModule } from "./useAppModule";
 import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { useSideDrawer } from "../useSideDrawer";
+import { useAppModule } from "./useAppModule";
 
 /**
  * 適用三種情境

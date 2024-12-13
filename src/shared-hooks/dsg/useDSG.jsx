@@ -33,7 +33,7 @@ export const useDSG = ({
 	const asyncRef = useRef({
 		supressEvents: false
 	});
-	const [readOnly, toggleReadOnly] = useToggle(initialLockRows);
+	const [readOnly, toggleReadOnly, handleLock, handleUnlock] = useToggle(initialLockRows);
 
 	const persistedIds = useMemo(() => new Set(), []);
 	const dirtyIds = useMemo(() => new Set(), []);
@@ -107,7 +107,8 @@ export const useDSG = ({
 		({ createRow, data, length = 10 }) => {
 			const createRowStub = createRow || _createRow;
 			if (!createRowStub) {
-				throw new Error("useDSG 及 fillRow 均未提供 createRow");
+				console.error("useDSG 及 fillRow 均未提供 createRow")
+				throw new Error("fillRows failed");
 			}
 
 			if (!data) {
@@ -185,20 +186,22 @@ export const useDSG = ({
 				}
 			}
 
+			const _newValues = doFillRows
+				? fillRows({
+					createRow,
+					data: newValue,
+					length: _length
+				})
+				: newValue
+
 			if (commit || init) {
-				setPrevGridData(newValue);
+				setPrevGridData(_newValues);
 			} else if (prev) {
 				setPrevGridData(prev);
 			}
 
 			setGridData(
-				doFillRows
-					? fillRows({
-						createRow,
-						data: newValue,
-						length: _length
-					})
-					: newValue
+				_newValues
 			);
 
 			setGridLoading(false);
@@ -211,7 +214,7 @@ export const useDSG = ({
 	);
 
 	const handleGridDataLoaded = useCallback(
-		(payload) => {
+		(payload, opts) => {
 			console.log(`${gridId}.onDataLoaded`, payload);
 			resetGridData(payload, { reset: true, commit: true });
 		},
@@ -257,13 +260,15 @@ export const useDSG = ({
 
 	const commitChanges = useCallback(
 		(newValue) => {
-			console.log(`${gridId}.commitChanges`, newValue);
+			const _newValue = newValue || gridData;
+			console.log(`${gridId}.commitChanges`, _newValue);
 			persistedIds.clear();
-			newValue.map((i) => {
+			_newValue.map((i) => {
 				const key = _.get(i, keyColumn);
 				persistedIds.add(key);
 			});
-			setPrevGridData(newValue || gridData);
+			setPrevGridData(_newValue);
+			// handleLock();
 		},
 		[gridData, gridId, keyColumn, persistedIds]
 	);
@@ -661,5 +666,7 @@ export const useDSG = ({
 		// toFirstColumn,
 		// lastCell,
 		asyncRef,
+		handleUnlock,
+		handleLock,
 	};
 };

@@ -10,7 +10,7 @@ const DSGLoading = memo((props) => {
 		animation = "pulse",
 	} = props;
 	return (
-		<Stack spacing={0.5}>
+		<Stack spacing={0.2}>
 			{!hideTitle && (
 				<Box>
 					<Skeleton

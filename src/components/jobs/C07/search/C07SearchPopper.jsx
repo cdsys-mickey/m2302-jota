@@ -10,7 +10,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import DeptPicker from "../../../DeptPicker";
+import DeptPicker from "../../../picker/DeptPicker";
 
 const C07SearchPopper = memo(
 	forwardRef((props, ref) => {

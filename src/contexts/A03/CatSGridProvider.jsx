@@ -183,7 +183,7 @@ const CatSGridProvider = (props) => {
 						MClas: state.mdId,
 					},
 				});
-				console.log("handleCreate response.payload", payload);
+				console.log("handleUpdate response.payload", payload);
 
 				if (status.success) {
 					grid.commitChanges(newValue);
@@ -288,7 +288,7 @@ const CatSGridProvider = (props) => {
 			gridMeta.setSelectedRow(row);
 			selectRow(row);
 		},
-		[grid, selectRow]
+		[gridMeta, selectRow]
 	);
 
 	return (

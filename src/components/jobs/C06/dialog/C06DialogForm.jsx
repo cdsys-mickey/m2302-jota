@@ -10,7 +10,7 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import DeptPicker from "../../../DeptPicker";
+import DeptPicker from "../../../picker/DeptPicker";
 import C06SquaredPicker from "./C06SquaredPicker";
 import { C06ProdGridBottomToolbar } from "./prod-grid/C06ProdGridBottomToolbar";
 import { C06ProdGridContainer } from "./prod-grid/C06ProdGridContainer";

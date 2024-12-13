@@ -20,6 +20,7 @@ const TypoDatePicker = memo(
 			// Input
 			name,
 			editing = false,
+			inline = false,
 			size = "small",
 			variant = "filled",
 			...rest
@@ -44,6 +45,7 @@ const TypoDatePicker = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
+					inline={inline}
 					{...typoProps}>
 					{memoisedText}
 				</FormFieldLabel>
@@ -57,8 +59,7 @@ const TypoDatePicker = memo(
 				name={name}
 				variant={variant}
 				size={size}
-				// InputLabelProps={InputLabelProps}
-				// fullWidth
+				inline={inline}
 				{...rest}
 			/>
 		);
@@ -74,6 +75,7 @@ TypoDatePicker.propTypes = {
 	typoVariant: PropTypes.string,
 	name: PropTypes.string,
 	editing: PropTypes.bool,
+	inline: PropTypes.bool,
 	size: PropTypes.string,
 	variant: PropTypes.string,
 	InputLabelProps: PropTypes.object,

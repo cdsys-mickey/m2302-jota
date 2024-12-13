@@ -13,7 +13,7 @@ import { forwardRef, memo } from "react";
 import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { DatePickerWrapper } from "../../../../shared-components/date-picker/DatePickerWrapper";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import DeptPicker from "../../../DeptPicker";
+import DeptPicker from "../../../picker/DeptPicker";
 
 const C09SearchPopper = memo(
 	forwardRef((props, ref) => {

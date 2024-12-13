@@ -3,9 +3,9 @@ import { E01Provider } from "@/contexts/E01/E01Provider";
 import { E021Provider } from "@/contexts/E021/E021Provider";
 import { E03Provider } from "@/contexts/E03/E03Provider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
-import { E01FrameContainer } from "@/pages/E01/E01FrameContainer";
-import { E021FrameContainer } from "@/pages/E021/E021FrameContainer";
-import { E03FrameContainer } from "@/pages/E03/E03FrameContainer";
+import { E01FrameContainer } from "@/pages/modules/E01/E01FrameContainer";
+import { E021FrameContainer } from "@/pages/modules/E021/E021FrameContainer";
+import { E03FrameContainer } from "@/pages/modules/E03/E03FrameContainer";
 import { Route } from "react-router-dom";
 
 const eRoutes = (

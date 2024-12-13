@@ -140,6 +140,7 @@ const OptionPicker = memo(
 			setFocus,
 			supressEvents,
 			isTouched,
+			isDirty,
 			...rest
 		} = props;
 
@@ -1021,5 +1022,6 @@ OptionPicker.propTypes = {
 	supressEvents: PropTypes.bool,
 	cellComponentRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	isTouched: PropTypes.bool,
+	isDirty: PropTypes.bool,
 };
 export default OptionPicker;

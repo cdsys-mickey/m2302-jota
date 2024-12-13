@@ -1,14 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { Box, Tooltip, Typography } from "@mui/material";
-import { forwardRef, memo } from "react";
-import FormLabelEx from "./FormLabelEx";
+import { forwardRef, memo, useMemo } from "react";
+import { useWatch } from "react-hook-form";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
-import { useMemo } from "react";
 import Types from "../../shared-modules/sd-types";
 import FlexBox from "../FlexBox";
-import { now } from "lodash";
-import { useWatch } from "react-hook-form";
+import FormLabelEx from "./FormLabelEx";
 
 /**
  * 增加 label 功能的 Typography
@@ -29,6 +27,7 @@ const FormFieldLabel = memo(
 			inline = false,
 			title,
 			arrow,
+			slotProps,
 			noWrap = false,
 			...rest
 		} = props;
@@ -56,15 +55,15 @@ const FormFieldLabel = memo(
 		);
 
 		const BoxComponent = useMemo(() => {
-			return flex ? FlexBox : Box;
-		}, [flex]);
+			return inline || flex ? FlexBox : Box;
+		}, [flex, inline]);
 
 		const defaultBoxProps = useMemo(() => {
-			return flex ? { alignItems: "center" } : {};
-		}, [flex]);
+			return inline ? { alignItems: "center" } : {};
+		}, [inline]);
 
 		return (
-			<BoxComponent ref={ref} inline={inline} {...defaultBoxProps} sx={[
+			<BoxComponent ref={ref} inline={inline} {...defaultBoxProps} {...slotProps?.box} sx={[
 				{
 					...(flex && {
 						alignItems: "center"
@@ -117,7 +116,7 @@ FormFieldLabel.displayName = "FormFieldLabel";
 FormFieldLabel.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-	children: PropTypes.node,
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	labelProps: PropTypes.object,
 	labelStyles: PropTypes.object,
 	emptyText: PropTypes.string,
@@ -127,7 +126,8 @@ FormFieldLabel.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	flex: PropTypes.bool,
 	noWrap: PropTypes.bool,
-	stringify: PropTypes.func
+	stringify: PropTypes.func,
+	slotProps: PropTypes.object
 };
 
 export default FormFieldLabel;

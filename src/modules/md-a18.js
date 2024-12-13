@@ -1,13 +1,15 @@
 import Forms from "../shared-modules/sd-forms";
 
 const transformForSubmitting = (payload) => {
-	const { outputType, dept, action, table, ...rest } = payload;
+	const { SDate, EDate, outputType, dept, action, table, ...rest } = payload;
 	return {
+		SDate: Forms.formatDate(SDate),
+		EDate: Forms.formatDate(EDate),
 		DeptID: dept?.DeptID || "",
 		Action: outputType?.id || "",
 		Doing: action || "",
 		RealFile: table?.RealFile || "",
-		...(rest && Forms.processDateFieldsForSubmit(rest, "SDate,EDate")),
+		...rest,
 	};
 };
 

@@ -45,7 +45,8 @@ const TextComponentEx = memo(
 			// isLastCell,
 			lastCell,
 			setActiveCell,
-			readOnly
+			readOnly,
+			type
 		} = columnData;
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
 		const asyncRef = useRef({
@@ -235,6 +236,7 @@ const TextComponentEx = memo(
 				style={_style}
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}
+				type={type}
 			// {...rest}
 			/>
 		);

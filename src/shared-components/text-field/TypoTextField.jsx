@@ -24,6 +24,7 @@ const TypoTextField = memo(
 			editing = false,
 			size = "small",
 			variant = "outlined",
+			inline = false,
 			...rest
 		} = props;
 
@@ -45,6 +46,7 @@ const TypoTextField = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
+					inline={inline}
 					{...slotProps?.label}
 					{...typoProps}
 				>
@@ -60,6 +62,7 @@ const TypoTextField = memo(
 				name={name}
 				variant={variant}
 				size={size}
+				inline={inline}
 				{...rest}
 			/>
 		);
@@ -77,6 +80,7 @@ TypoTextField.propTypes = {
 	typoVariant: PropTypes.string,
 	name: PropTypes.string,
 	editing: PropTypes.bool,
+	inline: PropTypes.bool,
 	size: PropTypes.string,
 	variant: PropTypes.string,
 	InputLabelProps: PropTypes.object,
