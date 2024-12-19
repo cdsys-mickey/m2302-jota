@@ -40,6 +40,7 @@ const ResponsiveDrawer = memo(
 						...(bgcolor && {
 							backgroundColor: bgcolor,
 						}),
+						overflow: "hidden"
 					},
 				}}
 				{...rest}>

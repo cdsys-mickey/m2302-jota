@@ -6,18 +6,35 @@ import { useMemo } from "react";
 import { ListRowContext } from "./context/ListRowContext";
 
 const ListColumn = (props) => {
-	const { children, ...rest } = props;
+	const { children, flex, inline, justifyContent, alignItems, ...rest } = props;
 	const listRow = useContext(ListRowContext);
 	const isLoading = useMemo(() => {
 		return listRow?.loading && !children
 	}, [children, listRow?.loading]);
+
+	const display = useMemo(() => {
+		return flex ? (inline ? "inline-flex" : "flex") : "block";
+	}, [flex, inline])
+
 	return (
-		<Grid item sx={[MuiStyles.ELLIPSIS]}  {...rest}>{isLoading ? <Skeleton /> : children || ""}</Grid>
+		<Grid item sx={[MuiStyles.ELLIPSIS, {
+			display,
+			...(justifyContent && {
+				justifyContent,
+			}),
+			...(alignItems && {
+				alignItems,
+			})
+		}]}  {...rest}>{isLoading ? <Skeleton /> : children || ""}</Grid>
 	);
 }
 
 ListColumn.propTypes = {
-	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array])
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+	flex: PropTypes.bool,
+	inline: PropTypes.bool,
+	alignItems: PropTypes.bool,
+	justifyContent: PropTypes.bool,
 }
 
 ListColumn.displayName = "ListViewColumn";

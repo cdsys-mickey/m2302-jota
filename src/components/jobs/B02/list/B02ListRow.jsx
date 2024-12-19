@@ -1,45 +1,37 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Box, Grid, IconButton, Tooltip } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo } from "react";
-import B02IdColumn from "./columns/B02IdColumn";
-import B02DateColumn from "./columns/B02DateColumn";
-import LockResetIcon from "@mui/icons-material/LockReset";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import B02SupplierColumn from "./columns/B02SupplierColumn";
-import B02UserColumn from "./columns/B02UserColumn";
+import { memo, useMemo } from "react";
 import B02CustomerColumn from "./columns/B02CustomerColumn";
-import { useMemo } from "react";
-import B02ProdColumn from "./columns/B02ProdColumn";
+import B02DateColumn from "./columns/B02DateColumn";
 import B02PriceColumn from "./columns/B02PriceColumn";
+import B02ProdColumn from "./columns/B02ProdColumn";
+import B02UserColumn from "./columns/B02UserColumn";
 
 const B02ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
+	const { ProdID, ProdData_N, PackData_N, CustID, CustData_N, QEmplID, EmplData_N } = value;
 
 	const cust = useMemo(() => {
-		const { CustID, CustData_N } = value || "";
 		return [
 			// CustID, 
 			CustData_N].filter(Boolean).join(" ");
-	}, [value])
+	}, [CustData_N])
 
 	const prod = useMemo(() => {
-		const { ProdID, ProdData_N, PackData_N } = value || "";
 		return [
 			ProdID,
 			ProdData_N]
 			.filter(Boolean).join(" ").concat(PackData_N ? `(${PackData_N})` : "");
-	}, [value])
+	}, [PackData_N, ProdData_N, ProdID])
 
 	const employee = useMemo(() => {
-		const { QEmplID, EmplData_N } = value || "";
 		return [
 			EmplData_N
 		].filter(Boolean).join(" ");
-	}, [])
+	}, [EmplData_N])
 
 	return (
 		<div style={style}>
@@ -73,28 +65,21 @@ const B02ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<B02CustomerColumn loading={loading}>
+						<B02CustomerColumn>
 							{cust}
 						</B02CustomerColumn>
-						<B02ProdColumn loading={loading}>
+						<B02ProdColumn>
 							{prod}
 						</B02ProdColumn>
-
-						{/* <B02PriceColumn loading={loading}>
-							{value?.Price}
-						</B02PriceColumn> */}
-						<B02PriceColumn loading={loading}>
+						<B02PriceColumn>
 							{value?.QPrice}
 						</B02PriceColumn>
-						<B02DateColumn loading={loading}>
+						<B02DateColumn>
 							{value?.QDate}
 						</B02DateColumn>
-						<B02UserColumn loading={loading}>
+						<B02UserColumn>
 							{employee}
 						</B02UserColumn>
-						{/* <B02ClassNColumn loading={loading}>
-						{value?.Clas_N}
-					</B02ClassNColumn> */}
 					</Grid>
 				</Box>
 			</HoverableListItem>

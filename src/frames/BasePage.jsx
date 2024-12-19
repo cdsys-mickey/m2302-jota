@@ -23,7 +23,7 @@ const BasePage = (props) => {
 	// });
 
 	return (
-		<FlexBox sx={{}}>
+		<FlexBox sx={{ overflow: "hidden" }}>
 			<ResponsiveDrawer
 				bgcolor={grey[100]}
 				anchor="left"

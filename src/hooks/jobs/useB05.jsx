@@ -474,6 +474,7 @@ export const useB05 = () => {
 				JobName: "B05",
 				IDs: crud.itemData?.InqID,
 			};
+			console.log("jsonData", jsonData);
 			postToBlank(
 				`${import.meta.env.VITE_URL_REPORT}/WebB05Rep.aspx?LogKey=${operator?.LogKey
 				}`,

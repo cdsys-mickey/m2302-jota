@@ -228,7 +228,7 @@ export const useA20 = ({ token }) => {
 			crud.promptCreating({
 				data,
 			});
-			grid.setGridDataLoaded(data.materials, {
+			grid.initGridData(data.materials, {
 				fillRows: true
 			});
 		},

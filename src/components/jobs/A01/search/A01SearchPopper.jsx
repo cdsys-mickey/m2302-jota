@@ -1,21 +1,17 @@
-import { MockProdClassLg } from "@/mocks/mock-prod-class-lg";
 // import CabinetTypes from "@/modules/md-cabinet-types";
-import ProdClasses from "@/modules/md-prod-classes";
-import ButtonEx from "@/shared-components/button/ButtonEx";
+import CounterPicker from "@/components/picker/CounterPicker";
+import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
+import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
+import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
-import SearchIcon from "@mui/icons-material/Search";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
-import WebApiOptionPicker from "../../../../shared-components/option-picker/WebApiOptionPicker";
-import DialogEx from "@/shared-components/dialog/DialogEx";
-import ClearInputButton from "../../../../shared-components/input/ClearInputButton";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { ButtonWrapper } from "../../../../shared-components/button/ButtonWrapper";
-
-const ProdSearchPopper = memo(
+const A01SearchPopper = memo(
 	forwardRef((props, ref) => {
 		const {
 			width = "40ch",
@@ -32,7 +28,7 @@ const ProdSearchPopper = memo(
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
 					<Grid container spacing={2} columns={12}>
-						{/* <Grid item xs={12} sm={12}>
+						<Grid item xs={12} sm={12}>
 							<ControlledTextField
 								autoFocus
 								name="id"
@@ -43,9 +39,10 @@ const ProdSearchPopper = memo(
 								InputLabelProps={
 									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
-								EndAdornmentComponent={ClearInputButton}
+								// EndAdornmentComponent={ClearInputButton}
+								clearable
 							/>
-						</Grid> */}
+						</Grid>
 						<Grid item xs={12} sm={12}>
 							<ControlledTextField
 								name="bc"
@@ -56,7 +53,8 @@ const ProdSearchPopper = memo(
 								InputLabelProps={
 									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
-								EndAdornmentComponent={ClearInputButton}
+								// EndAdornmentComponent={ClearInputButton}
+								clearable
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
@@ -69,7 +67,57 @@ const ProdSearchPopper = memo(
 								InputLabelProps={
 									MuiStyles.DEFAULT_INPUT_LABEL_PROPS
 								}
-								EndAdornmentComponent={ClearInputButton}
+								// EndAdornmentComponent={ClearInputButton}
+								clearable
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<ProdCatLPicker
+								name="catL"
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 240,
+										},
+									},
+								}}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<ProdCatMPicker
+								name="catM"
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 240,
+										},
+									},
+								}}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<ProdCatSPicker
+								name="catS"
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 240,
+										},
+									},
+								}}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<CounterPicker
+								label="櫃別"
+								name="counter"
+								disableOpenOnInput
 							/>
 						</Grid>
 					</Grid>
@@ -88,13 +136,13 @@ const ProdSearchPopper = memo(
 						variant="outlined"
 						color="primary"
 						onClick={onReset}>
-						重設
+						清除
 					</ButtonWrapper>
 					<ButtonWrapper
 						startIcon={<FilterAltIcon />}
 						type="submit"
 						variant="contained"
-						// onClick={handleSubmit}
+					// onClick={handleSubmit}
 					>
 						篩選
 					</ButtonWrapper>
@@ -104,6 +152,6 @@ const ProdSearchPopper = memo(
 	})
 );
 
-ProdSearchPopper.displayName = "ProdSearchPopper";
+A01SearchPopper.displayName = "A01SearchPopper";
 
-export default ProdSearchPopper;
+export default A01SearchPopper;

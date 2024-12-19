@@ -1,25 +1,19 @@
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { B02FetchResultLabelContainer } from "../B02FetchResultLabelContainer";
 import { B02ListOutputModePickerContainer } from "./B02ListOutputModePickerContainer";
 import B02ListPrintButtonContainer from "./B02ListPrintButtonContainer";
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
-import PropTypes from "prop-types";
-import { ButtonGroup } from "@mui/material";
 
-const LeftButtons = memo(() => {
-	return (
-		<>
-			<B02ListOutputModePickerContainer />
-			<B02ListPrintButtonContainer />
-		</>
-	);
-});
+const LeftButtons = memo(() => (<>
+	<B02ListOutputModePickerContainer />
+	<B02ListPrintButtonContainer />
+</>));
 
 LeftButtons.displayName = "LeftButtons";
 
 const B02ListToolbar = memo(
-	forwardRef(({ onDebugSubmit, ...rest }, ref) => {
+	forwardRef(({ ...rest }, ref) => {
 		return (
 			<FlexToolbar
 				// pb={1}
@@ -27,15 +21,7 @@ const B02ListToolbar = memo(
 				pr={1}
 				alignItems="flex-end"
 				ref={ref}
-				LeftComponent={() => (<>
-					<B02ListOutputModePickerContainer />
-					<ButtonGroup>
-						<DebugDialogButtonContainer
-							className="no-margin-right"
-							onClick={onDebugSubmit} />
-						<B02ListPrintButtonContainer />
-					</ButtonGroup>
-				</>)}
+				LeftComponent={LeftButtons}
 				RightComponent={B02FetchResultLabelContainer}
 				{...rest}
 			/>

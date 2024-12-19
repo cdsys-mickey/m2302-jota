@@ -12,7 +12,7 @@ import C03FlagColumn from "./columns/C03FlagColumn";
 import C03CheckerColumn from "./columns/C03CheckerColumn";
 
 const C03ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	return (
 		<div style={style}>
@@ -46,25 +46,25 @@ const C03ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<C03IdColumn loading={loading}>
+						<C03IdColumn>
 							{value?.採購單號}
 						</C03IdColumn>
-						<C03FlagColumn loading={loading}>
+						<C03FlagColumn>
 							{value?.結}
 						</C03FlagColumn>
-						<C03FlagColumn loading={loading}>
+						<C03FlagColumn>
 							{value?.覆核人員 ? "*" : ""}
 						</C03FlagColumn>
-						<C03DateColumn loading={loading}>
+						<C03DateColumn>
 							{value?.採購日}
 						</C03DateColumn>
-						<C03UserColumn loading={loading}>
+						<C03UserColumn>
 							{value?.製單人員}
 						</C03UserColumn>
-						<C03DeptColumn loading={loading}>
+						<C03DeptColumn>
 							{value?.["廠商代碼+名稱"]}
 						</C03DeptColumn>
-						{/* <C03CheckerColumn loading={loading}>
+						{/* <C03CheckerColumn>
 							{value?.覆核人員}
 						</C03CheckerColumn> */}
 					</Grid>

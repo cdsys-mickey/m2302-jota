@@ -196,7 +196,7 @@ export const F03DialogContainer = forwardRef((props, ref) => {
 			<DialogExContainer
 				ref={ref}
 				title={memoisedTitle}
-				fullScreen={f03.editing}
+				// fullScreen={f03.editing}
 				responsive
 				fullWidth
 				maxWidth="md"

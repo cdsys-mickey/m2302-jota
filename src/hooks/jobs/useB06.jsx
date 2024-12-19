@@ -19,7 +19,7 @@ export const useB06 = ({ token, logKey, deptId }) => {
 		initialFetchSize: 50,
 	});
 
-	const { postToBlank } = useHttpPost();
+	// const { postToBlank } = useHttpPost();
 
 	// const handleSelect = useCallback((e, item) => {
 	// 	e?.stopPropagation();

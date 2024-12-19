@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { forwardRef, useContext, useEffect, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import useDebounce from "../../../../shared-hooks/useDebounce";
-import ProdSearchPopperContainer from "./ProdSearchPopperContainer";
+import ProdSearchPopperContainer from "./A01SearchPopperContainer";
 
 export const ZZProdFilterFieldContainer = (props) => {
 	const { name = "q" } = props;

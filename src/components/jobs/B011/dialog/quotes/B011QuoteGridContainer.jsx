@@ -47,9 +47,7 @@ export const B011QuoteGridContainer = (props) => {
 	const contextMenu = useMemo(() => {
 		return b011.canDelete ? createDSGContextMenuComponent({
 			filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
-		}) : createDSGContextMenuComponent({
-			filterItem: (item) => [].includes(item.type),
-		});
+		}) : null;
 	}, [b011.canDelete])
 
 

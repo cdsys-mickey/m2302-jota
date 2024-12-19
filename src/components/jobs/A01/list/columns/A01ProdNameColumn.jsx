@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const A01ProdNameColumn = (props) => {
 	const { ...rest } = props;
 	return (
-		<ListColumn pr={1} xs={9} sm={9} md={9} lg={9} {...rest} />
+		<ListColumn pr={1} xs={9} {...rest} />
 	);
 };
 

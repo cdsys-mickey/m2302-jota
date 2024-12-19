@@ -47,11 +47,11 @@ const transformGridForSubmitting = (data, qdate, employeeId) => {
 	return data
 		.filter((v) => v.prod?.ProdID)
 		.map((v) => {
-			const { Pkey, prod, QPrice } = v;
 			return {
-				Pkey: Strings.containsNumberOnly(Pkey) ? Pkey : "",
-				ProdID: prod ? prod.ProdID : "",
-				QPrice: QPrice?.toString() || "",
+				// Pkey: Strings.containsNumberOnly(Pkey) ? Pkey : "",
+				Pkey: v.Pkey?.length < 36 ? "" : v.Pkey,
+				ProdID: v.prod ? v.prod.ProdID : "",
+				QPrice: v.QPrice?.toString() || "",
 				QDate: qdate || "",
 				QEmplID: employeeId || "",
 			};

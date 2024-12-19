@@ -1,4 +1,3 @@
-import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { memo } from "react";
 
@@ -7,6 +6,7 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 
+// 移至 Container 判斷
 // const ContextMenu = createDSGContextMenuComponent({
 // 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 // });
@@ -45,6 +45,7 @@ const B011QuoteGrid = memo((props) => {
 			// columns={columns}
 
 			disableExpandSelection
+			// 移至 Container 判斷
 			// contextMenuComponent={ContextMenu}
 			createRow={createRow}
 			duplicateRow={duplicateRow}

@@ -5,7 +5,6 @@ import StdPrint from "@/modules/md-std-print";
 
 const StdPrintOutputModePicker = memo(
 	forwardRef((props, ref) => {
-		console.log("rendering StdPrintOutputModePicker");
 		const { label = "輸出格式", ...rest } = props;
 
 		return (

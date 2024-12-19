@@ -11,6 +11,7 @@ import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import B02 from "@/modules/md-b02";
 import { BContext } from "@/contexts/B/BContext";
 import { B04Context } from "@/contexts/B04/B04Context";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 
 export const B02ListViewContainer = () => {
 	const b = useContext(BContext);
@@ -18,11 +19,14 @@ export const B02ListViewContainer = () => {
 	const { loadList } = b02;
 	const form = useFormContext();
 	const { height } = useWindowSize();
+
 	const formValues = useWatch({
 		control: form.control,
 	});
 
-	const debouncedFormValues = useDebounce(formValues, 300);
+	const debouncedFormValues = useDebounceObject(
+		formValues
+		, 300);
 
 	useInit(() => {
 		b02.loadList();

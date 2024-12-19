@@ -1,12 +1,7 @@
 import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { IconButton, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import { B012OutputModePickerContainer } from "./B012OutputModePickerContainer";
-import B012PrintButtonContainer from "./B012PrintButtonContainer";
 
 const B012DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
@@ -19,14 +14,14 @@ const B012DialogViewToolbar = memo(
 						<B012PrintButtonContainer />
 					</>
 				)} */}
-				{onDelete && (
+				{/* {onDelete && (
 					<ResponsiveButton
 						startIcon={<HighlightOffIcon />}
 						color="secondary"
 						onClick={onDelete}>
 						刪除
 					</ResponsiveButton>
-				)}
+				)} */}
 
 				{onEdit && (
 					<ResponsiveButton

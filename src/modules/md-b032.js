@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { nanoid } from "nanoid";
 import Forms from "../shared-modules/sd-forms";
+import Strings from "@/shared-modules/sd-strings";
 
 const transformForGridImport = (data) => {
 	return (
@@ -45,7 +46,8 @@ const transformGridForSubmitting = (data, qdate, employeeId) => {
 		.map((v) => {
 			const { Pkey, customer, QPrice } = v;
 			return {
-				Pkey: /^\d+$/.test(Pkey) ? Pkey : "",
+				// Pkey: Strings.containsNumberOnly(Pkey) ? Pkey : "",
+				Pkey: Pkey?.length < 36 ? "" : Pkey,
 				CustID: customer ? customer.CustID : "",
 				QPrice: QPrice?.toString() || "",
 				QDate: qdate || "",

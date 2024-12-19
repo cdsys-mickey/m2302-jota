@@ -17,10 +17,10 @@ const F01Drawer = memo((props) => {
 			}}
 			{...rest} >
 			<FormFieldLabel label="最後修改時間">
-				{f01.itemData?.WriteDate}
+				{f01.itemData?.WriteDate_N}
 			</FormFieldLabel>
 			<FormFieldLabel label="修改人員">
-				{f01.itemData?.Writer}
+				{f01.itemData?.Writer_N}
 			</FormFieldLabel>
 		</SideDrawer>
 	);

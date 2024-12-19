@@ -1,45 +1,37 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Box, Grid, IconButton, Tooltip } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo } from "react";
-import B031IdColumn from "./columns/B031IdColumn";
-import B031DateColumn from "./columns/B031DateColumn";
-import LockResetIcon from "@mui/icons-material/LockReset";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import B031SupplierColumn from "./columns/B031SupplierColumn";
-import B031UserColumn from "./columns/B031UserColumn";
+import { memo, useMemo } from "react";
 import B031CustomerColumn from "./columns/B031CustomerColumn";
-import { useMemo } from "react";
-import B031ProdColumn from "./columns/B031ProdColumn";
+import B031DateColumn from "./columns/B031DateColumn";
 import B031PriceColumn from "./columns/B031PriceColumn";
+import B031ProdColumn from "./columns/B031ProdColumn";
+import B031UserColumn from "./columns/B031UserColumn";
 
 const B031ListRow = memo((props) => {
 	const { index, style, value, loading, onClick, handleSelectDate } = props;
+	const { CustID, CustData_N, ProdID, ProdData_N, PackData_N, QEmplID, EmplData_N } = value;
 
 	const customer = useMemo(() => {
-		const { CustID, CustData_N } = value || "";
 		return [
 			// CustID, 
 			CustData_N].filter(Boolean).join(" ");
-	}, [value])
+	}, [CustData_N])
 
 	const prod = useMemo(() => {
-		const { ProdID, ProdData_N, PackData_N } = value || "";
 		return [
 			// ProdID, 
 			ProdData_N]
 			.filter(Boolean).join(" ").concat(PackData_N ? `(${PackData_N})` : "");
-	}, [value])
+	}, [PackData_N, ProdData_N])
 
 	const employee = useMemo(() => {
-		const { QEmplID, EmplData_N } = value || "";
 		return [
 			EmplData_N
 		].filter(Boolean).join(" ");
-	}, [value])
+	}, [EmplData_N])
 
 	return (
 		<div style={style}>

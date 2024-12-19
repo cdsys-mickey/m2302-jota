@@ -27,8 +27,8 @@ const ProdCatSPicker = (props) => {
 	}, [_catL, _catM, readOnly]);
 
 	const url = useMemo(() => {
-		return disabled ? null : `v1/prod/s-cats/${_catL},${_catM}`;
-	}, [_catL, _catM, disabled]);
+		return `v1/prod/s-cats/${_catL},${_catM}`;
+	}, [_catL, _catM]);
 
 	// 中分類清空則同步
 	useChangeTracking(() => {

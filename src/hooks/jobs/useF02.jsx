@@ -151,7 +151,7 @@ export const useF02 = ({ token }) => {
 		} catch (err) {
 			console.error("onSubmit.failed", err);
 			// crud.failUpdating();
-			toast.error(Errors.getMessage("鎖定失敗", err), {
+			toast.error(Errors.getMessage("產生電腦帳失敗", err), {
 				position: "top-right"
 			});
 		} finally {

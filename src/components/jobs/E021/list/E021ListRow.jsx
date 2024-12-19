@@ -10,7 +10,7 @@ import E021IdColumn from "./columns/E021IdColumn";
 import E021UserColumn from "./columns/E021UserColumn";
 
 const E021ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	const customer = useMemo(() => {
 		const { 客戶代碼, 客戶簡稱 } = value || "";
@@ -32,20 +32,20 @@ const E021ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<E021IdColumn loading={loading}>
+						<E021IdColumn>
 							{value?.銷貨單號 || ""}
 						</E021IdColumn>
-						<E021DateColumn loading={loading} >
+						<E021DateColumn >
 							{value?.銷貨日期 || ""}
 						</E021DateColumn>
 
-						<E021FlagColumn loading={loading}>
+						<E021FlagColumn>
 							{value?.零售 || ""}
 						</E021FlagColumn>
-						<E021CustomerColumn loading={loading}>
+						<E021CustomerColumn>
 							{customer}
 						</E021CustomerColumn>
-						<E021UserColumn loading={loading}>
+						<E021UserColumn>
 							{value?.業務人員 || ""}
 						</E021UserColumn>
 					</Grid>

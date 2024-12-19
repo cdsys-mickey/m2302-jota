@@ -5,6 +5,7 @@ import B02ListRow from "./B02ListRow";
 import { useCallback } from "react";
 import { BContext } from "@/contexts/B/BContext";
 import { B04Context } from "@/contexts/B04/B04Context";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const B02ListRowContainer = (props) => {
 	const b = useContext(BContext);
@@ -15,15 +16,17 @@ export const B02ListRowContainer = (props) => {
 	const value = useMemo(() => b02.listData[index], [b02.listData, index]);
 
 	return (
-		<B02ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			// onClick={(e) => b02.handleSelect(e, value)}
-			// confirmResetPword={(e) => confirmResetPword(e, value)}
-			// promptCopyAuth={(e) => promptCopyAuth(e, value)}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<B02ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				// onClick={(e) => b02.handleSelect(e, value)}
+				// confirmResetPword={(e) => confirmResetPword(e, value)}
+				// promptCopyAuth={(e) => promptCopyAuth(e, value)}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 B02ListRowContainer.propTypes = {

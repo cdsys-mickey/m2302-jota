@@ -13,7 +13,7 @@ import C06DeptIdColumn from "./columns/C06DeptIdColumn";
 import C06DeptNameColumn from "./columns/C06DeptNameColumn";
 
 const C06ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	return (
 		<div style={style}>
@@ -30,28 +30,28 @@ const C06ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<C06FlagColumn loading={loading}>
+						<C06FlagColumn>
 							{value?.結}
 						</C06FlagColumn>
-						<C06IdColumn loading={loading}>
+						<C06IdColumn>
 							{value?.訂貨單號}
 						</C06IdColumn>
-						<C06DateColumn loading={loading}>
+						<C06DateColumn>
 							{value?.訂貨日}
 						</C06DateColumn>
-						<C06DateColumn loading={loading}>
+						<C06DateColumn>
 							{value?.預到日}
 						</C06DateColumn>
-						<C06UserColumn loading={loading}>
+						<C06UserColumn>
 							{value?.製單人員}
 						</C06UserColumn>
-						<C06DeptIdColumn loading={loading}>
+						<C06DeptIdColumn>
 							{value?.訂貨門市}
 						</C06DeptIdColumn>
-						<C06DeptIdColumn loading={loading}>
+						<C06DeptIdColumn>
 							{value?.出貨門市}
 						</C06DeptIdColumn>
-						<C06DeptNameColumn loading={loading}>
+						<C06DeptNameColumn>
 							{value?.出貨門市名稱}
 						</C06DeptNameColumn>
 					</Grid>

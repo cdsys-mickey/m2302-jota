@@ -25,8 +25,9 @@ const getDataTypeById = (id) => {
 };
 
 const transformForSubmitting = (payload) => {
-	const { outputType, PrtType, PrtID, ...rest } = payload;
+	const { ActDate, outputType, PrtType, PrtID, ...rest } = payload;
 	return {
+		ActDate: Forms.formatDate(ActDate),
 		Action: outputType?.id || "",
 		PrtType: PrtType?.id || "",
 		PrtID: PrtID ? "Y" : "N",
@@ -35,9 +36,10 @@ const transformForSubmitting = (payload) => {
 };
 
 const transformForReading = (payload) => {
-	const { ActDate, PrtType, PrtID, ...rest } = payload;
+	const { ActDate, PhyIDs, PrtID, ...rest } = payload;
 	return {
 		ActDate: Forms.parseDate(ActDate),
+		PhyIDs,
 		// PrtID: PrtID === "Y",
 		// ActDate: Forms.parseDate(ActDate),
 		// PrtType: PrtType ? getDataTypeById(PrtType) : null,

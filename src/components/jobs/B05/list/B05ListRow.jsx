@@ -1,19 +1,16 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Box, Grid, IconButton, Tooltip } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import B05IdColumn from "./columns/B05IdColumn";
 import B05DateColumn from "./columns/B05DateColumn";
-import LockResetIcon from "@mui/icons-material/LockReset";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import B05IdColumn from "./columns/B05IdColumn";
 import B05SupplierColumn from "./columns/B05SupplierColumn";
 import B05UserColumn from "./columns/B05UserColumn";
 
 const B05ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	return (
 		<div style={style}>
@@ -47,16 +44,16 @@ const B05ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<B05IdColumn loading={loading}>
+						<B05IdColumn>
 							{value?.詢價單號}
 						</B05IdColumn>
-						<B05DateColumn loading={loading}>
+						<B05DateColumn>
 							{value?.詢價日期}
 						</B05DateColumn>
-						<B05SupplierColumn loading={loading}>
+						<B05SupplierColumn>
 							{value?.廠商名稱}
 						</B05SupplierColumn>
-						<B05UserColumn loading={loading}>
+						<B05UserColumn>
 							{value?.詢價人員}
 						</B05UserColumn>
 						{/* <B05ClassNColumn loading={loading}>

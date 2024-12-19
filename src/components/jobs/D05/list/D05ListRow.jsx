@@ -9,7 +9,7 @@ import D05IdColumn from "./columns/D05IdColumn";
 import D05UserColumn from "./columns/D05UserColumn";
 
 const D05ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	const employeeName = useMemo(() => {
 		return `${value?.倉管人員 || ""} ${value?.倉管人員姓名 || ""}`;
@@ -30,14 +30,14 @@ const D05ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<D05IdColumn loading={loading}>
+						<D05IdColumn>
 							{value?.報廢單號}
 						</D05IdColumn>
-						<D05DateColumn loading={loading}>
+						<D05DateColumn>
 							{value?.報廢日期}
 						</D05DateColumn>
 
-						<D05UserColumn loading={loading}>
+						<D05UserColumn>
 							{employeeName}
 						</D05UserColumn>
 					</Grid>

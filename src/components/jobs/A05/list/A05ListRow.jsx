@@ -1,8 +1,6 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
-import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Grid, IconButton, Tooltip } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import A05IDColumn from "./columns/A05IDColumn";

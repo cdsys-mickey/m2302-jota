@@ -2,7 +2,6 @@ import { memo } from "react";
 import HoverableListItem from "../HoverableListItem";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import IndexColumn from "./columns/IndexColumn";
 
 const ListRow = memo((props) => {
 	const { children, index, style, value, onClick, ...rest } = props;

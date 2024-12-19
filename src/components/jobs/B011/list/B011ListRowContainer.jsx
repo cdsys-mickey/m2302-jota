@@ -4,9 +4,10 @@ import { useContext, useMemo } from "react";
 import B011ListRow from "./B011ListRow";
 import { B031Context } from "@/contexts/B031/B031Context";
 import { BContext } from "@/contexts/B/BContext";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const B011ListRowContainer = (props) => {
-	const { index, forNew = false, ...rest } = props;
+	const { index, ...rest } = props;
 	const b = useContext(BContext);
 	const b011 = useContext(b.forNew ? B031Context : B011Context);
 	const { isItemLoading } = b011;
@@ -14,15 +15,17 @@ export const B011ListRowContainer = (props) => {
 	const value = useMemo(() => b011.listData[index], [b011.listData, index]);
 
 	return (
-		<B011ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			// onClick={(e) => b011.handleSelect(e, value)}
-			onClick={(e) => b011.handleSelectDate(e, value)}
-			handleSelectDate={(e) => b011.handleSelectDate(e, value)}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<B011ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				// onClick={(e) => b011.handleSelect(e, value)}
+				onClick={(e) => b011.handleSelectDate(e, value)}
+				handleSelectDate={(e) => b011.handleSelectDate(e, value)}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 B011ListRowContainer.propTypes = {

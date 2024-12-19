@@ -264,17 +264,6 @@ export const useA22 = ({
 		console.log(`handleSave`, grid.gridData);
 		const collected = A22.transformForSubmitting(grid.gridData);
 		console.log("collected", collected);
-		// const payload = {
-		// 	Action,
-		// };
-		// postToBlank(
-		// 	`${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx?LogKey=${
-		// 		operator.LogKey
-		// 	}`,
-		// 	{
-		// 		jsonData: JSON.stringify(payload),
-		// 	}
-		// );
 	}, [grid.gridData]);
 
 	const getRowKey = useCallback(({ rowData, rowIndex }) => {

@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Objects from "@/shared-modules/sd-objects";
 import Forms from "../shared-modules/sd-forms";
 import FreeProdTypes from "./md-free-prod-types";
 
@@ -127,12 +128,17 @@ const getTotal = (gridData) => {
 	return result;
 };
 
+const isFiltered = (criteria) => {
+	return Objects.isAnyPropNotEmpty(criteria, "id,pn,bc");
+};
+
 const C04 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
 	transformGridForReading,
 	getTotal,
+	isFiltered,
 };
 
 export default C04;

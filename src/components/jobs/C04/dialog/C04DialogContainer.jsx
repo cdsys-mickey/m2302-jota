@@ -176,7 +176,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 			{
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "進貨單價",
-				minWidth: 100,
+				minWidth: 120,
 				disabled: readOnly || c04.spriceDisabled,
 				cellClassName: c04.getSPriceClassName,
 			},
@@ -206,7 +206,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
 				title: "進貨金額",
-				minWidth: 90,
+				minWidth: 120,
 				disabled: true,
 			},
 			{

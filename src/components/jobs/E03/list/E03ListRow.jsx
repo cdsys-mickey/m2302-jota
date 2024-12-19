@@ -10,7 +10,7 @@ import E03IdColumn from "./columns/E03IdColumn";
 import E03UserColumn from "./columns/E03UserColumn";
 
 const E03ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	const customer = useMemo(() => {
 		const { 客戶代碼, 客戶簡稱 } = value || "";
@@ -32,23 +32,23 @@ const E03ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<E03IdColumn loading={loading}>
+						<E03IdColumn>
 							{value?.銷退單號 || ""}
 						</E03IdColumn>
-						<E03DateColumn loading={loading} >
+						<E03DateColumn >
 							{value?.銷退日期 || ""}
 						</E03DateColumn>
-						<E03DateColumn loading={loading} >
+						<E03DateColumn >
 							{value?.應收帳日期 || ""}
 						</E03DateColumn>
 
-						<E03FlagColumn loading={loading}>
+						<E03FlagColumn>
 							{value?.零售 || ""}
 						</E03FlagColumn>
-						<E03CustomerColumn loading={loading}>
+						<E03CustomerColumn>
 							{customer}
 						</E03CustomerColumn>
-						<E03UserColumn loading={loading}>
+						<E03UserColumn>
 							{value?.業務人員 || ""}
 						</E03UserColumn>
 					</Grid>

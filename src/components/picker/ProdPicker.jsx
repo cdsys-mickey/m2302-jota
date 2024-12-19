@@ -46,6 +46,7 @@ const ProdPicker = (props) => {
 			// 後來演變成是否啟用 findByInput 的判斷
 			// 透過 option-picker 的 API call 應該都是要帶回 fuzzy 版本
 			fuzzy: 1,
+			opts: 1,
 			// ** 已報價商品專用參數
 			...(retail != null && {
 				retail: retail ? 1 : 0

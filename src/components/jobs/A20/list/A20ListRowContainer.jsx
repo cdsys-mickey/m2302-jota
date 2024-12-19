@@ -3,6 +3,7 @@ import A20ListRow from "./A20ListRow";
 import { A20Context } from "@/contexts/A20/A20Context";
 import { useMemo } from "react";
 import PropTypes from "prop-types";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const A20ListRowContainer = (props) => {
 	const { index, ...rest } = props;
@@ -18,14 +19,16 @@ export const A20ListRowContainer = (props) => {
 	}, [a20.selectedItem?.ProdID, value?.ProdID]);
 
 	return (
-		<A20ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			onClick={(e) => a20.handleSelect(e, value)}
-			selected={selected}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<A20ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				onClick={(e) => a20.handleSelect(e, value)}
+				selected={selected}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 A20ListRowContainer.propTypes = {

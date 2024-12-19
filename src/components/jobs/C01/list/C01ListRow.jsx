@@ -11,7 +11,7 @@ import C01UserColumn from "./columns/C01UserColumn";
 import C01FlagColumn from "./columns/C01FlagColumn";
 
 const C01ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	return (
 		<div style={style}>
@@ -45,22 +45,22 @@ const C01ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<C01IdColumn loading={loading}>
+						<C01IdColumn>
 							{value?.請購單號}
 						</C01IdColumn>
-						<C01FlagColumn loading={loading}>
+						<C01FlagColumn>
 							{value?.核}
 						</C01FlagColumn>
-						<C01FlagColumn loading={loading}>
+						<C01FlagColumn>
 							{value?.採}
 						</C01FlagColumn>
-						<C01DateColumn loading={loading}>
+						<C01DateColumn>
 							{value?.請購日}
 						</C01DateColumn>
-						<C01DeptColumn loading={loading}>
+						<C01DeptColumn>
 							{value?.申請部門}
 						</C01DeptColumn>
-						<C01UserColumn loading={loading}>
+						<C01UserColumn>
 							{value?.製單人員}
 						</C01UserColumn>
 					</Grid>

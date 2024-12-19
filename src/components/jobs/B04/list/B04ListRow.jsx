@@ -1,45 +1,37 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Box, Grid, IconButton, Tooltip } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo } from "react";
-import B04IdColumn from "./columns/B04IdColumn";
-import B04DateColumn from "./columns/B04DateColumn";
-import LockResetIcon from "@mui/icons-material/LockReset";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import B04SupplierColumn from "./columns/B04SupplierColumn";
-import B04UserColumn from "./columns/B04UserColumn";
+import { memo, useMemo } from "react";
 import B04CustomerColumn from "./columns/B04CustomerColumn";
-import { useMemo } from "react";
-import B04ProdColumn from "./columns/B04ProdColumn";
+import B04DateColumn from "./columns/B04DateColumn";
 import B04PriceColumn from "./columns/B04PriceColumn";
+import B04ProdColumn from "./columns/B04ProdColumn";
+import B04UserColumn from "./columns/B04UserColumn";
 
 const B04ListRow = memo((props) => {
 	const { index, style, value, loading, onClick } = props;
+	const { CustID, CustData_N, ProdID, ProdData_N, PackData_N, QEmplID, EmplData_N } = value || "";
 
 	const cust = useMemo(() => {
-		const { CustID, CustData_N } = value || "";
 		return [
 			// CustID, 
 			CustData_N].filter(Boolean).join(" ");
-	}, [value])
+	}, [CustData_N])
 
 	const prod = useMemo(() => {
-		const { ProdID, ProdData_N, PackData_N } = value || "";
 		return [
 			// ProdID, 
 			ProdData_N]
 			.filter(Boolean).join(" ").concat(PackData_N ? `(${PackData_N})` : "");
-	}, [value])
+	}, [PackData_N, ProdData_N])
 
 	const employee = useMemo(() => {
-		const { QEmplID, EmplData_N } = value || "";
 		return [
 			EmplData_N
 		].filter(Boolean).join(" ");
-	}, [])
+	}, [EmplData_N])
 
 	return (
 		<div style={style}>

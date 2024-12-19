@@ -11,7 +11,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 
 export const useF04 = () => {
 	const crud = useContext(CrudContext);
-	const { token } = useContext(AuthContext);
+	const { token, operator } = useContext(AuthContext);
 	const {
 		httpGetAsync,
 	} = useWebApi();
@@ -36,18 +36,26 @@ export const useF04 = () => {
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
-		const data = F04.transformForSubmitting(payload);
+		const data = {
+			...F04.transformForSubmitting(payload),
+			JobName: "F04",
+			DeptID: operator?.CurDeptID,
+		};
 		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, reportUrl]);
+	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator?.CurDeptID, reportUrl]);
 
 	const onSubmit = useCallback(
 		(payload) => {
 			console.log("onSubmit", payload);
-			const data = F04.transformForSubmitting(payload);
+			const data = {
+				...F04.transformForSubmitting(payload),
+				JobName: "F04",
+				DeptID: operator?.CurDeptID,
+			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[reportUrl, reports]
+		[operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onSubmitError = useCallback((err) => {

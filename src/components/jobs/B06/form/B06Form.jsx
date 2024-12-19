@@ -1,22 +1,19 @@
-import { Box, Grid } from "@mui/material";
-import { memo } from "react";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
+import ProdPicker from "@/components/picker/ProdPicker";
 import SupplierPicker from "@/components/picker/SupplierPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { B06SearchButtonContainer } from "./B06SearchButtonContainer";
 import FlexGrid from "@/shared-components/FlexGrid";
-import { B06OrderByPicker } from "./fields/B06OrderByPicker";
-import PropTypes from "prop-types";
 import FormBox from "@/shared-components/form/FormBox";
-import Fieldset from "@/shared-components/Fieldset";
-import Colors from "@/modules/md-colors";
-import ProdPicker from "@/components/picker/ProdPicker";
+import { Grid } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo } from "react";
+import { B06SearchButtonContainer } from "./B06SearchButtonContainer";
+import { B06OrderByPicker } from "./fields/B06OrderByPicker";
 
 const B06Form = memo(() => {
 	return (
 		<FormBox>
 			<Grid container columns={24} spacing={1}>
-				<Grid item xs={24} sm={7}>
+				<Grid item xs={6}>
 					<SupplierPicker
 						label="廠商代碼起"
 						name="supplier"
@@ -33,7 +30,7 @@ const B06Form = memo(() => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={7}>
+				<Grid item xs={6}>
 					<SupplierPicker
 						label="廠商代碼迄"
 						name="supplier2"
@@ -50,24 +47,26 @@ const B06Form = memo(() => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={5}>
+				<Grid item xs={6}>
 					<DatePickerWrapper
 						name="date1"
 						label="起始日期"
 						fullWidth
 						validate
+						clearable
 					/>
 				</Grid>
-				<Grid item xs={24} sm={5}>
+				<Grid item xs={6}>
 					<DatePickerWrapper
 						name="date2"
 						label="截止日期"
 						fullWidth
 						validate
+						clearable
 					/>
 				</Grid>
 
-				<Grid item xs={24} sm={7}>
+				<Grid item xs={6}>
 					<ProdPicker
 						name="sprod"
 						label="起始商品編號"
@@ -86,7 +85,7 @@ const B06Form = memo(() => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={7}>
+				<Grid item xs={6}>
 					<ProdPicker
 						name="eprod"
 						label="截止商品編號"
@@ -106,15 +105,15 @@ const B06Form = memo(() => {
 					/>
 				</Grid>
 
-				<Grid item xs={24} sm={5}>
+				<Grid item xs={6}>
 					<B06OrderByPicker name="orderBy" label="排序"
 						disableOpenOnInput
 						selectOnFocus />
 				</Grid>
 				<FlexGrid
 					item
-					xs={24}
-					sm={5}
+
+					xs={6}
 					justifyContent="center"
 					alignItems="center">
 					<B06SearchButtonContainer

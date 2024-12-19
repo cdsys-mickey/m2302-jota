@@ -14,7 +14,7 @@ import C04DeptNameColumn from "./columns/C04DeptNameColumn";
 import C04NumColumn from "./columns/C04NumColumn";
 
 const C04ListRow = memo((props) => {
-	const { index, style, value, loading, onClick, expChecking } = props;
+	const { index, style, value, onClick, expChecking } = props;
 
 	return (
 		<div style={style}>
@@ -48,32 +48,30 @@ const C04ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<C04IdColumn loading={loading}>
+						<C04IdColumn>
 							{value?.進貨單號}
 						</C04IdColumn>
-						<C04DateColumn loading={loading}>
+						<C04DateColumn>
 							{value?.進貨日期}
 						</C04DateColumn>
-						<C04UserColumn loading={loading}>
+						<C04UserColumn>
 							{value?.倉管人員}
 						</C04UserColumn>
-						<C04DeptIdColumn loading={loading}>
+						<C04DeptIdColumn>
 							{value?.廠商代碼}
 						</C04DeptIdColumn>
-						<C04DeptNameColumn
-							loading={loading}
-							expChecking={expChecking}>
+						<C04DeptNameColumn expChecking={expChecking}>
 							{value?.廠商名稱}
 						</C04DeptNameColumn>
 						{expChecking && (
 							<>
-								<C04IdColumn loading={loading}>
+								<C04IdColumn>
 									{value?.商品編號}
 								</C04IdColumn>
-								<C04NumColumn loading={loading}>
+								<C04NumColumn>
 									{value?.數量}
 								</C04NumColumn>
-								<C04DateColumn loading={loading}>
+								<C04DateColumn>
 									{value?.有效期限}
 								</C04DateColumn>
 							</>

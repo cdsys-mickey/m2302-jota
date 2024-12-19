@@ -1,13 +1,10 @@
-import HoverableListItem from "@/shared-components/HoverableListItem";
-import HoverableListItemSecondaryAction from "@/shared-components/HoverableListItemSecondaryAction";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Grid, IconButton, Tooltip } from "@mui/material";
+import ListRow from "@/shared-components/listview/ListRow";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import A01ProdIDColumn from "./columns/A01ProdIDColumn";
 import A01ProdNameColumn from "./columns/A01ProdNameColumn";
-import ListRow from "@/shared-components/listview/ListRow";
+import A01ClassNColumn from "./columns/A01ClassNColumn";
 
 const A01ListRow = memo((props) => {
 	const { index, value, ...rest } = props;
@@ -21,9 +18,9 @@ const A01ListRow = memo((props) => {
 			<A01ProdNameColumn>
 				{value?.ProdData}
 			</A01ProdNameColumn>
-			<A01ProdNameColumn>
+			<A01ClassNColumn>
 				{value?.Barcode}
-			</A01ProdNameColumn>
+			</A01ClassNColumn>
 			{/* <A01ClassNColumn loading={loading}>
 				{value?.Clas_N}
 			</A01ClassNColumn> */}

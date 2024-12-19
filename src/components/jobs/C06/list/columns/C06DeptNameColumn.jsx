@@ -1,22 +1,16 @@
-import { Grid, Skeleton } from "@mui/material";
+import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
-import MuiStyles from "../../../../../shared-modules/sd-mui-styles";
 
 const C06DeptNameColumn = (props) => {
-	const { loading, children, expChecking, ...rest } = props;
-	const isLoading = loading && !children;
+	const { expChecking, ...rest } = props;
+
 	return (
-		<Grid
+		<ListColumn
 			item
 			pr={1}
-			xs={9}
-			sm={9}
-			md={9}
-			lg={expChecking ? 4 : 6}
-			sx={[MuiStyles.ELLIPSIS]}
-			{...rest}>
-			{isLoading ? <Skeleton /> : children || ""}
-		</Grid>
+			xs={expChecking ? 4 : 6}
+			{...rest}
+		/>
 	);
 };
 

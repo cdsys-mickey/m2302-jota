@@ -1,4 +1,5 @@
 import { D01Context } from "@/contexts/D01/D01Context";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import D01ListRow from "./D01ListRow";
@@ -11,14 +12,16 @@ export const D01ListRowContainer = (props) => {
 	const value = useMemo(() => c04.listData[index], [c04.listData, index]);
 
 	return (
-		<D01ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			onClick={(e) => c04.handleSelect(e, value)}
-			expChecking={c04.expChecking}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<D01ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				onClick={(e) => c04.handleSelect(e, value)}
+				expChecking={c04.expChecking}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 D01ListRowContainer.propTypes = {

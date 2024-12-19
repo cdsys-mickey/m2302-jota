@@ -1,11 +1,12 @@
 import { Box, Grid } from "@mui/material";
 import { memo, forwardRef } from "react";
 import PropTypes from "prop-types";
+import ListColumn from "../ListColumn";
 
 const IndexColumn = memo(
 	forwardRef(({ children, sx = [], ...rest }, ref) => {
 		return (
-			<Grid
+			<ListColumn
 				ref={ref}
 				item
 				xs={1}
@@ -22,7 +23,7 @@ const IndexColumn = memo(
 				]}
 				{...rest}>
 				<Box pr={1}>{children}</Box>
-			</Grid>
+			</ListColumn>
 		);
 	})
 );

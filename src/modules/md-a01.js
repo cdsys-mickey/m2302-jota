@@ -45,7 +45,7 @@ const transformComboGridForReading = (data) => {
 			ProdID: v.SProdID,
 			ProdData: v.Prod_N,
 		},
-		Prod_N: v.Prod_N,
+		SProdData: v.Prod_N,
 		// SProdQty: Number(v.SProdQty),
 		SProdQty: v.SProdQty,
 	}));
@@ -257,7 +257,10 @@ const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 };
 
 const isFiltered = (criteria) => {
-	return Objects.isAnyPropNotEmpty(criteria, "pi,pn,bc");
+	return Objects.isAnyPropNotEmpty(
+		criteria,
+		"id,pn,bc,catL,catM,catS,counter"
+	);
 };
 
 const paramsToJsonData = (mode) => (params) => {
@@ -301,6 +304,26 @@ const paramsToJsonData = (mode) => (params) => {
 	};
 };
 
+const transformAsQueryParams = (data) => {
+	const { catL, catM, catS, counter, ...rest } = data;
+	return {
+		...(catL && {
+			catL: catL.LClas,
+		}),
+		...(catM && {
+			catM: catM.MClas,
+		}),
+		...(catS && {
+			catS: catS.SClas,
+		}),
+		...(counter && {
+			counter: counter.CodeID,
+		}),
+		opts: 1,
+		...rest,
+	};
+};
+
 const A01 = {
 	hasEmptyError,
 	transformForReading,
@@ -311,6 +334,7 @@ const A01 = {
 	Mode,
 	paramsToJsonData,
 	Tabs,
+	transformAsQueryParams,
 };
 
 export default A01;

@@ -702,7 +702,7 @@ export const useA01 = ({ token, mode }) => {
 			handlePopperClose();
 			console.log(`onSearchSubmit`, data);
 			listLoader.loadList({
-				params: data,
+				params: A01.transformAsQueryParams(data),
 			});
 		},
 		[handlePopperClose, listLoader]
@@ -950,13 +950,15 @@ export const useA01 = ({ token, mode }) => {
 	const handleReset = useCallback(
 		({ reset }) =>
 			() => {
-				handlePopperClose();
-				listLoader.loadList({
-					params: {},
+				// handlePopperClose();
+				// listLoader.loadList({
+				// 	params: {},
+				// });
+				reset({
+					pid: ""
 				});
-				reset({});
 			},
-		[handlePopperClose, listLoader]
+		[]
 	);
 
 	const cancelAction = useCallback(() => {

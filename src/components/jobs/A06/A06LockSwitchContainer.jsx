@@ -1,6 +1,7 @@
 import { A06Context } from "@/contexts/A06/A06Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import useServiceStatus from "@/hooks/useServiceStatus";
+import A06 from "@/modules/md-a06";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";
@@ -16,6 +17,10 @@ export const A06LockSwitchContainer = (props) => {
 	const disabled = useMemo(() => {
 		return !a06.canUpdate || operator.CurHeadOffice != 1;
 	}, [a06.canUpdate, operator])
+
+	if (a06.mode !== A06.Mode.CUSTOMER) {
+		return false;
+	}
 
 	if (serviceStatus.loading !== false) {
 		return <LoadingTypography />

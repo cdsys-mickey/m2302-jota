@@ -12,7 +12,7 @@ import C08DeptIdColumn from "./columns/C08DeptIdColumn";
 import C08DeptNameColumn from "./columns/C08DeptNameColumn";
 
 const C08ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	return (
 		<div style={style}>
@@ -29,25 +29,25 @@ const C08ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<C08IdColumn loading={loading}>
+						<C08IdColumn>
 							{value?.撥出單號}
 						</C08IdColumn>
-						<C08DateColumn loading={loading}>
+						<C08DateColumn>
 							{value?.撥出日}
 						</C08DateColumn>
-						<C08DeptIdColumn loading={loading}>
+						<C08DeptIdColumn>
 							{value?.撥出門市}
 						</C08DeptIdColumn>
-						<C08IdColumn loading={loading}>
+						<C08IdColumn>
 							{value?.撥入單號}
 						</C08IdColumn>
-						<C08DeptIdColumn loading={loading}>
+						<C08DeptIdColumn>
 							{value?.撥入門市}
 						</C08DeptIdColumn>
-						<C08DeptNameColumn loading={loading}>
+						<C08DeptNameColumn>
 							{value?.撥入門市名稱}
 						</C08DeptNameColumn>
-						<C08IdColumn loading={loading}>
+						<C08IdColumn>
 							{value?.訂貨單號}
 						</C08IdColumn>
 					</Grid>

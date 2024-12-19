@@ -3,6 +3,7 @@ import B06ListRow from "./B06ListRow";
 import { B06Context } from "@/contexts/B06/B06Context";
 import { useMemo } from "react";
 import PropTypes from "prop-types";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const B06ListRowContainer = (props) => {
 	const b06 = useContext(B06Context);
@@ -17,14 +18,16 @@ export const B06ListRowContainer = (props) => {
 	}, [b06.selectedItem?.FactID, value?.FactID]);
 
 	return (
-		<B06ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			// onClick={(e) => b06.handleSelect(e, value)}
-			selected={selected}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<B06ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				// onClick={(e) => b06.handleSelect(e, value)}
+				selected={selected}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 B06ListRowContainer.propTypes = {

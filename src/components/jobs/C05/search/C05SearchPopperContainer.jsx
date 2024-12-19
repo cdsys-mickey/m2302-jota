@@ -4,6 +4,7 @@ import C05SearchPopper from "./C05SearchPopper";
 import { useFormContext } from "react-hook-form";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 const C05SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const c05 = useContext(C05Context);
@@ -21,6 +22,13 @@ const C05SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 		employee
 		`
 	)
+
+	useChangeTracking(() => {
+		if (c05.popperOpen) {
+			// form.reset()
+			console.log("popper opened");
+		}
+	}, [c05.popperOpen]);
 
 	return (
 		<FormMetaProvider {...formMeta}>

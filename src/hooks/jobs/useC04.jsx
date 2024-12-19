@@ -15,6 +15,7 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useAppModule } from "./useAppModule";
 import { useSideDrawer } from "../useSideDrawer";
+import { useToggle } from "@/shared-hooks/useToggle";
 
 export const useC04 = () => {
 	const crud = useContext(CrudContext);
@@ -39,6 +40,13 @@ export const useC04 = () => {
 		httpPatchAsync,
 	} = useWebApi();
 	const dialogs = useContext(DialogsContext);
+
+	const [
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+	] = useToggle(false);
 
 	const listLoader = useInfiniteLoader({
 		url: "v1/purchase/restocks",
@@ -88,10 +96,6 @@ export const useC04 = () => {
 	const spriceDisabled = useCallback(({ rowData }) => {
 		return !!rowData.SInqFlag || !!rowData.stype;
 	}, []);
-
-
-
-
 
 	const updateAmt = useCallback(({ setValue, data, reset = false }) => {
 		if (reset) {
@@ -396,7 +400,12 @@ export const useC04 = () => {
 
 	const onSearchSubmit = useCallback((data) => {
 		console.log("onSearchSubmit", data);
-	}, []);
+		handlePopperClose();
+		console.log(`onSearchSubmit`, data);
+		listLoader.loadList({
+			params: C04.transformAsQueryParams(data),
+		});
+	}, [handlePopperClose, listLoader]);
 
 	const onSearchSubmitError = useCallback((err) => {
 		console.error("onSearchSubmitError", err);
@@ -970,6 +979,18 @@ export const useC04 = () => {
 		});
 	}, [grid.gridData, handleRefreshAmt]);
 
+	const handleReset = useCallback(
+		({ reset }) =>
+			() => {
+				handlePopperClose();
+				listLoader.loadList({
+					params: {},
+				});
+				reset({});
+			},
+		[handlePopperClose, listLoader]
+	);
+
 	return {
 		...crud,
 		...listLoader,
@@ -1030,6 +1051,12 @@ export const useC04 = () => {
 		onUpdateRow,
 		onGridChanged,
 		refreshGrid,
-		supplierDisabled
+		supplierDisabled,
+		// Popper
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+		handleReset
 	};
 };

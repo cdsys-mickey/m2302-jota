@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 import { useCallback, useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
-import ProdSearchPopperContainer from "./ProdSearchPopperContainer";
+import A01SearchPopperContainer from "./A01SearchPopperContainer";
 
-export const ProdSearchFieldContainer = (props) => {
+export const A01SearchFieldContainer = (props) => {
 	const { name = "qs" } = props;
 	const form = useFormContext();
 	const { getValues } = form;
@@ -57,7 +57,7 @@ export const ProdSearchFieldContainer = (props) => {
 					inputRef={inputRef}
 					onClear={searchField.handleClear}
 					// Popper
-					PopperComponent={ProdSearchPopperContainer}
+					PopperComponent={A01SearchPopperContainer}
 					popperOpen={a01.popperOpen}
 					onPopperToggle={a01.handlePopperToggle}
 					onPopperOpen={a01.handlePopperOpen}
@@ -68,7 +68,7 @@ export const ProdSearchFieldContainer = (props) => {
 		</form>
 	);
 };
-ProdSearchFieldContainer.propTypes = {
+A01SearchFieldContainer.propTypes = {
 	name: PropTypes.string,
 };
-ProdSearchFieldContainer.displayName = "ProdSearchFieldContainer";
+A01SearchFieldContainer.displayName = "A01SearchFieldContainer";

@@ -8,6 +8,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "
 import { toast } from "react-toastify";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
 import { styled } from "@mui/system";
+import { isValid, parse } from "date-fns";
 
 const MSG_REQUIRED = "必須輸入日期"
 
@@ -143,9 +144,9 @@ const DateInputComponent = memo((props) => {
 			return false;
 		}
 		console.log(`date value ${value}`);
-		const date = new Date(value);
-		console.log("date", date);
-		return !isNaN(new Date(value).getTime());
+		const parsedDate = parse(value, 'yyyy/MM/dd', new Date());
+		console.log("parsedDate", parsedDate);
+		return isValid(parsedDate);
 	}, []);
 
 	const handleChange = useCallback((e) => {

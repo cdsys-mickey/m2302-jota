@@ -1,22 +1,17 @@
-import { Grid, Skeleton } from "@mui/material";
+import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
-import FlexGrid from "@/shared-components/FlexGrid";
 
 const C03FlagColumn = (props) => {
-	const { loading, children, ...rest } = props;
-	const isLoading = loading && !children;
+	const { ...rest } = props;
+
 	return (
-		<FlexGrid
-			item
+		<ListColumn
+			flex
 			pr={1}
-			xs={4}
-			sm={4}
-			md={4}
-			lg={1}
+			xs={1}
 			justifyContent="center"
-			{...rest}>
-			{isLoading ? <Skeleton /> : children || ""}
-		</FlexGrid>
+			{...rest}
+		/>
 	);
 };
 

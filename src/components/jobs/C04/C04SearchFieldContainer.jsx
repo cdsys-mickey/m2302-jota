@@ -5,10 +5,14 @@ import { useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import { C04Context } from "@/contexts/C04/C04Context";
+import C04 from "@/modules/md-c04";
+import C04SearchPopperContainer from "./C04SearchPopperContainer";
+import { useMemo } from "react";
 
 export const C04SearchFieldContainer = (props) => {
 	const { name = "q", ...rest } = props;
-	const forms = useFormContext();
+	const form = useFormContext();
+	const { getValues } = form;
 
 	const c04 = useContext(C04Context);
 
@@ -17,7 +21,7 @@ export const C04SearchFieldContainer = (props) => {
 	const searchField = useSearchField({
 		inputRef,
 		onChange: (v) => {
-			forms.setValue(name, v);
+			form.setValue(name, v);
 		},
 	});
 	useHotkeys("ctrl+F12", searchField.handleFocus, { enableOnFormTags: true });
@@ -26,12 +30,16 @@ export const C04SearchFieldContainer = (props) => {
 		enableOnFormTags: true,
 	});
 
+	const handleSubmit = useMemo(() => {
+		return form.handleSubmit(
+			c04.onSearchSubmit,
+			c04.onSearchSubmitError
+		)
+	}, [c04.onSearchSubmit, c04.onSearchSubmitError, form])
+
 	return (
 		<form
-			onSubmit={forms.handleSubmit(
-				c04.onSearchSubmit,
-				c04.onSearchSubmitError
-			)}>
+			onSubmit={handleSubmit}>
 			<div ref={escRef}>
 				<ControlledSearchFieldContainer
 					autoFocus
@@ -41,10 +49,17 @@ export const C04SearchFieldContainer = (props) => {
 					// rightSquare
 					// square
 					borderRadius="8px"
-					// width="30ch"
+					width="30ch"
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}
+					// Popper
+					PopperComponent={C04SearchPopperContainer}
+					popperOpen={c04.popperOpen}
+					onPopperToggle={c04.handlePopperToggle}
+					onPopperOpen={c04.handlePopperOpen}
+					onPopperClose={c04.handlePopperClose}
+					filtered={C04.isFiltered(getValues())}
 				/>
 			</div>
 		</form>

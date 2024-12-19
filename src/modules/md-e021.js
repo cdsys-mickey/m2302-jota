@@ -213,7 +213,6 @@ const transformGridForSubmitting = (data) => {
 				...rest
 			} = v;
 			return {
-				// Pkey: /^\d+$/.test(Pkey) ? Pkey : "",
 				Pkey: Pkey?.length < 36 ? "" : Pkey,
 				SProdID: prod ? prod.ProdID : "",
 				SQty: SQty?.toString() || "",

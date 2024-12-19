@@ -27,7 +27,7 @@ export const useA18 = () => {
 		`);
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx`
+		return `${import.meta.env.VITE_URL_REPORT}/WebA18Rep.aspx`
 	}, [])
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 

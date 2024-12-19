@@ -12,26 +12,24 @@ import B012UserColumn from "./columns/B012UserColumn";
 
 const B012ListRow = memo((props) => {
 	const { index, style, value, loading, onClick, handleSelectDate } = props;
+	const { CustID, CustData_N, ProdID, ProdData_N, PackData_N, QEmplID, EmplData_N } = value || {};
 
 	const customer = useMemo(() => {
-		const { CustID, CustData_N } = value || "";
 		return [CustData_N].filter(Boolean).join(" ");
-	}, [value])
+	}, [CustData_N])
 
 	const prod = useMemo(() => {
-		const { ProdID, ProdData_N, PackData_N } = value || "";
 		return [
 			// ProdID, 
 			ProdData_N]
 			.filter(Boolean).join(" ").concat(PackData_N ? `(${PackData_N})` : "");
-	}, [value])
+	}, [PackData_N, ProdData_N])
 
 	const employee = useMemo(() => {
-		const { QEmplID, EmplData_N } = value || "";
 		return [
 			EmplData_N
 		].filter(Boolean).join(" ");
-	}, [value])
+	}, [EmplData_N])
 
 	return (
 		<div style={style}>
@@ -51,19 +49,19 @@ const B012ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<B012ProdColumn className="mark" loading={loading}>
+						<B012ProdColumn className="mark">
 							{prod}
 						</B012ProdColumn>
-						<B012CustomerColumn loading={loading}>
+						<B012CustomerColumn>
 							{customer}
 						</B012CustomerColumn>
-						<B012PriceColumn loading={loading}>
+						<B012PriceColumn>
 							{value?.QPrice}
 						</B012PriceColumn>
-						<B012DateColumn loading={loading}>
+						<B012DateColumn>
 							{value?.QDate}
 						</B012DateColumn>
-						<B012UserColumn className="mark" loading={loading}>
+						<B012UserColumn className="mark">
 							{employee}
 						</B012UserColumn>
 						{/* <B012ClassNColumn loading={loading}>

@@ -11,7 +11,7 @@ import B06DateColumn from "./columns/B06DateColumn";
 import B06InqIdColumn from "./columns/B06InqIdColumn";
 
 const B06ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	return (
 		<div style={style}>
@@ -34,22 +34,22 @@ const B06ListRow = memo((props) => {
 						},
 					]}>
 					<IndexColumn title={index}></IndexColumn>
-					<B06SpNameColumn loading={loading}>
+					<B06SpNameColumn>
 						{value?.FactAbbr_N}
 					</B06SpNameColumn>
-					<B06ProdIdColumn loading={loading}>
+					<B06ProdIdColumn>
 						{value?.SProdID_N}
 					</B06ProdIdColumn>
-					<B06ProdNameColumn loading={loading}>
+					<B06ProdNameColumn>
 						{value?.SProdData_N}
 					</B06ProdNameColumn>
-					<B06PriceColumn loading={loading}>
+					<B06PriceColumn>
 						{value?.SPrice_N}
 					</B06PriceColumn>
-					<B06DateColumn loading={loading}>
+					<B06DateColumn>
 						{value?.InqDate_N}
 					</B06DateColumn>
-					<B06InqIdColumn loading={loading}>
+					<B06InqIdColumn>
 						{value?.InqID_N}
 					</B06InqIdColumn>
 				</Grid>

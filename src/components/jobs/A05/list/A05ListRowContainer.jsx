@@ -3,6 +3,7 @@ import A05ListRow from "./A05ListRow";
 import { A05Context } from "@/contexts/A05/A05Context";
 import { useMemo } from "react";
 import PropTypes from "prop-types";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const A05ListRowContainer = (props) => {
 	const { index, ...rest } = props;
@@ -18,14 +19,16 @@ export const A05ListRowContainer = (props) => {
 	}, [a05.selectedItem?.FactID, value?.FactID]);
 
 	return (
-		<A05ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			onClick={(e) => a05.handleSelect(e, value)}
-			selected={selected}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<A05ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				onClick={(e) => a05.handleSelect(e, value)}
+				selected={selected}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 A05ListRowContainer.propTypes = {

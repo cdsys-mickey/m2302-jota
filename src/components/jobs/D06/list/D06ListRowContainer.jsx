@@ -2,6 +2,7 @@ import { D06Context } from "@/contexts/D06/D06Context";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import D06ListRow from "./D06ListRow";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const D06ListRowContainer = (props) => {
 	const c04 = useContext(D06Context);
@@ -11,14 +12,16 @@ export const D06ListRowContainer = (props) => {
 	const value = useMemo(() => c04.listData[index], [c04.listData, index]);
 
 	return (
-		<D06ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			onClick={(e) => c04.handleSelect(e, value)}
-			expChecking={c04.expChecking}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<D06ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				onClick={(e) => c04.handleSelect(e, value)}
+				expChecking={c04.expChecking}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 D06ListRowContainer.propTypes = {

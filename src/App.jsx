@@ -30,6 +30,15 @@ const theme = createTheme({
 		fontFamily: ["微軟正黑體", "Roboto"].join(","),
 		fontWeightBold: true,
 	},
+	breakpoints: {
+		values: {
+			xs: 0,
+			sm: 600,
+			md: 960,
+			lg: 1300, // 自訂 lg 的起始寬度
+			xl: 1920,
+		},
+	},
 	palette: {
 		background: {
 			default: Colors.BG,

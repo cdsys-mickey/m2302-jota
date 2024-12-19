@@ -27,7 +27,7 @@ export const F03ProdGridContainer = (props) => {
 	}, [f03, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	const _height = useMemo(() => {
-		return formMeta.readOnly ? height - 246 : height - 146;
+		return formMeta.readOnly ? height - 246 : height - 206;
 	}, [formMeta.readOnly, height])
 
 	return (

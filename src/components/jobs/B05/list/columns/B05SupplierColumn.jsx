@@ -1,13 +1,12 @@
+import ListColumn from "@/shared-components/listview/ListColumn";
 import { Grid, Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
 
 const B05SupplierColumn = (props) => {
-	const { loading, children, ...rest } = props;
-	const isLoading = loading && !children;
+	const { ...rest } = props;
+
 	return (
-		<Grid item pr={1} xs={9} sm={9} md={9} lg={10} {...rest}>
-			{isLoading ? <Skeleton /> : children || ""}
-		</Grid>
+		<ListColumn item pr={1} xs={10} {...rest} />
 	);
 };
 

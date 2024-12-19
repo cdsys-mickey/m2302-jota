@@ -1,22 +1,17 @@
-import { Skeleton } from "@mui/material";
+import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
-import FlexGrid from "../../../../../shared-components/FlexGrid";
 
 const B06PriceColumn = (props) => {
-	const { loading, children, ...rest } = props;
-	const isLoading = loading && !children;
+	const { ...rest } = props;
+
 	return (
-		<FlexGrid
-			item
+		<ListColumn
+			flex
 			pr={1}
-			xs={9}
-			sm={9}
-			md={9}
-			lg={3}
+			xs={3}
 			justifyContent="flex-end"
-			{...rest}>
-			{isLoading ? <Skeleton /> : children || ""}
-		</FlexGrid>
+			{...rest}
+		/>
 	);
 };
 

@@ -2,6 +2,7 @@ import { C04Context } from "@/contexts/C04/C04Context";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import C04ListRow from "./C04ListRow";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const C04ListRowContainer = (props) => {
 	const c04 = useContext(C04Context);
@@ -11,14 +12,16 @@ export const C04ListRowContainer = (props) => {
 	const value = useMemo(() => c04.listData[index], [c04.listData, index]);
 
 	return (
-		<C04ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			onClick={(e) => c04.handleSelect(e, value)}
-			expChecking={c04.expChecking}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<C04ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				onClick={(e) => c04.handleSelect(e, value)}
+				expChecking={c04.expChecking}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 C04ListRowContainer.propTypes = {

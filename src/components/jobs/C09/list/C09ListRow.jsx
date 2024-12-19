@@ -13,16 +13,15 @@ import C09DeptNameColumn from "./columns/C09DeptNameColumn";
 import { useMemo } from "react";
 
 const C09ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	const txoDeptName = useMemo(() => {
 		return `${value?.撥出門市} ${value?.撥出門市名稱}`;
 	}, [value?.撥出門市, value?.撥出門市名稱]);
 
 	const employeeName = useMemo(() => {
-		return `${value?.驗收人員 || "(空白)"} ${
-			value?.驗收人員姓名 || "(空白)"
-		}`;
+		return `${value?.驗收人員 || "(空白)"} ${value?.驗收人員姓名 || "(空白)"
+			}`;
 	}, [value?.驗收人員, value?.驗收人員姓名]);
 
 	return (
@@ -40,20 +39,20 @@ const C09ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<C09IdColumn loading={loading}>
+						<C09IdColumn>
 							{value?.撥入單號}
 						</C09IdColumn>
-						<C09DateColumn loading={loading}>
+						<C09DateColumn>
 							{value?.撥入日期}
 						</C09DateColumn>
-						<C09IdColumn loading={loading}>
+						<C09IdColumn>
 							{value?.撥出單號}
 						</C09IdColumn>
-						<C09DeptColumn loading={loading}>
+						<C09DeptColumn>
 							{txoDeptName}
 						</C09DeptColumn>
 
-						<C09UserColumn loading={loading}>
+						<C09UserColumn>
 							{employeeName}
 						</C09UserColumn>
 					</Grid>

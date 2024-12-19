@@ -1,16 +1,11 @@
-import { Grid, Skeleton, Tooltip } from "@mui/material";
-import { orange } from "@mui/material/colors";
+import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
-import { useMemo } from "react";
 
 const B011DateColumn = (props) => {
-	const { loading, children, ...rest } = props;
-	const isLoading = loading && !children;
+	const { ...rest } = props;
 
 	return (
-		<Grid item pr={1} xs={9} sm={9} md={9} lg={3} {...rest}>
-			{isLoading ? <Skeleton /> : children || ""}
-		</Grid>
+		<ListColumn item pr={1} xs={3} {...rest} />
 	);
 };
 

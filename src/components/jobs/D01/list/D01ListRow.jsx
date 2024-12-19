@@ -15,7 +15,8 @@ import D01NumColumn from "./columns/D01NumColumn";
 import { useMemo } from "react";
 
 const D01ListRow = memo((props) => {
-	const { index, style, value, loading, onClick, expChecking } = props;
+	const { index, style, value, onClick, expChecking } = props;
+
 	const pdline = useMemo(() => {
 		return `${value?.線別} ${value?.領料線別名稱}`;
 	}, [value?.線別, value?.領料線別名稱]);
@@ -52,27 +53,27 @@ const D01ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<D01IdColumn loading={loading}>
+						<D01IdColumn>
 							{value?.領料單號}
 						</D01IdColumn>
-						<D01DateColumn loading={loading}>
+						<D01DateColumn>
 							{value?.領料日期}
 						</D01DateColumn>
-						<D01UserColumn loading={loading}>
+						<D01UserColumn>
 							{value?.製單人員}
 						</D01UserColumn>
-						<D01DeptColumn loading={loading}>
+						<D01DeptColumn>
 							{pdline}
 						</D01DeptColumn>
 						{expChecking && (
 							<>
-								<D01IdColumn loading={loading}>
+								<D01IdColumn>
 									{value?.商品編號}
 								</D01IdColumn>
-								<D01NumColumn loading={loading}>
+								<D01NumColumn>
 									{value?.數量}
 								</D01NumColumn>
-								<D01DateColumn loading={loading}>
+								<D01DateColumn>
 									{value?.有效期限}
 								</D01DateColumn>
 							</>

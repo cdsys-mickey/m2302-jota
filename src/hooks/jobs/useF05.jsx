@@ -57,7 +57,7 @@ export const useF05 = () => {
 
 	const confirmClose = useCallback(() => {
 		dialogs.confirm({
-			message: "確定將庫存進行月結轉?",
+			message: "確定盤點結轉?",
 			onConfirm: () => {
 				handleClose();
 			},

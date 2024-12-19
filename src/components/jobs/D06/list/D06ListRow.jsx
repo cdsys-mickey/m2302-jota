@@ -10,7 +10,7 @@ import D06IdColumn from "./columns/D06IdColumn";
 import D06UserColumn from "./columns/D06UserColumn";
 
 const D06ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 	const pdline = useMemo(() => {
 		return `${value?.線別} ${value?.生產線別名稱}`;
 	}, [value?.線別, value?.生產線別名稱]);
@@ -51,16 +51,16 @@ const D06ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<D06IdColumn loading={loading}>
+						<D06IdColumn>
 							{value?.結餘單號}
 						</D06IdColumn>
-						<D06DateColumn loading={loading}>
+						<D06DateColumn>
 							{value?.結餘日期}
 						</D06DateColumn>
-						<D06UserColumn loading={loading}>
+						<D06UserColumn>
 							{employeeName}
 						</D06UserColumn>
-						<D06DeptColumn loading={loading}>
+						<D06DeptColumn>
 							{pdline}
 						</D06DeptColumn>
 					</Grid>

@@ -21,7 +21,7 @@ export const A01ListRowContainer = (props) => {
 		<ListRowProvider loading={loading}>
 			<A01ListRow
 				index={index}
-				loading={loading}
+				// loading={loading}
 				value={value}
 				onClick={(e) => a01.handleSelect(e, value)}
 				selected={selected}

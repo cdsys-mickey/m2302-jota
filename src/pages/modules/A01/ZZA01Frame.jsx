@@ -2,7 +2,7 @@ import A01Toolbar from "@/components/jobs/A01/A01Toolbar";
 import { A01DialogContainer } from "@/components/jobs/A01/dialog/A01DialogContainer";
 import A01ListHeader from "@/components/jobs/A01/list/A01ListHeader";
 import { A01ListViewContainer } from "@/components/jobs/A01/list/A01ListViewContainer";
-import { ProdSearchFieldContainer } from "@/components/jobs/A01/search/ProdSearchFieldContainer";
+import { ProdSearchFieldContainer } from "@/components/jobs/A01/search/A01SearchFieldContainer";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";

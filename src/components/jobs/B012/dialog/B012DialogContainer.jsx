@@ -101,8 +101,8 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 
 	const readOnly = useMemo(() => {
 		return !b012.editing
-			|| (b012.editing && (!dlgProd || !dlgEmployee));
-	}, [b012.editing, dlgProd, dlgEmployee]);
+			|| (b012.editing && (!dlgProd || !dlgEmployee || !dlgDate));
+	}, [b012.editing, dlgProd, dlgEmployee, dlgDate]);
 
 	const columns = useMemo(
 		() => [

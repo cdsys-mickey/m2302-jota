@@ -11,7 +11,7 @@ import C02UserColumn from "./columns/C02UserColumn";
 import C02FlagColumn from "./columns/C02FlagColumn";
 
 const C02ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	return (
 		<div style={style}>
@@ -45,22 +45,22 @@ const C02ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<C02IdColumn loading={loading}>
+						<C02IdColumn>
 							{value?.請購單號}
 						</C02IdColumn>
-						<C02FlagColumn loading={loading}>
+						<C02FlagColumn>
 							{value?.核}
 						</C02FlagColumn>
-						<C02FlagColumn loading={loading}>
+						<C02FlagColumn>
 							{value?.採}
 						</C02FlagColumn>
-						<C02DateColumn loading={loading}>
+						<C02DateColumn>
 							{value?.請購日}
 						</C02DateColumn>
-						<C02DeptColumn loading={loading}>
+						<C02DeptColumn>
 							{value?.申請部門}
 						</C02DeptColumn>
-						<C02UserColumn loading={loading}>
+						<C02UserColumn>
 							{value?.製單人員}
 						</C02UserColumn>
 					</Grid>

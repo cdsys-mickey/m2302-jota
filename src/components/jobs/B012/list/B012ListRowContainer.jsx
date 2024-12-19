@@ -4,6 +4,7 @@ import { useContext, useMemo } from "react";
 import B012ListRow from "./B012ListRow";
 import { BContext } from "@/contexts/B/BContext";
 import { B032Context } from "@/contexts/B032/B032Context";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const B012ListRowContainer = (props) => {
 	const b = useContext(BContext);
@@ -14,15 +15,17 @@ export const B012ListRowContainer = (props) => {
 	const value = useMemo(() => b012.listData[index], [b012.listData, index]);
 
 	return (
-		<B012ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			// onClick={(e) => b012.handleSelect(e, value)}
-			onClick={(e) => b012.handleSelectDate(e, value)}
-			handleSelectDate={(e) => b012.handleSelectDate(e, value)}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<B012ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				// onClick={(e) => b012.handleSelect(e, value)}
+				onClick={(e) => b012.handleSelectDate(e, value)}
+				handleSelectDate={(e) => b012.handleSelectDate(e, value)}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 B012ListRowContainer.propTypes = {

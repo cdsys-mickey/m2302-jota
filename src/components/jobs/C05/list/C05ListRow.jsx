@@ -10,7 +10,7 @@ import C05IdColumn from "./columns/C05IdColumn";
 import C05UserColumn from "./columns/C05UserColumn";
 
 const C05ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
 
 	return (
 		<div style={style}>
@@ -27,16 +27,16 @@ const C05ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<C05IdColumn loading={loading}>
+						<C05IdColumn>
 							{value?.退貨單號}
 						</C05IdColumn>
-						<C05DateColumn loading={loading}>
+						<C05DateColumn>
 							{value?.退貨日}
 						</C05DateColumn>
-						<C05UserColumn loading={loading}>
+						<C05UserColumn>
 							{value?.倉管人員}
 						</C05UserColumn>
-						<C05DeptColumn loading={loading}>
+						<C05DeptColumn>
 							{value?.["廠商代碼+名稱"]}
 						</C05DeptColumn>
 					</Grid>

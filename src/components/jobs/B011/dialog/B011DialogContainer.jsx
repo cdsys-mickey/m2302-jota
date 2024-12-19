@@ -1,8 +1,10 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { BContext } from "@/contexts/B/BContext";
 import { B011Context } from "@/contexts/B011/B011Context";
+import { B031Context } from "@/contexts/B031/B031Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -12,6 +14,7 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import PropTypes from "prop-types";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
@@ -19,10 +22,6 @@ import { toast } from "react-toastify";
 import B011Drawer from "../B011Drawer";
 import B011DialogForm from "./B011DialogForm";
 import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer";
-import PropTypes from "prop-types";
-import { B031Context } from "@/contexts/B031/B031Context";
-import { BContext } from "@/contexts/B/BContext";
-import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
 	const { forNew = false, ...rest } = props;
@@ -254,7 +253,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 	}, [form, importProdsDialogOpen]);
 
 	const _maxWidth = useMemo(() => {
-		return b011.creating ? "md" : "lg";
+		return b011.creating ? "md" : "md";
 	}, [b011.creating])
 
 	return (

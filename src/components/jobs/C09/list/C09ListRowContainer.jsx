@@ -2,6 +2,7 @@ import { C09Context } from "@/contexts/C09/C09Context";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import C09ListRow from "./C09ListRow";
+import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 
 export const C09ListRowContainer = (props) => {
 	const c09 = useContext(C09Context);
@@ -11,13 +12,15 @@ export const C09ListRowContainer = (props) => {
 	const value = useMemo(() => c09.listData[index], [c09.listData, index]);
 
 	return (
-		<C09ListRow
-			index={index}
-			loading={loading}
-			value={value}
-			onClick={(e) => c09.handleSelect(e, value)}
-			{...rest}
-		/>
+		<ListRowProvider loading={loading}>
+			<C09ListRow
+				index={index}
+				// loading={loading}
+				value={value}
+				onClick={(e) => c09.handleSelect(e, value)}
+				{...rest}
+			/>
+		</ListRowProvider>
 	);
 };
 C09ListRowContainer.propTypes = {

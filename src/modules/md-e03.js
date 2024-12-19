@@ -161,7 +161,6 @@ const transformGridForSubmitting = (data) => {
 		.map((v, index) => {
 			const { Pkey, prod, SPrice, SQty, SAmt, stype, dtype, ...rest } = v;
 			return {
-				// Pkey: /^\d+$/.test(Pkey) ? Pkey : "",
 				Pkey: Pkey?.length < 36 ? "" : Pkey,
 				SProdID: prod ? prod.ProdID : "",
 				SQty: SQty?.toString() || "",

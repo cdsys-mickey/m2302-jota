@@ -18,7 +18,7 @@ export const C07ProdGridSubtotalLabel = (props) => {
 
 	return (
 		<FlexBox inline sx={{ fontWeight: 700 }}>
-			退貨合計：
+			訂貨合計：
 			<Typography color="primary" {...rest}>
 				{formattedSubtotal}
 			</Typography>
