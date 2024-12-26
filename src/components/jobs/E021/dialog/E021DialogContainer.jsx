@@ -19,6 +19,8 @@ import { toast } from "react-toastify";
 import E021Drawer from "../E021Drawer";
 import E021DialogForm from "./E021DialogForm";
 import { E021DialogToolbarContainer } from "./toolbar/E021DialogToolbarContainer";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const E021DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -35,6 +37,14 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		name: "SalDate",
 		control: form.control
 	})
+
+	const debouncedSalesDate = useDebounceObject(salesDate, 300);
+
+	useChangeTracking(() => {
+		if (e021.editing) {
+			form.setValue("ArrDate", debouncedSalesDate)
+		}
+	}, [debouncedSalesDate]);
 
 	const arrDate = useWatch({
 		name: "ArrDate",
@@ -414,6 +424,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 							handleCustomerOrdersChanged={e021.handleCustomerOrdersChanged({
 								setValue: form.setValue,
 								getValues: form.getValues,
+								reset: form.reset
 							})}
 						/>
 

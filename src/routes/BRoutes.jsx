@@ -121,9 +121,11 @@ const bRoutes = (
 			element={
 				<CrudProvider>
 					<InfiniteLoaderProvider>
-						<B06Provider>
-							<B06FrameContainer />
-						</B06Provider>
+						<B05Provider>
+							<B06Provider>
+								<B06FrameContainer />
+							</B06Provider>
+						</B05Provider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

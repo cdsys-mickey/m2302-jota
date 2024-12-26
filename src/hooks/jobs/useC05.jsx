@@ -372,7 +372,15 @@ export const useC05 = () => {
 				// 	params: {},
 				// });
 				reset({
-					supplier: null
+					supplier: null,
+					spn: "",
+					spa: "",
+					spu: "",
+					inv: "",
+					taxType: null,
+					rd: null,
+					rd2: null,
+					employee: null
 				});
 			},
 		[]

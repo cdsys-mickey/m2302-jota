@@ -955,7 +955,13 @@ export const useA01 = ({ token, mode }) => {
 				// 	params: {},
 				// });
 				reset({
-					pid: ""
+					id: "",
+					bc: "",
+					pn: "",
+					catL: null,
+					catM: null,
+					catS: null,
+					counter: null
 				});
 			},
 		[]

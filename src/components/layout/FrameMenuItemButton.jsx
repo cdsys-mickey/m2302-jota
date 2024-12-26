@@ -13,7 +13,7 @@ const FrameMenuItemButton = memo(
 			disabled,
 			value,
 			sx = [],
-			handleClickBy,
+			onClick,
 			selected = false,
 			...rest
 		} = props;
@@ -29,7 +29,7 @@ const FrameMenuItemButton = memo(
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				selected={selected}
-				onClick={handleClickBy(value)}
+				onClick={e => onClick(e, value)}
 				disabled={disabled}
 				{...rest}>
 				<FlexBox inline fullWidth alignItems="flex-start">
@@ -82,7 +82,7 @@ const FrameMenuItemButton = memo(
 FrameMenuItemButton.propTypes = {
 	value: PropTypes.object.isRequired,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	handleClickBy: PropTypes.func,
+	onClick: PropTypes.func,
 	selected: PropTypes.bool,
 };
 

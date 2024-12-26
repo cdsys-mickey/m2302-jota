@@ -354,13 +354,17 @@ export const useD01 = () => {
 	const handleReset = useCallback(
 		({ reset }) =>
 			() => {
-				handlePopperClose();
-				listLoader.loadList({
-					params: {},
+				// handlePopperClose();
+				// listLoader.loadList({
+				// 	params: {},
+				// });
+				reset({
+					employee: null,
+					pdate: null,
+					pdline: null
 				});
-				reset({});
 			},
-		[handlePopperClose, listLoader]
+		[]
 	);
 
 	const onSearchSubmit = useCallback(

@@ -491,9 +491,10 @@ export const useE01 = () => {
 
 	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, updateResult }) => async (rowData, index) => {
 		const rowIndex = fromRowIndex + index;
+		updateResult.rowIndex = rowIndex;
+
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		updateResult.rowIndex = rowIndex;
 
 		let processedRowData = {
 			...rowData,
@@ -567,12 +568,18 @@ export const useE01 = () => {
 		return processedRowData;
 	}, [grid.gridData, handleGridProdChange]);
 
-	const mapTooltip = useCallback(({ prevGridData, gridData, rowIndex }) => {
-		const targetRow = gridData[rowIndex];
-		let targetProdID = targetRow.prod?.ProdID;
-		// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
-		if (!targetProdID) {
+	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
+		console.log(`mapTooltip(rowIndex: ${rowIndex})`);
+		let targetProdID;
+		if (updateResult?.type === "DELETE") {
 			targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+		} else {
+			const targetRow = gridData[rowIndex];
+			targetProdID = targetRow.prod?.ProdID;
+			// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
+			if (!targetProdID) {
+				targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+			}
 		}
 
 		// 若 targetProdID 仍為空，則不執行更新
@@ -637,9 +644,9 @@ export const useE01 = () => {
 			});
 		}
 
-		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty")) {
+		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty") || updateResult.type === "DELETE") {
 			console.log("before reduce", gridData);
-			const updated = mapTooltip({ prevGridData, gridData, rowIndex: updateResult.rowIndex })
+			const updated = mapTooltip({ updateResult, prevGridData, gridData, rowIndex: updateResult.rowIndex })
 			console.log("after reduce", updated);
 			return updated;
 		}

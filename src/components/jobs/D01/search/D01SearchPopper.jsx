@@ -39,6 +39,7 @@ const D01SearchPopper = memo(
 								name="pdate"
 								label="領料日期(大於)"
 								validate
+								clearable
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
@@ -64,7 +65,7 @@ const D01SearchPopper = memo(
 						variant="outlined"
 						color="primary"
 						onClick={onReset}>
-						重設
+						清除
 					</ButtonWrapper>
 					<ButtonWrapper
 						startIcon={<FilterAltIcon />}

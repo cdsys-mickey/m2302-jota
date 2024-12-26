@@ -1,18 +1,16 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import AlertEx from "@/shared-components/AlertEx";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { FormLabelWrapper } from "@/shared-components/label/FormLabelWrapper";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Box, Container, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import { C01ProdGridContainer } from "./prods/C01ProdGridContainer";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
 
 const C01DialogForm = memo((props) => {
 	const {
@@ -103,9 +101,9 @@ const C01DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={8}>
+						{/* <Grid item xs={8}>
 							<FormLabelWrapper label="覆核" name="Checker_N" />
-						</Grid>
+						</Grid> */}
 						<Grid item xs={24}>
 							<C01ProdGridContainer />
 						</Grid>

@@ -12,8 +12,8 @@ const E021SalesTypePicker = memo(
 				ref={ref}
 				fullWidth
 				// required
-				disableClearable
-				label=""
+				// disableClearable
+				// label=""
 				options={E021.salesTypeOptions}
 				getOptionLabel={E021.getSalesTypeOptionLabel}
 				isOptionEqualToValue={E021.isSalesTypeOptionEqualToValue}

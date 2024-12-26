@@ -281,6 +281,18 @@ const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
 	return true;
 };
 
+function clearAllProps(obj) {
+	if (typeof obj !== "object" || obj === null) {
+		throw new Error("Invalid input: Expected an object.");
+	}
+
+	for (const key in obj) {
+		if (Object.hasOwnProperty.call(obj, key)) {
+			obj[key] = ""; // 將屬性值設為空字串，或設為其他預設值
+		}
+	}
+}
+
 const Objects = {
 	isAllPropsNullOrEmpty,
 	isAllPropsNotNull,
@@ -295,6 +307,7 @@ const Objects = {
 	arePropsEqual,
 	isAllPropsNotEmpty,
 	isAllPropsNotUndefined,
+	clearAllProps,
 };
 
 export default Objects;

@@ -30,7 +30,7 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
-const transformForGrid = (data) => {
+const transformGridForReading = (data) => {
 	return (
 		data?.map(
 			({
@@ -63,6 +63,28 @@ const transformForGrid = (data) => {
 	);
 };
 
+const transformGridForSubmitting = (gridData) => {
+	return (
+		gridData
+			?.filter((v) => v.prod?.ProdID)
+			.map(
+				(
+					{ Pkey, prod, SRqtQty, SOrdQty, supplier, SFactNa, SOrdID },
+					index
+				) => ({
+					Pkey: Pkey?.length < 36 ? "" : Pkey,
+					SProdID: prod?.ProdID,
+					SRqtQty: SRqtQty?.toString() || "",
+					SOrdQty: SOrdQty?.toString() || "",
+					SFactID: supplier?.FactID || "",
+					SFactNa: SFactNa || "",
+					SOrdID: SOrdID || "",
+					Seq: index + 1,
+				})
+			) || []
+	);
+};
+
 const transformForReading = (payload) => {
 	const {
 		RqtDate,
@@ -87,7 +109,7 @@ const transformForReading = (payload) => {
 					CodeData: PDlineData_N,
 			  }
 			: null,
-		prods: transformForGrid(GdsRqt_S),
+		prods: transformGridForReading(GdsRqt_S),
 		remark: Remark.join("\n"),
 		...rest,
 	};
@@ -103,31 +125,7 @@ const transformForSubmitting = (payload, gridData) => {
 		Remark: remark?.split("\n") || [],
 
 		...(gridData && {
-			GdsRqt_S: gridData
-				.filter((v) => v.prod?.ProdID)
-				.map(
-					(
-						{
-							Pkey,
-							prod,
-							SRqtQty,
-							SOrdQty,
-							supplier,
-							SFactNa,
-							SOrdID,
-						},
-						index
-					) => ({
-						Pkey: Pkey?.length < 36 ? "" : Pkey,
-						SProdID: prod?.ProdID,
-						SRqtQty: SRqtQty?.toString() || "",
-						SOrdQty: SOrdQty?.toString() || "",
-						SFactID: supplier?.FactID || "",
-						SFactNa: SFactNa || "",
-						SOrdID: SOrdID || "",
-						Seq: index + 1,
-					})
-				),
+			GdsRqt_S: transformGridForSubmitting(gridData),
 		}),
 	};
 };
@@ -160,7 +158,7 @@ const C01 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
-	transformForGrid,
+	transformGridForReading,
 	// 列表模式
 	ListModes,
 	options,

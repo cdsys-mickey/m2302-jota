@@ -38,7 +38,7 @@ const D05SearchPopper = memo(
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<EmployeePicker name="employee" label="倉管人員" d
-								isableOpenOnInput />
+								disableOpenOnInput />
 						</Grid>
 					</Grid>
 				</DialogContent>
@@ -56,7 +56,7 @@ const D05SearchPopper = memo(
 						variant="outlined"
 						color="primary"
 						onClick={onReset}>
-						重設
+						清除
 					</ButtonWrapper>
 					<ButtonWrapper
 						startIcon={<FilterAltIcon />}

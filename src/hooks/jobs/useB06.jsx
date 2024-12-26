@@ -6,25 +6,34 @@ import { useCallback } from "react";
 import { useAppModule } from "./useAppModule";
 import { useMemo } from "react";
 import useJotaReports from "../useJotaReports";
+import { useContext } from "react";
+import { B05Context } from "@/contexts/B05/B05Context";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
-export const useB06 = ({ token, logKey, deptId }) => {
+export const useB06 = () => {
+	const auth = useContext(AuthContext);
 	const appModule = useAppModule({
-		token,
 		moduleId: "B06",
 	});
 
+	const b05 = useContext(B05Context);
+
 	const listLoader = useInfiniteLoader({
 		url: "v1/prod/inquiry-details",
-		bearer: token,
+		bearer: auth.token,
 		initialFetchSize: 50,
 	});
 
 	// const { postToBlank } = useHttpPost();
 
-	// const handleSelect = useCallback((e, item) => {
-	// 	e?.stopPropagation();
-	// 	console.log("handleSelect", item);
-	// }, []);
+	const handleInqIdClick = useCallback((e, rowData) => {
+		e?.stopPropagation();
+		console.log("handleInqIdClick", rowData);
+		if (b05 && rowData.InqID_N) {
+			b05.cancelAction();
+			b05.loadItem({ id: rowData.InqID_N });
+		}
+	}, [b05]);
 
 	const onSearchSubmit = useCallback(
 		(data) => {
@@ -54,7 +63,7 @@ export const useB06 = ({ token, logKey, deptId }) => {
 			console.log("onPrintSubmit", data);
 			const collected = {
 				...B06.transformForPrinting(data),
-				DeptID: deptId,
+				DeptID: auth.operator?.CurDeptID,
 			};
 			console.log("collected", collected);
 
@@ -67,7 +76,7 @@ export const useB06 = ({ token, logKey, deptId }) => {
 			// );
 			reports.open(reportUrl, collected);
 		},
-		[deptId, reportUrl, reports]
+		[auth.operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -83,5 +92,6 @@ export const useB06 = ({ token, logKey, deptId }) => {
 		onPrintSubmitError,
 		// handleSelect,
 		...appModule,
+		handleInqIdClick
 	};
 };

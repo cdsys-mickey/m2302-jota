@@ -94,6 +94,44 @@ const paramsToJsonData = (params) => {
 	};
 };
 
+const transformAsQueryParams = (payload) => {
+	const {
+		supplier,
+		supplier2,
+		sprod,
+		eprod,
+		orderBy,
+		outputType,
+		date1,
+		date2,
+	} = payload;
+	console.log(`filtered props`, outputType);
+
+	return {
+		...(supplier && {
+			sp1: supplier?.FactID,
+		}),
+		...(supplier2 && {
+			sp2: supplier2?.FactID,
+		}),
+		...(sprod && {
+			pi: sprod?.ProdID,
+		}),
+		...(eprod && {
+			pi2: eprod?.ProdID,
+		}),
+		...(orderBy && {
+			ob: orderBy?.id || "",
+		}),
+		...(date1 && {
+			dt1: Forms.formatDate(date1),
+		}),
+		...(date2 && {
+			dt2: Forms.formatDate(date2),
+		}),
+	};
+};
+
 const B06 = {
 	paramsToJsonData,
 	transformForSearchSubmitting,
@@ -103,6 +141,7 @@ const B06 = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	findById,
+	transformAsQueryParams,
 };
 
 export default B06;

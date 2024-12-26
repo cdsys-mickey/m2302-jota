@@ -210,12 +210,17 @@ export const useE021 = () => {
 		[httpGetAsync, token, crud, sqtyManager, grid]
 	);
 
-	const mapTooltip = useCallback(({ prevGridData, gridData, rowIndex }) => {
-		const targetRow = gridData[rowIndex];
-		let targetProdID = targetRow.prod?.ProdID;
-		// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
-		if (!targetProdID) {
+	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
+		let targetProdID;
+		if (updateResult?.type === "DELETE") {
 			targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+		} else {
+			const targetRow = gridData[rowIndex];
+			targetProdID = targetRow.prod?.ProdID;
+			// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
+			if (!targetProdID) {
+				targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+			}
 		}
 
 		// 若 targetProdID 仍為空，則不執行更新
@@ -563,9 +568,10 @@ export const useE021 = () => {
 
 	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
 		const rowIndex = fromRowIndex + index;
+		updateResult.rowIndex = rowIndex;
+
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		updateResult.rowIndex = rowIndex;
 
 		let processedRowData = {
 			...rowData,
@@ -669,9 +675,10 @@ export const useE021 = () => {
 			formData
 		});
 
-		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty")) {
+		// 變更「商品」、「數量」或是「刪除」
+		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty") || updateResult.type === "DELETE") {
 			console.log("before reduce", gridData);
-			const updated = mapTooltip({ prevGridData, gridData, rowIndex: updateResult.rowIndex })
+			const updated = mapTooltip({ updateResult, prevGridData, gridData, rowIndex: updateResult.rowIndex })
 			console.log("after reduce", updated);
 			return updated;
 		}
@@ -927,6 +934,7 @@ export const useE021 = () => {
 		setValue("employee", null, {
 			shouldTouch: true
 		});
+		setValue("remark", "");
 		gridMeta.setActiveCell(null);
 		grid.initGridData([], {
 			fillRows: true
@@ -1061,7 +1069,7 @@ export const useE021 = () => {
 	}, []);
 
 	const handleCustomerOrdersChanged = useCallback(
-		({ setValue, getValues }) =>
+		({ setValue, getValues, reset }) =>
 			async (newValue) => {
 				console.log("handleCustomerOrdersChanged", newValue);
 				const formData = getValues();
@@ -1087,26 +1095,32 @@ export const useE021 = () => {
 					if (status.success) {
 						const data = E021.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
+						const { prods, ...formData } = data;
 						// 更新 grid
 						grid.setGridData(
-							grid.fillRows({ data: data.prods }), {
+							grid.fillRows({ data: prods }), {
 							supressEvents: true
 						});
-						setValue("CustName", data?.CustName || "");
-						setValue("CompTel", data?.CompTel || "");
-						setValue("RecAddr", data?.RecAddr || "");
-						setValue("InvAddr", data?.InvAddr || "");
-						setValue("UniForm", data?.UniForm || "");
-						setValue("transType", data?.transType || "");
-						setValue("employee", data?.employee || "");
-						setValue("taxExcluded", data?.taxExcluded || "");
-						setValue("paymentType", data?.paymentType || "");
 
-						// 更新列印註記
-						setValue("dontPrtAmt", data.dontPrtAmt);
-						// 更新數字
-						updateAmt({ setValue, formData: data });
-						// toast.info("採購單商品已載入");
+						reset(formData);
+						// setValue("CustName", data?.CustName || "");
+						// setValue("CompTel", data?.CompTel || "");
+						// setValue("RecAddr", data?.RecAddr || "");
+						// setValue("InvAddr", data?.InvAddr || "");
+						// setValue("UniForm", data?.UniForm || "");
+						// setValue("transType", data?.transType || "");
+						// setValue("employee", data?.employee || "");
+						// setValue("taxExcluded", data?.taxExcluded || "");
+						// setValue("paymentType", data?.paymentType || "");
+						// // 更新備註
+						// setValue("remark", data?.remark || "");
+
+						// // 更新列印註記
+						// setValue("dontPrtAmt", data.dontPrtAmt);
+						// // 更新數字
+						// updateAmt({ setValue, formData: data });
+						// // toast.info("採購單商品已載入");
+
 					} else {
 						throw error || new Error("未預期例外");
 					}

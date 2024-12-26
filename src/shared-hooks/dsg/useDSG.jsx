@@ -17,6 +17,8 @@ const DEFAULT_SET_DATA_OPTS = {
 
 const DEFAULT_ON_DELETE_ROW = ({ fromRowIndex, updateResult }) => (rowData, index) => {
 	const rowIndex = fromRowIndex + index;
+	updateResult.rowIndex = rowIndex;
+
 	console.log(`刪除第 ${rowIndex + 1} 列...`, rowData);
 	updateResult.rows++;
 };
@@ -381,6 +383,7 @@ export const useDSG = ({
 					cols: []
 				}
 				for (const operation of operations) {
+					updateResult.type = operation.type;
 					if (operation.type === "UPDATE") {
 						if (!asyncRef.current.supressEvents) {
 							const updatingRows = newValue

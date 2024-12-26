@@ -363,13 +363,19 @@ export const useC07 = () => {
 	const handleReset = useCallback(
 		({ reset }) =>
 			() => {
-				handlePopperClose();
-				listLoader.loadList({
-					params: {},
+				// handlePopperClose();
+				// listLoader.loadList({
+				// 	params: {},
+				// });
+				reset({
+					ordDate: null,
+					arrDate: null,
+					ordDept: null,
+					employee: null,
+					squared: null
 				});
-				reset({});
 			},
-		[handlePopperClose, listLoader]
+		[]
 	);
 
 	const onSearchSubmit = useCallback(

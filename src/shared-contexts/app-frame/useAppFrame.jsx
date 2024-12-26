@@ -3,12 +3,17 @@ import useAppRedirect from "@/hooks/useAppRedirect";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { ResponsiveContext } from "../responsive/ResponsiveContext";
+import { useLocation } from "react-router-dom";
 
 export const useAppFrame = (opts = {}) => {
 	const { drawerWidth = 300 } = opts;
 	const auth = useContext(AuthContext);
 	const { mobile } = useContext(ResponsiveContext);
 	const { toModule, toLanding } = useAppRedirect();
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const drawer = queryParams.get("drawer") != 0;
+
 	// Account
 
 	const [drawerState, setDrawerState] = useState({
@@ -49,14 +54,35 @@ export const useAppFrame = (opts = {}) => {
 		}
 	}, [menuState.menuItemSelected?.WebName, toModule]);
 
-	const handleMenuItemClickBy = useCallback(
-		(module) => () => {
-			setMenuState((prev) => ({
-				...prev,
-				menuItemSelected: module,
-			}));
-			console.log(`module ${module.JobID} selected`);
-			toModule(module.WebName);
+	const handleMenuItemClick = useCallback(
+		(e, module) => {
+			// setMenuState((prev) => ({
+			// 	...prev,
+			// 	menuItemSelected: module,
+			// }));
+			// console.log(`module ${module.JobID} selected`);
+			// toModule(module.WebName);
+
+			if (e.ctrlKey || e.shiftKey) {
+				console.log("module", module);
+				e.preventDefault();
+				e.stopPropagation();
+				console.log("window.location", window.location);
+				const url = `${import.meta.env.VITE_PUBLIC_URL}modules/${module.WebName}?drawer=0`;
+				const newTab = window.open(url, "_blank");
+				if (newTab) {
+					newTab.focus(); // 確保切換到新頁籤
+				} else {
+					alert('無法開啟新頁籤，可能被瀏覽器阻擋');
+				}
+			} else {
+				setMenuState((prev) => ({
+					...prev,
+					menuItemSelected: module,
+				}));
+				console.log(`module ${module.JobID} selected`);
+				toModule(module.WebName);
+			}
 		},
 		[toModule]
 	);
@@ -95,13 +121,13 @@ export const useAppFrame = (opts = {}) => {
 	}, [toLanding]);
 
 	const detectDrawerState = useCallback(() => {
-		const defaultOpen = !mobile;
+		const defaultOpen = !mobile && drawer;
 		console.log(`drawer default to ${defaultOpen ? "opened" : "closed"}`);
 		setDrawerState((prev) => ({
 			...prev,
 			drawerOpen: defaultOpen,
 		}));
-	}, [mobile]);
+	}, [drawer, mobile]);
 
 	// const handleSelectJob = useCallback(
 	// 	(itemId) => {
@@ -181,6 +207,7 @@ export const useAppFrame = (opts = {}) => {
 					...prev,
 					menuItemSelected: matchedAuthority,
 				}));
+				document.title = [menuItemId, matchedAuthority?.JobName].filter(Boolean).join(" - ");
 			} else {
 				setMenuState((prev) => ({
 					...prev,
@@ -197,11 +224,11 @@ export const useAppFrame = (opts = {}) => {
 		}
 	}, [auth.authorities, menuItemId, recoverMenuItemSelected]);
 
-	useEffect(() => {
-		if (!auth.deptSwitchWorking) {
-			resetMenuState();
-		}
-	}, [auth.deptSwitchWorking, resetMenuState]);
+	// useEffect(() => {
+	// 	if (!auth.deptSwitchWorking) {
+	// 		resetMenuState();
+	// 	}
+	// }, [auth.deptSwitchWorking, resetMenuState]);
 
 	return {
 		// DRAWER
@@ -215,7 +242,7 @@ export const useAppFrame = (opts = {}) => {
 		// MENU
 		// ...menuStateEx,
 		...menuState,
-		handleMenuItemClickBy,
+		handleMenuItemClick,
 		//
 		// ...accordionState,
 		// handleAccordionChange,

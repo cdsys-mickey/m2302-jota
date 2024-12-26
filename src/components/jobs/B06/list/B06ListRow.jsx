@@ -9,13 +9,14 @@ import B06SpNameColumn from "./columns/B06SpNameColumn";
 import B06PriceColumn from "./columns/B06PriceColumn";
 import B06DateColumn from "./columns/B06DateColumn";
 import B06InqIdColumn from "./columns/B06InqIdColumn";
+import { orange } from "@mui/material/colors";
 
 const B06ListRow = memo((props) => {
-	const { index, style, value, onClick } = props;
+	const { index, style, value, onInqIdClick } = props;
 
 	return (
 		<div style={style}>
-			<HoverableListItem borderBottom onClick={onClick}>
+			<HoverableListItem borderBottom>
 				{/* <HoverableListItemSecondaryAction>
 					<Tooltip arrow title="編輯">
 						<IconButton>
@@ -49,7 +50,11 @@ const B06ListRow = memo((props) => {
 					<B06DateColumn>
 						{value?.InqDate_N}
 					</B06DateColumn>
-					<B06InqIdColumn>
+					<B06InqIdColumn onClick={value?.InqID_N ? onInqIdClick : null} sx={{
+						"&:hover": {
+							color: orange[500]
+						}
+					}}>
 						{value?.InqID_N}
 					</B06InqIdColumn>
 				</Grid>
@@ -64,7 +69,7 @@ B06ListRow.propTypes = {
 	value: PropTypes.object,
 	loading: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	onClick: PropTypes.func,
+	onInqIdClick: PropTypes.func,
 };
 
 B06ListRow.displayName = "B06ListRow";

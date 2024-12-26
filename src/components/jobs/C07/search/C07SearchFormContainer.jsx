@@ -1,28 +1,28 @@
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import E021ListForm from "./E021ListForm";
+import C07SearchForm from "./C07SearchForm";
 
-export const E021ListFormContainer = (props) => {
+
+const C07SearchFormContainer = (props) => {
 	const { ...rest } = props;
+
 	const formMeta = useFormMeta(
 		`
-		q,
-		lvSalesDate,
+		lvOrder,
+		lvOrdDate,
 		lvArrDate,
+		lvDept,
 		lvEmployee,
-		lvSalesType,
-		lvRetail,
-		lvCust,
-		lvCustName,
-		lvCompTel,
-		`
-	)
+		lvSquared,
+		`);
+
 	return (
 		<FormMetaProvider {...formMeta}>
-			<E021ListForm  {...rest} />
+			<C07SearchForm  {...rest} />
 		</FormMetaProvider>
-	)
+	);
+
 }
 
-E021ListFormContainer.displayName = "E021ListFormContainer";
-
+C07SearchFormContainer.displayName = "C07SearchFormContainer";
+export default C07SearchFormContainer;

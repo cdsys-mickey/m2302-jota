@@ -113,7 +113,19 @@ const transformForSubmitting = (payload, gridData) => {
 };
 
 const transformAsQueryParams = (data) => {
-	return {};
+	const { employee, supplier, rstDate, ...rest } = data;
+	return {
+		...rest,
+		...(employee && {
+			emp: employee.CodeID,
+		}),
+		...(supplier && {
+			spl: supplier?.FactID,
+		}),
+		...(rstDate && {
+			rdat: Forms.formatDate(rstDate),
+		}),
+	};
 };
 
 const getTotal = (gridData) => {

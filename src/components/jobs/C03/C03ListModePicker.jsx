@@ -10,8 +10,8 @@ const C03ListModePicker = memo(
 		return (
 			<OptionPickerWrapper
 				ref={ref}
-				width="8rem"
-				dense
+				// width="8rem"
+				// dense
 				label=""
 				options={C03.options}
 				getOptionLabel={C03.getOptionLabel}

@@ -116,7 +116,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			const sqtyLock = sqtyLockRef.current;
 			const { gridMeta } = sqtyLock;
 			dialogs.confirm({
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足(${sqtyLock.stock} < ${sqtyLock.demand})，是否${action}？`,
+				message: `第 ${sqtyLock.rowIndex + 1} 筆 [${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足(${sqtyLock.stock} < ${sqtyLock.demand})，是否${action}？`,
 				onConfirm: () => {
 					commitSQty({});
 				},
@@ -145,7 +145,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 
 			dialogs.prompt({
 				title: "貨品庫存不足",
-				message: `[${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.stock} < ${sqtyLock.demand})` : ""}，若要${action}請輸入密碼`,
+				message: `第 ${sqtyLock.rowIndex + 1} 筆 [${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.stock} < ${sqtyLock.demand})` : ""}，若要${action}請輸入密碼`,
 				label: `${action}密碼`,
 				triggerCancelOnClose: true,
 				onConfirm: ({ value }) => {

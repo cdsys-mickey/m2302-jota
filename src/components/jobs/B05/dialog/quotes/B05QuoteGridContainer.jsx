@@ -22,6 +22,10 @@ export const B05QuoteGridContainer = (props) => {
 		return b05.buildGridChangeHandler({ gridMeta: formMeta.gridMeta, onUpdateRow: b05.onUpdateRow })
 	}, [b05, formMeta.gridMeta])
 
+	const _height = useMemo(() => {
+		return height - 330;
+	}, [height])
+
 	return (
 		<DSGContext.Provider value={{
 			...b05.grid,
@@ -35,7 +39,7 @@ export const B05QuoteGridContainer = (props) => {
 				onChange={onChange}
 				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
-				height={height - 330}
+				height={_height}
 				getRowKey={b05.getRowKey}
 				createRow={b05.createRow}
 				{...rest}

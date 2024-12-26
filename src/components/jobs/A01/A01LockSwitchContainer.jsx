@@ -5,6 +5,7 @@ import A01 from "@/modules/md-a01";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";
+import { Tooltip } from "@mui/material";
 import { useMemo } from "react";
 import { useContext } from "react";
 
@@ -17,6 +18,10 @@ export const A01LockSwitchContainer = (props) => {
 	const disabled = useMemo(() => {
 		return !a01.canUpdate || operator.CurHeadOffice != 1;
 	}, [a01.canUpdate, operator])
+
+	const _title = useMemo(() => {
+		return disabled ? "僅物流倉可進行切換" : ""
+	}, [disabled])
 
 	if (a01.mode !== A01.Mode.PROD) {
 		return false;
@@ -35,15 +40,20 @@ export const A01LockSwitchContainer = (props) => {
 	}
 
 	return (
-		<LockSwitch
-			unlockedLabel="POS下載開放"
-			lockedLabel="POS下載鎖定"
-			locked={!serviceStatus.enabled}
-			onChange={serviceStatus.toggle}
-			disabled={disabled}
-			width={130}
-			{...rest}
-		/>
+		<Tooltip title={_title}>
+			<span>
+				<LockSwitch
+					unlockedLabel="POS下載開放"
+					lockedLabel="POS下載鎖定"
+					locked={!serviceStatus.enabled}
+					onChange={serviceStatus.toggle}
+					disabled={disabled}
+					width={130}
+					{...rest}
+				/>
+
+			</span>
+		</Tooltip>
 	);
 };
 

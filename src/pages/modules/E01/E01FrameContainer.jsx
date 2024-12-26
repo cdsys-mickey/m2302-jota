@@ -15,8 +15,8 @@ export const E01FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
 	const searchForm = useForm({
 		defaultValues: {
-			lvSquared: E01.getSquaredOptionById(E01.SquaredState.NONE),
-			lvSalesType: E01.getSalesTypeOptionById(E01.SalesType.NONE)
+			// lvSquared: E01.getSquaredOptionById(E01.SquaredState.NONE),
+			// lvSalesType: E01.getSalesTypeOptionById(E01.SalesType.NONE)
 		}
 	});
 	const theme = useTheme();

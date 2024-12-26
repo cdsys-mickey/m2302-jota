@@ -24,19 +24,17 @@ const A03Frame = memo((props) => {
 						{/* <CatSGridProvider> */}
 						<CatMProvider>
 							{/* <CatMGridProvider> */}
-							<Grid item xs={12} sm={6} md={4}>
+							<Grid item xs={12} sm={12} md={6} lg={4}>
 								<CatLProvider>
-									{/* <CatLGridProvider> */}
 									<CatLGridContainer />
-									{/* </CatLGridProvider> */}
 								</CatLProvider>
 							</Grid>
-							<Grid item xs={12} sm={6} md={4}>
+							<Grid item xs={12} sm={12} md={6} lg={4}>
 								<CatMGridContainer />
 							</Grid>
 							{/* </CatMGridProvider> */}
 						</CatMProvider>
-						<Grid item xs={12} sm={6} md={4}>
+						<Grid item xs={12} sm={12} md={6} lg={4}>
 							<CatSGridContainer />
 						</Grid>
 						{/* </CatSGridProvider> */}

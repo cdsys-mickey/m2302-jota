@@ -4,6 +4,7 @@ import { memo } from "react";
 import { forwardRef } from "react";
 import { useMemo } from "react";
 import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
+import PropTypes from "prop-types";
 
 const ResponsiveFrameTitle = memo(
 	forwardRef((props, ref) => {
@@ -24,6 +25,8 @@ const ResponsiveFrameTitle = memo(
 		);
 	})
 );
-
+ResponsiveFrameTitle.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array])
+}
 ResponsiveFrameTitle.displayName = "ResponsiveFrameTitle";
 export default ResponsiveFrameTitle;

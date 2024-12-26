@@ -4,19 +4,20 @@ import { forwardRef, memo } from "react";
 import LoadingTypography from "../../../../shared-components/LoadingTypography";
 import C03CreateButtonContainer from "../C03CreateButtonContainer";
 import { C03FetchResultLabelContainer } from "../C03FetchResultLabelContainer";
-import C03ListModePicker from "../C03ListModePicker";
+// import C03ListModePicker from "../C03ListModePicker";
 
 const LeftButtons = memo(() => {
 	return (
 		<>
 			<C03CreateButtonContainer />
-			<C03ListModePicker
+			{/* <C03ListModePicker
 				name="listMode"
+				dense
 				placeholder="篩選模式"
 				disableClearable
 				autoComplete
 				autoSelect
-			/>
+			/> */}
 		</>
 	);
 });

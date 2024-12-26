@@ -11,6 +11,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { C04ExpDialogContainer } from "../../../components/jobs/C04/exp-dialog/C04ExpDialogContainer";
 import { C04ListHeaderContainer } from "../../../components/jobs/C04/list/C04ListHeaderContainer";
 import C04Drawer from "@/components/jobs/C04/C04Drawer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
+import C04SearchFormContainer from "@/components/jobs/C04/search/C04SearchFormContainer";
 
 export const C04FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -28,14 +30,17 @@ export const C04FrameContainer = () => {
 			<FormProvider {...searchForm}>
 				{/* 標題 */}
 				<FrameBannerContainer>
-					{<C04SearchFieldContainer name="q" />}
+					{/* {<C04SearchFieldContainer name="q" />} */}
 				</FrameBannerContainer>
-				{/* 工具列 */}
-				<C04ListToolbar />
+				<ResponsiveLayout initSize="md">
+					<C04SearchFormContainer />
+					{/* 工具列 */}
+					<C04ListToolbar />
 
-				{/* 列表 */}
-				<C04ListHeaderContainer />
-				<C04ListViewContainer />
+					{/* 列表 */}
+					<C04ListHeaderContainer />
+					<C04ListViewContainer />
+				</ResponsiveLayout>
 			</FormProvider>
 
 			{/* 對話框 */}

@@ -15,7 +15,11 @@ export const C02ProdGridContainer = (props) => {
 	const formMeta = useContext(FormMetaContext);
 
 	const onChange = useMemo(() => {
-		return c02.buildGridChangeHandler({ gridMeta: formMeta.gridMeta });
+		return c02.buildGridChangeHandler({
+			gridMeta: formMeta.gridMeta,
+			onUpdateRow: c02.onUpdateRow,
+			isRowDeletable: c02.isRowDeletable,
+		});
 	}, [c02, formMeta.gridMeta]);
 
 	return (

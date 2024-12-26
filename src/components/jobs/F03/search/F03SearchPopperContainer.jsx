@@ -10,17 +10,14 @@ const F03SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const f03 = useContext(F03Context);
 	const form = useFormContext();
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(f03.onSearchSubmit, f03.onSearchSubmitError)
-	}, [f03.onSearchSubmit, f03.onSearchSubmitError, form])
+	// const handleSubmit = useMemo(() => {
+	// 	return form.handleSubmit(f03.onSearchSubmit, f03.onSearchSubmitError)
+	// }, [f03.onSearchSubmit, f03.onSearchSubmitError, form])
 
 	const formMeta = useFormMeta(
 		`
 		employee
 		`,
-		{
-			lastField: handleSubmit
-		}
 	)
 
 	return (

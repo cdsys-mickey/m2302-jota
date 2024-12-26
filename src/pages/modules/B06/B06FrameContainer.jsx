@@ -1,4 +1,4 @@
-import B06Toolbar from "@/components/jobs/B06/B06Toolbar";
+import { B05DialogContainer } from "@/components/jobs/B05/dialog/B05DialogContainer";
 import B06ListHeader from "@/components/jobs/B06/list/B06ListHeader";
 import { B06ListViewContainer } from "@/components/jobs/B06/list/B06ListViewContainer";
 import Styles from "@/modules/md-styles";
@@ -7,9 +7,8 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { B06FormContainer } from "../../../components/jobs/B06/form/B06FormContainer";
 import { B06ToolbarContainer } from "../../../components/jobs/B06/B06ToolbarContainer";
-import ContainerEx from "../../../shared-components/ContainerEx";
+import { B06SearchFormContainer } from "@/components/jobs/B06/form/B06SearchFormContainer";
 
 export const B06FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -24,10 +23,12 @@ export const B06FrameContainer = () => {
 		<FormProvider {...searchForm}>
 			<Box sx={[boxStyles]}>
 				<FrameBannerContainer></FrameBannerContainer>
-				<B06FormContainer />
+				<B06SearchFormContainer />
 				<B06ToolbarContainer />
 				<B06ListHeader />
 				<B06ListViewContainer />
+				{/* B05 對話框 */}
+				<B05DialogContainer />
 			</Box>
 		</FormProvider>
 	);

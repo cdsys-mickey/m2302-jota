@@ -21,13 +21,13 @@ const createRow = () => ({
 });
 
 const SalesType = Object.freeze({
-	NONE: "",
+	// NONE: "",
 	RETAIL: "Y",
 	NORMAL: "N",
 });
 
 const salesTypeOptions = [
-	{ id: SalesType.NONE, label: "不篩選" },
+	// { id: SalesType.NONE, label: "不篩選" },
 	{ id: SalesType.RETAIL, label: "零售" },
 	{ id: SalesType.NORMAL, label: "正式客戶" },
 ];
@@ -60,7 +60,7 @@ const SquaredState = Object.freeze({
 });
 
 const listSquaredOptions = [
-	{ id: SquaredState.NONE, label: "不篩選" },
+	// { id: SquaredState.NONE, label: "不篩選" },
 	{ id: SquaredState.NOT, label: "未結清" },
 	{ id: SquaredState.MARK_AS_SQUARED, label: "結清" },
 	{ id: SquaredState.SQUARED, label: "銷貨已結清" },

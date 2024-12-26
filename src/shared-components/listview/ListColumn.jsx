@@ -6,26 +6,43 @@ import { useMemo } from "react";
 import { ListRowContext } from "./context/ListRowContext";
 
 const ListColumn = (props) => {
-	const { children, flex, inline, justifyContent, alignItems, ...rest } = props;
+	const { children, flex, inline, justifyContent, alignItems, onClick, sx = [], ...rest } = props;
 	const listRow = useContext(ListRowContext);
 	const isLoading = useMemo(() => {
 		return listRow?.loading && !children
 	}, [children, listRow?.loading]);
 
 	const display = useMemo(() => {
-		return flex ? (inline ? "inline-flex" : "flex") : "block";
+		return flex ? (inline ? "inline-flex" : "flex") : null;
 	}, [flex, inline])
 
-	return (
-		<Grid item sx={[MuiStyles.ELLIPSIS, {
-			display,
+	const styles = useMemo(() => ({
+		"&": {
+			...(display && { display }),
 			...(justifyContent && {
 				justifyContent,
 			}),
 			...(alignItems && {
 				alignItems,
+			}),
+			...(onClick && {
+				cursor: "pointer"
 			})
-		}]}  {...rest}>{isLoading ? <Skeleton /> : children || ""}</Grid>
+		}
+	}), [alignItems, display, justifyContent, onClick])
+
+	// const title = useMemo(() => {
+	// 	return Types.isString(children) ? children : "";
+	// }, [children])
+
+	return (
+		<Grid item sx={[MuiStyles.ELLIPSIS, styles, ...(Array.isArray(sx) ? sx : [sx])]}
+			onClick={onClick}
+			// title={title}
+			{...rest}
+		>
+			{isLoading ? <Skeleton /> : children || ""}
+		</Grid>
 	);
 }
 
@@ -35,6 +52,8 @@ ListColumn.propTypes = {
 	inline: PropTypes.bool,
 	alignItems: PropTypes.bool,
 	justifyContent: PropTypes.bool,
+	onClick: PropTypes.func,
+	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 }
 
 ListColumn.displayName = "ListViewColumn";

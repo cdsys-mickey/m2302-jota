@@ -136,9 +136,9 @@ const C04SearchPopper = memo(
 					<ButtonWrapper
 						size="small"
 						variant="outlined"
-						color="primary"
+						color="warning"
 						onClick={onReset}>
-						重設
+						清除
 					</ButtonWrapper>
 					<ButtonWrapper
 						startIcon={<FilterAltIcon />}

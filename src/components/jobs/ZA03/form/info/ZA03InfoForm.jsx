@@ -1,5 +1,6 @@
-import AppDeptPicker from "@/components/fields/AppDeptPicker";
-import AuthScopePickerContainer from "@/components/fields/AuthScopePickerContainer";
+import Auth from "@/modules/md-auth";
+import ZA03 from "@/modules/md-za03";
+import ContainerEx from "@/shared-components/ContainerEx";
 import FlexBox from "@/shared-components/FlexBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
@@ -7,11 +8,9 @@ import { TabPanel } from "@mui/lab";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ZA03 from "@/modules/md-za03";
-import ContainerEx from "@/shared-components/ContainerEx";
-import { ZA03DeptsPickerContainer } from "../depts-picker/ZA03DeptsPickerContainer";
-import Auth from "@/modules/md-auth";
 import ZA03DeptPicker from "../depts-picker/ZA03DeptPicker";
+import { ZA03DeptsPickerContainer } from "../depts-picker/ZA03DeptsPickerContainer";
+import AuthScopePickerContainer from "@/components/fields/AuthScopePickerContainer";
 
 const ZA03InfoForm = memo((props) => {
 	const { data, creating, updating, editing, handleDeptChange } = props;
@@ -112,20 +111,19 @@ const ZA03InfoForm = memo((props) => {
 							/> */}
 
 						</Grid>
-						{/* <Grid item xs={12} sm={12} md={6}>
-							<AuthScopePickerContainer
-								typo
-								name="userClass"
-								label="權限等級"
-								required
-							/>
-						</Grid> */}
-
 						<Grid item xs={12}>
 							<ZA03DeptsPickerContainer
 								typo
 								name="depts"
 								label="可登入門市"
+								required
+							/>
+						</Grid>
+						<Grid item xs={12} sm={12} md={6}>
+							<AuthScopePickerContainer
+								typo
+								name="userClass"
+								label="權限等級"
 								required
 							/>
 						</Grid>

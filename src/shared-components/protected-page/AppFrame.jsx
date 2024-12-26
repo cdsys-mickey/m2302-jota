@@ -1,14 +1,14 @@
 import { styled } from "@mui/material";
-import { memo, forwardRef } from "react";
+import { forwardRef, memo } from "react";
 
 import PropTypes from "prop-types";
-import { LoadingFrame } from "./LoadingFrame";
 
 const StyledMain = styled("main", {
 	shouldForwardProp: (prop) =>
 		!["menuFloating", "drawerWidth"].includes(prop),
 })(({ theme, menuFloating, drawerWidth }) => ({
 	flexGrow: 1,
+	overflow: "hidden",
 	// paddingTop: theme.spacing(2),
 	// paddingBottom: theme.spacing(2),
 	// paddingLeft: theme.spacing(3),
@@ -43,6 +43,7 @@ const AppFrame = memo(
 				menuFloating={menuFloating}
 				drawerWidth={drawerWidth}
 				{...rest}>
+
 				{children}
 			</StyledMain>
 		);

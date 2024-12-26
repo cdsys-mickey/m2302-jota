@@ -8,6 +8,7 @@ import FrameBanner from "../../shared-components/protected-page/FrameBanner";
 import { SettingsContext } from "../../contexts/settings/SettingsContext";
 import { TabContext } from "@mui/lab";
 import { useInit } from "../../shared-hooks/useInit";
+import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 
 export const SettingsFrameContainer = () => {
 	const settings = useContext(SettingsContext);
@@ -26,7 +27,7 @@ export const SettingsFrameContainer = () => {
 	return (
 		<Box sx={[boxStyles]}>
 			{/* 標題 */}
-			<FrameBanner title="個人設定" />
+			<FrameBannerContainer title="個人設定" />
 			<TabContext value={settings.selectedTab}>
 				<SettingsFrame handleTabChange={settings.handleTabChange} />
 			</TabContext>

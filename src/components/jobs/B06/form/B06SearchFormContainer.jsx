@@ -1,5 +1,5 @@
 import { FormProvider, useFormContext } from "react-hook-form";
-import B06Form from "./B06Form";
+import B06Form from "./B06SearchForm";
 import { useContext } from "react";
 import { B06Context } from "@/contexts/B06/B06Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
@@ -7,7 +7,7 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useMemo } from "react";
 import { useCallback } from "react";
 
-export const B06FormContainer = () => {
+export const B06SearchFormContainer = () => {
 	const b06 = useContext(B06Context);
 	const form = useFormContext({
 		defaultValues: {
@@ -53,4 +53,4 @@ export const B06FormContainer = () => {
 	);
 };
 
-B06FormContainer.displayName = "B06FormContainer";
+B06SearchFormContainer.displayName = "B06SearchFormContainer";

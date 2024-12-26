@@ -32,15 +32,15 @@ const getSquaredOptionDisabled = (option) => {
 };
 
 const ListModes = Object.freeze({
-	NOT_REVIEWED: 0,
-	REVIEWED: 1,
-	ALL: -1,
+	NOT_REVIEWED: 1,
+	REVIEWED: 2,
+	// ALL: -1,
 });
 
 const options = [
 	{ id: ListModes.NOT_REVIEWED, label: "待覆核" },
 	{ id: ListModes.REVIEWED, label: "已覆核" },
-	{ id: ListModes.ALL, label: "全部" },
+	// { id: ListModes.ALL, label: "不篩選" },
 ];
 
 const getOptionLabel = (option) => {
@@ -156,7 +156,28 @@ const transformForSubmitting = (payload, gridData) => {
 };
 
 const transformAsQueryParams = (data) => {
-	return {};
+	const { employee, ordDate, arrDate, supplier, listMode, order, ...rest } =
+		data;
+	return {
+		...rest,
+		...(order && {
+			id: order?.採購單號,
+		}),
+		...(employee && {
+			ep: employee.CodeID,
+		}),
+		od: Forms.formatDate(ordDate),
+		ad: Forms.formatDate(arrDate),
+		...(listMode && {
+			ck: listMode.id,
+		}),
+		...(supplier && {
+			spl: supplier?.FactID,
+		}),
+		// ...(squared && {
+		// 	sq: squared.id,
+		// }),
+	};
 };
 
 const getSubtotal = (gridData) => {

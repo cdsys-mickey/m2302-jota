@@ -1,8 +1,6 @@
 import FlexBox from "@/shared-components/FlexBox";
 import { Stack } from "@mui/material";
 import { forwardRef, memo } from "react";
-import ResponsiveFrameTitle from "../responsive/ResponsiveFrameTitle";
-// import ResponsiveFrameMenuButton from "./ResponsiveFrameMenuButton";
 import AvatarButtonContainer from "@/shared-components/avatar-button/AvatarButtonContainer";
 import FrameMenuButtonContainer from "./FrameMenuButtonContainer";
 import PropTypes from "prop-types";
@@ -12,7 +10,7 @@ import { DeptSwitchDialogContainer } from "@/components/account/DeptSwitchDialog
 import { useMemo } from "react";
 import { PushMessagesIconButtonContainer } from "@/components/push-messages/PushMessagesIconButtonContainer";
 import { PushMessagesPopoverContainer } from "@/components/push-messages/PushMessagesPopoverContainer";
-import { InfiniteLoaderProvider } from "../../contexts/infinite-loader/InfiniteLoaderProvider";
+import FrameTitle from "./FrameTitle";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
@@ -40,9 +38,7 @@ const FrameBanner = memo(
 					flex={leftFlex}>
 					{/* <ResponsiveFrameMenuButton /> */}
 					<FrameMenuButtonContainer />
-					<ResponsiveFrameTitle alt={alt}>
-						{title}
-					</ResponsiveFrameTitle>
+					<FrameTitle>{title}</FrameTitle>
 				</FlexBox>
 				<FlexBox alignItems="center" flex={centerFlex} px={2}>
 					{children}

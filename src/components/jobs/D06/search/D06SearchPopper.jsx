@@ -58,7 +58,7 @@ const D06SearchPopper = memo(
 						variant="outlined"
 						color="primary"
 						onClick={onReset}>
-						重設
+						清除
 					</ButtonWrapper>
 					<ButtonWrapper
 						startIcon={<FilterAltIcon />}

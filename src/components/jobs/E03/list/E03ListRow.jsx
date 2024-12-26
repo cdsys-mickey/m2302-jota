@@ -11,12 +11,11 @@ import E03UserColumn from "./columns/E03UserColumn";
 
 const E03ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
+	const { 客戶代碼, 客戶簡稱 } = value || {};
 
 	const customer = useMemo(() => {
-		const { 客戶代碼, 客戶簡稱 } = value || "";
 		return [客戶代碼, 客戶簡稱].filter(Boolean).join(" ");
-	}, [value])
-
+	}, [客戶代碼, 客戶簡稱])
 
 	return (
 		<div style={style}>

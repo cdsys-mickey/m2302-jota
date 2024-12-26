@@ -28,9 +28,9 @@ const SalesType = Object.freeze({
 });
 
 const salesTypeOptions = [
-	{ id: SalesType.NONE, label: "不篩選" },
+	// { id: SalesType.NONE, label: "不篩選" },
 	{ id: SalesType.RETAIL, label: "零售" },
-	{ id: SalesType.NORMAL, label: "正式客戶" },
+	{ id: SalesType.NORMAL, label: "正式" },
 ];
 
 const getSalesTypeOptionLabel = (option) => {
@@ -61,7 +61,7 @@ const SquaredState = Object.freeze({
 });
 
 const squaredOptions = [
-	{ id: SquaredState.NONE, label: "不篩選" },
+	// { id: SquaredState.NONE, label: "不篩選" },
 	{ id: SquaredState.NOT, label: "未結清" },
 	{ id: SquaredState.MARK_AS_SQUARED, label: "已結清" },
 	{ id: SquaredState.SQUARED, label: "銷貨已結清" },
@@ -208,10 +208,14 @@ const transformGridForSubmitting = (data) => {
 				SQty,
 				SAmt,
 				stype,
-				SNotQty,
+				// SNotQty,
 				SOutQty,
+				StockQty_N,
+				tooltip,
 				...rest
 			} = v;
+			console.log("skipping", tooltip);
+
 			return {
 				Pkey: Pkey?.length < 36 ? "" : Pkey,
 				SProdID: prod ? prod.ProdID : "",
@@ -219,8 +223,9 @@ const transformGridForSubmitting = (data) => {
 				SPrice: SPrice?.toString() || "",
 				SAmt: SAmt?.toString() || "",
 				SType: stype?.id || "",
-				SNotQty: SNotQty?.toString() || "",
+				// SNotQty: SNotQty?.toString() || "",
 				SOutQty: SOutQty?.toString() || "",
+				StockQty_N: StockQty_N?.toString() || "",
 				Seq: index + 1,
 				...rest,
 			};
@@ -349,8 +354,12 @@ const transformForSubmitting = (payload, gridData) => {
 		dontPrtAmt,
 		taxExcluded,
 		remark,
+		prods,
+		customerOrders,
 		...rest
 	} = payload;
+
+	console.log("skipping:", prods, customerOrders);
 
 	return {
 		SalDate: Forms.formatDate(SalDate) || "",
@@ -358,6 +367,10 @@ const transformForSubmitting = (payload, gridData) => {
 		RetDate: Forms.formatDate(RetDate) || "",
 		SalType: retail ? "Y" : "",
 		CustID: customer?.CustID || "",
+		OrdIDs: customerOrders
+			.map((x) => x.訂貨單號)
+			.filter(Boolean)
+			.join("|"),
 		CustName,
 		RecvID: paymentType?.CodeID || "",
 		EmplID: employee?.CodeID || "",

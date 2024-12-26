@@ -62,7 +62,6 @@ const E01ListForm = memo((props) => {
 					<E01SalesTypePicker
 						name="lvSalesType"
 						label="客戶類型"
-						clearable
 					/>
 				</Grid>
 				<FlexGrid item xs={24} sm={24} md={3} justifyContent="flex-end">

@@ -5,7 +5,7 @@ import FrameMenuItemButton from "./FrameMenuItemButton";
 
 const FrameMenuItemButtonContainer = (props) => {
 	const { value, ...rest } = props;
-	const { handleMenuItemClickBy, menuItemSelected } =
+	const { handleMenuItemClick, menuItemSelected } =
 		useContext(AppFrameContext);
 
 	const selected = useMemo(() => {
@@ -15,7 +15,7 @@ const FrameMenuItemButtonContainer = (props) => {
 	return (
 		<FrameMenuItemButton
 			value={value}
-			handleClickBy={handleMenuItemClickBy}
+			onClick={handleMenuItemClick}
 			selected={selected}
 			disabled={!value.WebName}
 			{...rest}

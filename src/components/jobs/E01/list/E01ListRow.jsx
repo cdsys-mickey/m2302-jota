@@ -11,26 +11,24 @@ import E01UserColumn from "./columns/E01UserColumn";
 
 const E01ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
+	const { 客戶代碼, 客戶簡稱, ProdID, ProdData_N, PackData_N, QEmplID, EmplData_N } = value || {};
 
 	const customer = useMemo(() => {
-		const { 客戶代碼, 客戶簡稱 } = value || "";
 		return [客戶代碼, 客戶簡稱].filter(Boolean).join(" ");
-	}, [value])
+	}, [客戶代碼, 客戶簡稱])
 
-	const prod = useMemo(() => {
-		const { ProdID, ProdData_N, PackData_N } = value || "";
-		return [
-			// ProdID, 
-			ProdData_N]
-			.filter(Boolean).join(" ").concat(PackData_N ? `(${PackData_N})` : "");
-	}, [value])
+	// const prod = useMemo(() => {
+	// 	return [
+	// 		// ProdID, 
+	// 		ProdData_N]
+	// 		.filter(Boolean).join(" ").concat(PackData_N ? `(${PackData_N})` : "");
+	// }, [PackData_N, ProdData_N])
 
-	const employee = useMemo(() => {
-		const { QEmplID, EmplData_N } = value || "";
-		return [
-			EmplData_N
-		].filter(Boolean).join(" ");
-	}, [value])
+	// const employee = useMemo(() => {
+	// 	return [
+	// 		EmplData_N
+	// 	].filter(Boolean).join(" ");
+	// }, [EmplData_N])
 
 	return (
 		<div style={style}>

@@ -75,13 +75,13 @@ const CustomerPicker = (props) => {
 		if (placeholder) {
 			return placeholder;
 		}
-		// let result = (forNew ? "新客戶" : "客戶");
-		let result = "編號";
+		let result = (forNew ? "新客戶" : "客戶");
+		result += "編號";
 		if (!forId) {
 			result += "/名稱";
 		}
 		return result;
-	}, [forId, placeholder])
+	}, [forId, forNew, placeholder])
 
 	return (
 		<OptionPickerWrapper

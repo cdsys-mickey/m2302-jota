@@ -12,7 +12,7 @@ const E01ListSquaredPicker = memo(
 				ref={ref}
 				fullWidth
 				// required
-				disableClearable
+				// disableClearable
 				label=""
 				options={E01.listSquaredOptions}
 				getOptionLabel={E01.getSquaredOptionLabel}

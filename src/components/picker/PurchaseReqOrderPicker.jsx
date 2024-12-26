@@ -14,11 +14,9 @@ const PurchaseReqOrderPicker = memo((props) => {
 	const querystring = useMemo(() => {
 		const obj = {
 			tp: 10000,
-
 		};
 		return queryString.stringify(obj);
-	}, [
-	]);
+	}, []);
 
 
 	return (
@@ -35,7 +33,7 @@ const PurchaseReqOrderPicker = memo((props) => {
 			// stringify={stringify}
 			notFoundText="請購單號 ${id} 不存在"
 			placeholder="請購單號"
-			typeToSearchText="輸入片段或完整單號進行搜尋..."
+			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"
 			{...rest}
 		/>

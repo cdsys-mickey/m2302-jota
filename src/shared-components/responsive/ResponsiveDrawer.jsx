@@ -1,4 +1,4 @@
-import { Drawer } from "@mui/material";
+import { Drawer, SwipeableDrawer } from "@mui/material";
 import { useMemo } from "react";
 import { memo } from "react";
 import { forwardRef } from "react";
@@ -13,7 +13,7 @@ const ResponsiveDrawer = memo(
 	forwardRef((props, ref) => {
 		const {
 			children,
-			variant = "persistent",
+			variant,
 			width = 260,
 			open = false,
 			bgcolor,
@@ -21,16 +21,16 @@ const ResponsiveDrawer = memo(
 		} = props;
 		const { mobile } = useContext(ResponsiveContext);
 
-		const autoVariant = useMemo(() => {
-			return mobile ? "temporary" : "persistent";
-		}, [mobile]);
+		const _variant = useMemo(() => {
+			return variant || mobile ? "temporary" : "persistent";
+		}, [mobile, variant]);
 
 		return (
-			<Drawer
+			<SwipeableDrawer
 				ref={ref}
 				open={open}
 				// open={autoOpen}
-				variant={autoVariant || variant}
+				variant={_variant}
 				sx={{
 					width: width,
 					flexShrink: 0,
@@ -45,7 +45,7 @@ const ResponsiveDrawer = memo(
 				}}
 				{...rest}>
 				{children}
-			</Drawer>
+			</SwipeableDrawer>
 		);
 	})
 );

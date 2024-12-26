@@ -7,8 +7,9 @@ import { useFormContext, useWatch } from "react-hook-form";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { E021ListRowContainer } from "./E021ListRowContainer";
 import { E021Context } from "@/contexts/E021/E021Context";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import E021 from "@/modules/md-e021";
+import { useMemo } from "react";
 
 export const E021ListViewContainer = () => {
 	const e021 = useContext(E021Context);
@@ -81,6 +82,10 @@ export const E021ListViewContainer = () => {
 		});
 	}, [q, salesDate, arrDate, squared, salesType, cust, custName, compTel, employee]);
 
+	const _height = useMemo(() => {
+		return height ? height - 236 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -92,7 +97,7 @@ export const E021ListViewContainer = () => {
 				loadMoreItems={e021.loadMoreItems}
 				isItemLoaded={e021.isItemLoaded}
 				RowComponent={E021ListRowContainer}
-				height={height ? height - 232 : 300}
+				height={_height}
 				handleItemsRendered={e021.handleItemsRendered}
 				error={e021.listError}
 				// bottomReached={e021.bottomReached}

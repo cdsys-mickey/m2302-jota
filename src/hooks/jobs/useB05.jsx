@@ -397,7 +397,7 @@ export const useB05 = () => {
 					url: "v1/prod/data-grid/B05",
 					bearer: token,
 					params: {
-						...B05.transformAsQueryParams(criteria),
+						...B05.transformImportProdsAsQueryParams(criteria),
 						pk: 1,
 					},
 				});
@@ -434,7 +434,7 @@ export const useB05 = () => {
 					url: "v1/prod/data-grid/B05",
 					bearer: token,
 					params: {
-						...B05.transformAsQueryParams(ipState.criteria),
+						...B05.transformImportProdsAsQueryParams(ipState.criteria),
 						sk: ipState.saveKey,
 					},
 				});

@@ -1,14 +1,10 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-import FormBox from "@/shared-components/form/FormBox";
-import Colors from "@/modules/md-colors";
-import { Grid } from "@mui/material";
-import Fieldset from "@/shared-components/Fieldset";
-import PurchaseReqOrderPicker from "@/components/picker/PurchaseReqOrderPicker";
-import C01ListModePicker from "../C01ListModePicker";
-import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
+import PurchaseReqOrderPicker from "@/components/picker/PurchaseReqOrderPicker";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import { Grid } from "@mui/material";
+import { memo } from "react";
 
 const C01ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -33,7 +29,7 @@ const C01ListForm = memo((props) => {
 						label="請購單號 (≧)"
 						name="reqOrder"
 						autoFocus
-						placeholder="可僅輸入單號數字"
+						placeholder="輸入單號或數字"
 						disableOpenOnInput
 					/>
 				</Grid>
@@ -42,6 +38,7 @@ const C01ListForm = memo((props) => {
 						name="date"
 						label="請購日期 (≧)"
 						validate
+						clearable
 					// dense
 					/>
 				</Grid>

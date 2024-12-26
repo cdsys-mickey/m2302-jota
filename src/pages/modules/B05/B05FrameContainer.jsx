@@ -3,6 +3,7 @@ import { B05DialogContainer } from "@/components/jobs/B05/dialog/B05DialogContai
 import B05ListHeader from "@/components/jobs/B05/list/B05ListHeader";
 import B05ListToolbar from "@/components/jobs/B05/list/B05ListToolbar";
 import { B05ListViewContainer } from "@/components/jobs/B05/list/B05ListViewContainer";
+import B05SearchFormContainer from "@/components/jobs/B05/search/B05SearchFormContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
@@ -24,8 +25,9 @@ export const B05FrameContainer = () => {
 			<Box sx={[boxStyles]}>
 				{/* 標題 */}
 				<FrameBannerContainer>
-					{<B05SearchFieldContainer name="q" />}
+					{/* {<B05SearchFieldContainer name="q" />} */}
 				</FrameBannerContainer>
+				<B05SearchFormContainer />
 				{/* 工具列 */}
 				<B05ListToolbar />
 				{/* 列表 */}

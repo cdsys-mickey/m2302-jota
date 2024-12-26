@@ -1,22 +1,21 @@
 import ProdPicker from "@/components/picker/ProdPicker";
 import SupplierPicker from "@/components/picker/SupplierPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
-import { Grid } from "@mui/material";
+import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { B06SearchButtonContainer } from "./B06SearchButtonContainer";
 import { B06OrderByPicker } from "./fields/B06OrderByPicker";
+import ResponsiveLineBreak from "@/shared-components/responsive-grid/ResponsiveLineBreak";
 
-const B06Form = memo(() => {
+const B06SearchForm = memo(() => {
 	return (
 		<FormBox>
-			<Grid container columns={24} spacing={1}>
-				<Grid item xs={6}>
+			<ResponsiveGrid container columns={24} spacing={1}>
+				<ResponsiveGrid item md={6} lg={5}>
 					<SupplierPicker
 						label="廠商代碼起"
-						name="supplier"
+						name="lvSupplier"
 						virtualize
 						optionLabelSize="md"
 						disableOpenOnInput
@@ -29,11 +28,11 @@ const B06Form = memo(() => {
 							},
 						}}
 					/>
-				</Grid>
-				<Grid item xs={6}>
+				</ResponsiveGrid>
+				<ResponsiveGrid item md={6} lg={5}>
 					<SupplierPicker
 						label="廠商代碼迄"
-						name="supplier2"
+						name="lvSupplier2"
 						virtualize
 						optionLabelSize="md"
 						disableOpenOnInput
@@ -46,8 +45,8 @@ const B06Form = memo(() => {
 							},
 						}}
 					/>
-				</Grid>
-				<Grid item xs={6}>
+				</ResponsiveGrid>
+				<ResponsiveGrid item md={6} lg={4}>
 					<DatePickerWrapper
 						name="date1"
 						label="起始日期"
@@ -55,8 +54,8 @@ const B06Form = memo(() => {
 						validate
 						clearable
 					/>
-				</Grid>
-				<Grid item xs={6}>
+				</ResponsiveGrid>
+				<ResponsiveGrid item md={6} lg={4}>
 					<DatePickerWrapper
 						name="date2"
 						label="截止日期"
@@ -64,9 +63,9 @@ const B06Form = memo(() => {
 						validate
 						clearable
 					/>
-				</Grid>
-
-				<Grid item xs={6}>
+				</ResponsiveGrid>
+				<ResponsiveLineBreak />
+				<ResponsiveGrid item md={6} lg={5}>
 					<ProdPicker
 						name="sprod"
 						label="起始商品編號"
@@ -84,8 +83,8 @@ const B06Form = memo(() => {
 							},
 						}}
 					/>
-				</Grid>
-				<Grid item xs={6}>
+				</ResponsiveGrid>
+				<ResponsiveGrid item md={6} lg={5}>
 					<ProdPicker
 						name="eprod"
 						label="截止商品編號"
@@ -103,17 +102,16 @@ const B06Form = memo(() => {
 							},
 						}}
 					/>
-				</Grid>
+				</ResponsiveGrid>
 
-				<Grid item xs={6}>
+				<ResponsiveGrid item md={6} lg={4}>
 					<B06OrderByPicker name="orderBy" label="排序"
 						disableOpenOnInput
 						selectOnFocus />
-				</Grid>
-				<FlexGrid
+				</ResponsiveGrid>
+				{/* <FlexGrid
 					item
-
-					xs={6}
+					md={6}
 					justifyContent="center"
 					alignItems="center">
 					<B06SearchButtonContainer
@@ -121,15 +119,15 @@ const B06Form = memo(() => {
 						size="medium"
 						fullWidth
 					/>
-				</FlexGrid>
-			</Grid>
-		</FormBox>
+				</FlexGrid> */}
+			</ResponsiveGrid>
+		</FormBox >
 	);
 });
 
-B06Form.propTypes = {
+B06SearchForm.propTypes = {
 	onSubmit: PropTypes.func,
 };
 
-B06Form.displayName = "B06Form";
-export default B06Form;
+B06SearchForm.displayName = "B06SearchForm";
+export default B06SearchForm;

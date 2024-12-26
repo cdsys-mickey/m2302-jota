@@ -22,6 +22,9 @@ const E01Drawer = memo((props) => {
 			<FormFieldLabel label="修改人員">
 				{e01.itemData?.Writer_N}
 			</FormFieldLabel>
+			<FormFieldLabel label="銷貨單號">
+				{e01.itemData?.SalIDs}
+			</FormFieldLabel>
 		</SideDrawer>
 	);
 });

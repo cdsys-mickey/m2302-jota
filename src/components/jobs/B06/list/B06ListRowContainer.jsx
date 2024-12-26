@@ -25,6 +25,7 @@ export const B06ListRowContainer = (props) => {
 				value={value}
 				// onClick={(e) => b06.handleSelect(e, value)}
 				selected={selected}
+				onInqIdClick={e => b06.handleInqIdClick(e, value)}
 				{...rest}
 			/>
 		</ListRowProvider>

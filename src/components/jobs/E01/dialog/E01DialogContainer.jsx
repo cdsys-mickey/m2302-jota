@@ -19,6 +19,8 @@ import { toast } from "react-toastify";
 import E01Drawer from "../E01Drawer";
 import E01DialogForm from "./E01DialogForm";
 import { E01DialogToolbarContainer } from "./toolbar/E01DialogToolbarContainer";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const E01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -46,6 +48,14 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 		name: "OrdDate",
 		control: form.control
 	})
+
+	const debouncedOrdDate = useDebounceObject(ordDate, 300);
+
+	useChangeTracking(() => {
+		if (e01.editing) {
+			form.setValue("ArrDate", debouncedOrdDate);
+		}
+	}, [debouncedOrdDate]);
 
 	const arrDate = useWatch({
 		name: "ArrDate",

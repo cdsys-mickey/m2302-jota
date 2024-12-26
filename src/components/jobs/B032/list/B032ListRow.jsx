@@ -12,7 +12,7 @@ import B032UserColumn from "./columns/B032UserColumn";
 
 const B032ListRow = memo((props) => {
 	const { index, style, value, loading, onClick, handleSelectDate } = props;
-	const { CustID, CustData_N, ProdID, ProdData_N, PackData_N, QEmplID, EmplData_N } = value;
+	const { CustID, CustData_N, ProdID, ProdData_N, PackData_N, QEmplID, EmplData_N } = value || {};
 
 	const customer = useMemo(() => {
 		return [

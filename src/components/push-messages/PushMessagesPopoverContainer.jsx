@@ -1,10 +1,9 @@
 import { useCallback, useContext } from "react";
-import { MessagingContext } from "../../contexts/messaging/MessagingContext";
-import useAppRedirect from "../../hooks/useAppRedirect";
-import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
-import { useWindowSize } from "../../shared-hooks/useWindowSize";
+import { MessagingContext } from "@/contexts/messaging/MessagingContext";
+import useAppRedirect from "@/hooks/useAppRedirect";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import PushMessagesPopover from "./PushMessagesPopover";
-import { PushMessagesProvider } from "../../contexts/PushMessagesProvider";
 
 export const PushMessagesPopoverContainer = () => {
 	// const auth = useContext(AuthContext);

@@ -1,14 +1,13 @@
+import { E01Context } from "@/contexts/E01/E01Context";
+import E01 from "@/modules/md-e01";
 import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { E01ListRowContainer } from "./E01ListRowContainer";
-import { E01Context } from "@/contexts/E01/E01Context";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
-import E01 from "@/modules/md-e01";
 
 export const E01ListViewContainer = () => {
 	const e01 = useContext(E01Context);

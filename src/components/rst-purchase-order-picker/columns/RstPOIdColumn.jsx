@@ -2,7 +2,7 @@ import { OptionGridColumn } from "@/shared-components/option-picker/grid/OptionG
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
-export const POIdColumn = memo(
+export const RstPOIdColumn = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;
 		return (
@@ -13,8 +13,8 @@ export const POIdColumn = memo(
 	})
 );
 
-POIdColumn.propTypes = {
+RstPOIdColumn.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
-POIdColumn.displayName = "POIdColumn";
+RstPOIdColumn.displayName = "POIdColumn";

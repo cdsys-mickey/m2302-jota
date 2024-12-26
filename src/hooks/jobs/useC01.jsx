@@ -338,17 +338,17 @@ export const useC01 = () => {
 	const handleReset = useCallback(
 		({ reset, getValues }) =>
 			() => {
-				const formData = getValues();
-				handlePopperClose();
-				listLoader.loadList({
-					params: {
-						ck: 2,
-						of: formData.listMode?.id,
-					},
-				});
+				// const formData = getValues();
+				// handlePopperClose();
+				// listLoader.loadList({
+				// 	params: {
+				// 		ck: 2,
+				// 		of: formData.listMode?.id,
+				// 	},
+				// });
 				reset({});
 			},
-		[handlePopperClose, listLoader]
+		[]
 	);
 
 	const onSearchSubmit = useCallback(
@@ -499,13 +499,20 @@ export const useC01 = () => {
 	const onPrintSubmit = useCallback(
 		(data) => {
 			console.log("onPrintSubmit", data);
+			const ordId = grid.gridData.map(x => x.SOrdID).filter(x => {
+				return x && x !== "*"
+			}).join(",");
+			if (!ordId) {
+				toast.error("目前沒有採購單");
+				return;
+			}
 			const jsonData = {
 				...(data.outputType && {
 					Action: data.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "C01",
-				IDs: crud.itemData?.RqtID,
+				IDs: ordId,
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(

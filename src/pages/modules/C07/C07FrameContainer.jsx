@@ -10,6 +10,8 @@ import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import C07Drawer from "@/components/jobs/C07/C07Drawer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
+import C07SearchFormContainer from "@/components/jobs/C07/search/C07SearchFormContainer";
 
 export const C07FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -26,12 +28,14 @@ export const C07FrameContainer = () => {
 		<Box sx={[boxStyles]}>
 			<FormProvider {...searchForm}>
 				<FrameBannerContainer>
-					{<C07SearchFieldContainer name="q" />}
+					{/* {<C07SearchFieldContainer name="q" />} */}
 				</FrameBannerContainer>
-				{/* <C07FormContainer /> */}
-				<C07ListToolbar />
-				<C07ListHeader />
-				<C07ListViewContainer />
+				<ResponsiveLayout columns={24} >
+					<C07SearchFormContainer initSize="md" />
+					<C07ListToolbar />
+					<C07ListHeader />
+					<C07ListViewContainer />
+				</ResponsiveLayout>
 			</FormProvider>
 			<C07DialogContainer />
 

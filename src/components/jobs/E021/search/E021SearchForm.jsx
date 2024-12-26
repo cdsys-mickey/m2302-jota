@@ -4,19 +4,20 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Grid } from "@mui/material";
 import { memo } from "react";
 import { E021CustomerPicker } from "../E021CustomerPicker";
 import E021SalesTypePicker from "../E021SalesTypePicker";
+import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
+import FlexBox from "@/shared-components/FlexBox";
 
-const E021ListForm = memo((props) => {
+const E021SearchForm = memo((props) => {
 	const { ...rest } = props;
 	return (
 
 		<FormBox>
 			<form {...rest}>
-				<Grid container columns={24} spacing={1}>
-					<Grid item xs={24} sm={24} md={4}>
+				<ResponsiveGrid container columns={24} spacing={1} initSize="xs">
+					<ResponsiveGrid item xs={4}>
 						<TextFieldWrapper
 							name="q"
 							label="單號"
@@ -24,8 +25,8 @@ const E021ListForm = memo((props) => {
 							clearable
 							placeholder="請輸入片段"
 						/>
-					</Grid>
-					<Grid item xs={24} sm={24} md={5}>
+					</ResponsiveGrid>
+					<ResponsiveGrid item xs={5}>
 						<DatePickerWrapper
 							name="lvSalesDate"
 							label="銷貨日"
@@ -33,8 +34,8 @@ const E021ListForm = memo((props) => {
 							validate
 						// dense
 						/>
-					</Grid>
-					<Grid item xs={24} sm={24} md={5}>
+					</ResponsiveGrid>
+					<ResponsiveGrid item xs={5}>
 						<DatePickerWrapper
 							name="lvArrDate"
 							label="到貨日≤"
@@ -42,8 +43,8 @@ const E021ListForm = memo((props) => {
 							validate
 						// dense
 						/>
-					</Grid>
-					<Grid item xs={24} sm={24} md={6}>
+					</ResponsiveGrid>
+					<ResponsiveGrid item xs={6}>
 						<EmployeePicker
 							name="lvEmployee"
 							label="業務員"
@@ -51,21 +52,23 @@ const E021ListForm = memo((props) => {
 							disableOpenOnInput
 							selectOnFocus
 						/>
-					</Grid>
-					<Grid item xs={24} sm={24} md={4}>
+					</ResponsiveGrid>
+					<ResponsiveGrid item xs={4}>
 						<E021SalesTypePicker
 							name="lvSalesType"
 							label="客戶類型"
-							clearable
+							placeholder="零售客戶?"
 						/>
-					</Grid>
-					<FlexGrid item xs={24} sm={24} md={4} justifyContent="flex-end">
-						<CheckboxExWrapper
-							label="零售"
-							name="lvRetail"
-						/>
-					</FlexGrid>
-					<Grid item xs={24} sm={24} md={5}>
+					</ResponsiveGrid>
+					<ResponsiveGrid item xs={4}>
+						<FlexBox justifyContent="flex-end">
+							<CheckboxExWrapper
+								label="零售"
+								name="lvRetail"
+							/>
+						</FlexBox>
+					</ResponsiveGrid>
+					<ResponsiveGrid item xs={5}>
 						<E021CustomerPicker
 							name="lvCust"
 							retailName="lvRetail"
@@ -80,18 +83,18 @@ const E021ListForm = memo((props) => {
 								},
 							}}
 						/>
-					</Grid>
-					<Grid item xs={24} sm={24} md={5}>
+					</ResponsiveGrid>
+					<ResponsiveGrid item xs={5}>
 						<TextFieldWrapper
 							name="lvCustName"
 							label="客戶名稱"
 							size="small"
 							clearable
-							placeholder="請輸入客戶名稱片段"
+							placeholder="請輸入名稱片段"
 							fullWidth
 						/>
-					</Grid>
-					<Grid item xs={24} sm={24} md={6}>
+					</ResponsiveGrid>
+					<ResponsiveGrid item xs={6}>
 						<TextFieldWrapper
 							name="lvCompTel"
 							label="電話"
@@ -100,20 +103,20 @@ const E021ListForm = memo((props) => {
 							placeholder="請輸入電話片段"
 							fullWidth
 						/>
-					</Grid>
+					</ResponsiveGrid>
 
 
-				</Grid>
+				</ResponsiveGrid>
 			</form>
 		</FormBox>
 
 	);
 })
 
-E021ListForm.propTypes = {
+E021SearchForm.propTypes = {
 
 }
 
-E021ListForm.displayName = "E021ListForm";
-export default E021ListForm;
+E021SearchForm.displayName = "E021SearchForm";
+export default E021SearchForm;
 

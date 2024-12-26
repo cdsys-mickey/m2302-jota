@@ -12,7 +12,7 @@ const formatDate = (value, format) => {
 	if (value instanceof Date) {
 		result = DateTimes.format(value, format);
 	} else if (typeof value === "string") {
-		result = value?.replace(/\.\s?|\//g, "-");
+		result = value?.replace(/\.\s?|\/|-/g, "/");
 	}
 	console.log(`reformat ${value} as ${result}`);
 	return result;

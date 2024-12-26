@@ -93,7 +93,7 @@ const transformForSubmitting = (payload, quoteGridData) => {
 	);
 };
 
-const transformAsQueryParams = (data) => {
+const transformImportProdsAsQueryParams = (data) => {
 	return {
 		pi: data.sprod?.ProdID,
 		pi2: data.eprod?.ProdID,
@@ -105,12 +105,21 @@ const transformAsQueryParams = (data) => {
 	};
 };
 
+const transformAsQueryParams = (data) => {
+	return {
+		emp: data.lvEmployee?.CodeID,
+		dat: Forms.formatDate(data.lvDate),
+		sup: data.lvSupplier?.FactID,
+	};
+};
+
 const B05 = {
 	transformForReading,
 	transformForSubmitting,
-	transformAsQueryParams,
+	transformImportProdsAsQueryParams,
 	transformForGridImport,
 	transformGridForReading,
+	transformAsQueryParams,
 };
 
 export default B05;

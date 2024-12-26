@@ -294,74 +294,130 @@ export const useC02 = () => {
 		return !!rowData.SOrdID && rowData.SOrdID !== "*";
 	}, []);
 
-	const handleGridProdChange = useCallback(({ rowData }) => {
+	const getProdInfo = useCallback(
+		async (prodId) => {
+			if (!prodId) {
+				toast.error("請先選擇商品", {
+					position: "top-right"
+				});
+				return;
+			}
+			try {
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/inv/stock",
+					bearer: token,
+					params: {
+						id: prodId,
+						cv: "i",
+					},
+				});
+
+				if (status.success) {
+					return payload;
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				toast.error(Errors.getMessage("查詢庫存失敗", err), {
+					position: "top-right"
+				});
+			}
+		}
+		, [httpGetAsync, token]);
+
+	const handleGridProdChange = useCallback(async ({ rowData }) => {
+		const prodInfo = rowData?.prod ? await getProdInfo(
+			rowData?.prod?.ProdID,
+		) : null;
+
 		const { prod } = rowData;
-		rowData = {
+		return {
 			...rowData,
 			["ProdData"]: prod?.ProdData || "",
 			["PackData_N"]: prod?.PackData_N || "",
-			["StockQty_N"]: prod?.StockQty || "",
+			["StockQty_N"]: prodInfo?.StockQty || "",
 			["SRqtQty"]: "",
 		};
-		return rowData;
-	}, []);
+	}, [getProdInfo]);
 
-	const buildGridChangeHandler = useCallback(
-		({ gridMeta }) => (newValue, operations) => {
-			console.log("buildGridChangeHandler", operations);
-			console.log("newValue", newValue);
-			const newGridData = [...newValue];
-			let checkFailed = false;
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = grid.gridData[rowIndex];
+	const isRowDeletable = useCallback(({ rowData }) => {
+		return !prodDisabled({ rowData });
+	}, [prodDisabled]);
 
-							let processedRowData = { ...rowData };
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// 商品
+		if (processedRowData.prod?.ProdID !== oldRowData.prod?.ProdID) {
+			processedRowData = await handleGridProdChange({
+				rowData: processedRowData,
+				formData
+			});
+			// console.log("handleGridProdChange done", processedRowData);
+		}
+		return processedRowData;
+	}, [grid.gridData, handleGridProdChange]);
 
-							// 商品
-							if (
-								rowData.prod?.ProdID !== oldRowData.prod?.ProdID
-							) {
-								console.log(
-									`prod[${rowIndex}] changed`,
-									rowData.prod
-								);
-								processedRowData = handleGridProdChange({
-									rowData: processedRowData,
-								});
-							}
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "DELETE") {
-					checkFailed = grid.gridData
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.some((rowData, i) => {
-							if (prodDisabled({ rowData })) {
-								const rowIndex = operation.fromRowIndex + i;
-								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
-									position: "top-right"
-								});
-								return true;
-							}
-							return false;
-						});
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
-				}
-			}
-			console.log("after changed", newGridData);
-			if (!checkFailed) {
-				grid.setGridData(newGridData);
-			}
-		},
-		[grid, handleGridProdChange, prodDisabled]
-	);
+	// const buildGridChangeHandler = useCallback(
+	// 	({ gridMeta }) => (newValue, operations) => {
+	// 		console.log("buildGridChangeHandler", operations);
+	// 		console.log("newValue", newValue);
+	// 		const newGridData = [...newValue];
+	// 		let checkFailed = false;
+	// 		for (const operation of operations) {
+	// 			if (operation.type === "UPDATE") {
+	// 				newValue
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.forEach((rowData, i) => {
+	// 						const rowIndex = operation.fromRowIndex + i;
+	// 						const oldRowData = grid.gridData[rowIndex];
+
+	// 						let processedRowData = { ...rowData };
+
+	// 						// 商品
+	// 						if (
+	// 							rowData.prod?.ProdID !== oldRowData.prod?.ProdID
+	// 						) {
+	// 							console.log(
+	// 								`prod[${rowIndex}] changed`,
+	// 								rowData.prod
+	// 							);
+	// 							processedRowData = handleGridProdChange({
+	// 								rowData: processedRowData,
+	// 							});
+	// 						}
+	// 						newGridData[rowIndex] = processedRowData;
+	// 					});
+	// 			} else if (operation.type === "DELETE") {
+	// 				checkFailed = grid.gridData
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.some((rowData, i) => {
+	// 						if (prodDisabled({ rowData })) {
+	// 							const rowIndex = operation.fromRowIndex + i;
+	// 							toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
+	// 								position: "top-right"
+	// 							});
+	// 							return true;
+	// 						}
+	// 						return false;
+	// 					});
+	// 			} else if (operation.type === "CREATE") {
+	// 				console.log("dsg.CREATE");
+	// 				// process CREATE here
+	// 				gridMeta.toFirstColumn({ nextRow: true });
+	// 			}
+	// 		}
+	// 		console.log("after changed", newGridData);
+	// 		if (!checkFailed) {
+	// 			grid.setGridData(newGridData);
+	// 		}
+	// 	},
+	// 	[grid, handleGridProdChange, prodDisabled]
+	// );
 
 	const onEditorSubmit = useCallback(
 		(data) => {
@@ -573,7 +629,7 @@ export const useC02 = () => {
 		createRow,
 		...grid,
 		grid,
-		buildGridChangeHandler,
+		// buildGridChangeHandler,
 		getRowKey,
 		prodDisabled,
 		rqtQtyDisabled,
@@ -594,6 +650,8 @@ export const useC02 = () => {
 		selectedItem,
 		selectById,
 		...sideDrawer,
+		isRowDeletable,
+		onUpdateRow,
 		// validateDate
 	};
 };

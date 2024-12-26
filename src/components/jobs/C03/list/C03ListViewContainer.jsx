@@ -10,28 +10,26 @@ import { C03Context } from "@/contexts/C03/C03Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import C03 from "../../../../modules/md-c03";
 import { useMemo } from "react";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
+import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
 
 export const C03ListViewContainer = () => {
 	const c03 = useContext(C03Context);
 	const { loadList } = c03;
 	const form = useFormContext();
 	const { height } = useWindowSize();
-	const q = useWatch({
-		name: "q",
-		control: form.control,
-	});
+
 
 	const listMode = useWatch({
 		name: "listMode",
 		control: form.control,
 	});
 
-	const debouncedQ = useDebounce(q, 300);
 
 	useInit(() => {
 		loadList({
 			params: {
-				ck: 1,
+				ck: C03.ListModes.NOT_REVIEWED,
 				rs: 3,
 				// sq: 1,
 			},
@@ -47,37 +45,96 @@ export const C03ListViewContainer = () => {
 		return null;
 	}, [listMode?.id]);
 
-	// const memoisedRs = useMemo(() => {
-	// 	if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
-	// 		return 3;
-	// 	}
-	// 	return null;
-	// }, [listMode?.id]);
+	// const q = useWatch({
+	// 	name: "q",
+	// 	control: form.control,
+	// });
+	// const debouncedQ = useDebounce(q, 300);
 
-	// const memoisedSq = useMemo(() => {
-	// 	if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
-	// 		return 1;
-	// 	}
-	// 	return null;
-	// }, [listMode?.id]);
+	const lvOrder = useWatch({
+		name: "lvOrder",
+		control: form.control
+	})
+	const debouncedOrder = useDebounceObject(lvOrder, 300);
+
+	const lvEmployee = useWatch({
+		name: "lvEmployee",
+		control: form.control
+	})
+	const debouncedEmployee = useDebounceObject(lvEmployee, 300);
+
+	const lvOrdDate = useWatch({
+		name: "lvOrdDate",
+		control: form.control
+	})
+	const debouncedOrdDate = useDebounceObject(lvOrdDate, 300);
+
+	const lvArrDate = useWatch({
+		name: "lvArrDate",
+		control: form.control
+	})
+	const debouncedArrDate = useDebounceObject(lvArrDate, 300);
+
+	const lvSupplier = useWatch({
+		name: "lvSupplier",
+		control: form.control
+	})
+	const debouncedSupplier = useDebounceObject(lvSupplier, 300);
+
+	// const lvSquared = useWatch({
+	// 	name: "lvSquared",
+	// 	control: form.control
+	// })
+	// const debouncedSquared = useDebounceObject(lvSquared, 300);
+
+
+
 
 	useChangeTracking(() => {
 		loadList({
 			params: {
-				q: debouncedQ,
-				...(memoisedCk && {
-					ck: memoisedCk,
+				// q: debouncedQ,
+				...(debouncedOrder && {
+					q: debouncedOrder?.採購單號,
 				}),
-				// ...(memoisedRs && {
-				// 	rs: memoisedRs,
+				// ...(memoisedCk && {
+				// 	ck: memoisedCk,
 				// }),
-				// ...(memoisedSq && {
-				// 	sq: memoisedSq,
-				// }),
+				...C03.transformAsQueryParams({
+					// ...(debouncedOrder && {
+					// 	order: debouncedOrder
+					// }),
+					...(debouncedEmployee && {
+						employee: debouncedEmployee
+					}),
+					...(debouncedOrdDate && {
+						ordDate: debouncedOrdDate
+					}),
+					...(debouncedArrDate && {
+						arrDate: debouncedArrDate
+					}),
+					...(debouncedSupplier && {
+						supplier: debouncedSupplier
+					}),
+					// ...(debouncedSquared && {
+					// 	squared: debouncedSquared
+					// })
+				})
 			},
 			supressLoading: true,
 		});
-	}, [debouncedQ, memoisedCk]);
+	}, [debouncedOrder, memoisedCk, debouncedOrder, debouncedEmployee, debouncedOrdDate, debouncedArrDate, debouncedSupplier, debouncedOrder]);
+
+	const { isLgOrUp } = useContext(ResponsiveLayoutContext);
+
+	// isLgOrUp 在初始時是 false, 要用比較短的樣式, 才不會有捲軸拉扯的問題
+	const _height = useMemo(() => {
+		return height ?
+			isLgOrUp
+				? height - 182
+				: height - 228
+			: 300;
+	}, [height, isLgOrUp])
 
 	return (
 		<ListViewBox withHeader>
@@ -90,7 +147,7 @@ export const C03ListViewContainer = () => {
 				loadMoreItems={c03.loadMoreItems}
 				isItemLoaded={c03.isItemLoaded}
 				RowComponent={C03ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={c03.handleItemsRendered}
 				error={c03.listError}
 				// bottomReached={c03.bottomReached}

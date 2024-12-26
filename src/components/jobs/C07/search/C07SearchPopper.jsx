@@ -11,6 +11,9 @@ import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import DeptPicker from "../../../picker/DeptPicker";
+import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
+import C07SearchForm from "./C07SearchForm";
+import C07SearchFormContainer from "./C07SearchFormContainer";
 
 const C07SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -28,42 +31,7 @@ const C07SearchPopper = memo(
 				<PopperTitle onClose={onClose}>進階篩選</PopperTitle>
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<Grid container spacing={1.5} columns={12}>
-						<Grid item xs={12} sm={12}>
-							<DatePickerWrapper
-								name="ordDate"
-								label="訂貨日期"
-								size="small"
-								validate
-							// slotProps={{
-							// 	field: {
-							// 		clearable: true,
-							// 	},
-							// }}
-							/>
-						</Grid>
-
-						<Grid item xs={12} sm={12}>
-							<DatePickerWrapper
-								name="arrDate"
-								label="預計到貨日期"
-								validate
-							/>
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<DeptPicker
-								name="ordDept"
-								label="訂貨門市"
-								disableOpenOnInput
-							/>
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="製單人員" disableOpenOnInput />
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<SquaredPicker name="squared" label="結清註記" disableOpenOnInput />
-						</Grid>
-					</Grid>
+					<C07SearchForm />
 				</DialogContent>
 				<Divider />
 				<DialogActions>
@@ -72,7 +40,7 @@ const C07SearchPopper = memo(
 						variant="outlined"
 						color="primary"
 						onClick={onReset}>
-						重設
+						清除
 					</ButtonWrapper>
 					{/* <ButtonWrapper
 						size="small"

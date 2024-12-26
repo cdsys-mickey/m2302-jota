@@ -12,7 +12,7 @@ const E01SalesTypePicker = memo(
 				ref={ref}
 				fullWidth
 				// required
-				disableClearable
+				// disableClearable
 				label=""
 				options={E01.salesTypeOptions}
 				getOptionLabel={E01.getSalesTypeOptionLabel}

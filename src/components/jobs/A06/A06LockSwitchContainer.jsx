@@ -5,6 +5,7 @@ import A06 from "@/modules/md-a06";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";
+import { Tooltip } from "@mui/material";
 import { useMemo } from "react";
 import { useContext } from "react";
 
@@ -15,8 +16,12 @@ export const A06LockSwitchContainer = (props) => {
 	const serviceStatus = useServiceStatus({ name: "CustFile" });
 
 	const disabled = useMemo(() => {
-		return !a06.canUpdate || operator.CurHeadOffice != 1;
+		return !a06.canUpdate || operator.CurFlagShip != 1;
 	}, [a06.canUpdate, operator])
+
+	const _title = useMemo(() => {
+		return disabled ? "僅旗艦店可進行切換" : ""
+	}, [disabled])
 
 	if (a06.mode !== A06.Mode.CUSTOMER) {
 		return false;
@@ -35,15 +40,19 @@ export const A06LockSwitchContainer = (props) => {
 	}
 
 	return (
-		<LockSwitch
-			unlockedLabel="POS下載開放"
-			lockedLabel="POS下載鎖定"
-			locked={!serviceStatus.enabled}
-			onChange={serviceStatus.toggle}
-			disabled={disabled}
-			width={130}
-			{...rest}
-		/>
+		<Tooltip title={_title}>
+			<span>
+				<LockSwitch
+					unlockedLabel="POS下載開放"
+					lockedLabel="POS下載鎖定"
+					locked={!serviceStatus.enabled}
+					onChange={serviceStatus.toggle}
+					disabled={disabled}
+					width={130}
+					{...rest}
+				/>
+			</span>
+		</Tooltip>
 	);
 };
 

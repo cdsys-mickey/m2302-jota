@@ -1,11 +1,11 @@
 import { Box, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";
-import { POCheckerColumn } from "./columns/POCheckerColumn";
-import { PODateColumn } from "./columns/PODateColumn";
-import { POIdColumn } from "./columns/POIdColumn";
+import { RstPOCheckerColumn } from "./columns/RstPOCheckerColumn";
+import { RstPODateColumn } from "./columns/RstPODateColumn";
+import { RstPOIdColumn } from "./columns/RstPOIdColumn";
 import PropTypes from "prop-types";
 
-export const PurchaseOrderGridHeader = memo(
+export const RstPurchaseOrderGridHeader = memo(
 	forwardRef((props, ref) => {
 		const { sx = [], ...rest } = props;
 		return (
@@ -20,17 +20,17 @@ export const PurchaseOrderGridHeader = memo(
 				]}
 				{...rest}>
 				<Grid container columns={24} spacing={2}>
-					<POIdColumn header>採購單號</POIdColumn>
-					<PODateColumn header>採購日期</PODateColumn>
-					<POCheckerColumn header>覆核</POCheckerColumn>
+					<RstPOIdColumn header>採購單號</RstPOIdColumn>
+					<RstPODateColumn header>採購日期</RstPODateColumn>
+					<RstPOCheckerColumn header>覆核</RstPOCheckerColumn>
 				</Grid>
 			</Box>
 		);
 	})
 );
 
-PurchaseOrderGridHeader.propTypes = {
+RstPurchaseOrderGridHeader.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
-PurchaseOrderGridHeader.displayName = "PurchaseOrderGridHeader";
+RstPurchaseOrderGridHeader.displayName = "PurchaseOrderGridHeader";
