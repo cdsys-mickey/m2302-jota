@@ -69,6 +69,7 @@ const E01DialogForm = memo((props) => {
 									variant="outlined"
 									required
 									validate
+									clearable
 								// disabled={!creating}
 								/>
 							</Grid>
@@ -81,6 +82,7 @@ const E01DialogForm = memo((props) => {
 									fullWidth
 									required
 									validate
+									clearable
 								// disabled={!creating}
 								/>
 							</Grid>

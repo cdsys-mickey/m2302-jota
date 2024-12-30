@@ -11,6 +11,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
 import FlexBox from "../FlexBox";
 import { Box } from "@mui/system";
+import Colors from "@/modules/md-colors";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -163,7 +164,14 @@ const ControlledDatePicker = ({
 									},
 									error: !!error,
 									helperText: error?.message,
-									onBlur: onBlur
+									onBlur: onBlur,
+									sx: {
+										...(required && !error && {
+											"& .MuiInputLabel-root:not(.Mui-focused)": {
+												color: Colors.REQUIRED,
+											}
+										})
+									}
 								},
 								sx: {
 									...(dense && {
@@ -174,7 +182,8 @@ const ControlledDatePicker = ({
 											// paddingLeft: "2px",
 											// paddingRight: "40px",
 										},
-									})
+									}),
+
 								},
 								field: {
 									clearable

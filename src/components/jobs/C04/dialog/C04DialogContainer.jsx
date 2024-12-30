@@ -130,6 +130,8 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
+						focusOnDisabled: true,
+
 					})
 				),
 				title: "商品編號",

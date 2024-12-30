@@ -9,6 +9,8 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import C09SearchFormContainer from "@/components/jobs/C09/search/C09SearchFormContainer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 
 export const C09FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -25,12 +27,14 @@ export const C09FrameContainer = () => {
 		<Box sx={[boxStyles]}>
 			<FormProvider {...searchForm}>
 				<FrameBannerContainer>
-					{<C09SearchFieldContainer name="q" />}
+					{/* {<C09SearchFieldContainer name="q" />} */}
 				</FrameBannerContainer>
-				{/* <C09FormContainer /> */}
-				<C09ListToolbar />
-				<C09ListHeader />
-				<C09ListViewContainer />
+				<ResponsiveLayout>
+					<C09SearchFormContainer />
+					<C09ListToolbar />
+					<C09ListHeader />
+					<C09ListViewContainer />
+				</ResponsiveLayout>
 			</FormProvider>
 			<C09DialogContainer />
 		</Box>

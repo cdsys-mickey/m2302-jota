@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { forwardRef, useContext, useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
-import { AuthContext } from "../../contexts/auth/AuthContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 	const { name = "q", ...rest } = props;

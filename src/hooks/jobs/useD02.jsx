@@ -156,7 +156,7 @@ export const useD02 = () => {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
 				if (err.code === 102) {
-					// loadStockMap(data.prods, { mark: true });
+					// recoverStockMap(data.prods, { mark: true });
 					toast.error("部分商品庫存不足，請調整後再送出", {
 						position: "top-right"
 					});

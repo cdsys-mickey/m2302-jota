@@ -78,15 +78,13 @@ export const C04ListViewContainer = () => {
 		});
 	}, [debouncedOrder, c04.expProd, c04.expDate, debouncedRstDate, debouncedEmployee, debouncedSupplier]);
 
-	const { isLgOrUp } = useContext(ResponsiveLayoutContext);
+	// const { isLgOrUp } = useContext(ResponsiveLayoutContext);
 
 	const _height = useMemo(() => {
 		return height ?
-			isLgOrUp
-				? height - 182
-				: height - 182
+			height - 182
 			: 300;
-	}, [height, isLgOrUp])
+	}, [height])
 
 	return (
 		<ListViewBox withHeader>

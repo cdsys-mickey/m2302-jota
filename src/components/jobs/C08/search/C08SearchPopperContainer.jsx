@@ -11,13 +11,13 @@ const C08SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const c08 = useContext(C08Context);
 	const form = useFormContext();
 
-	const onSubmit = useMemo(() => {
-		return form.handleSubmit(c08.onSearchSubmit, c08.onSearchSubmitError)
-	}, [c08.onSearchSubmit, c08.onSearchSubmitError, form]);
+	// const onSubmit = useMemo(() => {
+	// 	return form.handleSubmit(c08.onSearchSubmit, c08.onSearchSubmitError)
+	// }, [c08.onSearchSubmit, c08.onSearchSubmitError, form]);
 
-	const handleLastField = useCallback(() => {
-		onSubmit();
-	}, [onSubmit]);
+	// const handleLastField = useCallback(() => {
+	// 	onSubmit();
+	// }, [onSubmit]);
 
 	const formMeta = useFormMeta(
 		`
@@ -26,9 +26,7 @@ const C08SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 		deliveryEmployee,
 		txiDept,
 		transType
-		`, {
-		lastField: handleLastField
-	}
+		`
 	)
 
 	return (

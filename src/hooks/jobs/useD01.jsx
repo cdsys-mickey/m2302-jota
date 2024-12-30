@@ -169,7 +169,11 @@ export const useD01 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					sqtyManager.loadStockMap(data.prods);
+					sqtyManager.recoverStockMap(data.prods, {
+						// stock: {
+						// 	simulate: true
+						// }
+					});
 					// setSelectedInq(data);
 
 					grid.handleGridDataLoaded(data.prods);
@@ -235,7 +239,7 @@ export const useD01 = () => {
 					sqtyManager.handleOverrideSQty({
 						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true
 					});
-					// loadStockMap(data.prods, { mark: true });
+					// recoverStockMap(data.prods, { mark: true });
 					// toast.error("部分商品庫存不足，請調整後再送出", {
 					// 	position: "top-right"
 					// });
@@ -551,8 +555,7 @@ export const useD01 = () => {
 					}
 				);
 			} else if (rowData.prod) {
-				// qtyMap.set(prod.ProdID, prod.StockQty);
-				sqtyManager.setStockQty(prod.ProdID, prod.StockQty);
+				sqtyManager.updateStockQty(prod.ProdID, prod.StockQty);
 			}
 
 			rowData = {

@@ -25,6 +25,8 @@ import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
+import { orange } from "@mui/material/colors";
+import Colors from "@/modules/md-colors";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -539,6 +541,13 @@ const OptionPicker = memo(
 						onKeyDown={handleKeyDown}
 						onBlur={handleBlur}
 						{...props}
+						sx={[{
+							...(required && !error && {
+								"& .MuiInputLabel-root:not(.Mui-focused)": {
+									color: Colors.REQUIRED,
+								}
+							})
+						}]}
 						InputProps={{
 							...props.InputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後

@@ -33,13 +33,39 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		stockQtyMap.set(prodId, Number(value));
 	}, [stockQtyMap]);
 
+	const clearQty = useCallback(() => {
+		stockQtyMap.clear();
+	}, [stockQtyMap]);
+
+	const containsProd = useCallback((prodId) => {
+		return stockQtyMap.has(prodId);
+	}, [stockQtyMap]);
+
+	const updateStockQty = useCallback((key, value) => {
+		if (!key) {
+			console.log("updateStockQty skipped due to no key");
+		}
+		if (!containsProd(key)) {
+			setStockQty(key, value);
+		}
+	}, [containsProd, setStockQty]);
+
 	const getPreparedQty = useCallback((prodId) => {
 		return preparedQtyMap.get(prodId) || 0;
 	}, [preparedQtyMap]);
 
 	const setPreparedQty = useCallback((prodId, value) => {
-		preparedQtyMap.set(prodId, value);
+		preparedQtyMap.set(prodId, Number(value));
 	}, [preparedQtyMap]);
+
+	const updatePreparedQty = useCallback((key, value) => {
+		if (!key) {
+			console.log("updatePreparedQty skipped due to no key");
+		}
+		if (!containsProd(key)) {
+			setPreparedQty(key, value);
+		}
+	}, [containsProd, setPreparedQty]);
 
 	// 讀取密碼
 	const loadStockPword = useCallback(async () => {
@@ -332,13 +358,14 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 	);
 
 	// loadItem 及 save 拋出 102 時呼叫
-	const loadStockMap = useCallback(
+	const recoverStockMap = useCallback(
 		async (
 			gridData,
 			opts = {}
 		) => {
 			const {
-				stock: stockOpts = true, prepared: preparedOpts = false
+				stock: stockOpts = true,
+				prepared: preparedOpts = false
 			} = opts;
 			const _gridData = gridData || grid.gridData;
 
@@ -381,7 +408,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 						// 若不加回本張單的數量, 則為 0
 						const sqty = Number(rowData[sqtyColumn]) || 0;
 						const stock = stockQtyMap.get(prodId) || 0;
-						if (stockOpts?.addSelf) {
+						if (stockOpts?.simulate !== false) {
 							stockQtyMap.set(prodId, stock + sqty)
 						}
 
@@ -406,12 +433,12 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		[grid.gridData, stockQtyMap, prodIdKey, httpGetAsync, token, preparedQtyMap, sqtyColumn]
 	);
 
-	const loadPreparedMap = useCallback(
+	const ZZloadPreparedMap = useCallback(
 		async (
 			gridData,
 			opts = {}
 		) => {
-			const { addSelfStock = true } = opts;
+			const { simulate = true } = opts;
 			const _gridData = gridData || grid.gridData;
 
 			if (!gridData || gridData.length === 0) {
@@ -472,17 +499,9 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		}
 	}, [grid.gridData]);
 
-	const updateStockQty = useCallback((key, value) => {
-		stockQtyMap.set(key, value);
-	}, [stockQtyMap]);
 
-	const clearQty = useCallback(() => {
-		stockQtyMap.clear();
-	}, [stockQtyMap]);
 
-	const hasQty = useCallback((prodId) => {
-		return stockQtyMap.has(prodId);
-	}, [stockQtyMap]);
+
 
 	useInit(() => {
 		if (!disablePwordCheck) {
@@ -496,7 +515,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		handleOverrideSQty,
 		promptOverrideSQty,
 		handleGridSQtyChange,
-		loadStockMap,
+		recoverStockMap,
 		committed,
 		setCommitted,
 		getErrorInfo,
@@ -505,11 +524,11 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		getStockBeforeCurrent,
 		updateStockQty,
 		clearQty,
-		hasQty,
+		containsProd,
 		// 目前訂購量
-		loadPreparedMap,
 		getPreparedQty,
 		setPreparedQty,
+		updatePreparedQty,
 		getPreparedQtyExcludingCurrent,
 		getRemainingStock
 	}

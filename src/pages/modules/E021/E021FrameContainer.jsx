@@ -1,9 +1,8 @@
 import { E021DialogContainer } from "@/components/jobs/E021/dialog/E021DialogContainer";
-import { E021ListFormContainer } from "@/components/jobs/E021/list/E021ListFormContainer";
 import E021ListHeader from "@/components/jobs/E021/list/E021ListHeader";
 import E021ListToolbar from "@/components/jobs/E021/list/E021ListToolbar";
 import { E021ListViewContainer } from "@/components/jobs/E021/list/E021ListViewContainer";
-import E021 from "@/modules/md-e021";
+import { E021SearchFormContainer } from "@/components/jobs/E021/search/E021SearchFormContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
@@ -33,7 +32,7 @@ export const E021FrameContainer = () => {
 					{/* {<E021SearchFieldContainer name="q" />} */}
 				</FrameBannerContainer>
 				{/* 篩選工具列 */}
-				<E021ListFormContainer />
+				<E021SearchFormContainer initSize="md" />
 				{/* 工具列 */}
 				<E021ListToolbar />
 				{/* 列表 */}

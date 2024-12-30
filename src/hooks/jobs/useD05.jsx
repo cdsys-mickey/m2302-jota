@@ -136,7 +136,7 @@ export const useD05 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					await sqtyManager.loadStockMap(data.prods);
+					await sqtyManager.recoverStockMap(data.prods);
 
 					grid.initGridData(data.prods);
 				} else {
@@ -276,7 +276,7 @@ export const useD05 = () => {
 	// 			crud.failUpdating();
 	// 			console.error("handleUpdate.failed", err);
 	// 			if (err.code === 102) {
-	// 				loadStockMap(data.prods, { mark: true });
+	// 				recoverStockMap(data.prods, { mark: true });
 	// 				toast.error("部分商品庫存不足，請調整後再送出", {
 	// 					position: "top-right"
 	// 				});
@@ -287,7 +287,7 @@ export const useD05 = () => {
 	// 			}
 	// 		}
 	// 	},
-	// 	[crud, httpPutAsync, listLoader, loadItem, loadStockMap, token]
+	// 	[crud, httpPutAsync, listLoader, loadItem, recoverStockMap, token]
 	// );
 
 	//DELETE
@@ -505,8 +505,8 @@ export const useD05 = () => {
 		async ({ rowData }) => {
 			const { prod } = rowData;
 			// 只有當原本沒有此項商品時才更新庫存表
-			if (prod?.ProdID && !sqtyManager.hasQty(prod?.ProdID)) {
-				sqtyManager.updateStockQty(prod.ProdID, parseFloat(prod.StockQty))
+			if (prod?.ProdID) {
+				sqtyManager.updateStockQty(prod.ProdID, prod.StockQty)
 			}
 
 			let newRowData = {
@@ -935,7 +935,7 @@ export const useD05 = () => {
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
-		// loadStockMap,
+		// recoverStockMap,
 		customerDisabled,
 		deptDisabled,
 		sqtyDisabled,

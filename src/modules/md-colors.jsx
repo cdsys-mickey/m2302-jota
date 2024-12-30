@@ -2,6 +2,7 @@ import {
 	cyan,
 	green,
 	grey,
+	lightBlue,
 	lightGreen,
 	orange,
 	pink,
@@ -9,6 +10,7 @@ import {
 } from "@mui/material/colors";
 
 const Colors = {
+	REQUIRED: lightBlue[600],
 	CONTAINED: "#825b10",
 	// BG: "#fffcf8",
 	// BG: "#fff5e5",

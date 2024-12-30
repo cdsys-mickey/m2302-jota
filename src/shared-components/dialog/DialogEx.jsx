@@ -17,8 +17,8 @@ import {
 	useMemo,
 	useRef,
 } from "react";
-import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
-import MuiStyles from "../../shared-modules/sd-mui-styles";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 import { ButtonWrapper } from "../button/ButtonWrapper";
 import DialogTitleEx from "./DialogTitleEx";
 

@@ -191,7 +191,7 @@ export const useC08 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					sqtyManager.loadStockMap(data.prods);
+					sqtyManager.recoverStockMap(data.prods);
 					grid.initGridData(data.prods);
 				} else {
 					throw error || new Error("未預期例外");
@@ -348,7 +348,7 @@ export const useC08 = () => {
 	// 			crud.failUpdating();
 	// 			console.error("handleCreate.failed", err);
 	// 			if (err.code === 102) {
-	// 				loadStockMap(data.prods, { mark: true });
+	// 				recoverStockMap(data.prods, { mark: true });
 	// 				toast.error("部分商品庫存不足，請調整後再送出", {
 	// 					position: "top-right"
 	// 				});
@@ -359,7 +359,7 @@ export const useC08 = () => {
 	// 			}
 	// 		}
 	// 	},
-	// 	[crud, httpPutAsync, listLoader, loadItem, loadStockMap, token]
+	// 	[crud, httpPutAsync, listLoader, loadItem, recoverStockMap, token]
 	// );
 
 	//DELETE
@@ -452,7 +452,7 @@ export const useC08 = () => {
 				});
 
 				if (status.success) {
-					sqtyManager.setStockQty(prodId, payload.Stock);
+					sqtyManager.updateStockQty(prodId, payload.Stock);
 					return payload;
 				} else {
 					throw error || new Error("未預期例外");

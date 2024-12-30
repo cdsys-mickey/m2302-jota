@@ -97,9 +97,9 @@ export const C03ListViewContainer = () => {
 				...(debouncedOrder && {
 					q: debouncedOrder?.採購單號,
 				}),
-				// ...(memoisedCk && {
-				// 	ck: memoisedCk,
-				// }),
+				...(memoisedCk && {
+					ck: memoisedCk,
+				}),
 				...C03.transformAsQueryParams({
 					// ...(debouncedOrder && {
 					// 	order: debouncedOrder

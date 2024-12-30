@@ -76,13 +76,13 @@ export const useMessaging = () => {
 		(payload) => {
 			console.log("handleGotoJob", payload);
 			const jobId = payload?.jobID || payload?.JobID;
-			const targetId = payload?.id || payload?.ID;
+			const orderId = payload?.id || payload?.ID;
 
 			handlePopoverClose();
 			if (jobId) {
 				selectJobById(jobId, {
-					...(targetId && {
-						id: targetId,
+					...(orderId && {
+						id: orderId,
 					}),
 				});
 			}

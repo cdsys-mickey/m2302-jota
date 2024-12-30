@@ -180,10 +180,10 @@ export const useE01 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					sqtyManager.loadStockMap(data.prods, {
-						stock: {
-							addSelf: false
-						},
+					sqtyManager.recoverStockMap(data.prods, {
+						// stock: {
+						// 	simulate: false
+						// },
 						prepared: {
 							excludeSelf: true
 						}
@@ -461,8 +461,8 @@ export const useE01 = () => {
 				: null;
 
 			if (prodId) {
-				sqtyManager.setStockQty(prodId, Number(prodInfo?.StockQty));
-				sqtyManager.setPreparedQty(prodId, Number(prodInfo?.NotQty));
+				sqtyManager.updateStockQty(prodId, Number(prodInfo?.StockQty));
+				sqtyManager.updatePreparedQty(prodId, Number(prodInfo?.NotQty));
 			}
 
 			processedRowData = {

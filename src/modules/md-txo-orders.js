@@ -11,11 +11,13 @@ const isOptionEqualToValue = (option, value) =>
 	option["撥出單號"] === value["撥出單號"];
 
 const renderTagLabel = (option) => option["撥出單號"];
+const renderOptionLabel = (option) => option["撥出單號"];
 
-const TxoOrders = {
+const TransOutOrders = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	renderTagLabel,
+	renderOptionLabel,
 };
 
-export default TxoOrders;
+export default TransOutOrders;

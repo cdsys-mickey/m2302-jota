@@ -43,7 +43,7 @@ const SideMenuSearchBar = memo(
 						focusBackgroundColor="rgb(0 0 0 / 10%)"
 						hoverBackgroundColor="rgb(0 0 0 / 6%)"
 						width="20ch"
-						// onChange={onInputChange}
+					// onChange={onInputChange}
 					/>
 					{gotoMessages && (
 						<IconButton color="primary" onClick={gotoMessages}>

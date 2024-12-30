@@ -8,6 +8,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import FlexBox from "../FlexBox";
 import ClearInputButton from "../input/ClearInputButton";
+import { orange } from "@mui/material/colors";
+import Colors from "@/modules/md-colors";
 
 export const ControlledTextField = ({
 	name,
@@ -29,6 +31,7 @@ export const ControlledTextField = ({
 	InputLabelProps,
 	dense,
 	inline,
+	required,
 	...rest
 }) => {
 	const formMeta = useContext(FormMetaContext);
@@ -134,6 +137,7 @@ export const ControlledTextField = ({
 					}),
 				}}
 				disabled={disabled}
+				required={required}
 				{...rest}
 			/>
 		);
@@ -182,6 +186,11 @@ export const ControlledTextField = ({
 										paddingBottom: 0.2,
 										paddingRight: 0
 									}
+								}),
+								...(required && !error && {
+									"& .MuiInputLabel-root:not(.Mui-focused)": {
+										color: Colors.REQUIRED,
+									}
 								})
 							}),
 							...(Array.isArray(sx) ? sx : [sx]),
@@ -226,6 +235,7 @@ export const ControlledTextField = ({
 						disabled={disabled}
 						error={!!error}
 						helperText={error?.message}
+						required={required}
 						{...rest}
 					/>
 				</BoxComponent>

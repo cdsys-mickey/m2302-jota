@@ -11,7 +11,7 @@ const E01SquaredPicker = memo(
 			<OptionPickerWrapper
 				ref={ref}
 				fullWidth
-				required
+				// required
 				disableClearable
 				label=""
 				options={E01.squaredOptions}

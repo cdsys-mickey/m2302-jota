@@ -192,10 +192,10 @@ export const useE021 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					sqtyManager.loadStockMap(data.prods, {
-						stock: {
-							addSelf: true
-						}
+					sqtyManager.recoverStockMap(data.prods, {
+						// stock: {
+						// 	simulate: true
+						// }
 					});
 					setSelectedOrd(data);
 
@@ -491,7 +491,7 @@ export const useE021 = () => {
 				});
 
 				if (status.success) {
-					sqtyManager.setStockQty(prodId, payload.StockQty);
+					sqtyManager.updateStockQty(prodId, payload.StockQty);
 					return {
 						...payload,
 					};
@@ -539,8 +539,8 @@ export const useE021 = () => {
 				}) : null;
 
 			if (prodId) {
-				sqtyManager.setStockQty(prodId, Number(prodInfo?.StockQty));
-				sqtyManager.setPreparedQty(prodId, Number(prodInfo?.NotQty));
+				sqtyManager.updateStockQty(prodId, Number(prodInfo?.StockQty));
+				sqtyManager.updatePreparedQty(prodId, Number(prodInfo?.NotQty));
 			}
 
 			processedRowData = {

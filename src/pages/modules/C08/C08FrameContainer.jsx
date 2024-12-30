@@ -3,8 +3,10 @@ import C08ListHeader from "@/components/jobs/C08/list/C08ListHeader";
 import C08ListToolbar from "@/components/jobs/C08/list/C08ListToolbar";
 import { C08ListViewContainer } from "@/components/jobs/C08/list/C08ListViewContainer";
 import { C08SearchFieldContainer } from "@/components/jobs/C08/search/C08SearchFieldContainer";
+import C08SearchFormContainer from "@/components/jobs/C08/search/C08SearchFormContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
@@ -30,12 +32,14 @@ export const C08FrameContainer = () => {
 		<Box sx={[boxStyles]}>
 			<FormProvider {...searchForm}>
 				<FrameBannerContainer>
-					<C08SearchFieldContainer name="q" />
+					{/* <C08SearchFieldContainer name="q" /> */}
 				</FrameBannerContainer>
-				{/* <C08FormContainer /> */}
-				<C08ListToolbar />
-				<C08ListHeader />
-				<C08ListViewContainer />
+				<ResponsiveLayout>
+					<C08SearchFormContainer initSize="md" />
+					<C08ListToolbar />
+					<C08ListHeader />
+					<C08ListViewContainer />
+				</ResponsiveLayout>
 			</FormProvider>
 			<C08DialogContainer />
 

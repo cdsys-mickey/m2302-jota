@@ -11,6 +11,7 @@ import A01Form from "../form/A01Form";
 import { A01DialogToolbarContainer } from "./buttons/A01DialogToolbarContainer";
 import { useCallback } from "react";
 import A01Drawer from "../A01Drawer";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 
 export const A01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -21,6 +22,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
+	const { mobile } = useContext(ResponsiveContext);
 	// MODE 2
 	// const scrollable = useScrollable({
 	// 	hide: true,
@@ -62,8 +64,8 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 	}, [a01.mode]);
 
 	const formHeight = useMemo(() => {
-		return height - 190;
-	}, [height]);
+		return mobile ? height - 120 : height - 190;
+	}, [height, mobile]);
 
 	const handleClose = useMemo(() => {
 		return a01.editing ? a01.confirmDialogClose : a01.reset;

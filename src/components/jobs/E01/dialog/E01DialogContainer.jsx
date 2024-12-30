@@ -123,8 +123,8 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 	);
 
 	const readOnly = useMemo(() => {
-		return !e01.editing || !ordDate || !arrDate || !compTel || !custName || (!retail && !customer);
-	}, [arrDate, compTel, custName, customer, e01.editing, ordDate, retail]);
+		return !e01.editing || !ordDate || !arrDate || !custName || (!retail && !customer);
+	}, [arrDate, custName, customer, e01.editing, ordDate, retail]);
 
 	const columns = useMemo(
 		() => [

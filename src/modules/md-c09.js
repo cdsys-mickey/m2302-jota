@@ -118,7 +118,7 @@ const transformForSubmitting = (payload, gridData) => {
 };
 
 const transformAsQueryParams = (data) => {
-	const { tid, employee, txoDept, ...rest } = data;
+	const { txiDate, employee, txoDept, ...rest } = data;
 	return {
 		...(txoDept && {
 			todp: txoDept?.DeptID,
@@ -126,8 +126,8 @@ const transformAsQueryParams = (data) => {
 		...(employee && {
 			emi: employee.CodeID,
 		}),
-		...(tid && {
-			tid: Forms.formatDate(tid),
+		...(txiDate && {
+			tid: Forms.formatDate(txiDate),
 		}),
 		...rest,
 	};

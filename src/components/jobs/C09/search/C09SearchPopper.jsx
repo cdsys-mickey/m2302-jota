@@ -1,19 +1,12 @@
 // import CabinetTypes from "@/modules/md-cabinet-types";
 
-import SupplierPicker from "@/components/picker/SupplierPicker";
-import TaxType2Picker from "@/components/picker/TaxType2Picker";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
+import { DialogActions, DialogContent, Divider } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
-import { DatePickerWrapper } from "../../../../shared-components/date-picker/DatePickerWrapper";
-import EmployeePicker from "@/components/picker/EmployeePicker";
-import DeptPicker from "../../../picker/DeptPicker";
 
 const C09SearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -30,26 +23,7 @@ const C09SearchPopper = memo(
 				<PopperTitle onClose={onClose}>進階篩選</PopperTitle>
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<Grid container spacing={1.5} columns={12}>
-						<Grid item xs={12} sm={12}>
-							<DatePickerWrapper
-								name="tid"
-								label="撥入日期(大於)"
-								autoFocus
-								validate
-							/>
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<EmployeePicker name="employee" label="驗收人員" disableOpenOnInput />
-						</Grid>
-						<Grid item xs={12} sm={12}>
-							<DeptPicker
-								name="txoDept"
-								label="撥出門市"
-								disableOpenOnInput
-							/>
-						</Grid>
-					</Grid>
+
 				</DialogContent>
 				<Divider />
 				<DialogActions>
