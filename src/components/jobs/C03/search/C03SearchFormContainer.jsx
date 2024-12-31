@@ -1,6 +1,7 @@
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import C03SearchForm from "./C03SearchForm";
+import C03ListToolbar from "../list/C03ListToolbar";
 
 
 const C03SearchFormContainer = (props) => {
@@ -13,12 +14,15 @@ const C03SearchFormContainer = (props) => {
 		lvOrdDate,
 		lvArrDate,
 		lvSupplier,
-		listMode,
+		lvSquared,
+		lvReviewState,
 		`);
 
 	return (
 		<FormMetaProvider {...formMeta}>
 			<C03SearchForm  {...rest} />
+			{/* 工具列 */}
+			<C03ListToolbar />
 		</FormMetaProvider>
 	);
 

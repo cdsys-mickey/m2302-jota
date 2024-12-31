@@ -4,25 +4,18 @@ import D01SearchPopper from "./D01SearchPopper";
 import { useFormContext } from "react-hook-form";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useMemo } from "react";
 
 const D01SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const d01 = useContext(D01Context);
 	const form = useFormContext();
 
-	// const handleSubmit = useMemo(() => {
-	// 	return form.handleSubmit(d01.onSearchSubmit, d01.onSearchSubmitError)
-	// }, [d01.onSearchSubmit, d01.onSearchSubmitError, form]);
 
 	const formMeta = useFormMeta(
 		`
-		employee,
-		pdate,
-		pdline
-		`,
-		{
-			// lastField: handleSubmit
-		}
+		lvEmployee,
+		lvDate,
+		lvPdline
+		`
 	)
 
 

@@ -31,16 +31,14 @@ const getSquaredOptionDisabled = (option) => {
 	return option.id === SquaredState.SQUARED;
 };
 
-const ListModes = Object.freeze({
+const ReviewStates = Object.freeze({
 	NOT_REVIEWED: 1,
 	REVIEWED: 2,
-	// ALL: -1,
 });
 
 const options = [
-	{ id: ListModes.NOT_REVIEWED, label: "待覆核" },
-	{ id: ListModes.REVIEWED, label: "已覆核" },
-	// { id: ListModes.ALL, label: "不篩選" },
+	{ id: ReviewStates.NOT_REVIEWED, label: "待覆核" },
+	{ id: ReviewStates.REVIEWED, label: "已覆核" },
 ];
 
 const getOptionLabel = (option) => {
@@ -156,8 +154,17 @@ const transformForSubmitting = (payload, gridData) => {
 };
 
 const transformAsQueryParams = (data) => {
-	const { employee, ordDate, arrDate, supplier, listMode, order, ...rest } =
-		data;
+	const {
+		squared,
+		employee,
+		ordDate,
+		arrDate,
+		supplier,
+		// listMode,
+		order,
+		reviewState,
+		...rest
+	} = data;
 	return {
 		...rest,
 		...(order && {
@@ -166,17 +173,21 @@ const transformAsQueryParams = (data) => {
 		...(employee && {
 			ep: employee.CodeID,
 		}),
-		od: Forms.formatDate(ordDate),
-		ad: Forms.formatDate(arrDate),
-		...(listMode && {
-			ck: listMode.id,
+		...(ordDate && {
+			od: Forms.formatDate(ordDate),
+		}),
+		...(arrDate && {
+			ad: Forms.formatDate(arrDate),
+		}),
+		...(reviewState && {
+			ck: reviewState.id,
 		}),
 		...(supplier && {
 			spl: supplier?.FactID,
 		}),
-		// ...(squared && {
-		// 	sq: squared.id,
-		// }),
+		...(squared && {
+			sq: squared.id,
+		}),
 	};
 };
 
@@ -200,7 +211,7 @@ const C03 = {
 	transformGridForReading,
 	transformGridForSubmitting,
 	// 覆核註記
-	ListModes,
+	ReviewStates,
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,

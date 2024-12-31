@@ -41,7 +41,7 @@ const C02DialogViewToolbar = memo(
 						覆核
 					</ResponsiveButton>
 				)} */}
-				<C02ReviewButtonContainer>覆核</C02ReviewButtonContainer>
+				<C02ReviewButtonContainer />
 				{onReject && (
 					<ResponsiveButton
 						startIcon={<HighlightOffIcon />}

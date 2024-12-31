@@ -59,7 +59,7 @@ const E03LoadProdsForm = memo((props) => {
 							}}
 						/>
 					</Grid>
-					<Grid item xs={24} sm={24} md={12}>
+					<Grid item md={12}>
 						<ProdTypeAPicker name="typeA"
 							disableOpenOnInput
 							selectOnFocus

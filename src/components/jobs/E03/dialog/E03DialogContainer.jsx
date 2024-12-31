@@ -197,7 +197,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						autoHighlight: true,
 						selectOnFocus: true,
-						forcePopupIcon: false
+						// forcePopupIcon: false
 					})
 				),
 				title: "試贈樣",
@@ -214,7 +214,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						forcePopupIcon: false,
+						// forcePopupIcon: false,
 						autoHighlight: true,
 						slotProps: {
 							paper: {

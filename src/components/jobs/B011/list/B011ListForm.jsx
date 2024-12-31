@@ -1,15 +1,13 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
+import { BContext } from "@/contexts/B/BContext";
 import { B011Context } from "@/contexts/B011/B011Context";
+import { B031Context } from "@/contexts/B031/B031Context";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import { Grid } from "@mui/material";
-import { useContext } from "react";
-import { memo } from "react";
 import PropTypes from "prop-types";
-import { B031Context } from "@/contexts/B031/B031Context";
-import { BContext } from "@/contexts/B/BContext";
-import { useMemo } from "react";
+import { memo, useContext } from "react";
 
 const B011ListForm = memo((props) => {
 	const { forNew = false, ...rest } = props;
@@ -19,7 +17,7 @@ const B011ListForm = memo((props) => {
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<CustomerPicker
 						forNew={b.forNew}
 						name="lvCust"
@@ -35,7 +33,7 @@ const B011ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<EmployeePicker
 						label="報價人員"
 						name="lvEmployee"
@@ -46,7 +44,7 @@ const B011ListForm = memo((props) => {
 					// disableClearable
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<DatePickerWrapper
 						name="lvDate"
 						label="報價日期"

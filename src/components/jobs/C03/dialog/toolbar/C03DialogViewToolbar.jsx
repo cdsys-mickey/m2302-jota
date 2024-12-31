@@ -8,6 +8,7 @@ import { C03OutputModePickerContainer } from "./C03OutputModePickerContainer";
 import C03PrintButtonContainer from "./C03PrintButtonContainer";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { IconButton, Tooltip } from "@mui/material";
+import { C03ReviewButtonContainer } from "./C03ReviewButtonContainer";
 
 const C03DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
@@ -31,14 +32,15 @@ const C03DialogViewToolbar = memo(
 					</ResponsiveButton>
 				)}
 
-				{onReview && (
+				{/* {onReview && (
 					<ResponsiveButton
 						startIcon={<CheckCircleOutlineIcon />}
 						color="success"
 						onClick={onReview}>
 						覆核
 					</ResponsiveButton>
-				)}
+				)} */}
+				<C03ReviewButtonContainer />
 				{onReject && (
 					<ResponsiveButton
 						startIcon={<HighlightOffIcon />}

@@ -15,18 +15,19 @@ const LeftButtons = memo(() => {
 					marginRight: theme.spacing(1),
 				},
 			})}>
+			<C01TransformButtonContainer variant="contained" />
 			<C01ListModePicker
 				dense
 				name="listMode"
 				placeholder="篩選模式"
-				disableClearable
+				// disableClearable
 				autoComplete
 				autoSelect
 				blurOnSelect
-				width="9rem"
+				width="12rem"
 				disableOpenOnInput
 			/>
-			<C01TransformButtonContainer variant="contained" />
+
 		</FlexBox>
 	);
 });

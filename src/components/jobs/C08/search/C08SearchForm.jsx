@@ -12,7 +12,7 @@ const C08SearchForm = memo((props) => {
 	return (
 		<FormBox>
 			<ResponsiveGrid container spacing={1} columns={24} {...rest}>
-				<ResponsiveGrid item xs={24} sm={24} md={6} lg={4}>
+				<ResponsiveGrid item md={6} lg={4}>
 					<TransOutOrderPicker
 						label="撥出單號"
 						name="lvOrder"
@@ -21,7 +21,7 @@ const C08SearchForm = memo((props) => {
 						disableOpenOnInput
 					/>
 				</ResponsiveGrid>
-				<ResponsiveGrid item xs={24} sm={24} md={5} lg={4}>
+				<ResponsiveGrid item md={5} lg={4}>
 					<DatePickerWrapper
 						name="lvTxoDate"
 						label="撥出日期(>)"
@@ -29,24 +29,24 @@ const C08SearchForm = memo((props) => {
 						validate
 					/>
 				</ResponsiveGrid>
-				<ResponsiveGrid item xs={24} sm={24} md={6} lg={4}>
+				<ResponsiveGrid item md={6} lg={4}>
 					<EmployeePicker name="lvEmployee" label="倉管人員" disableOpenOnInput />
 				</ResponsiveGrid>
-				<ResponsiveGrid item xs={24} sm={24} md={5} lg={4}>
+				<ResponsiveGrid item md={5} lg={4}>
 					<EmployeePicker
 						name="lvDeliveryEmployee"
 						label="配送人員"
 						disableOpenOnInput
 					/>
 				</ResponsiveGrid>
-				<ResponsiveGrid item xs={24} sm={24} md={6} lg={4}>
+				<ResponsiveGrid item md={6} lg={4}>
 					<DeptPicker
 						name="lvDept"
 						label="撥入門市"
 						disableOpenOnInput
 					/>
 				</ResponsiveGrid>
-				<ResponsiveGrid item xs={24} sm={24} md={5} lg={4}>
+				<ResponsiveGrid item md={5} lg={4}>
 					<TransportTypePicker
 						name="lvTransType"
 						label="貨運類別"

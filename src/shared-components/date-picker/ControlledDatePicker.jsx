@@ -26,7 +26,7 @@ const ControlledDatePicker = ({
 	control,
 	readOnly,
 	dense,
-	clearable = false,
+	clearable = true,
 	defaultValue,
 	onChange: _onChange,
 	onChanged,

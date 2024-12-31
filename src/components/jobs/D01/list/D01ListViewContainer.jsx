@@ -9,18 +9,44 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { D01ListRowContainer } from "./D01ListRowContainer";
 import Forms from "../../../../shared-modules/sd-forms";
+import { useMemo } from "react";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
+import D01 from "@/modules/md-d01";
 
 export const D01ListViewContainer = () => {
 	const d01 = useContext(D01Context);
 	const { loadList } = d01;
 	const form = useFormContext();
 	const { height } = useWindowSize();
-	const q = useWatch({
-		name: "q",
-		control: form.control,
-	});
+	// const q = useWatch({
+	// 	name: "q",
+	// 	control: form.control,
+	// });
+	// const debouncedQ = useDebounce(q, 300);
 
-	const debouncedQ = useDebounce(q, 300);
+	const lvOrder = useWatch({
+		name: "lvOrder",
+		control: form.control
+	})
+	const debouncedOrder = useDebounceObject(lvOrder, 300);
+
+	const lvEmployee = useWatch({
+		name: "lvEmployee",
+		control: form.control
+	})
+	const debouncedEmployee = useDebounceObject(lvEmployee, 300);
+
+	const lvDate = useWatch({
+		name: "lvDate",
+		control: form.control
+	})
+	const debouncedDate = useDebounceObject(lvDate, 300);
+
+	const lvPdline = useWatch({
+		name: "lvPdline",
+		control: form.control
+	})
+	const debouncedPdline = useDebounceObject(lvPdline, 300);
 
 	useInit(() => {
 		d01.loadList({
@@ -31,7 +57,21 @@ export const D01ListViewContainer = () => {
 	useChangeTracking(() => {
 		loadList({
 			params: {
-				q: debouncedQ,
+				// q: debouncedQ,
+				...(debouncedOrder && {
+					q: debouncedOrder?.領料單號,
+				}),
+				...D01.transformAsQueryParams({
+					...(debouncedEmployee && {
+						employee: debouncedEmployee
+					}),
+					...(debouncedDate && {
+						pdate: debouncedDate
+					}),
+					...(debouncedPdline && {
+						pdline: debouncedPdline
+					}),
+				}),
 				...(d01.expProd && {
 					prdi: d01.expProd?.ProdID,
 				}),
@@ -41,7 +81,13 @@ export const D01ListViewContainer = () => {
 			},
 			supressLoading: true,
 		});
-	}, [debouncedQ, d01.expProd, d01.expDate]);
+	}, [debouncedOrder, debouncedDate, debouncedEmployee, debouncedPdline, d01.expProd, d01.expDate]);
+
+	const _height = useMemo(() => {
+		return height
+			? height - 182
+			: 300;
+	}, [height])
 
 	return (
 		<ListViewBox withHeader>
@@ -54,7 +100,7 @@ export const D01ListViewContainer = () => {
 				loadMoreItems={d01.loadMoreItems}
 				isItemLoaded={d01.isItemLoaded}
 				RowComponent={D01ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={d01.handleItemsRendered}
 				error={d01.listError}
 				// bottomReached={d01.bottomReached}

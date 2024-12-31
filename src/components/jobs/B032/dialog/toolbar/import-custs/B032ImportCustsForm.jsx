@@ -53,7 +53,7 @@ const B032ImportCustsForm = memo((props) => {
 						/>
 					</Grid>
 					<FlexBox fullWidth />
-					<Grid item xs={24} sm={24} md={12}>
+					<Grid item md={12}>
 						<AreaPicker name="area"
 							disableOpenOnInput
 							selectOnFocus

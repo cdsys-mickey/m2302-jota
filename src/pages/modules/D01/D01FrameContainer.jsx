@@ -12,6 +12,8 @@ import { D01ExpDialogContainer } from "@/components/jobs/D01/exp-dialog/D01ExpDi
 import { D01ListHeaderContainer } from "@/components/jobs/D01/list/D01ListHeaderContainer";
 import { D01Context } from "../../../contexts/D01/D01Context";
 import { useInit } from "../../../shared-hooks/useInit";
+import D01SearchFormContainer from "@/components/jobs/D01/search/D01SearchFormContainer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 
 export const D01FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -34,14 +36,17 @@ export const D01FrameContainer = () => {
 			<FormProvider {...searchForm}>
 				{/* 標題 */}
 				<FrameBannerContainer>
-					<D01SearchFieldContainer name="q" />
+					{/* <D01SearchFieldContainer name="q" /> */}
 				</FrameBannerContainer>
-				{/* 工具列 */}
-				<D01ListToolbar />
+				<ResponsiveLayout initSize="md">
+					<D01SearchFormContainer />
+					{/* 工具列 */}
+					<D01ListToolbar />
 
-				{/* 列表 */}
-				<D01ListHeaderContainer />
-				<D01ListViewContainer />
+					{/* 列表 */}
+					<D01ListHeaderContainer />
+					<D01ListViewContainer />
+				</ResponsiveLayout>
 			</FormProvider>
 
 			{/* 對話框 */}

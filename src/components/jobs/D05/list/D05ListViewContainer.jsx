@@ -9,18 +9,39 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { D05ListRowContainer } from "./D05ListRowContainer";
 import Forms from "@/shared-modules/sd-forms";
+import { useMemo } from "react";
+import D05 from "@/modules/md-d05";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 
 export const D05ListViewContainer = () => {
 	const d05 = useContext(D05Context);
 	const { loadList } = d05;
 	const form = useFormContext();
 	const { height } = useWindowSize();
-	const q = useWatch({
-		name: "q",
-		control: form.control,
-	});
 
-	const debouncedQ = useDebounce(q, 300);
+	// const q = useWatch({
+	// 	name: "q",
+	// 	control: form.control,
+	// });
+	// const debouncedQ = useDebounce(q, 300);
+
+	const lvOrder = useWatch({
+		name: "lvOrder",
+		control: form.control
+	})
+	const debouncedOrder = useDebounceObject(lvOrder, 300);
+
+	const lvEmployee = useWatch({
+		name: "lvEmployee",
+		control: form.control
+	})
+	const debouncedEmployee = useDebounceObject(lvEmployee, 300);
+
+	const lvDate = useWatch({
+		name: "lvDate",
+		control: form.control
+	})
+	const debouncedDate = useDebounceObject(lvDate, 300);
 
 	useInit(() => {
 		d05.loadList({
@@ -31,11 +52,28 @@ export const D05ListViewContainer = () => {
 	useChangeTracking(() => {
 		loadList({
 			params: {
-				q: debouncedQ,
+				// q: debouncedQ,
+				...(debouncedOrder && {
+					q: debouncedOrder?.報廢單號,
+				}),
+				...D05.transformAsQueryParams({
+					...(debouncedEmployee && {
+						employee: debouncedEmployee
+					}),
+					...(debouncedDate && {
+						wdate: debouncedDate
+					}),
+				}),
 			},
 			supressLoading: true,
 		});
-	}, [debouncedQ]);
+	}, [debouncedOrder, debouncedDate, debouncedEmployee]);
+
+	const _height = useMemo(() => {
+		return height
+			? height - 182
+			: 300;
+	}, [height])
 
 	return (
 		<ListViewBox withHeader>
@@ -46,7 +84,7 @@ export const D05ListViewContainer = () => {
 				loadMoreItems={d05.loadMoreItems}
 				isItemLoaded={d05.isItemLoaded}
 				RowComponent={D05ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={d05.handleItemsRendered}
 				error={d05.listError}
 				bottomReached={true}

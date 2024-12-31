@@ -139,10 +139,7 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 				title: "商品編號",
 				minWidth: 180,
 				maxWidth: 180,
-
-				disabled: !c03.editing || c03.prodDisabled,
-				// 第一個 column 不能唯讀
-				// disabled: readOnly,
+				disabled: readOnly || c03.prodDisabled,
 			},
 			{
 				...keyColumn(
@@ -184,14 +181,14 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "單價",
 				minWidth: 100,
-				disabled: !c03.editing || c03.spriceDisabled,
+				disabled: readOnly || c03.spriceDisabled,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "數量",
 				minWidth: 90,
 				grow: 1,
-				disabled: !c03.editing || c03.sqtyDisabled,
+				disabled: readOnly || c03.sqtyDisabled,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
@@ -205,10 +202,10 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 				title: "未進量",
 				minWidth: 90,
 				grow: 1,
-				disabled: !c03.editing || c03.sNotQtyDisabled,
+				disabled: readOnly || c03.sNotQtyDisabled,
 			},
 		],
-		[c03.editing, c03.prodDisabled, c03.sNotQtyDisabled, c03.spriceDisabled, c03.sqtyDisabled]
+		[c03.prodDisabled, c03.sNotQtyDisabled, c03.spriceDisabled, c03.sqtyDisabled, readOnly]
 	);
 
 	const gridMeta = useDSGMeta({

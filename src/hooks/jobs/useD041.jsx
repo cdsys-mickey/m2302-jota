@@ -480,6 +480,7 @@ export const useD041 = () => {
 				["SQty"]: "",
 				["ProdData"]: prod?.ProdData || "",
 				["PackData_N"]: prod?.PackData_N || "",
+				["SExpDate"]: "",
 			};
 
 			return rowData;

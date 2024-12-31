@@ -21,8 +21,6 @@ const D02SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 		`
 	);
 
-
-
 	return (
 		<FormMetaProvider {...formMeta}>
 			<D02SearchPopper

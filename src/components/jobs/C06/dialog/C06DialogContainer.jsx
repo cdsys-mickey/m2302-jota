@@ -66,7 +66,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						packageType: "i",
+						packageType: "s",
 						forId: true,
 						disableClearable: true,
 						slotProps: {
@@ -143,7 +143,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						autoHighlight: true,
 						selectOnFocus: true,
-						forcePopupIcon: false
+						// forcePopupIcon: false
 					})
 				),
 				title: "試贈樣",

@@ -44,7 +44,7 @@ export const useD07 = () => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/material/demand-est-orders",
+		url: "v1/mat/demand-est-orders",
 		bearer: token,
 		initialFetchSize: 50,
 	});
@@ -134,7 +134,7 @@ export const useD07 = () => {
 			try {
 				crud.startCreating();
 				const { status, error } = await httpPostAsync({
-					url: "v1/material/demand-est-orders",
+					url: "v1/mat/demand-est-orders",
 					data: data,
 					bearer: token,
 				});
@@ -174,7 +174,7 @@ export const useD07 = () => {
 					crud.startReading("讀取中...", { id });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/material/demand-est-orders",
+					url: "v1/mat/demand-est-orders",
 					bearer: token,
 					params: {
 						id: itemId,
@@ -243,7 +243,7 @@ export const useD07 = () => {
 			try {
 				crud.startUpdating();
 				const { status, error } = await httpPutAsync({
-					url: "v1/material/demand-est-orders",
+					url: "v1/mat/demand-est-orders",
 					data: data,
 					bearer: token,
 				});
@@ -275,7 +275,7 @@ export const useD07 = () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/material/demand-est-orders`,
+						url: `v1/mat/demand-est-orders`,
 						bearer: token,
 						params: {
 							id: itemData?.CalID,

@@ -38,7 +38,7 @@ const C01SearchPopper = memo(
 						<Grid item xs={12} sm={12}>
 							<TextFieldWrapper
 								name="rqtId"
-								label="單號 (≧)"
+								label="單號(≧)"
 								size="small"
 								fullWidth
 								clearable
@@ -48,7 +48,7 @@ const C01SearchPopper = memo(
 						<Grid item xs={12} sm={12}>
 							<DatePickerWrapper
 								name="date"
-								label="請購日期 (≧)"
+								label="請購日期(≧)"
 								validate
 							/>
 						</Grid>

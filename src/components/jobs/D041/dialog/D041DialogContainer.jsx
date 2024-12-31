@@ -22,6 +22,7 @@ import D041Drawer from "../D041Drawer";
 import D041DialogForm from "./D041DialogForm";
 import { D041DialogToolbarContainer } from "./toolbar/D041DialogToolbarContainer";
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
+import { YesOrEmptyPickerComponentContainer } from "@/components/dsg/columns/yes-or-empty-picker/YesOrEmptyPickerComponentContainer";
 
 export const D041DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -159,7 +160,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						forcePopupIcon: false,
+						// forcePopupIcon: false,
 						autoHighlight: true,
 						slotProps: {
 							paper: {
@@ -175,16 +176,33 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 				maxWidth: 160,
 				disabled: readOnly || d041.dtypeDisabled,
 			},
+			// {
+			// 	...keyColumn(
+			// 		"reworked",
+			// 		createCheckboxExColumn({
+			// 			size: "medium",
+			// 		})
+			// 	),
+			// 	title: "重工",
+			// 	minWidth: 38,
+			// 	maxWidth: 38,
+			// 	disabled: readOnly || d041.reworkedDisabled,
+			// },
 			{
 				...keyColumn(
 					"reworked",
-					createCheckboxExColumn({
-						size: "medium",
+					optionPickerColumn(YesOrEmptyPickerComponentContainer, {
+						name: "reworked",
+						disableClearable: true,
+						disableOpenOnInput: true,
+						autoHighlight: true,
+						selectOnFocus: true,
+						// forcePopupIcon: false
 					})
 				),
 				title: "重工",
-				minWidth: 38,
-				maxWidth: 38,
+				minWidth: 70,
+				maxWidth: 70,
 				disabled: readOnly || d041.reworkedDisabled,
 			},
 			{
@@ -196,7 +214,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						autoHighlight: true,
 						selectOnFocus: true,
-						forcePopupIcon: false
+						// forcePopupIcon: false
 					})
 				),
 				title: "試贈樣",

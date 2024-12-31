@@ -2,6 +2,7 @@
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
 import FreeProdTypes from "./md-free-prod-types";
+import YesOrEmpty from "./md-yes-or-empty";
 
 const transformGridForReading = (data) => {
 	return (
@@ -22,7 +23,8 @@ const transformGridForReading = (data) => {
 						ProdData: ProdData_N,
 					},
 					ProdData: ProdData_N,
-					reworked: SFlag === "Y",
+					// reworked: SFlag === "Y",
+					reworked: YesOrEmpty.getOptionById(SFlag),
 					// SExpDate: Forms.reformatDateAsDash(SExpDate),
 					SExpDate: SExpDate,
 					stype: FreeProdTypes.getOptionById(SType),
@@ -56,7 +58,8 @@ const transformGridForSubmitting = (gridData) => {
 				SType: stype?.id || "",
 				SRsnID: dtype?.CodeID || "",
 				Seq: index + 1,
-				SFlag: reworked ? "Y" : "",
+				// SFlag: reworked ? "Y" : "",
+				SFlag: reworked?.id || "",
 				...rest,
 			})
 		);

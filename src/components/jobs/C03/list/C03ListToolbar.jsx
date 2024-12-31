@@ -1,23 +1,24 @@
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import LoadingTypography from "../../../../shared-components/LoadingTypography";
+import LoadingTypography from "@/shared-components/LoadingTypography";
 import C03CreateButtonContainer from "../C03CreateButtonContainer";
 import { C03FetchResultLabelContainer } from "../C03FetchResultLabelContainer";
+import C03ReviewModePicker from "../C03ReviewModePicker";
 // import C03ListModePicker from "../C03ListModePicker";
 
 const LeftButtons = memo(() => {
 	return (
 		<>
 			<C03CreateButtonContainer />
-			{/* <C03ListModePicker
-				name="listMode"
+			<C03ReviewModePicker
+				name="lvReviewState"
 				dense
-				placeholder="篩選模式"
-				disableClearable
+				placeholder="覆核狀態"
 				autoComplete
 				autoSelect
-			/> */}
+				width="10rem"
+			/>
 		</>
 	);
 });

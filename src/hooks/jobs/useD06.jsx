@@ -44,7 +44,7 @@ export const useD06 = () => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/material/balance-orders",
+		url: "v1/mat/balance-orders",
 		bearer: token,
 		initialFetchSize: 50,
 	});
@@ -84,7 +84,7 @@ export const useD06 = () => {
 			try {
 				crud.startCreating();
 				const { status, error } = await httpPostAsync({
-					url: "v1/material/balance-orders",
+					url: "v1/matl/balance-orders",
 					data: data,
 					bearer: token,
 				});
@@ -124,7 +124,7 @@ export const useD06 = () => {
 					crud.startReading("讀取中...", { id });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/material/balance-orders",
+					url: "v1/matl/balance-orders",
 					bearer: token,
 					params: {
 						id: itemId,
@@ -193,7 +193,7 @@ export const useD06 = () => {
 			try {
 				crud.startUpdating();
 				const { status, error } = await httpPutAsync({
-					url: "v1/material/balance-orders",
+					url: "v1/matl/balance-orders",
 					data: data,
 					bearer: token,
 				});
@@ -225,7 +225,7 @@ export const useD06 = () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/material/balance-orders`,
+						url: `v1/matl/balance-orders`,
 						bearer: token,
 						params: {
 							id: itemData?.RemID,

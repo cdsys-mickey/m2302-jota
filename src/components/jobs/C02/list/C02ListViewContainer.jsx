@@ -8,6 +8,9 @@ import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { C02ListRowContainer } from "./C02ListRowContainer";
 import { C02Context } from "@/contexts/C02/C02Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
+import C02 from "@/modules/md-c02";
+import { useMemo } from "react";
 
 export const C02ListViewContainer = () => {
 	const c02 = useContext(C02Context);
@@ -15,17 +18,42 @@ export const C02ListViewContainer = () => {
 	const form = useFormContext();
 	const { getValues, setValue } = form;
 	const { height } = useWindowSize();
-	const q = useWatch({
-		name: "q",
-		control: form.control,
-	});
+
+	// const q = useWatch({
+	// 	name: "q",
+	// 	control: form.control,
+	// });
+	// const debouncedQ = useDebounce(q, 300);
+	const lvOrder = useWatch({
+		name: "lvOrder",
+		control: form.control
+	})
+	const debouncedOrder = useDebounceObject(lvOrder, 300);
+
+	const lvDate = useWatch({
+		name: "lvDate",
+		contorl: form.control
+	})
+	const debouncedDate = useDebounceObject(lvDate, 300);
+
+	const lvEmployee = useWatch({
+		name: "lvEmployee",
+		contorl: form.control
+	})
+	const debouncedEmployee = useDebounceObject(lvEmployee, 300);
 
 	const checker = useWatch({
 		name: "listMode",
 		control: form.control,
 	});
+	const debouncedChecker = useDebounceObject(checker, 300);
 
-	const debouncedQ = useDebounce(q, 300);
+	const lvPdline = useWatch({
+		name: "lvPdline",
+		control: form.control
+	})
+	const debouncedPdline = useDebounceObject(lvPdline, 300);
+
 
 	useInit(() => {
 		c02.loadList({
@@ -40,12 +68,27 @@ export const C02ListViewContainer = () => {
 		// const values = getValues();
 		console.log("checker:", checker);
 		loadList({
-			params: { q: debouncedQ, ck: checker?.id || "" },
+			params: {
+				// q: debouncedQ, 
+				ck: checker?.id || "",
+				...(C02.transformAsQueryParams({
+					order: debouncedOrder,
+					date: debouncedDate,
+					pdline: debouncedPdline,
+					employee: debouncedEmployee
+				}))
+			},
 			supressLoading: true,
 		});
 		// setValue("q", debouncedQ);
 		// }
-	}, [debouncedQ, checker]);
+	}, [debouncedChecker, debouncedOrder, debouncedDate, debouncedPdline, debouncedEmployee]);
+
+	const _height = useMemo(() => {
+		return height ?
+			height - 182
+			: 300;
+	}, [height])
 
 	return (
 		<ListViewBox withHeader>
@@ -58,7 +101,7 @@ export const C02ListViewContainer = () => {
 				loadMoreItems={c02.loadMoreItems}
 				isItemLoaded={c02.isItemLoaded}
 				RowComponent={C02ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={c02.handleItemsRendered}
 				error={c02.listError}
 				// bottomReached={c02.bottomReached}

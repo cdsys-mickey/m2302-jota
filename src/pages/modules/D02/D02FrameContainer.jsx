@@ -12,6 +12,8 @@ import { D02ExpDialogContainer } from "@/components/jobs/D02/exp-dialog/D02ExpDi
 import { D02ListHeaderContainer } from "@/components/jobs/D02/list/D02ListHeaderContainer";
 import { D02Context } from "../../../contexts/D02/D02Context";
 import { useInit } from "../../../shared-hooks/useInit";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
+import D02SearchFormContainer from "@/components/jobs/D02/search/D02SearchFormContainer";
 
 export const D02FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -34,14 +36,19 @@ export const D02FrameContainer = () => {
 			<FormProvider {...searchForm}>
 				{/* 標題 */}
 				<FrameBannerContainer>
-					<D02SearchFieldContainer name="q" />
+					{/* <D02SearchFieldContainer name="q" /> */}
 				</FrameBannerContainer>
-				{/* 工具列 */}
-				<D02ListToolbar />
 
-				{/* 列表 */}
-				<D02ListHeaderContainer />
-				<D02ListViewContainer />
+				<ResponsiveLayout>
+					<D02SearchFormContainer />
+					{/* 工具列 */}
+					<D02ListToolbar />
+
+					{/* 列表 */}
+					<D02ListHeaderContainer />
+					<D02ListViewContainer />
+
+				</ResponsiveLayout>
 			</FormProvider>
 
 			{/* 對話框 */}

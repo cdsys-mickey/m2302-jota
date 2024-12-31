@@ -46,8 +46,8 @@ const ResponsiveGridItem = memo((props) => {
 	}, [columns, lg, md, sm, xl, xs])
 
 	const _xsElastic = useMemo(() => {
-		return xs || sm || columns
-	}, [columns, sm, xs])
+		return xs || sm || md || columns
+	}, [columns, md, sm, xs])
 
 	/**
 	 * 計算寬度的演算法 

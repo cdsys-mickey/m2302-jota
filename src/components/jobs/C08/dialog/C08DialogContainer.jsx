@@ -1,30 +1,26 @@
-import { C08Context } from "@/contexts/C08/C08Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { useScrollable } from "@/shared-hooks/useScrollable";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import C08DialogForm from "./C08DialogForm";
-import { C08DialogToolbarContainer } from "./toolbar/C08DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
-import useDebounce from "@/shared-hooks/useDebounce";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import C08Drawer from "../C08Drawer";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { keyColumn } from "react-datasheet-grid";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
-import { useCallback } from "react";
-import { toast } from "react-toastify";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { C08Context } from "@/contexts/C08/C08Context";
+import Colors from "@/modules/md-colors";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { toast } from "react-toastify";
+import C08Drawer from "../C08Drawer";
+import C08DialogForm from "./C08DialogForm";
+import { C08DialogToolbarContainer } from "./toolbar/C08DialogToolbarContainer";
 
 export const C08DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -139,24 +135,6 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 				disabled: true,
 				cellClassName: c08.getSPriceClassName,
 			},
-			// {
-			// 	...keyColumn("StockQty_N", createFloatColumn(2)),
-			// 	title: "庫存",
-			// 	minWidth: 90,
-			// 	disabled: true,
-			// },
-			// {
-			// 	...keyColumn(
-			// 		"SQtyNote",
-			// 		createCheckboxExColumn({
-			// 			size: "medium",
-			// 		})
-			// 	),
-			// 	title: "註",
-			// 	minWidth: 38,
-			// 	maxWidth: 38,
-			// 	disabled: readOnly || c08.overrideSQtyDisabled,
-			// },
 			{
 				...keyColumn("SQtyNote", createTextColumnEx({
 					continuousUpdates: false,
@@ -191,7 +169,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						autoHighlight: true,
 						selectOnFocus: true,
-						forcePopupIcon: false
+						// forcePopupIcon: false
 					})
 				),
 				title: "試贈樣",
@@ -208,7 +186,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						// disableClearable: true,
 						selectOnFocus: true,
-						forcePopupIcon: false,
+						// forcePopupIcon: false,
 						autoHighlight: true,
 						slotProps: {
 							paper: {

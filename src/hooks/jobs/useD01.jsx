@@ -50,7 +50,7 @@ export const useD01 = () => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/material/picking-orders",
+		url: "v1/mat/picking-orders",
 		bearer: token,
 		initialFetchSize: 50,
 	});
@@ -158,7 +158,7 @@ export const useD01 = () => {
 					crud.startReading("讀取中...", { id });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/material/picking-orders",
+					url: "v1/mat/picking-orders",
 					bearer: token,
 					params: {
 						id: itemId,
@@ -201,11 +201,11 @@ export const useD01 = () => {
 				}
 
 				const { status, error } = creating ? await httpPostAsync({
-					url: "v1/material/picking-orders",
+					url: "v1/mat/picking-orders",
 					data: data,
 					bearer: token,
 				}) : await httpPutAsync({
-					url: "v1/material/picking-orders",
+					url: "v1/mat/picking-orders",
 					data: data,
 					bearer: token,
 				});
@@ -298,7 +298,7 @@ export const useD01 = () => {
 	// 		try {
 	// 			crud.startUpdating();
 	// 			const { status, error } = await httpPutAsync({
-	// 				url: "v1/material/picking-orders",
+	// 				url: "v1/mat/picking-orders",
 	// 				data: data,
 	// 				bearer: token,
 	// 			});
@@ -330,7 +330,7 @@ export const useD01 = () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/material/picking-orders`,
+						url: `v1/mat/picking-orders`,
 						bearer: token,
 						params: {
 							id: itemData?.OutID,
@@ -851,7 +851,7 @@ export const useD01 = () => {
 		try {
 			checkEditableAction.start();
 			const { status, error } = await httpGetAsync({
-				url: "v1/material/picking-orders/check-editable",
+				url: "v1/mat/picking-orders/check-editable",
 				bearer: token,
 				params: {
 					id: crud.itemData.OutID,

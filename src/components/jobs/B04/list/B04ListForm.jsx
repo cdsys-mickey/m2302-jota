@@ -5,14 +5,13 @@ import FormBox from "@/shared-components/form/FormBox";
 import { Grid } from "@mui/material";
 import { memo } from "react";
 import { B04OrderByPicker } from "../B04OrderByPicker";
-import NewCustomerPicker from "@/components/picker/ZZNewCustomerPicker";
 
 const B04ListForm = memo((props) => {
 	const { ...rest } = props;
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<CustomerPicker
 						forNew
 						name="customer"
@@ -27,7 +26,7 @@ const B04ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<CustomerPicker
 						forNew
 						name="customer2"
@@ -42,7 +41,7 @@ const B04ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<ProdPicker
 						name="prod"
 						forId
@@ -59,7 +58,7 @@ const B04ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<ProdPicker
 						name="prod2"
 						forId
@@ -76,7 +75,7 @@ const B04ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<DatePickerWrapper
 						name="date"
 						label="報價日期起"
@@ -85,7 +84,7 @@ const B04ListForm = memo((props) => {
 					// dense
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<DatePickerWrapper
 						name="date2"
 						label="報價日期訖"
@@ -94,7 +93,7 @@ const B04ListForm = memo((props) => {
 					// dense
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<B04OrderByPicker
 						name="orderBy"
 						label="排序"

@@ -4,13 +4,13 @@ import Forms from "../shared-modules/sd-forms";
 const ListModes = Object.freeze({
 	NOT_REVIEWED: 1,
 	REVIEWED: 2,
-	ALL: 3,
+	// ALL: 3,
 });
 
 const options = [
 	{ id: ListModes.NOT_REVIEWED, label: "待覆核" },
 	{ id: ListModes.REVIEWED, label: "已覆核" },
-	{ id: ListModes.ALL, label: "全部" },
+	// { id: ListModes.ALL, label: "全部" },
 ];
 
 const getOptionLabel = (option) => {
@@ -109,7 +109,21 @@ const transformForSubmitting = (payload, gridData) => {
 };
 
 const transformAsQueryParams = (data) => {
-	return {};
+	const { order, employee, date, pdline } = data;
+	return {
+		...(order && {
+			q: order?.["請購單號"],
+		}),
+		...(employee && {
+			emp: employee.CodeID,
+		}),
+		...(date && {
+			dt: Forms.formatDate(date),
+		}),
+		...(pdline && {
+			pdline: pdline.CodeID,
+		}),
+	};
 };
 
 const C02 = {

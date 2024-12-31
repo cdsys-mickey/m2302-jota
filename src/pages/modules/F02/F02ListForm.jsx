@@ -9,7 +9,7 @@ const F02ListForm = memo((props) => {
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<DatePickerWrapper
 						label="盤點日期"
 						inline

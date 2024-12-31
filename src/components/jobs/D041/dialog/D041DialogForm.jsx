@@ -75,7 +75,7 @@ const D041DialogForm = memo((props) => {
 								}}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DatePickerWrapper
 								typo
 								name="EntDate"

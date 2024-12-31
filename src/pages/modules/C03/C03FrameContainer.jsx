@@ -13,6 +13,7 @@ import { C03Context } from "@/contexts/C03/C03Context";
 import { useQuerySync } from "@/shared-hooks/useQuerySync";
 import C03 from "@/modules/md-c03";
 import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
+import Squared2 from "@/modules/md-squared2";
 
 export const C03FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -20,7 +21,8 @@ export const C03FrameContainer = () => {
 	const { selectById } = c03;
 	const searchForm = useForm({
 		defaultValues: {
-			listMode: C03.getOptionById(C03.ListModes.NOT_REVIEWED),
+			lvReviewState: C03.getOptionById(C03.ReviewStates.NOT_REVIEWED),
+			lvSquared: Squared2.getOptionById(Squared2.SquaredState.NOT_SQUARED)
 			// listMode: null,
 		},
 	});
@@ -48,11 +50,8 @@ export const C03FrameContainer = () => {
 				<FrameBannerContainer>
 					{/* {<C03SearchFieldContainer name="q" />} */}
 				</FrameBannerContainer>
-				<ResponsiveLayout initSize="md" >
-					<C03SearchFormContainer />
-					{/* 工具列 */}
-					<C03ListToolbar />
-
+				<ResponsiveLayout>
+					<C03SearchFormContainer initSize="md" />
 					{/* 列表 */}
 					<C03ListHeader />
 					<C03ListViewContainer />

@@ -4,8 +4,10 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
 import { memo } from "react";
-import C03ListModePicker from "../C03ListModePicker";
+import C03ListModePicker from "../C03ReviewModePicker";
 import PurchaseOrderPicker from "@/components/picker/PurchaseOrderPicker";
+import SquaredPicker from "@/components/picker/SquaredPicker";
+import SquaredPicker2 from "@/components/picker/SquaredPicker2";
 
 const C03SearchForm = memo((props) => {
 	const { ...rest } = props;
@@ -48,7 +50,7 @@ const C03SearchForm = memo((props) => {
 				<ResponsiveGrid item md={6} lg={4}>
 					<DatePickerWrapper
 						name="lvArrDate"
-						label="預計到貨日期"
+						label="預計到貨日期(≦)"
 						clearable
 					/>
 				</ResponsiveGrid>
@@ -70,23 +72,14 @@ const C03SearchForm = memo((props) => {
 				</ResponsiveGrid>
 
 				<ResponsiveGrid item md={6} lg={3}>
-					{/* <SquaredPicker
+					<SquaredPicker2
 						name="lvSquared"
 						label="結清註記"
 						clearable
-					/> */}
-					<C03ListModePicker
-						name="listMode"
-						label="結清註記"
-						placeholder="篩選結清註記"
-						autoComplete
-						autoSelect
 					/>
 				</ResponsiveGrid>
-
-
 			</ResponsiveGrid>
-		</FormBox>
+		</FormBox >
 	);
 })
 

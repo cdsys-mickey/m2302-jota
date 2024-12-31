@@ -10,7 +10,7 @@ const C02ListModePicker = memo(
 		return (
 			<OptionPickerWrapper
 				ref={ref}
-				width="9rem"
+
 				dense
 				label=""
 				options={C02.options}

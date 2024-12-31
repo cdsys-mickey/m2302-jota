@@ -41,7 +41,7 @@ const F01DialogForm = memo((props) => {
 				<>
 					<FormBox pt={1}>
 						<Grid container columns={24} spacing={1}>
-							<Grid item xs={24} sm={24} md={5}>
+							<Grid item md={5}>
 								<TextFieldWrapper
 									typo
 									name="PhyID"
@@ -55,7 +55,7 @@ const F01DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={6}>
+							<Grid item md={6}>
 								<EmployeePicker
 									typo
 									label="製單人員"
@@ -71,7 +71,7 @@ const F01DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={24} sm={24} md={9}>
+							<Grid item md={9}>
 								<TextFieldWrapper
 									typo
 									name="PhyData"
@@ -85,7 +85,7 @@ const F01DialogForm = memo((props) => {
 								/>
 							</Grid>
 							{editing && (
-								<Grid item xs={24} sm={24} md={4}>
+								<Grid item md={4}>
 									<CheckboxExWrapper
 										typo
 										label="貨品排序"

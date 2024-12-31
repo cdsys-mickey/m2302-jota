@@ -1,5 +1,5 @@
 import { useTheme } from "@mui/system";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 
 export default function useContainerSize({ opts } = {}) {
 	const { sm, md, lg, xl } = opts || {};

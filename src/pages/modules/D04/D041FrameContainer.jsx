@@ -10,6 +10,8 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { D041ExpDialogContainer } from "@/components/jobs/D041/exp-dialog/D041ExpDialogContainer";
 import { D041ListHeaderContainer } from "@/components/jobs/D041/list/D041ListHeaderContainer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
+import D041SearchFormContainer from "@/components/jobs/D041/search/D041SearchFormContainer";
 // import { D041Context } from "../../contexts/D041/D041Context";
 // import { useInit } from "../../shared-hooks/useInit";
 
@@ -34,14 +36,17 @@ export const D041FrameContainer = () => {
 			<FormProvider {...searchForm}>
 				{/* 標題 */}
 				<FrameBannerContainer>
-					<D041SearchFieldContainer name="q" />
+					{/* <D041SearchFieldContainer name="q" /> */}
 				</FrameBannerContainer>
-				{/* 工具列 */}
-				<D041ListToolbar />
+				<ResponsiveLayout>
+					<D041SearchFormContainer initSize="md" />
+					{/* 工具列 */}
+					<D041ListToolbar />
 
-				{/* 列表 */}
-				<D041ListHeaderContainer />
-				<D041ListViewContainer />
+					{/* 列表 */}
+					<D041ListHeaderContainer />
+					<D041ListViewContainer />
+				</ResponsiveLayout>
 			</FormProvider>
 
 			{/* 對話框 */}

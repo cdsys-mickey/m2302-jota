@@ -6,14 +6,14 @@ import PropTypes from "prop-types";
 import { useMemo } from "react";
 
 export const C02ReviewButtonContainer = (props) => {
-	const { children = "覆核", ...rest } = props;
+	const { label = "覆核", ...rest } = props;
 	const c02 = useContext(C02Context);
 
 	const index = useMemo(() => {
 		return c02.getCurrentIndex();
 	}, [c02]);
 
-	const label = useMemo(() => {
+	const _label = useMemo(() => {
 		return index !== null ? `覆核 (${index})` : "覆核";
 	}, [index]);
 
@@ -28,11 +28,12 @@ export const C02ReviewButtonContainer = (props) => {
 			color="success"
 			onClick={c02.promptReview}
 			{...rest}>
-			{label}
+			{_label}
 		</ButtonWrapper>
 	);
 };
 C02ReviewButtonContainer.propTypes = {
+	label: PropTypes.string,
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 C02ReviewButtonContainer.displayName = "C02ReviewButtonContainer";

@@ -4,8 +4,10 @@ import { D07ListHeaderContainer } from "@/components/jobs/D07/list/D07ListHeader
 import D07ListToolbar from "@/components/jobs/D07/list/D07ListToolbar";
 import { D07ListViewContainer } from "@/components/jobs/D07/list/D07ListViewContainer";
 import { D07SearchFieldContainer } from "@/components/jobs/D07/search/D07SearchFieldContainer";
+import D07SearchFormContainer from "@/components/jobs/D07/search/D07SearchFormContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
@@ -27,14 +29,18 @@ export const D07FrameContainer = () => {
 			<FormProvider {...searchForm}>
 				{/* 標題 */}
 				<FrameBannerContainer>
-					<D07SearchFieldContainer name="q" />
+					{/* <D07SearchFieldContainer name="q" /> */}
 				</FrameBannerContainer>
-				{/* 工具列 */}
-				<D07ListToolbar />
+				<ResponsiveLayout>
+					<D07SearchFormContainer />
+					{/* 工具列 */}
+					<D07ListToolbar />
 
-				{/* 列表 */}
-				<D07ListHeaderContainer />
-				<D07ListViewContainer />
+					{/* 列表 */}
+					<D07ListHeaderContainer />
+					<D07ListViewContainer />
+
+				</ResponsiveLayout>
 			</FormProvider>
 
 			{/* 對話框 */}

@@ -384,6 +384,7 @@ export const useC03 = () => {
 					handleSubmit();
 				} else {
 					// 清空「詢價註記」及「單價」
+					toast.info("商品單價已清除");
 					grid.initGridData(
 						grid.gridData.map((x) => ({
 							...x,
@@ -648,6 +649,13 @@ export const useC03 = () => {
 	}, []);
 
 	// REVIEW
+	const getCurrentIndex = useCallback(() => {
+		return listLoader.getIndexById({
+			id: crud.itemData?.OrdID,
+			key: "採購單號",
+		});
+	}, [crud.itemData?.OrdID, listLoader]);
+
 	const reviewAction = useAction();
 	const reviewing = useMemo(() => {
 		return !!reviewAction.state;
@@ -656,6 +664,12 @@ export const useC03 = () => {
 	const handleReview = useCallback(
 		async ({ value }) => {
 			console.log(`handleReview`, value);
+			const nextId = listLoader.findNextId({
+				id: crud.itemData?.OrdID,
+				key: "採購單號",
+				reverse: true,
+			});
+			console.log("nextId", nextId);
 			try {
 				reviewAction.start();
 				const { status, error } = await httpPatchAsync({
@@ -668,10 +682,13 @@ export const useC03 = () => {
 				});
 				if (status.success) {
 					reviewAction.clear();
-					// crud.cancelAction();
-					loadItem({
-						refresh: true,
-					});
+					crud.cancelAction();
+					if (nextId) {
+						selectById(nextId);
+					}
+					// loadItem({
+					// 	refresh: true,
+					// });
 					listLoader.loadList({
 						refresh: true,
 					});
@@ -680,19 +697,13 @@ export const useC03 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
+				reviewAction.fail({ error: err });
 				toast.error(Errors.getMessage("覆核失敗", err), {
 					position: "top-right"
 				});
 			}
 		},
-		[
-			crud.itemData?.OrdID,
-			httpPatchAsync,
-			listLoader,
-			loadItem,
-			reviewAction,
-			token,
-		]
+		[crud, httpPatchAsync, listLoader, reviewAction, selectById, token]
 	);
 
 	const promptReview = useCallback(() => {
@@ -889,6 +900,7 @@ export const useC03 = () => {
 		handleReview,
 		promptReview,
 		cancelReview,
+		getCurrentIndex,
 		// 解除覆核
 		// rejecting,
 		handleReject,

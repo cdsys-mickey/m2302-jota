@@ -151,7 +151,7 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						forcePopupIcon: false,
+						// forcePopupIcon: false,
 						autoHighlight: true,
 						slotProps: {
 							paper: {

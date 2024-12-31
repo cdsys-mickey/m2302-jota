@@ -6,14 +6,14 @@ const ListModes = Object.freeze({
 	NOT_ORDERED_INCLUDED: 3,
 	ORDERED: 1,
 	ALL_NOT_ORDERED: 2,
-	ALL: 0,
+	// ALL: 0,
 });
 
 const options = [
 	{ id: ListModes.NOT_ORDERED_INCLUDED, label: "包含未採購" },
 	{ id: ListModes.ORDERED, label: "整單已採購" },
 	{ id: ListModes.ALL_NOT_ORDERED, label: "整單未採購" },
-	{ id: ListModes.ALL, label: "全部" },
+	// { id: ListModes.ALL, label: "全部" },
 ];
 
 const getOptionLabel = (option) => {
@@ -135,13 +135,13 @@ const isFiltered = (criteria) => {
 };
 
 const transformAsQueryParams = (data) => {
-	const { reqEmployee, date, pdline, rqtId, listMode, ...rest } = data;
+	const { employee, date, pdline, order, orderFlag, ...rest } = data;
 	return {
-		...(rqtId && {
-			rid: rqtId,
+		...(order && {
+			rid: order?.["請購單號"],
 		}),
-		...(reqEmployee && {
-			rempi: reqEmployee.CodeID,
+		...(employee && {
+			emp: employee.CodeID,
 		}),
 		...(date && {
 			dt: Forms.formatDate(date),
@@ -149,7 +149,9 @@ const transformAsQueryParams = (data) => {
 		...(pdline && {
 			pdline: pdline.CodeID,
 		}),
-		of: listMode?.id ?? "",
+		...(orderFlag && {
+			of: orderFlag?.id ?? "",
+		}),
 		...rest,
 	};
 };

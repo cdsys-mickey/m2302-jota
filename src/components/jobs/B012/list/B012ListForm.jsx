@@ -12,7 +12,7 @@ const B012ListForm = memo((props) => {
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
 
-				<Grid item xs={24} sm={24} md={8}>
+				<Grid item md={8}>
 					<ProdPicker
 						name="lvProd"
 						// forId
@@ -30,7 +30,7 @@ const B012ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<EmployeePicker
 						label="報價人員"
 						name="lvEmployee"
@@ -41,7 +41,7 @@ const B012ListForm = memo((props) => {
 					// disableClearable
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<DatePickerWrapper
 						name="lvDate"
 						label="報價日期"

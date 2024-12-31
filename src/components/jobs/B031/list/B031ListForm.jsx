@@ -10,7 +10,7 @@ const B031ListForm = memo((props) => {
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<CustomerPicker
 						name="lvCust"
 						forNew
@@ -25,7 +25,7 @@ const B031ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<CustomerPicker
 						name="lvCust2"
 						forNew
@@ -40,7 +40,7 @@ const B031ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<ProdPicker
 						name="lvProd"
 						// forId
@@ -57,7 +57,7 @@ const B031ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<ProdPicker
 						name="lvProd2"
 						// forId
@@ -74,7 +74,7 @@ const B031ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<DatePickerWrapper
 						name="lvDate"
 						label="報價日期起"
@@ -83,7 +83,7 @@ const B031ListForm = memo((props) => {
 					// dense
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<DatePickerWrapper
 						name="lvDate2"
 						label="報價日期訖"

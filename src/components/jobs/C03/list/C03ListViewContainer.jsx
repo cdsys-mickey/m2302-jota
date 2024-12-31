@@ -12,6 +12,7 @@ import C03 from "../../../../modules/md-c03";
 import { useMemo } from "react";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
+import Squared2 from "@/modules/md-squared2";
 
 export const C03ListViewContainer = () => {
 	const c03 = useContext(C03Context);
@@ -20,30 +21,24 @@ export const C03ListViewContainer = () => {
 	const { height } = useWindowSize();
 
 
-	const listMode = useWatch({
-		name: "listMode",
+	const lvReviewState = useWatch({
+		name: "lvReviewState",
 		control: form.control,
 	});
+	const debouncedReviewState = useDebounceObject(lvReviewState, 300);
 
 
 	useInit(() => {
 		loadList({
 			params: {
-				ck: C03.ListModes.NOT_REVIEWED,
-				rs: 3,
-				// sq: 1,
+				ck: C03.ReviewStates.NOT_REVIEWED,
+				// rs: 3,
+				sq: Squared2.SquaredState.NOT_SQUARED,
 			},
 		});
 	}, []);
 
-	const memoisedCk = useMemo(() => {
-		if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
-			return 1;
-		} else if (listMode?.id === C03.ListModes.REVIEWED) {
-			return 2;
-		}
-		return null;
-	}, [listMode?.id]);
+
 
 	// const q = useWatch({
 	// 	name: "q",
@@ -81,13 +76,37 @@ export const C03ListViewContainer = () => {
 	})
 	const debouncedSupplier = useDebounceObject(lvSupplier, 300);
 
-	// const lvSquared = useWatch({
-	// 	name: "lvSquared",
-	// 	control: form.control
-	// })
-	// const debouncedSquared = useDebounceObject(lvSquared, 300);
+	const lvSquared = useWatch({
+		name: "lvSquared",
+		control: form.control
+	})
+	const debouncedSquared = useDebounceObject(lvSquared, 300);
 
+	// const memoisedCk = useMemo(() => {
+	// 	if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
+	// 		return 1;
+	// 	} else if (listMode?.id === C03.ListModes.REVIEWED) {
+	// 		return 2;
+	// 	}
+	// 	return null;
+	// }, [listMode?.id]);
 
+	// const memoisedRs = useMemo(() => {
+	// 	if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
+	// 		return 3; // 部分未進貨
+	// 	}
+	// 	return null;
+	// }, [listMode?.id]);
+
+	// const memoisedSq = useMemo(() => {
+	// 	if (debouncedSquared?.id) {
+	// 		return debouncedSquared?.id
+	// 	}
+	// 	if (listMode?.id === C03.ListModes.NOT_REVIEWED) {
+	// 		return 1;
+	// 	}
+	// 	return null;
+	// }, [debouncedSquared?.id, listMode?.id]);
 
 
 	useChangeTracking(() => {
@@ -97,33 +116,27 @@ export const C03ListViewContainer = () => {
 				...(debouncedOrder && {
 					q: debouncedOrder?.採購單號,
 				}),
-				...(memoisedCk && {
-					ck: memoisedCk,
-				}),
+				// ...(debouncedReviewState && {
+				// 	ck: debouncedReviewState?.id,
+				// }),
+				// ...(memoisedRs && {
+				// 	rs: memoisedRs,
+				// }),
+				// ...(debouncedSquared && {
+				// 	sq: debouncedSquared?.id,
+				// }),
 				...C03.transformAsQueryParams({
-					// ...(debouncedOrder && {
-					// 	order: debouncedOrder
-					// }),
-					...(debouncedEmployee && {
-						employee: debouncedEmployee
-					}),
-					...(debouncedOrdDate && {
-						ordDate: debouncedOrdDate
-					}),
-					...(debouncedArrDate && {
-						arrDate: debouncedArrDate
-					}),
-					...(debouncedSupplier && {
-						supplier: debouncedSupplier
-					}),
-					// ...(debouncedSquared && {
-					// 	squared: debouncedSquared
-					// })
+					employee: debouncedEmployee,
+					ordDate: debouncedOrdDate,
+					arrDate: debouncedArrDate,
+					supplier: debouncedSupplier,
+					squared: debouncedSquared,
+					reviewState: debouncedReviewState
 				})
 			},
 			supressLoading: true,
 		});
-	}, [debouncedOrder, memoisedCk, debouncedOrder, debouncedEmployee, debouncedOrdDate, debouncedArrDate, debouncedSupplier, debouncedOrder]);
+	}, [debouncedSquared, debouncedOrder, debouncedReviewState, debouncedOrder, debouncedEmployee, debouncedOrdDate, debouncedArrDate, debouncedSupplier, debouncedOrder]);
 
 	const { isLgOrUp } = useContext(ResponsiveLayoutContext);
 

@@ -49,7 +49,7 @@ export const useD05 = () => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/material/waste-orders",
+		url: "v1/mat/waste-orders",
 		bearer: token,
 		initialFetchSize: 50,
 	});
@@ -125,7 +125,7 @@ export const useD05 = () => {
 					crud.startReading("讀取中...", { id });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/material/waste-orders",
+					url: "v1/mat/waste-orders",
 					bearer: token,
 					params: {
 						id: itemId,
@@ -163,11 +163,11 @@ export const useD05 = () => {
 				}
 
 				const { status, error } = creating ? await httpPostAsync({
-					url: "v1/material/waste-orders",
+					url: "v1/mat/waste-orders",
 					data: data,
 					bearer: token,
 				}) : await httpPutAsync({
-					url: "v1/material/waste-orders",
+					url: "v1/mat/waste-orders",
 					data: data,
 					bearer: token,
 				});
@@ -259,7 +259,7 @@ export const useD05 = () => {
 	// 		try {
 	// 			crud.startUpdating();
 	// 			const { status, error } = await httpPutAsync({
-	// 				url: "v1/material/waste-orders",
+	// 				url: "v1/mat/waste-orders",
 	// 				data: data,
 	// 				bearer: token,
 	// 			});
@@ -298,7 +298,7 @@ export const useD05 = () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/material/waste-orders`,
+						url: `v1/mat/waste-orders`,
 						bearer: token,
 						params: {
 							id: itemData?.CxlID,
@@ -402,7 +402,7 @@ export const useD05 = () => {
 			if (prodId && (customerId || deptId)) {
 				try {
 					const { status, payload, error } = await httpGetAsync({
-						url: "v1/material/waste-orders/samt",
+						url: "v1/mat/waste-orders/samt",
 						bearer: token,
 						params: {
 							prdi: rowData?.prod?.ProdID,
@@ -461,7 +461,7 @@ export const useD05 = () => {
 			if (prodId) {
 				try {
 					const { status, payload, error } = await httpGetAsync({
-						url: "v1/material/waste-orders/samt",
+						url: "v1/mat/waste-orders/samt",
 						bearer: token,
 						params: {
 							prdi: rowData?.prod?.ProdID,
@@ -821,7 +821,7 @@ export const useD05 = () => {
 						console.log("collected", collected);
 
 						const { status, payload, error } = await httpPostAsync({
-							url: "v1/material/waste-orders/refresh-grid",
+							url: "v1/mat/waste-orders/refresh-grid",
 							bearer: token,
 							data: collected,
 						});
@@ -863,7 +863,7 @@ export const useD05 = () => {
 		try {
 			checkEditableAction.start();
 			const { status, error } = await httpGetAsync({
-				url: "v1/material/waste-orders/check-editable",
+				url: "v1/mat/waste-orders/check-editable",
 				bearer: token,
 				params: {
 					id: crud.itemData.CxlID,

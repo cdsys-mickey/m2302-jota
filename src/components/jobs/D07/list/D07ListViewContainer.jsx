@@ -9,18 +9,27 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { D07ListRowContainer } from "./D07ListRowContainer";
 import Forms from "../../../../shared-modules/sd-forms";
+import D07 from "@/modules/md-d07";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
+import { useMemo } from "react";
 
 export const D07ListViewContainer = () => {
 	const d07 = useContext(D07Context);
 	const { loadList } = d07;
 	const form = useFormContext();
 	const { height } = useWindowSize();
+
 	const q = useWatch({
 		name: "q",
 		control: form.control,
 	});
-
 	const debouncedQ = useDebounce(q, 300);
+
+	const lvEmployee = useWatch({
+		name: "lvEmployee",
+		control: form.control
+	})
+	const debouncedEmployee = useDebounceObject(lvEmployee, 300);
 
 	useInit(() => {
 		d07.loadList({
@@ -32,10 +41,19 @@ export const D07ListViewContainer = () => {
 		loadList({
 			params: {
 				q: debouncedQ,
+				...D07.transformAsQueryParams({
+					employee: debouncedEmployee
+				})
 			},
 			supressLoading: true,
 		});
-	}, [debouncedQ, d07.expProd, d07.expDate]);
+	}, [debouncedQ, debouncedEmployee]);
+
+	const _height = useMemo(() => {
+		return height
+			? height - 182
+			: 300;
+	}, [height])
 
 	return (
 		<ListViewBox withHeader>
@@ -48,7 +66,7 @@ export const D07ListViewContainer = () => {
 				loadMoreItems={d07.loadMoreItems}
 				isItemLoaded={d07.isItemLoaded}
 				RowComponent={D07ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={d07.handleItemsRendered}
 				error={d07.listError}
 				// bottomReached={d07.bottomReached}

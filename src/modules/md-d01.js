@@ -81,13 +81,13 @@ const transformForSubmitting = (payload, gridData) => {
 };
 
 const transformAsQueryParams = (data) => {
-	const { employee, rdate, pdline } = data;
+	const { employee, pdate, pdline } = data;
 	return {
 		...(employee && {
 			empi: employee.CodeID,
 		}),
-		...(rdate && {
-			rdate: Forms.formatDate(rdate),
+		...(pdate && {
+			pdate: Forms.formatDate(pdate),
 		}),
 		...(pdline && {
 			pdline: pdline.CodeID,

@@ -82,7 +82,7 @@ const C03DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DatePickerWrapper
 								typo
 								name="OrdDate"
@@ -94,7 +94,7 @@ const C03DialogForm = memo((props) => {
 								onChanged={handleOrdDateChanged}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DatePickerWrapper
 								typo
 								name="ArrDate"
@@ -118,8 +118,8 @@ const C03DialogForm = memo((props) => {
 									required: "廠商代碼為必填",
 								}}
 								disabled={supplierPickerDisabled}
-								disableClearable
-								clearOnEscape
+								// disableClearable
+								// clearOnEscape
 								virtualize
 								// fadeOutDisabled
 								optionLabelSize="md"

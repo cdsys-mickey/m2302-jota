@@ -27,36 +27,42 @@ const usePwordCheck = (opts = {}) => {
 	const { action = "執行", label = DEFAULT_LABEL, entryErrorMessage = DEFAULT_ENTRY_ERROR_MESSAGE } = opts;
 	const { token } = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);
-	const pwordLockRef = useRef(null);
+	const pwordLockRef = useRef({
+		passed: false
+	});
 	const {
-		httpGetAsync,
+		httpPostAsync
 	} = useWebApi();
 
 	// 讀取密碼
-	const loadStockPword = useCallback(async () => {
-		try {
-			const { status, payload, error } = await httpGetAsync({
-				url: `v1/ou/dept/params`,
-				bearer: token,
-				params: {
-					id: "StockPword",
-					dc: 1,
-				},
-			});
-			if (status.success) {
-				pwordLockRef.current = {
-					value: payload,
-					passed: false,
-				};
-			} else {
-				throw error || new Error("未預期例外");
-			}
-		} catch (err) {
-			toast.error(Errors.getMessage("讀取設定發生錯誤", err), {
-				position: "top-right"
-			});
-		}
-	}, [httpGetAsync, token]);
+	// const loadStockPword = useCallback(async () => {
+	// 	try {
+	// 		const { status, payload, error } = await httpGetAsync({
+	// 			url: `v1/ou/dept/params`,
+	// 			bearer: token,
+	// 			params: {
+	// 				id: "StockPword",
+	// 				dc: 1,
+	// 			},
+	// 		});
+	// 		if (status.success) {
+	// 			pwordLockRef.current = {
+	// 				value: payload,
+	// 				passed: false,
+	// 			};
+	// 		} else {
+	// 			throw error || new Error("未預期例外");
+	// 		}
+	// 	} catch (err) {
+	// 		toast.error(Errors.getMessage("讀取設定發生錯誤", err), {
+	// 			position: "top-right"
+	// 		});
+	// 	}
+	// }, [httpGetAsync, token]);
+
+	const validate = useCallback(async ({ value }) => {
+
+	}, []);
 
 	const promptPwordEntry = useCallback(
 		(opts = {}) => {
@@ -72,23 +78,39 @@ const usePwordCheck = (opts = {}) => {
 				message: _message,
 				label: _label,
 				triggerCancelOnClose: true,
-				onConfirm: ({ value }) => {
-					if (value === pwordLockRef.current.value) {
-						console.log("pword passed");
-						pwordLockRef.current = {
-							...pwordLockRef.current,
-							passed: true,
-						};
-						if (callback) {
-							callback();
+				onConfirm: async ({ value }) => {
+					try {
+						const { status } = await httpPostAsync({
+							url: `v1/ou/dept/params`,
+							bearer: token,
+							data: {
+								pword: value
+							}
+						})
+						console.log("status", status);
+						if (status.success) {
+							console.log("pword passed");
+							pwordLockRef.current = {
+								...pwordLockRef.current,
+								passed: true,
+							};
+							if (callback) {
+								callback();
+							}
+						} else {
+							console.log("pword not passed");
+							const _entryErrorMessage = typeof entryErrorMessage === "function" ? entryErrorMessage({ action }) : entryErrorMessage;
+							toast.error(_entryErrorMessage, {
+								position: "top-right"
+							});
+							promptPwordEntry();
 						}
-					} else {
-						console.log("pword not passed");
-						const _entryErrorMessage = typeof entryErrorMessage === "function" ? entryErrorMessage({ action }) : entryErrorMessage;
-						toast.error(_entryErrorMessage, {
+
+					} catch (err) {
+						console.error(err);
+						toast.error("驗證時發生錯誤", {
 							position: "top-right"
 						});
-						promptPwordEntry();
 					}
 				},
 				onCancel: () => {
@@ -98,11 +120,11 @@ const usePwordCheck = (opts = {}) => {
 				// confirmText: "通過",
 			});
 		},
-		[action, dialogs, entryErrorMessage]
+		[action, dialogs, entryErrorMessage, httpPostAsync, token]
 	);
 
 	const performCheck = useCallback(({ callback, ...rest }) => {
-		if (!pwordLockRef.current.passed) {
+		if (!pwordLockRef.current?.passed) {
 			promptPwordEntry({ first: true, callback, ...rest });
 			return;
 		}
@@ -113,9 +135,9 @@ const usePwordCheck = (opts = {}) => {
 		}
 	}, [promptPwordEntry]);
 
-	useInit(() => {
-		loadStockPword();
-	}, []);
+	// useInit(() => {
+	// 	loadStockPword();
+	// }, []);
 
 	return {
 		performCheck

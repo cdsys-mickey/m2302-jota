@@ -15,7 +15,7 @@ const E01ListForm = memo((props) => {
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
-				<Grid item xs={24} sm={24} md={5}>
+				<Grid item md={5}>
 					<TextFieldWrapper
 						name="q"
 						label="單號"
@@ -24,7 +24,7 @@ const E01ListForm = memo((props) => {
 						placeholder="請輸入單號片段"
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={5}>
+				<Grid item md={5}>
 					<DatePickerWrapper
 						name="lvOrdDate"
 						label="訂貨日"
@@ -33,7 +33,7 @@ const E01ListForm = memo((props) => {
 					// dense
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={5}>
+				<Grid item md={5}>
 					<DatePickerWrapper
 						name="lvArrDate"
 						label="到貨日≤"
@@ -42,14 +42,14 @@ const E01ListForm = memo((props) => {
 					// dense
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={4}>
+				<Grid item md={4}>
 					<E01ListSquaredPicker
 						name="lvSquared"
 						label="結清註記"
 						clearable
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={5}>
+				<Grid item md={5}>
 					<EmployeePicker
 						name="lvEmployee"
 						label="業務員"
@@ -58,19 +58,19 @@ const E01ListForm = memo((props) => {
 						selectOnFocus
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={5}>
+				<Grid item md={5}>
 					<E01SalesTypePicker
 						name="lvSalesType"
 						label="客戶類型"
 					/>
 				</Grid>
-				<FlexGrid item xs={24} sm={24} md={3} justifyContent="flex-end">
+				<FlexGrid item md={3} justifyContent="flex-end">
 					<CheckboxExWrapper
 						label="零售"
 						name="lvRetail"
 					/>
 				</FlexGrid>
-				<Grid item xs={24} sm={24} md={5}>
+				<Grid item md={5}>
 					<E01CustomerPicker
 						name="lvCust"
 						retailName="lvRetail"
@@ -86,7 +86,7 @@ const E01ListForm = memo((props) => {
 						}}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
+				<Grid item md={6}>
 					<TextFieldWrapper
 						name="lvCustName"
 						label="客戶名稱"
@@ -96,7 +96,7 @@ const E01ListForm = memo((props) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={5}>
+				<Grid item md={5}>
 					<TextFieldWrapper
 						name="lvCompTel"
 						label="電話"

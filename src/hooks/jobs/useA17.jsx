@@ -68,7 +68,7 @@ export const useA17 = () => {
 				if (status.success) {
 					crud.doneUpdating();
 					const processed = A17.transformForReading(payload);
-					crud.doneReading({
+					crud.doneLoading({
 						data: processed,
 					});
 					toast.success("單位參數已更新");

@@ -49,7 +49,7 @@ const E01DialogForm = memo((props) => {
 				<>
 					<FormBox pt={1}>
 						<Grid container columns={24} spacing={1}>
-							{!creating && (<Grid item xs={24} sm={24} md={5}>
+							{!creating && (<Grid item md={5}>
 								<TextFieldWrapper
 									typo
 									name="OrdID"
@@ -59,7 +59,7 @@ const E01DialogForm = memo((props) => {
 									readOnly={true}
 								/>
 							</Grid>)}
-							<Grid item xs={24} sm={24} md={creating ? 5 : 5}>
+							<Grid item md={creating ? 5 : 5}>
 								<DatePickerWrapper
 									typo
 									autoFocus
@@ -73,7 +73,7 @@ const E01DialogForm = memo((props) => {
 								// disabled={!creating}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={creating ? 5 : 7}>
+							<Grid item md={creating ? 5 : 7}>
 								<DatePickerWrapper
 									typo
 									name="ArrDate"
@@ -86,7 +86,7 @@ const E01DialogForm = memo((props) => {
 								// disabled={!creating}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item md={4}>
 								<E01SquaredPicker
 									typo
 									name="squared"
@@ -95,7 +95,7 @@ const E01DialogForm = memo((props) => {
 									disableOpenOnInput
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={3}>
+							<Grid item md={3}>
 								<CheckboxExWrapper
 									typo
 									label="詢貨單不列印金額"
@@ -113,7 +113,7 @@ const E01DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
-							<Grid item xs={24} sm={24} md={2}>
+							<Grid item md={2}>
 								<CheckboxExWrapper
 									typo
 									label="零售"
@@ -121,7 +121,7 @@ const E01DialogForm = memo((props) => {
 									onChange={handleRetailChange}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={3}>
+							<Grid item md={3}>
 								<E01CustomerPicker
 									retailName="retail"
 									forId
@@ -145,7 +145,7 @@ const E01DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={5}>
+							<Grid item md={5}>
 								<TextFieldWrapper
 									typo
 									label="客戶名稱"
@@ -157,7 +157,7 @@ const E01DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={3}>
+							<Grid item md={3}>
 								<PaymentPicker
 									typo
 									label="收款方式"
@@ -167,7 +167,7 @@ const E01DialogForm = memo((props) => {
 									disableClearable
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item md={4}>
 								<TextFieldWrapper
 									typo
 									label="電話"
@@ -178,7 +178,7 @@ const E01DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item md={4}>
 								<EmployeePicker
 									typo
 									label="業務員"
@@ -189,7 +189,7 @@ const E01DialogForm = memo((props) => {
 								// disabled={!creating}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={3}>
+							<Grid item md={3}>
 								<CheckboxExWrapper
 									typo
 									label="稅外加"
@@ -203,7 +203,7 @@ const E01DialogForm = memo((props) => {
 									onChange={handleTaxTypeChange}
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={8}>
+							<Grid item md={8}>
 								<TextFieldWrapper
 									typo
 									label="送貨地址"
@@ -211,7 +211,7 @@ const E01DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item md={4}>
 								<TransportTypePicker
 									typo
 									name="transType"
@@ -220,7 +220,7 @@ const E01DialogForm = memo((props) => {
 
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={8}>
+							<Grid item md={8}>
 								<TextFieldWrapper
 									typo
 									label="發票地址"
@@ -228,7 +228,7 @@ const E01DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item md={4}>
 								<TextFieldWrapper
 									typo
 									label="統一編號"

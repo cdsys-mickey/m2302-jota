@@ -1,6 +1,6 @@
 // import CabinetTypes from "@/modules/md-cabinet-types";
 
-import EmployeePicker from "@/components/picker/EmployeePicker";
+
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
@@ -24,16 +24,7 @@ const D07SearchPopper = memo(
 				<PopperTitle onClose={onClose}>進階篩選</PopperTitle>
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<Grid container spacing={1.5} columns={12}>
-						<Grid item xs={12} sm={12}>
-							<EmployeePicker
-								autoFocus
-								name="employee"
-								label="編輯人員"
-								disableOpenOnInput
-							/>
-						</Grid>
-					</Grid>
+
 				</DialogContent>
 				<Divider />
 				<DialogActions>

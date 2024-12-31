@@ -15,6 +15,8 @@ import { useQuerySync } from "../../../shared-hooks/useQuerySync";
 import { C02Context } from "../../../contexts/C02/C02Context";
 import C02Drawer from "../../../components/jobs/C02/C02Drawer";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
+import C02SearchFormContainer from "@/components/jobs/C02/search/C02SearchFormContainer";
 
 export const C02FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -47,14 +49,16 @@ export const C02FrameContainer = () => {
 			<FormProvider {...searchForm}>
 				{/* 標題 */}
 				<FrameBannerContainer>
-					{<C02SearchFieldContainer name="q" />}
+					{/* {<C02SearchFieldContainer name="q" />} */}
 				</FrameBannerContainer>
-				{/* 工具列 */}
-				<C02ListToolbar />
-
-				{/* 列表 */}
-				<C02ListHeader />
-				<C02ListViewContainer />
+				<ResponsiveLayout>
+					<C02SearchFormContainer initSize="md" />
+					{/* 工具列 */}
+					<C02ListToolbar />
+					{/* 列表 */}
+					<C02ListHeader />
+					<C02ListViewContainer />
+				</ResponsiveLayout>
 			</FormProvider>
 
 			{/* 對話框 */}

@@ -46,7 +46,7 @@ export const useD02 = () => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/material/returning-orders",
+		url: "v1/mat/returning-orders",
 		bearer: token,
 		initialFetchSize: 50,
 	});
@@ -140,7 +140,7 @@ export const useD02 = () => {
 			try {
 				crud.startCreating();
 				const { status, error } = await httpPostAsync({
-					url: "v1/material/returning-orders",
+					url: "v1/mat/returning-orders",
 					data: data,
 					bearer: token,
 				});
@@ -180,7 +180,7 @@ export const useD02 = () => {
 					crud.startReading("讀取中...", { id });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/material/returning-orders",
+					url: "v1/mat/returning-orders",
 					bearer: token,
 					params: {
 						id: itemId,
@@ -249,7 +249,7 @@ export const useD02 = () => {
 			try {
 				crud.startUpdating();
 				const { status, error } = await httpPutAsync({
-					url: "v1/material/returning-orders",
+					url: "v1/mat/returning-orders",
 					data: data,
 					bearer: token,
 				});
@@ -281,7 +281,7 @@ export const useD02 = () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/material/returning-orders`,
+						url: `v1/mat/returning-orders`,
 						bearer: token,
 						params: {
 							id: itemData?.RetID,
@@ -785,7 +785,7 @@ export const useD02 = () => {
 		try {
 			checkEditableAction.start();
 			const { status, error } = await httpGetAsync({
-				url: "v1/material/returning-orders/check-editable",
+				url: "v1/mat/returning-orders/check-editable",
 				bearer: token,
 				params: {
 					id: crud.itemData.RetID,

@@ -220,7 +220,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 						disableOpenOnInput: true,
 						autoHighlight: true,
 						selectOnFocus: true,
-						forcePopupIcon: false
+						// forcePopupIcon: false
 					})
 				),
 				title: "試贈樣",
