@@ -5,6 +5,7 @@ import { LastFieldBehavior } from "./LastFieldBehavior";
 import { toast } from "react-toastify";
 import FormMeta from "../../shared-modules/sd-form-meta";
 import { useRef } from "react";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useFormMeta = (value, opts = {}) => {
 	const asyncRef = useRef({
@@ -102,9 +103,7 @@ export const useFormMeta = (value, opts = {}) => {
 				});
 			} else {
 				if (typeof lastField === "string") {
-					toast.warn(lastField, {
-						position: "top-right",
-					});
+					toastEx.warn(lastField);
 					return;
 				} else if (typeof lastField === "function") {
 					// 為了避免 lastField 自訂函式沒加 setTimeout, 因此在這裡統一處理
@@ -118,11 +117,8 @@ export const useFormMeta = (value, opts = {}) => {
 				} else {
 					switch (lastField) {
 						case LastFieldBehavior.PROMPT:
-							toast.warn(
-								forward ? lastFieldMessage : firstFieldMessage,
-								{
-									position: "top-right",
-								}
+							toastEx.warn(
+								forward ? lastFieldMessage : firstFieldMessage
 							);
 							break;
 						case LastFieldBehavior.BLUR:

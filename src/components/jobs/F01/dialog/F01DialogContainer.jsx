@@ -1,5 +1,6 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { F01Context } from "@/contexts/F01/F01Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -13,7 +14,6 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import F01Drawer from "../F01Drawer";
 import F01DialogForm from "./F01DialogForm";
 import { F01DialogToolbarContainer } from "./toolbar/F01DialogToolbarContainer";
@@ -146,23 +146,17 @@ export const F01DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!PhyID) {
-			toast.error("請先輸入清單編號", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入清單編號");
 			form.setFocus("PhyID");
 			return;
 		}
 		if (!employee) {
-			toast.error("請先輸入製單人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入製單人員");
 			form.setFocus("employee");
 			return;
 		}
 		if (!PhyData) {
-			toast.error("請先輸入清單名稱", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入清單名稱");
 			form.setFocus("PhyData");
 			return;
 		}

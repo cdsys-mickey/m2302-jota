@@ -50,7 +50,7 @@ const C02DialogForm = memo((props) => {
 								/>
 							</Grid>
 						)}
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DatePickerWrapper
 								typo
 								name="RqtDate"
@@ -67,7 +67,7 @@ const C02DialogForm = memo((props) => {
 							// }}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5}>
 							<EmployeePicker
 								typo
 								label="製單人員"
@@ -77,7 +77,7 @@ const C02DialogForm = memo((props) => {
 									required: "製單人員為必填",
 								}}
 								virtualize
-								disableClearable
+								// disableClearable
 								disableOpenOnInput
 							/>
 						</Grid>

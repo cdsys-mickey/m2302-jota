@@ -5,7 +5,7 @@ const A06NameColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={9} {...rest} />
+		<ListColumn item pr={1} xs={8} {...rest} />
 	);
 };
 

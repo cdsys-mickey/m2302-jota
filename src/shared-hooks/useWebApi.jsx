@@ -5,8 +5,17 @@ import HttpStatus from "@/shared-classes/HttpStatus";
 import WebApi from "@/shared-modules/sd-web-api";
 import axios from "axios";
 import querystring from "query-string";
+import Types from "@/shared-modules/sd-types";
 
-const DEFAULT_HEADERS = {};
+const DEFAULT_HEADERS = () => {
+	let logKeyInSession = sessionStorage.getItem("LogKey");
+	if (logKeyInSession) {
+		return {
+			LogKey: logKeyInSession
+		}
+	}
+	return null;
+};
 
 const DEFAULT_JSON_HEADERS = {
 	"Content-Type": "application/json",
@@ -25,6 +34,7 @@ export const useWebApi = (props) => {
 		baseUrl = import.meta.env.VITE_URL_API || "/",
 		mode: defaultMode = "json",
 		withStackTrace = false,
+		headers = DEFAULT_HEADERS,
 	} = props || {};
 
 	const getUrl = useCallback(
@@ -38,15 +48,13 @@ export const useWebApi = (props) => {
 			}
 			// 應保留彈性, 不包含 PUBLIC_URL
 
-			let result = `${baseUrl.substring(0, 1) === "/" ? "" : "/"}${
-				baseUrl.substring(baseUrl.length - 1) === "/"
-					? `${baseUrl.substring(0, baseUrl.length - 1)}`
-					: baseUrl
-			}/${
-				relativePath.substring(0, 1) === "/"
+			let result = `${baseUrl.substring(0, 1) === "/" ? "" : "/"}${baseUrl.substring(baseUrl.length - 1) === "/"
+				? `${baseUrl.substring(0, baseUrl.length - 1)}`
+				: baseUrl
+				}/${relativePath.substring(0, 1) === "/"
 					? relativePath.substring(1)
 					: relativePath
-			}`;
+				}`;
 
 			if (params) {
 				result += "?" + querystring.stringify(params);
@@ -61,6 +69,16 @@ export const useWebApi = (props) => {
 	// 	return payload["data"] || [];
 	// }, []);
 
+	const getHeaders = useCallback(() => {
+		if (!headers) {
+			return null;
+		}
+		if (Types.isFunction(headers)) {
+			return headers();
+		}
+		return headers;
+	}, [headers]);
+
 	// async 版本
 	const sendAsync = useCallback(
 		async ({
@@ -68,7 +86,7 @@ export const useWebApi = (props) => {
 			method = "get",
 			data,
 			params,
-			headers,
+			headers: _headers,
 			bearer,
 			mode = defaultMode,
 			...rest
@@ -125,8 +143,9 @@ export const useWebApi = (props) => {
 					// }),
 					headers: {
 						// 先列舉 props 內的 headers
-						...DEFAULT_HEADERS,
-						...headers,
+						// ...DEFAULT_HEADERS,
+						...getHeaders(),
+						..._headers,
 						// 再列舉 參數 內的 headers
 						...(!!bearer && {
 							Authorization: `bearer ${bearer}`,
@@ -160,15 +179,15 @@ export const useWebApi = (props) => {
 					status: HttpStatus.from(err.response?.status || 500),
 					error: err.response?.data
 						? WebApi.getErrorFromPayload(err.response.data, {
-								withStackTrace: withStackTrace,
-								status: err.response.status,
-								statusText: err.response.statusText,
-						  })
+							withStackTrace: withStackTrace,
+							status: err.response.status,
+							statusText: err.response.statusText,
+						})
 						: err,
 				};
 			}
 		},
-		[defaultMode, getUrl, withStackTrace]
+		[defaultMode, getHeaders, getUrl, withStackTrace]
 	);
 
 	const httpGetAsync = useCallback(

@@ -1,21 +1,19 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import PropTypes from "prop-types";
-import { useCallback, useContext, useState } from "react";
-import { toast } from "react-toastify";
+import { toastEx } from "@/helpers/toast-ex";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { CatMGridContext } from "./CatMGridContext";
-import { CatSGridContext } from "./CatSGridContext";
-import { useRef } from "react";
-import { RoomTwoTone } from "@mui/icons-material";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
-import { useMemo } from "react";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import { RoomTwoTone } from "@mui/icons-material";
+import PropTypes from "prop-types";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
 import { A03Context } from "./A03Context";
+import { CatMGridContext } from "./CatMGridContext";
+import { CatSGridContext } from "./CatSGridContext";
 
 const CatMGridProvider = (props) => {
 	const { children } = props;
@@ -29,6 +27,7 @@ const CatMGridProvider = (props) => {
 		keyColumn: "MClas",
 		otherColumns: "ClassData",
 	});
+
 
 	const columns = useMemo(
 		() => [
@@ -135,9 +134,7 @@ const CatMGridProvider = (props) => {
 					} else {
 						switch (status.code) {
 							default:
-								toast.error(`發生未預期例外 ${status.code}`, {
-									position: "top-right"
-								});
+								toastEx.error(`發生未預期例外 ${status.code}`);
 								break;
 						}
 					}
@@ -154,7 +151,7 @@ const CatMGridProvider = (props) => {
 				grid.clear();
 			}
 		},
-		[grid, httpGetAsync, token]
+		[grid, gridMeta, httpGetAsync, token]
 	);
 
 	const reload = useCallback(() => {
@@ -178,7 +175,7 @@ const CatMGridProvider = (props) => {
 				if (status.success) {
 					grid.commitChanges(newValue);
 					selectRow({ rowData, rowIndex });
-					toast.success(
+					toastEx.success(
 						`中分類 ${rowData.MClas}/${rowData.ClassData} 新增成功`
 					);
 				} else {
@@ -186,9 +183,7 @@ const CatMGridProvider = (props) => {
 					throw error?.message || new Error("新增失敗");
 				}
 			} catch (err) {
-				toast.error(`新增中分類發生例外: ${err.message}`, {
-					position: "top-right"
-				});
+				toastEx.error("新增中分類失敗", err);
 				reload();
 			}
 		},
@@ -212,16 +207,14 @@ const CatMGridProvider = (props) => {
 				if (status.success) {
 					grid.commitChanges(newValue);
 					selectRow({ rowData, rowIndex });
-					toast.success(
+					toastEx.success(
 						`中分類 ${rowData.MClas}/${rowData.ClassData} 修改成功`
 					);
 				} else {
 					throw error?.message || new Error("修改失敗");
 				}
 			} catch (err) {
-				toast.error(`新增中分類發生例外: ${err.message}`, {
-					position: "top-right"
-				});
+				toastEx.error("新增中分類失敗", err);
 				reload();
 			}
 		},
@@ -242,7 +235,7 @@ const CatMGridProvider = (props) => {
 					// 取消選取列
 					selectRow(undefined);
 
-					toast.success(
+					toastEx.success(
 						`中分類 ${rowData.LClas}/${rowData.ClassData} 刪除成功`
 					);
 				} else {
@@ -250,7 +243,7 @@ const CatMGridProvider = (props) => {
 				}
 			} catch (err) {
 				console.error(err);
-				toast.error(`刪除中分類發生例外: ${err.message}`, {
+				toastEx.error(`刪除中分類發生例外: ${err.message}`, {
 					position: "top-right"
 				});
 			} finally {
@@ -259,7 +252,7 @@ const CatMGridProvider = (props) => {
 				reload();
 			}
 		},
-		[state.lgId, httpDeleteAsync, token, reload, selectRow, dialogs]
+		[state.lgId, httpDeleteAsync, token, selectRow, dialogs, reload]
 	);
 
 	const handleConfirmDelete = useCallback(
@@ -286,9 +279,7 @@ const CatMGridProvider = (props) => {
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
 			//dsg.rollbackChanges();
-			toast.error(`中分類 ${row.rowData.MClas} 已存在`, {
-				position: "top-right"
-			});
+			toastEx.error(`中分類 ${row.rowData.MClas} 已存在`);
 			grid.spreadOnRow(
 				row.rowIndex,
 				{
@@ -305,7 +296,7 @@ const CatMGridProvider = (props) => {
 			gridMeta.setSelectedRow(row);
 			selectRow(row);
 		},
-		[grid, selectRow]
+		[gridMeta, selectRow]
 	);
 
 	return (

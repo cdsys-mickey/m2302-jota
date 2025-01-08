@@ -1,11 +1,10 @@
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import F02 from "@/modules/md-f02";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import { useCallback, useContext, useState } from "react";
-import { toast } from "react-toastify";
 import { useAppModule } from "./useAppModule";
 
 export const useF02 = ({ token }) => {
@@ -92,7 +91,7 @@ export const useF02 = ({ token }) => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除目前電腦帳`);
+						toastEx.success(`成功删除目前電腦帳`);
 						load();
 					} else {
 						throw error || `發生未預期例外`;
@@ -100,9 +99,7 @@ export const useF02 = ({ token }) => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除目前電腦帳失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除目前電腦帳失敗", err);
 				}
 			},
 		});
@@ -141,7 +138,7 @@ export const useF02 = ({ token }) => {
 				data: F02.transformForSubmitting(data, grid.gridData)
 			})
 			if (status.success) {
-				toast.success("電腦帳已形成，請繼續盤點作業");
+				toastEx.success("電腦帳已形成，請繼續盤點作業");
 				crud.doneUpdating();
 				grid.commitChanges();
 				load();
@@ -151,9 +148,7 @@ export const useF02 = ({ token }) => {
 		} catch (err) {
 			console.error("onSubmit.failed", err);
 			// crud.failUpdating();
-			toast.error(Errors.getMessage("產生電腦帳失敗", err), {
-				position: "top-right"
-			});
+			toastEx.error("產生電腦帳失敗", err);
 		} finally {
 			crud.doneUpdating();
 		}

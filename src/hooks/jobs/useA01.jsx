@@ -26,6 +26,7 @@ import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBeha
 import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import { toastEx } from "@/helpers/toast-ex";
 
 /**
  * 適用三種情境
@@ -393,7 +394,7 @@ export const useA01 = ({ token, mode }) => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${data?.ProdData
 						}」新增成功`
 					);
@@ -424,9 +425,7 @@ export const useA01 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right",
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, listLoader, mode, token, API_URL]
@@ -444,7 +443,7 @@ export const useA01 = ({ token, mode }) => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${data?.ProdData
 						}」修改成功`
 					);
@@ -461,9 +460,7 @@ export const useA01 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right",
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, API_URL, token, mode, loadItem, listLoader]
@@ -482,7 +479,7 @@ export const useA01 = ({ token, mode }) => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`商品「${data?.ProdData}」櫃位已成功更新`);
+					toastEx.success(`商品「${data?.ProdData}」櫃位已成功更新`);
 					crud.doneUpdating();
 					loadItem({ id: processed?.ProdID });
 				} else {
@@ -491,9 +488,7 @@ export const useA01 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("onCounterSubmit.failed", err);
-				toast.error(Errors.getMessage("櫃位更新失敗", err), {
-					position: "top-right",
-				});
+				toastEx.error("櫃位更新失敗", err);
 			}
 		},
 		[crud, httpPatchAsync, loadItem, token]
@@ -501,11 +496,8 @@ export const useA01 = ({ token, mode }) => {
 
 	const onCounterSubmitError = useCallback((err) => {
 		console.error(`A01.onCounterSubmitError`, err);
-		toast.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
-			{
-				position: "top-right",
-			}
+		toastEx.error(
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
 		);
 	}, []);
 
@@ -540,11 +532,8 @@ export const useA01 = ({ token, mode }) => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A01.onSubmitError`, err);
-		toast.error(
-			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出",
-			{
-				position: "top-right",
-			}
+		toastEx.error(
+			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出"
 		);
 	}, []);
 
@@ -595,7 +584,7 @@ export const useA01 = ({ token, mode }) => {
 					});
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(
+						toastEx.success(
 							`成功删除${PROD}${crud.itemData.ProdData}`
 						);
 						listLoader.loadList({
@@ -607,9 +596,7 @@ export const useA01 = ({ token, mode }) => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right",
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -653,16 +640,14 @@ export const useA01 = ({ token, mode }) => {
 					listLoader.loadList({
 						refresh: true,
 					});
-					toast.success(
+					toastEx.success(
 						`商品「${crud.itemData?.ProdData}」已覆核成功`
 					);
 				} else {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("覆核失敗", err), {
-					position: "top-right",
-				});
+				toastEx.error("覆核失敗", err);
 			}
 		},
 		[API_URL, crud, httpPatchAsync, listLoader, reviewAction, token]
@@ -698,11 +683,11 @@ export const useA01 = ({ token, mode }) => {
 
 	// SEARCH
 	const onSearchSubmit = useCallback(
-		(data) => {
+		(payload) => {
 			handlePopperClose();
-			console.log(`onSearchSubmit`, data);
+			console.log(`onSearchSubmit`, payload);
 			listLoader.loadList({
-				params: A01.transformAsQueryParams(data),
+				params: A01.transformAsQueryParams(payload),
 			});
 		},
 		[handlePopperClose, listLoader]
@@ -749,11 +734,8 @@ export const useA01 = ({ token, mode }) => {
 									rowData.dept &&
 									transGrid.isDuplicating(rowData, newValue)
 								) {
-									toast.error(
-										`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`,
-										{
-											position: "top-right",
-										}
+									toastEx.error(
+										`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
 									);
 									setTimeout(() => {
 										transMeta.setActiveCell({
@@ -810,7 +792,7 @@ export const useA01 = ({ token, mode }) => {
 	// 						data: newValue,
 	// 					}
 	// 				);
-	// 				toast.error(
+	// 				toastEx.error(
 	// 					`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
 	// 				);
 	// 				return;
@@ -857,9 +839,8 @@ export const useA01 = ({ token, mode }) => {
 									rowData.prod &&
 									comboGrid.isDuplicating(rowData, newValue)
 								) {
-									toast.error(
-										`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`,
-										{ position: "top-right" }
+									toastEx.error(
+										`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
 									);
 									setTimeout(() => {
 										comboMeta.setActiveCell({
@@ -917,7 +898,7 @@ export const useA01 = ({ token, mode }) => {
 	// 						data: newValue,
 	// 					}
 	// 				);
-	// 				toast.error(
+	// 				toastEx.error(
 	// 					`「${rowData.prod?.ProdData}」已存在, 請選擇其他商品`
 	// 				);
 	// 				return;
@@ -934,7 +915,7 @@ export const useA01 = ({ token, mode }) => {
 	// 	switch (col) {
 	// 		case 1: //門市
 	// 			if (transGrid.isKeyDuplicated(rowData)) {
-	// 				toast.error(`門市「${rowData.dept?.DeptName}」不可重複選擇`);
+	// 				toastEx.error(`門市「${rowData.dept?.DeptName}」不可重複選擇`);
 	// 				transGrid.spreadOnRow(row, newValue, {
 	// 					dept: null,
 	// 				});
@@ -955,13 +936,14 @@ export const useA01 = ({ token, mode }) => {
 				// 	params: {},
 				// });
 				reset({
-					id: "",
-					bc: "",
-					pn: "",
-					catL: null,
-					catM: null,
-					catS: null,
-					counter: null
+					lvId: "",
+					lvBarcode: "",
+					lvName: "",
+					lvCatL: null,
+					lvCatM: null,
+					lvCatS: null,
+					lvCounter: null,
+					lvCmsType: null
 				});
 			},
 		[]

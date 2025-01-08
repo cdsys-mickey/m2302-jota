@@ -20,7 +20,7 @@ export const A06LockSwitchContainer = (props) => {
 	}, [a06.canUpdate, operator])
 
 	const _title = useMemo(() => {
-		return disabled ? "僅旗艦店可進行切換" : ""
+		return disabled ? "僅旗艦店人員可進行切換" : ""
 	}, [disabled])
 
 	if (a06.mode !== A06.Mode.CUSTOMER) {

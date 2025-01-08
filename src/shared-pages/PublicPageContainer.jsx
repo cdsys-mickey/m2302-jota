@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import PublicPage from "./PublicPage";
+import PropTypes from "prop-types";
 
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 
@@ -14,3 +15,7 @@ export const PublicPageContainer = ({ title, ...rest }) => {
 
 	return <PublicPage title={title} height={height} {...rest} />;
 };
+
+PublicPageContainer.propTypes = {
+	title: PropTypes.string
+}

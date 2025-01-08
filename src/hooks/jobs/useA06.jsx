@@ -1,18 +1,16 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import { useCallback, useContext, useMemo, useState } from "react";
-import { toast } from "react-toastify";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import A06 from "@/modules/md-a06";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useAction } from "@/shared-hooks/useAction";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
-import Errors from "@/shared-modules/sd-errors";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { useAppModule } from "./useAppModule";
-import { useInit } from "../../shared-hooks/useInit";
-import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
-import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
 
 export const useA06 = ({ token, mode }) => {
 	const formMeta = useFormMeta(
@@ -42,10 +40,7 @@ export const useA06 = ({ token, mode }) => {
 		transport,
 		mainProd,
 		remark
-	`,
-		{
-			lastField: LastFieldBehavior.PROMPT,
-		}
+	`
 	);
 	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
@@ -76,6 +71,9 @@ export const useA06 = ({ token, mode }) => {
 				: "v1/sales/customers",
 		bearer: token,
 		initialFetchSize: 50,
+		params: {
+			acc: 1
+		}
 	});
 
 	if (!mode) {
@@ -167,7 +165,7 @@ export const useA06 = ({ token, mode }) => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${data?.CustData
 						}」新增成功`
 					);
@@ -181,9 +179,7 @@ export const useA06 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, loader, mode, token]
@@ -203,7 +199,7 @@ export const useA06 = ({ token, mode }) => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${data?.CustData
 						}」修改成功`
 					);
@@ -218,9 +214,7 @@ export const useA06 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, loadItem, loader, mode, token]
@@ -244,7 +238,7 @@ export const useA06 = ({ token, mode }) => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A06.onSubmitError`, err);
-		toast.error(
+		toastEx.error(
 			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
 			position: "top-right"
 		}
@@ -280,7 +274,7 @@ export const useA06 = ({ token, mode }) => {
 					});
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(
+						toastEx.success(
 							`成功删除${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
 							}商品${crud.itemData.CustData}`
 						);
@@ -291,9 +285,7 @@ export const useA06 = ({ token, mode }) => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -323,16 +315,14 @@ export const useA06 = ({ token, mode }) => {
 					loader.loadList({
 						refresh: true,
 					});
-					toast.success(
+					toastEx.success(
 						`「${crud.itemData?.CustData}」已轉為正式客戶`
 					);
 				} else {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("轉換失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("轉換失敗", err);
 			}
 		},
 		[crud, httpPatchAsync, loader, reviewAction, token]
@@ -367,11 +357,11 @@ export const useA06 = ({ token, mode }) => {
 	}, [reviewAction]);
 
 	const onSearchSubmit = useCallback(
-		(data) => {
+		(payload) => {
 			handlePopperClose();
-			console.log(`onSearchSubmit`, data);
+			console.log(`onSearchSubmit`, payload);
 			loader.loadList({
-				params: data,
+				params: A06.transformAsQueryParams(payload),
 			});
 		},
 		[handlePopperClose, loader]
@@ -380,6 +370,21 @@ export const useA06 = ({ token, mode }) => {
 	const onSearchSubmitError = useCallback((err) => {
 		console.error(`onSearchSubmitError`, err);
 	}, []);
+
+	const handleReset = useCallback(
+		({ reset }) =>
+			() => {
+				reset({
+					lvId: "",
+					lvName: "",
+					lvEmployee: null,
+					lvArea: null,
+					lvPaymentType: null,
+					lvBank: null
+				});
+			},
+		[]
+	);
 
 	useInit(() => {
 		crud.cancelAction();
@@ -416,5 +421,6 @@ export const useA06 = ({ token, mode }) => {
 		failReview,
 		...appModule,
 		formMeta,
+		handleReset
 	};
 };

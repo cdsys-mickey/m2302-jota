@@ -5,6 +5,8 @@ import { P02Provider } from "@/contexts/P02/P02Provider";
 import { P02FrameContainer } from "@/pages/modules/P02/P02FrameContainer";
 import { P16Provider } from "@/contexts/P16/P16Provider";
 import { P16FrameContainer } from "@/pages/modules/P16/P16FrameContainer";
+import { P04Provider } from "@/contexts/P04/P04Provider";
+import { P04FrameContainer } from "@/pages/modules/P04/P04FrameContainer";
 
 const pRoutes = (
 	<>
@@ -22,17 +24,19 @@ const pRoutes = (
 			}
 		/>
 		<Route
-			path="P16"
+			path="P04"
 			element={
 				<CrudProvider>
 					<InfiniteLoaderProvider>
-						<P16Provider>
-							<P16FrameContainer />
-						</P16Provider>
+						<P04Provider>
+							<P04FrameContainer />
+						</P04Provider>
+
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}
 		/>
+
 	</>
 );
 

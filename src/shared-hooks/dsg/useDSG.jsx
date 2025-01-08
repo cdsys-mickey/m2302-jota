@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { toastEx } from "@/helpers/toast-ex";
 import { useToggle } from "@/shared-hooks/useToggle";
 import Arrays from "@/shared-modules/sd-arrays";
 import Objects from "@/shared-modules/sd-objects";
@@ -432,7 +433,7 @@ export const useDSG = ({
 								const key = _.get(rowData, keyColumn);
 								if (isRowDeletable && !isRowDeletable({ key, rowData })) {
 									const rowIndex = operation.fromRowIndex + i;
-									toast.error(
+									toastEx.error(
 										`不可刪除第 ${rowIndex + 1} 筆商品`
 									);
 									return true;
@@ -486,7 +487,7 @@ export const useDSG = ({
 							const activeCell = gridMeta.getActiveCell();
 							console.log("getActiveCell", activeCell);
 							// setActiveCell back to prev in next render cycle
-							toast.error("新增功能目前已停用", {
+							toastEx.error("新增功能目前已停用", {
 								position: "top-right"
 							})
 							setTimeout(() => {

@@ -4,7 +4,7 @@ import { useAppModule } from "./useAppModule";
 export const useP16 = ({ token }) => {
 	const appModule = useAppModule({
 		token,
-		moduleId: "P16",
+		moduleId: "A27",
 	});
 
 	const grid = useDSG({

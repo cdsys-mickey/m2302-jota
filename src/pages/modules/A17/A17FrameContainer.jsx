@@ -1,13 +1,12 @@
 import A17Toolbar from "@/components/jobs/A17/A17Toolbar";
+import { A17Context } from "@/contexts/A17/A17Context";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { Box, useTheme } from "@mui/material";
-import { useContext, useEffect, useMemo } from "react";
-import { A17FormContainer } from "../../../components/jobs/A17/A17FormContainer";
-import { A17Context } from "@/contexts/A17/A17Context";
-import { useBeforeUnload } from "react-router-dom";
 import { useUnload } from "@/shared-hooks/useUnload";
+import { Box, useTheme } from "@mui/material";
+import { useContext, useMemo } from "react";
+import { A17FormContainer } from "@/components/jobs/A17/A17FormContainer";
 
 export const A17FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);

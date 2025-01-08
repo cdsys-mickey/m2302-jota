@@ -21,6 +21,7 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import useDebugDialog from "../useDebugDialog";
 import queryString from "query-string";
 import useJotaReports from "../useJotaReports";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useA22 = ({
 	form
@@ -194,9 +195,7 @@ export const useA22 = ({
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("篩選失敗", err);
 			} finally {
 				setState((prev) => ({
 					...prev,
@@ -239,9 +238,7 @@ export const useA22 = ({
 				} else {
 					switch (status.code) {
 						default:
-							toast.error(`發生未預期例外 ${status.code}`, {
-								position: "top-right"
-							});
+							toastEx.error(`發生未預期例外 ${status.code}`);
 							break;
 					}
 				}

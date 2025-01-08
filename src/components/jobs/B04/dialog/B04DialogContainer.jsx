@@ -1,5 +1,6 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { B04Context } from "@/contexts/B04/B04Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -14,7 +15,6 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import B04Drawer from "../B04Drawer";
 import B04DialogForm from "./B04DialogForm";
 import { B04DialogToolbarContainer } from "./toolbar/B04DialogToolbarContainer";
@@ -153,23 +153,17 @@ export const B04DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!inqDate) {
-			toast.error("請先輸入詢價日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入詢價日期");
 			form.setFocus("InqDate");
 			return;
 		}
 		if (!employee) {
-			toast.error("請先輸入詢價人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入詢價人員");
 			form.setFocus("employee");
 			return;
 		}
 		if (!supplier) {
-			toast.error("請先輸入廠商代碼", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入廠商代碼");
 			form.setFocus("supplier");
 			return;
 		}

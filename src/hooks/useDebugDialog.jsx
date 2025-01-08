@@ -1,15 +1,14 @@
+import { toastEx } from "@/helpers/toast-ex";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useContext } from "react";
-import { useCallback, useState } from "react";
-import { toast } from "react-toastify";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useCallback, useContext } from "react";
 
 export default function useDebugDialog() {
 	const dialogs = useContext(DialogsContext);
 
 	const copyToClipboard = useCallback((message) => {
 		navigator.clipboard.writeText(message);
-		toast.info("報表資訊已複製到剪貼簿");
+		toastEx.info("報表資訊已複製到剪貼簿");
 	}, []);
 
 	const show = useCallback(({ data, url, title = "報表資訊" }) => {

@@ -85,19 +85,19 @@ const ResponsiveGridItem = memo((props) => {
 			return _xsElastic;
 		}
 		if (isXl) {
-			console.log("isXl");
+			// console.log("isXl");
 			return _xlElastic;
 		} else if (isLgOrUp) {
-			console.log("isLgOrUp");
+			// console.log("isLgOrUp");
 			return _lgElastic;
 		} else if (isMdOrUp) {
-			console.log("isMdOrUp");
+			// console.log("isMdOrUp");
 			return _mdElastic;
 		} else if (isSmOrUp) {
-			console.log("isSmOrUp");
+			// console.log("isSmOrUp");
 			return _smElastic;
 		}
-		console.log("isXs");
+		// console.log("isXs");
 		return _xsElastic;
 	}, [_lgElastic, _mdElastic, _smElastic, _xlElastic, _xsElastic, initSize, isLgOrUp, isMdOrUp, isSmOrUp, isXl, lgOrUp, mdOrUp, smOrUp, width, xlOrUp])
 

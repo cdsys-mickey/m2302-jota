@@ -1,5 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import D01 from "@/modules/md-d01";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -7,15 +8,12 @@ import { useAction } from "@/shared-hooks/useAction";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
 import useSQtyManager from "../useSQtyManager";
-import { isValid } from "date-fns";
+import { useAppModule } from "./useAppModule";
 
 const DEFAULT_ROWS = 10;
 
@@ -111,7 +109,7 @@ export const useD01 = () => {
 	// 			throw error || new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
-	// 		toast.error(Errors.getMessage("讀取設定發生錯誤", err), {
+	// 		toastEx.error("讀取設定發生錯誤", err), {
 	// 			position: "top-right"
 	// 		});
 	// 	}
@@ -211,7 +209,7 @@ export const useD01 = () => {
 				});
 
 				if (status.success) {
-					toast.success(creating ? `新增成功` : `修改成功`);
+					toastEx.success(creating ? `新增成功` : `修改成功`);
 					if (creating) {
 						crud.doneCreating();
 						crud.cancelReading();
@@ -240,13 +238,11 @@ export const useD01 = () => {
 						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true
 					});
 					// recoverStockMap(data.prods, { mark: true });
-					// toast.error("部分商品庫存不足，請調整後再送出", {
+					// toastEx.error("部分商品庫存不足，請調整後再送出", {
 					// 	position: "top-right"
 					// });
 				} else {
-					toast.error(Errors.getMessage("新增失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("新增失敗", err);
 				}
 			}
 		},
@@ -303,7 +299,7 @@ export const useD01 = () => {
 	// 				bearer: token,
 	// 			});
 	// 			if (status.success) {
-	// 				toast.success(`修改成功`);
+	// 				toastEx.success(`修改成功`);
 	// 				crud.doneUpdating();
 	// 				//crud.cancelReading();
 	// 				loadItem({ refresh: true });
@@ -314,7 +310,7 @@ export const useD01 = () => {
 	// 		} catch (err) {
 	// 			crud.failUpdating();
 	// 			console.error("handleCreate.failed", err);
-	// 			toast.error(Errors.getMessage("修改失敗", err), {
+	// 			toastEx.error("修改失敗", err), {
 	// 				position: "top-right"
 	// 			});
 	// 		}
@@ -339,7 +335,7 @@ export const useD01 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除領料單 ${itemData?.OutID}`);
+						toastEx.success(`成功删除領料單 ${itemData?.OutID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -347,9 +343,7 @@ export const useD01 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -491,7 +485,7 @@ export const useD01 = () => {
 	// 				} else {
 	// 					// dialogs.closeLatest();
 	// 					console.log("pword not passed");
-	// 					toast.error("密碼錯誤, 請重新輸入", {
+	// 					toastEx.error("密碼錯誤, 請重新輸入", {
 	// 						position: "top-right"
 	// 					});
 	// 					promptPwordEntry({
@@ -547,12 +541,9 @@ export const useD01 = () => {
 
 			// 檢查是否已存在
 			if (found) {
-				toast.error(
+				toastEx.error(
 					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${prodRowIndex + 1
-					} 筆, 請重新選擇`,
-					{
-						position: "top-right",
-					}
+					} 筆, 請重新選擇`
 				);
 			} else if (rowData.prod) {
 				sqtyManager.updateStockQty(prod.ProdID, prod.StockQty);
@@ -623,8 +614,10 @@ export const useD01 = () => {
 	// 	return rowData;
 	// }, []);
 
-	const onUpdateRow = useCallback(({ fromRowIndex, setValue, newValue, gridMeta }) => async (rowData, index) => {
+	const onUpdateRow = useCallback(({ fromRowIndex, setValue, newValue, gridMeta, updateResult }) => async (rowData, index) => {
 		const rowIndex = fromRowIndex + index;
+		updateResult.rowIndex = rowIndex;
+
 		const oldRowData = grid.gridData[rowIndex];
 		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 		let processedRowData = {
@@ -863,9 +856,7 @@ export const useD01 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-right"
-			});
+			toastEx.error("編輯檢查失敗", err);
 		} finally {
 			checkEditableAction.clear();
 		}

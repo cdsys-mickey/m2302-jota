@@ -30,6 +30,7 @@ const A18Form = memo((props) => {
 									name="dept"
 									disableOpenOnInput
 									selectOnFocus
+									disabled
 								/>
 							</Grid>
 

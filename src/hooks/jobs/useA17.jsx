@@ -8,6 +8,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/sd-errors";
 import { useAppModule } from "./useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useA17 = () => {
 	const crud = useContext(CrudContext);
@@ -71,15 +72,13 @@ export const useA17 = () => {
 					crud.doneLoading({
 						data: processed,
 					});
-					toast.success("單位參數已更新");
+					toastEx.success("單位參數已更新");
 				} else {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating(err);
-				toast.error(Errors.getMessage("參數設定失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("參數設定失敗", err);
 			}
 		},
 		[crud, httpPutAsync, token]

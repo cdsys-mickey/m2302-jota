@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import { useInit } from "../../shared-hooks/useInit";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useInit } from "@/shared-hooks/useInit";
 import Auth from "@/modules/md-auth";
-import { AuthContext } from "../../contexts/auth/AuthContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useContext } from "react";
 
 export const useAppModule = (props = {}) => {

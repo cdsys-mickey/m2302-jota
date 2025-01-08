@@ -3,6 +3,7 @@ import DateFormats from "./sd-date-formats";
 import Types from "./sd-types";
 import { toast } from "react-toastify";
 import { isValid, parse } from "date-fns";
+import { toastEx } from "@/helpers/toast-ex";
 
 const formatDate = (value, format) => {
 	if (!value) {
@@ -169,9 +170,7 @@ const assignDefaultValues = (obj, fieldNames, defaultValue = "") => {
 };
 
 const onSubmitError = (err) => {
-	toast.error("資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出", {
-		position: "top-right",
-	});
+	toastEx.error("資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出");
 };
 
 const getDateValidator =

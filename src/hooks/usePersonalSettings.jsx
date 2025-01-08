@@ -1,18 +1,14 @@
-import { useContext, useState } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { toastEx } from "@/helpers/toast-ex";
 import Settings from "@/modules/md-settings";
-import { useCallback } from "react";
-import { useAction } from "../shared-hooks/useAction";
+import { useWebApi } from "@/shared-hooks/useWebApi";
 import Cookies from "js-cookie";
+import { useCallback, useContext, useMemo, useState } from "react";
 import Auth from "../modules/md-auth";
-import { toast } from "react-toastify";
-import Errors from "../shared-modules/sd-errors";
-import { useMatch } from "react-router-dom";
-import { useMemo } from "react";
+import { useAction } from "../shared-hooks/useAction";
 
 export const usePersonalSettings = () => {
-	const { token, operator, validateCookie } = useContext(AuthContext);
+	const { token, operator } = useContext(AuthContext);
 	const [selectedTab, setSelectedTab] = useState(Settings.Tabs.CHANGE_PWORD);
 	const {
 		httpGetAsync,
@@ -71,9 +67,7 @@ export const usePersonalSettings = () => {
 						throw error || new Error("發生未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("驗證失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("驗證失敗", err);
 					setError("ogPword", {
 						type: "manual",
 						message: "密碼驗證失敗",
@@ -112,7 +106,7 @@ export const usePersonalSettings = () => {
 						},
 					});
 					if (status.success) {
-						toast.success("密碼已更新");
+						toastEx.success("密碼已更新");
 						finsihChanging();
 						Cookies.set(
 							Auth.COOKIE_LOGKEY,
@@ -127,9 +121,7 @@ export const usePersonalSettings = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("變更密碼失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("變更密碼失敗", err);
 					failChanging(err);
 				}
 			},

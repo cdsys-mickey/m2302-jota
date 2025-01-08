@@ -10,6 +10,7 @@ const BasePage = (props) => {
 	const {
 		drawerOpen,
 		handleDrawerClose,
+		handleDrawerOpen,
 		// height,
 		drawerWidth = 260,
 		// menuFloating,
@@ -29,7 +30,8 @@ const BasePage = (props) => {
 				anchor="left"
 				width={drawerWidth}
 				open={drawerOpen}
-				onClose={handleDrawerClose}>
+				onClose={handleDrawerClose}
+				onOpen={handleDrawerOpen}>
 				<SideMenuProvider>
 					{SearchBarComponent && <SearchBarComponent />}
 					{MenuComponent && <MenuComponent />}
@@ -46,6 +48,7 @@ const BasePage = (props) => {
 BasePage.propTypes = {
 	drawerOpen: PropTypes.bool,
 	handleDrawerClose: PropTypes.func,
+	handleDrawerOpen: PropTypes.func,
 	height: PropTypes.number,
 	drawerWidth: PropTypes.number,
 	SearchBarComponent: PropTypes.elementType,

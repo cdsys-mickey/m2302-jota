@@ -8,11 +8,11 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { CustomerSearchFieldContainer } from "../../../components/jobs/A06/search/CustomerSearchFieldContainer";
-import { StdPrintDialogContainer } from "../../../components/std-print/StdPrintDialogContainer";
-import { A06Context } from "../../../contexts/A06/A06Context";
-import { StdPrintProvider } from "../../../contexts/std-print/StdPrintProvider";
-import A06 from "../../../modules/md-a06";
+import { StdPrintDialogContainer } from "@/components/std-print/StdPrintDialogContainer";
+import { A06Context } from "@/contexts/A06/A06Context";
+import { StdPrintProvider } from "@/contexts/std-print/StdPrintProvider";
+import A06 from "@/modules/md-a06";
+import { A06SearchFieldContainer } from "@/components/jobs/A06/search/A06SearchFieldContainer";
 
 export const A06FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -37,7 +37,7 @@ export const A06FrameContainer = () => {
 					paramsToJsonData={A06.paramsToJsonData}>
 					{/* 標題 */}
 					<FrameBannerContainer>
-						{<CustomerSearchFieldContainer name="qs" />}
+						{<A06SearchFieldContainer name="qs" />}
 					</FrameBannerContainer>
 					{/* 工具列 */}
 					<A06Toolbar />

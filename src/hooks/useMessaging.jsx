@@ -1,16 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
+import { toastEx } from "@/helpers/toast-ex";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { AuthContext } from "../contexts/auth/AuthContext";
+import { PushMessagesContext } from "../contexts/PushMessagesContext";
+import Messaging from "../modules/md-messaging";
+import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 import { useInfiniteLoader } from "../shared-hooks/useInfiniteLoader";
 import { usePopover } from "../shared-hooks/usePopover";
 import { useSignalR } from "../shared-hooks/useSignalR";
 import { useWebApi } from "../shared-hooks/useWebApi";
-import Errors from "../shared-modules/sd-errors";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/auth/AuthContext";
-import Messaging from "../modules/md-messaging";
-import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
-import { PushMessagesContext } from "../contexts/PushMessagesContext";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const useMessaging = () => {
 	const { httpGetAsync, httpPutAsync, httpPatchAsync } = useWebApi();
@@ -97,10 +96,6 @@ export const useMessaging = () => {
 			toast(msg, {
 				type: Messaging.asToastifyType(payload.type),
 				onClick: () => handleGotoJob(payload),
-				// 警告或錯誤才將訊息顯示於上方
-				// ...(["WARNING", "ERROR"].includes(payload.type) && {
-				// 	position: "top-right",
-				// })
 			});
 
 			loadUnreadCount();
@@ -170,9 +165,7 @@ export const useMessaging = () => {
 					throw error || new Error("為預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("標示已讀失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("標示已讀失敗", err);
 			}
 		},
 		[clearListLoading, httpPatchAsync, loadUnreadCount, loader, token]

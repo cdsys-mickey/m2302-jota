@@ -259,29 +259,28 @@ const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 const isFiltered = (criteria) => {
 	return Objects.isAnyPropNotEmpty(
 		criteria,
-		"id,pn,bc,catL,catM,catS,counter"
+		"lvId,lvName,lvBarcode,lvCatL,lvCatM,lvCatS,lvCounter,lvCmsType"
 	);
 };
 
 const paramsToJsonData = (mode) => (params) => {
 	const where =
 		mode === A01.Mode.NEW_PROD
-			? [Reports.addParam("覆核人員", "=", "")]
-			: [Reports.addParam("覆核人員", "<>", "")];
+			? [Reports.addParam("審核人員", "=", "")]
+			: [Reports.addParam("審核人員", "<>", "")];
 
+	if (params?.pi) {
+		where.push({
+			ShowName: "貨品編號",
+			OpCode: "LIKE",
+			CondData: `%${params.id}%`,
+		});
+	}
 	if (params?.bc) {
 		where.push({
 			ShowName: "原印條碼",
 			OpCode: "LIKE",
-			CondData: `${params.bc}%`,
-		});
-	}
-
-	if (params?.pi) {
-		where.push({
-			ShowName: "產品代號",
-			OpCode: "LIKE",
-			CondData: `${params.pi}%`,
+			CondData: `%${params.bc}%`,
 		});
 	}
 
@@ -290,6 +289,42 @@ const paramsToJsonData = (mode) => (params) => {
 			ShowName: "產品名稱",
 			OpCode: "LIKE",
 			CondData: `%${params.pn}%`,
+		});
+	}
+
+	if (params?.catL) {
+		where.push({
+			ShowName: "大分類",
+			OpCode: "=",
+			CondData: params.catL,
+		});
+	}
+	if (params?.catM) {
+		where.push({
+			ShowName: "中分類",
+			OpCode: "=",
+			CondData: params.catM,
+		});
+	}
+	if (params?.catS) {
+		where.push({
+			ShowName: "小分類",
+			OpCode: "=",
+			CondData: params.catS,
+		});
+	}
+	if (params?.counter) {
+		where.push({
+			ShowName: "櫃別",
+			OpCode: "=",
+			CondData: params.counter,
+		});
+	}
+	if (params?.cms) {
+		where.push({
+			ShowName: "佣金類別",
+			OpCode: "=",
+			CondData: params.cmsType,
 		});
 	}
 
@@ -305,21 +340,45 @@ const paramsToJsonData = (mode) => (params) => {
 };
 
 const transformAsQueryParams = (data) => {
-	const { catL, catM, catS, counter, ...rest } = data;
+	const {
+		qs,
+		lvId,
+		lvName,
+		lvBarcode,
+		lvCatL,
+		lvCatM,
+		lvCatS,
+		lvCounter,
+		lvCmsType,
+		...rest
+	} = data;
 	return {
-		...(catL && {
-			catL: catL.LClas,
+		qs,
+		...(lvId && {
+			pi: lvId,
 		}),
-		...(catM && {
-			catM: catM.MClas,
+		...(lvBarcode && {
+			bc: lvBarcode,
 		}),
-		...(catS && {
-			catS: catS.SClas,
+		...(lvName && {
+			pn: lvName,
 		}),
-		...(counter && {
-			counter: counter.CodeID,
+		...(lvCatL && {
+			catL: lvCatL.LClas,
 		}),
-		opts: 1,
+		...(lvCatM && {
+			catM: lvCatM.MClas,
+		}),
+		...(lvCatS && {
+			catS: lvCatS.SClas,
+		}),
+		...(lvCounter && {
+			counter: lvCounter.CodeID,
+		}),
+		...(lvCmsType && {
+			cms: lvCmsType.CodeID,
+		}),
+		// opts: 1,
 		...rest,
 	};
 };

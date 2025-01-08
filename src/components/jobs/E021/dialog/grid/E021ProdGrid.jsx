@@ -23,7 +23,6 @@ const E021ProdGrid = memo((props) => {
 		getRowClassName,
 		height = 300,
 		bearer,
-		getTooltip,
 		...rest
 	} = props;
 

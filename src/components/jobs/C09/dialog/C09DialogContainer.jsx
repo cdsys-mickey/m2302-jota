@@ -1,25 +1,24 @@
+import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
+import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { C09Context } from "@/contexts/C09/C09Context";
+import { toastEx } from "@/helpers/toast-ex";
+import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C09DialogForm from "./C09DialogForm";
 import { C09DialogToolbarContainer } from "./toolbar/C09DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
-import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
-import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { useCallback } from "react";
-import { toast } from "react-toastify";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const C09DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -219,9 +218,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!txoDept) {
-			toast.error("請先輸入撥出門市", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入撥出門市");
 			form.setFocus("txoDept");
 			return;
 		}

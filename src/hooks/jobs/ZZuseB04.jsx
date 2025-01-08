@@ -96,9 +96,7 @@ export const ZZuseB04 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -201,9 +199,7 @@ export const ZZuseB04 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -234,9 +230,7 @@ export const ZZuseB04 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -395,9 +389,7 @@ export const ZZuseB04 = () => {
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("篩選失敗", err);
 			} finally {
 				setIpState((prev) => ({
 					...prev,
@@ -434,9 +426,7 @@ export const ZZuseB04 = () => {
 				}
 			} catch (err) {
 				importProdsAction.fail({ error: err });
-				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
-					position: "top-right"
-				});
+				toastEx.error("帶入商品發生錯誤", err);
 			}
 		},
 		[httpGetAsync, importProdsAction, ipState.criteria, ipState.saveKey, grid, token]

@@ -15,6 +15,7 @@ import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useB05 = () => {
 	const crud = useContext(CrudContext);
@@ -83,7 +84,7 @@ export const useB05 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toastEx.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -93,9 +94,7 @@ export const useB05 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -186,7 +185,7 @@ export const useB05 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -197,9 +196,7 @@ export const useB05 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -222,7 +219,7 @@ export const useB05 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除詢價單 ${itemData?.InqID}`);
+						toastEx.success(`成功删除詢價單 ${itemData?.InqID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -230,9 +227,7 @@ export const useB05 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -412,9 +407,7 @@ export const useB05 = () => {
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("篩選失敗", err);
 			} finally {
 				setIpState((prev) => ({
 					...prev,
@@ -444,16 +437,14 @@ export const useB05 = () => {
 					grid.initGridData(B05.transformForGridImport(data), {
 						fillRows: true,
 					});
-					toast.success(`成功帶入 ${data.length} 筆商品`);
+					toastEx.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
 				} else {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
 				importProdsAction.fail({ error: err });
-				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
-					position: "top-right"
-				});
+				toastEx.error("帶入商品發生錯誤", err);
 			}
 		},
 		[httpGetAsync, importProdsAction, ipState.criteria, ipState.saveKey, grid, token]

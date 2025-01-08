@@ -63,7 +63,7 @@ export const C08ProdGridContainer = (props) => {
 				// buildSelectionChangeHandler={c08.buildSelectionChangeHandler()}
 				handleGridCellFocusChange={c08.handleGridCellFocusChange}
 				// getRowClassName={c08.getRowClassName}
-				getTooltip={c08.getTooltip}
+				// getTooltip={c08.getTooltip}
 				createRow={c08.createRow}
 				stickyRightColumn={prodInfoColumn}
 				{...rest}

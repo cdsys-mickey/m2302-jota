@@ -1,5 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import C03 from "@/modules/md-c03";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -7,11 +8,9 @@ import { useAction } from "@/shared-hooks/useAction";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import { addDays, getYear, isDate, isValid } from "date-fns";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import Forms from "../../shared-modules/sd-forms";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
@@ -178,7 +177,7 @@ export const useC03 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toastEx.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -188,9 +187,7 @@ export const useC03 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -299,7 +296,7 @@ export const useC03 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -310,9 +307,7 @@ export const useC03 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -335,7 +330,7 @@ export const useC03 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除採購單 ${itemData?.OrdID}`);
+						toastEx.success(`成功删除採購單 ${itemData?.OrdID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -343,9 +338,7 @@ export const useC03 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -384,7 +377,7 @@ export const useC03 = () => {
 					handleSubmit();
 				} else {
 					// 清空「詢價註記」及「單價」
-					toast.info("商品單價已清除");
+					toastEx.info("商品單價已清除");
 					grid.initGridData(
 						grid.gridData.map((x) => ({
 							...x,
@@ -433,7 +426,7 @@ export const useC03 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { formData }) => {
 			if (!prodId) {
-				toast.error("請先選擇商品", {
+				toastEx.error("請先選擇商品", {
 					position: "top-right"
 				});
 				return;
@@ -441,7 +434,7 @@ export const useC03 = () => {
 
 			const supplierId = formData.supplier?.FactID;
 			if (!supplierId) {
-				toast.error("請先選擇廠商", {
+				toastEx.error("請先選擇廠商", {
 					position: "top-right"
 				});
 				return;
@@ -449,7 +442,7 @@ export const useC03 = () => {
 
 			const ordDate = formData?.OrdDate;
 			if (!isDate(ordDate)) {
-				toast.error("請先輸入採購日期", {
+				toastEx.error("請先輸入採購日期", {
 					position: "top-right"
 				});
 				return;
@@ -472,9 +465,7 @@ export const useC03 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("查詢報價失敗", err);
 			}
 		},
 		[httpGetAsync, token]
@@ -595,7 +586,7 @@ export const useC03 = () => {
 	// 						.some((rowData, i) => {
 	// 							if (prodDisabled({ rowData })) {
 	// 								const rowIndex = operation.fromRowIndex + i;
-	// 								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
+	// 								toastEx.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
 	// 									position: "top-right"
 	// 								});
 	// 								return true;
@@ -692,15 +683,13 @@ export const useC03 = () => {
 					listLoader.loadList({
 						refresh: true,
 					});
-					toast.success(`採購單${crud.itemData?.OrdID}」已覆核成功`);
+					toastEx.success(`採購單${crud.itemData?.OrdID}」已覆核成功`);
 				} else {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
 				reviewAction.fail({ error: err });
-				toast.error(Errors.getMessage("覆核失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("覆核失敗", err);
 			}
 		},
 		[crud, httpPatchAsync, listLoader, reviewAction, selectById, token]
@@ -748,16 +737,14 @@ export const useC03 = () => {
 					listLoader.loadList({
 						refresh: true,
 					});
-					toast.success(
+					toastEx.success(
 						`採購單${crud.itemData?.OrdID}」已解除覆核成功`
 					);
 				} else {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("解除覆核失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("解除覆核失敗", err);
 			}
 		},
 		[
@@ -835,7 +822,7 @@ export const useC03 = () => {
 						grid.initGridData(data.prods, {
 							fillRows: crud.creating
 						});
-						toast.info("商品單價已更新");
+						toastEx.info("商品單價已更新");
 						// 置換採購金額
 						setValue("OrdAmt_N", data.OrdAmt_N);
 						setPrevData({
@@ -847,16 +834,14 @@ export const useC03 = () => {
 					}
 				} catch (err) {
 					console.error("onRefreshGridSubmit failed", err);
-					toast.error(Errors.getMessage("單價重整失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("單價重整失敗", err);
 					// 還原
 					const prevData = getPrevData();
 					setValue("supplier", prevData?.supplier);
 					setValue("OrdDate", prevData?.OrdDate);
 				}
 			},
-		[grid, httpPostAsync, token, setPrevData, getPrevData]
+		[grid, httpPostAsync, token, crud.creating, setPrevData, getPrevData]
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {

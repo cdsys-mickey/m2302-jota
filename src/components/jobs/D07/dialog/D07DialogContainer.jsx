@@ -1,24 +1,23 @@
-import { D07Context } from "@/contexts/D07/D07Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { useScrollable } from "@/shared-hooks/useScrollable";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import D07DialogForm from "./D07DialogForm";
-import { D07DialogToolbarContainer } from "./toolbar/D07DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
-import D07Drawer from "../D07Drawer";
-import { keyColumn } from "react-datasheet-grid";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { D07Context } from "@/contexts/D07/D07Context";
+import { toastEx } from "@/helpers/toast-ex";
+import Colors from "@/modules/md-colors";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { toast } from "react-toastify";
-import { useCallback } from "react";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
+import D07Drawer from "../D07Drawer";
+import D07DialogForm from "./D07DialogForm";
+import { D07DialogToolbarContainer } from "./toolbar/D07DialogToolbarContainer";
 
 export const D07DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -155,23 +154,17 @@ export const D07DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!calId) {
-			toast.error("請先輸入試算單號", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入試算單號");
 			form.setFocus("CalID");
 			return;
 		}
 		if (!calData) {
-			toast.error("請先輸入試算單名稱", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入試算單名稱");
 			form.setFocus("CalData");
 			return;
 		}
 		if (!employee) {
-			toast.error("請先輸入編輯人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入編輯人員");
 			form.setFocus("employee");
 			return;
 		}

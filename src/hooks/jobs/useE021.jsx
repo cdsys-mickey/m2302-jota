@@ -1,5 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import E021 from "@/modules/md-e021";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
@@ -8,15 +9,13 @@ import { useAction } from "@/shared-hooks/useAction";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import Forms from "@/shared-modules/sd-forms";
 import Objects from "@/shared-modules/sd-objects";
 import { isDate } from "lodash";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
 import useSQtyManager from "../useSQtyManager";
+import { useAppModule } from "./useAppModule";
 
 export const useE021 = () => {
 	const crud = useContext(CrudContext);
@@ -80,6 +79,7 @@ export const useE021 = () => {
 
 	const sqtyManager = useSQtyManager({
 		grid,
+		convType: "s"
 	});
 	const { committed } = sqtyManager;
 
@@ -163,9 +163,7 @@ export const useE021 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("計算合計失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("計算合計失敗", err);
 			}
 		},
 		[httpGetAsync, token]
@@ -284,7 +282,7 @@ export const useE021 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(creating ? `新增成功` : "修改成功");
+					toastEx.success(creating ? `新增成功` : "修改成功");
 					if (creating) {
 						crud.doneCreating();
 						crud.cancelReading();
@@ -323,9 +321,7 @@ export const useE021 = () => {
 						}
 					});
 				} else {
-					toast.error(Errors.getMessage(creating ? `新增失敗` : `修改失敗`, err), {
-						position: "top-right"
-					});
+					toastEx.error(creating ? `新增失敗` : `修改失敗`, err);
 				}
 			}
 		},
@@ -383,7 +379,7 @@ export const useE021 = () => {
 	// 				bearer: token,
 	// 			});
 	// 			if (status.success) {
-	// 				toast.success(`修改成功`);
+	// 				toastEx.success(`修改成功`);
 	// 				crud.doneUpdating();
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
@@ -405,7 +401,7 @@ export const useE021 = () => {
 	// 						}
 	// 					})
 	// 			} else {
-	// 				toast.error(Errors.getMessage("修改失敗", err), {
+	// 				toastEx.error("修改失敗", err), {
 	// 					position: "top-right"
 	// 				});
 	// 			}
@@ -431,7 +427,7 @@ export const useE021 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除銷貨單 ${itemData?.SalID}`);
+						toastEx.success(`成功删除銷貨單 ${itemData?.SalID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -439,9 +435,7 @@ export const useE021 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -458,21 +452,21 @@ export const useE021 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { formData }) => {
 			if (!prodId) {
-				toast.error("請先選擇商品", {
+				toastEx.error("請先選擇商品", {
 					position: "top-right"
 				});
 				return;
 			}
 
 			if (!isDate(formData.SalDate)) {
-				toast.error("請先輸入銷貨日", {
+				toastEx.error("請先輸入銷貨日", {
 					position: "top-right"
 				});
 				return;
 			}
 
 			// if (!formData.customer) {
-			// 	toast.error("請先輸入客戶代碼", {
+			// 	toastEx.error("請先輸入客戶代碼", {
 			// 		position: "top-right"
 			// 	});
 			// 	return;
@@ -499,9 +493,7 @@ export const useE021 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("查詢報價失敗", err);
 			}
 		},
 		[httpGetAsync, sqtyManager, token]
@@ -634,7 +626,6 @@ export const useE021 = () => {
 			processedRowData.SPrice !== oldRowData.SPrice ||
 			processedRowData.SQty !== oldRowData.SQty
 		) {
-			dirty = true;
 			// 計算合計
 			processedRowData = {
 				...processedRowData,
@@ -814,9 +805,7 @@ export const useE021 = () => {
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("篩選失敗", err);
 			} finally {
 				setIpState((prev) => ({
 					...prev,
@@ -847,16 +836,14 @@ export const useE021 = () => {
 					grid.initGridData(E021.transformForGridImport(data, formData?.employee, formData?.Date), {
 						fillRows: true,
 					});
-					toast.success(`成功帶入 ${data.length} 筆商品`);
+					toastEx.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
 				} else {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
 				importProdsAction.fail({ error: err });
-				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
-					position: "top-right"
-				});
+				toastEx.error("帶入商品發生錯誤", err);
 			}
 		},
 		[httpGetAsync, importProdsAction, ipState.criteria, ipState.saveKey, grid, token]
@@ -965,7 +952,7 @@ export const useE021 = () => {
 						grid.initGridData(data.prods, {
 							fillRows: true
 						})
-						// toast.info("商品單價已更新");
+						// toastEx.info("商品單價已更新");
 						// 置換採購金額
 						setValue("SalAmt", data.SalAmt);
 						setValue("TaxAmt", data.TaxAmt);
@@ -980,9 +967,7 @@ export const useE021 = () => {
 					}
 				} catch (err) {
 					console.error("onRefreshGridSubmit failed", err);
-					toast.error(Errors.getMessage("單價重整失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("單價重整失敗", err);
 					// 還原
 					const prevData = getPrevData();
 					setValue("customer", prevData?.customer);
@@ -1018,9 +1003,7 @@ export const useE021 = () => {
 				}
 			} catch (err) {
 				console.error(err);
-				toast.error(Errors.getMessage("讀取客戶資料發生錯誤", err), {
-					position: "top-right"
-				});
+				toastEx.error("讀取客戶資料發生錯誤", err);
 			}
 		}
 
@@ -1119,15 +1102,13 @@ export const useE021 = () => {
 						// setValue("dontPrtAmt", data.dontPrtAmt);
 						// // 更新數字
 						// updateAmt({ setValue, formData: data });
-						// // toast.info("採購單商品已載入");
+						// // toastEx.info("採購單商品已載入");
 
 					} else {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("載入訂購單商品失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("載入訂購單商品失敗", err);
 				}
 			},
 		[grid, httpGetAsync, updateAmt, token]
@@ -1161,9 +1142,7 @@ export const useE021 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-right"
-			});
+			toastEx.error("編輯檢查失敗", err);
 		} finally {
 			checkEditableAction.clear();
 		}

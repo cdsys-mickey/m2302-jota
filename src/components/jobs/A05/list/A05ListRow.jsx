@@ -5,9 +5,15 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import A05IDColumn from "./columns/A05IDColumn";
 import A05NameColumn from "./columns/A05NameColumn";
+import { useMemo } from "react";
 
 const A05ListRow = memo((props) => {
-	const { index, style, value, loading, onClick } = props;
+	const { index, style, value, onClick } = props;
+	const { BankID, BankData_N } = value || {};
+
+	const bank = useMemo(() => {
+		return [BankID, BankData_N].filter(Boolean).join(" ");
+	}, [BankData_N, BankID])
 
 	return (
 		<div style={style}>
@@ -29,9 +35,12 @@ const A05ListRow = memo((props) => {
 						},
 					]}>
 					<IndexColumn title={index}></IndexColumn>
-					<A05IDColumn loading={loading}>{value?.FactID}</A05IDColumn>
-					<A05NameColumn loading={loading}>
+					<A05IDColumn>{value?.FactID}</A05IDColumn>
+					<A05NameColumn>
 						{value?.FactData}
+					</A05NameColumn>
+					<A05NameColumn>
+						{bank}
 					</A05NameColumn>
 					{/* <A05ClassNColumn loading={loading}>
 						{value?.Clas_N}

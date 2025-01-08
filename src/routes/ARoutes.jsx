@@ -58,6 +58,8 @@ import { A22FrameContainer } from "@/pages/modules/A22/A22FrameContainer";
 import { A26FrameContainer } from "@/pages/modules/A26/A26FrameContainer";
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
+import { P16Provider } from "@/contexts/P16/P16Provider";
+import { P16FrameContainer } from "@/pages/modules/P16/P16FrameContainer";
 
 const aRoutes = (
 	<>
@@ -394,6 +396,18 @@ const aRoutes = (
 						<A26Provider>
 							<A26FrameContainer />
 						</A26Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="A27"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<P16Provider>
+							<P16FrameContainer />
+						</P16Provider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

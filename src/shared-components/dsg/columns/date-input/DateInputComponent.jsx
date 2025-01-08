@@ -1,14 +1,13 @@
+import { toastEx } from "@/helpers/toast-ex";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import Objects from "@/shared-modules/sd-objects";
 import Types from "@/shared-modules/sd-types";
-import clsx from "clsx";
+import { styled } from "@mui/system";
+import { isValid, parse } from "date-fns";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { toast } from "react-toastify";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
-import { styled } from "@mui/system";
-import { isValid, parse } from "date-fns";
 
 const MSG_REQUIRED = "必須輸入日期"
 
@@ -343,7 +342,7 @@ const DateInputComponent = memo((props) => {
 						if (required) {
 							const message = getRequiredMessage({ value: inputRef.current.value })
 
-							toast.error(message, {
+							toastEx.error(message, {
 								position: "top-right"
 							})
 							refocus();
@@ -356,7 +355,7 @@ const DateInputComponent = memo((props) => {
 						// 變更時錯誤的那次不能觸發
 						if ((!modified || asyncRef.current.tabPressed) && asyncRef.current.invalid) {
 							asyncRef.current.tabPressed = false;
-							toast.error(`"${inputRef.current.value}" 不是正確的日期格式`, {
+							toastEx.error(`"${inputRef.current.value}" 不是正確的日期格式`, {
 								position: "top-right"
 							})
 							refocus({

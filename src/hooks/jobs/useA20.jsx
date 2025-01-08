@@ -10,6 +10,7 @@ import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useA20 = ({ token }) => {
 	const crud = useContext(CrudContext);
@@ -126,7 +127,7 @@ export const useA20 = ({ token }) => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`BOM「${data?.ProdID} ${data?.ProdData}」新增成功`
 					);
 					crud.doneCreating();
@@ -139,9 +140,7 @@ export const useA20 = ({ token }) => {
 			} catch (err) {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, loader, token]
@@ -159,7 +158,7 @@ export const useA20 = ({ token }) => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`BOM「${data?.ProdID} ${data?.ProdData}」修改成功`
 					);
 					crud.doneUpdating();
@@ -174,9 +173,7 @@ export const useA20 = ({ token }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, loadItem, loader, token]
@@ -210,7 +207,7 @@ export const useA20 = ({ token }) => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A20.onSubmitError`, err);
-		toast.error(
+		toastEx.error(
 			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
 			position: "top-right"
 		}
@@ -247,7 +244,7 @@ export const useA20 = ({ token }) => {
 					});
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(
+						toastEx.success(
 							`成功删除 BOM ${crud.itemData?.prod?.ProdID} ${crud.itemData?.prod?.ProdData}`
 						);
 						loader.loadList({ refresh: true });
@@ -257,9 +254,7 @@ export const useA20 = ({ token }) => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -317,7 +312,7 @@ export const useA20 = ({ token }) => {
 				rowData.sprod &&
 				grid.isDuplicating(rowData, newValue)
 			) {
-				toast.error(
+				toastEx.error(
 					`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`, {
 					position: "top-right"
 				}
@@ -365,7 +360,7 @@ export const useA20 = ({ token }) => {
 	// 									rowData.sprod &&
 	// 									grid.isDuplicating(rowData, newValue)
 	// 								) {
-	// 									toast.error(
+	// 									toastEx.error(
 	// 										`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`, {
 	// 										position: "top-right"
 	// 									}

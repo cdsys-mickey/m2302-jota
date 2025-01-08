@@ -11,7 +11,7 @@ const A01ListHeader = memo(
 			<ListViewHeader ref={ref}>
 				<IndexColumn></IndexColumn>
 				<A01ProdIDColumn>商品編號</A01ProdIDColumn>
-				<A01ProdNameColumn>品名及規格</A01ProdNameColumn>
+				<A01ProdNameColumn>品名規格</A01ProdNameColumn>
 				<A01ProdNameColumn>條碼</A01ProdNameColumn>
 				{/* <A01ClassNColumn>分類</A01ClassNColumn> */}
 			</ListViewHeader>

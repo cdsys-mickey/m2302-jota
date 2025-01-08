@@ -1,15 +1,30 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useInit } from "@/shared-hooks/useInit";
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
-import { useCallback, useContext, useMemo, useRef } from "react";
-import { toast } from "react-toastify";
-import _ from "lodash";
-import { useState } from "react";
+import { toastEx } from "@/helpers/toast-ex";
 import SQtyUtils from "@/modules/md-sqty";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import _ from "lodash";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
 
-export default function useSQtyManager({ grid, action = "強迫銷貨", stypeColumn = "stype", priceColumn = "SPrice", samtColumn = "SAmt", sqtyColumn = "SQty", sqtyNoteColumn = "SQtyNote", stockQtyColumn = "StockQty_N", markColumn = "sqtyError", prodIdKey = "prod.ProdID", prodNameKey = "prod.ProdData", disablePwordCheck = false }) {
+const DEFAULT_ENTRY_ERROR_MESSAGE = ({ action }) => {
+	return "密碼錯誤, 請重新輸入";
+}
+
+export default function useSQtyManager(opts = {}) {
+	const { grid, action = "強迫銷貨",
+		stypeColumn = "stype",
+		priceColumn = "SPrice",
+		samtColumn = "SAmt",
+		sqtyColumn = "SQty",
+		sqtyNoteColumn = "SQtyNote",
+		stockQtyColumn = "StockQty_N",
+		markColumn = "sqtyError",
+		prodIdKey = "prod.ProdID",
+		prodNameKey = "prod.ProdData",
+		disableOverrideCheck = false,
+		entryErrorMessage = DEFAULT_ENTRY_ERROR_MESSAGE,
+		convType
+	} = opts;
 	if (!grid) {
 		console.error(`${useSQtyManager.name} 未提供 grid 參數`);
 	}
@@ -23,6 +38,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 	const dialogs = useContext(DialogsContext);
 	const {
 		httpGetAsync,
+		httpPostAsync
 	} = useWebApi();
 
 	const getStockQty = useCallback((prodId) => {
@@ -87,9 +103,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("讀取設定發生錯誤", err), {
-				position: "top-right"
-			});
+			toastEx.error("讀取設定發生錯誤", err);
 		}
 	}, [httpGetAsync, token]);
 
@@ -165,7 +179,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			const { first = false, callback } = opts;
 			console.log("promptPwordEntry, first:", first);
 			const sqtyLock = sqtyLockRef.current;
-			const pwordLock = pwordLockRef.current;
+			// const pwordLock = pwordLockRef.current;
 
 			const { gridMeta } = sqtyLock;
 
@@ -174,30 +188,43 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 				message: `第 ${sqtyLock.rowIndex + 1} 筆 [${sqtyLock.prodId} ${sqtyLock.prodName}] 庫存不足${sqtyLock.stock != null ? `(${sqtyLock.stock} < ${sqtyLock.demand})` : ""}，若要${action}請輸入密碼`,
 				label: `${action}密碼`,
 				triggerCancelOnClose: true,
-				onConfirm: ({ value }) => {
-					if (value === pwordLock.value) {
-						console.log("pword passed");
-						pwordLockRef.current = {
-							...pwordLockRef.current,
-							passed: true,
-						};
-						if (callback) {
-							callback();
+				// mask: true,
+				onConfirm: async ({ value }) => {
+					try {
+						const { status } = await httpPostAsync({
+							url: `v1/ou/dept/params`,
+							bearer: token,
+							data: {
+								pword: value
+							}
+						})
+						console.log("status", status);
+						if (status.success) {
+							console.log("pword passed");
+							pwordLockRef.current = {
+								...pwordLockRef.current,
+								passed: true,
+							};
+							if (callback) {
+								callback();
+							}
+						} else {
+							console.log("pword not passed");
+							const _entryErrorMessage = typeof entryErrorMessage === "function" ? entryErrorMessage({ action }) : entryErrorMessage;
+							toastEx.error(_entryErrorMessage);
+							promptPwordEntry();
 						}
-					} else {
-						// dialogs.closeLatest();
-						console.log("pword not passed");
-						toast.error("密碼錯誤, 請重新輸入", {
-							position: "top-right"
-						});
-						promptPwordEntry({ callback: promptOverrideSQty });
+
+					} catch (err) {
+						console.error(err);
+						toastEx.error("驗證時發生錯誤");
 					}
 				},
 				onCancel: () => {
 					console.log("pword cancelled");
 					if (sqtyLock.rowIndex != null) {
 						gridMeta.setActiveCell({
-							col: "SQty",
+							col: sqtyColumn,
 							row: sqtyLock.rowIndex,
 						});
 					}
@@ -205,17 +232,17 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 				// confirmText: "通過",
 			});
 		},
-		[action, dialogs, promptOverrideSQty]
+		[action, dialogs, entryErrorMessage, httpPostAsync, sqtyColumn, token]
 	);
 
 	// 儲存時偵測到庫存不足, 提示 override 的進入點
 	const handleOverrideSQty = useCallback(
 		({ setValue, gridMeta, formData, rowData, rowIndex, demand, stock, refreshAmt, submitAfterCommitted = false }) => {
 			console.log("handleOverrideSQty");
-			if (!pwordLockRef.current) {
-				toast.error("密碼設定為空，請檢查程式");
-				return;
-			}
+			// if (!pwordLockRef.current) {
+			// 	toastEx.error("密碼設定為空，請檢查程式");
+			// 	return;
+			// }
 
 			if (!rowData) {
 				throw new Error("未指派 rowData 參數");
@@ -246,7 +273,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			// 1.如果通過密碼判定(stockPwordPassedRef.current), 則直接跳確認
 			gridMeta.setActiveCell(null);
 			// 尚未通過或是尚未讀取密碼
-			if (!pwordLockRef.current.passed) {
+			if (!pwordLockRef.current?.passed) {
 				promptPwordEntry({ first: true, callback: promptOverrideSQty });
 				return;
 			}
@@ -338,7 +365,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 
 			const demand = rowData[sqtyColumn];
 
-			if (demand > 0 && stock < demand) {
+			if (!disableOverrideCheck && demand > 0 && stock < demand) {
 				newRowData = {
 					...newRowData,
 					[sqtyColumn]: 0,
@@ -354,7 +381,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 			}
 			return newRowData;
 		},
-		[getStockExcludingCurrent, handleOverrideSQty, sqtyColumn, sqtyNoteColumn]
+		[disableOverrideCheck, getStockExcludingCurrent, handleOverrideSQty, sqtyColumn, sqtyNoteColumn]
 	);
 
 	// loadItem 及 save 拋出 102 時呼叫
@@ -389,7 +416,10 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 					params: {
 						id: prodIds.join(","),
 						stock: stockOpts ? 1 : 0,
-						prepared: preparedOpts ? 1 : 0
+						prepared: preparedOpts ? 1 : 0,
+						...(convType && {
+							cv: convType
+						})
 					},
 				});
 				if (status.success) {
@@ -424,9 +454,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("取得庫存失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("取得庫存失敗", err);
 			}
 			return stockQtyMap;
 		},
@@ -474,9 +502,7 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("取得目前訂購量失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("取得目前訂購量失敗", err);
 			}
 			return preparedQtyMap;
 		},
@@ -499,15 +525,11 @@ export default function useSQtyManager({ grid, action = "強迫銷貨", stypeCol
 		}
 	}, [grid.gridData]);
 
-
-
-
-
-	useInit(() => {
-		if (!disablePwordCheck) {
-			loadStockPword();
-		}
-	}, []);
+	// useInit(() => {
+	// 	if (!disablePwordCheck) {
+	// 		loadStockPword();
+	// 	}
+	// }, []);
 
 	return {
 		getStockQty,

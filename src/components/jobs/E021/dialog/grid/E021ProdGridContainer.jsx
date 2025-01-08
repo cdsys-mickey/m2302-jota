@@ -59,7 +59,6 @@ export const E021ProdGridContainer = (props) => {
 				height={_height}
 				getRowKey={e021.getRowKey}
 				createRow={e021.createRow}
-				getTooltip={e021.getTooltip}
 				stickyRightColumn={prodInfoColumn}
 				{...rest}
 			/>

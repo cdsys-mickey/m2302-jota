@@ -1,6 +1,9 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
+import { toastEx } from "@/helpers/toast-ex";
 import B012 from "@/modules/md-b012";
+import B02 from "@/modules/md-b02";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -8,17 +11,12 @@ import { useAction } from "@/shared-hooks/useAction";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
+import Forms from "@/shared-modules/sd-forms";
 import Objects from "@/shared-modules/sd-objects";
 import { nanoid } from "nanoid";
-import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
-import B02 from "@/modules/md-b02";
-import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
-import Forms from "@/shared-modules/sd-forms";
-import { useMemo } from "react";
 
 export const useB012 = (opts = {}) => {
 	const { forNew } = opts;
@@ -112,7 +110,7 @@ export const useB012 = (opts = {}) => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toastEx.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -122,12 +120,10 @@ export const useB012 = (opts = {}) => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
-		[crud, httpPostAsync, listLoader, token]
+		[API_URL, crud, httpPostAsync, listLoader, token]
 	);
 
 	// READ
@@ -226,7 +222,7 @@ export const useB012 = (opts = {}) => {
 	// 				bearer: token,
 	// 			});
 	// 			if (status.success) {
-	// 				toast.success(`修改成功`);
+	// 				toastEx.success(`修改成功`);
 	// 				crud.doneUpdating();
 	// 				//crud.cancelReading();
 	// 				loadItem({ refresh: true });
@@ -237,7 +233,7 @@ export const useB012 = (opts = {}) => {
 	// 		} catch (err) {
 	// 			crud.failUpdating();
 	// 			console.error("handleCreate.failed", err);
-	// 			toast.error(Errors.getMessage("修改失敗", err));
+	// 			toastEx.error("修改失敗", err));
 	// 		}
 	// 	},
 	// 	[crud, httpPutAsync, listLoader, loadItem, token]
@@ -253,7 +249,7 @@ export const useB012 = (opts = {}) => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -264,12 +260,10 @@ export const useB012 = (opts = {}) => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPatchAsync, listLoader, loadItem, token]
+		[API_URL, crud, httpPatchAsync, listLoader, loadItem, token]
 	);
 
 	//DELETE
@@ -289,7 +283,7 @@ export const useB012 = (opts = {}) => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除詢價單 ${itemData?.InqID}`);
+						toastEx.success(`成功删除詢價單 ${itemData?.InqID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -297,13 +291,11 @@ export const useB012 = (opts = {}) => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
+	}, [API_URL, crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
 
 	const onSearchSubmit = useCallback((data) => {
 		console.log("onSearchSubmit", data);
@@ -323,7 +315,7 @@ export const useB012 = (opts = {}) => {
 				processedRowData.customer &&
 				grid.isDuplicating(rowData, newValue, { key: "customer.CustID" })
 			) {
-				toast.error(`「${processedRowData.customer?.CustData}」已存在, 請選擇其他客戶`, {
+				toastEx.error(`「${processedRowData.customer?.CustData}」已存在, 請選擇其他客戶`, {
 					position: "top-right"
 				});
 				processedRowData.customer = null;
@@ -464,9 +456,7 @@ export const useB012 = (opts = {}) => {
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("篩選失敗", err);
 			} finally {
 				setIpState((prev) => ({
 					...prev,
@@ -497,16 +487,14 @@ export const useB012 = (opts = {}) => {
 					grid.initGridData(B012.transformForGridImport(data, formData?.employee, formData?.Date), {
 						fillRows: true,
 					});
-					toast.success(`成功帶入 ${data.length} 筆客戶`);
+					toastEx.success(`成功帶入 ${data.length} 筆客戶`);
 					importCustsAction.clear();
 				} else {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
 				importCustsAction.fail({ error: err });
-				toast.error(Errors.getMessage("帶入客戶發生錯誤", err), {
-					position: "top-right"
-				});
+				toastEx.error("帶入客戶發生錯誤", err);
 			}
 		},
 		[importCustsAction, httpGetAsync, GRID_URL, token, ipState.criteria, ipState.saveKey, grid]
@@ -545,15 +533,13 @@ export const useB012 = (opts = {}) => {
 			if (status.success) {
 				console.log("payload", payload.data);
 				if (!payload.data?.length) {
-					toast.error("目前查詢沒有資料", {
+					toastEx.error("目前查詢沒有資料", {
 						position: "top-right"
 					})
 					return;
 				}
 			} else {
-				toast.error(Errors.getMessage("讀取資料發生錯誤", error), {
-					position: "top-right"
-				})
+				toastEx.error("讀取資料發生錯誤", error);
 				return;
 			}
 			const { prtEmployee, prtDate } = data;
@@ -583,7 +569,7 @@ export const useB012 = (opts = {}) => {
 				}
 			);
 		},
-		[JOB_NAME, auth.token, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvProd?.ProdID]
+		[API_URL, JOB_NAME, auth.token, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvProd?.ProdID]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

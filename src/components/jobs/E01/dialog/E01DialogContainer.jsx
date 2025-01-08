@@ -1,6 +1,7 @@
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { E01Context } from "@/contexts/E01/E01Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -10,17 +11,16 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import E01Drawer from "../E01Drawer";
 import E01DialogForm from "./E01DialogForm";
 import { E01DialogToolbarContainer } from "./toolbar/E01DialogToolbarContainer";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const E01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -248,7 +248,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly || e01.sNotQtyDisabled,
 			},
 		],
-		[compTel, customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisabled, e01.spriceDisabled, e01.sqtyDisabled, e01.stypeDisabled, readOnly, retail]
+		[customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisabled, e01.spriceDisabled, e01.sqtyDisabled, e01.stypeDisabled, readOnly, retail]
 	);
 
 	const gridMeta = useDSGMeta({
@@ -261,37 +261,27 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!ordDate) {
-			toast.error("請先輸入訂貨日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入訂貨日期");
 			form.setFocus("OrdDate");
 			return;
 		}
 		if (!arrDate) {
-			toast.error("請先輸入到貨日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入到貨日期");
 			form.setFocus("ArrDate");
 			return;
 		}
 		if (!compTel) {
-			toast.error("請先輸入電話", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入電話");
 			form.setFocus("CompTel");
 			return;
 		}
 		if (!custName) {
-			toast.error("請先輸入客戶名稱", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入客戶名稱");
 			form.setFocus("CustName");
 			return;
 		}
 		if (!retail && !customer) {
-			toast.error("非零售請先輸入客戶代碼", {
-				position: "top-right",
-			});
+			toastEx.error("非零售請先輸入客戶代碼");
 			form.setFocus("customer");
 			return;
 		}

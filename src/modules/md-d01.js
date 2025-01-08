@@ -1,11 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Strings from "@/shared-modules/sd-strings";
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, SExpDate, ...rest }) => {
-			return {
+		data?.map((rowData, rowIndex) => {
+			const { SProdID, ProdData_N, SExpDate, ...rest } = rowData;
+			let processedRowData = {
 				prod: {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
@@ -16,6 +18,12 @@ const transformGridForReading = (data) => {
 				// overrideSQty: SQtyNote === "*",
 				...rest,
 			};
+			processedRowData.tooltip = getTooltip({
+				rowData: processedRowData,
+				rowIndex,
+			});
+
+			return processedRowData;
 		}) || []
 	);
 };
@@ -127,6 +135,19 @@ const findProdIndex = ({ newValue, rowData, rowIndex }) => {
 	return -1;
 };
 
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push(`庫存量(${stockQty || 0})`);
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
+};
+
 const D01 = {
 	transformForReading,
 	transformForSubmitting,
@@ -135,6 +156,7 @@ const D01 = {
 	getTotal,
 	isFiltered,
 	findProdIndex,
+	getTooltip,
 };
 
 export default D01;

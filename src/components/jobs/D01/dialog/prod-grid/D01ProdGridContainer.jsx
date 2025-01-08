@@ -6,6 +6,8 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import D01ProdGrid from "./D01ProdGrid";
+import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
+import { keyColumn } from "react-datasheet-grid";
 
 export const D01ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -21,9 +23,19 @@ export const D01ProdGridContainer = (props) => {
 			setValue: form.setValue,
 			gridMeta: formMeta.gridMeta,
 			onUpdateRow: d01.onUpdateRow,
+			onGridChanged: d01.onGridChanged,
 			// handleRefreshAmt: d01.handleRefreshAmt,
 		});
 	}, [d01, form.getValues, form.setValue, formMeta.gridMeta]);
+
+	const prodInfoColumn = useMemo(() => {
+		return {
+			...keyColumn("tooltip", createTooltipColumn({
+				arrow: true,
+				placement: "bottom-end",
+			}))
+		}
+	}, [])
 
 	return (
 		<DSGContext.Provider value={{ ...d01.grid, ...formMeta.gridMeta, readOnly: formMeta.readOnly }}>
@@ -37,6 +49,7 @@ export const D01ProdGridContainer = (props) => {
 				height={height - 310}
 				getRowKey={d01.getRowKey}
 				createRow={d01.createRow}
+				stickyRightColumn={prodInfoColumn}
 				{...rest}
 			/>
 		</DSGContext.Provider>

@@ -1,14 +1,13 @@
+import { toastEx } from "@/helpers/toast-ex";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import Objects from "@/shared-modules/sd-objects";
+import Types from "@/shared-modules/sd-types";
 import clsx from "clsx";
+import _ from "lodash";
 import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import InputMask from "react-input-mask";
-import { toast } from "react-toastify";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
-import Types from "@/shared-modules/sd-types";
-import _ from "lodash";
-import { useState } from "react";
 
 const DATE_FORMAT = "yyyy/MM/dd";
 const EMPTY = "____/__/__";
@@ -236,7 +235,7 @@ const DateInputMaskComponent = memo((props) => {
 						if (required) {
 							const message = getRequiredMessage({ value: inputRef.current.value })
 
-							toast.error(message, {
+							toastEx.error(message, {
 								position: "top-right"
 							})
 							setTimeout(() => {
@@ -247,7 +246,7 @@ const DateInputMaskComponent = memo((props) => {
 						const validationResult = isValidDate(inputRef.current.value);
 						console.log("isValidDate", validationResult);
 						if (!validationResult) {
-							toast.error(`${inputRef.current.value}不是正確的日期格式`, {
+							toastEx.error(`${inputRef.current.value}不是正確的日期格式`, {
 								position: "top-right"
 							})
 							setTimeout(() => {

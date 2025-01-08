@@ -47,7 +47,7 @@ export const A01SearchFieldContainer = (props) => {
 				<ControlledSearchFieldContainer
 					autoFocus
 					name={name}
-					placeholder="搜尋貨品 (ctrl+F12)"
+					placeholder="編號/品名(ctrl+F12)"
 					mobilePlaceholder="編號/品名"
 					// rightSquare
 					// square

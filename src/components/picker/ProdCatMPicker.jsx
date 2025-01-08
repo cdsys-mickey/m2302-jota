@@ -8,12 +8,12 @@ import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPic
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 
 const ProdCatMPicker = (props) => {
-	const { name, label = "中分類", catL, ...rest } = props;
+	const { name, label = "中分類", catLName = "catL", catL, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const form = useFormContext();
 	const { setValue } = form;
 
-	const catLValue = useWatch({ name: "catL" });
+	const catLValue = useWatch({ name: catLName });
 
 	const _catL = useMemo(() => {
 		return catL || catLValue?.LClas;
@@ -52,6 +52,7 @@ const ProdCatMPicker = (props) => {
 };
 
 ProdCatMPicker.propTypes = {
+	catLName: PropTypes.string,
 	name: PropTypes.string,
 	label: PropTypes.string,
 	catL: PropTypes.string,

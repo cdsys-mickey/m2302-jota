@@ -1,22 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import { toastEx } from "@/helpers/toast-ex";
+import C09 from "@/modules/md-c09";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { nanoid } from "nanoid";
+import { useCallback, useContext, useRef } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import CrudContext from "../../contexts/crud/CrudContext";
-import C09 from "@/modules/md-c09";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import Errors from "../../shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
 import { useAction } from "../../shared-hooks/useAction";
-import { useMemo } from "react";
 import useHttpPost from "../../shared-hooks/useHttpPost";
-import { isDate } from "date-fns";
-import Forms from "../../shared-modules/sd-forms";
+import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
 import { useToggle } from "../../shared-hooks/useToggle";
-import { nanoid } from "nanoid";
+import { useWebApi } from "../../shared-hooks/useWebApi";
+import { useAppModule } from "./useAppModule";
 
 export const useC09 = () => {
 	const crud = useContext(CrudContext);
@@ -119,7 +115,7 @@ export const useC09 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toastEx.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -129,9 +125,7 @@ export const useC09 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -221,7 +215,7 @@ export const useC09 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -232,9 +226,7 @@ export const useC09 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -257,7 +249,7 @@ export const useC09 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除撥入單 ${itemData?.TxiID}`);
+						toastEx.success(`成功删除撥入單 ${itemData?.TxiID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -265,9 +257,7 @@ export const useC09 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -312,7 +302,7 @@ export const useC09 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { txoDeptId }) => {
 			if (!prodId) {
-				toast.error("請先選擇商品", {
+				toastEx.error("請先選擇商品", {
 					position: "top-right"
 				});
 				return;
@@ -334,9 +324,7 @@ export const useC09 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("查詢報價失敗", err);
 			}
 		},
 		[httpGetAsync, token]
@@ -406,14 +394,12 @@ export const useC09 = () => {
 						setValue("TxoChk", data.TxoChk);
 						setValue("remark", data.remark);
 						refreshAmt({ setValue, data, gridData: data.prods });
-						// toast.info("撥出單商品已載入");
+						// toastEx.info("撥出單商品已載入");
 					} else {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("載入撥出單商品失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("載入撥出單商品失敗", err);
 				}
 			},
 		[httpPostAsync, grid, refreshAmt, token]
@@ -480,9 +466,7 @@ export const useC09 = () => {
 			};
 
 			if (prod && !quoted) {
-				toast.error(`「${prod.ProdData}」未訂調撥成本，不得輸入`, {
-					position: "top-right",
-				});
+				toastEx.error(`「${prod.ProdData}」未訂調撥成本，不得輸入`);
 			}
 			return newRowData;
 		},
@@ -695,7 +679,7 @@ export const useC09 = () => {
 								fillRows: true
 							});
 							refreshAmt({ setValue, data });
-							toast.info("商品單價已更新");
+							toastEx.info("商品單價已更新");
 						} else {
 							throw error || new Error("未預期例外");
 						}
@@ -706,9 +690,7 @@ export const useC09 = () => {
 						});
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("商品單價更新失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("商品單價更新失敗", err);
 					// 還原
 				}
 			},
@@ -737,9 +719,7 @@ export const useC09 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-right"
-			});
+			toastEx.error("編輯檢查失敗", err);
 		} finally {
 			checkEditableAction.clear();
 		}

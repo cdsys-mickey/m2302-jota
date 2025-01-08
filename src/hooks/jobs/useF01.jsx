@@ -1,5 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import F01 from "@/modules/md-f01";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
@@ -8,11 +9,9 @@ import { useAction } from "@/shared-hooks/useAction";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import Objects from "@/shared-modules/sd-objects";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 
@@ -82,7 +81,7 @@ export const useF01 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toastEx.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -92,9 +91,7 @@ export const useF01 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -185,7 +182,7 @@ export const useF01 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -196,9 +193,7 @@ export const useF01 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -221,7 +216,7 @@ export const useF01 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除盤點清單 ${itemData?.PhyID}`);
+						toastEx.success(`成功删除盤點清單 ${itemData?.PhyID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -229,9 +224,7 @@ export const useF01 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -408,9 +401,7 @@ export const useF01 = () => {
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("篩選失敗", err);
 			} finally {
 				setIpState((prev) => ({
 					...prev,
@@ -439,16 +430,14 @@ export const useF01 = () => {
 					grid.initGridData(F01.transformForGridImport(data), {
 						fillRows: true,
 					});
-					toast.success(`成功帶入 ${data.length} 筆商品`);
+					toastEx.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
 				} else {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
 				importProdsAction.fail({ error: err });
-				toast.error(Errors.getMessage("帶入商品發生錯誤", err), {
-					position: "top-right"
-				});
+				toastEx.error("帶入商品發生錯誤", err);
 			}
 		},
 		[httpGetAsync, importProdsAction, ipState.criteria, grid, token]

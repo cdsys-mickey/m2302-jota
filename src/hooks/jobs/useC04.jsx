@@ -1,21 +1,20 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import C04 from "@/modules/md-c04";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import Forms from "@/shared-modules/sd-forms";
 import { isDate } from "date-fns";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { useAppModule } from "./useAppModule";
 import { useSideDrawer } from "../useSideDrawer";
-import { useToggle } from "@/shared-hooks/useToggle";
+import { useAppModule } from "./useAppModule";
 
 export const useC04 = () => {
 	const crud = useContext(CrudContext);
@@ -149,7 +148,7 @@ export const useC04 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toastEx.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -159,9 +158,7 @@ export const useC04 = () => {
 			} catch (err) {
 				crud.failCreating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
 		[crud, httpPostAsync, listLoader, token]
@@ -247,13 +244,13 @@ export const useC04 = () => {
 							supressEvents: true
 						});
 						updateAmt({ setValue, data });
-						toast.info("商品單價已更新");
+						toastEx.info("商品單價已更新");
 					} else {
 						throw error || new Error("未預期例外");
 					}
 				} catch (e) {
 					console.error(e);
-					toast.error("商品單價更新失敗, 請檢查各欄位是否完整", {
+					toastEx.error("商品單價更新失敗, 請檢查各欄位是否完整", {
 						position: "top-right"
 					});
 				}
@@ -346,7 +343,7 @@ export const useC04 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -357,9 +354,7 @@ export const useC04 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -382,7 +377,7 @@ export const useC04 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除進貨單 ${itemData?.GinID}`);
+						toastEx.success(`成功删除進貨單 ${itemData?.GinID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -390,9 +385,7 @@ export const useC04 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -418,20 +411,20 @@ export const useC04 = () => {
 	const getProdInfo = useCallback(
 		async (prodId, { supplier, rstDate }) => {
 			if (!prodId) {
-				// toast.error("請先選擇商品");
+				// toastEx.error("請先選擇商品");
 				return;
 			}
 
 			const supplierId = supplier?.FactID;
 			if (!supplierId) {
-				toast.error("請先選擇廠商", {
+				toastEx.error("請先選擇廠商", {
 					position: "top-right"
 				});
 				return;
 			}
 
 			if (!isDate(rstDate)) {
-				toast.error("請先輸入進貨日期", {
+				toastEx.error("請先輸入進貨日期", {
 					position: "top-right"
 				});
 				return;
@@ -454,9 +447,7 @@ export const useC04 = () => {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("查詢報價失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("查詢報價失敗", err);
 			}
 		},
 		[httpGetAsync, token]
@@ -485,9 +476,7 @@ export const useC04 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("計算合計失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("計算合計失敗", err);
 			}
 		},
 		[httpGetAsync, token]
@@ -834,14 +823,12 @@ export const useC04 = () => {
 							supressEvents: true
 						});
 						updateAmt({ setValue, data });
-						// toast.info("採購單商品已載入");
+						// toastEx.info("採購單商品已載入");
 					} else {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("載入採購單商品失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("載入採購單商品失敗", err);
 				}
 			},
 		[grid, httpPostAsync, token, crud.creating, updateAmt]
@@ -876,7 +863,7 @@ export const useC04 = () => {
 							console.log("refreshed data", data);
 							grid.handleGridDataLoaded(data.prods);
 							updateAmt({ setValue, data });
-							toast.info("商品單價已更新");
+							toastEx.info("商品單價已更新");
 						} else {
 							throw error || new Error("未預期例外");
 						}
@@ -887,9 +874,7 @@ export const useC04 = () => {
 						});
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("商品單價更新失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("商品單價更新失敗", err);
 					// 還原
 				}
 			},
@@ -925,14 +910,12 @@ export const useC04 = () => {
 							supressEvents: true,
 						});
 						updateAmt({ setValue, data });
-						// toast.info("採購單商品已載入");
+						// toastEx.info("採購單商品已載入");
 					} else {
 						throw error || new Error("發生未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("重整商品失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("重整商品失敗", err);
 					// 還原
 				}
 			},
@@ -961,9 +944,7 @@ export const useC04 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-right"
-			});
+			toastEx.error("編輯檢查失敗", err);
 		} finally {
 			checkEditableAction.clear();
 		}
@@ -1060,4 +1041,5 @@ export const useC04 = () => {
 		handlePopperClose,
 		handleReset
 	};
+
 };

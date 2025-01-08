@@ -138,39 +138,41 @@ const getTooltip = ({ rowData, rowIndex }) => {
 };
 
 const transformGridForReading = (data) => {
-	return data?.map((rowData, rowIndex) => {
-		const {
-			// prod
-			SProdID,
-			ProdData_N,
-			PackData_N,
+	return (
+		data?.map((rowData, rowIndex) => {
+			const {
+				// prod
+				SProdID,
+				ProdData_N,
+				PackData_N,
 
-			// stype
-			SType,
+				// stype
+				SType,
 
-			...rest
-		} = rowData;
+				...rest
+			} = rowData;
 
-		let processedRowData = {
-			prod: SProdID
-				? {
-						ProdID: SProdID,
-						ProdData: ProdData_N,
-				  }
-				: null,
-			ProdData_N,
-			PackData_N,
-			stype: FreeProdTypes.getOptionById(SType),
-			...rest,
-		};
+			let processedRowData = {
+				prod: SProdID
+					? {
+							ProdID: SProdID,
+							ProdData: ProdData_N,
+					  }
+					: null,
+				ProdData_N,
+				PackData_N,
+				stype: FreeProdTypes.getOptionById(SType),
+				...rest,
+			};
 
-		processedRowData.tooltip = getTooltip({
-			rowData: processedRowData,
-			rowIndex,
-		});
+			processedRowData.tooltip = getTooltip({
+				rowData: processedRowData,
+				rowIndex,
+			});
 
-		return processedRowData;
-	});
+			return processedRowData;
+		}) || []
+	);
 };
 
 const transformGridForSubmitting = (data) => {

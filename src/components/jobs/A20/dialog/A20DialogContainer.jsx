@@ -1,25 +1,24 @@
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { A20Context } from "@/contexts/A20/A20Context";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import A20Form from "../form/A20Form";
-import { A20DialogButtonsContainer } from "./buttons/A20DialogButtonsContainer";
+import Colors from "@/modules/md-colors";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import Colors from "@/modules/md-colors";
-import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
-import A20Drawer from "../A20Drawer";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useCallback } from "react";
-import { toast } from "react-toastify";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
+import A20Drawer from "../A20Drawer";
+import A20Form from "../form/A20Form";
+import { A20DialogButtonsContainer } from "./buttons/A20DialogButtonsContainer";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const A20DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -131,9 +130,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!prod) {
-			toast.error("請先選擇商品", {
-				position: "top-right",
-			});
+			toastEx.error("請先選擇商品");
 			form.setFocus("prod");
 			return;
 		}

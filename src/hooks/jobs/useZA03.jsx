@@ -1,24 +1,22 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
+import Auth from "@/modules/md-auth";
+import CopyAuth from "@/modules/md-copy-auth";
 import UserInfo from "@/modules/md-user-info";
 import ZA03 from "@/modules/md-za03";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useAction } from "@/shared-hooks/useAction";
-import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
-import { useCallback, useContext, useMemo, useState } from "react";
-import { toast } from "react-toastify";
 import ActionState from "@/shared-constants/action-state";
-import { useAppModule } from "./useAppModule";
-import { useInit } from "@/shared-hooks/useInit";
-import { useRef } from "react";
-import CopyAuth from "@/modules/md-copy-auth";
-import Auth from "@/modules/md-auth";
-import DSG from "../../shared-modules/sd-dsg";
-import UserAuth from "../../modules/md-user-auth";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useAction } from "@/shared-hooks/useAction";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useInit } from "@/shared-hooks/useInit";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import UserAuth from "../../modules/md-user-auth";
+import DSG from "../../shared-modules/sd-dsg";
+import { useAppModule } from "./useAppModule";
 
 export const useZA03 = () => {
 	const crud = useContext(CrudContext);
@@ -116,7 +114,7 @@ export const useZA03 = () => {
 				}
 			} catch (err) {
 				loadAuthGridAction.fail({ error: err });
-				toast.error(err?.message, {
+				toastEx.error(err?.message, {
 					position: "top-right"
 				});
 			}
@@ -339,7 +337,7 @@ export const useZA03 = () => {
 
 				if (status.success) {
 					// const processed = Users.transformForReading(payload);
-					toast.success(`使用者新增成功`);
+					toastEx.success(`使用者新增成功`);
 
 					crud.doneCreating();
 					await loadItem({ id: payload?.UID });
@@ -352,15 +350,9 @@ export const useZA03 = () => {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
 				if (err.code === 8) {
-					toast.error("帳號名稱重複，請確認後重新送出",
-						{
-							position: "top-right",
-						}
-					);
+					toastEx.error("帳號名稱重複，請確認後重新送出");
 				} else {
-					toast.error(Errors.getMessage("新增失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("新增失敗", err);
 				}
 			}
 		},
@@ -378,7 +370,7 @@ export const useZA03 = () => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`使用者 ${payload.data?.LoginName} ${payload.data?.UserName}」修改成功`
 					);
 					crud.doneUpdating();
@@ -393,9 +385,7 @@ export const useZA03 = () => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, loadAuthGridAction, loadItem, loader, token]
@@ -419,7 +409,7 @@ export const useZA03 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`ZA03.onSubmitError`, err);
-		toast.error("資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
+		toastEx.error("資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
 			position: "top-right"
 		});
 	}, []);
@@ -439,7 +429,7 @@ export const useZA03 = () => {
 					});
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(
+						toastEx.success(
 							`成功删除 ${crud.itemData?.LoginName} ${crud.itemData.UserName}`
 						);
 						loader.loadList({ refresh: true });
@@ -449,9 +439,7 @@ export const useZA03 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -510,9 +498,7 @@ export const useZA03 = () => {
 					throw error || new Error("權限異動異常");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage(`更新 ${moduleId} 權限異常`, err), {
-					position: "top-right"
-				});
+				toastEx.error(`更新 ${moduleId} 權限異常`, err);
 			}
 		},
 		[crud.itemData?.UID, httpPatchAsync, selectedDept?.DeptID, token]
@@ -651,9 +637,7 @@ export const useZA03 = () => {
 				}
 			} catch (err) {
 				addAuthAction.fail({ error: err });
-				toast.error(Errors.getMessage("新增權限失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增權限失敗", err);
 			}
 		},
 		[
@@ -706,7 +690,7 @@ export const useZA03 = () => {
 				});
 				if (status.success) {
 					copyAuthAction.finish();
-					toast.success("權限複製成功");
+					toastEx.success("權限複製成功");
 					// 若編輯中則需要重整
 					if (crud.itemViewOpen) {
 						loadUserAuthorities();
@@ -721,9 +705,7 @@ export const useZA03 = () => {
 				}
 			} catch (err) {
 				copyAuthAction.fail({ error: err });
-				toast.error(Errors.getMessage("複製權限失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("複製權限失敗", err);
 			}
 		},
 		[
@@ -778,9 +760,7 @@ export const useZA03 = () => {
 					throw error || new Error("發生未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage("刪除權限失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("刪除權限失敗", err);
 			} finally {
 				dialogs.closeLatest();
 			}
@@ -831,16 +811,14 @@ export const useZA03 = () => {
 							}
 						);
 						if (status.success) {
-							toast.success(
+							toastEx.success(
 								`${item.LoginName} 密碼已重設為「${payload.newPword}」`
 							);
 						} else {
 							throw error || new Error("未預期例外");
 						}
 					} catch (err) {
-						toast.error(Errors.getMessage("重設密碼失敗", err), {
-							position: "top-right"
-						});
+						toastEx.error("重設密碼失敗", err);
 					}
 				},
 			});
@@ -881,15 +859,13 @@ export const useZA03 = () => {
 				saveAuthAction.finish();
 				setAuthEditingMode(null);
 				loadUserAuthorities();
-				toast.success("權限已更新");
+				toastEx.success("權限已更新");
 			} else {
 				throw error || new Error("權限異動異常");
 			}
 		} catch (err) {
 			saveAuthAction.fail("儲存失敗");
-			toast.error(Errors.getMessage(`更新 ${crud.itemData?.LoginName} 權限發生錯誤`, err), {
-				position: "top-right"
-			});
+			toastEx.error(`更新 ${crud.itemData?.LoginName} 權限發生錯誤`, err);
 		} finally {
 			saveAuthAction.clear();
 		}

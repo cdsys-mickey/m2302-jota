@@ -1,15 +1,14 @@
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { grey } from "@mui/material/colors";
 import PropTypes from "prop-types";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import CrudContext from "../../contexts/crud/CrudContext";
-import { StdPrintContext } from "../../contexts/std-print/StdPrintContext";
-import DialogEx from "../../shared-components/dialog/DialogEx";
+import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
+import DialogEx from "@/shared-components/dialog/DialogEx";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import StdPrintActionButtons from "./StdPrintActionButtons";
 import { StdPrintFormContainer } from "./StdPrintFormContainer";
-import { useWindowSize } from "../../shared-hooks/useWindowSize";
-import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 
 export const StdPrintDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import { useP02 } from "../../hooks/jobs/useP02";
-import P02 from "../../modules/md-p02";
-import StdPrint from "../../modules/md-std-print";
+import { useP02 } from "@/hooks/jobs/useP02";
+import P02 from "@/modules/md-p02";
+import StdPrint from "@/modules/md-std-print";
 import { P02Context } from "./P02Context";
 
 export const P02Provider = ({ children }) => {

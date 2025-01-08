@@ -6,6 +6,8 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import C06ProdGrid from "./C06ProdGrid";
+import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
+import { keyColumn } from "react-datasheet-grid";
 
 export const C06ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -24,6 +26,15 @@ export const C06ProdGridContainer = (props) => {
 			onGridChanged: c06.onGridChanged
 		});
 	}, [c06, form.getValues, form.setValue, formMeta.gridMeta]);
+
+	const prodInfoColumn = useMemo(() => {
+		return {
+			...keyColumn("tooltip", createTooltipColumn({
+				arrow: true,
+				placement: "left-start",
+			}))
+		}
+	}, [])
 
 	return (
 		<DSGContext.Provider value={{
@@ -47,6 +58,7 @@ export const C06ProdGridContainer = (props) => {
 				sprodDisabled={c06.sprodDisabled}
 				disableAddRows={c06.disableAddRows}
 				createRow={c06.createRow}
+				stickyRightColumn={prodInfoColumn}
 				{...rest}
 			/>
 		</DSGContext.Provider>

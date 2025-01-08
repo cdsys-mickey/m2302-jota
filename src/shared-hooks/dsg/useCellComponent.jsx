@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
 import { toast } from "react-toastify";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useCellComponent = (props = {}) => {
 	const {
@@ -26,9 +27,7 @@ export const useCellComponent = (props = {}) => {
 				setActiveCell(nextCell.field);
 			} else {
 				if (typeof lastCell === "string") {
-					toast.error(lastCell, {
-						position: "top-right",
-					});
+					toastEx.warn(lastCell);
 				} else if (typeof lastCell === "function") {
 					lastCell(opts);
 				} else {

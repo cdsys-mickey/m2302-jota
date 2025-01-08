@@ -1,7 +1,21 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Strings from "@/shared-modules/sd-strings";
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
 import FreeProdTypes from "./md-free-prod-types";
+
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push(`庫存量(${stockQty || 0})`);
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
+};
 
 const transformGridForReading = (data) => {
 	return (
@@ -208,32 +222,6 @@ const getTotal = (gridData) => {
 		result += SAmt ? Number(SAmt) : 0;
 	}
 	return result;
-};
-
-const getTooltip = ({ rowData }) => {
-	if (!rowData.SOrdID) {
-		return "";
-	}
-
-	let results = [];
-	// if (rowData?.StockQty_N !== null && rowData?.StockQty_N !== undefined) {
-	// 	results.push(`庫存: ${rowData?.StockQty_N || "0"}`);
-	// }
-	if (rowData?.ordId !== null && rowData?.ordId !== undefined) {
-		results.push(`訂單: ${rowData?.ordId || "(空白)"}`);
-	}
-
-	if (rowData?.OrdQty_N !== null && rowData?.OrdQty_N !== undefined) {
-		results.push(`訂貨量: ${rowData?.OrdQty_N || "0"}`);
-	}
-	if (rowData?.OrdNotQty_N !== null && rowData?.OrdNotQty_N !== undefined) {
-		results.push(`未出量: ${rowData?.OrdNotQty_N || "0"}`);
-	}
-	if (rowData?.OrdRemark_N !== null && rowData?.OrdRemark_N !== undefined) {
-		results.push(`備註: ${rowData?.OrdRemark_N || "(空白)"}`);
-	}
-
-	return results.join(", ");
 };
 
 const C08 = {

@@ -24,6 +24,7 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { nanoid } from "nanoid";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import { useSideDrawer } from "../useSideDrawer";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useC01 = () => {
 	const crud = useContext(CrudContext);
@@ -316,7 +317,7 @@ export const useC01 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -327,9 +328,7 @@ export const useC01 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -439,7 +438,7 @@ export const useC01 = () => {
 						// 	// const { prod } = rowData;
 						// 	const rowIndex = operation.fromRowIndex + i;
 						// 	if (prodDisabled({ rowData })) {
-						// 		toast.error(
+						// 		toastEx.error(
 						// 			`不可刪除第 ${rowIndex + 1} 筆商品`
 						// 		);
 						// 		return;
@@ -448,7 +447,7 @@ export const useC01 = () => {
 						.some((rowData, i) => {
 							if (prodDisabled({ rowData })) {
 								const rowIndex = operation.fromRowIndex + i;
-								toast.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
+								toastEx.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
 									position: "top-right"
 								});
 								return true;
@@ -503,7 +502,7 @@ export const useC01 = () => {
 				return x && x !== "*"
 			}).join(",");
 			if (!ordId) {
-				toast.error("目前沒有採購單");
+				toastEx.error("目前沒有採購單");
 				return;
 			}
 			const jsonData = {
@@ -523,12 +522,7 @@ export const useC01 = () => {
 				}
 			);
 		},
-		[
-			crud.itemData?.RqtID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[grid.gridData, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -580,13 +574,11 @@ export const useC01 = () => {
 					console.log("to-order.payload", payload);
 
 					if (!payload.OrdIDs) {
-						toast.error("沒有形成採購單，請確認供應商等欄位是否有確實填寫", {
-							position: "top-right",
-						});
+						toastEx.error("沒有形成採購單，請確認供應商等欄位是否有確實填寫");
 						transformAction.clear();
 					} else {
 						const ordIds = payload.OrdIDs.split("，");
-						toast.success(
+						toastEx.success(
 							`成功形成 ${ordIds.length
 							} 張採購單，單號：${ordIds.join("、")}`
 						);
@@ -601,9 +593,7 @@ export const useC01 = () => {
 				}
 			} catch (err) {
 				transformAction.fail({ error: err });
-				toast.error(Errors.getMessage("形成採購單失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("形成採購單失敗", err);
 			}
 		},
 		[crud, httpPatchAsync, listLoader, token, transformAction]
@@ -662,13 +652,11 @@ export const useC01 = () => {
 					console.log("to-order.payload", payload);
 
 					if (!payload.OrdIDs) {
-						toast.error("沒有形成採購單，請確認供應商等欄位是否有確實填寫", {
-							position: "top-right",
-						});
+						toastEx.error("沒有形成採購單，請確認供應商等欄位是否有確實填寫");
 						transformListAction.clear();
 					} else {
 						const ordIds = payload.OrdIDs.split("，");
-						toast.success(
+						toastEx.success(
 							`成功形成 ${ordIds.length
 							} 張採購單，單號：${ordIds.join("、")}`
 						);
@@ -683,9 +671,7 @@ export const useC01 = () => {
 				}
 			} catch (err) {
 				transformListAction.fail({ error: err });
-				toast.error(Errors.getMessage("形成採購單失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("形成採購單失敗", err);
 			}
 		},
 		[crud, httpPatchAsync, listLoader, listLoaderCtx.paramsRef, token, transformListAction]

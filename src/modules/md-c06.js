@@ -1,12 +1,27 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Strings from "@/shared-modules/sd-strings";
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
 import FreeProdTypes from "./md-free-prod-types";
 
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push(`庫存量(${stockQty || 0})`);
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
+};
+
 const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, SType, ...rest }) => {
-			return {
+		data?.map((rowData, rowIndex) => {
+			const { SProdID, ProdData_N, SType, ...rest } = rowData;
+			let processedRowData = {
 				prod: {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
@@ -15,6 +30,12 @@ const transformGridForReading = (data) => {
 				stype: FreeProdTypes.getOptionById(SType),
 				...rest,
 			};
+			processedRowData.tooltip = getTooltip({
+				rowData: processedRowData,
+				rowIndex,
+			});
+
+			return processedRowData;
 		}) || []
 	);
 };
@@ -231,6 +252,7 @@ const C06 = {
 	getSquaredOptionDisabled,
 	findSquaredOptionByInput,
 	stringifyOrders,
+	getTooltip,
 };
 
 export default C06;

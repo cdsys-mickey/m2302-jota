@@ -89,6 +89,7 @@ const DialogEx = memo(
 			confirmTooltip = "",
 			cancelTooltip = "",
 			id,
+			mask = false,
 			...rest
 		} = props;
 		// const dialogs = useContext(DialogsContext);
@@ -255,6 +256,9 @@ const DialogEx = memo(
 							<TextField
 								inputRef={setInputRef}
 								placeholder={placeholder}
+								{...(mask && {
+									type: "password"
+								})}
 								size="small"
 								autoFocus
 								fullWidth
@@ -263,6 +267,9 @@ const DialogEx = memo(
 								}
 								defaultValue={defaultPromptValue}
 								onKeyDown={handleKeyDown}
+								inputProps={{
+									autocomplete: "off"
+								}}
 								{...promptTextFieldProps}
 							/>
 						</Box>

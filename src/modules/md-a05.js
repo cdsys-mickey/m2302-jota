@@ -1,3 +1,5 @@
+import Objects from "@/shared-modules/sd-objects";
+
 /* eslint-disable no-mixed-spaces-and-tabs */
 const transformForReading = (payload) => {
 	const { BankID, BankData_N, MainProd = [], Remark = [], ...rest } = payload;
@@ -24,8 +26,45 @@ const transformForEditorSubmit = (payload) => {
 	};
 };
 
+const isFiltered = (criteria) => {
+	return Objects.isAnyPropNotEmpty(criteria, "lvId,lvName,lvBank");
+};
+
+const transformAsQueryParams = (data) => {
+	const { lvId, lvName, lvBank, ...rest } = data;
+	return {
+		si: lvId,
+		sn: lvName,
+		...(lvBank && {
+			bank: lvBank?.CodeID,
+		}),
+		...rest,
+	};
+};
+
 const paramsToJsonData = (params) => {
 	const where = [];
+	if (params?.si) {
+		where.push({
+			ShowName: "廠商代碼",
+			OpCode: "LIKE",
+			CondData: "%" + params.si + "%",
+		});
+	}
+	if (params?.sn) {
+		where.push({
+			ShowName: "廠商名稱",
+			OpCode: "LIKE",
+			CondData: "%" + params.sn + "%",
+		});
+	}
+	if (params?.bank) {
+		where.push({
+			ShowName: "往來銀行",
+			OpCode: "=",
+			CondData: params.bank,
+		});
+	}
 
 	return {
 		StdWhere: where,
@@ -42,6 +81,8 @@ const A05 = {
 	transformForReading,
 	transformForEditorSubmit,
 	paramsToJsonData,
+	isFiltered,
+	transformAsQueryParams,
 };
 
 export default A05;

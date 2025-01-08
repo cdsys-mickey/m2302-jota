@@ -1,13 +1,12 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import F07 from "@/modules/md-f07";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import { useCallback, useContext } from "react";
-import { toast } from "react-toastify";
 import { useAppModule } from "./useAppModule";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 
 export const useF07 = () => {
 	const crud = useContext(CrudContext);
@@ -66,7 +65,7 @@ export const useF07 = () => {
 					bearer: token
 				})
 				if (status.success) {
-					toast.success("結轉已成功");
+					toastEx.success("結轉已成功");
 					crud.doneUpdating();
 				} else {
 					throw error || new Error("未預期例外");
@@ -74,7 +73,7 @@ export const useF07 = () => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error(err);
-				toast.error(Errors.getMessage("結轉失敗", err));
+				toastEx.error("結轉失敗", err);
 			} finally {
 				crud.doneUpdating();
 				load();

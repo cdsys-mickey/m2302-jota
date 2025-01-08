@@ -1,21 +1,20 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import D05 from "@/modules/md-d05";
-import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { nanoid } from "nanoid";
-import { useCallback, useContext, useMemo, useRef } from "react";
-import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
+import D05 from "@/modules/md-d05";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
+import { nanoid } from "nanoid";
+import { useCallback, useContext, useRef } from "react";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
+import { useAppModule } from "./useAppModule";
 
 export const useD05 = () => {
 	const crud = useContext(CrudContext);
@@ -69,7 +68,7 @@ export const useD05 = () => {
 
 	const grid = useDSG({
 		gridId: "prods",
-		keyColumn: "pkey",
+		keyColumn: "Pkey",
 		createRow
 	});
 
@@ -172,7 +171,7 @@ export const useD05 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(creating ? `新增成功` : `修改成功`);
+					toastEx.success(creating ? `新增成功` : `修改成功`);
 					if (creating) {
 						crud.doneCreating();
 						crud.cancelReading();
@@ -192,9 +191,7 @@ export const useD05 = () => {
 					crud.failUpdating();
 				}
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 				// if (err.code === 102) {
 				// 	const rowIndex = Number(err.data.Row) - 1;
 				// 	const rowData = grid.gridData[rowIndex];
@@ -204,7 +201,7 @@ export const useD05 = () => {
 				// 		setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true
 				// 	});
 				// } else {
-				// 	toast.error(Errors.getMessage("新增失敗", err), {
+				// 	toastEx.error("新增失敗", err), {
 				// 		position: "top-right"
 				// 	});
 				// }
@@ -264,7 +261,7 @@ export const useD05 = () => {
 	// 				bearer: token,
 	// 			});
 	// 			if (status.success) {
-	// 				toast.success(`修改成功`);
+	// 				toastEx.success(`修改成功`);
 	// 				crud.doneUpdating();
 	// 				//crud.cancelReading();
 	// 				loadItem({ refresh: true });
@@ -277,11 +274,11 @@ export const useD05 = () => {
 	// 			console.error("handleUpdate.failed", err);
 	// 			if (err.code === 102) {
 	// 				recoverStockMap(data.prods, { mark: true });
-	// 				toast.error("部分商品庫存不足，請調整後再送出", {
+	// 				toastEx.error("部分商品庫存不足，請調整後再送出", {
 	// 					position: "top-right"
 	// 				});
 	// 			} else {
-	// 				toast.error(Errors.getMessage("修改失敗", err), {
+	// 				toastEx.error("修改失敗", err), {
 	// 					position: "top-right"
 	// 				});
 	// 			}
@@ -307,7 +304,7 @@ export const useD05 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除報廢單 ${itemData?.CxlID}`);
+						toastEx.success(`成功删除報廢單 ${itemData?.CxlID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -315,9 +312,7 @@ export const useD05 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -383,11 +378,7 @@ export const useD05 = () => {
 					["SQty"]: 0,
 					["SAmt"]: 0,
 				};
-				toast.error(`第 ${rowIndex + 1} 筆庫存量不足(${prodStock} < ${rowData.SQty})！`,
-					{
-						position: "top-right",
-					}
-				);
+				toastEx.error(`第 ${rowIndex + 1} 筆庫存量不足(${prodStock} < ${rowData.SQty})！`);
 				gridMeta.setActiveCell({
 					col: "SQty",
 					row: rowIndex
@@ -423,9 +414,7 @@ export const useD05 = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("查詢報價失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("查詢報價失敗", err);
 				}
 			} else {
 				processedRowData = {
@@ -481,9 +470,7 @@ export const useD05 = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("查詢報價失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("查詢報價失敗", err);
 				}
 			} else {
 				newRowData = {
@@ -531,6 +518,7 @@ export const useD05 = () => {
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				updateResult.rowIndex = rowIndex;
+
 				const oldRowData = grid.gridData[rowIndex];
 				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
 				let processedRowData = {
@@ -581,16 +569,22 @@ export const useD05 = () => {
 		[grid.gridData, handleGridProdChange, handleGridSQtyChange, handleGridSAmtChange]
 	);
 
-	const mapTooltip = useCallback(({ prevGridData, gridData, rowIndex }) => {
-		const targetRow = gridData[rowIndex];
-		let targetProdID = targetRow.prod?.ProdID;
-		// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
-		if (!targetProdID) {
+	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex, }) => {
+		let targetProdID;
+		if (updateResult?.type === "DELETE") {
 			targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+		} else {
+			const targetRow = gridData[rowIndex];
+			targetProdID = targetRow.prod?.ProdID;
+			// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
+			if (!targetProdID) {
+				targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+			}
 		}
 
 		// 若 targetProdID 仍為空，則不執行更新
 		if (!targetProdID) {
+			console.log("targetProdID 為空, 不執行 mapTooltip")
 			return gridData;
 		}
 
@@ -598,18 +592,20 @@ export const useD05 = () => {
 		return gridData.map((row, index) => {
 			if (row.prod?.ProdID === targetProdID) {
 				// 加總其他與 index 不同的 SQty
-				let otherRowsTotalSQty = gridData.reduce((acc, innerRow, innerIndex) => {
-					if (innerIndex !== index && innerRow.prod?.ProdID === targetProdID) {
-						return acc + Number(innerRow.SQty || 0);
-					}
-					return acc;
-				}, 0);
+				// let otherRowsTotalSQty = gridData.reduce((acc, innerRow, innerIndex) => {
+				// 	if (innerIndex !== index && innerRow.prod?.ProdID === targetProdID) {
+				// 		return acc + Number(innerRow.SQty || 0);
+				// 	}
+				// 	return acc;
+				// }, 0);
 
-				const stock = sqtyManager.getStockQty(targetProdID);
-				const remaining = stock - otherRowsTotalSQty;
+				// const ogStock = sqtyManager.getStockQty(targetProdID);
+				// const stock = ogStock - otherRowsTotalSQty;
+				const stock = sqtyManager.getRemainingStock({ prodId: targetProdID, gridData });
+
 				let processedRowData = {
 					...row,
-					StockQty_N: remaining,
+					StockQty_N: stock,
 				};
 
 				processedRowData = {
@@ -635,9 +631,9 @@ export const useD05 = () => {
 			});
 		}
 
-		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty")) {
+		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty") || updateResult.type === "DELETE") {
 			console.log("before reduce", gridData);
-			const updated = mapTooltip({ prevGridData, gridData, rowIndex: updateResult.rowIndex })
+			const updated = mapTooltip({ updateResult, prevGridData, gridData, rowIndex: updateResult.rowIndex })
 			console.log("after reduce", updated);
 			return updated;
 		}
@@ -833,7 +829,7 @@ export const useD05 = () => {
 							console.log("refreshed data", data);
 							grid.handleGridDataLoaded(data.prods);
 							updateAmt({ setValue, formData: data });
-							toast.info("商品單價已更新");
+							toastEx.info("商品單價已更新");
 						} else {
 							throw error || new Error("未預期例外");
 						}
@@ -844,9 +840,7 @@ export const useD05 = () => {
 						});
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("商品單價更新失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("商品單價更新失敗", err);
 					// 還原
 				}
 			},
@@ -875,9 +869,7 @@ export const useD05 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-right"
-			});
+			toastEx.error("編輯檢查失敗", err);
 		} finally {
 			checkEditableAction.clear();
 		}

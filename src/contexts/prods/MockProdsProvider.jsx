@@ -1,19 +1,18 @@
 import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import { useCallback, useState } from "react";
-import { toast } from "react-toastify";
+import { toastEx } from "@/helpers/toast-ex";
 import { MockProducts } from "@/mocks/mock-products";
 import A01 from "@/modules/md-a01";
+import { useCallback, useState } from "react";
 import { MockProdsContext } from "./MockProdsContext";
 
 export const MockProdsProvider = ({ children }) => {
 	const { cancelEditing, popperOpen, handlePopperClose } = useCrudZZ();
-
 	const [state, setState] = useState({
 		data: MockProducts,
 	});
 
 	const handleCreate = useCallback(() => {
-		toast.success("已成功新增");
+		toastEx.success("已成功新增");
 		cancelEditing();
 	}, [cancelEditing]);
 

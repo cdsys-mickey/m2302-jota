@@ -1,13 +1,11 @@
-import { useCallback, useState } from "react";
-import { useWebApi } from "../shared-hooks/useWebApi";
-import { useInit } from "../shared-hooks/useInit";
-import StdPrint from "../modules/md-std-print";
-import useHttpPost from "../shared-hooks/useHttpPost";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { toast } from "react-toastify";
+import StdPrint from "../modules/md-std-print";
 import { useAction } from "../shared-hooks/useAction";
-import { useMemo } from "react";
-import { useContext } from "react";
-import CrudContext from "../contexts/crud/CrudContext";
+import useHttpPost from "../shared-hooks/useHttpPost";
+import { useWebApi } from "../shared-hooks/useWebApi";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useStdPrint = ({
 	token,
@@ -18,7 +16,8 @@ export const useStdPrint = ({
 }) => {
 	const { httpGetAsync } = useWebApi();
 	const { postToBlank } = useHttpPost();
-	const crud = useContext(CrudContext);
+	// const crud = useContext(CrudContext);
+	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const [state, setState] = useState({
 		displayName: null,
 		fields: null,
@@ -163,14 +162,12 @@ export const useStdPrint = ({
 	const handlePrint = useCallback(
 		(mode) => {
 			if (!state.selectedFields || state.selectedFields.length === 0) {
-				toast.error("請至少選擇一個欄位", {
-					position: "top-right"
-				});
+				toastEx.error("請至少選擇一個欄位");
 				return;
 			}
 
 			const where = paramsToJsonData
-				? paramsToJsonData(crud?.paramsRef?.current)
+				? paramsToJsonData(listLoaderCtx?.paramsRef?.current)
 				: null;
 			console.log(`where`, where);
 
@@ -193,15 +190,7 @@ export const useStdPrint = ({
 				}
 			);
 		},
-		[
-			crud?.paramsRef,
-			deptId,
-			logKey,
-			paramsToJsonData,
-			postToBlank,
-			state.selectedFields,
-			tableName,
-		]
+		[deptId, listLoaderCtx?.paramsRef, logKey, paramsToJsonData, postToBlank, state.selectedFields, tableName]
 	);
 
 	const handleAddAllFields = useCallback(() => {
@@ -227,9 +216,11 @@ export const useStdPrint = ({
 	const onSubmit = useCallback(
 		(data) => {
 			console.log(`onSubmit`, data);
+			console.log(`params`, listLoaderCtx.paramsRef.current);
+
 			handlePrint(data.mode?.id);
 		},
-		[handlePrint]
+		[handlePrint, listLoaderCtx.paramsRef]
 	);
 
 	const onSubmitError = useCallback((err) => {

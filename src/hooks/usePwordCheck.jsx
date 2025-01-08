@@ -1,13 +1,8 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { toastEx } from "@/helpers/toast-ex";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
-import { useContext } from "react";
-import { useMemo } from "react";
-import { useRef } from "react";
-import { useCallback, useState } from "react";
-import { toast } from "react-toastify";
+import { useCallback, useContext, useRef } from "react";
 
 const DEFAULT_PROMPT = `請輸入密碼後繼續`;
 
@@ -54,15 +49,12 @@ const usePwordCheck = (opts = {}) => {
 	// 			throw error || new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
-	// 		toast.error(Errors.getMessage("讀取設定發生錯誤", err), {
+	// 		toastEx.error("讀取設定發生錯誤", err), {
 	// 			position: "top-right"
 	// 		});
 	// 	}
 	// }, [httpGetAsync, token]);
 
-	const validate = useCallback(async ({ value }) => {
-
-	}, []);
 
 	const promptPwordEntry = useCallback(
 		(opts = {}) => {
@@ -77,6 +69,7 @@ const usePwordCheck = (opts = {}) => {
 				title: _title,
 				message: _message,
 				label: _label,
+				// mask: true,
 				triggerCancelOnClose: true,
 				onConfirm: async ({ value }) => {
 					try {
@@ -100,17 +93,13 @@ const usePwordCheck = (opts = {}) => {
 						} else {
 							console.log("pword not passed");
 							const _entryErrorMessage = typeof entryErrorMessage === "function" ? entryErrorMessage({ action }) : entryErrorMessage;
-							toast.error(_entryErrorMessage, {
-								position: "top-right"
-							});
+							toastEx.error(_entryErrorMessage);
 							promptPwordEntry();
 						}
 
 					} catch (err) {
 						console.error(err);
-						toast.error("驗證時發生錯誤", {
-							position: "top-right"
-						});
+						toastEx.error("驗證時發生錯誤");
 					}
 				},
 				onCancel: () => {

@@ -1,9 +1,12 @@
 import { CustomerPickerComponentContainer } from "@/components/dsg/columns/customer-picker/CustomerPickerComponentContainer";
 import { EmployeePickerComponentContainer } from "@/components/dsg/columns/employee-picker/EmployeePickerComponentContainer";
+import { BContext } from "@/contexts/B/BContext";
+import { B012Context } from "@/contexts/B012/B012Context";
 import { B032Context } from "@/contexts/B032/B032Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -16,13 +19,9 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import B032Drawer from "../B032Drawer";
 import B032DialogForm from "./B032DialogForm";
 import { B032DialogToolbarContainer } from "./toolbar/B032DialogToolbarContainer";
-import { B012Context } from "@/contexts/B012/B012Context";
-import { BContext } from "@/contexts/B/BContext";
-import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 
 export const B032DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -32,7 +31,6 @@ export const B032DialogContainer = forwardRef((props, ref) => {
 			quotes: [],
 		},
 	});
-
 	const b = useContext(BContext);
 	const b032 = useContext(b.forNew ? B032Context : B012Context);
 	const { importCustsDialogOpen } = b032;
@@ -176,30 +174,24 @@ export const B032DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!prod) {
-			toast.error("請先輸入貨品編號", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入貨品編號");
 			form.setFocus("prod");
 			return;
 		}
 		if (!employee) {
-			toast.error("請先輸入報價人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報價人員");
 			form.setFocus("employee");
 			return;
 		}
 		if (!date) {
-			toast.error("請先輸入報價日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報價日期");
 			form.setFocus("Date");
 			return;
 		}
 
 
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [prod, date, employee, form, gridMeta]);
+	}, [prod, employee, date, gridMeta, form]);
 
 	const formMeta = useFormMeta(
 		`

@@ -1,15 +1,17 @@
 import { A06Context } from "@/contexts/A06/A06Context";
+import A06 from "@/modules/md-a06";
 import { ControlledSearchFieldContainer } from "@/shared-components/search-field/ControlledSearchFieldContainer";
 import useSearchField from "@/shared-hooks/useSearchField";
 import PropTypes from "prop-types";
 import { useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
+import A06SearchPopperContainer from "./A06SearchPopperContainer";
 
-export const CustomerSearchFieldContainer = (props) => {
+export const A06SearchFieldContainer = (props) => {
 	const { name = "qs", ...rest } = props;
 	const forms = useFormContext();
-	// const { getValues } = forms;
+	const { getValues } = forms;
 	// const forms = useForm();
 
 	const a06 = useContext(A06Context);
@@ -39,28 +41,28 @@ export const CustomerSearchFieldContainer = (props) => {
 				<ControlledSearchFieldContainer
 					autoFocus
 					name={name}
-					placeholder="搜尋代碼/名稱(ctrl+F12)"
-					mobilePlaceholder="代碼/名稱"
+					placeholder="編號/名稱(ctrl+F12)"
+					mobilePlaceholder="編號/名稱"
 					// rightSquare
 					// square
 					borderRadius="8px"
-					// width="30ch"
+					width="30ch"
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}
 					// Popper
-					// PopperComponent={CustomerSearchPopperContainer}
-					// popperOpen={a06.popperOpen}
-					// onPopperToggle={a06.handlePopperToggle}
-					// onPopperOpen={a06.handlePopperOpen}
-					// onPopperClose={a06.handlePopperClose}
-					// filtered={A06.isFiltered(getValues())}
+					PopperComponent={A06SearchPopperContainer}
+					popperOpen={a06.popperOpen}
+					onPopperToggle={a06.handlePopperToggle}
+					onPopperOpen={a06.handlePopperOpen}
+					onPopperClose={a06.handlePopperClose}
+					filtered={A06.isFiltered(getValues())}
 				/>
 			</div>
 		</form>
 	);
 };
-CustomerSearchFieldContainer.propTypes = {
+A06SearchFieldContainer.propTypes = {
 	name: PropTypes.string,
 };
-CustomerSearchFieldContainer.displayName = "CustomerSearchFieldContainer";
+A06SearchFieldContainer.displayName = "A06SearchFieldContainer";

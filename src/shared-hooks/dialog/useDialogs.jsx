@@ -156,7 +156,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 			// onConfirm,
 			onCancel,
 			label,
-			// closeOnConfirm = true,
+			mask = false,
 			...rest
 		}) => {
 			const newId = nanoid();
@@ -165,6 +165,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 				title: title,
 				message: message,
 				prompt: true,
+				mask,
 				defaultPromptValue: value,
 				promptTextFieldProps: {
 					label: label,

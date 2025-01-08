@@ -1,8 +1,10 @@
 import { EmployeePickerComponentContainer } from "@/components/dsg/columns/employee-picker/EmployeePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { B031Context } from "@/contexts/B031/B031Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -16,12 +18,9 @@ import { isValid } from "date-fns";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import B031Drawer from "../B031Drawer";
 import B031DialogForm from "./B031DialogForm";
 import { B031DialogToolbarContainer } from "./toolbar/B031DialogToolbarContainer";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
-import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 
 export const B031DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -31,7 +30,6 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 			quotes: [],
 		},
 	});
-
 	const b031 = useContext(B031Context);
 	const { importProdsDialogOpen } = b031;
 	const date = useWatch({
@@ -195,23 +193,17 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!customer) {
-			toast.error("請先輸入客戶代碼", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入客戶代碼");
 			form.setFocus("customer");
 			return;
 		}
 		if (!employee) {
-			toast.error("請先輸入報價人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報價人員");
 			form.setFocus("employee");
 			return;
 		}
 		if (!date) {
-			toast.error("請先輸入報價日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報價日期");
 			form.setFocus("Date");
 			return;
 		}
@@ -244,7 +236,7 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 				shouldSelect: true
 			});
 		}
-	}, [importProdsDialogOpen]);
+	}, [form, importProdsDialogOpen]);
 
 	return (
 		<FormProvider {...form}>

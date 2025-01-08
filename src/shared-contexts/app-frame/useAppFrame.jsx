@@ -4,6 +4,10 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { ResponsiveContext } from "../responsive/ResponsiveContext";
 import { useLocation } from "react-router-dom";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import queryString from "query-string";
+import Auth from "@/modules/md-auth";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useAppFrame = (opts = {}) => {
 	const { drawerWidth = 300 } = opts;
@@ -11,8 +15,15 @@ export const useAppFrame = (opts = {}) => {
 	const { mobile } = useContext(ResponsiveContext);
 	const { toModule, toLanding } = useAppRedirect();
 	const location = useLocation();
-	const queryParams = new URLSearchParams(location.search);
-	const drawer = queryParams.get("drawer") != 0;
+
+
+	const drawerMode = useMemo(() => {
+		const queryParams = new URLSearchParams(location.search);
+		return queryParams.get("drawer");
+	}, [location.search])
+
+
+	const { httpPostAsync } = useWebApi();
 
 	// Account
 
@@ -54,8 +65,21 @@ export const useAppFrame = (opts = {}) => {
 		}
 	}, [menuState.menuItemSelected?.WebName, toModule]);
 
+	const spawnNewSession = useCallback(async () => {
+		const { status, payload, error } = await httpPostAsync({
+			url: "v1/auth/spawn",
+			bearer: auth.token
+		})
+		if (status.success) {
+			console.debug("spawn result", payload);
+			return payload?.LogKey;
+		} else {
+			throw error || new Error("未預期例外");
+		}
+	}, [auth.token, httpPostAsync]);
+
 	const handleMenuItemClick = useCallback(
-		(e, module) => {
+		async (e, module) => {
 			// setMenuState((prev) => ({
 			// 	...prev,
 			// 	menuItemSelected: module,
@@ -67,13 +91,28 @@ export const useAppFrame = (opts = {}) => {
 				console.log("module", module);
 				e.preventDefault();
 				e.stopPropagation();
-				console.log("window.location", window.location);
-				const url = `${import.meta.env.VITE_PUBLIC_URL}modules/${module.WebName}?drawer=0`;
-				const newTab = window.open(url, "_blank");
-				if (newTab) {
-					newTab.focus(); // 確保切換到新頁籤
-				} else {
-					alert('無法開啟新頁籤，可能被瀏覽器阻擋');
+
+				try {
+					const newLogKey = await spawnNewSession();
+					console.log("newLogKey", newLogKey);
+
+					const url = `${import.meta.env.VITE_PUBLIC_URL}modules/${module.WebName}`;
+					const qs = queryString.stringify({
+						drawer: 0,
+						...(newLogKey && {
+							LogKey: newLogKey
+						})
+					})
+					const finalUrl = url + (qs ? `?${qs}` : "");
+					console.log("finalUrl", finalUrl);
+					const newTab = window.open(finalUrl, "_blank");
+					if (newTab) {
+						newTab.focus(); // 確保切換到新頁籤
+					} else {
+						toastEx.error('無法開啟新頁籤，可能被瀏覽器阻擋');
+					}
+				} catch (err) {
+					toastEx.error("開新頁籤失敗", err);
 				}
 			} else {
 				setMenuState((prev) => ({
@@ -84,7 +123,7 @@ export const useAppFrame = (opts = {}) => {
 				toModule(module.WebName);
 			}
 		},
-		[toModule]
+		[spawnNewSession, toModule]
 	);
 
 	const handleSelect = useCallback(
@@ -121,13 +160,13 @@ export const useAppFrame = (opts = {}) => {
 	}, [toLanding]);
 
 	const detectDrawerState = useCallback(() => {
-		const defaultOpen = !mobile && drawer;
+		const defaultOpen = !mobile && drawerMode != 0;
 		console.log(`drawer default to ${defaultOpen ? "opened" : "closed"}`);
 		setDrawerState((prev) => ({
 			...prev,
 			drawerOpen: defaultOpen,
 		}));
-	}, [drawer, mobile]);
+	}, [drawerMode, mobile]);
 
 	// const handleSelectJob = useCallback(
 	// 	(itemId) => {
@@ -195,27 +234,28 @@ export const useAppFrame = (opts = {}) => {
 		}));
 	}, []);
 
+	const getDocumentTitle = useCallback((menuItemId, matchedAuthority) => {
+		let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+		let deptName
+		if ((logKeyInSession || !menuItemId) && auth.operator?.CurDeptName) {
+			deptName = `[${auth.operator.CurDeptName}]`
+		}
+		return [deptName, menuItemId, matchedAuthority?.JobName].filter(Boolean).join("-")
+	}, [auth.operator?.CurDeptName]);
+
 	const recoverMenuItemSelected = useCallback(
 		(menuItemId) => {
 			console.log(`recoverMenuItemSelected(${menuItemId})`);
-			if (menuItemId) {
-				const matchedAuthority = auth.authorities?.find(
-					(a) => a.JobID === menuItemId
-				);
-				console.log(`recovered ${menuItemId}...`, matchedAuthority);
-				setMenuState((prev) => ({
-					...prev,
-					menuItemSelected: matchedAuthority,
-				}));
-				document.title = [menuItemId, matchedAuthority?.JobName].filter(Boolean).join(" - ");
-			} else {
-				setMenuState((prev) => ({
-					...prev,
-					menuItemSelected: null,
-				}));
-			}
+			const matchedAuthority = menuItemId ? auth.authorities?.find(
+				(a) => a.JobID === menuItemId
+			) : null;
+			setMenuState((prev) => ({
+				...prev,
+				menuItemSelected: matchedAuthority,
+			}));
+			document.title = getDocumentTitle(menuItemId, matchedAuthority);
 		},
-		[auth.authorities]
+		[auth.authorities, getDocumentTitle]
 	);
 
 	useEffect(() => {

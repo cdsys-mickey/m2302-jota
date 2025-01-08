@@ -1,3 +1,4 @@
+import { toastEx } from "@/helpers/toast-ex";
 import { useAction } from "@/shared-hooks/useAction";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
@@ -130,9 +131,7 @@ export const useProdGrid = ({
 				}
 			} catch (err) {
 				console.error("peek failed", err);
-				toast.error(Errors.getMessage("篩選失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("篩選失敗", err);
 			} finally {
 				setLoading(false);
 			}
@@ -176,9 +175,7 @@ export const useProdGrid = ({
 				} else {
 					switch (status.code) {
 						default:
-							toast.error(`發生未預期例外 ${status.code}`, {
-								position: "top-right"
-							});
+							toastEx.error(`發生未預期例外 ${status.code}`);
 							break;
 					}
 				}
@@ -241,7 +238,7 @@ export const useProdGrid = ({
 				bearer: token,
 			});
 			if (status.success) {
-				toast.success(`${collected.length}筆商品資料已更新`);
+				toastEx.success(`${collected.length}筆商品資料已更新`);
 				reload();
 				saveAction.finish();
 			} else {
@@ -251,9 +248,7 @@ export const useProdGrid = ({
 			saveAction.fail({
 				error: err
 			});
-			toast.error(Errors.getMessage("儲存失敗", err), {
-				position: "top-right"
-			});
+			toastEx.error("儲存失敗", err);
 		}
 	}, [
 		baseUri,

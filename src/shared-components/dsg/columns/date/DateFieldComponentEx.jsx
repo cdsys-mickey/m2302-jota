@@ -1,3 +1,4 @@
+import { toastEx } from "@/helpers/toast-ex";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import DateTimes from "@/shared-modules/sd-date-times";
 import Events from "@/shared-modules/sd-events";
@@ -6,7 +7,6 @@ import Objects from "@/shared-modules/sd-objects";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { toast } from "react-toastify";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
 
 const DATE_FORMAT = "yyyy-MM-dd";
@@ -219,7 +219,7 @@ const DateFieldComponentEx = memo((props) => {
 					const validationResult = isValidDate(ref.current.value);
 					console.log("isValidDate", validationResult);
 					if (!validationResult) {
-						toast.error("日期格式錯誤", {
+						toastEx.error("日期格式錯誤", {
 							position: "top-right"
 						})
 						setTimeout(() => {

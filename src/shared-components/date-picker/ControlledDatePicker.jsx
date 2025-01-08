@@ -38,7 +38,7 @@ const ControlledDatePicker = ({
 	onBlur,
 	debounce = 800,
 	inline = false,
-	// labelShrink,
+	clearText = "清除",
 	// variant = "outlined",
 	...rest
 }) => {
@@ -146,6 +146,11 @@ const ControlledDatePicker = ({
 							mask={mask}
 							format={format}
 							slotProps={{
+								clearButton: {
+									...(clearText && {
+										title: clearText
+									})
+								},
 								inputAdornment: {
 									sx: {
 										...(dense && {
@@ -229,6 +234,7 @@ const ControlledDatePicker = ({
 };
 ControlledDatePicker.propTypes = {
 	label: PropTypes.string,
+	clearText: PropTypes.string,
 	name: PropTypes.string,
 	control: PropTypes.object,
 	dense: PropTypes.bool,
@@ -249,6 +255,6 @@ ControlledDatePicker.propTypes = {
 	clearable: PropTypes.bool,
 	validate: PropTypes.bool,
 	inline: PropTypes.bool,
-	debounce: PropTypes.number
+	debounce: PropTypes.number,
 };
 export default ControlledDatePicker;

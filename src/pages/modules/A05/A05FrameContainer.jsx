@@ -8,7 +8,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { SupplierSearchFieldContainer } from "../../../components/jobs/A05/search/SupplierSearchFieldContainer";
+import { A05SearchFieldContainer } from "../../../components/jobs/A05/search/A05SearchFieldContainer";
 import { StdPrintProvider } from "../../../contexts/std-print/StdPrintProvider";
 import A05 from "../../../modules/md-a05";
 import { StdPrintDialogContainer } from "../../../components/std-print/StdPrintDialogContainer";
@@ -34,7 +34,7 @@ export const A05FrameContainer = () => {
 					paramsToJsonData={A05.paramsToJsonData}>
 					{/* 標題 */}
 					<FrameBannerContainer>
-						{<SupplierSearchFieldContainer name="qs" />}
+						{<A05SearchFieldContainer name="qs" />}
 					</FrameBannerContainer>
 					{/* 工具列 */}
 					<A05Toolbar />

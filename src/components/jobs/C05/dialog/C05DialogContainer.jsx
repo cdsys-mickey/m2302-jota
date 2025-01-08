@@ -1,27 +1,24 @@
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { C05Context } from "@/contexts/C05/C05Context";
+import { toastEx } from "@/helpers/toast-ex";
+import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
+import C05Drawer from "../C05Drawer";
 import C05DialogForm from "./C05DialogForm";
 import { C05DialogToolbarContainer } from "./toolbar/C05DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { useCallback } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { keyColumn } from "react-datasheet-grid";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { toast } from "react-toastify";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
-import C05Drawer from "../C05Drawer";
-import useDebounce from "@/shared-hooks/useDebounce";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -32,6 +29,7 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
+
 	const c05 = useContext(C05Context);
 
 	const supplier = useWatch({
@@ -200,16 +198,12 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!rtnDate) {
-			toast.error("請先輸入退貨日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入退貨日期");
 			form.setFocus("GrtDate");
 			return;
 		}
 		if (!supplier) {
-			toast.error("請先輸入供應商", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入供應商");
 			form.setFocus("supplier");
 			return;
 		}

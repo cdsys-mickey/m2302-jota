@@ -1,20 +1,18 @@
-import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import F03 from "@/modules/md-f03";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useAction } from "@/shared-hooks/useAction";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
-import { useAction } from "@/shared-hooks/useAction";
-import { useMemo } from "react";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { useToggle } from "../../shared-hooks/useToggle";
 import { nanoid } from "nanoid";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
+import { useAppModule } from "./useAppModule";
 
 export const useF03 = () => {
 	const crud = useContext(CrudContext);
@@ -97,7 +95,7 @@ export const useF03 = () => {
 	// 			throw error || new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
-	// 		toast.error(Errors.getMessage("讀取設定發生錯誤", err));
+	// 		toastEx.error("讀取設定發生錯誤", err));
 	// 	}
 	// }, [httpGetAsync, token]);
 
@@ -139,7 +137,7 @@ export const useF03 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toastEx.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -151,13 +149,11 @@ export const useF03 = () => {
 				console.error("handleCreate.failed", err);
 				if (err.code === 102) {
 					// recoverStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出", {
+					toastEx.error("部分商品庫存不足，請調整後再送出", {
 						position: "top-right"
 					});
 				} else {
-					toast.error(Errors.getMessage("新增失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("新增失敗", err);
 				}
 			}
 		},
@@ -248,7 +244,7 @@ export const useF03 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -259,9 +255,7 @@ export const useF03 = () => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -284,7 +278,7 @@ export const useF03 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除盤點清單 ${itemData?.CalID}`);
+						toastEx.success(`成功删除盤點清單 ${itemData?.CalID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -292,9 +286,7 @@ export const useF03 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -432,7 +424,7 @@ export const useF03 = () => {
 	// 				} else {
 	// 					// dialogs.closeLatest();
 	// 					console.log("pword not passed");
-	// 					toast.error("密碼錯誤, 請重新輸入");
+	// 					toastEx.error("密碼錯誤, 請重新輸入");
 	// 					promptPwordEntry({
 	// 						promptOverrideSQty,
 	// 						setValue,
@@ -483,12 +475,9 @@ export const useF03 = () => {
 
 			// 檢查是否已存在
 			if (found) {
-				toast.error(
+				toastEx.error(
 					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${prodRowIndex + 1
-					} 筆, 請重新選擇`,
-					{
-						position: "top-right",
-					}
+					} 筆, 請重新選擇`
 				);
 			}
 

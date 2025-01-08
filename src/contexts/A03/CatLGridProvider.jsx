@@ -1,25 +1,20 @@
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { toastEx } from "@/helpers/toast-ex";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
+import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import PropTypes from "prop-types";
-import { useCallback, useEffect } from "react";
-import { toast } from "react-toastify";
-import { useContext } from "react";
-import { useState } from "react";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useInit } from "@/shared-hooks/useInit";
-import { AuthContext } from "@/contexts/auth/AuthContext";
+import { useCallback, useContext, useMemo, useState, useTransition } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
+import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { A03Context } from "./A03Context";
 import { CatLGridContext } from "./CatLGridContext";
 import { CatMGridContext } from "./CatMGridContext";
 import { CatSGridContext } from "./CatSGridContext";
-import { useTransition } from "react";
-import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import DSG from "../../shared-modules/sd-dsg";
-import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
-import { useMemo } from "react";
-import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { A03Context } from "./A03Context";
 
 const CatLGridProvider = (props) => {
 	const { children } = props;
@@ -130,9 +125,7 @@ const CatLGridProvider = (props) => {
 				} else {
 					switch (status.code) {
 						default:
-							toast.error(`發生未預期例外 ${status.code}`, {
-								position: "top-right"
-							});
+							toastEx.error(`發生未預期例外 ${status.code}`);
 							break;
 					}
 				}
@@ -166,16 +159,14 @@ const CatLGridProvider = (props) => {
 				if (status.success) {
 					grid.commitChanges(newValue);
 					selectRow({ rowIndex, rowData });
-					toast.success(
+					toastEx.success(
 						`大分類 ${rowData.LClas}/${rowData.ClassData} 新增成功`
 					);
 				} else {
 					throw error?.message || new Error("新增失敗");
 				}
 			} catch (err) {
-				toast.error(`新增大分類發生例外: ${err.message}`, {
-					position: "top-right"
-				});
+				toastEx.error("新增大分類失敗");
 				reload();
 			}
 		},
@@ -197,16 +188,14 @@ const CatLGridProvider = (props) => {
 				if (status.success) {
 					grid.commitChanges(newValue);
 					selectRow({ rowIndex, rowData });
-					toast.success(
+					toastEx.success(
 						`大分類 ${rowData.LClas}/${rowData.ClassData} 修改成功`
 					);
 				} else {
 					throw error?.message || new Error("修改失敗");
 				}
 			} catch (err) {
-				toast.error(`新增大分類發生例外: ${err.message}`, {
-					position: "top-right"
-				});
+				toastEx.error("新增大分類失敗", err);
 				reload();
 			}
 		},
@@ -226,7 +215,7 @@ const CatLGridProvider = (props) => {
 				if (status.success) {
 					// 取消選取列
 					selectRow({});
-					toast.success(
+					toastEx.success(
 						`大分類 ${rowData.LClas}/${rowData.ClassData} 刪除成功`
 					);
 				} else {
@@ -234,7 +223,7 @@ const CatLGridProvider = (props) => {
 				}
 			} catch (err) {
 				console.error(err);
-				toast.error(`刪除大分類發生例外: ${err.message}`, {
+				toastEx.error(`刪除大分類發生例外: ${err.message}`, {
 					position: "top-right"
 				});
 			} finally {
@@ -243,7 +232,7 @@ const CatLGridProvider = (props) => {
 				reload();
 			}
 		},
-		[dialogs, httpDeleteAsync, reload, token, selectRow]
+		[httpDeleteAsync, token, selectRow, dialogs, reload]
 	);
 
 	const handleConfirmDelete = useCallback(
@@ -280,9 +269,7 @@ const CatLGridProvider = (props) => {
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
 			// grid.rollbackChanges();
-			toast.error(`大分類 ${row.rowData.LClas} 已存在`, {
-				position: "top-right"
-			});
+			toastEx.error(`大分類 ${row.rowData.LClas} 已存在`);
 			grid.spreadOnRow(
 				row.rowIndex,
 				{
@@ -305,7 +292,7 @@ const CatLGridProvider = (props) => {
 			gridMeta.setSelectedRow(row);
 			selectRow(row);
 		},
-		[grid, selectRow]
+		[gridMeta, selectRow]
 	);
 
 	useInit(() => {

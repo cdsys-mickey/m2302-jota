@@ -1,29 +1,25 @@
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { BContext } from "@/contexts/B/BContext";
 import { B02Context } from "@/contexts/B02/B02Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { useScrollable } from "@/shared-hooks/useScrollable";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useMemo } from "react";
-import { FormProvider, useFormContext, useWatch } from "react-hook-form";
-import B02DialogForm from "./B02DialogForm";
-import { useEffect } from "react";
-import { B02DialogToolbarContainer } from "./toolbar/B02DialogToolbarContainer";
+import { B04Context } from "@/contexts/B04/B04Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { Drawer } from "@mui/material";
-import B02Drawer from "../B02Drawer";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
-import { keyColumn } from "react-datasheet-grid";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useCallback } from "react";
-import { toast } from "react-toastify";
-import { BContext } from "@/contexts/B/BContext";
-import { B04Context } from "@/contexts/B04/B04Context";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { FormProvider, useFormContext, useWatch } from "react-hook-form";
+import B02Drawer from "../B02Drawer";
+import B02DialogForm from "./B02DialogForm";
+import { B02DialogToolbarContainer } from "./toolbar/B02DialogToolbarContainer";
 
 export const B02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -160,23 +156,17 @@ export const B02DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!inqDate) {
-			toast.error("請先輸入詢價日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入詢價日期");
 			form.setFocus("InqDate");
 			return;
 		}
 		if (!employee) {
-			toast.error("請先輸入詢價人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入詢價人員");
 			form.setFocus("employee");
 			return;
 		}
 		if (!supplier) {
-			toast.error("請先輸入廠商代碼", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入廠商代碼");
 			form.setFocus("supplier");
 			return;
 		}

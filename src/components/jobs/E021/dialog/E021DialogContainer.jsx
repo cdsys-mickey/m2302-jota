@@ -1,6 +1,7 @@
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { E021Context } from "@/contexts/E021/E021Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -10,17 +11,16 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import E021Drawer from "../E021Drawer";
 import E021DialogForm from "./E021DialogForm";
 import { E021DialogToolbarContainer } from "./toolbar/E021DialogToolbarContainer";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const E021DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -247,43 +247,33 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!salesDate) {
-			toast.error("請先輸入銷貨日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入銷貨日期");
 			form.setFocus("OrdDate");
 			return;
 		}
 		if (!arrDate) {
-			toast.error("請先輸入到貨日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入到貨日期");
 			form.setFocus("ArrDate");
 			return;
 		}
 		if (!compTel) {
-			toast.error("請先輸入電話", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入電話");
 			form.setFocus("CompTel");
 			return;
 		}
 		if (!custName) {
-			toast.error("請先輸入客戶名稱", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入客戶名稱");
 			form.setFocus("CustName");
 			return;
 		}
 		if (!retail && !customer) {
-			toast.error("非零售請先輸入客戶代碼", {
-				position: "top-right",
-			});
+			toastEx.error("非零售請先輸入客戶代碼");
 			form.setFocus("customer");
 			return;
 		}
 
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [arrDate, compTel, custName, customer, form, gridMeta, salesDate, retail]);
+	}, [salesDate, arrDate, compTel, custName, retail, customer, gridMeta, form]);
 
 	const validateCustomer = useCallback((value) => {
 		if (!retail && !value) {

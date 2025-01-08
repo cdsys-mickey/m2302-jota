@@ -1,5 +1,19 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Strings from "@/shared-modules/sd-strings";
 import Forms from "../shared-modules/sd-forms";
+
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push(`庫存量(${stockQty || 0})`);
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
+};
 
 const ListModes = Object.freeze({
 	NOT_REVIEWED: 1,
@@ -27,16 +41,26 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
-const transformForGrid = (data) => {
+const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, ...rest }) => ({
-			prod: {
-				ProdID: SProdID,
+		data?.map((rowData, rowIndex) => {
+			const { SProdID, ProdData_N, ...rest } = rowData;
+
+			let processedRowData = {
+				prod: {
+					ProdID: SProdID,
+					ProdData: ProdData_N,
+				},
 				ProdData: ProdData_N,
-			},
-			ProdData: ProdData_N,
-			...rest,
-		})) || []
+				...rest,
+			};
+			processedRowData.tooltip = getTooltip({
+				rowData: processedRowData,
+				rowIndex,
+			});
+
+			return processedRowData;
+		}) || []
 	);
 };
 
@@ -64,7 +88,7 @@ const transformForReading = (payload) => {
 					CodeData: PDlineData_N,
 			  }
 			: null,
-		prods: transformForGrid(GdsRqt_S),
+		prods: transformGridForReading(GdsRqt_S),
 		remark: Remark.join("\n"),
 		...rest,
 	};
@@ -130,13 +154,14 @@ const C02 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
-	transformForGrid,
+	transformForGrid: transformGridForReading,
 	// 列表模式
 	ListModes,
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
+	getTooltip,
 };
 
 export default C02;

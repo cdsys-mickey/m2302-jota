@@ -44,6 +44,7 @@ const A17Form = memo((props) => {
 									name="dept"
 									// readOnly={true}
 									onChanged={handleDeptChanged}
+									disabled
 								/>
 							</Grid>
 							{readWorking && (

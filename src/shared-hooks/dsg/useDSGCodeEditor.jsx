@@ -1,17 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useCallback, useRef } from "react";
-import { useWebApi } from "../useWebApi";
-import { useDSG } from "./useDSG";
-import { useContext } from "react";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { toast } from "react-toastify";
-import queryString from "query-string";
-import Objects from "../../shared-modules/sd-objects";
-import _ from "lodash";
-import { useState } from "react";
-import Errors from "../../shared-modules/sd-errors";
-import { nanoid } from "nanoid";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { toastEx } from "@/helpers/toast-ex";
+import _ from "lodash";
+import { nanoid } from "nanoid";
+import queryString from "query-string";
+import { useCallback, useContext, useState } from "react";
+import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
+import Objects from "../../shared-modules/sd-objects";
+import { useWebApi } from "../useWebApi";
 
 const defaultTransformForReading = (payload) => {
 	return payload?.data || [];
@@ -83,7 +79,7 @@ export const useDSGCodeEditor = ({
 				} else {
 					switch (status.code) {
 						default:
-							toast.error(`發生未預期例外 ${status.code}`, {
+							toastEx.error(`發生未預期例外 ${status.code}`, {
 								position: "top-right"
 							});
 							break;
@@ -114,16 +110,14 @@ export const useDSGCodeEditor = ({
 				console.log("handleCreate response.payload", payload);
 				if (status.success) {
 					grid.commitChanges(newValue);
-					toast.success(
+					toastEx.success(
 						`${displayName} ${rowData[grid.keyColumn]} 新增成功`
 					);
 				} else {
 					throw error || new Error("未預期例外");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage(`新增${displayName}發生例外`, err), {
-					position: "top-right"
-				});
+				toastEx.error(`新增${displayName}發生例外`, err);
 				reload();
 				setTimeout(() => {
 					gridMeta.setActiveCell(null);
@@ -145,16 +139,14 @@ export const useDSGCodeEditor = ({
 				console.log("handleUpdate response.payload", payload);
 				if (status.success) {
 					grid.commitChanges(newValue);
-					toast.success(
+					toastEx.success(
 						`${displayName} ${rowData[grid.keyColumn]} 修改成功`
 					);
 				} else {
 					throw error?.message || new Error("修改失敗");
 				}
 			} catch (err) {
-				toast.error(Errors.getMessage(`修改${displayName}發生例外`, err), {
-					position: "top-right"
-				});
+				toastEx.error(`修改${displayName}發生例外`, err);
 				reload();
 			}
 		},
@@ -199,20 +191,18 @@ export const useDSGCodeEditor = ({
 					})
 				);
 				if (success > 0) {
-					toast.success(`刪除成功 ${success} 筆${displayName || ""}`);
+					toastEx.success(`刪除成功 ${success} 筆${displayName || ""}`);
 					if (onDeleted) {
 						onDeleted(rows);
 					}
 				} else {
-					toast.warn("沒有刪除任何資料" + error?.message ? ": " + error.message : "", {
+					toastEx.warn("沒有刪除任何資料" + error?.message ? ": " + error.message : "", {
 						position: "top-right"
 					});
 				}
 			} catch (err) {
 				console.error(err);
-				toast.error(Errors.getMessage(`刪除${displayName}發生例外`, err), {
-					position: "top-right",
-				});
+				toastEx.error(`刪除${displayName}發生例外`, err);
 			} finally {
 				// grid.setDeletingRow(null);
 				reload();
@@ -307,9 +297,7 @@ export const useDSGCodeEditor = ({
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
-			toast.error(`${displayName} ${row.rowData[grid.keyColumn]} 已存在`, {
-				position: "top-right",
-			});
+			toastEx.error(`${displayName} ${row.rowData[grid.keyColumn]} 已存在`);
 
 			// 先把重複那筆的 key 清掉
 			newValue[row.rowIndex][grid.keyColumn] = "";

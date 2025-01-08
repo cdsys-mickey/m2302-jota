@@ -11,6 +11,8 @@ import { useInit } from "@/shared-hooks/useInit";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
 import { useSideDrawer } from "../useSideDrawer";
+import { useToggle } from "@/shared-hooks/useToggle";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const useA05 = ({ token }) => {
 	const formMeta = useFormMeta(
@@ -34,10 +36,7 @@ export const useA05 = ({ token }) => {
 		FactFax,
 		mainProd,
 		remark
-		`,
-		{
-			lastField: LastFieldBehavior.PROMPT,
-		}
+		`
 	);
 	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
@@ -51,10 +50,20 @@ export const useA05 = ({ token }) => {
 	const [selectedItem, setSelectedItem] = useState();
 	const dialogs = useContext(DialogsContext);
 
-	const loader = useInfiniteLoader({
+	const [
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+	] = useToggle(false);
+
+	const listLoader = useInfiniteLoader({
 		url: "v1/purchase/suppliers",
 		bearer: token,
 		initialFetchSize: 50,
+		params: {
+			acc: 1
+		}
 	});
 
 	const loadItem = useCallback(
@@ -139,25 +148,23 @@ export const useA05 = ({ token }) => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`廠商商品「${data?.FactID} ${data?.FactData}」新增成功`
 					);
 					crud.doneCreating();
 					crud.cancelReading();
 					// 重新整理
-					loader.loadList({ refresh: true });
+					listLoader.loadList({ refresh: true });
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating(err);
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("新增失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("新增失敗", err);
 			}
 		},
-		[crud, httpPostAsync, loader, token]
+		[crud, httpPostAsync, listLoader, token]
 	);
 
 	const handleUpdate = useCallback(
@@ -172,25 +179,23 @@ export const useA05 = ({ token }) => {
 				});
 
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`商品「${data?.FactID} ${data?.FactData}」修改成功`
 					);
 					crud.doneUpdating();
 					loadItem({ id: data?.FactID });
 					// 重新整理
-					loader.loadList({ refresh: true });
+					listLoader.loadList({ refresh: true });
 				} else {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("handleUpdate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, loadItem, loader, token]
+		[crud, httpPutAsync, loadItem, listLoader, token]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -212,7 +217,7 @@ export const useA05 = ({ token }) => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A05.onSubmitError`, err);
-		toast.error(
+		toastEx.error(
 			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
 			, {
 				position: "top-right"
@@ -248,46 +253,57 @@ export const useA05 = ({ token }) => {
 					});
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(
+						toastEx.success(
 							`成功删除${crud.itemData?.FactID} ${crud.itemData.FactData}`
 						);
-						loader.loadList({ refresh: true });
+						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, loader, token]);
+	}, [crud, dialogs, httpDeleteAsync, listLoader, token]);
 
 	const onSearchSubmit = useCallback(
 		(data) => {
+			handlePopperClose();
 			console.log(`onSearchSubmit`, data);
 			// const q = data?.q;
-			loader.loadList({
-				params: data,
+			listLoader.loadList({
+				params: A05.transformAsQueryParams(data),
 				// reset: true,
 			});
 		},
-		[loader]
+		[handlePopperClose, listLoader]
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
 		console.error(`onSearchSubmitError`, err);
 	}, []);
 
+	const handleReset = useCallback(
+		({ reset }) =>
+			() => {
+				reset({
+					lvId: "",
+					lvName: "",
+					lvBank: null
+				});
+			},
+		[]
+	);
+
 	useInit(() => {
 		crud.cancelAction();
 	}, []);
 
 	return {
-		...loader,
+		...listLoader,
 		...crud,
 		onSearchSubmit,
 		onSearchSubmitError,
@@ -304,6 +320,12 @@ export const useA05 = ({ token }) => {
 		confirmDelete,
 		...appModule,
 		formMeta,
-		...sideDrawer
+		...sideDrawer,
+		// Popper
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+		handleReset
 	};
 };

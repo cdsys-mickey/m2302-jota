@@ -1,23 +1,31 @@
+import { toastEx } from "@/helpers/toast-ex";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Messages from "@/modules/md-messages";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useAction } from "@/shared-hooks/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { decodeJwt } from "jose";
 import Cookies from "js-cookie";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useAction } from "@/shared-hooks/useAction";
-import { useMemo } from "react";
-import ActionState from "../shared-constants/action-state";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Auth from "../modules/md-auth";
-import Errors from "../shared-modules/sd-errors";
-import { useInfiniteLoader } from "../shared-hooks/useInfiniteLoader";
+import ActionState from "../shared-constants/action-state";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+const LOG_KEY = "LogKey";
 
 export const useAuth = () => {
 	const { toLogin, toLanding, toRenew } = useAppRedirect();
 	const { httpGetAsync } = useWebApi();
 	const dialogs = useContext(DialogsContext);
 	const deptSwitchAction = useAction();
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	const logKeyInUrl = useMemo(() => {
+		const params = new URLSearchParams(location.search);
+		return params.get(LOG_KEY);
+	}, [location.search])
 
 	const [state, setState] = useState({
 		// AUTHENTICATE
@@ -64,9 +72,7 @@ export const useAuth = () => {
 				} else {
 					switch (status.code) {
 						case 401:
-							toast.error(Messages.SESSION_EXPIRED, {
-								position: "top-right"
-							});
+							toastEx.error(Messages.SESSION_EXPIRED);
 							toLogin();
 					}
 				}
@@ -85,28 +91,39 @@ export const useAuth = () => {
 		Cookies.set(Auth.COOKIE_LOGKEY, logKey || "", Auth.COOKIE_OPTS);
 	}, []);
 
-	const validateCookie = useCallback(
-		async ({ switching = false, doRedirect = false } = {}) => {
-			console.log(`validating cookie...`);
-			try {
-				setState((prev) => ({
-					...prev,
-					validating: true,
-				}));
-				// 檢查 cookie
-				const logKey = Cookies.get(Auth.COOKIE_LOGKEY);
-				if (!logKey) {
-					toast.error("您尚未登入", {
-						position: "top-right"
-					});
-					if (doRedirect) {
-						toLogin();
-					}
-					return;
+	const recoverIdentity = useCallback(
+		async ({ queryParams, switching = false, doRedirect = false } = {}) => {
+			console.log(`recoverIdentity...`);
+			setState((prev) => ({
+				...prev,
+				validating: true,
+			}));
+			let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+			let logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
+			const logKey = logKeyInSession || logKeyInCookie;
+			if (!logKey) {
+				toastEx.error("您尚未登入");
+				if (doRedirect) {
+					toLogin();
 				}
-				const { status, payload, error } = await httpGetAsync({
+				return;
+			}
+
+			try {
+				// 檢查 cookie
+				const { status, payload, error } = logKeyInSession ? await httpGetAsync({
+					url: "v1/auth/token",
+					params: {
+						logKey: logKeyInSession
+					}
+				}) : await httpGetAsync({
 					url: "v1/auth/token",
 				});
+				if (logKeyInSession) {
+					console.log("recovering from logKey in session", logKeyInSession);
+				} else {
+					console.log("recovering from logKey in cookie", logKeyInCookie);
+				}
 
 				if (status.success) {
 					// JOSE methods
@@ -138,7 +155,7 @@ export const useAuth = () => {
 					// 	token,
 					// 	secret
 					// );
-					// console.log("jwtPayload", jwtPayload);
+					console.log("jwtPayload.entity", jwtPayload.entity);
 
 					setState((prev) => ({
 						...prev,
@@ -158,7 +175,7 @@ export const useAuth = () => {
 						};
 					}
 					if (doRedirect) {
-						toast.success(
+						toastEx.success(
 							`${jwtPayload.entity.LoginName || "(帳號)"} / ${jwtPayload.entity.UserName || ""
 							} 已成功${switching ? "切換" : "登入"}到${jwtPayload.entity.CurDeptName
 							}`
@@ -171,23 +188,16 @@ export const useAuth = () => {
 				console.error("token restore failed", err);
 				switch (err.status) {
 					case 426:
-						toast.error("請重設您的密碼", {
-							position: "top-right"
-						});
+						toastEx.error("您的帳號目前為鎖定狀態，請重設您的密碼");
 						toRenew();
 						break;
 					case 401:
-						// toast.error("您的連線階段已逾期，請重新登入", {
-						// 	position: "top-right"
-						// });
 						if (doRedirect) {
 							toLogin();
 						}
 						break;
 					default:
-						toast.error("登入發生例外，請重新嘗試", {
-							position: "top-right"
-						});
+						toastEx.error("登入發生例外，請重新嘗試");
 						if (doRedirect) {
 							toLogin();
 						}
@@ -198,9 +208,13 @@ export const useAuth = () => {
 					...prev,
 					validating: false,
 				}));
+				if (queryParams && queryParams.get(LOG_KEY)) {
+					queryParams.delete(LOG_KEY)
+					navigate({ search: queryParams.toString() }, { replace: true });
+				}
 			}
 		},
-		[httpGetAsync, loadAuthorities, toLogin, toRenew]
+		[httpGetAsync, loadAuthorities, navigate, toLogin, toRenew]
 	);
 
 	const invalidate = useCallback(() => {
@@ -216,17 +230,29 @@ export const useAuth = () => {
 				url: "v1/auth/signout",
 				bearer: state.token,
 			});
-			toast.success("您已成功登出");
-			Cookies.remove(Auth.COOKIE_LOGKEY);
+			toastEx.success("您已成功登出");
+			let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+			if (logKeyInSession) {
+				sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
+				window.close();
+			} else {
+				Cookies.remove(Auth.COOKIE_LOGKEY);
+				toLogin();
+			}
 		} catch (err) {
 			console.error("handleSignOut.failed", err);
 		}
-		toLogin();
+
 	}, [httpGetAsync, toLogin, state.token]);
 
 	const confirmSignOut = useCallback(() => {
+		let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+		let message = "確認要登出?";
+		if (logKeyInSession) {
+			message = "確定要結束視窗?";
+		}
 		dialogs.confirm({
-			message: "確認要登出?",
+			message,
 			onConfirm: () => {
 				handleSignOut();
 			},
@@ -247,12 +273,12 @@ export const useAuth = () => {
 					},
 				});
 				if (status.success) {
-					validateCookie({ switching: true, doRedirect: false });
+					recoverIdentity({ switching: true, doRedirect: false });
 					toLanding({
 						reloadAuthorities: true,
 					});
 					deptSwitchAction.clear();
-					toast.success(
+					toastEx.success(
 						`已成功切換至 ${data?.newDept?.DeptName || data?.newDept?.AbbrName
 						}`
 					);
@@ -261,12 +287,10 @@ export const useAuth = () => {
 				}
 			} catch (err) {
 				console.error("onDeptSwitchSubmit.failed", err);
-				toast.error(`切換單位異常`, {
-					position: "top-right"
-				});
+				toastEx.error(`切換單位異常`);
 			}
 		},
-		[deptSwitchAction, httpGetAsync, state.token, toLanding, validateCookie]
+		[deptSwitchAction, httpGetAsync, state.token, toLanding, recoverIdentity]
 	);
 
 	const onDeptSwitchSubmitError = useCallback((err) => {
@@ -331,7 +355,7 @@ export const useAuth = () => {
 						},
 					});
 					if (status.success) {
-						toast.success("密碼已更新");
+						toastEx.success("密碼已更新");
 						finsihChanging();
 						if (doRedirect) {
 							Cookies.set(
@@ -339,7 +363,7 @@ export const useAuth = () => {
 								payload.LogKey || "",
 								Auth.COOKIE_OPTS
 							);
-							// validateCookie({
+							// recoverIdentity({
 							// 	doRedirect: false,
 							// });
 							toLanding({
@@ -350,9 +374,7 @@ export const useAuth = () => {
 						throw error || new Error("未預期例外");
 					}
 				} catch (err) {
-					toast.error(Errors.getMessage("變更密碼失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("變更密碼失敗", err);
 					failChanging(err);
 				}
 			},
@@ -373,17 +395,39 @@ export const useAuth = () => {
 	useEffect(() => {
 		console.log("state.validating", state.validating);
 		if (state.validating === null) {
-			validateCookie({
+			const queryParams = new URLSearchParams(location.search);
+			const logKeyInUrl = queryParams.get(LOG_KEY);
+			if (logKeyInUrl) {
+				sessionStorage.setItem(LOG_KEY, logKeyInUrl);
+			}
+
+			recoverIdentity({
 				doRedirect: true,
+				queryParams
 			});
 		}
-	}, [state.validating, validateCookie]);
+	}, [state.validating, recoverIdentity, location.search]);
+
+	// useEffect(() => {
+	// 	const params = new URLSearchParams(location.search);
+	// 	const logKey = params.get("LogKey");
+
+	// 	if (logKey) {
+	// 		console.log("")
+	// 		// 將 LogKey 寫入 sessionStorage
+	// 		sessionStorage.setItem("LogKey", logKey);
+
+	// 		// 移除 LogKey 參數並更新網址
+	// 		params.delete("LogKey");
+	// 		navigate({ search: params.toString() }, { replace: true });
+	// 	}
+	// }, [location, navigate]);
 
 	return {
 		...state,
 		...authoritiesState,
 		// METHODS
-		validateCookie,
+		recoverIdentity,
 		invalidate,
 		confirmSignOut,
 		// 切換帳號

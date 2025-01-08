@@ -1,28 +1,26 @@
-import { D05Context } from "@/contexts/D05/D05Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { useScrollable } from "@/shared-hooks/useScrollable";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import D05DialogForm from "./D05DialogForm";
-import { D05DialogToolbarContainer } from "./toolbar/D05DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
-import { keyColumn } from "react-datasheet-grid";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
 import { CustomerPickerComponentContainer } from "@/components/dsg/columns/customer-picker/CustomerPickerComponentContainer";
 import { DeptPickerComponentContainer } from "@/components/dsg/columns/dept-picker/DeptPickerComponentContainer";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { toast } from "react-toastify";
-import { useCallback } from "react";
-import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { D05Context } from "@/contexts/D05/D05Context";
+import { toastEx } from "@/helpers/toast-ex";
+import Colors from "@/modules/md-colors";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D05Drawer from "../D05Drawer";
+import D05DialogForm from "./D05DialogForm";
+import { D05DialogToolbarContainer } from "./toolbar/D05DialogToolbarContainer";
 
 export const D05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -33,7 +31,6 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
-
 	const d05 = useContext(D05Context);
 
 	const scrollable = useScrollable({
@@ -240,16 +237,12 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!wdate) {
-			toast.error("請先輸入報廢日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報廢日期");
 			form.setFocus("wdate");
 			return;
 		}
 		if (!employee) {
-			toast.error("請先輸入倉管人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入倉管人員");
 			form.setFocus("employee");
 			return;
 		}

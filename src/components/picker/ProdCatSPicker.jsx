@@ -7,12 +7,12 @@ import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPic
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 
 const ProdCatSPicker = (props) => {
-	const { name, label = "小分類", readOnly = false, catL, catM, ...rest } = props;
+	const { name, label = "小分類", readOnly = false, catL, catLName = "catL", catM, catMName = "catM", ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const form = useFormContext();
 	const { setValue } = form;
-	const catLValue = useWatch({ name: "catL" });
-	const catMValue = useWatch({ name: "catM" });
+	const catLValue = useWatch({ name: catLName });
+	const catMValue = useWatch({ name: catMName });
 
 	const _catL = useMemo(() => {
 		return catL || catLValue?.LClas;
@@ -59,6 +59,8 @@ ProdCatSPicker.propTypes = {
 	catL: PropTypes.string,
 	catM: PropTypes.string,
 	readOnly: PropTypes.bool,
+	catLName: PropTypes.string,
+	catMName: PropTypes.string,
 };
 
 ProdCatSPicker.displayName = "ProdCatSPicker";

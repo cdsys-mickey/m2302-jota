@@ -1,10 +1,8 @@
-import PropTypes from "prop-types";
-import { StdPrintResetButtonContainer } from "./StdPrintResetButtonContainer";
+import StdPrint from "@/modules/md-std-print";
+import FlexBox from "@/shared-components/FlexBox";
 import { StdPrintAddAllFieldsButtonContainer } from "./StdPrintAddAllFieldsButtonContainer";
-import { StdPrintRemoveAllFieldsButtonContainer } from "./StdPrintRemoveAllFieldsButtonContainer";
 import StdPrintOutputModePicker from "./StdPrintOutputModePicker";
-import StdPrint from "../../modules/md-std-print";
-import FlexBox from "../../shared-components/FlexBox";
+import { StdPrintRemoveAllFieldsButtonContainer } from "./StdPrintRemoveAllFieldsButtonContainer";
 
 const StdPrintActionButtons = () => {
 	return (

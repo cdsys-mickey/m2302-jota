@@ -1,8 +1,8 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { toastEx } from "@/helpers/toast-ex";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import { useContext } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function useServiceStatus(opts = {}) {
@@ -49,9 +49,9 @@ export default function useServiceStatus(opts = {}) {
 			if (status.success) {
 				setEnabled(enabled);
 				if (enabled) {
-					toast.success("下載服務已開放");
+					toastEx.success("下載服務已開放");
 				} else {
-					toast.warn("下載服務已鎖定");
+					toastEx.warn("下載服務已鎖定");
 				}
 			} else {
 				throw error || new Error("未預期例外");

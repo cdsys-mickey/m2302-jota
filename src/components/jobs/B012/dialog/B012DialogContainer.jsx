@@ -1,8 +1,10 @@
 import { CustomerPickerComponentContainer } from "@/components/dsg/columns/customer-picker/CustomerPickerComponentContainer";
+import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
+import { B032Context } from "@/contexts/B032/B032Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -15,13 +17,10 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import B012Drawer from "../B012Drawer";
 import B012DialogForm from "./B012DialogForm";
 import { B012DialogToolbarContainer } from "./toolbar/B012DialogToolbarContainer";
-import { BContext } from "@/contexts/B/BContext";
-import { B032Context } from "@/contexts/B032/B032Context";
-import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const B012DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -190,30 +189,24 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!dlgProd) {
-			toast.error("請先輸入貨品編號", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入貨品編號");
 			form.setFocus("dlgProd");
 			return;
 		}
 		if (!dlgEmployee) {
-			toast.error("請先輸入報價人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報價人員");
 			form.setFocus("dlgEmployee");
 			return;
 		}
 		if (!dlgDate) {
-			toast.error("請先輸入報價日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報價日期");
 			form.setFocus("Date");
 			return;
 		}
 
 
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [dlgProd, dlgDate, dlgEmployee, form, gridMeta]);
+	}, [dlgProd, dlgEmployee, dlgDate, gridMeta, form]);
 
 	const formMeta = useFormMeta(
 		`

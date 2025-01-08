@@ -1,20 +1,18 @@
-import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import D041 from "@/modules/md-d041";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useAction } from "@/shared-hooks/useAction";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
-import { useAppModule } from "./useAppModule";
-import { useAction } from "@/shared-hooks/useAction";
-import { useMemo } from "react";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { useToggle } from "../../shared-hooks/useToggle";
 import { nanoid } from "nanoid";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
+import { useAppModule } from "./useAppModule";
 
 export const useD041 = () => {
 	const crud = useContext(CrudContext);
@@ -97,7 +95,7 @@ export const useD041 = () => {
 	// 			throw error || new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
-	// 		toast.error(Errors.getMessage("讀取設定發生錯誤", err));
+	// 		toastEx.error("讀取設定發生錯誤", err));
 	// 	}
 	// }, [httpGetAsync, token]);
 
@@ -140,7 +138,7 @@ export const useD041 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`新增成功`);
+					toastEx.success(`新增成功`);
 					crud.doneCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -152,13 +150,9 @@ export const useD041 = () => {
 				console.error("handleCreate.failed", err);
 				if (err.code === 102) {
 					// recoverStockMap(data.prods, { mark: true });
-					toast.error("部分商品庫存不足，請調整後再送出", {
-						position: "top-right"
-					});
+					toastEx.error("部分商品庫存不足，請調整後再送出");
 				} else {
-					toast.error(Errors.getMessage("新增失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("新增失敗", err);
 				}
 			}
 		},
@@ -249,7 +243,7 @@ export const useD041 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toast.success(`修改成功`);
+					toastEx.success(`修改成功`);
 					crud.doneUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -260,9 +254,7 @@ export const useD041 = () => {
 			} catch (err) {
 				crud.failUpdating();
 				console.error("handleCreate.failed", err);
-				toast.error(Errors.getMessage("修改失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("修改失敗", err);
 			}
 		},
 		[crud, httpPutAsync, listLoader, loadItem, token]
@@ -285,7 +277,7 @@ export const useD041 = () => {
 					// 關閉對話框
 					crud.cancelAction();
 					if (status.success) {
-						toast.success(`成功删除入庫單 ${itemData?.EntID}`);
+						toastEx.success(`成功删除入庫單 ${itemData?.EntID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -293,9 +285,7 @@ export const useD041 = () => {
 				} catch (err) {
 					crud.failDeleting(err);
 					console.error("confirmDelete.failed", err);
-					toast.error(Errors.getMessage("刪除失敗", err), {
-						position: "top-right"
-					});
+					toastEx.error("刪除失敗", err);
 				}
 			},
 		});
@@ -435,7 +425,7 @@ export const useD041 = () => {
 	// 				} else {
 	// 					// dialogs.closeLatest();
 	// 					console.log("pword not passed");
-	// 					toast.error("密碼錯誤, 請重新輸入");
+	// 					toastEx.error("密碼錯誤, 請重新輸入");
 	// 					promptPwordEntry({
 	// 						promptOverrideSQty,
 	// 						setValue,
@@ -748,9 +738,7 @@ export const useD041 = () => {
 				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
-			toast.error(Errors.getMessage("編輯檢查失敗", err), {
-				position: "top-right"
-			});
+			toastEx.error("編輯檢查失敗", err);
 		} finally {
 			checkEditableAction.clear();
 		}

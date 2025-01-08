@@ -1,26 +1,25 @@
-import { C06Context } from "@/contexts/C06/C06Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { useScrollable } from "@/shared-hooks/useScrollable";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import C06DialogForm from "./C06DialogForm";
-import { C06DialogToolbarContainer } from "./toolbar/C06DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
-import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useCallback } from "react";
-import { toast } from "react-toastify";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { C06Context } from "@/contexts/C06/C06Context";
+import { toastEx } from "@/helpers/toast-ex";
+import Colors from "@/modules/md-colors";
+import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import C06Drawer from "../C06Drawer";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
+import C06Drawer from "../C06Drawer";
+import C06DialogForm from "./C06DialogForm";
+import { C06DialogToolbarContainer } from "./toolbar/C06DialogToolbarContainer";
 
 export const C06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -31,6 +30,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
+
 	const spDept = useWatch({
 		name: "spDept",
 		control: form.control,
@@ -213,9 +213,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 	const handleLastField = useCallback(() => {
 		console.log("handleLastField");
 		if (!spDept) {
-			toast.error("請先輸入出貨部門", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入出貨部門");
 			form.setFocus("spDept");
 			return;
 		}

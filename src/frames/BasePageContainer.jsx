@@ -1,16 +1,15 @@
-import FrameMenuContainer from "@/components/layout/FrameMenuContainer";
 import SideMenuSearchBarContainer from "@/components/layout/SideMenuSearchBarContainer";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { LoadingFrame } from "@/shared-components/protected-page/LoadingFrame";
 import { useContext } from "react";
+import RWFrameMenuContainer from "../components/layout/RWFrameMenuContainer";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 import BasePage from "./BasePage";
-import RWFrameMenuContainer from "../components/layout/RWFrameMenuContainer";
 
 export const BasePageContainer = (props) => {
 	const { ...rest } = props;
 
-	const { drawerWidth, drawerOpen, handleDrawerClose, menuFloating } =
+	const { drawerWidth, drawerOpen, handleDrawerClose, handleDrawerOpen } =
 		useContext(AppFrameContext);
 	// const { height } = useWindowSize();
 	const { validating } = useContext(AuthContext);
@@ -23,6 +22,7 @@ export const BasePageContainer = (props) => {
 		<BasePage
 			// height={height}
 			handleDrawerClose={handleDrawerClose}
+			handleDrawerOpen={handleDrawerOpen}
 			drawerOpen={drawerOpen}
 			drawerWidth={drawerWidth}
 			// menuFloating={menuFloating}

@@ -18,14 +18,15 @@ import PropTypes from "prop-types";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import B011Drawer from "../B011Drawer";
 import B011DialogForm from "./B011DialogForm";
 import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer";
+import { toastEx } from "@/helpers/toast-ex";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
 	const { forNew = false, ...rest } = props;
 	const { height } = useWindowSize();
+
 	const form = useForm({
 		defaultValues: {
 			quotes: [],
@@ -201,23 +202,17 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!dlgCustomer) {
-			toast.error("請先輸入客戶代碼", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入客戶代碼");
 			form.setFocus("dlgCustomer");
 			return;
 		}
 		if (!dlgEmployee) {
-			toast.error("請先輸入報價人員", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報價人員");
 			form.setFocus("dlgEmployee");
 			return;
 		}
 		if (!dlgDate) {
-			toast.error("請先輸入報價日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入報價日期");
 			form.setFocus("Date");
 			return;
 		}

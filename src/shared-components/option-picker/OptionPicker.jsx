@@ -27,6 +27,7 @@ import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
 import { orange } from "@mui/material/colors";
 import Colors from "@/modules/md-colors";
+import { toastEx } from "@/helpers/toast-ex";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -322,9 +323,7 @@ const OptionPicker = memo(
 			(input, opts = {}) => {
 				const { error } = opts;
 				if (name && toastError) {
-					toast.error(getNotFoundMessage({ id: input, error }), {
-						position: "top-right",
-					});
+					toastEx.error(getNotFoundMessage({ id: input, error }));
 				} else if (name && setError) {
 					setError(name, {
 						type: "manual",

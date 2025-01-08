@@ -7,8 +7,9 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { B06ToolbarContainer } from "../../../components/jobs/B06/B06ToolbarContainer";
+import { B06ToolbarContainer } from "@/components/jobs/B06/B06ToolbarContainer";
 import { B06SearchFormContainer } from "@/components/jobs/B06/form/B06SearchFormContainer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 
 export const B06FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -23,10 +24,12 @@ export const B06FrameContainer = () => {
 		<FormProvider {...searchForm}>
 			<Box sx={[boxStyles]}>
 				<FrameBannerContainer></FrameBannerContainer>
-				<B06SearchFormContainer />
-				<B06ToolbarContainer />
-				<B06ListHeader />
-				<B06ListViewContainer />
+				<ResponsiveLayout>
+					<B06SearchFormContainer />
+					<B06ToolbarContainer />
+					<B06ListHeader />
+					<B06ListViewContainer />
+				</ResponsiveLayout>
 				{/* B05 對話框 */}
 				<B05DialogContainer />
 			</Box>

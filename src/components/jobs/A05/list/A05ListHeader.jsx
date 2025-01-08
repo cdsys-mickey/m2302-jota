@@ -12,6 +12,7 @@ const A05ListHeader = memo(
 				<IndexColumn></IndexColumn>
 				<A05IDColumn>代碼</A05IDColumn>
 				<A05NameColumn>名稱</A05NameColumn>
+				<A05NameColumn>銀行</A05NameColumn>
 			</ListViewHeader>
 		);
 	})

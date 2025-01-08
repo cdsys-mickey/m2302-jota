@@ -57,6 +57,7 @@ const C02ProdGrid = memo((props) => {
 			duplicateRow={duplicateRow}
 			rowClassName={getRowClassName}
 			deleteRow={deleteRow}
+			{...rest}
 		/>
 	);
 });

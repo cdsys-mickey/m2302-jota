@@ -1,4 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { toastEx } from "@/helpers/toast-ex";
 import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
@@ -7,12 +8,10 @@ import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import { nanoid } from "nanoid";
 import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { toast } from "react-toastify";
 import { useAppModule } from "./useAppModule";
 
 export const useA16 = () => {
@@ -136,7 +135,7 @@ export const useA16 = () => {
 					},
 				});
 				if (status.success) {
-					toast.success(
+					toastEx.success(
 						`${rowData["DeptName"]} 已成功 ${enabled ? "啟用" : "停用"
 						}`
 					);
@@ -145,9 +144,7 @@ export const useA16 = () => {
 				}
 			} catch (err) {
 				reload();
-				toast.error(Errors.getMessage("變更狀態失敗", err), {
-					position: "top-right"
-				});
+				toastEx.error("變更狀態失敗", err);
 			}
 		},
 		[httpPatchAsync, reload, token]

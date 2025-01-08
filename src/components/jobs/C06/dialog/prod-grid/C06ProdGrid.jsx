@@ -38,6 +38,7 @@ const C06ProdGrid = memo((props) => {
 		stypeDisabled,
 		creating,
 		getSPriceClassName,
+		...rest
 	} = props;
 
 
@@ -70,6 +71,7 @@ const C06ProdGrid = memo((props) => {
 			duplicateRow={duplicateRow}
 			rowClassName={getRowClassName}
 			deleteRow={deleteRow}
+			{...rest}
 		/>
 	);
 });

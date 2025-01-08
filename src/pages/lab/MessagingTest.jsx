@@ -1,10 +1,6 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
+import { toastEx } from "@/helpers/toast-ex";
 import { useSignalR } from "@/shared-hooks/useSignalR";
-import { useMemo } from "react";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
-import { useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const MessagingTest = memo(() => {
@@ -32,13 +28,13 @@ const MessagingTest = memo(() => {
 	const broadcastedHandler = useCallback((payload) => {
 		console.log(`messageBrocasted`, payload);
 		const { level, message } = payload;
-		toast.info(`[${level}]${message}`);
+		toastEx.info(`[${level}]${message}`);
 	}, []);
 
 	const receivedHandler = useCallback((payload) => {
 		console.log(`messageBrocasted`, payload);
 		const { level, message } = payload;
-		toast.success(`[${level}]${message}`);
+		toastEx.success(`[${level}]${message}`);
 	}, []);
 
 	const onSendSubmit = useCallback(

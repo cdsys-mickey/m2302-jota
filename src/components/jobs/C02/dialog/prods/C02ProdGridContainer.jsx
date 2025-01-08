@@ -6,6 +6,8 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useMemo } from "react";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
+import { keyColumn } from "react-datasheet-grid";
 
 export const C02ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -18,9 +20,19 @@ export const C02ProdGridContainer = (props) => {
 		return c02.buildGridChangeHandler({
 			gridMeta: formMeta.gridMeta,
 			onUpdateRow: c02.onUpdateRow,
+			onGridChanged: c02.onGridChanged,
 			isRowDeletable: c02.isRowDeletable,
 		});
 	}, [c02, formMeta.gridMeta]);
+
+	const prodInfoColumn = useMemo(() => {
+		return {
+			...keyColumn("tooltip", createTooltipColumn({
+				arrow: true,
+				placement: "left-start",
+			}))
+		}
+	}, [])
 
 	return (
 		<DSGContext.Provider value={{
@@ -41,6 +53,7 @@ export const C02ProdGridContainer = (props) => {
 				createRow={c02.createRow}
 				onChange={onChange}
 				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
+				stickyRightColumn={prodInfoColumn}
 				{...rest}
 			/>
 		</DSGContext.Provider>

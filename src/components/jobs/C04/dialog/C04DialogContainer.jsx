@@ -1,8 +1,10 @@
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { C04Context } from "@/contexts/C04/C04Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -10,20 +12,17 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounce from "@/shared-hooks/useDebounce";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import C04Drawer from "../C04Drawer";
 import C04DialogForm from "./C04DialogForm";
 import { C04DialogToolbarContainer } from "./toolbar/C04DialogToolbarContainer";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
-import useDebounce from "@/shared-hooks/useDebounce";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 
 export const C04DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -34,6 +33,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		},
 	});
 	const { reset } = form;
+
 
 	const ordId = useWatch({
 		name: "GinID",
@@ -282,22 +282,18 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!stkDate) {
-			toast.error("請先輸入進貨日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入進貨日期");
 			form.setFocus("GinDate");
 			return;
 		}
 		if (!supplier) {
-			toast.error("請先輸入供應商", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入供應商");
 			form.setFocus("supplier");
 			return;
 		}
 
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [gridMeta, form, stkDate, supplier]);
+	}, [stkDate, supplier, gridMeta, form]);
 
 	const formMeta = useFormMeta(
 		`

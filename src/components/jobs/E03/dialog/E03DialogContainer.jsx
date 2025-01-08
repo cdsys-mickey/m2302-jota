@@ -2,6 +2,7 @@ import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/f
 import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { E03Context } from "@/contexts/E03/E03Context";
+import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -16,7 +17,6 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { toast } from "react-toastify";
 import E03Drawer from "../E03Drawer";
 import E03DialogForm from "./E03DialogForm";
 import { E03DialogToolbarContainer } from "./toolbar/E03DialogToolbarContainer";
@@ -254,30 +254,22 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 
 	const handleLastField = useCallback(() => {
 		if (!returnDate) {
-			toast.error("請先輸入銷退日期", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入銷退日期");
 			form.setFocus("OrdDate");
 			return;
 		}
 		if (!compTel) {
-			toast.error("請先輸入電話", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入電話");
 			form.setFocus("CompTel");
 			return;
 		}
 		if (!custName) {
-			toast.error("請先輸入客戶名稱", {
-				position: "top-right",
-			});
+			toastEx.error("請先輸入客戶名稱");
 			form.setFocus("CustName");
 			return;
 		}
 		if (!retail && !customer) {
-			toast.error("非零售請先輸入客戶代碼", {
-				position: "top-right",
-			});
+			toastEx.error("非零售請先輸入客戶代碼");
 			form.setFocus("customer");
 			return;
 		}
