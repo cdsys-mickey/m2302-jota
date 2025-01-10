@@ -556,129 +556,129 @@ export const useC05 = () => {
 		}
 	}, [handleRefreshAmt]);
 
-	const buildGridChangeHandlerOld = useCallback(
-		({ getValues, setValue, gridMeta }) =>
-			async (newValue, operations) => {
-				const formData = getValues();
-				console.log("buildGridChangeHandler", operations);
-				console.log("newValue", newValue);
-				const newGridData = [...newValue];
-				let checkFailed = false;
-				for (const operation of operations) {
-					if (operation.type === "UPDATE") {
-						const updatedRows = await Promise.all(
-							newValue
-								.slice(
-									operation.fromRowIndex,
-									operation.toRowIndex
-								)
-								.map(async (item, index) => {
-									const updatedRow = await onUpdateRow({
-										formData,
-										fromRowIndex: operation.fromRowIndex,
-									})(item, index);
-									return updatedRow;
-								})
-						)
-						console.log("updatedRows", updatedRows);
+	// const buildGridChangeHandlerOld = useCallback(
+	// 	({ getValues, setValue, gridMeta }) =>
+	// 		async (newValue, operations) => {
+	// 			const formData = getValues();
+	// 			console.log("buildGridChangeHandler", operations);
+	// 			console.log("newValue", newValue);
+	// 			const newGridData = [...newValue];
+	// 			let checkFailed = false;
+	// 			for (const operation of operations) {
+	// 				if (operation.type === "UPDATE") {
+	// 					const updatedRows = await Promise.all(
+	// 						newValue
+	// 							.slice(
+	// 								operation.fromRowIndex,
+	// 								operation.toRowIndex
+	// 							)
+	// 							.map(async (item, index) => {
+	// 								const updatedRow = await onUpdateRow({
+	// 									formData,
+	// 									fromRowIndex: operation.fromRowIndex,
+	// 								})(item, index);
+	// 								return updatedRow;
+	// 							})
+	// 					)
+	// 					console.log("updatedRows", updatedRows);
 
-						newGridData.splice(
-							operation.fromRowIndex,
-							updatedRows.length,
-							...updatedRows
-						)
+	// 					newGridData.splice(
+	// 						operation.fromRowIndex,
+	// 						updatedRows.length,
+	// 						...updatedRows
+	// 					)
 
-						// newValue
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.forEach(async (rowData, i) => {
-						// 		const { prod, SPrice, SQty } = rowData;
-						// 		const rowIndex = operation.fromRowIndex + i;
-						// 		const {
-						// 			prod: oldProd,
-						// 			SPrice: oldSPrice,
-						// 			oldSQty,
-						// 		} = grid.gridData[rowIndex];
+	// 					// newValue
+	// 					// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					// 	.forEach(async (rowData, i) => {
+	// 					// 		const { prod, SPrice, SQty } = rowData;
+	// 					// 		const rowIndex = operation.fromRowIndex + i;
+	// 					// 		const {
+	// 					// 			prod: oldProd,
+	// 					// 			SPrice: oldSPrice,
+	// 					// 			oldSQty,
+	// 					// 		} = grid.gridData[rowIndex];
 
-						// 		let processedRowData = { ...rowData };
-						// 		// 商品
-						// 		if (prod?.ProdID !== oldProd?.ProdID) {
-						// 			console.log(
-						// 				`prod[${rowIndex}] changed`,
-						// 				prod
-						// 			);
-						// 			let prodInfoRetrieved = false;
-						// 			if (prod?.ProdID) {
-						// 				const prodInfo = await getProdInfo(
-						// 					prod?.ProdID,
-						// 					{
-						// 						supplier: formData.supplier,
-						// 						rtnDate: formData.GrtDate,
-						// 					}
-						// 				);
-						// 				// 取得報價
-						// 				prodInfoRetrieved =
-						// 					prodInfo && prodInfo.SPrice !== "";
-						// 				processedRowData = {
-						// 					...processedRowData,
-						// 					["PackData_N"]:
-						// 						prod?.PackData_N || "",
-						// 					...(prodInfoRetrieved && prodInfo),
-						// 				};
-						// 			}
-						// 			if (!prodInfoRetrieved) {
-						// 				processedRowData = {
-						// 					...processedRowData,
-						// 					["SInqFlag"]: "",
-						// 					["SPrice"]: "",
-						// 				};
-						// 			}
-						// 		}
+	// 					// 		let processedRowData = { ...rowData };
+	// 					// 		// 商品
+	// 					// 		if (prod?.ProdID !== oldProd?.ProdID) {
+	// 					// 			console.log(
+	// 					// 				`prod[${rowIndex}] changed`,
+	// 					// 				prod
+	// 					// 			);
+	// 					// 			let prodInfoRetrieved = false;
+	// 					// 			if (prod?.ProdID) {
+	// 					// 				const prodInfo = await getProdInfo(
+	// 					// 					prod?.ProdID,
+	// 					// 					{
+	// 					// 						supplier: formData.supplier,
+	// 					// 						rtnDate: formData.GrtDate,
+	// 					// 					}
+	// 					// 				);
+	// 					// 				// 取得報價
+	// 					// 				prodInfoRetrieved =
+	// 					// 					prodInfo && prodInfo.SPrice !== "";
+	// 					// 				processedRowData = {
+	// 					// 					...processedRowData,
+	// 					// 					["PackData_N"]:
+	// 					// 						prod?.PackData_N || "",
+	// 					// 					...(prodInfoRetrieved && prodInfo),
+	// 					// 				};
+	// 					// 			}
+	// 					// 			if (!prodInfoRetrieved) {
+	// 					// 				processedRowData = {
+	// 					// 					...processedRowData,
+	// 					// 					["SInqFlag"]: "",
+	// 					// 					["SPrice"]: "",
+	// 					// 				};
+	// 					// 			}
+	// 					// 		}
 
-						// 		// 單價, 贈,  數量
-						// 		if (SPrice !== oldSPrice || SQty !== oldSQty) {
-						// 			// 計算合計
-						// 			processedRowData = {
-						// 				...processedRowData,
-						// 				["SAmt"]:
-						// 					!SPrice || !SQty
-						// 						? ""
-						// 						: SPrice * SQty,
-						// 			};
-						// 		}
-						// 		newGridData[rowIndex] = processedRowData;
-						// 	});
-					} else if (operation.type === "DELETE") {
-						// 列舉原資料
-						// checkFailed = grid.gridData
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.some((rowData, i) => {
-						// 		if (prodDisabled({ rowData })) {
-						// 			const rowIndex = operation.fromRowIndex + i;
-						// 			toastEx.error(
-						// 				`不可刪除第 ${rowIndex + 1} 筆商品`
-						// 			);
-						// 			return true;
-						// 		}
-						// 		return false;
-						// 	});
-					} else if (operation.type === "CREATE") {
-						console.log("dsg.CREATE");
-						// process CREATE here
-						gridMeta.toFirstColumn({ nextRow: true });
-					}
-				}
-				console.log("grid.changed", newGridData);
-				if (!checkFailed) {
-					grid.setGridData(newGridData);
-					handleRefreshAmt({
-						formData,
-						gridData: newGridData,
-						setValue,
-					});
-				}
-			},
-		[handleRefreshAmt, grid, onUpdateRow]
-	);
+	// 					// 		// 單價, 贈,  數量
+	// 					// 		if (SPrice !== oldSPrice || SQty !== oldSQty) {
+	// 					// 			// 計算合計
+	// 					// 			processedRowData = {
+	// 					// 				...processedRowData,
+	// 					// 				["SAmt"]:
+	// 					// 					!SPrice || !SQty
+	// 					// 						? ""
+	// 					// 						: SPrice * SQty,
+	// 					// 			};
+	// 					// 		}
+	// 					// 		newGridData[rowIndex] = processedRowData;
+	// 					// 	});
+	// 				} else if (operation.type === "DELETE") {
+	// 					// 列舉原資料
+	// 					// checkFailed = grid.gridData
+	// 					// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					// 	.some((rowData, i) => {
+	// 					// 		if (prodDisabled({ rowData })) {
+	// 					// 			const rowIndex = operation.fromRowIndex + i;
+	// 					// 			toastEx.error(
+	// 					// 				`不可刪除第 ${rowIndex + 1} 筆商品`
+	// 					// 			);
+	// 					// 			return true;
+	// 					// 		}
+	// 					// 		return false;
+	// 					// 	});
+	// 				} else if (operation.type === "CREATE") {
+	// 					console.log("dsg.CREATE");
+	// 					// process CREATE here
+	// 					gridMeta.toFirstColumn({ nextRow: true });
+	// 				}
+	// 			}
+	// 			console.log("grid.changed", newGridData);
+	// 			if (!checkFailed) {
+	// 				grid.setGridData(newGridData);
+	// 				handleRefreshAmt({
+	// 					formData,
+	// 					gridData: newGridData,
+	// 					setValue,
+	// 				});
+	// 			}
+	// 		},
+	// 	[handleRefreshAmt, grid, onUpdateRow]
+	// );
 
 	const onEditorSubmit = useCallback(
 		(data) => {

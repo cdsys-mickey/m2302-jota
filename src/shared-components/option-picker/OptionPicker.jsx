@@ -144,6 +144,8 @@ const OptionPicker = memo(
 			supressEvents,
 			isTouched,
 			isDirty,
+			blurToLookup = false,
+			blurToClearErrors = true,
 			...rest
 		} = props;
 
@@ -343,8 +345,11 @@ const OptionPicker = memo(
 
 		const handleLookup = useCallback(
 			async (e, opts = {}) => {
-				// asyncRef.current.skipBlur = true;
 				const { validate = false, } = opts;
+
+				if (name && clearErrors) {
+					clearErrors(name);
+				}
 
 				// if (!findByInput || _open || (!inFormMeta && !inDSG)) {
 				if (_open || (!inFormMeta && !inDSG)) {
@@ -425,7 +430,7 @@ const OptionPicker = memo(
 				}
 				// focusNextCellOrField(e);
 			},
-			[_open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, selectField, onChange, value, focusNextCellOrField, getError, name, setError]
+			[name, clearErrors, _open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, selectField, onChange, value, focusNextCellOrField, getError, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -482,17 +487,11 @@ const OptionPicker = memo(
 		}, [])
 
 		const handleBlur = useCallback(
-			async (e) => {
+			async (e, opts) => {
 				// 離開輸入焦點就清除錯誤
-				if (name && clearErrors) {
+				if (blurToClearErrors && name && clearErrors) {
 					clearErrors(name);
 				}
-
-				// if (asyncRef.current.skipBlur) {
-				// 	asyncRef.current.skipBlur = false;
-				// 	return;
-				// }
-				// asyncRef.current.skipBlur = false;
 
 				if (_open || (!inFormMeta && !inDSG)) {
 					return;
@@ -500,20 +499,35 @@ const OptionPicker = memo(
 				e.preventDefault();
 				const input = e.target.value;
 
-				if (asyncRef.current.dirty && findByInput && (input || emptyId)) {
+				if (blurToLookup && asyncRef.current.dirty && findByInput && (input || emptyId)) {
 					console.log("handleBlur: ", input);
 					let found;
 					// found = await findByInput(input);
 					found = input || emptyId ? await findByInput(input) : null;
 					if (found) {
 						asyncRef.current.dirty = false;
+						if (multiple) {
+							onChange([
+								...value,
+								found
+							])
+						} else {
+							if (_.isEqual(found, value)) {
+								asyncRef.current.dirty = false;
+								focusNextCellOrField(e, opts);
+							}
+							onChange(found);
+						}
 					} else {
 						inputNotFound(input);
 						refocus();
 					}
+
 				}
+
+
 			},
-			[_open, clearErrors, emptyId, findByInput, inDSG, inFormMeta, inputNotFound, name, refocus]
+			[_open, blurToClearErrors, blurToLookup, clearErrors, emptyId, findByInput, focusNextCellOrField, inDSG, inFormMeta, inputNotFound, multiple, name, onChange, refocus, value]
 		);
 
 		const renderNormalInput = useCallback(
@@ -539,6 +553,7 @@ const OptionPicker = memo(
 						onChange={handleInputChange}
 						onKeyDown={handleKeyDown}
 						onBlur={handleBlur}
+						// onBlur={handleLookup}
 						{...props}
 						sx={[{
 							...(required && !error && {

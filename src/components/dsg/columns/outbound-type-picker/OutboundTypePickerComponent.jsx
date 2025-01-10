@@ -122,6 +122,7 @@ const OutboundTypePickerComponent = memo((props) => {
 			toastError
 			// virtualize
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

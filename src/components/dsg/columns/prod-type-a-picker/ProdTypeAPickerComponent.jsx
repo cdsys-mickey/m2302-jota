@@ -115,6 +115,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 			disableFadeOut
 			toastError
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

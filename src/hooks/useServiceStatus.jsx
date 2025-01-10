@@ -6,7 +6,7 @@ import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function useServiceStatus(opts = {}) {
-	const { name } = opts;
+	const { name, jobId } = opts;
 
 	if (!name) {
 		throw new Error("未指派服務名稱");
@@ -43,7 +43,8 @@ export default function useServiceStatus(opts = {}) {
 				url: `v1/pos/service-status/${name}`,
 				bearer: token,
 				data: {
-					enabled: enabled ? 1 : 0
+					enabled: enabled ? 1 : 0,
+					jobId
 				}
 			})
 			if (status.success) {

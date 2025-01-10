@@ -308,7 +308,7 @@ export const useE021 = () => {
 					const stock = Number(err.data.StockQty);
 
 					sqtyManager.handleOverrideSQty({
-						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, refreshAmt: ({ gridData }) => {
+						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, onCommit: ({ gridData }) => {
 							handleRefreshAmt({
 								gridData,
 								// taxExcluded: data.taxExcluded,
@@ -600,7 +600,7 @@ export const useE021 = () => {
 				setValue,
 				gridMeta,
 				// 透過對話框等操作直接更新 SQty 不會觸發 GridChange, 所以必須帶上 refreshAmt 處理函式
-				refreshAmt: ({ gridData }) => {
+				onCommit: ({ gridData }) => {
 					handleRefreshAmt({
 						formData,
 						gridData,
@@ -675,52 +675,52 @@ export const useE021 = () => {
 		}
 	}, [handleRefreshAmt, mapTooltip]);
 
-	const buildGridChangeHandlerOld = useCallback(
-		({ gridMeta, getValues }) => async (newValue, operations) => {
-			console.log("prevGridData", grid.prevGridData);
-			console.log("gridData", grid.gridData);
-			console.log("buildGridChangeHandler", operations);
-			const newGridData = [...newValue];
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = grid.gridData[rowIndex];
+	// const buildGridChangeHandlerOld = useCallback(
+	// 	({ gridMeta, getValues }) => async (newValue, operations) => {
+	// 		console.log("prevGridData", grid.prevGridData);
+	// 		console.log("gridData", grid.gridData);
+	// 		console.log("buildGridChangeHandler", operations);
+	// 		const newGridData = [...newValue];
+	// 		for (const operation of operations) {
+	// 			if (operation.type === "UPDATE") {
+	// 				newValue
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.forEach((rowData, i) => {
+	// 						const rowIndex = operation.fromRowIndex + i;
+	// 						const oldRowData = grid.gridData[rowIndex];
 
-							let processedRowData = { ...rowData };
+	// 						let processedRowData = { ...rowData };
 
-							if (
-								rowData.prod?.ProdID !==
-								oldRowData?.prod?.ProdID
-							) {
-								console.log(
-									`[${rowIndex}]prod changed`,
-									rowData?.prod
-								);
-								processedRowData = handleGridProdChange({
-									rowData,
-									oldRowData,
-									getValues
-								});
-							}
+	// 						if (
+	// 							rowData.prod?.ProdID !==
+	// 							oldRowData?.prod?.ProdID
+	// 						) {
+	// 							console.log(
+	// 								`[${rowIndex}]prod changed`,
+	// 								rowData?.prod
+	// 							);
+	// 							processedRowData = handleGridProdChange({
+	// 								rowData,
+	// 								oldRowData,
+	// 								getValues
+	// 							});
+	// 						}
 
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "DELETE") {
-					newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
-				}
-			}
-			console.log("after changed", newGridData);
-			grid.setGridData(newGridData);
-		},
-		[grid, handleGridProdChange]
-	);
+	// 						newGridData[rowIndex] = processedRowData;
+	// 					});
+	// 			} else if (operation.type === "DELETE") {
+	// 				newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
+	// 			} else if (operation.type === "CREATE") {
+	// 				console.log("dsg.CREATE");
+	// 				// process CREATE here
+	// 				gridMeta.toFirstColumn({ nextRow: true });
+	// 			}
+	// 		}
+	// 		console.log("after changed", newGridData);
+	// 		grid.setGridData(newGridData);
+	// 	},
+	// 	[grid, handleGridProdChange]
+	// );
 
 	const onEditorSubmit = useCallback(
 		({ setValue, gridMeta }) => (data) => {
@@ -1166,7 +1166,7 @@ export const useE021 = () => {
 		onEditorSubmitError,
 		// 報價 Grid
 		createRow,
-		buildGridChangeHandlerOld,
+		// buildGridChangeHandlerOld,
 		...grid,
 		grid,
 		onUpdateRow,

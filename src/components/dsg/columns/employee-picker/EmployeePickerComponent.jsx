@@ -123,6 +123,7 @@ const EmployeePickerComponent = memo((props) => {
 			virtualize
 			triggerDelay={100}
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

@@ -71,7 +71,7 @@ export const useAppFrame = (opts = {}) => {
 			bearer: auth.token
 		})
 		if (status.success) {
-			console.debug("spawn result", payload);
+			console.log("spawn result", payload);
 			return payload?.LogKey;
 		} else {
 			throw error || new Error("未預期例外");

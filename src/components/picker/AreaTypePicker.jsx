@@ -15,6 +15,7 @@ const AreaTypePicker = forwardRef((props, ref) => {
 			isOptionEqualToValue={AreaTypes.isOptionEqualToValue}
 			findByInput={AreaTypes.findByInput}
 			notFoundText="地區 ${id} 不存在"
+			blurToLookup
 			{...rest}
 		/>
 	);

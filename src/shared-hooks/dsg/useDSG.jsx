@@ -5,10 +5,7 @@ import Arrays from "@/shared-modules/sd-arrays";
 import Objects from "@/shared-modules/sd-objects";
 import Types from "@/shared-modules/sd-types";
 import _ from "lodash";
-import { useEffect } from "react";
-import { useRef } from "react";
-import { useCallback, useMemo, useState } from "react";
-import { toast } from "react-toastify";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const DEFAULT_SET_DATA_OPTS = {
 	reset: false,
@@ -48,7 +45,11 @@ export const useDSG = ({
 	// });
 
 	const [gridLoading, setGridLoading] = useState(null);
-	const [prevGridData, setPrevGridData] = useState([]);
+	// const [prevGridData, setPrevGridData] = useState([]);
+	const prevGridDataRef = useRef([]);
+	const setPrevGridData = useCallback((newValue) => {
+		prevGridDataRef.current = newValue;
+	}, []);
 	const [gridData, setGridData] = useState([]);
 
 	// const [deletingRow, setDeletingRow] = useState();
@@ -93,12 +94,16 @@ export const useDSG = ({
 			if (isDirty) {
 				if (!dirtyIds.has(key)) {
 					dirtyIds.add(key);
-					console.log(`dirtyId ${key} added`);
+					if (debug) {
+						console.log(`dirtyId ${key} added`);
+					}
 				}
 			} else {
 				if (dirtyIds.has(key)) {
 					dirtyIds.delete(key);
-					console.log(`dirtyId ${key} removed`);
+					if (debug) {
+						console.log(`dirtyId ${key} removed`);
+					}
 				}
 			}
 			return isDirty;
@@ -136,7 +141,7 @@ export const useDSG = ({
 		[_createRow]
 	);
 
-	const resetGridData = useCallback(
+	const _setGridData = useCallback(
 		(newValue, opts) => {
 			const {
 				reset = false,
@@ -174,10 +179,10 @@ export const useDSG = ({
 						: newValue;
 					// dirtyIds.clear();
 					newGridData.forEach((rowData, rowIndex) => {
-						let prevRowData = prevGridData[rowIndex];
+						let prevRowData = prevGridDataRef.current[rowIndex];
 						if (dirtyCheckBy) {
 							const key = _.get(rowData, keyColumn);
-							prevRowData = prevGridData.find((item) => {
+							prevRowData = prevGridDataRef.current.find((item) => {
 								const itemKey = _.get(item, keyColumn);
 								return itemKey === key;
 							});
@@ -199,8 +204,10 @@ export const useDSG = ({
 
 			if (commit || init) {
 				setPrevGridData(_newValues);
+				console.log("prevGridData after commit/init", _newValues);
 			} else if (prev) {
 				setPrevGridData(prev);
+				console.log("prevGridData of prev", prev);
 			}
 
 			setGridData(
@@ -210,26 +217,26 @@ export const useDSG = ({
 			setGridLoading(false);
 
 			if (debug) {
-				console.log("resetGridData", newValue);
+				console.log("resetGridData", _newValues);
 			}
 		},
-		[deletedIds, dirtyIds, fillRows, gridData, handleDirtyCheck, keyColumn, persistedIds, prevGridData]
+		[deletedIds, dirtyIds, fillRows, gridData, handleDirtyCheck, keyColumn, persistedIds, setPrevGridData]
 	);
 
 	const handleGridDataLoaded = useCallback(
 		(payload, opts) => {
 			console.log(`${gridId}.onDataLoaded`, payload);
-			resetGridData(payload, { reset: true, commit: true });
+			_setGridData(payload, { reset: true, commit: true });
 		},
-		[gridId, resetGridData]
+		[gridId, _setGridData]
 	);
 
 	const initGridData = useCallback(
 		(payload, opts) => {
 			console.log(`${gridId}.onDataLoaded`, payload);
-			resetGridData(payload, { ...opts, reset: true, commit: true, supressEvents: true });
+			_setGridData(payload, { ...opts, reset: true, commit: true, supressEvents: true });
 		},
-		[gridId, resetGridData]
+		[gridId, _setGridData]
 	);
 
 	const getRowDataByIndex = useCallback(
@@ -241,24 +248,24 @@ export const useDSG = ({
 
 	const removeRowByKey = useCallback(
 		(key) => {
-			const newValue = prevGridData.filter((rowData) => {
+			const newValue = prevGridDataRef.current.filter((rowData) => {
 				const value = _.get(rowData, keyColumn);
 				return value !== key;
 			});
-			resetGridData(newValue);
+			_setGridData(newValue);
 		},
-		[keyColumn, prevGridData, resetGridData]
+		[keyColumn, prevGridDataRef, _setGridData]
 	);
 
 	const removeRowByIndex = useCallback(
 		(fromRowIndex, toRowIndex) => {
 			console.log(`removeRowByIndex`, fromRowIndex, toRowIndex);
-			const newValue = prevGridData.filter((_, index) => {
+			const newValue = prevGridDataRef.filter((_, index) => {
 				return index < fromRowIndex || index >= toRowIndex;
 			});
-			resetGridData(newValue);
+			_setGridData(newValue);
 		},
-		[prevGridData, resetGridData]
+		[_setGridData]
 	);
 
 	const commitChanges = useCallback(
@@ -273,16 +280,16 @@ export const useDSG = ({
 			setPrevGridData(_newValue);
 			// handleLock();
 		},
-		[gridData, gridId, keyColumn, persistedIds]
+		[gridData, gridId, keyColumn, persistedIds, setPrevGridData]
 	);
 
 	const rollbackChanges = useCallback(() => {
-		console.log(`${gridId}.rollbackChanges→`, prevGridData);
+		console.log(`${gridId}.rollbackChanges→`, prevGridDataRef.current);
 
-		setGridData(prevGridData);
+		setGridData(prevGridDataRef.current);
 		setGridLoading(false);
 		dirtyIds.clear();
-	}, [dirtyIds, gridId, prevGridData]);
+	}, [dirtyIds, gridId, prevGridDataRef]);
 
 	const isKeyDuplicated = useCallback(
 		(newValue, key, _keyColumn) => {
@@ -351,7 +358,7 @@ export const useDSG = ({
 			} else if (operation.type === "UPDATE") {
 				const rowIndex = operation.fromRowIndex;
 				const rowData = newValue[rowIndex];
-				const prevRowData = prevGridData[rowIndex];
+				const prevRowData = prevGridDataRef.current[rowIndex];
 				console.log(`[DSG UPDATE]`, rowData);
 
 				const dirty = handleDirtyCheck(prevRowData, rowData);
@@ -361,7 +368,7 @@ export const useDSG = ({
 				setGridData(newValue);
 			}
 		},
-		[gridId, prevGridData, handleDirtyCheck]
+		[gridId, prevGridDataRef, handleDirtyCheck]
 	);
 
 
@@ -408,7 +415,7 @@ export const useDSG = ({
 							) : updatingRows;
 
 							updatedRows.forEach((updatedRowData, index) => {
-								const prevRowData = prevGridData[operation.fromRowIndex + index];
+								const prevRowData = prevGridDataRef.current[operation.fromRowIndex + index];
 								const dirty = handleDirtyCheck(updatedRowData, prevRowData, dirtyCheckOpts);
 								console.log("dirty", dirty);
 							});
@@ -502,18 +509,20 @@ export const useDSG = ({
 					!asyncRef.current.supressEvents &&
 					(updateResult.rows > 0 || updateResult.cols.length > 0)) {
 					console.log("onGridChanged", newGridData);
-					updated = await onGridChanged({ prevGridData, gridData: newGridData, formData, setValue, updateResult });
+					updated = await onGridChanged({ prevGridData: prevGridDataRef.current, gridData: newGridData, formData, setValue, updateResult });
 				}
 
 				if (!checkFailed) {
 					if (updated) {
 						setGridData(updated);
+						setPrevGridData(updated);
 					} else {
 						setGridData(newGridData);
+						setPrevGridData(newGridData);
 					}
 				}
 			},
-		[deletedIds, gridData, handleDirtyCheck, keyColumn, prevGridData]
+		[deletedIds, gridData, handleDirtyCheck, keyColumn, prevGridDataRef]
 	);
 
 	const spreadOnRow = useCallback(
@@ -586,14 +595,14 @@ export const useDSG = ({
 	}, [dirtyIds, gridData, keyColumn]);
 
 	const getDeletedRows = useCallback(() => {
-		return prevGridData.filter((row) => {
+		return prevGridDataRef.current.filter((row) => {
 			if (deletedIds && deletedIds.size > 0) {
 				const key = _.get(row, keyColumn);
 				return deletedIds.has(key);
 			}
 			return false;
 		});
-	}, [deletedIds, keyColumn, prevGridData]);
+	}, [deletedIds, keyColumn, prevGridDataRef]);
 
 	const handleToggleReadOnly = useCallback(() => {
 		rollbackChanges();
@@ -612,9 +621,9 @@ export const useDSG = ({
 		// STATES
 		// ...state,
 		gridData,
-		prevGridData,
+		prevGridData: prevGridDataRef.current,
 		gridLoading,
-		setGridData: resetGridData,
+		setGridData: _setGridData,
 		initGridData,
 
 		gridId,

@@ -17,6 +17,7 @@ const SquaredPicker = memo(
 				isOptionEqualToValue={Squared.isOptionEqualToValue}
 				findByInput={Squared.findSquaredOptionByInput}
 				// getOptionDisabled={Squared.getSquaredOptionDisabled}
+				blurToLookup
 				{...rest}
 			/>
 		);

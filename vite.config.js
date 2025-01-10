@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
 
 	return {
 		base: env.VITE_PUBLIC_URL,
+		// 只有影響開發環境
 		server: {
 			proxy: {
 				"/api": {
@@ -32,18 +33,5 @@ export default defineConfig(({ mode }) => {
 		define: {
 			"import.meta.env.BUILD_TIME": new Date(),
 		},
-
-		// ...(env.VITE_PROFILE === "dev" && {
-		// 	server: {
-		// 		proxy: {
-		// 			// "/api": "http://ap01/WebSale/api",
-		// 			"/api": {
-		// 				target: "http://ap01/WebSale/api",
-		// 				changeOrigin: true,
-		// 				secure: false,
-		// 			},
-		// 		},
-		// 	},
-		// }),
 	};
 });

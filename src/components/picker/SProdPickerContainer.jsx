@@ -66,6 +66,7 @@ export const SProdPickerContainer = (props) => {
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
+			blurToLookup
 			{...rest}
 		/>
 	);

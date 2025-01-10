@@ -19,11 +19,15 @@ export const useA18 = () => {
 	const formMeta = useFormMeta(
 		`
 		dept,
-		table,
-		outputType,
 		SDate,
 		EDate,
-		action
+		table,
+		job,
+		operator,
+		ipAddr,
+		action,
+		orderBy,
+		outputType,
 		`);
 
 	const reportUrl = useMemo(() => {

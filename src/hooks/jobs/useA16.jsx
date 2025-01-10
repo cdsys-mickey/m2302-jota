@@ -1,166 +1,317 @@
-import { AuthContext } from "@/contexts/auth/AuthContext";
+import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
-import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { useInit } from "@/shared-hooks/useInit";
+import A16 from "@/modules/md-a16";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useInit } from "@/shared-hooks/useInit"; import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import { nanoid } from "nanoid";
-import queryString from "query-string";
-import { useCallback, useContext, useMemo } from "react";
-import { keyColumn } from "react-datasheet-grid";
+import { useCallback, useContext, useState } from "react";
+import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
-
-export const useA16 = () => {
-	const { token } = useContext(AuthContext);
+export const useA16 = ({ token }) => {
+	const formMeta = useFormMeta(
+		`
+		DeptID,
+		GroupKey,
+		Seq,
+		AbbrName,
+		DeptName,
+		Address,
+		Tel,
+		Contact,
+		headOffice,
+		flagship
+		`
+	);
+	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "A16",
 	});
-	const { httpPatchAsync } = useWebApi();
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
+	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
+		useWebApi();
+	const [selectedItem, setSelectedItem] = useState();
+	const dialogs = useContext(DialogsContext);
 
-	const createRow = useCallback(
-		() => ({
-			id: nanoid(),
-			Using_N: "1",
-		}),
+	const [
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+	] = useToggle(false);
+
+	const listLoader = useInfiniteLoader({
+		url: "v1/ou/depts",
+		bearer: token,
+		initialFetchSize: 50,
+		params: {
+			acc: 1
+		}
+	});
+
+	const loadItem = useCallback(
+		async ({ id }) => {
+			try {
+				const encodedId = encodeURIComponent(id);
+				const { status, payload, error } = await httpGetAsync({
+					url: `v1/ou/depts`,
+					bearer: token,
+					params: {
+						id: encodedId,
+					},
+				});
+				console.log("payload", payload);
+				if (status.success) {
+					const data = A16.transformForReading(payload.data[0]);
+
+					crud.doneReading({
+						data,
+					});
+				} else {
+					throw error || new Error("讀取失敗");
+				}
+			} catch (err) {
+				crud.failReading(err);
+			}
+		},
+		[crud, httpGetAsync, token]
+	);
+
+	const handleSelect = useCallback(
+		async (e, rowData) => {
+			e?.stopPropagation();
+			crud.cancelAction();
+			setSelectedItem(rowData);
+
+			crud.startReading("讀取中...", { id: rowData.DeptID });
+			loadItem({ id: rowData.DeptID });
+		},
+		[crud, loadItem]
+	);
+
+	const confirmReturn = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要結束編輯?",
+			onConfirm: () => {
+				crud.cancelUpdating();
+			},
+		});
+	}, [crud, dialogs]);
+
+	const confirmDialogClose = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要放棄編輯?",
+			onConfirm: () => {
+				crud.cancelAction();
+			},
+		});
+	}, [crud, dialogs]);
+
+	const confirmQuitCreating = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要放棄新增?",
+			onConfirm: () => {
+				crud.cancelAction();
+			},
+		});
+	}, [crud, dialogs]);
+
+	const handleDialogClose = useCallback(() => {
+		crud.cancelAction();
+	}, [crud]);
+
+	const handleCreate = useCallback(
+		async ({ data }) => {
+			try {
+				crud.startCreating();
+				const { status, error } = await httpPostAsync({
+					url: "v1/ou/depts",
+					data: data,
+					bearer: token,
+				});
+
+				if (status.success) {
+					toastEx.success(
+						`門市「${data?.DeptID} ${data?.AbbrName}」新增成功`
+					);
+					crud.doneCreating();
+					crud.cancelReading();
+					// 重新整理
+					listLoader.loadList({ refresh: true });
+				} else {
+					throw error || new Error("新增發生未預期例外");
+				}
+			} catch (err) {
+				crud.failCreating(err);
+				console.error("handleCreate.failed", err);
+				toastEx.error("新增失敗", err);
+			}
+		},
+		[crud, httpPostAsync, listLoader, token]
+	);
+
+	const handleUpdate = useCallback(
+		async ({ data }) => {
+			try {
+				crud.startUpdating();
+				// const oldId = crud.itemData?.ProdID;
+				const { status, error } = await httpPutAsync({
+					url: `v1/ou/depts`,
+					data: data,
+					bearer: token,
+				});
+
+				if (status.success) {
+					toastEx.success(
+						`商品「${data?.DeptID} ${data?.AbbrName}」修改成功`
+					);
+					crud.doneUpdating();
+					loadItem({ id: data?.DeptID });
+					// 重新整理
+					listLoader.loadList({ refresh: true });
+				} else {
+					throw error || new Error("修改發生未預期例外");
+				}
+			} catch (err) {
+				crud.failUpdating(err);
+				console.error("handleUpdate.failed", err);
+				toastEx.error("修改失敗", err);
+			}
+		},
+		[crud, httpPutAsync, loadItem, listLoader, token]
+	);
+
+	const onEditorSubmit = useCallback(
+		async (data) => {
+			console.log(`A16.onEditorSubmit()`, data);
+
+			const processed = A16.transformForEditorSubmit(data);
+			console.log(`processed`, processed);
+			if (crud.creating) {
+				handleCreate({ data: processed });
+			} else if (crud.updating) {
+				handleUpdate({ data: processed });
+			} else {
+				console.error("UNKNOWN SUBMIT TYPE");
+			}
+		},
+		[crud.creating, crud.updating, handleCreate, handleUpdate]
+	);
+
+	const onEditorSubmitError = useCallback((err) => {
+		console.error(`A16.onSubmitError`, err);
+		toastEx.error(
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+			, {
+				position: "top-right"
+			});
+	}, []);
+
+	const promptCreating = useCallback(
+		(e) => {
+			e?.stopPropagation();
+			const data = {
+				trans: [],
+				combo: [],
+			};
+			crud.promptCreating({
+				data,
+			});
+		},
+		[crud]
+	);
+
+	const confirmDelete = useCallback(() => {
+		dialogs.confirm({
+			message: `確認要删除「${crud.itemData?.DeptID} ${crud.itemData?.AbbrName}」?`,
+			onConfirm: async () => {
+				try {
+					crud.startDeleting(crud.itemData);
+					const { status, error } = await httpDeleteAsync({
+						url: `v1/ou/depts`,
+						bearer: token,
+						params: {
+							id: crud.itemData?.DeptID
+						}
+					});
+					crud.cancelAction();
+					if (status.success) {
+						toastEx.success(
+							`成功删除 ${crud.itemData?.DeptID} ${crud.itemData.AbbrName}`
+						);
+						listLoader.loadList({ refresh: true });
+					} else {
+						throw error || `發生未預期例外`;
+					}
+				} catch (err) {
+					crud.failDeleting(err);
+					console.error("confirmDelete.failed", err);
+					toastEx.error("刪除失敗", err);
+				}
+			},
+		});
+	}, [crud, dialogs, httpDeleteAsync, listLoader, token]);
+
+	const onSearchSubmit = useCallback(
+		(data) => {
+			handlePopperClose();
+			console.log(`onSearchSubmit`, data);
+			// const q = data?.q;
+			listLoader.loadList({
+				params: A16.transformAsQueryParams(data),
+				// reset: true,
+			});
+		},
+		[handlePopperClose, listLoader]
+	);
+
+	const onSearchSubmitError = useCallback((err) => {
+		console.error(`onSearchSubmitError`, err);
+	}, []);
+
+	const handleReset = useCallback(
+		({ reset }) =>
+			() => {
+				reset({
+					lvId: "",
+					lvName: "",
+					lvBank: null
+				});
+			},
 		[]
 	);
 
-	const grid = useDSG({
-		gridId: "A16",
-		keyColumn: "DeptID",
-		otherColumns: "GroupKey,DeptName,AbbrName",
-		createRow
-	});
-
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"Using_N",
-					createCheckboxExColumn({
-						trueValue: "1",
-						falseValue: "0",
-						size: "medium"
-					})
-				),
-				title: "使用中",
-				minWidth: 60,
-				disabled: grid.readOnly,
-			},
-			{
-				...keyColumn(
-					"DeptID",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				disabled: grid.isPersisted,
-				title: "門市代碼",
-				grow: 2,
-			},
-			{
-				...keyColumn(
-					"GroupKey",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "群組",
-				grow: 1,
-				disabled: grid.readOnly,
-			},
-			{
-				...keyColumn(
-					"DeptName",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "門市名稱",
-				grow: 4,
-				disabled: grid.readOnly,
-			},
-			{
-				...keyColumn(
-					"AbbrName",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "簡稱",
-				grow: 2,
-				disabled: grid.readOnly,
-			},
-
-		],
-		[grid.isPersisted, grid.readOnly]
-	);
-
-	const gridMeta = useDSGMeta({
-		columns,
-		data: grid.gridData,
-		lastCell: DSGLastCellBehavior.CREATE_ROW,
-	});
-
-	const codeEditor = useDSGCodeEditor({
-		baseUri: "v1/ou/depts",
-		token,
-		displayName: "門市代碼",
-		querystring: queryString.stringify({
-			all: 1,
-		}),
-		grid,
-		gridMeta,
-	});
-
-	const { load, reload } = codeEditor;
-
-
-
-	const handlePatch = useCallback(
-		async ({ rowData }) => {
-			const enabled = rowData["Using_N"] === "1";
-			try {
-				const { status, error } = await httpPatchAsync({
-					url: `v1/ou/depts/enabled`,
-					bearer: token,
-					data: {
-						DeptID: rowData["DeptID"],
-						Using_N: rowData["Using_N"],
-					},
-				});
-				if (status.success) {
-					toastEx.success(
-						`${rowData["DeptName"]} 已成功 ${enabled ? "啟用" : "停用"
-						}`
-					);
-				} else {
-					throw error || new Error("變更狀態發生錯誤");
-				}
-			} catch (err) {
-				reload();
-				toastEx.error("變更狀態失敗", err);
-			}
-		},
-		[httpPatchAsync, reload, token]
-	);
-
 	useInit(() => {
-		load();
+		crud.cancelAction();
 	}, []);
 
 	return {
+		...listLoader,
+		...crud,
+		onSearchSubmit,
+		onSearchSubmitError,
+		handleSelect,
+		selectedItem,
+		handleDialogClose,
+		confirmDialogClose,
+		confirmQuitCreating,
+		onEditorSubmit,
+		onEditorSubmitError,
+		confirmReturn,
+		// CRUD overrides
+		promptCreating,
+		confirmDelete,
 		...appModule,
-		...grid,
-		...gridMeta,
-		gridMeta,
-		...codeEditor,
-		createRow,
-		handlePatch,
+		formMeta,
+		...sideDrawer,
+		// Popper
+		popperOpen,
+		handlePopperToggle,
+		handlePopperOpen,
+		handlePopperClose,
+		handleReset
 	};
 };

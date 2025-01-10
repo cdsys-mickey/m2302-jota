@@ -22,6 +22,7 @@ const D01ProdGrid = memo((props) => {
 		getRowClassName,
 		height = 300,
 		createRow,
+		...rest
 	} = props;
 
 
@@ -54,6 +55,7 @@ const D01ProdGrid = memo((props) => {
 			duplicateRow={duplicateRow}
 			rowClassName={getRowClassName}
 			deleteRow={deleteRow}
+			{...rest}
 		/>
 	);
 });

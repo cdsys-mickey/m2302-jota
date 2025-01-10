@@ -36,6 +36,7 @@ const ProdLinePicker = (props) => {
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
 			placeholder="生產線代號"
+			blurToLookup
 			{...rest}
 		/>
 	);

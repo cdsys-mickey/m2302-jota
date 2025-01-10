@@ -15,6 +15,7 @@ const ProdTypeBPicker = memo(
 				getOptionLabel={ProdTypeB.getOptionLabel}
 				isOptionEqualToValue={ProdTypeB.isOptionEqualToValue}
 				findByInput={ProdTypeB.findByInput}
+				blurToLookup
 				{...rest}
 			/>
 		);

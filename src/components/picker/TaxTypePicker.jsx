@@ -16,6 +16,7 @@ const TaxTypePicker = forwardRef((props, ref) => {
 			isOptionEqualToValue={TaxTypes.isOptionEqualToValue}
 			findByInput={TaxTypes.findByInput}
 			notFoundText="稅別 ${id} 不存在"
+			blurToLookup
 			{...rest}
 		/>
 	);

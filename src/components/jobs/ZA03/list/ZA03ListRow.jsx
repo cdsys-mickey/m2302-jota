@@ -22,6 +22,7 @@ const ZA03ListRow = memo((props) => {
 		onClick,
 		confirmResetPword,
 		promptCopyAuth,
+		showAuthScope
 	} = props;
 
 	return (
@@ -55,18 +56,20 @@ const ZA03ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<ZA03IDColumn loading={loading}>
+						<ZA03IDColumn>
 							{value?.LoginName}
 						</ZA03IDColumn>
-						<ZA03NameColumn loading={loading}>
+						<ZA03NameColumn>
 							{value?.UserName}
 						</ZA03NameColumn>
-						<ZA03DeptColumn loading={loading}>
+						<ZA03DeptColumn>
 							{value?.AbbrName}
 						</ZA03DeptColumn>
-						{/* <ZA03ClassColumn loading={loading}>
-							{value?.Class && <AuthScopeChip scope={value?.Class} size="small" />}
-						</ZA03ClassColumn> */}
+						{showAuthScope && (
+							<ZA03ClassColumn>
+								{value?.Class && <AuthScopeChip scope={value?.Class} size="small" />}
+							</ZA03ClassColumn>
+						)}
 					</Grid>
 				</Box>
 			</HoverableListItem>

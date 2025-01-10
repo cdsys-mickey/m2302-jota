@@ -1,18 +1,48 @@
+import Objects from "@/shared-modules/sd-objects";
+
+/* eslint-disable no-mixed-spaces-and-tabs */
 const transformForReading = (payload) => {
-	const { Using_N, ...rest } = payload;
+	const { FlagShip, HeadOffice, ...rest } = payload;
 	return {
-		Using_N: Using_N === "1",
+		flagship: FlagShip == 1,
+		headOffice: HeadOffice == 1,
+		...rest,
+	};
+};
+
+const transformForEditorSubmit = (payload) => {
+	const { flagship, headOffice, ...rest } = payload;
+	return {
+		FlagShip: flagship ? "1" : "",
+		HeadOffice: headOffice ? "1" : "",
+		...rest,
+	};
+};
+
+const isFiltered = (criteria) => {
+	return Objects.isAnyPropNotEmpty(criteria, "lvId,lvName,lvBank");
+};
+
+const transformAsQueryParams = (data) => {
+	const { lvId, lvName, lvBank, ...rest } = data;
+	return {
+		si: lvId,
+		sn: lvName,
+		...(lvBank && {
+			bank: lvBank?.CodeID,
+		}),
 		...rest,
 	};
 };
 
 const paramsToJsonData = (params) => {
 	const where = [];
+
 	return {
 		StdWhere: where,
 		...(params?.qs && {
 			CondData: {
-				QS_ID: `${params.qs}%`,
+				QS_ID: `%${params.qs}%`,
 				QS_NAME: `%${params.qs}%`,
 			},
 		}),
@@ -21,7 +51,10 @@ const paramsToJsonData = (params) => {
 
 const A16 = {
 	transformForReading,
+	transformForEditorSubmit,
 	paramsToJsonData,
+	isFiltered,
+	transformAsQueryParams,
 };
 
 export default A16;

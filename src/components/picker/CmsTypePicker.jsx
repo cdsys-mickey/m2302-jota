@@ -17,6 +17,7 @@ const CmsTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={CmsTypes.getOptionLabel}
 			isOptionEqualToValue={CmsTypes.isOptionEqualToValue}
 			notFoundText="佣金類別 ${id} 不存在"
+			blurToLookup
 			{...rest}
 		/>
 	);

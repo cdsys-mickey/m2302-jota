@@ -17,6 +17,7 @@ const ProdCatLPicker = memo((props) => {
 			getOptionLabel={ProdLCats.getOptionLabel}
 			isOptionEqualToValue={ProdLCats.isOptionEqualToValue}
 			notFoundText="大分類 ${id} 不存在"
+			blurToLookup
 			{...rest}
 		/>
 	);

@@ -15,6 +15,7 @@ const YesOrEmptyPicker = forwardRef((props, ref) => {
 			isOptionEqualToValue={YesOrEmpty.isOptionEqualToValue}
 			findByInput={YesOrEmpty.findByInput}
 			notFoundText="${id} 不存在"
+			blurToLookup
 			{...rest}
 		/>
 	);

@@ -16,7 +16,7 @@ const SquaredPicker2 = memo(
 				getOptionLabel={Squared2.getOptionLabel}
 				isOptionEqualToValue={Squared2.isOptionEqualToValue}
 				findByInput={Squared2.findOptionByInput}
-
+				blurToLookup
 				{...rest}
 			/>
 		);

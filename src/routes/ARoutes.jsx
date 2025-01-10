@@ -20,6 +20,7 @@ import { A13Provider } from "@/contexts/A13/A13Provider";
 import { A14Provider } from "@/contexts/A14/A14Provider";
 import { A15Provider } from "@/contexts/A15/A15Provider";
 import { A16Provider } from "@/contexts/A16/A16Provider";
+import { A16GProvider } from "@/contexts/A16G/A16GProvider";
 import { A17Provider } from "@/contexts/A17/A17Provider";
 import { A18Provider } from "@/contexts/A18/A18Provider";
 import { A19Provider } from "@/contexts/A19/A19Provider";
@@ -48,6 +49,7 @@ import { A12FrameContainer } from "@/pages/modules/A12/A12FrameContainer";
 import { A13FrameContainer } from "@/pages/modules/A13/A13FrameContainer";
 import { A14FrameContainer } from "@/pages/modules/A14/A14FrameContainer";
 import { A15FrameContainer } from "@/pages/modules/A15/A15FrameContainer";
+import { A16GFrameContainer } from "@/pages/modules/A16G/A16GFrameContainer";
 import { A16FrameContainer } from "@/pages/modules/A16/A16FrameContainer";
 import { A17FrameContainer } from "@/pages/modules/A17/A17FrameContainer";
 import { A18FrameContainer } from "@/pages/modules/A18/A18FrameContainer";
@@ -308,6 +310,7 @@ const aRoutes = (
 				</CrudProvider>
 			}
 		/>
+
 		<Route
 			path="A16"
 			element={
@@ -316,6 +319,18 @@ const aRoutes = (
 						<A16Provider>
 							<A16FrameContainer />
 						</A16Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="A16G"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<A16GProvider>
+							<A16GFrameContainer />
+						</A16GProvider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

@@ -121,6 +121,7 @@ const DeptPickerComponent = memo((props) => {
 			disableFadeOut
 			toastError
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

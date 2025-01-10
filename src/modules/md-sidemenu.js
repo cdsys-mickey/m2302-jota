@@ -18,10 +18,16 @@ const getHeaderIcon = (module) => {
 
 const isHeader = (module) => {
 	if (!module) {
-		return null;
+		return false;
 	}
-	const regexp = /^[a-zA-Z][0]{2}$/;
-	return regexp.test(module.JobID);
+	const jobIDPattern = /^[a-zA-Z]00$/;
+	if (typeof module.JobID === "string" && jobIDPattern.test(module.JobID)) {
+		return true;
+	}
+	if (typeof module.JobName === "string" && module.JobName.startsWith("【")) {
+		return true;
+	}
+	return false;
 };
 
 const SideMenu = {

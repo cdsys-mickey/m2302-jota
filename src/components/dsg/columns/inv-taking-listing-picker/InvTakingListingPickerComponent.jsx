@@ -121,6 +121,7 @@ const InvTakingListingPickerComponent = memo((props) => {
 			disableFadeOut
 			toastError
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

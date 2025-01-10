@@ -9,21 +9,22 @@ const A16PrintButtonContainer = memo(
 		const { ...rest } = props;
 		const stdPrint = useContext(StdPrintContext);
 		const a16 = useContext(A16Context);
+		const { moduleAuthorityLoading, canPrint } = a16;
 
-		if (a16.moduleAuthorityLoading || !a16.canPrint) {
+		if (moduleAuthorityLoading || !canPrint) {
 			return false;
 		}
 
 		return (
 			<ResponsiveButton
 				ref={ref}
-				color="neutral"
 				variant="contained"
 				startIcon={<LocalPrintshopIcon />}
 				sx={{
 					fontWeight: 600,
 				}}
 				onClick={stdPrint.promptPrint}
+				color="neutral"
 				{...rest}>
 				列印
 			</ResponsiveButton>
@@ -35,3 +36,4 @@ A16PrintButtonContainer.propTypes = {};
 
 A16PrintButtonContainer.displayName = "A16PrintButtonContainer";
 export default A16PrintButtonContainer;
+

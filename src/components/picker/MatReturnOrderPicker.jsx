@@ -34,6 +34,7 @@ const MatReturnOrderPicker = memo((props) => {
 			placeholder="退料單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"
+			blurToLookup
 			{...rest}
 		/>
 	);

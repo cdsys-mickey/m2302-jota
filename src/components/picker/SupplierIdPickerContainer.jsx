@@ -53,6 +53,7 @@ export const SupplierIdPickerContainer = (props) => {
 			isOptionEqualToValue={isOptionEqualToValue}
 			getData={getData}
 			getOptionKey={getOptionKey}
+			blurToLookup
 			{...rest}
 		/>
 	);

@@ -28,9 +28,7 @@ export const useA19 = () => {
 		dataType,
 		outputType,
 		transIncluded
-		`, {
-		lastField: LastFieldBehavior.PROMPT
-	}
+		`
 	)
 
 	const reportUrl = useMemo(() => {

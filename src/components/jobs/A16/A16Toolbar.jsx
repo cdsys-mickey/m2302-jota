@@ -1,29 +1,39 @@
+import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineListViewToolbar";
+import { Box } from "@mui/material";
 import { forwardRef, memo } from "react";
-import Colors from "../../../modules/md-colors";
-import ContainerEx from "../../../shared-components/ContainerEx";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
-import { A16LockRowsSwitchContainer } from "./A16LockRowsSwitchContainer";
+import A16CreateButtonContainer from "./A16CreateButtonContainer";
+import { A16FetchResultLabelContainer } from "./A16FetchResultLabelContainer";
+import ModuleToolbar from "../ModuleToolbar";
 import A16PrintButtonContainer from "./A16PrintButtonContainer";
+import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+
+const LeftButtons = memo(() => {
+	return (
+		<>
+			<A16CreateButtonContainer />
+			<A16PrintButtonContainer />
+		</>
+	);
+});
+
+LeftButtons.displayName = "LeftButtons";
 
 const A16Toolbar = memo(
-	forwardRef((props, ref) => {
-		const { ...rest } = props;
+	forwardRef(({ ...rest }, ref) => {
 		return (
-			<ContainerEx maxWidth="md" alignLeft>
-				<FlexToolbar
-					ref={ref}
-					bgcolor={Colors.TOOLBAR}
-					LeftComponent={A16PrintButtonContainer}
-					RightComponent={A16LockRowsSwitchContainer}
-					// right={<Switch />}
-					{...rest}
-				/>
-			</ContainerEx>
+			<FlexToolbar
+				// pb={1}
+				alignItems="flex-end"
+				ref={ref}
+				LeftComponent={LeftButtons}
+				// RightComponent={() => <FetchResultLabel totalElements={365} />}
+				RightComponent={A16FetchResultLabelContainer}
+				{...rest}
+			/>
 		);
 	})
 );
 
-A16Toolbar.propTypes = {};
-
-A16Toolbar.displayName = "A16Toolbar";
+A16Toolbar.displayName = "A16ListViewToolbar";
 export default A16Toolbar;
+

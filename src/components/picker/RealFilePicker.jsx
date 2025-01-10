@@ -1,8 +1,8 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { memo, useContext } from "react";
-import Database from "../../modules/md-database";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import Database from "@/modules/md-database";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 export const RealFilePicker = memo((props) => {
 	console.log("rendering RealFilePicker");
@@ -17,6 +17,7 @@ export const RealFilePicker = memo((props) => {
 			url={`v1/app/entities`}
 			getOptionLabel={Database.getOptionLabel}
 			isOptionEqualToValue={Database.isOptionEqualToValue}
+			blurToLookup
 			{...rest}
 		/>
 	);

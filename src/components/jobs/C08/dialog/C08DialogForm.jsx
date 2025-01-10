@@ -16,7 +16,6 @@ import { C08ProdGridContainer } from "./prod-grid/C08ProdGridContainer";
 
 const C08DialogForm = memo((props) => {
 	const {
-		onSubmit,
 		readError,
 		data,
 		readWorking,
@@ -32,7 +31,7 @@ const C08DialogForm = memo((props) => {
 		...rest
 	} = props;
 	return (
-		<form onSubmit={onSubmit}>
+		<form {...rest}>
 			{readWorking && (
 				<Container maxWidth="xs">
 					<FlexBox justifyContent="center" minHeight="30em">

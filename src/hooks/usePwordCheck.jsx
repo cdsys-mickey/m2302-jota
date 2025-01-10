@@ -94,7 +94,7 @@ const usePwordCheck = (opts = {}) => {
 							console.log("pword not passed");
 							const _entryErrorMessage = typeof entryErrorMessage === "function" ? entryErrorMessage({ action }) : entryErrorMessage;
 							toastEx.error(_entryErrorMessage);
-							promptPwordEntry();
+							promptPwordEntry(opts);
 						}
 
 					} catch (err) {

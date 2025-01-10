@@ -124,6 +124,7 @@ const ProdCatLPickerComponent = memo((props) => {
 			disableClearable
 			toastError
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

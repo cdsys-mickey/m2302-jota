@@ -123,6 +123,7 @@ const PkgTypePickerComponent = memo((props) => {
 			toastError
 			// virtualize
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

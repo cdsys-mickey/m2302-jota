@@ -53,7 +53,7 @@ export default function useSQtyManager(opts = {}) {
 		stockQtyMap.clear();
 	}, [stockQtyMap]);
 
-	const containsProd = useCallback((prodId) => {
+	const containsProdInStock = useCallback((prodId) => {
 		return stockQtyMap.has(prodId);
 	}, [stockQtyMap]);
 
@@ -61,13 +61,17 @@ export default function useSQtyManager(opts = {}) {
 		if (!key) {
 			console.log("updateStockQty skipped due to no key");
 		}
-		if (!containsProd(key)) {
+		if (!containsProdInStock(key)) {
 			setStockQty(key, value);
 		}
-	}, [containsProd, setStockQty]);
+	}, [containsProdInStock, setStockQty]);
 
 	const getPreparedQty = useCallback((prodId) => {
 		return preparedQtyMap.get(prodId) || 0;
+	}, [preparedQtyMap]);
+
+	const containsProdInPrepared = useCallback((prodId) => {
+		return preparedQtyMap.has(prodId);
 	}, [preparedQtyMap]);
 
 	const setPreparedQty = useCallback((prodId, value) => {
@@ -78,10 +82,10 @@ export default function useSQtyManager(opts = {}) {
 		if (!key) {
 			console.log("updatePreparedQty skipped due to no key");
 		}
-		if (!containsProd(key)) {
+		if (!containsProdInPrepared(key)) {
 			setPreparedQty(key, value);
 		}
-	}, [containsProd, setPreparedQty]);
+	}, [containsProdInPrepared, setPreparedQty]);
 
 	// 讀取密碼
 	const loadStockPword = useCallback(async () => {
@@ -110,7 +114,7 @@ export default function useSQtyManager(opts = {}) {
 	const commitSQty = useCallback(
 		({ }) => {
 			const sqtyLock = sqtyLockRef.current;
-			const { refreshAmt, gridMeta, rowData } = sqtyLock;
+			const { onCommit, gridMeta, rowData } = sqtyLock;
 			// 置換
 
 			const newRowData = {
@@ -124,15 +128,15 @@ export default function useSQtyManager(opts = {}) {
 			// 回寫 grid 是非同步的
 			grid.spreadOnRow(sqtyLock.rowIndex, newRowData);
 
-			// 先組成新的 gridData 用來計算合計, 餵給 refreshAmt
+			// 先組成新的 gridData 用來計算合計, 餵給 onCommit
 			let newGridData = [...grid.gridData];
 			newGridData[sqtyLock.rowIndex] = newRowData;
 
 			// 寫總計
-			if (refreshAmt) {
-				refreshAmt({ gridData: newGridData });
+			if (onCommit) {
+				onCommit({ gridData: newGridData });
 			} else {
-				console.warn("未提供 refreshAmt 函式");
+				console.warn("未提供 onCommit 函式");
 			}
 
 			gridMeta.setActiveCell({
@@ -237,7 +241,7 @@ export default function useSQtyManager(opts = {}) {
 
 	// 儲存時偵測到庫存不足, 提示 override 的進入點
 	const handleOverrideSQty = useCallback(
-		({ setValue, gridMeta, formData, rowData, rowIndex, demand, stock, refreshAmt, submitAfterCommitted = false }) => {
+		({ setValue, gridMeta, formData, rowData, rowIndex, demand, stock, onCommit, submitAfterCommitted = false }) => {
 			console.log("handleOverrideSQty");
 			// if (!pwordLockRef.current) {
 			// 	toastEx.error("密碼設定為空，請檢查程式");
@@ -264,7 +268,7 @@ export default function useSQtyManager(opts = {}) {
 				submitAfterCommitted,
 				// 傳遞用
 				rowData,
-				refreshAmt,
+				onCommit,
 				gridMeta,
 				setValue,
 				formData
@@ -350,7 +354,7 @@ export default function useSQtyManager(opts = {}) {
 	 * 當 grid sqty 欄位發生異動時的處理函式
 	 */
 	const handleGridSQtyChange = useCallback(
-		({ rowData, rowIndex, setValue, gridData, gridMeta, refreshAmt }) => {
+		({ rowData, rowIndex, setValue, gridData, gridMeta, onCommit }) => {
 			if (!rowData.prod) {
 				return rowData;
 			}
@@ -371,7 +375,7 @@ export default function useSQtyManager(opts = {}) {
 					[sqtyColumn]: 0,
 				};
 
-				handleOverrideSQty({ setValue, gridMeta, rowData, rowIndex, demand, stock, refreshAmt });
+				handleOverrideSQty({ setValue, gridMeta, rowData, rowIndex, demand, stock, onCommit });
 			} else {
 				newRowData = {
 					...newRowData,
@@ -443,7 +447,7 @@ export default function useSQtyManager(opts = {}) {
 						}
 
 						const notSQty = preparedQtyMap.get(prodId) || 0;
-						if (preparedOpts?.excludeSelf) {
+						if (preparedOpts?.excludeSelfOrder) {
 							preparedQtyMap.set(prodId, notSQty - sqty);
 						}
 					});
@@ -458,7 +462,7 @@ export default function useSQtyManager(opts = {}) {
 			}
 			return stockQtyMap;
 		},
-		[grid.gridData, stockQtyMap, prodIdKey, httpGetAsync, token, preparedQtyMap, sqtyColumn]
+		[grid.gridData, stockQtyMap, prodIdKey, httpGetAsync, token, convType, preparedQtyMap, sqtyColumn]
 	);
 
 	const ZZloadPreparedMap = useCallback(
@@ -546,7 +550,7 @@ export default function useSQtyManager(opts = {}) {
 		getStockBeforeCurrent,
 		updateStockQty,
 		clearQty,
-		containsProd,
+		containsProdInStock,
 		// 目前訂購量
 		getPreparedQty,
 		setPreparedQty,

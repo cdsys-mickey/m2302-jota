@@ -13,15 +13,23 @@ export const A06LockSwitchContainer = (props) => {
 	const { ...rest } = props;
 	const a06 = useContext(A06Context);
 	const { operator } = useContext(AuthContext);
-	const serviceStatus = useServiceStatus({ name: "CustFile" });
+	const serviceStatus = useServiceStatus({ name: "CustFile", jobId: "A06" });
 
 	const disabled = useMemo(() => {
-		return !a06.canUpdate || operator.CurFlagShip != 1;
-	}, [a06.canUpdate, operator])
+		return !a06.canManage || operator.CurFlagShip != 1;
+	}, [a06.canManage, operator.CurFlagShip])
+
 
 	const _title = useMemo(() => {
-		return disabled ? "僅旗艦店人員可進行切換" : ""
-	}, [disabled])
+		let msg = "";
+		if (operator.CurFlagShip != 1) {
+			msg += "僅旗艦店可進行切換";
+		}
+		if (!a06.canManage) {
+			msg += "切換需具備管理功能權限";
+		}
+		return msg;
+	}, [a06.canManage, operator.CurFlagShip])
 
 	if (a06.mode !== A06.Mode.CUSTOMER) {
 		return false;

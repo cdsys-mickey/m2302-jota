@@ -162,6 +162,7 @@ const RowProdCatSPickerComponent = memo((props) => {
 			disableClearable
 			toastError
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

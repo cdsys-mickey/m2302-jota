@@ -13,15 +13,22 @@ export const A01LockSwitchContainer = (props) => {
 	const { ...rest } = props;
 	const a01 = useContext(A01Context);
 	const { operator } = useContext(AuthContext);
-	const serviceStatus = useServiceStatus({ name: "StoreFile_F" });
+	const serviceStatus = useServiceStatus({ name: "StoreFile_F", jobId: "A01" });
 
 	const disabled = useMemo(() => {
-		return !a01.canUpdate || operator.CurHeadOffice != 1;
-	}, [a01.canUpdate, operator])
+		return !a01.canManage || operator.CurHeadOffice != 1;
+	}, [a01.canManage, operator])
 
 	const _title = useMemo(() => {
-		return disabled ? "僅物流倉可進行切換" : ""
-	}, [disabled])
+		let msg = "";
+		if (operator.CurHeadOffice != 1) {
+			msg += "僅物流倉可進行切換";
+		}
+		if (!a01.canManage) {
+			msg += "切換需具備管理功能權限";
+		}
+		return msg;
+	}, [a01.canManage, operator.CurHeadOffice])
 
 	if (a01.mode !== A01.Mode.PROD) {
 		return false;

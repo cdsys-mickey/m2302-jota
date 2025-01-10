@@ -69,10 +69,7 @@ export const useA01 = ({ token, mode }) => {
 		PriceC,
 		PriceD,
 		PriceE,
-		`,
-		{
-			lastField: LastFieldBehavior.PROMPT,
-		}
+		`
 	);
 	const crud = useContext(CrudContext);
 	const moduleId = useMemo(() => {

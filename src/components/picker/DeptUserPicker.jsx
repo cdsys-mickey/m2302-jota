@@ -43,6 +43,7 @@ export const DeptUserPicker = (props) => {
 			isOptionEqualToValue={isOptionEqualToValue}
 			getData={getData}
 			getOptionKey={getOptionKey}
+			blurToLookup
 			{...rest}
 		/>
 	);

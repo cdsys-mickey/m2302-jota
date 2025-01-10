@@ -50,7 +50,6 @@ export const D01ProdGridContainer = (props) => {
 				getRowKey={d01.getRowKey}
 				createRow={d01.createRow}
 				stickyRightColumn={prodInfoColumn}
-				{...rest}
 			/>
 		</DSGContext.Provider>
 	);

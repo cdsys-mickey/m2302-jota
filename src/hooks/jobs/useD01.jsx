@@ -557,7 +557,8 @@ export const useD01 = () => {
 				["StockQty_N"]: found ? "" : prod?.StockQty || "",
 				["SQty"]: "",
 				["SExpDate"]: "",
-				["SQtyNote"]: ""
+				["SQtyNote"]: "",
+				["tooltip"]: ""
 			};
 			return rowData;
 		},
@@ -613,6 +614,59 @@ export const useD01 = () => {
 	// 	};
 	// 	return rowData;
 	// }, []);
+	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
+		let _prodId;
+		if (updateResult?.type === "DELETE") {
+			_prodId = prevGridData[rowIndex]?.prod?.ProdID || '';
+		} else {
+			const targetRow = gridData[rowIndex];
+			_prodId = targetRow.prod?.ProdID;
+			// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
+			if (!_prodId) {
+				_prodId = prevGridData[rowIndex]?.prod?.ProdID || '';
+			}
+		}
+
+		// 若 targetProdID 仍為空，則不執行更新
+		if (!_prodId) {
+			console.log("targetProdID 為空, 不執行 mapTooltip")
+			return gridData;
+		}
+
+		// 計算其他符合條件列的 SQty 加總
+		return gridData.map((row) => {
+			if (row.prod?.ProdID === _prodId) {
+				// if ((row.SNotQty && row.SNotQty <= 0) || (row.SOutQty && row.SOutQty != 0)) {
+				// 	return {
+				// 		...row,
+				// 		StockQty_N: "",
+				// 		// OrdQty_N: "",
+				// 		// LaveQty_N: "",
+				// 		tooltip: ""
+				// 	};
+				// }
+
+				// const stock = sqtyManager.getStockQty(targetProdID);
+				const stock = sqtyManager.getRemainingStock({ prodId: _prodId, gridData });
+
+				let processedRowData = {
+					...row,
+					StockQty_N: stock,
+				};
+
+				processedRowData = {
+					...processedRowData,
+					["tooltip"]: D01.getTooltip({
+						rowData: processedRowData,
+						rowIndex
+					}),
+				}
+
+				return processedRowData;
+			}
+			return row; // 不符合條件則返回原本的列
+		});
+	}, [sqtyManager]);
 
 	const onUpdateRow = useCallback(({ fromRowIndex, setValue, newValue, gridMeta, updateResult }) => async (rowData, index) => {
 		const rowIndex = fromRowIndex + index;
@@ -623,11 +677,14 @@ export const useD01 = () => {
 		let processedRowData = {
 			...rowData,
 		};
+
+		let dirty = false;
 		// 商品
 		if (
 			rowData.prod?.ProdID !==
 			oldRowData.prod?.ProdID
 		) {
+			updateResult.cols.push("prod")
 			processedRowData =
 				await handleGridProdChange({
 					rowIndex,
@@ -638,16 +695,38 @@ export const useD01 = () => {
 
 		// 數量, 且有選 prod
 		if (rowData.SQty !== oldRowData.SQty) {
+			updateResult.cols.push("SQty")
 			processedRowData = sqtyManager.handleGridSQtyChange({
 				rowData: processedRowData,
 				gridData: newValue,
 				rowIndex,
 				setValue,
 				gridMeta,
+				onCommit: ({ gridData }) => {
+					const updated = mapTooltip({ gridData, rowIndex })
+					grid.setGridData(updated);
+				}
 			});
 		}
+		if (dirty) {
+			updateResult.rows++;
+		}
 		return processedRowData;
-	}, [grid.gridData, handleGridProdChange, sqtyManager]);
+	}, [grid, handleGridProdChange, mapTooltip, sqtyManager]);
+
+
+
+	const onGridChanged = useCallback(({ gridData, formData, setValue, updateResult, prevGridData }) => {
+		console.log("onGridChanged", gridData);
+
+		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty") || updateResult.type === "DELETE") {
+			console.log("before reduce", gridData);
+			const updated = mapTooltip({ updateResult, prevGridData, gridData, rowIndex: updateResult.rowIndex })
+			console.log("after reduce", updated);
+			return updated;
+		}
+
+	}, [mapTooltip]);
 
 	// const buildGridChangeHandler = useCallback(
 	// 	({ getValues, setValue, gridMeta }) =>
@@ -918,6 +997,7 @@ export const useD01 = () => {
 		handlePopperClose,
 		...sideDrawer,
 		committed,
+		onGridChanged
 		// validateDate
 	};
 };

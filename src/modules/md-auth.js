@@ -47,17 +47,17 @@ const findById = (id) => {
 };
 
 const FUNCTIONS = Object.freeze({
-	INQ: "查詢",
+	// INQ: "查詢",
 	INS: "新增",
 	UPD: "修改",
 	PRT: "列印",
 	DEL: "刪除",
-	USI: "停用",
+	USI: "管理",
 	CHK: "覆核",
-	NCK: "取消覆核",
-	RUN: "執行",
-	EXP: "匯出",
-	IMP: "匯入",
+	NCK: "解除",
+	// RUN: "執行",
+	// EXP: "匯出",
+	// IMP: "匯入",
 });
 
 const FUNCTION_START_INDEX = 3;
@@ -87,7 +87,7 @@ const transformPayloadToAuthority = (payload) => ({
 	canUpdate: payload["UPD"] === "1",
 	canDelete: payload["DEL"] === "1",
 	canPrint: payload["PRT"] === "1",
-	canPatch: payload["USI"] === "1",
+	canManage: payload["USI"] === "1",
 	canReview: payload["CHK"] === "1",
 	canReject: payload["NCK"] === "1",
 	canRun: payload["RUN"] === "1",
@@ -96,7 +96,7 @@ const transformPayloadToAuthority = (payload) => ({
 });
 
 const getHeaderColor = (userClass) => {
-	switch (userClass) {
+	switch (parseInt(userClass)) {
 		case Auth.SCOPES.ROOT:
 			return Colors.SCOPE_ROOT;
 		case Auth.SCOPES.HQ:

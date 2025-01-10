@@ -269,45 +269,45 @@ export const useA014 = () => {
 		return processedRowData;
 	}, [grid.gridData]);
 
-	const handleGridChange = useCallback(
-		(newValue, operations) => {
-			console.log(`A014.handleGridChange`, newValue);
-			// 只處理第一個 operation 的第一行
-			const operation = operations[0];
-			console.log("operation", operation);
-			if (operation.type === "CREATE") {
-				grid.setGridData(newValue);
-			} else if (operation.type === "UPDATE") {
-				const rowIndex = operation.fromRowIndex;
-				const rowData = newValue[rowIndex];
-				const prevRowData = grid.prevGridData[rowIndex];
-				console.log(`[DSG UPDATE]`, rowData);
-				const { catL, catM } = rowData;
-				const { catL: oldCatL, catM: oldCatM } = prevRowData;
+	// const handleGridChange = useCallback(
+	// 	(newValue, operations) => {
+	// 		console.log(`A014.handleGridChange`, newValue);
+	// 		// 只處理第一個 operation 的第一行
+	// 		const operation = operations[0];
+	// 		console.log("operation", operation);
+	// 		if (operation.type === "CREATE") {
+	// 			grid.setGridData(newValue);
+	// 		} else if (operation.type === "UPDATE") {
+	// 			const rowIndex = operation.fromRowIndex;
+	// 			const rowData = newValue[rowIndex];
+	// 			const prevRowData = grid.prevGridData[rowIndex];
+	// 			console.log(`[DSG UPDATE]`, rowData);
+	// 			const { catL, catM } = rowData;
+	// 			const { catL: oldCatL, catM: oldCatM } = prevRowData;
 
-				let newGridData = [...newValue];
-				let processedRowData = { ...rowData };
+	// 			let newGridData = [...newValue];
+	// 			let processedRowData = { ...rowData };
 
-				// process UPDATE here
-				if (catL?.LClas !== oldCatL?.LClas) {
-					processedRowData["catM"] = null;
-					processedRowData["catS"] = null;
-				} else if (catM?.MClas !== oldCatM?.MClas) {
-					processedRowData["catS"] = null;
-				}
+	// 			// process UPDATE here
+	// 			if (catL?.LClas !== oldCatL?.LClas) {
+	// 				processedRowData["catM"] = null;
+	// 				processedRowData["catS"] = null;
+	// 			} else if (catM?.MClas !== oldCatM?.MClas) {
+	// 				processedRowData["catS"] = null;
+	// 			}
 
-				const dirty = grid.handleDirtyCheck(prevRowData, processedRowData);
-				console.log("dirty", dirty);
+	// 			const dirty = grid.handleDirtyCheck(prevRowData, processedRowData);
+	// 			console.log("dirty", dirty);
 
-				newGridData[rowIndex] = processedRowData;
-				grid.setGridData(newGridData);
-				console.log("newGridData", newGridData)
-			} else {
-				grid.setGridData(newValue);
-			}
-		},
-		[grid]
-	);
+	// 			newGridData[rowIndex] = processedRowData;
+	// 			grid.setGridData(newGridData);
+	// 			console.log("newGridData", newGridData)
+	// 		} else {
+	// 			grid.setGridData(newValue);
+	// 		}
+	// 	},
+	// 	[grid]
+	// );
 
 	// const handleGridChange = useCallback(
 	// 	(newValue, operations) => {

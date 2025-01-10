@@ -258,7 +258,7 @@ export const useC08 = () => {
 					const stock = Number(err.data.StockQty);
 
 					sqtyManager.handleOverrideSQty({
-						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, refreshAmt: ({ gridData }) => {
+						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, onCommit: ({ gridData }) => {
 							handleRefreshAmt({
 								gridData,
 								setValue,
@@ -791,8 +791,8 @@ export const useC08 = () => {
 				rowIndex,
 				setValue,
 				gridMeta,
-				// 透過對話框等操作直接更新 SQty 不會觸發 GridChange, 所以必須帶上 refreshAmt 處理函式
-				refreshAmt: ({ gridData }) => {
+				// 透過對話框等操作直接更新 SQty 不會觸發 GridChange, 所以必須帶上 onCommit 處理函式
+				onCommit: ({ gridData }) => {
 					handleRefreshAmt({
 						gridData,
 						setValue,

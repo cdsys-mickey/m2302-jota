@@ -17,7 +17,7 @@ export const useAppModule = (props = {}) => {
 		canUpdate: false,
 		canPrint: false,
 		canDelete: false,
-		canPatch: false,
+		canManage: false,
 		canReview: false,
 		canReject: false,
 		canRun: false,

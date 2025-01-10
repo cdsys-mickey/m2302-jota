@@ -117,6 +117,7 @@ const AreaTypePickerComponent = memo((props) => {
 			toastError
 			virtualize
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

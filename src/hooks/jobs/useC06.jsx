@@ -66,6 +66,7 @@ export const useC06 = () => {
 
 	const sqtyManager = useSQtyManager({
 		grid,
+		convType: "s"
 	});
 	const { committed } = sqtyManager;
 
@@ -417,6 +418,7 @@ export const useC06 = () => {
 				});
 
 				if (status.success) {
+					sqtyManager.updateStockQty(prodId, payload.Stock);
 					return payload;
 				} else {
 					throw error || new Error("未預期例外");
@@ -425,7 +427,7 @@ export const useC06 = () => {
 				toastEx.error("查詢報價失敗", err);
 			}
 		},
-		[httpGetAsync, token]
+		[httpGetAsync, sqtyManager, token]
 	);
 
 	const sprodDisabled = useCallback(
@@ -525,35 +527,35 @@ export const useC06 = () => {
 			["SInQty"]: "",
 			["SAmt"]: "",
 			["stype"]: null,
-			["StockQty_N"]: "",
+			["StockQty_N"]: prodInfo?.Stock || "",
 			["tooltip"]: ""
 		};
 		return processedRowData;
 	}, [getProdInfo]);
 
 	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
-		let targetProdID;
+		let _prodId;
 		if (updateResult?.type === "DELETE") {
-			targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+			_prodId = prevGridData[rowIndex]?.prod?.ProdID || '';
 		} else {
 			const targetRow = gridData[rowIndex];
-			targetProdID = targetRow.prod?.ProdID;
+			_prodId = targetRow.prod?.ProdID;
 			// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
-			if (!targetProdID) {
-				targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+			if (!_prodId) {
+				_prodId = prevGridData[rowIndex]?.prod?.ProdID || '';
 			}
 		}
 
 		// 若 targetProdID 仍為空，則不執行更新
-		if (!targetProdID) {
+		if (!_prodId) {
 			console.log("targetProdID 為空, 不執行 mapTooltip")
 			return gridData;
 		}
 
 		// 計算其他符合條件列的 SQty 加總
 		return gridData.map((row) => {
-			if (row.prod?.ProdID === targetProdID) {
-				const stock = sqtyManager.getStockQty(row.prod?.ProdID);
+			if (row.prod?.ProdID === _prodId) {
+				const stock = sqtyManager.getStockQty(_prodId);
 				// const stock = sqtyManager.getRemainingStock({ prodId: targetProdID, gridData });
 
 				let processedRowData = {
@@ -647,7 +649,7 @@ export const useC06 = () => {
 		updateAmt({ setValue, gridData });
 
 		// 變更「商品」、「數量」或是「刪除」
-		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty") || updateResult.type === "DELETE") {
+		if (updateResult.cols.includes("prod") || updateResult.type === "DELETE") {
 			console.log("before reduce", gridData);
 			const updated = mapTooltip({ updateResult, prevGridData, gridData, rowIndex: updateResult.rowIndex })
 			console.log("after reduce", updated);
@@ -655,176 +657,176 @@ export const useC06 = () => {
 		}
 	}, [mapTooltip, updateAmt]);
 
-	const buildGridChangeHandlerOld = useCallback(
-		({ getValues, setValue, gridMeta }) =>
-			async (newValue, operations) => {
-				const formData = getValues();
-				console.log("buildGridChangeHandler", operations);
-				console.log("newValue", newValue);
-				const newGridData = [...newValue];
-				let checkFailed = false;
-				for (const operation of operations) {
-					if (operation.type === "UPDATE") {
-						const updatedRows = await Promise.all(
-							newValue
-								.slice(
-									operation.fromRowIndex,
-									operation.toRowIndex
-								)
-								.map(async (item, index) => {
-									const updatedRow = await onUpdateRow({
-										formData,
-										fromRowIndex: operation.fromRowIndex,
-									})(item, index);
-									return updatedRow;
-								})
-						)
-						console.log("updatedRows", updatedRows);
+	// const buildGridChangeHandlerOld = useCallback(
+	// 	({ getValues, setValue, gridMeta }) =>
+	// 		async (newValue, operations) => {
+	// 			const formData = getValues();
+	// 			console.log("buildGridChangeHandler", operations);
+	// 			console.log("newValue", newValue);
+	// 			const newGridData = [...newValue];
+	// 			let checkFailed = false;
+	// 			for (const operation of operations) {
+	// 				if (operation.type === "UPDATE") {
+	// 					const updatedRows = await Promise.all(
+	// 						newValue
+	// 							.slice(
+	// 								operation.fromRowIndex,
+	// 								operation.toRowIndex
+	// 							)
+	// 							.map(async (item, index) => {
+	// 								const updatedRow = await onUpdateRow({
+	// 									formData,
+	// 									fromRowIndex: operation.fromRowIndex,
+	// 								})(item, index);
+	// 								return updatedRow;
+	// 							})
+	// 					)
+	// 					console.log("updatedRows", updatedRows);
 
-						newGridData.splice(
-							operation.fromRowIndex,
-							updatedRows.length,
-							...updatedRows
-						)
-						// newValue
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.forEach(async (rowData, i) => {
-						// 		const {
-						// 			prod,
-						// 			SPrice,
-						// 			SQty,
-						// 			stype,
-						// 			SInQty,
-						// 			SNotQty,
-						// 		} = rowData;
-						// 		const rowIndex = operation.fromRowIndex + i;
-						// 		const {
-						// 			prod: oldProd,
-						// 			SPrice: oldSPrice,
-						// 			SQty: oldSQty,
-						// 			stype: oldStype,
-						// 			SNotQty: oldSNotQty,
-						// 		} = grid.gridData[rowIndex];
+	// 					newGridData.splice(
+	// 						operation.fromRowIndex,
+	// 						updatedRows.length,
+	// 						...updatedRows
+	// 					)
+	// 					// newValue
+	// 					// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					// 	.forEach(async (rowData, i) => {
+	// 					// 		const {
+	// 					// 			prod,
+	// 					// 			SPrice,
+	// 					// 			SQty,
+	// 					// 			stype,
+	// 					// 			SInQty,
+	// 					// 			SNotQty,
+	// 					// 		} = rowData;
+	// 					// 		const rowIndex = operation.fromRowIndex + i;
+	// 					// 		const {
+	// 					// 			prod: oldProd,
+	// 					// 			SPrice: oldSPrice,
+	// 					// 			SQty: oldSQty,
+	// 					// 			stype: oldStype,
+	// 					// 			SNotQty: oldSNotQty,
+	// 					// 		} = grid.gridData[rowIndex];
 
-						// 		let processedRowData = { ...rowData };
-						// 		// 商品
-						// 		if (prod?.ProdID !== oldProd?.ProdID) {
-						// 			console.log(
-						// 				`prod[${rowIndex}] changed`,
-						// 				prod
-						// 			);
-						// 			let prodInfoRetrieved = false;
-						// 			if (prod?.ProdID) {
-						// 				const prodInfo = await getProdInfo(
-						// 					prod?.ProdID,
-						// 					{
-						// 						spDept: formData.spDept,
-						// 					}
-						// 				);
-						// 				// 取得報價 (空白和 0 都不可調撥)
-						// 				prodInfoRetrieved =
-						// 					prodInfo && !!prodInfo.Price;
-						// 				if (prodInfoRetrieved) {
-						// 					processedRowData = {
-						// 						...processedRowData,
-						// 						["PackData_N"]:
-						// 							prod?.PackData_N || "",
-						// 						...(prodInfoRetrieved && {
-						// 							SPrice: prodInfo.Price,
-						// 							SMsg: `庫存為 ${prodInfo.Stock}`,
-						// 						}),
-						// 					};
-						// 				} else {
-						// 					toastEx.error(
-						// 						`出貨部門未設定「${prod.ProdID} ${prod.ProdData}」調撥成本，不得訂購`
-						// 					);
-						// 				}
-						// 			}
-						// 			if (!prodInfoRetrieved) {
-						// 				processedRowData = {
-						// 					...processedRowData,
-						// 					["prod"]: null,
-						// 					["SInqFlag"]: "",
-						// 					["SPrice"]: "",
-						// 					["PackData_N"]: "",
-						// 					["SNote"]: "",
-						// 					["SQty"]: "",
-						// 					["SNotQty"]: "",
-						// 					["SInQty"]: "",
-						// 					["SAmt"]: "",
-						// 				};
-						// 			}
-						// 		}
+	// 					// 		let processedRowData = { ...rowData };
+	// 					// 		// 商品
+	// 					// 		if (prod?.ProdID !== oldProd?.ProdID) {
+	// 					// 			console.log(
+	// 					// 				`prod[${rowIndex}] changed`,
+	// 					// 				prod
+	// 					// 			);
+	// 					// 			let prodInfoRetrieved = false;
+	// 					// 			if (prod?.ProdID) {
+	// 					// 				const prodInfo = await getProdInfo(
+	// 					// 					prod?.ProdID,
+	// 					// 					{
+	// 					// 						spDept: formData.spDept,
+	// 					// 					}
+	// 					// 				);
+	// 					// 				// 取得報價 (空白和 0 都不可調撥)
+	// 					// 				prodInfoRetrieved =
+	// 					// 					prodInfo && !!prodInfo.Price;
+	// 					// 				if (prodInfoRetrieved) {
+	// 					// 					processedRowData = {
+	// 					// 						...processedRowData,
+	// 					// 						["PackData_N"]:
+	// 					// 							prod?.PackData_N || "",
+	// 					// 						...(prodInfoRetrieved && {
+	// 					// 							SPrice: prodInfo.Price,
+	// 					// 							SMsg: `庫存為 ${prodInfo.Stock}`,
+	// 					// 						}),
+	// 					// 					};
+	// 					// 				} else {
+	// 					// 					toastEx.error(
+	// 					// 						`出貨部門未設定「${prod.ProdID} ${prod.ProdData}」調撥成本，不得訂購`
+	// 					// 					);
+	// 					// 				}
+	// 					// 			}
+	// 					// 			if (!prodInfoRetrieved) {
+	// 					// 				processedRowData = {
+	// 					// 					...processedRowData,
+	// 					// 					["prod"]: null,
+	// 					// 					["SInqFlag"]: "",
+	// 					// 					["SPrice"]: "",
+	// 					// 					["PackData_N"]: "",
+	// 					// 					["SNote"]: "",
+	// 					// 					["SQty"]: "",
+	// 					// 					["SNotQty"]: "",
+	// 					// 					["SInQty"]: "",
+	// 					// 					["SAmt"]: "",
+	// 					// 				};
+	// 					// 			}
+	// 					// 		}
 
-						// 		// 數量改變
-						// 		if (SQty !== oldSQty) {
-						// 			// 新增時, 數量會同步到未進量
-						// 			if (crud.creating) {
-						// 				processedRowData = {
-						// 					...processedRowData,
-						// 					["SNotQty"]: SQty,
-						// 				};
-						// 			}
-						// 		}
+	// 					// 		// 數量改變
+	// 					// 		if (SQty !== oldSQty) {
+	// 					// 			// 新增時, 數量會同步到未進量
+	// 					// 			if (crud.creating) {
+	// 					// 				processedRowData = {
+	// 					// 					...processedRowData,
+	// 					// 					["SNotQty"]: SQty,
+	// 					// 				};
+	// 					// 			}
+	// 					// 		}
 
-						// 		// 未進量改變
-						// 		if (SNotQty !== oldSNotQty) {
-						// 			processedRowData = {
-						// 				...processedRowData,
-						// 				["SNotQty"]:
-						// 					SNotQty === 0 ? 0 : SQty - SInQty,
-						// 			};
-						// 		}
+	// 					// 		// 未進量改變
+	// 					// 		if (SNotQty !== oldSNotQty) {
+	// 					// 			processedRowData = {
+	// 					// 				...processedRowData,
+	// 					// 				["SNotQty"]:
+	// 					// 					SNotQty === 0 ? 0 : SQty - SInQty,
+	// 					// 			};
+	// 					// 		}
 
-						// 		// 單價, 贈, 數量
-						// 		if (
-						// 			SPrice !== oldSPrice ||
-						// 			stype?.id !== oldStype?.id ||
-						// 			SQty !== oldSQty
-						// 		) {
-						// 			// 計算合計
-						// 			processedRowData = {
-						// 				...processedRowData,
-						// 				["SAmt"]:
-						// 					!SPrice || !SQty
-						// 						? ""
-						// 						: stype
-						// 							? 0
-						// 							: SPrice * SQty,
-						// 			};
-						// 		}
-						// 		newGridData[rowIndex] = processedRowData;
-						// 	});
-					} else if (operation.type === "DELETE") {
-						// 列舉原資料
-						// checkFailed = prodGrid.gridData
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.some((rowData, i) => {
-						// 		if (prodDisabled({ rowData })) {
-						// 			const rowIndex = operation.fromRowIndex + i;
-						// 			toastEx.error(
-						// 				`不可刪除第 ${rowIndex + 1} 筆商品`
-						// 			);
-						// 			return true;
-						// 		}
-						// 		return false;
-						// 	});
-					} else if (operation.type === "CREATE") {
-						console.log("dsg.CREATE");
-						// process CREATE here
-						gridMeta.toFirstColumn({ nextRow: true });
-					}
-				}
-				console.log("prodGrid.changed", newGridData);
-				if (!checkFailed) {
-					grid.setGridData(newGridData);
-					const total = C06.getTotal(newGridData);
-					setValue("OrdAmt", total.toFixed(2));
-					updateAmt({ setValue, gridData: newGridData });
-				}
-			},
-		[grid, onUpdateRow, updateAmt]
-	);
+	// 					// 		// 單價, 贈, 數量
+	// 					// 		if (
+	// 					// 			SPrice !== oldSPrice ||
+	// 					// 			stype?.id !== oldStype?.id ||
+	// 					// 			SQty !== oldSQty
+	// 					// 		) {
+	// 					// 			// 計算合計
+	// 					// 			processedRowData = {
+	// 					// 				...processedRowData,
+	// 					// 				["SAmt"]:
+	// 					// 					!SPrice || !SQty
+	// 					// 						? ""
+	// 					// 						: stype
+	// 					// 							? 0
+	// 					// 							: SPrice * SQty,
+	// 					// 			};
+	// 					// 		}
+	// 					// 		newGridData[rowIndex] = processedRowData;
+	// 					// 	});
+	// 				} else if (operation.type === "DELETE") {
+	// 					// 列舉原資料
+	// 					// checkFailed = prodGrid.gridData
+	// 					// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					// 	.some((rowData, i) => {
+	// 					// 		if (prodDisabled({ rowData })) {
+	// 					// 			const rowIndex = operation.fromRowIndex + i;
+	// 					// 			toastEx.error(
+	// 					// 				`不可刪除第 ${rowIndex + 1} 筆商品`
+	// 					// 			);
+	// 					// 			return true;
+	// 					// 		}
+	// 					// 		return false;
+	// 					// 	});
+	// 				} else if (operation.type === "CREATE") {
+	// 					console.log("dsg.CREATE");
+	// 					// process CREATE here
+	// 					gridMeta.toFirstColumn({ nextRow: true });
+	// 				}
+	// 			}
+	// 			console.log("prodGrid.changed", newGridData);
+	// 			if (!checkFailed) {
+	// 				grid.setGridData(newGridData);
+	// 				const total = C06.getTotal(newGridData);
+	// 				setValue("OrdAmt", total.toFixed(2));
+	// 				updateAmt({ setValue, gridData: newGridData });
+	// 			}
+	// 		},
+	// 	[grid, onUpdateRow, updateAmt]
+	// );
 
 	const onEditorSubmit = useCallback(
 		(data) => {

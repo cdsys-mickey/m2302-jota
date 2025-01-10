@@ -45,6 +45,7 @@ const AccountingEntryListingPicker = memo((props) => {
 			querystring={querystring}
 			notFoundText="作帳日 ${id} 不存在"
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 });

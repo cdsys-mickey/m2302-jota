@@ -10,7 +10,7 @@ const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
-const A16Grid = memo((props) => {
+const A16GGrid = memo((props) => {
 	const {
 		readOnly,
 		gridRef,
@@ -60,7 +60,7 @@ const A16Grid = memo((props) => {
 		</ContainerEx>
 	);
 });
-A16Grid.propTypes = {
+A16GGrid.propTypes = {
 	readOnly: PropTypes.bool,
 	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
@@ -72,5 +72,6 @@ A16Grid.propTypes = {
 	onActiveCellChange: PropTypes.func,
 };
 
-A16Grid.displayName = "A16Grid";
-export default A16Grid;
+A16GGrid.displayName = "A16GGrid";
+export default A16GGrid;
+

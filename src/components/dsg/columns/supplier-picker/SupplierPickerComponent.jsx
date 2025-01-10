@@ -128,6 +128,7 @@ const SupplierPickerComponent = memo((props) => {
 			// hidePopupIndicator={!active}
 			// hidePlaceholder={!active}
 			{...rest}
+			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

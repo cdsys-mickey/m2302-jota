@@ -61,10 +61,7 @@ export const useProdGrid = ({
 		typeA,
 		typeB,
 		taxType
-		`, {
-		// disableEnter: true
-		lastField: LastFieldBehavior.PROMPT
-	}
+		`
 	);
 
 	const toggleEditorLock = useCallback(() => {

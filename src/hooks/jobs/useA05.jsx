@@ -149,7 +149,7 @@ export const useA05 = ({ token }) => {
 
 				if (status.success) {
 					toastEx.success(
-						`廠商商品「${data?.FactID} ${data?.FactData}」新增成功`
+						`廠商「${data?.FactID} ${data?.FactData}」新增成功`
 					);
 					crud.doneCreating();
 					crud.cancelReading();
@@ -180,7 +180,7 @@ export const useA05 = ({ token }) => {
 
 				if (status.success) {
 					toastEx.success(
-						`商品「${data?.FactID} ${data?.FactData}」修改成功`
+						`廠商「${data?.FactID} ${data?.FactData}」修改成功`
 					);
 					crud.doneUpdating();
 					loadItem({ id: data?.FactID });

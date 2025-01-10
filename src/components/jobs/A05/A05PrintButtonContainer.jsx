@@ -1,8 +1,8 @@
 import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { forwardRef, memo, useContext } from "react";
-import { A05Context } from "../../../contexts/A05/A05Context";
-import { StdPrintContext } from "../../../contexts/std-print/StdPrintContext";
+import { A05Context } from "@/contexts/A05/A05Context";
+import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
 
 const A05PrintButtonContainer = memo(
 	forwardRef((props, ref) => {

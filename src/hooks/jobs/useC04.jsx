@@ -596,106 +596,106 @@ export const useC04 = () => {
 		});
 	}, [handleRefreshAmt]);
 
-	const buildGridChangeHandlerOld = useCallback(
-		({ getValues, setValue, gridMeta }) =>
-			async (newValue, operations) => {
-				const formData = getValues();
-				console.log("buildGridChangeHandlerOld", operations);
-				console.log("newValue", newValue);
-				const newGridData = [...newValue];
-				let checkFailed = false;
-				for (const operation of operations) {
-					if (operation.type === "UPDATE") {
-						const promises = newValue
-							.slice(
-								operation.fromRowIndex,
-								operation.toRowIndex
-							)
-							.map(async (item, index) => {
-								const updatedRow = await onUpdateRow({
-									formData,
-									fromRowIndex: operation.fromRowIndex,
-								})(item, index);
-								newGridData[operation.fromRowIndex + index] = updatedRow;
-							})
-						await Promise.all(promises);
-						handleRefreshAmt({
-							formData,
-							gridData: newGridData,
-							setValue,
-						});
-					} else if (operation.type === "DELETE") {
-						// do nothing
-						handleRefreshAmt({
-							formData,
-							gridData: newGridData,
-							setValue,
-						});
-					} else if (operation.type === "CREATE") {
-						console.log("dsg.CREATE");
-						// process CREATE here
-						gridMeta.toFirstColumn({ nextRow: true });
-					}
-				}
-				console.log("grid.changed", newGridData);
-				console.log("newGridData", newGridData);
-				grid.setGridData(newGridData);
-			},
-		[handleRefreshAmt, grid, onUpdateRow]
-	);
+	// const buildGridChangeHandlerOld = useCallback(
+	// 	({ getValues, setValue, gridMeta }) =>
+	// 		async (newValue, operations) => {
+	// 			const formData = getValues();
+	// 			console.log("buildGridChangeHandlerOld", operations);
+	// 			console.log("newValue", newValue);
+	// 			const newGridData = [...newValue];
+	// 			let checkFailed = false;
+	// 			for (const operation of operations) {
+	// 				if (operation.type === "UPDATE") {
+	// 					const promises = newValue
+	// 						.slice(
+	// 							operation.fromRowIndex,
+	// 							operation.toRowIndex
+	// 						)
+	// 						.map(async (item, index) => {
+	// 							const updatedRow = await onUpdateRow({
+	// 								formData,
+	// 								fromRowIndex: operation.fromRowIndex,
+	// 							})(item, index);
+	// 							newGridData[operation.fromRowIndex + index] = updatedRow;
+	// 						})
+	// 					await Promise.all(promises);
+	// 					handleRefreshAmt({
+	// 						formData,
+	// 						gridData: newGridData,
+	// 						setValue,
+	// 					});
+	// 				} else if (operation.type === "DELETE") {
+	// 					// do nothing
+	// 					handleRefreshAmt({
+	// 						formData,
+	// 						gridData: newGridData,
+	// 						setValue,
+	// 					});
+	// 				} else if (operation.type === "CREATE") {
+	// 					console.log("dsg.CREATE");
+	// 					// process CREATE here
+	// 					gridMeta.toFirstColumn({ nextRow: true });
+	// 				}
+	// 			}
+	// 			console.log("grid.changed", newGridData);
+	// 			console.log("newGridData", newGridData);
+	// 			grid.setGridData(newGridData);
+	// 		},
+	// 	[handleRefreshAmt, grid, onUpdateRow]
+	// );
 
-	const handleGridChangeAsync = useCallback(
-		({ getValues, setValue, gridMeta }) => (newValue, operations) => {
-			const newGridData = [...newValue];
+	// const handleGridChangeAsync = useCallback(
+	// 	({ getValues, setValue, gridMeta }) => (newValue, operations) => {
+	// 		const newGridData = [...newValue];
 
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					const formData = getValues();
-					const updateRowFunc = onUpdateRow({
-						formData,
-						fromRowIndex: operation.fromRowIndex,
-					});
+	// 		for (const operation of operations) {
+	// 			if (operation.type === "UPDATE") {
+	// 				const formData = getValues();
+	// 				const updateRowFunc = onUpdateRow({
+	// 					formData,
+	// 					fromRowIndex: operation.fromRowIndex,
+	// 				});
 
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach(async (rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = grid.gridData[rowIndex];
-							let processedRowData = { ...rowData };
+	// 				newValue
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.forEach(async (rowData, i) => {
+	// 						const rowIndex = operation.fromRowIndex + i;
+	// 						const oldRowData = grid.gridData[rowIndex];
+	// 						let processedRowData = { ...rowData };
 
-							if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID ||
-								rowData.SPrice !== oldRowData.SPrice ||
-								rowData.stype?.id !== oldRowData.stype?.id ||
-								rowData.SQty !== oldRowData.SQty
-							) {
-								processedRowData = await updateRowFunc(processedRowData, i);
-								newGridData[rowIndex] = processedRowData;
-								handleRefreshAmt({
-									formData,
-									gridData: newGridData,
-									setValue,
-								});
-							}
-							grid.setGridData(newGridData);
-						});
-				} else if (operation.type === "DELETE") {
-					grid.setGridData(newGridData);
-					const formData = getValues();
-					handleRefreshAmt({
-						formData,
-						gridData: newGridData,
-						setValue,
-					});
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					grid.setGridData(newGridData);
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
-				}
-			}
-		},
-		[handleRefreshAmt, grid, onUpdateRow]
-	);
+	// 						if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID ||
+	// 							rowData.SPrice !== oldRowData.SPrice ||
+	// 							rowData.stype?.id !== oldRowData.stype?.id ||
+	// 							rowData.SQty !== oldRowData.SQty
+	// 						) {
+	// 							processedRowData = await updateRowFunc(processedRowData, i);
+	// 							newGridData[rowIndex] = processedRowData;
+	// 							handleRefreshAmt({
+	// 								formData,
+	// 								gridData: newGridData,
+	// 								setValue,
+	// 							});
+	// 						}
+	// 						grid.setGridData(newGridData);
+	// 					});
+	// 			} else if (operation.type === "DELETE") {
+	// 				grid.setGridData(newGridData);
+	// 				const formData = getValues();
+	// 				handleRefreshAmt({
+	// 					formData,
+	// 					gridData: newGridData,
+	// 					setValue,
+	// 				});
+	// 			} else if (operation.type === "CREATE") {
+	// 				console.log("dsg.CREATE");
+	// 				grid.setGridData(newGridData);
+	// 				// process CREATE here
+	// 				gridMeta.toFirstColumn({ nextRow: true });
+	// 			}
+	// 		}
+	// 	},
+	// 	[handleRefreshAmt, grid, onUpdateRow]
+	// );
 
 	const onEditorSubmit = useCallback(
 		(data) => {

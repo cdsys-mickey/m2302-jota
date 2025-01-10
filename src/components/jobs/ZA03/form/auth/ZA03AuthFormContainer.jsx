@@ -1,15 +1,14 @@
-import { FormProvider, useForm } from "react-hook-form";
-import ZA03AuthForm from "./ZA03AuthForm";
-import { useContext } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import { keyColumn } from "react-datasheet-grid";
 import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
-import { useMemo } from "react";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useContext, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import ZA03AuthForm from "./ZA03AuthForm";
+
+const CHECK_WIDTH = 54;
 
 export const ZA03AuthFormContainer = () => {
 	// const form = useForm();
@@ -30,8 +29,8 @@ export const ZA03AuthFormContainer = () => {
 					})
 				),
 				title: "",
-				minWidth: 38,
-				maxWidth: 38,
+				minWidth: CHECK_WIDTH,
+				maxWidth: CHECK_WIDTH,
 				disabled: readOnly,
 			},
 			{
@@ -60,19 +59,19 @@ export const ZA03AuthFormContainer = () => {
 				minWidth: 240,
 			},
 
-			{
-				...keyColumn(
-					"INQ",
-					createCheckboxExColumn({
-						size: "medium",
-					})
-				),
-				title: "查",
-				minWidth: 38,
-				maxWidth: 38,
-				// disabled: readOnly || za03.funcDisabled,
-				disabled: readOnly,
-			},
+			// {
+			// 	...keyColumn(
+			// 		"INQ",
+			// 		createCheckboxExColumn({
+			// 			size: "medium",
+			// 		})
+			// 	),
+			// 	title: "查",
+			// 	minWidth: CHECK_WIDTH,
+			// 	maxWidth: CHECK_WIDTH,
+			// 	// disabled: readOnly || za03.funcDisabled,
+			// 	disabled: readOnly,
+			// },
 			{
 				...keyColumn(
 					"INS",
@@ -80,10 +79,9 @@ export const ZA03AuthFormContainer = () => {
 						size: "medium",
 					})
 				),
-				title: "增",
-				minWidth: 38,
-				maxWidth: 38,
-				// disabled: readOnly || za03.funcDisabled,
+				title: "新增",
+				minWidth: CHECK_WIDTH,
+				maxWidth: CHECK_WIDTH,
 				disabled: readOnly,
 			},
 			{
@@ -93,9 +91,9 @@ export const ZA03AuthFormContainer = () => {
 						size: "medium",
 					})
 				),
-				title: "改",
-				minWidth: 38,
-				maxWidth: 38,
+				title: "修改",
+				minWidth: CHECK_WIDTH,
+				maxWidth: CHECK_WIDTH,
 				// disabled: readOnly || za03.funcDisabled,
 				disabled: readOnly,
 			},
@@ -106,9 +104,9 @@ export const ZA03AuthFormContainer = () => {
 						size: "medium",
 					})
 				),
-				title: "印",
-				minWidth: 38,
-				maxWidth: 38,
+				title: "列印",
+				minWidth: CHECK_WIDTH,
+				maxWidth: CHECK_WIDTH,
 				// disabled: readOnly || za03.funcDisabled,
 				disabled: readOnly,
 			},
@@ -119,9 +117,9 @@ export const ZA03AuthFormContainer = () => {
 						size: "medium",
 					})
 				),
-				title: "刪",
-				minWidth: 38,
-				maxWidth: 38,
+				title: "刪除",
+				minWidth: CHECK_WIDTH,
+				maxWidth: CHECK_WIDTH,
 				// disabled: readOnly || za03.funcDisabled,
 				disabled: readOnly,
 			},
@@ -132,9 +130,9 @@ export const ZA03AuthFormContainer = () => {
 						size: "medium",
 					})
 				),
-				title: "停",
-				minWidth: 38,
-				maxWidth: 38,
+				title: "管理",
+				minWidth: CHECK_WIDTH,
+				maxWidth: CHECK_WIDTH,
 				// disabled: readOnly || za03.funcDisabled,
 				disabled: readOnly,
 			},
@@ -145,10 +143,9 @@ export const ZA03AuthFormContainer = () => {
 						size: "medium",
 					})
 				),
-				title: "審",
-				minWidth: 38,
-				maxWidth: 38,
-				// disabled: readOnly || za03.funcDisabled,
+				title: "覆核",
+				minWidth: CHECK_WIDTH,
+				maxWidth: CHECK_WIDTH,
 				disabled: readOnly,
 			},
 			{
@@ -158,51 +155,49 @@ export const ZA03AuthFormContainer = () => {
 						size: "medium",
 					})
 				),
-				title: "退",
-				minWidth: 38,
-				maxWidth: 38,
-				// disabled: readOnly || za03.funcDisabled,
+				title: "解除",
+				minWidth: CHECK_WIDTH,
+				maxWidth: CHECK_WIDTH,
 				disabled: readOnly,
 			},
-			{
-				...keyColumn(
-					"RUN",
-					createCheckboxExColumn({
-						size: "medium",
-					})
-				),
-				title: "執",
-				minWidth: 38,
-				maxWidth: 38,
-				// disabled: readOnly || za03.funcDisabled,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"EXP",
-					createCheckboxExColumn({
-						size: "medium",
-					})
-				),
-				title: "出",
-				minWidth: 38,
-				maxWidth: 38,
-				// disabled: readOnly || za03.funcDisabled,
-				disabled: readOnly,
-			},
-			{
-				...keyColumn(
-					"IMP",
-					createCheckboxExColumn({
-						size: "medium",
-					})
-				),
-				title: "入",
-				minWidth: 38,
-				maxWidth: 38,
-				// disabled: readOnly || za03.funcDisabled,
-				disabled: readOnly,
-			},
+			// {
+			// 	...keyColumn(
+			// 		"RUN",
+			// 		createCheckboxExColumn({
+			// 			size: "medium",
+			// 		})
+			// 	),
+			// 	title: "執行",
+			// 	minWidth: CHECK_WIDTH,
+			// 	maxWidth: CHECK_WIDTH,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn(
+			// 		"EXP",
+			// 		createCheckboxExColumn({
+			// 			size: "medium",
+			// 		})
+			// 	),
+			// 	title: "匯出",
+			// 	minWidth: CHECK_WIDTH,
+			// 	maxWidth: CHECK_WIDTH,
+			// 	// disabled: readOnly || za03.funcDisabled,
+			// 	disabled: readOnly,
+			// },
+			// {
+			// 	...keyColumn(
+			// 		"IMP",
+			// 		createCheckboxExColumn({
+			// 			size: "medium",
+			// 		})
+			// 	),
+			// 	title: "匯入",
+			// 	minWidth: CHECK_WIDTH,
+			// 	maxWidth: CHECK_WIDTH,
+			// 	// disabled: readOnly || za03.funcDisabled,
+			// 	disabled: readOnly,
+			// },
 			{
 				...keyColumn("Seq", createFloatColumn(2)),
 				title: "排序",

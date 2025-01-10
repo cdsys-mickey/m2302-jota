@@ -38,6 +38,7 @@ const A19Form = memo((props) => {
 									typeToSearchText="以編號,條碼或名稱搜尋"
 									disableOpenOnInput
 									selectOnFocus
+									blurToLookup
 									required
 									rules={{
 										required: "起始商品為必填"

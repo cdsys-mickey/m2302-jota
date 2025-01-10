@@ -639,121 +639,121 @@ export const useD05 = () => {
 		}
 	}, [updateAmt, mapTooltip]);
 
-	const buildGridChangeHandlerOld = useCallback(
-		({ getValues, setValue, gridMeta }) =>
-			async (newValue, operations) => {
-				// const formData = getValues();
-				console.log("handleGridChange", operations);
-				console.log("newValue", newValue);
-				const newGridData = [...newValue];
-				let checkFailed = false;
-				for (const operation of operations) {
-					if (operation.type === "UPDATE") {
-						const updatedRows = await Promise.all(
-							newValue
-								.slice(
-									operation.fromRowIndex,
-									operation.toRowIndex
-								)
-								.map(async (item, index) => {
-									console.log("before update", item);
-									const updatedRow = await onUpdateRow({
-										fromRowIndex: operation.fromRowIndex,
-										newValue,
-										gridMeta
-									})(item, index);
-									console.log("updated", updatedRow);
-									return updatedRow;
-								})
-						);
-						newGridData.splice(
-							operation.fromRowIndex,
-							updatedRows.length,
-							...updatedRows
-						);
-						console.log(newGridData);
+	// const buildGridChangeHandlerOld = useCallback(
+	// 	({ getValues, setValue, gridMeta }) =>
+	// 		async (newValue, operations) => {
+	// 			// const formData = getValues();
+	// 			console.log("handleGridChange", operations);
+	// 			console.log("newValue", newValue);
+	// 			const newGridData = [...newValue];
+	// 			let checkFailed = false;
+	// 			for (const operation of operations) {
+	// 				if (operation.type === "UPDATE") {
+	// 					const updatedRows = await Promise.all(
+	// 						newValue
+	// 							.slice(
+	// 								operation.fromRowIndex,
+	// 								operation.toRowIndex
+	// 							)
+	// 							.map(async (item, index) => {
+	// 								console.log("before update", item);
+	// 								const updatedRow = await onUpdateRow({
+	// 									fromRowIndex: operation.fromRowIndex,
+	// 									newValue,
+	// 									gridMeta
+	// 								})(item, index);
+	// 								console.log("updated", updatedRow);
+	// 								return updatedRow;
+	// 							})
+	// 					);
+	// 					newGridData.splice(
+	// 						operation.fromRowIndex,
+	// 						updatedRows.length,
+	// 						...updatedRows
+	// 					);
+	// 					console.log(newGridData);
 
 
-						// newValue
-						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
-						// 	.forEach(async (rowData, i) => {
-						// 		let checkFailed = false;
-						// 		const rowIndex = operation.fromRowIndex + i;
-						// 		const oldRowData = prodGrid.gridData[rowIndex];
-						// 		console.log(`開始處理第 ${rowIndex} 列...`);
-						// 		let processedRowData = { ...rowData };
-						// 		// 商品
-						// 		if (
-						// 			rowData.prod?.ProdID !==
-						// 			oldRowData.prod?.ProdID
-						// 		) {
-						// 			processedRowData =
-						// 				await handleGridProdChange({
-						// 					rowData: processedRowData,
-						// 				});
-						// 			console.log(
-						// 				"handleGridProdChange done",
-						// 				processedRowData
-						// 			);
-						// 		}
-						// 		// 數量, 客戶代碼, 門市碼 變動
-						// 		if (
-						// 			rowData.SQty !== oldRowData.SQty ||
-						// 			rowData.customer?.CustID !==
-						// 				oldRowData.customer?.CustID ||
-						// 			rowData.dept?.DeptID !==
-						// 				oldRowData.dept?.DeptID
-						// 		) {
-						// 			processedRowData =
-						// 				await handleGridSQtyChange({
-						// 					rowData: processedRowData,
-						// 					rowIndex,
-						// 					gridData: newValue,
-						// 				});
-						// 			console.log(
-						// 				"handleGridSQtyChange done",
-						// 				processedRowData
-						// 			);
-						// 		}
-						// 		newGridData[rowIndex] = processedRowData;
-						// 		console.log(
-						// 			`第 ${rowIndex} 列處理完成`,
-						// 			processedRowData
-						// 		);
-						// 		console.log("prodGrid.changed", newGridData);
-						// 		if (!checkFailed) {
-						// 			prodGrid.setGridData(newGridData);
-						// 			updateAmt({
-						// 				gridData: newGridData,
-						// 				setValue,
-						// 			});
-						// 		}
-						// 	});
-					} else if (operation.type === "DELETE") {
-						// do nothing
-						grid.setGridData(newGridData);
-						updateAmt({
-							gridData: newGridData,
-							setValue,
-						});
-					} else if (operation.type === "CREATE") {
-						console.log("dsg.CREATE");
-						// process CREATE here
-						gridMeta.toFirstColumn({ nextRow: true });
-					}
-				}
+	// 					// newValue
+	// 					// 	.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					// 	.forEach(async (rowData, i) => {
+	// 					// 		let checkFailed = false;
+	// 					// 		const rowIndex = operation.fromRowIndex + i;
+	// 					// 		const oldRowData = prodGrid.gridData[rowIndex];
+	// 					// 		console.log(`開始處理第 ${rowIndex} 列...`);
+	// 					// 		let processedRowData = { ...rowData };
+	// 					// 		// 商品
+	// 					// 		if (
+	// 					// 			rowData.prod?.ProdID !==
+	// 					// 			oldRowData.prod?.ProdID
+	// 					// 		) {
+	// 					// 			processedRowData =
+	// 					// 				await handleGridProdChange({
+	// 					// 					rowData: processedRowData,
+	// 					// 				});
+	// 					// 			console.log(
+	// 					// 				"handleGridProdChange done",
+	// 					// 				processedRowData
+	// 					// 			);
+	// 					// 		}
+	// 					// 		// 數量, 客戶代碼, 門市碼 變動
+	// 					// 		if (
+	// 					// 			rowData.SQty !== oldRowData.SQty ||
+	// 					// 			rowData.customer?.CustID !==
+	// 					// 				oldRowData.customer?.CustID ||
+	// 					// 			rowData.dept?.DeptID !==
+	// 					// 				oldRowData.dept?.DeptID
+	// 					// 		) {
+	// 					// 			processedRowData =
+	// 					// 				await handleGridSQtyChange({
+	// 					// 					rowData: processedRowData,
+	// 					// 					rowIndex,
+	// 					// 					gridData: newValue,
+	// 					// 				});
+	// 					// 			console.log(
+	// 					// 				"handleGridSQtyChange done",
+	// 					// 				processedRowData
+	// 					// 			);
+	// 					// 		}
+	// 					// 		newGridData[rowIndex] = processedRowData;
+	// 					// 		console.log(
+	// 					// 			`第 ${rowIndex} 列處理完成`,
+	// 					// 			processedRowData
+	// 					// 		);
+	// 					// 		console.log("prodGrid.changed", newGridData);
+	// 					// 		if (!checkFailed) {
+	// 					// 			prodGrid.setGridData(newGridData);
+	// 					// 			updateAmt({
+	// 					// 				gridData: newGridData,
+	// 					// 				setValue,
+	// 					// 			});
+	// 					// 		}
+	// 					// 	});
+	// 				} else if (operation.type === "DELETE") {
+	// 					// do nothing
+	// 					grid.setGridData(newGridData);
+	// 					updateAmt({
+	// 						gridData: newGridData,
+	// 						setValue,
+	// 					});
+	// 				} else if (operation.type === "CREATE") {
+	// 					console.log("dsg.CREATE");
+	// 					// process CREATE here
+	// 					gridMeta.toFirstColumn({ nextRow: true });
+	// 				}
+	// 			}
 
-				console.log("prodGrid.changed", newGridData);
-				if (!checkFailed) {
-					grid.setGridData(newGridData);
-					updateAmt({
-						gridData: newGridData,
-						setValue,
-					});
-				}
-			},
-		[grid, updateAmt, onUpdateRow]
-	);
+	// 			console.log("prodGrid.changed", newGridData);
+	// 			if (!checkFailed) {
+	// 				grid.setGridData(newGridData);
+	// 				updateAmt({
+	// 					gridData: newGridData,
+	// 					setValue,
+	// 				});
+	// 			}
+	// 		},
+	// 	[grid, updateAmt, onUpdateRow]
+	// );
 
 	const onEditorSubmit = useCallback(
 		({ setValue, gridMeta }) => (data) => {
@@ -917,7 +917,7 @@ export const useD05 = () => {
 		...grid,
 		grid,
 		createRow,
-		buildGridChangeHandlerOld,
+		// buildGridChangeHandlerOld,
 		getRowKey,
 		// 列印
 		onPrintSubmit,

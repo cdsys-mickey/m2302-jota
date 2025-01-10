@@ -16,6 +16,7 @@ const ProdTypeAPicker = memo(
 				isOptionEqualToValue={ProdTypeA.isOptionEqualToValue}
 				findByInput={ProdTypeA.findByInput}
 				notFoundText="品別代號 ${id} 不存在"
+				blurToLookup
 				{...rest}
 			/>
 		);

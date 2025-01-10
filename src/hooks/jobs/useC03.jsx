@@ -375,9 +375,9 @@ export const useC03 = () => {
 				) {
 					// 重新計算報價
 					handleSubmit();
-				} else {
+				} else if (newValue) {
 					// 清空「詢價註記」及「單價」
-					toastEx.info("商品單價已清除");
+					// toastEx.info("商品單價已清除");
 					grid.initGridData(
 						grid.gridData.map((x) => ({
 							...x,

@@ -210,6 +210,10 @@ const squaredOptions = [
 	{ id: SquaredState.SQUARED, label: "已結清" },
 ];
 
+const isOptionEqualToValue = (option, value) => {
+	return option?.id === value?.id;
+};
+
 const getSquaredOptionLabel = (option) => {
 	if (!option) return "";
 	const { id, label } = option;
@@ -253,6 +257,7 @@ const C06 = {
 	findSquaredOptionByInput,
 	stringifyOrders,
 	getTooltip,
+	isOptionEqualToValue,
 };
 
 export default C06;

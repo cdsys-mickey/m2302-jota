@@ -43,6 +43,7 @@ const InvTakingListingPicker = memo((props) => {
 			getData={getData}
 			querystring={querystring}
 			notFoundText="盤點清單 ${id} 不存在"
+			blurToLookup
 			{...rest}
 		/>
 	);

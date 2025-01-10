@@ -103,6 +103,7 @@ const CustomerPicker = (props) => {
 			placeholder={_placeholder}
 			typeToSearchText="輸入代號或名稱搜尋..."
 			resetOnChange
+			blurToLookup
 			{...rest}
 		/>
 	);

@@ -1,10 +1,15 @@
 import { useContext } from "react";
 import Copyright from "./Copyright";
 import { AppContext } from "@/contexts/app/AppContext";
+import { useInit } from "@/shared-hooks/useInit";
 
 export const CopyrightContainer = (props) => {
 	const { ...rest } = props;
-	const { version, apiVersion } = useContext(AppContext);
+	const { version, apiVersion, loadAppInfo, loading } = useContext(AppContext);
 
-	return <Copyright version={version} apiVersion={apiVersion} {...rest} />;
+	useInit(() => {
+		loadAppInfo();
+	}, []);
+
+	return <Copyright loading={loading} version={version} apiVersion={apiVersion} {...rest} />;
 };

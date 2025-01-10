@@ -4,10 +4,13 @@ import { FormProvider, useFormContext } from "react-hook-form";
 import { useContext } from "react";
 import { A18Context } from "@/contexts/A18/A18Context";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import Auth from "@/modules/md-auth";
 
 export const A18FormContainer = () => {
 	const form = useFormContext();
 	const a18 = useContext(A18Context);
+	const { operator } = useContext(AuthContext);
 
 	const onSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -22,10 +25,17 @@ export const A18FormContainer = () => {
 		)
 	}, [a18.onDebugSubmit, form]);
 
+	const deptDisabled = useMemo(() => {
+		return operator?.Class < Auth.SCOPES.ROOT;
+	}, [operator?.Class])
+
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...a18.formMeta}>
-				<A18Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<A18Form
+					onSubmit={onSubmit} onDebugSubmit={onDebugSubmit}
+					deptDisabled={deptDisabled}
+				/>
 			</FormMetaProvider>
 		</FormProvider>
 	);

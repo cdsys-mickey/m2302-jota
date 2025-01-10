@@ -15,6 +15,7 @@ const FreeProdTypePicker = forwardRef((props, ref) => {
 			isOptionEqualToValue={FreeProdTypes.isOptionEqualToValue}
 			findByInput={FreeProdTypes.findByInput}
 			notFoundText="試贈樣 ${id} 不存在"
+			blurToLookup
 			{...rest}
 		/>
 	);

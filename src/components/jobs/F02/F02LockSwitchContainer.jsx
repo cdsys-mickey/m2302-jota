@@ -12,9 +12,9 @@ export const F02LockSwitchContainer = (props) => {
 		return f02.staging ? "電腦帳已形成，刪除後才能解除鎖定" : "";
 	}, [f02.staging])
 
-	if (!f02.canUpdate) {
-		return false;
-	}
+	// if (!f02.canUpdate) {
+	// 	return false;
+	// }
 
 	return (
 		<Tooltip title={tooltip} arrow>

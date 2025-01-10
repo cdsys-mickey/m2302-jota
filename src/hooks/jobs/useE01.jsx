@@ -180,11 +180,11 @@ export const useE01 = () => {
 						data: data,
 					});
 					sqtyManager.recoverStockMap(data.prods, {
-						// stock: {
-						// 	simulate: false
-						// },
+						stock: {
+							simulate: false
+						},
 						prepared: {
-							excludeSelf: true
+							excludeSelfOrder: true
 						}
 					});
 					setSelectedOrd(data);
@@ -374,6 +374,7 @@ export const useE01 = () => {
 				});
 
 				if (status.success) {
+					sqtyManager.updateStockQty(prodId, payload.StockQty)
 					return {
 						...payload,
 						...(payload.Price && {
@@ -387,7 +388,7 @@ export const useE01 = () => {
 				toastEx.error("查詢報價失敗", err);
 			}
 		},
-		[httpGetAsync, token]
+		[httpGetAsync, sqtyManager, token]
 	);
 
 	const fetchAmt = useCallback(
@@ -563,26 +564,26 @@ export const useE01 = () => {
 
 	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
 		console.log(`mapTooltip(rowIndex: ${rowIndex})`);
-		let targetProdID;
+		let _prodId;
 		if (updateResult?.type === "DELETE") {
-			targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+			_prodId = prevGridData[rowIndex]?.prod?.ProdID || '';
 		} else {
 			const targetRow = gridData[rowIndex];
-			targetProdID = targetRow.prod?.ProdID;
+			_prodId = targetRow.prod?.ProdID;
 			// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
-			if (!targetProdID) {
-				targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
+			if (!_prodId) {
+				_prodId = prevGridData[rowIndex]?.prod?.ProdID || '';
 			}
 		}
 
 		// 若 targetProdID 仍為空，則不執行更新
-		if (!targetProdID) {
+		if (!_prodId) {
 			return gridData;
 		}
 
 		// 計算其他符合條件列的 SQty 加總
 		return gridData.map((row, index) => {
-			if (row.prod?.ProdID === targetProdID) {
+			if (row.prod?.ProdID === _prodId) {
 				if ((row.SNotQty && row.SNotQty <= 0) || (row.SOutQty && row.SOutQty != 0)) {
 					return {
 						...row,
@@ -594,18 +595,25 @@ export const useE01 = () => {
 				}
 
 				// 加總其他與 index 不同的 SQty
-				let otherRowsTotalSQty = gridData.reduce((acc, innerRow, innerIndex) => {
-					if (innerIndex !== index && innerRow.prod?.ProdID === targetProdID) {
-						return acc + Number(innerRow.SQty || 0);
+				// let otherRowTotalSQty = gridData.reduce((acc, innerRow, innerIndex) => {
+				// 	if (innerIndex !== index && innerRow.prod?.ProdID === _prodId) {
+				// 		return acc + Number(innerRow.SQty || 0);
+				// 	}
+				// 	return acc;
+				// }, 0);
+				let sameProdRowTotalSQty = gridData.reduce((acc, currentRow) => {
+					if (currentRow.prod?.ProdID === _prodId) {
+						return acc + Number(currentRow.SQty || 0);
 					}
 					return acc;
 				}, 0);
 
-				// const stock = sqtyManager.getStockQty(targetProdID);
-				const stock = sqtyManager.getRemainingStock({ prodId: targetProdID, gridData });
+				const stock = sqtyManager.getStockQty(_prodId);
+				// const stock = sqtyManager.getRemainingStock({ prodId: _prodId, gridData });
 
-				const prepared = sqtyManager.getPreparedQty(targetProdID);
-				const ordQty = prepared + otherRowsTotalSQty;
+				const otherOrderSQty = sqtyManager.getPreparedQty(_prodId);
+				// const ordQty = otherOrderSQty + otherRowTotalSQty;
+				const ordQty = otherOrderSQty + sameProdRowTotalSQty;
 				const remaining = stock - ordQty;
 
 				let processedRowData = {
@@ -647,52 +655,52 @@ export const useE01 = () => {
 		}
 	}, [fetchAmt, mapTooltip]);
 
-	const buildGridChangeHandlerOld = useCallback(
-		({ gridMeta, getValues }) => async (newValue, operations) => {
-			console.log("prevGridData", grid.prevGridData);
-			console.log("gridData", grid.gridData);
-			console.log("buildGridChangeHandler", operations);
-			const newGridData = [...newValue];
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = grid.gridData[rowIndex];
+	// const buildGridChangeHandlerOld = useCallback(
+	// 	({ gridMeta, getValues }) => async (newValue, operations) => {
+	// 		console.log("prevGridData", grid.prevGridData);
+	// 		console.log("gridData", grid.gridData);
+	// 		console.log("buildGridChangeHandler", operations);
+	// 		const newGridData = [...newValue];
+	// 		for (const operation of operations) {
+	// 			if (operation.type === "UPDATE") {
+	// 				newValue
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.forEach((rowData, i) => {
+	// 						const rowIndex = operation.fromRowIndex + i;
+	// 						const oldRowData = grid.gridData[rowIndex];
 
-							let processedRowData = { ...rowData };
+	// 						let processedRowData = { ...rowData };
 
-							if (
-								rowData.prod?.ProdID !==
-								oldRowData?.prod?.ProdID
-							) {
-								console.log(
-									`[${rowIndex}]prod changed`,
-									rowData?.prod
-								);
-								processedRowData = handleGridProdChange({
-									rowData,
-									oldRowData,
-									getValues
-								});
-							}
+	// 						if (
+	// 							rowData.prod?.ProdID !==
+	// 							oldRowData?.prod?.ProdID
+	// 						) {
+	// 							console.log(
+	// 								`[${rowIndex}]prod changed`,
+	// 								rowData?.prod
+	// 							);
+	// 							processedRowData = handleGridProdChange({
+	// 								rowData,
+	// 								oldRowData,
+	// 								getValues
+	// 							});
+	// 						}
 
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "DELETE") {
-					newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
-				}
-			}
-			console.log("after changed", newGridData);
-			grid.setGridData(newGridData);
-		},
-		[grid, handleGridProdChange]
-	);
+	// 						newGridData[rowIndex] = processedRowData;
+	// 					});
+	// 			} else if (operation.type === "DELETE") {
+	// 				newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
+	// 			} else if (operation.type === "CREATE") {
+	// 				console.log("dsg.CREATE");
+	// 				// process CREATE here
+	// 				gridMeta.toFirstColumn({ nextRow: true });
+	// 			}
+	// 		}
+	// 		console.log("after changed", newGridData);
+	// 		grid.setGridData(newGridData);
+	// 	},
+	// 	[grid, handleGridProdChange]
+	// );
 
 	const onEditorSubmit = useCallback(
 		(data) => {
@@ -1085,7 +1093,7 @@ export const useE01 = () => {
 		onEditorSubmitError,
 		// 報價 Grid
 		createRow,
-		buildGridChangeHandlerOld,
+		// buildGridChangeHandlerOld,
 		...grid,
 		grid,
 		onUpdateRow,

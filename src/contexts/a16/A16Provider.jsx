@@ -1,14 +1,12 @@
-import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useInit } from "@/shared-hooks/useInit";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { useA16 } from "../../hooks/jobs/useA16";
+import { AuthContext } from "../auth/AuthContext";
 import { A16Context } from "./A16Context";
 
-export const A16Provider = (props) => {
-	const { children } = props;
-	const { token } = useContext(AuthContext);
-	const a16 = useA16({ token });
+export const A16Provider = ({ children }) => {
+	const auth = useContext(AuthContext);
+	const a16 = useA16({ token: auth.token });
 
 	return (
 		<A16Context.Provider
@@ -23,3 +21,4 @@ export const A16Provider = (props) => {
 A16Provider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
+
