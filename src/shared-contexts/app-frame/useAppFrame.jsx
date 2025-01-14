@@ -235,11 +235,11 @@ export const useAppFrame = (opts = {}) => {
 	}, []);
 
 	const getDocumentTitle = useCallback((menuItemId, matchedAuthority) => {
-		let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
-		let deptName
-		if ((logKeyInSession || !menuItemId) && auth.operator?.CurDeptName) {
-			deptName = `[${auth.operator.CurDeptName}]`
-		}
+		// let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+		let deptName = `[${auth.operator.CurDeptName}]`
+		// if ((logKeyInSession || !menuItemId) && auth.operator?.CurDeptName) {
+		// 	deptName = `[${auth.operator.CurDeptName}]`
+		// }
 		return [deptName, menuItemId, matchedAuthority?.JobName].filter(Boolean).join("-")
 	}, [auth.operator?.CurDeptName]);
 

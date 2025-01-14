@@ -2,7 +2,7 @@ import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineLi
 import { forwardRef, memo } from "react";
 import { H02FormButtonsContainer } from "./buttons/H02FormButtonsContainer";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import FlexToolbar from "../../shared-components/listview/toolbar/FlexToolbar";
 
 const H02Toolbar = memo(
 	forwardRef((props, ref) => {

@@ -42,6 +42,7 @@ const SupplierPickerComponent = memo((props) => {
 		selectOnFocus,
 		// from Context
 		lastCell,
+		isLastRow,
 		getNextCell,
 		skipDisabled,
 		// focusNextCell,
@@ -54,6 +55,7 @@ const SupplierPickerComponent = memo((props) => {
 	const { focusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		insertRowBelow
 	});
@@ -81,6 +83,7 @@ const SupplierPickerComponent = memo((props) => {
 		focusNextCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 	});
 	// sync asyncRef
@@ -92,6 +95,7 @@ const SupplierPickerComponent = memo((props) => {
 		focusNextCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 	}
 

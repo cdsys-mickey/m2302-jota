@@ -16,6 +16,7 @@ const B06SearchForm = memo(() => {
 					<SupplierPicker
 						label="廠商代碼起"
 						name="lvSupplier"
+						autoFocus
 						virtualize
 						optionLabelSize="md"
 						disableOpenOnInput

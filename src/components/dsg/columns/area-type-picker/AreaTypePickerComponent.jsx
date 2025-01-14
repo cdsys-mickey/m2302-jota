@@ -43,6 +43,7 @@ const AreaTypePickerComponent = memo((props) => {
 		selectOnFocus = true,
 		// from Context
 		lastCell,
+		isLastRow,
 		getNextCell,
 		skipDisabled,
 		// focusNextCell,
@@ -56,6 +57,7 @@ const AreaTypePickerComponent = memo((props) => {
 	const { focusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		insertRowBelow
 	});

@@ -39,6 +39,7 @@ const ControlledDatePicker = ({
 	debounce = 800,
 	inline = false,
 	clearText = "清除",
+	fullWidth,
 	// variant = "outlined",
 	...rest
 }) => {
@@ -135,7 +136,9 @@ const ControlledDatePicker = ({
 				fieldState: { error },
 			}) => {
 				return (
-					<BoxComponent inline sx={{ fontWeight: 700 }}>
+					<BoxComponent {...(inline && { inline })} sx={{
+						fontWeight: 700,
+					}}>
 						{inline &&
 							label
 						}
@@ -176,7 +179,8 @@ const ControlledDatePicker = ({
 												color: Colors.REQUIRED,
 											}
 										})
-									}
+									},
+									fullWidth
 								},
 								sx: {
 									...(dense && {
@@ -222,9 +226,9 @@ const ControlledDatePicker = ({
 							// onError={(err) => {
 							// 	console.error(err);
 							// }}
-							{...rest}
 							invalidDateMessage={invalidDateMessage}
-
+							fullWidth={fullWidth}
+							{...rest}
 						/>
 					</BoxComponent>
 				)
@@ -255,6 +259,7 @@ ControlledDatePicker.propTypes = {
 	clearable: PropTypes.bool,
 	validate: PropTypes.bool,
 	inline: PropTypes.bool,
+	fullWidth: PropTypes.bool,
 	debounce: PropTypes.number,
 };
 export default ControlledDatePicker;

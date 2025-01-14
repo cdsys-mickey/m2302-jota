@@ -17,6 +17,7 @@ const E01ListForm = memo((props) => {
 			<Grid container columns={24} spacing={1}>
 				<Grid item md={5}>
 					<TextFieldWrapper
+						autoFocus
 						name="q"
 						label="單號"
 						size="small"

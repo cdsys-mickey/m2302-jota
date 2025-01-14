@@ -1,11 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
-import AvatarButton from "./AvatarButton";
-import { useContext } from "react";
-import { AuthContext } from "@/contexts/auth/AuthContext";
 import { AccountMenuContainer } from "@/components/account/AccountMenuContainer";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
-import Colors from "@/modules/md-colors";
 import Auth from "@/modules/md-auth";
+import { useCallback, useContext, useMemo, useState } from "react";
+import AvatarButton from "../avatar-button/AvatarButton";
 
 const AvatarButtonContainer = (props) => {
 	const { ...rest } = props;

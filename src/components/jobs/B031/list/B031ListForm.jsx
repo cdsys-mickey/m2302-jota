@@ -13,6 +13,7 @@ const B031ListForm = memo((props) => {
 				<Grid item md={6}>
 					<CustomerPicker
 						name="lvCust"
+						autoFocus
 						forNew
 						label="新客戶代碼起"
 						disableOpenOnInput

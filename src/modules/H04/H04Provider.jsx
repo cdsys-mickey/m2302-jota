@@ -1,14 +1,15 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import { useH02 } from "../../hooks/jobs/useH02";
-import StdPrint from "../../modules/md-std-print";
-import { H02Context } from "./H02Context";
+import { useH04 } from "./useH04";
+import StdPrint from "@/modules/md-std-print";
+import { H04Context } from "./H04Context";
 
-export const H02Provider = ({ children }) => {
-	const h02 = useH02();
+export const H04Provider = ({ children }) => {
+	const h04 = useH04();
 	const form = useForm({
 		defaultValues: {
-			SalYM: null,
+			SDate: null,
+			EDate: null,
 			InclTX: true,
 			InclTest: false,
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
@@ -17,22 +18,24 @@ export const H02Provider = ({ children }) => {
 
 	return (
 		<FormProvider {...form}>
-			<H02Context.Provider
+			<H04Context.Provider
 				value={{
-					...h02,
+					...h04,
 					handleSubmit: form.handleSubmit(
-						h02.onSubmit,
-						h02.onSubmitError
+						h04.onSubmit,
+						h04.onSubmitError
 					),
 				}}>
 				{children}
-			</H02Context.Provider>
+			</H04Context.Provider>
 		</FormProvider>
 	);
 };
 
-H02Provider.propTypes = {
+H04Provider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
 };
+
+
 
 

@@ -3,8 +3,9 @@ import queryString from "query-string";
 import { memo, useCallback, useContext, useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "@/modules/md-auth";
-import Depts from "@/modules/md-depts";
+
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import DeptOptions from "@/modules/DeptOptions.mjs";
 
 const UserDeptPicker = memo((props) => {
 	const { uid, scope = Auth.SCOPES.HQ, ...rest } = props;
@@ -32,8 +33,8 @@ const UserDeptPicker = memo((props) => {
 		<OptionPickerWrapper
 			url="v1/ou/user/depts"
 			// disabled={!uid}
-			getOptionLabel={Depts.getOptionLabel}
-			isOptionEqualToValue={Depts.isOptionEqualToValue}
+			getOptionLabel={DeptOptions.getOptionLabel}
+			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}
 			bearer={auth.token}
 			getData={getData}
 			// params={params}

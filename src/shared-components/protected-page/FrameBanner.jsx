@@ -1,7 +1,7 @@
 import FlexBox from "@/shared-components/FlexBox";
 import { Stack } from "@mui/material";
 import { forwardRef, memo } from "react";
-import AvatarButtonContainer from "@/shared-components/avatar-button/AvatarButtonContainer";
+import AvatarButtonContainer from "@/shared-components/protected-page/AvatarButtonContainer";
 import FrameMenuButtonContainer from "./FrameMenuButtonContainer";
 import PropTypes from "prop-types";
 import { useContext } from "react";
@@ -11,6 +11,7 @@ import { useMemo } from "react";
 import { PushMessagesIconButtonContainer } from "@/components/push-messages/PushMessagesIconButtonContainer";
 import { PushMessagesPopoverContainer } from "@/components/push-messages/PushMessagesPopoverContainer";
 import FrameTitle from "./FrameTitle";
+import DeptSwitchButtonContainer from "./DeptSwitchButtonContainer";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
@@ -63,6 +64,13 @@ const FrameBanner = memo(
 
 						{/* 通知小視窗 */}
 						<PushMessagesPopoverContainer />
+
+						{/* 切換單位 */}
+						<DeptSwitchButtonContainer
+							// size="small"
+							variant="standard"
+							dense
+						/>
 
 						{/* 帳號 */}
 						<AvatarButtonContainer

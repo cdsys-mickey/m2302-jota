@@ -12,7 +12,7 @@ const A01SearchForm = memo((props) => {
 	const { ...rest } = props;
 	return (
 		<FormBox>
-			<ResponsiveGrid container spacing={2} columns={12} {...rest}>
+			<ResponsiveGrid container spacing={1.5} columns={12} {...rest}>
 				<ResponsiveGrid item xs={12} sm={12}>
 					<TextFieldWrapper
 						autoFocus

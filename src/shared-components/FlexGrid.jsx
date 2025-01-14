@@ -47,7 +47,7 @@ FlexGrid.displayName = "FlexGrid";
 FlexGrid.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	justifyContent: PropTypes.string,
-	alignItems: PropTypes.bool,
+	alignItems: PropTypes.string,
 	inline: PropTypes.bool,
 	block: PropTypes.bool
 }

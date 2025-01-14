@@ -1,10 +1,10 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import DeptOptions from "@/modules/DeptOptions.mjs";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useContext, useMemo } from "react";
-import Depts from "../../modules/md-depts";
-import { useCallback } from "react";
+
 
 const AppDeptPicker = memo((props) => {
 	console.log("rendering AppDeptPicker");
@@ -23,7 +23,7 @@ const AppDeptPicker = memo((props) => {
 	}, [scopeByOperator, scope]);
 
 	// const getOptionLabel = useCallback(
-	// 	(option) => Depts.getOptionLabel(option),
+	// 	(option) => DeptOptions.getOptionLabel(option),
 	// 	[]
 	// );
 
@@ -41,9 +41,9 @@ const AppDeptPicker = memo((props) => {
 			// ref={ref}
 			bearer={token}
 			url={`v1/app/depts`}
-			getOptionLabel={Depts.getOptionLabel}
-			isOptionEqualToValue={Depts.isOptionEqualToValue}
-			getOptionKey={Depts.getOptionKey}
+			getOptionLabel={DeptOptions.getOptionLabel}
+			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}
+			getOptionKey={DeptOptions.getOptionKey}
 			querystring={qs}
 			resetOnChange
 			{...rest}

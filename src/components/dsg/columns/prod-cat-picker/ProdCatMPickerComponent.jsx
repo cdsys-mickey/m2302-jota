@@ -54,6 +54,7 @@ const ProdCatMPickerComponent = memo((props) => {
 		selectOnFocus,
 		// from Context
 		lastCell,
+		isLastRow,
 		getNextCell,
 		skipDisabled,
 		// focusNextCell,
@@ -66,6 +67,7 @@ const ProdCatMPickerComponent = memo((props) => {
 	const { focusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		insertRowBelow
 	});
@@ -95,6 +97,7 @@ const ProdCatMPickerComponent = memo((props) => {
 		focusNextCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 	});
 	// sync asyncRef
@@ -106,6 +109,7 @@ const ProdCatMPickerComponent = memo((props) => {
 		focusNextCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 	}
 

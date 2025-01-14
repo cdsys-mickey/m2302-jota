@@ -2,10 +2,14 @@ import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
 import { Route } from "react-router-dom";
 
-import { H01FrameContainer } from "@/pages/modules/H01/H01FrameContainer";
-import { H02FrameContainer } from "@/pages/modules/H02/H02FrameContainer";
-import { H01Provider } from "@/contexts/H01/H01Provider";
-import { H02Provider } from "@/contexts/H02/H02Provider";
+import { H01FrameContainer } from "@/modules/H01/H01FrameContainer";
+import { H01Provider } from "@/modules/H01/H01Provider";
+import { H02FrameContainer } from "@/modules/H02/H02FrameContainer";
+import { H02Provider } from "@/modules/H02/H02Provider";
+import { H03Provider } from "@/modules/H03/H03Provider";
+import { H03FrameContainer } from "@/modules/H03/H03FrameContainer";
+import { H04Provider } from "@/modules/H04/H04Provider";
+import { H04FrameContainer } from "@/modules/H04/H04FrameContainer";
 
 const hRoutes = (
 	<>
@@ -29,6 +33,30 @@ const hRoutes = (
 						<H02Provider>
 							<H02FrameContainer />
 						</H02Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H03"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H03Provider>
+							<H03FrameContainer />
+						</H03Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H04"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H04Provider>
+							<H04FrameContainer />
+						</H04Provider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

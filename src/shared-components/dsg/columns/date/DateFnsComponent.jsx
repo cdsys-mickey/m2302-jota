@@ -32,6 +32,7 @@ const DateFnsComponent = memo((props) => {
 		// focusNextCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		readOnly,
 		// ...rest
@@ -48,6 +49,7 @@ const DateFnsComponent = memo((props) => {
 	const { focusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		stopEditing,
 		insertRowBelow,

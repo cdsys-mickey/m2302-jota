@@ -1,4 +1,4 @@
-import H02 from "@/modules/md-h02";
+import H02 from "@/modules/H02/H02.mjs";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";

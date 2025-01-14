@@ -42,20 +42,24 @@ const transformGridForReading = (data) => {
 				SFactNa,
 				...rest
 			}) => ({
-				prod: {
-					ProdID: SProdID,
-					ProdData: ProdData_N,
-					// 複製包裝單位、庫存
-					PackData_N,
-					StockQty: StockQty_N,
-				},
+				prod: SProdID
+					? {
+							ProdID: SProdID,
+							ProdData: ProdData_N,
+							// 複製包裝單位、庫存
+							PackData_N,
+							StockQty: StockQty_N,
+					  }
+					: null,
 				ProdData: ProdData_N,
 				PackData_N,
 				StockQty_N,
-				supplier: {
-					FactID: SFactID,
-					FactData: SFactNa,
-				},
+				supplier: SFactID
+					? {
+							FactID: SFactID,
+							FactData: SFactNa,
+					  }
+					: null,
 				SFactNa,
 				...rest,
 			})

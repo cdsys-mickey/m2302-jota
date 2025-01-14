@@ -1,32 +1,14 @@
-import { useCallback } from "react";
-import { CheckboxExGroupContainer } from "../shared-components/checkbox-group/CheckboxExGroupContainer";
-import Depts from "../modules/md-depts";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/auth/AuthContext";
-import { useMemo } from "react";
-import queryString from "query-string";
-import Auth from "../modules/md-auth";
+import DeptOptions from "@/modules/DeptOptions.mjs";
 import PropTypes from "prop-types";
+import queryString from "query-string";
+import { useCallback, useContext, useMemo } from "react";
+import { AuthContext } from "../contexts/auth/AuthContext";
+import Auth from "../modules/md-auth";
 import CheckboxExGroup from "../shared-components/checkbox-group/CheckboxExGroup";
 
 export const UserDeptCheckboxGroupContainer = (props) => {
 	const { uid, scope = Auth.SCOPES.HQ, ...rest } = props;
 	const auth = useContext(AuthContext);
-
-	const getOptionKey = useCallback((opts) => {
-		return Depts.getOptionKey(opts);
-	}, []);
-
-	const getOptionLabel = useCallback((opts) => {
-		return Depts.getOptionLabel(opts);
-	}, []);
-
-	const isOptionChecked = useCallback(
-		(option, value) => {
-			return value.includes(getOptionKey(option));
-		},
-		[getOptionKey]
-	);
 
 	const getData = useCallback((payload) => {
 		return payload;
@@ -45,9 +27,9 @@ export const UserDeptCheckboxGroupContainer = (props) => {
 			bearer={auth.token}
 			querystring={querystring}
 			disabled={!uid}
-			getOptionKey={getOptionKey}
-			getOptionLabel={getOptionLabel}
-			isOptionChecked={isOptionChecked}
+			getOptionKey={DeptOptions.getOptionKey}
+			getOptionLabel={DeptOptions.getOptionLabel}
+			isOptionChecked={DeptOptions.isOptionChecked}
 			getData={getData}
 			{...rest}
 		/>

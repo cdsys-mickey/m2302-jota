@@ -1,19 +1,11 @@
-import { useContext } from "react";
-import CheckboxExGroup from "../../../../shared-components/checkbox-group/CheckboxExGroup";
-import { UserDeptCheckboxGroupContainer } from "../../../UserDeptCheckboxGroupContainer";
+import PropTypes from "prop-types";
+import { useCallback, useContext, useEffect, useMemo } from "react";
+import { useWatch } from "react-hook-form";
 import { ZA03Context } from "../../../../contexts/ZA03/ZA03Context";
 import { ZA03CopyAuthContext } from "../../../../contexts/ZA03/ZA03CopyAuthContext";
-import { useEffect } from "react";
-import { CheckboxExGroupContainer } from "../../../../shared-components/checkbox-group/CheckboxExGroupContainer";
-import { useMemo } from "react";
-import queryString from "query-string";
-import PropTypes from "prop-types";
-import Auth from "../../../../modules/md-auth";
-import { AuthContext } from "../../../../contexts/auth/AuthContext";
-import { useCallback } from "react";
-import Depts from "../../../../modules/md-depts";
+import CheckboxExGroup from "../../../../shared-components/checkbox-group/CheckboxExGroup";
 import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
-import { useWatch } from "react-hook-form";
+import DeptOptions from "@/modules/DeptOptions.mjs";
 
 export const ZA03CopyAuthDeptCheckboxGroupContainer = (props) => {
 	const { ...rest } = props;
@@ -37,17 +29,16 @@ export const ZA03CopyAuthDeptCheckboxGroupContainer = (props) => {
 	});
 
 	const getOptionKey = useCallback((opts) => {
-		return Depts.getOptionKey(opts);
+		return DeptOptions.getOptionKey(opts);
 	}, []);
 
 	const getOptionLabel = useCallback(
 		(v) => {
 			if (overrideDept) {
-				return `${Depts.getOptionLabel(v)}→${
-					za03.selectedDept?.AbbrName || ""
-				}`;
+				return `${DeptOptions.getOptionLabel(v)}→${za03.selectedDept?.AbbrName || ""
+					}`;
 			}
-			return `${Depts.getOptionLabel(v)}→${v?.AbbrName}`;
+			return `${DeptOptions.getOptionLabel(v)}→${v?.AbbrName}`;
 		},
 		[overrideDept, za03.selectedDept?.AbbrName]
 	);

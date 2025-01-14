@@ -31,6 +31,7 @@ const MuiDateComponent = memo((props) => {
 		// focusNextCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		readOnly,
 		hideControlsOnActive = true,
@@ -84,6 +85,7 @@ const MuiDateComponent = memo((props) => {
 	const { focusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		stopEditing,
 		insertRowBelow,

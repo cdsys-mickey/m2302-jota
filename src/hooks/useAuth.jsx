@@ -22,10 +22,10 @@ export const useAuth = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const logKeyInUrl = useMemo(() => {
-		const params = new URLSearchParams(location.search);
-		return params.get(LOG_KEY);
-	}, [location.search])
+	// const logKeyInUrl = useMemo(() => {
+	// 	const params = new URLSearchParams(location.search);
+	// 	return params.get(LOG_KEY);
+	// }, [location.search])
 
 	const [state, setState] = useState({
 		// AUTHENTICATE
@@ -231,14 +231,18 @@ export const useAuth = () => {
 				bearer: state.token,
 			});
 			toastEx.success("您已成功登出");
-			let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
-			if (logKeyInSession) {
-				sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
-				window.close();
-			} else {
-				Cookies.remove(Auth.COOKIE_LOGKEY);
-				toLogin();
-			}
+			// let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+			// if (logKeyInSession) {
+			// 	sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
+			// 	window.close();
+			// } else {
+			// 	Cookies.remove(Auth.COOKIE_LOGKEY);
+			// 	toLogin();
+			// }
+			sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
+			Cookies.remove(Auth.COOKIE_LOGKEY);
+			window.close();
+			toLogin();
 		} catch (err) {
 			console.error("handleSignOut.failed", err);
 		}
@@ -259,38 +263,43 @@ export const useAuth = () => {
 		});
 	}, [dialogs, handleSignOut]);
 
-	const onDeptSwitchSubmit = useCallback(
-		async (data) => {
-			console.log(`onDeptSwitchSubmit`, data);
-			const newDeptId = data?.newDept?.DeptID;
-			try {
-				deptSwitchAction.start();
-				const { status, error } = await httpGetAsync({
-					url: "v1/auth/switch-dept",
-					bearer: state.token,
-					params: {
-						id: newDeptId,
-					},
+	const switchDept = useCallback(async (newDept) => {
+		if (!newDept) {
+			toastEx.error("您尚未選擇欲切換的門市")
+		}
+		try {
+			deptSwitchAction.start();
+			const { status, error } = await httpGetAsync({
+				url: "v1/auth/switch-dept",
+				bearer: state.token,
+				params: {
+					id: newDept?.DeptID,
+				},
+			});
+			if (status.success) {
+				recoverIdentity({ switching: true, doRedirect: false });
+				toLanding({
+					reloadAuthorities: true,
 				});
-				if (status.success) {
-					recoverIdentity({ switching: true, doRedirect: false });
-					toLanding({
-						reloadAuthorities: true,
-					});
-					deptSwitchAction.clear();
-					toastEx.success(
-						`已成功切換至 ${data?.newDept?.DeptName || data?.newDept?.AbbrName
-						}`
-					);
-				} else {
-					throw error || new Error("切換單位發生未預期例外");
-				}
-			} catch (err) {
-				console.error("onDeptSwitchSubmit.failed", err);
-				toastEx.error(`切換單位異常`);
+				deptSwitchAction.clear();
+				toastEx.success(
+					`已成功切換至 ${newDept?.AbbrName || newDept?.DeptName}`
+				);
+			} else {
+				throw error || new Error("切換單位發生未預期例外");
 			}
+		} catch (err) {
+			console.error("onDeptSwitchSubmit.failed", err);
+			toastEx.error(`切換單位異常`);
+		}
+	}, [deptSwitchAction, httpGetAsync, recoverIdentity, state.token, toLanding]);
+
+	const onDeptSwitchSubmit = useCallback(
+		(data) => {
+			console.log(`onDeptSwitchSubmit`, data);
+			switchDept(data?.newDept);
 		},
-		[deptSwitchAction, httpGetAsync, state.token, toLanding, recoverIdentity]
+		[switchDept]
 	);
 
 	const onDeptSwitchSubmitError = useCallback((err) => {
@@ -397,8 +406,11 @@ export const useAuth = () => {
 		if (state.validating === null) {
 			const queryParams = new URLSearchParams(location.search);
 			const logKeyInUrl = queryParams.get(LOG_KEY);
+			const logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
 			if (logKeyInUrl) {
 				sessionStorage.setItem(LOG_KEY, logKeyInUrl);
+			} else if (logKeyInCookie) {
+				sessionStorage.setItem(LOG_KEY, logKeyInCookie);
 			}
 
 			recoverIdentity({
@@ -448,6 +460,7 @@ export const useAuth = () => {
 		onChangeSubmit,
 		onChangeSubmitError,
 		changePrompting,
+		switchDept
 		// ...taskListLoader,
 	};
 };

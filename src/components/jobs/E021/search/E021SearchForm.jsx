@@ -19,6 +19,7 @@ const E021SearchForm = memo((props) => {
 				<ResponsiveGrid container columns={24} spacing={1} initSize="xs">
 					<ResponsiveGrid item xs={4}>
 						<TextFieldWrapper
+							autoFocus
 							name="q"
 							label="單號"
 							size="small"

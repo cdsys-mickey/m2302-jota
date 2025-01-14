@@ -3,8 +3,8 @@ import queryString from "query-string";
 import { memo, useCallback, useContext, useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "@/modules/md-auth";
-import Depts from "@/modules/md-depts";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import DeptOptions from "@/modules/DeptOptions.mjs";
 
 const DeptPicker = memo((props) => {
 	const {
@@ -34,8 +34,8 @@ const DeptPicker = memo((props) => {
 	const getOptionLabel = useCallback(
 		(option) => {
 			return forId
-				? Depts.getOptionLabelForId(option)
-				: Depts.getOptionLabel(option);
+				? DeptOptions.getOptionLabelForId(option)
+				: DeptOptions.getOptionLabel(option);
 		},
 		[forId]
 	);
@@ -46,8 +46,8 @@ const DeptPicker = memo((props) => {
 			url="v1/ou/depts"
 			bearer={auth.token}
 			getOptionLabel={getOptionLabel}
-			renderOptionLabel={Depts.getOptionLabel}
-			isOptionEqualToValue={Depts.isOptionEqualToValue}
+			renderOptionLabel={DeptOptions.getOptionLabel}
+			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}
 			getData={getData}
 			querystring={querystring}
 			notFoundText="門市代號 ${id} 不存在"

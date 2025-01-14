@@ -353,6 +353,10 @@ export const useDSGMeta = ({
 		return cell.row === data.length - 1 && cell.col === columns.length - 1;
 	}, [columns?.length, data?.length]);
 
+	const isLastRow = useCallback((cell) => {
+		return cell.row == data.length - 1
+	}, [data?.length]);
+
 	return {
 		// Meta
 		gridRef,
@@ -362,6 +366,7 @@ export const useDSGMeta = ({
 		// Focus Controls
 		skipDisabled,
 		lastCell,
+		isLastRow,
 		getNextCell,
 		// nextCell,
 		// Ref Methods

@@ -45,6 +45,7 @@ const DateInputMaskComponent = memo((props) => {
 		focusPrevCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		readOnly,
 		continuousUpdates,
@@ -83,6 +84,7 @@ const DateInputMaskComponent = memo((props) => {
 	const { focusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		stopEditing,
 		insertRowBelow,

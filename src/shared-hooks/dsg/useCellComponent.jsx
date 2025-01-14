@@ -8,6 +8,7 @@ export const useCellComponent = (props = {}) => {
 		// from DSGContext
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		toFirstColumn,
 		// from Cell Component
@@ -26,6 +27,10 @@ export const useCellComponent = (props = {}) => {
 			if (nextCell.field) {
 				setActiveCell(nextCell.field);
 			} else {
+				// 要先確認是最後一行
+				if (!isLastRow(cell)) {
+					return;
+				}
 				if (typeof lastCell === "string") {
 					toastEx.warn(lastCell);
 				} else if (typeof lastCell === "function") {
@@ -45,7 +50,7 @@ export const useCellComponent = (props = {}) => {
 
 			}
 		},
-		[getNextCell, insertRowBelow, lastCell, setActiveCell]
+		[getNextCell, insertRowBelow, isLastRow, lastCell, setActiveCell]
 	);
 
 	return { focusNextCell };

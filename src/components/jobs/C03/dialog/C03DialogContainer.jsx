@@ -125,14 +125,8 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
-						// selectOnFocus: true,
-						// triggerDelay: 300,
-						// queryRequired: true,
-						// filterByServer: true,
-						// disableOpenOnInput: true,
-						// hideControlsOnActive: false,
-						// autoHighlight: true,
 						focusOnDisabled: true,
+						// disableClose: true
 					})
 				),
 				title: "商品編號",

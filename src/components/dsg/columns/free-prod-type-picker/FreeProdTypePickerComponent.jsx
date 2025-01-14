@@ -42,6 +42,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		selectOnFocus,
 		// from Context
 		lastCell,
+		isLastRow,
 		getNextCell,
 		skipDisabled,
 		// focusNextCell,
@@ -54,6 +55,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 	const { focusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 		insertRowBelow
 	});
@@ -83,6 +85,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		// focusNextCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 	});
 	// sync asyncRef
@@ -94,6 +97,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		// focusNextCell,
 		getNextCell,
 		lastCell,
+		isLastRow,
 		setActiveCell,
 	}
 

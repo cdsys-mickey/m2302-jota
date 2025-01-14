@@ -1,15 +1,11 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
+import { BContext } from "@/contexts/B/BContext";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import { Grid } from "@mui/material";
-import { memo } from "react";
+import { memo, useContext, useMemo } from "react";
 import { B02OrderByPicker } from "../B02OrderByPicker";
-import { useContext } from "react";
-import { BContext } from "@/contexts/B/BContext";
-import { B04Context } from "@/contexts/B04/B04Context";
-import { B02Context } from "@/contexts/B02/B02Context";
-import { useMemo } from "react";
 
 const B02ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -73,7 +69,6 @@ const B02ListForm = memo((props) => {
 						name="prod2"
 						forId
 						label="商品編號訖"
-						autoFocus
 						disableOpenOnInput
 						virtualize
 						slotProps={{

@@ -25,7 +25,6 @@ const C08SearchForm = memo((props) => {
 					<DatePickerWrapper
 						name="lvTxoDate"
 						label="撥出日期(>)"
-						autoFocus
 						validate
 					/>
 				</ResponsiveGrid>

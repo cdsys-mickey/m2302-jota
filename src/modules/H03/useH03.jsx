@@ -1,46 +1,35 @@
-import { useCallback, useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import H02 from "@/modules/md-h02";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { useAppModule } from "./useAppModule";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
-import useDebugDialog from "../useDebugDialog";
-import { useMemo } from "react";
+import H03 from "@/modules/H03/H03.mjs";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import queryString from "query-string";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useCallback, useContext, useMemo } from "react";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
+import useDebugDialog from "@/hooks/useDebugDialog";
+import useJotaReports from "@/hooks/useJotaReports";
 
-export const useH02 = () => {
+export const useH03 = () => {
 	const { token, operator } = useContext(AuthContext);
-	const { postToBlank } = useHttpPost();
 	const appModule = useAppModule({
 		token,
-		moduleId: "H02",
+		moduleId: "H03",
 	});
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-	const formMeta = useFormMeta(
-		`
-		SalYM,
-		SProdID,
-		EProdID,
-		InclTX,
-		InclTest,
-		outputType,
-		`,
-	)
+
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebH02Rep.aspx`
+		return `${import.meta.env.VITE_URL_REPORT}/WebH03Rep.aspx`
 	}, [])
+
+	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
 		const data = {
-			...H02.transformForSubmitting(payload),
+			...H03.transformForSubmitting(payload),
 			DeptId: operator.CurDeptID,
-		}
+		};
 		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
 	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
 
@@ -48,23 +37,13 @@ export const useH02 = () => {
 		(payload) => {
 			console.log("onSubmit", payload);
 			const data = {
-				...H02.transformForSubmitting(payload),
+				...H03.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,
 			}
 			console.log("data", data);
-			postToBlank(
-				queryString.stringifyUrl({
-					url: reportUrl,
-					query: {
-						LogKey: operator.LogKey
-					}
-				}),
-				{
-					jsonData: JSON.stringify(data),
-				}
-			);
+			reports.open(reportUrl, data);
 		},
-		[operator.CurDeptID, operator.LogKey, postToBlank, reportUrl]
+		[operator.CurDeptID, reportUrl, reports]
 	);
 
 	const onSubmitError = useCallback((err) => {
@@ -76,6 +55,6 @@ export const useH02 = () => {
 		onSubmit,
 		onSubmitError,
 		onDebugSubmit,
-		formMeta,
 	};
 };
+

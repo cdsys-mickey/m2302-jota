@@ -1,29 +1,26 @@
-import { useCallback, useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import H01 from "@/modules/md-h01";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { useAppModule } from "./useAppModule";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
-import useDebugDialog from "../useDebugDialog";
-import { useMemo } from "react";
+import H02 from "@/modules/H02/H02";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import queryString from "query-string";
-import useJotaReports from "../useJotaReports";
+import { useCallback, useContext, useMemo } from "react";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
+import useDebugDialog from "@/hooks/useDebugDialog";
 
-export const useH01 = () => {
+export const useH02 = () => {
 	const { token, operator } = useContext(AuthContext);
+	const { postToBlank } = useHttpPost();
 	const appModule = useAppModule({
 		token,
-		moduleId: "H01",
+		moduleId: "H02",
 	});
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
 	const formMeta = useFormMeta(
 		`
-		SDate,
-		EDate,
+		SalYM,
 		SProdID,
 		EProdID,
 		InclTX,
@@ -33,17 +30,15 @@ export const useH01 = () => {
 	)
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebH01Rep.aspx`
+		return `${import.meta.env.VITE_URL_REPORT}/WebH02Rep.aspx`
 	}, [])
-
-	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
 		const data = {
-			...H01.transformForSubmitting(payload),
+			...H02.transformForSubmitting(payload),
 			DeptId: operator.CurDeptID,
-		};
+		}
 		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
 	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
 
@@ -51,13 +46,23 @@ export const useH01 = () => {
 		(payload) => {
 			console.log("onSubmit", payload);
 			const data = {
-				...H01.transformForSubmitting(payload),
+				...H02.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,
 			}
 			console.log("data", data);
-			reports.open(reportUrl, data);
+			postToBlank(
+				queryString.stringifyUrl({
+					url: reportUrl,
+					query: {
+						LogKey: operator.LogKey
+					}
+				}),
+				{
+					jsonData: JSON.stringify(data),
+				}
+			);
 		},
-		[operator.CurDeptID, reportUrl, reports]
+		[operator.CurDeptID, operator.LogKey, postToBlank, reportUrl]
 	);
 
 	const onSubmitError = useCallback((err) => {

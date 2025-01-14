@@ -1,6 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "@/modules/md-auth";
-import Depts from "@/modules/md-depts";
 import Terminals from "@/modules/md-terminals";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
