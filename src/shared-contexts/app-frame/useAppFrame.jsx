@@ -66,7 +66,10 @@ export const useAppFrame = (opts = {}) => {
 	const spawnNewSession = useCallback(async () => {
 		const { status, payload, error } = await httpPostAsync({
 			url: "v1/auth/spawn",
-			bearer: auth.token
+			bearer: auth.token,
+			data: {
+				dept: auth.operator?.CurDeptID
+			}
 		})
 		if (status.success) {
 			console.log("spawn result", payload);
@@ -74,7 +77,7 @@ export const useAppFrame = (opts = {}) => {
 		} else {
 			throw error || new Error("未預期例外");
 		}
-	}, [auth.token, httpPostAsync]);
+	}, [auth.operator?.CurDeptID, auth.token, httpPostAsync]);
 
 	const handleMenuItemClick = useCallback(
 		async (e, module) => {

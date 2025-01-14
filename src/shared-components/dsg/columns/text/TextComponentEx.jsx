@@ -42,8 +42,8 @@ const TextComponentEx = memo(
 			// Context Methods
 			skipDisabled,
 			getNextCell,
-			// isLastCell,
 			lastCell,
+			isLastRow,
 			setActiveCell,
 			readOnly,
 			type
@@ -101,6 +101,7 @@ const TextComponentEx = memo(
 		const { focusNextCell } = useCellComponent({
 			getNextCell,
 			lastCell,
+			isLastRow,
 			setActiveCell,
 			stopEditing,
 			insertRowBelow,

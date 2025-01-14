@@ -372,9 +372,6 @@ export const useAuth = () => {
 								payload.LogKey || "",
 								Auth.COOKIE_OPTS
 							);
-							// recoverIdentity({
-							// 	doRedirect: false,
-							// });
 							toLanding({
 								reloadAuthorities: true,
 							});

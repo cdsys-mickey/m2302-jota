@@ -40,6 +40,7 @@ const CheckboxComponent = memo(
 			skipDisabled,
 			getNextCell,
 			lastCell,
+			isLastRow,
 			setActiveCell,
 			readOnly,
 			disableFocusNext
@@ -71,6 +72,7 @@ const CheckboxComponent = memo(
 		const { focusNextCell } = useCellComponent({
 			getNextCell,
 			lastCell,
+			isLastRow,
 			setActiveCell,
 			stopEditing,
 			insertRowBelow,
@@ -164,6 +166,7 @@ CheckboxComponent.propTypes = {
 	disabled: PropTypes.bool,
 	stopEditing: PropTypes.func,
 	setRowData: PropTypes.func,
+	insertRowBelow: PropTypes.func,
 };
 CheckboxComponent.displayName = "CheckboxComponent";
 export default CheckboxComponent;

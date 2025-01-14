@@ -162,7 +162,9 @@ const SplitButton = memo(forwardRef((props, ref) => {
 							}),
 						},
 					]}>
-					{slotProps?.typography ? (<Typography variant={slotProps?.typography?.variant}>{_label}</Typography>) : _label}
+					{slotProps?.typography ? (<Typography variant={slotProps?.typography?.variant} sx={{
+						whiteSpace: "nowrap"
+					}}>{_label}</Typography>) : _label}
 				</Button>
 				<Button
 					size={size}
