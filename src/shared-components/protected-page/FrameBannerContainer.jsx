@@ -9,7 +9,7 @@ export const FrameBannerContainer = (props) => {
 	const { ...rest } = props;
 	const appFrame = useContext(AppFrameContext);
 
-	const { containerRef, isXs, isLgOrUp } = useContainerSize();
+	const { containerRef, isMdOrDown, isLgOrUp } = useContainerSize();
 
 	const fullTitle = useMemo(() => {
 		return [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName].filter(Boolean).join(" ");
@@ -20,14 +20,14 @@ export const FrameBannerContainer = (props) => {
 	}, [appFrame.menuItemSelected?.JobID])
 
 	const title = useMemo(() => {
-		if (isXs) {
+		if (isMdOrDown) {
 			return altTitle;
 		}
 		if (isLgOrUp) {
 			return fullTitle;
 		}
 		return appFrame.menuItemSelected?.JobName;
-	}, [altTitle, appFrame.menuItemSelected?.JobName, fullTitle, isLgOrUp, isXs])
+	}, [altTitle, appFrame.menuItemSelected?.JobName, fullTitle, isLgOrUp, isMdOrDown])
 
 	return (
 		<PushMessagesProvider>
@@ -36,6 +36,7 @@ export const FrameBannerContainer = (props) => {
 					<FrameBanner
 						title={title}
 						alt={altTitle}
+						dense={isMdOrDown}
 						{...rest}
 					/>
 				</div>

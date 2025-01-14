@@ -15,16 +15,15 @@ import DeptSwitchButtonContainer from "./DeptSwitchButtonContainer";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
-		const { title, alt, children, SearchComponent, ...rest } = props;
-		const { mobile } = useContext(ResponsiveContext);
+		const { title, alt, children, SearchComponent, dense, ...rest } = props;
 
 		const showSearchComponent = useMemo(() => {
 			return children || !!SearchComponent;
 		}, [SearchComponent, children]);
 
 		const centerFlex = useMemo(() => {
-			return mobile || !!SearchComponent ? 2 : 1;
-		}, [SearchComponent, mobile]);
+			return dense || !!SearchComponent ? 2 : 1;
+		}, [SearchComponent, dense]);
 
 		const leftFlex = useMemo(() => {
 			return showSearchComponent ? 1 : 2;
@@ -66,11 +65,12 @@ const FrameBanner = memo(
 						<PushMessagesPopoverContainer />
 
 						{/* 切換單位 */}
-						<DeptSwitchButtonContainer
+						{!dense && (<DeptSwitchButtonContainer
 							// size="small"
 							variant="standard"
 							dense
-						/>
+						/>)}
+
 
 						{/* 帳號 */}
 						<AvatarButtonContainer
@@ -89,6 +89,7 @@ FrameBanner.displayName = "FrameBanner";
 FrameBanner.propTypes = {
 	title: PropTypes.string,
 	alt: PropTypes.string,
+	dense: PropTypes.bool,
 	SearchComponent: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.elementType,

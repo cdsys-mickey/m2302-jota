@@ -8,6 +8,7 @@ import { useCallback } from "react";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useEffect } from "react";
 import DeptOptions from "@/modules/DeptOptions.mjs";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const DeptSwitchButtonContainer = (props) => {
 	const { ...rest } = props;
@@ -95,9 +96,14 @@ const DeptSwitchButtonContainer = (props) => {
 			onClick={handleToggle}
 			onItemClick={switchDept}
 			clickOnSelect
+			hoverToOpen
+			IconComponent={ExpandMoreIcon}
 			slotProps={{
 				typography: {
 					variant: "h6"
+				},
+				paper: {
+					elevation: 8
 				}
 			}}
 			{...state}

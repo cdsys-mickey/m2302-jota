@@ -41,6 +41,8 @@ const SplitButton = memo(forwardRef((props, ref) => {
 		onOpen,
 		onClose,
 		onToggle,
+		hoverToOpen,
+		IconComponent = ArrowDropDownIcon,
 		...rest
 	} = props;
 
@@ -125,6 +127,9 @@ const SplitButton = memo(forwardRef((props, ref) => {
 				size={size}
 				ref={anchorRef}
 				aria-label="doc type"
+				onMouseEnter={hoverToOpen ? handleOpen : undefined}
+				// onMouseLeave={hoverToOpen ? handleClose : undefined}
+
 				{...rest}>
 				<Button
 					size={size}
@@ -166,7 +171,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 						// }),
 					}
 					]}>
-					<ArrowDropDownIcon fontSize="small" />
+					<IconComponent fontSize="small" />
 				</Button>
 
 			</ButtonGroup>
@@ -175,6 +180,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 					zIndex: 1,
 					minWidth: anchorRef.current?.clientWidth || "5rem",
 				}}
+
 				open={_open}
 				anchorEl={anchorRef.current}
 				role={undefined}
@@ -189,7 +195,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 									? "center top"
 									: "center bottom",
 						}}>
-						<Paper>
+						<Paper {...slotProps?.paper} onMouseLeave={hoverToOpen ? handleClose : undefined}>
 
 							<>
 								{loading && <LoadingTypography />}
@@ -237,6 +243,7 @@ SplitButton.displayName = "SplitButton";
 SplitButton.propTypes = {
 	label: PropTypes.string,
 	onClick: PropTypes.func,
+	onItemClick: PropTypes.func,
 	onOpen: PropTypes.func,
 	onClose: PropTypes.func,
 	onToggle: PropTypes.func,
@@ -255,6 +262,8 @@ SplitButton.propTypes = {
 	size: PropTypes.string,
 	defaultSelected: PropTypes.object,
 	options: PropTypes.array,
-	slotProps: PropTypes.object
+	slotProps: PropTypes.object,
+	hoverToOpen: PropTypes.bool,
+	IconComponent: PropTypes.elementType
 }
 export default SplitButton;
