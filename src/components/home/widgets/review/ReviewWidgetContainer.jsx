@@ -6,9 +6,12 @@ import { HomeContext } from "../../../../contexts/home/HomeContext";
 import { useInit } from "../../../../shared-hooks/useInit";
 import HomeWidget from "../HomeWidget";
 import { ReviewWidgetListItemContainer } from "./ReviewWidgetListItemContainer";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 
 export const ReviewWidgetContainer = () => {
 	const home = useContext(HomeContext);
+	const { height } = useWindowSize();
+
 	const { getReview, reviewLoading, reviewData, reviewError } = home;
 
 	useInit(() => {
@@ -20,6 +23,7 @@ export const ReviewWidgetContainer = () => {
 			loading={reviewLoading}
 			data={reviewData}
 			error={reviewError}
+			height={height - 172}
 			heading={
 				<ModuleHeading
 					icon={InboxIcon}

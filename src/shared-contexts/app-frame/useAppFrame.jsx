@@ -1,13 +1,11 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { toastEx } from "@/helpers/toast-ex";
 import useAppRedirect from "@/hooks/useAppRedirect";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useMatch } from "react-router-dom";
-import { ResponsiveContext } from "../responsive/ResponsiveContext";
-import { useLocation } from "react-router-dom";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import queryString from "query-string";
-import Auth from "@/modules/md-auth";
-import { toastEx } from "@/helpers/toast-ex";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useLocation, useMatch } from "react-router-dom";
+import { ResponsiveContext } from "../responsive/ResponsiveContext";
 
 export const useAppFrame = (opts = {}) => {
 	const { drawerWidth = 300 } = opts;

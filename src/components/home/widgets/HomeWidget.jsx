@@ -25,6 +25,7 @@ const useStyles = () => ({
 
 const WidgetBox = (props) => {
 	const {
+		height = 500,
 		children,
 		heading,
 		styles,
@@ -91,14 +92,17 @@ const HomeWidget = memo((props) => {
 			<WidgetBox
 				heading={heading}
 				styles={styles}
-				scrollable={scrollable}>
+				scrollerStyles={scrollable.scroller}
+				bodyStyles={scrollable.body}
+			>
 				<LoadingTypography>讀取中...</LoadingTypography>
 			</WidgetBox>
 		);
 	}
 
 	return (
-		<WidgetBox heading={heading} styles={styles} scrollable={scrollable}>
+		<WidgetBox heading={heading} styles={styles} scrollerStyles={scrollable.scroller}
+			bodyStyles={scrollable.body}>
 			{isDataEmpty && <NoDataBox />}
 			{hasData &&
 				data.map((item, index) => (

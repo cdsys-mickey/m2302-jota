@@ -21,8 +21,8 @@ export const BasePageContainer = (props) => {
 	return (
 		<BasePage
 			// height={height}
-			handleDrawerClose={handleDrawerClose}
-			handleDrawerOpen={handleDrawerOpen}
+			onDrawerClose={handleDrawerClose}
+			onDrawerOpen={handleDrawerOpen}
 			drawerOpen={drawerOpen}
 			drawerWidth={drawerWidth}
 			// menuFloating={menuFloating}

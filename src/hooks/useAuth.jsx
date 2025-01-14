@@ -401,16 +401,25 @@ export const useAuth = () => {
 		console.error("onChangeSubmitError", err);
 	}, []);
 
+	const renewLogKey = useCallback((newLogKey) => {
+		sessionStorage.setItem(LOG_KEY, newLogKey);
+	}, []);
+
 	useEffect(() => {
 		console.log("state.validating", state.validating);
 		if (state.validating === null) {
 			const queryParams = new URLSearchParams(location.search);
 			const logKeyInUrl = queryParams.get(LOG_KEY);
 			const logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
+			const logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+
 			if (logKeyInUrl) {
-				sessionStorage.setItem(LOG_KEY, logKeyInUrl);
+				renewLogKey(logKeyInUrl);
+			} else if (logKeyInSession) {
+				console.log("use existing sessionStorage");
 			} else if (logKeyInCookie) {
-				sessionStorage.setItem(LOG_KEY, logKeyInCookie);
+				console.log("recover from COOKIE");
+				renewLogKey(logKeyInCookie);
 			}
 
 			recoverIdentity({
@@ -418,7 +427,7 @@ export const useAuth = () => {
 				queryParams
 			});
 		}
-	}, [state.validating, recoverIdentity, location.search]);
+	}, [state.validating, recoverIdentity, location.search, renewLogKey]);
 
 	// useEffect(() => {
 	// 	const params = new URLSearchParams(location.search);
@@ -460,7 +469,8 @@ export const useAuth = () => {
 		onChangeSubmit,
 		onChangeSubmitError,
 		changePrompting,
-		switchDept
+		switchDept,
+		renewLogKey
 		// ...taskListLoader,
 	};
 };

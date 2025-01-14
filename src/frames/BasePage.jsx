@@ -9,8 +9,8 @@ import { grey } from "@mui/material/colors";
 const BasePage = (props) => {
 	const {
 		drawerOpen,
-		handleDrawerClose,
-		handleDrawerOpen,
+		onDrawerClose,
+		onDrawerOpen,
 		// height,
 		drawerWidth = 260,
 		// menuFloating,
@@ -30,8 +30,8 @@ const BasePage = (props) => {
 				anchor="left"
 				width={drawerWidth}
 				open={drawerOpen}
-				onClose={handleDrawerClose}
-				onOpen={handleDrawerOpen}>
+				onClose={onDrawerClose}
+				onOpen={onDrawerOpen}>
 				<SideMenuProvider>
 					{SearchBarComponent && <SearchBarComponent />}
 					{MenuComponent && <MenuComponent />}
@@ -47,8 +47,8 @@ const BasePage = (props) => {
 
 BasePage.propTypes = {
 	drawerOpen: PropTypes.bool,
-	handleDrawerClose: PropTypes.func,
-	handleDrawerOpen: PropTypes.func,
+	onDrawerClose: PropTypes.func,
+	onDrawerOpen: PropTypes.func,
 	height: PropTypes.number,
 	drawerWidth: PropTypes.number,
 	SearchBarComponent: PropTypes.elementType,

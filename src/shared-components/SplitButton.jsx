@@ -15,6 +15,7 @@ import {
 import PropTypes from "prop-types";
 import { forwardRef, memo, useCallback, useMemo, useRef, useState } from "react";
 import LoadingTypography from "./LoadingTypography";
+import Colors from "@/modules/md-colors";
 
 
 const SplitButton = memo(forwardRef((props, ref) => {
@@ -128,6 +129,22 @@ const SplitButton = memo(forwardRef((props, ref) => {
 				ref={anchorRef}
 				aria-label="doc type"
 				onMouseEnter={hoverToOpen ? handleOpen : undefined}
+				sx={{
+					"&:hover": {
+						backgroundColor: Colors.HOVER
+					},
+					...(dense && {
+						"& .main.MuiButtonGroup-grouped": {
+							paddingLeft: 1,
+							paddingRight: 1,
+						},
+						"& .drop-down.MuiButtonGroup-grouped": {
+							paddingLeft: 0,
+							paddingRight: 0,
+							minWidth: "20px",
+						}
+					}),
+				}}
 				// onMouseLeave={hoverToOpen ? handleClose : undefined}
 
 				{...rest}>
@@ -135,12 +152,9 @@ const SplitButton = memo(forwardRef((props, ref) => {
 					size={size}
 					onClick={handleClick}
 					startIcon={getIcon ? getIcon(state.selected) : null}
+					className="main"
 					sx={[
 						{
-							...(dense && {
-								paddingLeft: 1,
-								paddingRight: 1,
-							}),
 							...(noGutter && {
 								"&.MuiButtonGroup-grouped:not(:last-of-type)": {
 									borderRight: 0,
@@ -153,15 +167,9 @@ const SplitButton = memo(forwardRef((props, ref) => {
 				<Button
 					size={size}
 					onClick={handleToggle}
+					className="drop-down"
 					sx={[{
-						...(dense && {
-							"&.MuiButtonGroup-grouped": {
-								paddingLeft: 0,
-								paddingRight: 0,
-								minWidth: "20px",
 
-							}
-						}),
 						// ...(size === "small" && {
 						// 	"&.MuiButtonGroup-grouped": {
 						// 		minWidth: "20px",

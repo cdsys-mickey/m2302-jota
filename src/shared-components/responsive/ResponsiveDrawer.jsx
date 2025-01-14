@@ -4,7 +4,7 @@ import { memo } from "react";
 import { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 
 /**
  * mobile 狀態 variant 會自動改成 temporary
@@ -29,7 +29,6 @@ const ResponsiveDrawer = memo(
 			<SwipeableDrawer
 				ref={ref}
 				open={open}
-				// open={autoOpen}
 				variant={_variant}
 				sx={{
 					width: width,

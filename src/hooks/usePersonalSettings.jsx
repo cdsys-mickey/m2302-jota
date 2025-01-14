@@ -8,7 +8,7 @@ import Auth from "../modules/md-auth";
 import { useAction } from "../shared-hooks/useAction";
 
 export const usePersonalSettings = () => {
-	const { token, operator } = useContext(AuthContext);
+	const { token, operator, renewLogKey } = useContext(AuthContext);
 	const [selectedTab, setSelectedTab] = useState(Settings.Tabs.CHANGE_PWORD);
 	const {
 		httpGetAsync,
@@ -51,11 +51,12 @@ export const usePersonalSettings = () => {
 						},
 					});
 					if (status.success) {
-						Cookies.set(
-							Auth.COOKIE_LOGKEY,
-							payload.LogKey || "",
-							Auth.COOKIE_OPTS
-						);
+						renewLogKey(payload.LogKey);
+						// Cookies.set(
+						// 	Auth.COOKIE_LOGKEY,
+						// 	payload.LogKey || "",
+						// 	Auth.COOKIE_OPTS
+						// );
 
 						setVerified(true);
 						verifyAction.finish();
@@ -77,7 +78,7 @@ export const usePersonalSettings = () => {
 					});
 				}
 			},
-		[httpPostAsync, operator, verifyAction]
+		[httpPostAsync, operator, renewLogKey, verifyAction]
 	);
 
 	const onVerifySubmitError = useCallback((err) => {
@@ -108,11 +109,12 @@ export const usePersonalSettings = () => {
 					if (status.success) {
 						toastEx.success("密碼已更新");
 						finsihChanging();
-						Cookies.set(
-							Auth.COOKIE_LOGKEY,
-							payload.LogKey || "",
-							Auth.COOKIE_OPTS
-						);
+						// Cookies.set(
+						// 	Auth.COOKIE_LOGKEY,
+						// 	payload.LogKey || "",
+						// 	Auth.COOKIE_OPTS
+						// );
+						renewLogKey(payload.LogKey)
 						reset({
 							newPword: "",
 							newPword2: "",

@@ -35,18 +35,17 @@ const Home = memo((props) => {
 				<FrameBannerContainer title="首頁" />
 				<Box pt={3}>
 					<Grid container spacing={3}>
-						<Grid item xl={3} lg={5} md={6} sm={12} xs={12}>
-							{/* <Grid item xs={12}> */}
+						{/* <Grid item xl={3} lg={5} md={6} sm={12} xs={12}>
 							<BulletinWidgetContainer
-								// height={widgetHeight}
 								heading={
 									<ModuleHeading
 										icon={CampaignIcon}
 										text="公告"
 										cssColor={Colors.HEADING}
 									/>
-								}></BulletinWidgetContainer>
-						</Grid>
+								}
+								/>
+						</Grid> */}
 						{/* 待覆核 */}
 						<Grid item xl={3} lg={4} md={6} sm={12} xs={12}>
 							<ReviewWidgetContainer />
