@@ -53,8 +53,8 @@ const transformForSearchSubmitting = (payload) => {
 
 const transformForPrinting = (payload) => {
 	const {
-		supplier,
-		supplier2,
+		lvSupplier,
+		lvSupplier2,
 		sprod,
 		eprod,
 		orderBy,
@@ -67,8 +67,8 @@ const transformForPrinting = (payload) => {
 		{
 			Action: outputType?.id,
 			JobName: "B06",
-			FactID1: supplier?.FactID || "",
-			FactID2: supplier2?.FactID || "",
+			FactID1: lvSupplier?.FactID || "",
+			FactID2: lvSupplier2?.FactID || "",
 			SProdID1: sprod?.ProdID || "",
 			SProdID2: eprod?.ProdID || "",
 			OrderBy: orderBy?.id || "",

@@ -28,6 +28,7 @@ import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
 import { orange } from "@mui/material/colors";
 import Colors from "@/modules/md-colors";
 import { toastEx } from "@/helpers/toast-ex";
+import OptionPickerPopper from "./popper/OptionPickerPopper";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -899,6 +900,7 @@ const OptionPicker = memo(
 					// open={popperOpen}
 					// onOpen={handleOpen}
 					// onClose={handleClose}
+					PopperComponent={OptionPickerPopper}
 					open={_open}
 					onOpen={_onOpen}
 					onClose={_onClose}

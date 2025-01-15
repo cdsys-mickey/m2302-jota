@@ -98,14 +98,16 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const handleClose = useCallback(
 		(e) => {
-			if (!popperOpen) {
-				return;
+			// if (!popperOpen) {
+			// 	return;
+			// }
+			console.log(`useWebApiOptions.handleClose`);
+
+			if (!disableClose) {
+				setPopperOpen(false);
 			}
 			if (onClose) {
 				onClose(e);
-			}
-			if (!disableClose) {
-				setPopperOpen(false);
 			}
 			// 若有讀取失敗, 則清除讀取狀態
 			setPickerState((prev) => ({
@@ -115,7 +117,7 @@ export const useWebApiOptions = (opts = {}) => {
 				}),
 			}));
 		},
-		[disableClose, onClose, popperOpen]
+		[disableClose, onClose]
 	);
 
 	const shouldLoadOptions = useMemo(() => {

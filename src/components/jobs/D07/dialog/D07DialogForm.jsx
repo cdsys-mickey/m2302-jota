@@ -74,7 +74,7 @@ const D07DialogForm = memo((props) => {
 									required: "編輯人員為必填",
 								}}
 								virtualize
-								disableClearable
+								// disableClearable
 								disableOpenOnInput
 								slotProps={{
 									paper: {

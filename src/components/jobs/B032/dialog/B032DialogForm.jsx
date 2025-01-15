@@ -53,7 +53,7 @@ const B032DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+									// disableClearable
 									withPrice
 									disabled={!creating}
 									onChange={handleProdChange}
@@ -74,7 +74,7 @@ const B032DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+									// disableClearable
 									disabled={!creating}
 								/>
 							</Grid>

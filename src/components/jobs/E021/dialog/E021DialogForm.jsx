@@ -136,7 +136,7 @@ const E021DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+									// disableClearable
 									onChanged={handleCustomerChange}
 									required={customerRequired}
 									rules={{
@@ -214,7 +214,7 @@ const E021DialogForm = memo((props) => {
 									}}
 									virtualize
 									disableOpenOnInput
-									disableClearable
+								// disableClearable
 								// disabled={!creating}
 								/>
 							</Grid>
@@ -233,7 +233,7 @@ const E021DialogForm = memo((props) => {
 									name="transType"
 									label="貨運方式"
 									disableOpenOnInput
-									disableClearable
+									// disableClearable
 									slotProps={{
 										paper: {
 											sx: {
@@ -267,7 +267,7 @@ const E021DialogForm = memo((props) => {
 									name="paymentType"
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+								// disableClearable
 								/>
 							</Grid>
 

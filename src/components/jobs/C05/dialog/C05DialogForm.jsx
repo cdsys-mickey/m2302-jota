@@ -88,7 +88,7 @@ const C05DialogForm = memo((props) => {
 									required: "倉管人員為必填",
 								}}
 								virtualize
-								disableClearable
+								// disableClearable
 								disableOpenOnInput
 							/>
 						</Grid>
@@ -120,7 +120,7 @@ const C05DialogForm = memo((props) => {
 								optionLabelSize="md"
 								onChanged={handleSupplierChanged}
 								disableOpenOnInput
-								disableClearable
+								// disableClearable
 								slotProps={{
 									paper: {
 										sx: {

@@ -95,7 +95,7 @@ const C04DialogForm = memo((props) => {
 									required: "倉管人員為必填",
 								}}
 								virtualize
-								disableClearable
+								// disableClearable
 								disableOpenOnInput
 								clearOnEscape
 							/>
@@ -115,7 +115,7 @@ const C04DialogForm = memo((props) => {
 								withAddr
 								optionLabelSize="md"
 								onChanged={handleSupplierChanged}
-								disableClearable
+								// disableClearable
 								disableOpenOnInput
 								clearOnEscape
 								slotProps={{

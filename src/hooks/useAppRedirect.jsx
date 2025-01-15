@@ -28,8 +28,12 @@ const useAppRedirect = () => {
 		[redirectTo]
 	);
 
-	const toLogin = useCallback(() => {
-
+	const toLogin = useCallback((opts = {}) => {
+		const { clearSession = true } = opts;
+		if (clearSession) {
+			Cookies.remove(Auth.COOKIE_LOGKEY);
+			sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
+		}
 		const impersonte = Cookies.get(Auth.COOKIE_MODE) === "im";
 		redirectTo(
 			impersonte

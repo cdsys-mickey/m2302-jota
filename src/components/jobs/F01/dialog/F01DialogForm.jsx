@@ -67,7 +67,7 @@ const F01DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+								// disableClearable
 								/>
 							</Grid>
 

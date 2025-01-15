@@ -59,7 +59,7 @@ const B011DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+									// disableClearable
 									disabled={!creating}
 								// slotProps={{
 								// 	paper: {

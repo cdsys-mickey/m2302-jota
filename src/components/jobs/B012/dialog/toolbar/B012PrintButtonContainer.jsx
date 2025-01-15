@@ -54,6 +54,7 @@ const B012PrintButtonContainer = memo(
 						}}
 						onClick={disabled ? null : handleSubmit}
 						color="neutral"
+						disabled={disabled}
 						{...rest}>
 						列印
 					</ButtonWrapper>

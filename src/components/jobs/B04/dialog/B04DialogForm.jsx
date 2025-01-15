@@ -78,7 +78,7 @@ const B04DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+								// disableClearable
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={8}>
@@ -93,7 +93,7 @@ const B04DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+								// disableClearable
 								/>
 							</Grid>
 

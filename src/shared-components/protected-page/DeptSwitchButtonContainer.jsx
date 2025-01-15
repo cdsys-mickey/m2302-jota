@@ -9,14 +9,17 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useEffect } from "react";
 import DeptOptions from "@/modules/DeptOptions.mjs";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useDebounceState from "@/shared-hooks/useDebounceState";
 
 const DeptSwitchButtonContainer = (props) => {
 	const { ...rest } = props;
 	const { operator, token, switchDept } = useContext(AuthContext);
 	const { httpGetAsync } = useWebApi();
 
+	const [open, setOpen] = useState(false);
+	const [debouncedOpen, setDebouncedOpen] = useDebounceState(open, { callback: setOpen });
+
 	const [state, setState] = useState({
-		open: false,
 		loading: null,
 		options: null
 	});
@@ -30,23 +33,28 @@ const DeptSwitchButtonContainer = (props) => {
 	}, [operator])
 
 	const handleOpen = useCallback(() => {
-		setState((prev) => ({
-			...prev,
-			open: true,
-		}));
-	}, []);
+		// setState((prev) => ({
+		// 	...prev,
+		// 	open: true,
+		// }));
+		setDebouncedOpen(true, setOpen);
+		// setOpen(true);
+	}, [setDebouncedOpen]);
 
-	const handleClose = useCallback(() => {
-		setState((prev) => ({ ...prev, open: false }));
+	const handleClose = useCallback((e) => {
+		console.log("sw.handleClose");
+		// setState((prev) => ({ ...prev, open: false }));
+		setOpen(false);
 	}, []);
 
 	const handleToggle = useCallback(() => {
 		console.log("handleToggle")
-		setState((prev) => ({
-			...prev,
-			open: !prev.open,
-		}));
-	}, []);
+		// setState((prev) => ({
+		// 	...prev,
+		// 	open: !prev.open,
+		// }));
+		setDebouncedOpen(prev => !prev);
+	}, [setDebouncedOpen]);
 
 	const loadOptions = useCallback(async () => {
 		setState(prev => ({
@@ -77,10 +85,10 @@ const DeptSwitchButtonContainer = (props) => {
 	}, [httpGetAsync, token]);
 
 	useEffect(() => {
-		if (state.loading == null) {
+		if (debouncedOpen && state.loading == null) {
 			loadOptions();
 		}
-	}, [loadOptions, state.loading]);
+	}, [debouncedOpen, loadOptions, state.loading]);
 
 	return (
 		<SplitButton
@@ -90,12 +98,12 @@ const DeptSwitchButtonContainer = (props) => {
 			getOptionKey={DeptOptions.getOptionKey}
 			getOptionLabel={DeptOptions.getOptionLabel}
 			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}
+			open={debouncedOpen}
 			onOpen={handleOpen}
 			onClose={handleClose}
 			onToggle={handleToggle}
 			onClick={handleToggle}
-			onItemClick={switchDept}
-			clickOnSelect
+			onSelect={switchDept}
 			hoverToOpen
 			IconComponent={ExpandMoreIcon}
 			slotProps={{

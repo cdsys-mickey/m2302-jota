@@ -22,6 +22,7 @@ import { AppProvider } from "@/contexts/app/AppProvider";
 import AppRoute from "@/routes/AppRoute";
 import Colors from "@/modules/md-colors";
 import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";
+import { useEffect } from "react";
 // use palette from default theme
 const { palette } = createTheme();
 
@@ -120,6 +121,17 @@ const theme = createTheme({
 });
 
 function App() {
+
+	useEffect(() => {
+		const handleContextMenu = (event) => event.preventDefault();
+
+		document.addEventListener("contextmenu", handleContextMenu);
+
+		return () => {
+			document.removeEventListener("contextmenu", handleContextMenu);
+		};
+	}, []);
+
 	return (
 		<StyledEngineProvider injectFirst>
 			<ThemeProvider theme={theme}>

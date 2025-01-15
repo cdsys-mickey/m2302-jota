@@ -65,7 +65,7 @@ const D01DialogForm = memo((props) => {
 									required: "製單人員為必填",
 								}}
 								virtualize
-								disableClearable
+								// disableClearable
 								disableOpenOnInput
 							/>
 						</Grid>
@@ -98,7 +98,7 @@ const D01DialogForm = memo((props) => {
 									required: "領料線別為必填",
 								}}
 								disableOpenOnInput
-								disableClearable
+								// disableClearable
 								slotProps={{
 									paper: {
 										sx: {

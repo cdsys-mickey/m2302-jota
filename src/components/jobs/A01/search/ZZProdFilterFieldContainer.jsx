@@ -10,7 +10,7 @@ import ProdSearchPopperContainer from "./A01SearchPopperContainer";
 export const ZZProdFilterFieldContainer = (props) => {
 	const { name = "q" } = props;
 	const [value, onChange] = useState("");
-	const debouncedQs = useDebounce(value);
+
 	const a01 = useContext(A01Context);
 
 	const inputRef = useRef(null);

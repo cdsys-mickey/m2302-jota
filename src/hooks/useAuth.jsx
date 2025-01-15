@@ -231,16 +231,6 @@ export const useAuth = () => {
 				bearer: state.token,
 			});
 			toastEx.success("您已成功登出");
-			// let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
-			// if (logKeyInSession) {
-			// 	sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
-			// 	window.close();
-			// } else {
-			// 	Cookies.remove(Auth.COOKIE_LOGKEY);
-			// 	toLogin();
-			// }
-			sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
-			Cookies.remove(Auth.COOKIE_LOGKEY);
 			window.close();
 			toLogin();
 		} catch (err) {
@@ -290,9 +280,11 @@ export const useAuth = () => {
 			}
 		} catch (err) {
 			console.error("onDeptSwitchSubmit.failed", err);
-			toastEx.error(`切換單位異常`);
+			toastEx.error("切換失敗，請重新登入");
+			toLogin();
+
 		}
-	}, [deptSwitchAction, httpGetAsync, recoverIdentity, state.token, toLanding]);
+	}, [deptSwitchAction, httpGetAsync, recoverIdentity, state.token, toLanding, toLogin]);
 
 	const onDeptSwitchSubmit = useCallback(
 		(data) => {

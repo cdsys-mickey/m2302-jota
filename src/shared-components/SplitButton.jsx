@@ -1,3 +1,5 @@
+import Colors from "@/modules/md-colors";
+import useDebounceState from "@/shared-hooks/useDebounceState";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {
 	Button,
@@ -15,7 +17,7 @@ import {
 import PropTypes from "prop-types";
 import { forwardRef, memo, useCallback, useMemo, useRef, useState } from "react";
 import LoadingTypography from "./LoadingTypography";
-import Colors from "@/modules/md-colors";
+import { Box } from "@mui/system";
 
 
 const SplitButton = memo(forwardRef((props, ref) => {
@@ -24,13 +26,12 @@ const SplitButton = memo(forwardRef((props, ref) => {
 		defaultSelected,
 		openOnClick = false,
 		getLabel,
-		open,
+		open: _open,
 		getIcon,
 		options,
 		isOptionEqualToValue,
 		getOptionKey,
 		getOptionLabel,
-		clickOnSelect = false,
 		label = "請選擇",
 		noGutter = false,
 		dense = false,
@@ -38,7 +39,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 		slotProps,
 		// METHODS
 		onClick,
-		onItemClick,
+		onSelect,
 		onOpen,
 		onClose,
 		onToggle,
@@ -48,78 +49,89 @@ const SplitButton = memo(forwardRef((props, ref) => {
 	} = props;
 
 	const anchorRef = useRef(null);
-	const [state, setState] = useState({
-		open: false,
-		selected: defaultSelected,
-	});
+
+	// const [state, setState] = useState({
+	// 	// open: open,
+	// 	selected: defaultSelected,
+	// });
+	const [selected, setSelected] = useState(defaultSelected);
+	const [open, setOpen] = useState(_open == null ? false : _open);
+	const [debouncedOpen, setDebouncedOpen] = useDebounceState(open);
 
 	const handleOpen = useCallback(() => {
 		if (onOpen) {
 			onOpen();
 		}
-		setState((prev) => ({
-			...prev,
-			open: true,
-		}));
-	}, [onOpen]);
+		// setState((prev) => ({
+		// 	...prev,
+		// 	open: true,
+		// }));
+		setDebouncedOpen(true);
+	}, [onOpen, setDebouncedOpen]);
 
 	const handleToggle = useCallback(() => {
 		if (onToggle) {
 			onToggle();
 		}
-		setState((prev) => ({
-			...prev,
-			open: !prev.open,
-		}));
+		// setState((prev) => ({
+		// 	...prev,
+		// 	open: !prev.open,
+		// }));
+		setOpen(prev => !prev);
 	}, [onToggle]);
 
 	const handleClick = useCallback(
 		(e) => {
-			console.log("handleClick", state.selected);
-			if (!state.selected && openOnClick) {
+			console.log("handleClick", selected);
+			if (!selected && openOnClick) {
 				handleOpen();
 				return;
 			}
 			if (onClick) {
-				onClick(e, state.selected);
+				onClick(e, selected);
 			}
 		},
-		[handleOpen, onClick, openOnClick, state.selected]
+		[handleOpen, onClick, openOnClick, selected]
 	);
 
-	const handleClose = useCallback(() => {
-		console.log("handleClose")
+	const handleClose = useCallback((e, opts = {}) => {
+		const { debounce = false } = opts;
+		console.log("button.handleClose", opts)
 		if (onClose) {
-			onClose();
+			onClose(e);
 		}
-		setState((prev) => ({ ...prev, open: false }));
-	}, [onClose]);
+		// setState((prev) => ({ ...prev, open: false }));
+		if (debounce) {
+			setOpen(false);
+		} else {
+			setDebouncedOpen(false);
+		}
+	}, [onClose, setDebouncedOpen]);
 
 	const handleItemClick = useCallback(
 		(e, item) => {
 			e.stopPropagation();
 			console.log("handleItemClick", item);
 			handleClose();
-			if (clickOnSelect) {
-				if (onItemClick) {
-					onItemClick(item);
-				} else {
-					console.warn("onItemClick is not defined, trigger stopped");
-				}
+			setSelected(item);
+			if (onSelect) {
+				onSelect(item);
+			} else {
+				console.warn("onSelect is not defined, trigger stopped");
 			}
 		},
-		[handleClose, clickOnSelect, onItemClick]
+		[handleClose, onSelect]
 	);
 
 	const _label = useMemo(() => {
 		return getLabel
-			? getLabel(state.selected) || label
-			: state.selected
-	}, [getLabel, label, state.selected])
+			? getLabel(selected) || label
+			: selected
+	}, [getLabel, label, selected])
 
-	const _open = useMemo(() => {
-		return open != null ? open : state.open
-	}, [open, state.open])
+	const isPopperOpen = useMemo(() => {
+		return _open != null ? _open : debouncedOpen
+	}, [_open, debouncedOpen])
 
 	return (
 		<>
@@ -129,6 +141,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 				ref={anchorRef}
 				aria-label="doc type"
 				onMouseEnter={hoverToOpen ? handleOpen : undefined}
+				onMouseLeave={hoverToOpen ? (e) => handleClose(e, { debounce: true }) : undefined}
 				sx={{
 					"&:hover": {
 						backgroundColor: Colors.HOVER
@@ -151,7 +164,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 				<Button
 					size={size}
 					onClick={handleClick}
-					startIcon={getIcon ? getIcon(state.selected) : null}
+					startIcon={getIcon ? getIcon(selected) : null}
 					className="main"
 					sx={[
 						{
@@ -191,7 +204,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 					minWidth: anchorRef.current?.clientWidth || "5rem",
 				}}
 
-				open={_open}
+				open={isPopperOpen}
 				anchorEl={anchorRef.current}
 				role={undefined}
 				transition
@@ -205,10 +218,16 @@ const SplitButton = memo(forwardRef((props, ref) => {
 									? "center top"
 									: "center bottom",
 						}}>
-						<Paper {...slotProps?.paper} onMouseLeave={hoverToOpen ? handleClose : undefined}>
+						<Paper {...slotProps?.paper}
+							onMouseEnter={hoverToOpen ? handleOpen : undefined}
+							onMouseLeave={hoverToOpen ? handleClose : undefined}>
 
 							<>
-								{loading && <LoadingTypography />}
+								{loading && (
+									<Box p={1}>
+										<LoadingTypography />
+									</Box>
+								)}
 								{options && (<ClickAwayListener onClickAway={handleClose}>
 									<MenuList id="split-button-menu" autoFocusItem>
 
@@ -219,7 +238,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 												return (
 													<MenuItem
 														key={itemKey}
-														selected={isOptionEqualToValue ? isOptionEqualToValue(state.selected, item) : state.selected == item}
+														selected={isOptionEqualToValue ? isOptionEqualToValue(selected, item) : selected == item}
 														onClick={(e) =>
 															handleItemClick(
 																e,
@@ -253,7 +272,7 @@ SplitButton.displayName = "SplitButton";
 SplitButton.propTypes = {
 	label: PropTypes.string,
 	onClick: PropTypes.func,
-	onItemClick: PropTypes.func,
+	onSelect: PropTypes.func,
 	onOpen: PropTypes.func,
 	onClose: PropTypes.func,
 	onToggle: PropTypes.func,
@@ -262,7 +281,6 @@ SplitButton.propTypes = {
 	loading: PropTypes.bool,
 	open: PropTypes.bool,
 	openOnClick: PropTypes.bool,
-	clickOnSelect: PropTypes.bool,
 	getLabel: PropTypes.func,
 	getIcon: PropTypes.func,
 	getData: PropTypes.func,

@@ -66,7 +66,7 @@ const D06DialogForm = memo((props) => {
 									required: "製單人員為必填",
 								}}
 								virtualize
-								disableClearable
+								// disableClearable
 								disableOpenOnInput
 							/>
 						</Grid>
@@ -110,7 +110,7 @@ const D06DialogForm = memo((props) => {
 									required: "生產線別為必填",
 								}}
 								disableOpenOnInput
-								disableClearable
+							// disableClearable
 							// virtualize
 							// optionLabelSize="md"
 							/>

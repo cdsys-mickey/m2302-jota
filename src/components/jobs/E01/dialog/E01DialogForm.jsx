@@ -130,7 +130,7 @@ const E01DialogForm = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+									// disableClearable
 									onChanged={handleCustomerChange}
 									required={customerRequired}
 									rules={{
@@ -164,7 +164,7 @@ const E01DialogForm = memo((props) => {
 									name="paymentType"
 									disableOpenOnInput
 									selectOnFocus
-									disableClearable
+								// disableClearable
 								/>
 							</Grid>
 							<Grid item md={4}>
@@ -185,7 +185,7 @@ const E01DialogForm = memo((props) => {
 									name="employee"
 									virtualize
 									disableOpenOnInput
-									disableClearable
+								// disableClearable
 								// disabled={!creating}
 								/>
 							</Grid>

@@ -81,6 +81,11 @@ export const useSignIn = () => {
 							payload.LogKey || "",
 							Auth.COOKIE_OPTS
 						);
+						// 2.儲存 session
+						sessionStorage.setItem(
+							Auth.COOKIE_LOGKEY,
+							payload.LogKey
+						)
 						if (!impersonate) {
 							Cookies.remove(Auth.COOKIE_MODE);
 						} else {

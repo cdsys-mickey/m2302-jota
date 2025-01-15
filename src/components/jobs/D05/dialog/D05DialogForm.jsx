@@ -75,7 +75,7 @@ const D05DialogForm = memo((props) => {
 									required: "倉管人員為必填",
 								}}
 								virtualize
-								disableClearable
+								// disableClearable
 								disableOpenOnInput
 							/>
 						</Grid>

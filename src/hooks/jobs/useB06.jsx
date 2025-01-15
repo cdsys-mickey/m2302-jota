@@ -1,14 +1,11 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import B06 from "@/modules/md-b06";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useCallback } from "react";
-import { useAppModule } from "./useAppModule";
-import { useMemo } from "react";
-import useJotaReports from "../useJotaReports";
-import { useContext } from "react";
 import { B05Context } from "@/contexts/B05/B05Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import B06 from "@/modules/md-b06";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useCallback, useContext, useMemo } from "react";
+import useJotaReports from "../useJotaReports";
+import { useAppModule } from "./useAppModule";
 
 export const useB06 = () => {
 	const auth = useContext(AuthContext);

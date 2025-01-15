@@ -20,7 +20,7 @@ const B011PrintDialogForm = memo((props) => {
 							virtualize
 							disableOpenOnInput
 							selectOnFocus
-							disableClearable
+							// disableClearable
 							required
 							rules={{
 								required: "報價人員為必填"
