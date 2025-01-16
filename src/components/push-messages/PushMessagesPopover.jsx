@@ -1,18 +1,14 @@
-import AllInboxIcon from "@mui/icons-material/AllInbox";
-import { memo } from "react";
-import PropTypes from "prop-types";
-import { PushMessagesContainer } from "./PushMessagesContainer";
-import { Box, Popover, Typography } from "@mui/material";
-import FlexBox from "../../shared-components/FlexBox";
-import ButtonEx from "../../shared-components/button/ButtonEx";
-import { forwardRef } from "react";
-import LoadingTypography from "../../shared-components/LoadingTypography";
-import { useScrollable } from "../../shared-hooks/useScrollable";
-import { TaskListViewContainer } from "../messages/list/TaskListViewContainer";
 import { FrameMenuGroupHeader } from "@/components/layout/FrameMenuGroupHeader";
+import FlexBox from "@/shared-components/FlexBox";
+import LoadingTypography from "@/shared-components/LoadingTypography";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import AllInboxIcon from "@mui/icons-material/AllInbox";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
-import { ButtonWrapper } from "../../shared-components/button/ButtonWrapper";
+import { Box, Popover } from "@mui/material";
 import { blue } from "@mui/material/colors";
+import { forwardRef, memo } from "react";
+import { TaskListViewContainer } from "@/components/tasks/TaskListViewContainer";
 
 const PushMessagesPopover = memo(
 	forwardRef((props, ref) => {

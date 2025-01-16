@@ -3,10 +3,10 @@ import InfiniteListView from "@/shared-components/listview/infinite-listview/Inf
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
-import { AuthContext } from "@/contexts/auth/AuthContext";
-import { TaskListRowContainer } from "./task/TaskListRowContainer";
-import { PushMessagesContext } from "../../../contexts/PushMessagesContext";
-import { InfiniteLoaderProvider } from "../../../contexts/infinite-loader/InfiniteLoaderProvider";
+import { PushMessagesContext } from "@/contexts/PushMessagesContext";
+import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
+import { TaskListRowContainer } from "./TaskListRowContainer";
+
 
 export const TaskListViewContainer = () => {
 	// const auth = useContext(AuthContext);

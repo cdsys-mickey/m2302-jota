@@ -43,7 +43,7 @@ export const D02SearchFieldContainer = (props) => {
 					// rightSquare
 					// square
 					borderRadius="8px"
-					width="30ch"
+					width="100%"
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}

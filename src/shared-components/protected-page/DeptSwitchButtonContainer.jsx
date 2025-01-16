@@ -37,9 +37,9 @@ const DeptSwitchButtonContainer = (props) => {
 		// 	...prev,
 		// 	open: true,
 		// }));
-		setDebouncedOpen(true, setOpen);
-		// setOpen(true);
-	}, [setDebouncedOpen]);
+		// setDebouncedOpen(true, setOpen);
+		setOpen(true);
+	}, []);
 
 	const handleClose = useCallback((e) => {
 		console.log("sw.handleClose");

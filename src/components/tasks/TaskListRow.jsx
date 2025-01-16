@@ -2,16 +2,10 @@ import HoverableListItem from "@/shared-components/HoverableListItem";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 import { Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
-import ChipEx from "../../../../shared-components/ChipEx";
-import ButtonEx from "../../../../shared-components/button/ButtonEx";
-import MsgIDColumn from "../../columns/MsgIDColumn";
-import MsgJobColumn from "../../columns/MsgJobColumn";
-import MsgNameColumn from "../../columns/MsgNameColumn";
-import MsgNewColumn from "../../columns/MsgNewColumn";
-import MsgTimeColumn from "../../columns/MsgTimeColumn";
-import TaskMessageColumn from "../../columns/TaskMessageColumn";
-import { ButtonWrapper } from "../../../../shared-components/button/ButtonWrapper";
+import { memo } from "react";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import TaskJobColumn from "./columns/TaskJobColumn";
+import TaskMessageColumn from "./columns/TaskMessageColumn";
 
 const UnreadTypography = (props) => {
 	const { children, unread, ...rest } = props;
@@ -29,6 +23,7 @@ const UnreadTypography = (props) => {
 		</Typography>
 	);
 };
+
 UnreadTypography.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	unread: PropTypes.bool,
@@ -50,13 +45,13 @@ const TaskListRow = memo((props) => {
 						},
 					]}>
 					<IndexColumn title={index}></IndexColumn>
-					<MsgJobColumn>
+					<TaskJobColumn>
 						{value?.JobID && (
 							<ButtonWrapper onClick={handleGotoJob}>
 								{value?.JobID}
 							</ButtonWrapper>
 						)}
-					</MsgJobColumn>
+					</TaskJobColumn>
 					<TaskMessageColumn loading={loading}>
 						<Typography variant="body2">
 							{value?.MsgBody}

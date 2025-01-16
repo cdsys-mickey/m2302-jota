@@ -79,14 +79,49 @@ export const useAppFrame = (opts = {}) => {
 		}
 	}, [auth.operator?.CurDeptID, auth.token, httpPostAsync]);
 
+	const handleToggleDrawerOpen = (e) => {
+		e?.stopPropagation();
+		setDrawerState((prev) => ({
+			...prev,
+			drawerOpen: !prev.drawerOpen,
+		}));
+	};
+
+	const handleDrawerOpen = (open = true) => {
+		setDrawerState((prev) => ({
+			...prev,
+			drawerOpen: open,
+		}));
+	};
+	const handleDrawerClose = useCallback(() => {
+		handleDrawerOpen(false);
+	}, []);
+
+	const drawerFloating = useMemo(() => {
+		return mobile && drawerState.drawerOpen;
+	}, [drawerState.drawerOpen, mobile])
+
+	const handleSelect = useCallback(
+		(module, params) => {
+			setMenuState((prev) => ({
+				...prev,
+				menuItemSelected: module,
+			}));
+			console.log(`handleSelect module ${module?.JobID || null} selected`);
+			if (module?.WebName) {
+				toModule(module?.WebName, params);
+				// 
+				if (drawerFloating) {
+					handleDrawerClose();
+				}
+			}
+		},
+		[drawerFloating, handleDrawerClose, toModule]
+	);
+
 	const handleMenuItemClick = useCallback(
 		async (e, module) => {
-			// setMenuState((prev) => ({
-			// 	...prev,
-			// 	menuItemSelected: module,
-			// }));
-			// console.log(`module ${module.JobID} selected`);
-			// toModule(module.WebName);
+			console.log("handleMenuItemClick", module);
 
 			if (e.ctrlKey || e.shiftKey) {
 				console.log("module", module);
@@ -116,30 +151,19 @@ export const useAppFrame = (opts = {}) => {
 					toastEx.error("開新頁籤失敗", err);
 				}
 			} else {
-				setMenuState((prev) => ({
-					...prev,
-					menuItemSelected: module,
-				}));
-				console.log(`module ${module.JobID} selected`);
-				toModule(module.WebName);
+				handleSelect(module);
+				// setMenuState((prev) => ({
+				// 	...prev,
+				// 	menuItemSelected: module,
+				// }));
+				// console.log(`module ${module.JobID} selected`);
+				// toModule(module.WebName);
 			}
 		},
-		[spawnNewSession, toModule]
+		[handleSelect, spawnNewSession]
 	);
 
-	const handleSelect = useCallback(
-		(module, params) => {
-			setMenuState((prev) => ({
-				...prev,
-				menuItemSelected: module,
-			}));
-			console.log(`module ${module?.JobID || null} selected`);
-			if (module?.WebName) {
-				toModule(module?.WebName, params);
-			}
-		},
-		[toModule]
-	);
+
 
 	const selectJobById = useCallback(
 		(moduleId, params) => {
@@ -194,23 +218,7 @@ export const useAppFrame = (opts = {}) => {
 		return mobile || !drawerState.drawerOpen;
 	}, [drawerState.drawerOpen, mobile]);
 
-	const handleToggleDrawerOpen = (e) => {
-		e?.stopPropagation();
-		setDrawerState((prev) => ({
-			...prev,
-			drawerOpen: !prev.drawerOpen,
-		}));
-	};
 
-	const handleDrawerOpen = (open = true) => {
-		setDrawerState((prev) => ({
-			...prev,
-			drawerOpen: open,
-		}));
-	};
-	const handleDrawerClose = () => {
-		handleDrawerOpen(false);
-	};
 
 	useEffect(() => {
 		console.log(`mobile: ${mobile}`);
@@ -259,6 +267,8 @@ export const useAppFrame = (opts = {}) => {
 		[auth.authorities, getDocumentTitle]
 	);
 
+
+
 	useEffect(() => {
 		if (auth.authorities) {
 			recoverMenuItemSelected(menuItemId);
@@ -274,6 +284,7 @@ export const useAppFrame = (opts = {}) => {
 	return {
 		// DRAWER
 		...drawerState,
+		drawerFloating,
 		handleToggleDrawerOpen,
 		handleDrawerOpen,
 		handleDrawerClose,

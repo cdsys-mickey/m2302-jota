@@ -233,11 +233,11 @@ const OptionPicker = memo(
 
 		const handleClose = useCallback(
 			(e) => {
-				// console.log("OptionPicker.onClose", e);
+				console.log("OptionPicker.onClose", e);
 				// console.log("open", popperOpen);
-				if (!popperOpen) {
-					return;
-				}
+				// if (!popperOpen) {
+				// 	return;
+				// }
 				if (onClose) {
 					onClose(e);
 				}
@@ -245,7 +245,7 @@ const OptionPicker = memo(
 					setPopperOpen(false);
 				}
 			},
-			[disableClose, onClose, popperOpen]
+			[disableClose, onClose]
 		);
 
 		const _open = useMemo(() => {
@@ -560,6 +560,11 @@ const OptionPicker = memo(
 							...(required && !error && {
 								"& .MuiInputLabel-root:not(.Mui-focused)": {
 									color: Colors.REQUIRED,
+								},
+								"& .MuiOutlinedInput-root": {
+									'& fieldset': {
+										borderColor: Colors.REQUIRED,
+									},
 								}
 							})
 						}]}

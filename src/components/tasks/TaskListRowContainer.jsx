@@ -1,11 +1,8 @@
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import TaskListRow from "./TaskListRow";
-import { MessagingContext } from "../../../../contexts/messaging/MessagingContext";
-import { useCallback } from "react";
-import { AppFrameContext } from "../../../../shared-contexts/app-frame/AppFrameContext";
-import { AuthContext } from "../../../../contexts/auth/AuthContext";
-import { PushMessagesContext } from "../../../../contexts/PushMessagesContext";
+import { MessagingContext } from "@/contexts/messaging/MessagingContext";
+import { PushMessagesContext } from "@/contexts/PushMessagesContext";
 
 export const TaskListRowContainer = (props) => {
 	// const auth = useContext(AuthContext);

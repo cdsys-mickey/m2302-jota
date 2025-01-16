@@ -1,21 +1,26 @@
 import { Grid, Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
+import FlexGrid from "../../../shared-components/FlexGrid";
 
-const F03OrderNameColumn = (props) => {
+const TaskJobColumn = (props) => {
 	const { loading, children, ...rest } = props;
 	const isLoading = loading && !children;
 	return (
-		<Grid item pr={1} xs={18} lg={18} {...rest}>
+		<FlexGrid
+			item
+			pr={1}
+			xs={2}
+			justifyContent="center"
+			{...rest}>
 			{isLoading ? <Skeleton /> : children || ""}
-		</Grid>
+		</FlexGrid>
 	);
 };
 
-F03OrderNameColumn.propTypes = {
+TaskJobColumn.propTypes = {
 	loading: PropTypes.bool,
 	children: PropTypes.oneOfType([PropTypes.node]),
 };
 
-F03OrderNameColumn.displayName = "F03OrderNameColumn";
-export default F03OrderNameColumn;
-
+TaskJobColumn.displayName = "TaskJobColumn";
+export default TaskJobColumn;

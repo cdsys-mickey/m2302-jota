@@ -8,6 +8,8 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
+import Events from "@/shared-modules/sd-events";
+import { useState } from "react";
 
 const MSG_REQUIRED = "必須輸入日期"
 
@@ -49,7 +51,7 @@ const MaskedInput = styled("input")(({ theme }) => ({
 	},
 }));
 
-const Placeholder = styled("div")(({ theme, visible }) => ({
+const Placeholder = styled("div")(({ theme, visible, placeholderText = "____/__/__" }) => ({
 	visibility: visible ? "visible" : "hidden",
 	position: "absolute",
 	top: "0px",
@@ -57,10 +59,10 @@ const Placeholder = styled("div")(({ theme, visible }) => ({
 	fontFamily: FONT_FAMILY,
 	fontSize: FONT_SIZE,
 	color: "#aaa",
-	pointerEvents: "none", // 不影響輸入
+	pointerEvents: "none",
 	zIndex: 0,
 	"&::before": {
-		content: '"____/__/__"',
+		content: `"${placeholderText}"`, // 讓 placeholderText 成為 CSS 的 content
 	},
 }));
 
@@ -81,6 +83,8 @@ const DateInputComponent = memo((props) => {
 	const inputRef = useRef(null);
 
 	const firstRender = useFirstRender();
+
+
 	const {
 		// pattern = "\\d{4}-\\d{2}-\\d{2}",
 		// Context Methods
@@ -96,8 +100,11 @@ const DateInputComponent = memo((props) => {
 		required,
 		requiredMessage = MSG_REQUIRED,
 		disablePlaceholder = false,
+		placeholder = "____/__/__"
 		// ...rest
 	} = columnData;
+
+	const [placeholderText, setPlaceholderText] = useState(placeholder);
 
 	const asyncRef = useRef({
 		rowData,
@@ -108,8 +115,9 @@ const DateInputComponent = memo((props) => {
 		changedAt: 0,
 		escPressed: false,
 		tabPressed: false,
-		invalid: false
+		invalid: false,
 	})
+
 	asyncRef.current = {
 		rowData,
 		setRowData,
@@ -153,12 +161,15 @@ const DateInputComponent = memo((props) => {
 		// console.log("handleChange", e.target.value);
 		asyncRef.current.changedAt = Date.now();
 		// console.log("changedAt", asyncRef.current.changedAt);
+		asyncRef.current.errorRefocus = false;
 
 		if (continuousUpdates) {
 			setRowData(e.target.value);
 			console.log("rowData updated", e.target.value)
 		}
 	}, [continuousUpdates, setRowData]);
+
+
 
 	const handleInput = useCallback(() => {
 		if (inputRef.current) {
@@ -167,8 +178,11 @@ const DateInputComponent = memo((props) => {
 
 			// 更新輸入框的值
 			inputRef.current.value = maskedValue;
+			const result = "\u00a0".repeat(maskedValue.length) + placeholder.slice(maskedValue.length);
+			console.log(`"${result}"`);
+			setPlaceholderText(result)
 		}
-	}, [applyMask]);
+	}, [applyMask, placeholder]);
 
 	useLayoutEffect(() => {
 		if (focus) {
@@ -196,7 +210,7 @@ const DateInputComponent = memo((props) => {
 
 	const handleKeyDown = useCallback(
 		(e) => {
-			// console.log("handleKeyDown", Events.forKey(e));
+			console.log("handleKeyDown", Events.forKey(e));
 			switch (e.key) {
 				case "Escape":
 					asyncRef.current.escPressed = true;
@@ -244,40 +258,40 @@ const DateInputComponent = memo((props) => {
 			// DEL 時同步到 inputRef
 			console.log("同步清空 ref");
 			// inputRef.value = EMPTY;
-			inputRef.value = "";
+			inputRef.current.value = "";
 			asyncRef.current.changedAt = Date.now();
 			console.log("changedAt", asyncRef.current.changedAt)
 		} else if (rowData && !inputRef.value) {
 			// 選擇時同步到 ref
 			// const newDateValue = Forms.reformatDateAsDash(rowData, DateTimes.DATEFNS_DATE_DASH);
 			console.log(`sync ref to ${rowData}`);
-			inputRef.value = rowData;
+			inputRef.current.value = rowData;
 			asyncRef.current.changedAt = Date.now();
 			console.log("changedAt", asyncRef.current.changedAt)
 		}
 	}, [rowData]);
 
-	const refocusOld = useCallback((opts = {}) => {
-		const { select = true, touch = false } = opts;
-		console.log("refocusOld", {
-			select,
-			touch
-		});
+	// const refocusOld = useCallback((opts = {}) => {
+	// 	const { select = true, touch = false } = opts;
+	// 	console.log("refocusOld", {
+	// 		select,
+	// 		touch
+	// 	});
 
-		focusPrevCell();
+	// 	focusPrevCell();
 
-		inputRef.current?.focus();
-		if (touch) {
-			asyncRef.current.focusedAt = Date.now();
-			console.log("focusedAt", asyncRef.current.focusedAt)
+	// 	inputRef.current?.focus();
+	// 	if (touch) {
+	// 		asyncRef.current.focusedAt = Date.now();
+	// 		console.log("focusedAt", asyncRef.current.focusedAt)
 
-			asyncRef.current.changedAt = Date.now();
-			console.log("changedAt", asyncRef.current.changedAt)
-		}
-		if (select) {
-			inputRef.current?.select();
-		}
-	}, [focusPrevCell]);
+	// 		asyncRef.current.changedAt = Date.now();
+	// 		console.log("changedAt", asyncRef.current.changedAt)
+	// 	}
+	// 	if (select) {
+	// 		inputRef.current?.select();
+	// 	}
+	// }, [focusPrevCell]);
 
 	const refocus = useCallback((opts = {}) => {
 		const { select = true, touch = false } = opts;
@@ -317,66 +331,77 @@ const DateInputComponent = memo((props) => {
 
 	}, [requiredMessage]);
 
-	useLayoutEffect(() => {
-		if (focus) {
-			if (inputRef.current) {
-				// ref.current.value = asyncRef.current.formatInputOnFocus(
-				// 	asyncRef.current.rowData
-				// );
-				inputRef.current.focus();
-				inputRef.current.select();
-			}
-			asyncRef.current.escPressed = false;
-			asyncRef.current.focusedAt = Date.now();
-			console.log("focusedAt", asyncRef.current.focusedAt)
-		} else {
-			if (inputRef.current) {
-				console.log("changedAt >= focusedAt", asyncRef.current.changedAt >= asyncRef.current.focusedAt);
-				console.log("invalid", asyncRef.current.invalid)
-				const modified = asyncRef.current.changedAt >= asyncRef.current.focusedAt;
-				if (
-					!asyncRef.current.escPressed &&
-					!asyncRef.current.continuousUpdates &&
-					!asyncRef.current.firstRender &&
-					(modified || asyncRef.current.invalid)
-				) {
-					if (!inputRef.current.value) {
-						if (required) {
-							const message = getRequiredMessage({ value: inputRef.current.value })
+	const checkEnter = useCallback(() => {
+		if (inputRef.current) {
+			// ref.current.value = asyncRef.current.formatInputOnFocus(
+			// 	asyncRef.current.rowData
+			// );
+			inputRef.current.focus();
+			inputRef.current.select();
+		}
+		asyncRef.current.escPressed = false;
+		asyncRef.current.focusedAt = Date.now();
+		console.log("focusedAt", asyncRef.current.focusedAt)
+	}, []);
 
-							toastEx.error(message, {
-								position: "top-right"
-							})
-							refocus();
-						}
-					} else {
-						const validationResult = isValidDate(inputRef.current.value);
-						console.log("isValidDate", validationResult);
-						asyncRef.current.invalid = !validationResult;
+	const checkLeave = useCallback(() => {
+		if (inputRef.current) {
+			console.log("changedAt >= focusedAt", asyncRef.current.changedAt >= asyncRef.current.focusedAt);
+			console.log("invalid", asyncRef.current.invalid)
+			const modified = asyncRef.current.changedAt >= asyncRef.current.focusedAt;
+			if (
+				!asyncRef.current.escPressed &&
+				!asyncRef.current.continuousUpdates &&
+				!asyncRef.current.firstRender &&
+				(modified || asyncRef.current.invalid)
+			) {
+				if (!inputRef.current.value) {
+					if (required) {
+						const message = getRequiredMessage({ value: inputRef.current.value })
 
-						// 變更時錯誤的那次不能觸發
-						if ((!modified || asyncRef.current.tabPressed) && asyncRef.current.invalid) {
+						toastEx.error(message, {
+							position: "top-right"
+						})
+						refocus();
+					}
+				} else {
+					const validationResult = isValidDate(inputRef.current.value);
+					console.log("isValidDate", validationResult);
+					asyncRef.current.invalid = !validationResult;
+
+					// 變更時錯誤的那次不能觸發
+					if ((!modified || asyncRef.current.tabPressed) && asyncRef.current.invalid) {
+						toastEx.error(`"${inputRef.current.value}" 不是正確的日期格式`, {
+							position: "top-right"
+						})
+						if (asyncRef.current.tabPressed) {
 							asyncRef.current.tabPressed = false;
-							toastEx.error(`"${inputRef.current.value}" 不是正確的日期格式`, {
-								position: "top-right"
-							})
-							refocus({
-								touch: true
-							})
+							inputRef.current.value = "";
 						}
-
-						// if (!validationResult) {
-
-						// }
+						refocus({
+							touch: true,
+						})
 					}
 
-					console.log(`${DateInputComponent.displayName}.setRowData`, inputRef.current.value);
-					asyncRef.current.setRowData(inputRef.current.value || "");
+					// if (!validationResult) {
+
+					// }
 				}
-				inputRef.current.blur();
+
+				console.log(`${DateInputComponent.displayName}.setRowData`, inputRef.current.value);
+				asyncRef.current.setRowData(inputRef.current.value || "");
 			}
+			inputRef.current.blur();
 		}
-	}, [focus, getRequiredMessage, isValidDate, refocus, required]);
+	}, [getRequiredMessage, isValidDate, refocus, required]);
+
+	useLayoutEffect(() => {
+		if (focus) {
+			checkEnter();
+		} else {
+			checkLeave();
+		}
+	}, [checkEnter, checkLeave, focus]);
 
 	useEffect(() => {
 		if (!focus && inputRef.current && inputRef.current?.value != rowData) {
@@ -386,6 +411,8 @@ const DateInputComponent = memo((props) => {
 		}
 	}, [focus, rowData]);
 
+
+
 	return (
 		<InputContainer>
 			<MaskedInput
@@ -394,7 +421,7 @@ const DateInputComponent = memo((props) => {
 				onChange={handleChange}
 				onInput={handleInput}
 				onKeyDown={handleKeyDown}
-				placeholder={PLACEHOLDER}
+				// placeholder={PLACEHOLDER}
 				style={{
 					// pointerEvents: focus ? 'auto' : 'none',
 					pointerEvents: active ? 'auto' : 'none',
@@ -402,7 +429,10 @@ const DateInputComponent = memo((props) => {
 				}}
 				ref={inputRef}
 			/>
-			<Placeholder visible={focus && !disablePlaceholder} />
+			<Placeholder
+				visible={focus && !disablePlaceholder}
+				placeholderText={placeholderText}
+			/>
 		</InputContainer>
 	);
 }, arePropsEqual);

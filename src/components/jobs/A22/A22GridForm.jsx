@@ -7,6 +7,7 @@ import ProdPicker from "@/components/picker/ProdPicker";
 import { A22GridForm2Container } from "./A22GridForm2Container";
 import { A22GridFormToggleButtonContainer } from "./A22GridFormToggleButtonContainer";
 import { A22GridLoadButtonContainer } from "./A22GridLoadButtonContainer";
+import FlexBox from "@/shared-components/FlexBox";
 
 const A22GridForm = (props) => {
 	const { cat = true, safeQty = false, onSubmit, ...rest } = props;
@@ -16,7 +17,7 @@ const A22GridForm = (props) => {
 				<Grid container spacing={1} columns={24}>
 					{/* ROW 1 */}
 
-					<Grid item xs={24} sm={12} md={16} lg={7}>
+					<Grid item xs={6} lg={4}>
 						<ProdPicker
 							name="prod1"
 							label="起始商品編號"
@@ -37,7 +38,7 @@ const A22GridForm = (props) => {
 							}}
 						/>
 					</Grid>
-					<Grid item xs={24} sm={12} md={16} lg={7}>
+					<Grid item xs={6} lg={4}>
 						<ProdPicker
 							name="prod2"
 							label="截止商品編號"
@@ -58,7 +59,7 @@ const A22GridForm = (props) => {
 							}}
 						/>
 					</Grid>
-					<Grid item lg={4}>
+					<Grid item xs={5} lg={3}>
 						<TextFieldWrapper
 							name="qty"
 							label="張數"
@@ -66,22 +67,18 @@ const A22GridForm = (props) => {
 							size="small"
 						/>
 					</Grid>
-					<FlexGrid
-						item
-						xs={24}
-						sm={12}
-						md={16}
-						lg={6}
-						justifyContent="flex-end"
-						alignItems="flex-start"
+					<Grid item xs={7} lg={5}
 						sx={{
 							"& button": {
 								marginLeft: "4px",
 							},
 						}}>
-						<A22GridLoadButtonContainer />
-						<A22GridFormToggleButtonContainer />
-					</FlexGrid>
+						<FlexBox inline justifyContent="flex-end"
+							alignItems="flex-start">
+							<A22GridLoadButtonContainer />
+							<A22GridFormToggleButtonContainer />
+						</FlexBox>
+					</Grid>
 				</Grid>
 				{/* ROW 2 */}
 				<A22GridForm2Container cat={cat} safeQty={safeQty} />

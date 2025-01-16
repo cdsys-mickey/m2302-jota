@@ -1,17 +1,13 @@
-import FlexBox from "@/shared-components/FlexBox";
-import { Stack } from "@mui/material";
-import { forwardRef, memo } from "react";
-import AvatarButtonContainer from "@/shared-components/protected-page/AvatarButtonContainer";
-import FrameMenuButtonContainer from "./FrameMenuButtonContainer";
-import PropTypes from "prop-types";
-import { useContext } from "react";
-import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import { DeptSwitchDialogContainer } from "@/components/account/DeptSwitchDialogContainer";
-import { useMemo } from "react";
 import { PushMessagesIconButtonContainer } from "@/components/push-messages/PushMessagesIconButtonContainer";
 import { PushMessagesPopoverContainer } from "@/components/push-messages/PushMessagesPopoverContainer";
-import FrameTitle from "./FrameTitle";
+import FlexBox from "@/shared-components/FlexBox";
+import AvatarButtonContainer from "@/shared-components/protected-page/AvatarButtonContainer";
+import { Stack } from "@mui/material";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useMemo } from "react";
 import DeptSwitchButtonContainer from "./DeptSwitchButtonContainer";
+import FrameTitleContainer from "./FrameTitleContainer";
 
 const FrameBanner = memo(
 	forwardRef((props, ref) => {
@@ -32,13 +28,10 @@ const FrameBanner = memo(
 		return (
 			<FlexBox ref={ref} {...rest}>
 				<FlexBox
-					ml={-3}
-					alignItems="center"
-					justifyContent="flex-start"
+
 					flex={leftFlex}>
-					{/* <ResponsiveFrameMenuButton /> */}
-					<FrameMenuButtonContainer />
-					<FrameTitle>{title}</FrameTitle>
+
+					<FrameTitleContainer>{title}</FrameTitleContainer>
 				</FlexBox>
 				<FlexBox alignItems="center" flex={centerFlex} px={2}>
 					{children}

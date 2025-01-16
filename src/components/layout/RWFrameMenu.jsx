@@ -78,6 +78,7 @@ RWFrameMenu.propTypes = {
 	itemCount: PropTypes.number,
 	data: PropTypes.array,
 	loading: PropTypes.bool,
+	bottomReached: PropTypes.bool,
 	error: PropTypes.object,
 };
 

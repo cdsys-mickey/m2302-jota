@@ -15,7 +15,7 @@ const ProdGridForm = (props) => {
 				<Grid container spacing={1}>
 					{/* ROW 1 */}
 
-					<Grid item xs={12} sm={6} md={8} lg={3}>
+					<Grid item xs={3} lg={3}>
 						<TextFieldWrapper
 							name="prodId"
 							label="貨品編號"
@@ -24,7 +24,7 @@ const ProdGridForm = (props) => {
 							clearable
 						/>
 					</Grid>
-					<Grid item xs={12} sm={6} md={8} lg={3}>
+					<Grid item xs={3} lg={3}>
 						<TextFieldWrapper
 							name="prodName"
 							label="品名規格"
@@ -35,10 +35,8 @@ const ProdGridForm = (props) => {
 					</Grid>
 					<FlexGrid
 						item
-						xs={12}
-						sm={6}
-						md={8}
 						lg={6}
+						xs={5}
 						justifyContent="flex-end"
 						alignItems="flex-start"
 						sx={{

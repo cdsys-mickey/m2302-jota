@@ -1,19 +1,17 @@
-import { Box } from "@mui/material";
-import PropTypes from "prop-types";
-import React from "react";
 import AppBanner from "@/shared-components/AppBanner";
 import FlexBox from "@/shared-components/FlexBox";
-import BasePage from "./BasePage";
-import Copyright from "@/shared-components/Copyright";
+import { Box } from "@mui/material";
+import PropTypes from "prop-types";
+import React, { memo } from "react";
 import { CopyrightContainer } from "../shared-components/CopyrightContainer";
-import { memo } from "react";
+import BasePage from "./BasePage";
 
 const PublicPage = memo(
 	({ children, height, title, sx = [], boxProps, ...rest }) => {
 		return (
 			<BasePage sx={[...(Array.isArray(sx) ? sx : [sx])]} {...rest}>
 				<Box pt={2} px={2}>
-					<AppBanner size="sm" />
+					<AppBanner size="md" />
 					<FlexBox
 						// alignItems="center"
 						justifyContent="center"

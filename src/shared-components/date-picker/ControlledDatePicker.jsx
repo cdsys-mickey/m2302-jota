@@ -177,6 +177,11 @@ const ControlledDatePicker = ({
 										...(required && !error && {
 											"& .MuiInputLabel-root:not(.Mui-focused)": {
 												color: Colors.REQUIRED,
+											},
+											"& .MuiOutlinedInput-root": {
+												'& fieldset': {
+													borderColor: Colors.REQUIRED,
+												},
 											}
 										})
 									},

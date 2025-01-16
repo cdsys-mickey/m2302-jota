@@ -41,17 +41,17 @@ export const UserSearchFieldContainer = (props) => {
 					// rightSquare
 					// square
 					borderRadius="8px"
-					// width="30ch"
+					// width="100%"
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}
-					// Popper
-					// PopperComponent={UserSearchPopperContainer}
-					// popperOpen={users.popperOpen}
-					// onPopperToggle={users.handlePopperToggle}
-					// onPopperOpen={users.handlePopperOpen}
-					// onPopperClose={users.handlePopperClose}
-					// filtered={Users.isFiltered(getValues())}
+				// Popper
+				// PopperComponent={UserSearchPopperContainer}
+				// popperOpen={users.popperOpen}
+				// onPopperToggle={users.handlePopperToggle}
+				// onPopperOpen={users.handlePopperOpen}
+				// onPopperClose={users.handlePopperClose}
+				// filtered={Users.isFiltered(getValues())}
 				/>
 			</div>
 		</form>

@@ -38,7 +38,7 @@ export const A22GridLoadButtonContainer = () => {
 
 	const buttonText = useMemo(() => {
 		return Objects.isAllPropsEmpty(criteria, "prod1,prod2,catL,catM,catS")
-			? "請先輸入篩選條件"
+			? "輸入篩選條件"
 			: totalElements
 				? `讀取(符合${totalElements}筆)`
 				: "(查無相符商品)";

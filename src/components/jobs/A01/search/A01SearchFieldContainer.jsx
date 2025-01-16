@@ -7,6 +7,8 @@ import { useCallback, useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import A01SearchPopperContainer from "./A01SearchPopperContainer";
+import { useMemo } from "react";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 
 export const A01SearchFieldContainer = (props) => {
 	const { name = "qs" } = props;
@@ -14,6 +16,7 @@ export const A01SearchFieldContainer = (props) => {
 	const { getValues } = form;
 
 	const a01 = useContext(A01Context);
+	const { mobile } = useContext(ResponsiveContext);
 	const { popperOpen } = a01;
 
 	const inputRef = useRef(null);
@@ -37,6 +40,10 @@ export const A01SearchFieldContainer = (props) => {
 		enableOnFormTags: true,
 	});
 
+	// const _width = useMemo(() => {
+	// 	return mobile ? "20ch" : "30ch";
+	// }, [mobile])
+
 	return (
 		<form
 			onSubmit={form.handleSubmit(
@@ -52,7 +59,7 @@ export const A01SearchFieldContainer = (props) => {
 					// rightSquare
 					// square
 					borderRadius="8px"
-					width="30ch"
+					width="100%"
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}

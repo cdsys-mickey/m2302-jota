@@ -1,8 +1,7 @@
-import { Typography } from "@mui/material";
-import React, { useMemo } from "react";
 import FlexBox from "@/shared-components/FlexBox";
-import { memo } from "react";
+import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { memo, useMemo } from "react";
 
 const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 	const typographyVariant = useMemo(() => {
@@ -19,6 +18,8 @@ const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 
 	const imgHeight = useMemo(() => {
 		switch (size) {
+			case "md":
+				return 60;
 			default:
 				return 32;
 		}
@@ -29,11 +30,12 @@ const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 			<FlexBox>
 				<img
 					height={imgHeight}
-					src={`${import.meta.env.VITE_PUBLIC_URL}logo32.png`}
+					// src={`${import.meta.env.VITE_PUBLIC_URL}logo192.png`}
+					src={`${import.meta.env.VITE_PUBLIC_URL}banner.png`}
 					alt="logo"
 				/>
 			</FlexBox>
-			<FlexBox pl={1}>
+			{/* <FlexBox pl={1}>
 				<Typography
 					variant={typographyVariant}
 					sx={(theme) => ({
@@ -42,7 +44,7 @@ const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 					})}>
 					{children || import.meta.env.VITE_APP_TITLE}
 				</Typography>
-			</FlexBox>
+			</FlexBox> */}
 		</FlexBox>
 	);
 });

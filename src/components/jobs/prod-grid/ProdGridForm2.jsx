@@ -18,13 +18,13 @@ const ProdGridForm2 = memo((props) => {
 				<Grid container spacing={1}>
 					{cat && (
 						<>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={4} md={3}>
 								<ProdCatLPicker name="catL" disableOpenOnInput selectOnFocus />
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={4} md={3}>
 								<ProdCatMPicker name="catM" disableOpenOnInput selectOnFocus />
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={4} md={3}>
 								<ProdCatSPicker name="catS" disableOpenOnInput selectOnFocus />
 							</Grid>
 						</>
@@ -32,20 +32,20 @@ const ProdGridForm2 = memo((props) => {
 
 					{/* ROW 3 */}
 					<FlexBox fullWidth />
-					<Grid item xs={12} sm={12} md={3}>
+					<Grid item xs={3} md={3}>
 						{/* 品別 */}
 						<ProdTypeAPicker name="typeA" disableOpenOnInput selectOnFocus />
 					</Grid>
-					<Grid item xs={12} sm={12} md={3}>
+					<Grid item xs={3} md={3}>
 						{/* 品類 */}
 						<ProdTypeBPicker name="typeB" disableOpenOnInput selectOnFocus />
 					</Grid>
-					<Grid item xs={12} sm={12} md={3}>
+					<Grid item xs={3} md={3}>
 						{/* 稅別 */}
 						<TaxTypePicker name="taxType" label="稅別" disableOpenOnInput selectOnFocus />
 					</Grid>
 					{safeQty && (
-						<Grid item xs={12} sm={12} md={3}>
+						<Grid item xs={3} md={3}>
 							<TextFieldWrapper
 								name="safeQty"
 								label="安全存量"

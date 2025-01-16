@@ -129,7 +129,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 			: selected
 	}, [getLabel, label, selected])
 
-	const isPopperOpen = useMemo(() => {
+	const popperOpen = useMemo(() => {
 		return _open != null ? _open : debouncedOpen
 	}, [_open, debouncedOpen])
 
@@ -204,7 +204,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 					minWidth: anchorRef.current?.clientWidth || "5rem",
 				}}
 
-				open={isPopperOpen}
+				open={popperOpen}
 				anchorEl={anchorRef.current}
 				role={undefined}
 				transition
@@ -224,7 +224,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 
 							<>
 								{loading && (
-									<Box p={1}>
+									<Box p={2}>
 										<LoadingTypography />
 									</Box>
 								)}

@@ -13,13 +13,13 @@ const A22GridForm2 = memo((props) => {
 				<Grid container spacing={1}>
 					{cat && (
 						<>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item md={3}>
 								<ProdCatLPicker name="catL" disableOpenOnInput selectOnFocus />
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item md={3}>
 								<ProdCatMPicker name="catM" disableOpenOnInput selectOnFocus />
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item md={3}>
 								<ProdCatSPicker name="catS" disableOpenOnInput selectOnFocus />
 							</Grid>
 						</>
