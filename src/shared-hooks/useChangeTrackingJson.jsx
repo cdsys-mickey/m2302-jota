@@ -23,7 +23,7 @@ export const useChangeTrackingJson = (
 	}, [tag]);
 
 	useEffect(() => {
-		if (deepEqual) {
+		if (prevRef.current != dependenciesJson) {
 			// dont fire on first render
 			if (prevRef.current) {
 				callback();

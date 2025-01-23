@@ -76,7 +76,7 @@ const RowProdCatSPickerComponent = memo((props) => {
 	});
 
 
-	const { ref, hideControls, handleChange, cell } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -152,6 +152,8 @@ const RowProdCatSPickerComponent = memo((props) => {
 			// row 版
 			value={value}
 			onChange={onChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			catL={catL}
 			catM={catM}
 

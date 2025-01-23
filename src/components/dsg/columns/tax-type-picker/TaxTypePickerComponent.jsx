@@ -4,10 +4,11 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
+import Constants from "@/modules/md-constants";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.taxType,active,disabled,focus",
+		fields: "rowData.id,active,disabled,focus",
 		// debug: true,
 	});
 }
@@ -60,7 +61,7 @@ const TaxTypePickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -109,6 +110,8 @@ const TaxTypePickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// DSG 專屬
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
@@ -120,6 +123,7 @@ const TaxTypePickerComponent = memo((props) => {
 			toastError
 			{...rest}
 			blurToLookup={false}
+			mockDelay={Constants.POPPER_DELAY}
 		/>
 	);
 }, arePropsEqual);

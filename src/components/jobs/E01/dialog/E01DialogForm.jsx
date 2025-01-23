@@ -49,17 +49,19 @@ const E01DialogForm = memo((props) => {
 				<>
 					<FormBox pt={1}>
 						<Grid container columns={24} spacing={1}>
-							{!creating && (<Grid item md={5}>
-								<TextFieldWrapper
-									typo
-									name="OrdID"
-									label="單號"
-									// autoFocus
-									// fullWidth
-									readOnly={true}
-								/>
-							</Grid>)}
-							<Grid item md={creating ? 5 : 5}>
+							{!creating && (
+								<Grid item md={4}>
+									<TextFieldWrapper
+										typo
+										name="OrdID"
+										label="單號"
+										// autoFocus
+										// fullWidth
+										readOnly={true}
+									/>
+								</Grid>
+							)}
+							<Grid item md={4.5}>
 								<DatePickerWrapper
 									typo
 									autoFocus
@@ -73,7 +75,7 @@ const E01DialogForm = memo((props) => {
 								// disabled={!creating}
 								/>
 							</Grid>
-							<Grid item md={creating ? 5 : 7}>
+							<Grid item md={4.5}>
 								<DatePickerWrapper
 									typo
 									name="ArrDate"
@@ -112,16 +114,28 @@ const E01DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
+							<Grid item md={4}>
+								<EmployeePicker
+									typo
+									label="業務員"
+									name="employee"
+									virtualize
+									disableOpenOnInput
+								// disableClearable
+								// disabled={!creating}
+								/>
+							</Grid>
 							<FlexBox fullWidth />
 							<Grid item md={2}>
 								<CheckboxExWrapper
 									typo
 									label="零售"
 									name="retail"
+									size="small"
 									onChange={handleRetailChange}
 								/>
 							</Grid>
-							<Grid item md={3}>
+							<Grid item md={3.5}>
 								<E01CustomerPicker
 									retailName="retail"
 									forId
@@ -145,7 +159,7 @@ const E01DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item md={5}>
+							<Grid item md={6.5}>
 								<TextFieldWrapper
 									typo
 									label="客戶名稱"
@@ -167,28 +181,19 @@ const E01DialogForm = memo((props) => {
 								// disableClearable
 								/>
 							</Grid>
-							<Grid item md={4}>
+							<Grid item md={5}>
 								<TextFieldWrapper
 									typo
 									label="電話"
 									name="CompTel"
 									required
+									fullWidth
 									rules={{
 										required: "電話為必填"
 									}}
 								/>
 							</Grid>
-							<Grid item md={4}>
-								<EmployeePicker
-									typo
-									label="業務員"
-									name="employee"
-									virtualize
-									disableOpenOnInput
-								// disableClearable
-								// disabled={!creating}
-								/>
-							</Grid>
+
 							<Grid item md={3}>
 								<CheckboxExWrapper
 									typo

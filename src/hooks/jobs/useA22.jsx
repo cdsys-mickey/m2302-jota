@@ -356,45 +356,46 @@ export const useA22 = ({
 		return processedRowData;
 	}, [grid.gridData, handleGridProdChange]);
 
-	const handleGridChange = useCallback(
-		(newValue, operations) => {
-			const newGridData = [...newValue];
-			let checkFailed = false;
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const ogRowData = grid.gridData[rowIndex];
-							let processedRowData = { ...rowData };
+	// comment on 25.01.22, prepared to remove
+	// const handleGridChange = useCallback(
+	// 	(newValue, operations) => {
+	// 		const newGridData = [...newValue];
+	// 		let checkFailed = false;
+	// 		for (const operation of operations) {
+	// 			if (operation.type === "UPDATE") {
+	// 				newValue
+	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
+	// 					.forEach((rowData, i) => {
+	// 						const rowIndex = operation.fromRowIndex + i;
+	// 						const ogRowData = grid.gridData[rowIndex];
+	// 						let processedRowData = { ...rowData };
 
-							if (rowData.prod?.ProdID !== ogRowData?.prod?.ProdID) {
-								console.log(`prod[${rowIndex}] changed`, rowData.prod);
-								processedRowData = handleGridProdChange({
-									rowData: processedRowData,
-								});
-							}
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "DELETE") {
-					// grid.removeRowByIndex(
-					// 	operation.fromRowIndex,
-					// 	operation.toRowIndex
-					// );
-					newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
-				}
-				if (!checkFailed) {
-					grid.setGridData(newGridData);
-				}
-			}
-		},
-		[grid, gridMeta, handleGridProdChange]
-	);
+	// 						if (rowData.prod?.ProdID !== ogRowData?.prod?.ProdID) {
+	// 							console.log(`prod[${rowIndex}] changed`, rowData.prod);
+	// 							processedRowData = handleGridProdChange({
+	// 								rowData: processedRowData,
+	// 							});
+	// 						}
+	// 						newGridData[rowIndex] = processedRowData;
+	// 					});
+	// 			} else if (operation.type === "DELETE") {
+	// 				// grid.removeRowByIndex(
+	// 				// 	operation.fromRowIndex,
+	// 				// 	operation.toRowIndex
+	// 				// );
+	// 				newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
+	// 			} else if (operation.type === "CREATE") {
+	// 				console.log("dsg.CREATE");
+	// 				// process CREATE here
+	// 				gridMeta.toFirstColumn({ nextRow: true });
+	// 			}
+	// 			if (!checkFailed) {
+	// 				grid.setGridData(newGridData);
+	// 			}
+	// 		}
+	// 	},
+	// 	[grid, gridMeta, handleGridProdChange]
+	// );
 
 	const onSubmit = useCallback(
 		(data) => {
@@ -447,7 +448,7 @@ export const useA22 = ({
 		onGenReportSubmitError,
 		handleDeleteRow,
 		handleCreateRow,
-		handleGridChange,
+		// handleGridChange,
 		formMeta,
 		onUpdateRow,
 		onDebugSubmit

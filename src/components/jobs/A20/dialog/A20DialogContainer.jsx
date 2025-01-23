@@ -39,10 +39,14 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [a20.creating, a20.updating]);
 
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
+
 	const scrollable = useScrollable({
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
-		height: height - 100,
 	});
 
 	const handleSubmit = useMemo(() => {

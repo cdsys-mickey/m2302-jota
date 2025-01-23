@@ -22,14 +22,14 @@ import ClearInputButton from "../input/ClearInputButton";
 const renderPaperStyles = ({
 	responsive,
 	mobile,
-	width,
+	maxWidth,
 	square,
 	borderRadius,
 	rightSquare,
 	fullWidth,
 }) => {
 	const doFlex = responsive && mobile;
-	const doWidth = !doFlex && width;
+	const doWidth = !doFlex && maxWidth;
 
 	return {
 		display: "flex",
@@ -50,11 +50,12 @@ const renderPaperStyles = ({
 			borderBottomRightRadius: "4px",
 		}),
 		...(doWidth && {
-			width: width,
+			maxWidth,
 		}),
 		...(fullWidth && {
 			width: "100%",
 		}),
+		// width: "100%",
 	};
 };
 
@@ -66,7 +67,7 @@ const SearchField = memo(
 			onChange,
 			mobile,
 			placeholder,
-			width,
+			maxWidth,
 			sx = [],
 			square = false,
 			rightSquare = false,
@@ -106,7 +107,7 @@ const SearchField = memo(
 				renderPaperStyles({
 					responsive,
 					mobile,
-					width,
+					maxWidth,
 					square,
 					borderRadius,
 					rightSquare,
@@ -119,16 +120,9 @@ const SearchField = memo(
 				responsive,
 				rightSquare,
 				square,
-				width,
+				maxWidth,
 			]
 		);
-
-		// const doFlex = useMemo(
-		// 	() => responsive && mobile,
-		// 	[mobile, responsive]
-		// );
-
-		// const doWidth = useMemo(() => !doFlex && width, [doFlex, width]);
 
 		const doRenderPopper = useMemo(
 			() => (popper || PopperComponent) && onPopperOpen,
@@ -142,6 +136,10 @@ const SearchField = memo(
 			return placeholder;
 		}, [mobile, mobilePlaceholder, placeholder]);
 
+		const _popperWidth = useMemo(() => {
+			return maxWidth;
+		}, [maxWidth])
+
 		return (
 			<Box ref={ref}>
 				<Paper
@@ -154,20 +152,16 @@ const SearchField = memo(
 					noValidate
 					autoComplete="off">
 					<FlexBox px={0.5} {...BoxProps}>
-						<IconButton
-							type="button"
-							sx={{
-								p: "5px",
-								// ...(square && {
-								// 	borderRadius: "4px",
-								// }),
-								// ...(borderRadius && {
-								// 	borderRadius: borderRadius,
-								// }),
-							}}
-							aria-label="search">
-							<SearchIcon />
-						</IconButton>
+						{!mobile && (
+							<IconButton
+								type="button"
+								sx={{
+									p: "5px",
+								}}
+								aria-label="search">
+								<SearchIcon />
+							</IconButton>
+						)}
 						<InputBase
 							name={name}
 							inputRef={inputRef}
@@ -214,7 +208,7 @@ const SearchField = memo(
 											color={
 												filtered ? "primary" : "inherit"
 											}
-											// color={popperOpen ? "primary" : "inherit"}
+										// color={popperOpen ? "primary" : "inherit"}
 										/>
 									</IconButton>
 								</Tooltip>
@@ -249,7 +243,7 @@ const SearchField = memo(
 									placement="bottom-start">
 									{({ TransitionProps }) => (
 										<Fade {...TransitionProps}>
-											<PopperComponent width={width} />
+											<PopperComponent width={_popperWidth} />
 										</Fade>
 									)}
 								</Popper>

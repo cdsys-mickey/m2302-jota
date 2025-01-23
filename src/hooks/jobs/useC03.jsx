@@ -550,66 +550,6 @@ export const useC03 = () => {
 		updateAmt({ setValue, gridData });
 	}, [updateAmt]);
 
-	// const buildGridChangeHandler = useCallback(
-	// 	({ setValue, getValues, gridMeta }) =>
-	// 		async (newValue, operations) => {
-	// 			console.log("handleGridChange", operations);
-	// 			console.log("newValue", newValue);
-	// 			const newGridData = [...newValue];
-	// 			let checkFailed = false;
-	// 			for (const operation of operations) {
-	// 				if (operation.type === "UPDATE") {
-	// 					const updatedRows = await Promise.all(
-	// 						newValue
-	// 							.slice(
-	// 								operation.fromRowIndex,
-	// 								operation.toRowIndex
-	// 							)
-	// 							.map(async (item, index) => {
-	// 								const updatedRow = await updateGridRow({
-	// 									getValues,
-	// 									fromIndex: operation.fromRowIndex,
-	// 									newValue,
-	// 								})(item, index);
-	// 								return updatedRow;
-	// 							})
-	// 					)
-	// 					newGridData.splice(
-	// 						operation.fromRowIndex,
-	// 						updatedRows.length,
-	// 						...updatedRows
-	// 					);
-	// 				} else if (operation.type === "DELETE") {
-	// 					// 列舉原資料
-	// 					checkFailed = grid.gridData
-	// 						.slice(operation.fromRowIndex, operation.toRowIndex)
-	// 						.some((rowData, i) => {
-	// 							if (prodDisabled({ rowData })) {
-	// 								const rowIndex = operation.fromRowIndex + i;
-	// 								toastEx.error(`不可刪除第 ${rowIndex + 1} 筆商品`, {
-	// 									position: "top-right"
-	// 								});
-	// 								return true;
-	// 							}
-	// 							return false;
-	// 						});
-	// 				} else if (operation.type === "CREATE") {
-	// 					console.log("dsg.CREATE");
-	// 					// process CREATE here
-	// 					gridMeta.toFirstColumn({ nextRow: true });
-	// 				}
-	// 			}
-	// 			console.log("after changed", newGridData);
-	// 			if (!checkFailed) {
-	// 				grid.setGridData(newGridData);
-	// 				// const subtotal = C03.getSubtotal(newGridData);
-	// 				// setValue("OrdAmt_N", subtotal.toFixed(2));
-	// 				updateAmt({ gridData: newGridData, setValue });
-	// 			}
-	// 		},
-	// 	[grid, updateAmt, prodDisabled]
-	// );
-
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);

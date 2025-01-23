@@ -17,7 +17,7 @@ export const RealFilePicker = memo((props) => {
 			url={`v1/app/entities`}
 			getOptionLabel={Database.getOptionLabel}
 			isOptionEqualToValue={Database.isOptionEqualToValue}
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

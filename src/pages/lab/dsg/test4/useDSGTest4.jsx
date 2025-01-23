@@ -4,9 +4,7 @@ import { ProdTypeAPickerComponentContainer } from "@/components/dsg/columns/prod
 import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
 import { createDateInputColumn } from "@/shared-components/dsg/columns/date-input/createDateInputColumn";
 import { createDateFieldColumnEx } from "@/shared-components/dsg/columns/date/createDateFieldColumnEx";
-import { createMuiDateColumn } from "@/shared-components/dsg/columns/date/createMuiDateColumn";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import createOptionPickerColumn from "@/shared-components/dsg/columns/option-picker/createOptionPickerColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -16,14 +14,32 @@ import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 
 export const useDSGTest4 = () => {
-	const grid = useDSG({});
+	const createRow = useCallback(
+		() => ({
+			id: nanoid(),
+			prod: null,
+			SProdData: "",
+			SExpDate: null,
+			typeA: null,
+			SExpDate3: null,
+			supplier: null,
+			stype: null
+		}),
+		[]
+	);
+
+	const grid = useDSG({
+		gridId: "prods",
+		keyColumn: "id",
+		createRow
+	});
 
 	const columns = useMemo(
 		() => [
 			{
 				...keyColumn(
 					"prod",
-					createOptionPickerColumn(ProdPickerComponentContainer, {
+					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
 						packageType: "s",
@@ -34,7 +50,7 @@ export const useDSGTest4 = () => {
 						// pressToFind: true,
 						forId: true,
 						disableClearable: true,
-						autoHighlight: true,
+						// autoHighlight: true,
 						selectOnFocus: true,
 						slotProps: {
 							paper: {
@@ -127,7 +143,7 @@ export const useDSGTest4 = () => {
 			{
 				...keyColumn(
 					"typeA",
-					createOptionPickerColumn(ProdTypeAPickerComponentContainer, {
+					optionPickerColumn(ProdTypeAPickerComponentContainer, {
 						name: "typeA",
 						disableOpenOnInput: true,
 						disableClearable: true,
@@ -165,7 +181,9 @@ export const useDSGTest4 = () => {
 		[grid.readOnly]
 	);
 
-
+	const getRowKey = useCallback(({ rowData, rowIndex }) => {
+		return `${rowData?.id || rowIndex}`;
+	}, []);
 
 	const gridMeta = useDSGMeta({
 		columns,
@@ -183,65 +201,33 @@ export const useDSGTest4 = () => {
 		};
 	}, []);
 
-	const handleGridChange = useCallback(
-		(newValue, operations) => {
-			const newGridData = [...newValue];
-			let checkFailed = false;
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = grid.gridData[rowIndex];
-							let processedRowData = { ...rowData };
-							// 商品
-							if (
-								rowData.prod?.ProdID !== oldRowData.prod?.ProdID
-							) {
-								processedRowData = handleGridProdChange({
-									rowData: processedRowData,
-								});
-							}
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "DELETE") {
-					checkFailed = grid.gridData
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.some((rowData, i) => {
-							// process DELETE check here
-							return false;
-						});
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
-				}
-			}
-			if (!checkFailed) {
-				grid.setGridData(newGridData);
-				console.log("newGridData", newGridData);
-			}
-		},
-		[grid, gridMeta, handleGridProdChange]
-	);
-
-	const createRow = useCallback(
-		() => ({
-			id: nanoid(),
-			prod: null,
-			SProdName: "",
-			lastName: "",
-			typeA: null,
-			SExpDate: null,
-		}),
-		[]
-	);
+	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
+		const oldRowData = grid.gridData[rowIndex];
+		updateResult.rowIndex = rowIndex;
+		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		// prod
+		if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+			console.log(
+				`prod[${rowIndex}] changed`,
+				processedRowData?.prod
+			);
+			processedRowData = await handleGridProdChange({
+				rowData: processedRowData,
+				formData
+			});
+		}
+		return processedRowData;
+	}, [grid.gridData, handleGridProdChange]);
 
 	return {
 		grid,
 		gridMeta,
-		handleGridChange,
 		createRow,
+		getRowKey,
+		onUpdateRow
 	};
 };

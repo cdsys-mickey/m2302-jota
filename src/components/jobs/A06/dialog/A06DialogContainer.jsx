@@ -7,13 +7,17 @@ import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A06Form from "../form/A06Form";
 import { A06DialogButtonsContainer } from "./buttons/A06DialogButtonsContainer";
-import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 
 export const A06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
+
 	const scrollable = useScrollable({
-		height,
+		maxHeight: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -68,9 +72,9 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 					},
 				}}
 				contentSx={[
-					{
-						minHeight: "30em",
-					},
+					// {
+					// 	minHeight: "30em",
+					// },
 					scrollable.scroller,
 				]}
 				{...rest}>

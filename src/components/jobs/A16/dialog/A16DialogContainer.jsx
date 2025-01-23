@@ -14,6 +14,9 @@ import { A16DialogButtonsContainer } from "./buttons/A16DialogButtonsContainer";
 export const A16DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const forms = useForm({
 		defaultValues: {},
 	});
@@ -31,7 +34,7 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 	}, [a16.creating, a16.updating]);
 
 	const scrollable = useScrollable({
-		height,
+		maxHeight: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -69,9 +72,6 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 					},
 				}}
 				contentSx={[
-					{
-						minHeight: "30em",
-					},
 					scrollable.scroller,
 				]}
 				{...rest}>

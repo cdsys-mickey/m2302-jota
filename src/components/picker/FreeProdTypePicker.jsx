@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import FreeProdTypes from "@/modules/md-free-prod-types";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import Constants from "@/modules/md-constants";
 
 const FreeProdTypePicker = forwardRef((props, ref) => {
 	const { label = "試贈樣", ...rest } = props;
@@ -15,7 +16,8 @@ const FreeProdTypePicker = forwardRef((props, ref) => {
 			isOptionEqualToValue={FreeProdTypes.isOptionEqualToValue}
 			findByInput={FreeProdTypes.findByInput}
 			notFoundText="試贈樣 ${id} 不存在"
-			blurToLookup
+			{...Constants.STATIC_PICKER_OPTS}
+			// blurToLookup
 			{...rest}
 		/>
 	);

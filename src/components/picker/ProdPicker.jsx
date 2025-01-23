@@ -113,7 +113,7 @@ const ProdPicker = (props) => {
 			notFoundText={notFoundText}
 			placeholder="搜尋商品"
 			typeToSearchText="輸入編號、條碼或名稱搜尋..."
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

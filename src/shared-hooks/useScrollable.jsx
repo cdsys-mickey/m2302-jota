@@ -2,6 +2,8 @@ import { alpha } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useMemo } from "react";
 
+const DEFAULT_HEIGHT = 500;
+
 const makeBorder = ({
 	borderStyle,
 	borderRadius,
@@ -64,7 +66,8 @@ const makeThumb = ({
 
 const makeScroller = ({
 	height,
-	// maxHeight,
+	minHeight,
+	maxHeight,
 	borderRadius,
 	borderTopLeftRadius,
 	borderTopRightRadius,
@@ -81,98 +84,104 @@ const makeScroller = ({
 	withHeader,
 	//Global
 	hide,
-}) => ({
-	"&::-webkit-scrollbar": {
-		transition: "background-color 1s ease-in-out",
-		width: scrollerWidth,
-		...(scrollerBackgroundColor && {
-			backgroundColor: scrollerBackgroundColor,
+}) => {
+	return {
+		"&::-webkit-scrollbar": {
+			transition: "background-color 1s ease-in-out",
+			width: scrollerWidth,
+			...(scrollerBackgroundColor && {
+				backgroundColor: scrollerBackgroundColor,
+			}),
+			...(hide && {
+				backgroundColor: "transparent",
+				width: 0,
+			}),
+			borderTopLeftRadius: withHeader
+				? 0
+				: borderTopLeftRadius || borderRadius,
+			borderTopRightRadius: withHeader
+				? 0
+				: borderTopRightRadius || borderRadius,
+			borderBottomLeftRadius: borderBottomLeftRadius || borderRadius,
+			borderBottomRightRadius: borderBottomRightRadius || borderRadius,
+		},
+		// ...(alwaysShowTrack &&
+		// 	makeTrack({
+		// 		trackColor,
+		// 		withHeader,
+		// 	})),
+		...makeTrack({
+			hide,
+			borderRadius,
+			alwaysShowTrack,
+			trackColor,
+			withHeader,
 		}),
-		...(hide && {
-			backgroundColor: "transparent",
-			width: 0,
+		// ...(alwaysShowThumb &&
+		// 	makeThumb({
+		// 		alwaysShowThumb,
+		// 		thumbColor,
+		// 		borderRadius,
+		// 		borderBottomLeftRadius,
+		// 		borderBottomRightRadius,
+		// 		borderTopLeftRadius,
+		// 		borderTopRightRadius,
+		// 		withHeader,
+		// 	})),
+		...makeThumb({
+			alwaysShowThumb,
+			thumbColor,
+			borderRadius,
+			borderBottomLeftRadius,
+			borderBottomRightRadius,
+			borderTopLeftRadius,
+			borderTopRightRadius,
+			withHeader,
 		}),
-		borderTopLeftRadius: withHeader
-			? 0
-			: borderTopLeftRadius || borderRadius,
-		borderTopRightRadius: withHeader
-			? 0
-			: borderTopRightRadius || borderRadius,
-		borderBottomLeftRadius: borderBottomLeftRadius || borderRadius,
-		borderBottomRightRadius: borderBottomRightRadius || borderRadius,
-	},
-	// ...(alwaysShowTrack &&
-	// 	makeTrack({
-	// 		trackColor,
-	// 		withHeader,
-	// 	})),
-	...makeTrack({
-		hide,
-		borderRadius,
-		alwaysShowTrack,
-		trackColor,
-		withHeader,
-	}),
-	// ...(alwaysShowThumb &&
-	// 	makeThumb({
-	// 		alwaysShowThumb,
-	// 		thumbColor,
-	// 		borderRadius,
-	// 		borderBottomLeftRadius,
-	// 		borderBottomRightRadius,
-	// 		borderTopLeftRadius,
-	// 		borderTopRightRadius,
-	// 		withHeader,
-	// 	})),
-	...makeThumb({
-		alwaysShowThumb,
-		thumbColor,
-		borderRadius,
-		borderBottomLeftRadius,
-		borderBottomRightRadius,
-		borderTopLeftRadius,
-		borderTopRightRadius,
-		withHeader,
-	}),
-	"&:hover": {
-		// ...makeTrack({ trackColor }),
+		"&:hover": {
+			// ...makeTrack({ trackColor }),
 
-		...(!hide && {
-			"&::-webkit-scrollbar-thumb": {
-				opacity: 1,
-				backgroundColor: alpha(thumbColor, 0.9),
-			},
-		}),
-		...(!hide && {
-			"&::-webkit-scrollbar-track": {
-				opacity: 1,
-				backgroundColor: alpha(trackColor, 0.7),
-			},
-		}),
+			...(!hide && {
+				"&::-webkit-scrollbar-thumb": {
+					opacity: 1,
+					backgroundColor: alpha(thumbColor, 0.9),
+				},
+			}),
+			...(!hide && {
+				"&::-webkit-scrollbar-track": {
+					opacity: 1,
+					backgroundColor: alpha(trackColor, 0.7),
+				},
+			}),
 
-		// ...makeThumb({
-		// 	thumbColor,
-		// 	borderRadius,
-		// 	borderBottomLeftRadius,
-		// 	borderBottomRightRadius,
-		// 	borderTopLeftRadius,
-		// 	borderTopRightRadius,
-		// 	withHeader,
-		// }),
-	},
-	...(height && { height }),
-	overflowY: "auto",
-	overflowX: "hidden",
-});
+			// ...makeThumb({
+			// 	thumbColor,
+			// 	borderRadius,
+			// 	borderBottomLeftRadius,
+			// 	borderBottomRightRadius,
+			// 	borderTopLeftRadius,
+			// 	borderTopRightRadius,
+			// 	withHeader,
+			// }),
+		},
+		...(minHeight && { minHeight }),
+		...(maxHeight && { maxHeight }),
+		...(height && { height }),
+		overflowY: "auto",
+		overflowX: "hidden",
+	}
+};
 
 const makeBody = () => ({
 	flexGrow: 1,
 });
 
-export const useScrollable = (props = {}) => {
+export const useScrollable = (opts = {}) => {
 	const {
-		height = 500,
-		// maxHeight,
+		height,
+		minHeight,
+		maxHeight,
+		defaultHeight = DEFAULT_HEIGHT,
 		// BORDER
 		borderStyle = "1px solid #e0e0e0",
 		borderRadius = "4px",
@@ -192,7 +201,23 @@ export const useScrollable = (props = {}) => {
 		withHeader = false,
 		// Global
 		hide = false,
-	} = props;
+	} = opts;
+
+	if (!height && !minHeight && !maxHeight) {
+		console.log("height, minHeight, maxHeight 都沒有指定，將會使用預設高度");
+	}
+
+	const _minHeight = useMemo(() => {
+		return minHeight || height || defaultHeight;
+	}, [defaultHeight, height, minHeight]);
+
+	const _maxHeight = useMemo(() => {
+		return maxHeight || height || defaultHeight;
+	}, [defaultHeight, height, maxHeight]);
+
+	const _height = useMemo(() => {
+		return height || (!minHeight && !maxHeight) ? defaultHeight : null;
+	}, [defaultHeight, height, maxHeight, minHeight])
 
 	const styles = useMemo(
 		() => ({
@@ -207,8 +232,9 @@ export const useScrollable = (props = {}) => {
 			}),
 			scroller: makeScroller({
 				hide,
-				height,
-				// maxHeight,
+				height: _height,
+				minHeight: _minHeight,
+				maxHeight: _maxHeight,
 				borderRadius,
 				borderTopLeftRadius,
 				borderTopRightRadius,
@@ -226,23 +252,7 @@ export const useScrollable = (props = {}) => {
 			}),
 			body: makeBody({}),
 		}),
-		[
-			alwaysShowThumb,
-			alwaysShowTrack,
-			borderBottomLeftRadius,
-			borderBottomRightRadius,
-			borderRadius,
-			borderStyle,
-			borderTopLeftRadius,
-			borderTopRightRadius,
-			height,
-			scrollerBackgroundColor,
-			scrollerWidth,
-			hide,
-			thumbColor,
-			trackColor,
-			withHeader,
-		]
+		[borderStyle, borderRadius, borderTopLeftRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius, withHeader, hide, _height, _minHeight, _maxHeight, scrollerWidth, scrollerBackgroundColor, thumbColor, trackColor, alwaysShowTrack, alwaysShowThumb]
 	);
 	return {
 		...styles,

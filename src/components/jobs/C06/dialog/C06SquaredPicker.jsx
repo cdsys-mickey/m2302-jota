@@ -11,7 +11,7 @@ const C06SquaredPicker = memo(
 			<OptionPickerWrapper
 				ref={ref}
 				fullWidth
-				required
+				// required
 				disableClearable
 				label=""
 				options={C06.squaredOptions}

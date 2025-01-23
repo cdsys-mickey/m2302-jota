@@ -4,10 +4,11 @@ import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import ProdTypeBPicker from "../../../picker/ProdTypeBPicker";
+import Constants from "@/modules/md-constants";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.typeB,active,disabled,focus",
+		fields: "rowData.id,active,disabled,focus",
 		// debug: true,
 	});
 };
@@ -59,7 +60,7 @@ const ProdTypeBPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -107,6 +108,8 @@ const ProdTypeBPickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// DSG 專屬
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
@@ -118,6 +121,8 @@ const ProdTypeBPickerComponent = memo((props) => {
 			toastError
 			{...rest}
 			blurToLookup={false}
+			mockDelay={Constants.POPPER_DELAY}
+			noOptionsText="..."
 		/>
 	);
 }, arePropsEqual);

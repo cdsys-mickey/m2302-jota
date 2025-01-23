@@ -65,7 +65,7 @@ const C09DialogForm = memo((props) => {
 								variant="outlined"
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5}>
 							<EmployeePicker
 								typo
 								label="驗收人員"

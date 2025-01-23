@@ -119,10 +119,11 @@ export const useE021 = () => {
 			prods: [],
 		};
 		crud.promptCreating({ data });
+		sqtyManager.reset();
 		grid.initGridData(data.prods, {
 			fillRows: 13
 		});
-	}, [crud, grid]);
+	}, [crud, grid, sqtyManager]);
 
 	const updateAmt = useCallback(({ setValue, formData, reset = false }) => {
 		if (reset) {

@@ -42,6 +42,10 @@ export const C03ProdGridContainer = (props) => {
 	// 	return !c03.editing || !supplier || ordDate;
 	// }, [c03.editing, ordDate, supplier]);
 
+	const _height = useMemo(() => {
+		return c03.editing ? height - 374 : height - 408
+	}, [c03.editing, height])
+
 	return (
 		<DSGContext.Provider value={{
 			...c03.grid,
@@ -55,7 +59,7 @@ export const C03ProdGridContainer = (props) => {
 				data={c03.gridData || []}
 
 				bearer={auth.token}
-				height={c03.editing ? height - 358 : height - 408}
+				height={_height}
 				getRowKey={c03.getRowKey}
 				spriceDisabled={c03.spriceDisabled}
 				sqtyDisabled={c03.sqtyDisabled}

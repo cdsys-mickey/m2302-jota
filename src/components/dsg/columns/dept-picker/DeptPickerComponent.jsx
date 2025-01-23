@@ -61,7 +61,7 @@ const DeptPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -111,7 +111,8 @@ const DeptPickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
-			// onClose={handleClose}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			placeholder="門市"
 			typeToSearchText="請輸入門市編號或名稱進行搜尋"
 			// filterByServer

@@ -89,13 +89,14 @@ export const useC02 = () => {
 	const promptCreating = useCallback(() => {
 		const data = {
 			RqtDate: new Date(),
-			quotes: [],
+			prods: [],
 		};
 		crud.promptCreating({ data });
-		grid.initGridData(data.quotes, {
+		sqtyManager.reset();
+		grid.initGridData(data.prods, {
 			fillRows: true
 		});
-	}, [crud, grid]);
+	}, [crud, grid, sqtyManager]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -367,15 +368,6 @@ export const useC02 = () => {
 		// 計算其他符合條件列的 SQty 加總
 		return gridData.map((row) => {
 			if (row.prod?.ProdID === _prodId) {
-				// if ((row.SNotQty && row.SNotQty <= 0) || (row.SOutQty && row.SOutQty != 0)) {
-				// 	return {
-				// 		...row,
-				// 		StockQty_N: "",
-				// 		// OrdQty_N: "",
-				// 		// LaveQty_N: "",
-				// 		tooltip: ""
-				// 	};
-				// }
 
 				const stock = sqtyManager.getStockQty(_prodId);
 				// const stock = sqtyManager.getRemainingStock({ prodId: _prodId, gridData });

@@ -14,6 +14,11 @@ import MuiStyles from "@/shared-modules/sd-mui-styles";
 export const A05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
+
 	const forms = useForm({
 		defaultValues: {},
 	});
@@ -31,7 +36,7 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 	}, [a05.creating, a05.updating]);
 
 	const scrollable = useScrollable({
-		height,
+		maxHeight: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -69,9 +74,9 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 					},
 				}}
 				contentSx={[
-					{
-						minHeight: "30em",
-					},
+					// {
+					// 	minHeight: "30em",
+					// },
 					scrollable.scroller,
 				]}
 				{...rest}>

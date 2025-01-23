@@ -36,13 +36,13 @@ const SideMenuSearchBar = memo(
 						name={name}
 						inputRef={inputRef}
 						onClear={onClear}
-						searchIconPlacement="right"
+						// searchIconPlacement="left"
 						placeholder="篩選作業 (ctrl+F9)"
 						shadowStyle="in"
 						// shadow="focus"
 						focusBackgroundColor="rgb(0 0 0 / 10%)"
 						hoverBackgroundColor="rgb(0 0 0 / 6%)"
-						width="20ch"
+					// width="20ch"
 					// onChange={onInputChange}
 					/>
 					{gotoMessages && (

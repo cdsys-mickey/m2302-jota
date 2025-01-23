@@ -10,15 +10,12 @@ const DSGTest4Page = (props) => {
 		<>
 			<DSGTest4Provider>
 
-				<DsgTest4GridProvider>
-					<DsgTest4GridContainer />
-				</DsgTest4GridProvider>
+				{/* <DsgTest4GridProvider> */}
+				<DsgTest4GridContainer />
+				{/* </DsgTest4GridProvider> */}
 				<DSGTest4LockSwitch />
 			</DSGTest4Provider>
 
-			<Typography variant="subtitle1">
-				* 最後是 TextComponentEx
-			</Typography>
 		</>
 	);
 };

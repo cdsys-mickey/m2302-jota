@@ -25,6 +25,9 @@ import { toastEx } from "@/helpers/toast-ex";
 export const B012DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			quotes: [],
@@ -49,7 +52,7 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 	})
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});

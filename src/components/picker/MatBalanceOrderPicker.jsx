@@ -34,7 +34,7 @@ const MatBalanceOrderPicker = memo((props) => {
 			placeholder="結餘單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

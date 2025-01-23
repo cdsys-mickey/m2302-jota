@@ -2,8 +2,8 @@ const getOptionLabel = (option) => {
 	if (!option) {
 		return "";
 	}
-	const { CustID, CustData } = option;
-	return [CustID, CustData].filter(Boolean).join(" ");
+	const { CustID, CustData, AbbrName } = option;
+	return [CustID, AbbrName || CustData].filter(Boolean).join(" ");
 };
 
 const getOptionLabelForId = (option) => {

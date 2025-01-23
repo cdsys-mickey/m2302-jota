@@ -38,7 +38,7 @@ export const ZZProdFilterFieldContainer = (props) => {
 				// rightSquare
 				// square
 				borderRadius="8px"
-				width="100%"
+				maxWidth="32ch"
 				responsive
 				ref={inputRef}
 				onClear={searchField.handleClear}

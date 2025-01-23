@@ -43,7 +43,7 @@ export const BomSearchFieldContainer = (props) => {
 					// rightSquare
 					// square
 					borderRadius="8px"
-					// width="100%"
+					// maxWidth="32ch"
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}

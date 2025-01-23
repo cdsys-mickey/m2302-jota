@@ -25,6 +25,9 @@ import { C08DialogToolbarContainer } from "./toolbar/C08DialogToolbarContainer";
 export const C08DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			prods: [],
@@ -41,7 +44,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 	// const { getSOrdId } = c08;
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -87,7 +90,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
 						withStock: true,
-						packageType: "i",
+						// packageType: "i",
 						forId: true,
 						disableClearable: true,
 						slotProps: {

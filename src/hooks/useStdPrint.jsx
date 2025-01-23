@@ -6,6 +6,7 @@ import { useAction } from "../shared-hooks/useAction";
 import useHttpPost from "../shared-hooks/useHttpPost";
 import { useWebApi } from "../shared-hooks/useWebApi";
 import { toastEx } from "@/helpers/toast-ex";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const useStdPrint = ({
 	token,
@@ -16,7 +17,8 @@ export const useStdPrint = ({
 }) => {
 	const { httpGetAsync } = useWebApi();
 	const { postToBlank } = useHttpPost();
-	// const crud = useContext(CrudContext);
+	const auth = useContext(AuthContext);
+	const { operator } = auth;
 	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const [state, setState] = useState({
 		displayName: null,
@@ -167,7 +169,7 @@ export const useStdPrint = ({
 			}
 
 			const where = paramsToJsonData
-				? paramsToJsonData(listLoaderCtx?.paramsRef?.current)
+				? paramsToJsonData(listLoaderCtx?.paramsRef?.current, operator)
 				: null;
 			console.log(`where`, where);
 

@@ -127,10 +127,11 @@ export const useE01 = () => {
 			prods: [],
 		};
 		crud.promptCreating({ data });
+		sqtyManager.reset();
 		grid.initGridData(data.prods, {
 			fillRows: 13
 		});
-	}, [crud, grid]);
+	}, [crud, grid, sqtyManager]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {

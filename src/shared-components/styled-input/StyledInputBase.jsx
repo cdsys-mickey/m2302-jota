@@ -16,7 +16,8 @@ const StyledInputBase = styled(InputBase, {
 })(
 	({
 		theme,
-		width = "26ch",
+		width,
+		// width = "26ch",
 		square = false,
 		shadowStyle,
 		shadow = "always",
@@ -51,7 +52,9 @@ const StyledInputBase = styled(InputBase, {
 			border: "rgba(0, 0, 0, 0.12)",
 			"& .MuiInputBase-input": {
 				padding: theme.spacing(1, 1, 1, 0),
-				paddingLeft: theme.spacing(2),
+				...(!searchIconPlacement || searchIconPlacement === "none" && ({
+					paddingLeft: theme.spacing(2),
+				})),
 				...(searchIconPlacement === "left" && {
 					paddingLeft: `calc(1em + ${theme.spacing(4)})`,
 				}),
@@ -65,10 +68,15 @@ const StyledInputBase = styled(InputBase, {
 					"width",
 					"background-color",
 				]),
-				width: "100%",
-				[theme.breakpoints.up(breakpoint)]: {
-					width: width,
-				},
+				width: `100%`,
+				// width: `calc(100% - ${theme.spacing(4)})`,
+				...(width && (
+					{
+						[theme.breakpoints.up(breakpoint)]: {
+							width: width,
+						},
+					}
+				)),
 				...(alwaysIn && {
 					boxShadow: IN_STYLE,
 				}),

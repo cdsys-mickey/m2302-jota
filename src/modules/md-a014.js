@@ -83,9 +83,9 @@ const transformForSubmitting = (data, dirtyIds) => {
 				MClas: catM?.MClas || "",
 				SClas: catS?.SClas || "",
 				CmsID: cmsType?.CodeID || "",
-				Tax: taxType?.Tax || "",
-				TypeA: typeA?.TypeA || "",
-				TypeB: typeB?.TypeB || "",
+				Tax: taxType?.id || "",
+				TypeA: typeA?.id || "",
+				TypeB: typeB?.id || "",
 				...rest,
 			};
 		});

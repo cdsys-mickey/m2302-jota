@@ -29,7 +29,7 @@ export const C08ProdGridContainer = (props) => {
 	}, [c08, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	const _height = useMemo(() => {
-		return height - 360;
+		return height - 366;
 	}, [height])
 
 	const prodInfoColumn = useMemo(() => {

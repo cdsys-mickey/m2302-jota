@@ -139,10 +139,11 @@ export const useD01 = () => {
 			OutDate: new Date(),
 		};
 		crud.promptCreating({ data });
+		sqtyManager.reset();
 		grid.initGridData(data.prods, {
 			fillRows: true
 		});
-	}, [crud, grid]);
+	}, [crud, grid, sqtyManager]);
 
 
 

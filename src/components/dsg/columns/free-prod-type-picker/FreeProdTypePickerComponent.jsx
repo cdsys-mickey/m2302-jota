@@ -1,4 +1,5 @@
 import FreeProdTypePicker from "@/components/picker/FreeProdTypePicker";
+import Constants from "@/modules/md-constants";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
@@ -28,13 +29,13 @@ const FreeProdTypePickerComponent = memo((props) => {
 		// Control Functions
 		stopEditing,
 		insertRowBelow,
-		duplicateRow,
-		deleteRow,
-		getContextMenuItems,
+		// duplicateRow,
+		// deleteRow,
+		// getContextMenuItems,
 	} = props;
 
-	const rowDataRef = useRef(rowData);
-	rowDataRef.current = rowData;
+	// const rowDataRef = useRef(rowData);
+	// rowDataRef.current = rowData;
 
 	const {
 		name,
@@ -60,7 +61,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -77,29 +78,29 @@ const FreeProdTypePickerComponent = memo((props) => {
 		focusOnDisabled
 	});
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		// focusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		// focusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	// focusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	// focusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// }
 
 	return (
 		<FreeProdTypePicker
@@ -109,6 +110,8 @@ const FreeProdTypePickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// placeholder="試贈樣"
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
@@ -121,6 +124,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 			toastError
 			{...rest}
 			blurToLookup={false}
+			mockDelay={Constants.POPPER_DELAY}
 		/>
 	);
 }, arePropsEqual);

@@ -11,6 +11,7 @@ const WebApiOptionPicker = memo(
 			multiple,
 			name,
 			open,
+			options,
 			onOpen,
 			onClose,
 			onChange,
@@ -48,6 +49,7 @@ const WebApiOptionPicker = memo(
 			resetOnChange,
 			resetOptionsOnChange,
 			resetValueOnChange,
+			mockDelay,
 			...rest
 		} = props;
 
@@ -59,7 +61,7 @@ const WebApiOptionPicker = memo(
 			onClose: _onClose,
 			onChange: _onChange,
 			loading,
-			options,
+			options: _options,
 			noOptionsText: _noOptionsText,
 			onInputChange,
 			disabled,
@@ -70,6 +72,7 @@ const WebApiOptionPicker = memo(
 			disableClose,
 			multiple,
 			url,
+			options,
 			method,
 			bearer,
 			disableLazy,
@@ -101,6 +104,7 @@ const WebApiOptionPicker = memo(
 			resetOnChange,
 			resetOptionsOnChange,
 			resetValueOnChange,
+			mockDelay
 		});
 
 		return (
@@ -109,7 +113,7 @@ const WebApiOptionPicker = memo(
 				ref={ref}
 				name={name}
 				loading={loading}
-				options={options}
+				options={_options}
 				noOptionsText={_noOptionsText}
 				disabled={disabledByParent || disabled}
 				// Controlled Props
@@ -172,6 +176,8 @@ WebApiOptionPicker.propTypes = {
 	resetOptionsOnChange: PropTypes.bool,
 	findByInput: PropTypes.func,
 	inputParam: PropTypes.string,
+	options: PropTypes.array,
+	mockDelay: PropTypes.number
 };
 
 export default WebApiOptionPicker;

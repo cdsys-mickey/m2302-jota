@@ -280,8 +280,6 @@ const CatSGridProvider = (props) => {
 
 				clear,
 				load,
-				// handleGridChange,
-				// handleActiveCellChange,
 				handleCreate,
 				handleUpdate,
 				handleConfirmDelete,

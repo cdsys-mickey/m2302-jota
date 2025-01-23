@@ -18,7 +18,7 @@ export const A01ProdTransGridContainer = (props) => {
 	}, [a01.transGridDisabled])
 
 	const _height = useMemo(() => {
-		return height - 278 + (readOnly ? 48 : 0)
+		return height - 288 + (readOnly ? 48 : 0)
 	}, [height, readOnly])
 
 	return (

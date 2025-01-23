@@ -5,31 +5,31 @@ const data = Object.freeze({
 
 const options = [
 	{
-		Tax: "T",
-		Tax_N: "含稅",
+		id: "T",
+		label: "含稅",
 	},
 	{
-		Tax: "M",
-		Tax_N: "免稅",
+		id: "M",
+		label: "免稅",
 	},
 ];
 
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { Tax, Tax_N } = option;
-	return [Tax, Tax_N].filter(Boolean).join(" ");
+	const { id, label } = option;
+	return [id, label].filter(Boolean).join(" ");
 };
 
 const isOptionEqualToValue = (option, value) => {
-	return option?.Tax === value?.Tax;
+	return option?.id === value?.id;
 };
 
 const findById = (id) => {
-	return options.find((o) => o.Tax === id);
+	return options.find((o) => o.id === id);
 };
 
 const findByInput = (id) => {
-	return options.find((o) => o.Tax?.toLowerCase() === id?.toLowerCase());
+	return options.find((o) => o.id?.toLowerCase() === id?.toLowerCase());
 };
 
 const TaxTypes = {

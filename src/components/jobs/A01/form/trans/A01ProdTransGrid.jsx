@@ -43,7 +43,7 @@ const A01ProdTransGrid = memo((props) => {
 			ref={gridRef}
 			rowKey="id"
 			lockRows={readOnly}
-			rowHeight={34}
+			height={height}
 			value={data}
 			onActiveCellChange={onActiveCellChange}
 			columns={columns}

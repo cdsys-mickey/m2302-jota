@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import A01ProdIDColumn from "./columns/A01ProdIDColumn";
 import A01ProdNameColumn from "./columns/A01ProdNameColumn";
+import A01BarcodeColumn from "./columns/A01BarcodeColumn";
 
 const A01ListRow = memo((props) => {
 	const { index, value, ...rest } = props;
@@ -17,9 +18,9 @@ const A01ListRow = memo((props) => {
 			<A01ProdNameColumn>
 				{value?.ProdData}
 			</A01ProdNameColumn>
-			<A01ProdNameColumn>
+			<A01BarcodeColumn>
 				{value?.Barcode}
-			</A01ProdNameColumn>
+			</A01BarcodeColumn>
 			{/* <A01ClassNColumn loading={loading}>
 				{value?.Clas_N}
 			</A01ClassNColumn> */}

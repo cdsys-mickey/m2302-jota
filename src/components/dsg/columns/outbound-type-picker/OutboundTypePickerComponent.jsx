@@ -61,7 +61,7 @@ const OutboundTypePickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -110,7 +110,8 @@ const OutboundTypePickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
-			// onClose={handleClose}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			placeholder="銷退/報廢原因"
 			// typeToSearchText="請輸入編號或名稱進行搜尋"
 			// filterByServer
@@ -127,6 +128,7 @@ const OutboundTypePickerComponent = memo((props) => {
 			// virtualize
 			{...rest}
 			blurToLookup={false}
+
 		/>
 	);
 }, arePropsEqual);

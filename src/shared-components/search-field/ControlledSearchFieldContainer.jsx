@@ -5,7 +5,8 @@ import { ControlledSearchField } from "./ControlledSearchField";
 export const ControlledSearchFieldContainer = (props) => {
 	const { ...rest } = props;
 	const responsive = useContext(ResponsiveContext);
-	return <ControlledSearchField mobile={responsive.mobule} {...rest} />;
+	const { mobile } = responsive;
+	return <ControlledSearchField mobile={mobile} {...rest} />;
 };
 
 ControlledSearchFieldContainer.displayName = "ControlledSearchFieldContainer";

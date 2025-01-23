@@ -7,6 +7,7 @@ import A06NameColumn from "./columns/A06NameColumn";
 import { useMemo } from "react";
 import A06EmpColumn from "./columns/A06EmpColumn";
 import A06BankColumn from "./columns/A06BankColumn";
+import A06AreaColumn from "./columns/A06AreaColumn";
 
 const A06ListRow = memo((props) => {
 	const { index, value, ...rest } = props;
@@ -36,9 +37,9 @@ const A06ListRow = memo((props) => {
 			<A06NameColumn>
 				{value?.CustData}
 			</A06NameColumn>
-			<A06EmpColumn>
+			<A06AreaColumn>
 				{area}
-			</A06EmpColumn>
+			</A06AreaColumn>
 			<A06EmpColumn>
 				{employee}
 			</A06EmpColumn>

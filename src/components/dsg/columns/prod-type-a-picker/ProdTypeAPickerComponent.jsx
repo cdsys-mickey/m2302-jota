@@ -1,13 +1,14 @@
 import ProdTypeAPicker from "@/components//picker/ProdTypeAPicker";
 import Objects from "@/shared-modules/sd-objects";
 import PropTypes from "prop-types";
-import { memo, useRef } from "react";
+import { memo } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import Constants from "@/modules/md-constants";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.typeA,active,disabled,focus",
+		fields: "rowData.id,active,disabled,focus",
 		debug: true,
 	});
 };
@@ -33,8 +34,8 @@ const ProdTypeAPickerComponent = memo((props) => {
 		// getContextMenuItems,
 	} = props;
 
-	const rowDataRef = useRef(rowData);
-	rowDataRef.current = rowData;
+	// const rowDataRef = useRef(rowData);
+	// rowDataRef.current = rowData;
 
 	const {
 		name,
@@ -60,7 +61,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -77,29 +78,29 @@ const ProdTypeAPickerComponent = memo((props) => {
 		focusOnDisabled
 	});
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		focusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		focusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	focusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	focusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// }
 
 	return (
 		<ProdTypeAPicker
@@ -109,6 +110,8 @@ const ProdTypeAPickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// DSG 專屬
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
@@ -120,6 +123,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 			toastError
 			{...rest}
 			blurToLookup={false}
+			mockDelay={Constants.POPPER_DELAY}
 		/>
 	);
 }, arePropsEqual);

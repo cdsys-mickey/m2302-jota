@@ -63,7 +63,7 @@ const ProdCatLPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, handleChange, cell } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -117,6 +117,8 @@ const ProdCatLPickerComponent = memo((props) => {
 			// value={value}
 			value={rowData}
 			onChange={handleChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}

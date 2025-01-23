@@ -25,6 +25,9 @@ import C07Drawer from "../C07Drawer";
 export const C07DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			prods: [],
@@ -39,7 +42,7 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 	const c07 = useContext(C07Context);
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -177,7 +180,7 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 		],
-		[readOnly]
+		[c07.getSPriceClassName, readOnly]
 	);
 
 	const gridMeta = useDSGMeta({
@@ -246,7 +249,7 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 				}}
 				contentSx={[
 					{
-						minHeight: "30em",
+						// minHeight: "30em",
 						paddingTop: 0,
 						// paddingLeft: 0,
 						// paddingRight: 0,

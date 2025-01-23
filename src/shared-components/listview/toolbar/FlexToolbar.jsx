@@ -20,7 +20,7 @@ const FlexToolbar = memo(
 			// Styles
 			boxSx = [],
 			bgcolor,
-			minHeight = 36,
+			minHeight = 40,
 			borderRadius = 1,
 			...rest
 		} = props;

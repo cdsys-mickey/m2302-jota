@@ -25,6 +25,9 @@ import { E01DialogToolbarContainer } from "./toolbar/E01DialogToolbarContainer";
 export const E01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			quotes: [],
@@ -80,7 +83,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 	})
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -295,12 +298,12 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 		ArrDate,
 		squared,
 		dontPrtAmt,
+		employee,
 		retail,
 		customer,
 		CustName,
 		paymentType,
 		CompTel,
-		employee,
 		taxExcluded,
 		RecAddr,
 		transType,

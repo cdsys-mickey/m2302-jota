@@ -6,6 +6,7 @@ import { memo } from "react";
 import A05IDColumn from "./columns/A05IDColumn";
 import A05NameColumn from "./columns/A05NameColumn";
 import { useMemo } from "react";
+import A05BankColumn from "./columns/A05BankColumn";
 
 const A05ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
@@ -39,9 +40,9 @@ const A05ListRow = memo((props) => {
 					<A05NameColumn>
 						{value?.FactData}
 					</A05NameColumn>
-					<A05NameColumn>
+					<A05BankColumn>
 						{bank}
-					</A05NameColumn>
+					</A05BankColumn>
 					{/* <A05ClassNColumn loading={loading}>
 						{value?.Clas_N}
 					</A05ClassNColumn> */}

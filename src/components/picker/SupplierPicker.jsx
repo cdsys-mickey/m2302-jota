@@ -63,7 +63,7 @@ const SupplierPicker = (props) => {
 			stringify={stringify}
 			getOptionKey={getOptionKey}
 			notFoundText="廠商 ${id} 不存在"
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

@@ -5,6 +5,7 @@ import A06IDColumn from "./columns/A06IDColumn";
 import A06NameColumn from "./columns/A06NameColumn";
 import A06EmpColumn from "./columns/A06EmpColumn";
 import A06BankColumn from "./columns/A06BankColumn";
+import A06AreaColumn from "./columns/A06AreaColumn";
 
 const A06ListHeader = memo(
 	forwardRef((props, ref) => {
@@ -14,7 +15,7 @@ const A06ListHeader = memo(
 				<IndexColumn></IndexColumn>
 				<A06IDColumn>代碼</A06IDColumn>
 				<A06NameColumn>名稱</A06NameColumn>
-				<A06EmpColumn>區域</A06EmpColumn>
+				<A06AreaColumn>區域</A06AreaColumn>
 				<A06EmpColumn>業務員</A06EmpColumn>
 				<A06BankColumn>銀行</A06BankColumn>
 			</ListViewHeader>

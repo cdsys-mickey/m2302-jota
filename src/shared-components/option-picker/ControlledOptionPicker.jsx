@@ -90,13 +90,16 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 						clearErrors={form.clearErrors}
 
 						// options={options}
-						onChange={(newValue) => {
+						onChange={async (newValue) => {
 							setInnerValue(newValue);
 							console.log(`${ControlledOptionPicker.displayName}.onChange`, newValue);
+
 							if (_onChange) {
-								_onChange(newValue);
+								await _onChange(newValue);
 							}
+
 							onChange(newValue);
+
 							// const newValueJson = JSON.stringify(newValue);
 
 							// if (

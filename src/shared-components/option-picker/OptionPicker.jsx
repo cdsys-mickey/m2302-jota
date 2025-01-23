@@ -3,6 +3,7 @@ import Types from "@/shared-modules/sd-types";
 import {
 	Autocomplete,
 	Chip,
+	CircularProgress,
 	Paper,
 	TextField,
 	createFilterOptions,
@@ -19,16 +20,16 @@ import {
 	useState,
 } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { toast } from "react-toastify";
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
-import { orange } from "@mui/material/colors";
 import Colors from "@/modules/md-colors";
 import { toastEx } from "@/helpers/toast-ex";
 import OptionPickerPopper from "./popper/OptionPickerPopper";
+import { useEffect } from "react";
+import { useChangeTrackingJson } from "@/shared-hooks/useChangeTrackingJson";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -190,7 +191,7 @@ const OptionPicker = memo(
 		const handleInputChange = useCallback(
 			(event) => {
 				const input = event.target.value;
-				// console.log(`handleInputChange: "${input}"`);
+				console.log(`handleInputChange: "${input}"`);
 
 				// 原本輸入框刪到空白則取消 dirty 狀態,
 				// 但為了支援空 id, 因此這裡改成允許空白時保留 dirty 狀態
@@ -219,9 +220,11 @@ const OptionPicker = memo(
 			(e, opts = {}) => {
 				const { override = false } = opts;
 				if (popperOpen) {
+					console.log("popper already opened");
 					return;
 				}
 				if (!disableOpenOnInput || e.type === "click" || override) {
+					console.log("OptionPicker.handleOpen", e);
 					if (onOpen) {
 						onOpen(e);
 					}
@@ -252,13 +255,13 @@ const OptionPicker = memo(
 			return open !== null && open !== undefined ? open : popperOpen;
 		}, [open, popperOpen]);
 
-		const _onOpen = useMemo(() => {
-			return onOpen || handleOpen;
-		}, [handleOpen, onOpen]);
+		// const _onOpen = useMemo(() => {
+		// 	return onOpen || handleOpen;
+		// }, [handleOpen, onOpen]);
 
-		const _onClose = useMemo(() => {
-			return onClose || handleClose;
-		}, [handleClose, onClose]);
+		// const _onClose = useMemo(() => {
+		// 	return onClose || handleClose;
+		// }, [handleClose, onClose]);
 
 
 		/**
@@ -288,10 +291,10 @@ const OptionPicker = memo(
 
 		const handleChange = useCallback(
 			(event, value, reason) => {
+				console.log(`OptionPicker.handleChange`, value);
 				asyncRef.current.dirty = false;
 				if (onChange) {
-					console.log(`[${name}].onChange`, value);
-					console.log(`reason: ${reason}, event: `, event);
+					console.log(`\ttriggered from parent, reason: ${reason}, event: `, event);
 					onChange(value);
 				}
 
@@ -359,6 +362,7 @@ const OptionPicker = memo(
 
 				console.log("handleLookup", e.key);
 
+				console.log("preventDefault/stopPropagation during handleLookup");
 				e.preventDefault();
 				e.stopPropagation();
 
@@ -439,14 +443,15 @@ const OptionPicker = memo(
 				if (!findByInput) {
 					return;
 				}
-				console.log("popperOpen", open);
+				// console.log("popperOpen", open);
 				e.preventDefault();
 				// 由於 Column.disableKeys 設為 true 會干擾 tab 運作，
 				// 因此必須防止 arrow down 往下傳遞
 				// e.stopPropagation();
-				_onOpen(e, { override: true });
+				// _onOpen(e, { override: true });
+				handleOpen(e, { override: true });
 			},
-			[_onOpen, findByInput, open]
+			[findByInput, handleOpen]
 		);
 
 		const handleKeyDown = useCallback(
@@ -477,11 +482,12 @@ const OptionPicker = memo(
 		);
 
 		const handleAutocompleteKeyDown = useCallback((e) => {
-			// console.log("handleAutocompleteKeyDown", e);
+			console.log("handleAutocompleteKeyDown", e);
 			switch (e.key) {
 				case "ArrowUp":
 				case "ArrowDown":
 				case "Enter":
+					console.log("stopPropagation");
 					e.stopPropagation();
 					break;
 			}
@@ -489,6 +495,7 @@ const OptionPicker = memo(
 
 		const handleBlur = useCallback(
 			async (e, opts) => {
+				console.log(`${OptionPicker.displayName}.handleBlur`, e);
 				// 離開輸入焦點就清除錯誤
 				if (blurToClearErrors && name && clearErrors) {
 					clearErrors(name);
@@ -532,7 +539,7 @@ const OptionPicker = memo(
 		);
 
 		const renderNormalInput = useCallback(
-			(props) => {
+			(params) => {
 				// console.log("textFieldProps", textFieldProps);
 
 				return (
@@ -553,9 +560,9 @@ const OptionPicker = memo(
 						// onChange={onInputChange}
 						onChange={handleInputChange}
 						onKeyDown={handleKeyDown}
+						// onBlur={blurToLookup ? handleBlur : undefined}
 						onBlur={handleBlur}
-						// onBlur={handleLookup}
-						{...props}
+						{...params}
 						sx={[{
 							...(required && !error && {
 								"& .MuiInputLabel-root:not(.Mui-focused)": {
@@ -569,12 +576,18 @@ const OptionPicker = memo(
 							})
 						}]}
 						InputProps={{
-							...props.InputProps,
+							...params.InputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
 							...InputProps,
+							endAdornment: (
+								<>
+									{loading ? <CircularProgress color="inherit" size={20} /> : null}
+									{params.InputProps.endAdornment}
+								</>
+							),
 						}}
 						inputProps={{
-							...props.inputProps,
+							...params.inputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
 							// ...(dense && {
 							// 	padding: 0,
@@ -584,14 +597,14 @@ const OptionPicker = memo(
 						{...TextFieldProps}
 						InputLabelProps={{
 							...MuiStyles.DEFAULT_OPTION_PICKER_INPUT_LABEL_PROPS,
-							...props.InputLabelProps,
+							...params.InputLabelProps,
 							...InputLabelProps,
 							...(labelShrink && { shrink: true }),
 						}}
 					/>
 				);
 			},
-			[InputLabelProps, InputProps, TextFieldProps, autoFocus, error, fullWidth, handleBlur, handleInputChange, handleKeyDown, helperText, hideControls, inputProps, label, labelShrink, placeholder, required, size, variant]
+			[InputLabelProps, InputProps, TextFieldProps, autoFocus, error, fullWidth, handleInputChange, handleKeyDown, helperText, hideControls, inputProps, label, labelShrink, loading, placeholder, required, size, variant]
 		);
 
 		const renderDndInput = useCallback(
@@ -612,13 +625,11 @@ const OptionPicker = memo(
 		);
 
 		const handleRenderInput = useCallback(
-			(textFieldProps) => {
+			(params) => {
 				if (!dnd) {
-					return renderNormalInput(textFieldProps);
+					return renderNormalInput(params);
 				}
-				return dnd
-					? renderDndInput(textFieldProps)
-					: renderNormalInput(textFieldProps);
+				return renderDndInput(params);
 			},
 			[dnd, renderDndInput, renderNormalInput]
 		);
@@ -843,6 +854,7 @@ const OptionPicker = memo(
 
 
 		useChangeTracking(() => {
+			console.log("value changed", value);
 			// 當選項改變, 且有值, 且非 multiple
 			if (focusNextCellOrField
 				&& (
@@ -851,11 +863,26 @@ const OptionPicker = memo(
 				)
 				&& !multiple && !supressEvents && !disabled
 			) {
-				console.log(`${name} changed, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`, value);
+				console.log(`[${name}]OptionPicker.changed, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`, value);
 				asyncRef.current.performFocusNext = false;
 				focusNextCellOrField();
 			}
 		}, [value]);
+		// useEffect(() => {
+		// 	console.log("value changed", value);
+		// 	// 當選項改變, 且有值, 且非 multiple
+		// 	if (focusNextCellOrField
+		// 		&& (
+		// 			(value || asyncRef.current.performFocusNext)
+		// 			&& (isTouched !== true)
+		// 		)
+		// 		&& !multiple && !supressEvents && !disabled
+		// 	) {
+		// 		console.log(`${name} changed, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`, value);
+		// 		asyncRef.current.performFocusNext = false;
+		// 		focusNextCellOrField();
+		// 	}
+		// }, [disabled, focusNextCellOrField, inDSG, inFormMeta, isTouched, multiple, name, supressEvents, value]);
 
 		return (
 			<OptionPickerBox
@@ -875,15 +902,34 @@ const OptionPicker = memo(
 					onChange={handleChange}
 					ref={ref}
 					size={size}
-					PaperComponent={({ ...rest }) => (
-						<PaperComponent
-							elevation={8}
-							{...(GridHeaderComponent && {
-								HeaderComponent: GridHeaderComponent,
-							})}
-							{...rest}
-						/>
-					)}
+					slotProps={{
+						paper: {
+							component: ({ ...rest }) => (
+								<PaperComponent
+									elevation={8}
+									{...(GridHeaderComponent && {
+										HeaderComponent: GridHeaderComponent,
+									})}
+									{...rest}
+								/>
+							)
+						},
+						// ...(virtualize && {
+						// 	listbox: {
+						// 		component: VirtualizedPickerListbox
+						// 	}
+						// })
+					}}
+					// onBlur={handleBlur}
+					// PaperComponent={({ ...rest }) => (
+					// 	<PaperComponent
+					// 		elevation={8}
+					// 		{...(GridHeaderComponent && {
+					// 			HeaderComponent: GridHeaderComponent,
+					// 		})}
+					// 		{...rest}
+					// 	/>
+					// )}
 					// filterSelectedOptions={filterSelectedOptions}
 					disabled={disabled}
 					noOptionsText={noOptionsText}
@@ -903,12 +949,13 @@ const OptionPicker = memo(
 					filterOptions={memoisedFilterOptions}
 					// Popper Open 控制
 					// open={popperOpen}
-					// onOpen={handleOpen}
-					// onClose={handleClose}
-					PopperComponent={OptionPickerPopper}
+					onOpen={handleOpen}
+					onClose={handleClose}
+					// PopperComponent={OptionPickerPopper}
 					open={_open}
-					onOpen={_onOpen}
-					onClose={_onClose}
+					// onOpen={_onOpen}
+					// onOpen={_onOpen}
+					// onClose={_onClose}
 					sx={[
 						{
 							...(disabled && {
@@ -923,9 +970,6 @@ const OptionPicker = memo(
 								},
 							}),
 							...(dense && {
-								// "& .MuiAutocomplete-root ": {
-								// 	padding: 0,
-								// },
 								"&.MuiAutocomplete-root .MuiInputBase-root.MuiInputBase-sizeSmall":
 								{
 									paddingTop: "2px",
@@ -942,8 +986,14 @@ const OptionPicker = memo(
 					// virtualize = true 時必須強制 override 部分屬性
 					{...(virtualize && {
 						ListboxComponent: VirtualizedPickerListbox,
+						// 	disableListWrap: true,
+					})}
+					{...(virtualize && {
 						disableListWrap: true,
 					})}
+				// ListboxProps={{
+				// 	style: { minHeight: loading ? 100 : 'auto' } // 保留 Listbox 空間，避免重新渲染
+				// }}
 				/>
 			</OptionPickerBox>
 		);

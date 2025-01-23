@@ -30,7 +30,7 @@ export const useC08 = () => {
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 
-	const qtyMap = useMemo(() => new Map(), []);
+	// const qtyMap = useMemo(() => new Map(), []);
 
 	const [
 		popperOpen,
@@ -161,11 +161,11 @@ export const useC08 = () => {
 			depOrders: [],
 		};
 		crud.promptCreating({ data });
-		qtyMap.clear();
+		sqtyManager.reset();
 		grid.initGridData(data.prods, {
 			fillRows: true
 		});
-	}, [crud, grid, qtyMap]);
+	}, [crud, grid, sqtyManager]);
 
 
 

@@ -156,9 +156,10 @@ const processForDefaultSubmit = (data) => {
 };
 
 const transformForCounterSubmit = (data) => {
-	const { ProdID, counter } = data;
+	const { ProdID, counter, SafeQty } = data;
 	return {
 		ProdID,
+		SafeQty,
 		NewCaseID: counter?.CodeID || "",
 	};
 };
@@ -244,9 +245,9 @@ const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 		IUnit: iunit?.CodeID || "",
 		SUnit: sunit?.CodeID || "",
 		MUnit: munit?.CodeID || "",
-		Tax: taxType?.Tax || "",
-		TypeA: typeA?.TypeA || "",
-		TypeB: typeB?.TypeB || "",
+		Tax: taxType?.id || "",
+		TypeA: typeA?.id || "",
+		TypeB: typeB?.id || "",
 		...(transGridData && {
 			StoreTrans_S: transformTransGridForSubmit(transGridData),
 		}),

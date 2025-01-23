@@ -1,5 +1,6 @@
 import FreeProdTypePicker from "@/components/picker/FreeProdTypePicker";
 import YesOrEmptyPicker from "@/components/picker/YesOrEmptyPicker";
+import Constants from "@/modules/md-constants";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
@@ -61,7 +62,7 @@ const YesOrEmptyPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -110,6 +111,8 @@ const YesOrEmptyPickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
@@ -120,6 +123,8 @@ const YesOrEmptyPickerComponent = memo((props) => {
 			disableFadeOut
 			toastError
 			{...rest}
+			blurToLookup={false}
+			mockDelay={Constants.POPPER_DELAY}
 		/>
 	);
 }, arePropsEqual);

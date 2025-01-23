@@ -429,7 +429,7 @@ const transformProdCriteriaAsQueryParams = (data) => {
 		cl: data.catL?.LClas,
 		cm: data.catM?.MClas,
 		cs: data.catS?.SClas,
-		ta: data.typeA?.TypeA,
+		ta: data.typeA?.id,
 	};
 };
 

@@ -6,7 +6,7 @@ import { useCallback, useContext, useMemo } from "react";
 import Employees from "../../modules/md-employees";
 
 const EmployeePicker = (props) => {
-	const { label = "員工", withQuotes = false, ...rest } = props;
+	const { label = "員工", withQuotes = false, forNewCustomer, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
@@ -14,10 +14,13 @@ const EmployeePicker = (props) => {
 			tp: 1000,
 			...(withQuotes && {
 				wq: 1
+			}),
+			...(forNewCustomer && {
+				new: 1
 			})
 		};
 		return queryString.stringify(obj);
-	}, [withQuotes]);
+	}, [forNewCustomer, withQuotes]);
 
 	const getData = useCallback((payload) => {
 		return payload["data"];
@@ -42,7 +45,7 @@ const EmployeePicker = (props) => {
 			getOptionKey={getOptionKey}
 			placeholder="員工編號"
 			notFoundText="員工 ${id} 不存在"
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);
@@ -51,7 +54,8 @@ const EmployeePicker = (props) => {
 EmployeePicker.displayName = "EmployeePicker";
 EmployeePicker.propTypes = {
 	label: PropTypes.string,
-	withQuotes: PropTypes.bool
+	withQuotes: PropTypes.bool,
+	forNewCustomer: PropTypes.bool
 };
 
 export default EmployeePicker;

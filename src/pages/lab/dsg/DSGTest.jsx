@@ -1,5 +1,6 @@
 import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
-import { ZZcreateOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/ZZcreateOptionPickerColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import OptionPickerComponent from "@/shared-components/dsg/columns/option-picker/OptionPickerComponent";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo, useState } from "react";
 import {
@@ -71,7 +72,7 @@ const DSGTest = memo(
 				{
 					...keyColumn(
 						"abc",
-						ZZcreateOptionPickerColumn({
+						optionPickerColumn(OptionPickerComponent, {
 							options: ["A", "B", "C"],
 						})
 					),

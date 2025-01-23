@@ -525,45 +525,6 @@ export const useZA03 = () => {
 		[grid.gridData, handleFunctionEnabled]
 	);
 
-	// const handleGridChange = useCallback(
-	// 	(newValue, operations) => {
-	// 		let checkFailed = false;
-	// 		const newGridData = [...newValue];
-	// 		for (const operation of operations) {
-	// 			if (operation.type === "UPDATE") {
-	// 				newValue
-	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
-	// 					.forEach(async (rowData, i) => {
-	// 						const rowIndex = operation.fromRowIndex + i;
-	// 						console.log(`DSG UPDATE[${rowIndex}]`);
-	// 						const prevRowData = grid.prevGridData[rowIndex];
-
-	// 						grid.handleDirtyCheck(rowData, prevRowData);
-	// 					});
-	// 			}
-	// 		}
-	// 		if (!checkFailed) {
-	// 			grid.setGridData(newGridData);
-	// 		}
-	// 	},
-	// 	[grid]
-	// );
-
-	// const handleModuleSelectionChange = useCallback(
-	// 	({ selection } = {}) => {
-	// 		console.log("handleModuleSelectionChange", selection);
-	// 		if (selection) {
-	// 			const selectedModuleMin = getRowDataByIndex(selection.min.row);
-	// 			const selectedModuleMax = getRowDataByIndex(selection.max.row);
-	// 			setSelection({
-	// 				selectedModuleMin,
-	// 				selectedModuleMax,
-	// 			});
-	// 		}
-	// 	},
-	// 	[getRowDataByIndex]
-	// );
-
 	const handleCreateRow = useCallback(
 		() => ({
 			module: null,
@@ -936,7 +897,7 @@ export const useZA03 = () => {
 						return rowData;
 					}),
 				{
-					dirtyCheckByIndex: true,
+					doDirtyCheckByIndex: true,
 					// debug: true 
 				}
 			);
@@ -964,7 +925,7 @@ export const useZA03 = () => {
 					});
 					return updatedRowData;
 				}),
-			{ dirtyCheckByIndex: true, debug: true }
+			{ doDirtyCheckByIndex: true, debug: true }
 		);
 	}, [grid]);
 
@@ -978,7 +939,7 @@ export const useZA03 = () => {
 					});
 					return updatedRowData;
 				}),
-			{ dirtyCheckByIndex: true, debug: true }
+			{ doDirtyCheckByIndex: true, debug: true }
 		);
 	}, [grid]);
 
@@ -1060,7 +1021,6 @@ export const useZA03 = () => {
 		saveAuthState: saveAuthAction.state,
 		// 複製權限
 		getRowClassName,
-		// handleGridChange,
 		funcDisabled,
 		checkAll,
 		clearAll,

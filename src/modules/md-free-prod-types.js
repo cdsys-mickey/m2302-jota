@@ -13,14 +13,6 @@ const options = [
 	},
 ];
 
-const getOptionById = (id) => {
-	return options.find((o) => o.id === id) || null;
-};
-
-const findByInput = (id) => {
-	return options.find((o) => o.id === id) || null;
-};
-
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { id, label } = option;
@@ -29,6 +21,14 @@ const getOptionLabel = (option) => {
 
 const isOptionEqualToValue = (option, value) => {
 	return option?.id === value?.id;
+};
+
+const getOptionById = (id) => {
+	return options.find((o) => o.id == id) || null;
+};
+
+const findByInput = (id) => {
+	return options.find((o) => o.id == id) || null;
 };
 
 const FreeProdTypes = {

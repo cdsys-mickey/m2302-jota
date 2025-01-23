@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import TaxTypes2 from "@/modules/md-tax-types2";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import Constants from "@/modules/md-constants";
 
 const TaxType2Picker = memo(
 	forwardRef((props, ref) => {
@@ -16,7 +17,8 @@ const TaxType2Picker = memo(
 				getOptionLabel={TaxTypes2.getOptionLabel}
 				isOptionEqualToValue={TaxTypes2.isOptionEqualToValue}
 				findByInput={TaxTypes2.findByInput}
-				blurToLookup
+				{...Constants.STATIC_PICKER_OPTS}
+				// blurToLookup
 				{...rest}
 			/>
 		);

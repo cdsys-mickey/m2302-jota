@@ -27,6 +27,9 @@ import { C04DialogToolbarContainer } from "./toolbar/C04DialogToolbarContainer";
 export const C04DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			prods: [],
@@ -58,7 +61,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 	const c04 = useContext(C04Context);
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});

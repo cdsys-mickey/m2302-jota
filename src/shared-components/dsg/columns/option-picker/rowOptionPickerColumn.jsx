@@ -11,6 +11,13 @@ export const rowOptionPickerColumn = (CellComponent, opts = {}) => {
 			}
 		},
 		copyValue: ({ rowData }) => JSON.stringify(rowData[opts.name]),
+		pasteValue: ({ rowData, value }) => {
+			const obj = JSON.parse(value)
+			return {
+				...rowData,
+				[opts.name]: obj
+			}
+		},
 		// pasteValue: ({ value }) => JSON.parse(value),
 		isCellEmpty: ({ rowData }) => false,
 	};

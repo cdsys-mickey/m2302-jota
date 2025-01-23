@@ -49,7 +49,7 @@ export default function useSQtyManager(opts = {}) {
 		stockQtyMap.set(prodId, Number(value));
 	}, [stockQtyMap]);
 
-	const clearQty = useCallback(() => {
+	const reset = useCallback(() => {
 		stockQtyMap.clear();
 	}, [stockQtyMap]);
 
@@ -549,7 +549,7 @@ export default function useSQtyManager(opts = {}) {
 		getSQtyExcludingCurrent,
 		getStockBeforeCurrent,
 		updateStockQty,
-		clearQty,
+		reset,
 		containsProdInStock,
 		// 目前訂購量
 		getPreparedQty,

@@ -5,7 +5,7 @@ const A06EmpColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={3} {...rest} />
+		<ListColumn item pr={1} xs={3} sx={{ display: { xs: 'none', sm: 'block' } }} {...rest} />
 	);
 };
 

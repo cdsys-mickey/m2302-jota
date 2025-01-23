@@ -6,7 +6,6 @@ import { A22Context } from "@/contexts/A22/A22Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { FormProvider, useForm } from "react-hook-form";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 export const A22GridContainer = () => {
 	const { height } = useWindowSize();
@@ -39,7 +38,6 @@ export const A22GridContainer = () => {
 						data={a22.gridData}
 						loading={a22.gridLoading}
 						height={gridHeight}
-						// onChange={a22.handleGridChange}
 						onChange={onChange}
 						onActiveCellChange={a22.handleActiveCellChange}
 						bearer={token}

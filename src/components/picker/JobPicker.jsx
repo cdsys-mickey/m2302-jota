@@ -43,7 +43,7 @@ const JobPicker = memo((props) => {
 			getData={getData}
 			querystring={querystring}
 			notFoundText="作業代號 ${id} 不存在"
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

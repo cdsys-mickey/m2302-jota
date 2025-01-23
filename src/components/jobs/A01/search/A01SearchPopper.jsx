@@ -11,7 +11,8 @@ import A01SearchForm from "./A01SearchForm";
 const A01SearchPopper = memo(
 	forwardRef((props, ref) => {
 		const {
-			width = "40ch",
+			// width = "40ch",
+			width,
 			onClose,
 			onReset,
 			// onReset,

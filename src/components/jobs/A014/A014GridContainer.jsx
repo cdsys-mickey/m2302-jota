@@ -1,10 +1,9 @@
-import { useContext, useMemo } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
-import { useWindowSize } from "../../../shared-hooks/useWindowSize";
-import A014Grid from "./A014Grid";
-import { AuthContext } from "../../../contexts/auth/AuthContext";
+import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
+import { useWindowSize } from "../../../shared-hooks/useWindowSize";
+import A014Grid from "./A014Grid";
 
 export const A014GridContainer = () => {
 	const { height } = useWindowSize();
@@ -16,7 +15,10 @@ export const A014GridContainer = () => {
 	}, [prodGrid.expanded, height]);
 
 	const onChange = useMemo(() => {
-		return prodGrid.buildGridChangeHandler({ onUpdateRow: prodGrid.onUpdateRow })
+		return prodGrid.buildGridChangeHandler({
+			onUpdateRow: prodGrid.onUpdateRow,
+			doDirtyCheckByIndex: true
+		})
 	}, [prodGrid])
 
 	return (

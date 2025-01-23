@@ -50,6 +50,7 @@ const WidgetBox = (props) => {
 const HomeWidget = memo((props) => {
 	const {
 		height = 500,
+		minHeight,
 		loading,
 		error,
 		heading,
@@ -64,6 +65,7 @@ const HomeWidget = memo((props) => {
 	const styles = useStyles();
 	const scrollable = useScrollable({
 		height,
+		minHeight,
 		scrollerBackgroundColor: "transparent",
 	});
 

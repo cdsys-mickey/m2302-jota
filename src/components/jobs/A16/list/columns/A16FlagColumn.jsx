@@ -2,10 +2,16 @@ import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
 
 const A16FlagColumn = (props) => {
-	const { ...rest } = props;
+	const { children, ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={5} {...rest} />
+		<ListColumn item pr={1} xs={5} {...rest} sx={{
+			"& .MuiChip-root": {
+				marginRight: 0.5
+			}
+		}}>
+			{children}
+		</ListColumn>
 	);
 };
 

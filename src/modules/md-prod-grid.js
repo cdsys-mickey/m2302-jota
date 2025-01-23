@@ -5,9 +5,9 @@ const transformAsQueryParams = (data) => {
 		cl: data.catL?.LClas,
 		cm: data.catM?.MClas,
 		cs: data.catS?.SClas,
-		ta: data.typeA?.TypeA,
-		tb: data.typeB?.TypeB,
-		tx: data.taxType?.Tax,
+		ta: data.typeA?.id,
+		tb: data.typeB?.id,
+		tx: data.taxType?.id,
 		sq: data.safeQty,
 	};
 };

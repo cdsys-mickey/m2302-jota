@@ -22,6 +22,9 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 export const D06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			prods: [],
@@ -32,7 +35,7 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 	const d06 = useContext(D06Context);
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});

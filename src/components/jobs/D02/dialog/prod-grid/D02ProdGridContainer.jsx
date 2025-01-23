@@ -1,13 +1,10 @@
-import { useContext } from "react";
-import D02ProdGrid from "./D02ProdGrid";
 import { D02Context } from "@/contexts/D02/D02Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useFormContext, useWatch } from "react-hook-form";
-import DSGBox from "../../../../../shared-components/dsg/DSGBox";
-import { useMemo } from "react";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { useContext, useMemo } from "react";
+import D02ProdGrid from "./D02ProdGrid";
 
 export const D02ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -27,7 +24,7 @@ export const D02ProdGridContainer = (props) => {
 	}, [d02, formMeta.gridMeta]);
 
 	const _height = useMemo(() => {
-		return height - 310;
+		return height - 318;
 	}, [height])
 
 	return (

@@ -33,8 +33,12 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 
 	const c02 = useContext(C02Context);
 
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
+
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});

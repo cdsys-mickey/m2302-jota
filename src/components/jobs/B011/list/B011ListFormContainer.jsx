@@ -1,9 +1,12 @@
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import B011ListForm from "./B011ListForm";
+import { BContext } from "@/contexts/B/BContext";
+import { useContext } from "react";
 
 export const B011ListFormContainer = (props) => {
 	const { ...rest } = props;
+	const b = useContext(BContext);
 	const formMeta = useFormMeta(
 		`
 		lvCust,
@@ -14,7 +17,7 @@ export const B011ListFormContainer = (props) => {
 	)
 	return (
 		<FormMetaProvider {...formMeta}>
-			<B011ListForm  {...rest} />
+			<B011ListForm  {...rest} forNew={b.forNew} />
 		</FormMetaProvider>
 	)
 }

@@ -269,84 +269,6 @@ export const useA014 = () => {
 		return processedRowData;
 	}, [grid.gridData]);
 
-	// const handleGridChange = useCallback(
-	// 	(newValue, operations) => {
-	// 		console.log(`A014.handleGridChange`, newValue);
-	// 		// 只處理第一個 operation 的第一行
-	// 		const operation = operations[0];
-	// 		console.log("operation", operation);
-	// 		if (operation.type === "CREATE") {
-	// 			grid.setGridData(newValue);
-	// 		} else if (operation.type === "UPDATE") {
-	// 			const rowIndex = operation.fromRowIndex;
-	// 			const rowData = newValue[rowIndex];
-	// 			const prevRowData = grid.prevGridData[rowIndex];
-	// 			console.log(`[DSG UPDATE]`, rowData);
-	// 			const { catL, catM } = rowData;
-	// 			const { catL: oldCatL, catM: oldCatM } = prevRowData;
-
-	// 			let newGridData = [...newValue];
-	// 			let processedRowData = { ...rowData };
-
-	// 			// process UPDATE here
-	// 			if (catL?.LClas !== oldCatL?.LClas) {
-	// 				processedRowData["catM"] = null;
-	// 				processedRowData["catS"] = null;
-	// 			} else if (catM?.MClas !== oldCatM?.MClas) {
-	// 				processedRowData["catS"] = null;
-	// 			}
-
-	// 			const dirty = grid.handleDirtyCheck(prevRowData, processedRowData);
-	// 			console.log("dirty", dirty);
-
-	// 			newGridData[rowIndex] = processedRowData;
-	// 			grid.setGridData(newGridData);
-	// 			console.log("newGridData", newGridData)
-	// 		} else {
-	// 			grid.setGridData(newValue);
-	// 		}
-	// 	},
-	// 	[grid]
-	// );
-
-	// const handleGridChange = useCallback(
-	// 	(newValue, operations) => {
-	// 		const newGridData = [...newValue];
-	// 		let checkFailed = false;
-	// 		for (const operation of operations) {
-	// 			if (operation.type === "UPDATE") {
-	// 				console.log("dsg.UPDATE");
-	// 				newValue
-	// 					.slice(operation.fromRowIndex, operation.toRowIndex)
-	// 					.forEach((rowData, i) => {
-	// 						// const { catL, catM } = rowData;
-	// 						const rowIndex = operation.fromRowIndex + i;
-	// 						let prevRowData = grid.prevGridData[rowIndex];
-	// 						let processedRowData = { ...rowData };
-
-	// 						// const { catL: oldCatL, catM: oldCatM } = grid.gridData[rowIndex];
-	// 						// // process UPDATE here
-	// 						// if (catL?.LClas !== oldCatL?.LClas) {
-	// 						// 	processedRowData["catM"] = null;
-	// 						// 	processedRowData["catS"] = null;
-	// 						// } else if (catM?.MClas !== oldCatM?.MClas) {
-	// 						// 	processedRowData["catS"] = null;
-	// 						// }
-	// 						grid.handleDirtyCheck(prevRowData, processedRowData)
-	// 						newGridData[rowIndex] = processedRowData;
-	// 					});
-	// 			} else if (operation.type === "DELETE") {
-	// 				console.log("dsg.DELETE");
-	// 			} else if (operation.type === "CREATE") {
-	// 				console.log("dsg.CREATE");
-	// 			}
-	// 		}
-	// 		if (!checkFailed) {
-	// 			grid.setGridData(newGridData);
-	// 		}
-	// 	},
-	// 	[grid]
-	// );
 
 	return {
 		...appModule,
@@ -355,8 +277,6 @@ export const useA014 = () => {
 		grid,
 		...gridMeta,
 		gridMeta,
-		// handleCreateRow,
-		// handleGridChange
 		onUpdateRow
 	};
 };

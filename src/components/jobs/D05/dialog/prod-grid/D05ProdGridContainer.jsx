@@ -16,7 +16,7 @@ export const D05ProdGridContainer = (props) => {
 	const { ...rest } = props;
 	const d05 = useContext(D05Context);
 	const auth = useContext(AuthContext);
-	const { height: windowHeight } = useWindowSize();
+	const { height } = useWindowSize();
 	const form = useFormContext();
 	const formMeta = useContext(FormMetaContext);
 
@@ -24,17 +24,10 @@ export const D05ProdGridContainer = (props) => {
 		return !d05.editing;
 	}, [d05.editing]);
 
-	const height = useMemo(() => {
-		return windowHeight - 310;
-	}, [windowHeight]);
+	const _height = useMemo(() => {
+		return height - 318;
+	}, [height]);
 
-	// const onChange = useMemo(() => {
-	// 	return d05.buildGridChangeHandler({
-	// 		getValues: form.getValues,
-	// 		setValue: form.setValue,
-	// 		gridMeta: formMeta.gridMeta
-	// 	})
-	// }, [d05, form.getValues, form.setValue, formMeta.gridMeta])
 	const onChange = useMemo(() => {
 		return d05.buildGridChangeHandler({
 			getValues: form.getValues,
@@ -64,11 +57,10 @@ export const D05ProdGridContainer = (props) => {
 				gridRef={formMeta.gridMeta.setGridRef}
 				readOnly={formMeta.readOnly}
 				data={d05.gridData}
-				// handleGridChange={handleGridChange}
 				onChange={onChange}
 				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
-				height={height}
+				height={_height}
 				getRowKey={d05.getRowKey}
 				customerDisabled={d05.customerDisabled}
 				deptDisabled={d05.deptDisabled}

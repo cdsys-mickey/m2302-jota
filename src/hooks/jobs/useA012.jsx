@@ -59,7 +59,7 @@ export const useA012 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -84,7 +84,7 @@ export const useA012 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -109,7 +109,7 @@ export const useA012 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						slotProps: {
 							paper: {
 								sx: {
@@ -134,7 +134,7 @@ export const useA012 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						slotProps: {
 							paper: {
 								sx: {

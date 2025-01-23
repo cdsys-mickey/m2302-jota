@@ -1,5 +1,6 @@
 .rw-scrollable {
 	transition: all 0.2s ease-in-out;
+	overflow-x: hidden !important;
 	// TRACK
 	&::-webkit-scrollbar-track {
 		border-radius: 4px;

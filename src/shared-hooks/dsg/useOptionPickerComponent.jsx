@@ -25,6 +25,9 @@ export const useOptionPickerComponent = (opts) => {
 	} = opts;
 
 	const ref = useRef();
+	const asyncRef = useRef({
+		open: null
+	});
 
 	const cell = useMemo(() => {
 		return {
@@ -37,29 +40,61 @@ export const useOptionPickerComponent = (opts) => {
 		return disabled || hideControlsOnActive ? !focus : !active;
 	}, [active, hideControlsOnActive, disabled, focus]);
 
+
+	const handleChange = useCallback(
+		(newValue) => {
+			console.log(`[${name}]useOptionPickerComponent.handleChange`, newValue);
+			setRowData(newValue);
+			// if (!newValue) {
+			// 	return;
+			// }
+			setTimeout(() => {
+				stopEditing({ nextRow: false })
+				console.log("stopEditing invoked");
+				ref.current?.blur();
+			});
+			// stopEditing({ nextRow: false });
+			// ref.current?.blur();
+		},
+		[name, setRowData, stopEditing]
+	);
+
+	const handleOpen = useCallback(() => {
+		console.log("onOpen callback fired");
+		asyncRef.current.open = true;
+	}, []);
+
+	const handleClose = useCallback(() => {
+		console.log("onClose callback fired");
+		asyncRef.current.open = false;
+	}, []);
+
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
+			console.log("useOptionPickerComponent.focus", focus);
 			ref.current?.focus();
 			if (selectOnFocus) {
 				ref.current?.select();
 			}
 		} else {
-			ref.current?.blur();
+			console.log(`useOptionPickerComponent.leaveFocus, asyncRef.current.open: ${asyncRef.current.open}`);
+			if (!asyncRef.current.open) {
+				ref.current?.blur();
+			}
 		}
 	}, [focus, selectOnFocus]);
 
-	const handleChange = useCallback(
-		(newValue) => {
-			console.log(`${name}.handleChange`, newValue);
-			setRowData(newValue);
-			if (!newValue) {
-				return;
-			}
-			setTimeout(() => stopEditing({ nextRow: false }));
-		},
-		[name, setRowData, stopEditing]
-	);
+	useLayoutEffect(() => {
+		console.log("useOptionPickerComponent.active", active);
+		// if (!active && asyncRef.current.open) {
+		// 	setTimeout(() => {
+		// 		stopEditing({ nextRow: false })
+		// 		console.log("stopEditing invoked when leave active");
+		// 		ref.current?.blur();
+		// 	});
+		// }
+	}, [active, stopEditing]);
 
 	// 先單純靠 OptionPicker 內的
 	// 跳過停用 Cell
@@ -78,5 +113,7 @@ export const useOptionPickerComponent = (opts) => {
 		hideControls,
 		cell,
 		handleChange,
+		handleOpen,
+		handleClose
 	};
 };

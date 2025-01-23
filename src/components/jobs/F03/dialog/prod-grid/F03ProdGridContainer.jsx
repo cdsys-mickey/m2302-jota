@@ -4,7 +4,6 @@ import { F03Context } from "@/contexts/F03/F03Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useFormContext, useWatch } from "react-hook-form";
-import DSGBox from "../../../../../shared-components/dsg/DSGBox";
 import { useMemo } from "react";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
@@ -27,7 +26,7 @@ export const F03ProdGridContainer = (props) => {
 	}, [f03, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	const _height = useMemo(() => {
-		return formMeta.readOnly ? height - 246 : height - 206;
+		return formMeta.readOnly ? height - 254 : height - 214;
 	}, [formMeta.readOnly, height])
 
 	return (

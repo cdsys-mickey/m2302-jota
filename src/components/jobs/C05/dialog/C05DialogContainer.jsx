@@ -23,6 +23,9 @@ import { C05DialogToolbarContainer } from "./toolbar/C05DialogToolbarContainer";
 export const C05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			prods: [],
@@ -54,7 +57,7 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 	// }, [debouncedRtnDate]);
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});

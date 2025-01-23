@@ -28,8 +28,12 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 	});
 	const { reset } = form;
 
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
+
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});

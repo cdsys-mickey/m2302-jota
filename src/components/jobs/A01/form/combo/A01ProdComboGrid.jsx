@@ -43,7 +43,6 @@ const A01ProdComboGrid = memo((props) => {
 			ref={gridRef}
 			rowKey="id"
 			height={height}
-			rowHeight={34}
 			value={data}
 			onChange={handleGridChange}
 			onActiveCellChange={onActiveCellChange}

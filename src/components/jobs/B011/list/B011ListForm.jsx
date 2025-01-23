@@ -1,27 +1,22 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { BContext } from "@/contexts/B/BContext";
-import { B011Context } from "@/contexts/B011/B011Context";
-import { B031Context } from "@/contexts/B031/B031Context";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo, useContext } from "react";
+import { memo } from "react";
 
 const B011ListForm = memo((props) => {
 	const { forNew = false, ...rest } = props;
-	const b = useContext(BContext);
-	const b011 = useContext(b.forNew ? B031Context : B011Context);
 
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
 				<Grid item md={6}>
 					<CustomerPicker
-						forNew={b.forNew}
+						forNew={forNew}
 						name="lvCust"
-						label={b.forNew ? "新客戶代碼" : "客戶代碼"}
+						label={forNew ? "新客戶代碼" : "客戶代碼"}
 						disableOpenOnInput
 						withQuotes
 						slotProps={{
@@ -35,6 +30,7 @@ const B011ListForm = memo((props) => {
 				</Grid>
 				<Grid item md={6}>
 					<EmployeePicker
+						forNewCustomer={forNew}
 						label="報價人員"
 						name="lvEmployee"
 						virtualize

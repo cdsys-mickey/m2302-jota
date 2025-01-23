@@ -149,8 +149,8 @@ export const useDSG = ({
 				commit = false,
 				init,
 				debug,
-				dirtyCheckByIndex,
-				dirtyCheckBy,
+				doDirtyCheckByIndex,
+				doDirtyCheck,
 				createRow,
 				length = 10,
 				supressEvents,
@@ -173,14 +173,15 @@ export const useDSG = ({
 					persistedIds.add(key);
 				});
 			} else {
-				if (dirtyCheckByIndex || dirtyCheckBy) {
+				if (doDirtyCheckByIndex || doDirtyCheck) {
 					const newGridData = Types.isFunction(newValue)
 						? newValue(gridData)
 						: newValue;
 					// dirtyIds.clear();
 					newGridData.forEach((rowData, rowIndex) => {
+						// 先以 index 取出
 						let prevRowData = prevGridDataRef.current[rowIndex];
-						if (dirtyCheckBy) {
+						if (doDirtyCheck) {
 							const key = _.get(rowData, keyColumn);
 							prevRowData = prevGridDataRef.current.find((item) => {
 								const itemKey = _.get(item, keyColumn);
@@ -347,6 +348,8 @@ export const useDSG = ({
 		[gridId, setGridData]
 	);
 
+	// 簡單的 Grid.onChange 實作，目前應該只有 ZA03 與 A011~A015 在使用 
+	// 會使用 dirty check
 	const handleGridChange = useCallback(
 		(newValue, operations) => {
 			console.log(`${gridId}.handleGridChange`, newValue);
@@ -373,12 +376,20 @@ export const useDSG = ({
 
 
 
+	/**
+	 * 
+	 */
 	const buildGridChangeHandler = useCallback(
 		({ setValue, getValues, gridMeta, onUpdateRow, onDeleteRow = DEFAULT_ON_DELETE_ROW, isRowDeletable, onDeleteRowFailed, onGridChanged, isRowCreatable = true, ...opts }) =>
 			async (newValue, operations) => {
-				const { focusFirstColumnOnCreate = true, dirtyCheckOpts = {
-					// debug: true
-				} } = opts;
+				const {
+					focusFirstColumnOnCreate = true,
+					doDirtyCheck = false,
+					doDirtyCheckByIndex = false,
+					dirtyCheckOpts = {
+						// debug: true
+					}
+				} = opts;
 
 				console.log("onGridChange.operations", operations);
 				console.log("newValue", newValue);
@@ -414,11 +425,20 @@ export const useDSG = ({
 									})
 							) : updatingRows;
 
-							updatedRows.forEach((updatedRowData, index) => {
-								const prevRowData = prevGridDataRef.current[operation.fromRowIndex + index];
-								const dirty = handleDirtyCheck(updatedRowData, prevRowData, dirtyCheckOpts);
-								console.log("dirty", dirty);
-							});
+							if (doDirtyCheck || doDirtyCheckByIndex) {
+								updatedRows.forEach((updatedRowData, index) => {
+									let prevRowData = prevGridDataRef.current[operation.fromRowIndex + index];
+									if (doDirtyCheck) {
+										const key = _.get(updatedRows, keyColumn);
+										prevRowData = prevGridDataRef.current.find((item) => {
+											const itemKey = _.get(item, keyColumn);
+											return itemKey === key;
+										});
+									}
+									const dirty = handleDirtyCheck(updatedRowData, prevRowData, dirtyCheckOpts);
+									console.log("dirty", dirty);
+								});
+							}
 
 							// 替換成處理過的 rows
 							newGridData.splice(
@@ -515,14 +535,14 @@ export const useDSG = ({
 				if (!checkFailed) {
 					if (updated) {
 						setGridData(updated);
-						setPrevGridData(updated);
+						// setPrevGridData(updated);
 					} else {
 						setGridData(newGridData);
-						setPrevGridData(newGridData);
+						// setPrevGridData(newGridData);
 					}
 				}
 			},
-		[deletedIds, gridData, handleDirtyCheck, keyColumn, prevGridDataRef]
+		[deletedIds, gridData, handleDirtyCheck, keyColumn]
 	);
 
 	const spreadOnRow = useCallback(

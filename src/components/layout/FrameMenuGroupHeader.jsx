@@ -3,6 +3,7 @@ import { Typography } from "@mui/material";
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
 import Colors from "@/modules/md-colors";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 export const FrameMenuGroupHeader = memo(
 	forwardRef((props, ref) => {
@@ -29,6 +30,7 @@ export const FrameMenuGroupHeader = memo(
 						height: "34px",
 					},
 					...(Array.isArray(sx) ? sx : [sx]),
+					MuiStyles.ELLIPSIS,
 				]}
 				{...rest}>
 				<FlexBox>{iconComponent && <Icon htmlColor="#fff" />}</FlexBox>

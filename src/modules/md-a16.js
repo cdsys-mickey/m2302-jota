@@ -35,15 +35,14 @@ const transformAsQueryParams = (data) => {
 	};
 };
 
-const paramsToJsonData = (params) => {
+const paramsToJsonData = (params, operator) => {
 	const where = [];
 
 	return {
 		StdWhere: where,
-		...(params?.qs && {
+		...(operator?.GroupKey && {
 			CondData: {
-				QS_ID: `%${params.qs}%`,
-				QS_NAME: `%${params.qs}%`,
+				GROUP: operator.GroupKey.substring(0, 1),
 			},
 		}),
 	};

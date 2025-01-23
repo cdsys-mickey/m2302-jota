@@ -49,6 +49,8 @@ export const useDSGCodeEditor = ({
 			if (!supressLoading) {
 				grid.setGridLoading(true);
 			}
+			// 至少等 300ms
+			await new Promise((resolve) => setTimeout(resolve, 300));
 
 			// 更新 baseUri
 			if (baseUri) {

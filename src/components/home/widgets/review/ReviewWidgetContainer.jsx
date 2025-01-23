@@ -2,8 +2,8 @@ import Colors from "@/modules/md-colors";
 import ModuleHeading from "@/shared-components/ModuleHeading";
 import InboxIcon from "@mui/icons-material/Inbox";
 import { useContext } from "react";
-import { HomeContext } from "../../../../contexts/home/HomeContext";
-import { useInit } from "../../../../shared-hooks/useInit";
+import { HomeContext } from "@/contexts/home/HomeContext";
+import { useInit } from "@/shared-hooks/useInit";
 import HomeWidget from "../HomeWidget";
 import { ReviewWidgetListItemContainer } from "./ReviewWidgetListItemContainer";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
@@ -24,6 +24,7 @@ export const ReviewWidgetContainer = () => {
 			data={reviewData}
 			error={reviewError}
 			height={height - 172}
+			minHeight={height - 172}
 			heading={
 				<ModuleHeading
 					icon={InboxIcon}

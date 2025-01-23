@@ -123,10 +123,11 @@ export const useC06 = () => {
 				: null,
 		};
 		crud.promptCreating({ data });
+		sqtyManager.reset();
 		grid.initGridData(data.prods, {
 			fillRows: true
 		});
-	}, [crud, httpGetAsync, operator, grid, token]);
+	}, [operator, crud, sqtyManager, grid, httpGetAsync, token]);
 
 	const handleCreate = useCallback(
 		async ({ data }) => {

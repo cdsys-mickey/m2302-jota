@@ -4,6 +4,7 @@ import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/sd-objects";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import Constants from "@/modules/md-constants";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -62,7 +63,7 @@ const AreaTypePickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -108,6 +109,8 @@ const AreaTypePickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
@@ -120,6 +123,7 @@ const AreaTypePickerComponent = memo((props) => {
 			virtualize
 			{...rest}
 			blurToLookup={false}
+			{...Constants.STATIC_PICKER_OPTS}
 		/>
 	);
 }, arePropsEqual);

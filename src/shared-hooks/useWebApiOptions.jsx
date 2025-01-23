@@ -24,6 +24,7 @@ export const useWebApiOptions = (opts = {}) => {
 		id = "NO_ID",
 		//http
 		url,
+		options,
 		method = "get",
 		bearer,
 		disableLazy,
@@ -59,16 +60,28 @@ export const useWebApiOptions = (opts = {}) => {
 		resetValueOnChange = false,
 		resetOptionsOnChange = false,
 		// pressToFind,
+		mockDelay = 0,
 		...rest
 	} = opts;
 	const { sendAsync } = useWebApi();
 
-	const [pickerState, setPickerState] = useState({
-		loading: null,
-		query: null,
-		options: defaultOptions,
-		// open: false,
-		// noOptionsText: queryRequired ? typeToSearchText : noOptionsText,
+	const isMock = useMemo(() => {
+		return mockDelay > 0;
+	}, [mockDelay])
+
+	const [pickerState, setPickerState] = useState(() => {
+		// if (!url) {
+		// 	return {
+		// 		loadinog: false,
+		// 		query: null,
+		// 		options: options || defaultOptions,
+		// 	}
+		// }
+		return {
+			loading: null,
+			query: null,
+			options: defaultOptions,
+		}
 	});
 
 	const [_noOptionsText, setNoOptionsText] = useState(
@@ -76,6 +89,12 @@ export const useWebApiOptions = (opts = {}) => {
 	);
 
 	const [popperOpen, setPopperOpen] = useState(open || false);
+
+
+
+	const handleChange = useCallback((newValue) => {
+		onChange(newValue);
+	}, [onChange]);
 
 	const handleOpen = useCallback(
 		(e) => {
@@ -110,33 +129,31 @@ export const useWebApiOptions = (opts = {}) => {
 				onClose(e);
 			}
 			// 若有讀取失敗, 則清除讀取狀態
-			setPickerState((prev) => ({
-				...prev,
-				...(prev.error && {
-					loading: null,
-				}),
-			}));
+			setPickerState((prev) => {
+				if (prev.error) {
+					console.log("由於 prev.error, 將 loading 重設為 null")
+				}
+				return {
+					...prev,
+					...(prev.error && {
+						loading: null,
+					}),
+				}
+			});
 		},
 		[disableClose, onClose]
 	);
 
 	const shouldLoadOptions = useMemo(() => {
 		return (
-			url &&
+			(url || isMock) &&
 			(disableLazy ||
 				(popperOpen && (!queryRequired || pickerState.query))) &&
-			(pickerState.loading === null || pickerState.loading === undefined)
+			(pickerState.loading == null)
 		);
-	}, [
-		url,
-		disableLazy,
-		popperOpen,
-		queryRequired,
-		pickerState.query,
-		pickerState.loading,
-	]);
+	}, [url, isMock, disableLazy, popperOpen, queryRequired, pickerState.query, pickerState.loading]);
 
-	const getByInput = useCallback(
+	const fetchByInput = useCallback(
 		async (input) => {
 			// 避免使用空 input 進行搜尋
 			if (!input) {
@@ -174,17 +191,35 @@ export const useWebApiOptions = (opts = {}) => {
 		]
 	);
 
-	const loadOptions = useCallback(
-		async (query, { onError: onMethodError } = {}) => {
+	const mockFetchOptions = useCallback(async () => {
+		setPickerState((prev) => ({
+			...prev,
+			loading: true,
+			error: null,
+		}));
+		console.log("開始模擬延遲");
+		await new Promise((resolve) => setTimeout(resolve, mockDelay));
+		console.log("模擬延遲結束");
+		setPickerState((prev) => ({
+			...prev,
+			options: options,
+			loading: false,
+		}));
+	}, [mockDelay, options]);
+
+
+
+
+	const fetchOptions = useCallback(
+		async (query, { onError: _onError } = {}) => {
 			console.log(`${id}.loadOptions(${query || ""})`);
-			// 每次找之前回復 noOptionsText
-			// setLoading(true);
 			setPickerState((prev) => ({
 				...prev,
 				loading: true,
 				error: null,
-				// noOptionsText: typeToSearchText,
 			}));
+			// 解決滑鼠先移到 Listbox 位置而選不到項目的問題
+			// await new Promise((resolve) => setTimeout(resolve, 300));
 			try {
 				const { status, payload, error } = await sendAsync({
 					method,
@@ -214,8 +249,8 @@ export const useWebApiOptions = (opts = {}) => {
 			} catch (err) {
 				// 正常情況不該跑到這裡
 				console.error(`${id}.loadOptions failed`, err);
-				if (onMethodError) {
-					onMethodError(err);
+				if (_onError) {
+					_onError(err);
 				} else {
 					onError(err);
 				}
@@ -225,11 +260,9 @@ export const useWebApiOptions = (opts = {}) => {
 					error: {
 						message: "unexpected error",
 					},
-					// noOptionsText: fetchErrorText,
 				}));
 				setNoOptionsText(fetchErrorText);
 			} finally {
-				// setLoading(false);
 				setPickerState((prev) => ({
 					...prev,
 					loading: false,
@@ -253,13 +286,15 @@ export const useWebApiOptions = (opts = {}) => {
 		]
 	);
 
+	const loadOptions = useMemo(() => {
+		return isMock ? mockFetchOptions : fetchOptions;
+	}, [fetchOptions, isMock, mockFetchOptions]);
+
+
 	const clearOptions = useCallback(() => {
 		setPickerState((prev) => ({
 			...prev,
 			options: [],
-			// ...(queryRequired && {
-			// 	noOptionsText: typeToSearchText,
-			// }),
 		}));
 		setNoOptionsText(queryRequired ? typeToSearchText : noOptionsText);
 	}, [noOptionsText, queryRequired, typeToSearchText]);
@@ -276,10 +311,6 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const handleInputChange = useCallback(
 		(event) => {
-			// if (pressToFind) {
-			// 	return;
-			// }
-
 			const qs = event.target.value;
 			if (disableOpenOnInput) {
 				setPickerState((prev) => ({
@@ -317,7 +348,6 @@ export const useWebApiOptions = (opts = {}) => {
 	);
 
 	const disabled = useMemo(() => {
-		// console.log("pickerState.options.length", pickerState.options.length);
 		return disableOnSingleOption && pickerState.options.length < 2;
 	}, [disableOnSingleOption, pickerState.options.length]);
 
@@ -377,17 +407,15 @@ export const useWebApiOptions = (opts = {}) => {
 			);
 		}
 		if (shouldLoadOptions) {
-			// loadOptions();
-			// 嘗試 popperOpen 時同步 options
 			loadOptions(queryRequired ? pickerState.query : null);
 		}
 	}, [shouldLoadOptions]);
 
 	const _findByInput = useMemo(() => {
 		return Types.isBoolean(findByInput) && !findByInput
-			? getByInput
+			? fetchByInput
 			: findByInput;
-	}, [findByInput, getByInput]);
+	}, [findByInput, fetchByInput]);
 
 	return {
 		shouldLoadOptions,
@@ -397,7 +425,7 @@ export const useWebApiOptions = (opts = {}) => {
 		...pickerState,
 		noOptionsText: _noOptionsText,
 		onInputChange: handleInputChange,
-		onChange,
+		onChange: handleChange,
 		// open,
 		// disableClose,
 		disabled,

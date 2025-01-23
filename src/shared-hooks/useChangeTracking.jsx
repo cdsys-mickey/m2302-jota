@@ -20,18 +20,21 @@ export const useChangeTracking = (
 
 	useEffect(() => {
 		if (!deepEqual(dependencies, prevRef.current)) {
+			if (debug) {
+				console.log(`${head}prevRef.current→dependencies`,
+					prevRef.current,
+					dependencies
+				);
+			}
+
 			prevRef.current = dependencies;
 			// dont fire on first render
 			if (prevRef.current) {
 				callback();
 			}
-			if (debug) {
-				console.log(`${head}prevRef.current→dependencies`, prevRef.current, dependencies);
-			}
-
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [...dependencies]);
+	}, dependencies);
 
 	return {};
 };

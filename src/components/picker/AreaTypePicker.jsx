@@ -2,6 +2,7 @@ import AreaTypes from "@/modules/md-area-types";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import Constants from "@/modules/md-constants";
 
 const AreaTypePicker = forwardRef((props, ref) => {
 	const { label = "地區", ...rest } = props;
@@ -15,7 +16,8 @@ const AreaTypePicker = forwardRef((props, ref) => {
 			isOptionEqualToValue={AreaTypes.isOptionEqualToValue}
 			findByInput={AreaTypes.findByInput}
 			notFoundText="地區 ${id} 不存在"
-			blurToLookup
+			{...Constants.STATIC_PICKER_OPTS}
+			// blurToLookup
 			{...rest}
 		/>
 	);

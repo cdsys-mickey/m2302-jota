@@ -23,7 +23,7 @@ export const F01QuoteGridContainer = (props) => {
 	}, [f01, formMeta.gridMeta])
 
 	const _height = useMemo(() => {
-		return height - 306;
+		return height - 310;
 	}, [height])
 
 	return (

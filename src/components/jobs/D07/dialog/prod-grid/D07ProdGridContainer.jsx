@@ -26,6 +26,10 @@ export const D07ProdGridContainer = (props) => {
 		});
 	}, [d07, form.getValues, form.setValue, formMeta.gridMeta]);
 
+	const _height = useMemo(() => {
+		return height - 258
+	}, [height])
+
 	return (
 		<DSGContext.Provider value={{
 			...d07.grid,
@@ -39,7 +43,7 @@ export const D07ProdGridContainer = (props) => {
 				onChange={onChange}
 				onActiveCellChange={formMeta.gridMeta.handleActiveCellChange}
 				bearer={auth.token}
-				height={height - 250}
+				height={_height}
 				getRowKey={d07.getRowKey}
 				createRow={d07.createRow}
 				{...rest}

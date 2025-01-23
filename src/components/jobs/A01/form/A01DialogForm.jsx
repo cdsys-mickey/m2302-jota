@@ -31,7 +31,7 @@ import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FlexGrid from "@/shared-components/FlexGrid";
 
-const A01Form = memo((props) => {
+const A01DialogForm = memo((props) => {
 	const {
 		readError,
 		data,
@@ -280,7 +280,7 @@ const A01Form = memo((props) => {
 											name="SafeQty"
 											label="平日安全存量"
 											type="number"
-											readOnly={storeMode}
+											// readOnly={storeMode}
 											fullWidth
 											renderLabel={Strings.formatPrice}
 										/>
@@ -457,7 +457,7 @@ const A01Form = memo((props) => {
 	);
 });
 
-A01Form.propTypes = {
+A01DialogForm.propTypes = {
 	data: PropTypes.object,
 	readWorking: PropTypes.bool,
 	itemDataReady: PropTypes.bool,
@@ -473,5 +473,5 @@ A01Form.propTypes = {
 	comboTabDisabled: PropTypes.bool,
 };
 
-A01Form.displayName = "A01Form";
-export default A01Form;
+A01DialogForm.displayName = "A01Form";
+export default A01DialogForm;

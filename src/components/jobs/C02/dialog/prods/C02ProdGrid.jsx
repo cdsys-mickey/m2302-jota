@@ -18,8 +18,8 @@ const C02ProdGrid = memo((props) => {
 		readOnly,
 		gridRef,
 		data,
-		onChange,
-		onActiveCellChange,
+		// onChange,
+		// onActiveCellChange,
 		getRowClassName,
 		height = 300,
 		prodDisabled,
@@ -46,8 +46,8 @@ const C02ProdGrid = memo((props) => {
 			height={height + (readOnly ? 48 : 0)}
 			// rowHeight={42}
 			value={data}
-			onChange={onChange}
-			onActiveCellChange={onActiveCellChange}
+			// onChange={onChange}
+			// onActiveCellChange={onActiveCellChange}
 			// columns={columns}
 			addRowsComponent={DSGAddRowsToolbar}
 			disableExpandSelection

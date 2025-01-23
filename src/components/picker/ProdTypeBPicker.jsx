@@ -2,6 +2,7 @@ import ProdTypeB from "@/modules/md-prod-type-b";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import Constants from "@/modules/md-constants";
 
 const ProdTypeBPicker = memo(
 	forwardRef((props, ref) => {
@@ -15,7 +16,8 @@ const ProdTypeBPicker = memo(
 				getOptionLabel={ProdTypeB.getOptionLabel}
 				isOptionEqualToValue={ProdTypeB.isOptionEqualToValue}
 				findByInput={ProdTypeB.findByInput}
-				blurToLookup
+				{...Constants.STATIC_PICKER_OPTS}
+				// blurToLookup
 				{...rest}
 			/>
 		);

@@ -63,7 +63,7 @@ const ProdPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -113,8 +113,8 @@ const ProdPickerComponent = memo((props) => {
 			disabled={disabled}
 			value={rowData}
 			onChange={handleChange}
-			// onKeyDown={handleKeyDown}
-			// onClose={handleClose}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// placeholder="輸入編號、條碼或名稱搜尋"
 			// typeToSearchText="輸入編號、條碼或名稱搜尋..."
 			// filterByServer
@@ -123,18 +123,18 @@ const ProdPickerComponent = memo((props) => {
 			// FocusControl
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}
-			cell={cell}
 			dense
+			cell={cell}
 			hideControls={hideControls}
 			hideBorders
 			disableFadeOut
 			toastError
-			autoHighlight
+			// autoHighlight
 			disableOpenOnInput
 			selectOnFocus
 			// 大量資料專用
 			virtualize
-			triggerDelay={100}
+			// triggerDelay={100}
 			{...rest}
 			blurToLookup={false}
 		/>

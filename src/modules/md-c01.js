@@ -1,6 +1,20 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Strings from "@/shared-modules/sd-strings";
 import Forms from "../shared-modules/sd-forms";
 import Objects from "../shared-modules/sd-objects";
+
+const getTooltip = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push(`庫存量(${stockQty || 0})`);
+		}
+	}
+	const result = results.join(", ");
+	console.log(`${getTooltip.name}`, result);
+	return result;
+};
 
 const ListModes = Object.freeze({
 	NOT_ORDERED_INCLUDED: 3,
@@ -32,8 +46,8 @@ const getOptionById = (id) => {
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(
-			({
+		data?.map((rowData, rowIndex) => {
+			const {
 				SProdID,
 				ProdData_N,
 				PackData_N,
@@ -41,7 +55,8 @@ const transformGridForReading = (data) => {
 				SFactID,
 				SFactNa,
 				...rest
-			}) => ({
+			} = rowData;
+			let processedRowData = {
 				prod: SProdID
 					? {
 							ProdID: SProdID,
@@ -62,8 +77,13 @@ const transformGridForReading = (data) => {
 					: null,
 				SFactNa,
 				...rest,
-			})
-		) || []
+			};
+			processedRowData.tooltip = getTooltip({
+				rowData: processedRowData,
+				rowIndex,
+			});
+			return processedRowData;
+		}) || []
 	);
 };
 
@@ -172,6 +192,7 @@ const C01 = {
 	isOptionEqualToValue,
 	getOptionById,
 	isFiltered,
+	getTooltip,
 };
 
 export default C01;

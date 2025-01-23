@@ -123,13 +123,15 @@ const theme = createTheme({
 function App() {
 
 	useEffect(() => {
-		const handleContextMenu = (event) => event.preventDefault();
+		if (!["dev"].includes(import.meta.env.VITE_PROFILE)) {
+			const handleContextMenu = (event) => event.preventDefault();
 
-		document.addEventListener("contextmenu", handleContextMenu);
+			document.addEventListener("contextmenu", handleContextMenu);
 
-		return () => {
-			document.removeEventListener("contextmenu", handleContextMenu);
-		};
+			return () => {
+				document.removeEventListener("contextmenu", handleContextMenu);
+			};
+		}
 	}, []);
 
 	return (

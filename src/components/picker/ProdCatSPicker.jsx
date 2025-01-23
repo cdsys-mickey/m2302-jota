@@ -48,7 +48,7 @@ const ProdCatSPicker = (props) => {
 			isOptionEqualToValue={ProdSCats.isOptionEqualToValue}
 			notFoundText="小分類 ${id} 不存在"
 			resetOnChange
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

@@ -1,3 +1,4 @@
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { DynamicDataSheetGrid } from "react-datasheet-grid";
@@ -12,12 +13,14 @@ const DsgTest4Grid = memo(
 			onActiveCellChange,
 			onChange,
 			createRow,
+			getRowKey
 		} = props;
 
 		return (
 			<div ref={ref}>
-				<DynamicDataSheetGrid
+				<DSGGrid
 					ref={gridRef}
+					rowKey={getRowKey}
 					onChange={onChange}
 					columns={columns}
 					height={height}

@@ -51,7 +51,7 @@ const DeptPicker = memo((props) => {
 			getData={getData}
 			querystring={querystring}
 			notFoundText="門市代號 ${id} 不存在"
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

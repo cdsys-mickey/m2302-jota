@@ -34,7 +34,7 @@ const PickingOrderPicker = memo((props) => {
 			placeholder="領料單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

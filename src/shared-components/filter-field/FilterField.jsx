@@ -54,7 +54,7 @@ const FilterField = memo(
 			extraEndAdorment,
 			filtered,
 			SearchIconComponent = FilterAltOutlinedIcon,
-			searchIconPlacement = "left",
+			searchIconPlacement = "none",
 			// METHODS
 			onChange,
 			onClear,
@@ -82,7 +82,7 @@ const FilterField = memo(
 
 		const showSearchIcon = useMemo(() => {
 			return (
-				SearchIconComponent &&
+				!!SearchIconComponent &&
 				(searchIconPlacement === "left" ||
 					searchIconPlacement === "right")
 			);

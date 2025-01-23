@@ -1,64 +1,53 @@
-const getOptionLabel = (option) => {
-	if (!option) return "";
-	const { TypeA, TypeA_N } = option;
-	return `${TypeA} ${TypeA_N}`;
-};
-
-const isOptionEqualToValue = (option, value) => {
-	return option?.TypeA === value?.TypeA;
-};
-
 const options = [
 	{
-		TypeA: "1",
-		TypeA_N: "成品",
+		id: "1",
+		label: "成品",
 	},
 	{
-		TypeA: "2",
-		TypeA_N: "半成品",
+		id: "2",
+		label: "半成品",
 	},
 	{
-		TypeA: "3",
-		TypeA_N: "原料",
+		id: "3",
+		label: "原料",
 	},
 	{
-		TypeA: "4",
-		TypeA_N: "內包裝材料",
+		id: "4",
+		label: "內包裝材料",
 	},
 	{
-		TypeA: "5",
-		TypeA_N: "外包裝材料",
+		id: "5",
+		label: "外包裝材料",
 	},
 	{
-		TypeA: "6",
-		TypeA_N: "商品",
+		id: "6",
+		label: "商品",
 	},
 	{
-		TypeA: "7",
-		TypeA_N: "研發品",
+		id: "7",
+		label: "研發品",
 	},
 ];
 
+const getOptionLabel = (option) => {
+	if (!option) return "";
+	const { id, label } = option;
+	return [id, label].filter(Boolean).join(" ");
+};
+
+const isOptionEqualToValue = (option, value) => {
+	return option?.id == value?.id;
+};
+
 const findById = (id) => {
-	return options.find((o) => o.TypeA === id);
+	return options.find((o) => o.id == id);
 };
 
 const findByInput = (input) => {
-	return options.find((o) => o.TypeA === input);
+	return options.find((o) => o.id == input);
 };
 
-const Types = Object.freeze({
-	1: "成品",
-	2: "半成品",
-	3: "原料",
-	4: "內包裝材料",
-	5: "外包裝材料",
-	6: "商品",
-	7: "研發品",
-});
-
 const ProdTypeA = {
-	Types,
 	findById,
 	findByInput,
 	options,

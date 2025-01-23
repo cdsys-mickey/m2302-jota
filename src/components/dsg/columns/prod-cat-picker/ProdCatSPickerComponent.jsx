@@ -75,7 +75,7 @@ const ProdCatSPickerColumn = memo((props) => {
 	});
 
 
-	const { ref, hideControls, handleChange, cell } = useOptionPickerComponent({
+	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -131,6 +131,8 @@ const ProdCatSPickerColumn = memo((props) => {
 			value={rowData}
 			// value={value}
 			onChange={handleChange}
+			onOpen={handleOpen}
+			onClose={handleClose}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
 			focusNextCell={focusNextCell}

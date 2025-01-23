@@ -26,8 +26,8 @@ export const D041ProdGridContainer = (props) => {
 	}, [d041, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	const _height = useMemo(() => {
-		return formMeta.readOnly ? height - 300 : height - 310;
-	}, [formMeta.readOnly, height])
+		return d041.editing ? height - 318 : height - 316;
+	}, [d041.editing, height])
 
 	return (
 		<DSGContext.Provider value={{

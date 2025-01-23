@@ -32,7 +32,7 @@ const OwnBrandStockingOrderPicker = memo((props) => {
 			placeholder="入庫單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"
-			blurToLookup
+			// blurToLookup
 			{...rest}
 		/>
 	);

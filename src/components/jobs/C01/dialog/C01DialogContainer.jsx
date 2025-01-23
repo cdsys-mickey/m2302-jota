@@ -12,10 +12,21 @@ import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import C01Drawer from "../C01Drawer";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { keyColumn } from "react-datasheet-grid";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { SupplierPickerComponentContainer } from "@/components/dsg/columns/supplier-picker/SupplierPickerComponentContainer";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 export const C01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			prods: [],
@@ -26,7 +37,7 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 	const c01 = useContext(C01Context);
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -69,6 +80,139 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 		`
 	)
 
+	const readOnly = useMemo(() => {
+		return !c01.editing
+	}, [c01.editing])
+
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"prod",
+					optionPickerColumn(ProdPickerComponentContainer, {
+						name: "prod",
+						forId: true,
+						withStock: true,
+						packageType: "i",
+						// queryRequired: true,
+						disableClearable: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+						selectOnFocus: true,
+					})
+				),
+				id: "SProdID",
+				title: "商品編號",
+				minWidth: 140,
+				maxWidth: 140,
+				disabled: !c01.editing || c01.prodDisabled,
+			},
+			{
+				...keyColumn(
+					"ProdData",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品名規格",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"PackData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "單位",
+				minWidth: 60,
+				maxWidth: 60,
+				disabled: true,
+			},
+			// {
+			// 	...keyColumn("StockQty_N", createFloatColumn(2)),
+			// 	title: "當下庫存",
+			// 	minWidth: 90,
+			// 	maxWidth: 90,
+			// 	disabled: true,
+			// },
+			{
+				...keyColumn("SRqtQty", createFloatColumn(2)),
+				title: "請購量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: !c01.editing || c01.rqtQtyDisabled,
+			},
+			{
+				...keyColumn("SOrdQty", createFloatColumn(2)),
+				title: "採購量",
+				minWidth: 90,
+				maxWidth: 90,
+				disabled: !c01.editing || c01.orderQtyDisabled,
+			},
+			{
+				...keyColumn(
+					"supplier",
+					optionPickerColumn(SupplierPickerComponentContainer, {
+						name: "supplier",
+						selectOnFocus: true,
+						forId: true,
+						disableClearable: true,
+						autoHighlight: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
+					})
+				),
+				title: "供應商",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: !c01.editing || c01.supplierDisabled,
+			},
+			{
+				...keyColumn(
+					"SFactNa",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "名稱",
+				grow: 2,
+				disabled: !c01.editing || c01.supplierNameDisabled,
+			},
+			{
+				...keyColumn(
+					"SOrdID",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "採購單",
+				minWidth: 120,
+				disabled: true,
+			},
+		],
+		[c01.editing, c01.orderQtyDisabled, c01.prodDisabled, c01.rqtQtyDisabled, c01.supplierDisabled, c01.supplierNameDisabled]
+	);
+
+	const gridMeta = useDSGMeta({
+		data: c01.grid.gridData,
+		columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	})
+
+
 	useEffect(() => {
 		if (c01.itemDataReady) {
 			console.log("c01 form reset", c01.itemData);
@@ -104,8 +248,8 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<form onSubmit={handleSubmit}>
-					<FormMetaProvider {...formMeta}>
+				<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
+					<form onSubmit={handleSubmit}>
 						<C01DialogForm
 							creating={c01.creating}
 							editing={c01.editing}
@@ -116,8 +260,8 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 							itemDataReady={c01.itemDataReady}
 							onSubmit={handleSubmit}
 						/>
-					</FormMetaProvider>
-				</form>
+					</form>
+				</FormMetaProvider>
 				<C01Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogExContainer>
 		</FormProvider>

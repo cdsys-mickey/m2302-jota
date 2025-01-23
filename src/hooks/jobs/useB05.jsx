@@ -70,7 +70,7 @@ export const useB05 = () => {
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.quotes, {
-			fillRows: true
+			fillRows: 15
 		});
 	}, [crud, grid]);
 

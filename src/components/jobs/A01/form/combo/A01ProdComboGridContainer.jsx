@@ -18,7 +18,7 @@ export const A01ProdComboGridContainer = (props) => {
 	}, [a01.editing, store])
 
 	const _height = useMemo(() => {
-		return height - 278 + (lockRows ? 48 : 0)
+		return height - 288 + (lockRows ? 48 : 0)
 	}, [height, lockRows])
 
 	return (

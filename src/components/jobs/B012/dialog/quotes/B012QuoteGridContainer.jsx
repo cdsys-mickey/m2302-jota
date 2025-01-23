@@ -27,7 +27,7 @@ export const B012QuoteGridContainer = (props) => {
 			getValues: form.getValues,
 			onUpdateRow: b012.onUpdateRow,
 			onCheckRow: b012.onCheckRow,
-			isRowCreatable: false
+			isRowCreatable: b012.creating
 		})
 	}, [b012, form.getValues, formMeta.gridMeta])
 	// const onChange = useMemo(() => {
@@ -39,7 +39,7 @@ export const B012QuoteGridContainer = (props) => {
 	// }, [b012, form.getValues, formMeta.gridMeta])
 
 	const _height = useMemo(() => {
-		return height - 250;
+		return height - 256;
 	}, [height])
 
 	const contextMenu = useMemo(() => {

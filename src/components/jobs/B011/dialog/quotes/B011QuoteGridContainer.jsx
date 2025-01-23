@@ -14,7 +14,7 @@ import { BContext } from "@/contexts/B/BContext";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 
 export const B011QuoteGridContainer = (props) => {
-	const { forNew = false, ...rest } = props;
+	const { ...rest } = props;
 	const b = useContext(BContext);
 	const b011 = useContext(b.forNew ? B031Context : B011Context);
 	const auth = useContext(AuthContext);
@@ -28,7 +28,7 @@ export const B011QuoteGridContainer = (props) => {
 			getValues: form.getValues,
 			onUpdateRow: b011.onUpdateRow,
 			onCheckRow: b011.onCheckRow,
-			isRowCreatable: false
+			isRowCreatable: b011.creating
 		})
 	}, [b011, form.getValues, formMeta.gridMeta])
 	// const onChange = useMemo(() => {
@@ -40,7 +40,7 @@ export const B011QuoteGridContainer = (props) => {
 	// }, [b011, form.getValues, formMeta.gridMeta])
 
 	const _height = useMemo(() => {
-		return height - 250;
+		return height - 256;
 	}, [height])
 
 

@@ -82,7 +82,7 @@ const B05DialogForm = memo((props) => {
 								// disableClearable
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={8}>
+							<Grid item xs={24} sm={24} md={7}>
 								<SupplierPicker
 									typo
 									label="廠商代碼"

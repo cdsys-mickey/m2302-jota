@@ -1,4 +1,4 @@
-import WebApiOptionPickerColumn from "./WebApiOptionPickerColumn";
+import WebApiOptionPickerColumn from "./ZZWebApiOptionPickerColumn";
 
 export const createWebApiOptionPickerColumn = (componentProps) => {
 	return {

@@ -1,3 +1,4 @@
+import Constants from "@/modules/md-constants";
 import Squared2 from "@/modules/md-squared2";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
@@ -16,7 +17,8 @@ const SquaredPicker2 = memo(
 				getOptionLabel={Squared2.getOptionLabel}
 				isOptionEqualToValue={Squared2.isOptionEqualToValue}
 				findByInput={Squared2.findOptionByInput}
-				blurToLookup
+				{...Constants.STATIC_PICKER_OPTS}
+				// blurToLookup
 				{...rest}
 			/>
 		);

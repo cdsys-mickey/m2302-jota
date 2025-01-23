@@ -25,6 +25,9 @@ import { D05DialogToolbarContainer } from "./toolbar/D05DialogToolbarContainer";
 export const D05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	const form = useForm({
 		defaultValues: {
 			prods: [],
@@ -34,7 +37,7 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 	const d05 = useContext(D05Context);
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});

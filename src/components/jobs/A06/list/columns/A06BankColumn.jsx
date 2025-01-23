@@ -5,7 +5,7 @@ const A06BankColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={5} {...rest} />
+		<ListColumn item pr={1} xs={5} sx={{ display: { xs: 'none', sm: 'block' } }}{...rest} />
 	);
 };
 

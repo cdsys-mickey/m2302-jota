@@ -7,18 +7,22 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import A01Form from "../form/A01Form";
+import A01DialogForm from "../form/A01DialogForm";
 import { A01DialogToolbarContainer } from "./buttons/A01DialogToolbarContainer";
 import { useCallback } from "react";
 import A01Drawer from "../A01Drawer";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 
 export const A01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
 	// MODE 1
 	const scrollable = useScrollable({
-		height: height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -37,6 +41,42 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 	});
 	const { reset } = form;
 
+	const formMeta = useFormMeta(
+		`
+		ProdID,
+		ProdData,
+		Barcode,
+		BarPR,
+		catL,
+		catM,
+		catS,
+		typeA,
+		typeB,
+		taxType,
+		counter,
+		StdCost,
+		TranCost,
+		LocalCost,
+		OutCost,
+		SafeQty,
+		Location,
+		cmsType,
+		bunit,
+		sunit,
+		iunit,
+		munit,
+		SRate,
+		IRate,
+		MRate,
+		Price,
+		PriceA,
+		PriceB,
+		PriceC,
+		PriceD,
+		PriceE,
+		`
+	);
+
 	const title = useMemo(() => {
 		if (a01.mode === A01.Mode.NEW_PROD) {
 			if (a01.creating) {
@@ -51,7 +91,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 				return "新增商品";
 			} else if (a01.updating) {
 				return a01.mode === A01.Mode.STORE
-					? "修改商品櫃位"
+					? "調整櫃位/安全存量"
 					: "修改商品";
 			} else {
 				return "商品內容";
@@ -83,16 +123,26 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 
 	const isFieldDisabled = useCallback(
 		(field) => {
-			switch (field.name) {
-				case "catM":
-					return !catL || !a01.editing;
-				case "catS":
-					return !catM || !a01.editing;
-				default:
-					return !a01.editing;
+			if (storeMode) {
+				switch (field.name) {
+					case "counter":
+					case "SafeQty":
+						return false;
+					default:
+						return true;
+				}
+			} else {
+				switch (field.name) {
+					case "catM":
+						return !catL || !a01.editing;
+					case "catS":
+						return !catM || !a01.editing;
+					default:
+						return !a01.editing;
+				}
 			}
 		},
-		[a01.editing, catL, catM]
+		[a01.editing, catL, catM, storeMode]
 	);
 
 	const onSubmit = useMemo(() => {
@@ -127,15 +177,15 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 				contentSx={[
 					{
 						paddingTop: 0,
-						minHeight: "30em",
+						// minHeight: "30em",
 					},
 					scrollable.scroller,
 				]}
 				{...rest}>
 				<FormMetaProvider
-					{...a01.formMeta}
+					{...formMeta}
 					isFieldDisabled={isFieldDisabled}>
-					<A01Form
+					<A01DialogForm
 						onSubmit={onSubmit}
 						creating={a01.creating}
 						editing={a01.editing}

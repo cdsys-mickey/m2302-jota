@@ -21,6 +21,11 @@ import { F01DialogToolbarContainer } from "./toolbar/F01DialogToolbarContainer";
 export const F01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+
+	const _height = useMemo(() => {
+		return height - 120
+	}, [height])
+
 	const form = useFormContext({
 		defaultValues: {
 			quotes: [],
@@ -44,7 +49,7 @@ export const F01DialogContainer = forwardRef((props, ref) => {
 	})
 
 	const scrollable = useScrollable({
-		height,
+		height: _height,
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
@@ -92,7 +97,7 @@ export const F01DialogContainer = forwardRef((props, ref) => {
 					"prod",
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
-						packageType: "s",
+						// packageType: "s",
 						forId: true,
 						disableClearable: true,
 						slotProps: {

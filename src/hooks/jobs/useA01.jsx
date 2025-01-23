@@ -36,41 +36,7 @@ import { toastEx } from "@/helpers/toast-ex";
  */
 export const useA01 = ({ token, mode }) => {
 	const [selectedTab, setSelectedTab] = useState(A01.Tabs.INFO);
-	const formMeta = useFormMeta(
-		`
-		ProdID,
-		ProdData,
-		Barcode,
-		BarPR,
-		catL,
-		catM,
-		catS,
-		typeA,
-		typeB,
-		taxType,
-		counter,
-		StdCost,
-		TranCost,
-		LocalCost,
-		OutCost,
-		SafeQty,
-		Location,
-		cmsType,
-		bunit,
-		sunit,
-		iunit,
-		munit,
-		SRate,
-		IRate,
-		MRate,
-		Price,
-		PriceA,
-		PriceB,
-		PriceC,
-		PriceD,
-		PriceE,
-		`
-	);
+
 	const crud = useContext(CrudContext);
 	const moduleId = useMemo(() => {
 		switch (mode) {
@@ -476,7 +442,7 @@ export const useA01 = ({ token, mode }) => {
 					bearer: token,
 				});
 				if (status.success) {
-					toastEx.success(`商品「${data?.ProdData}」櫃位已成功更新`);
+					toastEx.success(`商品「${data?.ProdData}」櫃位/安全存量已成功更新`);
 					crud.doneUpdating();
 					loadItem({ id: processed?.ProdID });
 				} else {
@@ -485,7 +451,7 @@ export const useA01 = ({ token, mode }) => {
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("onCounterSubmit.failed", err);
-				toastEx.error("櫃位更新失敗", err);
+				toastEx.error("櫃位/安全存量更新失敗", err);
 			}
 		},
 		[crud, httpPatchAsync, loadItem, token]
@@ -1032,7 +998,6 @@ export const useA01 = ({ token, mode }) => {
 		createComboRow,
 		transTabDisabled,
 		comboTabDisabled,
-		formMeta,
 		...sideDrawer
 	};
 };

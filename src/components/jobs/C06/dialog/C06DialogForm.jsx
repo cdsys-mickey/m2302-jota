@@ -93,7 +93,7 @@ const C06DialogForm = memo((props) => {
 								disableOpenOnInput
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5}>
 							<EmployeePicker
 								typo
 								// autoFocus

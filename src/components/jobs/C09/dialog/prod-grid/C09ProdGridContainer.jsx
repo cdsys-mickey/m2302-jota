@@ -18,7 +18,7 @@ export const C09ProdGridContainer = (props) => {
 	const formMeta = useContext(FormMetaContext);
 
 	const height = useMemo(() => {
-		return windowHeight - 356;
+		return windowHeight - 366;
 	}, [windowHeight]);
 
 	const onChange = useMemo(() => {
