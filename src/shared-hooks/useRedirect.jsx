@@ -2,6 +2,8 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import querystring from "query-string";
+import { useContext } from "react";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 /**
  * 配合 rr6 修改
@@ -14,13 +16,12 @@ const useRedirect = () => {
 	 */
 	const getFullPath = useCallback((path, isRelative, params) => {
 		let result = isRelative
-			? `${import.meta.env.VITE_PUBLIC_URL}${
-					path.startsWith("/") ? "" : "/"
-			  }${path}`
+			// ? `${import.meta.env.VITE_PUBLIC_URL}${
+			? `${import.meta.env.VITE_PUBLIC_URL}/${path.startsWith("/") ? "" : "/"
+			}${path}`
 			: path;
-		result = `${result}${
-			params ? "?" + querystring.stringify(params) : ""
-		}`;
+		result = `${result}${params ? "?" + querystring.stringify(params) : ""
+			}`;
 		return result;
 	}, []);
 

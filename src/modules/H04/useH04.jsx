@@ -1,4 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
@@ -7,6 +8,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useCallback, useContext, useMemo } from "react";
 
 export const useH04 = () => {
+	const config = useContext(ConfigContext);
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -15,11 +17,9 @@ export const useH04 = () => {
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-
-
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebH04Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebH04Rep.aspx`
+	}, [config.REPORT_URL])
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 

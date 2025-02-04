@@ -70,7 +70,7 @@ const D06DialogForm = memo((props) => {
 								disableOpenOnInput
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={5.5}>
 							<DatePickerWrapper
 								typo
 								name="RemDate"
@@ -87,7 +87,7 @@ const D06DialogForm = memo((props) => {
 							// }}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={5.5}>
 							<DatePickerWrapper
 								typo
 								name="InitDate"

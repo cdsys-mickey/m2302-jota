@@ -14,6 +14,7 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 import useSQtyManager from "../useSQtyManager";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useC02 = () => {
 	const crud = useContext(CrudContext);
@@ -21,6 +22,7 @@ export const useC02 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "C02",
@@ -664,19 +666,14 @@ export const useC02 = () => {
 			};
 			console.log("[C02]jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC02Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebC02Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.RqtID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.RqtID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

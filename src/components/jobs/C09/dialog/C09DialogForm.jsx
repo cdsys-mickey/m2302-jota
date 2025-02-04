@@ -53,7 +53,7 @@ const C09DialogForm = memo((props) => {
 								readOnly={true}
 							/>
 						</Grid>)}
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<DatePickerWrapper
 								typo
 								name="txiDate"
@@ -81,7 +81,7 @@ const C09DialogForm = memo((props) => {
 						</Grid>
 
 						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={5.5}>
 							<TxoOrderPicker
 								typo
 								name="txoOrder"

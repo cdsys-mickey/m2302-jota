@@ -10,6 +10,7 @@ import { ResponsiveContext } from "../responsive/ResponsiveContext";
 export const useAppFrame = (opts = {}) => {
 	const { drawerWidth = 300 } = opts;
 	const auth = useContext(AuthContext);
+	// const config = useContext(ConfigContext);
 	const { mobile } = useContext(ResponsiveContext);
 	const { toModule, toLanding } = useAppRedirect();
 	const location = useLocation();
@@ -132,7 +133,8 @@ export const useAppFrame = (opts = {}) => {
 					const newLogKey = await spawnNewSession();
 					console.log("newLogKey", newLogKey);
 
-					const url = `${import.meta.env.VITE_PUBLIC_URL}modules/${module.WebName}`;
+					const url = `${import.meta.env.VITE_PUBLIC_URL}/modules/${module.WebName}`;
+					// const url = `${config.PUBLIC_URL}modules/${module.WebName}`;
 					const qs = queryString.stringify({
 						drawer: 0,
 						...(newLogKey && {

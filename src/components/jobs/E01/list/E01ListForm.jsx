@@ -7,8 +7,9 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Grid } from "@mui/material";
 import { memo } from "react";
 import { E01CustomerPicker } from "../E01CustomerPicker";
-import E01SalesTypePicker from "../E01SalesTypePicker";
+import E01SalesTypePicker from "../ZZE01SalesTypePicker";
 import E01ListSquaredPicker from "./E01ListSquaredPicker";
+import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 
 const E01ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -60,7 +61,7 @@ const E01ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item md={5}>
-					<E01SalesTypePicker
+					<SalesTypePicker
 						name="lvSalesType"
 						label="客戶類型"
 					/>

@@ -13,6 +13,7 @@ import { useCallback, useContext, useRef } from "react";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useD06 = () => {
 	const crud = useContext(CrudContext);
@@ -20,6 +21,7 @@ export const useD06 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "D06",
@@ -440,19 +442,14 @@ export const useD06 = () => {
 				IDs: crud.itemData?.RemID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebD06Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebD06Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.RemID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.RemID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

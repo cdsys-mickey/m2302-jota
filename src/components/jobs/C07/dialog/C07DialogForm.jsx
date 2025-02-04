@@ -63,7 +63,7 @@ const C07DialogForm = memo((props) => {
 							/>
 						</Grid>)}
 
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<DatePickerWrapper
 								typo
 								name="OrdDate"
@@ -76,7 +76,7 @@ const C07DialogForm = memo((props) => {
 								onChanged={handleRtnDateChanged}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<DatePickerWrapper
 								typo
 								name="ArrDate"
@@ -101,7 +101,7 @@ const C07DialogForm = memo((props) => {
 								disableOpenOnInput
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={6}>
+						<Grid item xs={24} sm={24} md={5}>
 							<DeptPicker
 								typo
 								name="ordDept"

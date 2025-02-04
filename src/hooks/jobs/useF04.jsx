@@ -8,8 +8,10 @@ import useJotaReports from "../useJotaReports";
 import { useAppModule } from "./useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { useWebApi } from "@/shared-hooks/useWebApi";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useF04 = () => {
+	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { token, operator } = useContext(AuthContext);
 	const {
@@ -30,8 +32,8 @@ export const useF04 = () => {
 		`);
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebF04Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebF04Rep.aspx`
+	}, [config.REPORT_URL])
 	const reports = useJotaReports();
 
 	const onDebugSubmit = useCallback((payload) => {

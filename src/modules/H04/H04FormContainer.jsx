@@ -1,11 +1,9 @@
-import { FormProvider, useFormContext, useWatch } from "react-hook-form";
-import H04Form from "./H04Form";
-import { useContext } from "react";
-import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { H04Context } from "./H04Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { useCallback } from "react";
+import { useContext, useMemo } from "react";
+import { FormProvider, useFormContext } from "react-hook-form";
+import { H04Context } from "./H04Context";
+import H04Form from "./H04Form";
 
 export const H04FormContainer = () => {
 	const form = useFormContext();
@@ -15,10 +13,12 @@ export const H04FormContainer = () => {
 		`
 			SDate,
 			EDate,
-			catL,
-			catM,
-			InclTX,
+			counter,
 			InclTest,
+			reportType,
+			orderType,
+			orderDir,
+			calType,
 			outputType,
 			`
 	)
@@ -36,27 +36,10 @@ export const H04FormContainer = () => {
 		)
 	}, [h04.onDebugSubmit, form]);
 
-	const catL = useWatch({
-		name: "catL",
-		control: form.control,
-	});
-
-
-	const isFieldDisabled = useCallback(
-		(field) => {
-			switch (field.name) {
-				case "catM":
-					return !catL;
-				default:
-					return false;
-			}
-		},
-		[catL]
-	);
 
 	return (
 		<FormProvider {...form}>
-			<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
+			<FormMetaProvider {...formMeta} >
 				<H04Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>

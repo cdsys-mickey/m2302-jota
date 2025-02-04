@@ -45,7 +45,7 @@ const C08DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						{!creating && (<Grid item xs={24} sm={24} md={4}>
+						{!creating && (<Grid item xs={24} sm={24} md={3.5}>
 							<TextFieldWrapper
 								typo
 								name="TxoID"
@@ -56,7 +56,7 @@ const C08DialogForm = memo((props) => {
 								readOnly={true}
 							/>
 						</Grid>)}
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<DatePickerWrapper
 								typo
 								name="TxoDate"
@@ -98,7 +98,7 @@ const C08DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={8}>
+						<Grid item xs={24} sm={24} md={creating ? 8.5 : 8}>
 							<PurchaseDepOrderPicker
 								typo
 								multiple

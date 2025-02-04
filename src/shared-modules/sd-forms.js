@@ -19,6 +19,19 @@ const formatDate = (value, format) => {
 	return result;
 };
 
+const formatYear = (value) => {
+	if (!value) {
+		return null;
+	}
+	let result = null;
+	if (value instanceof Date) {
+		result = DateTimes.format(value, DateFormats.DATEFNS_YEAR);
+	} else if (typeof value === "string") {
+		result = value;
+	}
+	return result;
+};
+
 const formatYearMonth = (value) => {
 	if (!value) {
 		return null;
@@ -247,6 +260,7 @@ const Forms = {
 	getTimeValidator,
 	validateTime,
 	formatTime,
+	formatYear,
 	formatYearMonth,
 };
 

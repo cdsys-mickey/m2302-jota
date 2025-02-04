@@ -1,17 +1,29 @@
 import Forms from "@/shared-modules/sd-forms";
 
 const transformForSubmitting = (payload) => {
-	const { outputType, SDate, EDate, catL, catM, InclTX, InclTest, ...rest } =
-		payload;
+	const {
+		outputType,
+		SDate,
+		EDate,
+		counter,
+		reportType,
+		orderType,
+		orderDir,
+		calType,
+		InclTest,
+		...rest
+	} = payload;
 	return {
 		JobName: "H04",
 		Action: outputType?.id?.toString() || "",
 		SDate: Forms.formatDate(SDate) || "",
 		EDate: Forms.formatDate(EDate) || "",
-		LClas: catL?.LClas || "",
-		MClas: catM?.MClas || "",
-		InclTX: InclTX ? "Y" : "N",
+		CaseID: counter?.CodeID || "",
 		InclTest: InclTest ? "Y" : "N",
+		RptType: reportType?.id,
+		OrdName: orderType?.id,
+		OrdSeq: orderDir?.id,
+		Rate: calType?.id,
 		...rest,
 	};
 };
@@ -21,4 +33,3 @@ const H04 = {
 };
 
 export default H04;
-

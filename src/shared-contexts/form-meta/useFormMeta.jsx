@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { LastFieldBehavior } from "./LastFieldBehavior";
-import { toast } from "react-toastify";
-import FormMeta from "../../shared-modules/sd-form-meta";
-import { useRef } from "react";
 import { toastEx } from "@/helpers/toast-ex";
+import { useRef } from "react";
+import FormMeta from "../../shared-modules/sd-form-meta";
+import { LastFieldBehavior } from "./LastFieldBehavior";
 
 export const useFormMeta = (value, opts = {}) => {
 	const asyncRef = useRef({
@@ -21,11 +20,14 @@ export const useFormMeta = (value, opts = {}) => {
 		lastField = null,
 		lastFieldMessage = "已是最後一個欄位",
 		firstFieldMessage = "已是第一個欄位",
+		includeComments = false
 	} = opts;
 
 	const fields = useMemo(() => {
-		return FormMeta.parse(value);
-	}, [value]);
+		return FormMeta.parse(value, {
+			includeComments
+		});
+	}, [includeComments, value]);
 
 	const getNextField = useCallback(
 		(currentFieldName, opts = {}) => {

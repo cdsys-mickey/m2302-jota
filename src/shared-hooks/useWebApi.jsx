@@ -1,11 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useCallback } from "react";
+import { useCallback, useContext, useMemo } from "react";
 
 import HttpStatus from "@/shared-classes/HttpStatus";
 import WebApi from "@/shared-modules/sd-web-api";
 import axios from "axios";
 import querystring from "query-string";
 import Types from "@/shared-modules/sd-types";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 const DEFAULT_HEADERS = () => {
 	let logKeyInSession = sessionStorage.getItem("LogKey");
@@ -31,26 +32,31 @@ const DEFAULT_FORM_HEADERS = {
  */
 export const useWebApi = (props) => {
 	const {
-		baseUrl = import.meta.env.VITE_URL_API || "/",
+		baseUrl,
 		mode: defaultMode = "json",
 		withStackTrace = false,
 		headers = DEFAULT_HEADERS,
 	} = props || {};
+	const config = useContext(ConfigContext);
+
+	const _baseUrl = useMemo(() => {
+		return baseUrl || config.API_URL || import.meta.env.VITE_URL_API || "/"
+	}, [baseUrl, config.API_URL])
 
 	const getUrl = useCallback(
 		(relativePath, params) => {
 			if (relativePath === undefined || relativePath === null) {
 				return null;
 			}
-			if (!baseUrl) {
+			if (!_baseUrl) {
 				console.error("baseUrl and REACT_APP_URL_API are both empty");
 				return;
 			}
 			// 應保留彈性, 不包含 PUBLIC_URL
 
-			let result = `${baseUrl.substring(0, 1) === "/" ? "" : "/"}${baseUrl.substring(baseUrl.length - 1) === "/"
-				? `${baseUrl.substring(0, baseUrl.length - 1)}`
-				: baseUrl
+			let result = `${_baseUrl.substring(0, 1) === "/" ? "" : "/"}${_baseUrl.substring(_baseUrl.length - 1) === "/"
+				? `${_baseUrl.substring(0, _baseUrl.length - 1)}`
+				: _baseUrl
 				}/${relativePath.substring(0, 1) === "/"
 					? relativePath.substring(1)
 					: relativePath
@@ -62,7 +68,7 @@ export const useWebApi = (props) => {
 
 			return result;
 		},
-		[baseUrl]
+		[_baseUrl]
 	);
 
 	// const defaultGetData = useCallback((payload) => {

@@ -14,6 +14,7 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import Forms from "../../shared-modules/sd-forms";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 // const DEFAULT_ROWS = 5;
 
@@ -23,6 +24,7 @@ export const useC03 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "C03",
@@ -719,19 +721,14 @@ export const useC03 = () => {
 				IDs: crud.itemData?.OrdID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC03Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebC03Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.OrdID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.OrdID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

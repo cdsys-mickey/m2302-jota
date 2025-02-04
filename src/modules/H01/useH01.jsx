@@ -6,8 +6,10 @@ import { useCallback, useContext, useMemo } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useH01 = () => {
+	const config = useContext(ConfigContext);
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -29,8 +31,8 @@ export const useH01 = () => {
 	)
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebH01Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebH01Rep.aspx`
+	}, [config.REPORT_URL])
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 

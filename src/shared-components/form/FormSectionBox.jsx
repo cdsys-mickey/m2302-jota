@@ -1,10 +1,8 @@
 import { Box, styled } from "@mui/material";
-import Arrays from "../../shared-modules/sd-arrays";
 
 const FormSectionBox = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!Arrays.parse(`editing`)
-			.includes(prop),
+		!["editing"].includes(prop),
 })(
 	({
 		theme,

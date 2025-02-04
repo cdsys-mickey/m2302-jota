@@ -14,6 +14,7 @@ import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 const DEFAULT_ROWS = 10;
 
@@ -23,6 +24,7 @@ export const useD01 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "D01",
@@ -858,19 +860,14 @@ export const useD01 = () => {
 				IDs: crud.itemData?.OutID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebD01Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebD01Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.OutID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.OutID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

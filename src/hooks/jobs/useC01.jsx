@@ -15,6 +15,7 @@ import { useWebApi } from "../../shared-hooks/useWebApi";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 import useSQtyManager from "../useSQtyManager";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useC01 = () => {
 	const crud = useContext(CrudContext);
@@ -22,6 +23,7 @@ export const useC01 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "C01",
@@ -444,14 +446,14 @@ export const useC01 = () => {
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC01Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebC01Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[grid.gridData, operator?.CurDeptID, operator?.LogKey, postToBlank]
+		[config.REPORT_URL, grid.gridData, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

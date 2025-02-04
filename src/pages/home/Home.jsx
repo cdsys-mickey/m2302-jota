@@ -1,19 +1,11 @@
-import HomeFrameBanner from "@/components/home/HomeFrameBanner";
-import BulletinWidgetContainer from "@/components/home/widgets/BulletinWidgetContainer";
-import Colors from "@/modules/md-colors";
+import BackgroundImage from "@/images/v748-toon-103-bright-20-1920.png";
 import { CopyrightContainer } from "@/shared-components/CopyrightContainer";
 import FlexBox from "@/shared-components/FlexBox";
-import ModuleHeading from "@/shared-components/ModuleHeading";
-import CampaignIcon from "@mui/icons-material/Campaign";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import InboxIcon from "@mui/icons-material/Inbox";
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
-import Styles from "@/modules/md-styles";
-import { ReviewWidgetContainer } from "../../components/home/widgets/review/ReviewWidgetContainer";
-import BackgroundImage from "@/images/v748-toon-103-bright-20-1920.png";
-import { FrameBannerContainer } from "../../shared-components/protected-page/FrameBannerContainer";
+import { memo } from "react";
+import { ReviewWidgetContainer } from "@/components/home/widgets/review/ReviewWidgetContainer";
+import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 
 const Home = memo((props) => {
 	const { boxStyles } = props;

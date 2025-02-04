@@ -17,7 +17,7 @@ const A22GridForm = (props) => {
 				<Grid container spacing={1} columns={24}>
 					{/* ROW 1 */}
 
-					<Grid item xs={6} lg={4}>
+					<Grid item xs={6} lg={6}>
 						<ProdPicker
 							name="prod1"
 							label="起始商品編號"
@@ -38,7 +38,7 @@ const A22GridForm = (props) => {
 							}}
 						/>
 					</Grid>
-					<Grid item xs={6} lg={4}>
+					<Grid item xs={6} lg={6}>
 						<ProdPicker
 							name="prod2"
 							label="截止商品編號"

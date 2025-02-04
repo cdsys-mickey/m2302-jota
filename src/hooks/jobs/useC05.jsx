@@ -15,6 +15,7 @@ import { nanoid } from "nanoid";
 import { useCallback, useContext, useRef } from "react";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useC05 = () => {
 	const crud = useContext(CrudContext);
@@ -22,6 +23,7 @@ export const useC05 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "C05",
@@ -721,19 +723,14 @@ export const useC05 = () => {
 				IDs: crud.itemData?.GrtID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC05Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebC05Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.GrtID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.GrtID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

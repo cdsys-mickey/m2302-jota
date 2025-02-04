@@ -1,0 +1,8 @@
+{
+	"PROFILE": "ap01t",
+	"PUBLIC_URL": "/jota-t/",
+	"API_URL": "/WebSale_T/api",
+	"MSG_HUB_URL": "/WebSale_T/api/hubs/messaging",
+	"CHAT_HUB_URL": "/WebSale_T/api/hubs/chat",
+	"REPORT_URL": "https://www.cdsys.com.tw/WebSale_T"
+}

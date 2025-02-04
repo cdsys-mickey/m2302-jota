@@ -6,13 +6,17 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { useContext } from "react";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 const SignalRTest = memo(() => {
 	const form = useForm();
 	const { register } = form;
+	const config = useContext(ConfigContext);
 
 	const { connection, connectionState, error } = useSignalR({
-		url: import.meta.env.VITE_URL_CHAT_HUB,
+		// url: import.meta.env.VITE_URL_CHAT_HUB,
+		url: config.CHAT_HUB_URL,
 	});
 
 	// const state = useMemo(() => {

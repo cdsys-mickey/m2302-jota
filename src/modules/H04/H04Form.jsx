@@ -14,6 +14,12 @@ import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import CounterPicker from "@/components/picker/CounterPicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
+import FlexBox from "@/shared-components/FlexBox";
+import H04ReportTypePicker from "./pickers/H04ReportTypePicker";
+import H04OrderTypePicker from "./pickers/H04OrderTypePicker";
+import H04CalTypePicker from "./pickers/H04CalTypePicker";
 
 const H04Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -43,53 +49,70 @@ const H04Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<ProdCatLPicker
-									name="catL"
+								<CounterPicker
+									name="counter"
 									disableOpenOnInput
 									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<ProdCatMPicker
-									name="catM"
-									disableOpenOnInput
-									selectOnFocus
-									catLName="catL"
-								/>
-							</Grid>
-							<FlexGrid item xs={12} alignItems="flex-start">
-								<CheckboxExWrapper
-									label="含撥出入"
-									name="InclTX"
-									defaultValue={true}
-								/>
-
 								<CheckboxExWrapper
 									label="含試贈樣"
 									name="InclTest"
 									defaultValue={true}
 								/>
-							</FlexGrid>
-						</Grid>
-						<Grid container>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/>
-							</FlexGrid>
-							<Grid item xs={12} sm={6}>
-								<FlexToolbar align="right">
-									<ButtonGroup>
-										<DebugDialogButtonContainer
-											onClick={onDebugSubmit} />
-										<ReportSubmitButtonContainer
-											onClick={onSubmit} />
-									</ButtonGroup>
-								</FlexToolbar>
 							</Grid>
+							<Grid item xs={12} sm={6}>
+								<H04ReportTypePicker
+									name="reportType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<H04OrderTypePicker
+									name="orderType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<OrderDirPicker
+									name="orderDir"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<H04CalTypePicker
+									name="calType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+
 						</Grid>
+						<FlexBox mt={1}>
+							<Grid container spacing={2}>
+								<FlexGrid item xs={12} sm={6} alignItems="center">
+									<StdPrintOutputModePicker
+										required
+										name="outputType"
+										label="執行方式"
+									/>
+								</FlexGrid>
+								<Grid item xs={12} sm={6}>
+									<FlexToolbar align="right">
+										<ButtonGroup>
+											<DebugDialogButtonContainer
+												onClick={onDebugSubmit} />
+											<ReportSubmitButtonContainer
+												onClick={onSubmit} />
+										</ButtonGroup>
+									</FlexToolbar>
+								</Grid>
+							</Grid>
+						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
 			</form>

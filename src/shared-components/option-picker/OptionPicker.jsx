@@ -360,7 +360,7 @@ const OptionPicker = memo(
 					return;
 				}
 
-				console.log("handleLookup", e.key);
+
 
 				console.log("preventDefault/stopPropagation during handleLookup");
 				e.preventDefault();
@@ -375,7 +375,7 @@ const OptionPicker = memo(
 				// if ((asyncRef.current.dirty) && findByInput) {
 				const input = e.target.value;
 				if (asyncRef.current.dirty && findByInput && (input || emptyId)) {
-
+					console.log("handleLookup", e.key);
 					let found;
 					let error;
 					try {

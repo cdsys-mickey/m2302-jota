@@ -1,9 +1,3 @@
-const getRootPath = () => {
-	return `/${import.meta.env.VITE_PUBLIC_URL}`;
-};
-
-const App = {
-	getRootPath,
-};
+const App = {};
 
 export default App;

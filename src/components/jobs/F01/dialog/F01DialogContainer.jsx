@@ -97,7 +97,7 @@ export const F01DialogContainer = forwardRef((props, ref) => {
 					"prod",
 					optionPickerColumn(ProdPickerComponentContainer, {
 						name: "prod",
-						// packageType: "s",
+						packageType: "_",
 						forId: true,
 						disableClearable: true,
 						slotProps: {

@@ -17,6 +17,7 @@ import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 import B02 from "@/modules/md-b02";
 import { toastEx } from "@/helpers/toast-ex";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useB032 = () => {
 	const crud = useContext(CrudContext);
@@ -24,6 +25,7 @@ export const useB032 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "B032",
@@ -487,19 +489,14 @@ export const useB032 = () => {
 				IDs: crud.itemData?.InqID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB012032Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebB012032Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.InqID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.InqID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

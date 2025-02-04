@@ -16,6 +16,7 @@ import { nanoid } from "nanoid";
 import usePwordCheck from "../usePwordCheck";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useC08 = () => {
 	const crud = useContext(CrudContext);
@@ -23,6 +24,7 @@ export const useC08 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "C08",
@@ -266,9 +268,10 @@ export const useC08 = () => {
 							})
 						}
 					});
-				} else if (err.code === 4 && !overrideCheckDate) {
+				} else if (err.code == 20 && !overrideCheckDate) {
+					// 日期檢查失敗
 					pwordCheck.performCheck({
-						title: err.message || "撥出日期不得小於系統日減７天。",
+						title: err.message,
 						callback: () => {
 							handleSave({ data, setValue, gridMeta, overrideCheckDate: true })
 						}
@@ -948,19 +951,14 @@ export const useC08 = () => {
 				IDs: crud.itemData?.TxoID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC08Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebC08Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.TxoID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.TxoID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

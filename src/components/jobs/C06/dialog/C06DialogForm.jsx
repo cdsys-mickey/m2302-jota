@@ -53,7 +53,7 @@ const C06DialogForm = memo((props) => {
 								readOnly={true}
 							/>
 						</Grid>)}
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<DatePickerWrapper
 								typo
 								autoFocus
@@ -65,7 +65,7 @@ const C06DialogForm = memo((props) => {
 								variant="outlined"
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<DatePickerWrapper
 								typo
 								name="ArrDate"

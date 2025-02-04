@@ -5,13 +5,13 @@ import { useCaptcha } from "@/shared-components/captcha-field/useCaptcha";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Cookies from "js-cookie";
 import _ from "lodash";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
 
-const pageCookieOpts = {
-	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
-	expires: 365,
-};
+// const pageCookieOpts = {
+// 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
+// 	expires: 365,
+// };
 
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWORD = "pw";
@@ -19,7 +19,20 @@ const PARAM_CAPTCHA = "captcha";
 
 export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
-	const formMeta = useFormMeta(`ac,pw,rememberMe:{skipEnter: true},captcha`);
+	// const config = useContext(ConfigContext);
+	const pageCookieOpts = useMemo(() => {
+		return {
+			path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
+			// path: `${config.PUBLIC_URL}/auth`,
+			expires: 365,
+		}
+	}, [])
+	const formMeta = useFormMeta(`
+		ac,
+		pw,
+		rememberMe:{skipEnter: true},
+		captcha`
+	);
 	const captcha = useCaptcha({
 		numbersOnly: true,
 		length: 4,

@@ -13,8 +13,10 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useD07 = () => {
+	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
@@ -648,19 +650,14 @@ export const useD07 = () => {
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebD07Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebD07Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.CalID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.CalID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

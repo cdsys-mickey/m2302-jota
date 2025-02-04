@@ -6,8 +6,10 @@ import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useF06 = () => {
+	const config = useContext(ConfigContext);
 	const { operator, token } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -24,8 +26,8 @@ export const useF06 = () => {
 		`);
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebF06Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebF06Rep.aspx`
+	}, [config.REPORT_URL])
 	const reports = useJotaReports();
 
 	const onDebugSubmit = useCallback((payload) => {

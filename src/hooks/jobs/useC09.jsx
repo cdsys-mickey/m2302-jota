@@ -13,6 +13,7 @@ import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useC09 = () => {
 	const crud = useContext(CrudContext);
@@ -20,6 +21,7 @@ export const useC09 = () => {
 	const itemIdRef = useRef();
 	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "C09",
@@ -633,19 +635,14 @@ export const useC09 = () => {
 				IDs: crud.itemData?.TxiID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebC09Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebC09Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.TxiID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.TxiID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -710,7 +707,7 @@ export const useC09 = () => {
 				url: "v1/purchase/trans-in-orders/check-editable",
 				bearer: token,
 				params: {
-					id: crud.itemData.TxoID,
+					id: crud.itemData.TxiID,
 				},
 			});
 			if (status.success) {

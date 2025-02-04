@@ -57,7 +57,7 @@ const E021SearchForm = memo((props) => {
 					<ResponsiveGrid item xs={4}>
 						<E021SalesTypePicker
 							name="lvSalesType"
-							label="客戶類型"
+							label="零售"
 							placeholder="零售客戶?"
 						/>
 					</ResponsiveGrid>

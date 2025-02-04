@@ -1,10 +1,9 @@
-import { useCallback } from "react";
-import useRedirect from "@/shared-hooks/useRedirect";
-import AppRoutes from "../modules/md-app-routes";
-import Cookies from "js-cookie";
-import Auth from "../modules/md-auth";
-import { useContext } from "react";
 import CrudContext from "@/contexts/crud/CrudContext";
+import useRedirect from "@/shared-hooks/useRedirect";
+import Cookies from "js-cookie";
+import { useCallback, useContext } from "react";
+import AppRoutes from "../modules/md-app-routes";
+import Auth from "../modules/md-auth";
 
 const useAppRedirect = () => {
 	const { redirectTo } = useRedirect();

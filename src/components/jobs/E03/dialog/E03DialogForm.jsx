@@ -57,7 +57,7 @@ const E03DialogForm = memo((props) => {
 									readOnly={true}
 								/>
 							</Grid>)}
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item xs={24} sm={24} md={4.5}>
 								<DatePickerWrapper
 									typo
 									autoFocus
@@ -115,7 +115,7 @@ const E03DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
-							<Grid item xs={24} sm={24} md={6}>
+							<Grid item xs={24} sm={24} md={6.5}>
 								<TextFieldWrapper
 									// dense
 									typo
@@ -174,7 +174,7 @@ const E03DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
-							<Grid item xs={24} sm={24} md={6}>
+							<Grid item xs={24} sm={24} md={6.5}>
 								<TextFieldWrapper
 									typo
 									label="送貨地址"
@@ -217,7 +217,7 @@ const E03DialogForm = memo((props) => {
 								// required
 								/>
 							</Grid>
-							<Grid item xs={24} sm={24} md={4}>
+							<Grid item xs={24} sm={24} md={3.5}>
 								<TextFieldWrapper
 									typo
 									label="統一編號"

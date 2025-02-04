@@ -53,7 +53,7 @@ const C05DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
-						{!creating && (<Grid item xs={24} sm={24} md={3}>
+						{!creating && (<Grid item xs={24} sm={24} md={3.5}>
 							<TextFieldWrapper
 								typo
 								name="GrtID"
@@ -65,7 +65,7 @@ const C05DialogForm = memo((props) => {
 							/>
 						</Grid>)}
 
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<C05RtnDatePickerContainer
 								typo
 								name="GrtDate"
@@ -78,7 +78,7 @@ const C05DialogForm = memo((props) => {
 								disableOpenOnInput
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<EmployeePicker
 								typo
 								label="倉管人員"
@@ -102,7 +102,7 @@ const C05DialogForm = memo((props) => {
 						</Grid>
 						<FlexBox fullWidth />
 
-						<Grid item xs={24} sm={24} md={3}>
+						<Grid item xs={24} sm={24} md={3.5}>
 							<SupplierPicker
 								typo
 								label="廠商代碼"
@@ -130,7 +130,7 @@ const C05DialogForm = memo((props) => {
 								}}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={6}>
 							<TextFieldWrapper
 								typo
 								name="FactData"
@@ -170,7 +170,7 @@ const C05DialogForm = memo((props) => {
 								onChange={handleTaxTypeChange}
 							/>
 						</FlexGrid>
-						<Grid item xs={24} sm={24} md={10}>
+						<Grid item xs={24} sm={24} md={8.5}>
 							<TextFieldWrapper
 								typo
 								name="FactAddr"

@@ -14,8 +14,10 @@ import { nanoid } from "nanoid";
 import { useCallback, useContext, useRef, useState } from "react";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useF01 = () => {
+	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
@@ -459,19 +461,14 @@ export const useF01 = () => {
 				IDs: crud.itemData?.PhyID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebF01Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebF01Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.PhyID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.PhyID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

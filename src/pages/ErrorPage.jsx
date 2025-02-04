@@ -1,10 +1,12 @@
-import { Button, Container, Typography } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { Button, Container, Typography } from '@mui/material';
+import { useCallback } from 'react';
 
 function ErrorPage() {
-	const handleBackHome = () => {
-		window.location.href = import.meta.env.VITE_PUBLIC_URL; // 或使用 react-router 的 useNavigate 回到主頁
-	};
+
+	const handleBackHome = useCallback(() => {
+		window.location.href = `${import.meta.env.VITE_PUBLIC_URL}/`; // 或使用 react-router 的 useNavigate 回到主頁
+	}, []);
 
 	return (
 		<Container style={{ textAlign: 'center', marginTop: '10%' }}>

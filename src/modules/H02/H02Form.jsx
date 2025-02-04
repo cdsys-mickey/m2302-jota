@@ -59,7 +59,7 @@ const H02Form = memo((props) => {
 							</Grid>
 						</Grid>
 
-						<Grid container>
+						<Grid container spacing={2}>
 							<FlexGrid item xs={12} alignItems="flex-start">
 								<CheckboxExWrapper
 									label="含撥出入"

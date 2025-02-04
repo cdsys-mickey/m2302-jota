@@ -31,7 +31,7 @@ export const E03ProdGridContainer = (props) => {
 	}, [e03, form.getValues, form.setValue, formMeta.gridMeta])
 
 	const _height = useMemo(() => {
-		return height - 410 - (formMeta.readOnly ? Styles.GRID_BOTTOM_TOOLBAR_HEIGHT : 0);
+		return height - 414 - (formMeta.readOnly ? Styles.GRID_BOTTOM_TOOLBAR_HEIGHT : 0);
 	}, [formMeta.readOnly, height])
 
 	const prodInfoColumn = useMemo(() => {

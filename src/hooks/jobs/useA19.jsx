@@ -7,9 +7,11 @@ import { useCallback, useContext, useMemo } from "react";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useA19 = () => {
 	const { token } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "A19",
@@ -32,8 +34,8 @@ export const useA19 = () => {
 	)
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebA19Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebA19Rep.aspx`
+	}, [config.REPORT_URL])
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 

@@ -23,6 +23,7 @@ const FieldsetBox = styled(Box, {
 		borderWidth: 1,
 		borderColor: "#bebebe",
 		borderStyle: "solid",
+		padding: 0,
 		borderRadius: theme.shape.borderRadius,
 		"& .fieldset-legend": {
 			fontSize: fontSize,

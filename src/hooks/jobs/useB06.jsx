@@ -6,9 +6,11 @@ import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useCallback, useContext, useMemo } from "react";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useB06 = () => {
 	const auth = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		moduleId: "B06",
 	});
@@ -50,8 +52,8 @@ export const useB06 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebB06Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebB06Rep.aspx`
+	}, [config.REPORT_URL])
 
 	const reports = useJotaReports({ from: "InqDate1", to: "InqDate2" });
 
@@ -65,7 +67,7 @@ export const useB06 = () => {
 			console.log("collected", collected);
 
 			// postToBlank(
-			// 	`${import.meta.env.VITE_URL_REPORT
+			// 	`${config.REPORT_URL
 			// 	}/WebB06Rep.aspx?LogKey=${logKey}`,
 			// 	{
 			// 		jsonData: JSON.stringify(collected),

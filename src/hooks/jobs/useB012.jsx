@@ -1,4 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import { toastEx } from "@/helpers/toast-ex";
@@ -35,6 +36,7 @@ export const useB012 = (opts = {}) => {
 
 	const crud = useContext(CrudContext);
 	const auth = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
@@ -562,14 +564,14 @@ export const useB012 = (opts = {}) => {
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB012032Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebB012032Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[API_URL, JOB_NAME, auth.token, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvProd?.ProdID]
+		[API_URL, JOB_NAME, auth.token, config.REPORT_URL, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvProd?.ProdID]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

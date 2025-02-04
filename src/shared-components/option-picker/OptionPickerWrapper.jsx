@@ -44,5 +44,6 @@ export const OptionPickerWrapper = memo((props) => {
 OptionPickerWrapper.displayName = "OptionPickerWrapper";
 OptionPickerWrapper.propTypes = {
 	typo: PropTypes.bool,
+	blurToLookup: PropTypes.bool,
 	url: PropTypes.string,
 };

@@ -10,10 +10,12 @@ import { useInfiniteLoader } from "../shared-hooks/useInfiniteLoader";
 import { usePopover } from "../shared-hooks/usePopover";
 import { useSignalR } from "../shared-hooks/useSignalR";
 import { useWebApi } from "../shared-hooks/useWebApi";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useMessaging = () => {
 	const { httpGetAsync, httpPutAsync, httpPatchAsync } = useWebApi();
 	const auth = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const { token } = auth;
 	// const { operator, clearListLoading } = auth;
 	const { operator } = auth;
@@ -125,7 +127,8 @@ export const useMessaging = () => {
 
 	const { connection, connectionId, connectionState, connect, disconnect } =
 		useSignalR({
-			url: import.meta.env.VITE_URL_MSG_HUB,
+			// url: import.meta.env.VITE_URL_MSG_HUB,
+			url: config.MSG_HUB_URL,
 			autoConnect: false,
 			onConnected: onConnected,
 			onReconnected: onReconnected,

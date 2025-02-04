@@ -6,8 +6,10 @@ import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useP02 = () => {
+	const config = useContext(ConfigContext);
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -32,8 +34,8 @@ export const useP02 = () => {
 	)
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebP02Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebP02Rep.aspx`
+	}, [config.REPORT_URL])
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 

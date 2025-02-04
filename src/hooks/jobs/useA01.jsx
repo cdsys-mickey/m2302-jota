@@ -1,13 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { DeptPickerComponentContainer } from "@/components/dsg/columns/dept-picker/DeptPickerComponentContainer";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toast-ex";
 import A01 from "@/modules/md-a01";
 import TaxTypes from "@/modules/md-tax-types";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
@@ -15,18 +15,14 @@ import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
 import WebApi from "@/shared-modules/sd-web-api";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { toast } from "react-toastify";
 import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { LastFieldBehavior } from "../../shared-contexts/form-meta/LastFieldBehavior";
 import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
-import { toastEx } from "@/helpers/toast-ex";
 
 /**
  * 適用三種情境

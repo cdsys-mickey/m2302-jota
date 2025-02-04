@@ -1,17 +1,16 @@
-import { useCallback, useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import A21 from "@/modules/md-a21";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { useAppModule } from "./useAppModule";
-import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
-import { useFormContext } from "react-hook-form";
-import { useMemo } from "react";
-import useJotaReports from "../useJotaReports";
-import useDebugDialog from "../useDebugDialog";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useCallback, useContext, useMemo } from "react";
+import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
+import useDebugDialog from "../useDebugDialog";
+import useJotaReports from "../useJotaReports";
+import { useAppModule } from "./useAppModule";
 
 export const useA21 = ({ form }) => {
 	const { token } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "A21",
@@ -21,8 +20,8 @@ export const useA21 = ({ form }) => {
 
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebA21Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebA21Rep.aspx`
+	}, [config.REPORT_URL])
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 

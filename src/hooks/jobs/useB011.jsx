@@ -18,6 +18,7 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useB011 = (opts = {}) => {
 	const { forNew } = opts;
@@ -36,6 +37,7 @@ export const useB011 = (opts = {}) => {
 
 	const crud = useContext(CrudContext);
 	const auth = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
@@ -617,14 +619,14 @@ export const useB011 = (opts = {}) => {
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB011031Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebB011031Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[API_URL, JOB_NAME, auth.token, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvCust?.CustID]
+		[API_URL, JOB_NAME, auth.token, config.REPORT_URL, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvCust?.CustID]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

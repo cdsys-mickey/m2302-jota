@@ -7,8 +7,10 @@ import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useH02 = () => {
+	const config = useContext(ConfigContext);
 	const { token, operator } = useContext(AuthContext);
 	const { postToBlank } = useHttpPost();
 	const appModule = useAppModule({
@@ -30,8 +32,8 @@ export const useH02 = () => {
 	)
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebH02Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebH02Rep.aspx`
+	}, [config.REPORT_URL])
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);

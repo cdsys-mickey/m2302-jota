@@ -7,6 +7,7 @@ import useHttpPost from "../shared-hooks/useHttpPost";
 import { useWebApi } from "../shared-hooks/useWebApi";
 import { toastEx } from "@/helpers/toast-ex";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useStdPrint = ({
 	token,
@@ -18,6 +19,7 @@ export const useStdPrint = ({
 	const { httpGetAsync } = useWebApi();
 	const { postToBlank } = useHttpPost();
 	const auth = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const { operator } = auth;
 	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const [state, setState] = useState({
@@ -185,14 +187,13 @@ export const useStdPrint = ({
 			};
 			console.log(`jsonData`, jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT
-				}/WebStdReport.aspx?LogKey=${logKey}`,
+				`${config.REPORT_URL}/WebStdReport.aspx?LogKey=${logKey}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[deptId, listLoaderCtx?.paramsRef, logKey, paramsToJsonData, postToBlank, state.selectedFields, tableName]
+		[config.REPORT_URL, deptId, listLoaderCtx?.paramsRef, logKey, operator, paramsToJsonData, postToBlank, state.selectedFields, tableName]
 	);
 
 	const handleAddAllFields = useCallback(() => {

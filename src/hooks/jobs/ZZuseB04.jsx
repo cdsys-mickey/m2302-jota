@@ -458,7 +458,7 @@ export const ZZuseB04 = () => {
 			};
 			console.log("jsonData", jsonData);
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebB0204Rep.aspx?LogKey=${operator?.LogKey}`,
+				`${config.REPORT_URL}/WebB0204Rep.aspx?LogKey=${operator?.LogKey}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}

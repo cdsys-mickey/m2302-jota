@@ -9,12 +9,11 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 
 import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
-import ProdPicker from "@/components/picker/ProdPicker";
+import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
+import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
-import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 
 const H03Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -72,7 +71,7 @@ const H03Form = memo((props) => {
 								/>
 							</FlexGrid>
 						</Grid>
-						<Grid container>
+						<Grid container spacing={2}>
 							<FlexGrid item xs={12} sm={6} alignItems="center">
 								<StdPrintOutputModePicker
 									required

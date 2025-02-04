@@ -1,6 +1,8 @@
+import ConfigContext from "@/contexts/config/ConfigContext";
 import FlexBox from "@/shared-components/FlexBox";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { useContext } from "react";
 import { memo, useMemo } from "react";
 
 const AppBanner = memo(({ size = "lg", children, ...rest }) => {
@@ -30,8 +32,9 @@ const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 			<FlexBox>
 				<img
 					height={imgHeight}
-					// src={`${import.meta.env.VITE_PUBLIC_URL}logo192.png`}
-					src={`${import.meta.env.VITE_PUBLIC_URL}banner.png`}
+					// src={`${import.meta.env.VITE_PUBLIC_URL}/logo192.png`}
+					src={`${import.meta.env.VITE_PUBLIC_URL}/banner.png`}
+					// src={`${config.PUBLIC_URL}banner.png`}
 					alt="logo"
 				/>
 			</FlexBox>

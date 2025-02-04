@@ -16,8 +16,10 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useE01 = () => {
+	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
@@ -852,19 +854,14 @@ export const useE01 = () => {
 				IDs: crud.itemData?.OrdID,
 			};
 			postToBlank(
-				`${import.meta.env.VITE_URL_REPORT}/WebE01Rep.aspx?LogKey=${operator?.LogKey
+				`${config.REPORT_URL}/WebE01Rep.aspx?LogKey=${operator?.LogKey
 				}`,
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
 		},
-		[
-			crud.itemData?.OrdID,
-			operator?.CurDeptID,
-			operator?.LogKey,
-			postToBlank,
-		]
+		[config.REPORT_URL, crud.itemData?.OrdID, operator?.CurDeptID, operator?.LogKey, postToBlank]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

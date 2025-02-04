@@ -23,6 +23,8 @@ import AppRoute from "@/routes/AppRoute";
 import Colors from "@/modules/md-colors";
 import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";
 import { useEffect } from "react";
+import { useContext } from "react";
+import ConfigContext from "./contexts/config/ConfigContext";
 // use palette from default theme
 const { palette } = createTheme();
 
@@ -121,9 +123,11 @@ const theme = createTheme({
 });
 
 function App() {
+	const config = useContext(ConfigContext);
 
 	useEffect(() => {
-		if (!["dev"].includes(import.meta.env.VITE_PROFILE)) {
+		// if (!["dev"].includes(import.meta.env.VITE_PROFILE)) {
+		if (!["dev"].includes(config.PROFILE)) {
 			const handleContextMenu = (event) => event.preventDefault();
 
 			document.addEventListener("contextmenu", handleContextMenu);

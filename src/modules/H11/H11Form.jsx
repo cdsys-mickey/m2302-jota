@@ -1,0 +1,183 @@
+import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
+import ContainerEx from "@/shared-components/ContainerEx";
+import FlexGrid from "@/shared-components/FlexGrid";
+import FormBox from "@/shared-components/form/FormBox";
+import FormSectionBox from "@/shared-components/form/FormSectionBox";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import { ButtonGroup, Grid } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo } from "react";
+
+import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
+import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
+import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
+import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
+import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
+import ValuePicker from "@/components/value-picker/ValuePicker";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import Fieldset from "@/shared-components/Fieldset";
+import FlexBox from "@/shared-components/FlexBox";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import DateFormats from "@/shared-modules/sd-date-formats";
+import H11NumberList from "./pickers/H11NumberList";
+import H11ReportTypePicker from "./pickers/H11ReportTypePicker";
+
+const H11Form = memo((props) => {
+	const { onSubmit, onDebugSubmit, ...rest } = props;
+	return (
+		<ContainerEx maxWidth="sm" alignLeft>
+			<form onSubmit={onSubmit} {...rest}>
+				<FormBox pt={1}>
+					<FormSectionBox editing>
+						<Grid container spacing={1}>
+							<Grid item xs={12} sm={8}>
+								<Grid container columns={12} spacing={2}>
+									<Grid item xs={12} sm={6}>
+										<DatePickerWrapper
+											autoFocus
+											name="Year"
+											label="年度"
+											validate
+											clearable
+											views={["year"]}
+											format={DateFormats.DATEFNS_YEAR}
+											required
+											rules={{
+												required: "年度為必填"
+											}}
+										/>
+
+									</Grid>
+
+									<Grid item xs={4}>
+										<ValuePicker
+											label="季度"
+											name="Season"
+											options={[1, 2, 3, 4]}
+											disableClearable
+											required
+											rules={{
+												required: "季度為必填"
+											}}
+										/>
+									</Grid>
+									<FlexBox fullWidth />
+
+									{/* 區域 */}
+									<Grid item xs={12} sm={6}>
+										<AreaPicker
+											name="SAreaID"
+											label="客戶區域"
+											fullWidth
+											validate
+											clearable
+										/>
+									</Grid>
+									<Grid item xs={12} sm={6}>
+										<AreaPicker
+											name="EAreaID"
+											label="截止區域"
+											fullWidth
+											validate
+											clearable
+										/>
+									</Grid>
+									{/* 通路 */}
+									<Grid item xs={12} sm={6}>
+										<ChannelPicker
+											name="SLineID"
+											label="客戶通路"
+											fullWidth
+											validate
+											clearable
+										/>
+									</Grid>
+									<Grid item xs={12} sm={6}>
+										<ChannelPicker
+											name="ELineID"
+											label="截止通路"
+											fullWidth
+											validate
+											clearable
+										/>
+									</Grid>
+									<Grid item xs={12} sm={12}>
+										<SalesTypePicker
+											name="SalType"
+											label="零售"
+											fullWidth
+											validate
+											clearable
+										/>
+									</Grid>
+									<Grid item xs={12} sm={12}>
+										<TextFieldWrapper
+											name="TopNo"
+											label="每一區域/通路,僅列前幾名店家"
+											type="number"
+											size="small"
+											fullWidth
+										/>
+									</Grid>
+									<FlexBox fullWidth />
+									<Grid item xs={12} sm={12}>
+										<H11ReportTypePicker
+											name="reportType"
+											disableOpenOnInput
+											selectOnFocus
+										/>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs={12} sm={4}>
+								<Fieldset label="≧ 下限">
+									<H11NumberList name="numbers" />
+								</Fieldset>
+							</Grid>
+						</Grid>
+						<FlexBox mt={1}>
+							<Grid container spacing={2}>
+								<FlexGrid item xs={12} sm={6} alignItems="center">
+									<StdPrintOutputModePicker
+										required
+										name="outputType"
+										label="執行方式"
+									/>
+								</FlexGrid>
+								<Grid item xs={12} sm={6}>
+									<FlexToolbar align="right">
+										<ButtonGroup>
+											<DebugDialogButtonContainer
+												onClick={onDebugSubmit} />
+											<ReportSubmitButtonContainer
+												onClick={onSubmit} />
+										</ButtonGroup>
+									</FlexToolbar>
+								</Grid>
+							</Grid>
+						</FlexBox>
+					</FormSectionBox>
+				</FormBox>
+			</form>
+		</ContainerEx>
+	);
+});
+
+H11Form.propTypes = {
+	readWorking: PropTypes.bool,
+	editing: PropTypes.bool,
+	updating: PropTypes.bool,
+	readFailed: PropTypes.bool,
+	readError: PropTypes.object,
+	onSubmit: PropTypes.func,
+	onDebugSubmit: PropTypes.func,
+};
+
+H11Form.displayName = "H11Form";
+export default H11Form;
+
+
+
+
+
+

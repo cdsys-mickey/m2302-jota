@@ -1,15 +1,23 @@
 import Types from "./sd-types";
 import _ from "lodash";
 
-const parse = (s) => {
+const parse = (s, opts = {}) => {
+	const { includeComments = false } = opts;
 	if (Array.isArray(s)) {
 		return s;
 	}
 	if (Types.isString(s)) {
-		return s
+		let result = s
 			.trim()
 			.split(/\s*,\s*/)
-			.filter(Boolean);
+			.filter(Boolean); // 保留非空值
+
+		// 如果 opts.includeComments 為 true，則進一步過濾掉以 "//" 開頭的元素
+		if (!includeComments) {
+			result = result.filter((item) => !item.startsWith("//"));
+		}
+
+		return result;
 	}
 	return [];
 };

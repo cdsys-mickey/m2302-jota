@@ -12,6 +12,7 @@ import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useB02 = (opts = {}) => {
 	const { forNew } = opts;
@@ -27,6 +28,7 @@ export const useB02 = (opts = {}) => {
 
 	const crud = useContext(CrudContext);
 	const { token, operator } = useContext(AuthContext);
+	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: JOB_NAME,
@@ -176,8 +178,8 @@ export const useB02 = (opts = {}) => {
 	}, [JOB_NAME, operator?.CurDeptID]);
 
 	const reportUrl = useMemo(() => {
-		return `${import.meta.env.VITE_URL_REPORT}/WebB0204Rep.aspx`
-	}, [])
+		return `${config.REPORT_URL}/WebB0204Rep.aspx`
+	}, [config.REPORT_URL])
 
 	const reports = useJotaReports({ from: "QDate1", to: "QDate2" });
 

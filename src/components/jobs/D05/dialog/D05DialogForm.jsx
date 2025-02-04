@@ -53,7 +53,7 @@ const D05DialogForm = memo((props) => {
 								/>
 							</Grid>
 						)}
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<DatePickerWrapper
 								autoFocus
 								typo

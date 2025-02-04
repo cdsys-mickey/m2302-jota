@@ -58,7 +58,7 @@ const U061Form = memo((props) => {
 							<Grid item xs={12} sm={6}>
 								<U061DataTypePicker
 									name="RptType"
-									label="資料型態"
+									label="報表型態"
 									required
 								/>
 							</Grid>
