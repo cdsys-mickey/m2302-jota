@@ -36,6 +36,9 @@ const AvatarButton = memo((props) => {
 									height: 32,
 									bgcolor: color,
 									color: theme.palette.getContrastText(color),
+									...(label.length > 1 && {
+										fontSize: '0.9rem'
+									})
 								}),
 							]}>
 							{label}
@@ -55,6 +58,7 @@ const AvatarButton = memo((props) => {
 });
 AvatarButton.displayName = "AvatarButton";
 AvatarButton.propTypes = {
+	label: PropTypes.string,
 	Menu: PropTypes.object,
 	anchorEl: PropTypes.object,
 	handleClick: PropTypes.func,

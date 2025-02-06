@@ -8,6 +8,10 @@ import { useWebApi } from "../shared-hooks/useWebApi";
 import { toastEx } from "@/helpers/toast-ex";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
+import Cookies from "js-cookie";
+import Settings from "@/modules/settings/Settings.mjs";
+import queryString from "query-string";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 
 export const useStdPrint = ({
 	token,
@@ -17,9 +21,10 @@ export const useStdPrint = ({
 	paramsToJsonData,
 }) => {
 	const { httpGetAsync } = useWebApi();
-	const { postToBlank } = useHttpPost();
+	const { postTo } = useHttpPost();
 	const auth = useContext(AuthContext);
 	const config = useContext(ConfigContext);
+	const dialogs = useContext(DialogsContext);
 	const { operator } = auth;
 	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const [state, setState] = useState({
@@ -186,14 +191,51 @@ export const useStdPrint = ({
 				// Top: 20,
 			};
 			console.log(`jsonData`, jsonData);
-			postToBlank(
-				`${config.REPORT_URL}/WebStdReport.aspx?LogKey=${logKey}`,
+			const dontPrompt = Cookies.get(Settings.Keys.COOKIE_DOWNLOAD_PROMPT) == 0;
+
+			postTo(
+				queryString.stringifyUrl({
+					url: `${config.REPORT_URL}/WebStdReport.aspx`,
+					query: {
+						LogKey: operator.LogKey,
+						...((!dontPrompt) && {
+							DontClose: 1
+						})
+					}
+				}),
 				{
 					jsonData: JSON.stringify(jsonData),
 				}
 			);
+
+			if (!dontPrompt && jsonData.Action != 1) {
+				dialogs.confirm({
+					message: "首次下載必須進行瀏覽器設定，請問您的檔案有正確下載嗎?",
+					checkLabel: "不要再提醒",
+					check: true,
+					defaultChecked: false,
+					confirmText: "有",
+					cancelText: "沒有",
+					onConfirm: (params) => {
+						console.log("params", params);
+						if (params.checked) {
+							Cookies.set(Settings.Keys.COOKIE_DOWNLOAD_PROMPT, 0);
+							dialogs.alert({
+								message: Settings.MSG_REMIND,
+								confirmText: "知道了"
+							});
+						}
+					},
+					onCancel: (params) => {
+						// if (params.value === "ON") {
+						// 	Cookies.set(COOKIE_DOWNLOAD_PROMPT, 0);
+						// }
+						toastEx.warn(Settings.MSG_INSTRUCT);
+					}
+				})
+			}
 		},
-		[config.REPORT_URL, deptId, listLoaderCtx?.paramsRef, logKey, operator, paramsToJsonData, postToBlank, state.selectedFields, tableName]
+		[config.REPORT_URL, deptId, dialogs, listLoaderCtx?.paramsRef, operator, paramsToJsonData, postTo, state.selectedFields, tableName]
 	);
 
 	const handleAddAllFields = useCallback(() => {

@@ -58,13 +58,18 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 			...dialogProps
 		}) => {
 			const newId = id || nanoid();
-			const handleConfirm = (opts) => {
-				const { value } = opts;
+			const handleConfirm = (params) => {
 				if (onConfirm) {
-					onConfirm({ id: newId, value });
+					onConfirm({
+						...params,
+						id: newId,
+					});
 				}
 				if (closeOnConfirm) {
-					close({ id: newId });
+					close({
+						...params,
+						id: newId,
+					});
 				}
 			}
 
@@ -118,6 +123,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 
 	const confirm = useCallback(
 		({
+			id,
 			title = "確認",
 			// message = "[訊息]",
 			message,
@@ -126,20 +132,32 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 			closeOnConfirm = true,
 			...rest
 		}) => {
-			const newId = nanoid();
+			const newId = id || nanoid();
 			return create({
 				id: newId,
 				title: title,
 				message: message,
-				onConfirm: (opts) => {
-					if (onConfirm) onConfirm(opts);
+				onConfirm: (params) => {
+					if (onConfirm) onConfirm({
+						...params,
+						id: newId,
+					});
 					if (closeOnConfirm) {
-						close(opts);
+						close({
+							...params,
+							id: newId,
+						});
 					}
 				},
-				onCancel: (opts) => {
-					if (onCancel) onCancel(opts);
-					close(opts);
+				onCancel: (params) => {
+					if (onCancel) onCancel({
+						...params,
+						id: newId,
+					});
+					close({
+						...params,
+						id: newId,
+					});
 				},
 				...rest,
 			});
@@ -149,6 +167,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 
 	const prompt = useCallback(
 		({
+			id,
 			title = "確認",
 			// message = "[訊息]",
 			message,
@@ -159,7 +178,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 			mask = false,
 			...rest
 		}) => {
-			const newId = nanoid();
+			const newId = id || nanoid();
 			return create({
 				id: newId,
 				title: title,
@@ -176,9 +195,15 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 				// 		close(opts);
 				// 	}
 				// },
-				onCancel: (opts) => {
-					if (onCancel) onCancel(opts);
-					close(opts);
+				onCancel: (params) => {
+					if (onCancel) onCancel({
+						...params,
+						id: newId,
+					});
+					close({
+						...params,
+						id: newId,
+					});
 				},
 				...rest,
 			});

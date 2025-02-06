@@ -41,6 +41,7 @@ const A17Form = memo((props) => {
 						<Grid container columns={12} spacing={editing ? 2 : 1}>
 							<Grid item xs={12}>
 								<AppDeptPicker
+									label="門市編號"
 									name="dept"
 									// readOnly={true}
 									onChanged={handleDeptChanged}

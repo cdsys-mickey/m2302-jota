@@ -25,6 +25,8 @@ import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvi
 import { useEffect } from "react";
 import { useContext } from "react";
 import ConfigContext from "./contexts/config/ConfigContext";
+import { Suspense } from "react";
+import LoadingTypography from "./shared-components/LoadingTypography";
 // use palette from default theme
 const { palette } = createTheme();
 
@@ -148,7 +150,9 @@ function App() {
 						<DialogsProvider buttonProps={{ size: "small" }}>
 							<CssBaseline />
 							<AppProvider>
-								<AppRoute />
+								<Suspense fallback={<LoadingTypography>載入中...</LoadingTypography>}>
+									<AppRoute />
+								</Suspense>
 							</AppProvider>
 						</DialogsProvider>
 					</ResponsiveProvider>

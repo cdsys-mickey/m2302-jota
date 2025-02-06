@@ -21,6 +21,7 @@ import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContex
 import MuiStyles from "@/shared-modules/sd-mui-styles";
 import { ButtonWrapper } from "../button/ButtonWrapper";
 import DialogTitleEx from "./DialogTitleEx";
+import CheckboxEx from "../checkbox/CheckboxEx";
 
 const defaultConfirmButtonProps = {
 	type: "submit",
@@ -85,6 +86,11 @@ const DialogEx = memo(
 			prompt = false,
 			defaultPromptValue = "",
 			promptTextFieldProps,
+			// CHECK
+			check = false,
+			defaultChecked = false,
+			checkedValue = "ON",
+			checkLabel,
 			onSubmit,
 			confirmTooltip = "",
 			cancelTooltip = "",
@@ -145,7 +151,12 @@ const DialogEx = memo(
 			}
 			if (onConfirm) {
 				onConfirm({
-					value: inputRef.current?.value,
+					...(inputRef.current?.value != null && {
+						value: inputRef.current?.value,
+					}),
+					...(inputRef.current?.checked != null && {
+						checked: inputRef.current?.checked,
+					}),
 					id
 				});
 			}
@@ -182,6 +193,10 @@ const DialogEx = memo(
 			},
 			[handleConfirm]
 		);
+
+		// const handleToggle = useCallback((e) => {
+
+		// }, []);
 
 		const showActions = useMemo(() => {
 			return (
@@ -274,6 +289,18 @@ const DialogEx = memo(
 							/>
 						</Box>
 					)}
+					{check && (
+						<Box py={1}>
+							<CheckboxEx
+								inputRef={setInputRef}
+								autoFocus
+								label={checkLabel}
+								defaultChecked={defaultChecked}
+								value={checkedValue}
+							/>
+
+						</Box>
+					)}
 					{/* <form onSubmit={onSubmit}>{children}</form> */}
 					{children}
 				</DialogContent>
@@ -360,6 +387,7 @@ DialogEx.propTypes = {
 	minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	// prompt
 	prompt: PropTypes.bool,
+	mask: PropTypes.bool,
 	defaultPromptValue: PropTypes.string,
 	promptTextFieldProps: PropTypes.object,
 	onSubmit: PropTypes.func,
@@ -372,7 +400,12 @@ DialogEx.propTypes = {
 	id: PropTypes.string,
 	confirmDisabled: PropTypes.bool,
 	cancelDisabled: PropTypes.bool,
-	slotProps: PropTypes.object
+	slotProps: PropTypes.object,
+	// check
+	check: PropTypes.bool,
+	defaultChecked: PropTypes.bool,
+	checkLabel: PropTypes.string,
+	checkedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default DialogEx;

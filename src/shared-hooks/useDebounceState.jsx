@@ -27,14 +27,24 @@ const useDebounceState = (value, delay = 100) => {
 
 	// 修改 setDebouncedValue，使其清除計時器並立即更新值
 	const cancelAndSetValue = (newValue, callback) => {
-		console.log("cancelAndSetValue", newValue);
+		const isFunc = typeof newValue === "function";
+		if (isFunc) {
+			console.log("cancelAndSetValue", "func");
+		} else {
+			console.log("cancelAndSetValue", newValue);
+		}
+
 		if (timeoutRef.current) {
 			clearTimeout(timeoutRef.current);
 			timeoutRef.current = null;
 		}
 		setDebouncedValue(newValue);
 		if (callback) {
-			callback(newValue);
+			if (!isFunc) {
+				callback(newValue);
+			} else {
+				callback(newValue());
+			}
 		}
 	};
 

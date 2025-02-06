@@ -162,7 +162,12 @@ export const useAuth = () => {
 						token,
 						operator: {
 							...jwtPayload.entity,
-							isRoot: jwtPayload.entity?.Class >= Auth.SCOPES.ROOT
+							hasRoot: jwtPayload.entity?.Class >= Auth.SCOPES.ROOT,
+							isRoot: jwtPayload.entity?.Class == Auth.SCOPES.ROOT,
+							isHQ: jwtPayload.entity?.Class == Auth.SCOPES.HQ,
+							hasHQ: jwtPayload.entity?.Class >= Auth.SCOPES.HQ,
+							isBranchHQ: jwtPayload.entity?.Class == Auth.SCOPES.BRANCH_HQ,
+							hasBranchHQ: jwtPayload.entity?.Class >= Auth.SCOPES.BRANCH_HQ,
 						},
 						roles: jwtPayload.roles,
 					}));

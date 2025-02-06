@@ -4,13 +4,14 @@ import useAppRedirect from "@/hooks/useAppRedirect";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import PushMessagesPopover from "./PushMessagesPopover";
+import { useMemo } from "react";
 
 export const PushMessagesPopoverContainer = () => {
 	// const auth = useContext(AuthContext);
 	const messaging = useContext(MessagingContext);
 	const appFrame = useContext(AppFrameContext);
 	const { handleSelect } = appFrame;
-	const { height, width } = useWindowSize();
+	// const { width } = useWindowSize();
 	const { toMessages } = useAppRedirect();
 	const { handlePopoverClose } = messaging;
 
@@ -29,6 +30,8 @@ export const PushMessagesPopoverContainer = () => {
 	// 	auth.loadList();
 	// }, []);
 
+
+
 	return (
 		// <PushMessagesProvider>
 		<PushMessagesPopover
@@ -36,8 +39,7 @@ export const PushMessagesPopoverContainer = () => {
 			anchorEl={messaging.popoverAnchorEl}
 			onClose={messaging.handlePopoverClose}
 			// loading={loading}
-			height={height - 180}
-			width={width - 90}
+			// width={width - 90}
 			gotoMessages={gotoMessages}
 		/>
 		// </PushMessagesProvider>

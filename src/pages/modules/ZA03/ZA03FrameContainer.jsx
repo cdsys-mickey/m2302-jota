@@ -12,6 +12,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { ZA03CopyAuthDialogContainer } from "../../../components/jobs/ZA03/copy-auth/ZA03CopyAuthDialogContainer";
 import { UserSearchFieldContainer } from "../../../components/jobs/ZA03/search/UserSearchFieldContainer";
 import { ZA03CopyAuthProvider } from "../../../contexts/ZA03/ZA03CopyAuthProvider";
+import ZA03ListHeaderContainer from "@/components/jobs/ZA03/list/ZA03ListHeaderContainer";
 
 export const ZA03FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
@@ -32,7 +33,7 @@ export const ZA03FrameContainer = () => {
 				{/* 工具列 */}
 				<ZA03Toolbar />
 				{/* 列表 */}
-				<ZA03ListHeader />
+				<ZA03ListHeaderContainer />
 				<ZA03ListViewContainer />
 				{/* 對話框 */}
 				<ZA03DialogContainer />

@@ -1,7 +1,7 @@
 import { Container, styled } from "@mui/material";
 
 const ContainerEx = styled(Container, {
-	shouldForwardProp: (prop) => !`alignLeft`.split(/\s*,\s*/).includes(prop),
+	shouldForwardProp: (prop) => !["alignLeft"].includes(prop),
 })(({ alignLeft = false }) => ({
 	...(alignLeft && {
 		"&": {

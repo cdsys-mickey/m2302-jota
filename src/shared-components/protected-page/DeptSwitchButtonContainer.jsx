@@ -17,7 +17,8 @@ const DeptSwitchButtonContainer = (props) => {
 	const { httpGetAsync } = useWebApi();
 
 	const [open, setOpen] = useState(false);
-	const [debouncedOpen, setDebouncedOpen] = useDebounceState(open, { callback: setOpen });
+	// const [debouncedOpen, setDebouncedOpen] = useDebounceState(open, { callback: setOpen });
+	const [debouncedOpen, setDebouncedOpen] = useDebounceState(open);
 
 	const [state, setState] = useState({
 		loading: null,
@@ -49,11 +50,10 @@ const DeptSwitchButtonContainer = (props) => {
 
 	const handleToggle = useCallback(() => {
 		console.log("handleToggle")
-		// setState((prev) => ({
-		// 	...prev,
-		// 	open: !prev.open,
-		// }));
-		setDebouncedOpen(prev => !prev);
+		setDebouncedOpen(prev => {
+			console.log("prev", prev);
+			return !prev;
+		});
 	}, [setDebouncedOpen]);
 
 	const loadOptions = useCallback(async () => {

@@ -164,7 +164,7 @@ export const useSignIn = () => {
 				}
 			}
 		},
-		[captcha, httpPostAsync, toLanding]
+		[captcha, httpPostAsync, pageCookieOpts, toLanding]
 	);
 
 	const signInSubmitHandler = useCallback(

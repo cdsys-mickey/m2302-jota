@@ -6,7 +6,7 @@ import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import A16Drawer from "../A16Drawer";
 import A16DialogForm from "./A16DialogForm";
 import { A16DialogButtonsContainer } from "./buttons/A16DialogButtonsContainer";
@@ -14,13 +14,14 @@ import { A16DialogButtonsContainer } from "./buttons/A16DialogButtonsContainer";
 export const A16DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+
 	const _height = useMemo(() => {
 		return height - 120
 	}, [height])
-	const forms = useForm({
+	const form = useForm({
 		defaultValues: {},
 	});
-	const { reset } = forms;
+	const { reset, setValue } = form;
 	const a16 = useContext(A16Context);
 
 	const title = useMemo(() => {
@@ -40,8 +41,8 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 	});
 
 	const onSubmit = useMemo(() => {
-		return forms.handleSubmit(a16.onEditorSubmit, a16.onEditorSubmitError);
-	}, [a16.onEditorSubmit, a16.onEditorSubmitError, forms]);
+		return form.handleSubmit(a16.onEditorSubmit, a16.onEditorSubmitError);
+	}, [a16.onEditorSubmit, a16.onEditorSubmitError, form]);
 
 	useEffect(() => {
 		// if (a16.readState === ActionState.DONE && !!a16.itemData) {
@@ -49,10 +50,32 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 			console.log(`a16 form reset`, a16.itemData);
 			reset(a16.itemData);
 		}
-	}, [a16.itemData, a16.itemDataReady, a16.readState, forms, reset]);
+	}, [a16.itemData, a16.itemDataReady, reset]);
+
+	const headOfficeValue = useWatch({
+		name: "headOffice",
+		control: form.control
+	})
+
+	const flagshipValue = useWatch({
+		name: "flagship",
+		control: form.control
+	})
+
+	useEffect(() => {
+		if (headOfficeValue) {
+			setValue("flagship", false);
+		}
+	}, [headOfficeValue, setValue]);
+
+	useEffect(() => {
+		if (flagshipValue) {
+			setValue("headOffice", false);
+		}
+	}, [flagshipValue, setValue]);
 
 	return (
-		<FormProvider {...forms}>
+		<FormProvider {...form}>
 			<DialogExContainer
 				title={title}
 				ref={ref}

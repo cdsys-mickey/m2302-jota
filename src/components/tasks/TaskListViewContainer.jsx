@@ -1,11 +1,13 @@
 import ListViewBox from "@/shared-components/listview/ListViewBox";
 import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import { useInit } from "@/shared-hooks/useInit";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import { PushMessagesContext } from "@/contexts/PushMessagesContext";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
 import { TaskListRowContainer } from "./TaskListRowContainer";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 
 
 export const TaskListViewContainer = () => {
@@ -13,8 +15,11 @@ export const TaskListViewContainer = () => {
 	// const { refreshList } = auth;
 	const pushMessages = useContext(PushMessagesContext);
 	const { refreshList } = pushMessages;
-
 	const { height } = useWindowSize();
+
+	const _height = useMemo(() => {
+		return Math.min(height - 200, 600);
+	}, [height])
 
 	useInit(() => {
 		refreshList();
@@ -30,7 +35,7 @@ export const TaskListViewContainer = () => {
 					loadMoreItems={pushMessages.loadMoreItems}
 					isItemLoaded={pushMessages.isItemLoaded}
 					RowComponent={TaskListRowContainer}
-					height={height ? height - 200 : 300}
+					height={_height}
 					handleItemsRendered={pushMessages.handleItemsRendered}
 					error={pushMessages.listError}
 					// bottomReached={users.bottomReached}
@@ -40,5 +45,7 @@ export const TaskListViewContainer = () => {
 		</InfiniteLoaderProvider>
 	);
 };
-
+TaskListViewContainer.propTypes = {
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+}
 TaskListViewContainer.displayName = "TaskListViewContainer";

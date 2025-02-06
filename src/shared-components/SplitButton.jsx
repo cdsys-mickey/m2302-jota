@@ -62,10 +62,6 @@ const SplitButton = memo(forwardRef((props, ref) => {
 		if (onOpen) {
 			onOpen();
 		}
-		// setState((prev) => ({
-		// 	...prev,
-		// 	open: true,
-		// }));
 		setDebouncedOpen(true);
 	}, [onOpen, setDebouncedOpen]);
 
@@ -73,10 +69,6 @@ const SplitButton = memo(forwardRef((props, ref) => {
 		if (onToggle) {
 			onToggle();
 		}
-		// setState((prev) => ({
-		// 	...prev,
-		// 	open: !prev.open,
-		// }));
 		setOpen(prev => !prev);
 	}, [onToggle]);
 

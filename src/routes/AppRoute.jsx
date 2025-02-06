@@ -11,14 +11,14 @@ import { ZA03Provider } from "@/contexts/ZA03/ZA03Provider";
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { HomeProvider } from "@/contexts/home/HomeProvider";
 import { MessagesProvider } from "@/contexts/msgs/MesssagesProvider";
-import { SettingsProvider } from "@/contexts/settings/SettingsProvider";
+import { SettingsProvider } from "@/modules/settings/SettingsProvider";
 
 
 
 import { ZA03FrameContainer } from "@/pages/modules/ZA03/ZA03FrameContainer";
 import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
 import { MessagesFrameContainer } from "@/pages/messages/MessagesFrameContainer";
-import { SettingsFrameContainer } from "@/pages/settings/SettingsFrameContainer";
+import { SettingsFrameContainer } from "@/modules/settings/SettingsFrameContainer";
 import { InfiniteLoaderProvider } from "../contexts/infinite-loader/InfiniteLoaderProvider";
 
 

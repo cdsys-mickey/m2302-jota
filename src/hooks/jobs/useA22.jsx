@@ -19,6 +19,7 @@ import queryString from "query-string";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import useDebugDialog from "../useDebugDialog";
+import useJotaReports from "../useJotaReports";
 
 export const useA22 = ({
 	form
@@ -253,13 +254,11 @@ export const useA22 = ({
 		[grid, httpGetAsync, state.saveKey, token]
 	);
 
-
-
-	const genReport = useCallback(async () => {
-		console.log(`handleSave`, grid.gridData);
-		const collected = A22.transformForSubmitting(grid.gridData);
-		console.log("collected", collected);
-	}, [grid.gridData]);
+	// const genReport = useCallback(async () => {
+	// 	console.log(`handleSave`, grid.gridData);
+	// 	const collected = A22.transformForSubmitting(grid.gridData);
+	// 	console.log("collected", collected);
+	// }, [grid.gridData]);
 
 	const getRowKey = useCallback(({ rowData, rowIndex }) => {
 		return rowData?.prod?.ProdID || rowIndex;
@@ -268,6 +267,8 @@ export const useA22 = ({
 	const reportUrl = useMemo(() => {
 		return `${config.REPORT_URL}/WebA22Rep.aspx`
 	}, [config.REPORT_URL])
+
+	const reports = useJotaReports();
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
@@ -280,27 +281,17 @@ export const useA22 = ({
 	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, grid.gridData, operator.CurDeptID, reportUrl]);
 
 	const onGenReportSubmit = useCallback(
-		(data) => {
-			console.log("onGenReportSubmit", data);
-			const collected = A22.transformForSubmitting(grid.gridData, data);
-			console.log("collected", collected);
-			const payload = {
-				...collected,
+		(payload) => {
+			console.log("onGenReportSubmit", payload);
+			const data = {
+				...A22.transformForSubmitting(grid.gridData, payload),
 				DeptId: operator.CurDeptID,
 			};
-			postToBlank(
-				queryString.stringifyUrl({
-					url: reportUrl,
-					query: {
-						LogKey: operator.LogKey
-					}
-				}),
-				{
-					jsonData: JSON.stringify(payload),
-				}
-			);
+			console.log("data", data);
+
+			reports.open(reportUrl, data)
 		},
-		[grid.gridData, operator.CurDeptID, operator.LogKey, postToBlank, reportUrl]
+		[grid.gridData, operator.CurDeptID, reportUrl, reports]
 	);
 
 	const onGenReportSubmitError = useCallback((err) => {
@@ -441,7 +432,7 @@ export const useA22 = ({
 		toggleExpanded,
 		toggleEditorLock,
 		getRowKey,
-		genReport,
+		// genReport,
 		onGenReportSubmit,
 		onGenReportSubmitError,
 		handleDeleteRow,

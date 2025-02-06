@@ -21,12 +21,17 @@ const AvatarButtonContainer = (props) => {
 		setAnchorEl(null);
 	}, []);
 
-	const memoisedTitle = useMemo(() => {
+	const _title = useMemo(() => {
 		return `${operator?.CurDeptName || "?"} ${operator?.UserName || "?"}`;
 	}, [operator?.CurDeptName, operator?.UserName]);
 
-	const memoisedLabel = useMemo(() => {
-		return (operator?.UserName || "?")[0];
+	const _label = useMemo(() => {
+		const userName = operator?.UserName || "?";
+
+		// 判斷是否為中文（透過正則表達式）
+		const isChinese = /[\u4e00-\u9fff]/.test(userName);
+
+		return isChinese ? userName.slice(-2) : userName[0];
 	}, [operator?.UserName]);
 
 	const color = useMemo(
@@ -40,8 +45,8 @@ const AvatarButtonContainer = (props) => {
 			anchorEl={anchorEl}
 			handleClick={handleClick}
 			handleMenuClose={handleMenuClose}
-			title={memoisedTitle}
-			label={memoisedLabel}
+			title={_title}
+			label={_label}
 			color={color}
 			MenuComponent={AccountMenuContainer}
 			{...rest}>

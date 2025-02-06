@@ -2,20 +2,25 @@ import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import AddIcon from "@mui/icons-material/Add";
 import { useContext } from "react";
 import { forwardRef, memo } from "react";
-import { A01Context } from "../../../contexts/A01/A01Context";
-import A01 from "../../../modules/md-a01";
+import { A01Context } from "@/contexts/A01/A01Context";
+import A01 from "@/modules/md-a01";
 import { useMemo } from "react";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 
 const A01CreateButtonContainer = memo(
 	forwardRef((props, ref) => {
+		const { mobile } = useContext(ResponsiveContext);
 		const { ...rest } = props;
 		const a01 = useContext(A01Context);
 		const text = useMemo(() => {
+			if (mobile) {
+				return "新增";
+			}
 			if (a01.mode === A01.Mode.NEW_PROD) {
 				return "新增新商品";
 			}
 			return "新增商品";
-		}, [a01.mode]);
+		}, [a01.mode, mobile]);
 
 		if (
 			a01.mode === A01.Mode.STORE ||

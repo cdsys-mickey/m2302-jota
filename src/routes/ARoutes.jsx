@@ -1,5 +1,4 @@
-import { Route } from "react-router-dom";
-import { A01Provider } from "@/contexts/A01/A01Provider";
+import { A010Provider } from "@/contexts/a010/A010Provider";
 import { A011Provider } from "@/contexts/A011/A011Provider";
 import { A012Provider } from "@/contexts/A012/A012Provider";
 import { A013Provider } from "@/contexts/A013/A013Provider";
@@ -29,8 +28,11 @@ import { A21Provider } from "@/contexts/A21/A21Provider";
 import { A22Provider } from "@/contexts/A22/A22Provider";
 import { A26Provider } from "@/contexts/A26/A26Provider";
 import { AA01Provider } from "@/contexts/AA01/AA01Provider";
-import { A010Provider } from "@/contexts/a010/A010Provider";
+import { CrudProvider } from "@/contexts/crud/CrudProvider";
+import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
+import { P16Provider } from "@/contexts/P16/P16Provider";
 import { A01FrameContainer } from "@/pages/modules/A01/A01FrameContainer";
+import A01Page from "@/pages/modules/A01/A01Page";
 import { A011FrameContainer } from "@/pages/modules/A011/A011FrameContainer";
 import { A012FrameContainer } from "@/pages/modules/A012/A012FrameContainer";
 import { A013FrameContainer } from "@/pages/modules/A013/A013FrameContainer";
@@ -49,8 +51,8 @@ import { A12FrameContainer } from "@/pages/modules/A12/A12FrameContainer";
 import { A13FrameContainer } from "@/pages/modules/A13/A13FrameContainer";
 import { A14FrameContainer } from "@/pages/modules/A14/A14FrameContainer";
 import { A15FrameContainer } from "@/pages/modules/A15/A15FrameContainer";
-import { A16GFrameContainer } from "@/pages/modules/A16G/A16GFrameContainer";
 import { A16FrameContainer } from "@/pages/modules/A16/A16FrameContainer";
+import { A16GFrameContainer } from "@/pages/modules/A16G/A16GFrameContainer";
 import { A17FrameContainer } from "@/pages/modules/A17/A17FrameContainer";
 import { A18FrameContainer } from "@/pages/modules/A18/A18FrameContainer";
 import { A19FrameContainer } from "@/pages/modules/A19/A19FrameContainer";
@@ -58,23 +60,15 @@ import { A20FrameContainer } from "@/pages/modules/A20/A20FrameContainer";
 import { A21FrameContainer } from "@/pages/modules/A21/A21FrameContainer";
 import { A22FrameContainer } from "@/pages/modules/A22/A22FrameContainer";
 import { A26FrameContainer } from "@/pages/modules/A26/A26FrameContainer";
-import { CrudProvider } from "@/contexts/crud/CrudProvider";
-import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
-import { P16Provider } from "@/contexts/P16/P16Provider";
 import { P16FrameContainer } from "@/pages/modules/P16/P16FrameContainer";
+import { Route } from "react-router-dom";
 
 const aRoutes = (
 	<>
 		<Route
 			path="A01"
 			element={
-				<CrudProvider>
-					<InfiniteLoaderProvider>
-						<A01Provider>
-							<A01FrameContainer />
-						</A01Provider>
-					</InfiniteLoaderProvider>
-				</CrudProvider>
+				<A01Page />
 			}
 		/>
 		<Route

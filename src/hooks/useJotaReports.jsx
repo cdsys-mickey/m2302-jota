@@ -1,11 +1,14 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import { useContext } from "react";
-import { useCallback, useState } from "react";
-import queryString from "query-string";
+import { toastEx } from "@/helpers/toast-ex";
+import Settings from "@/modules/settings/Settings.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { differenceInYears } from "date-fns";
+import useHttpPost from "@/shared-hooks/useHttpPost";
 import Forms from "@/shared-modules/sd-forms";
+import { differenceInYears } from "date-fns";
+import Cookies from "js-cookie";
+import queryString from "query-string";
+import { useCallback, useContext } from "react";
+
 
 export default function useJotaReports(props) {
 	const { from, to } = props || {};
@@ -18,23 +21,55 @@ export default function useJotaReports(props) {
 	const { postToBlank } = useHttpPost();
 	const { operator } = useContext(AuthContext);
 
-	const send = useCallback((url, params) => {
-		// const _url = url || data?.url;
-		// const _params = params || data?.params;
+
+	const send = useCallback((url, data, opts = {}) => {
+		const dontPrompt = Cookies.get(Settings.Keys.COOKIE_DOWNLOAD_PROMPT) == 0;
 		postToBlank(
 			queryString.stringifyUrl({
 				url: url,
 				query: {
-					LogKey: operator.LogKey
+					LogKey: operator.LogKey,
+					...((!dontPrompt) && {
+						DontClose: 1
+					})
 				}
 			}),
 			{
-				jsonData: JSON.stringify(params),
+				jsonData: JSON.stringify(data),
 			}
 		);
-	}, [operator.LogKey, postToBlank]);
 
-	const isDateValidated = useCallback((reportUrl, params) => {
+
+		if (!dontPrompt && data.Action != 1) {
+			dialogs.confirm({
+				message: "首次下載必須進行瀏覽器設定，請問您的檔案有正確下載嗎?",
+				checkLabel: "不要再提醒",
+				check: true,
+				defaultChecked: false,
+				confirmText: "有",
+				cancelText: "沒有",
+				onConfirm: (params) => {
+					console.log("params", params);
+					if (params.checked) {
+						Cookies.set(Settings.Keys.COOKIE_DOWNLOAD_PROMPT, 0);
+						dialogs.alert({
+							message: Settings.MSG_REMIND,
+							confirmText: "知道了"
+						});
+					}
+				},
+				onCancel: (params) => {
+					// if (params.value === "ON") {
+					// 	Cookies.set(COOKIE_DOWNLOAD_PROMPT, 0);
+					// }
+					toastEx.warn(Settings.MSG_INSTRUCT);
+				}
+			})
+		}
+
+	}, [dialogs, operator.LogKey, postToBlank]);
+
+	const isDateValidated = useCallback((reportUrl, params, opts) => {
 		if (from && to) {
 			const fromDateString = params[from];
 			const toDateString = params[to];
@@ -53,7 +88,7 @@ export default function useJotaReports(props) {
 					dialogs.confirm({
 						message: "您輸入的日期區間超過一年，確定執行?",
 						onConfirm: () => {
-							send(reportUrl, params);
+							send(reportUrl, params, opts);
 						}
 					});
 					return false;
@@ -64,16 +99,11 @@ export default function useJotaReports(props) {
 		return true;
 	}, [dialogs, from, send, to]);
 
-	const open = useCallback((reportUrl, params) => {
-		// setData({
-		// 	url: reportUrl,
-		// 	params: params
-		// })
-
-		if (isDateValidated(reportUrl, params)) {
-			send(reportUrl, params);
+	const open = useCallback((reportUrl, data, opts) => {
+		if (!isDateValidated(reportUrl, data, opts)) {
+			return;
 		}
-
+		send(reportUrl, data, opts);
 	}, [isDateValidated, send]);
 
 	return {

@@ -1,11 +1,9 @@
-import { ListItemIcon, MenuItem } from "@mui/material";
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import BugReportIcon from "@mui/icons-material/BugReport";
+import { ListItemIcon, MenuItem } from "@mui/material";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../contexts/auth/AuthContext";
-import Auth from "../../../modules/md-auth";
 
 export const GotoKitchenMenuItemContainer = (props) => {
 	const { children = "元件測試", ...rest } = props;
@@ -23,7 +21,7 @@ export const GotoKitchenMenuItemContainer = (props) => {
 		);
 	}, [navigate]);
 
-	if (!auth.operator.isRoot) {
+	if (!auth.operator.hasRoot) {
 		return false;
 	}
 

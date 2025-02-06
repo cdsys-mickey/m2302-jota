@@ -27,6 +27,7 @@ const A21Form = memo((props) => {
 									required
 									name="dept"
 									disableOpenOnInput
+									disabled
 								/>
 							</Grid>
 							<Grid item xs={12}>

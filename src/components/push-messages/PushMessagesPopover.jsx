@@ -17,14 +17,16 @@ const PushMessagesPopover = memo(
 			anchorEl,
 			onClose,
 			loading,
-			height,
-			width,
+			// height,
+			// width,
 			gotoMessages,
 			...rest
 		} = props;
-		const scrollable = useScrollable({
-			height,
-		});
+
+		// const scrollable = useScrollable({
+		// 	height
+		// })
+
 		return (
 			<Popover
 				ref={ref}
@@ -33,12 +35,11 @@ const PushMessagesPopover = memo(
 				// 	top: 60,
 				// 	left: width,
 				// }}
-				sx={
-					{
-						// minWidth: "20em",
-						// marginRight: 1,
-					}
-				}
+				sx={{
+					// minWidth: "20em",
+					// marginRight: 1,
+
+				}}
 				open={open}
 				anchorEl={anchorEl}
 				anchorOrigin={{
@@ -50,10 +51,17 @@ const PushMessagesPopover = memo(
 					horizontal: "right",
 				}}
 				onClose={onClose}
-				PaperProps={{
-					height: height,
-					width: 400,
+				slotProps={{
+					paper: {
+						// height: height,
+						// width: 400,
+					}
 				}}
+				// PaperProps={{
+				// 	height: height,
+				// 	maxHeight: 700,
+				// 	width: 400,
+				// }}
 				{...rest}>
 				<Box>
 					<FrameMenuGroupHeader
@@ -68,9 +76,12 @@ const PushMessagesPopover = memo(
 					<PushMessagesContainer />
 				</Box> */}
 				<Box
-					sx={{
-						width: 400,
-					}}>
+					sx={[
+						{
+							width: 400,
+						},
+					]}
+				>
 					<TaskListViewContainer />
 				</Box>
 				<Box pt={1}>

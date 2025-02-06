@@ -120,7 +120,6 @@ const A18Form = memo((props) => {
 										variant="contained"
 										color="primary"
 										type="submit"
-									// onClick={a18.handleSubmit}
 									>
 										執行
 									</ButtonWrapper>

@@ -8,7 +8,7 @@ import LoadingTypography from "./shared-components/LoadingTypography";
 
 const loadConfig = async () => {
 	try {
-		const response = await fetch(`${import.meta.env.VITE_PUBLIC_URL}/config.json`);
+		const response = await fetch(`${import.meta.env.VITE_PUBLIC_URL}/config.json?${new Date().getTime()}`);
 		const config = await response.json();
 		return config;
 	} catch (error) {

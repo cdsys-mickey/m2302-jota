@@ -1,0 +1,35 @@
+import { FormProvider, useFormContext } from "react-hook-form";
+import H24Form from "./H24Form";
+import { useContext } from "react";
+import { useMemo } from "react";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { H24Context } from "./H24Context";
+
+export const H24FormContainer = () => {
+	const form = useFormContext();
+	const h24 = useContext(H24Context);
+
+	const onSubmit = useMemo(() => {
+		return form.handleSubmit(
+			h24.onSubmit,
+			h24.onSubmitError
+		)
+	}, [h24.onSubmit, h24.onSubmitError, form]);
+
+	const onDebugSubmit = useMemo(() => {
+		return form.handleSubmit(
+			h24.onDebugSubmit,
+		)
+	}, [h24.onDebugSubmit, form]);
+
+	return <FormProvider {...form}>
+		<FormMetaProvider {...h24.formMeta}>
+			<H24Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+		</FormMetaProvider>
+	</FormProvider>;
+};
+
+H24FormContainer.displayName = "H24FormContainer";
+
+
+
