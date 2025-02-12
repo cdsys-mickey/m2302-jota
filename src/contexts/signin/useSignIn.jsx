@@ -23,7 +23,6 @@ export const useSignIn = () => {
 	const pageCookieOpts = useMemo(() => {
 		return {
 			path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
-			// path: `${config.PUBLIC_URL}/auth`,
 			expires: 365,
 		}
 	}, [])
@@ -92,7 +91,7 @@ export const useSignIn = () => {
 						Cookies.set(
 							Auth.COOKIE_LOGKEY,
 							payload.LogKey || "",
-							Auth.COOKIE_OPTS
+							Auth.LOCAL_COOKIE_OPTS
 						);
 						// 2.儲存 session
 						sessionStorage.setItem(
@@ -100,12 +99,15 @@ export const useSignIn = () => {
 							payload.LogKey
 						)
 						if (!impersonate) {
-							Cookies.remove(Auth.COOKIE_MODE);
+							Cookies.remove(
+								Auth.COOKIE_MODE,
+								Auth.LOCAL_COOKIE_OPTS
+							);
 						} else {
 							Cookies.set(
 								Auth.COOKIE_MODE,
 								"im",
-								Auth.COOKIE_OPTS
+								Auth.LOCAL_COOKIE_OPTS
 							);
 						}
 						if (data.rememberMe) {
@@ -117,7 +119,7 @@ export const useSignIn = () => {
 							Cookies.set(
 								Auth.COOKIE_ACCOUNT,
 								collected[PARAM_ACCOUNT],
-								Auth.COOKIE_OPTS
+								pageCookieOpts
 							);
 						} else {
 							Cookies.set(
@@ -125,7 +127,32 @@ export const useSignIn = () => {
 								0,
 								pageCookieOpts
 							);
-							Cookies.remove(Auth.COOKIE_ACCOUNT);
+							Cookies.remove(
+								Auth.COOKIE_ACCOUNT,
+								pageCookieOpts
+							);
+						}
+
+						//house keeping
+						if (import.meta.env.VITE_PUBLIC_URL) {
+							Cookies.remove(
+								Auth.COOKIE_ACCOUNT,
+								{
+									path: "/"
+								}
+							);
+							Cookies.remove(
+								Auth.COOKIE_REMEMBER_ME,
+								{
+									path: "/"
+								}
+							);
+							Cookies.remove(
+								Auth.COOKIE_MODE,
+								{
+									path: "/"
+								}
+							)
 						}
 						// 2.重導至首頁
 						toLanding();
@@ -143,7 +170,9 @@ export const useSignIn = () => {
 								toastEx.error("登入失敗", error);
 								break;
 						}
-						Cookies.remove(Auth.COOKIE_LOGKEY);
+						Cookies.remove(
+							Auth.COOKIE_LOGKEY
+						);
 					}
 				} catch (err) {
 					console.error("signinStub failed", err);

@@ -30,7 +30,7 @@ const useAppRedirect = () => {
 	const toLogin = useCallback((opts = {}) => {
 		const { clearSession = true } = opts;
 		if (clearSession) {
-			Cookies.remove(Auth.COOKIE_LOGKEY);
+			Cookies.remove(Auth.COOKIE_LOGKEY, Auth.LOCAL_COOKIE_OPTS);
 			sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
 		}
 		const impersonte = Cookies.get(Auth.COOKIE_MODE) === "im";
@@ -73,6 +73,10 @@ const useAppRedirect = () => {
 		toRoot("settings");
 	}, [toRoot]);
 
+	const toForbidden = useCallback(() => {
+		toRoot("forbidden");
+	}, [toRoot]);
+
 	return {
 		toLanding,
 		toLogin,
@@ -81,6 +85,7 @@ const useAppRedirect = () => {
 		toHome,
 		toMessages,
 		toRenew,
+		toForbidden,
 		gotoSettings,
 	};
 };

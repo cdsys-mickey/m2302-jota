@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import ActionState from "../shared-constants/action-state";
 import { useMemo } from "react";
-import { useRef } from "react";
 
 export const useAction = (initState = null) => {
 	const [actionState, setActionState] = useState({

@@ -1,6 +1,7 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
 import CaptchaWrapper from "./CaptchaWrapper";
+import { splitFieldInternalAndForwardedProps } from "@mui/x-date-pickers/internals";
 
 export const CaptchaField = memo(
 	forwardRef((props, ref) => {
@@ -88,7 +89,7 @@ export const CaptchaField = memo(
 );
 
 CaptchaField.propTypes = {
-	inputRef: PropTypes.ref,
+	inputRef: PropTypes.oneOfType([PropTypes.ref, PropTypes.func]),
 	canvasRef: PropTypes.ref,
 	value: PropTypes.string,
 	input: PropTypes.string,

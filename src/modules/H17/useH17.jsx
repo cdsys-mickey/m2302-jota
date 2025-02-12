@@ -21,7 +21,7 @@ export const useH17 = () => {
 		return `${config.REPORT_URL}/WebH17Rep.aspx`
 	}, [config.REPORT_URL])
 
-	const reports = useJotaReports({ from: "SDate", to: "EDate" });
+	const reports = useJotaReports({ from: "SArrDate", to: "EArrDate" });
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);

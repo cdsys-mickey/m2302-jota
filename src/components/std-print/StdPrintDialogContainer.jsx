@@ -68,13 +68,6 @@ export const StdPrintDialogContainer = forwardRef((props, ref) => {
 						variant: "contained",
 					}}
 					otherActionButtons={<StdPrintActionButtons />}
-					// otherActionButtons={
-					// 	<>
-					// 		<StdPrintResetButtonContainer />
-					// 		<StdPrintAddAllFieldsButtonContainer />
-					// 		<StdPrintRemoveAllFieldsButtonContainer />
-					// 	</>
-					// }
 					{...rest}>
 					<StdPrintFormContainer />
 				</DialogEx>

@@ -1,8 +1,17 @@
-const getErrorFromPayload = (payload, options) => {
-	const { withStackTtrace = false } = options || {};
+function isJsonString(str) {
+	try {
+		JSON.parse(str); // 嘗試解析字串
+		return true; // 解析成功，為有效的 JSON 字串
+	} catch (e) {
+		return false; // 解析失敗，非有效的 JSON 字串
+	}
+}
+
+const getErrorFromPayload = (payload, opts) => {
+	const { withStackTtrace = false } = opts || {};
 
 	if (!payload) {
-		const { status, statusText } = options;
+		const { status, statusText } = opts;
 
 		return {
 			...(status && {
@@ -41,11 +50,11 @@ const getErrorFromPayload = (payload, options) => {
 	if (withStackTtrace && stacktraceValue) {
 		result["stackTrace"] = stacktraceValue;
 	}
-	const statusValue = status || Status || options?.status;
+	const statusValue = status || Status || opts?.status;
 	if (statusValue) {
 		result["status"] = statusValue;
 	}
-	const statusTextValue = statusText || StatusText || options?.statusText;
+	const statusTextValue = statusText || StatusText || opts?.statusText;
 	if (statusValue) {
 		result["statusText"] = statusTextValue;
 	}
@@ -53,6 +62,22 @@ const getErrorFromPayload = (payload, options) => {
 		...result,
 		...rest,
 	};
+};
+
+const getErrorFromStatus = (status, axiosResponse) => {
+	return {
+		status: status.code,
+		message: axiosResponse.data || axiosResponse.statusText,
+	};
+};
+
+const getErrorFromResponse = (status, axiosResponse, opts) => {
+	const payload = axiosResponse.data;
+	if (isJsonString(payload)) {
+		return getErrorFromPayload(payload, opts);
+	} else {
+		return getErrorFromStatus(status, axiosResponse, opts);
+	}
 };
 
 const mapStatusText = (err, mapping) => {
@@ -79,6 +104,7 @@ const mapStatusText = (err, mapping) => {
 const WebApi = {
 	getErrorFromPayload,
 	mapStatusText,
+	getErrorFromResponse,
 };
 
 export default WebApi;

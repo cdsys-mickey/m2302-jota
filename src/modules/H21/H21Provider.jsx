@@ -10,8 +10,6 @@ export const H21Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
-			InclTX: true,
-			InclTest: false,
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},
 	});

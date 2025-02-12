@@ -51,7 +51,7 @@ export const useAuth = () => {
 	// 	},
 	// });
 
-	const loadAuthorities = useCallback(
+	const loadModules = useCallback(
 		async ({ token }) => {
 			console.log("loading authorities...");
 			setAuthoritiesState((prev) => ({
@@ -60,7 +60,7 @@ export const useAuth = () => {
 			}));
 			try {
 				const { status, payload } = await httpGetAsync({
-					url: "v1/auth/authorities",
+					url: "v1/auth/modules",
 					bearer: token,
 				});
 				if (status.success) {
@@ -88,7 +88,7 @@ export const useAuth = () => {
 	);
 
 	const renewCookie = useCallback((logKey) => {
-		Cookies.set(Auth.COOKIE_LOGKEY, logKey || "", Auth.COOKIE_OPTS);
+		Cookies.set(Auth.COOKIE_LOGKEY, logKey || "", Auth.LOCAL_COOKIE_OPTS);
 	}, []);
 
 	const recoverIdentity = useCallback(
@@ -172,7 +172,7 @@ export const useAuth = () => {
 						roles: jwtPayload.roles,
 					}));
 
-					loadAuthorities({ token });
+					loadModules({ token });
 
 					if (jwtPayload.entity.MustChange === "1") {
 						throw {
@@ -219,7 +219,7 @@ export const useAuth = () => {
 				}
 			}
 		},
-		[httpGetAsync, loadAuthorities, navigate, toLogin, toRenew]
+		[httpGetAsync, loadModules, navigate, toLogin, toRenew]
 	);
 
 	const invalidate = useCallback(() => {
@@ -367,7 +367,7 @@ export const useAuth = () => {
 							Cookies.set(
 								Auth.COOKIE_LOGKEY,
 								payload.LogKey || "",
-								Auth.COOKIE_OPTS
+								Auth.LOCAL_COOKIE_OPTS
 							);
 							toLanding({
 								reloadAuthorities: true,
@@ -454,7 +454,7 @@ export const useAuth = () => {
 		deptSwitchWorking,
 		handleError,
 		renewCookie,
-		loadAuthorities,
+		loadAuthorities: loadModules,
 		// 變更密碼
 		promptChanging,
 		startChanging,
@@ -464,7 +464,8 @@ export const useAuth = () => {
 		onChangeSubmitError,
 		changePrompting,
 		switchDept,
-		renewLogKey
+		renewLogKey,
+		loadModules
 		// ...taskListLoader,
 	};
 };

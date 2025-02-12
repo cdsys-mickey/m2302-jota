@@ -6,6 +6,7 @@ import StdPrint from "../../modules/md-std-print";
 import FlexBox from "../../shared-components/FlexBox";
 import { useScrollable } from "../../shared-hooks/useScrollable";
 import StdField from "./StdField";
+import { useMemo } from "react";
 
 const ListItem = styled("li")(({ theme }) => ({
 	margin: "8px",
@@ -30,6 +31,13 @@ const StdFields = memo((props) => {
 		alwaysShowThumb: true,
 		// trackColor: "transparent"
 	});
+
+	const _type = useMemo(() => {
+		return StdPrint.droppableIdToType(
+			droppableId
+		)
+	}, [droppableId])
+
 	return (
 		<Droppable droppableId={droppableId}>
 			{(provided) => (
@@ -63,9 +71,7 @@ const StdFields = memo((props) => {
 												onDelete={() => {
 													onDelete(item);
 												}}
-												type={StdPrint.droppableIdToType(
-													droppableId
-												)}
+												type={_type}
 											/>
 										</ListItem>
 									)}

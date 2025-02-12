@@ -107,13 +107,13 @@ const H08Form = memo((props) => {
 									selectOnFocus
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							{/* <Grid item xs={12} sm={6}>
 								<OrderDirPicker
 									name="orderDir"
 									disableOpenOnInput
 									selectOnFocus
 								/>
-							</Grid>
+							</Grid> */}
 						</Grid>
 						<FlexBox mt={1}>
 							<Grid container spacing={2}>

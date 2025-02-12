@@ -3,6 +3,7 @@ import { Chip } from "@mui/material";
 import MuiSeverity from "@/shared-modules/sd-mui-severity";
 import { forwardRef, memo } from "react";
 import { useMemo } from "react";
+import { styled } from "@mui/system";
 
 const VARIANT_DEFAULT = "default";
 const VARIANT_OUTLINED = "outlined";
@@ -55,6 +56,23 @@ const makeStyles = () => {
 	};
 };
 
+const ChipBox = styled("div", {
+	shouldForwardProp: (prop) => ![].includes(prop)
+})(({ theme }) => ({
+	position: "relative"
+}));
+
+const SecondIconBox = styled("div", {
+	shouldForwardProp: (prop) => ![].includes(prop)
+})(({ theme, color }) => ({
+	top: 0,
+	right: 28,
+	position: "absolute",
+	zIndex: 10000,
+	// color: theme.palette.getContrastText(color)
+
+}));
+
 const ChipEx = memo(
 	forwardRef((props, ref) => {
 		const {
@@ -68,6 +86,7 @@ const ChipEx = memo(
 			htmlTextColor,
 			borderRadius,
 			fullWidth = false,
+			secondIcon,
 			sx = [],
 			...rest
 		} = props;
@@ -125,31 +144,38 @@ const ChipEx = memo(
 
 		// console.log(`severityClass: ${severityClass}`);
 		return (
-			<Chip
-				ref={ref}
-				color={color}
-				variant={variant}
-				sx={[
-					_severityClass,
-					!!square && classes.square,
-					!!htmlColor && {
-						backgroundColor: htmlColor,
-					},
-					!!htmlTextColor && {
-						color: htmlTextColor,
-					},
-					!!borderRadius && {
-						borderRadius: borderRadius,
-					},
-					{
-						...(fullWidth && {
-							width: "100%",
-						}),
-					},
-					...(Array.isArray(sx) ? sx : [sx]),
-				]}
-				{...rest}
-			/>
+			<ChipBox>
+				<Chip
+					ref={ref}
+					color={color}
+					variant={variant}
+					sx={[
+						_severityClass,
+						!!square && classes.square,
+						!!htmlColor && {
+							backgroundColor: htmlColor,
+						},
+						!!htmlTextColor && {
+							color: htmlTextColor,
+						},
+						!!borderRadius && {
+							borderRadius: borderRadius,
+						},
+						{
+							...(fullWidth && {
+								width: "100%",
+							}),
+						},
+						...(Array.isArray(sx) ? sx : [sx]),
+					]}
+					{...rest}
+				/>
+				{secondIcon && (
+					<SecondIconBox color={color}>
+						{secondIcon}
+					</SecondIconBox>)
+				}
+			</ChipBox>
 		);
 	})
 );

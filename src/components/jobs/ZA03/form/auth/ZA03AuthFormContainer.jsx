@@ -198,13 +198,13 @@ export const ZA03AuthFormContainer = () => {
 			// 	// disabled: readOnly || za03.funcDisabled,
 			// 	disabled: readOnly,
 			// },
-			{
-				...keyColumn("Seq", createFloatColumn(2)),
-				title: "排序",
-				minWidth: 90,
-				maxWidth: 90,
-				disabled: readOnly,
-			},
+			// {
+			// 	...keyColumn("Seq", createFloatColumn(2)),
+			// 	title: "排序",
+			// 	minWidth: 90,
+			// 	maxWidth: 90,
+			// 	disabled: readOnly,
+			// },
 		],
 		[readOnly]
 	);

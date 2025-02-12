@@ -330,7 +330,7 @@ export const useDSGCodeEditor = ({
 
 	const handleDeleteOperation = useCallback(
 		({ operation, newValue, onDelete, onDeleted }) => {
-			const rows = grid.prevGridData.slice(
+			const rows = grid.gridData.slice(
 				operation.fromRowIndex,
 				operation.toRowIndex
 			);

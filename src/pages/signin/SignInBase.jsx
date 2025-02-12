@@ -13,6 +13,7 @@ import FlexContainer from "@/shared-components/FlexContainer";
 const SignInBase = memo(
 	forwardRef((props, ref) => {
 		const { children } = props;
+
 		return (
 			<PublicPageContainer
 				ref={ref}

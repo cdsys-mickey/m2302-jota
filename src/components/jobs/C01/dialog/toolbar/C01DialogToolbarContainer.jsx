@@ -46,7 +46,7 @@ export const C01DialogToolbarContainer = (props) => {
 		<C01DialogViewToolbar
 			onEdit={c01.canUpdate ? c01.promptUpdating : null}
 			onDelete={canDelete ? c01.confirmDelete : null}
-			onTransform={c01.canRun ? c01.promptTransform : null}
+			onTransform={c01.canManage ? c01.promptTransform : null}
 			onPrint={c01.canPrint ? handlePrint : null}
 			onSideDrawerOpen={c01.handleSideDrawerOpen}
 			{...rest}

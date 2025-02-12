@@ -115,14 +115,28 @@ const AppRoute = () => {
 										// maxWidth:
 									}
 								}
-								title="找不到您要瀏覽的頁面"
+								title="找不到您要瀏覽的模組"
 								message="請聯絡系統管理員"
 							/>
 						}
 					/>
 				</Route>
 			</Route>
-
+			<Route
+				path="forbidden"
+				element={
+					<InfoPage
+						severity="error"
+						alertProps={
+							{
+								// maxWidth:
+							}
+						}
+						title="您沒有使用權限"
+						message="請聯絡系統管理員"
+					/>
+				}
+			/>
 			{/* PUBLIC PAGE NOT FOUND */}
 			<Route
 				path="*"
@@ -139,6 +153,7 @@ const AppRoute = () => {
 					/>
 				}
 			/>
+
 		</Routes>
 	);
 };

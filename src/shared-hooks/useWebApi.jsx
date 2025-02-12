@@ -172,7 +172,7 @@ export const useWebApi = (props) => {
 					//should not happen, because Axios always throws error when status is not 2xx
 					return {
 						status: status,
-						error: WebApi.getErrorFromPayload(axiosResponse.data, {
+						error: WebApi.getErrorFromResponse(status, axiosResponse, {
 							withStackTrace: withStackTrace,
 							status: status.code,
 							statusText: axiosResponse.statusText,

@@ -1,3 +1,4 @@
+import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import DateFormats from "@/shared-modules/sd-date-formats";
 import { format, parseISO } from "date-fns";
@@ -6,7 +7,7 @@ import { useCallback, useState } from "react";
 
 export default function useApp() {
 	const { httpGetAsync } = useWebApi();
-
+	const appRedirect = useAppRedirect();
 	// 版本資訊
 	const version = useMemo(
 		() =>
@@ -47,7 +48,7 @@ export default function useApp() {
 			loading: true,
 		}));
 		try {
-			const { status, payload } = await httpGetAsync({
+			const { status, payload, error } = await httpGetAsync({
 				url: "",
 			});
 			if (status.success) {
@@ -57,8 +58,14 @@ export default function useApp() {
 					apiVersion: payload.version,
 					frontEnd: payload.frontEnd
 				}));
+			} else {
+				throw error || new Error("未預期例外")
 			}
 		} catch (err) {
+			console.error(err);
+			if (err.status == 403) {
+				appRedirect.toForbidden();
+			}
 			console.error("loadAppInto failed", err);
 		} finally {
 			setState((prev) => ({
@@ -66,7 +73,7 @@ export default function useApp() {
 				loading: false,
 			}));
 		}
-	}, [httpGetAsync]);
+	}, [appRedirect, httpGetAsync]);
 
 	return {
 		...state,

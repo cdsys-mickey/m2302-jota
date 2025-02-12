@@ -13,7 +13,7 @@ if (!["dev"].includes(import.meta.env.VITE_PROFILE)) {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	// <React.StrictMode>
-	<Router basename={import.meta.env.VITE_PUBLIC_URL}>
+	<Router basename={`${import.meta.env.VITE_PUBLIC_URL}/`}>
 		{import.meta.env.VITE_PROFILE !== "dev" ?
 			(<ErrorBoundary FallbackComponent={ErrorPage}>
 				<App />

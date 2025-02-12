@@ -25,6 +25,11 @@ const COOKIE_OPTS = {
 	expires: 365,
 };
 
+const LOCAL_COOKIE_OPTS = {
+	path: `${import.meta.env.VITE_PUBLIC_URL || "/"}`,
+	expires: 365,
+};
+
 const AUTH_SCOPE_OPTIONS = Object.keys(SCOPE_LABELS).map((key) => ({
 	id: parseInt(key),
 	label: SCOPE_LABELS[key],
@@ -52,7 +57,7 @@ const FUNCTIONS = Object.freeze({
 	UPD: "修改",
 	PRT: "列印",
 	DEL: "刪除",
-	USI: "管理",
+	USI: "進階",
 	CHK: "覆核",
 	NCK: "解除",
 	// RUN: "執行",
@@ -136,6 +141,7 @@ const Auth = {
 	isOptionEqualToValue,
 	getOptionKey,
 	COOKIE_OPTS,
+	LOCAL_COOKIE_OPTS,
 	findById,
 	getHeaderColor,
 	isCheckboxColumn,

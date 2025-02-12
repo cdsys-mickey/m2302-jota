@@ -1,24 +1,17 @@
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
-import { useContext } from "react";
 import { C01Context } from "@/contexts/C01/C01Context";
-import { useMemo } from "react";
-import C01 from "@/modules/md-c01";
-import { useFormContext } from "react-hook-form";
-import { Tooltip } from "@mui/material";
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useContext, useMemo } from "react";
 
 export const C01TransformButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { children = "形成採購單", ...rest } = props;
-		const form = useFormContext();
 		const c01 = useContext(C01Context);
 
-
 		const handleTransform = useMemo(() => {
-			return c01.canRun ? c01.promptTransformList : null;
-		}, [c01.canRun, c01.promptTransformList]);
+			return c01.canManage ? c01.promptTransformList : null;
+		}, [c01.canManage, c01.promptTransformList]);
 
 		return (
 			<ButtonWrapper

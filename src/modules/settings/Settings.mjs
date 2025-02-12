@@ -1,3 +1,7 @@
+const Params = Object.freeze({
+	PARAM_TAB: "tab",
+});
+
 const Keys = Object.freeze({
 	COOKIE_DOWNLOAD_PROMPT: "downloadPrompt",
 });
@@ -7,10 +11,9 @@ const MSG_INSTRUCT =
 	"請留意新開視窗網址列後方是否有「快顯」或「彈出」視窗被封鎖的警告，請點選該訊息並允許後再次執行";
 
 const Tabs = Object.freeze({
-	INFO: "INFO",
-	AUTH: "AUTH",
-	CHANGE_PWORD: "CHANGE_PWORD",
-	INSTRUCTION: "INSTRUCTION",
+	CHANGE_PWORD: "pwd",
+	INSTRUCTION: "noti",
+	MENU: "menu",
 });
 
 const Settings = {
@@ -18,6 +21,7 @@ const Settings = {
 	Tabs,
 	MSG_INSTRUCT,
 	MSG_REMIND,
+	...Params,
 };
 
 export default Settings;

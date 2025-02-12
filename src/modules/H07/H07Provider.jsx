@@ -15,7 +15,7 @@ export const H07Provider = ({ children }) => {
 			InclTest: false,
 			// reportType: H07ReportType.getDefaultOption(),
 			orderType: H07OrderType.getDefaultOption(),
-			orderDir: OrderDir.getDefaultOption(),
+			orderDir: OrderDir.getOptionById(2),
 			// calType: H07CalType.getDefaultOption(),
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},

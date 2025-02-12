@@ -5,10 +5,13 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { useAction } from "@/shared-hooks/useAction";
 import Cookies from "js-cookie";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export const usePersonalSettings = () => {
 	const { token, operator, renewLogKey } = useContext(AuthContext);
-	const [selectedTab, setSelectedTab] = useState(Settings.Tabs.CHANGE_PWORD);
+	// const [selectedTab, setSelectedTab] = useState(Settings.Tabs.CHANGE_PWORD);
+	const [searchParams, setSearchParams] = useSearchParams();
 	const {
 		httpGetAsync,
 		httpPostAsync,
@@ -31,8 +34,12 @@ export const usePersonalSettings = () => {
 	} = changeAction;
 
 	const handleTabChange = useCallback((e, newTab) => {
-		setSelectedTab(newTab);
-	}, []);
+		// setSelectedTab(newTab);
+		setSearchParams(prev => ({
+			...prev,
+			tab: newTab
+		}));
+	}, [setSearchParams]);
 
 	const onVerifySubmit = useCallback(
 		({ setError, reset }) =>
@@ -146,8 +153,17 @@ export const usePersonalSettings = () => {
 		return Cookies.get(Settings.Keys.COOKIE_DOWNLOAD_PROMPT) == 0;
 	}, []);
 
+	useEffect(() => {
+		if (!searchParams.has("tab")) {
+			setSearchParams(prev => ({
+				...prev,
+				tab: Settings.Tabs.CHANGE_PWORD
+			}));
+		}
+	}, [searchParams, setSearchParams]);
+
 	return {
-		selectedTab,
+		searchParams,
 		handleTabChange,
 		verified,
 		// 密碼變更

@@ -1,6 +1,6 @@
 const options = [
-	{ id: 1, label: "由小到大" },
-	{ id: 2, label: "由大到小" },
+	{ id: 1, label: "由大到小" },
+	{ id: 2, label: "由小到大" },
 ];
 
 const getOptionLabel = (option) => {

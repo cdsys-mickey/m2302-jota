@@ -13,12 +13,13 @@ export const H21FormContainer = () => {
 
 	const formMeta = useFormMeta(
 		`
-			SDate,
-			EDate,
+			CutYM,
+			SProdID,
+			EProdID,
 			catL,
 			catM,
-			InclTX,
-			InclTest,
+			catS,
+			counter,
 			outputType,
 			`
 	)
@@ -41,17 +42,24 @@ export const H21FormContainer = () => {
 		control: form.control,
 	});
 
+	const catM = useWatch({
+		name: "catM",
+		control: form.control,
+	});
+
 
 	const isFieldDisabled = useCallback(
 		(field) => {
 			switch (field.name) {
 				case "catM":
 					return !catL;
+				case "catS":
+					return !catM;
 				default:
 					return false;
 			}
 		},
-		[catL]
+		[catL, catM]
 	);
 
 	return (

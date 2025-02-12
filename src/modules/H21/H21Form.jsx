@@ -14,6 +14,11 @@ import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import ProdPicker from "@/components/picker/ProdPicker";
+import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
+import CounterPicker from "@/components/picker/CounterPicker";
+import FlexBox from "@/shared-components/FlexBox";
+import DateFormats from "@/shared-modules/sd-date-formats";
 
 const H21Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -25,21 +30,35 @@ const H21Form = memo((props) => {
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={6}>
 								<DatePickerWrapper
-									name="SDate"
-									label="日期區間"
+									name="CutYM"
+									label="資料年月"
 									fullWidth
 									validate
 									clearable
 									autoFocus
+									views={["year", "month"]}
+									format={DateFormats.DATEFNS_YEAR_AND_MONTH}
+								/>
+							</Grid>
+							<FlexBox fullWidth />
+							<Grid item xs={12} sm={6}>
+								<ProdPicker
+									name="SProdID"
+									label="貨號區間"
+									size="small"
+									virtualize
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EDate"
-									label="日期區間迄"
-									fullWidth
-									validate
-									clearable
+								<ProdPicker
+									name="EProdID"
+									label="貨號區間迄"
+									size="small"
+									virtualize
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -57,39 +76,44 @@ const H21Form = memo((props) => {
 									catLName="catL"
 								/>
 							</Grid>
-							<FlexGrid item xs={12} alignItems="flex-start">
-								<CheckboxExWrapper
-									label="含撥出入"
-									name="InclTX"
-									defaultValue={true}
-								/>
-
-								<CheckboxExWrapper
-									label="含試贈樣"
-									name="InclTest"
-									defaultValue={true}
-								/>
-							</FlexGrid>
-						</Grid>
-						<Grid container spacing={2}>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/>
-							</FlexGrid>
 							<Grid item xs={12} sm={6}>
-								<FlexToolbar align="right">
-									<ButtonGroup>
-										<DebugDialogButtonContainer
-											onClick={onDebugSubmit} />
-										<ReportSubmitButtonContainer
-											onClick={onSubmit} />
-									</ButtonGroup>
-								</FlexToolbar>
+								<ProdCatSPicker
+									name="catS"
+									disableOpenOnInput
+									selectOnFocus
+									catMName="catM"
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<CounterPicker
+									name="counter"
+									disableOpenOnInput
+									selectOnFocus
+								/>
 							</Grid>
 						</Grid>
+						<FlexBox mt={1}>
+							<Grid container spacing={2}>
+								<FlexGrid item xs={12} sm={6} alignItems="center">
+									<StdPrintOutputModePicker
+										required
+										name="outputType"
+										label="執行方式"
+									/>
+								</FlexGrid>
+								<Grid item xs={12} sm={6}>
+									<FlexToolbar align="right">
+										<ButtonGroup>
+											<DebugDialogButtonContainer
+												onClick={onDebugSubmit} />
+											<ReportSubmitButtonContainer
+												onClick={onSubmit} />
+										</ButtonGroup>
+									</FlexToolbar>
+								</Grid>
+							</Grid>
+
+						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
 			</form>

@@ -1,7 +1,7 @@
 import { ListItem } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo, forwardRef } from "react";
-import SideMenu from "@/modules/md-sidemenu";
+import SideMenu from "@/modules/SideMenu.mjs";
 import { FrameMenuGroupHeader } from "./FrameMenuGroupHeader";
 import FrameMenuItemButtonContainer from "./FrameMenuItemButtonContainer";
 
@@ -31,8 +31,8 @@ const RWFrameMenuRow = memo(
 					) : (
 						<FrameMenuItemButtonContainer
 							value={value}
-							// code={value.JobID}
-							// primary={value.JobName}
+						// code={value.JobID}
+						// primary={value.JobName}
 						/>
 					)}
 				</ListItem>

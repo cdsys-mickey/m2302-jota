@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { StdPrintActiveFieldsContainer } from "./StdPrintActiveFieldsContainer";
-import { StdPrintUnusedFieldsContainer } from "./StdPrintUnusedFieldContainer";
+import { StdPrintUnusedFieldsContainer } from "./StdPrintUnusedFieldsContainer";
 
 const SectionLabel = memo((props) => {
 	const { ...rest } = props;
@@ -19,7 +19,7 @@ const SectionLabel = memo((props) => {
 });
 SectionLabel.displayName = "SectionLabel";
 
-const A01PrintForm = memo((props) => {
+const StdPrintForm = memo((props) => {
 	const { onDragEnd, height } = props;
 
 	return (
@@ -38,11 +38,11 @@ const A01PrintForm = memo((props) => {
 	);
 });
 
-A01PrintForm.propTypes = {
+StdPrintForm.propTypes = {
 	onDragEnd: PropTypes.func,
 	height: PropTypes.number,
 	onSubmit: PropTypes.func,
 };
 
-A01PrintForm.displayName = "A01PrintForm";
-export default A01PrintForm;
+StdPrintForm.displayName = "StdPrintForm";
+export default StdPrintForm;
