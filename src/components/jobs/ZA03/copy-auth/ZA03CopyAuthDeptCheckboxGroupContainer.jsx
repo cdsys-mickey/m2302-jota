@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
 import { useCallback, useContext, useEffect, useMemo } from "react";
-import { useWatch } from "react-hook-form";
-import { ZA03Context } from "../../../../contexts/ZA03/ZA03Context";
-import { ZA03CopyAuthContext } from "../../../../contexts/ZA03/ZA03CopyAuthContext";
-import CheckboxExGroup from "../../../../shared-components/checkbox-group/CheckboxExGroup";
-import { useWindowSize } from "../../../../shared-hooks/useWindowSize";
+import { useFormContext, useWatch } from "react-hook-form";
+import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
+import { ZA03CopyAuthContext } from "@/contexts/ZA03/ZA03CopyAuthContext";
+import CheckboxExGroup from "@/shared-components/checkbox-group/CheckboxExGroup";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import DeptOptions from "@/modules/DeptOptions.mjs";
 
 export const ZA03CopyAuthDeptCheckboxGroupContainer = (props) => {
 	const { ...rest } = props;
-
+	const form = useFormContext();
+	const { setValue } = form;
 	const copyAuth = useContext(ZA03CopyAuthContext);
 	const {
 		fromUser,
@@ -55,10 +56,11 @@ export const ZA03CopyAuthDeptCheckboxGroupContainer = (props) => {
 	}, [fromUser?.UID]);
 
 	useEffect(() => {
-		if (fromUser?.UID && optionsNotLoaded) {
+		if (fromUser?.UID) {
 			loadOptions();
+			setValue("depts", []);
 		}
-	}, [fromUser?.UID, loadOptions, optionsNotLoaded]);
+	}, [fromUser?.UID, loadOptions, setValue]);
 
 	useEffect(() => {
 		if (!fromUser && optionsLoaded) {

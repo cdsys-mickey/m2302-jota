@@ -15,10 +15,8 @@ export const H22FormContainer = () => {
 			EDate,
 			SProdID,
 			EProdID,
-			SalType,
-			InclTest,
-			orderType,
-			outputType,
+			counter,
+			outputType
 			`
 	)
 

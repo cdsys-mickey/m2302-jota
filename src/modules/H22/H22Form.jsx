@@ -8,14 +8,11 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 
 import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
-import OrderDirPicker from "@/components/picker/OrderDirPicker";
+import CounterPicker from "@/components/picker/CounterPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
-import ProdFreeTypePicker from "@/components/prod-free-type-picker/ProdFreeTypePicker";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
-import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
-import H22OrderTypePicker from "./pickers/H22OrderTypePicker";
 
 const H22Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -61,38 +58,12 @@ const H22Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<SalesTypePicker
-									name="SalType"
-									label="零售"
-									fullWidth
-									validate
-									clearable
-								/>
-							</Grid>
-							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12}>
-								<ProdFreeTypePicker
-									name="InclTest"
-									label="含試贈樣"
-									fullWidth
-									clearable
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<H22OrderTypePicker
-									name="orderType"
+								<CounterPicker
+									name="counter"
 									disableOpenOnInput
 									selectOnFocus
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<OrderDirPicker
-									name="orderDir"
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-
 						</Grid>
 						<FlexBox mt={2}>
 							<Grid container spacing={2}>

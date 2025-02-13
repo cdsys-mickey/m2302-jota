@@ -74,7 +74,7 @@ const usePwordCheck = (opts = {}) => {
 				onConfirm: async ({ value }) => {
 					try {
 						const { status } = await httpPostAsync({
-							url: `v1/ou/dept/params`,
+							url: `v2/ou/dept/params/validate`,
 							bearer: token,
 							data: {
 								pword: value

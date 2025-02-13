@@ -88,28 +88,28 @@ export default function useSQtyManager(opts = {}) {
 	}, [containsProdInPrepared, setPreparedQty]);
 
 	// 讀取密碼
-	const loadStockPword = useCallback(async () => {
-		try {
-			const { status, payload, error } = await httpGetAsync({
-				url: `v1/ou/dept/params`,
-				bearer: token,
-				params: {
-					id: "StockPword",
-					dc: 1,
-				},
-			});
-			if (status.success) {
-				pwordLockRef.current = {
-					value: payload,
-					passed: false,
-				};
-			} else {
-				throw error || new Error("未預期例外");
-			}
-		} catch (err) {
-			toastEx.error("讀取設定發生錯誤", err);
-		}
-	}, [httpGetAsync, token]);
+	// const loadStockPword = useCallback(async () => {
+	// 	try {
+	// 		const { status, payload, error } = await httpGetAsync({
+	// 			url: `v1/ou/dept/params`,
+	// 			bearer: token,
+	// 			params: {
+	// 				id: "StockPword",
+	// 				dc: 1,
+	// 			},
+	// 		});
+	// 		if (status.success) {
+	// 			pwordLockRef.current = {
+	// 				value: payload,
+	// 				passed: false,
+	// 			};
+	// 		} else {
+	// 			throw error || new Error("未預期例外");
+	// 		}
+	// 	} catch (err) {
+	// 		toastEx.error("讀取設定發生錯誤", err);
+	// 	}
+	// }, [httpGetAsync, token]);
 
 	const commitSQty = useCallback(
 		({ }) => {
@@ -196,7 +196,7 @@ export default function useSQtyManager(opts = {}) {
 				onConfirm: async ({ value }) => {
 					try {
 						const { status } = await httpPostAsync({
-							url: `v1/ou/dept/params`,
+							url: `v2/ou/dept/params/validate`,
 							bearer: token,
 							data: {
 								pword: value

@@ -5,11 +5,12 @@ import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import A05Form from "../form/A05Form";
+import A05DialogForm from "../form/A05DialogForm";
 import { A05DialogButtonsContainer } from "./buttons/A05DialogButtonsContainer";
 import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 import A05Drawer from "../A05Drawer";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 
 export const A05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -18,6 +19,30 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 	const _height = useMemo(() => {
 		return height - 120
 	}, [height])
+
+	const formMeta = useFormMeta(
+		`
+		FactID,
+		FactData,
+		AbbrName,
+		Boss,
+		Contact,
+		Tel,
+		Uniform,
+		PayGroup,
+		bank,
+		BankAcct,
+		CompAddr,
+		CompTel,
+		CompFax,
+		TaxType,
+		FactAddr,
+		FactTel,
+		FactFax,
+		mainProd,
+		remark
+		`
+	);
 
 	const forms = useForm({
 		defaultValues: {},
@@ -80,8 +105,8 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<FormMetaProvider {...a05.formMeta}>
-					<A05Form
+				<FormMetaProvider {...formMeta}>
+					<A05DialogForm
 						ref={ref}
 						onSubmit={onSubmit}
 						editing={a05.editing}

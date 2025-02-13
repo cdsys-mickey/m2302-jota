@@ -5,9 +5,12 @@ import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { ZA03CopyAuthContext } from "@/contexts/ZA03/ZA03CopyAuthContext";
 import DialogEx from "@/shared-components/dialog/DialogEx";
 import ZA03CopyAuthForm from "./ZA03CopyAuthForm";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { useMemo } from "react";
 
 export const ZA03CopyAuthDialogContainer = () => {
 	const za03 = useContext(ZA03Context);
+	const { height } = useWindowSize();
 	const { copyAuthDialogOpen } = za03;
 	const copyAuth = useContext(ZA03CopyAuthContext);
 	const { setFromUser } = copyAuth;
@@ -15,6 +18,10 @@ export const ZA03CopyAuthDialogContainer = () => {
 		defaultValues: {},
 	});
 	const { reset } = forms;
+
+	const _height = useMemo(() => {
+		return height - 400
+	}, [height])
 
 	useEffect(() => {
 		if (copyAuthDialogOpen) {
@@ -30,6 +37,7 @@ export const ZA03CopyAuthDialogContainer = () => {
 					dense
 					disableEscapeKeyDown
 					minWidth="32em"
+
 					title="複製功能權限"
 					open={za03.copyAuthDialogOpen}
 					onClose={za03.cancelCopyAuth}
@@ -38,6 +46,12 @@ export const ZA03CopyAuthDialogContainer = () => {
 						za03.onCopyAuthSubmit,
 						za03.onCopyAuthSubmitError
 					)}
+					contentSx={[
+						{
+							paddingTop: 0,
+							minHeight: _height,
+						},
+					]}
 					working={za03.copyAuthWorking}
 					confirmText="複製">
 					<Container maxWidth="md">

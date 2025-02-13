@@ -26,6 +26,7 @@ export const useA12 = ({ token }) => {
 					"CodeID",
 					createTextColumnEx({
 						continuousUpdates: false,
+						maxLength: 2
 					})
 				),
 				disabled: grid.isPersisted,

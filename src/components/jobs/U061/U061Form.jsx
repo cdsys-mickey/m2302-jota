@@ -24,7 +24,6 @@ const U061Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={6}>
-								{/* <AuthDeptPicker label="起始門市" name="sdept" /> */}
 								<AppDeptPicker
 									autoFocus
 									label="門市代碼"

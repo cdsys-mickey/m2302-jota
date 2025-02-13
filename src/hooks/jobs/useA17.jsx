@@ -25,7 +25,7 @@ export const useA17 = () => {
 			try {
 				crud.startLoading("讀取中...");
 				const { status, payload, error } = await httpGetAsync({
-					url: `v1/ou/dept/params`,
+					url: `v2/ou/dept/params/pword`,
 					bearer: token,
 					params: {
 						dp: id,
@@ -62,7 +62,7 @@ export const useA17 = () => {
 			crud.startUpdating();
 			try {
 				const { status, payload, error } = await httpPutAsync({
-					url: `v1/ou/dept/params`,
+					url: `v2/ou/dept/params/pword`,
 					bearer: token,
 					data: A17.transformForEditorSubmit(data),
 				});

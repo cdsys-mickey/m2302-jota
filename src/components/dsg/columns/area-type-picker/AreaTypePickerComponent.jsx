@@ -40,7 +40,7 @@ const AreaTypePickerComponent = memo((props) => {
 
 	const {
 		name,
-		hideControlsOnActive = true,
+		hideControlsOnActive,
 		selectOnFocus = true,
 		// from Context
 		lastCell,

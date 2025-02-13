@@ -110,6 +110,11 @@ const A01DialogForm = memo((props) => {
 												required: "貨品編號為必填",
 											}}
 											readOnly={updating}
+											slotProps={{
+												htmlInput: {
+													maxLength: 13
+												}
+											}}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={6}>
@@ -134,6 +139,11 @@ const A01DialogForm = memo((props) => {
 											fullWidth
 											// value={data?.Barcode}
 											readOnly={storeMode}
+											slotProps={{
+												htmlInput: {
+													maxLength: 13
+												}
+											}}
 										/>
 									</Grid>
 									<FlexBox fullWidth />

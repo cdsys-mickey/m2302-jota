@@ -5,7 +5,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
 
-export const H22FrameContainer = () => {
+const H22FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
 	const theme = useTheme();
 	const boxStyles = useMemo(
@@ -25,8 +25,8 @@ export const H22FrameContainer = () => {
 		</Box>
 	);
 };
-
 H22FrameContainer.displayName = "H22Frame";
+export default H22FrameContainer;
 
 
 

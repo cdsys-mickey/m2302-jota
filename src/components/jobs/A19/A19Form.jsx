@@ -87,7 +87,6 @@ const A19Form = memo((props) => {
 							<FlexBox fullWidth />
 							{/* 門市 */}
 							<Grid item xs={12} sm={6}>
-								{/* <AuthDeptPicker label="起始門市" name="sdept" /> */}
 								<AppDeptPicker
 									// filterByOperator
 									label="起始門市"
@@ -98,7 +97,6 @@ const A19Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								{/* <AuthDeptPicker label="截止門市" name="edept" /> */}
 								<AppDeptPicker
 									// filterByOperator
 									label="截止門市"

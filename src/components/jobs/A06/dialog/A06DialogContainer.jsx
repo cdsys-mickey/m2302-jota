@@ -5,9 +5,10 @@ import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import A06Form from "../form/A06Form";
-import { A06DialogButtonsContainer } from "./buttons/A06DialogButtonsContainer";
+import A06DialogForm from "../form/A06DialogForm";
+import { A06DialogToolbarContainer } from "./buttons/A06DialogToolbarContainer";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import A06DrawerContainer from "../A06DrawerContainer";
 
 export const A06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -60,7 +61,7 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 				responsive
 				fullWidth
 				maxWidth="md"
-				TitleButtonsComponent={A06DialogButtonsContainer}
+				TitleButtonsComponent={A06DialogToolbarContainer}
 				open={a06.itemViewOpen}
 				onClose={
 					a06.editing ? a06.confirmDialogClose : a06.cancelAction
@@ -79,7 +80,7 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 				]}
 				{...rest}>
 				<FormMetaProvider {...a06.formMeta}>
-					<A06Form
+					<A06DialogForm
 						ref={ref}
 						onSubmit={onSubmit}
 						editing={a06.editing}
@@ -90,6 +91,7 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 						itemDataReady={a06.itemDataReady}
 					/>
 				</FormMetaProvider>
+				<A06DrawerContainer />
 			</DialogExContainer>
 		</FormProvider>
 	);

@@ -47,8 +47,8 @@ export const useSideMenu = ({ bgcolor = "#fff" } = {}) => {
 		}
 		const qs = q.trim().toLowerCase();
 		return (
-			item.JobID.toLowerCase().startsWith(qs) ||
-			item.JobName.toLowerCase().includes(qs)
+			item.JobID?.toLowerCase().startsWith(qs) ||
+			item.JobName?.toLowerCase().includes(qs)
 		);
 	}, []);
 
@@ -75,9 +75,9 @@ export const useSideMenu = ({ bgcolor = "#fff" } = {}) => {
 					: authorities
 						?.filter((x) => filterByInput(x, q))
 						.sort((x, y) => {
-							if (x.JobID.length < y.JobID.length) {
+							if (x.JobID?.length < y.JobID?.length) {
 								return -1;
-							} else if (x.JobID.length > y.JobID.length) {
+							} else if (x.JobID?.length > y.JobID?.length) {
 								return 1;
 							} else if (x.Seq < y.Seq) {
 								return -1;

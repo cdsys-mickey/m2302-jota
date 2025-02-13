@@ -6,9 +6,14 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { H21Context } from "./H21Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useCallback } from "react";
+import { useInit } from "@/shared-hooks/useInit";
+import StdPrint from "../md-std-print";
+import Forms from "@/shared-modules/sd-forms";
+import DateFormats from "@/shared-modules/sd-date-formats";
 
 export const H21FormContainer = () => {
 	const form = useFormContext();
+	const { reset } = form;
 	const h21 = useContext(H21Context);
 
 	const formMeta = useFormMeta(
@@ -47,7 +52,6 @@ export const H21FormContainer = () => {
 		control: form.control,
 	});
 
-
 	const isFieldDisabled = useCallback(
 		(field) => {
 			switch (field.name) {
@@ -61,6 +65,14 @@ export const H21FormContainer = () => {
 		},
 		[catL, catM]
 	);
+
+	useInit(async () => {
+		const cutYM = await h21.getCutYM();
+		reset({
+			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			CutYM: cutYM ? Forms.parseDate(cutYM, DateFormats.DATEFNS_YEAR_AND_MONTH) : null
+		})
+	}, []);
 
 	return (
 		<FormProvider {...form}>

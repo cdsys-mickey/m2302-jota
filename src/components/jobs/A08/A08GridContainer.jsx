@@ -27,6 +27,7 @@ const A08GridContainer = () => {
 					"CodeID",
 					createTextColumnEx({
 						continuousUpdates: false,
+						maxLength: 3
 					})
 				),
 				disabled: a08.grid.isPersisted,
@@ -40,7 +41,7 @@ const A08GridContainer = () => {
 					optionPickerColumn(AreaTypePickerComponentContainer, {
 						name: "areaType",
 						disableOpenOnInput: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: false,
 						disableClearable: true,
 						selectOnFocus: true,
 						autoHighlight: true,

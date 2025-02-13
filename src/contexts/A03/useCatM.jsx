@@ -29,6 +29,7 @@ export const useCatM = () => {
 					"MClas",
 					createTextColumnEx({
 						continuousUpdates: false,
+						maxLength: 3
 					})
 				),
 				disabled: grid.isPersisted,

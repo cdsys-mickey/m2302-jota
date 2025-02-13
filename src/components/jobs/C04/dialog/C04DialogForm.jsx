@@ -101,7 +101,7 @@ const C04DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={3}>
+						<Grid item xs={24} sm={24} md={3.5}>
 							<SupplierPicker
 								typo
 								forId
@@ -128,7 +128,7 @@ const C04DialogForm = memo((props) => {
 								disabled={supplierDisabled}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<TextFieldWrapper
 								typo
 								name="FactData"

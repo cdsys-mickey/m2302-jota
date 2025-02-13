@@ -8,10 +8,11 @@ export const H25Provider = ({ children }) => {
 	const h25 = useH25();
 	const form = useForm({
 		defaultValues: {
-			SDate: null,
-			EDate: null,
-			InclTX: true,
-			InclTest: false,
+			ArrDate: null,
+			SFactID: null,
+			EFactID: null,
+			SProdID: null,
+			EProdID: null,
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},
 	});

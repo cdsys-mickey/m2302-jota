@@ -12,7 +12,7 @@ export const ZA03OverrideDeptCheckboxContainer = (props) => {
 	});
 
 	const disabled = useMemo(() => {
-		return depts.length !== 1 || !fromUser;
+		return depts?.length !== 1 || !fromUser;
 	}, [depts.length, fromUser]);
 
 	if (!fromUser) {

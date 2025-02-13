@@ -1,41 +1,39 @@
-import StdPrint from "@/modules/md-std-print";
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import { H22Context } from "./H22Context";
-import { useH22 } from "./useH22";
+import { useH01 } from "./useH01";
+import StdPrint from "../md-std-print";
+import { H01Context } from "./H01Context";
 
-export const H22Provider = ({ children }) => {
-	const h22 = useH22();
+export const H01Provider = ({ children }) => {
+	const h01 = useH01();
 	const form = useForm({
 		defaultValues: {
 			SDate: null,
 			EDate: null,
+			InclTX: true,
+			InclTest: false,
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},
 	});
 
 	return (
 		<FormProvider {...form}>
-			<H22Context.Provider
+			<H01Context.Provider
 				value={{
-					...h22,
+					...h01,
 					handleSubmit: form.handleSubmit(
-						h22.onSubmit,
-						h22.onSubmitError
+						h01.onSubmit,
+						h01.onSubmitError
 					),
 				}}>
 				{children}
-			</H22Context.Provider>
+			</H01Context.Provider>
 		</FormProvider>
 	);
 };
 
-H22Provider.propTypes = {
+H01Provider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
 };
-
-
-
-
 
 

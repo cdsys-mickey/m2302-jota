@@ -1,15 +1,14 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Colors from "@/modules/md-colors";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { TextField } from "@mui/material";
-import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import MuiStyles from "../../shared-modules/sd-mui-styles";
+import ControllerWrapper from "../ControllerWrapper";
 import FlexBox from "../FlexBox";
 import ClearInputButton from "../input/ClearInputButton";
-import { orange } from "@mui/material/colors";
-import Colors from "@/modules/md-colors";
 
 export const ControlledTextField = ({
 	name,
@@ -24,6 +23,8 @@ export const ControlledTextField = ({
 	labelShrink = false,
 	defaultValue = "",
 	sx = [],
+	InputProps,
+	inputProps,
 	clearable,
 	disabled,
 	disabledBackgroundColor = "rgba(0,0,0,0.05)",
@@ -32,6 +33,7 @@ export const ControlledTextField = ({
 	dense,
 	inline,
 	required,
+	slotProps,
 	...rest
 }) => {
 	const formMeta = useContext(FormMetaContext);
@@ -94,66 +96,61 @@ export const ControlledTextField = ({
 		[disableEnter, inFormMeta, getError, form, name, focusNextField, isFieldDisabled]
 	);
 
-	const BoxComponent = useMemo(() => {
-		return inline ? FlexBox : Box;
-	}, [inline]);
-
-	if (!name) {
-		return (
-			<TextField
-				// multiline={multiline}
-				label={_label}
-				sx={[
-					(theme) => ({
-						"&:has(.MuiInputBase-input:focus)": {
-							// backgroundColor: "rgb(253 253 253)",
-						},
-						// "& .MuiOutlinedInput-root": {
-						// 	paddingRight: theme.spacing(1),
-						// },
-					}),
-					...(Array.isArray(sx) ? sx : [sx]),
-				]}
-				onChange={_onChange}
-				onKeyDown={handleKeyDown}
-				InputLabelProps={{
-					...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
-					...InputLabelProps,
-					...(labelShrink && { shrink: true }),
-				}}
-				InputProps={{
-					...(readOnly && {
-						readOnly: true,
-						// disableUnderline: true,
-					}),
-					...(renderEndAdornment && {
-						endAdornment: (
-							<>
-								{EndAdornmentComponent && (
-									<EndAdornmentComponent />
-								)}
-							</>
-						),
-					}),
-				}}
-				disabled={disabled}
-				required={required}
-				{...rest}
-			/>
-		);
-	}
+	// if (!name) {
+	// 	return (
+	// 		<TextField
+	// 			// multiline={multiline}
+	// 			label={_label}
+	// 			sx={[
+	// 				(theme) => ({
+	// 					"&:has(.MuiInputBase-input:focus)": {
+	// 						// backgroundColor: "rgb(253 253 253)",
+	// 					},
+	// 					// "& .MuiOutlinedInput-root": {
+	// 					// 	paddingRight: theme.spacing(1),
+	// 					// },
+	// 				}),
+	// 				...(Array.isArray(sx) ? sx : [sx]),
+	// 			]}
+	// 			onChange={_onChange}
+	// 			onKeyDown={handleKeyDown}
+	// 			InputLabelProps={{
+	// 				...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+	// 				...InputLabelProps,
+	// 				...(labelShrink && { shrink: true }),
+	// 			}}
+	// 			inputProps={{
+	// 				...inputProps,
+	// 				...slotProps?.htmlInput
+	// 			}}
+	// 			InputProps={{
+	// 				...InputProps,
+	// 				...slotProps?.input,
+	// 				...(readOnly && {
+	// 					readOnly: true,
+	// 					// disableUnderline: true,
+	// 				}),
+	// 				...(renderEndAdornment && {
+	// 					endAdornment: (
+	// 						<>
+	// 							{EndAdornmentComponent && (
+	// 								<EndAdornmentComponent />
+	// 							)}
+	// 						</>
+	// 					),
+	// 				}),
+	// 			}}
+	// 			disabled={disabled}
+	// 			required={required}
+	// 			{...rest}
+	// 		/>
+	// 	);
+	// }
 
 	return (
-		<Controller
-			name={name}
-			defaultValue={defaultValue}
-			control={control}
-			rules={rules}
-			render={({
-				field: { value, onChange, ref },
-				fieldState: { error },
-			}) => (
-				<BoxComponent inline sx={{ fontWeight: 700 }}>
+		<ControllerWrapper name={name} control={control} defaultValue={defaultValue} rules={rules}>
+			{({ value, onChange, ref, error }) => (
+				<FlexBox block={!inline} sx={{ fontWeight: 700 }}>
 					{inline &&
 						label
 					}
@@ -163,22 +160,16 @@ export const ControlledTextField = ({
 						label={_label}
 						inputRef={ref}
 						sx={[
-							(theme) => ({
+							() => ({
 								"&:has(.MuiInputBase-input:focus)": {
 									// backgroundColor: "rgb(253 253 253)",
 								},
-								// "& .MuiOutlinedInput-root": {
-								// 	paddingRight: theme.spacing(1),
-								// },
 								...(disabled && {
 									backgroundColor: disabledBackgroundColor,
 								}),
 								"&:hover .clearable": {
 									visibility: "visible",
 								},
-								// "& .clearable": {
-								// 	visibility: "hidden",
-								// },
 								...(dense && {
 									"& .MuiInputBase-input": {
 										paddingLeft: 1,
@@ -216,6 +207,8 @@ export const ControlledTextField = ({
 							...(labelShrink && { shrink: true }),
 						}}
 						InputProps={{
+							...InputProps,
+							...slotProps?.input,
 							...(readOnly && {
 								readOnly: true,
 								// disableUnderline: true,
@@ -237,16 +230,125 @@ export const ControlledTextField = ({
 								),
 							}),
 						}}
+						inputProps={{
+							...inputProps,
+							...slotProps?.htmlInput
+						}}
 						disabled={disabled}
 						error={!!error}
 						helperText={error?.message}
 						required={required}
 						{...rest}
 					/>
-				</BoxComponent>
+				</FlexBox>
 			)}
-		/>
-	);
+		</ControllerWrapper>
+	)
+
+	// return (
+	// 	<Controller
+	// 		name={name}
+	// 		defaultValue={defaultValue}
+	// 		control={control}
+	// 		rules={rules}
+	// 		render={({
+	// 			field: { value, onChange, ref },
+	// 			fieldState: { error },
+	// 		}) => (
+	// 			<FlexBox block={!inline} sx={{ fontWeight: 700 }}>
+	// 				{inline &&
+	// 					label
+	// 				}
+	// 				<TextField
+	// 					value={value}
+	// 					// multiline={multiline}
+	// 					label={_label}
+	// 					inputRef={ref}
+	// 					sx={[
+	// 						() => ({
+	// 							"&:has(.MuiInputBase-input:focus)": {
+	// 								// backgroundColor: "rgb(253 253 253)",
+	// 							},
+	// 							...(disabled && {
+	// 								backgroundColor: disabledBackgroundColor,
+	// 							}),
+	// 							"&:hover .clearable": {
+	// 								visibility: "visible",
+	// 							},
+	// 							...(dense && {
+	// 								"& .MuiInputBase-input": {
+	// 									paddingLeft: 1,
+	// 									paddingTop: 0.2,
+	// 									paddingBottom: 0.2,
+	// 									paddingRight: 0
+	// 								}
+	// 							}),
+	// 							...(required && !error && {
+	// 								"& .MuiInputLabel-root:not(.Mui-focused)": {
+	// 									color: Colors.REQUIRED,
+	// 								},
+	// 								"& .MuiOutlinedInput-root": {
+	// 									'& fieldset': {
+	// 										borderColor: Colors.REQUIRED,
+	// 									},
+	// 								}
+	// 							})
+	// 						}),
+	// 						...(Array.isArray(sx) ? sx : [sx]),
+	// 					]}
+	// 					onChange={(e) => {
+	// 						if (readOnly) {
+	// 							return;
+	// 						}
+	// 						onChange(e.target.value);
+	// 						if (_onChange) {
+	// 							_onChange(e.target.value);
+	// 						}
+	// 					}}
+	// 					onKeyDown={handleKeyDown}
+	// 					InputLabelProps={{
+	// 						...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+	// 						...InputLabelProps,
+	// 						...(labelShrink && { shrink: true }),
+	// 					}}
+	// 					InputProps={{
+	// 						...InputProps,
+	// 						...slotProps?.input,
+	// 						...(readOnly && {
+	// 							readOnly: true,
+	// 							// disableUnderline: true,
+	// 						}),
+	// 						...(renderEndAdornment && {
+	// 							endAdornment: (
+	// 								<>
+	// 									{clearable && (
+	// 										<ClearInputButton
+	// 											className="clearable"
+	// 											value={value}
+	// 											onChange={onChange}
+	// 										/>
+	// 									)}
+	// 									{EndAdornmentComponent && (
+	// 										<EndAdornmentComponent />
+	// 									)}
+	// 								</>
+	// 							),
+	// 						}),
+	// 					}}
+	// 					inputProps={{
+	// 						...inputProps,
+	// 						...slotProps?.htmlInput
+	// 					}}
+	// 					disabled={disabled}
+	// 					error={!!error}
+	// 					helperText={error?.message}
+	// 					required={required}
+	// 					{...rest}
+	// 				/>
+	// 			</FlexBox>
+	// 		)}
+	// 	/>
+	// );
 };
 
 ControlledTextField.propTypes = {
@@ -261,6 +363,9 @@ ControlledTextField.propTypes = {
 	labelShrink: PropTypes.bool,
 	defaultValue: PropTypes.string,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+	slotProps: PropTypes.object,
+	inputProps: PropTypes.object,
+	InputProps: PropTypes.object,
 	clearable: PropTypes.bool,
 	disabled: PropTypes.bool,
 	disabledBackgroundColor: PropTypes.string,

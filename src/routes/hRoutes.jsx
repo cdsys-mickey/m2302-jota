@@ -34,6 +34,16 @@ import { H17Provider } from "@/modules/H17/H17Provider";
 import { H17FrameContainer } from "@/modules/H17/H17FrameContainer";
 import { H21Provider } from "@/modules/H21/H21Provider";
 import { H21FrameContainer } from "@/modules/H21/H21FrameContainer";
+import { H22Provider } from "@/modules/H22/H22Provider";
+// import { lazy } from "react";
+import H22FrameContainer from "@/modules/H22/H22FrameContainer";
+import { H24Provider } from "@/modules/H24/H24Provider";
+import { H24FrameContainer } from "@/modules/H24/H24FrameContainer";
+import { H25Provider } from "@/modules/H25/H25Provider";
+import { H25FrameContainer } from "@/modules/H25/H25FrameContainer";
+// const H22FrameContainer = lazy(() => import("@/modules/H22/H22FrameContainer"));
+
+
 
 const hRoutes = (
 	<>
@@ -225,6 +235,42 @@ const hRoutes = (
 						<H21Provider>
 							<H21FrameContainer />
 						</H21Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H22"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H22Provider>
+							<H22FrameContainer />
+						</H22Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H24"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H24Provider>
+							<H24FrameContainer />
+						</H24Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H25"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H25Provider>
+							<H25FrameContainer />
+						</H25Provider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

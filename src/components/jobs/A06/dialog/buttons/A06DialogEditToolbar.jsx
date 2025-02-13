@@ -1,10 +1,9 @@
+import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 
-const A06DialogEditButtons = memo(
+const A06DialogEditToolbar = memo(
 	forwardRef((props, ref) => {
 		const { onSave, onCancel, loading, ...rest } = props;
 		return (
@@ -33,9 +32,10 @@ const A06DialogEditButtons = memo(
 		);
 	})
 );
-A06DialogEditButtons.displayName = "A06DialogEditButtons";
-A06DialogEditButtons.propTypes = {
+A06DialogEditToolbar.displayName = "A06DialogEditButtons";
+A06DialogEditToolbar.propTypes = {
 	onSave: PropTypes.func,
+	onCancel: PropTypes.func,
 	loading: PropTypes.bool,
 };
-export default A06DialogEditButtons;
+export default A06DialogEditToolbar;

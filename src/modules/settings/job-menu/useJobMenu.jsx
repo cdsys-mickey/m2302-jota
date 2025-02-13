@@ -70,7 +70,12 @@ export const useJobMenu = () => {
 				throw error || new Error("未預期例外")
 			}
 		} catch (err) {
-			toastEx.error("載入個人設定發生錯誤");
+			console.error(err);
+			if (err.status == 404) {
+				toastEx.info("您尚未設定功能排序，建議您可以先「加入所有功能」後，再請依需求調整");
+			} else {
+				toastEx.error("載入個人設定發生錯誤");
+			}
 		} finally {
 			setState(prev => ({
 				...prev,

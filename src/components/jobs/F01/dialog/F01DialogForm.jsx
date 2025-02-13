@@ -53,6 +53,11 @@ const F01DialogForm = memo((props) => {
 									rules={{
 										required: "清單編號為必填"
 									}}
+									slotProps={{
+										htmlInput: {
+											maxLength: 10
+										}
+									}}
 								/>
 							</Grid>
 							<Grid item md={6}>

@@ -32,6 +32,7 @@ export const useCatL = () => {
 					"LClas",
 					createTextColumnEx({
 						continuousUpdates: false,
+						maxLength: 2
 					})
 				),
 				disabled: grid.isPersisted,

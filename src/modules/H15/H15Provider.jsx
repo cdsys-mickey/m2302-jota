@@ -2,10 +2,8 @@ import StdPrint from "@/modules/md-std-print";
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { H15Context } from "./H15Context";
-import H15OrderType from "./pickers/H15OrderType.mjs";
-import { useH15 } from "./useH15";
-import OrderDir from "../OrderDir.mjs";
 import H15ReportType from "./pickers/H15ReportType.mjs";
+import { useH15 } from "./useH15";
 
 export const H15Provider = ({ children }) => {
 	const h15 = useH15();

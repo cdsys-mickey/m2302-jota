@@ -11,7 +11,7 @@ import { useCallback, useContext } from "react";
 
 
 export default function useJotaReports(props) {
-	const { from, to } = props || {};
+	const { from, to, month } = props || {};
 
 	// const [reportUrl, setReportUrl] = useState();
 	// const [formData, setFormData] = useState();
@@ -95,9 +95,20 @@ export default function useJotaReports(props) {
 				}
 			}
 
+		} else if (month) {
+			const monthString = params[month];
+			if (!monthString) {
+				dialogs.confirm({
+					message: "未輸入資料年月，確定執行?",
+					onConfirm: () => {
+						send(reportUrl, params);
+					}
+				});
+				return false;
+			}
 		}
 		return true;
-	}, [dialogs, from, send, to]);
+	}, [dialogs, from, month, send, to]);
 
 	const open = useCallback((reportUrl, data, opts) => {
 		if (!isDateValidated(reportUrl, data, opts)) {

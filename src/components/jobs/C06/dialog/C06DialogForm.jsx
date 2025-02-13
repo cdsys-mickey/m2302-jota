@@ -5,7 +5,7 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
+import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
@@ -14,7 +14,6 @@ import DeptPicker from "../../../picker/DeptPicker";
 import C06SquaredPicker from "./C06SquaredPicker";
 import { C06ProdGridBottomToolbar } from "./prod-grid/C06ProdGridBottomToolbar";
 import { C06ProdGridContainer } from "./prod-grid/C06ProdGridContainer";
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 
 const C06DialogForm = memo((props) => {
 	const {

@@ -4,10 +4,13 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { IconButton, Tooltip } from "@mui/material";
 
-const A06DialogViewButtons = memo(
+
+const A06DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onReview, ...rest } = props;
+		const { onEdit, onDelete, onReview, onSideDrawerOpen, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onDelete && (
@@ -36,15 +39,21 @@ const A06DialogViewButtons = memo(
 						編輯
 					</ResponsiveButton>
 				)}
+				<Tooltip title="詳細資訊">
+					<IconButton onClick={onSideDrawerOpen} size="small">
+						<HelpOutlineIcon />
+					</IconButton>
+				</Tooltip>
 			</Fragment>
 		);
 	})
 );
 
-A06DialogViewButtons.propTypes = {
+A06DialogViewToolbar.propTypes = {
 	onEdit: PropTypes.func,
 	onReview: PropTypes.func,
 	onDelete: PropTypes.func,
+	onSideDrawerOpen: PropTypes.func,
 };
 
-export default A06DialogViewButtons;
+export default A06DialogViewToolbar;

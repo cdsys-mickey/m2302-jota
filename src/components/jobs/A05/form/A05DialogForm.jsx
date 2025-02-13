@@ -1,8 +1,10 @@
 import { Grid } from "@mui/material";
 import { memo } from "react";
 
+import BankPicker from "@/components/fields/BankPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
+
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -11,15 +13,8 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import TaxExcludedCheckbox from "../../../checkbox/TaxExcludedCheckbox";
-import BankPicker from "../../../fields/BankPicker";
-import EmployeePicker from "@/components/picker/EmployeePicker";
-import AreaPicker from "./fields/AreaPicker";
-import ChannelPicker from "./fields/ChannelPicker";
-import PaymentPicker from "./fields/PaymentPicker";
-import TransportPicker from "./fields/TransportPicker";
-import { CustomerLevelPicker } from "./fields/CustomerLevelPicker";
 
-const A06Form = memo((props) => {
+const A05DialogForm = memo((props) => {
 	const {
 		data,
 		readWorking,
@@ -44,25 +39,30 @@ const A06Form = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
-					<FormSectionBox pt={editing ? 1.5 : 0.5} pb={1} mb={2} px={1}>
+					<FormSectionBox editing={editing}>
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
-									name="CustID"
-									label="客戶代碼"
+									name="FactID"
+									label="廠商代碼"
 									autoFocus
 									fullWidth
-									// value={data?.CustID}
+									value={data?.FactID}
 									required
-									rules={{ required: "客戶代碼為必填" }}
+									rules={{ required: "廠商代碼為必填" }}
 									readOnly={updating}
+									slotProps={{
+										htmlInput: {
+											maxLength: 6
+										}
+									}}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={6}>
+							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
-									name="CustData"
+									name="FactData"
 									label="名稱"
 									fullWidth
 									required
@@ -80,97 +80,8 @@ const A06Form = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
+
 							<Grid item xs={12} sm={12} md={3}>
-								<EmployeePicker
-									typo
-									name="employee"
-									label="業務員"
-									fullWidth
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={4} sm={4} md={2}>
-								<TaxExcludedCheckbox
-									typo
-									label="稅外加"
-									name="TaxType"
-								/>
-							</Grid>
-							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12} md={3}>
-								<CustomerLevelPicker
-									typo
-									name="level"
-									fullWidth
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
-								<AreaPicker
-									typo
-									name="area"
-									fullWidth
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
-								<ChannelPicker
-									typo
-									name="channel"
-									fullWidth
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<FlexBox fullWidth />
-						</Grid>
-					</FormSectionBox>
-					<FormSectionBox pt={editing ? 1.5 : 0.5} pb={1} mb={2} px={1}>
-						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={3}>
-								<TextFieldWrapper
-									typo
-									name="RecGroup"
-									label="收帳組別"
-									fullWidth
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
-								<PaymentPicker
-									typo
-									name="payment"
-									label="收款方式"
-									fullWidth
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
-								<BankPicker
-									typo
-									name="bank"
-									label="銀行"
-									fullWidth
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
-								<TextFieldWrapper
-									typo
-									name="BankAcct"
-									label="帳號"
-									fullWidth
-								/>
-							</Grid>
-						</Grid>
-					</FormSectionBox>
-					<FormSectionBox pt={editing ? 1.5 : 0.5} pb={1} mb={2} px={1}>
-						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
 									typo
 									name="Boss"
@@ -186,15 +97,83 @@ const A06Form = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
+							<Grid item xs={12} sm={12} md={5}>
+								<TextFieldWrapper
+									typo
+									name="Tel"
+									label="電話"
+									fullWidth
+								/>
+							</Grid>
+							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
-									name="UniForm"
-									label="統編"
+									name="Uniform"
+									label="公司統編"
+									fullWidth
+									slotProps={{
+										htmlInput: {
+											maxLength: 8
+										}
+									}}
+								/>
+							</Grid>
+							<Grid item xs={12} sm={12} md={1.5}>
+								<TextFieldWrapper
+									typo
+									name="PayGroup"
+									label="應付帳組別"
+									fullWidth
+									slotProps={{
+										htmlInput: {
+											maxLength: 2
+										}
+									}}
+								/>
+							</Grid>
+							<Grid item xs={12} sm={12} md={4.5}>
+								<BankPicker
+									typo
+									name="bank"
+									label="銀行"
+									fullWidth
+									disableOpenOnInput
+									selectOnFocus
+									slotProps={{
+										paper: {
+											sx: {
+												width: 260,
+											},
+										},
+									}}
+								/>
+							</Grid>
+
+							<Grid item xs={12} sm={12} md={3}>
+								<TextFieldWrapper
+									typo
+									name="BankAcct"
+									label="帳號"
 									fullWidth
 								/>
 							</Grid>
 
+							<FlexBox fullWidth />
+						</Grid>
+					</FormSectionBox>
+					{/* 公司 */}
+					<FormSectionTitle>公司</FormSectionTitle>
+					<FormSectionBox editing={editing}>
+						<Grid container columns={12} spacing={1}>
+							<Grid item xs={12} sm={12} md={6}>
+								<TextFieldWrapper
+									typo
+									name="CompAddr"
+									label="地址"
+									fullWidth
+								/>
+							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
@@ -211,65 +190,46 @@ const A06Form = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
+							<Grid item xs={4} sm={4} md={2}>
+								<TaxExcludedCheckbox
+									typo
+									label="稅外加"
+									name="TaxType"
+								/>
+							</Grid>
+						</Grid>
+					</FormSectionBox>
+					{/* 工廠 */}
+					<FormSectionTitle>工廠</FormSectionTitle>
+					<FormSectionBox editing={editing}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
 									typo
-									name="Cel"
-									label="行動"
+									name="FactAddr"
+									label="地址"
 									fullWidth
 								/>
 							</Grid>
-						</Grid>
-					</FormSectionBox>
-					<FormSectionTitle>出貨</FormSectionTitle>
-					<FormSectionBox pt={editing ? 1.5 : 0.5} pb={1} mb={2} px={1}>
-						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={8}>
-								<TextFieldWrapper
-									typo
-									name="RecAddr"
-									label="送貨地址"
-									fullWidth
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={4}>
-								<TextFieldWrapper
-									typo
-									name="RecTel"
-									label="送貨電話"
-									fullWidth
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={8}>
-								<TextFieldWrapper
-									typo
-									name="InvAddr"
-									label="發票地址"
-									fullWidth
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={4}>
-								<TextFieldWrapper
-									typo
-									name="InvTel"
-									label="發票電話"
-									fullWidth
-								/>
-							</Grid>
-							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3}>
-								<TransportPicker
+								<TextFieldWrapper
 									typo
-									name="transport"
-									label="貨運類別"
+									name="FactTel"
+									label="電話"
 									fullWidth
-									disableOpenOnInput
-									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={12} md={3}>
+								<TextFieldWrapper
+									typo
+									name="FactFax"
+									label="傳真"
+									fullWidth
 								/>
 							</Grid>
 						</Grid>
 					</FormSectionBox>
-					<FormSectionBox pt={editing ? 1.5 : 0.5} pb={1} mb={2} px={1}>
+					<FormSectionBox editing={editing}>
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
@@ -299,7 +259,7 @@ const A06Form = memo((props) => {
 	);
 });
 
-A06Form.propTypes = {
+A05DialogForm.propTypes = {
 	data: PropTypes.object,
 	readWorking: PropTypes.bool,
 	itemDataReady: PropTypes.bool,
@@ -309,5 +269,5 @@ A06Form.propTypes = {
 	readError: PropTypes.object,
 };
 
-A06Form.displayName = "A06Form";
-export default A06Form;
+A05DialogForm.displayName = "A05Form";
+export default A05DialogForm;

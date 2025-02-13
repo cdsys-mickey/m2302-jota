@@ -27,6 +27,7 @@ export const useA26 = ({ token }) => {
 					"CodeID",
 					createTextColumnEx({
 						continuousUpdates: false,
+						maxLength: 3
 					})
 				),
 				minWidth: 70,

@@ -4,6 +4,7 @@ import MuiSeverity from "@/shared-modules/sd-mui-severity";
 import { forwardRef, memo } from "react";
 import { useMemo } from "react";
 import { styled } from "@mui/system";
+import Wrapper from "./Wrapper";
 
 const VARIANT_DEFAULT = "default";
 const VARIANT_OUTLINED = "outlined";
@@ -72,6 +73,8 @@ const SecondIconBox = styled("div", {
 	// color: theme.palette.getContrastText(color)
 
 }));
+
+
 
 const ChipEx = memo(
 	forwardRef((props, ref) => {
@@ -142,9 +145,13 @@ const ChipEx = memo(
 			return severityClass;
 		}, [classes.defaultError, classes.defaultInfo, classes.defaultSuccess, classes.defaultWarning, classes.outlinedError, classes.outlinedInfo, classes.outlinedSuccess, classes.outlinedWarning, severity, variant])
 
-		// console.log(`severityClass: ${severityClass}`);
 		return (
-			<ChipBox>
+			<Wrapper condition={secondIcon} wrapper={(children) => (
+				<ChipBox>{children}
+					<SecondIconBox color={color}>
+						{secondIcon}
+					</SecondIconBox>
+				</ChipBox>)}>
 				<Chip
 					ref={ref}
 					color={color}
@@ -152,16 +159,16 @@ const ChipEx = memo(
 					sx={[
 						_severityClass,
 						!!square && classes.square,
-						!!htmlColor && {
-							backgroundColor: htmlColor,
-						},
-						!!htmlTextColor && {
-							color: htmlTextColor,
-						},
-						!!borderRadius && {
-							borderRadius: borderRadius,
-						},
 						{
+							...(htmlColor && {
+								backgroundColor: htmlColor,
+							}),
+							...(htmlTextColor && {
+								color: htmlTextColor,
+							}),
+							...(borderRadius && {
+								borderRadius: borderRadius,
+							}),
 							...(fullWidth && {
 								width: "100%",
 							}),
@@ -170,12 +177,7 @@ const ChipEx = memo(
 					]}
 					{...rest}
 				/>
-				{secondIcon && (
-					<SecondIconBox color={color}>
-						{secondIcon}
-					</SecondIconBox>)
-				}
-			</ChipBox>
+			</Wrapper>
 		);
 	})
 );

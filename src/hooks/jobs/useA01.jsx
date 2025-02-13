@@ -536,10 +536,10 @@ export const useA01 = ({ token, mode }) => {
 					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
 						url: API_URL,
+						bearer: token,
 						params: {
 							id: crud.itemData?.ProdID
 						},
-						bearer: token,
 					});
 					crud.cancelAction();
 					if (status.success) {

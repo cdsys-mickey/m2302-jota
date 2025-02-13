@@ -1,29 +1,16 @@
 import Forms from "@/shared-modules/sd-forms";
 
 const transformForSubmitting = (payload) => {
-	const {
-		outputType,
-		SDate,
-		EDate,
-		SalType,
-		orderType,
-		orderDir,
-		InclTest,
-		SProdID,
-		EProdID,
-		...rest
-	} = payload;
+	const { outputType, SDate, EDate, SProdID, EProdID, counter, ...rest } =
+		payload;
 	return {
 		JobName: "H22",
 		Action: outputType?.id?.toString() || "",
 		SDate: Forms.formatDate(SDate) || "",
 		EDate: Forms.formatDate(EDate) || "",
-		SalType: SalType?.id || "",
 		SProdID: SProdID?.ProdID || "",
 		EProdID: EProdID?.ProdID || "",
-		InclTest: InclTest?.id || "",
-		OrdName: orderType?.id,
-		OrdSeq: orderDir?.id,
+		CaseID: counter?.CodeID || "",
 		...rest,
 	};
 };
@@ -33,4 +20,3 @@ const H22 = {
 };
 
 export default H22;
-

@@ -13,6 +13,12 @@ import ProdPicker from "@/components/picker/ProdPicker";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import CounterPicker from "@/components/picker/CounterPicker";
+import FlexBox from "@/shared-components/FlexBox";
+import DeptPicker from "@/components/picker/DeptPicker";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
+import H24ReportTypePicker from "./pickers/H24ReportTypePicker";
+import H24OrderTypePicker from "./pickers/H24OrderTypePicker";
 
 const H24Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -24,12 +30,12 @@ const H24Form = memo((props) => {
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={6}>
 								<DatePickerWrapper
+									autoFocus
 									name="SDate"
 									label="日期區間"
 									fullWidth
 									validate
 									clearable
-									autoFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -61,39 +67,83 @@ const H24Form = memo((props) => {
 									selectOnFocus
 								/>
 							</Grid>
-							<FlexGrid item xs={12} alignItems="flex-start">
-								<CheckboxExWrapper
-									label="含撥出入"
-									name="InclTX"
-									defaultValue={true}
-								/>
-
-								<CheckboxExWrapper
-									label="含試贈樣"
-									name="InclTest"
-									defaultValue={true}
-								/>
-							</FlexGrid>
-						</Grid>
-						<Grid container spacing={2}>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/>
-							</FlexGrid>
 							<Grid item xs={12} sm={6}>
-								<FlexToolbar align="right">
-									<ButtonGroup>
-										<DebugDialogButtonContainer
-											onClick={onDebugSubmit} />
-										<ReportSubmitButtonContainer
-											onClick={onSubmit} />
-									</ButtonGroup>
-								</FlexToolbar>
+								<DeptPicker
+									name="SDeptID"
+									label="門市區間"
+									size="small"
+									virtualize
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<DeptPicker
+									name="EDeptID"
+									label="門市區間迄"
+									size="small"
+									virtualize
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<ProdLinePicker
+									name="SLineID"
+									label="部門區間"
+									size="small"
+									virtualize
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<ProdLinePicker
+									name="ELineID"
+									label="部門區間迄"
+									size="small"
+									virtualize
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<H24ReportTypePicker
+									name="reportType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<H24OrderTypePicker
+									name="orderType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
 							</Grid>
 						</Grid>
+						<FlexBox mt={2}>
+							<Grid container spacing={2}>
+								<FlexGrid item xs={12} sm={6} alignItems="center">
+									<StdPrintOutputModePicker
+										required
+										name="outputType"
+										label="執行方式"
+									/>
+								</FlexGrid>
+								<Grid item xs={12} sm={6}>
+									<FlexToolbar align="right">
+										<ButtonGroup>
+											<DebugDialogButtonContainer
+												onClick={onDebugSubmit} />
+											<ReportSubmitButtonContainer
+												onClick={onSubmit} />
+										</ButtonGroup>
+									</FlexToolbar>
+								</Grid>
+							</Grid>
+
+						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
 			</form>

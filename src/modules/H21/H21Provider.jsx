@@ -8,8 +8,6 @@ export const H21Provider = ({ children }) => {
 	const h21 = useH21();
 	const form = useForm({
 		defaultValues: {
-			SDate: null,
-			EDate: null,
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},
 	});

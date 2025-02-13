@@ -32,6 +32,7 @@ export const useA04 = () => {
 					"CodeID",
 					createTextColumnEx({
 						continuousUpdates: false,
+						maxLength: 3
 					})
 				),
 				disabled: grid.isPersisted,

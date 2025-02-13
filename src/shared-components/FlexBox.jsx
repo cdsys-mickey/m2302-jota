@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/material";
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 
 const FlexBoxBase = forwardRef((props, ref) => {
 	const { children, inline = false, block = false, ...other } = props;

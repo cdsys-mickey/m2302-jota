@@ -18,18 +18,6 @@ export const useH25 = () => {
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-	const formMeta = useFormMeta(
-		`
-		SDate,
-		EDate,
-		SProdID,
-		EProdID,
-		InclTX,
-		InclTest,
-		outputType,
-		`
-	)
-
 	const reportUrl = useMemo(() => {
 		return `${config.REPORT_URL}/WebH25Rep.aspx`
 	}, [config.REPORT_URL])
@@ -67,7 +55,6 @@ export const useH25 = () => {
 		onSubmit,
 		onSubmitError,
 		onDebugSubmit,
-		formMeta,
 	};
 };
 

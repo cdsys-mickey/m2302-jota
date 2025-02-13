@@ -63,6 +63,7 @@ const TypoTextField = memo(
 				variant={variant}
 				size={size}
 				inline={inline}
+				slotProps={slotProps}
 				{...rest}
 			/>
 		);

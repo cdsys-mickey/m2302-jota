@@ -11,6 +11,8 @@ import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { useAppModule } from "./useAppModule";
+import { useSideDrawer } from "../useSideDrawer";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
 export const useA06 = ({ token, mode }) => {
 	const formMeta = useFormMeta(
@@ -47,6 +49,10 @@ export const useA06 = ({ token, mode }) => {
 		token,
 		moduleId: mode === A06.Mode.NEW_CUSTOMER ? "A07" : "A06",
 	});
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
+	const { clearParams } = useContext(AppFrameContext);
+
 	const {
 		httpGetAsync,
 		httpPostAsync,
@@ -92,13 +98,16 @@ export const useA06 = ({ token, mode }) => {
 	const loadItem = useCallback(
 		async ({ id }) => {
 			try {
-				const encodedItemId = encodeURIComponent(id);
+				// const encodedItemId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url:
 						mode === A06.Mode.NEW_CUSTOMER
-							? `v1/sales/new-customers/${encodedItemId}`
-							: `v1/sales/customers/${encodedItemId}`,
+							? `v1/sales/new-customers`
+							: `v1/sales/customers`,
 					bearer: token,
+					data: {
+						id,
+					},
 				});
 				console.log("payload", payload);
 				if (status.success) {
@@ -268,9 +277,12 @@ export const useA06 = ({ token, mode }) => {
 					const { status, error } = await httpDeleteAsync({
 						url:
 							mode === A06.Mode.NEW_CUSTOMER
-								? `v1/sales/new-customers/${crud.itemData?.CustID}`
-								: `v1/sales/customers/${crud.itemData?.CustID}`,
+								? `v1/sales/new-customers`
+								: `v1/sales/customers`,
 						bearer: token,
+						params: {
+							id: crud.itemData?.CustID
+						},
 					});
 					crud.cancelAction();
 					if (status.success) {
@@ -386,6 +398,12 @@ export const useA06 = ({ token, mode }) => {
 		[]
 	);
 
+	const cancelAction = useCallback(() => {
+		crud.cancelAction();
+		// 清除 query params
+		clearParams();
+	}, [clearParams, crud]);
+
 	useInit(() => {
 		crud.cancelAction();
 	}, []);
@@ -421,6 +439,8 @@ export const useA06 = ({ token, mode }) => {
 		failReview,
 		...appModule,
 		formMeta,
-		handleReset
+		handleReset,
+		cancelAction: cancelAction,
+		...sideDrawer
 	};
 };

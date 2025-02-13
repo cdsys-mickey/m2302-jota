@@ -25,6 +25,7 @@ export const useCatS = () => {
 					"SClas",
 					createTextColumnEx({
 						continuousUpdates: false,
+						maxLength: 3
 					})
 				),
 				disabled: grid.isPersisted,

@@ -4,10 +4,27 @@ import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { H24Context } from "./H24Context";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 
 export const H24FormContainer = () => {
 	const form = useFormContext();
 	const h24 = useContext(H24Context);
+
+	const formMeta = useFormMeta(
+		`
+		SDate,
+		EDate,
+		SProdID,
+		EProdID,
+		SDeptID,
+		EDeptID,
+		SLineID,
+		ELineID,
+		reportType,
+		orderType,
+		outputType
+		`
+	)
 
 	const onSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -23,7 +40,7 @@ export const H24FormContainer = () => {
 	}, [h24.onDebugSubmit, form]);
 
 	return <FormProvider {...form}>
-		<FormMetaProvider {...h24.formMeta}>
+		<FormMetaProvider {...formMeta}>
 			<H24Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 	</FormProvider>;

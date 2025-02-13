@@ -7,8 +7,12 @@ const transformForSubmitting = (payload) => {
 		EDate,
 		SProdID,
 		EProdID,
-		InclTX,
-		InclTest,
+		SDeptID,
+		EDeptID,
+		SLineID,
+		ELineID,
+		reportType,
+		orderType,
 		...rest
 	} = payload;
 	return {
@@ -18,8 +22,12 @@ const transformForSubmitting = (payload) => {
 		EDate: Forms.formatDate(EDate) || "",
 		SProdID: SProdID?.ProdID || "",
 		EProdID: EProdID?.ProdID || "",
-		InclTX: InclTX ? "Y" : "N",
-		InclTest: InclTest ? "Y" : "N",
+		SDeptID: SDeptID?.DeptID || "",
+		EDeptID: EDeptID?.DeptID || "",
+		SLineID: SLineID?.CodeID || "",
+		ELineID: ELineID?.CodeID || "",
+		RptType: reportType?.id,
+		OrdName: orderType?.id,
 		...rest,
 	};
 };
@@ -29,4 +37,3 @@ const H24 = {
 };
 
 export default H24;
-

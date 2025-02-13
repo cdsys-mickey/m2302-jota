@@ -1,12 +1,12 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import H21 from "@/modules/H21/H21.mjs";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { useCallback, useContext, useMemo } from "react";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import H21 from "@/modules/H21/H21.mjs";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useCallback, useContext, useMemo } from "react";
 
 export const useH21 = () => {
 	const config = useContext(ConfigContext);
@@ -17,14 +17,13 @@ export const useH21 = () => {
 	});
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
-
-
+	const { httpGetAsync } = useWebApi();
 
 	const reportUrl = useMemo(() => {
 		return `${config.REPORT_URL}/WebH21Rep.aspx`
 	}, [config.REPORT_URL])
 
-	const reports = useJotaReports({ from: "SDate", to: "EDate" });
+	const reports = useJotaReports({ month: "CutYM" });
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
@@ -52,11 +51,22 @@ export const useH21 = () => {
 		console.error("onSubmitError", err);
 	}, []);
 
+	const getCutYM = useCallback(async () => {
+		const { status, payload } = await httpGetAsync({
+			url: "v2/ou/dept/params/cut-ym",
+			bearer: token
+		});
+		if (status.success) {
+			return payload["CutYM"]
+		}
+	}, [httpGetAsync, token]);
+
 	return {
 		...appModule,
 		onSubmit,
 		onSubmitError,
 		onDebugSubmit,
+		getCutYM
 	};
 };
 
