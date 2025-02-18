@@ -34,6 +34,8 @@ import hRoutes from "./hRoutes";
 import pRoutes from "./pRoutes";
 import uRoutes from "./uRoutes";
 import fRoutes from "./fRoutes";
+import hRoutes2 from "./hRoutes2";
+import pRoutes2 from "./pRoutes2";
 
 const AppRoute = () => {
 	return (
@@ -89,7 +91,9 @@ const AppRoute = () => {
 					{eRoutes}
 					{fRoutes}
 					{hRoutes}
+					{hRoutes2}
 					{pRoutes}
+					{pRoutes2}
 					{uRoutes}
 					{/* ZA */}
 					<Route

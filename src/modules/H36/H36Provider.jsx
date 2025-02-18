@@ -3,6 +3,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useH36 } from "./useH36";
 import StdPrint from "../../modules/md-std-print";
 import { H36Context } from "./H36Context";
+import H36ReportType from "./pickers/H36ReportType.mjs";
+import H36OrderType from "./pickers/H36OrderType.mjs";
 
 export const H36Provider = ({ children }) => {
 	const h36 = useH36();
@@ -10,8 +12,10 @@ export const H36Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
-			InclTX: true,
-			InclTest: false,
+			SPDLineID: null,
+			EPDLineID: null,
+			reportType: H36ReportType.getDefaultOption(),
+			orderType: H36OrderType.getDefaultOption(),
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},
 	});

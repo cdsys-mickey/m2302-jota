@@ -7,101 +7,113 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { B06OrderByPicker } from "./fields/B06OrderByPicker";
 import ResponsiveLineBreak from "@/shared-components/responsive-grid/ResponsiveLineBreak";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const B06SearchForm = memo(() => {
 	return (
-		<FormBox>
-			<ResponsiveGrid container columns={24} spacing={1}>
-				<ResponsiveGrid item md={6} lg={5}>
-					<SupplierPicker
-						label="廠商代碼起"
-						name="lvSupplier"
-						autoFocus
-						virtualize
-						optionLabelSize="md"
-						disableOpenOnInput
-						selectOnFocus
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
+		<FormBox pt={0.5}>
+			<ResponsiveGrid container columns={24} spacing={1.5}>
+				<ResponsiveGrid item md={12} lg={10}>
+					<RangeGroup legend="廠商區間"
+						leftComponent={<SupplierPicker
+							autoFocus
+							label="廠商區間"
+							name="lvSupplier"
+							virtualize
+							disableOpenOnInput
+							selectOnFocus
+							borderless
+							placeholder="起"
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
 								},
-							},
-						}}
-					/>
-				</ResponsiveGrid>
-				<ResponsiveGrid item md={6} lg={5}>
-					<SupplierPicker
-						label="廠商代碼迄"
-						name="lvSupplier2"
-						virtualize
-						optionLabelSize="md"
-						disableOpenOnInput
-						selectOnFocus
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
+							}}
+						/>}
+
+						rightComponent={<SupplierPicker
+							label="廠商區間迄"
+							name="lvSupplier2"
+							virtualize
+							disableOpenOnInput
+							selectOnFocus
+							borderless
+							placeholder="迄"
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
 								},
-							},
-						}}
+							}}
+						/>}
 					/>
 				</ResponsiveGrid>
-				<ResponsiveGrid item md={6} lg={4}>
-					<DatePickerWrapper
-						name="date1"
-						label="起始日期"
-						fullWidth
-						validate
-						clearable
-					/>
-				</ResponsiveGrid>
-				<ResponsiveGrid item md={6} lg={4}>
-					<DatePickerWrapper
-						name="date2"
-						label="截止日期"
-						fullWidth
-						validate
-						clearable
+				<ResponsiveGrid item md={12} lg={8}>
+					<RangeGroup legend="日期區間"
+						leftComponent={
+							<DatePickerWrapper
+								name="date1"
+								label="日期區間"
+								fullWidth
+								validate
+								clearable
+								borderless
+								placeholder="起"
+							/>
+						}
+						rightComponent={
+							<DatePickerWrapper
+								name="date2"
+								label="日期區間迄"
+								fullWidth
+								validate
+								clearable
+								borderless
+								placeholder="迄"
+							/>
+						}
 					/>
 				</ResponsiveGrid>
 				<ResponsiveLineBreak />
-				<ResponsiveGrid item md={6} lg={5}>
-					<ProdPicker
-						name="sprod"
-						label="起始商品編號"
-						size="small"
-						virtualize
-						optionLabelSize="md"
-						typeToSearchText="以編號,條碼或名稱搜尋"
-						disableOpenOnInput
-						selectOnFocus
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
+				<ResponsiveGrid item md={12} lg={10}>
+					<RangeGroup legend="貨號區間"
+						leftComponent={<ProdPicker
+							name="sprod"
+							label="貨號區間"
+							size="small"
+							virtualize
+							disableOpenOnInput
+							selectOnFocus
+							borderless
+							placeholder="起"
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
 								},
-							},
-						}}
-					/>
-				</ResponsiveGrid>
-				<ResponsiveGrid item md={6} lg={5}>
-					<ProdPicker
-						name="eprod"
-						label="截止商品編號"
-						size="small"
-						virtualize
-						optionLabelSize="md"
-						typeToSearchText="以編號,條碼或名稱搜尋"
-						disableOpenOnInput
-						selectOnFocus
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
+							}}
+						/>}
+						rightComponent={<ProdPicker
+							name="eprod"
+							label="貨號區間迄"
+							size="small"
+							virtualize
+							disableOpenOnInput
+							selectOnFocus
+							borderless
+							placeholder="迄"
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
 								},
-							},
-						}}
+							}}
+						/>}
 					/>
 				</ResponsiveGrid>
 
@@ -110,17 +122,6 @@ const B06SearchForm = memo(() => {
 						disableOpenOnInput
 						selectOnFocus />
 				</ResponsiveGrid>
-				{/* <FlexGrid
-					item
-					md={6}
-					justifyContent="center"
-					alignItems="center">
-					<B06SearchButtonContainer
-						variant="contained"
-						size="medium"
-						fullWidth
-					/>
-				</FlexGrid> */}
 			</ResponsiveGrid>
 		</FormBox >
 	);

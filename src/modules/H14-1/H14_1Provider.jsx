@@ -13,6 +13,8 @@ export const H14_1Provider = ({ children }) => {
 			SDate: null,
 			EDate: null,
 			SalType: false,
+			SCustID: null,
+			ECustID: null,
 			reportType: H14_1ReportType.getDefaultOption(),
 			orderType: H14_1OrderType.getDefaultOption(),
 			// orderDir: OrderDir.getDefaultOption(),

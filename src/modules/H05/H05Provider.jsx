@@ -11,6 +11,8 @@ export const H05Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
+			SCustID: null,
+			ECustID: null,
 			InclTest: false,
 			reportType: H05ReportType.getDefaultOption(),
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),

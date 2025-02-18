@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import DeptOptions from "@/modules/DeptOptions.mjs";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useDebounceState from "@/shared-hooks/useDebounceState";
+import HoverButton from "../HoverButton";
 
 const DeptSwitchButtonContainer = (props) => {
 	const { ...rest } = props;
@@ -91,7 +92,7 @@ const DeptSwitchButtonContainer = (props) => {
 	}, [debouncedOpen, loadOptions, state.loading]);
 
 	return (
-		<SplitButton
+		<HoverButton
 			label="單位"
 			defaultSelected={currentDept}
 			getLabel={DeptOptions.getOptionName}

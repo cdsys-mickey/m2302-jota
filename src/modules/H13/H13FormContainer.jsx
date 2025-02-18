@@ -13,8 +13,8 @@ export const H13FormContainer = () => {
 		`
 			SDate,
 			EDate,
-			cust,
-			cust2,
+			SCustID,
+			ECustID,
 			InclTest,
 			Local,
 			Out,

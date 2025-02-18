@@ -7,6 +7,7 @@ import { Box, Grid, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { B032ImportCustsButtonContainer } from "./B032ImportCustsButtonContainer";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const B032ImportCustsForm = memo((props) => {
 	const { onSubmit, ...rest } = props;
@@ -14,42 +15,43 @@ const B032ImportCustsForm = memo((props) => {
 		<form onSubmit={onSubmit} {...rest}>
 			<Box pt={1}>
 				<Grid container spacing={1} columns={24}>
-					<Grid item xs={12}>
-						<CustomerPicker
-							forNew
-							name="cust"
-							label="新客戶區間起"
-							size="small"
-							virtualize
-							autoFocus
-							// optionLabelSize="md"
-							disableOpenOnInput
-							selectOnFocus
-							slotProps={{
-								paper: {
-									sx: {
-										width: 360,
+					<Grid item xs={24} sm={24}>
+						<RangeGroup legend={"新客戶區間"}
+							leftComponent={<CustomerPicker
+								name="SCustID"
+								size="small"
+								virtualize
+								forNew
+								autoFocus
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
 									},
-								},
-							}}
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<CustomerPicker
-							forNew
-							name="cust2"
-							label="新客戶區間迄"
-							size="small"
-							virtualize
-							disableOpenOnInput
-							selectOnFocus
-							slotProps={{
-								paper: {
-									sx: {
-										width: 360,
+								}}
+								borderless
+								placeholder="起"
+							/>}
+							rightComponent={<CustomerPicker
+								name="ECustID"
+								size="small"
+								virtualize
+								forNew
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
 									},
-								},
-							}}
+								}}
+								borderless
+								placeholder="迄"
+							/>}
 						/>
 					</Grid>
 					<FlexBox fullWidth />

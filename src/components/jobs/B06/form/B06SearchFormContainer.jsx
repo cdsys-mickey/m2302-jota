@@ -29,8 +29,8 @@ export const B06SearchFormContainer = () => {
 
 	const formMeta = useFormMeta(
 		`
-		supplier,
-		supplier2,
+		lvSupplier,
+		lvSupplier2,
 		date1,
 		date2,
 		sprod,

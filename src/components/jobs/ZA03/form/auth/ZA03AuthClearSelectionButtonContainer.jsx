@@ -15,7 +15,7 @@ export const ZA03AuthClearSelectionButtonContainer = (props) => {
 
 	return (
 		<ButtonWrapper
-			startIcon={<RemoveDoneIcon />}
+			// startIcon={<RemoveDoneIcon />}
 			onClick={za03.clearSelection({ gridMeta: formMeta.gridMeta })}
 			{...rest}
 		/>

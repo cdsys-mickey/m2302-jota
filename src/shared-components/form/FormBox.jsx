@@ -11,14 +11,27 @@ const FormBox = styled(Box, {
 	},
 	"& .MuiInputLabel-shrink": {
 		fontSize: "115%",
+		// fontSize: "1.15rem",
 		fontWeight: 600,
 		left: "-2px",
 	},
-	"& .MuiInputBase-root": {
+	"& .field-group-legend": {
+		fontSize: "0.875rem",
+		fontWeight: 600,
+		left: "-2px",
+	},
+	// 排除 variant="filled"
+	"& fieldset.field-group": {
 		backgroundColor: "rgb(255,255,255)",
+		// backgroundColor: "initial",
+	},
+	"& .MuiInputBase-root:not(.MuiFilledInput-root)": {
+		backgroundColor: "rgb(255,255,255)",
+		// backgroundColor: "initial",
 	},
 	"& .dsg-container .MuiInputBase-root": {
-		backgroundColor: "initial",
+		backgroundColor: "rgb(255,255,255)",
+		// backgroundColor: "initial",
 	},
 }));
 

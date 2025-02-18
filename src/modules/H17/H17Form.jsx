@@ -16,6 +16,7 @@ import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import H17OrderTypePicker from "./pickers/H17OrderTypePicker";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const H17Form = memo((props) => {
 	const { forNewCustomer, onSubmit, onDebugSubmit, ...rest } = props;
@@ -25,23 +26,27 @@ const H17Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									autoFocus
-									name="SArrDate"
-									label="預計到貨"
-									fullWidth
-									validate
-									clearable
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EArrDate"
-									label="預計到貨迄"
-									fullWidth
-									validate
-									clearable
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="預計到貨日區間"
+									leftComponent={<DatePickerWrapper
+										autoFocus
+										name="SArrDate"
+										label=""
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EArrDate"
+										label="預計到貨迄"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -55,56 +60,69 @@ const H17Form = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
-							<Grid item xs={12} sm={6}>
-								<CustomerPicker
-									name="cust"
-									label="客戶區間起"
-									size="small"
-									virtualize
-									forNew={forNewCustomer}
-									disableOpenOnInput
-									selectOnFocus
-									slotProps={{
-										paper: {
-											sx: {
-												width: 360,
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend={forNewCustomer ? "新客戶區間" : "客戶區間"}
+									leftComponent={<CustomerPicker
+										name="cust"
+										label="客戶區間起"
+										size="small"
+										virtualize
+										forNew={forNewCustomer}
+										disableOpenOnInput
+										selectOnFocus
+										slotProps={{
+											paper: {
+												sx: {
+													width: 360,
+												},
 											},
-										},
-									}}
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<CustomerPicker
-									name="cust2"
-									label="客戶區間迄"
-									size="small"
-									virtualize
-									forNew={forNewCustomer}
-									disableOpenOnInput
-									selectOnFocus
-									slotProps={{
-										paper: {
-											sx: {
-												width: 360,
+										}}
+										borderless
+										placeholder="起"
+									/>
+									}
+									rightComponent={<CustomerPicker
+										name="cust2"
+										label="客戶區間迄"
+										size="small"
+										virtualize
+										forNew={forNewCustomer}
+										disableOpenOnInput
+										selectOnFocus
+										slotProps={{
+											paper: {
+												sx: {
+													width: 360,
+												},
 											},
-										},
-									}}
+										}}
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									label="貨品區間"
-									name="SProdID"
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									label="貨品區間迄"
-									name="EProdID"
-									disableOpenOnInput
-									selectOnFocus
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="貨品區間"
+									leftComponent={<ProdPicker
+										name="SProdID"
+										label="貨號區間"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<ProdPicker
+										name="EProdID"
+										label="貨號區間迄"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>

@@ -16,12 +16,13 @@ import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "./useAppModule";
 import ConfigContext from "@/contexts/config/ConfigContext";
+import { useMemo } from "react";
+import useJotaReports from "../useJotaReports";
 
 export const useD05 = () => {
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
-	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
@@ -658,27 +659,34 @@ export const useD05 = () => {
 		console.error("onEditorSubmitError", err);
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebD05Rep.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
 	const onPrintSubmit = useCallback(
-		(data) => {
-			console.log("onPrintSubmit", data);
-			const jsonData = {
-				...(data.outputType && {
-					Action: data.outputType.id,
+		(payload) => {
+			console.log("onPrintSubmit", payload);
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "D05",
 				IDs: crud.itemData?.CxlID,
 			};
-			console.log("jsonData", jsonData);
-			postToBlank(
-				`${config.REPORT_URL}/WebD05Rep.aspx?LogKey=${operator?.LogKey
-				}`,
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
+			// console.log("jsonData", data);
+			// postToBlank(
+			// 	`${config.REPORT_URL}/WebD05Rep.aspx?LogKey=${operator?.LogKey
+			// 	}`,
+			// 	{
+			// 		jsonData: JSON.stringify(data),
+			// 	}
+			// );
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[config.REPORT_URL, crud.itemData?.CxlID, operator?.CurDeptID, operator?.LogKey, postToBlank]
+		[crud.itemData?.CxlID, operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

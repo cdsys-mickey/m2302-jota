@@ -12,47 +12,51 @@ import { B012ImportCustsButtonContainer } from "./B012ImportCustsButtonContainer
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
 import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const B012ImportCustsForm = memo((props) => {
 	const { onSubmit, ...rest } = props;
 	return (
 		<form onSubmit={onSubmit} {...rest}>
-			<Box pt={1}>
-				<Grid container spacing={1} columns={24}>
-					<Grid item xs={12}>
-						<CustomerPicker
-							name="cust"
-							label="客戶區間起"
-							size="small"
-							virtualize
-							autoFocus
-							// optionLabelSize="md"
-							disableOpenOnInput
-							selectOnFocus
-							slotProps={{
-								paper: {
-									sx: {
-										width: 360,
+			<Box pt={2}>
+				<Grid container spacing={2} columns={24}>
+					<Grid item xs={24} sm={24}>
+						<RangeGroup legend={"客戶區間"}
+							leftComponent={<CustomerPicker
+								autoFocus
+								name="cust"
+								size="small"
+								virtualize
+								// forNew={forNewCustomer}
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
 									},
-								},
-							}}
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<CustomerPicker
-							name="cust2"
-							label="客戶區間迄"
-							size="small"
-							virtualize
-							disableOpenOnInput
-							selectOnFocus
-							slotProps={{
-								paper: {
-									sx: {
-										width: 360,
+								}}
+								borderless
+								placeholder="起"
+							/>}
+							rightComponent={<CustomerPicker
+								name="cust2"
+								size="small"
+								virtualize
+								// forNew={forNewCustomer}
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
 									},
-								},
-							}}
+								}}
+								borderless
+								placeholder="迄"
+							/>}
 						/>
 					</Grid>
 					<FlexBox fullWidth />

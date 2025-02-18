@@ -1,4 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
 import E021 from "@/modules/md-e021";
@@ -6,24 +7,22 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Forms from "@/shared-modules/sd-forms";
 import Objects from "@/shared-modules/sd-objects";
 import { isDate } from "lodash";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "./useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useE021 = () => {
 	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
-	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -856,26 +855,33 @@ export const useE021 = () => {
 		console.error("onImportProdsSubmitError", err);
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebE02Rep.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
 	const onPrintSubmit = useCallback(
-		(data) => {
-			console.log("onPrintSubmit", data);
-			const jsonData = {
-				...(data.outputType && {
-					Action: data.outputType.id,
+		(payload) => {
+			console.log("onPrintSubmit", payload);
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "E021",
 				IDs: crud.itemData?.SalID,
 			};
-			postToBlank(
-				`${config.REPORT_URL}/WebE02Rep.aspx?LogKey=${operator?.LogKey
-				}`,
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
+			// postToBlank(
+			// 	`${config.REPORT_URL}/WebE02Rep.aspx?LogKey=${operator?.LogKey
+			// 	}`,
+			// 	{
+			// 		jsonData: JSON.stringify(data),
+			// 	}
+			// );
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[config.REPORT_URL, crud.itemData?.SalID, operator?.CurDeptID, operator?.LogKey, postToBlank]
+		[crud.itemData?.SalID, operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

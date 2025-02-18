@@ -10,6 +10,8 @@ export const H13Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
+			SCustID: null,
+			ECustID: null,
 			InclTest: false,
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},

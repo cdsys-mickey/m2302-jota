@@ -1,17 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Colors from "@/modules/md-colors";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import DateFormats from "@/shared-modules/sd-date-formats";
 import Forms from "@/shared-modules/sd-forms";
 import MuiStyles from "@/shared-modules/sd-mui-styles";
+import { Box } from "@mui/system";
 import { DatePicker } from "@mui/x-date-pickers";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
+import ControllerWrapper from "../ControllerWrapper";
 import FlexBox from "../FlexBox";
-import { Box } from "@mui/system";
-import Colors from "@/modules/md-colors";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -26,6 +27,7 @@ const ControlledDatePicker = ({
 	control,
 	readOnly,
 	dense,
+	borderless,
 	clearable = true,
 	defaultValue,
 	onChange: _onChange,
@@ -40,6 +42,7 @@ const ControlledDatePicker = ({
 	inline = false,
 	clearText = "清除",
 	fullWidth,
+	slotProps,
 	// variant = "outlined",
 	...rest
 }) => {
@@ -116,130 +119,265 @@ const ControlledDatePicker = ({
 		}
 	}, [label, required, rules])
 
+	const _label = useMemo(() => {
+		return (borderless || !label) ? "" : `${label}${required ? "*" : ""}`;
+	}, [borderless, label, required])
+
 	const BoxComponent = useMemo(() => {
 		return inline ? FlexBox : Box;
 	}, [inline]);
 
-	if (!name) {
-		return <DatePicker {...rest} />;
-	}
-
 	return (
-		<Controller
-			name={name}
-			defaultValue={defaultValue || null}
-			control={control}
-			// rules={rules}
-			rules={_rules}
-			render={({
-				field: { ref, value, onChange },
-				fieldState: { error },
-			}) => {
-				return (
-					<BoxComponent {...(inline && { inline })} sx={{
-						fontWeight: 700,
-					}}>
-						{inline &&
-							label
-						}
-						<DatePicker
-							// autoOk
-							inputRef={ref}
-							label={label ? `${label}${required ? "*" : ""}` : ""}
-							mask={mask}
-							format={format}
-							slotProps={{
-								clearButton: {
-									...(clearText && {
-										title: clearText
-									})
-								},
-								inputAdornment: {
-									sx: {
-										...(dense && {
-											'& .MuiSvgIcon-root': { fontSize: '18px' }
-										})
-									}
-								},
-								textField: {
-									size: "small",
-									onKeyDown: handleKeyDown,
-									InputLabelProps: {
-										...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
-										...(dense && {
-											shrink: true,
-										})
-									},
-									error: !!error,
-									helperText: error?.message,
-									onBlur: onBlur,
-									sx: {
-										...(required && !error && {
-											"& .MuiInputLabel-root:not(.Mui-focused)": {
-												color: Colors.REQUIRED,
-											},
-											"& .MuiOutlinedInput-root": {
-												'& fieldset': {
-													borderColor: Colors.REQUIRED,
-												},
-											}
-										})
-									},
-									fullWidth
-								},
+		<ControllerWrapper name={name} control={control} defaultValue={defaultValue} rules={_rules}>
+			{({ value, onChange, ref, error }) => (
+				<BoxComponent {...(inline && { inline })} sx={{
+					fontWeight: 700,
+				}}>
+					{inline &&
+						label
+					}
+					<DatePicker
+						// autoOk
+						inputRef={ref}
+						label={_label}
+						mask={mask}
+						format={format}
+						slotProps={{
+							clearButton: {
+								...(clearText && {
+									title: clearText
+								})
+							},
+							inputAdornment: {
 								sx: {
 									...(dense && {
-										"& .MuiInputBase-input":
-										{
-											paddingTop: "4px",
-											paddingBottom: "4px",
-											// paddingLeft: "2px",
-											// paddingRight: "40px",
-										},
-									}),
-
-								},
-								field: {
-									clearable
+										'& .MuiSvgIcon-root': { fontSize: '18px' }
+									})
 								}
-							}}
-							value={value}
-							onChange={
-								readOnly
-									? null
-									: (newValue) => {
-										// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
-										if (_onChange) {
-											_onChange(newValue);
+							},
+							textField: {
+								size: "small",
+								onKeyDown: handleKeyDown,
+								InputLabelProps: {
+									...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+									...(dense && {
+										shrink: true,
+									})
+								},
+								error: !!error,
+								helperText: error?.message,
+								onBlur: onBlur,
+								sx: {
+									...(required && !error && {
+										"& .MuiInputLabel-root:not(.Mui-focused)": {
+											color: Colors.REQUIRED,
+										},
+										"& .MuiOutlinedInput-root": {
+											'& fieldset': {
+												borderColor: Colors.REQUIRED,
+											},
 										}
-
-										onChange(newValue);
-
-										if (onChanged) {
-											// onChanged(newValue);
-											setInnerValue(newValue);
+									}),
+									...(borderless && {
+										"& input": {
+											paddingTop: 0,
+											paddingLeft: "4px",
+											paddingRight: 0,
 										}
-									}
+									})
+								},
+								fullWidth,
+								...(borderless && {
+									variant: "filled",
+									InputProps: { disableUnderline: true }
+								}),
+								...slotProps?.textField,
+							},
+							sx: {
+								...(dense && {
+									"& .MuiInputBase-input":
+									{
+										paddingTop: "4px",
+										paddingBottom: "4px",
+										// paddingLeft: "2px",
+										// paddingRight: "40px",
+									},
+								}),
+
+							},
+							field: {
+								clearable
 							}
-							onKeyDown={handleKeyDown}
-							InputProps={{
-								...InputProps,
-								...(readOnly && { readOnly: true }),
-							}}
-							{...opts}
-							disabled={readOnly}
-							// onError={(err) => {
-							// 	console.error(err);
-							// }}
-							invalidDateMessage={invalidDateMessage}
-							fullWidth={fullWidth}
-							{...rest}
-						/>
-					</BoxComponent>
-				)
-			}}
-		/>
+						}}
+						value={value}
+						onChange={
+							readOnly
+								? null
+								: (newValue) => {
+									// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
+									if (_onChange) {
+										_onChange(newValue);
+									}
+
+									onChange(newValue);
+
+									if (onChanged) {
+										// onChanged(newValue);
+										setInnerValue(newValue);
+									}
+								}
+						}
+						onKeyDown={handleKeyDown}
+						InputProps={{
+							...InputProps,
+							...(readOnly && { readOnly: true }),
+						}}
+						{...opts}
+						disabled={readOnly}
+						// onError={(err) => {
+						// 	console.error(err);
+						// }}
+						invalidDateMessage={invalidDateMessage}
+						fullWidth={fullWidth}
+						{...rest}
+					/>
+				</BoxComponent>
+			)}
+		</ControllerWrapper>
 	);
+
+	// 	if (!name) {
+	// 		return <DatePicker {...rest} />;
+	// 	}
+
+	// 	return (
+	// 		<Controller
+	// 			name={name}
+	// 			defaultValue={defaultValue || null}
+	// 			control={control}
+	// 			// rules={rules}
+	// 			rules={_rules}
+	// 			render={({
+	// 				field: { ref, value, onChange },
+	// 				fieldState: { error },
+	// 			}) => {
+	// 				return (
+	// 					<BoxComponent {...(inline && { inline })} sx={{
+	// 						fontWeight: 700,
+	// 					}}>
+	// 						{inline &&
+	// 							label
+	// 						}
+	// 						<DatePicker
+	// 							// autoOk
+	// 							inputRef={ref}
+	// 							label={label ? `${label}${required ? "*" : ""}` : ""}
+	// 							mask={mask}
+	// 							format={format}
+	// 							slotProps={{
+	// 								clearButton: {
+	// 									...(clearText && {
+	// 										title: clearText
+	// 									})
+	// 								},
+	// 								inputAdornment: {
+	// 									sx: {
+	// 										...(dense && {
+	// 											'& .MuiSvgIcon-root': { fontSize: '18px' }
+	// 										})
+	// 									}
+	// 								},
+	// 								textField: {
+	// 									size: "small",
+	// 									onKeyDown: handleKeyDown,
+	// 									InputLabelProps: {
+	// 										...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
+	// 										...(dense && {
+	// 											shrink: true,
+	// 										})
+	// 									},
+	// 									error: !!error,
+	// 									helperText: error?.message,
+	// 									onBlur: onBlur,
+	// 									sx: {
+	// 										...(required && !error && {
+	// 											"& .MuiInputLabel-root:not(.Mui-focused)": {
+	// 												color: Colors.REQUIRED,
+	// 											},
+	// 											"& .MuiOutlinedInput-root": {
+	// 												'& fieldset': {
+	// 													borderColor: Colors.REQUIRED,
+	// 												},
+	// 											}
+	// 										}),
+	// 										...(borderless && {
+	// 											"& input": {
+	// 												paddingTop: 0,
+	// 												paddingLeft: "4px",
+	// 												paddingRight: 0,
+	// 											}
+	// 										})
+	// 									},
+	// 									fullWidth,
+	// 									...(borderless && {
+	// 										variant: "filled",
+	// 										InputProps: { disableUnderline: true }
+	// 									}),
+	// 									...slotProps?.textField,
+	// 								},
+	// 								sx: {
+	// 									...(dense && {
+	// 										"& .MuiInputBase-input":
+	// 										{
+	// 											paddingTop: "4px",
+	// 											paddingBottom: "4px",
+	// 											// paddingLeft: "2px",
+	// 											// paddingRight: "40px",
+	// 										},
+	// 									}),
+
+	// 								},
+	// 								field: {
+	// 									clearable
+	// 								}
+	// 							}}
+	// 							value={value}
+	// 							onChange={
+	// 								readOnly
+	// 									? null
+	// 									: (newValue) => {
+	// 										// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
+	// 										if (_onChange) {
+	// 											_onChange(newValue);
+	// 										}
+
+	// 										onChange(newValue);
+
+	// 										if (onChanged) {
+	// 											// onChanged(newValue);
+	// 											setInnerValue(newValue);
+	// 										}
+	// 									}
+	// 							}
+	// 							onKeyDown={handleKeyDown}
+	// 							InputProps={{
+	// 								...InputProps,
+	// 								...(readOnly && { readOnly: true }),
+	// 							}}
+	// 							{...opts}
+	// 							disabled={readOnly}
+	// 							// onError={(err) => {
+	// 							// 	console.error(err);
+	// 							// }}
+	// 							invalidDateMessage={invalidDateMessage}
+	// 							fullWidth={fullWidth}
+	// 							{...rest}
+	// 						/>
+	// 					</BoxComponent>
+	// 				)
+	// 			}}
+	// 		/>
+	// 	);
 };
 ControlledDatePicker.propTypes = {
 	label: PropTypes.string,
@@ -266,5 +404,7 @@ ControlledDatePicker.propTypes = {
 	inline: PropTypes.bool,
 	fullWidth: PropTypes.bool,
 	debounce: PropTypes.number,
+	slotProps: PropTypes.object,
+	borderless: PropTypes.bool,
 };
 export default ControlledDatePicker;

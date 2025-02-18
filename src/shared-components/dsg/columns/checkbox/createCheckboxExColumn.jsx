@@ -7,7 +7,7 @@ export const createCheckboxExColumn = (opts) => {
 		component: CheckboxComponentContainer,
 		// component: CheckboxComponent,
 		columnData: opts,
-		deleteValue: () => null,
+		deleteValue: () => false,
 		// We can customize what value is copied: when the checkbox is checked we copy YES, otherwise we copy NO
 		copyValue: ({ rowData }) => (rowData ? "1" : "0"),
 		// Since we copy custom values, we have to make sure pasting gives us the expected result

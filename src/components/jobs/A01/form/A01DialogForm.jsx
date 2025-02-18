@@ -1,22 +1,6 @@
-import TaxTypes from "@/modules/md-tax-types";
 import { Box, Grid, Tab } from "@mui/material";
 import { memo } from "react";
 
-import A01 from "@/modules/md-a01";
-import Strings from "@/shared-modules/sd-strings";
-import YesNo from "@/modules/md-yes-no";
-import FlexBox from "@/shared-components/FlexBox";
-import LoadingTypography from "@/shared-components/LoadingTypography";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import FormBox from "@/shared-components/form/FormBox";
-import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Container } from "@mui/material";
-import PropTypes from "prop-types";
-import { useScrollable } from "@/shared-hooks/useScrollable";
 import CmsTypePicker from "@/components/picker/CmsTypePicker";
 import CounterPicker from "@/components/picker/CounterPicker";
 import { PkgTypePicker } from "@/components/picker/PkgTypePicker";
@@ -26,10 +10,24 @@ import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
 import ProdTypeBPicker from "@/components/picker/ProdTypeBPicker";
 import TaxTypePicker from "@/components/picker/TaxTypePicker";
+import A01 from "@/modules/md-a01";
+import YesNo from "@/modules/md-yes-no";
+import ContainerEx from "@/shared-components/ContainerEx";
+import FlexBox from "@/shared-components/FlexBox";
+import LoadingTypography from "@/shared-components/LoadingTypography";
+import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import FormSectionBox from "@/shared-components/form/FormSectionBox";
+import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { useScrollable } from "@/shared-hooks/useScrollable";
+import Strings from "@/shared-modules/sd-strings";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { Container } from "@mui/material";
+import PropTypes from "prop-types";
 import { A01ProdComboGridContainer } from "./combo/A01ProdComboGridContainer";
 import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
-import ContainerEx from "@/shared-components/ContainerEx";
-import FlexGrid from "@/shared-components/FlexGrid";
 
 const A01DialogForm = memo((props) => {
 	const {
@@ -356,9 +354,11 @@ const A01DialogForm = memo((props) => {
 											disableOpenOnInput
 										/>
 									</Grid>
-									<FlexGrid item xs={12} sm={12} md={3} justifyContent="flex-end">
-										<FormSectionTitle>換算率</FormSectionTitle>
-									</FlexGrid>
+									<Grid item xs={12} sm={12} md={3}>
+										<FlexBox justifyContent="flex-end">
+											<FormSectionTitle>換算率</FormSectionTitle>
+										</FlexBox>
+									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
 											typo

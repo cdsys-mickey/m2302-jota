@@ -17,13 +17,13 @@ import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "./useAppModule";
 import ConfigContext from "@/contexts/config/ConfigContext";
+import useJotaReports from "../useJotaReports";
 
 export const useE01 = () => {
 	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
-	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -842,26 +842,33 @@ export const useE01 = () => {
 		console.error("onImportProdsSubmitError", err);
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebE01Rep.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
 	const onPrintSubmit = useCallback(
-		(data) => {
-			console.log("onPrintSubmit", data);
-			const jsonData = {
-				...(data.outputType && {
-					Action: data.outputType.id,
+		(payload) => {
+			console.log("onPrintSubmit", payload);
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "E01",
 				IDs: crud.itemData?.OrdID,
 			};
-			postToBlank(
-				`${config.REPORT_URL}/WebE01Rep.aspx?LogKey=${operator?.LogKey
-				}`,
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
+			// postToBlank(
+			// 	`${config.REPORT_URL}/WebE01Rep.aspx?LogKey=${operator?.LogKey
+			// 	}`,
+			// 	{
+			// 		jsonData: JSON.stringify(data),
+			// 	}
+			// );
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[config.REPORT_URL, crud.itemData?.OrdID, operator?.CurDeptID, operator?.LogKey, postToBlank]
+		[crud.itemData?.OrdID, operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

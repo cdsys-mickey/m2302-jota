@@ -19,6 +19,7 @@ import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import CounterPicker from "@/components/picker/CounterPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import DateFormats from "@/shared-modules/sd-date-formats";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const H21Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -41,24 +42,28 @@ const H21Form = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									name="SProdID"
-									label="貨號區間"
-									size="small"
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									name="EProdID"
-									label="貨號區間迄"
-									size="small"
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="貨號區間"
+									leftComponent={<ProdPicker
+										name="SProdID"
+										label="貨號區間"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<ProdPicker
+										name="EProdID"
+										label="貨號區間迄"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>

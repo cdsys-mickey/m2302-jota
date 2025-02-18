@@ -12,6 +12,8 @@ export const H06Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
+			SCustID: null,
+			ECustID: null,
 			InclTest: false,
 			orderType: H06OrderType.getDefaultOption(),
 			orderDir: OrderDir.getDefaultOption(),

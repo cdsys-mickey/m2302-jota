@@ -23,8 +23,6 @@ export const useB06 = () => {
 		initialFetchSize: 50,
 	});
 
-	// const { postToBlank } = useHttpPost();
-
 	const handleInqIdClick = useCallback((e, rowData) => {
 		e?.stopPropagation();
 		console.log("handleInqIdClick", rowData);
@@ -66,13 +64,6 @@ export const useB06 = () => {
 			};
 			console.log("collected", collected);
 
-			// postToBlank(
-			// 	`${config.REPORT_URL
-			// 	}/WebB06Rep.aspx?LogKey=${logKey}`,
-			// 	{
-			// 		jsonData: JSON.stringify(collected),
-			// 	}
-			// );
 			reports.open(reportUrl, collected);
 		},
 		[auth.operator?.CurDeptID, reportUrl, reports]

@@ -22,6 +22,7 @@ import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
 import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const H10Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -31,95 +32,104 @@ const H10Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									autoFocus
-									name="SDate1"
-									label="日期區間(一)"
-									fullWidth
-									validate
-									clearable
-									required
-									rules={{
-										required: "日期區間為必填"
-									}}
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="日期區間(一)" required
+									leftComponent={<DatePickerWrapper
+										name="SDate1"
+										required
+										rules={{
+											required: "日期區間(一)起為必填"
+										}}
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate1"
+										required
+										rules={{
+											required: "日期區間(一)迄為必填"
+										}}
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EDate1"
-									label="日期區間迄"
-									fullWidth
-									validate
-									clearable
-									required
-									rules={{
-										required: "日期區間為必填"
-									}}
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="SDate2"
-									label="日期區間(二)"
-									fullWidth
-									validate
-									clearable
-									required
-									rules={{
-										required: "日期區間為必填"
-									}}
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EDate2"
-									label="日期區間迄"
-									fullWidth
-									validate
-									clearable
-									required
-									rules={{
-										required: "日期區間為必填"
-									}}
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="日期區間(二)" required
+									leftComponent={<DatePickerWrapper
+										name="SDate2"
+										rules={{
+											required: "日期區間(二)起為必填"
+										}}
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate2"
+										rules={{
+											required: "日期區間(二)迄為必填"
+										}}
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							{/* 區域 */}
-							<Grid item xs={12} sm={6}>
-								<AreaPicker
-									name="SAreaID"
-									label="客戶區域"
-									fullWidth
-									validate
-									clearable
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<AreaPicker
-									name="EAreaID"
-									label="截止區域"
-									fullWidth
-									validate
-									clearable
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="客戶區域"
+									leftComponent={<AreaPicker
+										name="SAreaID"
+										label="客戶區域"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<AreaPicker
+										name="EAreaID"
+										label="截止區域"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							{/* 通路 */}
-							<Grid item xs={12} sm={6}>
-								<ChannelPicker
-									name="SLineID"
-									label="客戶通路"
-									fullWidth
-									validate
-									clearable
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ChannelPicker
-									name="ELineID"
-									label="截止通路"
-									fullWidth
-									validate
-									clearable
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="客戶通路"
+									leftComponent={<ChannelPicker
+										name="SLineID"
+										label="客戶通路"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<ChannelPicker
+										name="ELineID"
+										label="截止通路"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6.5}>

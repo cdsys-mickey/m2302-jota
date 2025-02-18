@@ -1,15 +1,15 @@
 import Forms from "@/shared-modules/sd-forms";
 
 const transformForSubmitting = (payload) => {
-	const { outputType, SDate, EDate, InclTest, cust, cust2, ...rest } =
+	const { outputType, SDate, EDate, InclTest, SCustID, ECustID, ...rest } =
 		payload;
 	return {
 		JobName: "H13",
 		Action: outputType?.id?.toString() || "",
 		SDate: Forms.formatDate(SDate) || "",
 		EDate: Forms.formatDate(EDate) || "",
-		SCustID: cust?.CustID || "",
-		ECustID: cust2?.CustID || "",
+		SCustID: SCustID?.CustID || "",
+		ECustID: ECustID?.CustID || "",
 		InclTest: InclTest ? "Y" : "N",
 		...rest,
 	};

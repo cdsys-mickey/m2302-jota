@@ -148,6 +148,8 @@ const OptionPicker = memo(
 			isDirty,
 			blurToLookup = false,
 			blurToClearErrors = true,
+			slotProps,
+			borderless,
 			...rest
 		} = props;
 
@@ -538,6 +540,10 @@ const OptionPicker = memo(
 			[_open, blurToClearErrors, blurToLookup, clearErrors, emptyId, findByInput, focusNextCellOrField, inDSG, inFormMeta, inputNotFound, multiple, name, onChange, refocus, value]
 		);
 
+		const _label = useMemo(() => {
+			return borderless ? "" : label;
+		}, [borderless, label])
+
 		const renderNormalInput = useCallback(
 			(params) => {
 				// console.log("textFieldProps", textFieldProps);
@@ -545,8 +551,7 @@ const OptionPicker = memo(
 				return (
 					<TextField
 						required={required}
-						label={label}
-						// label={dense ? "" : label}
+						label={_label}
 						size={size}
 						fullWidth={fullWidth}
 						error={error}
@@ -573,11 +578,21 @@ const OptionPicker = memo(
 										borderColor: Colors.REQUIRED,
 									},
 								}
+							}),
+							...(borderless && {
+								"& .MuiFilledInput-root": {
+									paddingTop: 0,
+									paddingLeft: "4px",
+									paddingRight: 0,
+								}
 							})
 						}]}
 						InputProps={{
 							...params.InputProps,
 							// textFieldProps 會帶入他的 override, 所以我們的修改必須放在他之後
+							...(borderless && {
+								disableUnderline: true
+							}),
 							...InputProps,
 							endAdornment: (
 								<>
@@ -595,6 +610,10 @@ const OptionPicker = memo(
 							...inputProps,
 						}}
 						{...TextFieldProps}
+						{...slotProps?.textField}
+						{...(borderless && {
+							variant: "filled",
+						})}
 						InputLabelProps={{
 							...MuiStyles.DEFAULT_OPTION_PICKER_INPUT_LABEL_PROPS,
 							...params.InputLabelProps,
@@ -604,7 +623,7 @@ const OptionPicker = memo(
 					/>
 				);
 			},
-			[InputLabelProps, InputProps, TextFieldProps, autoFocus, error, fullWidth, handleInputChange, handleKeyDown, helperText, hideControls, inputProps, label, labelShrink, loading, placeholder, required, size, variant]
+			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleInputChange, handleKeyDown, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.textField, variant]
 		);
 
 		const renderDndInput = useCallback(
@@ -902,34 +921,32 @@ const OptionPicker = memo(
 					onChange={handleChange}
 					ref={ref}
 					size={size}
-					slotProps={{
-						paper: {
-							component: ({ ...rest }) => (
-								<PaperComponent
-									elevation={8}
-									{...(GridHeaderComponent && {
-										HeaderComponent: GridHeaderComponent,
-									})}
-									{...rest}
-								/>
-							)
-						},
-						// ...(virtualize && {
-						// 	listbox: {
-						// 		component: VirtualizedPickerListbox
-						// 	}
-						// })
-					}}
+					// slotProps={{
+					// 	paper: {
+					// 		component: ({ ...rest }) => (
+					// 			<PaperComponent
+					// 				elevation={8}
+					// 				{...(GridHeaderComponent && {
+					// 					HeaderComponent: GridHeaderComponent,
+					// 				})}
+					// 				{...rest}
+					// 			/>
+					// 		),
+					// 		...slotProps?.paper,
+					// 	},
+					// 	...slotProps
+					// }}
 					// onBlur={handleBlur}
-					// PaperComponent={({ ...rest }) => (
-					// 	<PaperComponent
-					// 		elevation={8}
-					// 		{...(GridHeaderComponent && {
-					// 			HeaderComponent: GridHeaderComponent,
-					// 		})}
-					// 		{...rest}
-					// 	/>
-					// )}
+					PaperComponent={({ ...rest }) => (
+						<PaperComponent
+							elevation={8}
+							{...(GridHeaderComponent && {
+								HeaderComponent: GridHeaderComponent,
+							})}
+							{...rest}
+							{...slotProps?.paper}
+						/>
+					)}
 					// filterSelectedOptions={filterSelectedOptions}
 					disabled={disabled}
 					noOptionsText={noOptionsText}
@@ -983,6 +1000,7 @@ const OptionPicker = memo(
 					]}
 					{...AUTO_COMPLETE_DEFAULTS}
 					{...rest}
+
 					// virtualize = true 時必須強制 override 部分屬性
 					{...(virtualize && {
 						ListboxComponent: VirtualizedPickerListbox,
@@ -1103,5 +1121,8 @@ OptionPicker.propTypes = {
 	cellComponentRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	isTouched: PropTypes.bool,
 	isDirty: PropTypes.bool,
+	borderless: PropTypes.bool,
+	slotProps: PropTypes.object
+
 };
 export default OptionPicker;

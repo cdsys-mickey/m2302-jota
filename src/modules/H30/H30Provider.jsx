@@ -10,8 +10,10 @@ export const H30Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
-			InclTX: true,
-			InclTest: false,
+			SFactID: null,
+			EFactID: null,
+			SProdID: null,
+			EProdID: null,
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
 		},
 	});

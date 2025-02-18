@@ -21,6 +21,7 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import DateFormats from "@/shared-modules/sd-date-formats";
 import H11NumberList from "./pickers/H11NumberList";
 import H11ReportTypePicker from "./pickers/H11ReportTypePicker";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const H11Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -64,41 +65,47 @@ const H11Form = memo((props) => {
 									<FlexBox fullWidth />
 
 									{/* 區域 */}
-									<Grid item xs={12} sm={6}>
-										<AreaPicker
-											name="SAreaID"
-											label="客戶區域"
-											fullWidth
-											validate
-											clearable
-										/>
-									</Grid>
-									<Grid item xs={12} sm={6}>
-										<AreaPicker
-											name="EAreaID"
-											label="截止區域"
-											fullWidth
-											validate
-											clearable
+									<Grid item xs={12} sm={12}>
+										<RangeGroup legend="客戶區域"
+											leftComponent={<AreaPicker
+												name="SAreaID"
+												label="客戶區域"
+												fullWidth
+												validate
+												clearable
+												borderless
+												placeholder="起"
+											/>}
+											rightComponent={<AreaPicker
+												name="EAreaID"
+												label="截止區域"
+												fullWidth
+												validate
+												clearable
+												borderless
+												placeholder="迄"
+											/>}
 										/>
 									</Grid>
 									{/* 通路 */}
-									<Grid item xs={12} sm={6}>
-										<ChannelPicker
-											name="SLineID"
-											label="客戶通路"
-											fullWidth
-											validate
-											clearable
-										/>
-									</Grid>
-									<Grid item xs={12} sm={6}>
-										<ChannelPicker
-											name="ELineID"
-											label="截止通路"
-											fullWidth
-											validate
-											clearable
+									<Grid item xs={12} sm={12}>
+										<RangeGroup legend="客戶通路"
+											leftComponent={<ChannelPicker
+												name="SLineID"
+												fullWidth
+												validate
+												clearable
+												borderless
+												placeholder="起"
+											/>}
+											rightComponent={<ChannelPicker
+												name="ELineID"
+												fullWidth
+												validate
+												clearable
+												borderless
+												placeholder="迄"
+											/>}
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12}>

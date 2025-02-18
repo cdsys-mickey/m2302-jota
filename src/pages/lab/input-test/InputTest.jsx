@@ -14,16 +14,18 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import ProdTypeAPicker from "../../../components/picker/ProdTypeAPicker";
-import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
+import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { useRef } from "react";
-import ProdTypeA from "../../../modules/md-prod-type-a";
-import LockSwitch from "../../../shared-components/LockSwitch";
-import ProdTypeBPicker from "../../../components/picker/ProdTypeBPicker";
-import ProdPicker from "../../../components/picker/ProdPicker";
-import CheckboxExWrapper from "../../../shared-components/checkbox/CheckboxExWrapper";
-import { DateFieldWrapper } from "../../../shared-components/date-field/DateFieldWrapper";
+import ProdTypeA from "@/modules/md-prod-type-a";
+import LockSwitch from "@/shared-components/LockSwitch";
+import ProdTypeBPicker from "@/components/picker/ProdTypeBPicker";
+import ProdPicker from "@/components/picker/ProdPicker";
+import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { DateFieldWrapper } from "@/shared-components/date-field/DateFieldWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FieldGroup from "@/shared-components/FieldGroup";
+import FlexBox from "@/shared-components/FlexBox";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -98,6 +100,41 @@ const InputTest = () => {
 				<FormSectionTitle>OptionPicker</FormSectionTitle>
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={2}>
+						<Grid item xs={12} md={6.5}>
+							<FieldGroup legend="日期區間">
+								<FlexBox flex={1}>
+									<DatePickerWrapper
+										autoFocus
+										name="SDate"
+										label=""
+										fullWidth
+										validate
+										clearable
+										borderless
+									/>
+								</FlexBox>
+								<Box mx={0.2}>
+									<Typography variant="body1">~</Typography>
+								</Box>
+								<FlexBox flex={1}>
+									<DatePickerWrapper
+										name="EDate"
+										label=""
+										fullWidth
+										validate
+										clearable
+										borderless
+									/>
+								</FlexBox>
+
+							</FieldGroup>
+						</Grid>
+					</Grid>
+				</FormSectionBox>
+
+				<FormSectionTitle>OptionPicker</FormSectionTitle>
+				<FormSectionBox p={1} mb={1}>
+					<Grid container spacing={2}>
 						<Grid item xs={12} md={6}>
 							<Autocomplete
 								id="use autocomplete"
@@ -145,44 +182,55 @@ const InputTest = () => {
 				<FormSectionTitle>Tab & Enter </FormSectionTitle>
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={1}>
-						<Grid item xs={4}>
-							<ProdPicker
-								debug={true}
-								name="prodPicker"
-								label="必填商品"
-								required
-								labelShrink
-								placeholder="輸入商品編號"
-								filterByServer
-								rules={{
-									required: "此項必填",
-								}}
-								// queryRequired
-								virtualize
-								// 新增屬性
-								disableOpenOnInput
-								// pressToFind
-								notFoundText="商品代號 ${id} 不存在"
-							/>
-						</Grid>
-						<Grid item xs={4}>
-							<ProdPicker
-								debug={true}
-								name="prodPicker2"
-								label="非必填商品"
-								labelShrink
-								placeholder="輸入商品編號"
-								filterByServer
-								// rules={{
-								// 	required: "此項必填",
-								// }}
-								// queryRequired
-								virtualize
-								// 新增屬性
-								disableOpenOnInput
-								// pressToFind
-								notFoundText="商品代號 ${id} 不存在"
-							/>
+						<Grid item xs={8}>
+							<FieldGroup legend="貨品區間">
+								<FlexBox flex={1}>
+									<ProdPicker
+										debug={true}
+										name="prodPicker"
+										label=""
+										required
+										labelShrink
+										placeholder="輸入商品編號"
+										filterByServer
+										rules={{
+											required: "此項必填",
+										}}
+										// queryRequired
+										virtualize
+										// 新增屬性
+										disableOpenOnInput
+										// pressToFind
+										notFoundText="商品代號 ${id} 不存在"
+										borderless
+									/>
+								</FlexBox>
+								<FlexBox mx={0.2}>
+									<Typography variant="body1">~</Typography>
+								</FlexBox>
+								<FlexBox flex={1}>
+									<ProdPicker
+										debug={true}
+										name="prodPicker2"
+										label=""
+										labelShrink
+										placeholder="輸入商品編號"
+										filterByServer
+										// rules={{
+										// 	required: "此項必填",
+										// }}
+										// queryRequired
+										virtualize
+										// 新增屬性
+										disableOpenOnInput
+										// pressToFind
+										notFoundText="商品代號 ${id} 不存在"
+										borderless
+									/>
+								</FlexBox>
+							</FieldGroup>
+
+
 						</Grid>
 						<Grid item xs={4}>
 							<ProdTypeAPicker

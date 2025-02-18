@@ -14,7 +14,10 @@ import { FormProvider, useForm } from "react-hook-form";
 export const C05FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
 	const searchForm = useForm({
-		defaultValues: {},
+		defaultValues: {
+			rd: null,
+			rd2: null
+		},
 	});
 	const theme = useTheme();
 	const boxStyles = useMemo(

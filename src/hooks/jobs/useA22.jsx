@@ -28,7 +28,6 @@ export const useA22 = ({
 	const config = useContext(ConfigContext);
 	const { httpGetAsync } = useWebApi();
 	const [expanded, toggleExpanded] = useToggle(true);
-	const { postToBlank } = useHttpPost();
 
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();

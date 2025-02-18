@@ -1,0 +1,62 @@
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useContext, useMemo } from "react";
+import { FormProvider, useFormContext, useWatch } from "react-hook-form";
+import { H42Context } from "./H42Context";
+import H42Form from "./H42Form";
+
+export const H42FormContainer = () => {
+	const form = useFormContext();
+	const h42 = useContext(H42Context);
+
+	const formMeta = useFormMeta(
+		`
+			SDate,
+			EDate,
+			SArrDate,
+			EArrDate,
+			SProdID,
+			EProdID,
+			SDeptID,
+			EDeptID,
+			reportType,
+			orderType,
+			outputType,
+			`
+	)
+
+	const onSubmit = useMemo(() => {
+		return form.handleSubmit(
+			h42.onSubmit,
+			h42.onSubmitError
+		)
+	}, [h42.onSubmit, h42.onSubmitError, form]);
+
+	const onDebugSubmit = useMemo(() => {
+		return form.handleSubmit(
+			h42.onDebugSubmit,
+		)
+	}, [h42.onDebugSubmit, form]);
+
+	const retail = useWatch({
+		name: "retail",
+		control: form.control
+	})
+
+	return (
+		<FormProvider {...form}>
+			<FormMetaProvider {...formMeta} >
+				<H42Form forNewCustomer={retail} onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			</FormMetaProvider>
+		</FormProvider>
+	);
+};
+
+H42FormContainer.displayName = "H42FormContainer";
+
+
+
+
+
+
+

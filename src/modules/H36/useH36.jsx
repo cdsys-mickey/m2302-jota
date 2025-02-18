@@ -18,17 +18,7 @@ export const useH36 = () => {
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-	const formMeta = useFormMeta(
-		`
-		SDate,
-		EDate,
-		SProdID,
-		EProdID,
-		InclTX,
-		InclTest,
-		outputType,
-		`
-	)
+
 
 	const reportUrl = useMemo(() => {
 		return `${config.REPORT_URL}/WebH36Rep.aspx`
@@ -67,7 +57,6 @@ export const useH36 = () => {
 		onSubmit,
 		onSubmitError,
 		onDebugSubmit,
-		formMeta,
 	};
 };
 

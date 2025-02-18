@@ -1,16 +1,12 @@
-import ControlledAccountField from "@/components/auth/ControlledAccountField";
-import ControlledPwordField from "@/components/auth/ControlledPwordField";
 import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
 import FlexBox from "@/shared-components/FlexBox";
-import { ControlledLocalCaptchaField } from "@/shared-components/local-captcha/controlled-local-captcha-field";
 import LoginIcon from "@mui/icons-material/Login";
 import { LoadingButton } from "@mui/lab";
 import { Box, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { ControlledTextField } from "../../shared-components/controlled/ControlledTextField";
-import { ControlledCaptchaField } from "../../shared-components/captcha-field/ControlledCaptchaField";
 import { CaptchaFieldContainer } from "../../components/auth/CaptchaFieldContainer";
+import { ControlledTextField } from "../../shared-components/controlled/ControlledTextField";
 
 const SignInX = memo((props) => {
 	const { loading, ...rest } = props;

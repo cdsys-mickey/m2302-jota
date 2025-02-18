@@ -6,6 +6,7 @@ import FormBox from "@/shared-components/form/FormBox";
 import { Grid } from "@mui/material";
 import { memo, useContext, useMemo } from "react";
 import { B02OrderByPicker } from "../B02OrderByPicker";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const B02ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -16,86 +17,96 @@ const B02ListForm = memo((props) => {
 	return (
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
-				<Grid item xs={24} sm={24} md={6}>
-					<CustomerPicker
-						name="customer"
-						forNew={b.forNew}
-						autoFocus
-						label={`${cust}代碼起`}
-						disableOpenOnInput
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
+				<Grid item xs={24} sm={24} md={12}>
+					<RangeGroup legend={`${cust}區間`}
+						leftComponent={<CustomerPicker
+							name="customer"
+							forNew={b.forNew}
+							autoFocus
+							label={`${cust}代碼起`}
+							disableOpenOnInput
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
 								},
-							},
-						}}
+							}}
+							borderless
+							placeholder="起"
+						/>}
+						rightComponent={<CustomerPicker
+							forNew={b.forNew}
+							name="customer2"
+							label={`${cust}代碼訖`}
+							disableOpenOnInput
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
+								},
+							}}
+							borderless
+							placeholder="迄"
+						/>}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<CustomerPicker
-						forNew={b.forNew}
-						name="customer2"
-						label={`${cust}代碼訖`}
-						disableOpenOnInput
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						}}
-					/>
-				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<ProdPicker
-						name="prod"
-						forId
-						label="商品編號起"
+				<Grid item xs={24} sm={24} md={12}>
+					<RangeGroup legend="商品區間"
+						leftComponent={<ProdPicker
+							name="prod"
+							forId
+							label="商品編號起"
 
-						disableOpenOnInput
-						virtualize
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
+							disableOpenOnInput
+							virtualize
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
 								},
-							},
-						}}
-					/>
-				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<ProdPicker
-						name="prod2"
-						forId
-						label="商品編號訖"
-						disableOpenOnInput
-						virtualize
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
+							}}
+							borderless
+							placeholder="起"
+						/>}
+						rightComponent={<ProdPicker
+							name="prod2"
+							forId
+							label="商品編號訖"
+							disableOpenOnInput
+							virtualize
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
 								},
-							},
-						}}
+							}}
+							borderless
+							placeholder="迄"
+						/>}
 					/>
 				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<DatePickerWrapper
-						name="date"
-						label="報價日期起"
-						clearable
-						validate
-					// dense
-					/>
-				</Grid>
-				<Grid item xs={24} sm={24} md={6}>
-					<DatePickerWrapper
-						name="date2"
-						label="報價日期訖"
-						clearable
-						validate
-					// dense
+				<Grid item xs={24} sm={24} md={12}>
+					<RangeGroup legend="報價日期區間"
+						leftComponent={<DatePickerWrapper
+							name="date"
+							label="報價日期起"
+							clearable
+							validate
+							borderless
+							placeholder="起"
+						/>}
+						rightComponent={<DatePickerWrapper
+							name="date2"
+							label="報價日期訖"
+							clearable
+							validate
+							borderless
+							placeholder="迄"
+						/>}
 					/>
 				</Grid>
 				<Grid item xs={24} sm={24} md={6}>

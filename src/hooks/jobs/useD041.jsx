@@ -1,26 +1,25 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
 import D041 from "@/modules/md-d041";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useToggle } from "../../shared-hooks/useToggle";
+import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useD041 = () => {
 	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
-	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -650,26 +649,33 @@ export const useD041 = () => {
 		console.error("onEditorSubmitError", err);
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebD041Rep.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
 	const onPrintSubmit = useCallback(
-		(data) => {
-			console.log("onPrintSubmit", data);
-			const jsonData = {
-				...(data.outputType && {
-					Action: data.outputType.id,
+		(payload) => {
+			console.log("onPrintSubmit", payload);
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "D041",
 				IDs: crud.itemData?.EntID,
 			};
-			postToBlank(
-				`${config.REPORT_URL}/WebD041Rep.aspx?LogKey=${operator?.LogKey
-				}`,
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
+			// postToBlank(
+			// 	`${config.REPORT_URL}/WebD041Rep.aspx?LogKey=${operator?.LogKey
+			// 	}`,
+			// 	{
+			// 		jsonData: JSON.stringify(data),
+			// 	}
+			// );
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[config.REPORT_URL, crud.itemData?.EntID, operator?.CurDeptID, operator?.LogKey, postToBlank]
+		[crud.itemData?.EntID, operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

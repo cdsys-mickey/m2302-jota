@@ -9,13 +9,13 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Forms from "@/shared-modules/sd-forms";
 import Objects from "@/shared-modules/sd-objects";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
 
@@ -40,7 +40,6 @@ export const useB012 = (opts = {}) => {
 	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
-	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -520,11 +519,16 @@ export const useB012 = (opts = {}) => {
 		console.error("onPrintPromptSubmitError", err);
 	}, [])
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebB012032Rep.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
 	const onPrintSubmit = useCallback(
-		async (data) => {
-			console.log("onPrintSubmit", data);
+		async (payload) => {
+			console.log("onPrintSubmit", payload);
 			// fetch ListView data
-			const { status, payload, error } = await httpGetAsync({
+			const { status, payload: fetchPayload, error } = await httpGetAsync({
 				bearer: auth.token,
 				url: `${API_URL}/find-by-prod`,
 				params: {
@@ -533,8 +537,8 @@ export const useB012 = (opts = {}) => {
 				}
 			});
 			if (status.success) {
-				console.log("payload", payload.data);
-				if (!payload.data?.length) {
+				console.log("payload", fetchPayload.data);
+				if (!fetchPayload.data?.length) {
 					toastEx.error("目前查詢沒有資料", {
 						position: "top-right"
 					})
@@ -544,34 +548,36 @@ export const useB012 = (opts = {}) => {
 				toastEx.error("讀取資料發生錯誤", error);
 				return;
 			}
-			const { prtEmployee, prtDate } = data;
-			const jsonData = {
-				...(data.outputType && {
-					Action: data.outputType.id,
+			const { prtEmployee, prtDate } = payload;
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: JOB_NAME,
 				ProdID: printAction.params?.lvProd?.ProdID || "",
 				QEmplID: prtEmployee?.CodeID || "",
 				QDate: Forms.formatDate(prtDate),
-				B012032_W1: payload.data ?
-					payload.data?.map(x => ({
+				B012032_W1: fetchPayload.data ?
+					fetchPayload.data?.map(x => ({
 						CustID: x.CustID,
 						Price: x.Price,
 						QPrice: x.QPrice
 					}))
 					: []
 			};
-			console.log("jsonData", jsonData);
-			postToBlank(
-				`${config.REPORT_URL}/WebB012032Rep.aspx?LogKey=${operator?.LogKey
-				}`,
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
+			// console.log("jsonData", jsonData);
+			// postToBlank(
+			// 	`${config.REPORT_URL}/WebB012032Rep.aspx?LogKey=${operator?.LogKey
+			// 	}`,
+			// 	{
+			// 		jsonData: JSON.stringify(jsonData),
+			// 	}
+			// );
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[API_URL, JOB_NAME, auth.token, config.REPORT_URL, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, operator?.LogKey, postToBlank, printAction.params?.lvProd?.ProdID]
+		[API_URL, JOB_NAME, auth.token, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, printAction.params?.lvProd?.ProdID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

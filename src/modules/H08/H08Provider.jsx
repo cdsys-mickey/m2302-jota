@@ -1,12 +1,10 @@
+import StdPrint from "@/modules/md-std-print";
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import { useH08 } from "./useH08";
-import StdPrint from "@/modules/md-std-print";
-import { H08Context } from "./H08Context";
-import H08ReportType from "./pickers/H08ReportType.mjs";
-import H08OrderType from "./pickers/H08OrderType.mjs";
 import OrderDir from "../OrderDir.mjs";
-import H08CalType from "./pickers/H08CalType.mjs";
+import { H08Context } from "./H08Context";
+import H08OrderType from "./pickers/H08OrderType.mjs";
+import { useH08 } from "./useH08";
 
 export const H08Provider = ({ children }) => {
 	const h08 = useH08();
@@ -14,6 +12,8 @@ export const H08Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
+			SCustID: null,
+			ECustID: null,
 			orderType: H08OrderType.getDefaultOption(),
 			orderDir: OrderDir.getOptionById(2),
 			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),

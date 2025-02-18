@@ -13,6 +13,8 @@ import ProdPicker from "@/components/picker/ProdPicker";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import RangeGroup from "@/shared-components/RangeGroup";
+import FlexBox from "@/shared-components/FlexBox";
 
 const H01Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -22,78 +24,89 @@ const H01Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="SDate"
-									label="日期區間"
-									fullWidth
-									validate
-									clearable
-									autoFocus
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="日期區間"
+									leftComponent={<DatePickerWrapper
+										name="SDate"
+										fullWidth
+										validate
+										clearable
+										autoFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EDate"
-									label="日期區間迄"
-									fullWidth
-									validate
-									clearable
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="貨品區間"
+									leftComponent={<ProdPicker
+										name="SProdID"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<ProdPicker
+										name="EProdID"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									name="SProdID"
-									label="貨號區間"
-									size="small"
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									name="EProdID"
-									label="貨號區間迄"
-									size="small"
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<FlexGrid item xs={12} alignItems="flex-start">
-								<CheckboxExWrapper
-									label="含撥出入"
-									name="InclTX"
-									defaultValue={true}
-								/>
+							<Grid item xs={12}>
+								<FlexBox alignItems="flex-start">
+									<CheckboxExWrapper
+										label="含撥出入"
+										name="InclTX"
+										defaultValue={true}
+									/>
 
-								<CheckboxExWrapper
-									label="含試贈樣"
-									name="InclTest"
-									defaultValue={true}
-								/>
-							</FlexGrid>
-						</Grid>
-						<Grid container spacing={2}>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/>
-							</FlexGrid>
-							<Grid item xs={12} sm={6}>
-								<FlexToolbar align="right">
-									<ButtonGroup>
-										<DebugDialogButtonContainer
-											onClick={onDebugSubmit} />
-										<ReportSubmitButtonContainer
-											onClick={onSubmit} />
-									</ButtonGroup>
-								</FlexToolbar>
+									<CheckboxExWrapper
+										label="含試贈樣"
+										name="InclTest"
+										defaultValue={true}
+									/>
+
+								</FlexBox>
 							</Grid>
 						</Grid>
+						<FlexBox mt={1.8}>
+							<Grid container spacing={2}>
+								<Grid item xs={12} sm={6}>
+									<FlexBox alignItems="flex-start">
+										<StdPrintOutputModePicker
+											required
+											name="outputType"
+											label="執行方式"
+										/>
+									</FlexBox>
+								</Grid>
+								<Grid item xs={12} sm={6}>
+									<FlexToolbar align="right">
+										<ButtonGroup>
+											<DebugDialogButtonContainer
+												onClick={onDebugSubmit} />
+											<ReportSubmitButtonContainer
+												onClick={onSubmit} />
+										</ButtonGroup>
+									</FlexToolbar>
+								</Grid>
+							</Grid>
+						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
 			</form>

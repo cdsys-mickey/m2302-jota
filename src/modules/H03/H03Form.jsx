@@ -14,6 +14,8 @@ import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FlexBox from "@/shared-components/FlexBox";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const H03Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -23,23 +25,25 @@ const H03Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="SDate"
-									label="日期區間"
-									fullWidth
-									validate
-									clearable
-									autoFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EDate"
-									label="日期區間迄"
-									fullWidth
-									validate
-									clearable
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="日期區間"
+									leftComponent={<DatePickerWrapper
+										name="SDate"
+										fullWidth
+										validate
+										clearable
+										autoFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -72,13 +76,15 @@ const H03Form = memo((props) => {
 							</FlexGrid>
 						</Grid>
 						<Grid container spacing={2}>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/>
-							</FlexGrid>
+							<Grid item xs={12} sm={6}>
+								<FlexBox alignItems="center">
+									<StdPrintOutputModePicker
+										required
+										name="outputType"
+										label="執行方式"
+									/>
+								</FlexBox>
+							</Grid>
 							<Grid item xs={12} sm={6}>
 								<FlexToolbar align="right">
 									<ButtonGroup>

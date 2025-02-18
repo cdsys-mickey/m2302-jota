@@ -1,18 +1,16 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
+import useDebugDialog from "@/hooks/useDebugDialog";
+import useJotaReports from "@/hooks/useJotaReports";
 import H02 from "@/modules/H02/H02";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import useHttpPost from "@/shared-hooks/useHttpPost";
-import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
-import { useAppModule } from "@/hooks/jobs/useAppModule";
-import useDebugDialog from "@/hooks/useDebugDialog";
-import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useH02 = () => {
 	const config = useContext(ConfigContext);
 	const { token, operator } = useContext(AuthContext);
-	const { postToBlank } = useHttpPost();
 	const appModule = useAppModule({
 		token,
 		moduleId: "H02",
@@ -34,6 +32,7 @@ export const useH02 = () => {
 	const reportUrl = useMemo(() => {
 		return `${config.REPORT_URL}/WebH02Rep.aspx`
 	}, [config.REPORT_URL])
+	const reports = useJotaReports();
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);
@@ -44,6 +43,7 @@ export const useH02 = () => {
 		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
 	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
 
+
 	const onSubmit = useCallback(
 		(payload) => {
 			console.log("onSubmit", payload);
@@ -52,19 +52,21 @@ export const useH02 = () => {
 				DeptId: operator.CurDeptID,
 			}
 			console.log("data", data);
-			postToBlank(
-				queryString.stringifyUrl({
-					url: reportUrl,
-					query: {
-						LogKey: operator.LogKey
-					}
-				}),
-				{
-					jsonData: JSON.stringify(data),
-				}
-			);
+			// postToBlank(
+			// 	queryString.stringifyUrl({
+			// 		url: reportUrl,
+			// 		query: {
+			// 			LogKey: operator.LogKey
+			// 		}
+			// 	}),
+			// 	{
+			// 		jsonData: JSON.stringify(data),
+			// 	}
+			// );
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[operator.CurDeptID, operator.LogKey, postToBlank, reportUrl]
+		[operator.CurDeptID, reportUrl, reports]
 	);
 
 	const onSubmitError = useCallback((err) => {

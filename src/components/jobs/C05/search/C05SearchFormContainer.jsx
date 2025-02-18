@@ -8,10 +8,10 @@ export const C05SearchFormContainer = (props) => {
 	const formMeta = useFormMeta(
 		`
 		lvOrder,
-		supplier,
+		lvSupplier,
 		rd,
 		rd2,
-		employee,
+		lvEmployee,
 		`
 	);
 

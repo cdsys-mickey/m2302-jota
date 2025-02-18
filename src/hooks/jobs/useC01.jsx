@@ -1,3 +1,4 @@
+import ConfigContext from "@/contexts/config/ConfigContext";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import { toastEx } from "@/helpers/toast-ex";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -8,20 +9,18 @@ import CrudContext from "../../contexts/crud/CrudContext";
 import C01 from "../../modules/md-c01";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { useAction } from "../../shared-hooks/useAction";
-import useHttpPost from "../../shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useWebApi } from "../../shared-hooks/useWebApi";
+import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
 import useSQtyManager from "../useSQtyManager";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { useAppModule } from "./useAppModule";
 
 export const useC01 = () => {
 	const crud = useContext(CrudContext);
 	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const itemIdRef = useRef();
-	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
@@ -426,9 +425,14 @@ export const useC01 = () => {
 		return `${rowData?.Pkey || rowIndex}`;
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebC01Rep.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
 	const onPrintSubmit = useCallback(
-		(data) => {
-			console.log("onPrintSubmit", data);
+		(payload) => {
+			console.log("onPrintSubmit", payload);
 			const ordId = grid.gridData.map(x => x.SOrdID).filter(x => {
 				return x && x !== "*"
 			}).join(",");
@@ -436,24 +440,26 @@ export const useC01 = () => {
 				toastEx.error("目前沒有採購單");
 				return;
 			}
-			const jsonData = {
-				...(data.outputType && {
-					Action: data.outputType.id,
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "C01",
 				IDs: ordId,
 			};
-			console.log("jsonData", jsonData);
-			postToBlank(
-				`${config.REPORT_URL}/WebC01Rep.aspx?LogKey=${operator?.LogKey
-				}`,
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
+			// console.log("jsonData", data);
+			// postToBlank(
+			// 	`${config.REPORT_URL}/WebC01Rep.aspx?LogKey=${operator?.LogKey
+			// 	}`,
+			// 	{
+			// 		jsonData: JSON.stringify(data),
+			// 	}
+			// );
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[config.REPORT_URL, grid.gridData, operator?.CurDeptID, operator?.LogKey, postToBlank]
+		[grid.gridData, operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

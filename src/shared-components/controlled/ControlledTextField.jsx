@@ -34,6 +34,7 @@ export const ControlledTextField = ({
 	inline,
 	required,
 	slotProps,
+	borderless,
 	...rest
 }) => {
 	const formMeta = useContext(FormMetaContext);
@@ -43,8 +44,8 @@ export const ControlledTextField = ({
 	const form = useFormContext();
 
 	const _label = useMemo(() => {
-		return inline ? "" : label;
-	}, [inline, label])
+		return (inline || borderless) ? "" : label;
+	}, [borderless, inline, label])
 
 	const renderEndAdornment = useMemo(() => {
 		return EndAdornmentComponent || clearable;
@@ -381,4 +382,5 @@ ControlledTextField.propTypes = {
 	InputLabelProps: PropTypes.object,
 	dense: PropTypes.bool,
 	inline: PropTypes.bool,
+	borderless: PropTypes.bool,
 };

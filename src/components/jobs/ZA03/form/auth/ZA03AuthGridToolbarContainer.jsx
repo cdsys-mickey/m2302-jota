@@ -2,10 +2,12 @@ import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { useContext } from "react";
 import ZA03 from "../../../../../modules/md-za03";
-import { ZA03AuthCheckAllButtonContainer } from "./ZA03AuthCheckAllButtonContainer";
-import { ZA03AuthCheckSelectionButtonContainer } from "./ZA03AuthCheckSelectionButtonContainer";
-import { ZA03AuthClearAllButtonContainer } from "./ZA03AuthClearAllButtonContainer";
+import { ZA03AuthCheckAllButtonContainer } from "./buttons/ZA03AuthCheckAllButtonContainer";
+import { ZA03AuthCheckSelectionButtonContainer } from "./buttons/ZA03AuthCheckSelectionButtonContainer";
+import { ZA03AuthClearAllButtonContainer } from "./buttons/ZA03AuthClearAllButtonContainer";
 import { ZA03AuthDeptPickerContainer } from "./ZA03AuthDeptPickerContainer";
+import { ButtonGroup } from "@mui/material";
+import { ZA03AuthClearSelectionButtonContainer } from "./ZA03AuthClearSelectionButtonContainer";
 
 const ZA03AuthToolbarLeftComponents = () => {
 	return (
@@ -22,17 +24,27 @@ const ZA03AuthToolbarLeftComponents = () => {
 					}),
 				]}
 			/>
-			<ZA03AuthCheckSelectionButtonContainer
-				variant="contained"
-				color="info">
-				勾選
-			</ZA03AuthCheckSelectionButtonContainer>
-			<ZA03AuthCheckAllButtonContainer variant="contained">
-				全勾
-			</ZA03AuthCheckAllButtonContainer>
-			<ZA03AuthClearAllButtonContainer variant="outlined">
-				全清
-			</ZA03AuthClearAllButtonContainer>
+			<ButtonGroup>
+				<ZA03AuthCheckSelectionButtonContainer
+					variant="contained"
+					color="info"
+					className="no-margin-right">
+					勾選
+				</ZA03AuthCheckSelectionButtonContainer>
+				<ZA03AuthClearSelectionButtonContainer
+					variant="outlined"
+					color="info">
+					清除
+				</ZA03AuthClearSelectionButtonContainer>
+			</ButtonGroup>
+			<ButtonGroup>
+				<ZA03AuthCheckAllButtonContainer variant="contained" className="no-margin-right">
+					全勾
+				</ZA03AuthCheckAllButtonContainer>
+				<ZA03AuthClearAllButtonContainer variant="outlined">
+					全清
+				</ZA03AuthClearAllButtonContainer>
+			</ButtonGroup>
 		</>
 	);
 };

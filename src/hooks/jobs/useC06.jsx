@@ -1,26 +1,25 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
 import C06 from "@/modules/md-c06";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef } from "react";
+import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
 import useSQtyManager from "../useSQtyManager";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { useAppModule } from "./useAppModule";
 
 export const useC06 = () => {
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
-	const { postToBlank } = useHttpPost();
 	const { token, operator } = useContext(AuthContext);
 	const config = useContext(ConfigContext);
 	const appModule = useAppModule({
@@ -36,7 +35,6 @@ export const useC06 = () => {
 		httpPostAsync,
 		httpPutAsync,
 		httpDeleteAsync,
-		httpPatchAsync,
 	} = useWebApi();
 	const dialogs = useContext(DialogsContext);
 
@@ -860,26 +858,33 @@ export const useC06 = () => {
 		console.error("onEditorSubmitError", err);
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebC06Rep.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
 	const onPrintSubmit = useCallback(
-		(data) => {
-			console.log("onPrintSubmit", data);
-			const jsonData = {
-				...(data.outputType && {
-					Action: data.outputType.id,
+		(payload) => {
+			console.log("onPrintSubmit", payload);
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "C06",
 				IDs: crud.itemData?.OrdID,
 			};
-			postToBlank(
-				`${config.REPORT_URL}/WebC06Rep.aspx?LogKey=${operator?.LogKey
-				}`,
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
+			// postToBlank(
+			// 	`${config.REPORT_URL}/WebC06Rep.aspx?LogKey=${operator?.LogKey
+			// 	}`,
+			// 	{
+			// 		jsonData: JSON.stringify(data),
+			// 	}
+			// );
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[config.REPORT_URL, crud.itemData?.OrdID, operator?.CurDeptID, operator?.LogKey, postToBlank]
+		[crud.itemData?.OrdID, operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {

@@ -13,6 +13,8 @@ import ProdPicker from "@/components/picker/ProdPicker";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import RangeGroup from "@/shared-components/RangeGroup";
+import FlexBox from "@/shared-components/FlexBox";
 
 const H02Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -37,60 +39,69 @@ const H02Form = memo((props) => {
 							<Grid item xs={12} sm={6}>
 
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									name="SProdID"
-									label="貨號區間"
-									size="small"
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="貨品區間"
+									leftComponent={<ProdPicker
+										name="SProdID"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<ProdPicker
+										name="EProdID"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									name="EProdID"
-									label="貨號區間迄"
-									size="small"
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
-								/>
+							<Grid item xs={12} >
+								<FlexBox alignItems="flex-start">
+									<CheckboxExWrapper
+										label="含撥出入"
+										name="InclTX"
+										defaultValue={true}
+									/>
+
+									<CheckboxExWrapper
+										label="含試贈樣"
+										name="InclTest"
+										defaultValue={true}
+									/>
+								</FlexBox>
 							</Grid>
 						</Grid>
 
-						<Grid container spacing={2}>
-							<FlexGrid item xs={12} alignItems="flex-start">
-								<CheckboxExWrapper
-									label="含撥出入"
-									name="InclTX"
-									defaultValue={true}
-								/>
+						<FlexBox mt={1.8}>
+							<Grid container spacing={2}>
 
-								<CheckboxExWrapper
-									label="含試贈樣"
-									name="InclTest"
-									defaultValue={true}
-								/>
-							</FlexGrid>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/>
-							</FlexGrid>
-							<Grid item xs={12} sm={6}>
-								<FlexToolbar align="right">
-									<ButtonGroup>
-										<DebugDialogButtonContainer
-											onClick={onDebugSubmit} />
-										<ReportSubmitButtonContainer
-											onClick={onSubmit} />
-									</ButtonGroup>
-								</FlexToolbar>
+								<Grid item xs={12} sm={6}>
+									<FlexBox alignItems="center">
+										<StdPrintOutputModePicker
+											required
+											name="outputType"
+											label="執行方式"
+										/>
+									</FlexBox>
+								</Grid>
+								<Grid item xs={12} sm={6}>
+									<FlexToolbar align="right">
+										<ButtonGroup>
+											<DebugDialogButtonContainer
+												onClick={onDebugSubmit} />
+											<ReportSubmitButtonContainer
+												onClick={onSubmit} />
+										</ButtonGroup>
+									</FlexToolbar>
+								</Grid>
 							</Grid>
-						</Grid>
+						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
 			</form>
