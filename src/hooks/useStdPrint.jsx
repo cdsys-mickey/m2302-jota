@@ -2,28 +2,25 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import { toastEx } from "@/helpers/toast-ex";
-import Settings from "@/modules/settings/Settings.mjs";
-import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Cookies from "js-cookie";
-import queryString from "query-string";
 import { useCallback, useContext, useMemo, useState } from "react";
-import StdPrint from "../modules/md-std-print";
+import StdPrint from "../modules/StdPrint.mjs";
+import useJotaReports from "./useJotaReports";
+import useDebugDialog from "./useDebugDialog";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
 export const useStdPrint = ({
 	token,
 	tableName,
 	deptId,
-	logKey,
 	paramsToJsonData,
 }) => {
 	const { httpGetAsync } = useWebApi();
-	const { postTo } = useHttpPost();
+	// const { postTo } = useHttpPost();
 	const auth = useContext(AuthContext);
 	const config = useContext(ConfigContext);
-	const dialogs = useContext(DialogsContext);
+	// const dialogs = useContext(DialogsContext);
 	const { operator } = auth;
 	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const [state, setState] = useState({
@@ -167,8 +164,13 @@ export const useStdPrint = ({
 		}));
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebStdReport.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
 	const handlePrint = useCallback(
-		(mode) => {
+		(outputType) => {
 			if (!state.selectedFields || state.selectedFields.length === 0) {
 				toastEx.error("請至少選擇一個欄位");
 				return;
@@ -179,9 +181,9 @@ export const useStdPrint = ({
 				: null;
 			console.log(`where`, where);
 
-			const jsonData = {
-				...(mode && {
-					Action: mode,
+			const data = {
+				...(outputType && {
+					Action: outputType,
 				}),
 				RealFile: tableName,
 				DeptID: deptId,
@@ -189,52 +191,10 @@ export const useStdPrint = ({
 				...where,
 				// Top: 20,
 			};
-			console.log(`jsonData`, jsonData);
-			const dontPrompt = Cookies.get(Settings.Keys.COOKIE_DOWNLOAD_PROMPT) == 0;
-
-			postTo(
-				queryString.stringifyUrl({
-					url: `${config.REPORT_URL}/WebStdReport.aspx`,
-					query: {
-						LogKey: operator.LogKey,
-						...((!dontPrompt) && {
-							DontClose: 1
-						})
-					}
-				}),
-				{
-					jsonData: JSON.stringify(jsonData),
-				}
-			);
-
-			if (!dontPrompt && jsonData.Action != 1) {
-				dialogs.confirm({
-					message: "首次下載必須進行瀏覽器設定，請問您的檔案有正確下載嗎?",
-					checkLabel: "不要再提醒",
-					check: true,
-					defaultChecked: false,
-					confirmText: "有",
-					cancelText: "沒有",
-					onConfirm: (params) => {
-						console.log("params", params);
-						if (params.checked) {
-							Cookies.set(Settings.Keys.COOKIE_DOWNLOAD_PROMPT, 0);
-							dialogs.alert({
-								message: Settings.MSG_REMIND,
-								confirmText: "知道了"
-							});
-						}
-					},
-					onCancel: (params) => {
-						// if (params.value === "ON") {
-						// 	Cookies.set(COOKIE_DOWNLOAD_PROMPT, 0);
-						// }
-						toastEx.warn(Settings.MSG_INSTRUCT);
-					}
-				})
-			}
+			console.log("data", data);
+			reports.open(reportUrl, data);
 		},
-		[config.REPORT_URL, deptId, dialogs, listLoaderCtx?.paramsRef, operator, paramsToJsonData, postTo, state.selectedFields, tableName]
+		[deptId, listLoaderCtx?.paramsRef, operator, paramsToJsonData, reportUrl, reports, state.selectedFields, tableName]
 	);
 
 	const handleAddAllFields = useCallback(() => {
@@ -257,18 +217,44 @@ export const useStdPrint = ({
 		loadDef();
 	}, [loadDef]);
 
+	const appFrame = useContext(AppFrameContext);
+	const debugDialog = useDebugDialog();
+
+	const onDebugSubmit = useCallback((payload) => {
+		console.log("onDebugSubmit", payload);
+		const where = paramsToJsonData
+			? paramsToJsonData(listLoaderCtx?.paramsRef?.current, operator)
+			: null;
+		console.log(`where`, where);
+
+		const data = {
+			RealFile: tableName,
+			DeptID: deptId,
+			StdOut: state.selectedFields.join(","),
+			...where,
+			// Top: 20,
+		};
+		console.log("data", data);
+		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
+	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, deptId, listLoaderCtx?.paramsRef, operator, paramsToJsonData, reportUrl, state.selectedFields, tableName]);
+
 	const onSubmit = useCallback(
-		(data) => {
-			console.log(`onSubmit`, data);
+		(payload) => {
+			console.log(`onSubmit`, payload);
 			console.log(`params`, listLoaderCtx.paramsRef.current);
 
-			handlePrint(data.mode?.id);
+			handlePrint(payload.outputType?.id);
 		},
 		[handlePrint, listLoaderCtx.paramsRef]
 	);
 
 	const onSubmitError = useCallback((err) => {
 		console.error(`onSubmitError`, err);
+	}, []);
+
+	const handleExport = useCallback(({ setValue }) => (outputType) => {
+		console.log("handleExport", outputType);
+		setValue("outputType", outputType);
 	}, []);
 
 	// useInit(() => {
@@ -289,7 +275,9 @@ export const useStdPrint = ({
 		handleAddAllFields,
 		handleRemoveAllFields,
 		handleReset,
+		onDebugSubmit,
 		onSubmit,
 		onSubmitError,
+		handleExport
 	};
 };

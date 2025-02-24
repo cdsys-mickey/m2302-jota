@@ -1,8 +1,6 @@
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
-import React, { forwardRef, memo, useMemo } from "react";
-import ControlledA01TransferEditor from "./ControlledA01TransferEditor";
-import { TableContainer, Paper } from "@mui/material";
+import React, { forwardRef, memo } from "react";
 import A01TransferTable from "./A01TransferTable";
+import ControlledA01TransferEditor from "./ControlledA01TransferEditor";
 
 const TypoA01TransferPicker = memo(
 	forwardRef((props, ref) => {

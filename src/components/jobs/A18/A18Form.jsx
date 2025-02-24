@@ -17,6 +17,9 @@ import JobPicker from "@/components/picker/JobPicker";
 import { DeptUserPicker } from "@/components/picker/DeptUserPicker";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { A18OrderByPicker } from "./A18OrderByPicker";
+import RangeGroup from "@/shared-components/RangeGroup";
+import FlexBox from "@/shared-components/FlexBox";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const A18Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, deptDisabled, ...rest } = props;
@@ -36,21 +39,22 @@ const A18Form = memo((props) => {
 									disabled={deptDisabled}
 								/>
 							</Grid>
-							<Grid item xs={6}>
-								<DatePickerWrapper
-									name="SDate"
-									label="起始日期"
-									validate
+							<Grid item xs={12}>
+								<RangeGroup legend="日期區間"
+									leftComponent={<DatePickerWrapper
+										name="SDate"
+										label="起始日期"
+										validate
+										borderless
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate"
+										label="截止日期"
+										validate
+										borderless
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={6}>
-								<DatePickerWrapper
-									name="EDate"
-									label="截止日期"
-									validate
-								/>
-							</Grid>
-
 							<Grid item xs={12}>
 								<RealFilePicker
 									name="table"
@@ -101,17 +105,14 @@ const A18Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={6}>
-								<StdPrintOutputModePicker
+								{/* <StdPrintOutputModePicker
 									required
 									name="outputType"
 									label="執行方式"
-								/>
+								/> */}
 							</Grid>
 
-
-
-
-							<FlexToolbar align="right">
+							{/* <FlexToolbar align="right">
 								<ButtonGroup>
 									<DebugDialogButtonContainer onClick={onDebugSubmit} />
 									<ButtonWrapper
@@ -124,7 +125,17 @@ const A18Form = memo((props) => {
 										執行
 									</ButtonWrapper>
 								</ButtonGroup>
-							</FlexToolbar>
+							</FlexToolbar> */}
+							<Grid item xs={12}>
+								<FlexBox justifyContent="flex-end">
+									<PrintButtonContainer
+										color="primary"
+										variant="contained"
+										onSubmit={onSubmit}
+										onDebugSubmit={onDebugSubmit}
+									/>
+								</FlexBox>
+							</Grid>
 						</Grid>
 					</FormSectionBox>
 				</FormBox>

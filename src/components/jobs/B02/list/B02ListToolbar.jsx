@@ -2,13 +2,15 @@ import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { B02FetchResultLabelContainer } from "../B02FetchResultLabelContainer";
-import { B02ListOutputModePickerContainer } from "./B02ListOutputModePickerContainer";
-import B02ListPrintButtonContainer from "./B02ListPrintButtonContainer";
+import B02ExportButtonContainer from "./B02ExportButtonContainer";
 
-const LeftButtons = memo(() => (<>
+{/* <>
 	<B02ListOutputModePickerContainer />
 	<B02ListPrintButtonContainer />
-</>));
+	</> */}
+const LeftButtons = memo(() => (
+	<B02ExportButtonContainer variant="contained" color="primary" />
+));
 
 LeftButtons.displayName = "LeftButtons";
 

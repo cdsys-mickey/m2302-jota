@@ -480,6 +480,20 @@ export const useB05 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback((outputType) => {
+		console.log("handlePrint", outputType);
+		const data = {
+			...(outputType && {
+				Action: outputType.id,
+			}),
+			DeptID: operator?.CurDeptID,
+			JobName: "B05",
+			IDs: crud.itemData?.InqID,
+		};
+		console.log("data", data);
+		reports.open(reportUrl, data);
+	}, [crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports]);
+
 
 
 	const loadProdFormMeta = useFormMeta(
@@ -530,6 +544,7 @@ export const useB05 = () => {
 		loadProdFormMeta,
 		...sideDrawer,
 		onUpdateRow,
-		createRow
+		createRow,
+		handlePrint
 	};
 };

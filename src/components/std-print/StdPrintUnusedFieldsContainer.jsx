@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { StdPrintContext } from "../../contexts/std-print/StdPrintContext";
 import StdFields from "./StdFields";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../../modules/StdPrint.mjs";
 
 export const StdPrintUnusedFieldsContainer = (props) => {
 	const stdPrint = useContext(StdPrintContext);

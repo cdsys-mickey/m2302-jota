@@ -2,7 +2,6 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import U06 from "@/modules/md-u06";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useCallback, useContext, useMemo } from "react";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";

@@ -1,10 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useState } from "react";
-import CrudContext from "../contexts/crud/CrudContext";
+import { InfiniteLoaderContext } from "../contexts/infinite-loader/InfiniteLoaderContext";
 import Arrays from "../shared-modules/sd-arrays";
 import useDebounce from "./useDebounce";
-import { InfiniteLoaderContext } from "../contexts/infinite-loader/InfiniteLoaderContext";
 
 export const useInfiniteLoader = (props = {}) => {
 	const {
@@ -152,11 +151,6 @@ export const useInfiniteLoader = (props = {}) => {
 					const newSaveKey = getSaveKey(payload);
 					setSaveKey(newSaveKey);
 
-					// setSaveKey(
-					// 	(!startIndex || refresh) && !newSaveKey
-					// 		? uuidv4()
-					// 		: newSaveKey
-					// );
 					const itemCount = getItemCount(payload);
 					if (itemCount !== undefined) {
 						setItemCount(itemCount);

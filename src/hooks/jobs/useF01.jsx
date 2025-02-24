@@ -1,4 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
 import F01 from "@/modules/md-f01";
@@ -6,17 +7,14 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Objects from "@/shared-modules/sd-objects";
 import { nanoid } from "nanoid";
-import { useCallback, useContext, useRef, useState } from "react";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "./useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
-import { useMemo } from "react";
-import useJotaReports from "../useJotaReports";
 
 export const useF01 = () => {
 	const config = useContext(ConfigContext);
@@ -476,7 +474,10 @@ export const useF01 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -522,6 +523,7 @@ export const useF01 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		handlePrint,
 		// handleLastField,
 		loadProdFormMeta,
 		...sideDrawer,

@@ -3,7 +3,7 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import StdPrint from "@/modules/md-std-print";
+import StdPrint from "@/modules/StdPrint.mjs";
 import A21Form from "./A21Form";
 
 export const A21FormContainer = () => {

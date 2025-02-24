@@ -1,7 +1,7 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
-import StdPrint from "@/modules/md-std-print";
+import StdPrint from "@/modules/StdPrint.mjs";
 import { useContext } from "react";
 import { B032Context } from "@/contexts/B032/B032Context";
 import { B012Context } from "@/contexts/B012/B012Context";

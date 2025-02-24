@@ -73,6 +73,11 @@ export const useB06 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	return {
 		...listLoader,
 		// Popper
@@ -82,6 +87,7 @@ export const useB06 = () => {
 		onPrintSubmitError,
 		// handleSelect,
 		...appModule,
-		handleInqIdClick
+		handleInqIdClick,
+		handlePrint
 	};
 };

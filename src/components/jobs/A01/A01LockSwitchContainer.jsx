@@ -57,7 +57,9 @@ export const A01LockSwitchContainer = (props) => {
 					locked={!serviceStatus.enabled}
 					onChange={serviceStatus.toggle}
 					disabled={disabled}
-					width={mobile ? 120 : 130}
+					width={mobile ? 90 : 130}
+					// disableBoxShadow
+					// disableShadow
 					{...rest}
 				/>
 

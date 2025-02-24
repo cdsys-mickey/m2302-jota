@@ -15,12 +15,13 @@ import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonC
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const H25Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			<form onSubmit={onSubmit} {...rest}>
+			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
@@ -93,14 +94,14 @@ const H25Form = memo((props) => {
 									/>
 								</FlexGrid>
 								<Grid item xs={12} sm={6}>
-									<FlexToolbar align="right">
-										<ButtonGroup>
-											<DebugDialogButtonContainer
-												onClick={onDebugSubmit} />
-											<ReportSubmitButtonContainer
-												onClick={onSubmit} />
-										</ButtonGroup>
-									</FlexToolbar>
+									<FlexBox justifyContent="flex-end">
+										<PrintButtonContainer
+											color="primary"
+											variant="contained"
+											onSubmit={onSubmit}
+											onDebugSubmit={onDebugSubmit}
+										/>
+									</FlexBox>
 								</Grid>
 							</Grid>
 						</FlexBox>

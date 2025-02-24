@@ -25,13 +25,13 @@ const FormBox = styled(Box, {
 		backgroundColor: "rgb(255,255,255)",
 		// backgroundColor: "initial",
 	},
-	"& .MuiInputBase-root:not(.MuiFilledInput-root)": {
+	"& .MuiInputBase-root:not(.MuiFilledInput-root):not(.dsg-container *)": {
 		backgroundColor: "rgb(255,255,255)",
 		// backgroundColor: "initial",
 	},
 	"& .dsg-container .MuiInputBase-root": {
-		backgroundColor: "rgb(255,255,255)",
-		// backgroundColor: "initial",
+		// backgroundColor: "rgb(255,255,255)",
+		backgroundColor: "initial",
 	},
 }));
 

@@ -9,6 +9,7 @@ import DialogEx from "@/shared-components/dialog/DialogEx";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import StdPrintActionButtons from "./StdPrintActionButtons";
 import { StdPrintFormContainer } from "./StdPrintFormContainer";
+import PrintButtonContainer from "../print-button/PrintButtonContainer";
 
 export const StdPrintDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -22,6 +23,20 @@ export const StdPrintDialogContainer = forwardRef((props, ref) => {
 	const title = useMemo(() => {
 		return (stdPrint.displayName || "") + "列印";
 	}, [stdPrint.displayName]);
+
+	const handleDebugSubmit = useMemo(() => {
+		return form.handleSubmit(
+			stdPrint.onDebugSubmit,
+			stdPrint.onSubmitError
+		)
+	}, [form, stdPrint.onDebugSubmit, stdPrint.onSubmitError])
+
+	const handleSubmit = useMemo(() => {
+		return form.handleSubmit(
+			stdPrint.onSubmit,
+			stdPrint.onSubmitError
+		)
+	}, [form, stdPrint.onSubmit, stdPrint.onSubmitError])
 
 	useEffect(() => {
 		if (printing) {
@@ -43,10 +58,7 @@ export const StdPrintDialogContainer = forwardRef((props, ref) => {
 					onClose={stdPrint.cancelPrint}
 					confirmText="執行"
 					// onConfirm={stdPrint.handlePrint}
-					onSubmit={form.handleSubmit(
-						stdPrint.onSubmit,
-						stdPrint.onSubmitError
-					)}
+					onSubmit={handleSubmit}
 					// Title
 					titleSx={{
 						backgroundColor: grey[100],
@@ -68,6 +80,11 @@ export const StdPrintDialogContainer = forwardRef((props, ref) => {
 						variant: "contained",
 					}}
 					otherActionButtons={<StdPrintActionButtons />}
+					confirmButton={
+						<PrintButtonContainer
+							onDebugSubmit={handleDebugSubmit}
+							onSubmit={handleSubmit} variant="contained" color="primary" />
+					}
 					{...rest}>
 					<StdPrintFormContainer />
 				</DialogEx>

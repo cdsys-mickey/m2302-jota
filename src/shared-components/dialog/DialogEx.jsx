@@ -96,6 +96,7 @@ const DialogEx = memo(
 			cancelTooltip = "",
 			id,
 			mask = false,
+			confirmButton,
 			...rest
 		} = props;
 		// const dialogs = useContext(DialogsContext);
@@ -125,8 +126,8 @@ const DialogEx = memo(
 		const { mobile } = responsiveCtx;
 
 		const showConfirmButton = useMemo(() => {
-			return !!onConfirm || !!onSubmit;
-		}, [onConfirm, onSubmit]);
+			return !!onConfirm || !!onSubmit || !!confirmButton;
+		}, [confirmButton, onConfirm, onSubmit]);
 
 		const _fullScreen = useMemo(() => {
 			if (fullScreen) {
@@ -145,10 +146,6 @@ const DialogEx = memo(
 		// }, [message, prompt]);
 
 		const handleConfirm = useCallback(() => {
-			if (onSubmit) {
-				onSubmit();
-				return;
-			}
 			if (onConfirm) {
 				onConfirm({
 					...(inputRef.current?.value != null && {
@@ -159,6 +156,10 @@ const DialogEx = memo(
 					}),
 					id
 				});
+			}
+			if (onSubmit) {
+				onSubmit();
+				return;
 			}
 		}, [id, onConfirm, onSubmit]);
 
@@ -311,7 +312,11 @@ const DialogEx = memo(
 						{OtherActionButtonsComponent && (
 							<OtherActionButtonsComponent />
 						)}
-						{showConfirmButton && (
+						{showConfirmButton && confirmButton ? (
+							<Tooltip title={confirmTooltip}>
+								{confirmButton}
+							</Tooltip>
+						) : (
 							<Tooltip title={confirmTooltip}>
 								<ButtonWrapper
 									responsive

@@ -880,6 +880,11 @@ export const useD01 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	// 有效日期查詢
 	const onExpDialogOpen = useCallback(() => {
 		setExpState((prev) => ({
@@ -982,6 +987,7 @@ export const useD01 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		handlePrint,
 		// 有效日期查詢
 		...expState,
 		expChecking,

@@ -4,7 +4,6 @@ import { toastEx } from "@/helpers/toast-ex";
 import D06 from "@/modules/md-d06";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { addDays, isDate } from "date-fns";
@@ -464,6 +463,11 @@ export const useD06 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	const handleRemDateChanged = useCallback(
 		({ setValue }) =>
 			(value) => {
@@ -509,6 +513,7 @@ export const useD06 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		handlePrint,
 		// 檢查可否編輯
 		// loadStockPword,
 		// Popper

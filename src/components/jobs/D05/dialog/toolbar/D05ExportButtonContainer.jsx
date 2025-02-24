@@ -1,0 +1,33 @@
+import PrintButton from "@/components/print-button/PrintButton";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { D05Context } from "@/contexts/D05/D05Context";
+import { useContext } from "react";
+import { useFormContext } from "react-hook-form";
+
+const D05ExportButtonContainer = (props) => {
+	const { ...rest } = props;
+	const form = useFormContext();
+	const d05 = useContext(D05Context);
+	const { canPrint } = d05;
+
+	const handleSubmit = form.handleSubmit(
+		d05.onPrintSubmit,
+		d05.onPrintSubmitError
+	);
+
+	if (!canPrint) {
+		return false;
+	}
+
+	return (
+		<PrintButtonContainer
+			// onSelect={d05.handlePrint({ setValue: form.setValue })}
+			// onClick={d05.handlePrint({ setValue: form.setValue })}
+			onSubmit={handleSubmit}
+			{...rest}
+		/>
+	)
+}
+
+D05ExportButtonContainer.displayName = "D05ExportButtonContainer";
+export default D05ExportButtonContainer;

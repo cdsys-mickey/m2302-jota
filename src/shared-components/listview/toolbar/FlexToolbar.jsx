@@ -79,8 +79,14 @@ const FlexToolbar = memo(
 					})}
 					sx={[
 						(theme) => ({
-							"& button:not(.no-margin-right), & label:not(.no-margin-right), & .toolbar-button:not(.no-margin-right), &>*:not(.no-margin-right)":
-							{
+							"& button:not(.no-margin-right)": {
+								marginRight: theme.spacing(0.5),
+							},
+							"& .MuiButtonGroup-root button": {
+								marginLeft: "unset",
+								marginRight: "unset",
+							},
+							"& label:not(.no-margin-right), & .toolbar-button:not(.no-margin-right), & > *:not(.no-margin-right)": {
 								marginRight: theme.spacing(0.5),
 							},
 						}),

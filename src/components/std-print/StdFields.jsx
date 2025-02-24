@@ -2,7 +2,7 @@ import { Paper, styled } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../../modules/StdPrint.mjs";
 import FlexBox from "../../shared-components/FlexBox";
 import { useScrollable } from "../../shared-hooks/useScrollable";
 import StdField from "./StdField";

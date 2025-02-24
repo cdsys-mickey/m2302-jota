@@ -12,6 +12,9 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import AuthDeptPicker from "../../AuthDeptPicker";
 import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
 import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
+import RangeGroup from "@/shared-components/RangeGroup";
+import FlexBox from "@/shared-components/FlexBox";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const A21Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -30,30 +33,33 @@ const A21Form = memo((props) => {
 									disabled
 								/>
 							</Grid>
-							<Grid item xs={12}>
-								<DatePickerWrapper
-									name="SDate"
-									label="起始日期"
-									clearable
-									fullWidth
-									validate
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="日期區間"
+									leftComponent={<DatePickerWrapper
+										name="SDate"
+										fullWidth
+										validate
+										clearable
+										autoFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<DatePickerWrapper
-									name="EDate"
-									label="截止日期"
-									clearable
-									fullWidth
-									validate
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<TxtExportOutputModePicker
+								{/* <TxtExportOutputModePicker
 									name="outputType"
 									label="執行方式"
 									{...rest}
-								/>
+								/> */}
 							</Grid>
 							<Grid item xs={12}>
 								<ControlledYesNoCheckbox
@@ -93,8 +99,7 @@ const A21Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<FlexToolbar align="right">
-									{/* <A21FormButtonsContainer /> */}
+								{/* <FlexToolbar align="right">
 									<ButtonGroup>
 										<DebugDialogButtonContainer onClick={onDebugSubmit} />
 										<ButtonWrapper
@@ -105,7 +110,15 @@ const A21Form = memo((props) => {
 											執行
 										</ButtonWrapper>
 									</ButtonGroup>
-								</FlexToolbar>
+								</FlexToolbar> */}
+								<FlexBox justifyContent="flex-end">
+									<PrintButtonContainer
+										color="primary"
+										variant="contained"
+										onSubmit={onSubmit}
+										onDebugSubmit={onDebugSubmit}
+									/>
+								</FlexBox>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

@@ -1,4 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
 import E01 from "@/modules/md-e01";
@@ -6,19 +7,16 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Forms from "@/shared-modules/sd-forms";
 import Objects from "@/shared-modules/sd-objects";
 import { isDate } from "lodash";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "./useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
-import useJotaReports from "../useJotaReports";
-
 export const useE01 = () => {
 	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
@@ -875,7 +873,10 @@ export const useE01 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -1115,6 +1116,7 @@ export const useE01 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		handlePrint,
 		// handleLastField,
 		loadProdFormMeta,
 		...sideDrawer,

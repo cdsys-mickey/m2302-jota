@@ -4,7 +4,7 @@ import { A18Context } from "./A18Context";
 import { FormProvider, useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../../modules/StdPrint.mjs";
 
 export const A18Provider = ({ children }) => {
 	const a18 = useA18();

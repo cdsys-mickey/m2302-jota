@@ -6,7 +6,6 @@ import D05 from "@/modules/md-d05";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
@@ -693,6 +692,11 @@ export const useD05 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
 			async (data) => {
@@ -811,6 +815,7 @@ export const useD05 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		handlePrint,
 		onRefreshGridSubmit,
 		onRefreshGridSubmitError,
 		// 檢查可否編輯

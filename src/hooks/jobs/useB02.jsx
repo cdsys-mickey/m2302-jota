@@ -192,23 +192,6 @@ export const useB02 = (opts = {}) => {
 	const onPrintSubmit = useCallback(
 		(data) => {
 			console.log("onPrintSubmit", data);
-			const { outputType } = data;
-			// const jsonData = {
-			// 	...(data.outputType && {
-			// 		Action: data.outputType.id,
-			// 	}),
-			// 	DeptID: operator?.CurDeptID,
-			// 	JobName: JOB_NAME,
-
-			// 	CustID1: data.customer?.CustID || "",
-			// 	CustID2: data.customer2?.CustID || "",
-			// 	ProdID1: data.prod?.ProdID || "",
-			// 	ProdID2: data.prod2?.ProdID || "",
-			// 	QDate1: Forms.formatDate(data.date) || "",
-			// 	QDate2: Forms.formatDate(data.date2) || "",
-			// 	// OrderBy: data.orderBy?.id == 2 ? "ZA.ProdID, ZA.QDate DESC" : ""
-			// 	OrderBy: data.orderBy?.id
-			// };
 			const jsonData = transformForPrinting(data);
 			console.log("jsonData", jsonData);
 			reports.open(reportUrl, jsonData);
@@ -220,7 +203,10 @@ export const useB02 = (opts = {}) => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -259,6 +245,7 @@ export const useB02 = (opts = {}) => {
 		loadProdFormMeta,
 		...sideDrawer,
 		forNew,
-		onDebugSubmit
+		onDebugSubmit,
+		handlePrint
 	};
 };

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { useH24 } from "./useH24";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../StdPrint.mjs";
 import { H24Context } from "./H24Context";
 import H24ReportType from "./pickers/H24ReportType.mjs";
 import H24OrderType from "./pickers/H24OrderType.mjs";

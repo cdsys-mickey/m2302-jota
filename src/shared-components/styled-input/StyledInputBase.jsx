@@ -1,11 +1,12 @@
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 import { InputBase, styled } from "@mui/material";
 import { useMemo } from "react";
 
-const OUT_STYLE =
-	"0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)";
+// const OUT_STYLE =
+// "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)";
 
-const IN_STYLE =
-	"inset 0px 2px 1px -1px rgba(0,0,0,0.2), inset 0px 1px 1px 0px rgba(0,0,0,0.14), inset 0px 1px 3px 0px rgba(0,0,0,0.12)";
+// const IN_STYLE =
+// "inset 0px 2px 1px -1px rgba(0,0,0,0.2), inset 0px 1px 1px 0px rgba(0,0,0,0.14), inset 0px 1px 3px 0px rgba(0,0,0,0.12)";
 
 const StyledInputBase = styled(InputBase, {
 	shouldForwardProp: (prop) =>
@@ -78,10 +79,12 @@ const StyledInputBase = styled(InputBase, {
 					}
 				)),
 				...(alwaysIn && {
-					boxShadow: IN_STYLE,
+					// boxShadow: IN_STYLE,
+					boxShadow: MuiStyles.IN_BOX_SHADOW,
 				}),
 				...(alwaysOut && {
-					boxShadow: OUT_STYLE,
+					// boxShadow: OUT_STYLE,
+					boxShadow: MuiStyles.OUT_BOX_SHADOW,
 				}),
 				borderRadius: square ? theme.shape.borderRadius : "36px",
 			},
@@ -95,10 +98,12 @@ const StyledInputBase = styled(InputBase, {
 				backgroundColor: focusBackgroundColor || backgroundColor,
 				...(focusIn && {
 					// boxShadow: "inset 1px 2px 4px rgb(0 0 0 / 29%)",
-					boxShadow: IN_STYLE,
+					// boxShadow: IN_STYLE,
+					boxShadow: MuiStyles.IN_BOX_SHADOW,
 				}),
 				...(focusOut && {
-					boxShadow: OUT_STYLE,
+					// boxShadow: OUT_STYLE,
+					boxShadow: MuiStyles.OUT_BOX_SHADOW,
 				}),
 			},
 		};

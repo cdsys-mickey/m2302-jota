@@ -1,18 +1,15 @@
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
-import ContainerEx from "@/shared-components/ContainerEx";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import ContainerEx from "@/shared-components/ContainerEx";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { ButtonGroup, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import F04DataTypePicker from "./picker/F04DataTypePicker";
-import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 
 const F04Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -90,17 +87,14 @@ const F04Form = memo((props) => {
 							</Grid>
 
 
-							<Grid item xs={12}>
+							{/* <Grid item xs={12}>
 								<StdPrintOutputModePicker
 									required
 									name="outputType"
 									label="執行方式"
 								/>
-							</Grid>
-
-
-
-							<FlexToolbar align="right">
+							</Grid> */}
+							{/* <FlexToolbar align="right">
 								<ButtonGroup>
 									<DebugDialogButtonContainer onClick={onDebugSubmit} />
 									<ButtonWrapper
@@ -114,7 +108,17 @@ const F04Form = memo((props) => {
 										執行
 									</ButtonWrapper>
 								</ButtonGroup>
-							</FlexToolbar>
+							</FlexToolbar> */}
+							<Grid item xs={12}>
+								<FlexBox justifyContent="flex-end">
+									<PrintButtonContainer
+										color="primary"
+										variant="contained"
+										onSubmit={onSubmit}
+										onDebugSubmit={onDebugSubmit}
+									/>
+								</FlexBox>
+							</Grid>
 						</Grid>
 					</FormSectionBox>
 				</FormBox>

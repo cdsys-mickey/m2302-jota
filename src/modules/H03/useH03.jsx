@@ -1,12 +1,11 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import H03 from "@/modules/H03/H03.mjs";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { useCallback, useContext, useMemo } from "react";
+import ConfigContext from "@/contexts/config/ConfigContext";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import H03 from "@/modules/H03/H03.mjs";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useCallback, useContext, useMemo } from "react";
 
 export const useH03 = () => {
 	const config = useContext(ConfigContext);
@@ -17,8 +16,6 @@ export const useH03 = () => {
 	});
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
-
-
 
 	const reportUrl = useMemo(() => {
 		return `${config.REPORT_URL}/WebH03Rep.aspx`

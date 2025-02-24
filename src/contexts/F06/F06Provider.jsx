@@ -1,6 +1,6 @@
 import { useF06 } from "@/hooks/jobs/useF06";
 import F06 from "@/modules/md-f06";
-import StdPrint from "@/modules/md-std-print";
+import StdPrint from "@/modules/StdPrint.mjs";
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { F06Context } from "./F06Context";

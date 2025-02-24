@@ -1,6 +1,6 @@
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import { B04Context } from "@/contexts/B04/B04Context";
-import StdPrint from "@/modules/md-std-print";
+import StdPrint from "@/modules/StdPrint.mjs";
 import { forwardRef, memo, useContext } from "react";
 
 export const B04ListOutputModePickerContainer = memo(

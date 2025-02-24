@@ -92,7 +92,7 @@ const InputTest = () => {
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} md={6}>
-							<LockSwitch />
+							<LockSwitch width={80} />
 						</Grid>
 					</Grid>
 				</FormSectionBox>

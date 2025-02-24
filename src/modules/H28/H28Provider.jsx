@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { useH28 } from "./useH28";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../StdPrint.mjs";
 import { H28Context } from "./H28Context";
 
 export const H28Provider = ({ children }) => {

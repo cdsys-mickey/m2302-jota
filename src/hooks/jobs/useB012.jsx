@@ -584,7 +584,10 @@ export const useB012 = (opts = {}) => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
 
 	const importCustsFormMeta = useFormMeta(
 		`
@@ -638,6 +641,7 @@ export const useB012 = (opts = {}) => {
 		importCustsFormMeta,
 		handleProdChange,
 		...sideDrawer,
-		forNew
+		forNew,
+		handlePrint
 	};
 };

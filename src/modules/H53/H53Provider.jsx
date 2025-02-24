@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import StdPrint from "../md-std-print";
+import StdPrint from "../StdPrint.mjs";
 import { H53Context } from "./H53Context";
 import H53OrderType from "./pickers/H53OrderType.mjs";
 import { useH53 } from "./useH53";

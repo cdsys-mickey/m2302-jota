@@ -5,6 +5,7 @@ import A06 from "@/modules/md-a06";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import { Tooltip } from "@mui/material";
 import { useMemo } from "react";
 import { useContext } from "react";
@@ -14,6 +15,7 @@ export const A06LockSwitchContainer = (props) => {
 	const a06 = useContext(A06Context);
 	const { operator } = useContext(AuthContext);
 	const serviceStatus = useServiceStatus({ name: "CustFile", jobId: "A06" });
+	const { mobile } = useContext(ResponsiveContext);
 
 	const disabled = useMemo(() => {
 		return !a06.canManage || operator.CurFlagShip != 1;
@@ -51,12 +53,12 @@ export const A06LockSwitchContainer = (props) => {
 		<Tooltip title={_title}>
 			<span>
 				<LockSwitch
-					unlockedLabel="POS下載開放"
-					lockedLabel="POS下載鎖定"
+					unlockedLabel={mobile ? "POS開放" : "POS下載開放"}
+					lockedLabel={mobile ? "POS鎖定" : "POS下載鎖定"}
 					locked={!serviceStatus.enabled}
 					onChange={serviceStatus.toggle}
 					disabled={disabled}
-					width={130}
+					width={mobile ? 90 : 130}
 					{...rest}
 				/>
 			</span>

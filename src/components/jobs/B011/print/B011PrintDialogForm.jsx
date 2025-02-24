@@ -37,7 +37,7 @@ const B011PrintDialogForm = memo((props) => {
 						/>
 					</Grid>
 					<Grid item xs={12} sm={12} md={5}>
-						<B011OutputModePickerContainer label="列印格式" name="outputType" fullWidth />
+						<B011OutputModePickerContainer label="動作" name="outputType" fullWidth />
 					</Grid>
 				</Grid>
 			</Box>

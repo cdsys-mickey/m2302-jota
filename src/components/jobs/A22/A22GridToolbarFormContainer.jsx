@@ -11,6 +11,7 @@ import { A22OutputModePickerContainer } from "./A22OutputModePickerContainer";
 import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer";
 import { useMemo } from "react";
 import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 export const A22GridToolbarFormContainer = () => {
 	const form = useForm({
@@ -25,6 +26,13 @@ export const A22GridToolbarFormContainer = () => {
 			a22.onDebugSubmit,
 		)
 	}, [a22.onDebugSubmit, form]);
+
+	const handleSubmit = useMemo(() => {
+		return form.handleSubmit(
+			a22.onGenReportSubmit,
+			a22.onGenReportSubmitError
+		);
+	}, [a22, form])
 
 	if (a22.gridLoading || !a22.gridData || a22.gridData?.length === 0) {
 		return false;
@@ -45,13 +53,21 @@ export const A22GridToolbarFormContainer = () => {
 							alignItems="center"
 							justifyContent="flex-end">
 							<Box mr={0.5}>
-								<A22OutputModePickerContainer dense width="10rem" disableClearable />
+								{/* <A22OutputModePickerContainer dense width="10rem" disableClearable /> */}
 							</Box>
 							<Box ml={0.5}>
-								<ButtonGroup>
+								{/* <ButtonGroup>
 									<DebugDialogButtonContainer onClick={onDebugSubmit} />
 									<A22GenReportButtonContainer />
-								</ButtonGroup>
+								</ButtonGroup> */}
+								<FlexBox justifyContent="flex-end">
+									<PrintButtonContainer
+										color="primary"
+										variant="contained"
+										onSubmit={handleSubmit}
+										onDebugSubmit={onDebugSubmit}
+									/>
+								</FlexBox>
 							</Box>
 							<Box ml={0.5}>
 								<A22GridCancelEditButtonContainer />

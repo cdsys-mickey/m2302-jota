@@ -65,14 +65,20 @@ const theme = createTheme({
 		"neutral-light": {
 			main: "rgba(0, 0, 0, 0.2)",
 			contrastText: "#000",
+			dark: "rgba(0, 0, 0, 0.30)",
+			light: "rgba(0, 0, 0, 0.10)",
 		},
 		neutral: {
 			main: "rgba(0, 0, 0, 0.40)",
 			contrastText: "#fff",
+			dark: "rgba(0, 0, 0, 0.50)",
+			light: "rgba(0, 0, 0, 0.30)",
 		},
 		"neutral-dark": {
 			main: "rgba(0, 0, 0, 0.60)",
 			contrastText: "#fff",
+			dark: "rgba(0, 0, 0, 0.70)",
+			light: "rgba(0, 0, 0, 0.50)",
 		},
 		black: {
 			main: "rgba(0,0,0)",

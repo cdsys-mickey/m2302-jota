@@ -1,12 +1,11 @@
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import PropTypes from "prop-types";
-import { Fragment, forwardRef, memo } from "react";
-import { D05OutputModePickerContainer } from "./D05OutputModePickerContainer";
-import D05PrintButtonContainer from "./D05PrintButtonContainer";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { IconButton, Tooltip } from "@mui/material";
+import PropTypes from "prop-types";
+import { Fragment, forwardRef, memo } from "react";
+import D05ExportButtonContainer from "./D05ExportButtonContainer";
 
 const D05DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
@@ -16,8 +15,9 @@ const D05DialogViewToolbar = memo(
 			<Fragment ref={ref} {...rest}>
 				{onPrint && (
 					<>
-						<D05OutputModePickerContainer />
-						<D05PrintButtonContainer />
+						{/* <D05OutputModePickerContainer />
+						<D05PrintButtonContainer /> */}
+						<D05ExportButtonContainer />
 					</>
 				)}
 

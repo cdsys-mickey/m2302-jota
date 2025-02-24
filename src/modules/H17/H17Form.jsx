@@ -17,12 +17,13 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FlexBox from "@/shared-components/FlexBox";
 import H17OrderTypePicker from "./pickers/H17OrderTypePicker";
 import RangeGroup from "@/shared-components/RangeGroup";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const H17Form = memo((props) => {
 	const { forNewCustomer, onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			<form onSubmit={onSubmit} {...rest}>
+			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
@@ -151,14 +152,14 @@ const H17Form = memo((props) => {
 									/>
 								</FlexGrid>
 								<Grid item xs={12} sm={6}>
-									<FlexToolbar align="right">
-										<ButtonGroup>
-											<DebugDialogButtonContainer
-												onClick={onDebugSubmit} />
-											<ReportSubmitButtonContainer
-												onClick={onSubmit} />
-										</ButtonGroup>
-									</FlexToolbar>
+									<FlexBox justifyContent="flex-end">
+										<PrintButtonContainer
+											color="primary"
+											variant="contained"
+											onSubmit={onSubmit}
+											onDebugSubmit={onDebugSubmit}
+										/>
+									</FlexBox>
 								</Grid>
 							</Grid>
 						</FlexBox>

@@ -22,7 +22,7 @@ export const useH25 = () => {
 		return `${config.REPORT_URL}/WebH25Rep.aspx`
 	}, [config.REPORT_URL])
 
-	const reports = useJotaReports({ from: "SDate", to: "EDate" });
+	const reports = useJotaReports();
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);

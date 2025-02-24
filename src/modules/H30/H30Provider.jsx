@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { useH30 } from "./useH30";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../StdPrint.mjs";
 import { H30Context } from "./H30Context";
 
 export const H30Provider = ({ children }) => {

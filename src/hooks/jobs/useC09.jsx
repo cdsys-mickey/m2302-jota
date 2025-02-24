@@ -654,6 +654,11 @@ export const useC09 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
 			async (data) => {
@@ -774,5 +779,6 @@ export const useC09 = () => {
 		sqtyDisabled,
 		stypeDisabled,
 		dtypeDisabled,
+		handlePrint
 	};
 };

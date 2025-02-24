@@ -8,7 +8,6 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Objects from "@/shared-modules/sd-objects";
@@ -567,7 +566,10 @@ export const useB031 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -618,6 +620,7 @@ export const useB031 = () => {
 		onPrintSubmitError,
 		// handleLastField,
 		loadProdFormMeta,
-		...sideDrawer
+		...sideDrawer,
+		handlePrint
 	};
 };

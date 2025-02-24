@@ -1,6 +1,5 @@
-import { Box, styled } from "@mui/system";
-import { grey } from "@mui/material/colors";
 import FlexBox from "@/shared-components/FlexBox";
+import { styled } from "@mui/system";
 
 const DialogTitleButtonsBox = styled(FlexBox)(
 	({
@@ -12,7 +11,7 @@ const DialogTitleButtonsBox = styled(FlexBox)(
 		// },
 	}) => ({
 		position: "relative",
-		"& button, & label, & .button": {
+		"& button:not(.MuiButtonGroup-root *), & label, & .button": {
 			marginLeft: theme.spacing(0.5),
 		},
 		// padding: theme.spacing(1),

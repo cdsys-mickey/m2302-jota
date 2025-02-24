@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { useF04 } from "../../hooks/jobs/useF04";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../../modules/StdPrint.mjs";
 import { F04Context } from "./F04Context";
 import F04 from "@/modules/md-f04";
 

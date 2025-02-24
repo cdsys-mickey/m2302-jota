@@ -1,16 +1,12 @@
-import { useMemo } from "react";
-import SplitButton from "../SplitButton";
-import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-
-import { useState } from "react";
-import { useCallback } from "react";
-import { useWebApi } from "@/shared-hooks/useWebApi";
-import { useEffect } from "react";
-import DeptOptions from "@/modules/DeptOptions.mjs";
+import { useContext, useMemo } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DeptOptions from "@/modules/DeptOptions.mjs";
 import useDebounceState from "@/shared-hooks/useDebounceState";
-import HoverButton from "../HoverButton";
+import { useWebApi } from "@/shared-hooks/useWebApi";
+
+import { useCallback, useEffect, useState } from "react";
+import DropDownButton from "../DropDownButton";
 
 const DeptSwitchButtonContainer = (props) => {
 	const { ...rest } = props;
@@ -92,7 +88,7 @@ const DeptSwitchButtonContainer = (props) => {
 	}, [debouncedOpen, loadOptions, state.loading]);
 
 	return (
-		<HoverButton
+		<DropDownButton
 			label="單位"
 			defaultSelected={currentDept}
 			getLabel={DeptOptions.getOptionName}

@@ -693,7 +693,10 @@ export const useE03 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -872,6 +875,7 @@ export const useE03 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		handlePrint,
 		// handleLastField,
 		loadProdFormMeta,
 		...sideDrawer,

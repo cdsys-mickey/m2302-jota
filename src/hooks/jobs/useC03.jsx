@@ -742,6 +742,11 @@ export const useC03 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
 			async (data) => {
@@ -844,6 +849,7 @@ export const useC03 = () => {
 		...sideDrawer,
 		onGridChanged,
 		onUpdateRow,
-		isRowDeletable
+		isRowDeletable,
+		handlePrint
 	};
 };

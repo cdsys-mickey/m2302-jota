@@ -18,44 +18,50 @@ import ProdPicker from "../../picker/ProdPicker";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
 import Auth from "@/modules/md-auth";
 import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
+import RangeGroup from "@/shared-components/RangeGroup";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const A19Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			<form onSubmit={onSubmit} {...rest}>
+			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									name="sprod"
-									label="起始商品編號"
-									size="small"
-									virtualize
-									// filterByServer
-									// queryRequired
-									typeToSearchText="以編號,條碼或名稱搜尋"
-									disableOpenOnInput
-									selectOnFocus
-									blurToLookup
-									required
-									rules={{
-										required: "起始商品為必填"
-									}}
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdPicker
-									name="eprod"
-									label="截止商品編號"
-									size="small"
-									virtualize
-									// filterByServer
-									// queryRequired
-									typeToSearchText="以編號,條碼或名稱搜尋"
-									disableOpenOnInput
-									selectOnFocus
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="貨品區間" required
+									leftComponent={<ProdPicker
+										name="sprod"
+										label="起始商品編號"
+										size="small"
+										virtualize
+										// filterByServer
+										// queryRequired
+										typeToSearchText="以編號,條碼或名稱搜尋"
+										disableOpenOnInput
+										selectOnFocus
+										blurToLookup
+										required
+										rules={{
+											required: "起始商品為必填"
+										}}
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<ProdPicker
+										name="eprod"
+										label="截止商品編號"
+										size="small"
+										virtualize
+										// filterByServer
+										// queryRequired
+										typeToSearchText="以編號,條碼或名稱搜尋"
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							{/* 條碼 */}
@@ -86,42 +92,50 @@ const A19Form = memo((props) => {
 							</Grid> */}
 							<FlexBox fullWidth />
 							{/* 門市 */}
-							<Grid item xs={12} sm={6}>
-								<AppDeptPicker
-									// filterByOperator
-									label="起始門市"
-									name="sdept"
-									disableOpenOnInput
-									selectOnFocus
-									scope={Auth.SCOPES.BRANCH_HQ}
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="門市區間"
+									leftComponent={<AppDeptPicker
+										// filterByOperator
+										label="起始門市"
+										name="sdept"
+										disableOpenOnInput
+										selectOnFocus
+										scope={Auth.SCOPES.BRANCH_HQ}
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<AppDeptPicker
+										// filterByOperator
+										label="截止門市"
+										name="edept"
+										disableOpenOnInput
+										selectOnFocus
+										scope={Auth.SCOPES.BRANCH_HQ}
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<AppDeptPicker
-									// filterByOperator
-									label="截止門市"
-									name="edept"
-									disableOpenOnInput
-									selectOnFocus
-									scope={Auth.SCOPES.BRANCH_HQ}
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="SDate"
-									label="起始日期"
-									fullWidth
-									validate
-									clearable
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EDate"
-									label="截止日期"
-									fullWidth
-									validate
-									clearable
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="日期區間"
+									leftComponent={<DatePickerWrapper
+										name="SDate"
+										label="起始日期"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate"
+										label="截止日期"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -132,11 +146,11 @@ const A19Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<StdPrintOutputModePicker
+								{/* <StdPrintOutputModePicker
 									required
 									name="outputType"
 									label="執行方式"
-								/>
+								/> */}
 							</Grid>
 						</Grid>
 						<Grid container>
@@ -148,8 +162,7 @@ const A19Form = memo((props) => {
 								/>
 							</FlexGrid>
 							<Grid item xs={12} sm={6}>
-								<FlexToolbar align="right">
-									{/* <A19FormButtonsContainer /> */}
+								{/* <FlexToolbar align="right">
 									<ButtonGroup>
 										<DebugDialogButtonContainer onClick={onDebugSubmit} />
 
@@ -165,7 +178,15 @@ const A19Form = memo((props) => {
 											執行
 										</ButtonWrapper>
 									</ButtonGroup>
-								</FlexToolbar>
+								</FlexToolbar> */}
+								<FlexBox justifyContent="flex-end">
+									<PrintButtonContainer
+										color="primary"
+										variant="contained"
+										onSubmit={onSubmit}
+										onDebugSubmit={onDebugSubmit}
+									/>
+								</FlexBox>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

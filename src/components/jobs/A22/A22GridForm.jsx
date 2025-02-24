@@ -8,6 +8,7 @@ import { A22GridForm2Container } from "./A22GridForm2Container";
 import { A22GridFormToggleButtonContainer } from "./A22GridFormToggleButtonContainer";
 import { A22GridLoadButtonContainer } from "./A22GridLoadButtonContainer";
 import FlexBox from "@/shared-components/FlexBox";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const A22GridForm = (props) => {
 	const { cat = true, safeQty = false, onSubmit, ...rest } = props;
@@ -16,48 +17,53 @@ const A22GridForm = (props) => {
 			<Box p={1}>
 				<Grid container spacing={1} columns={24}>
 					{/* ROW 1 */}
+					<Grid item xs={12} lg={12}>
+						<RangeGroup legend="貨品區間"
 
-					<Grid item xs={6} lg={6}>
-						<ProdPicker
-							name="prod1"
-							label="起始商品編號"
-							size="small"
-							// filterByServer
-							// queryRequired
-							virtualize
-							typeToSearchText="以編號,條碼或名稱搜尋"
-							optionLabelSize="md"
-							disableOpenOnInput
-							selectOnFocus
-							slotProps={{
-								paper: {
-									sx: {
-										width: 360,
+							leftComponent={<ProdPicker
+								name="prod1"
+								label="起始商品編號"
+								size="small"
+								// filterByServer
+								// queryRequired
+								virtualize
+								typeToSearchText="以編號,條碼或名稱搜尋"
+								optionLabelSize="md"
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
 									},
-								},
-							}}
-						/>
-					</Grid>
-					<Grid item xs={6} lg={6}>
-						<ProdPicker
-							name="prod2"
-							label="截止商品編號"
-							size="small"
-							// filterByServer
-							// queryRequired
-							virtualize
-							typeToSearchText="以編號,條碼或名稱搜尋"
-							optionLabelSize="md"
-							disableOpenOnInput
-							selectOnFocus
-							slotProps={{
-								paper: {
-									sx: {
-										width: 360,
+								}}
+								borderless
+								placeholder="起"
+							/>}
+							rightComponent={<ProdPicker
+								name="prod2"
+								label="截止商品編號"
+								size="small"
+								// filterByServer
+								// queryRequired
+								virtualize
+								typeToSearchText="以編號,條碼或名稱搜尋"
+								optionLabelSize="md"
+								disableOpenOnInput
+								selectOnFocus
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
 									},
-								},
-							}}
+								}}
+								borderless
+								placeholder="起"
+							/>}
 						/>
+
 					</Grid>
 					<Grid item xs={5} lg={3}>
 						<TextFieldWrapper

@@ -44,6 +44,7 @@ const SplitButton = memo(forwardRef((props, ref) => {
 		onClose,
 		onToggle,
 		hoverToOpen,
+		hoverIconToOpen,
 		IconComponent = ArrowDropDownIcon,
 		...rest
 	} = props;
@@ -125,15 +126,23 @@ const SplitButton = memo(forwardRef((props, ref) => {
 		return _open != null ? _open : debouncedOpen
 	}, [_open, debouncedOpen])
 
+	const buttonGroupOnMouseEnter = useMemo(() => {
+		return hoverToOpen ? handleOpen : undefined
+	}, [handleOpen, hoverToOpen])
+
+	const buttonGroupOnMouseLeave = useMemo(() => {
+		return hoverToOpen ? (e) => handleClose(e, { debounce: true }) : undefined
+	}, [handleClose, hoverToOpen])
+
 	return (
 		<>
 			<ButtonGroup
-				variant="contained"
+				// variant="contained"
 				size={size}
 				ref={anchorRef}
 				aria-label="doc type"
-				onMouseEnter={hoverToOpen ? handleOpen : undefined}
-				onMouseLeave={hoverToOpen ? (e) => handleClose(e, { debounce: true }) : undefined}
+				onMouseEnter={buttonGroupOnMouseEnter}
+				onMouseLeave={buttonGroupOnMouseLeave}
 				sx={{
 					"&:hover": {
 						backgroundColor: Colors.HOVER
@@ -284,6 +293,7 @@ SplitButton.propTypes = {
 	options: PropTypes.array,
 	slotProps: PropTypes.object,
 	hoverToOpen: PropTypes.bool,
+	hoverIconToOpen: PropTypes.bool,
 	IconComponent: PropTypes.elementType
 }
 export default SplitButton;

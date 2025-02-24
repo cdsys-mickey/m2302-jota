@@ -1,11 +1,9 @@
 import { E03Context } from "@/contexts/E03/E03Context";
-import Strings from "@/shared-modules/sd-strings";
+import DSGToolbar from "@/shared-components/dsg/DSGToolbar";
 import { DSGToolbarLabel } from "@/shared-components/dsg/DSGToolbarLabel";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { minWidth } from "@mui/system";
-import { Box } from "@mui/system";
-import { useContext } from "react";
-import { memo } from "react";
+import Strings from "@/shared-modules/sd-strings";
+import { memo, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 
 const E03ProdGridToolbarLabels = memo(() => {
@@ -13,13 +11,7 @@ const E03ProdGridToolbarLabels = memo(() => {
 	const form = useFormContext();
 
 	return (
-		<Box sx={[
-			(theme) => ({
-				"& > *": {
-					marginLeft: theme.spacing(3)
-				}
-			})
-		]}>
+		<DSGToolbar>
 			<DSGToolbarLabel label="銷退" name="RetAmt" sx={{ minWidth: "9rem" }} />
 			<DSGToolbarLabel label="稅額" name="TaxAmt" sx={{ minWidth: "9rem" }} />
 			<DSGToolbarLabel label="總計" name="TotAmt" sx={{ minWidth: "9rem" }} />
@@ -52,7 +44,7 @@ const E03ProdGridToolbarLabels = memo(() => {
 			/>
 			<DSGToolbarLabel label="應收減額" name="RedAmt" sx={{ minWidth: "9rem" }} />
 
-		</Box>
+		</DSGToolbar>
 	);
 });
 E03ProdGridToolbarLabels.displayName = "E03ProdGridToolbarLabels";

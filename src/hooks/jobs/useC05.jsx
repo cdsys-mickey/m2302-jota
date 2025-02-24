@@ -743,6 +743,11 @@ export const useC05 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
 			async (data) => {
@@ -877,5 +882,6 @@ export const useC05 = () => {
 		handleRecvAmtChange,
 		refreshGrid,
 		handleRtnDateChanged,
+		handlePrint
 	};
 };

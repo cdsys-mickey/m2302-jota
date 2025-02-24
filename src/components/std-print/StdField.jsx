@@ -2,7 +2,7 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import ChipEx from "../../shared-components/ChipEx";
 import { ListItem } from "@mui/material";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../../modules/StdPrint.mjs";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const StdField = memo((props) => {

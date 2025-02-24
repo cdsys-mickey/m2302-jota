@@ -3,8 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import { C09OutputModePickerContainer } from "./C09OutputModePickerContainer";
-import C09PrintButtonContainer from "./C09PrintButtonContainer";
+import C09ExportButtonContainer from "./C09ExportButtonContainer";
 
 const C09DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
@@ -14,8 +13,9 @@ const C09DialogViewToolbar = memo(
 			<Fragment ref={ref} {...rest}>
 				{onPrint && (
 					<>
-						<C09OutputModePickerContainer />
-						<C09PrintButtonContainer />
+						{/* <C09OutputModePickerContainer />
+						<C09PrintButtonContainer /> */}
+						<C09ExportButtonContainer />
 					</>
 				)}
 

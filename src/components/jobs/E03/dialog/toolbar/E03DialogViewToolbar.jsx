@@ -5,8 +5,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { IconButton, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import { E03OutputModePickerContainer } from "./E03OutputModePickerContainer";
-import E03PrintButtonContainer from "./E03PrintButtonContainer";
+import E03ExportButtonContainer from "./E03ExportButtonContainer";
 
 const E03DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
@@ -15,8 +14,9 @@ const E03DialogViewToolbar = memo(
 			<Fragment ref={ref} {...rest}>
 				{onPrint && (
 					<>
-						<E03OutputModePickerContainer />
-						<E03PrintButtonContainer />
+						{/* <E03OutputModePickerContainer />
+						<E03PrintButtonContainer /> */}
+						<E03ExportButtonContainer />
 					</>
 				)}
 				{onDelete && (

@@ -15,7 +15,6 @@ const LeftButtons = memo(() => {
 					marginRight: theme.spacing(1),
 				},
 			})}>
-			<C01TransformButtonContainer variant="contained" />
 			<C01ListModePicker
 				dense
 				name="listMode"
@@ -27,6 +26,8 @@ const LeftButtons = memo(() => {
 				width="12rem"
 				disableOpenOnInput
 			/>
+			<C01TransformButtonContainer variant="contained" />
+
 
 		</FlexBox>
 	);

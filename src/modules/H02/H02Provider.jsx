@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { useH02 } from "./useH02";
-import StdPrint from "../md-std-print";
+import StdPrint from "../StdPrint.mjs";
 import { H02Context } from "./H02Context";
 
 

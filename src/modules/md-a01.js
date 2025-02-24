@@ -1,10 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Objects from "@/shared-modules/sd-objects";
+import { nanoid } from "nanoid";
 import ProdTypeA from "./md-prod-type-a";
 import ProdTypeB from "./md-prod-type-b";
-import TaxTypes from "./md-tax-types";
-import { v4 as uuidv4 } from "uuid";
-import Objects from "@/shared-modules/sd-objects";
 import Reports from "./md-reports";
+import TaxTypes from "./md-tax-types";
 
 const Tabs = Object.freeze({
 	INFO: "INFO",
@@ -27,7 +27,7 @@ const hasEmptyError = (criteria) => {
 
 const transformTransGridForReading = (data) => {
 	return data.map((v, i) => ({
-		id: uuidv4(),
+		id: nanoid(),
 		dept: {
 			DeptID: v.SDeptID,
 			DeptName: v.SDept_N,
@@ -40,7 +40,7 @@ const transformTransGridForReading = (data) => {
 
 const transformComboGridForReading = (data) => {
 	return data.map((v, i) => ({
-		id: uuidv4(),
+		id: nanoid(),
 		prod: {
 			ProdID: v.SProdID,
 			ProdData: v.Prod_N,
@@ -265,6 +265,8 @@ const isFiltered = (criteria) => {
 };
 
 const paramsToJsonData = (mode) => (params) => {
+	console.log("params", params);
+
 	const where =
 		mode === A01.Mode.NEW_PROD
 			? [Reports.addParam("審核人員", "=", "")]
@@ -272,9 +274,9 @@ const paramsToJsonData = (mode) => (params) => {
 
 	if (params?.pi) {
 		where.push({
-			ShowName: "貨品編號",
+			ShowName: "產品代號",
 			OpCode: "LIKE",
-			CondData: `%${params.id}%`,
+			CondData: `%${params.pi}%`,
 		});
 	}
 	if (params?.bc) {
@@ -329,11 +331,13 @@ const paramsToJsonData = (mode) => (params) => {
 		});
 	}
 
+	console.log("where", where);
+
 	return {
 		StdWhere: where,
 		...(params?.qs && {
 			CondData: {
-				QS_ID: `${params.qs}%`,
+				QS_ID: `%${params.qs}%`,
 				QS_NAME: `%${params.qs}%`,
 			},
 		}),

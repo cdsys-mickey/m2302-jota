@@ -7,8 +7,10 @@ import { memo, useMemo } from "react";
 import Switch from "react-switch";
 import { useToggle } from "../shared-hooks/useToggle";
 import FlexBox from "./FlexBox";
+import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 const ICON_WIDTH = 30;
+const BOX_OFFSET = 48;
 
 const LockSwitch = memo((props) => {
 	const {
@@ -18,6 +20,8 @@ const LockSwitch = memo((props) => {
 		locked,
 		width = 70,
 		onChange,
+		disableShadow = false,
+		disableBoxShadow = false,
 		...rest
 	} = props;
 
@@ -31,12 +35,14 @@ const LockSwitch = memo((props) => {
 		return onChange ? onChange : _toggleLocked;
 	}, [onChange, _toggleLocked]);
 
-	const boxWidth = useMemo(() => {
-		return width - ICON_WIDTH;
-	}, [width])
+	// const boxWidth = useMemo(() => {
+	// 	return width - ICON_WIDTH;
+	// }, [width])
 
-	const uncheckOffset = useMemo(() => {
-		return width > 70 ? (0 - width + 25) / 2 : 0;
+	// 鎖定文字框
+	const lockedMarginLeft = useMemo(() => {
+		// return width > 70 ? (0 - width + 25) / 2 : 0;
+		return 0 - (width - ICON_WIDTH - BOX_OFFSET);
 	}, [width])
 
 	return (
@@ -46,7 +52,10 @@ const LockSwitch = memo((props) => {
 				(theme) => ({
 					"& .react-switch-bg": {
 						border: "1px solid rgb(0,0,0,0.1)",
-						boxShadow: "-3px 3px 3px -1px rgb(0,0,0,0.2) inset",
+						...(!disableBoxShadow && ({
+							// boxShadow: "-3px 3px 3px -1px rgb(0,0,0,0.2) inset",
+							boxShadow: MuiStyles.IN_BOX_SHADOW,
+						})),
 						transition: theme.transitions.create(
 							["box-shadow", "background-color"],
 							{
@@ -61,6 +70,9 @@ const LockSwitch = memo((props) => {
 					"&:hover .react-switch-bg": {
 						boxShadow: "0px 4x 6px 0px rgb(0,0,0,0.4) inset",
 					},
+					"& .locked-label": {
+						width: `${width - ICON_WIDTH}px`,
+					}
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}>
@@ -69,13 +81,18 @@ const LockSwitch = memo((props) => {
 				borderRadius={6}
 				height={32}
 				width={width}
-				boxShadow="0px 1px 3px rgba(0, 0, 0, 0.6)"
+				{...!disableShadow && ({
+					// boxShadow: "-2px 0 02px rgba(0, 0, 0, 0.3), 2px 0 2px rgba(0, 0, 0, 0.3)"
+					boxShadow: MuiStyles.OUT_BOX_SHADOW_H
+				})}
 				activeBoxShadow="0px 0px 1px 3px rgba(0, 0, 0, 0.2)"
 				// 鎖定
 				offColor={red[100]}
 				offHandleColor={red[600]}
 				uncheckedHandleIcon={
+					// 鎖定把手
 					<FlexBox
+						className="locked-handle"
 						sx={{
 							height: "30px",
 							width: `${ICON_WIDTH}px`,
@@ -86,13 +103,15 @@ const LockSwitch = memo((props) => {
 					</FlexBox>
 				}
 				uncheckedIcon={
+					// 鎖定文字框
 					<FlexBox
+						className="locked-label"
 						sx={{
 							height: "30px",
-							width: `${boxWidth}px`,
+							// width: `${width - ICON_WIDTH}px`,
 							alignItems: "center",
 							justifyContent: "center",
-							marginLeft: `${uncheckOffset}px`
+							marginLeft: `${lockedMarginLeft}px`
 						}}>
 						<Typography
 							color="text.secondary"
@@ -106,10 +125,12 @@ const LockSwitch = memo((props) => {
 				onColor={green[50]}
 				onHandleColor={green["A700"]}
 				checkedIcon={
+					// 解鎖文字框
 					<FlexBox
+						className="unlocked-label"
 						sx={{
 							height: "30px",
-							width: `${boxWidth}px`,
+							width: `${width - ICON_WIDTH}px`,
 							alignItems: "center",
 							justifyContent: "center",
 						}}>
@@ -124,12 +145,16 @@ const LockSwitch = memo((props) => {
 					</FlexBox>
 				}
 				checkedHandleIcon={
+					// 解鎖把手
 					<FlexBox
+						className="unlocked-handle"
 						sx={{
 							height: "30px",
 							width: `${ICON_WIDTH}px`,
 							alignItems: "center",
 							justifyContent: "center",
+							// paddingLeft: "60px"
+							// right: "40px"
 						}}>
 						<LockOpenIcon fontSize="small" htmlColor="#fff" />
 					</FlexBox>
@@ -146,6 +171,8 @@ LockSwitch.propTypes = {
 	lockedLabel: PropTypes.string,
 	unlockedLabel: PropTypes.string,
 	locked: PropTypes.bool,
+	disableShadow: PropTypes.bool,
+	disableBoxShadow: PropTypes.bool,
 	onChange: PropTypes.func,
 	width: PropTypes.number
 };

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { useU05 } from "../../hooks/jobs/useU05";
 import U05 from "../../modules/md-u05";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../../modules/StdPrint.mjs";
 import { U05Context } from "./U05Context";
 
 export const U05Provider = ({ children }) => {

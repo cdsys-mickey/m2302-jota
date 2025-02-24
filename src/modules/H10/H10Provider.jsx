@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { useH10 } from "./useH10";
-import StdPrint from "@/modules/md-std-print";
+import StdPrint from "@/modules/StdPrint.mjs";
 import { H10Context } from "./H10Context";
 import H10ReportType from "./pickers/H10ReportType.mjs";
 import H10OrderType from "./pickers/H10OrderType.mjs";

@@ -1,9 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import ProdTypeA from "./md-prod-type-a";
-import ProdTypeB from "./md-prod-type-b";
-import TaxTypes from "./md-tax-types";
-import { v4 as uuidv4 } from "uuid";
 import Objects from "@/shared-modules/sd-objects";
+import { nanoid } from "nanoid";
 
 const hasEmptyError = (criteria) => {
 	if (criteria.q) {
@@ -27,7 +24,7 @@ const transformForReading = (data) => {
 			: null,
 		...(BomFile_S && {
 			materials: BomFile_S.map((v) => ({
-				id: uuidv4(),
+				id: nanoid(),
 				sprod: {
 					ProdID: v.SProdID,
 					ProdData: v.SProdData_N,

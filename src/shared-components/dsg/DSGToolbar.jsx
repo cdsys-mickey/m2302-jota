@@ -1,11 +1,11 @@
-import { memo } from "react";
 import PropTypes from "prop-types";
-import { Box } from "@mui/system";
+import { memo } from "react";
+import FlexBox from "../FlexBox";
 
 const DSGToolbar = memo((props) => {
 	const { children, sx = [], ...rest } = props;
 	return (
-		<Box
+		<FlexBox
 			sx={[
 				(theme) => ({
 					"& > *": {
@@ -17,7 +17,7 @@ const DSGToolbar = memo((props) => {
 			{...rest}
 		>
 			{children}
-		</Box>
+		</FlexBox>
 	);
 })
 

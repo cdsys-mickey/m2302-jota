@@ -52,13 +52,13 @@ const A01SearchForm = memo((props) => {
 						name="lvCatL"
 						disableOpenOnInput
 						selectOnFocus
-						slotProps={{
-							paper: {
-								sx: {
-									width: 240,
-								},
-							},
-						}}
+					// slotProps={{
+					// 	paper: {
+					// 		sx: {
+					// 			width: 240,
+					// 		},
+					// 	},
+					// }}
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item xs={12}>
@@ -67,13 +67,13 @@ const A01SearchForm = memo((props) => {
 						disableOpenOnInput
 						selectOnFocus
 						catLName="lvCatL"
-						slotProps={{
-							paper: {
-								sx: {
-									width: 240,
-								},
-							},
-						}}
+					// slotProps={{
+					// 	paper: {
+					// 		sx: {
+					// 			width: 240,
+					// 		},
+					// 	},
+					// }}
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item xs={12}>
@@ -83,13 +83,13 @@ const A01SearchForm = memo((props) => {
 						selectOnFocus
 						catLName="lvCatL"
 						catMName="lvCatM"
-						slotProps={{
-							paper: {
-								sx: {
-									width: 240,
-								},
-							},
-						}}
+					// slotProps={{
+					// 	paper: {
+					// 		sx: {
+					// 			width: 240,
+					// 		},
+					// 	},
+					// }}
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item xs={12}>

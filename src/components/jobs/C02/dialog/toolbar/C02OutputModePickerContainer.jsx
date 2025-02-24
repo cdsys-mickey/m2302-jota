@@ -1,9 +1,7 @@
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
-import StdPrint from "@/modules/md-std-print";
-import { useContext } from "react";
 import { C02Context } from "@/contexts/C02/C02Context";
+import StdPrint from "@/modules/StdPrint.mjs";
+import { forwardRef, memo, useContext } from "react";
 
 export const C02OutputModePickerContainer = memo(
 	forwardRef((props, ref) => {

@@ -668,14 +668,6 @@ export const useC02 = () => {
 				JobName: "C02",
 				IDs: crud.itemData?.RqtID,
 			};
-			// console.log("[C02]jsonData", data);
-			// postToBlank(
-			// 	`${config.REPORT_URL}/WebC02Rep.aspx?LogKey=${operator?.LogKey
-			// 	}`,
-			// 	{
-			// 		jsonData: JSON.stringify(data),
-			// 	}
-			// );
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
@@ -685,6 +677,12 @@ export const useC02 = () => {
 	const onPrintSubmitError = useCallback((err) => {
 		console.error("onPrintSubmitError", err);
 	}, []);
+
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 
 	// const validateDate = useCallback((value) => {
 	// 	if (value != null && !isValid(value)) {
@@ -736,8 +734,10 @@ export const useC02 = () => {
 		...sideDrawer,
 		isRowDeletable,
 		onUpdateRow,
-		onGridChanged
+		onGridChanged,
+		handlePrint
 		// validateDate
+
 
 	};
 };

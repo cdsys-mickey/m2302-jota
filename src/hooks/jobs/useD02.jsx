@@ -5,7 +5,6 @@ import D02 from "@/modules/md-d02";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
-import useHttpPost from "@/shared-hooks/useHttpPost";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { nanoid } from "nanoid";
@@ -731,6 +730,11 @@ export const useD02 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	// 有效日期查詢
 	const onExpDialogOpen = useCallback(() => {
 		setExpState((prev) => ({
@@ -831,6 +835,7 @@ export const useD02 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
+		handlePrint,
 		// 有效日期查詢
 		...expState,
 		expChecking,

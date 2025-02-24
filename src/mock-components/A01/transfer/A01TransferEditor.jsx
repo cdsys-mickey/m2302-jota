@@ -1,14 +1,13 @@
 import { MockShops } from "@/mocks/mock-shops";
 import Shops from "@/modules/md-shops";
-import ButtonEx from "@/shared-components/button/ButtonEx";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import { TypoWebApiOptionPicker } from "@/shared-components/typo/TypoWebApiOptionPicker";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Box, Container, Grid, IconButton } from "@mui/material";
+import { nanoid } from "nanoid";
 import React, { Fragment, forwardRef, memo, useCallback } from "react";
-import { v4 as uuid } from "uuid";
-import MuiStyles from "../../../shared-modules/sd-mui-styles";
 import { ButtonWrapper } from "../../../shared-components/button/ButtonWrapper";
+import MuiStyles from "../../../shared-modules/sd-mui-styles";
 
 const A01TransferEditor = memo(
 	forwardRef((props, ref) => {
@@ -19,7 +18,7 @@ const A01TransferEditor = memo(
 				let newValue = [
 					...value,
 					{
-						key: uuid(),
+						key: nanoid(),
 					},
 				];
 				onChange(newValue);

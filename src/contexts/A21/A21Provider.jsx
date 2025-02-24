@@ -4,7 +4,7 @@ import { A21Context } from "./A21Context";
 import { FormProvider, useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../../modules/StdPrint.mjs";
 
 export const A21Provider = ({ children }) => {
 	const { operator } = useContext(AuthContext);

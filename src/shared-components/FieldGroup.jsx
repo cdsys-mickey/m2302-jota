@@ -10,7 +10,7 @@ export default function FieldGroup({ legend, required, children }) {
 			sx={(theme) => ({
 				border: '1px solid rgba(0, 0, 0, 0.23)',
 				borderRadius: '4px',
-				padding: '0 6px 4px 10px',
+				padding: '0 7px 4px 7px',
 				margin: 0,
 				marginTop: -1.0,
 				'&:hover': {
@@ -19,10 +19,10 @@ export default function FieldGroup({ legend, required, children }) {
 				'&:focus-within': {
 					borderColor: theme.palette.primary.main,
 					borderWidth: "2px",
-					padding: '0 5px 3px 9px',
+					padding: '0 6px 3px 6px',
 					'& legend': {
 						color: theme.palette.primary.main,
-						fontWeight: 500
+						fontWeight: 600
 					},
 				},
 				...(required && {

@@ -1,7 +1,5 @@
-import StdPrint from "@/modules/md-std-print";
 import FlexBox from "@/shared-components/FlexBox";
 import { StdPrintAddAllFieldsButtonContainer } from "./StdPrintAddAllFieldsButtonContainer";
-import StdPrintOutputModePicker from "./StdPrintOutputModePicker";
 import { StdPrintRemoveAllFieldsButtonContainer } from "./StdPrintRemoveAllFieldsButtonContainer";
 
 const StdPrintActionButtons = () => {
@@ -11,7 +9,7 @@ const StdPrintActionButtons = () => {
 			<StdPrintAddAllFieldsButtonContainer />
 			{/* <StdPrintResetButtonContainer /> */}
 			<FlexBox flexGrow={1} />
-			<StdPrintOutputModePicker
+			{/* <StdPrintOutputModePicker
 				dense
 				variant="outlined"
 				size="small"
@@ -26,7 +24,7 @@ const StdPrintActionButtons = () => {
 				}
 				defaultValue={StdPrint.findById(StdPrint.OutputModes.HTML)}
 				disableClearable
-			/>
+			/> */}
 		</>
 	);
 };

@@ -1,26 +1,22 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { ButtonGroup, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
 import ProdPicker from "@/components/picker/ProdPicker";
-import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import RangeGroup from "@/shared-components/RangeGroup";
 import FlexBox from "@/shared-components/FlexBox";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const H02Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			<form onSubmit={onSubmit} {...rest}>
+			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
@@ -82,23 +78,23 @@ const H02Form = memo((props) => {
 							<Grid container spacing={2}>
 
 								<Grid item xs={12} sm={6}>
-									<FlexBox alignItems="center">
+									{/* <FlexBox alignItems="center">
 										<StdPrintOutputModePicker
 											required
 											name="outputType"
 											label="執行方式"
 										/>
-									</FlexBox>
+									</FlexBox> */}
 								</Grid>
 								<Grid item xs={12} sm={6}>
-									<FlexToolbar align="right">
-										<ButtonGroup>
-											<DebugDialogButtonContainer
-												onClick={onDebugSubmit} />
-											<ReportSubmitButtonContainer
-												onClick={onSubmit} />
-										</ButtonGroup>
-									</FlexToolbar>
+									<FlexBox justifyContent="flex-end">
+										<PrintButtonContainer
+											color="primary"
+											variant="contained"
+											onSubmit={onSubmit}
+											onDebugSubmit={onDebugSubmit}
+										/>
+									</FlexBox>
 								</Grid>
 							</Grid>
 						</FlexBox>

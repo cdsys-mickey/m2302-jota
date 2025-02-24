@@ -7,7 +7,7 @@ import { H21Context } from "./H21Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useCallback } from "react";
 import { useInit } from "@/shared-hooks/useInit";
-import StdPrint from "../md-std-print";
+import StdPrint from "../StdPrint.mjs";
 import Forms from "@/shared-modules/sd-forms";
 import DateFormats from "@/shared-modules/sd-date-formats";
 

@@ -16,9 +16,9 @@ const Colors = {
 	// BG: "#fffcf8",
 	// BG: "#fff5e5",
 	// BG: "rgb(0 0 0 / 1.5%)",
-	// BG: grey[200],
+	BG: grey[100],
 	// BG: "#cdf2f2",
-	BG: blueGrey[50],
+	// BG: blueGrey[50],
 	// BG: brown[50],
 	// PRIMARY: "#a64d11",
 	// PRIMARY: cyan[500],
@@ -45,7 +45,8 @@ const Colors = {
 	DISABLED: grey[300],
 	// DIALOG_BG: "rgb(235 235 235)",
 	// lightYellow
-	DIALOG_BG: "rgb(253 249 235)",
+	// DIALOG_BG: "rgb(253 249 235)",
+	DIALOG_BG: blueGrey[50],
 	// lightBrown
 	// DIALOG_BG: "rgb(252 242 225)",
 	// white

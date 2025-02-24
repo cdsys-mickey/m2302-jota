@@ -645,6 +645,11 @@ export const useC07 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
 			async (data) => {
@@ -765,6 +770,7 @@ export const useC07 = () => {
 		refreshWorking: refreshAction.working,
 		createRow,
 		...sideDrawer,
-		getSPriceClassName
+		getSPriceClassName,
+		handlePrint
 	};
 };

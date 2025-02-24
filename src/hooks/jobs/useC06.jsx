@@ -891,6 +891,11 @@ export const useC06 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
 			async (data) => {
@@ -1032,6 +1037,7 @@ export const useC06 = () => {
 		...sideDrawer,
 		onUpdateRow,
 		onGridChanged,
-		createRow
+		createRow,
+		handlePrint
 	};
 };

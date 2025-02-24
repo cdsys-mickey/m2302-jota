@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../StdPrint.mjs";
 import { H50Context } from "./H50Context";
 import H50OrderType from "./pickers/H50OrderType.mjs";
 import { useH50 } from "./useH50";

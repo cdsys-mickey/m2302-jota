@@ -466,6 +466,11 @@ export const useC01 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	// 轉採購單
 	const transformAction = useAction();
 
@@ -671,6 +676,7 @@ export const useC01 = () => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
-		...sideDrawer
+		...sideDrawer,
+		handlePrint
 	};
 };

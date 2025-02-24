@@ -4,7 +4,7 @@ import { F07Context } from "./F07Context";
 import { FormProvider, useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
-import StdPrint from "../../modules/md-std-print";
+import StdPrint from "../../modules/StdPrint.mjs";
 
 export const F07Provider = ({ children }) => {
 	const f07 = useF07();

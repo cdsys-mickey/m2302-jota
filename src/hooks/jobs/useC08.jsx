@@ -971,6 +971,11 @@ export const useC08 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
+	const handlePrint = useCallback(({ setValue }) => (outputType) => {
+		console.log("handlePrint", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	const checkEditableAction = useAction();
 
 	const handleCheckEditable = useCallback(async () => {
@@ -1265,6 +1270,7 @@ export const useC08 = () => {
 		committed,
 		onUpdateRow,
 		onGridChanged,
-		isRowDeletable
+		isRowDeletable,
+		handlePrint
 	};
 };

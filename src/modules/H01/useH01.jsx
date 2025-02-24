@@ -62,11 +62,17 @@ export const useH01 = () => {
 		console.error("onSubmitError", err);
 	}, []);
 
+	const onSelect = useCallback(({ setValue }) => (outputType) => {
+		console.log("onBeforeSubmit", outputType);
+		setValue("outputType", outputType);
+	}, []);
+
 	return {
 		...appModule,
 		onSubmit,
 		onSubmitError,
 		onDebugSubmit,
 		formMeta,
+		onSelect
 	};
 };

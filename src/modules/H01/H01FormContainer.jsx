@@ -24,7 +24,11 @@ export const H01FormContainer = () => {
 
 	return <FormProvider {...form}>
 		<FormMetaProvider {...h01.formMeta}>
-			<H01Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<H01Form
+				onDebugSubmit={onDebugSubmit}
+				onSubmit={onSubmit}
+			// onSelect={h01.onSelect({ setValue: form.setValue })}
+			/>
 		</FormMetaProvider>
 	</FormProvider>;
 };

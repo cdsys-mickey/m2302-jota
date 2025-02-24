@@ -13,6 +13,7 @@ import { memo } from "react";
 import F06DataTypePicker from "./picker/F06DataTypePicker";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import FlexBox from "@/shared-components/FlexBox";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const F06Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -63,15 +64,15 @@ const F06Form = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={12}>
+							{/* <Grid item xs={12}>
 								<StdPrintOutputModePicker
 									required
 									name="outputType"
 									label="執行方式"
 								/>
-							</Grid>
+							</Grid> */}
 
-							<FlexToolbar align="right">
+							{/* <FlexToolbar align="right">
 								<ButtonGroup>
 									<DebugDialogButtonContainer onClick={onDebugSubmit} />
 									<ButtonWrapper
@@ -84,7 +85,17 @@ const F06Form = memo((props) => {
 										執行
 									</ButtonWrapper>
 								</ButtonGroup>
-							</FlexToolbar>
+							</FlexToolbar> */}
+							<Grid item xs={12}>
+								<FlexBox justifyContent="flex-end">
+									<PrintButtonContainer
+										color="primary"
+										variant="contained"
+										onSubmit={onSubmit}
+										onDebugSubmit={onDebugSubmit}
+									/>
+								</FlexBox>
+							</Grid>
 						</Grid>
 					</FormSectionBox>
 				</FormBox>
