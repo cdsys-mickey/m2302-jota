@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 
 const SignInRoute = () => {
 
-
 	return (
 		<SignInBase>
 			<SignInProvider>

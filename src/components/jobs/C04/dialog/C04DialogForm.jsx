@@ -36,6 +36,7 @@ const C04DialogForm = memo((props) => {
 		supplierDisabled,
 		// supplier,
 		supplierNameDisabled,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -49,7 +50,7 @@ const C04DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
@@ -242,12 +243,15 @@ const C04DialogForm = memo((props) => {
 });
 
 C04DialogForm.propTypes = {
+	creating: PropTypes.bool,
+	editing: PropTypes.bool,
 	readWorking: PropTypes.bool,
 	readError: PropTypes.object,
 	data: PropTypes.object,
 	itemDataReady: PropTypes.bool,
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleStkDateChanged: PropTypes.func,
+	slotProps: PropTypes.object,
 };
 
 C04DialogForm.displayName = "C04DialogForm";

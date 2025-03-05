@@ -11,6 +11,7 @@ import MuiStyles from "@/shared-modules/sd-mui-styles";
 
 const ICON_WIDTH = 30;
 const BOX_OFFSET = 48;
+const MIN_WIDTH = 70;
 
 const LockSwitch = memo((props) => {
 	const {
@@ -35,15 +36,19 @@ const LockSwitch = memo((props) => {
 		return onChange ? onChange : _toggleLocked;
 	}, [onChange, _toggleLocked]);
 
-	// const boxWidth = useMemo(() => {
-	// 	return width - ICON_WIDTH;
-	// }, [width])
+	const _width = useMemo(() => {
+		if (!width || width < MIN_WIDTH) {
+			console.warn(`已強制使用最小寬度 ${MIN_WIDTH}`);
+			return MIN_WIDTH;
+		}
+		return width;
+	}, [width])
 
 	// 鎖定文字框
 	const lockedMarginLeft = useMemo(() => {
 		// return width > 70 ? (0 - width + 25) / 2 : 0;
-		return 0 - (width - ICON_WIDTH - BOX_OFFSET);
-	}, [width])
+		return _width > MIN_WIDTH ? 0 - (_width - ICON_WIDTH - BOX_OFFSET) : 0;
+	}, [_width])
 
 	return (
 		<Box
@@ -80,7 +85,7 @@ const LockSwitch = memo((props) => {
 				checked={!innerLocked}
 				borderRadius={6}
 				height={32}
-				width={width}
+				width={_width}
 				{...!disableShadow && ({
 					// boxShadow: "-2px 0 02px rgba(0, 0, 0, 0.3), 2px 0 2px rgba(0, 0, 0, 0.3)"
 					boxShadow: MuiStyles.OUT_BOX_SHADOW_H

@@ -9,10 +9,10 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import PropTypes from "prop-types";
-import ZA03 from "../../../../modules/md-za03";
-import FormBox from "../../../../shared-components/form/FormBox";
-import FormErrorBox from "../../../../shared-components/form/FormErrorBox";
-import { TextFieldWrapper } from "../../../../shared-components/text-field/TextFieldWrapper";
+import ZA03 from "@/modules/md-za03";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { ZA03DialogTitleButtonsContainer } from "../dialog/buttons/ZA03DialogTitleButtonsContainer";
 import ZA03GridContainer from "./auth/ZA03GridContainer";
 import { ZA03DeptsPickerContainer } from "./depts-picker/ZA03DeptsPickerContainer";
@@ -31,6 +31,7 @@ const ZZZA03Form = memo((props) => {
 		infoDisabled,
 		authDisabled,
 		deptDisabled,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -44,7 +45,7 @@ const ZZZA03Form = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError} {...slotProps?.error} />}
 			{dataLoaded && (
 				<FormBox
 				// pt={1}
@@ -209,6 +210,7 @@ ZZZA03Form.propTypes = {
 	deptDisabled: PropTypes.bool,
 	selectedTab: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	handleTabChange: PropTypes.func,
+	slotProps: PropTypes.object,
 };
 
 ZZZA03Form.displayName = "ZZZA03Form";

@@ -12,7 +12,7 @@ export const H51Provider = ({ children }) => {
 			EDate: null,
 			SProdID: null,
 			EProdID: null,
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

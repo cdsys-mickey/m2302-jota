@@ -58,7 +58,7 @@ const ZA03Grid = memo((props) => {
 			// columns={columns}
 			// addRowsComponent={DSGAddRowsToolbar}
 			addRowsComponent={null}
-			disableExpandSelection
+			// disableExpandSelection
 			disableContextMenu
 			// contextMenuComponent={ContextMenu}
 			rowClassName={getRowClassName}

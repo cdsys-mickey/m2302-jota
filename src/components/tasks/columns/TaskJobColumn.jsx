@@ -1,19 +1,15 @@
-import { Grid, Skeleton } from "@mui/material";
+import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
-import FlexGrid from "../../../shared-components/FlexGrid";
 
 const TaskJobColumn = (props) => {
-	const { loading, children, ...rest } = props;
-	const isLoading = loading && !children;
+	const { ...rest } = props;
 	return (
-		<FlexGrid
-			item
-			pr={1}
-			xs={2}
+		<ListColumn
+			flex
 			justifyContent="center"
-			{...rest}>
-			{isLoading ? <Skeleton /> : children || ""}
-		</FlexGrid>
+			// pl={1}
+			xs={3}
+			{...rest} />
 	);
 };
 

@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import U05 from "@/modules/md-u05";
+import U05 from "@/modules/U05/U05.mjs";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useCallback, useContext, useMemo } from "react";

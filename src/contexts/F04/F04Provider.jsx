@@ -11,7 +11,7 @@ export const F04Provider = ({ children }) => {
 	const form = useForm({
 		defaultValues: {
 			PrtType: F04.getDataTypeById(F04.DataType.DIFF),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 			PrtID: true
 		},
 	});

@@ -16,7 +16,7 @@ export const H49Provider = ({ children }) => {
 			SPDlineID: null,
 			EPDlineID: null,
 			reportType: H49ReportType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

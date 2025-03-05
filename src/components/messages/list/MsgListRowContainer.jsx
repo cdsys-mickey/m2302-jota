@@ -2,11 +2,13 @@ import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { MessagesContext } from "@/contexts/msgs/MessagesContext";
 import MsgListRow from "./MsgListRow";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const MsgListRowContainer = (props) => {
 	// const messaging = useContext(MessagingContext);
 	const msgs = useContext(MessagesContext);
 	// const { selectJobById } = useContext(AppFrameContext);
+	const auth = useContext(AuthContext);
 	const { index, ...rest } = props;
 	// const { isItemLoading } = messaging;
 	// const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
@@ -22,6 +24,9 @@ export const MsgListRowContainer = (props) => {
 	// 		id: value?.ID,
 	// 	});
 	// }, [selectJobById, value?.ID, value?.JobID]);
+	const linkEnabled = useMemo(() => {
+		return auth.operator?.CurDeptID === value?.DeptID;
+	}, [auth.operator?.CurDeptID, value?.DeptID])
 
 	return (
 		<MsgListRow
@@ -29,6 +34,7 @@ export const MsgListRowContainer = (props) => {
 			loading={loading}
 			value={value}
 			handleGotoJob={() => msgs.handleGotoJob(value)}
+			linkEnabled={linkEnabled}
 			{...rest}
 		/>
 	);

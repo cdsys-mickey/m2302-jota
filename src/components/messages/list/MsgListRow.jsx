@@ -2,7 +2,7 @@ import HoverableListItem from "@/shared-components/HoverableListItem";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import { ButtonWrapper } from "../../../shared-components/button/ButtonWrapper";
@@ -12,6 +12,7 @@ import MsgNameColumn from "../columns/MsgNameColumn";
 import MsgNewColumn from "../columns/MsgNewColumn";
 import MsgTimeColumn from "../columns/MsgTimeColumn";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import MsgDeptColumn from "../columns/MsgDeptColumn";
 
 const UnreadTypography = (props) => {
 	const { children, unread, ...rest } = props;
@@ -35,18 +36,18 @@ UnreadTypography.propTypes = {
 };
 
 const MsgListRow = memo((props) => {
-	const { index, style, value, loading, handleGotoJob } = props;
+	const { index, style, value, loading, handleGotoJob, linkEnabled } = props;
 	const unread = useMemo(() => {
 		return !value?.RecdTime;
 	}, [value?.RecdTime]);
 
-	const memoisedTitle = useMemo(() => {
-		return `前往 ${value?.JobID} 作業`;
-	}, [value?.JobID]);
+	const _title = useMemo(() => {
+		return !linkEnabled ? "請先切換門市後再操作" : `前往 ${value?.JobID} 作業`;
+	}, [linkEnabled, value?.JobID]);
 
 	return (
 		<div style={style}>
-			<HoverableListItem borderBottom>
+			<HoverableListItem transparent borderBottom>
 				<Grid
 					container
 					columns={24}
@@ -71,17 +72,21 @@ const MsgListRow = memo((props) => {
 							/>
 						)}
 					</MsgNewColumn>
-
+					<MsgDeptColumn >
+						<UnreadTypography unread={unread}>
+							{value?.AbbrName}
+						</UnreadTypography>
+					</MsgDeptColumn>
 					<MsgJobColumn>
 						{value?.JobID && (
-							// <Tooltip
-							// 	title={memoisedTitle}
-							// 	arrow
-							// 	placement="right-start">
-							<ButtonWrapper onClick={handleGotoJob}>
-								{value?.JobID}
-							</ButtonWrapper>
-							// </Tooltip>
+							<Tooltip
+								title={_title}
+								arrow
+								placement="right-start">
+								<ButtonWrapper onClick={handleGotoJob}>
+									{value?.JobID}
+								</ButtonWrapper>
+							</Tooltip>
 						)}
 					</MsgJobColumn>
 					<MsgIDColumn loading={loading}>
@@ -113,6 +118,7 @@ MsgListRow.propTypes = {
 	style: PropTypes.object,
 	value: PropTypes.object,
 	loading: PropTypes.bool,
+	linkEnabled: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
 	handleMarkAsRead: PropTypes.func,

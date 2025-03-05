@@ -155,11 +155,11 @@ const H10Form = memo((props) => {
 						<FlexBox mt={1}>
 							<Grid container spacing={2}>
 								<FlexGrid item xs={12} sm={6} alignItems="center">
-									<StdPrintOutputModePicker
+									{/* <StdPrintOutputModePicker
 										required
 										name="outputType"
 										label="執行方式"
-									/>
+									/> */}
 								</FlexGrid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">

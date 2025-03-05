@@ -16,7 +16,7 @@ export const H35Provider = ({ children }) => {
 			EIDeptID: null,
 			reportType: H35ReportType.getDefaultOption(),
 			orderType: H35OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

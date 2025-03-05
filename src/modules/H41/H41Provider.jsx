@@ -19,7 +19,7 @@ export const H41Provider = ({ children }) => {
 			EDeptID: null,
 			RsnID: null,
 			reportType: H41ReportType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

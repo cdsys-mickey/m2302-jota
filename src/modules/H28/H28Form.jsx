@@ -1,6 +1,4 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { Grid } from "@mui/material";
@@ -72,13 +70,15 @@ const H28Form = memo((props) => {
 						</Grid>
 						<FlexBox mt={2}>
 							<Grid container spacing={2}>
-								<FlexGrid item xs={12} sm={6} alignItems="center">
-									<StdPrintOutputModePicker
-										required
-										name="outputType"
-										label="執行方式"
-									/>
-								</FlexGrid>
+								<Grid item xs={12} sm={6}>
+									{/* <FlexBox alignItems="center">
+										<StdPrintOutputModePicker
+											required
+											name="outputType"
+											label="執行方式"
+										/>
+									</FlexBox> */}
+								</Grid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">
 										<PrintButtonContainer

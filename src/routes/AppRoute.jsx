@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
 import HomeContainer from "@/pages/home/HomeContainer";
-import { DSGTest2Container } from "@/pages/lab/dsg/DSGTest2Container";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import InfoPage from "@/shared-pages/InfoPage";
 
@@ -36,6 +35,7 @@ import uRoutes from "./uRoutes";
 import fRoutes from "./fRoutes";
 import hRoutes2 from "./hRoutes2";
 import pRoutes2 from "./pRoutes2";
+import ForbiddenPageContainer from "@/pages/ForbiddenPageContainer";
 
 const AppRoute = () => {
 	return (
@@ -129,16 +129,7 @@ const AppRoute = () => {
 			<Route
 				path="forbidden"
 				element={
-					<InfoPage
-						severity="error"
-						alertProps={
-							{
-								// maxWidth:
-							}
-						}
-						title="您沒有使用權限"
-						message="請聯絡系統管理員"
-					/>
+					<ForbiddenPageContainer />
 				}
 			/>
 			{/* PUBLIC PAGE NOT FOUND */}

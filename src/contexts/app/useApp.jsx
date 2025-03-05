@@ -62,10 +62,41 @@ export default function useApp() {
 				throw error || new Error("未預期例外")
 			}
 		} catch (err) {
-			console.error(err);
-			if (err.status == 403) {
+			console.error("error object:", err);
+			if (err?.status == 403 || err?.response?.status == 403) {
 				appRedirect.toForbidden();
 			}
+			console.error("loadAppInto failed", err);
+		} finally {
+			setState((prev) => ({
+				...prev,
+				loading: false,
+			}));
+		}
+	}, [appRedirect, httpGetAsync]);
+
+	const unloadAppInfo = useCallback(async () => {
+		setState((prev) => ({
+			...prev,
+			loading: true,
+		}));
+		try {
+			const { status, payload, error } = await httpGetAsync({
+				url: "",
+			});
+			if (status.success) {
+				setState((prev) => ({
+					...prev,
+					loading: false,
+					apiVersion: payload.version,
+					frontEnd: payload.frontEnd
+				}));
+				appRedirect.toLogin();
+			} else {
+				throw error || new Error("未預期例外")
+			}
+		} catch (err) {
+			console.error("error object:", err);
 			console.error("loadAppInto failed", err);
 		} finally {
 			setState((prev) => ({
@@ -81,7 +112,8 @@ export default function useApp() {
 		version,
 		setLoading,
 		handleTokenChange,
-		loadAppInfo
+		loadAppInfo,
+		unloadAppInfo
 	}
 
 }

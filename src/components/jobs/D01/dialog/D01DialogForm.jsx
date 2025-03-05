@@ -24,6 +24,7 @@ const D01DialogForm = memo((props) => {
 		updating,
 		handleRstDateChanged,
 		validateDate,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -37,7 +38,7 @@ const D01DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
@@ -141,6 +142,7 @@ D01DialogForm.propTypes = {
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRstDateChanged: PropTypes.func,
 	validateDate: PropTypes.func,
+	slotProps: PropTypes.object,
 };
 
 D01DialogForm.displayName = "D01DialogForm";

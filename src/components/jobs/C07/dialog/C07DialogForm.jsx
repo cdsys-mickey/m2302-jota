@@ -6,7 +6,6 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
@@ -34,6 +33,7 @@ const C07DialogForm = memo((props) => {
 		isSupplierNameDisabled,
 		purchaseOrdersDisabled,
 		supplier,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -47,7 +47,7 @@ const C07DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError} {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
@@ -162,6 +162,7 @@ C07DialogForm.propTypes = {
 	itemDataReady: PropTypes.bool,
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRtnDateChanged: PropTypes.func,
+	slotProps: PropTypes.object,
 };
 
 C07DialogForm.displayName = "C07DialogForm";

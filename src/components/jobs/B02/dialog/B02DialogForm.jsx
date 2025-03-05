@@ -21,6 +21,7 @@ const B02DialogForm = memo((props) => {
 		creating,
 		editing,
 		updating,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -34,7 +35,7 @@ const B02DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<>
 					<FormBox pt={1}>
@@ -126,6 +127,7 @@ B02DialogForm.propTypes = {
 	readError: PropTypes.object,
 	data: PropTypes.object,
 	itemDataReady: PropTypes.bool,
+	slotProps: PropTypes.object,
 };
 
 B02DialogForm.displayName = "B02DialogForm";

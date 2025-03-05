@@ -22,7 +22,7 @@ const StdPrintActionButtons = () => {
 						// ml: 1,
 					}
 				}
-				defaultValue={StdPrint.findById(StdPrint.OutputModes.HTML)}
+				defaultValue={StdPrint.getDefaultOption()}
 				disableClearable
 			/> */}
 		</>

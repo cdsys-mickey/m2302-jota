@@ -14,6 +14,7 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H52ReportTypePicker from "./pickers/H52ReportTypePicker";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const H52Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -81,24 +82,23 @@ const H52Form = memo((props) => {
 						<FlexBox mt={2}>
 							<Grid container spacing={2}>
 								<Grid item xs={12} sm={6}>
-									<FlexBox alignItems="center">
+									{/* <FlexBox alignItems="center">
 										<StdPrintOutputModePicker
 											required
 											name="outputType"
 											label="執行方式"
 										/>
-									</FlexBox>
+									</FlexBox> */}
 								</Grid>
 								<Grid item xs={12} sm={6}>
-									<FlexToolbar align="right">
-										<ButtonGroup>
-											<DebugDialogButtonContainer
-												onClick={onDebugSubmit} />
-											<ReportSubmitButtonContainer
-												onClick={onSubmit}
-											/>
-										</ButtonGroup>
-									</FlexToolbar>
+									<FlexBox justifyContent="flex-end">
+										<PrintButtonContainer
+											color="primary"
+											variant="contained"
+											onSubmit={onSubmit}
+											onDebugSubmit={onDebugSubmit}
+										/>
+									</FlexBox>
 								</Grid>
 							</Grid>
 						</FlexBox>

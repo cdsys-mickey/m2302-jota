@@ -21,7 +21,7 @@ export const A21Provider = ({ children }) => {
 			SalesID: "Y",
 			InvNo: "Y",
 			DelyNo: "Y",
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 	const a21 = useA21({ form });

@@ -4,14 +4,10 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import DeptPicker from "@/components/picker/DeptPicker";
-import { PurchaseDepOrderPicker } from "@/components/purchase-dep-order-picker/PurchaseDepOrderPicker";
-import { TxoOrderPicker } from "@/components/txo-order-picker/TxoOrderPicker";
 import { D05ProdGridBottomToolbar } from "./prod-grid/D05ProdGridBottomToolbar";
 import { D05ProdGridContainer } from "./prod-grid/D05ProdGridContainer";
 
@@ -25,6 +21,7 @@ const D05DialogForm = memo((props) => {
 		editing,
 		// txoDeptDisabled,
 		remarkDisabled,
+		slotProps,
 	} = props;
 	return (
 		<form onSubmit={onSubmit}>
@@ -37,7 +34,7 @@ const D05DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
@@ -116,6 +113,7 @@ D05DialogForm.propTypes = {
 	handleTxoOrdersChanged: PropTypes.func,
 	handleTxoDeptChanged: PropTypes.func,
 	remarkDisabled: PropTypes.bool,
+	slotProps: PropTypes.object,
 };
 
 D05DialogForm.displayName = "D05DialogForm";

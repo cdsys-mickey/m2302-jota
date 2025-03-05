@@ -2,7 +2,7 @@
 import { useCallback, useContext, useMemo } from "react";
 
 import HttpStatus from "@/shared-classes/HttpStatus";
-import WebApi from "@/shared-modules/sd-web-api";
+import WebApi from "@/shared-modules/WebApi.mjs";
 import axios from "axios";
 import querystring from "query-string";
 import Types from "@/shared-modules/sd-types";
@@ -189,7 +189,7 @@ export const useWebApi = (props) => {
 							status: err.response.status,
 							statusText: err.response.statusText,
 						})
-						: err,
+						: WebApi.getErrorFromAxiosError(err),
 				};
 			}
 		},

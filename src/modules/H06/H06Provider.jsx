@@ -17,7 +17,7 @@ export const H06Provider = ({ children }) => {
 			InclTest: false,
 			orderType: H06OrderType.getDefaultOption(),
 			orderDir: OrderDir.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

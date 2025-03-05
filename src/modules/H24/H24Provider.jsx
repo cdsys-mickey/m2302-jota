@@ -21,7 +21,7 @@ export const H24Provider = ({ children }) => {
 			ELineID: null,
 			reportType: H24ReportType.getDefaultOption(),
 			orderType: H24OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

@@ -31,6 +31,7 @@ const E01DialogForm = memo((props) => {
 		validateCustomer,
 		customerRequired,
 		handleTaxTypeChange,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -44,7 +45,7 @@ const E01DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError} {...slotProps?.error} />}
 			{itemDataReady && (
 				<>
 					<FormBox pt={1}>
@@ -281,6 +282,7 @@ E01DialogForm.propTypes = {
 	handleCustomerChange: PropTypes.func,
 	validateCustomer: PropTypes.func,
 	customerRequired: PropTypes.bool,
+	slotProps: PropTypes.object,
 };
 
 E01DialogForm.displayName = "E01DialogForm";

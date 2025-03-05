@@ -8,7 +8,7 @@ export const H21Provider = ({ children }) => {
 	const h21 = useH21();
 	const form = useForm({
 		defaultValues: {
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

@@ -14,7 +14,7 @@ export const H43Provider = ({ children }) => {
 			SDeptID: null,
 			EDeptID: null,
 			orderType: H43OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

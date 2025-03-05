@@ -3,22 +3,19 @@ import ContainerEx from "@/shared-components/ContainerEx";
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { ButtonGroup, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
 import DeptPicker from "@/components/picker/DeptPicker";
 import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import ProdPicker from "@/components/picker/ProdPicker";
-import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
+import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H24OrderTypePicker from "./pickers/H24OrderTypePicker";
 import H24ReportTypePicker from "./pickers/H24ReportTypePicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const H24Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -140,13 +137,15 @@ const H24Form = memo((props) => {
 						</Grid>
 						<FlexBox mt={2}>
 							<Grid container spacing={2}>
-								<FlexGrid item xs={12} sm={6} alignItems="center">
-									<StdPrintOutputModePicker
-										required
-										name="outputType"
-										label="執行方式"
-									/>
-								</FlexGrid>
+								<Grid item xs={12} sm={6}>
+									{/* <FlexBox alignItems="center">
+										<StdPrintOutputModePicker
+											required
+											name="outputType"
+											label="執行方式"
+										/>
+									</FlexBox> */}
+								</Grid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">
 										<PrintButtonContainer

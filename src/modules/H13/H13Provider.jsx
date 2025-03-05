@@ -13,7 +13,7 @@ export const H13Provider = ({ children }) => {
 			SCustID: null,
 			ECustID: null,
 			InclTest: false,
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

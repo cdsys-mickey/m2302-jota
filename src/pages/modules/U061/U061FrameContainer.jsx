@@ -1,4 +1,4 @@
-import { U061FormContainer } from "@/components/jobs/U061/U061FormContainer";
+import { U06_1FormContainer } from "@/modules/U06_1/U06_1FormContainer";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
@@ -21,7 +21,7 @@ export const U061FrameContainer = () => {
 			{/* 工具列 */}
 			{/* <U061Toolbar /> */}
 			{/* 表單 */}
-			<U061FormContainer />
+			<U06_1FormContainer />
 		</Box>
 	);
 };

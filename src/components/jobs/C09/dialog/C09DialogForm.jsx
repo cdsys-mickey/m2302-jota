@@ -26,6 +26,7 @@ const C09DialogForm = memo((props) => {
 		handleTxoDeptChanged,
 		// txoDeptDisabled,
 		remarkDisabled,
+		slotProps,
 	} = props;
 	return (
 		<form onSubmit={onSubmit}>
@@ -38,7 +39,7 @@ const C09DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
@@ -164,6 +165,7 @@ C09DialogForm.propTypes = {
 	handleTxoOrderChanged: PropTypes.func,
 	handleTxoDeptChanged: PropTypes.func,
 	remarkDisabled: PropTypes.bool,
+	slotProps: PropTypes.object,
 };
 
 C09DialogForm.displayName = "C09DialogForm";

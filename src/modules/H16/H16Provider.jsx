@@ -19,7 +19,7 @@ export const H16Provider = ({ children }) => {
 			orderType: H16OrderType.getDefaultOption(),
 			// orderDir: OrderDir.getDefaultOption(),
 			// calType: H16CalType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

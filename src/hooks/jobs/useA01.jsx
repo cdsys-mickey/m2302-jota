@@ -15,7 +15,6 @@ import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import WebApi from "@/shared-modules/sd-web-api";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-picker/ProdPickerComponentContainer";
@@ -284,12 +283,14 @@ export const useA01 = ({ token, mode }) => {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(
-					WebApi.mapStatusText(err, {
-						404: `找不到${mode === A01.Mode.NEW_PROD ? "新" : ""
-							}商品 ${id}`,
-					})
-				);
+				if (err.status == 404) {
+					crud.failReading({
+						...err,
+						message: `找不到${mode === A01.Mode.NEW_PROD ? "新" : ""}商品 ${id}`
+					});
+				} else {
+					crud.failReading(err);
+				}
 			}
 		},
 		[comboGrid, crud, httpGetAsync, mode, token, transGrid, API_URL]

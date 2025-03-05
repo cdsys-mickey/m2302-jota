@@ -1,5 +1,5 @@
+import { CustomerPurchaseOrderPicker } from "@/components/customer-purchase-order-picker/CustomerPurchaseOrderPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import SquaredPicker from "@/components/picker/SquaredPicker";
 import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
@@ -16,8 +16,6 @@ import PaymentPicker from "../../A06/form/fields/PaymentPicker";
 import { E021CustomerPicker } from "../E021CustomerPicker";
 import { E021ProdGridBottomToolbar } from "./grid/E021ProdGridBottomToolbar";
 import { E021ProdGridContainer } from "./grid/E021ProdGridContainer";
-import SalesOrderPicker from "@/components/sales-order-picker/SalesOrderPicker";
-import { CustomerPurchaseOrderPicker } from "@/components/customer-purchase-order-picker/CustomerPurchaseOrderPicker";
 
 const E021DialogForm = memo((props) => {
 	const {
@@ -36,6 +34,7 @@ const E021DialogForm = memo((props) => {
 		customerRequired,
 		handleTaxTypeChange,
 		// handleRecdAmtChange,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -49,7 +48,7 @@ const E021DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError} {...slotProps?.error} />}
 			{itemDataReady && (
 				<>
 					<FormBox pt={1}>
@@ -351,6 +350,7 @@ E021DialogForm.propTypes = {
 	handleCustomerChange: PropTypes.func,
 	validateCustomer: PropTypes.func,
 	customerRequired: PropTypes.bool,
+	slotProps: PropTypes.object,
 };
 
 E021DialogForm.displayName = "E021DialogForm";

@@ -17,7 +17,7 @@ export const H46Provider = ({ children }) => {
 			EDeptID: null,
 			RsnID: null,
 			reportType: H46ReportType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
 					short_name: "JOTA",
 					description: "宗泰食品集團進銷存系統",
 					lang: "zh-TW",
-					start_url: "/jota",
+					// start_url: "/jota",
 					display: "standalone",
 					background_color: "#ffffff",
 					theme_color: "#e0e0e0",

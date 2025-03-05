@@ -16,7 +16,7 @@ export const H38Provider = ({ children }) => {
 			SPDlineID: null,
 			EPDlineID: null,
 			orderType: H38OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

@@ -81,6 +81,14 @@ export const useMessaging = () => {
 
 			handlePopoverClose();
 			if (jobId) {
+				const deptId = payload?.DeptID;
+				const deptName = payload?.AbbrName;
+
+				if (auth.operator?.CurDeptID !== deptId) {
+					toastEx.error(`此通知屬於 ${deptName} 請切換門市後再進行操作`);
+					return;
+				}
+
 				selectJobById(jobId, {
 					...(orderId && {
 						id: orderId,
@@ -88,7 +96,7 @@ export const useMessaging = () => {
 				});
 			}
 		},
-		[handlePopoverClose, selectJobById]
+		[auth.operator?.CurDeptID, handlePopoverClose, selectJobById]
 	);
 
 	const handlNotify = useCallback(

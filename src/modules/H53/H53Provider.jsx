@@ -16,7 +16,7 @@ export const H53Provider = ({ children }) => {
 			SPDlineID: null,
 			EPDlineID: null,
 			orderType: H53OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

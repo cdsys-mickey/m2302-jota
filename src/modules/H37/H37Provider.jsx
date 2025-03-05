@@ -16,7 +16,7 @@ export const H37Provider = ({ children }) => {
 			SLineID: null,
 			ELineID: null,
 			orderType: H37OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

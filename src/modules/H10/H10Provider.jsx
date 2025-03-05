@@ -18,7 +18,7 @@ export const H10Provider = ({ children }) => {
 			EDate2: null,
 			TopNo: 10,
 			reportType: H10ReportType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

@@ -17,7 +17,7 @@ export const H17Provider = ({ children }) => {
 			orderType: H17OrderType.getDefaultOption(),
 			// orderDir: OrderDir.getDefaultOption(),
 			// calType: H17CalType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

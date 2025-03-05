@@ -26,6 +26,7 @@ const C06DialogForm = memo((props) => {
 		squaredFlagDisabled,
 		handleSpDeptChanged,
 		spDeptDisabled,
+		slotProps,
 	} = props;
 	return (
 		<form onSubmit={onSubmit}>
@@ -38,7 +39,7 @@ const C06DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
@@ -163,6 +164,7 @@ C06DialogForm.propTypes = {
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRtnDateChanged: PropTypes.func,
 	onSubmit: PropTypes.func,
+	slotProps: PropTypes.object,
 };
 
 C06DialogForm.displayName = "C06DialogForm";

@@ -16,7 +16,7 @@ export const H26Provider = ({ children }) => {
 			EArrDate: null,
 			reportType: H26ReportType.getDefaultOption(),
 			orderType: H26OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

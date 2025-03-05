@@ -15,7 +15,7 @@ export const H05Provider = ({ children }) => {
 			ECustID: null,
 			InclTest: false,
 			reportType: H05ReportType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

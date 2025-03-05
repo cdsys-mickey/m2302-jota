@@ -19,7 +19,7 @@ export const H04Provider = ({ children }) => {
 			orderType: H04OrderType.getDefaultOption(),
 			orderDir: OrderDir.getDefaultOption(),
 			calType: H04CalType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

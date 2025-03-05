@@ -2,12 +2,11 @@ import { cyan, grey } from "@mui/material/colors";
 import { Box, styled } from "@mui/system";
 import Colors from "@/modules/md-colors";
 import { useMemo } from "react";
+import Arrays from "@/shared-modules/sd-arrays";
 
 const HoverableListItem = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!`transparent,disabled,selected,hoverStyles,disabledStyles,borderBottom`
-			.trim()
-			.split(/\s*,\s*/)
+		!Arrays.parse(`transparent,disabled,selected,hoverStyles,disabledStyles,borderBottom,hideCursor`)
 			.includes(prop),
 })(
 	({
@@ -17,11 +16,12 @@ const HoverableListItem = styled(Box, {
 		transparent = false,
 		borderBottom = false,
 		selected = false,
+		hideCursor = false,
 		selectedStyles = {
-			backgroundColor: cyan[100],
+			backgroundColor: cyan[200],
 		},
 		hoverStyles = {
-			backgroundColor: grey[200],
+			backgroundColor: grey[100],
 			boxShadow: "1px 2px 3px rgb(0 0 0 / 20%)",
 		},
 		disabledStyles = {
@@ -37,6 +37,10 @@ const HoverableListItem = styled(Box, {
 		const showDisabledStyles = useMemo(() => {
 			return disabled && disabledStyles;
 		}, [disabled, disabledStyles]);
+
+		const showCursor = useMemo(() => {
+			return onClick && !hideCursor;
+		}, [hideCursor, onClick])
 
 		return {
 			position: "relative",
@@ -71,7 +75,7 @@ const HoverableListItem = styled(Box, {
 			...(borderBottom && {
 				borderBottom: `1px solid ${Colors.HOVER}`,
 			}),
-			cursor: onClick ? "pointer" : "inherit",
+			cursor: showCursor ? "pointer" : "inherit",
 		};
 	}
 );

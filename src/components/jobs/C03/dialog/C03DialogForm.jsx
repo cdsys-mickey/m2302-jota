@@ -6,7 +6,6 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
@@ -29,6 +28,7 @@ const C03DialogForm = memo((props) => {
 		squaredFlagDisabled,
 		creating,
 		editing,
+		slotProps,
 	} = props;
 	return (
 		<>
@@ -41,7 +41,7 @@ const C03DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<Grid container columns={24} spacing={editing ? 1 : 0}>
@@ -225,6 +225,7 @@ C03DialogForm.propTypes = {
 	squaredFlagDisabled: PropTypes.bool,
 	creating: PropTypes.bool,
 	editing: PropTypes.bool,
+	slotProps: PropTypes.object,
 };
 
 C03DialogForm.displayName = "C03DialogForm";

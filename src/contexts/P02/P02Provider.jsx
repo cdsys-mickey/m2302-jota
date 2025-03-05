@@ -11,7 +11,7 @@ export const P02Provider = ({ children }) => {
 		defaultValues: {
 			SDate: new Date(),
 			EDate: new Date(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 			RptType: P02.getDataTypeById(P02.DataType.SUMMARY),
 		},
 	});

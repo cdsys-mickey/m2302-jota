@@ -19,7 +19,7 @@ export const H14_1Provider = ({ children }) => {
 			orderType: H14_1OrderType.getDefaultOption(),
 			// orderDir: OrderDir.getDefaultOption(),
 			// calType: H141CalType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

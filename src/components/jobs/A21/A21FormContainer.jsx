@@ -23,7 +23,7 @@ export const A21FormContainer = () => {
 	// 		SalesID: "Y",
 	// 		InvNo: "Y",
 	// 		DelyNo: "Y",
-	// 		outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+	// 		outputType: StdPrint.getDefaultOption(),
 	// 	},
 	// });
 

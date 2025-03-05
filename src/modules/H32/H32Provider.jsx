@@ -12,7 +12,7 @@ export const H32Provider = ({ children }) => {
 			EDate: null,
 			SFactID: null,
 			EFactID: null,
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

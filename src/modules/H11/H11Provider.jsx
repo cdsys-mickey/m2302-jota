@@ -12,7 +12,7 @@ export const H11Provider = ({ children }) => {
 			SDate: null,
 			EDate: null,
 			TopNo: 10,
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 			reportType: H11ReportType.getDefaultOption(),
 			numbers: [
 				100000,

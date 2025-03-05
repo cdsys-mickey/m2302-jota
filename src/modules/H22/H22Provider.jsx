@@ -10,7 +10,7 @@ export const H22Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

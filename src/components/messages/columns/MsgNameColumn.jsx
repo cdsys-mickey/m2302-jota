@@ -7,7 +7,7 @@ const MsgNameColumn = (props) => {
 		<ListColumn
 			item
 			pr={1}
-			xs={13}
+			xs={11}
 			{...rest}
 		/>
 	);

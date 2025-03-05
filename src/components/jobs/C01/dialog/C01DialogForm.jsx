@@ -5,7 +5,6 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { FormLabelWrapper } from "@/shared-components/label/FormLabelWrapper";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
@@ -22,6 +21,7 @@ const C01DialogForm = memo((props) => {
 		creating,
 		editing,
 		updating,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -35,7 +35,7 @@ const C01DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<Grid container columns={24} spacing={1}>
@@ -130,6 +130,7 @@ C01DialogForm.propTypes = {
 	readError: PropTypes.object,
 	data: PropTypes.object,
 	itemDataReady: PropTypes.bool,
+	slotProps: PropTypes.object,
 };
 
 C01DialogForm.displayName = "C01DialogForm";

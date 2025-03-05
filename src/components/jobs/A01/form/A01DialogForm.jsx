@@ -45,6 +45,7 @@ const A01DialogForm = memo((props) => {
 		height,
 		transTabDisabled,
 		comboTabDisabled,
+		slotProps,
 		...rest
 	} = props;
 
@@ -65,7 +66,7 @@ const A01DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError} {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={0}>
 					<TabContext value={selectedTab}>
@@ -115,7 +116,7 @@ const A01DialogForm = memo((props) => {
 											}}
 										/>
 									</Grid>
-									<Grid item xs={12} sm={12} md={6}>
+									<Grid item xs={12} sm={12} md={5}>
 										<TextFieldWrapper
 											typo
 											name="ProdData"
@@ -129,6 +130,20 @@ const A01DialogForm = memo((props) => {
 											{data?.ProdData}
 										</TextFieldWrapper>
 									</Grid>
+									<Grid item xs={12} sm={12} md={4}>
+										<TextFieldWrapper
+											typo
+											label="發票印製名稱"
+											name="InvData"
+											fullWidth
+											slotProps={{
+												htmlInput: {
+													maxLength: 13
+												}
+											}}
+										/>
+									</Grid>
+									{/* <FlexBox fullWidth /> */}
 									<Grid item xs={12} sm={12} md={3}>
 										<TextFieldWrapper
 											typo
@@ -144,7 +159,6 @@ const A01DialogForm = memo((props) => {
 											}}
 										/>
 									</Grid>
-									<FlexBox fullWidth />
 									<Grid item xs={12} sm={12} md={3}>
 										<CheckboxExWrapper
 											typo
@@ -170,7 +184,7 @@ const A01DialogForm = memo((props) => {
 									container
 									columns={12}
 									spacing={editing ? 1 : 1}>
-									<Grid item xs={12} sm={12} md={4}>
+									<Grid item xs={12} sm={12} md={3}>
 										<ProdCatLPicker
 											typo
 											name="catL"
@@ -178,7 +192,7 @@ const A01DialogForm = memo((props) => {
 											disableOpenOnInput
 										/>
 									</Grid>
-									<Grid item xs={12} sm={12} md={4}>
+									<Grid item xs={12} sm={12} md={3}>
 										<ProdCatMPicker
 											typo
 											name="catM"
@@ -186,7 +200,7 @@ const A01DialogForm = memo((props) => {
 											disableOpenOnInput
 										/>
 									</Grid>
-									<Grid item xs={12} sm={12} md={4}>
+									<Grid item xs={12} sm={12} md={3}>
 										<ProdCatSPicker
 											typo
 											name="catS"
@@ -481,6 +495,7 @@ A01DialogForm.propTypes = {
 	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	transTabDisabled: PropTypes.bool,
 	comboTabDisabled: PropTypes.bool,
+	slotProps: PropTypes.object,
 };
 
 A01DialogForm.displayName = "A01Form";

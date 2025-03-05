@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { memo } from "react";
+import Types from "@/shared-modules/sd-types";
 
 const AlertEx = memo(
 	forwardRef((props, ref) => {
@@ -19,6 +20,7 @@ const AlertEx = memo(
 			minWidth,
 			defaultText = "(空白)",
 			error,
+			firstLineOnly = true,
 			...rest
 		} = props;
 
@@ -60,10 +62,11 @@ const AlertEx = memo(
 		}, [error, severity]);
 
 		const memoisedMessage = useMemo(() => {
-			return (
-				children || error?.message || error?.statusText || defaultText
-			);
-		}, [children, defaultText, error?.message, error?.statusText]);
+			const message = children || error?.message || error?.statusText || defaultText;
+			return (firstLineOnly && Types.isString(message))
+				? message.split("\n")[0]
+				: message;
+		}, [children, defaultText, error?.message, error?.statusText, firstLineOnly]);
 
 		return (
 			<Alert
@@ -124,6 +127,7 @@ AlertEx.propTypes = {
 	maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	flex: PropTypes.bool,
 	transparent: PropTypes.bool,
+	firstLineOnly: PropTypes.bool,
 	dense: PropTypes.bool,
 	error: PropTypes.object,
 	severity: PropTypes.string,

@@ -1,16 +1,15 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
+import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { D06ProdGridContainer } from "./prod-grid/D06ProdGridContainer";
-import ProdLinePicker from "@/components/picker/ProdLinePicker";
 
 const D06DialogForm = memo((props) => {
 	const {
@@ -24,6 +23,7 @@ const D06DialogForm = memo((props) => {
 		updating,
 		handleRemDateChanged,
 		validateDate,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -37,7 +37,7 @@ const D06DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
@@ -148,6 +148,7 @@ D06DialogForm.propTypes = {
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRemDateChanged: PropTypes.func,
 	validateDate: PropTypes.func,
+	slotProps: PropTypes.object,
 };
 
 D06DialogForm.displayName = "D06DialogForm";

@@ -14,7 +14,7 @@ export const H52Provider = ({ children }) => {
 			SProdID: null,
 			EProdID: null,
 			reportType: H52ReportType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

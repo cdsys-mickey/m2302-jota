@@ -3,9 +3,10 @@ import { useContext, useMemo } from "react";
 import TaskListRow from "./TaskListRow";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 import { PushMessagesContext } from "@/contexts/PushMessagesContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const TaskListRowContainer = (props) => {
-	// const auth = useContext(AuthContext);
+	const auth = useContext(AuthContext);
 	// const { selectJobById } = useContext(AppFrameContext);
 	const messaging = useContext(MessagingContext);
 	// const { handlePopoverClose } = messaging;
@@ -21,13 +22,9 @@ export const TaskListRowContainer = (props) => {
 	);
 	const loading = useMemo(() => !value, [value]);
 
-	// const handleGotoJob = useCallback(() => {
-	// 	console.log(`handleGotoJob`, value?.JobID);
-	// 	handlePopoverClose();
-	// 	selectJobById(value?.JobID, {
-	// 		id: value?.ID,
-	// 	});
-	// }, [handlePopoverClose, selectJobById, value?.ID, value?.JobID]);
+	const linkEnabled = useMemo(() => {
+		return auth.operator?.CurDeptID === value?.DeptID;
+	}, [auth.operator?.CurDeptID, value?.DeptID])
 
 	return (
 		<TaskListRow
@@ -35,6 +32,7 @@ export const TaskListRowContainer = (props) => {
 			loading={loading}
 			value={value}
 			handleGotoJob={() => messaging.handleGotoJob(value)}
+			linkEnabled={linkEnabled}
 			{...rest}
 		/>
 	);

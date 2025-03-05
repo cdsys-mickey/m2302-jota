@@ -4,19 +4,16 @@ import SupplierPicker from "@/components/picker/SupplierPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { C05AmtToolbar } from "./prod-grid/C05AmtToolbar";
+import C05RtnDatePickerContainer from "./C05RtnDatePicker";
 import { C05ProdGridBottomToolbar } from "./prod-grid/C05ProdGridBottomToolbar";
 import { C05ProdGridContainer } from "./prod-grid/C05ProdGridContainer";
 import C05ProdGridBottomToolbar2 from "./toolbar/C05ProdGridBottomToolbar2";
-import C05RtnDatePickerContainer from "./C05RtnDatePicker";
 
 const C05DialogForm = memo((props) => {
 	const {
@@ -36,6 +33,7 @@ const C05DialogForm = memo((props) => {
 		isSupplierNameDisabled,
 		purchaseOrdersDisabled,
 		supplier,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -49,7 +47,7 @@ const C05DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError} {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={editing ? 1 : 0}>
 					<Grid container columns={24} spacing={editing ? 1 : 1}>
@@ -217,6 +215,7 @@ C05DialogForm.propTypes = {
 	itemDataReady: PropTypes.bool,
 	purchaseOrdersDisabled: PropTypes.bool,
 	handleRtnDateChanged: PropTypes.func,
+	slotProps: PropTypes.object,
 };
 
 C05DialogForm.displayName = "C05DialogForm";

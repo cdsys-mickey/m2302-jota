@@ -16,7 +16,7 @@ export const A19Provider = ({ children }) => {
 				DeptID: operator.CurDeptID,
 				AbbrName: operator.CurDeptName,
 			},
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 			dataType: A19.getDataTypeById(A19.DataType.STOCK),
 		},
 	});

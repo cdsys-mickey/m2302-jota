@@ -26,6 +26,7 @@ const A06DialogForm = memo((props) => {
 		itemDataReady,
 		editing,
 		updating,
+		slotProps,
 		...rest
 	} = props;
 	return (
@@ -39,7 +40,7 @@ const A06DialogForm = memo((props) => {
 					</FlexBox>
 				</Container>
 			)}
-			{readError && <FormErrorBox error={readError} />}
+			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
@@ -321,6 +322,7 @@ A06DialogForm.propTypes = {
 	updating: PropTypes.bool,
 	store: PropTypes.bool,
 	readError: PropTypes.object,
+	slotProps: PropTypes.object,
 };
 
 A06DialogForm.displayName = "A06Form";

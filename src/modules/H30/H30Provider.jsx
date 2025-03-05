@@ -14,7 +14,7 @@ export const H30Provider = ({ children }) => {
 			EFactID: null,
 			SProdID: null,
 			EProdID: null,
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

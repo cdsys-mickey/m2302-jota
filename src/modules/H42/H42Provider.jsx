@@ -20,7 +20,7 @@ export const H42Provider = ({ children }) => {
 			EDeptID: null,
 			reportType: H42ReportType.getDefaultOption(),
 			orderType: H42OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

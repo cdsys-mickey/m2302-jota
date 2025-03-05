@@ -14,7 +14,7 @@ export const H27Provider = ({ children }) => {
 			SDeptID: null,
 			EDeptID: null,
 			orderType: H27OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

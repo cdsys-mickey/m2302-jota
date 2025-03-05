@@ -16,7 +16,7 @@ export const H36Provider = ({ children }) => {
 			EPDLineID: null,
 			reportType: H36ReportType.getDefaultOption(),
 			orderType: H36OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

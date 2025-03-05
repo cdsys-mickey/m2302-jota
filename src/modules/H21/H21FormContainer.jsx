@@ -69,7 +69,7 @@ export const H21FormContainer = () => {
 	useInit(async () => {
 		const cutYM = await h21.getCutYM();
 		reset({
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 			CutYM: cutYM ? Forms.parseDate(cutYM, DateFormats.DATEFNS_YEAR_AND_MONTH) : null
 		})
 	}, []);

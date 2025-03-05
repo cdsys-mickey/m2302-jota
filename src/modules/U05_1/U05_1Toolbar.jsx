@@ -1,0 +1,27 @@
+import ContainerEx from "@/shared-components/ContainerEx";
+import { forwardRef, memo } from "react";
+import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import { U05_1FormButtonsContainer as U05_1FormButtonsContainer } from "./buttons/U05_1FormButtonsContainer";
+
+const U05_1Toolbar = memo(
+	forwardRef((props, ref) => {
+		const { ...rest } = props;
+		return (
+			<ContainerEx maxWidth="sm" alignLeft>
+				<FlexToolbar
+					ref={ref}
+					RightComponent={U05_1FormButtonsContainer}
+					{...rest}
+				/>
+			</ContainerEx>
+		);
+	})
+);
+
+U05_1Toolbar.propTypes = {};
+
+U05_1Toolbar.displayName = "U051Toolbar";
+export default U05_1Toolbar;
+
+
+

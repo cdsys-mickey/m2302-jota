@@ -7,12 +7,13 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 
 import { useCallback, useEffect, useState } from "react";
 import DropDownButton from "../DropDownButton";
+import useAppRedirect from "@/hooks/useAppRedirect";
 
 const DeptSwitchButtonContainer = (props) => {
 	const { ...rest } = props;
 	const { operator, token, switchDept } = useContext(AuthContext);
 	const { httpGetAsync } = useWebApi();
-
+	const appRedirect = useAppRedirect();
 	const [open, setOpen] = useState(false);
 	// const [debouncedOpen, setDebouncedOpen] = useDebounceState(open, { callback: setOpen });
 	const [debouncedOpen, setDebouncedOpen] = useDebounceState(open);
@@ -72,6 +73,10 @@ const DeptSwitchButtonContainer = (props) => {
 			} else {
 				throw error || new Error("未預期例外");
 			}
+		} catch (err) {
+			if (err?.status == 401) {
+				appRedirect.toLogin();
+			}
 		} finally {
 			setState(prev => ({
 				...prev,
@@ -79,7 +84,7 @@ const DeptSwitchButtonContainer = (props) => {
 			}))
 
 		}
-	}, [httpGetAsync, token]);
+	}, [appRedirect, httpGetAsync, token]);
 
 	useEffect(() => {
 		if (debouncedOpen && state.loading == null) {

@@ -16,7 +16,7 @@ export const H08Provider = ({ children }) => {
 			ECustID: null,
 			orderType: H08OrderType.getDefaultOption(),
 			orderDir: OrderDir.getOptionById(2),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

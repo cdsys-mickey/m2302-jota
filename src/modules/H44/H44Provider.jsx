@@ -16,7 +16,7 @@ export const H44Provider = ({ children }) => {
 			Times: null,
 			Minus: false,
 			orderType: H44OrderType.getDefaultOption(),
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

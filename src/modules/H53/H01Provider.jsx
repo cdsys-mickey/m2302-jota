@@ -12,7 +12,7 @@ export const H01Provider = ({ children }) => {
 			EDate: null,
 			InclTX: true,
 			InclTest: false,
-			outputType: StdPrint.findById(StdPrint.OutputModes.HTML),
+			outputType: StdPrint.getDefaultOption(),
 		},
 	});
 

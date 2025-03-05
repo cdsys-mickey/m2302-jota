@@ -1,13 +1,15 @@
-import { Grid, Skeleton } from "@mui/material";
+import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
 
 const TaskMessageColumn = (props) => {
-	const { loading, children, ...rest } = props;
-	const isLoading = loading && !children;
+	const { ...rest } = props;
+
 	return (
-		<Grid item pr={1} xs={21} {...rest}>
-			{isLoading ? <Skeleton /> : children || ""}
-		</Grid>
+		<ListColumn
+			// pr={1} 
+			xs={17}
+			{...rest}
+		/>
 	);
 };
 

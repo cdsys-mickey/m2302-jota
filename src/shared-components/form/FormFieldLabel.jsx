@@ -126,6 +126,7 @@ FormFieldLabel.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	flex: PropTypes.bool,
 	noWrap: PropTypes.bool,
+	inline: PropTypes.bool,
 	stringify: PropTypes.func,
 	slotProps: PropTypes.object
 };

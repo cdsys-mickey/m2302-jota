@@ -45,6 +45,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		`
 		ProdID,
 		ProdData,
+		InvData,
 		Barcode,
 		BarPR,
 		catL,
