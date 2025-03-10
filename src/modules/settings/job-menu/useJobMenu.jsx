@@ -313,7 +313,7 @@ export const useJobMenu = () => {
 				handleRefreshPrompt();
 				saveAction.finish();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			saveAction.fail({

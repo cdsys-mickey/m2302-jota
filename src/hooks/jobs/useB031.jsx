@@ -97,7 +97,7 @@ export const useB031 = () => {
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating();
@@ -133,7 +133,7 @@ export const useB031 = () => {
 
 					grid.initGridData(data.quotes);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -206,7 +206,7 @@ export const useB031 = () => {
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
-	// 				throw error || new Error("未預期例外");
+	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
 	// 			crud.failUpdating();
@@ -233,7 +233,7 @@ export const useB031 = () => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating();
@@ -258,9 +258,9 @@ export const useB031 = () => {
 							id: itemData?.InqID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除詢價單 ${itemData?.InqID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -481,7 +481,7 @@ export const useB031 = () => {
 						totalElements: payload.Select?.TotalRecord,
 					}));
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error("peek failed", err);
@@ -519,7 +519,7 @@ export const useB031 = () => {
 					toastEx.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				importProdsAction.fail({ error: err });

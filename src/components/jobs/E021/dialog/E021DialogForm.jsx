@@ -20,20 +20,18 @@ import { E021ProdGridContainer } from "./grid/E021ProdGridContainer";
 const E021DialogForm = memo((props) => {
 	const {
 		readError,
-		squaredDisabled,
 		readWorking,
 		itemDataReady,
 		creating,
 		editing,
 		updating,
 		handleCustomerOrdersChanged,
-		customerOrdersDisabled,
+		// customerOrdersDisabled,
 		handleRetailChange,
 		handleCustomerChange,
 		validateCustomer,
 		customerRequired,
 		handleTaxTypeChange,
-		// handleRecdAmtChange,
 		slotProps,
 		...rest
 	} = props;
@@ -150,7 +148,7 @@ const E021DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item md={9}>
+							<Grid item md={8}>
 								<CustomerPurchaseOrderPicker
 									typo
 									multiple
@@ -158,9 +156,8 @@ const E021DialogForm = memo((props) => {
 									label="訂購單號"
 									// virtualize
 									// fadeOutDisabled
-									// onChanged={handleLoadProdsSubmit}
 									onChanged={handleCustomerOrdersChanged}
-									disabled={customerOrdersDisabled}
+									// disabled={customerOrdersDisabled}
 									disableOpenOnInput
 									// disableClose
 									slotProps={{
@@ -176,7 +173,7 @@ const E021DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item md={5}>
+							<Grid item md={6}>
 								<TextFieldWrapper
 									// dense
 									typo
@@ -218,7 +215,7 @@ const E021DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item md={9}>
+							<Grid item md={8}>
 								<TextFieldWrapper
 									typo
 									label="送貨地址"
@@ -226,7 +223,7 @@ const E021DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item md={3}>
+							<Grid item md={4}>
 								<TransportTypePicker
 									typo
 									name="transType"
@@ -346,10 +343,11 @@ E021DialogForm.propTypes = {
 	squaredDisabled: PropTypes.bool,
 	handleRetailChange: PropTypes.func,
 	handleTaxTypeChange: PropTypes.func,
-	// handleRecdAmtChange: PropTypes.func,
 	handleCustomerChange: PropTypes.func,
 	validateCustomer: PropTypes.func,
+	handleCustomerOrdersChanged: PropTypes.func,
 	customerRequired: PropTypes.bool,
+	// customerOrdersDisabled: PropTypes.bool,
 	slotProps: PropTypes.object,
 };
 

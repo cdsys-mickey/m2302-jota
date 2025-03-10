@@ -39,7 +39,7 @@ export const useF05 = () => {
 					toastEx.success("結轉已成功");
 					// crud.doneUpdating();
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating(err);
@@ -81,7 +81,7 @@ export const useF05 = () => {
 						data: data,
 					});
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failLoading(err);

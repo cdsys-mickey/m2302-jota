@@ -151,7 +151,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
-						resetOptionsOnChange: true,
+						clearOptionsOnChange: true,
 					})
 				),
 				title: "商品編號",

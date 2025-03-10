@@ -74,7 +74,7 @@ export const useA17 = () => {
 					});
 					toastEx.success("單位參數已更新");
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating(err);

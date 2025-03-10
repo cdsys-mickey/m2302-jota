@@ -127,7 +127,7 @@ export const useC01 = () => {
 					sqtyManager.recoverStockMap(data.prods);
 					grid.handleGridDataLoaded(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -193,7 +193,7 @@ export const useC01 = () => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating();
@@ -263,7 +263,7 @@ export const useC01 = () => {
 					sqtyManager.updateStockQty(prodId, payload.StockQty);
 					return payload;
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢庫存失敗", err);
@@ -531,7 +531,7 @@ export const useC01 = () => {
 						});
 					}
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				transformAction.fail({ error: err });
@@ -609,7 +609,7 @@ export const useC01 = () => {
 						});
 					}
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				transformListAction.fail({ error: err });

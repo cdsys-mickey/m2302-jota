@@ -30,17 +30,24 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 	}, [height])
 	const form = useForm({
 		defaultValues: {
-			quotes: [],
+			SalDate: new Date(),
+			ArrDate: new Date(),
+			taxExcluded: false,
+			customerOrders: [],
+			retail: false,
+			RecdAmt: 0,
+			prods: [],
 		},
 	});
+	const { setValue, reset } = form;
 
 	const e021 = useContext(E021Context);
+	const { promptLoadPurchaseOrder } = e021;
 
 	const salesDate = useWatch({
 		name: "SalDate",
 		control: form.control
 	})
-
 	const debouncedSalesDate = useDebounceObject(salesDate, 300);
 
 	useChangeTracking(() => {
@@ -48,6 +55,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 			form.setValue("ArrDate", debouncedSalesDate)
 		}
 	}, [debouncedSalesDate]);
+
 
 	const arrDate = useWatch({
 		name: "ArrDate",
@@ -75,6 +83,8 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		name: "employee",
 		control: form.control
 	})
+
+
 
 	const scrollable = useScrollable({
 		height: _height,
@@ -126,7 +136,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 						forId: true,
 						cst: customer?.CustID || "",
 						retail: retail,
-						compTel: compTel,
+						// compTel: compTel,
 						disableClearable: true,
 						withPrice: true,
 						slotProps: {
@@ -136,7 +146,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
-						resetOptionsOnChange: true,
+						clearOptionsOnChange: true,
 					})
 				),
 				title: "商品編號",
@@ -238,7 +248,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 		],
-		[compTel, customer?.CustID, e021.getSPriceClassName, e021.spriceDisabled, e021.sqtyDisabled, readOnly, retail]
+		[customer?.CustID, e021.getSPriceClassName, e021.spriceDisabled, e021.sqtyDisabled, readOnly, retail]
 	);
 
 	const gridMeta = useDSGMeta({
@@ -289,20 +299,20 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		return !retail;
 	}, [retail])
 
-	const customerOrdersDisabled = useMemo(() => {
-		return !!e021.itemData?.SalID || (!customer && !retail);
-	}, [customer, e021.itemData?.SalID, retail])
+	// const customerOrdersDisabled = useMemo(() => {
+	// 	return !!e021.itemData?.SalID || (!customer && !retail);
+	// }, [customer, e021.itemData?.SalID, retail])
 
 	const isFieldDisabled = useCallback(
 		(field) => {
 			switch (field.name) {
-				case "customerOrders":
-					return customerOrdersDisabled;
+				// case "customerOrders":
+				// 	return customerOrdersDisabled;
 				default:
 					return false;
 			}
 		},
-		[customerOrdersDisabled]
+		[]
 	);
 
 	const formMeta = useFormMeta(
@@ -344,13 +354,55 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		e021.onRefreshGridSubmitError
 	);
 
+	// const customerOrders = useWatch({
+	// 	name: "customerOrders",
+	// 	control: form.control
+	// })
+	// const debouncedCustomerOrders = useDebounceObject(customerOrders, 300);
+
+	// const ordersChangeMethod = useMemo(() => {
+	// 	return e021.handleCustomerOrdersChanged2({
+	// 		setValue: form.setValue,
+	// 		getValues: form.getValues,
+	// 		formMeta,
+	// 		reset: form.reset
+	// 	})
+	// }, [e021, form.getValues, form.reset, form.setValue, formMeta])
+
+	// const handleCustomerOrdersChanged = useCallback((newValue) => {
+	// 	ordersChangeMethod(newValue);
+	// }, [ordersChangeMethod]);
+
+	// useChangeTracking(() => {
+	// 	if (e021.editing) {
+	// 		handleCustomerOrdersChanged(debouncedCustomerOrders);
+	// 	}
+	// }, [debouncedCustomerOrders]);
 
 	useEffect(() => {
 		if (e021.itemDataReady) {
 			console.log("e021 form reset", e021.itemData);
-			form.reset(e021.itemData);
+			reset(e021.itemData);
 		}
-	}, [e021.itemData, e021.itemDataReady, form]);
+	}, [e021.itemData, e021.itemDataReady, reset]);
+
+	// useEffect(() => {
+	// 	if (e021.itemInitialized) {
+	// 		console.log("item initialized");
+	// 		reset({});
+	// 	}
+	// }, [e021.itemInitialized, reset]);
+
+	// useEffect(() => {
+	// 	if (e021.itemDataReady) {
+	// 		promptLoadPurchaseOrder({ setValue: setValue });
+	// 	}
+	// }, [e021.itemDataReady, promptLoadPurchaseOrder, setValue]);
+	// useInit(() => {
+	// 	if (e021.itemDataReady ) {
+	// 		promptLoadPurchaseOrder({ setValue, orderId: e021.purchaseOrderIdRef.current })
+	// 	}
+	// }, [e021.itemDataReady, e021.purchaseOrderIdRef.current]);
 
 	useEffect(() => {
 		if (e021.committed) {
@@ -406,18 +458,24 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 								getValues: form.getValues,
 								formMeta,
 								gridMeta,
-								handleSubmit: handleRefreshGridSubmit
+								handleRefreshGridSubmit
 							})}
 							handleRetailChange={e021.handleRetailChange({ setValue: form.setValue, gridMeta })}
 							validateCustomer={validateCustomer}
 							customerRequired={customerRequired}
 							handleTaxTypeChange={e021.handleTaxTypeChange({ setValue: form.setValue, getValues: form.getValues })}
 							// handleRecdAmtChange={e021.handleRecdAmtChange({ setValue: form.setValue, getValues: form.getValues })}
-							customerOrdersDisabled={customerOrdersDisabled}
-							handleCustomerOrdersChanged={e021.handleCustomerOrdersChanged({
+							// customerOrdersDisabled={customerOrdersDisabled}
+							// handleCustomerOrdersChanged={e021.handleCustomerOrdersChanged({
+							// 	setValue: form.setValue,
+							// 	getValues: form.getValues,
+							// 	reset: form.reset
+							// })}
+							handleCustomerOrdersChanged={e021.handleCustomerOrdersChanged2({
 								setValue: form.setValue,
 								getValues: form.getValues,
-								reset: form.reset
+								reset: form.reset,
+								formMeta,
 							})}
 						/>
 
@@ -426,6 +484,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 					{/* 側邊欄 */}
 					<E021Drawer />
 				</DialogExContainer>
+				{/* <LoadingBackdrop open={e021.loading} /> */}
 			</FormMetaProvider>
 		</FormProvider>
 	);

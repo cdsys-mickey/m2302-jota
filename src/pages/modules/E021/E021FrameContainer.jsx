@@ -3,15 +3,19 @@ import E021ListHeader from "@/components/jobs/E021/list/E021ListHeader";
 import E021ListToolbar from "@/components/jobs/E021/list/E021ListToolbar";
 import { E021ListViewContainer } from "@/components/jobs/E021/list/E021ListViewContainer";
 import { E021SearchFormContainer } from "@/components/jobs/E021/search/E021SearchFormContainer";
+import { E021Context } from "@/contexts/E021/E021Context";
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useQuerySync } from "@/shared-hooks/useQuerySync";
 import { Box, useTheme } from "@mui/material";
+import { useCallback } from "react";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 export const E021FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);
+	const { clearParams } = appFrame;
 	const searchForm = useForm({
 		defaultValues: {
 			// lvSquared: E021.getSquaredOptionById(E021.SquaredState.NONE),
@@ -19,10 +23,36 @@ export const E021FrameContainer = () => {
 		}
 	});
 	const theme = useTheme();
+	const e021 = useContext(E021Context);
+	const { createWithPurchaseOrder } = e021;
+
+
 	const boxStyles = useMemo(
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
 	);
+
+
+	// const handleQuerySync = useCallback(
+	// 	(newValue) => {
+	// 		if (newValue) {
+	// 			clearParams();
+	// 			loadPurchaseOrder({ id: newValue });
+	// 		}
+	// 	},
+	// 	[clearParams, loadPurchaseOrder]
+	// );
+	const handleQuerySync = useCallback(
+		(newValue) => {
+			if (newValue) {
+				// clearParams();
+				createWithPurchaseOrder({ id: newValue });
+			}
+		},
+		[createWithPurchaseOrder]
+	);
+
+	useQuerySync("target", handleQuerySync);
 
 	return (
 		<FormProvider {...searchForm}>

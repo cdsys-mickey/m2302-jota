@@ -107,7 +107,7 @@ export const useD01 = () => {
 	// 				passed: false,
 	// 			};
 	// 		} else {
-	// 			throw error || new Error("未預期例外");
+	// 			throw error ?? new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
 	// 		toastEx.error("讀取設定發生錯誤", err), {
@@ -178,7 +178,7 @@ export const useD01 = () => {
 
 					grid.handleGridDataLoaded(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -222,7 +222,7 @@ export const useD01 = () => {
 
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				if (creating) {
@@ -307,7 +307,7 @@ export const useD01 = () => {
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
-	// 				throw error || new Error("未預期例外");
+	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
 	// 			crud.failUpdating();
@@ -334,9 +334,9 @@ export const useD01 = () => {
 							id: itemData?.OutID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除領料單 ${itemData?.OutID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -941,7 +941,7 @@ export const useD01 = () => {
 			if (status.success) {
 				crud.promptUpdating();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			toastEx.error("編輯檢查失敗", err);

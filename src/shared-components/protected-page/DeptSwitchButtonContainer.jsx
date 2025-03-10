@@ -71,7 +71,7 @@ const DeptSwitchButtonContainer = (props) => {
 					loading: false
 				}))
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			if (err?.status == 401) {

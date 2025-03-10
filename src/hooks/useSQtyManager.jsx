@@ -51,7 +51,8 @@ export default function useSQtyManager(opts = {}) {
 
 	const reset = useCallback(() => {
 		stockQtyMap.clear();
-	}, [stockQtyMap]);
+		preparedQtyMap.clear();
+	}, [preparedQtyMap, stockQtyMap]);
 
 	const containsProdInStock = useCallback((prodId) => {
 		return stockQtyMap.has(prodId);
@@ -104,7 +105,7 @@ export default function useSQtyManager(opts = {}) {
 	// 				passed: false,
 	// 			};
 	// 		} else {
-	// 			throw error || new Error("未預期例外");
+	// 			throw error ?? new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
 	// 		toastEx.error("讀取設定發生錯誤", err);
@@ -431,6 +432,8 @@ export default function useSQtyManager(opts = {}) {
 					payload.Stock?.forEach((x) =>
 						stockQtyMap.set(x.ProdID, Number(x.Qty))
 					);
+
+					preparedQtyMap.clear();
 					payload.NotSQty?.forEach(x => {
 						preparedQtyMap.set(x.ProdID, Number(x.NotQty));
 					})
@@ -455,7 +458,7 @@ export default function useSQtyManager(opts = {}) {
 					console.log("preparedQtyMap:", preparedQtyMap);
 
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("取得庫存失敗", err);
@@ -503,7 +506,7 @@ export default function useSQtyManager(opts = {}) {
 
 					console.log("preparedQtyMap:", preparedQtyMap);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("取得目前訂購量失敗", err);

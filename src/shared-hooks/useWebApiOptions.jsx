@@ -3,6 +3,8 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import Types from "../shared-modules/sd-types";
 import { useChangeTracking } from "./useChangeTracking";
 import { useWebApi } from "./useWebApi";
+import CommonStyles from "@/shared-modules/CommonStyles.mjs";
+import CommonCSS from "@/shared-modules/CommonCSS.mjs";
 
 const defaultTriggerServerFilter = (q) => {
 	return !!q;
@@ -21,7 +23,7 @@ export const useWebApiOptions = (opts = {}) => {
 	const {
 		// 辨識用, 與 OptionPicker.name 不同
 		multiple,
-		id = "NO_ID",
+		name = "NO_ID",
 		//http
 		url,
 		options,
@@ -56,9 +58,9 @@ export const useWebApiOptions = (opts = {}) => {
 		debug = false,
 		// Enter & Tab
 		findByInput = false,
-		resetOnChange = false,
-		resetValueOnChange = false,
-		resetOptionsOnChange = false,
+		clearOnChange = false,
+		clearValueOnChange = false,
+		clearOptionsOnChange = false,
 		// pressToFind,
 		mockDelay = 0,
 		...rest
@@ -175,7 +177,7 @@ export const useWebApiOptions = (opts = {}) => {
 			if (status.success) {
 				return getData(payload)?.[0];
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		},
 		[
@@ -212,7 +214,7 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const fetchOptions = useCallback(
 		async (query, { onError: _onError } = {}) => {
-			console.log(`${id}.loadOptions(${query || ""})`);
+			console.log(`${name}.loadOptions(${query || ""})`);
 			setPickerState((prev) => ({
 				...prev,
 				loading: true,
@@ -248,7 +250,7 @@ export const useWebApiOptions = (opts = {}) => {
 				}
 			} catch (err) {
 				// 正常情況不該跑到這裡
-				console.error(`${id}.loadOptions failed`, err);
+				console.error(`${name}.loadOptions failed`, err);
 				if (_onError) {
 					_onError(err);
 				} else {
@@ -270,7 +272,7 @@ export const useWebApiOptions = (opts = {}) => {
 			}
 		},
 		[
-			id,
+			name,
 			sendAsync,
 			method,
 			url,
@@ -355,13 +357,13 @@ export const useWebApiOptions = (opts = {}) => {
 	 * 來源條件改變, 清空目前值, resetLoading
 	 */
 	useChangeTracking(() => {
-		if (resetOnChange || resetValueOnChange) {
+		if (clearOnChange || clearValueOnChange) {
 			// if (debug) {
 			console.log(
-				`${id}.resetValueOnChange: ${url}${querystring ? " " + querystring : ""
-				}, params:`,
-				params
+				`%cOptionPicker[${name}] VALUE CLEARED(clearValueOnChange ON) →`,
+				CommonCSS.MSG_WARN,
 			);
+			console.log(`\t%c${url}${querystring ? "?" + querystring : ""}${params ? `params: ${JSON.stringify(params)}` : ""}`, CommonCSS.MSG_INFO)
 			// }
 			onChange(multiple ? [] : null);
 			// resetLoading();
@@ -369,13 +371,13 @@ export const useWebApiOptions = (opts = {}) => {
 	}, [url, querystring, params]);
 
 	useChangeTracking(() => {
-		if (resetOnChange || resetOptionsOnChange) {
+		if (clearOnChange || clearOptionsOnChange) {
 			// if (debug) {
 			console.log(
-				`${id}.resetOptionsOnChange: ${url}${querystring ? " " + querystring : ""
-				}, params:`,
-				params
+				`%cOptionPicker[${name}] LOADING RESET(clearOptionsOnChange ON) → `,
+				CommonCSS.MSG_WARN,
 			);
+			console.log(`\t%c${url}${querystring ? "?" + querystring : ""}${params ? `params: ${JSON.stringify(params)}` : ""}`, CommonCSS.MSG_INFO);
 			// }
 			// onChange(multiple ? [] : null);
 			resetLoading();
@@ -385,13 +387,11 @@ export const useWebApiOptions = (opts = {}) => {
 	/** filterByServer 時, 關閉 popper 則重設 loading 狀態
 	 */
 	useChangeTracking(() => {
-		if (debug) {
-			console.log(
-				"[filterByServer, open] changed:",
-				`${filterByServer}, ${open}`
-			);
-		}
 		if (filterByServer && !open) {
+			console.log(
+				`%cOptionPicker[${name}] LOADING RESET(filterByServer ON, popper closed)`,
+				CommonCSS.MSG_WARN
+			);
 			resetLoading();
 		}
 	}, [filterByServer, open]);
@@ -402,7 +402,7 @@ export const useWebApiOptions = (opts = {}) => {
 	useChangeTracking(() => {
 		if (debug) {
 			console.log(
-				`${id}.[shouldLoadOptions] changed:`,
+				`${name}.[shouldLoadOptions] changed:`,
 				`${shouldLoadOptions}`
 			);
 		}

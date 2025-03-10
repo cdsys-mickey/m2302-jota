@@ -81,17 +81,18 @@ export const useMessaging = () => {
 
 			handlePopoverClose();
 			if (jobId) {
-				const deptId = payload?.DeptID;
-				const deptName = payload?.AbbrName;
+				// 兩種名稱分別來自 AppPushMessage 及 MessagingResult
+				const deptId = payload?.DeptID ?? payload?.deptID;
+				const deptName = payload?.AbbrName ?? payload?.deptName;
 
 				if (auth.operator?.CurDeptID !== deptId) {
-					toastEx.error(`此通知屬於 ${deptName} 請切換門市後再進行操作`);
+					toastEx.error(`此作業屬於 ${deptName}，請切換門市後再進行操作`);
 					return;
 				}
 
 				selectJobById(jobId, {
 					...(orderId && {
-						id: orderId,
+						target: orderId,
 					}),
 				});
 			}

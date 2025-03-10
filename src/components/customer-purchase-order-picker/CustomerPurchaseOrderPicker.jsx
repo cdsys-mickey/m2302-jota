@@ -24,15 +24,19 @@ export const CustomerPurchaseOrderPicker = (props) => {
 	const querystring = useMemo(() => {
 		const obj = {
 			tp: 100,
-			retail: retail ? 1 : 0,
-			cst: customer?.CustID || ""
+			...(retail && {
+				retail: 1,
+			}),
+			...(customer?.CustID && {
+				cst: customer.CustID ?? ""
+			})
 		};
 		return queryString.stringify(obj);
 	}, [customer?.CustID, retail]);
 
-	const disabled = useMemo(() => {
-		return (!retail && !customer);
-	}, [customer, retail]);
+	// const disabled = useMemo(() => {
+	// 	return (!retail && !customer);
+	// }, [customer, retail]);
 
 	return (
 		<OptionPickerWrapper
@@ -44,13 +48,14 @@ export const CustomerPurchaseOrderPicker = (props) => {
 			getOptionLabel={DepOrders.getOptionLabel}
 			isOptionEqualToValue={DepOrders.isOptionEqualToValue}
 			renderTagLabel={DepOrders.renderTagLabel}
-			disabled={disabled}
+			// disabled={disabled}
 			optionLabelSize="md"
 			GridHeaderComponent={CustomerPurchaseOrderGridHeader}
 			GridRowComponent={CustomerPurchaseOrderGridRow}
 			notFoundText="訂貨單號 ${id} 不存在"
 			inputParam="fz"
-			resetOnChange
+			clearOptionsOnChange
+			// clearOnChange
 			// disableClose
 			{...rest}
 		/>

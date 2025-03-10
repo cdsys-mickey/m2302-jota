@@ -124,7 +124,7 @@ export const useProdGrid = ({
 						totalElements: payload.Select?.TotalRecord,
 					}));
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error("peek failed", err);
@@ -239,7 +239,7 @@ export const useProdGrid = ({
 				reload();
 				saveAction.finish();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			saveAction.fail({

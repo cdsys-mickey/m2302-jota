@@ -254,7 +254,7 @@ export const useA06 = ({ token, mode }) => {
 		);
 	}, []);
 
-	const promptCreating = useCallback(
+	const handlePromptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			const data = {
@@ -284,8 +284,8 @@ export const useA06 = ({ token, mode }) => {
 							id: crud.itemData?.CustID
 						},
 					});
-					crud.cancelAction();
 					if (status.success) {
+						crud.cancelAction();
 						toastEx.success(
 							`成功删除${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
 							}商品${crud.itemData.CustData}`
@@ -428,7 +428,7 @@ export const useA06 = ({ token, mode }) => {
 		onEditorSubmitError,
 		confirmReturn,
 		// CRUD OVERRIDES
-		promptCreating,
+		handlePromptCreating,
 		confirmDelete,
 		// REVIEW
 		reviewing,

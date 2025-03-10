@@ -22,7 +22,7 @@ const ProdCatSPicker = (props) => {
 		return catM || catMValue?.MClas;
 	}, [catM, catMValue?.MClas])
 
-	const disabled = useMemo(() => {
+	const _disabled = useMemo(() => {
 		return !_catL || !_catM || readOnly;
 	}, [_catL, _catM, readOnly]);
 
@@ -42,12 +42,12 @@ const ProdCatSPicker = (props) => {
 			name={name}
 			label={label}
 			bearer={token}
-			disabled={disabled}
+			disabled={_disabled}
 			url={url}
 			getOptionLabel={ProdSCats.getOptionLabel}
 			isOptionEqualToValue={ProdSCats.isOptionEqualToValue}
 			notFoundText="小分類 ${id} 不存在"
-			resetOnChange
+			clearOnChange
 			// blurToLookup
 			{...rest}
 		/>

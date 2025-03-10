@@ -46,9 +46,9 @@ const WebApiOptionPicker = memo(
 			inputParam,
 			findByInput,
 			disableOpenOnInput,
-			resetOnChange,
-			resetOptionsOnChange,
-			resetValueOnChange,
+			clearOnChange,
+			clearOptionsOnChange,
+			clearValueOnChange,
 			mockDelay,
 			...rest
 		} = props;
@@ -68,6 +68,7 @@ const WebApiOptionPicker = memo(
 			findByInput: _findByInput,
 			// pressToFind: _pressToFind,
 		} = useWebApiOptions({
+			name,
 			disableOnSingleOption,
 			disableClose,
 			multiple,
@@ -101,9 +102,9 @@ const WebApiOptionPicker = memo(
 			inputParam,
 			findByInput,
 			disableOpenOnInput,
-			resetOnChange,
-			resetOptionsOnChange,
-			resetValueOnChange,
+			clearOnChange,
+			clearOptionsOnChange,
+			clearValueOnChange,
 			mockDelay
 		});
 
@@ -171,9 +172,9 @@ WebApiOptionPicker.propTypes = {
 	open: PropTypes.bool,
 	disableOpenOnInput: PropTypes.bool,
 	// pressToFind: PropTypes.bool,
-	resetOnChange: PropTypes.bool,
-	resetValueOnChange: PropTypes.bool,
-	resetOptionsOnChange: PropTypes.bool,
+	clearOnChange: PropTypes.bool,
+	clearValueOnChange: PropTypes.bool,
+	clearOptionsOnChange: PropTypes.bool,
 	findByInput: PropTypes.func,
 	inputParam: PropTypes.string,
 	options: PropTypes.array,

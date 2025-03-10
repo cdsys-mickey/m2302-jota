@@ -148,7 +148,7 @@ export const useE01 = () => {
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating();
@@ -194,7 +194,7 @@ export const useE01 = () => {
 					// })
 					grid.initGridData(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -260,7 +260,7 @@ export const useE01 = () => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating();
@@ -287,7 +287,7 @@ export const useE01 = () => {
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
-	// 				throw error || new Error("未預期例外");
+	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
 	// 			crud.failUpdating();
@@ -314,9 +314,9 @@ export const useE01 = () => {
 							id: itemData?.OrdID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除訂貨單 ${itemData?.OrdID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -383,7 +383,7 @@ export const useE01 = () => {
 						})
 					};
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢報價失敗", err);
@@ -780,7 +780,7 @@ export const useE01 = () => {
 						totalElements: payload.Select?.TotalRecord,
 					}));
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error("peek failed", err);
@@ -818,7 +818,7 @@ export const useE01 = () => {
 					toastEx.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				importProdsAction.fail({ error: err });
@@ -960,7 +960,7 @@ export const useE01 = () => {
 							customer: data?.customer,
 						});
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					console.error("onRefreshGridSubmit failed", err);
@@ -985,7 +985,8 @@ export const useE01 = () => {
 	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta, handleSubmit }) => async (newValue) => {
 		console.log("handleCustomerChange", newValue);
 		formMeta.asyncRef.current.supressEvents = true;
-		setValue("CustName", newValue?.CustData || "");
+		// setValue("CustName", newValue?.CustData ?? "");
+		setValue("CustName", newValue?.AbbrName ?? "");
 		let customerInfo = null;
 		if (newValue) {
 			const retail = getValues("retail");
@@ -1001,7 +1002,7 @@ export const useE01 = () => {
 				if (status.success) {
 					customerInfo = payload.data[0];
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error(err);
@@ -1053,7 +1054,7 @@ export const useE01 = () => {
 			if (status.success) {
 				crud.promptUpdating();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			toastEx.error("編輯檢查失敗", err);

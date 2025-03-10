@@ -141,7 +141,7 @@ export const useD05 = () => {
 
 					grid.initGridData(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -184,7 +184,7 @@ export const useD05 = () => {
 
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				if (creating) {
@@ -269,7 +269,7 @@ export const useD05 = () => {
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
-	// 				throw error || new Error("未預期例外");
+	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
 	// 			crud.failUpdating();
@@ -303,9 +303,9 @@ export const useD05 = () => {
 							id: itemData?.CxlID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除報廢單 ${itemData?.CxlID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -413,7 +413,7 @@ export const useD05 = () => {
 							["SAmt"]: newAmt,
 						};
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					toastEx.error("查詢報價失敗", err);
@@ -469,7 +469,7 @@ export const useD05 = () => {
 							["SAmt"]: (parseFloat(payload["SAmt"]) || 0).toFixed(2),
 						};
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					toastEx.error("查詢報價失敗", err);
@@ -724,7 +724,7 @@ export const useD05 = () => {
 							updateAmt({ setValue, formData: data });
 							toastEx.info("商品單價已更新");
 						} else {
-							throw error || new Error("未預期例外");
+							throw error ?? new Error("未預期例外");
 						}
 					} else {
 						updateAmt({
@@ -759,7 +759,7 @@ export const useD05 = () => {
 			if (status.success) {
 				crud.promptUpdating();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			toastEx.error("編輯檢查失敗", err);

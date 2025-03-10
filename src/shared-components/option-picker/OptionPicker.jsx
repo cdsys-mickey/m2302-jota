@@ -1,5 +1,7 @@
 import Types from "@/shared-modules/sd-types";
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { toastEx } from "@/helpers/toast-ex";
+import Colors from "@/modules/md-colors";
 import {
 	Autocomplete,
 	Chip,
@@ -25,11 +27,6 @@ import MuiStyles from "../../shared-modules/sd-mui-styles";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
-import Colors from "@/modules/md-colors";
-import { toastEx } from "@/helpers/toast-ex";
-import OptionPickerPopper from "./popper/OptionPickerPopper";
-import { useEffect } from "react";
-import { useChangeTrackingJson } from "@/shared-hooks/useChangeTrackingJson";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -238,7 +235,7 @@ const OptionPicker = memo(
 
 		const handleClose = useCallback(
 			(e) => {
-				console.log("OptionPicker.onClose", e);
+				// console.log("OptionPicker.onClose", e);
 				// console.log("open", popperOpen);
 				// if (!popperOpen) {
 				// 	return;
@@ -293,7 +290,7 @@ const OptionPicker = memo(
 
 		const handleChange = useCallback(
 			(event, value, reason) => {
-				console.log(`OptionPicker.handleChange`, value);
+				// console.log(`OptionPicker.handleChange`, value);
 				asyncRef.current.dirty = false;
 				if (onChange) {
 					console.log(`\ttriggered from parent, reason: ${reason}, event: `, event);
@@ -484,7 +481,7 @@ const OptionPicker = memo(
 		);
 
 		const handleAutocompleteKeyDown = useCallback((e) => {
-			console.log("handleAutocompleteKeyDown", e);
+			// console.log("handleAutocompleteKeyDown", e);
 			switch (e.key) {
 				case "ArrowUp":
 				case "ArrowDown":
@@ -497,7 +494,7 @@ const OptionPicker = memo(
 
 		const handleBlur = useCallback(
 			async (e, opts) => {
-				console.log(`${OptionPicker.displayName}.handleBlur`, e);
+				// console.log(`${OptionPicker.displayName}.handleBlur`, e);
 				// 離開輸入焦點就清除錯誤
 				if (blurToClearErrors && name && clearErrors) {
 					clearErrors(name);
@@ -873,7 +870,7 @@ const OptionPicker = memo(
 
 
 		useChangeTracking(() => {
-			console.log("value changed", value);
+			console.log(`[${name}].value changed`, value);
 			// 當選項改變, 且有值, 且非 multiple
 			if (focusNextCellOrField
 				&& (
@@ -882,9 +879,11 @@ const OptionPicker = memo(
 				)
 				&& !multiple && !supressEvents && !disabled
 			) {
-				console.log(`[${name}]OptionPicker.changed, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`, value);
+				console.log(`\tfocusNextCellOrField triggered, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`);
 				asyncRef.current.performFocusNext = false;
 				focusNextCellOrField();
+			} else {
+				console.log("\tfocusNextCellOrField not triggered");
 			}
 		}, [value]);
 		// useEffect(() => {

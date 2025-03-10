@@ -29,7 +29,7 @@ export default function useServiceStatus(opts = {}) {
 				setLoading(false);
 				setEnabled(payload["data"][0]["Using"] === "1");
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			console.error("getStatus failed", err);
@@ -55,7 +55,7 @@ export default function useServiceStatus(opts = {}) {
 					toastEx.warn("下載服務已鎖定");
 				}
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			console.error("updateStatus failed", err);

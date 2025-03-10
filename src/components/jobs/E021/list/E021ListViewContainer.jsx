@@ -8,7 +8,7 @@ import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { E021ListRowContainer } from "./E021ListRowContainer";
 import { E021Context } from "@/contexts/E021/E021Context";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import E021 from "@/modules/md-e021";
+import E021 from "@/modules/E021.mjs";
 import { useMemo } from "react";
 
 export const E021ListViewContainer = () => {

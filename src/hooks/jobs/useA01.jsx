@@ -511,7 +511,7 @@ export const useA01 = ({ token, mode }) => {
 		[comboGrid, transGrid]
 	);
 
-	const promptCreating = useCallback(
+	const handlePromptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			setSelectedTab(A01.Tabs.INFO);
@@ -952,7 +952,7 @@ export const useA01 = ({ token, mode }) => {
 		confirmReturn,
 		resetGridData,
 		// CRUD OVERRIDES
-		promptCreating,
+		handlePromptCreating,
 		confirmDelete,
 		// REVIEW
 		reviewing,

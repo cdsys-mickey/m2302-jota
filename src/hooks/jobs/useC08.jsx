@@ -105,7 +105,7 @@ export const useC08 = () => {
 	// 				passed: false,
 	// 			};
 	// 		} else {
-	// 			throw error || new Error("未預期例外");
+	// 			throw error ?? new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
 	// 		toastEx.error("讀取設定發生錯誤", err), {
@@ -194,7 +194,7 @@ export const useC08 = () => {
 					sqtyManager.recoverStockMap(data.prods);
 					grid.initGridData(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -243,7 +243,7 @@ export const useC08 = () => {
 					}
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				if (creating) {
@@ -341,7 +341,7 @@ export const useC08 = () => {
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
-	// 				throw error || new Error("未預期例外");
+	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
 	// 			crud.failUpdating();
@@ -375,9 +375,9 @@ export const useC08 = () => {
 							id: itemData?.TxoID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除撥出單 ${itemData?.TxoID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -452,7 +452,7 @@ export const useC08 = () => {
 					sqtyManager.updateStockQty(prodId, payload.Stock);
 					return payload;
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢調撥成本失敗", err);
@@ -991,7 +991,7 @@ export const useC08 = () => {
 			if (status.success) {
 				crud.promptUpdating();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			toastEx.error("編輯檢查失敗", err);
@@ -1069,7 +1069,7 @@ export const useC08 = () => {
 							newOrders: newValue,
 						});
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					toastEx.error("載入訂購單商品失敗", err);
@@ -1113,7 +1113,7 @@ export const useC08 = () => {
 							handleRefreshAmt({ setValue, gridData: data.prods });
 							// toastEx.info("商品單價已更新");
 						} else {
-							throw error || new Error("未預期例外");
+							throw error ?? new Error("未預期例外");
 						}
 					} catch (err) {
 						toastEx.error("商品單價更新失敗", err);

@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
-import E021 from "@/modules/md-e021";
+import E021 from "@/modules/E021.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -17,12 +17,15 @@ import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "./useAppModule";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useInit } from "@/shared-hooks/useInit";
 
 export const useE021 = () => {
 	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
+	const purchaseOrderIdRef = useRef();
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
@@ -31,6 +34,7 @@ export const useE021 = () => {
 
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
+	const { clearParams } = useContext(AppFrameContext);
 
 	const [selectedOrd, setSelectedOrd] = useState();
 
@@ -124,7 +128,13 @@ export const useE021 = () => {
 		grid.initGridData(data.prods, {
 			fillRows: 13
 		});
+		console.log("grid cleared in promptCreating");
 	}, [crud, grid, sqtyManager]);
+
+	const handlePromptCreating = useCallback((e) => {
+		e?.stopPropagation();
+		promptCreating();
+	}, [promptCreating]);
 
 	const updateAmt = useCallback(({ setValue, formData, reset = false }) => {
 		if (reset) {
@@ -140,6 +150,34 @@ export const useE021 = () => {
 			setValue("RecdAmt", formData.RecdAmt);
 			setValue("ArecAmt", formData.ArecAmt);
 		}
+	}, []);
+
+	const updateCustomerData = useCallback(({ setValue, formMeta }) => (data) => {
+		formMeta.asyncRef.current.supressEvents = true;
+		setValue("retail", data ? data?.retail : false);
+		setValue("customer", data ? data?.customer : null);
+		setValue("CustName", data?.CustName || "");
+		setValue("CompTel", data?.CompTel || "");
+		setValue("RecAddr", data?.RecAddr || "");
+		setValue("InvAddr", data?.InvAddr || "");
+		setValue("UniForm", data?.UniForm || "");
+		setValue("transType", data?.transType || "");
+		setValue("employee", data?.employee || "");
+		setValue("taxExcluded", data?.taxExcluded || "");
+		setValue("paymentType", data?.paymentType || "");
+		// // 更新備註
+		setValue("remark", data?.remark || "");
+
+		// // 更新列印註記
+		if (data) {
+			setValue("dontPrtAmt", data.dontPrtAmt ?? false);
+		} else {
+			setValue("dontPrtAmt", false);
+		}
+		// // 更新數字
+
+
+		formMeta.asyncRef.current.supressEvents = false;
 	}, []);
 
 	const handleRefreshAmt = useCallback(
@@ -201,7 +239,7 @@ export const useE021 = () => {
 
 					grid.initGridData(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -209,6 +247,55 @@ export const useE021 = () => {
 		},
 		[httpGetAsync, token, crud, sqtyManager, grid]
 	);
+
+	const createWithPurchaseOrder = useCallback(
+		async ({ id }) => {
+			try {
+				// promptCreating();
+				crud.promptCreating();
+				crud.startReading("讀取中...");
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/sales/customer-invoices/create-with",
+					bearer: token,
+					params: {
+						id,
+					},
+				});
+				if (status.success) {
+					const data = E021.transformForReading(payload.data[0]);
+					crud.doneReading({
+						data: {
+							...data,
+							Date: new Date(),
+							ArrDate: new Date(),
+						},
+					});
+
+					sqtyManager.recoverStockMap(data.prods, {
+						// stock: {
+						// 	simulate: true
+						// }
+					});
+
+					grid.initGridData(data.prods, {
+						fillRows: true,
+					});
+					toastEx.info(`已帶入訂購單 ${id}`)
+
+					// setTimeout(() => {
+					// 	crud.promptCreating();
+					// 	toastEx.info(`已帶入訂購單 ${id}`)
+					// });
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				crud.failReading(err);
+			}
+		},
+		[httpGetAsync, token, crud, sqtyManager, grid]
+	);
+
 
 	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
 		let targetProdID;
@@ -294,7 +381,7 @@ export const useE021 = () => {
 					}
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				if (creating) {
@@ -330,35 +417,43 @@ export const useE021 = () => {
 		[crud, httpPostAsync, token, httpPutAsync, listLoader, loadItem, grid, sqtyManager, handleRefreshAmt, mapTooltip]
 	);
 
+	const cancelAction = useCallback(() => {
+		crud.cancelAction();
+		purchaseOrderIdRef.current = null;
+		crud.setItemData(null);
+		// 清除 query params
+		clearParams();
+	}, [clearParams, crud]);
+
 	const handleSelect = useCallback(
 		async (e, rowData) => {
 			console.log("handleSelect", rowData);
 			e?.stopPropagation();
-			crud.cancelAction();
+			cancelAction();
 
 			loadItem({ id: rowData.銷貨單號 });
 		},
-		[crud, loadItem]
+		[cancelAction, loadItem]
 	);
 
 	const confirmQuitCreating = useCallback(() => {
 		dialogs.confirm({
 			message: "確定要放棄新增?",
 			onConfirm: () => {
-				crud.cancelAction();
+				cancelAction();
 			},
 		});
-	}, [crud, dialogs]);
+	}, [cancelAction, dialogs]);
 
 	const confirmQuitUpdating = useCallback(() => {
 		dialogs.confirm({
 			message: "確定要放棄修改?",
 			onConfirm: () => {
-				crud.cancelAction();
+				cancelAction();
 				loadItem({ refresh: true });
 			},
 		});
-	}, [crud, dialogs, loadItem]);
+	}, [cancelAction, dialogs, loadItem]);
 
 	const confirmReturnReading = useCallback(() => {
 		dialogs.confirm({
@@ -386,7 +481,7 @@ export const useE021 = () => {
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
-	// 				throw error || new Error("未預期例外");
+	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
 	// 			crud.failUpdating();
@@ -426,9 +521,9 @@ export const useE021 = () => {
 							id: itemData?.SalID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						cancelAction();
 						toastEx.success(`成功删除銷貨單 ${itemData?.SalID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -441,7 +536,7 @@ export const useE021 = () => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
+	}, [cancelAction, crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
 
 	const onSearchSubmit = useCallback((data) => {
 		console.log("onSearchSubmit", data);
@@ -492,7 +587,7 @@ export const useE021 = () => {
 						...payload,
 					};
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢報價失敗", err);
@@ -803,7 +898,7 @@ export const useE021 = () => {
 						totalElements: payload.Select?.TotalRecord,
 					}));
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error("peek failed", err);
@@ -841,7 +936,7 @@ export const useE021 = () => {
 					toastEx.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				importProdsAction.fail({ error: err });
@@ -930,10 +1025,10 @@ export const useE021 = () => {
 		});
 		setValue("remark", "");
 		gridMeta.setActiveCell(null);
-		grid.initGridData([], {
-			fillRows: true
-		});
-	}, [grid]);
+		// grid.initGridData([], {
+		// 	fillRows: true
+		// });
+	}, []);
 
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
@@ -970,7 +1065,7 @@ export const useE021 = () => {
 							customer: data?.customer,
 						});
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					console.error("onRefreshGridSubmit failed", err);
@@ -987,10 +1082,13 @@ export const useE021 = () => {
 		console.error("onRefreshGridSubmitError", err);
 	}, []);
 
-	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta, handleSubmit }) => async (newValue) => {
+	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta, handleRefreshGridSubmit }) => async (newValue) => {
 		console.log("handleCustomerChange", newValue);
 		formMeta.asyncRef.current.supressEvents = true;
-		setValue("CustName", newValue?.CustData || "");
+		const formData = getValues();
+
+		const isOrdersSelected = !!formData.customerOrders && formData.customerOrders.length > 0;
+
 		let customerInfo = null;
 		if (newValue) {
 			const retail = getValues("retail");
@@ -1006,35 +1104,51 @@ export const useE021 = () => {
 				if (status.success) {
 					customerInfo = payload.data[0];
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error(err);
 				toastEx.error("讀取客戶資料發生錯誤", err);
 			}
+
+
 		}
 
-		setValue("CompTel", customerInfo?.CompTel || "");
-		setValue("RecAddr", customerInfo?.RecAddr || "");
-		setValue("InvAddr", customerInfo?.InvAddr || "");
-		setValue("UniForm", customerInfo?.UniForm || "");
+		if (isOrdersSelected) {
+			setValue("customerOrders", []);
+		} else {
+			setValue("CustName", newValue?.CustData ?? "", {
+				shouldTouch: true
+			});
+			setValue("CompTel", customerInfo?.CompTel ?? "", {
+				shouldTouch: true
+			});
+			setValue("RecAddr", customerInfo?.RecAddr ?? "", {
+				shouldTouch: true
+			});
+			setValue("InvAddr", customerInfo?.InvAddr ?? "", {
+				shouldTouch: true
+			});
+			setValue("UniForm", customerInfo?.UniForm ?? "", {
+				shouldTouch: true
+			});
 
-
-		setValue("transType", E021.getTransType(customerInfo), {
-			shouldTouch: true
-		});
-		setValue("taxExcluded", E021.getTaxExcluded(customerInfo), {
-			shouldTouch: true
-		});
-		setValue("paymentType", E021.getPaymentType(customerInfo), {
-			shouldTouch: true
-		});
-		setValue("employee", E021.getEmployee(customerInfo), {
-			shouldTouch: true
-		});
+			setValue("transType", E021.getTransType(customerInfo), {
+				shouldTouch: true
+			});
+			setValue("taxExcluded", E021.getTaxExcluded(customerInfo), {
+				shouldTouch: true
+			});
+			setValue("paymentType", E021.getPaymentType(customerInfo), {
+				shouldTouch: true
+			});
+			setValue("employee", E021.getEmployee(customerInfo), {
+				shouldTouch: true
+			});
+		}
 
 		if (grid.gridData.filter(rowData => rowData.prod?.ProdID).length > 0) {
-			handleSubmit();
+			handleRefreshGridSubmit();
 		} else {
 			console.log("grid is empty, refresh-grid not triggered")
 		}
@@ -1058,18 +1172,29 @@ export const useE021 = () => {
 		return results.join(", ");
 	}, []);
 
-	const handleCustomerOrdersChanged = useCallback(
-		({ setValue, getValues, reset }) =>
+	const handleCustomerOrdersChanged2 = useCallback(
+		({ setValue, getValues, formMeta }) =>
 			async (newValue) => {
-				console.log("handleCustomerOrdersChanged", newValue);
-				const formData = getValues();
+				console.log("crud.readWorking", crud.readWorking);
+				console.log("handleCustomerOrdersChanged2", newValue);
 
-				if (newValue.length === 0) {
-					setValue("dontPrtAmt", false);
+				const formData = getValues();
+				console.log("formData after customerOrdersChanged", formData);
+
+				const custId = newValue?.[0]?.["客戶代碼"] || formData.customer?.CustID;
+				const retail = newValue?.[0]?.["零售"] || formData.retail;
+				const isCustomerAlreadySelected = !!formData.customer && newValue?.[0]?.["客戶代碼"] == formData.customer?.CustID;
+
+				if (newValue.length === 0 || !custId) {
+
+					updateCustomerData({ setValue, formMeta })(null);
+					updateAmt({ setValue, formData: null, reset: true });
+
 					grid.setGridData(
 						grid.fillRows({ data: [] }), {
 						supressEvents: true
 					});
+					console.log("grid cleared in handleCustomerOrdersChanged2");
 					return;
 				}
 				try {
@@ -1077,8 +1202,9 @@ export const useE021 = () => {
 						url: "v1/sales/customer-invoices/load-prods",
 						bearer: token,
 						params: {
-							cst: formData.customer?.CustID,
-							ids: newValue.map(x => x["訂貨單號"]).join(",")
+							cst: custId,
+							ids: newValue.map(x => x["訂貨單號"]).join(","),
+							retail: retail ? 1 : 0
 						},
 					});
 					console.log("load-prods.payload", payload);
@@ -1092,33 +1218,93 @@ export const useE021 = () => {
 							supressEvents: true
 						});
 
-						reset(formData);
-						// setValue("CustName", data?.CustName || "");
-						// setValue("CompTel", data?.CompTel || "");
-						// setValue("RecAddr", data?.RecAddr || "");
-						// setValue("InvAddr", data?.InvAddr || "");
-						// setValue("UniForm", data?.UniForm || "");
-						// setValue("transType", data?.transType || "");
-						// setValue("employee", data?.employee || "");
-						// setValue("taxExcluded", data?.taxExcluded || "");
-						// setValue("paymentType", data?.paymentType || "");
-						// // 更新備註
-						// setValue("remark", data?.remark || "");
 
-						// // 更新列印註記
-						// setValue("dontPrtAmt", data.dontPrtAmt);
-						// // 更新數字
-						// updateAmt({ setValue, formData: data });
-						// // toastEx.info("採購單商品已載入");
+						// reset(formData);
+						if (!isCustomerAlreadySelected) {
+							updateCustomerData({ setValue, formMeta })(formData);
+						}
 
+						updateAmt({ setValue, formData: data, reset: !data });
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					toastEx.error("載入訂購單商品失敗", err);
 				}
 			},
-		[grid, httpGetAsync, updateAmt, token]
+		[crud.readWorking, grid, httpGetAsync, token, updateAmt, updateCustomerData]
+	);
+
+	const handleCustomerOrdersChanged = useCallback(
+		({ setValue, getValues, reset }) =>
+			async (newValue) => {
+				console.log("handleCustomerOrdersChanged", newValue);
+				const formData = getValues();
+				console.log("formData", formData);
+
+				if (newValue.length === 0) {
+					setValue("dontPrtAmt", false);
+					grid.setGridData(
+						grid.fillRows({ data: [] }), {
+						supressEvents: true
+					});
+					console.log("grid cleared in handleCustomerOrdersChanged");
+					return;
+				}
+				try {
+					const custId = newValue[0]?.["客戶代碼"] || formData.customer?.CustID;
+					const retail = newValue[0]?.["零售"] || formData.retail;
+					if (!custId) {
+						console.error("沒有客戶代碼, load-prods 終止");
+						return;
+					}
+					const { status, payload, error } = await httpGetAsync({
+						url: "v1/sales/customer-invoices/load-prods",
+						bearer: token,
+						params: {
+							cst: custId,
+							ids: newValue.map(x => x["訂貨單號"]).join(","),
+							retail: retail ? 1 : 0
+						},
+					});
+					console.log("load-prods.payload", payload);
+					if (status.success) {
+						const data = E021.transformForReading(payload.data[0]);
+						console.log("refreshed data", data);
+						const { prods, ...formData } = data;
+						// 更新 grid
+						grid.setGridData(
+							grid.fillRows({ data: prods }), {
+							supressEvents: true
+						});
+
+						// reset(formData);
+						setValue("CustName", data?.CustName || "");
+						setValue("CompTel", data?.CompTel || "");
+						setValue("RecAddr", data?.RecAddr || "");
+						setValue("InvAddr", data?.InvAddr || "");
+						setValue("UniForm", data?.UniForm || "");
+						setValue("transType", data?.transType || "");
+						setValue("employee", data?.employee || "");
+						setValue("taxExcluded", data?.taxExcluded || "");
+						setValue("paymentType", data?.paymentType || "");
+						// // 更新備註
+						setValue("remark", data?.remark || "");
+
+						// // 更新列印註記
+						setValue("dontPrtAmt", data.dontPrtAmt ?? false);
+						// // 更新數字
+						updateAmt({ setValue, formData: data });
+						// // toastEx.info("採購單商品已載入");
+
+					} else {
+						throw error ?? new Error("未預期例外");
+					}
+				} catch (err) {
+					toastEx.error("載入訂購單商品失敗", err);
+				}
+			},
+		[grid, httpGetAsync, token, updateAmt]
 	);
 
 	const handleRecdAmtChange = useCallback(({ setValue, getValues }) => (newValue) => {
@@ -1146,7 +1332,7 @@ export const useE021 = () => {
 			if (status.success) {
 				crud.promptUpdating();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			toastEx.error("編輯檢查失敗", err);
@@ -1155,8 +1341,98 @@ export const useE021 = () => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
+	const setPurchaseOrderToLoad = useCallback((purchaseOrderId) => {
+		purchaseOrderIdRef.current = purchaseOrderId;
+	}, []);
+
+	// const pickByOrder = useCallback(async (orderId) => {
+	// 	// cancelAction();
+	// 	// 取得 order entity
+	// 	try {
+	// 		const { status, payload, error } = await httpGetAsync({
+	// 			url: `v1/sales/customer-invoices/customer-orders`,
+	// 			bearer: token,
+	// 			params: {
+	// 				fz: orderId
+	// 			}
+	// 		})
+	// 		if (status.success) {
+	// 			console.log("loaded customer-orders", payload)
+	// 			if (!payload.data || payload.data?.lenth == 0) {
+	// 				throw new Error(`查無訂貨單[${orderId}]`);
+	// 			}
+	// 			if (payload.data.length > 1) {
+	// 				throw new Error(`查到多筆訂貨單[${orderId}]`);
+	// 			}
+	// 			if (payload.data?.length == 1) {
+	// 				const orderObj = payload.data[0];
+	// 				// promptCreating([orderObj]);
+	// 				loadOrderRef.current = [orderObj];
+	// 				promptCreating();
+	// 				// toastEx.success(`訂貨單 ${orderId} 內容已載入`)
+	// 			}
+	// 		} else {
+	// 			throw error ?? new Error("未預期例外");
+	// 		}
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 		toastEx.error(`訂貨單 ${orderId} 內容載入失敗`, err);
+	// 	}
+	// }, [httpGetAsync, promptCreating, token]);
+
+	const loadOrderAction = useAction();
+
+	const loadPurchaseOrder = useCallback(async ({ setValue, orderId }) => {
+		try {
+			promptCreating();
+			loadOrderAction.start({ message: `載入訂貨單...` });
+			const { status, payload, error } = await httpGetAsync({
+				url: `v1/sales/customer-invoices/customer-orders`,
+				bearer: token,
+				params: {
+					fz: orderId
+				}
+			})
+			if (status.success) {
+				console.log("loaded customer-orders", payload)
+				if (!payload.data || payload.data?.lenth == 0) {
+					throw new Error(`查無訂貨單[${orderId}]`);
+				}
+				if (payload.data.length > 1) {
+					throw new Error(`查到多筆訂貨單[${orderId}]`);
+				}
+				if (payload.data?.length == 1) {
+					const orderObj = payload.data[0];
+					setValue("customerOrders", [orderObj])
+				}
+			} else {
+				throw error ?? new Error("未預期例外");
+			}
+			loadOrderAction.clear();
+		} catch (err) {
+			loadOrderAction.fail({ error: err });
+
+		}
+	}, [httpGetAsync, loadOrderAction, promptCreating, token]);
+
+	const promptLoadPurchaseOrder = useCallback(({ setValue, orderId }) => {
+		purchaseOrderIdRef.current = null;
+		dialogs.confirm({
+			message: `確定要載入訂貨單 ${orderId}?`,
+			onConfirm: () => {
+				loadPurchaseOrder({ setValue, orderId });
+			},
+		})
+	}, [dialogs, loadPurchaseOrder]);
+
+	useInit(() => {
+		crud.cancelAction();
+	}, []);
+
 	return {
 		...crud,
+		//override CRUD
+		cancelAction: cancelAction,
 		...listLoader,
 		...appModule,
 		selectedOrd,
@@ -1168,6 +1444,7 @@ export const useE021 = () => {
 		confirmQuitUpdating,
 		confirmReturnReading,
 		confirmDelete,
+		handlePromptCreating,
 		promptCreating,
 		onEditorSubmit,
 		onEditorSubmitError,
@@ -1206,12 +1483,21 @@ export const useE021 = () => {
 		handleRecdAmtChange,
 		getTooltip,
 		handleCustomerOrdersChanged,
+		handleCustomerOrdersChanged2,
 		committed,
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
 		// Grid 重整
 		onRefreshGridSubmit,
-		onRefreshGridSubmitError
+		onRefreshGridSubmitError,
+		// 調訂貨單
+		purchaseOrderIdRef,
+		// pickByOrder,
+		setPurchaseOrderToLoad,
+		loadPurchaseOrder,
+		promptLoadPurchaseOrder,
+		loadOrderWorking: loadOrderAction.working,
+		createWithPurchaseOrder
 	};
 };

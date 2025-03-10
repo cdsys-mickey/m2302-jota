@@ -242,8 +242,8 @@ export const useA20 = ({ token }) => {
 						url: `v1/prod/boms/${crud.itemData?.prod.ProdID}`,
 						bearer: token,
 					});
-					crud.cancelAction();
 					if (status.success) {
+						crud.cancelAction();
 						toastEx.success(
 							`成功删除 BOM ${crud.itemData?.prod?.ProdID} ${crud.itemData?.prod?.ProdData}`
 						);

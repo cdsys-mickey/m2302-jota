@@ -153,7 +153,7 @@ export const useC04 = () => {
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating();
@@ -189,7 +189,7 @@ export const useC04 = () => {
 
 					grid.handleGridDataLoaded(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -246,7 +246,7 @@ export const useC04 = () => {
 						updateAmt({ setValue, data });
 						toastEx.info("商品單價已更新");
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (e) {
 					console.error(e);
@@ -349,7 +349,7 @@ export const useC04 = () => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating();
@@ -374,9 +374,9 @@ export const useC04 = () => {
 							id: itemData?.GinID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除進貨單 ${itemData?.GinID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -444,7 +444,7 @@ export const useC04 = () => {
 				if (status.success) {
 					return payload;
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢報價失敗", err);
@@ -731,7 +731,7 @@ export const useC04 = () => {
 						updateAmt({ setValue, data });
 						// toastEx.info("採購單商品已載入");
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					toastEx.error("載入採購單商品失敗", err);
@@ -771,7 +771,7 @@ export const useC04 = () => {
 							updateAmt({ setValue, data });
 							toastEx.info("商品單價已更新");
 						} else {
-							throw error || new Error("未預期例外");
+							throw error ?? new Error("未預期例外");
 						}
 					} else {
 						updateAmt({
@@ -847,7 +847,7 @@ export const useC04 = () => {
 			if (status.success) {
 				crud.promptUpdating();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			toastEx.error("編輯檢查失敗", err);

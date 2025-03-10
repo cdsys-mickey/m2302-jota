@@ -237,8 +237,8 @@ export const useA16 = ({ token }) => {
 							id: crud.itemData?.DeptID
 						}
 					});
-					crud.cancelAction();
 					if (status.success) {
+						crud.cancelAction();
 						toastEx.success(
 							`成功删除 ${crud.itemData?.DeptID} ${crud.itemData.AbbrName}`
 						);

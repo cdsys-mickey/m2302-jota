@@ -154,7 +154,7 @@ export const useE03 = () => {
 
 					grid.initGridData(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -191,7 +191,7 @@ export const useE03 = () => {
 					}
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				if (creating) {
@@ -263,7 +263,7 @@ export const useE03 = () => {
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
-	// 				throw error || new Error("未預期例外");
+	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
 	// 			crud.failUpdating();
@@ -303,9 +303,9 @@ export const useE03 = () => {
 							id: itemData?.RetID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除銷退單 ${itemData?.RetID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -373,7 +373,7 @@ export const useE03 = () => {
 					// };
 					return payload;
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢報價失敗", err);
@@ -608,7 +608,7 @@ export const useE03 = () => {
 						totalElements: payload.Select?.TotalRecord,
 					}));
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error("peek failed", err);
@@ -646,7 +646,7 @@ export const useE03 = () => {
 					toastEx.success(`成功帶入 ${data.length} 筆商品`);
 					importProdsAction.clear();
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				importProdsAction.fail({ error: err });
@@ -759,7 +759,7 @@ export const useE03 = () => {
 				if (status.success) {
 					customerInfo = payload.data[0];
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error(err);
@@ -831,7 +831,7 @@ export const useE03 = () => {
 			if (status.success) {
 				crud.promptUpdating();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			toastEx.error("編輯檢查失敗", err);

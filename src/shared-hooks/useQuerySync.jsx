@@ -15,7 +15,7 @@ export const useQuerySync = (paramName, callback) => {
 
 	useEffect(() => {
 		if (syncing) {
-			console.log(`querySync for [${paramName}] triggered"`);
+			console.log(`querySync for [${paramName}] triggered`, newValue);
 			setSyncing(false);
 			setCurrentValue(newValue);
 			callback(newValue, currentValue);
@@ -23,11 +23,11 @@ export const useQuerySync = (paramName, callback) => {
 	}, [callback, currentValue, newValue, paramName, syncing]);
 
 	useEffect(() => {
-		console.log("newValue", newValue);
-		console.log("currentValue", currentValue);
+		// console.log("newValue", newValue);
+		// console.log("currentValue", currentValue);
 		if (!deepEqual(newValue, currentValue)) {
-			console.log(`query changed ${currentValue} → ${newValue}`);
+			console.log(`query[${paramName}] changed ${currentValue} → ${newValue}`);
 			setSyncing(true);
 		}
-	}, [currentValue, newValue]);
+	}, [currentValue, newValue, paramName]);
 };

@@ -198,7 +198,7 @@ export const useA05 = ({ token }) => {
 			});
 	}, []);
 
-	const promptCreating = useCallback(
+	const handlePromptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			const data = {
@@ -225,8 +225,8 @@ export const useA05 = ({ token }) => {
 							id: crud.itemData?.FactID
 						}
 					});
-					crud.cancelAction();
 					if (status.success) {
+						crud.cancelAction();
 						toastEx.success(
 							`成功删除${crud.itemData?.FactID} ${crud.itemData.FactData}`
 						);
@@ -290,7 +290,7 @@ export const useA05 = ({ token }) => {
 		onEditorSubmitError,
 		confirmReturn,
 		// CRUD overrides
-		promptCreating,
+		handlePromptCreating,
 		confirmDelete,
 		...appModule,
 		...sideDrawer,

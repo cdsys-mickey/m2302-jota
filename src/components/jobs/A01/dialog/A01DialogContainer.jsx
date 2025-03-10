@@ -128,6 +128,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 				switch (field.name) {
 					case "counter":
 					case "SafeQty":
+					case "cmsType":
 						return false;
 					default:
 						return true;

@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { useCallback } from "react";
 import { useState } from "react";
 
-export const useDialogs = ({ buttonProps: baseButtonProps }) => {
+export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 	const [entities, setEntities] = useState([]);
 
 	const close = useCallback((opts = {}) => {
@@ -57,6 +57,10 @@ export const useDialogs = ({ buttonProps: baseButtonProps }) => {
 			closeOnConfirm = true,
 			...dialogProps
 		}) => {
+			if (entities.length > sizeLimit) {
+				throw new Error(`視窗數已超過最大限制 ${sizeLimit}`);
+			}
+
 			const newId = id || nanoid();
 			const handleConfirm = (params) => {
 				if (onConfirm) {

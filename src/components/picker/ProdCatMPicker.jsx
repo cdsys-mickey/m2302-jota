@@ -8,7 +8,7 @@ import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPic
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 
 const ProdCatMPicker = (props) => {
-	const { name, label = "中分類", catLName = "catL", catL, ...rest } = props;
+	const { name, label = "中分類", catLName = "catL", catL, readOnly = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 	const form = useFormContext();
 	const { setValue } = form;
@@ -20,9 +20,9 @@ const ProdCatMPicker = (props) => {
 	}, [catL, catLValue?.LClas])
 
 
-	const disabled = useMemo(() => {
-		return !_catL;
-	}, [_catL]);
+	const _disabled = useMemo(() => {
+		return !_catL || readOnly;
+	}, [_catL, readOnly]);
 
 	const url = useMemo(() => {
 		return `v1/prod/m-cats/${_catL}`;
@@ -40,12 +40,13 @@ const ProdCatMPicker = (props) => {
 			name={name}
 			label={label}
 			bearer={token}
-			disabled={disabled}
+			disabled={_disabled}
 			url={url}
 			getOptionLabel={ProdMCats.getOptionLabel}
 			isOptionEqualToValue={ProdMCats.isOptionEqualToValue}
 			notFoundText="中分類 ${id} 不存在"
-			resetOnChange
+			clearOnChange
+			readOnly={readOnly}
 			// blurToLookup
 			{...rest}
 		/>

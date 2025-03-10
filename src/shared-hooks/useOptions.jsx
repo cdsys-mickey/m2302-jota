@@ -35,7 +35,7 @@ export const useOptions = ({
 			if (status.success) {
 				setOptionsData(getData(payload));
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			console.error("loadOptions failed", err);

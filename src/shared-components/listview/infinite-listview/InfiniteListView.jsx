@@ -81,7 +81,7 @@ const InfiniteListView = memo((props) => {
 					})}>
 					<List
 						onScroll={onScroll}
-						className={clsx("shadow", {
+						className={clsx("shadow", "i-listview", {
 							"top-shadow": scrollOffset > 5,
 						})}
 						ref={ref}

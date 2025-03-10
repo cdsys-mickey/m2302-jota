@@ -66,7 +66,7 @@ export const useF02 = ({ token }) => {
 					});
 					grid.handleLock();
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failLoading(err);
@@ -88,9 +88,9 @@ export const useF02 = ({ token }) => {
 						url: `v1/inv/taking/staging`,
 						bearer: token,
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除目前電腦帳`);
 						load();
 					} else {
@@ -143,7 +143,7 @@ export const useF02 = ({ token }) => {
 				grid.commitChanges();
 				load();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			console.error("onSubmit.failed", err);

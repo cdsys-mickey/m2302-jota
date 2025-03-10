@@ -16,7 +16,7 @@ const arePropsEqual = (oldProps, newProps) => {
 export const TooltipComponent = memo(
 	forwardRef((props, ref) => {
 		const { columnData, rowData, rowIndex } = props;
-		console.log("rendering TooltipComponent", rowData);
+		// console.log("rendering TooltipComponent", rowData);
 		const { title, ...rest } = columnData || {};
 
 		const _title = useMemo(() => {

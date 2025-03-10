@@ -427,8 +427,8 @@ export const useZA03 = () => {
 							id: crud.itemData?.UID,
 						},
 					});
-					crud.cancelAction();
 					if (status.success) {
+						crud.cancelAction();
 						toastEx.success(
 							`成功删除 ${crud.itemData?.LoginName} ${crud.itemData.UserName}`
 						);
@@ -594,7 +594,7 @@ export const useZA03 = () => {
 					addAuthAction.finish();
 					loadUserAuthorities();
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				addAuthAction.fail({ error: err });
@@ -776,7 +776,7 @@ export const useZA03 = () => {
 								`${item.LoginName} 密碼已重設為「${payload.newPword}」`
 							);
 						} else {
-							throw error || new Error("未預期例外");
+							throw error ?? new Error("未預期例外");
 						}
 					} catch (err) {
 						toastEx.error("重設密碼失敗", err);

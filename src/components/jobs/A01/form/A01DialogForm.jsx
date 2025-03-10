@@ -136,6 +136,7 @@ const A01DialogForm = memo((props) => {
 											label="發票印製名稱"
 											name="InvData"
 											fullWidth
+											readOnly={storeMode}
 											slotProps={{
 												htmlInput: {
 													maxLength: 13
@@ -322,7 +323,7 @@ const A01DialogForm = memo((props) => {
 										<CmsTypePicker
 											typo
 											name="cmsType"
-											readOnly={storeMode}
+											// readOnly={storeMode}
 											disableOpenOnInput
 										/>
 									</Grid>

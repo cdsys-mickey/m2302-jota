@@ -35,7 +35,7 @@ export const A01FrameContainer = () => {
 		[selectById]
 	);
 
-	useQuerySync("id", handleQuerySync);
+	useQuerySync("target", handleQuerySync);
 
 	return (
 		<Box sx={[boxStyles]}>

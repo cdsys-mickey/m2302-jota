@@ -45,7 +45,7 @@ export const useP04 = () => {
 						if (status.success) {
 							toastEx.success("收銀機銷售資料已清除")
 						} else {
-							throw error || new Error("未預期例外");
+							throw error ?? new Error("未預期例外");
 						}
 					} catch (err) {
 						console.error(err);

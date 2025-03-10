@@ -17,19 +17,20 @@ export const A26LockSwitchContainer = (props) => {
 	const { mobile } = useContext(ResponsiveContext);
 
 	const disabled = useMemo(() => {
-		return !a26.canManage || operator.CurHeadOffice != 1;
-	}, [a26.canManage, operator.CurHeadOffice])
+		// return !a26.canManage || operator.CurHeadOffice != 1;
+		return !a26.canManage;
+	}, [a26.canManage])
 
 	const _title = useMemo(() => {
 		let msg = "";
-		if (operator.CurHeadOffice != 1) {
-			msg += "僅物流倉可進行切換";
-		}
+		// if (operator.CurHeadOffice != 1) {
+		// 	msg += "僅物流倉可進行切換";
+		// }
 		if (!a26.canManage) {
 			msg += "切換需具備管理功能權限";
 		}
 		return msg;
-	}, [a26.canManage, operator.CurHeadOffice])
+	}, [a26.canManage])
 
 	if (serviceStatus.loading !== false) {
 		return <LoadingTypography />

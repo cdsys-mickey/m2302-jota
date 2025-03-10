@@ -46,7 +46,7 @@ const usePwordCheck = (opts = {}) => {
 	// 				passed: false,
 	// 			};
 	// 		} else {
-	// 			throw error || new Error("未預期例外");
+	// 			throw error ?? new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
 	// 		toastEx.error("讀取設定發生錯誤", err), {

@@ -93,7 +93,7 @@ export const useF03 = () => {
 	// 				passed: false,
 	// 			};
 	// 		} else {
-	// 			throw error || new Error("未預期例外");
+	// 			throw error ?? new Error("未預期例外");
 	// 		}
 	// 	} catch (err) {
 	// 		toastEx.error("讀取設定發生錯誤", err));
@@ -143,7 +143,7 @@ export const useF03 = () => {
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating();
@@ -186,7 +186,7 @@ export const useF03 = () => {
 
 					grid.handleGridDataLoaded(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -251,7 +251,7 @@ export const useF03 = () => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating(err);
@@ -276,9 +276,9 @@ export const useF03 = () => {
 							id: itemData?.CalID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除盤點清單 ${itemData?.CalID}`);
 						listLoader.loadList({ refresh: true });
 					} else {

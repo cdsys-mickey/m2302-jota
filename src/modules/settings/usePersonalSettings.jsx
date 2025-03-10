@@ -126,7 +126,7 @@ export const usePersonalSettings = () => {
 							newPword2: "",
 						});
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					toastEx.error("變更密碼失敗", err);

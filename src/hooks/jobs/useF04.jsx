@@ -81,7 +81,7 @@ export const useF04 = () => {
 						data,
 					});
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failLoading(err);

@@ -45,7 +45,7 @@ const AppDeptPicker = memo((props) => {
 			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}
 			getOptionKey={DeptOptions.getOptionKey}
 			querystring={qs}
-			resetOnChange
+			clearOnChange
 			{...rest}
 		/>
 	);

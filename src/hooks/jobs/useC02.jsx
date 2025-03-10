@@ -114,7 +114,7 @@ export const useC02 = () => {
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating();
@@ -151,7 +151,7 @@ export const useC02 = () => {
 					sqtyManager.recoverStockMap(data.prods);
 					grid.initGridData(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -230,7 +230,7 @@ export const useC02 = () => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating();
@@ -255,9 +255,9 @@ export const useC02 = () => {
 							id: itemData?.RqtID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除請購單 ${itemData?.RqtID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -318,7 +318,7 @@ export const useC02 = () => {
 					sqtyManager.updateStockQty(prodId, payload.StockQty);
 					return payload;
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢庫存失敗", err);

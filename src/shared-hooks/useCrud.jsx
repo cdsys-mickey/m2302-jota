@@ -17,6 +17,7 @@ export const useCrud = () => {
 	const [state, setState] = useState({
 		itemId: null,
 		itemData: null,
+		itemInitialized: false
 	});
 
 	const createAction = useAction();
@@ -40,6 +41,12 @@ export const useCrud = () => {
 			updateAction.clear();
 			deleteAction.clear();
 			loadAction.clear();
+
+			//清除 itemData
+			setState((prev) => ({
+				...prev,
+				itemInitialized: true,
+			}));
 
 			// 清除 id
 
@@ -74,6 +81,7 @@ export const useCrud = () => {
 				...(opts.data && {
 					itemData: opts.data,
 				}),
+				itemInitialized: false
 			}));
 		}
 	}, []);
@@ -322,10 +330,14 @@ export const useCrud = () => {
 
 	// 資料已就緒 → 配合新增等狀況
 	const itemDataReady = useMemo(() => {
+		// return (
+		// 	(loading && !loadWorking && !loadingFailed) ||
+		// 	((reading || creating || updating) && !readWorking && !readingFailed)
+		// );
 		return (
 			(loading && !loadWorking && !loadingFailed) ||
 			(reading && !readWorking && !readingFailed) ||
-			creating ||
+			(creating && !readWorking && !readingFailed) ||
 			(updating && !readWorking && !readingFailed)
 		);
 	}, [creating, loadWorking, loading, loadingFailed, readWorking, reading, readingFailed, updating]);

@@ -1,4 +1,4 @@
-import E021 from "@/modules/md-e021";
+import E021 from "@/modules/E021.mjs";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";

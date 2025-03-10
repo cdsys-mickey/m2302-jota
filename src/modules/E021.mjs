@@ -359,7 +359,7 @@ const transformForSubmitting = (payload, gridData) => {
 		...rest
 	} = payload;
 
-	console.log("skipping:", prods, customerOrders);
+	console.log("ignore props:", prods, customerOrders);
 
 	return {
 		SalDate: Forms.formatDate(SalDate) || "",

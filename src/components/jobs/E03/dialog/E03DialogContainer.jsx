@@ -127,7 +127,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 								},
 							},
 						},
-						resetOptionsOnChange: true,
+						clearOptionsOnChange: true,
 						// debug: true
 					})
 				),

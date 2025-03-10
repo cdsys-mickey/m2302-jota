@@ -26,13 +26,13 @@ export const useMessages = () => {
 				const deptName = payload?.AbbrName;
 
 				if (auth.operator?.CurDeptID !== deptId) {
-					toastEx.error(`此通知屬於 ${deptName} 請切換門市後再進行操作`);
+					toastEx.error(`此作業屬於 ${deptName}，請切換門市後再進行操作`);
 					return;
 				}
 
 				appFrame.selectJobById(jobId, {
 					...(targetId && {
-						id: targetId,
+						target: targetId,
 					}),
 				});
 			}

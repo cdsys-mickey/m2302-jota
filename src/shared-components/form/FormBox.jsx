@@ -15,6 +15,9 @@ const FormBox = styled(Box, {
 		fontWeight: 600,
 		left: "-2px",
 	},
+	"& .MuiFormControl-root:has(.MuiInputBase-root.Mui-disabled, .MuiInputBase-root.Mui-readOnly):not(.dsg-container *)": {
+		backgroundColor: "rgba(0, 0, 0, 0.05)"
+	},
 	"& .field-group-legend": {
 		fontSize: "0.875rem",
 		fontWeight: 600,
@@ -25,10 +28,12 @@ const FormBox = styled(Box, {
 		backgroundColor: "rgb(255,255,255)",
 		// backgroundColor: "initial",
 	},
-	"& .MuiInputBase-root:not(.MuiFilledInput-root):not(.dsg-container *)": {
+	"& .MuiInputBase-root:not(.MuiFilledInput-root):not(.dsg-container *):not(.Mui-readOnly):not(.Mui-disabled)": {
 		backgroundColor: "rgb(255,255,255)",
-		// backgroundColor: "initial",
 	},
+	// "& .MuiFormControl-root:not(.MuiInputBase-root.Mui-disabled, .MuiInputBase-root.Mui-readOnly)": {
+	// 	backgroundColor: "rgb(255,255,255)"
+	// },
 	"& .dsg-container .MuiInputBase-root": {
 		// backgroundColor: "rgb(255,255,255)",
 		backgroundColor: "initial",

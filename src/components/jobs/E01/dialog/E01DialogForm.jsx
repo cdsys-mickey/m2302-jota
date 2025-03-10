@@ -89,7 +89,7 @@ const E01DialogForm = memo((props) => {
 								// disabled={!creating}
 								/>
 							</Grid>
-							<Grid item md={4}>
+							<Grid item md={3.5}>
 								<E01SquaredPicker
 									typo
 									name="squared"
@@ -115,7 +115,7 @@ const E01DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item md={4}>
+							<Grid item md={4.5}>
 								<EmployeePicker
 									typo
 									label="業務員"

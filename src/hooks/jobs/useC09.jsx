@@ -120,7 +120,7 @@ export const useC09 = () => {
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating();
@@ -156,7 +156,7 @@ export const useC09 = () => {
 
 					grid.handleGridDataLoaded(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -221,7 +221,7 @@ export const useC09 = () => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating();
@@ -246,9 +246,9 @@ export const useC09 = () => {
 							id: itemData?.TxiID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除撥入單 ${itemData?.TxiID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -321,7 +321,7 @@ export const useC09 = () => {
 				if (status.success) {
 					return payload;
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢報價失敗", err);
@@ -396,7 +396,7 @@ export const useC09 = () => {
 						refreshAmt({ setValue, data, gridData: data.prods });
 						// toastEx.info("撥出單商品已載入");
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					toastEx.error("載入撥出單商品失敗", err);
@@ -688,7 +688,7 @@ export const useC09 = () => {
 							refreshAmt({ setValue, data });
 							toastEx.info("商品單價已更新");
 						} else {
-							throw error || new Error("未預期例外");
+							throw error ?? new Error("未預期例外");
 						}
 					} else {
 						refreshAmt({
@@ -723,7 +723,7 @@ export const useC09 = () => {
 			if (status.success) {
 				crud.promptUpdating();
 			} else {
-				throw error || new Error("未預期例外");
+				throw error ?? new Error("未預期例外");
 			}
 		} catch (err) {
 			toastEx.error("編輯檢查失敗", err);

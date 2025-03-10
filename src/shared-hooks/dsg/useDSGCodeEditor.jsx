@@ -116,7 +116,7 @@ export const useDSGCodeEditor = ({
 						`${displayName} ${rowData[grid.keyColumn]} 新增成功`
 					);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error(`新增${displayName}發生例外`, err);

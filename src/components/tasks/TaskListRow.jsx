@@ -1,6 +1,6 @@
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
-import { Grid, Tooltip, Typography } from "@mui/material";
+import { Grid, Link, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
@@ -57,9 +57,9 @@ const TaskListRow = memo((props) => {
 								title={_title}
 								arrow
 								placement="right-start">
-								<ButtonWrapper onClick={handleGotoJob} >
+								<Link onClick={handleGotoJob} variant="body2" sx={{ cursor: "pointer" }}>
 									{value?.JobID}
-								</ButtonWrapper>
+								</Link>
 							</Tooltip>
 						)}
 					</TaskJobColumn>

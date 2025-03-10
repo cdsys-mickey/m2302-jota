@@ -116,7 +116,7 @@ export const useB012 = (opts = {}) => {
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating();
@@ -152,7 +152,7 @@ export const useB012 = (opts = {}) => {
 
 					grid.initGridData(data.quotes);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -229,7 +229,7 @@ export const useB012 = (opts = {}) => {
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
-	// 				throw error || new Error("未預期例外");
+	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
 	// 			crud.failUpdating();
@@ -256,7 +256,7 @@ export const useB012 = (opts = {}) => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating();
@@ -281,9 +281,9 @@ export const useB012 = (opts = {}) => {
 							id: itemData?.InqID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除詢價單 ${itemData?.InqID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -453,7 +453,7 @@ export const useB012 = (opts = {}) => {
 						totalElements: payload.Select?.TotalRecord,
 					}));
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				console.error("peek failed", err);
@@ -491,7 +491,7 @@ export const useB012 = (opts = {}) => {
 					toastEx.success(`成功帶入 ${data.length} 筆客戶`);
 					importCustsAction.clear();
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				importCustsAction.fail({ error: err });

@@ -6,7 +6,11 @@ import { useCallback, useContext, useMemo } from "react";
 import Customers from "@/modules/md-customers";
 
 const CustomerPicker = (props) => {
-	const { label, autoLabel, placeholder, forId = false, forNew = false, fullName = false, withQuotes = false, ...rest } = props;
+	const { label, autoLabel, placeholder, forId = false, forNew = false, fullName = false, withQuotes = false,
+		// clearOnChange = true, 
+		clearValueOnChange = true,
+		clearOptionsOnChange = true,
+		...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
@@ -102,7 +106,10 @@ const CustomerPicker = (props) => {
 			notFoundText={notFoundText}
 			placeholder={_placeholder}
 			typeToSearchText="輸入代號或名稱搜尋..."
-			resetOnChange
+			// clearOnChange
+			// clearOnChange={clearOnChange}
+			clearValueOnChange={clearValueOnChange}
+			clearOptionsOnChange={clearOptionsOnChange}
 			// blurToLookup
 			{...rest}
 		/>
@@ -117,7 +124,10 @@ CustomerPicker.propTypes = {
 	fullName: PropTypes.bool,
 	forNew: PropTypes.bool,
 	autoLabel: PropTypes.bool,
-	withQuotes: PropTypes.bool
+	withQuotes: PropTypes.bool,
+	clearOnChange: PropTypes.bool,
+	clearOptionsOnChange: PropTypes.bool,
+	clearValueOnChange: PropTypes.bool
 };
 
 export default CustomerPicker;

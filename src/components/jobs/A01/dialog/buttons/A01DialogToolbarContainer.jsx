@@ -15,7 +15,8 @@ export const A01DialogToolbarContainer = (props) => {
 	const editLabel = useMemo(() => {
 		switch (a01.mode) {
 			case A01.Mode.STORE:
-				return "調整櫃位/安全存量";
+				// return "調整櫃位/安全存量";
+				return "編輯";
 			default:
 				return "編輯";
 		}

@@ -76,7 +76,7 @@ export const useAppFrame = (opts = {}) => {
 			console.log("spawn result", payload);
 			return payload?.LogKey;
 		} else {
-			throw error || new Error("未預期例外");
+			throw error ?? new Error("未預期例外");
 		}
 	}, [auth.operator?.CurDeptID, auth.token, httpPostAsync]);
 

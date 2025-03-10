@@ -183,7 +183,7 @@ export const useC03 = () => {
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failCreating();
@@ -224,7 +224,7 @@ export const useC03 = () => {
 
 					grid.initGridData(data.prods);
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failReading(err);
@@ -303,7 +303,7 @@ export const useC03 = () => {
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				crud.failUpdating();
@@ -328,9 +328,9 @@ export const useC03 = () => {
 							id: itemData?.OrdID,
 						},
 					});
-					// 關閉對話框
-					crud.cancelAction();
 					if (status.success) {
+						// 關閉對話框
+						crud.cancelAction();
 						toastEx.success(`成功删除採購單 ${itemData?.OrdID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -463,7 +463,7 @@ export const useC03 = () => {
 				if (status.success) {
 					return payload;
 				} else {
-					throw error || new Error("未預期例外");
+					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
 				toastEx.error("查詢報價失敗", err);
@@ -779,7 +779,7 @@ export const useC03 = () => {
 							OrdDate: data?.OrdDate,
 						});
 					} else {
-						throw error || new Error("未預期例外");
+						throw error ?? new Error("未預期例外");
 					}
 				} catch (err) {
 					console.error("onRefreshGridSubmit failed", err);
