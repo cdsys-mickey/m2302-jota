@@ -5,7 +5,7 @@ import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGr
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { memo } from "react";
 import AreaPicker from "../form/fields/AreaPicker";
-import PaymentPicker from "../form/fields/PaymentPicker";
+import PaymentPicker from "../../../payment-type-picker/PaymentPicker";
 
 const A06SearchForm = memo((props) => {
 	const { ...rest } = props;

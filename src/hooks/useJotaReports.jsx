@@ -3,7 +3,7 @@ import { toastEx } from "@/helpers/toast-ex";
 import Settings from "@/modules/settings/Settings.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import useHttpPost from "@/shared-hooks/useHttpPost";
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 import { differenceInYears } from "date-fns";
 import Cookies from "js-cookie";
 import queryString from "query-string";

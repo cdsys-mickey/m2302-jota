@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { F03ListRowContainer } from "./F03ListRowContainer";
-import Forms from "../../../../shared-modules/sd-forms";
+import Forms from "../../../../shared-modules/Forms.mjs";
 
 export const F03ListViewContainer = () => {
 	const f03 = useContext(F03Context);

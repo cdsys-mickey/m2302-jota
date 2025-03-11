@@ -64,6 +64,10 @@ const droppableIdToType = (droppableId) => {
 	return UNUSED;
 };
 
+const getOptionKey = (option) => {
+	return option?.id;
+};
+
 const StdPrint = {
 	SELECTED,
 	UNUSED,
@@ -76,6 +80,7 @@ const StdPrint = {
 	getOptionById,
 	getDefaultOption,
 	getIcon,
+	getOptionKey,
 };
 
 export default StdPrint;

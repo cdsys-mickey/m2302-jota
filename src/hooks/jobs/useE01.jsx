@@ -2,21 +2,21 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
-import E01 from "@/modules/md-e01";
+import E01 from "@/modules/E01.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 import Objects from "@/shared-modules/sd-objects";
 import { isDate } from "lodash";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 export const useE01 = () => {
 	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
@@ -108,14 +108,15 @@ export const useE01 = () => {
 
 	const sNotQtyDisabled = useCallback(({ rowData }) => {
 		// return rowData?.SNotQty && Number(rowData?.SNotQty) <= 0;
-		return !rowData?.SalIDs ||
-			(rowData?.SOutQty && Number(rowData?.SOutQty) >= Number(rowData?.SQty));
+		// return !rowData?.SalIDs ||
+		// 	(rowData?.SOutQty && Number(rowData?.SOutQty) >= Number(rowData?.SQty));
+		return (rowData?.SOutQty && Number(rowData?.SOutQty) >= Number(rowData?.SQty));
 	}, []);
 
 	const stypeDisabled = useCallback(({ rowData }) => {
-		return rowData?.SalIDs ||
+		return itemData?.SalIDs ||
 			(rowData?.SOutQty && Number(rowData?.SOutQty) > 0)
-	}, []);
+	}, [itemData?.SalIDs]);
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -548,7 +549,7 @@ export const useE01 = () => {
 			updateResult.cols.push("SAmt")
 		}
 
-		// 未進量改變
+		// 未出量改變
 		if (rowData.SNotQty !== oldRowData.SNotQty) {
 			processedRowData = {
 				...processedRowData,
@@ -562,6 +563,14 @@ export const useE01 = () => {
 		}
 		return processedRowData;
 	}, [grid.gridData, handleGridProdChange]);
+
+	const sprodDisabled = useCallback(({ rowData }) => {
+		return !!(itemData?.SalIDs);
+	}, [itemData?.SalIDs]);
+
+	const isRowDeletable = useCallback(({ key, rowData }) => {
+		return !(itemData?.SalIDs);
+	}, [itemData?.SalIDs]);
 
 	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
 		console.log(`mapTooltip(rowIndex: ${rowIndex})`);
@@ -1105,6 +1114,8 @@ export const useE01 = () => {
 		grid,
 		onUpdateRow,
 		getRowKey,
+		isRowDeletable,
+		sprodDisabled,
 		// 帶入商品
 		importProdsWorking: importProdsAction.working,
 		promptImportProds: importProdsAction.prompt,

@@ -152,12 +152,13 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 							},
 						},
 						clearOptionsOnChange: true,
+						focusOnDisabled: true
 					})
 				),
 				title: "商品編號",
 				minWidth: 140,
 				maxWidth: 140,
-				disabled: readOnly,
+				disabled: readOnly || e01.sprodDisabled,
 			},
 			{
 				...keyColumn(

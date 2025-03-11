@@ -1,4 +1,4 @@
-import Forms from "../shared-modules/sd-forms";
+import Forms from "../shared-modules/Forms.mjs";
 
 const DataType = Object.freeze({
 	SUMMARY: "1",

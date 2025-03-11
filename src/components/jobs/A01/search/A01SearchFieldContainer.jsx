@@ -1,5 +1,5 @@
 import { A01Context } from "@/contexts/A01/A01Context";
-import A01 from "@/modules/md-a01";
+import A01 from "@/modules/A01.mjs";
 import { ControlledSearchFieldContainer } from "@/shared-components/search-field/ControlledSearchFieldContainer";
 import useSearchField from "@/shared-hooks/useSearchField";
 import PropTypes from "prop-types";

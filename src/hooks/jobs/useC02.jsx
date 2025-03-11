@@ -8,13 +8,13 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useC02 = () => {
 	const crud = useContext(CrudContext);

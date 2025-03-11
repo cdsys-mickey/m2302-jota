@@ -2,7 +2,7 @@
 import { DeptPickerComponentContainer } from "@/components/dsg/columns/dept-picker/DeptPickerComponentContainer";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toast-ex";
-import A01 from "@/modules/md-a01";
+import A01 from "@/modules/A01.mjs";
 import TaxTypes from "@/modules/md-tax-types";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -21,7 +21,8 @@ import { ProdPickerComponentContainer } from "../../components/dsg/columns/prod-
 import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
 import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 /**
  * 適用三種情境
@@ -29,9 +30,10 @@ import { useAppModule } from "./useAppModule";
  * 2. 新商品維護(覆核) - A010
  * 3. 門市櫃位維護 - A011
  */
-export const useA01 = ({ token, mode }) => {
+export const useA01 = ({ mode }) => {
 	const [selectedTab, setSelectedTab] = useState(A01.Tabs.INFO);
-
+	const auth = useContext(AuthContext);
+	const { token } = auth;
 	const crud = useContext(CrudContext);
 	const moduleId = useMemo(() => {
 		switch (mode) {
@@ -439,16 +441,16 @@ export const useA01 = ({ token, mode }) => {
 					bearer: token,
 				});
 				if (status.success) {
-					toastEx.success(`商品「${data?.ProdData}」櫃位/安全存量已成功更新`);
+					toastEx.success(`商品「${data?.ProdData}」已成功更新`);
 					crud.doneUpdating();
 					loadItem({ id: processed?.ProdID });
 				} else {
-					throw error || new Error("櫃位更新失敗");
+					throw error || new Error("更新失敗");
 				}
 			} catch (err) {
 				crud.failUpdating(err);
 				console.error("onCounterSubmit.failed", err);
-				toastEx.error("櫃位/安全存量更新失敗", err);
+				toastEx.error("更新失敗", err);
 			}
 		},
 		[crud, httpPatchAsync, loadItem, token]

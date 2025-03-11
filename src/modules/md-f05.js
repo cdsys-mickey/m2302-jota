@@ -1,4 +1,4 @@
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 
 const transformForReading = (payload) => {
 	const { ActDate, PhyIDs } = payload;

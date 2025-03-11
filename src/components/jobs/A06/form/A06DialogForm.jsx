@@ -10,14 +10,14 @@ import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import TaxExcludedCheckbox from "../../../checkbox/TaxExcludedCheckbox";
-import BankPicker from "../../../fields/BankPicker";
+import BankPicker from "@/components/fields/BankPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
+import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import AreaPicker from "./fields/AreaPicker";
 import ChannelPicker from "./fields/ChannelPicker";
-import PaymentPicker from "./fields/PaymentPicker";
 import TransportPicker from "./fields/TransportPicker";
 import { CustomerLevelPicker } from "./fields/CustomerLevelPicker";
+import PaymentPicker from "@/components/payment-type-picker/PaymentPicker";
 
 const A06DialogForm = memo((props) => {
 	const {

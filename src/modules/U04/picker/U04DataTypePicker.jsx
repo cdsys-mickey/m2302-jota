@@ -1,8 +1,8 @@
-import Constants from "@/modules/md-constants";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import U04DataType from "./U04DataType.mjs";
+import Constants from "@/modules/md-constants";
 
 const U04DataTypePicker = memo(
 	forwardRef((props, ref) => {
@@ -12,7 +12,7 @@ const U04DataTypePicker = memo(
 			<OptionPickerWrapper
 				name={name}
 				label={label}
-				options={U04DataType.dataTypeOptions}
+				options={U04DataType.options}
 				getOptionLabel={U04DataType.getOptionLabel}
 				isOptionEqualToValue={U04DataType.isOptionEqualToValue}
 				findByInput={U04DataType.findByInput}

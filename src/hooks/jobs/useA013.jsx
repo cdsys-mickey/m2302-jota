@@ -1,7 +1,7 @@
 import ProdGrid from "@/modules/md-prod-grid";
 import A013 from "../../modules/md-a013";
 import { useProdGrid } from "../useProdGrid";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useDSG } from "../../shared-hooks/dsg/useDSG";
 import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";

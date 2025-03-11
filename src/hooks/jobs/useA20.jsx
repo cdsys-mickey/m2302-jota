@@ -9,7 +9,7 @@ import Errors from "@/shared-modules/sd-errors";
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { toastEx } from "@/helpers/toast-ex";
 
 export const useA20 = ({ token }) => {

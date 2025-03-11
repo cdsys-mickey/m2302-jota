@@ -26,6 +26,7 @@ export const U04FrameContainer = () => {
 	);
 };
 
-U04FrameContainer.displayName = "U04FrameContainer";
+U04FrameContainer.displayName = "U04Frame";
+
 
 

@@ -1,5 +1,5 @@
 import { E01Context } from "@/contexts/E01/E01Context";
-import E01 from "@/modules/md-e01";
+import E01 from "@/modules/E01.mjs";
 import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";

@@ -2,6 +2,10 @@ import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
 import { U01FrameContainer } from "@/modules/U01/U01FrameContainer";
 import { U01Provider } from "@/modules/U01/U01Provider";
+import { U02FrameContainer } from "@/modules/U02/U02FrameContainer";
+import { U02Provider } from "@/modules/U02/U02Provider";
+import { U03FrameContainer } from "@/modules/U03/U03FrameContainer";
+import { U03Provider } from "@/modules/U03/U03Provider";
 // import { U02FrameContainer } from "@/modules/U02/U02FrameContainer";
 // import { U02Provider } from "@/modules/U02/U02Provider";
 // import { U03FrameContainer } from "@/modules/U03/U03FrameContainer";
@@ -36,7 +40,7 @@ const uRoutes = (
 				</CrudProvider>
 			}
 		/>
-		{/* <Route
+		<Route
 			path="U02"
 			element={
 				<CrudProvider>
@@ -59,7 +63,7 @@ const uRoutes = (
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}
-		/> */}
+		/>
 		<Route
 			path="U04"
 			element={

@@ -7,7 +7,7 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useRef } from "react";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 import ConfigContext from "@/contexts/config/ConfigContext";
 import { toastEx } from "@/helpers/toast-ex";

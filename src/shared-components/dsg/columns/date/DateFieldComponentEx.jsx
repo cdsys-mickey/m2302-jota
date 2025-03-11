@@ -2,7 +2,7 @@ import { toastEx } from "@/helpers/toast-ex";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import DateTimes from "@/shared-modules/sd-date-times";
 import Events from "@/shared-modules/sd-events";
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 import Objects from "@/shared-modules/sd-objects";
 import clsx from "clsx";
 import PropTypes from "prop-types";

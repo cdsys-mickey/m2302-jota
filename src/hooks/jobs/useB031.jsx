@@ -15,7 +15,7 @@ import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useB031 = () => {
 	const crud = useContext(CrudContext);

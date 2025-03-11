@@ -13,7 +13,7 @@ import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import useJotaReports from "../useJotaReports";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useC09 = () => {
 	const crud = useContext(CrudContext);

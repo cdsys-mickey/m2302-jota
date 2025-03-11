@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Strings from "@/shared-modules/sd-strings";
-import Forms from "../shared-modules/sd-forms";
+import Forms from "../shared-modules/Forms.mjs";
 
 const getTooltip = ({ rowData, rowIndex }) => {
 	let results = [];

@@ -13,7 +13,7 @@ import { nanoid } from "nanoid";
 import { useCallback, useContext, useRef } from "react";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import { useMemo } from "react";
 import useJotaReports from "../useJotaReports";

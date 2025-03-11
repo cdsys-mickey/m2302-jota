@@ -5,7 +5,7 @@ import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { C01ListRowContainer } from "./C01ListRowContainer";

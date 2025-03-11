@@ -64,7 +64,7 @@ const H03Form = memo((props) => {
 							</Grid>
 							<FlexGrid item xs={12} alignItems="flex-start">
 								<CheckboxExWrapper
-									label="含撥出入"
+									label="包含撥出入"
 									name="InclTX"
 									defaultValue={true}
 								/>

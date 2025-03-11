@@ -16,7 +16,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import UserAuth from "../../modules/md-user-auth";
 import DSG from "../../shared-modules/sd-dsg";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useZA03 = () => {
 	const crud = useContext(CrudContext);

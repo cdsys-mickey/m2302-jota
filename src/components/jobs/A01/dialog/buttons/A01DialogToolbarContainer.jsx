@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { A01Context } from "@/contexts/A01/A01Context";
-import A01 from "@/modules/md-a01";
+import A01 from "@/modules/A01.mjs";
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import A01DialogEditToolbar from "./A01DialogEditToolbar";

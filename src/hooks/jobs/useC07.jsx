@@ -9,13 +9,13 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 import { isDate } from "date-fns";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef } from "react";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useC07 = () => {
 	const crud = useContext(CrudContext);

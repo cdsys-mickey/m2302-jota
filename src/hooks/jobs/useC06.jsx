@@ -14,7 +14,7 @@ import { useCallback, useContext, useMemo, useRef } from "react";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useC06 = () => {
 	const crud = useContext(CrudContext);

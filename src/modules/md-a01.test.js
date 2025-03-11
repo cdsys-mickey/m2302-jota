@@ -1,5 +1,5 @@
 import { it } from "vitest";
-import A01 from "./md-a01";
+import A01 from "./A01.mjs";
 import { expect } from "vitest";
 
 it("should paramsToJsonData", () => {

@@ -1,6 +1,6 @@
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { E021Context } from "@/contexts/E021/E021Context";
+import { E021Context } from "@/modules/E021/E021Context";
 import { toastEx } from "@/helpers/toast-ex";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
@@ -18,7 +18,7 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import E021Drawer from "../E021Drawer";
+import E021Drawer from "../../../components/jobs/E021/E021Drawer";
 import E021DialogForm from "./E021DialogForm";
 import { E021DialogToolbarContainer } from "./toolbar/E021DialogToolbarContainer";
 

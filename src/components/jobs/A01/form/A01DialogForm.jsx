@@ -10,7 +10,7 @@ import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
 import ProdTypeBPicker from "@/components/picker/ProdTypeBPicker";
 import TaxTypePicker from "@/components/picker/TaxTypePicker";
-import A01 from "@/modules/md-a01";
+import A01 from "@/modules/A01.mjs";
 import YesNo from "@/modules/md-yes-no";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FlexBox from "@/shared-components/FlexBox";

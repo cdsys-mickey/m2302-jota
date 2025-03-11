@@ -14,7 +14,7 @@ import { useToggle } from "../../shared-hooks/useToggle";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 const DEFAULT_ROWS = 10;
 

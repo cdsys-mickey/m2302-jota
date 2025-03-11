@@ -5,7 +5,7 @@ import { useCallback, useContext, useMemo } from "react";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import ConfigContext from "@/contexts/config/ConfigContext";

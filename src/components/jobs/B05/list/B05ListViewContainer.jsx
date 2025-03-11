@@ -9,7 +9,7 @@ import { B05ListRowContainer } from "./B05ListRowContainer";
 import { B05Context } from "@/contexts/B05/B05Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { useMemo } from "react";
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 import B05 from "@/modules/md-b05";
 
 export const B05ListViewContainer = () => {

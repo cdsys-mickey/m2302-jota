@@ -6,7 +6,7 @@ import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createT
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";

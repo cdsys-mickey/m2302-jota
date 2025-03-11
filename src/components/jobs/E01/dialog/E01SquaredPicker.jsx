@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
-import E01 from "@/modules/md-e01";
+import E01 from "@/modules/E01.mjs";
 
 const E01SquaredPicker = memo(
 	forwardRef((props, ref) => {

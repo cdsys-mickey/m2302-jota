@@ -1,7 +1,7 @@
 import { useInit } from "@/shared-hooks/useInit";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 import { useContext } from "react";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";

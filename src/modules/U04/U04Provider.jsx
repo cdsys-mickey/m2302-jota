@@ -1,9 +1,10 @@
+import StdPrint from "@/modules/StdPrint.mjs";
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import { useU04 } from "./useU04";
-import StdPrint from "../StdPrint.mjs";
 import { U04Context } from "./U04Context";
 import U04DataType from "./picker/U04DataType.mjs";
+import { useU04 } from "./useU04";
+import U04OrderType from "./picker/U04OrderType.mjs";
 
 export const U04Provider = ({ children }) => {
 	const u04 = useU04();
@@ -17,6 +18,7 @@ export const U04Provider = ({ children }) => {
 			EProdID: null,
 			InvTx: true,
 			SType: false,
+			OrdName: U04OrderType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 			RptType: U04DataType.getDefaultOption(),
 		},

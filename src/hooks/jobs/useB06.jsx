@@ -5,7 +5,7 @@ import B06 from "@/modules/md-b06";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useCallback, useContext, useMemo } from "react";
 import useJotaReports from "../useJotaReports";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useB06 = () => {

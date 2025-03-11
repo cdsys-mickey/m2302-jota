@@ -1,7 +1,7 @@
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useState } from "react";
 import { useCallback } from "react";
 

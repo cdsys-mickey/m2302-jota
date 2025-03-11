@@ -26,9 +26,9 @@ export const useU04 = () => {
 		EDate,
 		SProdID,
 		EProdID,
-		InvTx,
 		SType,
 		RptType,
+		orderType,
 		outputType,
 		`
 	)

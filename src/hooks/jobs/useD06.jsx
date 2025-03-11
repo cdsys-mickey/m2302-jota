@@ -11,7 +11,7 @@ import { nanoid } from "nanoid";
 import { useCallback, useContext, useRef } from "react";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import { useMemo } from "react";
 import useJotaReports from "../useJotaReports";

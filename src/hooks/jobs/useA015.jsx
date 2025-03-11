@@ -1,7 +1,7 @@
 import ProdGrid from "@/modules/md-prod-grid";
 import { useProdGrid } from "../useProdGrid";
 import A015 from "../../modules/md-a015";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useDSG } from "../../shared-hooks/dsg/useDSG";
 import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";

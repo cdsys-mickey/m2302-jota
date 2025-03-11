@@ -1,5 +1,5 @@
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useP16 = ({ token }) => {
 	const appModule = useAppModule({

@@ -1,6 +1,6 @@
 import { useInit } from "@/shared-hooks/useInit";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useDSG } from "../../shared-hooks/dsg/useDSG";
 import { keyColumn } from "react-datasheet-grid";
 import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";

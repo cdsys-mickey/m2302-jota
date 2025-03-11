@@ -5,13 +5,13 @@ import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import Forms from "@/shared-modules/sd-forms";
+import Forms from "@/shared-modules/Forms.mjs";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useState } from "react";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useB02 = (opts = {}) => {

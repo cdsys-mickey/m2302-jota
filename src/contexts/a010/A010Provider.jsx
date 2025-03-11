@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useA01 } from "../../hooks/jobs/useA01";
-import A01 from "../../modules/md-a01";
+import A01 from "../../modules/A01.mjs";
 import { A01Context } from "../A01/A01Context";
 
 export const A010Provider = ({ children }) => {

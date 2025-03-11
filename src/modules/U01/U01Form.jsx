@@ -98,7 +98,7 @@ const U01Form = memo((props) => {
 							</Grid>
 							<FlexGrid item xs={12} sm={6} alignItems="center">
 								<CheckboxExWrapper
-									label="含撥出入"
+									label="包含撥出入"
 									name="InvTx"
 									defaultValue={true}
 								/>

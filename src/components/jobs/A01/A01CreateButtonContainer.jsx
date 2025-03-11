@@ -3,7 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useContext } from "react";
 import { forwardRef, memo } from "react";
 import { A01Context } from "@/contexts/A01/A01Context";
-import A01 from "@/modules/md-a01";
+import A01 from "@/modules/A01.mjs";
 import { useMemo } from "react";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 

@@ -13,7 +13,7 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useToggle } from "../../shared-hooks/useToggle";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useD041 = () => {
 	const config = useContext(ConfigContext);

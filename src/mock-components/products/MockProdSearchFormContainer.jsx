@@ -1,5 +1,5 @@
 import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import A01 from "@/modules/md-a01";
+import A01 from "@/modules/A01.mjs";
 import SearchForm from "@/shared-components/SearchForm";
 import useSearchField from "@/shared-hooks/useSearchField";
 import React, { forwardRef, useMemo, useRef } from "react";

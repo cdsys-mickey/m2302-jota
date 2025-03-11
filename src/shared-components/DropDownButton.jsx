@@ -291,7 +291,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 														const ItemIconComponent = getItemIconComponent ? getItemIconComponent(item) : null;
 														return (
 															<MenuItem
-																key={itemKey}
+																key={itemKey || index}
 																selected={isOptionEqualToValue ? isOptionEqualToValue(selected, item) : selected == item}
 																onClick={(e) =>
 																	handleItemClick(

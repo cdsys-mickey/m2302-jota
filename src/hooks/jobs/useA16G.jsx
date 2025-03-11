@@ -12,7 +12,7 @@ import { nanoid } from "nanoid";
 import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useA16G = () => {
 	const { token } = useContext(AuthContext);

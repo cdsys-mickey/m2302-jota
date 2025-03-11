@@ -10,7 +10,7 @@ import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior"
 import { useDSG } from "../../shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
 import { useProdGrid } from "../useProdGrid";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useA012 = () => {
 	const appModule = useAppModule({

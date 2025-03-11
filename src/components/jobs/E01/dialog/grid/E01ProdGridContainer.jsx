@@ -27,7 +27,8 @@ export const E01ProdGridContainer = (props) => {
 			setValue: form.setValue,
 			onUpdateRow: e01.onUpdateRow,
 			onGridChanged: e01.onGridChanged,
-			onCheckRow: e01.onCheckRow
+			onCheckRow: e01.onCheckRow,
+			isRowDeletable: e01.isRowDeletable
 		})
 	}, [e01, form.getValues, form.setValue, formMeta.gridMeta])
 

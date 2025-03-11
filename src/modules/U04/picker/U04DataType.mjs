@@ -4,8 +4,8 @@ const DataType = Object.freeze({
 });
 
 const options = [
-	{ id: DataType.SUMMARY, name: "彙總" },
-	{ id: DataType.DETAIL1, name: "明細" },
+	{ id: DataType.SUMMARY, label: "彙總" },
+	{ id: DataType.DETAIL1, label: "明細" },
 ];
 
 const getOptionLabel = (option) => {
@@ -40,3 +40,4 @@ const U04DataType = {
 };
 
 export default U04DataType;
+

@@ -1,5 +1,5 @@
 import { A01Context } from "@/contexts/A01/A01Context";
-import A01 from "@/modules/md-a01";
+import A01 from "@/modules/A01.mjs";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { useScrollable } from "@/shared-hooks/useScrollable";

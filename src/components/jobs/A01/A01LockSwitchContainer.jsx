@@ -1,7 +1,7 @@
 import { A01Context } from "@/contexts/A01/A01Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import useServiceStatus from "@/hooks/useServiceStatus";
-import A01 from "@/modules/md-a01";
+import A01 from "@/modules/A01.mjs";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";

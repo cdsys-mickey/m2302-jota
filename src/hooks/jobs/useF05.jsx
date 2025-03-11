@@ -6,7 +6,7 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext } from "react";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useF05 = () => {
 	const crud = useContext(CrudContext);

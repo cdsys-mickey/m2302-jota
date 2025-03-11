@@ -19,6 +19,9 @@ import U04DataTypePicker from "./picker/U04DataTypePicker";
 import RangeGroup from "@/shared-components/RangeGroup";
 import FlexBox from "@/shared-components/FlexBox";
 import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import ProdFreeTypePicker from "@/components/prod-free-type-picker/ProdFreeTypePicker";
+import U04OrderTypePicker from "./picker/U04OrderTypePicker";
+import ProdFreeTypePickerV2 from "@/components/prod-free-type-picker/ProdFreeTypePickerV2";
 
 const U04Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -96,36 +99,29 @@ const U04Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<CheckboxExWrapper
-									label="含撥出入"
-									name="InvTx"
-									defaultValue={true}
-								/>
-
-							</FlexGrid>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<CheckboxExWrapper
-									label="包含試贈樣"
+							<Grid item xs={12} sm={6}>
+								<ProdFreeTypePickerV2
+									label="統計型態"
 									name="SType"
-									defaultValue={true}
+									disableOpenOnInput
+									selectOnFocus
 								/>
-							</FlexGrid>
+							</Grid>
 
 
 							<Grid item xs={12} sm={6}>
 								<U04DataTypePicker
 									name="RptType"
-									label="報表類型"
+									label="報表型態"
 									required
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								{/* <StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/> */}
+								<U04OrderTypePicker
+									name="orderType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
 							</Grid>
 						</Grid>
 						<FlexBox mt={1.5}>

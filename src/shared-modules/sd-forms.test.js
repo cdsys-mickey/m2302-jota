@@ -1,6 +1,6 @@
 import { it } from "vitest";
 import { expect } from "vitest";
-import Forms from "./sd-forms";
+import Forms from "./Forms.mjs";
 import DateFormats from "./sd-date-formats";
 
 it("should prepareForSubmit", () => {

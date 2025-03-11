@@ -15,7 +15,7 @@ import { useWebApi } from "../../shared-hooks/useWebApi";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
-import { useAppModule } from "./useAppModule";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useC01 = () => {
 	const crud = useContext(CrudContext);

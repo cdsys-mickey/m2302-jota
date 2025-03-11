@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { D02ListRowContainer } from "./D02ListRowContainer";
-import Forms from "../../../../shared-modules/sd-forms";
+import Forms from "../../../../shared-modules/Forms.mjs";
 import { useMemo } from "react";
 import D02 from "@/modules/md-d02";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";

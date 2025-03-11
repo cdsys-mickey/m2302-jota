@@ -22,6 +22,7 @@ const PrintButton = (props) => {
 			getOptionLabel={StdPrint.getOptionLabel}
 			isOptionEqualToValue={StdPrint.isOptionEqualToValue}
 			getItemIconComponent={StdPrint.getIcon}
+			getOptionKey={StdPrint.getOptionKey}
 			onClick={onClick || onSelect}
 			onItemClick={onItemClick || onSelect}
 			slotProps={{

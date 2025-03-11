@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { nanoid } from "nanoid";
-import Forms from "../shared-modules/sd-forms";
+import Forms from "../shared-modules/Forms.mjs";
 import FreeProdTypes from "./md-free-prod-types";
 
 const createRow = () => ({
