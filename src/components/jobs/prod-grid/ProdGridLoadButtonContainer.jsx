@@ -1,6 +1,6 @@
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import { LoadingButton } from "@mui/lab";
 import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
@@ -37,8 +37,8 @@ export const ProdGridLoadButtonContainer = (props) => {
 		return Objects.isAllPropsEmpty(criteria)
 			? "請先輸入篩選條件"
 			: totalElements
-			? `讀取資料(目前符合${totalElements}筆)`
-			: "(查無相符商品)";
+				? `讀取資料(目前符合${totalElements}筆)`
+				: "(查無相符商品)";
 	}, [criteria, totalElements]);
 
 	const disabled = useMemo(() => {

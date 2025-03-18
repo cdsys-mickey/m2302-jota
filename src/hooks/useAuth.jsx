@@ -1,4 +1,4 @@
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Messages from "@/modules/md-messages";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";

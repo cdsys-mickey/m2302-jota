@@ -5,7 +5,7 @@ import { E01Context } from "@/contexts/E01/E01Context";
 import { useState } from "react";
 import { useMemo } from "react";
 import { useEffect } from "react";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import Constants from "@/modules/md-constants";
 
@@ -39,8 +39,8 @@ export const E01ImportProdsButtonContainer = (props) => {
 		return Objects.isAllPropsEmpty(criteria)
 			? "請先輸入篩選條件"
 			: totalElements
-			? `帶入商品(目前符合${totalElements}筆)`
-			: "(查無相符商品)";
+				? `帶入商品(目前符合${totalElements}筆)`
+				: "(查無相符商品)";
 	}, [criteria, totalElements]);
 
 	const disabled = useMemo(() => {

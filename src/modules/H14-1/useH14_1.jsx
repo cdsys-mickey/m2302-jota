@@ -29,6 +29,7 @@ export const useH14_1 = () => {
 			...H14_1.transformForSubmitting(payload),
 			DeptId: operator.CurDeptID,
 		};
+		console.log("data", data);
 		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
 	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
 

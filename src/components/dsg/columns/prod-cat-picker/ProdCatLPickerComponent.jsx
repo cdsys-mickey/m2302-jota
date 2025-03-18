@@ -1,6 +1,6 @@
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import ProdCatLPicker from "@/components/picker/ProdCatLPicker";

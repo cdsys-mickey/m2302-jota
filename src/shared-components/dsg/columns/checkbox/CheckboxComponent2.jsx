@@ -1,4 +1,4 @@
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import { memo, useLayoutEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { useCallback } from "react";

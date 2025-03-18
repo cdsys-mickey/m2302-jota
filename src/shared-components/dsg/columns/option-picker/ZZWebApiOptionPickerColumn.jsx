@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import WebApiOptionPicker from "../../../option-picker/WebApiOptionPicker";
-import Objects from "../../../../shared-modules/sd-objects";
+import Objects from "../../../../shared-modules/Objects";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {

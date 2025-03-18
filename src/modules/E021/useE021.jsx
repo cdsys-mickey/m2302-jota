@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import E021 from "@/modules/E021/E021.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
@@ -10,7 +10,7 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Forms from "@/shared-modules/Forms.mjs";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import { isDate } from "lodash";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
@@ -170,7 +170,8 @@ export const useE021 = ({ mode }) => {
 	}, []);
 
 	const updateCustomerData = useCallback(({ setValue, formMeta }) => (data) => {
-		formMeta.asyncRef.current.supressEvents = true;
+		// formMeta.asyncRef.current.supressEvents = true;
+		formMeta.supressEvents();
 		setValue("retail", data ? data?.retail : false);
 		setValue("customer", data ? data?.customer : null);
 		setValue("CustName", data?.CustName || "");
@@ -194,7 +195,8 @@ export const useE021 = ({ mode }) => {
 		// // 更新數字
 
 
-		formMeta.asyncRef.current.supressEvents = false;
+		// formMeta.asyncRef.current.supressEvents = false;
+		formMeta.enableEvents();
 	}, []);
 
 	const handleRefreshAmt = useCallback(
@@ -417,7 +419,7 @@ export const useE021 = ({ mode }) => {
 				}
 
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
-				if (err.code === 102 && err.data.Row) {
+				if (err.code === 102 && err.data?.Row) {
 					const rowIndex = Number(err.data.Row) - 1;
 					const rowData = grid.gridData[rowIndex];
 					const stock = Number(err.data.StockQty);
@@ -1111,7 +1113,8 @@ export const useE021 = ({ mode }) => {
 
 	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta, handleRefreshGridSubmit }) => async (newValue) => {
 		console.log("handleCustomerChange", newValue);
-		formMeta.asyncRef.current.supressEvents = true;
+		// formMeta.asyncRef.current.supressEvents = true;
+		formMeta.supressEvents();
 		const formData = getValues();
 
 		const isOrdersSelected = !!formData.customerOrders && formData.customerOrders.length > 0;
@@ -1181,7 +1184,8 @@ export const useE021 = ({ mode }) => {
 		}
 
 		gridMeta.setActiveCell(null);
-		formMeta.asyncRef.current.supressEvents = false;
+		// formMeta.asyncRef.current.supressEvents = false;
+		formMeta.enableEvents();
 	}, [grid.gridData, httpGetAsync, token]);
 
 

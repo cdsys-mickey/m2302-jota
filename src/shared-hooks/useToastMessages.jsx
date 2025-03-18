@@ -1,4 +1,4 @@
-import Errors from "@/shared-modules/sd-errors";
+import Errors from "@/shared-modules/Errors";
 import { useCallback } from "react";
 import { toast } from "react-toastify";
 

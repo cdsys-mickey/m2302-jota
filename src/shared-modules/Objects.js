@@ -10,7 +10,7 @@ const DEFAULT_PROPS_OPTS = {
 };
 
 /**
- * 所有欄位存在且不為 null
+ * 所有欄位存在且不為 null 也不為 undefined
  */
 const isAllPropsNotNull = (obj, columnPattern) => {
 	if (!obj) {
@@ -20,13 +20,13 @@ const isAllPropsNotNull = (obj, columnPattern) => {
 		return (
 			Object.keys(obj).filter((key) => {
 				const value = obj[key];
-				return value === null || value === undefined;
+				return value == null;
 			}).length === 0
 		);
 	}
 	const columns = Arrays.parse(columnPattern);
 	return columns.every((prop) => {
-		return obj[prop] !== null && obj[prop] !== undefined;
+		return obj[prop] != null;
 	});
 };
 

@@ -46,6 +46,7 @@ const A01DialogForm = memo((props) => {
 		transTabDisabled,
 		comboTabDisabled,
 		slotProps,
+		handleInvDataFocused,
 		...rest
 	} = props;
 
@@ -142,6 +143,7 @@ const A01DialogForm = memo((props) => {
 													maxLength: 13
 												}
 											}}
+											onFocus={handleInvDataFocused}
 										/>
 									</Grid>
 									{/* <FlexBox fullWidth /> */}
@@ -492,6 +494,7 @@ A01DialogForm.propTypes = {
 	storeMode: PropTypes.bool,
 	selectedTab: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	handleTabChange: PropTypes.func,
+	handleInvDataFocused: PropTypes.func,
 	readError: PropTypes.object,
 	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	transTabDisabled: PropTypes.bool,

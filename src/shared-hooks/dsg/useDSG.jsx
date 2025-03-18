@@ -1,11 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import { useToggle } from "@/shared-hooks/useToggle";
 import Arrays from "@/shared-modules/sd-arrays";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import Types from "@/shared-modules/sd-types";
 import _ from "lodash";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 const DEFAULT_SET_DATA_OPTS = {
 	reset: false,
@@ -629,6 +630,16 @@ export const useDSG = ({
 		toggleReadOnly();
 	}, [rollbackChanges, toggleReadOnly]);
 
+	const supressEvents = useCallback(() => {
+		asyncRef.current.supressEvents = true;
+		console.log(`%c****** ${DSGContext.displayName}.supressEvent ON ******`, CommonCSS.MSG_WARN);
+	}, []);
+
+	const enableEvents = useCallback(() => {
+		asyncRef.current.supressEvents = false;
+		console.log(`%c****** ${DSGContext.displayName}.supressEvent OFF ******`, CommonCSS.MSG_SUCCESS);
+	}, []);
+
 	useEffect(() => {
 		// gridData changed, supressEvents reset to false
 		if (asyncRef.current.supressEvents) {
@@ -701,5 +712,7 @@ export const useDSG = ({
 		asyncRef,
 		handleUnlock,
 		handleLock,
+		supressEvents,
+		enableEvents
 	};
 };

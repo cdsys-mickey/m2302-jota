@@ -17,8 +17,7 @@ export const H14_1Provider = ({ children }) => {
 			ECustID: null,
 			reportType: H14_1ReportType.getDefaultOption(),
 			orderType: H14_1OrderType.getDefaultOption(),
-			// orderDir: OrderDir.getDefaultOption(),
-			// calType: H141CalType.getDefaultOption(),
+			SType: null,
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

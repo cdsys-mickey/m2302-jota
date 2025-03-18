@@ -1,7 +1,7 @@
 const options = [
-	{ id: 1, label: "金額" },
-	{ id: 2, label: "數量" },
-	{ id: 3, label: "櫃位" },
+	{ id: 1, label: "客戶" },
+	{ id: 2, label: "單據" },
+	{ id: 3, label: "日期" },
 ];
 
 const getOptionLabel = (option) => {
@@ -36,4 +36,3 @@ const H08OrderType = {
 };
 
 export default H08OrderType;
-

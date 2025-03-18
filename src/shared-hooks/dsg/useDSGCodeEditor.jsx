@@ -1,12 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import _ from "lodash";
 import { nanoid } from "nanoid";
 import queryString from "query-string";
 import { useCallback, useContext, useState } from "react";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import Objects from "../../shared-modules/sd-objects";
+import Objects from "../../shared-modules/Objects";
 import { useWebApi } from "../useWebApi";
 
 const defaultTransformForReading = (payload) => {
@@ -16,6 +16,10 @@ const defaultTransformForReading = (payload) => {
 const defaultTransformForSubmmit = (payload) => {
 	return payload;
 };
+
+const DEFAULT_PARAMS = {
+	np: 1
+}
 
 export const useDSGCodeEditor = ({
 	// 要餵給 useDSG 的參數
@@ -29,7 +33,8 @@ export const useDSGCodeEditor = ({
 	baseUri,
 	// token,
 	displayName = "代碼",
-	querystring,
+	params: defaultParams = DEFAULT_PARAMS,
+	// querystring,
 	autoDelete = false,
 	transformForReading = defaultTransformForReading,
 	transformForSubmitting = defaultTransformForSubmmit,
@@ -45,7 +50,7 @@ export const useDSGCodeEditor = ({
 	});
 
 	const load = useCallback(
-		async ({ params: _params, baseUri, supressLoading = false } = {}) => {
+		async ({ params, baseUri, supressLoading = false } = {}) => {
 			if (!supressLoading) {
 				grid.setGridLoading(true);
 			}
@@ -59,19 +64,22 @@ export const useDSGCodeEditor = ({
 					baseUri,
 				}));
 			}
-
+			const _params = params ?? defaultParams;
 			const _uri = baseUri || state.baseUri;
 
 			try {
 				const { status, payload } = await httpGetAsync({
 					url: _uri,
 					bearer: token,
-					params: {
-						..._params,
-						...(querystring && {
-							params: queryString.parse(querystring),
-						}),
-					},
+					...(_params && {
+						params: _params
+					})
+					// params: {
+					// 	..._params,
+					// 	...(querystring && {
+					// 		params: queryString.parse(querystring),
+					// 	}),
+					// },
 				});
 				if (status.success) {
 					if (onLoaded) {
@@ -93,7 +101,7 @@ export const useDSGCodeEditor = ({
 				grid.setGridLoading(false);
 			}
 		},
-		[grid, httpGetAsync, onLoaded, querystring, state.baseUri, token, transformForReading]
+		[defaultParams, grid, httpGetAsync, onLoaded, state.baseUri, token, transformForReading]
 	);
 
 	const reload = useCallback(() => {
@@ -366,7 +374,8 @@ export const useDSGCodeEditor = ({
 			};
 			const prevRowData = grid.prevGridData[operation.fromRowIndex];
 			if (
-				Objects.isAllPropsNotNull(firstRow.rowData, [
+				// Objects.isAllPropsNotNull(firstRow.rowData, [
+				Objects.isAllPropsNotUndefined(firstRow.rowData, [
 					grid.keyColumn,
 					...grid.otherColumnNames,
 				])

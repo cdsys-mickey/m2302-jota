@@ -29,7 +29,7 @@ const transformForSubmitting = (payload) => {
 		SProdID: SProdID?.ProdID || "",
 		EProdID: EProdID?.ProdID || "",
 		// InclTest: InclTest?.id || "",
-		SType: SType ? "Y" : "N",
+		SType: SType?.id?.toString() ?? "",
 		SCustID: SCustID?.CustID || "",
 		ECustID: ECustID?.CustID || "",
 		RptType: reportType?.id,

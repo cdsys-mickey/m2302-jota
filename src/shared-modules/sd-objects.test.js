@@ -1,5 +1,5 @@
 import { it } from "vitest";
-import Objects from "./sd-objects";
+import Objects from "./Objects";
 import { expect } from "vitest";
 
 it("isAllPropsNotNull", () => {

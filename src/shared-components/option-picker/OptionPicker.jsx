@@ -1,6 +1,6 @@
 import Types from "@/shared-modules/sd-types";
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/md-colors";
 import {
 	Autocomplete,

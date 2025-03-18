@@ -5,12 +5,12 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
+import Errors from "@/shared-modules/Errors";
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 
 export const useA20 = ({ token }) => {
 	const crud = useContext(CrudContext);

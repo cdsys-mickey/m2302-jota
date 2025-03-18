@@ -1,7 +1,7 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import A22 from "@/modules/md-a22";
 import { createIntColumn } from "@/shared-components/dsg/columns/float/createIntColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -13,7 +13,7 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import useDebugDialog from "../useDebugDialog";

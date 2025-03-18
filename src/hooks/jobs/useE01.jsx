@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import E01 from "@/modules/E01.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
@@ -10,7 +10,7 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Forms from "@/shared-modules/Forms.mjs";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import { isDate } from "lodash";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import useJotaReports from "../useJotaReports";
@@ -993,7 +993,8 @@ export const useE01 = () => {
 	 */
 	const handleCustomerChange = useCallback(({ setValue, getValues, formMeta, gridMeta, handleSubmit }) => async (newValue) => {
 		console.log("handleCustomerChange", newValue);
-		formMeta.asyncRef.current.supressEvents = true;
+		// formMeta.asyncRef.current.supressEvents = true;
+		formMeta.supressEvents();
 		// setValue("CustName", newValue?.CustData ?? "");
 		setValue("CustName", newValue?.AbbrName ?? "");
 		let customerInfo = null;
@@ -1046,7 +1047,8 @@ export const useE01 = () => {
 
 
 		gridMeta.setActiveCell(null);
-		formMeta.asyncRef.current.supressEvents = false;
+		// formMeta.asyncRef.current.supressEvents = false;
+		formMeta.enableEvents();
 	}, [grid.gridData, httpGetAsync, token]);
 
 	const checkEditableAction = useAction();

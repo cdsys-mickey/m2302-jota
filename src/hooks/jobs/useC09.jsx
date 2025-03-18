@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import ConfigContext from "@/contexts/config/ConfigContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import C09 from "@/modules/md-c09";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { nanoid } from "nanoid";

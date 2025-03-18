@@ -8,6 +8,12 @@ import { memo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
+
+const DEFAULT_PARAMS = {
+	np: 1
+}
+
+
 /**
  * 由 name 屬性決定是否要使用 Controller 包覆
  * @param {*} param0
@@ -23,6 +29,7 @@ export const ControlledWebApiOptionPicker = memo(
 		sx = [],
 		onChange: _onChange,
 		onChanged,
+		params = DEFAULT_PARAMS,
 		...rest
 	}) => {
 		const form = useFormContext();
@@ -95,6 +102,7 @@ export const ControlledWebApiOptionPicker = memo(
 							disableEnter={disableEnter}
 							focusNextField={focusNextField}
 							isFieldDisabled={isFieldDisabled}
+							params={params}
 							onChange={async (newValue) => {
 								let returnedValue;
 								// _onChange 可能是 async 方法, 這裡必須 await 否則得到的 returnedValue 可能是 Promise
@@ -150,4 +158,5 @@ ControlledWebApiOptionPicker.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	onChange: PropTypes.func,
 	onChanged: PropTypes.func,
+	params: PropTypes.object
 };

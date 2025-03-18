@@ -3,7 +3,7 @@ import { B012Context } from "@/contexts/B012/B012Context";
 import { B032Context } from "@/contexts/B032/B032Context";
 import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import useDebounce from "@/shared-hooks/useDebounce";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useWatch } from "react-hook-form";
 

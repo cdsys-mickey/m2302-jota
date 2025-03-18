@@ -1,4 +1,4 @@
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import { useSignalR } from "@/shared-hooks/useSignalR";
 import { memo, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";

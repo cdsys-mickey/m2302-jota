@@ -3,6 +3,8 @@ import { useContext, useMemo } from "react";
 import E021ListRow from "./E021ListRow";
 import { ListRowProvider } from "@/shared-components/listview/context/ListRowProvider";
 import { E021Context } from "@/modules/E021/E021Context";
+import { useCallback } from "react";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 export const E021ListRowContainer = (props) => {
 	const e021 = useContext(E021Context);
@@ -10,6 +12,12 @@ export const E021ListRowContainer = (props) => {
 	const { index, ...rest } = props;
 	const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
 	const value = useMemo(() => e021.listData[index], [e021.listData, index]);
+	const formMeta = useContext(FormMetaContext);
+
+	const handleClick = useCallback((e) => {
+		formMeta.supressEvents();
+		e021.handleSelect(e, value);
+	}, [e021, formMeta, value]);
 
 	return (
 		<ListRowProvider loading={loading}>
@@ -17,7 +25,7 @@ export const E021ListRowContainer = (props) => {
 				index={index}
 				// loading={loading}
 				value={value}
-				onClick={(e) => e021.handleSelect(e, value)}
+				onClick={handleClick}
 				{...rest}
 			/>
 		</ListRowProvider>

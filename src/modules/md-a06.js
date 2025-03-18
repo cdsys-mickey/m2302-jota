@@ -1,4 +1,4 @@
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 
 /* eslint-disable no-mixed-spaces-and-tabs */
 const Mode = Object.freeze({

@@ -1,6 +1,6 @@
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import Types from "@/shared-modules/sd-types";
 import clsx from "clsx";
 import _ from "lodash";

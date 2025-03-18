@@ -13,6 +13,7 @@ import { useCallback } from "react";
 import A01Drawer from "../A01Drawer";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import useDebounce from "@/shared-hooks/useDebounce";
 
 export const A01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -122,6 +123,15 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		control: form.control,
 	});
 
+	// const prodData = useWatch({
+	// 	name: "ProdData",
+	// 	control: form.control
+	// })
+
+	// const debouncedProdData = useDebounce(prodData, 800)
+
+
+
 	const isFieldDisabled = useCallback(
 		(field) => {
 			if (storeMode) {
@@ -150,6 +160,10 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 	const onSubmit = useMemo(() => {
 		return form.handleSubmit(a01.onEditorSubmit, a01.onEditorSubmitError);
 	}, [a01.onEditorSubmit, a01.onEditorSubmitError, form]);
+
+	const handleInvDataFocused = useMemo(() => {
+		return a01.handleInvDataFocused({ setValue: form.setValue, getValues: form.getValues });
+	}, [a01, form.getValues, form.setValue])
 
 	useEffect(() => {
 		if (a01.itemDataReady) {
@@ -202,6 +216,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 						height={formHeight}
 						transTabDisabled={a01.transTabDisabled}
 						comboTabDisabled={a01.comboTabDisabled}
+						handleInvDataFocused={handleInvDataFocused}
 					/>
 				</FormMetaProvider>
 				<A01Drawer />

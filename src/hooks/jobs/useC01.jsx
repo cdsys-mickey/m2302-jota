@@ -1,6 +1,6 @@
 import ConfigContext from "@/contexts/config/ConfigContext";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";

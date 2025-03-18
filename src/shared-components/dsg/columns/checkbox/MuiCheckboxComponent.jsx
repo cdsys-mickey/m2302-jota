@@ -2,7 +2,7 @@ import { Checkbox } from "@mui/material";
 import PropTypes from "prop-types";
 import { useRef } from "react";
 import { memo, useCallback, useMemo } from "react";
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {

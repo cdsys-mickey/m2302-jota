@@ -1,4 +1,4 @@
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Auth from "@/modules/md-auth";
 import { useCaptcha } from "@/shared-components/captcha-field/useCaptcha";

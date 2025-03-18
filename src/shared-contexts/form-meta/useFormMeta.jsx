@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import { useRef } from "react";
-import FormMeta from "../../shared-modules/sd-form-meta";
+import FormMeta from "@/shared-modules/sd-form-meta";
 import { LastFieldBehavior } from "./LastFieldBehavior";
+import CommonCSS from "@/shared-modules/CommonCSS.mjs";
+import { FormMetaProvider } from "./FormMetaProvider";
 
 export const useFormMeta = (value, opts = {}) => {
 	const asyncRef = useRef({
@@ -134,12 +136,24 @@ export const useFormMeta = (value, opts = {}) => {
 		[firstFieldMessage, getNextField, lastField, lastFieldMessage]
 	);
 
+	const supressEvents = useCallback(() => {
+		asyncRef.current.supressEvents = true;
+		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent ON ******`, CommonCSS.MSG_WARN);
+	}, []);
+
+	const enableEvents = useCallback(() => {
+		asyncRef.current.supressEvents = false;
+		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent OFF ******`, CommonCSS.MSG_SUCCESS);
+	}, []);
+
 	return {
 		fields,
 		getNextField,
 		nextEnabled,
 		focusNextField,
 		disableEnter,
-		asyncRef
+		asyncRef,
+		supressEvents,
+		enableEvents
 	};
 };

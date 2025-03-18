@@ -42,17 +42,7 @@ export const E021FrameContainer = () => {
 	// 	},
 	// 	[clearParams, loadPurchaseOrder]
 	// );
-	const handleQuerySync = useCallback(
-		(newValue) => {
-			if (newValue) {
-				// clearParams();
-				createWithPurchaseOrder({ id: newValue });
-			}
-		},
-		[createWithPurchaseOrder]
-	);
 
-	useQuerySync("target", handleQuerySync);
 
 	return (
 		<FormProvider {...searchForm}>

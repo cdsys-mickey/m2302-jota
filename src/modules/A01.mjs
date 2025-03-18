@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import { nanoid } from "nanoid";
 import ProdTypeA from "./md-prod-type-a";
 import ProdTypeB from "./md-prod-type-b";

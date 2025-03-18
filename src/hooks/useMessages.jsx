@@ -3,7 +3,7 @@ import { useInfiniteLoader } from "../shared-hooks/useInfiniteLoader";
 import { AuthContext } from "../contexts/auth/AuthContext";
 import { useContext } from "react";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 
 export const useMessages = () => {
 	const auth = useContext(AuthContext);

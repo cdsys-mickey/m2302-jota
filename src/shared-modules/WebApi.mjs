@@ -46,6 +46,7 @@ const getErrorFromPayload = (payload, opts) => {
 		statusText,
 		Status,
 		StatusText,
+		data,
 		// ...rest
 	} = payload;
 
@@ -78,6 +79,10 @@ const getErrorFromPayload = (payload, opts) => {
 	const _statusText = statusText || StatusText || opts?.statusText;
 	if (_statusText) {
 		error.statusText = _statusText;
+	}
+
+	if (data) {
+		error.data = data;
 	}
 	return error;
 };

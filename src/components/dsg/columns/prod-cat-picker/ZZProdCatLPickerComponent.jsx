@@ -1,4 +1,4 @@
-import Objects from "@/shared-modules/sd-objects";
+import Objects from "@/shared-modules/Objects";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import ProdCatLPicker from "@/components/picker/ProdCatLPicker";

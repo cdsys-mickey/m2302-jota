@@ -5,8 +5,8 @@ import FreeProdTypes from "../md-free-prod-types";
 import Strings from "@/shared-modules/sd-strings";
 
 const Mode = Object.freeze({
-	MANAGER: Symbol("1"),
-	CLEARK: Symbol("0"),
+	MANAGER: Symbol("E021"),
+	CLEARK: Symbol("E02"),
 });
 
 const createRow = () => ({

@@ -1,9 +1,9 @@
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import { useAction } from "@/shared-hooks/useAction";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
-import Objects from "@/shared-modules/sd-objects";
+import Errors from "@/shared-modules/Errors";
+import Objects from "@/shared-modules/Objects";
 import { useCallback, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/auth/AuthContext";

@@ -19,6 +19,10 @@ import { U05_1Provider } from "@/modules/U05_1/U05_1Provider";
 import { U06FrameContainer } from "@/modules/U06/U06FrameContainer";
 import { U06Provider } from "@/modules/U06/U06Provider";
 import { U061Provider } from "@/modules/U06_1/U06_1Provider";
+import { U07FrameContainer } from "@/modules/U07/U07FrameContainer";
+import { U07Provider } from "@/modules/U07/U07Provider";
+import { U08FrameContainer } from "@/modules/U08/U08FrameContainer";
+import { U08Provider } from "@/modules/U08/U08Provider";
 // import { U07FrameContainer } from "@/modules/U07/U07FrameContainer";
 // import { U07Provider } from "@/modules/U07/U07Provider";
 // import { U08FrameContainer } from "@/modules/U08/U08FrameContainer";
@@ -124,7 +128,7 @@ const uRoutes = (
 				</CrudProvider>
 			}
 		/>
-		{/* <Route
+		<Route
 			path="U07"
 			element={
 				<CrudProvider>
@@ -147,7 +151,7 @@ const uRoutes = (
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}
-		/> */}
+		/>
 	</>
 );
 

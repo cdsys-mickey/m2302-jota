@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import Auth from "@/modules/md-auth";
 import CopyAuth from "@/modules/md-copy-auth";
 import UserInfo from "@/modules/md-user-info";

@@ -1,7 +1,7 @@
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { E021Context } from "@/modules/E021/E021Context";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -21,6 +21,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import E021Drawer from "../E021Drawer";
 import E021DialogForm from "./E021DialogForm";
 import { E021DialogToolbarContainer } from "./toolbar/E021DialogToolbarContainer";
+import { useQuerySync } from "@/shared-hooks/useQuerySync";
 
 export const E021DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -42,7 +43,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 	const { setValue, reset } = form;
 
 	const e021 = useContext(E021Context);
-	const { promptLoadPurchaseOrder } = e021;
+	const { createWithPurchaseOrder } = e021;
 
 	const salesDate = useWatch({
 		name: "SalDate",
@@ -342,6 +343,8 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
+	const { enableEvents } = formMeta;
+
 	const handleSubmit = form.handleSubmit(
 		e021.onEditorSubmit({
 			setValue: form.setValue, gridMeta
@@ -383,8 +386,9 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		if (e021.itemDataReady) {
 			console.log("e021 form reset", e021.itemData);
 			reset(e021.itemData);
+			enableEvents();
 		}
-	}, [e021.itemData, e021.itemDataReady, reset]);
+	}, [e021.itemData, e021.itemDataReady, enableEvents, reset]);
 
 	// useEffect(() => {
 	// 	if (e021.itemInitialized) {
@@ -404,6 +408,16 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 	// 	}
 	// }, [e021.itemDataReady, e021.purchaseOrderIdRef.current]);
 
+	const handleCustomerChange = useMemo(() => {
+		return e021.handleCustomerChange({
+			setValue: form.setValue,
+			getValues: form.getValues,
+			formMeta,
+			gridMeta,
+			handleRefreshGridSubmit
+		})
+	}, [e021, form.getValues, form.setValue, formMeta, gridMeta, handleRefreshGridSubmit])
+
 	useEffect(() => {
 		if (e021.committed) {
 			console.log("committed", e021.grid.gridData);
@@ -411,14 +425,24 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [e021.committed, e021.grid.gridData, handleSubmit]);
 
+	const handleQuerySync = useCallback(
+		(newValue) => {
+			if (newValue) {
+				formMeta.supressEvents();
+				createWithPurchaseOrder({ id: newValue });
+			}
+		},
+		[createWithPurchaseOrder, formMeta]
+	);
+
+	useQuerySync("target", handleQuerySync);
+
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly} isFieldDisabled={isFieldDisabled}>
 				<DialogExContainer
 					ref={ref}
 					title={memoisedTitle}
-					// fullScreen
-					// fullScreen={e021.editing}
 					responsive
 					fullWidth
 					maxWidth="lg"
@@ -453,13 +477,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 							data={e021.itemData}
 							itemDataReady={e021.itemDataReady}
 							squaredDisabled={e021.squaredDisabled}
-							handleCustomerChange={e021.handleCustomerChange({
-								setValue: form.setValue,
-								getValues: form.getValues,
-								formMeta,
-								gridMeta,
-								handleRefreshGridSubmit
-							})}
+							handleCustomerChange={handleCustomerChange}
 							handleRetailChange={e021.handleRetailChange({ setValue: form.setValue, gridMeta })}
 							validateCustomer={validateCustomer}
 							customerRequired={customerRequired}

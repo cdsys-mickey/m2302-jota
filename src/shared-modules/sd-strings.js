@@ -19,6 +19,13 @@ function isNullOrEmpty(value) {
 	return value === null || value === undefined || value === "";
 }
 
+function getFirstLine(s) {
+	if (!s) {
+		return s;
+	}
+	return s.split("\n")[0];
+}
+
 const Strings = {
 	PRICE_DIGITS: PRICE_FIXED_DIGITS,
 	RATE_DIGITS: RATE_FIXED_DIGITS,
@@ -26,6 +33,7 @@ const Strings = {
 	formatRate,
 	containsNumberOnly,
 	isNullOrEmpty,
+	getFirstLine,
 };
 
 export default Strings;

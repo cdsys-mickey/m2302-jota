@@ -5,10 +5,10 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import A17 from "@/modules/md-a17";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/sd-errors";
+import Errors from "@/shared-modules/Errors";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 
 export const useA17 = () => {
 	const crud = useContext(CrudContext);

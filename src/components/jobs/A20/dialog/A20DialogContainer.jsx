@@ -18,7 +18,7 @@ import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMeta
 import A20Drawer from "../A20Drawer";
 import A20Form from "../form/A20Form";
 import { A20DialogButtonsContainer } from "./buttons/A20DialogButtonsContainer";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 
 export const A20DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

@@ -3,13 +3,13 @@ import Forms from "@/shared-modules/Forms.mjs";
 const transformForSubmitting = (payload) => {
 	const {
 		outputType,
+		orderType,
 		SDeptID,
 		EDeptID,
 		SDate,
 		EDate,
 		SProdID,
 		EProdID,
-		InvTx,
 		SType,
 		RptType,
 		...rest
@@ -23,9 +23,9 @@ const transformForSubmitting = (payload) => {
 		EDate: Forms.formatDate(EDate) || "",
 		SProdID: SProdID?.ProdID || "",
 		EProdID: EProdID?.ProdID || "",
-		InvTx: InvTx ? "Y" : "N",
-		SType: SType ? "Y" : "N",
+		SType: SType?.id,
 		RptType: RptType.id?.toString() || "1",
+		OrdName: orderType?.id?.toString(),
 		...rest,
 	};
 };

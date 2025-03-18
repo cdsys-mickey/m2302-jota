@@ -21,7 +21,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import B011Drawer from "../B011Drawer";
 import B011DialogForm from "./B011DialogForm";
 import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

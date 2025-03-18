@@ -10,7 +10,7 @@ import { useCallback, useContext, useMemo, useRef } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 import ConfigContext from "@/contexts/config/ConfigContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { nanoid } from "nanoid";
 import useJotaReports from "../useJotaReports";

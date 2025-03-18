@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 import C03 from "@/modules/md-c03";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -196,7 +196,7 @@ export const useC03 = () => {
 
 	// READ
 	const loadItem = useCallback(
-		async ({ id, refresh = false }) => {
+		async ({ id, refresh = false } = {}) => {
 			try {
 				const itemId = refresh ? itemIdRef.current : id;
 				if (!refresh) {

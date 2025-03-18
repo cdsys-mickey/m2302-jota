@@ -15,3 +15,4 @@ export const FormMetaProvider = ({ children, ...rest }) => {
 FormMetaProvider.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
+FormMetaProvider.displayName = "FormMetaProvider"

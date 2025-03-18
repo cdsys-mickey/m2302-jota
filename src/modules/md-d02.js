@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/Forms.mjs";
-import Objects from "../shared-modules/sd-objects";
+import Objects from "../shared-modules/Objects";
 
 const transformGridForReading = (data) => {
 	return (

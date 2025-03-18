@@ -16,6 +16,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H14_1OrderTypePicker from "./pickers/H14_1OrderTypePicker";
 import H14_1ReportTypePicker from "./pickers/H14_1ReportTypePicker";
+import ProdFreeTypePickerV2 from "@/components/prod-free-type-picker/ProdFreeTypePickerV2";
 
 const H14_1Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, forNewCustomer = false, ...rest } = props;
@@ -124,12 +125,11 @@ const H14_1Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<ProdFreeTypePicker
+								<ProdFreeTypePickerV2
 									label="統計型態"
 									name="SType"
 									disableOpenOnInput
 									selectOnFocus
-									placeholder="<空白>=試+贈+樣"
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>

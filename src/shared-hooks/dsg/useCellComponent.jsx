@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
 import { toast } from "react-toastify";
-import { toastEx } from "@/helpers/toast-ex";
+import { toastEx } from "@/helpers/toastEx";
 
 export const useCellComponent = (props = {}) => {
 	const {
