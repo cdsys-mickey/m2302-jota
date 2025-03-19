@@ -1,13 +1,12 @@
-import { useContext } from "react";
-import C02ProdGrid from "./C02ProdGrid";
 import { C02Context } from "@/contexts/C02/C02Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { useMemo } from "react";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
-import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
+import C02ProdGrid from "./C02ProdGrid";
 
 export const C02ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -27,7 +26,7 @@ export const C02ProdGridContainer = (props) => {
 
 	const prodInfoColumn = useMemo(() => {
 		return {
-			...keyColumn("tooltip", createTooltipColumn({
+			...keyColumn("tooltip", createTooltipExColumn({
 				arrow: true,
 				placement: "left-start",
 			}))

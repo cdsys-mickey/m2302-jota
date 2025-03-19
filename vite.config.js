@@ -53,7 +53,7 @@ export default defineConfig(({ mode }) => {
 					],
 				},
 				workbox: {
-					maximumFileSizeToCacheInBytes: 3000000, // 3 MB
+					maximumFileSizeToCacheInBytes: 5000000, // 5 MB
 				},
 			}),
 		],
@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
 			"import.meta.env.BUILD_TIME": new Date(),
 		},
 		build: {
-			chunkSizeWarningLimit: 3000, // 設定為 3000 kB
+			chunkSizeWarningLimit: 5000, // 設定為 5000 kB
 			rollupOptions: {
 				input: {
 					// 指定你的入口文件

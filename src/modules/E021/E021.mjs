@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { nanoid } from "nanoid";
-import Forms from "../../shared-modules/Forms.mjs";
+import Forms from "@/shared-modules/Forms.mjs";
 import FreeProdTypes from "../md-free-prod-types";
 import Strings from "@/shared-modules/sd-strings";
 
@@ -150,6 +150,50 @@ const getTooltip = ({ rowData, rowIndex }) => {
 	return result;
 };
 
+const getTooltips = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push({
+				label: `庫存量`,
+				value: stockQty ?? 0,
+			});
+		}
+
+		// 應該沒有
+		if (!Strings.isNullOrEmpty(rowData?.OrdQty_N)) {
+			const demandOfOtherRows = rowData.OrdQty_N;
+			results.push({
+				label: `目前訂購量`,
+				value: demandOfOtherRows ?? 0,
+			});
+		}
+		// 應該沒有
+		if (!Strings.isNullOrEmpty(rowData?.LaveQty_N)) {
+			const remaining = rowData.LaveQty_N;
+			results.push({
+				label: `剩餘量`,
+				value: remaining ?? 0,
+			});
+		}
+
+		if (!Strings.isNullOrEmpty(rowData?.SOrdID)) {
+			if (rowData.SOrdID) {
+				results.push({
+					label: `訂貨單號`,
+					value: rowData.SOrdID.includes("#")
+						? rowData.SOrdID.split("#")[0]
+						: rowData.SOrdID || "",
+				});
+			}
+		}
+	}
+	// const result = results.join(", ");
+	console.log(`${getTooltips.name}`, results);
+	return results;
+};
+
 const transformGridForReading = (data) => {
 	return data?.map((rowData, rowIndex) => {
 		const {
@@ -193,7 +237,7 @@ const transformGridForReading = (data) => {
 			...rest,
 		};
 
-		processedRowData.tooltip = getTooltip({
+		processedRowData.tooltip = getTooltips({
 			rowData: processedRowData,
 			rowIndex,
 		});
@@ -361,10 +405,21 @@ const transformForSubmitting = (payload, gridData) => {
 		remark,
 		prods,
 		customerOrders,
+		// *** ignore ***
+		stype,
+		innerProd,
+		deliveryEmployee,
 		...rest
 	} = payload;
 
-	console.log("ignore props:", prods, customerOrders);
+	console.log(
+		"ignore props:",
+		prods,
+		customerOrders,
+		stype,
+		innerProd,
+		deliveryEmployee
+	);
 
 	return {
 		SalDate: Forms.formatDate(SalDate) || "",
@@ -479,6 +534,7 @@ const E021 = {
 	getEmployee,
 	getTotal,
 	getTooltip,
+	getTooltips,
 	Mode,
 };
 

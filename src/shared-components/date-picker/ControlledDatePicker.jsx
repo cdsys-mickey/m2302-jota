@@ -4,7 +4,7 @@ import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import DateFormats from "@/shared-modules/sd-date-formats";
 import Forms from "@/shared-modules/Forms.mjs";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { Box } from "@mui/system";
 import { DatePicker } from "@mui/x-date-pickers";
 import PropTypes from "prop-types";

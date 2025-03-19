@@ -361,7 +361,7 @@ export const useE021 = ({ mode }) => {
 
 				processedRowData = {
 					...processedRowData,
-					["tooltip"]: E021.getTooltip({
+					["tooltip"]: E021.getTooltips({
 						rowData: processedRowData,
 						rowIndex
 					}),
@@ -1189,19 +1189,19 @@ export const useE021 = ({ mode }) => {
 	}, [grid.gridData, httpGetAsync, token]);
 
 
-	const getTooltip = useCallback(({ rowData }) => {
-		if (!rowData.SOrdID) {
-			return "";
-		}
+	// const getTooltip = useCallback(({ rowData }) => {
+	// 	if (!rowData.SOrdID) {
+	// 		return "";
+	// 	}
 
-		let results = [];
+	// 	let results = [];
 
-		if (rowData?.SOrdID != null) {
-			results.push(`訂貨單號: ${rowData?.SOrdID || "(空白)"}`);
-		}
+	// 	if (rowData?.SOrdID != null) {
+	// 		results.push(`訂貨單號: ${rowData?.SOrdID || "(空白)"}`);
+	// 	}
 
-		return results.join(", ");
-	}, []);
+	// 	return results.join(", ");
+	// }, []);
 
 	const handleCustomerOrdersChanged2 = useCallback(
 		({ setValue, getValues, formMeta }) =>
@@ -1529,7 +1529,7 @@ export const useE021 = ({ mode }) => {
 		onGridChanged,
 		handleTaxTypeChange,
 		handleRecdAmtChange,
-		getTooltip,
+		// getTooltip,
 		handleCustomerOrdersChanged,
 		handleCustomerOrdersChanged2,
 		committed,

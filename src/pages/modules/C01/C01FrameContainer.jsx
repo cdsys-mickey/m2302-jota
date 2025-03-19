@@ -9,7 +9,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import C01TransformToOrderDialogContainer from "../../../components/jobs/C01/dialog/transform-to-order/C01TransformToOrderDialogContainer";
 import C01TransformToOrdersDialogContainer from "../../../components/jobs/C01/dialog/transform-to-order/C01TransformToOrdersDialogContainer";
-import C01 from "../../../modules/md-c01";
+import C01 from "../../../modules/C01.mjs";
 import { C01SearchFormContainer } from "@/components/jobs/C01/list/C01SearchFormContainer";
 import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 

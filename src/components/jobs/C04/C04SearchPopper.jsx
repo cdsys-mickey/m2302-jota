@@ -8,7 +8,7 @@ import { ControlledTextField } from "@/shared-components/controlled/ControlledTe
 import ClearInputButton from "@/shared-components/input/ClearInputButton";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";

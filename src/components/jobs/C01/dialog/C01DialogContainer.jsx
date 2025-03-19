@@ -11,7 +11,7 @@ import Colors from "@/modules/md-colors";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import C01Drawer from "../C01Drawer";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { keyColumn } from "react-datasheet-grid";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";

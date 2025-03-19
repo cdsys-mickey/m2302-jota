@@ -11,7 +11,7 @@ import { D01ListRowContainer } from "./D01ListRowContainer";
 import Forms from "../../../../shared-modules/Forms.mjs";
 import { useMemo } from "react";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import D01 from "@/modules/md-d01";
+import D01 from "@/modules/D01.mjs";
 
 export const D01ListViewContainer = () => {
 	const d01 = useContext(D01Context);

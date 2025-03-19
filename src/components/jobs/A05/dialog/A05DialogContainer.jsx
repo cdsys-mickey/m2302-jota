@@ -9,7 +9,7 @@ import A05DialogForm from "../form/A05DialogForm";
 import { A05DialogButtonsContainer } from "./buttons/A05DialogButtonsContainer";
 import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 import A05Drawer from "../A05Drawer";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 
 export const A05DialogContainer = forwardRef((props, ref) => {

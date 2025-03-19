@@ -3,7 +3,7 @@ import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import PropTypes from "prop-types";
 import { memo, useContext } from "react";
 import SideDrawer from "@/shared-components/side-drawer/SideDrawer";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 const C07Drawer = memo((props) => {
 	const { anchor = "right", ...rest } = props;

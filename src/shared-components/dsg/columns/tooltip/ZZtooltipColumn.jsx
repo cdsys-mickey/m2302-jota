@@ -1,6 +1,6 @@
 import { TooltipComponent } from "./TooltipComponent";
 
-export const tooltipColumn = (opts = {}) => {
+export const ZZtooltipColumn = (opts = {}) => {
 	return {
 		component: TooltipComponent,
 		columnData: opts,

@@ -12,7 +12,7 @@ import Forms from "@/shared-modules/Forms.mjs";
 import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
 import { useMemo } from "react";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C08 from "@/modules/md-c08";
+import C08 from "@/modules/C08.mjs";
 
 export const C08ListViewContainer = () => {
 	const c08 = useContext(C08Context);

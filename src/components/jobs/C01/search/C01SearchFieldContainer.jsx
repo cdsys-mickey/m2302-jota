@@ -6,7 +6,7 @@ import { useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import C01SearchPopperContainer from "./C01SearchPopperContainer";
-import C01 from "@/modules/md-c01";
+import C01 from "@/modules/C01.mjs";
 
 export const C01SearchFieldContainer = (props) => {
 	const { name = "q", ...rest } = props;

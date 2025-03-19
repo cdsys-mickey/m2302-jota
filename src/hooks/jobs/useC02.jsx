@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
-import C02 from "@/modules/md-c02";
+import C02 from "@/modules/C02.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
@@ -380,7 +380,7 @@ export const useC02 = () => {
 
 				processedRowData = {
 					...processedRowData,
-					["tooltip"]: C02.getTooltip({
+					["tooltip"]: C02.getTooltips({
 						rowData: processedRowData,
 						rowIndex
 					}),

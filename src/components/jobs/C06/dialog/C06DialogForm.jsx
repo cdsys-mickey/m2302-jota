@@ -1,5 +1,5 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import C06 from "@/modules/md-c06";
+import C06 from "@/modules/C06.mjs";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";

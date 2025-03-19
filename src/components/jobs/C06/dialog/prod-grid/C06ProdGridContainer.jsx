@@ -8,6 +8,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import C06ProdGrid from "./C06ProdGrid";
 import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
 import { keyColumn } from "react-datasheet-grid";
+import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 
 export const C06ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -29,7 +30,7 @@ export const C06ProdGridContainer = (props) => {
 
 	const prodInfoColumn = useMemo(() => {
 		return {
-			...keyColumn("tooltip", createTooltipColumn({
+			...keyColumn("tooltip", createTooltipExColumn({
 				arrow: true,
 				placement: "left-start",
 			}))

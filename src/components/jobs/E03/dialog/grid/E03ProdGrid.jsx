@@ -6,7 +6,6 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import E03ProdGridAddRows from "./E03ProdGridAddRows";
-import { tooltipColumn } from "@/shared-components/dsg/columns/tooltip/tooltipColumn";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -23,7 +22,6 @@ const E03ProdGrid = memo((props) => {
 		getRowClassName,
 		height = 300,
 		bearer,
-		getTooltip,
 		...rest
 	} = props;
 

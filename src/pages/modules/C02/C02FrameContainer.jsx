@@ -9,12 +9,12 @@ import C02ListHeader from "@/components/jobs/C02/list/C02ListHeader";
 import { C02ListViewContainer } from "@/components/jobs/C02/list/C02ListViewContainer";
 import { C02SearchFieldContainer } from "@/components/jobs/C02/C02SearchFieldContainer";
 import Styles from "@/modules/md-styles";
-import C02 from "../../../modules/md-c02";
+import C02 from "../../../modules/C02.mjs";
 import { useCallback } from "react";
 import { useQuerySync } from "../../../shared-hooks/useQuerySync";
 import { C02Context } from "../../../contexts/C02/C02Context";
 import C02Drawer from "../../../components/jobs/C02/C02Drawer";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 import C02SearchFormContainer from "@/components/jobs/C02/search/C02SearchFormContainer";
 

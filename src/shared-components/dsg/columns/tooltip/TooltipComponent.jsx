@@ -28,7 +28,6 @@ export const TooltipComponent = memo(
 				ref={ref}
 				title={_title}
 				{...rest}
-			// open={true}
 			>
 				<HelpOutlineIcon
 					sx={{

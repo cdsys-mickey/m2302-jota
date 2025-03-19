@@ -7,7 +7,7 @@ import { memo, useMemo } from "react";
 import Switch from "react-switch";
 import { useToggle } from "../shared-hooks/useToggle";
 import FlexBox from "./FlexBox";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 const ICON_WIDTH = 30;
 const BOX_OFFSET = 48;

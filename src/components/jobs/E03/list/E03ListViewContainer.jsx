@@ -8,7 +8,7 @@ import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { E03ListRowContainer } from "./E03ListRowContainer";
 import { E03Context } from "@/contexts/E03/E03Context";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import E03 from "@/modules/md-e03";
+import E03 from "@/modules/E03.mjs";
 
 export const E03ListViewContainer = () => {
 	const e03 = useContext(E03Context);

@@ -1,4 +1,4 @@
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { TextField } from "@mui/material";
 
 const TextFieldBase = (props) => {

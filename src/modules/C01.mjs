@@ -16,6 +16,21 @@ const getTooltip = ({ rowData, rowIndex }) => {
 	return result;
 };
 
+const getTooltips = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push({
+				label: `庫存量`,
+				value: stockQty ?? 0,
+			});
+		}
+	}
+	console.log(`${getTooltips.name}`, results);
+	return results;
+};
+
 const ListModes = Object.freeze({
 	NOT_ORDERED_INCLUDED: 3,
 	ORDERED: 1,
@@ -78,7 +93,7 @@ const transformGridForReading = (data) => {
 				SFactNa,
 				...rest,
 			};
-			processedRowData.tooltip = getTooltip({
+			processedRowData.tooltip = getTooltips({
 				rowData: processedRowData,
 				rowIndex,
 			});
@@ -193,6 +208,7 @@ const C01 = {
 	getOptionById,
 	isFiltered,
 	getTooltip,
+	getTooltips,
 };
 
 export default C01;

@@ -9,7 +9,7 @@ import { TypoWebApiOptionPicker } from "@/shared-components/typo/TypoWebApiOptio
 import SearchIcon from "@mui/icons-material/Search";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";
-import MuiStyles from "../../shared-modules/sd-mui-styles";
+import MuiStyles from "../../shared-modules/MuiStyles";
 
 const MockProdSearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -161,7 +161,7 @@ const MockProdSearchPopper = memo(
 						size="small"
 						variant="contained"
 						color="inherit"
-						// onClick={handleReset}
+					// onClick={handleReset}
 					>
 						重設
 					</ButtonEx>
@@ -170,7 +170,7 @@ const MockProdSearchPopper = memo(
 						type="submit"
 						variant="contained"
 						size="small"
-						// onClick={handleSubmit}
+					// onClick={handleSubmit}
 					>
 						搜尋
 					</ButtonEx>

@@ -9,7 +9,7 @@ import { C02ListRowContainer } from "./C02ListRowContainer";
 import { C02Context } from "@/contexts/C02/C02Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C02 from "@/modules/md-c02";
+import C02 from "@/modules/C02.mjs";
 import { useMemo } from "react";
 
 export const C02ListViewContainer = () => {

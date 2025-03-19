@@ -3,7 +3,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
-import C06 from "@/modules/md-c06";
+import C06 from "@/modules/C06.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
@@ -566,7 +566,7 @@ export const useC06 = () => {
 
 				processedRowData = {
 					...processedRowData,
-					["tooltip"]: C06.getTooltip({
+					["tooltip"]: C06.getTooltips({
 						rowData: processedRowData,
 						rowIndex
 					}),

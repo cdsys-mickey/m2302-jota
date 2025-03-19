@@ -1,13 +1,13 @@
 import { D01Context } from "@/contexts/D01/D01Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
 import { useFormContext } from "react-hook-form";
 import D01ProdGrid from "./D01ProdGrid";
-import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
-import { keyColumn } from "react-datasheet-grid";
 
 export const D01ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -30,7 +30,7 @@ export const D01ProdGridContainer = (props) => {
 
 	const prodInfoColumn = useMemo(() => {
 		return {
-			...keyColumn("tooltip", createTooltipColumn({
+			...keyColumn("tooltip", createTooltipExColumn({
 				arrow: true,
 				placement: "bottom-end",
 			}))

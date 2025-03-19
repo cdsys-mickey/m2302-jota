@@ -1,4 +1,4 @@
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { Grid, Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext } from "react";

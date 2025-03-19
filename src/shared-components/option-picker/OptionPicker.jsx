@@ -23,7 +23,7 @@ import {
 } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
-import MuiStyles from "../../shared-modules/sd-mui-styles";
+import MuiStyles from "../../shared-modules/MuiStyles";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";

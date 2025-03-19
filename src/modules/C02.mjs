@@ -15,6 +15,21 @@ const getTooltip = ({ rowData, rowIndex }) => {
 	return result;
 };
 
+const getTooltips = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push({
+				label: `庫存量`,
+				value: stockQty ?? 0,
+			});
+		}
+	}
+	console.log(`${getTooltips.name}`, results);
+	return results;
+};
+
 const ListModes = Object.freeze({
 	NOT_REVIEWED: 1,
 	REVIEWED: 2,
@@ -54,7 +69,7 @@ const transformGridForReading = (data) => {
 				ProdData: ProdData_N,
 				...rest,
 			};
-			processedRowData.tooltip = getTooltip({
+			processedRowData.tooltip = getTooltips({
 				rowData: processedRowData,
 				rowIndex,
 			});
@@ -162,6 +177,7 @@ const C02 = {
 	isOptionEqualToValue,
 	getOptionById,
 	getTooltip,
+	getTooltips,
 };
 
 export default C02;

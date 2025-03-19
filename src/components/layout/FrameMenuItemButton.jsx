@@ -3,7 +3,7 @@ import { ListItemButton, ListItemText, Typography } from "@mui/material";
 import FlexBox from "@/shared-components/FlexBox";
 import PropTypes from "prop-types";
 import { grey } from "@mui/material/colors";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 const FrameMenuItemButton = memo(
 	forwardRef((props, ref) => {

@@ -2,7 +2,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
-import D05 from "@/modules/md-d05";
+import D05 from "@/modules/D05.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
@@ -612,7 +612,7 @@ export const useD05 = () => {
 
 				processedRowData = {
 					...processedRowData,
-					["tooltip"]: D05.getTooltip({
+					["tooltip"]: D05.getTooltips({
 						rowData: processedRowData,
 						rowIndex
 					}),

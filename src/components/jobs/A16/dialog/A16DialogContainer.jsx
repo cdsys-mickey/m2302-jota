@@ -4,7 +4,7 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import A16Drawer from "../A16Drawer";

@@ -1,6 +1,6 @@
 import { Grid, Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 const C09DeptNameColumn = (props) => {
 	const { loading, children, ...rest } = props;

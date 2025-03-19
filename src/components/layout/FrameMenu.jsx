@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import FrameMenuItemButton from "./FrameMenuItemButton";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import ErrorBox from "@/shared-components/ErrorBox";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 /**
  * 目前由 React Window 版本取代，暫不刪除

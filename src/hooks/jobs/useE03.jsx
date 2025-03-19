@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
-import E03 from "@/modules/md-e03";
+import E03 from "@/modules/E03.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -794,20 +794,6 @@ export const useE03 = () => {
 	}, [httpGetAsync, token]);
 
 
-	const getTooltip = useCallback(({ rowData }) => {
-		if (!rowData.SOrdID) {
-			return "";
-		}
-
-		let results = [];
-
-		if (rowData?.SOrdID != null) {
-			results.push(`訂貨單號: ${rowData?.SOrdID || "(空白)"}`);
-		}
-
-		return results.join(", ");
-	}, []);
-
 	const handleRfdAmtChange = useCallback(({ setValue, getValues }) => (newValue) => {
 		console.log("handleRfdAmtChange", newValue);
 		const formData = getValues();
@@ -889,7 +875,6 @@ export const useE03 = () => {
 		onGridChanged,
 		handleTaxTypeChange,
 		handleRfdAmtChange,
-		getTooltip,
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,

@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import C08 from "@/modules/md-c08";
+import C08 from "@/modules/C08.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
@@ -747,7 +747,7 @@ export const useC08 = () => {
 
 				processedRowData = {
 					...processedRowData,
-					["tooltip"]: C08.getTooltip({
+					["tooltip"]: C08.getTooltips({
 						rowData: processedRowData,
 						rowIndex
 					}),
@@ -1265,7 +1265,6 @@ export const useC08 = () => {
 		// getSOrdId,
 		handleGridCellFocusChange,
 		// getRowClassName,
-		// getTooltip,
 		...sideDrawer,
 		committed,
 		onUpdateRow,

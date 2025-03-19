@@ -1,5 +1,5 @@
 import { C06Context } from "@/contexts/C06/C06Context";
-import C06 from "@/modules/md-c06";
+import C06 from "@/modules/C06.mjs";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
 import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";

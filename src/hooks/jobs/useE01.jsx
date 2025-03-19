@@ -635,10 +635,14 @@ export const useE01 = () => {
 
 				processedRowData = {
 					...processedRowData,
-					["tooltip"]: E01.getTooltip({
+					// ["tooltip"]: E01.getTooltip({
+					// 	rowData: processedRowData,
+					// 	rowIndex
+					// }),
+					["tooltip"]: (E01.getTooltips({
 						rowData: processedRowData,
 						rowIndex
-					}),
+					})),
 				}
 
 				return processedRowData;
@@ -1074,25 +1078,6 @@ export const useE01 = () => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
-	// const getTooltip = useCallback(({ rowData, rowIndex }) => {
-	// 	console.log(`getTooltip(${rowIndex})`, rowData);
-	// 	let results = [];
-	// 	if (rowData.prod?.ProdID) {
-	// 		const stockQty = rowData.stock;
-	// 		results.push(`庫存量（${stockQty || 0}）`);
-
-	// 		const demandOfOtherRows = rowData.prepared;
-	// 		results.push(`目前訂購量（${demandOfOtherRows || 0}）`);
-
-	// 		const remaining = rowData.remaining;
-
-	// 		results.push(`剩餘量（${remaining || 0}）`);
-	// 	}
-	// 	const result = results.join(", ");
-	// 	console.log(`${getTooltip.name}`, result);
-	// 	return result;
-	// }, []);
-
 	return {
 		...crud,
 		...listLoader,
@@ -1147,7 +1132,6 @@ export const useE01 = () => {
 		// 檢查可否編輯
 		checkEditableWorking: checkEditableAction.working,
 		handleCheckEditable,
-		// getTooltip,
 		onActiveCellChange,
 		// activeCell
 		// Grid 重整

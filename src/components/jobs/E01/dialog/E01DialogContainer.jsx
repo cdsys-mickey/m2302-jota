@@ -252,7 +252,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly || e01.sNotQtyDisabled,
 			},
 		],
-		[customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisabled, e01.spriceDisabled, e01.sqtyDisabled, e01.stypeDisabled, readOnly, retail]
+		[customer?.CustID, e01.getSPriceClassName, e01.sNotQtyDisabled, e01.spriceDisabled, e01.sprodDisabled, e01.sqtyDisabled, e01.stypeDisabled, readOnly, retail]
 	);
 
 	const gridMeta = useDSGMeta({

@@ -5,7 +5,7 @@ import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import MuiStyles from "../../shared-modules/sd-mui-styles";
+import MuiStyles from "../../shared-modules/MuiStyles";
 import ControllerWrapper from "../ControllerWrapper";
 import FlexBox from "../FlexBox";
 import ClearInputButton from "../input/ClearInputButton";

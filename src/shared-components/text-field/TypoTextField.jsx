@@ -3,7 +3,7 @@ import { forwardRef, memo, useMemo } from "react";
 
 import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import { useWatch } from "react-hook-form";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import PropTypes from "prop-types";
 
 const TypoTextField = memo(

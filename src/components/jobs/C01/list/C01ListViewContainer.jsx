@@ -10,7 +10,7 @@ import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { C01ListRowContainer } from "./C01ListRowContainer";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C01 from "@/modules/md-c01";
+import C01 from "@/modules/C01.mjs";
 import { useMemo } from "react";
 
 export const C01ListViewContainer = () => {

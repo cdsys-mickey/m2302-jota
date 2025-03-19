@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 
 export const C01ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -31,7 +32,7 @@ export const C01ProdGridContainer = (props) => {
 
 	const prodInfoColumn = useMemo(() => {
 		return {
-			...keyColumn("tooltip", createTooltipColumn({
+			...keyColumn("tooltip", createTooltipExColumn({
 				arrow: true,
 				placement: "left-start",
 			}))

@@ -7,7 +7,7 @@ import { Box, Container, Grid, IconButton } from "@mui/material";
 import { nanoid } from "nanoid";
 import React, { Fragment, forwardRef, memo, useCallback } from "react";
 import { ButtonWrapper } from "../../../shared-components/button/ButtonWrapper";
-import MuiStyles from "../../../shared-modules/sd-mui-styles";
+import MuiStyles from "../../../shared-modules/MuiStyles";
 
 const A01TransferEditor = memo(
 	forwardRef((props, ref) => {

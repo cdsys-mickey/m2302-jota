@@ -135,6 +135,37 @@ const getTooltip = ({ rowData, rowIndex }) => {
 	return result;
 };
 
+const getTooltips = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+			const stockQty = rowData.StockQty_N;
+			results.push({
+				label: `庫存量`,
+				value: stockQty ?? 0,
+			});
+		}
+
+		if (!Strings.isNullOrEmpty(rowData?.OrdQty_N)) {
+			const demandOfOtherRows = rowData.OrdQty_N;
+			results.push({
+				label: `目前訂購量`,
+				value: demandOfOtherRows ?? 0,
+			});
+		}
+
+		if (!Strings.isNullOrEmpty(rowData?.LaveQty_N)) {
+			const remaining = rowData.LaveQty_N;
+			results.push({
+				label: `剩餘量`,
+				value: remaining ?? 0,
+			});
+		}
+	}
+	console.log(`${getTooltips.name}`, results);
+	return results;
+};
+
 const transformGridForReading = (data) => {
 	return (
 		data?.map((rowData, rowIndex) => {
@@ -163,7 +194,7 @@ const transformGridForReading = (data) => {
 				...rest,
 			};
 
-			processedRowData.tooltip = getTooltip({
+			processedRowData.tooltip = getTooltips({
 				rowData: processedRowData,
 				rowIndex,
 			});
@@ -427,6 +458,7 @@ const E01 = {
 	getEmployee,
 	getTotal,
 	getTooltip,
+	getTooltips,
 };
 
 export default E01;

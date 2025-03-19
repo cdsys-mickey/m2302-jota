@@ -18,7 +18,7 @@ import {
 	useRef,
 } from "react";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { ButtonWrapper } from "../button/ButtonWrapper";
 import DialogTitleEx from "./DialogTitleEx";
 import CheckboxEx from "../checkbox/CheckboxEx";

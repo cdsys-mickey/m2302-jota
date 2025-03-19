@@ -3,7 +3,7 @@ import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
 import PropTypes from "prop-types";
 import { memo, useContext } from "react";
 import SideDrawer from "@/shared-components/side-drawer/SideDrawer";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { B031Context } from "@/contexts/B031/B031Context";
 import { BContext } from "@/contexts/B/BContext";
 

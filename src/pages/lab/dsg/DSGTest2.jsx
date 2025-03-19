@@ -8,10 +8,11 @@ import {
 	keyColumn
 } from "react-datasheet-grid";
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const DSGTest2 = memo(
 	forwardRef((props, ref) => {
-		const { gridRef, bearer } = props;
+		const { gridRef } = props;
 
 		const [data, setData] = useState([
 			{ active: true, firstName: "Elon", lastName: "Musk", prod: null },
@@ -88,7 +89,7 @@ const DSGTest2 = memo(
 						// background: "#f3f3f3",
 					}
 				}>
-				<DynamicDataSheetGrid
+				<DSGGrid
 					ref={gridRef}
 					value={data}
 					onChange={setData}

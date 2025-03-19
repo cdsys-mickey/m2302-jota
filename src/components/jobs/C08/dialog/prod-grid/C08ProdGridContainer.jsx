@@ -8,6 +8,7 @@ import { useFormContext } from "react-hook-form";
 import C08ProdGrid from "./C08ProdGrid";
 import { keyColumn } from "react-datasheet-grid";
 import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
+import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 
 export const C08ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -34,7 +35,7 @@ export const C08ProdGridContainer = (props) => {
 
 	const prodInfoColumn = useMemo(() => {
 		return {
-			...keyColumn("tooltip", createTooltipColumn({
+			...keyColumn("tooltip", createTooltipExColumn({
 				arrow: true,
 				placement: "bottom-end",
 			}))
@@ -63,7 +64,6 @@ export const C08ProdGridContainer = (props) => {
 				// buildSelectionChangeHandler={c08.buildSelectionChangeHandler()}
 				handleGridCellFocusChange={c08.handleGridCellFocusChange}
 				// getRowClassName={c08.getRowClassName}
-				// getTooltip={c08.getTooltip}
 				createRow={c08.createRow}
 				stickyRightColumn={prodInfoColumn}
 				{...rest}

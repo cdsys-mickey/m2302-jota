@@ -146,7 +146,7 @@ const transformGridForReading = (data) => {
 			...rest,
 		};
 
-		processedRowData.tooltip = getTooltip({
+		processedRowData.tooltip = getTooltips({
 			rowData: processedRowData,
 			rowIndex,
 		});
@@ -255,6 +255,22 @@ const getTooltip = ({ rowData, rowIndex }) => {
 	const result = results.join(", ");
 	console.log(`${getTooltip.name}`, result);
 	return result;
+};
+
+const getTooltips = ({ rowData, rowIndex }) => {
+	let results = [];
+	if (rowData?.prod?.ProdID) {
+		if (rowData.SOrdID) {
+			results.push({
+				label: `訂貨單號`,
+				value: rowData.SOrdID.includes("#")
+					? rowData.SOrdID.split("#")[0]
+					: rowData.SOrdID || "",
+			});
+		}
+	}
+	console.log(`${getTooltips.name}`, results);
+	return results;
 };
 
 const transformForReading = (payload) => {
@@ -411,6 +427,7 @@ const E03 = {
 	getPaymentType,
 	getEmployee,
 	getTotal,
+	getTooltips,
 };
 
 export default E03;

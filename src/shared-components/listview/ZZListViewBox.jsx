@@ -1,7 +1,7 @@
 import { Box, Paper } from "@mui/material";
 import React from "react";
 
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 

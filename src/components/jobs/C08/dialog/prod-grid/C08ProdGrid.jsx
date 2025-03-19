@@ -1,15 +1,11 @@
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { memo } from "react";
 
-import { tooltipColumn } from "@/shared-components/dsg/columns/tooltip/tooltipColumn";
 import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import C08ProdGridAddRows from "./C08ProdGridAddRows";
-import { keyColumn } from "react-datasheet-grid";
-import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
-import { useMemo } from "react";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -86,7 +82,6 @@ C08ProdGrid.propTypes = {
 	readOnly: PropTypes.bool,
 	height: PropTypes.number,
 	gridRef: PropTypes.func,
-	getTooltip: PropTypes.func,
 	data: PropTypes.array.isRequired,
 };
 

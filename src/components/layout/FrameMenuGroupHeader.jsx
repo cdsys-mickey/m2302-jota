@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
 import Colors from "@/modules/md-colors";
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 export const FrameMenuGroupHeader = memo(
 	forwardRef((props, ref) => {

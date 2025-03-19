@@ -1,4 +1,4 @@
-import MuiStyles from "@/shared-modules/sd-mui-styles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { InputBase, styled } from "@mui/material";
 import { useMemo } from "react";
 

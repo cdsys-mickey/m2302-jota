@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import CrudContext from "../../contexts/crud/CrudContext";
-import C01 from "../../modules/md-c01";
+import C01 from "../../modules/C01.mjs";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { useAction } from "../../shared-hooks/useAction";
 import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
@@ -343,7 +343,7 @@ export const useC01 = () => {
 
 				processedRowData = {
 					...processedRowData,
-					["tooltip"]: C01.getTooltip({
+					["tooltip"]: C01.getTooltips({
 						rowData: processedRowData,
 						rowIndex
 					}),
