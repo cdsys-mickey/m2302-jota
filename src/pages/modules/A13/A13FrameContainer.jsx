@@ -16,7 +16,7 @@ export const A13FrameContainer = () => {
 	);
 	return (
 		<StdPrintProvider tableName="PDlineCod">
-			<A13Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+			<A13Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />
 			{/* 對話框 */}
 			<StdPrintDialogContainer />
 		</StdPrintProvider>

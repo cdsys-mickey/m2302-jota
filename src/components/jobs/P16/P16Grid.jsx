@@ -1,5 +1,4 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import AreaTypes from "@/modules/md-area-types";
 import ContainerEx from "@/shared-components/ContainerEx";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";

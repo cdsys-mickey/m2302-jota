@@ -12,7 +12,7 @@ export const A014FrameContainer = () => {
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
 	);
-	return <A014Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+	return (<A014Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />);
 };
 
 A014FrameContainer.displayName = "A014Frame";

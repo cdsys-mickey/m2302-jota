@@ -1,5 +1,4 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import AreaTypes from "@/modules/md-area-types";
 import ContainerEx from "@/shared-components/ContainerEx";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
@@ -65,6 +64,7 @@ const A08Grid = memo((props) => {
 	);
 });
 A08Grid.propTypes = {
+	canCreate: PropTypes.bool,
 	columns: PropTypes.array,
 	lockRows: PropTypes.bool,
 	gridRef: PropTypes.func,

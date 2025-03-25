@@ -67,13 +67,13 @@ const RowProdCatSPickerComponent = memo((props) => {
 		...rest
 	} = columnData;
 
-	const { handleFocusNextCell } = useCellComponent({
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-		insertRowBelow
-	});
+	// const { handleFocusNextCell } = useCellComponent({
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// 	insertRowBelow
+	// });
 
 
 	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
@@ -89,32 +89,32 @@ const RowProdCatSPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		handleFocusNextCell
+		// handleFocusNextCell
 	});
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// }
 
 	const onChange = useCallback((newValue) => {
 		const oldValue = rowData[name];
@@ -158,10 +158,10 @@ const RowProdCatSPickerComponent = memo((props) => {
 			catM={catM}
 
 			// DSG 專屬屬性
-			handleFocusNextCell={handleFocusNextCell}
+			// handleFocusNextCell={handleFocusNextCell}
 			// cellComponentRef={cellComponentRef}
 			dense
-			cell={cell}
+			// cell={cell}
 			hideControls={hideControls}
 			hideBorders
 			disableFadeOut

@@ -50,6 +50,7 @@ const ProdTypeAPickerComponent = memo((props) => {
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
+		multiple,
 		...rest
 	} = columnData;
 
@@ -61,9 +62,11 @@ const ProdTypeAPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
+		rowData,
 		columnIndex,
 		focus,
 		active,
@@ -75,7 +78,8 @@ const ProdTypeAPickerComponent = memo((props) => {
 		readOnly,
 		skipDisabled,
 		handleFocusNextCell,
-		focusOnDisabled
+		focusOnDisabled,
+		multiple
 	});
 
 	// const cellComponentRef = useRef({
@@ -104,25 +108,27 @@ const ProdTypeAPickerComponent = memo((props) => {
 
 	return (
 		<ProdTypeAPicker
-			name={name}
-			label=""
-			inputRef={ref}
-			disabled={disabled}
-			value={rowData}
-			onChange={handleChange}
-			onOpen={handleOpen}
-			onClose={handleClose}
+			// name={name}
+			// label=""
+			// inputRef={ref}
+			// disabled={disabled}
+			// value={rowData}
+			// onChange={handleChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
 			// DSG 專屬
 			// cellComponentRef={cellComponentRef}
-			handleFocusNextCell={handleFocusNextCell}
-			dense
-			cell={cell}
-			hideControls={hideControls}
-			hideBorders
-			disableFadeOut
-			toastError
+			// handleFocusNextCell={handleFocusNextCell}
+			// multiple={multiple}
+			// dense
+			// cell={cell}
+			// hideControls={hideControls}
+			// hideBorders
+			// disableFadeOut
+			// toastError
+			{...pickerProps}
 			{...rest}
-			blurToLookup={false}
+			// blurToLookup={false}
 			mockDelay={Constants.POPPER_DELAY}
 		/>
 	);

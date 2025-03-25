@@ -55,20 +55,23 @@ const RowProdCatMPickerComponent = memo((props) => {
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
+		multiple,
 		...rest
 	} = columnData;
 
-	const { handleFocusNextCell } = useCellComponent({
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-		insertRowBelow
-	});
+	// const { handleFocusNextCell } = useCellComponent({
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// 	insertRowBelow
+	// });
 
-	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	const { onChange: handleChange, ...pickerProps } = useOptionPickerComponent({
 		name,
 		rowIndex,
+		rowData,
 		columnIndex,
 		focus,
 		active,
@@ -79,35 +82,36 @@ const RowProdCatMPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		handleFocusNextCell,
-		focusOnDisabled
+		// handleFocusNextCell,
+		focusOnDisabled,
+		multiple
 	});
 
 
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// }
 
 	const onChange = useCallback((newValue) => {
 		const oldValue = rowData[name];
@@ -131,7 +135,7 @@ const RowProdCatMPickerComponent = memo((props) => {
 		<ProdCatMPicker
 			name={name}
 			label=""
-			inputRef={ref}
+			// inputRef={ref}
 			disabled={disabled}
 
 			// keyColumn 版
@@ -140,23 +144,25 @@ const RowProdCatMPickerComponent = memo((props) => {
 
 			// row 版
 			value={value}
-			onChange={onChange}
-			onOpen={handleOpen}
-			onClose={handleClose}
+			// onChange={onChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
 			catL={catL}
 
 			// DSG 專屬屬性
-			handleFocusNextCell={handleFocusNextCell}
+			// handleFocusNextCell={handleFocusNextCell}
+			multiple={multiple}
 			// cellComponentRef={cellComponentRef}
-			dense
-			cell={cell}
-			hideControls={hideControls}
-			hideBorders
-			disableFadeOut
+			// dense
+			// cell={cell}
+			// hideControls={hideControls}
+			// hideBorders
+			// disableFadeOut
 			disableClearable
-			toastError
+			// toastError
+			{...pickerProps}
 			{...rest}
-			blurToLookup={false}
+		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

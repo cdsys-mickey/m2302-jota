@@ -1,11 +1,10 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import AreaTypes from "@/modules/md-area-types";
 import ContainerEx from "@/shared-components/ContainerEx";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import F02 from "@/modules/md-f02";
 
 const ContextMenu = createDSGContextMenuComponent({

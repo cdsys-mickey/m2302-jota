@@ -1,4 +1,4 @@
-import AreaTypes from "./md-area-types";
+import AreaTypes from "./AreaTypes";
 
 const paramsToJsonData = (params) => {
 	const where = [];

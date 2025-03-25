@@ -50,6 +50,7 @@ const DeptPickerComponent = memo((props) => {
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
+		multiple,
 		...rest
 	} = columnData;
 
@@ -61,9 +62,11 @@ const DeptPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
+		rowData,
 		columnIndex,
 		focus,
 		active,
@@ -75,58 +78,61 @@ const DeptPickerComponent = memo((props) => {
 		readOnly,
 		skipDisabled,
 		handleFocusNextCell,
-		focusOnDisabled
+		focusOnDisabled,
+		multiple
 	});
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		// handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		// handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	// handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	// handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// }
 
 	return (
 		<DeptPicker
-			name={name}
+			// name={name}
 			queryParam="qs"
-			label=""
-			inputRef={ref}
-			disabled={disabled}
-			value={rowData}
-			onChange={handleChange}
-			onOpen={handleOpen}
-			onClose={handleClose}
-			placeholder="門市"
-			typeToSearchText="請輸入門市編號或名稱進行搜尋"
+			// label=""
+			// inputRef={ref}
+			// disabled={disabled}
+			// value={rowData}
+			// onChange={handleChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
+			// placeholder="門市"
+			// typeToSearchText="請輸入門市編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
-			handleFocusNextCell={handleFocusNextCell}
+			// handleFocusNextCell={handleFocusNextCell}
+			// multiple={multiple}
 			// cellComponentRef={cellComponentRef}
-			cell={cell}
-			dense
-			hideControls={hideControls}
-			hideBorders
-			disableFadeOut
-			toastError
+			// cell={cell}
+			// dense
+			// hideControls={hideControls}
+			// hideBorders
+			// disableFadeOut
+			// toastError
+			{...pickerProps}
 			{...rest}
-			blurToLookup={false}
+		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

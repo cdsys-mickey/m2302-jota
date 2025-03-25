@@ -1,8 +1,8 @@
-import AreaTypes from "@/modules/md-area-types";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import Constants from "@/modules/md-constants";
+import AreaTypes from "@/modules/AreaTypes.mjs";
 
 const AreaTypePicker = forwardRef((props, ref) => {
 	const { label = "地區", ...rest } = props;

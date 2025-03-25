@@ -50,6 +50,7 @@ const PkgTypePickerComponent = memo((props) => {
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
+		multiple,
 		...rest
 	} = columnData;
 
@@ -61,9 +62,11 @@ const PkgTypePickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
+		rowData,
 		columnIndex,
 		focus,
 		active,
@@ -75,60 +78,63 @@ const PkgTypePickerComponent = memo((props) => {
 		readOnly,
 		skipDisabled,
 		handleFocusNextCell,
-		focusOnDisabled
+		focusOnDisabled,
+		multiple
 	});
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// }
 
 	return (
 		<PkgTypePicker
-			name={name}
+			// name={name}
 			queryParam="qs"
-			label=""
-			inputRef={ref}
-			disabled={disabled}
-			value={rowData}
-			onChange={handleChange}
-			onOpen={handleOpen}
-			onClose={handleClose}
-			placeholder="包裝單位"
-			typeToSearchText="請輸入編號或名稱進行搜尋"
+			// label=""
+			// inputRef={ref}
+			// disabled={disabled}
+			// value={rowData}
+			// onChange={handleChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
+			// placeholder="包裝單位"
+			// typeToSearchText="請輸入編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			handleFocusNextCell={handleFocusNextCell}
-			dense
-			cell={cell}
-			hideControls={hideControls}
-			hideBorders
-			disableFadeOut
-			disableClearable
-			toastError
+			// handleFocusNextCell={handleFocusNextCell}
+			// multiple={multiple}
+			// dense
+			// cell={cell}
+			// hideControls={hideControls}
+			// hideBorders
+			// disableFadeOut
+			// disableClearable
+			// toastError
 			// virtualize
+			{...pickerProps}
 			{...rest}
-			blurToLookup={false}
+		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

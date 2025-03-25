@@ -50,6 +50,7 @@ const TaxTypePickerComponent = memo((props) => {
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
+		multiple,
 		...rest
 	} = columnData;
 
@@ -61,9 +62,11 @@ const TaxTypePickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
+		rowData,
 		columnIndex,
 		focus,
 		active,
@@ -75,54 +78,57 @@ const TaxTypePickerComponent = memo((props) => {
 		readOnly,
 		skipDisabled,
 		handleFocusNextCell,
-		focusOnDisabled
+		focusOnDisabled,
+		multiple
 	});
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// }
 
 	return (
 		<TaxTypePicker
-			name={name}
-			label=""
-			inputRef={ref}
-			disabled={disabled}
-			value={rowData}
-			onChange={handleChange}
-			onOpen={handleOpen}
-			onClose={handleClose}
+			// name={name}
+			// label=""
+			// inputRef={ref}
+			// disabled={disabled}
+			// value={rowData}
+			// onChange={handleChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
 			// DSG 專屬
 			// cellComponentRef={cellComponentRef}
-			handleFocusNextCell={handleFocusNextCell}
-			dense
-			cell={cell}
-			hideControls={hideControls}
-			hideBorders
-			disableFadeOut
-			toastError
+			// handleFocusNextCell={handleFocusNextCell}
+			// multiple={multiple}
+			// dense
+			// cell={cell}
+			// hideControls={hideControls}
+			// hideBorders
+			// disableFadeOut
+			// toastError
+			{...pickerProps}
 			{...rest}
-			blurToLookup={false}
+			// blurToLookup={false}
 			mockDelay={Constants.POPPER_DELAY}
 		/>
 	);

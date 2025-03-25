@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 import { toastEx } from "@/helpers/toastEx";
 import { useRef } from "react";
-import FormMeta from "@/shared-modules/sd-form-meta";
+import FormMeta from "@/shared-modules/FormMeta";
 import { LastFieldBehavior } from "./LastFieldBehavior";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
 import { FormMetaProvider } from "./FormMetaProvider";

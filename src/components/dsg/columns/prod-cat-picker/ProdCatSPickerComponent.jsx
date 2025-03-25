@@ -63,6 +63,7 @@ const ProdCatSPickerColumn = memo((props) => {
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
+		multiple,
 		...rest
 	} = columnData;
 
@@ -75,9 +76,11 @@ const ProdCatSPickerColumn = memo((props) => {
 	});
 
 
-	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
+		rowData,
 		columnIndex,
 		focus,
 		active,
@@ -89,32 +92,33 @@ const ProdCatSPickerColumn = memo((props) => {
 		readOnly,
 		skipDisabled,
 		handleFocusNextCell,
-		focusOnDisabled
+		focusOnDisabled,
+		multiple
 	});
 
-	const cellComponentRef = useRef({
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	});
-	// sync asyncRef
-	cellComponentRef.current = {
-		stopEditing,
-		insertRowBelow,
-		cell,
-		skipDisabled,
-		handleFocusNextCell,
-		getNextCell,
-		lastCell,
-		isLastRow,
-		setActiveCell,
-	}
+	// const cellComponentRef = useRef({
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// });
+	// // sync asyncRef
+	// cellComponentRef.current = {
+	// 	stopEditing,
+	// 	insertRowBelow,
+	// 	cell,
+	// 	skipDisabled,
+	// 	handleFocusNextCell,
+	// 	getNextCell,
+	// 	lastCell,
+	// 	isLastRow,
+	// 	setActiveCell,
+	// }
 
 	// const value = useMemo(() => {
 	// 	return name ? rowData[name] : rowData;
@@ -122,29 +126,31 @@ const ProdCatSPickerColumn = memo((props) => {
 
 	return (
 		<ProdCatSPicker
-			name={name}
-			label=""
-			inputRef={ref}
+			// name={name}
+			// label=""
+			// inputRef={ref}
 			// catL={catL}
 			// catM={catM}
 			// disabled={disabled}
-			value={rowData}
+			// value={rowData}
 			// value={value}
-			onChange={handleChange}
-			onOpen={handleOpen}
-			onClose={handleClose}
+			// onChange={handleChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			handleFocusNextCell={handleFocusNextCell}
-			dense
-			cell={cell}
-			hideControls={hideControls}
-			hideBorders
-			disableFadeOut
-			disableClearable
-			toastError
+			// handleFocusNextCell={handleFocusNextCell}
+			// multiple={multiple}
+			// dense
+			// cell={cell}
+			// hideControls={hideControls}
+			// hideBorders
+			// disableFadeOut
+			// disableClearable
+			// toastError
+			{...pickerProps}
 			{...rest}
-			blurToLookup={false}
+		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

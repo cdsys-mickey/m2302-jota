@@ -52,6 +52,7 @@ const AreaTypePickerComponent = memo((props) => {
 		handleFocusPrevCell,
 		focusOnDisabled,
 		readOnly,
+		multiple,
 		...rest
 	} = columnData;
 
@@ -63,9 +64,11 @@ const AreaTypePickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
+		rowData,
 		columnIndex,
 		focus,
 		active,
@@ -77,7 +80,8 @@ const AreaTypePickerComponent = memo((props) => {
 		readOnly,
 		skipDisabled,
 		handleFocusNextCell,
-		focusOnDisabled
+		focusOnDisabled,
+		multiple
 	});
 
 	// const cellComponentRef = useRef({
@@ -104,25 +108,27 @@ const AreaTypePickerComponent = memo((props) => {
 
 	return (
 		<AreaTypePicker
-			label=""
-			inputRef={ref}
-			disabled={disabled}
-			value={rowData}
-			onChange={handleChange}
-			onOpen={handleOpen}
-			onClose={handleClose}
+			// label=""
+			// inputRef={ref}
+			// disabled={disabled}
+			// value={rowData}
+			// onChange={handleChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			handleFocusNextCell={handleFocusNextCell}
-			dense
-			cell={cell}
-			hideControls={hideControls}
-			hideBorders
-			disableFadeOut
-			toastError
+			// handleFocusNextCell={handleFocusNextCell}
+			// multiple={multiple}
+			// dense
+			// cell={cell}
+			// hideControls={hideControls}
+			// hideBorders
+			// disableFadeOut
+			// toastError
 			virtualize
+			{...pickerProps}
 			{...rest}
-			blurToLookup={false}
+			// blurToLookup={false}
 			{...Constants.STATIC_PICKER_OPTS}
 		/>
 	);

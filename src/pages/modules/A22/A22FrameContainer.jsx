@@ -12,7 +12,7 @@ export const A22FrameContainer = () => {
 		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
 		[appFrame.drawerOpen, theme]
 	);
-	return <A22Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+	return (<A22Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />);
 };
 
 A22FrameContainer.displayName = "A22Frame";

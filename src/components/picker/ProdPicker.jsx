@@ -111,7 +111,7 @@ const ProdPicker = (props) => {
 			stringify={stringify}
 			// notFoundText="商品代號 ${id} 不存在"
 			notFoundText={notFoundText}
-			placeholder="搜尋商品"
+			placeholder="以編號或品名搜尋"
 			typeToSearchText="輸入編號、條碼或名稱搜尋..."
 			// blurToLookup
 			{...rest}

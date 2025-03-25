@@ -16,7 +16,7 @@ export const A14FrameContainer = () => {
 	);
 	return (
 		<StdPrintProvider tableName="ReasonCod">
-			<A14Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />;
+			<A14Frame drawerOpen={appFrame.drawerOpen} boxStyles={boxStyles} />
 			{/* 對話框 */}
 			<StdPrintDialogContainer />
 		</StdPrintProvider>

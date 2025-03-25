@@ -272,9 +272,10 @@ const OptionPicker = memo(
 			(e, opts = {}) => {
 				const { forward } = opts;
 				if (inDSG) {
-					if (handleFocusNextCell && focusNextCellOnChange) {
-						handleFocusNextCell(cell, { forward: forward || !e?.shiftKey });
-					}
+					// if (handleFocusNextCell && focusNextCellOnChange) {
+					// 	handleFocusNextCell(cell, { forward: forward || !e?.shiftKey });
+					// }
+					// 移往 useOptionPickerComponent
 				} else if (inFormMeta) {
 					if (handleFocusNextField && focusNextFieldOnChange) {
 						console.log(`${OptionPicker.displayName}.handleFocusNextCellOrField preventDefault`)
@@ -288,7 +289,7 @@ const OptionPicker = memo(
 					}
 				}
 			},
-			[inDSG, inFormMeta, handleFocusNextCell, focusNextCellOnChange, cell, handleFocusNextField, focusNextFieldOnChange, name, setFocus, isFieldDisabled]
+			[inDSG, inFormMeta, handleFocusNextField, focusNextFieldOnChange, name, setFocus, isFieldDisabled]
 		);
 
 		const handleChange = useCallback(
@@ -390,9 +391,10 @@ const OptionPicker = memo(
 						asyncRef.current.dirty = false;
 					} else {
 						// 處理輸入清成空，卻必須跳下一個欄位的狀況
-						if (!input) {
-							asyncRef.current.performFocusNext = true;
-						}
+						// 25.03.25 判定應該是沒用到的條件, 暫時移除
+						// if (!input) {
+						// 	asyncRef.current.performFocusNext = true;
+						// }
 
 						inputNotFound(input, {
 							error
@@ -875,11 +877,12 @@ const OptionPicker = memo(
 		useChangeTracking(() => {
 			console.log(`[${name}].value changed`, value);
 			// 當選項改變, 且有值, 且非 multiple
-			if (handleFocusNextCellOrField
-				&& (
-					(value || asyncRef.current.performFocusNext)
-					&& (isTouched !== true)
-				)
+			if ((
+				// (value || asyncRef.current.performFocusNext)
+				// 25.03.25 判定應該是沒用到的條件, 暫時移除
+				(value)
+				&& (isTouched !== true)
+			)
 				&& !multiple && !supressEvents && !disabled
 			) {
 				console.log(`\thandleFocusNextCellOrField triggered, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`);
@@ -889,22 +892,6 @@ const OptionPicker = memo(
 				console.log("\thandleFocusNextCellOrField not triggered");
 			}
 		}, [value]);
-
-		// useEffect(() => {
-		// 	console.log("value changed", value);
-		// 	// 當選項改變, 且有值, 且非 multiple
-		// 	if (handleFocusNextCellOrField
-		// 		&& (
-		// 			(value || asyncRef.current.performFocusNext)
-		// 			&& (isTouched !== true)
-		// 		)
-		// 		&& !multiple && !supressEvents && !disabled
-		// 	) {
-		// 		console.log(`${name} changed, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`, value);
-		// 		asyncRef.current.performFocusNext = false;
-		// 		handleFocusNextCellOrField();
-		// 	}
-		// }, [disabled, handleFocusNextCellOrField, inDSG, inFormMeta, isTouched, multiple, name, supressEvents, value]);
 
 		return (
 			<OptionPickerBox

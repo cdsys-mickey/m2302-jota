@@ -3,7 +3,6 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import { toastEx } from "@/helpers/toastEx";
 import _ from "lodash";
 import { nanoid } from "nanoid";
-import queryString from "query-string";
 import { useCallback, useContext, useState } from "react";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import Objects from "../../shared-modules/Objects";
@@ -173,7 +172,7 @@ export const useDSGCodeEditor = ({
 
 	const handleDelete = useCallback(
 		async (rows, opts = {}) => {
-			const { onDeleted } = opts;
+			const { onDeleted, disableToast = false } = opts;
 			console.log(`DELETE`, rows);
 			try {
 				let success = 0;
@@ -201,18 +200,24 @@ export const useDSGCodeEditor = ({
 					})
 				);
 				if (success > 0) {
-					toastEx.success(`刪除成功 ${success} 筆${displayName || ""}`);
+					if (!disableToast) {
+						toastEx.success(`刪除成功 ${success} 筆${displayName || ""}`);
+					}
 					if (onDeleted) {
 						onDeleted(rows);
 					}
 				} else {
-					toastEx.warn("沒有刪除任何資料" + error?.message ? ": " + error.message : "", {
-						position: "top-right"
-					});
+					if (!disableToast) {
+						toastEx.warn("沒有刪除任何資料" + error?.message ? ": " + error.message : "", {
+							position: "top-right"
+						});
+					}
 				}
 			} catch (err) {
 				console.error(err);
-				toastEx.error(`刪除${displayName}發生例外`, err);
+				if (!disableToast) {
+					toastEx.error(`刪除${displayName}發生例外`, err);
+				}
 			} finally {
 				// grid.setDeletingRow(null);
 				reload();
@@ -263,19 +268,33 @@ export const useDSGCodeEditor = ({
 				throw new Error("未指定 rows");
 			}
 
-			let message;
 
+
+			let message;
 			const firstRow = rows[0];
 			if (rows.length > 1) {
 				const lastRow = rows[rows.length - 1];
-				message = ` ${rows.length} 筆代碼 (${firstRow[grid.keyColumn]
+				message = ` ${rows.length} 筆${displayName} (${firstRow[grid.keyColumn]
 					} ~ ${lastRow[grid.keyColumn]})`;
 			} else {
 				const key = firstRow[grid.keyColumn];
 				message = `${displayName}${!key ? "" : "「" + key + "」"}`;
+				// 若整列空白則直接刪除不確認
 			}
-			// deletingRef.current.rows = grid.gridData?.length || 0;
+
 			gridMeta.saveSelection();
+			// if (!effectiveRows || effectiveRows.length == 0) {
+			// 	handleDelete(effectiveRows, {
+			// 		onDeleted,
+			// 		disableToast: true
+			// 	});
+			// 	dialogs.closeLatest();
+			// 	gridMeta.resetSelection();
+			// 	toastEx.info("已移除空白的資料")
+			// 	return;
+			// }
+			// deletingRef.current.rows = grid.gridData?.length || 0;
+
 			dialogs.create({
 				title: "刪除確認",
 				message: `確定要刪除${message}?`,
@@ -285,6 +304,7 @@ export const useDSGCodeEditor = ({
 						onDeleted,
 					});
 					// 下列順序不可改變, 否則會導致對話框未正常關閉
+
 					dialogs.closeLatest();
 					gridMeta.resetSelection();
 				},
@@ -319,7 +339,9 @@ export const useDSGCodeEditor = ({
 				}
 				return acc;
 			}, []);
-			grid.setGridData(filteredData);
+			grid.setGridData(filteredData, {
+				commit: true
+			});
 			// grid.spreadOnRow(
 			// 	row.rowIndex,
 			// 	{
@@ -343,10 +365,16 @@ export const useDSGCodeEditor = ({
 				operation.toRowIndex
 			);
 
-			if (onDelete && rows && rows.length > 0) {
-				onDelete(rows, { onDeleted });
-			} else {
-				grid.setGridData(newValue);
+			const effectiveRows = rows.filter(row => row[grid.keyColumn]);
+
+			let goAhead = true;
+			if (onDelete && effectiveRows && effectiveRows.length > 0) {
+				goAhead = !!onDelete(effectiveRows, { onDeleted });
+			}
+			if (!goAhead) {
+				grid.setGridData(newValue, {
+					commit: true
+				});
 			}
 		},
 		[grid]
@@ -374,10 +402,10 @@ export const useDSGCodeEditor = ({
 			};
 			const prevRowData = grid.prevGridData[operation.fromRowIndex];
 			if (
-				// Objects.isAllPropsNotNull(firstRow.rowData, [
-				Objects.isAllPropsNotUndefined(firstRow.rowData, [
+				Objects.isAllPropsNotNull(firstRow.rowData, [
+					// Objects.isAllPropsNotUndefined(firstRow.rowData, [
 					grid.keyColumn,
-					...grid.otherColumnNames,
+					...grid.checkColumnNames,
 				])
 			) {
 				// 所有欄位都有值(包含 Key)
@@ -408,6 +436,9 @@ export const useDSGCodeEditor = ({
 								onUpdate(firstRow, newValue);
 							}
 						}
+						grid.setGridData(newValue, {
+							commit: true
+						});
 					} else {
 						// CREATE
 						if (onBeforeCreate) {
@@ -416,14 +447,15 @@ export const useDSGCodeEditor = ({
 						if (onCreate) {
 							onCreate(firstRow, newValue);
 						}
+						grid.setGridData(newValue);
 					}
-					grid.setGridData(newValue);
+
 				}
 
 			} else if (
 				autoDelete &&
 				Objects.isAllPropsNull(firstRow.rowData, [
-					...grid.otherColumnNames,
+					...grid.checkColumnNames,
 				])
 			) {
 				// 刪除: Key 以外都是 null, 因為 createRow 好的時候是 undefined,
@@ -474,9 +506,11 @@ export const useDSGCodeEditor = ({
 					});
 				} else if (operation.type === "CREATE") {
 					grid.setGridData(newValue);
+					// 25.03.25 判斷是否為插入
+					const rowIndex = operation.fromRowIndex;
 					setTimeout(() => {
 						gridMeta?.setActiveCell({
-							row: newValue.length - 1,
+							row: rowIndex,
 							col: 0,
 						});
 					});

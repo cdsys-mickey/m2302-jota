@@ -62,7 +62,7 @@ const HomeContainer = () => {
 	// 	}
 	// }, [frontEnd?.minVersion, version])
 
-	return <Home drawerOpen={drawerOpen} theme={theme} boxStyles={boxStyles} />;
+	return (<Home drawerOpen={drawerOpen} theme={theme} boxStyles={boxStyles} />);
 };
 
 HomeContainer.displayName = "HomeContainer";

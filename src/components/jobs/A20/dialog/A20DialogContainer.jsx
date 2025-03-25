@@ -86,7 +86,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 						},
 					})
 				),
-				title: "商品編號",
+				title: "原物料編號",
 				minWidth: 170,
 				maxWidth: 170,
 				disabled: readOnly,
@@ -98,7 +98,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 						continuousUpdates: false,
 					})
 				),
-				title: "商品名稱",
+				title: "品名規格",
 				disabled: true,
 				grow: 2,
 			},

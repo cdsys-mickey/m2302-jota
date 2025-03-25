@@ -1,14 +1,16 @@
 import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import { useChangeTracking } from "../useChangeTracking";
 
 export const useOptionPickerComponent = (opts) => {
 	const {
 		name,
+		rowIndex,
+		rowData,
 		focus,
 		active,
 		disabled,
 		hideControlsOnActive,
 		selectOnFocus,
-		rowIndex,
 		columnIndex,
 		skipDisabled,
 		handleFocusNextCell,
@@ -22,9 +24,10 @@ export const useOptionPickerComponent = (opts) => {
 		// getNextCell,
 		// lastCell,
 		// setActiveCell,
+		multiple
 	} = opts;
 
-	const ref = useRef();
+	const inputRef = useRef();
 	const asyncRef = useRef({
 		open: null
 	});
@@ -51,10 +54,10 @@ export const useOptionPickerComponent = (opts) => {
 			setTimeout(() => {
 				stopEditing({ nextRow: false })
 				console.log("stopEditing invoked");
-				ref.current?.blur();
+				inputRef.current?.blur();
 			});
 			// stopEditing({ nextRow: false });
-			// ref.current?.blur();
+			// inputRef.current?.blur();
 		},
 		[name, setRowData, stopEditing]
 	);
@@ -73,14 +76,14 @@ export const useOptionPickerComponent = (opts) => {
 	useLayoutEffect(() => {
 		if (focus) {
 			// console.log("useOptionPickerComponent.focus", focus);
-			ref.current?.focus();
+			inputRef.current?.focus();
 			if (selectOnFocus) {
-				ref.current?.select();
+				inputRef.current?.select();
 			}
 		} else {
 			// console.log(`useOptionPickerComponent.leaveFocus, asyncRef.current.open: ${asyncRef.current.open}`);
 			if (!asyncRef.current.open) {
-				ref.current?.blur();
+				inputRef.current?.blur();
 			}
 		}
 	}, [focus, selectOnFocus]);
@@ -89,8 +92,9 @@ export const useOptionPickerComponent = (opts) => {
 	// 	console.log("useOptionPickerComponent.active", active);
 	// }, [active, stopEditing]);
 
-	// 先單純靠 OptionPicker 內的
-	// 跳過停用 Cell
+	/** active 時跳過停用的 Cell
+	 * 
+	**/
 	useLayoutEffect(() => {
 		if (skipDisabled && active && disabled && !focusOnDisabled && !readOnly) {
 			if (handleFocusNextCell) {
@@ -101,12 +105,43 @@ export const useOptionPickerComponent = (opts) => {
 		}
 	}, [active, cell, columnIndex, disabled, handleFocusNextCell, focusOnDisabled, readOnly, rowIndex, skipDisabled]);
 
+	useChangeTracking(() => {
+		console.log(`[${name}].rowData changed`, rowData);
+		// 當選項改變, 且有值, 且非 multiple
+		if (rowData && !multiple && !disabled && active) {
+			console.log(`\thandleFocusNextCell triggered`);
+			asyncRef.current.performFocusNext = false;
+			handleFocusNextCell(cell);
+		} else {
+			console.log("\thandleFocusNextCellOrField not triggered");
+		}
+	}, [rowData]);
+
+	const extraPropts = useMemo(() => {
+		return {
+			toastError: true,
+			blurToLookup: false,
+			hideBorders: true,
+			disableFadeOut: true,
+			dense: true,
+			autoHightlight: true,
+			selectOnFocus: true,
+			label: ""
+		}
+	}, [])
+
+
 	return {
-		ref,
+		name,
+		inputRef,
 		hideControls,
-		cell,
-		handleChange,
-		handleOpen,
-		handleClose
+		// cell,
+		onChange: handleChange,
+		onOpen: handleOpen,
+		onClose: handleClose,
+		disabled,
+		multiple,
+		value: rowData,
+		...extraPropts
 	};
 };

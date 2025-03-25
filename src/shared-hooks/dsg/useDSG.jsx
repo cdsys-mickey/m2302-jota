@@ -7,6 +7,7 @@ import Types from "@/shared-modules/sd-types";
 import _ from "lodash";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import Fields from "@/shared-modules/Fields.mjs";
 
 const DEFAULT_SET_DATA_OPTS = {
 	reset: false,
@@ -25,7 +26,7 @@ const DEFAULT_ON_DELETE_ROW = ({ fromRowIndex, updateResult }) => (rowData, inde
 export const useDSG = ({
 	gridId = "NO_NAME",
 	keyColumn,
-	otherColumns,
+	otherColumns: _otherColumns,
 
 	initialLockRows = true,
 
@@ -53,10 +54,18 @@ export const useDSG = ({
 	}, []);
 	const [gridData, setGridData] = useState([]);
 
-	// const [deletingRow, setDeletingRow] = useState();
+	const otherColumns = useMemo(() => {
+		return Fields.parse(_otherColumns);
+	}, [_otherColumns])
 
 	const otherColumnNames = useMemo(() => {
-		return Arrays.parse(otherColumns);
+		return Object.keys(otherColumns);
+	}, [otherColumns]);
+
+	const checkColumnNames = useMemo(() => {
+		return Object.keys(otherColumns).filter(
+			(key) => otherColumns[key].nullble !== true
+		)
 	}, [otherColumns]);
 
 	// const setGridLoading = useCallback((value) => {
@@ -272,7 +281,7 @@ export const useDSG = ({
 
 	const commitChanges = useCallback(
 		(newValue) => {
-			const _newValue = newValue || gridData;
+			const _newValue = newValue ?? gridData;
 			console.log(`${gridId}.commitChanges`, _newValue);
 			persistedIds.clear();
 			_newValue.map((i) => {
@@ -695,7 +704,9 @@ export const useDSG = ({
 
 		isDirty: dirtyIds && dirtyIds.size > 0,
 		handleDirtyCheck,
+		otherColumns,
 		otherColumnNames,
+		checkColumnNames,
 		fillRows,
 		// Ref Methods
 		// setActiveCell,
