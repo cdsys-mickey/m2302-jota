@@ -12,7 +12,7 @@ import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import OrderDirPicker from "@/components/picker/OrderDirPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
@@ -211,7 +211,7 @@ const H06Form = memo((props) => {
 								</FlexGrid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

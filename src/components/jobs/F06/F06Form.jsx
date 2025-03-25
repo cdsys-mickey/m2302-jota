@@ -1,19 +1,14 @@
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
+import { PrintReportButton } from "@/components";
 import AccountingEntryListingPicker from "@/components/picker/AccountingEntryListingPicker";
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import ContainerEx from "@/shared-components/ContainerEx";
+import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { ButtonGroup, Grid } from "@mui/material";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import F06DataTypePicker from "./picker/F06DataTypePicker";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import FlexBox from "@/shared-components/FlexBox";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const F06Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -88,7 +83,7 @@ const F06Form = memo((props) => {
 							</FlexToolbar> */}
 							<Grid item xs={12}>
 								<FlexBox justifyContent="flex-end">
-									<PrintButtonContainer
+									<PrintReportButton
 										color="primary"
 										variant="contained"
 										onSubmit={onSubmit}

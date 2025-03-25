@@ -9,7 +9,7 @@ import { memo } from "react";
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import { OutboundTypePicker } from "@/components/picker/OutboundTypePicker";
 import ProdPicker from "@/components/picker/ProdPicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
@@ -156,7 +156,7 @@ const H15Form = memo((props) => {
 								</Grid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

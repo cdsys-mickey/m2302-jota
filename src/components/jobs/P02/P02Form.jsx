@@ -5,19 +5,17 @@ import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { ButtonGroup, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
+import { PrintReportButton } from "@/components";
 import TerminalPicker from "@/components/terminal-picker/TerminalPicker";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import RangeGroup from "@/shared-components/RangeGroup";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { TimePickerWrapper } from "@/shared-components/time-picker/TimePickerWrapper";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import P02DataTypePicker from "./picker/P02DataTypePicker";
-import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 
 const P02Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -27,78 +25,90 @@ const P02Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="SDate"
-									label="交易日期起"
-									fullWidth
-									validate
-									clearable
-									autoFocus
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="交易日期"
+									leftComponent={<DatePickerWrapper
+										name="SDate"
+										fullWidth
+										validate
+										clearable
+										autoFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EDate"
-									label="交易日期迄"
-									fullWidth
-									validate
-									clearable
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="時段 (報表型態2,3有效)"
+									leftComponent={<TimePickerWrapper
+										name="STime"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<TimePickerWrapper
+										name="ETime"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<TimePickerWrapper
-									name="STime"
-									label="時段 (報表型態2,3有效)"
-									fullWidth
-									validate
-									clearable
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<TimePickerWrapper
-									name="ETime"
-									label="時段迄"
-									fullWidth
-									validate
-									clearable
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<TerminalPicker
-									name="SPosNo"
-									label="收銀機號起"
-									size="small"
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<TerminalPicker
-									name="EPosNo"
-									label="收銀機號迄"
-									size="small"
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="收銀機號"
+									leftComponent={<TerminalPicker
+										name="SPosNo"
+										label="收銀機號起"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<TerminalPicker
+										name="EPosNo"
+										label="收銀機號迄"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							{/* 條碼 */}
-							<Grid item xs={12} sm={6}>
-								<ControlledTextField
-									name="SInvID"
-									label="發票號碼 (報表型態2,3有效)"
-									size="small"
-									fullWidth
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ControlledTextField
-									name="EInvID"
-									label="發票號碼迄"
-									size="small"
-									fullWidth
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="發票號碼 (報表型態2,3有效)"
+									leftComponent={<TextFieldWrapper
+										name="SInvID"
+										label=""
+										size="small"
+										fullWidth
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<TextFieldWrapper
+										name="EInvID"
+										label="發票號碼迄"
+										size="small"
+										fullWidth
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<FlexBox fullWidth />
@@ -128,12 +138,12 @@ const P02Form = memo((props) => {
 							</FlexGrid>
 							<Grid item xs={12} sm={6}>
 								<FlexToolbar align="right">
-									<ButtonGroup>
-										<DebugDialogButtonContainer
-											onClick={onDebugSubmit} />
-										<ReportSubmitButtonContainer
-											onClick={onSubmit} />
-									</ButtonGroup>
+									<PrintReportButton
+										color="primary"
+										variant="contained"
+										onSubmit={onSubmit}
+										onDebugSubmit={onDebugSubmit}
+									/>
 								</FlexToolbar>
 							</Grid>
 						</Grid>

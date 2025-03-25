@@ -5,7 +5,7 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
@@ -65,7 +65,7 @@ const U05_1Form = memo((props) => {
 							<Grid container spacing={2}>
 								<Grid item xs={12} sm={12}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

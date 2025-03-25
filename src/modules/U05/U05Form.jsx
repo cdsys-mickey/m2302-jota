@@ -1,20 +1,16 @@
 import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { ButtonGroup, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
-import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
+import { PrintReportButton } from "@/components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import U05DataTypePicker from "./picker/U05DataTypePicker";
-import RangeGroup from "@/shared-components/RangeGroup";
 import FlexBox from "@/shared-components/FlexBox";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import RangeGroup from "@/shared-components/RangeGroup";
+import U05DataTypePicker from "./picker/U05DataTypePicker";
 
 const U05Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -65,7 +61,7 @@ const U05Form = memo((props) => {
 							<Grid container>
 								<Grid item xs={12} sm={12}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

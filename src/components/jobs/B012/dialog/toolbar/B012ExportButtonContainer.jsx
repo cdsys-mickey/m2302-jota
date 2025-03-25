@@ -1,5 +1,4 @@
-import PrintButton from "@/components/print-button/PrintButton";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
 import { B032Context } from "@/contexts/B032/B032Context";
@@ -23,9 +22,7 @@ const B012ExportButtonContainer = (props) => {
 	}
 
 	return (
-		<PrintButtonContainer
-			// onSelect={b012.handlePrint({ setValue: form.setValue })}
-			// onClick={b012.handlePrint({ setValue: form.setValue })}
+		<PrintReportButton
 			onSubmit={handleSubmit}
 			{...rest}
 		/>

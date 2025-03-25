@@ -61,13 +61,13 @@ const RowProdCatSPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -89,7 +89,7 @@ const RowProdCatSPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell
+		handleFocusNextCell
 	});
 
 	const cellComponentRef = useRef({
@@ -97,7 +97,7 @@ const RowProdCatSPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -109,7 +109,7 @@ const RowProdCatSPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -158,7 +158,7 @@ const RowProdCatSPickerComponent = memo((props) => {
 			catM={catM}
 
 			// DSG 專屬屬性
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 			// cellComponentRef={cellComponentRef}
 			dense
 			cell={cell}

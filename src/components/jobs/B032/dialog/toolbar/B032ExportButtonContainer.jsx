@@ -1,5 +1,4 @@
-import PrintButton from "@/components/print-button/PrintButton";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import { B032Context } from "@/contexts/B032/B032Context";
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
@@ -20,9 +19,7 @@ const B032ExportButtonContainer = (props) => {
 	}
 
 	return (
-		<PrintButtonContainer
-			// onSelect={b032.handlePrint({ setValue: form.setValue })}
-			// onClick={b032.handlePrint({ setValue: form.setValue })}
+		<PrintReportButton
 			onSubmit={handleSubmit}
 			{...rest}
 		/>

@@ -89,8 +89,8 @@ const DateInputComponent = memo((props) => {
 		// pattern = "\\d{4}-\\d{2}-\\d{2}",
 		// Context Methods
 		skipDisabled,
-		// focusNextCell,
-		focusPrevCell,
+		// handleFocusNextCell,
+		handleFocusPrevCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -192,7 +192,7 @@ const DateInputComponent = memo((props) => {
 		}
 	}, [focus]);
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -220,8 +220,8 @@ const DateInputComponent = memo((props) => {
 					e.preventDefault();
 					stopEditing({ nextRow: false });
 					setTimeout(() => {
-						if (focusNextCell) {
-							focusNextCell(cell, { forward: true });
+						if (handleFocusNextCell) {
+							handleFocusNextCell(cell, { forward: true });
 						}
 					});
 					break;
@@ -233,25 +233,25 @@ const DateInputComponent = memo((props) => {
 					// e.stopPropagation();
 					stopEditing({ nextRow: false });
 					setTimeout(() => {
-						if (focusNextCell) {
-							focusNextCell(cell, { forward: true });
+						if (handleFocusNextCell) {
+							handleFocusNextCell(cell, { forward: true });
 						}
 					});
 					break;
 			}
 		},
-		[cell, focusNextCell, stopEditing]
+		[cell, handleFocusNextCell, stopEditing]
 	);
 
 	useLayoutEffect(() => {
 		if (skipDisabled && active && disabled && !readOnly) {
-			if (focusNextCell) {
-				focusNextCell({ row: rowIndex, col: columnIndex });
+			if (handleFocusNextCell) {
+				handleFocusNextCell({ row: rowIndex, col: columnIndex });
 			} else {
-				console.log("focusNextCell is null");
+				console.log("handleFocusNextCell is null");
 			}
 		}
-	}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+	}, [active, columnIndex, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
 
 	useEffect(() => {
 		if (rowData == null && inputRef.value) {
@@ -278,7 +278,7 @@ const DateInputComponent = memo((props) => {
 	// 		touch
 	// 	});
 
-	// 	focusPrevCell();
+	// 	handleFocusPrevCell();
 
 	// 	inputRef.current?.focus();
 	// 	if (touch) {
@@ -291,7 +291,7 @@ const DateInputComponent = memo((props) => {
 	// 	if (select) {
 	// 		inputRef.current?.select();
 	// 	}
-	// }, [focusPrevCell]);
+	// }, [handleFocusPrevCell]);
 
 	const refocus = useCallback((opts = {}) => {
 		const { select = true, touch = false } = opts;
@@ -300,7 +300,7 @@ const DateInputComponent = memo((props) => {
 			touch
 		});
 		setTimeout(() => {
-			focusPrevCell({
+			handleFocusPrevCell({
 				col: columnIndex,
 				row: rowIndex
 			})
@@ -319,7 +319,7 @@ const DateInputComponent = memo((props) => {
 		})
 
 
-	}, [columnIndex, focusPrevCell, rowIndex]);
+	}, [columnIndex, handleFocusPrevCell, rowIndex]);
 
 	const getRequiredMessage = useCallback((params) => {
 		if (Types.isFunction(requiredMessage)) {
@@ -457,7 +457,7 @@ DateInputComponent.propTypes = {
 	insertRowBelow: PropTypes.func,
 	// Context
 	skipDisabled: PropTypes.bool,
-	focusNextCell: PropTypes.func,
+	handleFocusNextCell: PropTypes.func,
 	getNextCell: PropTypes.func,
 	lastCell: PropTypes.symbol,
 	setActiveCell: PropTypes.func,

@@ -95,12 +95,12 @@ export const useFormMeta = (value, opts = {}) => {
 		[getNextField, setFocus]
 	);
 
-	const focusNextField = useCallback(
+	const handleFocusNextField = useCallback(
 		(name, opts = {}) => {
 			const { setFocus, forward = true } = opts;
 			const nextField = getNextField(name, opts);
-			console.log("nextField", nextField);
-			console.log("opts", opts);
+			console.log("handleFocusNextField.nextField", nextField);
+			console.log("handleFocusNextField.opts", opts);
 			if (nextField) {
 				setFocus(nextField.name, {
 					shouldSelect: nextField.select,
@@ -150,7 +150,7 @@ export const useFormMeta = (value, opts = {}) => {
 		fields,
 		getNextField,
 		nextEnabled,
-		focusNextField,
+		handleFocusNextField,
 		disableEnter,
 		asyncRef,
 		supressEvents,

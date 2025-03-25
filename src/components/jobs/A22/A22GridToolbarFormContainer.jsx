@@ -1,17 +1,13 @@
-import { Box, ButtonGroup, Grid, Paper } from "@mui/material";
-import { useContext } from "react";
+import { PrintReportButton } from "@/components";
+import { Box, Grid, Paper } from "@mui/material";
+import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { A22Context } from "../../../contexts/A22/A22Context";
-import TxtExport from "../../../modules/md-txt-export";
-import FlexBox from "../../../shared-components/FlexBox";
-import FlexGrid from "../../../shared-components/FlexGrid";
-import { A22GenReportButtonContainer } from "./A22GenReportButtonContainer";
+import { A22Context } from "@/contexts/A22/A22Context";
+import TxtExport from "@/modules/md-txt-export";
+import FlexBox from "@/shared-components/FlexBox";
+import FlexGrid from "@/shared-components/FlexGrid";
 import { A22GridCancelEditButtonContainer } from "./A22GridCancelEditButtonContainer";
-import { A22OutputModePickerContainer } from "./A22OutputModePickerContainer";
 import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer";
-import { useMemo } from "react";
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 export const A22GridToolbarFormContainer = () => {
 	const form = useForm({
@@ -61,7 +57,7 @@ export const A22GridToolbarFormContainer = () => {
 									<A22GenReportButtonContainer />
 								</ButtonGroup> */}
 								<FlexBox justifyContent="flex-end">
-									<PrintButtonContainer
+									<PrintReportButton
 										color="primary"
 										variant="contained"
 										onSubmit={handleSubmit}

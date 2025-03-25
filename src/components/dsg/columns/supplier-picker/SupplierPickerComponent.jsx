@@ -45,14 +45,14 @@ const SupplierPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -80,7 +80,7 @@ const SupplierPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -92,7 +92,7 @@ const SupplierPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -116,7 +116,7 @@ const SupplierPickerComponent = memo((props) => {
 			// queryRequired
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 			cell={cell}
 			dense
 			hideControls={hideControls}

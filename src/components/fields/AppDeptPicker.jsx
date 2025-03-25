@@ -13,7 +13,7 @@ const AppDeptPicker = memo((props) => {
 
 	const qs = useMemo(() => {
 		return queryString.stringify({
-			...(scope && {
+			...(scope != null && {
 				sp: scope,
 			}),
 			...(scopeByOperator && {

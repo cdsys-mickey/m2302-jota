@@ -21,7 +21,7 @@ export const useH22 = () => {
 		return `${config.REPORT_URL}/WebH22Rep.aspx`
 	}, [config.REPORT_URL])
 
-	const reports = useJotaReports({ from: "SDate", to: "EDate" });
+	const reports = useJotaReports();
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);

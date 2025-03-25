@@ -21,7 +21,7 @@ export const useH44 = () => {
 		return `${config.REPORT_URL}/WebH44Rep.aspx`
 	}, [config.REPORT_URL])
 
-	const reports = useJotaReports({ from: "SDate1", to: "EDate2" });
+	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
 	const onDebugSubmit = useCallback((payload) => {
 		console.log("onSubmit", payload);

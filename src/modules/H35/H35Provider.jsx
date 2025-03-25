@@ -12,8 +12,8 @@ export const H35Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
-			SIDeptID: null,
-			EIDeptID: null,
+			SODeptID: null,
+			EODeptID: null,
 			reportType: H35ReportType.getDefaultOption(),
 			orderType: H35OrderType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),

@@ -8,8 +8,6 @@ export const H22Provider = ({ children }) => {
 	const h22 = useH22();
 	const form = useForm({
 		defaultValues: {
-			SDate: null,
-			EDate: null,
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

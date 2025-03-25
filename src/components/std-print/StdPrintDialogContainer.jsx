@@ -1,15 +1,15 @@
+import { PrintReportButton } from "@/components";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
+import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
+import DialogEx from "@/shared-components/dialog/DialogEx";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { grey } from "@mui/material/colors";
 import PropTypes from "prop-types";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
-import DialogEx from "@/shared-components/dialog/DialogEx";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import StdPrintActionButtons from "./StdPrintActionButtons";
 import { StdPrintFormContainer } from "./StdPrintFormContainer";
-import PrintButtonContainer from "../print-button/PrintButtonContainer";
 
 export const StdPrintDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -81,7 +81,7 @@ export const StdPrintDialogContainer = forwardRef((props, ref) => {
 					}}
 					otherActionButtons={<StdPrintActionButtons />}
 					confirmButton={
-						<PrintButtonContainer
+						<PrintReportButton
 							onDebugSubmit={handleDebugSubmit}
 							onSubmit={handleSubmit} variant="contained" color="primary" />
 					}

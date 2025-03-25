@@ -99,7 +99,7 @@ const TextComponentEx = memo(
 			};
 		}, [columnIndex, rowIndex]);
 
-		const { focusNextCell } = useCellComponent({
+		const { handleFocusNextCell } = useCellComponent({
 			getNextCell,
 			lastCell,
 			isLastRow,
@@ -121,21 +121,21 @@ const TextComponentEx = memo(
 					case "Enter":
 						// 下面這段不要隨意修改, 
 						// stopEditing 必須在下個 thread 執行, 
-						// 否則密碼焦點會因為 focusNextCell 執行而被 grid 搶走
+						// 否則密碼焦點會因為 handleFocusNextCell 執行而被 grid 搶走
 						e.preventDefault();
 						e.stopPropagation();
 						setTimeout(() => {
 							stopEditing({ nextRow: false });
-							// 透過輸入方式觸發的 focusNextCell
-							if (focusNextCell) {
-								focusNextCell(cell, { forward: true, e });
+							// 透過輸入方式觸發的 handleFocusNextCell
+							if (handleFocusNextCell) {
+								handleFocusNextCell(cell, { forward: true, e });
 							}
 						});
 
 						break;
 				}
 			},
-			[cell, focusNextCell, stopEditing]
+			[cell, handleFocusNextCell, stopEditing]
 		);
 
 		useLayoutEffect(() => {
@@ -189,20 +189,20 @@ const TextComponentEx = memo(
 		// 當 active 為 disalbed 時跳到下一個 enabled cell
 		useLayoutEffect(() => {
 			if (skipDisabled && disabled && !readOnly && active) {
-				if (focusNextCell) {
-					focusNextCell(cell);
+				if (handleFocusNextCell) {
+					handleFocusNextCell(cell);
 				} else {
-					console.log("focusNextCell is null");
+					console.log("handleFocusNextCell is null");
 				}
 			}
-		}, [active, cell, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, cell, columnIndex, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		// 當要離開最後一個 cell 時
 		// useLayoutEffect(() => {
 		// 	if (isLastCell(cell) && !active) {
-		// 		focusNextCell(cell);
+		// 		handleFocusNextCell(cell);
 		// 	}
-		// }, [active, cell, focusNextCell, isLastCell]);
+		// }, [active, cell, handleFocusNextCell, isLastCell]);
 		const _placeholder = useMemo(() => {
 			return active ? placeholder : undefined;
 		}, [active, placeholder])
@@ -255,7 +255,7 @@ TextComponentEx.propTypes = {
 	insertRowBelow: PropTypes.func,
 	columnData: PropTypes.object,
 	skipDisabled: PropTypes.bool,
-	focusNextCell: PropTypes.func,
+	handleFocusNextCell: PropTypes.func,
 	getNextCell: PropTypes.func,
 	// isLastCell: PropTypes.func,
 	setActiveCell: PropTypes.func,

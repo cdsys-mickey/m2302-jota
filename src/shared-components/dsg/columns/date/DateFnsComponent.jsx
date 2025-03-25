@@ -29,7 +29,7 @@ const DateFnsComponent = memo((props) => {
 		// pattern = "\\d{4}-\\d{2}-\\d{2}",
 		// Context Methods
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -46,7 +46,7 @@ const DateFnsComponent = memo((props) => {
 		}
 	}, [focus]);
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -95,25 +95,25 @@ const DateFnsComponent = memo((props) => {
 					e.preventDefault();
 					stopEditing({ nextRow: false });
 					setTimeout(() => {
-						if (focusNextCell) {
-							focusNextCell(cell, { forward: true });
+						if (handleFocusNextCell) {
+							handleFocusNextCell(cell, { forward: true });
 						}
 					});
 					break;
 			}
 		},
-		[cell, focusNextCell, stopEditing]
+		[cell, handleFocusNextCell, stopEditing]
 	);
 
 	useLayoutEffect(() => {
 		if (skipDisabled && active && disabled && !readOnly) {
-			if (focusNextCell) {
-				focusNextCell({ row: rowIndex, col: columnIndex });
+			if (handleFocusNextCell) {
+				handleFocusNextCell({ row: rowIndex, col: columnIndex });
 			} else {
-				console.log("focusNextCell is null");
+				console.log("handleFocusNextCell is null");
 			}
 		}
-	}, [active, columnIndex, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+	}, [active, columnIndex, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
 
 	return (
 		<input
@@ -158,7 +158,7 @@ DateFnsComponent.propTypes = {
 	insertRowBelow: PropTypes.func,
 	// Context
 	skipDisabled: PropTypes.bool,
-	focusNextCell: PropTypes.func,
+	handleFocusNextCell: PropTypes.func,
 	getNextCell: PropTypes.func,
 	lastCell: PropTypes.symbol,
 	setActiveCell: PropTypes.func,

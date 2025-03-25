@@ -38,7 +38,7 @@ export const ControlledTextField = ({
 	...rest
 }) => {
 	const formMeta = useContext(FormMetaContext);
-	const { isFieldDisabled, focusNextField, disableEnter } = formMeta || {};
+	const { isFieldDisabled, handleFocusNextField, disableEnter } = formMeta || {};
 	const inFormMeta = !!formMeta;
 	// const { setFocus } = useFormContext() || {};
 	const form = useFormContext();
@@ -85,7 +85,7 @@ export const ControlledTextField = ({
 				if (inFormMeta) {
 					e.preventDefault();
 
-					focusNextField(name, {
+					handleFocusNextField(name, {
 						setFocus: form.setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
@@ -94,7 +94,7 @@ export const ControlledTextField = ({
 				}
 			}
 		},
-		[disableEnter, inFormMeta, getError, form, name, focusNextField, isFieldDisabled]
+		[disableEnter, inFormMeta, getError, form, name, handleFocusNextField, isFieldDisabled]
 	);
 
 	// if (!name) {
@@ -188,6 +188,13 @@ export const ControlledTextField = ({
 											borderColor: Colors.REQUIRED,
 										},
 									}
+								}),
+								...(borderless && {
+									"& input": {
+										paddingTop: 0,
+										paddingLeft: "4px",
+										paddingRight: 0,
+									}
 								})
 							}),
 							...(Array.isArray(sx) ? sx : [sx]),
@@ -239,6 +246,14 @@ export const ControlledTextField = ({
 						error={!!error}
 						helperText={error?.message}
 						required={required}
+						{
+						...(borderless && {
+							variant: "filled",
+							InputProps: { disableUnderline: true }
+						})
+						}
+						{...slotProps?.textField}
+
 						{...rest}
 					/>
 				</FlexBox>

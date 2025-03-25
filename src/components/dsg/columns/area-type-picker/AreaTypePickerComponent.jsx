@@ -47,15 +47,15 @@ const AreaTypePickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
-		focusPrevCell,
+		handleFocusPrevCell,
 		focusOnDisabled,
 		readOnly,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -76,7 +76,7 @@ const AreaTypePickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		focusOnDisabled
 	});
 
@@ -85,7 +85,7 @@ const AreaTypePickerComponent = memo((props) => {
 	// 	insertRowBelow,
 	// 	cell,
 	// 	skipDisabled,
-	// 	focusNextCell,
+	// 	handleFocusNextCell,
 	// 	getNextCell,
 	// 	lastCell,
 	// 	setActiveCell,
@@ -96,7 +96,7 @@ const AreaTypePickerComponent = memo((props) => {
 	// 	insertRowBelow,
 	// 	cell,
 	// 	skipDisabled,
-	// 	focusNextCell,
+	// 	handleFocusNextCell,
 	// 	getNextCell,
 	// 	lastCell,
 	// 	setActiveCell,
@@ -113,7 +113,7 @@ const AreaTypePickerComponent = memo((props) => {
 			onClose={handleClose}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

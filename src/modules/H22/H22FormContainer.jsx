@@ -11,8 +11,6 @@ export const H22FormContainer = () => {
 
 	const formMeta = useFormMeta(
 		`
-			SDate,
-			EDate,
 			SProdID,
 			EProdID,
 			counter,

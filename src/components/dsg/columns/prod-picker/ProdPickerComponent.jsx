@@ -48,14 +48,14 @@ const ProdPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -76,7 +76,7 @@ const ProdPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		focusOnDisabled
 	});
 
@@ -85,7 +85,7 @@ const ProdPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -97,7 +97,7 @@ const ProdPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -122,7 +122,7 @@ const ProdPickerComponent = memo((props) => {
 
 			// FocusControl
 			// cellComponentRef={cellComponentRef}
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}
@@ -165,7 +165,7 @@ ProdPickerComponent.propTypes = {
 	duplicateRow: PropTypes.func,
 	deleteRow: PropTypes.func,
 	getContextMenuItems: PropTypes.func,
-	focusNextCell: PropTypes.func,
+	handleFocusNextCell: PropTypes.func,
 	skipDisabled: PropTypes.bool,
 	lastCell: PropTypes.symbol,
 };

@@ -7,7 +7,7 @@ import { memo } from "react";
 
 import CounterPicker from "@/components/picker/CounterPicker";
 import OrderDirPicker from "@/components/picker/OrderDirPicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
@@ -102,7 +102,7 @@ const H04Form = memo((props) => {
 								</Grid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

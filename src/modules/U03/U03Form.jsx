@@ -8,7 +8,7 @@ import { memo } from "react";
 
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import Auth from "@/modules/md-auth";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
@@ -121,15 +121,15 @@ const U03Form = memo((props) => {
 							<Grid container>
 								<Grid item xs={12} sm={12}>
 									{/* <FlexToolbar align="right">
-									<ButtonGroup>
-										<DebugDialogButtonContainer
-											onClick={onDebugSubmit} />
-										<ReportSubmitButtonContainer
-											onClick={onSubmit} />
-									</ButtonGroup>
+									<PrintReportButton
+											color="primary"
+											variant="contained"
+											onSubmit={onSubmit}
+											onDebugSubmit={onDebugSubmit}
+										/>
 								</FlexToolbar> */}
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

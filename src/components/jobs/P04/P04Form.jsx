@@ -11,6 +11,7 @@ import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonC
 import TerminalPicker from "@/components/terminal-picker/TerminalPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import Auth from "@/modules/md-auth";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const P04Form = memo((props) => {
 	const { onSubmit, ...rest } = props;
@@ -20,24 +21,27 @@ const P04Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="SDate"
-									label="交易日期起"
-									fullWidth
-									validate
-									clearable
-									autoFocus
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="交易日期"
 									required
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="EDate"
-									label="交易日期迄"
-									fullWidth
-									validate
-									clearable
+									leftComponent={<DatePickerWrapper
+										name="SDate"
+										fullWidth
+										validate
+										clearable
+										autoFocus
+										borderless
+										placeholder="起"
+
+									/>}
+									rightComponent={<DatePickerWrapper
+										name="EDate"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -48,7 +52,7 @@ const P04Form = memo((props) => {
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									scope={Auth.SCOPES.DEPT}
+								// scope={Auth.SCOPES.DEPT}
 								// required
 								// rules={{
 								// 	required: "收銀機號為必填"

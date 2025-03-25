@@ -43,14 +43,14 @@ const CustomerPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -71,7 +71,7 @@ const CustomerPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		focusOnDisabled
 	});
 
@@ -80,7 +80,7 @@ const CustomerPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -92,7 +92,7 @@ const CustomerPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -117,7 +117,7 @@ const CustomerPickerComponent = memo((props) => {
 			// virtualize
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 			cell={cell}
 			dense
 			hideControls={hideControls}

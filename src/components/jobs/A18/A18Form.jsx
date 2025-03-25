@@ -1,25 +1,21 @@
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
+import { PrintReportButton } from "@/components";
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
+import { DeptUserPicker } from "@/components/picker/DeptUserPicker";
+import JobPicker from "@/components/picker/JobPicker";
 import { RealFilePicker } from "@/components/picker/RealFilePicker";
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { ButtonGroup, Grid } from "@mui/material";
+import RangeGroup from "@/shared-components/RangeGroup";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import A18ActionPicker from "./picker/A18ActionPicker";
-import JobPicker from "@/components/picker/JobPicker";
-import { DeptUserPicker } from "@/components/picker/DeptUserPicker";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { A18OrderByPicker } from "./A18OrderByPicker";
-import RangeGroup from "@/shared-components/RangeGroup";
-import FlexBox from "@/shared-components/FlexBox";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import A18ActionPicker from "./picker/A18ActionPicker";
+import Auth from "@/modules/md-auth";
 
 const A18Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, deptDisabled, ...rest } = props;
@@ -37,6 +33,7 @@ const A18Form = memo((props) => {
 									disableOpenOnInput
 									selectOnFocus
 									disabled={deptDisabled}
+									scope={Auth.SCOPES.BRANCH_HQ}
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -128,7 +125,7 @@ const A18Form = memo((props) => {
 							</FlexToolbar> */}
 							<Grid item xs={12}>
 								<FlexBox justifyContent="flex-end">
-									<PrintButtonContainer
+									<PrintReportButton
 										color="primary"
 										variant="contained"
 										onSubmit={onSubmit}

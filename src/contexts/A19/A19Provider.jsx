@@ -5,7 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import StdPrint from "@/modules/StdPrint.mjs";
-import A19 from "@/modules/md-a19";
+import A19 from "@/modules/A19";
 
 export const A19Provider = ({ children }) => {
 	const a19 = useA19();

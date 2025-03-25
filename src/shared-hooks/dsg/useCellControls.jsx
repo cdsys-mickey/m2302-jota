@@ -10,13 +10,13 @@ export const useCellControls = () => {
 	return {
 		// from useDSGMeta
 		skipDisabled: dsg.skipDisabled,
-		// focusNextCell: dsg.focusNextCell,
+		// handleFocusNextCell: dsg.handleFocusNextCell,
 		getNextCell: dsg.getNextCell,
 		// isLastCell: dsg.isLastCell,
 		lastCell: dsg.lastCell,
 		isLastRow: dsg.isLastRow,
 		setActiveCell: dsg.setActiveCell,
-		focusPrevCell: dsg.focusPrevCell,
+		handleFocusPrevCell: dsg.handleFocusPrevCell,
 		inDSG: !!dsg,
 		// from useDSG
 		readOnly: dsg.readOnly,

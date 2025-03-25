@@ -1,4 +1,3 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
@@ -7,9 +6,9 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+import { PrintReportButton } from "@/components";
 import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
 import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
@@ -163,7 +162,7 @@ const H10Form = memo((props) => {
 								</FlexGrid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

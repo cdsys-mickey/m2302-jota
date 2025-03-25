@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import Auth from "@/modules/md-auth";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
@@ -77,7 +77,7 @@ const U06Form = memo((props) => {
 							<Grid container spacing={2}>
 								<Grid item xs={12} sm={12}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

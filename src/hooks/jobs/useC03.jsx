@@ -11,7 +11,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { addDays, getYear, isDate, isValid } from "date-fns";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
-import Forms from "../../shared-modules/Forms.mjs";
+import Forms from "@/shared-modules/Forms.mjs";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
@@ -235,7 +235,7 @@ export const useC03 = () => {
 
 	const selectById = useCallback(
 		async (id) => {
-			crud.cancelAction();
+			// crud.cancelAction();
 			const item = {
 				RqtID: id,
 			};
@@ -244,7 +244,7 @@ export const useC03 = () => {
 				id,
 			});
 		},
-		[crud, loadItem]
+		[loadItem]
 	);
 
 	const handleSelect = useCallback(

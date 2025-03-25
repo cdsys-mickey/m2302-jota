@@ -69,7 +69,7 @@ const CheckboxComponent = memo(
 			};
 		}, [columnIndex, rowIndex]);
 
-		const { focusNextCell } = useCellComponent({
+		const { handleFocusNextCell } = useCellComponent({
 			getNextCell,
 			lastCell,
 			isLastRow,
@@ -100,11 +100,11 @@ const CheckboxComponent = memo(
 			if (focus) {
 				setRowData(!rowData);
 				stopEditing({ nextRow: false });
-				if (focusNextCell) {
-					// focusNextCell(cell);
+				if (handleFocusNextCell) {
+					// handleFocusNextCell(cell);
 					setTimeout(() => {
-						// focusNextCell(cell, { forward: true });
-						focusNextCell(cell);
+						// handleFocusNextCell(cell, { forward: true });
+						handleFocusNextCell(cell);
 					});
 				}
 			}
@@ -113,14 +113,14 @@ const CheckboxComponent = memo(
 
 		useLayoutEffect(() => {
 			if (skipDisabled && active && disabled && !readOnly && !disableFocusNext) {
-				if (focusNextCell) {
+				if (handleFocusNextCell) {
 					// 這裡不能等到下個 cycle
-					focusNextCell(cell);
+					handleFocusNextCell(cell);
 				} else {
-					console.log("focusNextCell is null");
+					console.log("handleFocusNextCell is null");
 				}
 			}
-		}, [active, cell, columnIndex, disableFocusNext, disabled, focusNextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, cell, columnIndex, disableFocusNext, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<input

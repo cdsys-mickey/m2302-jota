@@ -339,14 +339,14 @@ export const useA01 = ({ mode }) => {
 		async (id) => {
 			setSelectedTab(A01.Tabs.INFO);
 			// crud.cancelAction();
-			cancelAction();
+			// cancelAction();
 			const item = {
 				ProdID: id,
 			};
 			setSelectedItem(item);
 			loadItem({ id });
 		},
-		[cancelAction, loadItem]
+		[loadItem]
 	);
 
 	const confirmQuitCreating = useCallback(() => {

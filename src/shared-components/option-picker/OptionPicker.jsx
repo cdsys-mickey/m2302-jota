@@ -22,8 +22,8 @@ import {
 	useState,
 } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
-import MuiStyles from "../../shared-modules/MuiStyles";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { OptionGridPaper } from "./grid/OptionGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
@@ -130,12 +130,12 @@ const OptionPicker = memo(
 			GridRowComponent,
 			inDSG,
 			cellComponentRef,
-			focusNextCell,
-			focusPrevCell,
+			handleFocusNextCell,
+			handleFocusPrevCell,
 			cell,
 			// FormMeta
 			inFormMeta,
-			focusNextField,
+			handleFocusNextField,
 			disableEnter,
 			emptyId,
 			isFieldDisabled,
@@ -147,12 +147,14 @@ const OptionPicker = memo(
 			blurToClearErrors = true,
 			slotProps,
 			borderless,
+			focusNextCellOnChange = true,
+			focusNextFieldOnChange = true,
 			...rest
 		} = props;
 
 		// console.log(`redenring OptionPicker: ${name}`);
 
-		// const { focusNextCell } = useCellComponent(cellComponentRef?.current);
+		// const { handleFocusNextCell } = useCellComponent(cellComponentRef?.current);
 
 
 		const getNotFoundMessage = useCallback((params) => {
@@ -264,19 +266,20 @@ const OptionPicker = memo(
 
 
 		/**
-		 * 先判斷 DSGContext.focusNextCell, 再判斷 FieldsContext.getNextField
+		 * 先判斷 DSGContext.handleFocusNextCell, 再判斷 FieldsContext.getNextField
 		 */
-		const focusNextCellOrField = useCallback(
+		const handleFocusNextCellOrField = useCallback(
 			(e, opts = {}) => {
 				const { forward } = opts;
 				if (inDSG) {
-					if (focusNextCell) {
-						focusNextCell(cell, { forward: forward || !e?.shiftKey });
+					if (handleFocusNextCell && focusNextCellOnChange) {
+						handleFocusNextCell(cell, { forward: forward || !e?.shiftKey });
 					}
 				} else if (inFormMeta) {
-					if (focusNextField) {
+					if (handleFocusNextField && focusNextFieldOnChange) {
+						console.log(`${OptionPicker.displayName}.handleFocusNextCellOrField preventDefault`)
 						e?.preventDefault();
-						focusNextField(name, {
+						handleFocusNextField(name, {
 							setFocus,
 							isFieldDisabled,
 							forward: forward || !e?.shiftKey,
@@ -285,7 +288,7 @@ const OptionPicker = memo(
 					}
 				}
 			},
-			[inDSG, inFormMeta, focusNextCell, cell, focusNextField, name, setFocus, isFieldDisabled]
+			[inDSG, inFormMeta, handleFocusNextCell, focusNextCellOnChange, cell, handleFocusNextField, focusNextFieldOnChange, name, setFocus, isFieldDisabled]
 		);
 
 		const handleChange = useCallback(
@@ -312,7 +315,7 @@ const OptionPicker = memo(
 			console.log("refocus", doSelect);
 
 			if (inDSG) {
-				focusPrevCell();
+				handleFocusPrevCell();
 			}
 
 			innerInputRef.current?.focus();
@@ -322,7 +325,7 @@ const OptionPicker = memo(
 
 
 
-		}, [focusPrevCell, inDSG]);
+		}, [handleFocusPrevCell, inDSG]);
 
 		const inputNotFound = useCallback(
 			(input, opts = {}) => {
@@ -361,7 +364,7 @@ const OptionPicker = memo(
 
 
 
-				console.log("preventDefault/stopPropagation during handleLookup");
+				console.log(`${OptionPicker.displayName}.handleLookup.preventDefault+stopPropagation`);
 				e.preventDefault();
 				e.stopPropagation();
 
@@ -409,7 +412,7 @@ const OptionPicker = memo(
 					} else {
 						if (_.isEqual(found, value)) {
 							asyncRef.current.dirty = false;
-							focusNextCellOrField(e, opts);
+							handleFocusNextCellOrField(e, opts);
 						}
 						onChange(found);
 					}
@@ -430,11 +433,10 @@ const OptionPicker = memo(
 							return;
 						}
 					}
-					focusNextCellOrField(e, opts);
+					handleFocusNextCellOrField(e, opts);
 				}
-				// focusNextCellOrField(e);
 			},
-			[name, clearErrors, _open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, selectField, onChange, value, focusNextCellOrField, getError, setError]
+			[name, clearErrors, _open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, selectField, onChange, value, handleFocusNextCellOrField, getError, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -481,13 +483,14 @@ const OptionPicker = memo(
 		);
 
 		const handleAutocompleteKeyDown = useCallback((e) => {
-			// console.log("handleAutocompleteKeyDown", e);
 			switch (e.key) {
 				case "ArrowUp":
 				case "ArrowDown":
 				case "Enter":
-					console.log("stopPropagation");
-					e.stopPropagation();
+					if (!e.shiftKey && !e.ctrlKey) {
+						console.log("handleAutocompleteKeyDown.stopPropagation");
+						e.stopPropagation();
+					}
 					break;
 			}
 		}, [])
@@ -521,7 +524,7 @@ const OptionPicker = memo(
 						} else {
 							if (_.isEqual(found, value)) {
 								asyncRef.current.dirty = false;
-								focusNextCellOrField(e, opts);
+								handleFocusNextCellOrField(e, opts);
 							}
 							onChange(found);
 						}
@@ -534,7 +537,7 @@ const OptionPicker = memo(
 
 
 			},
-			[_open, blurToClearErrors, blurToLookup, clearErrors, emptyId, findByInput, focusNextCellOrField, inDSG, inFormMeta, inputNotFound, multiple, name, onChange, refocus, value]
+			[_open, blurToClearErrors, blurToLookup, clearErrors, emptyId, findByInput, handleFocusNextCellOrField, inDSG, inFormMeta, inputNotFound, multiple, name, onChange, refocus, value]
 		);
 
 		const _label = useMemo(() => {
@@ -872,24 +875,25 @@ const OptionPicker = memo(
 		useChangeTracking(() => {
 			console.log(`[${name}].value changed`, value);
 			// 當選項改變, 且有值, 且非 multiple
-			if (focusNextCellOrField
+			if (handleFocusNextCellOrField
 				&& (
 					(value || asyncRef.current.performFocusNext)
 					&& (isTouched !== true)
 				)
 				&& !multiple && !supressEvents && !disabled
 			) {
-				console.log(`\tfocusNextCellOrField triggered, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`);
+				console.log(`\thandleFocusNextCellOrField triggered, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`);
 				asyncRef.current.performFocusNext = false;
-				focusNextCellOrField();
+				handleFocusNextCellOrField();
 			} else {
-				console.log("\tfocusNextCellOrField not triggered");
+				console.log("\thandleFocusNextCellOrField not triggered");
 			}
 		}, [value]);
+
 		// useEffect(() => {
 		// 	console.log("value changed", value);
 		// 	// 當選項改變, 且有值, 且非 multiple
-		// 	if (focusNextCellOrField
+		// 	if (handleFocusNextCellOrField
 		// 		&& (
 		// 			(value || asyncRef.current.performFocusNext)
 		// 			&& (isTouched !== true)
@@ -898,9 +902,9 @@ const OptionPicker = memo(
 		// 	) {
 		// 		console.log(`${name} changed, inFormMeta: ${inFormMeta}, isTouched: ${isTouched}, inDSG: ${inDSG}`, value);
 		// 		asyncRef.current.performFocusNext = false;
-		// 		focusNextCellOrField();
+		// 		handleFocusNextCellOrField();
 		// 	}
-		// }, [disabled, focusNextCellOrField, inDSG, inFormMeta, isTouched, multiple, name, supressEvents, value]);
+		// }, [disabled, handleFocusNextCellOrField, inDSG, inFormMeta, isTouched, multiple, name, supressEvents, value]);
 
 		return (
 			<OptionPickerBox
@@ -1103,13 +1107,13 @@ OptionPicker.propTypes = {
 	setError: PropTypes.func,
 	clearErrors: PropTypes.func,
 	notFoundText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-	focusNextCell: PropTypes.func,
-	focusPrevCell: PropTypes.func,
+	handleFocusNextCell: PropTypes.func,
+	handleFocusPrevCell: PropTypes.func,
 	cell: PropTypes.object,
 	toastError: PropTypes.bool,
 	disableClose: PropTypes.bool,
 	getNextField: PropTypes.func,
-	focusNextField: PropTypes.func,
+	handleFocusNextField: PropTypes.func,
 	isFieldDisabled: PropTypes.func,
 	setFocus: PropTypes.func,
 	inDSG: PropTypes.bool,
@@ -1121,7 +1125,8 @@ OptionPicker.propTypes = {
 	isTouched: PropTypes.bool,
 	isDirty: PropTypes.bool,
 	borderless: PropTypes.bool,
-	slotProps: PropTypes.object
-
+	slotProps: PropTypes.object,
+	focusNextCellOnChange: PropTypes.bool,
+	focusNextFieldOnChange: PropTypes.bool,
 };
 export default OptionPicker;

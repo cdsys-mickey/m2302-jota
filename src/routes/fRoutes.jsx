@@ -1,5 +1,5 @@
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
-import { F01Provider } from "@/contexts/F01/F01Provider";
+import { F01Provider } from "@/modules/F01/F01Provider";
 import { F02Provider } from "@/contexts/F02/F02Provider";
 import { F03Provider } from "@/contexts/F03/F03Provider";
 import { F04Provider } from "@/contexts/F04/F04Provider";
@@ -7,7 +7,7 @@ import { F05Provider } from "@/contexts/F05/F05Provider";
 import { F06Provider } from "@/contexts/F06/F06Provider";
 import { F07Provider } from "@/contexts/F07/F07Provider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
-import { F01FrameContainer } from "@/pages/modules/F01/F01FrameContainer";
+import { F01FrameContainer } from "@/modules/F01/F01FrameContainer";
 import { F02FrameContainer } from "@/pages/modules/F02/F02FrameContainer";
 import { F03FrameContainer } from "@/pages/modules/F03/F03FrameContainer";
 import { F04FrameContainer } from "@/pages/modules/F04/F04FrameContainer";

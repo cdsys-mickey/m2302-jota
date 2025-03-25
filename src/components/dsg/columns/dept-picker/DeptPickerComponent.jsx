@@ -46,14 +46,14 @@ const DeptPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -74,7 +74,7 @@ const DeptPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		focusOnDisabled
 	});
 
@@ -83,7 +83,7 @@ const DeptPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -95,7 +95,7 @@ const DeptPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -117,7 +117,7 @@ const DeptPickerComponent = memo((props) => {
 			typeToSearchText="請輸入門市編號或名稱進行搜尋"
 			// filterByServer
 			// DSG 專屬屬性
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 			// cellComponentRef={cellComponentRef}
 			cell={cell}
 			dense

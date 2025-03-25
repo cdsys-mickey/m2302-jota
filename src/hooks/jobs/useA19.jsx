@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import A19 from "@/modules/md-a19";
+import A19 from "@/modules/A19";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
@@ -28,8 +28,9 @@ export const useA19 = () => {
 		SDate,
 		EDate,
 		dataType,
+		InclInv,
+		InclTest,
 		outputType,
-		transIncluded
 		`
 	)
 

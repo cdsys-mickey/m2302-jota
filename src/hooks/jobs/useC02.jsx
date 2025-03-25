@@ -162,7 +162,7 @@ export const useC02 = () => {
 
 	const selectById = useCallback(
 		async (id) => {
-			crud.cancelAction();
+			// crud.cancelAction();
 			const item = {
 				RqtID: id,
 			};
@@ -171,7 +171,7 @@ export const useC02 = () => {
 				id,
 			});
 		},
-		[crud, loadItem]
+		[loadItem]
 	);
 
 	const handleSelect = useCallback(

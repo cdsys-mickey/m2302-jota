@@ -6,9 +6,7 @@ import { E021SearchFormContainer } from "@/modules/E021/search/E021SearchFormCon
 import Styles from "@/modules/md-styles";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useQuerySync } from "@/shared-hooks/useQuerySync";
 import { Box, useTheme } from "@mui/material";
-import { useCallback } from "react";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { E021Context } from "./E021Context";

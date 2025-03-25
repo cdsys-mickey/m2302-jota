@@ -9,6 +9,7 @@ import FormSectionBox from "../../../shared-components/form/FormSectionBox";
 import AppDeptPicker from "../../fields/AppDeptPicker";
 import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
 import FormBox from "../../../shared-components/form/FormBox";
+import Auth from "@/modules/md-auth";
 
 const A17Form = memo((props) => {
 	const {
@@ -46,6 +47,7 @@ const A17Form = memo((props) => {
 									// readOnly={true}
 									onChanged={handleDeptChanged}
 									disabled
+									scope={Auth.SCOPES.BRANCH_HQ}
 								/>
 							</Grid>
 							{readWorking && (

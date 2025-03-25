@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
+import Colors from "@/modules/md-colors";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -32,9 +33,11 @@ const ControlledTimePicker = ({
 	rules,
 	onBlur,
 	debounce = 800,
+	borderless,
+	slotProps,
 	...rest
 }) => {
-	const { isFieldDisabled, focusNextField, disableEnter } = useContext(FormMetaContext) || {};
+	const { isFieldDisabled, handleFocusNextField, disableEnter } = useContext(FormMetaContext) || {};
 	const form = useFormContext();
 	const { InputProps, ...opts } = DEFAULT_PROPS;
 
@@ -80,9 +83,9 @@ const ControlledTimePicker = ({
 					form.setError(name, error);
 					return;
 				}
-				if (focusNextField) {
+				if (handleFocusNextField) {
 					e.preventDefault();
-					focusNextField(name, {
+					handleFocusNextField(name, {
 						setFocus: form.setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
@@ -91,7 +94,7 @@ const ControlledTimePicker = ({
 				}
 			}
 		},
-		[disableEnter, getError, focusNextField, form, name, isFieldDisabled]
+		[disableEnter, getError, handleFocusNextField, form, name, isFieldDisabled]
 	);
 
 	const _rules = useMemo(() => {
@@ -106,6 +109,10 @@ const ControlledTimePicker = ({
 			}
 		}
 	}, [label, required, rules])
+
+	const _label = useMemo(() => {
+		return (borderless || !label) ? "" : `${label}${required ? "*" : ""}`;
+	}, [borderless, label, required])
 
 	if (!name) {
 		return <TimePicker views={views} ampm={ampm} {...rest} />;
@@ -126,7 +133,7 @@ const ControlledTimePicker = ({
 					<TimePicker
 						// autoOk
 						inputRef={ref}
-						label={label ? `${label}${required ? "*" : ""}` : ""}
+						label={_label}
 						views={views}
 						ampm={ampm}
 						slotProps={{
@@ -148,7 +155,31 @@ const ControlledTimePicker = ({
 								},
 								error: !!error,
 								helperText: error?.message,
-								onBlur: onBlur
+								onBlur: onBlur,
+								...(borderless && {
+									variant: "filled",
+									InputProps: { disableUnderline: true }
+								}),
+								sx: {
+									...(required && !error && {
+										"& .MuiInputLabel-root:not(.Mui-focused)": {
+											color: Colors.REQUIRED,
+										},
+										"& .MuiOutlinedInput-root": {
+											'& fieldset': {
+												borderColor: Colors.REQUIRED,
+											},
+										}
+									}),
+									...(borderless && {
+										"& input": {
+											paddingTop: 0,
+											paddingLeft: "4px",
+											paddingRight: 0,
+										}
+									})
+								},
+								...slotProps?.textField,
 							},
 							sx: {
 								...(dense && {
@@ -220,5 +251,7 @@ ControlledTimePicker.propTypes = {
 	debounce: PropTypes.number,
 	views: PropTypes.array,
 	ampm: PropTypes.bool,
+	borderless: PropTypes.bool,
+	slotProps: PropTypes.object
 };
 export default ControlledTimePicker;

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import Auth from "@/modules/md-auth";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
@@ -14,7 +14,7 @@ import RangeGroup from "@/shared-components/RangeGroup";
 import U07DataTypePicker from "./picker/U07DataTypePicker";
 
 const U07Form = memo((props) => {
-	const { onSubmit, onDebugSubmit, ...rest } = props;
+	const { onSubmit, onDebugSubmit, scope = Auth.SCOPES.BRANCH_HQ, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
@@ -28,7 +28,7 @@ const U07Form = memo((props) => {
 									name="SDeptID"
 									disableOpenOnInput
 									selectOnFocus
-									scope={Auth.SCOPES.BRANCH_HQ}
+									scope={scope}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12}>
@@ -77,7 +77,7 @@ const U07Form = memo((props) => {
 							<Grid container spacing={2}>
 								<Grid item xs={12} sm={12}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}
@@ -103,6 +103,7 @@ U07Form.propTypes = {
 	readError: PropTypes.object,
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,
+	scope: PropTypes.number
 };
 
 U07Form.displayName = "U07Form";

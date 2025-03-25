@@ -46,14 +46,14 @@ const FreeProdTypePickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -74,7 +74,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		focusOnDisabled
 	});
 
@@ -83,7 +83,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 	// 	insertRowBelow,
 	// 	cell,
 	// 	skipDisabled,
-	// 	// focusNextCell,
+	// 	// handleFocusNextCell,
 	// 	getNextCell,
 	// 	lastCell,
 	// 	isLastRow,
@@ -95,7 +95,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 	// 	insertRowBelow,
 	// 	cell,
 	// 	skipDisabled,
-	// 	// focusNextCell,
+	// 	// handleFocusNextCell,
 	// 	getNextCell,
 	// 	lastCell,
 	// 	isLastRow,
@@ -115,7 +115,7 @@ const FreeProdTypePickerComponent = memo((props) => {
 			// placeholder="試贈樣"
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

@@ -285,7 +285,7 @@ export const useAuth = () => {
 			}
 		} catch (err) {
 			console.error("onDeptSwitchSubmit.failed", err);
-			toastEx.error("切換失敗，請重新登入");
+			toastEx.error("由於登入已逾期切換門市失敗，請重新登入");
 			toLogin();
 
 		}

@@ -1,4 +1,4 @@
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
+import { PrintReportButton } from "@/components";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
@@ -111,7 +111,7 @@ const F04Form = memo((props) => {
 							</FlexToolbar> */}
 							<Grid item xs={12}>
 								<FlexBox justifyContent="flex-end">
-									<PrintButtonContainer
+									<PrintReportButton
 										color="primary"
 										variant="contained"
 										onSubmit={onSubmit}

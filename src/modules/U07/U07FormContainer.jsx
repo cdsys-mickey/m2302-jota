@@ -4,10 +4,14 @@ import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { U07Context } from "./U07Context";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import Auth from "../md-auth";
 
 export const U07FormContainer = () => {
 	const form = useFormContext();
 	const u07 = useContext(U07Context);
+	const auth = useContext(AuthContext);
+	const { operator } = auth;
 
 	const onSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -22,11 +26,17 @@ export const U07FormContainer = () => {
 		)
 	}, [u07.onDebugSubmit, form]);
 
-	return <FormProvider {...form}>
-		<FormMetaProvider {...u07.formMeta}>
-			<U07Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
-		</FormMetaProvider>
-	</FormProvider>;
+	return (
+		<FormProvider {...form}>
+			<FormMetaProvider {...u07.formMeta}>
+				<U07Form
+					onSubmit={onSubmit}
+					onDebugSubmit={onDebugSubmit}
+					scope={operator.CurHeadOffice ? Auth.SCOPES.BRANCH_HQ : Auth.SCOPES.DEPT}
+				/>
+			</FormMetaProvider>
+		</FormProvider>
+	);
 };
 
 U07FormContainer.displayName = "U07FormContainer";

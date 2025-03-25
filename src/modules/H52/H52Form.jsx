@@ -1,20 +1,16 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
-import { ButtonGroup, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import DebugDialogButtonContainer from "@/components/debug/DebugDialogButtonContainer";
+import { PrintReportButton } from "@/components";
 import ProdPicker from "@/components/picker/ProdPicker";
-import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H52ReportTypePicker from "./pickers/H52ReportTypePicker";
-import PrintButtonContainer from "@/components/print-button/PrintButtonContainer";
 
 const H52Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -92,7 +88,7 @@ const H52Form = memo((props) => {
 								</Grid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">
-										<PrintButtonContainer
+										<PrintReportButton
 											color="primary"
 											variant="contained"
 											onSubmit={onSubmit}

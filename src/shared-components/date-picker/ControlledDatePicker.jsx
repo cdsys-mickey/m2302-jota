@@ -35,6 +35,7 @@ const ControlledDatePicker = ({
 	mask = "____/__/__",
 	format = DateFormats.DATEFNS_DATE,
 	invalidDateMessage = "日期格式錯誤",
+	placeholder = "年/月/日",
 	required = false,
 	rules,
 	onBlur,
@@ -46,7 +47,7 @@ const ControlledDatePicker = ({
 	// variant = "outlined",
 	...rest
 }) => {
-	const { isFieldDisabled, focusNextField, disableEnter } = useContext(FormMetaContext) || {};
+	const { isFieldDisabled, handleFocusNextField, disableEnter } = useContext(FormMetaContext) || {};
 	const form = useFormContext();
 	const { InputProps, ...opts } = DEFAULT_PROPS;
 
@@ -92,9 +93,9 @@ const ControlledDatePicker = ({
 					form.setError(name, error);
 					return;
 				}
-				if (focusNextField) {
+				if (handleFocusNextField) {
 					e.preventDefault();
-					focusNextField(name, {
+					handleFocusNextField(name, {
 						setFocus: form.setFocus,
 						isFieldDisabled,
 						forward: !e.shiftKey,
@@ -103,7 +104,7 @@ const ControlledDatePicker = ({
 				}
 			}
 		},
-		[disableEnter, getError, focusNextField, form, name, isFieldDisabled]
+		[disableEnter, getError, handleFocusNextField, form, name, isFieldDisabled]
 	);
 
 	const _rules = useMemo(() => {
@@ -206,7 +207,8 @@ const ControlledDatePicker = ({
 
 							},
 							field: {
-								clearable
+								clearable,
+								placeholder
 							}
 						}}
 						value={value}
@@ -406,5 +408,6 @@ ControlledDatePicker.propTypes = {
 	debounce: PropTypes.number,
 	slotProps: PropTypes.object,
 	borderless: PropTypes.bool,
+	placeholder: PropTypes.string
 };
 export default ControlledDatePicker;

@@ -36,7 +36,7 @@ const ControlledDateField = ({
 	...rest
 }) => {
 	const { setError, clearErrors } = useFormContext();
-	const { isFieldDisabled, focusNextField, disableEnter } = useContext(FormMetaContext) || {};
+	const { isFieldDisabled, handleFocusNextField, disableEnter } = useContext(FormMetaContext) || {};
 	const { setFocus } = useFormContext() || {};
 
 	const { InputProps, ...opts } = DEFAULT_PROPS;
@@ -46,7 +46,7 @@ const ControlledDateField = ({
 			// if (e.key === "Enter" || e.key === "Tab") {
 			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
 				e.preventDefault();
-				focusNextField(name, {
+				handleFocusNextField(name, {
 					setFocus,
 					isFieldDisabled,
 					forward: !e.shiftKey,
@@ -54,7 +54,7 @@ const ControlledDateField = ({
 				});
 			}
 		},
-		[disableEnter, focusNextField, name, setFocus, isFieldDisabled]
+		[disableEnter, handleFocusNextField, name, setFocus, isFieldDisabled]
 	);
 
 	if (!name) {

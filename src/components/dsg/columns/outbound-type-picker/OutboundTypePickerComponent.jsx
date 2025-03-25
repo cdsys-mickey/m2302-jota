@@ -46,14 +46,14 @@ const OutboundTypePickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -74,7 +74,7 @@ const OutboundTypePickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		focusOnDisabled
 	});
 
@@ -83,7 +83,7 @@ const OutboundTypePickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -95,7 +95,7 @@ const OutboundTypePickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -117,7 +117,7 @@ const OutboundTypePickerComponent = memo((props) => {
 			// filterByServer
 			// DSG 專屬
 			// cellComponentRef={cellComponentRef}
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 
 			dense
 			cell={cell}

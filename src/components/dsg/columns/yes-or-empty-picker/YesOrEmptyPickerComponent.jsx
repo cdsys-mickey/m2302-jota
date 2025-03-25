@@ -47,14 +47,14 @@ const YesOrEmptyPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
 		...rest
 	} = columnData;
 
-	const { focusNextCell } = useCellComponent({
+	const { handleFocusNextCell } = useCellComponent({
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -75,7 +75,7 @@ const YesOrEmptyPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		focusNextCell,
+		handleFocusNextCell,
 		focusOnDisabled
 	});
 
@@ -84,7 +84,7 @@ const YesOrEmptyPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -96,7 +96,7 @@ const YesOrEmptyPickerComponent = memo((props) => {
 		insertRowBelow,
 		cell,
 		skipDisabled,
-		// focusNextCell,
+		// handleFocusNextCell,
 		getNextCell,
 		lastCell,
 		isLastRow,
@@ -115,7 +115,7 @@ const YesOrEmptyPickerComponent = memo((props) => {
 			onClose={handleClose}
 			// DSG 專屬屬性
 			// cellComponentRef={cellComponentRef}
-			focusNextCell={focusNextCell}
+			handleFocusNextCell={handleFocusNextCell}
 			dense
 			cell={cell}
 			hideControls={hideControls}

@@ -1,4 +1,4 @@
-import A19 from "@/modules/md-a19";
+import A19 from "@/modules/A19";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
