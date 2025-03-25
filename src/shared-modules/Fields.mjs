@@ -12,6 +12,11 @@ function addDoubleQuotesToObjectKeys(str) {
  */
 const parse = (input, opts = {}) => {
 	const { includeComments = false, defaultProps } = opts;
+
+	if (!input) {
+		return {};
+	}
+
 	let result = input
 		.trim()
 		.split(/\s*,\s*(?![^{]*\})/)

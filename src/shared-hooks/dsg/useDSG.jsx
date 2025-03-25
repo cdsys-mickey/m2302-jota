@@ -1,7 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { toastEx } from "@/helpers/toastEx";
 import { useToggle } from "@/shared-hooks/useToggle";
-import Arrays from "@/shared-modules/sd-arrays";
 import Objects from "@/shared-modules/Objects";
 import Types from "@/shared-modules/sd-types";
 import _ from "lodash";
@@ -58,13 +57,19 @@ export const useDSG = ({
 		return Fields.parse(_otherColumns);
 	}, [_otherColumns])
 
+	/**
+	 * 所有其他欄位
+	 */
 	const otherColumnNames = useMemo(() => {
 		return Object.keys(otherColumns);
 	}, [otherColumns]);
 
+	/**
+	 * 需要檢查的欄位(排除 nullable: true 的欄位)
+	 */
 	const checkColumnNames = useMemo(() => {
 		return Object.keys(otherColumns).filter(
-			(key) => otherColumns[key].nullble !== true
+			(key) => otherColumns[key]?.nullble !== true
 		)
 	}, [otherColumns]);
 
