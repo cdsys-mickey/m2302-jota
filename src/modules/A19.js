@@ -53,8 +53,8 @@ const transformForSubmitting = (payload) => {
 		SProdID: sprod?.ProdID || "",
 		EProdID: eprod?.ProdID || "",
 		DataType: dataType.id?.toString() || "3",
-		InclInv: InclInv ? "Y" : "N",
-		InclTest: InclTest ? "Y" : "N",
+		InclInv: InclInv || dataType?.id != DataType.SALE ? "Y" : "N",
+		InclTest: InclTest || dataType?.id != DataType.SALE ? "Y" : "N",
 		...rest,
 	};
 };

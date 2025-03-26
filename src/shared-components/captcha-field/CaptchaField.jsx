@@ -90,7 +90,7 @@ export const CaptchaField = memo(
 
 CaptchaField.propTypes = {
 	inputRef: PropTypes.oneOfType([PropTypes.ref, PropTypes.func]),
-	canvasRef: PropTypes.ref,
+	canvasRef: PropTypes.oneOfType([PropTypes.ref, PropTypes.func]),
 	value: PropTypes.string,
 	input: PropTypes.string,
 	placeholder: PropTypes.string,

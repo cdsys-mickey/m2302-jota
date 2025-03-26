@@ -1,7 +1,6 @@
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FlexBox from "@/shared-components/FlexBox";
-import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { Grid } from "@mui/material";
@@ -10,11 +9,12 @@ import { memo } from "react";
 
 import { PrintReportButton } from "@/components";
 import Auth from "@/modules/md-auth";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import RangeGroup from "@/shared-components/RangeGroup";
 import ProdPicker from "../../picker/ProdPicker";
+import A19InOutCheckbox from "./buttons/A19InOutCheckbox";
 import A19DataTypePicker from "./picker/A19DataTypePicker";
+import A19FreeCheckbox from "./buttons/A19FreeCheckbox";
 
 const A19Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -151,12 +151,17 @@ const A19Form = memo((props) => {
 						<Grid container>
 							<Grid item xs={12} sm={6} >
 								<FlexBox alignItems="center">
-									<CheckboxExWrapper
+									{/* <CheckboxExWrapper
+										label="包含撥出入"
+										name="InclInv"
+										defaultValue={true}
+									/> */}
+									<A19InOutCheckbox
 										label="包含撥出入"
 										name="InclInv"
 										defaultValue={true}
 									/>
-									<CheckboxExWrapper
+									<A19FreeCheckbox
 										label="含試贈樣"
 										name="InclTest"
 										defaultValue={false}
