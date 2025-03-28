@@ -41,7 +41,7 @@ export const useP14 = () => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/inv/taking/listing",
+		url: "v1/pos/daily-report/listing",
 		bearer: token,
 		initialFetchSize: 50,
 	});
@@ -51,6 +51,7 @@ export const useP14 = () => {
 			Pkey: nanoid(),
 			prod: null,
 			SPrice: "",
+			Force: false
 		}),
 		[]
 	);
@@ -60,43 +61,6 @@ export const useP14 = () => {
 		keyColumn: "pkey",
 		createRow
 	});
-
-	// CREATE
-	const promptCreating = useCallback(() => {
-		const data = {
-			prods: [],
-		};
-		crud.promptCreating({ data });
-		grid.initGridData(data.prods, {
-			fillRows: true
-		});
-	}, [crud, grid]);
-
-	const handleCreate = useCallback(
-		async ({ data }) => {
-			try {
-				crud.startCreating();
-				const { status, error } = await httpPostAsync({
-					url: "v1/inv/taking/listing",
-					data: data,
-					bearer: token,
-				});
-				if (status.success) {
-					toastEx.success(`新增成功`);
-					crud.doneCreating();
-					crud.cancelReading();
-					listLoader.loadList({ refresh: true });
-				} else {
-					throw error ?? new Error("未預期例外");
-				}
-			} catch (err) {
-				crud.failCreating();
-				console.error("handleCreate.failed", err);
-				toastEx.error("新增失敗", err);
-			}
-		},
-		[crud, httpPostAsync, listLoader, token]
-	);
 
 	// READ
 	const loadItem = useCallback(
@@ -108,7 +72,7 @@ export const useP14 = () => {
 					crud.startReading("讀取中...", { id });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/inv/taking/listing",
+					url: "v1/pos/daily-report/listing",
 					bearer: token,
 					params: {
 						id: itemId,
@@ -121,7 +85,7 @@ export const useP14 = () => {
 					});
 					setSelectedInq(data);
 
-					grid.handleGridDataLoaded(data.prods);
+					grid.initGridData(data.prods);
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
@@ -132,13 +96,97 @@ export const useP14 = () => {
 		[crud, httpGetAsync, grid, token]
 	);
 
+	// CREATE
+	const promptCreating = useCallback(() => {
+		const data = {
+			prods: [],
+		};
+		crud.promptCreating({ data });
+		grid.initGridData(data.prods, {
+			fillRows: 13
+		});
+	}, [crud, grid]);
+
+	const handleSave = useCallback(
+		async ({ data }) => {
+			const creating = crud.creating;
+			try {
+				if (creating) {
+					crud.startCreating();
+				} else {
+					crud.startUpdating();
+				}
+
+				const httpMethod = creating ? httpPostAsync : httpPutAsync;
+
+				const { status, error } = await httpMethod({
+					url: "v1/pos/daily-report/listing",
+					data: data,
+					bearer: token,
+				});
+				if (status.success) {
+					toastEx.success(creating ? `新增成功` : "修改成功");
+					if (creating) {
+						crud.doneCreating();
+						crud.cancelReading();
+					} else {
+						crud.doneUpdating();
+						loadItem({ refresh: true });
+					}
+					listLoader.loadList({ refresh: true });
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				if (err.status === 409 && err.data) {
+					grid.initGridData(P14.transformGridForReading(err.data));
+				}
+				if (creating) {
+					crud.failCreating();
+				} else {
+					crud.failUpdating();
+				}
+				toastEx.error(`${creating ? "新增" : "修改"}失敗`, err);
+			}
+		},
+		[crud, grid, httpPostAsync, httpPutAsync, listLoader, loadItem, token]
+	);
+
+	// const handleCreate = useCallback(
+	// 	async ({ data }) => {
+	// 		try {
+	// 			crud.startCreating();
+	// 			const { status, error } = await httpPostAsync({
+	// 				url: "v1/pos/daily-report/listing",
+	// 				data: data,
+	// 				bearer: token,
+	// 			});
+	// 			if (status.success) {
+	// 				toastEx.success(`新增成功`);
+	// 				crud.doneCreating();
+	// 				crud.cancelReading();
+	// 				listLoader.loadList({ refresh: true });
+	// 			} else {
+	// 				throw error ?? new Error("未預期例外");
+	// 			}
+	// 		} catch (err) {
+	// 			crud.failCreating();
+	// 			console.error("handleCreate.failed", err);
+	// 			toastEx.error("新增失敗", err);
+	// 		}
+	// 	},
+	// 	[crud, httpPostAsync, listLoader, token]
+	// );
+
+
+
 	const handleSelect = useCallback(
 		async (e, rowData) => {
 			e?.stopPropagation();
 			crud.cancelAction();
 			// setSelectedItem(rowData);
 
-			loadItem({ id: rowData.PhyID });
+			loadItem({ id: rowData.ItmID });
 		},
 		[crud, loadItem]
 	);
@@ -173,51 +221,51 @@ export const useP14 = () => {
 	}, [crud, dialogs, loadItem]);
 
 	// UPDATE
-	const handleUpdate = useCallback(
-		async ({ data }) => {
-			try {
-				crud.startUpdating();
-				const { status, error } = await httpPutAsync({
-					url: "v1/inv/taking/listing",
-					data: data,
-					bearer: token,
-				});
-				if (status.success) {
-					toastEx.success(`修改成功`);
-					crud.doneUpdating();
-					//crud.cancelReading();
-					loadItem({ refresh: true });
-					listLoader.loadList({ refresh: true });
-				} else {
-					throw error ?? new Error("未預期例外");
-				}
-			} catch (err) {
-				crud.failUpdating();
-				console.error("handleCreate.failed", err);
-				toastEx.error("修改失敗", err);
-			}
-		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
-	);
+	// const handleUpdate = useCallback(
+	// 	async ({ data }) => {
+	// 		try {
+	// 			crud.startUpdating();
+	// 			const { status, error } = await httpPutAsync({
+	// 				url: "v1/pos/daily-report/listing",
+	// 				data: data,
+	// 				bearer: token,
+	// 			});
+	// 			if (status.success) {
+	// 				toastEx.success(`修改成功`);
+	// 				crud.doneUpdating();
+	// 				//crud.cancelReading();
+	// 				loadItem({ refresh: true });
+	// 				listLoader.loadList({ refresh: true });
+	// 			} else {
+	// 				throw error ?? new Error("未預期例外");
+	// 			}
+	// 		} catch (err) {
+	// 			crud.failUpdating();
+	// 			console.error("handleCreate.failed", err);
+	// 			toastEx.error("修改失敗", err);
+	// 		}
+	// 	},
+	// 	[crud, httpPutAsync, listLoader, loadItem, token]
+	// );
 
 	//DELETE
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({
-			message: `確認要删除盤點清單「${itemData?.PhyID}」?`,
+			message: `確認要删除列印品項「${itemData?.ItmID}」?`,
 			onConfirm: async () => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/inv/taking/listing`,
+						url: `v1/pos/daily-report/listing`,
 						bearer: token,
 						params: {
-							id: itemData?.PhyID,
+							id: itemData?.ItmID,
 						},
 					});
 					if (status.success) {
 						// 關閉對話框
 						crud.cancelAction();
-						toastEx.success(`成功删除盤點清單 ${itemData?.PhyID}`);
+						toastEx.success(`成功删除列印品項 ${itemData?.ItmID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -325,21 +373,9 @@ export const useP14 = () => {
 				grid.gridData
 			);
 			console.log("collected", collected);
-			if (crud.creating) {
-				handleCreate({ data: collected });
-			} else if (crud.updating) {
-				handleUpdate({ data: collected });
-			} else {
-				console.error("UNKNOWN SUBMIT TYPE");
-			}
+			handleSave({ data: collected });
 		},
-		[
-			crud.creating,
-			crud.updating,
-			handleCreate,
-			handleUpdate,
-			grid.gridData,
-		]
+		[grid.gridData, handleSave]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -385,7 +421,7 @@ export const useP14 = () => {
 
 			try {
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/inv/taking/load-prods",
+					url: "v1/pos/daily-report/load-prods",
 					bearer: token,
 					params: {
 						...P14.transformAsQueryParams(criteria),
@@ -419,14 +455,15 @@ export const useP14 = () => {
 			try {
 				importProdsAction.start();
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/inv/taking/load-prods",
+					url: "v1/pos/daily-report/load-prods",
 					bearer: token,
 					params: {
 						...P14.transformAsQueryParams(ipState.criteria),
 					},
 				});
 				if (status.success) {
-					const data = payload.data?.[0].PhyLst_S || [];
+					// const data = payload.data?.[0].DayItm_S || [];
+					const data = payload.data;
 					console.log("data", data);
 					grid.initGridData(P14.transformForGridImport(data), {
 						fillRows: true,
@@ -462,12 +499,12 @@ export const useP14 = () => {
 				}),
 				DeptID: operator?.CurDeptID,
 				JobName: "P14",
-				IDs: crud.itemData?.PhyID,
+				IDs: crud.itemData?.ItmID,
 			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.PhyID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.ItmID, operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -477,6 +514,10 @@ export const useP14 = () => {
 	const handlePrint = useCallback(({ setValue }) => (outputType) => {
 		console.log("handlePrint", outputType);
 		setValue("outputType", outputType);
+	}, []);
+
+	const forceDisabled = useCallback(({ rowData }) => {
+		return !rowData.Repeat_N;
 	}, []);
 
 	const loadProdFormMeta = useFormMeta(
@@ -528,7 +569,8 @@ export const useP14 = () => {
 		loadProdFormMeta,
 		...sideDrawer,
 		onUpdateRow,
-		createRow
+		createRow,
+		forceDisabled
 	};
 };
 

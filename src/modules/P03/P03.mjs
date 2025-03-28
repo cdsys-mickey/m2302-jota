@@ -2,6 +2,7 @@ import Forms from "@/shared-modules/Forms.mjs";
 
 const transformForSubmitting = (payload) => {
 	const {
+		outputType,
 		SDate,
 		EDate,
 		retail,
@@ -12,9 +13,11 @@ const transformForSubmitting = (payload) => {
 		EAreaID,
 		SLineID,
 		ELineID,
-		reportType,
+		RptType,
+		OrdName,
 		InclTest,
-		outputType,
+		OrdSeq,
+		Rate,
 		...rest
 	} = payload;
 
@@ -33,7 +36,10 @@ const transformForSubmitting = (payload) => {
 		SLineID: SLineID?.CodeID || "",
 		ELineID: ELineID?.CodeID || "",
 		InclTest: InclTest ? "Y" : "N",
-		RptType: reportType?.id,
+		RptType: RptType?.id,
+		OrdName: OrdName?.id,
+		OrdSeq: OrdSeq?.id,
+		Rate: Rate?.id,
 		...rest,
 	};
 };
@@ -43,4 +49,3 @@ const P03 = {
 };
 
 export default P03;
-

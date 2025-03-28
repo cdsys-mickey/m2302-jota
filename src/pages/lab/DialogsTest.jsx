@@ -1,10 +1,10 @@
 import { Box } from "@mui/material";
-import { ButtonWrapper } from "../../shared-components/button/ButtonWrapper";
 import { useCallback } from "react";
 import { useContext } from "react";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { toast } from "react-toastify";
 import { useRef } from "react";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 
 const DialogsTest = (props) => {
 	const { ...rest } = props;

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 
 const C02DialogEditToolbar = memo(
 	forwardRef((props, ref) => {

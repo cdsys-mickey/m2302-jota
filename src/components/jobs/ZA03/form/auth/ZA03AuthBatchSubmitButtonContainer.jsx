@@ -1,6 +1,6 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import UserAuth from "@/modules/md-user-auth";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import ActionState from "@/shared-constants/action-state";
 import { useContext } from "react";
 import PropTypes from "prop-types";

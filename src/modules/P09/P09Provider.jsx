@@ -4,6 +4,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import { P09Context } from "./P09Context";
 import P09ReportType from "./pickers/P09ReportType.mjs";
 import { useP09 } from "./useP09";
+import P09DataSource from "./pickers/P09DataSource.mjs";
+import P09OrderType from "./pickers/P09OrderType.mjs";
+import OrderDir from "../OrderDir.mjs";
+import P09CalType from "./pickers/P09CalType.mjs";
 
 export const P09Provider = ({ children }) => {
 	const p09 = useP09();
@@ -11,11 +15,14 @@ export const P09Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
+			Source: P09DataSource.getDefaultOption(),
+			SProdID: null,
+			EProdID: null,
 			// InclTest: false,
-			reportType: P09ReportType.getDefaultOption(),
-			// orderType: P09OrderType.getDefaultOption(),
-			// orderDir: OrderDir.getDefaultOption(),
-			// calType: P09CalType.getDefaultOption(),
+			RptType: P09ReportType.getDefaultOption(),
+			OrdName: P09OrderType.getDefaultOption(),
+			OrdSeq: OrderDir.getDefaultOption(),
+			Rate: P09CalType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

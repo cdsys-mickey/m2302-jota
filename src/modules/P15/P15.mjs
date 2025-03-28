@@ -1,25 +1,15 @@
 import Forms from "@/shared-modules/Forms.mjs";
+import DateFormats from "@/shared-modules/sd-date-formats";
 
 const transformForSubmitting = (payload) => {
-	const {
-		outputType,
-		SDate,
-		EDate,
-		SProdID,
-		EProdID,
-		InclTX,
-		InclTest,
-		...rest
-	} = payload;
+	const { outputType, SDate, EDate, STime, ETime, ...rest } = payload;
 	return {
 		JobName: "P15",
 		Action: outputType?.id?.toString() || "",
 		SDate: Forms.formatDate(SDate) || "",
 		EDate: Forms.formatDate(EDate) || "",
-		SProdID: SProdID?.ProdID || "",
-		EProdID: EProdID?.ProdID || "",
-		InclTX: InclTX ? "Y" : "N",
-		InclTest: InclTest ? "Y" : "N",
+		STime: Forms.formatDate(STime, DateFormats.DATEFNS_HOUR) || "",
+		ETime: Forms.formatDate(ETime, DateFormats.DATEFNS_HOUR) || "",
 		...rest,
 	};
 };
@@ -29,4 +19,3 @@ const P15 = {
 };
 
 export default P15;
-

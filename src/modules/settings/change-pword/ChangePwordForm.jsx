@@ -2,7 +2,7 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import { Box, Container, FormHelperText, Grid } from "@mui/material";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
-import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
+import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
 import LoginIcon from "@mui/icons-material/Login";
 import FlexBox from "@/shared-components/FlexBox";
 import ContainerEx from "@/shared-components/ContainerEx";

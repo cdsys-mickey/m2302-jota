@@ -5,7 +5,7 @@ import { B011Context } from "@/contexts/B011/B011Context";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useMemo } from "react";
 import { Tooltip } from "@mui/material";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import PropTypes from "prop-types";
 import { B031Context } from "@/contexts/B031/B031Context";
 import { BContext } from "@/contexts/B/BContext";

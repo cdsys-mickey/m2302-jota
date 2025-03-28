@@ -1,4 +1,5 @@
-import PrintReportButtonContainer from "@/components/PrintReportButton/PrintReportButtonContainer";
+import PrintReportButton from "@/components/PrintReportButton/PrintReportButtonContainer";
 import DebugReportButton from "@/components/DebugReportButton";
+import PaymentPicker from "./PaymentPicker/PaymentPickerContainer";
 
-export { PrintReportButtonContainer as PrintReportButton, DebugReportButton };
+export { PrintReportButton, DebugReportButton, PaymentPicker };

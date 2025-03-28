@@ -129,8 +129,8 @@ const YesOrEmptyPickerComponent = memo((props) => {
 			// toastError
 			{...pickerProps}
 			{...rest}
-			// blurToLookup={false}
-			mockDelay={Constants.POPPER_DELAY}
+		// blurToLookup={false}
+		// mockDelay={Constants.POPPER_DELAY}
 		/>
 	);
 }, arePropsEqual);

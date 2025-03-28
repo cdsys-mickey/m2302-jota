@@ -240,7 +240,7 @@ export const useDSG = ({
 	);
 
 	const handleGridDataLoaded = useCallback(
-		(payload, opts) => {
+		(payload) => {
 			console.log(`${gridId}.onDataLoaded`, payload);
 			_setGridData(payload, { reset: true, commit: true });
 		},

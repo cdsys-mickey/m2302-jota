@@ -1,53 +1,84 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/Forms.mjs";
 import Objects from "../shared-modules/Objects";
+import FreeProdTypes from "./md-free-prod-types";
+import YesOrEmpty from "./YesOrEmpty.mjs";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, SExpDate, ...rest }) => {
-			return {
-				prod: {
-					ProdID: SProdID,
+		data?.map(
+			({
+				SProdID,
+				ProdData_N,
+				SExpDate,
+				SType,
+				SRsnID,
+				RsnData_N,
+				SFlag,
+				...rest
+			}) => {
+				return {
+					prod: {
+						ProdID: SProdID,
+						ProdData: ProdData_N,
+					},
 					ProdData: ProdData_N,
-				},
-				ProdData: ProdData_N,
-				SExpDate: Forms.reformatDateAsDash(SExpDate),
-				// overrideSQty: SQtyNote === "*",
-				...rest,
-			};
-		}) || []
+					// reworked: SFlag === "Y",
+					reworked: YesOrEmpty.getOptionById(SFlag),
+					// SExpDate: Forms.reformatDateAsDash(SExpDate),
+					SExpDate: SExpDate,
+					stype: FreeProdTypes.getOptionById(SType),
+					dtype: SRsnID
+						? {
+								CodeID: SRsnID,
+								CodeData: RsnData_N,
+						  }
+						: null,
+					...rest,
+					...rest,
+				};
+			}
+		) || []
 	);
 };
 
 const transformGridForSubmitting = (gridData) => {
 	return gridData
 		.filter((v) => v.prod?.ProdID)
-		.map(({ Pkey, prod, SExpDate, SQty, StockQty_N, ...rest }, index) => ({
-			Pkey: Pkey?.length < 36 ? "" : Pkey,
-			SProdID: prod?.ProdID,
-			ProdData_N: prod?.ProdData,
-			SExpDate: Forms.formatDate(SExpDate),
-			SQty: SQty?.toString() || "",
-			StockQty_N: StockQty_N?.toString() || "",
-			Seq: index + 1,
-			...rest,
-		}));
+		.map(
+			(
+				{ Pkey, prod, SExpDate, SQty, stype, dtype, reworked, ...rest },
+				index
+			) => ({
+				Pkey: Pkey?.length < 36 ? "" : Pkey,
+				SProdID: prod?.ProdID,
+				ProdData_N: prod?.ProdData,
+				SExpDate: Forms.formatDate(SExpDate),
+				SQty: SQty?.toString() || "",
+				SType: stype?.id || "",
+				SRsnID: dtype?.CodeID || "",
+				Seq: index + 1,
+				// SFlag: reworked ? "Y" : "",
+				SFlag: reworked?.id || "",
+				...rest,
+			})
+		);
 };
 
 const transformForReading = (payload) => {
 	const {
-		RetDate,
+		EntDate,
 		PDlineID,
 		PDlineData_N,
 		EmplID,
 		EmplData_N,
-		MatRet_S,
+		ProdEnt_S,
 		Remark,
 		...rest
 	} = payload;
 
 	return {
-		RetDate: Forms.parseDate(RetDate),
+		EntDate: Forms.parseDate(EntDate),
 		employee: {
 			CodeID: EmplID,
 			CodeData: EmplData_N,
@@ -58,34 +89,34 @@ const transformForReading = (payload) => {
 					CodeData: PDlineData_N,
 			  }
 			: null,
-		prods: transformGridForReading(MatRet_S),
+		prods: transformGridForReading(ProdEnt_S),
 		remark: Remark.join("\n"),
 		...rest,
 	};
 };
 
 const transformForSubmitting = (payload, gridData) => {
-	const { RetDate, employee, pdline, remark, ...rest } = payload;
+	const { EntDate, employee, pdline, remark, ...rest } = payload;
 	return {
-		RetDate: RetDate ? Forms.formatDate(RetDate) : "",
+		EntDate: EntDate ? Forms.formatDate(EntDate) : "",
 		EmplID: employee?.CodeID || "",
 		PDlineID: pdline?.CodeID || "",
 		Remark: remark?.split("\n") || [],
 		...rest,
 		...(gridData && {
-			MatRet_S: transformGridForSubmitting(gridData),
+			ProdEnt_S: transformGridForSubmitting(gridData),
 		}),
 	};
 };
 
 const transformAsQueryParams = (data) => {
-	const { employee, rdate, pdline } = data;
+	const { employee, sdate, pdline } = data;
 	return {
 		...(employee && {
 			empi: employee.CodeID,
 		}),
-		...(rdate && {
-			rdate: Forms.formatDate(rdate),
+		...(sdate && {
+			sdate: Forms.formatDate(sdate),
 		}),
 		...(pdline && {
 			pdline: pdline.CodeID,
@@ -106,10 +137,10 @@ const getTotal = (gridData) => {
 };
 
 const isFiltered = (criteria) => {
-	return Objects.isAnyPropNotEmpty(criteria, "employee,pdline,rdate");
+	return Objects.isAnyPropNotEmpty(criteria, "employee,pdline,sdate");
 };
 
-const findProdIndex = ({ newValue, rowData, rowIndex }) => {
+const isProdExists = ({ newValue, rowData, rowIndex }) => {
 	if (!rowData?.prod?.ProdID) {
 		return -1;
 	}
@@ -125,14 +156,14 @@ const findProdIndex = ({ newValue, rowData, rowIndex }) => {
 	return -1;
 };
 
-const D02 = {
+const D041 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
 	transformGridForReading,
 	getTotal,
 	isFiltered,
-	findProdIndex,
+	isProdExists,
 };
 
-export default D02;
+export default D041;

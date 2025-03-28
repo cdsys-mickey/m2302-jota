@@ -3,7 +3,7 @@ import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 import { Grid, Link, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import TaskJobColumn from "./columns/TaskJobColumn";
 import TaskMessageColumn from "./columns/TaskMessageColumn";
 import TaskDeptColumn from "./columns/TaskDeptColumn";

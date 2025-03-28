@@ -1,5 +1,5 @@
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import { useContext } from "react";
 
 export const ProdGridEditButtonContainer = (props) => {

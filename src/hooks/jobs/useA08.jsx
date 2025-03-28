@@ -14,15 +14,12 @@ export const useA08 = ({ token }) => {
 			areaType: {nullble: true},
 			CodeData
 		`,
-		// otherColumns: "CodeData",
 	});
 
 
 
 	return {
 		grid,
-		// gridMeta,
-		// codeEditor,
 		...appModule,
 	};
 };

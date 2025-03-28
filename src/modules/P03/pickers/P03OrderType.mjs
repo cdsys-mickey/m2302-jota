@@ -1,7 +1,7 @@
 const options = [
 	{ id: 1, label: "金額" },
 	{ id: 2, label: "數量" },
-	{ id: 3, label: "櫃位" },
+	{ id: 3, label: "代碼" },
 ];
 
 const getOptionLabel = (option) => {
@@ -36,5 +36,3 @@ const P03OrderType = {
 };
 
 export default P03OrderType;
-
-

@@ -41,8 +41,8 @@ const P14DialogForm = memo((props) => {
 							<Grid item md={5}>
 								<TextFieldWrapper
 									typo
-									name="PhyID"
-									label="清單編號"
+									name="ItmID"
+									label="品項列印序號"
 									autoFocus={creating}
 									fullWidth
 									disabled={updating}
@@ -57,51 +57,25 @@ const P14DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item md={6}>
-								<EmployeePicker
-									typo
-									label="製單人員"
-									name="employee"
-									required
-									rules={{
-										required: "製單人員為必填",
-									}}
-									virtualize
-									disableOpenOnInput
-									selectOnFocus
-								// disableClearable
-								/>
-							</Grid>
 
 							<Grid item md={9}>
 								<TextFieldWrapper
 									typo
-									name="PhyData"
-									label="清單名稱"
+									name="ItmData"
+									label="品項列印名稱"
+									autoFocus={updating}
 									fullWidth
 									required
 									rules={{
-										required: "清單名稱為必填",
+										required: "名稱為必填",
 									}}
-									readOnly={updating}
+								// readOnly={updating}
 								/>
 							</Grid>
-							{editing && (
-								<Grid item md={4}>
-									<CheckboxExWrapper
-										typo
-										label="貨品排序"
-										name="Order"
-										size="medium"
-									/>
-								</Grid>
-							)}
-
-
 							<Grid item xs={24}>
 								<P14QuoteGridContainer />
 							</Grid>
-							<Grid item xs={24}>
+							{/* <Grid item xs={24}>
 								<TextFieldWrapper
 									typo
 									name="Message_N"
@@ -112,7 +86,7 @@ const P14DialogForm = memo((props) => {
 									fullWidth
 									editing={false}
 								/>
-							</Grid>
+							</Grid> */}
 						</Grid>
 					</FormBox>
 

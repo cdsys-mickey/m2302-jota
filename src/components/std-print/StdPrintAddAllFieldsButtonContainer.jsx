@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
+import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
 import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 

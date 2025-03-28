@@ -1,12 +1,12 @@
 import { LoadingButton } from "@mui/lab";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import ResponsiveLoadingButton from "./ResponsiveLoadingButton";
+import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton";
 import { useRef } from "react";
 import { useImperativeHandle } from "react";
 import { useEffect } from "react";
 
-export const ButtonWrapper = forwardRef((props, ref) => {
+const ButtonWrapperContainer = forwardRef((props, ref) => {
 	const { responsive, size = "small", autoFocus = false, ...rest } = props;
 
 	const buttonRef = useRef();
@@ -17,7 +17,7 @@ export const ButtonWrapper = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		if (buttonRef.current && autoFocus) {
-			console.log("autoFocus on ButtonWrapper");
+			console.log("autoFocus on ButtonWrapperContainer");
 			buttonRef.current?.focus();
 		}
 	}, [autoFocus]);
@@ -31,9 +31,11 @@ export const ButtonWrapper = forwardRef((props, ref) => {
 	return <LoadingButton ref={buttonRef} size={size} {...rest} />;
 });
 
-ButtonWrapper.displayName = "ButtonWrapper";
-ButtonWrapper.propTypes = {
+ButtonWrapperContainer.displayName = "ButtonWrapperContainer";
+ButtonWrapperContainer.propTypes = {
 	responsive: PropTypes.bool,
 	autoFocus: PropTypes.bool,
 	size: PropTypes.oneOf(["small", "medium", "large"]),
 };
+
+export default ButtonWrapperContainer;

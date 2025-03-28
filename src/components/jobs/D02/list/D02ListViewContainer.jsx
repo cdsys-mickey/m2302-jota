@@ -10,7 +10,7 @@ import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { D02ListRowContainer } from "./D02ListRowContainer";
 import Forms from "../../../../shared-modules/Forms.mjs";
 import { useMemo } from "react";
-import D02 from "@/modules/md-d02";
+import D02 from "@/modules/D02.mjs";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
 
 export const D02ListViewContainer = () => {

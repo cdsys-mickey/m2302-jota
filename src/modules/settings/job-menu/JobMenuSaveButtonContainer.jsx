@@ -1,4 +1,4 @@
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import SaveIcon from '@mui/icons-material/Save';
 import { useContext } from "react";
 import { JobMenuContext } from "./JobMenuContext";

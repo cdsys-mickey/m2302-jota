@@ -244,7 +244,7 @@ export const useD01 = () => {
 					// 	position: "top-right"
 					// });
 				} else {
-					toastEx.error("新增失敗", err);
+					toastEx.error(`${creating ? "新增" : "修改"}失敗`, err);
 				}
 			}
 		},

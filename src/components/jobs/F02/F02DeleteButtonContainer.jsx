@@ -1,5 +1,5 @@
 import { F02Context } from "@/contexts/F02/F02Context";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import { useMemo } from "react";

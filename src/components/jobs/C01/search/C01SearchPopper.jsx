@@ -1,6 +1,6 @@
 // import CabinetTypes from "@/modules/md-cabinet-types";
 
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";

@@ -15,6 +15,10 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P09ReportTypePicker from "./pickers/P09ReportTypePicker";
+import P09DataSourcePicker from "./pickers/P09DataSourcePicker";
+import P09OrderTypePicker from "./pickers/P09OrderTypePicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
+import P09CalTypePicker from "./pickers/P09CalTypePicker";
 
 const P09Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, forNewCustomer, ...rest } = props;
@@ -47,36 +51,12 @@ const P09Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12}>
-								<RangeGroup legend="貨號區間"
-									leftComponent={<ProdPicker
-										name="SProdID"
-										label="貨號區間"
-										size="small"
-										virtualize
-										disableOpenOnInput
-										selectOnFocus
-										borderless
-										placeholder="起"
-									/>}
-									rightComponent={<ProdPicker
-										name="EProdID"
-										label="貨號區間迄"
-										size="small"
-										virtualize
-										disableOpenOnInput
-										selectOnFocus
-										borderless
-										placeholder="迄"
-									/>}
-								/>
-							</Grid>
 							<Grid item xs={12} sm={6}>
-								<CheckboxExWrapper
-									label="包含零售"
-									name="SalType"
-									defaultValue={false}
-									size="small"
+								<P09DataSourcePicker
+									label="資料來源"
+									name="Source"
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 						</Grid>
@@ -91,7 +71,7 @@ const P09Form = memo((props) => {
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend={forNewCustomer ? "新客戶區間" : "客戶區間"}
 									leftComponent={<CustomerPicker
-										name="cust"
+										name="SCustID"
 										size="small"
 										virtualize
 										forNew={forNewCustomer}
@@ -108,7 +88,7 @@ const P09Form = memo((props) => {
 										placeholder="起"
 									/>}
 									rightComponent={<CustomerPicker
-										name="cust2"
+										name="ECustID"
 										size="small"
 										virtualize
 										forNew={forNewCustomer}
@@ -126,18 +106,62 @@ const P09Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="貨品區間"
+									leftComponent={<ProdPicker
+										name="SProdID"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<ProdPicker
+										name="EProdID"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="迄"
+									/>}
+								/>
+							</Grid>
 							<Grid item xs={12} sm={6}>
-								<OutboundTypePicker
-									label="原因代碼"
-									name="reason"
+								<CheckboxExWrapper
+									label="含試贈樣"
+									name="InclTest"
+									defaultValue={true}
+									size="small"
+								/>
+							</Grid>
+							<FlexBox fullWidth />
+							<Grid item xs={12} sm={6}>
+								<P09ReportTypePicker
+									label="報表型態"
+									name="RptType"
 									disableOpenOnInput
 									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<P09ReportTypePicker
-									label="報表型態"
-									name="reportType"
+								<P09OrderTypePicker
+									name="OrdName"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<OrderDirPicker
+									name="OrdSeq"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<P09CalTypePicker
+									name="Rate"
 									disableOpenOnInput
 									selectOnFocus
 								/>

@@ -1,7 +1,7 @@
 import { FrameMenuGroupHeader } from "@/components/layout/FrameMenuGroupHeader";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";

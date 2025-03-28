@@ -1,4 +1,4 @@
-import ResponsiveLoadingButton from "@/shared-components/button/ResponsiveLoadingButton";
+import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { useContext } from "react";
 import { JobMenuContext } from "./JobMenuContext";

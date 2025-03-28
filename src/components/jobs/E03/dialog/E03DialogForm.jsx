@@ -11,10 +11,10 @@ import { Container, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import PaymentPicker from "../../../payment-type-picker/PaymentPicker";
 import { E03CustomerPicker } from "../E03CustomerPicker";
 import { E03ProdGridBottomToolbar } from "./grid/E03ProdGridBottomToolbar";
 import { E03ProdGridContainer } from "./grid/E03ProdGridContainer";
+import { PaymentPicker } from "@/components";
 
 const E03DialogForm = memo((props) => {
 	const {

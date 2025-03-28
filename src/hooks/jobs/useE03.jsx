@@ -200,8 +200,8 @@ export const useE03 = () => {
 					crud.failUpdating();
 				}
 
-				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
-				toastEx.error(creating ? `新增失敗` : `修改失敗`, err);
+				console.error(`${creating ? "新增" : "修改"}失敗`, err);
+				toastEx.error(`${creating ? "新增" : "修改"}失敗`, err);
 			}
 		},
 		[crud, httpPostAsync, httpPutAsync, listLoader, loadItem, token]

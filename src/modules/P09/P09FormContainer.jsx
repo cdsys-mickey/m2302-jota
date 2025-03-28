@@ -13,14 +13,17 @@ export const P09FormContainer = () => {
 		`
 			SDate,
 			EDate,
+			Source,
+			retail,
+			SCustID,
+			ECustID,
 			SProdID,
 			EProdID,
-			SalType,
-			retail,
-			cust,
-			cust2,
-			reason,
-			reportType,
+			InclTest,
+			RptType,
+			OrdName,
+			OrdSeq,
+			Rate,
 			outputType,
 			`
 	)

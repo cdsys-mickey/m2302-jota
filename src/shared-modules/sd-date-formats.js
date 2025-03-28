@@ -16,6 +16,7 @@ const DATEFNS_FORMATS = Object.freeze({
 	DATEFNS_DATETIME: "yyyy/MM/dd HH:mm",
 	DATEFNS_DATETIME_SECONDS: "yyyy/MM/dd HH:mm:ss",
 	DATEFNS_TIME: "HH:mm",
+	DATEFNS_HOUR: "HH",
 	DATEFNS_TIME_SECONDS: "HH:mm:ss",
 	DATEFNS_YEAR: "yyyy",
 });

@@ -24,15 +24,18 @@ export const toastEx = {
 		}
 
 		if (err) {
-			toast.error(Errors.getMessage(message, err), {
+			const _msg = Errors.getMessage(message, err);
+			toast.error(_msg, {
 				position: "top-right",
 				...opts,
 			});
+			console.error(_msg, err);
 		} else {
 			toast.error(message, {
 				position: "top-right",
 				...opts,
 			});
+			console.error(message);
 		}
 	},
 };

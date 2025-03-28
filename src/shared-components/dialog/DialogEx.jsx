@@ -19,7 +19,7 @@ import {
 } from "react";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { ButtonWrapper } from "../button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import DialogTitleEx from "./DialogTitleEx";
 import CheckboxEx from "../checkbox/CheckboxEx";
 

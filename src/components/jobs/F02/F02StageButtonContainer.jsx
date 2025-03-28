@@ -1,5 +1,5 @@
 import { F02Context } from "@/contexts/F02/F02Context";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import LockIcon from '@mui/icons-material/Lock';
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";

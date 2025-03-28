@@ -105,15 +105,17 @@ export const useOptionPickerComponent = (opts) => {
 		}
 	}, [active, cell, columnIndex, disabled, handleFocusNextCell, focusOnDisabled, readOnly, rowIndex, skipDisabled]);
 
+	/**
+	 * 選擇了新值後，觸發焦點移轉往前
+	 */
 	useChangeTracking(() => {
 		console.log(`[${name}].rowData changed`, rowData);
 		// 當選項改變, 且有值, 且非 multiple
 		if (rowData && !multiple && !disabled && active) {
 			console.log(`\thandleFocusNextCell triggered`);
 			asyncRef.current.performFocusNext = false;
-			handleFocusNextCell(cell);
-		} else {
-			console.log("\thandleFocusNextCellOrField not triggered");
+			// 由於選擇新值觸發的焦點移轉一定是 forward: true
+			handleFocusNextCell(cell, { forward: true });
 		}
 	}, [rowData]);
 
@@ -124,7 +126,7 @@ export const useOptionPickerComponent = (opts) => {
 			hideBorders: true,
 			disableFadeOut: true,
 			dense: true,
-			autoHightlight: true,
+			autoHighlight: true,
 			selectOnFocus: true,
 			label: ""
 		}
@@ -135,13 +137,14 @@ export const useOptionPickerComponent = (opts) => {
 		name,
 		inputRef,
 		hideControls,
-		// cell,
+		cell,
 		onChange: handleChange,
 		onOpen: handleOpen,
 		onClose: handleClose,
 		disabled,
 		multiple,
 		value: rowData,
+		handleFocusNextCell,
 		...extraPropts
 	};
 };

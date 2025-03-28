@@ -21,8 +21,11 @@ export const P03FormContainer = () => {
 			EAreaID,
 			SLineID,
 			ELineID,
-			reportType,
 			InclTest,
+			RptType,
+			OrdName,
+			OrdSeq,
+			Rate,
 			outputType,
 			`
 	)

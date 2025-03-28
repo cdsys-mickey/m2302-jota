@@ -4,7 +4,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useContext, useMemo } from "react";
 
-const ResponsiveLoadingButton = memo(
+const ResponsiveLoadingButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const {
 			children,
@@ -76,7 +76,7 @@ const ResponsiveLoadingButton = memo(
 	})
 );
 
-ResponsiveLoadingButton.propTypes = {
+ResponsiveLoadingButtonContainer.propTypes = {
 	children: PropTypes.node,
 	startIcon: PropTypes.object,
 	endIcon: PropTypes.object,
@@ -85,4 +85,4 @@ ResponsiveLoadingButton.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 
-export default ResponsiveLoadingButton;
+export default ResponsiveLoadingButtonContainer;

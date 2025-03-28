@@ -1,7 +1,7 @@
 import ContainerEx from "@/shared-components/ContainerEx";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import { Grid } from "@mui/material";
+import { Grid, InputAdornment } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
@@ -11,6 +11,10 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { PrintReportButton } from "@/components";
+import P10ReportTypePicker from "./pickers/P10ReportTypePicker";
+import P10OrderTypePicker from "./pickers/P10OrderTypePicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 
 const P10Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -21,7 +25,7 @@ const P10Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={12}>
-								<RangeGroup legend="日期區間"
+								<RangeGroup legend="交易日期"
 									leftComponent={<DatePickerWrapper
 										name="SDate"
 										fullWidth
@@ -42,7 +46,7 @@ const P10Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12}>
-								<RangeGroup legend="貨品區間"
+								<RangeGroup legend="贈品編號"
 									leftComponent={<ProdPicker
 										name="SProdID"
 										size="small"
@@ -63,21 +67,45 @@ const P10Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={12}>
-								<FlexBox alignItems="flex-start">
-									<CheckboxExWrapper
-										label="包含撥出入"
-										name="InclTX"
-										defaultValue={true}
-									/>
-
-									<CheckboxExWrapper
-										label="含試贈樣"
-										name="InclTest"
-										defaultValue={true}
-									/>
-
-								</FlexBox>
+							<Grid item xs={12} sm={6}>
+								<P10ReportTypePicker
+									name="RptType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<P10OrderTypePicker
+									name="OrdName"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<OrderDirPicker
+									name="OrdSeq"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<TextFieldWrapper
+									name="Top"
+									label="資料顯示"
+									size="small"
+									InputProps={{
+										startAdornment: <InputAdornment position="start">排行前</InputAdornment>,
+										endAdornment: <InputAdornment position="end">名</InputAdornment>,
+									}}
+									inputProps={{
+										style: {
+											textAlign: 'right',
+											// width: '6em', 
+										},
+										inputMode: 'numeric',
+										pattern: '[0-9]*',
+									}}
+								/>
 							</Grid>
 						</Grid>
 						<FlexBox mt={1.8}>

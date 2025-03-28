@@ -11,7 +11,7 @@ import { Container, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import PaymentPicker from "../../../payment-type-picker/PaymentPicker";
+import PaymentPicker from "../../../PaymentPicker/PaymentPickerContainer";
 import { E01CustomerPicker } from "../E01CustomerPicker";
 import E01SquaredPicker from "./E01SquaredPicker";
 import { E01ProdGridBottomToolbar } from "./grid/E01ProdGridBottomToolbar";

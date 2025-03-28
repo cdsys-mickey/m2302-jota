@@ -140,8 +140,8 @@ const ProdPickerComponent = memo((props) => {
 			// 大量資料專用
 			virtualize
 			// triggerDelay={100}
-			{...rest}
 			{...pickerProps}
+			{...rest}
 		// blurToLookup={false}
 		/>
 	);

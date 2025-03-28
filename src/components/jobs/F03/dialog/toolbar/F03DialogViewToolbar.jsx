@@ -1,4 +1,4 @@
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { IconButton, Tooltip } from "@mui/material";

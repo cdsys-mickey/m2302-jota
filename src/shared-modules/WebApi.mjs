@@ -15,6 +15,7 @@ const getErrorFromAxiosError = (err) => {
 	error.statusText = err.response?.statusText;
 	error.message = err.message;
 	error.type = err.name;
+	console.log("getErrorFromAxiosError", error);
 	return error;
 };
 
@@ -84,6 +85,8 @@ const getErrorFromPayload = (payload, opts) => {
 	if (data) {
 		error.data = data;
 	}
+
+	console.log("getErrorFromPayload", error);
 	return error;
 };
 

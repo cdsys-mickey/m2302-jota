@@ -128,25 +128,27 @@ const P02Form = memo((props) => {
 								/>
 							</Grid>
 						</Grid>
-						<Grid container>
-							<FlexGrid item xs={12} sm={6} alignItems="center">
-								{/* <CheckboxExWrapper
+						<FlexBox mt={2}>
+							<Grid container>
+								<FlexGrid item xs={12} sm={6} alignItems="center">
+									{/* <CheckboxExWrapper
 									label="包含撥出入"
 									name="transIncluded"
 									defaultValue={true}
 								/> */}
-							</FlexGrid>
-							<Grid item xs={12} sm={6}>
-								<FlexToolbar align="right">
-									<PrintReportButton
-										color="primary"
-										variant="contained"
-										onSubmit={onSubmit}
-										onDebugSubmit={onDebugSubmit}
-									/>
-								</FlexToolbar>
+								</FlexGrid>
+								<Grid item xs={12} sm={6}>
+									<FlexBox justifyContent="flex-end">
+										<PrintReportButton
+											color="primary"
+											variant="contained"
+											onSubmit={onSubmit}
+											onDebugSubmit={onDebugSubmit}
+										/>
+									</FlexBox>
+								</Grid>
 							</Grid>
-						</Grid>
+						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
 			</form>

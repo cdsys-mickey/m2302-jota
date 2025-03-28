@@ -1,8 +1,8 @@
 const options = [
-	{ id: 1, label: "貨品" },
-	{ id: 2, label: "單據" },
-	{ id: 3, label: "日期" },
-	{ id: 4, label: "業務員" },
+	{ id: 1, label: "金額" },
+	{ id: 2, label: "數量" },
+	{ id: 3, label: "貨品" },
+	{ id: 4, label: "櫃別" },
 ];
 
 const getOptionLabel = (option) => {
@@ -37,5 +37,3 @@ const P09OrderType = {
 };
 
 export default P09OrderType;
-
-

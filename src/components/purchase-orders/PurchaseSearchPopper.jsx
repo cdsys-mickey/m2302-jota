@@ -8,8 +8,8 @@ import PopperTitle from "@/shared-components/popper/PopperTitle";
 import TypoWebApiOptionPicker from "@/shared-components/typo/TypoWebApiOptionPicker";
 import SearchIcon from "@mui/icons-material/Search";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
-import React, { forwardRef, memo } from "react";
-import { ButtonWrapper } from "../../shared-components/button/ButtonWrapper";
+import { forwardRef, memo } from "react";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 
 const PurchaseSearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -100,7 +100,7 @@ const PurchaseSearchPopper = memo(
 					<ButtonWrapper
 						variant="contained"
 						color="inherit"
-						// onClick={handleReset}
+					// onClick={handleReset}
 					>
 						重設
 					</ButtonWrapper>
@@ -108,7 +108,7 @@ const PurchaseSearchPopper = memo(
 						startIcon={<SearchIcon />}
 						type="submit"
 						variant="contained"
-						// onClick={handleSubmit}
+					// onClick={handleSubmit}
 					>
 						搜尋
 					</ButtonWrapper>

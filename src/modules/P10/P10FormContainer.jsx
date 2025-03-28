@@ -4,10 +4,25 @@ import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { P10Context } from "./P10Context";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 
 export const P10FormContainer = () => {
 	const form = useFormContext();
 	const p10 = useContext(P10Context);
+
+	const formMeta = useFormMeta(
+		`
+			SDate,
+			EDate,
+			SProdID,
+			EProdID,
+			RptType,
+			OrdName,
+			OrdSeq,
+			Top,
+			outputType,
+			`
+	)
 
 	const onSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -23,7 +38,7 @@ export const P10FormContainer = () => {
 	}, [p10.onDebugSubmit, form]);
 
 	return <FormProvider {...form}>
-		<FormMetaProvider {...p10.formMeta}>
+		<FormMetaProvider {...formMeta}>
 			<P10Form
 				onDebugSubmit={onDebugSubmit}
 				onSubmit={onSubmit}

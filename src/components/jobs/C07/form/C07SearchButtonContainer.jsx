@@ -1,4 +1,4 @@
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import { useContext } from "react";
 import { C07Context } from "@/contexts/C07/C07Context";
 

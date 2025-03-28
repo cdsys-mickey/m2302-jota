@@ -17,10 +17,13 @@ import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import P14Drawer from "../P14Drawer";
 import P14DialogForm from "./P14DialogForm";
 import { P14DialogToolbarContainer } from "./toolbar/P14DialogToolbarContainer";
+import { YesOrEmptyPickerComponentContainer } from "@/components/dsg/columns/yes-or-empty-picker/YesOrEmptyPickerComponentContainer";
+import P14 from "../P14.mjs";
 
 export const P14DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+
 
 	const _height = useMemo(() => {
 		return height - 120
@@ -34,17 +37,13 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 	const { reset } = form;
 
 	const p14 = useContext(P14Context);
-	const PhyID = useWatch({
-		name: "PhyID",
+	const ItmID = useWatch({
+		name: "ItmID",
 		control: form.control
 	})
 
-	const employee = useWatch({
-		name: "employee",
-		control: form.control
-	})
-	const PhyData = useWatch({
-		name: "PhyData",
+	const ItmData = useWatch({
+		name: "ItmData",
 		control: form.control
 	})
 
@@ -56,11 +55,11 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 
 	const memoisedTitle = useMemo(() => {
 		if (p14.creating) {
-			return "建立盤點清單";
+			return "建立列印品項";
 		} else if (p14.updating) {
-			return "修改盤點清單";
+			return "修改列印品項";
 		} else {
-			return "盤點清單內容";
+			return "列印品項內容";
 		}
 	}, [p14.creating, p14.updating]);
 
@@ -87,8 +86,8 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 	);
 
 	const readOnly = useMemo(() => {
-		return !p14.editing || !PhyID || !PhyData || !employee;
-	}, [p14.editing, PhyID, PhyData, employee]);
+		return !p14.editing;
+	}, [p14.editing]);
 
 	const columns = useMemo(
 		() => [
@@ -112,7 +111,6 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 				title: "商品編號",
 				minWidth: 180,
 				maxWidth: 180,
-				disabled: readOnly,
 			},
 			{
 				...keyColumn(
@@ -126,20 +124,58 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 				grow: 2,
 			},
 			{
+				...keyColumn("Repeat_N", createTextColumnEx({
+					continuousUpdates: false,
+				})),
+				minWidth: 38,
+				maxWidth: 38,
+				title: "重",
+				disabled: true,
+				cellClassName: "star",
+			},
+			{
 				...keyColumn(
-					"PackData_N",
+					"Force",
+					optionPickerColumn(YesOrEmptyPickerComponentContainer, {
+						name: "Force",
+						disableClearable: true,
+						disableOpenOnInput: true,
+						autoHighlight: true,
+						selectOnFocus: true,
+					})
+				),
+				title: "強",
+				minWidth: 70,
+				maxWidth: 70,
+				disabled: readOnly || p14.forceDisabled,
+			},
+			{
+				...keyColumn(
+					"OItmID_N",
 					createTextColumnEx({
 						continuousUpdates: false,
 					})
 				),
-				title: "包裝說明",
+				title: "序",
+				minWidth: 40,
+				maxWidth: 40,
+				disabled: true,
+			},
+			{
+				...keyColumn(
+					"OItmData_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "品項列印名稱",
 				minWidth: 120,
 				maxWidth: 120,
 				disabled: true,
 			},
 
 		],
-		[readOnly]
+		[]
 	);
 
 	const gridMeta = useDSGMeta({
@@ -150,30 +186,23 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 	})
 
 	const handleLastField = useCallback(() => {
-		if (!PhyID) {
-			toastEx.error("請先輸入清單編號");
-			form.setFocus("PhyID");
+		if (!ItmID) {
+			toastEx.error("請先輸入品項編號");
+			form.setFocus("ItmID");
 			return;
 		}
-		if (!employee) {
-			toastEx.error("請先輸入製單人員");
-			form.setFocus("employee");
-			return;
-		}
-		if (!PhyData) {
-			toastEx.error("請先輸入清單名稱");
-			form.setFocus("PhyData");
+		if (!ItmData) {
+			toastEx.error("請先輸入品項名稱");
+			form.setFocus("ItmData");
 			return;
 		}
 		gridMeta.setActiveCell({ col: 0, row: 0 });
-	}, [PhyID, employee, PhyData, gridMeta, form]);
+	}, [ItmID, ItmData, gridMeta, form]);
 
 	const formMeta = useFormMeta(
 		`
-		PhyID,
-		employee,
-		PhyData,
-		Order
+		ItmID,
+		ItmData,
 		`,
 		{
 			lastField: handleLastField

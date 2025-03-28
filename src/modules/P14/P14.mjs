@@ -1,31 +1,34 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { nanoid } from "nanoid";
+import YesOrEmpty from "../YesOrEmpty.mjs";
 
 const transformForGridImport = (data) => {
 	return (
-		data?.map((v) => ({
+		data?.map(({ ProdID, ProdData, ...rest }) => ({
 			Pkey: nanoid(),
 			prod: {
-				ProdID: v.ProdID,
-				ProdData: v.ProdData_N,
+				ProdID: ProdID,
+				ProdData: ProdData,
 			},
-			ProdData_N: v.ProdData_N,
-			PackData_N: v.PackData_N,
-			Seq: v.Seq,
+			ProdData_N: ProdData,
+			Force: null,
+			...rest,
 		})) || []
 	);
 };
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(({ SProdID, ProdData_N, PackData_N, Seq }) => ({
+		data?.map(({ SProdID, ProdData_N, Force, Repeat_N, Seq, ...rest }) => ({
 			prod: {
 				ProdID: SProdID,
 				ProdData: ProdData_N,
 			},
 			ProdData_N,
-			PackData_N,
+			Force: YesOrEmpty.getOptionById(Force),
+			Repeat_N: Repeat_N ? "*" : "",
 			Seq,
+			...rest,
 		})) || []
 	);
 };
@@ -33,51 +36,29 @@ const transformGridForReading = (data) => {
 const transformGridForSubmitting = (data) => {
 	return data
 		.filter((v) => v.prod?.ProdID)
-		.map(({ prod }, index) => ({
+		.map(({ prod, Force }, index) => ({
 			SProdID: prod?.ProdID,
 			Seq: index + 1,
+			Force: Force?.id ?? "",
 		}));
 };
 
 const transformForReading = (payload) => {
-	const {
-		Order,
-		Message_N,
-		EmplID,
-		EmplData_N,
-		FactID,
-		FactData_N,
-		PhyLst_S,
-		...rest
-	} = payload;
+	const { DayItm_S, ...rest } = payload;
 
 	return {
-		employee: {
-			CodeID: EmplID,
-			CodeData: EmplData_N,
-		},
-		supplier: FactID
-			? {
-					FactID,
-					FactData: FactData_N,
-			  }
-			: null,
-		prods: transformGridForReading(PhyLst_S),
-		Order: Order === "Y",
+		prods: transformGridForReading(DayItm_S),
 		...rest,
 	};
 };
 
 const transformForSubmitting = (payload, gridData) => {
-	const { PhyID, PhyData, Order, employee, supplier } = payload;
+	const { ItmID, ItmData } = payload;
 	return {
-		PhyID,
-		PhyData,
-		Order: Order ? "Y" : "",
-		EmplID: employee?.CodeID || "",
-		FactID: supplier?.FactID || "",
+		ItmID,
+		ItmData,
 		...(gridData && {
-			PhyLst_S: transformGridForSubmitting(gridData),
+			DayItm_S: transformGridForSubmitting(gridData),
 		}),
 	};
 };
@@ -98,4 +79,3 @@ const P14 = {
 };
 
 export default P14;
-

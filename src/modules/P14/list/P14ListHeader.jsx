@@ -2,8 +2,7 @@ import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 import ListViewHeader from "@/shared-components/listview/header/ListViewHeader";
 import { forwardRef, memo } from "react";
 import P14IdColumn from "./columns/P14IdColumn";
-import P14SupplierColumn from "./columns/P14SupplierColumn";
-import P14UserColumn from "./columns/P14UserColumn";
+import P14NameColumn from "./columns/P14NameColumn";
 
 const P14ListHeader = memo(
 	forwardRef((props, ref) => {
@@ -11,9 +10,8 @@ const P14ListHeader = memo(
 		return (
 			<ListViewHeader ref={ref} {...rest}>
 				<IndexColumn></IndexColumn>
-				<P14IdColumn>清單編號</P14IdColumn>
-				<P14SupplierColumn>清單名稱</P14SupplierColumn>
-				<P14UserColumn>製單人員</P14UserColumn>
+				<P14IdColumn>品項列印序號</P14IdColumn>
+				<P14NameColumn>品項列印名稱</P14NameColumn>
 			</ListViewHeader>
 		);
 	})

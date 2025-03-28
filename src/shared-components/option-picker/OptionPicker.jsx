@@ -270,11 +270,11 @@ const OptionPicker = memo(
 		 */
 		const handleFocusNextCellOrField = useCallback(
 			(e, opts = {}) => {
-				const { forward } = opts;
+				const { forward, nextCell = false } = opts;
 				if (inDSG) {
-					// if (handleFocusNextCell && focusNextCellOnChange) {
-					// 	handleFocusNextCell(cell, { forward: forward || !e?.shiftKey });
-					// }
+					if (nextCell) {
+						handleFocusNextCell(cell, { forward: forward || !e?.shiftKey });
+					}
 					// 移往 useOptionPickerComponent
 				} else if (inFormMeta) {
 					if (handleFocusNextField && focusNextFieldOnChange) {
@@ -289,7 +289,7 @@ const OptionPicker = memo(
 					}
 				}
 			},
-			[inDSG, inFormMeta, handleFocusNextField, focusNextFieldOnChange, name, setFocus, isFieldDisabled]
+			[inDSG, inFormMeta, handleFocusNextCell, cell, handleFocusNextField, focusNextFieldOnChange, name, setFocus, isFieldDisabled]
 		);
 
 		const handleChange = useCallback(
@@ -419,10 +419,11 @@ const OptionPicker = memo(
 						onChange(found);
 					}
 				} else {
+					// 值沒有異動
 					if (validate) {
 						const error = await getError();
-						console.log("error:", error);
 						if (error) {
+							console.log("error:", error);
 							// 錯誤則不往下傳遞給 DSGGrid
 							// e.stopPropagation();
 							if (name && setError) {
@@ -435,7 +436,11 @@ const OptionPicker = memo(
 							return;
 						}
 					}
-					handleFocusNextCellOrField(e, opts);
+					// 處理直接按 Enter 跳下一個欄位 / cell 的狀況
+					handleFocusNextCellOrField(e, {
+						...opts,
+						nextCell: true
+					});
 				}
 			},
 			[name, clearErrors, _open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, selectField, onChange, value, handleFocusNextCellOrField, getError, setError]

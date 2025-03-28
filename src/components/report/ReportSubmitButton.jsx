@@ -1,4 +1,4 @@
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PropTypes from "prop-types";
 import { memo } from "react";

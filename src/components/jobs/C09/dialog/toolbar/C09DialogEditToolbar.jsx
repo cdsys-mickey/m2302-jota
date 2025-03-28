@@ -2,7 +2,7 @@ import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 
 const C09DialogEditToolbar = memo(
 	forwardRef((props, ref) => {

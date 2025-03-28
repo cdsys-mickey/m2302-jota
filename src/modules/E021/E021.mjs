@@ -261,9 +261,10 @@ const transformGridForSubmitting = (data) => {
 				SOutQty,
 				StockQty_N,
 				tooltip,
+				sqtyError,
 				...rest
 			} = v;
-			console.log("skipping", tooltip);
+			console.log("skipping", sqtyError, tooltip);
 
 			return {
 				Pkey: Pkey?.length < 36 ? "" : Pkey,

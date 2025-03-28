@@ -7,8 +7,9 @@ const transformForSubmitting = (payload) => {
 		EDate,
 		SProdID,
 		EProdID,
-		InclTX,
-		InclTest,
+		RptType,
+		OrdName,
+		OrdSeq,
 		...rest
 	} = payload;
 	return {
@@ -18,8 +19,9 @@ const transformForSubmitting = (payload) => {
 		EDate: Forms.formatDate(EDate) || "",
 		SProdID: SProdID?.ProdID || "",
 		EProdID: EProdID?.ProdID || "",
-		InclTX: InclTX ? "Y" : "N",
-		InclTest: InclTest ? "Y" : "N",
+		RptType: RptType?.id,
+		OrdName: OrdName?.id,
+		OrdSeq: OrdSeq?.id,
 		...rest,
 	};
 };
@@ -29,4 +31,3 @@ const P10 = {
 };
 
 export default P10;
-

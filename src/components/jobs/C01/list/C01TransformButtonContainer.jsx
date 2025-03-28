@@ -1,5 +1,5 @@
 import { C01Context } from "@/contexts/C01/C01Context";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Tooltip } from "@mui/material";
 import PropTypes from "prop-types";

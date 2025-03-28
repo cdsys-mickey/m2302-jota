@@ -11,6 +11,7 @@ import LockResetIcon from "@mui/icons-material/LockReset";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import P14SupplierColumn from "./columns/P14SupplierColumn";
 import P14UserColumn from "./columns/P14UserColumn";
+import P14NameColumn from "./columns/P14NameColumn";
 
 const P14ListRow = memo((props) => {
 	const { index, style, value, loading, onClick } = props;
@@ -48,15 +49,12 @@ const P14ListRow = memo((props) => {
 							},
 						]}>
 						<IndexColumn title={index}></IndexColumn>
-						<P14IdColumn loading={loading}>
-							{value?.PhyID}
+						<P14IdColumn>
+							{value?.ItmID}
 						</P14IdColumn>
-						<P14SupplierColumn loading={loading}>
-							{value?.PhyData}
-						</P14SupplierColumn>
-						<P14UserColumn loading={loading}>
-							{value?.製單人員}
-						</P14UserColumn>
+						<P14NameColumn>
+							{value?.ItmData}
+						</P14NameColumn>
 					</Grid>
 				</Box>
 			</HoverableListItem>

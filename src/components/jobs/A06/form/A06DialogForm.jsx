@@ -17,7 +17,7 @@ import AreaPicker from "./fields/AreaPicker";
 import ChannelPicker from "./fields/ChannelPicker";
 import TransportPicker from "./fields/TransportPicker";
 import { CustomerLevelPicker } from "./fields/CustomerLevelPicker";
-import PaymentPicker from "@/components/payment-type-picker/PaymentPicker";
+import PaymentPicker from "@/components/PaymentPicker/PaymentPickerContainer";
 
 const A06DialogForm = memo((props) => {
 	const {

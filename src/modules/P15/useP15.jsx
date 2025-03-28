@@ -18,17 +18,7 @@ export const useP15 = () => {
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-	const formMeta = useFormMeta(
-		`
-		SDate,
-		EDate,
-		SProdID,
-		EProdID,
-		InclTX,
-		InclTest,
-		outputType,
-		`
-	)
+
 
 	const reportUrl = useMemo(() => {
 		return `${config.REPORT_URL}/WebP15Rep.aspx`
@@ -72,7 +62,6 @@ export const useP15 = () => {
 		onSubmit,
 		onSubmitError,
 		onDebugSubmit,
-		formMeta,
 		onSelect
 	};
 };

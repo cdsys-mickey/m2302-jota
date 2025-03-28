@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper"
 
-const PaymentPicker = forwardRef((props, ref) => {
+const PaymentPickerContainer = forwardRef((props, ref) => {
 	const { name, label = "收款方式", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
@@ -20,11 +20,11 @@ const PaymentPicker = forwardRef((props, ref) => {
 			{...rest} />
 	);
 });
-PaymentPicker.propTypes = {
+PaymentPickerContainer.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
 	children: PropTypes.node,
 };
 
-PaymentPicker.displayName = "PaymentPicker";
-export default PaymentPicker;
+PaymentPickerContainer.displayName = "PaymentPickerContainer";
+export default PaymentPickerContainer;

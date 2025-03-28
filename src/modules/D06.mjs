@@ -63,7 +63,17 @@ const transformForReading = (payload) => {
 };
 
 const transformForSubmitting = (payload, gridData) => {
-	const { RemDate, InitDate, employee, pdline, remark, ...rest } = payload;
+	const {
+		RemDate,
+		InitDate,
+		employee,
+		pdline,
+		remark,
+		prod,
+		prods,
+		...rest
+	} = payload;
+	console.log("ignores", prod, prods);
 	return {
 		RemDate: RemDate ? Forms.formatDate(RemDate) : "",
 		InitDate: InitDate ? Forms.formatDate(InitDate) : "",

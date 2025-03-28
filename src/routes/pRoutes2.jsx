@@ -1,26 +1,24 @@
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
+import { P14FrameContainer } from "@/modules/P14/P14FrameContainer";
+import { P14Provider } from "@/modules/P14/P14Provider";
 import { Route } from "react-router-dom";
-import { P02Provider } from "@/contexts/P02/P02Provider";
-import { P02FrameContainer } from "@/pages/modules/P02/P02FrameContainer";
-import { P04Provider } from "@/contexts/P04/P04Provider";
-import { P04FrameContainer } from "@/pages/modules/P04/P04FrameContainer";
 
 const pRoutes2 = (
 	<>
-		{/* <Route
-			path="P02"
+		<Route
+			path="P14"
 			element={
 				<CrudProvider>
 					<InfiniteLoaderProvider>
-						<P02Provider>
-							<P02FrameContainer />
-						</P02Provider>
+						<P14Provider>
+							<P14FrameContainer />
+						</P14Provider>
 
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}
-		/> */}
+		/>
 
 
 	</>

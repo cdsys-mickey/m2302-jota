@@ -438,7 +438,7 @@ export const useE021 = ({ mode }) => {
 						}
 					});
 				} else {
-					toastEx.error(creating ? `新增失敗` : `修改失敗`, err);
+					toastEx.error(`${creating ? "新增" : "修改"}失敗`, err);
 				}
 			}
 		},

@@ -6,13 +6,16 @@ const transformForSubmitting = (payload) => {
 		SDate,
 		EDate,
 		retail,
-		cust,
-		cust2,
+		SCustID,
+		ECustID,
 		SProdID,
 		EProdID,
-		reason,
-		reportType,
-		SalType,
+		InclTest,
+		RptType,
+		OrdName,
+		OrdSeq,
+		Rate,
+		Source,
 		...rest
 	} = payload;
 
@@ -23,13 +26,16 @@ const transformForSubmitting = (payload) => {
 		Action: outputType?.id?.toString() || "",
 		SDate: Forms.formatDate(SDate) || "",
 		EDate: Forms.formatDate(EDate) || "",
-		SCustID: cust?.CustID || "",
-		ECustID: cust2?.CustID || "",
+		SCustID: SCustID?.CustID || "",
+		ECustID: ECustID?.CustID || "",
 		SProdID: SProdID?.ProdID || "",
 		EProdID: EProdID?.ProdID || "",
-		SalType: SalType ? "Y" : "N",
-		RsnID: reason?.CodeID || "",
-		RptType: reportType?.id,
+		InclTest: InclTest ? "Y" : "N",
+		Source: Source?.id,
+		RptType: RptType?.id,
+		OrdName: OrdName?.id,
+		OrdSeq: OrdSeq?.id,
+		Rate: Rate?.id,
 		...rest,
 	};
 };
@@ -39,4 +45,3 @@ const P09 = {
 };
 
 export default P09;
-

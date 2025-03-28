@@ -16,6 +16,9 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P03ReportTypePicker from "./pickers/P03ReportTypePicker";
+import P03OrderTypePicker from "./pickers/P03OrderTypePicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
+import P03CalTypePicker from "./pickers/P03CalTypePicker";
 
 const P03Form = memo((props) => {
 	const { forNewCustomer, onSubmit, onDebugSubmit, ...rest } = props;
@@ -27,7 +30,7 @@ const P03Form = memo((props) => {
 						<Grid container columns={12} spacing={2}>
 
 							<Grid item xs={12} sm={12}>
-								<RangeGroup legend="日期區間"
+								<RangeGroup legend="交易日期"
 									leftComponent={<DatePickerWrapper
 										name="SDate"
 										fullWidth
@@ -147,20 +150,41 @@ const P03Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							{/*  */}
-							<Grid item xs={12} sm={6}>
-								<P03ReportTypePicker
-									name="reportType"
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
 							<Grid item xs={12} sm={6}>
 								<CheckboxExWrapper
 									label="含試贈樣"
 									name="InclTest"
 									defaultValue={true}
 									size="small"
+								/>
+							</Grid>
+							<FlexBox fullWidth />
+							<Grid item xs={12} sm={6}>
+								<P03ReportTypePicker
+									name="RptType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<P03OrderTypePicker
+									name="OrdName"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<OrderDirPicker
+									name="OrdSeq"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<P03CalTypePicker
+									name="Rate"
+									disableOpenOnInput
+									selectOnFocus
 								/>
 							</Grid>
 						</Grid>

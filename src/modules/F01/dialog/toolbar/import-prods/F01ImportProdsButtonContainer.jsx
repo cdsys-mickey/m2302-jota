@@ -1,5 +1,5 @@
 import { F01Context } from "@/modules/F01/F01Context";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import useDebounce from "@/shared-hooks/useDebounce";
 import Objects from "@/shared-modules/Objects";
 import { useContext, useEffect, useMemo, useState } from "react";

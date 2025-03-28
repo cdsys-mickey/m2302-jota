@@ -34,6 +34,8 @@ const ControlledTimePicker = ({
 	onBlur,
 	debounce = 800,
 	borderless,
+	clearText = "清除",
+	fullWidth,
 	slotProps,
 	...rest
 }) => {
@@ -179,6 +181,11 @@ const ControlledTimePicker = ({
 										}
 									})
 								},
+								fullWidth,
+								...(borderless && {
+									variant: "filled",
+									InputProps: { disableUnderline: true }
+								}),
 								...slotProps?.textField,
 							},
 							sx: {
@@ -252,6 +259,8 @@ ControlledTimePicker.propTypes = {
 	views: PropTypes.array,
 	ampm: PropTypes.bool,
 	borderless: PropTypes.bool,
-	slotProps: PropTypes.object
+	slotProps: PropTypes.object,
+	clearText: PropTypes.string,
+	fullWidth: PropTypes.bool,
 };
 export default ControlledTimePicker;

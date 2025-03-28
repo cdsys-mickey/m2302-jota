@@ -2,7 +2,7 @@ import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import E021ImportProdsDialogContainer from "./import-prods/E021ImportProdsDialogContainer";
 
 

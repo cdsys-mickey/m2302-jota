@@ -218,7 +218,7 @@ export const useDSGMeta = ({
 						col = 0;
 						row++;
 						if (row >= data.length) {
-							// 若當初 forward 是自動判斷的, 且判斷結果為反向搜尋, 當找不到時, 就改成往下找
+							// 若當初 forward 是自動判斷的, 且判斷結果為正向搜尋, 當找不到時, 就改成往回找
 							if (opts.forward == null && forward) {
 								console.log("cannot find next cell while using direction auto detection and result is reversing, try force forwarding...")
 								return getNextCell(cell, { forward: false });

@@ -15,7 +15,7 @@ import { memo } from "react";
 import { E021CustomerPicker } from "../E021CustomerPicker";
 import { E021ProdGridBottomToolbar } from "./grid/E021ProdGridBottomToolbar";
 import { E021ProdGridContainer } from "./grid/E021ProdGridContainer";
-import PaymentPicker from "@/components/payment-type-picker/PaymentPicker";
+import PaymentPicker from "@/components/PaymentPicker/PaymentPickerContainer";
 
 const E021DialogForm = memo((props) => {
 	const {

@@ -1,4 +1,4 @@
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import { useContext } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import CheckIcon from "@mui/icons-material/Check";

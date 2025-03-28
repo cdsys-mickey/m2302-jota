@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
-import D02 from "@/modules/md-d02";
+import D02 from "@/modules/D02.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";

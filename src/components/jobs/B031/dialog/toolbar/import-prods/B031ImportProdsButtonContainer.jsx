@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useMemo } from "react";
 import { useEffect } from "react";
 import Objects from "@/shared-modules/Objects";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import Constants from "@/modules/md-constants";
 
 export const B031ImportProdsButtonContainer = (props) => {

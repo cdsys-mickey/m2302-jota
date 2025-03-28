@@ -1,5 +1,5 @@
 import { F05Context } from "@/contexts/F05/F05Context";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import LockIcon from '@mui/icons-material/Lock';
 import { forwardRef, memo, useContext } from "react";
 

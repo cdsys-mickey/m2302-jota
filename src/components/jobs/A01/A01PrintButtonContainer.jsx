@@ -2,7 +2,7 @@ import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { forwardRef, memo, useContext } from "react";
 import { A01Context } from "@/contexts/A01/A01Context";
 import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 
 const A01PrintButtonContainer = memo(
 	forwardRef((props, ref) => {

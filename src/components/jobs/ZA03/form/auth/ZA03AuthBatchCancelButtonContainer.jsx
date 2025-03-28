@@ -1,7 +1,7 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { useContext } from "react";
 import UserAuth from "@/modules/md-user-auth";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import PropTypes from "prop-types";
 
 export const ZA03AuthBatchCancelButtonContainer = (props) => {

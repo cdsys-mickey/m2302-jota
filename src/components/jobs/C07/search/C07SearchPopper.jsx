@@ -2,7 +2,7 @@
 
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import SquaredPicker from "@/components/picker/SquaredPicker";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";

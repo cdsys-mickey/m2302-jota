@@ -10,8 +10,8 @@ export const P15Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
-			InclTX: true,
-			InclTest: false,
+			STime: null,
+			ETime: null,
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

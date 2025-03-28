@@ -9,7 +9,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { D06ListRowContainer } from "./D06ListRowContainer";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import D06 from "@/modules/md-d06";
+import D06 from "@/modules/D06.mjs";
 import { useMemo } from "react";
 
 export const D06ListViewContainer = () => {

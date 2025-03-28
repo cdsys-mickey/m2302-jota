@@ -324,6 +324,7 @@ const A01DialogForm = memo((props) => {
 									<Grid item xs={12} sm={12} md={4}>
 										<CmsTypePicker
 											typo
+											label="佣金類別"
 											name="cmsType"
 											// readOnly={storeMode}
 											disableOpenOnInput

@@ -1,84 +1,53 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Forms from "../shared-modules/Forms.mjs";
 import Objects from "../shared-modules/Objects";
-import FreeProdTypes from "./md-free-prod-types";
-import YesOrEmpty from "./md-yes-or-empty";
 
 const transformGridForReading = (data) => {
 	return (
-		data?.map(
-			({
-				SProdID,
-				ProdData_N,
-				SExpDate,
-				SType,
-				SRsnID,
-				RsnData_N,
-				SFlag,
-				...rest
-			}) => {
-				return {
-					prod: {
-						ProdID: SProdID,
-						ProdData: ProdData_N,
-					},
+		data?.map(({ SProdID, ProdData_N, SExpDate, ...rest }) => {
+			return {
+				prod: {
+					ProdID: SProdID,
 					ProdData: ProdData_N,
-					// reworked: SFlag === "Y",
-					reworked: YesOrEmpty.getOptionById(SFlag),
-					// SExpDate: Forms.reformatDateAsDash(SExpDate),
-					SExpDate: SExpDate,
-					stype: FreeProdTypes.getOptionById(SType),
-					dtype: SRsnID
-						? {
-								CodeID: SRsnID,
-								CodeData: RsnData_N,
-						  }
-						: null,
-					...rest,
-					...rest,
-				};
-			}
-		) || []
+				},
+				ProdData: ProdData_N,
+				SExpDate: Forms.reformatDateAsDash(SExpDate),
+				// overrideSQty: SQtyNote === "*",
+				...rest,
+			};
+		}) || []
 	);
 };
 
 const transformGridForSubmitting = (gridData) => {
 	return gridData
 		.filter((v) => v.prod?.ProdID)
-		.map(
-			(
-				{ Pkey, prod, SExpDate, SQty, stype, dtype, reworked, ...rest },
-				index
-			) => ({
-				Pkey: Pkey?.length < 36 ? "" : Pkey,
-				SProdID: prod?.ProdID,
-				ProdData_N: prod?.ProdData,
-				SExpDate: Forms.formatDate(SExpDate),
-				SQty: SQty?.toString() || "",
-				SType: stype?.id || "",
-				SRsnID: dtype?.CodeID || "",
-				Seq: index + 1,
-				// SFlag: reworked ? "Y" : "",
-				SFlag: reworked?.id || "",
-				...rest,
-			})
-		);
+		.map(({ Pkey, prod, SExpDate, SQty, StockQty_N, ...rest }, index) => ({
+			Pkey: Pkey?.length < 36 ? "" : Pkey,
+			SProdID: prod?.ProdID,
+			ProdData_N: prod?.ProdData,
+			SExpDate: Forms.formatDate(SExpDate),
+			SQty: SQty?.toString() || "",
+			StockQty_N: StockQty_N?.toString() || "",
+			Seq: index + 1,
+			...rest,
+		}));
 };
 
 const transformForReading = (payload) => {
 	const {
-		EntDate,
+		RetDate,
 		PDlineID,
 		PDlineData_N,
 		EmplID,
 		EmplData_N,
-		ProdEnt_S,
+		MatRet_S,
 		Remark,
 		...rest
 	} = payload;
 
 	return {
-		EntDate: Forms.parseDate(EntDate),
+		RetDate: Forms.parseDate(RetDate),
 		employee: {
 			CodeID: EmplID,
 			CodeData: EmplData_N,
@@ -89,34 +58,35 @@ const transformForReading = (payload) => {
 					CodeData: PDlineData_N,
 			  }
 			: null,
-		prods: transformGridForReading(ProdEnt_S),
+		prods: transformGridForReading(MatRet_S),
 		remark: Remark.join("\n"),
 		...rest,
 	};
 };
 
 const transformForSubmitting = (payload, gridData) => {
-	const { EntDate, employee, pdline, remark, ...rest } = payload;
+	const { RetDate, employee, pdline, remark, prods, prod, ...rest } = payload;
+	console.log("ignores", prods, prod);
 	return {
-		EntDate: EntDate ? Forms.formatDate(EntDate) : "",
+		RetDate: RetDate ? Forms.formatDate(RetDate) : "",
 		EmplID: employee?.CodeID || "",
 		PDlineID: pdline?.CodeID || "",
 		Remark: remark?.split("\n") || [],
 		...rest,
 		...(gridData && {
-			ProdEnt_S: transformGridForSubmitting(gridData),
+			MatRet_S: transformGridForSubmitting(gridData),
 		}),
 	};
 };
 
 const transformAsQueryParams = (data) => {
-	const { employee, sdate, pdline } = data;
+	const { employee, rdate, pdline } = data;
 	return {
 		...(employee && {
 			empi: employee.CodeID,
 		}),
-		...(sdate && {
-			sdate: Forms.formatDate(sdate),
+		...(rdate && {
+			rdate: Forms.formatDate(rdate),
 		}),
 		...(pdline && {
 			pdline: pdline.CodeID,
@@ -137,10 +107,10 @@ const getTotal = (gridData) => {
 };
 
 const isFiltered = (criteria) => {
-	return Objects.isAnyPropNotEmpty(criteria, "employee,pdline,sdate");
+	return Objects.isAnyPropNotEmpty(criteria, "employee,pdline,rdate");
 };
 
-const isProdExists = ({ newValue, rowData, rowIndex }) => {
+const findProdIndex = ({ newValue, rowData, rowIndex }) => {
 	if (!rowData?.prod?.ProdID) {
 		return -1;
 	}
@@ -156,14 +126,14 @@ const isProdExists = ({ newValue, rowData, rowIndex }) => {
 	return -1;
 };
 
-const D041 = {
+const D02 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
 	transformGridForReading,
 	getTotal,
 	isFiltered,
-	isProdExists,
+	findProdIndex,
 };
 
-export default D041;
+export default D02;

@@ -1,7 +1,6 @@
 const options = [
-	{ id: 1, label: "簡表" },
-	{ id: 2, label: "客戶統計" },
-	{ id: 3, label: "客戶貨品" },
+	{ id: 1, label: "淨銷" },
+	{ id: 2, label: "銷/退" },
 ];
 
 const getOptionById = (id) => {
@@ -36,4 +35,3 @@ const P09ReportType = {
 };
 
 export default P09ReportType;
-

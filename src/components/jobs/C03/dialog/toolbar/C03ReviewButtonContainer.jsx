@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ButtonWrapper } from "@/shared-components/button/ButtonWrapper";
+import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { C03Context } from "@/contexts/C03/C03Context";
 import PropTypes from "prop-types";
