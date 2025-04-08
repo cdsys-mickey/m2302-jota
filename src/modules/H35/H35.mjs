@@ -18,7 +18,7 @@ const transformForSubmitting = (payload) => {
 		EDate: Forms.formatDate(EDate) || "",
 		SODeptID: SODeptID?.DeptID || "",
 		EODeptID: EODeptID?.DeptID || "",
-		RptName: reportType?.id,
+		RptType: reportType?.id,
 		OrdName: orderType?.id,
 		...rest,
 	};
