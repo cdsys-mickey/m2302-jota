@@ -72,7 +72,7 @@ const H24Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12}>
+							{/* <Grid item xs={12} sm={12}>
 								<RangeGroup legend="門市區間"
 									leftComponent={<DeptPicker
 										name="SDeptID"
@@ -95,11 +95,11 @@ const H24Form = memo((props) => {
 										placeholder="迄"
 									/>}
 								/>
-							</Grid>
+							</Grid> */}
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="部門區間"
 									leftComponent={<ProdLinePicker
-										name="SLineID"
+										name="SPDlineID"
 										label="部門區間"
 										size="small"
 										virtualize
@@ -109,7 +109,7 @@ const H24Form = memo((props) => {
 										placeholder="起"
 									/>}
 									rightComponent={<ProdLinePicker
-										name="ELineID"
+										name="EPDlineID"
 										label="部門區間迄"
 										size="small"
 										virtualize

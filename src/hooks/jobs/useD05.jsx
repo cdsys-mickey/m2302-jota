@@ -194,19 +194,6 @@ export const useD05 = () => {
 				}
 				console.error("handleCreate.failed", err);
 				toastEx.error("新增失敗", err);
-				// if (err.code === 102) {
-				// 	const rowIndex = Number(err.data.Row) - 1;
-				// 	const rowData = grid.gridData[rowIndex];
-				// 	const stock = Number(err.data.StockQty);
-
-				// 	sqtyManager.handleOverrideSQty({
-				// 		setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true
-				// 	});
-				// } else {
-				// 	toastEx.error("新增失敗", err), {
-				// 		position: "top-right"
-				// 	});
-				// }
 			}
 		},
 		[crud, httpPostAsync, httpPutAsync, listLoader, loadItem, token]

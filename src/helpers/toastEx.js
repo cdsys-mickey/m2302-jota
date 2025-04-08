@@ -1,4 +1,4 @@
-import Errors from "@/shared-modules/Errors";
+import Errors from "@/shared-modules/Errors.mjs";
 import { toast } from "react-toastify";
 
 export const toastEx = {
@@ -35,7 +35,7 @@ export const toastEx = {
 				position: "top-right",
 				...opts,
 			});
-			console.error(message);
+			console.warn(message);
 		}
 	},
 };

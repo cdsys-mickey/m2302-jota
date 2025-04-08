@@ -5,7 +5,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import A17 from "@/modules/md-a17";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/Errors";
+import Errors from "@/shared-modules/Errors.mjs";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";

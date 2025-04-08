@@ -43,7 +43,7 @@ const CheckboxComponent = memo(
 			isLastRow,
 			setActiveCell,
 			readOnly,
-			disableFocusNext
+			focusNextCell
 		} = columnData;
 
 		const toggleChecked = useCallback(
@@ -112,7 +112,7 @@ const CheckboxComponent = memo(
 		}, [focus, stopEditing]);
 
 		useLayoutEffect(() => {
-			if (skipDisabled && active && disabled && !readOnly && !disableFocusNext) {
+			if (skipDisabled && active && disabled && !readOnly && focusNextCell) {
 				if (handleFocusNextCell) {
 					// 這裡不能等到下個 cycle
 					handleFocusNextCell(cell);
@@ -120,7 +120,7 @@ const CheckboxComponent = memo(
 					console.log("handleFocusNextCell is null");
 				}
 			}
-		}, [active, cell, columnIndex, disableFocusNext, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, cell, columnIndex, focusNextCell, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<input

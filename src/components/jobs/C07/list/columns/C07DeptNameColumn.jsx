@@ -2,12 +2,12 @@ import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
 
 const C07DeptNameColumn = (props) => {
-	const { expChecking, ...rest } = props;
+	const { ...rest } = props;
 
 	return (
 		<ListColumn
 			pr={1}
-			xs={expChecking ? 4 : 6}
+			xs={4}
 			{...rest}
 		/>
 	);

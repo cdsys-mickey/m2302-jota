@@ -4,6 +4,4 @@
 	"MSG_HUB_URL": "/WebSale/api/hubs/messaging",
 	"CHAT_HUB_URL": "/WebSale/api/hubs/chat",
 	"REPORT_URL": "https://www.cdsys.com.tw/WebSale",
-	"A01_CMS": false,
-	"PROD_BATCH": false
 }

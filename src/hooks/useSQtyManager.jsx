@@ -317,12 +317,18 @@ export default function useSQtyManager(opts = {}) {
 		[sqtyColumn]
 	);
 
+	/**
+	 * 取得排除自身列的未出量(目前未使用)
+	 */
 	const getPreparedQtyExcludingCurrent = useCallback(({ prodId, rowIndex, gridData }) => {
 		const otherSum = getSQtyExcludingCurrent({ prodId, rowIndex, gridData });
 		const prepared = getPreparedQty(prodId);
 		return prepared + otherSum;
 	}, [getPreparedQty, getSQtyExcludingCurrent]);
 
+	/**
+	 * 取得排除自身的庫存量(D05)
+	 */
 	const getStockExcludingCurrent = useCallback(
 		({ prodId, rowIndex, gridData }) => {
 			const demandTotal = gridData
@@ -397,7 +403,8 @@ export default function useSQtyManager(opts = {}) {
 		) => {
 			const {
 				stock: stockOpts = true,
-				prepared: preparedOpts = false
+				prepared: preparedOpts = false,
+				safetyStock: safetyStockOpts = false,
 			} = opts;
 			const _gridData = gridData || grid.gridData;
 
@@ -422,6 +429,7 @@ export default function useSQtyManager(opts = {}) {
 						id: prodIds.join(","),
 						stock: stockOpts ? 1 : 0,
 						prepared: preparedOpts ? 1 : 0,
+						safetyStock: safetyStockOpts ? 1 : 0,
 						...(convType && {
 							cv: convType
 						})
@@ -516,14 +524,14 @@ export default function useSQtyManager(opts = {}) {
 		[grid.gridData, preparedQtyMap, prodIdKey, httpGetAsync, token, stockQtyMap]
 	);
 
-	const getErrorInfo = useCallback((err) => {
+	const getErrorParams = useCallback((err) => {
 		if (err.code !== 102) {
 			console.error("只能處理 code 為 102 的錯誤");
 			return;
 		}
-		const rowIndex = Number(err.data.Row) - 1;
+		const rowIndex = Number(err.data[0].Row) - 1;
 		const rowData = grid.gridData[rowIndex];
-		const stock = Number(err.data.StockQty);
+		const stock = Number(err.data[0].StockQty);
 		return {
 			rowIndex,
 			rowData,
@@ -547,7 +555,7 @@ export default function useSQtyManager(opts = {}) {
 		recoverStockMap,
 		committed,
 		setCommitted,
-		getErrorInfo,
+		getErrorParams,
 		getStockExcludingCurrent,
 		getSQtyExcludingCurrent,
 		getStockBeforeCurrent,

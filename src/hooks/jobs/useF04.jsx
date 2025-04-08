@@ -12,6 +12,10 @@ import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useF04 = () => {
 	const config = useContext(ConfigContext);
+	const doBatch = useMemo(() => {
+		return !!config?.BATCH?.F01;
+	}, [config?.BATCH?.F01])
+
 	const crud = useContext(CrudContext);
 	const { token, operator } = useContext(AuthContext);
 	const {
@@ -42,9 +46,12 @@ export const useF04 = () => {
 			...F04.transformForSubmitting(payload),
 			JobName: "F04",
 			DeptID: operator?.CurDeptID,
+			...(doBatch && {
+				PrtForm: "Y"
+			})
 		};
 		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator?.CurDeptID, reportUrl]);
+	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, doBatch, operator?.CurDeptID, reportUrl]);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -53,11 +60,14 @@ export const useF04 = () => {
 				...F04.transformForSubmitting(payload),
 				JobName: "F04",
 				DeptID: operator?.CurDeptID,
+				...(doBatch && {
+					PrtForm: "Y"
+				})
 			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[operator?.CurDeptID, reportUrl, reports]
+		[doBatch, operator?.CurDeptID, reportUrl, reports]
 	);
 
 	const onSubmitError = useCallback((err) => {
@@ -97,7 +107,8 @@ export const useF04 = () => {
 		formMeta,
 		onDebugSubmit,
 		load,
-		...crud
+		...crud,
+		doBatch
 	};
 };
 

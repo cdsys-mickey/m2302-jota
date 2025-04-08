@@ -247,48 +247,6 @@ export const useE03 = () => {
 		});
 	}, [crud, dialogs, loadItem]);
 
-	// UPDATE
-	// const handleUpdate = useCallback(
-	// 	async ({ data, setValue, gridMeta }) => {
-	// 		try {
-	// 			crud.startUpdating();
-	// 			const { status, error } = await httpPutAsync({
-	// 				url: "v1/sales/customer-return-orders",
-	// 				data,
-	// 				bearer: token,
-	// 			});
-	// 			if (status.success) {
-	// 				toastEx.success(`修改成功`);
-	// 				crud.doneUpdating();
-	// 				loadItem({ refresh: true });
-	// 				listLoader.loadList({ refresh: true });
-	// 			} else {
-	// 				throw error ?? new Error("未預期例外");
-	// 			}
-	// 		} catch (err) {
-	// 			crud.failUpdating();
-	// 			console.error("handleCreate.failed", err);
-	// 			if (err.code === 102 && err.data) {
-	// 				const rowIndex = Number(err.data.Row) - 1;
-	// 				const 
-
-
-	// 					dialogs.confirm({
-	// 						message: `第 ${err.data.Row} 筆庫存(${err.data.StockQty})不足, 是否強迫銷退?`,
-	// 						onConfirm: () => {
-	// 							overrideSQty.handleOverrideSQty({ setValue, gridMeta });
-	// 						}
-	// 					})
-	// 			} else {
-	// 				toastEx.error("修改失敗", err), {
-	// 					position: "top-right"
-	// 				});
-	// 			}
-	// 		}
-	// 	},
-	// 	[crud, dialogs, httpPutAsync, listLoader, loadItem, overrideSQty, token]
-	// );
-
 	//DELETE
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({

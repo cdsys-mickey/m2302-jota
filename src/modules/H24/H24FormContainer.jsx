@@ -18,7 +18,7 @@ export const H24FormContainer = () => {
 		EProdID,
 		SDeptID,
 		EDeptID,
-		SLineID,
+		SPDlineID,
 		ELineID,
 		reportType,
 		orderType,

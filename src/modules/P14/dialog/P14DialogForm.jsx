@@ -52,7 +52,7 @@ const P14DialogForm = memo((props) => {
 									}}
 									slotProps={{
 										htmlInput: {
-											maxLength: 10
+											maxLength: 2
 										}
 									}}
 								/>
@@ -69,7 +69,6 @@ const P14DialogForm = memo((props) => {
 									rules={{
 										required: "名稱為必填",
 									}}
-								// readOnly={updating}
 								/>
 							</Grid>
 							<Grid item xs={24}>

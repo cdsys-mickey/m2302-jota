@@ -28,6 +28,7 @@ import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import { A01ProdComboGridContainer } from "./combo/A01ProdComboGridContainer";
 import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
+import { A01CmsGridContainer } from "./cms/A01CmsGridContainer";
 
 const A01DialogForm = memo((props) => {
 	const {
@@ -45,8 +46,10 @@ const A01DialogForm = memo((props) => {
 		height,
 		transTabDisabled,
 		comboTabDisabled,
+		cmsTabDisabled,
 		slotProps,
 		handleInvDataFocused,
+		doCms,
 		...rest
 	} = props;
 
@@ -86,6 +89,15 @@ const A01DialogForm = memo((props) => {
 									value={A01.Tabs.COMBO}
 									disabled={comboTabDisabled}
 								/>
+								{
+									doCms && (
+										<Tab
+											label="佣金類別"
+											value={A01.Tabs.CMS}
+											disabled={cmsTabDisabled}
+										/>
+									)
+								}
 							</TabList>
 						</Box>
 						<TabPanel
@@ -321,7 +333,7 @@ const A01DialogForm = memo((props) => {
 										/>
 									</Grid>
 
-									<Grid item xs={12} sm={12} md={4}>
+									{/* <Grid item xs={12} sm={12} md={4}>
 										<CmsTypePicker
 											typo
 											label="佣金類別"
@@ -329,7 +341,7 @@ const A01DialogForm = memo((props) => {
 											// readOnly={storeMode}
 											disableOpenOnInput
 										/>
-									</Grid>
+									</Grid> */}
 								</Grid>
 							</FormSectionBox>
 
@@ -478,6 +490,13 @@ const A01DialogForm = memo((props) => {
 								<A01ProdComboGridContainer />
 							</ContainerEx>
 						</TabPanel>
+						{doCms && (
+							<TabPanel value={A01.Tabs.CMS}>
+								<ContainerEx maxWidth="sm" alignLeft>
+									<A01CmsGridContainer />
+								</ContainerEx>
+							</TabPanel>
+						)}
 					</TabContext>
 				</FormBox>
 			)}
@@ -500,7 +519,9 @@ A01DialogForm.propTypes = {
 	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	transTabDisabled: PropTypes.bool,
 	comboTabDisabled: PropTypes.bool,
+	cmsTabDisabled: PropTypes.bool,
 	slotProps: PropTypes.object,
+	doCms: PropTypes.bool,
 };
 
 A01DialogForm.displayName = "A01Form";

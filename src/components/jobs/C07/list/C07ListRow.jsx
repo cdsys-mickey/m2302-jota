@@ -10,9 +10,22 @@ import C07DeptNameColumn from "./columns/C07DeptNameColumn";
 import C07FlagColumn from "./columns/C07FlagColumn";
 import C07IdColumn from "./columns/C07IdColumn";
 import C07UserColumn from "./columns/C07UserColumn";
+import { useMemo } from "react";
 
 const C07ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
+
+	const ordDeptName = useMemo(() => {
+		return [value?.訂貨門市, value?.訂貨門市名稱]
+			.filter(x => x)
+			.join(" ");
+	}, [value?.訂貨門市, value?.訂貨門市名稱])
+
+	const shipDeptName = useMemo(() => {
+		return [value?.出貨門市]
+			.filter(x => x)
+			.join(" ");
+	}, [value?.出貨門市])
 
 	return (
 		<div style={style}>
@@ -44,14 +57,11 @@ const C07ListRow = memo((props) => {
 						<C07UserColumn>
 							{value?.製單人員}
 						</C07UserColumn>
-						<C07DeptIdColumn>
-							{value?.訂貨門市}
-						</C07DeptIdColumn>
-						<C07DeptIdColumn>
-							{value?.出貨門市}
-						</C07DeptIdColumn>
 						<C07DeptNameColumn>
-							{value?.出貨門市名稱}
+							{ordDeptName}
+						</C07DeptNameColumn>
+						<C07DeptNameColumn>
+							{shipDeptName}
 						</C07DeptNameColumn>
 					</Grid>
 				</Box>

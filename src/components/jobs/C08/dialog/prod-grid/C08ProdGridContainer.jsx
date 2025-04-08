@@ -1,14 +1,13 @@
 import { C08Context } from "@/contexts/C08/C08Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
 import { useFormContext } from "react-hook-form";
 import C08ProdGrid from "./C08ProdGrid";
-import { keyColumn } from "react-datasheet-grid";
-import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
-import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 
 export const C08ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -25,12 +24,12 @@ export const C08ProdGridContainer = (props) => {
 			gridMeta: formMeta.gridMeta,
 			onUpdateRow: c08.onUpdateRow,
 			onGridChanged: c08.onGridChanged,
-			isRowDeletable: c08.isRowDeletable
+			// isRowDeletable: c08.isRowDeletable
 		});
 	}, [c08, form.getValues, form.setValue, formMeta.gridMeta]);
 
 	const _height = useMemo(() => {
-		return height - 366;
+		return height - 370;
 	}, [height])
 
 	const prodInfoColumn = useMemo(() => {

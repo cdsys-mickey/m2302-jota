@@ -4,6 +4,12 @@
 	"MSG_HUB_URL": "http://localhost:5229/hubs/messaging",
 	"CHAT_HUB_URL": "http://localhost:5229/hubs/chat",
 	"REPORT_URL": "https://www.cdsys.com.tw/WebSale_T",
-	"A01_CMS": true,
-	"PROD_BATCH": true
+	"CMS": {
+		"A01": true
+	},
+	"BATCH": {
+		"F01": true,
+		"F03": true,
+		"F04": true
+	}
 }

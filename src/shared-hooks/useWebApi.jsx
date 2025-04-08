@@ -34,7 +34,7 @@ export const useWebApi = (props) => {
 	const {
 		baseUrl,
 		mode: defaultMode = "json",
-		withStackTrace = false,
+		withStack = false,
 		headers = DEFAULT_HEADERS,
 	} = props || {};
 	const config = useContext(ConfigContext);
@@ -163,7 +163,7 @@ export const useWebApi = (props) => {
 					return {
 						status: status,
 						error: WebApi.getErrorFromResponse(status, axiosResponse, {
-							withStackTrace: withStackTrace,
+							withStack: withStack,
 							status: status.code,
 							statusText: axiosResponse.statusText,
 						}),
@@ -175,7 +175,7 @@ export const useWebApi = (props) => {
 					status: HttpStatus.from(err.response?.status || 500),
 					error: err.response?.data
 						? WebApi.getErrorFromPayload(err.response.data, {
-							withStackTrace: withStackTrace,
+							withStack: withStack,
 							status: err.response.status,
 							statusText: err.response.statusText,
 						})
@@ -183,7 +183,7 @@ export const useWebApi = (props) => {
 				};
 			}
 		},
-		[defaultMode, getHeaders, getUrl, withStackTrace]
+		[defaultMode, getHeaders, getUrl, withStack]
 	);
 
 	const httpGetAsync = useCallback(

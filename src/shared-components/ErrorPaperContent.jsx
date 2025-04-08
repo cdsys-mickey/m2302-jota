@@ -30,7 +30,7 @@ const ErrorPaperContent = ({
 	title = "發生例外狀況",
 	status,
 	message,
-	stackTrace,
+	stack,
 	style,
 	variant = "h5",
 	...rest
@@ -73,7 +73,7 @@ const ErrorPaperContent = ({
 					</Grid>
 				)}
 
-				{stackTrace && (
+				{stack && (
 					<>
 						<Grid item xs={12}>
 							<Typography
@@ -91,7 +91,7 @@ const ErrorPaperContent = ({
 								variant="body1"
 								color="textSecondary"
 								className={classes.stacktrace}>
-								{stackTrace}
+								{stack}
 							</Typography>
 						</Grid>
 					</>

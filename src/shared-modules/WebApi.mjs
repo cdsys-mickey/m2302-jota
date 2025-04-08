@@ -9,18 +9,18 @@ function isJsonString(str) {
 	}
 }
 
-const getErrorFromAxiosError = (err) => {
-	const error = new WebApiError();
-	error.status = err.response?.status;
-	error.statusText = err.response?.statusText;
-	error.message = err.message;
-	error.type = err.name;
-	console.log("getErrorFromAxiosError", error);
-	return error;
+const getErrorFromAxiosError = (axiosError) => {
+	const webApiError = new WebApiError(axiosError.message);
+	webApiError.status = axiosError.response?.status;
+	webApiError.statusText = axiosError.response?.statusText;
+	webApiError.type = axiosError.name;
+	webApiError.stack = axiosError.stack;
+	console.log("getErrorFromAxiosError", webApiError);
+	return webApiError;
 };
 
 const getErrorFromPayload = (payload, opts) => {
-	const { withStackTtrace = false } = opts || {};
+	const { withStackTtrace: withStack = false } = opts || {};
 
 	if (!payload) {
 		const { status, statusText } = opts;
@@ -41,8 +41,8 @@ const getErrorFromPayload = (payload, opts) => {
 		Message,
 		type,
 		Type,
-		stackTrace,
-		StackTrace,
+		stack,
+		Stack,
 		status,
 		statusText,
 		Status,
@@ -68,9 +68,9 @@ const getErrorFromPayload = (payload, opts) => {
 		error.type = _type;
 	}
 
-	const _stackTrace = stackTrace || StackTrace;
-	if (withStackTtrace && _stackTrace) {
-		error.stackTrace = _stackTrace;
+	const _stack = stack || Stack;
+	if (withStack && _stack) {
+		error.stack = _stack;
 	}
 
 	const _status = status || Status || opts?.status;

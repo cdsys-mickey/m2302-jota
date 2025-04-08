@@ -4,16 +4,18 @@ class WebApiError extends Error {
 		message,
 		status,
 		statusText,
-		stackTrace,
+		stack,
 		type,
 		data,
 		...rest
 	} = {}) {
 		super(message);
+		this.name = "WebApiError";
+
 		this.code = code;
 		this.status = status;
 		this.statusText = statusText;
-		this.stackTrace = stackTrace;
+		this.stack = stack;
 		this.type = type;
 		this.data = data;
 		this.extra = rest;
@@ -35,8 +37,8 @@ class WebApiError extends Error {
 			}),
 			message: this.message,
 			status: this.status,
-			...(this.stackTrace && {
-				stackTrace: this.stackTrace,
+			...(this.stack && {
+				stack: this.stack,
 			}),
 			...(this.type && {
 				type: this.type,

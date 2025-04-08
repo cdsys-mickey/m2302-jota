@@ -24,6 +24,8 @@ import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useRef } from "react";
+import { CmsTypePickerComponentContainer } from "@/components/dsg/columns/cms-type-picker/CmsTypePickerComponentContainer";
+import ConfigContext from "@/contexts/config/ConfigContext";
 
 /**
  * 適用三種情境
@@ -36,6 +38,11 @@ export const useA01 = ({ mode }) => {
 	const auth = useContext(AuthContext);
 	const { token } = auth;
 	const crud = useContext(CrudContext);
+	const config = useContext(ConfigContext);
+	const doCms = useMemo(() => {
+		return !!config?.CMS?.A01;
+	}, [config?.CMS?.A01])
+
 	const itemIdRef = useRef();
 	const moduleId = useMemo(() => {
 		switch (mode) {
@@ -102,6 +109,15 @@ export const useA01 = ({ mode }) => {
 		throw `mode 未指定`;
 	}
 
+	// GRID 共用
+	const handleGridDeptChange = useCallback(({ rowData }) => {
+		return {
+			...rowData,
+			["SDept_N"]: rowData?.dept?.DeptName || "",
+		};
+	}, []);
+
+	//ProdTransGrid
 	const createTransRow = useCallback(
 		() => ({
 			dept: null,
@@ -110,15 +126,6 @@ export const useA01 = ({ mode }) => {
 		[]
 	);
 
-	const createComboRow = useCallback(
-		() => ({
-			prod: null,
-			SProdQty: "",
-		}),
-		[]
-	);
-
-	//ProdTransGrid
 	const transGridDisabled = useMemo(() => {
 		return !crud.editing || mode === A01.Mode.STORE;
 	}, [crud.editing, mode]);
@@ -191,7 +198,178 @@ export const useA01 = ({ mode }) => {
 		lastCell: DSGLastCellBehavior.CREATE_ROW
 	});
 
+	const transTabDisabled = useMemo(() => {
+		return crud.editing && mode === A01.Mode.STORE;
+	}, [crud.editing, mode]);
+
+	//ProdCmsGrid
+	const createCmsRow = useCallback(
+		() => ({
+			dept: null,
+			cmsType: null,
+		}),
+		[]
+	);
+
+	const cmsGridDisabled = useMemo(() => {
+		return !crud.editing || mode === A01.Mode.STORE;
+	}, [crud.editing, mode]);
+
+	const cmsColumns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"dept",
+					optionPickerColumn(DeptPickerComponentContainer, {
+						name: "dept",
+						disableOpenOnInput: true,
+						hideControlsOnActive: true,
+						forId: true,
+						disableClearable: true,
+						selectOnFocus: true,
+						autoHighlight: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 200,
+								},
+							},
+						},
+					})
+				),
+				title: "門市代碼",
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: transGridDisabled,
+			},
+			{
+				...keyColumn(
+					"SDept_N",
+					createTextColumnEx({
+						continuousUpdates: false,
+					})
+				),
+				title: "門市名稱",
+				disabled: true,
+				grow: 2,
+			},
+			{
+				...keyColumn(
+					"cmsType",
+					optionPickerColumn(CmsTypePickerComponentContainer, {
+						name: "dept",
+						disableOpenOnInput: true,
+						hideControlsOnActive: true,
+						forId: true,
+						disableClearable: true,
+						selectOnFocus: true,
+						autoHighlight: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 200,
+								},
+							},
+						},
+					})
+				),
+				title: "佣金類別",
+				minWidth: 200,
+				maxWidth: 200,
+				disabled: transGridDisabled,
+			},
+		],
+		[transGridDisabled]
+	);
+
+	const cmsGrid = useDSG({
+		gridId: "cms",
+		keyColumn: "dept.DeptID",
+		skipDisabled: true,
+		createRow: createCmsRow,
+	});
+
+	const cmsMeta = useDSGMeta({
+		data: cmsGrid.gridData,
+		columns: cmsColumns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW
+	});
+
+	const handleCmsGridChange = useCallback(
+		(newValue, operations) => {
+			const newGridData = [...newValue];
+			let checkFailed = false;
+			for (const operation of operations) {
+				if (operation.type === "UPDATE") {
+					console.log("dsg.UPDATE");
+					newValue
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.forEach((rowData, i) => {
+							const rowIndex = operation.fromRowIndex + i;
+							const oldRowData = cmsGrid.gridData[rowIndex];
+							let processedRowData = { ...rowData };
+							// process UPDATE here
+							if (
+								rowData.dept?.DeptID !== oldRowData.dept?.DeptID
+							) {
+								processedRowData = handleGridDeptChange({
+									rowData: processedRowData,
+								});
+
+								if (
+									rowData.dept &&
+									cmsGrid.isDuplicating(rowData, newValue)
+								) {
+									toastEx.error(
+										`「${rowData.dept?.DeptName}」已存在, 請選擇其他門市`
+									);
+									setTimeout(() => {
+										cmsMeta.setActiveCell({
+											col: 0,
+											row: rowIndex,
+										});
+									});
+									checkFailed = true;
+								}
+							}
+							newGridData[rowIndex] = processedRowData;
+						});
+				} else if (operation.type === "DELETE") {
+					console.log("dsg.DELETE");
+					checkFailed = cmsGrid.gridData
+						.slice(operation.fromRowIndex, operation.toRowIndex)
+						.some((rowData, i) => {
+							// process DELETE check here
+							// if(xxxDisabled(rowData)){ return true }
+							return false;
+						});
+				} else if (operation.type === "CREATE") {
+					console.log("dsg.CREATE");
+					// process CREATE here
+					cmsMeta.toFirstColumn({ nextRow: true });
+				}
+			}
+			if (!checkFailed) {
+				cmsGrid.setGridData(newGridData);
+			}
+		},
+		[cmsGrid, cmsMeta, handleGridDeptChange]
+	);
+
+	const cmsTabDisabled = useMemo(() => {
+		return crud.editing && mode === A01.Mode.STORE;
+	}, [crud.editing, mode]);
+
 	//ProdComboGrid
+	const createComboRow = useCallback(
+		() => ({
+			prod: null,
+			SProdQty: "",
+		}),
+		[]
+	);
+
 	const comboGridDisabled = useMemo(() => {
 		return !crud.editing || mode === A01.Mode.STORE;
 	}, [crud.editing, mode]);
@@ -283,6 +461,7 @@ export const useA01 = ({ mode }) => {
 
 					transGrid.initGridData(data.trans);
 					comboGrid.initGridData(data.combo);
+					cmsGrid.initGridData(data.cms);
 
 					crud.doneReading({
 						data: data,
@@ -501,7 +680,8 @@ export const useA01 = ({ mode }) => {
 			const processed = A01.transformForEditorSubmit(
 				data,
 				transGrid.gridData,
-				comboGrid.gridData
+				comboGrid.gridData,
+				doCms ? cmsGrid.gridData : null
 			);
 			console.log(`processed`, processed);
 			if (crud.creating) {
@@ -512,14 +692,7 @@ export const useA01 = ({ mode }) => {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
 		},
-		[
-			comboGrid.gridData,
-			crud.creating,
-			crud.updating,
-			handleCreate,
-			handleUpdate,
-			transGrid.gridData,
-		]
+		[cmsGrid.gridData, comboGrid.gridData, crud.creating, crud.updating, doCms, handleCreate, handleUpdate, transGrid.gridData]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -551,14 +724,16 @@ export const useA01 = ({ mode }) => {
 				taxType: TaxTypes.findById("T"),
 				trans: transGrid.fillRows({}),
 				combo: comboGrid.fillRows({}),
+				cms: cmsGrid.fillRows({}),
 			};
 			crud.promptCreating({
 				data,
 			});
 			transGrid.initGridData(data.trans);
 			comboGrid.initGridData(data.combo);
+			cmsGrid.initGridData(data.cms);
 		},
-		[comboGrid, crud, transGrid]
+		[cmsGrid, comboGrid, crud, transGrid]
 	);
 
 	const confirmDelete = useCallback(() => {
@@ -696,12 +871,7 @@ export const useA01 = ({ mode }) => {
 	}, []);
 
 	// TRANS GRID
-	const handleGridDeptChange = useCallback(({ rowData }) => {
-		return {
-			...rowData,
-			["SDept_N"]: rowData?.dept?.DeptName || "",
-		};
-	}, []);
+
 
 	const handleTransGridChange = useCallback(
 		(newValue, operations) => {
@@ -945,9 +1115,7 @@ export const useA01 = ({ mode }) => {
 
 
 
-	const transTabDisabled = useMemo(() => {
-		return crud.editing && mode === A01.Mode.STORE;
-	}, [crud.editing, mode]);
+
 
 	const comboTabDisabled = useMemo(() => {
 		return crud.editing && mode === A01.Mode.STORE;
@@ -960,6 +1128,8 @@ export const useA01 = ({ mode }) => {
 			setValue("InvData", prodData);
 		}
 	}, []);
+
+
 
 	useInit(() => {
 		crud.cancelAction();
@@ -1003,10 +1173,17 @@ export const useA01 = ({ mode }) => {
 		// ProdTransGrid
 		transGrid,
 		transMeta,
-		// setTransGridRef: transGrid.setGridRef,
-		// transGridData: transGrid.gridData,
 		handleTransGridChange,
 		transGridDisabled,
+		createTransRow,
+		transTabDisabled,
+		// ProdCmsGrid
+		cmsGrid,
+		cmsMeta,
+		handleCmsGridChange,
+		cmsGridDisabled,
+		createCmsRow,
+		cmsTabDisabled,
 		// ProdComboGrid
 		comboGrid,
 		comboMeta,
@@ -1029,11 +1206,11 @@ export const useA01 = ({ mode }) => {
 		handleTabChange,
 		setSelectedTab,
 		handleReset,
-		createTransRow,
 		createComboRow,
-		transTabDisabled,
+
 		comboTabDisabled,
 		...sideDrawer,
-		handleInvDataFocused
+		handleInvDataFocused,
+		doCms
 	};
 };

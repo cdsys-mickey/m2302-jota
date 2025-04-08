@@ -46,11 +46,10 @@ const useAxiosServiceDotNet = (props) => {
 		}
 		// 應保留彈性, 不包含 PUBLIC_URL
 		const apiUrl = `${import.meta.env.VITE_URL_API || }`;
-		return `${apiUrl.substring(0, 1) === "/" ? "" : "/"}${
-			apiUrl.substring(apiUrl.length - 1) === "/"
+		return `${apiUrl.substring(0, 1) === "/" ? "" : "/"}${apiUrl.substring(apiUrl.length - 1) === "/"
 				? `${apiUrl.substring(0, apiUrl.length - 1)}`
 				: apiUrl
-		}/${url.substring(0, 1) === "/" ? url.substring(1) : url}`;
+			}/${url.substring(0, 1) === "/" ? url.substring(1) : url}`;
 	}, []);
 
 	const getErrorFromHttpResponse = useCallback(
@@ -89,7 +88,7 @@ const useAxiosServiceDotNet = (props) => {
 			result["message"] = payload?.Message;
 			result["type"] = payload?.Type;
 			if (stacktrace) {
-				result["stacktrace"] = payload?.StackTrace;
+				result["stacktrace"] = payload?.Stack;
 			}
 			return result;
 		},
@@ -106,8 +105,8 @@ const useAxiosServiceDotNet = (props) => {
 					params:
 						method === "get"
 							? {
-									...data,
-							  }
+								...data,
+							}
 							: null,
 					headers: {
 						// 先列舉 props 內的 headers
@@ -156,8 +155,8 @@ const useAxiosServiceDotNet = (props) => {
 					params:
 						method === "get"
 							? {
-									...data,
-							  }
+								...data,
+							}
 							: null,
 					headers: {
 						// 先列舉 props 內的 headers
@@ -300,15 +299,15 @@ const useAxiosServiceDotNet = (props) => {
 					url: fetchUrl,
 					data: params
 						? {
-								...params,
-								page,
-								size: size || pageSize,
-						  }
+							...params,
+							page,
+							size: size || pageSize,
+						}
 						: {
-								...fetchState.criteria,
-								page,
-								size: size || pageSize,
-						  },
+							...fetchState.criteria,
+							page,
+							size: size || pageSize,
+						},
 				});
 				delayTimer.current = null;
 				console.log(response, "fetch response");

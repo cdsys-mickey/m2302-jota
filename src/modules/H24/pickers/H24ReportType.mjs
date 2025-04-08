@@ -1,6 +1,6 @@
 const options = [
 	{ id: 1, label: "貨品彙總" },
-	{ id: 2, label: "貨品+門市彙總" },
+	{ id: 2, label: "貨品+部門彙總" },
 	{ id: 3, label: "單據明細" },
 ];
 

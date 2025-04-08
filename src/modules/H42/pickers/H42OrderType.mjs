@@ -1,6 +1,6 @@
 const options = [
 	{ id: 1, label: "貨號" },
-	{ id: 2, label: "客戶" },
+	{ id: 2, label: "門市" },
 	{ id: 3, label: "單據" },
 ];
 
@@ -36,4 +36,3 @@ const H42OrderType = {
 };
 
 export default H42OrderType;
-

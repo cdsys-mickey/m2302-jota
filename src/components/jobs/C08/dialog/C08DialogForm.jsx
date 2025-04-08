@@ -113,7 +113,7 @@ const C08DialogForm = memo((props) => {
 								slotProps={{
 									paper: {
 										sx: {
-											width: 660,
+											width: 680,
 										},
 									},
 								}}

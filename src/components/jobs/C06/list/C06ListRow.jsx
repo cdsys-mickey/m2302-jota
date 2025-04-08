@@ -11,9 +11,22 @@ import C06UserColumn from "./columns/C06UserColumn";
 import C06FlagColumn from "./columns/C06FlagColumn";
 import C06DeptIdColumn from "./columns/C06DeptIdColumn";
 import C06DeptNameColumn from "./columns/C06DeptNameColumn";
+import { useMemo } from "react";
 
 const C06ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
+
+	const ordDeptName = useMemo(() => {
+		return [value?.訂貨門市]
+			.filter(x => x)
+			.join(" ");
+	}, [value?.訂貨門市])
+
+	const shipDeptName = useMemo(() => {
+		return [value?.出貨門市, value?.出貨門市名稱]
+			.filter(x => x)
+			.join(" ");
+	}, [value?.出貨門市, value?.出貨門市名稱])
 
 	return (
 		<div style={style}>
@@ -46,13 +59,10 @@ const C06ListRow = memo((props) => {
 							{value?.製單人員}
 						</C06UserColumn>
 						<C06DeptIdColumn>
-							{value?.訂貨門市}
-						</C06DeptIdColumn>
-						<C06DeptIdColumn>
-							{value?.出貨門市}
+							{ordDeptName}
 						</C06DeptIdColumn>
 						<C06DeptNameColumn>
-							{value?.出貨門市名稱}
+							{shipDeptName}
 						</C06DeptNameColumn>
 					</Grid>
 				</Box>

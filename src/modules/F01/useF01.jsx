@@ -17,7 +17,6 @@ import { useSideDrawer } from "../../hooks/useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useF01 = () => {
-	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
@@ -26,6 +25,10 @@ export const useF01 = () => {
 		token,
 		moduleId: "F01",
 	});
+	const config = useContext(ConfigContext);
+	const doBatch = useMemo(() => {
+		return !!config?.BATCH?.F01;
+	}, [config?.BATCH?.F01])
 
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
@@ -528,6 +531,7 @@ export const useF01 = () => {
 		loadProdFormMeta,
 		...sideDrawer,
 		onUpdateRow,
-		createRow
+		createRow,
+		doBatch
 	};
 };

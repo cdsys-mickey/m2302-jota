@@ -187,7 +187,8 @@ export const useE01 = () => {
 						},
 						prepared: {
 							excludeSelfOrder: true
-						}
+						},
+						safetyStock: true
 					});
 					setSelectedOrd(data);
 					// const newGridData = data.prods.map(async (rowData, rowIndex) => {
@@ -464,10 +465,11 @@ export const useE01 = () => {
 			processedRowData = {
 				...processedRowData,
 				["prod"]: prodInfo ? processedRowData.prod : null,
-				["ProdData_N"]: prodInfo ? processedRowData.prod?.ProdData || "" : "",
-				["PackData_N"]: processedRowData?.prod?.PackData_N || "",
-				["SQflag"]: prodInfo?.QFlag || "",
-				["SPrice"]: prodInfo?.Price || "",
+				["ProdData_N"]: prodInfo ? processedRowData.prod?.ProdData ?? "" : "",
+				["PackData_N"]: processedRowData?.prod?.PackData_N ?? "",
+				["SQflag"]: prodInfo?.QFlag ?? "",
+				["SPrice"]: prodInfo?.Price ?? "",
+				["SafeQty_N"]: prodInfo?.SafeQty_N ?? "",
 				["SQty"]: "",
 				["SAmt"]: "",
 				["stype"]: null,
@@ -574,26 +576,26 @@ export const useE01 = () => {
 
 	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
 		console.log(`mapTooltip(rowIndex: ${rowIndex})`);
-		let _prodId;
+		let changedProdId;
 		if (updateResult?.type === "DELETE") {
-			_prodId = prevGridData[rowIndex]?.prod?.ProdID || '';
+			changedProdId = prevGridData[rowIndex]?.prod?.ProdID || '';
 		} else {
 			const targetRow = gridData[rowIndex];
-			_prodId = targetRow.prod?.ProdID;
+			changedProdId = targetRow.prod?.ProdID;
 			// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
-			if (!_prodId) {
-				_prodId = prevGridData[rowIndex]?.prod?.ProdID || '';
+			if (!changedProdId) {
+				changedProdId = prevGridData[rowIndex]?.prod?.ProdID || '';
 			}
 		}
 
 		// 若 targetProdID 仍為空，則不執行更新
-		if (!_prodId) {
+		if (!changedProdId) {
 			return gridData;
 		}
 
 		// 計算其他符合條件列的 SQty 加總
 		return gridData.map((row, index) => {
-			if (row.prod?.ProdID === _prodId) {
+			if (row.prod?.ProdID === changedProdId) {
 				if ((row.SNotQty && row.SNotQty <= 0) || (row.SOutQty && row.SOutQty != 0)) {
 					return {
 						...row,
@@ -612,17 +614,16 @@ export const useE01 = () => {
 				// 	return acc;
 				// }, 0);
 				let sameProdRowTotalSQty = gridData.reduce((acc, currentRow) => {
-					if (currentRow.prod?.ProdID === _prodId) {
+					if (currentRow.prod?.ProdID === changedProdId) {
 						return acc + Number(currentRow.SQty || 0);
 					}
 					return acc;
 				}, 0);
 
-				const stock = sqtyManager.getStockQty(_prodId);
-				// const stock = sqtyManager.getRemainingStock({ prodId: _prodId, gridData });
+				const stock = sqtyManager.getStockQty(changedProdId);
 
-				const otherOrderSQty = sqtyManager.getPreparedQty(_prodId);
-				// const ordQty = otherOrderSQty + otherRowTotalSQty;
+				const otherOrderSQty = sqtyManager.getPreparedQty(changedProdId);
+				// 訂購量 = 未出量 + 所有同商品訂購量
 				const ordQty = otherOrderSQty + sameProdRowTotalSQty;
 				const remaining = stock - ordQty;
 

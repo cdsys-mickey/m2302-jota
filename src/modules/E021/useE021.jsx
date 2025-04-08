@@ -419,13 +419,20 @@ export const useE021 = ({ mode }) => {
 				}
 
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
-				if (err.code === 102 && err.data?.Row) {
-					const rowIndex = Number(err.data.Row) - 1;
-					const rowData = grid.gridData[rowIndex];
-					const stock = Number(err.data.StockQty);
+				// const errorRow = err.data?.[0]?.Row;
+				// const errorStock = err.data?.[0]?.StockQty;
+				// if (err.code === 102 && errorRow && errorStock) {
+				if (err.code === 102) {
+					// const rowIndex = Number(errorRow) - 1;
+					// const rowData = grid.gridData[rowIndex];
+					// const stock = Number(errorStock);
+					const errorParams = sqtyManager.getErrorParams(err);
 
 					sqtyManager.handleOverrideSQty({
-						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true, onCommit: ({ gridData }) => {
+						setValue, gridMeta, formData: data,
+						// rowData, rowIndex, stock, submitAfterCommitted: true, 
+						...errorParams,
+						onCommit: ({ gridData }) => {
 							handleRefreshAmt({
 								gridData,
 								// taxExcluded: data.taxExcluded,
@@ -433,7 +440,7 @@ export const useE021 = ({ mode }) => {
 								formData: data
 							})
 
-							const updated = mapTooltip({ gridData, rowIndex })
+							const updated = mapTooltip({ gridData, rowIndex: errorParams.rowIndex })
 							grid.setGridData(updated);
 						}
 					});
@@ -492,48 +499,6 @@ export const useE021 = ({ mode }) => {
 			},
 		});
 	}, [crud, dialogs, loadItem]);
-
-	// UPDATE
-	// const handleUpdate = useCallback(
-	// 	async ({ data, setValue, gridMeta }) => {
-	// 		try {
-	// 			crud.startUpdating();
-	// 			const { status, error } = await httpPutAsync({
-	// 				url: "v1/sales/customer-invoices",
-	// 				data,
-	// 				bearer: token,
-	// 			});
-	// 			if (status.success) {
-	// 				toastEx.success(`修改成功`);
-	// 				crud.doneUpdating();
-	// 				loadItem({ refresh: true });
-	// 				listLoader.loadList({ refresh: true });
-	// 			} else {
-	// 				throw error ?? new Error("未預期例外");
-	// 			}
-	// 		} catch (err) {
-	// 			crud.failUpdating();
-	// 			console.error("handleCreate.failed", err);
-	// 			if (err.code === 102 && err.data) {
-	// 				const rowIndex = Number(err.data.Row) - 1;
-	// 				const 
-
-
-	// 					dialogs.confirm({
-	// 						message: `第 ${err.data.Row} 筆庫存(${err.data.StockQty})不足, 是否強迫銷貨?`,
-	// 						onConfirm: () => {
-	// 							sqtyManager.handleOverrideSQty({ setValue, gridMeta });
-	// 						}
-	// 					})
-	// 			} else {
-	// 				toastEx.error("修改失敗", err), {
-	// 					position: "top-right"
-	// 				});
-	// 			}
-	// 		}
-	// 	},
-	// 	[crud, dialogs, httpPutAsync, listLoader, loadItem, sqtyManager, token]
-	// );
 
 	//DELETE
 	const confirmDelete = useCallback(() => {

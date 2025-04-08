@@ -25,7 +25,6 @@ export const ZA03AuthFormContainer = () => {
 					"enabled",
 					createCheckboxExColumn({
 						size: "medium",
-						disableFocusNext: true
 					})
 				),
 				title: "",

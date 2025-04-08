@@ -13,6 +13,7 @@ const ListViewBox = styled(Paper, {
 		borderBottomLeftRadius: 0,
 		borderBottomRightRadius: 0,
 	}),
+	marginBottom: "4px"
 }));
 
 ListViewBox.propTypes = {};

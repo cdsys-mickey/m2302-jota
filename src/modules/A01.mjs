@@ -10,6 +10,7 @@ const Tabs = Object.freeze({
 	INFO: "INFO",
 	TRANS: "TRANS",
 	COMBO: "COMBO",
+	CMS: "CMS",
 });
 
 const Mode = Object.freeze({
@@ -51,6 +52,21 @@ const transformComboGridForReading = (data) => {
 	}));
 };
 
+const transformCmsGridForReading = (data) => {
+	return data.map((v, i) => ({
+		id: nanoid(),
+		dept: {
+			DeptID: v.SDeptID,
+			DeptName: v.SDept_N,
+		},
+		SDept_N: v.SDept_N,
+		cmsType: {
+			CodeID: v.SCmsID,
+			CodeData: v.SCms_N,
+		},
+	}));
+};
+
 const transformForReading = (data) => {
 	const {
 		BUnit,
@@ -61,8 +77,8 @@ const transformForReading = (data) => {
 		MClas_N,
 		SClas,
 		SClas_N,
-		CmsID,
-		Cms_N,
+		// CmsID,
+		// Cms_N,
 		CaseID,
 		Case_N,
 		SUnit,
@@ -76,6 +92,7 @@ const transformForReading = (data) => {
 		TypeB,
 		StoreTrans_S,
 		StoreCom_S,
+		StoreCms_S,
 		...rest
 	} = data;
 
@@ -101,12 +118,12 @@ const transformForReading = (data) => {
 					ClassData: SClas_N,
 			  }
 			: null,
-		cmsType: CmsID
-			? {
-					CodeID: CmsID,
-					CodeData: Cms_N,
-			  }
-			: null,
+		// cmsType: CmsID
+		// 	? {
+		// 			CodeID: CmsID,
+		// 			CodeData: Cms_N,
+		// 	  }
+		// 	: null,
 		counter: CaseID
 			? {
 					CodeID: CaseID,
@@ -147,6 +164,9 @@ const transformForReading = (data) => {
 		...(StoreCom_S && {
 			combo: transformComboGridForReading(StoreCom_S),
 		}),
+		...(StoreCms_S && {
+			cms: transformCmsGridForReading(StoreCms_S),
+		}),
 		...rest,
 	};
 };
@@ -175,6 +195,16 @@ const transformTransGridForSubmit = (data) => {
 		}));
 };
 
+const transformCmsGridForSubmit = (data) => {
+	return data
+		.filter((x) => x.dept?.DeptID)
+		.map((v, i) => ({
+			Seq: i,
+			SDeptID: v.dept?.DeptID,
+			SCmsID: v.cmsType?.CodeID ?? "",
+		}));
+};
+
 const transformComboGridForSubmit = (data) => {
 	return data
 		.filter((x) => !!x.prod)
@@ -185,7 +215,12 @@ const transformComboGridForSubmit = (data) => {
 		}));
 };
 
-const transformForEditorSubmit = (data, transGridData, comboGridData) => {
+const transformForEditorSubmit = (
+	data,
+	transGridData,
+	comboGridData,
+	cmsGridData
+) => {
 	const {
 		catL,
 		catM,
@@ -200,8 +235,10 @@ const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 		typeA,
 		typeB,
 		// omit props
+		dept,
 		combo,
 		trans,
+		cms,
 		Clas_N,
 		Checker_N,
 		GroupKey_N,
@@ -217,6 +254,8 @@ const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 		GroupKey_N,
 		combo,
 		trans,
+		cms,
+		dept,
 		Using_N,
 		WriteDate_N,
 		Writer_N,
@@ -254,6 +293,9 @@ const transformForEditorSubmit = (data, transGridData, comboGridData) => {
 		}),
 		...(comboGridData && {
 			StoreCom_S: transformComboGridForSubmit(comboGridData),
+		}),
+		...(cmsGridData && {
+			StoreCms_S: transformCmsGridForSubmit(cmsGridData),
 		}),
 	};
 };

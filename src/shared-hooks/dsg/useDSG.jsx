@@ -490,14 +490,17 @@ export const useDSG = ({
 								} else {
 									if (onDeleteRow) {
 										try {
+											//await 在這裡沒有用?
 											await onDeleteRow({
 												fromRowIndex: operation.fromRowIndex,
+												toRowIndex: operation.toRowIndex,
 												updateResult
 											})(rowData, index);
 										} catch (err) {
 											if (onDeleteRowFailed) {
 												await onDeleteRowFailed({
 													fromRowIndex: operation.fromRowIndex,
+													toRowIndex: operation.toRowIndex,
 													updateResult
 												})(rowData, index);
 											}
@@ -542,7 +545,7 @@ export const useDSG = ({
 				let updated = null;
 				if (onGridChanged &&
 					!asyncRef.current.supressEvents &&
-					(updateResult.rows > 0 || updateResult.cols.length > 0)) {
+					(updateResult.rows > 0 || updateResult.cols.length > 0 || updateResult.type === "DELETE")) {
 					console.log("onGridChanged", newGridData);
 					updated = await onGridChanged({ prevGridData: prevGridDataRef.current, gridData: newGridData, formData, setValue, updateResult });
 				}

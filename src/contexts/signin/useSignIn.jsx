@@ -82,9 +82,6 @@ export const useSignIn = () => {
 					});
 					console.log("status", status);
 					console.log("payload", payload);
-					if (error) {
-						console.error(error);
-					}
 
 					if (status.success) {
 						// 1.儲存 Cookie
@@ -158,7 +155,7 @@ export const useSignIn = () => {
 						toLanding();
 					} else {
 						captcha.handleRefresh();
-						console.error(`status: ${status}`);
+						console.warn(`status: ${status}`);
 						switch (status.code) {
 							case 401:
 								toastEx.error(`登入失敗，請檢查帳號密碼是否正確`);
@@ -175,7 +172,7 @@ export const useSignIn = () => {
 						);
 					}
 				} catch (err) {
-					console.error("signinStub failed", err);
+					console.error("登入發生異常", err);
 					toastEx.error("登入發生異常", err);
 				} finally {
 					setState((prev) => ({

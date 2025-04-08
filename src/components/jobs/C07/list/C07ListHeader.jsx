@@ -20,9 +20,8 @@ const C07ListHeader = memo(
 				<C07DateColumn>訂貨日期</C07DateColumn>
 				<C07DateColumn>預到日期</C07DateColumn>
 				<C07UserColumn>製單人員</C07UserColumn>
-				<C07DeptIdColumn>訂貨門市</C07DeptIdColumn>
-				<C07DeptIdColumn>出貨門市</C07DeptIdColumn>
-				<C07DeptNameColumn>名稱</C07DeptNameColumn>
+				<C07DeptNameColumn>訂貨門市</C07DeptNameColumn>
+				<C07DeptNameColumn>出貨門市</C07DeptNameColumn>
 			</ListViewHeader>
 		);
 	})

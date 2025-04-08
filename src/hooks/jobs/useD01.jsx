@@ -232,12 +232,15 @@ export const useD01 = () => {
 				}
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
 				if (err.code === 102) {
-					const rowIndex = Number(err.data.Row) - 1;
-					const rowData = grid.gridData[rowIndex];
-					const stock = Number(err.data.StockQty);
+					// const rowIndex = Number(err.data[0].Row) - 1;
+					// const rowData = grid.gridData[rowIndex];
+					// const stock = Number(err.data[0].StockQty);
+					const errorParams = sqtyManager.getErrorParams(err);
 
 					sqtyManager.handleOverrideSQty({
-						setValue, gridMeta, formData: data, rowData, rowIndex, stock, submitAfterCommitted: true
+						setValue, gridMeta, formData: data,
+						// rowData, rowIndex, stock, submitAfterCommitted: true
+						...errorParams
 					});
 					// recoverStockMap(data.prods, { mark: true });
 					// toastEx.error("部分商品庫存不足，請調整後再送出", {
@@ -248,7 +251,7 @@ export const useD01 = () => {
 				}
 			}
 		},
-		[crud, grid.gridData, httpPostAsync, httpPutAsync, listLoader, loadItem, sqtyManager, token]
+		[crud, httpPostAsync, httpPutAsync, listLoader, loadItem, sqtyManager, token]
 	);
 
 	const handleSelect = useCallback(
@@ -398,137 +401,6 @@ export const useD01 = () => {
 		return !!rowData.SInqFlag || !!rowData.stype;
 	}, []);
 
-	// const recoverActiveCell = useCallback(({ gridMeta }) => {
-	// 	if (sqtyLockRef.current !== undefined && sqtyLockRef.current !== null) {
-	// 		gridMeta.setActiveCell({
-	// 			col: "SQty",
-	// 			row: sqtyLockRef.current?.rowIndex,
-	// 		});
-	// 	} else {
-	// 		console.warn("sqtyLockRef is null");
-	// 	}
-	// }, []);
-
-	// const commitSQty = useCallback(
-	// 	({ gridMeta }) => {
-	// 		const sqtyLock = sqtyLockRef.current;
-	// 		// 置換
-
-	// 		const newRowData = {
-	// 			SQty: sqtyLock.demand,
-	// 			SQtyNote: "*",
-	// 		};
-	// 		console.log("commitSQty", newRowData);
-
-	// 		grid.spreadOnRow(sqtyLock.rowIndex, newRowData);
-	// 		const newGridData = [...grid.gridData];
-	// 		newGridData[sqtyLock.rowIndex] = newRowData;
-
-	// 		gridMeta.setActiveCell({
-	// 			col: "SQty",
-	// 			row: sqtyLock.rowIndex,
-	// 		});
-	// 		sqtyLockRef.current = null;
-	// 	},
-	// 	[grid]
-	// );
-
-	// /**
-	//  * 確認強迫銷貨
-	//  */
-	// const promptOverrideSQty = useCallback(
-	// 	({ gridMeta }) => {
-	// 		const sqtyLock = sqtyLockRef.current;
-	// 		dialogs.confirm({
-	// 			message: `[${sqtyLock.prod.ProdID} ${sqtyLock.prod.ProdData}] 庫存不足(${sqtyLock.stock})，是否強迫銷貨？`,
-	// 			onConfirm: () => {
-	// 				commitSQty({ gridMeta });
-	// 			},
-	// 			onCancel: () => {
-	// 				console.log("pword cancelled");
-	// 				// prodGrid.setActiveCell({
-	// 				// 	col: "SQty",
-	// 				// 	row: sqtyLock.rowIndex,
-	// 				// });
-	// 				recoverActiveCell({ gridMeta });
-	// 			},
-	// 			onClose: () => {
-	// 				recoverActiveCell({ gridMeta })
-	// 			},
-	// 			closeOthers: true,
-	// 		});
-	// 	},
-	// 	[commitSQty, dialogs, recoverActiveCell]
-	// );
-
-	// const promptPwordEntry = useCallback(
-	// 	({ promptOverrideSQty, setValue, gridMeta, first = true }) => {
-	// 		console.log("promptPwordEntry, first:", first);
-	// 		const sqtyLock = sqtyLockRef.current;
-	// 		const pwordLock = pwordLockRef.current;
-	// 		dialogs.confirm({
-	// 			title: "庫存不足",
-	// 			message: first
-	// 				? `[${sqtyLock.prod.ProdID} ${sqtyLock.prod.ProdData}] 庫存不足(${sqtyLock.stock}), 請輸入密碼`
-	// 				: "密碼錯誤，請再次輸入或取消",
-	// 			label: "強迫銷貨密碼",
-	// 			triggerCancelOnClose: true,
-	// 			disableCloseOnConfirm: true,
-	// 			closeOthers: !first,
-	// 			onConfirm: (value) => {
-	// 				if (value === pwordLock.value) {
-	// 					console.log("pword passed");
-	// 					pwordLockRef.current = {
-	// 						...pwordLockRef.current,
-	// 						passed: true,
-	// 					};
-	// 					// dialogs.closeLatest();
-	// 					promptOverrideSQty({ gridMeta });
-	// 				} else {
-	// 					// dialogs.closeLatest();
-	// 					console.log("pword not passed");
-	// 					toastEx.error("密碼錯誤, 請重新輸入", {
-	// 						position: "top-right"
-	// 					});
-	// 					promptPwordEntry({
-	// 						promptOverrideSQty,
-	// 						setValue,
-	// 						gridMeta,
-	// 						first: false,
-	// 					});
-	// 				}
-	// 			},
-	// 			onCancel: () => {
-	// 				console.log("pword cancelled");
-	// 				// prodGrid.setActiveCell({
-	// 				// 	col: "SQty",
-	// 				// 	row: sqtyLock.rowIndex,
-	// 				// });
-	// 				recoverActiveCell({ gridMeta });
-	// 			},
-	// 			onClose: () => {
-	// 				recoverActiveCell({ gridMeta })
-	// 			},
-	// 			// confirmText: "通過",
-	// 		});
-	// 	},
-	// 	[dialogs, recoverActiveCell]
-	// );
-
-	// const handleOverrideSQty = useCallback(
-	// 	({ setValue, gridMeta }) => {
-	// 		const pwordLock = pwordLockRef.current;
-	// 		// 1.如果通過密碼判定(stockPwordPassedRef.current), 則直接跳確認
-	// 		gridMeta.setActiveCell(null);
-	// 		if (!pwordLock?.passed) {
-	// 			promptPwordEntry({ promptOverrideSQty, setValue, gridMeta });
-	// 			return;
-	// 		}
-	// 		promptOverrideSQty({ gridMeta });
-	// 	},
-	// 	[promptOverrideSQty, promptPwordEntry]
-	// );
-
 	const handleGridProdChange = useCallback(
 		async ({ rowData, rowIndex, newValue }) => {
 			const { prod } = rowData;
@@ -567,55 +439,6 @@ export const useD01 = () => {
 		[sqtyManager]
 	);
 
-	// const handleGridSQtyChange = useCallback(
-	// 	({ rowData, rowIndex, setValue, gridData, gridMeta }) => {
-	// 		if (!rowData.prod) {
-	// 			return rowData;
-	// 		}
-
-	// 		const prodStock = calcProdStock({
-	// 			rowIndex,
-	// 			prodId: rowData.prod.ProdID,
-	// 			gridData,
-	// 		});
-
-	// 		sqtyLockRef.current = {
-	// 			rowIndex: rowIndex,
-	// 			prod: rowData.prod,
-	// 			demand: rowData.SQty,
-	// 			price: rowData.SPrice,
-	// 			stype: rowData.stype,
-	// 			stock: prodStock,
-	// 		};
-
-	// 		if (prodStock < rowData.SQty && rowData.SQty > 0) {
-	// 			rowData = {
-	// 				...rowData,
-	// 				["SQty"]: 0,
-	// 			};
-
-	// 			handleOverrideSQty({ setValue, gridMeta });
-	// 		} else {
-	// 			rowData = {
-	// 				...rowData,
-	// 				["SQtyNote"]: "",
-	// 				sqtyError: false,
-	// 			};
-	// 		}
-	// 		return rowData;
-	// 	},
-	// 	[calcProdStock, handleOverrideSQty]
-	// );
-
-	// const handleGridOverrideSQtyChange = useCallback(({ rowData }) => {
-	// 	rowData = {
-	// 		...rowData,
-	// 		...(rowData.sqtyManager && {
-	// 			sqtyError: false,
-	// 		}),
-	// 	};
-	// 	return rowData;
-	// }, []);
 	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {
 		let _prodId;
 		if (updateResult?.type === "DELETE") {

@@ -2,18 +2,16 @@ import { A01Context } from "@/contexts/A01/A01Context";
 import A01 from "@/modules/A01.mjs";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
+import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import A01Drawer from "../A01Drawer";
 import A01DialogForm from "../form/A01DialogForm";
 import { A01DialogToolbarContainer } from "./buttons/A01DialogToolbarContainer";
-import { useCallback } from "react";
-import A01Drawer from "../A01Drawer";
-import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import useDebounce from "@/shared-hooks/useDebounce";
 
 export const A01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -28,6 +26,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		scrollerBackgroundColor: "transparent",
 	});
 	const { mobile } = useContext(ResponsiveContext);
+
 	// MODE 2
 	// const scrollable = useScrollable({
 	// 	hide: true,
@@ -216,7 +215,9 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 						height={formHeight}
 						transTabDisabled={a01.transTabDisabled}
 						comboTabDisabled={a01.comboTabDisabled}
+						cmsTabDisabled={a01.cmsTabDisabled}
 						handleInvDataFocused={handleInvDataFocused}
+						doCms={a01.doCms}
 					/>
 				</FormMetaProvider>
 				<A01Drawer />

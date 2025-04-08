@@ -138,7 +138,7 @@ const getTooltip = ({ rowData, rowIndex }) => {
 const getTooltips = ({ rowData, rowIndex }) => {
 	let results = [];
 	if (rowData?.prod?.ProdID) {
-		if (!Strings.isNullOrEmpty(rowData?.StockQty_N)) {
+		if (rowData?.StockQty_N) {
 			const stockQty = rowData.StockQty_N;
 			results.push({
 				label: `庫存量`,
@@ -146,7 +146,7 @@ const getTooltips = ({ rowData, rowIndex }) => {
 			});
 		}
 
-		if (!Strings.isNullOrEmpty(rowData?.OrdQty_N)) {
+		if (rowData?.OrdQty_N) {
 			const demandOfOtherRows = rowData.OrdQty_N;
 			results.push({
 				label: `目前訂購量`,
@@ -154,12 +154,18 @@ const getTooltips = ({ rowData, rowIndex }) => {
 			});
 		}
 
-		if (!Strings.isNullOrEmpty(rowData?.LaveQty_N)) {
-			const remaining = rowData.LaveQty_N;
-			results.push({
-				label: `剩餘量`,
-				value: remaining ?? 0,
-			});
+		if (rowData?.LaveQty_N) {
+			const remaining = Number(rowData.LaveQty_N);
+			const safety = Number(rowData?.SafeQty_N) || 0;
+
+			const value = safety > 0 ? remaining - safety : remaining;
+
+			if (remaining < (safety > 0 ? safety : 0)) {
+				results.push({
+					label: `低於安存量`,
+					value: value,
+				});
+			}
 		}
 	}
 	console.log(`${getTooltips.name}`, results);
@@ -335,8 +341,13 @@ const transformForSubmitting = (payload, gridData) => {
 		dontPrtAmt,
 		taxExcluded,
 		remark,
+		prod,
+		prods,
+		stype,
 		...rest
 	} = payload;
+
+	console.log("ignores", prod, prods, stype);
 
 	return {
 		OrdDate: Forms.formatDate(OrdDate),
