@@ -7,6 +7,7 @@ import { DepOrderDeptIdColumn } from "./columns/DepOrderDeptIdColumn";
 import { DepOrderFlagColumn } from "./columns/DepOrderFlagColumn";
 import { DepOrderIdColumn } from "./columns/DepOrderIdColumn";
 import { DepOrderUserColumn } from "./columns/DepOrderUserColumn";
+import { blue, cyan } from "@mui/material/colors";
 
 const PurchaseDepOrderGridHeader = memo(
 	forwardRef((props, ref) => {
@@ -17,8 +18,11 @@ const PurchaseDepOrderGridHeader = memo(
 				sx={[
 					(theme) => ({
 						borderBottom: "1px solid rgb(0,0,0,0.1)",
+						backgroundColor: cyan[100],
+
 					}),
 					...(Array.isArray(sx) ? sx : [sx]),
+
 				]}
 				{...rest}>
 				<Grid container columns={24} spacing={0}>

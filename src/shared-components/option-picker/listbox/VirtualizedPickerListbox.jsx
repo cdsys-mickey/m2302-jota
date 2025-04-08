@@ -6,6 +6,8 @@ import { forwardRef, memo, useCallback, useEffect, useMemo, useRef } from "react
 import { VariableSizeList } from "react-window";
 import { RWOuterElementContext } from "./RWOuterElementContext";
 import RWOuterElementType from "./RWOuterElementType";
+import { OptionPickerContext } from "./OptionPickerContext";
+import { useContext } from "react";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -19,27 +21,31 @@ const useResetCache = (data) => {
 	return ref;
 };
 
+const RENDER_OPTION_NOT_DEFINED = "???";
+
 /**
  * 此為 renderRow 移至 Context 的版本
  */
 const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
-	const { children, renderRow, ...other } = props;
+	const { children, ...other } = props;
 	console.log("VirtualizedPickerListbox.otherProps", other)
-	// const optionPicker = useContext(OptionPickerContext);
+	const optionPicker = useContext(OptionPickerContext);
+	const { GridRowComponent, renderOptionLabel } = optionPicker;
 
 	// if (!optionPicker) {
 	// 	throw new Error("沒有偵測到 OptionPickerContext");
 	// }
 
-	const defaultRenderRow = useCallback((opts) => {
+	const renderOption = useCallback((opts) => {
 		// opts from React Window
 		const { data, index, style } = opts;
 
 		// Props from Autocomplete-renderOption
 		const dataSet = data[index];
+		console.log(`dataSet[${index}]`, dataSet);
 
 		const { key, ...componentProps } = dataSet[0];
-		const optionLabel = dataSet[1];
+		const option = dataSet[1];
 
 		const inlineStyle = {
 			...style,
@@ -64,14 +70,12 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 				{...componentProps}
 				noWrap
 				style={inlineStyle}>
-				{optionLabel}
+				{GridRowComponent
+					? <GridRowComponent value={option} />
+					: (renderOptionLabel ? renderOptionLabel(option) : RENDER_OPTION_NOT_DEFINED)}
 			</Typography>
 		);
-	}, []);
-
-	const _renderRow = useMemo(() => {
-		return renderRow || defaultRenderRow;
-	}, [defaultRenderRow, renderRow])
+	}, [GridRowComponent, renderOptionLabel]);
 
 	// const { renderRow } = optionPicker;
 
@@ -131,7 +135,7 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 					itemSize={(index) => getChildSize(itemData[index])}
 					overscanCount={5}
 					itemCount={itemCount}>
-					{_renderRow}
+					{renderOption}
 				</VariableSizeList>
 			</RWOuterElementContext.Provider>
 		</div>

@@ -2,7 +2,7 @@ import { Box, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
-export const OptionGridPaper = memo(
+export const OptionPickerGridPaper = memo(
 	forwardRef((props, ref) => {
 		const {
 			children,
@@ -18,6 +18,7 @@ export const OptionGridPaper = memo(
 						px={2}
 						sx={{
 							borderBottom: "1px solid rgb(0,0,0,0.1)",
+							position: "relative"
 						}}>
 						<HeaderComponent />
 					</Box>
@@ -27,7 +28,7 @@ export const OptionGridPaper = memo(
 						(theme) => ({
 							...(!loading && {
 								"& .MuiAutocomplete-listbox": {
-									marginTop: theme.spacing(-1),
+									// marginTop: theme.spacing(-1),
 								},
 							}),
 						}),
@@ -39,11 +40,11 @@ export const OptionGridPaper = memo(
 	})
 );
 
-OptionGridPaper.propTypes = {
+OptionPickerGridPaper.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	loading: PropTypes.bool,
 	HeaderComponent: PropTypes.elementType,
 	elevation: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-OptionGridPaper.displayName = "OptionGridPaper";
+OptionPickerGridPaper.displayName = "OptionGridPaper";

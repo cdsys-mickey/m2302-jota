@@ -105,8 +105,9 @@ const C08DialogForm = memo((props) => {
 								multiple
 								name="depOrders"
 								label="訂貨單號"
-								// virtualize
+								virtualize
 								// fadeOutDisabled
+								// disableClose
 								onChanged={handleDepOrdersChanged}
 								disabled={purchaseOrdersDisabled}
 								disableOpenOnInput

@@ -24,9 +24,10 @@ import {
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { OptionGridPaper } from "./grid/OptionGridPaper";
+import { OptionPickerGridPaper } from "./grid/OptionPickerGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
+import { OptionPickerContext } from "./listbox/OptionPickerContext";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -37,6 +38,8 @@ const MSG_NOT_FOUND_DEFAULT = "${id} 不存在";
 const noFilterOptions = (options) => {
 	return options;
 };
+
+const RENDER_OPTION_NOT_DEFINED = "???";
 
 /**
  * getOptionLabel: 預設用於繪製選擇及選定的 option
@@ -122,7 +125,6 @@ const OptionPicker = memo(
 			// ListboxComponent,
 			renderOption,
 			renderGroup,
-			// renderRow = defaultRenderRow,
 			optionLabelSize,
 			// GRID support
 			PaperComponent: customPaperComponent,
@@ -778,7 +780,7 @@ const OptionPicker = memo(
 
 		const defaultRenderOption = useCallback(
 			(optionProps, option) => {
-				const { key, style, ...defaultOptionProps } = optionProps;
+				const { key, style, ...restOptionProps } = optionProps;
 				const renderOptionLabelFunc =
 					renderOptionLabel ||
 					getOptionLabel ||
@@ -786,28 +788,26 @@ const OptionPicker = memo(
 
 				return (
 					<li
-						{...defaultOptionProps}
 						key={key}
 						style={{
 							...style,
 							...itemStyle,
-						}}>
-						{renderOptionLabelFunc(option)}
+						}}
+						{...restOptionProps}
+					>
+						{GridRowComponent
+							? <GridRowComponent value={option} />
+							: renderOptionLabelFunc ? renderOptionLabelFunc(option) : RENDER_OPTION_NOT_DEFINED}
 					</li>
 				);
 			},
-			[
-				defaultGetOptionLabel,
-				getOptionLabel,
-				itemStyle,
-				renderOptionLabel,
-			]
+			[GridRowComponent, defaultGetOptionLabel, getOptionLabel, itemStyle, renderOptionLabel]
 		);
 
 		const renderOptionForVirtualized = useCallback(
 			(props, option, state) => {
-				const renderOptionLabelFunc = renderOptionLabel || getOptionLabel;
-				const label = renderOptionLabelFunc(option);
+				// const renderOptionLabelFunc = renderOptionLabel || getOptionLabel;
+				// const label = renderOptionLabelFunc(option);
 
 				let variant;
 				if (optionLabelSize === "small") {
@@ -822,45 +822,37 @@ const OptionPicker = memo(
 							variant: variant,
 						}),
 					},
-					label,
+					option,
 					state.index,
 				];
 			},
-			[getOptionLabel, optionLabelSize, renderOptionLabel]
+			[optionLabelSize]
 		);
-
-
 
 		/**
 		 * grid 版本 renderOption
 		 */
-		const renderGridOption = useCallback(
-			({ key, style, ...optionProps }, option) => {
-				return (
-					<li key={key} style={style} {...optionProps}>
-						<GridRowComponent value={option} />
-					</li>
-				);
-			},
-			[]
-		);
+		// const renderGridOption = useCallback(
+		// 	(optionProps, option) => {
+		// 		const { key, style, ...restOptionProps } = optionProps;
+		// 		return (
+		// 			<li key={key} style={style} {...restOptionProps}>
+		// 				<GridRowComponent value={option} />
+		// 			</li>
+		// 		);
+		// 	},
+		// 	[]
+		// );
 
 		const handleRenderOption = useMemo(() => {
-			if (GridRowComponent) {
-				return renderGridOption;
-			}
 			if (virtualize) {
 				return renderOptionForVirtualized;
 			}
+			// if (GridRowComponent) {
+			// 	return renderGridOption;
+			// }
 			return renderOption || defaultRenderOption;
-		}, [
-			GridRowComponent,
-			virtualize,
-			renderOption,
-			defaultRenderOption,
-			renderGridOption,
-			renderOptionForVirtualized,
-		]);
+		}, [virtualize, renderOption, defaultRenderOption, renderOptionForVirtualized]);
 
 		const renderGroupForVirtualized = useCallback((params) => {
 			return params;
@@ -872,7 +864,7 @@ const OptionPicker = memo(
 
 		const PaperComponent = useMemo(() => {
 			if (GridHeaderComponent) {
-				return OptionGridPaper;
+				return OptionPickerGridPaper;
 			}
 			return customPaperComponent || Paper;
 		}, [GridHeaderComponent, customPaperComponent]);
@@ -902,116 +894,118 @@ const OptionPicker = memo(
 		}, [value]);
 
 		return (
-			<OptionPickerBox
-				// DSG 支援屬性
-				hideBorders={hideBorders}
-				focusedBackgroundColor={focusedBackgroundColor}
-				// hidePopupIndicator={hidePopupIndicator}
-				// disablePointerEvents={disablePointerEvents}
-				hideControls={hideControls}
-				disableFadeOut={disableFadeOut}
-				size={size}
-				title={memoisedTitle}
-				width={_width}
-				{...BoxProps}>
-				<Autocomplete
-					onKeyDown={handleAutocompleteKeyDown}
-					onChange={handleChange}
-					ref={ref}
+			<OptionPickerContext.Provider value={{
+				GridRowComponent,
+				renderOptionLabel: renderOptionLabel || getOptionLabel
+			}}>
+				<OptionPickerBox
+					// DSG 支援屬性
+					hideBorders={hideBorders}
+					focusedBackgroundColor={focusedBackgroundColor}
+					// hidePopupIndicator={hidePopupIndicator}
+					// disablePointerEvents={disablePointerEvents}
+					hideControls={hideControls}
+					disableFadeOut={disableFadeOut}
 					size={size}
-					// slotProps={{
-					// 	paper: {
-					// 		component: ({ ...rest }) => (
-					// 			<PaperComponent
-					// 				elevation={8}
-					// 				{...(GridHeaderComponent && {
-					// 					HeaderComponent: GridHeaderComponent,
-					// 				})}
-					// 				{...rest}
-					// 			/>
-					// 		),
-					// 		...slotProps?.paper,
-					// 	},
-					// 	...slotProps
-					// }}
-					// onBlur={handleBlur}
-					PaperComponent={({ ...rest }) => (
-						<PaperComponent
-							elevation={8}
-							{...(GridHeaderComponent && {
-								HeaderComponent: GridHeaderComponent,
-							})}
-							{...rest}
-							{...slotProps?.paper}
-						/>
-					)}
-					// filterSelectedOptions={filterSelectedOptions}
-					disabled={disabled}
-					noOptionsText={noOptionsText}
-					clearText={clearText}
-					closeText={closeText}
-					openText={openText}
-					multiple={multiple}
-					renderInput={handleRenderInput}
-					renderTags={renderTags}
-					loading={loading}
-					loadingText={loadingText}
-					value={value}
-					options={options}
-					getOptionLabel={getOptionLabel}
-					renderOption={handleRenderOption}
-					renderGroup={handleRenderGroup}
-					filterOptions={memoisedFilterOptions}
-					// Popper Open 控制
-					// open={popperOpen}
-					onOpen={handleOpen}
-					onClose={handleClose}
-					// PopperComponent={OptionPickerPopper}
-					open={_open}
-					// onOpen={_onOpen}
-					// onOpen={_onOpen}
-					// onClose={_onClose}
-					sx={[
-						{
-							...(disabled && {
-								"&.MuiAutocomplete-root .MuiAutocomplete-popupIndicator":
-								{
-									// opacity: 0,
-									display: "none",
-								},
-								"&.MuiAutocomplete-root .MuiInputBase-root.Mui-disabled ":
-								{
-									paddingRight: 0,
-								},
-							}),
-							...(dense && {
-								"&.MuiAutocomplete-root .MuiInputBase-root.MuiInputBase-sizeSmall":
-								{
-									paddingTop: "2px",
-									paddingBottom: "2px",
-									paddingLeft: "2px",
-									// paddingRight: "40px",
-								},
-							}),
-						},
-						...(Array.isArray(sx) ? sx : [sx]),
-					]}
-					{...AUTO_COMPLETE_DEFAULTS}
-					{...rest}
+					title={memoisedTitle}
+					width={_width}
+					{...BoxProps}>
+					<Autocomplete
+						onKeyDown={handleAutocompleteKeyDown}
+						onChange={handleChange}
+						ref={ref}
+						size={size}
+						// slotProps={{
+						// 	paper: {
+						// 		component: ({ ...rest }) => (
+						// 			<PaperComponent
+						// 				elevation={8}
+						// 				{...(GridHeaderComponent && {
+						// 					HeaderComponent: GridHeaderComponent,
+						// 				})}
+						// 				{...rest}
+						// 			/>
+						// 		),
+						// 		...slotProps?.paper,
+						// 	},
+						// 	...slotProps
+						// }}
+						// onBlur={handleBlur}
+						PaperComponent={({ ...rest }) => (
+							<PaperComponent
+								elevation={8}
+								{...(GridHeaderComponent && {
+									HeaderComponent: GridHeaderComponent,
+								})}
+								{...rest}
+								{...slotProps?.paper}
+							/>
+						)}
+						// filterSelectedOptions={filterSelectedOptions}
+						disabled={disabled}
+						noOptionsText={noOptionsText}
+						clearText={clearText}
+						closeText={closeText}
+						openText={openText}
+						multiple={multiple}
+						renderInput={handleRenderInput}
+						renderTags={renderTags}
+						loading={loading}
+						loadingText={loadingText}
+						value={value}
+						options={options}
+						getOptionLabel={getOptionLabel}
+						renderOption={handleRenderOption}
+						renderGroup={handleRenderGroup}
+						filterOptions={memoisedFilterOptions}
+						// Popper Open 控制
+						// open={popperOpen}
+						onOpen={handleOpen}
+						onClose={handleClose}
+						// PopperComponent={OptionPickerPopper}
+						open={_open}
+						// onOpen={_onOpen}
+						// onOpen={_onOpen}
+						// onClose={_onClose}
+						sx={[
+							{
+								...(disabled && {
+									"&.MuiAutocomplete-root .MuiAutocomplete-popupIndicator":
+									{
+										// opacity: 0,
+										display: "none",
+									},
+									"&.MuiAutocomplete-root .MuiInputBase-root.Mui-disabled ":
+									{
+										paddingRight: 0,
+									},
+								}),
+								...(dense && {
+									"&.MuiAutocomplete-root .MuiInputBase-root.MuiInputBase-sizeSmall":
+									{
+										paddingTop: "2px",
+										paddingBottom: "2px",
+										paddingLeft: "2px",
+										// paddingRight: "40px",
+									},
+								}),
+							},
+							...(Array.isArray(sx) ? sx : [sx]),
+						]}
+						{...AUTO_COMPLETE_DEFAULTS}
+						{...rest}
 
-					// virtualize = true 時必須強制 override 部分屬性
-					{...(virtualize && {
-						ListboxComponent: VirtualizedPickerListbox,
-						// 	disableListWrap: true,
-					})}
-					{...(virtualize && {
-						disableListWrap: true,
-					})}
-				// ListboxProps={{
-				// 	style: { minHeight: loading ? 100 : 'auto' } // 保留 Listbox 空間，避免重新渲染
-				// }}
-				/>
-			</OptionPickerBox>
+						// virtualize = true 時必須強制 override 部分屬性
+						{...(virtualize && {
+							ListboxComponent: VirtualizedPickerListbox,
+							// 	disableListWrap: true,
+						})}
+						{...(virtualize && {
+							disableListWrap: true,
+						})}
+					/>
+				</OptionPickerBox>
+			</OptionPickerContext.Provider>
 		);
 	})
 );
@@ -1078,7 +1072,6 @@ OptionPicker.propTypes = {
 	labelShrink: PropTypes.bool,
 	renderOption: PropTypes.func,
 	renderGroup: PropTypes.func,
-	// renderRow: PropTypes.func,
 	dontFilterOptions: PropTypes.bool,
 	stringify: PropTypes.func,
 	renderOptionLabel: PropTypes.func,

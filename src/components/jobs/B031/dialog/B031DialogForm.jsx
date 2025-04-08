@@ -1,18 +1,14 @@
+import CustomerPicker from "@/components/picker/CustomerPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import SupplierPicker from "@/components/picker/SupplierPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { OptionPickerProvider } from "@/shared-components/option-picker/OptionPickerProvider";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Container, Drawer, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { B031QuoteGridContainer } from "./quotes/B031QuoteGridContainer";
-import CustomerPicker from "@/components/picker/CustomerPicker";
-import NewCustomerPicker from "@/components/picker/ZZNewCustomerPicker";
 
 const B031DialogForm = memo((props) => {
 	const {
