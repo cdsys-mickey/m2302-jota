@@ -15,6 +15,7 @@ const PurchaseDepOrderGridRow = memo(
 		const deptName = useMemo(() => {
 			return `${value["訂貨門市"]} ${value["訂貨門市名稱"]}`;
 		}, [value]);
+
 		return (
 			<Grid ref={ref} container columns={24} spacing={2}>
 				<DepOrderFlagColumn>{value["結"]}</DepOrderFlagColumn>

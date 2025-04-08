@@ -777,8 +777,9 @@ const OptionPicker = memo(
 		}, []);
 
 		const defaultRenderOption = useCallback(
-			({ key, style, ...defaultOptionProps }, option) => {
-				const renderOptionFunc =
+			(optionProps, option) => {
+				const { key, style, ...defaultOptionProps } = optionProps;
+				const renderOptionLabelFunc =
 					renderOptionLabel ||
 					getOptionLabel ||
 					defaultGetOptionLabel;
@@ -791,7 +792,7 @@ const OptionPicker = memo(
 							...style,
 							...itemStyle,
 						}}>
-						{renderOptionFunc(option)}
+						{renderOptionLabelFunc(option)}
 					</li>
 				);
 			},
@@ -805,8 +806,8 @@ const OptionPicker = memo(
 
 		const renderOptionForVirtualized = useCallback(
 			(props, option, state) => {
-				const renderOptionFunc = renderOptionLabel || getOptionLabel;
-				const label = renderOptionFunc(option);
+				const renderOptionLabelFunc = renderOptionLabel || getOptionLabel;
+				const label = renderOptionLabelFunc(option);
 
 				let variant;
 				if (optionLabelSize === "small") {
@@ -828,9 +829,7 @@ const OptionPicker = memo(
 			[getOptionLabel, optionLabelSize, renderOptionLabel]
 		);
 
-		const renderGroupForVirtualized = useCallback((params) => {
-			return params;
-		}, []);
+
 
 		/**
 		 * grid 版本 renderOption
@@ -862,6 +861,10 @@ const OptionPicker = memo(
 			renderGridOption,
 			renderOptionForVirtualized,
 		]);
+
+		const renderGroupForVirtualized = useCallback((params) => {
+			return params;
+		}, []);
 
 		const handleRenderGroup = useMemo(() => {
 			return virtualize ? renderGroupForVirtualized : renderGroup;
