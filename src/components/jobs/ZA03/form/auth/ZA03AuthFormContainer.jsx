@@ -1,6 +1,5 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
@@ -8,7 +7,7 @@ import { useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import ZA03AuthForm from "./ZA03AuthForm";
 
-const CHECK_WIDTH = 54;
+const CHECK_WIDTH = 65;
 
 export const ZA03AuthFormContainer = () => {
 	// const form = useForm();
@@ -23,7 +22,7 @@ export const ZA03AuthFormContainer = () => {
 			{
 				...keyColumn(
 					"enabled",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium",
 					})
 				),
@@ -61,7 +60,7 @@ export const ZA03AuthFormContainer = () => {
 			// {
 			// 	...keyColumn(
 			// 		"INQ",
-			// 		createCheckboxExColumn({
+			// 		createCheckboxColumn({
 			// 			size: "medium",
 			// 		})
 			// 	),
@@ -74,7 +73,7 @@ export const ZA03AuthFormContainer = () => {
 			{
 				...keyColumn(
 					"INS",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium",
 					})
 				),
@@ -86,7 +85,7 @@ export const ZA03AuthFormContainer = () => {
 			{
 				...keyColumn(
 					"UPD",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium",
 					})
 				),
@@ -99,7 +98,7 @@ export const ZA03AuthFormContainer = () => {
 			{
 				...keyColumn(
 					"PRT",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium",
 					})
 				),
@@ -112,7 +111,7 @@ export const ZA03AuthFormContainer = () => {
 			{
 				...keyColumn(
 					"DEL",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium",
 					})
 				),
@@ -125,7 +124,7 @@ export const ZA03AuthFormContainer = () => {
 			{
 				...keyColumn(
 					"USI",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium",
 					})
 				),
@@ -138,7 +137,7 @@ export const ZA03AuthFormContainer = () => {
 			{
 				...keyColumn(
 					"CHK",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium",
 					})
 				),
@@ -150,7 +149,7 @@ export const ZA03AuthFormContainer = () => {
 			{
 				...keyColumn(
 					"NCK",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium",
 					})
 				),
@@ -162,7 +161,7 @@ export const ZA03AuthFormContainer = () => {
 			// {
 			// 	...keyColumn(
 			// 		"RUN",
-			// 		createCheckboxExColumn({
+			// 		createCheckboxColumn({
 			// 			size: "medium",
 			// 		})
 			// 	),
@@ -174,7 +173,7 @@ export const ZA03AuthFormContainer = () => {
 			// {
 			// 	...keyColumn(
 			// 		"EXP",
-			// 		createCheckboxExColumn({
+			// 		createCheckboxColumn({
 			// 			size: "medium",
 			// 		})
 			// 	),
@@ -187,7 +186,7 @@ export const ZA03AuthFormContainer = () => {
 			// {
 			// 	...keyColumn(
 			// 		"IMP",
-			// 		createCheckboxExColumn({
+			// 		createCheckboxColumn({
 			// 			size: "medium",
 			// 		})
 			// 	),
@@ -209,7 +208,9 @@ export const ZA03AuthFormContainer = () => {
 	);
 
 	const gridMeta = useDSGMeta({
+		name: "auth",
 		data: za03.grid.gridData,
+		setGridData: za03.grid.setGridData,
 		columns,
 		skipDisabled: true,
 	})

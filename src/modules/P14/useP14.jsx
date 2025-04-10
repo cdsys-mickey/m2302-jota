@@ -62,9 +62,12 @@ export const useP14 = () => {
 		createRow
 	});
 
+	const [duplicating, setDuplicating] = useState(false);
+
 	// READ
 	const loadItem = useCallback(
 		async ({ id, refresh = false }) => {
+			setDuplicating(false);
 			try {
 				const itemId = refresh ? itemIdRef.current : id;
 				if (!refresh) {
@@ -98,6 +101,7 @@ export const useP14 = () => {
 
 	// CREATE
 	const promptCreating = useCallback(() => {
+		setDuplicating(false);
 		const data = {
 			prods: [],
 		};
@@ -108,7 +112,7 @@ export const useP14 = () => {
 	}, [crud, grid]);
 
 	const handleSave = useCallback(
-		async ({ data }) => {
+		async ({ data, }) => {
 			const creating = crud.creating;
 			try {
 				if (creating) {
@@ -139,7 +143,10 @@ export const useP14 = () => {
 				}
 			} catch (err) {
 				if (err.status === 409 && err.data) {
-					grid.initGridData(P14.transformGridForReading(err.data));
+					setDuplicating(true);
+					grid.initGridData(P14.transformGridForReading(err.data), {
+						fillRows: crud.creating
+					});
 				}
 				if (creating) {
 					crud.failCreating();
@@ -570,7 +577,8 @@ export const useP14 = () => {
 		...sideDrawer,
 		onUpdateRow,
 		createRow,
-		forceDisabled
+		forceDisabled,
+		duplicating
 	};
 };
 

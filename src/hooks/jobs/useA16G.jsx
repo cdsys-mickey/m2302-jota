@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { toastEx } from "@/helpers/toastEx";
-import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -42,7 +42,7 @@ export const useA16G = () => {
 			{
 				...keyColumn(
 					"Using_N",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						trueValue: "1",
 						falseValue: "0",
 						size: "medium"

@@ -105,12 +105,14 @@ const E01DialogForm = memo((props) => {
 									name="dontPrtAmt"
 									size="medium"
 									color="secondary"
-									labelSlotProps={{
-										typography: {
-											variant: "body2",
-											// sx: {
-											// 	fontSize: 10
-											// }
+									slotProps={{
+										label: {
+											typography: {
+												variant: "body2",
+												// sx: {
+												// 	fontSize: 10
+												// }
+											}
 										}
 									}}
 								/>

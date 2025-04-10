@@ -105,12 +105,14 @@ const E021DialogForm = memo((props) => {
 									name="dontPrtAmt"
 									size="medium"
 									color="secondary"
-									labelSlotProps={{
-										typography: {
-											variant: "body2",
-											// sx: {
-											// 	fontSize: 10
-											// }
+									slotProps={{
+										label: {
+											typography: {
+												variant: "body2",
+												// sx: {
+												// 	fontSize: 10
+												// }
+											}
 										}
 									}}
 								/>
@@ -245,12 +247,14 @@ const E021DialogForm = memo((props) => {
 									label="稅外加"
 									name="taxExcluded"
 									size="medium"
-									labelSlotProps={{
-										typography: {
-											variant: "body2",
-											// sx: {
-											// 	fontSize: 10
-											// }
+									slotProps={{
+										label: {
+											typography: {
+												variant: "body2",
+												// sx: {
+												// 	fontSize: 10
+												// }
+											}
 										}
 									}}
 									onChange={handleTaxTypeChange}

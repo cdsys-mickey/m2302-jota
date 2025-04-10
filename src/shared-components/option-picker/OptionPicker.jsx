@@ -603,6 +603,7 @@ const OptionPicker = memo(
 								disableUnderline: true
 							}),
 							...InputProps,
+							...slotProps?.input,
 							endAdornment: (
 								<>
 									{loading ? <CircularProgress color="inherit" size={20} /> : null}

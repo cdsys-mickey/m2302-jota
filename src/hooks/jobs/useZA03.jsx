@@ -54,9 +54,9 @@ export const useZA03 = () => {
 		// keyColumn: "module.JobID",
 		keyColumn: "JobID",
 	});
-	const gridMeta = useDSGMeta({
+	// const gridMeta = useDSGMeta({
 
-	});
+	// });
 	// const { clearGridData, getRowDataByIndex } = authGrid;
 
 	// const [selection, setSelection] = useState({
@@ -150,7 +150,7 @@ export const useZA03 = () => {
 			cancelAuthEditing();
 		} else {
 			dialogs.confirm({
-				message: `確定要放棄修改?`,
+				message: `您已變更權限設定，確定要放棄修改?`,
 				onConfirm: () => {
 					cancelAuthEditing();
 				},

@@ -1,9 +1,7 @@
-import Objects from "@/shared-modules/Objects";
-import { memo, useLayoutEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import { useCallback } from "react";
-import { useMemo } from "react";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import Objects from "@/shared-modules/Objects";
+import PropTypes from "prop-types";
+import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -15,6 +13,8 @@ const arePropsEqual = (oldProps, newProps) => {
 
 /**
  * 截自 GitHub 上的原始碼，用於改寫加入新功能
+ * 1. 使用空白鍵切換
+ * 2. 按 Enter 不改變 rowData
  * https://github.com/nick-keller/react-datasheet-grid/blob/master/src/columns/checkboxColumn.tsx
  */
 const CheckboxComponent = memo(
@@ -31,7 +31,7 @@ const CheckboxComponent = memo(
 		disabled,
 	}) => {
 		const ref = useRef(null);
-		// console.log("rendering CheckboxComponent");
+
 		const {
 			size,
 			valueToChecked,
@@ -43,15 +43,16 @@ const CheckboxComponent = memo(
 			isLastRow,
 			setActiveCell,
 			readOnly,
-			focusNextCell
+			focusNextCell = true
 		} = columnData;
 
 		const toggleChecked = useCallback(
 			(e) => {
-				console.log("e.target.checked", e.target.checked);
+
 				const newValue = checkedToValue
 					? checkedToValue(!e.target.checked)
 					: !e.target.checked;
+				console.log(`e.target.checked ${e.target.checked} → ${newValue}`);
 				setRowData(newValue);
 			},
 			[checkedToValue, setRowData]
@@ -83,36 +84,46 @@ const CheckboxComponent = memo(
 		}, []);
 
 		const handleMouseDown = useCallback((e) => {
-			if (!active) {
-				// setRowData(!rowData);
-				toggleChecked(e);
-			}
-		}, [active, toggleChecked]);
+			// if (!active) {
+			setRowData(!rowData);
+			// toggleChecked(e);
+			// }
+		}, [rowData, setRowData]);
 
 		const handleChange = useCallback(() => {
 			// do nothing
 		}, []);
 
-		// When cell becomes focus we immediately toggle the checkbox and blur the cell by calling `stopEditing`
-		// Notice the `nextRow: false` to make sure the active cell does not go to the cell below and stays on this cell
-		// This way the user can keep pressing Enter to toggle the checkbox on and off multiple times
+		// 當 focus 時, 切換 rowData, 再視條件往下一格前進
+		// useLayoutEffect(() => {
+		// 	if (focus) {
+		// 		setRowData(!rowData);
+		// 		stopEditing({ nextRow: false });
+		// 		console.log(`focusNextCell: ${focusNextCell}`);
+		// 		if (handleFocusNextCell && focusNextCell) {
+		// 			setTimeout(() => {
+		// 				handleFocusNextCell(cell);
+		// 			});
+		// 		}
+		// 	}
+		// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// }, [focus, stopEditing]);
 		useLayoutEffect(() => {
 			if (focus) {
-				setRowData(!rowData);
 				stopEditing({ nextRow: false });
-				if (handleFocusNextCell) {
-					// handleFocusNextCell(cell);
+				if (handleFocusNextCell && focusNextCell) {
+					// 只會往下走
 					setTimeout(() => {
-						// handleFocusNextCell(cell, { forward: true });
-						handleFocusNextCell(cell);
+						handleFocusNextCell(cell, { forward: true });
 					});
 				}
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [focus, stopEditing]);
 
+		// 略過停用的 cell
 		useLayoutEffect(() => {
-			if (skipDisabled && active && disabled && !readOnly && focusNextCell) {
+			if (skipDisabled && active && disabled && !readOnly) {
 				if (handleFocusNextCell) {
 					// 這裡不能等到下個 cycle
 					handleFocusNextCell(cell);
@@ -167,6 +178,8 @@ CheckboxComponent.propTypes = {
 	stopEditing: PropTypes.func,
 	setRowData: PropTypes.func,
 	insertRowBelow: PropTypes.func,
+	rowIndex: PropTypes.number,
+	columnIndex: PropTypes.number
 };
 CheckboxComponent.displayName = "CheckboxComponent";
 export default CheckboxComponent;

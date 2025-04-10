@@ -70,7 +70,7 @@ const C08DialogForm = memo((props) => {
 								onChanged={handleRtnDateChanged}
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<EmployeePicker
 								typo
 								label="倉管人員"
@@ -84,7 +84,7 @@ const C08DialogForm = memo((props) => {
 								disableOpenOnInput
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<DeptPicker
 								typo
 								name="txiDept"
@@ -99,7 +99,7 @@ const C08DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<FlexBox fullWidth />
-						<Grid item xs={24} sm={24} md={creating ? 8.5 : 8}>
+						<Grid item xs={24} sm={24} md={creating ? 9 : 8}>
 							<PurchaseDepOrderPicker
 								typo
 								multiple
@@ -122,7 +122,7 @@ const C08DialogForm = memo((props) => {
 						</Grid>
 
 
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<TransportTypePicker
 								typo
 								name="transType"
@@ -135,7 +135,7 @@ const C08DialogForm = memo((props) => {
 							/>
 						</Grid>
 
-						<Grid item xs={24} sm={24} md={5}>
+						<Grid item xs={24} sm={24} md={5.5}>
 							<EmployeePicker
 								typo
 								label="配送人"

@@ -1,11 +1,11 @@
-import CheckboxComponentContainer from "./CheckboxComponentContainer";
+import CheckboxComponent from "./CheckboxComponent";
 
 const TRUE_VALUES = ["1", "y", "true", "chekced", "on"];
 
-export const createCheckboxExColumn = (opts) => {
+export const createCheckboxColumnOld = (opts) => {
 	return {
-		component: CheckboxComponentContainer,
-		// component: CheckboxComponent,
+		// component: CheckboxComponentContainer,
+		component: CheckboxComponent,
 		columnData: opts,
 		deleteValue: () => false,
 		// We can customize what value is copied: when the checkbox is checked we copy YES, otherwise we copy NO
@@ -13,6 +13,7 @@ export const createCheckboxExColumn = (opts) => {
 		// Since we copy custom values, we have to make sure pasting gives us the expected result
 		// Here NO is included in the FALSY array, so it will be converted to false, YES is not, so it will be converted to true
 		pasteValue: ({ value }) => TRUE_VALUES.includes(value.toLowerCase()),
-		isCellEmpty: ({ rowData }) => rowData == null || rowData == undefined,
+		// isCellEmpty: ({ rowData }) => !rowData,
+		isCellEmpty: ({ rowData }) => rowData == undefined || rowData == null,
 	};
 };

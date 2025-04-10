@@ -1,8 +1,9 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
-import { P14Context } from "@/modules/P14/P14Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/md-colors";
+import { P14Context } from "@/modules/P14/P14Context";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
@@ -17,8 +18,6 @@ import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import P14Drawer from "../P14Drawer";
 import P14DialogForm from "./P14DialogForm";
 import { P14DialogToolbarContainer } from "./toolbar/P14DialogToolbarContainer";
-import { YesOrEmptyPickerComponentContainer } from "@/components/dsg/columns/yes-or-empty-picker/YesOrEmptyPickerComponentContainer";
-import P14 from "../P14.mjs";
 
 export const P14DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -123,64 +122,69 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 				disabled: true,
 				grow: 2,
 			},
-			{
-				...keyColumn("Repeat_N", createTextColumnEx({
-					continuousUpdates: false,
-				})),
-				minWidth: 38,
-				maxWidth: 38,
-				title: "重",
-				disabled: true,
-				cellClassName: "star",
-			},
-			{
-				...keyColumn(
-					"Force",
-					optionPickerColumn(YesOrEmptyPickerComponentContainer, {
-						name: "Force",
-						disableClearable: true,
-						disableOpenOnInput: true,
-						autoHighlight: true,
-						selectOnFocus: true,
-					})
-				),
-				title: "強",
-				minWidth: 70,
-				maxWidth: 70,
-				disabled: readOnly || p14.forceDisabled,
-			},
-			{
-				...keyColumn(
-					"OItmID_N",
-					createTextColumnEx({
+			...(p14.duplicating ? [
+				{
+					...keyColumn("Repeat_N", createTextColumnEx({
 						continuousUpdates: false,
-					})
-				),
-				title: "序",
-				minWidth: 40,
-				maxWidth: 40,
-				disabled: true,
-			},
-			{
-				...keyColumn(
-					"OItmData_N",
-					createTextColumnEx({
-						continuousUpdates: false,
-					})
-				),
-				title: "品項列印名稱",
-				minWidth: 120,
-				maxWidth: 120,
-				disabled: true,
-			},
-
+					})),
+					minWidth: 38,
+					maxWidth: 38,
+					title: "重覆",
+					disabled: true,
+					cellClassName: "star",
+				},
+			] : []),
+			...(p14.duplicating ? [
+				{
+					...keyColumn(
+						"Force",
+						createCheckboxColumn({
+							size: "medium",
+						})
+					),
+					title: "強制",
+					minWidth: 40,
+					maxWidth: 40,
+					disabled: readOnly || p14.forceDisabled,
+				}
+			] : []),
+			...(p14.duplicating ? [
+				{
+					...keyColumn(
+						"OItmID_N",
+						createTextColumnEx({
+							continuousUpdates: false,
+						})
+					),
+					title: "序號",
+					minWidth: 40,
+					maxWidth: 40,
+					disabled: true,
+				},
+			] : []),
+			...(p14.duplicating ? [
+				{
+					...keyColumn(
+						"OItmData_N",
+						createTextColumnEx({
+							continuousUpdates: false,
+						})
+					),
+					title: "品項列印名稱",
+					minWidth: 120,
+					maxWidth: 120,
+					disabled: true,
+				},
+			] : []),
 		],
-		[]
+		[p14.duplicating, p14.forceDisabled, readOnly]
 	);
 
 	const gridMeta = useDSGMeta({
 		data: p14.grid.gridData,
 		columns,
+		setGridData: p14.grid.setGridData,
+		createRow: p14.createRow,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW
 	})

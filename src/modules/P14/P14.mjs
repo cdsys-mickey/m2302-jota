@@ -1,6 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { nanoid } from "nanoid";
-import YesOrEmpty from "../YesOrEmpty.mjs";
 
 const transformForGridImport = (data) => {
 	return (
@@ -11,7 +10,8 @@ const transformForGridImport = (data) => {
 				ProdData: ProdData,
 			},
 			ProdData_N: ProdData,
-			Force: null,
+			// Force: null,
+			Force: false,
 			...rest,
 		})) || []
 	);
@@ -25,7 +25,8 @@ const transformGridForReading = (data) => {
 				ProdData: ProdData_N,
 			},
 			ProdData_N,
-			Force: YesOrEmpty.getOptionById(Force),
+			// Force: YesOrEmpty.getOptionById(Force),
+			Force: Force === "Y",
 			Repeat_N: Repeat_N ? "*" : "",
 			Seq,
 			...rest,
@@ -39,7 +40,8 @@ const transformGridForSubmitting = (data) => {
 		.map(({ prod, Force }, index) => ({
 			SProdID: prod?.ProdID,
 			Seq: index + 1,
-			Force: Force?.id ?? "",
+			// Force: Force?.id ?? "",
+			Force: Force ? "Y" : "",
 		}));
 };
 

@@ -4,7 +4,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { D041Context } from "@/contexts/D041/D041Context";
 import Colors from "@/modules/md-colors";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -179,35 +179,35 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 				maxWidth: 160,
 				disabled: readOnly || d041.dtypeDisabled,
 			},
-			// {
-			// 	...keyColumn(
-			// 		"reworked",
-			// 		createCheckboxExColumn({
-			// 			size: "medium",
-			// 		})
-			// 	),
-			// 	title: "重工",
-			// 	minWidth: 38,
-			// 	maxWidth: 38,
-			// 	disabled: readOnly || d041.reworkedDisabled,
-			// },
 			{
 				...keyColumn(
 					"reworked",
-					optionPickerColumn(YesOrEmptyPickerComponentContainer, {
-						name: "reworked",
-						disableClearable: true,
-						disableOpenOnInput: true,
-						autoHighlight: true,
-						selectOnFocus: true,
-						// forcePopupIcon: false
+					createCheckboxColumn({
+						size: "medium",
 					})
 				),
 				title: "重工",
-				minWidth: 70,
-				maxWidth: 70,
+				minWidth: 38,
+				maxWidth: 38,
 				disabled: readOnly || d041.reworkedDisabled,
 			},
+			// {
+			// 	...keyColumn(
+			// 		"reworked",
+			// 		optionPickerColumn(YesOrEmptyPickerComponentContainer, {
+			// 			name: "reworked",
+			// 			disableClearable: true,
+			// 			disableOpenOnInput: true,
+			// 			autoHighlight: true,
+			// 			selectOnFocus: true,
+			// 			// forcePopupIcon: false
+			// 		})
+			// 	),
+			// 	title: "重工",
+			// 	minWidth: 70,
+			// 	maxWidth: 70,
+			// 	disabled: readOnly || d041.reworkedDisabled,
+			// },
 			{
 				...keyColumn(
 					"stype",
@@ -243,6 +243,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 	const gridMeta = useDSGMeta({
 		data: d041.grid.gridData,
 		columns,
+		setGridData: d041.grid.setGridData,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW
 	})

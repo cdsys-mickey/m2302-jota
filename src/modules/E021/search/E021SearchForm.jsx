@@ -57,8 +57,8 @@ const E021SearchForm = memo((props) => {
 					<ResponsiveGrid item xs={4}>
 						<E021SalesTypePicker
 							name="lvSalesType"
-							label="零售"
-							placeholder="零售客戶?"
+							label="銷售類型"
+							placeholder="空白=正式+零售客戶"
 						/>
 					</ResponsiveGrid>
 					<ResponsiveGrid item xs={4}>
@@ -66,6 +66,12 @@ const E021SearchForm = memo((props) => {
 							<CheckboxExWrapper
 								label="零售"
 								name="lvRetail"
+								size="small"
+								slotProps={{
+									label: {
+										labelPlacement: "start"
+									}
+								}}
 							/>
 						</FlexBox>
 					</ResponsiveGrid>

@@ -1,13 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback, useRef } from "react";
 import DSG from "@/shared-modules/sd-dsg";
+import { useEffect } from "react";
+import { toastEx } from "@/helpers/toastEx";
+import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
 
 export const useDSGMeta = ({
+	name,
 	columns,
 	skipDisabled = false,
 	lastCell,
 	data,
-	// onActiveCellChange
+	setGridData,
+	createRow
 }) => {
 	const gridRef = useRef();
 	const setGridRef = useCallback((node) => {
@@ -357,6 +362,101 @@ export const useDSGMeta = ({
 		return cell.row == data.length - 1
 	}, [data?.length]);
 
+	const toggleCheckbox = useCallback((cell) => {
+		if (!setGridData) {
+			console.warn("沒有將 setGridData 傳入 DSGMeta");
+			return;
+		}
+		setGridData(prev =>
+			prev.map((rowData, i) =>
+				i === cell.row ? { ...rowData, [cell.colId]: !rowData[cell.colId] } : rowData
+			)
+		);
+	}, [setGridData]);
+
+	const insertRowBelow = useCallback((cell) => {
+		if (!createRow) {
+			throw new Error("沒有將 createRow 傳入 DSGMeta")
+		}
+		console.log("insertRowBelow below", cell);
+		setGridData(prev => {
+			const newGridData = [...prev];
+			newGridData.splice(cell.row + 1, 0, createRow());
+			return newGridData;
+		})
+		// 於下個一個 cycle 
+		setTimeout(() => {
+			const newCell = {
+				row: cell.row + 1,
+				col: 0
+			}
+			setActiveCell(newCell);
+		});
+	}, [createRow, setActiveCell, setGridData]);
+
+	const handleFocusNextCell = useCallback(
+		(cell, opts = {}) => {
+			console.log("handleFocusNextCell from: ", cell);
+			if (!getNextCell) {
+				throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
+			}
+
+			const nextCell = getNextCell(cell, opts);
+			if (nextCell.field) {
+				setActiveCell(nextCell.field);
+			} else {
+				// 要先確認是最後一行
+				if (!isLastRow(cell)) {
+					return;
+				}
+				if (typeof lastCell === "string") {
+					toastEx.warn(lastCell);
+				} else if (typeof lastCell === "function") {
+					lastCell(opts);
+				} else {
+					switch (lastCell) {
+						case DSGLastCellBehavior.BLUR:
+							setActiveCell(null);
+							break;
+						case DSGLastCellBehavior.CREATE_ROW:
+							if (nextCell.isForward) {
+								insertRowBelow(cell);
+							}
+							break;
+					}
+				}
+
+			}
+		},
+		[getNextCell, insertRowBelow, isLastRow, lastCell, setActiveCell]
+	);
+
+	// 處理全域鍵盤事件
+	const handleKeyDown = useCallback((event) => {
+		if (event.key === ' ' && column.toggleBySpace) {
+			event.preventDefault(); // 防止預設行為（如頁面滾動）
+			console.log("activeCell: ", getActiveCell())
+			const activeCell = getActiveCell();
+			if (activeCell != null) {
+				const column = columns[activeCell.col];
+				console.log("column", column);
+				toggleCheckbox(activeCell)
+
+				handleFocusNextCell(activeCell, { forward: true });
+			}
+		}
+	}, [columns, getActiveCell, handleFocusNextCell, toggleCheckbox]);
+
+	// 在組件掛載時添加 document 事件監聽器
+	useEffect(() => {
+		document.addEventListener('keydown', handleKeyDown);
+
+		// 清理函數：在組件卸載時移除監聽器
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [handleKeyDown]); // 空依賴陣列表示只在組件掛載和卸載時執行
+
 	return {
 		// Meta
 		gridRef,
@@ -389,6 +489,6 @@ export const useDSGMeta = ({
 		saveSelection,
 		restoreSelection,
 		resetSelection,
-		handleFocusPrevCell
+		handleFocusPrevCell,
 	};
 };

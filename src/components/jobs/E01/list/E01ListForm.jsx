@@ -4,12 +4,13 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Grid } from "@mui/material";
+import { Grid, InputAdornment } from "@mui/material";
 import { memo } from "react";
 import { E01CustomerPicker } from "../E01CustomerPicker";
 import E01SalesTypePicker from "../ZZE01SalesTypePicker";
 import E01ListSquaredPicker from "./E01ListSquaredPicker";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
+import FlexBox from "@/shared-components/FlexBox";
 
 const E01ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -66,12 +67,20 @@ const E01ListForm = memo((props) => {
 						label="客戶類型"
 					/>
 				</Grid>
-				<FlexGrid item md={3} justifyContent="flex-end">
-					<CheckboxExWrapper
-						label="零售"
-						name="lvRetail"
-					/>
-				</FlexGrid>
+				<Grid item md={3} >
+					<FlexBox justifyContent="flex-end">
+						<CheckboxExWrapper
+							label="零售"
+							name="lvRetail"
+							size="small"
+							slotProps={{
+								label: {
+									labelPlacement: "start"
+								}
+							}}
+						/>
+					</FlexBox>
+				</Grid>
 				<Grid item md={5}>
 					<E01CustomerPicker
 						name="lvCust"
@@ -85,6 +94,17 @@ const E01ListForm = memo((props) => {
 									width: 360,
 								},
 							},
+							// input: {
+							// 	startAdornment:
+							// 		(
+							// 			<InputAdornment position="start">
+							// 				<CheckboxExWrapper
+							// 					label="零售"
+							// 					name="lvRetail"
+							// 				/>
+							// 			</InputAdornment>
+							// 		)
+							// }
 						}}
 					/>
 				</Grid>
@@ -111,7 +131,7 @@ const E01ListForm = memo((props) => {
 
 
 			</Grid>
-		</FormBox>
+		</FormBox >
 
 	);
 })

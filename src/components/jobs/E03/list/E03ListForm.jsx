@@ -50,16 +50,24 @@ const E03ListForm = memo((props) => {
 				<Grid item md={5}>
 					<E03SalesTypePicker
 						name="lvSalesType"
-						label="零售"
+						label="客戶類型"
 						clearable
 					/>
 				</Grid>
-				<FlexGrid item md={3} justifyContent="flex-end">
-					<CheckboxExWrapper
-						label="零售客戶"
-						name="lvRetail"
-					/>
-				</FlexGrid>
+				<Grid item md={3} >
+					<FlexBox justifyContent="flex-end">
+						<CheckboxExWrapper
+							label="零售"
+							name="lvRetail"
+							size="small"
+							slotProps={{
+								label: {
+									labelPlacement: "start"
+								}
+							}}
+						/>
+					</FlexBox>
+				</Grid>
 				<Grid item md={5}>
 					<E03CustomerPicker
 						name="lvCust"

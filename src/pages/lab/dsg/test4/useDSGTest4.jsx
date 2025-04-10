@@ -1,7 +1,7 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 
 import { ProdTypeAPickerComponentContainer } from "@/components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
-import { createCheckboxExColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxExColumn";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { createDateInputColumn } from "@/shared-components/dsg/columns/date-input/createDateInputColumn";
 import { createDateFieldColumnEx } from "@/shared-components/dsg/columns/date/createDateFieldColumnEx";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -92,7 +92,7 @@ export const useDSGTest4 = () => {
 			{
 				...keyColumn(
 					"check1",
-					createCheckboxExColumn({
+					createCheckboxColumn({
 						size: "medium"
 					})
 				),

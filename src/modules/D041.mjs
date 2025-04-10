@@ -23,8 +23,8 @@ const transformGridForReading = (data) => {
 						ProdData: ProdData_N,
 					},
 					ProdData: ProdData_N,
-					// reworked: SFlag === "Y",
-					reworked: YesOrEmpty.getOptionById(SFlag),
+					reworked: SFlag === "Y",
+					// reworked: YesOrEmpty.getOptionById(SFlag),
 					// SExpDate: Forms.reformatDateAsDash(SExpDate),
 					SExpDate: SExpDate,
 					stype: FreeProdTypes.getOptionById(SType),
@@ -58,8 +58,8 @@ const transformGridForSubmitting = (gridData) => {
 				SType: stype?.id || "",
 				SRsnID: dtype?.CodeID || "",
 				Seq: index + 1,
-				// SFlag: reworked ? "Y" : "",
-				SFlag: reworked?.id || "",
+				SFlag: reworked ? "Y" : "",
+				// SFlag: reworked?.id || "",
 				...rest,
 			})
 		);

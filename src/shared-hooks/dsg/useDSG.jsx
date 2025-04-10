@@ -73,13 +73,6 @@ export const useDSG = ({
 		)
 	}, [otherColumns]);
 
-	// const setGridLoading = useCallback((value) => {
-	// 	setState((prev) => ({
-	// 		...prev,
-	// 		gridLoading: value,
-	// 	}));
-	// }, []);
-
 	const isRowDataEquals = useCallback((prevRowData, rowData) => {
 		const result = Objects.arePropsEqual(prevRowData, rowData, {
 			ignoresEmpty: true,
@@ -88,11 +81,6 @@ export const useDSG = ({
 		console.log(`isRowDataEquals: ${result}`, prevRowData, rowData);
 		return result;
 	}, []);
-
-	// const isRowDataEquals2 = useCallback((prevRowData, rowData) => {
-	// 	console.log("isRowDataEquals", prevRowData, rowData);
-	// 	return _.isEqual(prevRowData, rowData);
-	// }, []);
 
 	const handleDirtyCheck = useCallback(
 		(prevRowData, rowData, opts = {}) => {
@@ -103,8 +91,6 @@ export const useDSG = ({
 			}
 
 			const isDirty = !isRowDataEquals(prevRowData, rowData);
-			// const isDirty = !_.isEqual(prevRowData, rowData);
-			// console.log(`isDirty: ${isDirty}`, prevRowData, rowData);
 
 			if (isDirty) {
 				if (!dirtyIds.has(key)) {
@@ -178,22 +164,46 @@ export const useDSG = ({
 			const doFillRows = !!_fillRows;
 			const _length = Types.isNumber(_fillRows) ? _fillRows : length;
 
+			// 組成目標資料
+			let updatedGridData;
+			let filledGridData;
+			setGridData(prev => {
+				if (Types.isFunction(newValue)) {
+					updatedGridData = newValue(prev);
+				} else {
+					updatedGridData = newValue;
+				}
+
+				// 填充空白列
+				if (doFillRows) {
+					filledGridData = fillRows({
+						createRow,
+						data: updatedGridData,
+						length: _length
+					})
+					return filledGridData;
+				}
+				return updatedGridData;
+			});
+
+
 			if (reset || init) {
 				dirtyIds.clear();
 				persistedIds.clear();
 				deletedIds.clear();
-
-				newValue?.map((item) => {
+				updatedGridData?.map((item) => {
 					const key = _.get(item, keyColumn);
-					persistedIds.add(key);
+					if (key) {
+						persistedIds.add(key);
+					}
 				});
 			} else {
 				if (doDirtyCheckByIndex || doDirtyCheck) {
-					const newGridData = Types.isFunction(newValue)
-						? newValue(gridData)
-						: newValue;
+					// const newGridData = Types.isFunction(newValue)
+					// 	? newValue(gridData)
+					// 	: newValue;
 					// dirtyIds.clear();
-					newGridData.forEach((rowData, rowIndex) => {
+					updatedGridData.forEach((rowData, rowIndex) => {
 						// 先以 index 取出
 						let prevRowData = prevGridDataRef.current[rowIndex];
 						if (doDirtyCheck) {
@@ -210,33 +220,33 @@ export const useDSG = ({
 				}
 			}
 
-			const _newValues = doFillRows
-				? fillRows({
-					createRow,
-					data: newValue,
-					length: _length
-				})
-				: newValue
+			// const _newValues = doFillRows
+			// 	? fillRows({
+			// 		createRow,
+			// 		data: newValue,
+			// 		length: _length
+			// 	})
+			// 	: newValue
 
 			if (commit || init) {
-				setPrevGridData(_newValues);
-				console.log("prevGridData after commit/init", _newValues);
+				setPrevGridData(updatedGridData);
+				console.log("prevGridData after commit/init", updatedGridData);
 			} else if (prev) {
 				setPrevGridData(prev);
 				console.log("prevGridData of prev", prev);
 			}
 
-			setGridData(
-				_newValues
-			);
+			// setGridData(
+			// 	_newValues
+			// );
 
 			setGridLoading(false);
 
 			if (debug) {
-				console.log("resetGridData", _newValues);
+				console.log("_setGridData", updatedGridData);
 			}
 		},
-		[deletedIds, dirtyIds, fillRows, gridData, handleDirtyCheck, keyColumn, persistedIds, setPrevGridData]
+		[deletedIds, dirtyIds, fillRows, handleDirtyCheck, keyColumn, persistedIds, setPrevGridData]
 	);
 
 	const handleGridDataLoaded = useCallback(
