@@ -433,7 +433,7 @@ export const useDSGMeta = ({
 
 	// 處理全域鍵盤事件
 	const handleKeyDown = useCallback((event) => {
-		if (event.key === ' ' && ) {
+		if (event.key === ' ') {
 			event.preventDefault(); // 防止預設行為（如頁面滾動）
 			console.log("activeCell: ", getActiveCell())
 			const activeCell = getActiveCell();
