@@ -433,16 +433,17 @@ export const useDSGMeta = ({
 
 	// 處理全域鍵盤事件
 	const handleKeyDown = useCallback((event) => {
-		if (event.key === ' ' && column.toggleBySpace) {
+		if (event.key === ' ' && ) {
 			event.preventDefault(); // 防止預設行為（如頁面滾動）
 			console.log("activeCell: ", getActiveCell())
 			const activeCell = getActiveCell();
 			if (activeCell != null) {
 				const column = columns[activeCell.col];
 				console.log("column", column);
-				toggleCheckbox(activeCell)
-
-				handleFocusNextCell(activeCell, { forward: true });
+				if (column.toggleBySpace) {
+					toggleCheckbox(activeCell)
+					handleFocusNextCell(activeCell, { forward: true });
+				}
 			}
 		}
 	}, [columns, getActiveCell, handleFocusNextCell, toggleCheckbox]);
