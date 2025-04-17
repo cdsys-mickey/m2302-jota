@@ -4,7 +4,7 @@ import { toastEx } from "@/helpers/toastEx";
 import Auth from "@/modules/md-auth";
 import CopyAuth from "@/modules/md-copy-auth";
 import UserInfo from "@/modules/md-user-info";
-import ZA03 from "@/modules/md-za03";
+import ZA03 from "@/modules/ZA03.mjs";
 import ActionState from "@/shared-constants/action-state";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";

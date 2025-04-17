@@ -5,7 +5,7 @@ import { C02ListViewContainer } from "@/components/jobs/C02/list/C02ListViewCont
 import C02SearchFormContainer from "@/components/jobs/C02/search/C02SearchFormContainer";
 import { C02Context } from "@/contexts/C02/C02Context";
 import C02 from "@/modules/C02.mjs";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

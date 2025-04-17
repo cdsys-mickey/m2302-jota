@@ -6,7 +6,7 @@ import { useCallback, useContext, useMemo } from "react";
 import Customers from "@/modules/md-customers";
 
 const CustomerPicker = (props) => {
-	const { label, autoLabel, placeholder, forId = false, forNew = false, fullName = false, withQuotes = false,
+	const { label, autoLabel = true, placeholder, forId = false, forNew = false, fullName = false, withQuotes = false,
 		// clearOnChange = true, 
 		clearValueOnChange = true,
 		clearOptionsOnChange = true,

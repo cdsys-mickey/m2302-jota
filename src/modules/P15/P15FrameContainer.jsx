@@ -1,5 +1,5 @@
 import { P15FormContainer } from "@/modules/P15/P15FormContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

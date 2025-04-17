@@ -1,5 +1,5 @@
 import { D05Context } from "@/contexts/D05/D05Context";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, useContext } from "react";
 import { D05ProdGridSubtotalLabel } from "./D05ProdGridSubtotalLabel";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -27,7 +27,7 @@ export const D05ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <FlexToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 D05ProdGridBottomToolbar.propTypes = {};

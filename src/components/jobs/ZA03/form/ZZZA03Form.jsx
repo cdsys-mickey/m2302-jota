@@ -9,7 +9,7 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import PropTypes from "prop-types";
-import ZA03 from "@/modules/md-za03";
+import ZA03 from "@/modules/ZA03.mjs";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";

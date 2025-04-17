@@ -4,7 +4,7 @@ import { F03ListHeaderContainer } from "@/components/jobs/F03/list/F03ListHeader
 import F03ListToolbar from "@/components/jobs/F03/list/F03ListToolbar";
 import { F03ListViewContainer } from "@/components/jobs/F03/list/F03ListViewContainer";
 import { F03SearchFieldContainer } from "@/components/jobs/F03/search/F03SearchFieldContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

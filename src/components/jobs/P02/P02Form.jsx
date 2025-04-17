@@ -4,7 +4,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";

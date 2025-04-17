@@ -2,12 +2,30 @@ import { memo } from "react";
 import HoverableListItem from "../HoverableListItem";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
+import { blue, orange, pink } from "@mui/material/colors";
 
 const ListRow = memo((props) => {
-	const { children, index, style, value, onClick, ...rest } = props;
+	const { children, flex = true, index, style, value, checked, onClick, ...rest } = props;
 	return (
 		<div style={style}>
-			<HoverableListItem borderBottom onClick={onClick}>
+			<HoverableListItem borderBottom onClick={onClick}
+				selected={checked}
+				sx={[
+					(theme) => ({
+						backgroundColor: "transparent",
+						"&:hover .hover-to-show": {
+							display: flex ? "flex" : "block",
+						},
+						...(checked && {
+							backgroundColor: pink[50]
+						}),
+						transition: theme.transitions.create("backgroundColor", {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.enteringScreen,
+						})
+					})
+				]}
+			>
 				{/* <HoverableListItemSecondaryAction>
 					<Tooltip arrow title="編輯">
 						<IconButton>

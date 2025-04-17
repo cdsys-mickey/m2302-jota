@@ -182,7 +182,7 @@ const ControlledDatePicker = ({
 									...(borderless && {
 										"& input": {
 											paddingTop: 0,
-											paddingLeft: "4px",
+											paddingLeft: "8px",
 											paddingRight: 0,
 										}
 									})

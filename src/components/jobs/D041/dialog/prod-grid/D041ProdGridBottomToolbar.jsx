@@ -1,4 +1,4 @@
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, useContext } from "react";
 import { D041Context } from "@/contexts/D041/D041Context";
 import FlexBox from "@/shared-components/FlexBox";
@@ -21,7 +21,7 @@ export const D041ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <FlexToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 D041ProdGridBottomToolbar.propTypes = {};

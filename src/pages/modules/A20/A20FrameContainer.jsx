@@ -2,7 +2,7 @@ import A20Toolbar from "@/components/jobs/A20/A20Toolbar";
 import { A20DialogContainer } from "@/components/jobs/A20/dialog/A20DialogContainer";
 import A20ListHeader from "@/components/jobs/A20/list/A20ListHeader";
 import { A20ListViewContainer } from "@/components/jobs/A20/list/A20ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

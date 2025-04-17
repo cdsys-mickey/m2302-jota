@@ -1,5 +1,5 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import ZA03 from "@/modules/md-za03";
+import ZA03 from "@/modules/ZA03.mjs";
 import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import { useContext } from "react";
 import UserAuth from "../../../../../modules/md-user-auth";

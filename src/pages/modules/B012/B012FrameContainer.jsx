@@ -4,7 +4,7 @@ import B012ListHeader from "@/components/jobs/B012/list/B012ListHeader";
 import B012ListToolbar from "@/components/jobs/B012/list/B012ListToolbar";
 import { B012ListViewContainer } from "@/components/jobs/B012/list/B012ListViewContainer";
 import B012PrintDialogContainer from "@/components/jobs/B012/print/B012PrintDialogContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

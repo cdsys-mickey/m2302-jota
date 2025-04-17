@@ -1,5 +1,5 @@
 import { C04Context } from "@/contexts/C04/C04Context";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, useContext } from "react";
 import C04ProdGridToolbarLabels from "./C04ProdGridToolbarLabels";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
@@ -7,7 +7,7 @@ import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 const C04ProdGridBottomToolbar2 = forwardRef((props, ref) => {
 	const { ...rest } = props;
 
-	return <FlexToolbar ref={ref} RightComponent={C04ProdGridToolbarLabels} {...rest} />;
+	return <ListToolbar ref={ref} RightComponent={C04ProdGridToolbarLabels} {...rest} />;
 });
 
 C04ProdGridBottomToolbar2.propTypes = {};

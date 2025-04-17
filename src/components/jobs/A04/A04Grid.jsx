@@ -1,4 +1,4 @@
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { Box, Container, useTheme } from "@mui/material";

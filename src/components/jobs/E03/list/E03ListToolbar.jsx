@@ -1,5 +1,5 @@
 import { forwardRef, memo } from "react";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import ModuleToolbar from "../../ModuleToolbar";
 import E03CreateButtonContainer from "../E03CreateButtonContainer";
 import { E03FetchResultLabelContainer } from "../E03FetchResultLabelContainer";
@@ -17,7 +17,7 @@ LeftButtons.displayName = "LeftButtons";
 const E03ListToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<FlexToolbar
+			<ListToolbar
 				// pb={1}
 				pl={0}
 				pr={1}

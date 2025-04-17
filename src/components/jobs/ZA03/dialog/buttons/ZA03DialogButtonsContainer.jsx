@@ -9,7 +9,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import { ZA03AuthAddButtonContainer } from "../../form/auth/ZA03AuthAddButtonContainer";
 import { ZA03AuthDeptPickerContainer } from "../../form/auth/ZA03AuthDeptPickerContainer";
 import { ZA03AuthLockRowsSwitchContainer } from "../../form/auth/ZA03AuthLockRowsSwitchContainer";
-import ZA03 from "@/modules/md-za03";
+import ZA03 from "@/modules/ZA03.mjs";
 
 export const ZA03DialogButtonsContainer = (props) => {
 	const { ...rest } = props;

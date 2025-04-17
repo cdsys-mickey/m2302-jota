@@ -3,6 +3,7 @@ import {
 	FormControlLabel,
 	FormHelperText
 } from "@mui/material";
+import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
@@ -10,20 +11,38 @@ const CheckboxEx = memo(
 	forwardRef((props, ref) => {
 		const { label, slotProps, error, helperText, ...rest } = props;
 		const { label: labelProps, ...checkboxSlotProps } = slotProps || {};
+
+		const checkbox = (
+			<Checkbox
+				ref={ref}
+				color="default"
+				// {...(checkboxSlotProps && {
+				// 	slotProps: checkboxSlotProps
+				// })}
+				{...checkboxSlotProps}
+				{...rest}
+			/>
+		)
+
 		return (
-			<>
-				<FormControlLabel
+			<Box>
+				{label ? <FormControlLabel
 					label={label}
 					error={error}
-					control={<Checkbox ref={ref} color="default" slotProps={checkboxSlotProps} {...rest} />}
-					{...labelProps}
-				/>
+					control={
+						checkbox
+					}
+					{...(labelProps && {
+						slotProps: labelProps
+					})}
+
+				/> : (checkbox)}
 				{helperText && (
 					<FormHelperText error={!!error}>
 						{helperText}
 					</FormHelperText>
 				)}
-			</>
+			</Box>
 		);
 	})
 );

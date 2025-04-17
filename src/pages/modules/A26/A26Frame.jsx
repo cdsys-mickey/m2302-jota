@@ -4,7 +4,7 @@ import { Box, useTheme } from "@mui/material";
 import { memo, useMemo } from "react";
 import A26Toolbar from "@/components/jobs/A26/A26Toolbar";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import PropTypes from "prop-types";
 
 const A26Frame = memo((props) => {

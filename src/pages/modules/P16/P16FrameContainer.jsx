@@ -1,4 +1,4 @@
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";

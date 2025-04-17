@@ -41,7 +41,7 @@ const P16GridContainer = () => {
 					optionPickerColumn(DeptPickerComponentContainer, {
 						name: "dept",
 						disableOpenOnInput: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						disableClearable: true,
 						selectOnFocus: true,
 						autoHighlight: true,

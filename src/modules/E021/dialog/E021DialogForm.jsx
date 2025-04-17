@@ -246,7 +246,7 @@ const E021DialogForm = memo((props) => {
 									typo
 									label="稅外加"
 									name="taxExcluded"
-									size="medium"
+									// size="small"
 									slotProps={{
 										label: {
 											typography: {

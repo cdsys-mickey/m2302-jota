@@ -1,6 +1,6 @@
 import Colors from "@/modules/md-colors";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, memo } from "react";
 import { A17FormButtonsContainer } from "./buttons/A17FormButtonsContainer";
 
@@ -9,7 +9,7 @@ const A17Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<FlexToolbar
+				<ListToolbar
 					ref={ref}
 					bgcolor={Colors.TOOLBAR}
 					LeftComponent={A17FormButtonsContainer}

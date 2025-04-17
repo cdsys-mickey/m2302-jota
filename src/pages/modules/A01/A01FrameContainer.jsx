@@ -7,7 +7,7 @@ import { StdPrintDialogContainer } from "@/components/std-print/StdPrintDialogCo
 import { A01Context } from "@/contexts/A01/A01Context";
 import { StdPrintProvider } from "@/contexts/std-print/StdPrintProvider";
 import A01 from "@/modules/A01.mjs";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useQuerySync } from "@/shared-hooks/useQuerySync";

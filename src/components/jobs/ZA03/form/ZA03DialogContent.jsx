@@ -1,7 +1,7 @@
 import { Box, Tab } from "@mui/material";
 import { memo } from "react";
 
-import ZA03 from "@/modules/md-za03";
+import ZA03 from "@/modules/ZA03.mjs";
 import AlertEx from "@/shared-components/AlertEx";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";

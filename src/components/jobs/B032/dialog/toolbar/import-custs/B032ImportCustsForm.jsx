@@ -2,7 +2,7 @@ import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
 import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import FlexBox from "@/shared-components/FlexBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { Box, Grid, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
@@ -76,14 +76,14 @@ const B032ImportCustsForm = memo((props) => {
 						/>
 					</Grid>
 				</Grid>
-				<FlexToolbar align="right">
+				<ListToolbar align="right">
 					<Tooltip title="shift+Enter">
 						<B032ImportCustsButtonContainer
 							variant="contained"
 							color="primary"
 						/>
 					</Tooltip>
-				</FlexToolbar>
+				</ListToolbar>
 			</Box>
 		</form>
 	);

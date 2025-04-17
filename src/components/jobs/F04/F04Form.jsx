@@ -87,28 +87,6 @@ const F04Form = memo((props) => {
 							</Grid>
 
 
-							{/* <Grid item xs={12}>
-								<StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/>
-							</Grid> */}
-							{/* <FlexToolbar align="right">
-								<ButtonGroup>
-									<DebugDialogButtonContainer onClick={onDebugSubmit} />
-									<ButtonWrapper
-										responsive
-										startIcon={<OpenInNewIcon />}
-										variant="contained"
-										color="primary"
-										type="submit"
-									// onClick={f04.handleSubmit}
-									>
-										執行
-									</ButtonWrapper>
-								</ButtonGroup>
-							</FlexToolbar> */}
 							<Grid item xs={12}>
 								<FlexBox justifyContent="flex-end">
 									<PrintReportButton

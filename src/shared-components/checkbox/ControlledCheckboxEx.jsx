@@ -91,10 +91,12 @@ const ControlledCheckboxEx = ({
 	}, [_value, valueToChecked]);
 
 	if (!name) {
-		return <CheckboxEx
-			onKeyDown={handleKeyDown}
-			checked={checked}
-		/>
+		return (
+			<CheckboxEx
+				onKeyDown={handleKeyDown}
+				checked={checked}
+			/>
+		);
 	}
 
 	return (

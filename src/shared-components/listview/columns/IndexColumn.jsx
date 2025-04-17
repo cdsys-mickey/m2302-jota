@@ -12,7 +12,7 @@ const IndexColumn = memo(
 				xs={1}
 				sx={[
 					{
-						display: "flex",
+						// display: "flex",
 						alignItems: "center",
 						justifyContent: "flex-end",
 						"& *": {
@@ -22,7 +22,7 @@ const IndexColumn = memo(
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				{...rest}>
-				<Box pr={1}>{children}</Box>
+				{children}
 			</ListColumn>
 		);
 	})

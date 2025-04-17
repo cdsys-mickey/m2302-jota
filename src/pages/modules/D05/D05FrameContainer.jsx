@@ -3,7 +3,7 @@ import { D05DialogContainer } from "@/components/jobs/D05/dialog/D05DialogContai
 import D05ListHeader from "@/components/jobs/D05/list/D05ListHeader";
 import D05ListToolbar from "@/components/jobs/D05/list/D05ListToolbar";
 import { D05ListViewContainer } from "@/components/jobs/D05/list/D05ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

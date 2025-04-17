@@ -1,0 +1,35 @@
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import G02SearchForm from "./G02SearchForm";
+import { useCallback } from "react";
+import { useFormContext } from "react-hook-form";
+
+const G02SearchFormContainer = (props) => {
+	const { ...rest } = props;
+
+	const formMeta = useFormMeta(
+		`
+		lvEDate,
+		lvCustID,
+		lvCustName,
+		lvTel,
+		lvID
+		`);
+
+	const form = useFormContext();
+
+	const handleCustomerChange = useCallback((newCustomer) => {
+		form.setValue("lvCustName", newCustomer.CustData ?? "");
+	}, [form]);
+
+
+	return (
+		<FormMetaProvider {...formMeta}>
+			<G02SearchForm onCustomerChange={handleCustomerChange} {...rest} />
+		</FormMetaProvider>
+	);
+
+}
+
+G02SearchFormContainer.displayName = "G02SearchFormContainer";
+export default G02SearchFormContainer;

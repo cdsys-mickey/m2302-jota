@@ -1,5 +1,5 @@
 import { C08Context } from "@/contexts/C08/C08Context";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, useContext } from "react";
 import { C08ProdGridSubtotalLabel } from "./C08ProdGridSubtotalLabel";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
@@ -20,7 +20,7 @@ export const C08ProdGridBottomToolbar = forwardRef((props, ref) => {
 	if (!formMeta.readOnly) {
 		return false;
 	}
-	return <FlexToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 C08ProdGridBottomToolbar.propTypes = {};

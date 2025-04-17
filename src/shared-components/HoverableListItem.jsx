@@ -21,7 +21,7 @@ const HoverableListItem = styled(Box, {
 			backgroundColor: cyan[200],
 		},
 		hoverStyles = {
-			backgroundColor: grey[100],
+			backgroundColor: "rgba(0, 0, 0, 0.03)",
 			boxShadow: "1px 2px 3px rgb(0 0 0 / 20%)",
 		},
 		disabledStyles = {
@@ -31,8 +31,8 @@ const HoverableListItem = styled(Box, {
 		},
 	}) => {
 		const showHoverStyles = useMemo(() => {
-			return !disabled && !transparent && hoverStyles;
-		}, [disabled, hoverStyles, transparent]);
+			return !disabled && !transparent && hoverStyles && onClick;
+		}, [disabled, hoverStyles, onClick, transparent]);
 
 		const showDisabledStyles = useMemo(() => {
 			return disabled && disabledStyles;
@@ -47,7 +47,18 @@ const HoverableListItem = styled(Box, {
 			// padding: theme.spacing(1),
 			// paddingBottom: 0,
 
-			"&:hover": {
+			// "&:hover": {
+			// 	...(showHoverStyles && {
+			// 		//default hover styles
+			// 		...hoverStyles,
+			// 	}),
+			// },
+			"&:hover::after": {
+				content: '""',
+				position: "absolute",
+				inset: 0,
+				pointerEvents: "none",
+				borderRadius: "inherit",
 				...(showHoverStyles && {
 					//default hover styles
 					...hoverStyles,

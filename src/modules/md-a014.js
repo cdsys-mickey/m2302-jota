@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import ProdTypeA from "./md-prod-type-a";
 import ProdTypeB from "./md-prod-type-b";
-import TaxTypes from "./md-tax-types";
+import TaxTypes from "./TaxTypes.mjs";
 
 const transformForReading = (payload) => {
 	return payload.data[0][`A014_W1`].map((i) => {

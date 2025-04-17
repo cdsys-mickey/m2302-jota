@@ -101,7 +101,7 @@ const E01DialogForm = memo((props) => {
 							<Grid item md={3}>
 								<CheckboxExWrapper
 									typo
-									label="詢貨單不列印金額"
+									label="不列印金額"
 									name="dontPrtAmt"
 									size="medium"
 									color="secondary"

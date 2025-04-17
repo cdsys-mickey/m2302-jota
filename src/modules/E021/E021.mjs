@@ -315,7 +315,7 @@ const getPaymentType = (data) => {
 };
 
 const getDeliveryEmployee = (data) => {
-	const { DyEmplID, DyEmplData_N } = data || {};
+	const { DyEmplID, DyEmplData_N } = data ?? {};
 	if (!DyEmplID) {
 		return null;
 	}
@@ -418,8 +418,8 @@ const transformForSubmitting = (payload, gridData) => {
 		prods,
 		customerOrders,
 		stype,
-		innerProd,
-		deliveryEmployee
+		innerProd
+		// deliveryEmployee
 	);
 
 	return {
@@ -439,6 +439,7 @@ const transformForSubmitting = (payload, gridData) => {
 		Remark: remark.split("\n"),
 		TrafID: transType?.CodeID || "",
 		TaxType: taxExcluded ? "Y" : "",
+		DyEmplID: deliveryEmployee?.CodeID ?? "",
 		...rest,
 		...(gridData && {
 			Sales_S: transformGridForSubmitting(gridData),

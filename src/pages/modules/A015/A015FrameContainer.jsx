@@ -2,7 +2,7 @@ import A015Frame from "./A015Frame";
 import { useContext } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useMemo } from "react";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { useTheme } from "@mui/material";
 
 export const A015FrameContainer = () => {

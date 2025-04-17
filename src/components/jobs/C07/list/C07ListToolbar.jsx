@@ -1,4 +1,4 @@
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import LoadingTypography from "@/shared-components/LoadingTypography";
@@ -18,7 +18,7 @@ LeftButtons.displayName = "LeftButtons";
 const C07ListToolbar = memo(
 	forwardRef(({ loading, ...rest }, ref) => {
 		return (
-			<FlexToolbar
+			<ListToolbar
 				pl={0}
 				alignItems="flex-end"
 				ref={ref}

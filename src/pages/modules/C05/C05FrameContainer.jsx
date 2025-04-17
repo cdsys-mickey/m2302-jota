@@ -3,7 +3,7 @@ import C05ListHeader from "@/components/jobs/C05/list/C05ListHeader";
 import C05ListToolbar from "@/components/jobs/C05/list/C05ListToolbar";
 import { C05ListViewContainer } from "@/components/jobs/C05/list/C05ListViewContainer";
 import { C05SearchFormContainer } from "@/components/jobs/C05/search/C05SearchFormContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

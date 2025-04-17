@@ -2,7 +2,7 @@ import A14Frame from "./A14Frame";
 import { useContext } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useMemo } from "react";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { useTheme } from "@mui/material";
 import { StdPrintProvider } from "../../../contexts/std-print/StdPrintProvider";
 import { StdPrintDialogContainer } from "../../../components/std-print/StdPrintDialogContainer";

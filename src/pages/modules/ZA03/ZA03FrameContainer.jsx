@@ -3,7 +3,7 @@ import { ZA03AddAuthDialogContainer } from "@/components/jobs/ZA03/add-auth-dial
 import { ZA03DialogContainer } from "@/components/jobs/ZA03/dialog/ZA03DialogContainer";
 import ZA03ListHeader from "@/components/jobs/ZA03/list/ZA03ListHeader";
 import { ZA03ListViewContainer } from "@/components/jobs/ZA03/list/ZA03ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

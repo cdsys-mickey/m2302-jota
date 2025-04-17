@@ -3,7 +3,7 @@ import A03Frame from "./A03Frame";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useTheme } from "@mui/material";
 import { useMemo } from "react";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { StdPrintDialogContainer } from "@/components/std-print/StdPrintDialogContainer";
 import { StdPrintProvider } from "@/contexts/std-print/StdPrintProvider";
 

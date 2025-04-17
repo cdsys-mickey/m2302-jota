@@ -3,7 +3,7 @@ import { DeptPickerComponentContainer } from "@/components/dsg/columns/dept-pick
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
 import A01 from "@/modules/A01.mjs";
-import TaxTypes from "@/modules/md-tax-types";
+import TaxTypes from "@/modules/TaxTypes.mjs";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
@@ -138,7 +138,7 @@ export const useA01 = ({ mode }) => {
 					optionPickerColumn(DeptPickerComponentContainer, {
 						name: "dept",
 						disableOpenOnInput: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						forId: true,
 						disableClearable: true,
 						selectOnFocus: true,
@@ -223,7 +223,7 @@ export const useA01 = ({ mode }) => {
 					optionPickerColumn(DeptPickerComponentContainer, {
 						name: "dept",
 						disableOpenOnInput: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						forId: true,
 						disableClearable: true,
 						selectOnFocus: true,
@@ -259,7 +259,7 @@ export const useA01 = ({ mode }) => {
 					optionPickerColumn(CmsTypePickerComponentContainer, {
 						name: "dept",
 						disableOpenOnInput: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						forId: true,
 						disableClearable: true,
 						selectOnFocus: true,

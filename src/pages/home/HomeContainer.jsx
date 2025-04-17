@@ -6,7 +6,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import { useContext, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import Styles from "../../modules/md-styles";
+import Styles from "../../modules/Styles.mjs";
 import { useInit } from "../../shared-hooks/useInit";
 import Home from "./Home";
 

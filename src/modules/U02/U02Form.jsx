@@ -121,14 +121,6 @@ const U02Form = memo((props) => {
 						<FlexBox mt={1.5}>
 							<Grid container>
 								<Grid item xs={12} sm={12}>
-									{/* <FlexToolbar align="right">
-									<PrintReportButton
-											color="primary"
-											variant="contained"
-											onSubmit={onSubmit}
-											onDebugSubmit={onDebugSubmit}
-										/>
-								</FlexToolbar> */}
 									<FlexBox justifyContent="flex-end">
 										<PrintReportButton
 											color="primary"

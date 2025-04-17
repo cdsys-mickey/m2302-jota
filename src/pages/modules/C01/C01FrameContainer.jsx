@@ -1,7 +1,7 @@
 import { C01DialogContainer } from "@/components/jobs/C01/dialog/C01DialogContainer";
 import C01ListHeader from "@/components/jobs/C01/list/C01ListHeader";
 import { C01ListViewContainer } from "@/components/jobs/C01/list/C01ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

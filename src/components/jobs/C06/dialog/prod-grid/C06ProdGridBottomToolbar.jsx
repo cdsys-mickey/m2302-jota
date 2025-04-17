@@ -1,5 +1,5 @@
 import { C06Context } from "@/contexts/C06/C06Context";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, useContext } from "react";
 import { C06ProdGridSubtotalLabel } from "./C06ProdGridSubtotalLabel";
 
@@ -20,7 +20,7 @@ export const C06ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <FlexToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 C06ProdGridBottomToolbar.propTypes = {};

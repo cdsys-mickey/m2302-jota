@@ -26,7 +26,7 @@ const F02GridContainer = () => {
 					optionPickerColumn(InvTakingListingPickerComponentContainer, {
 						name: "listing",
 						disableOpenOnInput: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						disableClearable: true,
 						selectOnFocus: true,
 						autoHighlight: true,
@@ -77,7 +77,7 @@ const F02GridContainer = () => {
 	}, [f02.grid, f02.onUpdateRow, gridMeta])
 
 	const _height = useMemo(() => {
-		return height - 214
+		return height - 224
 	}, [height]);
 
 	return (

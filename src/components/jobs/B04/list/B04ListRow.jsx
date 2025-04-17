@@ -9,6 +9,7 @@ import B04DateColumn from "./columns/B04DateColumn";
 import B04PriceColumn from "./columns/B04PriceColumn";
 import B04ProdColumn from "./columns/B04ProdColumn";
 import B04UserColumn from "./columns/B04UserColumn";
+import ListRow from "@/shared-components/listview/ListRow";
 
 const B04ListRow = memo((props) => {
 	const { index, style, value, loading, onClick } = props;
@@ -34,62 +35,27 @@ const B04ListRow = memo((props) => {
 	}, [EmplData_N])
 
 	return (
-		<div style={style}>
-			<HoverableListItem borderBottom onClick={onClick}>
-				<HoverableListItemSecondaryAction>
-					{/* <Tooltip arrow title="編輯">
-						<IconButton>
-							<EditOutlinedIcon htmlColor="#000" />
-						</IconButton>
-					</Tooltip> 
-					<Tooltip arrow title="複製權限" sx={{ zIndex: 10000 }}>
-						<IconButton onClick={promptCopyAuth}>
-							<ContentCopyIcon htmlColor="#000" />
-						</IconButton>
-					</Tooltip>
-					<Tooltip arrow title="重設密碼" sx={{ zIndex: 10000 }}>
-						<IconButton onClick={confirmResetPword}>
-							<LockResetIcon htmlColor="#000" />
-						</IconButton>
-					</Tooltip>
-					*/}
-				</HoverableListItemSecondaryAction>
-				<Box>
-					<Grid
-						container
-						columns={24}
-						sx={[
-							{
-								minHeight: "36px",
-								alignItems: "center",
-							},
-						]}>
-						<IndexColumn title={index}></IndexColumn>
-						<B04CustomerColumn loading={loading}>
-							{cust}
-						</B04CustomerColumn>
-						<B04ProdColumn loading={loading}>
-							{prod}
-						</B04ProdColumn>
-						<B04DateColumn loading={loading}>
-							{value?.QDate}
-						</B04DateColumn>
-						<B04PriceColumn loading={loading}>
-							{value?.Price}
-						</B04PriceColumn>
-						<B04PriceColumn loading={loading}>
-							{value?.QPrice}
-						</B04PriceColumn>
-						<B04UserColumn loading={loading}>
-							{employee}
-						</B04UserColumn>
-						{/* <B04ClassNColumn loading={loading}>
-						{value?.Clas_N}
-					</B04ClassNColumn> */}
-					</Grid>
-				</Box>
-			</HoverableListItem>
-		</div>
+		<ListRow style={style} onClick={onClick}>
+			<IndexColumn title={index}></IndexColumn>
+			<B04CustomerColumn>
+				{cust}
+			</B04CustomerColumn>
+			<B04ProdColumn>
+				{prod}
+			</B04ProdColumn>
+			<B04DateColumn>
+				{value?.QDate}
+			</B04DateColumn>
+			<B04PriceColumn >
+				{value?.Price}
+			</B04PriceColumn>
+			<B04PriceColumn>
+				{value?.QPrice}
+			</B04PriceColumn>
+			<B04UserColumn >
+				{employee}
+			</B04UserColumn>
+		</ListRow>
 	);
 });
 

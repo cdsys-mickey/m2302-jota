@@ -47,7 +47,8 @@ export default function FieldGroup({ legend, required, children }) {
 					{legend}
 				</Box>
 			)}
-			<Box sx={{ display: 'flex', gap: '8px' }}>
+			{/* 這裡微調輸入框灰底與 fieldset 的間隔 */}
+			<Box sx={{ display: 'flex', gap: '8px', marginTop: '-1px', marginBottom: '1px' }}>
 				{children}
 			</Box>
 		</Box>

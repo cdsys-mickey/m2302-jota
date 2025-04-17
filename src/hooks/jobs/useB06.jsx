@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { B05Context } from "@/contexts/B05/B05Context";
+import { B05Context } from "@/modules/B05/B05Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import B06 from "@/modules/md-b06";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";

@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useState } from "react";
-import { InfiniteLoaderContext } from "../contexts/infinite-loader/InfiniteLoaderContext";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import Arrays from "../shared-modules/sd-arrays";
 import useDebounce from "./useDebounce";
 
@@ -125,7 +125,7 @@ export const useInfiniteLoader = (props = {}) => {
 			const loading =
 				// ((!start || !listData) && !supressLoading) || refresh;
 				// 依賴 start 或有誤顯示的風險
-				(!listData && !supressLoading) || refresh;
+				(!listData || refresh) && !supressLoading;
 			console.log("loading", loading);
 
 			setListError(null);
@@ -248,12 +248,6 @@ export const useInfiniteLoader = (props = {}) => {
 		[loadingMap]
 	);
 
-	// const listLoading = useMemo(() => {
-	// 	return debounce === 0
-	// 		? state.loading
-	// 		: debouncedLoading;
-	// }, [debounce, debouncedLoading, state.loading]);
-
 	const listFiltered = useMemo(() => {
 		return false;
 	}, []);
@@ -277,6 +271,9 @@ export const useInfiniteLoader = (props = {}) => {
 		[listData]
 	);
 
+	/**
+	 * 尋找緊鄰的 id
+	 */
 	const findAdjacentId = useCallback(
 		({ key, id, reverse = false } = {}) => {
 			const entry = Object.entries(listData).find(
@@ -309,6 +306,12 @@ export const useInfiniteLoader = (props = {}) => {
 		[findAdjacentId]
 	);
 
+	// checkbox 支援
+	const getItemDataByIndex = useCallback((indexes) => {
+		return indexes.map(i => listData[i]);
+	}, [listData]);
+
+
 	return {
 		// PROPS
 		saveKey,
@@ -330,5 +333,7 @@ export const useInfiniteLoader = (props = {}) => {
 		findNextId,
 		findPrevId,
 		getIndexById,
+		// checkbox 
+		getItemDataByIndex
 	};
 };

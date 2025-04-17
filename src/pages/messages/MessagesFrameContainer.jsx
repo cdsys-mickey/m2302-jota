@@ -1,7 +1,7 @@
 import MsgToolbar from "@/components/messages/MsgToolbar";
 import MsgListHeader from "@/components/messages/list/MsgListHeader";
 import { MsgListViewContainer } from "@/components/messages/list/MsgListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

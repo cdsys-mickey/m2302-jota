@@ -1,5 +1,5 @@
 import { E01Context } from "@/contexts/E01/E01Context";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";

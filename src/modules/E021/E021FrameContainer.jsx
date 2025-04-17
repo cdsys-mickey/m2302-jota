@@ -3,7 +3,7 @@ import E021ListHeader from "@/modules/E021/list/E021ListHeader";
 import E021ListToolbar from "@/modules/E021/list/E021ListToolbar";
 import { E021ListViewContainer } from "@/modules/E021/list/E021ListViewContainer";
 import { E021SearchFormContainer } from "@/modules/E021/search/E021SearchFormContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

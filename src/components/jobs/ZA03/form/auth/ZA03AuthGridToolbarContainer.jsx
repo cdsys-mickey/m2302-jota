@@ -1,7 +1,7 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { useContext } from "react";
-import ZA03 from "../../../../../modules/md-za03";
+import ZA03 from "@/modules/ZA03.mjs";
 import { ZA03AuthCheckAllButtonContainer } from "./buttons/ZA03AuthCheckAllButtonContainer";
 import { ZA03AuthCheckSelectionButtonContainer } from "./buttons/ZA03AuthCheckSelectionButtonContainer";
 import { ZA03AuthClearAllButtonContainer } from "./buttons/ZA03AuthClearAllButtonContainer";
@@ -76,7 +76,7 @@ export const ZA03AuthGridToolbarContainer = (props) => {
 	}
 
 	return (
-		<FlexToolbar
+		<ListToolbar
 			pt={1}
 			LeftComponent={ZA03AuthToolbarLeftComponents}
 			// RightComponent={ZA03AuthToolbarRightComponents}

@@ -5,7 +5,7 @@ import D07ListToolbar from "@/components/jobs/D07/list/D07ListToolbar";
 import { D07ListViewContainer } from "@/components/jobs/D07/list/D07ListViewContainer";
 import { D07SearchFieldContainer } from "@/components/jobs/D07/search/D07SearchFieldContainer";
 import D07SearchFormContainer from "@/components/jobs/D07/search/D07SearchFormContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

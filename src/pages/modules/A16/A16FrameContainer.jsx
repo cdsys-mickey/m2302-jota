@@ -2,7 +2,7 @@ import A16Toolbar from "@/components/jobs/A16/A16Toolbar";
 import { A16DialogContainer } from "@/components/jobs/A16/dialog/A16DialogContainer";
 import A16ListHeader from "@/components/jobs/A16/list/A16ListHeader";
 import { A16ListViewContainer } from "@/components/jobs/A16/list/A16ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

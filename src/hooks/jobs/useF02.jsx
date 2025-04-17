@@ -1,6 +1,6 @@
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
-import F02 from "@/modules/md-f02";
+import F02 from "@/modules/F02.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useWebApi } from "@/shared-hooks/useWebApi";

@@ -2,7 +2,7 @@ import { D041SearchFieldContainer } from "@/components/jobs/D041/search/D041Sear
 import { D041DialogContainer } from "@/components/jobs/D041/dialog/D041DialogContainer";
 import D041ListToolbar from "@/components/jobs/D041/list/D041ListToolbar";
 import { D041ListViewContainer } from "@/components/jobs/D041/list/D041ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

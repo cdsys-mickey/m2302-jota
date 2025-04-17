@@ -2,13 +2,13 @@ import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import FlexToolbar from "../../../../../shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "../../../../../shared-components/listview/toolbar/ListToolbar";
 
 const ZA03DialogEditButtons = memo(
 	forwardRef((props, ref) => {
 		const { onSave, onCancel, loading, sx = [], ...rest } = props;
 		return (
-			<FlexToolbar
+			<ListToolbar
 				{...rest}
 				rightComponents={
 					<>
@@ -29,7 +29,7 @@ const ZA03DialogEditButtons = memo(
 							儲存
 						</ResponsiveLoadingButton>
 					</>
-				}></FlexToolbar>
+				}></ListToolbar>
 		);
 	})
 );

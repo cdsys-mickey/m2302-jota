@@ -4,7 +4,7 @@ import C08ListToolbar from "@/components/jobs/C08/list/C08ListToolbar";
 import { C08ListViewContainer } from "@/components/jobs/C08/list/C08ListViewContainer";
 import { C08SearchFieldContainer } from "@/components/jobs/C08/search/C08SearchFieldContainer";
 import C08SearchFormContainer from "@/components/jobs/C08/search/C08SearchFormContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

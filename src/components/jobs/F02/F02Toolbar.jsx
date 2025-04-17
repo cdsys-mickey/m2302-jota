@@ -1,6 +1,6 @@
 import Colors from "@/modules/md-colors";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, memo } from "react";
 import { F02LockSwitchContainer } from "./F02LockSwitchContainer";
 import F02StageButtonContainer from "./F02StageButtonContainer";
@@ -27,7 +27,7 @@ const F02Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="sm" alignLeft>
-				<FlexToolbar
+				<ListToolbar
 					bgcolor={Colors.TOOLBAR}
 					ref={ref}
 					LeftComponent={LeftComponent}

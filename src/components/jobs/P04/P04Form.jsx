@@ -2,7 +2,7 @@ import ContainerEx from "@/shared-components/ContainerEx";
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
@@ -69,10 +69,10 @@ const P04Form = memo((props) => {
 								/> */}
 							</FlexGrid>
 							<Grid item xs={12} sm={6}>
-								<FlexToolbar align="right">
+								<ListToolbar align="right">
 									<ReportSubmitButtonContainer
 										onClick={onSubmit} />
-								</FlexToolbar>
+								</ListToolbar>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

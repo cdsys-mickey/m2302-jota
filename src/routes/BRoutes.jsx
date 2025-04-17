@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import { CrudProvider } from "../contexts/crud/CrudProvider";
+import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
 
 import { BProvider } from "@/contexts/B/BProvider";
@@ -9,13 +9,14 @@ import { B02Provider } from "@/contexts/B02/B02Provider";
 import { B031Provider } from "@/contexts/B031/B031Provider";
 import { B032Provider } from "@/contexts/B032/B032Provider";
 import { B04Provider } from "@/contexts/B04/B04Provider";
-import { B05Provider } from "@/contexts/B05/B05Provider";
+
 import { B06Provider } from "@/contexts/B06/B06Provider";
 import { B011FrameContainer } from "@/pages/modules/B011/B011FrameContainer";
 import { B012FrameContainer } from "@/pages/modules/B012/B012FrameContainer";
 import { B02FrameContainer } from "@/pages/modules/B02/B02FrameContainer";
-import { B05FrameContainer } from "@/pages/modules/B05/B05FrameContainer";
+import { B05FrameContainer } from "@/modules/B05/B05FrameContainer";
 import { B06FrameContainer } from "@/pages/modules/B06/B06FrameContainer";
+import { B05Provider } from "@/modules/B05/B05Provider";
 
 const bRoutes = (
 	<>

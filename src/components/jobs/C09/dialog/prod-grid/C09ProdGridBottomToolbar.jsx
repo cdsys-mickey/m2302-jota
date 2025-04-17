@@ -1,5 +1,5 @@
 import { C09Context } from "@/contexts/C09/C09Context";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, useContext } from "react";
 import { C09ProdGridSubtotalLabel } from "./C09ProdGridSubtotalLabel";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -36,7 +36,7 @@ export const C09ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <FlexToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 C09ProdGridBottomToolbar.propTypes = {};

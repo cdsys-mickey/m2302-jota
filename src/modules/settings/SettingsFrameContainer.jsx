@@ -4,7 +4,7 @@ import { useInit } from "@/shared-hooks/useInit";
 import { TabContext } from "@mui/lab";
 import { Box, useTheme } from "@mui/material";
 import { useContext, useMemo } from "react";
-import Styles from "../md-styles";
+import Styles from "../Styles.mjs";
 import { SettingsContext } from "./SettingsContext";
 import SettingsFrame from "./SettingsFrame";
 import Settings from "./Settings.mjs";

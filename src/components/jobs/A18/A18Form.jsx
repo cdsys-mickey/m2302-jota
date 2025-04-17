@@ -109,20 +109,6 @@ const A18Form = memo((props) => {
 								/> */}
 							</Grid>
 
-							{/* <FlexToolbar align="right">
-								<ButtonGroup>
-									<DebugDialogButtonContainer onClick={onDebugSubmit} />
-									<ButtonWrapper
-										responsive
-										startIcon={<OpenInNewIcon />}
-										variant="contained"
-										color="primary"
-										type="submit"
-									>
-										執行
-									</ButtonWrapper>
-								</ButtonGroup>
-							</FlexToolbar> */}
 							<Grid item xs={12}>
 								<FlexBox justifyContent="flex-end">
 									<PrintReportButton

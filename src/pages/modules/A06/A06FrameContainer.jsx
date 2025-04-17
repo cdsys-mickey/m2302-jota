@@ -2,7 +2,7 @@ import A06Toolbar from "@/components/jobs/A06/A06Toolbar";
 import { A06DialogContainer } from "@/components/jobs/A06/dialog/A06DialogContainer";
 import A06ListHeader from "@/components/jobs/A06/list/A06ListHeader";
 import { A06ListViewContainer } from "@/components/jobs/A06/list/A06ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

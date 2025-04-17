@@ -1,6 +1,6 @@
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { forwardRef, memo, useMemo } from "react";
-import FlexToolbar from "./FlexToolbar";
+import ListToolbar from "./ListToolbar";
 
 const DSGBottomToolbar = memo(
 	forwardRef((props, ref) => {
@@ -11,7 +11,7 @@ const DSGBottomToolbar = memo(
 		const style = useMemo(() => Styles.ofGridBottomToolbar(), [])
 
 		return (
-			<FlexToolbar
+			<ListToolbar
 				{...style}
 				ref={ref}
 				{...rest}

@@ -4,7 +4,7 @@ import { forwardRef, memo } from "react";
 import { A11LockRowsSwitchContainer } from "./A11LockRowsSwitchContainer";
 import A11PrintButtonContainer from "./A11PrintButtonContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
 import Colors from "../../../modules/md-colors";
 
 const A11Toolbar = memo(
@@ -12,7 +12,7 @@ const A11Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<FlexToolbar
+				<ListToolbar
 					ref={ref}
 					bgcolor={Colors.TOOLBAR}
 					LeftComponent={A11PrintButtonContainer}

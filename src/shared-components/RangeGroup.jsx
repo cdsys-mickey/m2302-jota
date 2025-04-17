@@ -1,9 +1,8 @@
-import { Box } from '@mui/system';
-import PropTypes from "prop-types";
-import FieldGroup from './FieldGroup';
 import { Grid, Typography } from '@mui/material';
-import FlexBox from './FlexBox';
+import PropTypes from "prop-types";
 import { useMemo } from 'react';
+import FieldGroup from './FieldGroup';
+import FlexBox from './FlexBox';
 
 export default function RangeGroup({ legend, leftComponent, rightComponent, required = false, seperator = "~" }) {
 

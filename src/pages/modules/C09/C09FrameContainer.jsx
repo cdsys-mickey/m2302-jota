@@ -3,7 +3,7 @@ import { C09DialogContainer } from "@/components/jobs/C09/dialog/C09DialogContai
 import C09ListHeader from "@/components/jobs/C09/list/C09ListHeader";
 import C09ListToolbar from "@/components/jobs/C09/list/C09ListToolbar";
 import { C09ListViewContainer } from "@/components/jobs/C09/list/C09ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

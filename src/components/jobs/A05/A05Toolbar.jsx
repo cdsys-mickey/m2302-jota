@@ -5,7 +5,7 @@ import A05CreateButtonContainer from "./A05CreateButtonContainer";
 import { A05FetchResultLabelContainer } from "./A05FetchResultLabelContainer";
 import ModuleToolbar from "../ModuleToolbar";
 import A05PrintButtonContainer from "./A05PrintButtonContainer";
-import FlexToolbar from "../../../shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
 
 const LeftButtons = memo(() => {
 	return (
@@ -21,7 +21,7 @@ LeftButtons.displayName = "LeftButtons";
 const A05Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<FlexToolbar
+			<ListToolbar
 				// pb={1}
 				alignItems="flex-end"
 				ref={ref}

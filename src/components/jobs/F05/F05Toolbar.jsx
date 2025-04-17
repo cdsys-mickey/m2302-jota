@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import F05CloseButtonContainer from "./F05CloseButtonContainer";
 import Colors from "@/modules/md-colors";
 
@@ -9,7 +9,7 @@ const F05Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<FlexToolbar
+				<ListToolbar
 					bgcolor={Colors.TOOLBAR}
 					ref={ref}
 					LeftComponent={F05CloseButtonContainer}

@@ -1,4 +1,4 @@
-import ZA03 from "@/modules/md-za03";
+import ZA03 from "@/modules/ZA03.mjs";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TabPanel } from "@mui/lab";
 import PropTypes from "prop-types";

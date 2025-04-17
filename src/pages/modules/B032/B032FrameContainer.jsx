@@ -3,7 +3,7 @@ import { B032ListFormContainer } from "@/components/jobs/B032/list/B032ListFormC
 import B032ListHeader from "@/components/jobs/B032/list/B032ListHeader";
 import B032ListToolbar from "@/components/jobs/B032/list/B032ListToolbar";
 import { B032ListViewContainer } from "@/components/jobs/B032/list/B032ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

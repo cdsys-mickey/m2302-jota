@@ -5,7 +5,7 @@ import B02ListHeader from "@/components/jobs/B02/list/B02ListHeader";
 import B02ListToolbar from "@/components/jobs/B02/list/B02ListToolbar";
 import B02ListToolbarContainer from "@/components/jobs/B02/list/B02ListToolbarContainer";
 import { B02ListViewContainer } from "@/components/jobs/B02/list/B02ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

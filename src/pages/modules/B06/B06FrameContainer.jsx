@@ -1,7 +1,7 @@
-import { B05DialogContainer } from "@/components/jobs/B05/dialog/B05DialogContainer";
+
 import B06ListHeader from "@/components/jobs/B06/list/B06ListHeader";
 import { B06ListViewContainer } from "@/components/jobs/B06/list/B06ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";
@@ -10,6 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { B06ToolbarContainer } from "@/components/jobs/B06/B06ToolbarContainer";
 import { B06SearchFormContainer } from "@/components/jobs/B06/form/B06SearchFormContainer";
 import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
+import { B05DialogContainer } from "@/modules/B05/dialog/B05DialogContainer";
 
 export const B06FrameContainer = () => {
 	const appFrame = useContext(AppFrameContext);

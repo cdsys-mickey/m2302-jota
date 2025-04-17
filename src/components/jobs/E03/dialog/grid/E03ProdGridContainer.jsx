@@ -9,7 +9,7 @@ import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
 import { keyColumn } from "react-datasheet-grid";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 
 export const E03ProdGridContainer = (props) => {

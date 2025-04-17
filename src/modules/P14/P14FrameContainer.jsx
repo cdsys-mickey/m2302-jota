@@ -3,7 +3,7 @@ import { P14DialogContainer } from "@/modules/P14/dialog/P14DialogContainer";
 import P14ListHeader from "@/modules/P14/list/P14ListHeader";
 import P14ListToolbar from "@/modules/P14/list/P14ListToolbar";
 import { P14ListViewContainer } from "@/modules/P14/list/P14ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

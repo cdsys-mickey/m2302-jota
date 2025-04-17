@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import ProdTypeA from "./md-prod-type-a";
 import ProdTypeB from "./md-prod-type-b";
 import Reports from "./md-reports";
-import TaxTypes from "./md-tax-types";
+import TaxTypes from "./TaxTypes.mjs";
 
 const Tabs = Object.freeze({
 	INFO: "INFO",

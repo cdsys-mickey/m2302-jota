@@ -153,6 +153,11 @@ export const useE021 = ({ mode }) => {
 		promptCreating();
 	}, [promptCreating]);
 
+	// 同步不列印金額註記
+	const updatePrtAmt = useCallback(({ setValue, formData }) => {
+		setValue("dontPrtAmt", formData?.dontPrtAmt ?? false);
+	}, []);
+
 	const updateAmt = useCallback(({ setValue, formData, reset = false }) => {
 		if (reset) {
 			setValue("SalAmt", "");
@@ -187,11 +192,7 @@ export const useE021 = ({ mode }) => {
 		setValue("remark", data?.remark || "");
 
 		// // 更新列印註記
-		if (data) {
-			setValue("dontPrtAmt", data.dontPrtAmt ?? false);
-		} else {
-			setValue("dontPrtAmt", false);
-		}
+		// setValue("dontPrtAmt", data?.dontPrtAmt ?? false);
 		// // 更新數字
 
 
@@ -1196,6 +1197,8 @@ export const useE021 = ({ mode }) => {
 				if (!newValue || newValue.length === 0) {
 
 					updateCustomerData({ setValue, formMeta })(null);
+					// 清除不列印金額註記
+					updatePrtAmt({ setValue, formData: null });
 					updateAmt({ setValue, formData: null, reset: true });
 
 					grid.setGridData(
@@ -1229,11 +1232,12 @@ export const useE021 = ({ mode }) => {
 						// 暫存上次讀取成功的訂貨單
 						prevOrdersRef.current = data.customerOrders;
 
-						// reset(formData);
+						// 當客戶已選擇才會更新客戶資料
 						if (!isCustomerAlreadySelected) {
 							updateCustomerData({ setValue, formMeta })(formData);
 						}
-
+						// 同步不列印金額註記
+						updatePrtAmt({ setValue, formData: data });
 						updateAmt({ setValue, formData: data, reset: !data });
 					} else {
 						throw error ?? new Error("未預期例外");
@@ -1245,10 +1249,10 @@ export const useE021 = ({ mode }) => {
 					}
 				}
 			},
-		[crud.readWorking, grid, httpGetAsync, token, updateAmt, updateCustomerData]
+		[crud.readWorking, grid, httpGetAsync, token, updateAmt, updateCustomerData, updatePrtAmt]
 	);
 
-	const handleCustomerOrdersChanged = useCallback(
+	const handleCustomerOrdersChangedOld = useCallback(
 		({ setValue, getValues, reset }) =>
 			async (newValue) => {
 				console.log("handleCustomerOrdersChanged", newValue);
@@ -1495,7 +1499,7 @@ export const useE021 = ({ mode }) => {
 		handleTaxTypeChange,
 		handleRecdAmtChange,
 		// getTooltip,
-		handleCustomerOrdersChanged,
+		handleCustomerOrdersChangedOld,
 		handleCustomerOrdersChanged2,
 		committed,
 		// 檢查可否編輯

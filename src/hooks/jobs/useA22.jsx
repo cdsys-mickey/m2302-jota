@@ -67,7 +67,7 @@ export const useA22 = ({
 						// queryRequired: true,
 						// filterByServer: true,
 						// disableOpenOnInput: true,
-						hideControlsOnActive: true,
+						// hideControlsOnActive: true,
 						forId: true,
 						disableClearable: true,
 						autoHighlight: true,

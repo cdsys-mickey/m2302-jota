@@ -1,6 +1,6 @@
 import A17Toolbar from "@/components/jobs/A17/A17Toolbar";
 import { A17Context } from "@/contexts/A17/A17Context";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useUnload } from "@/shared-hooks/useUnload";

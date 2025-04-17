@@ -1,5 +1,5 @@
 import ProdGrid from "@/modules/md-prod-grid";
-import A013 from "../../modules/md-a013";
+import A013 from "../../modules/A013.mjs";
 import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useDSG } from "../../shared-hooks/dsg/useDSG";

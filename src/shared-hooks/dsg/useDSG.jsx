@@ -49,6 +49,7 @@ export const useDSG = ({
 	// const [prevGridData, setPrevGridData] = useState([]);
 	const prevGridDataRef = useRef([]);
 	const setPrevGridData = useCallback((newValue) => {
+		console.log("prevGridDataRef.current=", newValue);
 		prevGridDataRef.current = newValue;
 	}, []);
 	const [gridData, setGridData] = useState([]);
@@ -155,8 +156,9 @@ export const useDSG = ({
 				createRow,
 				length = 10,
 				supressEvents,
-				fillRows: _fillRows
+				fillRows: _fillRows,
 			} = opts || DEFAULT_SET_DATA_OPTS;
+
 			if (supressEvents) {
 				asyncRef.current.supressEvents = true;
 			}
@@ -164,47 +166,37 @@ export const useDSG = ({
 			const doFillRows = !!_fillRows;
 			const _length = Types.isNumber(_fillRows) ? _fillRows : length;
 
-			// 組成目標資料
-			let updatedGridData;
-			let filledGridData;
-			setGridData(prev => {
+			setGridData((prev) => {
+				let updatedGridData;
 				if (Types.isFunction(newValue)) {
 					updatedGridData = newValue(prev);
 				} else {
 					updatedGridData = newValue;
 				}
 
-				// 填充空白列
+				let filledGridData;
 				if (doFillRows) {
 					filledGridData = fillRows({
 						createRow,
 						data: updatedGridData,
-						length: _length
-					})
-					return filledGridData;
+						length: _length,
+					});
+					updatedGridData = filledGridData; // 確保後續邏輯使用填充後的數據
 				}
-				return updatedGridData;
-			});
 
-
-			if (reset || init) {
-				dirtyIds.clear();
-				persistedIds.clear();
-				deletedIds.clear();
-				updatedGridData?.map((item) => {
-					const key = _.get(item, keyColumn);
-					if (key) {
-						persistedIds.add(key);
-					}
-				});
-			} else {
-				if (doDirtyCheckByIndex || doDirtyCheck) {
-					// const newGridData = Types.isFunction(newValue)
-					// 	? newValue(gridData)
-					// 	: newValue;
-					// dirtyIds.clear();
+				// 在這裡處理依賴 updatedGridData 的邏輯
+				if (reset || init) {
+					dirtyIds.clear();
+					persistedIds.clear();
+					deletedIds.clear();
+					updatedGridData?.map((item) => {
+						const key = _.get(item, keyColumn);
+						if (key) {
+							persistedIds.add(key);
+						}
+					});
+				} else if (doDirtyCheckByIndex || doDirtyCheck) {
 					updatedGridData.forEach((rowData, rowIndex) => {
-						// 先以 index 取出
 						let prevRowData = prevGridDataRef.current[rowIndex];
 						if (doDirtyCheck) {
 							const key = _.get(rowData, keyColumn);
@@ -213,38 +205,26 @@ export const useDSG = ({
 								return itemKey === key;
 							});
 						}
-						handleDirtyCheck(rowData, prevRowData, {
-							debug,
-						});
+						handleDirtyCheck(rowData, prevRowData, { debug });
 					});
 				}
-			}
 
-			// const _newValues = doFillRows
-			// 	? fillRows({
-			// 		createRow,
-			// 		data: newValue,
-			// 		length: _length
-			// 	})
-			// 	: newValue
+				if (commit || init) {
+					setPrevGridData(updatedGridData);
+					console.log("prevGridData after commit/init", updatedGridData);
+				} else if (prev) {
+					setPrevGridData(prev);
+					console.log("prevGridData of prev", prev);
+				}
 
-			if (commit || init) {
-				setPrevGridData(updatedGridData);
-				console.log("prevGridData after commit/init", updatedGridData);
-			} else if (prev) {
-				setPrevGridData(prev);
-				console.log("prevGridData of prev", prev);
-			}
+				setGridLoading(false);
 
-			// setGridData(
-			// 	_newValues
-			// );
+				if (debug) {
+					console.log("_setGridData", updatedGridData);
+				}
 
-			setGridLoading(false);
-
-			if (debug) {
-				console.log("_setGridData", updatedGridData);
-			}
+				return updatedGridData; // 返回最終的數據
+			});
 		},
 		[deletedIds, dirtyIds, fillRows, handleDirtyCheck, keyColumn, persistedIds, setPrevGridData]
 	);

@@ -1,4 +1,4 @@
-import TaxTypes from "@/modules/md-tax-types";
+import TaxTypes from "@/modules/TaxTypes.mjs";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";

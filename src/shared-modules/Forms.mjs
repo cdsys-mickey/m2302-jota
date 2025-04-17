@@ -252,6 +252,12 @@ const validateTime = (value) => {
 	return getTimeValidator()(value);
 };
 
+const formatMoney = (amount, precision = 2) => {
+	return Number(amount)
+		.toFixed(precision)
+		.replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};
+
 const Forms = {
 	formatDate,
 	formatDateTime,
@@ -269,6 +275,7 @@ const Forms = {
 	formatTime,
 	formatYear,
 	formatYearMonth,
+	formatMoney,
 };
 
 export default Forms;

@@ -2,7 +2,7 @@ import { C04SearchFieldContainer } from "@/components/jobs/C04/C04SearchFieldCon
 import { C04DialogContainer } from "@/components/jobs/C04/dialog/C04DialogContainer";
 import C04ListToolbar from "@/components/jobs/C04/list/C04ListToolbar";
 import { C04ListViewContainer } from "@/components/jobs/C04/list/C04ListViewContainer";
-import Styles from "@/modules/md-styles";
+import Styles from "@/modules/Styles.mjs";
 import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { Box, useTheme } from "@mui/material";

@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { memo, useContext } from "react";
 import { ZA03Context } from "../../contexts/ZA03/ZA03Context";
 import { useMemo } from "react";
-import ZA03 from "../../modules/md-za03";
+import ZA03 from "../../modules/ZA03.mjs";
 
 export const ControlledUnusedModulePicker = memo((props) => {
 	const { name, label = "可用作業", ...rest } = props;

@@ -6,7 +6,7 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { ZA03DialogContentContainer } from "../form/ZA03DialogContentContainer";
 import Colors from "@/modules/md-colors";
 import { FormProvider, useForm } from "react-hook-form";
-import ZA03 from "@/modules/md-za03";
+import ZA03 from "@/modules/ZA03.mjs";
 
 export const ZA03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

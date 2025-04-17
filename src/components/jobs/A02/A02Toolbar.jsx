@@ -1,7 +1,7 @@
 import { forwardRef, memo } from "react";
 import Colors from "@/modules/md-colors";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexToolbar from "@/shared-components/listview/toolbar/FlexToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { A02LockRowsSwitchContainer } from "./A02LockRowsSwitchContainer";
 import A02PrintButtonContainer from "./A02PrintButtonContainer";
 
@@ -10,7 +10,7 @@ const A02Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<FlexToolbar
+				<ListToolbar
 					borderRadius={1}
 					ref={ref}
 					bgcolor={Colors.TOOLBAR}
