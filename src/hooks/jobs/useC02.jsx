@@ -68,7 +68,8 @@ export const useC02 = () => {
 	const sqtyManager = useSQtyManager({
 		grid,
 		sqtyColumn: "SRqtQty",
-		disableOverrideCheck: true
+		disableOverrideCheck: true,
+		convType: "i"
 	});
 	const { committed } = sqtyManager;
 
@@ -148,7 +149,9 @@ export const useC02 = () => {
 						data: data,
 					});
 
-					sqtyManager.recoverStockMap(data.prods);
+					sqtyManager.recoverStockMap(data.prods, {
+						safety: true
+					});
 					grid.initGridData(data.prods);
 				} else {
 					throw error ?? new Error("未預期例外");
@@ -311,11 +314,12 @@ export const useC02 = () => {
 					params: {
 						id: prodId,
 						cv: "i",
+						safety: 1
 					},
 				});
 
 				if (status.success) {
-					sqtyManager.updateStockQty(prodId, payload.StockQty);
+					sqtyManager.updateStockQty(prodId, payload.Stock ?? payload.StockQty);
 					return payload;
 				} else {
 					throw error ?? new Error("未預期例外");
@@ -334,9 +338,10 @@ export const useC02 = () => {
 		const { prod } = rowData;
 		return {
 			...rowData,
-			["ProdData"]: prod?.ProdData || "",
-			["PackData_N"]: prod?.PackData_N || "",
-			["StockQty_N"]: prodInfo?.StockQty || "",
+			["ProdData"]: prod?.ProdData ?? "",
+			["PackData_N"]: prod?.PackData_N ?? "",
+			["StockQty_N"]: prodInfo?.Stock ?? "",
+			["SafeQty_N"]: prodInfo?.Safety ?? "",
 			["SRqtQty"]: "",
 			["tooltip"]: ""
 		};

@@ -3,7 +3,7 @@ import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/o
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { C09Context } from "@/contexts/C09/C09Context";
 import { toastEx } from "@/helpers/toastEx";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";

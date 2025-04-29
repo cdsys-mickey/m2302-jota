@@ -48,7 +48,11 @@ export const H05FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<H05Form forNewCustomer={retail} onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H05Form
+					forNewCustomer={retail}
+					onSubmit={onSubmit}
+					onDebugSubmit={onDebugSubmit}
+				/>
 			</FormMetaProvider>
 		</FormProvider>
 	);

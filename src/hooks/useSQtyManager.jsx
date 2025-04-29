@@ -404,7 +404,7 @@ export default function useSQtyManager(opts = {}) {
 			const {
 				stock: stockOpts = true,
 				prepared: preparedOpts = false,
-				safetyStock: safetyStockOpts = false,
+				safety: safetyOpts = false,
 			} = opts;
 			const _gridData = gridData || grid.gridData;
 
@@ -429,7 +429,7 @@ export default function useSQtyManager(opts = {}) {
 						id: prodIds.join(","),
 						stock: stockOpts ? 1 : 0,
 						prepared: preparedOpts ? 1 : 0,
-						safetyStock: safetyStockOpts ? 1 : 0,
+						safety: safetyOpts ? 1 : 0,
 						...(convType && {
 							cv: convType
 						})

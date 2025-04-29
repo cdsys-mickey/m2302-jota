@@ -5,7 +5,7 @@ import { A04LockSwitchContainer } from "./A04LockSwitchContainer";
 import A04PrintButtonContainer from "./A04PrintButtonContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
 import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
-import Colors from "../../../modules/md-colors";
+import Colors from "../../../modules/Colors.mjs";
 
 const A04Toolbar = memo(
 	forwardRef((props, ref) => {

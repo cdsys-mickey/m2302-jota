@@ -1,7 +1,11 @@
 import { Box, Paper } from "@mui/material";
+import { blue, grey } from "@mui/material/colors";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
+/**
+ * 用來定義
+ */
 export const OptionPickerGridPaper = memo(
 	forwardRef((props, ref) => {
 		const {
@@ -14,14 +18,7 @@ export const OptionPickerGridPaper = memo(
 		return (
 			<Paper ref={ref} elevation={elevation} {...rest}>
 				{!loading && (
-					<Box
-						px={2}
-						sx={{
-							borderBottom: "1px solid rgb(0,0,0,0.1)",
-							position: "relative"
-						}}>
-						<HeaderComponent />
-					</Box>
+					<HeaderComponent />
 				)}
 				<Box
 					sx={[

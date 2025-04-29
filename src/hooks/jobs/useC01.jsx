@@ -4,14 +4,14 @@ import { toastEx } from "@/helpers/toastEx";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import CrudContext from "../../contexts/crud/CrudContext";
-import C01 from "../../modules/C01.mjs";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { useAction } from "../../shared-hooks/useAction";
-import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
-import { useToggle } from "../../shared-hooks/useToggle";
-import { useWebApi } from "../../shared-hooks/useWebApi";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import CrudContext from "@/contexts/crud/CrudContext";
+import C01 from "@/modules/C01.mjs";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useAction } from "@/shared-hooks/useAction";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useToggle } from "@/shared-hooks/useToggle";
+import { useWebApi } from "@/shared-hooks/useWebApi";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
@@ -256,11 +256,12 @@ export const useC01 = () => {
 					params: {
 						id: prodId,
 						cv: "i",
+						safety: 1
 					},
 				});
 
 				if (status.success) {
-					sqtyManager.updateStockQty(prodId, payload.StockQty);
+					sqtyManager.updateStockQty(prodId, payload.Stock ?? payload.StockQty);
 					return payload;
 				} else {
 					throw error ?? new Error("未預期例外");
@@ -284,7 +285,7 @@ export const useC01 = () => {
 			...processedRowData,
 			["ProdData"]: prod?.ProdData || "",
 			["PackData_N"]: prod?.PackData_N || "",
-			["StockQty_N"]: prodInfo?.StockQty || "",
+			["StockQty_N"]: prodInfo?.Stock || "",
 			["SRqtQty"]: "",
 			["SOrdQty"]: "",
 			["supplier"]: null,

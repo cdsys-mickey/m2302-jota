@@ -1,6 +1,6 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { D01Context } from "@/contexts/D01/D01Context";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";

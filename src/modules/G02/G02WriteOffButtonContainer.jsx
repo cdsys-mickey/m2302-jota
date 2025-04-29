@@ -1,7 +1,7 @@
 import { G02Context } from "@/modules/G02/G02Context";
 import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import { forwardRef, memo, useContext, useMemo } from "react";
-import LastPageIcon from '@mui/icons-material/LastPage';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import { Button, ButtonGroup, Tooltip } from "@mui/material";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -41,7 +41,7 @@ const G02WriteOffButtonContainer = memo(
 							ref={ref}
 
 							color="secondary"
-							startIcon={<LastPageIcon />}
+							startIcon={<PlaylistRemoveIcon />}
 							onClick={g02.confirmWriteOff}
 							className="no-margin-right"
 							sx={{

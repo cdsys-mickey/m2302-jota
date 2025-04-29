@@ -62,7 +62,7 @@ const DeptPickerComponent = memo((props) => {
 		insertRowBelow
 	});
 
-	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	// const { inputRef, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
 	const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
@@ -111,12 +111,8 @@ const DeptPickerComponent = memo((props) => {
 			// name={name}
 			queryParam="qs"
 			// label=""
-			// inputRef={ref}
 			// disabled={disabled}
 			// value={rowData}
-			// onChange={handleChange}
-			// onOpen={handleOpen}
-			// onClose={handleClose}
 			// placeholder="門市"
 			// typeToSearchText="請輸入門市編號或名稱進行搜尋"
 			// filterByServer
@@ -124,12 +120,19 @@ const DeptPickerComponent = memo((props) => {
 			// handleFocusNextCell={handleFocusNextCell}
 			// multiple={multiple}
 			// cellComponentRef={cellComponentRef}
-			// cell={cell}
 			// dense
-			// hideControls={hideControls}
 			// hideBorders
 			// disableFadeOut
 			// toastError
+
+
+			// inputRef={inputRef}
+			// hideControls={hideControls}
+			// cell={cell}
+			// onChange={handleChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
+
 			{...pickerProps}
 			{...rest}
 		// blurToLookup={false}

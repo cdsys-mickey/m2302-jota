@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import Types from "@/shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 
 const AlertEx = memo(
 	forwardRef((props, ref) => {

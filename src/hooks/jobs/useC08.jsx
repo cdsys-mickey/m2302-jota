@@ -191,7 +191,9 @@ export const useC08 = () => {
 					crud.doneReading({
 						data: data,
 					});
-					sqtyManager.recoverStockMap(data.prods);
+					sqtyManager.recoverStockMap(data.prods, {
+						safety: true
+					});
 					grid.initGridData(data.prods);
 				} else {
 					throw error ?? new Error("未預期例外");
@@ -254,9 +256,6 @@ export const useC08 = () => {
 
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
 				if (err.code === 102) {
-					// const rowIndex = Number(err.data[0].Row) - 1;
-					// const rowData = grid.gridData[rowIndex];
-					// const stock = Number(err.data[0].StockQty);
 					const errorParams = sqtyManager.getErrorParams(err);
 
 					sqtyManager.handleOverrideSQty({

@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 
 const DEFAULT_PROPS = {
 	size: "small",

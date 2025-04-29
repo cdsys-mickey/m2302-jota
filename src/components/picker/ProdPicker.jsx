@@ -7,6 +7,7 @@ import queryString from "query-string";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import { useCallback } from "react";
 import _ from "lodash";
+import { createFilterOptions } from "@mui/material";
 
 const ProdPicker = (props) => {
 	const {
@@ -22,10 +23,12 @@ const ProdPicker = (props) => {
 		// ** 已報價商品專用參數
 		retail,
 		cst,
-		// compTel,
+		slotProps = {},
 		...rest
 	} = props;
 	const { token } = useContext(AuthContext);
+
+	const { paper: paperProps, ..._slotProps } = slotProps;
 
 	const querystring = useMemo(() => {
 		return queryString.stringify({
@@ -96,6 +99,50 @@ const ProdPicker = (props) => {
 		return retail != null ? getNotFoundText : "商品代號 ${id} 不存在"
 	}, [getNotFoundText, retail])
 
+	const defaultFilter = useMemo(() => createFilterOptions({
+		stringify: (option) => `${option.ProdID} ${option.ProdData} ${option.Barcode}`
+	}), []);
+
+	const filterOptions = useCallback((options, state) => {
+		// 執行預設過濾
+		let filtered = defaultFilter(options, state);
+
+		// 僅當有輸入值時應用自訂排序
+		if (state.inputValue) {
+			filtered = filtered.sort((a, b) => {
+				const input = state.inputValue.toLowerCase();
+
+				// 比較 ProdID 的匹配位置
+				const aProdIDIndex = a.ProdID.toLowerCase().indexOf(input);
+				const bProdIDIndex = b.ProdID.toLowerCase().indexOf(input);
+				if (aProdIDIndex !== bProdIDIndex) {
+					if (aProdIDIndex === -1) return 1; // a 無匹配，排後面
+					if (bProdIDIndex === -1) return -1; // b 無匹配，排後面
+					return aProdIDIndex - bProdIDIndex; // 比較位置
+				}
+
+				// 比較 ProdData 的匹配位置
+				const aProdDataIndex = a.ProdData.toLowerCase().indexOf(input);
+				const bProdDataIndex = b.ProdData.toLowerCase().indexOf(input);
+				if (aProdDataIndex !== bProdDataIndex) {
+					if (aProdDataIndex === -1) return 1; // a 無匹配，排後面
+					if (bProdDataIndex === -1) return -1; // b 無匹配，排後面
+					return aProdDataIndex - bProdDataIndex; // 比較位置
+				}
+
+				// 比較 Barcode 的匹配位置
+				const aBarcodeIndex = a.Barcode.toLowerCase().indexOf(input);
+				const bBarcodeIndex = b.Barcode.toLowerCase().indexOf(input);
+				if (aBarcodeIndex === -1 && bBarcodeIndex === -1) return 0; // 都無匹配，保持順序
+				if (aBarcodeIndex === -1) return 1; // a 無匹配，排後面
+				if (bBarcodeIndex === -1) return -1; // b 無匹配，排後面
+				return aBarcodeIndex - bBarcodeIndex; // 比較位置
+			});
+		}
+
+		return filtered;
+	}, [defaultFilter]);
+
 	return (
 		<OptionPickerWrapper
 			label={label}
@@ -113,7 +160,16 @@ const ProdPicker = (props) => {
 			notFoundText={notFoundText}
 			placeholder="以編號或品名搜尋"
 			typeToSearchText="輸入編號、條碼或名稱搜尋..."
-			// blurToLookup
+			filterOptions={filterOptions}
+			slotProps={{
+				..._slotProps,
+				paper: {
+					sx: {
+						width: 300,
+					},
+					...paperProps
+				},
+			}}
 			{...rest}
 		/>
 	);
@@ -133,6 +189,7 @@ ProdPicker.propTypes = {
 	fuzzy: PropTypes.bool,
 	retail: PropTypes.bool,
 	cst: PropTypes.string,
+	slotProps: PropTypes.object
 	// compTel: PropTypes.string
 };
 

@@ -5,7 +5,7 @@ import HttpStatus from "@/shared-classes/HttpStatus";
 import WebApi from "@/shared-modules/WebApi.mjs";
 import axios from "axios";
 import querystring from "query-string";
-import Types from "@/shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 import ConfigContext from "@/contexts/config/ConfigContext";
 
 const DEFAULT_HEADERS = () => {
@@ -25,6 +25,10 @@ const DEFAULT_JSON_HEADERS = {
 const DEFAULT_FORM_HEADERS = {
 	"Content-Type": "multipart/form-data",
 };
+
+const DEFAULT_RESPONSE_OPTS = {
+	headers: false
+}
 
 /**
  * 呼叫 Web-API,
@@ -75,15 +79,15 @@ export const useWebApi = (props) => {
 	// 	return payload["data"] || [];
 	// }, []);
 
-	const getHeaders = useCallback(() => {
-		if (!headers) {
-			return null;
-		}
-		if (Types.isFunction(headers)) {
-			return headers();
-		}
-		return headers;
-	}, [headers]);
+	// const getHeaders = useCallback(() => {
+	// 	if (!headers) {
+	// 		return null;
+	// 	}
+	// 	if (Types.isFunction(headers)) {
+	// 		return headers();
+	// 	}
+	// 	return headers;
+	// }, [headers]);
 
 	// async 版本
 	const sendAsync = useCallback(
@@ -95,8 +99,10 @@ export const useWebApi = (props) => {
 			headers: _headers,
 			bearer,
 			mode = defaultMode,
+
 			...rest
-		}) => {
+		}, opts = {}) => {
+			const { response: responseOpts = DEFAULT_RESPONSE_OPTS } = opts;
 			const apiUrl = getUrl(url);
 			if (!apiUrl) {
 				throw `url cannot be null`;
@@ -138,25 +144,28 @@ export const useWebApi = (props) => {
 					}),
 					params: _params,
 					headers: {
+						...(mode === "json" && DEFAULT_JSON_HEADERS),
+						...(mode === "form" && DEFAULT_FORM_HEADERS),
+
 						// 先列舉 props 內的 headers
-						// ...DEFAULT_HEADERS,
-						...getHeaders(),
-						..._headers,
 						// 再列舉 參數 內的 headers
+						...(Types.isFunction(headers) ? headers() : headers),
+						...(Types.isFunction(_headers) ? _headers() : _headers),
 						...(!!bearer && {
 							Authorization: `bearer ${bearer}`,
 						}),
-						...(mode === "json" && DEFAULT_JSON_HEADERS),
-						...(mode === "form" && DEFAULT_FORM_HEADERS),
 					},
 					...rest,
 				});
 				const status = HttpStatus.from(axiosResponse.status);
-				// console.log(`payload`, axiosResponse.data);
+				console.log(`axiosResponse`, axiosResponse);
 				if (status.is2xx) {
 					return {
 						status: status,
 						payload: axiosResponse.data,
+						...(responseOpts.headers && {
+							headers: axiosResponse.headers
+						})
 					};
 				} else {
 					//should not happen, because Axios always throws error when status is not 2xx
@@ -183,7 +192,7 @@ export const useWebApi = (props) => {
 				};
 			}
 		},
-		[defaultMode, getHeaders, getUrl, withStack]
+		[defaultMode, getUrl, headers, withStack]
 	);
 
 	const httpGetAsync = useCallback(
@@ -221,6 +230,21 @@ export const useWebApi = (props) => {
 		[sendAsync]
 	);
 
+	// 
+	const getFileNameFromDisposition = useCallback((headers) => {
+		let fileName = 'downloaded_file';
+		const disposition = headers['content-disposition'];
+		if (disposition && disposition.includes('filename=')) {
+			const matches = disposition.match(/filename="(.+)"/);
+			if (matches && matches[1]) {
+				fileName = matches[1];
+			}
+		}
+		return fileName;
+	}, []);
+
+
+
 	return {
 		sendAsync,
 		httpGetAsync,
@@ -230,5 +254,6 @@ export const useWebApi = (props) => {
 		httpDeleteAsync,
 		getUrl,
 		fetch,
+		getFileNameFromDisposition
 	};
 };

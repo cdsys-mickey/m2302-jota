@@ -55,6 +55,7 @@ const P10Form = memo((props) => {
 										selectOnFocus
 										borderless
 										placeholder="起"
+
 									/>}
 									rightComponent={<ProdPicker
 										name="EProdID"
@@ -64,6 +65,7 @@ const P10Form = memo((props) => {
 										selectOnFocus
 										borderless
 										placeholder="迄"
+
 									/>}
 								/>
 							</Grid>

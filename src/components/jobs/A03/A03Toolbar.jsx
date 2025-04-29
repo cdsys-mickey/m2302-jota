@@ -5,7 +5,7 @@ import ContainerEx from "../../../shared-components/ContainerEx";
 import { A03LockSwitchContainer } from "./A03LockSwitchContainer";
 import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
 import { Grid } from "@mui/material";
-import Colors from "../../../modules/md-colors";
+import Colors from "../../../modules/Colors.mjs";
 
 const A03Toolbar = memo(
 	forwardRef((props, ref) => {

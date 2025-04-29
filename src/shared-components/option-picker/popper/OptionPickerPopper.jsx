@@ -7,17 +7,23 @@ const OptionPickerPopper = forwardRef((props, ref) => {
 	const { open } = props;
 	const popperRef = useRef(null);
 
+	console.log("rendering OptionPickerPopper", props);
+
 	const setRef = useCallback((node) => {
-		console.log("setRef invoked")
+		console.log("OptionPickerPopper.setRef invoked")
 		popperRef.current = node;
 		if (typeof ref === "function") ref(node);
 		else if (ref) ref.current = node;
 	}, [ref]);
 
 	useEffect(() => {
-		if (open && popperRef.current) {
-			console.log("OptionPickerPopper 取得焦點")
-			popperRef.current.focus();
+		if (open) {
+			setTimeout(() => {
+				console.log("OptionPickerPopper 取得焦點")
+				if (popperRef.current) {
+					popperRef.current.focus();
+				}
+			}, 0);
 		}
 	}, [open]);
 

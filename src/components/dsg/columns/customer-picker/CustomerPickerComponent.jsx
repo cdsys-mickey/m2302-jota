@@ -107,7 +107,7 @@ const CustomerPickerComponent = memo((props) => {
 		<CustomerPicker
 			// name={name}
 			queryParam="qs"
-			// label=""
+			autoLabel={false}
 			// inputRef={ref}
 			// disabled={disabled}
 			// value={rowData}

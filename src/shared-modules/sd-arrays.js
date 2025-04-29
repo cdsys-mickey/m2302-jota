@@ -1,4 +1,4 @@
-import Types from "./sd-types";
+import Types from "@/shared-modules/Types.mjs";
 import _ from "lodash";
 
 const parse = (s, opts = {}) => {

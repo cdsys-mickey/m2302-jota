@@ -60,7 +60,7 @@ export const useE021 = ({ mode }) => {
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/sales/customer-invoices",
+		url: "v1/sales/invoices",
 		bearer: token,
 		initialFetchSize: 50,
 	});
@@ -205,7 +205,7 @@ export const useE021 = ({ mode }) => {
 			const total = E021.getTotal(gridData);
 			try {
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/sales/customer-invoices/refresh-amt",
+					url: "v1/sales/invoices/refresh-amt",
 					bearer: token,
 					data: {
 						taxExcluded: formData.taxExcluded ? 1 : 0,
@@ -239,7 +239,7 @@ export const useE021 = ({ mode }) => {
 					crud.startReading("讀取中...", { itemId });
 				}
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/sales/customer-invoices",
+					url: "v1/sales/invoices",
 					bearer: token,
 					params: {
 						id: itemId,
@@ -277,7 +277,7 @@ export const useE021 = ({ mode }) => {
 				crud.promptCreating();
 				crud.startReading("讀取中...");
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/sales/customer-invoices/create-with",
+					url: "v1/sales/invoices/create-with",
 					bearer: token,
 					params: {
 						id,
@@ -385,14 +385,14 @@ export const useE021 = ({ mode }) => {
 				}
 
 				const { status, error } = creating ? await httpPostAsync({
-					url: "v1/sales/customer-invoices",
+					url: "v1/sales/invoices",
 					data: data,
 					bearer: token,
 					params: {
 						mode: mode.description
 					}
 				}) : await httpPutAsync({
-					url: "v1/sales/customer-invoices",
+					url: "v1/sales/invoices",
 					data: data,
 					bearer: token,
 					params: {
@@ -420,13 +420,7 @@ export const useE021 = ({ mode }) => {
 				}
 
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
-				// const errorRow = err.data?.[0]?.Row;
-				// const errorStock = err.data?.[0]?.StockQty;
-				// if (err.code === 102 && errorRow && errorStock) {
 				if (err.code === 102) {
-					// const rowIndex = Number(errorRow) - 1;
-					// const rowData = grid.gridData[rowIndex];
-					// const stock = Number(errorStock);
 					const errorParams = sqtyManager.getErrorParams(err);
 
 					sqtyManager.handleOverrideSQty({
@@ -509,7 +503,7 @@ export const useE021 = ({ mode }) => {
 				try {
 					crud.startDeleting(itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/sales/customer-invoices`,
+						url: `v1/sales/invoices`,
 						bearer: token,
 						params: {
 							id: itemData?.SalID,
@@ -566,7 +560,7 @@ export const useE021 = ({ mode }) => {
 
 			try {
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/sales/customer-invoices/prod-info",
+					url: "v1/sales/invoices/prod-info",
 					bearer: token,
 					params: {
 						id: prodId,
@@ -641,6 +635,7 @@ export const useE021 = ({ mode }) => {
 				["SNotQty"]: "",
 				["SQtyNote"]: "",
 				["StockQty"]: "",
+				["SafeQty_N"]: prodInfo?.SafeQty_N ?? "",
 				// ["OrdQty_N"]: "",
 				// ["LaveQty_N"]: "",
 				["tooltip"]: ""
@@ -1037,7 +1032,7 @@ export const useE021 = ({ mode }) => {
 					console.log("collected", collected);
 
 					const { status, payload, error } = await httpPostAsync({
-						url: "v1/sales/customer-invoices/refresh-grid",
+						url: "v1/sales/invoices/refresh-grid",
 						bearer: token,
 						data: collected,
 					});
@@ -1210,7 +1205,7 @@ export const useE021 = ({ mode }) => {
 				}
 				try {
 					const { status, payload, error } = await httpGetAsync({
-						url: "v1/sales/customer-invoices/load-prods",
+						url: "v1/sales/invoices/load-prods",
 						bearer: token,
 						params: {
 							cst: custId,
@@ -1276,7 +1271,7 @@ export const useE021 = ({ mode }) => {
 						return;
 					}
 					const { status, payload, error } = await httpGetAsync({
-						url: "v1/sales/customer-invoices/load-prods",
+						url: "v1/sales/invoices/load-prods",
 						bearer: token,
 						params: {
 							cst: custId,
@@ -1340,7 +1335,7 @@ export const useE021 = ({ mode }) => {
 		try {
 			checkEditableAction.start();
 			const { status, error } = await httpGetAsync({
-				url: "v1/sales/customer-invoices/check-editable",
+				url: "v1/sales/invoices/check-editable",
 				bearer: token,
 				params: {
 					id: crud.itemData.SalID,
@@ -1367,7 +1362,7 @@ export const useE021 = ({ mode }) => {
 	// 	// 取得 order entity
 	// 	try {
 	// 		const { status, payload, error } = await httpGetAsync({
-	// 			url: `v1/sales/customer-invoices/customer-orders`,
+	// 			url: `v1/sales/invoices/customer-orders`,
 	// 			bearer: token,
 	// 			params: {
 	// 				fz: orderId
@@ -1404,7 +1399,7 @@ export const useE021 = ({ mode }) => {
 			promptCreating();
 			loadOrderAction.start({ message: `載入訂貨單...` });
 			const { status, payload, error } = await httpGetAsync({
-				url: `v1/sales/customer-invoices/customer-orders`,
+				url: `v1/sales/invoices/customer-orders`,
 				bearer: token,
 				params: {
 					fz: orderId

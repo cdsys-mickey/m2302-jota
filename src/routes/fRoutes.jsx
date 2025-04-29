@@ -1,6 +1,6 @@
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { F01Provider } from "@/modules/F01/F01Provider";
-import { F02Provider } from "@/contexts/F02/F02Provider";
+import { F02Provider } from "@/pages/modules/F02/F02Provider";
 import { F03Provider } from "@/contexts/F03/F03Provider";
 import { F04Provider } from "@/contexts/F04/F04Provider";
 import { F05Provider } from "@/contexts/F05/F05Provider";

@@ -1,6 +1,6 @@
 import { F03Context } from "@/contexts/F03/F03Context";
 import { toastEx } from "@/helpers/toastEx";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";

@@ -1,7 +1,7 @@
 import { toastEx } from "@/helpers/toastEx";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import Objects from "@/shared-modules/Objects";
-import Types from "@/shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 import { styled } from "@mui/system";
 import { isValid, parse } from "date-fns";
 import _ from "lodash";

@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import DateFormats from "@/shared-modules/sd-date-formats";

@@ -1,7 +1,7 @@
-import Types from "@/shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { toastEx } from "@/helpers/toastEx";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import {
 	Autocomplete,
 	Chip,
@@ -28,6 +28,7 @@ import { OptionPickerGridPaper } from "./grid/OptionPickerGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
 import { OptionPickerContext } from "./listbox/OptionPickerContext";
+import OptionPickerPopper from "./popper/OptionPickerPopper";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -151,6 +152,7 @@ const OptionPicker = memo(
 			borderless,
 			focusNextCellOnChange = true,
 			focusNextFieldOnChange = true,
+			filterOptions,
 			...rest
 		} = props;
 
@@ -169,13 +171,13 @@ const OptionPicker = memo(
 		}, [notFoundText]);
 
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
-		const memoisedFilterOptions = useMemo(() => {
+		const _filterOptions = useMemo(() => {
 			return dontFilterOptions
 				? noFilterOptions
-				: createFilterOptions({
+				: (filterOptions ? filterOptions : createFilterOptions({
 					stringify,
-				});
-		}, [dontFilterOptions, stringify]);
+				}));
+		}, [dontFilterOptions, filterOptions, stringify]);
 
 		// OPEN Control
 		const asyncRef = useRef({
@@ -189,12 +191,10 @@ const OptionPicker = memo(
 		const innerInputRef = useRef();
 		useImperativeHandle(inputRef, () => innerInputRef.current);
 
-		const [popperOpen, setPopperOpen] = useState(open || false);
-
 		const handleInputChange = useCallback(
 			(event) => {
 				const input = event.target.value;
-				console.log(`handleInputChange: "${input}"`);
+				// console.log(`handleInputChange: "${input}"`);
 
 				// 原本輸入框刪到空白則取消 dirty 狀態,
 				// 但為了支援空 id, 因此這裡改成允許空白時保留 dirty 狀態
@@ -219,8 +219,18 @@ const OptionPicker = memo(
 			[clearErrors, multiple, name, onChange, onInputChange, value]
 		);
 
+		const [popperOpen, setPopperOpen] = useState(open || false);
+		// const popperRef = useRef(null);
+
 		const handleOpen = useCallback(
 			(e, opts = {}) => {
+				// setTimeout(() => {
+				// 	if (popperRef.current) {
+				// 		popperRef.current.focus();
+				// 		console.log("popperRef.current.focus");
+				// 	}
+				// }, 0);
+
 				const { override = false } = opts;
 				if (popperOpen) {
 					console.log("popper already opened");
@@ -633,7 +643,7 @@ const OptionPicker = memo(
 					/>
 				);
 			},
-			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleInputChange, handleKeyDown, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.textField, variant]
+			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleInputChange, handleKeyDown, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.input, slotProps?.textField, variant]
 		);
 
 		const renderDndInput = useCallback(
@@ -864,11 +874,11 @@ const OptionPicker = memo(
 		}, [renderGroup, renderGroupForVirtualized, virtualize]);
 
 		const PaperComponent = useMemo(() => {
-			if (GridHeaderComponent) {
+			if (GridRowComponent) {
 				return OptionPickerGridPaper;
 			}
 			return customPaperComponent || Paper;
-		}, [GridHeaderComponent, customPaperComponent]);
+		}, [GridRowComponent, customPaperComponent]);
 
 		const _width = useMemo(() => {
 			return fullWidth ? "100%" : (width || "fill-available");
@@ -894,6 +904,7 @@ const OptionPicker = memo(
 			}
 		}, [value]);
 
+
 		return (
 			<OptionPickerContext.Provider value={{
 				GridRowComponent,
@@ -916,22 +927,6 @@ const OptionPicker = memo(
 						onChange={handleChange}
 						ref={ref}
 						size={size}
-						// slotProps={{
-						// 	paper: {
-						// 		component: ({ ...rest }) => (
-						// 			<PaperComponent
-						// 				elevation={8}
-						// 				{...(GridHeaderComponent && {
-						// 					HeaderComponent: GridHeaderComponent,
-						// 				})}
-						// 				{...rest}
-						// 			/>
-						// 		),
-						// 		...slotProps?.paper,
-						// 	},
-						// 	...slotProps
-						// }}
-						// onBlur={handleBlur}
 						PaperComponent={({ ...rest }) => (
 							<PaperComponent
 								elevation={8}
@@ -958,12 +953,18 @@ const OptionPicker = memo(
 						getOptionLabel={getOptionLabel}
 						renderOption={handleRenderOption}
 						renderGroup={handleRenderGroup}
-						filterOptions={memoisedFilterOptions}
+						filterOptions={_filterOptions}
 						// Popper Open 控制
 						// open={popperOpen}
 						onOpen={handleOpen}
 						onClose={handleClose}
-						// PopperComponent={OptionPickerPopper}
+						PopperComponent={OptionPickerPopper}
+						// slotProps={{
+						// 	popper: {
+						// 		popperRef: popperRef,
+						// 		tabIndex: 0, // 確保 Popper 可聚焦
+						// 	}
+						// }}
 						open={_open}
 						// onOpen={_onOpen}
 						// onOpen={_onOpen}
@@ -1117,5 +1118,6 @@ OptionPicker.propTypes = {
 	slotProps: PropTypes.object,
 	focusNextCellOnChange: PropTypes.bool,
 	focusNextFieldOnChange: PropTypes.bool,
+	filterOptions: PropTypes.func
 };
 export default OptionPicker;

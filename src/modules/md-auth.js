@@ -1,4 +1,4 @@
-import Colors from "./md-colors";
+import Colors from "./Colors.mjs";
 
 const COOKIE_MODE = "md";
 const COOKIE_ACCOUNT = "ac";

@@ -4,6 +4,7 @@ import DSG from "@/shared-modules/sd-dsg";
 import { useEffect } from "react";
 import { toastEx } from "@/helpers/toastEx";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
+import { useLayoutEffect } from "react";
 
 export const useDSGMeta = ({
 	name,
@@ -12,14 +13,23 @@ export const useDSGMeta = ({
 	lastCell,
 	data,
 	setGridData,
-	createRow
+	createRow,
+	defaultCell
 }) => {
 	const gridRef = useRef();
+	const asyncRef = useRef({
+		refAssigned: false
+	});
 	const setGridRef = useCallback((node) => {
 		if (node) {
 			gridRef.current = node;
+			if (!asyncRef.current.refAssigned && defaultCell) {
+				gridRef.current.setActiveCell(defaultCell)
+				console.log("defaultCell assigned", defaultCell)
+			}
+			asyncRef.current.refAssigned = true;
 		}
-	}, []);
+	}, [defaultCell]);
 
 	const asyncMetaRef = useRef({
 		prevCell: null,

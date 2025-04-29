@@ -1,9 +1,8 @@
 import queryString from "query-string";
 import { useCallback, useMemo, useRef, useState } from "react";
-import Types from "../shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 import { useChangeTracking } from "./useChangeTracking";
 import { useWebApi } from "./useWebApi";
-import CommonStyles from "@/shared-modules/CommonStyles.mjs";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
 
 const defaultTriggerServerFilter = (q) => {
@@ -11,8 +10,10 @@ const defaultTriggerServerFilter = (q) => {
 };
 
 const defaultGetData = (payload) => {
-	return payload["data"];
-	// return payload;
+	// return payload && typeof payload === 'object' && 'data' in payload && Array.isArray(payload.data)
+	// 	? payload.data
+	// 	: payload;
+	return payload.data;
 };
 
 const defaultOnError = (err) => {

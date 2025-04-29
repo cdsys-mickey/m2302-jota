@@ -1,6 +1,6 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { toastEx } from "@/helpers/toastEx";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { P14Context } from "@/modules/P14/P14Context";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";

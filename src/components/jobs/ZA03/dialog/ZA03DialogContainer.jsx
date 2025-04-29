@@ -4,7 +4,7 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { ZA03DialogContentContainer } from "../form/ZA03DialogContentContainer";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { FormProvider, useForm } from "react-hook-form";
 import ZA03 from "@/modules/ZA03.mjs";
 

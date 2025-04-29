@@ -6,7 +6,7 @@ import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D06DialogForm from "./D06DialogForm";
 import { D06DialogToolbarContainer } from "./toolbar/D06DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import D06Drawer from "../D06Drawer";
 import { keyColumn } from "react-datasheet-grid";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";

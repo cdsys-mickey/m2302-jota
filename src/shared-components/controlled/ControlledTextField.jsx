@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";

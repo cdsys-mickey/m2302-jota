@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import ProdLines from "../../modules/md-prod-lines";
+import ProdLines from "../../modules/ProdLines.mjs";
 import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 
 const ProdLinePicker = (props) => {

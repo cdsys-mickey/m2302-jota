@@ -1,5 +1,5 @@
 import { forwardRef, memo } from "react";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { ProdGridCancelChangesButtonContainer } from "./ProdGridCancelChangesButtonContainer";
 import { ProdGridCancelEditButtonContainer } from "./ProdGridCancelEditButtonContainer";

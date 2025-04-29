@@ -9,14 +9,14 @@ export const useCellControls = () => {
 	}
 	return {
 		// from useDSGMeta
-		skipDisabled: dsg.skipDisabled,
 		getNextCell: dsg.getNextCell,
 		lastCell: dsg.lastCell,
 		isLastRow: dsg.isLastRow,
 		setActiveCell: dsg.setActiveCell,
 		handleFocusPrevCell: dsg.handleFocusPrevCell,
+
+		skipDisabled: dsg.skipDisabled,
 		inDSG: !!dsg,
-		// from useDSG
 		readOnly: dsg.readOnly,
 		supressEvents: dsg.asyncRef?.current?.supressEvents || false
 	};

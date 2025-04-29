@@ -50,6 +50,7 @@ const H21Form = memo((props) => {
 										selectOnFocus
 										borderless
 										placeholder="起"
+
 									/>}
 									rightComponent={<ProdPicker
 										name="EProdID"
@@ -60,6 +61,7 @@ const H21Form = memo((props) => {
 										selectOnFocus
 										borderless
 										placeholder="迄"
+
 									/>}
 								/>
 							</Grid>

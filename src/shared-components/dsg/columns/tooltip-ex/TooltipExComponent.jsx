@@ -5,7 +5,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { useMemo } from "react";
 import Objects from "@/shared-modules/Objects";
 import TooltipEx from "@/components/picker/tooltip-ex/TooltipEx";
-import Types from "@/shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {

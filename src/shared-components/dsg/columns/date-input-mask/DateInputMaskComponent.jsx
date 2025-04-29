@@ -1,7 +1,7 @@
 import { toastEx } from "@/helpers/toastEx";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import Objects from "@/shared-modules/Objects";
-import Types from "@/shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 import clsx from "clsx";
 import _ from "lodash";
 import PropTypes from "prop-types";

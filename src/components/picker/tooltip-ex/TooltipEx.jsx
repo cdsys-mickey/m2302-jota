@@ -1,4 +1,4 @@
-import Types from "@/shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 import { Tooltip } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import { Box } from "@mui/system";

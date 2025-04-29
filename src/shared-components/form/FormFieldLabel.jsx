@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import MuiStyles from "../../shared-modules/MuiStyles";
-import Types from "../../shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 import FlexBox from "../FlexBox";
 import FormLabelEx from "./FormLabelEx";
 

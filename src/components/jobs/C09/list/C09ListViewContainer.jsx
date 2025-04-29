@@ -11,7 +11,7 @@ import { C09ListRowContainer } from "./C09ListRowContainer";
 import Forms from "@/shared-modules/Forms.mjs";
 import { useMemo } from "react";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C09 from "@/modules/md-c09";
+import C09 from "@/modules/C09.mjs";
 
 export const C09ListViewContainer = () => {
 	const c09 = useContext(C09Context);

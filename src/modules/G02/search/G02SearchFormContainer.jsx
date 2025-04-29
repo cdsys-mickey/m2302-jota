@@ -19,7 +19,7 @@ const G02SearchFormContainer = (props) => {
 	const form = useFormContext();
 
 	const handleCustomerChange = useCallback((newCustomer) => {
-		form.setValue("lvCustName", newCustomer.CustData ?? "");
+		form.setValue("lvCustName", newCustomer.AbbrName ?? "");
 	}, [form]);
 
 

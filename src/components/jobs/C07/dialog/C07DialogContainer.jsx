@@ -6,7 +6,7 @@ import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C07DialogForm from "./C07DialogForm";
 import { C07DialogToolbarContainer } from "./toolbar/C07DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { keyColumn } from "react-datasheet-grid";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";

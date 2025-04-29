@@ -1,4 +1,4 @@
-import Colors from '@/modules/md-colors';
+import Colors from '@/modules/Colors.mjs';
 import { Box } from '@mui/system';
 import PropTypes from "prop-types";
 

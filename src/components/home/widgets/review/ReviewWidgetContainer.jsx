@@ -1,4 +1,4 @@
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import ModuleHeading from "@/shared-components/ModuleHeading";
 import InboxIcon from "@mui/icons-material/Inbox";
 import { useContext } from "react";

@@ -1,4 +1,4 @@
-import Types from "./sd-types";
+import Types from "@/shared-modules/Types.mjs";
 
 const PRICE_FIXED_DIGITS = 2;
 const RATE_FIXED_DIGITS = 4;

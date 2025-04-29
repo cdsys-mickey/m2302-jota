@@ -20,7 +20,7 @@ import { ToastContainer } from "react-toastify";
 import { DialogsProvider } from "@/shared-contexts/dialog/DialogsProvider";
 import { AppProvider } from "@/contexts/app/AppProvider";
 import AppRoute from "@/routes/AppRoute";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";
 import { useEffect } from "react";
 import { useContext } from "react";

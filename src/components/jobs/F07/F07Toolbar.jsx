@@ -1,4 +1,4 @@
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { forwardRef, memo } from "react";
 import ContainerEx from "@/shared-components/ContainerEx";
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";

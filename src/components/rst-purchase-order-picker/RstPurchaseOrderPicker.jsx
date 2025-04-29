@@ -6,7 +6,7 @@ import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import { RstPurchaseOrderGridHeader } from "./RstPurchaseOrderGridHeader";
 import { RstPurchaseOrderGridRow } from "./RstPurchaseOrderGridRow";
-import RstPurchaseOrders from "@/modules/md-rst-purchase-orders";
+import RstPurchaseOrders from "@/components/rst-purchase-order-picker/RstPurchaseOrrders.mjs";
 
 export const RstPurchaseOrderPicker = (props) => {
 	const { label = "採購單", ...rest } = props;

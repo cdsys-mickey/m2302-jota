@@ -1,4 +1,4 @@
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { JobMenuRemoveAllFieldsButtonContainer } from "./JobMenuRemoveAllFieldsButtonContainer";
 import { JobMenuSaveButtonContainer } from "./JobMenuSaveButtonContainer";

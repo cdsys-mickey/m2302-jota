@@ -26,6 +26,17 @@ const getTooltips = ({ rowData, rowIndex }) => {
 				label: `庫存量`,
 				value: stockQty ?? 0,
 			});
+			if (rowData?.SafeQty_N) {
+				const safety = Number(rowData?.SafeQty_N) || 0;
+
+				const value = safety > 0 ? stockQty - safety : stockQty;
+				if (stockQty < (safety > 0 ? safety : 0)) {
+					results.push({
+						label: `低於安存量`,
+						value: value,
+					});
+				}
+			}
 		}
 	}
 	console.log(`${getTooltips.name}`, results);

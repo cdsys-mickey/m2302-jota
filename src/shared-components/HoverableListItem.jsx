@@ -1,6 +1,6 @@
 import { cyan, grey } from "@mui/material/colors";
 import { Box, styled } from "@mui/system";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { useMemo } from "react";
 import Arrays from "@/shared-modules/sd-arrays";
 
@@ -84,7 +84,7 @@ const HoverableListItem = styled(Box, {
 				opacity: "100%",
 			},
 			...(borderBottom && {
-				borderBottom: `1px solid ${Colors.HOVER}`,
+				borderBottom: `1px solid ${Colors.TOOLBAR}`,
 			}),
 			cursor: showCursor ? "pointer" : "inherit",
 		};

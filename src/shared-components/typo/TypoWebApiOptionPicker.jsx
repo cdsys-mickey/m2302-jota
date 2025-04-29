@@ -4,7 +4,7 @@ import { forwardRef, memo, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useWatch } from "react-hook-form";
 import TypoChips from "@/shared-components/typo/TypoChips";
-import Types from "@/shared-modules/sd-types";
+import Types from "@/shared-modules/Types.mjs";
 
 const TypoWebApiOptionPicker = memo(
 	forwardRef((props, ref) => {

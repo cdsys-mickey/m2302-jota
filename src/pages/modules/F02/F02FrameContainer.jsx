@@ -17,5 +17,3 @@ export const F02FrameContainer = () => {
 };
 
 F02FrameContainer.displayName = "F02Frame";
-
-

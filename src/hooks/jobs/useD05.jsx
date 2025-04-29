@@ -474,11 +474,45 @@ export const useD05 = () => {
 		[httpGetAsync, token]
 	);
 
+	const getProdInfo = useCallback(
+		async (prodId) => {
+			if (!prodId) {
+				toastEx.error("請先選擇商品", {
+					position: "top-right"
+				});
+				return;
+			}
+			try {
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/inv/stock",
+					bearer: token,
+					params: {
+						id: prodId,
+						safety: 1
+					},
+				});
+
+				if (status.success) {
+					sqtyManager.updateStockQty(prodId, payload.Stock ?? payload.StockQty);
+					return payload;
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				toastEx.error("查詢庫存失敗", err);
+			}
+		}
+		, [httpGetAsync, sqtyManager, token]);
+
 	/**
 	 * D3 此作業沒有做重複判斷, 數量也不足也不會提示密碼
 	 */
 	const handleGridProdChange = useCallback(
 		async ({ rowData }) => {
+			const prodInfo = rowData?.prod ? await getProdInfo(
+				rowData?.prod?.ProdID,
+			) : null;
+
 			const { prod } = rowData;
 			// 只有當原本沒有此項商品時才更新庫存表
 			if (prod?.ProdID) {
@@ -490,6 +524,7 @@ export const useD05 = () => {
 				["ProdData"]: prod?.ProdData || "",
 				["PackData_N"]: prod?.PackData_N || "",
 				["StockQty_N"]: prod?.StockQty || "",
+				["SafeQty_N"]: prodInfo?.Safety ?? "",
 				["SQty"]: "",
 				["SAmt"]: "",
 				["dtype"]: null,

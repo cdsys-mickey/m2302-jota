@@ -75,22 +75,22 @@ export const useOptionPickerComponent = (opts) => {
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
-			// console.log("useOptionPickerComponent.focus", focus);
+			console.log("useOptionPickerComponent.focus", focus);
 			inputRef.current?.focus();
 			if (selectOnFocus) {
 				inputRef.current?.select();
 			}
 		} else {
-			// console.log(`useOptionPickerComponent.leaveFocus, asyncRef.current.open: ${asyncRef.current.open}`);
+			console.log(`useOptionPickerComponent.leaveFocus, asyncRef.current.open: ${asyncRef.current.open}`);
 			if (!asyncRef.current.open) {
 				inputRef.current?.blur();
 			}
 		}
 	}, [focus, selectOnFocus]);
 
-	// useLayoutEffect(() => {
-	// 	console.log("useOptionPickerComponent.active", active);
-	// }, [active, stopEditing]);
+	useLayoutEffect(() => {
+		console.log("useOptionPickerComponent.active", active);
+	}, [active, stopEditing]);
 
 	/** active 時跳過停用的 Cell
 	 * 

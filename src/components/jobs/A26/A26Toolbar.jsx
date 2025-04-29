@@ -5,7 +5,7 @@ import { A26LockRowsSwitchContainer } from "./A26LockRowsSwitchContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
 import A26PrintButtonContainer from "./A26PrintButtonContainer";
 import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
-import Colors from "../../../modules/md-colors";
+import Colors from "../../../modules/Colors.mjs";
 import { A26LockSwitchContainer } from "./A26LockSwitchContainer";
 
 const LeftButtons = memo(() => {

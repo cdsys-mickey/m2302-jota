@@ -3,7 +3,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import { PublicPageContainer } from "@/shared-pages/PublicPageContainer";
 import { forwardRef, memo } from "react";
 
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import ModuleHeading from "@/shared-components/ModuleHeading";
 import LockIcon from "@mui/icons-material/Lock";
 import { Container } from "@mui/material";

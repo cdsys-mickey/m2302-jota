@@ -188,7 +188,7 @@ export const useE01 = () => {
 						prepared: {
 							excludeSelfOrder: true
 						},
-						safetyStock: true
+						safety: true
 					});
 					setSelectedOrd(data);
 					// const newGridData = data.prods.map(async (rowData, rowIndex) => {
@@ -356,13 +356,6 @@ export const useE01 = () => {
 				});
 				return;
 			}
-
-			// if (!formData.customer) {
-			// 	toastEx.error("請先輸入客戶代碼", {
-			// 		position: "top-right"
-			// 	});
-			// 	return;
-			// }
 
 			try {
 				const { status, payload, error } = await httpGetAsync({

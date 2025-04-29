@@ -7,7 +7,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import C01DialogForm from "./C01DialogForm";
 import { useEffect } from "react";
 import { C01DialogToolbarContainer } from "./toolbar/C01DialogToolbarContainer";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import C01Drawer from "../C01Drawer";

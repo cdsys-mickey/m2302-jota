@@ -1,5 +1,5 @@
 import { A16Context } from "@/contexts/A16/A16Context";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useScrollable } from "@/shared-hooks/useScrollable";

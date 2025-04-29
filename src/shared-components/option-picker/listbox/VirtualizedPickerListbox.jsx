@@ -1,4 +1,4 @@
-import { ListSubheader, Typography } from "@mui/material";
+import { Box, ListSubheader, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PropTypes from "prop-types";
@@ -10,6 +10,8 @@ import { OptionPickerContext } from "./OptionPickerContext";
 import { useContext } from "react";
 
 const LISTBOX_PADDING = 8; // px
+const ITEM_HEIGHT_MOBILE = 48;
+const ITEM_HEIGHT_DESKTOP = 36;
 
 const useResetCache = (data) => {
 	const ref = useRef(null);
@@ -28,7 +30,7 @@ const RENDER_OPTION_NOT_DEFINED = "???";
  */
 const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 	const { children, ...other } = props;
-	console.log("VirtualizedPickerListbox.otherProps", other)
+	// console.log("VirtualizedPickerListbox.otherProps", other)
 	const optionPicker = useContext(OptionPickerContext);
 	const { GridRowComponent, renderOptionLabel } = optionPicker;
 
@@ -42,7 +44,7 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 
 		// Props from Autocomplete-renderOption
 		const dataSet = data[index];
-		console.log(`dataSet[${index}]`, dataSet);
+		// console.log(`dataSet[${index}]`, dataSet);
 
 		const { key, ...componentProps } = dataSet[0];
 		const option = dataSet[1];
@@ -99,9 +101,12 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 	}, [itemData?.length]);
 
 	const itemSize = useMemo(() => {
-		return smUp ? 36 : 48
+		return smUp ? ITEM_HEIGHT_DESKTOP : ITEM_HEIGHT_MOBILE
 	}, [smUp]);
 
+	/**
+	 * 回應項目高度, group 是 48
+	 */
 	const getChildSize = useCallback((child) => {
 		if (child.group !== undefined) {
 			return 48;
@@ -110,24 +115,37 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 		return itemSize;
 	}, [itemSize]);
 
-	const getHeight = useCallback(() => {
-		if (itemCount > 8) {
-			return 8 * itemSize;
-		}
-		return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
-	}, [getChildSize, itemCount, itemData, itemSize]);
+	// const getHeight = useCallback(() => {
+	// 	if (itemCount > 8) {
+	// 		return 8 * itemSize;
+	// 	}
+	// 	return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
+	// }, [getChildSize, itemCount, itemData, itemSize]);
 
 	const listRef = useResetCache(itemCount);
 
+	const _height = useMemo(() => {
+		// 若項目大於 8 個就不再一一計算
+		if (itemCount > 8) {
+			return 8 * itemSize + 2 * LISTBOX_PADDING;
+		}
+		return itemData.map(getChildSize).reduce((acc, cur) => acc + cur, 0)
+			+ 2 * LISTBOX_PADDING;
+	}, [getChildSize, itemCount, itemData, itemSize])
+
 	return (
-		<div ref={ref} >
+		<Box ref={ref} sx={{
+			"& ul": {
+				margin: 0
+			}
+		}}>
 			{/* 把傳遞給 ListboxComponent 的 props 都放置到 Provider 內
 				讓 RWOuterElementType 可以存取,
 			 */}
 			<RWOuterElementContext.Provider value={other}>
 				<VariableSizeList
 					itemData={itemData}
-					height={getHeight() + 2 * LISTBOX_PADDING}
+					height={_height}
 					width="100%"
 					ref={listRef}
 					outerElementType={RWOuterElementType}
@@ -138,7 +156,7 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 					{renderOption}
 				</VariableSizeList>
 			</RWOuterElementContext.Provider>
-		</div>
+		</Box>
 	);
 }));
 

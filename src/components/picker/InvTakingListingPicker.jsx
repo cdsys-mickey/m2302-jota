@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import InvTaking from "@/modules/md-inv-taking";
+import InvTaking from "@/modules/InvTaking";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import PropTypes from "prop-types";
 import queryString from "query-string";

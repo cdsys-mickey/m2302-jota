@@ -1,4 +1,5 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
+import RecvAccCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAccCustomerPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
@@ -21,9 +22,11 @@ const G02SearchForm = memo((props) => {
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item lg={2.5}>
-					<CustomerPicker
+					{/* <CustomerPicker */}
+					{/* forNew */}
+					<RecvAccCustomerPicker
 						name="lvCustID"
-						forNew
+						label="客戶代碼"
 						forId
 						disableOpenOnInput
 						onChanged={onCustomerChange}

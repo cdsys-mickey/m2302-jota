@@ -1,4 +1,4 @@
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import useDebounceState from "@/shared-hooks/useDebounceState";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {

@@ -2,7 +2,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import { Typography } from "@mui/material";
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import MuiStyles from "@/shared-modules/MuiStyles";
 
 export const FrameMenuGroupHeader = memo(

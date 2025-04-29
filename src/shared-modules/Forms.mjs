@@ -2,7 +2,7 @@ import { toastEx } from "@/helpers/toastEx";
 import { isValid } from "date-fns";
 import DateFormats from "./sd-date-formats";
 import DateTimes from "./sd-date-times";
-import Types from "./sd-types";
+import Types from "@/shared-modules/Types.mjs";
 
 const formatDate = (value, format) => {
 	if (!value) {

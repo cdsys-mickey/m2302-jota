@@ -232,9 +232,6 @@ export const useD01 = () => {
 				}
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
 				if (err.code === 102) {
-					// const rowIndex = Number(err.data[0].Row) - 1;
-					// const rowData = grid.gridData[rowIndex];
-					// const stock = Number(err.data[0].StockQty);
 					const errorParams = sqtyManager.getErrorParams(err);
 
 					sqtyManager.handleOverrideSQty({
@@ -401,8 +398,42 @@ export const useD01 = () => {
 		return !!rowData.SInqFlag || !!rowData.stype;
 	}, []);
 
+	const getProdInfo = useCallback(
+		async (prodId) => {
+			if (!prodId) {
+				toastEx.error("請先選擇商品", {
+					position: "top-right"
+				});
+				return;
+			}
+			try {
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/inv/stock",
+					bearer: token,
+					params: {
+						id: prodId,
+						safety: 1
+					},
+				});
+
+				if (status.success) {
+					sqtyManager.updateStockQty(prodId, payload.Stock ?? payload.StockQty);
+					return payload;
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				toastEx.error("查詢庫存失敗", err);
+			}
+		}
+		, [httpGetAsync, sqtyManager, token]);
+
 	const handleGridProdChange = useCallback(
 		async ({ rowData, rowIndex, newValue }) => {
+			const prodInfo = rowData?.prod ? await getProdInfo(
+				rowData?.prod?.ProdID,
+			) : null;
+
 			const { prod } = rowData;
 
 			const prodRowIndex = rowData.prod?.ProdID ? D01.findProdIndex({
@@ -429,6 +460,7 @@ export const useD01 = () => {
 				["ProdData"]: found ? "" : rowData.prod?.ProdData,
 				["PackData_N"]: found ? "" : prod?.PackData_N || "",
 				["StockQty_N"]: found ? "" : prod?.StockQty || "",
+				["SafeQty_N"]: prodInfo?.Safety ?? "",
 				["SQty"]: "",
 				["SExpDate"]: "",
 				["SQtyNote"]: "",
@@ -436,7 +468,7 @@ export const useD01 = () => {
 			};
 			return rowData;
 		},
-		[sqtyManager]
+		[getProdInfo, sqtyManager]
 	);
 
 	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex }) => {

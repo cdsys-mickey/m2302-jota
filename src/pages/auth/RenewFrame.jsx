@@ -1,4 +1,4 @@
-import Colors from "@/modules/md-colors";
+import Colors from "@/modules/Colors.mjs";
 import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import FlexBox from "@/shared-components/FlexBox";
