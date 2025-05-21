@@ -242,8 +242,9 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 
 	const gridMeta = useDSGMeta({
 		data: d041.grid.gridData,
+		// setGridData: d041.grid.setGridData,
+		grid: d041.grid,
 		columns,
-		setGridData: d041.grid.setGridData,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW
 	})

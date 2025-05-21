@@ -186,10 +186,11 @@ export const useDSGTest4 = () => {
 	}, []);
 
 	const gridMeta = useDSGMeta({
+		data: grid.gridData,
+		grid: grid,
 		columns,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW,
-		data: grid.gridData,
 	});
 
 	const handleGridProdChange = useCallback(({ rowData }) => {

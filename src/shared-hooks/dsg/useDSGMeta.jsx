@@ -6,14 +6,15 @@ import { toastEx } from "@/helpers/toastEx";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
 
 export const useDSGMeta = ({
-	name,
 	columns,
 	skipDisabled = false,
 	lastCell,
 	data,
 	setGridData,
 	createRow,
-	defaultCell
+	defaultCell,
+	grid,
+	setValue
 }) => {
 	const gridRef = useRef();
 	const asyncRef = useRef({
@@ -372,16 +373,50 @@ export const useDSGMeta = ({
 	}, [data?.length]);
 
 	const toggleCheckbox = useCallback((cell) => {
-		if (!setGridData) {
-			console.warn("沒有將 setGridData 傳入 DSGMeta");
+		if (!grid) {
+			console.warn("沒有將 grid 傳入 DSGMeta");
 			return;
 		}
-		setGridData(prev =>
-			prev.map((rowData, i) =>
-				i === cell.row ? { ...rowData, [cell.colId]: !rowData[cell.colId] } : rowData
-			)
-		);
-	}, [setGridData]);
+		// setGridData(prev =>
+		// 	prev.map((rowData, i) =>
+		// 		i === cell.row ? { ...rowData, [cell.colId]: !rowData[cell.colId] } : rowData
+		// 	)
+		// );
+		const oldValue = grid.gridData;
+		const newValue = oldValue.map((rowData, i) =>
+			i === cell.row ? { ...rowData, [cell.colId]: !rowData[cell.colId] } : rowData)
+
+
+		// 模擬本來要在 buildGridChangeHandler 內觸發的 onUpdateRow 及 onGridChanged
+		if (grid.onUpdateRow) {
+			const newValue = grid.gridData.map((rowData, i) =>
+				i === cell.row ? { ...rowData, [cell.colId]: !rowData[cell.colId] } : rowData)
+			let updateResult = {
+				rows: 0,
+				rowIndex: cell.row,
+				cols: [],
+				type: "UPDATE"
+			}
+
+			const rowData = newValue[cell.row];
+			grid.onUpdateRow({
+				updateResult,
+				fromRowIndex: 0,
+				oldValue,
+				newValue,
+				setValue
+			})(rowData, cell.row)
+
+			if (grid.onGridChanged &&
+				(updateResult.rows > 0 || updateResult.cols.length > 0 || updateResult.type === "DELETE")) {
+				console.log("onGridChanged", newValue);
+				// updated = grid.onGridChanged({ prevGridData: prevGridDataRef.current, gridData: newGridData, formData, setValue, updateResult });
+				grid.onGridChanged({ gridData: newValue, setValue, updateResult });
+			}
+		}
+
+		grid?.setGridData(newValue);
+	}, [grid, setValue]);
 
 	const insertRowBelow = useCallback((cell) => {
 		if (!createRow) {
@@ -406,9 +441,9 @@ export const useDSGMeta = ({
 	const handleFocusNextCell = useCallback(
 		(cell, opts = {}) => {
 			console.log("handleFocusNextCell from: ", cell);
-			if (!getNextCell) {
-				throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
-			}
+			// if (!getNextCell) {
+			// 	throw new Error("useCellComponent 未傳遞進 getNextCell 方法");
+			// }
 
 			const nextCell = getNextCell(cell, opts);
 			if (nextCell.field) {
@@ -444,8 +479,8 @@ export const useDSGMeta = ({
 	const handleKeyDown = useCallback((event) => {
 		console.log(`useDSGMeta.handleKeyDown`, event.key);
 		if (event.key === ' ') {
-			console.log("activeCell: ", getActiveCell())
 			const activeCell = getActiveCell();
+			console.log("activeCell: ", activeCell)
 			if (activeCell != null) {
 				const column = columns[activeCell.col];
 				console.log("column", column);
@@ -503,5 +538,6 @@ export const useDSGMeta = ({
 		restoreSelection,
 		resetSelection,
 		handleFocusPrevCell,
+		handleFocusNextCell
 	};
 };

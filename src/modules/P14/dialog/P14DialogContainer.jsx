@@ -182,8 +182,9 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 
 	const gridMeta = useDSGMeta({
 		data: p14.grid.gridData,
+		grid: p14.grid,
+		// setGridData: p14.grid.setGridData,
 		columns,
-		setGridData: p14.grid.setGridData,
 		createRow: p14.createRow,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW

@@ -210,7 +210,8 @@ export const ZA03AuthFormContainer = () => {
 	const gridMeta = useDSGMeta({
 		name: "auth",
 		data: za03.grid.gridData,
-		setGridData: za03.grid.setGridData,
+		// setGridData: za03.grid.setGridData,
+		grid: za03.grid,
 		columns,
 		skipDisabled: true,
 	})

@@ -197,10 +197,11 @@ export const DsgTest4GridContainer = () => {
 	);
 
 	const gridMeta = useDSGMeta({
+		data: dsgTest4.grid.gridData,
+		grid: dsgTest4.grid,
 		columns,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW,
-		data: dsgTest4.grid.gridData,
 	});
 
 	const onChange = useMemo(() => {

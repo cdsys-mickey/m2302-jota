@@ -1,21 +1,19 @@
-import { AuthContext } from "@/contexts/auth/AuthContext";
+import RecvAcctDocPickerCell from "@/components/dsg/columns/RecvAcctDocPickerCell/RecvAcctDocPickerCell";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
-import G06DocGrid from "./G06DocGrid";
-import { G06Context } from "../../G06Context";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { keyColumn } from "react-datasheet-grid";
-import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useFormContext } from "react-hook-form";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
-import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import RecvAcctDocPickerCell from "@/components/dsg/columns/RecvAcctDocPickerCell/RecvAcctDocPickerCell";
+import { G06Context } from "../../G06Context";
+import G06DocGrid from "./G06DocGrid";
 
 export const G06DocGridContainer = (props) => {
 	const { ...rest } = props;
@@ -117,11 +115,13 @@ export const G06DocGridContainer = (props) => {
 
 	const docGridMeta = useDSGMeta({
 		data: g06.docGrid.gridData,
+		grid: g06.docGrid,
+		// setGridData: g06.docGrid.setGridData,
 		columns: columns,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW,
 		createRow: g06.createDocRow,
-		setGridData: g06.docGrid.setGridData
+		setValue: form.setValue
 	});
 
 	const onChange = useMemo(() => {
@@ -129,11 +129,11 @@ export const G06DocGridContainer = (props) => {
 			getValues: form.getValues,
 			setValue: form.setValue,
 			gridMeta: docGridMeta,
-			onUpdateRow: g06.onUpdateDocRow,
+			// onUpdateRow: g06.onUpdateDocRow,
 			onGridChanged: g06.onDocGridChanged,
 			// isRowDeletable: c08.isRowDeletable
 		});
-	}, [docGridMeta, form.getValues, form.setValue, g06.docGrid, g06.onDocGridChanged, g06.onUpdateDocRow]);
+	}, [docGridMeta, form.getValues, form.setValue, g06.docGrid, g06.onDocGridChanged]);
 
 	return (
 		<DSGContext.Provider

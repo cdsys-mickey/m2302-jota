@@ -109,12 +109,56 @@ export const useG06 = ({ token }) => {
 		return !crud.editing;
 	}, [crud.editing]);
 
+
+	const onUpdateDocRow = useCallback(({ fromRowIndex, formData, oldValue, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
+		const rowIndex = fromRowIndex + index;
+		updateResult.rowIndex = rowIndex;
+
+		const oldRowData = oldValue[rowIndex];
+		console.log(`開始處理 Doc 第 ${rowIndex + 1} 列...`, rowData);
+		let processedRowData = {
+			...rowData,
+		};
+		let dirty = false;
+		// prod
+		if (processedRowData.WoNotes !== oldRowData.WoNotes) {
+			updateResult.cols.push("WoNotes")
+			dirty = true;
+		}
+
+		if (dirty) {
+			updateResult.rows++;
+		}
+		return processedRowData;
+	}, []);
+
+	const onDocGridChanged = useCallback(({ gridData, setValue, updateResult }) => {
+		console.log("onDocGridChanged", gridData);
+
+		if (updateResult.cols.includes("WoNotes")) {
+			console.log("before reduce", gridData);
+			const totals = gridData.reduce((acc, row) => ({
+				CutAmt: acc.CutAmt + (row.WoNotes ? (row.DocID?.DocType == 1 ? Number(row.SalAmt) : 0 - Number(row.RetAmt)) : 0),
+			}), { CutAmt: 0 });
+			console.log("totals", totals);
+			asyncRef.current.CutAmt = totals.CutAmt ?? 0;
+			setValue("CutAmt", Forms.formatMoney(asyncRef.current.CutAmt, 2));
+
+			//"收沖差額" = "本期收款" - "單據沖銷"
+			const result = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
+			setValue("DiffAmt", Forms.formatMoney(result, 2));
+		}
+	}, []);
+
 	const docGrid = useDSG({
 		gridId: "doc",
 		keyColumn: "dept.DeptID",
 		skipDisabled: true,
 		createRow: createDocRow,
+		onUpdateRow: onUpdateDocRow,
+		onGridChanged: onDocGridChanged
 	});
+
 	const docGridDisabled = useMemo(() => {
 		return !crud.editing;
 	}, [crud.editing]);
@@ -459,45 +503,8 @@ export const useG06 = ({ token }) => {
 		}
 	}, []);
 
-	const onUpdateDocRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		updateResult.rowIndex = rowIndex;
 
-		const oldRowData = docGrid.gridData[rowIndex];
-		console.log(`開始處理 Doc 第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		let dirty = false;
-		// prod
-		if (processedRowData.WoNotes !== oldRowData.WoNotes) {
-			updateResult.cols.push("WoNotes")
-			dirty = true;
-		}
 
-		if (dirty) {
-			updateResult.rows++;
-		}
-		return processedRowData;
-	}, [docGrid.gridData]);
-
-	const onDocGridChanged = useCallback(({ gridData, setValue, updateResult }) => {
-		console.log("onGridChanged", gridData);
-
-		if (updateResult.cols.includes("WoNotes")) {
-			console.log("before reduce", gridData);
-			const totals = gridData.reduce((acc, row) => ({
-				CutAmt: acc.CutAmt + (row.WoNotes ? (row.DocID?.DocType == 1 ? Number(row.SalAmt) : 0 - Number(row.RetAmt)) : 0),
-			}), { CutAmt: 0 });
-			console.log("totals", totals);
-			asyncRef.current.CutAmt = totals.CutAmt ?? 0;
-			setValue("CutAmt", Forms.formatMoney(asyncRef.current.CutAmt, 2));
-
-			//"收沖差額" = "本期收款" - "單據沖銷"
-			const result = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
-			setValue("DiffAmt", Forms.formatMoney(result, 2));
-		}
-	}, []);
 
 	return {
 		...listLoader,

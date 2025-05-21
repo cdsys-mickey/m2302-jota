@@ -32,6 +32,8 @@ export const useDSG = ({
 	initialLockRows = true,
 
 	createRow: _createRow,
+	onUpdateRow: _onUpdateRow,
+	onGridChanged
 }) => {
 	const asyncRef = useRef({
 		supressEvents: false
@@ -398,6 +400,8 @@ export const useDSG = ({
 					}
 				} = opts;
 
+				const __onUpdateRow = onUpdateRow || _onUpdateRow;
+
 				console.log("onGridChange.operations", operations);
 				console.log("newValue", newValue);
 				const formData = getValues ? getValues() : null;
@@ -412,19 +416,21 @@ export const useDSG = ({
 					updateResult.type = operation.type;
 					if (operation.type === "UPDATE") {
 						if (!asyncRef.current.supressEvents) {
+							// 處理同行同時更新
 							const updatingRows = newValue
 								.slice(
 									operation.fromRowIndex,
 									operation.toRowIndex
 								);
-							const updatedRows = onUpdateRow ? await Promise.all(
+							const updatedRows = __onUpdateRow ? await Promise.all(
 								updatingRows
 									.map(async (item, index) => {
-										const updatedRow = await onUpdateRow({
+										const updatedRow = await __onUpdateRow({
 											formData,
 											setValue,
 											fromRowIndex: operation.fromRowIndex,
 											newValue,
+											oldValue: gridData,
 											gridMeta,
 											updateResult
 										})(item, index);
@@ -551,7 +557,7 @@ export const useDSG = ({
 					}
 				}
 			},
-		[deletedIds, gridData, handleDirtyCheck, keyColumn]
+		[_onUpdateRow, deletedIds, gridData, handleDirtyCheck, keyColumn]
 	);
 
 	const spreadOnRow = useCallback(
@@ -723,6 +729,8 @@ export const useDSG = ({
 		handleUnlock,
 		handleLock,
 		supressEvents,
-		enableEvents
+		enableEvents,
+		onUpdateRow: _onUpdateRow,
+		onGridChanged
 	};
 };
