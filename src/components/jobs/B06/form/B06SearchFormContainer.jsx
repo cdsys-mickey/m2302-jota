@@ -6,6 +6,7 @@ import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useMemo } from "react";
 import { useCallback } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const B06SearchFormContainer = () => {
 	const b06 = useContext(B06Context);
@@ -15,17 +16,6 @@ export const B06SearchFormContainer = () => {
 		},
 	});
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(
-			b06.onSearchSubmit,
-			b06.onSearchSubmitError
-		)
-	}, [b06.onSearchSubmit, b06.onSearchSubmitError, form]);
-
-	const handleLastField = useCallback(() => {
-		document.activeElement.blur();
-		handleSubmit();
-	}, [handleSubmit]);
 
 	const formMeta = useFormMeta(
 		`
@@ -36,16 +26,13 @@ export const B06SearchFormContainer = () => {
 		sprod,
 		eprod,
 		orderBy
-		`,
-		{
-			lastField: handleLastField
-		}
+		`
 	);
 
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta}>
-				<form onSubmit={handleSubmit}>
+				<form >
 					<B06Form />
 				</form>
 			</FormMetaProvider>

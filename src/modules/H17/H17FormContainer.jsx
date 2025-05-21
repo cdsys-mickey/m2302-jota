@@ -4,6 +4,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import { H17Context } from "./H17Context";
 import H17Form from "./H17Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H17FormContainer = () => {
 	const form = useFormContext();
@@ -23,12 +24,16 @@ export const H17FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h17.onSubmit,
 			h17.onSubmitError
 		)
 	}, [h17.onSubmit, h17.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -45,7 +50,7 @@ export const H17FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<H17Form forNewCustomer={retail} onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H17Form forNewCustomer={retail} onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

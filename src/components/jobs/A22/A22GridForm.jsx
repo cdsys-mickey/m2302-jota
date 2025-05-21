@@ -9,17 +9,18 @@ import { A22GridFormToggleButtonContainer } from "./A22GridFormToggleButtonConta
 import { A22GridLoadButtonContainer } from "./A22GridLoadButtonContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
+import FormBox from "@/shared-components/form/FormBox";
 
 const A22GridForm = (props) => {
 	const { cat = true, safeQty = false, onSubmit, ...rest } = props;
 	return (
 		<Paper component="form" onSubmit={onSubmit} {...rest}>
-			<Box p={1}>
+			<FormBox p={1}>
 				<Grid container spacing={1} columns={24}>
 					{/* ROW 1 */}
 					<Grid item xs={12} lg={12}>
 						<RangeGroup legend="貨品區間"
-
+							required
 							leftComponent={<ProdPicker
 								name="prod1"
 								label="起始商品編號"
@@ -88,7 +89,7 @@ const A22GridForm = (props) => {
 				</Grid>
 				{/* ROW 2 */}
 				<A22GridForm2Container cat={cat} safeQty={safeQty} />
-			</Box>
+			</FormBox>
 		</Paper>
 	);
 };

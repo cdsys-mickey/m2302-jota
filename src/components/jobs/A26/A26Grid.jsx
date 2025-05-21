@@ -1,5 +1,4 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
-import Styles from "@/modules/Styles.mjs";
 import LoadingBackdrop from "@/shared-components/LoadingBackdrop";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
@@ -28,11 +27,6 @@ const A26Grid = memo((props) => {
 		onSelectionChange,
 		...rest
 	} = props;
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
 
 
 

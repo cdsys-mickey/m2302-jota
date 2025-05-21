@@ -17,7 +17,7 @@ const P09DataSourcePicker = forwardRef((props, ref) => {
 			getOptionLabel={P09DataSource.getOptionLabel}
 			isOptionEqualToValue={P09DataSource.isOptionEqualToValue}
 			findByInput={P09DataSource.findByInput}
-			notFoundText="資料來源 ${id} 不存在"
+			notFoundText="資料來源 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

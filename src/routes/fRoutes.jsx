@@ -1,6 +1,6 @@
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { F01Provider } from "@/modules/F01/F01Provider";
-import { F02Provider } from "@/pages/modules/F02/F02Provider";
+import { F02Provider } from "@/pages/jobs/F02/F02Provider";
 import { F03Provider } from "@/contexts/F03/F03Provider";
 import { F04Provider } from "@/contexts/F04/F04Provider";
 import { F05Provider } from "@/contexts/F05/F05Provider";
@@ -8,12 +8,12 @@ import { F06Provider } from "@/contexts/F06/F06Provider";
 import { F07Provider } from "@/contexts/F07/F07Provider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
 import { F01FrameContainer } from "@/modules/F01/F01FrameContainer";
-import { F02FrameContainer } from "@/pages/modules/F02/F02FrameContainer";
-import { F03FrameContainer } from "@/pages/modules/F03/F03FrameContainer";
-import { F04FrameContainer } from "@/pages/modules/F04/F04FrameContainer";
-import { F05FrameContainer } from "@/pages/modules/F05/F05FrameContainer";
-import { F06FrameContainer } from "@/pages/modules/F06/F06FrameContainer";
-import { F07FrameContainer } from "@/pages/modules/F07/F07FrameContainer";
+import { F02FrameContainer } from "@/pages/jobs/F02/F02FrameContainer";
+import { F03FrameContainer } from "@/pages/jobs/F03/F03FrameContainer";
+import { F04FrameContainer } from "@/pages/jobs/F04/F04FrameContainer";
+import { F05FrameContainer } from "@/pages/jobs/F05/F05FrameContainer";
+import { F06FrameContainer } from "@/pages/jobs/F06/F06FrameContainer";
+import { F07FrameContainer } from "@/pages/jobs/F07/F07FrameContainer";
 import { Route } from "react-router-dom";
 
 const fRoutes = (

@@ -3,28 +3,18 @@ import { P14DialogContainer } from "@/modules/P14/dialog/P14DialogContainer";
 import P14ListHeader from "@/modules/P14/list/P14ListHeader";
 import P14ListToolbar from "@/modules/P14/list/P14ListToolbar";
 import { P14ListViewContainer } from "@/modules/P14/list/P14ListViewContainer";
-import Styles from "@/modules/Styles.mjs";
-import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { Box, useTheme } from "@mui/material";
-import { useContext, useMemo } from "react";
+import { FrameBanner, FrameBox } from "@/shared-components";
 import { FormProvider, useForm } from "react-hook-form";
 export const P14FrameContainer = () => {
-	const appFrame = useContext(AppFrameContext);
 	const searchForm = useForm();
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
-		[appFrame.drawerOpen, theme]
-	);
 
 	return (
 		<FormProvider {...searchForm}>
-			<Box sx={[boxStyles]}>
+			<FrameBox>
 				{/* 標題 */}
-				<FrameBannerContainer>
+				<FrameBanner>
 					{<P14SearchFieldContainer name="q" />}
-				</FrameBannerContainer>
+				</FrameBanner>
 				{/* 工具列 */}
 				<P14ListToolbar />
 				{/* 列表 */}
@@ -33,7 +23,7 @@ export const P14FrameContainer = () => {
 				{/* 對話框 */}
 				<P14DialogContainer />
 
-			</Box>
+			</FrameBox>
 		</FormProvider>
 	);
 };

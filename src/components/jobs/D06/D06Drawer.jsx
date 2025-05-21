@@ -1,5 +1,5 @@
 import { D06Context } from "@/contexts/D06/D06Context";
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import PropTypes from "prop-types";
 import { memo, useContext } from "react";
 import SideDrawer from "@/shared-components/side-drawer/SideDrawer";

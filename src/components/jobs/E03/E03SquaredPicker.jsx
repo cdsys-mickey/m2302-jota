@@ -19,7 +19,7 @@ const E03SquaredPicker = memo(
 				isOptionEqualToValue={E03.isSquaredOptionEqualToValue}
 				getOptionDisabled={E03.getSquaredOptionDisabled}
 				findByInput={E03.findSquaredOptionByInput}
-				notFoundText="結清註記 ${id} 不存在"
+				notFoundText="結清註記 ${input} 不存在"
 				emptyId
 				{...rest}
 			/>

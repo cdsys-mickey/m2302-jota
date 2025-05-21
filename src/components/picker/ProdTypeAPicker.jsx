@@ -15,7 +15,7 @@ const ProdTypeAPicker = memo(forwardRef((props, ref) => {
 			getOptionLabel={ProdTypeA.getOptionLabel}
 			isOptionEqualToValue={ProdTypeA.isOptionEqualToValue}
 			findByInput={ProdTypeA.findByInput}
-			notFoundText="品別代號 ${id} 不存在"
+			notFoundText="品別代號 ${input} 不存在"
 			// blurToLookup
 			{...rest}
 			{...Constants.STATIC_PICKER_OPTS}

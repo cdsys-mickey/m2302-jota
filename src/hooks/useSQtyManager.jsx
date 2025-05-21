@@ -423,7 +423,7 @@ export default function useSQtyManager(opts = {}) {
 			];
 			try {
 				const { status, payload, error } = await httpGetAsync({
-					url: "v1/inv/qty-map",
+					url: "v1/inv/stock-map",
 					bearer: token,
 					params: {
 						id: prodIds.join(","),
@@ -474,54 +474,6 @@ export default function useSQtyManager(opts = {}) {
 			return stockQtyMap;
 		},
 		[grid.gridData, stockQtyMap, prodIdKey, httpGetAsync, token, convType, preparedQtyMap, sqtyColumn]
-	);
-
-	const ZZloadPreparedMap = useCallback(
-		async (
-			gridData,
-			opts = {}
-		) => {
-			const { simulate = true } = opts;
-			const _gridData = gridData || grid.gridData;
-
-			if (!gridData || gridData.length === 0) {
-				return;
-			}
-			const prodIds = [
-				...new Set(
-					_gridData
-						.filter((item) => {
-							const key = _.get(item, prodIdKey);
-							return key != null && key != "";
-						})
-						.map((item) => item.prod.ProdID)
-				),
-			];
-			try {
-				const { status, payload, error } = await httpGetAsync({
-					url: "v1/sales/customer-orders/prepared-qty-map",
-					bearer: token,
-					params: {
-						id: prodIds.join(","),
-					},
-				});
-				if (status.success) {
-					preparedQtyMap.clear();
-					payload.Stock?.map((x) =>
-						stockQtyMap.set(x.ProdID, Number(x.Qty))
-					);
-					// 把目前庫存加回去
-
-					console.log("preparedQtyMap:", preparedQtyMap);
-				} else {
-					throw error ?? new Error("未預期例外");
-				}
-			} catch (err) {
-				toastEx.error("取得目前訂購量失敗", err);
-			}
-			return preparedQtyMap;
-		},
-		[grid.gridData, preparedQtyMap, prodIdKey, httpGetAsync, token, stockQtyMap]
 	);
 
 	const getErrorParams = useCallback((err) => {

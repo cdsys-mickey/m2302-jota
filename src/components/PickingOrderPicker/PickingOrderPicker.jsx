@@ -32,7 +32,7 @@ const PickingOrderPicker = memo((props) => {
 			getOptionLabel={PickingOrders.getOptionLabel}
 			isOptionEqualToValue={PickingOrders.isOptionEqualToValue}
 			renderOptionLabel={PickingOrders.renderOptionLabel}
-			notFoundText="領料單號 ${id} 不存在"
+			notFoundText="領料單號 ${input} 不存在"
 			placeholder="領料單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"

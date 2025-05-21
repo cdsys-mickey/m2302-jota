@@ -351,6 +351,7 @@ export const useC03 = () => {
 
 	const onSearchSubmitError = useCallback((err) => {
 		console.error("onSearchSubmitError", err);
+
 	}, []);
 
 	const getRowKey = useCallback(({ rowData, rowIndex }) => {
@@ -578,6 +579,9 @@ export const useC03 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error("onEditorSubmitError", err);
+		toastEx.error(
+			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出"
+		);
 	}, []);
 
 	// REVIEW
@@ -725,13 +729,6 @@ export const useC03 = () => {
 				JobName: "C03",
 				IDs: crud.itemData?.OrdID,
 			};
-			// postToBlank(
-			// 	`${config.REPORT_URL}/WebC03Rep.aspx?LogKey=${operator?.LogKey
-			// 	}`,
-			// 	{
-			// 		jsonData: JSON.stringify(data),
-			// 	}
-			// );
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},

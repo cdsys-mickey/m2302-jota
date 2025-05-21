@@ -183,10 +183,12 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 							paddingTop: "6px",
 							paddingBottom: "6px",
 						},
-
+						"& .MuiButtonGroup-grouped .MuiButton-endIcon": {
+							marginLeft: 0
+						}
 					}),
 					...(noGutter && {
-						"& .MuiButtonGroup-firstButton": {
+						"& .MuiButtonGroup-grouped .MuiButtonGroup-firstButton": {
 							borderRight: 0,
 						}
 					})
@@ -235,6 +237,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 							// 		paddingRight: "4px",
 							// 	},
 							// }),
+							// marginLeft: 0
 						}
 						]}>
 						<IconComponent fontSize="small" {...slotProps?.dropdownButton?.icon} />

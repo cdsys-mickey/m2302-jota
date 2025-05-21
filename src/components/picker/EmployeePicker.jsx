@@ -44,7 +44,7 @@ const EmployeePicker = (props) => {
 			getData={getData}
 			getOptionKey={getOptionKey}
 			placeholder="員工編號"
-			notFoundText="員工 ${id} 不存在"
+			notFoundText="員工 ${input} 不存在"
 			// blurToLookup
 			{...rest}
 		/>

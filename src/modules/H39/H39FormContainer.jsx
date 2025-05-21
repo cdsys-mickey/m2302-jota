@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { H39Context } from "./H39Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H39FormContainer = () => {
 	const form = useFormContext();
@@ -22,7 +23,7 @@ export const H39FormContainer = () => {
 		`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h39.onSubmit,
 			h39.onSubmitError
@@ -35,9 +36,13 @@ export const H39FormContainer = () => {
 		)
 	}, [h39.onDebugSubmit, form]);
 
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
+
 	return <FormProvider {...form}>
 		<FormMetaProvider {...formMeta}>
-			<H39Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<H39Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 	</FormProvider>;
 };

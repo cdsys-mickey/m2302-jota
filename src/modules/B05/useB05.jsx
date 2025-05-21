@@ -347,6 +347,9 @@ export const useB05 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error("onEditorSubmitError", err);
+		toastEx.error(
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+		);
 	}, []);
 
 	const getRowKey = useCallback(({ rowData, rowIndex }) => {

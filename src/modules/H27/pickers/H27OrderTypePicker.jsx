@@ -17,7 +17,7 @@ const H27OrderTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={H27OrderType.getOptionLabel}
 			isOptionEqualToValue={H27OrderType.isOptionEqualToValue}
 			findByInput={H27OrderType.findByInput}
-			notFoundText="排序方式 ${id} 不存在"
+			notFoundText="排序方式 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

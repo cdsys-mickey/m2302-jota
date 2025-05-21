@@ -42,7 +42,7 @@ const JobPicker = memo((props) => {
 			isOptionEqualToValue={Jobs.isOptionEqualToValue}
 			getData={getData}
 			querystring={querystring}
-			notFoundText="作業代號 ${id} 不存在"
+			notFoundText="作業代號 ${input} 不存在"
 			// blurToLookup
 			{...rest}
 		/>

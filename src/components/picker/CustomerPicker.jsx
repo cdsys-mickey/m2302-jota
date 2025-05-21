@@ -6,7 +6,7 @@ import { useCallback, useContext, useMemo } from "react";
 import Customers from "@/modules/md-customers";
 
 const CustomerPicker = (props) => {
-	const { label, autoLabel = true, placeholder, forId = false, forNew = false, fullName = false, withQuotes = false,
+	const { label, placeholder, forId = false, forNew = false, fullName = false, withQuotes = false,
 		// clearOnChange = true, 
 		clearValueOnChange = true,
 		clearOptionsOnChange = true,
@@ -60,26 +60,24 @@ const CustomerPicker = (props) => {
 	}, [forNew])
 
 	const notFoundText = useMemo(() => {
-		return forNew ? "新客戶編號 ${id} 不存在" : "客戶編號 ${id} 不存在";
+		return forNew ? "零售客戶編號 ${input} 不存在" : "客戶編號 ${input} 不存在";
 	}, [forNew])
 
 	const _label = useMemo(() => {
-		if (autoLabel) {
-			let result = (forNew ? "新客戶" : "客戶");
-			if (forId) {
-				result += "編號";
-			}
-			return result;
+		let autoLabel = (forNew ? "零售客戶" : "客戶");
+		if (forId) {
+			autoLabel += "編號";
 		}
-		return label;
-	}, [autoLabel, forId, forNew, label])
+		// 當 label 為 null 或 undefined 時才帶出
+		return label == null ? autoLabel : label;
+	}, [forId, forNew, label])
 
 
 	const _placeholder = useMemo(() => {
 		if (placeholder) {
 			return placeholder;
 		}
-		let result = (forNew ? "新客戶" : "客戶");
+		let result = (forNew ? "零售客戶" : "客戶");
 		result += "編號";
 		if (!forId) {
 			result += "/名稱";

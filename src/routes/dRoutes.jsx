@@ -6,12 +6,12 @@ import { D05Provider } from "../contexts/D05/D05Provider";
 import { D06Provider } from "../contexts/D06/D06Provider";
 import { D07Provider } from "../contexts/D07/D07Provider";
 
-import { D01FrameContainer } from "../pages/modules/D01/D01FrameContainer";
-import { D02FrameContainer } from "../pages/modules/D02/D02FrameContainer";
-import { D041FrameContainer } from "../pages/modules/D04/D041FrameContainer";
-import { D05FrameContainer } from "../pages/modules/D05/D05FrameContainer";
-import { D06FrameContainer } from "../pages/modules/D06/D06FrameContainer";
-import { D07FrameContainer } from "../pages/modules/D07/D07FrameContainer";
+import { D01FrameContainer } from "../pages/jobs/D01/D01FrameContainer";
+import { D02FrameContainer } from "../pages/jobs/D02/D02FrameContainer";
+import { D041FrameContainer } from "../pages/jobs/D04/D041FrameContainer";
+import { D05FrameContainer } from "../pages/jobs/D05/D05FrameContainer";
+import { D06FrameContainer } from "../pages/jobs/D06/D06FrameContainer";
+import { D07FrameContainer } from "../pages/jobs/D07/D07FrameContainer";
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
 

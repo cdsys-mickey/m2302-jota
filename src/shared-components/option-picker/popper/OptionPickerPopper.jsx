@@ -6,8 +6,7 @@ import { forwardRef, useEffect, useRef } from "react";
 const OptionPickerPopper = forwardRef((props, ref) => {
 	const { open } = props;
 	const popperRef = useRef(null);
-
-	console.log("rendering OptionPickerPopper", props);
+	// console.log("rendering OptionPickerPopper", props);
 
 	const setRef = useCallback((node) => {
 		console.log("OptionPickerPopper.setRef invoked")

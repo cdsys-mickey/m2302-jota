@@ -4,6 +4,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { H22Context } from "./H22Context";
 import H22Form from "./H22Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H22FormContainer = () => {
 	const form = useFormContext();
@@ -18,12 +19,16 @@ export const H22FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h22.onSubmit,
 			h22.onSubmitError
 		)
 	}, [h22.onSubmit, h22.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -35,7 +40,7 @@ export const H22FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<H22Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H22Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

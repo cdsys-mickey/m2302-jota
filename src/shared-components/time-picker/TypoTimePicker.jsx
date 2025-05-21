@@ -1,4 +1,4 @@
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import DateFormats from "@/shared-modules/sd-date-formats";
 import DateTimes from "@/shared-modules/sd-date-times";
 import PropTypes from "prop-types";

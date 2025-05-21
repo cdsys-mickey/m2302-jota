@@ -27,7 +27,7 @@ import { U08Provider } from "@/modules/U08/U08Provider";
 // import { U07Provider } from "@/modules/U07/U07Provider";
 // import { U08FrameContainer } from "@/modules/U08/U08FrameContainer";
 // import { U08Provider } from "@/modules/U08/U08Provider";
-import { U061FrameContainer } from "@/pages/modules/U061/U061FrameContainer";
+import { U061FrameContainer } from "@/pages/jobs/U061/U061FrameContainer";
 import { Route } from "react-router-dom";
 
 const uRoutes = (

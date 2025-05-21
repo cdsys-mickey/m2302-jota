@@ -15,6 +15,7 @@ const transformForSubmitting = (payload) => {
 		EDate,
 		reportType,
 		numbers,
+		ranks,
 		...rest
 	} = payload;
 	return {
@@ -32,6 +33,7 @@ const transformForSubmitting = (payload) => {
 		TopNo: TopNo,
 		RptType: reportType?.id || "",
 		Limit: numbers.filter((x) => x != null).map((x) => x?.toString() || ""),
+		Level: ranks.filter((x) => x != null).map((x) => x?.toString() || ""),
 		...rest,
 	};
 };

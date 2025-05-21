@@ -1,5 +1,5 @@
 import ControlledDatePicker from "@/shared-components/date-picker/ControlledDatePicker";
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import { forwardRef, memo, useMemo } from "react";
 import DateTimes from "@/shared-modules/sd-date-times";
 import { useWatch } from "react-hook-form";

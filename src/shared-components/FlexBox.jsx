@@ -1,18 +1,18 @@
 import { Box, styled } from "@mui/material";
-import { forwardRef } from "react";
+// import { forwardRef } from "react";
 
-const FlexBoxBase = forwardRef((props, ref) => {
-	const { children, inline = false, block = false, ...other } = props;
-	return (
-		<Box
-			ref={ref}
-			display={block ? "block" : inline ? "inline-flex" : "flex"}
-			{...other}>
-			{children}
-		</Box>
-	);
-});
-FlexBoxBase.displayName = "FlexBoxBase";
+// const FlexBoxBase = forwardRef((props, ref) => {
+// 	const { children, inline = false, block = false, ...other } = props;
+// 	return (
+// 		<Box
+// 			ref={ref}
+// 			display={block ? "block" : inline ? "inline-flex" : "flex"}
+// 			{...other}>
+// 			{children}
+// 		</Box>
+// 	);
+// });
+// FlexBoxBase.displayName = "FlexBoxBase";
 
 /**
  * 包裝 Box 針對 Flex 常用功能去簡化使用的元件
@@ -21,11 +21,8 @@ FlexBoxBase.displayName = "FlexBoxBase";
  */
 const FlexBox = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!`inline,block,fullWidth,fullHeight,midWidth,maxWidth`
-			.trim()
-			.split(/\s*,\s*/)
-			.includes(prop),
-})(({ theme, inline, block, fullHeight, fullWidth, minWidth, maxWidth }) => ({
+		!['inline', 'block', 'fullWidth', 'fullHeight', 'midWidth', 'maxWidth'].includes(prop),
+})(({ theme, inline = false, block = false, fullHeight, fullWidth, minWidth, maxWidth }) => ({
 	display: block ? "block" : inline ? "inline-flex" : "flex",
 	...(fullHeight && {
 		height: "100vh",

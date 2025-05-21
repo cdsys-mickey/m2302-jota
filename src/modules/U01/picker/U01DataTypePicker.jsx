@@ -16,7 +16,7 @@ const U01DataTypePicker = memo(
 				getOptionLabel={U01DataType.getOptionLabel}
 				isOptionEqualToValue={U01DataType.isOptionEqualToValue}
 				findByInput={U01DataType.findByInput}
-				notFoundText="報表型態 ${id} 不存在"
+				notFoundText="報表型態 ${input} 不存在"
 				{...Constants.STATIC_PICKER_OPTS}
 				{...rest}
 			/>

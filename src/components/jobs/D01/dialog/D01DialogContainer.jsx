@@ -18,7 +18,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D01Drawer from "../D01Drawer";
 import D01DialogForm from "./D01DialogForm";
 import { D01DialogToolbarContainer } from "./toolbar/D01DialogToolbarContainer";
-import { createDateInputColumn } from "@/shared-components/dsg/columns/date-input/createDateInputColumn";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const D01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -151,8 +151,6 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 				disabled: readOnly,
 			},
 			{
-				// ...keyColumn("SExpDate", dateFieldColumnEx),
-				// ...keyColumn("SExpDate", createDateInputColumn({ disablePlaceholder: true })),
 				...keyColumn("SExpDate", dateInputColumn),
 				title: "有效日期",
 				minWidth: 110,
@@ -190,6 +188,9 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 		d01.onEditorSubmitError
 	);
 
+	useHotkeys(["Control+Enter"], () => d01.editing ? setTimeout(handleSubmit) : null, {
+		enableOnFormTags: true
+	})
 
 	useEffect(() => {
 		if (d01.itemDataReady) {

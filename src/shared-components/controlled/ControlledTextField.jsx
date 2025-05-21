@@ -71,6 +71,11 @@ export const ControlledTextField = ({
 
 	const handleKeyDown = useCallback(
 		async (e) => {
+			// 若按住 Ctrl 則不處理
+			if (e.ctrlKey) {
+				return;
+			}
+
 			// 按下 Shift 時必須略過不處理
 			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
 				if (e.key === "Enter") {

@@ -198,7 +198,7 @@ const InputTest = () => {
 										// 新增屬性
 										disableOpenOnInput
 										// pressToFind
-										notFoundText="商品代號 ${id} 不存在"
+										notFoundText="商品代號 ${input} 不存在"
 										borderless
 									/>
 								</FlexBox>
@@ -221,7 +221,7 @@ const InputTest = () => {
 										// 新增屬性
 										disableOpenOnInput
 										// pressToFind
-										notFoundText="商品代號 ${id} 不存在"
+										notFoundText="商品代號 ${input} 不存在"
 										borderless
 									/>
 								</FlexBox>

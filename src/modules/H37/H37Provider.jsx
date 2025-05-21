@@ -14,7 +14,6 @@ export const H37Provider = ({ children }) => {
 			SProdID: null,
 			EProdID: null,
 			SPDlineID: null,
-			ELineID: null,
 			orderType: H37OrderType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},

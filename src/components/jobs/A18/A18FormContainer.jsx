@@ -1,12 +1,11 @@
-import { useMemo } from "react";
-import A18Form from "./A18Form";
-import { FormProvider, useFormContext } from "react-hook-form";
-import { useContext } from "react";
 import { A18Context } from "@/contexts/A18/A18Context";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "@/modules/md-auth";
-import { useCallback } from "react";
+import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useContext, useMemo } from "react";
+import { FormProvider, useFormContext } from "react-hook-form";
+import A18Form from "./A18Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const A18FormContainer = () => {
 	const form = useFormContext();
@@ -36,6 +35,10 @@ export const A18FormContainer = () => {
 	const deptDisabled = useMemo(() => {
 		return operator?.Class < Auth.SCOPES.ROOT;
 	}, [operator?.Class])
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	return (
 		<FormProvider {...form}>

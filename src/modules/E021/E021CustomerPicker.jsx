@@ -9,7 +9,10 @@ export const E021CustomerPicker = (props) => {
 		name: retailName,
 	});
 
-	return <CustomerPicker forNew={retail} autoLabel clearValueOnChange={false} {...rest} />
+	return (
+		<CustomerPicker forNew={retail}
+			clearValueOnChange={false} {...rest} />
+	)
 }
 
 E021CustomerPicker.propTypes = {

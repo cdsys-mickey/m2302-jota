@@ -40,7 +40,7 @@ export default function useJotaReports(props) {
 		);
 
 
-		if (!dontPrompt && data.Action != 1) {
+		if (!dontPrompt && data.Action != 1 && data.Action != null) {
 			dialogs.confirm({
 				message: "首次下載必須進行瀏覽器設定，請問您的檔案有正確下載嗎?",
 				checkLabel: "不要再提醒",

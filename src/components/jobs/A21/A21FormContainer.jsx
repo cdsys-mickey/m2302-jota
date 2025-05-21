@@ -5,27 +5,11 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import StdPrint from "@/modules/StdPrint.mjs";
 import A21Form from "./A21Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const A21FormContainer = () => {
 	const a21 = useContext(A21Context);
 	const form = useFormContext();
-	// const { operator } = useContext(AuthContext);
-	// const form = useForm({
-	// 	defaultValues: {
-	// 		dept: {
-	// 			DeptID: operator.CurDeptID,
-	// 			AbbrName: operator.CurDeptName,
-	// 		},
-	// 		Name: "Y",
-	// 		Tel: "Y",
-	// 		InvAddr: "Y",
-	// 		ToAddr: "Y",
-	// 		SalesID: "Y",
-	// 		InvNo: "Y",
-	// 		DelyNo: "Y",
-	// 		outputType: StdPrint.getDefaultOption(),
-	// 	},
-	// });
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -33,17 +17,21 @@ export const A21FormContainer = () => {
 		)
 	}, [a21.onDebugSubmit, form]);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			a21.onSubmit,
 			a21.onSubmitError
 		)
 	}, [a21.onSubmit, a21.onSubmitError, form]);
 
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
+
 	return (
 		// <FormProvider {...form}>
 		<FormMetaProvider {...a21.formMeta}>
-			<A21Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<A21Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 		// </FormProvider>
 	);

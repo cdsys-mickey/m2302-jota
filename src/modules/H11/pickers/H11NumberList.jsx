@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { List, ListItem, TextField, Button, Box } from '@mui/material';
+import { List, ListItem, TextField, Button, Box, Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { TextFieldWrapper } from '@/shared-components/text-field/TextFieldWrapper';
 import FlexBox from '@/shared-components/FlexBox';
 import { useWatch } from 'react-hook-form';
+import { Fragment } from 'react';
 
 const H11NumberList = (props) => {
-	const { name = "values", control } = props || {};
+	const { name = "values", rankName, control } = props || {};
 	// 初始化等級和數字陣列
 	const [entries, setEntries] = useState([
 		{ rank: 'A', value: 100000 },
@@ -18,11 +19,11 @@ const H11NumberList = (props) => {
 	]);
 
 	// 更新等級的處理函式
-	// const handleRankChange = useCallback((index, value) => {
-	// 	const updatedEntries = [...entries];
-	// 	updatedEntries[index].rank = value;
-	// 	setEntries(updatedEntries);
-	// }, [entries]);
+	const handleRankChange = useCallback((index, value) => {
+		const updatedEntries = [...entries];
+		updatedEntries[index].rank = value;
+		setEntries(updatedEntries);
+	}, [entries]);
 
 	// 更新數字的處理函式
 	const handleValueChange = useCallback((index, value) => {
@@ -41,33 +42,38 @@ const H11NumberList = (props) => {
 	})
 
 	return (
-		<div>
-			<List >
+		<Box p={1}>
+			<Grid container spacing={1}>
 				{value.map((entry, index) => (
-					<ListItem key={index}>
-						<FlexBox fullWidth>
+					<>
+						<Grid item xs={4}>
 							<TextFieldWrapper
-								// label="數字"
-								name={`${name}[${index}]`}
-								type="number"
-								// value={entry.value}
-								onChange={(e) => handleValueChange(index, e.target.value)}
+								name={`${rankName}[${index}]`}
+								onChange={(e) => handleRankChange(index, e.target.value)}
 								fullWidth
 								size="small"
 								variant="standard"
-								// slotProps={{
-								// 	htmlInput: {
-								// 		style: { textAlign: 'right' }
-								// 	}
-								// }}
 								InputProps={{
 									inputProps: { style: { textAlign: 'right' } }, // 文字靠右對齊
 								}}
 							/>
-						</FlexBox>
-					</ListItem>
+						</Grid>
+						<Grid item xs={8}>
+							<TextFieldWrapper
+								name={`${name}[${index}]`}
+								type="number"
+								onChange={(e) => handleValueChange(index, e.target.value)}
+								fullWidth
+								size="small"
+								variant="standard"
+								InputProps={{
+									inputProps: { style: { textAlign: 'right' } }, // 文字靠右對齊
+								}}
+							/>
+						</Grid>
+					</>
 				))}
-			</List>
+			</Grid>
 			{/* <Button
 				variant="contained"
 				color="primary"
@@ -76,7 +82,7 @@ const H11NumberList = (props) => {
 			>
 				排序由大到小
 			</Button> */}
-		</div>
+		</Box>
 	);
 };
 

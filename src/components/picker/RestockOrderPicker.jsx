@@ -31,7 +31,7 @@ const RestockOrderPicker = memo((props) => {
 			getOptionLabel={RestockOrders.getOptionLabel}
 			isOptionEqualToValue={RestockOrders.isOptionEqualToValue}
 			renderOptionLabel={RestockOrders.renderOptionLabel}
-			notFoundText="進貨單號 ${id} 不存在"
+			notFoundText="進貨單號 ${input} 不存在"
 			placeholder="進貨單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"

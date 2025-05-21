@@ -1,4 +1,4 @@
-import Styles from "@/modules/Styles.mjs";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import { forwardRef, memo, useMemo } from "react";
 import ListToolbar from "./ListToolbar";
 
@@ -8,7 +8,7 @@ const DSGBottomToolbar = memo(
 			...rest
 		} = props;
 
-		const style = useMemo(() => Styles.ofGridBottomToolbar(), [])
+		const style = useMemo(() => MuiStyles.ofGridBottomToolbar(), [])
 
 		return (
 			<ListToolbar

@@ -4,6 +4,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { H11Context } from "./H11Context";
 import H11Form from "./H11Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H11FormContainer = () => {
 	const form = useFormContext();
@@ -21,21 +22,31 @@ export const H11FormContainer = () => {
 			TopNo,
 			reportType,
 			outputType,
+			ranks[0],
 			numbers[0],
+			ranks[1],
 			numbers[1],
+			ranks[2],
 			numbers[2],
+			ranks[3],
 			numbers[3],
+			ranks[4],
 			numbers[4],
+			ranks[5],
 			numbers[5],
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h11.onSubmit,
 			h11.onSubmitError
 		)
 	}, [h11.onSubmit, h11.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -47,7 +58,7 @@ export const H11FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<H11Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H11Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

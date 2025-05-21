@@ -1,5 +1,5 @@
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import React, { forwardRef, memo } from "react";
 import MuiStyles from "../../shared-modules/MuiStyles";
 

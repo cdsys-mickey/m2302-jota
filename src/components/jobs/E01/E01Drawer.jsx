@@ -1,5 +1,5 @@
 import { E01Context } from "@/contexts/E01/E01Context";
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import PropTypes from "prop-types";
 import { memo, useContext } from "react";
 import SideDrawer from "@/shared-components/side-drawer/SideDrawer";

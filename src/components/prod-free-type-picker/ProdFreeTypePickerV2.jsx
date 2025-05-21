@@ -16,7 +16,7 @@ const ProdFreeTypePickerV2 = memo(
 				getOptionLabel={ProdFreeTypesV2.getOptionLabel}
 				isOptionEqualToValue={ProdFreeTypesV2.isOptionEqualToValue}
 				findByInput={ProdFreeTypesV2.findOptionByInput}
-				notFoundText="試贈樣 ${id} 不存在"
+				notFoundText="試贈樣 ${input} 不存在"
 				placeholder="1試,2贈,3樣,(空)試+贈+樣"
 				{...rest}
 			/>

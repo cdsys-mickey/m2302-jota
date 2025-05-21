@@ -13,7 +13,7 @@ export const B06OrderByPicker = memo(
 				isOptionEqualToValue={B06.isOptionEqualToValue}
 				defaultValue={B06.findById(B06.OrderBy.PROD)}
 				findByInput={B06.findById}
-				notFoundText="排序 ${id} 不存在"
+				notFoundText="排序 ${input} 不存在"
 				{...rest}
 			/>
 		);

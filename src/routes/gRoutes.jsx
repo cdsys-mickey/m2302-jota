@@ -8,8 +8,16 @@ import { G04FrameContainer } from "@/modules/G04/G04FrameContainer";
 import { G04Provider } from "@/modules/G04/G04Provider";
 import { G05FrameContainer } from "@/modules/G05/G05FrameContainer";
 import { G05Provider } from "@/modules/G05/G05Provider";
-import { G10FrameContainer } from "@/pages/modules/G10/G10FrameContainer";
-import { G10Provider } from "@/pages/modules/G10/G10Provider";
+import { G06FrameContainer } from "@/modules/G06/G06FrameContainer";
+import { G06Provider } from "@/modules/G06/G06Provider";
+import { G07FrameContainer } from "@/modules/G07/G07FrameContainer";
+import { G07Provider } from "@/modules/G07/G07Provider";
+import { G08FrameContainer } from "@/modules/G08/G08FrameContainer";
+import { G08Provider } from "@/modules/G08/G08Provider";
+import { G09FrameContainer } from "@/modules/G09/G09FrameContainer";
+import { G09Provider } from "@/modules/G09/G09Provider";
+import { G10FrameContainer } from "@/pages/jobs/G10/G10FrameContainer";
+import { G10Provider } from "@/pages/jobs/G10/G10Provider";
 import { Route } from "react-router-dom";
 
 const gRoutes = (
@@ -36,7 +44,7 @@ const gRoutes = (
 				</CrudProvider>
 			}
 		/>
-		{/* <Route
+		<Route
 			path="G04"
 			element={
 				<CrudProvider>
@@ -45,7 +53,7 @@ const gRoutes = (
 					</G04Provider>
 				</CrudProvider>
 			}
-		/> */}
+		/>
 		<Route
 			path="G05"
 			element={
@@ -53,6 +61,50 @@ const gRoutes = (
 					<G05Provider>
 						<G05FrameContainer />
 					</G05Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="G06"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<G06Provider>
+							<G06FrameContainer />
+						</G06Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="G07"
+			element={
+				<CrudProvider>
+					<G07Provider>
+						<G07FrameContainer />
+					</G07Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="G08"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<G08Provider>
+							<G08FrameContainer />
+						</G08Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="G09"
+			element={
+				<CrudProvider>
+					<G09Provider>
+						<G09FrameContainer />
+					</G09Provider>
 				</CrudProvider>
 			}
 		/>

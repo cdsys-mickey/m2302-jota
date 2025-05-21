@@ -17,7 +17,7 @@ const AreaPicker = forwardRef((props, ref) => {
 			url={`v1/sales/customer/areas`}
 			getOptionLabel={Codes.getOptionLabel}
 			isOptionEqualToValue={Codes.isOptionEqualToValue}
-			notFoundText="區域 ${id} 不存在"
+			notFoundText="區域 ${input} 不存在"
 			{...rest} />
 	);
 });

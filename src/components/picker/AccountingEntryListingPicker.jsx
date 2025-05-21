@@ -43,7 +43,7 @@ const AccountingEntryListingPicker = memo((props) => {
 			isOptionEqualToValue={AccountingEntries.isOptionEqualToValue}
 			getData={getData}
 			querystring={querystring}
-			notFoundText="作帳日 ${id} 不存在"
+			notFoundText="作帳日 ${input} 不存在"
 			{...rest}
 			blurToLookup={false}
 		/>

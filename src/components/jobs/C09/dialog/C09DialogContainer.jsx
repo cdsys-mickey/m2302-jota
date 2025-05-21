@@ -19,6 +19,7 @@ import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C09DialogForm from "./C09DialogForm";
 import { C09DialogToolbarContainer } from "./toolbar/C09DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const C09DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -246,6 +247,10 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 		c09.onEditorSubmit,
 		c09.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => c09.updating ? setTimeout(handleSubmit) : null, {
+		enableOnFormTags: true
+	})
 
 	const isFieldDisabled = useCallback(
 		(field) => {

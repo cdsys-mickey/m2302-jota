@@ -4,6 +4,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { H35Context } from "./H35Context";
 import H35Form from "./H35Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H35FormContainer = () => {
 	const form = useFormContext();
@@ -21,12 +22,16 @@ export const H35FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h35.onSubmit,
 			h35.onSubmitError
 		)
 	}, [h35.onSubmit, h35.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -38,7 +43,7 @@ export const H35FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<H35Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H35Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

@@ -2,14 +2,12 @@ import { useCallback } from "react";
 
 const DEFAULT_OPTS = {
 	target: "_blank",
-	closeOnLoad: false
 }
 
 const useHttpPost = () => {
 	const postTo = useCallback((url, data, opts = {}) => {
 		const {
 			target = DEFAULT_OPTS.target,
-			closeOnLoad = DEFAULT_OPTS.closeOnLoad
 		} = opts;
 		var form = document.createElement("form");
 		form.target = target;
@@ -25,13 +23,6 @@ const useHttpPost = () => {
 			form.appendChild(input);
 		}
 
-		var newWindow;
-		if (closeOnLoad) {
-			newWindow = window.open(url, target);
-			newWindow.onload = () => {
-				newWindow.close();
-			};
-		}
 		document.body.appendChild(form);
 		form.submit();
 		document.body.removeChild(form);

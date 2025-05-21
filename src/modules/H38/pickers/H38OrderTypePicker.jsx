@@ -17,7 +17,7 @@ const H38OrderTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={H38OrderType.getOptionLabel}
 			isOptionEqualToValue={H38OrderType.isOptionEqualToValue}
 			findByInput={H38OrderType.findByInput}
-			notFoundText="排序方式 ${id} 不存在"
+			notFoundText="排序方式 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

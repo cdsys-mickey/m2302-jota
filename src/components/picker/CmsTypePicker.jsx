@@ -16,7 +16,7 @@ const CmsTypePicker = forwardRef((props, ref) => {
 			url={`v1/prod/cms-types`}
 			getOptionLabel={CmsTypes.getOptionLabel}
 			isOptionEqualToValue={CmsTypes.isOptionEqualToValue}
-			notFoundText="佣金類別 ${id} 不存在"
+			notFoundText="佣金類別 ${input} 不存在"
 			// blurToLookup
 			{...rest}
 		/>

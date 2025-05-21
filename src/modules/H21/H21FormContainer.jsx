@@ -10,6 +10,7 @@ import { useInit } from "@/shared-hooks/useInit";
 import StdPrint from "../StdPrint.mjs";
 import Forms from "@/shared-modules/Forms.mjs";
 import DateFormats from "@/shared-modules/sd-date-formats";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H21FormContainer = () => {
 	const form = useFormContext();
@@ -29,12 +30,16 @@ export const H21FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h21.onSubmit,
 			h21.onSubmitError
 		)
 	}, [h21.onSubmit, h21.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -77,7 +82,7 @@ export const H21FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
-				<H21Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H21Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

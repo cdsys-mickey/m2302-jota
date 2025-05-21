@@ -34,7 +34,7 @@ const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
 };
 
-const MSG_NOT_FOUND_DEFAULT = "${id} 不存在";
+const MSG_NOT_FOUND_DEFAULT = "${input} 不存在";
 
 const noFilterOptions = (options) => {
 	return options;
@@ -162,11 +162,11 @@ const OptionPicker = memo(
 
 
 		const getNotFoundMessage = useCallback((params) => {
-			if (Types.isString(notFoundText)) {
+			if (Types.isFunction(notFoundText)) {
+				return notFoundText(params);
+			} else if (Types.isString(notFoundText)) {
 				const notFoundTemplete = _.template(notFoundText);
 				return notFoundTemplete(params);
-			} else if (Types.isFunction(notFoundText)) {
-				return notFoundText(params);
 			}
 		}, [notFoundText]);
 
@@ -340,15 +340,15 @@ const OptionPicker = memo(
 
 		}, [handleFocusPrevCell, inDSG]);
 
-		const inputNotFound = useCallback(
+		const handleInputNotFound = useCallback(
 			(input, opts = {}) => {
 				const { error } = opts;
 				if (name && toastError) {
-					toastEx.error(getNotFoundMessage({ id: input, error }));
+					toastEx.error(getNotFoundMessage({ input, error }));
 				} else if (name && setError) {
 					setError(name, {
 						type: "manual",
-						message: getNotFoundMessage({ id: input, error }),
+						message: getNotFoundMessage({ input, error }),
 					});
 					return;
 				} else {
@@ -374,8 +374,6 @@ const OptionPicker = memo(
 				if (_open || (!inFormMeta && !inDSG)) {
 					return;
 				}
-
-
 
 				console.log(`${OptionPicker.displayName}.handleLookup.preventDefault+stopPropagation`);
 				e.preventDefault();
@@ -408,7 +406,7 @@ const OptionPicker = memo(
 						// 	asyncRef.current.performFocusNext = true;
 						// }
 
-						inputNotFound(input, {
+						handleInputNotFound(input, {
 							error
 						});
 						selectField();
@@ -455,7 +453,7 @@ const OptionPicker = memo(
 					});
 				}
 			},
-			[name, clearErrors, _open, inFormMeta, inDSG, findByInput, emptyId, multiple, inputNotFound, selectField, onChange, value, handleFocusNextCellOrField, getError, setError]
+			[name, clearErrors, _open, inFormMeta, inDSG, findByInput, emptyId, multiple, handleInputNotFound, selectField, onChange, value, handleFocusNextCellOrField, getError, setError]
 		);
 
 		const handleArrowDown = useCallback(
@@ -476,7 +474,11 @@ const OptionPicker = memo(
 
 		const handleKeyDown = useCallback(
 			(e) => {
-				// console.log("e.key", e.key);
+				// 若按住 Ctrl 則不處理
+				if (e.ctrlKey) {
+					return;
+				}
+
 				switch (e.key) {
 					case "Enter":
 						// 按下 Shift 時必須略過不處理
@@ -548,7 +550,7 @@ const OptionPicker = memo(
 							onChange(found);
 						}
 					} else {
-						inputNotFound(input);
+						handleInputNotFound(input);
 						refocus();
 					}
 
@@ -556,7 +558,7 @@ const OptionPicker = memo(
 
 
 			},
-			[_open, blurToClearErrors, blurToLookup, clearErrors, emptyId, findByInput, handleFocusNextCellOrField, inDSG, inFormMeta, inputNotFound, multiple, name, onChange, refocus, value]
+			[_open, blurToClearErrors, blurToLookup, clearErrors, emptyId, findByInput, handleFocusNextCellOrField, inDSG, inFormMeta, handleInputNotFound, multiple, name, onChange, refocus, value]
 		);
 
 		const _label = useMemo(() => {
@@ -980,6 +982,7 @@ const OptionPicker = memo(
 									"&.MuiAutocomplete-root .MuiInputBase-root.Mui-disabled ":
 									{
 										paddingRight: 0,
+										paddingTop: 0
 									},
 								}),
 								...(dense && {

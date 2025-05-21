@@ -30,7 +30,7 @@ const DeptRecvOrderPicker = memo((props) => {
 			getOptionLabel={DeptRecvOrders.getOptionLabel}
 			isOptionEqualToValue={DeptRecvOrders.isOptionEqualToValue}
 			renderOptionLabel={DeptRecvOrders.renderOptionLabel}
-			notFoundText="門市訂貨單號 ${id} 不存在"
+			notFoundText="門市訂貨單號 ${input} 不存在"
 			placeholder="門市訂貨單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"

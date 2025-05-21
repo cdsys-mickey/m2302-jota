@@ -16,7 +16,7 @@ const OrderDirPicker = forwardRef((props, ref) => {
 			getOptionLabel={OrderDir.getOptionLabel}
 			isOptionEqualToValue={OrderDir.isOptionEqualToValue}
 			findByInput={OrderDir.findByInput}
-			notFoundText="順序 ${id} 不存在"
+			notFoundText="順序 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

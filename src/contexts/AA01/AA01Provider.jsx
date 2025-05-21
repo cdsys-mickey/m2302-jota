@@ -2,9 +2,9 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useA01 } from "../../hooks/jobs/useA01";
-import A01 from "../../modules/A01.mjs";
-import { A01Context } from "../A01/A01Context";
+import A01 from "@/modules/A01/A01.mjs";
+import { useA01 } from "@/modules/A01/useA01";
+import { A01Context } from "@/modules/A01/A01Context";
 
 export const AA01Provider = ({ children }) => {
 	const auth = useContext(AuthContext);

@@ -14,6 +14,14 @@ export const H11Provider = ({ children }) => {
 			TopNo: 10,
 			outputType: StdPrint.getDefaultOption(),
 			reportType: H11ReportType.getDefaultOption(),
+			ranks: [
+				"A",
+				"B",
+				"C",
+				"D",
+				null,
+				null,
+			],
 			numbers: [
 				100000,
 				50000,

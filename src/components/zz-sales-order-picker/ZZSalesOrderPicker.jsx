@@ -49,7 +49,7 @@ const SalesOrderPicker = (props) => {
 			// renderOption={renderOption}
 			GridHeaderComponent={SalesOrderGridHeader}
 			GridRowComponent={SalesOrderGridRow}
-			notFoundText="採購單號 ${id} 不存在"
+			notFoundText="採購單號 ${input} 不存在"
 			inputParam="fz"
 			{...rest}
 		/>

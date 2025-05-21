@@ -4,6 +4,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { H51Context } from "./H51Context";
 import H51Form from "./H51Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H51FormContainer = () => {
 	const form = useFormContext();
@@ -19,12 +20,16 @@ export const H51FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h51.onSubmit,
 			h51.onSubmitError
 		)
 	}, [h51.onSubmit, h51.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -36,7 +41,7 @@ export const H51FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<H51Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H51Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

@@ -18,7 +18,7 @@ const E03SalesTypePicker = memo(
 				getOptionLabel={E03.getSalesTypeOptionLabel}
 				isOptionEqualToValue={E03.isSalesTypeOptionEqualToValue}
 				findByInput={E03.findSalesTypeOptionByInput}
-				notFoundText="銷售類別 ${id} 不存在"
+				notFoundText="銷售類別 ${input} 不存在"
 				placeholder="空白: 零售+批發"
 				emptyId
 				{...rest}

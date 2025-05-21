@@ -2,6 +2,7 @@ import { PrintReportButton } from "@/components";
 import { BContext } from "@/contexts/B/BContext";
 import { B02Context } from "@/contexts/B02/B02Context";
 import { B04Context } from "@/contexts/B04/B04Context";
+import { useMemo } from "react";
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -17,6 +18,12 @@ const B02ExportButtonContainer = (props) => {
 		b02.onPrintSubmitError
 	);
 
+	const onDebugSubmit = useMemo(() => {
+		return form.handleSubmit(
+			b02.onDebugSubmit,
+		)
+	}, [b02.onDebugSubmit, form]);
+
 	if (!canPrint) {
 		return false;
 	}
@@ -24,6 +31,7 @@ const B02ExportButtonContainer = (props) => {
 	return (
 		<PrintReportButton
 			onSubmit={handleSubmit}
+			onDebugSubmit={onDebugSubmit}
 			{...rest}
 		/>
 	)

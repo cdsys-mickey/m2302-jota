@@ -11,11 +11,11 @@ import { B032Provider } from "@/contexts/B032/B032Provider";
 import { B04Provider } from "@/contexts/B04/B04Provider";
 
 import { B06Provider } from "@/contexts/B06/B06Provider";
-import { B011FrameContainer } from "@/pages/modules/B011/B011FrameContainer";
-import { B012FrameContainer } from "@/pages/modules/B012/B012FrameContainer";
-import { B02FrameContainer } from "@/pages/modules/B02/B02FrameContainer";
+import { B011FrameContainer } from "@/pages/jobs/B011/B011FrameContainer";
+import { B012FrameContainer } from "@/pages/jobs/B012/B012FrameContainer";
+import { B02FrameContainer } from "@/pages/jobs/B02/B02FrameContainer";
 import { B05FrameContainer } from "@/modules/B05/B05FrameContainer";
-import { B06FrameContainer } from "@/pages/modules/B06/B06FrameContainer";
+import { B06FrameContainer } from "@/pages/jobs/B06/B06FrameContainer";
 import { B05Provider } from "@/modules/B05/B05Provider";
 
 const bRoutes = (

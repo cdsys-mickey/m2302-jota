@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useWatch } from "react-hook-form";
-import FormFieldLabel from "../../../../shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 
 export const C03DialogCheckerLabel = (props) => {
 	const { name, label = "覆核", ...rest } = props;

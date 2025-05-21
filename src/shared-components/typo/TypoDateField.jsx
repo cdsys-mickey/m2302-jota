@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import ControlledDateField from "@/shared-components/controlled/ControlledDateField";
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import { memo } from "react";
 import { forwardRef } from "react";
 import { useWatch } from "react-hook-form";

@@ -362,9 +362,9 @@ export const useWebApiOptions = (opts = {}) => {
 			// if (debug) {
 			console.log(
 				`%cOptionPicker[${name}] VALUE CLEARED(clearValueOnChange ON) →`,
-				CommonCSS.MSG_WARN,
+				CommonCSS.CONSOLE_WARN,
 			);
-			console.log(`\t%c${url}${querystring ? "?" + querystring : ""}${params ? `params: ${JSON.stringify(params)}` : ""}`, CommonCSS.MSG_INFO)
+			console.log(`\t%c${url}${querystring ? "?" + querystring : ""}${params ? `params: ${JSON.stringify(params)}` : ""}`, CommonCSS.CONSOLE_INFO)
 			// }
 			onChange(multiple ? [] : null);
 			// resetLoading();
@@ -376,9 +376,9 @@ export const useWebApiOptions = (opts = {}) => {
 			// if (debug) {
 			console.log(
 				`%cOptionPicker[${name}] LOADING RESET(clearOptionsOnChange ON) → `,
-				CommonCSS.MSG_WARN,
+				CommonCSS.CONSOLE_WARN,
 			);
-			console.log(`\t%c${url}${querystring ? "?" + querystring : ""}${params ? `params: ${JSON.stringify(params)}` : ""}`, CommonCSS.MSG_INFO);
+			console.log(`\t%c${url}${querystring ? "?" + querystring : ""}${params ? `params: ${JSON.stringify(params)}` : ""}`, CommonCSS.CONSOLE_INFO);
 			// }
 			// onChange(multiple ? [] : null);
 			resetLoading();
@@ -391,7 +391,7 @@ export const useWebApiOptions = (opts = {}) => {
 		if (filterByServer && !open) {
 			console.log(
 				`%cOptionPicker[${name}] LOADING RESET(filterByServer ON, popper closed)`,
-				CommonCSS.MSG_WARN
+				CommonCSS.CONSOLE_WARN
 			);
 			resetLoading();
 		}

@@ -19,6 +19,7 @@ import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createT
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const C02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -76,6 +77,10 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 			c02.onEditorSubmitError
 		)
 	}, [c02.onEditorSubmit, c02.onEditorSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const rqtDate = useWatch({
 		name: "RqtDate",

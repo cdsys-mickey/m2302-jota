@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { H25Context } from "./H25Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H25FormContainer = () => {
 	const form = useFormContext();
@@ -21,12 +22,16 @@ export const H25FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h25.onSubmit,
 			h25.onSubmitError
 		)
 	}, [h25.onSubmit, h25.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -36,7 +41,7 @@ export const H25FormContainer = () => {
 
 	return <FormProvider {...form}>
 		<FormMetaProvider {...formMeta}>
-			<H25Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<H25Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 	</FormProvider>;
 };

@@ -9,6 +9,7 @@ import A06DialogForm from "../form/A06DialogForm";
 import { A06DialogToolbarContainer } from "./buttons/A06DialogToolbarContainer";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import A06DrawerContainer from "../A06DrawerContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const A06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -38,12 +39,16 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [a06.creating, a06.updating]);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return forms.handleSubmit(
 			a06.onEditorSubmit,
 			a06.onEditorSubmitError
 		)
 	}, [a06.onEditorSubmit, a06.onEditorSubmitError, forms]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	useEffect(() => {
 		// if (a06.readState === ActionState.DONE && !!a06.itemData) {
@@ -82,7 +87,7 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 				<FormMetaProvider {...a06.formMeta}>
 					<A06DialogForm
 						ref={ref}
-						onSubmit={onSubmit}
+						onSubmit={handleSubmit}
 						editing={a06.editing}
 						updating={a06.updating}
 						readWorking={a06.readWorking}

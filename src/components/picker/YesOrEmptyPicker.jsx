@@ -15,7 +15,7 @@ const YesOrEmptyPicker = forwardRef((props, ref) => {
 			getOptionLabel={YesOrEmpty.getOptionLabel}
 			isOptionEqualToValue={YesOrEmpty.isOptionEqualToValue}
 			findByInput={YesOrEmpty.findByInput}
-			notFoundText="${id} 不存在"
+			notFoundText="${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			{...rest}
 		/>

@@ -13,6 +13,7 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H50OrderTypePicker from "./pickers/H50OrderTypePicker";
+import DeptPicker from "@/components/picker/DeptPicker";
 
 const H50Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -69,11 +70,11 @@ const H50Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12}>
-								<RangeGroup legend="生產線別"
-									leftComponent={<ProdLinePicker
-										name="SPDlineID"
-										label="生產線別"
+							<Grid item xs={12} >
+								<RangeGroup legend="門市區間"
+									leftComponent={<DeptPicker
+										name="SDeptID"
+										label=""
 										size="small"
 										virtualize
 										disableOpenOnInput
@@ -81,9 +82,9 @@ const H50Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<ProdLinePicker
-										name="EPDlineID"
-										label="生產線別迄"
+									rightComponent={<DeptPicker
+										name="EDeptID"
+										label=""
 										size="small"
 										virtualize
 										disableOpenOnInput

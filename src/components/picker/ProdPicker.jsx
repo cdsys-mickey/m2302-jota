@@ -90,13 +90,13 @@ const ProdPicker = (props) => {
 
 	const getNotFoundText = useCallback((params = {}) => {
 		const { error } = params;
-		const notFoundMsgTemplate = _.template("商品代號 ${id} 不存在");
+		const notFoundMsgTemplate = _.template("商品代號 ${input} 不存在");
 		const notFoundMsg = notFoundMsgTemplate(params);
 		return error?.message || notFoundMsg;
 	}, []);
 
 	const notFoundText = useMemo(() => {
-		return retail != null ? getNotFoundText : "商品代號 ${id} 不存在"
+		return retail != null ? getNotFoundText : "商品代號 ${input} 不存在"
 	}, [getNotFoundText, retail])
 
 	const defaultFilter = useMemo(() => createFilterOptions({
@@ -156,7 +156,7 @@ const ProdPicker = (props) => {
 			getData={getData}
 			getTitle={getTitle}
 			stringify={stringify}
-			// notFoundText="商品代號 ${id} 不存在"
+			// notFoundText="商品代號 ${input} 不存在"
 			notFoundText={notFoundText}
 			placeholder="以編號或品名搜尋"
 			typeToSearchText="輸入編號、條碼或名稱搜尋..."

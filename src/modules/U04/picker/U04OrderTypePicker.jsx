@@ -17,7 +17,7 @@ const U04OrderTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={U04OrderType.getOptionLabel}
 			isOptionEqualToValue={U04OrderType.isOptionEqualToValue}
 			findByInput={U04OrderType.findByInput}
-			notFoundText="排序方式 ${id} 不存在"
+			notFoundText="排序方式 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

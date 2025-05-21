@@ -11,6 +11,7 @@ import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createT
 import { keyColumn } from "react-datasheet-grid";
 import Styles from "@/modules/Styles.mjs";
 import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 export const E03ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -32,7 +33,7 @@ export const E03ProdGridContainer = (props) => {
 	}, [e03, form.getValues, form.setValue, formMeta.gridMeta])
 
 	const _height = useMemo(() => {
-		return height - 414 - (formMeta.readOnly ? Styles.GRID_BOTTOM_TOOLBAR_HEIGHT : 0);
+		return height - 414 - (formMeta.readOnly ? MuiStyles.GRID_BOTTOM_TOOLBAR_HEIGHT : 0);
 	}, [formMeta.readOnly, height])
 
 	const prodInfoColumn = useMemo(() => {

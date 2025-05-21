@@ -10,7 +10,7 @@ import CustomerPicker from "@/components/picker/CustomerPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import RecvAccCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAccCustomerPicker";
+import RecvAcctRcptCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctRcptCustomerPicker";
 
 const G01Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, onCustomerChange, ...rest } = props;
@@ -34,11 +34,11 @@ const G01Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12}>
-								{/* <CustomerPicker */}
-								<RecvAccCustomerPicker
+								<CustomerPicker
+									// <RecvAccRcptCustomerPicker
 									name="CustID"
-									// forNew
-									label="客戶編號"
+									forNew
+									// label="客戶編號"
 									forId
 									// label="客戶編號"
 									disableOpenOnInput

@@ -23,6 +23,7 @@ import {
 import C03Drawer from "../C03Drawer";
 import C03DialogForm from "./C03DialogForm";
 import { C03DialogToolbarContainer } from "./toolbar/C03DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const C03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -96,6 +97,10 @@ export const C03DialogContainer = forwardRef((props, ref) => {
 		c03.onEditorSubmit,
 		c03.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const handleRefreshGridSubmit = form.handleSubmit(
 		c03.onRefreshGridSubmit({ setValue: form.setValue }),

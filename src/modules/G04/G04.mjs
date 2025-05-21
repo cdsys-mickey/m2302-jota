@@ -1,6 +1,11 @@
 import DateFormats from "@/shared-modules/sd-date-formats";
 import Forms from "@/shared-modules/Forms.mjs";
 
+const Tabs = Object.freeze({
+	CREATE: "CREATE",
+	DELETE: "DELETE",
+});
+
 const transformForSubmitting = (payload) => {
 	const {
 		outputType,
@@ -30,8 +35,7 @@ const transformForSubmitting = (payload) => {
 
 const G04 = {
 	transformForSubmitting,
+	Tabs,
 };
 
 export default G04;
-
-

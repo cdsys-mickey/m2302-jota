@@ -15,10 +15,10 @@ import H36OrderTypePicker from "./pickers/H36OrderTypePicker";
 import H36ReportTypePicker from "./pickers/H36ReportTypePicker";
 
 const H36Form = memo((props) => {
-	const { onSubmit, onDebugSubmit, ...rest } = props;
+	const { onSubmit, onDebugSubmit, orderTypeDisabled, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
+			<form {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
@@ -100,13 +100,16 @@ const H36Form = memo((props) => {
 									selectOnFocus
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<H36OrderTypePicker
-									name="orderType"
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
+							{!orderTypeDisabled && (
+
+								<Grid item xs={12} sm={6}>
+									<H36OrderTypePicker
+										name="orderType"
+										disableOpenOnInput
+										selectOnFocus
+									/>
+								</Grid>
+							)}
 						</Grid>
 						<FlexBox mt={2}>
 							<Grid container spacing={2}>
@@ -146,6 +149,7 @@ H36Form.propTypes = {
 	readError: PropTypes.object,
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,
+	orderTypeDisabled: PropTypes.bool
 };
 
 H36Form.displayName = "H36Form";

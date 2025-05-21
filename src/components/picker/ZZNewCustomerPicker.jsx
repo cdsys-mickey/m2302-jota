@@ -63,7 +63,7 @@ const NewCustomerPicker = (props) => {
 			getTitle={getTitle}
 			stringify={stringify}
 			getOptionKey={getOptionKey}
-			notFoundText="新客戶代號 ${id} 不存在"
+			notFoundText="新客戶代號 ${input} 不存在"
 			placeholder="新客戶編號/名稱"
 			typeToSearchText="輸入代號或名稱搜尋..."
 			{...rest}

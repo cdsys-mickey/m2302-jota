@@ -1,17 +1,16 @@
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { CurAccYM, CurStage } = option;
-	if (!CurAccYM) {
+	const { AccYM, Stage } = option;
+	if (!AccYM) {
 		return "(?)";
 	}
-	return `${CurAccYM} 第${CurStage}期`;
+	return `${AccYM} 第${Stage}期`;
 };
 
 const isOptionEqualToValue = (option, value) =>
-	option["CurAccYM"] === value["CurAccYM"] &&
-	option["CurStage"] === value["CurStage"];
+	option["AccYM"] === value["AccYM"] && option["Stage"] === value["Stage"];
 
-const renderTagLabel = (option) => option["CurAccYM"];
+const renderTagLabel = (option) => option["AccYM"];
 
 const RecvAccountSessions = {
 	getOptionLabel,

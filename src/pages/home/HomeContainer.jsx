@@ -20,13 +20,7 @@ const HomeContainer = () => {
 	const { confirm: dialogConfirm } = dialogs;
 
 	const isLoadAuthorities = params.get("reload") === "1";
-	const { drawerOpen, detectDrawerState } = useContext(AppFrameContext);
-
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofHomeBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
+	const { detectDrawerState } = useContext(AppFrameContext);
 
 	useInit(() => {
 		detectDrawerState();
@@ -54,15 +48,7 @@ const HomeContainer = () => {
 		}
 	}, [frontEnd?.minVersion, version, loading])
 
-	// useChangeTracking(() => {
-	// 	if (frontEnd?.minVersion && version) {
-	// 		if (frontEnd?.minVersion > version) {
-	// 			toastEx.error(`有新版本 ${frontEnd?.minVersion}`);
-	// 		}
-	// 	}
-	// }, [frontEnd?.minVersion, version])
-
-	return (<Home drawerOpen={drawerOpen} theme={theme} boxStyles={boxStyles} />);
+	return (<Home />);
 };
 
 HomeContainer.displayName = "HomeContainer";

@@ -22,6 +22,7 @@ import B011Drawer from "../B011Drawer";
 import B011DialogForm from "./B011DialogForm";
 import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer";
 import { toastEx } from "@/helpers/toastEx";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -88,6 +89,10 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 		b011.onEditorSubmit,
 		b011.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const readOnly = useMemo(() => {
 		return !b011.editing

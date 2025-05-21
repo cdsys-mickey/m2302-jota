@@ -1,19 +1,18 @@
-import { useMemo } from "react";
-import F04Form from "./F04Form";
-import { FormProvider, useFormContext } from "react-hook-form";
-import { useContext } from "react";
 import { F04Context } from "@/contexts/F04/F04Context";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useInit } from "@/shared-hooks/useInit";
-import { useEffect } from "react";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useInit } from "@/shared-hooks/useInit";
+import { useContext, useMemo } from "react";
+import { FormProvider, useFormContext } from "react-hook-form";
+import { useHotkeys } from "react-hotkeys-hook";
+import F04Form from "./F04Form";
 
 export const F04FormContainer = () => {
 	const form = useFormContext();
 	const { reset } = form;
 	const f04 = useContext(F04Context);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			f04.onSubmit,
 			f04.onSubmitError
@@ -30,6 +29,11 @@ export const F04FormContainer = () => {
 		f04.load();
 	}, []);
 
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
+
+
 	useChangeTracking(() => {
 		if (f04.itemDataReady) {
 			console.log("f04 form reset", f04.itemData);
@@ -40,7 +44,7 @@ export const F04FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...f04.formMeta}>
-				<F04Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<F04Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

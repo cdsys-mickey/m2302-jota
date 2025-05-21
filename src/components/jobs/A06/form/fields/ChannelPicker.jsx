@@ -17,7 +17,7 @@ const ChannelPicker = forwardRef((props, ref) => {
 			url={`v1/sales/customer/channels`}
 			getOptionLabel={Codes.getOptionLabel}
 			isOptionEqualToValue={Codes.isOptionEqualToValue}
-			notFoundText="通路 ${id} 不存在"
+			notFoundText="通路 ${input} 不存在"
 			{...rest} />
 	);
 });

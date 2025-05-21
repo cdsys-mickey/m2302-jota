@@ -29,7 +29,7 @@ export const useOptionPickerComponent = (opts) => {
 
 	const inputRef = useRef();
 	const asyncRef = useRef({
-		open: null
+		popperOpen: null
 	});
 
 	const cell = useMemo(() => {
@@ -64,25 +64,25 @@ export const useOptionPickerComponent = (opts) => {
 
 	const handleOpen = useCallback(() => {
 		console.log("onOpen callback fired");
-		asyncRef.current.open = true;
+		asyncRef.current.popperOpen = true;
 	}, []);
 
 	const handleClose = useCallback(() => {
 		console.log("onClose callback fired");
-		asyncRef.current.open = false;
+		asyncRef.current.popperOpen = false;
 	}, []);
 
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
-			console.log("useOptionPickerComponent.focus", focus);
+			console.log("useOptionPickerComponent onFocus", focus);
 			inputRef.current?.focus();
 			if (selectOnFocus) {
 				inputRef.current?.select();
 			}
 		} else {
-			console.log(`useOptionPickerComponent.leaveFocus, asyncRef.current.open: ${asyncRef.current.open}`);
-			if (!asyncRef.current.open) {
+			console.log(`useOptionPickerComponent.leaveFocus, asyncRef.current.popperOpen: ${asyncRef.current.popperOpen}`);
+			if (!asyncRef.current.popperOpen) {
 				inputRef.current?.blur();
 			}
 		}

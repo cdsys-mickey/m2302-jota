@@ -30,7 +30,7 @@ const MatWasteOrderPicker = memo((props) => {
 			getOptionLabel={MatWasteOrders.getOptionLabel}
 			isOptionEqualToValue={MatWasteOrders.isOptionEqualToValue}
 			renderOptionLabel={MatWasteOrders.renderOptionLabel}
-			notFoundText="報廢單號 ${id} 不存在"
+			notFoundText="報廢單號 ${input} 不存在"
 			placeholder="報廢單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"

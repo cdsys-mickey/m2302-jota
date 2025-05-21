@@ -50,7 +50,6 @@ export const useA21 = ({ form }) => {
 		dept,
 		SDate,
 		EDate,
-		outputType,
 		Name,
 		Tel,
 		InvAddr,

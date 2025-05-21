@@ -18,7 +18,7 @@ const P10CalTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={P10CalType.getOptionLabel}
 			isOptionEqualToValue={P10CalType.isOptionEqualToValue}
 			findByInput={P10CalType.findByInput}
-			notFoundText="百分率算法 ${id} 不存在"
+			notFoundText="百分率算法 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

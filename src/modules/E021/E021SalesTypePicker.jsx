@@ -18,7 +18,7 @@ const E021SalesTypePicker = memo(
 				getOptionLabel={E021.getSalesTypeOptionLabel}
 				isOptionEqualToValue={E021.isSalesTypeOptionEqualToValue}
 				findByInput={E021.findSalesTypeOptionByInput}
-				notFoundText="銷售類別 ${id} 不存在"
+				notFoundText="銷售類別 ${input} 不存在"
 				emptyId
 				{...rest}
 			/>

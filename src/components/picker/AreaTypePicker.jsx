@@ -15,7 +15,7 @@ const AreaTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={AreaTypes.getOptionLabel}
 			isOptionEqualToValue={AreaTypes.isOptionEqualToValue}
 			findByInput={AreaTypes.findByInput}
-			notFoundText="地區 ${id} 不存在"
+			notFoundText="地區 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

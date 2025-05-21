@@ -30,7 +30,7 @@ const MatReturnOrderPicker = memo((props) => {
 			getOptionLabel={MatReturnOrders.getOptionLabel}
 			isOptionEqualToValue={MatReturnOrders.isOptionEqualToValue}
 			renderOptionLabel={MatReturnOrders.renderOptionLabel}
-			notFoundText="退料單號 ${id} 不存在"
+			notFoundText="退料單號 ${input} 不存在"
 			placeholder="退料單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"

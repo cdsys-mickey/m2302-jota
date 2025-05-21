@@ -1,6 +1,6 @@
 import { forwardRef, memo, useMemo } from "react";
 import ControlledCheckboxEx from "@/shared-components/checkbox/ControlledCheckboxEx";
-import FormFieldLabel from "../form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import { useWatch } from "react-hook-form";
 import PropTypes from "prop-types";
 

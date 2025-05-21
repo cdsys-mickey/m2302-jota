@@ -136,7 +136,7 @@ const H11Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={4}>
 								<Fieldset label="≧ 下限">
-									<H11NumberList name="numbers" />
+									<H11NumberList name="numbers" rankName="ranks" />
 								</Fieldset>
 							</Grid>
 						</Grid>

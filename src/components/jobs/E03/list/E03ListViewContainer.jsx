@@ -9,6 +9,7 @@ import { E03ListRowContainer } from "./E03ListRowContainer";
 import { E03Context } from "@/contexts/E03/E03Context";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import E03 from "@/modules/E03.mjs";
+import { useMemo } from "react";
 
 export const E03ListViewContainer = () => {
 	const e03 = useContext(E03Context);
@@ -69,6 +70,10 @@ export const E03ListViewContainer = () => {
 		employee
 	}, 300);
 
+	const _height = useMemo(() => {
+		return height ? height - 232 : 300
+	}, [height])
+
 	useInit(() => {
 		e03.loadList();
 	}, []);
@@ -91,7 +96,7 @@ export const E03ListViewContainer = () => {
 				loadMoreItems={e03.loadMoreItems}
 				isItemLoaded={e03.isItemLoaded}
 				RowComponent={E03ListRowContainer}
-				height={height ? height - 232 : 300}
+				height={_height}
 				handleItemsRendered={e03.handleItemsRendered}
 				error={e03.listError}
 				// bottomReached={e03.bottomReached}

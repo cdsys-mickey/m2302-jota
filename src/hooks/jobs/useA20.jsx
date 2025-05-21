@@ -60,10 +60,13 @@ export const useA20 = ({ token }) => {
 	const loadItem = useCallback(
 		async ({ id }) => {
 			try {
-				const encodedId = encodeURIComponent(id);
+				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
-					url: `v1/prod/boms/${encodedId}`,
+					url: `v1/prod/boms`,
 					bearer: token,
+					params: {
+						id
+					}
 				});
 				console.log("payload", payload);
 				if (status.success) {

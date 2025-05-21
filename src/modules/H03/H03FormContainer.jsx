@@ -6,6 +6,7 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { H03Context } from "./H03Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useCallback } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H03FormContainer = () => {
 	const form = useFormContext();
@@ -23,7 +24,7 @@ export const H03FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h03.onSubmit,
 			h03.onSubmitError
@@ -54,10 +55,12 @@ export const H03FormContainer = () => {
 		[catL]
 	);
 
+
+
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
-				<H03Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H03Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

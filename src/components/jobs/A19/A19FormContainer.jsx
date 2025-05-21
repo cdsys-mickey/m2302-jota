@@ -4,12 +4,13 @@ import { A19Context } from "@/contexts/A19/A19Context";
 import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const A19FormContainer = () => {
 	const form = useFormContext();
 	const a19 = useContext(A19Context);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			a19.onSubmit,
 			a19.onSubmitError
@@ -22,9 +23,13 @@ export const A19FormContainer = () => {
 		)
 	}, [a19.onDebugSubmit, form]);
 
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
+
 	return <FormProvider {...form}>
 		<FormMetaProvider {...a19.formMeta}>
-			<A19Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<A19Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 	</FormProvider>;
 };

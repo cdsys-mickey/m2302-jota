@@ -4,12 +4,13 @@ import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { H01Context } from "./H01Context";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H01FormContainer = () => {
 	const form = useFormContext();
 	const h01 = useContext(H01Context);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h01.onSubmit,
 			h01.onSubmitError
@@ -22,11 +23,15 @@ export const H01FormContainer = () => {
 		)
 	}, [h01.onDebugSubmit, form]);
 
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
+
 	return <FormProvider {...form}>
 		<FormMetaProvider {...h01.formMeta}>
 			<H01Form
 				onDebugSubmit={onDebugSubmit}
-				onSubmit={onSubmit}
+				onSubmit={handleSubmit}
 			// onSelect={h01.onSelect({ setValue: form.setValue })}
 			/>
 		</FormMetaProvider>

@@ -7,6 +7,7 @@ import { useContext, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import A06SearchPopperContainer from "./A06SearchPopperContainer";
+import { useMemo } from "react";
 
 export const A06SearchFieldContainer = (props) => {
 	const { name = "qs", ...rest } = props;
@@ -31,12 +32,20 @@ export const A06SearchFieldContainer = (props) => {
 		enableOnFormTags: true,
 	});
 
+	const handleSubmit = useMemo(() => {
+		return forms.handleSubmit(
+			a06.onSearchSubmit,
+			a06.onSearchSubmitError
+		)
+	}, [a06.onSearchSubmit, a06.onSearchSubmitError, forms])
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
+
 	return (
 		<form
-			onSubmit={forms.handleSubmit(
-				a06.onSearchSubmit,
-				a06.onSearchSubmitError
-			)}>
+			onSubmit={handleSubmit}>
 			<div ref={escRef}>
 				<ControlledSearchFieldContainer
 					autoFocus

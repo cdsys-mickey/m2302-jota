@@ -1,10 +1,9 @@
 import { Box, Grid } from "@mui/material";
 import { memo } from "react";
 import PropTypes from "prop-types";
-import { grey } from "@mui/material/colors";
 
 const OptionPickerGridHeader = memo((props) => {
-	const { children, slotProps, bgColor = grey[400], color, ...rest } = props;
+	const { children, slotProps, bgColor, color, ...rest } = props;
 
 	return (
 		<Box
@@ -12,8 +11,8 @@ const OptionPickerGridHeader = memo((props) => {
 				(theme) => ({
 					borderBottom: "1px solid rgb(0,0,0,0.1)",
 					position: "relative",
-					backgroundColor: bgColor,
-					color: color ?? theme.palette.getContrastText(bgColor)
+					backgroundColor: bgColor ?? theme.palette.primary.main,
+					color: color ?? theme.palette.getContrastText(bgColor ?? theme.palette.primary.main)
 				})]}
 			{...slotProps?.wrapper}
 		>

@@ -1,5 +1,5 @@
 import React from "react";
-import FormLabelEx from "./FormLabelEx";
+import FormLabelEx from "../FormLabelEx/FormLabelEx";
 import { Box } from "@mui/material";
 
 const ZZFormLabelBox = React.forwardRef(({ label, children, ...rest }, ref) => {

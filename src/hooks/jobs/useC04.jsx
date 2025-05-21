@@ -623,6 +623,9 @@ export const useC04 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error("onEditorSubmitError", err);
+		toastEx.error(
+			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出"
+		);
 	}, []);
 
 	const reportUrl = useMemo(() => {

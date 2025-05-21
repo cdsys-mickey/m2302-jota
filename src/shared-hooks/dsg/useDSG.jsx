@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import Fields from "@/shared-modules/Fields.mjs";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
+import CommonStyles from "@/shared-modules/CommonStyles.mjs";
 
 const DEFAULT_SET_DATA_OPTS = {
 	reset: false,
@@ -511,7 +512,7 @@ export const useDSG = ({
 							// process CREATE here
 							if (focusFirstColumnOnCreate) {
 								if (!gridMeta) {
-									console.warn("focusFirstColumnOnCreate is TRUE, but gridMeta is not provided");
+									console.warn("focusFirstColumnOnCreate is TRUE, but gridMeta is not provided in buildGridChangeHandler method");
 								}
 								gridMeta?.toFirstColumn({ nextRow: true });
 							}
@@ -543,11 +544,10 @@ export const useDSG = ({
 
 				if (!checkFailed) {
 					if (updated) {
+						console.log(`%conGridChanged:`, CommonStyles.CONSOLE_INFO, updated)
 						setGridData(updated);
-						// setPrevGridData(updated);
 					} else {
 						setGridData(newGridData);
-						// setPrevGridData(newGridData);
 					}
 				}
 			},
@@ -640,12 +640,12 @@ export const useDSG = ({
 
 	const supressEvents = useCallback(() => {
 		asyncRef.current.supressEvents = true;
-		console.log(`%c****** ${DSGContext.displayName}.supressEvent ON ******`, CommonCSS.MSG_WARN);
+		console.log(`%c****** ${DSGContext.displayName}.supressEvent ON ******`, CommonCSS.CONSOLE_WARN);
 	}, []);
 
 	const enableEvents = useCallback(() => {
 		asyncRef.current.supressEvents = false;
-		console.log(`%c****** ${DSGContext.displayName}.supressEvent OFF ******`, CommonCSS.MSG_SUCCESS);
+		console.log(`%c****** ${DSGContext.displayName}.supressEvent OFF ******`, CommonCSS.CONSOLE_SUCCESS);
 	}, []);
 
 	useEffect(() => {

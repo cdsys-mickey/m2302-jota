@@ -3,52 +3,23 @@ import E021ListHeader from "@/modules/E021/list/E021ListHeader";
 import E021ListToolbar from "@/modules/E021/list/E021ListToolbar";
 import { E021ListViewContainer } from "@/modules/E021/list/E021ListViewContainer";
 import { E021SearchFormContainer } from "@/modules/E021/search/E021SearchFormContainer";
-import Styles from "@/modules/Styles.mjs";
-import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { Box, useTheme } from "@mui/material";
-import { useContext, useMemo } from "react";
+import { FrameBanner, FrameBox } from "@/shared-components";
 import { FormProvider, useForm } from "react-hook-form";
-import { E021Context } from "./E021Context";
 
 export const E021FrameContainer = () => {
-	const appFrame = useContext(AppFrameContext);
-	const { clearParams } = appFrame;
 	const searchForm = useForm({
 		defaultValues: {
 			// lvSquared: E021.getSquaredOptionById(E021.SquaredState.NONE),
 			// lvSalesType: E021.getSalesTypeOptionById(E021.SalesType.NONE)
 		}
 	});
-	const theme = useTheme();
-	const e021 = useContext(E021Context);
-	const { createWithPurchaseOrder } = e021;
-
-
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
-		[appFrame.drawerOpen, theme]
-	);
-
-
-	// const handleQuerySync = useCallback(
-	// 	(newValue) => {
-	// 		if (newValue) {
-	// 			clearParams();
-	// 			loadPurchaseOrder({ id: newValue });
-	// 		}
-	// 	},
-	// 	[clearParams, loadPurchaseOrder]
-	// );
 
 
 	return (
 		<FormProvider {...searchForm}>
-			<Box sx={[boxStyles]}>
+			<FrameBox>
 				{/* 標題 */}
-				<FrameBannerContainer>
-					{/* {<E021SearchFieldContainer name="q" />} */}
-				</FrameBannerContainer>
+				<FrameBanner></FrameBanner>
 				{/* 篩選工具列 */}
 				<E021SearchFormContainer initSize="md" />
 				{/* 工具列 */}
@@ -58,7 +29,7 @@ export const E021FrameContainer = () => {
 				<E021ListViewContainer />
 				{/* 對話框 */}
 				<E021DialogContainer />
-			</Box>
+			</FrameBox>
 		</FormProvider>
 	);
 };

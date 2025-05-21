@@ -19,8 +19,8 @@ const transformForSubmitting = (payload) => {
 	return {
 		JobName: "G05",
 		Action: outputType?.id?.toString() || "",
-		AccYM: session?.CurAccYM ?? "",
-		Stage: session?.CurStage ?? "",
+		AccYM: session?.AccYM ?? "",
+		Stage: session?.Stage ?? "",
 		...(SCustID && {
 			SCustID: SCustID?.CustID,
 		}),

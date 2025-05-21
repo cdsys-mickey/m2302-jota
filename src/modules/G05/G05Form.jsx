@@ -6,11 +6,12 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 
 import { PrintReportButton } from "@/components";
-import RecvAccCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAccCustomerPicker";
-import { RecvAccountSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAccountSessionPicker";
+import RecvAcctRcptCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctRcptCustomerPicker";
+import { RecvAcctBatchSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctBatchSessionPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import G05ReportTypePicker from "./picker/G05ReportTypePicker";
+import RecvAcctBatchCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctBatchCustomerPicker";
 
 const G05Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, onSessionChanged, ...rest } = props;
@@ -21,7 +22,7 @@ const G05Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={4.5}>
-								<RecvAccountSessionPicker
+								<RecvAcctBatchSessionPicker
 									name="session"
 									label="帳款年月+期別"
 									fullWidth
@@ -39,7 +40,7 @@ const G05Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend={"客戶區間"}
-									leftComponent={<RecvAccCustomerPicker
+									leftComponent={<RecvAcctBatchCustomerPicker
 										name="SCustID"
 										size="small"
 										virtualize
@@ -57,7 +58,7 @@ const G05Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<RecvAccCustomerPicker
+									rightComponent={<RecvAcctBatchCustomerPicker
 										name="ECustID"
 										size="small"
 										virtualize

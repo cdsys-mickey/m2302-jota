@@ -77,7 +77,10 @@ export const G04FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
-				<G04Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<G04Form onSubmit={onSubmit}
+					selectedTab={g04.selectedTab}
+					handleTabChange={g04.handleTabChange}
+				/>
 			</FormMetaProvider>
 		</FormProvider>
 	);

@@ -1,12 +1,10 @@
+import { FrameBanner } from "@/shared-components";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Paper, Tab } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import FrameBanner from "../../shared-components/protected-page/FrameBanner";
-import { useMemo } from "react";
-import { useScrollable } from "../../shared-hooks/useScrollable";
-import ContainerEx from "../../shared-components/ContainerEx";
-import { FrameBannerContainer } from "../../shared-components/protected-page/FrameBannerContainer";
+import ContainerEx from "@/shared-components/ContainerEx";
+import { useScrollable } from "@/shared-hooks/useScrollable";
 
 export const KitchenSink = memo(
 	forwardRef((props, ref) => {
@@ -17,7 +15,7 @@ export const KitchenSink = memo(
 		return (
 			<Box ref={ref} py={1} px={3}>
 				<ContainerEx maxWidth="lg">
-					<FrameBannerContainer title="元件測試" alt="kitchen-sink" />
+					<FrameBanner title="元件測試" alt="kitchen-sink" />
 					<TabContext value={selectedTab}>
 						<Box mt={1}>
 							<Paper sx={[scrollable.scroller]}>

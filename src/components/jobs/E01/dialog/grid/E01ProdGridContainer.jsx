@@ -8,6 +8,7 @@ import { useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { useFormContext } from "react-hook-form";
 import E01ProdGrid from "./E01ProdGrid";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 export const E01ProdGridContainer = (props) => {
 	const { ...rest } = props;
@@ -30,7 +31,7 @@ export const E01ProdGridContainer = (props) => {
 	}, [e01, form.getValues, form.setValue, formMeta.gridMeta])
 
 	const _height = useMemo(() => {
-		return height - 430 - (formMeta.readOnly ? Styles.GRID_BOTTOM_TOOLBAR_HEIGHT : 0);
+		return height - 430 - (formMeta.readOnly ? MuiStyles.GRID_BOTTOM_TOOLBAR_HEIGHT : 0);
 	}, [formMeta.readOnly, height])
 
 	const prodInfoColumn = useMemo(() => {

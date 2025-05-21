@@ -43,7 +43,7 @@ export const PurchaseDepOrderPicker = (props) => {
 			optionLabelSize="md"
 			GridHeaderComponent={PurchaseDepOrderGridHeader}
 			GridRowComponent={PurchaseDepOrderGridRow}
-			notFoundText="門市訂貨單號 ${id} 不存在"
+			notFoundText="門市訂貨單號 ${input} 不存在"
 			inputParam="fz"
 			clearOnChange
 			// disableClose

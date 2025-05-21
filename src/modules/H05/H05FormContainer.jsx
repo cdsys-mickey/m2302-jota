@@ -4,10 +4,16 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import { H05Context } from "./H05Context";
 import H05Form from "./H05Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H05FormContainer = () => {
 	const form = useFormContext();
 	const h05 = useContext(H05Context);
+
+	const retail = useWatch({
+		name: "retail",
+		control: form.control
+	})
 
 	const formMeta = useFormMeta(
 		`
@@ -27,7 +33,7 @@ export const H05FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h05.onSubmit,
 			h05.onSubmitError
@@ -40,9 +46,8 @@ export const H05FormContainer = () => {
 		)
 	}, [h05.onDebugSubmit, form]);
 
-	const retail = useWatch({
-		name: "retail",
-		control: form.control
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
 	})
 
 	return (
@@ -50,7 +55,7 @@ export const H05FormContainer = () => {
 			<FormMetaProvider {...formMeta} >
 				<H05Form
 					forNewCustomer={retail}
-					onSubmit={onSubmit}
+					onSubmit={handleSubmit}
 					onDebugSubmit={onDebugSubmit}
 				/>
 			</FormMetaProvider>

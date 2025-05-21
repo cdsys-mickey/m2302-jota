@@ -1,11 +1,10 @@
-import Styles from "@/modules/Styles.mjs";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import useAppRedirect from "@/hooks/useAppRedirect";
+import { FrameBox } from "@/shared-components";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { Box, useTheme } from "@mui/material";
-import { useContext, useMemo } from "react";
+import { useInit } from "@/shared-hooks/useInit";
+import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import useAppRedirect from "../../hooks/useAppRedirect";
-import { useInit } from "../../shared-hooks/useInit";
 import RenewFrame from "./RenewFrame";
 
 export const RenewFrameContainer = () => {
@@ -18,11 +17,6 @@ export const RenewFrameContainer = () => {
 		defaultValues: {},
 	});
 	const { setError } = form;
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
-		[appFrame.drawerOpen, theme]
-	);
 
 	// useEffect(() => {
 	// 	handleDrawerClose();
@@ -32,7 +26,7 @@ export const RenewFrameContainer = () => {
 	}, []);
 
 	return (
-		<Box sx={[boxStyles]}>
+		<FrameBox>
 			<FormProvider {...form}>
 				<form
 					noValidate
@@ -43,7 +37,7 @@ export const RenewFrameContainer = () => {
 					<RenewFrame toLogin={toLogin} loading={changing} />
 				</form>
 			</FormProvider>
-		</Box>
+		</FrameBox>
 	);
 };
 

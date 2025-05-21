@@ -5,7 +5,7 @@ import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
-import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 const ProdCatMPicker = (props) => {
 	const { name, label = "中分類", catLName = "catL", catL, readOnly = false, ...rest } = props;
@@ -44,7 +44,7 @@ const ProdCatMPicker = (props) => {
 			url={url}
 			getOptionLabel={ProdMCats.getOptionLabel}
 			isOptionEqualToValue={ProdMCats.isOptionEqualToValue}
-			notFoundText="中分類 ${id} 不存在"
+			notFoundText="中分類 ${input} 不存在"
 			clearOnChange
 			readOnly={readOnly}
 			// blurToLookup

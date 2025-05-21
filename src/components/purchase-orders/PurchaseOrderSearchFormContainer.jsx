@@ -1,4 +1,4 @@
-import A01 from "@/modules/A01.mjs";
+import A01 from "@/modules/A01/A01.mjs";
 import React, { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import PurchaseSearchPopperContainer from "./PurchaseSearchPopperContainer";

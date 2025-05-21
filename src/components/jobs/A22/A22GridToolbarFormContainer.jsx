@@ -8,6 +8,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
 import { A22GridCancelEditButtonContainer } from "./A22GridCancelEditButtonContainer";
 import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const A22GridToolbarFormContainer = () => {
 	const form = useForm({
@@ -29,6 +30,10 @@ export const A22GridToolbarFormContainer = () => {
 			a22.onGenReportSubmitError
 		);
 	}, [a22, form])
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	if (a22.gridLoading || !a22.gridData || a22.gridData?.length === 0) {
 		return false;

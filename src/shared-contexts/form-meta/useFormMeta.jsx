@@ -138,12 +138,12 @@ export const useFormMeta = (value, opts = {}) => {
 
 	const supressEvents = useCallback(() => {
 		asyncRef.current.supressEvents = true;
-		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent ON ******`, CommonCSS.MSG_WARN);
+		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent ON ******`, CommonCSS.CONSOLE_WARN);
 	}, []);
 
 	const enableEvents = useCallback(() => {
 		asyncRef.current.supressEvents = false;
-		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent OFF ******`, CommonCSS.MSG_SUCCESS);
+		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent OFF ******`, CommonCSS.CONSOLE_SUCCESS);
 	}, []);
 
 	return {

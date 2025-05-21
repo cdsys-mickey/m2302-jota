@@ -16,7 +16,7 @@ const CounterPicker = forwardRef((props, ref) => {
 			url={`v1/prod/counters`}
 			getOptionLabel={Counters.getOptionLabel}
 			isOptionEqualToValue={Counters.isOptionEqualToValue}
-			notFoundText="櫃別 ${id} 不存在"
+			notFoundText="櫃別 ${input} 不存在"
 			// blurToLookup
 			{...rest}
 		/>

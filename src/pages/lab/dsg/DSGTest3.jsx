@@ -9,7 +9,7 @@ import {
 	textColumn,
 } from "react-datasheet-grid";
 import { checkboxColumn2 } from "../../../shared-components/dsg/columns/checkbox/checkboxColumn2";
-import { reactSelectColumn } from "../../../shared-components/dsg/columns/react-select/reactSelectColumn";
+// import { reactSelectColumn } from "../../../shared-components/dsg/columns/react-select/reactSelectColumn";
 
 const DSGTest3 = memo(
 	forwardRef((props, ref) => {
@@ -79,29 +79,29 @@ const DSGTest3 = memo(
 					),
 					title: "OptionPicker",
 				},
-				{
-					...keyColumn(
-						"def",
-						reactSelectColumn({
-							options: [
-								{
-									value: "D",
-									label: "D",
-								},
-								{
-									value: "E",
-									label: "E",
-								},
-								{
-									value: "F",
-									label: "F",
-								},
-							],
-							placeholder: "請選擇...",
-						})
-					),
-					title: "React-Select",
-				},
+				// {
+				// 	...keyColumn(
+				// 		"def",
+				// 		reactSelectColumn({
+				// 			options: [
+				// 				{
+				// 					value: "D",
+				// 					label: "D",
+				// 				},
+				// 				{
+				// 					value: "E",
+				// 					label: "E",
+				// 				},
+				// 				{
+				// 					value: "F",
+				// 					label: "F",
+				// 				},
+				// 			],
+				// 			placeholder: "請選擇...",
+				// 		})
+				// 	),
+				// 	title: "React-Select",
+				// },
 			],
 			[]
 		);

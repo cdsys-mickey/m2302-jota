@@ -5,7 +5,7 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
+
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
@@ -14,6 +14,7 @@ import C03SquaredPicker from "../C03SquaredPicker";
 import { C03DialogRstLabel } from "./C03DialogRstLabel";
 import { C03ProdGridBottomToolbar } from "./prods/C03ProdGridBottomToolbar";
 import { C03ProdGridContainer } from "./prods/C03ProdGridContainer";
+import { FormFieldLabel } from "@/shared-components";
 
 const C03DialogForm = memo((props) => {
 	const {
@@ -161,7 +162,7 @@ const C03DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} md={8}>
-							<FormFieldLabelContainer
+							<FormFieldLabel
 								name="RqtID_N"
 								label="請購單"
 								// flex

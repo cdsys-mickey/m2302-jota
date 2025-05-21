@@ -16,7 +16,7 @@ export const CustomerLevelPicker = forwardRef((props, ref) => {
 			getOptionLabel={CustomerLevels.getOptionLabel}
 			isOptionEqualToValue={CustomerLevels.isOptionEqualToValue}
 			findByInput={CustomerLevels.findByInput}
-			notFoundText="等級 ${id} 不存在"
+			notFoundText="等級 ${input} 不存在"
 			{...rest} />
 	);
 });

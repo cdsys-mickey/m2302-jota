@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useWatch } from "react-hook-form";
-import FormFieldLabel from "../../../../shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import { useMemo } from "react";
 
 export const C03DialogRstLabel = (props) => {

@@ -5,7 +5,7 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { FormFieldLabelContainer } from "@/shared-components/form/FormFieldLabelContainer";
+import { FormFieldLabel } from "@/shared-components";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
@@ -124,7 +124,7 @@ const C07DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} md={5}>
-							<FormFieldLabelContainer
+							<FormFieldLabel
 								name="transOutOrders"
 								label="來源撥出單號"
 								stringify={C07.stringifyOrders}

@@ -1,5 +1,13 @@
-import PrintReportButton from "@/components/PrintReportButton/PrintReportButtonContainer";
-import DebugReportButton from "@/components/DebugReportButton";
-import PaymentPicker from "./PaymentPicker/PaymentPickerContainer";
+import DebugReportButtonContainer from "./DebugReportButton";
+import PrintReportButtonContainer from "@/components/PrintReportButton/PrintReportButtonContainer";
+import DeptSwitchButtonContainer from "./DeptSwitchButton/DeptSwitchButtonContainer";
+import FrameTitleContainer from "./FrameTitle/FrameTitleContainer";
+import PaymentPickerContainer from "./PaymentPicker/PaymentPickerContainer";
 
-export { PrintReportButton, DebugReportButton, PaymentPicker };
+export {
+	DebugReportButtonContainer as DebugReportButton,
+	DeptSwitchButtonContainer as DeptSwitchButton,
+	FrameTitleContainer as FrameTitle,
+	PaymentPickerContainer as PaymentPicker,
+	PrintReportButtonContainer as PrintReportButton,
+};

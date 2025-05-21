@@ -28,7 +28,7 @@ const OwnBrandStockingOrderPicker = memo((props) => {
 			getOptionLabel={OwnBrandStockingOrders.getOptionLabel}
 			isOptionEqualToValue={OwnBrandStockingOrders.isOptionEqualToValue}
 			renderOptionLabel={OwnBrandStockingOrders.renderOptionLabel}
-			notFoundText="入庫單號 ${id} 不存在"
+			notFoundText="入庫單號 ${input} 不存在"
 			placeholder="入庫單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"

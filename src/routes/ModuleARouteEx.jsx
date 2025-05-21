@@ -16,21 +16,21 @@ import { A26Provider } from "@/contexts/A26/A26Provider";
 import { AA01Provider } from "@/contexts/AA01/AA01Provider";
 import { A010Provider } from "@/contexts/a010/A010Provider";
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
-import { A01FrameContainer } from "@/pages/modules/A01/A01FrameContainer";
+import { A01FrameContainer } from "@/modules/A01/A01FrameContainer";
 import { A02FrameContainer } from "@/pages/A02/A02FrameContainer";
 import { A03FrameContainer } from "@/pages/A03/A03FrameContainer";
-import { A04FrameContainer } from "@/pages/modules/A04/A04FrameContainer";
-import { A08FrameContainer } from "@/pages/modules/A08/A08FrameContainer";
-import { A09FrameContainer } from "@/pages/modules/A09/A09FrameContainer";
-import { A10FrameContainer } from "@/pages/modules/A10/A10FrameContainer";
-import { A11FrameContainer } from "@/pages/modules/A11/A11FrameContainer";
-import { A12FrameContainer } from "@/pages/modules/A12/A12FrameContainer";
-import { A13FrameContainer } from "@/pages/modules/A13/A13FrameContainer";
-import { A14FrameContainer } from "@/pages/modules/A14/A14FrameContainer";
-import { A16FrameContainer } from "@/pages/modules/A16G/A16GFrameContainer";
-import { A26FrameContainer } from "@/pages/modules/A26/A26FrameContainer";
+import { A04FrameContainer } from "@/pages/jobs/A04/A04FrameContainer";
+import { A08FrameContainer } from "@/pages/jobs/A08/A08FrameContainer";
+import { A09FrameContainer } from "@/pages/jobs/A09/A09FrameContainer";
+import { A10FrameContainer } from "@/pages/jobs/A10/A10FrameContainer";
+import { A11FrameContainer } from "@/pages/jobs/A11/A11FrameContainer";
+import { A12FrameContainer } from "@/pages/jobs/A12/A12FrameContainer";
+import { A13FrameContainer } from "@/pages/jobs/A13/A13FrameContainer";
+import { A14FrameContainer } from "@/pages/jobs/A14/A14FrameContainer";
+import { A16FrameContainer } from "@/pages/jobs/A16G/A16GFrameContainer";
+import { A26FrameContainer } from "@/pages/jobs/A26/A26FrameContainer";
 import { A15Provider } from "@/contexts/A15/A15Provider";
-import { A15FrameContainer } from "@/pages/modules/A15/A15FrameContainer";
+import { A15FrameContainer } from "@/pages/jobs/A15/A15FrameContainer";
 
 const ModuleARoute = () => {
 	return (

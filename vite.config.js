@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -27,6 +28,10 @@ export default defineConfig(({ mode }) => {
 		},
 		plugins: [
 			react(),
+			visualizer({
+				open: true, // 自動打開瀏覽器顯示分析圖表
+				filename: "stats.html", // 輸出檔案
+			}),
 			VitePWA({
 				registerType: "autoUpdate",
 				manifest: {

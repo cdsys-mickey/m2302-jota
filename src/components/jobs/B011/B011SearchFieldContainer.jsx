@@ -17,12 +17,16 @@ export const B011SearchFieldContainer = (props) => {
 
 	const inputRef = useRef(null);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return forms.handleSubmit(
 			b011.onSearchSubmit,
 			b011.onSearchSubmitError
 		)
 	}, [b011.onSearchSubmit, b011.onSearchSubmitError, forms]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const searchField = useSearchField({
 		inputRef,
@@ -38,7 +42,7 @@ export const B011SearchFieldContainer = (props) => {
 
 	return (
 		<form
-			onSubmit={onSubmit}>
+			onSubmit={handleSubmit}>
 			<div ref={escRef}>
 				<ControlledSearchFieldContainer
 					autoFocus

@@ -1,7 +1,7 @@
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import { forwardRef, memo, useMemo } from "react";
 
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import { useWatch } from "react-hook-form";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import PropTypes from "prop-types";

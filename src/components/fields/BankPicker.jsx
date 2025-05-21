@@ -17,7 +17,7 @@ const BankPicker = forwardRef((props, ref) => {
 			url={`v1/banks`}
 			getOptionLabel={Banks.getOptionLabel}
 			isOptionEqualToValue={Banks.isOptionEqualToValue}
-			notFoundText="銀行 ${id} 不存在"
+			notFoundText="銀行 ${input} 不存在"
 			{...rest}
 		/>
 	);

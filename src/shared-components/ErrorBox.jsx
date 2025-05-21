@@ -15,14 +15,14 @@ const ErrorBox = memo(
 			},
 			ref
 		) => {
-			const displayedMessage = useMemo(() => {
+			const _message = useMemo(() => {
 				return message || error?.message || defaultMessage;
 			}, [defaultMessage, error?.message, message]);
 
 			return (
 				<AlertEx ref={ref} severity="error" flex={1} {...rest}>
 					<AlertTitle>{title}</AlertTitle>
-					{displayedMessage}
+					{_message}
 				</AlertEx>
 			);
 		}

@@ -123,11 +123,13 @@ export const useMessaging = () => {
 	}, [clearListLoading, loadUnreadCount]);
 
 	const onConnected = useCallback(() => {
+		console.log(`"connected" signal received`);
 		loadUnreadCount();
 		clearListLoading();
 	}, [clearListLoading, loadUnreadCount]);
 
 	const onReconnected = useCallback(() => {
+		console.log(`"reconnected" signal received`);
 		loadUnreadCount();
 		clearListLoading();
 	}, [clearListLoading, loadUnreadCount]);

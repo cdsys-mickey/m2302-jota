@@ -17,7 +17,7 @@ const TransportPicker = forwardRef((props, ref) => {
 			url={`v1/sales/customer/transports`}
 			getOptionLabel={Codes.getOptionLabel}
 			isOptionEqualToValue={Codes.isOptionEqualToValue}
-			notFoundText="貨運類別 ${id} 不存在"
+			notFoundText="貨運類別 ${input} 不存在"
 			{...rest} />
 	);
 });

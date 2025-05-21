@@ -16,7 +16,7 @@ const H08ReportTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={H08ReportType.getOptionLabel}
 			isOptionEqualToValue={H08ReportType.isOptionEqualToValue}
 			findByInput={H08ReportType.findByInput}
-			notFoundText="報表型態 ${id} 不存在"
+			notFoundText="報表型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

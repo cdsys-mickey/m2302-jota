@@ -34,7 +34,7 @@ export const TxoOrderPicker = (props) => {
 			optionLabelSize="md"
 			GridHeaderComponent={TxoOrderGridHeader}
 			GridRowComponent={TxoOrderGridRow}
-			notFoundText="撥出單號 ${id} 不存在"
+			notFoundText="撥出單號 ${input} 不存在"
 			inputParam="fz"
 			// disableClose
 			{...rest}

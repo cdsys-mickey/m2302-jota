@@ -83,7 +83,11 @@ const ControlledDatePicker = ({
 
 	const handleKeyDown = useCallback(
 		async (e) => {
-			//if (e.key === "Enter" || e.key === "Tab") {
+			// 若按住 Ctrl 則不處理
+			if (e.ctrlKey) {
+				return;
+			}
+
 			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
 				e.preventDefault();
 				const error = await getError();

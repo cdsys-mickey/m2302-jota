@@ -16,7 +16,7 @@ const P10ReportTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={P10ReportType.getOptionLabel}
 			isOptionEqualToValue={P10ReportType.isOptionEqualToValue}
 			findByInput={P10ReportType.findByInput}
-			notFoundText="報表型態 ${id} 不存在"
+			notFoundText="報表型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

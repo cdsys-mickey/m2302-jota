@@ -4,6 +4,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { H43Context } from "./H43Context";
 import H43Form from "./H43Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H43FormContainer = () => {
 	const form = useFormContext();
@@ -20,12 +21,16 @@ export const H43FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h43.onSubmit,
 			h43.onSubmitError
 		)
 	}, [h43.onSubmit, h43.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -37,7 +42,7 @@ export const H43FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<H43Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<H43Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

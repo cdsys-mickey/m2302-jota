@@ -21,6 +21,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C08Drawer from "../C08Drawer";
 import C08DialogForm from "./C08DialogForm";
 import { C08DialogToolbarContainer } from "./toolbar/C08DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const C08DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -235,6 +236,10 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 		}),
 		c08.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const formMeta = useFormMeta(
 		`

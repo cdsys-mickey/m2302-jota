@@ -1,8 +1,8 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import FormFieldLabel from "../form/FormFieldLabel";
 import { useWatch } from "react-hook-form";
 import { useMemo } from "react";
+import { FormFieldLabel } from "@/shared-components";
 
 export const FormLabelWrapper = memo(
 	forwardRef((props, ref) => {

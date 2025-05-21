@@ -34,7 +34,7 @@ const PurchaseOrderPicker = memo((props) => {
 			renderOptionLabel={PurchaseOrders.renderOptionLabel}
 			// getTitle={PurchaseOrders.renderOptionLabel}
 			// stringify={stringify}
-			notFoundText="採購單號 ${id} 不存在"
+			notFoundText="採購單號 ${input} 不存在"
 			placeholder="採購單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"

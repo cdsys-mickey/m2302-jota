@@ -30,7 +30,7 @@ const MatBalanceOrderPicker = memo((props) => {
 			getOptionLabel={MatBalanceOrders.getOptionLabel}
 			isOptionEqualToValue={MatBalanceOrders.isOptionEqualToValue}
 			renderOptionLabel={MatBalanceOrders.renderOptionLabel}
-			notFoundText="結餘單號 ${id} 不存在"
+			notFoundText="結餘單號 ${input} 不存在"
 			placeholder="結餘單號"
 			typeToSearchText="輸入單號或片段進行搜尋..."
 			inputParam="fz"

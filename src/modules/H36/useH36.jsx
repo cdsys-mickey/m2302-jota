@@ -36,7 +36,8 @@ export const useH36 = () => {
 	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
 
 	const onSubmit = useCallback(
-		(payload) => {
+		(payload, e) => {
+			e?.preventDefault();
 			console.log("onSubmit", payload);
 			const data = {
 				...H36.transformForSubmitting(payload),

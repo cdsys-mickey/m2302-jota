@@ -4,17 +4,22 @@ import { H02Context } from "@/modules/H02/H02Context";
 import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H02FormContainer = () => {
 	const form = useFormContext();
 	const h02 = useContext(H02Context);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h02.onSubmit,
 			h02.onSubmitError
 		)
 	}, [h02.onSubmit, h02.onSubmitError, form]);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -24,7 +29,7 @@ export const H02FormContainer = () => {
 
 	return <FormProvider {...form}>
 		<FormMetaProvider {...h02.formMeta}>
-			<H02Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<H02Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 	</FormProvider>;
 };

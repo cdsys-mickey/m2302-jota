@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { useContext } from "react";
-import FormFieldLabel from "@/shared-components/form/FormFieldLabel";
+import { FormFieldLabel } from "@/shared-components";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import { useWatch } from "react-hook-form";

@@ -1,5 +1,5 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
-import RecvAccCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAccCustomerPicker";
+import RecvAcctRcptCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctRcptCustomerPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
@@ -15,18 +15,18 @@ const G02SearchForm = memo((props) => {
 				<ResponsiveGrid item lg={2.5}>
 					<DatePickerWrapper
 						name="lvEDate"
-						label="資料截止日"
+						label="資料截止日 ≦"
 						fullWidth
 						validate
 						clearable
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item lg={2.5}>
-					{/* <CustomerPicker */}
-					{/* forNew */}
-					<RecvAccCustomerPicker
+					<CustomerPicker
+						forNew
+						// <RecvAccRcptCustomerPicker
 						name="lvCustID"
-						label="客戶代碼"
+						// label="客戶代碼"
 						forId
 						disableOpenOnInput
 						onChanged={onCustomerChange}

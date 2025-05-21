@@ -12,13 +12,9 @@ const B02ListToolbarContainer = (props) => {
 	const form = useFormContext();
 	const b = useContext(BContext);
 	const b02 = useContext(b.forNew ? B04Context : B02Context);
-	const onDebugSubmit = useMemo(() => {
-		return form.handleSubmit(
-			b02.onDebugSubmit,
-		)
-	}, [b02.onDebugSubmit, form]);
 
-	return <B02ListToolbar onDebugSubmit={onDebugSubmit}  {...rest} />
+
+	return <B02ListToolbar  {...rest} />
 }
 
 B02ListToolbarContainer.displayName = "B02ListToolbarContainer";

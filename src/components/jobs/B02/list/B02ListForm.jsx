@@ -25,13 +25,13 @@ const B02ListForm = memo((props) => {
 							autoFocus
 							label={`${cust}代碼起`}
 							disableOpenOnInput
-							slotProps={{
-								paper: {
-									sx: {
-										width: 360,
-									},
-								},
-							}}
+							// slotProps={{
+							// 	paper: {
+							// 		sx: {
+							// 			width: 360,
+							// 		},
+							// 	},
+							// }}
 							borderless
 							placeholder="起"
 						/>}
@@ -40,13 +40,13 @@ const B02ListForm = memo((props) => {
 							name="customer2"
 							label={`${cust}代碼訖`}
 							disableOpenOnInput
-							slotProps={{
-								paper: {
-									sx: {
-										width: 360,
-									},
-								},
-							}}
+							// slotProps={{
+							// 	paper: {
+							// 		sx: {
+							// 			width: 360,
+							// 		},
+							// 	},
+							// }}
 							borderless
 							placeholder="迄"
 						/>}

@@ -25,7 +25,7 @@ export const PkgTypePicker = (props) => {
 			queryParam="qs"
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
-			notFoundText="包裝單位 ${id} 不存在"
+			notFoundText="包裝單位 ${input} 不存在"
 			// blurToLookup
 			{...rest}
 		/>

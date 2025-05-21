@@ -28,7 +28,7 @@ export const OutboundTypePicker = (props) => {
 			// querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
-			notFoundText="銷退/報廢原因 ${id} 不存在"
+			notFoundText="銷退/報廢原因 ${input} 不存在"
 			// blurToLookup
 			{...rest}
 		/>

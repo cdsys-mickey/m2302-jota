@@ -18,7 +18,7 @@ const H22CalTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={H22CalType.getOptionLabel}
 			isOptionEqualToValue={H22CalType.isOptionEqualToValue}
 			findByInput={H22CalType.findByInput}
-			notFoundText="百分率算法 ${id} 不存在"
+			notFoundText="百分率算法 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

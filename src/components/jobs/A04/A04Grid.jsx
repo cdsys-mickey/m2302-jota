@@ -1,4 +1,3 @@
-import Styles from "@/modules/Styles.mjs";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { Box, Container, useTheme } from "@mui/material";
@@ -37,11 +36,6 @@ const A04Grid = memo((props) => {
 		getRowClassName,
 		...rest
 	} = props;
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen }),
-		[drawerOpen, theme]
-	);
 
 	const gridHeight = useMemo(() => {
 		return height + (lockRows || !canCreate ? 48 : 0);

@@ -1,7 +1,7 @@
 import { Slide } from "@mui/material";
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import { FrameMenuButton } from "./FrameMenuButton";
+import { FrameMenuButtonView } from "../FrameMenuButton/FrameMenuButtonView";
 
 const ResponsiveFrameMenuButton = memo(
 	forwardRef((props, ref) => {
@@ -10,7 +10,7 @@ const ResponsiveFrameMenuButton = memo(
 
 		return (
 			<Slide direction="right" in={visible} mountOnEnter unmountOnExit>
-				<FrameMenuButton ref={ref} onClick={onClick} {...rest} />
+				<FrameMenuButtonView ref={ref} onClick={onClick} {...rest} />
 			</Slide>
 		);
 	})

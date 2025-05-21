@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import B06Toolbar from "./B06Toolbar";
-import { B06Context } from "../../../contexts/B06/B06Context";
+import { B06Context } from "@/contexts/B06/B06Context";
 
 export const B06ToolbarContainer = (props) => {
 	const { ...rest } = props;

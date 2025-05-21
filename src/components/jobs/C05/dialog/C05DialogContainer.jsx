@@ -19,6 +19,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C05Drawer from "../C05Drawer";
 import C05DialogForm from "./C05DialogForm";
 import { C05DialogToolbarContainer } from "./toolbar/C05DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const C05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -198,6 +199,10 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 		c05.onEditorSubmit,
 		c05.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const handleLastField = useCallback(() => {
 		if (!rtnDate) {

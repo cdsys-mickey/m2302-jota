@@ -35,7 +35,7 @@ const TerminalPicker = memo((props) => {
 			isOptionEqualToValue={Terminals.isOptionEqualToValue}
 			getData={getData}
 			querystring={querystring}
-			notFoundText="收銀機號 ${id} 不存在"
+			notFoundText="收銀機號 ${input} 不存在"
 			{...rest}
 		/>
 	);

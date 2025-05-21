@@ -4,7 +4,6 @@ import DSG from "@/shared-modules/sd-dsg";
 import { useEffect } from "react";
 import { toastEx } from "@/helpers/toastEx";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
-import { useLayoutEffect } from "react";
 
 export const useDSGMeta = ({
 	name,
@@ -443,14 +442,15 @@ export const useDSGMeta = ({
 
 	// 處理全域鍵盤事件
 	const handleKeyDown = useCallback((event) => {
+		console.log(`useDSGMeta.handleKeyDown`, event.key);
 		if (event.key === ' ') {
-			event.preventDefault(); // 防止預設行為（如頁面滾動）
 			console.log("activeCell: ", getActiveCell())
 			const activeCell = getActiveCell();
 			if (activeCell != null) {
 				const column = columns[activeCell.col];
 				console.log("column", column);
 				if (column.toggleBySpace) {
+					event.preventDefault(); // 防止預設行為（如頁面滾動）
 					toggleCheckbox(activeCell)
 					handleFocusNextCell(activeCell, { forward: true });
 				}
@@ -467,6 +467,8 @@ export const useDSGMeta = ({
 			document.removeEventListener('keydown', handleKeyDown);
 		};
 	}, [handleKeyDown]); // 空依賴陣列表示只在組件掛載和卸載時執行
+
+
 
 	return {
 		// Meta

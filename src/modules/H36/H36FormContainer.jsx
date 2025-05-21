@@ -1,10 +1,10 @@
-import { FormProvider, useFormContext } from "react-hook-form";
-import H36Form from "./H36Form";
-import { useContext } from "react";
-import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { H36Context } from "./H36Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useContext, useMemo } from "react";
+import { FormProvider, useFormContext, useWatch } from "react-hook-form";
+import { H36Context } from "./H36Context";
+import H36Form from "./H36Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const H36FormContainer = () => {
 	const form = useFormContext();
@@ -24,7 +24,16 @@ export const H36FormContainer = () => {
 		`
 	)
 
-	const onSubmit = useMemo(() => {
+	const reportType = useWatch({
+		name: "reportType",
+		control: form.control
+	})
+
+	const orderTypeDisabled = useMemo(() => {
+		return reportType?.id == 1;
+	}, [reportType?.id])
+
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			h36.onSubmit,
 			h36.onSubmitError
@@ -37,9 +46,13 @@ export const H36FormContainer = () => {
 		)
 	}, [h36.onDebugSubmit, form]);
 
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
+
 	return <FormProvider {...form}>
 		<FormMetaProvider {...formMeta}>
-			<H36Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<H36Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} orderTypeDisabled={orderTypeDisabled} />
 		</FormMetaProvider>
 	</FormProvider>;
 };

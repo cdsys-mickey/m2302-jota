@@ -16,7 +16,7 @@ const TaxTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={TaxTypes.getOptionLabel}
 			isOptionEqualToValue={TaxTypes.isOptionEqualToValue}
 			findByInput={TaxTypes.findByInput}
-			notFoundText="稅別 ${id} 不存在"
+			notFoundText="稅別 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

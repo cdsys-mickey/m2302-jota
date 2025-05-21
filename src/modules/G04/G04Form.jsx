@@ -1,123 +1,153 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import { Grid } from "@mui/material";
+import { Grid, Tab } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import CounterPicker from "@/components/picker/CounterPicker";
-import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
-import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
-import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
-import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
+import RecvAcctBatchCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctBatchCustomerPicker";
+import { RecvAcctBatchSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctBatchSessionPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
-import RangeGroup from "@/shared-components/RangeGroup";
-import DateFormats from "@/shared-modules/sd-date-formats";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import G04CreateBatchButtonContainer from "./G04CreateBatchButtonContainer";
+import FlexToolbar from "@/shared-components/FlexToolbar/FlexToolbar";
+import G04DeleteButtonContainer from "./G04DeleteButtonContainer";
+import { Box } from "@mui/system";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import G04 from "./G04.mjs";
 
 const G04Form = memo((props) => {
-	const { onSubmit, onDebugSubmit, ...rest } = props;
+	const { onSubmit, selectedTab, handleTabChange, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									name="CutYM"
-									label="資料年月"
-									fullWidth
-									validate
-									clearable
-									autoFocus
-									views={["year", "month"]}
-									format={DateFormats.DATEFNS_YEAR_AND_MONTH}
-								/>
-							</Grid>
-							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12}>
-								<RangeGroup legend="貨號區間"
-									leftComponent={<ProdPicker
-										name="SProdID"
-										label="貨號區間"
-										size="small"
-										virtualize
-										disableOpenOnInput
-										selectOnFocus
-										borderless
-										placeholder="起"
-									/>}
-									rightComponent={<ProdPicker
-										name="EProdID"
-										label="貨號區間迄"
-										size="small"
-										virtualize
-										disableOpenOnInput
-										selectOnFocus
-										borderless
-										placeholder="迄"
-									/>}
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdCatLPicker
-									name="catL"
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdCatMPicker
-									name="catM"
-									disableOpenOnInput
-									selectOnFocus
-									catLName="catL"
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdCatSPicker
-									name="catS"
-									disableOpenOnInput
-									selectOnFocus
-									catMName="catM"
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<CounterPicker
-									name="counter"
-									disableOpenOnInput
-									selectOnFocus
-								/>
-							</Grid>
-						</Grid>
-						<FlexBox mt={1}>
-							<Grid container spacing={2}>
-								<Grid item xs={12} sm={6}>
-									{/* <FlexBox alignItems="center">
-										<StdPrintOutputModePicker
+						<TabContext value={selectedTab}>
+							<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+								<TabList onChange={handleTabChange}>
+									<Tab label="形成批次" value={G04.Tabs.CREATE} />
+									<Tab label="刪除" value={G04.Tabs.DELETE} />
+								</TabList>
+							</Box>
+							<TabPanel value={G04.Tabs.CREATE}>
+								<Grid container columns={12} spacing={2}>
+									<Grid item xs={12} >
+										<RecvAcctBatchSessionPicker
+											name="session"
+											label="帳款年月+期別"
+											fullWidth
+											validate
+											clearable
+											autoFocus
+											virtualize
 											required
-											name="outputType"
-											label="執行方式"
+											rules={{
+												required: "帳款年月+期別為必填",
+											}}
+										// onChanged={onSessionChanged}
+										// disableClose
 										/>
-									</FlexBox> */}
-								</Grid>
-								<Grid item xs={12} sm={6}>
-									<FlexBox justifyContent="flex-end">
-										<PrintReportButton
-											color="primary"
-											variant="contained"
-											onSubmit={onSubmit}
-											onDebugSubmit={onDebugSubmit}
+									</Grid>
+									<Grid item xs={12}>
+										<DatePickerWrapper
+											name="CutDate"
+											label="截止日"
+											clearable
+											validate
+											fullWidth
 										/>
-									</FlexBox>
-								</Grid>
-							</Grid>
+									</Grid>
+									<Grid item xs={12}>
+										<TextFieldWrapper
+											name="RecGroup"
+											label="應收帳組別"
+											size="small"
+											clearable
+											type="number"
+											fullWidth
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<RecvAcctBatchCustomerPicker
+											name="CustID"
+											size="small"
+											virtualize
+											disableOpenOnInput
+											selectOnFocus
+											fullWidth
+										// placeholder="客戶編號"
+										/>
+									</Grid>
 
-						</FlexBox>
+									<FlexBox fullWidth />
+								</Grid>
+								<Box mt={1}>
+									<FlexToolbar
+										borderBottom={false}
+										rightComponents={
+											<>
+												<G04CreateBatchButtonContainer />
+											</>}
+									/>
+								</Box>
+							</TabPanel>
+							<TabPanel value={G04.Tabs.DELETE}>
+								<Grid container columns={12} spacing={2}>
+									<Grid item xs={12} >
+										<RecvAcctBatchSessionPicker
+											name="session"
+											label="帳款年月+期別"
+											fullWidth
+											validate
+											clearable
+											autoFocus
+											virtualize
+											required
+											rules={{
+												required: "帳款年月+期別為必填",
+											}}
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<TextFieldWrapper
+											name="RecGroup"
+											label="應收帳組別"
+											size="small"
+											clearable
+											type="number"
+											fullWidth
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<RecvAcctBatchCustomerPicker
+											name="CustID"
+											size="small"
+											virtualize
+											disableOpenOnInput
+											selectOnFocus
+											fullWidth
+										// placeholder="客戶編號"
+										/>
+									</Grid>
+
+									<FlexBox fullWidth />
+								</Grid>
+								<Box mt={1}>
+									<FlexToolbar
+										borderBottom={false}
+										rightComponents={
+											<>
+												<G04DeleteButtonContainer />
+											</>}
+									/>
+								</Box>
+							</TabPanel>
+						</TabContext>
+
+
 					</FormSectionBox>
 				</FormBox>
 			</form>
@@ -133,6 +163,8 @@ G04Form.propTypes = {
 	readError: PropTypes.object,
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,
+	selectedTab: PropTypes.string,
+	handleTabChange: PropTypes.func
 };
 
 G04Form.displayName = "G04Form";

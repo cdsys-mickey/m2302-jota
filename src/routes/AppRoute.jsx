@@ -14,7 +14,7 @@ import { SettingsProvider } from "@/modules/settings/SettingsProvider";
 
 
 
-import { ZA03FrameContainer } from "@/pages/modules/ZA03/ZA03FrameContainer";
+import { ZA03FrameContainer } from "@/pages/jobs/ZA03/ZA03FrameContainer";
 import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
 import { MessagesFrameContainer } from "@/pages/messages/MessagesFrameContainer";
 import { SettingsFrameContainer } from "@/modules/settings/SettingsFrameContainer";

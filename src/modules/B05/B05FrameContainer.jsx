@@ -1,31 +1,19 @@
-import Styles from "@/modules/Styles.mjs";
-import { FrameBannerContainer } from "@/shared-components/protected-page/FrameBannerContainer";
-import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { Box, useTheme } from "@mui/material";
-import { useContext, useMemo } from "react";
+import { FrameBanner, FrameBox } from "@/shared-components";
 import { FormProvider, useForm } from "react-hook-form";
 import { B05DialogContainer } from "./dialog/B05DialogContainer";
-import B05SearchFormContainer from "./search/B05SearchFormContainer";
-import B05ListToolbar from "./list/B05ListToolbar";
 import B05ListHeader from "./list/B05ListHeader";
+import B05ListToolbar from "./list/B05ListToolbar";
 import { B05ListViewContainer } from "./list/B05ListViewContainer";
+import B05SearchFormContainer from "./search/B05SearchFormContainer";
 
 export const B05FrameContainer = () => {
-	const appFrame = useContext(AppFrameContext);
 	const searchForm = useForm();
-	const theme = useTheme();
-	const boxStyles = useMemo(
-		() => Styles.ofFrameBox({ theme, drawerOpen: appFrame.drawerOpen }),
-		[appFrame.drawerOpen, theme]
-	);
 
 	return (
 		<FormProvider {...searchForm}>
-			<Box sx={[boxStyles]}>
+			<FrameBox>
 				{/* 標題 */}
-				<FrameBannerContainer>
-					{/* {<B05SearchFieldContainer name="q" />} */}
-				</FrameBannerContainer>
+				<FrameBanner></FrameBanner>
 				<B05SearchFormContainer />
 				{/* 工具列 */}
 				<B05ListToolbar />
@@ -35,7 +23,7 @@ export const B05FrameContainer = () => {
 				{/* 對話框 */}
 				<B05DialogContainer />
 
-			</Box>
+			</FrameBox>
 		</FormProvider>
 	);
 };

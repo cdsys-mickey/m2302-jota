@@ -16,7 +16,7 @@ const H34ReportTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={H34ReportType.getOptionLabel}
 			isOptionEqualToValue={H34ReportType.isOptionEqualToValue}
 			findByInput={H34ReportType.findByInput}
-			notFoundText="報表型態 ${id} 不存在"
+			notFoundText="報表型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}
