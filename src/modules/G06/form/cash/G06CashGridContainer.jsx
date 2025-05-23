@@ -22,8 +22,8 @@ export const G06CashGridContainer = (props) => {
 	// const { height } = useWindowSize();
 
 	const readOnly = useMemo(() => {
-		return g06.cmsGridDisabled;
-	}, [g06.cmsGridDisabled])
+		return g06.cashGridDisabled;
+	}, [g06.cashGridDisabled])
 
 	const _height = useMemo(() => {
 		// return height - 288 + (readOnly ? 48 : 0)
@@ -78,7 +78,7 @@ export const G06CashGridContainer = (props) => {
 	return (
 		<DSGContext.Provider
 			value={{
-				...g06.cmsGrid,
+				...g06.cashGrid,
 				...cashGridMeta,
 				readOnly: !g06.editing
 			}}>

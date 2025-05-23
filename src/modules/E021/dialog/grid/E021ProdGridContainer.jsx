@@ -7,9 +7,7 @@ import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
 import { keyColumn } from "react-datasheet-grid";
-import Styles from "@/modules/Styles.mjs";
 import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 import MuiStyles from "@/shared-modules/MuiStyles";
 

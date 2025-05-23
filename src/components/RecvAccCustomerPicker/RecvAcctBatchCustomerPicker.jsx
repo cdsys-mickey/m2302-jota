@@ -10,8 +10,7 @@ const RecvAcctBatchCustomerPicker = (props) => {
 	const {
 		label = "應收帳批次零售客戶",
 		forId,
-		sess,
-		placeholder,
+		sessName = "session",
 		clearValueOnChange = true,
 		clearOptionsOnChange = true,
 		...rest } = props;
@@ -19,7 +18,7 @@ const RecvAcctBatchCustomerPicker = (props) => {
 
 	const form = useFormContext();
 	const session = useWatch({
-		name: "session",
+		name: sessName,
 		control: form.control
 	})
 
@@ -62,7 +61,7 @@ const RecvAcctBatchCustomerPicker = (props) => {
 	}, []);
 
 	const url = useMemo(() => {
-		return "v1/sales/recv-account/g04-customers"
+		return "v1/sales/recv-account/batch-customers"
 	}, [])
 
 	const notFoundText = useMemo(() => {
@@ -106,7 +105,8 @@ RecvAcctBatchCustomerPicker.propTypes = {
 	clearOnChange: PropTypes.bool,
 	clearOptionsOnChange: PropTypes.bool,
 	clearValueOnChange: PropTypes.bool,
-	forId: PropTypes.bool
+	forId: PropTypes.bool,
+	sessName: PropTypes.string.isRequired
 };
 
 export default RecvAcctBatchCustomerPicker;

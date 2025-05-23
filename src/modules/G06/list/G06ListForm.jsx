@@ -6,6 +6,7 @@ import { Grid } from "@mui/material";
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { RecvAcctRcptSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctRcptSessionPicker";
+import RecvAcctBatchCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctBatchCustomerPicker";
 
 const G06ListForm = memo((props) => {
 	const { onCustomerChange, onSessionChange, ...rest } = props;
@@ -29,7 +30,8 @@ const G06ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item md={8}>
-					<CustomerPicker
+					{/* <CustomerPicker */}
+					<RecvAcctBatchCustomerPicker
 						name="lvCust"
 						// label="客戶代號"
 						// forId

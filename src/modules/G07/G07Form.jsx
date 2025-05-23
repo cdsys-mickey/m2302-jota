@@ -41,12 +41,13 @@ const G07Form = memo((props) => {
 								<RecvAcctBatchCustomerPicker
 									name="CustID"
 									size="small"
-									label="客戶代號"
+									label="客戶編號"
+									placeholder="客戶編號"
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
-									// borderless
-									placeholder="起"
+								// borderless
+								// placeholder="起"
 								/>
 							</Grid>
 							{/* <Grid item xs={12} sm={12}>

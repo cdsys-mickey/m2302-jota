@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import { useG04 } from "./useG04";
-import StdPrint from "@/modules/StdPrint.mjs";
 import { G04Context } from "./G04Context";
+import { useG04 } from "./useG04";
 
 export const G04Provider = ({ children }) => {
 	const g04 = useG04();
 	const form = useForm({
 		defaultValues: {
-			outputType: StdPrint.getDefaultOption(),
+			AccYM: new Date(),
+			CutDate: new Date()
 		},
 	});
 

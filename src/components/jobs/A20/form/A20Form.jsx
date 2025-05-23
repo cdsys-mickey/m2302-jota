@@ -13,6 +13,7 @@ import { A20ProdMaterialsGridContainer } from "./prods/A20ProdMaterialsGridConta
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import ProdPicker from "../../../picker/ProdPicker";
+import { FormFieldLabel } from "@/shared-components";
 
 const A20Form = memo((props) => {
 	const {
@@ -42,7 +43,7 @@ const A20Form = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
 					{/* <FormSectionBox pt={editing ? 1.5 : 0.5} pb={editing ? 0 : 1} mb={2} px={1}> */}
-					<FormSectionBox editing={editing} pb={0}>
+					<FormSectionBox editing={editing} >
 						<Grid container columns={24} spacing={1}>
 							<Grid item xs={24} sm={24} md={10}>
 								<ProdPicker
@@ -75,14 +76,25 @@ const A20Form = memo((props) => {
 									fullWidth
 									required
 									rules={{ required: "製造量為必填" }}
+									inputProps={{
+										sx: {
+											paddingTop: "5px",
+											paddingBottom: "5px",
+										}
+									}}
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={4}>
-								<PackageTypeLabelContainer
+								{/* <PackageTypeLabelContainer
 									name="prod.PackData_N"
 									label="包裝說明">
 									{data?.PackData_N}
-								</PackageTypeLabelContainer>
+								</PackageTypeLabelContainer> */}
+								<FormFieldLabel
+									name="PackData_N"
+									label="包裝說明"
+									inline={editing}
+								/>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

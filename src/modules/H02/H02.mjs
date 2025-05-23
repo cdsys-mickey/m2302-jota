@@ -31,8 +31,8 @@ const transformForSubmitting = (payload) => {
 		payload;
 	return {
 		JobName: "H02",
-		Action: outputType?.id?.toString() || "",
-		SalYM: Forms.formatYearMonth(SalYM) || "",
+		Action: outputType?.id?.toString() ?? "",
+		SalYM: Forms.formatYearMonth(SalYM) ?? "",
 		SProdID: SProdID?.ProdID || "",
 		EProdID: EProdID?.ProdID || "",
 		InclTX: InclTX ? "Y" : "N",

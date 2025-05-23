@@ -28,10 +28,10 @@ export default defineConfig(({ mode }) => {
 		},
 		plugins: [
 			react(),
-			visualizer({
-				open: true, // 自動打開瀏覽器顯示分析圖表
-				filename: "stats.html", // 輸出檔案
-			}),
+			// visualizer({
+			// 	open: true, // 自動打開瀏覽器顯示分析圖表
+			// 	filename: "stats.html", // 輸出檔案
+			// }),
 			VitePWA({
 				registerType: "autoUpdate",
 				manifest: {

@@ -1,10 +1,10 @@
 import DSG from "@/shared-modules/sd-dsg";
 import { Box, styled } from "@mui/material";
-import { cyan } from "@mui/material/colors";
+import { blueGrey, cyan, grey, lightBlue, orange, red } from "@mui/material/colors";
 
 const DSGBox = styled(Box, {
-	shouldForwardProp: (prop) => !["bgcolor", "disableAddRow"].includes(prop),
-})(({ theme, groupColor = cyan[700], disableAddRows }) => ({
+	shouldForwardProp: (prop) => !["bgcolor", "disableAddRow", "dense"].includes(prop),
+})(({ theme, groupColor = cyan[700], disableAddRows, dense = true }) => ({
 	[`& .${DSG.CssClasses.ROW_SELECTED} .dsg-cell-gutter`]: {
 		backgroundColor: theme.palette.primary.main,
 		color: theme.palette.getContrastText(theme.palette.primary.main),
@@ -37,6 +37,16 @@ const DSGBox = styled(Box, {
 	borderLeft: "1px solid rgba(0,0,0,0.1)",
 	borderRight: "1px solid rgba(0,0,0,0.25)",
 	borderBottom: "1px solid rgba(0,0,0,0.25)",
+	...(dense && {
+		"& .dsg-add-row": {
+			padding: "1px 1px 0 1px"
+		},
+		"& .dsg-add-row-btn": {
+			padding: "4px 10px",
+			marginRight: "4px",
+			backgroundColor: grey[200]
+		}
+	})
 }));
 
 export default DSGBox;

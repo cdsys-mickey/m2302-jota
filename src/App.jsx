@@ -127,6 +127,14 @@ const theme = createTheme({
 				},
 			},
 		},
+		MuiTab: {
+			styleOverrides: {
+				root: {
+					fontSize: '1rem',
+					// fontWeight: 600,
+				},
+			},
+		},
 	},
 });
 

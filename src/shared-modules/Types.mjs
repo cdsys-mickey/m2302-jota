@@ -22,6 +22,10 @@ const isBoolean = (v) => {
 	return typeof v === "boolean";
 };
 
+const isLiteral = (v) => {
+	return isString(v) || isNumber(v) || isBoolean(v);
+};
+
 const Types = {
 	isString,
 	isObject,
@@ -29,6 +33,7 @@ const Types = {
 	isArray,
 	isFunction,
 	isBoolean,
+	isLiteral,
 };
 
 export default Types;

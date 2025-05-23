@@ -26,8 +26,8 @@ export const G06ChkGridContainer = (props) => {
 	// const { height } = useWindowSize();
 
 	const readOnly = useMemo(() => {
-		return g06.cmsGridDisabled;
-	}, [g06.cmsGridDisabled])
+		return g06.chkGridDisabled;
+	}, [g06.chkGridDisabled])
 
 	const _height = useMemo(() => {
 		// return height - 288 + (readOnly ? 48 : 0)

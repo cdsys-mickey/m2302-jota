@@ -1,4 +1,3 @@
-import DateFormats from "@/shared-modules/sd-date-formats";
 import Forms from "@/shared-modules/Forms.mjs";
 
 const Tabs = Object.freeze({
@@ -7,34 +6,32 @@ const Tabs = Object.freeze({
 });
 
 const transformForSubmitting = (payload) => {
-	const {
-		outputType,
-		CutYM,
-		SProdID,
-		EProdID,
-		catL,
-		catM,
-		catS,
-		counter,
-		...rest
-	} = payload;
+	const { AccYM, CutDate, CustID, ...rest } = payload;
 	return {
-		JobName: "G04",
-		Action: outputType?.id?.toString() || "",
-		CutYM:
-			Forms.formatDate(CutYM, DateFormats.DATEFNS_YEAR_AND_MONTH) || "",
-		SProdID: SProdID?.ProdID || "",
-		EProdID: EProdID?.ProdID || "",
-		LClas: catL?.LClas || "",
-		MClas: catM?.MClas || "",
-		SClas: catS?.SClas || "",
-		CaseID: counter?.CodeID || "",
+		AccYM: Forms.formatYearMonth(AccYM) ?? "",
+		CutDate: Forms.formatDate(CutDate) ?? "",
+		...(CustID && {
+			CustID: CustID.CustID,
+		}),
 		...rest,
+	};
+};
+
+const transformForDeleteSubmitting = (payload) => {
+	const { delSession, delRecGroup, delCustID } = payload;
+	return {
+		AccYM: Forms.formatYearMonth(delSession?.AccYM) ?? "",
+		Stage: delSession?.Stage ?? "",
+		RecGroup: delRecGroup ?? "",
+		CustID: delCustID?.CustID ?? "",
+		CutDate: "",
+		CustData_N: "",
 	};
 };
 
 const G04 = {
 	transformForSubmitting,
+	transformForDeleteSubmitting,
 	Tabs,
 };
 

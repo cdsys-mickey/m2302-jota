@@ -3,9 +3,10 @@ import { Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import MuiStyles from "../../shared-modules/MuiStyles";
-import Types from "@/shared-modules/Types.mjs";
 import FlexBox from "../FlexBox";
 import { FormLabelEx } from "@/shared-components";
+import Types from "@/shared-modules/Types.mjs";
+import Forms from "@/shared-modules/Forms.mjs";
 
 /**
  * 增加 label 功能的 Typography
@@ -13,7 +14,7 @@ import { FormLabelEx } from "@/shared-components";
 const FormFieldLabelView = memo(
 	forwardRef((props, ref) => {
 		const {
-			name,
+			// name,
 			label,
 			children,
 			labelProps,
@@ -27,29 +28,21 @@ const FormFieldLabelView = memo(
 			value,
 			slotProps,
 			noWrap = false,
+			// isEmpty = false,
+			isNegative = false,
 			...rest
 		} = props;
-
-		// const value = useWatch({
-		// 	name,
-		// });
 
 		const _labelStyles = useMemo(() => {
 			return labelStyles || (noWrap ? MuiStyles.FORM_LABEL_STYLES_NOWRAP : MuiStyles.DEFAULT_FORM_LABEL_STYLES)
 		}, [labelStyles, noWrap]);
 
-		// 加入陣列空白判斷
-		const isEmptyText = useMemo(() => {
-			return (
-				(value == null || value == "" || (Array.isArray(value) && value.length == 0))
-				&& (children == null || children == "")
-			) && !!emptyText;
-		}, [children, emptyText, value]);
-
-		const body = useMemo(
-			() => (value ? (stringify ? stringify(value) : value) : (stringify ? stringify(children) : children)) || emptyText,
-			[children, emptyText, stringify, value]
-		);
+		const body = useMemo(() => {
+			if (children != null) {
+				return (Types.isLiteral(children) ? Forms.formatLiteral(children) : children) || emptyText;
+			}
+			return (stringify ? stringify(value) : (Types.isLiteral(children) ? Forms.formatLiteral(children) : children) || emptyText);
+		}, [children, emptyText, stringify, value]);
 
 		const BoxComponent = useMemo(() => {
 			return inline || flex ? FlexBox : Box;
@@ -59,18 +52,24 @@ const FormFieldLabelView = memo(
 			return inline ? { alignItems: "center" } : {};
 		}, [inline]);
 
-		const isNegativeValue = useMemo(() => {
-			return (value?.startsWith("-"))
-				|| (children?.startsWith("-"))
-		}, [children, value])
+		const isEmpty = useMemo(() => {
+			const result = (
+				(value == null || value === "" || (Array.isArray(value) && value.length == 0))
+				&& (children == null || children === "")
+
+			);
+			return result;
+		}, [children, value]);
 
 		return (
 			<BoxComponent ref={ref} inline={inline} {...defaultBoxProps} {...slotProps?.box} sx={[
-				{
+				(theme) => ({
 					...(flex && {
 						alignItems: "center"
-					})
-				},
+					}),
+					marginTop: theme.spacing(-1),
+					marginLeft: theme.spacing(0.5)
+				}),
 				_labelStyles,
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}>
@@ -82,33 +81,28 @@ const FormFieldLabelView = memo(
 						{label}
 					</FormLabelEx>
 				)}
-				<Box {...slotProps?.value} {...(isNegativeValue && slotProps?.negativeValue)}>
-					{Types.isString(body)
-						? body?.split("\n").map((s, index) => (
-							<Typography
-								key={`${s}_${index}`}
-								color="text.secondary"
-								variant="body1"
-								sx={[
-									(theme) => ({
-										// marginTop: theme.spacing(-0.5),
-										fontWeight: 400,
-										// marginLeft: theme.spacing(
-										// 	inline ? 1 : 0.5
-										// ),
-										...(!isEmptyText && {
-											color: theme.palette.primary.main,
-										}),
+				{Types.isLiteral(body) ? <Box {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
+					{body?.split("\n").map((s, index) => (
+						<Typography
+							key={`${s}_${index}`}
+							color="text.secondary"
+							variant="body1"
+							sx={[
+								(theme) => ({
+									fontWeight: 400,
+									...(!isEmpty && {
+										color: theme.palette.primary.main,
 									}),
-									...(Array.isArray(typographySx)
-										? typographySx
-										: [typographySx]),
-								]}>
-								{s}
-							</Typography>
-						))
-						: body}
-				</Box>
+								}),
+								...(Array.isArray(typographySx)
+									? typographySx
+									: [typographySx]),
+							]}>
+							{s}
+						</Typography>
+					))}
+				</Box> : body}
+
 			</BoxComponent>
 
 		);
@@ -132,7 +126,10 @@ FormFieldLabelView.propTypes = {
 	inline: PropTypes.bool,
 	stringify: PropTypes.func,
 	slotProps: PropTypes.object,
-	value: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+	format: PropTypes.func,
+	isNegative: PropTypes.bool,
+	isEmpty: PropTypes.bool,
 };
 
 export default FormFieldLabelView;

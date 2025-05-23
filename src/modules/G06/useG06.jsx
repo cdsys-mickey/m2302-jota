@@ -45,7 +45,8 @@ export const useG06 = ({ token }) => {
 
 		// 收沖差額
 		// 單據沖銷
-		CutAmt: 0
+		CutAmt: 0,
+		DiffAmt: 0
 	})
 
 	const [
@@ -145,8 +146,8 @@ export const useG06 = ({ token }) => {
 			setValue("CutAmt", Forms.formatMoney(asyncRef.current.CutAmt, 2));
 
 			//"收沖差額" = "本期收款" - "單據沖銷"
-			const result = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
-			setValue("DiffAmt", Forms.formatMoney(result, 2));
+			asyncRef.current.DiffAmt = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
+			setValue("DiffAmt", Forms.formatMoney(asyncRef.current.DiffAmt, 2));
 		}
 	}, []);
 
@@ -180,13 +181,15 @@ export const useG06 = ({ token }) => {
 					chkGrid.initGridData(data.chkGridData);
 					docGrid.initGridData(data.docGridData);
 					asyncRef.current = {
-						PreAmt: Number(data.PreAmt) ?? 0,
-						RcvAmt: Number(data.RcvAmt) ?? 0,
-						CollAmt: Number(data.CollAmt) ?? 0,
-						RemAmt: Number(data.RemAmt) ?? 0,
-						CashAmt: Number(data.CashAmt) ?? 0,
-						DnsAmt: Number(data.DnsAmt) ?? 0,
-						ChkAmt: Number(data.ChkAmt) ?? 0
+						PreAmt: data.PreAmt,
+						RcvAmt: data.RcvAmt,
+						CollAmt: data.CollAmt,
+						RemAmt: data.RemAmt,
+						CashAmt: data.CashAmt,
+						DnsAmt: data.DnsAmt,
+						ChkAmt: data.ChkAmt,
+						CutAmt: data.CutAmt,
+						DiffAmt: data.DiffAmt,
 					}
 					crud.doneReading({
 						data,
@@ -455,13 +458,14 @@ export const useG06 = ({ token }) => {
 			setValue("DnsAmt", asyncRef.current.DnsAmt);
 
 			//"本期收款" = "收現金額" + "折讓金額" + "票據金額"
-			const collAmt = asyncRef.current.CashAmt + asyncRef.current.DnsAmt + asyncRef.current.ChkAmt;
-			setValue("CollAmt", Forms.formatMoney(collAmt, 2));
+			asyncRef.current.CollAmt = asyncRef.current.CashAmt + asyncRef.current.DnsAmt + asyncRef.current.ChkAmt;
+			setValue("CollAmt", Forms.formatMoney(asyncRef.current.CollAmt, 2));
 			//"本期餘額" = "前期餘額" + "本期應收" - "本期收款"
-			const remAmt = asyncRef.current.PreAmt + asyncRef.current.RcvAmt - asyncRef.current.CollAmt;
-			setValue("RemAmt", Forms.formatMoney(remAmt, 2));
+			asyncRef.current.RemAmt = asyncRef.current.PreAmt + asyncRef.current.RcvAmt - asyncRef.current.CollAmt;
+			setValue("RemAmt", Forms.formatMoney(asyncRef.current.RemAmt, 2));
 			//"收沖差額" = "本期收款" - "單據沖銷"
-
+			asyncRef.current.DiffAmt = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
+			setValue("DiffAmt", Forms.formatMoney(asyncRef.current.DiffAmt, 2));
 		}
 	}, []);
 

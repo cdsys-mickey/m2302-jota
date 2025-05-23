@@ -68,7 +68,7 @@ const B012DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={5}>
-								<FormFieldLabel name="Price" label="建議售價" />
+								<FormFieldLabel name="Price" label="建議售價" inline={editing} />
 							</Grid>
 							<Grid item xs={24} sm={24} md={6}>
 								<EmployeePicker

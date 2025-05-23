@@ -24,6 +24,7 @@ const G04CreateBatchButtonContainer = memo(
 				sx={{
 					fontWeight: 600,
 				}}
+				loading={g04.createWorking}
 				{...rest}>
 				形成批次
 			</ButtonWrapper>

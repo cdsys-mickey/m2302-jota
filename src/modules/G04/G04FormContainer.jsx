@@ -18,14 +18,14 @@ export const G04FormContainer = () => {
 
 	const formMeta = useFormMeta(
 		`
-			CutYM,
-			SProdID,
-			EProdID,
-			catL,
-			catM,
-			catS,
-			counter,
-			outputType,
+			AccYM,
+			Stage,
+			CutDate,
+			RecGroup,
+			CustID,
+			delSession,
+			delRecGroup,
+			delCustID,
 			`
 	)
 

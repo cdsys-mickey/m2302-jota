@@ -102,7 +102,10 @@ const A01DialogForm = memo((props) => {
 						</Box>
 						<TabPanel
 							value={A01.Tabs.INFO}
-							sx={[scrollable.scroller]}>
+							sx={[(theme) => ({
+								paddingTop: 1
+							}),
+							scrollable.scroller]}>
 							<FormSectionTitle>品名及規格</FormSectionTitle>
 							<FormSectionBox editing={editing}>
 								<Grid

@@ -252,10 +252,40 @@ const validateTime = (value) => {
 	return getTimeValidator()(value);
 };
 
+const parseNumber = (value, defaultValue = 0) => {
+	if (typeof value === "number") return value;
+	return typeof value === "string"
+		? Number(value.replace(/,/g, "")) ?? defaultValue
+		: defaultValue;
+};
+
 const formatMoney = (amount, precision = 2) => {
-	return Number(amount)
+	// return number.toFixed(precision).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+	return parseNumber(amount)
 		.toFixed(precision)
 		.replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};
+
+const formatLiteral = (value) => {
+	// 檢查是否為字符串
+	if (typeof value === "string") {
+		return value.trim();
+	}
+	// 檢查是否為數字（排除 NaN 和 Infinity）
+	if (typeof value === "number" && isFinite(value)) {
+		// 如果是整數，直接返回字符串形式
+		if (Number.isInteger(value)) {
+			return value.toString();
+		}
+		// 非整數，保留最多兩位小數
+		return formatMoney(value);
+	}
+	// 檢查是否為布林
+	if (typeof value === "boolean") {
+		return value ? "是" : "否";
+	}
+	// 其他類型返回空字符串
+	return "";
 };
 
 const Forms = {
@@ -276,6 +306,8 @@ const Forms = {
 	formatYear,
 	formatYearMonth,
 	formatMoney,
+	parseNumber,
+	formatLiteral,
 };
 
 export default Forms;

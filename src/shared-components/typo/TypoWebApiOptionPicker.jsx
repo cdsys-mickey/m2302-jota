@@ -38,7 +38,7 @@ const TypoWebApiOptionPicker = memo(
 			name,
 		});
 
-		const memoisedText = useMemo(() => {
+		const _text = useMemo(() => {
 			const renderOption = renderTagLabel || getOptionLabel;
 			if (children) {
 				return children;
@@ -53,7 +53,7 @@ const TypoWebApiOptionPicker = memo(
 					.join(", ");
 			}
 			return (
-				(getOptionLabel ? getOptionLabel(value) : value) || emptyText
+				(getOptionLabel ? getOptionLabel(value) : value)
 			);
 		}, [
 			children,
@@ -78,7 +78,7 @@ const TypoWebApiOptionPicker = memo(
 							getOptionKey={getOptionKey}
 						/>
 					) : (
-						memoisedText
+						_text
 					)}
 				</FormFieldLabel>
 			);

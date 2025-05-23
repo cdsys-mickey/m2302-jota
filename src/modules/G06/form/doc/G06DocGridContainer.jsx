@@ -138,7 +138,7 @@ export const G06DocGridContainer = (props) => {
 	return (
 		<DSGContext.Provider
 			value={{
-				...g06.cmsGrid,
+				...g06.docGrid,
 				...docGridMeta,
 				readOnly: !g06.editing
 			}}>

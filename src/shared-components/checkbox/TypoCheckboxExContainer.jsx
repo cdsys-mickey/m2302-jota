@@ -1,5 +1,5 @@
 import { forwardRef, useContext } from "react";
-import CrudContext from "../../contexts/crud/CrudContext";
+import CrudContext from "@/contexts/crud/CrudContext";
 import TypoCheckboxEx from "./TypoCheckboxEx";
 
 export const TypoCheckboxExContainer = forwardRef(({ ...rest }, ref) => {

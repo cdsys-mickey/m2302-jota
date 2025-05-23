@@ -19,7 +19,7 @@ const G05Form = memo((props) => {
 		<ContainerEx maxWidth="sm" alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
-					<FormSectionBox editing>
+					<FormSectionBox >
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={4.5}>
 								<RecvAcctBatchSessionPicker

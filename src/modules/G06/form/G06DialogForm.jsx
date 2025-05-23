@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { memo } from "react";
 
 import FlexBox from "@/shared-components/FlexBox";
@@ -16,6 +16,8 @@ import { G06CashGridContainer } from "./cash/G06CashGridContainer";
 import { G06ChkGridContainer } from "./chk/G06ChkGridContainer";
 import { G06DocGridContainer } from "./doc/G06DocGridContainer";
 import { FormFieldLabel } from "@/shared-components";
+import Forms from "@/shared-modules/Forms.mjs";
+
 
 const NumberFieldLabel = (props) => {
 	const { ...rest } = props;
@@ -92,55 +94,57 @@ const G06DialogForm = memo((props) => {
 								// }}
 								/>
 							</Grid>
-							<FlexBox fullWidth />
-
 						</Grid>
-					</FormSectionBox>
-					<FormSectionBox>
-						<Grid container>
-							<Grid item xs={2}>
-								<FormFieldLabel
-									name="PreAmt"
-									label="前期餘額"
-								/>
-							</Grid>
-							<Grid item xs={2}>
-								<NumberFieldLabel
-									name="RcvAmt"
-									label="＋本期應收"
-								/>
-							</Grid>
-							<Grid item xs={2}>
-								<NumberFieldLabel
-									name="CollAmt"
-									label="－本期收款"
-								/>
-							</Grid>
-							<Grid item xs={2}>
-								<NumberFieldLabel
-									name="RemAmt"
-									label="＝本期餘額"
-								/>
-							</Grid>
-							<Grid item xs={2}>
-								<FlexBox justifyContent="flex-end">
+						<Box mt={2}>
+							<Grid container>
+								<Grid item xs={2}>
 									<FormFieldLabel
-										name="DiffAmt"
-										label="[收沖差額]"
+										name="PreAmt"
+										label="前期餘額"
+										stringify={Forms.formatMoney}
 									/>
-								</FlexBox>
-							</Grid>
-							<Grid item xs={2}>
-								<FlexBox justifyContent="flex-end">
-									<FormFieldLabel
-										name="CutDate"
-										label="[資料截止日期]"
+								</Grid>
+								<Grid item xs={2}>
+									<NumberFieldLabel
+										name="RcvAmt"
+										label="＋本期應收"
+										stringify={Forms.formatMoney}
 									/>
-								</FlexBox>
+								</Grid>
+								<Grid item xs={2}>
+									<NumberFieldLabel
+										name="CollAmt"
+										label="－本期收款"
+										stringify={Forms.formatMoney}
+									/>
+								</Grid>
+								<Grid item xs={2}>
+									<NumberFieldLabel
+										name="RemAmt"
+										label="＝本期餘額"
+										stringify={Forms.formatMoney}
+									/>
+								</Grid>
+								<Grid item xs={2}>
+									<FlexBox justifyContent="flex-end">
+										<FormFieldLabel
+											name="DiffAmt"
+											label="[收沖差額]"
+											stringify={Forms.formatMoney}
+										/>
+									</FlexBox>
+								</Grid>
+								<Grid item xs={2}>
+									<FlexBox justifyContent="flex-end">
+										<FormFieldLabel
+											name="CutDate"
+											label="[資料截止日期]"
+										/>
+									</FlexBox>
+								</Grid>
 							</Grid>
-						</Grid>
+						</Box>
 					</FormSectionBox>
-
 
 					{/* 收款 */}
 					<FormSectionTitle>現金收款</FormSectionTitle>
@@ -154,6 +158,7 @@ const G06DialogForm = memo((props) => {
 									<FormFieldLabel
 										name="CashAmt"
 										label="本期收現"
+										stringify={Forms.formatMoney}
 									/>
 								</FlexBox>
 							</Grid>
@@ -162,6 +167,7 @@ const G06DialogForm = memo((props) => {
 									<FormFieldLabel
 										name="DnsAmt"
 										label="本期折讓"
+										stringify={Forms.formatMoney}
 									/>
 								</FlexBox>
 							</Grid>
@@ -170,6 +176,7 @@ const G06DialogForm = memo((props) => {
 									<FormFieldLabel
 										name="ChkAmt"
 										label="本期收票"
+										stringify={Forms.formatMoney}
 									/>
 								</FlexBox>
 							</Grid>
@@ -182,13 +189,14 @@ const G06DialogForm = memo((props) => {
 					</FormSectionBox>
 					{/*  銷售銷退 */}
 					<FormSectionTitle>銷售/銷退單據</FormSectionTitle>
-					<FormSectionBox editing={editing}>
+					<FormSectionBox editing={editing} pb={0}>
 						<G06DocGridContainer />
 						<FlexBox justifyContent="flex-end">
 							<FormFieldLabel
 								name="CutAmt"
 								label="單據沖銷"
 								inline
+								stringify={Forms.formatMoney}
 							/>
 						</FlexBox>
 					</FormSectionBox>
