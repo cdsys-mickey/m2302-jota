@@ -11,7 +11,7 @@ const FormSectionBox = styled(Box, {
 		borderColor = "rgb(16 160 215)",
 		// editing = false,
 		// pt,
-		pt = 1.5,
+		pt = 1,
 		pb,
 		pl = 1,
 		pr,

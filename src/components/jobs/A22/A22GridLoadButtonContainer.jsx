@@ -2,7 +2,7 @@ import { LoadingButton } from "@mui/lab";
 import { useContext, useEffect, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import useDebounce from "@/shared-hooks/useDebounce";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import { A22Context } from "@/contexts/A22/A22Context";
 import { useState } from "react";
 import { Tooltip } from "@mui/material";

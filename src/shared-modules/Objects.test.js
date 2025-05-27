@@ -1,5 +1,5 @@
 import { it } from "vitest";
-import Objects from "./Objects";
+import Objects from "./Objects.mjs";
 import { expect } from "vitest";
 
 it("isAllPropsNotNull", () => {

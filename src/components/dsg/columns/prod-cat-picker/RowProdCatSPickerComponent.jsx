@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useMemo } from "react";
@@ -76,7 +76,7 @@ const RowProdCatSPickerComponent = memo((props) => {
 	// });
 
 
-	const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
+	const { value: rowValue, onChange: handleChange, ...pickerProps } = useOptionPickerComponent({
 		name,
 		rowIndex,
 		columnIndex,
@@ -91,6 +91,8 @@ const RowProdCatSPickerComponent = memo((props) => {
 		skipDisabled,
 		// handleFocusNextCell
 	});
+
+	console.log("ignores props", rowValue);
 
 	// const cellComponentRef = useRef({
 	// 	stopEditing,
@@ -127,9 +129,6 @@ const RowProdCatSPickerComponent = memo((props) => {
 		}
 	}, [handleChange, name, rowData]);
 
-	const value = useMemo(() => {
-		return rowData[name];
-	}, [name, rowData]);
 
 	const catL = useMemo(() => {
 		return rowData.catL?.LClas;
@@ -139,36 +138,43 @@ const RowProdCatSPickerComponent = memo((props) => {
 		return rowData.catM?.MClas;
 	}, [rowData.catM?.MClas])
 
+	const value = useMemo(() => {
+		return rowData[name];
+	}, [name, rowData]);
+
+
 	return (
 		<ProdCatSPicker
 			name={name}
 			label=""
-			inputRef={ref}
+			// inputRef={inputRef}
 
 			// keyColumn 版
 			// value={rowData}
 			// onChange={handleChange}
 
 			// row 版
-			value={value}
-			onChange={onChange}
-			onOpen={handleOpen}
-			onClose={handleClose}
 			catL={catL}
 			catM={catM}
+			value={value}
+			onChange={onChange}
+			// onOpen={handleOpen}
+			// onClose={handleClose}
 
 			// DSG 專屬屬性
 			// handleFocusNextCell={handleFocusNextCell}
 			// cellComponentRef={cellComponentRef}
 			dense
 			// cell={cell}
-			hideControls={hideControls}
-			hideBorders
-			disableFadeOut
-			disableClearable
-			toastError
+			// hideControls={hideControls}
+			// hideBorders
+			// disableFadeOut
+			// disableClearable
+			// toastError
+			// {...rest}
+			// blurToLookup={false}
+			{...pickerProps}
 			{...rest}
-			blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

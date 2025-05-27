@@ -10,7 +10,7 @@ import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Forms from "@/shared-modules/Forms.mjs";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import { isDate } from "lodash";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";

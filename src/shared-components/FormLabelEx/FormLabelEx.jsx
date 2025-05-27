@@ -21,6 +21,7 @@ const FormLabelEx = memo((props) => {
 	const {
 		size = "small",
 		IconComponent,
+		dense,
 		children,
 		variant = "subtitle2",
 		sx = [],
@@ -31,6 +32,9 @@ const FormLabelEx = memo((props) => {
 				(theme) => ({
 					color: theme.palette.text.primary,
 					fontWeight: 400,
+					...(dense && {
+						top: "-4px",
+					}),
 					marginRight: theme.spacing(1)
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),
@@ -55,7 +59,7 @@ FormLabelEx.propTypes = {
 	children: PropTypes.node,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	variant: PropTypes.string,
-	// IconComponent: PropTypes.
+	dense: PropTypes.bool
 };
 
 export default FormLabelEx;

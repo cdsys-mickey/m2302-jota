@@ -3,7 +3,7 @@ import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import DateTimes from "@/shared-modules/sd-date-times";
 import Events from "@/shared-modules/sd-events";
 import Forms from "@/shared-modules/Forms.mjs";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";

@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import { nanoid } from "nanoid";
 
 const hasEmptyError = (criteria) => {

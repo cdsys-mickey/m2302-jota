@@ -1,4 +1,4 @@
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useRef } from "react";
 import ProdCatMPicker from "../../../picker/ProdCatMPicker";

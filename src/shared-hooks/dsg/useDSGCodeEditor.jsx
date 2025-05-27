@@ -5,7 +5,7 @@ import _ from "lodash";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useState } from "react";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import Objects from "../../shared-modules/Objects";
+import Objects from "../../shared-modules/Objects.mjs";
 import { useWebApi } from "../useWebApi";
 
 const defaultTransformForReading = (payload) => {

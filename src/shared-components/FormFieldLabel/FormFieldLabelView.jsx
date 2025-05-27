@@ -30,6 +30,7 @@ const FormFieldLabelView = memo(
 			noWrap = false,
 			// isEmpty = false,
 			isNegative = false,
+			dense = true,
 			...rest
 		} = props;
 
@@ -62,46 +63,60 @@ const FormFieldLabelView = memo(
 		}, [children, value]);
 
 		return (
-			<BoxComponent ref={ref} inline={inline} {...defaultBoxProps} {...slotProps?.box} sx={[
+			<BoxComponent className={FormFieldLabelView.displayName} ref={ref} inline={inline} {...defaultBoxProps} {...slotProps?.box} sx={[
 				(theme) => ({
 					...(flex && {
 						alignItems: "center"
 					}),
-					marginTop: theme.spacing(-1),
-					marginLeft: theme.spacing(0.5)
+					// marginTop: theme.spacing(-0.5),
+					// marginTop: theme.spacing(-1),
+					marginLeft: theme.spacing(0.5),
+					...(dense && {
+						height: "40px"
+					})
 				}),
 				_labelStyles,
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}>
 				{label && (
 					<FormLabelEx
+						dense={dense}
 						{...labelProps}
 						{...slotProps?.label}
 					>
 						{label}
 					</FormLabelEx>
 				)}
-				{Types.isLiteral(body) ? <Box {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
-					{body?.split("\n").map((s, index) => (
-						<Typography
-							key={`${s}_${index}`}
-							color="text.secondary"
-							variant="body1"
-							sx={[
-								(theme) => ({
-									fontWeight: 400,
-									...(!isEmpty && {
-										color: theme.palette.primary.main,
+				<Box className="FormFieldLabelView-bodybox" sx={{
+					...(dense && {
+						position: "relative",
+						// top: "-4px"
+						top: "-8px"
+					})
+				}} {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
+					{Types.isLiteral(body) ? <>
+						{body?.split("\n").map((s, index) => (
+							<Typography
+								key={`${s}_${index}`}
+								color="text.secondary"
+								variant="body1"
+								sx={[
+									(theme) => ({
+										fontWeight: 400,
+										...(!isEmpty && {
+											color: theme.palette.primary.main,
+										}),
 									}),
-								}),
-								...(Array.isArray(typographySx)
-									? typographySx
-									: [typographySx]),
-							]}>
-							{s}
-						</Typography>
-					))}
-				</Box> : body}
+									...(Array.isArray(typographySx)
+										? typographySx
+										: [typographySx]),
+								]}>
+								{s}
+							</Typography>
+						))}
+					</>
+						: body}
+				</Box>
 
 			</BoxComponent>
 
@@ -130,6 +145,7 @@ FormFieldLabelView.propTypes = {
 	format: PropTypes.func,
 	isNegative: PropTypes.bool,
 	isEmpty: PropTypes.bool,
+	dense: PropTypes.bool
 };
 
 export default FormFieldLabelView;

@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Strings from "@/shared-modules/sd-strings";
 import Forms from "../shared-modules/Forms.mjs";
-import Objects from "../shared-modules/Objects";
+import Objects from "../shared-modules/Objects.mjs";
 import FreeProdTypes from "./md-free-prod-types";
 
 const getTooltip = ({ rowData, rowIndex }) => {

@@ -1,7 +1,7 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 

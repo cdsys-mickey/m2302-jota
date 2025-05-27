@@ -1,5 +1,5 @@
 import ProdTypeAPicker from "@/components//picker/ProdTypeAPicker";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";

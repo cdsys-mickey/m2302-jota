@@ -210,8 +210,12 @@ const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
 		nullishEquivalent,
 		deepCompare = false,
 	} = opts;
-	// comapre null
+
+	if (debug) {
+		console.log("comparing", obj1, obj2);
+	}
 	if (nullishEquivalent) {
+		// comapre null
 		if (
 			(obj1 === null || obj1 === undefined) &&
 			(obj2 !== null || obj2 !== undefined)
@@ -259,14 +263,14 @@ const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
 	}
 
 	for (const key of keys1) {
-		const value1 = ignoresEmpty ? _.get(obj1, key) || "" : _.get(obj1, key);
-		const value2 = ignoresEmpty ? _.get(obj2, key) || "" : _.get(obj2, key);
+		const value1 = ignoresEmpty ? _.get(obj1, key) ?? "" : _.get(obj1, key);
+		const value2 = ignoresEmpty ? _.get(obj2, key) ?? "" : _.get(obj2, key);
 
 		if (!deepCompare ? value1 !== value2 : !_.isEqual(value1, value2)) {
 			if (debug) {
 				console.log(
 					`${header ? header + "." : ""}${key} mismatched ${
-						deepCompare ? "(deepCompare)" : null
+						deepCompare ? "(deepCompare)" : ""
 					}: ${value1} → `,
 					value2
 				);

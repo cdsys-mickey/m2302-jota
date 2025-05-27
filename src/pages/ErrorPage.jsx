@@ -15,7 +15,7 @@ function ErrorPage() {
 				系統發生例外狀況
 			</Typography>
 			<Typography variant="body1" style={{ marginBottom: '20px' }}>
-				很抱歉系統出現了未預期的例外狀況，您可以稍後再試或是聯絡我們.
+				很抱歉系統出現了未預期的例外狀況，請先嘗試重新整理網頁(Ctrl + F5)或稍後再試.
 			</Typography>
 			<Button variant="contained" color="primary" onClick={handleBackHome}>
 				回到首頁

@@ -1,5 +1,5 @@
 import Forms from "@/shared-modules/Forms.mjs";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 
 /* eslint-disable no-mixed-spaces-and-tabs */
 const transformForReading = (payload) => {

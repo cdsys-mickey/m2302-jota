@@ -1,6 +1,6 @@
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import { LoadingButton } from "@mui/lab";
 import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";

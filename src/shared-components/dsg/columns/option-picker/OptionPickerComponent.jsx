@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useRef } from "react";
 import { useLayoutEffect } from "react";
 import { useCallback } from "react";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import { useMemo } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {

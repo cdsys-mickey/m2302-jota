@@ -1,4 +1,4 @@
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import { memo, useLayoutEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { useCallback } from "react";

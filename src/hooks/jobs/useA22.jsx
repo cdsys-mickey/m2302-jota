@@ -13,7 +13,7 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import useDebugDialog from "../useDebugDialog";

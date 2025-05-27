@@ -47,7 +47,7 @@ export const useA014 = () => {
 					...optionPickerColumn(ProdCatLPickerComponentContainer, {
 						name: "catL",
 						disableOpenOnInput: true,
-						disableClearable: true,
+						// disableClearable: true,
 						selectOnFocus: true,
 						hideControlsOnActive: false,
 						slotProps: {
@@ -84,7 +84,7 @@ export const useA014 = () => {
 				...rowOptionPickerColumn(RowProdCatMPickerComponentContainer, {
 					name: "catM",
 					disableOpenOnInput: true,
-					disableClearable: true,
+					// disableClearable: true,
 					selectOnFocus: true,
 					hideControlsOnActive: false,
 					slotProps: {
@@ -121,7 +121,7 @@ export const useA014 = () => {
 				...rowOptionPickerColumn(RowProdCatSPickerComponentContainer, {
 					name: "catS",
 					disableOpenOnInput: true,
-					disableClearable: true,
+					// disableClearable: true,
 					selectOnFocus: true,
 					hideControlsOnActive: false,
 					slotProps: {
@@ -179,8 +179,8 @@ export const useA014 = () => {
 				),
 				disabled: grid.readOnly,
 				title: "品類",
-				minWidth: 100,
-				maxWidth: 100,
+				// minWidth: 100,
+				// maxWidth: 100,
 			},
 			{
 				...keyColumn(

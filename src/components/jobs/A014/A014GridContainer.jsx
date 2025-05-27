@@ -1,8 +1,8 @@
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
-import { useWindowSize } from "../../../shared-hooks/useWindowSize";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import A014Grid from "./A014Grid";
 
 export const A014GridContainer = () => {

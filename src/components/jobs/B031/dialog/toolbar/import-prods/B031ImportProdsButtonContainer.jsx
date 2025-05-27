@@ -5,7 +5,7 @@ import { B031Context } from "@/contexts/B031/B031Context";
 import { useState } from "react";
 import { useMemo } from "react";
 import { useEffect } from "react";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import Constants from "@/modules/md-constants";
 

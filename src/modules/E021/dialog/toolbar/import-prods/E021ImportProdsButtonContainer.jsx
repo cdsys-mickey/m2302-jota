@@ -1,7 +1,7 @@
 import { E021Context } from "@/modules/E021/E021Context";
 import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import useDebounce from "@/shared-hooks/useDebounce";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useWatch } from "react-hook-form";
 

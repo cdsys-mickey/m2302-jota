@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import Forms from "../shared-modules/Forms.mjs";
 import FreeProdTypes from "./md-free-prod-types";
 

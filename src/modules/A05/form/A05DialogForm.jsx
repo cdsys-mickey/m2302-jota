@@ -12,7 +12,7 @@ import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import TaxExcludedCheckbox from "../../../components/checkbox/TaxExcludedCheckbox";
+import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 
 const A05DialogForm = memo((props) => {
 	const {
@@ -40,7 +40,7 @@ const A05DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionTitle>基本資料</FormSectionTitle>
-					<FormSectionBox editing={editing}>
+					<FormSectionBox >
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper

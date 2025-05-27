@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Tooltip } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { useMemo } from "react";
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import TooltipEx from "@/components/picker/tooltip-ex/TooltipEx";
 import Types from "@/shared-modules/Types.mjs";
 

@@ -1,10 +1,10 @@
-import Objects from "@/shared-modules/Objects";
+import Objects from "@/shared-modules/Objects.mjs";
 import PropTypes from "prop-types";
 import { memo, useMemo, useRef } from "react";
 import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
-import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import { useCallback } from "react";
+import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -59,16 +59,17 @@ const RowProdCatMPickerComponent = memo((props) => {
 		...rest
 	} = columnData;
 
-	// const { handleFocusNextCell } = useCellComponent({
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// 	insertRowBelow
-	// });
+	const { handleFocusNextCell } = useCellComponent({
+		getNextCell,
+		lastCell,
+		isLastRow,
+		setActiveCell,
+		insertRowBelow
+	});
 
 	// const { ref, hideControls, cell, handleChange, handleOpen, handleClose } = useOptionPickerComponent({
-	const { onChange: handleChange, ...pickerProps } = useOptionPickerComponent({
+	const { onChange: handleChange, value: rowValue, ...pickerProps } = useOptionPickerComponent({
+		// const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
 		rowData,
@@ -82,10 +83,12 @@ const RowProdCatMPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		// handleFocusNextCell,
+		handleFocusNextCell,
 		focusOnDisabled,
 		multiple
 	});
+
+	console.log("ignores props", rowValue);
 
 
 
@@ -144,7 +147,7 @@ const RowProdCatMPickerComponent = memo((props) => {
 
 			// row 版
 			value={value}
-			// onChange={onChange}
+			onChange={onChange}
 			// onOpen={handleOpen}
 			// onClose={handleClose}
 			catL={catL}
@@ -158,7 +161,7 @@ const RowProdCatMPickerComponent = memo((props) => {
 			// hideControls={hideControls}
 			// hideBorders
 			// disableFadeOut
-			disableClearable
+			// disableClearable
 			// toastError
 			{...pickerProps}
 			{...rest}
