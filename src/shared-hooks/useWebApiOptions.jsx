@@ -9,7 +9,7 @@ const defaultTriggerServerFilter = (q) => {
 	return !!q;
 };
 
-const defaultGetData = (payload) => {
+const defaultGetOptions = (payload) => {
 	// return payload && typeof payload === 'object' && 'data' in payload && Array.isArray(payload.data)
 	// 	? payload.data
 	// 	: payload;
@@ -52,7 +52,7 @@ export const useWebApiOptions = (opts = {}) => {
 		defaultOptions = [],
 		// METHODS
 		triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
-		getData = defaultGetData,
+		getOptions = defaultGetOptions,
 		onError = defaultOnError,
 		disableClose,
 		disableOnSingleOption,
@@ -176,14 +176,14 @@ export const useWebApiOptions = (opts = {}) => {
 				}),
 			});
 			if (status.success) {
-				return getData(payload)?.[0];
+				return getOptions(payload)?.[0];
 			} else {
 				throw error ?? new Error("未預期例外");
 			}
 		},
 		[
 			bearer,
-			getData,
+			getOptions,
 			headers,
 			inputParam,
 			method,
@@ -238,7 +238,10 @@ export const useWebApiOptions = (opts = {}) => {
 					}),
 				});
 				if (status.success) {
-					const loadedOptions = getData(payload);
+					const loadedOptions = getOptions(payload);
+					if (!Types.isArray(loadedOptions)) {
+						throw new Error("options is not an array");
+					}
 					// 只有成功才會將 loading 註記為 false
 					setPickerState((prev) => ({
 						...prev,
@@ -250,7 +253,7 @@ export const useWebApiOptions = (opts = {}) => {
 					throw error || "load options failed";
 				}
 			} catch (err) {
-				// 正常情況不該跑到這裡
+				// 通常是 getOptions 失敗才會跑到這邊
 				console.error(`${name}.loadOptions failed`, err);
 				if (_onError) {
 					_onError(err);
@@ -282,7 +285,7 @@ export const useWebApiOptions = (opts = {}) => {
 			params,
 			headers,
 			bearer,
-			getData,
+			getOptions,
 			noOptionsText,
 			onError,
 			fetchErrorText,
@@ -351,8 +354,8 @@ export const useWebApiOptions = (opts = {}) => {
 	);
 
 	const disabled = useMemo(() => {
-		return disableOnSingleOption && pickerState.options.length < 2;
-	}, [disableOnSingleOption, pickerState.options.length]);
+		return disableOnSingleOption && pickerState.options && pickerState.options?.length < 2;
+	}, [disableOnSingleOption, pickerState.options]);
 
 	/**
 	 * 來源條件改變, 清空目前值, resetLoading

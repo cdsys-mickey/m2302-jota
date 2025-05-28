@@ -11,7 +11,7 @@ const UserDeptPicker = memo((props) => {
 	const { uid, scope = Auth.SCOPES.HQ, ...rest } = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload;
 	}, []);
 
@@ -36,7 +36,7 @@ const UserDeptPicker = memo((props) => {
 			getOptionLabel={DeptOptions.getOptionLabel}
 			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}
 			bearer={auth.token}
-			getData={getData}
+			getOptions={getOptions}
 			// params={params}
 			querystring={querystring}
 			{...rest}

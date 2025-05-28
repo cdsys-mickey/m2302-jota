@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import Banks from "@/modules/md-banks";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 
 const BankPicker = forwardRef((props, ref) => {
 	const { name, label = "銀行", ...rest } = props;

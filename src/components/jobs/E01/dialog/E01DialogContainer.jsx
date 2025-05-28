@@ -21,6 +21,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import E01Drawer from "../E01Drawer";
 import E01DialogForm from "./E01DialogForm";
 import { E01DialogToolbarContainer } from "./toolbar/E01DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const E01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -119,6 +120,10 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 		e01.onEditorSubmit,
 		e01.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const handleRefreshGridSubmit = form.handleSubmit(
 		e01.onRefreshGridSubmit({ setValue: form.setValue }),

@@ -17,7 +17,7 @@ const DeptPicker = memo((props) => {
 	} = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -48,7 +48,7 @@ const DeptPicker = memo((props) => {
 			getOptionLabel={getOptionLabel}
 			renderOptionLabel={DeptOptions.getOptionLabel}
 			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			querystring={querystring}
 			notFoundText="門市代號 ${input} 不存在"
 			// blurToLookup

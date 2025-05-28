@@ -6,6 +6,7 @@ import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { U07Context } from "./U07Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "../md-auth";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const U07FormContainer = () => {
 	const form = useFormContext();
@@ -13,12 +14,16 @@ export const U07FormContainer = () => {
 	const auth = useContext(AuthContext);
 	const { operator } = auth;
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			u07.onSubmit,
 			u07.onSubmitError
 		)
 	}, [u07.onSubmit, u07.onSubmitError, form]);
+
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -30,7 +35,7 @@ export const U07FormContainer = () => {
 		<FormProvider {...form}>
 			<FormMetaProvider {...u07.formMeta}>
 				<U07Form
-					onSubmit={onSubmit}
+					onSubmit={handleSubmit}
 					onDebugSubmit={onDebugSubmit}
 					scope={operator.CurHeadOffice ? Auth.SCOPES.BRANCH_HQ : Auth.SCOPES.DEPT}
 				/>

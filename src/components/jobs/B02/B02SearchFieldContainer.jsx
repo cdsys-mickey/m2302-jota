@@ -18,7 +18,7 @@ export const B02SearchFieldContainer = (props) => {
 
 	const inputRef = useRef(null);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return forms.handleSubmit(
 			b02.onSearchSubmit,
 			b02.onSearchSubmitError
@@ -39,7 +39,7 @@ export const B02SearchFieldContainer = (props) => {
 
 	return (
 		<form
-			onSubmit={onSubmit}>
+			onSubmit={handleSubmit}>
 			<div ref={escRef}>
 				<ControlledSearchFieldContainer
 					autoFocus

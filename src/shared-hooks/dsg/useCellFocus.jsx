@@ -1,9 +1,7 @@
-import { useCallback } from "react";
-import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
-import { toast } from "react-toastify";
 import { toastEx } from "@/helpers/toastEx";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
+import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
 
 export const useCellFocus = (props = {}) => {
 	const {
@@ -71,6 +69,5 @@ export const useCellFocus = (props = {}) => {
 		skipDisabled,
 		readOnly,
 		focusOnDisabled,
-		inDSG: !!dsg
 	};
 };

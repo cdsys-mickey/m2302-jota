@@ -13,8 +13,10 @@ import ConfigContext from "@/contexts/config/ConfigContext";
 import useJotaReports from "@/hooks/useJotaReports";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useMemo } from "react";
+import { useRef } from "react";
 
 export const useG08 = () => {
+	const itemIdRef = useRef();
 	const config = useContext(ConfigContext);
 	const { token, operator } = useContext(AuthContext);
 	const formMeta = useFormMeta(
@@ -55,14 +57,22 @@ export const useG08 = () => {
 	});
 
 	const loadItem = useCallback(
-		async ({ id }) => {
+		async ({ id, refresh }) => {
+			const _id = refresh ? itemIdRef.current : id;
+			if (!_id) {
+				throw new Error("未指定 id");
+			}
+			if (!refresh) {
+				itemIdRef.current = id;
+				crud.startReading("讀取中...", { id });
+			}
 			try {
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/sales/recv-account/adj-entries`,
 					bearer: token,
 					params: {
-						id,
+						id: _id
 					},
 				});
 				console.log("payload", payload);
@@ -99,9 +109,10 @@ export const useG08 = () => {
 			message: "確認要結束編輯?",
 			onConfirm: () => {
 				crud.cancelUpdating();
+				loadItem({ refresh: true });
 			},
 		});
-	}, [crud, dialogs]);
+	}, [crud, dialogs, loadItem]);
 
 	const confirmDialogClose = useCallback(() => {
 		dialogs.confirm({

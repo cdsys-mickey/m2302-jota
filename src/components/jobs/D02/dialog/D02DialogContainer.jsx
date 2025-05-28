@@ -18,6 +18,7 @@ import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useCallback } from "react";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const D02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -158,6 +159,10 @@ export const D02DialogContainer = forwardRef((props, ref) => {
 		d02.onEditorSubmit,
 		d02.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	useEffect(() => {
 		if (d02.itemDataReady) {

@@ -5,7 +5,7 @@ import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import MuiStyles from "../../shared-modules/MuiStyles";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import ControllerWrapper from "../ControllerWrapper";
 import FlexBox from "../FlexBox";
 import ClearInputButton from "../input/ClearInputButton";
@@ -182,8 +182,11 @@ export const ControlledTextField = ({
 										paddingTop: 0.2,
 										paddingBottom: 0.2,
 										paddingRight: 0
-									}
+									},
 								}),
+								"& .MuiFormHelperText-root": {
+									marginTop: 0
+								},
 								...(required && !error && {
 									"& .MuiInputLabel-root:not(.Mui-focused)": {
 										color: Colors.REQUIRED,

@@ -21,6 +21,7 @@ import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import C07Drawer from "../C07Drawer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const C07DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -221,6 +222,10 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 		c07.onEditorSubmit,
 		c07.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	useEffect(() => {
 		if (c07.itemDataReady) {

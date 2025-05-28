@@ -20,6 +20,7 @@ import { createFloatColumn } from "@/shared-components/dsg/columns/float/createF
 import { SupplierPickerComponentContainer } from "@/components/dsg/columns/supplier-picker/SupplierPickerComponentContainer";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const C01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -73,6 +74,10 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 		c01.onEditorSubmit,
 		c01.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const formMeta = useFormMeta(
 		`

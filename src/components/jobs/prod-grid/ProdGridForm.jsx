@@ -6,12 +6,13 @@ import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrappe
 import { ProdGridForm2Container } from "./ProdGridForm2Container";
 import { ProdGridFormToggleButtonContainer } from "./ProdGridFormToggleButtonContainer";
 import { ProdGridLoadButtonContainer } from "./ProdGridLoadButtonContainer";
+import FormBox from "@/shared-components/form/FormBox";
 
 const ProdGridForm = (props) => {
 	const { cat = true, safeQty = false, handleSubmit, ...rest } = props;
 	return (
 		<Paper component="form" onSubmit={handleSubmit} {...rest}>
-			<Box p={1}>
+			<FormBox p={1}>
 				<Grid container spacing={1}>
 					{/* ROW 1 */}
 
@@ -53,7 +54,7 @@ const ProdGridForm = (props) => {
 				</Grid>
 				{/* ROW 2 */}
 				<ProdGridForm2Container cat={cat} safeQty={safeQty} />
-			</Box>
+			</FormBox>
 		</Paper>
 	);
 };

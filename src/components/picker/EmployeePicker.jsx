@@ -22,7 +22,7 @@ const EmployeePicker = (props) => {
 		return queryString.stringify(obj);
 	}, [forNewCustomer, withQuotes]);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -41,7 +41,7 @@ const EmployeePicker = (props) => {
 			querystring={querystring}
 			getOptionLabel={Employees.getOptionLabel}
 			isOptionEqualToValue={Employees.isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			getOptionKey={getOptionKey}
 			placeholder="員工編號"
 			notFoundText="員工 ${input} 不存在"

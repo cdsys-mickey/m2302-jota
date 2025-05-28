@@ -36,7 +36,7 @@ const WebApiOptionPicker = memo(
 			defaultOptions = [],
 			// METHODS
 			triggerServerFilter, // 是否驅動遠端搜尋
-			getData,
+			getOptions,
 			onError,
 			disableClose,
 			disableOnSingleOption,
@@ -90,7 +90,7 @@ const WebApiOptionPicker = memo(
 			triggerDelay,
 			defaultOptions,
 			triggerServerFilter,
-			getData,
+			getOptions,
 			onError,
 			open,
 			onOpen,
@@ -160,7 +160,7 @@ WebApiOptionPicker.propTypes = {
 	triggerDelay: PropTypes.number,
 	defaultOptions: PropTypes.array,
 	triggerServerFilter: PropTypes.func,
-	getData: PropTypes.func,
+	getOptions: PropTypes.func,
 	onError: PropTypes.func,
 	onClose: PropTypes.func,
 	onOpen: PropTypes.func,

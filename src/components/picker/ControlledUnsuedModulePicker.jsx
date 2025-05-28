@@ -29,7 +29,7 @@ export const ControlledUnusedModulePicker = memo((props) => {
 				uid,
 			})}
 			filterSelectedOptions
-			getData={(x) => x}
+			getOptions={(x) => x}
 			getOptionKey={ZA03.getOptionKey}
 			getOptionLabel={ZA03.getOptionLabel}
 			isOptionEqualToValue={ZA03.isOptionEqualToValue}

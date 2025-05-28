@@ -14,7 +14,7 @@ export const useZA03CopyAuth = ({ token, scope = Auth.SCOPES.HQ }) => {
 		};
 	}, [fromUser?.UID, scope]);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload;
 	}, []);
 
@@ -22,7 +22,7 @@ export const useZA03CopyAuth = ({ token, scope = Auth.SCOPES.HQ }) => {
 		url: "v1/ou/user/depts",
 		bearer: token,
 		params,
-		getData,
+		getOptions,
 	});
 
 	return {

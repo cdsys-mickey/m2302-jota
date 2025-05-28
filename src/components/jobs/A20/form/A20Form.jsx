@@ -76,12 +76,12 @@ const A20Form = memo((props) => {
 									fullWidth
 									required
 									rules={{ required: "製造量為必填" }}
-									inputProps={{
-										sx: {
-											paddingTop: "5px",
-											paddingBottom: "5px",
-										}
-									}}
+								// inputProps={{
+								// 	sx: {
+								// 		paddingTop: "5px",
+								// 		paddingBottom: "5px",
+								// 	}
+								// }}
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={4}>
@@ -93,7 +93,7 @@ const A20Form = memo((props) => {
 								<FormFieldLabel
 									name="PackData_N"
 									label="包裝說明"
-									inline={editing}
+								// inline={editing}
 								/>
 							</Grid>
 						</Grid>

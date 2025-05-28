@@ -1,11 +1,9 @@
 import { A21Context } from "@/contexts/A21/A21Context";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useContext, useMemo } from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { AuthContext } from "@/contexts/auth/AuthContext";
-import StdPrint from "@/modules/StdPrint.mjs";
-import A21Form from "./A21Form";
+import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
+import A21Form from "./A21Form";
 
 export const A21FormContainer = () => {
 	const a21 = useContext(A21Context);
@@ -24,7 +22,7 @@ export const A21FormContainer = () => {
 		)
 	}, [a21.onSubmit, a21.onSubmitError, form]);
 
-	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

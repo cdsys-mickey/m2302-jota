@@ -45,6 +45,7 @@ const FilterFieldBorder = styled("div")(({ theme }) => ({
 const FilterField = memo(
 	forwardRef((props, ref) => {
 		const {
+			selectOnFocus,
 			focusShadow = false,
 			// InputBase
 			inputRef,
@@ -88,6 +89,10 @@ const FilterField = memo(
 			);
 		}, [SearchIconComponent, searchIconPlacement]);
 
+		const handleFocus = useCallback((event) => {
+			event.target.select();
+		}, []);
+
 		return (
 			<div ref={ref}>
 				<FilterFieldBorder focusShadow={focusShadow}>
@@ -110,6 +115,9 @@ const FilterField = memo(
 						inputRef={inputRef}
 						inputProps={{ "aria-label": "search" }}
 						placeholder={placeholder}
+						{...(selectOnFocus && {
+							onFocus: handleFocus
+						})}
 						endAdornment={
 							<Box
 								sx={{

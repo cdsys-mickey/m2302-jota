@@ -4,8 +4,6 @@ import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoade
 import { A01FrameContainer } from "@/modules/A01/A01FrameContainer";
 import { A01Provider } from "@/modules/A01/A01Provider";
 
-// const A01FrameContainer = lazy(() => import("./A01FrameContainer"));
-
 const A01Page = () => {
 	return (
 		<CrudProvider>

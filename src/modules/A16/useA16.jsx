@@ -9,8 +9,10 @@ import { useCallback, useContext, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
 import A16 from "./A16.mjs";
+import { useRef } from "react";
 
 export const useA16 = ({ token }) => {
+	const itemIdRef = useRef();
 	const formMeta = useFormMeta(
 		`
 		DeptID,
@@ -54,14 +56,22 @@ export const useA16 = ({ token }) => {
 	});
 
 	const loadItem = useCallback(
-		async ({ id }) => {
+		async ({ id, refresh }) => {
+			const _id = refresh ? itemIdRef.current : id;
+			if (!_id) {
+				throw new Error("未指定 id");
+			}
+			if (!refresh) {
+				itemIdRef.current = id;
+				crud.startReading("讀取中...", { id });
+			}
 			try {
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/ou/depts`,
 					bearer: token,
 					params: {
-						id,
+						id: _id
 					},
 				});
 				console.log("payload", payload);
@@ -98,9 +108,10 @@ export const useA16 = ({ token }) => {
 			message: "確認要結束編輯?",
 			onConfirm: () => {
 				crud.cancelUpdating();
+				loadItem({ refresh: true });
 			},
 		});
-	}, [crud, dialogs]);
+	}, [crud, dialogs, loadItem]);
 
 	const confirmDialogClose = useCallback(() => {
 		dialogs.confirm({

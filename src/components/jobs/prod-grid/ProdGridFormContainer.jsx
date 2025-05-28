@@ -2,8 +2,6 @@ import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { useContext } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import ProdGridForm from "./ProdGridForm";
-import useDebounce from "../../../shared-hooks/useDebounce";
-import { useEffect } from "react";
 import { FormMetaProvider } from "../../../shared-contexts/form-meta/FormMetaProvider";
 import { useCallback } from "react";
 import { useMemo } from "react";
@@ -42,14 +40,14 @@ export const ProdGridFormContainer = (props) => {
 		[catL, catM]
 	);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			prodGrid.onSubmit,
 			prodGrid.onSubmitError
 		)
 	}, [form, prodGrid.onSubmit, prodGrid.onSubmitError]);
 
-	const hotkeyRef = useHotkeys("Shift+Enter", onSubmit, {
+	const hotkeyRef = useHotkeys("Ctrl+Enter", handleSubmit, {
 		enableOnFormTags: true,
 	});
 
@@ -58,7 +56,7 @@ export const ProdGridFormContainer = (props) => {
 			<FormProvider {...form}>
 				<FormMetaProvider {...prodGrid.formMeta} isFieldDisabled={isFieldDisabled}>
 					<ProdGridForm
-						handleSubmit={onSubmit}
+						handleSubmit={handleSubmit}
 						{...rest}
 					/>
 				</FormMetaProvider>

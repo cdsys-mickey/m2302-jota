@@ -343,7 +343,7 @@ DropDownButton.propTypes = {
 	openOnClick: PropTypes.bool,
 	getLabel: PropTypes.func,
 	getItemIconComponent: PropTypes.func,
-	getData: PropTypes.func,
+	getOptions: PropTypes.func,
 	isOptionEqualToValue: PropTypes.func,
 	getOptionKey: PropTypes.func,
 	getOptionLabel: PropTypes.func,

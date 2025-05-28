@@ -1,32 +1,29 @@
+import BankPicker from "@/components/fields/BankPicker";
+import { useCellFocus } from "@/shared-hooks/dsg/useCellFocus";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/Objects.mjs";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
-import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
-import { useCellFocus } from "@/shared-hooks/dsg/useCellFocus";
-import BankPicker from "@/components/fields/BankPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		fields: "rowData.SDocID,active,disabled,focus",
+		fields: "rowData.CodeID,active,disabled,focus",
 		// debug: true,
 	});
 };
 
 const BankPickerCell = memo((props) => {
 	const {
-		// Data
-		rowData,
-		setRowData,
-		// Extra information
-		rowIndex,
-		columnIndex,
 		// Component Props
 		columnData,
-		// Cell state
+		// from cell
+		rowData,
+		setRowData,
+		rowIndex,
+		columnIndex,
 		active,
 		focus,
 		disabled,
-		// Control functions
 		stopEditing,
 		insertRowBelow,
 		// duplicateRow,
@@ -34,8 +31,8 @@ const BankPickerCell = memo((props) => {
 		// getContextMenuItems,
 	} = props;
 
-	const rowDataRef = useRef(rowData);
-	rowDataRef.current = rowData;
+	// const rowDataRef = useRef(rowData);
+	// rowDataRef.current = rowData;
 
 	const {
 		name,
@@ -46,36 +43,34 @@ const BankPickerCell = memo((props) => {
 	} = columnData;
 
 
-	const { handleFocusNextCell, skipDisabled, readOnly, focusOnDisabled, inDSG } = useCellFocus({
+	const cellFocus = useCellFocus({
 		insertRowBelow
 	});
 
 	const pickerProps = useOptionPickerComponent({
-		name,
+		// from props
 		rowIndex,
 		rowData,
 		columnIndex,
 		focus,
 		active,
 		disabled,
-		hideControlsOnActive,
-		selectOnFocus,
 		setRowData,
 		stopEditing,
-		readOnly,
-		skipDisabled,
-		handleFocusNextCell,
-		focusOnDisabled,
-		multiple
+		// from columnData
+		name,
+		hideControlsOnActive,
+		selectOnFocus,
+		multiple,
+		// from cellFocus
+		...cellFocus,
 	});
 
 	return (
 		<BankPicker
 			queryParam="qs"
-			inDSG={inDSG}
 			{...pickerProps}
 			{...rest}
-		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

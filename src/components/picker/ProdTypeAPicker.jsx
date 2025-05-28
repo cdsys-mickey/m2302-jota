@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import ProdTypeA from "@/modules/md-prod-type-a";
+import ProdTypeA from "@/modules/ProdTypeA";
 import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
 import Constants from "@/modules/md-constants";
 

@@ -4,6 +4,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import { P03Context } from "./P03Context";
 import P03Form from "./P03Form";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const P03FormContainer = () => {
 	const form = useFormContext();
@@ -30,12 +31,16 @@ export const P03FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			p03.onSubmit,
 			p03.onSubmitError
 		)
 	}, [p03.onSubmit, p03.onSubmitError, form]);
+
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -51,7 +56,7 @@ export const P03FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<P03Form forNewCustomer={retail} onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+				<P03Form forNewCustomer={retail} onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

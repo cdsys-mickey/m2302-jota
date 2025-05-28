@@ -14,7 +14,7 @@ const RecvAcctDocPicker = memo((props) => {
 	} = props;
 	const auth = useContext(AuthContext);
 
-	// const getData = useCallback((payload) => {
+	// const getOptions = useCallback((payload) => {
 	// 	return payload;
 	// }, []);
 
@@ -41,7 +41,7 @@ const RecvAcctDocPicker = memo((props) => {
 			getOptionLabel={getOptionLabel}
 			renderOptionLabel={RecvAcctDoc.getOptionLabel}
 			isOptionEqualToValue={RecvAcctDoc.isOptionEqualToValue}
-			// getData={getData}
+			// getOptions={getOptions}
 			querystring={querystring}
 			notFoundText="銷售/銷退單號 ${input} 不存在"
 			noOptionsText="請直接輸入銷貨/銷退單號"

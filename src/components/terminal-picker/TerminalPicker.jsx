@@ -15,7 +15,7 @@ const TerminalPicker = memo((props) => {
 	} = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -33,7 +33,7 @@ const TerminalPicker = memo((props) => {
 			getOptionLabel={Terminals.getOptionLabel}
 			renderOptionLabel={Terminals.getOptionLabel}
 			isOptionEqualToValue={Terminals.isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			querystring={querystring}
 			notFoundText="收銀機號 ${input} 不存在"
 			{...rest}

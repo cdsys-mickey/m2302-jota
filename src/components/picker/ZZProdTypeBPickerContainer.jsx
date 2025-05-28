@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import ProdTypeB from "../../modules/md-prod-type-b";
+import ProdTypeB from "../../modules/ProdTypeB";
 import TypoOptionPickerContainer from "../../shared-components/typo/TypoOptionPickerContainer";
 import OptionPicker from "../../shared-components/option-picker/OptionPicker";
 import { ControlledOptionPicker } from "../../shared-components/option-picker/ControlledOptionPicker";

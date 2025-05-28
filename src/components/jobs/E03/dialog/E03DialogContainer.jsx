@@ -20,6 +20,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import E03Drawer from "../E03Drawer";
 import E03DialogForm from "./E03DialogForm";
 import { E03DialogToolbarContainer } from "./toolbar/E03DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const E03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -332,6 +333,10 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 		e03.onEditorSubmit,
 		e03.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	useEffect(() => {
 		if (e03.itemDataReady) {

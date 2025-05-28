@@ -20,11 +20,11 @@ const options = [
 ];
 
 const findById = (id) => {
-	return options.find((o) => o.id === id);
+	return options.find((o) => o.id == id);
 };
 
 const findByInput = (input) => {
-	return options.find((o) => o.id === input);
+	return options.find((o) => o.id == input);
 };
 
 const ProdTypeB = {

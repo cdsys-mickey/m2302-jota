@@ -29,19 +29,6 @@ export const G04FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
-		return form.handleSubmit(
-			g04.onSubmit,
-			g04.onSubmitError
-		)
-	}, [g04.onSubmit, g04.onSubmitError, form]);
-
-	const onDebugSubmit = useMemo(() => {
-		return form.handleSubmit(
-			g04.onDebugSubmit,
-		)
-	}, [g04.onDebugSubmit, form]);
-
 	const catL = useWatch({
 		name: "catL",
 		control: form.control,
@@ -77,7 +64,7 @@ export const G04FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
-				<G04Form onSubmit={onSubmit}
+				<G04Form
 					selectedTab={g04.selectedTab}
 					handleTabChange={g04.handleTabChange}
 				/>

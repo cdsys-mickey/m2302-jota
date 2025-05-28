@@ -29,6 +29,8 @@ import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
 import { OptionPickerContext } from "./listbox/OptionPickerContext";
 import OptionPickerPopper from "./popper/OptionPickerPopper";
+import { useContext } from "react";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -131,7 +133,7 @@ const OptionPicker = memo(
 			PaperComponent: customPaperComponent,
 			GridHeaderComponent,
 			GridRowComponent,
-			inDSG,
+			// inDSG,
 			cellComponentRef,
 			handleFocusNextCell,
 			handleFocusPrevCell,
@@ -155,6 +157,9 @@ const OptionPicker = memo(
 			filterOptions,
 			...rest
 		} = props;
+
+		const dsg = useContext(DSGContext);
+		const inDSG = useMemo(() => !!dsg, [dsg]);
 
 		// console.log(`redenring OptionPicker: ${name}`);
 
@@ -979,11 +984,11 @@ const OptionPicker = memo(
 										// opacity: 0,
 										display: "none",
 									},
-									"&.MuiAutocomplete-root .MuiInputBase-root.Mui-disabled ":
-									{
-										paddingRight: 0,
-										paddingTop: 0
-									},
+									// "&.MuiAutocomplete-root .MuiInputBase-root.Mui-disabled ":
+									// {
+									// 	paddingRight: 0,
+									// 	paddingTop: 0
+									// },
 								}),
 								...(dense && {
 									"&.MuiAutocomplete-root .MuiInputBase-root.MuiInputBase-sizeSmall":
@@ -994,6 +999,9 @@ const OptionPicker = memo(
 										// paddingRight: "40px",
 									},
 								}),
+								"& .MuiFormHelperText-root": {
+									marginTop: 0
+								},
 							},
 							...(Array.isArray(sx) ? sx : [sx]),
 						]}

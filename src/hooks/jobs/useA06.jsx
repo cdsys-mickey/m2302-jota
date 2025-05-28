@@ -13,8 +13,10 @@ import { useCallback, useContext, useMemo, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "../useSideDrawer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useRef } from "react";
 
 export const useA06 = ({ token, mode }) => {
+	const itemIdRef = useRef();
 	const formMeta = useFormMeta(
 		`
 		CustID,
@@ -86,17 +88,19 @@ export const useA06 = ({ token, mode }) => {
 		throw `mode 未指定`;
 	}
 
-	const confirmReturn = useCallback(() => {
-		dialogs.confirm({
-			message: "確認要結束編輯?",
-			onConfirm: () => {
-				crud.cancelUpdating();
-			},
-		});
-	}, [crud, dialogs]);
+
 
 	const loadItem = useCallback(
-		async ({ id }) => {
+		async ({ id, refresh }) => {
+			const itemId = refresh ? itemIdRef.current : id;
+			if (!itemId) {
+				throw new Error("未指定 id");
+			}
+			if (!refresh) {
+				itemIdRef.current = id;
+				crud.startReading("讀取中...", { id });
+			}
+
 			try {
 				// const encodedItemId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
@@ -105,8 +109,8 @@ export const useA06 = ({ token, mode }) => {
 							? `v1/sales/new-customers`
 							: `v1/sales/customers`,
 					bearer: token,
-					data: {
-						id,
+					params: {
+						id: itemId
 					},
 				});
 				console.log("payload", payload);
@@ -125,6 +129,16 @@ export const useA06 = ({ token, mode }) => {
 		},
 		[crud, httpGetAsync, mode, token]
 	);
+
+	const confirmReturn = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要結束編輯?",
+			onConfirm: () => {
+				crud.cancelUpdating();
+				loadItem({ refresh: true });
+			},
+		});
+	}, [crud, dialogs, loadItem]);
 
 	const handleSelect = useCallback(
 		async (e, rowData) => {

@@ -20,7 +20,7 @@ const C01TransformToOrderDialogContainer = () => {
 		)
 	}, [c01.onTransformSubmit, c01.onTransformSubmitError, form])
 
-	// useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+	// useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
 	// 	enableOnFormTags: true
 	// })
 

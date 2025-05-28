@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import ProdTypeA from "./md-prod-type-a";
-import ProdTypeB from "./md-prod-type-b";
+import ProdTypeA from "./ProdTypeA";
+import ProdTypeB from "./ProdTypeB";
 import TaxTypes from "./TaxTypes.mjs";
 
 const transformForReading = (payload) => {

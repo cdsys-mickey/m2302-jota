@@ -13,7 +13,7 @@ const InvTakingListingPicker = memo((props) => {
 	} = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -40,7 +40,7 @@ const InvTakingListingPicker = memo((props) => {
 			getOptionLabel={getOptionLabel}
 			renderOptionLabel={InvTaking.getOptionLabel}
 			isOptionEqualToValue={InvTaking.isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			querystring={querystring}
 			notFoundText="盤點清單 ${input} 不存在"
 			blurToLookup

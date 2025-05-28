@@ -3,16 +3,16 @@ import { RowProdCatSPickerComponentContainer } from "@/components/dsg/columns/pr
 import ProdGrid from "@/modules/md-prod-grid";
 import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { ProdCatLPickerComponentContainer } from "../../components/dsg/columns/prod-cat-picker/ProdCatLPickerComponentContainer";
-import { ProdTypeAPickerComponentContainer } from "../../components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
-import { ProdTypeBPickerComponentContainer } from "../../components/dsg/columns/prod-type-b-picker/ProdTypeBPickerComponentContainer";
-import { TaxTypePickerComponentContainer } from "../../components/dsg/columns/tax-type-picker/TaxTypePickerComponentContainer";
-import A014 from "../../modules/md-a014";
-import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSG } from "../../shared-hooks/dsg/useDSG";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { ProdCatLPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/ProdCatLPickerComponentContainer";
+import { ProdTypeAPickerComponentContainer } from "@/components/dsg/columns/prod-type-a-picker/ProdTypeAPickerComponentContainer";
+import { ProdTypeBPickerComponentContainer } from "@/components/dsg/columns/prod-type-b-picker/ProdTypeBPickerComponentContainer";
+import { TaxTypePickerComponentContainer } from "@/components/dsg/columns/tax-type-picker/TaxTypePickerComponentContainer";
+import A014 from "@/modules/md-a014";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { rowOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/rowOptionPickerColumn";
@@ -144,7 +144,6 @@ export const useA014 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: false,
 						slotProps: {
 							paper: {
 								sx: {
@@ -167,7 +166,6 @@ export const useA014 = () => {
 						disableOpenOnInput: true,
 						disableClearable: true,
 						selectOnFocus: true,
-						hideControlsOnActive: false,
 						slotProps: {
 							paper: {
 								sx: {

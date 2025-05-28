@@ -16,7 +16,7 @@ const defaultTriggerServerFilter = (q) => {
 	return !!q;
 };
 
-const defaultGetData = (payload) => {
+const defaultGetOptions = (payload) => {
 	return payload["data"];
 	// return payload;
 };
@@ -52,7 +52,7 @@ const WebApiOptionPickerOld = memo(
 
 			// METHODS
 			triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
-			getData = defaultGetData,
+			getOptions = defaultGetOptions,
 			onError = defaultOnError,
 			onOpen,
 			onClose,
@@ -119,7 +119,7 @@ const WebApiOptionPickerOld = memo(
 						setPickerState((prev) => ({
 							...prev,
 							// loading: false,
-							options: getData(payload) || [],
+							options: getOptions(payload) || [],
 							// error: error,
 							noOptionsText,
 						}));
@@ -161,7 +161,7 @@ const WebApiOptionPickerOld = memo(
 				querystring,
 				headers,
 				bearer,
-				getData,
+				getOptions,
 				noOptionsText,
 				onError,
 				fetchErrorText,
@@ -339,7 +339,7 @@ WebApiOptionPickerOld.propTypes = {
 	triggerDelay: PropTypes.number,
 	defaultOptions: PropTypes.array,
 	triggerServerFilter: PropTypes.func,
-	getData: PropTypes.func,
+	getOptions: PropTypes.func,
 	onError: PropTypes.func,
 	onClose: PropTypes.func,
 	onOpen: PropTypes.func,

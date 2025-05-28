@@ -33,7 +33,7 @@ export const H42FormContainer = () => {
 		)
 	}, [h42.onSubmit, h42.onSubmitError, form]);
 
-	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

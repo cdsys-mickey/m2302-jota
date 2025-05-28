@@ -21,7 +21,7 @@ export const SupplierIdPickerContainer = (props) => {
 		return option?.FactID === value?.FactID;
 	}, []);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -51,7 +51,7 @@ export const SupplierIdPickerContainer = (props) => {
 			getOptionLabel={getOptionLabel}
 			renderOptionLabel={renderOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			getOptionKey={getOptionKey}
 			// blurToLookup
 			{...rest}

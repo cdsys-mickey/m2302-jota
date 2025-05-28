@@ -1,31 +1,69 @@
 import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { useChangeTracking } from "../useChangeTracking";
+import CommonStyles from "@/shared-modules/CommonStyles.mjs";
 
 export const useOptionPickerComponent = (opts) => {
 	const {
-		name,
+		// from props
 		rowIndex,
 		rowData,
 		focus,
 		active,
 		disabled,
-		hideControlsOnActive,
-		selectOnFocus,
 		columnIndex,
-		skipDisabled,
-		handleFocusNextCell,
 		setRowData,
 		stopEditing,
+		// from cellFocus
+		handleFocusNextCell,
+		skipDisabled,
 		readOnly,
 		focusOnDisabled = false,
-		// Control Mehotds
-		// insertRowBelow,
-		// Context Method,
-		// getNextCell,
-		// lastCell,
-		// setActiveCell,
-		multiple
+		// from columnData
+		name,
+		hideControlsOnActive,
+		selectOnFocus,
+		multiple = false
 	} = opts;
+
+	// props
+	Object.entries({
+		rowIndex,
+		rowData,
+		focus,
+		active,
+		disabled,
+		columnIndex,
+		setRowData,
+		stopEditing,
+	}).forEach(([name, prop]) => {
+		if (prop === undefined) {
+			console.warn(`%c[props].${name}未傳遞`, CommonStyles.CONSOLE_WARN);
+		}
+	});
+
+	// cellFocus
+	Object.entries({
+		handleFocusNextCell,
+		skipDisabled,
+		readOnly,
+		focusOnDisabled,
+	}).forEach(([name, prop]) => {
+		if (prop === undefined) {
+			console.warn(`%c[cellFocus].${name}未傳遞`, CommonStyles.CONSOLE_WARN);
+		}
+	});
+
+	// columnData
+	Object.entries({
+		name,
+		// hideControlsOnActive,
+		// selectOnFocus,
+		// multiple
+	}).forEach(([name, prop]) => {
+		if (prop === undefined) {
+			console.warn(`%c[columnData].${name}未傳遞`, CommonStyles.CONSOLE_WARN);
+		}
+	});
 
 	const inputRef = useRef();
 	const asyncRef = useRef({

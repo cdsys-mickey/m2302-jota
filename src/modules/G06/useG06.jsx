@@ -15,7 +15,7 @@ import { useRef } from "react";
 import Forms from "@/shared-modules/Forms.mjs";
 
 export const useG06 = ({ token }) => {
-
+	const itemIdRef = useRef();
 	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
 		token,
@@ -46,7 +46,8 @@ export const useG06 = ({ token }) => {
 		// 收沖差額
 		// 單據沖銷
 		CutAmt: 0,
-		DiffAmt: 0
+		DiffAmt: 0,
+		dirty: false
 	})
 
 	const [
@@ -165,13 +166,21 @@ export const useG06 = ({ token }) => {
 	}, [crud.editing]);
 
 	const loadItem = useCallback(
-		async ({ id }) => {
+		async ({ id, refresh = false }) => {
+			const itemId = refresh ? itemIdRef.current : id;
+			if (!itemId) {
+				throw new Error("未指定 id");
+			}
+			if (!refresh) {
+				itemIdRef.current = id;
+				crud.startReading("讀取中...", { id });
+			}
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/sales/recv-account/rcpt-records`,
 					bearer: token,
 					params: {
-						id
+						id: itemId
 					},
 				});
 				console.log("payload", payload);
@@ -190,6 +199,7 @@ export const useG06 = ({ token }) => {
 						ChkAmt: data.ChkAmt,
 						CutAmt: data.CutAmt,
 						DiffAmt: data.DiffAmt,
+						dirty: false
 					}
 					crud.doneReading({
 						data,
@@ -221,9 +231,11 @@ export const useG06 = ({ token }) => {
 			message: "確認要結束編輯?",
 			onConfirm: () => {
 				crud.cancelUpdating();
+				loadItem({ refresh: true });
+				asyncRef.current.dirty = false;
 			},
 		});
-	}, [crud, dialogs]);
+	}, [crud, dialogs, loadItem]);
 
 	const confirmDialogClose = useCallback(() => {
 		dialogs.confirm({
@@ -302,6 +314,7 @@ export const useG06 = ({ token }) => {
 				}
 			} catch (err) {
 				crud.failUpdating(err);
+				asyncRef.current.dirty = true;
 				console.error("handleUpdate.failed", err);
 				toastEx.error("更新失敗", err);
 			}

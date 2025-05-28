@@ -8,7 +8,7 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import { useOptions } from "../../shared-hooks/useOptions";
 
-const defaultGetData = (payload) => {
+const defaultGetOptions = (payload) => {
 	return payload["data"];
 };
 
@@ -41,6 +41,6 @@ CheckboxExGroupContainer.propTypes = {
 	bearer: PropTypes.string,
 	querystring: PropTypes.string,
 	defaultOptions: PropTypes.array,
-	getData: PropTypes.func,
+	getOptions: PropTypes.func,
 	disabled: PropTypes.bool,
 };

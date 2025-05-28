@@ -18,6 +18,7 @@ import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import P14Drawer from "../P14Drawer";
 import P14DialogForm from "./P14DialogForm";
 import { P14DialogToolbarContainer } from "./toolbar/P14DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const P14DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -83,6 +84,10 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 		p14.onEditorSubmit,
 		p14.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const readOnly = useMemo(() => {
 		return !p14.editing;

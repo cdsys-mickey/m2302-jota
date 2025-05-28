@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { P15Context } from "./P15Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const P15FormContainer = () => {
 	const form = useFormContext();
@@ -20,12 +21,16 @@ export const P15FormContainer = () => {
 			`
 	)
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			p15.onSubmit,
 			p15.onSubmitError
 		)
 	}, [p15.onSubmit, p15.onSubmitError, form]);
+
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -37,7 +42,7 @@ export const P15FormContainer = () => {
 		<FormMetaProvider {...formMeta}>
 			<P15Form
 				onDebugSubmit={onDebugSubmit}
-				onSubmit={onSubmit}
+				onSubmit={handleSubmit}
 			// onSelect={p15.onSelect({ setValue: form.setValue })}
 			/>
 		</FormMetaProvider>

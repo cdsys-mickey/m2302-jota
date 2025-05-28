@@ -12,7 +12,7 @@ export const F07FormContainer = () => {
 	const { reset } = form;
 	const f07 = useContext(F07Context);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			f07.onSubmit,
 			f07.onSubmitError
@@ -34,7 +34,7 @@ export const F07FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...f07.formMeta}>
-				<F07Form onSubmit={onSubmit} />
+				<F07Form onSubmit={handleSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);

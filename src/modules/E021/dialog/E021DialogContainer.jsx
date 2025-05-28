@@ -22,6 +22,7 @@ import E021Drawer from "../E021Drawer";
 import E021DialogForm from "./E021DialogForm";
 import { E021DialogToolbarContainer } from "./toolbar/E021DialogToolbarContainer";
 import { useQuerySync } from "@/shared-hooks/useQuerySync";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const E021DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -351,6 +352,10 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		}),
 		e021.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const handleRefreshGridSubmit = form.handleSubmit(
 		e021.onRefreshGridSubmit({ setValue: form.setValue }),

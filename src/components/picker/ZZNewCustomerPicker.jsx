@@ -20,7 +20,7 @@ const NewCustomerPicker = (props) => {
 		return Customers.isOptionEqualToValue(option, value);
 	}, []);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -59,7 +59,7 @@ const NewCustomerPicker = (props) => {
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
 			renderOptionLabel={renderOptionLabel}
-			getData={getData}
+			getOptions={getOptions}
 			getTitle={getTitle}
 			stringify={stringify}
 			getOptionKey={getOptionKey}

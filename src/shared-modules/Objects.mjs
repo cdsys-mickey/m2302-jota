@@ -211,9 +211,10 @@ const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
 		deepCompare = false,
 	} = opts;
 
-	if (debug) {
-		console.log("comparing", obj1, obj2);
-	}
+	// if (debug && header) {
+	// 	console.log(`comparing ${header}`, obj1, obj2);
+	// }
+
 	if (nullishEquivalent) {
 		// comapre null
 		if (

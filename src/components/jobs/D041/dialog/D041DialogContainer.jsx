@@ -23,6 +23,7 @@ import D041DialogForm from "./D041DialogForm";
 import { D041DialogToolbarContainer } from "./toolbar/D041DialogToolbarContainer";
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { YesOrEmptyPickerComponentContainer } from "@/components/dsg/columns/yes-or-empty-picker/YesOrEmptyPickerComponentContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const D041DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -88,6 +89,10 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 		d041.onEditorSubmit,
 		d041.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const readOnly = useMemo(() => {
 		return !d041.editing || !employee || !pdline || !entDate;

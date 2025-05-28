@@ -8,7 +8,7 @@ const AuthDeptPicker = memo((props) => {
 	const { ...rest } = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload;
 	}, []);
 
@@ -18,7 +18,7 @@ const AuthDeptPicker = memo((props) => {
 			getOptionLabel={DeptOptions.getOptionLabel}
 			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}
 			bearer={auth.token}
-			getData={getData}
+			getOptions={getOptions}
 			{...rest}
 		/>
 	);

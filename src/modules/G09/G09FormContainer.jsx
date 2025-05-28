@@ -17,7 +17,7 @@ export const G09FormContainer = () => {
 		)
 	}, [g09.onSubmit, g09.onSubmitError, form]);
 
-	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

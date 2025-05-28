@@ -22,7 +22,7 @@ export const B05SearchFieldContainer = (props) => {
 		)
 	}, [b05.onSearchSubmit, b05.onSearchSubmitError, forms]);
 
-	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

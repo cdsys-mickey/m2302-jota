@@ -13,7 +13,7 @@ const JobPicker = memo((props) => {
 	} = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -40,7 +40,7 @@ const JobPicker = memo((props) => {
 			getOptionLabel={getOptionLabel}
 			renderOptionLabel={Jobs.getOptionLabel}
 			isOptionEqualToValue={Jobs.isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			querystring={querystring}
 			notFoundText="作業代號 ${input} 不存在"
 			// blurToLookup

@@ -42,6 +42,7 @@ const SideMenuSearchBar = memo(
 						// shadow="focus"
 						focusBackgroundColor="rgb(0 0 0 / 10%)"
 						hoverBackgroundColor="rgb(0 0 0 / 6%)"
+						selectOnFocus
 					// width="20ch"
 					// onChange={onInputChange}
 					/>

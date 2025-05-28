@@ -5,17 +5,22 @@ import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useCallback } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const U03FormContainer = () => {
 	const form = useFormContext();
 	const u03 = useContext(U03Context);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			u03.onSubmit,
 			u03.onSubmitError
 		)
 	}, [u03.onSubmit, u03.onSubmitError, form]);
+
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -43,7 +48,7 @@ export const U03FormContainer = () => {
 
 	return <FormProvider {...form}>
 		<FormMetaProvider {...u03.formMeta} isFieldDisabled={isFieldDisabled}>
-			<U03Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<U03Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 	</FormProvider>;
 };

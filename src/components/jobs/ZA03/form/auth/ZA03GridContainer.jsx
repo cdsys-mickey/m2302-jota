@@ -44,7 +44,7 @@ const ZA03GridContainer = () => {
 				isKeyDisabled={za03.isKeyDisabled}
 				getOptionLabel={za03.getOptionLabel}
 				isOptionEqualToValue={za03.isOptionEqualToValue}
-				getData={za03.getData}
+				getOptions={za03.getOptions}
 
 				getRowClassName={za03.getRowClassName}
 

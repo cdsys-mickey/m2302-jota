@@ -84,7 +84,7 @@ const ProdPicker = (props) => {
 		return Prods.renderOptionLabel(option);
 	}, []);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -153,7 +153,7 @@ const ProdPicker = (props) => {
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
 			renderOptionLabel={renderOptionLabel}
-			getData={getData}
+			getOptions={getOptions}
 			getTitle={getTitle}
 			stringify={stringify}
 			// notFoundText="商品代號 ${input} 不存在"

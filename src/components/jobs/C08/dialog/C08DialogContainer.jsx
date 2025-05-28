@@ -227,8 +227,6 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 		gridMeta.setActiveCell({ col: 0, row: 0 });
 	}, [form, gridMeta, txiDept]);
 
-
-
 	const handleSubmit = form.handleSubmit(
 		c08.onEditorSubmit({
 			setValue: form.setValue,

@@ -7,6 +7,7 @@ import FlexBox from "../FlexBox";
 import { FormLabelEx } from "@/shared-components";
 import Types from "@/shared-modules/Types.mjs";
 import Forms from "@/shared-modules/Forms.mjs";
+import { Fragment } from "react";
 
 /**
  * 增加 label 功能的 Typography
@@ -71,9 +72,9 @@ const FormFieldLabelView = memo(
 					// marginTop: theme.spacing(-0.5),
 					// marginTop: theme.spacing(-1),
 					marginLeft: theme.spacing(0.5),
-					...(dense && {
-						height: "40px"
-					})
+					// ...(dense && {
+					// 	height: "40px"
+					// })
 				}),
 				_labelStyles,
 				...(Array.isArray(sx) ? sx : [sx]),
@@ -90,30 +91,34 @@ const FormFieldLabelView = memo(
 				<Box className="FormFieldLabelView-bodybox" sx={{
 					...(dense && {
 						position: "relative",
-						// top: "-4px"
-						top: "-8px"
+						// top: "-8px"
+						marginTop: "-8px"
 					})
 				}} {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
 					{Types.isLiteral(body) ? <>
-						{body?.split("\n").map((s, index) => (
-							<Typography
-								key={`${s}_${index}`}
-								color="text.secondary"
-								variant="body1"
-								sx={[
-									(theme) => ({
-										fontWeight: 400,
-										...(!isEmpty && {
-											color: theme.palette.primary.main,
-										}),
+						<Typography
+							color="text.secondary"
+							variant="body1"
+							sx={[
+								(theme) => ({
+									fontWeight: 400,
+									...(!isEmpty && {
+										color: theme.palette.primary.main,
 									}),
-									...(Array.isArray(typographySx)
-										? typographySx
-										: [typographySx]),
-								]}>
-								{s}
-							</Typography>
-						))}
+								}),
+								...(Array.isArray(typographySx)
+									? typographySx
+									: [typographySx]),
+							]}>
+							{body
+								?.split('\n')
+								.map((line, index) => (
+									<Fragment key={`${line}_${index}`}>
+										{line}
+										{index < body.split('\n').length - 1 && <br />}
+									</Fragment>
+								))}
+						</Typography>
 					</>
 						: body}
 				</Box>

@@ -16,6 +16,7 @@ import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import BankPickerCell from "@/components/dsg/columns/bank-picker/BankPickerCell";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { BankPickerComponentContainer } from "@/components/dsg/columns/bank-picker/BankPickerComponentContainer";
 
 export const G06ChkGridContainer = (props) => {
 	const { ...rest } = props;
@@ -47,6 +48,7 @@ export const G06ChkGridContainer = (props) => {
 				...keyColumn(
 					"BankID",
 					optionPickerColumn(BankPickerCell, {
+						// optionPickerColumn(BankPickerComponentContainer, {
 						name: "BankID",
 						disableOpenOnInput: true,
 						disableClearable: true,

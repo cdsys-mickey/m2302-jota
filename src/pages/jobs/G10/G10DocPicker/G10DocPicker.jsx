@@ -13,8 +13,8 @@ const G10DocPicker = memo((props) => {
 	} = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
-		return payload;
+	const getOptions = useCallback((payload) => {
+		return payload.data;
 	}, []);
 
 	const querystring = useMemo(() => {
@@ -44,7 +44,7 @@ const G10DocPicker = memo((props) => {
 			getOptionLabel={getOptionLabel}
 			renderOptionLabel={G10Doc.getOptionLabel}
 			isOptionEqualToValue={G10Doc.isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			querystring={querystring}
 			// notFoundText="單號 ${input} 不存在"
 			notFoundText={notFoundText}

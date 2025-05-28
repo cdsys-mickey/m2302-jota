@@ -4,17 +4,22 @@ import { U04Context } from "@/modules/U04/U04Context";
 import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const U04FormContainer = () => {
 	const form = useFormContext();
 	const u04 = useContext(U04Context);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			u04.onSubmit,
 			u04.onSubmitError
 		)
 	}, [u04.onSubmit, u04.onSubmitError, form]);
+
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -24,7 +29,7 @@ export const U04FormContainer = () => {
 
 	return <FormProvider {...form}>
 		<FormMetaProvider {...u04.formMeta}>
-			<U04Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<U04Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 	</FormProvider>;
 };

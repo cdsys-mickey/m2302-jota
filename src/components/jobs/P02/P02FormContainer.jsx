@@ -4,17 +4,22 @@ import { P02Context } from "@/contexts/P02/P02Context";
 import { useContext } from "react";
 import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const P02FormContainer = () => {
 	const form = useFormContext();
 	const p02 = useContext(P02Context);
 
-	const onSubmit = useMemo(() => {
+	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
 			p02.onSubmit,
 			p02.onSubmitError
 		)
 	}, [p02.onSubmit, p02.onSubmitError, form]);
+
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -24,7 +29,7 @@ export const P02FormContainer = () => {
 
 	return <FormProvider {...form}>
 		<FormMetaProvider {...p02.formMeta}>
-			<P02Form onSubmit={onSubmit} onDebugSubmit={onDebugSubmit} />
+			<P02Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
 	</FormProvider>;
 };

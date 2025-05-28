@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import ProdTypeA from "@/modules/md-prod-type-a";
+import ProdTypeA from "@/modules/ProdTypeA";
 import TypoOptionPickerContainer from "@/shared-components/option-picker/TypoOptionPickerContainer";
 import { useWatch } from "react-hook-form";
 

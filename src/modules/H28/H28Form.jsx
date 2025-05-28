@@ -37,7 +37,6 @@ const H28Form = memo((props) => {
 										fullWidth
 										validate
 										clearable
-										autoFocus
 										borderless
 										placeholder="起"
 									/>}

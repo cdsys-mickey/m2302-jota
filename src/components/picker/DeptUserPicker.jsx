@@ -19,7 +19,7 @@ export const DeptUserPicker = (props) => {
 		return option?.UID === value?.UID;
 	}, []);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -41,7 +41,7 @@ export const DeptUserPicker = (props) => {
 			querystring={querystring}
 			getOptionLabel={getOptionLabel}
 			isOptionEqualToValue={isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			getOptionKey={getOptionKey}
 			// blurToLookup
 			{...rest}

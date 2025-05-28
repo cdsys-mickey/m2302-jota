@@ -18,6 +18,7 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useCallback } from "react";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const D06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -71,6 +72,10 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 		d06.onEditorSubmit,
 		d06.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const readOnly = useMemo(() => {
 		return !d06.editing;

@@ -3,7 +3,7 @@ import { useWebApi } from "./useWebApi";
 import { useEffect } from "react";
 import { useMemo } from "react";
 
-const defaultGetData = (payload) => {
+const defaultGetOptions = (payload) => {
 	return payload["data"];
 };
 
@@ -13,7 +13,7 @@ export const useOptions = ({
 	params,
 	bearer,
 	defaultOptions = [],
-	getData = defaultGetData,
+	getOptions = defaultGetOptions,
 }) => {
 	const { sendAsync } = useWebApi();
 	const [optionsLoading, setOptionsLoading] = useState();
@@ -33,7 +33,7 @@ export const useOptions = ({
 			});
 
 			if (status.success) {
-				setOptionsData(getData(payload));
+				setOptionsData(getOptions(payload));
 			} else {
 				throw error ?? new Error("未預期例外");
 			}
@@ -43,7 +43,7 @@ export const useOptions = ({
 		} finally {
 			setOptionsLoading(false);
 		}
-	}, [bearer, getData, method, params, sendAsync, url]);
+	}, [bearer, getOptions, method, params, sendAsync, url]);
 
 	const clearOptions = useCallback(() => {
 		console.log("clearOptions");

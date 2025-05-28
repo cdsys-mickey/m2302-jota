@@ -1,10 +1,6 @@
 import { Box, styled } from "@mui/material";
 
-const FormSectionBox = styled(Box, {
-	className: "FormSectionBox",
-	shouldForwardProp: (prop) =>
-		!["editing"].includes(prop),
-})(
+const FormSectionBox = styled(Box)(
 	({
 		theme,
 		bgcolor = "rgba(255, 255, 255, 100.0)",

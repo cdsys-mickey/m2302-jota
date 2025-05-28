@@ -160,7 +160,7 @@ CheckboxExGroup.propTypes = {
 	getOptionKey: PropTypes.func,
 	getOptionLabel: PropTypes.func,
 	isOptionChecked: PropTypes.func,
-	getData: PropTypes.func,
+	getOptions: PropTypes.func,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	loading: PropTypes.bool,
 	fullWidth: PropTypes.bool,

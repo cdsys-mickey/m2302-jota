@@ -21,6 +21,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import D05Drawer from "../D05Drawer";
 import D05DialogForm from "./D05DialogForm";
 import { D05DialogToolbarContainer } from "./toolbar/D05DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const D05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -267,6 +268,10 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 		d05.onEditorSubmit({ setValue: form.setValue, gridMeta }),
 		d05.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	useEffect(() => {
 		if (d05.itemDataReady) {

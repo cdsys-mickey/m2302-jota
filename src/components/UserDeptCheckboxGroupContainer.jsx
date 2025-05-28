@@ -10,7 +10,7 @@ export const UserDeptCheckboxGroupContainer = (props) => {
 	const { uid, scope = Auth.SCOPES.HQ, ...rest } = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload;
 	}, []);
 
@@ -30,7 +30,7 @@ export const UserDeptCheckboxGroupContainer = (props) => {
 			getOptionKey={DeptOptions.getOptionKey}
 			getOptionLabel={DeptOptions.getOptionLabel}
 			isOptionChecked={DeptOptions.isOptionChecked}
-			getData={getData}
+			getOptions={getOptions}
 			{...rest}
 		/>
 	);

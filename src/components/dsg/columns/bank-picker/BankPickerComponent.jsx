@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import ProdTypeBPicker from "../../../picker/ProdTypeBPicker";
 import Constants from "@/modules/md-constants";
+import BankPicker from "@/components/fields/BankPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -14,7 +15,7 @@ const arePropsEqual = (oldProps, newProps) => {
 	});
 };
 
-const ProdTypeBPickerComponent = memo((props) => {
+const BankPickerComponent = memo((props) => {
 	const {
 		// Data
 		rowData,
@@ -110,7 +111,7 @@ const ProdTypeBPickerComponent = memo((props) => {
 	// }
 
 	return (
-		<ProdTypeBPicker
+		<BankPicker
 			// name={name}
 			// label=""
 			// inputRef={ref}
@@ -137,7 +138,7 @@ const ProdTypeBPickerComponent = memo((props) => {
 	);
 }, arePropsEqual);
 
-ProdTypeBPickerComponent.propTypes = {
+BankPickerComponent.propTypes = {
 	// Data
 	rowData: PropTypes.oneOfType([
 		PropTypes.string,
@@ -162,5 +163,5 @@ ProdTypeBPickerComponent.propTypes = {
 	getContextMenuItems: PropTypes.func,
 };
 
-ProdTypeBPickerComponent.displayName = "ProdTypeBPickerComponent";
-export default ProdTypeBPickerComponent;
+BankPickerComponent.displayName = "BankPickerComponent";
+export default BankPickerComponent;

@@ -35,7 +35,7 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const { httpGetAsync } = useWebApi();
 
-	const defaultGetData = useCallback((payload) => {
+	const defaultGetOptions = useCallback((payload) => {
 		return payload["data"] || [];
 	}, []);
 
@@ -76,7 +76,7 @@ export const useInfiniteLoader = (props = {}) => {
 			stop,
 			saveKey,
 			params,
-			getData = defaultGetData,
+			getOptions = defaultGetOptions,
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
 			refresh = false,
@@ -155,7 +155,7 @@ export const useInfiniteLoader = (props = {}) => {
 					if (itemCount !== undefined) {
 						setItemCount(itemCount);
 					}
-					const newData = getData(payload);
+					const newData = getOptions(payload);
 					const newDataObj = Arrays.toObject(newData, start);
 					// console.log("newData", newData);
 
@@ -187,7 +187,7 @@ export const useInfiniteLoader = (props = {}) => {
 			}
 		},
 		[
-			defaultGetData,
+			defaultGetOptions,
 			defaultGetSaveKey,
 			defaultGetItemCount,
 			initialFetchSize,

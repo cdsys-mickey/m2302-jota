@@ -1,8 +1,8 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Objects from "@/shared-modules/Objects.mjs";
 import { nanoid } from "nanoid";
-import ProdTypeA from "../md-prod-type-a";
-import ProdTypeB from "../md-prod-type-b";
+import ProdTypeA from "../ProdTypeA";
+import ProdTypeB from "../ProdTypeB";
 import Reports from "../md-reports";
 import TaxTypes from "../TaxTypes.mjs";
 

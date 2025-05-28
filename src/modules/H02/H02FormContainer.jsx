@@ -17,7 +17,7 @@ export const H02FormContainer = () => {
 		)
 	}, [h02.onSubmit, h02.onSubmitError, form]);
 
-	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

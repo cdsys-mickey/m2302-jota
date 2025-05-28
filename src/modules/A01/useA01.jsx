@@ -448,7 +448,7 @@ export const useA01 = ({ mode }) => {
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: API_URL,
-					data: {
+					params: {
 						id: itemId,
 					},
 					bearer: token,

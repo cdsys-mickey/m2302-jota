@@ -14,7 +14,7 @@ const AccountingEntryListingPicker = memo((props) => {
 	} = props;
 	const auth = useContext(AuthContext);
 
-	const getData = useCallback((payload) => {
+	const getOptions = useCallback((payload) => {
 		return payload["data"];
 	}, []);
 
@@ -41,7 +41,7 @@ const AccountingEntryListingPicker = memo((props) => {
 			getOptionLabel={getOptionLabel}
 			renderOptionLabel={AccountingEntries.getOptionLabel}
 			isOptionEqualToValue={AccountingEntries.isOptionEqualToValue}
-			getData={getData}
+			getOptions={getOptions}
 			querystring={querystring}
 			notFoundText="作帳日 ${input} 不存在"
 			{...rest}

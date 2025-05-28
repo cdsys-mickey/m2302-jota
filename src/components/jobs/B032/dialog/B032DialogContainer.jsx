@@ -22,6 +22,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import B032Drawer from "../B032Drawer";
 import B032DialogForm from "./B032DialogForm";
 import { B032DialogToolbarContainer } from "./toolbar/B032DialogToolbarContainer";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const B032DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -85,6 +86,10 @@ export const B032DialogContainer = forwardRef((props, ref) => {
 		b032.onEditorSubmit,
 		b032.onEditorSubmitError
 	);
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
+		enableOnFormTags: true
+	})
 
 	const readOnly = useMemo(() => {
 		return !b032.editing

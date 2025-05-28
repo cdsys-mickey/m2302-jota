@@ -75,7 +75,7 @@ export const useWebApi = (props) => {
 		[_baseUrl]
 	);
 
-	// const defaultGetData = useCallback((payload) => {
+	// const defaultGetOptions = useCallback((payload) => {
 	// 	return payload["data"] || [];
 	// }, []);
 

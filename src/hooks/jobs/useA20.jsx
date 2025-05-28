@@ -1,18 +1,17 @@
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toastEx";
+import { useAppModule } from "@/hooks/jobs/useAppModule";
 import A20 from "@/modules/md-a20";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/Errors.mjs";
-import { useCallback, useContext, useState } from "react";
-import { toast } from "react-toastify";
+import { useCallback, useContext, useRef, useState } from "react";
 import { useSideDrawer } from "../useSideDrawer";
-import { useAppModule } from "@/hooks/jobs/useAppModule";
-import { toastEx } from "@/helpers/toastEx";
 
 export const useA20 = ({ token }) => {
+	const itemIdRef = useRef();
 	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
 		token,
@@ -48,25 +47,26 @@ export const useA20 = ({ token }) => {
 		createRow
 	});
 
-	const confirmReturn = useCallback(() => {
-		dialogs.confirm({
-			message: "確認要結束編輯?",
-			onConfirm: () => {
-				crud.cancelUpdating();
-			},
-		});
-	}, [crud, dialogs]);
+
 
 	const loadItem = useCallback(
-		async ({ id }) => {
+		async ({ id, refresh }) => {
+			const itemId = refresh ? itemIdRef.current : id;
+			if (!itemId) {
+				throw new Error("未指定 id");
+			}
+			if (!refresh) {
+				itemIdRef.current = id;
+				crud.startReading("讀取中...", { id });
+			}
 			try {
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/prod/boms`,
 					bearer: token,
 					params: {
-						id
-					}
+						id: itemId
+					},
 				});
 				console.log("payload", payload);
 				if (status.success) {
@@ -84,6 +84,16 @@ export const useA20 = ({ token }) => {
 		},
 		[crud, httpGetAsync, grid, token]
 	);
+
+	const confirmReturn = useCallback(() => {
+		dialogs.confirm({
+			message: "確認要結束編輯?",
+			onConfirm: () => {
+				crud.cancelUpdating();
+				loadItem({ refresh: true });
+			},
+		});
+	}, [crud, dialogs, loadItem]);
 
 	const handleSelect = useCallback(
 		async (e, rowData) => {
