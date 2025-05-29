@@ -1,15 +1,13 @@
-import { FormProvider, useFormContext, useWatch } from "react-hook-form";
-import G04Form from "./G04Form";
-import { useContext } from "react";
-import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { G04Context } from "./G04Context";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { useCallback } from "react";
 import { useInit } from "@/shared-hooks/useInit";
+import { useCallback, useContext, useMemo } from "react";
+import { FormProvider, useFormContext, useWatch } from "react-hook-form";
+import { useHotkeys } from "react-hotkeys-hook";
 import StdPrint from "../StdPrint.mjs";
-import Forms from "@/shared-modules/Forms.mjs";
-import DateFormats from "@/shared-modules/sd-date-formats";
+import G04 from "./G04.mjs";
+import { G04Context } from "./G04Context";
+import G04Form from "./G04Form";
 
 export const G04FormContainer = () => {
 	const form = useFormContext();
@@ -23,6 +21,7 @@ export const G04FormContainer = () => {
 			CutDate,
 			RecGroup,
 			CustID,
+			delYM,
 			delSession,
 			delRecGroup,
 			delCustID,
@@ -53,11 +52,37 @@ export const G04FormContainer = () => {
 		[catL, catM]
 	);
 
+	const handleDelSessionChange = useCallback((newSession) => {
+		console.log("newSession", newSession);
+		if (newSession?.AccYM) {
+			form.setValue("delYM", newSession?.AccYM)
+		}
+	}, [form]);
+
+	const handleInputChange = useCallback((e, newValue) => {
+		form.setValue("Stage", newValue);
+	}, [form]);
+
+	const handleSubmit = form.handleSubmit(g04.onSubmit, g04.onSubmitError);
+	const handleDeleteSubmit = form.handleSubmit(g04.onDeleteSubmit, g04.onDeleteSubmitError);
+
+	const handleDefaultAction = useMemo(() => {
+		if (g04.selectedTab == G04.Tabs.CREATE) {
+			return handleSubmit;
+		} else if (g04.selectedTab == G04.Tabs.DELETE) {
+			return handleDeleteSubmit;
+		}
+		return null;
+	}, [g04.selectedTab, handleDeleteSubmit, handleSubmit])
+
+	useHotkeys(["Control+Enter"], () => setTimeout(handleDefaultAction), {
+		enableOnFormTags: true
+	})
+
 	useInit(async () => {
-		const cutYM = await g04.getCutYM();
 		reset({
-			outputType: StdPrint.getDefaultOption(),
-			CutYM: cutYM ? Forms.parseDate(cutYM, DateFormats.DATEFNS_YEAR_AND_MONTH) : null
+			AccYM: new Date(),
+			delYM: null
 		})
 	}, []);
 
@@ -67,6 +92,8 @@ export const G04FormContainer = () => {
 				<G04Form
 					selectedTab={g04.selectedTab}
 					handleTabChange={g04.handleTabChange}
+					handleDelSessionChange={handleDelSessionChange}
+					handleDelSessionInputChange={handleInputChange}
 				/>
 			</FormMetaProvider>
 		</FormProvider>

@@ -18,10 +18,10 @@ const transformForSubmitting = (payload) => {
 };
 
 const transformForDeleteSubmitting = (payload) => {
-	const { delSession, delRecGroup, delCustID } = payload;
+	const { delYM, delSession, delRecGroup, delCustID } = payload;
 	return {
-		AccYM: Forms.formatYearMonth(delSession?.AccYM) ?? "",
-		Stage: delSession?.Stage ?? "",
+		AccYM: Forms.formatYearMonth(delYM) ?? "",
+		Stage: delSession?.Stage != null ? delSession.Stage : delSession || "",
 		RecGroup: delRecGroup ?? "",
 		CustID: delCustID?.CustID ?? "",
 		CutDate: "",

@@ -318,6 +318,7 @@ export const useWebApiOptions = (opts = {}) => {
 	const handleInputChange = useCallback(
 		(event) => {
 			const qs = event.target.value;
+			console.log(`text changed: `, qs);
 			if (disableOpenOnInput) {
 				setPickerState((prev) => ({
 					...prev,
@@ -416,9 +417,14 @@ export const useWebApiOptions = (opts = {}) => {
 	}, [shouldLoadOptions]);
 
 	const _findByInput = useMemo(() => {
-		return Types.isBoolean(findByInput) && !findByInput
-			? fetchByInput
-			: findByInput;
+		if (findByInput != null) {
+			if (Types.isFunction(findByInput)) {
+				return findByInput;
+			} else if (Types.isBoolean(findByInput)) {
+				return findByInput ? fetchByInput : null;
+			}
+		}
+		return fetchByInput;
 	}, [findByInput, fetchByInput]);
 
 	return {

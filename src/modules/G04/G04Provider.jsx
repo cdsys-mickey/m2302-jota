@@ -5,12 +5,7 @@ import { useG04 } from "./useG04";
 
 export const G04Provider = ({ children }) => {
 	const g04 = useG04();
-	const form = useForm({
-		defaultValues: {
-			AccYM: new Date(),
-			CutDate: new Date()
-		},
-	});
+	const form = useForm();
 
 	return (
 		<FormProvider {...form}>

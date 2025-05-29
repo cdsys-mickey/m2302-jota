@@ -8,7 +8,7 @@ import { RecvAccountSessionGridRow } from "./RecvAccountSessionGridRow";
 import RecvAccountSessions from "./RecvAccountSessions.mjs";
 
 export const RecvAcctCurrentSessionPicker = (props) => {
-	const { label = "應收帳批次期別", ...rest } = props;
+	const { label = "應收帳批次期別", forSession = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
@@ -26,16 +26,23 @@ export const RecvAcctCurrentSessionPicker = (props) => {
 			url={`v1/sales/recv-account/current-sessions`}
 			queryParam="qs"
 			querystring={querystring}
-			getOptionLabel={RecvAccountSessions.getOptionLabel}
-			isOptionEqualToValue={RecvAccountSessions.isOptionEqualToValue}
-			renderTagLabel={RecvAccountSessions.renderTagLabel}
+			getOptionLabel={forSession
+				? RecvAccountSessions.getOptionLabelForSession
+				: RecvAccountSessions.getOptionLabel}
+			isOptionEqualToValue={forSession
+				? RecvAccountSessions.isOptionEqualToValueForSession
+				: RecvAccountSessions.isOptionEqualToValue}
+			freeSolo={forSession}
+			forcePopupIcon
 			optionLabelSize="md"
 			// PaperComponent={PurchaseOrderPickerPaper}
 			// renderOption={renderOption}
 			GridHeaderComponent={RecvAccountSessionGridHeader}
 			GridRowComponent={RecvAccountSessionGridRow}
 			notFoundText="期別 ${input} 不存在"
-			inputParam="fz"
+			// inputParam="fz"
+			disableOpenOnInput
+			findByInput={false}
 			clearOnChange
 			{...rest}
 		/>
@@ -47,6 +54,7 @@ RecvAcctCurrentSessionPicker.propTypes = {
 	children: PropTypes.node,
 	// supplierId: PropTypes.string,
 	// supplierName: PropTypes.string,
+	forSession: PropTypes.bool
 };
 
 RecvAcctCurrentSessionPicker.displayName = "RecvAcctCurrentSessionPicker";

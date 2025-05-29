@@ -197,7 +197,7 @@ const OptionPicker = memo(
 		useImperativeHandle(inputRef, () => innerInputRef.current);
 
 		const handleInputChange = useCallback(
-			(event) => {
+			(event, newValue, reason) => {
 				const input = event.target.value;
 				// console.log(`handleInputChange: "${input}"`);
 
@@ -215,7 +215,7 @@ const OptionPicker = memo(
 				asyncRef.current.dirty = true;
 
 				if (onInputChange) {
-					onInputChange(event);
+					onInputChange(event, newValue, reason);
 				}
 				if (name && clearErrors) {
 					clearErrors(name);
@@ -375,7 +375,6 @@ const OptionPicker = memo(
 					clearErrors(name);
 				}
 
-				// if (!findByInput || _open || (!inFormMeta && !inDSG)) {
 				if (_open || (!inFormMeta && !inDSG)) {
 					return;
 				}
@@ -390,7 +389,6 @@ const OptionPicker = memo(
 				// }
 
 				// dirty check 是為了避免 option label 把 id+name 當作 id
-				// if ((asyncRef.current.dirty) && findByInput) {
 				const input = e.target.value;
 				if (asyncRef.current.dirty && findByInput && (input || emptyId)) {
 					console.log("handleLookup", e.key);

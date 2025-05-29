@@ -5,7 +5,8 @@ import { Grid, Tab } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import RecvAcctBatchCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctBatchCustomerPicker";
+import CustomerPicker from "@/components/picker/CustomerPicker";
+import RecvAcctCurrentCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctCurrentCustomerPicker";
 import { RecvAcctCurrentSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctCurrentSessionPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
@@ -16,8 +17,6 @@ import { Box } from "@mui/system";
 import G04 from "./G04.mjs";
 import G04CreateBatchButtonContainer from "./G04CreateBatchButtonContainer";
 import G04DeleteButtonContainer from "./G04DeleteButtonContainer";
-import CustomerPicker from "@/components/picker/CustomerPicker";
-import RecvAcctCurrentCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctCurrentCustomerPicker";
 
 const G04TabPanel = (props) => {
 	const { ...rest } = props;
@@ -29,7 +28,7 @@ const G04TabPanel = (props) => {
 }
 
 const G04Form = memo((props) => {
-	const { selectedTab, handleTabChange, ...rest } = props;
+	const { selectedTab, handleTabChange, handleDelSessionChange, handleDelSessionInputChange, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form {...rest} style={{ paddingBottom: "10rem" }}>
@@ -118,15 +117,32 @@ const G04Form = memo((props) => {
 							</G04TabPanel>
 							<G04TabPanel value={G04.Tabs.DELETE}>
 								<Grid container columns={12} spacing={2}>
-									<Grid item xs={12} >
+									<Grid item xs={7} >
+										<DatePickerWrapper
+											name="delYM"
+											label="帳款年月"
+											fullWidth
+											validate
+											// clearable
+											autoFocus
+											views={['year', 'month']}
+											format="yyyy/MM"
+											// required
+											placeholder="年/月"
+										/>
+									</Grid>
+
+									<Grid item xs={5} >
 										<RecvAcctCurrentSessionPicker
 											name="delSession"
-											label="帳款年月+期別"
+											forSession
+											label="期別"
 											fullWidth
 											validate
 											clearable
-											autoFocus
 											virtualize
+											onChanged={handleDelSessionChange}
+											onInputChange={handleDelSessionInputChange}
 										// required
 										// rules={{
 										// 	required: "帳款年月+期別為必填",
@@ -187,7 +203,9 @@ G04Form.propTypes = {
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,
 	selectedTab: PropTypes.string,
-	handleTabChange: PropTypes.func
+	handleTabChange: PropTypes.func,
+	handleDelSessionChange: PropTypes.func,
+	handleDelSessionInputChange: PropTypes.func
 };
 
 G04Form.displayName = "G04Form";

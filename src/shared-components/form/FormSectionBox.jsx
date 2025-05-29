@@ -1,6 +1,13 @@
 import { Box, styled } from "@mui/material";
 
-const FormSectionBox = styled(Box)(
+const COMPONENT_NAME = "FormSectionBox";
+
+const FormSectionBox = styled(Box, {
+	name: COMPONENT_NAME,
+	slot: "root",
+	shouldForwardProp: (prop) =>
+		!["editing"].includes(prop),
+})(
 	({
 		theme,
 		bgcolor = "rgba(255, 255, 255, 100.0)",
@@ -36,5 +43,4 @@ const FormSectionBox = styled(Box)(
 		// },
 	})
 );
-FormSectionBox.displayName = "FormSectionBox";
 export default FormSectionBox;
