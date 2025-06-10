@@ -3,36 +3,29 @@ import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Objects from "@/shared-modules/Objects.mjs";
-import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useJotaReports from "@/hooks/useJotaReports";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
-import G02 from "./G02.mjs";
-import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
+import useDebugDialog from "@/hooks/useDebugDialog";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
 export const useG02 = () => {
 	const crud = useContext(CrudContext);
-	const { itemData } = crud;
-	const itemIdRef = useRef();
 	const { token, operator } = useContext(AuthContext);
 	const config = useContext(ConfigContext);
+	const listLoaderCtx = useContext(InfiniteLoaderContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "G02",
 	});
-
-	// 側邊欄
-	const sideDrawer = useSideDrawer();
-
-	const [selectedInq, setSelectedInq] = useState();
+	const appFrame = useContext(AppFrameContext);
+	const debugDialog = useDebugDialog();
 
 	const {
 		httpGetAsync,
@@ -104,48 +97,85 @@ export const useG02 = () => {
 	}, [dialogs, handleWriteOff, listLoaderContext.checked.length]);
 
 	const onPrintSubmit = useCallback(
-		(payload) => {
+		async (payload) => {
 			console.log("onPrintSubmit", payload);
+
+			// fetch ListView data
+			const { status, payload: fetchPayload, error } = await httpGetAsync({
+				bearer: token,
+				url: "v1/sales/recv-accounts",
+				params: {
+					...listLoaderCtx.paramsRef.current,
+					np: 1
+				}
+			});
+			if (status.success) {
+				console.log("payload", fetchPayload.data);
+				if (!fetchPayload.data?.length) {
+					toastEx.error("目前查詢沒有資料", {
+						position: "top-right"
+					})
+					return;
+				}
+			} else {
+				toastEx.error("讀取資料發生錯誤", error)
+				return;
+			}
 
 			const data = {
 				...(payload.outputType && {
 					Action: payload.outputType.id,
 				}),
 				DeptID: operator?.CurDeptID,
-				JobName: "G02",
-				IDs: crud.itemData?.InqID,
+				JobName: "G01",
+				G02_S: fetchPayload.data ?? [],
 			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports]
+		[httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, reportUrl, reports, token]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback((outputType) => {
-		console.log("handlePrint", outputType);
+	const onDebugPrintSubmit = useCallback(async (payload) => {
+		console.log("onPrintSubmit", payload);
+
+		// fetch ListView data
+		const { status, payload: fetchPayload, error } = await httpGetAsync({
+			bearer: token,
+			url: "v1/sales/recv-accounts",
+			params: {
+				...listLoaderCtx.paramsRef.current,
+				np: 1
+			}
+		});
+		if (status.success) {
+			console.log("payload", fetchPayload.data);
+			if (!fetchPayload.data?.length) {
+				toastEx.error("目前查詢沒有資料", {
+					position: "top-right"
+				})
+				return;
+			}
+		} else {
+			toastEx.error("讀取資料發生錯誤", error)
+			return;
+		}
+
 		const data = {
-			...(outputType && {
-				Action: outputType.id,
+			...(payload.outputType && {
+				Action: payload.outputType.id,
 			}),
 			DeptID: operator?.CurDeptID,
-			JobName: "G02",
-			IDs: crud.itemData?.InqID,
+			JobName: "G01",
+			G02_S: fetchPayload.data ?? [],
 		};
-		console.log("data", data);
-		reports.open(reportUrl, data);
-	}, [crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports]);
+		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
+	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, reportUrl, token]);
 
-	// const uncheckAll = useCallback(() => {
-	// 	listLoaderContext.uncheckAll();
-	// }, [listLoaderContext]);
-
-	// const getChecked = useCallback(() => {
-	// 	return listLoader.getItemDataByIndex(listLoaderContext.checked);
-	// }, [listLoader, listLoaderContext.checked]);
 
 	const checked = useMemo(() => {
 		return listLoader.getItemDataByIndex(listLoaderContext.checked)
@@ -160,7 +190,7 @@ export const useG02 = () => {
 		// 列印
 		onPrintSubmit,
 		onPrintSubmitError,
-		handlePrint,
+		onDebugPrintSubmit,
 		handleWriteOff,
 		confirmWriteOff,
 		// uncheckAll,

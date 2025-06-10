@@ -20,6 +20,7 @@ export const useG05 = () => {
 
 	const formMeta = useFormMeta(
 		`
+		AccYM,
 		session,
 		SCustID,
 		ECustID,
@@ -62,7 +63,6 @@ export const useG05 = () => {
 			// 		jsonData: JSON.stringify(data),
 			// 	}
 			// );
-			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
 		[operator.CurDeptID, reportUrl, reports]

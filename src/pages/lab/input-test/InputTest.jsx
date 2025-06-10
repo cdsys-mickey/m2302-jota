@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 import ProdPicker from "@/components/picker/ProdPicker";
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
 import ProdTypeBPicker from "@/components/picker/ProdTypeBPicker";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DateFieldWrapper } from "@/shared-components/date-field/DateFieldWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FieldGroup from "@/shared-components/FieldGroup";
@@ -23,6 +22,7 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
+import { CheckboxEx } from "@/shared-components";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -246,7 +246,7 @@ const InputTest = () => {
 							/>
 						</Grid>
 						<Grid item xs={4}>
-							<CheckboxExWrapper name="check1" label="check1" />
+							<CheckboxEx name="check1" label="check1" />
 						</Grid>
 						<Grid item xs={4}>
 							<TextFieldWrapper

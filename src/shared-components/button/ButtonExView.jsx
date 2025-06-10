@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button } from "@mui/material";
 import { forwardRef } from "react";
 
-const ButtonEx = memo(
+const ButtonExView = memo(
 	forwardRef((props, ref) => {
 		const { children, ...rest } = props;
 		return (
@@ -14,9 +14,9 @@ const ButtonEx = memo(
 	})
 );
 
-ButtonEx.propTypes = {
+ButtonExView.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
-ButtonEx.displayName = "ButtonEx";
-export default ButtonEx;
+ButtonExView.displayName = "ButtonEx";
+export default ButtonExView;

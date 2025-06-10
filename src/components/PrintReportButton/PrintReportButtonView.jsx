@@ -46,5 +46,5 @@ PrintReportButtonView.propTypes = {
 	onSelect: PropTypes.func,
 }
 
-PrintReportButtonView.displayName = "PrintButton";
+PrintReportButtonView.displayName = "PrintReportButtonView";
 export default PrintReportButtonView;

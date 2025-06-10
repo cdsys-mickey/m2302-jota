@@ -19,7 +19,7 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 	const { authorities } = auth;
 
 	const form = useFormContext();
-	const { handleHomeClick } = useContext(AppFrameContext);
+	const { handleHomeClick, handleToggleDrawerOpen } = useContext(AppFrameContext);
 
 	const searchField = useSearchField({
 		inputRef,
@@ -64,6 +64,7 @@ const SideMenuSearchBarContainer = forwardRef((props, ref) => {
 					inputRef={inputRef}
 					onClear={searchField.handleClear}
 					onHomeClick={handleHomeClick}
+					onToggleDrawerOpen={handleToggleDrawerOpen}
 					// gotoMessages={gotoMessages}
 					{...rest}
 				/>

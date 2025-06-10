@@ -16,12 +16,14 @@ export default function RangeGroup({ legend, leftComponent, rightComponent, requ
 				<Grid item xs={12} sm={5.75}>
 					{leftComponent}
 				</Grid>
-				<Grid item xs={12} sm={0.5} sx={{ display: { xs: 'none', sm: 'block' } }}>
+				<Grid item xs={1} sm={0.5}
+				// sx={{ display: { xs: 'none', sm: 'block' } }}
+				>
 					<FlexBox justifyContent="center">
 						<Typography variant="body1">{seperator}</Typography>
 					</FlexBox>
 				</Grid>
-				<Grid item xs={12} sm={5.75}>
+				<Grid item xs={11} sm={5.75}>
 					{rightComponent}
 				</Grid>
 			</Grid>

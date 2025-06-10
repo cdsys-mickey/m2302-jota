@@ -43,7 +43,7 @@ const G04Form = memo((props) => {
 							</Box>
 							<G04TabPanel value={G04.Tabs.CREATE}>
 								<Grid container columns={12} spacing={2}>
-									<Grid item xs={12} sm={8}>
+									<Grid item xs={12} sm={7}>
 										<DatePickerWrapper
 											name="AccYM"
 											label="帳款年月"
@@ -57,7 +57,7 @@ const G04Form = memo((props) => {
 											placeholder="年/月"
 										/>
 									</Grid>
-									<Grid item xs={12} sm={4}>
+									<Grid item xs={12} sm={5}>
 										<TextFieldWrapper
 											name="Stage"
 											label="期別"
@@ -65,10 +65,10 @@ const G04Form = memo((props) => {
 											clearable
 											type="number"
 											fullWidth
-										// required
-										// rules={{
-										// 	required: "期別為必填"
-										// }}
+											required
+											rules={{
+												required: "期別為必填"
+											}}
 										/>
 									</Grid>
 									<Grid item xs={12}>
@@ -143,10 +143,10 @@ const G04Form = memo((props) => {
 											virtualize
 											onChanged={handleDelSessionChange}
 											onInputChange={handleDelSessionInputChange}
-										// required
-										// rules={{
-										// 	required: "帳款年月+期別為必填",
-										// }}
+											required
+											rules={{
+												required: "帳款年月+期別為必填",
+											}}
 										/>
 									</Grid>
 									<Grid item xs={12}>
@@ -168,6 +168,7 @@ const G04Form = memo((props) => {
 											selectOnFocus
 											fullWidth
 											sessName="delSession"
+											label="客戶編號"
 										// placeholder="客戶編號"
 										/>
 									</Grid>

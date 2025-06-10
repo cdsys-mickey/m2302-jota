@@ -561,7 +561,7 @@ export const useZA03 = () => {
 		return ZA03.isOptionEqualToValue(option, value);
 	};
 
-	const getData = useCallback((data) => {
+	const getOptions = useCallback((data) => {
 		return data;
 	}, []);
 
@@ -983,7 +983,7 @@ export const useZA03 = () => {
 		isKeyDisabled,
 		getOptionLabel,
 		isOptionEqualToValue,
-		getData,
+		getOptions,
 		handlePatch,
 		// 新增權限
 		promptAddAuth: addAuthAction.prompt,

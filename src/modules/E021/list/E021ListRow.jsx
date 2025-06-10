@@ -37,6 +37,9 @@ const E021ListRow = memo((props) => {
 						<E021DateColumn >
 							{value?.銷貨日期 || ""}
 						</E021DateColumn>
+						<E021DateColumn >
+							{value?.應收帳日期 || ""}
+						</E021DateColumn>
 
 						<E021FlagColumn>
 							{value?.零售 || ""}

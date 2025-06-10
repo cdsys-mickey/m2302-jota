@@ -1,7 +1,7 @@
 import { MockProdClassLg } from "@/mocks/mock-prod-class-lg";
 // import CabinetTypes from "@/modules/md-cabinet-types";
 import ProdClasses from "@/modules/md-prod-classes";
-import ButtonEx from "@/shared-components/button/ButtonEx";
+import ButtonExView from "@/shared-components/button/ButtonExView";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
@@ -157,15 +157,15 @@ const MockProdSearchPopper = memo(
 				</DialogContent>
 				<Divider />
 				<DialogActions>
-					<ButtonEx
+					<ButtonExView
 						size="small"
 						variant="contained"
 						color="inherit"
 					// onClick={handleReset}
 					>
 						重設
-					</ButtonEx>
-					<ButtonEx
+					</ButtonExView>
+					<ButtonExView
 						startIcon={<SearchIcon />}
 						type="submit"
 						variant="contained"
@@ -173,7 +173,7 @@ const MockProdSearchPopper = memo(
 					// onClick={handleSubmit}
 					>
 						搜尋
-					</ButtonEx>
+					</ButtonExView>
 				</DialogActions>
 			</PopperBox>
 		);

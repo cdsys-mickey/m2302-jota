@@ -99,7 +99,7 @@ const OptionPicker = memo(
 			error = false,
 			helperText,
 			disabled = false,
-			onInputChange,
+			onTextChange,
 			renderTagLabel,
 			getOptionKey,
 			labelShrink = false,
@@ -196,10 +196,11 @@ const OptionPicker = memo(
 		const innerInputRef = useRef();
 		useImperativeHandle(inputRef, () => innerInputRef.current);
 
-		const handleInputChange = useCallback(
+		const handleTextChange = useCallback(
 			(event, newValue, reason) => {
 				const input = event.target.value;
-				// console.log(`handleInputChange: "${input}"`);
+				// const input = newValue;
+				console.log(`handleTextChange: "${input}"`);
 
 				// 原本輸入框刪到空白則取消 dirty 狀態,
 				// 但為了支援空 id, 因此這裡改成允許空白時保留 dirty 狀態
@@ -214,14 +215,14 @@ const OptionPicker = memo(
 
 				asyncRef.current.dirty = true;
 
-				if (onInputChange) {
-					onInputChange(event, newValue, reason);
+				if (onTextChange) {
+					onTextChange(event, newValue, reason);
 				}
 				if (name && clearErrors) {
 					clearErrors(name);
 				}
 			},
-			[clearErrors, multiple, name, onChange, onInputChange, value]
+			[clearErrors, multiple, name, onChange, onTextChange, value]
 		);
 
 		const [popperOpen, setPopperOpen] = useState(open || false);
@@ -461,9 +462,9 @@ const OptionPicker = memo(
 
 		const handleArrowDown = useCallback(
 			(e) => {
-				if (!findByInput) {
-					return;
-				}
+				// if (!findByInput) {
+				// 	return;
+				// }
 				// console.log("popperOpen", open);
 				e.preventDefault();
 				// 由於 Column.disableKeys 設為 true 會干擾 tab 運作，
@@ -472,7 +473,7 @@ const OptionPicker = memo(
 				// _onOpen(e, { override: true });
 				handleOpen(e, { override: true });
 			},
-			[findByInput, handleOpen]
+			[handleOpen]
 		);
 
 		const handleKeyDown = useCallback(
@@ -586,8 +587,7 @@ const OptionPicker = memo(
 						// placeholder={hidePlaceholder ? "" : placeholder}
 						placeholder={hideControls ? "" : placeholder}
 						autoFocus={autoFocus}
-						// onChange={onInputChange}
-						onChange={handleInputChange}
+						onChange={handleTextChange}
 						onKeyDown={handleKeyDown}
 						// onBlur={blurToLookup ? handleBlur : undefined}
 						onBlur={handleBlur}
@@ -648,7 +648,7 @@ const OptionPicker = memo(
 					/>
 				);
 			},
-			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleInputChange, handleKeyDown, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.input, slotProps?.textField, variant]
+			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleKeyDown, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.input, slotProps?.textField, variant]
 		);
 
 		const renderDndInput = useCallback(
@@ -930,6 +930,7 @@ const OptionPicker = memo(
 					<Autocomplete
 						onKeyDown={handleAutocompleteKeyDown}
 						onChange={handleChange}
+						// onInputChange={handleInputChange}
 						ref={ref}
 						size={size}
 						PaperComponent={({ ...rest }) => (
@@ -1063,7 +1064,7 @@ OptionPicker.propTypes = {
 	error: PropTypes.bool,
 	helperText: PropTypes.string,
 	disabled: PropTypes.bool,
-	onInputChange: PropTypes.func,
+	onTextChange: PropTypes.func,
 	getOptionLabel: PropTypes.func,
 	// PickerBox
 	BoxProps: PropTypes.object,

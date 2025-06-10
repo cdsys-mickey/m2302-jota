@@ -1,9 +1,11 @@
 import { useCallback } from "react";
 import PrintReportButtonView from "./PrintReportButtonView";
 import { useFormContext } from "react-hook-form";
+import StdPrint from "@/modules/StdPrint.mjs";
+import PropTypes from "prop-types";
 
 const PrintReportButtonContainer = (props) => {
-	const { ...rest } = props;
+	const { htmlOnly, ...rest } = props;
 	const form = useFormContext();
 	const { setValue } = form;
 
@@ -12,8 +14,17 @@ const PrintReportButtonContainer = (props) => {
 		setValue("outputType", outputType);
 	}, [setValue]);
 
-	return <PrintReportButtonView onSelect={onSelect} noGutter {...rest} />
+	return (
+		<PrintReportButtonView
+			onSelect={onSelect}
+			noGutter
+			{...(htmlOnly && { options: StdPrint.optionsHTMLOnly })}
+			{...rest} />
+	)
 }
 
-PrintReportButtonContainer.displayName = "PrintButtonContainer";
+PrintReportButtonContainer.displayName = "PrintReportButtonContainer";
+PrintReportButtonContainer.propTypes = {
+	htmlOnly: PropTypes.bool
+}
 export default PrintReportButtonContainer;

@@ -384,7 +384,7 @@ const transformForReading = (payload) => {
 			: null,
 		CustName,
 		customerOrders:
-			OrdIDs?.split("|")
+			OrdIDs?.split(/[|,]/)
 				.filter((s) => !!s)
 				.map((x) => ({
 					["訂貨單號"]: x,

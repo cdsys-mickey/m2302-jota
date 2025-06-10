@@ -150,7 +150,7 @@ const transformForReading = (payload) => {
 			AbbrName: IDeptName_N,
 		},
 		depOrders:
-			OrdIDs?.split("|")
+			OrdIDs?.split(/[|,]/)
 				.filter((s) => !!s)
 				.map((x) => ({
 					["訂貨單號"]: x,

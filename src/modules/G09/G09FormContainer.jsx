@@ -5,6 +5,7 @@ import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import G09Form from "./G09Form";
 import { useCallback } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
+import Forms from "@/shared-modules/Forms.mjs";
 
 export const G09FormContainer = () => {
 	const form = useFormContext();
@@ -17,7 +18,7 @@ export const G09FormContainer = () => {
 		)
 	}, [g09.onSubmit, g09.onSubmitError, form]);
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 
@@ -32,8 +33,17 @@ export const G09FormContainer = () => {
 		control: form.control
 	})
 
-	const onSessionChanged = useCallback(() => {
+	const reportType = useWatch({
+		name: "RptType",
+		control: form.control
+	})
+
+	const onSessionChanged = useCallback((newSession) => {
 		form.setValue("CustID", null);
+
+		if (newSession?.AccYM) {
+			form.setValue("AccYM", Forms.parseDate(newSession?.AccYM + "/01"))
+		}
 	}, [form]);
 
 	return <FormProvider {...form}>
@@ -43,6 +53,7 @@ export const G09FormContainer = () => {
 				onSubmit={handleSubmit}
 				onDebugSubmit={onDebugSubmit}
 				onSessionChanged={onSessionChanged}
+				htmlOnly={reportType?.id == 2}
 			/>
 		</FormMetaProvider>
 	</FormProvider>;

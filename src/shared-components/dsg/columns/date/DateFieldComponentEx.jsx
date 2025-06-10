@@ -141,21 +141,6 @@ const DateFieldComponentEx = memo((props) => {
 		}
 	}, [active, columnIndex, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
 
-	// const [dateValue, setDateValue] = useState(null);
-
-	// 雖然是監聽輸入字串, 但還是要等到可以解析為正式日期時才會觸發
-	// const handleInputChange = useCallback((e) => {
-	// 	console.log("handleInputChange", e.target.value);
-	// 	// const inputValue = e.target.value.replace(/-/g, ''); // 去除 '-' 符號
-	// 	setDateValue(e.target.value);
-	// 	// if (inputValue.length === 8) {
-	// 	// 	setDateValue(e.target.value);
-	// 	// 	// 可以在這裡執行 onChange 的邏輯
-	// 	// 	console.log('Date input completed:', e.target.value);
-	// 	// }
-	// 	// setRowData(e.target.value);
-	// }, []);
-
 	const isValidDate = useCallback((value) => {
 		console.log(`date value ${value}`);
 		const date = new Date(value);
@@ -266,7 +251,6 @@ const DateFieldComponentEx = memo((props) => {
 
 			// value={dateValue}
 			onChange={handleChange} // 用來更新顯示的值
-			// onInput={handleInputChange} // 攔截輸入動作
 			onKeyDown={handleKeyDown}
 
 		// {...rest}

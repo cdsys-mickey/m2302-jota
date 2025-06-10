@@ -35,6 +35,8 @@ const options = [
 	{ id: OutputModes.PDF, name: "存成 PDF" },
 ];
 
+const optionsHTMLOnly = [{ id: OutputModes.HTML, name: "預覽列印" }];
+
 const getOptionById = (id) => {
 	return options.find((o) => o.id == id);
 };
@@ -74,6 +76,7 @@ const StdPrint = {
 	droppableIdToType,
 	OutputModes,
 	options,
+	optionsHTMLOnly,
 	getOptionLabel,
 	isOptionEqualToValue,
 	findById,

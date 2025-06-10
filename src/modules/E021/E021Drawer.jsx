@@ -16,6 +16,11 @@ const E021Drawer = memo((props) => {
 				}
 			}}
 			{...rest} >
+			{e021.itemData?.AccYMD && (
+				<FormFieldLabel label="應收帳款">
+					{e021.itemData?.AccYMD}
+				</FormFieldLabel>
+			)}
 			<FormFieldLabel label="最後修改時間">
 				{e021.itemData?.WriteDate_N}
 			</FormFieldLabel>

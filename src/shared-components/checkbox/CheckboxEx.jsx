@@ -1,5 +1,6 @@
 import {
 	Checkbox,
+	FormControl,
 	FormControlLabel,
 	FormHelperText
 } from "@mui/material";
@@ -25,7 +26,7 @@ const CheckboxEx = memo(
 		)
 
 		return (
-			<Box>
+			<FormControl>
 				{label ? <FormControlLabel
 					label={label}
 					error={error}
@@ -42,7 +43,7 @@ const CheckboxEx = memo(
 						{helperText}
 					</FormHelperText>
 				)}
-			</Box>
+			</FormControl>
 		);
 	})
 );

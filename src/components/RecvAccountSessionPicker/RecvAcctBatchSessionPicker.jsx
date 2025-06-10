@@ -8,7 +8,7 @@ import { RecvAccountSessionGridRow } from "./RecvAccountSessionGridRow";
 import RecvAccountSessions from "./RecvAccountSessions.mjs";
 
 export const RecvAcctBatchSessionPicker = (props) => {
-	const { label = "應收帳批次期別", ...rest } = props;
+	const { label = "應收帳批次期別", forSession = false, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
@@ -26,8 +26,14 @@ export const RecvAcctBatchSessionPicker = (props) => {
 			url={`v1/sales/recv-account/batch-sessions`}
 			queryParam="qs"
 			querystring={querystring}
-			getOptionLabel={RecvAccountSessions.getOptionLabel}
-			isOptionEqualToValue={RecvAccountSessions.isOptionEqualToValue}
+			getOptionLabel={forSession
+				? RecvAccountSessions.getOptionLabelForSession
+				: RecvAccountSessions.getOptionLabel}
+			isOptionEqualToValue={forSession
+				? RecvAccountSessions.isOptionEqualToValueForSession
+				: RecvAccountSessions.isOptionEqualToValue}
+			freeSolo={forSession}
+			forcePopupIcon
 			renderTagLabel={RecvAccountSessions.renderTagLabel}
 			optionLabelSize="md"
 			// PaperComponent={PurchaseOrderPickerPaper}
@@ -45,6 +51,7 @@ export const RecvAcctBatchSessionPicker = (props) => {
 RecvAcctBatchSessionPicker.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
+	forSession: PropTypes.bool
 	// supplierId: PropTypes.string,
 	// supplierName: PropTypes.string,
 };

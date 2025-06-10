@@ -5,6 +5,7 @@ import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import G05Form from "./G05Form";
 import { useCallback } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
+import Forms from "@/shared-modules/Forms.mjs";
 
 export const G05FormContainer = () => {
 	const form = useFormContext();
@@ -17,7 +18,7 @@ export const G05FormContainer = () => {
 		)
 	}, [g05.onSubmit, g05.onSubmitError, form]);
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 
@@ -37,9 +38,13 @@ export const G05FormContainer = () => {
 		control: form.control
 	})
 
-	const onSessionChanged = useCallback(() => {
+	const onSessionChanged = useCallback((newSession) => {
 		form.setValue("SCustID", null);
 		form.setValue("ECustID", null);
+
+		if (newSession?.AccYM) {
+			form.setValue("AccYM", Forms.parseDate(newSession?.AccYM + "/01"))
+		}
 	}, [form]);
 
 	const isFieldDisabled = useCallback(

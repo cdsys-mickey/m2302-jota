@@ -11,16 +11,28 @@ const isOptionEqualToValue = (option, value) => {
 };
 
 const transformForSubmitting = (payload) => {
-	const { outputType, session, SCustID, ECustID, RptType, retail, ...rest } =
-		payload;
+	const {
+		outputType,
+		session,
+		Stage,
+		SCustID,
+		ECustID,
+		RptType,
+		retail,
+		AccYM,
+		...rest
+	} = payload;
 
 	console.log("ignore props", retail);
 
 	return {
 		JobName: "G05",
 		Action: outputType?.id?.toString() || "",
-		AccYM: session?.AccYM ?? "",
-		Stage: session?.Stage ?? "",
+		// AccYM: AccYM || session?.AccYM ?? "",
+		// Stage: session?.Stage ?? "",
+		AccYM: Forms.formatYearMonth(AccYM) ?? "",
+		Stage:
+			Stage || (session?.Stage != null ? session.Stage : session || ""),
 		...(SCustID && {
 			SCustID: SCustID?.CustID,
 		}),

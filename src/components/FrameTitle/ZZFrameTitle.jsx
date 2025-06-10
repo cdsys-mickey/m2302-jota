@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import FlexBox from "../../shared-components/FlexBox";
 
-const FrameTitle = memo(
+const ZZFrameTitle = memo(
 	forwardRef((props, ref) => {
 		const { mobile, children, ...rest } = props;
 
@@ -24,11 +24,11 @@ const FrameTitle = memo(
 		);
 	})
 );
-FrameTitle.propTypes = {
+ZZFrameTitle.propTypes = {
 	mobile: PropTypes.bool,
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	drawerOpen: PropTypes.bool,
 	onClick: PropTypes.func
 }
-FrameTitle.displayName = "FrameTitle";
-export default FrameTitle;
+ZZFrameTitle.displayName = "ZZFrameTitle";
+export default ZZFrameTitle;

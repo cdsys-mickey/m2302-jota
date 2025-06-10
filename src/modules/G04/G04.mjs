@@ -6,22 +6,23 @@ const Tabs = Object.freeze({
 });
 
 const transformForSubmitting = (payload) => {
-	const { AccYM, CutDate, CustID, ...rest } = payload;
+	const { AccYM, Stage, RecGroup, CutDate, CustID } = payload;
 	return {
 		AccYM: Forms.formatYearMonth(AccYM) ?? "",
 		CutDate: Forms.formatDate(CutDate) ?? "",
-		...(CustID && {
-			CustID: CustID.CustID,
-		}),
-		...rest,
+		CustID: CustID?.CustID ?? "",
+		Stage,
+		RecGroup,
 	};
 };
 
 const transformForDeleteSubmitting = (payload) => {
-	const { delYM, delSession, delRecGroup, delCustID } = payload;
+	const { delYM, delSession, delRecGroup, delCustID, Stage } = payload;
 	return {
 		AccYM: Forms.formatYearMonth(delYM) ?? "",
-		Stage: delSession?.Stage != null ? delSession.Stage : delSession || "",
+		Stage:
+			Stage ||
+			(delSession?.Stage != null ? delSession.Stage : delSession || ""),
 		RecGroup: delRecGroup ?? "",
 		CustID: delCustID?.CustID ?? "",
 		CutDate: "",

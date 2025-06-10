@@ -8,7 +8,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 
 const RecvAcctRcptCustomerPicker = (props) => {
 	const {
-		label = "零售客戶",
+		label = "客戶編號",
 		forId,
 		sess,
 		placeholder,

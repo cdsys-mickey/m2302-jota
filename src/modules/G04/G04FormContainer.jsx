@@ -8,6 +8,7 @@ import StdPrint from "../StdPrint.mjs";
 import G04 from "./G04.mjs";
 import { G04Context } from "./G04Context";
 import G04Form from "./G04Form";
+import Forms from "@/shared-modules/Forms.mjs";
 
 export const G04FormContainer = () => {
 	const form = useFormContext();
@@ -55,11 +56,11 @@ export const G04FormContainer = () => {
 	const handleDelSessionChange = useCallback((newSession) => {
 		console.log("newSession", newSession);
 		if (newSession?.AccYM) {
-			form.setValue("delYM", newSession?.AccYM)
+			form.setValue("delYM", Forms.parseDate(newSession?.AccYM + "/01"))
 		}
 	}, [form]);
 
-	const handleInputChange = useCallback((e, newValue) => {
+	const handleDelSessionInputChange = useCallback((e, newValue) => {
 		form.setValue("Stage", newValue);
 	}, [form]);
 
@@ -82,6 +83,7 @@ export const G04FormContainer = () => {
 	useInit(async () => {
 		reset({
 			AccYM: new Date(),
+			CutDate: new Date(),
 			delYM: null
 		})
 	}, []);
@@ -93,7 +95,7 @@ export const G04FormContainer = () => {
 					selectedTab={g04.selectedTab}
 					handleTabChange={g04.handleTabChange}
 					handleDelSessionChange={handleDelSessionChange}
-					handleDelSessionInputChange={handleInputChange}
+					handleDelSessionInputChange={handleDelSessionInputChange}
 				/>
 			</FormMetaProvider>
 		</FormProvider>

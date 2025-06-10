@@ -20,6 +20,7 @@ export const useG09 = () => {
 
 	const formMeta = useFormMeta(
 		`
+		AccYM,
 		session,
 		CustID,
 		RptType,

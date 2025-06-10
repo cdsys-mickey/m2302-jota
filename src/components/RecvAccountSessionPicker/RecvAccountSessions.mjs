@@ -1,3 +1,5 @@
+import Types from "@/shared-modules/Types.mjs";
+
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { AccYM, Stage } = option;
@@ -8,18 +10,24 @@ const getOptionLabel = (option) => {
 };
 
 const getOptionLabelForSession = (option) => {
-	if (!option) return "";
-	const { Stage } = option;
-	if (!Stage) {
-		return `${option}`;
+	if (Types.isObject(option)) {
+		const { Stage } = option;
+		return Stage || "";
 	}
-	return `第${Stage}期`;
+	return option || "";
 };
 
 const isOptionEqualToValue = (option, value) =>
 	option["AccYM"] === value["AccYM"] && option["Stage"] === value["Stage"];
 
 const isOptionEqualToValueForSession = (option, value) => {
+	if (value?.AccYM != null) {
+		return (
+			option["AccYM"] === value["AccYM"] &&
+			option["Stage"] === value["Stage"]
+		);
+	}
+
 	return option["Stage"] === value["Stage"];
 };
 

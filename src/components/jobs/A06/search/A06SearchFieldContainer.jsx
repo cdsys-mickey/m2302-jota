@@ -39,9 +39,9 @@ export const A06SearchFieldContainer = (props) => {
 		)
 	}, [a06.onSearchSubmit, a06.onSearchSubmitError, forms])
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
-		enableOnFormTags: true
-	})
+	// useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	// 	enableOnFormTags: true
+	// })
 
 	return (
 		<form

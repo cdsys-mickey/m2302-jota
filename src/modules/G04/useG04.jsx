@@ -76,8 +76,8 @@ export const useG04 = () => {
 		[crud, httpDeleteAsync, token]
 	);
 
-	const onDeleteSubmitError = useCallback((err) => {
-		console.error("onDeleteSubmitError", err);
+	const onDeleteSubmitError = useCallback((err, data) => {
+		console.error("onDeleteSubmitError", err, data);
 	}, []);
 
 

@@ -9,6 +9,12 @@ const G08Drawer = memo((props) => {
 	const g08 = useContext(G08Context);
 	return (
 		<SideDrawer anchor={anchor} open={g08.sideDrawerOpen} onClose={g08.handleSideDrawerClose} {...rest} >
+			{g08.itemData?.AccYM_N && (
+				<FormFieldLabel label="應收帳款">
+					{`${g08.itemData?.AccYM_N}#${g08.itemData?.Stage_N}`}
+				</FormFieldLabel>
+			)}
+
 			<FormFieldLabel label="最後修改時間">
 				{g08.itemData?.WriteDate_N}
 			</FormFieldLabel>

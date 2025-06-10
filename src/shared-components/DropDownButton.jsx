@@ -155,6 +155,10 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 		return (selected && getItemIconComponent) ? getItemIconComponent(selected) : null;
 	}, [getItemIconComponent, selected])
 
+	const showSplit = useMemo(() => {
+		return split && options?.length > 1;
+	}, [options?.length, split])
+
 	return (
 		<>
 			<ButtonGroup
@@ -172,7 +176,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 					...(dense && {
 						"& .main.MuiButtonGroup-grouped": {
 							paddingLeft: StartIconComponent ? 2 : 1,
-							paddingRight: 1,
+							paddingRight: showSplit ? 1 : 2,
 							paddingTop: "4px",
 							paddingBottom: "3px",
 						},
@@ -223,21 +227,13 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 							</Typography>)
 						: _label}
 				</Button>
-				{split && (
+				{showSplit && (
 					<Button
 						size={size}
 						onClick={handleToggle}
 						className="drop-down"
 						sx={[{
-							// minWidth: "20px",
 
-							// ...(size === "small" && {
-							// 	"&.MuiButtonGroup-grouped": {
-							// 		paddingLeft: "4px",
-							// 		paddingRight: "4px",
-							// 	},
-							// }),
-							// marginLeft: 0
 						}
 						]}>
 						<IconComponent fontSize="small" {...slotProps?.dropdownButton?.icon} />

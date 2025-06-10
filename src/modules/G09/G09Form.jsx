@@ -10,27 +10,43 @@ import RecvAcctRcptCustomerPicker from "@/components/RecvAccCustomerPicker/RecvA
 import FlexBox from "@/shared-components/FlexBox";
 import G09ReportTypePicker from "./picker/G09ReportTypePicker";
 import { RecvAcctRcptSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctRcptSessionPicker";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 
 const G09Form = memo((props) => {
-	const { onSubmit, onDebugSubmit, onSessionChanged, ...rest } = props;
+	const { onSubmit, onDebugSubmit, onSessionChanged, htmlOnly, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
-							<Grid item xs={12} sm={12}>
+							<Grid item xs={7} >
+								<DatePickerWrapper
+									name="AccYM"
+									label="帳款年月"
+									fullWidth
+									validate
+									// clearable
+									autoFocus
+									views={['year', 'month']}
+									format="yyyy/MM"
+									// required
+									placeholder="年/月"
+								/>
+							</Grid>
+							<Grid item xs={12} sm={5}>
 								<RecvAcctRcptSessionPicker
 									name="session"
-									label="帳款年月+期別"
+									label="期別"
 									fullWidth
+									forSession
 									validate
 									clearable
 									autoFocus
 									virtualize
 									required
 									rules={{
-										required: "帳款年月+期別為必填",
+										required: "期別為必填",
 									}}
 									onChanged={onSessionChanged}
 								/>
@@ -89,6 +105,7 @@ const G09Form = memo((props) => {
 											variant="contained"
 											onSubmit={onSubmit}
 											onDebugSubmit={onDebugSubmit}
+											htmlOnly={htmlOnly}
 										/>
 									</FlexBox>
 								</Grid>
@@ -111,7 +128,8 @@ G09Form.propTypes = {
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,
 	onCustomerChange: PropTypes.func,
-	onSessionChanged: PropTypes.func
+	onSessionChanged: PropTypes.func,
+	htmlOnly: PropTypes.bool,
 };
 
 G09Form.displayName = "G09Form";

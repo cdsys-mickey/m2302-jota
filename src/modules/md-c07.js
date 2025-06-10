@@ -66,13 +66,13 @@ const transformForReading = (payload) => {
 		},
 		TxoID,
 		transOutOrders:
-			TxoID?.split("|")
+			TxoID?.split(/[|,]/)
 				.filter((s) => !!s)
 				.map((x) => ({
 					["撥出單號"]: x,
 				})) || [],
 		transInOrders:
-			TxiID?.split("|")
+			TxiID?.split(/[|,]/)
 				.filter((s) => !!s)
 				.map((x) => ({
 					["撥入單號"]: x,

@@ -58,7 +58,7 @@ export const useWebApiOptions = (opts = {}) => {
 		disableOnSingleOption,
 		debug = false,
 		// Enter & Tab
-		findByInput = false,
+		findByInput,
 		clearOnChange = false,
 		clearValueOnChange = false,
 		clearOptionsOnChange = false,
@@ -221,6 +221,7 @@ export const useWebApiOptions = (opts = {}) => {
 				loading: true,
 				error: null,
 			}));
+			const handleError = _onError ?? onError;
 			// 解決滑鼠先移到 Listbox 位置而選不到項目的問題
 			// await new Promise((resolve) => setTimeout(resolve, 300));
 			try {
@@ -239,13 +240,15 @@ export const useWebApiOptions = (opts = {}) => {
 				});
 				if (status.success) {
 					const loadedOptions = getOptions(payload);
-					if (!Types.isArray(loadedOptions)) {
-						throw new Error("options is not an array");
-					}
+					// if (!Types.isArray(loadedOptions)) {
+					// 	throw new Error("options is not an array");
+					// }
+					const _options = Types.isArray(loadedOptions) ? loadedOptions : [];
 					// 只有成功才會將 loading 註記為 false
 					setPickerState((prev) => ({
 						...prev,
-						options: loadedOptions || [],
+						// options: loadedOptions || [],
+						options: _options,
 						loading: false,
 					}));
 					setNoOptionsText(noOptionsText);
@@ -255,11 +258,7 @@ export const useWebApiOptions = (opts = {}) => {
 			} catch (err) {
 				// 通常是 getOptions 失敗才會跑到這邊
 				console.error(`${name}.loadOptions failed`, err);
-				if (_onError) {
-					_onError(err);
-				} else {
-					onError(err);
-				}
+				handleError(err);
 				setPickerState((prev) => ({
 					...prev,
 					options: [],
@@ -315,10 +314,10 @@ export const useWebApiOptions = (opts = {}) => {
 		}));
 	}, []);
 
-	const handleInputChange = useCallback(
-		(event) => {
+	const handleTextChange = useCallback(
+		(event, newValue, reason) => {
 			const qs = event.target.value;
-			console.log(`text changed: `, qs);
+			console.log(`text changed: `, qs, newValue, reason);
 			if (disableOpenOnInput) {
 				setPickerState((prev) => ({
 					...prev,
@@ -434,7 +433,7 @@ export const useWebApiOptions = (opts = {}) => {
 		resetLoading,
 		...pickerState,
 		noOptionsText: _noOptionsText,
-		onInputChange: handleInputChange,
+		onTextChange: handleTextChange,
 		onChange: handleChange,
 		// open,
 		// disableClose,

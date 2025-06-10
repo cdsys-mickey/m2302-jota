@@ -1,6 +1,6 @@
 import { MockProdClassLg } from "@/mocks/mock-prod-class-lg";
 import ProdClasses from "@/modules/md-prod-classes";
-import ButtonEx from "@/shared-components/button/ButtonEx";
+import ButtonExView from "@/shared-components/button/ButtonExView";
 import ControlledDatePicker from "@/shared-components/date-picker/ControlledDatePicker";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
