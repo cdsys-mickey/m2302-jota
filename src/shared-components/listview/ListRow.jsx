@@ -1,11 +1,11 @@
+import { Grid } from "@mui/material";
+import { pink } from "@mui/material/colors";
+import PropTypes from "prop-types";
 import { memo } from "react";
 import HoverableListItem from "../HoverableListItem";
-import { Grid } from "@mui/material";
-import PropTypes from "prop-types";
-import { blue, orange, pink } from "@mui/material/colors";
 
 const ListRow = memo((props) => {
-	const { children, flex = true, index, style, value, checked, onClick, ...rest } = props;
+	const { children, flex = true, selectText = true, style, value, checked, onClick, ...rest } = props;
 	return (
 		<div style={style}>
 			<HoverableListItem borderBottom onClick={onClick}
@@ -22,6 +22,9 @@ const ListRow = memo((props) => {
 						transition: theme.transitions.create("backgroundColor", {
 							easing: theme.transitions.easing.sharp,
 							duration: theme.transitions.duration.enteringScreen,
+						}),
+						...(!selectText && {
+							userSelect: "none"
 						})
 					})
 				]}

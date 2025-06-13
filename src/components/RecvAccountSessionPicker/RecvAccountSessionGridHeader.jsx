@@ -8,7 +8,7 @@ export const RecvAccountSessionGridHeader = memo(
 	() => {
 		return (
 			<OptionPickerGridHeader>
-				<RecvAcctYMColumn header>採購年月</RecvAcctYMColumn>
+				<RecvAcctYMColumn header>帳款年月</RecvAcctYMColumn>
 				<RecvAccountSessionColumn header>期別</RecvAccountSessionColumn>
 			</OptionPickerGridHeader>
 		);

@@ -39,7 +39,9 @@ export const useG07 = () => {
 				crud.startUpdating();
 				const { status, error } = await httpPostAsync({
 					url: "v1/sales/recv-account/carry-forward",
-					bearer: token
+					bearer: token,
+					mode: "form",
+					data
 				})
 				if (status.success) {
 					toastEx.success("結轉已成功");

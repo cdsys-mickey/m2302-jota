@@ -1,25 +1,27 @@
-import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import PropTypes from "prop-types";
-import { Fragment, forwardRef, memo } from "react";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { IconButton, Tooltip } from "@mui/material";
+import PropTypes from "prop-types";
+import { Fragment, forwardRef, memo } from "react";
+import G06DeleteButton from "./G06DeleteButton";
+import G06EditButton from "./G06EditButton";
 
 const G06DialogTitleViewButtons = memo(
 	forwardRef((props, ref) => {
 		const { onEdit, onDelete, onSideDrawerOpen, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				{onDelete && (
+				<G06DeleteButton />
+				{/* {onDelete && (
 					<ResponsiveButton
 						startIcon={<HighlightOffIcon />}
 						color="secondary"
 						onClick={onDelete}>
 						刪除
 					</ResponsiveButton>
-				)}
+				)}*/}
 
+				<G06EditButton />
+				{/*
 				{onEdit && (
 					<ResponsiveButton
 						startIcon={<EditOutlinedIcon />}
@@ -27,7 +29,7 @@ const G06DialogTitleViewButtons = memo(
 						onClick={onEdit}>
 						輸入收款資料
 					</ResponsiveButton>
-				)}
+				)} */}
 
 				<Tooltip title="詳細資訊">
 					<IconButton onClick={onSideDrawerOpen} size="small">

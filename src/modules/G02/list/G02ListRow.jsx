@@ -17,11 +17,7 @@ const G02ListRow = memo((props) => {
 
 
 	return (
-		<ListRow style={style} onClick={onClick} checked={checked}>
-			{/* <CheckboxColumn index={index} /> */}
-			{/* <IndexColumn index={index}>
-				<CheckboxExWrapper name="checked" />
-			</IndexColumn> */}
+		<ListRow style={style} onClick={onClick} checked={checked} selectText={false}>
 			<CheckboxColumn
 				index={index}
 				checked={checked}

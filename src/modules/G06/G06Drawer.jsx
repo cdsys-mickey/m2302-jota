@@ -9,6 +9,11 @@ const G06Drawer = memo((props) => {
 	const g06 = useContext(G06Context);
 	return (
 		<SideDrawer anchor={anchor} open={g06.sideDrawerOpen} onClose={g06.handleSideDrawerClose} {...rest} >
+			{g06.itemData?.CutNotes && (
+				<FormFieldLabel label="已結轉">
+					{g06.itemData?.CutNotes}
+				</FormFieldLabel>
+			)}
 			<FormFieldLabel label="最後修改時間">
 				{g06.itemData?.WriteDate_N}
 			</FormFieldLabel>

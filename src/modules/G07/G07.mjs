@@ -1,5 +1,3 @@
-import Forms from "@/shared-modules/Forms.mjs";
-
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { name } = option;
@@ -11,20 +9,16 @@ const isOptionEqualToValue = (option, value) => {
 };
 
 const transformForSubmitting = (payload) => {
-	const { outputType, session, CustID, RptType, retail, ...rest } = payload;
+	const { session, CustID } = payload;
 
-	console.log("ignore props", retail);
+	// console.log("ignore props", retail);
 
 	return {
-		JobName: "G07",
-		Action: outputType?.id?.toString() || "",
-		AccYM: session?.CurAccYM ?? "",
-		Stage: session?.CurStage ?? "",
+		ym: session?.AccYM ?? "",
+		sess: session?.Stage ?? "",
 		...(CustID && {
-			CustID: CustID?.CustID,
+			scti: CustID?.CustID,
 		}),
-		RptType: RptType.id?.toString(),
-		...rest,
 	};
 };
 
@@ -35,5 +29,3 @@ const G07 = {
 };
 
 export default G07;
-
-

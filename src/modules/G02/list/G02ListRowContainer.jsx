@@ -14,13 +14,12 @@ export const G02ListRowContainer = (props) => {
 	const value = useMemo(() => g02.listData[index], [g02.listData, index]);
 
 	const listLoader = useContext(InfiniteLoaderContext);
-	const { isChecked, setChecked } = listLoader;
+	const { isChecked, toggleChecked } = listLoader;
 	const checked = isChecked(index);
 
 	const handleCheckChange = useCallback((e) => {
-		e.preventDefault();
-		setChecked(index);
-	}, [index, setChecked]);
+		toggleChecked(index, e);
+	}, [index, toggleChecked]);
 
 	return (
 		<ListRowProvider loading={loading}>
