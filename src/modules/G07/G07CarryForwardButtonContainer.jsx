@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { forwardRef, memo, useContext } from "react";
 import { G07Context } from "./G07Context";
@@ -16,7 +16,7 @@ const G07CarryForwardButtonContainer = memo(
 		}, [form, g07.onSubmit, g07.onSubmitError])
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				responsive
 				ref={ref}
 				variant="contained"
@@ -28,7 +28,7 @@ const G07CarryForwardButtonContainer = memo(
 				}}
 				{...rest}>
 				結轉
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

@@ -11,7 +11,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import OptionPicker from "./OptionPicker";
+import OptionPickerView from "./OptionPickerView";
 
 const dontFilterOptions = (options) => {
 	return options;
@@ -355,7 +355,7 @@ const ZZOptionPickerEx = memo(
 		}, [name, onChange, querystring, url]);
 
 		return (
-			<OptionPicker
+			<OptionPickerView
 				name={name}
 				multiple={multiple}
 				ref={ref}

@@ -1,5 +1,5 @@
 import { G10Context } from "@/pages/jobs/G10/G10Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import { useMemo } from "react";
@@ -21,7 +21,7 @@ const G10DeleteButtonContainer = memo(
 		return (
 			<Tooltip title={title} arrow>
 				<span>
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						ref={ref}
 						variant="contained"
@@ -35,7 +35,7 @@ const G10DeleteButtonContainer = memo(
 						}}
 						{...rest}>
 						刪除
-					</ButtonWrapper>
+					</ButtonEx>
 				</span>
 			</Tooltip>
 		);

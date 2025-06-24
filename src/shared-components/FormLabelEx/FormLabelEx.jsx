@@ -24,6 +24,7 @@ const FormLabelEx = memo((props) => {
 		dense,
 		children,
 		variant = "subtitle2",
+		slotProps,
 		sx = [],
 	} = props;
 	return (
@@ -31,11 +32,14 @@ const FormLabelEx = memo((props) => {
 			sx={[
 				(theme) => ({
 					color: theme.palette.text.primary,
-					fontWeight: 400,
+					// fontWeight: 400,
 					...(dense && {
 						top: "-4px",
 					}),
-					marginRight: theme.spacing(1)
+					marginRight: theme.spacing(1),
+					"& .MuiTypography-root": {
+						fontWeight: 600
+					}
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}>
@@ -46,7 +50,7 @@ const FormLabelEx = memo((props) => {
 					</FlexBox>
 				)}
 				<FlexBox alignItems="center" flex={1}>
-					<Typography variant={variant}>{children}</Typography>
+					<Typography variant={variant} {...slotProps?.typography}>{children}</Typography>
 				</FlexBox>
 			</FlexBox>
 		</FormLabel>
@@ -59,7 +63,8 @@ FormLabelEx.propTypes = {
 	children: PropTypes.node,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	variant: PropTypes.string,
-	dense: PropTypes.bool
+	dense: PropTypes.bool,
+	slotProps: PropTypes.object
 };
 
 export default FormLabelEx;

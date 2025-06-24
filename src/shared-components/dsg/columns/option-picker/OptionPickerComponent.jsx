@@ -1,5 +1,5 @@
 import { memo } from "react";
-import OptionPicker from "@/shared-components/option-picker/OptionPicker";
+import OptionPickerView from "@/shared-components/option-picker/OptionPickerView";
 import PropTypes from "prop-types";
 import { useRef } from "react";
 import { useLayoutEffect } from "react";
@@ -68,7 +68,7 @@ const OptionPickerComponent = memo((props) => {
 	}, [focus]);
 
 	return (
-		<OptionPicker
+		<OptionPickerView
 			label=""
 			readOnly={disabled}
 			inputRef={inputRef}

@@ -2,7 +2,7 @@ import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import SearchIcon from "@mui/icons-material/Search";
 import B031ImportProdsDialogContainer from "./import-prods/B031ImportProdsDialogContainer";
 
@@ -15,25 +15,25 @@ const B031DialogEditToolbar = memo(
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onLoadProds && (
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						onClick={onLoadProds}
 						endIcon={<SearchIcon />}
 						color="primary"
 						variant="outlined">
 						帶入商品
-					</ButtonWrapper>
+					</ButtonEx>
 				)}
 
-				<ButtonWrapper
+				<ButtonEx
 					responsive
 					onClick={onCancel}
 					color="warning"
 					variant="outlined"
 					{...rest}>
 					取消
-				</ButtonWrapper>
-				<ButtonWrapper
+				</ButtonEx>
+				<ButtonEx
 					responsive
 					onClick={onSave}
 					type="submit"
@@ -42,7 +42,7 @@ const B031DialogEditToolbar = memo(
 					variant="contained"
 					loading={loading}>
 					儲存
-				</ButtonWrapper>
+				</ButtonEx>
 				{/* 帶入商品 */}
 				<B031ImportProdsDialogContainer />
 			</Fragment>

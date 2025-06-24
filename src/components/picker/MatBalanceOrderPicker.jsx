@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import MatBalanceOrders from "@/modules/md-mat-balance-orders";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useContext, useMemo } from "react";
@@ -21,7 +21,7 @@ const MatBalanceOrderPicker = memo((props) => {
 
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url={`v1/mat/balance-orders`}
 			bearer={token}

@@ -1,10 +1,12 @@
-import Auth from "@/modules/md-auth";
-import Cookies from "js-cookie";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { useContext } from "react";
 import DebugReportButtonView from "./DebugReportButtonView";
 
 const DebugReportButtonContainer = (props) => {
 	const { ...rest } = props;
-	let impersonate = Cookies.get(Auth.COOKIE_MODE) === "im";
+	const { impersonate } = useContext(AuthContext);
+
+
 	if (!impersonate) {
 		return false;
 	}

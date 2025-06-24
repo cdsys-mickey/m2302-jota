@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx} from "@/shared-components";
 import { useContext } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import CheckIcon from "@mui/icons-material/Check";
@@ -13,7 +13,7 @@ export const ZA03AuthClearSelectionButtonContainer = (props) => {
 		return false;
 	}
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			startIcon={<CheckIcon />}
 			onClick={za03.clearSelection({ gridMeta: formMeta.gridMeta })}
 			{...rest}

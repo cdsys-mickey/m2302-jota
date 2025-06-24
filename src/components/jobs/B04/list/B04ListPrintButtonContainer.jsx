@@ -3,7 +3,7 @@ import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { forwardRef, memo, useContext } from "react";
 import { B04Context } from "@/contexts/B04/B04Context";
 import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import { useFormContext } from "react-hook-form";
 import { useMemo } from "react";
 
@@ -23,7 +23,7 @@ const B04ListPrintButtonContainer = memo(
 		}
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				className="button"
 				responsive
 				ref={ref}
@@ -36,7 +36,7 @@ const B04ListPrintButtonContainer = memo(
 				color="neutral"
 				{...rest}>
 				列印
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

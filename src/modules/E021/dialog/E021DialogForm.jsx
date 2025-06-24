@@ -109,9 +109,6 @@ const E021DialogForm = memo((props) => {
 										label: {
 											typography: {
 												variant: "body2",
-												// sx: {
-												// 	fontSize: 10
-												// }
 											}
 										}
 									}}
@@ -251,9 +248,6 @@ const E021DialogForm = memo((props) => {
 										label: {
 											typography: {
 												variant: "body2",
-												// sx: {
-												// 	fontSize: 10
-												// }
 											}
 										}
 									}}

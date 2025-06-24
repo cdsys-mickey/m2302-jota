@@ -1,4 +1,4 @@
-import CheckboxEx from "@/shared-components/checkbox/CheckboxEx";
+import CheckboxEx from "@/shared-components/checkbox/CheckboxExView";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { Box } from "@mui/material";

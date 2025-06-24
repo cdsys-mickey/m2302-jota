@@ -77,8 +77,8 @@ const transformForReading = (data) => {
 		MClas_N,
 		SClas,
 		SClas_N,
-		// CmsID,
-		// Cms_N,
+		CmsID,
+		Cms_N,
 		CaseID,
 		Case_N,
 		SUnit,
@@ -118,12 +118,12 @@ const transformForReading = (data) => {
 					ClassData: SClas_N,
 			  }
 			: null,
-		// cmsType: CmsID
-		// 	? {
-		// 			CodeID: CmsID,
-		// 			CodeData: Cms_N,
-		// 	  }
-		// 	: null,
+		cmsType: CmsID
+			? {
+					CodeID: CmsID,
+					CodeData: Cms_N,
+			  }
+			: null,
 		counter: CaseID
 			? {
 					CodeID: CaseID,

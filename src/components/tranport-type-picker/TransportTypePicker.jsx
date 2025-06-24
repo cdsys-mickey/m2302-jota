@@ -2,14 +2,14 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import Codes from "@/shared-modules/md-codes";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 const TransportTypePicker = forwardRef((props, ref) => {
 	const { label = "貨運類別", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			ref={ref}
 			bearer={token}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { A01Provider } from "@/contexts/A01/A01Provider";
-import { A02Provider } from "@/contexts/A02/A02Provider";
+import { A02Provider } from "@/modules/A02/A02Provider";
 import { A03Provider } from "@/contexts/A03/A03Provider";
 import { A04Provider } from "@/contexts/A04/A04Provider";
 import { A08Provider } from "@/contexts/A08/A08Provider";

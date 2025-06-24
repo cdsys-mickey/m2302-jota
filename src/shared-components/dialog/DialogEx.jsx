@@ -19,9 +19,10 @@ import {
 } from "react";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
 import DialogTitleEx from "./DialogTitleEx";
-import CheckboxEx from "../checkbox/CheckboxEx";
+import CheckboxEx from "../checkbox/CheckboxExView";
+import { ButtonEx } from "@/shared-components";
+
 
 const defaultConfirmButtonProps = {
 	type: "submit",
@@ -254,14 +255,16 @@ const DialogEx = memo(
 						() => ({
 							...(minWidth && { minWidth: minWidth }),
 							...(dense && {
-								paddingBottom: 0,
+								paddingBottom: 1,
 							}),
 							paddingTop: 0,
 						}),
 
 						...(Array.isArray(contentSx) ? contentSx : [contentSx]),
 					]}
-					{...contentProps}>
+					{...slotProps?.content}
+					{...contentProps}
+				>
 					{message?.split("\n").map((line, index) => (
 						<DialogContentText key={`line-${index}`}>
 							{line}
@@ -318,7 +321,7 @@ const DialogEx = memo(
 							</Tooltip>
 						) : (
 							<Tooltip title={confirmTooltip}>
-								<ButtonWrapper
+								<ButtonEx
 									responsive
 									onClick={handleConfirm}
 									loading={working}
@@ -329,12 +332,12 @@ const DialogEx = memo(
 									{...buttonProps}
 									{...confirmButtonProps}>
 									{confirmText}
-								</ButtonWrapper>
+								</ButtonEx>
 							</Tooltip>
 						)}
 						{onCancel && (
 							<Tooltip title={cancelTooltip}>
-								<ButtonWrapper
+								<ButtonEx
 									responsive
 									color="primary"
 									// onClick={onCancel}
@@ -343,7 +346,7 @@ const DialogEx = memo(
 									{...buttonProps}
 									{...cancelButtonProps}>
 									{cancelText}
-								</ButtonWrapper>
+								</ButtonEx>
 							</Tooltip>
 						)}
 					</DialogActions>

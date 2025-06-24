@@ -1,12 +1,12 @@
 import B06 from "@/modules/md-b06";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import { forwardRef, memo } from "react";
 
 export const B06OrderByPicker = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				ref={ref}
 				options={B06.options}
 				getOptionLabel={B06.getOptionLabel}

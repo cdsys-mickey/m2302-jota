@@ -1,7 +1,7 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { useContext } from "react";
 import UserAuth from "@/modules/md-user-auth";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import PropTypes from "prop-types";
 
 export const ZA03AuthBatchCancelButtonContainer = (props) => {
@@ -15,12 +15,12 @@ export const ZA03AuthBatchCancelButtonContainer = (props) => {
 		return false;
 	}
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			// disabled={za03.isDirty}
 			onClick={za03.confirmCancelAuthEditing}
 			{...rest}>
 			{children}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 ZA03AuthBatchCancelButtonContainer.propTypes = {

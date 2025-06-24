@@ -1,8 +1,10 @@
 import DSG from "@/shared-modules/sd-dsg";
 import { Box, styled } from "@mui/material";
 import { blueGrey, cyan, grey, lightBlue, orange, red } from "@mui/material/colors";
+import clsx from "clsx";
+import PropTypes from "prop-types";
 
-const DSGBox = styled(Box, {
+const DSGBoxBase = styled(Box, {
 	shouldForwardProp: (prop) => !["bgcolor", "disableAddRow", "dense"].includes(prop),
 })(({ theme, groupColor = cyan[700], disableAddRows, dense = true }) => ({
 	[`& .${DSG.CssClasses.ROW_SELECTED} .dsg-cell-gutter`]: {
@@ -43,10 +45,17 @@ const DSGBox = styled(Box, {
 		},
 		"& .dsg-add-row-btn": {
 			padding: "4px 10px",
-			marginRight: "4px",
+			marginRight: "2px",
 			backgroundColor: grey[200]
 		}
 	})
 }));
 
+const DSGBox = (props) => {
+	const { ...rest } = props;
+	return <DSGBoxBase className="DSGBox" {...rest} />;
+}
+DSGBox.propTypes = {
+	className: PropTypes.string
+}
 export default DSGBox;

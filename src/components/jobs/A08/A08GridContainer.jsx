@@ -1,19 +1,18 @@
+import AreaTypePickerCell from "@/components/AreaPicker/AreaTypePickerCell";
 import { A08Context } from "@/contexts/A08/A08Context";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
-import A08Grid from "./A08Grid";
-import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
-import { useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import A08 from "@/modules/A08.mjs";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { AreaTypePickerComponentContainer } from "@/components/dsg/columns/area-type-picker/AreaTypePickerComponentContainer";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
-import A08 from "@/modules/md-a08";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useInit } from "@/shared-hooks/useInit";
+import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { useContext, useMemo } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { FormProvider, useForm } from "react-hook-form";
+import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
+import A08Grid from "./A08Grid";
 
 const A08GridContainer = () => {
 	const { height } = useWindowSize();
@@ -38,7 +37,8 @@ const A08GridContainer = () => {
 			{
 				...keyColumn(
 					"areaType",
-					optionPickerColumn(AreaTypePickerComponentContainer, {
+					// optionPickerColumn(AreaTypePickerComponentContainer, {
+					optionPickerColumn(AreaTypePickerCell, {
 						name: "areaType",
 						disableOpenOnInput: true,
 						// hideControlsOnActive: false,

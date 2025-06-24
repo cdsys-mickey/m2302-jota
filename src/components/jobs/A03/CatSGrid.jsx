@@ -6,6 +6,7 @@ import {
 	DynamicDataSheetGrid
 } from "react-datasheet-grid";
 import DSGBox from "../../../shared-components/dsg/DSGBox";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -44,26 +45,24 @@ const CatSGrid = memo((props) => {
 
 	return (
 		// <Container maxWidth="xs">
-		<DSGBox>
-			<DynamicDataSheetGrid
-				lockRows={lockRows}
-				ref={setGridRef}
-				rowKey="SClas"
-				height={gridHeight}
-				// rowHeight={42}
-				value={data}
-				columns={columns}
-				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
-				disableExpandSelection
-				contextMenuComponent={ContextMenu}
-				onChange={onChange}
-				onSelectionChange={onSelectionChange}
-				onActiveCellChange={onActiveCellChange}
-				createRow={createRow}
-				// autoAddRow
-				rowClassName={getRowClassName}
-			/>
-		</DSGBox>
+		<DSGGrid
+			lockRows={lockRows}
+			ref={setGridRef}
+			rowKey="SClas"
+			height={gridHeight}
+			// rowHeight={42}
+			value={data}
+			columns={columns}
+			addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
+			disableExpandSelection
+			contextMenuComponent={ContextMenu}
+			onChange={onChange}
+			onSelectionChange={onSelectionChange}
+			onActiveCellChange={onActiveCellChange}
+			createRow={createRow}
+			// autoAddRow
+			rowClassName={getRowClassName}
+		/>
 		// </Container>
 	);
 });

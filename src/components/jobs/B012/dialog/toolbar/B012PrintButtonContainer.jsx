@@ -1,7 +1,7 @@
 import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
 import { B032Context } from "@/contexts/B032/B032Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { Tooltip } from "@mui/material";
 import { forwardRef, memo, useContext, useMemo } from "react";
@@ -41,7 +41,7 @@ const B012PrintButtonContainer = memo(
 		return (
 			<Tooltip title={_title} arrow >
 				<span>
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						ref={ref}
 						variant="contained"
@@ -54,7 +54,7 @@ const B012PrintButtonContainer = memo(
 						disabled={disabled}
 						{...rest}>
 						列印
-					</ButtonWrapper>
+					</ButtonEx>
 				</span>
 			</Tooltip >
 		);

@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useContext, useMemo } from "react";
@@ -20,7 +20,7 @@ export const RecvAcctRcptSessionPicker = (props) => {
 
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			bearer={token}
 			url={`v1/sales/recv-account/rcpt-sessions`}

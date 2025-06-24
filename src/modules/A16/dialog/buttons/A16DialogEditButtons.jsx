@@ -1,15 +1,15 @@
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
+import { ButtonEx } from "@/shared-components";
 
 const A16DialogEditButtons = memo(
 	forwardRef((props, ref) => {
 		const { onSave, onCancel, loading, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				<ButtonWrapper
+				<ButtonEx
 					responsive
 					onClick={onCancel}
 					color="warning"
@@ -17,8 +17,8 @@ const A16DialogEditButtons = memo(
 					// loading={loading}
 					{...rest}>
 					取消
-				</ButtonWrapper>
-				<ButtonWrapper
+				</ButtonEx>
+				<ButtonEx
 					responsive
 					onClick={onSave}
 					type="submit"
@@ -27,7 +27,7 @@ const A16DialogEditButtons = memo(
 					variant="contained"
 					loading={loading}>
 					儲存
-				</ButtonWrapper>
+				</ButtonEx>
 			</Fragment>
 		);
 	})

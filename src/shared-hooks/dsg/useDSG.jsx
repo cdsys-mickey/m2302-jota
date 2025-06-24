@@ -151,7 +151,7 @@ export const useDSG = ({
 		(newValue, opts) => {
 			const {
 				reset = false,
-				prev = null,
+				prev: prevData = null,
 				commit = false,
 				init,
 				debug,
@@ -216,9 +216,9 @@ export const useDSG = ({
 				if (commit || init) {
 					setPrevGridData(updatedGridData);
 					console.log("prevGridData after commit/init", updatedGridData);
-				} else if (prev) {
-					setPrevGridData(prev);
-					console.log("prevGridData of prev", prev);
+				} else if (prevData) {
+					setPrevGridData(prevData);
+					console.log("prevGridData of prev", prevData);
 				}
 
 				setGridLoading(false);

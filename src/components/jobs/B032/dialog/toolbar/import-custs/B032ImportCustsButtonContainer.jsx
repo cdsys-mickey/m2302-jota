@@ -1,7 +1,7 @@
 import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
 import { B032Context } from "@/contexts/B032/B032Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import useDebounce from "@/shared-hooks/useDebounce";
 import Objects from "@/shared-modules/Objects.mjs";
 import { useContext, useEffect, useMemo, useState } from "react";
@@ -48,7 +48,7 @@ export const B032ImportCustsButtonContainer = (props) => {
 	}, [totalElements]);
 
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			type="submit"
 			disabled={disabled}
 			size="small"
@@ -59,7 +59,7 @@ export const B032ImportCustsButtonContainer = (props) => {
 			}}
 			{...rest}>
 			{buttonText}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 

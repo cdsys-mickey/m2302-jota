@@ -1,11 +1,9 @@
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import WebApiOptionPicker from "../../shared-components/option-picker/WebApiOptionPicker";
 import Prods from "@/modules/md-prods";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
-import { useMemo } from "react";
 import queryString from "query-string";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import { useContext, useMemo } from "react";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 export const ZZProdIdPickerContainer = (props) => {
 	const {
@@ -35,7 +33,7 @@ export const ZZProdIdPickerContainer = (props) => {
 	}, [withBomPackageName, withPurchasePackageName, withSalesPackageName]);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			bearer={token}

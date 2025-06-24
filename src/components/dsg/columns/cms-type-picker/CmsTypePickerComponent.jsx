@@ -1,10 +1,9 @@
+import CmsTypePicker from "@/components/CmsTypePicker/CmsTypePicker";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
 import Objects from "@/shared-modules/Objects.mjs";
 import PropTypes from "prop-types";
 import { memo, useRef } from "react";
-import { useOptionPickerComponent } from "@/shared-hooks/dsg/useOptionPickerComponent";
-import DeptPicker from "@/components/picker/DeptPicker";
-import CmsTypePicker from "@/components/picker/CmsTypePicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {

@@ -1,4 +1,4 @@
-import CmsTypePicker from "@/components/picker/CmsTypePicker";
+import CmsTypePicker from "@/components/CmsTypePicker/CmsTypePicker";
 import CounterPicker from "@/components/picker/CounterPicker";
 import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
 import ProdCatMPicker from "@/components/picker/ProdCatMPicker";

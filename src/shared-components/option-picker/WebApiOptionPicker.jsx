@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 import { useWebApiOptions } from "@/shared-hooks/useWebApiOptions";
 import { forwardRef, memo } from "react";
-import OptionPicker from "./OptionPicker";
+import OptionPickerView from "./OptionPickerView";
 
 const WebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
@@ -109,7 +109,7 @@ const WebApiOptionPicker = memo(
 		});
 
 		return (
-			<OptionPicker
+			<OptionPickerView
 				multiple={multiple}
 				ref={ref}
 				name={name}

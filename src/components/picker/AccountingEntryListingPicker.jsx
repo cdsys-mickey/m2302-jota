@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import AccountingEntries from "@/modules/md-acc-entries";
 
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useCallback, useContext, useMemo } from "react";
@@ -34,7 +34,7 @@ const AccountingEntryListingPicker = memo((props) => {
 	);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url="v1/inv/taking/acc-entries"
 			bearer={auth.token}

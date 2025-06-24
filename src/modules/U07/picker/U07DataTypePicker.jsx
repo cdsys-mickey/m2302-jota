@@ -1,5 +1,5 @@
 import Constants from "@/modules/md-constants";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import U07DataType from "./U07DataType.mjs";
@@ -9,7 +9,7 @@ const U07DataTypePicker = memo(
 		const { name, label = "資料類型", ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				name={name}
 				label={label}
 				options={U07DataType.options}

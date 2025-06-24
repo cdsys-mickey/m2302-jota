@@ -2,7 +2,7 @@ import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
 import AddIcon from "@mui/icons-material/Add";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { B012Context } from "@/contexts/B012/B012Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import { BContext } from "@/contexts/B/BContext";
 import { B032Context } from "@/contexts/B032/B032Context";
 
@@ -16,7 +16,7 @@ const B012CreateButtonContainer = memo(
 		}, []);
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				responsive
 				ref={ref}
 				variant="contained"
@@ -27,7 +27,7 @@ const B012CreateButtonContainer = memo(
 				}}
 				{...rest}>
 				{text}
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

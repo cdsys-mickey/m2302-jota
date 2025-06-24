@@ -1,4 +1,6 @@
 import { Box, styled } from "@mui/material";
+import clsx from "clsx";
+import PropTypes from "prop-types";
 
 
 /**
@@ -6,10 +8,10 @@ import { Box, styled } from "@mui/material";
  * 修改歷程:
  * 2021.09.30 初版
  */
-const FlexBox = styled(Box, {
+const FlexBoxBase = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!['inline', 'block', 'fullWidth', 'fullHeight', 'midWidth', 'maxWidth'].includes(prop),
-})(({ theme, inline = false, block = false, fullHeight, fullWidth, minWidth, maxWidth }) => ({
+		!['inline', 'block', 'fullWidth', 'fullHeight', 'midWidth', 'maxWidth', 'gap'].includes(prop),
+})(({ theme, inline = false, block = false, fullHeight, fullWidth, minWidth, maxWidth, gap }) => ({
 	display: block ? "block" : inline ? "inline-flex" : "flex",
 	...(fullHeight && {
 		height: "100vh",
@@ -23,6 +25,16 @@ const FlexBox = styled(Box, {
 	...(maxWidth && {
 		maxWidth: isNaN(maxWidth) ? maxWidth : theme.spacing(maxWidth),
 	}),
+	...(gap && {
+		gap: isNaN(gap) ? gap : theme.spacing(gap),
+	}),
 }));
 
+const FlexBox = (props) => {
+	const { className, ...rest } = props;
+	return <FlexBoxBase className={clsx("FlexBox", className)} {...rest} />
+}
+FlexBox.propTypes = {
+	className: PropTypes.string
+}
 export default FlexBox;

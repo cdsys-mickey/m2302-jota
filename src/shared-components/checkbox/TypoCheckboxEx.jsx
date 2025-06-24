@@ -22,9 +22,10 @@ const TypoCheckboxEx = memo(
 			// Input
 			name,
 			editing = false,
-			variant = "outlined",
+			variant,
 			size = "small",
 			getLabel = DEFAULT_GET_LABEL,
+			slotProps,
 			...rest
 		} = props;
 
@@ -42,7 +43,8 @@ const TypoCheckboxEx = memo(
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
-					{...typoProps}>
+					{...typoProps}
+					{...slotProps?.label}>
 					{momoisedText}
 				</FormFieldLabel>
 			);
@@ -64,6 +66,7 @@ const TypoCheckboxEx = memo(
 
 TypoCheckboxEx.displayName = "TypoCheckboxEx";
 TypoCheckboxEx.propTypes = {
-	getLabel: PropTypes.func
+	getLabel: PropTypes.func,
+	slotProps: PropTypes.object
 }
 export default TypoCheckboxEx;

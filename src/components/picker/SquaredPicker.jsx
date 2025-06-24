@@ -1,6 +1,6 @@
 import Constants from "@/modules/md-constants";
 import Squared from "@/modules/md-squared";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
@@ -9,7 +9,7 @@ const SquaredPicker = memo(
 		const { ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				ref={ref}
 				fullWidth
 				label=""

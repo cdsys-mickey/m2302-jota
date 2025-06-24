@@ -1,5 +1,5 @@
 import { F02Context } from "@/pages/jobs/F02/F02Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import { useMemo } from "react";
@@ -21,7 +21,7 @@ const F02DeleteButtonContainer = memo(
 		return (
 			<Tooltip title={title} arrow>
 				<span>
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						ref={ref}
 						variant="contained"
@@ -35,7 +35,7 @@ const F02DeleteButtonContainer = memo(
 						}}
 						{...rest}>
 						刪除
-					</ButtonWrapper>
+					</ButtonEx>
 				</span>
 			</Tooltip>
 		);

@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import ProdTypeA from "@/modules/ProdTypeA";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import Constants from "@/modules/md-constants";
 
 const ProdTypeAPicker = memo(forwardRef((props, ref) => {
 	const { label = "品別", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			ref={ref}
 			label={label}
 			options={ProdTypeA.options}

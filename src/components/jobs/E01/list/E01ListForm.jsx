@@ -67,46 +67,49 @@ const E01ListForm = memo((props) => {
 						label="客戶類型"
 					/>
 				</Grid>
-				<Grid item md={3} >
-					<FlexBox justifyContent="flex-end">
-						<CheckboxExWrapper
-							label="零售"
-							name="lvRetail"
-							size="small"
-							slotProps={{
-								label: {
-									labelPlacement: "start"
-								}
-							}}
-						/>
+				<Grid item md={8}>
+					<FlexBox inline fullWidth gap={0.2}>
+						<FlexBox justifyContent="flex-end">
+							<CheckboxExWrapper
+								label="零售"
+								name="lvRetail"
+								size="small"
+								variant="outlined"
+							// slotProps={{
+							// 	label: {
+							// 		labelPlacement: "start"
+							// 	}
+							// }}
+							/>
+						</FlexBox>
+						<FlexBox flex={1}>
+							<E01CustomerPicker
+								name="lvCust"
+								retailName="lvRetail"
+								// label="客戶代碼"
+								forId
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
+									},
+									// input: {
+									// 	startAdornment:
+									// 		(
+									// 			<InputAdornment position="start">
+									// 				<CheckboxExWrapper
+									// 					label="零售"
+									// 					name="lvRetail"
+									// 				/>
+									// 			</InputAdornment>
+									// 		)
+									// }
+								}}
+							/>
+						</FlexBox>
 					</FlexBox>
-				</Grid>
-				<Grid item md={5}>
-					<E01CustomerPicker
-						name="lvCust"
-						retailName="lvRetail"
-						// label="客戶代碼"
-						forId
-						disableOpenOnInput
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-							// input: {
-							// 	startAdornment:
-							// 		(
-							// 			<InputAdornment position="start">
-							// 				<CheckboxExWrapper
-							// 					label="零售"
-							// 					name="lvRetail"
-							// 				/>
-							// 			</InputAdornment>
-							// 		)
-							// }
-						}}
-					/>
 				</Grid>
 				<Grid item md={6}>
 					<TextFieldWrapper

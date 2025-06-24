@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { memo } from "react";
 
-import BankPicker from "@/components/fields/BankPicker";
+import BankPicker from "@/components/BankPicker/BankPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 

@@ -32,7 +32,6 @@ const FormFieldLabelView = memo(
 			// isEmpty = false,
 			isNegative = false,
 			dense = true,
-			...rest
 		} = props;
 
 		const _labelStyles = useMemo(() => {
@@ -97,13 +96,13 @@ const FormFieldLabelView = memo(
 				}} {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
 					{Types.isLiteral(body) ? <>
 						<Typography
-							color="text.secondary"
+							color="primary"
 							variant="body1"
 							sx={[
 								(theme) => ({
 									fontWeight: 400,
-									...(!isEmpty && {
-										color: theme.palette.primary.main,
+									...(isEmpty && {
+										color: theme.palette.text.disabled,
 									}),
 								}),
 								...(Array.isArray(typographySx)

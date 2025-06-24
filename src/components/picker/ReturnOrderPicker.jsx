@@ -2,7 +2,7 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import { useMemo } from "react";
 import queryString from "query-string";
 import ReturnOrders from "@/modules/md-return-orders";
@@ -23,7 +23,7 @@ const ReturnOrderPicker = memo((props) => {
 
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url={`v1/purchase/returns`}
 			bearer={token}

@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { useContext } from "react";
 import { JobMenuContext } from "./JobMenuContext";
@@ -8,7 +8,7 @@ export const JobMenuAddAllFieldsButtonContainer = (props) => {
 	const { children = "加入所有功能", ...rest } = props;
 	const jobMenu = useContext(JobMenuContext);
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			responsive
 			variant="contained"
 			color="neutral"
@@ -16,7 +16,7 @@ export const JobMenuAddAllFieldsButtonContainer = (props) => {
 			onClick={jobMenu.handleAddAllFields}
 			{...rest}>
 			{children}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 JobMenuAddAllFieldsButtonContainer.propTypes = {

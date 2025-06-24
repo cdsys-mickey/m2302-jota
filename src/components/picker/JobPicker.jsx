@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Jobs from "@/modules/md-jobs";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useCallback, useContext, useMemo } from "react";
@@ -33,7 +33,7 @@ const JobPicker = memo((props) => {
 	);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url="v1/app/modules"
 			bearer={auth.token}

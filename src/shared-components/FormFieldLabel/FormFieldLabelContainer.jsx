@@ -10,18 +10,6 @@ const FormFieldLabelContainer = (props) => {
 		name,
 	});
 
-	// const isEmpty = useMemo(() => {
-	// 	const result = (
-	// 		(value == null || value === "" || (Array.isArray(value) && value.length == 0))
-	// 		&& (children == null || children === "")
-
-	// 	);
-	// 	if (result) {
-	// 		console.log(`${name} is empty`);
-	// 	}
-	// 	return result;
-	// }, [children, name, value]);
-
 	const isNegative = useMemo(() => {
 		const _value = Types.isNumber(value) ? value : Number(value);
 		const _children = Types.isNumber(children) ? children : Number(children);

@@ -1,4 +1,4 @@
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import ProdFreeTypes from "./ProdFreeTypes.mjs";
@@ -8,7 +8,7 @@ const ProdFreeTypePicker = memo(
 		const { ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				ref={ref}
 				fullWidth
 				label=""

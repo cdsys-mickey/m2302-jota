@@ -22,7 +22,7 @@ export const B06FrameContainer = () => {
 		)
 	}, [b06.onPrintSubmit, b06.onPrintSubmitError, form]);
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

@@ -1,7 +1,7 @@
 import { FrameMenuGroupHeader } from "@/components/layout/FrameMenuGroupHeader";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
@@ -91,13 +91,13 @@ const PushMessagesPopover = memo(
 							{loading && <LoadingTypography />}
 						</FlexBox>
 						<FlexBox>
-							<ButtonWrapper
+							<ButtonEx
 								variant="outlined"
 								color="info"
 								startIcon={<AllInboxIcon />}
 								onClick={gotoMessages}>
 								前往訊息匣
-							</ButtonWrapper>
+							</ButtonEx>
 						</FlexBox>
 					</FlexBox>
 				</Box>

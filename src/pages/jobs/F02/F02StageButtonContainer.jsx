@@ -1,5 +1,5 @@
 import { F02Context } from "@/pages/jobs/F02/F02Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import LockIcon from '@mui/icons-material/Lock';
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
@@ -19,7 +19,7 @@ const F02StageButtonContainer = memo(
 		}, [f02.grid.readOnly])
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				responsive
 				ref={ref}
 				variant="contained"
@@ -31,7 +31,7 @@ const F02StageButtonContainer = memo(
 				}}
 				{...rest}>
 				產生電腦帳
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

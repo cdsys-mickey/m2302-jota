@@ -3,6 +3,7 @@ import Forms from "@/shared-modules/Forms.mjs";
 const Tabs = Object.freeze({
 	CREATE: "CREATE",
 	DELETE: "DELETE",
+	RECOVER: "RECOVER",
 });
 
 const transformForSubmitting = (payload) => {
@@ -30,10 +31,19 @@ const transformForDeleteSubmitting = (payload) => {
 	};
 };
 
+const transformForRecoverSubmitting = (payload) => {
+	const { recYM, recSession, recStage } = payload;
+	return {
+		AccYM: Forms.formatYearMonth(recYM) ?? "",
+		Stage: recStage ?? (recSession?.Stage != null ? recSession.Stage : ""),
+	};
+};
+
 const G04 = {
+	Tabs,
 	transformForSubmitting,
 	transformForDeleteSubmitting,
-	Tabs,
+	transformForRecoverSubmitting,
 };
 
 export default G04;

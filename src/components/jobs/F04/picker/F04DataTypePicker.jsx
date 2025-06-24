@@ -1,5 +1,5 @@
 import F04 from "@/modules/md-f04";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
@@ -8,7 +8,7 @@ const F04DataTypePicker = memo(
 		const { name, label = "資料類型", ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				name={name}
 				label={label}
 				options={F04.dataTypeOptions}

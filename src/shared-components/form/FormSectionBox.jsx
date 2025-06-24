@@ -33,7 +33,7 @@ const FormSectionBox = styled(Box, {
 		paddingRight: theme.spacing(pr != null ? pr : 1),
 		// marginTop: theme.spacing(1),
 		// marginTop: theme.spacing(0),
-		marginBottom: theme.spacing(mb != null ? mb : 2),
+		marginBottom: theme.spacing(mb != null ? mb : 1),
 		// '& .MuiFormControl-root:has(.MuiOutlinedInput-root)': {
 		// 	marginTop: theme.spacing(0.5),
 		// },

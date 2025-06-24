@@ -1,4 +1,4 @@
-import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
+import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
 import { useContext } from "react";
 import { StdPrintContext } from "../../contexts/std-print/StdPrintContext";
 import PropTypes from "prop-types";

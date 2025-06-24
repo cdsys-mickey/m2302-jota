@@ -1,4 +1,4 @@
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import U04DataType from "./U04DataType.mjs";
@@ -9,7 +9,7 @@ const U04DataTypePicker = memo(
 		const { name, label = "資料類型", ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				name={name}
 				label={label}
 				options={U04DataType.options}

@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useContext, useMemo } from "react";
@@ -30,7 +30,7 @@ export const PurchaseDepOrderPicker = (props) => {
 	}, [txiDept]);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			bearer={token}
 			url={`v1/purchase/trans-out-orders/dep-orders`}

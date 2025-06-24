@@ -1,7 +1,7 @@
 import { BContext } from "@/contexts/B/BContext";
 import { B011Context } from "@/contexts/B011/B011Context";
 import { B031Context } from "@/contexts/B031/B031Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import useDebounce from "@/shared-hooks/useDebounce";
 import Objects from "@/shared-modules/Objects.mjs";
 import PropTypes from "prop-types";
@@ -49,7 +49,7 @@ export const B011ImportProdsButtonContainer = (props) => {
 	}, [totalElements]);
 
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			type="submit"
 			disabled={disabled}
 			size="small"
@@ -60,7 +60,7 @@ export const B011ImportProdsButtonContainer = (props) => {
 			}}
 			{...rest}>
 			{buttonText}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 B011ImportProdsButtonContainer.propTypes = {

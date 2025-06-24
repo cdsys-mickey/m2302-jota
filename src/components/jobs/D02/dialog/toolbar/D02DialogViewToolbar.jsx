@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -22,24 +22,24 @@ const D02DialogViewToolbar = memo(
 				)}
 
 				{onDelete && (
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						startIcon={<DeleteOutlinedIcon />}
 						color="secondary"
 						onClick={onDelete}>
 						刪除
-					</ButtonWrapper>
+					</ButtonEx>
 				)}
 
 				{onEdit && (
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						startIcon={<EditOutlinedIcon />}
 						color="primary"
 						onClick={onEdit}
 						loading={checkEditableWorking}>
 						編輯
-					</ButtonWrapper>
+					</ButtonEx>
 				)}
 				<Tooltip title="詳細資訊">
 					<IconButton onClick={onSideDrawerOpen} size="small">

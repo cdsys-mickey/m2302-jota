@@ -3,7 +3,7 @@ import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import ProdLines from "../../modules/ProdLines.mjs";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 const ProdLinePicker = (props) => {
 	const { name, label = "生產線別", ...rest } = props;
@@ -25,7 +25,7 @@ const ProdLinePicker = (props) => {
 	}, []);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			bearer={token}

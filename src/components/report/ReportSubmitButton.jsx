@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PropTypes from "prop-types";
 import { memo } from "react";
@@ -7,7 +7,7 @@ const ReportSubmitButton = memo((props) => {
 	const { onClick, children = "執行", size = "small", ...rest } = props;
 
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			name="submit"
 			responsive
 			startIcon={<OpenInNewIcon />}
@@ -19,7 +19,7 @@ const ReportSubmitButton = memo((props) => {
 			{...rest}
 		>
 			{children}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 })
 

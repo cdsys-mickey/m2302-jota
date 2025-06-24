@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import C01 from "@/modules/C01.mjs";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 const C01ListModePicker = memo(
 	forwardRef((props, ref) => {
 		const { label = "", ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				label={label}
 				ref={ref}
 				// width="9rem"

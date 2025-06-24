@@ -4,7 +4,7 @@ import { memo, useCallback, useContext, useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "@/modules/md-auth";
 
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import DeptOptions from "@/modules/DeptOptions.mjs";
 
 const UserDeptPicker = memo((props) => {
@@ -30,7 +30,7 @@ const UserDeptPicker = memo((props) => {
 	// }, [scope, uid]);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			url="v1/ou/user/depts"
 			// disabled={!uid}
 			getOptionLabel={DeptOptions.getOptionLabel}

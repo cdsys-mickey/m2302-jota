@@ -1,13 +1,13 @@
 import CustomerLevels from "@/modules/md-customer-levels";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 export const CustomerLevelPicker = forwardRef((props, ref) => {
 	const { name, readOnly = false, label = "等級", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			readOnly={readOnly}
 			ref={ref}

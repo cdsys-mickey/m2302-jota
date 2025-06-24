@@ -2,7 +2,7 @@ import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 
 const C04DialogEditToolbar = memo(
 	forwardRef((props, ref) => {
@@ -17,7 +17,7 @@ const C04DialogEditToolbar = memo(
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onRefresh && (
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						onClick={onRefresh}
 						type="button"
@@ -26,17 +26,17 @@ const C04DialogEditToolbar = memo(
 						variant="contained"
 						loading={refreshWorking}>
 						更新單價
-					</ButtonWrapper>
+					</ButtonEx>
 				)}
-				<ButtonWrapper
+				<ButtonEx
 					responsive
 					onClick={onCancel}
 					color="warning"
 					variant="outlined"
 					{...rest}>
 					取消
-				</ButtonWrapper>
-				<ButtonWrapper
+				</ButtonEx>
+				<ButtonEx
 					responsive
 					onClick={onSave}
 					type="submit"
@@ -45,7 +45,7 @@ const C04DialogEditToolbar = memo(
 					variant="contained"
 					loading={editWorking}>
 					儲存
-				</ButtonWrapper>
+				</ButtonEx>
 			</Fragment>
 		);
 	})

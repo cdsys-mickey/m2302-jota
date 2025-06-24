@@ -1,7 +1,7 @@
 // import CabinetTypes from "@/modules/md-cabinet-types";
 
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -37,28 +37,28 @@ const F03SearchPopper = memo(
 				</DialogContent>
 				<Divider />
 				<DialogActions>
-					{/* <ButtonWrapper
+					{/* <ButtonEx
 						size="small"
 						variant="contained"
 						color="inherit"
 						onClick={onClear}>
 						清除
-					</ButtonWrapper> */}
-					<ButtonWrapper
+					</ButtonEx> */}
+					<ButtonEx
 						size="small"
 						variant="outlined"
 						color="primary"
 						onClick={onReset}>
 						清除
-					</ButtonWrapper>
-					<ButtonWrapper
+					</ButtonEx>
+					<ButtonEx
 						startIcon={<FilterAltIcon />}
 						type="submit"
 						variant="contained"
 					// onClick={handleSubmit}
 					>
 						篩選
-					</ButtonWrapper>
+					</ButtonEx>
 				</DialogActions>
 			</PopperBox>
 		);

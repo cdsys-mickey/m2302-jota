@@ -1,5 +1,5 @@
 import { G10Context } from "@/pages/jobs/G10/G10Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import { Tooltip } from "@mui/material";
 import { forwardRef, memo, useContext, useMemo } from "react";
@@ -31,7 +31,7 @@ const G10WriteOffButtonContainer = memo(
 		return (
 			<Tooltip title={title}>
 				<span>
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						ref={ref}
 						variant="contained"
@@ -43,7 +43,7 @@ const G10WriteOffButtonContainer = memo(
 						}}
 						{...rest}>
 						沖銷
-					</ButtonWrapper>
+					</ButtonEx>
 				</span>
 			</Tooltip>
 

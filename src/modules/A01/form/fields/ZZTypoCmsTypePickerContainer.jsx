@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import { useWatch } from "react-hook-form";
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
-import CmsTypes from "@/modules/md-cms-types";
+import CmsTypes from "@/modules/CmsTypes";
 
 const ZZTypoCmsTypePickerContainer = forwardRef((props, ref) => {
 	const { name, children, label = "佣金類別", ...rest } = props;

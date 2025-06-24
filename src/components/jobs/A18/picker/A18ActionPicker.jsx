@@ -1,5 +1,5 @@
-import A18 from "@/modules/md-a18";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import A18 from "@/modules/A18.mjs";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
@@ -9,7 +9,7 @@ const A18ActionPicker = memo(
 		const { name, label = "輸出格式", ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				name={name}
 				label={label}
 				options={A18.Actions}

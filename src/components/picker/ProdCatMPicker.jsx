@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 const ProdCatMPicker = (props) => {
@@ -36,7 +36,7 @@ const ProdCatMPicker = (props) => {
 	}, [catL]);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			bearer={token}

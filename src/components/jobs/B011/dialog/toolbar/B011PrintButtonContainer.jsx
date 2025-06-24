@@ -5,7 +5,7 @@ import { B011Context } from "@/contexts/B011/B011Context";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useMemo } from "react";
 import { Tooltip } from "@mui/material";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import PropTypes from "prop-types";
 import { B031Context } from "@/contexts/B031/B031Context";
 import { BContext } from "@/contexts/B/BContext";
@@ -41,7 +41,7 @@ const B011PrintButtonContainer = memo(
 		return (
 			<Tooltip title={_title} arrow >
 				<span>
-					<ButtonWrapper
+					<ButtonEx
 						responsive
 						ref={ref}
 						variant="contained"
@@ -54,7 +54,7 @@ const B011PrintButtonContainer = memo(
 						disabled={disabled}
 						{...rest}>
 						列印
-					</ButtonWrapper>
+					</ButtonEx>
 				</span>
 			</Tooltip>
 		);

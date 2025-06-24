@@ -42,14 +42,9 @@ export const useAuth = () => {
 		authoritiesLoading: null,
 	});
 
-	// const taskListLoader = useInfiniteLoader({
-	// 	url: "v1/my/messages",
-	// 	bearer: state.token,
-	// 	initialFetchSize: 30,
-	// 	params: {
-	// 		ur: 1,
-	// 	},
-	// });
+	const impersonate = useMemo(() => {
+		return Cookies.get(Auth.COOKIE_MODE) === "im"
+	}, []);
 
 	const loadModules = useCallback(
 		async ({ token }) => {
@@ -465,7 +460,8 @@ export const useAuth = () => {
 		changePrompting,
 		switchDept,
 		renewLogKey,
-		loadModules
+		loadModules,
+		impersonate
 		// ...taskListLoader,
 	};
 };

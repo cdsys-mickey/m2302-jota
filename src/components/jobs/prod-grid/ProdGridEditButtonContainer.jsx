@@ -1,5 +1,5 @@
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import { useContext } from "react";
 
 export const ProdGridEditButtonContainer = (props) => {
@@ -16,9 +16,9 @@ export const ProdGridEditButtonContainer = (props) => {
 	}
 
 	return (
-		<ButtonWrapper responsive onClick={prodGrid.toggleEditorLock} {...rest}>
+		<ButtonEx responsive onClick={prodGrid.toggleEditorLock} {...rest}>
 			編輯
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 

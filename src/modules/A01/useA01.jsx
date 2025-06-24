@@ -274,8 +274,8 @@ export const useA01 = ({ mode }) => {
 					})
 				),
 				title: "佣金類別",
-				minWidth: 200,
-				maxWidth: 200,
+				minWidth: 300,
+				maxWidth: 300,
 				disabled: transGridDisabled,
 			},
 		],

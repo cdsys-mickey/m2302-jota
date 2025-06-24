@@ -1,14 +1,14 @@
 import TxtExport from "@/modules/md-txt-export";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 const TxtExportOutputModePicker = memo(
 	forwardRef((props, ref) => {
 		const { label = "輸出格式", ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				label={label}
 				options={TxtExport.options}
 				getOptionLabel={TxtExport.getOptionLabel}

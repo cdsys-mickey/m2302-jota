@@ -1,5 +1,5 @@
 import Constants from "@/modules/md-constants";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import H11ReportType from "./H11ReportType.mjs";
@@ -8,7 +8,7 @@ const H11ReportTypePicker = forwardRef((props, ref) => {
 	const { name, label = "報表型態", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			ref={ref}
 			label={label}

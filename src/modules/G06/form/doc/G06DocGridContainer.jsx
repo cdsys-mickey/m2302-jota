@@ -19,31 +19,18 @@ export const G06DocGridContainer = (props) => {
 	const { ...rest } = props;
 	const g06 = useContext(G06Context);
 	// const auth = useContext(AuthContext);
-	const formMeta = useContext(FormMetaContext);
 	const form = useFormContext();
-	const { height } = useWindowSize();
 
 	const readOnly = useMemo(() => {
 		return g06.docGridDisabled;
 	}, [g06.docGridDisabled])
 
 	const _height = useMemo(() => {
-		// return height - 288 + (readOnly ? 48 : 0)
 		return 240;
 	}, [])
 
 	const columns = useMemo(
 		() => [
-			// {
-			// 	...keyColumn(
-			// 		"DocID",
-			// 		createTextColumnEx()
-			// 	),
-			// 	title: "單據號碼",
-			// 	minWidth: 120,
-			// 	maxWidth: 120,
-			// 	disabled: readOnly,
-			// },
 			{
 				...keyColumn(
 					"DocID",

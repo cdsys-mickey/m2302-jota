@@ -1,4 +1,4 @@
-import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
+import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
 import SaveIcon from "@mui/icons-material/Save";
 import { useContext } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";

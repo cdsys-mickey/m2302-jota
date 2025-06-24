@@ -1,10 +1,9 @@
 import { Button, IconButton, Tooltip } from "@mui/material";
-import React, { memo, forwardRef, useMemo } from "react";
-import ButtonExView from "@/shared-components/button/ButtonExView";
+import { forwardRef, memo, useMemo } from "react";
 
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { ResponsiveContext } from "../../shared-contexts/responsive/ResponsiveContext";
+import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 
 const ResponsiveButton = memo(
 	forwardRef((props, ref) => {

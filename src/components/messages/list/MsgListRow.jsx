@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -82,9 +82,9 @@ const MsgListRow = memo((props) => {
 								title={_title}
 								arrow
 								placement="right-start">
-								<ButtonWrapper onClick={handleGotoJob}>
+								<ButtonEx onClick={handleGotoJob}>
 									{value?.JobID}
-								</ButtonWrapper>
+								</ButtonEx>
 							</Tooltip>
 						)}
 					</MsgJobColumn>

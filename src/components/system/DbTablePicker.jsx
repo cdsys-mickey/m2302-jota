@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import Database from "@/modules/md-database";
 import { ControlledOptionPicker } from "@/shared-components/option-picker/ControlledOptionPicker";
-import OptionPicker from "@/shared-components/option-picker/OptionPicker";
+import OptionPickerView from "@/shared-components/option-picker/OptionPickerView";
 
 const DbTablePicker = memo(
 	forwardRef((props, ref) => {
@@ -22,7 +22,7 @@ const DbTablePicker = memo(
 			);
 		} else {
 			return (
-				<OptionPicker
+				<OptionPickerView
 					readOnly={readOnly}
 					ref={ref}
 					label={label}

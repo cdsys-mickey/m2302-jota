@@ -134,23 +134,50 @@ export const useG06 = ({ token }) => {
 		return processedRowData;
 	}, []);
 
+	const syncNumbers = useCallback(({ setValue, received = true, remaining = true, diff = true }) => {
+
+		//"本期收款" = "收現金額" + "折讓金額" + "票據金額"
+		asyncRef.current.CollAmt = asyncRef.current.CashAmt + asyncRef.current.DnsAmt + asyncRef.current.ChkAmt;
+		if (received) {
+			setValue("CollAmt", Forms.formatMoney(asyncRef.current.CollAmt, 2));
+		}
+
+		//"本期餘額" = "前期餘額" + "本期應收" - "本期收款"
+		asyncRef.current.RemAmt = asyncRef.current.PreAmt + asyncRef.current.RcvAmt - asyncRef.current.CollAmt;
+		if (remaining) {
+			setValue("RemAmt", Forms.formatMoney(asyncRef.current.RemAmt, 2));
+		}
+
+		//"收沖差額" = "本期收款" - "單據沖銷"
+		asyncRef.current.DiffAmt = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
+		if (diff) {
+			setValue("DiffAmt", Forms.formatMoney(asyncRef.current.DiffAmt, 2));
+		}
+	}, []);
+
 	const onDocGridChanged = useCallback(({ gridData, setValue, updateResult }) => {
 		console.log("onDocGridChanged", gridData);
-
+		//
 		if (updateResult.cols.includes("WoNotes")) {
 			console.log("before reduce", gridData);
 			const totals = gridData.reduce((acc, row) => ({
-				CutAmt: acc.CutAmt + (row.WoNotes ? (row.DocID?.DocType == 1 ? Number(row.SalAmt) : 0 - Number(row.RetAmt)) : 0),
+				CutAmt: acc.CutAmt + (row.WoNotes ? (
+					row.DocID?.DocType == 1 ? Number(row.SalAmt) :
+						row.DocID?.DocType == 2 ? 0 - Number(row.RetAmt) :
+							row.DocID?.DocType == 3 ? Number(row.AdjAmt) : 0
+				) : 0),
 			}), { CutAmt: 0 });
+
 			console.log("totals", totals);
 			asyncRef.current.CutAmt = totals.CutAmt ?? 0;
 			setValue("CutAmt", Forms.formatMoney(asyncRef.current.CutAmt, 2));
 
 			//"收沖差額" = "本期收款" - "單據沖銷"
-			asyncRef.current.DiffAmt = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
-			setValue("DiffAmt", Forms.formatMoney(asyncRef.current.DiffAmt, 2));
+			// asyncRef.current.DiffAmt = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
+			// setValue("DiffAmt", Forms.formatMoney(asyncRef.current.DiffAmt, 2));
+			syncNumbers({ setValue, received: false, remaining: false });
 		}
-	}, []);
+	}, [syncNumbers]);
 
 	const docGrid = useDSG({
 		gridId: "doc",
@@ -424,12 +451,6 @@ export const useG06 = ({ token }) => {
 		crud.cancelAction();
 	}, []);
 
-	const refreshNumbers = useCallback(({ gridData }) => {
-		// 本期收現
-		// 本期折讓
-		// 本期收票
-	}, []);
-
 	const onUpdateCashRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
 		const rowIndex = fromRowIndex + index;
 		updateResult.rowIndex = rowIndex;
@@ -456,6 +477,8 @@ export const useG06 = ({ token }) => {
 		return processedRowData;
 	}, [cashGrid.gridData]);
 
+
+
 	const onCashGridChanged = useCallback(({ gridData, setValue, updateResult }) => {
 		console.log("onGridChanged", gridData);
 
@@ -470,17 +493,9 @@ export const useG06 = ({ token }) => {
 			asyncRef.current.DnsAmt = totals.DnsAmt ?? 0;
 			setValue("DnsAmt", asyncRef.current.DnsAmt);
 
-			//"本期收款" = "收現金額" + "折讓金額" + "票據金額"
-			asyncRef.current.CollAmt = asyncRef.current.CashAmt + asyncRef.current.DnsAmt + asyncRef.current.ChkAmt;
-			setValue("CollAmt", Forms.formatMoney(asyncRef.current.CollAmt, 2));
-			//"本期餘額" = "前期餘額" + "本期應收" - "本期收款"
-			asyncRef.current.RemAmt = asyncRef.current.PreAmt + asyncRef.current.RcvAmt - asyncRef.current.CollAmt;
-			setValue("RemAmt", Forms.formatMoney(asyncRef.current.RemAmt, 2));
-			//"收沖差額" = "本期收款" - "單據沖銷"
-			asyncRef.current.DiffAmt = asyncRef.current.CollAmt - asyncRef.current.CutAmt;
-			setValue("DiffAmt", Forms.formatMoney(asyncRef.current.DiffAmt, 2));
+			syncNumbers({ setValue });
 		}
-	}, []);
+	}, [syncNumbers]);
 
 	const onUpdateChkRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
 		const rowIndex = fromRowIndex + index;
@@ -514,11 +529,13 @@ export const useG06 = ({ token }) => {
 			}), { ChkAmt: 0 });
 			asyncRef.current.ChkAmt = totals.ChkAmt ?? 0;
 			setValue("ChkAmt", Forms.formatMoney(asyncRef.current.ChkAmt, 2));
-			//"本期收款" = "收現金額" + "折讓金額" + "票據金額"
-			const result = asyncRef.current.CashAmt + asyncRef.current.DnsAmt + asyncRef.current.ChkAmt;
-			setValue("CollAmt", Forms.formatMoney(result, 2));
+
+			// //"本期收款" = "收現金額" + "折讓金額" + "票據金額"
+			// const result = asyncRef.current.CashAmt + asyncRef.current.DnsAmt + asyncRef.current.ChkAmt;
+			// setValue("CollAmt", Forms.formatMoney(result, 2));
+			syncNumbers({ setValue });
 		}
-	}, []);
+	}, [syncNumbers]);
 
 
 

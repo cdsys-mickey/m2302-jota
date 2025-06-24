@@ -13,7 +13,7 @@ import { useMemo } from "react";
  * @param {*} props
  * @returns
  */
-export const OptionPickerWrapper = memo((props) => {
+const OptionPickerWrapper = memo((props) => {
 	const { typo = false, url, blurToLookup, ...rest } = props;
 	const dsg = useContext(DSGContext);
 	const inDSG = !!dsg;
@@ -47,3 +47,4 @@ OptionPickerWrapper.propTypes = {
 	blurToLookup: PropTypes.bool,
 	url: PropTypes.string,
 };
+export default OptionPickerWrapper;

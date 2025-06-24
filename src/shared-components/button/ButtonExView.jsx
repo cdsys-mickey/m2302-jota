@@ -18,5 +18,5 @@ ButtonExView.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
-ButtonExView.displayName = "ButtonEx";
+ButtonExView.displayName = "ButtonExView";
 export default ButtonExView;

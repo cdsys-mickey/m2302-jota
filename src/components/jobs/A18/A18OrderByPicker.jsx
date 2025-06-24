@@ -1,12 +1,12 @@
-import A18 from "@/modules/md-a18";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import A18 from "@/modules/A18.mjs";
+import { OptionPicker } from "@/shared-components";
 import { forwardRef, memo } from "react";
 
 export const A18OrderByPicker = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				ref={ref}
 				options={A18.options}
 				getOptionLabel={A18.getOptionLabel}

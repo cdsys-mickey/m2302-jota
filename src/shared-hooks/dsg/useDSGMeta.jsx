@@ -374,7 +374,7 @@ export const useDSGMeta = ({
 
 	const toggleCheckbox = useCallback((cell) => {
 		if (!grid) {
-			console.warn("沒有將 grid 傳入 DSGMeta");
+			console.warn("沒有將 grid 傳入 DSGMeta, toggleCheckbox 將會被忽略");
 			return;
 		}
 		// setGridData(prev =>
@@ -477,7 +477,7 @@ export const useDSGMeta = ({
 
 	// 處理全域鍵盤事件
 	const handleKeyDown = useCallback((event) => {
-		console.log(`useDSGMeta.handleKeyDown`, event.key);
+		// console.log(`useDSGMeta.handleKeyDown`, event.key);
 		if (event.key === ' ') {
 			const activeCell = getActiveCell();
 			console.log("activeCell: ", activeCell)

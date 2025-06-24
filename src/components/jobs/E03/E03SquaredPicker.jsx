@@ -1,5 +1,5 @@
 import E03 from "@/modules/E03.mjs";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
@@ -8,7 +8,7 @@ const E03SquaredPicker = memo(
 		const { ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				ref={ref}
 				fullWidth
 				// required

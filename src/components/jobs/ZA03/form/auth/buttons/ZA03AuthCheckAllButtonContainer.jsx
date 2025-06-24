@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { useContext } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
@@ -11,7 +11,7 @@ export const ZA03AuthCheckAllButtonContainer = (props) => {
 		return false;
 	}
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			startIcon={<DoneAllIcon />}
 			onClick={za03.checkAll}
 			{...rest}

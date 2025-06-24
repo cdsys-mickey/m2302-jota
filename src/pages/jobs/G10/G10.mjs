@@ -5,9 +5,7 @@ const transformGridForSubmitting = (gridData) => {
 		.filter((x) => x.doc?.SDocID)
 		.map((x) => {
 			const { doc } = x;
-			return {
-				SDocID: doc?.SDocID,
-			};
+			return doc;
 		});
 };
 

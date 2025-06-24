@@ -32,7 +32,7 @@ export const P10FormContainer = () => {
 		)
 	}, [p10.onSubmit, p10.onSubmitError, form]);
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

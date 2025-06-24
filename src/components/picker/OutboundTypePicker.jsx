@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useCallback, useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import Codes from "@/shared-modules/md-codes";
 
 export const OutboundTypePicker = (props) => {
@@ -17,7 +17,7 @@ export const OutboundTypePicker = (props) => {
 	}, []);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			bearer={token}

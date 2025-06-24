@@ -9,7 +9,7 @@ import TypoWebApiOptionPicker from "@/shared-components/typo/TypoWebApiOptionPic
 import SearchIcon from "@mui/icons-material/Search";
 import { DialogActions, DialogContent, Divider, Grid } from "@mui/material";
 import { forwardRef, memo } from "react";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 
 const PurchaseSearchPopper = memo(
 	forwardRef((props, ref) => {
@@ -97,21 +97,21 @@ const PurchaseSearchPopper = memo(
 				</DialogContent>
 				<Divider />
 				<DialogActions>
-					<ButtonWrapper
+					<ButtonEx
 						variant="contained"
 						color="inherit"
 					// onClick={handleReset}
 					>
 						重設
-					</ButtonWrapper>
-					<ButtonWrapper
+					</ButtonEx>
+					<ButtonEx
 						startIcon={<SearchIcon />}
 						type="submit"
 						variant="contained"
 					// onClick={handleSubmit}
 					>
 						搜尋
-					</ButtonWrapper>
+					</ButtonEx>
 				</DialogActions>
 			</PopperBox>
 		);

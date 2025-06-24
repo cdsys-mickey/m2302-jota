@@ -1,5 +1,5 @@
 import Constants from "@/modules/md-constants";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import P09DataSource from "./P09DataSource.mjs";
@@ -9,7 +9,7 @@ const P09DataSourcePicker = forwardRef((props, ref) => {
 	const { name, label = "排序方式", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			ref={ref}
 			label={label}

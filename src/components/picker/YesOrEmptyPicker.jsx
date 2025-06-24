@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import YesOrEmpty from "@/modules/YesOrEmpty.mjs";
 import Constants from "@/modules/md-constants";
 
@@ -8,7 +8,7 @@ const YesOrEmptyPicker = forwardRef((props, ref) => {
 	const { label = "是否", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			ref={ref}
 			label={label}
 			options={YesOrEmpty.options}

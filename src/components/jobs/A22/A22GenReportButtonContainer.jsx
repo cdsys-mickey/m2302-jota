@@ -1,5 +1,5 @@
 import { A22Context } from "@/contexts/A22/A22Context";
-import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
+import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";

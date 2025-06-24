@@ -17,7 +17,7 @@ export const U05_1FormContainer = () => {
 		)
 	}, [u051.onSubmit, u051.onSubmitError, form]);
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

@@ -10,7 +10,7 @@ import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import BankPicker from "@/components/fields/BankPicker";
+import BankPicker from "@/components/BankPicker/BankPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import AreaPicker from "./fields/AreaPicker";

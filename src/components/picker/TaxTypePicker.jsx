@@ -1,14 +1,14 @@
 import TaxTypes from "@/modules/TaxTypes.mjs";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import Constants from "@/modules/md-constants";
 
 const TaxTypePicker = forwardRef((props, ref) => {
 	const { name, label = "稅別", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			ref={ref}
 			label={label}

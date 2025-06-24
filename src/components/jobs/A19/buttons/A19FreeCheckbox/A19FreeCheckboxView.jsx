@@ -1,10 +1,10 @@
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxEx } from "@/shared-components";
 import { memo } from "react";
 
 const A19FreeCheckboxView = memo((props) => {
 	const { ...rest } = props;
 	return (
-		<CheckboxExWrapper
+		<CheckboxEx
 			label="含試贈樣"
 			defaultValue={false}
 			{...rest}

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { memo, useRef } from "react";
 import ProdTypeBPicker from "../../../picker/ProdTypeBPicker";
 import Constants from "@/modules/md-constants";
-import BankPicker from "@/components/fields/BankPicker";
+import BankPicker from "@/components/BankPicker/BankPicker";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {

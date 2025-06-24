@@ -1,5 +1,5 @@
 import { F07Context } from "@/contexts/F07/F07Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import LockIcon from '@mui/icons-material/Lock';
 import { forwardRef, memo, useContext } from "react";
 
@@ -9,7 +9,7 @@ const F07CloseButtonContainer = memo(
 		const f07 = useContext(F07Context);
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				responsive
 				ref={ref}
 				variant="contained"
@@ -21,7 +21,7 @@ const F07CloseButtonContainer = memo(
 				}}
 				{...rest}>
 				結轉
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

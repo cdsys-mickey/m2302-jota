@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { C02Context } from "@/contexts/C02/C02Context";
 import PropTypes from "prop-types";
@@ -22,14 +22,14 @@ export const C02ReviewButtonContainer = (props) => {
 	}
 
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			responsive
 			startIcon={<CheckCircleOutlineIcon />}
 			color="success"
 			onClick={c02.promptReview}
 			{...rest}>
 			{_label}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 C02ReviewButtonContainer.propTypes = {

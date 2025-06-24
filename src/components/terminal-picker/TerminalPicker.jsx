@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "@/modules/md-auth";
 import Terminals from "@/modules/md-terminals";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useMemo } from "react";
@@ -26,7 +26,7 @@ const TerminalPicker = memo((props) => {
 	}, [scope]);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url="v1/pos/terminals"
 			bearer={auth.token}

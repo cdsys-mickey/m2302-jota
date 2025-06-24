@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Controller, useFormContext } from "react-hook-form";
-import OptionPicker from "./OptionPicker";
+import OptionPickerView from "./OptionPickerView";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { useRef } from "react";
@@ -64,7 +64,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 	);
 
 	if (!name) {
-		return <OptionPicker ref={ref} setFocus={setFocus} onChange={_onChange} {...rest} />;
+		return <OptionPickerView ref={ref} setFocus={setFocus} onChange={_onChange} {...rest} />;
 	}
 
 	return (
@@ -80,7 +80,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 				// prevValue.current = JSON.stringify(value);
 
 				return (
-					<OptionPicker
+					<OptionPickerView
 						name={name}
 						inputRef={ref}
 						value={value}

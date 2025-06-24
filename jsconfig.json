@@ -1,15 +1,18 @@
 {
 	"compilerOptions": {
-		"target": "es6",
+		"target": "esnext",
 		"jsx": "react",
 		"module": "esnext",
 		"moduleResolution": "node",
-		"baseUrl": "./",
+		"baseUrl": "src",
 		"paths": {
 			"@/*": [
-				"src/*"
+				"*"
+			],
+			"@/modules/*": [
+				"modules/*"
 			]
-		}
+		},
 	},
 	"include": [
 		"src/**/*"

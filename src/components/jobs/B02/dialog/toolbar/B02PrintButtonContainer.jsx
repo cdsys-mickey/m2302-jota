@@ -1,7 +1,7 @@
 import { BContext } from "@/contexts/B/BContext";
 import { B02Context } from "@/contexts/B02/B02Context";
 import { B04Context } from "@/contexts/B04/B04Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { forwardRef, memo, useContext } from "react";
 import { useFormContext } from "react-hook-form";
@@ -24,7 +24,7 @@ const B02PrintButtonContainer = memo(
 		}
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				responsive
 				ref={ref}
 				// variant="contained"
@@ -37,7 +37,7 @@ const B02PrintButtonContainer = memo(
 				color="neutral"
 				{...rest}>
 				列印
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

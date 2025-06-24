@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
@@ -48,7 +48,7 @@ const NewCustomerPicker = (props) => {
 	}, []);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			bearer={token}
 			url="v1/sales/new-customers"

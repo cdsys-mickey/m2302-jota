@@ -5,9 +5,9 @@ import Prods from "@/modules/md-prods";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import queryString from "query-string";
-import { OptionPickerWrapper } from "../../shared-components/option-picker/OptionPickerWrapper";
 import { useCallback } from "react";
 import SProds from "../../modules/md-sprods";
+import { OptionPicker } from "@/shared-components";
 
 export const SProdPickerContainer = (props) => {
 	const {
@@ -55,7 +55,7 @@ export const SProdPickerContainer = (props) => {
 	}, []);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			bearer={token}

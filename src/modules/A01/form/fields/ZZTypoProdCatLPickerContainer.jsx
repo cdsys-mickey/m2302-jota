@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ProdLCats from "@/modules/md-prod-l-cats";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 
@@ -9,7 +9,7 @@ export const ZZTypoProdCatLPickerContainer = forwardRef((props, ref) => {
 	const { token } = useContext(AuthContext);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			ref={ref}

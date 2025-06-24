@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import DeptRecvOrders from "@/modules/md-dept-recv-orders";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useContext, useMemo } from "react";
@@ -21,7 +21,7 @@ const DeptRecvOrderPicker = memo((props) => {
 
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url={`v1/purchase/dep-recv-orders`}
 			bearer={token}

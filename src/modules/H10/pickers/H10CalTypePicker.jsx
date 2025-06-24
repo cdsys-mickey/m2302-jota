@@ -1,5 +1,5 @@
 import Constants from "@/modules/md-constants";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import H10CalType from "./H10CalType.mjs";
@@ -10,7 +10,7 @@ const H10CalTypePicker = forwardRef((props, ref) => {
 	const { name, label = "百分率算法", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			ref={ref}
 			label={label}

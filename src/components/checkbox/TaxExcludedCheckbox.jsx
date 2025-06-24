@@ -1,12 +1,12 @@
-import PropTypes from "prop-types";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import YesEmpty from "@/modules/md-yes-empty";
+import { CheckboxEx } from "@/shared-components";
+import PropTypes from "prop-types";
 
 const TaxTypeCheckbox = (props) => {
 	const { label = "稅外加", ...rest } = props;
 
 	return (
-		<CheckboxExWrapper
+		<CheckboxEx
 			label={label}
 			defaultValue=""
 			valueToChecked={YesEmpty.valueToChecked}

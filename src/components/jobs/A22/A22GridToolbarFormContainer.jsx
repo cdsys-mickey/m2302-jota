@@ -31,7 +31,7 @@ export const A22GridToolbarFormContainer = () => {
 		);
 	}, [a22, form])
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

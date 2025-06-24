@@ -2,7 +2,7 @@ import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { forwardRef, memo, useContext } from "react";
 import { A01Context } from "@/modules/A01/A01Context";
 import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 
 const A01PrintButtonContainer = memo(
 	forwardRef((props, ref) => {
@@ -20,7 +20,7 @@ const A01PrintButtonContainer = memo(
 		}
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				responsive
 				ref={ref}
 				variant="contained"
@@ -31,7 +31,7 @@ const A01PrintButtonContainer = memo(
 				onClick={stdPrint.promptPrint}
 				{...rest}>
 				列印
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

@@ -1,8 +1,7 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
-import RemoveDoneIcon from "@mui/icons-material/RemoveDone";
-import { useContext } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
+import { ButtonEx } from "@/shared-components";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { useContext } from "react";
 
 export const ZA03AuthClearSelectionButtonContainer = (props) => {
 	const { ...rest } = props;
@@ -14,7 +13,7 @@ export const ZA03AuthClearSelectionButtonContainer = (props) => {
 	}
 
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			// startIcon={<RemoveDoneIcon />}
 			onClick={za03.clearSelection({ gridMeta: formMeta.gridMeta })}
 			{...rest}

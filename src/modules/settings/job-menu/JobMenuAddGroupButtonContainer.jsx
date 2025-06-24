@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import { useContext } from "react";
 import { JobMenuContext } from "./JobMenuContext";
@@ -8,7 +8,7 @@ export const JobMenuAddGroupButtonContainer = (props) => {
 	const { children = "新增群組標頭", ...rest } = props;
 	const jobMenu = useContext(JobMenuContext);
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			responsive
 			variant="contained"
 			color="info"
@@ -16,7 +16,7 @@ export const JobMenuAddGroupButtonContainer = (props) => {
 			onClick={jobMenu.handleAddGroup}
 			{...rest}>
 			{children}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 JobMenuAddGroupButtonContainer.propTypes = {

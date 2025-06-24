@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import SaveIcon from '@mui/icons-material/Save';
 import { useContext } from "react";
 import { JobMenuContext } from "./JobMenuContext";
@@ -6,7 +6,7 @@ import { JobMenuContext } from "./JobMenuContext";
 export const JobMenuSaveButtonContainer = () => {
 	const jobMenu = useContext(JobMenuContext);
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			responsive
 			variant="contained"
 			color="warning"
@@ -14,7 +14,7 @@ export const JobMenuSaveButtonContainer = () => {
 			onClick={jobMenu.handleSave}
 			loading={jobMenu.saveWorking}>
 			儲存
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 

@@ -1,6 +1,6 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import UserAuth from "@/modules/md-user-auth";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import ActionState from "@/shared-constants/action-state";
 import { useContext } from "react";
 import PropTypes from "prop-types";
@@ -18,13 +18,13 @@ export const ZA03AuthBatchSubmitButtonContainer = (props) => {
 	}
 
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			onClick={za03.handleAuthSave}
 			// disabled={!za03.isDirty}
 			loading={za03.saveAuthState === ActionState.WORKING}
 			{...rest}>
 			{children}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 ZA03AuthBatchSubmitButtonContainer.propTypes = {

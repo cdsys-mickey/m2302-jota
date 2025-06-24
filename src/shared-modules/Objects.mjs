@@ -1,3 +1,4 @@
+import CommonStyles from "./CommonStyles.mjs";
 import Arrays from "./sd-arrays";
 import _ from "lodash";
 
@@ -269,10 +270,11 @@ const arePropsEqual = (obj1, obj2, opts = DEFAULT_PROPS_OPTS) => {
 
 		if (!deepCompare ? value1 !== value2 : !_.isEqual(value1, value2)) {
 			if (debug) {
-				console.log(
-					`${header ? header + "." : ""}${key} mismatched ${
+				console.warn(
+					`%C${header ? header + "." : ""}${key} mismatched ${
 						deepCompare ? "(deepCompare)" : ""
 					}: ${value1} → `,
+					CommonStyles.CONSOLE_WARN,
 					value2
 				);
 			}

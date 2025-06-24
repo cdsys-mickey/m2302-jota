@@ -3,6 +3,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import G04 from "@/modules/G04/G04.mjs";
+import { useAction } from "@/shared-hooks/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useState } from "react";
 
@@ -14,7 +15,7 @@ export const useG04 = () => {
 		token,
 		moduleId: "G04",
 	});
-	const { httpGetAsync, httpPostAsync, httpDeleteAsync } = useWebApi();
+	const { httpPatchAsync, httpPostAsync, httpDeleteAsync } = useWebApi();
 
 	const handleTabChange = useCallback((e, newValue) => {
 		setSelectedTab(newValue);
@@ -80,6 +81,38 @@ export const useG04 = () => {
 		console.error("onDeleteSubmitError", err, data);
 	}, []);
 
+	const restoreAction = useAction();
+
+	const onRecoverSubmit = useCallback(
+		async (payload) => {
+			console.log("onRecoverSubmit", payload);
+			const data = G04.transformForRecoverSubmitting(payload);
+			console.log("transformed data", data);
+			restoreAction.start();
+			try {
+				const { status, error } = await httpPatchAsync({
+					url: `v1/sales/recv-account/batches/restore`,
+					data,
+					bearer: token
+				})
+				if (status.success) {
+					restoreAction.done();
+					toastEx.success(`復原成功`);
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				restoreAction.fail();
+				toastEx.error("復原失敗", err);
+			}
+		},
+		[httpPatchAsync, restoreAction, token]
+	);
+
+	const onRecoverSubmitError = useCallback((err, data) => {
+		console.error("onRecoverSubmitError", err, data);
+	}, []);
+
 
 	return {
 		...crud,
@@ -89,7 +122,11 @@ export const useG04 = () => {
 		onDeleteSubmit,
 		onDeleteSubmitError,
 		selectedTab,
-		handleTabChange
+		handleTabChange,
+		// RECOVER
+		onRecoverSubmit,
+		onRecoverSubmitError,
+		restoreWorking: restoreAction.working
 	};
 };
 

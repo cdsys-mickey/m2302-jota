@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import FreeProdTypes from "@/modules/md-free-prod-types";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import Constants from "@/modules/md-constants";
 
 const FreeProdTypePicker = forwardRef((props, ref) => {
 	const { label = "試贈樣", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			ref={ref}
 			label={label}
 			options={FreeProdTypes.options}

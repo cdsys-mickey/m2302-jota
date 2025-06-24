@@ -36,7 +36,7 @@ export const A18FormContainer = () => {
 		return operator?.Class < Auth.SCOPES.ROOT;
 	}, [operator?.Class])
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

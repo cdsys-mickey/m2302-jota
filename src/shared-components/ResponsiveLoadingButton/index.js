@@ -1,3 +1,3 @@
-import ResponsiveLoadingButtonContainer from "./ResponsiveLoadingButtonContainer";
+import ResponsiveLoadingButtonContainer from "../ButtonEx/ResponsiveLoadingButtonContainer";
 
 export default ResponsiveLoadingButtonContainer;

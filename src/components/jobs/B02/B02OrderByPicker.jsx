@@ -1,12 +1,12 @@
 import B02 from "@/modules/md-b02";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import { forwardRef, memo } from "react";
 
 export const B02OrderByPicker = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				ref={ref}
 				options={B02.options}
 				getOptionLabel={B02.getOptionLabel}

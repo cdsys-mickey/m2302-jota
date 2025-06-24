@@ -4,7 +4,7 @@ import Prods from "@/modules/md-prods";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import queryString from "query-string";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import { useCallback } from "react";
 import _ from "lodash";
 import { createFilterOptions } from "@mui/material";
@@ -144,7 +144,7 @@ const ProdPicker = (props) => {
 	}, [defaultFilter]);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url={`v1/prods`}
 			bearer={token}

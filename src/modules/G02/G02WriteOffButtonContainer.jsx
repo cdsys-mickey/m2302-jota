@@ -1,5 +1,5 @@
 import { G02Context } from "@/modules/G02/G02Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import { Button, ButtonGroup, Tooltip } from "@mui/material";
@@ -36,7 +36,7 @@ const G02WriteOffButtonContainer = memo(
 			<Tooltip title={_title}>
 				<span>
 					<ButtonGroupEx variant="contained" size="small" noDivider disableInteractive>
-						<ButtonWrapper
+						<ButtonEx
 							responsive
 							ref={ref}
 
@@ -50,7 +50,7 @@ const G02WriteOffButtonContainer = memo(
 							disabled={disabled}
 							{...rest}>
 							{text}
-						</ButtonWrapper>
+						</ButtonEx>
 						{!disabled && (
 							<Tooltip title="取消勾取">
 								<Button

@@ -22,10 +22,6 @@ export const P14SearchFieldContainer = (props) => {
 		)
 	}, [p14.onSearchSubmit, p14.onSearchSubmitError, forms]);
 
-	// useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
-	// 	enableOnFormTags: true
-	// })
-
 	const searchField = useSearchField({
 		inputRef,
 		onChange: (v) => {

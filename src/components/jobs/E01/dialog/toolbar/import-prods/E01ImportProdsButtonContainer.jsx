@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useMemo } from "react";
 import { useEffect } from "react";
 import Objects from "@/shared-modules/Objects.mjs";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import Constants from "@/modules/md-constants";
 
 export const E01ImportProdsButtonContainer = (props) => {
@@ -49,7 +49,7 @@ export const E01ImportProdsButtonContainer = (props) => {
 	}, [totalElements]);
 
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			type="submit"
 			disabled={disabled}
 			size="small"
@@ -60,7 +60,7 @@ export const E01ImportProdsButtonContainer = (props) => {
 			}}
 			{...rest}>
 			{buttonText}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 

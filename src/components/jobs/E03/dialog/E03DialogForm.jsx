@@ -167,9 +167,6 @@ const E03DialogForm = memo((props) => {
 										label: {
 											typography: {
 												variant: "body2",
-												// sx: {
-												// 	fontSize: 10
-												// }
 											}
 
 										}

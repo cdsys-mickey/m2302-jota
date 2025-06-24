@@ -1,5 +1,5 @@
 import F07 from "@/modules/md-f07";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 
@@ -9,7 +9,7 @@ const F07ActionPicker = memo(
 		const { name, label = "輸出格式", ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				name={name}
 				label={label}
 				options={F07.Actions}

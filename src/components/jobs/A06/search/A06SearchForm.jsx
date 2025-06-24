@@ -1,4 +1,4 @@
-import BankPicker from "@/components/fields/BankPicker";
+import BankPicker from "@/components/BankPicker/BankPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";

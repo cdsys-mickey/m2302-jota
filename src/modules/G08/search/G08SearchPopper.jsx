@@ -3,7 +3,7 @@ import CounterPicker from "@/components/picker/CounterPicker";
 import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
 import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
@@ -33,21 +33,21 @@ const G08SearchPopper = memo(
 				<Divider />
 				<DialogActions>
 
-					<ButtonWrapper
+					<ButtonEx
 						size="small"
 						variant="outlined"
 						color="primary"
 						onClick={onReset}>
 						清除
-					</ButtonWrapper>
-					<ButtonWrapper
+					</ButtonEx>
+					<ButtonEx
 						startIcon={<FilterAltIcon />}
 						type="submit"
 						variant="contained"
 					// onClick={handleSubmit}
 					>
 						篩選
-					</ButtonWrapper>
+					</ButtonEx>
 				</DialogActions>
 			</PopperBox>
 		);

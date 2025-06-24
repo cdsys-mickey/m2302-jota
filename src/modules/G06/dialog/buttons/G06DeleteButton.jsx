@@ -7,7 +7,7 @@ const G06DeleteButton = (props) => {
 	const { ...rest } = props;
 	const g06 = useContext(G06Context);
 
-	if (g06.itemData?.CutNotes) {
+	if (g06.itemData?.CutNotes || !g06.canDelete) {
 		return false;
 	}
 
@@ -16,7 +16,7 @@ const G06DeleteButton = (props) => {
 			responsive
 			startIcon={<HighlightOffIcon />}
 			color="secondary"
-			onClick={g06.canUpdate ? g06.promptUpdating : null}
+			onClick={g06.confirmDelete}
 			{...rest}>
 			刪除
 		</ButtonEx>

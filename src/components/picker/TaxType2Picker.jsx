@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import TaxTypes2 from "@/modules/md-tax-types2";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import Constants from "@/modules/md-constants";
 
 const TaxType2Picker = memo(
@@ -9,7 +9,7 @@ const TaxType2Picker = memo(
 		const { name, label = "稅別", ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				name={name}
 				ref={ref}
 				label={label}

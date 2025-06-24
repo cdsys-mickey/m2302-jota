@@ -8,7 +8,7 @@ import {
 import PropTypes from "prop-types";
 import { memo, useState } from "react";
 import { useController } from "react-hook-form";
-import CheckboxEx from "../checkbox/CheckboxEx";
+import CheckboxEx from "../checkbox/CheckboxExView";
 
 import ErrorBox from "../ErrorBox";
 import LoadingTypography from "../LoadingTypography";

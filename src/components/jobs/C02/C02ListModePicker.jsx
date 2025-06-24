@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import C02 from "@/modules/C02.mjs";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 const C02ListModePicker = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				ref={ref}
 
 				dense

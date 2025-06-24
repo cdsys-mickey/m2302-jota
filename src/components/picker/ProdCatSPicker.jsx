@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import ProdSCats from "@/modules/md-prod-s-cats";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
 
 const ProdCatSPicker = (props) => {
@@ -38,7 +38,7 @@ const ProdCatSPicker = (props) => {
 	}, [_catM]);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			bearer={token}

@@ -1,14 +1,14 @@
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 
 const A01DialogEditToolbar = memo(
 	forwardRef((props, ref) => {
 		const { onSave, onCancel, loading, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				<ButtonWrapper
+				<ButtonEx
 					responsive
 					onClick={onCancel}
 					// color="neutral"
@@ -16,8 +16,8 @@ const A01DialogEditToolbar = memo(
 					variant="outlined"
 					{...rest}>
 					取消
-				</ButtonWrapper>
-				<ButtonWrapper
+				</ButtonEx>
+				<ButtonEx
 					responsive
 					onClick={onSave}
 					type="submit"
@@ -26,7 +26,7 @@ const A01DialogEditToolbar = memo(
 					variant="contained"
 					loading={loading}>
 					儲存
-				</ButtonWrapper>
+				</ButtonEx>
 			</Fragment>
 		);
 	})

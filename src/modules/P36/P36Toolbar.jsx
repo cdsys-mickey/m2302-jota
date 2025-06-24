@@ -1,0 +1,36 @@
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import { forwardRef, memo } from "react";
+import P36CreateButtonContainer from "./P36CreateButtonContainer";
+import { P36FetchResultLabelContainer } from "./P36FetchResultLabelContainer";
+import P36PrintButtonContainer from "./P36PrintButtonContainer";
+
+const LeftButtons = memo(() => (
+	<>
+		<P36CreateButtonContainer />
+		<P36PrintButtonContainer />
+	</>
+))
+
+LeftButtons.displayName = "LeftButtons";
+
+const P36Toolbar = memo(
+	forwardRef(({ ...rest }, ref) => {
+		return (
+			<ListToolbar
+				// pb={1}
+				alignItems="flex-end"
+				ref={ref}
+				LeftComponent={LeftButtons}
+				// RightComponent={() => <FetchResultLabel totalElements={365} />}
+				RightComponent={P36FetchResultLabelContainer}
+				{...rest}
+			/>
+		);
+	})
+);
+
+P36Toolbar.displayName = "P36ListViewToolbar";
+export default P36Toolbar;
+
+
+

@@ -6,7 +6,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { Box, Container, Grid, IconButton } from "@mui/material";
 import { nanoid } from "nanoid";
 import React, { Fragment, forwardRef, memo, useCallback } from "react";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import MuiStyles from "../../../shared-modules/MuiStyles";
 
 const A01TransferEditor = memo(
@@ -80,12 +80,12 @@ const A01TransferEditor = memo(
 					<ClearIcon />
 				</IconButton>
 			</FlexBox> */}
-				<ButtonWrapper
+				<ButtonEx
 					variant="contained"
 					color="inherit"
 					onClick={handleAdd}>
 					新增
-				</ButtonWrapper>
+				</ButtonEx>
 				{/* </Stack> */}
 				{/* 既有 */}
 			</Container>

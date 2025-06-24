@@ -1,7 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { P14Context } from "@/modules/P14/P14Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 
 const P14CreateButtonContainer = memo(
 	forwardRef((props, ref) => {
@@ -16,7 +16,7 @@ const P14CreateButtonContainer = memo(
 		}
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				ref={ref}
 				variant="contained"
 				startIcon={<AddIcon />}
@@ -26,7 +26,7 @@ const P14CreateButtonContainer = memo(
 				}}
 				{...rest}>
 				{text}
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

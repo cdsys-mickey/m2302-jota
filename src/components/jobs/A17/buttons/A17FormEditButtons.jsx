@@ -1,4 +1,4 @@
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
@@ -8,14 +8,14 @@ const A17FormEditButtons = memo(
 		const { onSave, editWorking, onCancel, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
-				<ButtonWrapper
+				<ButtonEx
 					responsive
 					onClick={onCancel}
 					variant="outlined"
 					color="warning">
 					取消
-				</ButtonWrapper>
-				<ButtonWrapper
+				</ButtonEx>
+				<ButtonEx
 					responsive
 					onClick={onSave}
 					type="submit"
@@ -24,7 +24,7 @@ const A17FormEditButtons = memo(
 					variant="contained"
 					loading={editWorking}>
 					儲存
-				</ButtonWrapper>
+				</ButtonEx>
 			</Fragment>
 		);
 	})

@@ -21,7 +21,7 @@ export const B02FrameContainer = () => {
 		b02.onPrintSubmitError
 	);
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

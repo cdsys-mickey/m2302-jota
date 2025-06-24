@@ -8,7 +8,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { keyColumn } from "react-datasheet-grid";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { AreaTypePickerComponentContainer } from "@/components/dsg/columns/area-type-picker/AreaTypePickerComponentContainer";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";

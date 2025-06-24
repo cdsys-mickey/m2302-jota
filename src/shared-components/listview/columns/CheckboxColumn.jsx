@@ -2,7 +2,7 @@ import { memo, forwardRef } from "react";
 import PropTypes from "prop-types";
 import ListColumn from "../ListColumn";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import CheckboxEx from "@/shared-components/checkbox/CheckboxEx";
+import CheckboxEx from "@/shared-components/checkbox/CheckboxExView";
 import { Box } from "@mui/material";
 import { useContext } from "react";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";

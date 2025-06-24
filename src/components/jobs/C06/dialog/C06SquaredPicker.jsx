@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import C06 from "@/modules/C06.mjs";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 const C06SquaredPicker = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 
 		return (
-			<OptionPickerWrapper
+			<OptionPicker
 				ref={ref}
 				fullWidth
 				// required

@@ -7,7 +7,7 @@ const G06EditButton = (props) => {
 	const { ...rest } = props;
 	const g06 = useContext(G06Context);
 
-	if (g06.itemData?.CutNotes) {
+	if (g06.itemData?.CutNotes || !g06.canUpdate) {
 		return false;
 	}
 
@@ -15,7 +15,7 @@ const G06EditButton = (props) => {
 		<ButtonEx
 			startIcon={<EditOutlinedIcon />}
 			color="primary"
-			onClick={g06.canUpdate ? g06.promptUpdating : null}
+			onClick={g06.promptUpdating}
 			{...rest}>
 			輸入收款資料
 		</ButtonEx>

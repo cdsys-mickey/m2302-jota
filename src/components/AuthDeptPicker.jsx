@@ -1,7 +1,7 @@
 import { memo, useCallback, useContext } from "react";
 import { AuthContext } from "../contexts/auth/AuthContext";
 
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import DeptOptions from "@/modules/DeptOptions.mjs";
 
 const AuthDeptPicker = memo((props) => {
@@ -13,7 +13,7 @@ const AuthDeptPicker = memo((props) => {
 	}, []);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			url="v1/auth/depts"
 			getOptionLabel={DeptOptions.getOptionLabel}
 			isOptionEqualToValue={DeptOptions.isOptionEqualToValue}

@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import OwnBrandStockingOrders from "@/modules/md-own-brand-stocking-orders";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useContext, useMemo } from "react";
@@ -19,7 +19,7 @@ const OwnBrandStockingOrderPicker = memo((props) => {
 
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url={`v1/own-brand/stocking-orders`}
 			bearer={token}

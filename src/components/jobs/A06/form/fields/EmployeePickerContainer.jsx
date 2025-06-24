@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import Employees from "@/modules/md-employees";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 const TypoEmployeePickerContainer = forwardRef((props, ref) => {
 	const { name, label = "員工", ...rest } = props;
@@ -10,7 +10,7 @@ const TypoEmployeePickerContainer = forwardRef((props, ref) => {
 
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			ref={ref}

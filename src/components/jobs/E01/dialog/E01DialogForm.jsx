@@ -2,7 +2,6 @@ import EmployeePicker from "@/components/picker/EmployeePicker";
 import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
@@ -16,6 +15,7 @@ import { E01CustomerPicker } from "../E01CustomerPicker";
 import E01SquaredPicker from "./E01SquaredPicker";
 import { E01ProdGridBottomToolbar } from "./grid/E01ProdGridBottomToolbar";
 import { E01ProdGridContainer } from "./grid/E01ProdGridContainer";
+import { CheckboxEx } from "@/shared-components";
 
 const E01DialogForm = memo((props) => {
 	const {
@@ -99,19 +99,20 @@ const E01DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item md={3}>
-								<CheckboxExWrapper
+								<CheckboxEx
 									typo
 									label="不列印金額"
 									name="dontPrtAmt"
-									size="medium"
+									size="small"
 									color="secondary"
+									fullWidth
 									slotProps={{
 										label: {
-											typography: {
-												variant: "body2",
-												// sx: {
-												// 	fontSize: 10
-												// }
+											slotProps: {
+												typography: {
+													variant: "body2",
+												}
+
 											}
 										}
 									}}
@@ -130,7 +131,7 @@ const E01DialogForm = memo((props) => {
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item md={2}>
-								<CheckboxExWrapper
+								<CheckboxEx
 									typo
 									label="零售"
 									name="retail"
@@ -198,7 +199,7 @@ const E01DialogForm = memo((props) => {
 							</Grid>
 
 							<Grid item md={3}>
-								<CheckboxExWrapper
+								<CheckboxEx
 									typo
 									label="稅外加"
 									name="taxExcluded"

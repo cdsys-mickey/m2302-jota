@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { memo, useContext } from "react";
 import Database from "@/modules/md-database";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 export const RealFilePicker = memo((props) => {
 	console.log("rendering RealFilePicker");
@@ -10,7 +10,7 @@ export const RealFilePicker = memo((props) => {
 	const { token } = useContext(AuthContext);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			bearer={token}

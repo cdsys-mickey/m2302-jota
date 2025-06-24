@@ -1,15 +1,15 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { OptionPicker } from "@/shared-components";
 import Codes from "@/shared-modules/md-codes";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper"
 
 const PaymentPickerContainer = forwardRef((props, ref) => {
 	const { name, label = "收款方式", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			label={label}
 			ref={ref}

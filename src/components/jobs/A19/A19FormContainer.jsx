@@ -23,7 +23,7 @@ export const A19FormContainer = () => {
 		)
 	}, [a19.onDebugSubmit, form]);
 
-	useHotkeys(["Shift+Enter"], () => setTimeout(handleSubmit), {
+	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 

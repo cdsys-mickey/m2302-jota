@@ -2,17 +2,16 @@ import { toastEx } from "@/helpers/toastEx";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useCallback, useContext } from "react";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
+import CommonStyles from "@/shared-modules/CommonStyles.mjs";
 
 export const useCellFocus = (props = {}) => {
 	const {
-		// from DSGContext
-		// getNextCell,
-		// lastCell,
-		// isLastRow,
-		// setActiveCell,
-		// from Cell Component
 		insertRowBelow,
 	} = props;
+
+	if (insertRowBelow === undefined) {
+		console.warn(`%cinsertRowBelow未傳遞`, CommonStyles.CONSOLE_WARN);
+	}
 
 	const dsg = useContext(DSGContext);
 

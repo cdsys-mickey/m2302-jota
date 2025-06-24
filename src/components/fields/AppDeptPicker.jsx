@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import DeptOptions from "@/modules/DeptOptions.mjs";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useContext, useMemo } from "react";
@@ -37,7 +37,7 @@ const AppDeptPicker = memo((props) => {
 	// );
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			// ref={ref}
 			bearer={token}
 			url={`v1/app/depts`}

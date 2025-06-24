@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import InvTaking from "@/modules/InvTaking";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useCallback, useContext, useMemo } from "react";
@@ -33,7 +33,7 @@ const InvTakingListingPicker = memo((props) => {
 	);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url="v1/inv/taking/listing"
 			bearer={auth.token}

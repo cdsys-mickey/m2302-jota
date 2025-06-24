@@ -1,9 +1,9 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
+import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import G06 from "../../G06.mjs";
 
 const ContextMenu = createDSGContextMenuComponent({

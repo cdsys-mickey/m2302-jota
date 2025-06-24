@@ -1,6 +1,6 @@
 import Constants from "@/modules/md-constants";
 import OrderDir from "@/modules/OrderDir.mjs";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 
@@ -8,7 +8,7 @@ const OrderDirPicker = forwardRef((props, ref) => {
 	const { name, label = "順序", ...rest } = props;
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			name={name}
 			ref={ref}
 			label={label}

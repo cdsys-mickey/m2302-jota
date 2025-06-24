@@ -1,16 +1,17 @@
+
 import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useInit } from "@/shared-hooks/useInit";
 import { useCallback, useContext, useMemo } from "react";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
-import StdPrint from "../StdPrint.mjs";
 import G04 from "./G04.mjs";
 import { G04Context } from "./G04Context";
 import G04Form from "./G04Form";
-import Forms from "@/shared-modules/Forms.mjs";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const G04FormContainer = () => {
+	const auth = useContext(AuthContext);
 	const form = useFormContext();
 	const { reset } = form;
 	const g04 = useContext(G04Context);
@@ -26,6 +27,8 @@ export const G04FormContainer = () => {
 			delSession,
 			delRecGroup,
 			delCustID,
+			recYM,
+			recSession,
 			`
 	)
 
@@ -53,16 +56,7 @@ export const G04FormContainer = () => {
 		[catL, catM]
 	);
 
-	const handleDelSessionChange = useCallback((newSession) => {
-		console.log("newSession", newSession);
-		if (newSession?.AccYM) {
-			form.setValue("delYM", Forms.parseDate(newSession?.AccYM + "/01"))
-		}
-	}, [form]);
 
-	const handleDelSessionInputChange = useCallback((e, newValue) => {
-		form.setValue("Stage", newValue);
-	}, [form]);
 
 	const handleSubmit = form.handleSubmit(g04.onSubmit, g04.onSubmitError);
 	const handleDeleteSubmit = form.handleSubmit(g04.onDeleteSubmit, g04.onDeleteSubmitError);
@@ -94,8 +88,7 @@ export const G04FormContainer = () => {
 				<G04Form
 					selectedTab={g04.selectedTab}
 					handleTabChange={g04.handleTabChange}
-					handleDelSessionChange={handleDelSessionChange}
-					handleDelSessionInputChange={handleDelSessionInputChange}
+					impersonate={auth.impersonate}
 				/>
 			</FormMetaProvider>
 		</FormProvider>

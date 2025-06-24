@@ -2,14 +2,14 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import PropTypes from "prop-types";
 import { forwardRef, useContext } from "react";
 import Counters from "@/modules/md-counters";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 
 const CounterPicker = forwardRef((props, ref) => {
 	const { label = "櫃別", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			ref={ref}
 			bearer={token}

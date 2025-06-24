@@ -1,5 +1,5 @@
 import { P14Context } from "@/modules/P14/P14Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import useDebounce from "@/shared-hooks/useDebounce";
 import Objects from "@/shared-modules/Objects.mjs";
 import { useContext, useEffect, useMemo, useState } from "react";
@@ -45,7 +45,7 @@ export const P14ImportProdsButtonContainer = (props) => {
 	}, [totalElements]);
 
 	return (
-		<ButtonWrapper
+		<ButtonEx
 			type="submit"
 			disabled={disabled}
 			size="small"
@@ -56,7 +56,7 @@ export const P14ImportProdsButtonContainer = (props) => {
 			}}
 			{...rest}>
 			{buttonText}
-		</ButtonWrapper>
+		</ButtonEx>
 	);
 };
 

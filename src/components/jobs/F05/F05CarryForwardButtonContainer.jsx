@@ -1,5 +1,5 @@
 import { F05Context } from "@/contexts/F05/F05Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import { forwardRef, memo, useContext } from "react";
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
@@ -9,7 +9,7 @@ const F05CarryForwardButtonContainer = memo(
 		const f05 = useContext(F05Context);
 
 		return (
-			<ButtonWrapper
+			<ButtonEx
 				responsive
 				ref={ref}
 				variant="contained"
@@ -21,7 +21,7 @@ const F05CarryForwardButtonContainer = memo(
 				}}
 				{...rest}>
 				結轉
-			</ButtonWrapper>
+			</ButtonEx>
 		);
 	})
 );

@@ -1,7 +1,7 @@
 import { Box, Grid, Tab } from "@mui/material";
 import { memo } from "react";
 
-import CmsTypePicker from "@/components/picker/CmsTypePicker";
+import CmsTypePicker from "@/components/CmsTypePicker/CmsTypePicker";
 import CounterPicker from "@/components/picker/CounterPicker";
 import { PkgTypePicker } from "@/components/picker/PkgTypePicker";
 import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
@@ -336,7 +336,7 @@ const A01DialogForm = memo((props) => {
 										/>
 									</Grid>
 
-									{/* <Grid item xs={12} sm={12} md={4}>
+									<Grid item xs={12} sm={12} md={6}>
 										<CmsTypePicker
 											typo
 											label="佣金類別"
@@ -344,7 +344,7 @@ const A01DialogForm = memo((props) => {
 											// readOnly={storeMode}
 											disableOpenOnInput
 										/>
-									</Grid> */}
+									</Grid>
 								</Grid>
 							</FormSectionBox>
 
@@ -495,7 +495,7 @@ const A01DialogForm = memo((props) => {
 						</TabPanel>
 						{doCms && (
 							<TabPanel value={A01.Tabs.CMS}>
-								<ContainerEx maxWidth="sm" alignLeft>
+								<ContainerEx maxWidth="md" alignLeft>
 									<A01CmsGridContainer />
 								</ContainerEx>
 							</TabPanel>

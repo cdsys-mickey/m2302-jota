@@ -1,4 +1,4 @@
-import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
+import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";

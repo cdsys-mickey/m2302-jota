@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
 import { toast } from "react-toastify";
 import { useRef } from "react";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 
 const DialogsTest = (props) => {
 	const { ...rest } = props;
@@ -34,9 +34,9 @@ const DialogsTest = (props) => {
 
 	return (
 		<Box p={6}>
-			<ButtonWrapper onClick={handleClick} variant="contained">
+			<ButtonEx onClick={handleClick} variant="contained">
 				打開對話框
-			</ButtonWrapper>
+			</ButtonEx>
 		</Box>
 	);
 };

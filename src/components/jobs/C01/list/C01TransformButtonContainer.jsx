@@ -1,5 +1,5 @@
 import { C01Context } from "@/contexts/C01/C01Context";
-import ButtonWrapper from "@/shared-components/ButtonWrapper";
+import { ButtonEx } from "@/shared-components";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
@@ -25,7 +25,7 @@ export const C01TransformButtonContainer = memo(
 		return (
 			<Tooltip title={_title} arrow >
 				<span>
-					<ButtonWrapper
+					<ButtonEx
 						ref={ref}
 						responsive
 						startIcon={<CheckCircleOutlineIcon />}
@@ -33,7 +33,7 @@ export const C01TransformButtonContainer = memo(
 						disabled={disabled}
 						{...rest}>
 						{children}
-					</ButtonWrapper>
+					</ButtonEx>
 
 				</span>
 			</Tooltip>

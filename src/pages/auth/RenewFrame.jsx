@@ -1,5 +1,5 @@
 import Colors from "@/modules/Colors.mjs";
-import ResponsiveLoadingButton from "@/shared-components/ResponsiveLoadingButton/ResponsiveLoadingButtonContainer";
+import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
 import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexContainer from "@/shared-components/FlexContainer";

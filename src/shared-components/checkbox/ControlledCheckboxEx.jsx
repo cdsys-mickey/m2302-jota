@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Controller, useFormContext } from "react-hook-form";
 import PropTypes from "prop-types";
-import CheckboxEx from "./CheckboxEx";
+import CheckboxEx from "./CheckboxExView";
 import { useCallback } from "react";
 import { useContext } from "react";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";

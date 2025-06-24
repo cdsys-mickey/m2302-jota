@@ -2,7 +2,7 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { OptionPickerWrapper } from "@/shared-components/option-picker/OptionPickerWrapper";
+import { OptionPicker } from "@/shared-components";
 import { useMemo } from "react";
 import queryString from "query-string";
 import PurchaseReqOrders from "@/modules/md-purchase-req-orders";
@@ -20,7 +20,7 @@ const PurchaseReqOrderPicker = memo((props) => {
 
 
 	return (
-		<OptionPickerWrapper
+		<OptionPicker
 			label={label}
 			url={`v1/purchase/req-orders`}
 			bearer={token}
