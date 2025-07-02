@@ -20,7 +20,7 @@ const CmsAreaPicker = forwardRef((props, ref) => {
 			isOptionEqualToValue={CmsAreas.isOptionEqualToValue}
 			findByInput={CmsAreas.findByInput}
 			notFoundText="地區 ${input} 不存在"
-			{...Constants.STATIC_PICKER_OPTS}
+			// {...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}
 		/>

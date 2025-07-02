@@ -18,23 +18,23 @@ export const P36FrameContainer = () => {
 	return (
 		<FormProvider {...searchForm}>
 			<FrameBox>
-				<StdPrintProvider
+				{/* <StdPrintProvider
 					tableName="CndFile"
-					paramsToJsonData={P36.paramsToJsonData}>
-					{/* 標題 */}
-					<FrameBanner>
-						{<P36SearchFieldContainer name="qs" />}
-					</FrameBanner>
-					{/* 工具列 */}
-					<P36Toolbar />
-					{/* 列表 */}
-					<P36ListHeader />
-					<P36ListViewContainer />
-					{/* 對話框 */}
-					<P36DialogContainer />
-					<StdPrintDialogContainer />
+					paramsToJsonData={P36.paramsToJsonData}> */}
+				{/* 標題 */}
+				<FrameBanner>
+					{<P36SearchFieldContainer name="qs" />}
+				</FrameBanner>
+				{/* 工具列 */}
+				<P36Toolbar />
+				{/* 列表 */}
+				<P36ListHeader />
+				<P36ListViewContainer />
+				{/* 對話框 */}
+				<P36DialogContainer />
+				{/* <StdPrintDialogContainer /> */}
 
-				</StdPrintProvider>
+				{/* </StdPrintProvider> */}
 			</FrameBox>
 		</FormProvider>
 	);

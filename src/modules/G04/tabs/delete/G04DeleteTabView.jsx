@@ -1,19 +1,19 @@
-import { Box, Grid } from "@mui/material";
-import G04TabPanel from "../G04TabPanel";
-import G04 from "../../G04.mjs";
-import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { RecvAcctCurrentSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctCurrentSessionPicker";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import RecvAcctCurrentCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctCurrentCustomerPicker";
+import { RecvAcctCurrentSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctCurrentSessionPicker";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexToolbar from "@/shared-components/FlexToolbar/FlexToolbar";
-import G04DeleteButtonContainer from "./G04DeleteButtonContainer";
+import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TabPanel } from "@mui/lab";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
+import G04 from "../../G04.mjs";
+import G04DeleteButtonContainer from "./G04DeleteButtonContainer";
 
 const G04DeleteTabView = (props) => {
 	const { handleDelSessionChange, handleDelSessionInputChange, ...rest } = props;
 	return (
-		<G04TabPanel value={G04.Tabs.DELETE} {...rest}>
+		<TabPanel value={G04.Tabs.DELETE} {...rest}>
 			<Grid container columns={12} spacing={2}>
 				<Grid item xs={7} >
 					<DatePickerWrapper
@@ -41,10 +41,10 @@ const G04DeleteTabView = (props) => {
 						virtualize
 						onChanged={handleDelSessionChange}
 						onInputChange={handleDelSessionInputChange}
-						required
-						rules={{
-							required: "帳款年月+期別為必填",
-						}}
+					// required
+					// rules={{
+					// 	required: "帳款年月+期別為必填",
+					// }}
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -82,7 +82,7 @@ const G04DeleteTabView = (props) => {
 						</>}
 				/>
 			</Box>
-		</G04TabPanel>
+		</TabPanel>
 	)
 }
 G04DeleteTabView.propTypes = {

@@ -1,7 +1,6 @@
 import FlexBox from "@/shared-components/FlexBox";
 import PropTypes from "prop-types";
-import { useMemo } from "react";
-import { forwardRef, memo } from "react";
+import { forwardRef, memo, useMemo } from "react";
 
 const ListToolbar = memo(
 	forwardRef((props, ref) => {
@@ -31,6 +30,7 @@ const ListToolbar = memo(
 		const hasRight = useMemo(() => {
 			return RightComponent || rightComponents;
 		}, [RightComponent, rightComponents]);
+
 
 		return (
 			<FlexBox

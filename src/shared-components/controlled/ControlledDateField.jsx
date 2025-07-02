@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import DateFormats from "@/shared-modules/sd-date-formats";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 import { DateField } from "@mui/x-date-pickers";
 import { isValid } from "date-fns";
 import PropTypes from "prop-types";

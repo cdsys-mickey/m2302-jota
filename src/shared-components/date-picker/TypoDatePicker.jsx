@@ -1,10 +1,10 @@
 import ControlledDatePicker from "@/shared-components/date-picker/ControlledDatePicker";
 import { FormFieldLabel } from "@/shared-components";
 import { forwardRef, memo, useMemo } from "react";
-import DateTimes from "@/shared-modules/sd-date-times";
+import DateTimes from "@/shared-modules/DateTimes.mjs";
 import { useWatch } from "react-hook-form";
 import PropTypes from "prop-types";
-import DateFormats from "@/shared-modules/sd-date-formats";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 
 const TypoDatePicker = memo(
 	forwardRef((props, ref) => {

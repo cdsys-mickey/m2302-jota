@@ -88,14 +88,14 @@ export const useP34 = ({ token }) => {
 					grid.initGridData(data.ranges, {
 						fillRows: 3
 					});
-					crud.doneReading({
+					crud.finishedReading({
 						data,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[crud, grid, httpGetAsync, token]
@@ -162,10 +162,10 @@ export const useP34 = ({ token }) => {
 						`車行「${data?.CarID} ${data?.CarData}」${action}成功`
 					);
 					if (creating) {
-						crud.doneCreating();
+						crud.finishedCreating();
 						crud.cancelReading();
 					} else {
-						crud.doneUpdating();
+						crud.finishedUpdating();
 						loadItem({ id: data?.CarID });
 					}
 					// 重新整理
@@ -175,10 +175,10 @@ export const useP34 = ({ token }) => {
 				}
 			} catch (err) {
 				if (creating) {
-					crud.failCreating(err);
+					crud.failedCreating(err);
 					console.error("handleCreate.failed", err);
 				} else {
-					crud.failUpdating(err);
+					crud.failedUpdating(err);
 					console.error("handleUpdate.failed", err);
 				}
 				toastEx.error(`${action}失敗`, err);
@@ -201,7 +201,7 @@ export const useP34 = ({ token }) => {
 	// 				toastEx.success(
 	// 					`佣金「${data?.CarID} ${data?.CarData}」新增成功`
 	// 				);
-	// 				crud.doneCreating();
+	// 				crud.finishedCreating();
 	// 				crud.cancelReading();
 	// 				// 重新整理
 	// 				listLoader.loadList({ refresh: true });
@@ -209,7 +209,7 @@ export const useP34 = ({ token }) => {
 	// 				throw error || new Error("新增發生未預期例外");
 	// 			}
 	// 		} catch (err) {
-	// 			crud.failCreating(err);
+	// 			crud.failedCreating(err);
 	// 			console.error("handleCreate.failed", err);
 	// 			toastEx.error("新增失敗", err);
 	// 		}
@@ -232,7 +232,7 @@ export const useP34 = ({ token }) => {
 	// 				toastEx.success(
 	// 					`廠商「${data?.CarID} ${data?.CarData}」修改成功`
 	// 				);
-	// 				crud.doneUpdating();
+	// 				crud.finishedUpdating();
 	// 				loadItem({ id: data?.CarID });
 	// 				// 重新整理
 	// 				listLoader.loadList({ refresh: true });
@@ -240,7 +240,7 @@ export const useP34 = ({ token }) => {
 	// 				throw error || new Error("修改發生未預期例外");
 	// 			}
 	// 		} catch (err) {
-	// 			crud.failUpdating(err);
+	// 			crud.failedUpdating(err);
 	// 			console.error("handleUpdate.failed", err);
 	// 			toastEx.error("修改失敗", err);
 	// 		}
@@ -310,7 +310,7 @@ export const useP34 = ({ token }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

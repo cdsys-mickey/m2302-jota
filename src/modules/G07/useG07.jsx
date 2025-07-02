@@ -5,11 +5,18 @@ import { useAppModule } from "@/hooks/jobs/useAppModule";
 import G07 from "@/modules/G07/G07";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useAction } from "@/shared-hooks/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useState } from "react";
 
 export const useG07 = () => {
 	const crud = useContext(CrudContext);
+
+	const [selectedTab, setSelectedTab] = useState(G07.Tabs.CARRY);
+	const handleTabChange = useCallback((e, newValue) => {
+		setSelectedTab(newValue);
+	}, []);
+
 	const dialogs = useContext(DialogsContext);
 	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
@@ -24,7 +31,8 @@ export const useG07 = () => {
 		`
 		session,
 		CustID,
-		RptType,
+		AccYM,
+		Stage,
 		`
 	)
 
@@ -45,16 +53,16 @@ export const useG07 = () => {
 				})
 				if (status.success) {
 					toastEx.success("結轉已成功");
-					crud.doneUpdating();
+					crud.finishedUpdating();
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error(err);
 				toastEx.error("結轉失敗", err);
 			} finally {
-				crud.doneUpdating();
+				crud.finishedUpdating();
 			}
 			// dialogs.confirm({
 			// 	message: "確定進行結轉?",
@@ -67,16 +75,16 @@ export const useG07 = () => {
 			// 			})
 			// 			if (status.success) {
 			// 				toastEx.success("結轉已成功");
-			// 				crud.doneUpdating();
+			// 				crud.finishedUpdating();
 			// 			} else {
 			// 				throw error ?? new Error("未預期例外");
 			// 			}
 			// 		} catch (err) {
-			// 			crud.failUpdating(err);
+			// 			crud.failedUpdating(err);
 			// 			console.error(err);
 			// 			toastEx.error("結轉失敗", err);
 			// 		} finally {
-			// 			crud.doneUpdating();
+			// 			crud.finishedUpdating();
 			// 		}
 			// 	},
 			// })
@@ -92,11 +100,56 @@ export const useG07 = () => {
 		);
 	}, []);
 
+	const restoreAction = useAction();
+	const onRestoreSubmit = useCallback(
+		async (payload) => {
+			console.log("onRestoreSubmit", payload);
+
+			dialogs.confirm({
+				message: "確定還原應收帳結轉?",
+				onConfirm: async () => {
+					const data = G07.transformForRestoreSubmitting(payload);
+					restoreAction.start();
+					try {
+						const { status, error } = await httpPostAsync({
+							url: "v1/sales/recv-account/restore",
+							bearer: token,
+							mode: "form",
+							data
+						})
+						if (status.success) {
+							restoreAction.finish();
+							toastEx.success("復原已成功");
+						} else {
+							throw error ?? new Error("未預期例外");
+						}
+					} catch (err) {
+						console.error(err);
+						restoreAction.fail(err);
+						toastEx.error("復原失敗", err);
+					}
+
+				},
+			})
+		},
+		[dialogs, httpPostAsync, restoreAction, token]
+	);
+
+	const onRestoreSubmitError = useCallback((err) => {
+		console.error("onRestoreSubmitError", err);
+	}, [])
+
 	return {
 		...appModule,
 		onSubmit,
 		onSubmitError,
 		formMeta,
+		handleTabChange,
+		// 復原
+		onRestoreSubmit,
+		onRestoreSubmitError,
+		restoreWorking: restoreAction.working,
+		selectedTab
 	};
 };
 

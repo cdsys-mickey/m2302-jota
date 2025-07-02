@@ -1,10 +1,11 @@
 import { FormFieldLabel } from "@/shared-components";
-import DateFormats from "@/shared-modules/sd-date-formats";
-import DateTimes from "@/shared-modules/sd-date-times";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
+
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import ControlledTimePicker from "./ControlledTimePicker";
+import DateTimes from "@/shared-modules/DateTimes.mjs";
 
 const TypoTimePicker = memo(
 	forwardRef((props, ref) => {

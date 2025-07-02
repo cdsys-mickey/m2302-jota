@@ -87,14 +87,14 @@ export const useF04 = () => {
 				if (status.success) {
 					const data = F04.transformForReading(payload.data[0]);
 					console.log("data", data);
-					crud.doneLoading({
+					crud.finishedLoading({
 						data,
 					});
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failLoading(err);
+				crud.failedLoading(err);
 			}
 		},
 		[crud, httpGetAsync, token]

@@ -5,7 +5,7 @@ import { memo } from "react";
 import { forwardRef } from "react";
 import { useWatch } from "react-hook-form";
 import { format } from "date-fns";
-import DateTimes from "../../shared-modules/sd-date-times";
+import DateTimes from "@/shared-modules/DateTimes.mjs";
 import PropTypes from "prop-types";
 
 const TypoDateField = memo(

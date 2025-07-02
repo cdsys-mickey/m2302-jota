@@ -85,7 +85,7 @@ export const useG10 = ({ token }) => {
 			})
 			if (status.success) {
 				toastEx.success("沖銷已完成");
-				crud.doneUpdating();
+				crud.finishedUpdating();
 				// grid.commitChanges();
 				grid.initGridData([], {
 					fillRows: 15
@@ -95,10 +95,10 @@ export const useG10 = ({ token }) => {
 			}
 		} catch (err) {
 			console.error("onSubmit.failed", err);
-			// crud.failUpdating();
+			// crud.failedUpdating();
 			toastEx.error("沖銷失敗", err);
 		} finally {
-			crud.doneUpdating();
+			crud.finishedUpdating();
 		}
 
 	}, [crud, grid, httpPostAsync, token])

@@ -1,27 +1,19 @@
+import Forms from "@/shared-modules/Forms.mjs";
 import Objects from "@/shared-modules/Objects.mjs";
 
 /* eslint-disable no-mixed-spaces-and-tabs */
 const transformForReading = (payload) => {
-	const { BankID, BankData_N, MainProd = [], Remark = [], ...rest } = payload;
+	const { BDay, ...rest } = payload;
 	return {
-		bank: BankID
-			? {
-					CodeID: BankID,
-					CodeData: BankData_N,
-			  }
-			: null,
-		mainProd: MainProd.join("\n"),
-		remark: Remark.join("\n"),
+		BDay: Forms.parseDate(BDay),
 		...rest,
 	};
 };
 
 const transformForEditorSubmit = (payload) => {
-	const { bank, mainProd, remark, ...rest } = payload;
+	const { BDay, ...rest } = payload;
 	return {
-		BankID: bank?.CodeID || "",
-		MainProd: mainProd.split("\n"),
-		Remark: remark.split("\n"),
+		BDay: Forms.formatDate(BDay),
 		...rest,
 	};
 };
@@ -86,6 +78,3 @@ const P36 = {
 };
 
 export default P36;
-
-
-

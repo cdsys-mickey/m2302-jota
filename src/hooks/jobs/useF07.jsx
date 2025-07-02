@@ -7,6 +7,7 @@ import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import { useAction } from "@/shared-hooks/useAction";
 
 export const useF07 = () => {
 	const crud = useContext(CrudContext);
@@ -23,7 +24,7 @@ export const useF07 = () => {
 
 	const formMeta = useFormMeta(
 		`
-
+		
 		`);
 
 
@@ -42,14 +43,14 @@ export const useF07 = () => {
 				if (status.success) {
 					const data = F07.transformForReading(payload.data[0]);
 					console.log("data", data);
-					crud.doneLoading({
+					crud.finishedLoading({
 						data: data,
 					});
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failLoading(err);
+				crud.failedLoading(err);
 			}
 		},
 		[crud, httpGetAsync, token]
@@ -66,16 +67,16 @@ export const useF07 = () => {
 				})
 				if (status.success) {
 					toastEx.success("結轉已成功");
-					crud.doneUpdating();
+					crud.finishedUpdating();
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error(err);
 				toastEx.error("結轉失敗", err);
 			} finally {
-				crud.doneUpdating();
+				crud.finishedUpdating();
 				load();
 			}
 
@@ -93,12 +94,58 @@ export const useF07 = () => {
 		})
 	}, [dialogs, handleCarryForward]);
 
+	const restoreAction = useAction();
+
+	const handleRestore = useCallback(
+		async () => {
+			console.log("handleRestore");
+			try {
+				restoreAction.start();
+				const { status, error } = await httpPostAsync({
+					url: "v1/inv/taking/restore",
+					bearer: token
+				})
+				if (status.success) {
+					toastEx.success("復原已成功");
+					restoreAction.finish();
+					load();
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				restoreAction.fail(err);
+				console.error(err);
+				toastEx.error("復原失敗", err);
+			} finally {
+				restoreAction.finish();
+				load();
+			}
+
+
+		},
+		[httpPostAsync, load, restoreAction, token]
+	);
+
+	const confirmRestore = useCallback(() => {
+		dialogs.confirm({
+			message: "確定還原庫存月結轉?",
+			onConfirm: () => {
+				handleRestore();
+			},
+		})
+	}, [dialogs, handleRestore]);
+
+
+
 	return {
 		...appModule,
 		...crud,
 		confirmCarryForward,
 		formMeta,
 		load,
+		// 復原
+		confirmRestore,
+		restoreWorking: restoreAction.working
 	};
 };
 

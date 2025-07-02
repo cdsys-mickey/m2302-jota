@@ -23,25 +23,20 @@ export const P36DialogContainer = forwardRef((props, ref) => {
 
 	const formMeta = useFormMeta(
 		`
-		FactID,
-		FactData,
-		AbbrName,
-		Boss,
-		Contact,
-		Tel,
-		Uniform,
-		PayGroup,
-		bank,
-		BankAcct,
-		CompAddr,
-		CompTel,
-		CompFax,
-		TaxType,
-		FactAddr,
-		FactTel,
-		FactFax,
-		mainProd,
-		remark
+		CndID,
+		CndData,
+		AbbrID,
+		LicNo,
+		IDNo,
+		BDay,
+		Cel,
+		Email,
+		Postal,
+		Addr,
+		Remark,
+		Assign,
+		AsRemark,
+		Bound,
 		`
 	);
 

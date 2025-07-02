@@ -6,12 +6,14 @@ const CaptchaWrapper = styled("div")(({ theme }) => ({
 		flexDirection: "column",
 		width: "100%",
 		maxWidth: 255,
-		borderRadius: 6,
+		borderRadius: 4,
 		padding: 4,
 		boxSizing: "border-box",
 		border: `1px solid ${theme.palette.divider}`,
 	},
-
+	// ".rnc:has(.rnc-input:focus)": {
+	// 	padding: 3,
+	// },
 	".rnc-row": {
 		display: "flex",
 		alignItems: "stretch",
@@ -58,11 +60,14 @@ const CaptchaWrapper = styled("div")(({ theme }) => ({
 	".rnc-input": {
 		padding: "0 11px",
 		height: 32,
-		borderRadius: 6,
+		borderRadius: 4,
 		fontSize: 14,
 		color: theme.palette.text.primary,
 		border: `1px solid ${theme.palette.divider}`,
 	},
+	".rnc-input:focus": {
+		outline: `2px solid ${theme.palette.primary.main}`,
+	}
 }));
 
 export default CaptchaWrapper;

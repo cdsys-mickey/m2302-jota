@@ -11,9 +11,13 @@ const DialogTitleButtonsBox = styled(FlexBox)(
 		// },
 	}) => ({
 		position: "relative",
-		"& button:not(.MuiButtonGroup-root *), & label, & .button": {
-			marginLeft: theme.spacing(0.5),
-		},
+		// "& button:not(.MuiButtonGroup-root *), & label, & .button": {
+		// 	marginLeft: theme.spacing(0.5),
+		// },
+
+		display: 'flex', // Ensure the parent is a flex container for gap to work
+		gap: theme.spacing(1), // Use gap instead of marginLeft
+
 		// padding: theme.spacing(1),
 		// paddingBottom: 0,
 

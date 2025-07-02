@@ -2,7 +2,7 @@
 import Colors from "@/modules/Colors.mjs";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
-import DateFormats from "@/shared-modules/sd-date-formats";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 import Forms from "@/shared-modules/Forms.mjs";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import { Box } from "@mui/system";

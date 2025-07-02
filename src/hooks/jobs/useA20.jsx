@@ -72,14 +72,14 @@ export const useA20 = ({ token }) => {
 				if (status.success) {
 					const data = A20.transformForReading(payload);
 					grid.handleGridDataLoaded(data.materials);
-					crud.doneReading({
+					crud.finishedReading({
 						data,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[crud, httpGetAsync, grid, token]
@@ -143,7 +143,7 @@ export const useA20 = ({ token }) => {
 					toastEx.success(
 						`BOM「${data?.ProdID} ${data?.ProdData}」新增成功`
 					);
-					crud.doneCreating();
+					crud.finishedCreating();
 					crud.cancelReading();
 					// 重新整理
 					loader.loadList({ refresh: true });
@@ -151,7 +151,7 @@ export const useA20 = ({ token }) => {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
-				crud.failCreating(err);
+				crud.failedCreating(err);
 				console.error("handleCreate.failed", err);
 				toastEx.error("新增失敗", err);
 			}
@@ -174,7 +174,7 @@ export const useA20 = ({ token }) => {
 					toastEx.success(
 						`BOM「${data?.ProdID} ${data?.ProdData}」修改成功`
 					);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					loadItem({ id: data?.ProdID });
 					// 重新整理
 					loader.loadList({
@@ -184,7 +184,7 @@ export const useA20 = ({ token }) => {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toastEx.error("修改失敗", err);
 			}
@@ -265,7 +265,7 @@ export const useA20 = ({ token }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

@@ -26,14 +26,14 @@ const G04Form = memo((props) => {
 								<TabList onChange={handleTabChange}>
 									<Tab label="形成批次" value={G04.Tabs.CREATE} />
 									<Tab label="刪除" value={G04.Tabs.DELETE} />
-									{impersonate && (
+									{/* {impersonate && (
 										<Tab label="復原" value={G04.Tabs.RECOVER} />
-									)}
+									)} */}
 								</TabList>
 							</Box>
 							<G04CreateTab />
 							<G04DeleteTabContainer />
-							<G04RecoverTabContainer />
+							{/* <G04RecoverTabContainer /> */}
 						</TabContext>
 
 

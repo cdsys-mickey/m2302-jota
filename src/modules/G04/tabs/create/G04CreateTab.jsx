@@ -8,11 +8,12 @@ import FlexToolbar from "@/shared-components/FlexToolbar/FlexToolbar";
 import FlexBox from "@/shared-components/FlexBox";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
 import G04CreateBatchButtonContainer from "./G04CreateBatchButtonContainer";
+import { TabPanel } from "@mui/lab";
 
 const G04CreateTab = (props) => {
 	const { ...rest } = props;
 	return (
-		<G04TabPanel value={G04.Tabs.CREATE} {...rest}>
+		<TabPanel value={G04.Tabs.CREATE} {...rest}>
 			<Grid container columns={12} spacing={2}>
 				<Grid item xs={12} sm={7}>
 					<DatePickerWrapper
@@ -85,7 +86,7 @@ const G04CreateTab = (props) => {
 						</>}
 				/>
 			</Box>
-		</G04TabPanel>
+		</TabPanel>
 	);
 }
 

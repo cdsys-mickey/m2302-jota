@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import PushMessageListItemSecondaryAction from "./PushMessageListItemSecondaryAction";
 import { format, parse } from "date-fns";
-import DateTimes from "../../shared-modules/sd-date-times";
+import DateTimes from "@/shared-modules/DateTimes.mjs";
 import { grey } from "@mui/material/colors";
 
 const PushMessageListItem = memo(
@@ -40,9 +40,8 @@ const PushMessageListItem = memo(
 		}, [message?.SendTime]);
 
 		const secondary = useMemo(() => {
-			return `來自 ${message.SendName || "(未知)"} 給 ${
-				message?.AbbrName
-			}, ${timestamp}`;
+			return `來自 ${message.SendName || "(未知)"} 給 ${message?.AbbrName
+				}, ${timestamp}`;
 		}, [message?.AbbrName, message.SendName, timestamp]);
 
 		return (

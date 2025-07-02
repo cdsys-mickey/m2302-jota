@@ -33,6 +33,7 @@ const P36ListRow = memo((props) => {
 					<P36NameColumn>
 						{value?.CndData}
 					</P36NameColumn>
+					<P36IDColumn>{value?.AbbrID}</P36IDColumn>
 				</Grid>
 			</HoverableListItem>
 		</div>

@@ -1,5 +1,5 @@
 import Forms from "@/shared-modules/Forms.mjs";
-import DateFormats from "@/shared-modules/sd-date-formats";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 
 const transformForSubmitting = (payload) => {
 	const { outputType, SDate, EDate, STime, ETime, ...rest } = payload;

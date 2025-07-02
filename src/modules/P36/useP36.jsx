@@ -40,15 +40,15 @@ export const useP36 = ({ token }) => {
 
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
-			const _id = refresh ? itemIdRef.current : id;
-			if (!_id) {
-				throw new Error("未指定 id");
-			}
-			if (!refresh) {
-				itemIdRef.current = id;
-				crud.startReading("讀取中...", { id });
-			}
 			try {
+				const _id = refresh ? itemIdRef.current : id;
+				if (!_id) {
+					throw new Error("未指定 id");
+				}
+				if (!refresh) {
+					itemIdRef.current = id;
+					crud.startReading("讀取中...", { id });
+				}
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/cms/tour-guides`,
@@ -61,14 +61,14 @@ export const useP36 = ({ token }) => {
 				if (status.success) {
 					const data = P36.transformForReading(payload.data[0]);
 
-					crud.doneReading({
+					crud.finishedReading({
 						data,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[crud, httpGetAsync, token]
@@ -80,8 +80,8 @@ export const useP36 = ({ token }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.startReading("讀取中...", { id: rowData.TrvID });
-			loadItem({ id: rowData.TrvID });
+			crud.startReading("讀取中...", { id: rowData.CndID });
+			loadItem({ id: rowData.CndID });
 		},
 		[crud, loadItem]
 	);
@@ -118,11 +118,13 @@ export const useP36 = ({ token }) => {
 		crud.cancelAction();
 	}, [crud]);
 
-	const handleCreate = useCallback(
-		async ({ data }) => {
+	const handleSave = useCallback(
+		async ({ data, creating }) => {
+			const action = creating ? "新增" : "修改";
 			try {
-				crud.startCreating();
-				const { status, error } = await httpPostAsync({
+				creating ? crud.startCreating() : crud.startUpdating;
+				const httpMethod = creating ? httpPostAsync : httpPutAsync;
+				const { status, error } = await httpMethod({
 					url: "v1/cms/tour-guides",
 					data: data,
 					bearer: token,
@@ -130,22 +132,33 @@ export const useP36 = ({ token }) => {
 
 				if (status.success) {
 					toastEx.success(
-						`項目「${data?.TrvID} ${data?.TrvData}」新增成功`
+						`項目「${data?.CndID} ${data?.CndData}」${action}成功`
 					);
-					crud.doneCreating();
-					crud.cancelReading();
+					if (creating) {
+						crud.finishedCreating();
+						crud.cancelReading();
+
+					} else {
+						crud.finishedUpdating();
+						loadItem({ id: data?.CndID });
+					}
 					// 重新整理
 					listLoader.loadList({ refresh: true });
 				} else {
-					throw error || new Error("新增發生未預期例外");
+					throw error || new Error(`${action}發生未預期例外`);
 				}
 			} catch (err) {
-				crud.failCreating(err);
-				console.error("handleCreate.failed", err);
-				toastEx.error("新增失敗", err);
+				if (creating) {
+					crud.failedCreating(err);
+					console.error("handleCreate.failed", err);
+				} else {
+					crud.failedUpdating(err);
+					console.error("handleUpdate.failed", err);
+				}
+				toastEx.error(`${action}失敗`, err);
 			}
 		},
-		[crud, httpPostAsync, listLoader, token]
+		[crud, httpPostAsync, httpPutAsync, listLoader, loadItem, token]
 	);
 
 	const handleUpdate = useCallback(
@@ -161,17 +174,17 @@ export const useP36 = ({ token }) => {
 
 				if (status.success) {
 					toastEx.success(
-						`項目「${data?.TrvID} ${data?.TrvData}」修改成功`
+						`項目「${data?.CndID} ${data?.CndData}」修改成功`
 					);
-					crud.doneUpdating();
-					loadItem({ id: data?.TrvID });
+					crud.finishedUpdating();
+					loadItem({ id: data?.CndID });
 					// 重新整理
 					listLoader.loadList({ refresh: true });
 				} else {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toastEx.error("修改失敗", err);
 			}
@@ -185,15 +198,13 @@ export const useP36 = ({ token }) => {
 
 			const processed = P36.transformForEditorSubmit(data);
 			console.log(`processed`, processed);
-			if (crud.creating) {
-				handleCreate({ data: processed });
-			} else if (crud.updating) {
-				handleUpdate({ data: processed });
+			if (crud.creating || crud.updating) {
+				handleSave({ data: processed, creating: crud.creating });
 			} else {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
 		},
-		[crud.creating, crud.updating, handleCreate, handleUpdate]
+		[crud.creating, crud.updating, handleSave]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -221,7 +232,7 @@ export const useP36 = ({ token }) => {
 
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({
-			message: `確認要删除「${crud.itemData?.TrvID} ${crud.itemData?.TrvData}」?`,
+			message: `確認要删除「${crud.itemData?.CndID} ${crud.itemData?.CndData}」?`,
 			onConfirm: async () => {
 				try {
 					crud.startDeleting(crud.itemData);
@@ -229,20 +240,20 @@ export const useP36 = ({ token }) => {
 						url: `v1/cms/tour-guides`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.TrvID
+							id: crud.itemData?.CndID
 						}
 					});
 					if (status.success) {
 						crud.cancelAction();
 						toastEx.success(
-							`成功删除${crud.itemData?.TrvID} ${crud.itemData.TrvData}`
+							`成功删除${crud.itemData?.CndID} ${crud.itemData.CndData}`
 						);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

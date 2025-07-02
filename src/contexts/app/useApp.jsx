@@ -1,6 +1,6 @@
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import DateFormats from "@/shared-modules/sd-date-formats";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 import { format, parseISO } from "date-fns";
 import { useMemo } from "react";
 import { useCallback, useState } from "react";

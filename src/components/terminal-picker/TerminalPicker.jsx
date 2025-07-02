@@ -10,7 +10,7 @@ import { memo, useCallback, useContext } from "react";
 const TerminalPicker = memo((props) => {
 	const {
 		label = "收銀機號",
-		scope = Auth.SCOPES.BRANCH_HQ,
+		scope = Auth.SCOPES.DEPT,
 		...rest
 	} = props;
 	const auth = useContext(AuthContext);

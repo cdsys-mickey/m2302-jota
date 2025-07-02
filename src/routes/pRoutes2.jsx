@@ -20,6 +20,8 @@ import { P35FrameContainer } from "@/modules/P35/P35FrameContainer";
 import { P35Provider } from "@/modules/P35/P35Provider";
 import { P36FrameContainer } from "@/modules/P36/P36FrameContainer";
 import { P36Provider } from "@/modules/P36/P36Provider";
+import { P37FrameContainer } from "@/modules/P37/P37FrameContainer";
+import P37Provider from "@/modules/P37/P37Provider";
 import { P41FrameContainer } from "@/modules/P41/P41FrameContainer";
 import { P41Provider } from "@/modules/P41/P41Provider";
 import { P42FrameContainer } from "@/modules/P42/P42FrameContainer";
@@ -147,6 +149,16 @@ const pRoutes2 = (
 							<P36FrameContainer />
 						</P36Provider>
 					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P37"
+			element={
+				<CrudProvider>
+					<P37Provider>
+						<P37FrameContainer />
+					</P37Provider>
 				</CrudProvider>
 			}
 		/>

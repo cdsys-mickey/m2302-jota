@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { CaptchaFieldContainer } from "../../components/auth/CaptchaFieldContainer";
 import { ControlledTextField } from "../../shared-components/controlled/ControlledTextField";
+import { ButtonEx } from "@/shared-components";
 
 const SignInX = memo((props) => {
 	const { loading, ...rest } = props;
@@ -84,14 +85,14 @@ const SignInX = memo((props) => {
 					</FlexBox>
 
 					<FlexBox>
-						<LoadingButton
+						<ButtonEx
 							type="submit"
 							variant="contained"
 							size="small"
 							loading={loading}
 							endIcon={<LoginIcon />}>
 							登入
-						</LoadingButton>
+						</ButtonEx>
 					</FlexBox>
 				</FlexBox>
 			</Box>

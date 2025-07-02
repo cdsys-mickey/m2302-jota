@@ -54,7 +54,7 @@ export const useF02 = ({ token }) => {
 				if (status.success) {
 					const data = F02.transformForReading(payload.data[0]);
 					console.log("data", data);
-					crud.doneLoading({
+					crud.finishedLoading({
 						data: data,
 					});
 					setState(prev => ({
@@ -69,7 +69,7 @@ export const useF02 = ({ token }) => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failLoading(err);
+				crud.failedLoading(err);
 			} finally {
 				grid.setGridLoading(false);
 			}
@@ -97,7 +97,7 @@ export const useF02 = ({ token }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除目前電腦帳失敗", err);
 				}
@@ -139,7 +139,7 @@ export const useF02 = ({ token }) => {
 			})
 			if (status.success) {
 				toastEx.success("電腦帳已形成，請繼續盤點作業");
-				crud.doneUpdating();
+				crud.finishedUpdating();
 				grid.commitChanges();
 				load();
 			} else {
@@ -147,10 +147,10 @@ export const useF02 = ({ token }) => {
 			}
 		} catch (err) {
 			console.error("onSubmit.failed", err);
-			// crud.failUpdating();
+			// crud.failedUpdating();
 			toastEx.error("產生電腦帳失敗", err);
 		} finally {
-			crud.doneUpdating();
+			crud.finishedUpdating();
 		}
 
 	}, [crud, grid, httpPutAsync, load, token])

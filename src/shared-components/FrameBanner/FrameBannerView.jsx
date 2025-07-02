@@ -21,7 +21,7 @@ const FrameBannerView = memo(
 		}, [SearchComponent, dense]);
 
 		const leftFlex = useMemo(() => {
-			return showSearchComponent ? 1 : 2;
+			return showSearchComponent ? 1.1 : 2;
 		}, [showSearchComponent]);
 
 		return (

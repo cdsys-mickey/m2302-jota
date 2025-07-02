@@ -1,7 +1,7 @@
 import { ButtonEx } from "@/shared-components";
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { forwardRef, memo, useContext } from "react";
-import { G07Context } from "./G07Context";
+import { G07Context } from "../../G07Context";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 

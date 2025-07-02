@@ -90,7 +90,7 @@ export const useAction = (initState = null) => {
 		return actionState.state === ActionState.PROMPT;
 	}, [actionState.state]);
 
-	const done = useMemo(() => {
+	const finished = useMemo(() => {
 		return actionState.state === ActionState.DONE;
 	}, [actionState.state]);
 
@@ -113,7 +113,7 @@ export const useAction = (initState = null) => {
 		active,
 		working,
 		prompting,
-		done,
+		finished,
 		failed,
 	};
 };

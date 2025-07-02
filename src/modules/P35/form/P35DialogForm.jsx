@@ -297,7 +297,7 @@ const P35DialogForm = memo((props) => {
 							<Grid item xs={12} sm={12} md={3} lg={2}>
 								<TextFieldWrapper
 									typo
-									name="Bonus11"
+									name="Bonus2"
 									label="獎勵佣金"
 									fullWidth
 								/>
@@ -398,6 +398,7 @@ const P35DialogForm = memo((props) => {
 													name="guideAmt"
 													label="導遊佣金"
 													fullWidth
+													clearable
 												/>
 											</Grid>
 											<Grid item xs={4}>
@@ -414,6 +415,7 @@ const P35DialogForm = memo((props) => {
 													name="driverAmt"
 													label="司機佣金"
 													fullWidth
+													clearable
 												/>
 											</Grid>
 											<Grid item xs={4}>

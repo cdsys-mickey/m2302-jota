@@ -247,7 +247,7 @@ export const useE021 = ({ mode }) => {
 				});
 				if (status.success) {
 					const data = E021.transformForReading(payload.data[0]);
-					crud.doneReading({
+					crud.finishedReading({
 						data: data,
 					});
 					// 暫存上次讀取成功的訂貨單
@@ -264,7 +264,7 @@ export const useE021 = ({ mode }) => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[httpGetAsync, token, crud, sqtyManager, grid]
@@ -285,7 +285,7 @@ export const useE021 = ({ mode }) => {
 				});
 				if (status.success) {
 					const data = E021.transformForReading(payload.data[0]);
-					crud.doneReading({
+					crud.finishedReading({
 						data: {
 							...data,
 							Date: new Date(),
@@ -313,7 +313,7 @@ export const useE021 = ({ mode }) => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[httpGetAsync, token, crud, sqtyManager, grid]
@@ -402,10 +402,10 @@ export const useE021 = ({ mode }) => {
 				if (status.success) {
 					toastEx.success(creating ? `新增成功` : "修改成功");
 					if (creating) {
-						crud.doneCreating();
+						crud.finishedCreating();
 						crud.cancelReading();
 					} else {
-						crud.doneUpdating();
+						crud.finishedUpdating();
 						loadItem({ refresh: true });
 					}
 					listLoader.loadList({ refresh: true });
@@ -414,9 +414,9 @@ export const useE021 = ({ mode }) => {
 				}
 			} catch (err) {
 				if (creating) {
-					crud.failCreating();
+					crud.failedCreating();
 				} else {
-					crud.failUpdating();
+					crud.failedUpdating();
 				}
 
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
@@ -519,7 +519,7 @@ export const useE021 = ({ mode }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

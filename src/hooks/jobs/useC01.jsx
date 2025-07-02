@@ -120,7 +120,7 @@ export const useC01 = () => {
 				});
 				if (status.success) {
 					const data = C01.transformForReading(payload.data[0]);
-					crud.doneReading({
+					crud.finishedReading({
 						data: data,
 					});
 					setSelected(data);
@@ -130,7 +130,7 @@ export const useC01 = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[httpGetAsync, token, crud, sqtyManager, grid]
@@ -188,7 +188,7 @@ export const useC01 = () => {
 				});
 				if (status.success) {
 					toastEx.success(`修改成功`);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
@@ -196,7 +196,7 @@ export const useC01 = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating();
+				crud.failedUpdating();
 				console.error("handleUpdate.failed", err);
 				toastEx.error("修改失敗", err);
 			}

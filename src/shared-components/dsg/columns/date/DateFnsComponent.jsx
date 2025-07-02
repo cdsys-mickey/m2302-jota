@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useLayoutEffect } from "react";
 import { useRef } from "react";
 import { memo } from "react";
-import DateTimes from "@/shared-modules/sd-date-times";
+import DateTimes from "@/shared-modules/DateTimes.mjs";
 import { useCallback } from "react";
 import { useMemo } from "react";
 import PropTypes from "prop-types";

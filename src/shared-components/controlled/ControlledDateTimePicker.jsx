@@ -4,7 +4,7 @@ import { TextField } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { isValid } from "date-fns";
 import { Controller, useFormContext } from "react-hook-form";
-import DateFormats from "@/shared-modules/sd-date-formats";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 
 const ControlledDateTimePicker = ({
 	label = "日期",

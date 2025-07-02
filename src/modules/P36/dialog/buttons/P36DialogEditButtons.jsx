@@ -1,8 +1,7 @@
+import { ButtonEx } from "@/shared-components";
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
-import { ButtonEx } from "@/shared-components";
 
 const P36DialogEditButtons = memo(
 	forwardRef((props, ref) => {

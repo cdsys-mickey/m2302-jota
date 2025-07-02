@@ -1,4 +1,4 @@
-import DateFormats from "@/shared-modules/sd-date-formats";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 import Forms from "@/shared-modules/Forms.mjs";
 
 const transformForSubmitting = (payload) => {

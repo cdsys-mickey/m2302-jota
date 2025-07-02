@@ -1,5 +1,6 @@
 import { G07FormContainer } from "@/modules/G07/G07FormContainer";
 import { FrameBanner, FrameBox } from "@/shared-components";
+import G07Toolbar from "./G07Toolbar";
 export const G07FrameContainer = () => {
 
 	return (

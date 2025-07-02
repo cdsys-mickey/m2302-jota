@@ -1,5 +1,6 @@
-import { default as DateFormats, default as DateTimes } from "@/shared-modules/sd-date-times";
+import DateTimes from "@/shared-modules/DateTimes.mjs";
 import { DateFnsComponentContainer } from "./DateFnsComponentContainer";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 
 export const dateFNSDateColumn = {
 	component: DateFnsComponentContainer,

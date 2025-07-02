@@ -77,8 +77,6 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 				field: { ref, value, onChange },
 				fieldState: { isTouched, isDirty, error },
 			}) => {
-				// prevValue.current = JSON.stringify(value);
-
 				return (
 					<OptionPickerView
 						name={name}
@@ -99,21 +97,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 							}
 
 							onChange(newValue);
-
-							// const newValueJson = JSON.stringify(newValue);
-
-							// if (
-							// 	onChanged &&
-							// 	newValueJson !== prevValue.current
-							// ) {
-							// 	onChanged(newValue);
-							// 	prevValue.current = newValueJson;
-							// 	console.log(`${name}.changed`, newValue);
-							// }
 						}}
-						// InputLabelProps={{
-						// 	...(labelShrink && { shrink: true }),
-						// }}
 						error={!!error}
 						helperText={error?.message}
 						// FormMeta

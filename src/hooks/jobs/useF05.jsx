@@ -37,16 +37,16 @@ export const useF05 = () => {
 				})
 				if (status.success) {
 					toastEx.success("結轉已成功");
-					// crud.doneUpdating();
+					// crud.finishedUpdating();
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error(err);
 				toastEx.error("結轉失敗", err);
 			} finally {
-				crud.doneUpdating();
+				crud.finishedUpdating();
 			}
 
 
@@ -77,14 +77,14 @@ export const useF05 = () => {
 				if (status.success) {
 					const data = F05.transformForReading(payload.data[0]);
 					console.log("data", data);
-					crud.doneLoading({
+					crud.finishedLoading({
 						data: data,
 					});
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failLoading(err);
+				crud.failedLoading(err);
 			}
 		},
 		[crud, httpGetAsync, token]

@@ -139,14 +139,14 @@ export const useF03 = () => {
 				});
 				if (status.success) {
 					toastEx.success(`新增成功`);
-					crud.doneCreating();
+					crud.finishedCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failCreating();
+				crud.failedCreating();
 				console.error("handleCreate.failed", err);
 				if (err.code === 102) {
 					// recoverStockMap(data.prods, { mark: true });
@@ -179,7 +179,7 @@ export const useF03 = () => {
 				});
 				if (status.success) {
 					const data = F03.transformForReading(payload.data[0]);
-					crud.doneReading({
+					crud.finishedReading({
 						data: data,
 					});
 					// setSelectedInq(data);
@@ -189,7 +189,7 @@ export const useF03 = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[crud, httpGetAsync, grid, token]
@@ -246,7 +246,7 @@ export const useF03 = () => {
 				});
 				if (status.success) {
 					toastEx.success(`修改成功`);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
@@ -254,7 +254,7 @@ export const useF03 = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error("handleCreate.failed", err);
 				toastEx.error("修改失敗", err);
 			}
@@ -285,7 +285,7 @@ export const useF03 = () => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

@@ -10,7 +10,7 @@ export const MockA01ListItemContainer = forwardRef(({ ...rest }, ref) => {
 	return (
 		<MockA01ListItem
 			ref={ref}
-			onClick={crud.doneReading}
+			onClick={crud.finishedReading}
 			onEdit={handleEditing}
 			{...rest}
 		/>

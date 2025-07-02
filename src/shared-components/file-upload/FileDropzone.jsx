@@ -154,7 +154,7 @@ const FileDropzone = (props) => {
 							: LoadingState.DONE,
 					};
 				});
-				console.log("upload done");
+				console.log("upload finished");
 
 				if (onUploaded) {
 					onUploaded(uploadingFile);
@@ -251,7 +251,7 @@ const FileDropzone = (props) => {
 							// 	: LoadingState.DONE,
 						};
 					});
-					console.log("upload done");
+					console.log("upload finished");
 
 					if (onUploaded) {
 						onUploaded(uploadingFile);
@@ -365,8 +365,8 @@ const FileDropzone = (props) => {
 									? dragActivePrompt
 									: dragRejectPrompt
 								: !disabled
-								? dropPrompt
-								: disabledPrompt}
+									? dropPrompt
+									: disabledPrompt}
 						</PromptTypography>
 					</PromptBox>
 				</FileDropzoneBox>

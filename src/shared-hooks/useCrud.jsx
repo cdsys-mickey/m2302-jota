@@ -107,7 +107,7 @@ export const useCrud = () => {
 		[createAction, setOpts]
 	);
 
-	const doneCreating = useCallback(
+	const finishedCreating = useCallback(
 		(opts) => {
 			createAction.clear();
 			setOpts(opts);
@@ -115,7 +115,7 @@ export const useCrud = () => {
 		[createAction, setOpts]
 	);
 
-	const failCreating = useCallback(
+	const failedCreating = useCallback(
 		(err, opts) => {
 			createAction.fail({
 				error: err
@@ -147,9 +147,9 @@ export const useCrud = () => {
 		[readAction, setOpts]
 	);
 
-	const doneReading = useCallback(
+	const finishedReading = useCallback(
 		(opts) => {
-			console.log("doneReading", opts);
+			console.log("finishedReading", opts);
 			readAction.finish();
 			setOpts(opts);
 		},
@@ -160,9 +160,9 @@ export const useCrud = () => {
 		readAction.clear();
 	}, [readAction]);
 
-	const failReading = useCallback(
+	const failedReading = useCallback(
 		(err, opts) => {
-			console.log("failReading", err);
+			console.error("failedReading", err);
 			readAction.fail({ error: err });
 			setOpts(opts);
 		},
@@ -191,9 +191,9 @@ export const useCrud = () => {
 		[loadAction, setOpts]
 	);
 
-	const doneLoading = useCallback(
+	const finishedLoading = useCallback(
 		(opts) => {
-			console.log("doneLoading", opts);
+			console.log("finishedLoading", opts);
 			loadAction.finish();
 			setOpts(opts);
 		},
@@ -204,9 +204,9 @@ export const useCrud = () => {
 		loadAction.clear();
 	}, [loadAction]);
 
-	const failLoading = useCallback(
+	const failedLoading = useCallback(
 		(err, opts) => {
-			console.log("failLoading", err);
+			console.log("failedLoading", err);
 			loadAction.fail({ error: err });
 			setOpts(opts);
 		},
@@ -243,7 +243,7 @@ export const useCrud = () => {
 		[setOpts, updateAction]
 	);
 
-	const doneUpdating = useCallback(() => {
+	const finishedUpdating = useCallback(() => {
 		updateAction.clear();
 	}, [updateAction]);
 
@@ -251,7 +251,7 @@ export const useCrud = () => {
 		updateAction.clear();
 	}, [updateAction]);
 
-	const failUpdating = useCallback(
+	const failedUpdating = useCallback(
 		(err, opts) => {
 			updateAction.fail({ error: err });
 			setOpts(opts);
@@ -289,7 +289,7 @@ export const useCrud = () => {
 		[deleteAction, setOpts]
 	);
 
-	const doneDeleting = useCallback(() => {
+	const finishedDeleting = useCallback(() => {
 		deleteAction.finish();
 	}, [deleteAction]);
 
@@ -297,7 +297,7 @@ export const useCrud = () => {
 		deleteAction.clear();
 	}, [deleteAction]);
 
-	const failDeleting = useCallback(
+	const failedDeleting = useCallback(
 		(err, opts) => {
 			deleteAction.fail({
 				error: err
@@ -375,9 +375,9 @@ export const useCrud = () => {
 		// CREATE Methods
 		promptCreating,
 		startCreating,
-		doneCreating,
+		finishedCreating,
 		cancelCreating,
-		failCreating,
+		failedCreating,
 		// READ Props
 		readMessage: readAction.message,
 		readState: readAction.state,
@@ -387,9 +387,9 @@ export const useCrud = () => {
 		readWorking,
 		// READ Methods
 		startReading,
-		doneReading,
+		finishedReading,
 		cancelReading,
-		failReading,
+		failedReading,
 		// LOAD Props
 		loadMessage: loadAction.message,
 		loadState: loadAction.state,
@@ -399,9 +399,9 @@ export const useCrud = () => {
 		loadWorking,
 		// LOAD Methods
 		startLoading,
-		doneLoading,
+		finishedLoading,
 		cancelLoading,
-		failLoading,
+		failedLoading,
 		// UPDATE Props
 		updateMessage: updateAction.message,
 		updateState: updateAction.state,
@@ -412,9 +412,9 @@ export const useCrud = () => {
 		// UPDATE Methods
 		promptUpdating,
 		startUpdating,
-		doneUpdating,
+		finishedUpdating,
 		cancelUpdating,
-		failUpdating,
+		failedUpdating,
 		// DELETE Props
 		deleteMessage: deleteAction.message,
 		deleteState: deleteAction.state,
@@ -425,9 +425,9 @@ export const useCrud = () => {
 		// DELETE Methods
 		promptDeleting,
 		startDeleting,
-		doneDeleting,
+		finishedDeleting,
 		cancelDeleting,
-		failDeleting,
+		failedDeleting,
 		// COMPUTED
 		itemDataLoaded,
 		editing,

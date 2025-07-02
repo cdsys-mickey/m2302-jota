@@ -117,14 +117,14 @@ export const useA06 = ({ token, mode }) => {
 				if (status.success) {
 					const data = A06.transformForReading(payload.data[0]);
 
-					crud.doneReading({
+					crud.finishedReading({
 						data,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[crud, httpGetAsync, mode, token]
@@ -192,7 +192,7 @@ export const useA06 = ({ token, mode }) => {
 						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${data?.CustData
 						}」新增成功`
 					);
-					crud.doneCreating();
+					crud.finishedCreating();
 					crud.cancelReading();
 					// 重新整理
 					loader.loadList({ refresh: true });
@@ -200,7 +200,7 @@ export const useA06 = ({ token, mode }) => {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
-				crud.failCreating(err);
+				crud.failedCreating(err);
 				console.error("handleCreate.failed", err);
 				toastEx.error("新增失敗", err);
 			}
@@ -226,7 +226,7 @@ export const useA06 = ({ token, mode }) => {
 						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${data?.CustData
 						}」修改成功`
 					);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					// crud.cancelReading();
 					loadItem({ id: data?.CustID });
 					// 重新整理
@@ -235,7 +235,7 @@ export const useA06 = ({ token, mode }) => {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toastEx.error("修改失敗", err);
 			}
@@ -309,7 +309,7 @@ export const useA06 = ({ token, mode }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

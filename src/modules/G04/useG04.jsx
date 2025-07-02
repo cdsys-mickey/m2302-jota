@@ -34,13 +34,13 @@ export const useG04 = () => {
 					bearer: token
 				})
 				if (status.success) {
-					crud.doneCreating();
+					crud.finishedCreating();
 					toastEx.success(`形成成功`);
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failCreating();
+				crud.failedCreating();
 				toastEx.error("形成失敗", err);
 			}
 		},
@@ -64,13 +64,13 @@ export const useG04 = () => {
 					bearer: token
 				})
 				if (status.success) {
-					crud.doneDeleting();
+					crud.finishedDeleting();
 					toastEx.success(`刪除成功`);
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failDeleting();
+				crud.failedDeleting();
 				toastEx.error("刪除失敗", err);
 			}
 		},
@@ -96,7 +96,7 @@ export const useG04 = () => {
 					bearer: token
 				})
 				if (status.success) {
-					restoreAction.done();
+					restoreAction.finish();
 					toastEx.success(`復原成功`);
 				} else {
 					throw error ?? new Error("未預期例外");

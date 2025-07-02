@@ -463,7 +463,7 @@ export const useA01 = ({ mode }) => {
 					comboGrid.initGridData(data.combo);
 					cmsGrid.initGridData(data.cms);
 
-					crud.doneReading({
+					crud.finishedReading({
 						data: data,
 					});
 				} else {
@@ -471,12 +471,12 @@ export const useA01 = ({ mode }) => {
 				}
 			} catch (err) {
 				if (err.status == 404) {
-					crud.failReading({
+					crud.failedReading({
 						...err,
 						message: `找不到${mode === A01.Mode.NEW_PROD ? "新" : ""}商品 ${id}`
 					});
 				} else {
-					crud.failReading(err);
+					crud.failedReading(err);
 				}
 			}
 		},
@@ -568,7 +568,7 @@ export const useA01 = ({ mode }) => {
 	// 					`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${data?.ProdData
 	// 					}」新增成功`
 	// 				);
-	// 				crud.doneCreating();
+	// 				crud.finishedCreating();
 	// 				crud.cancelReading();
 	// 				// 重新整理
 	// 				listLoader.loadList({ refresh: true });
@@ -593,7 +593,7 @@ export const useA01 = ({ mode }) => {
 	// 				throw error || new Error("發生未預期例外");
 	// 			}
 	// 		} catch (err) {
-	// 			crud.failCreating(err);
+	// 			crud.failedCreating(err);
 	// 			console.error("handleCreate.failed", err);
 	// 			toastEx.error("新增失敗", err);
 	// 		}
@@ -617,7 +617,7 @@ export const useA01 = ({ mode }) => {
 	// 					`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${data?.ProdData
 	// 					}」修改成功`
 	// 				);
-	// 				crud.doneUpdating();
+	// 				crud.finishedUpdating();
 	// 				// crud.cancelReading();
 	// 				loadItem({ id: data?.ProdID });
 	// 				// 重新整理
@@ -628,7 +628,7 @@ export const useA01 = ({ mode }) => {
 	// 				throw error || new Error("修改發生未預期例外");
 	// 			}
 	// 		} catch (err) {
-	// 			crud.failUpdating(err);
+	// 			crud.failedUpdating(err);
 	// 			asyncRef.current.dirty = true;
 	// 			console.error("handleUpdate.failed", err);
 	// 			toastEx.error("修改失敗", err);
@@ -653,10 +653,10 @@ export const useA01 = ({ mode }) => {
 					}」${crud.creating ? "新增" : "修改"}成功`
 				);
 				if (crud.creating) {
-					crud.doneCreating();
+					crud.finishedCreating();
 					crud.cancelReading();
 				} else {
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					loadItem({ id: data?.ProdID });
 				}
 
@@ -685,11 +685,11 @@ export const useA01 = ({ mode }) => {
 			}
 		} catch (err) {
 			if (crud.creating) {
-				crud.failCreating(err);
+				crud.failedCreating(err);
 				console.error("handleCreate.failed", err);
 				toastEx.error("新增失敗", err);
 			} else {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				asyncRef.current.dirty = true;
 				console.error("handleUpdate.failed", err);
 				toastEx.error("修改失敗", err);
@@ -713,13 +713,13 @@ export const useA01 = ({ mode }) => {
 				});
 				if (status.success) {
 					toastEx.success(`商品「${data?.ProdData}」已成功更新`);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					loadItem({ id: processed?.ProdID });
 				} else {
 					throw error || new Error("更新失敗");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error("onCounterSubmit.failed", err);
 				toastEx.error("更新失敗", err);
 			}
@@ -825,7 +825,7 @@ export const useA01 = ({ mode }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

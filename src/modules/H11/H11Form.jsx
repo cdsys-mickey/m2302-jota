@@ -17,7 +17,7 @@ import Fieldset from "@/shared-components/Fieldset";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import DateFormats from "@/shared-modules/sd-date-formats";
+import DateFormats from "@/shared-modules/DateFormats.mjs";
 import H11NumberList from "./pickers/H11NumberList";
 import H11ReportTypePicker from "./pickers/H11ReportTypePicker";
 

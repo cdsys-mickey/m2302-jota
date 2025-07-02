@@ -12,6 +12,7 @@ const P36ListHeader = memo(
 				<IndexColumn></IndexColumn>
 				<P36IDColumn>代碼</P36IDColumn>
 				<P36NameColumn>名稱</P36NameColumn>
+				<P36IDColumn>簡碼</P36IDColumn>
 			</ListViewHeader>
 		);
 	})

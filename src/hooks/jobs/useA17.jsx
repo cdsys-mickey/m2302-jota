@@ -34,14 +34,14 @@ export const useA17 = () => {
 				console.log("payload", payload);
 				if (status.success) {
 					const data = A17.transformForReading(payload);
-					crud.doneLoading({
+					crud.finishedLoading({
 						data,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failLoading(err);
+				crud.failedLoading(err);
 			}
 		},
 		[crud, httpGetAsync, token]
@@ -67,9 +67,9 @@ export const useA17 = () => {
 					data: A17.transformForEditorSubmit(data),
 				});
 				if (status.success) {
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					const processed = A17.transformForReading(payload);
-					crud.doneLoading({
+					crud.finishedLoading({
 						data: processed,
 					});
 					toastEx.success("單位參數已更新");
@@ -77,7 +77,7 @@ export const useA17 = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				toastEx.error("參數設定失敗", err);
 			}
 		},

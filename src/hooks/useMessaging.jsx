@@ -217,7 +217,7 @@ export const useMessaging = () => {
 			});
 			if (status.success) {
 				console.log(
-					`registeration done.`
+					`registeration finished.`
 				);
 			}
 		};
@@ -237,7 +237,7 @@ export const useMessaging = () => {
 	// 		});
 	// 		if (status.success) {
 	// 			console.log(
-	// 				`registeration done.`
+	// 				`registeration finished.`
 	// 			);
 	// 		}
 	// 	};

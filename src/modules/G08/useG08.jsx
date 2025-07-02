@@ -79,14 +79,14 @@ export const useG08 = () => {
 				if (status.success) {
 					const data = G08.transformForReading(payload.data[0]);
 
-					crud.doneReading({
+					crud.finishedReading({
 						data,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[crud, httpGetAsync, token]
@@ -150,7 +150,7 @@ export const useG08 = () => {
 					toastEx.success(
 						`調整單「${data?.AdjID}」新增成功`
 					);
-					crud.doneCreating();
+					crud.finishedCreating();
 					crud.cancelReading();
 					// 重新整理
 					listLoader.loadList({ refresh: true });
@@ -158,7 +158,7 @@ export const useG08 = () => {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
-				crud.failCreating(err);
+				crud.failedCreating(err);
 				console.error("handleCreate.failed", err);
 				toastEx.error("新增失敗", err);
 			}
@@ -181,7 +181,7 @@ export const useG08 = () => {
 					toastEx.success(
 						`調整單「${data?.AdjID}」修改成功`
 					);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					loadItem({ id: data?.AdjID });
 					// 重新整理
 					listLoader.loadList({ refresh: true });
@@ -189,7 +189,7 @@ export const useG08 = () => {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toastEx.error("修改失敗", err);
 			}
@@ -259,7 +259,7 @@ export const useG08 = () => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

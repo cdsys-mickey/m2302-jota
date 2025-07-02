@@ -127,12 +127,30 @@ const transformForEditorSubmit = (payload, gridData) => {
 				SDrvPnow: clearOnSite3 ? "Y" : "N",
 			},
 		],
+		// FixCmsTB:
+		// 	guideAmt || driverAmt
+		// 		? [
+		// 				{
+		// 					SCndFCms: guideAmt?.toString() ?? "",
+		// 					SDrvFCms: driverAmt?.toString() ?? "",
+		// 				},
+		// 		  ]
+		// 		: [],
 		FixCmsTB: [
 			{
 				SCndFCms: guideAmt?.toString() ?? "",
 				SDrvFCms: driverAmt?.toString() ?? "",
 			},
 		],
+		// CarNoTB:
+		// 	guideAmtMultipliedByBus || driverAmtMultipliedByBus
+		// 		? [
+		// 				{
+		// 					SCndCar: guideAmtMultipliedByBus ? "Y" : "N",
+		// 					SDrvCar: driverAmtMultipliedByBus ? "Y" : "N",
+		// 				},
+		// 		  ]
+		// 		: [],
 		CarNoTB: [
 			{
 				SCndCar: guideAmtMultipliedByBus ? "Y" : "N",

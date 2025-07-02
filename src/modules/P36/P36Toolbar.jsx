@@ -7,7 +7,7 @@ import P36PrintButtonContainer from "./P36PrintButtonContainer";
 const LeftButtons = memo(() => (
 	<>
 		<P36CreateButtonContainer />
-		<P36PrintButtonContainer />
+		{/* <P36PrintButtonContainer /> */}
 	</>
 ))
 

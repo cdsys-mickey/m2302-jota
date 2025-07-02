@@ -166,7 +166,7 @@ export const useD01 = () => {
 				});
 				if (status.success) {
 					const data = D01.transformForReading(payload.data[0]);
-					crud.doneReading({
+					crud.finishedReading({
 						data: data,
 					});
 					sqtyManager.recoverStockMap(data.prods, {
@@ -181,7 +181,7 @@ export const useD01 = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[httpGetAsync, token, crud, sqtyManager, grid]
@@ -213,10 +213,10 @@ export const useD01 = () => {
 				if (status.success) {
 					toastEx.success(creating ? `新增成功` : `修改成功`);
 					if (creating) {
-						crud.doneCreating();
+						crud.finishedCreating();
 						crud.cancelReading();
 					} else {
-						crud.doneUpdating();
+						crud.finishedUpdating();
 						loadItem({ refresh: true });
 					}
 
@@ -226,9 +226,9 @@ export const useD01 = () => {
 				}
 			} catch (err) {
 				if (creating) {
-					crud.failCreating();
+					crud.failedCreating();
 				} else {
-					crud.failUpdating();
+					crud.failedUpdating();
 				}
 				console.error(`${creating ? "新增" : "修改"} 失敗`, err);
 				if (err.code === 102) {
@@ -302,7 +302,7 @@ export const useD01 = () => {
 	// 			});
 	// 			if (status.success) {
 	// 				toastEx.success(`修改成功`);
-	// 				crud.doneUpdating();
+	// 				crud.finishedUpdating();
 	// 				//crud.cancelReading();
 	// 				loadItem({ refresh: true });
 	// 				listLoader.loadList({ refresh: true });
@@ -310,7 +310,7 @@ export const useD01 = () => {
 	// 				throw error ?? new Error("未預期例外");
 	// 			}
 	// 		} catch (err) {
-	// 			crud.failUpdating();
+	// 			crud.failedUpdating();
 	// 			console.error("handleCreate.failed", err);
 	// 			toastEx.error("修改失敗", err), {
 	// 				position: "top-right"
@@ -343,7 +343,7 @@ export const useD01 = () => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

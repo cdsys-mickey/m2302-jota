@@ -241,9 +241,11 @@ const DialogEx = memo(
 							...(!showTitle && {
 								minHeight: theme.spacing(3),
 							}),
-							"& button, & label, & .button": {
-								marginLeft: theme.spacing(0.2),
-							},
+							// "& button, & label, & .button": {
+							// 	marginLeft: theme.spacing(0.2),
+							// },
+							// display: 'flex', // Ensure the parent is a flex container for gap to work
+							// gap: theme.spacing(0.6), // Use gap instead of marginLeft
 						}),
 						...(Array.isArray(titleSx) ? titleSx : [titleSx]),
 					]}>

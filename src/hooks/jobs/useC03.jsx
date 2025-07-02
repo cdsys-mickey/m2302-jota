@@ -179,14 +179,14 @@ export const useC03 = () => {
 				});
 				if (status.success) {
 					toastEx.success(`新增成功`);
-					crud.doneCreating();
+					crud.finishedCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failCreating();
+				crud.failedCreating();
 				console.error("handleCreate.failed", err);
 				toastEx.error("新增失敗", err);
 			}
@@ -212,7 +212,7 @@ export const useC03 = () => {
 				});
 				if (status.success) {
 					const data = C03.transformForReading(payload.data[0]);
-					crud.doneReading({
+					crud.finishedReading({
 						data: data,
 					});
 					setPrevData({
@@ -227,7 +227,7 @@ export const useC03 = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[crud, httpGetAsync, grid, setPrevData, token]
@@ -298,7 +298,7 @@ export const useC03 = () => {
 				});
 				if (status.success) {
 					toastEx.success(`修改成功`);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
 					listLoader.loadList({ refresh: true });
@@ -306,7 +306,7 @@ export const useC03 = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating();
+				crud.failedUpdating();
 				console.error("handleCreate.failed", err);
 				toastEx.error("修改失敗", err);
 			}
@@ -337,7 +337,7 @@ export const useC03 = () => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}
@@ -509,7 +509,7 @@ export const useC03 = () => {
 				rowData: processedRowData,
 				formData
 			});
-			// console.log("handleGridProdChange done", processedRowData);
+			// console.log("handleGridProdChange finished", processedRowData);
 		}
 
 		// 單價、數量改變, 同步金額

@@ -22,11 +22,6 @@ const OptionPickerWrapper = memo((props) => {
 		return blurToLookup != null ? blurToLookup : !inDSG;
 	}, [blurToLookup, inDSG])
 
-	// console.log("rendering OptionPickerWrapper");
-	// if (typo) {
-	// 	return <TypoWebApiOptionPickerContainer url={url} {...rest} />
-	// }
-	// return <ControlledWebApiOptionPicker url={url} {...rest} />;
 	if (typo) {
 		return url ? (
 			<TypoWebApiOptionPickerContainer url={url} blurToLookup={_blurToLookup} {...rest} />

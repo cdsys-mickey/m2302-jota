@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 
 import { format, parse } from "date-fns";
-import DateTimes from "../../shared-modules/sd-date-times";
+import DateTimes from "@/shared-modules/DateTimes.mjs";
 import { grey } from "@mui/material/colors";
 
 const TaskListItem = memo(
@@ -33,9 +33,8 @@ const TaskListItem = memo(
 		}, [value?.SendTime]);
 
 		const secondary = useMemo(() => {
-			return `來自 ${value.SendName || "(未知)"} 給 ${
-				value?.AbbrName
-			}, ${timestamp}`;
+			return `來自 ${value.SendName || "(未知)"} 給 ${value?.AbbrName
+				}, ${timestamp}`;
 		}, [value?.AbbrName, value.SendName, timestamp]);
 
 		return (

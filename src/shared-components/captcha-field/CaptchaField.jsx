@@ -1,7 +1,6 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
 import CaptchaWrapper from "./CaptchaWrapper";
-import { splitFieldInternalAndForwardedProps } from "@mui/x-date-pickers/internals";
 
 export const CaptchaField = memo(
 	forwardRef((props, ref) => {
@@ -10,7 +9,7 @@ export const CaptchaField = memo(
 			canvasRef,
 			input,
 			handleRefresh,
-			onChange,
+			// onChange,
 			playAudio,
 			placeholder,
 			...rest
@@ -76,7 +75,7 @@ export const CaptchaField = memo(
 					<input
 						ref={inputRef}
 						value={input}
-						onChange={onChange}
+						// onChange={onChange}
 						placeholder={placeholder}
 						className="rnc-input"
 						data-testid="captcha-input"
@@ -96,7 +95,7 @@ CaptchaField.propTypes = {
 	placeholder: PropTypes.string,
 	handleRefresh: PropTypes.func,
 	playAudio: PropTypes.func,
-	handleChange: PropTypes.func,
+	// handleChange: PropTypes.func,
 };
 
 CaptchaField.displayName = "CaptchaField";

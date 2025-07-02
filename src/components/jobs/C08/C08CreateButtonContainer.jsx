@@ -1,7 +1,7 @@
-import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
+import { C08Context } from "@/contexts/C08/C08Context";
+import { ButtonEx } from "@/shared-components";
 import AddIcon from "@mui/icons-material/Add";
 import { forwardRef, memo, useContext, useMemo } from "react";
-import { C08Context } from "@/contexts/C08/C08Context";
 
 const C08CreateButtonContainer = memo(
 	forwardRef((props, ref) => {
@@ -12,7 +12,7 @@ const C08CreateButtonContainer = memo(
 		}, []);
 
 		return (
-			<ResponsiveButton
+			<ButtonEx
 				ref={ref}
 				variant="contained"
 				startIcon={<AddIcon />}
@@ -22,7 +22,7 @@ const C08CreateButtonContainer = memo(
 				}}
 				{...rest}>
 				{text}
-			</ResponsiveButton>
+			</ButtonEx>
 		);
 	})
 );

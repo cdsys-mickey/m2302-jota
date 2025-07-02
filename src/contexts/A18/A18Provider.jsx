@@ -1,11 +1,11 @@
+import A18OrderBy from "@/components/jobs/A18/A18OrderBy.mjs";
 import PropTypes from "prop-types";
-import { useA18 } from "../../hooks/jobs/useA18";
-import { A18Context } from "./A18Context";
-import { FormProvider, useForm } from "react-hook-form";
 import { useContext } from "react";
-import { AuthContext } from "../auth/AuthContext";
+import { FormProvider, useForm } from "react-hook-form";
+import { useA18 } from "../../hooks/jobs/useA18";
 import StdPrint from "../../modules/StdPrint.mjs";
-import A18 from "@/modules/A18.mjs";
+import { AuthContext } from "../auth/AuthContext";
+import { A18Context } from "./A18Context";
 
 export const A18Provider = ({ children }) => {
 	const a18 = useA18();
@@ -16,7 +16,7 @@ export const A18Provider = ({ children }) => {
 				DeptID: operator.CurDeptID,
 				AbbrName: operator.CurDeptName,
 			},
-			orderBy: A18.OrderBy.DATE,
+			orderBy: A18OrderBy.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

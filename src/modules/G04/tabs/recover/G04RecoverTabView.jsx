@@ -6,12 +6,12 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import G04RecoverButtonContainer from "./G04RecoverButtonContainer";
 import G04 from "@/modules/G04/G04.mjs";
-import G04TabPanel from "@/modules/G04/tabs/G04TabPanel";
+import { TabPanel } from "@mui/lab";
 
 const G04RecoverTabView = (props) => {
 	const { handleSessionChange, handleSessionInputChange, ...rest } = props;
 	return (
-		<G04TabPanel value={G04.Tabs.RECOVER} {...rest}>
+		<TabPanel value={G04.Tabs.RECOVER} {...rest}>
 			<Grid container columns={12} spacing={2}>
 				<Grid item xs={7} >
 					<DatePickerWrapper
@@ -56,7 +56,7 @@ const G04RecoverTabView = (props) => {
 						</>}
 				/>
 			</Box>
-		</G04TabPanel>
+		</TabPanel>
 	)
 }
 G04RecoverTabView.propTypes = {

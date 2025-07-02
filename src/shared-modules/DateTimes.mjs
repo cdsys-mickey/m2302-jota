@@ -11,7 +11,7 @@ import {
 	startOfWeek,
 } from "date-fns";
 import { zhTW } from "date-fns/locale";
-import DateFormats from "./sd-date-formats";
+import DateFormats from "./DateFormats.mjs";
 
 const DEFAULT_OPTS = {
 	invalidTimeMessage: "",

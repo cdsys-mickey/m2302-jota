@@ -228,14 +228,14 @@ export const useG06 = ({ token }) => {
 						DiffAmt: data.DiffAmt,
 						dirty: false
 					}
-					crud.doneReading({
+					crud.finishedReading({
 						data,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[cashGrid, chkGrid, crud, docGrid, httpGetAsync, token]
@@ -301,7 +301,7 @@ export const useG06 = ({ token }) => {
 	// 				toastEx.success(
 	// 					`收款單「${G06.buildName(data)}」${crud.creating ? "新增" : "修改"}成功`
 	// 				);
-	// 				crud.doneCreating();
+	// 				crud.finishedCreating();
 	// 				crud.cancelReading();
 	// 				// 重新整理
 	// 				listLoader.loadList({ refresh: true });
@@ -309,7 +309,7 @@ export const useG06 = ({ token }) => {
 	// 				throw error || new Error(`${crud.creating ? "新增" : "修改"}發生未預期例外`);
 	// 			}
 	// 		} catch (err) {
-	// 			crud.failCreating(err);
+	// 			crud.failedCreating(err);
 	// 			console.error("handleCreate.failed", err);
 	// 			toastEx.error("新增失敗", err);
 	// 		}
@@ -332,7 +332,7 @@ export const useG06 = ({ token }) => {
 					toastEx.success(
 						`收款單「${data?.AccYM}第${data?.Stage}期-${data.CustData_N}」更新成功`
 					);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					loadItem({ id: data?.LogID });
 					// 重新整理
 					listLoader.loadList({ refresh: true });
@@ -340,7 +340,7 @@ export const useG06 = ({ token }) => {
 					throw error || new Error("更新發生未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				asyncRef.current.dirty = true;
 				console.error("handleUpdate.failed", err);
 				toastEx.error("更新失敗", err);
@@ -410,7 +410,7 @@ export const useG06 = ({ token }) => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}

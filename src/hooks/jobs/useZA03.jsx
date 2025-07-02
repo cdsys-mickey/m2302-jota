@@ -260,7 +260,7 @@ export const useZA03 = () => {
 
 				if (status.success) {
 					const data = UserInfo.transformForReading(payload);
-					crud.doneReading({
+					crud.finishedReading({
 						data,
 					});
 					if (!dontSelectDefaultDept) {
@@ -270,7 +270,7 @@ export const useZA03 = () => {
 					throw error || new Error("讀取失敗");
 				}
 			} catch (err) {
-				crud.failReading(err);
+				crud.failedReading(err);
 			}
 		},
 		[crud, httpGetAsync, token]
@@ -339,7 +339,7 @@ export const useZA03 = () => {
 					// const processed = Users.transformForReading(payload);
 					toastEx.success(`使用者新增成功`);
 
-					crud.doneCreating();
+					crud.finishedCreating();
 					await loadItem({ id: payload?.UID });
 					// 重新整理
 					loader.loadList({ refresh: true });
@@ -347,7 +347,7 @@ export const useZA03 = () => {
 					throw error || new Error("新增發生未預期例外");
 				}
 			} catch (err) {
-				crud.failCreating(err);
+				crud.failedCreating(err);
 				console.error("handleCreate.failed", err);
 				if (err.code === 8) {
 					toastEx.error("帳號名稱重複，請確認後重新送出");
@@ -373,7 +373,7 @@ export const useZA03 = () => {
 					toastEx.success(
 						`使用者 ${payload.data?.LoginName} ${payload.data?.UserName}」修改成功`
 					);
-					crud.doneUpdating();
+					crud.finishedUpdating();
 					loadAuthGridAction.clear();
 					// await loadItem(data?.UID);
 					await loadItem({ refresh: true });
@@ -383,7 +383,7 @@ export const useZA03 = () => {
 					throw error || new Error("修改發生未預期例外");
 				}
 			} catch (err) {
-				crud.failUpdating(err);
+				crud.failedUpdating(err);
 				console.error("handleUpdate.failed", err);
 				toastEx.error("修改失敗", err);
 			}
@@ -437,7 +437,7 @@ export const useZA03 = () => {
 						throw error || `發生未預期例外`;
 					}
 				} catch (err) {
-					crud.failDeleting(err);
+					crud.failedDeleting(err);
 					console.error("confirmDelete.failed", err);
 					toastEx.error("刪除失敗", err);
 				}
