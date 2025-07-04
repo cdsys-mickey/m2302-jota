@@ -648,7 +648,7 @@ const OptionPickerView = memo(
 					/>
 				);
 			},
-			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleKeyDown, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.input, slotProps?.textField, variant]
+			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleKeyDown, handleTextChange, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.input, slotProps?.textField, variant]
 		);
 
 		const renderDndInput = useCallback(

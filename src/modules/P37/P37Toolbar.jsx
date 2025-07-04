@@ -1,10 +1,17 @@
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, memo } from "react";
+import Colors from "../Colors.mjs";
+import { P37LockRowsSwitchContainer } from "./toolbar/P37LockRowsSwitchContainer";
+import P37SaveButton from "./toolbar/P37SaveButton";
+import P37CancelButton from "./toolbar/P37CancelButton";
+import P37EditButton from "./toolbar/P37EditButton";
 
 const LeftButtons = memo(() => (
 	<>
-		{/* <P41CreateButtonContainer />
-		<P41PrintButtonContainer /> */}
+		<P37EditButton />
+		<P37SaveButton />
+		<P37CancelButton />
+		{/* <P41PrintButtonContainer /> */}
 	</>
 ))
 
@@ -13,15 +20,18 @@ LeftButtons.displayName = "LeftButtons";
 const P37Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
+			// <ContainerEx maxWidth="sm" alignLeft>
 			<ListToolbar
 				// pb={1}
 				alignItems="flex-end"
 				ref={ref}
-				// LeftComponent={LeftButtons}
+				bgcolor={Colors.TOOLBAR}
+				LeftComponent={LeftButtons}
 				// RightComponent={() => <FetchResultLabel totalElements={365} />}
-				// RightComponent={P37FetchResultLabelContainer}
+				// RightComponent={P37LockRowsSwitchContainer}
 				{...rest}
 			/>
+			// </ContainerEx>
 		);
 	})
 );

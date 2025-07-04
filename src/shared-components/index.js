@@ -9,6 +9,7 @@ import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import OptionPickerWrapper from "./option-picker/OptionPickerWrapper";
 import { TextFieldWrapper } from "./text-field/TextFieldWrapper";
 import { DatePickerWrapper } from "./date-picker/DatePickerWrapper";
+import SelectExWrapper from "./SelectEx/SelectExWrapper";
 
 export {
 	ButtonWrapperContainer as ButtonEx,
@@ -22,4 +23,5 @@ export {
 	OptionPickerWrapper as OptionPicker,
 	TextFieldWrapper as TextFieldEx,
 	DatePickerWrapper as DatePickerEx,
+	SelectExWrapper as SelectEx,
 };

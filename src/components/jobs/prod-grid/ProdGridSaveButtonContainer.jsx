@@ -3,6 +3,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { useContext } from "react";
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { useMemo } from "react";
+import { ButtonEx } from "@/shared-components";
 
 export const ProdGridSaveButtonContainer = (props) => {
 	const { ...rest } = props;
@@ -22,7 +23,8 @@ export const ProdGridSaveButtonContainer = (props) => {
 	}
 
 	return (
-		<ResponsiveLoadingButton
+		<ButtonEx
+			responsive
 			size="small"
 			// disabled={disabled}
 			disabled={!prodGrid.isDirty}
@@ -32,7 +34,7 @@ export const ProdGridSaveButtonContainer = (props) => {
 			onClick={prodGrid.handleSave}
 			{...rest}>
 			儲存
-		</ResponsiveLoadingButton>
+		</ButtonEx>
 	);
 };
 

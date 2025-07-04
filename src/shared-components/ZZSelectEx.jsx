@@ -44,7 +44,7 @@ const expandedStyles = (theme) => ({
 /**
  * 結合 ExpandMoreButton 與 Menu，功能上與 Select 類似，但外觀更貼近現代 UI
  */
-const SelectEx = memo(
+const ZZSelectEx = memo(
 	({
 		items,
 		value,
@@ -149,5 +149,5 @@ const SelectEx = memo(
 		);
 	}
 );
-SelectEx.displayName = "SelectEx";
-export default SelectEx;
+ZZSelectEx.displayName = "ZZSelectEx";
+export default ZZSelectEx;

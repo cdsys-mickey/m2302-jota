@@ -13,12 +13,14 @@ import { useRef } from "react";
 import { nanoid } from "nanoid";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useMemo } from "react";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
-export const useP35 = ({ token }) => {
+export const useP35 = () => {
 	const itemIdRef = useRef();
 	const crud = useContext(CrudContext);
+	const auth = useContext(AuthContext);
 	const appModule = useAppModule({
-		token,
+		// token: auth.token,
 		moduleId: "P35",
 	});
 	// 側邊欄
@@ -57,7 +59,7 @@ export const useP35 = ({ token }) => {
 
 	const listLoader = useInfiniteLoader({
 		url: "v1/cms/tour-groups",
-		bearer: token,
+		bearer: auth.token,
 		initialFetchSize: 50,
 	});
 
@@ -75,7 +77,7 @@ export const useP35 = ({ token }) => {
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/cms/tour-groups`,
-					bearer: token,
+					bearer: auth.token,
 					params: {
 						id: _id
 					},
@@ -96,7 +98,7 @@ export const useP35 = ({ token }) => {
 				crud.failedReading(err);
 			}
 		},
-		[crud, grid, httpGetAsync, token]
+		[auth.token, crud, grid, httpGetAsync]
 	);
 
 	const handleSelect = useCallback(
@@ -152,7 +154,7 @@ export const useP35 = ({ token }) => {
 				const { status, error } = await httpMethod({
 					url: "v1/cms/tour-groups",
 					data: data,
-					bearer: token,
+					bearer: auth.token,
 				});
 
 				if (status.success) {
@@ -183,7 +185,7 @@ export const useP35 = ({ token }) => {
 				toastEx.error(`${action}失敗`, err);
 			}
 		},
-		[crud, httpPostAsync, httpPutAsync, listLoader, loadItem, token]
+		[auth.token, crud, httpPostAsync, httpPutAsync, listLoader, loadItem]
 	);
 
 	// const handleUpdate = useCallback(
@@ -270,7 +272,7 @@ export const useP35 = ({ token }) => {
 					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
 						url: `v1/cms/tour-groups`,
-						bearer: token,
+						bearer: auth.token,
 						params: {
 							id: crud.itemData?.TrvID
 						}
@@ -291,7 +293,7 @@ export const useP35 = ({ token }) => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, listLoader, token]);
+	}, [auth.token, crud, dialogs, httpDeleteAsync, listLoader]);
 
 	const onSearchSubmit = useCallback(
 		(data) => {

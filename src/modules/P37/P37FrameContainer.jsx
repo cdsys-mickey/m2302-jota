@@ -11,8 +11,6 @@ export const P37FrameContainer = () => {
 			<FrameBanner>
 
 			</FrameBanner>
-			{/* 工具列 */}
-			<P37Toolbar />
 			<P37FormContainer />
 		</FrameBox>
 	);

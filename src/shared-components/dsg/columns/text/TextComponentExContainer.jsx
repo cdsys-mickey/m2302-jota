@@ -5,15 +5,16 @@ import TextComponentEx from "./TextComponentEx";
 
 export const TextComponentExContainer = (props) => {
 	const { columnData, ...rest } = props;
-	const cellControls = useCellControls();
+	// const cellControls = useCellControls();
 
-	const _columnData = useMemo(() => {
-		return {
-			...columnData,
-			...cellControls,
-		};
-	}, [cellControls, columnData]);
-	return <TextComponentEx columnData={_columnData} {...rest} />;
+	// const _columnData = useMemo(() => {
+	// 	return {
+	// 		...columnData,
+	// 		...cellControls,
+	// 	};
+	// }, [cellControls, columnData]);
+	// return <TextComponentEx columnData={_columnData} {...rest} />;
+	return <TextComponentEx columnData={columnData} {...rest} />;
 };
 
 TextComponentExContainer.displayName = "TextComponentExContainer";

@@ -31,6 +31,18 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.id == value?.id;
 };
 
+const getOptionKey = (option) => {
+	return `${option?.id}`;
+};
+
+const getDefaultValue = () => {
+	return Types.LOCAL;
+};
+
+const getDefaultOption = () => {
+	return getOptionById(getDefaultValue());
+};
+
 const TourGroupTypes = {
 	Types,
 	options,
@@ -38,6 +50,9 @@ const TourGroupTypes = {
 	getOptionById,
 	findOptionByInput,
 	isOptionEqualToValue,
+	getOptionKey,
+	getDefaultValue,
+	getDefaultOption,
 };
 
 export default TourGroupTypes;

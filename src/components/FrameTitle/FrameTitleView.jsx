@@ -7,7 +7,7 @@ import { forwardRef, memo } from "react";
 
 const FrameTitleView = memo(
 	forwardRef((props, ref) => {
-		const { children, drawerOpen, ...rest } = props;
+		const { children, drawerOpen, mobile, ...rest } = props;
 
 		const showMenuButton = useMemo(() => {
 			return !drawerOpen

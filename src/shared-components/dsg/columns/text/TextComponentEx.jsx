@@ -5,6 +5,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useFirstRender } from "../../forked/hooks/useFirstRender";
 import { useMemo } from "react";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
+import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
@@ -23,6 +24,7 @@ const TextComponentEx = memo(
 		rowIndex,
 		columnIndex,
 		columnData,
+		cellControls,
 		// Control Functions
 		stopEditing,
 		insertRowBelow,
@@ -38,16 +40,19 @@ const TextComponentEx = memo(
 			continuousUpdates,
 			// additional opts
 			style,
+			type,
 			// Context Methods
-			skipDisabled,
+
+			...rest
+		} = columnData;
+
+		const { skipDisabled,
 			getNextCell,
 			lastCell,
 			isLastRow,
 			setActiveCell,
-			readOnly,
-			type,
-			...rest
-		} = columnData;
+			readOnly } = useCellControls();
+
 		// We create refs for async access so we don't have to add it to the useEffect dependencies
 		const asyncRef = useRef({
 			rowData,
@@ -253,6 +258,7 @@ TextComponentEx.propTypes = {
 	stopEditing: PropTypes.func,
 	insertRowBelow: PropTypes.func,
 	columnData: PropTypes.object,
+	// cellControls: PropTypes.object,
 	skipDisabled: PropTypes.bool,
 	handleFocusNextCell: PropTypes.func,
 	getNextCell: PropTypes.func,

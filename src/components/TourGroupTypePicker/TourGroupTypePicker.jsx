@@ -16,6 +16,7 @@ const TourGroupTypePicker = memo(
 				isOptionEqualToValue={TourGroupTypes.isOptionEqualToValue}
 				findByInput={TourGroupTypes.findOptionByInput}
 				notFoundText="團種類 ${input} 不存在"
+				getOptionKey={TourGroupTypes.getOptionKey}
 				// placeholder="空白: 零售+批發"
 				{...rest}
 			/>

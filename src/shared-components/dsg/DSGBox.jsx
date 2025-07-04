@@ -1,7 +1,6 @@
 import DSG from "@/shared-modules/sd-dsg";
 import { Box, styled } from "@mui/material";
-import { blueGrey, cyan, grey, lightBlue, orange, red } from "@mui/material/colors";
-import clsx from "clsx";
+import { cyan, grey } from "@mui/material/colors";
 import PropTypes from "prop-types";
 
 const DSGBoxBase = styled(Box, {

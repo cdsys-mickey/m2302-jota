@@ -25,7 +25,7 @@ const ProdGridToolbar = memo(
 						<ProdGridCancelEditButtonContainer
 							variant="outlined"
 							color="warning">
-							結束編輯
+							取消編輯
 						</ProdGridCancelEditButtonContainer>
 
 						<ProdGridSaveButtonContainer

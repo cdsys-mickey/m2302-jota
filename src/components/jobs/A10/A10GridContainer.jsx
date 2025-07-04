@@ -3,7 +3,7 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import A10Grid from "./A10Grid";
 import { useMemo } from "react";
-import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 const A10GridContainer = () => {
 	const { height } = useWindowSize();
