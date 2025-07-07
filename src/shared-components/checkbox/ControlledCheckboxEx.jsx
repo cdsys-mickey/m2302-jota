@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Controller, useFormContext } from "react-hook-form";
 import PropTypes from "prop-types";
-import CheckboxEx from "./CheckboxExView";
+import CheckboxExView from "./CheckboxExView";
 import { useCallback } from "react";
 import { useContext } from "react";
 import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
@@ -61,7 +61,7 @@ const ControlledCheckboxEx = ({
 				}
 			}
 		},
-		[handleFocusNextField, name, setFocus, isFieldDisabled, toggleChecked]
+		[handleFocusNextField, toggleChecked, name, setFocus, isFieldDisabled]
 	);
 
 	// const handleKeyUp = useCallback(
@@ -92,7 +92,7 @@ const ControlledCheckboxEx = ({
 
 	if (!name) {
 		return (
-			<CheckboxEx
+			<CheckboxExView
 				onKeyDown={handleKeyDown}
 				checked={checked}
 			/>
@@ -109,7 +109,7 @@ const ControlledCheckboxEx = ({
 				field: { value, onChange, ref },
 				fieldState: { error },
 			}) => (
-				<CheckboxEx
+				<CheckboxExView
 					inputRef={ref}
 					checked={valueToChecked ? valueToChecked(value) : value}
 					onKeyDown={handleKeyDown}

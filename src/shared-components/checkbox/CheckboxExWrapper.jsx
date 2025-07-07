@@ -16,6 +16,5 @@ CheckboxExWrapper.propTypes = {
 	typo: PropTypes.bool,
 	getLabel: PropTypes.func,
 };
-
 CheckboxExWrapper.displayName = "CheckboxExWrapper";
 export default CheckboxExWrapper;

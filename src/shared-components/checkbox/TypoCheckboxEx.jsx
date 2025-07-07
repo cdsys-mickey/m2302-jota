@@ -57,6 +57,7 @@ const TypoCheckboxEx = memo(
 				name={name}
 				variant={variant}
 				size={size}
+				slotProps={slotProps}
 				// InputLabelProps={InputLabelProps}
 				{...rest}
 			/>

@@ -76,7 +76,9 @@ const CheckboxExView = memo(
 						control={
 							checkbox
 						}
-						{...labelProps}
+						slotProps={{
+							...labelProps
+						}}
 
 					/>
 				</> : (checkbox)}

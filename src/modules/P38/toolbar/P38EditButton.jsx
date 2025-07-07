@@ -2,10 +2,18 @@ import { ButtonEx } from "@/shared-components";
 import EditIcon from '@mui/icons-material/Edit';
 import { useContext } from "react";
 import P38Context from "../P38Context";
+import { useCallback } from "react";
+import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
 
 const P38EditButton = (props) => {
 	const { ...rest } = props;
 	const p38 = useContext(P38Context);
+	const formMeta = useContext(FormMetaContext);
+
+	const handleEdit = useCallback(() => {
+		p38.promptUpdating();
+		formMeta.handleFocusFirstField();
+	}, [formMeta, p38]);
 
 	if (p38.editing) {
 		return false;
@@ -19,7 +27,7 @@ const P38EditButton = (props) => {
 			size="small"
 			endIcon={<EditIcon />}
 			loading={p38.saveWorking}
-			onClick={p38.handleEdit}
+			onClick={handleEdit}
 			{...rest}
 		>編輯</ButtonEx>
 

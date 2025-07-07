@@ -97,12 +97,14 @@ export const useFormMeta = (value, opts = {}) => {
 
 	const handleFocusNextField = useCallback(
 		(name, opts = {}) => {
-			const { setFocus, forward = true } = opts;
+			const { setFocus: _setFocus, forward = true } = opts;
+			const setFocusMethod = _setFocus || setFocus;
+			// const { forward = true } = opts;
 			const nextField = getNextField(name, opts);
 			console.log("handleFocusNextField.nextField", nextField);
 			console.log("handleFocusNextField.opts", opts);
 			if (nextField) {
-				setFocus(nextField.name, {
+				setFocusMethod(nextField.name, {
 					shouldSelect: nextField.select,
 				});
 			} else {
@@ -133,7 +135,7 @@ export const useFormMeta = (value, opts = {}) => {
 				}
 			}
 		},
-		[firstFieldMessage, getNextField, lastField, lastFieldMessage]
+		[firstFieldMessage, getNextField, lastField, lastFieldMessage, setFocus]
 	);
 
 	const supressEvents = useCallback(() => {
@@ -151,8 +153,15 @@ export const useFormMeta = (value, opts = {}) => {
 	}, [getNextField]);
 
 	const handleFocusFirstField = useCallback(() => {
-
-	}, []);
+		const firstField = getFirstField();
+		if (firstField) {
+			setTimeout(() => {
+				setFocus(firstField.name, {
+					shouldSelect: firstField.select,
+				});
+			}, 200)
+		}
+	}, [getFirstField, setFocus]);
 
 	return {
 		fields,
@@ -162,6 +171,8 @@ export const useFormMeta = (value, opts = {}) => {
 		disableEnter,
 		asyncRef,
 		supressEvents,
-		enableEvents
+		enableEvents,
+		getFirstField,
+		handleFocusFirstField,
 	};
 };

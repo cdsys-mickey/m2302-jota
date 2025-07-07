@@ -6,10 +6,16 @@ import { useContext } from "react";
 import P38Context from "./P38Context";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { useInit } from "@/shared-hooks/useInit";
+import { FormProvider, useForm } from "react-hook-form";
 
 
 export const P38FrameContainer = () => {
 	const crud = useContext(CrudContext);
+	const form = useForm({
+		defaultValues: {
+
+		}
+	});
 
 	useInit(() => {
 		return () => {
@@ -26,7 +32,9 @@ export const P38FrameContainer = () => {
 			</FrameBanner>
 			{/* 工具列 */}
 			{/* <P38Toolbar /> */}
-			<P38FormContainer />
+			<FormProvider {...form}>
+				<P38FormContainer />
+			</FormProvider>
 		</FrameBox>
 	);
 };

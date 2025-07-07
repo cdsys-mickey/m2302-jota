@@ -18,7 +18,7 @@ const P38CancelButton = (props) => {
 			variant="outlined"
 			size="small"
 			// endIcon={<SaveIcon />}
-			loading={p38.saveWorking}
+			disabled={p38.saveWorking}
 			onClick={p38.cancelEdit}
 			{...rest}
 		>取消</ButtonEx>

@@ -23,10 +23,10 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
-	const forms = useForm({
+	const form = useForm({
 		defaultValues: {},
 	});
-	const { reset } = forms;
+	const { reset } = form;
 	const a06 = useContext(A06Context);
 
 	const title = useMemo(() => {
@@ -40,11 +40,11 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 	}, [a06.creating, a06.updating]);
 
 	const handleSubmit = useMemo(() => {
-		return forms.handleSubmit(
+		return form.handleSubmit(
 			a06.onEditorSubmit,
 			a06.onEditorSubmitError
 		)
-	}, [a06.onEditorSubmit, a06.onEditorSubmitError, forms]);
+	}, [a06.onEditorSubmit, a06.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
@@ -56,10 +56,10 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 			console.log(`a06 form reset`, a06.itemData);
 			reset(a06.itemData);
 		}
-	}, [a06.itemData, a06.itemDataReady, a06.readState, reset]);
+	}, [a06.itemData, a06.itemDataReady, reset]);
 
 	return (
-		<FormProvider {...forms}>
+		<FormProvider {...form}>
 			<DialogExContainer
 				title={title}
 				ref={ref}

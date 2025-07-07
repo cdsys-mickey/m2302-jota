@@ -10,11 +10,11 @@ const getOptionLabel = (option) => {
 };
 
 const isOptionEqualToValue = (option, value) => {
-	return option?.id === value?.id;
+	return option?.id == value?.id;
 };
 
 const getOptionById = (id) => {
-	return options.find((o) => o.id === id);
+	return options.find((o) => o.id == id);
 };
 
 const findOptionByInput = (s) => {

@@ -8,9 +8,10 @@ import { memo } from "react";
 import P38Toolbar from "../P38Toolbar";
 import P38CalTypePicker from "./pickers/P38CalTypePicker";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import LoadingTypography from "@/shared-components/LoadingTypography";
 
 const P38FormView = memo((props) => {
-	const { loadError, ...rest } = props;
+	const { loadError, loadWorking, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
 			<FormBox {...rest}>
@@ -19,8 +20,9 @@ const P38FormView = memo((props) => {
 						{loadError ? <FormErrorBox error={loadError} /> : (
 							<>
 								<P38Toolbar />
+
 								<Box mt={1}>
-									<Grid container spacing={1}>
+									{loadWorking ? <LoadingTypography>讀取中</LoadingTypography> : <Grid container spacing={1}>
 										<Grid item xs={12}>
 											<TextFieldEx
 												name="Head"
@@ -48,7 +50,8 @@ const P38FormView = memo((props) => {
 												fullWidth
 											/>
 										</Grid>
-									</Grid>
+									</Grid>}
+
 								</Box>
 							</>)
 						}
@@ -62,6 +65,7 @@ const P38FormView = memo((props) => {
 
 P38FormView.propTypes = {
 	loadError: PropTypes.object,
+	loadWorking: PropTypes.bool,
 	slotProps: PropTypes.object
 }
 

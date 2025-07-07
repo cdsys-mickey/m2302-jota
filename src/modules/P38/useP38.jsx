@@ -25,6 +25,7 @@ export default function useP38() {
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 
+	const tsRef = useRef();
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
 			const _id = refresh ? itemIdRef.current : id;
@@ -46,6 +47,7 @@ export default function useP38() {
 				});
 				console.log("payload", payload);
 				if (status.success) {
+					tsRef.current = payload.CheckData.TimeVal;
 					const data = P38.transformForReading(payload.data[0]);
 					crud.finishedLoading({
 						data,
@@ -66,9 +68,9 @@ export default function useP38() {
 		[auth.token, crud, httpGetAsync]
 	);
 
-	const handleEdit = useCallback(() => {
-		crud.promptUpdating();
-	}, [crud]);
+	// const handleEdit = useCallback(() => {
+	// 	crud.promptUpdating();
+	// }, [crud]);
 
 	const cancelEdit = useCallback(() => {
 		crud.cancelUpdating();
@@ -81,9 +83,12 @@ export default function useP38() {
 		console.log("data", data);
 		try {
 			crud.startUpdating();
-			const { status, error } = await httpPutAsync({
+			const { status, error, payload } = await httpPutAsync({
 				url: "v1/cms/settings",
-				data,
+				data: data,
+				params: {
+					ts: tsRef.current
+				},
 				bearer: auth.token
 			})
 			if (status.success) {
@@ -91,6 +96,9 @@ export default function useP38() {
 					`儲存成功`
 				);
 				crud.finishedUpdating();
+
+				tsRef.current = payload.CheckData.TimeVal;
+
 			} else {
 				throw error || new Error(`儲存發生未預期例外`);
 			}
@@ -108,7 +116,7 @@ export default function useP38() {
 		...appModule,
 		...crud,
 		loadItem,
-		handleEdit,
+		// handleEdit,
 		cancelEdit,
 		onSubmit,
 		onSubmitError
