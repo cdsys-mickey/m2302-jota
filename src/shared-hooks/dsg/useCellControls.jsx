@@ -14,9 +14,10 @@ export const useCellControls = () => {
 		isLastRow: dsg.isLastRow,
 		setActiveCell: dsg.setActiveCell,
 		handleFocusPrevCell: dsg.handleFocusPrevCell,
-
 		skipDisabled: dsg.skipDisabled,
 		inDSG: !!dsg,
+
+		// from DSGContext
 		readOnly: dsg.readOnly,
 		supressEvents: dsg.asyncRef?.current?.supressEvents || false
 	};

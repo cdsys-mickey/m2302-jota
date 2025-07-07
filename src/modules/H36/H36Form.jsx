@@ -100,16 +100,17 @@ const H36Form = memo((props) => {
 									selectOnFocus
 								/>
 							</Grid>
-							{!orderTypeDisabled && (
+							{/* {!orderTypeDisabled && ( */}
 
-								<Grid item xs={12} sm={6}>
-									<H36OrderTypePicker
-										name="orderType"
-										disableOpenOnInput
-										selectOnFocus
-									/>
-								</Grid>
-							)}
+							<Grid item xs={12} sm={6}>
+								<H36OrderTypePicker
+									name="orderType"
+									disableOpenOnInput
+									selectOnFocus
+									disabled={orderTypeDisabled}
+								/>
+							</Grid>
+							{/* )} */}
 						</Grid>
 						<FlexBox mt={2}>
 							<Grid container spacing={2}>

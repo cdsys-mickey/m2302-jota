@@ -29,6 +29,7 @@ const P37SaveButton = (props) => {
 			endIcon={<SaveIcon />}
 			loading={p37.saveWorking}
 			onClick={handleSubmit}
+			disabled={!p37.grid.isDirty}
 			{...rest}
 		>儲存</ButtonEx>
 

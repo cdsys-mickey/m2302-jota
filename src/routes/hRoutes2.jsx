@@ -59,6 +59,8 @@ import { H47Provider } from "@/modules/H47/H47Provider";
 import { H47FrameContainer } from "@/modules/H47/H47FrameContainer";
 import { H51Provider } from "@/modules/H51/H51Provider";
 import { H51FrameContainer } from "@/modules/H51/H51FrameContainer";
+import { H45Provider } from "@/modules/H45/H45Provider";
+import { H45FrameContainer } from "@/modules/H45/H45FrameContainer";
 
 
 
@@ -313,6 +315,18 @@ const hRoutes2 = (
 						<H44Provider>
 							<H44FrameContainer />
 						</H44Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H45"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H45Provider>
+							<H45FrameContainer />
+						</H45Provider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

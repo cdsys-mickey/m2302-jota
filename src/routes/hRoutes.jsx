@@ -24,14 +24,18 @@ import { H11Provider } from "@/modules/H11/H11Provider";
 import { H11FrameContainer } from "@/modules/H11/H11FrameContainer";
 import { H13Provider } from "@/modules/H13/H13Provider";
 import { H13FrameContainer } from "@/modules/H13/H13FrameContainer";
-import { H14_1Provider } from "@/modules/H14-1/H14_1Provider";
-import { H14_1FrameContainer } from "@/modules/H14-1/H14_1FrameContainer";
+import { H14_1Provider } from "@/modules/H14_1/H14_1Provider";
+import { H14_1FrameContainer } from "@/modules/H14_1/H14_1FrameContainer";
 import { H15Provider } from "@/modules/H15/H15Provider";
 import { H15FrameContainer } from "@/modules/H15/H15FrameContainer";
 import { H16Provider } from "@/modules/H16/H16Provider";
 import { H16FrameContainer } from "@/modules/H16/H16FrameContainer";
 import { H17Provider } from "@/modules/H17/H17Provider";
 import { H17FrameContainer } from "@/modules/H17/H17FrameContainer";
+import { H14_3Provider } from "@/modules/H14_3/H14_3Provider";
+import { H14_3FrameContainer } from "@/modules/H14_3/H14_3FrameContainer";
+import { H14_2Provider } from "@/modules/H14_2/H14_2Provider";
+import { H14_2FrameContainer } from "@/modules/H14_2/H14_2FrameContainer";
 
 const hRoutes = (
 	<>
@@ -175,6 +179,30 @@ const hRoutes = (
 						<H14_1Provider>
 							<H14_1FrameContainer />
 						</H14_1Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H142"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H14_2Provider>
+							<H14_2FrameContainer />
+						</H14_2Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H143"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H14_3Provider>
+							<H14_3FrameContainer />
+						</H14_3Provider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

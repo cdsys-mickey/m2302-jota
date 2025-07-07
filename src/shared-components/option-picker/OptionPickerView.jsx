@@ -239,7 +239,7 @@ const OptionPickerView = memo(
 
 				const { override = false } = opts;
 				if (popperOpen) {
-					console.log("popper already opened");
+					// console.log("popper already opened");
 					return;
 				}
 				if (!disableOpenOnInput || e.type === "click" || override) {

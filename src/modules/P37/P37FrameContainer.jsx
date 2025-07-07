@@ -1,5 +1,4 @@
 import { FrameBanner, FrameBox } from "@/shared-components";
-import P37Toolbar from "./P37Toolbar";
 import P37FormContainer from "./form/P37FormContainer";
 
 
@@ -11,6 +10,8 @@ export const P37FrameContainer = () => {
 			<FrameBanner>
 
 			</FrameBanner>
+			{/* 工具列 */}
+			{/* <P37Toolbar /> */}
 			<P37FormContainer />
 		</FrameBox>
 	);

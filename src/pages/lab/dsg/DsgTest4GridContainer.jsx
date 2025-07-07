@@ -20,7 +20,6 @@ import { SupplierPickerComponentContainer } from "@/components/dsg/columns/suppl
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 
 export const DsgTest4GridContainer = () => {
-	// const dsg = useContext(DSGContext);
 	const dsgTest4 = useContext(DSGTest4Context);
 	const form = useForm();
 	const { height } = useWindowSize();

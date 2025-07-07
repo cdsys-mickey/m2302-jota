@@ -1,11 +1,19 @@
 import { ButtonEx } from "@/shared-components";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import EditIcon from '@mui/icons-material/Edit';
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import P37Context from "../P37Context";
 
 const P37EditButton = (props) => {
 	const { ...rest } = props;
 	const p37 = useContext(P37Context);
+	const grid = useContext(DSGContext);
+	const { setActiveCell } = grid;
+
+	const handleEdit = useCallback(() => {
+		grid.handleUnlock();
+		setActiveCell({ col: 0, row: 0 })
+	}, [grid, setActiveCell]);
 
 	if (
 		!p37.grid.readOnly
@@ -21,7 +29,7 @@ const P37EditButton = (props) => {
 			size="small"
 			endIcon={<EditIcon />}
 			loading={p37.saveWorking}
-			onClick={p37.handleEdit}
+			onClick={handleEdit}
 			{...rest}
 		>編輯</ButtonEx>
 

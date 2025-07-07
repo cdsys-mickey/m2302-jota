@@ -6,7 +6,6 @@ import { useMemo } from "react";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 const A16GGridContainer = () => {
-	// const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	const a16g = useContext(A16GContext);
 

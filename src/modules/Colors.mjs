@@ -43,6 +43,7 @@ const Colors = {
 	PURPLE: "#7e5a9f",
 	YELLOW: "yellow",
 	DISABLED: grey[300],
+	CHECKBOX: grey[300],
 	// DIALOG_BG: "rgb(235 235 235)",
 	// lightYellow
 	// DIALOG_BG: "rgb(253 249 235)",

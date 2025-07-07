@@ -1,11 +1,8 @@
-import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import DSGBox from "./DSGBox";
+import { forwardRef, memo, useContext, useMemo } from "react";
 import { DynamicDataSheetGrid } from "react-datasheet-grid";
-import { useContext } from "react";
 import { DSGContext } from "../../shared-contexts/datasheet-grid/DSGContext";
-import { useMemo } from "react";
-import { Typography } from "@mui/material";
+import DSGBox from "./DSGBox";
 
 const DSGGRID_DEFAULTS = {
 	rowHeight: 34,

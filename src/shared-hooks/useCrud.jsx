@@ -435,6 +435,7 @@ export const useCrud = () => {
 		editWorking,
 		itemViewOpen,
 		cancelEditing,
+		saveWorking: createWorking || updateWorking,
 		// Params
 		paramsRef,
 	};

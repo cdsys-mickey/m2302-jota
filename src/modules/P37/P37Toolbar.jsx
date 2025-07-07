@@ -14,8 +14,16 @@ const LeftButtons = memo(() => (
 		{/* <P41PrintButtonContainer /> */}
 	</>
 ))
-
 LeftButtons.displayName = "LeftButtons";
+
+const RightButtons = memo(() => (
+	<>
+		<P37SaveButton />
+		<P37CancelButton />
+	</>
+))
+RightButtons.displayName = "RightButtons";
+
 
 const P37Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
@@ -26,9 +34,8 @@ const P37Toolbar = memo(
 				alignItems="flex-end"
 				ref={ref}
 				bgcolor={Colors.TOOLBAR}
-				LeftComponent={LeftButtons}
-				// RightComponent={() => <FetchResultLabel totalElements={365} />}
-				// RightComponent={P37LockRowsSwitchContainer}
+				LeftComponent={P37EditButton}
+				RightComponent={RightButtons}
 				{...rest}
 			/>
 			// </ContainerEx>

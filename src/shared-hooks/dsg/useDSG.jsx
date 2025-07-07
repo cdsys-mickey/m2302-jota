@@ -14,6 +14,11 @@ const DEFAULT_SET_DATA_OPTS = {
 	reset: false,
 	commit: false,
 	prev: null,
+	doDirtyCheck: false,
+	doDirtyCheckByIndex: false,
+	debug: false,
+	init: false,
+	supressEvents: false
 };
 
 const DEFAULT_ON_DELETE_ROW = ({ fromRowIndex, updateResult }) => (rowData, index) => {
@@ -33,7 +38,9 @@ export const useDSG = ({
 
 	createRow: _createRow,
 	onUpdateRow: _onUpdateRow,
-	onGridChanged
+	onGridChanged,
+	doDirtyCheck: defaultDoDirtyCheck = false,
+	doDirtyCheckByIndex: defaultDoDirtyCheckByIndex = false,
 }) => {
 	const asyncRef = useRef({
 		supressEvents: false
@@ -88,10 +95,11 @@ export const useDSG = ({
 	}, []);
 
 	const handleDirtyCheck = useCallback(
-		(prevRowData, rowData, opts = {}) => {
-			const { debug } = opts;
-			const key = _.get(rowData, keyColumn);
-			if (!key) {
+		(prevRowData, rowData, rowIndex, opts = {}) => {
+			const { debug, byIndex } = opts;
+			const key = byIndex ? rowIndex : _.get(rowData, keyColumn);
+			if (!byIndex && !key) {
+				console.error("未定義 keyColumn, 無法執行 handleDirtyCheck");
 				return;
 			}
 
@@ -119,14 +127,14 @@ export const useDSG = ({
 
 	const fillRows = useCallback(
 		({ createRow, data, length = 10 }) => {
-			const createRowStub = createRow || _createRow;
-			if (!createRowStub) {
+			const createRowMethod = createRow || _createRow;
+			if (!createRowMethod) {
 				console.error("useDSG 及 fillRow 均未提供 createRow")
 				throw new Error("fillRows failed");
 			}
 
 			if (!data) {
-				return Array.from({ length }, createRowStub);
+				return Array.from({ length }, createRowMethod);
 			} else {
 				if (!Types.isArray(data)) {
 					throw new Error("data 並非 array");
@@ -139,7 +147,7 @@ export const useDSG = ({
 					...data,
 					...Array.from(
 						{ length: length - data.length },
-						createRowStub
+						createRowMethod
 					),
 				];
 			}
@@ -169,6 +177,8 @@ export const useDSG = ({
 
 			const doFillRows = !!_fillRows;
 			const _length = Types.isNumber(_fillRows) ? _fillRows : length;
+			const _doDirtyCheck = doDirtyCheck || defaultDoDirtyCheck;
+			const _doDirtyCheckByIndex = doDirtyCheckByIndex || defaultDoDirtyCheckByIndex;
 
 			setGridData((prev) => {
 				let updatedGridData;
@@ -199,17 +209,19 @@ export const useDSG = ({
 							persistedIds.add(key);
 						}
 					});
-				} else if (doDirtyCheckByIndex || doDirtyCheck) {
+				} else if (_doDirtyCheck || _doDirtyCheckByIndex) {
 					updatedGridData.forEach((rowData, rowIndex) => {
+						// 以 index 取出 prev
 						let prevRowData = prevGridDataRef.current[rowIndex];
-						if (doDirtyCheck) {
+						// 以 key 取出 prev
+						if (_doDirtyCheck) {
 							const key = _.get(rowData, keyColumn);
 							prevRowData = prevGridDataRef.current.find((item) => {
 								const itemKey = _.get(item, keyColumn);
 								return itemKey === key;
 							});
 						}
-						handleDirtyCheck(rowData, prevRowData, { debug });
+						handleDirtyCheck(rowData, prevRowData, rowIndex, { debug, byIndex: _doDirtyCheckByIndex });
 					});
 				}
 
@@ -230,7 +242,7 @@ export const useDSG = ({
 				return updatedGridData; // 返回最終的數據
 			});
 		},
-		[deletedIds, dirtyIds, fillRows, handleDirtyCheck, keyColumn, persistedIds, setPrevGridData]
+		[defaultDoDirtyCheck, defaultDoDirtyCheckByIndex, deletedIds, dirtyIds, fillRows, handleDirtyCheck, keyColumn, persistedIds, setPrevGridData]
 	);
 
 	const handleGridDataLoaded = useCallback(
@@ -373,7 +385,7 @@ export const useDSG = ({
 				const prevRowData = prevGridDataRef.current[rowIndex];
 				console.log(`[DSG UPDATE]`, rowData);
 
-				const dirty = handleDirtyCheck(prevRowData, rowData);
+				const dirty = handleDirtyCheck(prevRowData, rowData, rowIndex);
 				console.log("dirty", dirty);
 				setGridData(newValue);
 			} else {
@@ -401,6 +413,8 @@ export const useDSG = ({
 				} = opts;
 
 				const __onUpdateRow = onUpdateRow || _onUpdateRow;
+				const _doDirtyCheck = doDirtyCheck || defaultDoDirtyCheck;
+				const _doDirtyCheckByIndex = doDirtyCheckByIndex || defaultDoDirtyCheckByIndex;
 
 				console.log("onGridChange.operations", operations);
 				console.log("newValue", newValue);
@@ -438,17 +452,24 @@ export const useDSG = ({
 									})
 							) : updatingRows;
 
-							if (doDirtyCheck || doDirtyCheckByIndex) {
+							if (_doDirtyCheck || _doDirtyCheckByIndex) {
 								updatedRows.forEach((updatedRowData, index) => {
-									let prevRowData = prevGridDataRef.current[operation.fromRowIndex + index];
-									if (doDirtyCheck) {
+									const rowIndex = operation.fromRowIndex + index;
+									// 以 index 取出 prev
+									let prevRowData = prevGridDataRef.current[rowIndex];
+									// 以 key 取出 prev
+									if (_doDirtyCheck) {
 										const key = _.get(updatedRows, keyColumn);
 										prevRowData = prevGridDataRef.current.find((item) => {
 											const itemKey = _.get(item, keyColumn);
 											return itemKey === key;
 										});
 									}
-									const dirty = handleDirtyCheck(updatedRowData, prevRowData, dirtyCheckOpts);
+									// 以 index 作為比對依據
+									const dirty = handleDirtyCheck(updatedRowData, prevRowData, rowIndex, {
+										...dirtyCheckOpts,
+										byIndex: _doDirtyCheckByIndex
+									});
 									console.log("dirty", dirty);
 								});
 							}
@@ -557,7 +578,7 @@ export const useDSG = ({
 					}
 				}
 			},
-		[_onUpdateRow, deletedIds, gridData, handleDirtyCheck, keyColumn]
+		[_onUpdateRow, defaultDoDirtyCheck, defaultDoDirtyCheckByIndex, deletedIds, gridData, handleDirtyCheck, keyColumn]
 	);
 
 	const spreadOnRow = useCallback(
@@ -654,6 +675,10 @@ export const useDSG = ({
 		console.log(`%c****** ${DSGContext.displayName}.supressEvent OFF ******`, CommonCSS.CONSOLE_SUCCESS);
 	}, []);
 
+	const checkDirty = useCallback(() => {
+		return dirtyIds?.length > 0
+	}, [dirtyIds?.length]);
+
 	useEffect(() => {
 		// gridData changed, supressEvents reset to false
 		if (asyncRef.current.supressEvents) {
@@ -731,6 +756,7 @@ export const useDSG = ({
 		supressEvents,
 		enableEvents,
 		onUpdateRow: _onUpdateRow,
-		onGridChanged
+		onGridChanged,
+		checkDirty
 	};
 };

@@ -23,7 +23,6 @@ const CatLGridProvider = (props) => {
 		useWebApi();
 	const { token } = useContext(AuthContext);
 
-	// const dsg = useContext(DSGContext);
 	const grid = useDSG({
 		gridId: "CatL",
 		keyColumn: "LClas",

@@ -32,7 +32,7 @@ const transformForReading = (payload) => {
 
 const transformGridForSubmit = (data) => {
 	return data
-		.filter((x) => x.SDnCp != null)
+		.filter((x) => x.SDnCp != null && x.SDnCp != "")
 		.map(({ SDnCp, SUpCp, STrvCms, SDrvCms, ...rest }) => ({
 			SDnCp: SDnCp?.toString() ?? "",
 			SUpCp: SUpCp?.toString() ?? "",

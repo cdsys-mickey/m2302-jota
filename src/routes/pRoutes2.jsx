@@ -22,6 +22,8 @@ import { P36FrameContainer } from "@/modules/P36/P36FrameContainer";
 import { P36Provider } from "@/modules/P36/P36Provider";
 import { P37FrameContainer } from "@/modules/P37/P37FrameContainer";
 import P37Provider from "@/modules/P37/P37Provider";
+import { P38FrameContainer } from "@/modules/P38/P38FrameContainer";
+import P38Provider from "@/modules/P38/P38Provider";
 import { P41FrameContainer } from "@/modules/P41/P41FrameContainer";
 import { P41Provider } from "@/modules/P41/P41Provider";
 import { P42FrameContainer } from "@/modules/P42/P42FrameContainer";
@@ -159,6 +161,16 @@ const pRoutes2 = (
 					<P37Provider>
 						<P37FrameContainer />
 					</P37Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P38"
+			element={
+				<CrudProvider>
+					<P38Provider>
+						<P38FrameContainer />
+					</P38Provider>
 				</CrudProvider>
 			}
 		/>

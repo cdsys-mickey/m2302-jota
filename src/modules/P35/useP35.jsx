@@ -153,7 +153,7 @@ export const useP35 = () => {
 				const httpMethod = creating ? httpPostAsync : httpPutAsync;
 				const { status, error } = await httpMethod({
 					url: "v1/cms/tour-groups",
-					data: data,
+					data,
 					bearer: auth.token,
 				});
 

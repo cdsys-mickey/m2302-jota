@@ -1,20 +1,14 @@
 import DSGAddRowsToolbarEx from "@/components/dsg/DSGAddRowsToolbarEx";
 import P37Context from "@/modules/P37/P37Context";
-import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import DSGMetaContext from "@/shared-contexts/datasheet-grid/DSGMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
-import { keyColumn } from "react-datasheet-grid";
 import { useFormContext } from "react-hook-form";
 
 const ContextMenu = createDSGContextMenuComponent({
@@ -26,74 +20,8 @@ const P37GridContainer = (props) => {
 	const { height } = useWindowSize();
 	const form = useFormContext();
 	const p37 = useContext(P37Context);
-
-	const readOnly = useMemo(() => {
-		return p37.grid.readOnly;
-	}, [p37.grid.readOnly])
-
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"SDnCp",
-					createTextColumnEx({
-						alignRight: true
-					})
-				),
-				title: "≧ 下限值",
-				disabled: readOnly,
-				// minWidth: 120,
-				// maxWidth: 130,
-				grow: 1,
-			},
-			{
-				...keyColumn(
-					"SUpCp",
-					createTextColumnEx({
-						alignRight: true
-					})
-				),
-				title: "≦ 上限值",
-				disabled: readOnly,
-				// minWidth: 120,
-				// maxWidth: 130,
-				grow: 1,
-			},
-			{
-				...keyColumn(
-					"SDrvCms",
-					createTextColumnEx({
-						alignRight: true
-					})
-				),
-				title: "司機佣金(%)",
-				disabled: readOnly,
-				minWidth: 130,
-				maxWidth: 130,
-			},
-			{
-				...keyColumn(
-					"STrvCms",
-					createTextColumnEx({
-						alignRight: true
-					})
-				),
-				title: "旅行社佣金(%)",
-				disabled: readOnly,
-				minWidth: 130,
-				maxWidth: 130,
-			},
-		],
-		[readOnly]
-	);
-
-	const gridMeta = useDSGMeta({
-		data: p37.grid.gridData,
-		columns: columns,
-		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW,
-		grid: p37.grid
-	});
+	// const grid = useContext(DSGContext);
+	const gridMeta = useContext(DSGMetaContext);
 
 	const _height = useMemo(() => {
 		return height - 494 + (p37.gridDisabled ? 48 : 0)
@@ -137,32 +65,26 @@ const P37GridContainer = (props) => {
 	}
 
 	return (
-		<DSGContext.Provider
-			value={{
-				...p37.grid,
-				...gridMeta,
-				readOnly: !p37.editing
-			}}>
-			<DSGGrid
-				ref={gridMeta.setGridRef}
-				lockRows={p37.grid.readOnly}
-				columns={columns}
-				value={p37.grid.gridData}
-				onChange={onChange}
-				onActiveCellChange={gridMeta.handleActiveCellChange}
-				addRowsComponent={DSGAddRowsToolbarEx}
-				height={_height}
-				createRow={p37.createRow}
-				disableExpandSelection
-				contextMenuComponent={ContextMenu}
-				slotProps={{
-					box: {
-						// mt: 0.5
-					}
-				}}
-				{...rest}
-			/>
-		</DSGContext.Provider>
+
+		<DSGGrid
+			ref={gridMeta.setGridRef}
+			lockRows={p37.grid.readOnly}
+			columns={gridMeta.columns}
+			value={p37.grid.gridData}
+			onChange={onChange}
+			onActiveCellChange={gridMeta.handleActiveCellChange}
+			addRowsComponent={DSGAddRowsToolbarEx}
+			height={_height}
+			createRow={p37.createRow}
+			disableExpandSelection
+			contextMenuComponent={ContextMenu}
+			slotProps={{
+				box: {
+					// mt: 0.5
+				}
+			}}
+			{...rest}
+		/>
 	);
 };
 

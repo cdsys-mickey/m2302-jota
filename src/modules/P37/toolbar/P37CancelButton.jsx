@@ -11,7 +11,8 @@ const P37CancelButton = (props) => {
 		p37.grid.gridLoading ||
 		!p37.grid.gridData ||
 		p37.grid.gridData?.length === 0 ||
-		p37.grid.readOnly
+		p37.grid.readOnly ||
+		p37.saveWorking
 	) {
 		return false;
 	}

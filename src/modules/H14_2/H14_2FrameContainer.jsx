@@ -1,7 +1,7 @@
-import { H14_1FormContainer } from "@/modules/H14-1/H14_1FormContainer";
+import { H14_2FormContainer } from "@/modules/H14_2/H14_2FormContainer";
 import { FrameBanner, FrameBox } from "@/shared-components";
 
-export const H14_1FrameContainer = () => {
+export const H14_2FrameContainer = () => {
 
 	return (
 		<FrameBox>
@@ -11,12 +11,13 @@ export const H14_1FrameContainer = () => {
 			{/* 工具列 */}
 			{/* <H141Toolbar /> */}
 			{/* 表單 */}
-			<H14_1FormContainer />
+			<H14_2FormContainer />
 		</FrameBox>
 	);
 };
 
-H14_1FrameContainer.displayName = "H141Frame";
+H14_2FrameContainer.displayName = "H14_2FrameContainer";
+
 
 
 

@@ -8,7 +8,6 @@ import { CatSContext } from "../../../contexts/A03/CatSContext";
 import { useMemo } from "react";
 
 export const CatSGridContainer = () => {
-	// const dsg = useContext(DSGContext);
 	const { height } = useWindowSize();
 	// const catS = useContext(CatSGridContext);
 	const catS = useContext(CatSContext);

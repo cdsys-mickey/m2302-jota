@@ -146,6 +146,14 @@ export const useFormMeta = (value, opts = {}) => {
 		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent OFF ******`, CommonCSS.CONSOLE_SUCCESS);
 	}, []);
 
+	const getFirstField = useCallback(() => {
+		return getNextField();
+	}, [getNextField]);
+
+	const handleFocusFirstField = useCallback(() => {
+
+	}, []);
+
 	return {
 		fields,
 		getNextField,

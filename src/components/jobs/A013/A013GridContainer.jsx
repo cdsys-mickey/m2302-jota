@@ -3,7 +3,6 @@ import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { useWindowSize } from "../../../shared-hooks/useWindowSize";
 import A013Grid from "./A013Grid";
 import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
-import { grid } from "@mui/system";
 
 export const A013GridContainer = () => {
 	const { height } = useWindowSize();

@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import { useContext } from "react";
 import { useCallback, useState } from "react";
 import P37 from "./P37.mjs";
+import { toastEx } from "@/helpers/toastEx";
 
 export default function useP37() {
 	const itemIdRef = useRef();
@@ -27,7 +28,7 @@ export default function useP37() {
 	// GRID
 	const createRow = useCallback(
 		() => ({
-			Pkey: nanoid(),
+			id: nanoid(),
 		}),
 		[]
 	);
@@ -37,11 +38,8 @@ export default function useP37() {
 		keyColumn: "id",
 		skipDisabled: true,
 		createRow: createRow,
+		doDirtyCheckByIndex: true
 	});
-
-	const gridDisabled = useMemo(() => {
-		return !crud.editing;
-	}, [crud.editing]);
 
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
@@ -87,14 +85,38 @@ export default function useP37() {
 
 	const cancelEdit = useCallback(() => {
 		grid.handleLock();
-	}, [grid]);
+		// if (grid.checkDirty()) {
+		if (grid.isDirty) {
+			loadItem({ refresh: true });
+		}
+	}, [grid, loadItem]);
 
 	const onSubmit = useCallback(async (payload) => {
 		console.log("onSubmit", payload);
 		console.log("grid.gridData", grid.gridData);
 		const data = P37.transformForEditorSubmit(payload, grid.gridData);
 		console.log("data", data);
-	}, [grid.gridData])
+		try {
+			crud.startUpdating();
+			const { status, error } = await httpPutAsync({
+				url: "v1/cms/nc-tour-groups",
+				data,
+				bearer: auth.token
+			})
+			if (status.success) {
+				toastEx.success(
+					`儲存成功`
+				);
+				crud.finishedUpdating();
+				grid.handleLock();
+			} else {
+				throw error || new Error(`儲存發生未預期例外`);
+			}
+		} catch (err) {
+			crud.failedUpdating(err);
+			toastEx.error(`儲存失敗`, err);
+		}
+	}, [auth.token, crud, grid, httpPutAsync])
 
 	const onSubmitError = useCallback((err) => {
 		console.error("onSubmitError", err);
