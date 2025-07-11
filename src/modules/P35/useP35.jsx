@@ -260,8 +260,9 @@ export const useP35 = () => {
 			crud.promptCreating({
 				data,
 			});
+			grid.initGridData(data.ranges, { fillRows: 3 })
 		},
-		[crud]
+		[crud, grid]
 	);
 
 	const confirmDelete = useCallback(() => {

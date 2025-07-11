@@ -3,7 +3,7 @@ import U05Form from "./U05Form";
 import { U05Context } from "@/modules/U05/U05Context";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const U05FormContainer = () => {

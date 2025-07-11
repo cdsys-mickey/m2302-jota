@@ -4,7 +4,7 @@ import { B011Context } from "@/contexts/B011/B011Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";

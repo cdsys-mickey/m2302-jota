@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import H53 from "@/modules/H53/H53.mjs"
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useCallback, useContext, useMemo } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";

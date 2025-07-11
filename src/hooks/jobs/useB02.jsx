@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";

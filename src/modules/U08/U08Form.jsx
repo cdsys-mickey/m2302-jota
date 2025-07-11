@@ -14,7 +14,7 @@ import RangeGroup from "@/shared-components/RangeGroup";
 import U08DataTypePicker from "./picker/U08DataTypePicker";
 
 const U08Form = memo((props) => {
-	const { onSubmit, onDebugSubmit, ...rest } = props;
+	const { onSubmit, onDebugSubmit, deptDisabled, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
@@ -28,6 +28,7 @@ const U08Form = memo((props) => {
 									name="SDeptID"
 									disableOpenOnInput
 									selectOnFocus
+									disabled={deptDisabled}
 									scope={Auth.SCOPES.BRANCH_HQ}
 								/>
 							</Grid>
@@ -103,6 +104,7 @@ U08Form.propTypes = {
 	readError: PropTypes.object,
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,
+	deptDisabled: PropTypes.bool
 };
 
 U08Form.displayName = "U08Form";

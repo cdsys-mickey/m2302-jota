@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import CheckboxExView from "./CheckboxExView";
 import { useCallback } from "react";
 import { useContext } from "react";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useMemo } from "react";
 
 const ControlledCheckboxEx = ({

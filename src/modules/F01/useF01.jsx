@@ -4,7 +4,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
 import F01 from "@/modules/F01/F01.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";

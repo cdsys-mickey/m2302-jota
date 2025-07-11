@@ -4,7 +4,7 @@ import { P14Context } from "@/modules/P14/P14Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useMemo } from "react";
 
 export const P14QuoteGridContainer = (props) => {

@@ -7,10 +7,10 @@ import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import P42DialogForm from "../form/P42DialogForm";
 import { P42DialogButtonsContainer } from "./buttons/P42DialogButtonsContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import P42Drawer from "../P42Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const P42DialogContainer = forwardRef((props, ref) => {

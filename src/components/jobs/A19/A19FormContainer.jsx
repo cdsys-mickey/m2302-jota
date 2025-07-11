@@ -3,8 +3,9 @@ import A19Form from "./A19Form";
 import { A19Context } from "@/contexts/A19/A19Context";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useInit } from "@/shared-hooks/useInit";
 
 export const A19FormContainer = () => {
 	const form = useFormContext();
@@ -27,11 +28,11 @@ export const A19FormContainer = () => {
 		enableOnFormTags: true
 	})
 
-	return <FormProvider {...form}>
+	return (
 		<FormMetaProvider {...a19.formMeta}>
 			<A19Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 		</FormMetaProvider>
-	</FormProvider>;
+	)
 };
 
 A19FormContainer.displayName = "A19FormContainer";

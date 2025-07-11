@@ -1,8 +1,6 @@
-import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
+import { ButtonEx } from "@/shared-components";
 import AddIcon from "@mui/icons-material/Add";
-import { useContext } from "react";
-import { forwardRef, memo } from "react";
-import { useMemo } from "react";
+import { forwardRef, memo, useContext, useMemo } from "react";
 import { P35Context } from "./P35Context";
 
 const P35CreateButtonContainer = memo(
@@ -19,7 +17,8 @@ const P35CreateButtonContainer = memo(
 		}
 
 		return (
-			<ResponsiveButton
+			<ButtonEx
+				responsive
 				ref={ref}
 				variant="contained"
 				startIcon={<AddIcon />}
@@ -29,7 +28,7 @@ const P35CreateButtonContainer = memo(
 				}}
 				{...rest}>
 				{text}
-			</ResponsiveButton>
+			</ButtonEx>
 		);
 	})
 );

@@ -4,7 +4,7 @@ import { useContext } from "react";
 import A04Grid from "./A04Grid";
 import { useMemo } from "react";
 import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 const A04GridContainer = () => {
 	const { height } = useWindowSize();

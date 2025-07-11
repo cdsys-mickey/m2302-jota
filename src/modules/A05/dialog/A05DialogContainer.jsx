@@ -7,10 +7,10 @@ import { forwardRef, useContext, useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import A05DialogForm from "../form/A05DialogForm";
 import { A05DialogButtonsContainer } from "./buttons/A05DialogButtonsContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import A05Drawer from "../A05Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const A05DialogContainer = forwardRef((props, ref) => {

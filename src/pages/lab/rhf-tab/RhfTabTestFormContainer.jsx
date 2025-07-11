@@ -3,7 +3,7 @@ import { RhfTabTestForm } from "./RhfTabTestForm";
 import { useContext, useMemo } from "react";
 import { RHFTabTestContext } from "./RHFTabTestContext";
 import { useCallback } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 
 export const RhfTabTestFormContainer = () => {
 	const form = useForm();

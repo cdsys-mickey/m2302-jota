@@ -226,6 +226,7 @@ export const useP36 = ({ token }) => {
 			crud.promptCreating({
 				data,
 			});
+
 		},
 		[crud]
 	);

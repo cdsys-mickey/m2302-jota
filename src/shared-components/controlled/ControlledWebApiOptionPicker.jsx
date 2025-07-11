@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { useRef } from "react";
 import { memo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 
 const DEFAULT_PARAMS = {

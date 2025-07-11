@@ -1,9 +1,23 @@
 import { A18FormContainer } from "@/components/jobs/A18/A18FormContainer";
+import A18OrderBy from "@/components/jobs/A18/A18OrderBy.mjs";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import StdPrint from "@/modules/StdPrint.mjs";
 import { FrameBanner, FrameBox } from "@/shared-components";
+import { useContext } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
 export const A18FrameContainer = () => {
-
-
+	const { operator } = useContext(AuthContext);
+	const form = useForm({
+		defaultValues: {
+			dept: {
+				DeptID: operator.CurDeptID,
+				AbbrName: operator.CurDeptName,
+			},
+			orderBy: A18OrderBy.getDefaultOption(),
+			outputType: StdPrint.getDefaultOption(),
+		},
+	});
 	return (
 		<FrameBox>
 			{/* 標題 */}
@@ -13,7 +27,9 @@ export const A18FrameContainer = () => {
 			{/* <A18Toolbar /> */}
 			{/* <EmptyToolbar /> */}
 			{/* 表單 */}
-			<A18FormContainer />
+			<FormProvider {...form}>
+				<A18FormContainer />
+			</FormProvider>
 		</FrameBox>
 	);
 };

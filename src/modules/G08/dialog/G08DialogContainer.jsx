@@ -1,7 +1,7 @@
 import { G08Context } from "@/modules/G08/G08Context";
 import Colors from "@/modules/Colors.mjs";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import MuiStyles from "@/shared-modules/MuiStyles";

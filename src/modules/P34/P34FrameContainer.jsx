@@ -14,6 +14,9 @@ import { P34SearchFieldContainer } from "./search/P34SearchFieldContainer";
 
 export const P34FrameContainer = () => {
 	const searchForm = useForm();
+	const form = useForm({
+		defaultValues: {},
+	});
 
 	return (
 		<FormProvider {...searchForm}>
@@ -31,7 +34,9 @@ export const P34FrameContainer = () => {
 					<P34ListHeader />
 					<P34ListViewContainer />
 					{/* 對話框 */}
-					<P34DialogContainer />
+					<FormProvider {...form}>
+						<P34DialogContainer />
+					</FormProvider>
 					<StdPrintDialogContainer />
 
 				</StdPrintProvider>

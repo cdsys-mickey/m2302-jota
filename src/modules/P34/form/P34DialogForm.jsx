@@ -61,7 +61,7 @@ const P34DialogForm = memo((props) => {
 									readOnly={updating}
 									slotProps={{
 										htmlInput: {
-											maxLength: 6
+											maxLength: 8
 										}
 									}}
 								/>
@@ -105,9 +105,9 @@ const P34DialogForm = memo((props) => {
 								<CmsAreaPicker
 									typo
 									name="area"
+									disabled
 								/>
 							</Grid>
-							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3} lg={2}>
 								<TextFieldWrapper
 									typo

@@ -3,7 +3,7 @@ import F07Form from "./F07Form";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { useContext } from "react";
 import { F07Context } from "@/contexts/F07/F07Context";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useInit } from "@/shared-hooks/useInit";
 import { useEffect } from "react";
 

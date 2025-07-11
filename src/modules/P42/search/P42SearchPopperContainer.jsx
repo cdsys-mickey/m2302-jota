@@ -2,8 +2,8 @@ import { P42Context } from "@/modules/P42/P42Context";
 import { forwardRef, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import P42SearchPopper from "./P42SearchPopper";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 
 const P42SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const p42 = useContext(P42Context);

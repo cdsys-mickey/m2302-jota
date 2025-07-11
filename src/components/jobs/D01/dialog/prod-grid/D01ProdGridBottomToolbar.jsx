@@ -3,7 +3,7 @@ import { forwardRef, useContext } from "react";
 import { D01Context } from "@/contexts/D01/D01Context";
 import FlexBox from "@/shared-components/FlexBox";
 import { D01ProdGridSubtotalLabel } from "./D01ProdGridSubtotalLabel";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 const RightComponent = () => {
 	return (

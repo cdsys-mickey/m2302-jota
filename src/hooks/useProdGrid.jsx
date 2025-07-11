@@ -9,8 +9,8 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/auth/AuthContext";
 import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
 import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
-import { LastFieldBehavior } from "../shared-contexts/form-meta/LastFieldBehavior";
-import { useFormMeta } from "../shared-contexts/form-meta/useFormMeta";
+import { LastFieldBehavior } from "../shared-components/form-meta/LastFieldBehavior";
+import { useFormMeta } from "../shared-components/form-meta/useFormMeta";
 
 export const useProdGrid = ({
 	grid,

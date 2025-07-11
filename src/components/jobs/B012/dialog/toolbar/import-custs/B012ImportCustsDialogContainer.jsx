@@ -1,8 +1,8 @@
 import { B012Context } from "@/contexts/B012/B012Context";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { forwardRef, useContext } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import B012ImportCustsForm from "./B012ImportCustsForm";
 import { BContext } from "@/contexts/B/BContext";
 import { B032Context } from "@/contexts/B032/B032Context";
@@ -12,9 +12,7 @@ const B012ImportCustsDialogContainer = forwardRef((props, ref) => {
 	const b = useContext(BContext);
 	const b012 = useContext(b.forNew ? B032Context : B012Context);
 	// const formMeta = useContext(FormMetaContext);
-	const form = useForm({
-		defaultValues: {},
-	});
+	const form = useFormContext();
 
 	const handleSubmit = form.handleSubmit(
 		b012.onImportCustsSubmit({ form }),
@@ -33,12 +31,11 @@ const B012ImportCustsDialogContainer = forwardRef((props, ref) => {
 			hideCloseButton={false}
 			confirmTooltip="shift+Enter"
 			{...rest}>
-			<FormProvider {...form}>
-				<FormMetaProvider {...b012.importCustsFormMeta}>
-					<B012ImportCustsForm onSubmit={handleSubmit} />
-				</FormMetaProvider>
-			</FormProvider>
-		</DialogExContainer>
+
+			<FormMetaProvider {...b012.importCustsFormMeta}>
+				<B012ImportCustsForm onSubmit={handleSubmit} />
+			</FormMetaProvider>
+		</DialogExContainer >
 	);
 });
 

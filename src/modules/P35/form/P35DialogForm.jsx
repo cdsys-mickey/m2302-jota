@@ -46,7 +46,7 @@ const P35DialogForm = memo((props) => {
 					{/* <FormSectionTitle>基本資料</FormSectionTitle> */}
 					<FormSectionBox >
 						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={3} lg={2}>
 								<TextFieldWrapper
 									typo
 									name="TrvID"
@@ -59,7 +59,7 @@ const P35DialogForm = memo((props) => {
 									readOnly={updating}
 									slotProps={{
 										htmlInput: {
-											maxLength: 6
+											maxLength: 8
 										}
 									}}
 								/>
@@ -69,6 +69,7 @@ const P35DialogForm = memo((props) => {
 									typo
 									name="TrvData"
 									label="名稱"
+									autoFocus={updating}
 									fullWidth
 									required
 									rules={{
@@ -76,12 +77,17 @@ const P35DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={1} lg={1}>
 								<TextFieldWrapper
 									typo
 									name="AbbrID"
 									label="簡碼"
 									fullWidth
+									slotProps={{
+										htmlInput: {
+											maxLength: 2
+										}
+									}}
 								/>
 							</Grid>
 							<FlexBox fullWidth />
@@ -96,9 +102,9 @@ const P35DialogForm = memo((props) => {
 								<CmsAreaPicker
 									typo
 									name="area"
+									disabled
 								/>
 							</Grid>
-							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3} lg={2}>
 								<TextFieldWrapper
 									typo
@@ -289,17 +295,22 @@ const P35DialogForm = memo((props) => {
 								<TextFieldWrapper
 									typo
 									name="Bonus1"
-									label="獎勵金"
+									label="獎勵金1"
 									fullWidth
-									endAdornment={<InputAdornment position="end">kg</InputAdornment>}
+									InputProps={{
+										endAdornment: <InputAdornment position="end">%</InputAdornment>,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3} lg={2}>
 								<TextFieldWrapper
 									typo
 									name="Bonus2"
-									label="獎勵佣金"
+									label="獎勵金2"
 									fullWidth
+									InputProps={{
+										endAdornment: <InputAdornment position="end">%</InputAdornment>,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3} lg={2}>

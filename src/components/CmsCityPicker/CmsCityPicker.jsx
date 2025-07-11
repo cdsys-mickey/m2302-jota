@@ -1,9 +1,7 @@
-import PropTypes from "prop-types";
-import { forwardRef } from "react";
-import { OptionPicker } from "@/shared-components";
-import Constants from "@/modules/md-constants";
-import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import { OptionPicker } from "@/shared-components";
+import PropTypes from "prop-types";
+import { forwardRef, useContext } from "react";
 import CmsCities from "./CmsCities.mjs";
 
 const CmsCityPicker = forwardRef((props, ref) => {

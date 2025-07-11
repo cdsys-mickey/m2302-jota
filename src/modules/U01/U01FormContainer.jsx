@@ -3,7 +3,7 @@ import U01Form from "./U01Form";
 import { U01Context } from "@/modules/U01/U01Context";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const U01FormContainer = () => {

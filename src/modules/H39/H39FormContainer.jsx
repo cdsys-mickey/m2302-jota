@@ -2,9 +2,9 @@ import { FormProvider, useFormContext } from "react-hook-form";
 import H39Form from "./H39Form";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { H39Context } from "./H39Context";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const H39FormContainer = () => {

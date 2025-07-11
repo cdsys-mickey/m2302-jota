@@ -28,6 +28,8 @@ import { P41FrameContainer } from "@/modules/P41/P41FrameContainer";
 import { P41Provider } from "@/modules/P41/P41Provider";
 import { P42FrameContainer } from "@/modules/P42/P42FrameContainer";
 import { P42Provider } from "@/modules/P42/P42Provider";
+import { P51FrameContainer } from "@/modules/P51/P51FrameContainer";
+import { P51Provider } from "@/modules/P51/P51Provider";
 import { Route } from "react-router-dom";
 
 const pRoutes2 = (
@@ -194,6 +196,18 @@ const pRoutes2 = (
 						<P42Provider>
 							<P42FrameContainer />
 						</P42Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P51"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<P51Provider>
+							<P51FrameContainer />
+						</P51Provider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

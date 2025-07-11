@@ -2,9 +2,9 @@ import { F03Context } from "@/contexts/F03/F03Context";
 import { forwardRef, useContext } from "react";
 import F03SearchPopper from "./F03SearchPopper";
 import { useFormContext } from "react-hook-form";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 
 const F03SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const f03 = useContext(F03Context);

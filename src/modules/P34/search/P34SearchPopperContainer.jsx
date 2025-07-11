@@ -2,8 +2,8 @@ import { P34Context } from "@/modules/P34/P34Context";
 import { forwardRef, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import P34SearchPopper from "./P34SearchPopper";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 
 const P34SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const p34 = useContext(P34Context);

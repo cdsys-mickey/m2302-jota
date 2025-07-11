@@ -60,7 +60,7 @@ export const useP33 = () => {
 	});
 
 	const codeEditor = useDSGCodeEditor({
-		baseUri: "v1/cms/groups",
+		baseUri: "v1/cms/cust-types",
 		token,
 		grid,
 		gridMeta,

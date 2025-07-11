@@ -1,4 +1,4 @@
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 
 export const useRHFTabTest = () => {
 	const formMeta = useFormMeta(

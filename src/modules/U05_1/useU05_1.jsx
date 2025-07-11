@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useCallback, useContext, useMemo } from "react";
 
 import ConfigContext from "@/contexts/config/ConfigContext";

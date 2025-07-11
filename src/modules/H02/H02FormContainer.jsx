@@ -3,7 +3,7 @@ import H02Form from "./H02Form";
 import { H02Context } from "@/modules/H02/H02Context";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const H02FormContainer = () => {

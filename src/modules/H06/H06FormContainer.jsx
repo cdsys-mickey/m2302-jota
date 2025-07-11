@@ -1,5 +1,5 @@
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import { H06Context } from "./H06Context";

@@ -13,6 +13,7 @@ import { useRef } from "react";
 
 export const useP41 = ({ token }) => {
 	const itemIdRef = useRef();
+	const tsRef = useRef();
 	const crud = useContext(CrudContext);
 	const appModule = useAppModule({
 		token,
@@ -33,7 +34,7 @@ export const useP41 = ({ token }) => {
 	] = useToggle(false);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/purchase/suppliers",
+		url: "v1/cms/bookings",
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
@@ -44,17 +45,17 @@ export const useP41 = ({ token }) => {
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
 			const _id = refresh ? itemIdRef.current : id;
-			if (!_id) {
-				throw new Error("未指定 id");
-			}
-			if (!refresh) {
-				itemIdRef.current = id;
-				crud.startReading("讀取中...", { id });
-			}
 			try {
+				if (!_id) {
+					throw new Error("未指定 id");
+				}
+				if (!refresh) {
+					itemIdRef.current = id;
+					crud.startReading("讀取中...", { id });
+				}
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
-					url: `v1/purchase/suppliers`,
+					url: `v1/cms/bookings`,
 					bearer: token,
 					params: {
 						id: _id
@@ -62,6 +63,7 @@ export const useP41 = ({ token }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
+					tsRef.current = payload.CheckData.TimeVal;
 					const data = P41.transformForReading(payload.data[0]);
 
 					crud.finishedReading({
@@ -83,8 +85,8 @@ export const useP41 = ({ token }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.startReading("讀取中...", { id: rowData.FactID });
-			loadItem({ id: rowData.FactID });
+			crud.startReading("讀取中...", { id: rowData.OrdID });
+			loadItem({ id: rowData.OrdID });
 		},
 		[crud, loadItem]
 	);
@@ -121,66 +123,81 @@ export const useP41 = ({ token }) => {
 		crud.cancelAction();
 	}, [crud]);
 
-	const handleCreate = useCallback(
-		async ({ data }) => {
+	const handleSave = useCallback(
+		async ({ data, creating }) => {
+			const action = creating ? "新增" : "修改";
 			try {
-				crud.startCreating();
-				const { status, error } = await httpPostAsync({
-					url: "v1/purchase/suppliers",
+				creating ? crud.startCreating() : crud.startUpdating();
+				const httpMethod = creating ? httpPostAsync : httpPutAsync;
+				const { status, error, payload } = await httpMethod({
+					url: "v1/cms/bookings",
 					data: data,
 					bearer: token,
+
 				});
 
 				if (status.success) {
+					const data = payload.data?.[0];
 					toastEx.success(
-						`廠商「${data?.FactID} ${data?.FactData}」新增成功`
+						`團體預約單 ${data?.OrdID} ${action}成功`
 					);
-					crud.finishedCreating();
-					crud.cancelReading();
+					if (creating) {
+						crud.finishedCreating();
+						crud.cancelReading();
+					} else {
+						crud.finishedUpdating();
+						loadItem({ id: data?.OrdID });
+					}
 					// 重新整理
 					listLoader.loadList({ refresh: true });
+					tsRef.current = payload.CheckData.TimeVal;
 				} else {
-					throw error || new Error("新增發生未預期例外");
+					throw error || new Error(`${action}增發生未預期例外`);
 				}
 			} catch (err) {
-				crud.failedCreating(err);
-				console.error("handleCreate.failed", err);
-				toastEx.error("新增失敗", err);
-			}
-		},
-		[crud, httpPostAsync, listLoader, token]
-	);
-
-	const handleUpdate = useCallback(
-		async ({ data }) => {
-			try {
-				crud.startUpdating();
-				// const oldId = crud.itemData?.ProdID;
-				const { status, error } = await httpPutAsync({
-					url: `v1/purchase/suppliers`,
-					data: data,
-					bearer: token,
-				});
-
-				if (status.success) {
-					toastEx.success(
-						`廠商「${data?.FactID} ${data?.FactData}」修改成功`
-					);
-					crud.finishedUpdating();
-					loadItem({ id: data?.FactID });
-					// 重新整理
-					listLoader.loadList({ refresh: true });
+				if (creating) {
+					crud.failedCreating(err);
+					console.error("handleCreate.failed", err);
 				} else {
-					throw error || new Error("修改發生未預期例外");
+					crud.failedUpdating(err);
+					console.error("handleUpdate.failed", err);
 				}
-			} catch (err) {
-				crud.failedUpdating(err);
-				console.error("handleUpdate.failed", err);
-				toastEx.error("修改失敗", err);
+				toastEx.error(`${action}失敗`, err);
 			}
 		},
-		[crud, httpPutAsync, loadItem, listLoader, token]
+		[crud, httpPostAsync, httpPutAsync, listLoader, loadItem, token]
 	);
+
+	// const handleUpdate = useCallback(
+	// 	async ({ data }) => {
+	// 		try {
+	// 			crud.startUpdating();
+	// 			// const oldId = crud.itemData?.ProdID;
+	// 			const { status, error } = await httpPutAsync({
+	// 				url: `v1/cms/bookings`,
+	// 				data: data,
+	// 				bearer: token,
+	// 			});
+
+	// 			if (status.success) {
+	// 				toastEx.success(
+	// 					`團體預約單「${data?.OrdID}」修改成功`
+	// 				);
+	// 				crud.finishedUpdating();
+	// 				loadItem({ id: data?.OrdID });
+	// 				// 重新整理
+	// 				listLoader.loadList({ refresh: true });
+	// 			} else {
+	// 				throw error || new Error("修改發生未預期例外");
+	// 			}
+	// 		} catch (err) {
+	// 			crud.failedUpdating(err);
+	// 			console.error("handleUpdate.failed", err);
+	// 			toastEx.error("修改失敗", err);
+	// 		}
+	// 	},
+	// 	[crud, httpPutAsync, loadItem, listLoader, token]
+	// );
 
 	const onEditorSubmit = useCallback(
 		async (data) => {
@@ -188,15 +205,13 @@ export const useP41 = ({ token }) => {
 
 			const processed = P41.transformForEditorSubmit(data);
 			console.log(`processed`, processed);
-			if (crud.creating) {
-				handleCreate({ data: processed });
-			} else if (crud.updating) {
-				handleUpdate({ data: processed });
+			if (crud.creating || crud.updating) {
+				handleSave({ data: processed, creating: crud.creating });
 			} else {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
 		},
-		[crud.creating, crud.updating, handleCreate, handleUpdate]
+		[crud.creating, crud.updating, handleSave]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -212,8 +227,8 @@ export const useP41 = ({ token }) => {
 		(e) => {
 			e?.stopPropagation();
 			const data = {
-				trans: [],
-				combo: [],
+				OrdDate: new Date(),
+				ArrDate: new Date(),
 			};
 			crud.promptCreating({
 				data,
@@ -224,21 +239,22 @@ export const useP41 = ({ token }) => {
 
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({
-			message: `確認要删除「${crud.itemData?.FactID} ${crud.itemData?.FactData}」?`,
+			message: `確認要删除預約單 ${crud.itemData?.OrdID}?`,
 			onConfirm: async () => {
 				try {
 					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/purchase/suppliers`,
+						url: `v1/cms/bookings`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.FactID
+							id: crud.itemData?.OrdID,
+							ts: tsRef.current
 						}
 					});
 					if (status.success) {
 						crud.cancelAction();
 						toastEx.success(
-							`成功删除${crud.itemData?.FactID} ${crud.itemData.FactData}`
+							`成功删除預約單 ${crud.itemData?.OrdID}`
 						);
 						listLoader.loadList({ refresh: true });
 					} else {

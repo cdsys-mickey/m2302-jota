@@ -1,5 +1,5 @@
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import C01ListToolbar from "./C01ListToolbar";
 import C01SearchForm from "./C01SearchForm";
 

@@ -6,7 +6,7 @@ import { toastEx } from "@/helpers/toastEx";
 import B012 from "@/modules/md-b012";
 import B02 from "@/modules/md-b02";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useAction } from "@/shared-hooks/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";

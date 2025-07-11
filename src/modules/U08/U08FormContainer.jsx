@@ -1,14 +1,20 @@
-import { FormProvider, useFormContext } from "react-hook-form";
-import U08Form from "./U08Form";
-import { useContext } from "react";
-import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { U08Context } from "./U08Context";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { FormMetaProvider } from "@/shared-components";
+import { useContext, useMemo } from "react";
+import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
+import Auth from "../md-auth";
+import { U08Context } from "./U08Context";
+import U08Form from "./U08Form";
 
 export const U08FormContainer = () => {
 	const form = useFormContext();
+	const { operator } = useContext(AuthContext);
 	const u08 = useContext(U08Context);
+
+	const deptDisabled = useMemo(() => {
+		return operator?.Class < Auth.SCOPES.ROOT;
+	}, [operator?.Class])
 
 	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -27,11 +33,15 @@ export const U08FormContainer = () => {
 		)
 	}, [u08.onDebugSubmit, form]);
 
-	return <FormProvider {...form}>
+	return (
 		<FormMetaProvider {...u08.formMeta}>
-			<U08Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
+			<U08Form
+				onSubmit={handleSubmit}
+				onDebugSubmit={onDebugSubmit}
+				deptDisabled={deptDisabled}
+			/>
 		</FormMetaProvider>
-	</FormProvider>;
+	);
 };
 
 U08FormContainer.displayName = "U08FormContainer";

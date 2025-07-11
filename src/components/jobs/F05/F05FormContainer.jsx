@@ -1,5 +1,5 @@
 import { F05Context } from "@/contexts/F05/F05Context";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useInit } from "@/shared-hooks/useInit";
 import { useContext, useMemo } from "react";

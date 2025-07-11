@@ -53,6 +53,7 @@ export const useZA03 = () => {
 		gridId: "auth",
 		// keyColumn: "module.JobID",
 		keyColumn: "JobID",
+		doDirtyCheckByIndex: true
 	});
 	// const gridMeta = useDSGMeta({
 
@@ -801,10 +802,10 @@ export const useZA03 = () => {
 	const saveAuthAction = useAction();
 
 	const handleAuthSave = useCallback(async () => {
-		const dirtyRows = grid.getDirtyRows();
-		console.log(`handleAuthSave`, dirtyRows);
 		// return;
 		try {
+			const dirtyRows = grid.getDirtyRows();
+			console.log(`handleAuthSave`, dirtyRows);
 			saveAuthAction.start({ message: "儲存中..." });
 			const { status, error } = await httpPatchAsync({
 				url: `v1/ou/user/authorities`,
@@ -874,6 +875,7 @@ export const useZA03 = () => {
 			grid.setGridData(
 				(prev) =>
 					prev.map((rowData, rowIndex) => {
+
 						// 只更新指定行
 						if (
 							rowIndex >= selection.min.row &&
@@ -892,13 +894,15 @@ export const useZA03 = () => {
 										checked;
 								}
 							}
+							console.log(`updating rowIndex[${rowIndex}]`, rowData);
+							grid.handleDirtyCheck(rowData, updatedRowData, rowIndex)
 							return updatedRowData;
 						}
 						return rowData;
 					}),
 				{
-					doDirtyCheckByIndex: true,
-					// debug: true 
+					// doDirtyCheckByIndex: true,
+					debug: true
 				}
 			);
 
@@ -925,7 +929,8 @@ export const useZA03 = () => {
 					});
 					return updatedRowData;
 				}),
-			{ doDirtyCheckByIndex: true, debug: true }
+			// { doDirtyCheckByIndex: true, debug: true }
+			{ debug: true }
 		);
 	}, [grid]);
 
@@ -939,7 +944,8 @@ export const useZA03 = () => {
 					});
 					return updatedRowData;
 				}),
-			{ doDirtyCheckByIndex: true, debug: true }
+			// { doDirtyCheckByIndex: true, debug: true }
+			{ debug: true }
 		);
 	}, [grid]);
 

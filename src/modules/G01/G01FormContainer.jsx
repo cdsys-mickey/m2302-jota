@@ -3,7 +3,7 @@ import G01Form from "./G01Form";
 import { G01Context } from "@/modules/G01/G01Context";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useCallback } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 

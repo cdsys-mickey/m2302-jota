@@ -55,7 +55,7 @@ const P36DialogForm = memo((props) => {
 									readOnly={updating}
 									slotProps={{
 										htmlInput: {
-											maxLength: 6
+											maxLength: 8
 										}
 									}}
 								/>
@@ -65,6 +65,7 @@ const P36DialogForm = memo((props) => {
 									typo
 									name="CndData"
 									label="姓名"
+									autoFocus={updating}
 									fullWidth
 									required
 									rules={{
@@ -108,7 +109,8 @@ const P36DialogForm = memo((props) => {
 									validate
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={5}>
+							<FlexBox fullWidth />
+							<Grid item xs={12} sm={12} md={5} lg={3}>
 								<TextFieldWrapper
 									typo
 									name="Cel"
@@ -124,6 +126,7 @@ const P36DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
+							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo

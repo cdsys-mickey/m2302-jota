@@ -1,5 +1,5 @@
 import { A22Context } from "@/contexts/A22/A22Context";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import A22GridForm from "./A22GridForm";

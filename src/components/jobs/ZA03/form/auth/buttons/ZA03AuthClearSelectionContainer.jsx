@@ -1,8 +1,8 @@
-import { ButtonEx} from "@/shared-components";
+import { ButtonEx } from "@/shared-components";
 import { useContext } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import CheckIcon from "@mui/icons-material/Check";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 export const ZA03AuthClearSelectionButtonContainer = (props) => {
 	const { ...rest } = props;

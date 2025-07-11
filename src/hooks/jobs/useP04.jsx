@@ -3,7 +3,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
 import P04 from "@/modules/md-p04";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";

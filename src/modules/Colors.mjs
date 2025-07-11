@@ -11,6 +11,7 @@ import {
 
 const Colors = {
 	// REQUIRED: lightBlue[600],
+	FOCUSED_BORDER: lightBlue[600],
 	REQUIRED: lightBlue[600],
 	CONTAINED: "#825b10",
 	// BG: "#fffcf8",

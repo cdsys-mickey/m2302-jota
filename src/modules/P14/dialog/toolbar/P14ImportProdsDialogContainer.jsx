@@ -2,7 +2,7 @@ import { forwardRef, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { P14Context } from "@/modules/P14/P14Context";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import P14LoadProdsForm from "./import-prods/P14ImportProdsForm";
 
 const P14ImportProdsDialogContainer = forwardRef((props, ref) => {

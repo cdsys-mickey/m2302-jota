@@ -14,6 +14,9 @@ import { P35SearchFieldContainer } from "./search/P35SearchFieldContainer";
 
 export const P35FrameContainer = () => {
 	const searchForm = useForm();
+	const form = useForm({
+		defaultValues: {},
+	});
 
 	return (
 		<FormProvider {...searchForm}>
@@ -31,8 +34,10 @@ export const P35FrameContainer = () => {
 					<P35ListHeader />
 					<P35ListViewContainer />
 					{/* 對話框 */}
-					<P35DialogContainer dense />
-					<StdPrintDialogContainer />
+					<FormProvider {...form}>
+						<P35DialogContainer dense />
+						<StdPrintDialogContainer />
+					</FormProvider>
 
 				</StdPrintProvider>
 			</FrameBox>

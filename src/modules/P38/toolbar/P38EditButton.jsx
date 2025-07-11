@@ -3,7 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useContext } from "react";
 import P38Context from "../P38Context";
 import { useCallback } from "react";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 const P38EditButton = (props) => {
 	const { ...rest } = props;

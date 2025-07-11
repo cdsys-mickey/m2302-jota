@@ -5,8 +5,8 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { forwardRef } from "react";
 import D01ExpDialogForm from "./D01ExpDialogForm";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 
 export const D01ExpDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

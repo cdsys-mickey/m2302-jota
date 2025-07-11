@@ -1,17 +1,18 @@
-import { P36Context } from "@/modules/P36/P36Context";
 import Colors from "@/modules/Colors.mjs";
+import { P36Context } from "@/modules/P36/P36Context";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import P36DialogForm from "../form/P36DialogForm";
-import { P36DialogButtonsContainer } from "./buttons/P36DialogButtonsContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import P36Drawer from "../P36Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { forwardRef, useContext, useEffect, useMemo } from "react";
+import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
+import P36DialogForm from "../form/P36DialogForm";
+import P36Drawer from "../P36Drawer";
+import { P36DialogButtonsContainer } from "./buttons/P36DialogButtonsContainer";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const P36DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -40,10 +41,8 @@ export const P36DialogContainer = forwardRef((props, ref) => {
 		`
 	);
 
-	const forms = useForm({
-		defaultValues: {},
-	});
-	const { reset } = forms;
+	const form = useFormContext();
+	const { reset } = form;
 	const p36 = useContext(P36Context);
 
 	const title = useMemo(() => {
@@ -63,63 +62,60 @@ export const P36DialogContainer = forwardRef((props, ref) => {
 	});
 
 	const handleSubmit = useMemo(() => {
-		return forms.handleSubmit(p36.onEditorSubmit, p36.onEditorSubmitError);
-	}, [p36.onEditorSubmit, p36.onEditorSubmitError, forms]);
+		return form.handleSubmit(p36.onEditorSubmit, p36.onEditorSubmitError);
+	}, [p36.onEditorSubmit, p36.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
-		// if (p36.readState === ActionState.DONE && !!p36.itemData) {
+	useChangeTracking(() => {
 		if (p36.itemDataReady) {
 			console.log(`p36 form reset`, p36.itemData);
 			reset(p36.itemData);
 		}
-	}, [p36.itemData, p36.itemDataReady, p36.readState, forms, reset]);
+	}, [p36.itemData, p36.itemDataReady]);
 
 	return (
-		<FormProvider {...forms}>
-			<DialogExContainer
-				title={title}
-				ref={ref}
-				// fullScreen
-				responsive
-				fullWidth
-				maxWidth="md"
-				TitleButtonsComponent={P36DialogButtonsContainer}
-				open={p36.itemViewOpen}
-				onClose={
-					p36.editing ? p36.confirmDialogClose : p36.cancelAction
-				}
-				// onReturn={p36.updating ? p36.confirmReturn : null}
-				sx={{
-					"& .MuiDialog-paper": {
-						backgroundColor: Colors.DIALOG_BG,
-					},
-				}}
-				contentSx={[
-					// {
-					// 	minHeight: "30em",
-					// },
-					scrollable.scroller,
-				]}
-				{...rest}>
-				<FormMetaProvider {...formMeta}>
-					<P36DialogForm
-						ref={ref}
-						onSubmit={handleSubmit}
-						editing={p36.editing}
-						updating={p36.updating}
-						readWorking={p36.readWorking}
-						readError={p36.readError}
-						data={p36.itemData}
-						itemDataReady={p36.itemDataReady}
-					/>
-				</FormMetaProvider>
-				<P36Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
-		</FormProvider>
+		<DialogExContainer
+			title={title}
+			ref={ref}
+			// fullScreen
+			responsive
+			fullWidth
+			maxWidth="md"
+			TitleButtonsComponent={P36DialogButtonsContainer}
+			open={p36.itemViewOpen}
+			onClose={
+				p36.editing ? p36.confirmDialogClose : p36.cancelAction
+			}
+			// onReturn={p36.updating ? p36.confirmReturn : null}
+			sx={{
+				"& .MuiDialog-paper": {
+					backgroundColor: Colors.DIALOG_BG,
+				},
+			}}
+			contentSx={[
+				// {
+				// 	minHeight: "30em",
+				// },
+				scrollable.scroller,
+			]}
+			{...rest}>
+			<FormMetaProvider {...formMeta}>
+				<P36DialogForm
+					ref={ref}
+					onSubmit={handleSubmit}
+					editing={p36.editing}
+					updating={p36.updating}
+					readWorking={p36.readWorking}
+					readError={p36.readError}
+					data={p36.itemData}
+					itemDataReady={p36.itemDataReady}
+				/>
+			</FormMetaProvider>
+			<P36Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
+		</DialogExContainer>
 	);
 });
 

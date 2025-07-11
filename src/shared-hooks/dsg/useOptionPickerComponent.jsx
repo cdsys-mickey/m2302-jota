@@ -113,13 +113,13 @@ export const useOptionPickerComponent = (opts) => {
 	// focusing on the underlying input component when the cell is focused
 	useLayoutEffect(() => {
 		if (focus) {
-			console.log("useOptionPickerComponent onFocus", focus);
+			// console.log("useOptionPickerComponent onFocus", focus);
 			inputRef.current?.focus();
 			if (selectOnFocus) {
 				inputRef.current?.select();
 			}
 		} else {
-			console.log(`useOptionPickerComponent.leaveFocus, asyncRef.current.popperOpen: ${asyncRef.current.popperOpen}`);
+			// console.log(`useOptionPickerComponent.leaveFocus, asyncRef.current.popperOpen: ${asyncRef.current.popperOpen}`);
 			if (!asyncRef.current.popperOpen) {
 				inputRef.current?.blur();
 			}

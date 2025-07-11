@@ -7,25 +7,15 @@ import P41IDColumn from "./columns/P41IDColumn";
 import P41NameColumn from "./columns/P41NameColumn";
 import { useMemo } from "react";
 import P41BankColumn from "./columns/P41BankColumn";
+import P41GuideNameColumn from "./columns/P41GuideNameColumn";
+import P41DateColumn from "./columns/P41DateColumn";
 
 const P41ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
-	const { BankID, BankData_N } = value || {};
-
-	const bank = useMemo(() => {
-		return [BankID, BankData_N].filter(Boolean).join(" ");
-	}, [BankData_N, BankID])
 
 	return (
 		<div style={style}>
 			<HoverableListItem borderBottom onClick={onClick}>
-				{/* <HoverableListItemSecondaryAction>
-					<Tooltip arrow title="編輯">
-						<IconButton>
-							<EditOutlinedIcon htmlColor="#000" />
-						</IconButton>
-					</Tooltip>
-				</HoverableListItemSecondaryAction> */}
 				<Grid
 					container
 					columns={24}
@@ -36,16 +26,25 @@ const P41ListRow = memo((props) => {
 						},
 					]}>
 					<IndexColumn title={index}></IndexColumn>
-					<P41IDColumn>{value?.FactID}</P41IDColumn>
+					<P41IDColumn>{value?.OrdID}</P41IDColumn>
+					<P41DateColumn>
+						{value?.OrdDate}
+					</P41DateColumn>
+					<P41DateColumn>
+						{value?.ArrDate}
+					</P41DateColumn>
 					<P41NameColumn>
-						{value?.FactData}
+						{value?.GrpName}
 					</P41NameColumn>
+					{/* <P41GuideNameColumn>
+						{value?.CndName}
+					</P41GuideNameColumn> */}
 					<P41BankColumn>
-						{bank}
+						{value?.CarData}
 					</P41BankColumn>
-					{/* <P41ClassNColumn loading={loading}>
-						{value?.Clas_N}
-					</P41ClassNColumn> */}
+					<P41BankColumn>
+						{value?.TrvData}
+					</P41BankColumn>
 				</Grid>
 			</HoverableListItem>
 		</div>

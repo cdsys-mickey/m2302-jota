@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import A18 from "@/modules/A18.mjs";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useCallback, useContext, useMemo } from "react";
-import { useFormMeta } from "../../shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "../../shared-components/form-meta/useFormMeta";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";

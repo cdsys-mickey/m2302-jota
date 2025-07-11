@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import P35IDColumn from "./columns/P35IDColumn";
 import P35NameColumn from "./columns/P35NameColumn";
+import P35BankColumn from "./columns/P35BankColumn";
 
 const P35ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
@@ -33,6 +34,9 @@ const P35ListRow = memo((props) => {
 					<P35NameColumn>
 						{value?.TrvData}
 					</P35NameColumn>
+					<P35BankColumn>
+						{value?.AbbrID}
+					</P35BankColumn>
 				</Grid>
 			</HoverableListItem>
 		</div>

@@ -1,5 +1,5 @@
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import B02ListForm from "./B02ListForm";
 
 export const B02ListFormContainer = (props) => {

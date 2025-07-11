@@ -1,7 +1,7 @@
 import { B012Context } from "@/contexts/B012/B012Context";
 import DialogEx from "@/shared-components/dialog/DialogEx";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import B012PrintDialogForm from "./B012PrintDialogForm";

@@ -39,8 +39,8 @@ export const useDSG = ({
 	createRow: _createRow,
 	onUpdateRow: _onUpdateRow,
 	onGridChanged,
-	doDirtyCheck: defaultDoDirtyCheck = false,
-	doDirtyCheckByIndex: defaultDoDirtyCheckByIndex = false,
+	doDirtyCheck = false,
+	doDirtyCheckByIndex = false,
 }) => {
 	const asyncRef = useRef({
 		supressEvents: false
@@ -94,14 +94,20 @@ export const useDSG = ({
 		return result;
 	}, []);
 
+	const getRowKey = useCallback((rowData, rowIndex) => {
+		if (!doDirtyCheckByIndex && !keyColumn) {
+			console.error("doDirtyCheckByIndex 未定義 keyColumn, 無法執行 getRowKey");
+			return;
+		}
+		return doDirtyCheckByIndex ? rowIndex : _.get(rowData, keyColumn);
+	}, [doDirtyCheckByIndex, keyColumn]);
+
 	const handleDirtyCheck = useCallback(
 		(prevRowData, rowData, rowIndex, opts = {}) => {
-			const { debug, byIndex } = opts;
-			const key = byIndex ? rowIndex : _.get(rowData, keyColumn);
-			if (!byIndex && !key) {
-				console.error("未定義 keyColumn, 無法執行 handleDirtyCheck");
-				return;
-			}
+			const { debug } = opts;
+			// const key = byIndex ? rowIndex : _.get(rowData, keyColumn);
+			const key = getRowKey(rowData, rowIndex);
+
 
 			const isDirty = !isRowDataEquals(prevRowData, rowData);
 
@@ -122,7 +128,7 @@ export const useDSG = ({
 			}
 			return isDirty;
 		},
-		[dirtyIds, isRowDataEquals, keyColumn]
+		[dirtyIds, getRowKey, isRowDataEquals]
 	);
 
 	const fillRows = useCallback(
@@ -163,12 +169,12 @@ export const useDSG = ({
 				commit = false,
 				init,
 				debug,
-				doDirtyCheckByIndex,
-				doDirtyCheck,
 				createRow,
 				length = 10,
 				supressEvents,
 				fillRows: _fillRows,
+				doDirtyCheck: _doDirtyCheck,
+				doDirtyCheckByIndex: _doDirtyCheckByIndex
 			} = opts || DEFAULT_SET_DATA_OPTS;
 
 			if (supressEvents) {
@@ -177,8 +183,6 @@ export const useDSG = ({
 
 			const doFillRows = !!_fillRows;
 			const _length = Types.isNumber(_fillRows) ? _fillRows : length;
-			const _doDirtyCheck = doDirtyCheck || defaultDoDirtyCheck;
-			const _doDirtyCheckByIndex = doDirtyCheckByIndex || defaultDoDirtyCheckByIndex;
 
 			setGridData((prev) => {
 				let updatedGridData;
@@ -203,8 +207,9 @@ export const useDSG = ({
 					dirtyIds.clear();
 					persistedIds.clear();
 					deletedIds.clear();
-					updatedGridData?.map((item) => {
-						const key = _.get(item, keyColumn);
+					updatedGridData?.map((rowData) => {
+						const key = _.get(rowData, keyColumn);
+						// const key = getRowKey(rowData, rowIndex, { byIndex: _doDirtyCheckByIndex });
 						if (key) {
 							persistedIds.add(key);
 						}
@@ -221,7 +226,7 @@ export const useDSG = ({
 								return itemKey === key;
 							});
 						}
-						handleDirtyCheck(rowData, prevRowData, rowIndex, { debug, byIndex: _doDirtyCheckByIndex });
+						handleDirtyCheck(rowData, prevRowData, rowIndex, { debug });
 					});
 				}
 
@@ -242,7 +247,7 @@ export const useDSG = ({
 				return updatedGridData; // 返回最終的數據
 			});
 		},
-		[defaultDoDirtyCheck, defaultDoDirtyCheckByIndex, deletedIds, dirtyIds, fillRows, handleDirtyCheck, keyColumn, persistedIds, setPrevGridData]
+		[fillRows, dirtyIds, persistedIds, deletedIds, keyColumn, handleDirtyCheck, setPrevGridData]
 	);
 
 	const handleGridDataLoaded = useCallback(
@@ -295,8 +300,8 @@ export const useDSG = ({
 			const _newValue = newValue ?? gridData;
 			console.log(`${gridId}.commitChanges`, _newValue);
 			persistedIds.clear();
-			_newValue.map((i) => {
-				const key = _.get(i, keyColumn);
+			_newValue.map((rowData) => {
+				const key = _.get(rowData, keyColumn);
 				persistedIds.add(key);
 			});
 			setPrevGridData(_newValue);
@@ -316,8 +321,8 @@ export const useDSG = ({
 	const isKeyDuplicated = useCallback(
 		(newValue, key, _keyColumn) => {
 			return (
-				newValue.filter((i) => {
-					const prevKey = _.get(i, _keyColumn || keyColumn);
+				newValue.filter((rowData) => {
+					const prevKey = _.get(rowData, _keyColumn || keyColumn);
 					return prevKey === key;
 				}).length > 1
 			);
@@ -405,16 +410,12 @@ export const useDSG = ({
 			async (newValue, operations) => {
 				const {
 					focusFirstColumnOnCreate = true,
-					doDirtyCheck = false,
-					doDirtyCheckByIndex = false,
 					dirtyCheckOpts = {
 						// debug: true
 					}
 				} = opts;
 
 				const __onUpdateRow = onUpdateRow || _onUpdateRow;
-				const _doDirtyCheck = doDirtyCheck || defaultDoDirtyCheck;
-				const _doDirtyCheckByIndex = doDirtyCheckByIndex || defaultDoDirtyCheckByIndex;
 
 				console.log("onGridChange.operations", operations);
 				console.log("newValue", newValue);
@@ -452,13 +453,13 @@ export const useDSG = ({
 									})
 							) : updatingRows;
 
-							if (_doDirtyCheck || _doDirtyCheckByIndex) {
+							if (doDirtyCheck || doDirtyCheckByIndex) {
 								updatedRows.forEach((updatedRowData, index) => {
 									const rowIndex = operation.fromRowIndex + index;
 									// 以 index 取出 prev
 									let prevRowData = prevGridDataRef.current[rowIndex];
 									// 以 key 取出 prev
-									if (_doDirtyCheck) {
+									if (doDirtyCheck) {
 										const key = _.get(updatedRows, keyColumn);
 										prevRowData = prevGridDataRef.current.find((item) => {
 											const itemKey = _.get(item, keyColumn);
@@ -468,7 +469,6 @@ export const useDSG = ({
 									// 以 index 作為比對依據
 									const dirty = handleDirtyCheck(updatedRowData, prevRowData, rowIndex, {
 										...dirtyCheckOpts,
-										byIndex: _doDirtyCheckByIndex
 									});
 									console.log("dirty", dirty);
 								});
@@ -578,7 +578,7 @@ export const useDSG = ({
 					}
 				}
 			},
-		[_onUpdateRow, defaultDoDirtyCheck, defaultDoDirtyCheckByIndex, deletedIds, gridData, handleDirtyCheck, keyColumn]
+		[_onUpdateRow, doDirtyCheck, doDirtyCheckByIndex, gridData, handleDirtyCheck, keyColumn, deletedIds]
 	);
 
 	const spreadOnRow = useCallback(
@@ -641,6 +641,20 @@ export const useDSG = ({
 	// }, []);
 
 	const getDirtyRows = useCallback(() => {
+		if (!doDirtyCheck && !doDirtyCheckByIndex) {
+			throw new Error("cannot getDirtyRows without doDirtyCheck OR doDirtyCheckByIndex");
+		}
+
+		if (!dirtyIds || dirtyIds.size === 0) {
+			return [];
+		}
+
+		if (doDirtyCheckByIndex) {
+			return Array.from(dirtyIds)
+				.map(index => gridData[index])
+				.filter(row => row !== undefined)
+		}
+
 		return gridData.filter((rowData) => {
 			if (dirtyIds && dirtyIds.size > 0) {
 				const key = _.get(rowData, keyColumn);
@@ -648,7 +662,7 @@ export const useDSG = ({
 			}
 			return false;
 		});
-	}, [dirtyIds, gridData, keyColumn]);
+	}, [dirtyIds, doDirtyCheck, doDirtyCheckByIndex, gridData, keyColumn]);
 
 	const getDeletedRows = useCallback(() => {
 		return prevGridDataRef.current.filter((row) => {

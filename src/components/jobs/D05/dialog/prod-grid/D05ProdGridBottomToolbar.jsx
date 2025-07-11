@@ -4,7 +4,7 @@ import { forwardRef, useContext } from "react";
 import { D05ProdGridSubtotalLabel } from "./D05ProdGridSubtotalLabel";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useMemo } from "react";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 const RightComponent = () => {
 	return (

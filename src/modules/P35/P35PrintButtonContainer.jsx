@@ -1,8 +1,8 @@
-import ResponsiveButton from "@/shared-components/button/ResponsiveButton";
+import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
+import { P35Context } from "@/modules/P35/P35Context";
+import { ButtonEx } from "@/shared-components";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { forwardRef, memo, useContext } from "react";
-import { P35Context } from "@/modules/P35/P35Context";
-import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
 
 const P35PrintButtonContainer = memo(
 	forwardRef((props, ref) => {
@@ -16,7 +16,8 @@ const P35PrintButtonContainer = memo(
 		}
 
 		return (
-			<ResponsiveButton
+			<ButtonEx
+				responsive
 				ref={ref}
 				variant="contained"
 				startIcon={<LocalPrintshopIcon />}
@@ -27,7 +28,7 @@ const P35PrintButtonContainer = memo(
 				color="neutral"
 				{...rest}>
 				列印
-			</ResponsiveButton>
+			</ButtonEx>
 		);
 	})
 );

@@ -25,6 +25,7 @@ export const useA014 = () => {
 	const grid = useDSG({
 		gridId: "A014",
 		keyColumn: "ProdID",
+		doDirtyCheckByIndex: true
 	});
 
 	const columns = useMemo(

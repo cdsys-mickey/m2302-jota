@@ -5,7 +5,7 @@ import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
 import H02 from "@/modules/H02/H02";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useCallback, useContext, useMemo } from "react";
 
 export const useH02 = () => {

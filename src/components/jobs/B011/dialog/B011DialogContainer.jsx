@@ -8,8 +8,8 @@ import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/date
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
@@ -17,12 +17,13 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import PropTypes from "prop-types";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm, useFormContext, useWatch } from "react-hook-form";
 import B011Drawer from "../B011Drawer";
 import B011DialogForm from "./B011DialogForm";
 import { B011DialogToolbarContainer } from "./toolbar/B011DialogToolbarContainer";
 import { toastEx } from "@/helpers/toastEx";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const B011DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -30,11 +31,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 	const _height = useMemo(() => {
 		return height - 120
 	}, [height])
-	const form = useForm({
-		defaultValues: {
-			quotes: [],
-		},
-	});
+	const form = useFormContext();
 	const b = useContext(BContext);
 	const b011 = useContext(b.forNew ? B031Context : B011Context);
 	const { importProdsDialogOpen } = b011;
@@ -239,12 +236,12 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (b011.itemDataReady) {
 			console.log("b011 form reset", b011.itemData);
 			form.reset(b011.itemData);
 		}
-	}, [b011.itemData, b011.itemDataReady, form]);
+	}, [b011.itemData, b011.itemDataReady]);
 
 	useEffect(() => {
 		if (!importProdsDialogOpen) {
@@ -259,53 +256,52 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 	}, [b011.creating])
 
 	return (
-		<FormProvider {...form}>
-			<DialogExContainer
-				ref={ref}
-				title={memoisedTitle}
-				// fullScreen
-				responsive
-				fullWidth
-				maxWidth={_maxWidth}
-				TitleButtonsComponent={B011DialogToolbarContainer}
-				open={b011.itemViewOpen}
-				onClose={handleClose}
-				// onReturn={handleReturn}
-				sx={{
-					"& .MuiDialog-paper": {
-						backgroundColor: Colors.DIALOG_BG,
-					},
-				}}
-				contentSx={[
-					{
-						minHeight: "30em",
-						paddingTop: 0,
-						// paddingLeft: 0,
-						// paddingRight: 0,
-					},
-					scrollable.scroller,
-				]}
-				{...rest}>
 
-				<form onSubmit={handleSubmit}>
-					<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
-						<B011DialogForm
-							creating={b011.creating}
-							editing={b011.editing}
-							updating={b011.updating}
-							readWorking={b011.readWorking}
-							readError={b011.readError}
-							data={b011.itemData}
-							itemDataReady={b011.itemDataReady}
-						/>
+		<DialogExContainer
+			ref={ref}
+			title={memoisedTitle}
+			// fullScreen
+			responsive
+			fullWidth
+			maxWidth={_maxWidth}
+			TitleButtonsComponent={B011DialogToolbarContainer}
+			open={b011.itemViewOpen}
+			onClose={handleClose}
+			// onReturn={handleReturn}
+			sx={{
+				"& .MuiDialog-paper": {
+					backgroundColor: Colors.DIALOG_BG,
+				},
+			}}
+			contentSx={[
+				{
+					minHeight: "30em",
+					paddingTop: 0,
+					// paddingLeft: 0,
+					// paddingRight: 0,
+				},
+				scrollable.scroller,
+			]}
+			{...rest}>
 
-					</FormMetaProvider>
-				</form>
+			<form onSubmit={handleSubmit}>
+				<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
+					<B011DialogForm
+						creating={b011.creating}
+						editing={b011.editing}
+						updating={b011.updating}
+						readWorking={b011.readWorking}
+						readError={b011.readError}
+						data={b011.itemData}
+						itemDataReady={b011.itemDataReady}
+					/>
 
-				{/* 側邊欄 */}
-				<B011Drawer />
-			</DialogExContainer>
-		</FormProvider>
+				</FormMetaProvider>
+			</form>
+
+			{/* 側邊欄 */}
+			<B011Drawer />
+		</DialogExContainer>
 	);
 });
 B011DialogContainer.propTypes = {

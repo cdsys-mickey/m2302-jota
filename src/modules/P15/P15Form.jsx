@@ -6,10 +6,10 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 
 import { PrintReportButton } from "@/components";
+import { TimePickerEx } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
-import { TimePickerWrapper } from "@/shared-components/time-picker/TimePickerWrapper";
 
 const P15Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -42,7 +42,7 @@ const P15Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={8}>
 								<RangeGroup legend="時段 (00~23)"
-									leftComponent={<TimePickerWrapper
+									leftComponent={<TimePickerEx
 										name="STime"
 										fullWidth
 										validate
@@ -53,7 +53,7 @@ const P15Form = memo((props) => {
 										views={['hours']}
 										format="HH"
 									/>}
-									rightComponent={<TimePickerWrapper
+									rightComponent={<TimePickerEx
 										name="ETime"
 										fullWidth
 										validate

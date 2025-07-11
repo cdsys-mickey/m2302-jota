@@ -2,8 +2,8 @@ import { G06Context } from "@/modules/G06/G06Context";
 import { forwardRef, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import G06SearchPopper from "./G06SearchPopper";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 
 const G06SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const g06 = useContext(G06Context);

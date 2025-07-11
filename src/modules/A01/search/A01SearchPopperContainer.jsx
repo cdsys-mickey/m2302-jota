@@ -2,8 +2,8 @@ import { A01Context } from "@/modules/A01/A01Context";
 import { forwardRef, useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import A01SearchPopper from "./A01SearchPopper";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 import { useCallback } from "react";
 
 const A01SearchPopperContainer = forwardRef(({ ...rest }, ref) => {

@@ -5,12 +5,11 @@ import { OptionPicker } from "@/shared-components";
 import Banks from "./Banks.mjs";
 
 const BankPicker = forwardRef((props, ref) => {
-	const { name, label = "銀行", ...rest } = props;
+	const { label = "銀行", ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	return (
 		<OptionPicker
-			name={name}
 			label={label}
 			ref={ref}
 			bearer={token}

@@ -1,7 +1,7 @@
 import DSGAddRowsToolbarEx from "@/components/dsg/DSGAddRowsToolbarEx";
 import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
@@ -23,7 +23,7 @@ const P34GridContainer = (props) => {
 
 
 	const _height = useMemo(() => {
-		return height - 594 + (p34.gridDisabled ? 48 : 0)
+		return height - 530 + (p34.gridDisabled ? 48 : 0)
 	}, [height, p34.gridDisabled])
 
 

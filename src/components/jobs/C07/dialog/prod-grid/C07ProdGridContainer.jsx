@@ -5,7 +5,7 @@ import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import C07ProdGrid from "./C07ProdGrid";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 export const C07ProdGridContainer = (props) => {
 	const { ...rest } = props;

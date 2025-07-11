@@ -7,7 +7,7 @@ import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import createTooltipColumn from "@/shared-components/dsg/columns/tooltip/createTooltipColumn";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 
 export const C01ProdGridContainer = (props) => {

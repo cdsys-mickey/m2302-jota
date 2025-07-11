@@ -2,8 +2,8 @@ import { P21Context } from "@/modules/P21/P21Context";
 import { forwardRef, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import P21SearchPopper from "./P21SearchPopper";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 
 const P21SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const p21 = useContext(P21Context);

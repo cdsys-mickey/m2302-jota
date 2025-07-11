@@ -8,6 +8,7 @@ import ResponsiveLoadingButtonContainer from "./ResponsiveLoadingButtonContainer
 import { useMemo } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
+import Colors from "@/modules/Colors.mjs";
 
 const ButtonWrapperContainer = forwardRef((props, ref) => {
 	const { responsive, size = "small", autoFocus = false, sx = [], ...rest } = props;
@@ -40,7 +41,8 @@ const ButtonWrapperContainer = forwardRef((props, ref) => {
 			size={size} {...rest}
 			sx={[
 				() => ({
-					'--wrapper-color': '#b0b0b0', // 定義 CSS 變數
+					// '--wrapper-color': '#b0b0b0', // 定義 CSS 變數
+					'--wrapper-color': Colors.FOCUSED_BORDER, // 定義 CSS 變數
 					'&:focus': {
 						outline: '2px solid var(--wrapper-color)',
 						outlineOffset: '2px',

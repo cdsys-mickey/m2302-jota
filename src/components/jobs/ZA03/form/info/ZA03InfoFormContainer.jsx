@@ -2,9 +2,9 @@ import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import ZA03InfoForm from "./ZA03InfoForm";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useCallback } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 
 export const ZA03InfoFormContainer = () => {
 	const za03 = useContext(ZA03Context);

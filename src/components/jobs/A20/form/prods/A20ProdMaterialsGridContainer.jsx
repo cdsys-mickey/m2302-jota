@@ -5,7 +5,7 @@ import A20ProdMaterialsGrid from "./A20ProdMaterialsGrid";
 import PropTypes from "prop-types";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useMemo } from "react";
 
 export const A20ProdMaterialsGridContainer = (props) => {

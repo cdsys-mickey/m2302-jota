@@ -3,6 +3,7 @@ import ListViewHeader from "@/shared-components/listview/header/ListViewHeader";
 import { forwardRef, memo } from "react";
 import P35IDColumn from "./columns/P35IDColumn";
 import P35NameColumn from "./columns/P35NameColumn";
+import P35BankColumn from "./columns/P35BankColumn";
 
 const P35ListHeader = memo(
 	forwardRef((props, ref) => {
@@ -12,6 +13,7 @@ const P35ListHeader = memo(
 				<IndexColumn></IndexColumn>
 				<P35IDColumn>代碼</P35IDColumn>
 				<P35NameColumn>名稱</P35NameColumn>
+				<P35BankColumn>簡碼</P35BankColumn>
 			</ListViewHeader>
 		);
 	})

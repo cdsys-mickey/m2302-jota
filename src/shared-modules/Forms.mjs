@@ -59,6 +59,18 @@ const parseDate = (value, pattern) => {
 	return DateTimes.parse(value, pattern);
 };
 
+const parseTime = (value, pattern = DateFormats.DATEFNS_TIME) => {
+	return DateTimes.parse(value, pattern);
+};
+
+const parseDateAndTime = (
+	dateValue,
+	timeValue,
+	pattern = DateFormats.DATEFNS_DATETIME
+) => {
+	return DateTimes.parse(`${dateValue} ${dateValue}`, pattern);
+};
+
 const formatTime = (value, format = "HH:mm") => {
 	if (!value) {
 		return null;
@@ -292,6 +304,8 @@ const Forms = {
 	formatDate,
 	formatDateTime,
 	parseDate,
+	parseTime,
+	parseDateAndTime,
 	processDateFieldsForSubmit,
 	processDateFieldsForReset,
 	// processNumberFieldsForSubmit,

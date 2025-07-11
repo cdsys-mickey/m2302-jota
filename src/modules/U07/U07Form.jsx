@@ -14,7 +14,7 @@ import RangeGroup from "@/shared-components/RangeGroup";
 import U07DataTypePicker from "./picker/U07DataTypePicker";
 
 const U07Form = memo((props) => {
-	const { onSubmit, onDebugSubmit, scope = Auth.SCOPES.BRANCH_HQ, ...rest } = props;
+	const { onSubmit, onDebugSubmit, scope = Auth.SCOPES.BRANCH_HQ, deptDisabled, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
@@ -23,11 +23,12 @@ const U07Form = memo((props) => {
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={12}>
 								<AppDeptPicker
-									autoFocus
+
 									label="門市代碼"
 									name="SDeptID"
 									disableOpenOnInput
 									selectOnFocus
+									disabled={deptDisabled}
 									scope={scope}
 								/>
 							</Grid>
@@ -35,6 +36,7 @@ const U07Form = memo((props) => {
 								<RangeGroup legend="交易日期"
 									leftComponent={
 										<DatePickerWrapper
+											autoFocus
 											name="SDate"
 											label="日期區間"
 											fullWidth
@@ -58,20 +60,13 @@ const U07Form = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={12}>
+							{/* <Grid item xs={12} sm={12}>
 								<U07DataTypePicker
 									name="RptType"
 									label="資料型態"
 									required
 								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								{/* <StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/> */}
-							</Grid>
+							</Grid> */}
 						</Grid>
 						<FlexBox mt={1.5}>
 							<Grid container spacing={2}>
@@ -103,7 +98,8 @@ U07Form.propTypes = {
 	readError: PropTypes.object,
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,
-	scope: PropTypes.number
+	scope: PropTypes.number,
+	deptDisabled: PropTypes.bool
 };
 
 U07Form.displayName = "U07Form";

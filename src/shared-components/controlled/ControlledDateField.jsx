@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { useCallback } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { FormMetaContext } from "../../shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "../form-meta/FormMetaContext";
 import DateFieldBox from "../date-field/DateFieldBox";
 
 const DEFAULT_PROPS = {

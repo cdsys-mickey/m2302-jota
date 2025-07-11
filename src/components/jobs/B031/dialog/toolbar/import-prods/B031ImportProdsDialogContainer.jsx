@@ -1,6 +1,6 @@
 import { B031Context } from "@/contexts/B031/B031Context";
 import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { forwardRef, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import B031ImportProdsForm from "./B031ImportProdsForm";

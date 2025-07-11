@@ -3,7 +3,7 @@ import U03Form from "./U03Form";
 import { U03Context } from "@/modules/U03/U03Context";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useCallback } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 

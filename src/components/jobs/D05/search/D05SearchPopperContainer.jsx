@@ -2,9 +2,9 @@ import { D05Context } from "@/contexts/D05/D05Context";
 import { forwardRef, useContext } from "react";
 import D05SearchPopper from "./D05SearchPopper";
 import { useFormContext } from "react-hook-form";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 
 const D05SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const d05 = useContext(D05Context);

@@ -4,17 +4,16 @@ import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
 import { PrintReportButton } from "@/components";
 import TerminalPicker from "@/components/terminal-picker/TerminalPicker";
+import { TimePickerEx } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { TimePickerWrapper } from "@/shared-components/time-picker/TimePickerWrapper";
 import P02DataTypePicker from "./picker/P02DataTypePicker";
 
 const P02Form = memo((props) => {
@@ -48,7 +47,7 @@ const P02Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="時段 (報表型態2,3有效)"
-									leftComponent={<TimePickerWrapper
+									leftComponent={<TimePickerEx
 										name="STime"
 										fullWidth
 										validate
@@ -56,7 +55,7 @@ const P02Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<TimePickerWrapper
+									rightComponent={<TimePickerEx
 										name="ETime"
 										fullWidth
 										validate

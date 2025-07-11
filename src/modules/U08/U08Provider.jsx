@@ -4,13 +4,19 @@ import StdPrint from "@/modules/StdPrint.mjs";
 import { U08Context } from "./U08Context";
 import U08DataType from "./picker/U08DataType.mjs";
 import { useU08 } from "./useU08";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { useContext } from "react";
 
 export const U08Provider = ({ children }) => {
+	const { operator } = useContext(AuthContext);
 	const u08 = useU08();
 	const form = useForm({
 		defaultValues: {
 			outputType: StdPrint.getDefaultOption(),
-			SDeptID: null,
+			SDeptID: {
+				DeptID: operator.CurDeptID,
+				AbbrName: operator.CurDeptName,
+			},
 			SDate: new Date(),
 			EDate: new Date(),
 			RptType: U08DataType.getDefaultOption(),

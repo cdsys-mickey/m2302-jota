@@ -17,7 +17,7 @@ export const A014GridContainer = () => {
 	const onChange = useMemo(() => {
 		return prodGrid.buildGridChangeHandler({
 			onUpdateRow: prodGrid.onUpdateRow,
-			doDirtyCheckByIndex: true
+			// doDirtyCheckByIndex: true
 		})
 	}, [prodGrid])
 

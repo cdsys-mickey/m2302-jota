@@ -43,6 +43,8 @@ const A19Form = memo((props) => {
 										}}
 										borderless
 										placeholder="起"
+
+										autoFocus
 									/>}
 									rightComponent={<ProdPicker
 										name="eprod"

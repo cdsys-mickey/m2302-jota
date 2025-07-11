@@ -34,6 +34,7 @@ const A18Form = memo((props) => {
 									selectOnFocus
 									disabled={deptDisabled}
 									scope={Auth.SCOPES.BRANCH_HQ}
+									autoFocus
 								/>
 							</Grid>
 							<Grid item xs={12}>

@@ -1,5 +1,5 @@
 import DSGBottomToolbar from "@/shared-components/listview/toolbar/DSGBottomToolbar";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { forwardRef, useContext } from "react";
 import E021ProdGridToolbarLabels from "./E021ProdGridToolbarLabels";
 

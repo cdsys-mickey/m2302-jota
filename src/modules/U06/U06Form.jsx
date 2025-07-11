@@ -14,7 +14,7 @@ import RangeGroup from "@/shared-components/RangeGroup";
 import U06DataTypePicker from "./picker/U06DataTypePicker";
 
 const U06Form = memo((props) => {
-	const { onSubmit, onDebugSubmit, ...rest } = props;
+	const { onSubmit, onDebugSubmit, deptDisabled, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
@@ -23,11 +23,11 @@ const U06Form = memo((props) => {
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12} sm={12}>
 								<AppDeptPicker
-									autoFocus
 									label="門市代碼"
 									name="SDeptID"
 									disableOpenOnInput
 									selectOnFocus
+									disabled={deptDisabled}
 									scope={Auth.SCOPES.BRANCH_HQ}
 								/>
 							</Grid>
@@ -35,6 +35,7 @@ const U06Form = memo((props) => {
 								<RangeGroup legend="交易日期"
 									leftComponent={
 										<DatePickerWrapper
+											autoFocus
 											name="SDate"
 											label="日期區間"
 											fullWidth
@@ -103,6 +104,7 @@ U06Form.propTypes = {
 	readError: PropTypes.object,
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,
+	deptDisabled: PropTypes.bool,
 };
 
 U06Form.displayName = "U06Form";

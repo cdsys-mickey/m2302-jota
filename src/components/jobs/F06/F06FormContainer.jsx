@@ -3,7 +3,7 @@ import F06Form from "./F06Form";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import { useContext } from "react";
 import { F06Context } from "@/contexts/F06/F06Context";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const F06FormContainer = () => {

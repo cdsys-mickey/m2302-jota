@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import B031DialogEditToolbar from "./B031DialogEditToolbar";
 import B031DialogViewToolbar from "./B031DialogViewToolbar";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useMemo } from "react";
 
 export const B031DialogToolbarContainer = (props) => {

@@ -3,7 +3,7 @@ import P02Form from "./P02Form";
 import { P02Context } from "@/contexts/P02/P02Context";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const P02FormContainer = () => {

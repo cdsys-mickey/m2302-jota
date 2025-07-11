@@ -9,7 +9,11 @@ import { FormProvider, useForm } from "react-hook-form";
 
 export const B012FrameContainer = () => {
 	const searchForm = useForm();
-
+	const form = useForm({
+		defaultValues: {
+			quotes: [],
+		},
+	});
 	return (
 		<FormProvider {...searchForm}>
 			<FrameBox>
@@ -25,7 +29,9 @@ export const B012FrameContainer = () => {
 				<B012ListHeader />
 				<B012ListViewContainer />
 				{/* 對話框 */}
-				<B012DialogContainer />
+				<FormProvider {...form}>
+					<B012DialogContainer />
+				</FormProvider>
 				<B012PrintDialogContainer />
 			</FrameBox>
 		</FormProvider>

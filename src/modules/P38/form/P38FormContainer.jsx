@@ -5,8 +5,8 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import P38Context from "../P38Context";
 import P38FormView from "./P38FormView";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 const P38FormContainer = (props) => {

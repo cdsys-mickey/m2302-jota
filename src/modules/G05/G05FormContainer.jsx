@@ -1,5 +1,5 @@
 import { G05Context } from "@/modules/G05/G05Context";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import G05Form from "./G05Form";

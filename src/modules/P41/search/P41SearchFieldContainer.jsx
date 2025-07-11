@@ -57,12 +57,12 @@ export const P41SearchFieldContainer = (props) => {
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}
-					Popper
-					PopperComponent={P41SearchPopperContainer}
-					popperOpen={p41.popperOpen}
-					onPopperToggle={p41.handlePopperToggle}
-					onPopperOpen={p41.handlePopperOpen}
-					onPopperClose={p41.handlePopperClose}
+					// Popper
+					// PopperComponent={P41SearchPopperContainer}
+					// popperOpen={p41.popperOpen}
+					// onPopperToggle={p41.handlePopperToggle}
+					// onPopperOpen={p41.handlePopperOpen}
+					// onPopperClose={p41.handlePopperClose}
 					filtered={P41.isFiltered(getValues())}
 				/>
 			</div>

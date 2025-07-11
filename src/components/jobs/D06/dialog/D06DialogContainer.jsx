@@ -16,8 +16,8 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useCallback } from "react";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const D06DialogContainer = forwardRef((props, ref) => {

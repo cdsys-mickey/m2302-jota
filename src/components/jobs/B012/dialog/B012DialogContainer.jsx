@@ -8,15 +8,15 @@ import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/date
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm, useFormContext, useWatch } from "react-hook-form";
 import B012Drawer from "../B012Drawer";
 import B012DialogForm from "./B012DialogForm";
 import { B012DialogToolbarContainer } from "./toolbar/B012DialogToolbarContainer";
@@ -29,11 +29,7 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 	const _height = useMemo(() => {
 		return height - 120
 	}, [height])
-	const form = useForm({
-		defaultValues: {
-			quotes: [],
-		},
-	});
+	const form = useFormContext();
 
 	const b = useContext(BContext);
 	const b012 = useContext(b.forNew ? B032Context : B012Context);
@@ -243,54 +239,53 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 	}, [form, importCustsDialogOpen]);
 
 	return (
-		<FormProvider {...form}>
-			<DialogExContainer
-				ref={ref}
-				title={memoisedTitle}
-				// fullScreen
-				responsive
-				fullWidth
-				maxWidth="md"
-				TitleButtonsComponent={B012DialogToolbarContainer}
-				open={b012.itemViewOpen}
-				onClose={handleClose}
-				// onReturn={handleReturn}
-				sx={{
-					"& .MuiDialog-paper": {
-						backgroundColor: Colors.DIALOG_BG,
-					},
-				}}
-				contentSx={[
-					{
-						minHeight: "30em",
-						paddingTop: 0,
-						// paddingLeft: 0,
-						// paddingRight: 0,
-					},
-					scrollable.scroller,
-				]}
-				{...rest}>
 
-				<form onSubmit={handleSubmit}>
-					<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
-						<B012DialogForm
-							creating={b012.creating}
-							editing={b012.editing}
-							updating={b012.updating}
-							readWorking={b012.readWorking}
-							readError={b012.readError}
-							data={b012.itemData}
-							itemDataReady={b012.itemDataReady}
-							handleProdChange={b012.handleProdChange({ setValue: form.setValue })}
-						/>
+		<DialogExContainer
+			ref={ref}
+			title={memoisedTitle}
+			// fullScreen
+			responsive
+			fullWidth
+			maxWidth="md"
+			TitleButtonsComponent={B012DialogToolbarContainer}
+			open={b012.itemViewOpen}
+			onClose={handleClose}
+			// onReturn={handleReturn}
+			sx={{
+				"& .MuiDialog-paper": {
+					backgroundColor: Colors.DIALOG_BG,
+				},
+			}}
+			contentSx={[
+				{
+					minHeight: "30em",
+					paddingTop: 0,
+					// paddingLeft: 0,
+					// paddingRight: 0,
+				},
+				scrollable.scroller,
+			]}
+			{...rest}>
 
-					</FormMetaProvider>
-				</form>
+			<form onSubmit={handleSubmit}>
+				<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
+					<B012DialogForm
+						creating={b012.creating}
+						editing={b012.editing}
+						updating={b012.updating}
+						readWorking={b012.readWorking}
+						readError={b012.readError}
+						data={b012.itemData}
+						itemDataReady={b012.itemDataReady}
+						handleProdChange={b012.handleProdChange({ setValue: form.setValue })}
+					/>
 
-				{/* 側邊欄 */}
-				<B012Drawer />
-			</DialogExContainer>
-		</FormProvider>
+				</FormMetaProvider>
+			</form>
+
+			{/* 側邊欄 */}
+			<B012Drawer />
+		</DialogExContainer>
 	);
 });
 

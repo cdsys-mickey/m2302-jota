@@ -2,10 +2,10 @@ import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
 import { useContext } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import ProdGridForm from "./ProdGridForm";
-import { FormMetaProvider } from "../../../shared-contexts/form-meta/FormMetaProvider";
 import { useCallback } from "react";
 import { useMemo } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
+import { FormMetaProvider } from "@/shared-components";
 
 export const ProdGridFormContainer = (props) => {
 	const { ...rest } = props;

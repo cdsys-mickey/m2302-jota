@@ -72,20 +72,6 @@ const ZA03DialogContent = memo((props) => {
 							disabled={authDisabled}
 						/>
 					</TabList>
-					{/* <FlexBox
-						sx={{
-							position: "absolute",
-							left: "220px",
-							top: "50px",
-						}}>
-						<ZA03AuthDeptPickerContainer
-							name="dept"
-							width="14em"
-							sx={{
-								backgroundColor: "#fff",
-							}}
-						/>
-					</FlexBox> */}
 					<FlexBox
 						flexGrow={1}
 						justifyContent="flex-end"

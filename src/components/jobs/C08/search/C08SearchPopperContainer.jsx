@@ -2,8 +2,8 @@ import { C08Context } from "@/contexts/C08/C08Context";
 import { forwardRef, useContext } from "react";
 import C08SearchPopper from "./C08SearchPopper";
 import { useFormContext } from "react-hook-form";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 import { useMemo } from "react";
 import { useCallback } from "react";
 

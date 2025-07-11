@@ -15,6 +15,9 @@ export const A06FrameContainer = () => {
 	const a06 = useContext(A06Context);
 	const { mode } = a06;
 	const searchForm = useForm();
+	const form = useForm({
+		defaultValues: {},
+	});
 
 	return (
 		<FormProvider {...searchForm}>
@@ -36,7 +39,9 @@ export const A06FrameContainer = () => {
 					<A06ListHeader />
 					<A06ListViewContainer />
 					{/* 對話框 */}
-					<A06DialogContainer />
+					<FormProvider {...form}>
+						<A06DialogContainer />
+					</FormProvider>
 					<StdPrintDialogContainer />
 				</StdPrintProvider>
 			</FrameBox>

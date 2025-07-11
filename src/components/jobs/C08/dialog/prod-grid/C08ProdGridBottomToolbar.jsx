@@ -2,7 +2,7 @@ import { C08Context } from "@/contexts/C08/C08Context";
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, useContext } from "react";
 import { C08ProdGridSubtotalLabel } from "./C08ProdGridSubtotalLabel";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 const RightComponent = () => {
 	return (

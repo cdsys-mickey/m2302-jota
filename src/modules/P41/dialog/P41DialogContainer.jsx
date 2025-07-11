@@ -4,14 +4,15 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import P41DialogForm from "../form/P41DialogForm";
 import { P41DialogButtonsContainer } from "./buttons/P41DialogButtonsContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import P41Drawer from "../P41Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useCallback } from "react";
 
 export const P41DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -23,32 +24,37 @@ export const P41DialogContainer = forwardRef((props, ref) => {
 
 	const formMeta = useFormMeta(
 		`
-		FactID,
-		FactData,
-		AbbrName,
-		Boss,
-		Contact,
-		Tel,
-		Uniform,
-		PayGroup,
-		bank,
-		BankAcct,
-		CompAddr,
-		CompTel,
-		CompFax,
-		TaxType,
-		FactAddr,
-		FactTel,
-		FactFax,
-		mainProd,
-		remark
+		OrdID,
+		OrdDate,
+		ArrDate,
+		ArrHM,
+		CFlag,
+		GrpName,
+		city,
+		area,
+		GrpType,
+		custType,
+		busComp,
+		CarData_N,
+		CarQty,
+		PugAmt,
+		CarNo,
+		DrvName,
+		DrvTel,
+		tourGroup,
+		TrvData_N,
+		tourGuide,
+		CndName,
+		CndTel,
+		employee,
+		Remark
 		`
 	);
 
-	const forms = useForm({
+	const form = useForm({
 		defaultValues: {},
 	});
-	const { reset } = forms;
+	const { reset } = form;
 	const p41 = useContext(P41Context);
 
 	const title = useMemo(() => {
@@ -68,12 +74,65 @@ export const P41DialogContainer = forwardRef((props, ref) => {
 	});
 
 	const handleSubmit = useMemo(() => {
-		return forms.handleSubmit(p41.onEditorSubmit, p41.onEditorSubmitError);
-	}, [p41.onEditorSubmit, p41.onEditorSubmitError, forms]);
+		return form.handleSubmit(p41.onEditorSubmit, p41.onEditorSubmitError);
+	}, [p41.onEditorSubmit, p41.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
+
+	const handleCityChange = useCallback((newValue) => {
+		form.setValue("area", newValue?.CtAreaID ? {
+			CodeID: newValue.CtAreaID,
+			CodeData: newValue.CtAreaData
+		} : null)
+	}, [form]);
+
+	const handleBusCompChange = useCallback((newValue) => {
+		form.setValue("CarData_N", newValue?.CarData ?? "");
+	}, [form]);
+
+	const handleTourGroupChange = useCallback((newValue) => {
+		form.setValue("TrvData_N", newValue?.TrvData ?? "");
+	}, [form]);
+
+	const handleTourGuideChange = useCallback((newValue) => {
+		form.setValue("CndName", newValue?.CndData ?? "")
+	}, [form]);
+
+	const comId = useWatch({
+		name: "ComID",
+		control: form.control
+	})
+
+	const cflag = useWatch({
+		name: "CFlag",
+		control: form.control
+	})
+
+	const cflagDisabled = useMemo(() => {
+		return comId && cflag;
+	}, [cflag, comId])
+
+	// const city = useWatch({
+	// 	name: "city",
+	// 	control: form.control
+	// })
+
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
+				case "CFlag":
+					return cflagDisabled;
+				case "area":
+					// return !city;
+					return true;
+				default:
+					return false;
+			}
+		},
+		[cflagDisabled]
+	);
 
 	useEffect(() => {
 		// if (p41.readState === ActionState.DONE && !!p41.itemData) {
@@ -81,10 +140,10 @@ export const P41DialogContainer = forwardRef((props, ref) => {
 			console.log(`p41 form reset`, p41.itemData);
 			reset(p41.itemData);
 		}
-	}, [p41.itemData, p41.itemDataReady, p41.readState, forms, reset]);
+	}, [p41.itemData, p41.itemDataReady, p41.readState, form, reset]);
 
 	return (
-		<FormProvider {...forms}>
+		<FormProvider {...form}>
 			<DialogExContainer
 				title={title}
 				ref={ref}
@@ -110,7 +169,7 @@ export const P41DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<FormMetaProvider {...formMeta}>
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
 					<P41DialogForm
 						ref={ref}
 						onSubmit={handleSubmit}
@@ -120,6 +179,11 @@ export const P41DialogContainer = forwardRef((props, ref) => {
 						readError={p41.readError}
 						data={p41.itemData}
 						itemDataReady={p41.itemDataReady}
+						onCityChange={handleCityChange}
+						onBusCompChange={handleBusCompChange}
+						onTourGroupChange={handleTourGroupChange}
+						onTourGuideChange={handleTourGuideChange}
+						cflagDisabled={cflagDisabled}
 					/>
 				</FormMetaProvider>
 				<P41Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />

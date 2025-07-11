@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { G07Context } from "@/modules/G07/G07Context";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";

@@ -7,7 +7,7 @@ import { createIntColumn } from "@/shared-components/dsg/columns/float/createInt
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";

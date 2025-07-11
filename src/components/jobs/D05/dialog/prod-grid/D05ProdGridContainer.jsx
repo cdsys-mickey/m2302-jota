@@ -2,7 +2,7 @@ import { D05Context } from "@/contexts/D05/D05Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";

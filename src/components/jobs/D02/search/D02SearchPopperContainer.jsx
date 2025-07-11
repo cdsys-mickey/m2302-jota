@@ -1,6 +1,6 @@
 import { D02Context } from "@/contexts/D02/D02Context";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { forwardRef, useContext } from "react";
 import D02SearchPopper from "./D02SearchPopper";
 import { useFormContext } from "react-hook-form";

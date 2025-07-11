@@ -2,7 +2,7 @@ import { FormProvider, useFormContext } from "react-hook-form";
 import U06_1Form from "./U06_1Form";
 import { useContext } from "react";
 import { useMemo } from "react";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { U06_1Context } from "./U06_1Context";
 import { useHotkeys } from "react-hotkeys-hook";
 

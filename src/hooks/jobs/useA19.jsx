@@ -1,8 +1,8 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import A19 from "@/modules/A19";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { LastFieldBehavior } from "@/shared-contexts/form-meta/LastFieldBehavior";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { LastFieldBehavior } from "@/shared-components/form-meta/LastFieldBehavior";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useCallback, useContext, useMemo } from "react";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";

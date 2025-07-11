@@ -1,8 +1,8 @@
 import { B011Context } from "@/contexts/B011/B011Context";
 import { B031Context } from "@/contexts/B031/B031Context";
 import DialogEx from "@/shared-components/dialog/DialogEx";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -34,22 +34,21 @@ const B011PrintDialogContainer = (props) => {
 	)
 
 	return (
-		<FormProvider {...form}>
-			<DialogEx
-				responsive
-				maxWidth="xs"
-				title="列印"
-				open={b011.printDialogOpen}
-				onClose={b011.cancelPrint}
-				onCancel={b011.cancelPrint}
-				onConfirm={handleSubmit}
-				confirmText="執行"
-			>
-				<FormMetaProvider {...formMeta}>
-					<B011PrintDialogForm onSubmit={handleSubmit} />
-				</FormMetaProvider>
-			</DialogEx>
-		</FormProvider>
+
+		<DialogEx
+			responsive
+			maxWidth="xs"
+			title="列印"
+			open={b011.printDialogOpen}
+			onClose={b011.cancelPrint}
+			onCancel={b011.cancelPrint}
+			onConfirm={handleSubmit}
+			confirmText="執行"
+		>
+			<FormMetaProvider {...formMeta}>
+				<B011PrintDialogForm onSubmit={handleSubmit} />
+			</FormMetaProvider>
+		</DialogEx>
 	);
 }
 

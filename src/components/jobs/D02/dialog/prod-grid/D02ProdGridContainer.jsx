@@ -1,7 +1,7 @@
 import { D02Context } from "@/contexts/D02/D02Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
 import D02ProdGrid from "./D02ProdGrid";

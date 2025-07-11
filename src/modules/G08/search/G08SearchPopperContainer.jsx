@@ -2,8 +2,8 @@ import { G08Context } from "@/modules/G08/G08Context";
 import { forwardRef, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import G08SearchPopper from "./G08SearchPopper";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 
 const G08SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const g08 = useContext(G08Context);

@@ -1,5 +1,5 @@
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { LastFieldBehavior } from "../../../shared-contexts/form-meta/LastFieldBehavior";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { LastFieldBehavior } from "../../../shared-components/form-meta/LastFieldBehavior";
 
 export const useInputTest = () => {
 	const formMeta = useFormMeta(

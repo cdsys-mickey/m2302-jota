@@ -4,7 +4,7 @@ import { B032Context } from "@/contexts/B032/B032Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { B012Context } from "@/contexts/B012/B012Context";

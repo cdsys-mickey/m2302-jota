@@ -4,12 +4,12 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import A06DialogForm from "../form/A06DialogForm";
 import { A06DialogToolbarContainer } from "./buttons/A06DialogToolbarContainer";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
 import A06DrawerContainer from "../A06DrawerContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { FormMetaProvider } from "@/shared-components";
 
 export const A06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -23,9 +23,7 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 		alwaysShowThumb: true,
 		scrollerBackgroundColor: "transparent",
 	});
-	const form = useForm({
-		defaultValues: {},
-	});
+	const form = useFormContext();
 	const { reset } = form;
 	const a06 = useContext(A06Context);
 
@@ -59,46 +57,45 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 	}, [a06.itemData, a06.itemDataReady, reset]);
 
 	return (
-		<FormProvider {...form}>
-			<DialogExContainer
-				title={title}
-				ref={ref}
-				responsive
-				fullWidth
-				maxWidth="md"
-				TitleButtonsComponent={A06DialogToolbarContainer}
-				open={a06.itemViewOpen}
-				onClose={
-					a06.editing ? a06.confirmDialogClose : a06.cancelAction
-				}
-				// onReturn={a06.updating ? a06.confirmReturn : null}
-				sx={{
-					"& .MuiDialog-paper": {
-						backgroundColor: Colors.DIALOG_BG,
-					},
-				}}
-				contentSx={[
-					// {
-					// 	minHeight: "30em",
-					// },
-					scrollable.scroller,
-				]}
-				{...rest}>
-				<FormMetaProvider {...a06.formMeta}>
-					<A06DialogForm
-						ref={ref}
-						onSubmit={handleSubmit}
-						editing={a06.editing}
-						updating={a06.updating}
-						readWorking={a06.readWorking}
-						readError={a06.readError}
-						data={a06.itemData}
-						itemDataReady={a06.itemDataReady}
-					/>
-				</FormMetaProvider>
-				<A06DrawerContainer />
-			</DialogExContainer>
-		</FormProvider>
+
+		<DialogExContainer
+			title={title}
+			ref={ref}
+			responsive
+			fullWidth
+			maxWidth="md"
+			TitleButtonsComponent={A06DialogToolbarContainer}
+			open={a06.itemViewOpen}
+			onClose={
+				a06.editing ? a06.confirmDialogClose : a06.cancelAction
+			}
+			// onReturn={a06.updating ? a06.confirmReturn : null}
+			sx={{
+				"& .MuiDialog-paper": {
+					backgroundColor: Colors.DIALOG_BG,
+				},
+			}}
+			contentSx={[
+				// {
+				// 	minHeight: "30em",
+				// },
+				scrollable.scroller,
+			]}
+			{...rest}>
+			<FormMetaProvider {...a06.formMeta}>
+				<A06DialogForm
+					ref={ref}
+					onSubmit={handleSubmit}
+					editing={a06.editing}
+					updating={a06.updating}
+					readWorking={a06.readWorking}
+					readError={a06.readError}
+					data={a06.itemData}
+					itemDataReady={a06.itemDataReady}
+				/>
+			</FormMetaProvider>
+			<A06DrawerContainer />
+		</DialogExContainer>
 	);
 });
 

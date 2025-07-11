@@ -1,7 +1,7 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { FormMetaProvider } from "@/shared-components";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";

@@ -7,8 +7,8 @@ import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import C05SearchPopperContainer from "./C05SearchPopperContainer";
 import C05 from "@/modules/md-c05";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 
 export const C05SearchFieldContainer = (props) => {
 	const { name = "q", ...rest } = props;

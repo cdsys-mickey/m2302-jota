@@ -7,38 +7,50 @@ import Forms from "@/shared-modules/Forms.mjs";
 import { differenceInYears } from "date-fns";
 import Cookies from "js-cookie";
 import queryString from "query-string";
-import { useCallback, useContext } from "react";
+import { useMemo, useCallback, useContext } from "react";
 
+const DEFAULT_OPTS = {
+	checkEvery: false,
+	name: ""
+};
 
-export default function useJotaReports(props) {
-	const { from, to, month } = props || {};
+export default function useJotaReports(props, opts = DEFAULT_OPTS) {
+	const fromToPairs = useMemo(() => {
+		if (Array.isArray(props)) {
+			return props;
+		} else {
+			const { from, to } = props || {};
+			if (from && to) {
+				return [{ from, to }];
+			}
+			return [];
+		}
+	}, [props]);
 
-	// const [reportUrl, setReportUrl] = useState();
-	// const [formData, setFormData] = useState();
-	// const [data, setData] = useState();
+	const month = useMemo(() => {
+		if (!Array.isArray(props)) {
+			return props?.month;
+		}
+		return undefined;
+	}, [props]);
 
 	const dialogs = useContext(DialogsContext);
 	const { postToBlank } = useHttpPost();
 	const { operator } = useContext(AuthContext);
 
-
-	const send = useCallback((url, data, opts = {}) => {
+	const send = useCallback((url, data) => {
 		const dontPrompt = Cookies.get(Settings.Keys.COOKIE_DOWNLOAD_PROMPT) == 0;
+
 		postToBlank(
 			queryString.stringifyUrl({
-				url: url,
+				url,
 				query: {
 					LogKey: operator.LogKey,
-					...((!dontPrompt) && {
-						DontClose: 1
-					})
+					...(!dontPrompt && { DontClose: 1 })
 				}
 			}),
-			{
-				jsonData: JSON.stringify(data),
-			}
+			{ jsonData: JSON.stringify(data) }
 		);
-
 
 		if (!dontPrompt && data.Action != 1 && data.Action != null) {
 			dialogs.confirm({
@@ -49,7 +61,6 @@ export default function useJotaReports(props) {
 				confirmText: "有",
 				cancelText: "沒有",
 				onConfirm: (params) => {
-					console.log("params", params);
 					if (params.checked) {
 						Cookies.set(Settings.Keys.COOKIE_DOWNLOAD_PROMPT, 0);
 						dialogs.alert({
@@ -58,67 +69,82 @@ export default function useJotaReports(props) {
 						});
 					}
 				},
-				onCancel: (params) => {
-					// if (params.value === "ON") {
-					// 	Cookies.set(COOKIE_DOWNLOAD_PROMPT, 0);
-					// }
+				onCancel: () => {
 					toastEx.warn(Settings.MSG_INSTRUCT);
 				}
-			})
+			});
 		}
-
 	}, [dialogs, operator.LogKey, postToBlank]);
 
-	const isDateValidated = useCallback((reportUrl, params, opts) => {
-		if (from && to) {
-			const fromDateString = params[from];
-			const toDateString = params[to];
-			if (!fromDateString && !toDateString) {
-				dialogs.confirm({
-					message: "未輸入日期區間，確定執行?",
-					onConfirm: () => {
-						send(reportUrl, params);
-					}
-				});
-				return false;
-			} else if (toDateString) {
-				const fromDate = Forms.parseDate(fromDateString);
-				const toDate = Forms.parseDate(toDateString);
-				if (!fromDate || differenceInYears(toDate, fromDate) > 0) {
-					dialogs.confirm({
-						message: "您輸入的日期區間超過一年，確定執行?",
-						onConfirm: () => {
-							send(reportUrl, params, opts);
-						}
-					});
-					return false;
-				}
+	const isDateValidated = useCallback((reportUrl, params, sendOpts) => {
+		let anyFilled = false;
+		let invalidRangePair = null;
+		let emptyPairs = [];
+
+		for (const pair of fromToPairs) {
+			const fromVal = params[pair.from];
+			const toVal = params[pair.to];
+
+			if (!fromVal && !toVal) {
+				emptyPairs.push(pair);
+				continue;
 			}
 
-		} else if (month) {
+			anyFilled = true;
+
+			if (fromVal && toVal) {
+				const fromDate = Forms.parseDate(fromVal);
+				const toDate = Forms.parseDate(toVal);
+				if (!fromDate || differenceInYears(toDate, fromDate) > 0) {
+					invalidRangePair = {
+						from: fromVal,
+						to: toVal
+					};
+					break;
+				}
+			}
+		}
+
+		if (invalidRangePair) {
+			dialogs.confirm({
+				message: `「${invalidRangePair.from} - ${invalidRangePair.to}」的範圍超過一年，確定執行?`,
+				onConfirm: () => {
+					send(reportUrl, params, sendOpts);
+				}
+			});
+			return false;
+		}
+
+		if ((!opts.checkEvery && !anyFilled) || (opts.checkEvery && emptyPairs.length > 0)) {
+			dialogs.confirm({
+				message: `${opts.name}日期區間皆未輸入，確定執行?`,
+				onConfirm: () => {
+					send(reportUrl, params, sendOpts);
+				}
+			});
+			return false;
+		}
+
+		if (month) {
 			const monthString = params[month];
 			if (!monthString) {
 				dialogs.confirm({
 					message: "未輸入資料年月，確定執行?",
 					onConfirm: () => {
-						send(reportUrl, params);
+						send(reportUrl, params, sendOpts);
 					}
 				});
 				return false;
 			}
 		}
+
 		return true;
-	}, [dialogs, from, month, send, to]);
+	}, [dialogs, fromToPairs, month, opts.name, opts.checkEvery, send]);
 
 	const open = useCallback((reportUrl, data, opts) => {
-		if (!isDateValidated(reportUrl, data, opts)) {
-			return;
-		}
+		if (!isDateValidated(reportUrl, data, opts)) return;
 		send(reportUrl, data, opts);
 	}, [isDateValidated, send]);
 
-	return {
-		open
-	}
-
+	return { open };
 }

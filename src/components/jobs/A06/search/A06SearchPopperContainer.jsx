@@ -2,8 +2,8 @@ import { A06Context } from "@/contexts/A06/A06Context";
 import { forwardRef, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import A06SearchPopper from "./A06SearchPopper";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-contexts/form-meta/FormMetaProvider";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { FormMetaProvider } from "@/shared-components";
 
 const A06SearchPopperContainer = forwardRef(({ ...rest }, ref) => {
 	const a06 = useContext(A06Context);

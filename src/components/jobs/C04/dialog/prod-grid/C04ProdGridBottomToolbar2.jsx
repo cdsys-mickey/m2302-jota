@@ -2,7 +2,7 @@ import { C04Context } from "@/contexts/C04/C04Context";
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, useContext } from "react";
 import C04ProdGridToolbarLabels from "./C04ProdGridToolbarLabels";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 const C04ProdGridBottomToolbar2 = forwardRef((props, ref) => {
 	const { ...rest } = props;

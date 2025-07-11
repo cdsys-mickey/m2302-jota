@@ -13,7 +13,9 @@ export const useInit = (callback, dependencies) => {
 		return () => {
 			if (!unloadedRef.current && unloadCallback) {
 				unloadedRef.current = true;
-				unloadCallback();
+				if (unloadCallback) {
+					unloadCallback();
+				}
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

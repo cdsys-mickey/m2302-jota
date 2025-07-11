@@ -5,11 +5,15 @@ import { Fragment, forwardRef, memo } from "react";
 import { ButtonEx } from "@/shared-components";
 import SearchIcon from "@mui/icons-material/Search";
 import B012ImportCustsDialogContainer from "./import-custs/B012ImportCustsDialogContainer";
+import { FormProvider, useForm } from "react-hook-form";
 
 const B012DialogEditToolbar = memo(
 	forwardRef((props, ref) => {
 		const { onImportCusts, onSave, onCancel, loading, ...rest } = props;
 
+		const form = useForm({
+			defaultValues: {},
+		});
 
 		return (
 			<Fragment ref={ref} {...rest}>
@@ -43,7 +47,9 @@ const B012DialogEditToolbar = memo(
 					儲存
 				</ButtonEx>
 				{/* 帶入商品 */}
-				<B012ImportCustsDialogContainer />
+				<FormProvider {...form}>
+					<B012ImportCustsDialogContainer />
+				</FormProvider>
 			</Fragment>
 		);
 	})

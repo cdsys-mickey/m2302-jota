@@ -5,7 +5,7 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { useFormMeta } from "@/shared-contexts/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
@@ -14,11 +14,11 @@ import MuiStyles from "@/shared-modules/MuiStyles";
 import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { FormMetaProvider } from "../../../../shared-contexts/form-meta/FormMetaProvider";
 import A20Drawer from "../A20Drawer";
 import A20Form from "../form/A20Form";
 import { A20DialogButtonsContainer } from "./buttons/A20DialogButtonsContainer";
 import { toastEx } from "@/helpers/toastEx";
+import { FormMetaProvider } from "@/shared-components";
 
 export const A20DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

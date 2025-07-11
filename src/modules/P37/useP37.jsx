@@ -52,7 +52,6 @@ export default function useP37() {
 				crud.startLoading("讀取中...", { id });
 			}
 			try {
-				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/cms/nc-tour-groups`,
 					bearer: auth.token,
@@ -98,7 +97,7 @@ export default function useP37() {
 		console.log("data", data);
 		try {
 			crud.startUpdating();
-			const { status, error } = await httpPutAsync({
+			const { status, error, payload } = await httpPutAsync({
 				url: "v1/cms/nc-tour-groups",
 				data,
 				bearer: auth.token
@@ -109,6 +108,14 @@ export default function useP37() {
 				);
 				crud.finishedUpdating();
 				grid.handleLock();
+
+				const newData = P37.transformForReading(payload.data[0]);
+				grid.initGridData(newData.commissions, {
+					fillRows: 5
+				})
+				crud.finishedLoading({
+					data: newData,
+				});
 			} else {
 				throw error || new Error(`儲存發生未預期例外`);
 			}

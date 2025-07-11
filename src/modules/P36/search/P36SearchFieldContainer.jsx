@@ -48,7 +48,7 @@ export const P36SearchFieldContainer = (props) => {
 				<ControlledSearchFieldContainer
 					autoFocus
 					name={name}
-					placeholder="編號/名稱(ctrl+F12)"
+					placeholder="簡碼/編號/名稱(C+F12)"
 					mobilePlaceholder="編號/名稱"
 					// rightSquare
 					// square

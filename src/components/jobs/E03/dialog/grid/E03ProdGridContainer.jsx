@@ -2,7 +2,7 @@ import { E03Context } from "@/contexts/E03/E03Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import createTooltipExColumn from "@/shared-components/dsg/columns/tooltip-ex/createTooltipExColumn";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import { useContext, useMemo } from "react";

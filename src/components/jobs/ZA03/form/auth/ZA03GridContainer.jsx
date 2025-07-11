@@ -4,7 +4,7 @@ import ZA03Grid from "./ZA03Grid";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useMemo } from "react";
 
 const ZA03GridContainer = () => {

@@ -5,7 +5,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useMemo } from "react";
-import { FormMetaContext } from "@/shared-contexts/form-meta/FormMetaContext";
+import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 
 export const F03ProdGridContainer = (props) => {
