@@ -2,12 +2,11 @@ import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, memo } from "react";
 import P42CreateButtonContainer from "./P42CreateButtonContainer";
 import { P42FetchResultLabelContainer } from "./P42FetchResultLabelContainer";
-import P42PrintButtonContainer from "./P42PrintButtonContainer";
 
 const LeftButtons = memo(() => (
 	<>
 		<P42CreateButtonContainer />
-		<P42PrintButtonContainer />
+		{/* <P42PrintButtonContainer /> */}
 	</>
 ))
 
@@ -31,6 +30,7 @@ const P42Toolbar = memo(
 
 P42Toolbar.displayName = "P42ListViewToolbar";
 export default P42Toolbar;
+
 
 
 

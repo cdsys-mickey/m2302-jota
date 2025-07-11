@@ -4,7 +4,7 @@ import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer"
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import P42DialogForm from "../form/P42DialogForm";
 import { P42DialogButtonsContainer } from "./buttons/P42DialogButtonsContainer";
 import { FormMetaProvider } from "@/shared-components";
@@ -12,6 +12,7 @@ import P42Drawer from "../P42Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useCallback } from "react";
 
 export const P42DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -23,32 +24,37 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 
 	const formMeta = useFormMeta(
 		`
-		FactID,
-		FactData,
-		AbbrName,
-		Boss,
-		Contact,
-		Tel,
-		Uniform,
-		PayGroup,
-		bank,
-		BankAcct,
-		CompAddr,
-		CompTel,
-		CompFax,
-		TaxType,
-		FactAddr,
-		FactTel,
-		FactFax,
-		mainProd,
-		remark
+		OrdID,
+		OrdDate,
+		ArrDate,
+		ArrHM,
+		CFlag,
+		GrpName,
+		city,
+		area,
+		GrpType,
+		custType,
+		busComp,
+		CarData_N,
+		CarQty,
+		PugAmt,
+		CarNo,
+		DrvName,
+		DrvTel,
+		tourGroup,
+		TrvData_N,
+		tourGuide,
+		CndName,
+		CndTel,
+		employee,
+		Remark
 		`
 	);
 
-	const forms = useForm({
+	const form = useForm({
 		defaultValues: {},
 	});
-	const { reset } = forms;
+	const { reset } = form;
 	const p42 = useContext(P42Context);
 
 	const title = useMemo(() => {
@@ -68,12 +74,65 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 	});
 
 	const handleSubmit = useMemo(() => {
-		return forms.handleSubmit(p42.onEditorSubmit, p42.onEditorSubmitError);
-	}, [p42.onEditorSubmit, p42.onEditorSubmitError, forms]);
+		return form.handleSubmit(p42.onEditorSubmit, p42.onEditorSubmitError);
+	}, [p42.onEditorSubmit, p42.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
 	})
+
+	const handleCityChange = useCallback((newValue) => {
+		form.setValue("area", newValue?.CtAreaID ? {
+			CodeID: newValue.CtAreaID,
+			CodeData: newValue.CtAreaData
+		} : null)
+	}, [form]);
+
+	const handleBusCompChange = useCallback((newValue) => {
+		form.setValue("CarData_N", newValue?.CarData ?? "");
+	}, [form]);
+
+	const handleTourGroupChange = useCallback((newValue) => {
+		form.setValue("TrvData_N", newValue?.TrvData ?? "");
+	}, [form]);
+
+	const handleTourGuideChange = useCallback((newValue) => {
+		form.setValue("CndName", newValue?.CndData ?? "")
+	}, [form]);
+
+	const comId = useWatch({
+		name: "ComID",
+		control: form.control
+	})
+
+	const cflag = useWatch({
+		name: "CFlag",
+		control: form.control
+	})
+
+	const cflagDisabled = useMemo(() => {
+		return comId && cflag;
+	}, [cflag, comId])
+
+	// const city = useWatch({
+	// 	name: "city",
+	// 	control: form.control
+	// })
+
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
+				case "CFlag":
+					return cflagDisabled;
+				case "area":
+					// return !city;
+					return true;
+				default:
+					return false;
+			}
+		},
+		[cflagDisabled]
+	);
 
 	useEffect(() => {
 		// if (p42.readState === ActionState.DONE && !!p42.itemData) {
@@ -81,10 +140,10 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 			console.log(`p42 form reset`, p42.itemData);
 			reset(p42.itemData);
 		}
-	}, [p42.itemData, p42.itemDataReady, p42.readState, forms, reset]);
+	}, [p42.itemData, p42.itemDataReady, p42.readState, form, reset]);
 
 	return (
-		<FormProvider {...forms}>
+		<FormProvider {...form}>
 			<DialogExContainer
 				title={title}
 				ref={ref}
@@ -110,7 +169,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					scrollable.scroller,
 				]}
 				{...rest}>
-				<FormMetaProvider {...formMeta}>
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
 					<P42DialogForm
 						ref={ref}
 						onSubmit={handleSubmit}
@@ -120,6 +179,11 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 						readError={p42.readError}
 						data={p42.itemData}
 						itemDataReady={p42.itemDataReady}
+						onCityChange={handleCityChange}
+						onBusCompChange={handleBusCompChange}
+						onTourGroupChange={handleTourGroupChange}
+						onTourGuideChange={handleTourGuideChange}
+						cflagDisabled={cflagDisabled}
 					/>
 				</FormMetaProvider>
 				<P42Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
@@ -129,6 +193,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 });
 
 P42DialogContainer.displayName = "P42DialogContainer";
+
 
 
 

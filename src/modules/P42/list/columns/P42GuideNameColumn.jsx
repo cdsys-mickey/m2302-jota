@@ -1,20 +1,21 @@
 import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
 
-const P42IDColumn = (props) => {
+const P42GuideNameColumn = (props) => {
 	const { ...rest } = props;
+
 	return (
-		<ListColumn item pr={1} xs={6} sm={3} {...rest} />
+		<ListColumn item pr={1} xs={17} sm={3} {...rest} />
 	);
 };
 
-P42IDColumn.propTypes = {
+P42GuideNameColumn.propTypes = {
 	loading: PropTypes.bool,
 	children: PropTypes.oneOfType([PropTypes.node]),
 };
 
-P42IDColumn.displayName = "P42IDColumn";
-export default P42IDColumn;
+P42GuideNameColumn.displayName = "P42GuideNameColumn";
+export default P42GuideNameColumn;
 
 
 

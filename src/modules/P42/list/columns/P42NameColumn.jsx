@@ -5,7 +5,7 @@ const P42NameColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={17} sm={9} {...rest} />
+		<ListColumn item pr={1} xs={17} sm={6} {...rest} />
 	);
 };
 
@@ -16,6 +16,7 @@ P42NameColumn.propTypes = {
 
 P42NameColumn.displayName = "P42NameColumn";
 export default P42NameColumn;
+
 
 
 

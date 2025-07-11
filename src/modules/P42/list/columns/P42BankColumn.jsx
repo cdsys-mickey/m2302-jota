@@ -5,7 +5,7 @@ const P42BankColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={9} sx={{ display: { xs: 'none', sm: 'block' } }} {...rest} />
+		<ListColumn item pr={1} xs={4} sx={{ display: { xs: 'none', sm: 'block' } }} {...rest} />
 	);
 };
 
@@ -16,6 +16,7 @@ P42BankColumn.propTypes = {
 
 P42BankColumn.displayName = "P42BankColumn";
 export default P42BankColumn;
+
 
 
 

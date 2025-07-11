@@ -57,12 +57,12 @@ export const P42SearchFieldContainer = (props) => {
 					responsive
 					inputRef={inputRef}
 					onClear={searchField.handleClear}
-					Popper
-					PopperComponent={P42SearchPopperContainer}
-					popperOpen={p42.popperOpen}
-					onPopperToggle={p42.handlePopperToggle}
-					onPopperOpen={p42.handlePopperOpen}
-					onPopperClose={p42.handlePopperClose}
+					// Popper
+					// PopperComponent={P42SearchPopperContainer}
+					// popperOpen={p42.popperOpen}
+					// onPopperToggle={p42.handlePopperToggle}
+					// onPopperOpen={p42.handlePopperOpen}
+					// onPopperClose={p42.handlePopperClose}
 					filtered={P42.isFiltered(getValues())}
 				/>
 			</div>
@@ -73,6 +73,7 @@ P42SearchFieldContainer.propTypes = {
 	name: PropTypes.string,
 };
 P42SearchFieldContainer.displayName = "SupplierSearchFieldContainer";
+
 
 
 
