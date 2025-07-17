@@ -2,7 +2,7 @@ import { MockProdClassLg } from "@/mocks/mock-prod-class-lg";
 // import CabinetTypes from "@/modules/md-cabinet-types";
 import ProdClasses from "@/modules/md-prod-classes";
 import ButtonExView from "@/shared-components/button/ButtonExView";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
+import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
 import PopperBox from "@/shared-components/popper/PopperBox";
 import PopperTitle from "@/shared-components/popper/PopperTitle";
 import { TypoWebApiOptionPicker } from "@/shared-components/typo/TypoWebApiOptionPicker";

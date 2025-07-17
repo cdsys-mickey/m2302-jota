@@ -9,6 +9,7 @@ import ListViewBox from "../../../shared-components/listview/ListViewBox";
 import { useReactWindowScroll } from "../../../shared-hooks/react-window/useReactWindowScroll";
 import { P21ListRowContainer } from "./P21ListRowContainer";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
+import { useMemo } from "react";
 
 export const P21ListViewContainer = () => {
 	const p21 = useContext(P21Context);
@@ -40,6 +41,10 @@ export const P21ListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -51,7 +56,7 @@ export const P21ListViewContainer = () => {
 				loadMoreItems={p21.loadMoreItems}
 				isItemLoaded={p21.isItemLoaded}
 				RowComponent={P21ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={p21.handleItemsRendered}
 				error={p21.listError}
 				// bottomReached={p21.bottomReached}

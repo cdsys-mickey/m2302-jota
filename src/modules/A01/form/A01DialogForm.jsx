@@ -20,7 +20,7 @@ import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import Strings from "@/shared-modules/sd-strings";
 import { TabContext, TabList, TabPanel } from "@mui/lab";

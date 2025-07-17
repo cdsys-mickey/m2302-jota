@@ -50,7 +50,7 @@ export const B011ListViewContainer = (props) => {
 	}, [lvCust, lvDate, lvEmployee]);
 
 	const _height = useMemo(() => {
-		return height - 180
+		return height ? height - 200 : 300
 	}, [height])
 
 	return (

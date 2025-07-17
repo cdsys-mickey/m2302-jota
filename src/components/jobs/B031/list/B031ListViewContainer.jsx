@@ -1,14 +1,13 @@
+import { B031Context } from "@/contexts/B031/B031Context";
+import B031 from "@/modules/md-b031";
 import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { B031ListRowContainer } from "./B031ListRowContainer";
-import { B031Context } from "@/contexts/B031/B031Context";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
-import B031 from "@/modules/md-b031";
 
 export const B031ListViewContainer = () => {
 	const b031 = useContext(B031Context);
@@ -59,6 +58,10 @@ export const B031ListViewContainer = () => {
 		});
 	}, [cust, cust2, prod, prod2, date, date2]);
 
+	const _height = useMemo(() => {
+		return height ? height - 250 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -70,7 +73,7 @@ export const B031ListViewContainer = () => {
 				loadMoreItems={b031.loadMoreItems}
 				isItemLoaded={b031.isItemLoaded}
 				RowComponent={B031ListRowContainer}
-				height={height ? height - 232 : 300}
+				height={_height}
 				handleItemsRendered={b031.handleItemsRendered}
 				error={b031.listError}
 				// bottomReached={b031.bottomReached}

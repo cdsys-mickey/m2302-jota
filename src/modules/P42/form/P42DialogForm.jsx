@@ -1,28 +1,26 @@
 import { Grid } from "@mui/material";
 import { memo } from "react";
 
-import BankPicker from "@/components/BankPicker/BankPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 
-import FormBox from "@/shared-components/form/FormBox";
-import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
-import { Container } from "@mui/material";
-import PropTypes from "prop-types";
-import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
-import { CheckboxEx, DatePickerEx, FormFieldLabel, TimePickerEx } from "@/shared-components";
-import DateFormats from "@/shared-modules/DateFormats.mjs";
-import CmsCityPicker from "@/components/CmsCityPicker/CmsCityPicker";
 import CmsAreaPicker from "@/components/CmsAreaPicker/CmsAreaPicker";
-import CmsGroupTypePicker from "@/components/CmsGroupTypePicker/CmsGroupTypePicker";
+import { CmsBookingOrderPicker } from "@/components/CmsBookingOrderPicker/CmsBookingOrderPicker";
 import CmsBusCompPicker from "@/components/CmsBusCompPicker/CmsBusCompPicker";
+import CmsCityPicker from "@/components/CmsCityPicker/CmsCityPicker";
+import CmsCustTypePicker from "@/components/CmsCustTypePicker/CmsCustTypePicker";
+import CmsGroupTypePicker from "@/components/CmsGroupTypePicker/CmsGroupTypePicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import CmsCustTypePicker from "@/components/CmsCustTypePicker/CmsCustTypePicker";
+import { CheckboxEx, DatePickerEx } from "@/shared-components";
+import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import FormSectionBox from "@/shared-components/form/FormSectionBox";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
+import { Container } from "@mui/material";
+import PropTypes from "prop-types";
+import HotelPicker from "@/components/HotelPicker/HotelPicker";
 
 const P42DialogForm = memo((props) => {
 	const {
@@ -55,31 +53,21 @@ const P42DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionBox >
-						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={2}>
+						<Grid container columns={24} spacing={1}>
+							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
-									name="OrdID"
-									label="預約單號"
-									// autoFocus
+									name="ComID"
+									label="佣金單號"
 									fullWidth
-									value={data?.OrdID}
-									// required
-									// rules={{ required: "廠商代碼為必填" }}
-									// readOnly={updating}
 									disabled
-								// slotProps={{
-								// 	htmlInput: {
-								// 		maxLength: 6
-								// 	}
-								// }}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={4.5}>
 								<DatePickerEx
 									typo
-									name="OrdDate"
-									label="訂訪日"
+									name="SalDate"
+									label="交易日"
 									autoFocus
 									fullWidth
 									required
@@ -88,45 +76,26 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={12} md={3}>
-								<DatePickerEx
+							<Grid item xs={12} sm={12} md={6}>
+								<CmsBookingOrderPicker
 									typo
-									name="ArrDate"
-									label="到訪日"
-									fullWidth
-									required
-									variant="outlined"
-									validate
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={2.5}>
-								<TimePickerEx
-									label="到訪時間"
-									typo
-									name="ArrHM"
-									fullWidth
-									validate
-									clearable
-									placeholder="起"
-									variant="outlined"
-									views={['hours', 'minutes']}
-									format={DateFormats.DATEFNS_TIME}
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={1.5}>
-								<CheckboxEx
-									typo
-									label="結清"
-									name="CFlag"
-									variant="outlined"
-									disabled={cflagDisabled}
+									name="bookingOrder"
+									label="預約單號"
+									disableOpenOnInput
+									slotProps={{
+										paper: {
+											sx: {
+												width: 740,
+											},
+										},
+									}}
 								/>
 							</Grid>
 						</Grid>
 					</FormSectionBox>
 					<FormSectionBox >
-						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={7}>
+						<Grid container columns={24} spacing={1}>
+							<Grid item xs={12} sm={12} md={7.5}>
 								<TextFieldWrapper
 									typo
 									name="GrpName"
@@ -146,7 +115,7 @@ const P42DialogForm = memo((props) => {
 									disableOpenOnInput
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={3} lg={2}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<CmsAreaPicker
 									typo
 									name="area"
@@ -177,8 +146,8 @@ const P42DialogForm = memo((props) => {
 					</FormSectionBox>
 					{/* <FlexBox fullWidth /> */}
 					<FormSectionBox >
-						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={3}>
+						<Grid container columns={24} spacing={1}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<CmsBusCompPicker
 									typo
 									name="busComp"
@@ -197,7 +166,7 @@ const P42DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={2}>
+							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
 									name="CarQty"
@@ -215,8 +184,8 @@ const P42DialogForm = memo((props) => {
 									type="number"
 								/>
 							</Grid>
-							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12} md={3}>
+							{/* <FlexBox fullWidth /> */}
+							<Grid item xs={12} sm={12} md={3.5}>
 								<TextFieldWrapper
 									typo
 									name="CarNo"
@@ -224,39 +193,29 @@ const P42DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={4}>
+							<Grid item xs={12} sm={12} md={2.5}>
 								<TextFieldWrapper
 									typo
 									name="DrvName"
 									label="司機姓名"
 									fullWidth
-									slotProps={{
-										htmlInput: {
-											maxLength: 8
-										}
-									}}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={5}>
+							<Grid item xs={12} sm={12} md={4.5}>
 								<TextFieldWrapper
 									typo
 									name="DrvTel"
 									label="司機電話"
 									fullWidth
-								// slotProps={{
-								// 	htmlInput: {
-								// 		maxLength: 2
-								// 	}
-								// }}
 								/>
 							</Grid>
 						</Grid>
 					</FormSectionBox>
 					{/* <FlexBox fullWidth /> */}
 					<FormSectionBox >
-						<Grid container columns={12} spacing={1}>
+						<Grid container columns={24} spacing={1}>
 
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<TourGroupPicker
 									typo
 									name="tourGroup"
@@ -275,7 +234,7 @@ const P42DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<FlexBox fullWidth />
+							{/* <FlexBox fullWidth /> */}
 							<Grid item xs={12} sm={12} md={3}>
 								<TourGuidePicker
 									typo
@@ -308,8 +267,8 @@ const P42DialogForm = memo((props) => {
 					</FormSectionBox>
 					{/* <FlexBox fullWidth /> */}
 					<FormSectionBox >
-						<Grid container columns={12} spacing={1}>
-							<Grid item xs={12} sm={12} md={3}>
+						<Grid container columns={24} spacing={1}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<EmployeePicker
 									typo
 									name="employee"
@@ -318,8 +277,16 @@ const P42DialogForm = memo((props) => {
 									disableOpenOnInput
 								/>
 							</Grid>
-							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12} md={6}>
+							<Grid item xs={12} sm={12} md={4}>
+								<EmployeePicker
+									typo
+									name="cashier"
+									label="出納"
+									fullWidth
+									disableOpenOnInput
+								/>
+							</Grid>
+							<Grid item xs={12} sm={12} md={16.5}>
 								<TextFieldWrapper
 									typo
 									name="Remark"
@@ -328,34 +295,42 @@ const P42DialogForm = memo((props) => {
 									multiline
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
-								{/* <FormFieldLabel name="TrxDate" label="已訪日" /> */}
-								{/* <TextFieldWrapper
-									typo
-									name="TrxDate"
-									label="已訪日"
-									fullWidth
-									disabled
-								/> */}
-								<DatePickerEx
-									typo
-									name="TrxDate"
-									label="已訪日"
-									fullWidth
-									variant="outlined"
-									// validate
-									disabled
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							{/* <FlexBox fullWidth /> */}
+							<Grid item xs={12} sm={12} md={13.5}>
 								<TextFieldWrapper
 									typo
-									name="ComID"
-									label="佣金單號"
+									name="SnRemark"
+									label="旅行社簽約備註"
 									fullWidth
-									disabled
+									multiline
 								/>
-								{/* <FormFieldLabel name="ComID" label="佣金單號" /> */}
+							</Grid>
+							<Grid item xs={12} sm={12} md={3.5}>
+								<HotelPicker
+									typo
+									name="hotel"
+									label="區域"
+									fullWidth
+									disableOpenOnInput
+								/>
+							</Grid>
+							<Grid item xs={12} sm={12} md={3.5}>
+								<TextFieldWrapper
+									typo
+									name="HotelCms"
+									label="區域佣金"
+									fullWidth
+									type="number"
+								/>
+							</Grid>
+							<Grid item xs={12} sm={12} md={3.5}>
+								<CheckboxEx
+									typo
+									label="飯店佣金已發"
+									name="HotelPay"
+									variant="outlined"
+									fullWidth
+								/>
 							</Grid>
 						</Grid>
 					</FormSectionBox>

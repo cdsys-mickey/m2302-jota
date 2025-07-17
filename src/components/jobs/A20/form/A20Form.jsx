@@ -7,7 +7,7 @@ import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { PackageTypeLabelContainer } from "./fields/PackageTypeLabelContainer";
 import { A20ProdMaterialsGridContainer } from "./prods/A20ProdMaterialsGridContainer";
 import FormBox from "@/shared-components/form/FormBox";

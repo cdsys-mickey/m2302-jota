@@ -1,3 +1,4 @@
+import Types from "@/shared-modules/Types.mjs";
 import { useEffect, useRef } from "react";
 
 export const useInit = (callback, dependencies) => {
@@ -13,8 +14,10 @@ export const useInit = (callback, dependencies) => {
 		return () => {
 			if (!unloadedRef.current && unloadCallback) {
 				unloadedRef.current = true;
-				if (unloadCallback) {
+				if (Types.isFunction(unloadCallback)) {
 					unloadCallback();
+				} else {
+					console.warn("unloadCallback is not a function", unloadCallback)
 				}
 			}
 		}

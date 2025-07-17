@@ -1,5 +1,5 @@
 import StdPrint from "@/modules/StdPrint.mjs";
-import DropDownButton from "@/shared-components/DropDownButton";
+import { DropDownButton } from "@/shared-components";
 import PropTypes from "prop-types";
 import DebugReportButton from "@/components/DebugReportButton";
 

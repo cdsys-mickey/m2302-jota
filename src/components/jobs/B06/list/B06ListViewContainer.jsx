@@ -10,6 +10,7 @@ import { B06ListRowContainer } from "./B06ListRowContainer";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import B06 from "@/modules/md-b06";
+import { useMemo } from "react";
 
 export const B06ListViewContainer = () => {
 	const b06 = useContext(B06Context);
@@ -91,6 +92,10 @@ export const B06ListViewContainer = () => {
 		});
 	}, [debouncedQs, debouncedSupplier, debouncedSupplier2, debouncedDate, debouncedDate2, debouncedProd, debouncedProd2, debouncedOrderBy]);
 
+	const _height = useMemo(() => {
+		return height ? height - 250 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -102,7 +107,7 @@ export const B06ListViewContainer = () => {
 				loadMoreItems={b06.loadMoreItems}
 				isItemLoaded={b06.isItemLoaded}
 				RowComponent={B06ListRowContainer}
-				height={height ? height - 236 : 300}
+				height={_height}
 				handleItemsRendered={b06.handleItemsRendered}
 				error={b06.listError}
 				// bottomReached={b06.bottomReached}

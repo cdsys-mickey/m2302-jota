@@ -9,6 +9,7 @@ import ListViewBox from "../../../shared-components/listview/ListViewBox";
 import { useReactWindowScroll } from "../../../shared-hooks/react-window/useReactWindowScroll";
 import { P42ListRowContainer } from "./P42ListRowContainer";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
+import { useMemo } from "react";
 
 export const P42ListViewContainer = () => {
 	const p42 = useContext(P42Context);
@@ -40,6 +41,10 @@ export const P42ListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -51,7 +56,7 @@ export const P42ListViewContainer = () => {
 				loadMoreItems={p42.loadMoreItems}
 				isItemLoaded={p42.isItemLoaded}
 				RowComponent={P42ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={p42.handleItemsRendered}
 				error={p42.listError}
 				// bottomReached={p42.bottomReached}

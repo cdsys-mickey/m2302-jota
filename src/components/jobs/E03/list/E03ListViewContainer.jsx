@@ -71,7 +71,7 @@ export const E03ListViewContainer = () => {
 	}, 300);
 
 	const _height = useMemo(() => {
-		return height ? height - 232 : 300
+		return height ? height - 250 : 300
 	}, [height])
 
 	useInit(() => {

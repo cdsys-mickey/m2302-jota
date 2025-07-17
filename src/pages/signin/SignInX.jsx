@@ -6,8 +6,8 @@ import { Box, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { CaptchaFieldContainer } from "../../components/auth/CaptchaFieldContainer";
-import { ControlledTextField } from "../../shared-components/controlled/ControlledTextField";
-import { ButtonEx } from "@/shared-components";
+import { ControlledTextField } from "../../shared-components/TextFieldEx/ControlledTextField";
+import { ButtonEx, TextFieldEx } from "@/shared-components";
 
 const SignInX = memo((props) => {
 	const { loading, ...rest } = props;
@@ -35,7 +35,8 @@ const SignInX = memo((props) => {
 						/>
 					</Grid>
 					<Grid item xs={12}>
-						<ControlledTextField
+						<TextFieldEx
+							passwordToggle
 							type="password"
 							inputProps={{
 								autocomplete: "current-password",

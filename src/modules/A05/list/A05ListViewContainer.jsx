@@ -9,6 +9,7 @@ import ListViewBox from "../../../shared-components/listview/ListViewBox";
 import { useReactWindowScroll } from "../../../shared-hooks/react-window/useReactWindowScroll";
 import { A05ListRowContainer } from "./A05ListRowContainer";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
+import { useMemo } from "react";
 
 export const A05ListViewContainer = () => {
 	const a05 = useContext(A05Context);
@@ -40,6 +41,10 @@ export const A05ListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -51,7 +56,7 @@ export const A05ListViewContainer = () => {
 				loadMoreItems={a05.loadMoreItems}
 				isItemLoaded={a05.isItemLoaded}
 				RowComponent={A05ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={a05.handleItemsRendered}
 				error={a05.listError}
 				// bottomReached={a05.bottomReached}

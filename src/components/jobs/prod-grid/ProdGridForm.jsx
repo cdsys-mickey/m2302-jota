@@ -2,7 +2,7 @@ import { Box, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 
 import FlexGrid from "@/shared-components/FlexGrid";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { ProdGridForm2Container } from "./ProdGridForm2Container";
 import { ProdGridFormToggleButtonContainer } from "./ProdGridFormToggleButtonContainer";
 import { ProdGridLoadButtonContainer } from "./ProdGridLoadButtonContainer";

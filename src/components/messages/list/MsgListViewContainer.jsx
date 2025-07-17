@@ -8,6 +8,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { MessagesContext } from "@/contexts/msgs/MessagesContext";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { MsgListRowContainer } from "./MsgListRowContainer";
+import { useMemo } from "react";
 
 export const MsgListViewContainer = () => {
 	// const messaging = useContext(MessagingContext);
@@ -39,6 +40,10 @@ export const MsgListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -48,7 +53,7 @@ export const MsgListViewContainer = () => {
 				loadMoreItems={msgs.loadMoreItems}
 				isItemLoaded={msgs.isItemLoaded}
 				RowComponent={MsgListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={msgs.handleItemsRendered}
 				error={msgs.listError}
 				// bottomReached={users.bottomReached}

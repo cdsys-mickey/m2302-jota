@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { ControlledTextField } from "../controlled/ControlledTextField";
+import { ControlledTextField } from "./ControlledTextField";
 import TypoTextFieldContainer from "./TypoTextFieldContainer";
 
 export const TextFieldWrapper = (props) => {

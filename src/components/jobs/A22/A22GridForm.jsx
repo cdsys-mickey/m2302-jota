@@ -1,4 +1,4 @@
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Box, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 

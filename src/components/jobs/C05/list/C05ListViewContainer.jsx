@@ -23,8 +23,8 @@ export const C05ListViewContainer = () => {
 		console.log("isLgOrUp", isLgOrUp)
 		return height ?
 			isLgOrUp
-				? height - 182
-				: height - 232
+				? height - 200
+				: height - 250
 			: 300;
 	}, [height, isLgOrUp])
 

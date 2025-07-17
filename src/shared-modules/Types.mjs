@@ -18,6 +18,10 @@ const isFunction = (v) => {
 	return typeof v === "function";
 };
 
+const isPromise = (v) => {
+	return v instanceof Promise;
+};
+
 const isBoolean = (v) => {
 	return typeof v === "boolean";
 };
@@ -34,6 +38,7 @@ const Types = {
 	isFunction,
 	isBoolean,
 	isLiteral,
+	isPromise,
 };
 
 export default Types;

@@ -1,8 +1,8 @@
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
+import { ButtonEx } from "@/shared-components";
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import ListToolbar from "../../../../../shared-components/listview/toolbar/ListToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 
 const ZA03DialogEditButtons = memo(
 	forwardRef((props, ref) => {
@@ -12,14 +12,16 @@ const ZA03DialogEditButtons = memo(
 				{...rest}
 				rightComponents={
 					<>
-						<ResponsiveLoadingButton
+						<ButtonEx
+							responsive
 							onClick={onCancel}
 							color="primary"
 							variant="outlined"
 							{...rest}>
 							取消
-						</ResponsiveLoadingButton>
-						<ResponsiveLoadingButton
+						</ButtonEx>
+						<ButtonEx
+							responsive
 							onClick={onSave}
 							type="submit"
 							endIcon={<SendIcon />}
@@ -27,7 +29,7 @@ const ZA03DialogEditButtons = memo(
 							variant="contained"
 							loading={loading}>
 							儲存
-						</ResponsiveLoadingButton>
+						</ButtonEx>
 					</>
 				}></ListToolbar>
 		);

@@ -3,7 +3,7 @@ import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { memo } from "react";
 import { E021CustomerPicker } from "../E021CustomerPicker";
 import E021SalesTypePicker from "../E021SalesTypePicker";

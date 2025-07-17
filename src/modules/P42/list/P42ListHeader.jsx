@@ -13,13 +13,12 @@ const P42ListHeader = memo(
 		return (
 			<ListViewHeader ref={ref} {...rest}>
 				<IndexColumn></IndexColumn>
-				<P42IDColumn>預約單號</P42IDColumn>
-				<P42DateColumn>訂訪日</P42DateColumn>
-				<P42DateColumn>到訪日</P42DateColumn>
-				<P42NameColumn>名稱</P42NameColumn>
-				{/* <P42GuideNameColumn>導遊</P42GuideNameColumn> */}
+				<P42IDColumn>佣金單號</P42IDColumn>
+				<P42DateColumn>交易日</P42DateColumn>
+				<P42NameColumn>團體名稱</P42NameColumn>
 				<P42BankColumn>車行</P42BankColumn>
 				<P42BankColumn>旅行社</P42BankColumn>
+				<P42GuideNameColumn>導遊</P42GuideNameColumn>
 			</ListViewHeader>
 		);
 	})

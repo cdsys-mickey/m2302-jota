@@ -9,6 +9,7 @@ import ListViewBox from "../../../shared-components/listview/ListViewBox";
 import { useReactWindowScroll } from "../../../shared-hooks/react-window/useReactWindowScroll";
 import { P35ListRowContainer } from "./P35ListRowContainer";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
+import { useMemo } from "react";
 
 export const P35ListViewContainer = () => {
 	const p35 = useContext(P35Context);
@@ -40,6 +41,10 @@ export const P35ListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -51,7 +56,7 @@ export const P35ListViewContainer = () => {
 				loadMoreItems={p35.loadMoreItems}
 				isItemLoaded={p35.isItemLoaded}
 				RowComponent={P35ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={p35.handleItemsRendered}
 				error={p35.listError}
 				// bottomReached={p35.bottomReached}

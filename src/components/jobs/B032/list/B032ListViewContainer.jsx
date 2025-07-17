@@ -11,6 +11,7 @@ import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import B032 from "@/modules/md-b032";
 import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
+import { useMemo } from "react";
 
 export const B032ListViewContainer = () => {
 	const b = useContext(BContext);
@@ -62,6 +63,10 @@ export const B032ListViewContainer = () => {
 		});
 	}, [cust, cust2, prod, prod2, date, date2]);
 
+	const _height = useMemo(() => {
+		return height ? height - 250 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -73,7 +78,7 @@ export const B032ListViewContainer = () => {
 				loadMoreItems={b032.loadMoreItems}
 				isItemLoaded={b032.isItemLoaded}
 				RowComponent={B032ListRowContainer}
-				height={height ? height - 232 : 300}
+				height={_height}
 				handleItemsRendered={b032.handleItemsRendered}
 				error={b032.listError}
 				// bottomReached={b032.bottomReached}

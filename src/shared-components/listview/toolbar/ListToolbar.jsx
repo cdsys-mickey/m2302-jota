@@ -39,8 +39,7 @@ const ListToolbar = memo(
 				fullWidth
 				alignItems={alignItems}
 				p={0.5}
-				my={0.5}
-				{...LeftProps}
+				// my={0.5}
 				sx={[
 					(theme) => ({
 						// minHeight: "48px",
@@ -78,16 +77,17 @@ const ListToolbar = memo(
 					})}
 					sx={[
 						(theme) => ({
-							"& button:not(.no-margin-right)": {
-								marginRight: theme.spacing(1),
-							},
-							"& .MuiButtonGroup-root button": {
-								marginLeft: "unset",
-								marginRight: "unset",
-							},
-							"& label:not(.no-margin-right), & .toolbar-button:not(.no-margin-right), & > *:not(.no-margin-right)": {
-								marginRight: theme.spacing(1),
-							},
+							// "& button:not(.no-margin-right)": {
+							// 	marginRight: theme.spacing(1),
+							// },
+							// "& .MuiButtonGroup-root button": {
+							// 	marginLeft: "unset",
+							// 	marginRight: "unset",
+							// },
+							// "& label:not(.no-margin-right), & .toolbar-button:not(.no-margin-right), & > *:not(.no-margin-right)": {
+							// 	marginRight: theme.spacing(1),
+							// },
+							"gap": theme.spacing(1)
 						}),
 					]}
 					{...LeftProps}>
@@ -99,8 +99,8 @@ const ListToolbar = memo(
 				{/* RIGHT */}
 				<FlexBox
 					pl={1}
-					pt={1}
-					pb={0}
+					// pt={0}
+					// pb={0}
 					alignItems="center"
 					justifyContent="flex-end"
 					flex={1}

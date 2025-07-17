@@ -8,6 +8,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import ListViewBox from "../../../../shared-components/listview/ListViewBox";
 import { A20ListRowContainer } from "./A20ListRowContainer";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
+import { useMemo } from "react";
 
 export const A20ListViewContainer = () => {
 	console.log("rendering A20ListViewContainer");
@@ -40,6 +41,10 @@ export const A20ListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -52,7 +57,7 @@ export const A20ListViewContainer = () => {
 				loadMoreItems={a20.loadMoreItems}
 				isItemLoaded={a20.isItemLoaded}
 				RowComponent={A20ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={a20.handleItemsRendered}
 				error={a20.listError}
 				// bottomReached={a20.bottomReached}

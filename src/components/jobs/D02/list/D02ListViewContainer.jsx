@@ -80,7 +80,7 @@ export const D02ListViewContainer = () => {
 
 	const _height = useMemo(() => {
 		return height
-			? height - 182
+			? height - 200
 			: 300;
 	}, [height])
 

@@ -1,7 +1,7 @@
 import { E03Context } from "@/contexts/E03/E03Context";
 import DSGToolbar from "@/shared-components/dsg/DSGToolbar";
 import { DSGToolbarLabel } from "@/shared-components/dsg/DSGToolbarLabel";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import Strings from "@/shared-modules/sd-strings";
 import { memo, useContext } from "react";
 import { useFormContext } from "react-hook-form";

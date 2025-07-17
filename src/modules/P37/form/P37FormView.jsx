@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import P37GridContainer from "../grid/P37GridContainer";
 import P37Toolbar from "../P37Toolbar";
+import { Box } from "@mui/system";
 
 const P37FormView = memo((props) => {
 	const { ...rest } = props;
@@ -26,7 +27,9 @@ const P37FormView = memo((props) => {
 								/>
 							</Grid>
 						</Grid>
-						<P37Toolbar />
+						<Box my={0.5}>
+							<P37Toolbar />
+						</Box>
 						{/* <FlexBox sx={{ width: "900px" }} > */}
 						<P37GridContainer slotProps={{
 							box: {

@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import FormSectionTitle from "../../../shared-components/form/FormSectionTitle";
 import FormSectionBox from "../../../shared-components/form/FormSectionBox";
 import { Grid } from "@mui/material";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 
 export const RhfTabTestForm = memo(
 	forwardRef((props, ref) => {

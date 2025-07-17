@@ -1,7 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Colors from "@/modules/Colors.mjs";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
-import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
@@ -9,6 +8,7 @@ import MuiStyles from "@/shared-modules/MuiStyles";
 import ControllerWrapper from "../ControllerWrapper";
 import FlexBox from "../FlexBox";
 import ClearInputButton from "../input/ClearInputButton";
+import TextFieldExView from "./TextFieldExView";
 
 export const ControlledTextField = ({
 	name,
@@ -42,6 +42,8 @@ export const ControlledTextField = ({
 	const inFormMeta = !!formMeta;
 	// const { setFocus } = useFormContext() || {};
 	const form = useFormContext();
+	const { endAdornment, ...InputPropsWithoutEndAdornment } = InputProps || {};
+	const { endAdornment: inputEndAdornment, ...inputPropsWithoutEndAdornment } = slotProps?.input || {};
 
 	const _label = useMemo(() => {
 		return (inline || borderless) ? "" : label;
@@ -102,57 +104,6 @@ export const ControlledTextField = ({
 		[disableEnter, inFormMeta, getError, form, name, handleFocusNextField, isFieldDisabled]
 	);
 
-	// if (!name) {
-	// 	return (
-	// 		<TextField
-	// 			// multiline={multiline}
-	// 			label={_label}
-	// 			sx={[
-	// 				(theme) => ({
-	// 					"&:has(.MuiInputBase-input:focus)": {
-	// 						// backgroundColor: "rgb(253 253 253)",
-	// 					},
-	// 					// "& .MuiOutlinedInput-root": {
-	// 					// 	paddingRight: theme.spacing(1),
-	// 					// },
-	// 				}),
-	// 				...(Array.isArray(sx) ? sx : [sx]),
-	// 			]}
-	// 			onChange={_onChange}
-	// 			onKeyDown={handleKeyDown}
-	// 			InputLabelProps={{
-	// 				...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
-	// 				...InputLabelProps,
-	// 				...(labelShrink && { shrink: true }),
-	// 			}}
-	// 			inputProps={{
-	// 				...inputProps,
-	// 				...slotProps?.htmlInput
-	// 			}}
-	// 			InputProps={{
-	// 				...InputProps,
-	// 				...slotProps?.input,
-	// 				...(readOnly && {
-	// 					readOnly: true,
-	// 					// disableUnderline: true,
-	// 				}),
-	// 				...(renderEndAdornment && {
-	// 					endAdornment: (
-	// 						<>
-	// 							{EndAdornmentComponent && (
-	// 								<EndAdornmentComponent />
-	// 							)}
-	// 						</>
-	// 					),
-	// 				}),
-	// 			}}
-	// 			disabled={disabled}
-	// 			required={required}
-	// 			{...rest}
-	// 		/>
-	// 	);
-	// }
-
 	return (
 		<ControllerWrapper name={name} control={control} defaultValue={defaultValue} rules={rules}>
 			{({ value, onChange, ref, error }) => (
@@ -160,7 +111,7 @@ export const ControlledTextField = ({
 					{inline &&
 						label
 					}
-					<TextField
+					<TextFieldExView
 						value={value}
 						// multiline={multiline}
 						label={_label}
@@ -223,8 +174,10 @@ export const ControlledTextField = ({
 							...(labelShrink && { shrink: true }),
 						}}
 						InputProps={{
-							...InputProps,
-							...slotProps?.input,
+							// ...InputProps,
+							...InputPropsWithoutEndAdornment,
+							// ...slotProps?.input,
+							...inputPropsWithoutEndAdornment,
 							...(readOnly && {
 								readOnly: true,
 								// disableUnderline: true,
@@ -232,6 +185,8 @@ export const ControlledTextField = ({
 							...(renderEndAdornment && {
 								endAdornment: (
 									<>
+										{endAdornment}
+										{inputEndAdornment}
 										{clearable && (
 											<ClearInputButton
 												className="clearable"

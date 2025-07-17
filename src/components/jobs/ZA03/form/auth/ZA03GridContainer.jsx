@@ -14,7 +14,7 @@ const ZA03GridContainer = () => {
 	const formMeta = useContext(FormMetaContext);
 
 	const _height = useMemo(() => {
-		return height - 272
+		return height ? height - 274 : 300;
 	}, [height])
 
 	return (

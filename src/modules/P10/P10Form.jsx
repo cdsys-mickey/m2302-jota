@@ -14,7 +14,7 @@ import { PrintReportButton } from "@/components";
 import P10ReportTypePicker from "./pickers/P10ReportTypePicker";
 import P10OrderTypePicker from "./pickers/P10OrderTypePicker";
 import OrderDirPicker from "@/components/picker/OrderDirPicker";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 
 const P10Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;

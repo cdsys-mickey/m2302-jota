@@ -81,7 +81,7 @@ export const E021ListViewContainer = () => {
 	}, [q, salesDate, arrDate, squared, salesType, cust, custName, compTel, employee]);
 
 	const _height = useMemo(() => {
-		return height ? height - 236 : 300
+		return height ? height - 250 : 300
 	}, [height])
 
 	return (

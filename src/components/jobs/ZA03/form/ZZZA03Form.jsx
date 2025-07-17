@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import ZA03 from "@/modules/ZA03.mjs";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { ZA03DialogTitleButtonsContainer } from "../dialog/buttons/ZA03DialogTitleButtonsContainer";
 import ZA03GridContainer from "./auth/ZA03GridContainer";
 import { ZA03DeptsPickerContainer } from "./depts-picker/ZA03DeptsPickerContainer";

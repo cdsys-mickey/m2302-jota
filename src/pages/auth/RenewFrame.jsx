@@ -1,6 +1,6 @@
 import Colors from "@/modules/Colors.mjs";
 import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
+import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexContainer from "@/shared-components/FlexContainer";
 import ModuleHeading from "@/shared-components/ModuleHeading";

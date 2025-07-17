@@ -50,9 +50,7 @@ export const D07ListViewContainer = () => {
 	}, [debouncedQ, debouncedEmployee]);
 
 	const _height = useMemo(() => {
-		return height
-			? height - 182
-			: 300;
+		return height ? height - 200 : 300;
 	}, [height])
 
 	return (

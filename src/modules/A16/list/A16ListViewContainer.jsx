@@ -8,6 +8,7 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { A16ListRowContainer } from "./A16ListRowContainer";
+import { useMemo } from "react";
 
 export const A16ListViewContainer = () => {
 	const a16 = useContext(A16Context);
@@ -39,6 +40,10 @@ export const A16ListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -50,7 +55,7 @@ export const A16ListViewContainer = () => {
 				loadMoreItems={a16.loadMoreItems}
 				isItemLoaded={a16.isItemLoaded}
 				RowComponent={A16ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={a16.handleItemsRendered}
 				error={a16.listError}
 				// bottomReached={a16.bottomReached}

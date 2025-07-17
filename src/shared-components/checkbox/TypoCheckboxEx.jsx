@@ -5,7 +5,9 @@ import { useWatch } from "react-hook-form";
 import PropTypes from "prop-types";
 
 const DEFAULT_GET_LABEL = (value) => {
-	return value ? "是" : "否";
+	return value != null
+		? (value ? "是" : "否")
+		: "";
 }
 
 const TypoCheckboxEx = memo(

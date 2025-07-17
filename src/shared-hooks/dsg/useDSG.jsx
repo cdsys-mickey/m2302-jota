@@ -96,7 +96,7 @@ export const useDSG = ({
 
 	const getRowKey = useCallback((rowData, rowIndex) => {
 		if (!doDirtyCheckByIndex && !keyColumn) {
-			console.error("doDirtyCheckByIndex 未定義 keyColumn, 無法執行 getRowKey");
+			console.error("未啟用 doDirtyCheckByIndex 或未定義 keyColumn, 無法執行 getRowKey");
 			return;
 		}
 		return doDirtyCheckByIndex ? rowIndex : _.get(rowData, keyColumn);
@@ -503,7 +503,10 @@ export const useDSG = ({
 							});
 						if (!checkFailed) {
 							const promises = deletingRows.map(async (rowData, index) => {
-								const key = _.get(rowData, keyColumn);
+								// const key = _.get(rowData, keyColumn);
+								const rowIndex = operation.fromRowIndex + index;
+								const key = getRowKey(rowData, rowIndex);
+
 								if (!key) {
 									console.error(`key(${keyColumn}) 的內容是空的`);
 								} else {
@@ -746,7 +749,7 @@ export const useDSG = ({
 		isDuplicated,
 		isDuplicating,
 
-		isDirty: dirtyIds && dirtyIds.size > 0,
+		isDirty: (dirtyIds && dirtyIds.size > 0) || (deletedIds && deletedIds.size > 0),
 		handleDirtyCheck,
 		otherColumns,
 		otherColumnNames,

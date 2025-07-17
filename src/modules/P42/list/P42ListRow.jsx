@@ -26,25 +26,22 @@ const P42ListRow = memo((props) => {
 						},
 					]}>
 					<IndexColumn title={index}></IndexColumn>
-					<P42IDColumn>{value?.OrdID}</P42IDColumn>
+					<P42IDColumn>{value?.ComID}</P42IDColumn>
 					<P42DateColumn>
-						{value?.OrdDate}
-					</P42DateColumn>
-					<P42DateColumn>
-						{value?.ArrDate}
+						{value?.SalDate}
 					</P42DateColumn>
 					<P42NameColumn>
 						{value?.GrpName}
 					</P42NameColumn>
-					{/* <P42GuideNameColumn>
-						{value?.CndName}
-					</P42GuideNameColumn> */}
 					<P42BankColumn>
 						{value?.CarData}
 					</P42BankColumn>
 					<P42BankColumn>
 						{value?.TrvData}
 					</P42BankColumn>
+					<P42GuideNameColumn>
+						{value?.CndName}
+					</P42GuideNameColumn>
 				</Grid>
 			</HoverableListItem>
 		</div>

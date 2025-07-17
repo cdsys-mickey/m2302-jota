@@ -6,7 +6,7 @@ import { LoadingButton } from "@mui/lab";
 import { Box, Divider, Grid, Paper } from "@mui/material";
 import { forwardRef, memo } from "react";
 import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
-import { ControlledTextField } from "@/shared-components/controlled/ControlledTextField";
+import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
 
 const SignIn = memo(
 	forwardRef((props, ref) => {

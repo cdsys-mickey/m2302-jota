@@ -3,7 +3,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import { Box, Collapse, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { TextFieldWrapper } from "../../../shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "../../../shared-components/TextFieldEx/TextFieldWrapper";
 import ProdCatLPicker from "../../picker/ProdCatLPicker";
 import ProdCatMPicker from "../../picker/ProdCatMPicker";
 import ProdCatSPicker from "../../picker/ProdCatSPicker";

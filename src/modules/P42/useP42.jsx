@@ -34,7 +34,7 @@ export const useP42 = ({ token }) => {
 	] = useToggle(false);
 
 	const listLoader = useInfiniteLoader({
-		url: "v1/cms/bookings",
+		url: "v1/cms/entries",
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
@@ -55,7 +55,7 @@ export const useP42 = ({ token }) => {
 				}
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
-					url: `v1/cms/bookings`,
+					url: `v1/cms/entries`,
 					bearer: token,
 					params: {
 						id: _id
@@ -85,8 +85,8 @@ export const useP42 = ({ token }) => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.startReading("讀取中...", { id: rowData.OrdID });
-			loadItem({ id: rowData.OrdID });
+			crud.startReading("讀取中...", { id: rowData.ComID });
+			loadItem({ id: rowData.ComID });
 		},
 		[crud, loadItem]
 	);
@@ -130,7 +130,7 @@ export const useP42 = ({ token }) => {
 				creating ? crud.startCreating() : crud.startUpdating();
 				const httpMethod = creating ? httpPostAsync : httpPutAsync;
 				const { status, error, payload } = await httpMethod({
-					url: "v1/cms/bookings",
+					url: "v1/cms/entries",
 					data: data,
 					bearer: token,
 
@@ -139,14 +139,14 @@ export const useP42 = ({ token }) => {
 				if (status.success) {
 					const data = payload.data?.[0];
 					toastEx.success(
-						`團體預約單 ${data?.OrdID} ${action}成功`
+						`佣金單號 ${data?.ComID} ${action}成功`
 					);
 					if (creating) {
 						crud.finishedCreating();
 						crud.cancelReading();
 					} else {
 						crud.finishedUpdating();
-						loadItem({ id: data?.OrdID });
+						loadItem({ id: data?.ComID });
 					}
 					// 重新整理
 					listLoader.loadList({ refresh: true });
@@ -174,17 +174,17 @@ export const useP42 = ({ token }) => {
 	// 			crud.startUpdating();
 	// 			// const oldId = crud.itemData?.ProdID;
 	// 			const { status, error } = await httpPutAsync({
-	// 				url: `v1/cms/bookings`,
+	// 				url: `v1/cms/entries`,
 	// 				data: data,
 	// 				bearer: token,
 	// 			});
 
 	// 			if (status.success) {
 	// 				toastEx.success(
-	// 					`團體預約單「${data?.OrdID}」修改成功`
+	// 					`佣金單號「${data?.ComID}」修改成功`
 	// 				);
 	// 				crud.finishedUpdating();
-	// 				loadItem({ id: data?.OrdID });
+	// 				loadItem({ id: data?.ComID });
 	// 				// 重新整理
 	// 				listLoader.loadList({ refresh: true });
 	// 			} else {
@@ -205,11 +205,11 @@ export const useP42 = ({ token }) => {
 
 			const processed = P42.transformForEditorSubmit(data);
 			console.log(`processed`, processed);
-			if (crud.creating || crud.updating) {
-				handleSave({ data: processed, creating: crud.creating });
-			} else {
-				console.error("UNKNOWN SUBMIT TYPE");
-			}
+			// if (crud.creating || crud.updating) {
+			// 	handleSave({ data: processed, creating: crud.creating });
+			// } else {
+			// 	console.error("UNKNOWN SUBMIT TYPE");
+			// }
 		},
 		[crud.creating, crud.updating, handleSave]
 	);
@@ -227,8 +227,7 @@ export const useP42 = ({ token }) => {
 		(e) => {
 			e?.stopPropagation();
 			const data = {
-				OrdDate: new Date(),
-				ArrDate: new Date(),
+				SalDate: new Date(),
 			};
 			crud.promptCreating({
 				data,
@@ -239,22 +238,22 @@ export const useP42 = ({ token }) => {
 
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({
-			message: `確認要删除預約單 ${crud.itemData?.OrdID}?`,
+			message: `確認要删除佣金單 ${crud.itemData?.ComID}?`,
 			onConfirm: async () => {
 				try {
 					crud.startDeleting(crud.itemData);
 					const { status, error } = await httpDeleteAsync({
-						url: `v1/cms/bookings`,
+						url: `v1/cms/entries`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.OrdID,
+							id: crud.itemData?.ComID,
 							ts: tsRef.current
 						}
 					});
 					if (status.success) {
 						crud.cancelAction();
 						toastEx.success(
-							`成功删除預約單 ${crud.itemData?.OrdID}`
+							`成功删除佣金單 ${crud.itemData?.ComID}`
 						);
 						listLoader.loadList({ refresh: true });
 					} else {

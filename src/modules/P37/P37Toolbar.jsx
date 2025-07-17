@@ -9,8 +9,8 @@ import P37EditButton from "./toolbar/P37EditButton";
 const LeftButtons = memo(() => (
 	<>
 		<P37EditButton />
-		<P37SaveButton />
-		<P37CancelButton />
+		{/* <P37SaveButton /> */}
+		{/* <P37CancelButton /> */}
 		{/* <P41PrintButtonContainer /> */}
 	</>
 ))

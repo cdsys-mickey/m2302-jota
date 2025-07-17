@@ -8,6 +8,7 @@ import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { F01ListRowContainer } from "./F01ListRowContainer";
 import { F01Context } from "@/modules/F01/F01Context";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
+import { useMemo } from "react";
 
 export const F01ListViewContainer = () => {
 	const f01 = useContext(F01Context);
@@ -51,6 +52,10 @@ export const F01ListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -62,7 +67,7 @@ export const F01ListViewContainer = () => {
 				loadMoreItems={f01.loadMoreItems}
 				isItemLoaded={f01.isItemLoaded}
 				RowComponent={F01ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={f01.handleItemsRendered}
 				error={f01.listError}
 				// bottomReached={f01.bottomReached}

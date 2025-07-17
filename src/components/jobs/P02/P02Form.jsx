@@ -13,7 +13,7 @@ import TerminalPicker from "@/components/terminal-picker/TerminalPicker";
 import { TimePickerEx } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import RangeGroup from "@/shared-components/RangeGroup";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import P02DataTypePicker from "./picker/P02DataTypePicker";
 
 const P02Form = memo((props) => {

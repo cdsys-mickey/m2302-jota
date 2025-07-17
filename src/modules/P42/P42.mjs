@@ -5,11 +5,8 @@ import Objects from "@/shared-modules/Objects.mjs";
 /* eslint-disable no-mixed-spaces-and-tabs */
 const transformForReading = (payload) => {
 	const {
-		OrdDate,
-		TrxDate,
-		ArrDate,
-		ArrHM,
-		CFlag,
+		SalDate,
+		OrdID,
 		CityID,
 		CityData_N,
 		CtAreaID_N,
@@ -21,18 +18,22 @@ const transformForReading = (payload) => {
 		CarData_N,
 		TrvID,
 		TrvData_N,
-		EmplID,
-		EmplData_N,
 		CndID,
 		CndName,
+		EmplID,
+		EmplData_N,
+		AcctID,
+		AcctData_N,
+		HotelPay,
 		...rest
 	} = payload;
 	return {
-		OrdDate: Forms.parseDate(OrdDate),
-		TrxDate: Forms.parseDate(TrxDate),
-		ArrDate: Forms.parseDate(ArrDate),
-		ArrHM: Forms.parseTime(ArrHM),
-		CFlag: CFlag === "Y",
+		SalDate: Forms.parseDate(SalDate),
+		bookingOrder: OrdID
+			? {
+					OrdID,
+			  }
+			: null,
 		city: CityID
 			? {
 					CodeID: CityID,
@@ -80,17 +81,21 @@ const transformForReading = (payload) => {
 					CodeData: EmplData_N,
 			  }
 			: null,
+		cashier: AcctID
+			? {
+					CodeID: AcctID,
+					CodeData: AcctData_N,
+			  }
+			: null,
+		HotalPay: HotelPay ? HotelPay === "Y" : null,
 		...rest,
 	};
 };
 
 const transformForEditorSubmit = (payload) => {
 	const {
-		OrdDate,
-		ArrDate,
-		TrxDate,
-		ArrHM,
-		CFlag,
+		SalDate,
+		bookingOrder,
 		city,
 		area,
 		GrpType,
@@ -99,15 +104,14 @@ const transformForEditorSubmit = (payload) => {
 		tourGroup,
 		tourGuide,
 		employee,
-		// CloseLog,
+		cashier,
+		hotel,
+		HotelPay,
 		...rest
 	} = payload;
 	return {
-		OrdDate: Forms.formatDate(OrdDate),
-		ArrDate: Forms.formatDate(ArrDate),
-		TrxDate: Forms.formatDate(TrxDate),
-		ArrHM: Forms.formatTime(ArrHM) ?? "",
-		CFlag: CFlag ? "Y" : "",
+		SalDate: Forms.formatDate(SalDate),
+		OrdID: bookingOrder?.OrdID || "",
 		CityID: city?.CodeID ?? "",
 		CtAreaID: area?.CodeID ?? "",
 		GrpType: GrpType?.id ?? "",
@@ -116,7 +120,9 @@ const transformForEditorSubmit = (payload) => {
 		TrvID: tourGroup?.TrvID ?? "",
 		CndID: tourGuide?.CndID ?? "",
 		EmplID: employee?.CodeID ?? "",
-		// CloseLog: CloseLog ?? "",
+		AcctID: cashier?.CodeID ?? "",
+		HotelID: hotel?.CodeID ?? "",
+		HotelPay: HotelPay ? "Y" : "N",
 		...rest,
 	};
 };
@@ -181,4 +187,3 @@ const P42 = {
 };
 
 export default P42;
-

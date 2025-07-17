@@ -102,8 +102,8 @@ export const C07ListViewContainer = () => {
 	const _height = useMemo(() => {
 		return height ?
 			isLgOrUp
-				? height - 182
-				: height - 222
+				? height - 200
+				: height - 250
 			: 300;
 	}, [height, isLgOrUp])
 

@@ -10,7 +10,6 @@ import { Box } from "@mui/system";
 import G04 from "./G04.mjs";
 import G04CreateTab from "./tabs/create/G04CreateTab";
 import G04DeleteTabContainer from "./tabs/delete/G04DeleteTabContainer";
-import G04RecoverTabContainer from "./tabs/recover/G04RecoverTabContainer";
 
 
 

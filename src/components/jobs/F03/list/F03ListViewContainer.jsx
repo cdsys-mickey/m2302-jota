@@ -9,6 +9,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { F03ListRowContainer } from "./F03ListRowContainer";
 import Forms from "../../../../shared-modules/Forms.mjs";
+import { useMemo } from "react";
 
 export const F03ListViewContainer = () => {
 	const f03 = useContext(F03Context);
@@ -37,6 +38,10 @@ export const F03ListViewContainer = () => {
 		});
 	}, [debouncedQ, f03.expProd, f03.expDate]);
 
+	const _height = useMemo(() => {
+		return height ? height - 162 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -48,7 +53,7 @@ export const F03ListViewContainer = () => {
 				loadMoreItems={f03.loadMoreItems}
 				isItemLoaded={f03.isItemLoaded}
 				RowComponent={F03ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={f03.handleItemsRendered}
 				error={f03.listError}
 				// bottomReached={f03.bottomReached}

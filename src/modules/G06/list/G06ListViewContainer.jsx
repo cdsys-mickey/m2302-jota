@@ -37,7 +37,7 @@ export const G06ListViewContainer = () => {
 	const debouncedCustName = useDebounce(custName, 300);
 
 	const _height = useMemo(() => {
-		return height ? height - 182 : 300
+		return height ? height - 200 : 300
 	}, [height])
 
 	useInit(() => {

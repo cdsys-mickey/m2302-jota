@@ -13,22 +13,69 @@ import MuiStyles from "@/shared-modules/MuiStyles";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useCallback } from "react";
+import { keyColumn } from "react-datasheet-grid";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 
 export const P42DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
-
+	const form = useForm({
+		defaultValues: {},
+	});
+	const { reset } = form;
+	const p42 = useContext(P42Context);
 	const _height = useMemo(() => {
 		return height - 120
 	}, [height])
 
+	const columns = useMemo(
+		() => [
+			{
+				...keyColumn(
+					"SCustID",
+					createTextColumnEx({
+						// alignRight: true
+					})
+				),
+				title: "起",
+				// disabled: readOnly,
+				minWidth: 130,
+				// maxWidth: 120,
+			},
+			{
+				...keyColumn(
+					"ECustID",
+					createTextColumnEx({
+						// alignRight: true
+					})
+				),
+				title: "迄",
+				// disabled: readOnly,
+				minWidth: 130,
+				// maxWidth: 120,
+			},
+		],
+		[]
+	);
+
+	const gridMeta = useDSGMeta({
+		columns: columns,
+		skipDisabled: true,
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
+		grid: p42.custGrid
+	});
+
+	const handleLastField = useCallback(() => {
+		gridMeta.setActiveCell({ col: 0, row: 0 });
+	}, [gridMeta]);
+
 	const formMeta = useFormMeta(
 		`
-		OrdID,
-		OrdDate,
-		ArrDate,
-		ArrHM,
-		CFlag,
+		ComID,
+		SalDate,
+		bookingOrder,
 		GrpName,
 		city,
 		area,
@@ -47,15 +94,18 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		CndName,
 		CndTel,
 		employee,
-		Remark
-		`
+		cashier,
+		Remark,
+		SnRemark,
+		hotel,
+		HotelCms,
+		HotelPay,
+		`, {
+		lastField: handleLastField
+	}
 	);
 
-	const form = useForm({
-		defaultValues: {},
-	});
-	const { reset } = form;
-	const p42 = useContext(P42Context);
+
 
 	const title = useMemo(() => {
 		if (p42.creating) {
@@ -150,7 +200,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 				// fullScreen
 				responsive
 				fullWidth
-				maxWidth="md"
+				maxWidth="lg"
 				TitleButtonsComponent={P42DialogButtonsContainer}
 				open={p42.itemViewOpen}
 				onClose={

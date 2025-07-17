@@ -12,6 +12,7 @@ import B02 from "@/modules/md-b02";
 import { BContext } from "@/contexts/B/BContext";
 import { B04Context } from "@/contexts/B04/B04Context";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
+import { useMemo } from "react";
 
 export const B02ListViewContainer = () => {
 	const b = useContext(BContext);
@@ -39,6 +40,10 @@ export const B02ListViewContainer = () => {
 		});
 	}, [debouncedFormValues]);
 
+	const _height = useMemo(() => {
+		return height ? height - 250 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -50,7 +55,7 @@ export const B02ListViewContainer = () => {
 				loadMoreItems={b02.loadMoreItems}
 				isItemLoaded={b02.isItemLoaded}
 				RowComponent={B02ListRowContainer}
-				height={height ? height - 232 : 300}
+				height={_height}
 				handleItemsRendered={b02.handleItemsRendered}
 				error={b02.listError}
 				// bottomReached={b02.bottomReached}

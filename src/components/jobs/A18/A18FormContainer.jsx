@@ -26,11 +26,7 @@ export const A18FormContainer = () => {
 	// 	)();
 	// }, [a18, form])
 
-	const onDebugSubmit = useMemo(() => {
-		return form.handleSubmit(
-			a18.onDebugSubmit,
-		)
-	}, [a18.onDebugSubmit, form]);
+	const handleDebugSubmit = form.handleSubmit(a18.onDebugSubmit)
 
 	const deptDisabled = useMemo(() => {
 		return operator?.Class < Auth.SCOPES.ROOT;
@@ -45,7 +41,7 @@ export const A18FormContainer = () => {
 			<A18Form
 				onSubmit={handleSubmit}
 				// onSubmit={handleClick}
-				onDebugSubmit={onDebugSubmit}
+				onDebugSubmit={handleDebugSubmit}
 				deptDisabled={deptDisabled}
 			/>
 		</FormMetaProvider>

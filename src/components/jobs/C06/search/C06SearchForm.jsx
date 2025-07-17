@@ -6,7 +6,7 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
 import ResponsiveLineBreak from "@/shared-components/responsive-grid/ResponsiveLineBreak";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { memo } from "react";
 
 const C06SearchForm = memo((props) => {

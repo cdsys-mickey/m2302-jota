@@ -9,6 +9,7 @@ import { B04ListRowContainer } from "./B04ListRowContainer";
 import { B04Context } from "@/contexts/B04/B04Context";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import B04 from "@/modules/md-b04";
+import { useMemo } from "react";
 
 export const B04ListViewContainer = () => {
 	const b04 = useContext(B04Context);
@@ -32,6 +33,10 @@ export const B04ListViewContainer = () => {
 		});
 	}, [debouncedFormValues]);
 
+	const _height = useMemo(() => {
+		return height ? height - 250 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -43,7 +48,7 @@ export const B04ListViewContainer = () => {
 				loadMoreItems={b04.loadMoreItems}
 				isItemLoaded={b04.isItemLoaded}
 				RowComponent={B04ListRowContainer}
-				height={height ? height - 232 : 300}
+				height={_height}
 				handleItemsRendered={b04.handleItemsRendered}
 				error={b04.listError}
 				// bottomReached={b04.bottomReached}

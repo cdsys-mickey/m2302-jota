@@ -8,6 +8,7 @@ import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { P14ListRowContainer } from "./P14ListRowContainer";
 import { P14Context } from "@/modules/P14/P14Context";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
+import { useMemo } from "react";
 
 export const P14ListViewContainer = () => {
 	const p14 = useContext(P14Context);
@@ -51,6 +52,11 @@ export const P14ListViewContainer = () => {
 		}
 	}, [debouncedQs]);
 
+	const _height = useMemo(() => {
+		// return height ? height - 162 : 300
+		return height ? height - 100 : 300
+	}, [height])
+
 	return (
 		<ListViewBox withHeader>
 			<InfiniteListView
@@ -62,7 +68,7 @@ export const P14ListViewContainer = () => {
 				loadMoreItems={p14.loadMoreItems}
 				isItemLoaded={p14.isItemLoaded}
 				RowComponent={P14ListRowContainer}
-				height={height ? height - 142 : 300}
+				height={_height}
 				handleItemsRendered={p14.handleItemsRendered}
 				error={p14.listError}
 				// bottomReached={p14.bottomReached}

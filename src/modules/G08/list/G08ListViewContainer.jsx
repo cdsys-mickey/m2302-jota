@@ -44,7 +44,7 @@ export const G08ListViewContainer = () => {
 	}, 300);
 
 	const _height = useMemo(() => {
-		return height ? height - 192 : 300
+		return height ? height - 210 : 300
 	}, [height])
 
 	useInit(() => {

@@ -66,7 +66,7 @@ export const G02ListViewContainer = () => {
 	}, [debouncedDate, debouncedCustId, debouncedCustName, debouncedTel, debouncedID]);
 
 	const _height = useMemo(() => {
-		return height ? height - (g02.isAnyChecked ? 220 : 180) : 300;
+		return height ? height - (g02.isAnyChecked ? 240 : 200) : 300;
 	}, [g02.isAnyChecked, height])
 
 	return (

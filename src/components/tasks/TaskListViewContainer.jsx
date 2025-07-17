@@ -18,7 +18,7 @@ export const TaskListViewContainer = () => {
 	const { height } = useWindowSize();
 
 	const _height = useMemo(() => {
-		return Math.min(height - 200, 600);
+		return height ? Math.min(height - 200, 600) : 300;
 	}, [height])
 
 	useInit(() => {

@@ -3,7 +3,7 @@ import RecvAcctRcptCustomerPicker from "@/components/RecvAccCustomerPicker/RecvA
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import PropTypes from "prop-types";
 import { memo } from "react";
 

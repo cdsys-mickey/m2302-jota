@@ -2,7 +2,7 @@ import { E021Context } from "@/modules/E021/E021Context";
 import Strings from "@/shared-modules/sd-strings";
 import DSGToolbar from "@/shared-components/dsg/DSGToolbar";
 import { DSGToolbarLabel } from "@/shared-components/dsg/DSGToolbarLabel";
-import { TextFieldWrapper } from "@/shared-components/text-field/TextFieldWrapper";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { memo, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 
