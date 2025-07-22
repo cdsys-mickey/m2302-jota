@@ -33,9 +33,9 @@ const FormLabelEx = memo((props) => {
 				(theme) => ({
 					color: theme.palette.text.primary,
 					// fontWeight: 400,
-					...(dense && {
-						top: "-4px",
-					}),
+					// ...(dense && {
+					// 	top: "-4px",
+					// }),
 					marginRight: theme.spacing(1),
 					"& .MuiTypography-root": {
 						fontWeight: 600

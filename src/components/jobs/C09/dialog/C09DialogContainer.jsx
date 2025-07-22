@@ -4,7 +4,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { C09Context } from "@/contexts/C09/C09Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -20,6 +20,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C09DialogForm from "./C09DialogForm";
 import { C09DialogToolbarContainer } from "./toolbar/C09DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C09DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -264,17 +265,17 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 		[]
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (c09.itemDataReady) {
 			console.log("c09 form reset", c09.itemData);
 			reset(c09.itemData);
 		}
-	}, [c09.itemData, c09.itemDataReady, reset]);
+	}, [c09.itemData, c09.itemDataReady]);
 
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -322,7 +323,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 						remarkDisabled={remarkDisabled}
 					/>
 				</FormMetaProvider>
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

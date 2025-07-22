@@ -1,7 +1,7 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { D01Context } from "@/contexts/D01/D01Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -19,6 +19,7 @@ import D01Drawer from "../D01Drawer";
 import D01DialogForm from "./D01DialogForm";
 import { D01DialogToolbarContainer } from "./toolbar/D01DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const D01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -192,12 +193,12 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (d01.itemDataReady) {
 			console.log("d01 form reset", d01.itemData);
 			reset(d01.itemData);
 		}
-	}, [d01.itemData, d01.itemDataReady, reset]);
+	}, [d01.itemData, d01.itemDataReady]);
 
 	useEffect(() => {
 		if (d01.committed) {
@@ -209,7 +210,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly}>
-				<DialogExContainer
+				<DialogEx
 					ref={ref}
 					title={memoisedTitle}
 					// fullScreen
@@ -249,7 +250,7 @@ export const D01DialogContainer = forwardRef((props, ref) => {
 					/>
 
 					<D01Drawer />
-				</DialogExContainer>
+				</DialogEx>
 			</FormMetaProvider>
 		</FormProvider>
 	);

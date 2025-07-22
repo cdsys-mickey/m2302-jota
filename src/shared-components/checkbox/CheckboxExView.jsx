@@ -10,7 +10,7 @@ import { forwardRef, memo } from "react";
 
 const CheckboxExView = memo(
 	forwardRef((props, ref) => {
-		const { shrink = false, variant, fullWidth = false, label, slotProps, error, helperText, ...rest } = props;
+		const { shrink = false, variant, fullWidth = false, dense = false, label, slotProps, error, helperText, ...rest } = props;
 		const { label: labelProps, ...checkboxSlotProps } = slotProps || {};
 
 		const checkbox = (
@@ -28,11 +28,15 @@ const CheckboxExView = memo(
 		return (
 			<FormControl
 				sx={{
+					display: 'inline-block', // 適應內容大小
 					...(fullWidth && {
 						width: "100%"
 					}),
-
-					display: 'inline-block', // 適應內容大小
+					...(dense && {
+						"& .MuiCheckbox-root": {
+							padding: 0
+						}
+					}),
 					...(variant === "outlined" && {
 						border: (theme) => `1px solid ${theme.palette.grey[400]}`, // 與 outlined TextField 未聚焦邊框顏色一致
 						borderRadius: '4px', // 與 TextField 的圓角一致
@@ -95,6 +99,7 @@ CheckboxExView.displayName = "CheckboxExView";
 CheckboxExView.propTypes = {
 	shrink: PropTypes.bool,
 	fullWidth: PropTypes.bool,
+	dense: PropTypes.bool,
 	variant: PropTypes.string,
 	label: PropTypes.string,
 	slotProps: PropTypes.object,

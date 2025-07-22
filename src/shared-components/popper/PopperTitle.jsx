@@ -1,5 +1,5 @@
 import { memo } from "react";
-import DialogTitleEx from "@/shared-components/dialog/DialogTitleEx";
+import DialogTitleEx from "@/shared-components/DialogEx/DialogTitleEx";
 import PropTypes from "prop-types";
 
 const PopperTitle = memo((props) => {

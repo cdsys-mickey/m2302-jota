@@ -3,7 +3,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { B031Context } from "@/contexts/B031/B031Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -22,6 +22,7 @@ import B031Drawer from "../B031Drawer";
 import B031DialogForm from "./B031DialogForm";
 import { B031DialogToolbarContainer } from "./toolbar/B031DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const B031DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -228,12 +229,12 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (b031.itemDataReady) {
 			console.log("b031 form reset", b031.itemData);
 			form.reset(b031.itemData);
 		}
-	}, [b031.itemData, b031.itemDataReady, form]);
+	}, [b031.itemData, b031.itemDataReady]);
 
 	useEffect(() => {
 		if (!importProdsDialogOpen) {
@@ -245,7 +246,7 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -289,7 +290,7 @@ export const B031DialogContainer = forwardRef((props, ref) => {
 
 				{/* 側邊欄 */}
 				<B031Drawer />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

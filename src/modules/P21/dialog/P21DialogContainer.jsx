@@ -1,6 +1,6 @@
 import { P21Context } from "@/modules/P21/P21Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -12,6 +12,7 @@ import P21Drawer from "../P21Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const P21DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -75,17 +76,16 @@ export const P21DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
-		// if (p21.readState === ActionState.DONE && !!p21.itemData) {
+	useChangeTracking(() => {
 		if (p21.itemDataReady) {
 			console.log(`p21 form reset`, p21.itemData);
 			reset(p21.itemData);
 		}
-	}, [p21.itemData, p21.itemDataReady, p21.readState, forms, reset]);
+	}, [p21.itemData, p21.itemDataReady]);
 
 	return (
 		<FormProvider {...forms}>
-			<DialogExContainer
+			<DialogEx
 				title={title}
 				ref={ref}
 				// fullScreen
@@ -123,7 +123,7 @@ export const P21DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<P21Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

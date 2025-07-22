@@ -1,7 +1,7 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { A20Context } from "@/contexts/A20/A20Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -19,6 +19,7 @@ import A20Form from "../form/A20Form";
 import { A20DialogButtonsContainer } from "./buttons/A20DialogButtonsContainer";
 import { toastEx } from "@/helpers/toastEx";
 import { FormMetaProvider } from "@/shared-components";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const A20DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -152,16 +153,16 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (a20.itemDataReady) {
 			console.log(`a20 form reset`, a20.itemData);
 			reset(a20.itemData);
 		}
-	}, [a20.itemData, a20.itemDataReady, a20.readState, reset]);
+	}, [a20.itemData, a20.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				title={title}
 				ref={ref}
 				responsive
@@ -203,7 +204,7 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 					</form>
 				</FormMetaProvider>
 				<A20Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider >
 	);
 });

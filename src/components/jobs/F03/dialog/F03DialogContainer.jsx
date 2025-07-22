@@ -1,7 +1,7 @@
 import { F03Context } from "@/contexts/F03/F03Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-components";
@@ -17,6 +17,7 @@ import F03Drawer from "../F03Drawer";
 import F03DialogForm from "./F03DialogForm";
 import { F03DialogToolbarContainer } from "./toolbar/F03DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const F03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -183,16 +184,16 @@ export const F03DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (f03.itemDataReady) {
 			console.log("f03 form reset", f03.itemData);
 			reset(f03.itemData);
 		}
-	}, [f03.itemData, f03.itemDataReady, reset]);
+	}, [f03.itemData, f03.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen={f03.editing}
@@ -236,7 +237,7 @@ export const F03DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<F03Drawer />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

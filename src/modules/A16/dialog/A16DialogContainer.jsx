@@ -1,6 +1,6 @@
 import { A16Context } from "@/modules/A16/A16Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { FormMetaProvider } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
@@ -11,6 +11,7 @@ import A16Drawer from "../A16Drawer";
 import A16DialogForm from "./A16DialogForm";
 import { A16DialogButtonsContainer } from "./buttons/A16DialogButtonsContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const A16DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -49,13 +50,12 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
-		// if (a16.readState === ActionState.DONE && !!a16.itemData) {
+	useChangeTracking(() => {
 		if (a16.itemDataReady) {
 			console.log(`a16 form reset`, a16.itemData);
 			reset(a16.itemData);
 		}
-	}, [a16.itemData, a16.itemDataReady, reset]);
+	}, [a16.itemData, a16.itemDataReady]);
 
 	const headOfficeValue = useWatch({
 		name: "headOffice",
@@ -81,7 +81,7 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				title={title}
 				ref={ref}
 				// fullScreen
@@ -116,7 +116,7 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<A16Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

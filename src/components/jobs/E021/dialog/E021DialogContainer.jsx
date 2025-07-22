@@ -3,7 +3,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { E021Context } from "@/modules/E021/E021Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -379,12 +379,12 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 	// 	}
 	// }, [debouncedCustomerOrders]);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (e021.itemDataReady) {
 			console.log("e021 form reset", e021.itemData);
 			reset(e021.itemData);
 		}
-	}, [e021.itemData, e021.itemDataReady, reset]);
+	}, [e021.itemData, e021.itemDataReady]);
 
 	// useEffect(() => {
 	// 	if (e021.itemInitialized) {
@@ -414,7 +414,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly} isFieldDisabled={isFieldDisabled}>
-				<DialogExContainer
+				<DialogEx
 					ref={ref}
 					title={memoisedTitle}
 					// fullScreen
@@ -483,7 +483,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 
 					{/* 側邊欄 */}
 					<E021Drawer />
-				</DialogExContainer>
+				</DialogEx>
 				{/* <LoadingBackdrop open={e021.loading} /> */}
 			</FormMetaProvider>
 		</FormProvider>

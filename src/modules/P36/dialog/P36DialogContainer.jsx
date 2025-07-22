@@ -1,6 +1,6 @@
 import Colors from "@/modules/Colors.mjs";
 import { P36Context } from "@/modules/P36/P36Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { FormMetaProvider } from "@/shared-components";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
@@ -77,7 +77,7 @@ export const P36DialogContainer = forwardRef((props, ref) => {
 	}, [p36.itemData, p36.itemDataReady]);
 
 	return (
-		<DialogExContainer
+		<DialogEx
 			title={title}
 			ref={ref}
 			// fullScreen
@@ -115,7 +115,7 @@ export const P36DialogContainer = forwardRef((props, ref) => {
 				/>
 			</FormMetaProvider>
 			<P36Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

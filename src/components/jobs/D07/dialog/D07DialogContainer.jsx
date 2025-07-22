@@ -2,7 +2,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { D07Context } from "@/contexts/D07/D07Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -19,6 +19,7 @@ import D07Drawer from "../D07Drawer";
 import D07DialogForm from "./D07DialogForm";
 import { D07DialogToolbarContainer } from "./toolbar/D07DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const D07DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -191,16 +192,16 @@ export const D07DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (d07.itemDataReady) {
 			console.log("d07 form reset", d07.itemData);
 			reset(d07.itemData);
 		}
-	}, [d07.itemData, d07.itemDataReady, reset]);
+	}, [d07.itemData, d07.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -244,7 +245,7 @@ export const D07DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<D07Drawer />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

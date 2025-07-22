@@ -1,6 +1,6 @@
 import Colors from "@/modules/Colors.mjs";
 import { P34Context } from "@/modules/P34/P34Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -166,7 +166,7 @@ export const P34DialogContainer = forwardRef((props, ref) => {
 	}, [p34.itemData, p34.itemDataReady]);
 
 	return (
-		<DialogExContainer
+		<DialogEx
 			title={title}
 			ref={ref}
 			// fullScreen
@@ -206,7 +206,7 @@ export const P34DialogContainer = forwardRef((props, ref) => {
 				/>
 			</FormMetaProvider>
 			<P34Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

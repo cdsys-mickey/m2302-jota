@@ -14,6 +14,11 @@ import TimePickerWrapper from "./time-picker/TimePickerWrapper";
 
 import FormMetaProvider from "./form-meta/FormMetaProvider";
 import DropDownButton from "./DropDownButton";
+import DialogExContainer from "./DialogEx/DialogExContainer";
+
+import FlexTableView from "./FlexTable/FlexTableView";
+import FlexTableCellView from "./FlexTable/FlexTableCellView";
+import FlexTableRowView from "./FlexTable/FlexTableRowView";
 
 export {
 	ButtonWrapperContainer as ButtonEx,
@@ -31,4 +36,8 @@ export {
 	TimePickerWrapper as TimePickerEx,
 	FormMetaProvider,
 	DropDownButton,
+	DialogExContainer as DialogEx,
+	FlexTableView as FlexTable,
+	FlexTableRowView as FlexTableRow,
+	FlexTableCellView as FlexTableCell,
 };

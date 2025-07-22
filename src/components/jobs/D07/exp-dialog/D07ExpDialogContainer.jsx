@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { D07Context } from "@/contexts/D07/D07Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { forwardRef } from "react";
 import D07ExpDialogForm from "./D07ExpDialogForm";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
@@ -29,7 +29,7 @@ export const D07ExpDialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title="有效日期檢查"
 				responsive
@@ -41,7 +41,7 @@ export const D07ExpDialogContainer = forwardRef((props, ref) => {
 				confirmText="執行"
 				onCancel={d07.onExpDialogClose}>
 				<D07ExpDialogForm onSubmit={handleSubmit} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

@@ -1,5 +1,5 @@
 import { B012Context } from "@/contexts/B012/B012Context";
-import DialogEx from "@/shared-components/dialog/DialogEx";
+import { DialogEx } from "@/shared-components";
 import { FormMetaProvider } from "@/shared-components";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useContext, useMemo } from "react";

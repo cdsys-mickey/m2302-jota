@@ -1,6 +1,6 @@
 import { A05Context } from "@/modules/A05/A05Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -12,6 +12,7 @@ import A05Drawer from "../A05Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const A05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -75,17 +76,16 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
-		// if (a05.readState === ActionState.DONE && !!a05.itemData) {
+	useChangeTracking(() => {
 		if (a05.itemDataReady) {
 			console.log(`a05 form reset`, a05.itemData);
 			reset(a05.itemData);
 		}
-	}, [a05.itemData, a05.itemDataReady, a05.readState, forms, reset]);
+	}, [a05.itemData, a05.itemDataReady]);
 
 	return (
 		<FormProvider {...forms}>
-			<DialogExContainer
+			<DialogEx
 				title={title}
 				ref={ref}
 				// fullScreen
@@ -123,7 +123,7 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<A05Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import DialogEx from "../../../../shared-components/dialog/DialogEx";
-import { ZA03Context } from "../../../../contexts/ZA03/ZA03Context";
-import { FormProvider, useForm } from "react-hook-form";
-import ZA03AddAuthForm from "./ZA03AddAuthForm";
-import { Typography } from "@mui/material";
+
+import { DialogEx } from "@/shared-components";
 import { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
+import ZA03AddAuthForm from "./ZA03AddAuthForm";
 
 export const ZA03AddAuthDialogContainer = () => {
 	const za03 = useContext(ZA03Context);

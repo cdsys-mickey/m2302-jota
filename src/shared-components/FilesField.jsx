@@ -4,7 +4,7 @@ import React, { useCallback, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import RBDnD from "@/shared-modules/rb-dnd";
 import AlertEx from "./AlertEx";
-import DialogEx from "./dialog/DialogEx";
+import { DialogEx } from "@/shared-components";
 import FileDropzone from "./file-upload/FileDropzone";
 
 const FilesField = ({
@@ -151,8 +151,8 @@ const FilesField = ({
 				message={
 					deleting
 						? `確定要刪除${label}「${getFileNameFromValue(
-								deleting
-						  )}」?`
+							deleting
+						)}」?`
 						: ""
 				}
 				onCancel={() => setDeleting(null)}

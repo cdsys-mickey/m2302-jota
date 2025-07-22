@@ -1,7 +1,7 @@
 import { PrintReportButton } from "@/components";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
-import DialogEx from "@/shared-components/dialog/DialogEx";
+import { DialogEx } from "@/shared-components";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { grey } from "@mui/material/colors";

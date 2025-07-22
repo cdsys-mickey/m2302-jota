@@ -1,5 +1,5 @@
 import { B011Context } from "@/contexts/B011/B011Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { FormMetaProvider } from "@/shared-components";
 import { forwardRef, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -23,7 +23,7 @@ const B011ImportProdsDialogContainer = forwardRef((props, ref) => {
 	);
 
 	return (
-		<DialogExContainer
+		<DialogEx
 			ref={ref}
 			responsive
 			fullWidth
@@ -39,7 +39,7 @@ const B011ImportProdsDialogContainer = forwardRef((props, ref) => {
 					<B011ImportProdsForm onSubmit={handleSubmit} />
 				</FormMetaProvider>
 			</FormProvider>
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

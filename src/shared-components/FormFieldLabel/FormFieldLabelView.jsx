@@ -68,12 +68,7 @@ const FormFieldLabelView = memo(
 					...(flex && {
 						alignItems: "center"
 					}),
-					// marginTop: theme.spacing(-0.5),
-					// marginTop: theme.spacing(-1),
 					marginLeft: theme.spacing(0.5),
-					// ...(dense && {
-					// 	height: "40px"
-					// })
 				}),
 				_labelStyles,
 				...(Array.isArray(sx) ? sx : [sx]),
@@ -90,8 +85,9 @@ const FormFieldLabelView = memo(
 				<Box className="FormFieldLabelView-bodybox" sx={{
 					...(dense && {
 						position: "relative",
-						// top: "-8px"
-						marginTop: "-8px"
+						// ...(label && { // dense 時若有 label 才往上移 8px
+						// 	marginTop: "-8px"
+						// })
 					})
 				}} {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
 					{Types.isLiteral(body) ? <>
@@ -122,7 +118,7 @@ const FormFieldLabelView = memo(
 						: body}
 				</Box>
 
-			</BoxComponent>
+			</BoxComponent >
 
 		);
 	})

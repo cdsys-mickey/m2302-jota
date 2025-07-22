@@ -1,5 +1,5 @@
 import { C01Context } from "@/contexts/C01/C01Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useMemo } from "react";
@@ -21,6 +21,7 @@ import { SupplierPickerComponentContainer } from "@/components/dsg/columns/suppl
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -218,16 +219,16 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 	})
 
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (c01.itemDataReady) {
 			console.log("c01 form reset", c01.itemData);
 			reset(c01.itemData);
 		}
-	}, [c01.itemData, c01.itemDataReady, reset]);
+	}, [c01.itemData, c01.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -268,7 +269,7 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 					</form>
 				</FormMetaProvider>
 				<C01Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

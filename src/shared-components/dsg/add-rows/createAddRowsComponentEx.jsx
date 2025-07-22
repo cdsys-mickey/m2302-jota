@@ -9,7 +9,7 @@ const defaultTranslationKeys = {
 }
 
 export const createAddRowsComponentEx =
-	({ translationKeys = defaultTranslationKeys, CenterComponent, RightComponent }) =>
+	({ translationKeys = defaultTranslationKeys, hideNumberField = false, CenterComponent, RightComponent }) =>
 		({ addRows }) => {
 			const [value, setValue] = useState(1);
 			const [rawValue, setRawValue] = useState(String(value));
@@ -22,43 +22,46 @@ export const createAddRowsComponentEx =
 						className="dsg-add-row-btn add-control"
 						onClick={() => addRows(value)}>
 						{translationKeys.button ?? "新增"}
-					</button>{" "}
-					<input
-						className="dsg-add-row-input add-control"
-						value={rawValue}
-						onBlur={() => setRawValue(String(value))}
-						type="number"
-						min={1}
-						onChange={(e) => {
-							setRawValue(e.target.value);
-							setValue(
-								Math.max(
-									1,
-									Math.round(parseInt(e.target.value) || 0)
-								)
-							);
-						}}
-						onKeyDown={(event) => {
-							if (event.key === "Enter") {
-								addRows(value);
-							}
-						}}
-					/>
-					<span className="dsg-add-row-label add-control">
-						{translationKeys.unit ?? "筆"}
-					</span>
+					</button>
+					{!hideNumberField && (
+						<>
+							<input
+								className="dsg-add-row-input add-control"
+								value={rawValue}
+								onBlur={() => setRawValue(String(value))}
+								type="number"
+								min={1}
+								onChange={(e) => {
+									setRawValue(e.target.value);
+									setValue(
+										Math.max(
+											1,
+											Math.round(parseInt(e.target.value) || 0)
+										)
+									);
+								}}
+								onKeyDown={(event) => {
+									if (event.key === "Enter") {
+										addRows(value);
+									}
+								}}
+							/>
+							<span className="dsg-add-row-label add-control">
+								{translationKeys.unit ?? "筆"}
+							</span>
+						</>
+					)}
+
 					{/* </div> */}
-					{CenterComponent && (
-						<FlexBox>
-							<CenterComponent />
+					{RightComponent && (
+						<FlexBox
+							className="dsg-add-row-right"
+							flexGrow={1}
+							justifyContent="flex-end"
+						>
+							{RightComponent && <RightComponent />}
 						</FlexBox>
 					)}
-					<FlexBox
-						className="dsg-add-row-right"
-						flexGrow={1}
-						justifyContent="flex-end">
-						{RightComponent && <RightComponent />}
-					</FlexBox>
 				</div>
 			);
 		};

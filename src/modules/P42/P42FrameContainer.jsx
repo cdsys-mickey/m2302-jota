@@ -11,6 +11,9 @@ import { P42SearchFieldContainer } from "./search/P42SearchFieldContainer";
 
 export const P42FrameContainer = () => {
 	const searchForm = useForm();
+	const form = useForm({
+		defaultValues: {},
+	});
 
 	return (
 		<FormProvider {...searchForm}>
@@ -25,7 +28,9 @@ export const P42FrameContainer = () => {
 				<P42ListHeader />
 				<P42ListViewContainer />
 				{/* 對話框 */}
-				<P42DialogContainer />
+				<FormProvider {...form}>
+					<P42DialogContainer />
+				</FormProvider>
 
 			</FrameBox>
 		</FormProvider>

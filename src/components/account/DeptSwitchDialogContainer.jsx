@@ -1,4 +1,4 @@
-import DialogEx from "@/shared-components/dialog/DialogEx";
+import { DialogEx } from "@/shared-components";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AuthContext } from "../../contexts/auth/AuthContext";

@@ -13,7 +13,7 @@ import CmsGroupTypePicker from "@/components/CmsGroupTypePicker/CmsGroupTypePick
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { CheckboxEx, DatePickerEx } from "@/shared-components";
+import { CheckboxEx, DatePickerEx, FlexTable, FlexTableCell, FlexTableRow, FormFieldLabel, TextFieldEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -21,6 +21,16 @@ import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapp
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import HotelPicker from "@/components/HotelPicker/HotelPicker";
+import P42GridContainer from "../dialog/grid/P42RangeGridContainer";
+import P42CmsGridContainer from "../dialog/grid/P42CmsGridContainer";
+import P42CmsRow2View from "../dialog/grid/P42CmsRow2";
+
+const CELL_HEIGHT = "26px"
+const CELL_PROPS = {
+	alignItems: "center",
+	justifyContent: "flex-end",
+	height: CELL_HEIGHT
+}
 
 const P42DialogForm = memo((props) => {
 	const {
@@ -175,7 +185,7 @@ const P42DialogForm = memo((props) => {
 									type="number"
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<TextFieldWrapper
 									typo
 									name="PugAmt"
@@ -185,7 +195,7 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 							{/* <FlexBox fullWidth /> */}
-							<Grid item xs={12} sm={12} md={3.5}>
+							<Grid item xs={12} sm={12} md={3}>
 								<TextFieldWrapper
 									typo
 									name="CarNo"
@@ -246,7 +256,7 @@ const P42DialogForm = memo((props) => {
 									disableOpenOnInput
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={4}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<TextFieldWrapper
 									typo
 									name="CndName"
@@ -255,7 +265,7 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={12} md={5}>
+							<Grid item xs={12} sm={12} md={5.5}>
 								<TextFieldWrapper
 									typo
 									name="CndTel"
@@ -286,7 +296,7 @@ const P42DialogForm = memo((props) => {
 									disableOpenOnInput
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={16.5}>
+							<Grid item xs={12} sm={12} md={8}>
 								<TextFieldWrapper
 									typo
 									name="Remark"
@@ -296,7 +306,7 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 							{/* <FlexBox fullWidth /> */}
-							<Grid item xs={12} sm={12} md={13.5}>
+							<Grid item xs={12} sm={12} md={8.5}>
 								<TextFieldWrapper
 									typo
 									name="SnRemark"
@@ -314,7 +324,7 @@ const P42DialogForm = memo((props) => {
 									disableOpenOnInput
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={3.5}>
+							<Grid item xs={12} sm={12} md={4}>
 								<TextFieldWrapper
 									typo
 									name="HotelCms"
@@ -334,8 +344,20 @@ const P42DialogForm = memo((props) => {
 							</Grid>
 						</Grid>
 					</FormSectionBox>
+					<Grid container columns={24} spacing={1}>
+						<Grid item xs={24} sm={5.5}>
+							<P42GridContainer />
+
+						</Grid>
+						<Grid item xs={24} sm={18.5}>
+							<P42CmsGridContainer />
+
+							<P42CmsRow2View mt={0.5} />
+						</Grid>
+					</Grid>
 				</FormBox >
-			)}
+			)
+			}
 		</form >
 	);
 });

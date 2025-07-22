@@ -1,7 +1,7 @@
 import { A01Context } from "@/modules/A01/A01Context";
 import A01 from "@/modules/A01/A01.mjs";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { FormMetaProvider } from "@/shared-components";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
@@ -13,6 +13,7 @@ import A01Drawer from "../A01Drawer";
 import A01DialogForm from "../form/A01DialogForm";
 import { A01DialogToolbarContainer } from "./buttons/A01DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const A01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -169,16 +170,16 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		return a01.handleInvDataFocused({ setValue: form.setValue, getValues: form.getValues });
 	}, [a01, form.getValues, form.setValue])
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (a01.itemDataReady) {
 			console.log(`a01 form reset`, a01.itemData);
 			reset(a01.itemData);
 		}
-	}, [a01.itemData, a01.itemDataReady, a01.readState, reset]);
+	}, [a01.itemData, a01.itemDataReady, a01.readState]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				title={title}
 				ref={ref}
 				// fullScreen
@@ -226,7 +227,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<A01Drawer />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

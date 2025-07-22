@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from "react-hook-form";
-import DialogEx from "@/shared-components/dialog/DialogEx";
+import { DialogEx } from "@/shared-components";
 import { useContext } from "react";
 import { C01Context } from "@/contexts/C01/C01Context";
 import { Container } from "@mui/material";

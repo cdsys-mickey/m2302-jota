@@ -1,5 +1,5 @@
 import { D02Context } from "@/contexts/D02/D02Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -19,6 +19,7 @@ import { useCallback } from "react";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-components";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const D02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -164,16 +165,16 @@ export const D02DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (d02.itemDataReady) {
 			console.log("d02 form reset", d02.itemData);
 			reset(d02.itemData);
 		}
-	}, [d02.itemData, d02.itemDataReady, reset]);
+	}, [d02.itemData, d02.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -212,7 +213,7 @@ export const D02DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<D02Drawer />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

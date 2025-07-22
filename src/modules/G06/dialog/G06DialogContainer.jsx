@@ -1,6 +1,6 @@
 import { G06Context } from "@/modules/G06/G06Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -12,6 +12,7 @@ import G06Drawer from "../G06Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const G06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -75,17 +76,16 @@ export const G06DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
-		// if (g06.readState === ActionState.DONE && !!g06.itemData) {
+	useChangeTracking(() => {
 		if (g06.itemDataReady) {
 			console.log(`g06 form reset`, g06.itemData);
 			reset(g06.itemData);
 		}
-	}, [g06.itemData, g06.itemDataReady, g06.readState, forms, reset]);
+	}, [g06.itemData, g06.itemDataReady, g06.readState]);
 
 	return (
 		<FormProvider {...forms}>
-			<DialogExContainer
+			<DialogEx
 				title={title}
 				ref={ref}
 				// fullScreen
@@ -123,7 +123,7 @@ export const G06DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<G06Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

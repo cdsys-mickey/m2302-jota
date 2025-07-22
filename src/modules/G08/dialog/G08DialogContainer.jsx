@@ -1,6 +1,6 @@
 import { G08Context } from "@/modules/G08/G08Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { FormMetaProvider } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
@@ -11,6 +11,7 @@ import G08Drawer from "../G08Drawer";
 import G08DialogForm from "./G08DialogForm";
 import { G08DialogButtonsContainer } from "./buttons/G08DialogButtonsContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const G08DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -49,13 +50,12 @@ export const G08DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
-		// if (g08.readState === ActionState.DONE && !!g08.itemData) {
+	useChangeTracking(() => {
 		if (g08.itemDataReady) {
 			console.log(`g08 form reset`, g08.itemData);
 			reset(g08.itemData);
 		}
-	}, [g08.itemData, g08.itemDataReady, reset]);
+	}, [g08.itemData, g08.itemDataReady]);
 
 	const headOfficeValue = useWatch({
 		name: "headOffice",
@@ -81,7 +81,7 @@ export const G08DialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				title={title}
 				ref={ref}
 				// fullScreen
@@ -116,7 +116,7 @@ export const G08DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<G08Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

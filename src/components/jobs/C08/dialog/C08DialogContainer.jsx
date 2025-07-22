@@ -4,7 +4,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { C08Context } from "@/contexts/C08/C08Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -22,6 +22,7 @@ import C08Drawer from "../C08Drawer";
 import C08DialogForm from "./C08DialogForm";
 import { C08DialogToolbarContainer } from "./toolbar/C08DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C08DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -266,12 +267,12 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 		[txiDept]
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (c08.itemDataReady) {
 			console.log("c08 form reset", c08.itemData);
 			reset(c08.itemData);
 		}
-	}, [c08.itemData, c08.itemDataReady, reset]);
+	}, [c08.itemData, c08.itemDataReady]);
 
 	// 非同步獲取 sord 資訊
 	// const sordId = useMemo(() => {
@@ -293,7 +294,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled} gridMeta={gridMeta} readOnly={readOnly}>
-				<DialogExContainer
+				<DialogEx
 					ref={ref}
 					title={memoisedTitle}
 					// fullScreen
@@ -341,7 +342,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 					/>
 
 					<C08Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-				</DialogExContainer>
+				</DialogEx>
 			</FormMetaProvider>
 		</FormProvider>
 	);

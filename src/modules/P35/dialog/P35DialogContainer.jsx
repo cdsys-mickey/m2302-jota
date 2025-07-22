@@ -1,7 +1,7 @@
 import CmsTypePickerCell from "@/components/CmsTypePicker/CmsTypePickerCell";
 import Colors from "@/modules/Colors.mjs";
 import { P35Context } from "@/modules/P35/P35Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { FormMetaProvider } from "@/shared-components";
@@ -187,7 +187,7 @@ export const P35DialogContainer = forwardRef((props, ref) => {
 	}, [p35.itemData, p35.itemDataReady]);
 
 	return (
-		<DialogExContainer
+		<DialogEx
 			title={title}
 			ref={ref}
 			// fullScreen
@@ -226,7 +226,7 @@ export const P35DialogContainer = forwardRef((props, ref) => {
 				/>
 			</FormMetaProvider>
 			<P35Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

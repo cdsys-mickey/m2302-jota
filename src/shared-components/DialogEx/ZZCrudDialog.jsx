@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import DialogEx from "./DialogEx";
+import DialogExView from "./DialogExView";
 import CrudContext from "@/contexts/crud/CrudContext";
 
-export const DialogExContainer = (props) => {
+const CrudDialog = (props) => {
 	const { ...rest } = props;
 	const crud = useContext(CrudContext);
 	return (
-		<DialogEx
+		<DialogExView
 			disableEscapeKeyDown={crud?.editing}
 			hideCloseButton={crud?.editing}
 			// fullScreen={crud?.editing}
@@ -15,4 +15,5 @@ export const DialogExContainer = (props) => {
 	);
 };
 
-DialogExContainer.displayName = "DialogExContainer";
+CrudDialog.displayName = "CrudDialog";
+export default CrudDialog;

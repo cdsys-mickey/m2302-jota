@@ -3,7 +3,7 @@ import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
 import { B032Context } from "@/contexts/B032/B032Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -22,6 +22,7 @@ import B012DialogForm from "./B012DialogForm";
 import { B012DialogToolbarContainer } from "./toolbar/B012DialogToolbarContainer";
 import { toastEx } from "@/helpers/toastEx";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const B012DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -223,12 +224,12 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (b012.itemDataReady) {
 			console.log("b012 form reset", b012.itemData);
 			form.reset(b012.itemData);
 		}
-	}, [b012.itemData, b012.itemDataReady, form]);
+	}, [b012.itemData, b012.itemDataReady]);
 
 	useEffect(() => {
 		if (!importCustsDialogOpen) {
@@ -240,7 +241,7 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 
 	return (
 
-		<DialogExContainer
+		<DialogEx
 			ref={ref}
 			title={memoisedTitle}
 			// fullScreen
@@ -285,7 +286,7 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 
 			{/* 側邊欄 */}
 			<B012Drawer />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

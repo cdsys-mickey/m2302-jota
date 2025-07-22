@@ -2,7 +2,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
 import { P14Context } from "@/modules/P14/P14Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -19,6 +19,7 @@ import P14Drawer from "../P14Drawer";
 import P14DialogForm from "./P14DialogForm";
 import { P14DialogToolbarContainer } from "./toolbar/P14DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const P14DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -219,15 +220,15 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (p14.itemDataReady) {
 			console.log("p14 form reset", p14.itemData);
 			reset(p14.itemData);
 		}
-	}, [p14.itemData, p14.itemDataReady, reset]);
+	}, [p14.itemData, p14.itemDataReady]);
 
 	return (
-		<DialogExContainer
+		<DialogEx
 			ref={ref}
 			title={memoisedTitle}
 			// fullScreen
@@ -271,7 +272,7 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 			</FormProvider>
 			{/* 側邊欄 */}
 			<P14Drawer />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

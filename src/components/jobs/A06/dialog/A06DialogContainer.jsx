@@ -1,6 +1,6 @@
 import { A06Context } from "@/contexts/A06/A06Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -10,6 +10,7 @@ import { A06DialogToolbarContainer } from "./buttons/A06DialogToolbarContainer";
 import A06DrawerContainer from "../A06DrawerContainer";
 import { useHotkeys } from "react-hotkeys-hook";
 import { FormMetaProvider } from "@/shared-components";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const A06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -48,17 +49,16 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
-		// if (a06.readState === ActionState.DONE && !!a06.itemData) {
+	useChangeTracking(() => {
 		if (a06.itemDataReady) {
 			console.log(`a06 form reset`, a06.itemData);
 			reset(a06.itemData);
 		}
-	}, [a06.itemData, a06.itemDataReady, reset]);
+	}, [a06.itemData, a06.itemDataReady]);
 
 	return (
 
-		<DialogExContainer
+		<DialogEx
 			title={title}
 			ref={ref}
 			responsive
@@ -95,7 +95,7 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 				/>
 			</FormMetaProvider>
 			<A06DrawerContainer />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

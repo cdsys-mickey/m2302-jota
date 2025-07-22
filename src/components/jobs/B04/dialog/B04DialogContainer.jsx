@@ -2,7 +2,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { B04Context } from "@/contexts/B04/B04Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -18,6 +18,7 @@ import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import B04Drawer from "../B04Drawer";
 import B04DialogForm from "./B04DialogForm";
 import { B04DialogToolbarContainer } from "./toolbar/B04DialogToolbarContainer";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const B04DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -181,15 +182,15 @@ export const B04DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (b04.itemDataReady) {
 			console.log("b04 form reset", b04.itemData);
 			reset(b04.itemData);
 		}
-	}, [b04.itemData, b04.itemDataReady, reset]);
+	}, [b04.itemData, b04.itemDataReady]);
 
 	return (
-		<DialogExContainer
+		<DialogEx
 			ref={ref}
 			title={memoisedTitle}
 			// fullScreen
@@ -233,7 +234,7 @@ export const B04DialogContainer = forwardRef((props, ref) => {
 			</FormProvider>
 			{/* 側邊欄 */}
 			<B04Drawer />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

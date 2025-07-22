@@ -1,6 +1,6 @@
 import { C02Context } from "@/contexts/C02/C02Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -20,6 +20,7 @@ import { createFloatColumn } from "@/shared-components/dsg/columns/float/createF
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -238,16 +239,16 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 		[]
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (c02.itemDataReady) {
 			console.log("c02 form reset", c02.itemData);
 			reset(c02.itemData);
 		}
-	}, [c02.itemData, c02.itemDataReady, reset]);
+	}, [c02.itemData, c02.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -290,7 +291,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 						<C02Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 					</form>
 				</FormMetaProvider>
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

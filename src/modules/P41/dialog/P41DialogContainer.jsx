@@ -1,6 +1,6 @@
 import { P41Context } from "@/modules/P41/P41Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -17,6 +17,7 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { keyColumn } from "react-datasheet-grid";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const P41DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -140,17 +141,16 @@ export const P41DialogContainer = forwardRef((props, ref) => {
 		[cflagDisabled]
 	);
 
-	useEffect(() => {
-		// if (p41.readState === ActionState.DONE && !!p41.itemData) {
+	useChangeTracking(() => {
 		if (p41.itemDataReady) {
 			console.log(`p41 form reset`, p41.itemData);
 			reset(p41.itemData);
 		}
-	}, [p41.itemData, p41.itemDataReady, p41.readState, form, reset]);
+	}, [p41.itemData, p41.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				title={title}
 				ref={ref}
 				// fullScreen
@@ -193,7 +193,7 @@ export const P41DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<P41Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

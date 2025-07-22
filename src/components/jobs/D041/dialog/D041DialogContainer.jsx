@@ -3,7 +3,7 @@ import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/o
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { D041Context } from "@/contexts/D041/D041Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -24,6 +24,7 @@ import { D041DialogToolbarContainer } from "./toolbar/D041DialogToolbarContainer
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { YesOrEmptyPickerComponentContainer } from "@/components/dsg/columns/yes-or-empty-picker/YesOrEmptyPickerComponentContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const D041DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -268,16 +269,16 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 	}
 	)
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (d041.itemDataReady) {
 			console.log("d041 form reset", d041.itemData);
 			reset(d041.itemData);
 		}
-	}, [d041.itemData, d041.itemDataReady, reset]);
+	}, [d041.itemData, d041.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -316,7 +317,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<D041Drawer />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

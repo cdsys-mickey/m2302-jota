@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { ZA03CopyAuthContext } from "@/contexts/ZA03/ZA03CopyAuthContext";
-import DialogEx from "@/shared-components/dialog/DialogEx";
+import { DialogEx } from "@/shared-components";
 import ZA03CopyAuthForm from "./ZA03CopyAuthForm";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useMemo } from "react";

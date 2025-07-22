@@ -3,7 +3,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { C04Context } from "@/contexts/C04/C04Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -337,7 +337,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 		tag: C04DialogContainer.displayName
 	});
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (c04.itemDataReady) {
 			console.log("c04 form reset", c04.itemData);
 			reset(c04.itemData);
@@ -346,7 +346,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -412,7 +412,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<C04Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

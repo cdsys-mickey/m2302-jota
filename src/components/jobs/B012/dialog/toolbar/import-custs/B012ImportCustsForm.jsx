@@ -1,18 +1,13 @@
-import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
-import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
-import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
-import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
+import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
+import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
+import CustomerPicker from "@/components/picker/CustomerPicker";
 import FlexBox from "@/shared-components/FlexBox";
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import RangeGroup from "@/shared-components/RangeGroup";
 import { Box, Grid, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ProdPicker from "@/components/picker/ProdPicker";
 import { B012ImportCustsButtonContainer } from "./B012ImportCustsButtonContainer";
-import CustomerPicker from "@/components/picker/CustomerPicker";
-import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
-import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
-import RangeGroup from "@/shared-components/RangeGroup";
 
 const B012ImportCustsForm = memo((props) => {
 	const { onSubmit, ...rest } = props;

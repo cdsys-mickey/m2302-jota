@@ -1,7 +1,7 @@
-import DialogEx from "@/shared-components/dialog/DialogEx";
 import { useDialogs } from "@/shared-hooks/dialog/useDialogs";
 import PropTypes from "prop-types";
 import { DialogsContext } from "./DialogsContext";
+import { DialogEx } from "@/shared-components";
 
 export const DialogsProvider = ({ children, buttonProps }) => {
 	const dialogs = useDialogs({ buttonProps });

@@ -4,7 +4,7 @@ import { B02Context } from "@/contexts/B02/B02Context";
 import { B04Context } from "@/contexts/B04/B04Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -20,6 +20,7 @@ import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import B02Drawer from "../B02Drawer";
 import B02DialogForm from "./B02DialogForm";
 import { B02DialogToolbarContainer } from "./toolbar/B02DialogToolbarContainer";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const B02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -184,15 +185,15 @@ export const B02DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (b02.itemDataReady) {
 			console.log("b02 form reset", b02.itemData);
 			reset(b02.itemData);
 		}
-	}, [b02.itemData, b02.itemDataReady, reset]);
+	}, [b02.itemData, b02.itemDataReady]);
 
 	return (
-		<DialogExContainer
+		<DialogEx
 			ref={ref}
 			title={memoisedTitle}
 			// fullScreen
@@ -236,7 +237,7 @@ export const B02DialogContainer = forwardRef((props, ref) => {
 			</FormProvider>
 			{/* 側邊欄 */}
 			<B02Drawer />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

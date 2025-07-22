@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
-import DialogTitleButtonsBox from "@/shared-components/dialog/DialogTitleButtonsBox";
+import DialogTitleButtonsBox from "@/shared-components/DialogEx/DialogTitleButtonsBox";
 import FlexBox from "@/shared-components/FlexBox";
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import { memo, forwardRef } from "react";
@@ -64,9 +64,8 @@ const DialogTitleEx = memo(
 							...(onReturn && {
 								paddingLeft: "50px",
 							}),
-							minHeight: `calc(${theme.spacing(5)} + ${
-								yOffset * 2
-							}px)`,
+							minHeight: `calc(${theme.spacing(5)} + ${yOffset * 2
+								}px)`,
 						}),
 						...(Array.isArray(sx) ? sx : [sx]),
 					]}

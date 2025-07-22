@@ -4,7 +4,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { E03Context } from "@/contexts/E03/E03Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -21,6 +21,7 @@ import E03Drawer from "../E03Drawer";
 import E03DialogForm from "./E03DialogForm";
 import { E03DialogToolbarContainer } from "./toolbar/E03DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const E03DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -338,12 +339,12 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (e03.itemDataReady) {
 			console.log("e03 form reset", e03.itemData);
 			form.reset(e03.itemData);
 		}
-	}, [e03.itemData, e03.itemDataReady, form]);
+	}, [e03.itemData, e03.itemDataReady]);
 
 	useEffect(() => {
 		if (e03.committed) {
@@ -355,7 +356,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} gridMeta={gridMeta} readOnly={readOnly} isFieldDisabled={isFieldDisabled}>
-				<DialogExContainer
+				<DialogEx
 					ref={ref}
 					title={memoisedTitle}
 					// fullScreen
@@ -405,7 +406,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 
 					{/* 側邊欄 */}
 					<E03Drawer />
-				</DialogExContainer>
+				</DialogEx>
 			</FormMetaProvider>
 		</FormProvider>
 	);

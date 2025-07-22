@@ -1,5 +1,5 @@
 import { C07Context } from "@/contexts/C07/C07Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -22,6 +22,7 @@ import { FormMetaProvider } from "@/shared-components";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import C07Drawer from "../C07Drawer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C07DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -227,16 +228,16 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (c07.itemDataReady) {
 			console.log("c07 form reset", c07.itemData);
 			reset(c07.itemData);
 		}
-	}, [c07.itemData, c07.itemDataReady, reset]);
+	}, [c07.itemData, c07.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -290,7 +291,7 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<C07Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

@@ -2,7 +2,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { B05Context } from "@/modules/B05/B05Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -197,7 +197,7 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 	}, [b05.itemData, b05.itemDataReady, reset]);
 
 	return (
-		<DialogExContainer
+		<DialogEx
 			ref={ref}
 			title={memoisedTitle}
 			// fullScreen
@@ -241,7 +241,7 @@ export const B05DialogContainer = forwardRef((props, ref) => {
 			</FormProvider>
 			{/* 側邊欄 */}
 			<B05Drawer />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 

@@ -3,7 +3,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { E01Context } from "@/contexts/E01/E01Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -344,16 +344,16 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 		return !retail;
 	}, [retail])
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (e01.itemDataReady) {
 			console.log("e01 form reset", e01.itemData);
 			form.reset(e01.itemData);
 		}
-	}, [e01.itemData, e01.itemDataReady, form]);
+	}, [e01.itemData, e01.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -412,7 +412,7 @@ export const E01DialogContainer = forwardRef((props, ref) => {
 
 				{/* 側邊欄 */}
 				<E01Drawer />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

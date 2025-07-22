@@ -10,6 +10,9 @@ import { useSideDrawer } from "@/hooks/useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import P42 from "./P42.mjs";
 import { useRef } from "react";
+import { nanoid } from "nanoid";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useMemo } from "react";
 
 export const useP42 = ({ token }) => {
 	const itemIdRef = useRef();
@@ -32,6 +35,41 @@ export const useP42 = ({ token }) => {
 		handlePopperOpen,
 		handlePopperClose,
 	] = useToggle(false);
+
+	// GRID
+	const createRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			MFixP: true
+		}),
+		[]
+	);
+
+	const rangeGrid = useDSG({
+		gridId: "ranges",
+		keyColumn: "id",
+		skipDisabled: true,
+		createRow: createRow,
+	});
+	const gridDisabled = useMemo(() => {
+		return !crud.editing;
+	}, [crud.editing]);
+
+	// GRID
+	const createCmsRow = useCallback(
+		() => ({
+			Pkey: nanoid(),
+			cmsType: null
+		}),
+		[]
+	);
+
+	const cmsGrid = useDSG({
+		gridId: "commissions",
+		keyColumn: "id",
+		skipDisabled: true,
+		createRow: createRow,
+	});
 
 	const listLoader = useInfiniteLoader({
 		url: "v1/cms/entries",
@@ -211,7 +249,7 @@ export const useP42 = ({ token }) => {
 			// 	console.error("UNKNOWN SUBMIT TYPE");
 			// }
 		},
-		[crud.creating, crud.updating, handleSave]
+		[]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -228,12 +266,16 @@ export const useP42 = ({ token }) => {
 			e?.stopPropagation();
 			const data = {
 				SalDate: new Date(),
+				ranges: [],
+				commissions: [],
 			};
 			crud.promptCreating({
 				data,
 			});
+			rangeGrid.initGridData(data.ranges, { fillRows: 10 })
+			cmsGrid.initGridData(data.commissions, { fillRows: 10 })
 		},
-		[crud]
+		[cmsGrid, crud, rangeGrid]
 	);
 
 	const confirmDelete = useCallback(() => {
@@ -324,7 +366,13 @@ export const useP42 = ({ token }) => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
-		handleReset
+		handleReset,
+		// GRID
+		rangeGrid,
+		gridDisabled,
+		createRow,
+		cmsGrid,
+		createCmsRow
 	};
 };
 

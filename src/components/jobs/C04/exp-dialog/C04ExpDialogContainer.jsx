@@ -1,10 +1,9 @@
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { C04Context } from "../../../../contexts/C04/C04Context";
-import { DialogExContainer } from "../../../../shared-components/dialog/DialogExContainer";
+import { C04Context } from "@/contexts/C04/C04Context";
 import { forwardRef } from "react";
 import C04ExpDialogForm from "./C04ExpDialogForm";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useCallback } from "react";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-components";
@@ -46,7 +45,7 @@ export const C04ExpDialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title="有效日期檢查"
 				responsive
@@ -60,7 +59,7 @@ export const C04ExpDialogContainer = forwardRef((props, ref) => {
 				<FormMetaProvider {...formMeta}>
 					<C04ExpDialogForm onSubmit={handleSubmit} />
 				</FormMetaProvider>
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

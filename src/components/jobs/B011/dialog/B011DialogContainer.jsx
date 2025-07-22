@@ -3,7 +3,7 @@ import { BContext } from "@/contexts/B/BContext";
 import { B011Context } from "@/contexts/B011/B011Context";
 import { B031Context } from "@/contexts/B031/B031Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
@@ -257,7 +257,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 
 	return (
 
-		<DialogExContainer
+		<DialogEx
 			ref={ref}
 			title={memoisedTitle}
 			// fullScreen
@@ -301,7 +301,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 
 			{/* 側邊欄 */}
 			<B011Drawer />
-		</DialogExContainer>
+		</DialogEx>
 	);
 });
 B011DialogContainer.propTypes = {

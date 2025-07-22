@@ -3,7 +3,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { C06Context } from "@/contexts/C06/C06Context";
 import { toastEx } from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
@@ -21,6 +21,7 @@ import C06Drawer from "../C06Drawer";
 import C06DialogForm from "./C06DialogForm";
 import { C06DialogToolbarContainer } from "./toolbar/C06DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const C06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -253,16 +254,16 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 		[c06.squaredFlagDisabled]
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (c06.itemDataReady) {
 			console.log("c06 form reset", c06.itemData);
 			reset(c06.itemData);
 		}
-	}, [c06.itemData, c06.itemDataReady, reset]);
+	}, [c06.itemData, c06.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -307,7 +308,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 					/>
 					<C06Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 				</FormMetaProvider>
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

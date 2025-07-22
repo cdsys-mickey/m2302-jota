@@ -1,5 +1,5 @@
 import { D06Context } from "@/contexts/D06/D06Context";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
@@ -19,6 +19,7 @@ import { useCallback } from "react";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { FormMetaProvider } from "@/shared-components";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const D06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -175,16 +176,16 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 		[]
 	);
 
-	useEffect(() => {
+	useChangeTracking(() => {
 		if (d06.itemDataReady) {
 			console.log("d06 form reset", d06.itemData);
 			reset(d06.itemData);
 		}
-	}, [d06.itemData, d06.itemDataReady, reset]);
+	}, [d06.itemData, d06.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				// fullScreen
@@ -232,7 +233,7 @@ export const D06DialogContainer = forwardRef((props, ref) => {
 					/>
 				</FormMetaProvider>
 				<D06Drawer />
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

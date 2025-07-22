@@ -4,6 +4,7 @@ import DSG from "@/shared-modules/sd-dsg";
 import { useEffect } from "react";
 import { toastEx } from "@/helpers/toastEx";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
+import { useMemo } from "react";
 
 export const useDSGMeta = ({
 	columns,
@@ -16,6 +17,9 @@ export const useDSGMeta = ({
 	grid,
 	setValue
 }) => {
+	const _data = useMemo(() => {
+		return data ?? grid?.gridData;
+	}, [data, grid?.gridData])
 	const gridRef = useRef();
 	const asyncRef = useRef({
 		refAssigned: false
@@ -107,7 +111,7 @@ export const useDSGMeta = ({
 					// 當只有選取一列時
 					if (selection?.min?.row === selection?.max?.row) {
 						const rowIndex = selection?.min?.row;
-						const rowData = data[rowIndex];
+						const rowData = _data[rowIndex];
 
 						onRowSelectionChange({
 							rowIndex,
@@ -119,7 +123,7 @@ export const useDSGMeta = ({
 					}
 				}
 			},
-		[data, defaultOnRowSelectionChange]
+		[_data, defaultOnRowSelectionChange]
 	);
 
 	// ref Methods
@@ -156,13 +160,13 @@ export const useDSGMeta = ({
 			return Boolean(
 				typeof disabled === "function"
 					? disabled({
-						rowData: data[cell.row],
+						rowData: _data[cell.row],
 						rowIndex: cell.row,
 					})
 					: disabled
 			);
 		},
-		[columns, data]
+		[columns, _data]
 	);
 
 	const isForward = useCallback((prev, next) => {
@@ -232,7 +236,7 @@ export const useDSGMeta = ({
 					if (col >= columns.length) {
 						col = 0;
 						row++;
-						if (row >= data.length) {
+						if (row >= _data.length) {
 							// 若當初 forward 是自動判斷的, 且判斷結果為正向搜尋, 當找不到時, 就改成往回找
 							if (opts.forward == null && forward) {
 								console.log("cannot find next cell while using direction auto detection and result is reversing, try force forwarding...")
@@ -276,21 +280,21 @@ export const useDSGMeta = ({
 				isForward: forward
 			};
 		},
-		[columns?.length, data?.length, isCellDisabled, isForward]
+		[columns?.length, _data?.length, isCellDisabled, isForward]
 	);
 
 	const toColumn = useCallback(
 		(colIndex, opts = {}) => {
 			const { nextRow = true } = opts;
 			const newRow = nextRow
-				? data.length - 1
+				? _data.length - 1
 				: asyncMetaRef.current?.cell?.row;
 			setActiveCell({
 				row: newRow,
 				col: colIndex,
 			});
 		},
-		[data?.length, setActiveCell]
+		[_data?.length, setActiveCell]
 	);
 
 	const toFirstColumn = useCallback(
@@ -338,7 +342,7 @@ export const useDSGMeta = ({
 	}, [getActiveCell, getSelection, setActiveCell]);
 
 	const restoreSelection = useCallback(() => {
-		const maxRow = data.length - 1;
+		const maxRow = _data.length - 1;
 		if (prevActiveCellRef.current) {
 			let activeCell = prevActiveCellRef.current;
 			if (activeCell.row > maxRow) {
@@ -359,18 +363,18 @@ export const useDSGMeta = ({
 			setSelection(selection);
 			prevSelectionRef.current = null;
 		}
-	}, [data?.length, setActiveCell, setSelection]);
+	}, [_data?.length, setActiveCell, setSelection]);
 
 	const isLastCell = useCallback((cell) => {
 		if (!cell) {
 			throw new Error("current cell cannot be null");
 		}
-		return cell.row === data.length - 1 && cell.col === columns.length - 1;
-	}, [columns?.length, data?.length]);
+		return cell.row === _data.length - 1 && cell.col === columns.length - 1;
+	}, [columns?.length, _data?.length]);
 
 	const isLastRow = useCallback((cell) => {
-		return cell.row == data.length - 1
-	}, [data?.length]);
+		return cell.row == _data.length - 1
+	}, [_data?.length]);
 
 	const toggleCheckbox = useCallback((cell) => {
 		if (!grid) {

@@ -1,6 +1,6 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { DialogExContainer } from "@/shared-components/dialog/DialogExContainer";
+import { DialogEx } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { ZA03DialogContentContainer } from "../form/ZA03DialogContentContainer";
@@ -92,7 +92,7 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 
 	return (
 		<FormProvider {...form}>
-			<DialogExContainer
+			<DialogEx
 				ref={ref}
 				title={memoisedTitle}
 				responsive
@@ -121,7 +121,7 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 				<form>
 					<ZA03DialogContentContainer />
 				</form>
-			</DialogExContainer>
+			</DialogEx>
 		</FormProvider>
 	);
 });

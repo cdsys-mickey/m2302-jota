@@ -43,7 +43,7 @@ const defaultCancelButtonProps = {
  * @param {*} param0
  * @returns
  */
-const DialogEx = memo(
+const DialogExView = memo(
 	forwardRef((props = {}, ref) => {
 		const {
 			slotProps,
@@ -57,7 +57,6 @@ const DialogEx = memo(
 			children,
 			confirmText = "確定",
 			cancelText = "取消",
-			index = 0,
 			minWidth = "20em",
 			// maxWidth = "100vw",
 			// minHeight,
@@ -222,7 +221,7 @@ const DialogEx = memo(
 				sx={[
 					{
 						"& .MuiDialog-paper": {
-							zIndex: 1300 + index,
+							zIndex: 1300,
 						},
 					},
 					...(Array.isArray(sx) ? sx : [sx]),
@@ -251,13 +250,14 @@ const DialogEx = memo(
 					]}>
 					{title}
 				</DialogTitleEx>
-
 				<DialogContent
 					sx={[
 						() => ({
 							...(minWidth && { minWidth: minWidth }),
 							...(dense && {
-								paddingBottom: 1,
+								paddingBottom: 0,
+								paddingLeft: 0,
+								paddingRight: 0,
 							}),
 							paddingTop: 0,
 						}),
@@ -310,6 +310,7 @@ const DialogEx = memo(
 					{/* <form onSubmit={onSubmit}>{children}</form> */}
 					{children}
 				</DialogContent>
+
 				{showActions && (
 					<DialogActions
 						{...slotProps?.actions}>
@@ -358,8 +359,8 @@ const DialogEx = memo(
 	})
 );
 
-DialogEx.displayName = "DialogEx";
-DialogEx.propTypes = {
+DialogExView.displayName = "DialogEx";
+DialogExView.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 
 	title: PropTypes.string,
@@ -379,6 +380,7 @@ DialogEx.propTypes = {
 	confirmButtonProps: PropTypes.object,
 	cancelButtonProps: PropTypes.object,
 	titleButtons: PropTypes.element,
+	confirmButton: PropTypes.element,
 	TitleButtonsComponent: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.elementType,
@@ -416,6 +418,7 @@ DialogEx.propTypes = {
 	defaultChecked: PropTypes.bool,
 	checkLabel: PropTypes.string,
 	checkedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+
 };
 
-export default DialogEx;
+export default DialogExView;

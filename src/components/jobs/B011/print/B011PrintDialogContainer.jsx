@@ -1,6 +1,6 @@
 import { B011Context } from "@/contexts/B011/B011Context";
 import { B031Context } from "@/contexts/B031/B031Context";
-import DialogEx from "@/shared-components/dialog/DialogEx";
+import { DialogEx } from "@/shared-components";
 import { FormMetaProvider } from "@/shared-components";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import PropTypes from "prop-types";
