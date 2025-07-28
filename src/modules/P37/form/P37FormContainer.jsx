@@ -16,6 +16,7 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import DSGMetaContext from "@/shared-contexts/datasheet-grid/DSGMetaContext";
 import { FormMetaProvider } from "@/shared-components";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
 
 const P37FormContainer = (props) => {
 	const { ...rest } = props;
@@ -26,6 +27,16 @@ const P37FormContainer = (props) => {
 		}
 	});
 	const { reset } = form;
+
+	useInit(() => {
+		p37.loadItem({ id: CmsGroupTypes.Types.DOMESTIC });
+	}, []);
+
+	useChangeTracking(() => {
+		if (p37.itemDataReady) {
+			reset(p37.itemData);
+		}
+	}, [p37.itemData, p37.itemDataReady]);
 
 	const formMeta = useFormMeta(
 		`

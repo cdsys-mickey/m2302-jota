@@ -112,7 +112,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 			}
 			return newId;
 		},
-		[baseButtonProps, close]
+		[baseButtonProps, close, entities.length, sizeLimit]
 	);
 
 	const setWorking = useCallback((working) => {

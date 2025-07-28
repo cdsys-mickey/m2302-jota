@@ -15,6 +15,7 @@ const ResponsiveLoadingButtonContainer = memo(
 			// hideText = false,
 			useIconButton = false,
 			sx = [],
+			tooltip,
 			...rest
 		} = props;
 		const { mobile } = useContext(ResponsiveContext);
@@ -57,21 +58,23 @@ const ResponsiveLoadingButtonContainer = memo(
 		}
 
 		return (
-			<LoadingButton
-				ref={ref}
-				size="small"
-				sx={[
-					...(Array.isArray(sx) ? sx : [sx]),
-				]}
-				{...(doStartIcon && {
-					startIcon,
-				})}
-				{...(doEndIcon && {
-					endIcon,
-				})}
-				{...rest}>
-				{text}
-			</LoadingButton>
+			<Tooltip title={tooltip}>
+				<LoadingButton
+					ref={ref}
+					size="small"
+					sx={[
+						...(Array.isArray(sx) ? sx : [sx]),
+					]}
+					{...(doStartIcon && {
+						startIcon,
+					})}
+					{...(doEndIcon && {
+						endIcon,
+					})}
+					{...rest}>
+					{text}
+				</LoadingButton>
+			</Tooltip>
 		);
 	})
 );
@@ -81,6 +84,7 @@ ResponsiveLoadingButtonContainer.propTypes = {
 	startIcon: PropTypes.object,
 	endIcon: PropTypes.object,
 	mobileText: PropTypes.string,
+	tooltip: PropTypes.string,
 	useIconButton: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };

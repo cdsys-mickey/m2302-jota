@@ -9,14 +9,9 @@ import { useFormContext } from "react-hook-form";
 
 const P37DomesticTabContainer = () => {
 	const p37 = useContext(P37Context);
-	const form = useFormContext();
-	const { reset } = form;
 
-	useChangeTracking(() => {
-		if (p37.itemDataReady) {
-			reset(p37.itemData);
-		}
-	}, [p37.itemData, p37.itemDataReady]);
+
+
 	return <P37DomesticTabView editing={p37.editing} />
 }
 

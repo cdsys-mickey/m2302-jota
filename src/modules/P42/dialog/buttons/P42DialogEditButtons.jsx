@@ -36,7 +36,8 @@ const P42DialogEditButtons = memo(
 					endIcon={<SendIcon />}
 					color="warning"
 					variant="contained"
-					loading={loading}>
+					loading={loading}
+					tooltip="儲存 (Ctrl-Enter)">
 					儲存
 				</ButtonEx>
 			</Fragment>

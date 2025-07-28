@@ -11,7 +11,7 @@ export const P42DialogButtonsContainer = (props) => {
 	const form = useFormContext();
 
 	// if (p42.readState !== ActionState.DONE) {
-	if (!p42.itemDataReady) {
+	if (!p42.itemDataLoaded) {
 		return false;
 	}
 

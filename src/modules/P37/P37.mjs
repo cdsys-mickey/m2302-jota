@@ -35,18 +35,14 @@ const transformForReading = (payload, selectedTab) => {
 
 	payload.ComNCont_S.forEach((item) => {
 		// 處理 SUpCp
-		result.SUpCP.push(item.SUpCp || null);
+		result.SUpCP.push(item.SUpCp || "");
 
 		// 處理 SDrvCms，移除百分比符號
-		result.SDrvCms.push(
-			item.SDrvCms ? item.SDrvCms.replace("%", "") : null
-		);
-		result.STrvCms.push(
-			item.STrvCms ? item.STrvCms.replace("%", "") : null
-		);
+		result.SDrvCms.push(item.SDrvCms ? item.SDrvCms.replace("%", "") : "");
+		result.STrvCms.push(item.STrvCms ? item.STrvCms.replace("%", "") : "");
 
 		// 處理 SDnCp
-		result.SDnCp.push(item.SDnCp || null);
+		result.SDnCp.push(item.SDnCp || "");
 	});
 
 	if (selectedTab !== CmsGroupTypes.Types.CHINA) {
@@ -129,12 +125,16 @@ const transformForEditorSubmit = (payload, selecedtTab) => {
 				SUpCp: payload.SUpCP[i] || "",
 				SDrvCms:
 					i === 0 || i === 2
-						? `${payload.SDrvCms[i]}%`
-						: payload.SDrvCms[i] || "",
+						? payload.SDrvCms[i]
+							? `${payload.SDrvCms[i]}%`
+							: ""
+						: payload.SDrvCms[i] ?? "",
 				STrvCms:
 					i === 0 || i === 2
-						? `${payload.STrvCms[i]}%`
-						: payload.STrvCms[i] || "",
+						? payload.STrvCms[i]
+							? `${payload.STrvCms[i]}%`
+							: ""
+						: payload.STrvCms[i] ?? "",
 			};
 			output.ComNCont_S.push(item);
 		}

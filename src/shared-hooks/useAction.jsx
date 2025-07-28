@@ -8,7 +8,7 @@ export const useAction = (initState = null) => {
 		// payload: null,
 		message: null,
 		error: null,
-		params: null
+		// params: null
 	});
 
 	// const [error, setError] = useState();
@@ -26,7 +26,7 @@ export const useAction = (initState = null) => {
 			...prev,
 			state: ActionState.PROMPT,
 			message,
-			params
+			...params
 		}));
 	}, []);
 	// const prompt = useCallback((data, message) => {
@@ -47,7 +47,7 @@ export const useAction = (initState = null) => {
 			error: null,
 			// payload: null,
 			message,
-			params
+			...params
 		}));
 	}, []);
 
@@ -57,9 +57,8 @@ export const useAction = (initState = null) => {
 		setActionState((prev) => ({
 			...prev,
 			state: ActionState.DONE,
-			// payload: payload,
 			message,
-			params
+			...params
 		}));
 	}, []);
 
@@ -78,7 +77,8 @@ export const useAction = (initState = null) => {
 			// payload: null,
 			message: null,
 			error: null,
-			params: null
+			params: null,
+			supressLoading: false
 		});
 	}, []);
 

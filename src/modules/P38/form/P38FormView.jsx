@@ -22,7 +22,7 @@ const P38FormView = memo((props) => {
 								<P38Toolbar />
 
 								<Box mt={1}>
-									{loadWorking ? <LoadingTypography>讀取中</LoadingTypography> : <Grid container spacing={1}>
+									{loadWorking ? <LoadingTypography>讀取中</LoadingTypography> : (<Grid container spacing={2}>
 										<Grid item xs={12}>
 											<TextFieldEx
 												name="Head"
@@ -50,7 +50,7 @@ const P38FormView = memo((props) => {
 												fullWidth
 											/>
 										</Grid>
-									</Grid>}
+									</Grid>)}
 
 								</Box>
 							</>)

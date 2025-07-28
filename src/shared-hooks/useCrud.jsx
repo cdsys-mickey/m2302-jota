@@ -18,7 +18,6 @@ export const useCrud = () => {
 		itemId: null,
 		itemData: null,
 		itemInitialized: false,
-		supressLoading: false
 	});
 	const createAction = useAction();
 	const readAction = useAction();
@@ -141,8 +140,9 @@ export const useCrud = () => {
 	const startReading = useCallback(
 		(message, opts) => {
 			console.log(`startReading[${message}]`, opts);
-			readAction.start({ message });
-			setOpts(opts);
+			const { params, ...rest } = opts || {};
+			readAction.start({ message, params });
+			setOpts(rest);
 		},
 		[readAction, setOpts]
 	);
@@ -150,11 +150,11 @@ export const useCrud = () => {
 	const finishedReading = useCallback(
 		(opts) => {
 			console.log("finishedReading", opts);
-			readAction.finish();
-			setOpts({
-				supressLoading: false,
-				...opts
+			const { params, ...rest } = opts || {};
+			readAction.finish({
+				params
 			});
+			setOpts(rest);
 		},
 		[readAction, setOpts]
 	);
@@ -177,8 +177,8 @@ export const useCrud = () => {
 	}, [readAction.state]);
 
 	const readWorking = useMemo(() => {
-		return readAction.state === ActionState.WORKING && !state.supressLoading;
-	}, [readAction.state, state.supressLoading]);
+		return readAction.state === ActionState.WORKING && !readAction.supressLoading;
+	}, [readAction.state, readAction.supressLoading]);
 
 	const readingFailed = useMemo(() => {
 		return readAction.failed || !!readAction.error;
@@ -188,7 +188,8 @@ export const useCrud = () => {
 	const startLoading = useCallback(
 		(message, opts) => {
 			console.log(`startLoading[${message}]`, opts);
-			loadAction.start({ message });
+			const { params } = opts || {};
+			loadAction.start({ message, params });
 			setOpts(opts);
 		},
 		[loadAction, setOpts]
@@ -198,10 +199,7 @@ export const useCrud = () => {
 		(opts) => {
 			console.log("finishedLoading", opts);
 			loadAction.finish();
-			setOpts({
-				supressLoading: false,
-				...opts,
-			});
+			setOpts(opts);
 		},
 		[loadAction, setOpts]
 	);
@@ -224,8 +222,8 @@ export const useCrud = () => {
 	}, [loadAction.state]);
 
 	const loadWorking = useMemo(() => {
-		return loadAction.state === ActionState.WORKING && !state.supressLoading;
-	}, [loadAction.state, state.supressLoading]);
+		return loadAction.state === ActionState.WORKING && !loadAction.supressLoading;
+	}, [loadAction.state, loadAction.supressLoading]);
 
 	const loadingFailed = useMemo(() => {
 		return loadAction.failed || !!loadAction.error;
@@ -326,20 +324,13 @@ export const useCrud = () => {
 		return deleteAction.failed || !!deleteAction.error;
 	}, [deleteAction.error, deleteAction.failed]);
 
-	// 資料已讀取完成
+	// 資料已讀取完成，可於表單顯示內容，當使用 refresh 方式更新資料時，這個狀態不會受影響
 	const itemDataLoaded = useMemo(() => {
-		return (
-			(readAction.state === ActionState.DONE || loadAction.state === ActionState.DONE && !!state.itemData) ||
-			(!!createAction.state && !!state.itemData)
-		);
-	}, [createAction.state, loadAction.state, readAction.state, state.itemData]);
+		return !!state.itemData && !readWorking && !loadWorking;
+	}, [loadWorking, readWorking, state.itemData]);
 
-	// 資料已就緒 → 配合新增等狀況
+	// 資料已就緒 → 代表新資料載入完成，通常是適合觸發 form 載入
 	const itemDataReady = useMemo(() => {
-		// return (
-		// 	(loading && !loadWorking && !loadingFailed) ||
-		// 	((reading || creating || updating) && !readWorking && !readingFailed)
-		// );
 		return (
 			(loading && loadAction.state !== ActionState.WORKING && !loadingFailed) ||
 			(reading && readAction.state !== ActionState.WORKING && !readingFailed) ||

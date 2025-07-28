@@ -115,9 +115,9 @@ export default function useJotaReports(props, opts = DEFAULT_OPTS) {
 			return false;
 		}
 
-		if ((!opts.checkEvery && !anyFilled) || (opts.checkEvery && emptyPairs.length > 0)) {
+		if ((fromToPairs.length > 0 && (!opts.checkEvery && !anyFilled) || (opts.checkEvery && emptyPairs.length > 0))) {
 			dialogs.confirm({
-				message: `${opts.name}日期區間皆未輸入，確定執行?`,
+				message: `${opts.name}日期區間${fromToPairs.length > 1 ? "皆" : ""}未輸入，確定執行?`,
 				onConfirm: () => {
 					send(reportUrl, params, sendOpts);
 				}

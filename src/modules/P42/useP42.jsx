@@ -93,8 +93,8 @@ export const useP42 = () => {
 				}
 				if (!refresh) {
 					itemIdRef.current = id;
-					crud.startReading("讀取中...", { id, suppressLoading: refresh });
 				}
+				crud.startReading("讀取中...", { id, params: { supressLoading: refresh } });
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/cms/entries`,
@@ -187,9 +187,10 @@ export const useP42 = () => {
 					if (creating) {
 						crud.finishedCreating();
 						crud.cancelReading();
+						loadItem({ id: responseData?.ComID });
 					} else {
 						crud.finishedUpdating();
-						loadItem({ id: responseData?.ComID });
+						loadItem({ refresh: true });
 					}
 					// 重新整理
 					listLoader.loadList({ refresh: true });
@@ -286,6 +287,10 @@ export const useP42 = () => {
 	const confirmDelete = useCallback(() => {
 		dialogs.confirm({
 			message: `確認要删除佣金單 ${crud.itemData?.ComID}?`,
+			confirmButtonProps: {
+				color: "secondary",
+				variant: "contained"
+			},
 			onConfirm: async () => {
 				try {
 					crud.startDeleting(crud.itemData);

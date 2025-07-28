@@ -1,5 +1,5 @@
 import FlexBox from "@/shared-components/FlexBox";
-import ButtonExView from "@/shared-components/button/ButtonExView";
+import ButtonExView from "@/shared-components/ButtonEx/ButtonExView";
 
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Badge, Box, IconButton, Popover } from "@mui/material";

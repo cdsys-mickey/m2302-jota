@@ -33,6 +33,7 @@ const P42DialogForm = memo((props) => {
 		readWorking,
 		readError,
 		itemDataReady,
+		itemDataLoaded,
 		editing,
 		updating,
 		slotProps,
@@ -55,7 +56,7 @@ const P42DialogForm = memo((props) => {
 				</Container>
 			)}
 			{readError && <FormErrorBox error={readError}  {...slotProps?.error} />}
-			{itemDataReady && (
+			{itemDataLoaded && (
 				<FormBox pt={1}>
 					<FormSectionBox >
 						<Grid container columns={24} spacing={1}>

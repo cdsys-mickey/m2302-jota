@@ -749,12 +749,6 @@ export const useC08 = () => {
 				JobName: "C08",
 				IDs: crud.itemData?.TxoID,
 			};
-			// postToBlank(
-			// 	`${config.REPORT_URL}/WebC08Rep.aspx?LogKey=${operator?.LogKey
-			// 	}`,
-			// 	{
-			// 		jsonData: JSON.stringify(data),
-			// 	}
 			// );
 			console.log("data", data);
 			reports.open(reportUrl, data);

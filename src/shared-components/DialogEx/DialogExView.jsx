@@ -354,7 +354,8 @@ const DialogExView = memo(
 									})}
 									disabled={confirmDisabled}
 									{...buttonProps}
-									{...confirmButtonProps}>
+									{...confirmButtonProps}
+									{...slotProps?.confirmButton}>
 									{confirmText}
 								</ButtonEx>
 							</Tooltip>

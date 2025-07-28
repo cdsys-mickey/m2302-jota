@@ -377,6 +377,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					readError={p42.readError}
 					data={p42.itemData}
 					itemDataReady={p42.itemDataReady}
+					itemDataLoaded={p42.itemDataLoaded}
 					onCityChange={handleCityChange}
 					onBusCompChange={handleBusCompChange}
 					onTourGroupChange={handleTourGroupChange}
