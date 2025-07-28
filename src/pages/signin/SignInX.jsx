@@ -90,6 +90,7 @@ const SignInX = memo((props) => {
 							type="submit"
 							variant="contained"
 							size="small"
+							color="warning"
 							loading={loading}
 							endIcon={<LoginIcon />}>
 							登入

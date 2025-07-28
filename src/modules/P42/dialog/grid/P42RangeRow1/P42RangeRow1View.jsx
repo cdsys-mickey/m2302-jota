@@ -6,7 +6,7 @@ const P42RangeRow1ViewComponent = (props) => {
 	return (
 		<FlexTable border={0} {...rest}>
 			<FlexTableRow>
-				<FlexTableCell align="right" alignItems="flex-end">
+				<FlexTableCell align="right" alignItems="flex-end" px={1}>
 					<FormFieldLabel
 						name="SalCount"
 						label="筆數："

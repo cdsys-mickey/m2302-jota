@@ -17,9 +17,9 @@ export const useCrud = () => {
 	const [state, setState] = useState({
 		itemId: null,
 		itemData: null,
-		itemInitialized: false
+		itemInitialized: false,
+		supressLoading: false
 	});
-
 	const createAction = useAction();
 	const readAction = useAction();
 	const updateAction = useAction();
@@ -72,18 +72,18 @@ export const useCrud = () => {
 	}, [cancelAction]);
 
 	const setOpts = useCallback((opts) => {
-		if (opts) {
-			setState((prev) => ({
-				...prev,
-				...(opts.id && {
-					itemId: opts.id,
-				}),
-				...(opts.data && {
-					itemData: opts.data,
-				}),
-				itemInitialized: false
-			}));
-		}
+		const { id, data, ...rest } = opts || {};
+		setState((prev) => ({
+			...prev,
+			...(id && {
+				itemId: id,
+			}),
+			...(data && {
+				itemData: data,
+			}),
+			itemInitialized: false,
+			...rest
+		}));
 	}, []);
 
 	// CREATE
@@ -151,7 +151,10 @@ export const useCrud = () => {
 		(opts) => {
 			console.log("finishedReading", opts);
 			readAction.finish();
-			setOpts(opts);
+			setOpts({
+				supressLoading: false,
+				...opts
+			});
 		},
 		[readAction, setOpts]
 	);
@@ -174,8 +177,8 @@ export const useCrud = () => {
 	}, [readAction.state]);
 
 	const readWorking = useMemo(() => {
-		return readAction.state === ActionState.WORKING;
-	}, [readAction.state]);
+		return readAction.state === ActionState.WORKING && !state.supressLoading;
+	}, [readAction.state, state.supressLoading]);
 
 	const readingFailed = useMemo(() => {
 		return readAction.failed || !!readAction.error;
@@ -195,7 +198,10 @@ export const useCrud = () => {
 		(opts) => {
 			console.log("finishedLoading", opts);
 			loadAction.finish();
-			setOpts(opts);
+			setOpts({
+				supressLoading: false,
+				...opts,
+			});
 		},
 		[loadAction, setOpts]
 	);
@@ -218,8 +224,8 @@ export const useCrud = () => {
 	}, [loadAction.state]);
 
 	const loadWorking = useMemo(() => {
-		return loadAction.state === ActionState.WORKING;
-	}, [loadAction.state]);
+		return loadAction.state === ActionState.WORKING && !state.supressLoading;
+	}, [loadAction.state, state.supressLoading]);
 
 	const loadingFailed = useMemo(() => {
 		return loadAction.failed || !!loadAction.error;
@@ -335,12 +341,12 @@ export const useCrud = () => {
 		// 	((reading || creating || updating) && !readWorking && !readingFailed)
 		// );
 		return (
-			(loading && !loadWorking && !loadingFailed) ||
-			(reading && !readWorking && !readingFailed) ||
-			(creating && !readWorking && !readingFailed) ||
-			(updating && !readWorking && !readingFailed)
+			(loading && loadAction.state !== ActionState.WORKING && !loadingFailed) ||
+			(reading && readAction.state !== ActionState.WORKING && !readingFailed) ||
+			(creating && readAction.state !== ActionState.WORKING && !readingFailed) ||
+			(updating && readAction.state !== ActionState.WORKING && !readingFailed)
 		);
-	}, [creating, loadWorking, loading, loadingFailed, readWorking, reading, readingFailed, updating]);
+	}, [creating, loadAction.state, loading, loadingFailed, readAction.state, reading, readingFailed, updating]);
 
 	const editing = useMemo(() => {
 		return !!createAction.state || !!updateAction.state;

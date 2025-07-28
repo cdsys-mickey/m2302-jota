@@ -91,6 +91,9 @@ const U02Form = memo((props) => {
 									label="包含撥出入"
 									name="InvTx"
 									defaultValue={true}
+									variant="outlined"
+									size="small"
+									fullWidth
 								/>
 
 							</FlexGrid>
@@ -99,6 +102,9 @@ const U02Form = memo((props) => {
 									label="包含試贈樣"
 									name="SType"
 									defaultValue={true}
+									variant="outlined"
+									size="small"
+									fullWidth
 								/>
 							</FlexGrid>
 

@@ -18,6 +18,7 @@ LeftButtons.displayName = "LeftButtons";
 
 const RightButtons = memo(() => (
 	<>
+		<P37EditButton />
 		<P37SaveButton />
 		<P37CancelButton />
 	</>
@@ -34,7 +35,7 @@ const P37Toolbar = memo(
 				alignItems="flex-end"
 				ref={ref}
 				bgcolor={Colors.TOOLBAR}
-				LeftComponent={P37EditButton}
+				// LeftComponent={P37EditButton}
 				RightComponent={RightButtons}
 				{...rest}
 			/>

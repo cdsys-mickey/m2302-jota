@@ -7,3 +7,7 @@
   /* --dsg-selection-border-color: rgb(69,128,230); */
   --dsg-selection-border-color: #00bdd1;
 }
+
+.dsg-add-row>* {
+  margin-right: 0;
+}

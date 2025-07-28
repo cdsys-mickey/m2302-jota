@@ -1,5 +1,5 @@
+import CmsCalcTypes from "@/components/CmsCalcTypePicker/CmsCalTypes.mjs";
 import Objects from "@/shared-modules/Objects.mjs";
-import P38CalType from "./form/pickers/P38CalType.mjs";
 
 /* eslint-disable no-mixed-spaces-and-tabs */
 
@@ -9,7 +9,7 @@ const transformForReading = (payload) => {
 	return {
 		Head: Head ?? "",
 		Tail: Tail.join("\n"),
-		CmsCalc: P38CalType.getOptionById(CmsCalc),
+		CmsCalc: CmsCalcTypes.getOptionById(CmsCalc),
 		...rest,
 	};
 };

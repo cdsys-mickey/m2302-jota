@@ -7,13 +7,7 @@ const P37CancelButton = (props) => {
 	const { ...rest } = props;
 	const p37 = useContext(P37Context);
 
-	if (
-		p37.grid.gridLoading ||
-		!p37.grid.gridData ||
-		p37.grid.gridData?.length === 0 ||
-		p37.grid.readOnly ||
-		p37.saveWorking
-	) {
+	if (!p37.editing) {
 		return false;
 	}
 
@@ -23,9 +17,7 @@ const P37CancelButton = (props) => {
 			color="warning"
 			variant="outlined"
 			size="small"
-			// endIcon={<SaveIcon />}
-			loading={p37.saveWorking}
-			onClick={p37.cancelEdit}
+			onClick={p37.cancelEditing}
 			{...rest}
 		>取消</ButtonEx>
 

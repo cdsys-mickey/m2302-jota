@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { FormLabel, Typography } from "@mui/material";
 import FlexBox from "@/shared-components/FlexBox";
 import { memo } from "react";
+import { useMemo } from "react";
 
 const iconProps = (size) => {
 	switch (size) {
@@ -21,21 +22,27 @@ const FormLabelEx = memo((props) => {
 	const {
 		size = "small",
 		IconComponent,
+		inline,
 		dense,
 		children,
 		variant = "subtitle2",
 		slotProps,
 		sx = [],
 	} = props;
+
+	const paddingUp = useMemo(() => {
+		return dense && !inline;
+	}, [dense, inline])
+
 	return (
 		<FormLabel
 			sx={[
 				(theme) => ({
 					color: theme.palette.text.primary,
 					// fontWeight: 400,
-					// ...(dense && {
-					// 	top: "-4px",
-					// }),
+					...(paddingUp && {
+						top: "-4px",
+					}),
 					marginRight: theme.spacing(1),
 					"& .MuiTypography-root": {
 						fontWeight: 600
@@ -61,10 +68,13 @@ FormLabelEx.displayName = "FormLabelEx";
 
 FormLabelEx.propTypes = {
 	children: PropTypes.node,
+	size: PropTypes.string,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	variant: PropTypes.string,
 	dense: PropTypes.bool,
-	slotProps: PropTypes.object
+	inline: PropTypes.bool,
+	slotProps: PropTypes.object,
+	IconComponent: PropTypes.element
 };
 
 export default FormLabelEx;

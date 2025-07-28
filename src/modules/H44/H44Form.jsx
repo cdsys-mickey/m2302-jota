@@ -86,7 +86,9 @@ const H44Form = memo((props) => {
 									label="扣減退料次數"
 									name="Minus"
 									defaultValue={true}
+									variant="outlined"
 									size="small"
+									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>

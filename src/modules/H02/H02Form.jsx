@@ -19,7 +19,7 @@ const H02Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={6}>
 								<DatePickerWrapper
 									name="SalYM"
@@ -59,20 +59,28 @@ const H02Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} >
+							<Grid item xs={3} >
 								<FlexBox alignItems="flex-start">
 									<CheckboxExWrapper
-										label="包含撥出入"
+										label="含撥出入"
 										name="InclTX"
 										defaultValue={true}
-									/>
-
-									<CheckboxExWrapper
-										label="含試贈樣"
-										name="InclTest"
-										defaultValue={true}
+										variant="outlined"
+										size="small"
+										fullWidth
 									/>
 								</FlexBox>
+							</Grid>
+							<Grid item xs={3} >
+
+								<CheckboxExWrapper
+									label="含試贈樣"
+									name="InclTest"
+									defaultValue={true}
+									variant="outlined"
+									size="small"
+									fullWidth
+								/>
 							</Grid>
 						</Grid>
 

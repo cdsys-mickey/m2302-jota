@@ -10,10 +10,13 @@ import PropTypes from "prop-types";
  */
 const FlexBoxBase = styled(Box, {
 	shouldForwardProp: (prop) =>
-		!['inline', 'block', 'fullWidth', 'fullHeight', 'midWidth', 'maxWidth', 'gap'].includes(prop),
-})(({ theme, inline = false, block = false, fullHeight, fullWidth, minWidth, maxWidth, gap }) => ({
+		!['inline', 'block', 'fullWidth', 'fullHeight', 'fullWindowHeight', 'midWidth', 'maxWidth', 'gap'].includes(prop),
+})(({ theme, inline = false, block = false, fullHeight, fullWindowHeight, fullWidth, minWidth, maxWidth, gap }) => ({
 	display: block ? "block" : inline ? "inline-flex" : "flex",
 	...(fullHeight && {
+		height: "100%",
+	}),
+	...(fullWindowHeight && {
 		height: "100vh",
 	}),
 	...(fullWidth && {

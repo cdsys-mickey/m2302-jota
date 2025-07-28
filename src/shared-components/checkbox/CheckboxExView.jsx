@@ -3,30 +3,38 @@ import {
 	FormControl,
 	FormControlLabel,
 	FormHelperText,
-	InputLabel
+	InputLabel,
+	Tooltip
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { useMemo } from "react";
 import { forwardRef, memo } from "react";
 
 const CheckboxExView = memo(
 	forwardRef((props, ref) => {
-		const { shrink = false, variant, fullWidth = false, dense = false, label, slotProps, error, helperText, ...rest } = props;
+		const { shrink = false, variant, fullWidth = false, dense = false, label, slotProps, error, helperText, tooltip, disabled, ...rest } = props;
 		const { label: labelProps, ...checkboxSlotProps } = slotProps || {};
 
-		const checkbox = (
-			<Checkbox
-				ref={ref}
-				color="default"
-				// {...(checkboxSlotProps && {
-				// 	slotProps: checkboxSlotProps
-				// })}
-				{...checkboxSlotProps}
-				{...rest}
-			/>
-		)
+		const checkbox = useMemo(() => (
+			<Tooltip title={tooltip}>
+				<span>
+					<Checkbox
+						ref={ref}
+						// color="default"
+						// {...(checkboxSlotProps && {
+						// 	slotProps: checkboxSlotProps
+						// })}
+						disabled={disabled}
+						{...checkboxSlotProps}
+						{...rest}
+					/>
+				</span>
+			</Tooltip>
+		), [checkboxSlotProps, disabled, ref, rest, tooltip]);
 
 		return (
 			<FormControl
+				disabled={disabled}
 				sx={{
 					display: 'inline-block', // 適應內容大小
 					...(fullWidth && {
@@ -77,6 +85,7 @@ const CheckboxExView = memo(
 					<FormControlLabel
 						label={shrink ? "" : label}
 						error={error}
+						disabled={disabled}
 						control={
 							checkbox
 						}
@@ -97,6 +106,7 @@ const CheckboxExView = memo(
 );
 CheckboxExView.displayName = "CheckboxExView";
 CheckboxExView.propTypes = {
+	disabled: PropTypes.bool,
 	shrink: PropTypes.bool,
 	fullWidth: PropTypes.bool,
 	dense: PropTypes.bool,
@@ -105,5 +115,6 @@ CheckboxExView.propTypes = {
 	slotProps: PropTypes.object,
 	error: PropTypes.object,
 	helperText: PropTypes.string,
+	tooltip: PropTypes.string,
 };
 export default CheckboxExView;

@@ -10,27 +10,22 @@ import CmsBusCompPicker from "@/components/CmsBusCompPicker/CmsBusCompPicker";
 import CmsCityPicker from "@/components/CmsCityPicker/CmsCityPicker";
 import CmsCustTypePicker from "@/components/CmsCustTypePicker/CmsCustTypePicker";
 import CmsGroupTypePicker from "@/components/CmsGroupTypePicker/CmsGroupTypePicker";
+import HotelPicker from "@/components/HotelPicker/HotelPicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
-import EmployeePicker from "@/components/picker/EmployeePicker";
-import { CheckboxEx, DatePickerEx, FlexTable, FlexTableCell, FlexTableRow, FormFieldLabel, TextFieldEx } from "@/shared-components";
+import { CheckboxEx, DatePickerEx, FormFieldLabel } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import HotelPicker from "@/components/HotelPicker/HotelPicker";
-import P42GridContainer from "../dialog/grid/P42RangeGridContainer";
 import P42CmsGridContainer from "../dialog/grid/P42CmsGridContainer";
-import P42CmsRow2View from "../dialog/grid/P42CmsRow2";
+import P42RangeGridContainer from "../dialog/grid/P42RangeGridContainer";
+import CmsCalcTypes from "@/components/CmsCalcTypePicker/CmsCalTypes.mjs";
 
 const CELL_HEIGHT = "26px"
-const CELL_PROPS = {
-	alignItems: "center",
-	justifyContent: "flex-end",
-	height: CELL_HEIGHT
-}
 
 const P42DialogForm = memo((props) => {
 	const {
@@ -64,7 +59,7 @@ const P42DialogForm = memo((props) => {
 				<FormBox pt={1}>
 					<FormSectionBox >
 						<Grid container columns={24} spacing={1}>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={4}>
 								<TextFieldWrapper
 									typo
 									name="ComID"
@@ -86,12 +81,13 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={12} md={6}>
+							<Grid item xs={12} sm={12} md={7}>
 								<CmsBookingOrderPicker
 									typo
 									name="bookingOrder"
 									label="預約單號"
 									disableOpenOnInput
+									cleared={false}
 									slotProps={{
 										paper: {
 											sx: {
@@ -101,11 +97,21 @@ const P42DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
+							<Grid item xs={12} md={8.5}>
+								<FlexBox justifyContent="flex-end" alignItems="flex-end" height={36}>
+									<FormFieldLabel
+										name="CalcType"
+										label="計算方式："
+										inline
+										stringify={CmsCalcTypes.getOptionLabel}
+									/>
+								</FlexBox>
+							</Grid>
 						</Grid>
 					</FormSectionBox>
 					<FormSectionBox >
 						<Grid container columns={24} spacing={1}>
-							<Grid item xs={12} sm={12} md={7.5}>
+							<Grid item xs={12} sm={12} md={8}>
 								<TextFieldWrapper
 									typo
 									name="GrpName"
@@ -117,7 +123,7 @@ const P42DialogForm = memo((props) => {
 								// }}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<CmsCityPicker
 									typo
 									name="city"
@@ -134,7 +140,7 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<CmsGroupTypePicker
 									typo
 									name="GrpType"
@@ -157,7 +163,7 @@ const P42DialogForm = memo((props) => {
 					{/* <FlexBox fullWidth /> */}
 					<FormSectionBox >
 						<Grid container columns={24} spacing={1}>
-							<Grid item xs={12} sm={12} md={3.5}>
+							<Grid item xs={12} sm={12} md={4}>
 								<CmsBusCompPicker
 									typo
 									name="busComp"
@@ -176,7 +182,7 @@ const P42DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<TextFieldWrapper
 									typo
 									name="CarQty"
@@ -211,7 +217,7 @@ const P42DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={4.5}>
+							<Grid item xs={12} sm={12} md={3.5}>
 								<TextFieldWrapper
 									typo
 									name="DrvTel"
@@ -225,7 +231,7 @@ const P42DialogForm = memo((props) => {
 					<FormSectionBox >
 						<Grid container columns={24} spacing={1}>
 
-							<Grid item xs={12} sm={12} md={3.5}>
+							<Grid item xs={12} sm={12} md={4}>
 								<TourGroupPicker
 									typo
 									name="tourGroup"
@@ -245,7 +251,7 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 							{/* <FlexBox fullWidth /> */}
-							<Grid item xs={12} sm={12} md={3}>
+							<Grid item xs={12} sm={12} md={4}>
 								<TourGuidePicker
 									typo
 									name="tourGuide"
@@ -278,7 +284,7 @@ const P42DialogForm = memo((props) => {
 					{/* <FlexBox fullWidth /> */}
 					<FormSectionBox >
 						<Grid container columns={24} spacing={1}>
-							<Grid item xs={12} sm={12} md={3.5}>
+							<Grid item xs={12} sm={12} md={4}>
 								<EmployeePicker
 									typo
 									name="employee"
@@ -296,26 +302,8 @@ const P42DialogForm = memo((props) => {
 									disableOpenOnInput
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={8}>
-								<TextFieldWrapper
-									typo
-									name="Remark"
-									label="備註"
-									fullWidth
-									multiline
-								/>
-							</Grid>
-							{/* <FlexBox fullWidth /> */}
-							<Grid item xs={12} sm={12} md={8.5}>
-								<TextFieldWrapper
-									typo
-									name="SnRemark"
-									label="旅行社簽約備註"
-									fullWidth
-									multiline
-								/>
-							</Grid>
-							<Grid item xs={12} sm={12} md={3.5}>
+
+							<Grid item xs={12} sm={12} md={4}>
 								<HotelPicker
 									typo
 									name="hotel"
@@ -336,23 +324,41 @@ const P42DialogForm = memo((props) => {
 							<Grid item xs={12} sm={12} md={3.5}>
 								<CheckboxEx
 									typo
+									// disabled={!editing}
 									label="飯店佣金已發"
 									name="HotelPay"
 									variant="outlined"
 									fullWidth
 								/>
 							</Grid>
+
+							<Grid item xs={12} sm={12} md={12}>
+								<TextFieldWrapper
+									typo
+									name="Remark"
+									label="備註"
+									fullWidth
+									multiline
+								/>
+							</Grid>
+							{/* <FlexBox fullWidth /> */}
+							<Grid item xs={12} sm={12} md={12}>
+								<TextFieldWrapper
+									typo
+									name="SnRemark"
+									label="旅行社簽約備註"
+									fullWidth
+									multiline
+								/>
+							</Grid>
 						</Grid>
 					</FormSectionBox>
 					<Grid container columns={24} spacing={1}>
-						<Grid item xs={24} sm={5.5}>
-							<P42GridContainer />
-
+						<Grid item md={24} lg={5.5} >
+							<P42RangeGridContainer />
 						</Grid>
-						<Grid item xs={24} sm={18.5}>
+						<Grid item md={24} lg={18.5}>
 							<P42CmsGridContainer />
-
-							<P42CmsRow2View mt={0.5} />
 						</Grid>
 					</Grid>
 				</FormBox >

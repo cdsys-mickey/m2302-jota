@@ -116,7 +116,7 @@ const TextComponentEx = memo(
 		const handleKeyDown = useCallback(
 			(e) => {
 				// Track when user presses the Esc key
-				console.log("handleKeyDown", e);
+				// console.log("handleKeyDown", e);
 				switch (e.key) {
 					case "Escape":
 						asyncRef.current.escPressed = true;

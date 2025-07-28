@@ -1,12 +1,10 @@
-import PropTypes from "prop-types";
-import { useContext } from "react";
 import { useP42 } from "@/modules/P42/useP42";
-import { AuthContext } from "@/contexts/auth/AuthContext";
+import PropTypes from "prop-types";
 import { P42Context } from "./P42Context";
 
 export const P42Provider = ({ children }) => {
-	const auth = useContext(AuthContext);
-	const p42 = useP42({ token: auth.token });
+
+	const p42 = useP42();
 
 	return (
 		<P42Context.Provider

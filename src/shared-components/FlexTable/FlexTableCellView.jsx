@@ -7,7 +7,7 @@ import FlexTableRowContext from "./FlexTableRowContext";
 
 const FlexTableCellViewComponent = (props) => {
 	const { children, sx = [], border, height, h, width, w, align, alignItems, justifyContent, padding, p, ...rest } = props;
-	const { rowHeight: tableRowHeight, border: tableBorder, padding: tablePadding } = useContext(FlexTableContext) || {};
+	const { rowHeight: tableRowHeight, border: tableBorder, padding: tablePadding, cellProps } = useContext(FlexTableContext) || {};
 	const { rowHeight, alignItems: rowAlignItems, justifyContent: rowJustifyContent } = useContext(FlexTableRowContext) || {};
 
 	// const contextProps = useMemo(() => {
@@ -46,12 +46,19 @@ const FlexTableCellViewComponent = (props) => {
 	}, [border]);
 
 	const __border = useMemo(() => {
-		return border ?? tableBorder;
-	}, [border, tableBorder])
+		return _border ?? tableBorder;
+	}, [_border, tableBorder])
 
 	const _padding = useMemo(() => {
 		return padding ?? p ?? tablePadding;
 	}, [p, padding, tablePadding])
+
+	const _cellProps = useMemo(() => {
+		return {
+			...cellProps,
+			...rest
+		}
+	}, [cellProps, rest])
 
 	return (
 		<Box
@@ -60,12 +67,13 @@ const FlexTableCellViewComponent = (props) => {
 			p={_padding}
 			sx={{
 				display: 'table-cell',
-				...(_border && {
+				...(__border && {
 					border: __border,
 				})
 			}}>
 			<FlexBox
 				fullWidth
+				{...children && ({ fullHeight: true })}
 				{...(_alignItems && { alignItems: _alignItems })}
 				{...(_justifyContent && { justifyContent: _justifyContent })}
 				sx={[
@@ -76,7 +84,7 @@ const FlexTableCellViewComponent = (props) => {
 					}),
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
-				{...rest}
+				{..._cellProps}
 			>
 				{children}
 			</FlexBox>
@@ -92,6 +100,8 @@ FlexTableCellViewComponent.propTypes = {
 	h: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	w: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	padding: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	p: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	alignItems: PropTypes.string,
 	justifyContent: PropTypes.string,
 	align: PropTypes.string,

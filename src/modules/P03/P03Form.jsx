@@ -155,7 +155,9 @@ const P03Form = memo((props) => {
 									label="含試贈樣"
 									name="InclTest"
 									defaultValue={true}
+									variant="outlined"
 									size="small"
+									fullWidth
 								/>
 							</Grid>
 							<FlexBox fullWidth />

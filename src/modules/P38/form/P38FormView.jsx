@@ -1,14 +1,14 @@
 import { TextFieldEx } from "@/shared-components";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FormBox from "@/shared-components/form/FormBox";
+import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
+import LoadingTypography from "@/shared-components/LoadingTypography";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
+import CmsCalcTypePicker from "@/components/CmsCalcTypePicker/CmsCalTypePicker";
 import P38Toolbar from "../P38Toolbar";
-import P38CalTypePicker from "./pickers/P38CalTypePicker";
-import FormErrorBox from "@/shared-components/form/FormErrorBox";
-import LoadingTypography from "@/shared-components/LoadingTypography";
 
 const P38FormView = memo((props) => {
 	const { loadError, loadWorking, ...rest } = props;
@@ -43,7 +43,7 @@ const P38FormView = memo((props) => {
 											/>
 										</Grid>
 										<Grid item xs={12}>
-											<P38CalTypePicker
+											<CmsCalcTypePicker
 												typo
 												label="佣金計算"
 												name="CmsCalc"

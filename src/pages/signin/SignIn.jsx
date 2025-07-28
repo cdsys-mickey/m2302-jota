@@ -39,9 +39,9 @@ const SignIn = memo(
 								type="password"
 								fullWidth
 								name="pw"
-								label="通行碼"
+								label="密碼"
 								required
-								rules={{ required: "請輸入通行碼" }}
+								rules={{ required: "請輸入密碼" }}
 								size="small"
 								sx={{
 									"& .MuiInputBase-root": {
@@ -90,6 +90,7 @@ const SignIn = memo(
 							<LoadingButton
 								type="submit"
 								variant="contained"
+
 								size="small"
 								loading={loading}
 								endIcon={<LoginIcon />}>

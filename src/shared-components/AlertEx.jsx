@@ -61,7 +61,7 @@ const AlertEx = memo(
 			return error ? "error" : severity;
 		}, [error, severity]);
 
-		const memoisedMessage = useMemo(() => {
+		const _message = useMemo(() => {
 			const message = children || error?.message || error?.statusText || defaultText;
 			return (firstLineOnly && Types.isString(message))
 				? message.split("\n")[0]
@@ -115,7 +115,7 @@ const AlertEx = memo(
 				]}
 				{...rest}>
 				{title && <AlertTitle>{title}</AlertTitle>}
-				{memoisedMessage}
+				{_message}
 			</Alert>
 		);
 	})

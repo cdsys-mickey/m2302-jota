@@ -11,12 +11,7 @@ const P37SaveButton = (props) => {
 
 	const handleSubmit = form.handleSubmit(p37.onSubmit, p37.onSubmitError);
 
-	if (
-		p37.grid.gridLoading ||
-		!p37.grid.gridData ||
-		p37.grid.gridData?.length === 0 ||
-		p37.grid.readOnly
-	) {
+	if (!p37.editing) {
 		return false;
 	}
 
@@ -27,9 +22,8 @@ const P37SaveButton = (props) => {
 			color="warning"
 			size="small"
 			endIcon={<SaveIcon />}
-			loading={p37.saveWorking}
+			loading={p37.editWorking}
 			onClick={handleSubmit}
-			disabled={!p37.grid.isDirty}
 			{...rest}
 		>儲存</ButtonEx>
 

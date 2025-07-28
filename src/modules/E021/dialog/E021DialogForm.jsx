@@ -51,12 +51,12 @@ const E021DialogForm = memo((props) => {
 				<>
 					<FormBox pt={1}>
 						<Grid container columns={24} spacing={0.8}>
-							{!creating && (<Grid item md={6}>
+							{!creating && (<Grid item md={6.5}>
 								<TextFieldWrapper
 									typo
 									name="SalID"
 									label="單號"
-									// fullWidth
+									fullWidth
 									readOnly={true}
 								/>
 							</Grid>)}
@@ -101,9 +101,10 @@ const E021DialogForm = memo((props) => {
 							<Grid item md={3} lg={4}>
 								<CheckboxExWrapper
 									typo
+									variant="outlined"
 									label="不列印金額"
 									name="dontPrtAmt"
-									size="medium"
+									size="small"
 									color="secondary"
 									slotProps={{
 										label: {
@@ -115,9 +116,12 @@ const E021DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<FlexBox fullWidth />
-							<Grid item md={2}>
+							<Grid item md={2.5}>
 								<CheckboxExWrapper
+									fullWidth
 									typo
+									size="small"
+									variant="outlined"
 									label="零售"
 									name="retail"
 									onChange={handleRetailChange}
@@ -222,7 +226,7 @@ const E021DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item md={4}>
+							<Grid item md={3.5}>
 								<TransportTypePicker
 									typo
 									name="transType"
@@ -238,10 +242,12 @@ const E021DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item md={2}>
+							<Grid item md={2.5}>
 								<CheckboxExWrapper
 									typo
 									label="稅外加"
+									fullWidth
+									variant="outlined"
 									name="taxExcluded"
 									// size="small"
 									slotProps={{

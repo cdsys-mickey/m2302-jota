@@ -5,11 +5,12 @@ import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { Typography } from "@mui/material";
+import { Typography, useTheme, useMediaQuery } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import P42CmsRow1View from "./P42CmsRow1";
+import P42CmsRow1Container from "./P42CmsRow1/P42CmsRow1Container";
+import P42CmsRow2Container from "./P42CmsRow2/P42CmsRow2Container";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -18,19 +19,23 @@ const ContextMenu = createDSGContextMenuComponent({
 const P42CmsGridContainer = (props) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
+	const theme = useTheme();
+	const lgOrUp = useMediaQuery(theme.breakpoints.up('lg'));
+
 	const form = useFormContext();
 	const p42 = useContext(P42Context);
 	const formMeta = useContext(FormMetaContext);
 	const _addRowsComponent = useMemo(() => {
 		return createAddRowsComponentEx({
+			hideButton: true,
 			hideNumberField: true,
-			RightComponent: P42CmsRow1View
+			RightComponent: P42CmsRow1Container
 		})
 	}, [])
 
 	const _height = useMemo(() => {
-		return height - 510 + (p42.gridDisabled ? 48 : 0)
-	}, [height, p42.gridDisabled])
+		return lgOrUp ? height - 510 : 200;
+	}, [height, lgOrUp])
 
 	const onChange = useMemo(() => {
 		return p42.cmsGrid.buildGridChangeHandler({
@@ -84,7 +89,10 @@ const P42CmsGridContainer = (props) => {
 				// 	}
 				// }}
 				{...rest}
-			/>
+			>
+				{!p42.editing && <P42CmsRow1Container />}
+				<P42CmsRow2Container />
+			</DSGGrid>
 		</DSGContext.Provider>
 	);
 };

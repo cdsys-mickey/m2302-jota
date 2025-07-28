@@ -89,10 +89,12 @@ const F01DialogForm = memo((props) => {
 							{editing && (
 								<Grid item md={4}>
 									<CheckboxExWrapper
+										variant="outlined"
+										fullWidth
 										typo
 										label="貨品排序"
 										name="Order"
-										size="medium"
+										size="small"
 									/>
 								</Grid>
 							)}

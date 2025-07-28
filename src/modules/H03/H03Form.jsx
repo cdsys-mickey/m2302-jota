@@ -21,7 +21,7 @@ const H03Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間"
 									leftComponent={<DatePickerWrapper
@@ -58,19 +58,29 @@ const H03Form = memo((props) => {
 									catLName="catL"
 								/>
 							</Grid>
-							<FlexGrid item xs={12} alignItems="flex-start">
-								<CheckboxExWrapper
-									label="包含撥出入"
-									name="InclTX"
-									defaultValue={true}
-								/>
+							<Grid item xs={3} >
+								<FlexBox alignItems="flex-start">
+									<CheckboxExWrapper
+										label="含撥出入"
+										name="InclTX"
+										defaultValue={true}
+										variant="outlined"
+										size="small"
+										fullWidth
+									/>
+								</FlexBox>
+							</Grid>
+							<Grid item xs={3} >
 
 								<CheckboxExWrapper
 									label="含試贈樣"
 									name="InclTest"
 									defaultValue={true}
+									variant="outlined"
+									size="small"
+									fullWidth
 								/>
-							</FlexGrid>
+							</Grid>
 						</Grid>
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={6}>

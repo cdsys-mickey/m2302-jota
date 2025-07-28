@@ -113,7 +113,7 @@ const DialogTitleEx = memo(
 						<DialogTitleButtonsBox>{buttons}</DialogTitleButtonsBox>
 					)}
 					{doRenderButtonsComponent && (
-						<DialogTitleButtonsBox>
+						<DialogTitleButtonsBox alignItems="center">
 							<ButtonsComponent />
 						</DialogTitleButtonsBox>
 					)}

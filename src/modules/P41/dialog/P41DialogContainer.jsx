@@ -1,23 +1,17 @@
-import { P41Context } from "@/modules/P41/P41Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogEx } from "@/shared-components";
+import { P41Context } from "@/modules/P41/P41Context";
+import { DialogEx, FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useContext, useEffect, useMemo } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import P41DialogForm from "../form/P41DialogForm";
-import { P41DialogButtonsContainer } from "./buttons/P41DialogButtonsContainer";
-import { FormMetaProvider } from "@/shared-components";
-import P41Drawer from "../P41Drawer";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { forwardRef, useCallback, useContext, useMemo } from "react";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useCallback } from "react";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import P41DialogForm from "../form/P41DialogForm";
+import P41Drawer from "../P41Drawer";
+import { P41DialogButtonsContainer } from "./buttons/P41DialogButtonsContainer";
 
 export const P41DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

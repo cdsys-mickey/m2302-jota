@@ -25,7 +25,7 @@ const getDefaultOption = () => {
 	return getOptionById(2);
 };
 
-const P38CalType = {
+const CmsCalcTypes = {
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
@@ -34,4 +34,4 @@ const P38CalType = {
 	getDefaultOption,
 };
 
-export default P38CalType;
+export default CmsCalcTypes;

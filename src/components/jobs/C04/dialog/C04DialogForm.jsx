@@ -160,7 +160,7 @@ const C04DialogForm = memo((props) => {
 							item
 							xs={4}
 							sm={4}
-							md={4}
+							md={4.5}
 						// justifyContent="center"
 						>
 							<TaxExcludedCheckbox
@@ -170,7 +170,7 @@ const C04DialogForm = memo((props) => {
 								onChange={handleTaxTypeChange}
 							/>
 						</FlexGrid>
-						<Grid item xs={24} sm={24} md={4.5}>
+						<Grid item xs={24} sm={24} md={4}>
 							<TextFieldWrapper
 								typo
 								name="InvNo"

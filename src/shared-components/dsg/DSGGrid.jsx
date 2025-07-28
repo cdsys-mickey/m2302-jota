@@ -49,8 +49,8 @@ export const DSGGrid = memo(
 					lockRows={lockRows}
 					{...DSGGRID_DEFAULTS}
 					{...rest}>
-					{children}
 				</DynamicDataSheetGrid>
+				{children}
 			</DSGBox>
 		);
 	})

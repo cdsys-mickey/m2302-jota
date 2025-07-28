@@ -1,15 +1,15 @@
+import { createAddRowsComponentEx } from "@/shared-components/dsg/add-rows/createAddRowsComponentEx";
+import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { Typography } from "@mui/material";
+import { Typography, useTheme, useMediaQuery } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { P42Context } from "../../P42Context";
-import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { createAddRowsComponentEx } from "@/shared-components/dsg/add-rows/createAddRowsComponentEx";
-import P42RangeRow1View from "./P42RangeRow1";
+import P42RangeRow1Container from "./P42RangeRow1/P42RangeRow1Container";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -21,16 +21,18 @@ const P42RangeGridContainer = (props) => {
 	const form = useFormContext();
 	const p42 = useContext(P42Context);
 	const formMeta = useContext(FormMetaContext);
+	const theme = useTheme();
+	const lgOrUp = useMediaQuery(theme.breakpoints.up('lg'));
 	const _addRowsComponent = useMemo(() => {
 		return createAddRowsComponentEx({
 			hideNumberField: true,
-			RightComponent: P42RangeRow1View
+			RightComponent: P42RangeRow1Container
 		})
 	}, [])
 
 	const _height = useMemo(() => {
-		return height - 478 + (p42.gridDisabled ? 48 : 0)
-	}, [height, p42.gridDisabled])
+		return lgOrUp ? height - 478 : 200
+	}, [height, lgOrUp])
 
 
 
@@ -64,8 +66,8 @@ const P42RangeGridContainer = (props) => {
 	return (
 		<DSGContext.Provider
 			value={{
-				...p42.grid,
-				...formMeta.gridMeta,
+				...p42.rangeGrid,
+				...formMeta.rangeGridMeta,
 				readOnly: !p42.editing
 			}}>
 			<DSGGrid
@@ -82,7 +84,9 @@ const P42RangeGridContainer = (props) => {
 				disableExpandSelection
 				contextMenuComponent={ContextMenu}
 				{...rest}
-			/>
+			>
+				{!p42.editing && <P42RangeRow1Container />}
+			</DSGGrid>
 		</DSGContext.Provider>
 	);
 };

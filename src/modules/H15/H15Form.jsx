@@ -76,7 +76,9 @@ const H15Form = memo((props) => {
 									label="包含零售"
 									name="SalType"
 									defaultValue={false}
+									variant="outlined"
 									size="small"
+									fullWidth
 								/>
 							</Grid>
 						</Grid>

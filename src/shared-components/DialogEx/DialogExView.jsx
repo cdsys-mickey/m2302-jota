@@ -22,6 +22,8 @@ import MuiStyles from "@/shared-modules/MuiStyles";
 import DialogTitleEx from "./DialogTitleEx";
 import CheckboxEx from "../checkbox/CheckboxExView";
 import { ButtonEx } from "@/shared-components";
+import FormErrorBox from "../form/FormErrorBox";
+import FormAlertBox from "../form/FormAlertBox";
 
 
 const defaultConfirmButtonProps = {
@@ -97,14 +99,18 @@ const DialogExView = memo(
 			id,
 			mask = false,
 			confirmButton,
+			tooSmall,
 			...rest
 		} = props;
-		// const dialogs = useContext(DialogsContext);
+		// console.log("tooSmall", tooSmall);
 
 		const _cancelDisabled = useMemo(() => {
 			return cancelDisabled != null ? cancelDisabled : working;
 		}, [cancelDisabled, working])
 
+		const _hideCloseButton = useMemo(() => {
+			return hideCloseButton && !tooSmall;
+		}, [hideCloseButton, tooSmall])
 
 
 		const inputRef = useRef();
@@ -117,6 +123,10 @@ const DialogExView = memo(
 		const showTitle = useMemo(() => {
 			return title || titleButtons || TitleButtonsComponent;
 		}, [title, titleButtons, TitleButtonsComponent]);
+
+		const _title = useMemo(() => {
+			return !tooSmall ? title : "";
+		}, [title, tooSmall])
 
 		const doRenderOtherActionButtonsComponent = useMemo(() => {
 			return OtherActionButtonsComponent || otherActionButtons;
@@ -229,10 +239,12 @@ const DialogExView = memo(
 				{...rest}>
 				<DialogTitleEx
 					onClose={onClose}
-					hideCloseButton={hideCloseButton}
+					hideCloseButton={_hideCloseButton}
 					onReturn={onReturn}
-					buttons={titleButtons}
-					ButtonsComponent={TitleButtonsComponent}
+					{...!tooSmall && {
+						buttons: titleButtons,
+						ButtonsComponent: TitleButtonsComponent
+					}}
 					{...titleProps}
 					sx={[
 						(theme) => ({
@@ -248,8 +260,9 @@ const DialogExView = memo(
 						}),
 						...(Array.isArray(titleSx) ? titleSx : [titleSx]),
 					]}>
-					{title}
+					{_title}
 				</DialogTitleEx>
+
 				<DialogContent
 					sx={[
 						() => ({
@@ -267,12 +280,20 @@ const DialogExView = memo(
 					{...slotProps?.content}
 					{...contentProps}
 				>
-					{message?.split("\n").map((line, index) => (
+					{tooSmall && (
+						<FormAlertBox slotProps={{
+							alert: {
+								severity: "warning"
+							}
+						}}>螢幕寬度不足無法顯示, 請縮小螢幕縮放比例以容納更多內容，或以關閉按鈕離開本作業
+						</FormAlertBox>
+					)}
+					{!tooSmall && message?.split("\n").map((line, index) => (
 						<DialogContentText key={`line-${index}`}>
 							{line}
 						</DialogContentText>
 					))}
-					{prompt && (
+					{(!tooSmall && prompt) && (
 						<Box py={1}>
 							<TextField
 								inputRef={setInputRef}
@@ -295,7 +316,7 @@ const DialogExView = memo(
 							/>
 						</Box>
 					)}
-					{check && (
+					{(!tooSmall && check) && (
 						<Box py={1}>
 							<CheckboxEx
 								inputRef={setInputRef}
@@ -308,7 +329,7 @@ const DialogExView = memo(
 						</Box>
 					)}
 					{/* <form onSubmit={onSubmit}>{children}</form> */}
-					{children}
+					{!tooSmall && children}
 				</DialogContent>
 
 				{showActions && (
@@ -415,6 +436,7 @@ DialogExView.propTypes = {
 	slotProps: PropTypes.object,
 	// check
 	check: PropTypes.bool,
+	tooSmall: PropTypes.bool,
 	defaultChecked: PropTypes.bool,
 	checkLabel: PropTypes.string,
 	checkedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])

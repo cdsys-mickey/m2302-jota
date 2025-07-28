@@ -283,7 +283,7 @@ export const useC08 = () => {
 				}
 			}
 		},
-		[crud, grid.gridData, handleRefreshAmt, httpPostAsync, httpPutAsync, listLoader, loadItem, pwordCheck, sqtyManager, token]
+		[crud, handleRefreshAmt, httpPostAsync, httpPutAsync, listLoader, loadItem, pwordCheck, sqtyManager, token]
 	);
 
 	const handleSelect = useCallback(

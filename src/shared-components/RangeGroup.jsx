@@ -4,14 +4,14 @@ import { useMemo } from 'react';
 import FieldGroup from './FieldGroup';
 import FlexBox from './FlexBox';
 
-export default function RangeGroup({ legend, leftComponent, rightComponent, required = false, seperator = "~" }) {
+export default function RangeGroup({ legend, leftComponent, rightComponent, required = false, disabled = false, seperator = "~" }) {
 
 	const _legend = useMemo(() => {
 		return required ? `${legend || "(無標頭)"}*` : legend;
 	}, [legend, required])
 
 	return (
-		<FieldGroup legend={_legend} required={required}>
+		<FieldGroup legend={_legend} required={required} disabled={disabled}>
 			<Grid container spacing={1}>
 				<Grid item xs={12} sm={5.75}>
 					{leftComponent}
@@ -33,6 +33,7 @@ export default function RangeGroup({ legend, leftComponent, rightComponent, requ
 
 RangeGroup.propTypes = {
 	required: PropTypes.bool,
+	disabled: PropTypes.bool,
 	legend: PropTypes.string,
 	seperator: PropTypes.string,
 	leftComponent: PropTypes.element,

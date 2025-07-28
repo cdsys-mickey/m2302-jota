@@ -64,6 +64,8 @@ const E021SearchForm = memo((props) => {
 					<ResponsiveGrid item xs={4}>
 						<FlexBox justifyContent="flex-end">
 							<CheckboxExWrapper
+								variant="outlined"
+								fullWidth
 								label="零售"
 								name="lvRetail"
 								size="small"

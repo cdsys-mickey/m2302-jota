@@ -35,6 +35,7 @@ export const ControlledTextField = ({
 	required,
 	slotProps,
 	borderless,
+	hideSpinButton = false,
 	...rest
 }) => {
 	const formMeta = useContext(FormMetaContext);
@@ -49,9 +50,10 @@ export const ControlledTextField = ({
 		return (inline || borderless) ? "" : label;
 	}, [borderless, inline, label])
 
+	// 只要有任一條件需要顯示後綴
 	const renderEndAdornment = useMemo(() => {
-		return EndAdornmentComponent || clearable;
-	}, [EndAdornmentComponent, clearable]);
+		return EndAdornmentComponent || clearable || endAdornment || inputEndAdornment;
+	}, [EndAdornmentComponent, clearable, endAdornment, inputEndAdornment]);
 
 	const getError = useCallback(
 		async (opts = { debug: false }) => {
@@ -154,6 +156,18 @@ export const ControlledTextField = ({
 										paddingLeft: "4px",
 										paddingRight: 0,
 									}
+								}),
+								...(hideSpinButton && {
+									// 隱藏 WebKit 瀏覽器的箭頭
+									'& input[type="number"]::-webkit-inner-spin-button, & input[type="number"]::-webkit-outer-spin-button': {
+										display: 'none',
+										paddingRight: "8px",
+									},
+									// 隱藏 Firefox 的箭頭
+									'& input[type="number"]': {
+										MozAppearance: 'textfield',
+										paddingRight: "8px",
+									},
 								})
 							}),
 							...(Array.isArray(sx) ? sx : [sx]),
@@ -185,8 +199,6 @@ export const ControlledTextField = ({
 							...(renderEndAdornment && {
 								endAdornment: (
 									<>
-										{endAdornment}
-										{inputEndAdornment}
 										{clearable && (
 											<ClearInputButton
 												className="clearable"
@@ -194,6 +206,9 @@ export const ControlledTextField = ({
 												onChange={onChange}
 											/>
 										)}
+										{endAdornment}
+										{inputEndAdornment}
+
 										{EndAdornmentComponent && (
 											<EndAdornmentComponent />
 										)}
@@ -209,15 +224,16 @@ export const ControlledTextField = ({
 						error={!!error}
 						helperText={error?.message}
 						required={required}
+
+						{...slotProps?.textField}
+
+						{...rest}
 						{
 						...(borderless && {
 							variant: "filled",
 							InputProps: { disableUnderline: true }
 						})
 						}
-						{...slotProps?.textField}
-
-						{...rest}
 					/>
 				</FlexBox>
 			)}
@@ -361,4 +377,5 @@ ControlledTextField.propTypes = {
 	dense: PropTypes.bool,
 	inline: PropTypes.bool,
 	borderless: PropTypes.bool,
+	hideSpinButton: PropTypes.bool
 };

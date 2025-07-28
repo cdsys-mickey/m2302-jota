@@ -2,7 +2,7 @@ import Colors from '@/modules/Colors.mjs';
 import { Box } from '@mui/system';
 import PropTypes from "prop-types";
 
-export default function FieldGroup({ legend, required, children }) {
+export default function FieldGroup({ children, legend, required, disabled }) {
 	return (
 		<Box
 			component="fieldset"
@@ -13,9 +13,11 @@ export default function FieldGroup({ legend, required, children }) {
 				padding: '0 7px 4px 7px',
 				margin: 0,
 				marginTop: -1.0,
-				'&:hover': {
-					borderColor: 'rgba(0, 0, 0, 0.87)',
-				},
+				...(!disabled && {
+					'&:hover': {
+						borderColor: 'rgba(0, 0, 0, 0.87)',
+					},
+				}),
 				'&:focus-within': {
 					borderColor: theme.palette.primary.main,
 					borderWidth: "2px",
@@ -27,7 +29,10 @@ export default function FieldGroup({ legend, required, children }) {
 				},
 				...(required && {
 					borderColor: Colors.REQUIRED,
-				})
+				}),
+				// ...(disabled && {
+				// 	backgroundColor: 'rgba(0, 0, 0, 0.23)'
+				// })
 			})}
 		>
 			{legend && (
@@ -57,6 +62,7 @@ export default function FieldGroup({ legend, required, children }) {
 
 FieldGroup.propTypes = {
 	required: PropTypes.bool,
+	disabled: PropTypes.bool,
 	legend: PropTypes.string,
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array, PropTypes.func])
 }

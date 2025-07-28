@@ -1,14 +1,14 @@
 const Types = Object.freeze({
 	// NONE: "",
-	LOCAL: "1",
-	LOCAL_HOTEL: "2",
+	DOMESTIC: "1",
+	AGENCY: "2",
 	BUS: "3",
 	CHINA: "4",
 });
 
 const options = [
-	{ id: Types.LOCAL, label: "國旅團" },
-	{ id: Types.LOCAL_HOTEL, label: "國旅團(旅)" },
+	{ id: Types.DOMESTIC, label: "國旅團" },
+	{ id: Types.AGENCY, label: "國旅團(旅)" },
 	{ id: Types.BUS, label: "大巴" },
 	{ id: Types.CHINA, label: "大陸團" },
 ];
@@ -21,6 +21,10 @@ const getOptionLabel = (option) => {
 
 const getOptionById = (id) => {
 	return options.find((o) => o.id == id);
+};
+
+const getLabelById = (id) => {
+	return getOptionLabel(getOptionById(id));
 };
 
 const findOptionByInput = (s) => {
@@ -44,7 +48,7 @@ const findByInput = (input) => {
 };
 
 const getDefaultValue = () => {
-	return Types.LOCAL;
+	return Types.DOMESTIC;
 };
 
 const getDefaultOption = () => {
@@ -63,6 +67,7 @@ const CmsGroupTypes = {
 	getDefaultOption,
 	findById,
 	findByInput,
+	getLabelById,
 };
 
 export default CmsGroupTypes;

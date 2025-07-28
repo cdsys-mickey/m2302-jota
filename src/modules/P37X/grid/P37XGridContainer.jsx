@@ -1,5 +1,5 @@
 import DSGAddRowsToolbarEx from "@/components/dsg/DSGAddRowsToolbarEx";
-import P37Context from "@/modules/P37/P37Context";
+import P37XContext from "@/modules/P37X/P37XContext";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
@@ -15,30 +15,30 @@ const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
 });
 
-const P37GridContainer = (props) => {
+const P37XGridContainer = (props) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
 	const form = useFormContext();
-	const p37 = useContext(P37Context);
+	const p37x = useContext(P37XContext);
 	// const grid = useContext(DSGContext);
 	const gridMeta = useContext(DSGMetaContext);
 
 	const _height = useMemo(() => {
-		return height - 494 + (p37.gridDisabled ? 48 : 0)
-	}, [height, p37.gridDisabled])
+		return height - 494 + (p37x.gridDisabled ? 48 : 0)
+	}, [height, p37x.gridDisabled])
 
 	const onChange = useMemo(() => {
-		return p37.grid.buildGridChangeHandler({
+		return p37x.grid.buildGridChangeHandler({
 			getValues: form.getValues,
 			setValue: form.setValue,
 			gridMeta: gridMeta,
-			onUpdateRow: p37.onUpdateRow,
-			onGridChanged: p37.onGridChanged,
+			onUpdateRow: p37x.onUpdateRow,
+			onGridChanged: p37x.onGridChanged,
 			// isRowDeletable: c08.isRowDeletable
 		});
-	}, [form.getValues, form.setValue, gridMeta, p37.grid, p37.onGridChanged, p37.onUpdateRow]);
+	}, [form.getValues, form.setValue, gridMeta, p37x.grid, p37x.onGridChanged, p37x.onUpdateRow]);
 
-	if (!p37.grid.gridData) {
+	if (!p37x.grid.gridData) {
 		return (
 			<Typography variant="body2" color="text.secondary">
 				(未填寫)
@@ -46,7 +46,7 @@ const P37GridContainer = (props) => {
 		);
 	}
 
-	if (p37.grid.gridData?.length === 0 && p37.cashGridDisabled) {
+	if (p37x.grid.gridData?.length === 0 && p37x.cashGridDisabled) {
 		return (
 			<Typography variant="body2" color="text.secondary">
 				(空白)
@@ -54,28 +54,28 @@ const P37GridContainer = (props) => {
 		);
 	}
 
-	if (p37.loadWorking) {
+	if (p37x.loadWorking) {
 		return (
 			<DSGLoading height={_height} />
 		);
 	}
 
-	if (p37.loadError) {
-		return <FormErrorBox error={p37.loadError} />
+	if (p37x.loadError) {
+		return <FormErrorBox error={p37x.loadError} />
 	}
 
 	return (
 
 		<DSGGrid
 			ref={gridMeta.setGridRef}
-			lockRows={p37.grid.readOnly}
+			lockRows={p37x.grid.readOnly}
 			columns={gridMeta.columns}
-			value={p37.grid.gridData}
+			value={p37x.grid.gridData}
 			onChange={onChange}
 			onActiveCellChange={gridMeta.handleActiveCellChange}
 			addRowsComponent={DSGAddRowsToolbarEx}
 			height={_height}
-			createRow={p37.createRow}
+			createRow={p37x.createRow}
 			disableExpandSelection
 			contextMenuComponent={ContextMenu}
 			slotProps={{
@@ -88,8 +88,8 @@ const P37GridContainer = (props) => {
 	);
 };
 
-P37GridContainer.propTypes = {
+P37XGridContainer.propTypes = {
 	store: PropTypes.bool,
 };
-P37GridContainer.displayName = "P37GridContainer";
-export default P37GridContainer;
+P37XGridContainer.displayName = "P37XGridContainer";
+export default P37XGridContainer;

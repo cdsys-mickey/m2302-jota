@@ -6,7 +6,7 @@ import C04ExpDialogForm from "./C04ExpDialogForm";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useCallback } from "react";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
-import { FormMetaProvider } from "@/shared-components";
+import { DialogEx, FormMetaProvider } from "@/shared-components";
 
 export const C04ExpDialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

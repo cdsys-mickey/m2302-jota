@@ -6,7 +6,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import Cookies from "js-cookie";
 import _ from "lodash";
 import { useCallback, useMemo, useState } from "react";
-import { useFormMeta } from "../../shared-components/form-meta/useFormMeta";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 
 // const pageCookieOpts = {
 // 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,

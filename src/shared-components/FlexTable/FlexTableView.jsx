@@ -3,9 +3,14 @@ import FlexBox from "../FlexBox";
 import FlexTableContext from "./FlexTableContext";
 import { useMemo } from "react";
 import { memo } from "react";
+import { Box } from "@mui/material";
 
 const FlexTableViewComponent = (props) => {
-	const { children, rowHeight, border = 0, padding, sx = [], ...rest } = props;
+	const {
+		children, rowHeight, border = 0, padding,
+		cellProps,
+		sx = [], ...rest
+	} = props;
 
 	const _border = useMemo(() => {
 		if (typeof border === 'number' && border > 0) {
@@ -21,25 +26,28 @@ const FlexTableViewComponent = (props) => {
 		return {
 			border: _border,
 			rowHeight,
-			padding
+			padding,
+			cellProps
 		}
-	}, [_border, padding, rowHeight])
+	}, [_border, cellProps, padding, rowHeight])
 
 	return (
-		<FlexBox inline fullWidth sx={[
-			(theme) => ({
-				display: 'table',
-				borderCollapse: 'collapse',
-				...(_border && {
-					border: _border
-				})
-			}),
-			...(Array.isArray(sx) ? sx : [sx]),
-		]} {...rest}>
-			<FlexTableContext.Provider value={contextProps}>
-				{children}
-			</FlexTableContext.Provider>
-		</FlexBox>
+		<Box sx={{ width: "100%" }} {...rest}>
+			<FlexBox inline fullWidth sx={[
+				(theme) => ({
+					display: 'table',
+					borderCollapse: 'collapse',
+					...(_border && {
+						border: _border
+					})
+				}),
+				...(Array.isArray(sx) ? sx : [sx]),
+			]} >
+				<FlexTableContext.Provider value={contextProps}>
+					{children}
+				</FlexTableContext.Provider>
+			</FlexBox>
+		</Box>
 	);
 }
 
@@ -48,7 +56,8 @@ FlexTableViewComponent.propTypes = {
 	border: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	padding: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	rowHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	cellProps: PropTypes.object
 }
 
 const FlexTableView = memo(FlexTableViewComponent);

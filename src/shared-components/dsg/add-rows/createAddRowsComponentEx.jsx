@@ -9,20 +9,21 @@ const defaultTranslationKeys = {
 }
 
 export const createAddRowsComponentEx =
-	({ translationKeys = defaultTranslationKeys, hideNumberField = false, CenterComponent, RightComponent }) =>
+	({ translationKeys = defaultTranslationKeys, hideNumberField = false, hideButton = false, RightComponent }) =>
 		({ addRows }) => {
 			const [value, setValue] = useState(1);
 			const [rawValue, setRawValue] = useState(String(value));
 
 			return (
 				<div className="dsg-add-row">
-					{/* <div style={{ display: "inline-flex" }}> */}
-					<button
-						type="button"
-						className="dsg-add-row-btn add-control"
-						onClick={() => addRows(value)}>
-						{translationKeys.button ?? "新增"}
-					</button>
+					{!hideButton && (
+						<button
+							type="button"
+							className="dsg-add-row-btn add-control"
+							onClick={() => addRows(value)}>
+							{translationKeys.button ?? "新增"}
+						</button>
+					)}
 					{!hideNumberField && (
 						<>
 							<input

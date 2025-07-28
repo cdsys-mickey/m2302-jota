@@ -14,6 +14,8 @@ import { keyColumn } from "react-datasheet-grid";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import DSGMetaContext from "@/shared-contexts/datasheet-grid/DSGMetaContext";
+import { FormMetaProvider } from "@/shared-components";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 
 const P37FormContainer = (props) => {
 	const { ...rest } = props;
@@ -23,116 +25,46 @@ const P37FormContainer = (props) => {
 			GrpType: TourGroupTypes.getDefaultValue(),
 		}
 	});
+	const { reset } = form;
 
-	const readOnly = useMemo(() => {
-		return p37.grid.readOnly;
-	}, [p37.grid.readOnly])
-
-	const columns = useMemo(
-		() => [
-			{
-				...keyColumn(
-					"SDnCp",
-					createTextColumnEx({
-						alignRight: true
-					})
-				),
-				title: "≧ 下限值",
-				disabled: readOnly,
-				// minWidth: 120,
-				// maxWidth: 130,
-				grow: 1,
-			},
-			{
-				...keyColumn(
-					"SUpCp",
-					createTextColumnEx({
-						alignRight: true
-					})
-				),
-				title: "≦ 上限值",
-				disabled: readOnly,
-				// minWidth: 120,
-				// maxWidth: 130,
-				grow: 1,
-			},
-			{
-				...keyColumn(
-					"SDrvCms",
-					createTextColumnEx({
-						alignRight: true
-					})
-				),
-				title: "司機佣金(%)",
-				disabled: readOnly,
-				minWidth: 130,
-				maxWidth: 130,
-			},
-			{
-				...keyColumn(
-					"STrvCms",
-					createTextColumnEx({
-						alignRight: true
-					})
-				),
-				title: "旅行社佣金(%)",
-				disabled: readOnly,
-				minWidth: 130,
-				maxWidth: 130,
-			},
-		],
-		[readOnly]
+	const formMeta = useFormMeta(
+		`
+		SUpCP[0],
+		SDrvCms[0],
+		SDnCp[1],
+		SUpCP[1],
+		SDrvCms[1],
+		SDnCp[2],
+		SDrvCms[2],
+		`
 	);
-
-	// GRID
-	const gridMeta = useDSGMeta({
-		data: p37.grid.gridData,
-		columns: columns,
-		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW,
-		grid: p37.grid
-	});
 
 	const handleSubmit = form.handleSubmit(p37.onEditorSubmit, p37.onEditorSubmitError);
 	useHotkeys(["Control+Enter"], () => {
-		if (!p37.grid.readOnly) {
+		if (p37.editing) {
 			setTimeout(handleSubmit)
 		}
 	}, {
 		enableOnFormTags: true
 	})
 
-	const tourGroupType = useWatch({
-		name: "GrpType",
-		control: form.control
-	})
-
 	useChangeTracking(() => {
-		p37.loadItem({ id: tourGroupType })
-	}, [tourGroupType]);
+		if (p37.itemDataReady) {
+			reset(p37.itemData);
+		}
+	}, [p37.itemData, p37.itemDataReady]);
 
-	useInit(() => {
-		p37.loadItem({ id: TourGroupTypes.getDefaultValue() });
-	}, []);
-
-	const contextValue = useMemo(() => ({
-		...p37.grid,
-		...gridMeta,
-		readOnly: !p37.editing
-	}), [gridMeta, p37.editing, p37.grid])
 
 	return (
 		<FormProvider {...form}>
-			<DSGMetaContext.Provider value={gridMeta}>
-				<DSGContext.Provider
-					value={contextValue}>
-					<P37FormView
-						loadWorking={p37.loadWorking}
-						loadError={p37.loadError}
-						{...rest}
-					/>
-				</DSGContext.Provider>
-			</DSGMetaContext.Provider>
+			<FormMetaProvider {...formMeta}>
+				<P37FormView
+					selectedTab={p37.selectedTab}
+					handleTabChange={p37.handleTabChange}
+					editing={p37.editing}
+					{...rest}
+				/>
+			</FormMetaProvider>
 		</FormProvider>
 	);
 }

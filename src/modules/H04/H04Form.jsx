@@ -57,6 +57,9 @@ const H04Form = memo((props) => {
 									label="含試贈樣"
 									name="InclTest"
 									defaultValue={true}
+									variant="outlined"
+									size="small"
+									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>

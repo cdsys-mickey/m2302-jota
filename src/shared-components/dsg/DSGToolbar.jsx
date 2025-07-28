@@ -9,7 +9,8 @@ const DSGToolbar = memo((props) => {
 			sx={[
 				(theme) => ({
 					"& > *": {
-						marginLeft: theme.spacing(3)
+						gap: theme.spacing(1),
+						minHeight: "29px"
 					}
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),

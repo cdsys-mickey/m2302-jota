@@ -72,6 +72,8 @@ const H14_1Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<CheckboxExWrapper
+									variant="outlined"
+									fullWidth
 									label="包含零售"
 									name="SalType"
 									defaultValue={false}

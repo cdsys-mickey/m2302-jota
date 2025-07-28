@@ -75,6 +75,7 @@ const FormFieldLabelView = memo(
 			]}>
 				{label && (
 					<FormLabelEx
+						inline={inline}
 						dense={dense}
 						{...labelProps}
 						{...slotProps?.label}
@@ -85,9 +86,9 @@ const FormFieldLabelView = memo(
 				<Box className="FormFieldLabelView-bodybox" sx={{
 					...(dense && {
 						position: "relative",
-						// ...(label && { // dense 時若有 label 才往上移 8px
-						// 	marginTop: "-8px"
-						// })
+						...(!inline && { // dense 時若有 label 才往上移 8px
+							marginTop: "-8px"
+						})
 					})
 				}} {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
 					{Types.isLiteral(body) ? <>

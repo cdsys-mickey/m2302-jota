@@ -7,15 +7,15 @@ import { memo } from "react";
 const FlexTableRowViewComponent = (props) => {
 	const { children, height, border, sx = [], ...rest } = props;
 
-	const _border = useMemo(() => {
-		if (typeof border === 'number' && border > 0) {
-			return `${border}px solid #ccc`;
-		}
-		if (typeof border === 'string') {
-			return border;
-		}
-		return undefined;
-	}, [border]);
+	// const _border = useMemo(() => {
+	// 	if (typeof border === 'number' && border > 0) {
+	// 		return `${border}px solid #ccc`;
+	// 	}
+	// 	if (typeof border === 'string') {
+	// 		return border;
+	// 	}
+	// 	return undefined;
+	// }, [border]);
 
 	const contextProps = useMemo(() => {
 		return {

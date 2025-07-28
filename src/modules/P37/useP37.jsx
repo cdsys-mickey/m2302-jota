@@ -1,16 +1,12 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { toastEx } from "@/helpers/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
-import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import { nanoid } from "nanoid";
-import { useRef } from "react";
-import { useMemo } from "react";
-import { useContext } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import P37 from "./P37.mjs";
-import { toastEx } from "@/helpers/toastEx";
+import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
 
 export default function useP37() {
 	const itemIdRef = useRef();
@@ -25,21 +21,9 @@ export default function useP37() {
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 
-	// GRID
-	const createRow = useCallback(
-		() => ({
-			id: nanoid(),
-		}),
-		[]
-	);
+	const [selectedTab, setSelectedTab] = useState(CmsGroupTypes.Types.DOMESTIC);
+	const [busCmsType, setBusCmsType] = useState(null);
 
-	const grid = useDSG({
-		gridId: "commissions",
-		keyColumn: "id",
-		skipDisabled: true,
-		createRow: createRow,
-		doDirtyCheckByIndex: true
-	});
 
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
@@ -61,13 +45,18 @@ export default function useP37() {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = P37.transformForReading(payload.data[0]);
-					grid.initGridData(data.commissions, {
-						fillRows: 5
-					})
+					let data;
+					if (id == CmsGroupTypes.Types.CHINA) {
+						data = P37.transformForChinaReading(payload.data[0]);
+						setBusCmsType(payload.data[0].ComNCont_S?.[0].SDrvCms?.includes("%") ? 1 : 0);
+					} else {
+						data = P37.transformForReading(payload.data[0]);
+						setBusCmsType(null);
+					}
 					crud.finishedLoading({
 						data,
 					});
+
 				} else {
 					throw error || new Error("讀取失敗");
 				}
@@ -75,25 +64,12 @@ export default function useP37() {
 				crud.failedLoading(err);
 			}
 		},
-		[auth.token, crud, grid, httpGetAsync]
+		[auth.token, crud, httpGetAsync]
 	);
-
-	const handleEdit = useCallback(() => {
-		grid.handleUnlock();
-	}, [grid]);
-
-	const cancelEdit = useCallback(() => {
-		grid.handleLock();
-		// if (grid.checkDirty()) {
-		if (grid.isDirty) {
-			loadItem({ refresh: true });
-		}
-	}, [grid, loadItem]);
 
 	const onSubmit = useCallback(async (payload) => {
 		console.log("onSubmit", payload);
-		console.log("grid.gridData", grid.gridData);
-		const data = P37.transformForEditorSubmit(payload, grid.gridData);
+		const data = P37.transformForEditorSubmit(payload, selectedTab);
 		console.log("data", data);
 		try {
 			crud.startUpdating();
@@ -107,12 +83,15 @@ export default function useP37() {
 					`儲存成功`
 				);
 				crud.finishedUpdating();
-				grid.handleLock();
 
-				const newData = P37.transformForReading(payload.data[0]);
-				grid.initGridData(newData.commissions, {
-					fillRows: 5
-				})
+				let newData;
+				if (selectedTab == CmsGroupTypes.Types.CHINA) {
+					newData = P37.transformForChinaReading(payload.data[0]);
+					setBusCmsType(payload.data[0].ComNCont_S?.[0].SDrvCms?.includes("%") ? 1 : 0);
+				} else {
+					newData = P37.transformForReading(payload.data[0]);
+					setBusCmsType(null);
+				}
 				crud.finishedLoading({
 					data: newData,
 				});
@@ -123,21 +102,31 @@ export default function useP37() {
 			crud.failedUpdating(err);
 			toastEx.error(`儲存失敗`, err);
 		}
-	}, [auth.token, crud, grid, httpPutAsync])
+	}, [auth.token, crud, httpPutAsync, selectedTab])
 
 	const onSubmitError = useCallback((err) => {
 		console.error("onSubmitError", err);
 	}, [])
 
+	const handleTabChange = useCallback((e, newValue) => {
+		setSelectedTab(newValue);
+		loadItem({ id: newValue });
+	}, [loadItem]);
+
+	const handleBusCmsTypeChange = useCallback((newValue) => {
+		console.log("newValue", newValue);
+	}, []);
+
 	return {
 		...appModule,
 		...crud,
 		loadItem,
-		grid,
-		handleEdit,
-		cancelEdit,
 		onSubmit,
-		onSubmitError
+		onSubmitError,
+		selectedTab,
+		handleTabChange,
+		busCmsType,
+		handleBusCmsTypeChange,
 	}
 
 }

@@ -1,21 +1,32 @@
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
-import { ButtonEx } from "@/shared-components";
+import { ButtonEx, ToolbarDivider } from "@/shared-components";
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import { Box } from "@mui/material";
 
 const P42DialogEditButtons = memo(
-	forwardRef((props, ref) => {
-		const { onSave, onCancel, loading, ...rest } = props;
+	(props) => {
+		const { onSave, onCancel, loading, refreshWorking, onRefresh } = props;
 		return (
-			<Fragment ref={ref} {...rest}>
+			<Fragment>
+				<ButtonEx
+					responsive
+					onClick={onRefresh}
+					type="submit"
+					startIcon={<AutorenewIcon />}
+					color="secondary"
+					variant="contained"
+					loading={refreshWorking}>
+					重新計算
+				</ButtonEx>
+				<ToolbarDivider />
 				<ButtonEx
 					responsive
 					onClick={onCancel}
 					color="warning"
 					variant="outlined"
-					// loading={loading}
-					{...rest}>
+				>
 					取消
 				</ButtonEx>
 				<ButtonEx
@@ -30,12 +41,14 @@ const P42DialogEditButtons = memo(
 				</ButtonEx>
 			</Fragment>
 		);
-	})
-);
+	});
 P42DialogEditButtons.displayName = "P42DialogEditButtons";
 P42DialogEditButtons.propTypes = {
 	onSave: PropTypes.func,
+	onCancel: PropTypes.func,
+	onRefresh: PropTypes.func,
 	loading: PropTypes.bool,
+	refreshWorking: PropTypes.bool,
 };
 export default P42DialogEditButtons;
 

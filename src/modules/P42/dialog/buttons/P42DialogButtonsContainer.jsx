@@ -8,7 +8,7 @@ import P42DialogViewButtons from "./P42DialogViewButtons";
 export const P42DialogButtonsContainer = (props) => {
 	const { ...rest } = props;
 	const p42 = useContext(P42Context);
-	const forms = useFormContext();
+	const form = useFormContext();
 
 	// if (p42.readState !== ActionState.DONE) {
 	if (!p42.itemDataReady) {
@@ -18,13 +18,18 @@ export const P42DialogButtonsContainer = (props) => {
 	if (p42.editing) {
 		return (
 			<P42DialogEditButtons
-				onSave={forms.handleSubmit(
+				onSave={form.handleSubmit(
 					p42.onEditorSubmit,
 					p42.onEditorSubmitError
 				)}
 				onCancel={
 					p42.updating ? p42.confirmReturn : p42.confirmQuitCreating
 				}
+				onRefresh={form.handleSubmit(
+					p42.onRefreshSubmit({ form }),
+					p42.onRefreshSubmitError
+				)}
+				refreshWorking={p42.refreshWorking}
 				loading={p42.editWorking}
 				{...rest}
 			/>

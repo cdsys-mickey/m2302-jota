@@ -1,57 +1,146 @@
+import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
 import Objects from "@/shared-modules/Objects.mjs";
+
+const BusCmsTypes = Object.freeze({
+	AMOUNT: 0,
+	PERCENT: 1,
+});
 
 /* eslint-disable no-mixed-spaces-and-tabs */
 
-const transformGridForReading = (data) => {
-	return (
-		data?.map((rowData) => {
-			const { SDnCp, SUpCp, STrvCms, SCndCms, ...rest } = rowData;
-			let processedRowData = {
-				SDnCp: SDnCp?.toString() ?? "",
-				SUpCp: SUpCp?.toString() ?? "",
-				STrvCms: STrvCms?.toString() ?? "",
-				SCndCms: SCndCms?.toString() ?? "",
-				...rest,
-			};
-			return processedRowData;
-		}) || []
-	);
-};
+// const transformGridForReading = (data) => {
+// 	return (
+// 		data?.map((rowData) => {
+// 			const { SDnCp, SUpCp, STrvCms, SCndCms, ...rest } = rowData;
+// 			let processedRowData = {
+// 				SDnCp: SDnCp?.toString() ?? "",
+// 				SUpCp: SUpCp?.toString() ?? "",
+// 				STrvCms: STrvCms?.toString() ?? "",
+// 				SCndCms: SCndCms?.toString() ?? "",
+// 				...rest,
+// 			};
+// 			return processedRowData;
+// 		}) || []
+// 	);
+// };
 
-const transformForReading = (payload) => {
-	const { ComNCont_S, ...rest } = payload || {};
+const transformForReading = (payload, selectedTab) => {
+	const result = {
+		GrpType: payload.GrpType,
+		SUpCP: [],
+		SDrvCms: [],
+		STrvCms: [],
+		SDnCp: [],
+	};
+
+	payload.ComNCont_S.forEach((item) => {
+		// 處理 SUpCp
+		result.SUpCP.push(item.SUpCp || null);
+
+		// 處理 SDrvCms，移除百分比符號
+		result.SDrvCms.push(
+			item.SDrvCms ? item.SDrvCms.replace("%", "") : null
+		);
+		result.STrvCms.push(
+			item.STrvCms ? item.STrvCms.replace("%", "") : null
+		);
+
+		// 處理 SDnCp
+		result.SDnCp.push(item.SDnCp || null);
+	});
+
+	if (selectedTab !== CmsGroupTypes.Types.CHINA) {
+		return result;
+	}
+
+	const rowData = payload.ComNCont_S?.[0];
+	const { SDrvCms } = rowData;
+	let valueA = "";
+	let valueB = "";
+	let busCmsType = null;
+	if (SDrvCms.includes("%")) {
+		valueB = SDrvCms.replace("%", "");
+		busCmsType = 1;
+	} else {
+		valueA = SDrvCms;
+		busCmsType = 0;
+	}
 
 	return {
-		commissions: ComNCont_S ? transformGridForReading(ComNCont_S) : [],
-		// ...(ComNCont_S && {
-		// 	commissions: transformGridForReading(ComNCont_S),
-		// }),
-		...rest,
+		...result,
+		ADrvCms: valueA,
+		BDrvCms: valueB,
+		busCmsType,
 	};
 };
 
-const transformGridForSubmit = (data) => {
-	return data
-		.filter((x) => x.SDnCp != null && x.SDnCp != "")
-		.map(({ SDnCp, SUpCp, STrvCms, SDrvCms, ...rest }) => ({
-			SDnCp: SDnCp?.toString() ?? "",
-			SUpCp: SUpCp?.toString() ?? "",
-			SDrvCms: SDrvCms?.toString() ?? "",
-			STrvCms: STrvCms?.toString() ?? "",
+const transformForChinaReading = (payload) => {
+	const rowData = payload.ComNCont_S?.[0];
+	const { SDrvCms, STrvCms } = rowData;
+	let valueA = "";
+	let valueB = "";
+	let busCmsType = null;
+	if (SDrvCms.includes("%")) {
+		valueB = SDrvCms.replace("%", "");
+		busCmsType = 1;
+	} else {
+		valueA = SDrvCms;
+		busCmsType = 0;
+	}
+	return {
+		ADrvCms: valueA,
+		BDrvCms: valueB,
+		ATrvCms: STrvCms,
+		busCmsType,
+	};
+};
+
+const transformForEditorSubmit = (payload, selecedtTab) => {
+	const output = {
+		GrpType: selecedtTab,
+		ComNCont_S: [],
+	};
+
+	if (selecedtTab == CmsGroupTypes.Types.CHINA) {
+		const { busCmsType, ADrvCms, BDrvCms, ATrvCms, ...rest } = payload;
+		output.ComNCont_S.push({
+			Seq: 1,
+			SDrvCms:
+				busCmsType == BusCmsTypes.AMOUNT
+					? ADrvCms
+					: `${BDrvCms ?? "0"}%`,
+			STrvCms: ATrvCms,
 			...rest,
-		}));
-};
+		});
+	} else {
+		const maxLength = Math.max(
+			payload.SUpCP.length,
+			payload.SDrvCms.length,
+			payload.STrvCms.length,
+			payload.SDnCp.length
+		);
 
-const transformForEditorSubmit = (payload, gridData) => {
-	const { GrpType, commissions, ...rest } = payload;
+		for (let i = 0; i < maxLength; i++) {
+			const item = {
+				Seq: i + 1,
+				SDnCp: payload.SDnCp[i]
+					? Number(payload.SDnCp[i]).toFixed(2)
+					: "",
+				SUpCp: payload.SUpCP[i] || "",
+				SDrvCms:
+					i === 0 || i === 2
+						? `${payload.SDrvCms[i]}%`
+						: payload.SDrvCms[i] || "",
+				STrvCms:
+					i === 0 || i === 2
+						? `${payload.STrvCms[i]}%`
+						: payload.STrvCms[i] || "",
+			};
+			output.ComNCont_S.push(item);
+		}
+	}
 
-	console.log("ignore props", commissions);
-
-	return {
-		GrpType,
-		ComNCont_S: transformGridForSubmit(gridData),
-		...rest,
-	};
+	return output;
 };
 
 const isFiltered = (criteria) => {
@@ -111,6 +200,8 @@ const P37 = {
 	paramsToJsonData,
 	isFiltered,
 	transformAsQueryParams,
+	transformForChinaReading,
+	BusCmsTypes,
 };
 
 export default P37;

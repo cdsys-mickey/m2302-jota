@@ -182,6 +182,7 @@ const A01DialogForm = memo((props) => {
 											typo
 											label="列印條碼"
 											defaultValue="N"
+											variant="outlined"
 											name="BarPR"
 											readOnly={storeMode}
 											valueToChecked={

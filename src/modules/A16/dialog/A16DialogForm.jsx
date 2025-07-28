@@ -137,14 +137,18 @@ const A16DialogForm = memo((props) => {
 							</Grid>
 
 							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12} md={12}>
+							<Grid item xs={12} sm={12} md={3}>
 								<CheckboxExWrapper
+									variant="outlined"
 									typo
 									name="headOffice"
 									label="總公司"
 									fullWidth
 								/>
+							</Grid>
+							<Grid item xs={12} sm={12} md={3}>
 								<CheckboxExWrapper
+									variant="outlined"
 									typo
 									name="flagship"
 									label="旗艦店"

@@ -29,6 +29,13 @@ const DSGBoxBase = styled(Box, {
 		marginTop: "12px",
 		color: theme.palette.secondary.main,
 	},
+	[`& .dsg-add-row *`]: {
+		// marginRight: 0,
+		// gap: 1
+	},
+	[`& .dsg-add-row > button`]: {
+		// gap: theme.spacing(1)
+	},
 	...(disableAddRows && {
 		"& .dsg-add-row .add-control": {
 			opacity: 0,

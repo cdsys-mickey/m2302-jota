@@ -20,6 +20,7 @@ import P42DialogForm from "../form/P42DialogForm";
 import P42Drawer from "../P42Drawer";
 import { P42DialogButtonsContainer } from "./buttons/P42DialogButtonsContainer";
 import { useMediaQuery } from "@mui/system";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 
 export const P42DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -34,8 +35,8 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 	}, [height])
 
 	const readOnly = useMemo(() => {
-		return p42.gridDisabled;
-	}, [p42.gridDisabled])
+		return !p42.editing;
+	}, [p42.editing])
 
 	const rangeColumns = useMemo(
 		() => [
@@ -46,10 +47,10 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 						// alignRight: true
 					})
 				),
-				title: "起",
-				// disabled: readOnly,
-				minWidth: 100,
-				// maxWidth: 120,
+				title: "卡號起",
+				disabled: readOnly,
+				minWidth: 110,
+				maxWidth: 110,
 			},
 			{
 				...keyColumn(
@@ -58,20 +59,21 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 						// alignRight: true
 					})
 				),
-				title: "迄",
-				// disabled: readOnly,
-				minWidth: 100,
+				title: "~迄",
+				disabled: readOnly,
+				grow: 1
+				// minWidth: 100,
 				// maxWidth: 120,
 			},
 		],
-		[]
+		[readOnly]
 	);
 
 	const rangeGridMeta = useDSGMeta({
 		columns: rangeColumns,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW,
-		grid: p42.rangeGrid
+		grid: p42.rangeGrid,
 	});
 
 	const cmsColumns = useMemo(
@@ -85,7 +87,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 				title: "佣金類別",
 				// minWidth: 130,
 				grow: 1,
-				disabled: readOnly,
+				disabled: true,
 			},
 			{
 				...keyColumn(
@@ -95,9 +97,9 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "消費總額",
-				disabled: readOnly,
-				minWidth: 150,
-				maxWidth: 150,
+				disabled: true,
+				minWidth: 120,
+				maxWidth: 120,
 				grow: 1
 			},
 			{
@@ -108,9 +110,20 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "旅行社佣金",
-				disabled: readOnly,
-				minWidth: 150,
-				maxWidth: 150,
+				disabled: true,
+				minWidth: 120,
+				maxWidth: 120,
+			},
+			{
+				...keyColumn(
+					"STrvCmsGap",
+					createTextColumnEx({
+						alignRight: true
+					})
+				),
+				disabled: true,
+				minWidth: 25,
+				maxWidth: 25,
 			},
 			{
 				...keyColumn(
@@ -120,9 +133,20 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "導遊佣金",
-				disabled: readOnly,
-				minWidth: 150,
-				maxWidth: 150,
+				disabled: true,
+				minWidth: 120,
+				maxWidth: 120,
+			},
+			{
+				...keyColumn(
+					"SCndCmsGap",
+					createTextColumnEx({
+						alignRight: true
+					})
+				),
+				disabled: true,
+				minWidth: 25,
+				maxWidth: 25,
 			},
 			{
 				...keyColumn(
@@ -132,9 +156,20 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "司機佣金",
-				disabled: readOnly,
-				minWidth: 150,
-				maxWidth: 150,
+				disabled: true,
+				minWidth: 120,
+				maxWidth: 120,
+			},
+			{
+				...keyColumn(
+					"SDrvCmsGap",
+					createTextColumnEx({
+						alignRight: true
+					})
+				),
+				disabled: true,
+				minWidth: 25,
+				maxWidth: 25,
 			},
 			{
 				...keyColumn(
@@ -145,8 +180,8 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 				),
 				title: "PC總額",
 				disabled: readOnly,
-				minWidth: 150,
-				maxWidth: 150,
+				minWidth: 120,
+				maxWidth: 120,
 			},
 		],
 		[readOnly]
@@ -156,7 +191,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		columns: cmsColumns,
 		skipDisabled: true,
 		lastCell: DSGLastCellBehavior.CREATE_ROW,
-		grid: p42.custGrid
+		grid: p42.cmsGrid,
 	});
 
 	const handleLastField = useCallback(() => {
@@ -165,6 +200,12 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 
 	const formMeta = useFormMeta(
 		`
+		TrvPay,
+		CndPay,
+		DrvPay,
+		TrvTotCmsC,
+		CndTotCmsC,
+		DrvTotCmsC,
 		ComID,
 		SalDate,
 		bookingOrder,
@@ -187,11 +228,11 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		CndTel,
 		employee,
 		cashier,
-		Remark,
-		SnRemark,
 		hotel,
 		HotelCms,
 		HotelPay,
+		Remark,
+		SnRemark,
 		`, {
 		lastField: handleLastField
 	}
@@ -223,6 +264,8 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		enableOnFormTags: true
 	})
 
+	// *** 欄位連動
+
 	const handleCityChange = useCallback((newValue) => {
 		form.setValue("area", newValue?.CtAreaID ? {
 			CodeID: newValue.CtAreaID,
@@ -242,30 +285,21 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		form.setValue("CndName", newValue?.CndData ?? "")
 	}, [form]);
 
-	const comId = useWatch({
-		name: "ComID",
+	const bookingOrder = useWatch({
+		name: "bookingOrder",
 		control: form.control
 	})
 
-	const cflag = useWatch({
-		name: "CFlag",
-		control: form.control
-	})
+	const debouncedBookingOrder = useDebounceObject(bookingOrder, 300);
 
-	const cflagDisabled = useMemo(() => {
-		return comId && cflag;
-	}, [cflag, comId])
-
-	// const city = useWatch({
-	// 	name: "city",
-	// 	control: form.control
-	// })
+	useChangeTracking(() => {
+		console.log("bookingOrder changed", debouncedBookingOrder);
+		p42.handleBookingOrderChange({ form })(debouncedBookingOrder);
+	}, [debouncedBookingOrder]);
 
 	const isFieldDisabled = useCallback(
 		(field) => {
 			switch (field.name) {
-				case "CFlag":
-					return cflagDisabled;
 				case "area":
 					// return !city;
 					return true;
@@ -273,7 +307,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					return false;
 			}
 		},
-		[cflagDisabled]
+		[]
 	);
 
 	useChangeTracking(() => {
@@ -283,6 +317,26 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [p42.itemData, p42.itemDataReady]);
 
+	const fields = ["TrvTotCmsC", "CndTotCmsC", "DrvTotCmsC"];
+
+	// // 使用 useWatch 監聽欄位
+	const watchedValues = useWatch({
+		control: form.control,
+		name: fields,
+	});
+
+	useChangeTracking(
+		() => {
+			console.log("watchedValues", watchedValues);
+			const sum = watchedValues.reduce((sum, value) => {
+				return sum + (parseFloat(value) || 0);
+			}, 0);
+			form.setValue("TotCmsC_N", sum)
+		},
+		watchedValues,
+		{ debug: true, tag: "TotalCalculation", debounce: 300 }
+	);
+
 	return (
 
 		<DialogEx
@@ -291,7 +345,8 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 			fullScreen={xlOrDown}
 			responsive
 			fullWidth
-			maxWidth="lg"
+			maxWidth="xl"
+			// minWidth={1300}
 			TitleButtonsComponent={P42DialogButtonsContainer}
 			open={p42.itemViewOpen}
 			onClose={
@@ -304,10 +359,12 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 				},
 			}}
 			contentSx={[
-				// {
-				// 	minHeight: "30em",
-				// },
+				{
+					// paddingTop: 0,
+					// paddingBottom: 0,
+				},
 				scrollable.scroller,
+
 			]}
 			{...rest}>
 			<FormMetaProvider {...formMeta} rangeGridMeta={rangeGridMeta} cmsGridMeta={cmsGridMeta} isFieldDisabled={isFieldDisabled}>
@@ -324,7 +381,6 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					onBusCompChange={handleBusCompChange}
 					onTourGroupChange={handleTourGroupChange}
 					onTourGuideChange={handleTourGuideChange}
-					cflagDisabled={cflagDisabled}
 				/>
 			</FormMetaProvider>
 			<P42Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />

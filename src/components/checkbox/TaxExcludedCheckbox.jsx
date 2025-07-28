@@ -12,6 +12,9 @@ const TaxTypeCheckbox = (props) => {
 			valueToChecked={YesEmpty.valueToChecked}
 			checkedToValue={YesEmpty.checkedToValue}
 			getLabel={YesEmpty.getOptionLabel}
+			variant="outlined"
+			size="small"
+			fullWidth
 			{...rest}
 		/>
 	);
