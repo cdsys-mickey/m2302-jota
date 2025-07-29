@@ -18,7 +18,7 @@ const P42DialogEditButtons = memo(
 					color="secondary"
 					variant="contained"
 					loading={refreshWorking}>
-					重新計算
+					佣金計算
 				</ButtonEx>
 				<ToolbarDivider />
 				<ButtonEx

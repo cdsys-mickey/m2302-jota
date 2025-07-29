@@ -957,12 +957,6 @@ export const useE021 = ({ mode }) => {
 				IDs: crud.itemData?.SalID,
 			};
 			// postToBlank(
-			// 	`${config.REPORT_URL}/WebE02Rep.aspx?LogKey=${operator?.LogKey
-			// 	}`,
-			// 	{
-			// 		jsonData: JSON.stringify(data),
-			// 	}
-			// );
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},

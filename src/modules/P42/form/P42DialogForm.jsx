@@ -105,6 +105,7 @@ const P42DialogForm = memo((props) => {
 										label="計算方式："
 										inline
 										stringify={CmsCalcTypes.getOptionLabel}
+										emptyText="(尚未計算)"
 									/>
 								</FlexBox>
 							</Grid>

@@ -42,7 +42,9 @@ const FormFieldLabelView = memo(
 			if (children != null) {
 				return (Types.isLiteral(children) ? Forms.formatLiteral(children) : children) || emptyText;
 			}
-			return (stringify ? stringify(value) : (Types.isLiteral(value) ? Forms.formatLiteral(value) : value) || emptyText);
+			return (stringify
+				? stringify(value) || emptyText
+				: (Types.isLiteral(value) ? Forms.formatLiteral(value) : value) || emptyText);
 		}, [children, emptyText, stringify, value]);
 
 		const BoxComponent = useMemo(() => {

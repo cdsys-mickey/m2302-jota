@@ -18,7 +18,7 @@ const ListToolbar = memo(
 			// Styles
 			boxSx = [],
 			bgcolor,
-			minHeight = 40,
+			minHeight = 37,
 			borderRadius = 1,
 			...rest
 		} = props;

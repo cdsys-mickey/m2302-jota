@@ -22,7 +22,7 @@ const P34Toolbar = memo(
 				ref={ref}
 				LeftComponent={LeftButtons}
 				// RightComponent={() => <FetchResultLabel totalElements={365} />}
-				RightComponent={P34FetchResultLabelContainer}
+				// RightComponent={P34FetchResultLabelContainer}
 				{...rest}
 			/>
 		);

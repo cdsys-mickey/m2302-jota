@@ -5,12 +5,18 @@ import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { IconButton, Tooltip } from "@mui/material";
+import P42ExportButtonContainer from "../toolbar/P42ExportButtonContainer";
 
 const P42DialogTitleViewButtons = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onSideDrawerOpen, ...rest } = props;
+		const { onPrint, onEdit, onDelete, onSideDrawerOpen, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
+				{onPrint && (
+					<>
+						<P42ExportButtonContainer />
+					</>
+				)}
 				{onDelete && (
 					<ResponsiveButton
 						startIcon={<HighlightOffIcon />}
@@ -40,6 +46,7 @@ const P42DialogTitleViewButtons = memo(
 );
 
 P42DialogTitleViewButtons.propTypes = {
+	onPrint: PropTypes.func,
 	onEdit: PropTypes.func,
 	onDelete: PropTypes.func,
 	onSideDrawerOpen: PropTypes.func,

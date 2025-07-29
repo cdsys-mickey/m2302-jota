@@ -10,6 +10,11 @@ export const P42DialogButtonsContainer = (props) => {
 	const p42 = useContext(P42Context);
 	const form = useFormContext();
 
+	const handlePrint = form.handleSubmit(
+		p42.onPrintSubmit,
+		p42.onPrintSubmitError
+	);
+
 	// if (p42.readState !== ActionState.DONE) {
 	if (!p42.itemDataLoaded) {
 		return false;
@@ -38,6 +43,7 @@ export const P42DialogButtonsContainer = (props) => {
 
 	return (
 		<P42DialogViewButtons
+			onPrint={p42.canPrint ? handlePrint : null}
 			onEdit={p42.canUpdate ? p42.promptUpdating : null}
 			onDelete={p42.canDelete ? p42.confirmDelete : null}
 			onSideDrawerOpen={p42.handleSideDrawerOpen}

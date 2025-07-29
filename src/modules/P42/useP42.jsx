@@ -15,12 +15,15 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useAction } from "@/shared-hooks/useAction";
+import ConfigContext from "@/contexts/config/ConfigContext";
+import useJotaReports from "@/hooks/useJotaReports";
 
 export const useP42 = () => {
+	const config = useContext(ConfigContext);
 	const itemIdRef = useRef();
 	const tsRef = useRef();
 	const crud = useContext(CrudContext);
-	const { token } = useContext(AuthContext);
+	const { token, operator } = useContext(AuthContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: "P42",
@@ -391,6 +394,7 @@ export const useP42 = () => {
 				const collected = P42.transformForReading(payload.data[0]);
 				console.log("collected", collected);
 				[
+					"SalCount",
 					"TotCms_N", "SalTotAmt", "TrvTotCms", "CndTotCms", "CndPay", "DrvTotCms", "DrvPay", "SalTotAmtC",
 					"CalcType", "TotCmsC_N", "TrvTotCmsC", "CndTotCmsC", "DrvTotCmsC", "CarCmsC"
 				]
@@ -456,6 +460,33 @@ export const useP42 = () => {
 		}, 0);
 	}, []);
 
+	const reportUrl = useMemo(() => {
+		return `${config.REPORT_URL}/WebP42Rep.aspx`
+	}, [config.REPORT_URL])
+	const reports = useJotaReports();
+
+	const onPrintSubmit = useCallback(
+		(payload) => {
+			console.log("onPrintSubmit", payload);
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
+				}),
+				DeptID: operator?.CurDeptID,
+				JobName: "P42",
+				ComID: crud.itemData?.ComID,
+			};
+			// postToBlank(
+			console.log("data", data);
+			reports.open(reportUrl, data);
+		},
+		[crud.itemData?.ComID, operator?.CurDeptID, reportUrl, reports]
+	);
+
+	const onPrintSubmitError = useCallback((err) => {
+		console.error("onPrintSubmitError", err);
+	}, []);
+
 	useInit(() => {
 		crud.cancelAction();
 	}, []);
@@ -497,7 +528,9 @@ export const useP42 = () => {
 		onRefreshSubmit,
 		onRefreshSubmitError,
 		refreshWorking: refreshAction.working,
-		handlePcSubtotalChange
+		handlePcSubtotalChange,
+		onPrintSubmit,
+		onPrintSubmitError,
 	};
 };
 
