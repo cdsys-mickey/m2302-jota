@@ -8,13 +8,9 @@ import G02DateColumn from "./columns/G02DateColumn";
 import G02IdColumn from "./columns/G02IdColumn";
 import G02SupplierColumn from "./columns/G02SupplierColumn";
 import G02TelColumn from "./columns/G02TelColumn";
-import { useContext } from "react";
-import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 
 const G02ListRow = memo((props) => {
 	const { index, style, value, onClick, onCheckChange, checked } = props;
-
-
 
 	return (
 		<ListRow style={style} onClick={onClick} checked={checked} selectText={false}>

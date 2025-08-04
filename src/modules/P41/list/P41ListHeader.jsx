@@ -6,6 +6,7 @@ import P41NameColumn from "./columns/P41NameColumn";
 import P41BankColumn from "./columns/P41BankColumn";
 import P41GuideNameColumn from "./columns/P41GuideNameColumn";
 import P41DateColumn from "./columns/P41DateColumn";
+import P41FlagColumn from "./columns/P41FlagColumn";
 
 const P41ListHeader = memo(
 	forwardRef((props, ref) => {
@@ -20,6 +21,8 @@ const P41ListHeader = memo(
 				{/* <P41GuideNameColumn>導遊</P41GuideNameColumn> */}
 				<P41BankColumn>車行</P41BankColumn>
 				<P41BankColumn>旅行社</P41BankColumn>
+				<P41FlagColumn>結清</P41FlagColumn>
+				<P41IDColumn>佣金單號</P41IDColumn>
 			</ListViewHeader>
 		);
 	})

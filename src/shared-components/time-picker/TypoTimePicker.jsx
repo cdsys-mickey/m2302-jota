@@ -42,6 +42,7 @@ const TypoTimePicker = memo(
 		if (!editing) {
 			return (
 				<FormFieldLabel
+					name={name}
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}

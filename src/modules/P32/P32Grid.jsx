@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import ContainerEx from "@/shared-components/ContainerEx";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 import P32 from "./P32.mjs";
 
 const ContextMenu = createDSGContextMenuComponent({

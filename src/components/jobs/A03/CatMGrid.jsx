@@ -2,7 +2,7 @@ import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),

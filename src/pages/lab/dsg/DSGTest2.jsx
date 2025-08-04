@@ -8,7 +8,7 @@ import {
 	keyColumn
 } from "react-datasheet-grid";
 import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 
 const DSGTest2 = memo(
 	forwardRef((props, ref) => {

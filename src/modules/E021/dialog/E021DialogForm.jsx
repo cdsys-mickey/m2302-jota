@@ -323,7 +323,7 @@ const E021DialogForm = memo((props) => {
 									typo
 									name="remark"
 									multiline
-									minRows={2}
+									minRows={1}
 									maxRows={5}
 									label="備註"
 									fullWidth

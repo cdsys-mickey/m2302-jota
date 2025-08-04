@@ -18,6 +18,8 @@ import { useAction } from "@/shared-hooks/useAction";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import useJotaReports from "@/hooks/useJotaReports";
 
+const BOOKING_ORDER_FIELDS = ["GrpName", "city", "area", "GrpType", "custType", "busComp", "CarData_N", "CarQty", "PugAmt", "CarNo", "DrvName", "DrvTel", "tourGroup", "TrvData_N", "tourGuide", "CndName", "CndTel", "employee", "Remark"];
+
 export const useP42 = () => {
 	const config = useContext(ConfigContext);
 	const itemIdRef = useRef();
@@ -115,6 +117,7 @@ export const useP42 = () => {
 					crud.finishedReading({
 						data,
 					});
+					return data;
 				} else {
 					throw error || new Error("讀取失敗");
 				}
@@ -131,7 +134,7 @@ export const useP42 = () => {
 			crud.cancelAction();
 			setSelectedItem(rowData);
 
-			crud.startReading("讀取中...", { id: rowData.ComID });
+			// crud.startReading("讀取中...", { id: rowData.ComID });
 			loadItem({ id: rowData.ComID });
 		},
 		[crud, loadItem]
@@ -275,6 +278,7 @@ export const useP42 = () => {
 			e?.stopPropagation();
 			const data = {
 				SalDate: new Date(),
+				CarQty: 1,
 				ranges: [],
 				commissions: [],
 			};
@@ -353,6 +357,8 @@ export const useP42 = () => {
 	);
 
 	const handleBookingOrderChange = useCallback(({ form }) => async (newBookingOrder) => {
+
+
 		if (newBookingOrder) {
 			try {
 				const { status, payload, error } = await httpGetAsync({
@@ -365,7 +371,7 @@ export const useP42 = () => {
 				if (status.success) {
 					const collected = P42.transformForImport(payload.data[0]);
 					console.log("collected", collected);
-					["GrpName", "city", "area", "GrpType", "custType", "busComp", "CarData_N", "CarQty", "PugAmt", "CarNo", "DrvName", "DrvTel", "tourGroup", "TrvData_N", "tourGuide", "CndName", "CndTel", "employee", "Remark"].forEach((field) => {
+					BOOKING_ORDER_FIELDS.forEach((field) => {
 						form.setValue(field, collected[field]);
 					});
 				} else {
@@ -376,6 +382,17 @@ export const useP42 = () => {
 			}
 		} else {
 			// 清空?
+			const currentValues = form.getValues();
+			const clearedValues = {};
+			BOOKING_ORDER_FIELDS.forEach((field) => {
+				const value = currentValues[field];
+				if (typeof value === "string") {
+					form.setValue(field, "");
+				} else if (typeof value === "object") {
+					clearedValues[field] = null;
+					form.setValue(field, null);
+				}
+			});
 		}
 	}, [httpGetAsync, token]);
 

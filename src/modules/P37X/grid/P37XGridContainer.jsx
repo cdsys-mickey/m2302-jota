@@ -1,7 +1,7 @@
 import DSGAddRowsToolbarEx from "@/components/dsg/DSGAddRowsToolbarEx";
 import P37XContext from "@/modules/P37X/P37XContext";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import DSGMetaContext from "@/shared-contexts/datasheet-grid/DSGMetaContext";

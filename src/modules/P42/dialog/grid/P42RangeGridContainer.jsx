@@ -1,6 +1,5 @@
 import { createAddRowsComponentEx } from "@/shared-components/dsg/add-rows/createAddRowsComponentEx";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
@@ -10,6 +9,7 @@ import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { P42Context } from "../../P42Context";
 import P42RangeRow1Container from "./P42RangeRow1/P42RangeRow1Container";
+import { DSGGrid } from "@/shared-components";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),
@@ -32,6 +32,10 @@ const P42RangeGridContainer = (props) => {
 
 	const _height = useMemo(() => {
 		return lgOrUp ? height - 478 : 200
+	}, [height, lgOrUp])
+
+	const _loadingHeight = useMemo(() => {
+		return lgOrUp ? height - 482 : 200
 	}, [height, lgOrUp])
 
 
@@ -80,6 +84,7 @@ const P42RangeGridContainer = (props) => {
 				// addRowsComponent={DSGAddRowsToolbarEx}
 				addRowsComponent={_addRowsComponent}
 				height={_height}
+				loadingHeight={_loadingHeight}
 				createRow={p42.createRow}
 				disableExpandSelection
 				contextMenuComponent={ContextMenu}

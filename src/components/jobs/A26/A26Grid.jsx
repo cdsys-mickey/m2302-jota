@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import ContainerEx from "@/shared-components/ContainerEx";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),

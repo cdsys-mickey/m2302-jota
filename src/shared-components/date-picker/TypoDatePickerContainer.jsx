@@ -1,5 +1,5 @@
 import { forwardRef, useContext } from "react";
-import CrudContext from "../../contexts/crud/CrudContext";
+import CrudContext from "@/contexts/crud/CrudContext";
 import TypoDatePicker from "./TypoDatePicker";
 import { useMemo } from "react";
 import PropTypes from "prop-types";

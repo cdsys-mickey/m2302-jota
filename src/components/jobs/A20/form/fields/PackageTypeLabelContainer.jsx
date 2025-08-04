@@ -36,12 +36,22 @@ export const PackageTypeLabelContainer = (props) => {
 					top: -12,
 				}),
 			}}
-			typographySx={{
-				...(editing && {
-					position: "relative",
-					// top: -12,
-				}),
+			slotProps={{
+				typography: {
+					sx: {
+						...(editing && {
+							position: "relative",
+							// top: -12,
+						}),
+					}
+				}
 			}}
+			// typographySx={{
+			// 	...(editing && {
+			// 		position: "relative",
+			// 		// top: -12,
+			// 	}),
+			// }}
 			{...typoProps}>
 			{labelText}
 		</FormFieldLabel>

@@ -86,7 +86,7 @@ export const useP35 = () => {
 				if (status.success) {
 					const data = P35.transformForReading(payload.data[0]);
 					grid.initGridData(data.commissions, {
-						fillRows: 3
+						fillRows: 10
 					})
 					crud.finishedReading({
 						data,
@@ -260,7 +260,7 @@ export const useP35 = () => {
 			crud.promptCreating({
 				data,
 			});
-			grid.initGridData(data.ranges, { fillRows: 3 })
+			grid.initGridData(data.ranges, { fillRows: 10 })
 		},
 		[crud, grid]
 	);

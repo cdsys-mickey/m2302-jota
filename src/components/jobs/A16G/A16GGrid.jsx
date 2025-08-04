@@ -4,7 +4,7 @@ import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import ContainerEx from "@/shared-components/ContainerEx";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),

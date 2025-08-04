@@ -1,6 +1,6 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
 import ContainerEx from "@/shared-components/ContainerEx";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import PropTypes from "prop-types";

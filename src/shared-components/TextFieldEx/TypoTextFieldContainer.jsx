@@ -8,11 +8,13 @@ const TypoTextFieldContainer = forwardRef((props, ref) => {
 	const { editing, ...rest } = props;
 	const { editing: _editing } = useContext(CrudContext);
 
+
+
 	const __editing = useMemo(() => {
 		return editing != null ? editing : _editing;
 	}, [_editing, editing])
 
-	return <TypoTextField ref={ref} editing={__editing} {...rest} />;
+	return <TypoTextField ref={ref} editing={__editing}  {...rest} />;
 });
 
 TypoTextFieldContainer.displayName = "TypoTextFieldContainer";

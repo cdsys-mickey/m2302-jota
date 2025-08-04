@@ -6,7 +6,7 @@ import {
 	DynamicDataSheetGrid
 } from "react-datasheet-grid";
 import DSGBox from "../../../shared-components/dsg/DSGBox";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 
 const ContextMenu = createDSGContextMenuComponent({
 	filterItem: (item) => ["DELETE_ROW", "DELETE_ROWS"].includes(item.type),

@@ -1,4 +1,4 @@
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { DynamicDataSheetGrid } from "react-datasheet-grid";

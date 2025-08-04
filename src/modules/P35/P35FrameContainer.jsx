@@ -35,7 +35,7 @@ export const P35FrameContainer = () => {
 					<P35ListViewContainer />
 					{/* 對話框 */}
 					<FormProvider {...form}>
-						<P35DialogContainer dense />
+						<P35DialogContainer />
 						<StdPrintDialogContainer />
 					</FormProvider>
 

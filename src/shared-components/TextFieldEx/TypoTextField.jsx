@@ -2,9 +2,8 @@ import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledT
 import { forwardRef, memo, useMemo } from "react";
 
 import { FormFieldLabel } from "@/shared-components";
-import { useWatch } from "react-hook-form";
-import MuiStyles from "@/shared-modules/MuiStyles";
 import PropTypes from "prop-types";
+import { useWatch } from "react-hook-form";
 
 const TypoTextField = memo(
 	forwardRef((props, ref) => {
@@ -21,6 +20,7 @@ const TypoTextField = memo(
 			renderLabel,
 			// Input
 			name,
+			// loading = false,
 			editing = false,
 			size = "small",
 			variant = "outlined",
@@ -43,10 +43,12 @@ const TypoTextField = memo(
 		if (!editing) {
 			return (
 				<FormFieldLabel
+					name={name}
 					label={label}
 					variant={typoVariant}
 					emptyText={emptyText}
 					inline={inline}
+					// loading={loading}
 					{...slotProps?.label}
 					{...typoProps}
 				>
@@ -81,11 +83,13 @@ TypoTextField.propTypes = {
 	typoVariant: PropTypes.string,
 	name: PropTypes.string,
 	editing: PropTypes.bool,
+	loading: PropTypes.bool,
 	inline: PropTypes.bool,
 	size: PropTypes.string,
 	variant: PropTypes.string,
 	InputLabelProps: PropTypes.object,
 	slotProps: PropTypes.object,
 	renderLabel: PropTypes.func,
+
 };
 export default TypoTextField;

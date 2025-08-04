@@ -129,7 +129,7 @@ const P51Form = memo((props) => {
 									name="OrdName"
 									size="small"
 									fullWidth
-									helperText="1=到訪日,2=訂訪日,3=已以訪日,4=預約單號,5=旅行社,6=車行"
+									helperText="1=到訪日,2=訂訪日,3=已訪日,4=預約單號,5=旅行社,6=車行"
 								/>
 							</Grid>
 						</Grid>

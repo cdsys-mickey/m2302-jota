@@ -1,13 +1,12 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-import { TabPanel } from "@mui/lab";
 import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
-import { Box, Grid, InputAdornment, TextField, Typography } from "@mui/material";
-import RangeGroup from "@/shared-components/RangeGroup";
 import { TextFieldEx } from "@/shared-components";
 import FlexBox from "@/shared-components/FlexBox";
-import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
+import RangeGroup from "@/shared-components/RangeGroup";
 import { useScrollable } from "@/shared-hooks/useScrollable";
+import { TabPanel } from "@mui/lab";
+import { Box, Grid, InputAdornment, Typography } from "@mui/material";
+import PropTypes from "prop-types";
+import { memo } from "react";
 
 const P37BusTabViewComponent = (props) => {
 	const { editing, maxHeight, ...rest } = props;
@@ -46,15 +45,13 @@ const P37BusTabViewComponent = (props) => {
 					</FlexBox>
 				</Grid>
 				<Grid item xs={4}>
-					<TextFieldWrapper
+					<TextFieldEx
 						name="SDrvCms[0]"
 						// label="巴士佣金"
 						size="small"
 						// dense
 						disabled={!editing}
-						InputProps={{
-							endAdornment: <InputAdornment position="end">%</InputAdornment>,
-						}}
+						endAdornment="%"
 					/>
 				</Grid>
 				<Grid item xs={4}>
@@ -66,15 +63,13 @@ const P37BusTabViewComponent = (props) => {
 					</FlexBox>
 				</Grid>
 				<Grid item xs={4}>
-					<TextFieldWrapper
+					<TextFieldEx
 						name="STrvCms[0]"
 						// label="巴士佣金"
 						size="small"
 						// dense
 						disabled={!editing}
-						InputProps={{
-							endAdornment: <InputAdornment position="end">%</InputAdornment>,
-						}}
+						endAdornment="%"
 					/>
 				</Grid>
 				<Grid item xs={4}>
@@ -192,9 +187,7 @@ const P37BusTabViewComponent = (props) => {
 						name="SDrvCms[2]"
 						// label="巴士佣金"
 						size="small"
-						InputProps={{
-							endAdornment: <InputAdornment position="end">%</InputAdornment>,
-						}}
+						endAdornment="%"
 						disabled={!editing}
 					/>
 				</Grid>
@@ -212,9 +205,7 @@ const P37BusTabViewComponent = (props) => {
 						name="STrvCms[2]"
 						// label="旅行社佣金"
 						size="small"
-						InputProps={{
-							endAdornment: <InputAdornment position="end">%</InputAdornment>,
-						}}
+						endAdornment="%"
 						disabled={!editing}
 					/>
 				</Grid>

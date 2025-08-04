@@ -21,12 +21,15 @@ import P42Drawer from "../P42Drawer";
 import { P42DialogButtonsContainer } from "./buttons/P42DialogButtonsContainer";
 import { useMediaQuery } from "@mui/system";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
+import { useRef } from "react";
+import CrudContext from "@/contexts/crud/CrudContext";
 
 export const P42DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
 
 	const xlOrDown = useMediaQuery((theme) => theme.breakpoints.down('xl'));
+	const crud = useContext(CrudContext);
 	const form = useFormContext();
 	const { reset } = form;
 	const p42 = useContext(P42Context);
@@ -200,12 +203,12 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 
 	const formMeta = useFormMeta(
 		`
-		TrvPay,
-		CndPay,
-		DrvPay,
 		TrvTotCmsC,
+		TrvPay,
 		CndTotCmsC,
+		CndPay,
 		DrvTotCmsC,
+		DrvPay,
 		ComID,
 		SalDate,
 		bookingOrder,
@@ -229,7 +232,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		employee,
 		cashier,
 		hotel,
-		HotelCms,
+		HotelTotCms,
 		HotelPay,
 		Remark,
 		SnRemark,
@@ -285,17 +288,33 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		form.setValue("CndName", newValue?.CndData ?? "")
 	}, [form]);
 
+	const prevBookingOrder = useRef();
+	useChangeTracking(() => {
+		if (p42.itemDataReady) {
+			console.log(`p42 form reset`, p42.itemData);
+			reset(p42.itemData);
+			// crud.finishedReading({
+			// 	data: p42.itemData,
+			// });
+			prevBookingOrder.current = p42.itemData?.bookingOrder;
+		} else {
+			prevBookingOrder.current = null;
+		}
+	}, [p42.itemData, p42.itemDataReady]);
+
+	// 預約單
 	const bookingOrder = useWatch({
 		name: "bookingOrder",
 		control: form.control
 	})
 
-	const debouncedBookingOrder = useDebounceObject(bookingOrder, 300);
-
 	useChangeTracking(() => {
-		console.log("bookingOrder changed", debouncedBookingOrder);
-		p42.handleBookingOrderChange({ form })(debouncedBookingOrder);
-	}, [debouncedBookingOrder]);
+		if (bookingOrder?.OrdID !== prevBookingOrder.current?.OrdID) {
+			console.log("bookingOrder changed", prevBookingOrder.current, bookingOrder);
+			p42.handleBookingOrderChange({ form })(bookingOrder);
+			prevBookingOrder.current = bookingOrder;
+		}
+	}, [bookingOrder]);
 
 	const isFieldDisabled = useCallback(
 		(field) => {
@@ -310,16 +329,8 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		[]
 	);
 
-	useChangeTracking(() => {
-		if (p42.itemDataReady) {
-			console.log(`p42 form reset`, p42.itemData);
-			reset(p42.itemData);
-		}
-	}, [p42.itemData, p42.itemDataReady]);
-
-	const fields = ["TrvTotCmsC", "CndTotCmsC", "DrvTotCmsC"];
-
-	// // 使用 useWatch 監聽欄位
+	// 佣金小計
+	const fields = ["HotelTotCms", "TrvTotCms", "CndTotCms", "DrvTotCms"];
 	const watchedValues = useWatch({
 		control: form.control,
 		name: fields,
@@ -331,10 +342,31 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 			const sum = watchedValues.reduce((sum, value) => {
 				return sum + (parseFloat(value) || 0);
 			}, 0);
-			form.setValue("TotCmsC_N", sum)
+			form.setValue("TotCms_N", sum)
 		},
 		watchedValues,
-		{ debug: true, tag: "TotalCalculation", debounce: 300 }
+		{ debug: true, tag: "TotCms_N", debounce: 300 }
+	);
+
+	// PC端佣金小計
+	const pcFields = ["HotelTotCms", "TrvTotCmsC", "CndTotCmsC", "DrvTotCmsC"];
+
+	// // 使用 useWatch 監聽欄位
+	const pcWatchedValues = useWatch({
+		control: form.control,
+		name: pcFields,
+	});
+
+	useChangeTracking(
+		() => {
+			console.log("pcWatchedValues", watchedValues);
+			const sum = pcWatchedValues.reduce((sum, value) => {
+				return sum + (parseFloat(value) || 0);
+			}, 0);
+			form.setValue("TotCmsC_N", sum)
+		},
+		pcWatchedValues,
+		{ debug: true, tag: "TotCmsC_N", debounce: 300 }
 	);
 
 	return (

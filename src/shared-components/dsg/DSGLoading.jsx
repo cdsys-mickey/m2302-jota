@@ -8,6 +8,9 @@ const DSGLoading = memo((props) => {
 		height = 300,
 		variant = "rectangular",
 		animation = "pulse",
+		headerHeight = 34,
+		rowHeight = 34,
+		rows
 	} = props;
 	return (
 		<Stack spacing={0.2}>
@@ -16,12 +19,24 @@ const DSGLoading = memo((props) => {
 					<Skeleton
 						variant={variant}
 						animation={animation}
-						height={42}
+						height={headerHeight}
 					/>
 				</Box>
 			)}
-
-			<Skeleton variant={variant} animation={animation} height={height} />
+			{rows ? Array.from({ length: rows }).map((_, index) => (
+				<Skeleton
+					key={index}
+					variant={variant}
+					animation={animation}
+					height={height}
+					style={{ marginBottom: rows > 1 ? '8px' : '0' }} // 當有多行時增加間距
+				/>
+			)) : <Skeleton
+				variant={variant}
+				animation={animation}
+				height={height}
+				style={{ marginBottom: rows > 1 ? '8px' : '0' }} // 當有多行時增加間距
+			/>}
 		</Stack>
 	);
 });

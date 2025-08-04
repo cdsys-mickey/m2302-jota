@@ -1,5 +1,6 @@
 import { P42CndPayCheckbox, P42DrvPayCheckbox, P42TrvPayCheckbox } from "@/components";
 import { CheckboxEx, FlexTable, FlexTableCell, FlexTableRow, FormFieldLabel } from "@/shared-components";
+import DSGLabelView from "@/shared-components/dsg/DSGLabelView";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
@@ -10,68 +11,102 @@ const P42CmsRow1ViewComponent = (props) => {
 			<FlexTableRow alignItems="center" justifyContent="flex-end">
 				{/* 旅行社佣金小計+導遊佣金小計+司機佣金小計 */}
 				<FlexTableCell flex={1} align="right" px={1} fullHeight>
-					<FormFieldLabel
+					<DSGLabelView
 						name="TotCms_N"
-						label="小計："
-						inline
-						emptyText=""
+						label="佣金小計："
 					/>
 				</FlexTableCell>
 				{/* 消費總額 */}
-				<FlexTableCell w={120} align="right" px={1}>
-					<FormFieldLabel
+				<FlexTableCell w={120} align="right" px={1} slotProps={{
+					box: {
+						sx: {
+							backgroundColor: "var(--dsg-cell-disabled-background-color)"
+						}
+					}
+				}}>
+					<DSGLabelView
 						name="SalTotAmt"
-						// label="小計"
-						inline
-						emptyText=""
+					// label="小計"
 					/>
 				</FlexTableCell>
 				{/* 旅行社佣金小計 */}
-				<FlexTableCell w={120} align="right" px={1}>
-					<FormFieldLabel
+				<FlexTableCell w={120} align="right" px={1} slotProps={{
+					box: {
+						sx: {
+							backgroundColor: "var(--dsg-cell-disabled-background-color)"
+						}
+					}
+				}}>
+					<DSGLabelView
 						name="TrvTotCms"
-						// label="小計"
-						inline
-						emptyText=""
+					// label="小計"
 					/>
 				</FlexTableCell>
-				<FlexTableCell w={25} align="right" >
-					<P42TrvPayCheckbox
-						name="TrvPay"
-					/>
+				<FlexTableCell w={25} align="right" slotProps={{
+					box: {
+						sx: {
+							// backgroundColor: "var(--dsg-cell-disabled-background-color)"
+						}
+					}
+				}}>
+
 				</FlexTableCell>
 				{/* 導遊佣金小計 */}
-				<FlexTableCell w={120} align="right" px={1}>
-					<FormFieldLabel
+				<FlexTableCell w={120} align="right" px={1} slotProps={{
+					box: {
+						sx: {
+							backgroundColor: "var(--dsg-cell-disabled-background-color)"
+						}
+					}
+				}}>
+					<DSGLabelView
 						name="CndTotCms"
-						// label="小計"
-						inline
-						emptyText=""
+					// label="小計"
 					/>
 				</FlexTableCell>
-				<FlexTableCell w={25} align="right">
-					<P42CndPayCheckbox
-						name="CndPay"
-					/>
+				<FlexTableCell w={25} align="right" slotProps={{
+					box: {
+						sx: {
+							// backgroundColor: "var(--dsg-cell-disabled-background-color)"
+						}
+					}
+				}}>
+
 				</FlexTableCell>
 				{/* 司機佣金小計 */}
-				<FlexTableCell w={120} align="right" px={1}>
-					<FormFieldLabel
+				<FlexTableCell w={120} align="right" px={1} slotProps={{
+					box: {
+						sx: {
+							backgroundColor: "var(--dsg-cell-disabled-background-color)"
+						}
+					}
+				}}>
+					<DSGLabelView
 						name="DrvTotCms"
 						// label="小計"
 						inline
 						emptyText=""
 					/>
 				</FlexTableCell>
-				<FlexTableCell w={25} align="right">
-					<P42DrvPayCheckbox
-						name="DrvPay"
-					/>
+				<FlexTableCell w={25} align="right" slotProps={{
+					box: {
+						sx: {
+							// backgroundColor: "var(--dsg-cell-disabled-background-color)"
+						}
+					}
+				}}>
+
 				</FlexTableCell>
 
 				{/* PC總額小計 */}
-				<FlexTableCell w={120} align="right" px={1}>
-					<FormFieldLabel
+				<FlexTableCell w={120} align="right" px={1} slotProps={{
+					box: {
+						sx: {
+							backgroundColor: "var(--dsg-cell-disabled-background-color)"
+						}
+					}
+				}}>
+					<DSGLabelView
 						name="SalTotAmtC"
 						// label="小計"
 						inline
@@ -83,7 +118,7 @@ const P42CmsRow1ViewComponent = (props) => {
 
 				</FlexTableCell>
 			</FlexTableRow>
-		</FlexTable>
+		</FlexTable >
 	);
 }
 

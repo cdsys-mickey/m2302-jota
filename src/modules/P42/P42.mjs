@@ -77,7 +77,10 @@ const transformForReading = (payload) => {
 		TrvPay,
 		CndPay,
 		CarPay,
+		DrvPay,
 		CalcType,
+		HotelID,
+		HotelData_N,
 		...rest
 	} = payload;
 	return {
@@ -140,12 +143,19 @@ const transformForReading = (payload) => {
 					CodeData: AcctData_N,
 			  }
 			: null,
+		hotel: HotelID
+			? {
+					CodeID: HotelID,
+					CodeData: HotelData_N,
+			  }
+			: null,
 		ranges: transformRangeGridForReading(ComFile_CustIDs),
 		commissions: transformCmsGridForReading(ComFile_S),
 		HotelPay: HotelPay ? HotelPay === "Y" : null,
 		TrvPay: TrvPay ? TrvPay === "Y" : null,
 		CndPay: CndPay ? CndPay === "Y" : null,
 		CarPay: CarPay ? CarPay === "Y" : null,
+		DrvPay: DrvPay ? DrvPay === "Y" : null,
 		CalcType: CmsCalcTypes.getOptionById(CalcType) ?? null,
 		...rest,
 	};
@@ -238,8 +248,8 @@ const transformRangeGridForSubmitting = (gridData) => {
 			?.filter((v) => v.SCustID)
 			.map(({ SCustID, ECustID, ...rest }, index) => ({
 				Seq: index + 1,
-				SCustID,
-				ECustID,
+				SCustID: SCustID?.toUpperCase() ?? "",
+				ECustID: ECustID?.toUpperCase() ?? "",
 				...rest,
 			})) ?? []
 	);
@@ -298,6 +308,7 @@ const transformForEditorSubmit = (payload, rangeGridData, cmsGridData) => {
 		ranges,
 		commissions,
 		CalcType,
+		CarQty,
 		...rest
 	} = payload;
 
@@ -323,6 +334,7 @@ const transformForEditorSubmit = (payload, rangeGridData, cmsGridData) => {
 		ComFile_CustIDs: transformRangeGridForSubmitting(rangeGridData),
 		ComFile_S: transformCmsGridForSubmitting(cmsGridData),
 		CalcType: CalcType?.id || "",
+		CarQty: CarQty || "1",
 		...rest,
 	};
 };

@@ -32,6 +32,26 @@ import { P42FrameContainer } from "@/modules/P42/P42FrameContainer";
 import { P42Provider } from "@/modules/P42/P42Provider";
 import { P51FrameContainer } from "@/modules/P51/P51FrameContainer";
 import { P51Provider } from "@/modules/P51/P51Provider";
+import { P52FrameContainer } from "@/modules/P52/P52FrameContainer";
+import { P52Provider } from "@/modules/P52/P52Provider";
+import { P53FrameContainer } from "@/modules/P53/P53FrameContainer";
+import { P53Provider } from "@/modules/P53/P53Provider";
+import { P54FrameContainer } from "@/modules/P54/P54FrameContainer";
+import { P54Provider } from "@/modules/P54/P54Provider";
+import { P55FrameContainer } from "@/modules/P55/P55FrameContainer";
+import { P55Provider } from "@/modules/P55/P55Provider";
+import { P56FrameContainer } from "@/modules/P56/P56FrameContainer";
+import { P56Provider } from "@/modules/P56/P56Provider";
+import { P57FrameContainer } from "@/modules/P57/P57FrameContainer";
+import { P57Provider } from "@/modules/P57/P57Provider";
+import { P58FrameContainer } from "@/modules/P58/P58FrameContainer";
+import { P58Provider } from "@/modules/P58/P58Provider";
+import { P61FrameContainer } from "@/modules/P61/P61FrameContainer";
+import { P61Provider } from "@/modules/P61/P61Provider";
+import { P62FrameContainer } from "@/modules/P62/P62FrameContainer";
+import { P62Provider } from "@/modules/P62/P62Provider";
+import { P63FrameContainer } from "@/modules/P63/P63FrameContainer";
+import { P63Provider } from "@/modules/P63/P63Provider";
 import { Route } from "react-router-dom";
 
 const pRoutes2 = (
@@ -221,6 +241,110 @@ const pRoutes2 = (
 							<P51FrameContainer />
 						</P51Provider>
 					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P52"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<P52Provider>
+							<P52FrameContainer />
+						</P52Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P53"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<P53Provider>
+							<P53FrameContainer />
+						</P53Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P54"
+			element={
+				<CrudProvider>
+					<P54Provider>
+						<P54FrameContainer />
+					</P54Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P55"
+			element={
+				<CrudProvider>
+					<P55Provider>
+						<P55FrameContainer />
+					</P55Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P56"
+			element={
+				<CrudProvider>
+					<P56Provider>
+						<P56FrameContainer />
+					</P56Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P57"
+			element={
+				<CrudProvider>
+					<P57Provider>
+						<P57FrameContainer />
+					</P57Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P58"
+			element={
+				<CrudProvider>
+					<P58Provider>
+						<P58FrameContainer />
+					</P58Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P61"
+			element={
+				<CrudProvider>
+					<P61Provider>
+						<P61FrameContainer />
+					</P61Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P62"
+			element={
+				<CrudProvider>
+					<P62Provider>
+						<P62FrameContainer />
+					</P62Provider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="P63"
+			element={
+				<CrudProvider>
+					<P63Provider>
+						<P63FrameContainer />
+					</P63Provider>
 				</CrudProvider>
 			}
 		/>

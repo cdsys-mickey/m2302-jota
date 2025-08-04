@@ -19,6 +19,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import P35DialogForm from "../form/P35DialogForm";
 import P35Drawer from "../P35Drawer";
 import { P35DialogButtonsContainer } from "./buttons/P35DialogButtonsContainer";
+import { useMediaQuery } from "@mui/system";
 
 export const P35DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -26,9 +27,9 @@ export const P35DialogContainer = forwardRef((props, ref) => {
 	const form = useFormContext();
 	const { reset } = form;
 	const p35 = useContext(P35Context);
-
+	const xlOrDown = useMediaQuery((theme) => theme.breakpoints.down('xl'));
 	const _height = useMemo(() => {
-		return height - 110
+		return height - 20
 	}, [height])
 
 	const readOnly = useMemo(() => {
@@ -191,6 +192,7 @@ export const P35DialogContainer = forwardRef((props, ref) => {
 			title={title}
 			ref={ref}
 			// fullScreen
+			fullScreen={xlOrDown}
 			responsive
 			fullWidth
 			maxWidth="lg"

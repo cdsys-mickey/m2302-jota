@@ -1,16 +1,17 @@
 import PropTypes from "prop-types";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { DynamicDataSheetGrid } from "react-datasheet-grid";
-import { DSGContext } from "../../shared-contexts/datasheet-grid/DSGContext";
-import DSGBox from "./DSGBox";
+import { DSGContext } from "../../../shared-contexts/datasheet-grid/DSGContext";
+import DSGBox from "../DSGBox";
+import DSGLoading from "../DSGLoading";
 
 const DSGGRID_DEFAULTS = {
 	rowHeight: 34,
 };
 
-export const DSGGrid = memo(
+export const DSGGridView = memo(
 	forwardRef((props, ref) => {
-		const { children, rowClassName, columns, value, lockRows, slotProps, ...rest } = props;
+		const { children, loading = false, height, loadingHeight, rowClassName, columns, value, lockRows, slotProps, ...rest } = props;
 		const gridMeta = useContext(DSGContext);
 
 
@@ -39,6 +40,14 @@ export const DSGGrid = memo(
 		// 	);
 		// }
 
+		if (loading) {
+			return (
+				<DSGBox {...slotProps?.box} >
+					<DSGLoading height={loadingHeight ?? height} />
+				</DSGBox>
+			);
+		}
+
 		return (
 			<DSGBox {...slotProps?.box}>
 				<DynamicDataSheetGrid
@@ -47,6 +56,7 @@ export const DSGGrid = memo(
 					ref={ref}
 					value={value}
 					lockRows={lockRows}
+					height={height}
 					{...DSGGRID_DEFAULTS}
 					{...rest}>
 				</DynamicDataSheetGrid>
@@ -56,13 +66,16 @@ export const DSGGrid = memo(
 	})
 );
 
-DSGGrid.propTypes = {
+DSGGridView.propTypes = {
 	columns: PropTypes.array,
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	rowClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 	value: PropTypes.array,
 	lockRows: PropTypes.bool,
-	slotProps: PropTypes.object
+	slotProps: PropTypes.object,
+	loading: PropTypes.bool,
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	loadingHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
-DSGGrid.displayName = "DSGGrid";
+DSGGridView.displayName = "DSGGridView";

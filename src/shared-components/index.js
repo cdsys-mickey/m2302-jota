@@ -24,6 +24,8 @@ import ToolbarDividerView from "./ToolbarDivider/ToolbarDivierView";
 import TypoLabelWrapper from "./TypoLabel/TypoLabelWrapper";
 import ControlledRadioGroupEx from "./RadioGroupEx/ControlledRadioGroupEx";
 
+import DSGGridContainer from "./dsg/DSGGrid/DSGGridContainer";
+
 export {
 	ButtonWrapperContainer as ButtonEx,
 	CheckboxExWrapper as CheckboxEx,
@@ -47,4 +49,5 @@ export {
 	FlexTableCellView as FlexTableCell,
 	ToolbarDividerView as ToolbarDivider,
 	ControlledRadioGroupEx as RadioGroupEx,
+	DSGGridContainer as DSGGrid,
 };

@@ -3,9 +3,17 @@ import { useWatch } from "react-hook-form";
 import FormFieldLabelView from "./FormFieldLabelView";
 import { useMemo } from "react";
 import Types from "@/shared-modules/Types.mjs";
+import CrudContext from "@/contexts/crud/CrudContext";
+import { useContext } from "react";
 
 const FormFieldLabelContainer = (props) => {
 	const { name, children, ...rest } = props;
+	const { loadWorking, readWorking } = useContext(CrudContext) || {};
+
+	const _loading = useMemo(() => {
+		return loadWorking || readWorking;
+	}, [loadWorking, readWorking])
+
 	const value = useWatch({
 		name,
 	});
@@ -21,6 +29,8 @@ const FormFieldLabelContainer = (props) => {
 			value={value}
 			// isEmpty={isEmpty}
 			isNegative={isNegative}
+			loading={_loading}
+			// loading={true}
 			{...rest} >
 			{children}
 		</FormFieldLabelView>

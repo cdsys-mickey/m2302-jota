@@ -4,18 +4,20 @@ const DataType = Object.freeze({
 	PURCHASE: 1,
 	SALE: 2,
 	STOCK: 3,
+	OWN_BRAND: 4,
 });
 
 const dataTypeOptions = [
-	{ id: DataType.PURCHASE, name: "進貨量" },
-	{ id: DataType.SALE, name: "銷貨量" },
-	{ id: DataType.STOCK, name: "庫存量" },
+	{ id: DataType.PURCHASE, label: "進貨量" },
+	{ id: DataType.SALE, label: "銷貨量" },
+	{ id: DataType.STOCK, label: "庫存量" },
+	{ id: DataType.OWN_BRAND, label: "自製品入庫量" },
 ];
 
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { name } = option;
-	return `${name}`;
+	const { id, label } = option;
+	return [id, label].filter(Boolean).join(" ");
 };
 
 const isOptionEqualToValue = (option, value) => {
@@ -52,7 +54,7 @@ const transformForSubmitting = (payload) => {
 		EDeptID: edept?.DeptID || "",
 		SProdID: sprod?.ProdID || "",
 		EProdID: eprod?.ProdID || "",
-		DataType: dataType.id?.toString() || "3",
+		DataType: dataType?.id?.toString() || "3",
 		InclInv: InclInv || dataType?.id != DataType.SALE ? "Y" : "N",
 		InclTest: InclTest || dataType?.id != DataType.SALE ? "Y" : "N",
 		...rest,

@@ -1,4 +1,4 @@
-import { Box, Grid, InputAdornment } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { memo } from "react";
 
 import BankPicker from "@/components/BankPicker/BankPicker";
@@ -7,12 +7,10 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 
 import CmsAreaPicker from "@/components/CmsAreaPicker/CmsAreaPicker";
 import CmsCityPicker from "@/components/CmsCityPicker/CmsCityPicker";
-import { CheckboxEx, FormLabelEx, TextFieldEx } from "@/shared-components";
+import { CheckboxEx, TextFieldEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import FormSectionTitle from "@/shared-components/form/FormSectionTitle";
-import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import P35GridContainer from "../grid/P35GridContainer";
@@ -47,7 +45,7 @@ const P35DialogForm = memo((props) => {
 					<FormSectionBox >
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={3} lg={2}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="TrvID"
 									label="旅行社代碼"
@@ -65,7 +63,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="TrvData"
 									label="名稱"
@@ -78,7 +76,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={1} lg={1}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="AbbrID"
 									label="簡碼"
@@ -106,7 +104,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3} lg={2}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Contact"
 									label="聯絡人"
@@ -114,7 +112,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={5} lg={3}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Tel"
 									label="聯絡電話"
@@ -122,7 +120,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3} lg={3}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Fax"
 									label="傳真"
@@ -131,7 +129,7 @@ const P35DialogForm = memo((props) => {
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3} lg={2}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Cel"
 									label="行動電話"
@@ -144,7 +142,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={5} lg={3}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Email"
 									label="電子信箱"
@@ -157,7 +155,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Postal"
 									label="郵遞區號"
@@ -171,7 +169,7 @@ const P35DialogForm = memo((props) => {
 							</Grid>
 
 							<Grid item xs={12} sm={12} md={6} lg={4}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Addr"
 									label="聯絡地址"
@@ -185,7 +183,7 @@ const P35DialogForm = memo((props) => {
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3} lg={2}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Uniform"
 									label="公司統一編號"
@@ -198,7 +196,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={6} lg={3}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="InvTitle"
 									label="發票抬頭"
@@ -229,7 +227,7 @@ const P35DialogForm = memo((props) => {
 							</Grid>
 
 							<Grid item xs={12} sm={12} md={3} lg={4}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="BankAcct"
 									label="帳號"
@@ -244,7 +242,7 @@ const P35DialogForm = memo((props) => {
 
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={12}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Remark"
 									multiline
@@ -280,7 +278,7 @@ const P35DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={10.5}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="AsRemark"
 									multiline
@@ -292,161 +290,84 @@ const P35DialogForm = memo((props) => {
 							<FlexBox fullWidth />
 
 							<Grid item xs={12} sm={12} md={3} lg={2}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Bonus1"
 									label="獎勵金1"
 									fullWidth
-									InputProps={{
-										endAdornment: <InputAdornment position="end">%</InputAdornment>,
-									}}
+									endAdornment="%"
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3} lg={2}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Bonus2"
 									label="獎勵金2"
 									fullWidth
-									InputProps={{
-										endAdornment: <InputAdornment position="end">%</InputAdornment>,
-									}}
+									endAdornment="%"
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3} lg={2}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="CmsDn"
 									label="金額下限"
 									fullWidth
 								/>
 							</Grid>
-						</Grid>
 
-						<Box mt={0.5}>
-							<Grid container spacing={2}>
-								<Grid item xs={12} lg={8}>
-									{/* <FormLabelEx variant="subtitle2">佣金設定</FormLabelEx> */}
-									<FlexBox inline >
-										<FlexBox sx={{ width: "360px" }} />
-										<FlexBox sx={{ width: "128px" }} >
-											<CheckboxEx
-												typo
-												// variant="outlined"
-												fullWidth
-												// shrink
-												label="現結"
-												name="clearOnSite1"
-												defaultValue={false}
-												size="small"
-												slotProps={{
-													label: {
-														slotProps: {
-															typography: {
-																variant: "subtitle2"
-															}
-														},
-														inline: true
-													},
-												}}
-											/>
-										</FlexBox>
-										<FlexBox sx={{ width: "128px" }} >
-											<CheckboxEx
-												typo
-												// variant="outlined"
-												fullWidth
-												// shrink
-												label="現結"
-												name="clearOnSite2"
-												defaultValue={false}
-												size="small"
-												slotProps={{
-													label: {
-														slotProps: {
-															typography: {
-																variant: "subtitle2"
-															}
-														},
-														inline: true
-													},
-
-												}}
-											/>
-										</FlexBox>
-										<FlexBox sx={{ width: "128px" }} >
-											<CheckboxEx
-												typo
-												// variant="outlined"
-												fullWidth
-												// shrink
-												label="現結"
-												name="clearOnSite3"
-												defaultValue={false}
-												size="small"
-												slotProps={{
-													label: {
-														// labelPlacement: "start",
-														slotProps: {
-															typography: {
-																variant: "subtitle2"
-															}
-														},
-														inline: true
-													},
-												}}
-											/>
-										</FlexBox>
-									</FlexBox>
+							<Grid item xs={12} lg={9} xl={9}>
+								<Box mt={1}>
 									<P35GridContainer />
-								</Grid>
-								<Grid item xs={12} lg={4}>
-									<Box mt={4.6}>
-										<Grid container spacing={1}>
-											<Grid item xs={8}>
-												<TextFieldEx
-													typo
-													name="guideAmt"
-													label="導遊佣金"
-													fullWidth
-													clearable
-												/>
-											</Grid>
-											<Grid item xs={4}>
-												<CheckboxEx
-													typo
-													label="X 車數"
-													name="guideAmtMultipliedByBus"
-													variant="outlined"
-												/>
-											</Grid>
-											<Grid item xs={8}>
-												<TextFieldEx
-													typo
-													name="driverAmt"
-													label="司機佣金"
-													fullWidth
-													clearable
-												/>
-											</Grid>
-											<Grid item xs={4}>
-												<CheckboxEx
-													typo
-													label="X 車數"
-													name="driverAmtMultipliedByBus"
-													variant="outlined"
-												/>
-											</Grid>
-										</Grid>
-									</Box>
-								</Grid>
+
+								</Box>
 							</Grid>
 
-						</Box>
+							<Grid item xs={12} lg={3} xl={3}>
+								<Grid container spacing={1}>
+									<Grid item xs={7}>
+										<TextFieldEx
+											typo
+											name="guideAmt"
+											label="導遊佣金"
+											fullWidth
+											clearable
+										/>
+									</Grid>
+									<Grid item xs={5}>
+										<CheckboxEx
+											typo
+											label="X 車數"
+											name="guideAmtMultipliedByBus"
+											variant="outlined"
+										/>
+									</Grid>
+									<Grid item xs={7}>
+										<TextFieldEx
+											typo
+											name="driverAmt"
+											label="司機佣金"
+											fullWidth
+											clearable
+										/>
+									</Grid>
+									<Grid item xs={5}>
+										<CheckboxEx
+											typo
+											label="X 車數"
+											name="driverAmtMultipliedByBus"
+											variant="outlined"
+										/>
+									</Grid>
+								</Grid>
+							</Grid>
+						</Grid>
+
 					</FormSectionBox>
 				</FormBox>
-			)}
-		</form>
+			)
+			}
+		</form >
 	);
 });
 

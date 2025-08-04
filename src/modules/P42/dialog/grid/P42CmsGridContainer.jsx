@@ -1,7 +1,7 @@
 import { P42Context } from "@/modules/P42/P42Context";
 import { createAddRowsComponentEx } from "@/shared-components/dsg/add-rows/createAddRowsComponentEx";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
@@ -35,6 +35,10 @@ const P42CmsGridContainer = (props) => {
 
 	const _height = useMemo(() => {
 		return lgOrUp ? height - 510 : 200;
+	}, [height, lgOrUp])
+
+	const _loadingHeight = useMemo(() => {
+		return lgOrUp ? height - 482 : 200;
 	}, [height, lgOrUp])
 
 	const onChange = useMemo(() => {
@@ -80,6 +84,7 @@ const P42CmsGridContainer = (props) => {
 				onActiveCellChange={formMeta.cmsGridMeta.handleActiveCellChange}
 				addRowsComponent={_addRowsComponent}
 				height={_height}
+				loadingHeight={_loadingHeight}
 				createRow={p42.createCmsRow}
 				disableExpandSelection
 				contextMenuComponent={ContextMenu}

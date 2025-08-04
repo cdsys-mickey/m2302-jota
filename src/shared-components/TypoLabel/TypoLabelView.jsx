@@ -20,7 +20,7 @@ const TypoLabelView = memo(
 			children,
 			labelProps,
 			labelStyles,
-			typographySx,
+			// typographySx,
 			emptyText = "(空白)",
 			sx = [],
 			flex = false,
@@ -100,10 +100,11 @@ const TypoLabelView = memo(
 									...(isEmpty && {
 										color: theme.palette.text.disabled,
 									}),
+									...slotProps?.typography?.sx
 								}),
-								...(Array.isArray(typographySx)
-									? typographySx
-									: [typographySx]),
+								// ...(Array.isArray(typographySx)
+								// 	? typographySx
+								// 	: [typographySx]),
 							]}>
 							{body
 								?.split('\n')
@@ -134,7 +135,7 @@ TypoLabelView.propTypes = {
 	emptyText: PropTypes.string,
 	title: PropTypes.string,
 	arrow: PropTypes.bool,
-	typographySx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	// typographySx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	flex: PropTypes.bool,
 	noWrap: PropTypes.bool,

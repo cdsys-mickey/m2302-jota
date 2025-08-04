@@ -140,6 +140,9 @@ const A19Form = memo((props) => {
 									name="dataType"
 									label="資料類型"
 									required
+									rules={{
+										required: "資料類型為必填"
+									}}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>

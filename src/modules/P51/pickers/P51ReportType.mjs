@@ -1,7 +1,7 @@
 const options = [
 	{ id: 1, label: "彙總" },
-	{ id: 2, label: "未結案" },
-	{ id: 3, label: "已結案" },
+	{ id: 2, label: "未到訪" },
+	{ id: 3, label: "已到訪" },
 ];
 
 const getOptionById = (id) => {

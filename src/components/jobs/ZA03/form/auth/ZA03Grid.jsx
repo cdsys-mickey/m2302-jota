@@ -1,4 +1,4 @@
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";

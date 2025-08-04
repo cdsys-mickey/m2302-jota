@@ -9,12 +9,14 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { G02ListRowContainer } from "./G02ListRowContainer";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import G02 from "../G02.mjs";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 
 export const G02ListViewContainer = () => {
 	const g02 = useContext(G02Context);
 	const { loadList } = g02;
 	const form = useFormContext();
 	const { height } = useWindowSize();
+	const listLoader = useContext(InfiniteLoaderContext);
 
 	const lvEDate = useWatch({
 		name: "lvEDate",
@@ -51,6 +53,7 @@ export const G02ListViewContainer = () => {
 	}, []);
 
 	useChangeTracking(() => {
+		listLoader.uncheckAll();
 		loadList({
 			params: {
 				...G02.transformAsQueryParams({

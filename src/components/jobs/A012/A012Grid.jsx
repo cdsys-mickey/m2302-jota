@@ -2,7 +2,7 @@ import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import NoDataBox from "@/shared-components/NoDataBox";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 
 const A012Grid = memo((props) => {
 	const {

@@ -5,7 +5,7 @@ const P41BankColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={4} sx={{ display: { xs: 'none', sm: 'block' } }} {...rest} />
+		<ListColumn item pr={1} xs={3.5} sx={{ display: { xs: 'none', sm: 'block' } }} {...rest} />
 	);
 };
 

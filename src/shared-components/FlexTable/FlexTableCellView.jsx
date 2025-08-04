@@ -6,8 +6,8 @@ import FlexTableContext from "./FlexTableContext";
 import FlexTableRowContext from "./FlexTableRowContext";
 
 const FlexTableCellViewComponent = (props) => {
-	const { children, sx = [], border, height, h, width, w, align, alignItems, justifyContent, padding, p, ...rest } = props;
-	const { rowHeight: tableRowHeight, border: tableBorder, padding: tablePadding, cellProps } = useContext(FlexTableContext) || {};
+	const { children, sx = [], slotProps, border, height, h, width, w, align, alignItems, justifyContent, padding, p, ...rest } = props;
+	const { rowHeight: tableRowHeight, alignItems: tableAlignItems, border: tableBorder, padding: tablePadding, cellProps } = useContext(FlexTableContext) || {};
 	const { rowHeight, alignItems: rowAlignItems, justifyContent: rowJustifyContent } = useContext(FlexTableRowContext) || {};
 
 	// const contextProps = useMemo(() => {
@@ -24,8 +24,8 @@ const FlexTableCellViewComponent = (props) => {
 	}, [w, width])
 
 	const _alignItems = useMemo(() => {
-		return alignItems ?? rowAlignItems;
-	}, [alignItems, rowAlignItems])
+		return alignItems ?? rowAlignItems ?? tableAlignItems;
+	}, [alignItems, rowAlignItems, tableAlignItems])
 
 	const _justifyContent = useMemo(() => {
 		if (align) {
@@ -60,20 +60,27 @@ const FlexTableCellViewComponent = (props) => {
 		}
 	}, [cellProps, rest])
 
+	const useFullHeight = useMemo(() => {
+		return !!children;
+	}, [children])
+
 	return (
 		<Box
 			{...(_height && { height: _height })}
 			{...(_width && { width: _width })}
 			p={_padding}
+			{...slotProps?.box}
 			sx={{
 				display: 'table-cell',
 				...(__border && {
 					border: __border,
-				})
-			}}>
+				}),
+				...slotProps?.box?.sx
+			}}
+		>
 			<FlexBox
 				fullWidth
-				{...children && ({ fullHeight: true })}
+				{...useFullHeight && ({ fullHeight: true })}
 				{...(_alignItems && { alignItems: _alignItems })}
 				{...(_justifyContent && { justifyContent: _justifyContent })}
 				sx={[
@@ -86,7 +93,7 @@ const FlexTableCellViewComponent = (props) => {
 				]}
 				{..._cellProps}
 			>
-				{children}
+				{children || " "}
 			</FlexBox>
 		</Box>
 	);
@@ -105,6 +112,7 @@ FlexTableCellViewComponent.propTypes = {
 	alignItems: PropTypes.string,
 	justifyContent: PropTypes.string,
 	align: PropTypes.string,
+	slotProps: PropTypes.object
 }
 const FlexTableCellView = memo(FlexTableCellViewComponent);
 // FlexTableCellView.displayName = "FlexTableCellView";

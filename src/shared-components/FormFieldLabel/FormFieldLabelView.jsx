@@ -8,6 +8,7 @@ import { FormLabelEx } from "@/shared-components";
 import Types from "@/shared-modules/Types.mjs";
 import Forms from "@/shared-modules/Forms.mjs";
 import { Fragment } from "react";
+import { Skeleton } from "@mui/lab";
 
 /**
  * 增加 label 功能的 Typography
@@ -20,7 +21,7 @@ const FormFieldLabelView = memo(
 			children,
 			labelProps,
 			labelStyles,
-			typographySx,
+			// typographySx,
 			emptyText = "(空白)",
 			sx = [],
 			flex = false,
@@ -32,6 +33,7 @@ const FormFieldLabelView = memo(
 			// isEmpty = false,
 			isNegative = false,
 			dense = true,
+			loading = false,
 		} = props;
 
 		const _labelStyles = useMemo(() => {
@@ -39,13 +41,16 @@ const FormFieldLabelView = memo(
 		}, [labelStyles, noWrap]);
 
 		const body = useMemo(() => {
+			if (loading) {
+				return <Skeleton variant="rectangular" width="100%" height="24px" />
+			}
 			if (children != null) {
 				return (Types.isLiteral(children) ? Forms.formatLiteral(children) : children) || emptyText;
 			}
 			return (stringify
 				? stringify(value) || emptyText
 				: (Types.isLiteral(value) ? Forms.formatLiteral(value) : value) || emptyText);
-		}, [children, emptyText, stringify, value]);
+		}, [children, emptyText, loading, stringify, value]);
 
 		const BoxComponent = useMemo(() => {
 			return inline || flex ? FlexBox : Box;
@@ -65,16 +70,18 @@ const FormFieldLabelView = memo(
 		}, [children, value]);
 
 		return (
-			<BoxComponent className={FormFieldLabelView.displayName} ref={ref} inline={inline} {...defaultBoxProps} {...slotProps?.box} sx={[
-				(theme) => ({
-					...(flex && {
-						alignItems: "center"
+			<BoxComponent className={FormFieldLabelView.displayName} ref={ref}
+				{...(inline && { inline: true })}
+				{...defaultBoxProps} {...slotProps?.box} sx={[
+					(theme) => ({
+						...(flex && {
+							alignItems: "center"
+						}),
+						marginLeft: theme.spacing(0.5),
 					}),
-					marginLeft: theme.spacing(0.5),
-				}),
-				_labelStyles,
-				...(Array.isArray(sx) ? sx : [sx]),
-			]}>
+					_labelStyles,
+					...(Array.isArray(sx) ? sx : [sx]),
+				]}>
 				{label && (
 					<FormLabelEx
 						inline={inline}
@@ -86,6 +93,7 @@ const FormFieldLabelView = memo(
 					</FormLabelEx>
 				)}
 				<Box className="FormFieldLabelView-bodybox" sx={{
+					minWidth: "40px",
 					...(dense && {
 						position: "relative",
 						...(!inline && { // dense 時若有 label 才往上移 8px
@@ -93,32 +101,35 @@ const FormFieldLabelView = memo(
 						})
 					})
 				}} {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
-					{Types.isLiteral(body) ? <>
-						<Typography
-							color="primary"
-							variant="body1"
-							sx={[
-								(theme) => ({
-									fontWeight: 400,
-									...(isEmpty && {
-										color: theme.palette.text.disabled,
+					{
+						Types.isLiteral(body)
+							? <Typography
+								color="primary"
+								variant="body1"
+								{...slotProps?.typography}
+								sx={[
+									(theme) => ({
+										fontWeight: 400,
+										...(isEmpty && {
+											color: theme.palette.text.disabled,
+										}),
+										...slotProps?.typography?.sx
 									}),
-								}),
-								...(Array.isArray(typographySx)
-									? typographySx
-									: [typographySx]),
-							]}>
-							{body
-								?.split('\n')
-								.map((line, index) => (
-									<Fragment key={`${line}_${index}`}>
-										{line}
-										{index < body.split('\n').length - 1 && <br />}
-									</Fragment>
-								))}
-						</Typography>
-					</>
-						: body}
+									// ...(typographySx && Array.isArray(typographySx)
+									// 	? typographySx
+									// 	: [typographySx]),
+								]}>
+								{body
+									?.split('\n')
+									.map((line, index) => (
+										<Fragment key={`${line}_${index}`}>
+											{line}
+											{index < body.split('\n').length - 1 && <br />}
+										</Fragment>
+									))}
+							</Typography>
+							: body
+					}
 				</Box>
 
 			</BoxComponent >
@@ -137,7 +148,7 @@ FormFieldLabelView.propTypes = {
 	emptyText: PropTypes.string,
 	title: PropTypes.string,
 	arrow: PropTypes.bool,
-	typographySx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	// typographySx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	flex: PropTypes.bool,
 	noWrap: PropTypes.bool,
@@ -148,7 +159,8 @@ FormFieldLabelView.propTypes = {
 	format: PropTypes.func,
 	isNegative: PropTypes.bool,
 	isEmpty: PropTypes.bool,
-	dense: PropTypes.bool
+	dense: PropTypes.bool,
+	loading: PropTypes.bool,
 };
 
 export default FormFieldLabelView;

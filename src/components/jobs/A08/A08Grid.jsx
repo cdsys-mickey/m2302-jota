@@ -4,7 +4,7 @@ import DSGLoading from "@/shared-components/dsg/DSGLoading";
 import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-menu/createDSGContextMenuComponent";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components"
 import A08 from "@/modules/A08.mjs";
 
 const ContextMenu = createDSGContextMenuComponent({

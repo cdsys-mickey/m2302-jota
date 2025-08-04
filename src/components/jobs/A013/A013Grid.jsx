@@ -1,13 +1,9 @@
 import DSGAddRowsToolbar from "@/components/dsg/DSGAddRowsToolbar";
+import { DSGGrid } from "@/shared-components";
 import DSGLoading from "@/shared-components/dsg/DSGLoading";
-import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import {
-	DynamicDataSheetGrid
-} from "react-datasheet-grid";
-import NoDataBox from "../../../shared-components/NoDataBox";
-import { DSGGrid } from "../../../shared-components/dsg/DSGGrid";
+import NoDataBox from "@/shared-components/NoDataBox";
 
 const A013Grid = memo((props) => {
 	const {

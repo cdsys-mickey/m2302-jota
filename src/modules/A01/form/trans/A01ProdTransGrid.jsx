@@ -3,7 +3,7 @@ import { createDSGContextMenuComponent } from "@/shared-components/dsg/context-m
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { DSGGrid } from "@/shared-components/dsg/DSGGrid";
+import { DSGGrid } from "@/shared-components";
 import { pt } from "date-fns/locale";
 
 const ContextMenu = createDSGContextMenuComponent({
