@@ -293,6 +293,7 @@ const P35DialogForm = memo((props) => {
 								<TextFieldEx
 									typo
 									name="Bonus1"
+									type="number"
 									label="獎勵金1"
 									fullWidth
 									endAdornment="%"
@@ -302,6 +303,7 @@ const P35DialogForm = memo((props) => {
 								<TextFieldEx
 									typo
 									name="Bonus2"
+									type="number"
 									label="獎勵金2"
 									fullWidth
 									endAdornment="%"
@@ -311,6 +313,7 @@ const P35DialogForm = memo((props) => {
 								<TextFieldEx
 									typo
 									name="CmsDn"
+									type="number"
 									label="金額下限"
 									fullWidth
 								/>

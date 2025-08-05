@@ -64,6 +64,7 @@ const U08Form = memo((props) => {
 									name="RptType"
 									label="資料型態"
 									required
+									disableOpenOnInput
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>

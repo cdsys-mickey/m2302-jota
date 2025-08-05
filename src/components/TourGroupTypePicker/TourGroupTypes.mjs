@@ -23,8 +23,8 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id == id);
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
+const findByInput = (s) => {
+	return options.find((o) => o.id == s);
 };
 
 const isOptionEqualToValue = (option, value) => {
@@ -48,7 +48,7 @@ const TourGroupTypes = {
 	options,
 	getOptionLabel,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	isOptionEqualToValue,
 	getOptionKey,
 	getDefaultValue,

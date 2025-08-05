@@ -120,11 +120,11 @@ const P02Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<StdPrintOutputModePicker
+								{/* <StdPrintOutputModePicker
 									required
 									name="outputType"
 									label="執行方式"
-								/>
+								/> */}
 							</Grid>
 						</Grid>
 						<FlexBox mt={2}>

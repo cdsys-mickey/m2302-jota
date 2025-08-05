@@ -1,14 +1,14 @@
 const Types = Object.freeze({
 	// NONE: "",
-	BUS_DRIVER: "1",
-	AGENCY: "2",
+	AGENCY: "1",
+	BUS_DRIVER: "2",
 	GUIDE: "3",
 });
 
 const options = [
-	{ id: Types.BUS_DRIVER, label: "司機佣金" },
-	{ id: Types.AGENCY, label: "旅行社佣金" },
-	{ id: Types.GUIDE, label: "導遊佣金" },
+	{ id: Types.AGENCY, label: "旅行社" },
+	{ id: Types.BUS_DRIVER, label: "車行" },
+	{ id: Types.GUIDE, label: "導遊" },
 ];
 
 const getOptionLabel = (option) => {

@@ -6,7 +6,7 @@ import P61OrderType from "./P61OrderType.mjs";
 
 
 const P61OrderTypePicker = forwardRef((props, ref) => {
-	const { name, label = "排序方式", ...rest } = props;
+	const { name, label = "明細型態", ...rest } = props;
 
 	return (
 		<OptionPicker
@@ -17,7 +17,7 @@ const P61OrderTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={P61OrderType.getOptionLabel}
 			isOptionEqualToValue={P61OrderType.isOptionEqualToValue}
 			findByInput={P61OrderType.findByInput}
-			notFoundText="排序方式 ${input} 不存在"
+			notFoundText="明細型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

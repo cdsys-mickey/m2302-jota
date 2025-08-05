@@ -51,9 +51,9 @@ export const DSGGridView = memo(
 		return (
 			<DSGBox {...slotProps?.box}>
 				<DynamicDataSheetGrid
+					ref={ref}
 					columns={_columns}
 					rowClassName={_rowClassName}
-					ref={ref}
 					value={value}
 					lockRows={lockRows}
 					height={height}

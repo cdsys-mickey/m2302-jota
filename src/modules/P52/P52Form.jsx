@@ -119,6 +119,7 @@ const P52Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<P52ReportTypePicker
+									label="資料型態"
 									name="reportType"
 									disableOpenOnInput
 									selectOnFocus

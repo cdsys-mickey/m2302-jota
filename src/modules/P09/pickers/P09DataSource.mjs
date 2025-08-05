@@ -20,8 +20,8 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
+const findByInput = (s) => {
+	return options.find((o) => o.id == s);
 };
 
 const getDefaultOption = () => {
@@ -33,7 +33,7 @@ const P09DataSource = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	getDefaultOption,
 };
 

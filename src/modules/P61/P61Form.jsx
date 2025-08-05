@@ -87,7 +87,7 @@ const P61Form = memo((props) => {
 										/>
 									</FlexBox>
 									<FlexBox px={1} pb={1} alignItems="flex-end">
-										<Typography variant="body2">方計算回饋金</Typography>
+										<Typography variant="body2">方計算回饋金(獎勵金1)</Typography>
 									</FlexBox>
 
 								</FlexBox>

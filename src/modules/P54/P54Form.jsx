@@ -55,7 +55,7 @@ const P54Form = memo((props) => {
 									fullWidth
 									// forId
 									// onChange={onTourGuideChange}
-									// disableOpenOnInput
+									disableOpenOnInput
 									placeholder="1=旅行社,2=車行,3=導遊,<空白>=三者"
 								/>
 							</Grid>

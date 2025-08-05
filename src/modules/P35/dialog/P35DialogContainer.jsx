@@ -42,6 +42,7 @@ export const P35DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("cmsType",
 					optionPickerColumn(CmsTypePickerCell, {
 						name: "cmsType",
+						disableOpenOnInput: true
 					})
 				),
 				title: "佣金類別",

@@ -2,7 +2,7 @@ import Constants from "@/modules/md-constants";
 import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import P10OrderType from "./P10OrderType.mjs";
+import P10OrderTypes from "./P10OrderTypes.mjs";
 
 
 const P10OrderTypePicker = forwardRef((props, ref) => {
@@ -13,10 +13,10 @@ const P10OrderTypePicker = forwardRef((props, ref) => {
 			name={name}
 			ref={ref}
 			label={label}
-			options={P10OrderType.options}
-			getOptionLabel={P10OrderType.getOptionLabel}
-			isOptionEqualToValue={P10OrderType.isOptionEqualToValue}
-			findByInput={P10OrderType.findByInput}
+			options={P10OrderTypes.options}
+			getOptionLabel={P10OrderTypes.getOptionLabel}
+			isOptionEqualToValue={P10OrderTypes.isOptionEqualToValue}
+			findByInput={P10OrderTypes.findByInput}
 			notFoundText="排序方式 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup

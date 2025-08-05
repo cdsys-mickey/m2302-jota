@@ -206,7 +206,8 @@ const P36DialogForm = memo((props) => {
 							<Grid item xs={12} sm={12} md={3} lg={2}>
 								<TextFieldWrapper
 									typo
-									name="Bound"
+									name="Bonus"
+									type="number"
 									label="獎勵金百分比"
 									fullWidth
 									slotProps={{
@@ -223,8 +224,8 @@ const P36DialogForm = memo((props) => {
 											textAlign: 'right',
 											// width: '6em', 
 										},
-										inputMode: 'numeric',
-										pattern: '[0-9]*',
+										// inputMode: 'numeric',
+										// pattern: '[0-9]*',
 									}}
 								/>
 							</Grid>

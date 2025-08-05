@@ -297,7 +297,7 @@ const P34DialogForm = memo((props) => {
 							<Grid container>
 								<Grid item xs={12} lg={6}>
 									{/*<FormSectionTitle>消費額比較值</FormSectionTitle>*/}
-									<FormLabelEx variant="subtitle2">消費額比較值</FormLabelEx>
+									<FormLabelEx variant="subtitle2">消費額比較值（單位：萬元）</FormLabelEx>
 									<P34GridContainer />
 								</Grid>
 							</Grid>

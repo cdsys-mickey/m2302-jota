@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import MuiStyles from "../../shared-modules/MuiStyles";
@@ -8,7 +8,6 @@ import { FormLabelEx } from "@/shared-components";
 import Types from "@/shared-modules/Types.mjs";
 import Forms from "@/shared-modules/Forms.mjs";
 import { Fragment } from "react";
-import { Skeleton } from "@mui/lab";
 
 /**
  * 增加 label 功能的 Typography

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import StdPrint from "../StdPrint.mjs";
 import { P51Context } from "./P51Context";
-import P51ReportType from "./pickers/P51ReportType.mjs";
+import P51ReportType from "./pickers/P51ReportTypes.mjs";
 import { useP51 } from "./useP51";
 
 export const P51Provider = ({ children }) => {

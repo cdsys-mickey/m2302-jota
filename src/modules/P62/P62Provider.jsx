@@ -4,7 +4,7 @@ import StdPrint from "../StdPrint.mjs";
 import { P62Context } from "./P62Context";
 import P62ReportType from "./pickers/P62ReportTypes.mjs";
 import { useP62 } from "./useP62";
-import P62OrderType from "./pickers/P62OrderType.mjs";
+import P62OrderType from "./pickers/P62OrderTypes.mjs";
 import P62RptClasses from "./pickers/P62RptClasses.mjs";
 
 export const P62Provider = ({ children }) => {

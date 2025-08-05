@@ -29,21 +29,21 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id == id);
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() == s?.toLowerCase());
+const findByInput = (s) => {
+	return options.find((o) => o.id == s);
 };
 
 const getDefaultOption = () => {
 	return getOptionById(1);
 };
 
-const P53OrderType = {
+const P53OrderTypes = {
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	getDefaultOption,
 };
 
-export default P53OrderType;
+export default P53OrderTypes;

@@ -1,7 +1,6 @@
 const options = [
-	{ id: 1, label: "已發佣金" },
-	{ id: 2, label: "未發佣金" },
-	{ id: 3, label: "全部" },
+	{ id: 1, label: "彙總" },
+	{ id: 2, label: "明細" },
 ];
 
 const getOptionById = (id) => {
@@ -18,8 +17,8 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.id === value?.id;
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
+const findByInput = (s) => {
+	return options.find((o) => o.id == s);
 };
 
 const getDefaultOption = () => {
@@ -31,10 +30,8 @@ const P63ReportTypes = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	getDefaultOption,
 };
 
 export default P63ReportTypes;
-
-

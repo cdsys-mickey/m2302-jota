@@ -2,7 +2,7 @@ import Constants from "@/modules/md-constants";
 import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import P53ReportType from "./P53ReportType.mjs";
+import P53ReportTypes from "./P53ReportTypes.mjs";
 
 const P53ReportTypePicker = forwardRef((props, ref) => {
 	const { name, label = "報表型態", ...rest } = props;
@@ -12,10 +12,10 @@ const P53ReportTypePicker = forwardRef((props, ref) => {
 			name={name}
 			ref={ref}
 			label={label}
-			options={P53ReportType.options}
-			getOptionLabel={P53ReportType.getOptionLabel}
-			isOptionEqualToValue={P53ReportType.isOptionEqualToValue}
-			findByInput={P53ReportType.findByInput}
+			options={P53ReportTypes.options}
+			getOptionLabel={P53ReportTypes.getOptionLabel}
+			isOptionEqualToValue={P53ReportTypes.isOptionEqualToValue}
+			findByInput={P53ReportTypes.findByInput}
 			notFoundText="報表型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup

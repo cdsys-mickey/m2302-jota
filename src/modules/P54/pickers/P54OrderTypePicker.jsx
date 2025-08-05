@@ -6,7 +6,7 @@ import P54OrderTypes from "./P54OrderTypes.mjs";
 
 
 const P54OrderTypePicker = forwardRef((props, ref) => {
-	const { name, label = "排序方式", ...rest } = props;
+	const { name, label = "明細型態", ...rest } = props;
 
 	return (
 		<OptionPicker
@@ -17,7 +17,7 @@ const P54OrderTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={P54OrderTypes.getOptionLabel}
 			isOptionEqualToValue={P54OrderTypes.isOptionEqualToValue}
 			findByInput={P54OrderTypes.findByInput}
-			notFoundText="排序方式 ${input} 不存在"
+			notFoundText="明細型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

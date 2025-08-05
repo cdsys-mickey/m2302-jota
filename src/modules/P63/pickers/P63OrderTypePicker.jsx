@@ -2,22 +2,22 @@ import Constants from "@/modules/md-constants";
 import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import P63OrderType from "./P63OrderType.mjs";
+import P63OrderTypes from "./P63OrderTypes.mjs";
 
 
 const P63OrderTypePicker = forwardRef((props, ref) => {
-	const { name, label = "排序方式", ...rest } = props;
+	const { name, label = "明細型態", ...rest } = props;
 
 	return (
 		<OptionPicker
 			name={name}
 			ref={ref}
 			label={label}
-			options={P63OrderType.options}
-			getOptionLabel={P63OrderType.getOptionLabel}
-			isOptionEqualToValue={P63OrderType.isOptionEqualToValue}
-			findByInput={P63OrderType.findByInput}
-			notFoundText="排序方式 ${input} 不存在"
+			options={P63OrderTypes.options}
+			getOptionLabel={P63OrderTypes.getOptionLabel}
+			isOptionEqualToValue={P63OrderTypes.isOptionEqualToValue}
+			findByInput={P63OrderTypes.findByInput}
+			notFoundText="明細型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

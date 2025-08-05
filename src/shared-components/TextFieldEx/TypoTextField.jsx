@@ -4,6 +4,7 @@ import { forwardRef, memo, useMemo } from "react";
 import { FormFieldLabel } from "@/shared-components";
 import PropTypes from "prop-types";
 import { useWatch } from "react-hook-form";
+import Types from "@/shared-modules/Types.mjs";
 
 const TypoTextField = memo(
 	forwardRef((props, ref) => {
@@ -25,6 +26,7 @@ const TypoTextField = memo(
 			size = "small",
 			variant = "outlined",
 			inline = false,
+			endAdornment,
 			...rest
 		} = props;
 
@@ -32,13 +34,20 @@ const TypoTextField = memo(
 			name,
 		});
 
+		const endAdornmentText = useMemo(() => {
+			if (!Types.isLiteral(endAdornment)) {
+				return "";
+			}
+			return endAdornment;
+		}, [endAdornment])
+
 		const memoisedText = useMemo(() => {
 			return value && type === "password"
 				? maskedText
 				: renderLabel
-					? renderLabel(value)
-					: value;
-		}, [maskedText, renderLabel, type, value]);
+					? (renderLabel(value) ?? "") + endAdornmentText
+					: (value?.toString() ?? "") + endAdornmentText;
+		}, [endAdornmentText, maskedText, renderLabel, type, value]);
 
 		if (!editing) {
 			return (
@@ -49,6 +58,7 @@ const TypoTextField = memo(
 					emptyText={emptyText}
 					inline={inline}
 					// loading={loading}
+					endAdornment={endAdornment}
 					{...slotProps?.label}
 					{...typoProps}
 				>
@@ -66,6 +76,7 @@ const TypoTextField = memo(
 				size={size}
 				inline={inline}
 				slotProps={slotProps}
+				endAdornment={endAdornment}
 				{...rest}
 			/>
 		);
@@ -90,6 +101,7 @@ TypoTextField.propTypes = {
 	InputLabelProps: PropTypes.object,
 	slotProps: PropTypes.object,
 	renderLabel: PropTypes.func,
+	endAdornment: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
 
 };
 export default TypoTextField;

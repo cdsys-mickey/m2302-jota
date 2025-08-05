@@ -20,6 +20,7 @@ const InvTakingListingPicker = memo((props) => {
 	const querystring = useMemo(() => {
 		return queryString.stringify({
 			opts: 1,
+			np: 1
 		});
 	}, []);
 
@@ -44,6 +45,7 @@ const InvTakingListingPicker = memo((props) => {
 			querystring={querystring}
 			notFoundText="盤點清單 ${input} 不存在"
 			blurToLookup
+			virtualize
 			{...rest}
 		/>
 	);

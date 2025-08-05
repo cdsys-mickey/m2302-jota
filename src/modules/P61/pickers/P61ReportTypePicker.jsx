@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 import P61ReportType from "./P61ReportTypes.mjs";
 
 const P61ReportTypePicker = forwardRef((props, ref) => {
-	const { name, label = "資料型態", ...rest } = props;
+	const { name, label = "報表型態", ...rest } = props;
 
 	return (
 		<OptionPicker
@@ -16,7 +16,7 @@ const P61ReportTypePicker = forwardRef((props, ref) => {
 			getOptionLabel={P61ReportType.getOptionLabel}
 			isOptionEqualToValue={P61ReportType.isOptionEqualToValue}
 			findByInput={P61ReportType.findByInput}
-			notFoundText="資料型態 ${input} 不存在"
+			notFoundText="報表型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}

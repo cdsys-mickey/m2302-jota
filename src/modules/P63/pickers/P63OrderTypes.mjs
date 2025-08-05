@@ -1,6 +1,7 @@
 const options = [
-	{ id: 1, label: "數量" },
-	{ id: 2, label: "編號" },
+	{ id: 1, label: "全部" },
+	{ id: 2, label: "有達標準" },
+	{ id: 3, label: "未達標準" },
 ];
 
 const getOptionLabel = (option) => {
@@ -17,21 +18,21 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
+const findByInput = (s) => {
+	return options.find((o) => o.id == s);
 };
 
 const getDefaultOption = () => {
 	return getOptionById(1);
 };
 
-const P10OrderType = {
+const P63OrderTypes = {
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	getDefaultOption,
 };
 
-export default P10OrderType;
+export default P63OrderTypes;

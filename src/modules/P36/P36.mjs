@@ -3,17 +3,20 @@ import Objects from "@/shared-modules/Objects.mjs";
 
 /* eslint-disable no-mixed-spaces-and-tabs */
 const transformForReading = (payload) => {
-	const { BDay, ...rest } = payload;
+	const { BDay, Assign, ...rest } = payload;
 	return {
 		BDay: Forms.parseDate(BDay),
+		Assign: Assign === "Y",
 		...rest,
 	};
 };
 
 const transformForEditorSubmit = (payload) => {
-	const { BDay, ...rest } = payload;
+	const { BDay, Assign, Bouns, ...rest } = payload;
 	return {
-		BDay: Forms.formatDate(BDay),
+		BDay: Forms.formatDate(BDay) ?? "",
+		Assign: Assign ? "Y" : "N",
+		Bouns: Bouns?.toString() ?? "",
 		...rest,
 	};
 };

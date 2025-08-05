@@ -17,8 +17,8 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id === id);
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
+const findByInput = (s) => {
+	return options.find((o) => o.id == s);
 };
 
 const getDefaultOption = () => {
@@ -30,7 +30,7 @@ const H14_3OrderType = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	getDefaultOption,
 };
 

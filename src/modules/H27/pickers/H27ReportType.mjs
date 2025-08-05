@@ -17,8 +17,8 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.id === value?.id;
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
+const findByInput = (s) => {
+	return options.find((o) => o.id == s);
 };
 
 const getDefaultOption = () => {
@@ -30,11 +30,8 @@ const H27ReportType = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	getDefaultOption,
 };
 
 export default H27ReportType;
-
-
-

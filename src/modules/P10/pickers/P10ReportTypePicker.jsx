@@ -2,7 +2,7 @@ import Constants from "@/modules/md-constants";
 import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import P10ReportType from "./P10ReportType.mjs";
+import P10ReportTypes from "./P10ReportTypes.mjs";
 
 const P10ReportTypePicker = forwardRef((props, ref) => {
 	const { name, label = "報表型態", ...rest } = props;
@@ -12,10 +12,10 @@ const P10ReportTypePicker = forwardRef((props, ref) => {
 			name={name}
 			ref={ref}
 			label={label}
-			options={P10ReportType.options}
-			getOptionLabel={P10ReportType.getOptionLabel}
-			isOptionEqualToValue={P10ReportType.isOptionEqualToValue}
-			findByInput={P10ReportType.findByInput}
+			options={P10ReportTypes.options}
+			getOptionLabel={P10ReportTypes.getOptionLabel}
+			isOptionEqualToValue={P10ReportTypes.isOptionEqualToValue}
+			findByInput={P10ReportTypes.findByInput}
 			notFoundText="報表型態 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup

@@ -9,7 +9,7 @@ const DSGLoading = memo((props) => {
 		variant = "rectangular",
 		animation = "pulse",
 		headerHeight = 34,
-		rowHeight = 34,
+		// rowHeight = 34,
 		rows
 	} = props;
 	return (
@@ -43,7 +43,9 @@ const DSGLoading = memo((props) => {
 
 DSGLoading.propTypes = {
 	hideTitle: PropTypes.bool,
+	headerHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	height: PropTypes.number,
+	rows: PropTypes.number,
 	variant: PropTypes.string,
 	animation: PropTypes.string,
 };

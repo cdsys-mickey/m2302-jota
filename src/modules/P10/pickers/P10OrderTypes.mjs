@@ -1,12 +1,7 @@
 const options = [
-	{ id: 1, label: "彙總" },
-	{ id: 2, label: "未到訪" },
-	{ id: 3, label: "已到訪" },
+	{ id: 1, label: "數量" },
+	{ id: 2, label: "編號" },
 ];
-
-const getOptionById = (id) => {
-	return options.find((o) => o.id == id);
-};
 
 const getOptionLabel = (option) => {
 	if (!option) return "";
@@ -18,21 +13,25 @@ const isOptionEqualToValue = (option, value) => {
 	return option?.id === value?.id;
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() === s?.toLowerCase());
+const getOptionById = (id) => {
+	return options.find((o) => o.id == id);
+};
+
+const findByInput = (s) => {
+	return options.find((o) => o.id == s);
 };
 
 const getDefaultOption = () => {
 	return getOptionById(1);
 };
 
-const P51ReportType = {
+const P10OrderType = {
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	getDefaultOption,
 };
 
-export default P51ReportType;
+export default P10OrderType;

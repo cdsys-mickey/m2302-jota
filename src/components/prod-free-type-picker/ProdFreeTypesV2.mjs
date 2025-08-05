@@ -14,7 +14,7 @@ const getOptionById = (id) => {
 	return options.find((o) => o.id == id);
 };
 
-const findOptionByInput = (s) => {
+const findByInput = (s) => {
 	return options.find((o) => o.id == s);
 };
 
@@ -26,7 +26,7 @@ const ProdFreeTypesV2 = {
 	options,
 	getOptionLabel,
 	getOptionById,
-	findOptionByInput,
+	findByInput,
 	isOptionEqualToValue,
 };
 

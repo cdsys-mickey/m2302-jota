@@ -2,21 +2,21 @@ import Constants from "@/modules/md-constants";
 import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import P62ReportType from "./P62ReportTypes.mjs";
+import P62ReportTypes from "./P62ReportTypes.mjs";
 
 const P62ReportTypePicker = forwardRef((props, ref) => {
-	const { name, label = "資料型態", ...rest } = props;
+	const { name, label = "報表類型", ...rest } = props;
 
 	return (
 		<OptionPicker
 			name={name}
 			ref={ref}
 			label={label}
-			options={P62ReportType.options}
-			getOptionLabel={P62ReportType.getOptionLabel}
-			isOptionEqualToValue={P62ReportType.isOptionEqualToValue}
-			findByInput={P62ReportType.findByInput}
-			notFoundText="資料型態 ${input} 不存在"
+			options={P62ReportTypes.options}
+			getOptionLabel={P62ReportTypes.getOptionLabel}
+			isOptionEqualToValue={P62ReportTypes.isOptionEqualToValue}
+			findByInput={P62ReportTypes.findByInput}
+			notFoundText="報表類型 ${input} 不存在"
 			{...Constants.STATIC_PICKER_OPTS}
 			// blurToLookup
 			{...rest}
