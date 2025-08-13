@@ -5,7 +5,7 @@ const FormSectionBox = (props) => {
 	const { p = 1, mb = 1, sx = [], bgcolor = "rgba(255, 255, 255, 100.0)",
 		borderColor = "rgb(16 160 215)", ...rest } = props;
 	return (
-		<Box p={p} mb={mb} sx={[
+		<Box p={p} pt={1.5} mb={mb} sx={[
 			(theme) => ({
 				backgroundColor: bgcolor,
 				borderRadius: theme.spacing(1),

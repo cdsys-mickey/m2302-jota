@@ -56,6 +56,28 @@ const STYLES = Object.freeze({
 		"-2px 0px 1px -1px rgba(0,0,0,0.2), 2px 0px 1px -1px rgba(0,0,0,0.2), -1px 0px 1px 0px rgba(0,0,0,0.14) , 1px 0px 1px 0px rgba(0,0,0,0.14), -1px 0px 3px 0px rgba(0,0,0,0.12), 1px 0px 3px 0px rgba(0,0,0,0.12)",
 	IN_BOX_SHADOW:
 		"inset 0px 2px 1px -1px rgba(0,0,0,0.2), inset 0px 1px 1px 0px rgba(0,0,0,0.14), inset 0px 1px 3px 0px rgba(0,0,0,0.12)",
+	DISABLED_INPUT_BG: {
+		background: "rgba(0, 0, 0, 0.003)",
+	},
+	TRANSPARENT_INPUT_BG: {
+		background: "transparent",
+	},
+	GRADIENT_INPUT_BG: {
+		background:
+			"linear-gradient(to right, #f3e7f127 0%, #ecbedd25 60%, #e6f0f8ff 90%, #e6f0f8ff 100%)", // 平滑漸層，藍色佔右邊20%
+	},
+	GRADIENT_INPUT_BG_HOVER: {
+		"&:hover": {
+			background:
+				"linear-gradient(to right, #f3e7f127 0%, #ecbedd7c 60%, #d9e6f2ff 80%, #d9e6f2ff 100%)", // 懸停時稍亮
+		},
+	},
+	GRADIENT_INPUT_BG_FOCUSED: {
+		"&.Mui-focused": {
+			background:
+				"linear-gradient(to right, #f3e7f127 0%, #ecbeddad 60%, #c9e0f0ff 80%, #c9e0f0ff 100%)", // 聚焦時更亮
+		},
+	},
 });
 
 const forColorButton = (theme, mainTone = amber) => ({

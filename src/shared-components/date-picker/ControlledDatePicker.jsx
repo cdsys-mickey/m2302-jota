@@ -188,6 +188,14 @@ const ControlledDatePicker = ({
 											paddingTop: 0,
 											paddingLeft: "8px",
 											paddingRight: 0,
+										},
+										"& .MuiInputBase-root.MuiFilledInput-root": {
+											// paddingTop: 0,
+											// paddingLeft: "4px",
+											// paddingRight: 0,
+											...MuiStyles.GRADIENT_INPUT_BG,
+											...MuiStyles.GRADIENT_INPUT_BG_HOVER,
+											...MuiStyles.GRADIENT_INPUT_BG_FOCUSED,
 										}
 									})
 								},
@@ -209,11 +217,17 @@ const ControlledDatePicker = ({
 									},
 								}),
 
+
 							},
 							field: {
 								clearable,
 								placeholder
 							}
+						}}
+						sx={{
+							...(borderless && {
+
+							})
 						}}
 						value={value}
 						onChange={

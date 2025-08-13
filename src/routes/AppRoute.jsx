@@ -37,10 +37,12 @@ import hRoutes2 from "./hRoutes2";
 import pRoutes2 from "./pRoutes2";
 import ForbiddenPageContainer from "@/pages/ForbiddenPageContainer";
 import gRoutes from "./gRoutes";
+import sysRoutes from "./sysRoutes";
 
 const AppRoute = () => {
 	return (
 		<Routes>
+
 			{/* LANDING REDIRECTION */}
 			<Route
 				index
@@ -97,19 +99,8 @@ const AppRoute = () => {
 					{pRoutes}
 					{pRoutes2}
 					{uRoutes}
-					{/* ZA */}
-					<Route
-						path="ZA03"
-						element={
-							<CrudProvider>
-								<InfiniteLoaderProvider>
-									<ZA03Provider>
-										<ZA03FrameContainer />
-									</ZA03Provider>
-								</InfiniteLoaderProvider>
-							</CrudProvider>
-						}
-					/>
+					{sysRoutes}
+
 					{/* MODULE NOT FOUND */}
 					<Route
 						path="*"

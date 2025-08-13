@@ -12,12 +12,14 @@ import {
 	MenuList,
 	Paper,
 	Popper,
+	Tooltip,
 	Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useCallback, useMemo, useRef, useState } from "react";
 import LoadingTypography from "./LoadingTypography";
 import { Box } from "@mui/system";
+import TooltipWrapper from "./TooltipWrapper/TooltipWrapper";
 
 
 const DropDownButton = memo(forwardRef((props, ref) => {
@@ -51,6 +53,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 		IconComponent = ArrowDropDownIcon,
 		color,
 		leftButtons,
+		title,
 		...rest
 	} = props;
 
@@ -200,33 +203,35 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 				color={color}
 				{...rest}>
 				{leftButtons}
-				<Button
-					size={size}
-					onClick={handleClick}
-					startIcon={StartIconComponent ? <StartIconComponent fontSize="small" /> : null}
-					className="main"
-					{...(IconComponent && !split && ({
-						endIcon: <IconComponent fontSize="small" />
-					}))}
-					sx={[
-						{
-							...(noGutter && {
-								"&.MuiButtonGroup-grouped:not(:last-of-type)": {
-									borderRight: 0,
-								},
-							}),
-						},
-					]}
-					{...slotProps?.button}>
-					{slotProps?.typography
-						? (
-							<Typography variant={slotProps?.typography?.variant} sx={{
-								whiteSpace: "nowrap"
-							}}>
-								{_label}
-							</Typography>)
-						: _label}
-				</Button>
+				<TooltipWrapper title={title}>
+					<Button
+						size={size}
+						onClick={handleClick}
+						startIcon={StartIconComponent ? <StartIconComponent fontSize="small" /> : null}
+						className="main"
+						{...(IconComponent && !split && ({
+							endIcon: <IconComponent fontSize="small" />
+						}))}
+						sx={[
+							{
+								...(noGutter && {
+									"&.MuiButtonGroup-grouped:not(:last-of-type)": {
+										borderRight: 0,
+									},
+								}),
+							},
+						]}
+						{...slotProps?.button}>
+						{slotProps?.typography
+							? (
+								<Typography variant={slotProps?.typography?.variant} sx={{
+									whiteSpace: "nowrap"
+								}}>
+									{_label}
+								</Typography>)
+							: _label}
+					</Button>
+				</TooltipWrapper>
 				{showSplit && (
 					<Button
 						size={size}
@@ -353,5 +358,6 @@ DropDownButton.propTypes = {
 	IconComponent: PropTypes.elementType,
 	color: PropTypes.string,
 	leftButtons: PropTypes.node,
+	title: PropTypes.string
 }
 export default DropDownButton;

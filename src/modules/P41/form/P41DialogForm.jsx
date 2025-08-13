@@ -321,7 +321,7 @@ const P41DialogForm = memo((props) => {
 								name="Remark"
 								label="備註"
 								fullWidth
-								multiline
+							// multiline
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12} md={3}>

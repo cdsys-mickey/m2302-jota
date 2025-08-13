@@ -33,8 +33,8 @@ export default function useP37() {
 			}
 			if (!refresh) {
 				itemIdRef.current = id;
-				crud.startLoading("讀取中...", { id });
 			}
+			crud.startLoading("讀取中...", { id });  // 一定要有狀態改變, 否則不會觸發 onItemDataReady
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/cms/nc-tour-groups`,
@@ -117,9 +117,15 @@ export default function useP37() {
 		console.log("newValue", newValue);
 	}, []);
 
+	const cancelEditing = useCallback(() => {
+		crud.cancelEditing();
+		loadItem({ refresh: true });
+	}, [crud, loadItem]);
+
 	return {
 		...appModule,
 		...crud,
+		cancelEditing,
 		loadItem,
 		onSubmit,
 		onSubmitError,

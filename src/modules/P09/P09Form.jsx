@@ -24,7 +24,7 @@ const P09Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, forNewCustomer, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
-			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
+			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "0rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>

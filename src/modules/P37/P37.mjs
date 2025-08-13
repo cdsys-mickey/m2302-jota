@@ -26,14 +26,14 @@ const BusCmsTypes = Object.freeze({
 
 const transformForReading = (payload, selectedTab) => {
 	const result = {
-		GrpType: payload.GrpType,
+		GrpType: payload?.GrpType || "",
 		SUpCP: [],
 		SDrvCms: [],
 		STrvCms: [],
 		SDnCp: [],
 	};
 
-	payload.ComNCont_S.forEach((item) => {
+	payload?.ComNCont_S.forEach((item) => {
 		// 處理 SUpCp
 		result.SUpCP.push(item.SUpCp || "");
 
@@ -45,11 +45,22 @@ const transformForReading = (payload, selectedTab) => {
 		result.SDnCp.push(item.SDnCp || "");
 	});
 
+	// 補滿四列
+	const remaining = 4 - result.SUpCP?.length;
+	if (remaining > 0) {
+		for (let i = 0; i < remaining; i++) {
+			result.SUpCP.push("");
+			result.SDrvCms.push("");
+			result.STrvCms.push("");
+			result.SDnCp.push("");
+		}
+	}
+
 	if (selectedTab !== CmsGroupTypes.Types.CHINA) {
 		return result;
 	}
 
-	const rowData = payload.ComNCont_S?.[0];
+	const rowData = payload?.ComNCont_S?.[0];
 	const { SDrvCms } = rowData;
 	let valueA = "";
 	let valueB = "";
@@ -71,8 +82,8 @@ const transformForReading = (payload, selectedTab) => {
 };
 
 const transformForChinaReading = (payload) => {
-	const rowData = payload.ComNCont_S?.[0];
-	const { SDrvCms, STrvCms } = rowData;
+	const rowData = payload?.ComNCont_S?.[0];
+	const { SDrvCms, STrvCms } = rowData || {};
 	let valueA = "";
 	let valueB = "";
 	let busCmsType = null;
@@ -98,7 +109,7 @@ const transformForEditorSubmit = (payload, selecedtTab) => {
 	};
 
 	if (selecedtTab == CmsGroupTypes.Types.CHINA) {
-		const { busCmsType, ADrvCms, BDrvCms, ATrvCms, ...rest } = payload;
+		const { busCmsType, ADrvCms, BDrvCms, ATrvCms } = payload;
 		output.ComNCont_S.push({
 			Seq: 1,
 			SDrvCms:
@@ -106,35 +117,34 @@ const transformForEditorSubmit = (payload, selecedtTab) => {
 					? ADrvCms
 					: `${BDrvCms ?? "0"}%`,
 			STrvCms: ATrvCms,
-			...rest,
 		});
 	} else {
 		const maxLength = Math.max(
-			payload.SUpCP.length,
-			payload.SDrvCms.length,
-			payload.STrvCms.length,
-			payload.SDnCp.length
+			payload.SUpCP?.length || 1,
+			payload.SDrvCms?.length || 1,
+			payload.STrvCms?.length || 1,
+			payload.SDnCp?.length || 1
 		);
 
 		for (let i = 0; i < maxLength; i++) {
 			const item = {
 				Seq: i + 1,
-				SDnCp: payload.SDnCp[i]
-					? Number(payload.SDnCp[i]).toFixed(2)
+				SDnCp: payload.SDnCp?.[i]
+					? Number(payload.SDnCp?.[i]).toFixed(2)
 					: "",
-				SUpCp: payload.SUpCP[i] || "",
+				SUpCp: payload.SUpCP?.[i] || "",
 				SDrvCms:
 					i === 0 || i === 2
-						? payload.SDrvCms[i]
-							? `${payload.SDrvCms[i]}%`
+						? payload.SDrvCms?.[i]
+							? `${payload.SDrvCms?.[i]}%`
 							: ""
-						: payload.SDrvCms[i] ?? "",
+						: payload.SDrvCms?.[i] ?? "",
 				STrvCms:
 					i === 0 || i === 2
-						? payload.STrvCms[i]
-							? `${payload.STrvCms[i]}%`
+						? payload.STrvCms?.[i]
+							? `${payload.STrvCms?.[i]}%`
 							: ""
-						: payload.STrvCms[i] ?? "",
+						: payload.STrvCms?.[i] ?? "",
 			};
 			output.ComNCont_S.push(item);
 		}

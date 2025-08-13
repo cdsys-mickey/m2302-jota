@@ -54,7 +54,7 @@ export const P14ListViewContainer = () => {
 
 	const _height = useMemo(() => {
 		// return height ? height - 162 : 300
-		return height ? height - 100 : 300
+		return height ? height - 150 : 300
 	}, [height])
 
 	return (

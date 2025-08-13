@@ -24,11 +24,12 @@ const P37DomesticTabViewComponent = (props) => {
 						size="small"
 						// dense
 						disabled={!editing}
+						endAdornment="元"
 					/>
 				</Grid>
 				<Grid item xs={4}>
 					<FlexBox height="36px" alignItems="center">
-						<Typography>元以下</Typography>
+						<Typography>以下</Typography>
 					</FlexBox>
 				</Grid>
 				<Grid item xs={4}>
@@ -72,6 +73,7 @@ const P37DomesticTabViewComponent = (props) => {
 								fullWidth
 								emptyText=""
 								disabled={!editing}
+								endAdornment="元"
 							/>}
 						rightComponent={
 							<TextFieldEx
@@ -82,6 +84,7 @@ const P37DomesticTabViewComponent = (props) => {
 								fullWidth
 								emptyText=""
 								disabled={!editing}
+								endAdornment="元"
 							/>}
 					/>
 				</Grid>
@@ -96,9 +99,7 @@ const P37DomesticTabViewComponent = (props) => {
 						name="SDrvCms[1]"
 						// label="巴士佣金"
 						size="small"
-						InputProps={{
-							endAdornment: <InputAdornment position="end">元</InputAdornment>,
-						}}
+						endAdornment="元"
 						disabled={!editing}
 					/>
 				</Grid>
@@ -122,11 +123,12 @@ const P37DomesticTabViewComponent = (props) => {
 						// label="消費額下限"
 						size="small"
 						disabled={!editing}
+						endAdornment="元"
 					/>
 				</Grid>
 				<Grid item xs={4}>
 					<FlexBox height="36px" alignItems="center">
-						<Typography>元以上</Typography>
+						<Typography>以上</Typography>
 					</FlexBox>
 				</Grid>
 

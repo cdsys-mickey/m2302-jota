@@ -62,6 +62,8 @@ import { Route } from "react-router-dom";
 import { A16FrameContainer } from "@/modules/A16/A16FrameContainer";
 import { A05Provider } from "@/modules/A05/A05Provider";
 import { A08FrameContainer } from "@/pages/jobs/A08/A08FrameContainer";
+import { A28Provider } from "@/modules/A28/A28Provider";
+import { A28FrameContainer } from "@/modules/A28/A28FrameContainer";
 
 const aRoutes = (
 	<>
@@ -418,6 +420,16 @@ const aRoutes = (
 							<P16FrameContainer />
 						</P16Provider>
 					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="A28"
+			element={
+				<CrudProvider>
+					<A28Provider>
+						<A28FrameContainer />
+					</A28Provider>
 				</CrudProvider>
 			}
 		/>

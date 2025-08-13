@@ -34,6 +34,7 @@ const PrintReportButtonView = (props) => {
 			{...(onDebugSubmit && {
 				leftButtons: <DebugReportButton onClick={onDebugSubmit} />
 			})}
+			title="直接檢視 (Ctrl-Enter)"
 			{...rest}
 		/>
 	);

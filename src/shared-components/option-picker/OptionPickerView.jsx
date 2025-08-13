@@ -608,6 +608,9 @@ const OptionPickerView = memo(
 									paddingTop: 0,
 									paddingLeft: "4px",
 									paddingRight: 0,
+									...MuiStyles.GRADIENT_INPUT_BG,
+									...MuiStyles.GRADIENT_INPUT_BG_HOVER,
+									...MuiStyles.GRADIENT_INPUT_BG_FOCUSED,
 								}
 							})
 						}]}
@@ -637,6 +640,7 @@ const OptionPickerView = memo(
 						{...TextFieldProps}
 						{...slotProps?.textField}
 						{...(borderless && {
+							// variant: "standard",
 							variant: "filled",
 						})}
 						InputLabelProps={{

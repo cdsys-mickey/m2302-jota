@@ -30,9 +30,10 @@ export default function FieldGroup({ children, legend, required, disabled }) {
 				...(required && {
 					borderColor: Colors.REQUIRED,
 				}),
-				// ...(disabled && {
-				// 	backgroundColor: 'rgba(0, 0, 0, 0.23)'
-				// })
+				backgroundColor: "rgb(255,255,255)",
+				...(disabled && {
+					backgroundColor: 'rgba(0, 0, 0, 0.05)'
+				})
 			})}
 		>
 			{legend && (

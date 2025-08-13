@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import FlexBox from "../FlexBox";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 const IconProps = {
 	fontSize: "small",
@@ -16,11 +17,19 @@ const IconProps = {
 }
 
 const TextFieldExView = (props) => {
-	const { label, passwordToggle = false, type, inline, disabled, required, dense, error, borderless, disabledBackgroundColor = "rgba(0,0,0,0.05)", hideSpinButtons, sx = [], endAdornment, ...rest } = props;
+	const { label, passwordToggle = false, passwordPressed = false, type, inline, disabled, required, dense, error, borderless, disabledBackgroundColor = "rgba(0,0,0,0.05)", hideSpinButtons, sx = [], endAdornment, ...rest } = props;
 	const [showPassword, setShowPassword] = useState(false);
 
 	const handleClickShowPassword = useCallback(() => {
 		setShowPassword(prev => !prev);
+	}, []);
+
+	const handleShowPassword = useCallback(() => {
+		setShowPassword(true);
+	}, []);
+
+	const handleHidePassword = useCallback(() => {
+		setShowPassword(false);
 	}, []);
 
 	const _type = useMemo(() => {
@@ -30,6 +39,10 @@ const TextFieldExView = (props) => {
 	const _label = useMemo(() => {
 		return (inline || borderless) ? "" : label;
 	}, [borderless, inline, label])
+
+	const withInputProps = useMemo(() => {
+		return passwordToggle || passwordPressed || borderless || endAdornment;
+	}, [borderless, endAdornment, passwordPressed, passwordToggle])
 
 	return (
 		<FlexBox block={!inline} sx={{ fontWeight: 700 }}>
@@ -47,9 +60,12 @@ const TextFieldExView = (props) => {
 						"&:has(.MuiInputBase-input:focus)": {
 							// backgroundColor: "rgb(253 253 253)",
 						},
-						...(disabled && {
+						...(disabled && !borderless && {
 							backgroundColor: disabledBackgroundColor,
 						}),
+						"& .clearable": {
+							visibility: "hidden",
+						},
 						"&:hover .clearable": {
 							visibility: "visible",
 						},
@@ -76,9 +92,14 @@ const TextFieldExView = (props) => {
 						}),
 						...(borderless && {
 							"& input": {
-								paddingTop: 0,
+								padding: 0,
 								paddingLeft: "4px",
-								paddingRight: 0,
+							},
+							"& .MuiFilledInput-root": {
+								...MuiStyles.GRADIENT_INPUT_BG,
+								...(!disabled && MuiStyles.GRADIENT_INPUT_BG_HOVER),
+								...(!disabled && MuiStyles.GRADIENT_INPUT_BG_FOCUSED),
+								...(disabled && MuiStyles.TRANSPARENT_INPUT_BG)
 							}
 						}),
 						...(hideSpinButtons && {
@@ -97,27 +118,56 @@ const TextFieldExView = (props) => {
 					...(Array.isArray(sx) ? sx : [sx]),
 				]}
 				{...rest}
-				{... (passwordToggle && {
+				{...withInputProps && {
 					InputProps: {
-						endAdornment: (
-							<InputAdornment position="end">
-								<IconButton onClick={handleClickShowPassword} edge="end">
-									{showPassword ? <VisibilityOff {...IconProps} /> : <Visibility {...IconProps} />}
-								</IconButton>
-							</InputAdornment>
-						),
+						...(passwordToggle && {
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton onClick={handleClickShowPassword} edge="end">
+										{showPassword ? <VisibilityOff {...IconProps} /> : <Visibility {...IconProps} />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}),
+						...(passwordPressed && {
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton onMouseDown={handleShowPassword} onMouseUp={handleHidePassword} edge="end" size="small">
+										<Visibility {...IconProps} />
+									</IconButton>
+								</InputAdornment>
+							),
+						}),
+						...(typeof endAdornment === "string" && {
+							endAdornment: <InputAdornment position="end">{endAdornment}</InputAdornment>,
+						}),
+						...(borderless && {
+							disableUnderline: true
+						})
 					}
-				})}
-				{...(typeof endAdornment === "string" && {
-					InputProps: {
-						endAdornment: <InputAdornment position="end">{endAdornment}</InputAdornment>,
-					}
-				})}
+				}}
+				// {... (passwordToggle && {
+				// 	InputProps: {
+				// 		endAdornment: (
+				// 			<InputAdornment position="end">
+				// 				<IconButton onClick={handleClickShowPassword} edge="end">
+				// 					{showPassword ? <VisibilityOff {...IconProps} /> : <Visibility {...IconProps} />}
+				// 				</IconButton>
+				// 			</InputAdornment>
+				// 		),
+				// 	}
+				// })}
+
+				// {...(typeof endAdornment === "string" && {
+				// 	InputProps: {
+				// 		endAdornment: <InputAdornment position="end">{endAdornment}</InputAdornment>,
+				// 	}
+				// })}
 
 				{
 				...(borderless && {
 					variant: "filled",
-					InputProps: { disableUnderline: true }
+					// InputProps: { disableUnderline: true }
 				})
 				}
 			/>
@@ -128,6 +178,7 @@ const TextFieldExView = (props) => {
 TextFieldExView.propTypes = {
 	label: PropTypes.string,
 	passwordToggle: PropTypes.bool,
+	passwordPressed: PropTypes.bool,
 	type: PropTypes.string,
 	dense: PropTypes.bool,
 	borderless: PropTypes.bool,

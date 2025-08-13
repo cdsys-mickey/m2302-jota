@@ -81,6 +81,8 @@ const transformForReading = (payload) => {
 		CalcType,
 		HotelID,
 		HotelData_N,
+		// Remark,
+		// SnRemark,
 		...rest
 	} = payload;
 	return {
@@ -157,6 +159,8 @@ const transformForReading = (payload) => {
 		CarPay: CarPay ? CarPay === "Y" : null,
 		DrvPay: DrvPay ? DrvPay === "Y" : null,
 		CalcType: CmsCalcTypes.getOptionById(CalcType) ?? null,
+		// Remark: Remark.join("\n"),
+		// SnRemark: SnRemark.join("\n"),
 		...rest,
 	};
 };
@@ -183,6 +187,8 @@ const transformForImport = (payload) => {
 		EmplData_N,
 		CndID,
 		CndName,
+		// Remark,
+		// SnRemark,
 		...rest
 	} = payload;
 	return {
@@ -238,6 +244,8 @@ const transformForImport = (payload) => {
 					CodeData: EmplData_N,
 			  }
 			: null,
+		// Remark: Remark.join("\n"),
+		// SnRemark: SnRemark.join("\n"),
 		...rest,
 	};
 };
@@ -309,6 +317,8 @@ const transformForEditorSubmit = (payload, rangeGridData, cmsGridData) => {
 		commissions,
 		CalcType,
 		CarQty,
+		// Remark,
+		// SnRemark,
 		...rest
 	} = payload;
 
@@ -335,6 +345,8 @@ const transformForEditorSubmit = (payload, rangeGridData, cmsGridData) => {
 		ComFile_S: transformCmsGridForSubmitting(cmsGridData),
 		CalcType: CalcType?.id || "",
 		CarQty: CarQty || "1",
+		// Remark: Remark.split("\n"),
+		// SnRemark: SnRemark.split("\n"),
 		...rest,
 	};
 };

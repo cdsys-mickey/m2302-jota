@@ -14,7 +14,7 @@ import HotelPicker from "@/components/HotelPicker/HotelPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
-import { CheckboxEx, DatePickerEx, FormFieldLabel } from "@/shared-components";
+import { CheckboxEx, DatePickerEx, FormFieldLabel, TextFieldEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -187,7 +187,7 @@ const P42DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12} md={3.5}>
-							<TextFieldWrapper
+							<TextFieldEx
 								typo
 								name="CarQty"
 								label="車數"
@@ -351,7 +351,7 @@ const P42DialogForm = memo((props) => {
 								name="Remark"
 								label="備註"
 								fullWidth
-								multiline
+							// multiline
 							/>
 						</Grid>
 						{/* <FlexBox fullWidth /> */}
@@ -361,7 +361,7 @@ const P42DialogForm = memo((props) => {
 								name="SnRemark"
 								label="旅行社簽約備註"
 								fullWidth
-								multiline
+							// multiline
 							/>
 						</Grid>
 					</Grid>

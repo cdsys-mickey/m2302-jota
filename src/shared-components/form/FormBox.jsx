@@ -16,7 +16,7 @@ const FormBox = styled(Box, {
 		left: "-2px",
 	},
 	"& .MuiFormControl-root:has(.MuiInputBase-root.Mui-disabled, .MuiInputBase-root.Mui-readOnly):not(.dsg-container *)": {
-		backgroundColor: "rgba(0, 0, 0, 0.05)"
+		// backgroundColor: "rgba(0, 0, 0, 0.05)"
 	},
 	"& .field-group-legend": {
 		fontSize: "0.875rem",
@@ -25,8 +25,11 @@ const FormBox = styled(Box, {
 	},
 	// 排除 variant="filled"
 	"& fieldset.field-group": {
-		backgroundColor: "rgb(255,255,255)",
+		// backgroundColor: "rgb(255,255,255)",
 		// backgroundColor: "initial",
+	},
+	"& .field-group .MuiInputBase-root.MuiFilledInput-root.Mui-disabled": {
+		backgroundColor: "transparent"
 	},
 	"& .MuiInputBase-root:not(.MuiFilledInput-root):not(.dsg-container *):not(.Mui-readOnly):not(.Mui-disabled)": {
 		backgroundColor: "rgb(255,255,255)",
