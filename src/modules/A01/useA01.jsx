@@ -10,7 +10,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";

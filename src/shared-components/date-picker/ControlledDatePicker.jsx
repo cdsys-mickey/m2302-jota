@@ -44,11 +44,13 @@ const ControlledDatePicker = ({
 	clearText = "清除",
 	fullWidth,
 	slotProps,
+	minDate,
 	// variant = "outlined",
 	...rest
 }) => {
 	const { isFieldDisabled, handleFocusNextField, disableEnter } = useContext(FormMetaContext) || {};
 	const form = useFormContext();
+	const { clearErrors } = form;
 	const { InputProps, ...opts } = DEFAULT_PROPS;
 
 	const [innerValue, setInnerValue] = useState();
@@ -118,11 +120,12 @@ const ControlledDatePicker = ({
 				...rules?.validate,
 				validateDate: Forms.getDateValidator({
 					fieldName: label,
-					required
+					required,
+					minDate
 				})
 			}
 		}
-	}, [label, required, rules])
+	}, [label, minDate, required, rules])
 
 	const _label = useMemo(() => {
 		return (borderless || !label) ? "" : `${label}${required ? "*" : ""}`;
@@ -234,6 +237,7 @@ const ControlledDatePicker = ({
 							readOnly
 								? null
 								: (newValue) => {
+									clearErrors();
 									// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
 									if (_onChange) {
 										_onChange(newValue);
@@ -259,6 +263,7 @@ const ControlledDatePicker = ({
 						// }}
 						invalidDateMessage={invalidDateMessage}
 						fullWidth={fullWidth}
+						minDate={minDate}
 						{...rest}
 					/>
 				</BoxComponent>
@@ -266,138 +271,6 @@ const ControlledDatePicker = ({
 		</ControllerWrapper>
 	);
 
-	// 	if (!name) {
-	// 		return <DatePicker {...rest} />;
-	// 	}
-
-	// 	return (
-	// 		<Controller
-	// 			name={name}
-	// 			defaultValue={defaultValue || null}
-	// 			control={control}
-	// 			// rules={rules}
-	// 			rules={_rules}
-	// 			render={({
-	// 				field: { ref, value, onChange },
-	// 				fieldState: { error },
-	// 			}) => {
-	// 				return (
-	// 					<BoxComponent {...(inline && { inline })} sx={{
-	// 						fontWeight: 700,
-	// 					}}>
-	// 						{inline &&
-	// 							label
-	// 						}
-	// 						<DatePicker
-	// 							// autoOk
-	// 							inputRef={ref}
-	// 							label={label ? `${label}${required ? "*" : ""}` : ""}
-	// 							mask={mask}
-	// 							format={format}
-	// 							slotProps={{
-	// 								clearButton: {
-	// 									...(clearText && {
-	// 										title: clearText
-	// 									})
-	// 								},
-	// 								inputAdornment: {
-	// 									sx: {
-	// 										...(dense && {
-	// 											'& .MuiSvgIcon-root': { fontSize: '18px' }
-	// 										})
-	// 									}
-	// 								},
-	// 								textField: {
-	// 									size: "small",
-	// 									onKeyDown: handleKeyDown,
-	// 									InputLabelProps: {
-	// 										...MuiStyles.DEFAULT_INPUT_LABEL_PROPS,
-	// 										...(dense && {
-	// 											shrink: true,
-	// 										})
-	// 									},
-	// 									error: !!error,
-	// 									helperText: error?.message,
-	// 									onBlur: onBlur,
-	// 									sx: {
-	// 										...(required && !error && {
-	// 											"& .MuiInputLabel-root:not(.Mui-focused)": {
-	// 												color: Colors.REQUIRED,
-	// 											},
-	// 											"& .MuiOutlinedInput-root": {
-	// 												'& fieldset': {
-	// 													borderColor: Colors.REQUIRED,
-	// 												},
-	// 											}
-	// 										}),
-	// 										...(borderless && {
-	// 											"& input": {
-	// 												paddingTop: 0,
-	// 												paddingLeft: "4px",
-	// 												paddingRight: 0,
-	// 											}
-	// 										})
-	// 									},
-	// 									fullWidth,
-	// 									...(borderless && {
-	// 										variant: "filled",
-	// 										InputProps: { disableUnderline: true }
-	// 									}),
-	// 									...slotProps?.textField,
-	// 								},
-	// 								sx: {
-	// 									...(dense && {
-	// 										"& .MuiInputBase-input":
-	// 										{
-	// 											paddingTop: "4px",
-	// 											paddingBottom: "4px",
-	// 											// paddingLeft: "2px",
-	// 											// paddingRight: "40px",
-	// 										},
-	// 									}),
-
-	// 								},
-	// 								field: {
-	// 									clearable
-	// 								}
-	// 							}}
-	// 							value={value}
-	// 							onChange={
-	// 								readOnly
-	// 									? null
-	// 									: (newValue) => {
-	// 										// 為了正確反應鍵盤操作, 即使格式錯誤還是照樣 render
-	// 										if (_onChange) {
-	// 											_onChange(newValue);
-	// 										}
-
-	// 										onChange(newValue);
-
-	// 										if (onChanged) {
-	// 											// onChanged(newValue);
-	// 											setInnerValue(newValue);
-	// 										}
-	// 									}
-	// 							}
-	// 							onKeyDown={handleKeyDown}
-	// 							InputProps={{
-	// 								...InputProps,
-	// 								...(readOnly && { readOnly: true }),
-	// 							}}
-	// 							{...opts}
-	// 							disabled={readOnly}
-	// 							// onError={(err) => {
-	// 							// 	console.error(err);
-	// 							// }}
-	// 							invalidDateMessage={invalidDateMessage}
-	// 							fullWidth={fullWidth}
-	// 							{...rest}
-	// 						/>
-	// 					</BoxComponent>
-	// 				)
-	// 			}}
-	// 		/>
-	// 	);
 };
 ControlledDatePicker.propTypes = {
 	label: PropTypes.string,
@@ -426,6 +299,7 @@ ControlledDatePicker.propTypes = {
 	debounce: PropTypes.number,
 	slotProps: PropTypes.object,
 	borderless: PropTypes.bool,
-	placeholder: PropTypes.string
+	placeholder: PropTypes.string,
+	minDate: PropTypes.object
 };
 export default ControlledDatePicker;

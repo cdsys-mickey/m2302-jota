@@ -23,6 +23,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { CheckboxEx } from "@/shared-components";
+import RangeGroup from "@/shared-components/RangeGroup";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -180,8 +181,8 @@ const InputTest = () => {
 				<FormSectionBox p={1} mb={1}>
 					<Grid container spacing={1}>
 						<Grid item xs={8}>
-							<FieldGroup legend="貨品區間">
-								<FlexBox flex={1}>
+							<RangeGroup legend="貨品區間" required
+								leftComponent={
 									<ProdPicker
 										debug={true}
 										name="prodPicker"
@@ -195,17 +196,16 @@ const InputTest = () => {
 										}}
 										// queryRequired
 										virtualize
+										fullWidth
 										// 新增屬性
 										disableOpenOnInput
 										// pressToFind
 										notFoundText="商品代號 ${input} 不存在"
 										borderless
+										clearOnEscape
 									/>
-								</FlexBox>
-								<FlexBox mx={0.2}>
-									<Typography variant="body1">~</Typography>
-								</FlexBox>
-								<FlexBox flex={1}>
+								}
+								rightComponent={
 									<ProdPicker
 										debug={true}
 										name="prodPicker2"
@@ -224,8 +224,8 @@ const InputTest = () => {
 										notFoundText="商品代號 ${input} 不存在"
 										borderless
 									/>
-								</FlexBox>
-							</FieldGroup>
+								}
+							/>
 
 
 						</Grid>

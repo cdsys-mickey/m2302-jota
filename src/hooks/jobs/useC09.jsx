@@ -8,7 +8,7 @@ import { useCallback, useContext, useMemo, useRef } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import CrudContext from "../../contexts/crud/CrudContext";
 import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import { useAction } from "../../shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useWebApi } from "../../shared-hooks/useWebApi";

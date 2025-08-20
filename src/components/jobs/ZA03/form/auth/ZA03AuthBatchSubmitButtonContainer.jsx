@@ -1,7 +1,7 @@
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import UserAuth from "@/modules/md-user-auth";
 import { ButtonEx } from "@/shared-components";
-import ActionState from "@/shared-constants/action-state";
+import ActionState from "@/shared-modules/ActionState/ActionState";
 import { useContext } from "react";
 import PropTypes from "prop-types";
 

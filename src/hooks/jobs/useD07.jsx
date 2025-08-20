@@ -5,7 +5,7 @@ import { toastEx } from "@/helpers/toastEx";
 import D07 from "@/modules/md-d07";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { nanoid } from "nanoid";

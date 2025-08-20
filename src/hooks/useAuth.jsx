@@ -2,13 +2,13 @@ import { toastEx } from "@/helpers/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Messages from "@/modules/md-messages";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { decodeJwt } from "jose";
 import Cookies from "js-cookie";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Auth from "../modules/md-auth";
-import ActionState from "../shared-constants/action-state";
+import ActionState from "../shared-modules/ActionState/ActionState";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 

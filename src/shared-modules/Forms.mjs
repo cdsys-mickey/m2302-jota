@@ -1,5 +1,5 @@
 import { toastEx } from "@/helpers/toastEx";
-import { isValid } from "date-fns";
+import { isBefore, isValid } from "date-fns";
 import DateFormats from "./DateFormats.mjs";
 import Types from "@/shared-modules/Types.mjs";
 import DateTimes from "./DateTimes.mjs";
@@ -212,6 +212,7 @@ const getDateValidator =
 			required = false,
 			fieldName = "日期",
 			requiredMessage,
+			minDate,
 		} = opts;
 		if (!value) {
 			if (required) {
@@ -225,6 +226,10 @@ const getDateValidator =
 			}
 		} else if (!isValid(value)) {
 			return errorMessage;
+		} else if (minDate) {
+			if (isBefore(value, minDate)) {
+				return `必須在 ${Forms.formatDate(minDate)} (含)之後`;
+			}
 		}
 		return true;
 	};

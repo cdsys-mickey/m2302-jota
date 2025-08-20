@@ -6,9 +6,13 @@ import { FormProvider, useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import REB from "./REB.mjs";
 import REBForm from "./REBForm";
+import { useInit } from "@/shared-hooks/useInit";
+import { useEffect } from "react";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const REBFormContainer = () => {
 	const form = useFormContext();
+	const { reset } = form;
 	const reb = useContext(REBContext);
 	const auth = useContext(AuthContext);
 
@@ -28,6 +32,17 @@ export const REBFormContainer = () => {
 	useHotkeys(["Control+Enter"], () => setTimeout(handleDefaultAction), {
 		enableOnFormTags: true
 	})
+
+	useInit(() => {
+		reb.load();
+	}, []);
+
+	useChangeTracking(() => {
+		if (reb.itemDataReady) {
+			console.log("reb form reset", reb.itemData);
+			reset(reb.itemData);
+		}
+	}, [reb.itemData, reb.itemDataReady]);
 
 	return (
 		<FormProvider {...form}>

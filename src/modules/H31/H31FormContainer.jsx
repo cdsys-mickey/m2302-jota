@@ -19,6 +19,7 @@ export const H31FormContainer = () => {
 			EProdID,
 			SFactID,
 			EFactID,
+			orderType,
 			outputType,
 			`
 	)

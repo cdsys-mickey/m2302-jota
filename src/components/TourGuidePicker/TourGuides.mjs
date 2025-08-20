@@ -1,7 +1,14 @@
+const stringify = (option) => {
+	if (!option) return "";
+	const { AbbrID, CndID, CndData } = option;
+	return [AbbrID, CndID, CndData].filter(Boolean).join(" ");
+};
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { CndID, CndData } = option;
-	return [CndID, CndData].filter(Boolean).join(" ");
+	const { AbbrID, CndID, CndData } = option;
+	return [(AbbrID ?? "").padStart(2, " "), CndID, CndData]
+		.filter(Boolean)
+		.join(" ");
 };
 
 const getOptionLabelForId = (option) => {
@@ -19,6 +26,7 @@ const getOptionKey = (option) => {
 };
 
 const TourGuides = {
+	stringify,
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionKey,

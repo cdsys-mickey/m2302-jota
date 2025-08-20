@@ -1,14 +1,9 @@
 const options = [
-	{ id: 1, label: "所有細目一覽表" },
-	{ id: 2, label: "團體來訪一覽表" },
-	{ id: 3, label: "有旅行社帶團" },
-	{ id: 4, label: "無旅行社帶團" },
-	{ id: 5, label: "飯店業者退佣" },
+	{ id: 1, label: "貨品" },
+	{ id: 2, label: "單據" },
+	{ id: 3, label: "日期" },
+	{ id: 4, label: "廠商" },
 ];
-
-const getOptionById = (id) => {
-	return options.find((o) => o.id == id);
-};
 
 const getOptionLabel = (option) => {
 	if (!option) return "";
@@ -17,7 +12,11 @@ const getOptionLabel = (option) => {
 };
 
 const isOptionEqualToValue = (option, value) => {
-	return option?.id == value?.id;
+	return option?.id === value?.id;
+};
+
+const getOptionById = (id) => {
+	return options.find((o) => o.id === id);
 };
 
 const findByInput = (s) => {
@@ -28,7 +27,7 @@ const getDefaultOption = () => {
 	return getOptionById(1);
 };
 
-const P53ReportTypes = {
+const H31OrderType = {
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
@@ -37,4 +36,4 @@ const P53ReportTypes = {
 	getDefaultOption,
 };
 
-export default P53ReportTypes;
+export default H31OrderType;

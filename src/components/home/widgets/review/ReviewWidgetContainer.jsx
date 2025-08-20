@@ -33,6 +33,7 @@ export const ReviewWidgetContainer = () => {
 				/>
 			}
 			ItemComponent={ReviewWidgetListItemContainer}
+			emptyText="目前尚無待辦項目"
 		/>
 	);
 };

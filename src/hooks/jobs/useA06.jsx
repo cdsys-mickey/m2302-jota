@@ -4,7 +4,7 @@ import { toastEx } from "@/helpers/toastEx";
 import A06 from "@/modules/md-a06";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";

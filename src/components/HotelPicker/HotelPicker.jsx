@@ -16,6 +16,7 @@ const HotelPicker = memo(
 				bearer={token}
 				url={`v1/cms/hotels`}
 				getOptionLabel={forId ? Hotels.getOptionLabelForId : Hotels.getOptionLabel}
+				stringify={Hotels.getOptionLabel}
 				isOptionEqualToValue={Hotels.isOptionEqualToValue}
 				renderOptionLabel={Hotels.getOptionLabel}
 				notFoundText="旅行社 ${input} 不存在"

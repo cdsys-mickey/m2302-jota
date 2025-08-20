@@ -39,6 +39,7 @@ const RecvAcctDocPicker = memo((props) => {
 			url="v1/sales/recv-account/docs"
 			bearer={auth.token}
 			getOptionLabel={getOptionLabel}
+			stringify={RecvAcctDoc.getOptionLabel}
 			renderOptionLabel={RecvAcctDoc.getOptionLabel}
 			isOptionEqualToValue={RecvAcctDoc.isOptionEqualToValue}
 			// getOptions={getOptions}

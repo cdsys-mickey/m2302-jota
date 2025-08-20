@@ -60,6 +60,7 @@ const HomeWidget = memo((props) => {
 		data = [],
 		// handleItemSelect,
 		ItemComponent,
+		emptyText,
 		...rest
 	} = props;
 	const styles = useStyles();
@@ -70,8 +71,8 @@ const HomeWidget = memo((props) => {
 	});
 
 	const isDataEmpty = useMemo(() => {
-		return !loading && data && data.length === 0;
-	}, [data, loading]);
+		return data && data.length === 0;
+	}, [data]);
 
 	const hasData = useMemo(() => {
 		return !loading && data && data.length > 0;
@@ -105,7 +106,7 @@ const HomeWidget = memo((props) => {
 	return (
 		<WidgetBox heading={heading} styles={styles} scrollerStyles={scrollable.scroller}
 			bodyStyles={scrollable.body}>
-			{isDataEmpty && <NoDataBox />}
+			{isDataEmpty && <NoDataBox title={emptyText} severity="info" />}
 			{hasData &&
 				data.map((item, index) => (
 					<ItemComponent key={`item_${index}`} value={item} />

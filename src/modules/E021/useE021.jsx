@@ -6,7 +6,7 @@ import E021 from "@/modules/E021/E021.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Forms from "@/shared-modules/Forms.mjs";

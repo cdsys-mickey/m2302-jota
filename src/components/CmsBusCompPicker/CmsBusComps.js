@@ -1,9 +1,15 @@
 import Strings from "@/shared-modules/sd-strings";
 
+const stringify = (option) => {
+	if (!option) return "";
+	const { CarID, CarData, AbbrID } = option;
+	return [CarID, CarData, AbbrID].filter(Boolean).join(" ");
+};
+
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { CarID, CarData, Other1 } = option;
-	return `${CarID} ${CarData}${
+	const { AbbrID, CarID, CarData, Other1 } = option;
+	return `${(AbbrID ?? "").padStart(2, " ")} ${CarID} ${CarData}${
 		Other1 != null ? ": " + Strings.formatPrice(Other1 ?? 0) + "%" : ""
 	}`;
 };
@@ -24,6 +30,7 @@ const isOptionEqualToValue = (option, value) => {
 };
 
 const CmsBusComps = {
+	stringify,
 	getOptionLabel,
 	getOptionLabelForId,
 	isOptionEqualToValue,

@@ -14,7 +14,7 @@ import { nanoid } from "nanoid";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import useJotaReports from "@/hooks/useJotaReports";
 

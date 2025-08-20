@@ -3,7 +3,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import G04 from "@/modules/G04/G04.mjs";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useState } from "react";
 

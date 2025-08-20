@@ -4,6 +4,12 @@ const getOptionLabel = (option) => {
 	return [CodeID, CodeData].filter(Boolean).join(" ");
 };
 
+const stringify = (option) => {
+	if (!option) return "";
+	const { CodeID, CodeData } = option;
+	return [CodeID, CodeData].filter(Boolean).join(" ");
+};
+
 const getOptionLabelForId = (option) => {
 	if (!option) return "";
 	const { CodeID } = option;
@@ -19,6 +25,7 @@ const getOptionKey = (option) => {
 };
 
 const Hotels = {
+	stringify,
 	getOptionLabel,
 	getOptionLabelForId,
 	isOptionEqualToValue,

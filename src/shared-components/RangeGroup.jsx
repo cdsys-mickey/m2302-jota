@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useMemo } from 'react';
 import FieldGroup from './FieldGroup';
 import FlexBox from './FlexBox';
+import { ResponsiveGrid } from './responsive-grid/ResponsiveGrid';
 
 export default function RangeGroup({ legend, leftComponent, rightComponent, required = false, multiline = false, disabled = false, seperator = "~" }) {
 
@@ -12,21 +13,21 @@ export default function RangeGroup({ legend, leftComponent, rightComponent, requ
 
 	return (
 		<FieldGroup legend={_legend} required={required} disabled={disabled}>
-			<Grid container spacing={1}>
-				<Grid item xs={12} sm={multiline ? 7.5 : 5.75}>
+			<ResponsiveGrid container spacing={1}>
+				<ResponsiveGrid item xs={multiline ? 7.5 : 5.75}>
 					{leftComponent}
-				</Grid>
+				</ResponsiveGrid>
 				{multiline && <FlexBox fullWidth />}
-				{multiline && <Grid item xs={4}></Grid>}
-				<Grid item xs={1} sm={0.5}>
+				{multiline && <ResponsiveGrid item xs={4}></ResponsiveGrid>}
+				<ResponsiveGrid item xs={0.5}>
 					<FlexBox justifyContent="center">
 						<Typography variant="body1">{seperator}</Typography>
 					</FlexBox>
-				</Grid>
-				<Grid item xs={11} sm={multiline ? 7.5 : 5.75}>
+				</ResponsiveGrid>
+				<ResponsiveGrid item xs={multiline ? 7.5 : 5.75}>
 					{rightComponent}
-				</Grid>
-			</Grid>
+				</ResponsiveGrid>
+			</ResponsiveGrid>
 		</FieldGroup>
 	);
 }

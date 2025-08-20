@@ -3,6 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useH31 } from "./useH31";
 import StdPrint from "../StdPrint.mjs";
 import { H31Context } from "./H31Context";
+import H31OrderType from "./pickers/H31OrderType.mjs";
 
 export const H31Provider = ({ children }) => {
 	const h31 = useH31();
@@ -14,6 +15,7 @@ export const H31Provider = ({ children }) => {
 			EProdID: null,
 			SFactID: null,
 			EFactID: null,
+			orderType: H31OrderType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

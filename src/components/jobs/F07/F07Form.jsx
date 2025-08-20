@@ -1,3 +1,4 @@
+import { FormFieldLabel } from "@/shared-components";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -15,9 +16,9 @@ const F07Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={2}>
 							<Grid item xs={12}>
-								<TextFieldWrapper
-									typo
-									editing={false}
+								<FormFieldLabel
+									// typo
+									// editing={false}
 									size="small"
 									name="CutYM"
 									label="結轉年月"

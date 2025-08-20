@@ -8,6 +8,7 @@ import { OptionPicker } from "@/shared-components";
 import { useCallback } from "react";
 import _ from "lodash";
 import { createFilterOptions } from "@mui/material";
+import Arrays from "@/shared-modules/sd-arrays";
 
 const ProdPicker = (props) => {
 	const {
@@ -109,35 +110,7 @@ const ProdPicker = (props) => {
 
 		// 僅當有輸入值時應用自訂排序
 		if (state.inputValue) {
-			filtered = filtered.sort((a, b) => {
-				const input = state.inputValue.toLowerCase();
-
-				// 比較 ProdID 的匹配位置
-				const aProdIDIndex = a.ProdID.toLowerCase().indexOf(input);
-				const bProdIDIndex = b.ProdID.toLowerCase().indexOf(input);
-				if (aProdIDIndex !== bProdIDIndex) {
-					if (aProdIDIndex === -1) return 1; // a 無匹配，排後面
-					if (bProdIDIndex === -1) return -1; // b 無匹配，排後面
-					return aProdIDIndex - bProdIDIndex; // 比較位置
-				}
-
-				// 比較 ProdData 的匹配位置
-				const aProdDataIndex = a.ProdData.toLowerCase().indexOf(input);
-				const bProdDataIndex = b.ProdData.toLowerCase().indexOf(input);
-				if (aProdDataIndex !== bProdDataIndex) {
-					if (aProdDataIndex === -1) return 1; // a 無匹配，排後面
-					if (bProdDataIndex === -1) return -1; // b 無匹配，排後面
-					return aProdDataIndex - bProdDataIndex; // 比較位置
-				}
-
-				// 比較 Barcode 的匹配位置
-				const aBarcodeIndex = a.Barcode.toLowerCase().indexOf(input);
-				const bBarcodeIndex = b.Barcode.toLowerCase().indexOf(input);
-				if (aBarcodeIndex === -1 && bBarcodeIndex === -1) return 0; // 都無匹配，保持順序
-				if (aBarcodeIndex === -1) return 1; // a 無匹配，排後面
-				if (bBarcodeIndex === -1) return -1; // b 無匹配，排後面
-				return aBarcodeIndex - bBarcodeIndex; // 比較位置
-			});
+			filtered = Arrays.sortByFoundIndex(filtered, ["ProdID", "ProdData", "Barcode"], state.inputValue);
 		}
 
 		return filtered;

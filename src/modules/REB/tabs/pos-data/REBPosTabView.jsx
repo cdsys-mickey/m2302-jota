@@ -1,7 +1,7 @@
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import Auth from "@/modules/md-auth";
 import REB from "@/modules/REB/REB.mjs";
-import { DatePickerEx } from "@/shared-components";
+import { DatePickerEx, FormFieldLabel } from "@/shared-components";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { TabPanel } from "@mui/lab";
@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import REBPosRebuildButtonContainer from "./REBPosRebuildButtonContainer";
 
 const REBPosTabView = (props) => {
-	const { ...rest } = props;
+	const { minDate, ...rest } = props;
 	return (
 		<TabPanel value={REB.TabType.POS_DATA} {...rest}>
 			<Grid container columns={12} spacing={2}>
@@ -36,6 +36,7 @@ const REBPosTabView = (props) => {
 							// autoFocus
 							borderless
 							placeholder="起"
+							minDate={minDate}
 						/>}
 						rightComponent={<DatePickerEx
 							name="endDate"
@@ -44,10 +45,30 @@ const REBPosTabView = (props) => {
 							clearable
 							borderless
 							placeholder="迄"
+							minDate={minDate}
 						/>}
 					/>
 				</Grid>
-
+				<Grid item xs={6}>
+					<FormFieldLabel
+						// typo
+						// editing={false}
+						size="small"
+						name="CutYM"
+						label="結轉年月"
+						// inline
+						required
+						readOnly
+						slotProps={{
+							"label": {
+								sx: {
+									marginTop: "-8px",
+									marginLeft: "4px"
+								}
+							}
+						}}
+					/>
+				</Grid>
 			</Grid>
 
 			<FlexBox mt={1.8}>
@@ -65,7 +86,8 @@ const REBPosTabView = (props) => {
 }
 
 REBPosTabView.propTypes = {
-	onSessionChanged: PropTypes.func
+	onSessionChanged: PropTypes.func,
+	minDate: PropTypes.object
 }
 
 REBPosTabView.displayName = "REBPosTabView";

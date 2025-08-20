@@ -126,7 +126,7 @@ const P42DialogForm = memo((props) => {
 							// }}
 							/>
 						</Grid>
-						<Grid item xs={12} sm={12} md={3.5}>
+						<Grid item xs={12} sm={12} md={4}>
 							<CmsCityPicker
 								typo
 								name="city"
@@ -186,7 +186,7 @@ const P42DialogForm = memo((props) => {
 								clearable
 							/>
 						</Grid>
-						<Grid item xs={12} sm={12} md={3.5}>
+						<Grid item xs={12} sm={12} md={4}>
 							<TextFieldEx
 								typo
 								name="CarQty"
@@ -225,7 +225,7 @@ const P42DialogForm = memo((props) => {
 								clearable
 							/>
 						</Grid>
-						<Grid item xs={12} sm={12} md={3.5}>
+						<Grid item xs={12} sm={12} md={3}>
 							<TextFieldWrapper
 								typo
 								name="DrvTel"
@@ -234,12 +234,6 @@ const P42DialogForm = memo((props) => {
 								clearable
 							/>
 						</Grid>
-					</Grid>
-				</FormSectionBox>
-				{/* <FlexBox fullWidth /> */}
-				<FormSectionBox >
-					<Grid container columns={24} spacing={1}>
-
 						<Grid item xs={12} sm={12} md={4}>
 							<TourGroupPicker
 								typo

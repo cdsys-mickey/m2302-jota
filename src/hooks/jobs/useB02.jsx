@@ -3,7 +3,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import Forms from "@/shared-modules/Forms.mjs";
 import { nanoid } from "nanoid";

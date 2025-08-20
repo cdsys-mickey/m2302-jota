@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useCallback, useContext, useMemo, useState } from "react";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import JobMenu from "./JobMenu.mjs";
 import { nanoid } from "nanoid";

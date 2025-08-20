@@ -1,7 +1,14 @@
+const stringify = (option) => {
+	if (!option) return "";
+	const { TrvID, TrvData, AbbrID } = option;
+	return [AbbrID, TrvID, TrvData].filter(Boolean).join(" ");
+};
 const getOptionLabel = (option) => {
 	if (!option) return "";
-	const { TrvID, TrvData } = option;
-	return [TrvID, TrvData].filter(Boolean).join(" ");
+	const { AbbrID, TrvID, TrvData } = option;
+	return [(AbbrID ?? "").padStart(2, " "), TrvID, TrvData]
+		.filter(Boolean)
+		.join(" ");
 };
 
 const getOptionLabelForId = (option) => {
@@ -19,6 +26,7 @@ const getOptionKey = (option) => {
 };
 
 const TourGroups = {
+	stringify,
 	getOptionLabel,
 	getOptionLabelForId,
 	isOptionEqualToValue,

@@ -7,7 +7,7 @@ import B032 from "@/modules/md-b032";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Objects from "@/shared-modules/Objects.mjs";

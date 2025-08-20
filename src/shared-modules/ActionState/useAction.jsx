@@ -1,23 +1,13 @@
 import { useCallback, useState } from "react";
-import ActionState from "../shared-constants/action-state";
 import { useMemo } from "react";
+import ActionState from "./ActionState";
 
-export const useAction = (initState = null) => {
+export default function useAction(initState = null) {
 	const [actionState, setActionState] = useState({
 		state: initState,
-		// payload: null,
 		message: null,
 		error: null,
-		// params: null
 	});
-
-	// const [error, setError] = useState();
-	// const [errorState, setErrorState] = useState({
-	// 	error: null,
-	// 	failed: false,
-	// });
-	// const [payload, setPayload] = useState();
-	// const [message, setMessage] = useState();
 
 	const prompt = useCallback(({ message, params } = {}) => {
 		console.log(`prompt`, message);
@@ -29,16 +19,7 @@ export const useAction = (initState = null) => {
 			...params
 		}));
 	}, []);
-	// const prompt = useCallback((data, message) => {
-	// 	console.log("prompt", data);
 
-	// 	setActionState((prev) => ({
-	// 		...prev,
-	// 		state: ActionState.PROMPT,
-	// 		payload: data,
-	// 		message: message,
-	// 	}));
-	// }, []);
 
 	const start = useCallback(({ message, params } = {}) => {
 		setActionState((prev) => ({

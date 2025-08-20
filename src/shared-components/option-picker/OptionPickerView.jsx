@@ -175,13 +175,18 @@ const OptionPickerView = memo(
 			}
 		}, [notFoundText]);
 
+		const withFilterOptions = useMemo(() => {
+			return dontFilterOptions || filterOptions || stringify;
+		}, [dontFilterOptions, filterOptions, stringify])
+
 		// 參考 https://github.com/mui/material-ui/blob/master/packages/mui-base/src/useAutocomplete/useAutocomplete.js
 		const _filterOptions = useMemo(() => {
-			return dontFilterOptions
-				? noFilterOptions
-				: (filterOptions ? filterOptions : createFilterOptions({
-					stringify,
-				}));
+			if (dontFilterOptions) {
+				return noFilterOptions;
+			}
+			return filterOptions ?? (stringify ? createFilterOptions({
+				stringify,
+			}) : null);
 		}, [dontFilterOptions, filterOptions, stringify]);
 
 		// OPEN Control
@@ -196,18 +201,23 @@ const OptionPickerView = memo(
 		const innerInputRef = useRef();
 		useImperativeHandle(inputRef, () => innerInputRef.current);
 
+		const handleClear = useCallback(() => {
+			onChange(multiple ? [] : null)
+		}, [multiple, onChange]);
+
 		const handleTextChange = useCallback(
 			(event, newValue, reason) => {
 				const input = event.target.value;
 				// const input = newValue;
-				console.log(`handleTextChange: "${input}"`);
+				// console.log(`handleTextChange: "${input}"`);
 
 				// 原本輸入框刪到空白則取消 dirty 狀態,
 				// 但為了支援空 id, 因此這裡改成允許空白時保留 dirty 狀態
 
 				// 清除值就清除錯誤
 				if (!input && value) {
-					onChange(multiple ? [] : null);
+					// onChange(multiple ? [] : null);
+					handleClear();
 					if (name && clearErrors) {
 						clearErrors(name);
 					}
@@ -222,7 +232,7 @@ const OptionPickerView = memo(
 					clearErrors(name);
 				}
 			},
-			[clearErrors, multiple, name, onChange, onTextChange, value]
+			[clearErrors, handleClear, name, onTextChange, value]
 		);
 
 		const [popperOpen, setPopperOpen] = useState(open || false);
@@ -476,7 +486,7 @@ const OptionPickerView = memo(
 			[handleOpen]
 		);
 
-		const handleKeyDown = useCallback(
+		const handleTextFieldKeyDown = useCallback(
 			(e) => {
 				// 若按住 Ctrl 則不處理
 				if (e.ctrlKey) {
@@ -508,12 +518,13 @@ const OptionPickerView = memo(
 		);
 
 		const handleAutocompleteKeyDown = useCallback((e) => {
+			// console.log("handleAutocompleteKeyDown e.key", e.key)
 			switch (e.key) {
 				case "ArrowUp":
 				case "ArrowDown":
 				case "Enter":
 					if (!e.shiftKey && !e.ctrlKey) {
-						console.log("handleAutocompleteKeyDown.stopPropagation");
+						console.log("handleAutocompleteKeyDown.stopPropagation", e.key);
 						e.stopPropagation();
 					}
 					break;
@@ -588,7 +599,7 @@ const OptionPickerView = memo(
 						placeholder={hideControls ? "" : placeholder}
 						autoFocus={autoFocus}
 						onChange={handleTextChange}
-						onKeyDown={handleKeyDown}
+						onKeyDown={handleTextFieldKeyDown}
 						// onBlur={blurToLookup ? handleBlur : undefined}
 						onBlur={handleBlur}
 						{...params}
@@ -652,7 +663,7 @@ const OptionPickerView = memo(
 					/>
 				);
 			},
-			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleKeyDown, handleTextChange, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.input, slotProps?.textField, variant]
+			[InputLabelProps, InputProps, TextFieldProps, _label, autoFocus, borderless, error, fullWidth, handleBlur, handleTextFieldKeyDown, handleTextChange, helperText, hideControls, inputProps, labelShrink, loading, placeholder, required, size, slotProps?.input, slotProps?.textField, variant]
 		);
 
 		const renderDndInput = useCallback(
@@ -963,7 +974,9 @@ const OptionPickerView = memo(
 						getOptionLabel={getOptionLabel}
 						renderOption={handleRenderOption}
 						renderGroup={handleRenderGroup}
-						filterOptions={_filterOptions}
+						{...(withFilterOptions && {
+							filterOptions: _filterOptions
+						})}
 						// Popper Open 控制
 						// open={popperOpen}
 						onOpen={handleOpen}

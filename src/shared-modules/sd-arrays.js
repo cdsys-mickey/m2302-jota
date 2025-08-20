@@ -41,10 +41,29 @@ const rangeToObject = (start, stop, value, original = {}) => {
 	return result;
 };
 
+const sortByFoundIndex = (array, fields, searchValue) => {
+	const input = searchValue.toLowerCase(); // 移到迴圈外
+	return array.sort((a, b) => {
+		for (const field of fields) {
+			const aIndex = a[field].toLowerCase().indexOf(input);
+			const bIndex = b[field].toLowerCase().indexOf(input);
+
+			if (aIndex !== bIndex) {
+				if (aIndex === -1) return 1; // a 無匹配，排後面
+				if (bIndex === -1) return -1; // b 無匹配，排後面
+				return aIndex - bIndex; // 比較位置
+			}
+		}
+
+		return 0; // 無差異，保持順序
+	});
+};
+
 const Arrays = {
 	parse,
 	toObject,
 	rangeToObject,
+	sortByFoundIndex,
 };
 
 export default Arrays;

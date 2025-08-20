@@ -5,13 +5,17 @@ import { useAppModule } from "@/hooks/jobs/useAppModule";
 import REB from "@/modules/REB/REB";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
-import { useAction } from "@/shared-hooks/useAction";
+import useAction from "@/shared-modules/ActionState/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useState } from "react";
+import F07 from "../md-f07";
 
 export const useREB = () => {
 	const crud = useContext(CrudContext);
-
+	const {
+		httpGetAsync,
+		httpPostAsync
+	} = useWebApi();
 	const [selectedTab, setSelectedTab] = useState(REB.TabType.SALES_DATA);
 	const handleTabChange = useCallback((e, newValue) => {
 		setSelectedTab(newValue);
@@ -24,9 +28,7 @@ export const useREB = () => {
 		moduleId: "REB",
 	});
 
-	const {
-		httpPostAsync
-	} = useWebApi();
+
 	const formMeta = useFormMeta(
 		`
 		dept,
@@ -138,6 +140,32 @@ export const useREB = () => {
 		console.error("onPosRebuildSubmitError", err);
 	}, [])
 
+	const load = useCallback(
+		async ({ refresh = false } = {}) => {
+			try {
+				if (!refresh) {
+					crud.startLoading("讀取中...");
+				}
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/sales/data/prev-inv",
+					bearer: token,
+				});
+				if (status.success) {
+					const data = F07.transformForReading(payload.data[0]);
+					console.log("data", data);
+					crud.finishedLoading({
+						data: data,
+					});
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				crud.failedLoading(err);
+			}
+		},
+		[crud, httpGetAsync, token]
+	);
+
 	return {
 		...appModule,
 		...crud,
@@ -149,7 +177,8 @@ export const useREB = () => {
 		onPosRebuildSubmit,
 		onPosRebuildSubmitError,
 		posRebuildWorking: posRebuildAction.working,
-		selectedTab
+		selectedTab,
+		load
 	};
 };
 

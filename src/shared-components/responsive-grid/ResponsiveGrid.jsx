@@ -19,7 +19,7 @@ export const ResponsiveGrid = memo((props) => {
 
 	return (
 		<ResponsiveGridProvider containerRef={containerRef} columns={columns} initSize={initSize} {...containerOpts}>
-			<div ref={containerRef}>
+			<div ref={containerRef} style={{ width: "100%" }}>
 				<Grid container={container} columns={columns} {...rest}>
 					{children}
 				</Grid>
