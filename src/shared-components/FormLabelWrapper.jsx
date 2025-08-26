@@ -19,7 +19,7 @@ const FormLabelWrapper = (props) => {
 
 FormLabelWrapper.propTypes = {
 	label: PropTypes.string,
-	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array, PropTypes.func])
+	children: PropTypes.oneOfType([PropTypes.element, PropTypes.array, PropTypes.func])
 }
 
 export default FormLabelWrapper;

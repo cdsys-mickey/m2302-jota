@@ -1,9 +1,7 @@
-import { memo } from "react";
+import { FormControl, FormHelperText, FormLabel, RadioGroup } from "@mui/material";
 import PropTypes from "prop-types";
-import { FormHelperText, RadioGroup } from "@mui/material";
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import RadioExView from "../RadioEx/RadioExView";
-import FormLabelWrapper from "shared-components/FormLabelWrapper";
 
 
 const RadioGroupExViewComponent = (props) => {
@@ -38,7 +36,8 @@ const RadioGroupExViewComponent = (props) => {
 	}, [defaultGetOptionKey, getOptionKey]);
 
 	return (
-		<FormLabelWrapper label={label}>
+		<FormControl>
+			{label && <FormLabel>{label}</FormLabel>}
 			<RadioGroup {...rest}>{options ? options.map((option, index) => {
 				const label = renderOption(option, index);
 				const key = renderKey(option, index);
@@ -47,13 +46,14 @@ const RadioGroupExViewComponent = (props) => {
 			{helperText && (
 				<FormHelperText error={!!error}>{helperText}</FormHelperText>
 			)}
-		</FormLabelWrapper>
+		</FormControl>
 	);
 }
 
 RadioGroupExViewComponent.propTypes = {
 	label: PropTypes.string,
-	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array, PropTypes.func]),
+	helperText: PropTypes.string,
+	children: PropTypes.oneOfType([PropTypes.element, PropTypes.array, PropTypes.func]),
 	options: PropTypes.array,
 	getOptionLabel: PropTypes.func,
 	getOptionKey: PropTypes.func,

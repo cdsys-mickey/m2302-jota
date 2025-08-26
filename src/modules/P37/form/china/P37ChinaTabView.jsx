@@ -1,7 +1,6 @@
 import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
-import { RadioGroupEx } from "@/shared-components";
+import { RadioGroupEx, TextFieldEx } from "@/shared-components";
 import FlexBox from "@/shared-components/FlexBox";
-import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { TabPanel } from "@mui/lab";
 import { Grid, InputAdornment, Radio, Typography } from "@mui/material";
 import PropTypes from "prop-types";
@@ -26,7 +25,7 @@ const P37ChinaTabViewComponent = (props) => {
 								value={P37.BusCmsTypes.AMOUNT}
 								disabled={!editing}
 							/>
-							<TextFieldWrapper
+							<TextFieldEx
 								name="ADrvCms"
 								// label="巴士佣金"
 								size="small"
@@ -46,7 +45,7 @@ const P37ChinaTabViewComponent = (props) => {
 								value={P37.BusCmsTypes.PERCENT}
 								disabled={!editing}
 							/>
-							<TextFieldWrapper
+							<TextFieldEx
 								name="BDrvCms"
 								// label="巴士佣金"
 								size="small"
@@ -64,7 +63,7 @@ const P37ChinaTabViewComponent = (props) => {
 						</FlexBox>
 					</Grid>
 					<Grid item xs={4}>
-						<TextFieldWrapper
+						<TextFieldEx
 							name="ATrvCms"
 							// label="旅行社佣金"
 							size="small"

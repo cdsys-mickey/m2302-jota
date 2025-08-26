@@ -130,7 +130,8 @@ const transformForEditorSubmit = (payload, selecedtTab) => {
 			const item = {
 				Seq: i + 1,
 				SDnCp: payload.SDnCp?.[i]
-					? Number(payload.SDnCp?.[i]).toFixed(2)
+					? // ? Number(payload.SDnCp?.[i]).toFixed(2)
+					  payload.SDnCp?.[i]
 					: "",
 				SUpCp: payload.SUpCP?.[i] || "",
 				SDrvCms:

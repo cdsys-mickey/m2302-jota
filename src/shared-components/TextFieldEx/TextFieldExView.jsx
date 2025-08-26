@@ -1,6 +1,4 @@
 import Colors from "@/modules/Colors.mjs";
-import { Visibility } from "@mui/icons-material";
-import { VisibilityOff } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
@@ -8,6 +6,8 @@ import { useCallback } from "react";
 import { useState } from "react";
 import FlexBox from "../FlexBox";
 import MuiStyles from "@/shared-modules/MuiStyles";
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 const IconProps = {
 	fontSize: "small",
@@ -124,7 +124,9 @@ const TextFieldExView = (props) => {
 							endAdornment: (
 								<InputAdornment position="end">
 									<IconButton onClick={handleClickShowPassword} edge="end">
-										{showPassword ? <VisibilityOff {...IconProps} /> : <Visibility {...IconProps} />}
+										{showPassword
+											? <VisibilityOffOutlinedIcon {...IconProps} />
+											: <VisibilityOutlinedIcon {...IconProps} />}
 									</IconButton>
 								</InputAdornment>
 							),
@@ -133,7 +135,7 @@ const TextFieldExView = (props) => {
 							endAdornment: (
 								<InputAdornment position="end">
 									<IconButton onMouseDown={handleShowPassword} onMouseUp={handleHidePassword} edge="end" size="small">
-										<Visibility {...IconProps} />
+										<VisibilityOutlinedIcon {...IconProps} />
 									</IconButton>
 								</InputAdornment>
 							),
