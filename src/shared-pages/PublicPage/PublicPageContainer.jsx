@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import PublicPage from "./PublicPage";
+import PublicPageView from "./PublicPageView";
 import PropTypes from "prop-types";
 
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 
-export const PublicPageContainer = ({ title, ...rest }) => {
+const PublicPageContainer = ({ title, ...rest }) => {
 	const { height } = useWindowSize();
 
 	useEffect(() => {
@@ -13,9 +13,11 @@ export const PublicPageContainer = ({ title, ...rest }) => {
 			: import.meta.env.VITE_APP_TITLE;
 	}, [title]);
 
-	return <PublicPage title={title} height={height} {...rest} />;
+	return <PublicPageView title={title} height={height} {...rest} />;
 };
 
 PublicPageContainer.propTypes = {
 	title: PropTypes.string
 }
+
+export default PublicPageContainer;

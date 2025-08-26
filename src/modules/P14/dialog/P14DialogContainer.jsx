@@ -81,10 +81,14 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 		p14.updating,
 	]);
 
-	const handleSubmit = form.handleSubmit(
-		p14.onEditorSubmit,
-		p14.onEditorSubmitError
-	);
+	const handleSubmit = useCallback(() => {
+		if (p14.editing) {
+			form.handleSubmit(
+				p14.onEditorSubmit,
+				p14.onEditorSubmitError
+			)();
+		}
+	}, [form, p14.editing, p14.onEditorSubmit, p14.onEditorSubmitError]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

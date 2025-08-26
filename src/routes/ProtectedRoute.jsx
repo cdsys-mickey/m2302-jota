@@ -1,5 +1,7 @@
 import { AuthProvider } from "@/contexts/auth/AuthProvider";
-import { BasePageContainer } from "@/frames/BasePageContainer";
+import { MessagingProvider } from "@/contexts/messaging/MessagingProvider";
+import { PushMessagesProvider } from "@/contexts/PushMessagesProvider";
+import { BaseFrame } from "@/modules";
 
 import AppFrameProvider from "@/shared-contexts/app-frame/AppFrameProvider";
 
@@ -7,7 +9,11 @@ const ProtectedRoute = () => {
 	return (
 		<AuthProvider>
 			<AppFrameProvider drawerWidth={300}>
-				<BasePageContainer />
+				<PushMessagesProvider>
+					<MessagingProvider>
+						<BaseFrame />
+					</MessagingProvider>
+				</PushMessagesProvider>
 			</AppFrameProvider>
 		</AuthProvider>
 	);

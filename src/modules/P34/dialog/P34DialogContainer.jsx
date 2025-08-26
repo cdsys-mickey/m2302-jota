@@ -150,9 +150,11 @@ export const P34DialogContainer = forwardRef((props, ref) => {
 		} : null)
 	}, [form]);
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(p34.onEditorSubmit, p34.onEditorSubmitError);
-	}, [p34.onEditorSubmit, p34.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (p34.editing) {
+			form.handleSubmit(p34.onEditorSubmit, p34.onEditorSubmitError)();
+		}
+	}, [form, p34.editing, p34.onEditorSubmit, p34.onEditorSubmitError]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

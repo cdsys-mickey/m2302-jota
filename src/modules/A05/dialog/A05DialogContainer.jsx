@@ -13,6 +13,7 @@ import MuiStyles from "@/shared-modules/MuiStyles";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useCallback } from "react";
 
 export const A05DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -68,9 +69,11 @@ export const A05DialogContainer = forwardRef((props, ref) => {
 		scrollerBackgroundColor: "transparent",
 	});
 
-	const handleSubmit = useMemo(() => {
-		return forms.handleSubmit(a05.onEditorSubmit, a05.onEditorSubmitError);
-	}, [a05.onEditorSubmit, a05.onEditorSubmitError, forms]);
+	const handleSubmit = useCallback(() => {
+		if (a05.editing) {
+			forms.handleSubmit(a05.onEditorSubmit, a05.onEditorSubmitError)();
+		}
+	}, [a05.editing, a05.onEditorSubmit, a05.onEditorSubmitError, forms]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

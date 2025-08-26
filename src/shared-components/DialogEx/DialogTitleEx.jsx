@@ -10,6 +10,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import { memo, forwardRef } from "react";
 import PropTypes from "prop-types";
+import TooltipWrapper from "../TooltipWrapper/TooltipWrapper";
 
 const DialogTitleEx = memo(
 	forwardRef((props, ref) => {
@@ -18,7 +19,7 @@ const DialogTitleEx = memo(
 			hideCloseButton,
 			children,
 			onClose,
-			closeText = "",
+			closeTooltip = "",
 			onReturn,
 			returnText = "",
 			returnIcon,
@@ -118,7 +119,7 @@ const DialogTitleEx = memo(
 						</DialogTitleButtonsBox>
 					)}
 					{hasCloseButton && (
-						<Tooltip title={closeText || ""}>
+						<TooltipWrapper title={closeTooltip}>
 							<IconButton
 								// disableRipple
 								aria-label="close"
@@ -130,7 +131,7 @@ const DialogTitleEx = memo(
 								size={size}>
 								<CloseIcon />
 							</IconButton>
-						</Tooltip>
+						</TooltipWrapper>
 					)}
 				</FlexBox>
 			</>

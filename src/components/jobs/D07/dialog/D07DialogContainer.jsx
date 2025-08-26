@@ -69,10 +69,14 @@ export const D07DialogContainer = forwardRef((props, ref) => {
 		d07.updating,
 	]);
 
-	const handleSubmit = form.handleSubmit(
-		d07.onEditorSubmit,
-		d07.onEditorSubmitError
-	);
+	const handleSubmit = useCallback(() => {
+		if (d07.editing) {
+			form.handleSubmit(
+				d07.onEditorSubmit,
+				d07.onEditorSubmitError
+			)();
+		}
+	}, [d07.editing, d07.onEditorSubmit, d07.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

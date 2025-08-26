@@ -12,6 +12,7 @@ import G08DialogForm from "./G08DialogForm";
 import { G08DialogButtonsContainer } from "./buttons/G08DialogButtonsContainer";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useCallback } from "react";
 
 export const G08DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -42,9 +43,11 @@ export const G08DialogContainer = forwardRef((props, ref) => {
 		scrollerBackgroundColor: "transparent",
 	});
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(g08.onEditorSubmit, g08.onEditorSubmitError);
-	}, [g08.onEditorSubmit, g08.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (g08.editing) {
+			form.handleSubmit(g08.onEditorSubmit, g08.onEditorSubmitError)();
+		}
+	}, [form, g08.editing, g08.onEditorSubmit, g08.onEditorSubmitError]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

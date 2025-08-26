@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 import { SideMenuProvider } from "@/contexts/SideMenuProvider";
 import { grey } from "@mui/material/colors";
 
-const BasePage = (props) => {
+const BaseFrameView = (props) => {
 	const {
 		drawerOpen,
 		onDrawerClose,
@@ -45,7 +45,7 @@ const BasePage = (props) => {
 	);
 };
 
-BasePage.propTypes = {
+BaseFrameView.propTypes = {
 	drawerOpen: PropTypes.bool,
 	onDrawerClose: PropTypes.func,
 	onDrawerOpen: PropTypes.func,
@@ -55,4 +55,4 @@ BasePage.propTypes = {
 	MenuComponent: PropTypes.elementType,
 };
 
-export default BasePage;
+export default BaseFrameView;

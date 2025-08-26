@@ -16,7 +16,7 @@ const P14DialogViewToolbar = memo(
 					<>
 						{/* <P14OutputModePickerContainer />
 						<P14PrintButtonContainer /> */}
-						<P14ExportButtonContainer />
+						<P14ExportButtonContainer title="直接檢視" />
 					</>
 				)}
 				{onDelete && (

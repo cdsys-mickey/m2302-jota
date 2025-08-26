@@ -1,9 +1,6 @@
-import { MessagingProvider } from "@/contexts/messaging/MessagingProvider";
-import { PushMessagesProvider } from "@/contexts/PushMessagesProvider";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import useContainerSize from "@/shared-hooks/useContainerSize";
 import { useContext, useMemo } from "react";
-import FrameBanner from "./FrameBannerView";
 import FrameBannerView from "./FrameBannerView";
 
 export const FrameBannerContainer = (props) => {
@@ -31,17 +28,14 @@ export const FrameBannerContainer = (props) => {
 	}, [altTitle, appFrame.menuItemSelected?.JobName, fullTitle, isMdOrUp, isSmOrDown])
 
 	return (
-		<PushMessagesProvider>
-			<MessagingProvider>
-				<div ref={containerRef}>
-					<FrameBannerView
-						title={title}
-						alt={altTitle}
-						dense={isMdOrDown}
-						{...rest}
-					/>
-				</div>
-			</MessagingProvider>
-		</PushMessagesProvider>
+
+		<div ref={containerRef}>
+			<FrameBannerView
+				title={title}
+				alt={altTitle}
+				dense={isMdOrDown}
+				{...rest}
+			/>
+		</div>
 	);
 };

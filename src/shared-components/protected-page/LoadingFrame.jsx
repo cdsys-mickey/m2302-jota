@@ -3,15 +3,15 @@ import PropTypes from "prop-types";
 import { Container } from "@mui/material";
 import LoadingTypography from "../LoadingTypography";
 import FlexBox from "@/shared-components/FlexBox";
-import { PublicPageContainer } from "@/shared-pages/PublicPageContainer";
 import BackgroundImage from "@/images/rm218batch4-ning-34_2.jpg";
+import { PublicPage } from "@/shared-pages";
 
 export const LoadingFrame = memo(
 	forwardRef((props, ref) => {
 		const { title = "讀取中", ...rest } = props;
 
 		return (
-			<PublicPageContainer
+			<PublicPage
 				ref={ref}
 				sx={{
 					backgroundImage: `url(${BackgroundImage})`,
@@ -20,7 +20,8 @@ export const LoadingFrame = memo(
 					backgroundRepeat: "no-repeat",
 					minHeight: "100vh",
 				}}
-				boxProps={{ alignItems: "center" }}>
+				boxProps={{ alignItems: "center" }}
+				{...rest}>
 				<Container maxWidth="xs">
 					<FlexBox justifyContent="center">
 						<LoadingTypography iconSize="lg" variant="h5">
@@ -28,7 +29,7 @@ export const LoadingFrame = memo(
 						</LoadingTypography>
 					</FlexBox>
 				</Container>
-			</PublicPageContainer>
+			</PublicPage>
 		);
 	})
 );

@@ -1,21 +1,20 @@
 import BackgroundImage from "@/images/rm218batch4-ning-34_2.jpg";
 import FlexBox from "@/shared-components/FlexBox";
-import { PublicPageContainer } from "@/shared-pages/PublicPageContainer";
 import { forwardRef, memo } from "react";
 
 import Colors from "@/modules/Colors.mjs";
-import ModuleHeading from "@/shared-components/ModuleHeading";
-import LockIcon from "@mui/icons-material/Lock";
-import { Container } from "@mui/material";
-import PropTypes from "prop-types";
 import FlexContainer from "@/shared-components/FlexContainer";
+import ModuleHeading from "@/shared-components/ModuleHeading";
+import { PublicPage } from "@/shared-pages";
+import LockIcon from "@mui/icons-material/Lock";
+import PropTypes from "prop-types";
 
 const SignInBase = memo(
 	forwardRef((props, ref) => {
 		const { children } = props;
 
 		return (
-			<PublicPageContainer
+			<PublicPage
 				ref={ref}
 				sx={{
 					backgroundImage: `url(${BackgroundImage})`,
@@ -48,7 +47,7 @@ const SignInBase = memo(
 						</FlexBox>
 					</FlexBox>
 				</FlexContainer>
-			</PublicPageContainer>
+			</PublicPage>
 		);
 	})
 );

@@ -1,7 +1,6 @@
-import { Controller } from "react-hook-form";
 import PropTypes from "prop-types";
-import RadioGroupExView from "./RadioGroupExView";
 import ControllerWrapper from "../ControllerWrapper";
+import RadioGroupExView from "./RadioGroupExView";
 
 const ControlledRadioGroupEx = ({
 	name,

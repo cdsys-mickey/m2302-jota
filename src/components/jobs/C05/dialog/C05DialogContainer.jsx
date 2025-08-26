@@ -196,10 +196,14 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 		lastCell: DSGLastCellBehavior.CREATE_ROW
 	})
 
-	const handleSubmit = form.handleSubmit(
-		c05.onEditorSubmit,
-		c05.onEditorSubmitError
-	);
+	const handleSubmit = useCallback(() => {
+		if (c05.editing) {
+			form.handleSubmit(
+				c05.onEditorSubmit,
+				c05.onEditorSubmitError
+			)()
+		}
+	}, [c05.editing, c05.onEditorSubmit, c05.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

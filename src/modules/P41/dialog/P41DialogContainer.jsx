@@ -74,9 +74,11 @@ export const P41DialogContainer = forwardRef((props, ref) => {
 		scrollerBackgroundColor: "transparent",
 	});
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(p41.onEditorSubmit, p41.onEditorSubmitError);
-	}, [p41.onEditorSubmit, p41.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (p41.editing) {
+			form.handleSubmit(p41.onEditorSubmit, p41.onEditorSubmitError)();
+		}
+	}, [form, p41.editing, p41.onEditorSubmit, p41.onEditorSubmitError]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

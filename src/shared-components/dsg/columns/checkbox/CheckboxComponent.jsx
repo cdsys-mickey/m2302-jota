@@ -149,6 +149,10 @@ const CheckboxComponent = memo(
 						pointerEvents: "none",
 					}),
 					cursor: "pointer",
+					// appearance: "none",
+					// ":checked": {
+					// 	backgroundColor: "#555"
+					// }
 				}}
 				// Important to prevent any undesired "tabbing"
 				tabIndex={-1}

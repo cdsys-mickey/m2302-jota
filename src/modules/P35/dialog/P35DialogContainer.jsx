@@ -166,16 +166,18 @@ export const P35DialogContainer = forwardRef((props, ref) => {
 		scrollerBackgroundColor: "transparent",
 	});
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(p35.onEditorSubmit, p35.onEditorSubmitError);
-	}, [form, p35.onEditorSubmit, p35.onEditorSubmitError]);
-
 	const handleCityChange = useCallback((newValue) => {
 		form.setValue("area", newValue?.CtAreaID ? {
 			CodeID: newValue.CtAreaID,
 			CodeData: newValue.CtAreaData
 		} : null)
 	}, [form]);
+
+	const handleSubmit = useCallback(() => {
+		if (p35.editing) {
+			form.handleSubmit(p35.onEditorSubmit, p35.onEditorSubmitError)();
+		}
+	}, [form, p35.editing, p35.onEditorSubmit, p35.onEditorSubmitError]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

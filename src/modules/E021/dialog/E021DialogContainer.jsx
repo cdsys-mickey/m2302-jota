@@ -346,12 +346,16 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 
 	const { enableEvents } = formMeta;
 
-	const handleSubmit = form.handleSubmit(
-		e021.onEditorSubmit({
-			setValue: form.setValue, gridMeta
-		}),
-		e021.onEditorSubmitError
-	);
+	const handleSubmit = useCallback(() => {
+		if (e021.editing) {
+			form.handleSubmit(
+				e021.onEditorSubmit({
+					setValue: form.setValue, gridMeta
+				}),
+				e021.onEditorSubmitError
+			)();
+		}
+	}, [e021, form, gridMeta]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

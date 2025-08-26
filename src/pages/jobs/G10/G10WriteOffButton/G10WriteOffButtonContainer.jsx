@@ -2,6 +2,7 @@ import { G10Context } from "@/pages/jobs/G10/G10Context";
 import { ButtonEx } from "@/shared-components";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import { Tooltip } from "@mui/material";
+import { useCallback } from "react";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -12,9 +13,11 @@ const G10WriteOffButtonContainer = memo(
 		const g10 = useContext(G10Context);
 		const form = useFormContext();
 
-		const handleSubmit = useMemo(() => {
-			return form.handleSubmit(g10.onSubmit, g10.onSubmitErrort);
-		}, [g10.onSubmit, g10.onSubmitErrort, form]);
+		const handleSubmit = useCallback(() => {
+			if (g10.editing) {
+				form.handleSubmit(g10.onSubmit, g10.onSubmitErrort)();
+			}
+		}, [form, g10.editing, g10.onSubmit, g10.onSubmitErrort]);
 
 		useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 			enableOnFormTags: true

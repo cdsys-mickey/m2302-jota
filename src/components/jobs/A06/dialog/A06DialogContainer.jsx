@@ -11,6 +11,7 @@ import A06DrawerContainer from "../A06DrawerContainer";
 import { useHotkeys } from "react-hotkeys-hook";
 import { FormMetaProvider } from "@/shared-components";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useCallback } from "react";
 
 export const A06DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -38,12 +39,14 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 		}
 	}, [a06.creating, a06.updating]);
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(
-			a06.onEditorSubmit,
-			a06.onEditorSubmitError
-		)
-	}, [a06.onEditorSubmit, a06.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (a06.editing) {
+			form.handleSubmit(
+				a06.onEditorSubmit,
+				a06.onEditorSubmitError
+			)()
+		}
+	}, [a06.editing, a06.onEditorSubmit, a06.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

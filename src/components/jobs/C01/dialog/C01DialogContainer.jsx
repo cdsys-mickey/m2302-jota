@@ -22,6 +22,7 @@ import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useCallback } from "react";
 
 export const C01DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -71,10 +72,14 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 		c01.updating,
 	]);
 
-	const handleSubmit = form.handleSubmit(
-		c01.onEditorSubmit,
-		c01.onEditorSubmitError
-	);
+	const handleSubmit = useCallback(() => {
+		if (c01.editing) {
+			form.handleSubmit(
+				c01.onEditorSubmit,
+				c01.onEditorSubmitError
+			)();
+		}
+	}, [c01.editing, c01.onEditorSubmit, c01.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

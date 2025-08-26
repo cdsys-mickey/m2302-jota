@@ -37,6 +37,10 @@ const defaultCancelButtonProps = {
 	color: "primary",
 };
 
+const defaultTitleProps = {
+	closeTooltip: "關閉視窗 (Esc)"
+}
+
 /**
  * 關鍵屬性是 onConfirm, onCancel, 以及 onClose, 雖然沒有在這裡定義 onClose,
  * 可是他會往下傳遞給 Dialog, 有 onClose 才會
@@ -246,6 +250,8 @@ const DialogExView = memo(
 						ButtonsComponent: TitleButtonsComponent
 					}}
 					{...titleProps}
+					{...defaultTitleProps}
+					{...slotProps?.title}
 					sx={[
 						(theme) => ({
 							fontWeight: 600,

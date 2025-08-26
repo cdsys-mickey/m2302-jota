@@ -259,9 +259,11 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		scrollerBackgroundColor: "transparent",
 	});
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(p42.onEditorSubmit, p42.onEditorSubmitError);
-	}, [p42.onEditorSubmit, p42.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (p42.editing) {
+			form.handleSubmit(p42.onEditorSubmit, p42.onEditorSubmitError)();
+		}
+	}, [form, p42.editing, p42.onEditorSubmit, p42.onEditorSubmitError]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

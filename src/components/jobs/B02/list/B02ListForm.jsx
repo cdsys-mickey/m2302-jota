@@ -27,6 +27,14 @@ const B02ListForm = memo((props) => {
 							disableOpenOnInput
 							borderless
 							placeholder="起"
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
+								},
+							}}
+
 						/>}
 						rightComponent={<CustomerPicker
 							forNew={b.forNew}
@@ -35,6 +43,13 @@ const B02ListForm = memo((props) => {
 							disableOpenOnInput
 							borderless
 							placeholder="迄"
+							slotProps={{
+								paper: {
+									sx: {
+										width: 360,
+									},
+								},
+							}}
 						/>}
 					/>
 				</Grid>

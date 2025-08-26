@@ -12,6 +12,7 @@ import A16DialogForm from "./A16DialogForm";
 import { A16DialogButtonsContainer } from "./buttons/A16DialogButtonsContainer";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useCallback } from "react";
 
 export const A16DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -42,9 +43,11 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 		scrollerBackgroundColor: "transparent",
 	});
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(a16.onEditorSubmit, a16.onEditorSubmitError);
-	}, [a16.onEditorSubmit, a16.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (a16.editing) {
+			form.handleSubmit(a16.onEditorSubmit, a16.onEditorSubmitError)();
+		}
+	}, [a16.editing, a16.onEditorSubmit, a16.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

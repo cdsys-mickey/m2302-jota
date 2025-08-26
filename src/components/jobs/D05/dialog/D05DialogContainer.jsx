@@ -265,10 +265,14 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 		}
 	);
 
-	const handleSubmit = form.handleSubmit(
-		d05.onEditorSubmit({ setValue: form.setValue, gridMeta }),
-		d05.onEditorSubmitError
-	);
+	const handleSubmit = useCallback(() => {
+		if (d05.editing) {
+			form.handleSubmit(
+				d05.onEditorSubmit({ setValue: form.setValue, gridMeta }),
+				d05.onEditorSubmitError
+			)();
+		}
+	}, [d05, form, gridMeta]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

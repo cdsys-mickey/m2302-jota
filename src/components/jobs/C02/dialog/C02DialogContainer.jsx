@@ -72,12 +72,14 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 		c02.updating,
 	]);
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(
-			c02.onEditorSubmit,
-			c02.onEditorSubmitError
-		)
-	}, [c02.onEditorSubmit, c02.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (c02.editing) {
+			form.handleSubmit(
+				c02.onEditorSubmit,
+				c02.onEditorSubmitError
+			)()
+		}
+	}, [c02.editing, c02.onEditorSubmit, c02.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

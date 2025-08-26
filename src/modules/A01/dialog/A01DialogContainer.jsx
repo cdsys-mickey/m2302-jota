@@ -158,9 +158,11 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 		[a01.editing, catL, catM, storeMode]
 	);
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(a01.onEditorSubmit, a01.onEditorSubmitError);
-	}, [a01.onEditorSubmit, a01.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (a01.editing) {
+			form.handleSubmit(a01.onEditorSubmit, a01.onEditorSubmitError)();
+		}
+	}, [a01.editing, a01.onEditorSubmit, a01.onEditorSubmitError, form]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
@@ -202,6 +204,11 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					},
 					scrollable.scroller,
 				]}
+				// slotProps={{
+				// 	title: {
+				// 		closeTooltip: "關閉視窗 (Esc)"
+				// 	}
+				// }}
 				{...rest}>
 				<FormMetaProvider
 					{...formMeta}

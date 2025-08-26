@@ -37,7 +37,7 @@ const TooltipEx = memo(forwardRef((props, ref) => {
 	}, [negativeColor, slotProps]);
 
 	/**
-	 * 使用順序 title → items
+	 * 使用順序 items → title
 	 */
 	const _title = useMemo(() => {
 		if (items && Types.isArray(items) && items.length > 0) {

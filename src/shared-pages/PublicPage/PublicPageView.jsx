@@ -2,11 +2,11 @@ import AppBanner from "@/shared-components/AppBanner";
 import FlexBox from "@/shared-components/FlexBox";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
-import React, { memo } from "react";
-import { CopyrightContainer } from "../shared-components/CopyrightContainer";
-import BasePage from "./BasePage";
+import { CopyrightContainer } from "@/shared-components/CopyrightContainer";
+import BasePage from "../BasePage";
+import { memo } from "react";
 
-const PublicPage = memo(
+const PublicPageView = memo(
 	({ children, height, title, sx = [], boxProps, ...rest }) => {
 		return (
 			<BasePage sx={[...(Array.isArray(sx) ? sx : [sx])]} {...rest}>
@@ -30,11 +30,13 @@ const PublicPage = memo(
 	}
 );
 
-PublicPage.propTypes = {
+PublicPageView.propTypes = {
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	title: PropTypes.string,
 	children: PropTypes.node,
+	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 
-PublicPage.displayName = "PublicPage";
+PublicPageView.displayName = "PublicPage";
 
-export default PublicPage;
+export default PublicPageView;

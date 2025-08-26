@@ -14,6 +14,10 @@ import { useNavigate } from "react-router-dom";
 
 const LOG_KEY = "LogKey";
 
+const DEFAULT_SWITCH_DEPT_OPTS = {
+	toLanding: true
+}
+
 export const useAuth = () => {
 	const { toLogin, toLanding, toRenew } = useAppRedirect();
 	const { httpGetAsync } = useWebApi();
@@ -253,7 +257,9 @@ export const useAuth = () => {
 		});
 	}, [dialogs, handleSignOut]);
 
-	const switchDept = useCallback(async (newDept) => {
+
+
+	const switchDept = useCallback(async (newDept, opts = DEFAULT_SWITCH_DEPT_OPTS) => {
 		if (!newDept) {
 			toastEx.error("您尚未選擇欲切換的門市")
 		}
@@ -268,10 +274,12 @@ export const useAuth = () => {
 			});
 			if (status.success) {
 				recoverIdentity({ switching: true, doRedirect: false });
-				toLanding({
-					reloadAuthorities: true,
-				});
-				deptSwitchAction.clear();
+				if (opts.toLanding) {
+					toLanding({
+						reloadAuthorities: true,
+					});
+				}
+
 				toastEx.success(
 					`已成功切換至 ${newDept?.AbbrName || newDept?.DeptName}`
 				);
@@ -283,6 +291,8 @@ export const useAuth = () => {
 			toastEx.error("由於登入已逾期切換門市失敗，請重新登入");
 			toLogin();
 
+		} finally {
+			deptSwitchAction.clear();
 		}
 	}, [deptSwitchAction, httpGetAsync, recoverIdentity, state.token, toLanding, toLogin]);
 

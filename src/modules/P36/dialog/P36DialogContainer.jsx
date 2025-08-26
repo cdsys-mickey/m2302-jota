@@ -13,6 +13,7 @@ import P36DialogForm from "../form/P36DialogForm";
 import P36Drawer from "../P36Drawer";
 import { P36DialogButtonsContainer } from "./buttons/P36DialogButtonsContainer";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useCallback } from "react";
 
 export const P36DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -61,9 +62,11 @@ export const P36DialogContainer = forwardRef((props, ref) => {
 		scrollerBackgroundColor: "transparent",
 	});
 
-	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(p36.onEditorSubmit, p36.onEditorSubmitError);
-	}, [p36.onEditorSubmit, p36.onEditorSubmitError, form]);
+	const handleSubmit = useCallback(() => {
+		if (p36.editing) {
+			form.handleSubmit(p36.onEditorSubmit, p36.onEditorSubmitError)();
+		}
+	}, [form, p36.editing, p36.onEditorSubmit, p36.onEditorSubmitError]);
 
 	useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true

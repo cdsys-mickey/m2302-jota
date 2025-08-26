@@ -4,6 +4,12 @@ import PropTypes from "prop-types";
 const ControllerWrapper = (props) => {
 	const { name, control, defaultValue, rules, children } = props;
 	// 如果沒有 name，直接回傳 children，不使用 Controller
+
+	if (typeof children != "function") {
+		throw new Error("children 必須是 function({value, onChange, error})");
+	}
+
+
 	if (!name) {
 		return children({ defaultValue, onChange: () => { }, ref: null, error: null });
 	}
