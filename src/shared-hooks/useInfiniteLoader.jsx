@@ -115,7 +115,7 @@ export const useInfiniteLoader = (props = {}) => {
 			}
 
 			console.log(
-				`load(${startIndex} ~ ${stopIndex}), params:`,
+				`loadList(${startIndex} ~ ${stopIndex}), params:`,
 				activeParams
 			);
 			if (saveKey) {

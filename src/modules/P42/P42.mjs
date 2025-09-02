@@ -402,6 +402,25 @@ const paramsToJsonData = (params) => {
 	};
 };
 
+function mapBookingFields(original, collected, fields) {
+	// 初始化結果 object，保留原始 data 的結構
+	const result = {
+		SalDate: original.SalDate,
+		CarQty: collected.CarQty || original.CarQty, // 優先使用 collected 的 CarQty
+		ranges: original.ranges,
+		commissions: original.commissions,
+	};
+
+	// 遍歷 BOOKING_ORDER_FIELDS，將對應欄位從 collected 複製到 result
+	fields.forEach((field) => {
+		if (collected[field] !== undefined) {
+			result[field] = collected[field]; // 直接複製欄位（包括嵌套 object）
+		}
+	});
+
+	return result;
+}
+
 const P42 = {
 	transformForReading,
 	transformForImport,
@@ -409,6 +428,7 @@ const P42 = {
 	paramsToJsonData,
 	isFiltered,
 	transformAsQueryParams,
+	mapBookingFields,
 };
 
 export default P42;

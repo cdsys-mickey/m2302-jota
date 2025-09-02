@@ -10,14 +10,16 @@ const SCOPES = Object.freeze({
 	DEPT: 0,
 	BRANCH_HQ: 1,
 	HQ: 2,
-	ROOT: 3,
+	SYS: 3,
+	ROOT: 4,
 });
 
 const SCOPE_LABELS = Object.freeze({
 	[SCOPES.DEPT]: "門市",
 	[SCOPES.BRANCH_HQ]: "分公司",
 	[SCOPES.HQ]: "總公司",
-	[SCOPES.ROOT]: "系統",
+	[SCOPES.SYS]: "系統",
+	[SCOPES.ROOT]: "超級",
 });
 
 const COOKIE_OPTS = {
@@ -104,6 +106,8 @@ const getHeaderColor = (userClass) => {
 	switch (parseInt(userClass)) {
 		case Auth.SCOPES.ROOT:
 			return Colors.SCOPE_ROOT;
+		case Auth.SCOPES.SYS:
+			return Colors.SCOPE_SYS;
 		case Auth.SCOPES.HQ:
 			return Colors.SCOPE_HQ;
 		case Auth.SCOPES.BRANCH_HQ:

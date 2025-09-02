@@ -7,6 +7,7 @@ import {
 	orange,
 	pink,
 	purple,
+	red,
 } from "@mui/material/colors";
 
 const Colors = {
@@ -37,7 +38,8 @@ const Colors = {
 	// SCOPE_DEPT: grey[300],
 	SCOPE_DEPT: cyan[700],
 	SCOPE_BRANCH_HQ: orange[300],
-	SCOPE_HQ: pink[500],
+	SCOPE_HQ: red[500],
+	SCOPE_SYS: pink[500],
 	SCOPE_ROOT: purple[500],
 	ICON_BG: grey[500],
 	GREY: grey[300],

@@ -449,7 +449,7 @@ export const useE021 = ({ mode }) => {
 
 	const cancelAction = useCallback(() => {
 		crud.cancelAction();
-		purchaseOrderIdRef.current = null;
+		// purchaseOrderIdRef.current = null;
 		crud.setItemData(null);
 		// 清除 query params
 		clearParams();
@@ -1347,9 +1347,9 @@ export const useE021 = ({ mode }) => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
-	const setPurchaseOrderToLoad = useCallback((purchaseOrderId) => {
-		purchaseOrderIdRef.current = purchaseOrderId;
-	}, []);
+	// const setPurchaseOrderToLoad = useCallback((purchaseOrderId) => {
+	// 	purchaseOrderIdRef.current = purchaseOrderId;
+	// }, []);
 
 	// const pickByOrder = useCallback(async (orderId) => {
 	// 	// cancelAction();
@@ -1421,15 +1421,15 @@ export const useE021 = ({ mode }) => {
 		}
 	}, [httpGetAsync, loadOrderAction, promptCreating, token]);
 
-	const promptLoadPurchaseOrder = useCallback(({ setValue, orderId }) => {
-		purchaseOrderIdRef.current = null;
-		dialogs.confirm({
-			message: `確定要載入訂貨單 ${orderId}?`,
-			onConfirm: () => {
-				loadPurchaseOrder({ setValue, orderId });
-			},
-		})
-	}, [dialogs, loadPurchaseOrder]);
+	// const promptLoadPurchaseOrder = useCallback(({ setValue, orderId }) => {
+	// 	purchaseOrderIdRef.current = null;
+	// 	dialogs.confirm({
+	// 		message: `確定要載入訂貨單 ${orderId}?`,
+	// 		onConfirm: () => {
+	// 			loadPurchaseOrder({ setValue, orderId });
+	// 		},
+	// 	})
+	// }, [dialogs, loadPurchaseOrder]);
 
 	useInit(() => {
 		crud.cancelAction();
@@ -1437,8 +1437,8 @@ export const useE021 = ({ mode }) => {
 
 	return {
 		...crud,
-		//override CRUD
-		cancelAction: cancelAction,
+		//override CRUD.cancelAction
+		cancelAction,
 		...listLoader,
 		...appModule,
 		selectedOrd,
@@ -1498,11 +1498,11 @@ export const useE021 = ({ mode }) => {
 		onRefreshGridSubmit,
 		onRefreshGridSubmitError,
 		// 調訂貨單
-		purchaseOrderIdRef,
+		// purchaseOrderIdRef,
 		// pickByOrder,
-		setPurchaseOrderToLoad,
+		// setPurchaseOrderToLoad,
 		loadPurchaseOrder,
-		promptLoadPurchaseOrder,
+		// promptLoadPurchaseOrder,
 		loadOrderWorking: loadOrderAction.working,
 		createWithPurchaseOrder,
 		stypeDisabled

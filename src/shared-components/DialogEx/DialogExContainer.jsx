@@ -3,6 +3,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import DialogExView from "./DialogExView";
+import { useMemo } from "react";
 
 const DialogExContainer = (props) => {
 	const { minWidth, ...rest } = props;
@@ -27,10 +28,14 @@ const DialogExContainer = (props) => {
 	const matchesBreakpoint = useMediaQuery(query);
 	const tooSmall = !!minWidth && !matchesBreakpoint;
 
+	const _editing = useMemo(() => {
+		return crud?.editing && !crud?.readingFailed;
+	}, [crud?.editing, crud?.readingFailed])
+
 	return (
 		<DialogExView
-			disableEscapeKeyDown={crud?.editing}
-			hideCloseButton={crud?.editing}
+			disableEscapeKeyDown={_editing}
+			hideCloseButton={_editing}
 			tooSmall={tooSmall}
 			// fullScreen={crud?.editing}
 			{...rest}

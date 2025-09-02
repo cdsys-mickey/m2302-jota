@@ -929,8 +929,8 @@ export const useZA03 = () => {
 					});
 					return updatedRowData;
 				}),
-			// { doDirtyCheckByIndex: true, debug: true }
-			{ debug: true }
+			{ doDirtyCheckByIndex: true, debug: true }
+			// { debug: true }
 		);
 	}, [grid]);
 
@@ -944,8 +944,8 @@ export const useZA03 = () => {
 					});
 					return updatedRowData;
 				}),
-			// { doDirtyCheckByIndex: true, debug: true }
-			{ debug: true }
+			{ doDirtyCheckByIndex: true, debug: true }
+			// { debug: true }
 		);
 	}, [grid]);
 

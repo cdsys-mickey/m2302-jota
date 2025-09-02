@@ -23,6 +23,7 @@ import { useMediaQuery } from "@mui/system";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useRef } from "react";
 import CrudContext from "@/contexts/crud/CrudContext";
+import { useQuerySync } from "@/shared-hooks/useQuerySync";
 
 export const P42DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -33,6 +34,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 	const form = useFormContext();
 	const { reset } = form;
 	const p42 = useContext(P42Context);
+	const { createWithBookingOrder } = p42;
 	const _height = useMemo(() => {
 		return height - 40
 	}, [height])
@@ -371,6 +373,18 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		{ debug: true, tag: "TotCmsC_N", debounce: 300 }
 	);
 
+	const handleQuerySync = useCallback(
+		(newValue) => {
+			if (newValue) {
+				formMeta.supressEvents();
+				createWithBookingOrder({ id: newValue });
+			}
+		},
+		[createWithBookingOrder, formMeta]
+	);
+
+	useQuerySync("target", handleQuerySync);
+
 	return (
 
 		<DialogEx
@@ -384,7 +398,9 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 			TitleButtonsComponent={P42DialogButtonsContainer}
 			open={p42.itemViewOpen}
 			onClose={
-				p42.editing ? p42.confirmDialogClose : p42.cancelAction
+				(p42.editing && !p42?.readingFailed)
+					? p42.confirmDialogClose
+					: p42.cancelAction
 			}
 			// onReturn={p42.updating ? p42.confirmReturn : null}
 			sx={{

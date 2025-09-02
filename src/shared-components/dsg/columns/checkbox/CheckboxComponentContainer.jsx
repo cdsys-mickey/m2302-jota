@@ -1,7 +1,7 @@
 import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
-import CheckboxComponent from "./CheckboxComponent";
+import CheckboxCellComponent from "./CheckboxCell/CheckboxCellComponent";
 
 const CheckboxComponentContainer = (props) => {
 	const { columnData, ...rest } = props;
@@ -13,7 +13,7 @@ const CheckboxComponentContainer = (props) => {
 			...cellControls,
 		};
 	}, [cellControls, columnData]);
-	return <CheckboxComponent columnData={_columnData} {...rest} />;
+	return <CheckboxCellComponent columnData={_columnData} {...rest} />;
 }
 
 CheckboxComponentContainer.propTypes = {

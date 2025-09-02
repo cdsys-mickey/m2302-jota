@@ -61,7 +61,11 @@ export const E01ListViewContainer = () => {
 	});
 
 	useInit(() => {
-		e01.loadList();
+		e01.loadList({
+			params: E01.transformAsQueryParams({
+				squared: E01.getListSquaredOptionById(E01.SquaredState.NOT)
+			})
+		});
 	}, []);
 
 	useChangeTracking(() => {

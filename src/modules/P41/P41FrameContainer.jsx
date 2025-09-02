@@ -5,25 +5,31 @@ import { FormProvider, useForm } from "react-hook-form";
 
 
 import { FrameBanner, FrameBox } from "@/shared-components";
-import P41Toolbar from "./P41Toolbar";
-import { P41SearchFieldContainer } from "./search/P41SearchFieldContainer";
+import ResponsiveLayout from "@/shared-components/responsive/ResponsiveLayout";
+import P41 from "./P41.mjs";
+import P41SearchFormContainer from "./search/P41SearchFormContainer";
 
 
 export const P41FrameContainer = () => {
-	const searchForm = useForm();
+	const searchForm = useForm({
+		defaultValues: P41.getDefaultValues()
+	});
 
 	return (
 		<FormProvider {...searchForm}>
 			<FrameBox>
 				{/* 標題 */}
 				<FrameBanner>
-					{<P41SearchFieldContainer name="qs" />}
+					{/* {<P41SearchFieldContainer name="qs" />} */}
 				</FrameBanner>
-				{/* 工具列 */}
-				<P41Toolbar />
-				{/* 列表 */}
-				<P41ListHeader />
-				<P41ListViewContainer />
+				<ResponsiveLayout initSize="md">
+					<P41SearchFormContainer />
+					{/* 工具列 */}
+
+					{/* 列表 */}
+					<P41ListHeader />
+					<P41ListViewContainer />
+				</ResponsiveLayout>
 				{/* 對話框 */}
 				<P41DialogContainer />
 

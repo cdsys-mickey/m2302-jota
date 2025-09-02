@@ -10,6 +10,7 @@ import { useSideDrawer } from "@/hooks/useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import P41 from "./P41.mjs";
 import { useRef } from "react";
+import useAppRedirect from "@/hooks/useAppRedirect";
 
 export const useP41 = ({ token }) => {
 	const itemIdRef = useRef();
@@ -19,6 +20,8 @@ export const useP41 = ({ token }) => {
 		token,
 		moduleId: "P41",
 	});
+	const { toModule } = useAppRedirect();
+
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
@@ -298,6 +301,11 @@ export const useP41 = ({ token }) => {
 		[]
 	);
 
+	const gotoP42 = useCallback(() => {
+		toModule("P42", { target: crud.itemData?.OrdID });
+	}, [crud.itemData?.OrdID, toModule]);
+
+
 	useInit(() => {
 		crud.cancelAction();
 	}, []);
@@ -325,7 +333,8 @@ export const useP41 = ({ token }) => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
-		handleReset
+		handleReset,
+		gotoP42
 	};
 };
 

@@ -6,19 +6,19 @@ import { IconButton, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import E01ExportButtonContainer from "./E01ExportButtonContainer";
+import E01ConvertToSalesOrderButton from "./E01ConvertToSalesOrderButton";
 
 const E01DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onPrint, onSideDrawerOpen, ...rest } = props;
+		const { onEdit, onDelete, onPrint, onSideDrawerOpen, onConvert, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onPrint && (
 					<>
-						{/* <E01OutputModePickerContainer />
-						<E01PrintButtonContainer /> */}
 						<E01ExportButtonContainer />
 					</>
 				)}
+				<E01ConvertToSalesOrderButton onClick={onConvert} />
 				{onDelete && (
 					<ResponsiveButton
 						startIcon={<HighlightOffIcon />}
@@ -51,6 +51,7 @@ E01DialogViewToolbar.propTypes = {
 	onDelete: PropTypes.func,
 	onPrint: PropTypes.func,
 	onSideDrawerOpen: PropTypes.func,
+	onConvert: PropTypes.func
 };
 
 export default E01DialogViewToolbar;

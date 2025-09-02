@@ -1,6 +1,7 @@
 import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
 import Forms from "@/shared-modules/Forms.mjs";
 import Objects from "@/shared-modules/Objects.mjs";
+import P41FilterModes from "./P41FilterModePicker/P41FilterModes";
 
 /* eslint-disable no-mixed-spaces-and-tabs */
 const transformForReading = (payload) => {
@@ -126,12 +127,19 @@ const isFiltered = (criteria) => {
 };
 
 const transformAsQueryParams = (data) => {
-	const { lvId, lvName, lvBank, ...rest } = data;
+	const { lvArrDate, lvOrdDate, lvFilterMode, qs, ...rest } = data;
 	return {
-		si: lvId,
-		sn: lvName,
-		...(lvBank && {
-			bank: lvBank?.CodeID,
+		...(qs && {
+			qs,
+		}),
+		...(lvArrDate && {
+			ard: Forms.formatDate(lvArrDate),
+		}),
+		...(lvOrdDate && {
+			ord: Forms.formatDate(lvOrdDate),
+		}),
+		...(lvFilterMode && {
+			c: lvFilterMode?.id,
 		}),
 		...rest,
 	};
@@ -172,12 +180,20 @@ const paramsToJsonData = (params) => {
 	};
 };
 
+const getDefaultValues = () => {
+	return {
+		lvArrDate: new Date(),
+		lvFilterMode: P41FilterModes.getDefaultOption(),
+	};
+};
+
 const P41 = {
 	transformForReading,
 	transformForEditorSubmit,
 	paramsToJsonData,
 	isFiltered,
 	transformAsQueryParams,
+	getDefaultValues,
 };
 
 export default P41;

@@ -211,10 +211,11 @@ export const P35DialogContainer = forwardRef((props, ref) => {
 				},
 			}}
 			contentSx={[
-				// {
-				// 	minHeight: "30em",
-				// },
+				{
+					paddingBottom: 0
+				},
 				scrollable.scroller,
+
 			]}
 			{...rest}>
 			<FormMetaProvider {...formMeta} gridMeta={gridMeta} isFieldDisabled={isFieldDisabled}>

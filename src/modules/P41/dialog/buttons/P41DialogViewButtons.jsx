@@ -5,12 +5,14 @@ import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { IconButton, Tooltip } from "@mui/material";
+import P41ConvertToEntryButton from "../toolbar/P41ConvertToEntryButton";
 
 const P41DialogTitleViewButtons = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onSideDrawerOpen, ...rest } = props;
+		const { onEdit, onDelete, onSideDrawerOpen, onConvert, ...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
+				<P41ConvertToEntryButton onClick={onConvert} />
 				{onDelete && (
 					<ResponsiveButton
 						startIcon={<HighlightOffIcon />}
@@ -43,6 +45,7 @@ P41DialogTitleViewButtons.propTypes = {
 	onEdit: PropTypes.func,
 	onDelete: PropTypes.func,
 	onSideDrawerOpen: PropTypes.func,
+	onConvert: PropTypes.func,
 };
 
 export default P41DialogTitleViewButtons;

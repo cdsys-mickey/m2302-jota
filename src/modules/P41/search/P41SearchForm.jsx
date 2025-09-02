@@ -1,4 +1,5 @@
 import BankPicker from "@/components/BankPicker/BankPicker";
+import { DatePickerEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
@@ -9,34 +10,35 @@ const P41SearchForm = memo((props) => {
 	return (
 		<FormBox>
 			<ResponsiveGrid container spacing={1} columns={24} {...rest} >
-				<ResponsiveGrid item xs={24} sm={24} md={4}>
+				<ResponsiveGrid item md={6} lg={4}>
 					<TextFieldWrapper
 						autoFocus
-						name="lvId"
-						label="廠商編號"
+						name="qs"
+						label="編號/名稱"
 						variant="outlined"
 						size="small"
 						fullWidth
 						clearable
 					/>
 				</ResponsiveGrid>
-				<ResponsiveGrid item xs={24} sm={24} md={4}>
-					<TextFieldWrapper
-						name="lvName"
-						label="廠商名稱"
-						variant="outlined"
-						size="small"
+				<ResponsiveGrid item md={6} lg={4}>
+					<DatePickerEx
+						name="lvArrDate"
+						label="到訪日期"
+						validate
+						clearable
 						fullWidth
+					/>
+				</ResponsiveGrid>
+				<ResponsiveGrid item md={6} lg={4}>
+					<DatePickerEx
+						name="lvOrdDate"
+						label="訂訪日期"
+						validate
 						clearable
 					/>
 				</ResponsiveGrid>
-				<ResponsiveGrid item xs={24} sm={24} md={4}>
-					<BankPicker
-						name="lvBank"
-						label="銀行"
-						disableOpenOnInput
-					/>
-				</ResponsiveGrid>
+
 			</ResponsiveGrid>
 		</FormBox>
 	);

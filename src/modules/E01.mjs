@@ -59,10 +59,14 @@ const SquaredState = Object.freeze({
 
 const listSquaredOptions = [
 	// { id: SquaredState.NONE, label: "不篩選" },
-	{ id: SquaredState.NOT, label: "未結清" },
-	{ id: SquaredState.MARK_AS_SQUARED, label: "結清" },
-	{ id: SquaredState.SQUARED, label: "銷貨已結清" },
+	{ id: SquaredState.NOT, label: "[ ]未結清" },
+	{ id: SquaredState.MARK_AS_SQUARED, label: "[Y]結清" },
+	{ id: SquaredState.SQUARED, label: "[*]銷貨已結清" },
 ];
+
+const getListSquaredOptionById = (id) => {
+	return listSquaredOptions.find((o) => o.id === id);
+};
 
 const squaredOptions = [
 	{ id: SquaredState.NONE, label: "未結清" },
@@ -73,7 +77,7 @@ const squaredOptions = [
 const getSquaredOptionLabel = (option) => {
 	if (!option) return "";
 	const { id, label } = option;
-	return `[${id || "  "}] ${label}`;
+	return [label].filter(Boolean).join(" ");
 };
 
 const getSquaredOptionById = (id) => {
@@ -449,7 +453,9 @@ const E01 = {
 	transformProdCriteriaAsQueryParams,
 	// 結清
 	SquaredState,
+	// ListForm 結清下拉清單
 	listSquaredOptions,
+	getListSquaredOptionById,
 	squaredOptions,
 	getSquaredOptionLabel,
 	getSquaredOptionById,

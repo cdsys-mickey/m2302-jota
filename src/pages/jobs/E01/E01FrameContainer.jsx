@@ -3,12 +3,15 @@ import { E01ListFormContainer } from "@/components/jobs/E01/list/E01ListFormCont
 import E01ListHeader from "@/components/jobs/E01/list/E01ListHeader";
 import E01ListToolbar from "@/components/jobs/E01/list/E01ListToolbar";
 import { E01ListViewContainer } from "@/components/jobs/E01/list/E01ListViewContainer";
+import E01 from "@/modules/E01.mjs";
 import { FrameBanner, FrameBox } from "@/shared-components";
 import { FormProvider, useForm } from "react-hook-form";
 
 export const E01FrameContainer = () => {
 	const searchForm = useForm({
 		defaultValues: {
+			lvOrdDate: null,
+			lvSquared: E01.getListSquaredOptionById(E01.SquaredState.NOT)
 		}
 	});
 

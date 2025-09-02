@@ -37,7 +37,7 @@ const SignInX = memo((props) => {
 					<Grid item xs={12}>
 						<TextFieldEx
 							// passwordToggle
-							passwordPressed
+							// passwordPressed
 							type="password"
 							inputProps={{
 								autocomplete: "current-password",

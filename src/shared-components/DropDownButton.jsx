@@ -246,10 +246,15 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 				)}
 			</ButtonGroup>
 			<Popper
-				sx={{
-					zIndex: 1,
-					minWidth: anchorRef.current?.clientWidth || "5rem",
-				}}
+				sx={[
+					theme => ({
+						zIndex: theme.zIndex.tooltip,
+						minWidth: anchorRef.current?.clientWidth || "5rem",
+					}),
+					...(Array.isArray(slotProps?.popper?.sx)
+						? slotProps.popper.sx
+						: [slotProps?.popper?.sx].filter(Boolean)),
+				]}
 
 				open={popperOpen}
 				anchorEl={anchorRef.current}

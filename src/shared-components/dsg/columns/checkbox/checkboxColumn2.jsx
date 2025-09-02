@@ -1,7 +1,7 @@
-import CheckboxComponent from "./CheckboxComponent";
+import CheckboxCellComponent from "./CheckboxCell/CheckboxCellComponent";
 
 export const checkboxColumn2 = {
-	component: CheckboxComponent,
+	component: CheckboxCellComponent,
 	deleteValue: () => false,
 	// We can customize what value is copied: when the checkbox is checked we copy YES, otherwise we copy NO
 	copyValue: ({ rowData }) => (rowData ? "1" : "0"),

@@ -53,6 +53,7 @@ export const E01DialogToolbarContainer = (props) => {
 			onDelete={e01.canDelete ? e01.confirmDelete : null}
 			onPrint={e01.canPrint ? handlePrint : null}
 			onSideDrawerOpen={e01.handleSideDrawerOpen}
+			onConvert={e01.gotoE021}
 			{...rest}
 		/>
 	);

@@ -1,5 +1,6 @@
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import Objects from "@/shared-modules/Objects.mjs";
+import { Checkbox } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 
@@ -17,7 +18,7 @@ const arePropsEqual = (oldProps, newProps) => {
  * 2. 按 Enter 不改變 rowData
  * https://github.com/nick-keller/react-datasheet-grid/blob/master/src/columns/checkboxColumn.tsx
  */
-const CheckboxComponent = memo(
+const CheckboxCellComponent = memo(
 	({
 		columnData,
 		focus,
@@ -134,26 +135,29 @@ const CheckboxComponent = memo(
 		}, [active, cell, columnIndex, focusNextCell, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
-			<input
+			<Checkbox
+				color="default"
 				className="dsg-checkbox"
 				style={{
-					...(size === "large" && {
-						height: "24px",
-						width: "24px",
-					}),
-					...(size === "medium" && {
-						height: "18px",
-						width: "18px",
-					}),
+					// ...(size === "large" && {
+					// 	height: "24px",
+					// 	width: "24px",
+					// }),
+					// ...(size === "medium" && {
+					// 	height: "18px",
+					// 	width: "18px",
+					// }),
 					...(disabled && {
 						pointerEvents: "none",
 					}),
 					cursor: "pointer",
-					// appearance: "none",
-					// ":checked": {
-					// 	backgroundColor: "#555"
-					// }
 				}}
+				sx={{
+					"&.MuiCheckbox-root": {
+						padding: 0
+					}
+				}}
+				disableRipple
 				// Important to prevent any undesired "tabbing"
 				tabIndex={-1}
 				type="checkbox"
@@ -167,13 +171,12 @@ const CheckboxComponent = memo(
 				onMouseDown={handleMouseDown}
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}
-			// onChange={() => null}
 			/>
 		);
 	},
 	arePropsEqual
 );
-CheckboxComponent.propTypes = {
+CheckboxCellComponent.propTypes = {
 	columnData: PropTypes.object,
 	rowData: PropTypes.bool,
 	focus: PropTypes.bool,
@@ -185,5 +188,5 @@ CheckboxComponent.propTypes = {
 	rowIndex: PropTypes.number,
 	columnIndex: PropTypes.number
 };
-CheckboxComponent.displayName = "CheckboxComponent";
-export default CheckboxComponent;
+CheckboxCellComponent.displayName = "CheckboxComponent";
+export default CheckboxCellComponent;

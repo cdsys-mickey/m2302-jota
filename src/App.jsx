@@ -152,7 +152,7 @@ function App() {
 				document.removeEventListener("contextmenu", handleContextMenu);
 			};
 		}
-	}, []);
+	}, [config.PROFILE]);
 
 	return (
 		<StyledEngineProvider injectFirst>

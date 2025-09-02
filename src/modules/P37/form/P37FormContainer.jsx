@@ -1,23 +1,14 @@
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import P37FormView from "./P37FormView";
+import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
 import TourGroupTypes from "@/components/TourGroupTypePicker/TourGroupTypes.mjs";
-import { useEffect } from "react";
-import { useContext } from "react";
-import P37Context from "../P37Context";
-import { useInit } from "@/shared-hooks/useInit";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import { useHotkeys } from "react-hotkeys-hook";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { useMemo } from "react";
-import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import DSGMetaContext from "@/shared-contexts/datasheet-grid/DSGMetaContext";
 import { FormMetaProvider } from "@/shared-components";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
-import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
-import { useCallback } from "react";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useInit } from "@/shared-hooks/useInit";
+import { useCallback, useContext } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useHotkeys } from "react-hotkeys-hook";
+import P37Context from "../P37Context";
+import P37FormView from "./P37FormView";
 
 const P37FormContainer = (props) => {
 	const { ...rest } = props;
@@ -37,12 +28,12 @@ const P37FormContainer = (props) => {
 		p37.loadItem({ id: CmsGroupTypes.Types.DOMESTIC });
 	}, []);
 
-	useChangeTracking(() => {
-		if (p37.itemDataReady) {
-			reset(p37.itemData);
-			console.log("reset", p37.itemData);
-		}
-	}, [p37.itemData, p37.itemDataReady]);
+	// useChangeTracking(() => {
+	// 	if (p37.itemDataReady) {
+	// 		reset(p37.itemData);
+	// 		console.log("reset", p37.itemData);
+	// 	}
+	// }, [p37.itemData, p37.itemDataReady]);
 
 	const formMeta = useFormMeta(
 		`

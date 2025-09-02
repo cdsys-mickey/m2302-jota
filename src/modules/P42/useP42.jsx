@@ -17,8 +17,16 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import useAction from "@/shared-modules/ActionState/useAction";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import useJotaReports from "@/hooks/useJotaReports";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
 const BOOKING_ORDER_FIELDS = ["GrpName", "city", "area", "GrpType", "custType", "busComp", "CarData_N", "CarQty", "PugAmt", "CarNo", "DrvName", "DrvTel", "tourGroup", "TrvData_N", "tourGuide", "CndName", "CndTel", "employee", "Remark"];
+
+const newData = {
+	SalDate: new Date(),
+	CarQty: 1,
+	ranges: [],
+	commissions: [],
+}
 
 export const useP42 = () => {
 	const config = useContext(ConfigContext);
@@ -32,6 +40,7 @@ export const useP42 = () => {
 	});
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
+	const { clearParams } = useContext(AppFrameContext);
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApi();
 	const [selectedItem, setSelectedItem] = useState();
@@ -128,16 +137,69 @@ export const useP42 = () => {
 		[cmsGrid, crud, httpGetAsync, rangeGrid, token]
 	);
 
+	const createWithBookingOrder = useCallback(
+		async ({ id }) => {
+			try {
+				// promptCreating();
+				crud.promptCreating();
+				crud.startReading("讀取中...");
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/cms/bookings",
+					bearer: token,
+					params: {
+						id,
+					},
+				});
+				if (status.success) {
+					const collected = P42.transformForImport(payload.data[0]);
+					const mappedData = P42.mapBookingFields(newData, collected, BOOKING_ORDER_FIELDS);
+					mappedData["bookingOrder"] = {
+						OrdID: id
+					}
+					crud.finishedReading({
+						data: {
+							...mappedData,
+						},
+					});
+					// 暫存上次讀取成功的訂貨單
+					// prevOrdersRef.current = data.customerOrders;
+
+
+					rangeGrid.initGridData(mappedData.ranges, {
+						fillRows: true,
+					});
+					cmsGrid.initGridData(mappedData.commissions, {
+						fillRows: true
+					})
+					toastEx.info(`已帶入預約單 ${id}`)
+
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				crud.failedReading(err);
+			}
+		},
+		[crud, httpGetAsync, token, rangeGrid, cmsGrid]
+	);
+
+	const cancelAction = useCallback(() => {
+		crud.cancelAction();
+		crud.setItemData(null);
+		// 清除 query params
+		clearParams();
+	}, [clearParams, crud]);
+
 	const handleSelect = useCallback(
 		async (e, rowData) => {
 			e?.stopPropagation();
-			crud.cancelAction();
+			cancelAction();
 			setSelectedItem(rowData);
 
 			// crud.startReading("讀取中...", { id: rowData.ComID });
 			loadItem({ id: rowData.ComID });
 		},
-		[crud, loadItem]
+		[cancelAction, loadItem]
 	);
 
 	const confirmReturn = useCallback(() => {
@@ -154,23 +216,23 @@ export const useP42 = () => {
 		dialogs.confirm({
 			message: "確認要放棄編輯?",
 			onConfirm: () => {
-				crud.cancelAction();
+				cancelAction();
 			},
 		});
-	}, [crud, dialogs]);
+	}, [cancelAction, dialogs]);
 
 	const confirmQuitCreating = useCallback(() => {
 		dialogs.confirm({
 			message: "確認要放棄新增?",
 			onConfirm: () => {
-				crud.cancelAction();
+				cancelAction();
 			},
 		});
-	}, [crud, dialogs]);
+	}, [cancelAction, dialogs]);
 
 	const handleDialogClose = useCallback(() => {
-		crud.cancelAction();
-	}, [crud]);
+		cancelAction();
+	}, [cancelAction]);
 
 	const handleSave = useCallback(
 		async ({ data, creating }) => {
@@ -276,17 +338,12 @@ export const useP42 = () => {
 	const handlePromptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
-			const data = {
-				SalDate: new Date(),
-				CarQty: 1,
-				ranges: [],
-				commissions: [],
-			};
+
 			crud.promptCreating({
-				data,
+				data: newData,
 			});
-			rangeGrid.initGridData(data.ranges, { fillRows: 10 })
-			cmsGrid.initGridData(data.commissions, { fillRows: 10 })
+			rangeGrid.initGridData(newData.ranges, { fillRows: 10 })
+			cmsGrid.initGridData(newData.commissions, { fillRows: 10 })
 		},
 		[cmsGrid, crud, rangeGrid]
 	);
@@ -310,7 +367,7 @@ export const useP42 = () => {
 						}
 					});
 					if (status.success) {
-						crud.cancelAction();
+						cancelAction();
 						toastEx.success(
 							`成功删除佣金單 ${crud.itemData?.ComID}`
 						);
@@ -325,7 +382,7 @@ export const useP42 = () => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, listLoader, token]);
+	}, [cancelAction, crud, dialogs, httpDeleteAsync, listLoader, token]);
 
 	const onSearchSubmit = useCallback(
 		(data) => {
@@ -357,8 +414,6 @@ export const useP42 = () => {
 	);
 
 	const handleBookingOrderChange = useCallback(({ form }) => async (newBookingOrder) => {
-
-
 		if (newBookingOrder) {
 			try {
 				const { status, payload, error } = await httpGetAsync({
@@ -511,6 +566,8 @@ export const useP42 = () => {
 	return {
 		...listLoader,
 		...crud,
+		//override CRUD.cancelAction
+		cancelAction: cancelAction,
 		onSearchSubmit,
 		onSearchSubmitError,
 		handleSelect,
@@ -548,6 +605,8 @@ export const useP42 = () => {
 		handlePcSubtotalChange,
 		onPrintSubmit,
 		onPrintSubmitError,
+		// 帶入預約單
+		createWithBookingOrder
 	};
 };
 

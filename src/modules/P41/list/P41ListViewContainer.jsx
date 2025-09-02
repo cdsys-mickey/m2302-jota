@@ -5,11 +5,12 @@ import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "../../../shared-components/listview/ListViewBox";
-import { useReactWindowScroll } from "../../../shared-hooks/react-window/useReactWindowScroll";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { P41ListRowContainer } from "./P41ListRowContainer";
-import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useMemo } from "react";
+import P41 from "../P41.mjs";
+import P41FilterModes from "../P41FilterModePicker/P41FilterModes";
 
 export const P41ListViewContainer = () => {
 	const p41 = useContext(P41Context);
@@ -22,27 +23,44 @@ export const P41ListViewContainer = () => {
 		control: form.control,
 	});
 
+	const lvArrDate = useWatch({
+		name: "lvArrDate",
+		control: form.control
+	})
+
+	const lvOrdDate = useWatch({
+		name: "lvOrdDate",
+		control: form.control
+	})
+
+	const lvFilterMode = useWatch({
+		name: "lvFilterMode",
+		control: form.control
+	})
+
 	const debouncedQs = useDebounce(qs, 300);
 	// const { scrollOffset, onScroll } = useReactWindowScroll({ debounce: 20 });
 
 	useInit(() => {
-		p41.loadList();
+		p41.loadList({
+			params: P41.transformAsQueryParams(P41.getDefaultValues())
+		});
 	}, []);
 
 	useChangeTracking(() => {
-		console.log(`debouncedQs: ${debouncedQs}`);
-		if (debouncedQs !== undefined) {
-			const values = getValues();
-			loadList({
-				params: { ...values, qs: debouncedQs },
-				supressLoading: true,
-			});
-			setValue("qs", debouncedQs);
-		}
-	}, [debouncedQs]);
+		loadList({
+			params: P41.transformAsQueryParams({
+				qs: debouncedQs,
+				lvOrdDate,
+				lvArrDate,
+				lvFilterMode
+			}),
+			supressLoading: true,
+		});
+	}, [debouncedQs, lvOrdDate, lvArrDate, lvFilterMode]);
 
 	const _height = useMemo(() => {
-		return height ? height - 162 : 300
+		return height ? height - 202 : 300
 	}, [height])
 
 	return (

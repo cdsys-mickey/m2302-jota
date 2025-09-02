@@ -17,6 +17,7 @@ import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import useAppRedirect from "../useAppRedirect";
 export const useE01 = () => {
 	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
@@ -27,6 +28,7 @@ export const useE01 = () => {
 		token,
 		moduleId: "E01",
 	});
+	const { toModule } = useAppRedirect();
 
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
@@ -1072,6 +1074,10 @@ export const useE01 = () => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
+	const gotoE021 = useCallback(() => {
+		toModule("E021", { target: crud.itemData?.OrdID });
+	}, [crud.itemData?.OrdID, toModule]);
+
 	return {
 		...crud,
 		...listLoader,
@@ -1130,6 +1136,8 @@ export const useE01 = () => {
 		// activeCell
 		// Grid 重整
 		onRefreshGridSubmit,
-		onRefreshGridSubmitError
+		onRefreshGridSubmitError,
+
+		gotoE021
 	};
 };

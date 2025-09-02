@@ -47,6 +47,7 @@ export const P41DialogButtonsContainer = (props) => {
 		<P41DialogViewButtons
 			onEdit={_onEdit}
 			onDelete={_onDelete}
+			onConvert={p41.gotoP42}
 			onSideDrawerOpen={p41.handleSideDrawerOpen}
 			{...rest}
 		/>

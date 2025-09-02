@@ -1,17 +1,12 @@
 import { FormControl, FormLabel } from "@mui/material";
 import PropTypes from "prop-types";
-import { cloneElement } from "react";
 
 const FormLabelWrapper = (props) => {
-	const { children, label, ...rest } = props;
-
-	if (!label) {
-		return cloneElement(children, rest);
-	}
+	const { children, label } = props;
 
 	return (
 		<FormControl>
-			<FormLabel>{label}</FormLabel>
+			{label && (<FormLabel>{label}</FormLabel>)}
 			{children}
 		</FormControl>
 	)

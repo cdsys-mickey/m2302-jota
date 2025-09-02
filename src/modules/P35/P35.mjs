@@ -60,8 +60,10 @@ const transformForReading = (payload) => {
 					CodeData: BankData_N,
 			  }
 			: null,
-		Remark: Remark.join("\n"),
-		AsRemark: AsRemark.join("\n"),
+		// Remark: Remark.join("\n"),
+		// AsRemark: AsRemark.join("\n"),
+		Remark,
+		AsRemark,
 		clearOnSite1: PayNowTB?.[0]?.STrvPnow === "Y",
 		clearOnSite2: PayNowTB?.[0]?.SCndPnow === "Y",
 		clearOnSite3: PayNowTB?.[0]?.SDrvPnow === "Y",
@@ -117,9 +119,11 @@ const transformForEditorSubmit = (payload, gridData) => {
 		CityID: city?.CodeID ?? "",
 		CtAreaID: area?.CodeID ?? "",
 		BankID: bank?.CodeID ?? "",
-		Remark: Remark?.split("\n") || [],
+		// Remark: Remark?.split("\n") || [],
+		Remark,
 		Assign: Assign ? "Y" : "N",
-		AsRemark: AsRemark?.split("\n") || [],
+		// AsRemark: AsRemark?.split("\n") || [],
+		AsRemark,
 		PayNowTB: [
 			{
 				STrvPnow: clearOnSite1 ? "Y" : "N",

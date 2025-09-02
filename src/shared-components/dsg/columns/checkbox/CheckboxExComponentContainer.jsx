@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import CheckboxComponent from "./CheckboxComponent";
+import CheckboxCellComponent from "./CheckboxCell/CheckboxCellComponent";
 
 export const CheckboxExComponentContainer = (props) => {
 	const { ...rest } = props;

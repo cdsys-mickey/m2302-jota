@@ -46,7 +46,7 @@ export default function useP37() {
 				console.log("payload", payload);
 				if (status.success) {
 					let data;
-					if (id == CmsGroupTypes.Types.CHINA) {
+					if (_id == CmsGroupTypes.Types.CHINA) {
 						data = P37.transformForChinaReading(payload.data[0]);
 						setBusCmsType(payload.data[0].ComNCont_S?.[0].SDrvCms?.includes("%") ? 1 : 0);
 					} else {

@@ -2,11 +2,19 @@ import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, memo } from "react";
 import P41CreateButtonContainer from "./P41CreateButtonContainer";
 import { P41FetchResultLabelContainer } from "./P41FetchResultLabelContainer";
+import P41FilterModePicker from "./P41FilterModePicker/P41FilterModePicker";
 
 const LeftButtons = memo(() => (
 	<>
 		<P41CreateButtonContainer />
-		{/* <P41PrintButtonContainer /> */}
+		<P41FilterModePicker
+			name="lvFilterMode"
+			dense
+			placeholder="篩選模式"
+			autoComplete
+			autoSelect
+			width="10rem"
+		/>
 	</>
 ))
 
