@@ -1,7 +1,6 @@
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, memo } from "react";
 import Colors from "../Colors.mjs";
-import { P37XLockRowsSwitchContainer } from "./toolbar/P37XLockRowsSwitchContainer";
 import P37XSaveButton from "./toolbar/P37XSaveButton";
 import P37XCancelButton from "./toolbar/P37XCancelButton";
 import P37XEditButton from "./toolbar/P37XEditButton";

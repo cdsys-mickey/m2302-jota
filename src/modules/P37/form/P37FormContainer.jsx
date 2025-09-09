@@ -104,6 +104,7 @@ const P37FormContainer = (props) => {
 					selectedTab={p37.selectedTab}
 					handleTabChange={p37.handleTabChange}
 					editing={p37.editing}
+					groupTypes={p37.groupAliasMap}
 					{...rest}
 				/>
 			</FormMetaProvider>

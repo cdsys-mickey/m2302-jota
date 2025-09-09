@@ -1,31 +1,27 @@
 import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import { forwardRef, memo } from "react";
-import Colors from "../Colors.mjs";
-import { P38LockRowsSwitchContainer } from "./toolbar/P38LockRowsSwitchContainer";
-import P38SaveButton from "./toolbar/P38SaveButton";
-import P38CancelButton from "./toolbar/P38CancelButton";
-import P38EditButton from "./toolbar/P38EditButton";
+import UserSettingEditorSaveButton from "./UserSettingEditorSaveButton";
+import UserSettingEditorCancelButton from "./UserSettingEditorCancelButton";
+import UserSettingEditorEditButton from "./UserSettingEditorEditButton";
+import Colors from "@/modules/Colors.mjs";
 
 const LeftButtons = memo(() => (
 	<>
-		<P38EditButton />
-		<P38SaveButton />
-		<P38CancelButton />
-		{/* <P41PrintButtonContainer /> */}
+		<UserSettingEditorEditButton />
 	</>
 ))
 LeftButtons.displayName = "LeftButtons";
 
 const RightButtons = memo(() => (
 	<>
-		<P38SaveButton />
-		<P38CancelButton />
+		<UserSettingEditorSaveButton />
+		<UserSettingEditorCancelButton />
 	</>
 ))
 RightButtons.displayName = "RightButtons";
 
 
-const P38Toolbar = memo(
+const UserSettingEditorToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			// <ContainerEx maxWidth="sm" alignLeft>
@@ -34,7 +30,7 @@ const P38Toolbar = memo(
 				alignItems="flex-end"
 				ref={ref}
 				bgcolor={Colors.TOOLBAR}
-				LeftComponent={P38EditButton}
+				LeftComponent={UserSettingEditorEditButton}
 				RightComponent={RightButtons}
 				{...rest}
 			/>
@@ -43,8 +39,8 @@ const P38Toolbar = memo(
 	})
 );
 
-P38Toolbar.displayName = "P38Toolbar";
-export default P38Toolbar;
+UserSettingEditorToolbar.displayName = "UserSettingEditorToolbar";
+export default UserSettingEditorToolbar;
 
 
 

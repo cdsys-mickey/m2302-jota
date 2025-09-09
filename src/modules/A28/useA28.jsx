@@ -17,8 +17,6 @@ export const useA28 = () => {
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-
-
 	const reportUrl = useMemo(() => {
 		return `${config.REPORT_URL}/WebA28Rep.aspx`
 	}, [config.REPORT_URL])

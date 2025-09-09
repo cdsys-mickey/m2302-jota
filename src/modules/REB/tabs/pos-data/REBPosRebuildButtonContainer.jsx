@@ -18,6 +18,7 @@ const REBPosRebuildButtonContainer = memo(
 				startIcon={<RestoreIcon />}
 				onClick={form.handleSubmit(reb.onPosRebuildSubmit, reb.onPosRebuildSubmitError)}
 				loading={reb.posRebuildWorking}
+				disabled={reb.loadWorking}
 				// color="secondary"
 				sx={{
 					fontWeight: 600,

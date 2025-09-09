@@ -1,7 +1,9 @@
 import useAppRedirect from "@/hooks/useAppRedirect";
+import Auth from "@/modules/md-auth";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import DateFormats from "@/shared-modules/DateFormats.mjs";
 import { format, parseISO } from "date-fns";
+import Cookies from "js-cookie";
 import { useMemo } from "react";
 import { useCallback, useState } from "react";
 
@@ -106,6 +108,32 @@ export default function useApp() {
 		}
 	}, [appRedirect, httpGetAsync]);
 
+	const getSessionValue = useCallback((key) => {
+		const valueInSession = sessionStorage.getItem(key);
+		const valueInCookie = Cookies.get(key);
+		return valueInSession || valueInCookie;
+	}, []);
+
+	const setSessionValue = useCallback((key, value) => {
+		Cookies.set(
+			key,
+			value,
+			Auth.LOCAL_COOKIE_OPTS
+		);
+		sessionStorage.setItem(
+			key,
+			value
+		)
+	}, []);
+
+	const removeSessionValue = useCallback((key) => {
+		Cookies.remove(
+			key,
+			Auth.LOCAL_COOKIE_OPTS
+		);
+		sessionStorage.removeItem(key);
+	}, []);
+
 	return {
 		...state,
 		fetch,
@@ -113,7 +141,10 @@ export default function useApp() {
 		setLoading,
 		handleTokenChange,
 		loadAppInfo,
-		unloadAppInfo
+		unloadAppInfo,
+		getSessionValue,
+		setSessionValue,
+		removeSessionValue
 	}
 
 }

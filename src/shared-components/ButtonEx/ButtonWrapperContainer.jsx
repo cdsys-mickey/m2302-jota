@@ -33,25 +33,32 @@ const ButtonWrapperContainer = forwardRef((props, ref) => {
 
 	const ButtonComponent = useMemo(() => {
 		return responsive ? ResponsiveLoadingButtonContainer : LoadingButton;
-	}, [responsive])
+	}, [responsive]);
 
 	return (
 		<ButtonComponent
 			ref={setButtonRef}
-			size={size} {...rest}
+			size={size}
+			{...rest}
 			sx={[
 				() => ({
-					// '--wrapper-color': '#b0b0b0', // 定義 CSS 變數
-					'--wrapper-color': Colors.FOCUSED_BORDER, // 定義 CSS 變數
+					// 初始樣式
 					'&:focus': {
-						outline: '2px solid var(--wrapper-color)',
+						outline: '2px solid #b0b0b0',
 						outlineOffset: '2px',
+						animation: 'colorPulse 1.5s ease-in-out infinite',
+					},
+					// 動畫直接改變 border-color
+					'@keyframes colorPulse': {
+						'0%': { outlineColor: '#b0b0b0' },
+						'50%': { outlineColor: '#ffffff' },
+						'100%': { outlineColor: '#b0b0b0' },
 					},
 				}),
 				...(Array.isArray(sx) ? sx : [sx]),
 			]}
 		/>
-	)
+	);
 });
 
 ButtonWrapperContainer.displayName = "ButtonWrapperContainer";
@@ -59,7 +66,7 @@ ButtonWrapperContainer.propTypes = {
 	responsive: PropTypes.bool,
 	autoFocus: PropTypes.bool,
 	size: PropTypes.oneOf(["small", "medium", "large"]),
-	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 export default ButtonWrapperContainer;

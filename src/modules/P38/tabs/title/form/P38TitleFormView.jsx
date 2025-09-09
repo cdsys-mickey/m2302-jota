@@ -8,9 +8,9 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import CmsCalcTypePicker from "@/components/CmsCalcTypePicker/CmsCalTypePicker";
-import P38Toolbar from "../P38Toolbar";
+import P38Toolbar from "../P38TitleToolbar";
 
-const P38FormView = memo((props) => {
+const P38TitleFormView = memo((props) => {
 	const { loadError, loadWorking, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
@@ -63,11 +63,11 @@ const P38FormView = memo((props) => {
 	);
 })
 
-P38FormView.propTypes = {
+P38TitleFormView.propTypes = {
 	loadError: PropTypes.object,
 	loadWorking: PropTypes.bool,
 	slotProps: PropTypes.object
 }
 
-P38FormView.displayName = "P38FormView";
-export default P38FormView;
+P38TitleFormView.displayName = "P38FormView";
+export default P38TitleFormView;

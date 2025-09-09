@@ -1,12 +1,9 @@
-import PropTypes from "prop-types";
-import { DSGGridView } from "./DSGGridView";
-import { useMemo } from "react";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { useContext } from "react";
-import { forwardRef } from "react";
+import { forwardRef, useContext, useMemo } from "react";
+import { DSGGridView } from "./DSGGridView";
 
 const DSGGridContainer = forwardRef((props, ref) => {
-	const { name, ...rest } = props;
+	const { ...rest } = props;
 	const { loadWorking, readWorking } = useContext(CrudContext) || {};
 
 	const _loading = useMemo(() => {
@@ -16,7 +13,7 @@ const DSGGridContainer = forwardRef((props, ref) => {
 	return (
 		<DSGGridView
 			ref={ref}
-			name={name}
+			// name={name}
 			loading={_loading}
 			// loading={true}
 			{...rest}
@@ -25,7 +22,7 @@ const DSGGridContainer = forwardRef((props, ref) => {
 });
 
 DSGGridContainer.propTypes = {
-	name: PropTypes.string.isRequired
+	// name: PropTypes.string.isRequired
 }
 DSGGridContainer.displayName = "DSGGridContainer";
 export default DSGGridContainer;

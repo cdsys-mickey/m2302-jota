@@ -88,7 +88,7 @@ export const G04FormContainer = () => {
 				<G04Form
 					selectedTab={g04.selectedTab}
 					handleTabChange={g04.handleTabChange}
-					impersonate={auth.impersonate}
+					hasRoot={auth.operator?.hasRoot}
 				/>
 			</FormMetaProvider>
 		</FormProvider>

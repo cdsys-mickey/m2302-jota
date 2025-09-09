@@ -12,7 +12,7 @@ const G07RestoreButtonContainer = memo(
 		const auth = useContext(AuthContext);
 		const form = useFormContext();
 
-		if (!auth.impersonate) {
+		if (!auth.operator?.hasRoot) {
 			return false;
 		}
 

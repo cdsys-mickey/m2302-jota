@@ -7,6 +7,11 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useRef, useState } from "react";
 import P37 from "./P37.mjs";
 import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
+import UserSettingEditors from "@/shared-modules/UserSettingEditor/UserSettingEditors.mjs";
+import P38 from "../P38/P38.mjs";
+import UserSettings from "../UserSettings.mjs";
+import { useInit } from "@/shared-hooks/useInit";
+import useCmsGroupTypeAlias from "@/hooks/useCmsGroupTypeAlias";
 
 export default function useP37() {
 	const itemIdRef = useRef();
@@ -23,7 +28,7 @@ export default function useP37() {
 
 	const [selectedTab, setSelectedTab] = useState(CmsGroupTypes.Types.DOMESTIC);
 	const [busCmsType, setBusCmsType] = useState(null);
-
+	const [groupAliasMap, loadGroupAliasMap] = useCmsGroupTypeAlias();
 
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
@@ -122,6 +127,10 @@ export default function useP37() {
 		loadItem({ refresh: true });
 	}, [crud, loadItem]);
 
+	useInit(() => {
+		loadGroupAliasMap();
+	}, []);
+
 	return {
 		...appModule,
 		...crud,
@@ -133,6 +142,8 @@ export default function useP37() {
 		handleTabChange,
 		busCmsType,
 		handleBusCmsTypeChange,
+		groupAliasMap,
+		loadGroupAliasMap
 	}
 
 }

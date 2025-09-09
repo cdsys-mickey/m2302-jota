@@ -43,7 +43,6 @@ REBForm.propTypes = {
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	readFailed: PropTypes.bool,
-	impersonate: PropTypes.bool,
 	readError: PropTypes.object,
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,

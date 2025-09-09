@@ -1,5 +1,7 @@
 import Colors from "./Colors.mjs";
 
+const COOKIE_LANDING = "landing";
+const COOKIE_LOGIN = "login";
 const COOKIE_MODE = "md";
 const COOKIE_ACCOUNT = "ac";
 // const COOKIE_LOGKEY = "m2302-token";
@@ -131,6 +133,8 @@ const getFunctionKeyByIndex = (index) => {
 
 const Auth = {
 	getItemById,
+	COOKIE_LANDING,
+	COOKIE_LOGIN,
 	COOKIE_MODE,
 	COOKIE_ACCOUNT,
 	COOKIE_LOGKEY,

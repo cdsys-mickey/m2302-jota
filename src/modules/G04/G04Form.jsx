@@ -14,7 +14,7 @@ import G04DeleteTabContainer from "./tabs/delete/G04DeleteTabContainer";
 
 
 const G04Form = memo((props) => {
-	const { selectedTab, handleTabChange, impersonate, ...rest } = props;
+	const { selectedTab, handleTabChange, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form {...rest} style={{ paddingBottom: "10rem" }}>
@@ -25,9 +25,6 @@ const G04Form = memo((props) => {
 								<TabList onChange={handleTabChange}>
 									<Tab label="形成批次" value={G04.Tabs.CREATE} />
 									<Tab label="刪除" value={G04.Tabs.DELETE} />
-									{/* {impersonate && (
-										<Tab label="復原" value={G04.Tabs.RECOVER} />
-									)} */}
 								</TabList>
 							</Box>
 							<G04CreateTab />
@@ -55,7 +52,6 @@ G04Form.propTypes = {
 	handleTabChange: PropTypes.func,
 	handleDelSessionChange: PropTypes.func,
 	handleDelSessionInputChange: PropTypes.func,
-	impersonate: PropTypes.bool
 };
 
 G04Form.displayName = "G04Form";

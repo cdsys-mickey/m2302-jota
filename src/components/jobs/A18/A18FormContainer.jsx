@@ -1,6 +1,4 @@
 import { A18Context } from "@/contexts/A18/A18Context";
-import { AuthContext } from "@/contexts/auth/AuthContext";
-import Auth from "@/modules/md-auth";
 import { FormMetaProvider } from "@/shared-components";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
@@ -10,7 +8,7 @@ import A18Form from "./A18Form";
 export const A18FormContainer = () => {
 	const form = useFormContext();
 	const a18 = useContext(A18Context);
-	const { operator } = useContext(AuthContext);
+	// const { operator } = useContext(AuthContext);
 
 	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
@@ -28,9 +26,9 @@ export const A18FormContainer = () => {
 
 	const handleDebugSubmit = form.handleSubmit(a18.onDebugSubmit)
 
-	const deptDisabled = useMemo(() => {
-		return operator?.Class < Auth.SCOPES.ROOT;
-	}, [operator?.Class])
+	// const deptDisabled = useMemo(() => {
+	// 	return operator?.Class < Auth.SCOPES.ROOT;
+	// }, [operator?.Class])
 
 	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
@@ -42,7 +40,7 @@ export const A18FormContainer = () => {
 				onSubmit={handleSubmit}
 				// onSubmit={handleClick}
 				onDebugSubmit={handleDebugSubmit}
-				deptDisabled={deptDisabled}
+			// deptDisabled={deptDisabled}
 			/>
 		</FormMetaProvider>
 	);

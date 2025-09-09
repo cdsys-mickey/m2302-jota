@@ -39,9 +39,9 @@ const SignInX = memo((props) => {
 							// passwordToggle
 							// passwordPressed
 							type="password"
-							inputProps={{
-								autocomplete: "current-password",
-							}}
+							// inputProps={{
+							// 	autocomplete: "current-password",
+							// }}
 							fullWidth
 							name="pw"
 							label="通行碼"

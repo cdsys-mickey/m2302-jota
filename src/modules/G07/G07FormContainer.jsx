@@ -35,7 +35,7 @@ export const G07FormContainer = () => {
 				<G07Form
 					selectedTab={g07.selectedTab}
 					handleTabChange={g07.handleTabChange}
-					impersonate={auth.impersonate}
+					hasRoot={auth.operator?.hasRoot}
 				/>
 			</FormMetaProvider>
 		</FormProvider>

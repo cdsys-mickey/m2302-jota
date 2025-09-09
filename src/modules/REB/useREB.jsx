@@ -141,7 +141,7 @@ export const useREB = () => {
 	}, [])
 
 	const load = useCallback(
-		async ({ refresh = false } = {}) => {
+		async ({ refresh = false, id } = {}) => {
 			try {
 				if (!refresh) {
 					crud.startLoading("讀取中...");
@@ -149,6 +149,11 @@ export const useREB = () => {
 				const { status, payload, error } = await httpGetAsync({
 					url: "v1/sales/data/prev-inv",
 					bearer: token,
+					...(id && {
+						params: {
+							d: id
+						}
+					})
 				});
 				if (status.success) {
 					const data = F07.transformForReading(payload.data[0]);

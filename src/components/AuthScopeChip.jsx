@@ -1,9 +1,8 @@
 import Auth from "@/modules/md-auth";
 import ChipEx from "@/shared-components/ChipEx";
-import { useMemo } from "react";
-import PropTypes from "prop-types";
-import MuiSeverity from "@/shared-modules/sd-mui-severity";
 import { useTheme } from "@mui/system";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
 
 
 const AuthScopeChip = (props) => {

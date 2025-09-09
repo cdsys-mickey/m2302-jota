@@ -23,6 +23,7 @@ const REBSalesRebuildButtonContainer = memo(
 				startIcon={<RestoreIcon />}
 				onClick={handleSubmit}
 				loading={reb.updateWorking}
+				disabled={reb.loadWorking}
 				sx={{
 					fontWeight: 600,
 				}}

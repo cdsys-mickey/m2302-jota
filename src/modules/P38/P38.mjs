@@ -1,89 +1,18 @@
-import CmsCalcTypes from "@/components/CmsCalcTypePicker/CmsCalTypes.mjs";
-import Objects from "@/shared-modules/Objects.mjs";
-
-/* eslint-disable no-mixed-spaces-and-tabs */
-
-const transformForReading = (payload) => {
-	const { Head, Tail, CmsCalc, ...rest } = payload || {};
-
-	return {
-		Head: Head ?? "",
-		Tail: Tail.join("\n"),
-		CmsCalc: CmsCalcTypes.getOptionById(CmsCalc),
-		...rest,
-	};
+const TABS = {
+	TITLE: 0,
+	ALIAS: 1,
 };
 
-const transformForEditorSubmit = (payload) => {
-	const { Head, Tail, CmsCalc, ...rest } = payload;
-
-	// console.log("ignore props", commissions);
-
-	return {
-		Head: Head ?? "",
-		Tail: Tail.split("\n"),
-		CmsCalc: CmsCalc?.id ?? "",
-		...rest,
-	};
-};
-
-const isFiltered = (criteria) => {
-	return Objects.isAnyPropNotEmpty(criteria, "lvId,lvName,lvBank");
-};
-
-const transformAsQueryParams = (data) => {
-	const { lvId, lvName, lvBank, ...rest } = data;
-	return {
-		si: lvId,
-		sn: lvName,
-		...(lvBank && {
-			bank: lvBank?.CodeID,
-		}),
-		...rest,
-	};
-};
-
-const paramsToJsonData = (params) => {
-	const where = [];
-	if (params?.si) {
-		where.push({
-			ShowName: "廠商代碼",
-			OpCode: "LIKE",
-			CondData: "%" + params.si + "%",
-		});
-	}
-	if (params?.sn) {
-		where.push({
-			ShowName: "廠商名稱",
-			OpCode: "LIKE",
-			CondData: "%" + params.sn + "%",
-		});
-	}
-	if (params?.bank) {
-		where.push({
-			ShowName: "往來銀行",
-			OpCode: "=",
-			CondData: params.bank,
-		});
-	}
-
-	return {
-		StdWhere: where,
-		...(params?.qs && {
-			CondData: {
-				QS_ID: `${params.qs}%`,
-				QS_NAME: `%${params.qs}%`,
-			},
-		}),
-	};
+const DEFAULT_ALIAS_VALUES = {
+	1: "團1",
+	2: "團2",
+	3: "團3",
+	4: "團4",
 };
 
 const P38 = {
-	transformForReading,
-	transformForEditorSubmit,
-	paramsToJsonData,
-	isFiltered,
-	transformAsQueryParams,
+	TABS,
+	DEFAULT_ALIAS_VALUES,
 };
 
 export default P38;

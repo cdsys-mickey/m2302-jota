@@ -16,7 +16,7 @@ import P37BusTabContainer from "./bus/P37BusTabContainer";
 import P37ChinaTabContainer from "./china/P37ChinaTabContainer";
 
 const P37FormView = memo((props) => {
-	const { selectedTab, handleTabChange, editing, ...rest } = props;
+	const { selectedTab, handleTabChange, editing, groupTypes, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="sm" alignLeft>
 			<FormBox {...rest}>
@@ -26,7 +26,7 @@ const P37FormView = memo((props) => {
 						<TabContext value={selectedTab}>
 							<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
 								<TabList onChange={handleTabChange}>
-									{CmsGroupTypes.options.map((option) => {
+									{groupTypes.map((option) => {
 										const disabled = editing && option.id != selectedTab;
 										return (
 											<Tab key={option.id} label={option.label} value={option.id} disabled={disabled} />
@@ -53,7 +53,8 @@ P37FormView.propTypes = {
 	slotProps: PropTypes.object,
 	selectedTab: PropTypes.string,
 	handleTabChange: PropTypes.func,
-	editing: PropTypes.bool
+	editing: PropTypes.bool,
+	groupTypes: PropTypes.array
 }
 
 P37FormView.displayName = "P37FormView";

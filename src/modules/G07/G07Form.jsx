@@ -11,7 +11,7 @@ import G07CarryTabContainer from "./tabs/carry/G07CarryTabContainer";
 import G07RestoreTabContainer from "./tabs/restore/G07RestoreTabContainer";
 
 const G07Form = memo((props) => {
-	const { selectedTab, handleTabChange, impersonate, ...rest } = props;
+	const { selectedTab, handleTabChange, hasRoot, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form {...rest} style={{ paddingBottom: "10rem" }}>
@@ -21,7 +21,7 @@ const G07Form = memo((props) => {
 							<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
 								<TabList onChange={handleTabChange}>
 									<Tab label="結轉" value={G07.Tabs.CARRY} />
-									{impersonate && (
+									{hasRoot && (
 										<Tab label="復原" value={G07.Tabs.RESTORE} />
 									)}
 								</TabList>
@@ -44,7 +44,7 @@ G07Form.propTypes = {
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
 	readFailed: PropTypes.bool,
-	impersonate: PropTypes.bool,
+	hasRoot: PropTypes.bool,
 	readError: PropTypes.object,
 	onSubmit: PropTypes.func,
 	onDebugSubmit: PropTypes.func,

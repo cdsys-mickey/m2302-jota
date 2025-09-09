@@ -8,8 +8,8 @@ import { memo, useContext, useMemo } from "react";
 
 const AppDeptPicker = memo((props) => {
 	console.log("rendering AppDeptPicker");
-	const { scope, scopeByOperator, ...rest } = props;
-	const { token } = useContext(AuthContext);
+	const { scope, scopeByOperator, disableByClass, disabled, ...rest } = props;
+	const { token, operator } = useContext(AuthContext);
 
 	const qs = useMemo(() => {
 		return queryString.stringify({
@@ -22,19 +22,15 @@ const AppDeptPicker = memo((props) => {
 		});
 	}, [scopeByOperator, scope]);
 
-	// const getOptionLabel = useCallback(
-	// 	(option) => DeptOptions.getOptionLabel(option),
-	// 	[]
-	// );
-
-	// const isOptionEqualToValue = useCallback((option, value) => {
-	// 	return Depts.isOptionEqualToValue(option, value);
-	// }, []);
-
-	// const getOptionKey = useCallback(
-	// 	(option) => Depts.getOptionKey(option),
-	// 	[]
-	// );
+	const _disabled = useMemo(() => {
+		if (disabled) {
+			return true;
+		}
+		if (disableByClass == null) {
+			return false;
+		}
+		return operator.Class < disableByClass;
+	}, [disableByClass, disabled, operator.Class])
 
 	return (
 		<OptionPicker
@@ -46,6 +42,7 @@ const AppDeptPicker = memo((props) => {
 			getOptionKey={DeptOptions.getOptionKey}
 			querystring={qs}
 			clearOnChange
+			disabled={_disabled}
 			{...rest}
 		/>
 	);
@@ -54,7 +51,9 @@ const AppDeptPicker = memo((props) => {
 AppDeptPicker.propTypes = {
 	uid: PropTypes.string,
 	scope: PropTypes.number,
+	disabled: PropTypes.bool,
 	scopeByOperator: PropTypes.bool,
+	disableByClass: PropTypes.number
 };
 
 AppDeptPicker.displayName = "AppDeptPicker";

@@ -24,22 +24,6 @@ export const DSGGridView = memo(
 			return columns || gridMeta?.columns;
 		}, [columns, gridMeta?.columns]);
 
-		// if (!value) {
-		// 	return (
-		// 		<Typography variant="body2" color="text.secondary">
-		// 			(未填寫)
-		// 		</Typography>
-		// 	);
-		// }
-
-		// if (value?.length === 0 && lockRows) {
-		// 	return (
-		// 		<Typography variant="body2" color="text.secondary">
-		// 			(空白)
-		// 		</Typography>
-		// 	);
-		// }
-
 		if (loading) {
 			return (
 				<DSGBox {...slotProps?.box} >

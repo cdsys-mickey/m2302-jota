@@ -7,6 +7,9 @@ import Cookies from "js-cookie";
 import _ from "lodash";
 import { useCallback, useMemo, useState } from "react";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "../app/AppContext";
 
 // const pageCookieOpts = {
 // 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
@@ -15,11 +18,14 @@ import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWORD = "pw";
+const PARAM_OTP = "otp";
+const PARAM_CAPTCHA_PASSED = "captchaPassed";
 const PARAM_CAPTCHA = "captcha";
 
 export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
-	// const config = useContext(ConfigContext);
+	const { setSessionValue, removeSessionValue } = useContext(AppContext);
+	const location = useLocation();
 	const pageCookieOpts = useMemo(() => {
 		return {
 			path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
@@ -48,13 +54,13 @@ export const useSignIn = () => {
 
 	const signinStub = useCallback(
 		async (data, opts = {}) => {
-			const { impersonate = false, setFocus } = opts;
+			const { impersonate = false, url = "/v1/auth/signin", setFocus } = opts;
 			const collected = _.pick(data, [
 				PARAM_ACCOUNT,
 				PARAM_PWORD,
-				"captchaPassed",
+				PARAM_CAPTCHA_PASSED,
 			]);
-
+			let _impersonated = impersonate;
 			if (
 				impersonate &&
 				collected[PARAM_PWORD] !== import.meta.env.VITE_PWORDX
@@ -75,37 +81,51 @@ export const useSignIn = () => {
 				}));
 				try {
 					const { status, payload, error } = await httpPostAsync({
-						url: impersonate
-							? "/v1/auth/signinx"
-							: "/v1/auth/signin",
+						url: url,
 						data: collected,
 					});
 					console.log("status", status);
 					console.log("payload", payload);
 
+
 					if (status.success) {
-						// 1.儲存 Cookie
-						Cookies.set(
-							Auth.COOKIE_LOGKEY,
-							payload.LogKey || "",
-							Auth.LOCAL_COOKIE_OPTS
-						);
-						// 2.儲存 session
-						sessionStorage.setItem(
-							Auth.COOKIE_LOGKEY,
-							payload.LogKey
-						)
-						if (!impersonate) {
+						_impersonated = payload?.impersonated == "1";
+						// 1.儲存 COOKIE_LOGKEY
+						setSessionValue(Auth.COOKIE_LOGKEY, payload.LogKey ?? "")
+						// Cookies.set(
+						// 	Auth.COOKIE_LOGKEY,
+						// 	payload.LogKey || "",
+						// 	Auth.LOCAL_COOKIE_OPTS
+						// );
+						// sessionStorage.setItem(
+						// 	Auth.COOKIE_LOGKEY,
+						// 	payload.LogKey
+						// )
+
+						// 2.儲存 COOKIE_LOGIN
+						setSessionValue(Auth.COOKIE_LOGIN, location.pathname ?? "")
+						// Cookies.set(
+						// 	Auth.COOKIE_LOGIN,
+						// 	location.pathname
+						// )
+						// sessionStorage.setItem(
+						// 	Auth.COOKIE_LOGIN,
+						// 	location.pathname
+						// )
+
+						if (!_impersonated) {
 							Cookies.remove(
 								Auth.COOKIE_MODE,
 								Auth.LOCAL_COOKIE_OPTS
 							);
+							// removeSessionValue(Auth.COOKIE_MODE);
 						} else {
 							Cookies.set(
 								Auth.COOKIE_MODE,
 								"im",
 								Auth.LOCAL_COOKIE_OPTS
 							);
+							// setSessionValue(Auth.COOKIE_MODE, "im");
 						}
 						if (data.rememberMe) {
 							Cookies.set(
@@ -161,7 +181,7 @@ export const useSignIn = () => {
 								toastEx.error(`登入失敗，請檢查帳號密碼是否正確`);
 								break;
 							case 429:
-								toastEx.error(`帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`);
+								toastEx.error(`登入失敗，帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`);
 								break;
 							default:
 								toastEx.error("登入失敗", error);
@@ -190,7 +210,7 @@ export const useSignIn = () => {
 				}
 			}
 		},
-		[captcha, httpPostAsync, pageCookieOpts, toLanding]
+		[captcha, httpPostAsync, location.pathname, pageCookieOpts, setSessionValue, toLanding]
 	);
 
 	const signInSubmitHandler = useCallback(
@@ -223,6 +243,7 @@ export const useSignIn = () => {
 				};
 				signinStub(collected, {
 					impersonate: true,
+					url: "/v1/auth/signinx",
 					setFocus,
 				});
 			},

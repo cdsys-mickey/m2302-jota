@@ -4,10 +4,10 @@ import DebugReportButtonView from "./DebugReportButtonView";
 
 const DebugReportButtonContainer = (props) => {
 	const { ...rest } = props;
-	const { impersonate } = useContext(AuthContext);
+	const { debugEnabled } = useContext(AuthContext);
 
 
-	if (!impersonate) {
+	if (!debugEnabled) {
 		return false;
 	}
 	return <DebugReportButtonView {...rest} />

@@ -1,13 +1,13 @@
 import { ButtonEx } from "@/shared-components";
 import EditIcon from '@mui/icons-material/Edit';
 import { useContext } from "react";
-import P38Context from "../P38Context";
+import P38TitleContext from "../P38TitleContext";
 import { useCallback } from "react";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
 const P38EditButton = (props) => {
 	const { ...rest } = props;
-	const p38 = useContext(P38Context);
+	const p38 = useContext(P38TitleContext);
 	const formMeta = useContext(FormMetaContext);
 
 	const handleEdit = useCallback(() => {

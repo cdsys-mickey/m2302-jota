@@ -46,9 +46,10 @@ export const useAuth = () => {
 		authoritiesLoading: null,
 	});
 
-	const impersonate = useMemo(() => {
+	const debugEnabled = useMemo(() => {
 		return Cookies.get(Auth.COOKIE_MODE) === "im"
-	}, []);
+			|| state.operator?.hasRoot
+	}, [state.operator?.hasRoot]);
 
 	const loadModules = useCallback(
 		async ({ token }) => {
@@ -163,6 +164,8 @@ export const useAuth = () => {
 							...jwtPayload.entity,
 							hasRoot: jwtPayload.entity?.Class >= Auth.SCOPES.ROOT,
 							isRoot: jwtPayload.entity?.Class == Auth.SCOPES.ROOT,
+							hasSys: jwtPayload.entity?.Class >= Auth.SCOPES.SYS,
+							isSys: jwtPayload.entity?.Class == Auth.SCOPES.SYS,
 							isHQ: jwtPayload.entity?.Class == Auth.SCOPES.HQ,
 							hasHQ: jwtPayload.entity?.Class >= Auth.SCOPES.HQ,
 							isBranchHQ: jwtPayload.entity?.Class == Auth.SCOPES.BRANCH_HQ,
@@ -201,7 +204,7 @@ export const useAuth = () => {
 						}
 						break;
 					default:
-						toastEx.error("登入發生例外，請重新嘗試");
+						toastEx.error("登入發生例外", err);
 						if (doRedirect) {
 							toLogin();
 						}
@@ -471,7 +474,7 @@ export const useAuth = () => {
 		switchDept,
 		renewLogKey,
 		loadModules,
-		impersonate
+		debugEnabled
 		// ...taskListLoader,
 	};
 };

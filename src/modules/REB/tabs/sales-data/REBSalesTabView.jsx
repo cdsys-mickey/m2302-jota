@@ -8,14 +8,15 @@ import { TabPanel } from "@mui/lab";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import REBSalesRebuildButtonContainer from "./REBSalesRebuildButtonContainer";
+import AuthDeptPicker from "@/components/AuthDeptPicker";
 
 const REBSalesTabView = (props) => {
-	const { minDate, ...rest } = props;
+	const { minDate, onDeptChange, ...rest } = props;
 	return (
 		<TabPanel value={REB.TabType.SALES_DATA} {...rest}>
 			<Grid container columns={12} spacing={2}>
 				<Grid item xs={12}>
-					<AppDeptPicker
+					{/* <AppDeptPicker
 						filterByOperator
 						label="執行門市"
 						name="dept"
@@ -24,6 +25,15 @@ const REBSalesTabView = (props) => {
 						// disabled={deptDisabled}
 						scope={Auth.SCOPES.BRANCH_HQ}
 						autoFocus
+						/> */}
+					<AuthDeptPicker
+						label="門市編號"
+						required
+						name="dept"
+						disableOpenOnInput
+						onChange={onDeptChange}
+						disableByClass={Auth.SCOPES.ROOT}
+					// disabled={deptDisabled}
 					/>
 				</Grid>
 				<Grid item xs={12} sm={12}>
@@ -38,6 +48,7 @@ const REBSalesTabView = (props) => {
 							borderless
 							placeholder="起"
 							minDate={minDate}
+							autoFocus
 						/>}
 						rightComponent={<DatePickerEx
 							name="endDate"
@@ -86,7 +97,9 @@ const REBSalesTabView = (props) => {
 }
 
 REBSalesTabView.propTypes = {
-	minDate: PropTypes.object
+	minDate: PropTypes.object,
+	onDeptChange: PropTypes.func,
+	deptDisabled: PropTypes.bool
 }
 
 REBSalesTabView.displayName = "REBSalesTabView";

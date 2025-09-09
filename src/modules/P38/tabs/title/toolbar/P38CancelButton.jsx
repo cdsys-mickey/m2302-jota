@@ -1,11 +1,11 @@
 import { ButtonEx } from "@/shared-components";
 
 import { useContext } from "react";
-import P38Context from "../P38Context";
+import P38TitleContext from "../P38TitleContext";
 
 const P38CancelButton = (props) => {
 	const { ...rest } = props;
-	const p38 = useContext(P38Context);
+	const p38 = useContext(P38TitleContext);
 
 	if (!p38.editing) {
 		return false;

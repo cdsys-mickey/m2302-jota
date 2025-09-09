@@ -143,7 +143,7 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={12} md={3.5}>
+							<Grid item xs={12} sm={12} md={4.5}>
 								<CmsGroupTypePicker
 									typo
 									name="GrpType"

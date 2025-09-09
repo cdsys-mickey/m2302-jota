@@ -315,9 +315,9 @@ const DialogExView = memo(
 								}
 								defaultValue={defaultPromptValue}
 								onKeyDown={handleKeyDown}
-								inputProps={{
-									autocomplete: "off"
-								}}
+								// inputProps={{
+								// 	autocomplete: "off"
+								// }}
 								{...promptTextFieldProps}
 							/>
 						</Box>

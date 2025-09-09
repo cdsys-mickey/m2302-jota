@@ -50,7 +50,6 @@ export const REBFormContainer = () => {
 				<REBForm
 					selectedTab={reb.selectedTab}
 					handleTabChange={reb.handleTabChange}
-					impersonate={auth.impersonate}
 				/>
 			</FormMetaProvider>
 		</FormProvider>

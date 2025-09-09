@@ -73,13 +73,6 @@ export const useWebApiOptions = (opts = {}) => {
 	}, [mockDelay])
 
 	const [pickerState, setPickerState] = useState(() => {
-		// if (!url) {
-		// 	return {
-		// 		loadinog: false,
-		// 		query: null,
-		// 		options: options || defaultOptions,
-		// 	}
-		// }
 		return {
 			loading: null,
 			query: null,
@@ -240,9 +233,6 @@ export const useWebApiOptions = (opts = {}) => {
 				});
 				if (status.success) {
 					const loadedOptions = getOptions(payload);
-					// if (!Types.isArray(loadedOptions)) {
-					// 	throw new Error("options is not an array");
-					// }
 					const _options = Types.isArray(loadedOptions) ? loadedOptions : [];
 					// 只有成功才會將 loading 註記為 false
 					setPickerState((prev) => ({

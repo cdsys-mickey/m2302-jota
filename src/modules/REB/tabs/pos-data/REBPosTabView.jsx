@@ -1,4 +1,4 @@
-import AppDeptPicker from "@/components/fields/AppDeptPicker";
+import AuthDeptPicker from "@/components/AuthDeptPicker";
 import Auth from "@/modules/md-auth";
 import REB from "@/modules/REB/REB.mjs";
 import { DatePickerEx, FormFieldLabel } from "@/shared-components";
@@ -10,12 +10,12 @@ import PropTypes from "prop-types";
 import REBPosRebuildButtonContainer from "./REBPosRebuildButtonContainer";
 
 const REBPosTabView = (props) => {
-	const { minDate, ...rest } = props;
+	const { minDate, onDeptChange, ...rest } = props;
 	return (
 		<TabPanel value={REB.TabType.POS_DATA} {...rest}>
 			<Grid container columns={12} spacing={2}>
 				<Grid item xs={12}>
-					<AppDeptPicker
+					{/* <AppDeptPicker
 						filterByOperator
 						label="執行門市"
 						name="dept"
@@ -24,6 +24,15 @@ const REBPosTabView = (props) => {
 						// disabled={deptDisabled}
 						scope={Auth.SCOPES.BRANCH_HQ}
 						autoFocus
+						/> */}
+					<AuthDeptPicker
+						label="門市編號"
+						required
+						name="dept"
+						disableOpenOnInput
+						// disabled={deptDisabled}
+						onChange={onDeptChange}
+						disableByClass={Auth.SCOPES.ROOT}
 					/>
 				</Grid>
 				<Grid item xs={12} sm={12}>
@@ -33,7 +42,7 @@ const REBPosTabView = (props) => {
 							fullWidth
 							validate
 							clearable
-							// autoFocus
+							autoFocus
 							borderless
 							placeholder="起"
 							minDate={minDate}
@@ -87,7 +96,9 @@ const REBPosTabView = (props) => {
 
 REBPosTabView.propTypes = {
 	onSessionChanged: PropTypes.func,
-	minDate: PropTypes.object
+	onDeptChange: PropTypes.func,
+	minDate: PropTypes.object,
+	deptDisabled: PropTypes.bool
 }
 
 REBPosTabView.displayName = "REBPosTabView";

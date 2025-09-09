@@ -18,7 +18,7 @@ import A18ActionPicker from "./picker/A18ActionPicker";
 import Auth from "@/modules/md-auth";
 
 const A18Form = memo((props) => {
-	const { onSubmit, onDebugSubmit, deptDisabled, ...rest } = props;
+	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest}>
@@ -32,7 +32,8 @@ const A18Form = memo((props) => {
 									name="dept"
 									disableOpenOnInput
 									selectOnFocus
-									disabled={deptDisabled}
+									// disabled={deptDisabled}
+									disableByClass={Auth.SCOPES.ROOT}
 									scope={Auth.SCOPES.BRANCH_HQ}
 									autoFocus
 								/>

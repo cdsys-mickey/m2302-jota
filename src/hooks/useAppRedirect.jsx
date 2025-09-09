@@ -4,10 +4,12 @@ import Cookies from "js-cookie";
 import { useCallback, useContext } from "react";
 import AppRoutes from "../modules/md-app-routes";
 import Auth from "../modules/md-auth";
+import { AppContext } from "@/contexts/app/AppContext";
 
 const useAppRedirect = () => {
 	const { redirectTo } = useRedirect();
 	const crud = useContext(CrudContext);
+	const { getSessionValue } = useContext(AppContext) ?? {};
 
 	const toRenew = useCallback(() => {
 		redirectTo("/renew");
@@ -33,6 +35,17 @@ const useAppRedirect = () => {
 			Cookies.remove(Auth.COOKIE_LOGKEY, Auth.LOCAL_COOKIE_OPTS);
 			sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
 		}
+
+		const loginUrl = getSessionValue(Auth.COOKIE_LOGIN);
+
+		if (loginUrl) {
+			redirectTo(
+				loginUrl,
+				{ replace: true }
+			);
+			return;
+		}
+
 		const impersonte = Cookies.get(Auth.COOKIE_MODE) === "im";
 		redirectTo(
 			impersonte
@@ -40,7 +53,7 @@ const useAppRedirect = () => {
 				: import.meta.env.VITE_URL_LOGIN,
 			{ replace: true }
 		);
-	}, [redirectTo]);
+	}, [getSessionValue, redirectTo]);
 
 	const toModule = useCallback(
 		(moduleId, params) => {
