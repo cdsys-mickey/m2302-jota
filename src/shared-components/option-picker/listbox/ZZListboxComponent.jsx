@@ -1,9 +1,8 @@
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PropTypes from "prop-types";
-import { forwardRef, useContext, useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { VariableSizeList } from "react-window";
-import { OptionPickerContext } from "./OptionPickerContext";
 import { RWOuterElementContext } from "./RWOuterElementContext";
 import RWOuterElementType from "./RWOuterElementType";
 import { ListSubheader, Typography } from "@mui/material";

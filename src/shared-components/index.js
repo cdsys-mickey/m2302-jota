@@ -42,7 +42,7 @@ export {
 	SelectExWrapper as SelectEx,
 	TimePickerWrapper as TimePickerEx,
 	FormMetaProvider,
-	DropDownButton,
+	DropDownButton as DropDownButton,
 	DialogExContainer as DialogEx,
 	FlexTableView as FlexTable,
 	FlexTableRowView as FlexTableRow,

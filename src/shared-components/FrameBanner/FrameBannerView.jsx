@@ -57,11 +57,14 @@ const FrameBannerView = memo(
 						<PushMessagesPopoverContainer />
 
 						{/* 切換單位 */}
-						{!dense && (<DeptSwitchButton
-							// size="small"
-							variant="standard"
-							dense
-						/>)}
+						{!dense && (
+							<DeptSwitchButton
+								// size="small"
+								variant="standard"
+								dense
+								sharedKey="dept-switch"
+							/>
+						)}
 
 
 						{/* 帳號 */}
