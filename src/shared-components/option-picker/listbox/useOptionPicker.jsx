@@ -4,6 +4,22 @@ import { useCallback, useState } from "react";
 const LISTBOX_PADDING = 8; // px
 
 export const useOptionPicker = () => {
+	const [sharedOptionsMap, setSharedOptionsMap] = useState({});
+
+	const updateOptions = useCallback((key, newOptions) => {
+		setSharedOptionsMap((prev) => ({
+			...prev,
+			[key]: newOptions
+		}));
+	}, []);
+
+	const getOptions = useCallback((key) => sharedOptionsMap[key] || [], [sharedOptionsMap]);
+
+	const hasOptions = useCallback((key) => {
+		const options = sharedOptionsMap[key];
+		return !!options && options.length > 0
+	}, [sharedOptionsMap]);
+
 	const renderRow = useCallback((opts) => {
 		// Props from React Window
 		const { data, index, style } = opts;
@@ -43,5 +59,8 @@ export const useOptionPicker = () => {
 
 	return {
 		renderRow,
+		getOptions,
+		updateOptions,
+		hasOptions
 	};
 };

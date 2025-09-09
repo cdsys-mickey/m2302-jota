@@ -332,7 +332,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 		</>
 	);
 }));
-DropDownButton.displayName = "DropDownButton";
+DropDownButton.displayName = "DropDownButtonView";
 DropDownButton.propTypes = {
 	label: PropTypes.string,
 	onSelect: PropTypes.func,

@@ -1,9 +1,10 @@
 import queryString from "query-string";
 import { useCallback, useMemo, useRef, useState } from "react";
 import Types from "@/shared-modules/Types.mjs";
-import { useChangeTracking } from "./useChangeTracking";
-import { useWebApi } from "./useWebApi";
+import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
+import { useWebApi } from "../../shared-hooks/useWebApi";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
+import useSharedOptions from "./useSharedOptions";
 
 const defaultTriggerServerFilter = (q) => {
 	return !!q;
@@ -64,6 +65,7 @@ export const useWebApiOptions = (opts = {}) => {
 		clearOptionsOnChange = false,
 		// pressToFind,
 		mockDelay = 0,
+		sharedKey,
 		...rest
 	} = opts;
 	const { sendAsync } = useWebApi();
@@ -72,13 +74,13 @@ export const useWebApiOptions = (opts = {}) => {
 		return mockDelay > 0;
 	}, [mockDelay])
 
-	const [pickerState, setPickerState] = useState(() => {
-		return {
-			loading: null,
-			query: null,
-			options: defaultOptions,
-		}
+	const [pickerState, setPickerState] = useState({
+		loading: null,
+		query: null,
+		// options: defaultOptions,
 	});
+
+	const [_options, setOptions] = useSharedOptions({ sharedKey, defaultOptions });
 
 	const [_noOptionsText, setNoOptionsText] = useState(
 		queryRequired ? typeToSearchText : noOptionsText
@@ -198,10 +200,12 @@ export const useWebApiOptions = (opts = {}) => {
 		console.log("模擬延遲結束");
 		setPickerState((prev) => ({
 			...prev,
-			options: options,
+			// options: options,
 			loading: false,
 		}));
-	}, [mockDelay, options]);
+		setOptions(options);
+
+	}, [mockDelay, options, setOptions]);
 
 
 
@@ -233,14 +237,14 @@ export const useWebApiOptions = (opts = {}) => {
 				});
 				if (status.success) {
 					const loadedOptions = getOptions(payload);
-					const _options = Types.isArray(loadedOptions) ? loadedOptions : [];
+					const __options = Types.isArray(loadedOptions) ? loadedOptions : [];
 					// 只有成功才會將 loading 註記為 false
 					setPickerState((prev) => ({
 						...prev,
-						// options: loadedOptions || [],
-						options: _options,
+						// options: __options,
 						loading: false,
 					}));
+					setOptions(__options);
 					setNoOptionsText(noOptionsText);
 				} else {
 					throw error || "load options failed";
@@ -251,11 +255,12 @@ export const useWebApiOptions = (opts = {}) => {
 				handleError(err);
 				setPickerState((prev) => ({
 					...prev,
-					options: [],
+					// options: [],
 					error: {
 						message: "unexpected error",
 					},
 				}));
+				setOptions([]);
 				setNoOptionsText(fetchErrorText);
 			} finally {
 				setPickerState((prev) => ({
@@ -264,21 +269,7 @@ export const useWebApiOptions = (opts = {}) => {
 				}));
 			}
 		},
-		[
-			name,
-			sendAsync,
-			method,
-			url,
-			queryParam,
-			querystring,
-			params,
-			headers,
-			bearer,
-			getOptions,
-			noOptionsText,
-			onError,
-			fetchErrorText,
-		]
+		[name, onError, sendAsync, method, url, queryParam, querystring, params, headers, bearer, getOptions, setOptions, noOptionsText, fetchErrorText]
 	);
 
 	const loadOptions = useMemo(() => {
@@ -289,10 +280,11 @@ export const useWebApiOptions = (opts = {}) => {
 	const clearOptions = useCallback(() => {
 		setPickerState((prev) => ({
 			...prev,
-			options: [],
+			// options: [],
 		}));
+		setOptions([]);
 		setNoOptionsText(queryRequired ? typeToSearchText : noOptionsText);
-	}, [noOptionsText, queryRequired, typeToSearchText]);
+	}, [noOptionsText, queryRequired, setOptions, typeToSearchText]);
 
 	const lazyLoadingRef = useRef();
 
@@ -300,9 +292,10 @@ export const useWebApiOptions = (opts = {}) => {
 		setPickerState((prevState) => ({
 			...prevState,
 			loading: null,
-			options: [],
+			// options: [],
 		}));
-	}, []);
+		setOptions([]);
+	}, [setOptions]);
 
 	const handleTextChange = useCallback(
 		(event, newValue, reason) => {
@@ -422,6 +415,7 @@ export const useWebApiOptions = (opts = {}) => {
 		clearOptions,
 		resetLoading,
 		...pickerState,
+		options: _options,
 		noOptionsText: _noOptionsText,
 		onTextChange: handleTextChange,
 		onChange: handleChange,

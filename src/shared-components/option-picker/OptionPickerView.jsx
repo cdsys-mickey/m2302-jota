@@ -27,7 +27,7 @@ import MuiStyles from "@/shared-modules/MuiStyles";
 import { OptionPickerGridPaper } from "./grid/OptionPickerGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
 import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
-import { OptionPickerContext } from "./listbox/OptionPickerContext";
+import OptionPickerContext from "./OptionPickerContext";
 import OptionPickerPopper from "./popper/OptionPickerPopper";
 import { useContext } from "react";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";

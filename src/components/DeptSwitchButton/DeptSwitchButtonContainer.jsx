@@ -4,13 +4,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeptOptions from "@/modules/DeptOptions.mjs";
 import useDebounceState from "@/shared-hooks/useDebounceState";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-
+import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 import DropDownButton from "../../shared-components/DropDownButton";
 import useAppRedirect from "@/hooks/useAppRedirect";
+import useSharedOptions from "@/shared-components/option-picker/useSharedOptions";
 
 const DeptSwitchButtonContainer = (props) => {
-	const { ...rest } = props;
+	const { sharedKey, defaultOptions = [], ...rest } = props;
 	const { operator, token, switchDept } = useContext(AuthContext);
 	const { httpGetAsync } = useWebApi();
 	const appRedirect = useAppRedirect();
@@ -20,7 +21,7 @@ const DeptSwitchButtonContainer = (props) => {
 
 	const [state, setState] = useState({
 		loading: null,
-		options: null
+		// options: null
 	});
 
 	const currentDept = useMemo(() => {
@@ -54,7 +55,17 @@ const DeptSwitchButtonContainer = (props) => {
 		});
 	}, [setDebouncedOpen]);
 
+	const [_options, setOptions] = useSharedOptions({
+		sharedKey, defaultOptions, onInit: () => {
+			setState(prev => ({
+				...prev,
+				loading: false
+			}))
+		}
+	});
+
 	const loadOptions = useCallback(async () => {
+		console.log("loadOptions triggered");
 		setState(prev => ({
 			...prev,
 			loading: true
@@ -67,9 +78,10 @@ const DeptSwitchButtonContainer = (props) => {
 			if (status.success) {
 				setState(prev => ({
 					...prev,
-					options: payload,
+					// options: payload,
 					loading: false
 				}))
+				setOptions(payload);
 			} else {
 				throw error ?? new Error("未預期例外");
 			}
@@ -84,7 +96,7 @@ const DeptSwitchButtonContainer = (props) => {
 			}))
 
 		}
-	}, [appRedirect, httpGetAsync, token]);
+	}, [appRedirect, httpGetAsync, setOptions, token]);
 
 	useEffect(() => {
 		if (debouncedOpen && state.loading == null) {
@@ -117,9 +129,13 @@ const DeptSwitchButtonContainer = (props) => {
 				}
 			}}
 			{...state}
+			options={_options}
 			{...rest}
 		/>)
 }
-
+DeptSwitchButtonContainer.propTypes = {
+	sharedKey: PropTypes.string,
+	defaultOptions: PropTypes.array
+}
 DeptSwitchButtonContainer.displayName = "DeptSwitchButtonContainer";
 export default DeptSwitchButtonContainer;

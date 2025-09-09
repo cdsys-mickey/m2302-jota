@@ -6,7 +6,7 @@ import { forwardRef, memo, useCallback, useEffect, useMemo, useRef } from "react
 import { VariableSizeList } from "react-window";
 import { RWOuterElementContext } from "./RWOuterElementContext";
 import RWOuterElementType from "./RWOuterElementType";
-import { OptionPickerContext } from "./OptionPickerContext";
+import OptionPickerContext from "../OptionPickerContext";
 import { useContext } from "react";
 
 const LISTBOX_PADDING = 8; // px

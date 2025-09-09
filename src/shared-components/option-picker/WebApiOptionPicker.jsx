@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import { useWebApiOptions } from "@/shared-hooks/useWebApiOptions";
+import { useWebApiOptions } from "@/shared-components/option-picker/useWebApiOptions";
 import { forwardRef, memo } from "react";
 import OptionPickerView from "./OptionPickerView";
 
@@ -50,6 +50,7 @@ const WebApiOptionPicker = memo(
 			clearOptionsOnChange,
 			clearValueOnChange,
 			mockDelay,
+			sharedKey,
 			...rest
 		} = props;
 
@@ -105,7 +106,8 @@ const WebApiOptionPicker = memo(
 			clearOnChange,
 			clearOptionsOnChange,
 			clearValueOnChange,
-			mockDelay
+			mockDelay,
+			sharedKey
 		});
 
 		return (
@@ -178,7 +180,8 @@ WebApiOptionPicker.propTypes = {
 	findByInput: PropTypes.func,
 	inputParam: PropTypes.string,
 	options: PropTypes.array,
-	mockDelay: PropTypes.number
+	mockDelay: PropTypes.number,
+	sharedKey: PropTypes.string,
 };
 
 export default WebApiOptionPicker;
