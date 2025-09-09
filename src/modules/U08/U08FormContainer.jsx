@@ -13,8 +13,9 @@ export const U08FormContainer = () => {
 	const u08 = useContext(U08Context);
 
 	const deptDisabled = useMemo(() => {
-		return operator?.Class < Auth.SCOPES.ROOT;
-	}, [operator?.Class])
+		return operator?.Class < Auth.SCOPES.ROOT && operator.CurHeadOffice != 1;
+	}, [operator?.Class, operator.CurHeadOffice])
+
 
 	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(

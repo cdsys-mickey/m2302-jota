@@ -13,8 +13,8 @@ export const U06FormContainer = () => {
 	const { operator } = useContext(AuthContext);
 
 	const deptDisabled = useMemo(() => {
-		return operator?.Class < Auth.SCOPES.ROOT;
-	}, [operator?.Class])
+		return operator?.Class < Auth.SCOPES.BRANCH_HQ && operator.CurHeadOffice != 1;
+	}, [operator?.Class, operator.CurHeadOffice])
 
 	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(

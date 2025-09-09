@@ -15,8 +15,9 @@ export const U07FormContainer = () => {
 	const { operator } = auth;
 
 	const deptDisabled = useMemo(() => {
-		return operator?.Class < Auth.SCOPES.ROOT;
-	}, [operator?.Class])
+		return operator?.Class < Auth.SCOPES.ROOT && operator.CurHeadOffice != 1;
+	}, [operator?.Class, operator.CurHeadOffice])
+
 
 	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
