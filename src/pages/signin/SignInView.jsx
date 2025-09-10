@@ -3,14 +3,22 @@ import FlexBox from "@/shared-components/FlexBox";
 import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
 import LoginIcon from "@mui/icons-material/Login";
 import { LoadingButton } from "@mui/lab";
-import { Box, Divider, Grid, Paper } from "@mui/material";
+import { Box, Collapse, Divider, Grid, Paper } from "@mui/material";
 import { forwardRef, memo } from "react";
 import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
 import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
+import { ButtonEx } from "@/shared-components";
 
-const SignIn = memo(
+const SignInView = memo(
 	forwardRef((props, ref) => {
-		const { loading, ...rest } = props;
+		const { loading, hideCaptcha, ...rest } = props;
+
+		const pwLabel = useMemo(() => {
+			return hideCaptcha ? "OTP" : "密碼";
+		}, [hideCaptcha])
+
 		return (
 			<Paper
 				elevation={4}
@@ -40,9 +48,9 @@ const SignIn = memo(
 								type="password"
 								fullWidth
 								name="pw"
-								label="密碼"
+								label={pwLabel}
 								required
-								rules={{ required: "請輸入密碼" }}
+								rules={{ required: `請輸入${pwLabel}` }}
 								size="small"
 								sx={{
 									"& .MuiInputBase-root": {
@@ -62,19 +70,22 @@ const SignIn = memo(
 				</Box>
 				<Divider />
 				<Box p={2}>
-					<FlexBox
-						inline
-						fullWidth
-						justifyContent="center"
-						mt={0}
-						mb={2}>
-						<CaptchaFieldContainer
-							name="captcha"
-							length={4}
-							placeholder="請輸入驗證碼"
-						/>
-					</FlexBox>
-					<Divider />
+					<Collapse in={!hideCaptcha}>
+						<FlexBox
+							inline
+							fullWidth
+							justifyContent="center"
+							mt={0}
+							mb={2}>
+							<CaptchaFieldContainer
+								name="captcha"
+								length={4}
+								placeholder="請輸入驗證碼"
+							/>
+						</FlexBox>
+						<Divider />
+					</Collapse>
+
 					<FlexBox mt={1} inline fullWidth alignItems="center">
 						<FlexBox flex={1}>
 							{/* <Link
@@ -88,15 +99,17 @@ const SignIn = memo(
 							</Link> */}
 						</FlexBox>
 						<FlexBox>
-							<LoadingButton
+							<ButtonEx
 								type="submit"
 								variant="contained"
-
+								{...(hideCaptcha && {
+									color: "warning"
+								})}
 								size="small"
 								loading={loading}
 								endIcon={<LoginIcon />}>
 								登入
-							</LoadingButton>
+							</ButtonEx>
 						</FlexBox>
 					</FlexBox>
 					{/* <FlexBox mt={1}>
@@ -118,5 +131,8 @@ const SignIn = memo(
 		);
 	})
 );
-
-export default SignIn;
+SignInView.propTypes = {
+	loading: PropTypes.bool,
+	hideCaptcha: PropTypes.bool,
+}
+export default SignInView;

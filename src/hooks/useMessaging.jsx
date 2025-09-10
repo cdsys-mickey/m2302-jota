@@ -2,15 +2,16 @@ import { toastEx } from "@/helpers/toastEx";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { AuthContext } from "../contexts/auth/AuthContext";
-import { PushMessagesContext } from "../contexts/PushMessagesContext";
-import Messaging from "../modules/md-messaging";
-import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
-import { useInfiniteLoader } from "../shared-hooks/useInfiniteLoader";
-import { usePopover } from "../shared-hooks/usePopover";
-import { useSignalR } from "../shared-hooks/useSignalR";
-import { useWebApi } from "../shared-hooks/useWebApi";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { PushMessagesContext } from "@/contexts/PushMessagesContext";
+import Messaging from "@/modules/md-messaging";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { usePopover } from "@/shared-hooks/usePopover";
+import { useSignalR } from "@/shared-hooks/useSignalR";
+import { useWebApi } from "@/shared-hooks/useWebApi";
 import ConfigContext from "@/contexts/config/ConfigContext";
+import { useRunOnce } from "@/shared-hooks/useRunOnce";
 
 export const useMessaging = () => {
 	const { httpGetAsync, httpPutAsync, httpPatchAsync } = useWebApi();
@@ -185,7 +186,7 @@ export const useMessaging = () => {
 		[clearListLoading, httpPatchAsync, loadUnreadCount, loader, token]
 	);
 
-	useEffect(() => {
+	useRunOnce(() => {
 		// notify
 		connection?.on("notify", handlNotify);
 
@@ -203,7 +204,7 @@ export const useMessaging = () => {
 
 			console.log("notify handlers un-registered");
 		};
-	}, [connection, handlNotify, handleRefresh]);
+	});
 
 	useChangeTracking(() => {
 		const handleConnected = async () => {

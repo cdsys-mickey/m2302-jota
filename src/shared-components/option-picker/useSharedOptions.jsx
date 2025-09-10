@@ -12,6 +12,9 @@ export default function useSharedOptions({ sharedKey, defaultOptions, onInit, on
 	}, [sharedContext, sharedKey])
 
 	const setOptions = useCallback((newOptions) => {
+		if (sharedKey && !sharedContext) {
+			console.error("%c未發現 Shared");
+		}
 		if (isUseSharedOptions) {
 			sharedContext.updateOptions(sharedKey, newOptions);
 		} else {

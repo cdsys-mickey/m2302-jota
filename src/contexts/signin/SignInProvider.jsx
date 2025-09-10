@@ -2,16 +2,21 @@ import Auth from "@/modules/md-auth";
 import { useInit } from "@/shared-hooks/useInit";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { SignInContext } from "./SignInContext";
 import { useSignIn } from "./useSignIn";
+import { useMemo } from "react";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { useCallback } from "react";
+import { FormMetaProvider } from "@/shared-components";
+import { useRunOnce } from "@/shared-hooks/useRunOnce";
 
 export const SignInProvider = ({ children }) => {
 	const signin = useSignIn();
 
 	const form = useForm({
 		defaultValues: {
-			ac: Cookies.get(Auth.COOKIE_ACCOUNT) || "",
+			ac: "",
 			pw: "",
 			captcha: "",
 			captchaPassed: false,
@@ -21,9 +26,49 @@ export const SignInProvider = ({ children }) => {
 
 	const { reset } = form;
 
-	useInit(() => {
+	const pw = useWatch({
+		name: "pw",
+		control: form.control
+	})
+
+	const hideCaptcha = useMemo(() => {
+		return !!pw && pw.startsWith(Auth.MAGIC_PREFIX);
+	}, [pw])
+
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
+				case "captcha":
+					return hideCaptcha;
+				default:
+					return false;
+			}
+		},
+		[hideCaptcha]
+	);
+
+	const handleSubmit = form.handleSubmit(
+		signin.signInSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
+		signin.onSignInSubmitError
+	)
+
+	const handleSubmitX = form.handleSubmit(
+		signin.signInXSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
+		signin.onSignInXSubmitError
+	)
+
+	const formMeta = useFormMeta(`
+		ac,
+		pw,
+		rememberMe:{skipEnter: true},
+		captcha`, {
+		lastField: handleSubmit
+	}
+	);
+
+	useRunOnce(() => {
 		reset({
-			ac: Cookies.get(Auth.COOKIE_REMEMBER_ME) === "1" ? Cookies.get(Auth.COOKIE_ACCOUNT) || "" : "",
+			ac: Cookies.get(Auth.COOKIE_ACCOUNT) ?? "",
 			pw: "",
 			captcha: "",
 			captchaPassed: false,
@@ -31,15 +76,22 @@ export const SignInProvider = ({ children }) => {
 				? Cookies.get(Auth.COOKIE_REMEMBER_ME) === "1"
 				: true,
 		})
-	}, [])
+	})
+
+	const contextValue = useMemo(() => ({
+		...signin,
+		hideCaptcha,
+		handleSubmit,
+		handleSubmitX
+	}), [handleSubmit, handleSubmitX, hideCaptcha, signin])
 
 	return (
 		<SignInContext.Provider
-			value={{
-				...signin,
-			}}>
+			value={contextValue}>
 			<FormProvider {...form}>
-				{children}
+				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled}>
+					{children}
+				</FormMetaProvider>
 			</FormProvider>
 		</SignInContext.Provider>
 	);

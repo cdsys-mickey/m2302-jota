@@ -214,12 +214,12 @@ export const useSignIn = () => {
 	);
 
 	const signInSubmitHandler = useCallback(
-		({ setFocus }) =>
+		({ setFocus, hideCaptcha }) =>
 			(data) => {
 				console.log("onSignInSubmit", data);
 				const collected = {
 					...data,
-					captchaPassed: captcha.validate(data.captcha),
+					captchaPassed: hideCaptcha || captcha.validate(data.captcha),
 				};
 				signinStub(collected, {
 					impersonate: false,
@@ -253,6 +253,9 @@ export const useSignIn = () => {
 	const onSignInXSubmitError = useCallback((err) => {
 		console.error("onSignInXError", err);
 	}, []);
+
+
+
 
 	return {
 		...state,

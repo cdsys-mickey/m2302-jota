@@ -26,7 +26,8 @@ const SignInBase = memo(
 				<FlexContainer
 					maxWidth="xs"
 					justifyContent="center"
-					alignItems="center"
+					// alignItems="center"
+					sx={{ paddingTop: "18vh" }}
 					ref={ref}>
 					<FlexBox
 						px={3}

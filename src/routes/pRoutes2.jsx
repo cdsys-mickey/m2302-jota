@@ -51,6 +51,7 @@ import { P62FrameContainer } from "@/modules/P62/P62FrameContainer";
 import { P62Provider } from "@/modules/P62/P62Provider";
 import { P63FrameContainer } from "@/modules/P63/P63FrameContainer";
 import { P63Provider } from "@/modules/P63/P63Provider";
+import { SharedOptionsProvider } from "@/shared-components/option-picker/SharedOptionsProvider";
 import { Route } from "react-router-dom";
 
 const pRoutes2 = (
@@ -122,9 +123,11 @@ const pRoutes2 = (
 			element={
 				<CrudProvider>
 					<InfiniteLoaderProvider>
-						<P32Provider>
-							<P32FrameContainer />
-						</P32Provider>
+						<SharedOptionsProvider>
+							<P32Provider>
+								<P32FrameContainer />
+							</P32Provider>
+						</SharedOptionsProvider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

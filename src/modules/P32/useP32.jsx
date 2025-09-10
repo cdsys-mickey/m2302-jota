@@ -70,6 +70,7 @@ export const useP32 = () => {
 						disableClearable: true,
 						selectOnFocus: true,
 						autoHighlight: true,
+						sharedKey: "cms-area"
 					})
 				),
 				title: "範圍",

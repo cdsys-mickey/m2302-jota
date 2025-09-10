@@ -8,7 +8,7 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import CmsCalcTypePicker from "@/components/CmsCalcTypePicker/CmsCalTypePicker";
-import P38Toolbar from "../P38TitleToolbar";
+import P38TitleToolbar from "../P38TitleToolbar";
 
 const P38TitleFormView = memo((props) => {
 	const { loadError, loadWorking, ...rest } = props;
@@ -19,8 +19,9 @@ const P38TitleFormView = memo((props) => {
 					<FormSectionBox pt={0.5}>
 						{loadError ? <FormErrorBox error={loadError} /> : (
 							<>
-								<P38Toolbar />
-
+								<Box my={0.5}>
+									<P38TitleToolbar />
+								</Box>
 								<Box mt={1}>
 									{loadWorking ? <LoadingTypography>讀取中</LoadingTypography> : (<Grid container spacing={2}>
 										<Grid item xs={12}>

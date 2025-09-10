@@ -80,7 +80,14 @@ export const useWebApiOptions = (opts = {}) => {
 		// options: defaultOptions,
 	});
 
-	const [_options, setOptions] = useSharedOptions({ sharedKey, defaultOptions });
+	const [_options, setOptions] = useSharedOptions({
+		sharedKey, defaultOptions, onInit: () => {
+			setPickerState(prev => ({
+				...prev,
+				loading: false
+			}))
+		}
+	});
 
 	const [_noOptionsText, setNoOptionsText] = useState(
 		queryRequired ? typeToSearchText : noOptionsText

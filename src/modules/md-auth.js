@@ -7,6 +7,7 @@ const COOKIE_ACCOUNT = "ac";
 // const COOKIE_LOGKEY = "m2302-token";
 const COOKIE_LOGKEY = "LogKey";
 const COOKIE_REMEMBER_ME = "rememberMe";
+const MAGIC_PREFIX = "~~";
 
 const SCOPES = Object.freeze({
 	DEPT: 0,
@@ -154,6 +155,7 @@ const Auth = {
 	getHeaderColor,
 	isCheckboxColumn,
 	getFunctionKeyByIndex,
+	MAGIC_PREFIX,
 };
 
 export default Auth;
