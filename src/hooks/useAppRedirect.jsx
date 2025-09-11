@@ -32,7 +32,7 @@ const useAppRedirect = () => {
 	const toLogin = useCallback((opts = {}) => {
 		const { clearSession = true } = opts;
 		if (clearSession) {
-			Cookies.remove(Auth.COOKIE_LOGKEY, Auth.LOCAL_COOKIE_OPTS);
+			Cookies.remove(Auth.COOKIE_LOGKEY, Auth.ROOT_COOKIE_OPTS);
 			sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
 		}
 

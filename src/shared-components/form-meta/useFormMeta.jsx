@@ -117,7 +117,7 @@ export const useFormMeta = (value, opts = {}) => {
 					// 只有順向才會觸發
 					if (forward) {
 						setTimeout(() => {
-							lastField(opts);
+							lastField(name, opts);
 						});
 					}
 				} else {

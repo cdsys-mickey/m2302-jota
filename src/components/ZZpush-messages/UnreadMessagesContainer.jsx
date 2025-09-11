@@ -1,16 +1,16 @@
 import { useContext } from "react";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
-import PushMessages from "./PushMessages";
+import UnreadMessages from "./UnreadMessages";
 
-export const PushMessagesContainer = () => {
+export const UnreadMessagesContainer = () => {
 	const messaging = useContext(MessagingContext);
 
 	return (
-		<PushMessages
+		<UnreadMessages
 			loading={messaging.recentMessagesLoading}
 			data={messaging.recentMessages}
 		/>
 	);
 };
 
-PushMessagesContainer.displayName = "PushMessagesContainer";
+UnreadMessagesContainer.displayName = "UnreadMessagesContainer";

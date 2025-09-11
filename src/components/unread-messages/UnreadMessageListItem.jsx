@@ -14,7 +14,7 @@ import { format, parse } from "date-fns";
 import DateTimes from "@/shared-modules/DateTimes.mjs";
 import { grey } from "@mui/material/colors";
 
-const TaskListItem = memo(
+const UnreadMessageListItem = memo(
 	forwardRef((props, ref) => {
 		const { handleGotoJob, value, disabled, unread, ...rest } = props;
 		const title = useMemo(() => {
@@ -78,23 +78,19 @@ const TaskListItem = memo(
 						}}
 					/>
 				</ListItem>
-				{/* <PushMessageListItemSecondaryAction
-					pt={1}
-					onMarkAsRead={unread ? handleMarkAsRead : null}
-				/> */}
 				<Divider variant="middle" />
 			</HoverableListItem>
 		);
 	})
 );
-TaskListItem.propTypes = {
+UnreadMessageListItem.propTypes = {
 	handleGotoJob: PropTypes.func,
-	handleMarkAsRead: PropTypes.func,
+	// handleMarkAsRead: PropTypes.func,
 	text: PropTypes.string,
 	JobID: PropTypes.string,
 	unread: PropTypes.bool,
 	value: PropTypes.object,
 	disabled: PropTypes.bool,
 };
-TaskListItem.displayName = "TaskListItem";
-export default TaskListItem;
+UnreadMessageListItem.displayName = "TaskListItem";
+export default UnreadMessageListItem;

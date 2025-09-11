@@ -1,7 +1,7 @@
 import { DeptSwitchButton, FrameTitle } from "@/components";
 import { DeptSwitchDialogContainer } from "@/components/account/DeptSwitchDialogContainer";
-import { PushMessagesIconButtonContainer } from "@/components/push-messages/PushMessagesIconButtonContainer";
-import { PushMessagesPopoverContainer } from "@/components/push-messages/PushMessagesPopoverContainer";
+import { UnreadMessagesIconButtonContainer } from "@/components/ZZpush-messages/UnreadMessagesIconButtonContainer";
+import { UnreadMessagesPopoverContainer } from "@/components/ZZpush-messages/UnreadMessagesPopoverContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import AvatarButtonContainer from "@/shared-components/protected-page/AvatarButtonContainer";
 import { Stack } from "@mui/material";
@@ -51,10 +51,10 @@ const FrameBannerView = memo(
 						{/* <ZZPushMessagesButtonContainer /> */}
 
 						{/* 通知按鈕 */}
-						<PushMessagesIconButtonContainer />
+						<UnreadMessagesIconButtonContainer />
 
 						{/* 通知小視窗 */}
-						<PushMessagesPopoverContainer />
+						<UnreadMessagesPopoverContainer />
 
 						{/* 切換單位 */}
 						{!dense && (

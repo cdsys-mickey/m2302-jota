@@ -1,8 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { Box, List } from "@mui/material";
-import LoadingTypography from "../../shared-components/LoadingTypography";
-import PushMessageListItem from "./PushMessageListItem";
+import LoadingTypography from "@/shared-components/LoadingTypography";
 import { PushMessageListItemContainer } from "./PushMessageListItemContainer";
 
 const PushMessageList = memo((props) => {
@@ -31,7 +30,7 @@ PushMessageList.propTypes = {
 };
 PushMessageList.displayName = "PushMessageList";
 
-const PushMessages = memo((props) => {
+const UnreadMessages = memo((props) => {
 	const { loading, data, ...rest } = props;
 	if (loading && (!data || data.length === 0)) {
 		return (
@@ -48,19 +47,16 @@ const PushMessages = memo((props) => {
 				<PushMessageListItemContainer
 					key={m.MsgID}
 					message={m}
-					// text={m.MsgBody}
-					// JobID={m.JobID}
-					// unread={m.Unread === 0}
 				/>
 			))}
 		</PushMessageList>
 	);
 });
 
-PushMessages.propTypes = {
+UnreadMessages.propTypes = {
 	data: PropTypes.array,
 	loading: PropTypes.bool,
 };
 
-PushMessages.displayName = "PushMessages";
-export default PushMessages;
+UnreadMessages.displayName = "PushMessages";
+export default UnreadMessages;

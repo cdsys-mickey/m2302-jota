@@ -1,8 +1,8 @@
 import { forwardRef, memo } from "react";
 
-import ListToolbar from "../../shared-components/listview/toolbar/ListToolbar";
+import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
 import ModuleToolbar from "../jobs/ModuleToolbar";
-import { MsgFetchResultLabelContainer } from "./MsgFetchResultLabelContainer";
+import { AllMessagesFetchResultLabelContainer } from "./AllMessagesFetchResultLabelContainer";
 
 
 const LeftButtons = memo(() => {
@@ -11,7 +11,7 @@ const LeftButtons = memo(() => {
 
 LeftButtons.displayName = "LeftButtons";
 
-const MsgToolbar = memo(
+const AllMessagesToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			<ListToolbar
@@ -19,12 +19,12 @@ const MsgToolbar = memo(
 				ref={ref}
 				LeftComponent={LeftButtons}
 				// RightComponent={() => <FetchResultLabel totalElements={365} />}
-				RightComponent={MsgFetchResultLabelContainer}
+				RightComponent={AllMessagesFetchResultLabelContainer}
 				{...rest}
 			/>
 		);
 	})
 );
 
-MsgToolbar.displayName = "MsgToolbar";
-export default MsgToolbar;
+AllMessagesToolbar.displayName = "MsgToolbar";
+export default AllMessagesToolbar;

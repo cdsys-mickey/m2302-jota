@@ -104,9 +104,6 @@ const MsgListRow = memo((props) => {
 						</UnreadTypography>
 					</MsgTimeColumn>
 				</Grid>
-				{/* <PushMessageListItemSecondaryAction
-					onMarkAsRead={unread ? handleMarkAsRead : null}
-				/> */}
 			</HoverableListItem>
 		</div>
 	);
@@ -120,7 +117,7 @@ MsgListRow.propTypes = {
 	linkEnabled: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
-	handleMarkAsRead: PropTypes.func,
+	// handleMarkAsRead: PropTypes.func,
 	handleGotoJob: PropTypes.func,
 };
 

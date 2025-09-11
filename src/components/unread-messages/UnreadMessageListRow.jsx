@@ -31,7 +31,7 @@ UnreadTypography.propTypes = {
 	unread: PropTypes.bool,
 };
 
-const TaskListRow = memo((props) => {
+const UnreadMessageListRow = memo((props) => {
 	const { index, style, value, loading, handleGotoJob, linkEnabled } = props;
 
 	const _title = useMemo(() => {
@@ -79,7 +79,7 @@ const TaskListRow = memo((props) => {
 	);
 });
 
-TaskListRow.propTypes = {
+UnreadMessageListRow.propTypes = {
 	index: PropTypes.number,
 	style: PropTypes.object,
 	value: PropTypes.object,
@@ -87,9 +87,8 @@ TaskListRow.propTypes = {
 	linkEnabled: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
-	handleMarkAsRead: PropTypes.func,
 	handleGotoJob: PropTypes.func,
 };
 
-TaskListRow.displayName = "TaskListRow";
-export default TaskListRow;
+UnreadMessageListRow.displayName = "TaskListRow";
+export default UnreadMessageListRow;

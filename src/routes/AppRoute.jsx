@@ -7,21 +7,21 @@ import InfoPage from "@/shared-pages/InfoPage";
 
 
 import { HomeProvider } from "@/contexts/home/HomeProvider";
-import { MessagesProvider } from "@/contexts/msgs/MesssagesProvider";
+import { AllMessagesProvider } from "@/contexts/msgs/AllMesssagesProvider";
 import { SettingsProvider } from "@/modules/settings/SettingsProvider";
 
 
 
 import { SettingsFrameContainer } from "@/modules/settings/SettingsFrameContainer";
 import { RenewFrameContainer } from "@/pages/auth/RenewFrameContainer";
-import { MessagesFrameContainer } from "@/pages/messages/MessagesFrameContainer";
+import { AllMessagesFrameContainer } from "@/pages/messages/AllMessagesFrameContainer";
 import { InfiniteLoaderProvider } from "../contexts/infinite-loader/InfiniteLoaderProvider";
 
 
 import ForbiddenPageContainer from "@/pages/ForbiddenPageContainer";
 import CheckAuthRoute from "./CheckAuthRoute";
 import aRoutes from "./aRoutes";
-import authRoutes from "./authRoutes";
+import signinRoutes from "./signinRoutes";
 import bRoutes from "./bRoutes";
 import cRoutes from "./cRoutes";
 import dRoutes from "./dRoutes";
@@ -35,6 +35,7 @@ import pRoutes from "./pRoutes";
 import pRoutes2 from "./pRoutes2";
 import sysRoutes from "./sysRoutes";
 import uRoutes from "./uRoutes";
+import { MessagingProvider } from "@/contexts/messaging/MessagingProvider";
 
 const AppRoute = () => {
 	return (
@@ -48,11 +49,9 @@ const AppRoute = () => {
 					<CheckAuthRoute />
 				}
 			/>
-
-			{authRoutes}
-
 			{labRoutes}
 
+			{signinRoutes}
 			{/* PROTECTED */}
 			<Route path="" element={<ProtectedRoute />}>
 				<Route
@@ -67,9 +66,9 @@ const AppRoute = () => {
 					path="msgs"
 					element={
 						<InfiniteLoaderProvider>
-							<MessagesProvider>
-								<MessagesFrameContainer />
-							</MessagesProvider>
+							<AllMessagesProvider>
+								<AllMessagesFrameContainer />
+							</AllMessagesProvider>
 						</InfiniteLoaderProvider>
 					}
 				/>

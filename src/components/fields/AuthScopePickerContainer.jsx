@@ -18,7 +18,7 @@ const AuthScopePickerContainer = forwardRef((props, ref) => {
 			name={name}
 			label={label}
 			ref={ref}
-			options={Auth.AUTH_SCOPE_OPTIONS}
+			options={Auth.AUTH_COOKIE_OPTIONS}
 			getOptionLabel={Auth.getOptionLabel}
 			isOptionEqualToValue={Auth.isOptionEqualToValue}
 			{...rest}

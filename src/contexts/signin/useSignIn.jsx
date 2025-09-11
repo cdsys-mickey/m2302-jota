@@ -18,6 +18,7 @@ import { AppContext } from "../app/AppContext";
 
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWORD = "pw";
+const PARAM_REMEMBER_ME = "rememberMe";
 const PARAM_OTP = "otp";
 const PARAM_CAPTCHA_PASSED = "captchaPassed";
 const PARAM_CAPTCHA = "captcha";
@@ -26,7 +27,7 @@ export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
 	const { setSessionValue, removeSessionValue } = useContext(AppContext);
 	const location = useLocation();
-	const pageCookieOpts = useMemo(() => {
+	const authCookieOpts = useMemo(() => {
 		return {
 			path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
 			expires: 365,
@@ -59,7 +60,10 @@ export const useSignIn = () => {
 				PARAM_ACCOUNT,
 				PARAM_PWORD,
 				PARAM_CAPTCHA_PASSED,
+				PARAM_REMEMBER_ME
 			]);
+			// const collected = data;
+			console.log("collected", collected);
 			let _impersonated = impersonate;
 			if (
 				impersonate &&
@@ -74,7 +78,7 @@ export const useSignIn = () => {
 				captcha.handleRefresh();
 				return;
 			}
-			if (collected.captchaPassed) {
+			if (collected[PARAM_CAPTCHA_PASSED]) {
 				setState((prev) => ({
 					...prev,
 					loading: true,
@@ -91,7 +95,7 @@ export const useSignIn = () => {
 					if (status.success) {
 						_impersonated = payload?.impersonated == "1";
 						// 1.儲存 COOKIE_LOGKEY
-						setSessionValue(Auth.COOKIE_LOGKEY, payload.LogKey ?? "")
+						setSessionValue(Auth.COOKIE_LOGKEY, payload.LogKey ?? "", Auth.AUTH_COOKIE_OPTS)
 						// Cookies.set(
 						// 	Auth.COOKIE_LOGKEY,
 						// 	payload.LogKey || "",
@@ -103,11 +107,12 @@ export const useSignIn = () => {
 						// )
 
 						// 2.儲存 COOKIE_LOGIN
-						setSessionValue(Auth.COOKIE_LOGIN, location.pathname ?? "")
-						// Cookies.set(
-						// 	Auth.COOKIE_LOGIN,
-						// 	location.pathname
-						// )
+						// setSessionValue(Auth.COOKIE_LOGIN, location.pathname ?? "")
+						Cookies.set(
+							Auth.COOKIE_LOGIN,
+							location.pathname,
+							Auth.ROOT_COOKIE_OPTS
+						)
 						// sessionStorage.setItem(
 						// 	Auth.COOKIE_LOGIN,
 						// 	location.pathname
@@ -116,14 +121,14 @@ export const useSignIn = () => {
 						if (!_impersonated) {
 							Cookies.remove(
 								Auth.COOKIE_MODE,
-								Auth.LOCAL_COOKIE_OPTS
+								Auth.ROOT_COOKIE_OPTS
 							);
 							// removeSessionValue(Auth.COOKIE_MODE);
 						} else {
 							Cookies.set(
 								Auth.COOKIE_MODE,
 								"im",
-								Auth.LOCAL_COOKIE_OPTS
+								Auth.ROOT_COOKIE_OPTS
 							);
 							// setSessionValue(Auth.COOKIE_MODE, "im");
 						}
@@ -131,46 +136,48 @@ export const useSignIn = () => {
 							Cookies.set(
 								Auth.COOKIE_REMEMBER_ME,
 								1,
-								pageCookieOpts
+								authCookieOpts
 							);
 							Cookies.set(
 								Auth.COOKIE_ACCOUNT,
 								collected[PARAM_ACCOUNT],
-								pageCookieOpts
+								Auth.AUTH_COOKIE_OPTS
 							);
+							// setSessionValue(Auth.COOKIE_ACCOUNT, collected[PARAM_ACCOUNT], Auth.AUTH_COOKIE_OPTS);
 						} else {
 							Cookies.set(
 								Auth.COOKIE_REMEMBER_ME,
 								0,
-								pageCookieOpts
+								authCookieOpts
 							);
 							Cookies.remove(
 								Auth.COOKIE_ACCOUNT,
-								pageCookieOpts
+								Auth.AUTH_COOKIE_OPTS
 							);
+							// removeSessionValue(Auth.COOKIE_ACCOUNT);
 						}
 
 						//house keeping
-						if (import.meta.env.VITE_PUBLIC_URL) {
-							Cookies.remove(
-								Auth.COOKIE_ACCOUNT,
-								{
-									path: "/"
-								}
-							);
-							Cookies.remove(
-								Auth.COOKIE_REMEMBER_ME,
-								{
-									path: "/"
-								}
-							);
-							Cookies.remove(
-								Auth.COOKIE_MODE,
-								{
-									path: "/"
-								}
-							)
-						}
+						// if (import.meta.env.VITE_PUBLIC_URL) {
+						// 	Cookies.remove(
+						// 		Auth.COOKIE_ACCOUNT,
+						// 		{
+						// 			path: "/"
+						// 		}
+						// 	);
+						// 	Cookies.remove(
+						// 		Auth.COOKIE_REMEMBER_ME,
+						// 		{
+						// 			path: "/"
+						// 		}
+						// 	);
+						// 	Cookies.remove(
+						// 		Auth.COOKIE_MODE,
+						// 		{
+						// 			path: "/"
+						// 		}
+						// 	)
+						// }
 						// 2.重導至首頁
 						toLanding();
 					} else {
@@ -210,7 +217,7 @@ export const useSignIn = () => {
 				}
 			}
 		},
-		[captcha, httpPostAsync, location.pathname, pageCookieOpts, setSessionValue, toLanding]
+		[captcha, httpPostAsync, setSessionValue, location.pathname, toLanding, authCookieOpts, removeSessionValue]
 	);
 
 	const signInSubmitHandler = useCallback(

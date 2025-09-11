@@ -2,6 +2,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import useContainerSize from "@/shared-hooks/useContainerSize";
 import { useContext, useMemo } from "react";
 import FrameBannerView from "./FrameBannerView";
+import { UnreadMessagesProvider } from "@/contexts/UnreadMessagesProvider";
 
 export const FrameBannerContainer = (props) => {
 	const { ...rest } = props;

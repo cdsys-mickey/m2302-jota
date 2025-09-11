@@ -1,10 +1,10 @@
-import MsgToolbar from "@/components/messages/MsgToolbar";
-import MsgListHeader from "@/components/messages/list/MsgListHeader";
-import { MsgListViewContainer } from "@/components/messages/list/MsgListViewContainer";
+import AllMessagesToolbar from "@/components/all-messages/AllMessagesToolbar";
+import MsgListHeader from "@/components/all-messages/list/MsgListHeader";
+import { MsgListViewContainer } from "@/components/all-messages/list/MsgListViewContainer";
 import { FrameBanner, FrameBox } from "@/shared-components";
 import { FormProvider, useForm } from "react-hook-form";
 
-export const MessagesFrameContainer = () => {
+export const AllMessagesFrameContainer = () => {
 	const searchForm = useForm();
 
 	return (
@@ -13,7 +13,7 @@ export const MessagesFrameContainer = () => {
 				{/* 標題 */}
 				<FrameBanner title="推播訊息通知" alt="推播" />
 				{/* 工具列 */}
-				<MsgToolbar />
+				<AllMessagesToolbar />
 				{/* 列表 */}
 				<MsgListHeader />
 				<MsgListViewContainer />
@@ -22,4 +22,4 @@ export const MessagesFrameContainer = () => {
 	);
 };
 
-MessagesFrameContainer.displayName = "MessagesFrameContainer";
+AllMessagesFrameContainer.displayName = "MessagesFrameContainer";

@@ -3,7 +3,7 @@ import SignInRoute from "./SignInRoute";
 import { SignInContainer } from "@/pages/signin/SignInContainer";
 import { SignInXContainer } from "@/pages/signin/SignInXContainer";
 
-const authRoutes = (
+const signinRoutes = (
 	<>
 		<Route path="auth" element={<SignInRoute />}>
 			<Route index path="signin" element={<SignInContainer />} />
@@ -12,4 +12,4 @@ const authRoutes = (
 	</>
 );
 
-export default authRoutes;
+export default signinRoutes;

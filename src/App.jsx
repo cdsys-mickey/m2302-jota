@@ -27,6 +27,8 @@ import { useContext } from "react";
 import ConfigContext from "./contexts/config/ConfigContext";
 import { Suspense } from "react";
 import LoadingTypography from "./shared-components/LoadingTypography";
+import { MessagingProvider } from "./contexts/messaging/MessagingProvider";
+import { AuthProvider } from "./contexts/auth/AuthProvider";
 // use palette from default theme
 const { palette } = createTheme();
 
@@ -165,7 +167,9 @@ function App() {
 							<CssBaseline />
 							<AppProvider>
 								<Suspense fallback={<LoadingTypography>載入中...</LoadingTypography>}>
-									<AppRoute />
+									<MessagingProvider>
+										<AppRoute />
+									</MessagingProvider>
 								</Suspense>
 							</AppProvider>
 						</DialogsProvider>

@@ -25,13 +25,13 @@ const SCOPE_LABELS = Object.freeze({
 	[SCOPES.ROOT]: "超級",
 });
 
-const COOKIE_OPTS = {
-	path: "/",
+const ROOT_COOKIE_OPTS = {
+	path: `/${import.meta.env.VITE_PUBLIC_URL ?? ""}`,
 	expires: 365,
 };
 
-const LOCAL_COOKIE_OPTS = {
-	path: `${import.meta.env.VITE_PUBLIC_URL || "/"}`,
+const AUTH_COOKIE_OPTS = {
+	path: `${import.meta.env.VITE_PUBLIC_URL ?? "/auth"}`,
 	expires: 365,
 };
 
@@ -149,8 +149,8 @@ const Auth = {
 	getOptionLabel,
 	isOptionEqualToValue,
 	getOptionKey,
-	COOKIE_OPTS,
-	LOCAL_COOKIE_OPTS,
+	ROOT_COOKIE_OPTS,
+	AUTH_COOKIE_OPTS,
 	findById,
 	getHeaderColor,
 	isCheckboxColumn,

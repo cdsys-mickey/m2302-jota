@@ -1,11 +1,11 @@
-import { useCallback, useState } from "react";
-import { useInfiniteLoader } from "../shared-hooks/useInfiniteLoader";
-import { AuthContext } from "../contexts/auth/AuthContext";
+import { useCallback } from "react";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useContext } from "react";
-import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { toastEx } from "@/helpers/toastEx";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 
-export const useMessages = () => {
+export const useAllMessages = () => {
 	const auth = useContext(AuthContext);
 	const appFrame = useContext(AppFrameContext);
 	const loader = useInfiniteLoader({

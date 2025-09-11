@@ -11,6 +11,10 @@ import Auth from "../modules/md-auth";
 import ActionState from "../shared-modules/ActionState/ActionState";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "@/contexts/app/AppContext";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { MessagingContext } from "@/contexts/messaging/MessagingContext";
+import consoleEx from "@/helpers/consoleEx";
 
 const LOG_KEY = "LogKey";
 
@@ -20,11 +24,14 @@ const DEFAULT_SWITCH_DEPT_OPTS = {
 
 export const useAuth = () => {
 	const { toLogin, toLanding, toRenew } = useAppRedirect();
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync, httpPutAsync } = useWebApi();
 	const dialogs = useContext(DialogsContext);
 	const deptSwitchAction = useAction();
 	const location = useLocation();
 	const navigate = useNavigate();
+	const { getSessionValue } = useContext(AppContext);
+	const messaging = useContext(MessagingContext);
+	const { connectionId } = messaging;
 
 	// const logKeyInUrl = useMemo(() => {
 	// 	const params = new URLSearchParams(location.search);
@@ -88,7 +95,7 @@ export const useAuth = () => {
 	);
 
 	const renewCookie = useCallback((logKey) => {
-		Cookies.set(Auth.COOKIE_LOGKEY, logKey || "", Auth.LOCAL_COOKIE_OPTS);
+		Cookies.set(Auth.COOKIE_LOGKEY, logKey || "", Auth.ROOT_COOKIE_OPTS);
 	}, []);
 
 	const recoverIdentity = useCallback(
@@ -98,9 +105,10 @@ export const useAuth = () => {
 				...prev,
 				validating: true,
 			}));
-			let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
-			let logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
-			const logKey = logKeyInSession || logKeyInCookie;
+			// let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+			// let logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
+			// const logKey = logKeyInSession || logKeyInCookie;
+			const logKey = getSessionValue(Auth.COOKIE_LOGKEY);
 			if (!logKey) {
 				toastEx.error("您尚未登入");
 				if (doRedirect) {
@@ -111,19 +119,25 @@ export const useAuth = () => {
 
 			try {
 				// 檢查 cookie
-				const { status, payload, error } = logKeyInSession ? await httpGetAsync({
+				// const { status, payload, error } = logKeyInSession ? await httpGetAsync({
+				// 	url: "v1/auth/token",
+				// 	params: {
+				// 		logKey: logKeyInSession
+				// 	}
+				// }) : await httpGetAsync({
+				// 	url: "v1/auth/token",
+				// });
+				// if (logKeyInSession) {
+				// 	console.log("recovering from logKey in session", logKeyInSession);
+				// } else {
+				// 	console.log("recovering from logKey in cookie", logKeyInCookie);
+				// }
+				const { status, payload, error } = await httpGetAsync({
 					url: "v1/auth/token",
 					params: {
-						logKey: logKeyInSession
+						logKey: logKey
 					}
-				}) : await httpGetAsync({
-					url: "v1/auth/token",
 				});
-				if (logKeyInSession) {
-					console.log("recovering from logKey in session", logKeyInSession);
-				} else {
-					console.log("recovering from logKey in cookie", logKeyInCookie);
-				}
 
 				if (status.success) {
 					// JOSE methods
@@ -221,8 +235,31 @@ export const useAuth = () => {
 				}
 			}
 		},
-		[httpGetAsync, loadModules, navigate, toLogin, toRenew]
+		[getSessionValue, httpGetAsync, loadModules, navigate, toLogin, toRenew]
 	);
+
+	useEffect(() => {
+		const handleRegister = async () => {
+			console.log(`connectionId ${connectionId} connected, registering to LogKey ${state.operator?.LoginName}(${state.operator?.LogKey})`);
+			const { status } = await httpPutAsync({
+				url: "v1/auth/register",
+				bearer: state.token,
+				data: {
+					connectionId,
+				},
+			});
+			if (status.success) {
+				console.log(
+					`\tsuccess.`
+				);
+			} else {
+				consoleEx.error("\tfailed");
+			}
+		};
+		if (connectionId && state.operator?.LogKey) {
+			handleRegister();
+		}
+	}, [connectionId, httpPutAsync, state.operator?.LogKey, state.operator?.LoginName, state.token]);
 
 	const invalidate = useCallback(() => {
 		setState((prev) => ({
@@ -374,8 +411,8 @@ export const useAuth = () => {
 						if (doRedirect) {
 							Cookies.set(
 								Auth.COOKIE_LOGKEY,
-								payload.LogKey || "",
-								Auth.LOCAL_COOKIE_OPTS
+								payload.LogKey ?? "",
+								Auth.ROOT_COOKIE_OPTS
 							);
 							toLanding({
 								reloadAuthorities: true,

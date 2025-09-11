@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import PushMessageListItem from "./PushMessageListItem";
-import { AppFrameContext } from "../../shared-contexts/app-frame/AppFrameContext";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useMemo } from "react";
 import PropTypes from "prop-types";
-import { AuthContext } from "../../contexts/auth/AuthContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useCallback } from "react";
-import { MessagingContext } from "../../contexts/messaging/MessagingContext";
+import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 
 export const PushMessageListItemContainer = (props) => {
 	const { message, ...rest } = props;

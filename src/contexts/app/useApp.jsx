@@ -114,11 +114,11 @@ export default function useApp() {
 		return valueInSession || valueInCookie;
 	}, []);
 
-	const setSessionValue = useCallback((key, value) => {
+	const setSessionValue = useCallback((key, value, opts) => {
 		Cookies.set(
 			key,
 			value,
-			Auth.LOCAL_COOKIE_OPTS
+			opts
 		);
 		sessionStorage.setItem(
 			key,
@@ -126,10 +126,10 @@ export default function useApp() {
 		)
 	}, []);
 
-	const removeSessionValue = useCallback((key) => {
+	const removeSessionValue = useCallback((key, opts) => {
 		Cookies.remove(
 			key,
-			Auth.LOCAL_COOKIE_OPTS
+			opts
 		);
 		sessionStorage.removeItem(key);
 	}, []);

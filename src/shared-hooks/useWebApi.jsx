@@ -107,13 +107,13 @@ export const useWebApi = (props) => {
 			if (!apiUrl) {
 				throw `url cannot be null`;
 			}
-
+			const _method = method.toUpperCase();
 			// GET 下無 params 而有 data, 就將 data 當成 params 使用
 			const isUseDataAsParams =
-				method.toLowerCase() === "get" && !params && !!data;
+				_method === "GET" && !params && !!data;
 			const _params = isUseDataAsParams ? data : params;
 
-			console.log(`${method.toUpperCase()} ${apiUrl}`);
+			console.log(`${_method} ${apiUrl}`);
 			if (params) {
 				console.log("\tparams", params);
 			}
@@ -130,7 +130,7 @@ export const useWebApi = (props) => {
 				console.log("formData", formData);
 			}
 
-			const isUseRawData = method !== "get" && mode !== "form";
+			const isUseRawData = _method !== "GET" && mode !== "form";
 
 			try {
 				const axiosResponse = await axios({
@@ -158,7 +158,7 @@ export const useWebApi = (props) => {
 					...rest,
 				});
 				const status = HttpStatus.from(axiosResponse.status);
-				console.log(`axiosResponse`, axiosResponse);
+				console.log(`\t[${status.code}]→`, axiosResponse);
 				if (status.is2xx) {
 					return {
 						status: status,

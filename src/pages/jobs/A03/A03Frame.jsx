@@ -7,7 +7,7 @@ import { CatMProvider } from "@/contexts/A03/CatMProvider";
 import { CatSProvider } from "@/contexts/A03/CatSProvider";
 import { FrameBanner, FrameBox } from "@/shared-components";
 import ContainerEx from "@/shared-components/ContainerEx";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
@@ -17,7 +17,9 @@ const A03Frame = memo(() => {
 	return (
 		<FrameBox>
 			<FrameBanner />
-			<A03Toolbar />
+			<Box mb={0.5}>
+				<A03Toolbar />
+			</Box>
 			<ContainerEx maxWidth="lg" alignLeft>
 				<Grid container spacing={1}>
 					<CatSProvider>

@@ -57,13 +57,22 @@ export const SignInProvider = ({ children }) => {
 		signin.onSignInXSubmitError
 	)
 
+	const handleLastField = useCallback((name, opts) => {
+		console.log("handleLastField", name, opts);
+		if (name != "rememberMe") {
+			handleSubmit()
+		}
+	}, [handleSubmit]);
+
 	const formMeta = useFormMeta(`
 		ac,
 		pw,
 		rememberMe:{skipEnter: true},
-		captcha`, {
-		lastField: handleSubmit
-	}
+		captcha`,
+		{
+			// lastField: handleSubmit
+			lastField: handleLastField
+		}
 	);
 
 	useRunOnce(() => {

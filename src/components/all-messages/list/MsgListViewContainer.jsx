@@ -5,15 +5,13 @@ import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { MessagesContext } from "@/contexts/msgs/MessagesContext";
+import { AllMessagesContext } from "@/contexts/msgs/AllMessagesContext";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { MsgListRowContainer } from "./MsgListRowContainer";
 import { useMemo } from "react";
 
 export const MsgListViewContainer = () => {
-	// const messaging = useContext(MessagingContext);
-	// const { loadList } = messaging;
-	const msgs = useContext(MessagesContext);
+	const msgs = useContext(AllMessagesContext);
 	const form = useFormContext();
 	const { getValues, setValue } = form;
 	const { height } = useWindowSize();

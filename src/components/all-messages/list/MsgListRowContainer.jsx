@@ -1,12 +1,11 @@
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
-import { MessagesContext } from "@/contexts/msgs/MessagesContext";
+import { AllMessagesContext } from "@/contexts/msgs/AllMessagesContext";
 import MsgListRow from "./MsgListRow";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const MsgListRowContainer = (props) => {
-	// const messaging = useContext(MessagingContext);
-	const msgs = useContext(MessagesContext);
+	const msgs = useContext(AllMessagesContext);
 	// const { selectJobById } = useContext(AppFrameContext);
 	const auth = useContext(AuthContext);
 	const { index, ...rest } = props;

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useMessaging } from "../../hooks/useMessaging";
+import { useMessaging } from "@/hooks/useMessaging";
 import { MessagingContext } from "./MessagingContext";
 
 export const MessagingProvider = ({ children }) => {
