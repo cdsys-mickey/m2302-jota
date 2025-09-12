@@ -15,7 +15,7 @@ const arePropsEqual = (oldProps, newProps) => {
  * 截自 GitHub 上的原始碼，用於改寫加入新功能
  * https://github.com/nick-keller/react-datasheet-grid/blob/master/src/columns/checkboxColumn.tsx
  */
-const CheckboxExComponent = memo(
+const CheckboxInputComponent = memo(
 	({
 		columnData,
 		focus,
@@ -85,7 +85,7 @@ const CheckboxExComponent = memo(
 	},
 	arePropsEqual
 );
-CheckboxExComponent.propTypes = {
+CheckboxInputComponent.propTypes = {
 	columnData: PropTypes.object,
 	rowData: PropTypes.bool,
 	focus: PropTypes.bool,
@@ -94,5 +94,5 @@ CheckboxExComponent.propTypes = {
 	stopEditing: PropTypes.func,
 	setRowData: PropTypes.func,
 };
-CheckboxExComponent.displayName = "CheckboxExComponent";
-export default CheckboxExComponent;
+CheckboxInputComponent.displayName = "CheckboxExComponent";
+export default CheckboxInputComponent;

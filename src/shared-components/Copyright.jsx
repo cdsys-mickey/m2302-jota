@@ -3,7 +3,7 @@ import { Link, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 
-const Copyright = ({ version, loading, apiVersion, handleCopyVersion }) => {
+const Copyright = ({ version, loading, apiVersion, handleCopyVersion, connState }) => {
 	const config = useContext(ConfigContext);
 
 	return (
@@ -27,7 +27,8 @@ const Copyright = ({ version, loading, apiVersion, handleCopyVersion }) => {
 					? `[${config.PROFILE}]`
 					: "[no profile]"
 					},
-			API: ${apiVersion || (loading ? "(系統啟動中...)" : "(N/A)")}`}
+			API:${apiVersion || (loading ? "(系統啟動中...)" : "(N/A)")}`}
+				[{connState}]
 			</Typography>
 		</>
 	);
@@ -37,7 +38,8 @@ Copyright.propTypes = {
 	version: PropTypes.string,
 	loading: PropTypes.bool,
 	apiVersion: PropTypes.string,
-	handleCopyVersion: PropTypes.func
+	handleCopyVersion: PropTypes.func,
+	connState: PropTypes.string
 };
 
 export default Copyright;

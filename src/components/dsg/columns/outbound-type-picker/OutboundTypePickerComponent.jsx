@@ -46,7 +46,6 @@ const OutboundTypePickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
@@ -82,58 +81,10 @@ const OutboundTypePickerComponent = memo((props) => {
 		multiple
 	});
 
-	// const cellComponentRef = useRef({
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	// handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// });
-	// // sync asyncRef
-	// cellComponentRef.current = {
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	// handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// }
-
 	return (
 		<OutboundTypePicker
-			// name={name}
-			// label=""
-			// inputRef={ref}
-			// disabled={disabled}
-			// value={rowData}
-			// onChange={handleChange}
-			// onOpen={handleOpen}
-			// onClose={handleClose}
-			// placeholder="銷退/報廢原因"
-			// typeToSearchText="請輸入編號或名稱進行搜尋"
-			// filterByServer
-			// DSG 專屬
-			// cellComponentRef={cellComponentRef}
-			// handleFocusNextCell={handleFocusNextCell}
-			// multiple={multiple}
-			// dense
-			// cell={cell}
-			// hideControls={hideControls}
-			// hideBorders
-			// disableFadeOut
-			// toastError
-			// virtualize
 			{...pickerProps}
 			{...rest}
-		// blurToLookup={false}
-
 		/>
 	);
 }, arePropsEqual);

@@ -3,28 +3,25 @@ import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/o
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { D041Context } from "@/contexts/D041/D041Context";
 import Colors from "@/modules/Colors.mjs";
-import { DialogEx } from "@/shared-components";
+import { DialogEx, FormMetaProvider } from "@/shared-components";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
-import { dateFieldColumnEx } from "@/shared-components/dsg/columns/date/dateFieldColumnEx";
+import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { FormMetaProvider } from "@/shared-components";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { forwardRef, useCallback, useContext, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { useHotkeys } from "react-hotkeys-hook";
 import D041Drawer from "../D041Drawer";
 import D041DialogForm from "./D041DialogForm";
 import { D041DialogToolbarContainer } from "./toolbar/D041DialogToolbarContainer";
-import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
-import { YesOrEmptyPickerComponentContainer } from "@/components/dsg/columns/yes-or-empty-picker/YesOrEmptyPickerComponentContainer";
-import { useHotkeys } from "react-hotkeys-hook";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const D041DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -194,6 +191,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 					"reworked",
 					createCheckboxColumn({
 						size: "medium",
+						focusNextCell: false
 					})
 				),
 				title: "重工",

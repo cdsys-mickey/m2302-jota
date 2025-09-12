@@ -61,20 +61,10 @@ const RowProdCatSPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		...rest
 	} = columnData;
-
-	// const { handleFocusNextCell } = useCellComponent({
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// 	insertRowBelow
-	// });
-
 
 	const { value: rowValue, onChange: handleChange, ...pickerProps } = useOptionPickerComponent({
 		name,
@@ -89,34 +79,9 @@ const RowProdCatSPickerComponent = memo((props) => {
 		stopEditing,
 		readOnly,
 		skipDisabled,
-		// handleFocusNextCell
 	});
 
 	console.log("ignores props", rowValue);
-
-	// const cellComponentRef = useRef({
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// });
-	// // sync asyncRef
-	// cellComponentRef.current = {
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// }
 
 	const onChange = useCallback((newValue) => {
 		const oldValue = rowData[name];

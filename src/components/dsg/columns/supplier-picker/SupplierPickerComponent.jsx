@@ -45,7 +45,6 @@ const SupplierPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
@@ -77,66 +76,15 @@ const SupplierPickerComponent = memo((props) => {
 		focusOnDisabled,
 	});
 
-	// const cellComponentRef = useRef({
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// });
-	// // sync asyncRef
-	// cellComponentRef.current = {
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// }
-
 	return (
 		<SupplierPicker
-			// name={name}
 			queryParam="qs"
-			// label=""
-			// inputRef={ref}
-			// disabled={disabled}
-			// value={rowData}
-			// onChange={handleChange}
-			// onOpen={handleOpen}
-			// onClose={handleClose}
-			// placeholder="供應商"
-			// typeToSearchText="請輸入編號或名稱進行搜尋"
-			// filterByServer
-			// queryRequired
-			// DSG 專屬屬性
-			// cellComponentRef={cellComponentRef}
-			// handleFocusNextCell={handleFocusNextCell}
-			// cell={cell}
-			// dense
-			// hideControls={hideControls}
-			// hideBorders
-			// disableFadeOut
-			// toastError
-			// autoHighlight
 			disableOpenOnInput
-			// selectOnFocus
 			// 大量資料專用
 			virtualize
 			triggerDelay={100}
-			// disablePointerEvents={!focus}
-			// hidePopupIndicator={!active}
-			// hidePlaceholder={!active}
 			{...pickerProps}
 			{...rest}
-		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

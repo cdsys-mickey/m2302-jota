@@ -1,6 +1,6 @@
 import FlexBox from "@/shared-components/FlexBox";
 
-import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
+// import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
 import LoginIcon from "@mui/icons-material/Login";
 import { LoadingButton } from "@mui/lab";
 import { Box, Collapse, Divider, Grid, Paper } from "@mui/material";
@@ -9,7 +9,7 @@ import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
 import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
-import { ButtonEx } from "@/shared-components";
+import { ButtonEx, CheckboxEx } from "@/shared-components";
 
 const SignInView = memo(
 	forwardRef((props, ref) => {
@@ -64,7 +64,11 @@ const SignInView = memo(
 				<Box px={2}>
 					<Grid container spacing={0}>
 						<Grid item xs={12}>
-							<RememberMeCheckboxContainer name="rememberMe" />
+							<CheckboxEx
+								name="rememberMe"
+								label="記住我"
+								focusNextFieldBySpace={false}
+							/>
 						</Grid>
 					</Grid>
 				</Box>

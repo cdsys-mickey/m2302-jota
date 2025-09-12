@@ -23,7 +23,8 @@ export const useDSGTest4 = () => {
 			typeA: null,
 			SExpDate3: null,
 			supplier: null,
-			stype: null
+			stype: null,
+			check1: false
 		}),
 		[]
 	);

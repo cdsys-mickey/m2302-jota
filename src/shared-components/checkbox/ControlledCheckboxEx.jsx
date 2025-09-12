@@ -15,10 +15,11 @@ const ControlledCheckboxEx = ({
 	onChange: _onChange,
 	value: _value,
 	// onKeyDown,
-	onChanged,
+	// onChanged,
 	checkedToValue,
 	valueToChecked,
 	defaultValue = null,
+	focusNextFieldBySpace = true,
 	...rest
 }) => {
 	const { isFieldDisabled, handleFocusNextField } = useContext(FormMetaContext) || {};
@@ -45,11 +46,15 @@ const ControlledCheckboxEx = ({
 			// }
 			console.log("handleKeyDown:", `"${e.key}"`);
 			if (e.key === "Enter" || e.key === "Tab" || e.key === " ") {
-				// if (e.key === " " || e.key === "Enter") {
-				// 不要讓 Enter 送出
+				// 特殊按鍵不要觸發預設行為
+				e.preventDefault();
 				if (e.key === " ") {
 					toggleChecked(e);
+					if (!focusNextFieldBySpace) {
+						return;
+					}
 				}
+
 				if (handleFocusNextField) {
 					e.preventDefault();
 					handleFocusNextField(name, {
@@ -177,4 +182,5 @@ ControlledCheckboxEx.propTypes = {
 		PropTypes.number,
 		PropTypes.object,
 	]),
+	focusNextFieldBySpace: PropTypes.bool
 };

@@ -12,7 +12,8 @@ import TextFieldExView from "./TextFieldExView";
 
 export const ControlledTextField = ({
 	name,
-	// multiline,
+	multiline,
+	placeholder,
 	// inputRef,
 	label,
 	readOnly = false,
@@ -78,8 +79,30 @@ export const ControlledTextField = ({
 				return;
 			}
 
-			// 按下 Shift 時必須略過不處理
-			if (((e.key === "Enter" && !disableEnter) && !e.shiftKey) || e.key === "Tab") {
+			// 按下 Shift 時必須略過不處理, 作為換行
+			// if (((e.key === "Enter" && !disableEnter) && !e.shiftKey && !e.altKey) || e.key === "Tab") {
+			if (((e.key === "Enter" && !disableEnter)) || e.key === "Tab") {
+				if (multiline && e.shiftKey) {
+					return;
+				}
+				// if (e.altKey) {
+				// 	e.preventDefault();
+				// 	// 獲取當前焦點元素
+				// 	const focusedElement = document.activeElement;
+				// 	const newEvent = new KeyboardEvent('keydown', {
+				// 		key: 'Enter', // 模擬的鍵
+				// 		code: e.code, // 使用原始事件的物理鍵代碼
+				// 		bubbles: true, // 允許事件冒泡
+				// 		cancelable: true, // 允許事件被取消
+				// 		// altKey: false, // 明確設置不包含 Alt 鍵
+				// 		shiftKey: true
+				// 	});
+
+				// 	// 分發新的事件到目標元素
+				// 	focusedElement.dispatchEvent(newEvent);
+				// 	console.log("alt+Enter 模擬 ShiftEnter");
+				// 	return;
+				// }
 				if (e.key === "Enter") {
 					const error = await getError();
 					if (error) {
@@ -89,9 +112,8 @@ export const ControlledTextField = ({
 						return;
 					}
 				}
+				e.preventDefault();
 				if (inFormMeta) {
-					e.preventDefault();
-
 					handleFocusNextField(name, {
 						setFocus: form.setFocus,
 						isFieldDisabled,
@@ -101,8 +123,15 @@ export const ControlledTextField = ({
 				}
 			}
 		},
-		[disableEnter, inFormMeta, getError, form, name, handleFocusNextField, isFieldDisabled]
+		[disableEnter, multiline, inFormMeta, getError, form, name, handleFocusNextField, isFieldDisabled]
 	);
+
+	const _placeholder = useMemo(() => {
+		if (!placeholder && multiline) {
+			return "使用 Shift+Enter 換行";
+		}
+		return placeholder;
+	}, [multiline, placeholder])
 
 	return (
 		<ControllerWrapper name={name} control={control} defaultValue={defaultValue} rules={rules}>
@@ -110,7 +139,10 @@ export const ControlledTextField = ({
 
 				<TextFieldExView
 					value={value}
-					// multiline={multiline}
+					multiline={multiline}
+					{..._placeholder && {
+						placeholder: _placeholder
+					}}
 					label={label}
 					inline={inline}
 					inputRef={ref}
@@ -182,7 +214,7 @@ export const ControlledTextField = ({
 ControlledTextField.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
-	// multiline: PropTypes.bool,
+	multiline: PropTypes.bool,
 	readOnly: PropTypes.bool,
 	control: PropTypes.object,
 	onChange: PropTypes.func,
@@ -208,5 +240,6 @@ ControlledTextField.propTypes = {
 	// shouldSelect: PropTypes.bool,
 	InputLabelProps: PropTypes.object,
 	inline: PropTypes.bool,
+	placeholder: PropTypes.string,
 
 };

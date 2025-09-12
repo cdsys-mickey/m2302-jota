@@ -6,7 +6,7 @@ import { memo, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
-		header: "CheckboxCompoent",
+		header: "CheckboxCellCompoent",
 		fields: "rowData,active,focus,disabled",
 		// debug: true,
 	});
@@ -44,20 +44,20 @@ const CheckboxCellComponent = memo(
 			isLastRow,
 			setActiveCell,
 			readOnly,
-			focusNextCell = true
+			focusNextCellOnChange = false,
 		} = columnData;
 
-		const toggleChecked = useCallback(
-			(e) => {
+		// const toggleChecked = useCallback(
+		// 	(e) => {
 
-				const newValue = checkedToValue
-					? checkedToValue(!e.target.checked)
-					: !e.target.checked;
-				console.log(`e.target.checked ${e.target.checked} → ${newValue}`);
-				setRowData(newValue);
-			},
-			[checkedToValue, setRowData]
-		);
+		// 		const newValue = checkedToValue
+		// 			? checkedToValue(!e.target.checked)
+		// 			: !e.target.checked;
+		// 		console.log(`e.target.checked ${e.target.checked} → ${newValue}`);
+		// 		setRowData(newValue);
+		// 	},
+		// 	[checkedToValue, setRowData]
+		// );
 
 		const checked = useMemo(() => {
 			return valueToChecked ? valueToChecked(rowData) : rowData
@@ -96,23 +96,10 @@ const CheckboxCellComponent = memo(
 		}, []);
 
 		// 當 focus 時, 切換 rowData, 再視條件往下一格前進
-		// useLayoutEffect(() => {
-		// 	if (focus) {
-		// 		setRowData(!rowData);
-		// 		stopEditing({ nextRow: false });
-		// 		console.log(`focusNextCell: ${focusNextCell}`);
-		// 		if (handleFocusNextCell && focusNextCell) {
-		// 			setTimeout(() => {
-		// 				handleFocusNextCell(cell);
-		// 			});
-		// 		}
-		// 	}
-		// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-		// }, [focus, stopEditing]);
 		useLayoutEffect(() => {
 			if (focus) {
 				stopEditing({ nextRow: false });
-				if (handleFocusNextCell && focusNextCell) {
+				if (handleFocusNextCell && focusNextCellOnChange) {
 					// 只會往下走
 					setTimeout(() => {
 						handleFocusNextCell(cell, { forward: true });
@@ -132,7 +119,7 @@ const CheckboxCellComponent = memo(
 					console.log("handleFocusNextCell is null");
 				}
 			}
-		}, [active, cell, columnIndex, focusNextCell, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
+		}, [active, cell, columnIndex, focusNextCellOnChange, disabled, handleFocusNextCell, readOnly, rowIndex, skipDisabled]);
 
 		return (
 			<Checkbox

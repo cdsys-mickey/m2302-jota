@@ -1,4 +1,4 @@
-import MuiCheckboxComponent from "./MuiCheckboxComponent";
+import MuiCheckboxComponent from "./ZZMuiCheckboxComponent";
 
 const DEFAULT_OPTS = {
 	trueValue: true,

@@ -47,7 +47,6 @@ const ProdTypeBPickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
@@ -85,54 +84,11 @@ const ProdTypeBPickerComponent = memo((props) => {
 		handleFocusNextCell,
 	});
 
-	// const cellComponentRef = useRef({
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// });
-	// // sync asyncRef
-	// cellComponentRef.current = {
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// }
-
 	return (
 		<ProdTypeBPicker
-			// name={name}
-			// label=""
-			// inputRef={ref}
-			// disabled={disabled}
-			// value={rowData}
-			// onChange={handleChange}
-			// onOpen={handleOpen}
-			// onClose={handleClose}
-			// DSG 專屬
-			// cellComponentRef={cellComponentRef}
-			// handleFocusNextCell={handleFocusNextCell}
-			// dense
-			// cell={cell}
-			// hideControls={hideControls}
-			// hideBorders
-			// disableFadeOut
-			// toastError
 			{...pickerProps}
 			{...rest}
-			// blurToLookup={false}
 			mockDelay={Constants.POPPER_DELAY}
-		// noOptionsText="..."
 		/>
 	);
 }, arePropsEqual);

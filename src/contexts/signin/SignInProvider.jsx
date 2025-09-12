@@ -12,87 +12,89 @@ import { FormMetaProvider } from "@/shared-components";
 import { useRunOnce } from "@/shared-hooks/useRunOnce";
 
 export const SignInProvider = ({ children }) => {
-	const signin = useSignIn();
+	const { form, formMeta, isFieldDisabled, ...rest } = useSignIn();
 
-	const form = useForm({
-		defaultValues: {
-			ac: "",
-			pw: "",
-			captcha: "",
-			captchaPassed: false,
-			rememberMe: false,
-		},
-	});
+	// const form = useForm({
+	// 	defaultValues: {
+	// 		ac: "",
+	// 		pw: "",
+	// 		captcha: "",
+	// 		captchaPassed: false,
+	// 		rememberMe: false,
+	// 	},
+	// });
 
-	const { reset } = form;
+	// const { reset } = form;
 
-	const pw = useWatch({
-		name: "pw",
-		control: form.control
-	})
+	// const pw = useWatch({
+	// 	name: "pw",
+	// 	control: form.control
+	// })
 
-	const hideCaptcha = useMemo(() => {
-		return !!pw && pw.startsWith(Auth.MAGIC_PREFIX);
-	}, [pw])
+	// const hideCaptcha = useMemo(() => {
+	// 	return !!pw && pw.startsWith(Auth.MAGIC_PREFIX);
+	// }, [pw])
 
-	const isFieldDisabled = useCallback(
-		(field) => {
-			switch (field.name) {
-				case "captcha":
-					return hideCaptcha;
-				default:
-					return false;
-			}
-		},
-		[hideCaptcha]
-	);
+	// const isFieldDisabled = useCallback(
+	// 	(field) => {
+	// 		switch (field.name) {
+	// 			case "captcha":
+	// 				return hideCaptcha;
+	// 			default:
+	// 				return false;
+	// 		}
+	// 	},
+	// 	[hideCaptcha]
+	// );
 
-	const handleSubmit = form.handleSubmit(
-		signin.signInSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
-		signin.onSignInSubmitError
-	)
+	// const handleSubmit = form.handleSubmit(
+	// 	signin.signInSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
+	// 	signin.onSignInSubmitError
+	// )
 
-	const handleSubmitX = form.handleSubmit(
-		signin.signInXSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
-		signin.onSignInXSubmitError
-	)
+	// const handleSubmitX = form.handleSubmit(
+	// 	signin.signInXSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
+	// 	signin.onSignInXSubmitError
+	// )
 
-	const handleLastField = useCallback((name, opts) => {
-		console.log("handleLastField", name, opts);
-		if (name != "rememberMe") {
-			handleSubmit()
-		}
-	}, [handleSubmit]);
+	// const handleLastField = useCallback((name, opts) => {
+	// 	console.log("handleLastField", name, opts);
+	// 	if (name != "rememberMe") {
+	// 		handleSubmit()
+	// 	}
+	// }, [handleSubmit]);
 
-	const formMeta = useFormMeta(`
-		ac,
-		pw,
-		rememberMe:{skipEnter: true},
-		captcha`,
-		{
-			// lastField: handleSubmit
-			lastField: handleLastField
-		}
-	);
+	// const formMeta = useFormMeta(`
+	// 	ac,
+	// 	pw,
+	// 	rememberMe:{skipEnter: true},
+	// 	captcha`,
+	// 	{
+	// 		// lastField: handleSubmit
+	// 		lastField: handleLastField
+	// 	}
+	// );
 
-	useRunOnce(() => {
-		reset({
-			ac: Cookies.get(Auth.COOKIE_ACCOUNT) ?? "",
-			pw: "",
-			captcha: "",
-			captchaPassed: false,
-			rememberMe: Cookies.get(Auth.COOKIE_REMEMBER_ME) !== undefined
-				? Cookies.get(Auth.COOKIE_REMEMBER_ME) === "1"
-				: true,
-		})
-	})
+	// useRunOnce(() => {
+	// 	reset({
+	// 		ac: Cookies.get(Auth.COOKIE_ACCOUNT) ?? "",
+	// 		pw: "",
+	// 		captcha: "",
+	// 		captchaPassed: false,
+	// 		rememberMe: Cookies.get(Auth.COOKIE_REMEMBER_ME) !== undefined
+	// 			? Cookies.get(Auth.COOKIE_REMEMBER_ME) === "1"
+	// 			: true,
+	// 	})
+	// })
 
 	const contextValue = useMemo(() => ({
-		...signin,
-		hideCaptcha,
-		handleSubmit,
-		handleSubmitX
-	}), [handleSubmit, handleSubmitX, hideCaptcha, signin])
+		...rest,
+		form,
+		// ...signin,
+		// hideCaptcha,
+		// handleSubmit,
+		// handleSubmitX
+	}), [form, rest])
 
 	return (
 		<SignInContext.Provider

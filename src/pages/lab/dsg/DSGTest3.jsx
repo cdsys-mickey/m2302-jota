@@ -1,4 +1,5 @@
-import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
+import { checkboxColumnEx } from "@/shared-components/dsg/columns/checkbox/checkboxColumnEx";
+import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import OptionPickerComponent from "@/shared-components/dsg/columns/option-picker/OptionPickerComponent";
 import PropTypes from "prop-types";
@@ -8,8 +9,6 @@ import {
 	keyColumn,
 	textColumn,
 } from "react-datasheet-grid";
-import { checkboxColumn2 } from "../../../shared-components/dsg/columns/checkbox/checkboxColumn2";
-// import { reactSelectColumn } from "../../../shared-components/dsg/columns/react-select/reactSelectColumn";
 
 const DSGTest3 = memo(
 	forwardRef((props, ref) => {
@@ -56,16 +55,13 @@ const DSGTest3 = memo(
 		const columns = useMemo(
 			() => [
 				// { ...keyColumn("active", checkboxColumn), title: "Active" },
-				{ ...keyColumn("active", checkboxColumn2), title: "Active" },
+				{ ...keyColumn("active", checkboxColumnEx), title: "Active" },
 				{ ...keyColumn("firstName", textColumn), title: "First name" },
 				{ ...keyColumn("lastName", textColumn), title: "Last name" },
 				{
 					...keyColumn(
 						"active2",
-						createMuiCheckboxColumn({
-							trueValue: "1",
-							falseValue: "0",
-						})
+						createCheckboxColumn()
 					),
 					title: "Active2",
 					minWidth: 60,

@@ -82,57 +82,11 @@ const G10DocPickerCellOld = memo((props) => {
 		multiple
 	});
 
-	// const cellComponentRef = useRef({
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	// handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// });
-	// // sync asyncRef
-	// cellComponentRef.current = {
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	// handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// }
-
 	return (
 		<G10DocPicker
-			// name={name}
 			queryParam="qs"
-			// label=""
-			// inputRef={ref}
-			// disabled={disabled}
-			// value={rowData}
-			// onChange={handleChange}
-			// onOpen={handleOpen}
-			// onClose={handleClose}
-			// placeholder="清單編號"
-			// typeToSearchText="請輸入編號或名稱進行搜尋"
-			// filterByServer
-			// DSG 專屬屬性
-			// handleFocusNextCell={handleFocusNextCell}
-			// cellComponentRef={cellComponentRef}
-			// multiple={multiple}
-			// cell={cell}
-			// dense
-			// hideControls={hideControls}
-			// hideBorders
-			// disableFadeOut
-			// toastError
 			{...pickerProps}
 			{...rest}
-		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

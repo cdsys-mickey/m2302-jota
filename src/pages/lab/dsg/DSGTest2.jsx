@@ -1,14 +1,13 @@
-import { createMuiCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createMuiCheckboxColumn";
+import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
+import { DSGGrid } from "@/shared-components";
+import { checkboxColumnEx } from "@/shared-components/dsg/columns/checkbox/checkboxColumnEx";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo, useState } from "react";
 import {
 	createTextColumn,
-	DynamicDataSheetGrid,
 	keyColumn
 } from "react-datasheet-grid";
-import { prodPickerColumn } from "@/components/dsg/columns/prod-picker/prodPickerColumn";
-import { DSGGrid } from "@/shared-components";
 
 const DSGTest2 = memo(
 	forwardRef((props, ref) => {
@@ -24,10 +23,7 @@ const DSGTest2 = memo(
 				{
 					...keyColumn(
 						"Using_N",
-						createMuiCheckboxColumn({
-							trueValue: "1",
-							falseValue: "0",
-						})
+						checkboxColumnEx
 					),
 					title: "U",
 					minWidth: 60,

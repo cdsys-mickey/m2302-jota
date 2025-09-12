@@ -56,13 +56,6 @@ const G10DocPickerCell = memo((props) => {
 		...rest
 	} = columnData;
 
-	// const { handleFocusNextCell } = useCellComponent({
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// 	insertRowBelow
-	// });
 	const { handleFocusNextCell, skipDisabled, readOnly, focusOnDisabled, inDSG } = useCellFocus({
 		// getNextCell,
 		// lastCell,

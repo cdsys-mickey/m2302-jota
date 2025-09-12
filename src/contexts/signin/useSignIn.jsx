@@ -10,6 +10,8 @@ import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../app/AppContext";
+import { useForm, useWatch } from "react-hook-form";
+import { useRunOnce } from "@/shared-hooks/useRunOnce";
 
 // const pageCookieOpts = {
 // 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
@@ -33,12 +35,30 @@ export const useSignIn = () => {
 			expires: 365,
 		}
 	}, [])
-	const formMeta = useFormMeta(`
-		ac,
-		pw,
-		rememberMe:{skipEnter: true},
-		captcha`
-	);
+
+
+	const form = useForm({
+		defaultValues: {
+			ac: "",
+			pw: "",
+			captcha: "",
+			captchaPassed: false,
+			rememberMe: false,
+		},
+	});
+	const { reset } = form;
+
+
+	const pw = useWatch({
+		name: "pw",
+		control: form.control
+	})
+
+	const hideCaptcha = useMemo(() => {
+		return !!pw && pw.startsWith(Auth.MAGIC_PREFIX);
+	}, [pw])
+
+
 	const captcha = useCaptcha({
 		numbersOnly: true,
 		length: 4,
@@ -217,7 +237,7 @@ export const useSignIn = () => {
 				}
 			}
 		},
-		[captcha, httpPostAsync, setSessionValue, location.pathname, toLanding, authCookieOpts, removeSessionValue]
+		[captcha, httpPostAsync, setSessionValue, location.pathname, toLanding, authCookieOpts]
 	);
 
 	const signInSubmitHandler = useCallback(
@@ -263,14 +283,70 @@ export const useSignIn = () => {
 
 
 
+	const isFieldDisabled = useCallback(
+		(field) => {
+			switch (field.name) {
+				case "captcha":
+					return hideCaptcha;
+				default:
+					return false;
+			}
+		},
+		[hideCaptcha]
+	);
+
+	const handleSubmit = form.handleSubmit(
+		signInSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
+		onSignInSubmitError
+	)
+
+	const handleSubmitX = form.handleSubmit(
+		signInXSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
+		onSignInXSubmitError
+	)
+
+	const handleLastField = useCallback((name, opts) => {
+		console.log("handleLastField", name, opts);
+		// if (name != "rememberMe") {
+		// 	handleSubmit()
+		// }
+		handleSubmit();
+	}, [handleSubmit]);
+
+	const formMeta = useFormMeta(`
+		ac,
+		pw,
+		rememberMe:{skipEnter: true},
+		captcha`,
+		{
+			lastField: handleLastField
+		}
+	);
+
+	useRunOnce(() => {
+		reset({
+			ac: Cookies.get(Auth.COOKIE_ACCOUNT) ?? "",
+			pw: "",
+			captcha: "",
+			captchaPassed: false,
+			rememberMe: Cookies.get(Auth.COOKIE_REMEMBER_ME) !== undefined
+				? Cookies.get(Auth.COOKIE_REMEMBER_ME) === "1"
+				: true,
+		})
+	})
 
 	return {
 		...state,
+		form,
+		hideCaptcha,
 		signInSubmitHandler,
 		onSignInSubmitError,
 		signInXSubmitHandler,
 		onSignInXSubmitError,
 		captcha,
 		formMeta,
+		handleSubmit,
+		handleSubmitX,
+		isFieldDisabled
 	};
 };

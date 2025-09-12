@@ -491,7 +491,9 @@ export const useDSGMeta = ({
 				if (column.toggleBySpace) {
 					event.preventDefault(); // 防止預設行為（如頁面滾動）
 					toggleCheckbox(activeCell)
-					handleFocusNextCell(activeCell, { forward: true });
+					if (column.focusNextCellOnSpace) {
+						handleFocusNextCell(activeCell, { forward: true });
+					}
 				}
 			}
 		}

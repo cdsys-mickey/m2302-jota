@@ -59,7 +59,6 @@ const ProdCatSPickerColumn = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
@@ -96,61 +95,10 @@ const ProdCatSPickerColumn = memo((props) => {
 		multiple
 	});
 
-	// const cellComponentRef = useRef({
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// });
-	// // sync asyncRef
-	// cellComponentRef.current = {
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// }
-
-	// const value = useMemo(() => {
-	// 	return name ? rowData[name] : rowData;
-	// }, [name, rowData]);
-
 	return (
 		<ProdCatSPicker
-			// name={name}
-			// label=""
-			// inputRef={ref}
-			// catL={catL}
-			// catM={catM}
-			// disabled={disabled}
-			// value={rowData}
-			// value={value}
-			// onChange={handleChange}
-			// onOpen={handleOpen}
-			// onClose={handleClose}
-			// DSG 專屬屬性
-			// cellComponentRef={cellComponentRef}
-			// handleFocusNextCell={handleFocusNextCell}
-			// multiple={multiple}
-			// dense
-			// cell={cell}
-			// hideControls={hideControls}
-			// hideBorders
-			// disableFadeOut
-			// disableClearable
-			// toastError
 			{...pickerProps}
 			{...rest}
-		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

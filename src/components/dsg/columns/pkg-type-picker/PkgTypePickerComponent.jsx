@@ -46,7 +46,6 @@ const PkgTypePickerComponent = memo((props) => {
 		isLastRow,
 		getNextCell,
 		skipDisabled,
-		// handleFocusNextCell,
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
@@ -82,59 +81,11 @@ const PkgTypePickerComponent = memo((props) => {
 		multiple
 	});
 
-	// const cellComponentRef = useRef({
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// });
-	// // sync asyncRef
-	// cellComponentRef.current = {
-	// 	stopEditing,
-	// 	insertRowBelow,
-	// 	cell,
-	// 	skipDisabled,
-	// 	handleFocusNextCell,
-	// 	getNextCell,
-	// 	lastCell,
-	// 	isLastRow,
-	// 	setActiveCell,
-	// }
-
 	return (
 		<PkgTypePicker
-			// name={name}
 			queryParam="qs"
-			// label=""
-			// inputRef={ref}
-			// disabled={disabled}
-			// value={rowData}
-			// onChange={handleChange}
-			// onOpen={handleOpen}
-			// onClose={handleClose}
-			// placeholder="包裝單位"
-			// typeToSearchText="請輸入編號或名稱進行搜尋"
-			// filterByServer
-			// DSG 專屬屬性
-			// cellComponentRef={cellComponentRef}
-			// handleFocusNextCell={handleFocusNextCell}
-			// multiple={multiple}
-			// dense
-			// cell={cell}
-			// hideControls={hideControls}
-			// hideBorders
-			// disableFadeOut
-			// disableClearable
-			// toastError
-			// virtualize
 			{...pickerProps}
 			{...rest}
-		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

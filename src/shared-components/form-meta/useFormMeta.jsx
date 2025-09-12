@@ -41,34 +41,30 @@ export const useFormMeta = (value, opts = {}) => {
 				return null;
 			}
 
+			// 輔助函數（可內聯或提取）
+			function skipField(field, e) {
+				return e?.key === "Enter" && field.skipEnter;
+			}
+
+			function isEnabled(field, isFieldDisabled) {
+				if (!isFieldDisabled || !isFieldDisabled(field)) {
+					return true;
+				}
+				console.log(`field [${field.name}] is disabled`, field);
+				return false;
+			}
+
 			if (forward) {
 				for (let i = currentIndex + 1; i < fields.length; i++) {
 					const field = fields[i];
-					if (e?.key === "Enter" && field.skipEnter) {
-						continue;
-					}
-
-					if (!isFieldDisabled || !isFieldDisabled(field)) {
-						return field;
-					} else {
-						if (isFieldDisabled) {
-							console.log(`field [${field.name}] is disabled`, field);
-						}
-					}
+					if (skipField(field, e)) continue;
+					if (isEnabled(field, isFieldDisabled)) return field;
 				}
 			} else {
 				for (let i = currentIndex - 1; i >= 0; i--) {
 					const field = fields[i];
-					if (e?.key === "Enter" && field.skipEnter) {
-						continue;
-					}
-					if (!isFieldDisabled || !isFieldDisabled(field)) {
-						return field;
-					} else {
-						if (isFieldDisabled) {
-							console.log(`field [${field.name}] is disabled`, field);
-						}
-					}
+					if (skipField(field, e)) continue;
+					if (isEnabled(field, isFieldDisabled)) return field;
 				}
 			}
 

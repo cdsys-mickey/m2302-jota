@@ -1,4 +1,4 @@
-import CheckboxCellComponent from "./CheckboxCell/CheckboxCellComponent";
+import CheckboxCellComponent from "./CheckboxCellComponent";
 
 export const checkboxColumn2 = {
 	component: CheckboxCellComponent,

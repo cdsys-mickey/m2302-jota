@@ -9,19 +9,19 @@ import { memo } from "react";
 
 const Home = memo(() => {
 	return (
-		<HomeBox
-			sx={{
-				backgroundImage: `url(${BackgroundImage})`,
-				backgroundSize: "cover",
+		<Box sx={{
+			backgroundImage: `url(${BackgroundImage})`,
+			backgroundSize: "cover",
 
-				backgroundRepeat: "no-repeat",
-				minHeight: "100vh",
-			}}>
-			{/* <HomeFrameBanner /> */}
-			<FrameBanner title="首頁" />
-			<Box pt={3}>
-				<Grid container spacing={3}>
-					{/* <Grid item xl={3} lg={5} md={6} sm={12} xs={12}>
+			backgroundRepeat: "no-repeat",
+			minHeight: "100vh",
+		}}>
+			<HomeBox>
+				{/* <HomeFrameBanner /> */}
+				<FrameBanner title="首頁" />
+				<Box pt={3}>
+					<Grid container spacing={3}>
+						{/* <Grid item xl={3} lg={5} md={6} sm={12} xs={12}>
 							<BulletinWidgetContainer
 								heading={
 									<ModuleHeading
@@ -32,16 +32,17 @@ const Home = memo(() => {
 								}
 								/>
 						</Grid> */}
-					{/* 待覆核 */}
-					<Grid item xl={3} lg={4} md={6} sm={12} xs={12}>
-						<ReviewWidgetContainer />
+						{/* 待覆核 */}
+						<Grid item xl={3} lg={4} md={6} sm={12} xs={12}>
+							<ReviewWidgetContainer />
+						</Grid>
 					</Grid>
-				</Grid>
-			</Box>
+				</Box>
+			</HomeBox>
 			<FlexBox fullWidth mt={1} px={2} justifyContent="flex-end">
 				<CopyrightContainer />
 			</FlexBox>
-		</HomeBox>
+		</Box>
 	);
 });
 

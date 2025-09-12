@@ -4,19 +4,45 @@ import { AppContext } from "@/contexts/app/AppContext";
 import { useInit } from "@/shared-hooks/useInit";
 import { useCallback } from "react";
 import { toastEx } from "@/helpers/toastEx";
+import { MessagingContext } from "@/contexts/messaging/MessagingContext";
+import { useMemo } from "react";
+import { HubConnectionState } from "@microsoft/signalr";
 
 export const CopyrightContainer = (props) => {
 	const { ...rest } = props;
 	const { version, apiVersion, loadAppInfo, loading } = useContext(AppContext);
+	const messaging = useContext(MessagingContext);
+	const { connectionState } = messaging;
 
 	const handleCopyVersion = useCallback(async () => {
 		await navigator.clipboard.writeText(version);
 		toastEx.info("版號已複製到剪貼簿")
 	}, [version]);
 
+	const connState = useMemo(() => {
+		switch (connectionState) {
+			case HubConnectionState.Connected:
+				return "V";
+			case HubConnectionState.Connecting:
+				return "...";
+			case HubConnectionState.Disconnected:
+			default:
+				return "X";
+		}
+	}, [connectionState])
+
 	useInit(() => {
 		loadAppInfo();
 	}, []);
 
-	return <Copyright loading={loading} version={version} apiVersion={apiVersion} handleCopyVersion={handleCopyVersion} {...rest} />;
+	return (
+		<Copyright
+			loading={loading}
+			version={version}
+			apiVersion={apiVersion}
+			handleCopyVersion={handleCopyVersion}
+			connState={connState}
+			{...rest}
+		/>
+	);
 };
