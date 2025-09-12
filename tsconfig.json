@@ -1,0 +1,44 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"lib": [
+			"DOM",
+			"DOM.Iterable",
+			"ESNext"
+		],
+		"allowJs": true, // 支援混合 JS/JSX
+		"skipLibCheck": true,
+		"esModuleInterop": false,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "bundler", // Vite 推薦
+		"module": "ESNext",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"jsx": "react-jsx", // 更新 JSX 模式
+		"baseUrl": "src", // 保留你的路徑設定
+		"paths": {
+			"@/*": [
+				"*"
+			],
+			"@/modules/*": [
+				"modules/*"
+			]
+		}
+	},
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	],
+	"references": [
+		{
+			"path": "./tsconfig.node.json"
+		}
+	]
+}

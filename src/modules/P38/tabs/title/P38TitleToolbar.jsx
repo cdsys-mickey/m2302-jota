@@ -10,15 +10,13 @@ const LeftButtons = memo(() => (
 		<P38EditButton />
 		<P38SaveButton />
 		<P38CancelButton />
-		{/* <P41PrintButtonContainer /> */}
 	</>
 ))
 LeftButtons.displayName = "LeftButtons";
 
 const RightButtons = memo(() => (
 	<>
-		<P38SaveButton />
-		<P38CancelButton />
+
 	</>
 ))
 RightButtons.displayName = "RightButtons";
@@ -33,7 +31,7 @@ const P38TitleToolbar = memo(
 				alignItems="flex-end"
 				ref={ref}
 				bgcolor={Colors.TOOLBAR}
-				LeftComponent={P38EditButton}
+				LeftComponent={LeftButtons}
 				RightComponent={RightButtons}
 				{...rest}
 			/>

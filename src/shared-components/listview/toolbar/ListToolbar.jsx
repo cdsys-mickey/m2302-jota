@@ -77,17 +77,7 @@ const ListToolbar = memo(
 					})}
 					sx={[
 						(theme) => ({
-							// "& button:not(.no-margin-right)": {
-							// 	marginRight: theme.spacing(1),
-							// },
-							// "& .MuiButtonGroup-root button": {
-							// 	marginLeft: "unset",
-							// 	marginRight: "unset",
-							// },
-							// "& label:not(.no-margin-right), & .toolbar-button:not(.no-margin-right), & > *:not(.no-margin-right)": {
-							// 	marginRight: theme.spacing(1),
-							// },
-							"gap": theme.spacing(1)
+							"gap": theme.spacing(0.5)
 						}),
 					]}
 					{...LeftProps}>
@@ -104,15 +94,12 @@ const ListToolbar = memo(
 					alignItems="center"
 					justifyContent="flex-end"
 					flex={1}
-					// {...(!hasLeft && {
-					// 	flex: 1,
-					// })}
+					{...(!hasRight && {
+						flex: 0,
+					})}
 					sx={[
 						(theme) => ({
-							// "& button, & label, & .button": {
-							// 	marginLeft: theme.spacing(0.5),
-							// },
-							"gap": theme.spacing(1)
+							"gap": theme.spacing(0.5)
 						}),
 					]}
 					{...RightProps}>

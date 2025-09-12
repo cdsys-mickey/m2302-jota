@@ -24,7 +24,7 @@ const P38SaveButton = (props) => {
 			endIcon={<SaveIcon />}
 			loading={p38.saveWorking}
 			onClick={handleSubmit}
-			// disabled={!p38.grid.isDirty}
+			// disabled={!p38.editing}
 			{...rest}
 		>儲存</ButtonEx>
 

@@ -13,8 +13,8 @@ const UserSettingEditorFormView = memo((props) => {
 		<ContainerEx maxWidth="sm" alignLeft>
 			<FormBox {...rest}>
 				<form>
-					<FormSectionBox pt={0.5}>
-						<Box my={0.5}>
+					<FormSectionBox pt={1}>
+						<Box mb={0.5}>
 							<UserSettingEditorToolbar />
 						</Box>
 						<UserSettingEditorGridContainer slotProps={{

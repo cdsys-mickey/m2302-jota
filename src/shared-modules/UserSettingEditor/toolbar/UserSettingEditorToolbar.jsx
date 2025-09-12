@@ -8,14 +8,15 @@ import Colors from "@/modules/Colors.mjs";
 const LeftButtons = memo(() => (
 	<>
 		<UserSettingEditorEditButton />
+		<UserSettingEditorSaveButton />
+		<UserSettingEditorCancelButton />
 	</>
 ))
 LeftButtons.displayName = "LeftButtons";
 
 const RightButtons = memo(() => (
 	<>
-		<UserSettingEditorSaveButton />
-		<UserSettingEditorCancelButton />
+
 	</>
 ))
 RightButtons.displayName = "RightButtons";
@@ -30,7 +31,7 @@ const UserSettingEditorToolbar = memo(
 				alignItems="flex-end"
 				ref={ref}
 				bgcolor={Colors.TOOLBAR}
-				LeftComponent={UserSettingEditorEditButton}
+				LeftComponent={LeftButtons}
 				RightComponent={RightButtons}
 				{...rest}
 			/>

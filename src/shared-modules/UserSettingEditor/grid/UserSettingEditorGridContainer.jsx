@@ -24,8 +24,9 @@ const UserSettingEditorGridContainer = (props) => {
 	const gridMeta = useContext(DSGMetaContext);
 
 	const _height = useMemo(() => {
-		return height - 494 + (userSettingEditor.gridDisabled ? 48 : 0)
-	}, [height, userSettingEditor.gridDisabled])
+		// return height - 494 + (userSettingEditor.gridDisabled ? 48 : 0)
+		return height - 494
+	}, [height])
 
 	const onChange = useMemo(() => {
 		return userSettingEditor.grid.buildGridChangeHandler({

@@ -1,4 +1,3 @@
-import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import UserSettingEditorProvider from "./context/UserSettingEditorProvider";

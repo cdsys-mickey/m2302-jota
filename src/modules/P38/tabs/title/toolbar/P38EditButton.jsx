@@ -28,6 +28,7 @@ const P38EditButton = (props) => {
 			endIcon={<EditIcon />}
 			loading={p38.saveWorking}
 			onClick={handleEdit}
+			// disabled={p38.editing}
 			{...rest}
 		>編輯</ButtonEx>
 

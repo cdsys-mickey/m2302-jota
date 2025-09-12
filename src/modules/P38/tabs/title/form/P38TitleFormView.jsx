@@ -16,13 +16,13 @@ const P38TitleFormView = memo((props) => {
 		<ContainerEx maxWidth="sm" alignLeft>
 			<FormBox {...rest}>
 				<form>
-					<FormSectionBox pt={0.5}>
+					<FormSectionBox pt={1}>
 						{loadError ? <FormErrorBox error={loadError} /> : (
 							<>
-								<Box my={0.5}>
+								<Box mb={0.5}>
 									<P38TitleToolbar />
 								</Box>
-								<Box mt={1}>
+								<Box mt={1} >
 									{loadWorking ? <LoadingTypography>讀取中</LoadingTypography> : (<Grid container spacing={2}>
 										<Grid item xs={12}>
 											<TextFieldEx
