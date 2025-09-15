@@ -25,7 +25,7 @@ import TypoLabelWrapper from "./TypoLabel/TypoLabelWrapper";
 import ControlledRadioGroupEx from "./RadioGroupEx/ControlledRadioGroupEx";
 
 import DSGGridContainer from "./dsg/DSGGrid/DSGGridContainer";
-import CustomAlertView from "./CustomAlert/CustomAlertView";
+import JumboAlertView from "./JumboAlert/JumboAlertView";
 
 export {
 	ButtonWrapperContainer as ButtonEx,
@@ -51,5 +51,5 @@ export {
 	ToolbarDividerView as ToolbarDivider,
 	ControlledRadioGroupEx as RadioGroupEx,
 	DSGGridContainer as DSGGrid,
-	CustomAlertView as CustomAlert,
+	JumboAlertView as JumboAlert,
 };

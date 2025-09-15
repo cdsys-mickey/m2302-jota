@@ -1,7 +1,7 @@
 import { A012GridContainer } from "@/components/jobs/A012/A012GridContainer";
 import { ProdGridFormContainer } from "@/components/jobs/prod-grid/ProdGridFormContainer";
 import { ProdGridToolbarContainer } from "@/components/jobs/prod-grid/ProdGridToolbarContainer";
-import { CustomAlert, FrameBanner, FrameBox } from "@/shared-components";
+import { JumboAlert, FrameBanner, FrameBox } from "@/shared-components";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { Box, Container } from "@mui/material";
 import PropTypes from "prop-types";
@@ -18,11 +18,12 @@ const A012Frame = memo((props) => {
 			</ContainerEx>
 			{loading == null ? (
 				<Container maxWidth="sm">
-					<Box pt="15vh">
-						<CustomAlert
+					<Box pt="8vh">
+						<JumboAlert
 							label="請先輸入篩選條件，按下「讀取資料」後再進行修改"
-							severity="info"
+							// severity="info"
 							icon={ManageSearchIcon}
+
 						/>
 					</Box>
 				</Container>
