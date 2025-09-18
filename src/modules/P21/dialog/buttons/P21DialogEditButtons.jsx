@@ -1,7 +1,6 @@
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
 import { ButtonEx } from "@/shared-components";
 
 const P21DialogEditButtons = memo(
@@ -34,6 +33,7 @@ const P21DialogEditButtons = memo(
 );
 P21DialogEditButtons.displayName = "P21DialogEditButtons";
 P21DialogEditButtons.propTypes = {
+	onCancel: PropTypes.func,
 	onSave: PropTypes.func,
 	loading: PropTypes.bool,
 };

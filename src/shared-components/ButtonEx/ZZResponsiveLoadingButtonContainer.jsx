@@ -3,6 +3,7 @@ import { LoadingButton } from "@mui/lab";
 import { IconButton, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useContext, useMemo } from "react";
+import TooltipWrapper from "../TooltipWrapper/TooltipWrapper";
 
 const ResponsiveLoadingButtonContainer = memo(
 	forwardRef((props, ref) => {
@@ -18,23 +19,23 @@ const ResponsiveLoadingButtonContainer = memo(
 			tooltip,
 			...rest
 		} = props;
-		const { mobile } = useContext(ResponsiveContext);
+		const { mobile = false } = useContext(ResponsiveContext) ?? {};
 
 		const icon = useMemo(() => {
-			return startIcon || endIcon;
+			return startIcon ?? endIcon;
 		}, [endIcon, startIcon]);
 
-		const doIconButton = useMemo(
+		const isUseIconButton = useMemo(
 			() => mobile && icon && useIconButton,
 			[icon, mobile, useIconButton]
 		);
 
-		const doStartIcon = useMemo(
+		const isUseStartIcon = useMemo(
 			() => startIcon && (!mobile || useIconButton),
 			[useIconButton, mobile, startIcon]
 		);
 
-		const doEndIcon = useMemo(
+		const isUseEndIcon = useMemo(
 			() => endIcon && (!mobile || useIconButton),
 			[endIcon, useIconButton, mobile]
 		);
@@ -49,33 +50,32 @@ const ResponsiveLoadingButtonContainer = memo(
 			return children;
 		}, [children, useIconButton, mobile, mobileText]);
 
-		if (doIconButton) {
+		if (isUseIconButton) {
 			return (
-				<Tooltip title={children}>
-					<IconButton {...rest}>{icon}</IconButton>
-				</Tooltip>
+				<IconButton {...rest}>{icon}</IconButton>
+				</Tooltip >
 			);
 		}
 
-		return (
-			<Tooltip title={tooltip}>
-				<LoadingButton
-					ref={ref}
-					size="small"
-					sx={[
-						...(Array.isArray(sx) ? sx : [sx]),
-					]}
-					{...(doStartIcon && {
-						startIcon,
-					})}
-					{...(doEndIcon && {
-						endIcon,
-					})}
-					{...rest}>
-					{text}
-				</LoadingButton>
-			</Tooltip>
-		);
+return (
+	<TooltipWrapper title={tooltip}>
+		<LoadingButton
+			ref={ref}
+			size="small"
+			sx={[
+				...(Array.isArray(sx) ? sx : [sx]),
+			]}
+			{...(isUseStartIcon && {
+				startIcon,
+			})}
+			{...(isUseEndIcon && {
+				endIcon,
+			})}
+			{...rest}>
+			{text}
+		</LoadingButton>
+	</TooltipWrapper>
+);
 	})
 );
 

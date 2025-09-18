@@ -111,6 +111,7 @@ const SignInView = memo(
 								})}
 								size="small"
 								loading={loading}
+								// loading={true}
 								endIcon={<LoginIcon />}>
 								登入
 							</ButtonEx>

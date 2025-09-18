@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { StdPrintContext } from "@/contexts/std-print/StdPrintContext";
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
+import { ButtonEx } from "@/shared-components";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 export const StdPrintResetButtonContainer = () => {

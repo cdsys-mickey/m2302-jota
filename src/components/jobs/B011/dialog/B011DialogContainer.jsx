@@ -100,7 +100,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 			|| (b011.editing && (!dlgCustomer || !dlgEmployee));
 	}, [b011.editing, dlgCustomer, dlgEmployee]);
 
-	const qpriceTitle = useMemo(() => {
+	const quotedPriceTitle = useMemo(() => {
 		return b.forNew ? "新客戶報價" : "客戶報價";
 	}, [b.forNew])
 
@@ -157,14 +157,14 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("Price", createFloatColumn(2)),
 				title: "建議售價",
 				minWidth: 120,
-				maxWidth: 120,
+				// maxWidth: 120,
 				disabled: true,
 			},
 			{
 				...keyColumn("QPrice", createFloatColumn(2)),
-				title: qpriceTitle,
+				title: quotedPriceTitle,
 				minWidth: 120,
-				maxWidth: 120,
+				// maxWidth: 120,
 				disabled: readOnly,
 			},
 			...(!b011.creating ? [
@@ -198,7 +198,7 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 				// },
 			] : [])
 		],
-		[b011.creating, qpriceTitle, readOnly]
+		[b011.creating, quotedPriceTitle, readOnly]
 	);
 
 	const gridMeta = useDSGMeta({

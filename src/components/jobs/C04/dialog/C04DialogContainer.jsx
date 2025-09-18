@@ -160,7 +160,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 				),
 				title: "品名規格",
 				disabled: true,
-				grow: 2,
+				grow: 1.5,
 			},
 			{
 				...keyColumn(
@@ -179,6 +179,7 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					"SInqFlag",
 					createTextColumnEx({
 						continuousUpdates: false,
+
 					})
 				),
 				minWidth: 38,

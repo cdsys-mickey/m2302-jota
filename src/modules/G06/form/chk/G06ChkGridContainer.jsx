@@ -36,7 +36,7 @@ export const G06ChkGridContainer = (props) => {
 				...keyColumn("ChkAmt", createFloatColumn(2)),
 				title: "票據金額",
 				minWidth: 130,
-				maxWidth: 130,
+				// maxWidth: 130,
 				disabled: readOnly,
 			},
 			{

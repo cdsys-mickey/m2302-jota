@@ -1,5 +1,4 @@
 import Colors from "@/modules/Colors.mjs";
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
 import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexContainer from "@/shared-components/FlexContainer";
@@ -9,9 +8,10 @@ import LoginIcon from "@mui/icons-material/Login";
 import { Box, FormHelperText, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
+import { ButtonEx } from "@/shared-components";
 
 const RenewFrame = memo((props) => {
-	const { loading, toLogin, ...rest } = props;
+	const { loading, toLogin } = props;
 	return (
 		<FlexContainer
 			maxWidth="xs"
@@ -110,17 +110,17 @@ const RenewFrame = memo((props) => {
 									marginLeft: 1,
 								},
 							}}>
-							<ResponsiveLoadingButton onClick={toLogin}>
+							<ButtonEx onClick={toLogin}>
 								回登入頁面
-							</ResponsiveLoadingButton>
-							<ResponsiveLoadingButton
+							</ButtonEx>
+							<ButtonEx
 								type="submit"
 								variant="contained"
 								size="small"
 								loading={loading}
 								endIcon={<LoginIcon />}>
 								送出
-							</ResponsiveLoadingButton>
+							</ButtonEx>
 						</FlexBox>
 						<FormHelperText error>
 							*基於安全性考量，請變更您的密碼後再進入系統

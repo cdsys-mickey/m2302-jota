@@ -2,10 +2,10 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import { Box, Container, FormHelperText, Grid } from "@mui/material";
 import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
 import LoginIcon from "@mui/icons-material/Login";
 import FlexBox from "@/shared-components/FlexBox";
 import ContainerEx from "@/shared-components/ContainerEx";
+import { ButtonEx } from "@/shared-components";
 
 const ChangePwordForm = memo((props) => {
 	const { loading = false, verified, ...rest } = props;
@@ -100,14 +100,15 @@ const ChangePwordForm = memo((props) => {
 								marginLeft: 1,
 							},
 						}}>
-						<ResponsiveLoadingButton
+						<ButtonEx
+							responsive
 							type="submit"
 							variant="contained"
 							size="small"
 							loading={loading}
 							endIcon={<LoginIcon />}>
 							送出
-						</ResponsiveLoadingButton>
+						</ButtonEx>
 					</FlexBox>
 				</form>
 			</Box>

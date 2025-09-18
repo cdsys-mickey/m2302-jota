@@ -1,5 +1,5 @@
 import { A22Context } from "@/contexts/A22/A22Context";
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
+import { ButtonEx } from "@/shared-components";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
@@ -26,7 +26,7 @@ export const A22GenReportButtonContainer = () => {
 	}
 
 	return (
-		<ResponsiveLoadingButton
+		<ButtonEx
 			size="small"
 			variant="contained"
 			endIcon={<OpenInNewIcon />}
@@ -35,7 +35,7 @@ export const A22GenReportButtonContainer = () => {
 		// onClick={handleClick}
 		>
 			執行
-		</ResponsiveLoadingButton>
+		</ButtonEx>
 	);
 };
 

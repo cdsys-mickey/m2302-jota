@@ -1,4 +1,4 @@
-import ResponsiveLoadingButton from "@/shared-components/ButtonEx/ResponsiveLoadingButtonContainer";
+import { ButtonEx } from "@/shared-components";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import PropTypes from "prop-types";
 import { useContext } from "react";

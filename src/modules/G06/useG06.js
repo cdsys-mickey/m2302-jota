@@ -200,8 +200,8 @@ export const useG06 = ({ token }) => {
 			}
 			if (!refresh) {
 				itemIdRef.current = id;
-				crud.startReading("讀取中...", { id });
 			}
+			crud.startReading("讀取中...", { id });
 			try {
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/sales/recv-account/rcpt-records`,

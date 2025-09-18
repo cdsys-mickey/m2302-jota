@@ -4,7 +4,7 @@ import FrameMenuButtonContainer from "./FrameMenuButton/FrameMenuButtonContainer
 import HomeBoxContainer from "./HomeBox/HomeBoxContainer";
 import FormFieldLabelWrapper from "./FormFieldLabel/FormFieldLabelWrapper";
 import FormLabelEx from "./FormLabelEx/FormLabelEx";
-import ButtonWrapperContainer from "./ButtonEx/ButtonWrapperContainer";
+import ButtonExContainer from "./ButtonEx/ButtonExContainer";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import OptionPickerWrapper from "./option-picker/OptionPickerWrapper";
 import { TextFieldWrapper } from "./TextFieldEx/TextFieldWrapper";
@@ -28,7 +28,7 @@ import DSGGridContainer from "./dsg/DSGGrid/DSGGridContainer";
 import JumboAlertView from "./JumboAlert/JumboAlertView";
 
 export {
-	ButtonWrapperContainer as ButtonEx,
+	ButtonExContainer as ButtonEx,
 	CheckboxExWrapper as CheckboxEx,
 	FrameBannerContainer as FrameBanner,
 	FrameBoxContainer as FrameBox,

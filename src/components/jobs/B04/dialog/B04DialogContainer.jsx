@@ -138,7 +138,7 @@ export const B04DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "廠商報價",
 				minWidth: 120,
-				maxWidth: 120,
+				// maxWidth: 120,
 				disabled: readOnly,
 			},
 		],

@@ -152,7 +152,7 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("QPrice", createFloatColumn(2)),
 				title: qpriceTitle,
 				minWidth: 120,
-				maxWidth: 120,
+				// maxWidth: 120,
 				disabled: readOnly,
 			},
 			...(!b012.creating ? [

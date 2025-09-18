@@ -123,7 +123,7 @@ export const useA22 = ({
 				...keyColumn("Qty", createIntColumn()),
 				title: "張數",
 				minWidth: 80,
-				maxWidth: 80,
+				// maxWidth: 80,
 				disabled: grid.readOnly,
 			},
 		],

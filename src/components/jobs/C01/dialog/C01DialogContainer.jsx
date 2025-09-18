@@ -157,14 +157,14 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SRqtQty", createFloatColumn(2)),
 				title: "請購量",
 				minWidth: 90,
-				maxWidth: 90,
+				// maxWidth: 90,
 				disabled: !c01.editing || c01.rqtQtyDisabled,
 			},
 			{
 				...keyColumn("SOrdQty", createFloatColumn(2)),
 				title: "採購量",
 				minWidth: 90,
-				maxWidth: 90,
+				// maxWidth: 90,
 				disabled: !c01.editing || c01.orderQtyDisabled,
 			},
 			{
@@ -209,7 +209,8 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "採購單",
-				minWidth: 120,
+				// minWidth: 120,
+				maxWidth: 120,
 				disabled: true,
 			},
 		],

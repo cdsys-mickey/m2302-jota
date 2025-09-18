@@ -157,21 +157,21 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "退貨單價",
 				minWidth: 100,
-				maxnWidth: 100,
+				// maxnWidth: 100,
 				disabled: readOnly,
 			},
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "退貨數量",
 				minWidth: 100,
-				maxWidth: 100,
+				// maxWidth: 100,
 				disabled: readOnly,
 			},
 			{
 				...keyColumn("SAmt", createFloatColumn(2)),
 				title: "退貨金額",
 				minWidth: 120,
-				maxWidth: 120,
+				// maxWidth: 120,
 				disabled: true,
 			},
 			{
@@ -182,7 +182,7 @@ export const C05DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "備註",
-				grow: 2,
+				grow: 1,
 				disabled: readOnly,
 			},
 		],

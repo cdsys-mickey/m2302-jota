@@ -111,8 +111,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "單價",
 				minWidth: 90,
-				maxnWidth: 90,
-				grow: 1,
+				// maxnWidth: 90,
 				disabled: true,
 				cellClassName: c06.getSPriceClassName,
 			},
@@ -120,7 +119,6 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "訂貨量",
 				minWidth: 90,
-				grow: 1,
 				disabled: readOnly || c06.sqtyDisabled,
 			},
 			{
@@ -128,6 +126,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 					continuousUpdates: false,
 				})),
 				minWidth: 60,
+				maxWidth: 60,
 				title: "包裝",
 				disabled: true,
 			},
@@ -135,8 +134,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SAmt", createFloatColumn(2)),
 				title: "金額",
 				minWidth: 90,
-				maxnWidth: 90,
-				grow: 1,
+				// maxWidth: 90,
 				disabled: true,
 			},
 			{
@@ -164,14 +162,14 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "備註",
-				grow: 2,
+				grow: 1,
 				disabled: readOnly,
 			},
 			{
 				...keyColumn("SNotQty", createFloatColumn(2)),
 				title: "未到量",
 				minWidth: 90,
-				maxnWidth: 90,
+				// maxWidth: 90,
 				disabled: readOnly || c06.sNotQtyDisabled,
 			},
 			// {

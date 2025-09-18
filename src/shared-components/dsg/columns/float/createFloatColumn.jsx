@@ -24,5 +24,8 @@ export const createFloatColumn = (fixedDigit = 1, opts) =>
 			return !isNaN(number) ? number : null;
 		},
 		type: "number",
+		style: {
+			padding: 0
+		},
 		...opts,
 	});

@@ -1,17 +1,9 @@
-import { LoadingButton } from "@mui/lab";
 import PropTypes from "prop-types";
-import { forwardRef } from "react";
-import { useRef } from "react";
-import { useImperativeHandle } from "react";
-import { useEffect } from "react";
-import ResponsiveLoadingButtonContainer from "./ResponsiveLoadingButtonContainer";
-import { useMemo } from "react";
-import { useCallback } from "react";
-import { useState } from "react";
-import Colors from "@/modules/Colors.mjs";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
+import ButtonExView from "./ButtonExView";
 
-const ButtonWrapperContainer = forwardRef((props, ref) => {
-	const { responsive, size = "small", autoFocus = false, sx = [], ...rest } = props;
+const ButtonExContainer = forwardRef((props, ref) => {
+	const { size = "small", autoFocus = false, sx = [], ...rest } = props;
 
 	const buttonRef = useRef();
 	const [buttonRefReady, setButtonReady] = useState(false);
@@ -26,17 +18,13 @@ const ButtonWrapperContainer = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		if (buttonRefReady && autoFocus) {
-			console.log("autoFocus on ButtonWrapperContainer");
+			console.log("autoFocus on " + ButtonExContainer.displayName);
 			buttonRef.current.focus();
 		}
 	}, [autoFocus, buttonRefReady]);
 
-	const ButtonComponent = useMemo(() => {
-		return responsive ? ResponsiveLoadingButtonContainer : LoadingButton;
-	}, [responsive]);
-
 	return (
-		<ButtonComponent
+		<ButtonExView
 			ref={setButtonRef}
 			size={size}
 			{...rest}
@@ -61,12 +49,13 @@ const ButtonWrapperContainer = forwardRef((props, ref) => {
 	);
 });
 
-ButtonWrapperContainer.displayName = "ButtonWrapperContainer";
-ButtonWrapperContainer.propTypes = {
-	responsive: PropTypes.bool,
+ButtonExContainer.displayName = "ButtonExContainer";
+ButtonExContainer.propTypes = {
+	// responsive: PropTypes.bool,
+	buttonComponent: PropTypes.element,
 	autoFocus: PropTypes.bool,
 	size: PropTypes.oneOf(["small", "medium", "large"]),
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
-export default ButtonWrapperContainer;
+export default ButtonExContainer;

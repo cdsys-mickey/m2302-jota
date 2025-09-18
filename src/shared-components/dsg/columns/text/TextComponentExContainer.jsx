@@ -1,6 +1,4 @@
-import { useCellControls } from "@/shared-hooks/dsg/useCellControls";
 import PropTypes from "prop-types";
-import { useMemo } from "react";
 import TextComponentEx from "./TextComponentEx";
 
 export const TextComponentExContainer = (props) => {

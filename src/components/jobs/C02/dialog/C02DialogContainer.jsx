@@ -161,14 +161,14 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SRqtQty", createFloatColumn(2)),
 				title: "請購量",
 				minWidth: 100,
-				maxWidth: 100,
+				// maxWidth: 150,
 				disabled: readOnly || c02.rqtQtyDisabled,
 			},
 			{
 				...keyColumn("SOrdQty", createFloatColumn(2)),
 				title: "採購量",
 				minWidth: 100,
-				maxWidth: 100,
+				// maxWidth: 150,
 				disabled: true,
 			},
 			{
@@ -179,7 +179,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "供應商",
-				minWidth: 80,
+				// minWidth: 80,
 				maxWidth: 80,
 				disabled: true,
 			},

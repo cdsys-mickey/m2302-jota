@@ -125,8 +125,8 @@ export const F03DialogContainer = forwardRef((props, ref) => {
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "數量",
 				minWidth: 90,
-				maxWidth: 90,
-				grow: 1,
+				// maxWidth: 90,
+				// grow: 1,
 				disabled: readOnly,
 				// 與 tab 衝突
 				// disableKeys: true
