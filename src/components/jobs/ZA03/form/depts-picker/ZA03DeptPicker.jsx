@@ -1,7 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import { useContext } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { useFormContext } from "react-hook-form";

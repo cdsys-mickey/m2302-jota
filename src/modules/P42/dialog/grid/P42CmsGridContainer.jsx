@@ -19,8 +19,8 @@ const ContextMenu = createDSGContextMenuComponent({
 const P42CmsGridContainer = (props) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
-	const theme = useTheme();
-	const lgOrUp = useMediaQuery(theme.breakpoints.up('lg'));
+	// const theme = useTheme();
+	const smallerThanXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
 
 	const form = useFormContext();
 	const p42 = useContext(P42Context);
@@ -34,12 +34,13 @@ const P42CmsGridContainer = (props) => {
 	}, [])
 
 	const _height = useMemo(() => {
-		return lgOrUp ? height - 510 : 200;
-	}, [height, lgOrUp])
+		return smallerThanXL ? height - 512 : height - 636;
+		// return height - 636;
+	}, [height, smallerThanXL])
 
 	const _loadingHeight = useMemo(() => {
-		return lgOrUp ? height - 482 : 200;
-	}, [height, lgOrUp])
+		return smallerThanXL ? height - 482 : 200;
+	}, [height, smallerThanXL])
 
 	const onChange = useMemo(() => {
 		return p42.cmsGrid.buildGridChangeHandler({

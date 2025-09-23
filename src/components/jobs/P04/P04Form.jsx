@@ -10,7 +10,7 @@ import { memo } from "react";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import TerminalPicker from "@/components/terminal-picker/TerminalPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import RangeGroup from "@/shared-components/RangeGroup";
 
 const P04Form = memo((props) => {

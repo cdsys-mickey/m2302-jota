@@ -7,13 +7,14 @@ export const StdPrintResetButtonContainer = () => {
 	const stdPrint = useContext(StdPrintContext);
 
 	return (
-		<ResponsiveLoadingButton
+		<ButtonEx
+			responsive
 			variant="contained"
 			color="warning"
 			startIcon={<RestartAltIcon />}
 			onClick={stdPrint.handleReset}>
 			重設
-		</ResponsiveLoadingButton>
+		</ButtonEx>
 	);
 };
 

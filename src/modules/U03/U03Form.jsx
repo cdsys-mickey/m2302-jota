@@ -9,7 +9,7 @@ import { memo } from "react";
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";

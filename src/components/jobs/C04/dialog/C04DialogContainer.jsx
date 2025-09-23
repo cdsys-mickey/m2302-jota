@@ -147,8 +147,8 @@ export const C04DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 170,
-				maxWidth: 170,
+				minWidth: 122,
+				maxWidth: 140,
 				disabled: readOnly || c04.prodDisabled,
 			},
 			{

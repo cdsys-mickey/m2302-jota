@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { FormMetaProvider } from "@/shared-components";
 import { U07Context } from "./U07Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import Auth from "../md-auth";
+import Auth from "../Auth.mjs";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const U07FormContainer = () => {

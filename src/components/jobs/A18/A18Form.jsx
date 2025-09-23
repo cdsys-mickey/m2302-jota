@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { A18OrderByPicker } from "./A18OrderByPicker";
 import A18ActionPicker from "./picker/A18ActionPicker";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 
 const A18Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;

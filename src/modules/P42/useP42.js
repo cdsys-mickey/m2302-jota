@@ -19,14 +19,34 @@ import ConfigContext from "@/contexts/config/ConfigContext";
 import useJotaReports from "@/hooks/useJotaReports";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
-const BOOKING_ORDER_FIELDS = ["GrpName", "city", "area", "GrpType", "custType", "busComp", "CarData_N", "CarQty", "PugAmt", "CarNo", "DrvName", "DrvTel", "tourGroup", "TrvData_N", "tourGuide", "CndName", "CndTel", "employee", "Remark"];
+const BOOKING_ORDER_FIELDS = [
+	"GrpName",
+	"city",
+	"area",
+	"GrpType",
+	"custType",
+	"busComp",
+	"CarData_N",
+	"CarQty",
+	"PugAmt",
+	"CarNo",
+	"DrvName",
+	"DrvTel",
+	"tourGroup",
+	"TrvData_N",
+	"tourGuide",
+	"CndName",
+	"CndTel",
+	"employee",
+	"Remark",
+];
 
 const newData = {
 	SalDate: new Date(),
 	CarQty: 1,
 	ranges: [],
 	commissions: [],
-}
+};
 
 export const useP42 = () => {
 	const config = useContext(ConfigContext);
@@ -77,7 +97,7 @@ export const useP42 = () => {
 	const createCmsRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
-			cmsType: null
+			cmsType: null,
 		}),
 		[]
 	);
@@ -94,8 +114,8 @@ export const useP42 = () => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			acc: 1
-		}
+			acc: 1,
+		},
 	});
 
 	const loadItem = useCallback(
@@ -108,21 +128,24 @@ export const useP42 = () => {
 				if (!refresh) {
 					itemIdRef.current = id;
 				}
-				crud.startReading("讀取中...", { id, params: { supressLoading: refresh } });
+				crud.startReading("讀取中...", {
+					id,
+					params: { supressLoading: refresh },
+				});
 				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/cms/entries`,
 					bearer: token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
 				if (status.success) {
 					tsRef.current = payload.CheckData.TimeVal;
 					const data = P42.transformForReading(payload.data[0]);
-					rangeGrid.initGridData(data.ranges, { fillRows: 10 })
-					cmsGrid.initGridData(data.commissions, { fillRows: 10 })
+					rangeGrid.initGridData(data.ranges, { fillRows: 8 });
+					cmsGrid.initGridData(data.commissions, { fillRows: 8 });
 					crud.finishedReading({
 						data,
 					});
@@ -152,10 +175,14 @@ export const useP42 = () => {
 				});
 				if (status.success) {
 					const collected = P42.transformForImport(payload.data[0]);
-					const mappedData = P42.mapBookingFields(newData, collected, BOOKING_ORDER_FIELDS);
+					const mappedData = P42.mapBookingFields(
+						newData,
+						collected,
+						BOOKING_ORDER_FIELDS
+					);
 					mappedData["bookingOrder"] = {
-						OrdID: id
-					}
+						OrdID: id,
+					};
 					crud.finishedReading({
 						data: {
 							...mappedData,
@@ -164,15 +191,13 @@ export const useP42 = () => {
 					// 暫存上次讀取成功的訂貨單
 					// prevOrdersRef.current = data.customerOrders;
 
-
 					rangeGrid.initGridData(mappedData.ranges, {
-						fillRows: true,
+						fillRows: 8,
 					});
 					cmsGrid.initGridData(mappedData.commissions, {
-						fillRows: true
-					})
-					toastEx.info(`已帶入預約單 ${id}`)
-
+						fillRows: 8,
+					});
+					toastEx.info(`已帶入預約單 ${id}`);
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
@@ -244,7 +269,6 @@ export const useP42 = () => {
 					url: "v1/cms/entries",
 					data: data,
 					bearer: token,
-
 				});
 
 				if (status.success) {
@@ -315,7 +339,11 @@ export const useP42 = () => {
 		async (data) => {
 			console.log(`P42.onEditorSubmit()`, data);
 
-			const processed = P42.transformForEditorSubmit(data, rangeGrid.gridData, cmsGrid.gridData);
+			const processed = P42.transformForEditorSubmit(
+				data,
+				rangeGrid.gridData,
+				cmsGrid.gridData
+			);
 			console.log(`processed`, processed);
 			if (crud.creating || crud.updating) {
 				handleSave({ data: processed, creating: crud.creating });
@@ -323,16 +351,23 @@ export const useP42 = () => {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
 		},
-		[cmsGrid.gridData, crud.creating, crud.updating, handleSave, rangeGrid.gridData]
+		[
+			cmsGrid.gridData,
+			crud.creating,
+			crud.updating,
+			handleSave,
+			rangeGrid.gridData,
+		]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`P42.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const handlePromptCreating = useCallback(
@@ -342,8 +377,8 @@ export const useP42 = () => {
 			crud.promptCreating({
 				data: newData,
 			});
-			rangeGrid.initGridData(newData.ranges, { fillRows: 10 })
-			cmsGrid.initGridData(newData.commissions, { fillRows: 10 })
+			rangeGrid.initGridData(newData.ranges, { fillRows: 8 });
+			cmsGrid.initGridData(newData.commissions, { fillRows: 8 });
 		},
 		[cmsGrid, crud, rangeGrid]
 	);
@@ -353,7 +388,7 @@ export const useP42 = () => {
 			message: `確認要删除佣金單 ${crud.itemData?.ComID}?`,
 			confirmButtonProps: {
 				color: "secondary",
-				variant: "contained"
+				variant: "contained",
 			},
 			onConfirm: async () => {
 				try {
@@ -363,8 +398,8 @@ export const useP42 = () => {
 						bearer: token,
 						params: {
 							id: crud.itemData?.ComID,
-							ts: tsRef.current
-						}
+							ts: tsRef.current,
+						},
 					});
 					if (status.success) {
 						cancelAction();
@@ -407,134 +442,181 @@ export const useP42 = () => {
 				reset({
 					lvId: "",
 					lvName: "",
-					lvBank: null
+					lvBank: null,
 				});
 			},
 		[]
 	);
 
-	const handleBookingOrderChange = useCallback(({ form }) => async (newBookingOrder) => {
-		if (newBookingOrder) {
-			try {
-				const { status, payload, error } = await httpGetAsync({
-					url: "v1/cms/bookings",
-					bearer: token,
-					params: {
-						id: newBookingOrder.OrdID
+	const handleBookingOrderChange = useCallback(
+		({ form }) =>
+			async (newBookingOrder) => {
+				if (newBookingOrder) {
+					try {
+						const { status, payload, error } = await httpGetAsync({
+							url: "v1/cms/bookings",
+							bearer: token,
+							params: {
+								id: newBookingOrder.OrdID,
+							},
+						});
+						if (status.success) {
+							const collected = P42.transformForImport(
+								payload.data[0]
+							);
+							console.log("collected", collected);
+							BOOKING_ORDER_FIELDS.forEach((field) => {
+								form.setValue(field, collected[field]);
+							});
+						} else {
+							throw error || new Error("未預期例外");
+						}
+					} catch (err) {
+						toastEx.error(
+							`帶出預約單 ${newBookingOrder.OrdID} 發生錯誤`,
+							err
+						);
 					}
-				})
-				if (status.success) {
-					const collected = P42.transformForImport(payload.data[0]);
-					console.log("collected", collected);
-					BOOKING_ORDER_FIELDS.forEach((field) => {
-						form.setValue(field, collected[field]);
-					});
 				} else {
-					throw error || new Error("未預期例外");
+					// 清空?
+					const currentValues = form.getValues();
+					const clearedValues = {};
+					BOOKING_ORDER_FIELDS.forEach((field) => {
+						const value = currentValues[field];
+						if (typeof value === "string") {
+							form.setValue(field, "");
+						} else if (typeof value === "object") {
+							clearedValues[field] = null;
+							form.setValue(field, null);
+						}
+					});
 				}
-			} catch (err) {
-				toastEx.error(`帶出預約單 ${newBookingOrder.OrdID} 發生錯誤`, err);
-			}
-		} else {
-			// 清空?
-			const currentValues = form.getValues();
-			const clearedValues = {};
-			BOOKING_ORDER_FIELDS.forEach((field) => {
-				const value = currentValues[field];
-				if (typeof value === "string") {
-					form.setValue(field, "");
-				} else if (typeof value === "object") {
-					clearedValues[field] = null;
-					form.setValue(field, null);
-				}
-			});
-		}
-	}, [httpGetAsync, token]);
+			},
+		[httpGetAsync, token]
+	);
 
 	const refreshAction = useAction();
 
-	const onRefreshSubmit = useCallback(({ form }) => async (data) => {
-		try {
-			refreshAction.start();
-			const collected = P42.transformForEditorSubmit(data, rangeGrid.gridData, cmsGrid.gridData);
-			const { status, payload, error } = await httpPostAsync({
-				url: "v1/cms/entries/refresh",
-				bearer: token,
-				data: collected
-			})
-			if (status.success) {
-				const collected = P42.transformForReading(payload.data[0]);
-				console.log("collected", collected);
-				[
-					"SalCount",
-					"TotCms_N", "SalTotAmt", "TrvTotCms", "CndTotCms", "CndPay", "DrvTotCms", "DrvPay", "SalTotAmtC",
-					"CalcType", "TotCmsC_N", "TrvTotCmsC", "CndTotCmsC", "DrvTotCmsC", "CarCmsC"
-				]
-					.forEach((field) => {
-						form.setValue(field, collected[field]);
+	const onRefreshSubmit = useCallback(
+		({ form }) =>
+			async (data) => {
+				try {
+					refreshAction.start();
+					const collected = P42.transformForEditorSubmit(
+						data,
+						rangeGrid.gridData,
+						cmsGrid.gridData
+					);
+					const { status, payload, error } = await httpPostAsync({
+						url: "v1/cms/entries/refresh",
+						bearer: token,
+						data: collected,
 					});
-				cmsGrid.initGridData(collected.commissions, { fillRows: 10 })
-				refreshAction.finish();
-			} else {
-				throw error || new Error("未預期例外");
-			}
-		} catch (err) {
-			toastEx.error(`重新計算發生錯誤`, err);
-			refreshAction.fail(err);
-		}
-	}, [cmsGrid, httpPostAsync, rangeGrid.gridData, refreshAction, token]);
+					if (status.success) {
+						const collected = P42.transformForReading(
+							payload.data[0]
+						);
+						console.log("collected", collected);
+						[
+							"SalCount",
+							"TotCms_N",
+							"SalTotAmt",
+							"TrvTotCms",
+							"CndTotCms",
+							"CndPay",
+							"DrvTotCms",
+							"DrvPay",
+							"SalTotAmtC",
+							"CalcType",
+							"TotCmsC_N",
+							"TrvTotCmsC",
+							"CndTotCmsC",
+							"DrvTotCmsC",
+							"CarCmsC",
+						].forEach((field) => {
+							form.setValue(field, collected[field]);
+						});
+						cmsGrid.initGridData(collected.commissions, {
+							fillRows: 8,
+						});
+						refreshAction.finish();
+					} else {
+						throw error || new Error("未預期例外");
+					}
+				} catch (err) {
+					toastEx.error(`重新計算發生錯誤`, err);
+					refreshAction.fail(err);
+				}
+			},
+		[cmsGrid, httpPostAsync, rangeGrid.gridData, refreshAction, token]
+	);
 
 	const onRefreshSubmitError = useCallback((err) => {
 		console.error(`P42.onRefreshSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	// CmsGrid
-	const onUpdateCmsRow = useCallback(({ fromRowIndex, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		updateResult.rowIndex = rowIndex;
-		const oldRowData = cmsGrid.gridData[rowIndex];
+	const onUpdateCmsRow = useCallback(
+		({ fromRowIndex, updateResult }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				updateResult.rowIndex = rowIndex;
+				const oldRowData = cmsGrid.gridData[rowIndex];
 
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		let dirty = false;
-		if (rowData.SPCAmt != oldRowData.SPCAmt) {
-			updateResult.cols.push("SPCAmt");
-			dirty = true;
-		}
-		if (dirty) {
-			updateResult.rows++;
-		}
-		return processedRowData;
-	}, [cmsGrid.gridData]);
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				let dirty = false;
+				if (rowData.SPCAmt != oldRowData.SPCAmt) {
+					updateResult.cols.push("SPCAmt");
+					dirty = true;
+				}
+				if (dirty) {
+					updateResult.rows++;
+				}
+				return processedRowData;
+			},
+		[cmsGrid.gridData]
+	);
 
-	const onCmsGridChanged = useCallback(({ gridData, formData, setValue, updateResult, prevGridData }) => {
-		if (updateResult.rows > 0 && updateResult.cols.includes("SPCAmt")) {
-			const totalSPCAmt = gridData.reduce((sum, item) => {
-				return sum + (Number(item.SPCAmt) || 0);
-			}, 0);
-			console.log("totalSPCAmt", totalSPCAmt)
-			setValue("SalTotAmtC", totalSPCAmt);
-		}
-	}, []);
+	const onCmsGridChanged = useCallback(
+		({ gridData, formData, setValue, updateResult, prevGridData }) => {
+			if (updateResult.rows > 0 && updateResult.cols.includes("SPCAmt")) {
+				const totalSPCAmt = gridData.reduce((sum, item) => {
+					return sum + (Number(item.SPCAmt) || 0);
+				}, 0);
+				console.log("totalSPCAmt", totalSPCAmt);
+				setValue("SalTotAmtC", totalSPCAmt);
+			}
+		},
+		[]
+	);
 
-	const handlePcSubtotalChange = useCallback(({ form }) => () => {
-		const values = form.getValues();
-		["TrvTotCmsC", "CndTotCmsC", "DrvTotCmsC"].reduce((sum, field) => {
-			const catTotal = parseFloat(values[field]) || 0;
-			return sum + catTotal;
-		}, 0);
-	}, []);
+	const handlePcSubtotalChange = useCallback(
+		({ form }) =>
+			() => {
+				const values = form.getValues();
+				["TrvTotCmsC", "CndTotCmsC", "DrvTotCmsC"].reduce(
+					(sum, field) => {
+						const catTotal = parseFloat(values[field]) || 0;
+						return sum + catTotal;
+					},
+					0
+				);
+			},
+		[]
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebP42Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebP42Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -606,10 +688,6 @@ export const useP42 = () => {
 		onPrintSubmit,
 		onPrintSubmitError,
 		// 帶入預約單
-		createWithBookingOrder
+		createWithBookingOrder,
 	};
 };
-
-
-
-

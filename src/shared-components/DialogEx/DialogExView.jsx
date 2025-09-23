@@ -291,7 +291,7 @@ const DialogExView = memo(
 							alert: {
 								severity: "warning"
 							}
-						}}>螢幕寬度不足無法顯示, 請縮小螢幕縮放比例以容納更多內容，或以關閉按鈕離開本作業
+						}}>螢幕可用空間不足無法顯示, 請縮小螢幕縮放比例以容納更多內容，或以關閉按鈕離開本作業
 						</FormAlertBox>
 					)}
 					{!tooSmall && message?.split("\n").map((line, index) => (

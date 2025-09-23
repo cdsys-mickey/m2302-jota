@@ -210,7 +210,11 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 						startIcon={StartIconComponent ? <StartIconComponent fontSize="small" /> : null}
 						className="main"
 						{...(IconComponent && !split && ({
-							endIcon: <IconComponent fontSize="small" />
+							endIcon: (
+								<IconComponent fontSize="small"
+									htmlColor={color}
+								/>
+							)
 						}))}
 						sx={[
 							{
@@ -222,11 +226,17 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 							},
 						]}
 						{...slotProps?.button}>
+						{/* {_label} */}
 						{slotProps?.typography
 							? (
-								<Typography variant={slotProps?.typography?.variant} sx={{
-									whiteSpace: "nowrap"
-								}}>
+								<Typography variant={slotProps?.typography?.variant}
+									sx={{
+										whiteSpace: "nowrap",
+										...(color && {
+											color
+										})
+									}}
+								>
 									{_label}
 								</Typography>)
 							: _label}
@@ -241,7 +251,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 
 						}
 						]}>
-						<IconComponent fontSize="small" {...slotProps?.dropdownButton?.icon} />
+						<IconComponent fontSize="small" htmlColor={color} {...slotProps?.dropdownButton?.icon} />
 					</Button>
 				)}
 			</ButtonGroup>

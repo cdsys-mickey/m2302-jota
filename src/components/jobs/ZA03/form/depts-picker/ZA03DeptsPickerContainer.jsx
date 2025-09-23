@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import AppDeptPicker from "../../../../fields/AppDeptPicker";
 import { useFormContext, useWatch } from "react-hook-form";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import { useContext } from "react";
 import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import { useMemo } from "react";

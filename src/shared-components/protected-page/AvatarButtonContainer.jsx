@@ -1,7 +1,7 @@
 import { AccountMenuContainer } from "@/components/account/AccountMenuContainer";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import { useCallback, useContext, useMemo, useState } from "react";
 import AvatarButton from "../avatar-button/AvatarButton";
 

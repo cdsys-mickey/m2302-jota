@@ -1,5 +1,4 @@
 import useAppRedirect from "@/hooks/useAppRedirect";
-import Auth from "@/modules/md-auth";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import DateFormats from "@/shared-modules/DateFormats.mjs";
 import { format, parseISO } from "date-fns";
@@ -58,10 +57,10 @@ export default function useApp() {
 					...prev,
 					loading: false,
 					apiVersion: payload.version,
-					frontEnd: payload.frontEnd
+					frontEnd: payload.frontEnd,
 				}));
 			} else {
-				throw error || new Error("未預期例外")
+				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
 			console.error("error object:", err);
@@ -91,11 +90,11 @@ export default function useApp() {
 					...prev,
 					loading: false,
 					apiVersion: payload.version,
-					frontEnd: payload.frontEnd
+					frontEnd: payload.frontEnd,
 				}));
 				appRedirect.toLogin();
 			} else {
-				throw error || new Error("未預期例外")
+				throw error || new Error("未預期例外");
 			}
 		} catch (err) {
 			console.error("error object:", err);
@@ -108,29 +107,18 @@ export default function useApp() {
 		}
 	}, [appRedirect, httpGetAsync]);
 
-	const getSessionValue = useCallback((key) => {
+	const getSessionCookie = useCallback((key) => {
 		const valueInSession = sessionStorage.getItem(key);
-		const valueInCookie = Cookies.get(key);
-		return valueInSession || valueInCookie;
+		return valueInSession || Cookies.get(key);
 	}, []);
 
-	const setSessionValue = useCallback((key, value, opts) => {
-		Cookies.set(
-			key,
-			value,
-			opts
-		);
-		sessionStorage.setItem(
-			key,
-			value
-		)
+	const setSessionCookie = useCallback((key, value, opts) => {
+		Cookies.set(key, value, opts);
+		sessionStorage.setItem(key, value);
 	}, []);
 
 	const removeSessionValue = useCallback((key, opts) => {
-		Cookies.remove(
-			key,
-			opts
-		);
+		Cookies.remove(key, opts);
 		sessionStorage.removeItem(key);
 	}, []);
 
@@ -142,9 +130,8 @@ export default function useApp() {
 		handleTokenChange,
 		loadAppInfo,
 		unloadAppInfo,
-		getSessionValue,
-		setSessionValue,
-		removeSessionValue
-	}
-
+		getSessionCookie,
+		setSessionCookie,
+		removeSessionValue,
+	};
 }

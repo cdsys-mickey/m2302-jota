@@ -4,7 +4,7 @@ import FlexBox from "../FlexBox";
 import PropTypes from "prop-types";
 
 const FormAlertBox = memo((props) => {
-	const { title = "(提示)", slotProps, ...rest } = props;
+	const { title, slotProps, ...rest } = props;
 
 	return (
 		<FlexBox alignItems="center" justifyContent="center" height="72vh">

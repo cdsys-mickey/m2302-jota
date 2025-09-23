@@ -58,7 +58,7 @@ const C03DialogForm = memo((props) => {
 								/>
 							</Grid>
 						)}
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={4.5}>
 							<EmployeePicker
 								typo
 								autoFocus
@@ -73,7 +73,7 @@ const C03DialogForm = memo((props) => {
 								disableOpenOnInput
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={4}>
+						<Grid item xs={24} sm={24} md={3.5}>
 							<C03SquaredPicker
 								typo
 								name="squared"

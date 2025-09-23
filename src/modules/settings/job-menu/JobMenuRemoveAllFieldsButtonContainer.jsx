@@ -8,14 +8,15 @@ export const JobMenuRemoveAllFieldsButtonContainer = (props) => {
 	const { children = "移除所有功能", ...rest } = props;
 	const jobMenu = useContext(JobMenuContext);
 	return (
-		<ResponsiveLoadingButton
+		<ButtonEx
+			responsive
 			variant="contained"
 			color="neutral"
 			endIcon={<KeyboardDoubleArrowLeftIcon />}
 			onClick={jobMenu.handleRemoveAllFields}
 			{...rest}>
 			{children}
-		</ResponsiveLoadingButton>
+		</ButtonEx>
 	);
 };
 JobMenuRemoveAllFieldsButtonContainer.propTypes = {

@@ -1,4 +1,4 @@
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import { useInit } from "@/shared-hooks/useInit";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";

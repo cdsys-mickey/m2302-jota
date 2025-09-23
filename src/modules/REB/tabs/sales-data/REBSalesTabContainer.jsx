@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import { useContext } from "react";
 import { REBContext } from "../../REBContext";
 import { AppContext } from "@/contexts/app/AppContext";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 
 const REBSalesTabContainer = (props) => {
 	const { ...rest } = props;

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 import { AuthContext } from "../contexts/auth/AuthContext";
-import Auth from "../modules/md-auth";
+import Auth from "../modules/Auth.mjs";
 import CheckboxExGroup from "../shared-components/checkbox-group/CheckboxExGroup";
 
 export const UserDeptCheckboxGroupContainer = (props) => {

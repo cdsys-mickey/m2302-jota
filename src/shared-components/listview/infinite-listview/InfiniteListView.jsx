@@ -32,6 +32,7 @@ const InfiniteListView = memo((props) => {
 		minimumBatchSize = 20,
 		threshold = 20,
 		saveKey,
+		emptyText
 	} = props;
 
 	const infiniteLoaderRef = useRef(null);
@@ -63,7 +64,7 @@ const InfiniteListView = memo((props) => {
 		return <ErrorBox error={error} height={height} />;
 	}
 	if (loading === false && itemCount === 0) {
-		return <NoDataBox height={height} />;
+		return <NoDataBox height={height} title={emptyText} />;
 	}
 
 	return (
@@ -99,6 +100,7 @@ const InfiniteListView = memo((props) => {
 	);
 });
 InfiniteListView.propTypes = {
+	emptyText: PropTypes.string,
 	saveKey: PropTypes.string,
 	itemCount: PropTypes.number,
 	otherListProps: PropTypes.object,

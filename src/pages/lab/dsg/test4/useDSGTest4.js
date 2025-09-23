@@ -24,7 +24,7 @@ export const useDSGTest4 = () => {
 			SExpDate3: null,
 			supplier: null,
 			stype: null,
-			check1: false
+			check1: false,
 		}),
 		[]
 	);
@@ -32,7 +32,7 @@ export const useDSGTest4 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "id",
-		createRow
+		createRow,
 	});
 
 	const columns = useMemo(
@@ -63,9 +63,9 @@ export const useDSGTest4 = () => {
 					})
 				),
 				title: "商品",
-				minWidth: 170,
-				maxWidth: 170,
-				disabled: grid.readOnly
+				minWidth: 122,
+				maxWidth: 140,
+				disabled: grid.readOnly,
 			},
 			{
 				...keyColumn(
@@ -94,12 +94,12 @@ export const useDSGTest4 = () => {
 				...keyColumn(
 					"check1",
 					createCheckboxColumn({
-						size: "medium"
+						size: "medium",
 					})
 				),
 				minWidth: 48,
 				maxWidth: 48,
-				disabled: grid.readOnly
+				disabled: grid.readOnly,
 			},
 			// {
 			// 	...keyColumn(
@@ -125,9 +125,9 @@ export const useDSGTest4 = () => {
 					})
 				),
 				title: "DateField",
-				minWidth: 140,
+				minWidth: 122,
 				maxWidth: 140,
-				disabled: grid.readOnly
+				disabled: grid.readOnly,
 			},
 			// {
 			// 	...keyColumn(
@@ -175,9 +175,8 @@ export const useDSGTest4 = () => {
 				title: "DateInput",
 				minWidth: 110,
 				maxWidth: 110,
-				disabled: grid.readOnly
+				disabled: grid.readOnly,
 			},
-
 		],
 		[grid.readOnly]
 	);
@@ -203,33 +202,44 @@ export const useDSGTest4 = () => {
 		};
 	}, []);
 
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		updateResult.rowIndex = rowIndex;
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// prod
-		if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
-			console.log(
-				`prod[${rowIndex}] changed`,
-				processedRowData?.prod
-			);
-			processedRowData = await handleGridProdChange({
-				rowData: processedRowData,
-				formData
-			});
-		}
-		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+	const onUpdateRow = useCallback(
+		({
+				fromRowIndex,
+				formData,
+				newValue,
+				setValue,
+				gridMeta,
+				updateResult,
+			}) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				updateResult.rowIndex = rowIndex;
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// prod
+				if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+					console.log(
+						`prod[${rowIndex}] changed`,
+						processedRowData?.prod
+					);
+					processedRowData = await handleGridProdChange({
+						rowData: processedRowData,
+						formData,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	return {
 		grid,
 		gridMeta,
 		createRow,
 		getRowKey,
-		onUpdateRow
+		onUpdateRow,
 	};
 };

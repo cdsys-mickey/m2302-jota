@@ -3,13 +3,13 @@ import useRedirect from "@/shared-hooks/useRedirect";
 import Cookies from "js-cookie";
 import { useCallback, useContext } from "react";
 import AppRoutes from "../modules/md-app-routes";
-import Auth from "../modules/md-auth";
+import Auth from "../modules/Auth.mjs";
 import { AppContext } from "@/contexts/app/AppContext";
 
 const useAppRedirect = () => {
 	const { redirectTo } = useRedirect();
 	const crud = useContext(CrudContext);
-	const { getSessionValue } = useContext(AppContext) ?? {};
+	const { getSessionCookie } = useContext(AppContext) ?? {};
 
 	const toRenew = useCallback(() => {
 		redirectTo("/renew");
@@ -29,31 +29,32 @@ const useAppRedirect = () => {
 		[redirectTo]
 	);
 
-	const toLogin = useCallback((opts = {}) => {
-		const { clearSession = true } = opts;
-		if (clearSession) {
-			Cookies.remove(Auth.COOKIE_LOGKEY, Auth.ROOT_COOKIE_OPTS);
-			sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
-		}
+	const toLogin = useCallback(
+		(opts = {}) => {
+			const { clearSession = true } = opts;
+			if (clearSession) {
+				Cookies.remove(Auth.COOKIE_LOGKEY, Auth.ROOT_COOKIE_OPTS);
+				sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
+			}
 
-		const loginUrl = getSessionValue(Auth.COOKIE_LOGIN);
+			const loginUrl = getSessionCookie(Auth.COOKIE_LOGIN);
 
-		if (loginUrl) {
+			if (loginUrl) {
+				redirectTo(loginUrl, { replace: true });
+				return;
+			}
+
+			const impersonte =
+				sessionStorage.getItem(Auth.COOKIE_IMPERSONATE) == 1;
 			redirectTo(
-				loginUrl,
+				impersonte
+					? import.meta.env.VITE_URL_LOGINX
+					: import.meta.env.VITE_URL_LOGIN,
 				{ replace: true }
 			);
-			return;
-		}
-
-		const impersonte = Cookies.get(Auth.COOKIE_MODE) === "im";
-		redirectTo(
-			impersonte
-				? import.meta.env.VITE_URL_LOGINX
-				: import.meta.env.VITE_URL_LOGIN,
-			{ replace: true }
-		);
-	}, [getSessionValue, redirectTo]);
+		},
+		[getSessionCookie, redirectTo]
+	);
 
 	const toModule = useCallback(
 		(moduleId, params) => {

@@ -54,8 +54,8 @@ export const DsgTest4GridContainer = () => {
 					})
 				),
 				title: "商品",
-				minWidth: 170,
-				maxWidth: 170,
+				minWidth: 122,
+				maxWidth: 140,
 				disabled: dsgTest4.grid.readOnly
 			},
 			{
@@ -116,7 +116,7 @@ export const DsgTest4GridContainer = () => {
 					})
 				),
 				title: "DateField",
-				minWidth: 140,
+				minWidth: 122,
 				maxWidth: 140,
 				disabled: dsgTest4.grid.readOnly
 			},

@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 
 import { PrintReportButton } from "@/components";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import RangeGroup from "@/shared-components/RangeGroup";
 import ProdPicker from "../../picker/ProdPicker";

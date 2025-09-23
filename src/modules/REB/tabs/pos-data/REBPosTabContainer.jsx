@@ -6,7 +6,7 @@ import Forms from "@/shared-modules/Forms.mjs";
 import { useCallback } from "react";
 import { REBContext } from "../../REBContext";
 import { useContext } from "react";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import { AppContext } from "@/contexts/app/AppContext";
 
 const REBPosTabContainer = (props) => {

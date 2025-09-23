@@ -9,7 +9,7 @@ import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import AppDeptPicker from "../../fields/AppDeptPicker";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import FormBox from "@/shared-components/form/FormBox";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 
 const A17Form = memo((props) => {
 	const {

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import queryString from "query-string";
 import { memo, useCallback, useContext, useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 
 import { OptionPicker } from "@/shared-components";
 import DeptOptions from "@/modules/DeptOptions.mjs";

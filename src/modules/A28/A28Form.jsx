@@ -12,7 +12,7 @@ import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import A28OrderTypePicker from "./pickers/A28OrderTypePicker";
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
-import Auth from "../md-auth";
+import Auth from "../Auth.mjs";
 
 const A28Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;

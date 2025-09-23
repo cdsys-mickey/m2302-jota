@@ -8,7 +8,7 @@ import { memo, useRef } from "react";
 const arePropsEqual = (oldProps, newProps) => {
 	return Objects.arePropsEqual(oldProps, newProps, {
 		fields: "rowData.FactID,active,disabled,focus",
-		// debug: true,
+		debug: true,
 	});
 };
 
@@ -48,6 +48,7 @@ const SupplierPickerComponent = memo((props) => {
 		setActiveCell,
 		readOnly,
 		focusOnDisabled,
+		multiple,
 		...rest
 	} = columnData;
 
@@ -63,6 +64,7 @@ const SupplierPickerComponent = memo((props) => {
 	const pickerProps = useOptionPickerComponent({
 		name,
 		rowIndex,
+		rowData,
 		columnIndex,
 		focus,
 		active,
@@ -72,8 +74,10 @@ const SupplierPickerComponent = memo((props) => {
 		setRowData,
 		stopEditing,
 		readOnly,
+		skipDisabled,
 		handleFocusNextCell,
 		focusOnDisabled,
+		multiple
 	});
 
 	return (

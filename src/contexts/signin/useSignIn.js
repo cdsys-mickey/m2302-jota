@@ -1,22 +1,16 @@
 import { toastEx } from "@/helpers/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import { useCaptcha } from "@/shared-components/captcha-field/useCaptcha";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import Cookies from "js-cookie";
 import _ from "lodash";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useLocation } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "../app/AppContext";
 import { useForm, useWatch } from "react-hook-form";
 import { useRunOnce } from "@/shared-hooks/useRunOnce";
-
-// const pageCookieOpts = {
-// 	path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
-// 	expires: 365,
-// };
+import { AppContext } from "../app/AppContext";
 
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWORD = "pw";
@@ -25,17 +19,13 @@ const PARAM_OTP = "otp";
 const PARAM_CAPTCHA_PASSED = "captchaPassed";
 const PARAM_CAPTCHA = "captcha";
 
+const ERROR_LOGKEY_EMPTY = "E01";
+
 export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
-	const { setSessionValue, removeSessionValue } = useContext(AppContext);
 	const location = useLocation();
-	const authCookieOpts = useMemo(() => {
-		return {
-			path: `${import.meta.env.VITE_PUBLIC_URL}/auth`,
-			expires: 365,
-		}
-	}, [])
-
+	const app = useContext(AppContext);
+	const { setSessionCookie } = app;
 
 	const form = useForm({
 		defaultValues: {
@@ -48,16 +38,14 @@ export const useSignIn = () => {
 	});
 	const { reset } = form;
 
-
 	const pw = useWatch({
 		name: "pw",
-		control: form.control
-	})
+		control: form.control,
+	});
 
 	const hideCaptcha = useMemo(() => {
 		return !!pw && pw.startsWith(Auth.MAGIC_PREFIX);
-	}, [pw])
-
+	}, [pw]);
 
 	const captcha = useCaptcha({
 		numbersOnly: true,
@@ -75,12 +63,17 @@ export const useSignIn = () => {
 
 	const signinStub = useCallback(
 		async (data, opts = {}) => {
-			const { impersonate = false, url = "/v1/auth/signin", setFocus } = opts;
+			sessionStorage.removeItem(Auth.COOKIE_SPAWN);
+			const {
+				impersonate = false,
+				url = "/v1/auth/signin",
+				setFocus,
+			} = opts;
 			const collected = _.pick(data, [
 				PARAM_ACCOUNT,
 				PARAM_PWORD,
 				PARAM_CAPTCHA_PASSED,
-				PARAM_REMEMBER_ME
+				PARAM_REMEMBER_ME,
 			]);
 			// const collected = data;
 			console.log("collected", collected);
@@ -111,93 +104,79 @@ export const useSignIn = () => {
 					console.log("status", status);
 					console.log("payload", payload);
 
-
 					if (status.success) {
 						_impersonated = payload?.impersonated == "1";
+
+						if (!payload.LogKey) {
+							throw new Error(
+								`登入發生異常 ${ERROR_LOGKEY_EMPTY}`
+							);
+						}
 						// 1.儲存 COOKIE_LOGKEY
-						setSessionValue(Auth.COOKIE_LOGKEY, payload.LogKey ?? "", Auth.AUTH_COOKIE_OPTS)
+						setSessionCookie(
+							Auth.COOKIE_LOGKEY,
+							payload.LogKey,
+							Auth.AUTH_COOKIE_OPTS
+						);
 						// Cookies.set(
 						// 	Auth.COOKIE_LOGKEY,
 						// 	payload.LogKey || "",
-						// 	Auth.LOCAL_COOKIE_OPTS
+						// 	Auth.ROOT_COOKIE_OPTS
 						// );
 						// sessionStorage.setItem(
 						// 	Auth.COOKIE_LOGKEY,
 						// 	payload.LogKey
-						// )
+						// );
 
 						// 2.儲存 COOKIE_LOGIN
-						// setSessionValue(Auth.COOKIE_LOGIN, location.pathname ?? "")
-						Cookies.set(
+						setSessionCookie(
 							Auth.COOKIE_LOGIN,
-							location.pathname,
+							location.pathname ?? "",
 							Auth.ROOT_COOKIE_OPTS
-						)
+						);
+						// Cookies.set(
+						// 	Auth.COOKIE_LOGIN,
+						// 	location.pathname,
+						// 	Auth.ROOT_COOKIE_OPTS
+						// );
 						// sessionStorage.setItem(
 						// 	Auth.COOKIE_LOGIN,
 						// 	location.pathname
 						// )
 
 						if (!_impersonated) {
-							Cookies.remove(
-								Auth.COOKIE_MODE,
-								Auth.ROOT_COOKIE_OPTS
-							);
-							// removeSessionValue(Auth.COOKIE_MODE);
+							// Cookies.remove(
+							// 	Auth.COOKIE_IMPERSONATE,
+							// 	Auth.ROOT_COOKIE_OPTS
+							// );
+							sessionStorage.removeItem(Auth.COOKIE_IMPERSONATE);
 						} else {
-							Cookies.set(
-								Auth.COOKIE_MODE,
-								"im",
-								Auth.ROOT_COOKIE_OPTS
-							);
-							// setSessionValue(Auth.COOKIE_MODE, "im");
+							// Cookies.set(
+							// 	Auth.COOKIE_IMPERSONATE,
+							// 	"im",
+							// 	Auth.ROOT_COOKIE_OPTS
+							// );
+							sessionStorage.setItem(Auth.COOKIE_IMPERSONATE, 1);
 						}
+						Cookies.set(
+							Auth.COOKIE_REMEMBER_ME,
+							data.rememberMe ? 1 : 0,
+							Auth.AUTH_COOKIE_OPTS
+						);
+
 						if (data.rememberMe) {
-							Cookies.set(
-								Auth.COOKIE_REMEMBER_ME,
-								1,
-								authCookieOpts
-							);
 							Cookies.set(
 								Auth.COOKIE_ACCOUNT,
 								collected[PARAM_ACCOUNT],
 								Auth.AUTH_COOKIE_OPTS
 							);
-							// setSessionValue(Auth.COOKIE_ACCOUNT, collected[PARAM_ACCOUNT], Auth.AUTH_COOKIE_OPTS);
 						} else {
-							Cookies.set(
-								Auth.COOKIE_REMEMBER_ME,
-								0,
-								authCookieOpts
-							);
 							Cookies.remove(
 								Auth.COOKIE_ACCOUNT,
 								Auth.AUTH_COOKIE_OPTS
 							);
-							// removeSessionValue(Auth.COOKIE_ACCOUNT);
 						}
 
-						//house keeping
-						// if (import.meta.env.VITE_PUBLIC_URL) {
-						// 	Cookies.remove(
-						// 		Auth.COOKIE_ACCOUNT,
-						// 		{
-						// 			path: "/"
-						// 		}
-						// 	);
-						// 	Cookies.remove(
-						// 		Auth.COOKIE_REMEMBER_ME,
-						// 		{
-						// 			path: "/"
-						// 		}
-						// 	);
-						// 	Cookies.remove(
-						// 		Auth.COOKIE_MODE,
-						// 		{
-						// 			path: "/"
-						// 		}
-						// 	)
-						// }
 						// 2.重導至首頁
 						toLanding();
 					} else {
@@ -205,18 +184,20 @@ export const useSignIn = () => {
 						console.warn(`status: ${status}`);
 						switch (status.code) {
 							case 401:
-								toastEx.error(`登入失敗，請檢查帳號密碼是否正確`);
+								toastEx.error(
+									`登入失敗，請檢查帳號密碼是否正確`
+								);
 								break;
 							case 429:
-								toastEx.error(`登入失敗，帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`);
+								toastEx.error(
+									`登入失敗，帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`
+								);
 								break;
 							default:
 								toastEx.error("登入失敗", error);
 								break;
 						}
-						Cookies.remove(
-							Auth.COOKIE_LOGKEY
-						);
+						Cookies.remove(Auth.COOKIE_LOGKEY);
 					}
 				} catch (err) {
 					console.error("登入發生異常", err);
@@ -237,7 +218,7 @@ export const useSignIn = () => {
 				}
 			}
 		},
-		[captcha, httpPostAsync, setSessionValue, location.pathname, toLanding, authCookieOpts]
+		[captcha, httpPostAsync, location.pathname, setSessionCookie, toLanding]
 	);
 
 	const signInSubmitHandler = useCallback(
@@ -246,7 +227,8 @@ export const useSignIn = () => {
 				console.log("onSignInSubmit", data);
 				const collected = {
 					...data,
-					captchaPassed: hideCaptcha || captcha.validate(data.captcha),
+					captchaPassed:
+						hideCaptcha || captcha.validate(data.captcha),
 				};
 				signinStub(collected, {
 					impersonate: false,
@@ -281,8 +263,6 @@ export const useSignIn = () => {
 		console.error("onSignInXError", err);
 	}, []);
 
-
-
 	const isFieldDisabled = useCallback(
 		(field) => {
 			switch (field.name) {
@@ -296,30 +276,40 @@ export const useSignIn = () => {
 	);
 
 	const handleSubmit = form.handleSubmit(
-		signInSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
+		signInSubmitHandler({
+			setFocus: form.setFocus,
+			hideCaptcha: hideCaptcha,
+		}),
 		onSignInSubmitError
-	)
+	);
 
 	const handleSubmitX = form.handleSubmit(
-		signInXSubmitHandler({ setFocus: form.setFocus, hideCaptcha: hideCaptcha }),
+		signInXSubmitHandler({
+			setFocus: form.setFocus,
+			hideCaptcha: hideCaptcha,
+		}),
 		onSignInXSubmitError
-	)
+	);
 
-	const handleLastField = useCallback((name, opts) => {
-		console.log("handleLastField", name, opts);
-		// if (name != "rememberMe") {
-		// 	handleSubmit()
-		// }
-		handleSubmit();
-	}, [handleSubmit]);
+	const handleLastField = useCallback(
+		(name, opts) => {
+			console.log("handleLastField", name, opts);
+			// if (name != "rememberMe") {
+			// 	handleSubmit()
+			// }
+			handleSubmit();
+		},
+		[handleSubmit]
+	);
 
-	const formMeta = useFormMeta(`
+	const formMeta = useFormMeta(
+		`
 		ac,
 		pw,
 		rememberMe:{skipEnter: true},
 		captcha`,
 		{
-			lastField: handleLastField
+			lastField: handleLastField,
 		}
 	);
 
@@ -329,11 +319,12 @@ export const useSignIn = () => {
 			pw: "",
 			captcha: "",
 			captchaPassed: false,
-			rememberMe: Cookies.get(Auth.COOKIE_REMEMBER_ME) !== undefined
-				? Cookies.get(Auth.COOKIE_REMEMBER_ME) === "1"
-				: true,
-		})
-	})
+			rememberMe:
+				Cookies.get(Auth.COOKIE_REMEMBER_ME) !== undefined
+					? Cookies.get(Auth.COOKIE_REMEMBER_ME) === "1"
+					: true,
+		});
+	});
 
 	return {
 		...state,
@@ -347,6 +338,6 @@ export const useSignIn = () => {
 		formMeta,
 		handleSubmit,
 		handleSubmitX,
-		isFieldDisabled
+		isFieldDisabled,
 	};
 };

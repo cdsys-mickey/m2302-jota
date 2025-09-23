@@ -79,7 +79,7 @@ const ButtonExView = memo(
 						endIcon,
 					})}
 					loading={loading}
-					responsive={responsive}
+					// responsive={responsive}
 					{...rest}
 				>
 					{text}

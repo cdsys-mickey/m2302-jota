@@ -21,8 +21,9 @@ const P42RangeGridContainer = (props) => {
 	const form = useFormContext();
 	const p42 = useContext(P42Context);
 	const formMeta = useContext(FormMetaContext);
-	const theme = useTheme();
-	const lgOrUp = useMediaQuery(theme.breakpoints.up('lg'));
+	// const theme = useTheme();
+	const smallerThanXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
+
 	const _addRowsComponent = useMemo(() => {
 		return createAddRowsComponentEx({
 			hideNumberField: true,
@@ -31,12 +32,12 @@ const P42RangeGridContainer = (props) => {
 	}, [])
 
 	const _height = useMemo(() => {
-		return lgOrUp ? height - 478 : 200
-	}, [height, lgOrUp])
+		return smallerThanXL ? height - 480 : height - 636
+	}, [height, smallerThanXL])
 
 	const _loadingHeight = useMemo(() => {
-		return lgOrUp ? height - 482 : 200
-	}, [height, lgOrUp])
+		return smallerThanXL ? height - 482 : 200
+	}, [height, smallerThanXL])
 
 
 

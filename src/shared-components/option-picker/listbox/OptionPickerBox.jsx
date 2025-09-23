@@ -33,10 +33,10 @@ const OptionPickerBox = styled(Box, {
 			"& .MuiAutocomplete-popupIndicator": {
 				opacity: 0,
 			},
-			"& .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root, & .MuiAutocomplete-hasPopupIcon .MuiOutlinedInput-root, & .MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root":
-				{
-					paddingRight: 0,
-				},
+			"& .MuiAutocomplete-hasPopupIcon .MuiOutlinedInput-root, & .MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root":
+			{
+				paddingRight: 0,
+			},
 		}),
 		...(hideControls && {
 			pointerEvents: "none",

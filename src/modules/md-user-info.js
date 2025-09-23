@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 
-import Auth from "./md-auth";
+import Auth from "./Auth.mjs";
 
 const getOptionLabel = (option) => {
 	if (!option) return "";

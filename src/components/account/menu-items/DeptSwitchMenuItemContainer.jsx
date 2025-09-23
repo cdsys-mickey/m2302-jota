@@ -4,7 +4,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useCallback } from "react";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 
 export const DeptSwitchMenuItemContainer = (props) => {
 	const { onMenuClose, ...rest } = props;

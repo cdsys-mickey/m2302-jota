@@ -118,8 +118,8 @@ export const P14DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 180,
-				maxWidth: 180,
+				minWidth: 122,
+				maxWidth: 140,
 			},
 			{
 				...keyColumn(

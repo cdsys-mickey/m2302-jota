@@ -1,5 +1,5 @@
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import REB from "@/modules/REB/REB.mjs";
 import { DatePickerEx, FormFieldLabel } from "@/shared-components";
 import FlexBox from "@/shared-components/FlexBox";

@@ -61,6 +61,7 @@ export const P42ListViewContainer = () => {
 				error={p42.listError}
 				// bottomReached={p42.bottomReached}
 				bottomReached={true}
+
 			/>
 		</ListViewBox>
 	);

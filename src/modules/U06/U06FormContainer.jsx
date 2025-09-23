@@ -3,7 +3,7 @@ import { FormMetaProvider } from "@/shared-components";
 import { useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
-import Auth from "../md-auth";
+import Auth from "../Auth.mjs";
 import { U06Context } from "./U06Context";
 import U06Form from "./U06Form";
 

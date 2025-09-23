@@ -13,7 +13,7 @@ const NoDataBox = memo(
 			children,
 			height,
 			severity = "warning",
-			title = "這個檢視目前沒有資料",
+			title = "目前沒有資料，請確認篩選條件是否正確。",
 			size,
 			...rest
 		} = props;

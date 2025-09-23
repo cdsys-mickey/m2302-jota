@@ -7,13 +7,13 @@ export const JobMenuResetButtonContainer = () => {
 	const jobMenu = useContext(JobMenuContext);
 
 	return (
-		<ResponsiveLoadingButton
+		<ButtonEx
 			variant="contained"
 			color="warning"
 			startIcon={<RestartAltIcon />}
 			onClick={jobMenu.handleReset}>
 			重設
-		</ResponsiveLoadingButton>
+		</ButtonEx>
 	);
 };
 

@@ -29,7 +29,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
 
-	const xlOrDown = useMediaQuery((theme) => theme.breakpoints.down('xl'));
+	const smallerThanXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
 	const crud = useContext(CrudContext);
 	const form = useFormContext();
 	const { reset } = form;
@@ -390,11 +390,11 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		<DialogEx
 			title={title}
 			ref={ref}
-			fullScreen={xlOrDown}
+			fullScreen={smallerThanXL}
 			responsive
 			fullWidth
 			maxWidth="xl"
-			// minWidth={1300}
+			minWidth={1300}
 			TitleButtonsComponent={P42DialogButtonsContainer}
 			open={p42.itemViewOpen}
 			onClose={

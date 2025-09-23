@@ -133,8 +133,8 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: cust,
-				minWidth: 180,
-				maxWidth: 180,
+				minWidth: 122,
+				maxWidth: 140,
 				disabled: readOnly || !b012.creating,
 			},
 			{

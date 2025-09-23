@@ -123,7 +123,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 140,
+				minWidth: 122,
 				maxWidth: 140,
 				disabled: readOnly,
 			},
@@ -191,7 +191,8 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "名稱",
-				grow: 2,
+				// grow: 2,
+				minWidth: 120,
 				disabled: true,
 			},
 			{

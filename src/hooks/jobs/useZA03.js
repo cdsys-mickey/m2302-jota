@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { toastEx } from "@/helpers/toastEx";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import CopyAuth from "@/modules/md-copy-auth";
 import UserInfo from "@/modules/md-user-info";
 import ZA03 from "@/modules/ZA03.mjs";
@@ -53,7 +53,7 @@ export const useZA03 = () => {
 		gridId: "auth",
 		// keyColumn: "module.JobID",
 		keyColumn: "JobID",
-		doDirtyCheckByIndex: true
+		doDirtyCheckByIndex: true,
 	});
 	// const gridMeta = useDSGMeta({
 
@@ -116,7 +116,7 @@ export const useZA03 = () => {
 			} catch (err) {
 				loadAuthGridAction.fail({ error: err });
 				toastEx.error(err?.message, {
-					position: "top-right"
+					position: "top-right",
 				});
 			}
 		},
@@ -171,37 +171,37 @@ export const useZA03 = () => {
 		return loadAuthGridAction.state === ActionState.WORKING;
 	}, [loadAuthGridAction.state]);
 
-	const handleDeptChange = useCallback(({ setValue, getValues }) => (newValue) => {
-		// console.log("getValues", getValues());
+	const handleDeptChange = useCallback(
+		({ setValue, getValues }) =>
+			(newValue) => {
+				// console.log("getValues", getValues());
 
-		if (crud.creating) {
-			if (newValue) {
-				setValue("depts", [
-					newValue
-				])
-			} else {
-				setValue("depts", [
-
-				])
-			}
-		}
-	}, [crud.creating]);
+				if (crud.creating) {
+					if (newValue) {
+						setValue("depts", [newValue]);
+					} else {
+						setValue("depts", []);
+					}
+				}
+			},
+		[crud.creating]
+	);
 
 	/**
 	 * 防止隸屬門市被刪除
 	 */
-	const handleDeptsChange = useCallback(({ setValue, getValues }) => (newValue) => {
-		// console.log("getValues", getValues());
-		const dept = getValues("dept");
+	const handleDeptsChange = useCallback(
+		({ setValue, getValues }) =>
+			(newValue) => {
+				// console.log("getValues", getValues());
+				const dept = getValues("dept");
 
-		if (!newValue.find(x => x.DeptID === dept.DeptID)) {
-			return [
-				dept,
-				...newValue,
-			]
-		}
-	}, []);
-
+				if (!newValue.find((x) => x.DeptID === dept.DeptID)) {
+					return [dept, ...newValue];
+				}
+			},
+		[]
+	);
 
 	const handleAuthDeptChange = useCallback(
 		(dept) => {
@@ -410,9 +410,12 @@ export const useZA03 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`ZA03.onSubmitError`, err);
-		toastEx.error("資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
-			position: "top-right"
-		});
+		toastEx.error(
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const confirmDelete = useCallback(() => {
@@ -485,8 +488,9 @@ export const useZA03 = () => {
 		async (moduleId, funcId, enabled) => {
 			try {
 				const { status, error } = await httpPatchAsync({
-					url: `v1/ou/user/authorities/${enabled ? "enable" : "disable"
-						}`,
+					url: `v1/ou/user/authorities/${
+						enabled ? "enable" : "disable"
+					}`,
 					bearer: token,
 					params: {
 						uid: crud.itemData?.UID,
@@ -547,9 +551,7 @@ export const useZA03 = () => {
 
 	const isKeyDisabled = useCallback(
 		({ rowData, rowIndex }) => {
-			return (
-				grid.readOnly || grid.isPersisted({ rowData, rowIndex })
-			);
+			return grid.readOnly || grid.isPersisted({ rowData, rowIndex });
 		},
 		[grid]
 	);
@@ -868,14 +870,13 @@ export const useZA03 = () => {
 	const setSelectionChecked = useCallback(
 		(gridMeta, checked) => {
 			const selection = gridMeta.getSelection({
-				// debug: true 
+				// debug: true
 			});
 			console.log("selected", selection);
 
 			grid.setGridData(
 				(prev) =>
 					prev.map((rowData, rowIndex) => {
-
 						// 只更新指定行
 						if (
 							rowIndex >= selection.min.row &&
@@ -894,15 +895,22 @@ export const useZA03 = () => {
 										checked;
 								}
 							}
-							console.log(`updating rowIndex[${rowIndex}]`, rowData);
-							grid.handleDirtyCheck(rowData, updatedRowData, rowIndex)
+							console.log(
+								`updating rowIndex[${rowIndex}]`,
+								rowData
+							);
+							grid.handleDirtyCheck(
+								rowData,
+								updatedRowData,
+								rowIndex
+							);
 							return updatedRowData;
 						}
 						return rowData;
 					}),
 				{
 					// doDirtyCheckByIndex: true,
-					debug: true
+					debug: true,
 				}
 			);
 
@@ -911,13 +919,21 @@ export const useZA03 = () => {
 		[grid]
 	);
 
-	const checkSelection = useCallback(({ gridMeta }) => () => {
-		setSelectionChecked(gridMeta, true);
-	}, [setSelectionChecked]);
+	const checkSelection = useCallback(
+		({ gridMeta }) =>
+			() => {
+				setSelectionChecked(gridMeta, true);
+			},
+		[setSelectionChecked]
+	);
 
-	const clearSelection = useCallback(({ gridMeta }) => () => {
-		setSelectionChecked(gridMeta, false);
-	}, [setSelectionChecked]);
+	const clearSelection = useCallback(
+		({ gridMeta }) =>
+			() => {
+				setSelectionChecked(gridMeta, false);
+			},
+		[setSelectionChecked]
+	);
 
 	const checkAll = useCallback(() => {
 		grid.setGridData(
@@ -1033,6 +1049,6 @@ export const useZA03 = () => {
 		checkSelection,
 		clearSelection,
 		handleDeptChange,
-		handleDeptsChange
+		handleDeptsChange,
 	};
 };

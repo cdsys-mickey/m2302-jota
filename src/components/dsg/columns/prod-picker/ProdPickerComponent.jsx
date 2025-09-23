@@ -110,39 +110,12 @@ const ProdPickerComponent = memo((props) => {
 
 	return (
 		<ProdPicker
-			// name={name}
-			// label=""
 			queryParam="qs"
-			// inputRef={ref}
-			// disabled={disabled}
-			// value={rowData}
-			// onChange={handleChange}
-			// onOpen={handleOpen}
-			// onClose={handleClose}
-			// placeholder="輸入編號、條碼或名稱搜尋"
-			// typeToSearchText="輸入編號、條碼或名稱搜尋..."
-			// filterByServer
-			// queryRequired
-
-			// FocusControl
-			// cellComponentRef={cellComponentRef}
-			// handleFocusNextCell={handleFocusNextCell}
-			// multiple={multiple}
-			// dense
-			// cell={cell}
-			// hideControls={hideControls}
-			// hideBorders
-			// disableFadeOut
-			// toastError
-			// autoHighlight
 			disableOpenOnInput
-			// selectOnFocus
 			// 大量資料專用
 			virtualize
-			// triggerDelay={100}
 			{...pickerProps}
 			{...rest}
-		// blurToLookup={false}
 		/>
 	);
 }, arePropsEqual);

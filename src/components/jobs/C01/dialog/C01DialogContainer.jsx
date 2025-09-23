@@ -119,7 +119,7 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 				),
 				id: "SProdID",
 				title: "商品編號",
-				minWidth: 140,
+				minWidth: 122,
 				maxWidth: 140,
 				disabled: !c01.editing || c01.prodDisabled,
 			},
@@ -198,7 +198,8 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "名稱",
-				grow: 2,
+				// grow: 1.5,
+				minWidth: 120,
 				disabled: !c01.editing || c01.supplierNameDisabled,
 			},
 			{

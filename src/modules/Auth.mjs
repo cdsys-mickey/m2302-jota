@@ -2,7 +2,8 @@ import Colors from "./Colors.mjs";
 
 const COOKIE_LANDING = "landing";
 const COOKIE_LOGIN = "login";
-const COOKIE_MODE = "md";
+const COOKIE_IMPERSONATE = "imp";
+const COOKIE_SPAWN = "spwn";
 const COOKIE_ACCOUNT = "ac";
 // const COOKIE_LOGKEY = "m2302-token";
 const COOKIE_LOGKEY = "LogKey";
@@ -26,12 +27,12 @@ const SCOPE_LABELS = Object.freeze({
 });
 
 const ROOT_COOKIE_OPTS = {
-	path: `/${import.meta.env.VITE_PUBLIC_URL ?? ""}`,
+	path: `${import.meta.env.VITE_PUBLIC_URL || "/"}`,
 	expires: 365,
 };
 
 const AUTH_COOKIE_OPTS = {
-	path: `${import.meta.env.VITE_PUBLIC_URL ?? "/auth"}`,
+	path: `${import.meta.env.VITE_PUBLIC_URL ?? "" + "/auth"}`,
 	expires: 365,
 };
 
@@ -136,7 +137,8 @@ const Auth = {
 	getItemById,
 	COOKIE_LANDING,
 	COOKIE_LOGIN,
-	COOKIE_MODE,
+	COOKIE_IMPERSONATE,
+	COOKIE_SPAWN,
 	COOKIE_ACCOUNT,
 	COOKIE_LOGKEY,
 	COOKIE_REMEMBER_ME,

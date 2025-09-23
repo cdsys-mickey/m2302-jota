@@ -1,4 +1,4 @@
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import ChipEx from "@/shared-components/ChipEx";
 import { useTheme } from "@mui/system";
 import PropTypes from "prop-types";

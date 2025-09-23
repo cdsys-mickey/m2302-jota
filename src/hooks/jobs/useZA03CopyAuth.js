@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useOptions } from "../../shared-hooks/useOptions";
 import queryString from "query-string";
 import { useMemo } from "react";
-import Auth from "../../modules/md-auth";
+import Auth from "../../modules/Auth.mjs";
 
 export const useZA03CopyAuth = ({ token, scope = Auth.SCOPES.HQ }) => {
 	const [fromUser, setFromUser] = useState();

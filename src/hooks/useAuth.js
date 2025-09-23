@@ -7,7 +7,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import { decodeJwt } from "jose";
 import Cookies from "js-cookie";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import Auth from "../modules/md-auth";
+import Auth from "../modules/Auth.mjs";
 import ActionState from "../shared-modules/ActionState/ActionState";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -19,8 +19,8 @@ import consoleEx from "@/helpers/consoleEx";
 const LOG_KEY = "LogKey";
 
 const DEFAULT_SWITCH_DEPT_OPTS = {
-	toLanding: true
-}
+	toLanding: true,
+};
 
 export const useAuth = () => {
 	const { toLogin, toLanding, toRenew } = useAppRedirect();
@@ -29,7 +29,7 @@ export const useAuth = () => {
 	const deptSwitchAction = useAction();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { getSessionValue } = useContext(AppContext);
+	const { getSessionCookie } = useContext(AppContext);
 	const messaging = useContext(MessagingContext);
 	const { connectionId } = messaging;
 
@@ -54,8 +54,9 @@ export const useAuth = () => {
 	});
 
 	const debugEnabled = useMemo(() => {
-		return Cookies.get(Auth.COOKIE_MODE) === "im"
-			|| state.operator?.hasRoot
+		return (
+			Cookies.get(Auth.COOKIE_IMPERSONATE) == 1 || state.operator?.hasRoot
+		);
 	}, [state.operator?.hasRoot]);
 
 	const loadModules = useCallback(
@@ -105,10 +106,10 @@ export const useAuth = () => {
 				...prev,
 				validating: true,
 			}));
-			// let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
-			// let logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
-			// const logKey = logKeyInSession || logKeyInCookie;
-			const logKey = getSessionValue(Auth.COOKIE_LOGKEY);
+			let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+			let logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
+			const logKey = logKeyInSession || logKeyInCookie;
+			// const logKey = getSessionCookie(Auth.COOKIE_LOGKEY);
 			if (!logKey) {
 				toastEx.error("您尚未登入");
 				if (doRedirect) {
@@ -119,25 +120,30 @@ export const useAuth = () => {
 
 			try {
 				// 檢查 cookie
-				// const { status, payload, error } = logKeyInSession ? await httpGetAsync({
-				// 	url: "v1/auth/token",
-				// 	params: {
-				// 		logKey: logKeyInSession
-				// 	}
-				// }) : await httpGetAsync({
-				// 	url: "v1/auth/token",
-				// });
-				// if (logKeyInSession) {
-				// 	console.log("recovering from logKey in session", logKeyInSession);
-				// } else {
-				// 	console.log("recovering from logKey in cookie", logKeyInCookie);
-				// }
 				const { status, payload, error } = await httpGetAsync({
 					url: "v1/auth/token",
 					params: {
-						logKey: logKey
-					}
+						logKey: logKey,
+					},
 				});
+
+				if (logKeyInSession) {
+					console.log(
+						"recovering from logKey in session",
+						logKeyInSession
+					);
+				} else {
+					console.log(
+						"recovering from logKey in cookie",
+						logKeyInCookie
+					);
+				}
+				// const { status, payload, error } = await httpGetAsync({
+				// 	url: "v1/auth/token",
+				// 	params: {
+				// 		logKey: logKey,
+				// 	},
+				// });
 
 				if (status.success) {
 					// JOSE methods
@@ -176,14 +182,20 @@ export const useAuth = () => {
 						token,
 						operator: {
 							...jwtPayload.entity,
-							hasRoot: jwtPayload.entity?.Class >= Auth.SCOPES.ROOT,
-							isRoot: jwtPayload.entity?.Class == Auth.SCOPES.ROOT,
+							hasRoot:
+								jwtPayload.entity?.Class >= Auth.SCOPES.ROOT,
+							isRoot:
+								jwtPayload.entity?.Class == Auth.SCOPES.ROOT,
 							hasSys: jwtPayload.entity?.Class >= Auth.SCOPES.SYS,
 							isSys: jwtPayload.entity?.Class == Auth.SCOPES.SYS,
 							isHQ: jwtPayload.entity?.Class == Auth.SCOPES.HQ,
 							hasHQ: jwtPayload.entity?.Class >= Auth.SCOPES.HQ,
-							isBranchHQ: jwtPayload.entity?.Class == Auth.SCOPES.BRANCH_HQ,
-							hasBranchHQ: jwtPayload.entity?.Class >= Auth.SCOPES.BRANCH_HQ,
+							isBranchHQ:
+								jwtPayload.entity?.Class ==
+								Auth.SCOPES.BRANCH_HQ,
+							hasBranchHQ:
+								jwtPayload.entity?.Class >=
+								Auth.SCOPES.BRANCH_HQ,
 						},
 						roles: jwtPayload.roles,
 					}));
@@ -196,10 +208,14 @@ export const useAuth = () => {
 						};
 					}
 					if (doRedirect) {
+						const spawn = sessionStorage.getItem(Auth.COOKIE_SPAWN);
+
 						toastEx.success(
-							`${jwtPayload.entity.LoginName || "(帳號)"} / ${jwtPayload.entity.UserName || ""
-							} 已成功${switching ? "切換" : "登入"}到${jwtPayload.entity.CurDeptName
-							}`
+							`${jwtPayload.entity.LoginName || "(帳號)"}/${
+								jwtPayload.entity.UserName || ""
+							}${spawn ? "以視窗模式" : ""}成功${
+								switching ? "切換" : "登入"
+							}到${jwtPayload.entity.CurDeptName}`
 						);
 					}
 				} else {
@@ -230,17 +246,22 @@ export const useAuth = () => {
 					validating: false,
 				}));
 				if (queryParams && queryParams.get(LOG_KEY)) {
-					queryParams.delete(LOG_KEY)
-					navigate({ search: queryParams.toString() }, { replace: true });
+					queryParams.delete(LOG_KEY);
+					navigate(
+						{ search: queryParams.toString() },
+						{ replace: true }
+					);
 				}
 			}
 		},
-		[getSessionValue, httpGetAsync, loadModules, navigate, toLogin, toRenew]
+		[httpGetAsync, loadModules, navigate, toLogin, toRenew]
 	);
 
 	useEffect(() => {
 		const handleRegister = async () => {
-			console.log(`connectionId ${connectionId} connected, registering to LogKey ${state.operator?.LoginName}(${state.operator?.LogKey})`);
+			console.log(
+				`connectionId ${connectionId} connected, registering to LogKey ${state.operator?.LoginName}(${state.operator?.LogKey})`
+			);
 			const { status } = await httpPutAsync({
 				url: "v1/auth/register",
 				bearer: state.token,
@@ -249,9 +270,7 @@ export const useAuth = () => {
 				},
 			});
 			if (status.success) {
-				console.log(
-					`\tsuccess.`
-				);
+				console.log(`\tsuccess.`);
 			} else {
 				consoleEx.error("\tfailed");
 			}
@@ -259,7 +278,13 @@ export const useAuth = () => {
 		if (connectionId && state.operator?.LogKey) {
 			handleRegister();
 		}
-	}, [connectionId, httpPutAsync, state.operator?.LogKey, state.operator?.LoginName, state.token]);
+	}, [
+		connectionId,
+		httpPutAsync,
+		state.operator?.LogKey,
+		state.operator?.LoginName,
+		state.token,
+	]);
 
 	const invalidate = useCallback(() => {
 		setState((prev) => ({
@@ -268,73 +293,85 @@ export const useAuth = () => {
 		}));
 	}, []);
 
-	const handleSignOut = useCallback(async () => {
-		try {
-			await httpGetAsync({
-				url: "v1/auth/signout",
-				bearer: state.token,
-			});
-			toastEx.success("您已成功登出");
-			window.close();
-			toLogin();
-		} catch (err) {
-			console.error("handleSignOut.failed", err);
-		}
-
-	}, [httpGetAsync, toLogin, state.token]);
+	const handleSignOut = useCallback(
+		async ({ spawn = false }) => {
+			try {
+				await httpGetAsync({
+					url: "v1/auth/signout",
+					bearer: state.token,
+				});
+				toastEx.success("您已成功登出");
+				if (spawn) {
+					window.close();
+				}
+				sessionStorage.removeItem(Auth.COOKIE_SPAWN);
+				toLogin();
+			} catch (err) {
+				console.error("handleSignOut.failed", err);
+			}
+		},
+		[httpGetAsync, toLogin, state.token]
+	);
 
 	const confirmSignOut = useCallback(() => {
-		let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+		const spawn = sessionStorage.getItem(Auth.COOKIE_SPAWN) == 1;
 		let message = "確認要登出?";
-		if (logKeyInSession) {
+		if (spawn) {
 			message = "確定要結束視窗?";
 		}
 		dialogs.confirm({
 			message,
 			onConfirm: () => {
-				handleSignOut();
+				handleSignOut({ spawn });
 			},
 		});
 	}, [dialogs, handleSignOut]);
 
-
-
-	const switchDept = useCallback(async (newDept, opts = DEFAULT_SWITCH_DEPT_OPTS) => {
-		if (!newDept) {
-			toastEx.error("您尚未選擇欲切換的門市")
-		}
-		try {
-			deptSwitchAction.start();
-			const { status, error } = await httpGetAsync({
-				url: "v1/auth/switch-dept",
-				bearer: state.token,
-				params: {
-					id: newDept?.DeptID,
-				},
-			});
-			if (status.success) {
-				recoverIdentity({ switching: true, doRedirect: false });
-				if (opts.toLanding) {
-					toLanding({
-						reloadAuthorities: true,
-					});
-				}
-
-				toastEx.success(
-					`已成功切換至 ${newDept?.AbbrName || newDept?.DeptName}`
-				);
-			} else {
-				throw error || new Error("切換單位發生未預期例外");
+	const switchDept = useCallback(
+		async (newDept, opts = DEFAULT_SWITCH_DEPT_OPTS) => {
+			if (!newDept) {
+				toastEx.error("您尚未選擇欲切換的門市");
 			}
-		} catch (err) {
-			console.error("onDeptSwitchSubmit.failed", err);
-			toastEx.error("由於登入已逾期切換門市失敗，請重新登入");
-			toLogin();
+			try {
+				deptSwitchAction.start();
+				const { status, error } = await httpGetAsync({
+					url: "v1/auth/switch-dept",
+					bearer: state.token,
+					params: {
+						id: newDept?.DeptID,
+					},
+				});
+				if (status.success) {
+					recoverIdentity({ switching: true, doRedirect: false });
+					if (opts.toLanding) {
+						toLanding({
+							reloadAuthorities: true,
+						});
+					}
 
-		} finally {
-			deptSwitchAction.clear();
-		}
-	}, [deptSwitchAction, httpGetAsync, recoverIdentity, state.token, toLanding, toLogin]);
+					toastEx.success(
+						`已成功切換至 ${newDept?.AbbrName || newDept?.DeptName}`
+					);
+				} else {
+					throw error || new Error("切換單位發生未預期例外");
+				}
+			} catch (err) {
+				console.error("onDeptSwitchSubmit.failed", err);
+				toastEx.error("由於登入已逾期切換門市失敗，請重新登入");
+				toLogin();
+			} finally {
+				deptSwitchAction.clear();
+			}
+		},
+		[
+			deptSwitchAction,
+			httpGetAsync,
+			recoverIdentity,
+			state.token,
+			toLanding,
+			toLogin,
+		]
+	);
 
 	const onDeptSwitchSubmit = useCallback(
 		(data) => {
@@ -440,7 +477,7 @@ export const useAuth = () => {
 		console.error("onChangeSubmitError", err);
 	}, []);
 
-	const renewLogKey = useCallback((newLogKey) => {
+	const renewLogKeyInSession = useCallback((newLogKey) => {
 		sessionStorage.setItem(LOG_KEY, newLogKey);
 	}, []);
 
@@ -450,23 +487,30 @@ export const useAuth = () => {
 			const queryParams = new URLSearchParams(location.search);
 			const logKeyInUrl = queryParams.get(LOG_KEY);
 			const logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
-			const logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+			// const logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
 
 			if (logKeyInUrl) {
-				renewLogKey(logKeyInUrl);
-			} else if (logKeyInSession) {
-				console.log("use existing sessionStorage");
-			} else if (logKeyInCookie) {
-				console.log("recover from COOKIE");
-				renewLogKey(logKeyInCookie);
+				sessionStorage.setItem(Auth.COOKIE_SPAWN, 1);
+				renewLogKeyInSession(logKeyInUrl);
+			} else {
+				sessionStorage.setItem(Auth.COOKIE_SPAWN, 0);
+				if (logKeyInCookie) {
+					console.log("recover from COOKIE");
+					renewLogKeyInSession(logKeyInCookie);
+				}
 			}
 
 			recoverIdentity({
 				doRedirect: true,
-				queryParams
+				queryParams,
 			});
 		}
-	}, [state.validating, recoverIdentity, location.search, renewLogKey]);
+	}, [
+		state.validating,
+		recoverIdentity,
+		location.search,
+		renewLogKeyInSession,
+	]);
 
 	// useEffect(() => {
 	// 	const params = new URLSearchParams(location.search);
@@ -509,9 +553,9 @@ export const useAuth = () => {
 		onChangeSubmitError,
 		changePrompting,
 		switchDept,
-		renewLogKey,
+		renewLogKey: renewLogKeyInSession,
 		loadModules,
-		debugEnabled
+		debugEnabled,
 		// ...taskListLoader,
 	};
 };

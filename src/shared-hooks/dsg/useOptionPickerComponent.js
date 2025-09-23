@@ -1,6 +1,7 @@
 import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { useChangeTracking } from "../useChangeTracking";
 import CommonStyles from "@/shared-modules/CommonStyles.mjs";
+import consoleEx from "@/helpers/consoleEx";
 
 export const useOptionPickerComponent = (opts) => {
 	const {
@@ -22,7 +23,7 @@ export const useOptionPickerComponent = (opts) => {
 		name,
 		hideControlsOnActive,
 		selectOnFocus,
-		multiple = false
+		multiple = false,
 	} = opts;
 
 	// props
@@ -37,7 +38,7 @@ export const useOptionPickerComponent = (opts) => {
 		stopEditing,
 	}).forEach(([name, prop]) => {
 		if (prop === undefined) {
-			console.warn(`%c[props].${name}未傳遞`, CommonStyles.CONSOLE_WARN);
+			consoleEx.warn(`[props].${name}未傳遞`);
 		}
 	});
 
@@ -49,7 +50,7 @@ export const useOptionPickerComponent = (opts) => {
 		focusOnDisabled,
 	}).forEach(([name, prop]) => {
 		if (prop === undefined) {
-			console.warn(`%c[cellFocus].${name}未傳遞`, CommonStyles.CONSOLE_WARN);
+			consoleEx.warn(`[cellFocus].${name}未傳遞`);
 		}
 	});
 
@@ -61,13 +62,16 @@ export const useOptionPickerComponent = (opts) => {
 		// multiple
 	}).forEach(([name, prop]) => {
 		if (prop === undefined) {
-			console.warn(`%c[columnData].${name}未傳遞`, CommonStyles.CONSOLE_WARN);
+			console.warn(
+				`%c[columnData].${name}未傳遞`,
+				CommonStyles.CONSOLE_WARN
+			);
 		}
 	});
 
 	const inputRef = useRef();
 	const asyncRef = useRef({
-		popperOpen: null
+		popperOpen: null,
 	});
 
 	const cell = useMemo(() => {
@@ -81,16 +85,18 @@ export const useOptionPickerComponent = (opts) => {
 		return disabled || hideControlsOnActive ? !focus : !active;
 	}, [active, hideControlsOnActive, disabled, focus]);
 
-
 	const handleChange = useCallback(
 		(newValue) => {
-			console.log(`[${name}]useOptionPickerComponent.handleChange`, newValue);
+			console.log(
+				`[${name}]useOptionPickerComponent.handleChange`,
+				newValue
+			);
 			setRowData(newValue);
 			// if (!newValue) {
 			// 	return;
 			// }
 			setTimeout(() => {
-				stopEditing({ nextRow: false })
+				stopEditing({ nextRow: false });
 				console.log("stopEditing invoked");
 				inputRef.current?.blur();
 			});
@@ -131,17 +137,33 @@ export const useOptionPickerComponent = (opts) => {
 	}, [active, stopEditing]);
 
 	/** active 時跳過停用的 Cell
-	 * 
-	**/
+	 *
+	 **/
 	useLayoutEffect(() => {
-		if (skipDisabled && active && disabled && !focusOnDisabled && !readOnly) {
+		if (
+			skipDisabled &&
+			active &&
+			disabled &&
+			!focusOnDisabled &&
+			!readOnly
+		) {
 			if (handleFocusNextCell) {
 				handleFocusNextCell(cell);
 			} else {
 				console.log("handleFocusNextCell is null");
 			}
 		}
-	}, [active, cell, columnIndex, disabled, handleFocusNextCell, focusOnDisabled, readOnly, rowIndex, skipDisabled]);
+	}, [
+		active,
+		cell,
+		columnIndex,
+		disabled,
+		handleFocusNextCell,
+		focusOnDisabled,
+		readOnly,
+		rowIndex,
+		skipDisabled,
+	]);
 
 	/**
 	 * 選擇了新值後，觸發焦點移轉往前
@@ -166,10 +188,9 @@ export const useOptionPickerComponent = (opts) => {
 			dense: true,
 			autoHighlight: true,
 			selectOnFocus: true,
-			label: ""
-		}
-	}, [])
-
+			label: "",
+		};
+	}, []);
 
 	return {
 		name,
@@ -183,6 +204,6 @@ export const useOptionPickerComponent = (opts) => {
 		multiple,
 		value: rowData,
 		handleFocusNextCell,
-		...extraPropts
+		...extraPropts,
 	};
 };

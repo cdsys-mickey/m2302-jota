@@ -227,10 +227,15 @@ const TextComponentEx = memo(
 			}
 		}, [focus, style])
 
+		const _text = useMemo(() => {
+			return formatBlurredInput(rowData)
+		}, [formatBlurredInput, rowData])
+
 		return (
 			<input
 				// We use an uncontrolled component for better performance
-				defaultValue={formatBlurredInput(rowData)}
+				defaultValue={_text}
+				title={_text}
 				className={_className}
 				placeholder={_placeholder}
 				// Important to prevent any undesired "tabbing"

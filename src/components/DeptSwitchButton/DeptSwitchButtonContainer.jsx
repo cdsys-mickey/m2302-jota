@@ -9,6 +9,8 @@ import { useCallback, useEffect, useState } from "react";
 import DropDownButton from "../../shared-components/DropDownButton";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import useSharedOptions from "@/shared-components/option-picker/useSharedOptions";
+import Auth from "@/modules/Auth.mjs";
+import { lightBlue, pink } from "@mui/material/colors";
 
 const DeptSwitchButtonContainer = (props) => {
 	const { sharedKey, defaultOptions = [], ...rest } = props;
@@ -104,6 +106,12 @@ const DeptSwitchButtonContainer = (props) => {
 		}
 	}, [debouncedOpen, loadOptions, state.loading]);
 
+	const spawn = useMemo(() => sessionStorage.getItem(Auth.COOKIE_SPAWN) == 1, []);
+
+	const textColor = useMemo(() => {
+		return spawn ? "success" : "success";
+	}, [spawn])
+
 	return (
 		<DropDownButton
 			label="單位"
@@ -120,13 +128,18 @@ const DeptSwitchButtonContainer = (props) => {
 			onSelect={switchDept}
 			hoverToOpen
 			IconComponent={ExpandMoreIcon}
+			color="info"
+			size="large"
+			{...(spawn && {
+				color: pink[300]
+			})}
 			slotProps={{
 				typography: {
-					variant: "h6"
+					variant: "h6",
 				},
 				paper: {
 					elevation: 8
-				}
+				},
 			}}
 			{...state}
 			options={_options}

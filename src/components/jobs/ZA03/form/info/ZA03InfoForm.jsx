@@ -1,4 +1,4 @@
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import ZA03 from "@/modules/ZA03.mjs";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FlexBox from "@/shared-components/FlexBox";

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import Auth from "@/modules/md-auth";
+import Auth from "@/modules/Auth.mjs";
 import { OptionPicker } from "@/shared-components";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";

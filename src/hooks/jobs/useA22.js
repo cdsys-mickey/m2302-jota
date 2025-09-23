@@ -19,9 +19,7 @@ import { keyColumn } from "react-datasheet-grid";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 
-export const useA22 = ({
-	form
-}) => {
+export const useA22 = ({ form }) => {
 	const { operator, token } = useContext(AuthContext);
 	const config = useContext(ConfigContext);
 	const { httpGetAsync } = useWebApi();
@@ -81,8 +79,8 @@ export const useA22 = ({
 					})
 				),
 				title: "商品編號",
-				minWidth: 170,
-				maxWidth: 170,
+				minWidth: 122,
+				maxWidth: 140,
 				disabled: grid.readOnly,
 			},
 			{
@@ -134,9 +132,8 @@ export const useA22 = ({
 		data: grid.gridData,
 		columns,
 		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
-	})
-
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
+	});
 
 	const toggleEditorLock = useCallback(() => {
 		if (grid.readOnly) {
@@ -228,9 +225,7 @@ export const useA22 = ({
 					},
 				});
 				if (status.success) {
-					grid.handleGridDataLoaded(
-						A22.transformForReading(payload)
-					);
+					grid.handleGridDataLoaded(A22.transformForReading(payload));
 				} else {
 					switch (status.code) {
 						default:
@@ -262,20 +257,37 @@ export const useA22 = ({
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebA22Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebA22Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports();
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const collected = A22.transformForSubmitting(grid.gridData, payload);
-		const data = {
-			...collected,
-			DeptId: operator.CurDeptID,
-		};
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, grid.gridData, operator.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const collected = A22.transformForSubmitting(
+				grid.gridData,
+				payload
+			);
+			const data = {
+				...collected,
+				DeptId: operator.CurDeptID,
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			grid.gridData,
+			operator.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onGenReportSubmit = useCallback(
 		(payload) => {
@@ -286,7 +298,7 @@ export const useA22 = ({
 			};
 			console.log("data", data);
 
-			reports.open(reportUrl, data)
+			reports.open(reportUrl, data);
 		},
 		[grid.gridData, operator.CurDeptID, reportUrl, reports]
 	);
@@ -321,26 +333,37 @@ export const useA22 = ({
 		};
 	}, []);
 
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// prod
-		if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
-			console.log(
-				`prod[${rowIndex}] changed`,
-				processedRowData?.prod
-			);
-			processedRowData = await handleGridProdChange({
-				rowData: processedRowData,
-				formData
-			});
-		}
-		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+	const onUpdateRow = useCallback(
+		({
+				fromRowIndex,
+				formData,
+				newValue,
+				setValue,
+				gridMeta,
+				updateResult,
+			}) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// prod
+				if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+					console.log(
+						`prod[${rowIndex}] changed`,
+						processedRowData?.prod
+					);
+					processedRowData = await handleGridProdChange({
+						rowData: processedRowData,
+						formData,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	// comment on 25.01.22, prepared to remove
 	// const handleGridChange = useCallback(
@@ -396,7 +419,7 @@ export const useA22 = ({
 	}, []);
 
 	const handleSubmit = useMemo(() => {
-		return form.handleSubmit(onSubmit, onSubmitError)
+		return form.handleSubmit(onSubmit, onSubmitError);
 	}, [form, onSubmit, onSubmitError]);
 
 	const formMeta = useFormMeta(
@@ -409,10 +432,9 @@ export const useA22 = ({
 		catS
 		`,
 		{
-			lastField: handleSubmit
+			lastField: handleSubmit,
 		}
 	);
-
 
 	return {
 		load,
@@ -437,6 +459,6 @@ export const useA22 = ({
 		// handleGridChange,
 		formMeta,
 		onUpdateRow,
-		onDebugSubmit
+		onDebugSubmit,
 	};
 };

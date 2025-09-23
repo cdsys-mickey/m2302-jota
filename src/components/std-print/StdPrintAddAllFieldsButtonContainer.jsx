@@ -6,13 +6,14 @@ import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArro
 export const StdPrintAddAllFieldsButtonContainer = () => {
 	const stdPrint = useContext(StdPrintContext);
 	return (
-		<ResponsiveLoadingButton
+		<ButtonEx
+			responsive
 			variant="contained"
 			color="neutral"
 			startIcon={<KeyboardDoubleArrowRightIcon />}
 			onClick={stdPrint.handleAddAllFields}>
 			加入所有欄位
-		</ResponsiveLoadingButton>
+		</ButtonEx>
 	);
 };
 

@@ -41,7 +41,7 @@ export const useA01 = ({ mode }) => {
 	const config = useContext(ConfigContext);
 	const doCms = useMemo(() => {
 		return !!config?.CMS?.A01;
-	}, [config?.CMS?.A01])
+	}, [config?.CMS?.A01]);
 
 	const itemIdRef = useRef();
 	const moduleId = useMemo(() => {
@@ -63,7 +63,7 @@ export const useA01 = ({ mode }) => {
 	const sideDrawer = useSideDrawer();
 	const { clearParams } = useContext(AppFrameContext);
 	const asyncRef = useRef({
-		dirty: false
+		dirty: false,
 	});
 
 	const {
@@ -94,15 +94,15 @@ export const useA01 = ({ mode }) => {
 
 	const PROD = useMemo(() => {
 		return mode === A01.Mode.NEW_PROD ? "新商品" : "商品";
-	}, [mode])
+	}, [mode]);
 
 	const listLoader = useInfiniteLoader({
 		url: API_URL,
 		bearer: token,
 		initialFetchSize: 50,
 		parans: {
-			all: 1
-		}
+			all: 1,
+		},
 	});
 
 	if (!mode) {
@@ -195,7 +195,7 @@ export const useA01 = ({ mode }) => {
 		data: transGrid.gridData,
 		columns: transColumns,
 		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
 	});
 
 	const transTabDisabled = useMemo(() => {
@@ -293,7 +293,7 @@ export const useA01 = ({ mode }) => {
 		data: cmsGrid.gridData,
 		columns: cmsColumns,
 		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
 	});
 
 	const handleCmsGridChange = useCallback(
@@ -395,8 +395,8 @@ export const useA01 = ({ mode }) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 170,
-				maxWidth: 170,
+				minWidth: 122,
+				maxWidth: 140,
 				disabled: comboGridDisabled,
 			},
 			{
@@ -430,10 +430,8 @@ export const useA01 = ({ mode }) => {
 		data: comboGrid.gridData,
 		columns: comboColumns,
 		skipDisabled: true,
-		lastCell: DSGLastCellBehavior.CREATE_ROW
+		lastCell: DSGLastCellBehavior.CREATE_ROW,
 	});
-
-
 
 	const loadItem = useCallback(
 		async ({ id, refresh = false } = {}) => {
@@ -473,14 +471,25 @@ export const useA01 = ({ mode }) => {
 				if (err.status == 404) {
 					crud.failedReading({
 						...err,
-						message: `找不到${mode === A01.Mode.NEW_PROD ? "新" : ""}商品 ${id}`
+						message: `找不到${
+							mode === A01.Mode.NEW_PROD ? "新" : ""
+						}商品 ${id}`,
 					});
 				} else {
 					crud.failedReading(err);
 				}
 			}
 		},
-		[crud, httpGetAsync, API_URL, token, transGrid, comboGrid, cmsGrid, mode]
+		[
+			crud,
+			httpGetAsync,
+			API_URL,
+			token,
+			transGrid,
+			comboGrid,
+			cmsGrid,
+			mode,
+		]
 	);
 
 	const confirmReturn = useCallback(() => {
@@ -637,67 +646,78 @@ export const useA01 = ({ mode }) => {
 	// 	[crud, httpPutAsync, API_URL, token, mode, loadItem, listLoader]
 	// );
 
-	const handleSave = useCallback(async ({ data }) => {
-		try {
-			crud.creating ? crud.startCreating() : crud.startUpdating();
-			const httpMethod = crud.creating ? httpPostAsync : httpPutAsync;
-			const { status, error } = await httpMethod({
-				url: API_URL,
-				data: data,
-				bearer: token,
-			});
+	const handleSave = useCallback(
+		async ({ data }) => {
+			try {
+				crud.creating ? crud.startCreating() : crud.startUpdating();
+				const httpMethod = crud.creating ? httpPostAsync : httpPutAsync;
+				const { status, error } = await httpMethod({
+					url: API_URL,
+					data: data,
+					bearer: token,
+				});
 
-			if (status.success) {
-				toastEx.success(
-					`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${data?.ProdData
-					}」${crud.creating ? "新增" : "修改"}成功`
-				);
-				if (crud.creating) {
-					crud.finishedCreating();
-					crud.cancelReading();
-				} else {
-					crud.finishedUpdating();
-					loadItem({ id: data?.ProdID });
-				}
-
-				// 重新整理
-				listLoader.loadList({ refresh: true });
-			} else {
-				if (error.code) {
-					switch (error.code) {
-						case 410:
-							setSelectedTab(A01.Tabs.TRANS);
-							break;
-						case 420:
-							setSelectedTab(A01.Tabs.COMBO);
-							break;
-						case 430:
-							setSelectedTab(A01.Tabs.CMS);
-							break;
-						case 409:
-						case 422:
-						default:
-							setSelectedTab(A01.Tabs.INFO);
-							break;
+				if (status.success) {
+					toastEx.success(
+						`${mode === A01.Mode.NEW_PROD ? "新" : ""}商品「${
+							data?.ProdData
+						}」${crud.creating ? "新增" : "修改"}成功`
+					);
+					if (crud.creating) {
+						crud.finishedCreating();
+						crud.cancelReading();
+					} else {
+						crud.finishedUpdating();
+						loadItem({ id: data?.ProdID });
 					}
+
+					// 重新整理
+					listLoader.loadList({ refresh: true });
+				} else {
+					if (error.code) {
+						switch (error.code) {
+							case 410:
+								setSelectedTab(A01.Tabs.TRANS);
+								break;
+							case 420:
+								setSelectedTab(A01.Tabs.COMBO);
+								break;
+							case 430:
+								setSelectedTab(A01.Tabs.CMS);
+								break;
+							case 409:
+							case 422:
+							default:
+								setSelectedTab(A01.Tabs.INFO);
+								break;
+						}
+					}
+					throw error || new Error("發生未預期例外");
 				}
-				throw error || new Error("發生未預期例外");
+			} catch (err) {
+				if (crud.creating) {
+					crud.failedCreating(err);
+					console.error("handleCreate.failed", err);
+					toastEx.error("新增失敗", err);
+				} else {
+					crud.failedUpdating(err);
+					asyncRef.current.dirty = true;
+					console.error("handleUpdate.failed", err);
+					toastEx.error("修改失敗", err);
+				}
 			}
-		} catch (err) {
-			if (crud.creating) {
-				crud.failedCreating(err);
-				console.error("handleCreate.failed", err);
-				toastEx.error("新增失敗", err);
-			} else {
-				crud.failedUpdating(err);
-				asyncRef.current.dirty = true;
-				console.error("handleUpdate.failed", err);
-				toastEx.error("修改失敗", err);
-			}
-		}
-	}, [API_URL, crud, httpPostAsync, httpPutAsync, listLoader, loadItem, mode, token]);
-
-
+		},
+		[
+			API_URL,
+			crud,
+			httpPostAsync,
+			httpPutAsync,
+			listLoader,
+			loadItem,
+			mode,
+			token,
+		]
+	);
 
 	const onCounterSubmit = useCallback(
 		async (data) => {
@@ -755,14 +775,18 @@ export const useA01 = ({ mode }) => {
 			// 	console.error("UNKNOWN SUBMIT TYPE");
 			// }
 		},
-		[cmsGrid.gridData, comboGrid.gridData, doCms, handleSave, transGrid.gridData]
+		[
+			cmsGrid.gridData,
+			comboGrid.gridData,
+			doCms,
+			handleSave,
+			transGrid.gridData,
+		]
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A01.onSubmitError`, err);
-		toastEx.error(
-			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出"
-		);
+		toastEx.error("資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出");
 	}, []);
 
 	const resetGridData = useCallback(
@@ -809,7 +833,7 @@ export const useA01 = ({ mode }) => {
 						url: API_URL,
 						bearer: token,
 						params: {
-							id: crud.itemData?.ProdID
+							id: crud.itemData?.ProdID,
 						},
 					});
 					// crud.cancelAction();
@@ -831,7 +855,16 @@ export const useA01 = ({ mode }) => {
 				}
 			},
 		});
-	}, [API_URL, PROD, cancelAction, crud, dialogs, httpDeleteAsync, listLoader, token]);
+	}, [
+		API_URL,
+		PROD,
+		cancelAction,
+		crud,
+		dialogs,
+		httpDeleteAsync,
+		listLoader,
+		token,
+	]);
 
 	// PRINT
 	const printAction = useAction();
@@ -882,7 +915,15 @@ export const useA01 = ({ mode }) => {
 				toastEx.error("覆核失敗", err);
 			}
 		},
-		[API_URL, cancelAction, crud.itemData, httpPatchAsync, listLoader, reviewAction, token]
+		[
+			API_URL,
+			cancelAction,
+			crud.itemData,
+			httpPatchAsync,
+			listLoader,
+			reviewAction,
+			token,
+		]
 	);
 
 	const promptReview = useCallback(() => {
@@ -934,7 +975,6 @@ export const useA01 = ({ mode }) => {
 	}, []);
 
 	// TRANS GRID
-
 
 	const handleTransGridChange = useCallback(
 		(newValue, operations) => {
@@ -1038,8 +1078,6 @@ export const useA01 = ({ mode }) => {
 			["SProdData"]: prod?.ProdData || "",
 		};
 	}, []);
-
-
 
 	const handleComboGridChange = useCallback(
 		(newValue, operations) => {
@@ -1170,29 +1208,27 @@ export const useA01 = ({ mode }) => {
 					lvCatM: null,
 					lvCatS: null,
 					lvCounter: null,
-					lvCmsType: null
+					lvCmsType: null,
 				});
 			},
 		[]
 	);
 
-
-
-
-
 	const comboTabDisabled = useMemo(() => {
 		return crud.editing && mode === A01.Mode.STORE;
 	}, [crud.editing, mode]);
 
-	const handleInvDataFocused = useCallback(({ setValue, getValues }) => (e) => {
-		console.log("handleInvDataFocused", e);
-		if (!e.target.value) {
-			const prodData = getValues("ProdData");
-			setValue("InvData", prodData);
-		}
-	}, []);
-
-
+	const handleInvDataFocused = useCallback(
+		({ setValue, getValues }) =>
+			(e) => {
+				console.log("handleInvDataFocused", e);
+				if (!e.target.value) {
+					const prodData = getValues("ProdData");
+					setValue("InvData", prodData);
+				}
+			},
+		[]
+	);
 
 	useInit(() => {
 		crud.cancelAction();
@@ -1274,6 +1310,6 @@ export const useA01 = ({ mode }) => {
 		comboTabDisabled,
 		...sideDrawer,
 		handleInvDataFocused,
-		doCms
+		doCms,
 	};
 };
