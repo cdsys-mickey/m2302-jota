@@ -1,6 +1,6 @@
 import { TypoWebApiOptionPickerContainer } from "@/shared-components/typo/TypoWebApiOptionPickerContainer";
 import PropTypes from "prop-types";
-import { memo } from "react";
+import { forwardRef, memo } from "react";
 import { ControlledWebApiOptionPicker } from "../controlled/ControlledWebApiOptionPicker";
 import { ControlledOptionPicker } from "./ControlledOptionPicker";
 import TypoOptionPickerContainer from "./TypoOptionPickerContainer";
@@ -14,7 +14,7 @@ import { SelectEx } from "@/shared-components";
  * @param {*} props
  * @returns
  */
-const OptionPickerWrapper = memo((props) => {
+const OptionPickerWrapper = memo(forwardRef((props, ref) => {
 	const { typo = false, url, blurToLookup, select, ...rest } = props;
 	const dsg = useContext(DSGContext);
 	const inDSG = !!dsg;
@@ -29,17 +29,35 @@ const OptionPickerWrapper = memo((props) => {
 
 	if (typo) {
 		return url ? (
-			<TypoWebApiOptionPickerContainer url={url} blurToLookup={_blurToLookup} {...rest} />
+			<TypoWebApiOptionPickerContainer
+				ref={ref}
+				url={url}
+				blurToLookup={_blurToLookup}
+				{...rest}
+			/>
 		) : (
-			<TypoOptionPickerContainer blurToLookup={_blurToLookup} {...rest} />
+			<TypoOptionPickerContainer
+				ref={ref}
+				blurToLookup={_blurToLookup}
+				{...rest}
+			/>
 		);
 	}
 	return url ? (
-		<ControlledWebApiOptionPicker url={url} blurToLookup={_blurToLookup} {...rest} />
+		<ControlledWebApiOptionPicker
+			ref={ref}
+			url={url}
+			blurToLookup={_blurToLookup}
+			{...rest}
+		/>
 	) : (
-		<ControlledOptionPicker blurToLookup={_blurToLookup} {...rest} />
+		<ControlledOptionPicker
+			ref={ref}
+			blurToLookup={_blurToLookup}
+			{...rest}
+		/>
 	);
-});
+}));
 
 OptionPickerWrapper.displayName = "OptionPickerWrapper";
 OptionPickerWrapper.propTypes = {

@@ -72,7 +72,7 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const isMock = useMemo(() => {
 		return mockDelay > 0;
-	}, [mockDelay])
+	}, [mockDelay]);
 
 	const [pickerState, setPickerState] = useState({
 		loading: null,
@@ -81,12 +81,14 @@ export const useWebApiOptions = (opts = {}) => {
 	});
 
 	const [_options, setOptions] = useSharedOptions({
-		sharedKey, defaultOptions, onInit: () => {
-			setPickerState(prev => ({
+		sharedKey,
+		defaultOptions,
+		onInit: () => {
+			setPickerState((prev) => ({
 				...prev,
-				loading: false
-			}))
-		}
+				loading: false,
+			}));
+		},
 	});
 
 	const [_noOptionsText, setNoOptionsText] = useState(
@@ -95,11 +97,12 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const [popperOpen, setPopperOpen] = useState(open || false);
 
-
-
-	const handleChange = useCallback((newValue) => {
-		onChange(newValue);
-	}, [onChange]);
+	const handleChange = useCallback(
+		(newValue) => {
+			onChange(newValue);
+		},
+		[onChange]
+	);
 
 	const handleOpen = useCallback(
 		(e) => {
@@ -136,14 +139,14 @@ export const useWebApiOptions = (opts = {}) => {
 			// 若有讀取失敗, 則清除讀取狀態
 			setPickerState((prev) => {
 				if (prev.error) {
-					console.log("由於 prev.error, 將 loading 重設為 null")
+					console.log("由於 prev.error, 將 loading 重設為 null");
 				}
 				return {
 					...prev,
 					...(prev.error && {
 						loading: null,
 					}),
-				}
+				};
 			});
 		},
 		[disableClose, onClose]
@@ -154,9 +157,17 @@ export const useWebApiOptions = (opts = {}) => {
 			(url || isMock) &&
 			(disableLazy ||
 				(popperOpen && (!queryRequired || pickerState.query))) &&
-			(pickerState.loading == null)
+			pickerState.loading == null
 		);
-	}, [url, isMock, disableLazy, popperOpen, queryRequired, pickerState.query, pickerState.loading]);
+	}, [
+		url,
+		isMock,
+		disableLazy,
+		popperOpen,
+		queryRequired,
+		pickerState.query,
+		pickerState.loading,
+	]);
 
 	const fetchByInput = useCallback(
 		async (input) => {
@@ -211,11 +222,7 @@ export const useWebApiOptions = (opts = {}) => {
 			loading: false,
 		}));
 		setOptions(options);
-
 	}, [mockDelay, options, setOptions]);
-
-
-
 
 	const fetchOptions = useCallback(
 		async (query, { onError: _onError } = {}) => {
@@ -244,7 +251,9 @@ export const useWebApiOptions = (opts = {}) => {
 				});
 				if (status.success) {
 					const loadedOptions = getOptions(payload);
-					const __options = Types.isArray(loadedOptions) ? loadedOptions : [];
+					const __options = Types.isArray(loadedOptions)
+						? loadedOptions
+						: [];
 					// 只有成功才會將 loading 註記為 false
 					setPickerState((prev) => ({
 						...prev,
@@ -276,13 +285,27 @@ export const useWebApiOptions = (opts = {}) => {
 				}));
 			}
 		},
-		[name, onError, sendAsync, method, url, queryParam, querystring, params, headers, bearer, getOptions, setOptions, noOptionsText, fetchErrorText]
+		[
+			name,
+			onError,
+			sendAsync,
+			method,
+			url,
+			queryParam,
+			querystring,
+			params,
+			headers,
+			bearer,
+			getOptions,
+			setOptions,
+			noOptionsText,
+			fetchErrorText,
+		]
 	);
 
 	const loadOptions = useMemo(() => {
 		return isMock ? mockFetchOptions : fetchOptions;
 	}, [fetchOptions, isMock, mockFetchOptions]);
-
 
 	const clearOptions = useCallback(() => {
 		setPickerState((prev) => ({
@@ -340,11 +363,23 @@ export const useWebApiOptions = (opts = {}) => {
 				}, triggerDelay);
 			}
 		},
-		[clearOptions, disableOpenOnInput, filterByServer, loadOptions, popperOpen, triggerDelay, triggerServerFilter]
+		[
+			clearOptions,
+			disableOpenOnInput,
+			filterByServer,
+			loadOptions,
+			popperOpen,
+			triggerDelay,
+			triggerServerFilter,
+		]
 	);
 
 	const disabled = useMemo(() => {
-		return disableOnSingleOption && pickerState.options && pickerState.options?.length < 2;
+		return (
+			disableOnSingleOption &&
+			pickerState.options &&
+			pickerState.options?.length < 2
+		);
 	}, [disableOnSingleOption, pickerState.options]);
 
 	/**
@@ -355,9 +390,14 @@ export const useWebApiOptions = (opts = {}) => {
 			// if (debug) {
 			console.log(
 				`%cOptionPicker[${name}] VALUE CLEARED(clearValueOnChange ON) →`,
-				CommonCSS.CONSOLE_WARN,
+				CommonCSS.CONSOLE_WARN
 			);
-			console.log(`\t%c${url}${querystring ? "?" + querystring : ""}${params ? `params: ${JSON.stringify(params)}` : ""}`, CommonCSS.CONSOLE_INFO)
+			console.log(
+				`\t%c${url}${querystring ? "?" + querystring : ""}${
+					params ? `params: ${JSON.stringify(params)}` : ""
+				}`,
+				CommonCSS.CONSOLE_INFO
+			);
 			// }
 			onChange(multiple ? [] : null);
 			// resetLoading();
@@ -369,14 +409,19 @@ export const useWebApiOptions = (opts = {}) => {
 			// if (debug) {
 			console.log(
 				`%cOptionPicker[${name}] LOADING RESET(clearOptionsOnChange ON) → `,
-				CommonCSS.CONSOLE_WARN,
+				CommonCSS.CONSOLE_WARN
 			);
-			console.log(`\t%c${url}${querystring ? "?" + querystring : ""}${params ? `params: ${JSON.stringify(params)}` : ""}`, CommonCSS.CONSOLE_INFO);
+			console.log(
+				`\t%c${url}${querystring ? "?" + querystring : ""}${
+					params ? `params: ${JSON.stringify(params)}` : ""
+				}`,
+				CommonCSS.CONSOLE_INFO
+			);
 			// }
 			// onChange(multiple ? [] : null);
 			resetLoading();
 		}
-	}, [url, querystring, params])
+	}, [url, querystring, params]);
 
 	/** filterByServer 時, 關閉 popper 則重設 loading 狀態
 	 */

@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import WebApiOptionPicker from "@/shared-components/option-picker/WebApiOptionPicker";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { useCallback } from "react";
 import { useRef } from "react";
 import { memo } from "react";
@@ -20,18 +20,19 @@ const DEFAULT_PARAMS = {
  * @returns
  */
 export const ControlledWebApiOptionPicker = memo(
-	({
-		name,
-		control,
-		rules,
-		labelShrink = false,
-		defaultValue = null,
-		sx = [],
-		onChange: _onChange,
-		onChanged,
-		params = DEFAULT_PARAMS,
-		...rest
-	}) => {
+	forwardRef((props, ref) => {
+		const {
+			name,
+			control,
+			rules,
+			labelShrink = false,
+			defaultValue = null,
+			sx = [],
+			onChange: _onChange,
+			onChanged,
+			params = DEFAULT_PARAMS,
+			...rest
+		} = props;
 		const form = useFormContext();
 		const { setFocus } = form || {};
 		const formMeta = useContext(FormMetaContext);
@@ -77,16 +78,18 @@ export const ControlledWebApiOptionPicker = memo(
 				control={control}
 				rules={rules}
 				render={({
-					field: { value, onChange, ref },
+					// field: { value, onChange, ref: inputRef },
+					field,
 					fieldState: { isTouched, isDirty, error },
 				}) => {
-					prevValue.current = JSON.stringify(value);
+					prevValue.current = JSON.stringify(field.value);
 
 					return (
 						<WebApiOptionPicker
 							name={name}
+							ref={field.ref}
 							inputRef={ref}
-							value={value}
+							value={field.value}
 							sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 							getError={getError}
 							setError={form.setError}
@@ -111,9 +114,9 @@ export const ControlledWebApiOptionPicker = memo(
 								}
 
 								if (returnedValue !== undefined) {
-									onChange(returnedValue);
+									field.onChange(returnedValue);
 								} else {
-									onChange(newValue);
+									field.onChange(newValue);
 								}
 
 								const newValueJson = JSON.stringify(newValue);
@@ -140,7 +143,7 @@ export const ControlledWebApiOptionPicker = memo(
 			/>
 		);
 	}
-);
+	));
 ControlledWebApiOptionPicker.displayName = "ControlledWebApiOptionPicker";
 
 ControlledWebApiOptionPicker.propTypes = {
