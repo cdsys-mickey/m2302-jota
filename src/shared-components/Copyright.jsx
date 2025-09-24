@@ -1,18 +1,22 @@
 import ConfigContext from "@/contexts/config/ConfigContext";
-import { Link, Typography } from "@mui/material";
+import { IconButton, Link, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext } from "react";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-const Copyright = ({ version, loading, apiVersion, handleCopyVersion, connState }) => {
+const Copyright = ({ version, loading, apiVersion, handleCopyVersion, handleCopyApiVersion, connState }) => {
 	const config = useContext(ConfigContext);
 
 	return (
 		<>
 			<Typography variant="subtitle2" color="textSecondary" align="center">
-				copyright©cdsys APP:
+				copyright©cdsys, APP: {version}{config.PROFILE
+					? `[${config.PROFILE}]`
+					: "[no profile]"
+				}
 			</Typography>
 			{/* <Typography variant="subtitle2" color="textSecondary" align="center"> */}
-			<Link component="button" variant="subtitle2" onClick={handleCopyVersion} sx={{
+			{/* <Link component="button" variant="subtitle2" onClick={handleCopyVersion} sx={{
 				color: "text.secondary",
 				textDecoration: 'none', // 可選：移除底線
 				'&:hover': {
@@ -20,16 +24,34 @@ const Copyright = ({ version, loading, apiVersion, handleCopyVersion, connState 
 				},
 			}}>
 				{version || "(N/A)"}
-			</Link>
+			</Link> */}
+			<Tooltip title="複製">
+				<IconButton onClick={handleCopyVersion} disableFocusRipple disableRipple sx={{
+					padding: 0,
+					marginLeft: 0.5,
+					marginRight: 1
+				}}>
+					<ContentCopyIcon fontSize="small" sx={{
+						width: 14
+					}} />
+				</IconButton>
+			</Tooltip>
 			{/* </Typography> */}
 			<Typography variant="subtitle2" color="textSecondary" align="center">
-				{`${config.PROFILE
-					? `[${config.PROFILE}]`
-					: "[no profile]"
-					},
-			API:${apiVersion || (loading ? "(系統啟動中...)" : "(N/A)")}`}
+				{`API: ${apiVersion || (loading ? "(系統啟動中...)" : "(N/A)")}`}
 				[{connState}]
 			</Typography>
+			<Tooltip title="複製">
+				<IconButton onClick={handleCopyApiVersion} disableFocusRipple disableRipple sx={{
+					padding: 0,
+					marginLeft: 0.5,
+					marginRight: 1
+				}}>
+					<ContentCopyIcon fontSize="small" sx={{
+						width: 14
+					}} />
+				</IconButton>
+			</Tooltip>
 		</>
 	);
 };
@@ -39,6 +61,7 @@ Copyright.propTypes = {
 	loading: PropTypes.bool,
 	apiVersion: PropTypes.string,
 	handleCopyVersion: PropTypes.func,
+	handleCopyApiVersion: PropTypes.func,
 	connState: PropTypes.string
 };
 

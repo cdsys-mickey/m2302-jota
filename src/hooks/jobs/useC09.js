@@ -14,6 +14,8 @@ import { useToggle } from "../../shared-hooks/useToggle";
 import { useWebApi } from "../../shared-hooks/useWebApi";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { useSideDrawer } from "../useSideDrawer";
 
 export const useC09 = () => {
 	const crud = useContext(CrudContext);
@@ -25,6 +27,9 @@ export const useC09 = () => {
 		token,
 		moduleId: "C09",
 	});
+	// 側邊欄
+	const sideDrawer = useSideDrawer();
+	const { clearParams } = useContext(AppFrameContext);
 
 	const [
 		popperOpen,
@@ -33,12 +38,8 @@ export const useC09 = () => {
 		handlePopperClose,
 	] = useToggle(false);
 
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
+		useWebApi();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -66,7 +67,7 @@ export const useC09 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	const refreshAmt = useCallback(
@@ -89,8 +90,6 @@ export const useC09 = () => {
 		},
 		[]
 	);
-
-
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -130,6 +129,13 @@ export const useC09 = () => {
 		},
 		[crud, httpPostAsync, listLoader, token]
 	);
+	const cancelAction = useCallback(() => {
+		crud.cancelAction();
+		// purchaseOrderIdRef.current = null;
+		crud.setItemData(null);
+		// 清除 query params
+		clearParams();
+	}, [clearParams, crud]);
 
 	// READ
 	const loadItem = useCallback(
@@ -168,31 +174,31 @@ export const useC09 = () => {
 	const handleSelect = useCallback(
 		async (e, rowData) => {
 			e?.stopPropagation();
-			crud.cancelAction();
+			cancelAction();
 			// setSelectedItem(rowData);
 
 			loadItem({ id: rowData.撥入單號 });
 		},
-		[crud, loadItem]
+		[cancelAction, loadItem]
 	);
 
 	const confirmQuitCreating = useCallback(() => {
 		dialogs.confirm({
 			message: "確定要放棄新增?",
 			onConfirm: () => {
-				crud.cancelAction();
+				cancelAction();
 			},
 		});
-	}, [crud, dialogs]);
+	}, [cancelAction, dialogs]);
 
 	const confirmQuitUpdating = useCallback(() => {
 		dialogs.confirm({
 			message: "確定要放棄修改?",
 			onConfirm: () => {
-				crud.cancelAction();
+				cancelAction();
 			},
 		});
-	}, [crud, dialogs]);
+	}, [cancelAction, dialogs]);
 
 	const confirmReturnReading = useCallback(() => {
 		dialogs.confirm({
@@ -248,7 +254,7 @@ export const useC09 = () => {
 					});
 					if (status.success) {
 						// 關閉對話框
-						crud.cancelAction();
+						cancelAction();
 						toastEx.success(`成功删除撥入單 ${itemData?.TxiID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -261,7 +267,15 @@ export const useC09 = () => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
+	}, [
+		cancelAction,
+		crud,
+		dialogs,
+		httpDeleteAsync,
+		itemData,
+		listLoader,
+		token,
+	]);
 
 	const handleReset = useCallback(
 		({ reset }) =>
@@ -274,7 +288,6 @@ export const useC09 = () => {
 					tid: null,
 					employee: null,
 					txoDept: null,
-
 				});
 			},
 		[]
@@ -303,7 +316,7 @@ export const useC09 = () => {
 		async (prodId, { txoDeptId }) => {
 			if (!prodId) {
 				toastEx.error("請先選擇商品", {
-					position: "top-right"
+					position: "top-right",
 				});
 				return;
 			}
@@ -344,6 +357,44 @@ export const useC09 = () => {
 		return !!rowData.SoFlag_N;
 	}, []);
 
+	const createWithTxoOrder = useCallback(
+		async ({ id }) => {
+			try {
+				crud.promptCreating();
+				crud.startReading("讀取中...");
+				const { status, payload, error } = await httpGetAsync({
+					url: "v1/purchase/trans-in-orders/create-with-txo",
+					bearer: token,
+					params: {
+						txoId: id,
+					},
+				});
+				console.log("create-with-txo response:", payload);
+				if (status.success) {
+					const data = C09.transformForReading(payload.data[0]);
+					console.log("refreshed data", data);
+					crud.finishedReading({
+						data: {
+							...data,
+							txiDate: new Date(),
+						},
+					});
+					grid.initGridData(data.prods, {
+						fillRows: true,
+						supressEvents: true,
+					});
+					toastEx.info(`已帶入撥出單 ${id}`);
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				toastEx.error("載入撥出單商品失敗", err);
+				crud.failedReading(err);
+			}
+		},
+		[crud, grid, httpGetAsync, token]
+	);
+
 	/**
 	 * 撥出單號改變
 	 * → 指定撥出門市
@@ -365,9 +416,9 @@ export const useC09 = () => {
 						"txoDept",
 						newValue?.撥出門市
 							? {
-								DeptID: newValue.撥出門市,
-								AbbrName: newValue.撥出門市名稱,
-							}
+									DeptID: newValue.撥出門市,
+									AbbrName: newValue.撥出門市名稱,
+							  }
 							: null
 					);
 				}
@@ -389,7 +440,10 @@ export const useC09 = () => {
 					if (status.success) {
 						const data = C09.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
-						grid.setGridData(data.prods, { fillRows: true, supressEvents: true });
+						grid.setGridData(data.prods, {
+							fillRows: true,
+							supressEvents: true,
+						});
 						setValue("depOrders", data.depOrders);
 						setValue("TxoChk", data.TxoChk);
 						setValue("remark", data.remark);
@@ -414,7 +468,7 @@ export const useC09 = () => {
 			async (newValue) => {
 				console.log("handleTxoDeptChanged", newValue);
 				setValue("txoOrder", null, {
-					shouldTouch: true
+					shouldTouch: true,
 				});
 
 				grid.setGridData([], { fillRows: true });
@@ -426,7 +480,6 @@ export const useC09 = () => {
 		[grid]
 	);
 
-
 	const handleGridSQtyChange = useCallback(({ rowData }) => {
 		let newRowData = {
 			...rowData,
@@ -434,8 +487,8 @@ export const useC09 = () => {
 				!rowData.SPrice || !rowData.SQty
 					? ""
 					: rowData.stype?.id
-						? 0
-						: rowData.SPrice * rowData.SQty,
+					? 0
+					: rowData.SPrice * rowData.SQty,
 		};
 		return newRowData;
 	}, []);
@@ -443,9 +496,11 @@ export const useC09 = () => {
 	const handleGridProdChange = useCallback(
 		async ({ rowData, txiDeptId }) => {
 			const { prod } = rowData;
-			const prodInfo = prod?.ProdID ? await getProdInfo(prod?.ProdID, {
-				txiDeptId,
-			}) : null;
+			const prodInfo = prod?.ProdID
+				? await getProdInfo(prod?.ProdID, {
+						txiDeptId,
+				  })
+				: null;
 
 			// 取得報價
 			let quoted = !!prodInfo?.Price;
@@ -462,7 +517,6 @@ export const useC09 = () => {
 				["dtype"]: null,
 				["SoFlag_N"]: quoted ? prodInfo?.SoFlag_N || "" : "",
 				["StockQty_N"]: quoted ? prodInfo?.Stock || "" : "",
-
 			};
 
 			if (prod && !quoted) {
@@ -473,36 +527,36 @@ export const useC09 = () => {
 		[getProdInfo]
 	);
 
-	const updateGridRow = useCallback(({ fromRowIndex, formData }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// 商品
-		if (
-			rowData.prod?.ProdID !==
-			oldRowData.prod?.ProdID
-		) {
-			processedRowData =
-				await handleGridProdChange({
-					rowData,
-					txoDeptId: formData.txoDept?.DeptID,
-				});
-		}
+	const updateGridRow = useCallback(
+		({ fromRowIndex, formData }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// 商品
+				if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID) {
+					processedRowData = await handleGridProdChange({
+						rowData,
+						txoDeptId: formData.txoDept?.DeptID,
+					});
+				}
 
-		// 單價, 贈,  數量
-		if (
-			rowData.SQty !== oldRowData.SQty ||
-			rowData.stype?.id !== oldRowData.stype?.id
-		) {
-			processedRowData = handleGridSQtyChange({
-				rowData: processedRowData,
-			});
-		}
-		return processedRowData;
-	}, [grid.gridData, handleGridProdChange, handleGridSQtyChange]);
+				// 單價, 贈,  數量
+				if (
+					rowData.SQty !== oldRowData.SQty ||
+					rowData.stype?.id !== oldRowData.stype?.id
+				) {
+					processedRowData = handleGridSQtyChange({
+						rowData: processedRowData,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange, handleGridSQtyChange]
+	);
 
 	const buildGridChangeHandler = useCallback(
 		({ getValues, setValue, gridMeta }) =>
@@ -526,21 +580,24 @@ export const useC09 = () => {
 											formData,
 											newValue,
 											setValue,
-											fromRowIndex: operation.fromRowIndex,
-											gridMeta
+											fromRowIndex:
+												operation.fromRowIndex,
+											gridMeta,
 										})(item, index);
 										return updatedRow;
 									})
-							)
+							);
 							console.log("updatedRows", updatedRows);
 
 							newGridData.splice(
 								operation.fromRowIndex,
 								updatedRows.length,
 								...updatedRows
-							)
+							);
 						} else {
-							console.log("grid.asyncRef.supressEvents is TRUE, grid changes not triggered");
+							console.log(
+								"grid.asyncRef.supressEvents is TRUE, grid changes not triggered"
+							);
 						}
 						// newValue
 						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
@@ -595,10 +652,7 @@ export const useC09 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = C09.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = C09.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			if (crud.creating) {
 				handleCreate({ data: collected });
@@ -619,14 +673,12 @@ export const useC09 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error("onEditorSubmitError", err);
-		toastEx.error(
-			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出"
-		);
+		toastEx.error("資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出");
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebC09Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebC09Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -657,10 +709,14 @@ export const useC09 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
@@ -686,7 +742,7 @@ export const useC09 = () => {
 							);
 							console.log("refreshed data", data);
 							grid.initGridData(data.prods, {
-								fillRows: true
+								fillRows: true,
 							});
 							refreshAmt({ setValue, data });
 							toastEx.info("商品單價已更新");
@@ -741,8 +797,11 @@ export const useC09 = () => {
 
 	return {
 		...crud,
+		//override CRUD.cancelAction
+		cancelAction,
 		...listLoader,
 		...appModule,
+		...sideDrawer,
 		// selectedInq,
 		loadItem,
 		handleSelect,
@@ -782,6 +841,7 @@ export const useC09 = () => {
 		sqtyDisabled,
 		stypeDisabled,
 		dtypeDisabled,
-		handlePrint
+		handlePrint,
+		createWithTxoOrder,
 	};
 };

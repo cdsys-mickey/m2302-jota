@@ -74,14 +74,15 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 			control={control}
 			rules={rules}
 			render={({
-				field: { ref, value, onChange },
+				field,
 				fieldState: { isTouched, isDirty, error },
 			}) => {
 				return (
 					<OptionPickerView
 						name={name}
-						inputRef={ref}
-						value={value}
+						ref={ref}
+						inputRef={field.ref}
+						value={field.value}
 						sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 						getError={getError}
 						setError={form.setError}
@@ -96,7 +97,7 @@ export const ControlledOptionPicker = forwardRef((props, ref) => {
 								await _onChange(newValue);
 							}
 
-							onChange(newValue);
+							field.onChange(newValue);
 						}}
 						error={!!error}
 						helperText={error?.message}

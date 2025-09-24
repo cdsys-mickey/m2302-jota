@@ -23,6 +23,7 @@ export const ControlledWebApiOptionPicker = memo(
 	forwardRef((props, ref) => {
 		const {
 			name,
+			// multiple,
 			control,
 			rules,
 			labelShrink = false,
@@ -87,8 +88,9 @@ export const ControlledWebApiOptionPicker = memo(
 					return (
 						<WebApiOptionPicker
 							name={name}
-							ref={field.ref}
-							inputRef={ref}
+							ref={ref}
+							inputRef={field.ref}
+							// multiple={multiple}
 							value={field.value}
 							sx={[{}, ...(Array.isArray(sx) ? sx : [sx])]}
 							getError={getError}
@@ -161,5 +163,5 @@ ControlledWebApiOptionPicker.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	onChange: PropTypes.func,
 	onChanged: PropTypes.func,
-	params: PropTypes.object
+	params: PropTypes.object,
 };

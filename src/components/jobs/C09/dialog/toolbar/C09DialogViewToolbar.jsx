@@ -4,10 +4,12 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import C09ExportButtonContainer from "./C09ExportButtonContainer";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { IconButton, Tooltip } from "@mui/material";
 
 const C09DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, checkEditableWorking, onDelete, onPrint, ...rest } =
+		const { onEdit, checkEditableWorking, onDelete, onPrint, onSideDrawerOpen, ...rest } =
 			props;
 		return (
 			<Fragment ref={ref} {...rest}>
@@ -39,6 +41,11 @@ const C09DialogViewToolbar = memo(
 						編輯
 					</ButtonEx>
 				)}
+				<Tooltip title="詳細資訊">
+					<IconButton onClick={onSideDrawerOpen} size="small">
+						<HelpOutlineIcon />
+					</IconButton>
+				</Tooltip>
 			</Fragment>
 		);
 	})
@@ -49,6 +56,7 @@ C09DialogViewToolbar.propTypes = {
 	onDelete: PropTypes.func,
 	onPrint: PropTypes.func,
 	checkEditableWorking: PropTypes.bool,
+	onSideDrawerOpen: PropTypes.func,
 };
 
 export default C09DialogViewToolbar;

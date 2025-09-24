@@ -3,13 +3,13 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { useContext, useMemo } from "react";
+import { forwardRef, useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import { TxoOrderGridHeader } from "./TxoOrderGridHeader";
 import { TxoOrderGridRow } from "./TxoOrderGridRow";
 import TxoOrders from "../../modules/md-txo-orders";
 
-export const TxoOrderPicker = (props) => {
+export const TxoOrderPicker = forwardRef((props, ref) => {
 	const { label = "撥出單", ...rest } = props;
 	const { token, operator } = useContext(AuthContext);
 
@@ -23,6 +23,7 @@ export const TxoOrderPicker = (props) => {
 
 	return (
 		<OptionPicker
+			ref={ref}
 			label={label}
 			bearer={token}
 			url={`v1/purchase/trans-in-orders/txo-orders`}
@@ -40,7 +41,7 @@ export const TxoOrderPicker = (props) => {
 			{...rest}
 		/>
 	);
-};
+});
 
 TxoOrderPicker.propTypes = {
 	label: PropTypes.string,

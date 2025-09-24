@@ -14,13 +14,17 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { forwardRef, useCallback, useContext, useEffect, useMemo } from "react";
+import { forwardRef, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import C09DialogForm from "./C09DialogForm";
 import { C09DialogToolbarContainer } from "./toolbar/C09DialogToolbarContainer";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useSearchParams } from "react-router-dom";
+import { useQuerySync } from "@/shared-hooks/useQuerySync";
+import C09Drawer from "../C09Drawer";
+import MuiStyles from "@/shared-modules/MuiStyles";
 
 export const C09DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -36,6 +40,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 	const { reset } = form;
 
 	const c09 = useContext(C09Context);
+	const { createWithTxoOrder, promptCreating } = c09;
 
 	const scrollable = useScrollable({
 		height: _height,
@@ -234,10 +239,10 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 	const formMeta = useFormMeta(
 		`
 		txiDate,
-		employee,
 		txoOrder,
 		depOrders,
-		txoDept
+		txoDept,
+		employee,
 		`,
 		{
 			lastField: handleLastField
@@ -265,13 +270,37 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 		[]
 	);
 
+	const txoOrderPickerRef = useRef(null);
+
+	const [searchParams] = useSearchParams();
+	const txoId = searchParams.get('target');
+
 	useChangeTracking(() => {
 		if (c09.itemDataReady) {
 			console.log("c09 form reset", c09.itemData);
 			reset(c09.itemData);
+			if (txoId == "")
+				setTimeout(() => {
+					txoOrderPickerRef.current?.openPopper();
+					toastEx.info("請選擇要轉入的調撥單")
+				}, 500);
 		}
 	}, [c09.itemData, c09.itemDataReady]);
 
+	const handleQueryChange = useCallback(
+		(newValue) => {
+			if (newValue != null) {
+				if (newValue) {
+					createWithTxoOrder({ id: newValue });
+				} else {
+					promptCreating();
+				}
+			}
+		},
+		[createWithTxoOrder, promptCreating]
+	);
+
+	useQuerySync("target", handleQueryChange);
 
 	return (
 		<FormProvider {...form}>
@@ -303,6 +332,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 				{...rest}>
 				<FormMetaProvider {...formMeta} isFieldDisabled={isFieldDisabled} gridMeta={gridMeta} readOnly={readOnly}>
 					<C09DialogForm
+						txoOrderPickerRef={txoOrderPickerRef}
 						onSubmit={handleSubmit}
 						creating={c09.creating}
 						editing={c09.editing}
@@ -323,6 +353,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 						remarkDisabled={remarkDisabled}
 					/>
 				</FormMetaProvider>
+				<C09Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
 			</DialogEx>
 		</FormProvider>
 	);

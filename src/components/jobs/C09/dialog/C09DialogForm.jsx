@@ -16,6 +16,7 @@ import { C09ProdGridContainer } from "./prod-grid/C09ProdGridContainer";
 
 const C09DialogForm = memo((props) => {
 	const {
+		txoOrderPickerRef,
 		onSubmit,
 		readError,
 		readWorking,
@@ -66,24 +67,12 @@ const C09DialogForm = memo((props) => {
 								variant="outlined"
 							/>
 						</Grid>
-						<Grid item xs={24} sm={24} md={5}>
-							<EmployeePicker
-								typo
-								label="驗收人員"
-								name="employee"
-								required
-								rules={{
-									required: "驗收人員為必填",
-								}}
-								virtualize
-								// disableClearable
-								disableOpenOnInput
-							/>
-						</Grid>
+
 
 						<FlexBox fullWidth />
 						<Grid item xs={24} sm={24} md={5.5}>
 							<TxoOrderPicker
+								ref={txoOrderPickerRef}
 								typo
 								name="txoOrder"
 								label="撥出單號"
@@ -127,6 +116,20 @@ const C09DialogForm = memo((props) => {
 							// disabled={txoDeptDisabled}
 							/>
 						</Grid>
+						<Grid item xs={24} sm={24} md={5}>
+							<EmployeePicker
+								typo
+								label="驗收人員"
+								name="employee"
+								required
+								rules={{
+									required: "驗收人員為必填",
+								}}
+								virtualize
+								// disableClearable
+								disableOpenOnInput
+							/>
+						</Grid>
 					</Grid>
 					<Box py={1}>
 						<C09ProdGridContainer />
@@ -166,6 +169,7 @@ C09DialogForm.propTypes = {
 	handleTxoDeptChanged: PropTypes.func,
 	remarkDisabled: PropTypes.bool,
 	slotProps: PropTypes.object,
+	txoOrderPickerRef: PropTypes.ref
 };
 
 C09DialogForm.displayName = "C09DialogForm";

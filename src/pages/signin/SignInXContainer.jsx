@@ -1,25 +1,27 @@
 import { SignInContext } from "@/contexts/signin/SignInContext";
-import { FormMetaProvider } from "@/shared-components";
 import { useContext } from "react";
-import SignInX from "./SignInX";
+import SignInXView from "./SignInXView";
 
 export const SignInXContainer = (props) => {
 	const { ...rest } = props;
 	// const form = useFormContext();
 	const signin = useContext(SignInContext);
 	return (
-		<FormMetaProvider {...signin.formMeta}>
-			<form
-				noValidate
-				autoComplete="off"
-				// onSubmit={form.handleSubmit(
-				// 	signin.signInXSubmitHandler({ setFocus: form.setFocus }),
-				// 	signin.onSignInXSubmitError
-				// )}
-				onSubmit={signin.handleSubmitX}
-			>
-				<SignInX loading={signin.loading} {...rest} />
-			</form>
-		</FormMetaProvider>
+		<form
+			noValidate
+			autoComplete="off"
+			// onSubmit={form.handleSubmit(
+			// 	signin.signInSubmitHandler({ setFocus: form.setFocus, hideCaptcha: signin.hideCaptcha }),
+			// 	signin.onSignInSubmitError
+			// )}
+			onSubmit={signin.handleSubmitX}
+		>
+			<SignInXView
+				loading={signin.loading}
+				hideCaptcha={signin.hideCaptcha}
+				{...rest}
+			/>
+		</form>
+
 	);
 };

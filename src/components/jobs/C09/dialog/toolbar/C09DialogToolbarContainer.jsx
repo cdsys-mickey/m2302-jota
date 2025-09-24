@@ -37,6 +37,7 @@ export const C09DialogToolbarContainer = (props) => {
 						? c09.confirmReturnReading
 						: c09.confirmQuitCreating
 				}
+
 				{...rest}
 			/>
 		);
@@ -49,6 +50,7 @@ export const C09DialogToolbarContainer = (props) => {
 			onDelete={canDelete ? c09.confirmDelete : null}
 			onPrint={c09.canPrint ? handlePrint : null}
 			checkEditableWorking={c09.checkEditableWorking}
+			onSideDrawerOpen={c09.handleSideDrawerOpen}
 			{...rest}
 		/>
 	);

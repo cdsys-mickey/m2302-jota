@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 import { useWebApiOptions } from "@/shared-components/option-picker/useWebApiOptions";
-import { forwardRef, memo } from "react";
+import { forwardRef, memo, useImperativeHandle } from "react";
 import OptionPickerView from "./OptionPickerView";
 
 const WebApiOptionPicker = memo(
@@ -68,6 +68,8 @@ const WebApiOptionPicker = memo(
 			disabled,
 			findByInput: _findByInput,
 			// pressToFind: _pressToFind,
+			openPopper,
+			closePopper,
 		} = useWebApiOptions({
 			name,
 			disableOnSingleOption,
@@ -109,6 +111,12 @@ const WebApiOptionPicker = memo(
 			mockDelay,
 			sharedKey
 		});
+
+
+		useImperativeHandle(ref, () => ({
+			openPopper,
+			closePopper,
+		}));
 
 		return (
 			<OptionPickerView

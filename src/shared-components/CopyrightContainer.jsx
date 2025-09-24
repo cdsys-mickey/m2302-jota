@@ -16,8 +16,13 @@ export const CopyrightContainer = (props) => {
 
 	const handleCopyVersion = useCallback(async () => {
 		await navigator.clipboard.writeText(version);
-		toastEx.info("版號已複製到剪貼簿")
+		toastEx.info("APP 版號已複製到剪貼簿")
 	}, [version]);
+
+	const handleCopyApiVersion = useCallback(async () => {
+		await navigator.clipboard.writeText(apiVersion);
+		toastEx.info("API 版號已複製到剪貼簿")
+	}, [apiVersion]);
 
 	const connState = useMemo(() => {
 		switch (connectionState) {
@@ -41,6 +46,7 @@ export const CopyrightContainer = (props) => {
 			version={version}
 			apiVersion={apiVersion}
 			handleCopyVersion={handleCopyVersion}
+			handleCopyApiVersion={handleCopyApiVersion}
 			connState={connState}
 			{...rest}
 		/>

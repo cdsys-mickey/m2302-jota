@@ -1,22 +1,23 @@
 import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
+import { ButtonEx, TextFieldEx } from "@/shared-components";
 import FlexBox from "@/shared-components/FlexBox";
 import LoginIcon from "@mui/icons-material/Login";
-import { LoadingButton } from "@mui/lab";
 import { Box, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo } from "react";
+import { forwardRef, memo } from "react";
 import { CaptchaFieldContainer } from "../../components/auth/CaptchaFieldContainer";
 import { ControlledTextField } from "../../shared-components/TextFieldEx/ControlledTextField";
-import { ButtonEx, TextFieldEx } from "@/shared-components";
 
-const SignInX = memo((props) => {
+const SignInXView = memo(forwardRef((props, ref) => {
 	const { loading, ...rest } = props;
 	return (
 		<Paper
+			ref={ref}
 			elevation={4}
 			sx={{
 				backgroundColor: "rgba(255,255,255,0.8)",
-			}}>
+			}}
+			{...rest}>
 			<Box pt={3} pb={1} px={2}>
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
@@ -101,10 +102,10 @@ const SignInX = memo((props) => {
 			</Box>
 		</Paper>
 	);
-});
+}));
 
-SignInX.displayName = "SignInX";
-SignInX.propTypes = {
+SignInXView.displayName = "SignInXView";
+SignInXView.propTypes = {
 	loading: PropTypes.bool,
 };
-export default SignInX;
+export default SignInXView;

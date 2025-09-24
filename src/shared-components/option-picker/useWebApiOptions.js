@@ -97,6 +97,14 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const [popperOpen, setPopperOpen] = useState(open || false);
 
+	const openPopper = useCallback(() => {
+		setPopperOpen(true);
+	}, []);
+
+	const closePopper = useCallback(() => {
+		setPopperOpen(false);
+	}, []);
+
 	const handleChange = useCallback(
 		(newValue) => {
 			onChange(newValue);
@@ -479,6 +487,8 @@ export const useWebApiOptions = (opts = {}) => {
 		open: popperOpen,
 		onOpen: handleOpen,
 		onClose: handleClose,
+		openPopper,
+		closePopper,
 		...rest,
 	};
 };

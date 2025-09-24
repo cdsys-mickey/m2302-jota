@@ -263,7 +263,11 @@ export const useP42 = () => {
 		async ({ data, creating }) => {
 			const action = creating ? "新增" : "修改";
 			try {
-				creating ? crud.startCreating() : crud.startUpdating();
+				if (creating) {
+					crud.startCreating();
+				} else {
+					crud.startUpdating();
+				}
 				const httpMethod = creating ? httpPostAsync : httpPutAsync;
 				const { status, error, payload } = await httpMethod({
 					url: "v1/cms/entries",

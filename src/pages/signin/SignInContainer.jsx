@@ -1,7 +1,6 @@
 import { SignInContext } from "@/contexts/signin/SignInContext";
 import { useContext } from "react";
-import { useFormContext } from "react-hook-form";
-import SignIn from "./SignInView";
+import SignInView from "./SignInView";
 
 export const SignInContainer = (props) => {
 	const { ...rest } = props;
@@ -19,7 +18,7 @@ export const SignInContainer = (props) => {
 			// )}
 			onSubmit={signin.handleSubmit}
 		>
-			<SignIn
+			<SignInView
 				loading={signin.loading}
 				hideCaptcha={signin.hideCaptcha}
 				{...rest}

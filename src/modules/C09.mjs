@@ -82,21 +82,25 @@ const transformForReading = (payload) => {
 			  }
 			: null,
 		txiDate: Forms.parseDate(TxiDate),
-		employee: {
-			CodeID: EmplID,
-			CodeData: EmplData_N,
-		},
-		txoDept: {
-			DeptID: ODeptID,
-			AbbrName: ODeptName_N,
-		},
+		employee: EmplID
+			? {
+					CodeID: EmplID,
+					CodeData: EmplData_N,
+			  }
+			: null,
+		txoDept: ODeptID
+			? {
+					DeptID: ODeptID,
+					AbbrName: ODeptName_N,
+			  }
+			: null,
 		depOrders:
 			OrdIDs?.split(/[|,]/)
 				.filter((s) => !!s)
 				.map((x) => ({
 					["訂貨單號"]: x,
 				})) || [],
-		prods: transformGridForReading(InvTxi_S),
+		prods: transformGridForReading(InvTxi_S) ?? [],
 		remark: Remark.join("\n"),
 		...rest,
 	};

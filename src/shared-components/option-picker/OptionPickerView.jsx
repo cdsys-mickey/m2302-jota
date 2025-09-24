@@ -201,9 +201,13 @@ const OptionPickerView = memo(
 		const innerInputRef = useRef();
 		useImperativeHandle(inputRef, () => innerInputRef.current);
 
+		const emptyValue = useMemo(() => {
+			return multiple ? [] : null;
+		}, [multiple])
+
 		const handleClear = useCallback(() => {
-			onChange(multiple ? [] : null)
-		}, [multiple, onChange]);
+			onChange(emptyValue)
+		}, [emptyValue, onChange]);
 
 		const handleTextChange = useCallback(
 			(event, newValue, reason) => {
@@ -924,6 +928,10 @@ const OptionPickerView = memo(
 			}
 		}, [value]);
 
+		const _value = useMemo(() => {
+			return value ?? emptyValue;
+		}, [emptyValue, value])
+
 
 		return (
 			<OptionPickerContext.Provider value={{
@@ -969,7 +977,7 @@ const OptionPickerView = memo(
 						renderTags={renderTags}
 						loading={loading}
 						loadingText={loadingText}
-						value={value}
+						value={_value}
 						options={options}
 						getOptionLabel={getOptionLabel}
 						renderOption={handleRenderOption}

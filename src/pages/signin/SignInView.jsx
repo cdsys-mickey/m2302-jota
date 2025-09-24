@@ -1,15 +1,13 @@
 import FlexBox from "@/shared-components/FlexBox";
 
 // import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
-import LoginIcon from "@mui/icons-material/Login";
-import { LoadingButton } from "@mui/lab";
-import { Box, Collapse, Divider, Grid, Paper } from "@mui/material";
-import { forwardRef, memo } from "react";
 import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
-import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
-import PropTypes from "prop-types";
-import { useMemo } from "react";
 import { ButtonEx, CheckboxEx } from "@/shared-components";
+import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
+import LoginIcon from "@mui/icons-material/Login";
+import { Box, Collapse, Divider, Grid, Paper } from "@mui/material";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useMemo } from "react";
 
 const SignInView = memo(
 	forwardRef((props, ref) => {
@@ -21,10 +19,12 @@ const SignInView = memo(
 
 		return (
 			<Paper
+				ref={ref}
 				elevation={4}
 				sx={{
 					backgroundColor: "rgba(255,255,255,0.8)",
-				}}>
+				}}
+				{...rest}>
 				<Box pt={3} pb={1} px={2}>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>

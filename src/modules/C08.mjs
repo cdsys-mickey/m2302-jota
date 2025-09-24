@@ -186,10 +186,23 @@ const transformForSubmitting = (payload, gridData) => {
 		// DROPPING PROPS
 		stock,
 		prods,
+		prod,
+		stype,
+		dtype,
+		taxExcluded,
+		supplier,
 		...rest
 	} = payload;
 
-	console.log("DROP props", { stock, prods });
+	console.log("DROP props", {
+		stock,
+		prods,
+		prod,
+		stype,
+		dtype,
+		taxExcluded,
+		supplier,
+	});
 
 	return {
 		TxoID,

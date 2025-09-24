@@ -48,7 +48,7 @@ export const useHome = () => {
 
 	const handleReviewItemClick = useCallback(
 		(item) => {
-			selectJobById(item.module);
+			selectJobById(item.module, item.params);
 		},
 		[selectJobById]
 	);
