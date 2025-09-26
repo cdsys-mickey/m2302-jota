@@ -18,6 +18,7 @@ import useAction from "@/shared-modules/ActionState/useAction";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import useJotaReports from "@/hooks/useJotaReports";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import CmsGroupTypeContext from "@/components/CmsGroupTypePicker/CmsGroupTypeContext";
 
 const BOOKING_ORDER_FIELDS = [
 	"GrpName",
@@ -118,6 +119,8 @@ export const useP42 = () => {
 		},
 	});
 
+	const { groupTypeAlias } = useContext(CmsGroupTypeContext);
+
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
 			const _id = refresh ? itemIdRef.current : id;
@@ -143,7 +146,10 @@ export const useP42 = () => {
 				console.log("payload", payload);
 				if (status.success) {
 					tsRef.current = payload.CheckData.TimeVal;
-					const data = P42.transformForReading(payload.data[0]);
+					const data = P42.transformForReading(
+						payload.data[0],
+						groupTypeAlias
+					);
 					rangeGrid.initGridData(data.ranges, { fillRows: 8 });
 					cmsGrid.initGridData(data.commissions, { fillRows: 8 });
 					crud.finishedReading({
@@ -157,7 +163,7 @@ export const useP42 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[cmsGrid, crud, httpGetAsync, rangeGrid, token]
+		[cmsGrid, crud, groupTypeAlias, httpGetAsync, rangeGrid, token]
 	);
 
 	const createWithBookingOrder = useCallback(

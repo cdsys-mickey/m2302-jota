@@ -86,7 +86,9 @@ export const useUnreadMessages = () => {
 				const deptName = payload?.AbbrName ?? payload?.deptName;
 
 				if (auth.operator?.CurDeptID !== deptId) {
-					toastEx.error(`此作業屬於 ${deptName}，請切換門市後再進行操作`);
+					toastEx.error(
+						`此作業屬於[${deptName}]，請切換門市後再進行操作`
+					);
 					return;
 				}
 
@@ -151,13 +153,13 @@ export const useUnreadMessages = () => {
 				}
 				break;
 		}
-	}, [connectionState, auth.token])
+	}, [connectionState, auth.token]);
 
 	return {
 		...popover,
 		...unreadMessageListLoader,
 		...unreadState,
 		loadUnreadCount,
-		handleGotoJob
+		handleGotoJob,
 	};
 };

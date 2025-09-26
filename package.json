@@ -9,7 +9,7 @@
     "build-ap01": "env-cmd -f ./.env.ap01 vite build",
     "build-ap01-t": "env-cmd -f ./.env.ap01-t vite build",
     "build-prod": "env-cmd -f ./.env.prod vite build",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint src --cache --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest"
   },

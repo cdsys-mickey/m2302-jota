@@ -1,24 +1,19 @@
-import useCmsGroupTypeAlias from "@/hooks/useCmsGroupTypeAlias";
 import { OptionPicker } from "@/shared-components";
-import { useInit } from "@/shared-hooks/useInit";
 import PropTypes from "prop-types";
-import { forwardRef, memo } from "react";
+import { forwardRef, memo, useContext } from "react";
+import CmsGroupTypeContext from "./CmsGroupTypeContext";
 import CmsGroupTypes from "./CmsGroupTypes.mjs";
 
 const CmsGroupTypePicker = memo(
 	forwardRef((props, ref) => {
 		const { label = "團體種類", ...rest } = props;
-		const [groupTypeAlias, loadGroupAliasMap] = useCmsGroupTypeAlias();
-
-		useInit(() => {
-			loadGroupAliasMap();
-		}, [])
+		const cmsGroupTypes = useContext(CmsGroupTypeContext);
 
 		return (
 			<OptionPicker
 				label={label}
 				ref={ref}
-				options={groupTypeAlias}
+				options={cmsGroupTypes.groupTypeAlias}
 				getOptionLabel={CmsGroupTypes.getOptionLabel}
 				isOptionEqualToValue={CmsGroupTypes.isOptionEqualToValue}
 				findByInput={CmsGroupTypes.findByInput}

@@ -5,7 +5,7 @@ const TaskDeptColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn flex justifyContent="center" xs={4} {...rest} />
+		<ListColumn flex justifyContent="center" xs={4.5} {...rest} />
 	);
 };
 

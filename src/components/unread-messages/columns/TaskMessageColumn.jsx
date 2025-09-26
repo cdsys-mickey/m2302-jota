@@ -7,7 +7,7 @@ const TaskMessageColumn = (props) => {
 	return (
 		<ListColumn
 			// pr={1} 
-			xs={17}
+			xs={16.5}
 			{...rest}
 		/>
 	);

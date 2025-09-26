@@ -282,7 +282,7 @@ export const C09DialogContainer = forwardRef((props, ref) => {
 			if (txoId == "")
 				setTimeout(() => {
 					txoOrderPickerRef.current?.openPopper();
-					toastEx.info("請選擇要轉入的調撥單")
+					toastEx.warn("請選擇要轉入的調撥單")
 				}, 500);
 		}
 	}, [c09.itemData, c09.itemDataReady]);

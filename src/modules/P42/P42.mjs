@@ -50,7 +50,7 @@ const transformCmsGridForReading = (gridData) => {
 	);
 };
 
-const transformForReading = (payload) => {
+const transformForReading = (payload, aliasOptions) => {
 	const {
 		SalDate,
 		OrdID,
@@ -105,7 +105,7 @@ const transformForReading = (payload) => {
 					CodeData: CtAreaData_N,
 			  }
 			: null,
-		GrpType: CmsGroupTypes.getOptionById(GrpType),
+		GrpType: CmsGroupTypes.getOptionById(GrpType, aliasOptions),
 		custType: CustTID
 			? {
 					CodeID: CustTID,

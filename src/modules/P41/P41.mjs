@@ -4,7 +4,7 @@ import Objects from "@/shared-modules/Objects.mjs";
 import P41FilterModes from "./P41FilterModePicker/P41FilterModes";
 
 /* eslint-disable no-mixed-spaces-and-tabs */
-const transformForReading = (payload) => {
+const transformForReading = (payload, aliasOptions) => {
 	const {
 		OrdDate,
 		TrxDate,
@@ -47,7 +47,7 @@ const transformForReading = (payload) => {
 					CodeData: CtAreaData_N,
 			  }
 			: null,
-		GrpType: CmsGroupTypes.getOptionById(GrpType),
+		GrpType: CmsGroupTypes.getOptionById(GrpType, aliasOptions),
 		custType: CustTID
 			? {
 					CodeID: CustTID,

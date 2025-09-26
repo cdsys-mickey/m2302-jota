@@ -1,3 +1,4 @@
+import CmsGroupTypeProvider from "@/components/CmsGroupTypePicker/CmsGroupTypeProvider";
 import { CrudProvider } from "@/contexts/crud/CrudProvider";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
 import { P13FrameContainer } from "@/modules/P13/P13FrameContainer";
@@ -215,9 +216,11 @@ const pRoutes2 = (
 			element={
 				<CrudProvider>
 					<InfiniteLoaderProvider>
-						<P41Provider>
-							<P41FrameContainer />
-						</P41Provider>
+						<CmsGroupTypeProvider>
+							<P41Provider>
+								<P41FrameContainer />
+							</P41Provider>
+						</CmsGroupTypeProvider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}
@@ -227,9 +230,11 @@ const pRoutes2 = (
 			element={
 				<CrudProvider>
 					<InfiniteLoaderProvider>
-						<P42Provider>
-							<P42FrameContainer />
-						</P42Provider>
+						<CmsGroupTypeProvider>
+							<P42Provider>
+								<P42FrameContainer />
+							</P42Provider>
+						</CmsGroupTypeProvider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

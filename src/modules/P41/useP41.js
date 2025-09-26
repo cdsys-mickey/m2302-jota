@@ -11,6 +11,7 @@ import { useAppModule } from "@/hooks/jobs/useAppModule";
 import P41 from "./P41.mjs";
 import { useRef } from "react";
 import useAppRedirect from "@/hooks/useAppRedirect";
+import CmsGroupTypeContext from "@/components/CmsGroupTypePicker/CmsGroupTypeContext";
 
 export const useP41 = ({ token }) => {
 	const itemIdRef = useRef();
@@ -41,9 +42,11 @@ export const useP41 = ({ token }) => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			acc: 1
-		}
+			acc: 1,
+		},
 	});
+
+	const { groupTypeAlias } = useContext(CmsGroupTypeContext);
 
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
@@ -61,13 +64,16 @@ export const useP41 = ({ token }) => {
 					url: `v1/cms/bookings`,
 					bearer: token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
 				if (status.success) {
 					tsRef.current = payload.CheckData.TimeVal;
-					const data = P41.transformForReading(payload.data[0]);
+					const data = P41.transformForReading(
+						payload.data[0],
+						groupTypeAlias
+					);
 
 					crud.finishedReading({
 						data,
@@ -79,7 +85,7 @@ export const useP41 = ({ token }) => {
 				crud.failedReading(err);
 			}
 		},
-		[crud, httpGetAsync, token]
+		[crud, groupTypeAlias, httpGetAsync, token]
 	);
 
 	const handleSelect = useCallback(
@@ -136,14 +142,11 @@ export const useP41 = ({ token }) => {
 					url: "v1/cms/bookings",
 					data: data,
 					bearer: token,
-
 				});
 
 				if (status.success) {
 					const data = payload.data?.[0];
-					toastEx.success(
-						`團體預約單 ${data?.OrdID} ${action}成功`
-					);
+					toastEx.success(`團體預約單 ${data?.OrdID} ${action}成功`);
 					if (creating) {
 						crud.finishedCreating();
 						crud.cancelReading();
@@ -220,10 +223,11 @@ export const useP41 = ({ token }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`P41.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const handlePromptCreating = useCallback(
@@ -251,8 +255,8 @@ export const useP41 = ({ token }) => {
 						bearer: token,
 						params: {
 							id: crud.itemData?.OrdID,
-							ts: tsRef.current
-						}
+							ts: tsRef.current,
+						},
 					});
 					if (status.success) {
 						crud.cancelAction();
@@ -295,7 +299,7 @@ export const useP41 = ({ token }) => {
 				reset({
 					lvId: "",
 					lvName: "",
-					lvBank: null
+					lvBank: null,
 				});
 			},
 		[]
@@ -304,7 +308,6 @@ export const useP41 = ({ token }) => {
 	const gotoP42 = useCallback(() => {
 		toModule("P42", { target: crud.itemData?.OrdID });
 	}, [crud.itemData?.OrdID, toModule]);
-
 
 	useInit(() => {
 		crud.cancelAction();
@@ -334,9 +337,6 @@ export const useP41 = ({ token }) => {
 		handlePopperOpen,
 		handlePopperClose,
 		handleReset,
-		gotoP42
+		gotoP42,
 	};
 };
-
-
-

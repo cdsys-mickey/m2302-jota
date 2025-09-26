@@ -2,8 +2,7 @@ module.exports = {
 	env: { browser: true, es2020: true },
 	extends: [
 		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:react/recommended", // 這會啟用 react/prop-types: 'error' 作為預設
+		"plugin:react/recommended",
 		"plugin:react/jsx-runtime",
 		"plugin:react-hooks/recommended",
 	],
@@ -11,22 +10,40 @@ module.exports = {
 	parserOptions: {
 		ecmaVersion: "latest",
 		sourceType: "module",
-		project: "./tsconfig.json",
 	},
 	settings: { react: { version: "18.2" } },
 	plugins: ["react-refresh"],
 	rules: {
 		"react-refresh/only-export-components": "warn",
 		"@typescript-eslint/no-var-requires": "off",
-		// 移除 'react/prop-types': 'off'，讓它用 React 預設（對 JS 啟用）
 	},
 	overrides: [
 		{
-			files: ["*.ts", "*.tsx"], // 只針對 TS/TSX 檔案
+			files: ["*.ts", "*.tsx"], // 針對 TS/TSX 檔案
+			extends: [
+				"plugin:@typescript-eslint/recommended",
+				"plugin:@typescript-eslint/recommended-requiring-type-checking",
+			],
+			parserOptions: {
+				project: "./tsconfig.json", // 僅在 TS/TSX 中啟用類型檢查
+			},
 			rules: {
-				"react/prop-types": "off", // 在 TS/TSX 中關閉，避免與 TS 類型重複
+				"react/prop-types": "off",
 				"@typescript-eslint/no-unused-vars": "error",
-				// 可以添加其他 TS 專屬規則
+			},
+		},
+		{
+			files: ["*.jsx"], // 針對 JSX 檔案
+			parser: "espree", // 使用 JavaScript 解析器
+			extends: [
+				"eslint:recommended",
+				"plugin:react/recommended",
+				"plugin:react/jsx-runtime",
+				"plugin:react-hooks/recommended",
+			],
+			rules: {
+				"react/prop-types": "off", // 禁用 prop-types
+				"@typescript-eslint/*": "off", // 禁用所有 TypeScript 規則
 			},
 		},
 	],

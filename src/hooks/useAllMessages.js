@@ -20,13 +20,14 @@ export const useAllMessages = () => {
 			const jobId = payload?.jobID || payload?.JobID;
 			const targetId = payload?.id || payload?.ID;
 
-
 			if (jobId) {
 				const deptId = payload?.DeptID;
 				const deptName = payload?.AbbrName;
 
 				if (auth.operator?.CurDeptID !== deptId) {
-					toastEx.error(`此作業屬於 ${deptName}，請切換門市後再進行操作`);
+					toastEx.error(
+						`此作業屬於[${deptName}]，請切換門市後再進行操作`
+					);
 					return;
 				}
 

@@ -19,16 +19,18 @@ const getOptionLabel = (option) => {
 	return `[${id || "  "}] ${label}`;
 };
 
-const getOptionById = (id) => {
-	return options.find((o) => o.id == id);
+const getOptionById = (id, aliasOptions) => {
+	return (aliasOptions ?? options).find((o) => o.id == id);
 };
 
 const getLabelById = (id) => {
 	return getOptionLabel(getOptionById(id));
 };
 
-const findOptionByInput = (s) => {
-	return options.find((o) => o.id?.toLowerCase() == s?.toLowerCase());
+const findOptionByInput = (s, aliasOptions) => {
+	return (aliasOptions ?? options).find(
+		(o) => o.id?.toLowerCase() == s?.toLowerCase()
+	);
 };
 
 const isOptionEqualToValue = (option, value) => {
@@ -39,12 +41,12 @@ const getOptionKey = (option) => {
 	return `${option?.id}`;
 };
 
-const findById = (id) => {
-	return options.find((o) => o.id === id);
+const findById = (id, aliasOptions) => {
+	return (aliasOptions ?? options).find((o) => o.id === id);
 };
 
-const findByInput = (input) => {
-	return options.find((o) => o.id == input);
+const findByInput = (input, aliasOptions) => {
+	return (aliasOptions ?? options).find((o) => o.id == input);
 };
 
 const getDefaultValue = () => {
