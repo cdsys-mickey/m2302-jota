@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";

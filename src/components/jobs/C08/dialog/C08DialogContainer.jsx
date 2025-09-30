@@ -2,7 +2,7 @@ import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/f
 import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { C08Context } from "@/contexts/C08/C08Context";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
 import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";

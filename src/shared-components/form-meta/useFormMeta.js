@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { useRef } from "react";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
 import FormMeta from "./FormMeta.mjs";
@@ -10,7 +10,7 @@ import FormMetaProvider from "./FormMetaProvider";
 
 export const useFormMeta = (value, opts = {}) => {
 	const asyncRef = useRef({
-		supressEvents: false
+		supressEvents: false,
 	});
 
 	const form = useFormContext();
@@ -22,21 +22,21 @@ export const useFormMeta = (value, opts = {}) => {
 		lastField = null,
 		lastFieldMessage = "已是最後一個欄位",
 		firstFieldMessage = "已是第一個欄位",
-		includeComments = false
+		includeComments = false,
 	} = opts;
 
 	const fields = useMemo(() => {
 		return FormMeta.parse(value, {
-			includeComments
+			includeComments,
 		});
 	}, [includeComments, value]);
 
 	const getNextField = useCallback(
 		(currentFieldName, opts = {}) => {
 			const { forward = true, isFieldDisabled, e } = opts;
-			const currentIndex = currentFieldName ? fields.findIndex(
-				(item) => item.name === currentFieldName
-			) : -1;
+			const currentIndex = currentFieldName
+				? fields.findIndex((item) => item.name === currentFieldName)
+				: -1;
 			if (currentIndex === -1 && (!fields || fields.length === 0)) {
 				return null;
 			}
@@ -136,12 +136,18 @@ export const useFormMeta = (value, opts = {}) => {
 
 	const supressEvents = useCallback(() => {
 		asyncRef.current.supressEvents = true;
-		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent ON ******`, CommonCSS.CONSOLE_WARN);
+		console.log(
+			`%c****** ${FormMetaProvider.displayName}.supressEvent ON ******`,
+			CommonCSS.CONSOLE_WARN
+		);
 	}, []);
 
 	const enableEvents = useCallback(() => {
 		asyncRef.current.supressEvents = false;
-		console.log(`%c****** ${FormMetaProvider.displayName}.supressEvent OFF ******`, CommonCSS.CONSOLE_SUCCESS);
+		console.log(
+			`%c****** ${FormMetaProvider.displayName}.supressEvent OFF ******`,
+			CommonCSS.CONSOLE_SUCCESS
+		);
 	}, []);
 
 	const getFirstField = useCallback(() => {
@@ -155,7 +161,7 @@ export const useFormMeta = (value, opts = {}) => {
 				setFocus(firstField.name, {
 					shouldSelect: firstField.select,
 				});
-			}, 200)
+			}, 200);
 		}
 	}, [getFirstField, setFocus]);
 

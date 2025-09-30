@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import C07 from "@/modules/md-c07";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -38,12 +38,8 @@ export const useC07 = () => {
 		handlePopperClose,
 	] = useToggle(false);
 
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
+		useWebApi();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -67,7 +63,7 @@ export const useC07 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	const refreshAmt = useCallback(({ setValue, data, reset = false }) => {
@@ -99,8 +95,6 @@ export const useC07 = () => {
 		crud.promptCreating({ data });
 		grid.handleGridDataLoaded(data.prods);
 	}, [crud, grid]);
-
-
 
 	const handleCreate = useCallback(
 		async ({ data }) => {
@@ -363,7 +357,7 @@ export const useC07 = () => {
 					arrDate: null,
 					ordDept: null,
 					employee: null,
-					squared: null
+					squared: null,
 				});
 			},
 		[]
@@ -392,7 +386,7 @@ export const useC07 = () => {
 		async (prodId, { supplier, rtnDate }) => {
 			if (!prodId) {
 				toastEx.error("請先選擇商品", {
-					position: "top-right"
+					position: "top-right",
 				});
 				return;
 			}
@@ -400,14 +394,14 @@ export const useC07 = () => {
 			const supplierId = supplier?.FactID;
 			if (!supplierId) {
 				toastEx.error("請先選擇廠商", {
-					position: "top-right"
+					position: "top-right",
 				});
 				return;
 			}
 
 			if (!isDate(rtnDate)) {
 				toastEx.error("請先輸入訂貨日期", {
-					position: "top-right"
+					position: "top-right",
 				});
 				return;
 			}
@@ -586,10 +580,7 @@ export const useC07 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = C07.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = C07.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			if (crud.creating) {
 				handleCreate({ data: collected });
@@ -613,8 +604,8 @@ export const useC07 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebC07Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebC07Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -645,10 +636,14 @@ export const useC07 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
@@ -771,6 +766,6 @@ export const useC07 = () => {
 		createRow,
 		...sideDrawer,
 		getSPriceClassName,
-		handlePrint
+		handlePrint,
 	};
 };

@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
@@ -27,12 +27,8 @@ export const useG02 = () => {
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
+		useWebApi();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -52,32 +48,34 @@ export const useG02 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebG02Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebG02Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const writeOffAction = useAction();
 
 	const handleWriteOff = useCallback(async () => {
-		const collected = listLoader.getItemDataByIndex(listLoaderContext.checked);
+		const collected = listLoader.getItemDataByIndex(
+			listLoaderContext.checked
+		);
 		console.log("handleWriteOff", collected);
 		try {
 			writeOffAction.start();
 			const { status, error } = await httpPostAsync({
 				url: "v1/sales/recv-accounts",
 				data: collected,
-				bearer: token
-			})
+				bearer: token,
+			});
 			if (status.success) {
 				listLoaderContext.uncheckAll();
 				writeOffAction.clear();
 				listLoader.loadList({
 					refresh: true,
-					supressLoading: true
+					supressLoading: true,
 				});
 				toastEx.success(`沖銷已完成`);
 			} else {
-				throw error || `發生未預期例外`
+				throw error || `發生未預期例外`;
 			}
 		} catch (err) {
 			writeOffAction.fail({ error: err });
@@ -101,24 +99,28 @@ export const useG02 = () => {
 			console.log("onPrintSubmit", payload);
 
 			// fetch ListView data
-			const { status, payload: fetchPayload, error } = await httpGetAsync({
+			const {
+				status,
+				payload: fetchPayload,
+				error,
+			} = await httpGetAsync({
 				bearer: token,
 				url: "v1/sales/recv-accounts",
 				params: {
 					...listLoaderCtx.paramsRef.current,
-					np: 1
-				}
+					np: 1,
+				},
 			});
 			if (status.success) {
 				console.log("payload", fetchPayload.data);
 				if (!fetchPayload.data?.length) {
 					toastEx.error("目前查詢沒有資料", {
-						position: "top-right"
-					})
+						position: "top-right",
+					});
 					return;
 				}
 			} else {
-				toastEx.error("讀取資料發生錯誤", error)
+				toastEx.error("讀取資料發生錯誤", error);
 				return;
 			}
 
@@ -133,53 +135,79 @@ export const useG02 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, reportUrl, reports, token]
+		[
+			httpGetAsync,
+			listLoaderCtx.paramsRef,
+			operator?.CurDeptID,
+			reportUrl,
+			reports,
+			token,
+		]
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const onDebugPrintSubmit = useCallback(async (payload) => {
-		console.log("onPrintSubmit", payload);
+	const onDebugPrintSubmit = useCallback(
+		async (payload) => {
+			console.log("onPrintSubmit", payload);
 
-		// fetch ListView data
-		const { status, payload: fetchPayload, error } = await httpGetAsync({
-			bearer: token,
-			url: "v1/sales/recv-accounts",
-			params: {
-				...listLoaderCtx.paramsRef.current,
-				np: 1
-			}
-		});
-		if (status.success) {
-			console.log("payload", fetchPayload.data);
-			if (!fetchPayload.data?.length) {
-				toastEx.error("目前查詢沒有資料", {
-					position: "top-right"
-				})
+			// fetch ListView data
+			const {
+				status,
+				payload: fetchPayload,
+				error,
+			} = await httpGetAsync({
+				bearer: token,
+				url: "v1/sales/recv-accounts",
+				params: {
+					...listLoaderCtx.paramsRef.current,
+					np: 1,
+				},
+			});
+			if (status.success) {
+				console.log("payload", fetchPayload.data);
+				if (!fetchPayload.data?.length) {
+					toastEx.error("目前查詢沒有資料", {
+						position: "top-right",
+					});
+					return;
+				}
+			} else {
+				toastEx.error("讀取資料發生錯誤", error);
 				return;
 			}
-		} else {
-			toastEx.error("讀取資料發生錯誤", error)
-			return;
-		}
 
-		const data = {
-			...(payload.outputType && {
-				Action: payload.outputType.id,
-			}),
-			DeptID: operator?.CurDeptID,
-			JobName: "G01",
-			G02_S: fetchPayload.data ?? [],
-		};
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, httpGetAsync, listLoaderCtx.paramsRef, operator?.CurDeptID, reportUrl, token]);
-
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
+				}),
+				DeptID: operator?.CurDeptID,
+				JobName: "G01",
+				G02_S: fetchPayload.data ?? [],
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			httpGetAsync,
+			listLoaderCtx.paramsRef,
+			operator?.CurDeptID,
+			reportUrl,
+			token,
+		]
+	);
 
 	const checked = useMemo(() => {
-		return listLoader.getItemDataByIndex(listLoaderContext.checked)
-	}, [listLoader, listLoaderContext.checked])
+		return listLoader.getItemDataByIndex(listLoaderContext.checked);
+	}, [listLoader, listLoaderContext.checked]);
 
 	return {
 		...crud,
@@ -199,4 +227,3 @@ export const useG02 = () => {
 		checked,
 	};
 };
-

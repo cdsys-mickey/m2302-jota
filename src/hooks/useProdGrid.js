@@ -1,4 +1,4 @@
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
@@ -18,7 +18,7 @@ export const useProdGrid = ({
 	transformAsQueryParams,
 	transformForSubmitting,
 	transformForReading,
-	safeQty
+	safeQty,
 }) => {
 	const { token } = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);
@@ -28,7 +28,7 @@ export const useProdGrid = ({
 	const appFrame = useContext(AppFrameContext);
 	const beforeToggleRef = useRef({
 		drawerOpen: null,
-		expanded: null
+		expanded: null,
 	});
 
 	const [loading, setLoading] = useState();
@@ -41,8 +41,8 @@ export const useProdGrid = ({
 	const { gridData, dirtyIds } = grid;
 
 	const formMeta = useFormMeta(
-		safeQty ?
-			`
+		safeQty
+			? `
 		prodId,
 		prodName,
 		catL,
@@ -52,7 +52,8 @@ export const useProdGrid = ({
 		typeB,
 		taxType,
 		safeQty
-		` : `
+		`
+			: `
 		prodId,
 		prodName,
 		catL,
@@ -68,8 +69,8 @@ export const useProdGrid = ({
 		if (grid.readOnly) {
 			beforeToggleRef.current = {
 				drawerOpen: appFrame.drawerOpen,
-				expanded: expanded
-			}
+				expanded: expanded,
+			};
 			console.log(`og drawer opened memoised`);
 			appFrame.handleDrawerClose();
 			if (expanded) {
@@ -80,7 +81,7 @@ export const useProdGrid = ({
 				appFrame.handleDrawerOpen();
 			}
 			if (beforeToggleRef.current.expanded) {
-				toggleExpanded()
+				toggleExpanded();
 			}
 		}
 		grid.toggleReadOnly();
@@ -243,7 +244,7 @@ export const useProdGrid = ({
 			}
 		} catch (err) {
 			saveAction.fail({
-				error: err
+				error: err,
 			});
 			toastEx.error("儲存失敗", err);
 		}
@@ -275,6 +276,6 @@ export const useProdGrid = ({
 		toggleEditorLock,
 		loading,
 		confirmCancelChanges,
-		formMeta
+		formMeta,
 	};
 };

@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { createCheckboxColumn } from "@/shared-components/dsg/columns/checkbox/createCheckboxColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
@@ -34,7 +34,7 @@ export const useA16G = () => {
 		gridId: "A16",
 		keyColumn: "DeptID",
 		otherColumns: "GroupKey,DeptName,AbbrName",
-		createRow
+		createRow,
 	});
 
 	const columns = useMemo(
@@ -45,7 +45,7 @@ export const useA16G = () => {
 					createCheckboxColumn({
 						trueValue: "1",
 						falseValue: "0",
-						size: "medium"
+						size: "medium",
 					})
 				),
 				title: "使用中",
@@ -96,7 +96,6 @@ export const useA16G = () => {
 				grow: 2,
 				disabled: grid.readOnly,
 			},
-
 		],
 		[grid.isPersisted, grid.readOnly]
 	);
@@ -120,8 +119,6 @@ export const useA16G = () => {
 
 	const { load, reload } = codeEditor;
 
-
-
 	const handlePatch = useCallback(
 		async ({ rowData }) => {
 			const enabled = rowData["Using_N"] === "1";
@@ -136,7 +133,8 @@ export const useA16G = () => {
 				});
 				if (status.success) {
 					toastEx.success(
-						`${rowData["DeptName"]} 已成功 ${enabled ? "啟用" : "停用"
+						`${rowData["DeptName"]} 已成功 ${
+							enabled ? "啟用" : "停用"
 						}`
 					);
 				} else {

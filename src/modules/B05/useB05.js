@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -33,12 +33,8 @@ export const useB05 = () => {
 
 	const [selectedInq, setSelectedInq] = useState();
 
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
+		useWebApi();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -59,7 +55,7 @@ export const useB05 = () => {
 	const grid = useDSG({
 		gridId: "quotes",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	// CREATE
@@ -70,7 +66,7 @@ export const useB05 = () => {
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.quotes, {
-			fillRows: 15
+			fillRows: 15,
 		});
 	}, [crud, grid]);
 
@@ -241,40 +237,48 @@ export const useB05 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridProdChange = useCallback(
-		({ rowData }) => {
-			let processedRowData = { ...rowData };
-			processedRowData = {
-				...processedRowData,
-				["SProdData_N"]: rowData?.prod?.ProdData || "",
-				["SPackData_N"]: rowData?.prod?.PackData_N || "",
-				["SPrice"]: "",
-			};
-			return processedRowData;
-		},
-		[]
-	);
-
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
+	const handleGridProdChange = useCallback(({ rowData }) => {
+		let processedRowData = { ...rowData };
+		processedRowData = {
+			...processedRowData,
+			["SProdData_N"]: rowData?.prod?.ProdData || "",
+			["SPackData_N"]: rowData?.prod?.PackData_N || "",
+			["SPrice"]: "",
 		};
-		// prod
-		if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
-			console.log(
-				`prod[${rowIndex}] changed`,
-				processedRowData?.prod
-			);
-			processedRowData = await handleGridProdChange({
-				rowData: processedRowData,
-				formData
-			});
-		}
 		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+	}, []);
+
+	const onUpdateRow = useCallback(
+		({
+				fromRowIndex,
+				formData,
+				newValue,
+				setValue,
+				gridMeta,
+				updateResult,
+			}) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// prod
+				if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+					console.log(
+						`prod[${rowIndex}] changed`,
+						processedRowData?.prod
+					);
+					processedRowData = await handleGridProdChange({
+						rowData: processedRowData,
+						formData,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	// const buildGridChangeHandler = useCallback(
 	// 	({ gridMeta }) => (newValue, operations) => {
@@ -323,10 +327,7 @@ export const useB05 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = B05.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = B05.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			if (crud.creating) {
 				handleCreate({ data: collected });
@@ -430,7 +431,9 @@ export const useB05 = () => {
 					url: "v1/prod/data-grid/B05",
 					bearer: token,
 					params: {
-						...B05.transformImportProdsAsQueryParams(ipState.criteria),
+						...B05.transformImportProdsAsQueryParams(
+							ipState.criteria
+						),
 						sk: ipState.saveKey,
 					},
 				});
@@ -450,7 +453,14 @@ export const useB05 = () => {
 				toastEx.error("帶入商品發生錯誤", err);
 			}
 		},
-		[httpGetAsync, importProdsAction, ipState.criteria, ipState.saveKey, grid, token]
+		[
+			httpGetAsync,
+			importProdsAction,
+			ipState.criteria,
+			ipState.saveKey,
+			grid,
+			token,
+		]
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {
@@ -458,8 +468,8 @@ export const useB05 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebB05Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebB05Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -484,21 +494,22 @@ export const useB05 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback((outputType) => {
-		console.log("handlePrint", outputType);
-		const data = {
-			...(outputType && {
-				Action: outputType.id,
-			}),
-			DeptID: operator?.CurDeptID,
-			JobName: "B05",
-			IDs: crud.itemData?.InqID,
-		};
-		console.log("data", data);
-		reports.open(reportUrl, data);
-	}, [crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports]);
-
-
+	const handlePrint = useCallback(
+		(outputType) => {
+			console.log("handlePrint", outputType);
+			const data = {
+				...(outputType && {
+					Action: outputType.id,
+				}),
+				DeptID: operator?.CurDeptID,
+				JobName: "B05",
+				IDs: crud.itemData?.InqID,
+			};
+			console.log("data", data);
+			reports.open(reportUrl, data);
+		},
+		[crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports]
+	);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -509,7 +520,7 @@ export const useB05 = () => {
 		catM,
 		catS
 		`
-	)
+	);
 
 	return {
 		...crud,
@@ -549,6 +560,6 @@ export const useB05 = () => {
 		...sideDrawer,
 		onUpdateRow,
 		createRow,
-		handlePrint
+		handlePrint,
 	};
 };

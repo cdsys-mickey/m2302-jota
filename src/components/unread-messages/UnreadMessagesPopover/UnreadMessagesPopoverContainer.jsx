@@ -2,7 +2,7 @@ import { UnreadMessagesContext } from "@/contexts/UnreadMessagesContext";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useCallback, useContext } from "react";
-import UnreadMessagesPopover from "./UnreadMessagesPopover";
+import UnreadMessagesPopoverView from "./UnreadMessagesPopoverView";
 
 export const UnreadMessagesPopoverContainer = () => {
 	// const messaging = useContext(MessagingContext);
@@ -19,8 +19,7 @@ export const UnreadMessagesPopoverContainer = () => {
 	}, [handlePopoverClose, handleSelect, toMessages]);
 
 	return (
-		// <PushMessagesProvider>
-		<UnreadMessagesPopover
+		<UnreadMessagesPopoverView
 			open={unreadMessages.popoverOpen}
 			anchorEl={unreadMessages.popoverAnchorEl}
 			onClose={unreadMessages.handlePopoverClose}
@@ -28,7 +27,6 @@ export const UnreadMessagesPopoverContainer = () => {
 			// width={width - 90}
 			gotoMessages={gotoMessages}
 		/>
-		// </PushMessagesProvider>
 	);
 };
 

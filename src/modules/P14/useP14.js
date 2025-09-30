@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import P14 from "@/modules/P14/P14.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
@@ -32,12 +32,8 @@ export const useP14 = () => {
 
 	const [selectedInq, setSelectedInq] = useState();
 
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
+		useWebApi();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -51,7 +47,7 @@ export const useP14 = () => {
 			Pkey: nanoid(),
 			prod: null,
 			SPrice: "",
-			Force: false
+			Force: false,
 		}),
 		[]
 	);
@@ -59,7 +55,7 @@ export const useP14 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	const [duplicating, setDuplicating] = useState(false);
@@ -107,12 +103,12 @@ export const useP14 = () => {
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.prods, {
-			fillRows: 13
+			fillRows: 13,
 		});
 	}, [crud, grid]);
 
 	const handleSave = useCallback(
-		async ({ data, }) => {
+		async ({ data }) => {
 			const creating = crud.creating;
 			try {
 				if (creating) {
@@ -145,7 +141,7 @@ export const useP14 = () => {
 				if (err.status === 409 && err.data) {
 					setDuplicating(true);
 					grid.initGridData(P14.transformGridForReading(err.data), {
-						fillRows: crud.creating
+						fillRows: crud.creating,
 					});
 				}
 				if (creating) {
@@ -184,8 +180,6 @@ export const useP14 = () => {
 	// 	},
 	// 	[crud, httpPostAsync, listLoader, token]
 	// );
-
-
 
 	const handleSelect = useCallback(
 		async (e, rowData) => {
@@ -294,39 +288,47 @@ export const useP14 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridProdChange = useCallback(
-		({ rowData }) => {
-			let processedRowData = { ...rowData };
-			processedRowData = {
-				...processedRowData,
-				["ProdData_N"]: rowData?.prod?.ProdData || "",
-				["PackData_N"]: rowData?.prod?.PackData_N || "",
-			};
-			return processedRowData;
-		},
-		[]
-	);
-
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
+	const handleGridProdChange = useCallback(({ rowData }) => {
+		let processedRowData = { ...rowData };
+		processedRowData = {
+			...processedRowData,
+			["ProdData_N"]: rowData?.prod?.ProdData || "",
+			["PackData_N"]: rowData?.prod?.PackData_N || "",
 		};
-		// prod
-		if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
-			console.log(
-				`prod[${rowIndex}] changed`,
-				processedRowData?.prod
-			);
-			processedRowData = await handleGridProdChange({
-				rowData: processedRowData,
-				formData
-			});
-		}
 		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+	}, []);
+
+	const onUpdateRow = useCallback(
+		({
+				fromRowIndex,
+				formData,
+				newValue,
+				setValue,
+				gridMeta,
+				updateResult,
+			}) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// prod
+				if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+					console.log(
+						`prod[${rowIndex}] changed`,
+						processedRowData?.prod
+					);
+					processedRowData = await handleGridProdChange({
+						rowData: processedRowData,
+						formData,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	// const buildGridChangeHandler = useCallback(
 	// 	({ gridMeta }) => (newValue, operations) => {
@@ -375,10 +377,7 @@ export const useP14 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = P14.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = P14.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			handleSave({ data: collected });
 		},
@@ -493,8 +492,8 @@ export const useP14 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebP14Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebP14Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -518,10 +517,14 @@ export const useP14 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const forceDisabled = useCallback(({ rowData }) => {
 		return !rowData.Repeat_N;
@@ -536,7 +539,7 @@ export const useP14 = () => {
 		catM,
 		catS
 		`
-	)
+	);
 
 	return {
 		...crud,
@@ -578,7 +581,6 @@ export const useP14 = () => {
 		onUpdateRow,
 		createRow,
 		forceDisabled,
-		duplicating
+		duplicating,
 	};
 };
-

@@ -11,7 +11,7 @@ import { forwardRef, memo, useMemo } from "react";
 
 const SignInView = memo(
 	forwardRef((props, ref) => {
-		const { loading, hideCaptcha, ...rest } = props;
+		const { loading, hideCaptcha, isRefreshRequired, ...rest } = props;
 
 		const pwLabel = useMemo(() => {
 			return hideCaptcha ? "OTP" : "密碼";
@@ -112,7 +112,9 @@ const SignInView = memo(
 								size="small"
 								loading={loading}
 								// loading={true}
-								endIcon={<LoginIcon />}>
+								endIcon={<LoginIcon />}
+								disabled={isRefreshRequired}
+							>
 								登入
 							</ButtonEx>
 						</FlexBox>

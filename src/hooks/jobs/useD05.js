@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import D05 from "@/modules/D05.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -71,7 +71,7 @@ export const useD05 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "Pkey",
-		createRow
+		createRow,
 	});
 
 	const sqtyManager = useSQtyManager({
@@ -79,28 +79,24 @@ export const useD05 = () => {
 	});
 	const { committed } = sqtyManager;
 
-	const updateAmt = useCallback(
-		({ setValue, gridData, reset = false }) => {
-			if (reset) {
-				setValue("TotAmt_N", "");
-			} else {
-				// if (formData) {
-				// 	setValue("TotAmt_N", formData?.TotAmt_N);
-				// 	return;
-				// }
+	const updateAmt = useCallback(({ setValue, gridData, reset = false }) => {
+		if (reset) {
+			setValue("TotAmt_N", "");
+		} else {
+			// if (formData) {
+			// 	setValue("TotAmt_N", formData?.TotAmt_N);
+			// 	return;
+			// }
 
-				if (gridData) {
-					const total = D05.getTotal(gridData);
-					console.log("total", total);
-					setValue("TotAmt_N", total.toFixed(2));
-					return;
-				}
-				setValue("TotAmt_N", "");
+			if (gridData) {
+				const total = D05.getTotal(gridData);
+				console.log("total", total);
+				setValue("TotAmt_N", total.toFixed(2));
+				return;
 			}
-		},
-		[]
-	);
-
+			setValue("TotAmt_N", "");
+		}
+	}, []);
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -163,15 +159,17 @@ export const useD05 = () => {
 					crud.startUpdating();
 				}
 
-				const { status, error } = creating ? await httpPostAsync({
-					url: "v1/mat/waste-orders",
-					data: data,
-					bearer: token,
-				}) : await httpPutAsync({
-					url: "v1/mat/waste-orders",
-					data: data,
-					bearer: token,
-				});
+				const { status, error } = creating
+					? await httpPostAsync({
+							url: "v1/mat/waste-orders",
+							data: data,
+							bearer: token,
+					  })
+					: await httpPutAsync({
+							url: "v1/mat/waste-orders",
+							data: data,
+							bearer: token,
+					  });
 				if (status.success) {
 					toastEx.success(creating ? `新增成功` : `修改成功`);
 					if (creating) {
@@ -198,7 +196,6 @@ export const useD05 = () => {
 		},
 		[crud, httpPostAsync, httpPutAsync, listLoader, loadItem, token]
 	);
-
 
 	const handleSelect = useCallback(
 		async (e, rowData) => {
@@ -316,7 +313,7 @@ export const useD05 = () => {
 				// });
 				reset({
 					wdate: null,
-					employee: null
+					employee: null,
 				});
 			},
 		[]
@@ -343,7 +340,6 @@ export const useD05 = () => {
 
 	const handleGridSQtyChange = useCallback(
 		async ({ rowData, rowIndex, gridData, gridMeta }) => {
-
 			let processedRowData = {
 				...rowData,
 			};
@@ -359,7 +355,7 @@ export const useD05 = () => {
 				rowIndex,
 				prodId: rowData.prod.ProdID,
 				gridData,
-			})
+			});
 
 			if (prodStock < rowData.SQty) {
 				processedRowData = {
@@ -367,11 +363,15 @@ export const useD05 = () => {
 					["SQty"]: 0,
 					["SAmt"]: 0,
 				};
-				toastEx.error(`第 ${rowIndex + 1} 筆庫存量不足(${prodStock} < ${rowData.SQty})！`);
+				toastEx.error(
+					`第 ${rowIndex + 1} 筆庫存量不足(${prodStock} < ${
+						rowData.SQty
+					})！`
+				);
 				gridMeta.setActiveCell({
 					col: "SQty",
-					row: rowIndex
-				})
+					row: rowIndex,
+				});
 				return processedRowData;
 			}
 
@@ -394,7 +394,9 @@ export const useD05 = () => {
 
 					if (status.success) {
 						console.log("payload", payload);
-						const newAmt = (parseFloat(payload["SAmt"]) || 0).toFixed(2);
+						const newAmt = (
+							parseFloat(payload["SAmt"]) || 0
+						).toFixed(2);
 						processedRowData = {
 							...processedRowData,
 							["SAmt"]: newAmt,
@@ -420,7 +422,6 @@ export const useD05 = () => {
 
 	const handleGridSAmtChange = useCallback(
 		async ({ rowData, rowIndex, gridData, gridMeta }) => {
-
 			let newRowData = {
 				...rowData,
 			};
@@ -453,7 +454,9 @@ export const useD05 = () => {
 						console.log("payload", payload);
 						newRowData = {
 							...newRowData,
-							["SAmt"]: (parseFloat(payload["SAmt"]) || 0).toFixed(2),
+							["SAmt"]: (
+								parseFloat(payload["SAmt"]) || 0
+							).toFixed(2),
 						};
 					} else {
 						throw error ?? new Error("未預期例外");
@@ -478,7 +481,7 @@ export const useD05 = () => {
 		async (prodId) => {
 			if (!prodId) {
 				toastEx.error("請先選擇商品", {
-					position: "top-right"
+					position: "top-right",
 				});
 				return;
 			}
@@ -488,12 +491,15 @@ export const useD05 = () => {
 					bearer: token,
 					params: {
 						id: prodId,
-						safety: 1
+						safety: 1,
 					},
 				});
 
 				if (status.success) {
-					sqtyManager.updateStockQty(prodId, payload.Stock ?? payload.StockQty);
+					sqtyManager.updateStockQty(
+						prodId,
+						payload.Stock ?? payload.StockQty
+					);
 					return payload;
 				} else {
 					throw error ?? new Error("未預期例外");
@@ -501,22 +507,23 @@ export const useD05 = () => {
 			} catch (err) {
 				toastEx.error("查詢庫存失敗", err);
 			}
-		}
-		, [httpGetAsync, sqtyManager, token]);
+		},
+		[httpGetAsync, sqtyManager, token]
+	);
 
 	/**
 	 * D3 此作業沒有做重複判斷, 數量也不足也不會提示密碼
 	 */
 	const handleGridProdChange = useCallback(
 		async ({ rowData }) => {
-			const prodInfo = rowData?.prod ? await getProdInfo(
-				rowData?.prod?.ProdID,
-			) : null;
+			const prodInfo = rowData?.prod
+				? await getProdInfo(rowData?.prod?.ProdID)
+				: null;
 
 			const { prod } = rowData;
 			// 只有當原本沒有此項商品時才更新庫存表
 			if (prod?.ProdID) {
-				sqtyManager.updateStockQty(prod.ProdID, prod.StockQty)
+				sqtyManager.updateStockQty(prod.ProdID, prod.StockQty);
 			}
 
 			let newRowData = {
@@ -530,7 +537,7 @@ export const useD05 = () => {
 				["dtype"]: null,
 				["dept"]: null,
 				["customer"]: null,
-				["tooltip"]: ""
+				["tooltip"]: "",
 			};
 			return newRowData;
 		},
@@ -555,34 +562,35 @@ export const useD05 = () => {
 					processedRowData = await handleGridProdChange({
 						rowData: processedRowData,
 					});
-					updateResult.cols.push("prod")
+					updateResult.cols.push("prod");
 				}
 
 				// 數量 變動
 				if (processedRowData.SQty !== oldRowData.SQty) {
-					updateResult.cols.push("SQty")
+					updateResult.cols.push("SQty");
 					processedRowData = await handleGridSQtyChange({
 						rowData: processedRowData,
 						rowIndex,
 						gridData: newValue,
-						gridMeta
+						gridMeta,
 					});
 				}
 
 				if (
 					processedRowData.SQty !== oldRowData.SQty ||
-					processedRowData.customer?.CustID !== oldRowData.customer?.CustID ||
+					processedRowData.customer?.CustID !==
+						oldRowData.customer?.CustID ||
 					processedRowData.dept?.DeptID !== oldRowData.dept?.DeptID
 				) {
 					processedRowData = await handleGridSAmtChange({
 						rowData: processedRowData,
 						rowIndex,
 						gridData: newValue,
-						gridMeta
+						gridMeta,
 					});
 					// console.log("handleGridSQtyChange finished", processedRowData);
 					dirty = true;
-					updateResult.cols.push("SAmt")
+					updateResult.cols.push("SAmt");
 				}
 				if (dirty) {
 					updateResult.rows++;
@@ -590,89 +598,113 @@ export const useD05 = () => {
 				console.log(`第 ${rowIndex} 列處理完成`, processedRowData);
 				return processedRowData;
 			},
-		[grid.gridData, handleGridProdChange, handleGridSQtyChange, handleGridSAmtChange]
+		[
+			grid.gridData,
+			handleGridProdChange,
+			handleGridSQtyChange,
+			handleGridSAmtChange,
+		]
 	);
 
-	const mapTooltip = useCallback(({ updateResult, prevGridData, gridData, rowIndex, }) => {
-		let targetProdID;
-		if (updateResult?.type === "DELETE") {
-			targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
-		} else {
-			const targetRow = gridData[rowIndex];
-			targetProdID = targetRow.prod?.ProdID;
-			// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
-			if (!targetProdID) {
-				targetProdID = prevGridData[rowIndex]?.prod?.ProdID || '';
-			}
-		}
-
-		// 若 targetProdID 仍為空，則不執行更新
-		if (!targetProdID) {
-			console.log("targetProdID 為空, 不執行 mapTooltip")
-			return gridData;
-		}
-
-		// 計算其他符合條件列的 SQty 加總
-		return gridData.map((row, index) => {
-			if (row.prod?.ProdID === targetProdID) {
-				// 加總其他與 index 不同的 SQty
-				// let otherRowsTotalSQty = gridData.reduce((acc, innerRow, innerIndex) => {
-				// 	if (innerIndex !== index && innerRow.prod?.ProdID === targetProdID) {
-				// 		return acc + Number(innerRow.SQty || 0);
-				// 	}
-				// 	return acc;
-				// }, 0);
-
-				// const ogStock = sqtyManager.getStockQty(targetProdID);
-				// const stock = ogStock - otherRowsTotalSQty;
-				const stock = sqtyManager.getRemainingStock({ prodId: targetProdID, gridData });
-
-				let processedRowData = {
-					...row,
-					StockQty_N: stock,
-				};
-
-				processedRowData = {
-					...processedRowData,
-					["tooltip"]: D05.getTooltips({
-						rowData: processedRowData,
-						rowIndex
-					}),
+	const mapTooltip = useCallback(
+		({ updateResult, prevGridData, gridData, rowIndex }) => {
+			let targetProdID;
+			if (updateResult?.type === "DELETE") {
+				targetProdID = prevGridData[rowIndex]?.prod?.ProdID || "";
+			} else {
+				const targetRow = gridData[rowIndex];
+				targetProdID = targetRow.prod?.ProdID;
+				// 如果 targetProdID 為空，則使用 prevGridData 的 ProdID
+				if (!targetProdID) {
+					targetProdID = prevGridData[rowIndex]?.prod?.ProdID || "";
 				}
-
-				return processedRowData;
 			}
-			return row; // 不符合條件則返回原本的列
-		});
-	}, [sqtyManager]);
 
-	const onGridChanged = useCallback(({ gridData, formData, setValue, updateResult, prevGridData }) => {
-		if (updateResult.cols.includes("SAmt")) {
-			updateAmt({
-				formData,
-				gridData,
-				setValue,
+			// 若 targetProdID 仍為空，則不執行更新
+			if (!targetProdID) {
+				console.log("targetProdID 為空, 不執行 mapTooltip");
+				return gridData;
+			}
+
+			// 計算其他符合條件列的 SQty 加總
+			return gridData.map((row, index) => {
+				if (row.prod?.ProdID === targetProdID) {
+					// 加總其他與 index 不同的 SQty
+					// let otherRowsTotalSQty = gridData.reduce((acc, innerRow, innerIndex) => {
+					// 	if (innerIndex !== index && innerRow.prod?.ProdID === targetProdID) {
+					// 		return acc + Number(innerRow.SQty || 0);
+					// 	}
+					// 	return acc;
+					// }, 0);
+
+					// const ogStock = sqtyManager.getStockQty(targetProdID);
+					// const stock = ogStock - otherRowsTotalSQty;
+					const stock = sqtyManager.getRemainingStock({
+						prodId: targetProdID,
+						gridData,
+					});
+
+					let processedRowData = {
+						...row,
+						StockQty_N: stock,
+					};
+
+					processedRowData = {
+						...processedRowData,
+						["tooltip"]: D05.getTooltips({
+							rowData: processedRowData,
+							rowIndex,
+						}),
+					};
+
+					return processedRowData;
+				}
+				return row; // 不符合條件則返回原本的列
 			});
-		}
+		},
+		[sqtyManager]
+	);
 
-		if (updateResult.cols.includes("prod") || updateResult.cols.includes("SQty") || updateResult.type === "DELETE") {
-			console.log("before reduce", gridData);
-			const updated = mapTooltip({ updateResult, prevGridData, gridData, rowIndex: updateResult.rowIndex })
-			console.log("after reduce", updated);
-			return updated;
-		}
-	}, [updateAmt, mapTooltip]);
+	const onGridChanged = useCallback(
+		({ gridData, formData, setValue, updateResult, prevGridData }) => {
+			if (updateResult.cols.includes("SAmt")) {
+				updateAmt({
+					formData,
+					gridData,
+					setValue,
+				});
+			}
+
+			if (
+				updateResult.cols.includes("prod") ||
+				updateResult.cols.includes("SQty") ||
+				updateResult.type === "DELETE"
+			) {
+				console.log("before reduce", gridData);
+				const updated = mapTooltip({
+					updateResult,
+					prevGridData,
+					gridData,
+					rowIndex: updateResult.rowIndex,
+				});
+				console.log("after reduce", updated);
+				return updated;
+			}
+		},
+		[updateAmt, mapTooltip]
+	);
 
 	const onEditorSubmit = useCallback(
-		({ setValue, gridMeta }) => (data) => {
-			console.log("onEditorSubmit", data);
-			const collected = D05.transformForSubmitting(
-				data,
-				grid.gridData
-			);
-			console.log("collected", collected);
-			handleSave({ data: collected, setValue, gridMeta })
-		},
+		({ setValue, gridMeta }) =>
+			(data) => {
+				console.log("onEditorSubmit", data);
+				const collected = D05.transformForSubmitting(
+					data,
+					grid.gridData
+				);
+				console.log("collected", collected);
+				handleSave({ data: collected, setValue, gridMeta });
+			},
 		[grid.gridData, handleSave]
 	);
 
@@ -681,8 +713,8 @@ export const useD05 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebD05Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebD05Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -714,10 +746,14 @@ export const useD05 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
@@ -851,6 +887,6 @@ export const useD05 = () => {
 		...sideDrawer,
 		committed,
 		onUpdateRow,
-		onGridChanged
+		onGridChanged,
 	};
 };

@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 // import { useSideDrawer } from "@/hooks/useSideDrawer";
 import { useWebApi } from "@/shared-hooks/useWebApi";
@@ -51,7 +51,7 @@ export default function useP38Title() {
 					crud.finishedLoading({
 						Head: "",
 						Tail: [],
-						CmsCalc: null
+						CmsCalc: null,
 					});
 				} else {
 					throw error || new Error("讀取失敗");
@@ -72,40 +72,40 @@ export default function useP38Title() {
 		loadItem({ refresh: true });
 	}, [crud, loadItem]);
 
-	const onSubmit = useCallback(async (payload) => {
-		console.log("onSubmit", payload);
-		const data = P38Titles.transformForEditorSubmit(payload);
-		console.log("data", data);
-		try {
-			crud.startUpdating();
-			const { status, error, payload } = await httpPutAsync({
-				url: "v1/cms/settings",
-				data: data,
-				params: {
-					ts: tsRef.current
-				},
-				bearer: auth.token
-			})
-			if (status.success) {
-				toastEx.success(
-					`儲存成功`
-				);
-				crud.finishedUpdating();
+	const onSubmit = useCallback(
+		async (payload) => {
+			console.log("onSubmit", payload);
+			const data = P38Titles.transformForEditorSubmit(payload);
+			console.log("data", data);
+			try {
+				crud.startUpdating();
+				const { status, error, payload } = await httpPutAsync({
+					url: "v1/cms/settings",
+					data: data,
+					params: {
+						ts: tsRef.current,
+					},
+					bearer: auth.token,
+				});
+				if (status.success) {
+					toastEx.success(`儲存成功`);
+					crud.finishedUpdating();
 
-				tsRef.current = payload.CheckData.TimeVal;
-
-			} else {
-				throw error || new Error(`儲存發生未預期例外`);
+					tsRef.current = payload.CheckData.TimeVal;
+				} else {
+					throw error || new Error(`儲存發生未預期例外`);
+				}
+			} catch (err) {
+				crud.failedUpdating(err);
+				toastEx.error(`儲存失敗`, err);
 			}
-		} catch (err) {
-			crud.failedUpdating(err);
-			toastEx.error(`儲存失敗`, err);
-		}
-	}, [auth.token, crud, httpPutAsync])
+		},
+		[auth.token, crud, httpPutAsync]
+	);
 
 	const onSubmitError = useCallback((err) => {
 		console.error("onSubmitError", err);
-	}, [])
+	}, []);
 
 	return {
 		...appModule,
@@ -114,7 +114,6 @@ export default function useP38Title() {
 		// handleEdit,
 		cancelEdit,
 		onSubmit,
-		onSubmitError
-	}
-
+		onSubmitError,
+	};
 }

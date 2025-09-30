@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import Settings from "@/modules/settings/Settings.mjs";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useState } from "react";
@@ -33,13 +33,16 @@ export const usePersonalSettings = () => {
 		prompting: changePrompting,
 	} = changeAction;
 
-	const handleTabChange = useCallback((e, newTab) => {
-		// setSelectedTab(newTab);
-		setSearchParams(prev => ({
-			...prev,
-			tab: newTab
-		}));
-	}, [setSearchParams]);
+	const handleTabChange = useCallback(
+		(e, newTab) => {
+			// setSelectedTab(newTab);
+			setSearchParams((prev) => ({
+				...prev,
+				tab: newTab,
+			}));
+		},
+		[setSearchParams]
+	);
 
 	const onVerifySubmit = useCallback(
 		({ setError, reset }) =>
@@ -80,7 +83,7 @@ export const usePersonalSettings = () => {
 						message: "密碼驗證失敗",
 					});
 					verifyAction.fail({
-						error: err
+						error: err,
 					});
 				}
 			},
@@ -120,7 +123,7 @@ export const usePersonalSettings = () => {
 						// 	payload.LogKey || "",
 						// 	Auth.COOKIE_OPTS
 						// );
-						renewLogKey(payload.LogKey)
+						renewLogKey(payload.LogKey);
 						reset({
 							newPword: "",
 							newPword2: "",
@@ -133,7 +136,14 @@ export const usePersonalSettings = () => {
 					failChanging(err);
 				}
 			},
-		[failChanging, finsihChanging, httpPatchAsync, renewLogKey, startChanging, token]
+		[
+			failChanging,
+			finsihChanging,
+			httpPatchAsync,
+			renewLogKey,
+			startChanging,
+			token,
+		]
 	);
 
 	const onChangePwordSubmitError = useCallback((err) => {
@@ -145,8 +155,8 @@ export const usePersonalSettings = () => {
 	}, [changing, verified, verifying]);
 
 	const handleDownloadPromptChange = useCallback((newValue) => {
-		console.log("handleDownloadPromptChange", newValue)
-		Cookies.set(Settings.Keys.COOKIE_DOWNLOAD_PROMPT, newValue ? 1 : 0)
+		console.log("handleDownloadPromptChange", newValue);
+		Cookies.set(Settings.Keys.COOKIE_DOWNLOAD_PROMPT, newValue ? 1 : 0);
 	}, []);
 
 	const isDownloadPromptDisabled = useCallback(() => {
@@ -155,9 +165,9 @@ export const usePersonalSettings = () => {
 
 	useEffect(() => {
 		if (!searchParams.has("tab")) {
-			setSearchParams(prev => ({
+			setSearchParams((prev) => ({
 				...prev,
-				tab: Settings.Tabs.CHANGE_PWORD
+				tab: Settings.Tabs.CHANGE_PWORD,
 			}));
 		}
 	}, [searchParams, setSearchParams]);
@@ -176,6 +186,6 @@ export const usePersonalSettings = () => {
 		loading,
 		// 提示
 		handleDownloadPromptChange,
-		isDownloadPromptDisabled
+		isDownloadPromptDisabled,
 	};
 };

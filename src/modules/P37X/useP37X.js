@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import { useContext } from "react";
 import { useCallback, useState } from "react";
 import P37X from "./P37X.mjs";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 
 export default function useP37X() {
 	const itemIdRef = useRef();
@@ -38,7 +38,7 @@ export default function useP37X() {
 		keyColumn: "id",
 		skipDisabled: true,
 		createRow: createRow,
-		doDirtyCheckByIndex: true
+		doDirtyCheckByIndex: true,
 	});
 
 	const loadItem = useCallback(
@@ -56,15 +56,15 @@ export default function useP37X() {
 					url: `v1/cms/nc-tour-groups`,
 					bearer: auth.token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
 				if (status.success) {
 					const data = P37X.transformForReading(payload.data[0]);
 					grid.initGridData(data.commissions, {
-						fillRows: 5
-					})
+						fillRows: 5,
+					});
 					crud.finishedLoading({
 						data,
 					});
@@ -90,44 +90,45 @@ export default function useP37X() {
 		}
 	}, [grid, loadItem]);
 
-	const onSubmit = useCallback(async (payload) => {
-		console.log("onSubmit", payload);
-		console.log("grid.gridData", grid.gridData);
-		const data = P37X.transformForEditorSubmit(payload, grid.gridData);
-		console.log("data", data);
-		try {
-			crud.startUpdating();
-			const { status, error, payload } = await httpPutAsync({
-				url: "v1/cms/nc-tour-groups",
-				data,
-				bearer: auth.token
-			})
-			if (status.success) {
-				toastEx.success(
-					`儲存成功`
-				);
-				crud.finishedUpdating();
-				grid.handleLock();
-
-				const newData = P37X.transformForReading(payload.data[0]);
-				grid.initGridData(newData.commissions, {
-					fillRows: 5
-				})
-				crud.finishedLoading({
-					data: newData,
+	const onSubmit = useCallback(
+		async (payload) => {
+			console.log("onSubmit", payload);
+			console.log("grid.gridData", grid.gridData);
+			const data = P37X.transformForEditorSubmit(payload, grid.gridData);
+			console.log("data", data);
+			try {
+				crud.startUpdating();
+				const { status, error, payload } = await httpPutAsync({
+					url: "v1/cms/nc-tour-groups",
+					data,
+					bearer: auth.token,
 				});
-			} else {
-				throw error || new Error(`儲存發生未預期例外`);
+				if (status.success) {
+					toastEx.success(`儲存成功`);
+					crud.finishedUpdating();
+					grid.handleLock();
+
+					const newData = P37X.transformForReading(payload.data[0]);
+					grid.initGridData(newData.commissions, {
+						fillRows: 5,
+					});
+					crud.finishedLoading({
+						data: newData,
+					});
+				} else {
+					throw error || new Error(`儲存發生未預期例外`);
+				}
+			} catch (err) {
+				crud.failedUpdating(err);
+				toastEx.error(`儲存失敗`, err);
 			}
-		} catch (err) {
-			crud.failedUpdating(err);
-			toastEx.error(`儲存失敗`, err);
-		}
-	}, [auth.token, crud, grid, httpPutAsync])
+		},
+		[auth.token, crud, grid, httpPutAsync]
+	);
 
 	const onSubmitError = useCallback((err) => {
 		console.error("onSubmitError", err);
-	}, [])
+	}, []);
 
 	return {
 		...appModule,
@@ -137,7 +138,6 @@ export default function useP37X() {
 		handleEdit,
 		cancelEdit,
 		onSubmit,
-		onSubmitError
-	}
-
+		onSubmitError,
+	};
 }

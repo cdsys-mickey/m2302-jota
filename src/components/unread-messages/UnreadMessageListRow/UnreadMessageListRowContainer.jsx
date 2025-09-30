@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import { UnreadMessagesContext } from "@/contexts/UnreadMessagesContext";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
-import UnreadMessageListRow from "./UnreadMessageListRow";
+import UnreadMessageListRowView from "./UnreadMessageListRowView";
 
 export const UnreadMessageListRowContainer = (props) => {
 	const auth = useContext(AuthContext);
@@ -22,7 +22,7 @@ export const UnreadMessageListRowContainer = (props) => {
 	}, [auth.operator?.CurDeptID, value?.DeptID])
 
 	return (
-		<UnreadMessageListRow
+		<UnreadMessageListRowView
 			index={index}
 			loading={loading}
 			value={value}

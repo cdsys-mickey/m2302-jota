@@ -1,5 +1,5 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
@@ -34,7 +34,7 @@ export const useP35 = () => {
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
-			cmsType: null
+			cmsType: null,
 		}),
 		[]
 	);
@@ -79,15 +79,15 @@ export const useP35 = () => {
 					url: `v1/cms/tour-groups`,
 					bearer: auth.token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
 				if (status.success) {
 					const data = P35.transformForReading(payload.data[0]);
 					grid.initGridData(data.commissions, {
-						fillRows: 10
-					})
+						fillRows: 10,
+					});
 					crud.finishedReading({
 						data,
 					});
@@ -245,10 +245,11 @@ export const useP35 = () => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`P35.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const handlePromptCreating = useCallback(
@@ -260,7 +261,7 @@ export const useP35 = () => {
 			crud.promptCreating({
 				data,
 			});
-			grid.initGridData(data.ranges, { fillRows: 10 })
+			grid.initGridData(data.ranges, { fillRows: 10 });
 		},
 		[crud, grid]
 	);
@@ -275,8 +276,8 @@ export const useP35 = () => {
 						url: `v1/cms/tour-groups`,
 						bearer: auth.token,
 						params: {
-							id: crud.itemData?.TrvID
-						}
+							id: crud.itemData?.TrvID,
+						},
 					});
 					if (status.success) {
 						crud.cancelAction();
@@ -343,8 +344,6 @@ export const useP35 = () => {
 		// GRID
 		grid,
 		gridDisabled,
-		createRow
+		createRow,
 	};
 };
-
-

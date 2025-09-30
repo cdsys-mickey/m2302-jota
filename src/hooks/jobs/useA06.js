@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import A06 from "@/modules/md-a06";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
@@ -80,15 +80,13 @@ export const useA06 = ({ token, mode }) => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			acc: 1
-		}
+			acc: 1,
+		},
 	});
 
 	if (!mode) {
 		throw `mode 未指定`;
 	}
-
-
 
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
@@ -110,7 +108,7 @@ export const useA06 = ({ token, mode }) => {
 							: `v1/sales/customers`,
 					bearer: token,
 					params: {
-						id: itemId
+						id: itemId,
 					},
 				});
 				console.log("payload", payload);
@@ -189,7 +187,8 @@ export const useA06 = ({ token, mode }) => {
 
 				if (status.success) {
 					toastEx.success(
-						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${data?.CustData
+						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
+							data?.CustData
 						}」新增成功`
 					);
 					crud.finishedCreating();
@@ -223,7 +222,8 @@ export const useA06 = ({ token, mode }) => {
 
 				if (status.success) {
 					toastEx.success(
-						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${data?.CustData
+						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
+							data?.CustData
 						}」修改成功`
 					);
 					crud.finishedUpdating();
@@ -262,9 +262,10 @@ export const useA06 = ({ token, mode }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A06.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
-			position: "top-right"
-		}
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
 		);
 	}, []);
 
@@ -295,13 +296,14 @@ export const useA06 = ({ token, mode }) => {
 								: `v1/sales/customers`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.CustID
+							id: crud.itemData?.CustID,
 						},
 					});
 					if (status.success) {
 						crud.cancelAction();
 						toastEx.success(
-							`成功删除${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
+							`成功删除${
+								mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
 							}商品${crud.itemData.CustData}`
 						);
 						loader.loadList({ refresh: true });
@@ -406,7 +408,7 @@ export const useA06 = ({ token, mode }) => {
 					lvEmployee: null,
 					lvArea: null,
 					lvPaymentType: null,
-					lvBank: null
+					lvBank: null,
 				});
 			},
 		[]
@@ -455,6 +457,6 @@ export const useA06 = ({ token, mode }) => {
 		formMeta,
 		handleReset,
 		cancelAction: cancelAction,
-		...sideDrawer
+		...sideDrawer,
 	};
 };

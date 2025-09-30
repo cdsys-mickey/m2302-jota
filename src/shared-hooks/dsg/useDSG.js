@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { useToggle } from "@/shared-hooks/useToggle";
 import Objects from "@/shared-modules/Objects.mjs";
 import Types from "@/shared-modules/Types.mjs";
@@ -18,16 +18,18 @@ const DEFAULT_SET_DATA_OPTS = {
 	doDirtyCheckByIndex: false,
 	debug: false,
 	init: false,
-	supressEvents: false
+	supressEvents: false,
 };
 
-const DEFAULT_ON_DELETE_ROW = ({ fromRowIndex, updateResult }) => (rowData, index) => {
-	const rowIndex = fromRowIndex + index;
-	updateResult.rowIndex = rowIndex;
+const DEFAULT_ON_DELETE_ROW =
+	({ fromRowIndex, updateResult }) =>
+	(rowData, index) => {
+		const rowIndex = fromRowIndex + index;
+		updateResult.rowIndex = rowIndex;
 
-	console.log(`刪除第 ${rowIndex + 1} 列...`, rowData);
-	updateResult.rows++;
-};
+		console.log(`刪除第 ${rowIndex + 1} 列...`, rowData);
+		updateResult.rows++;
+	};
 
 export const useDSG = ({
 	gridId = "NO_NAME",
@@ -43,9 +45,10 @@ export const useDSG = ({
 	doDirtyCheckByIndex = false,
 }) => {
 	const asyncRef = useRef({
-		supressEvents: false
+		supressEvents: false,
 	});
-	const [readOnly, toggleReadOnly, handleLock, handleUnlock] = useToggle(initialLockRows);
+	const [readOnly, toggleReadOnly, handleLock, handleUnlock] =
+		useToggle(initialLockRows);
 
 	const persistedIds = useMemo(() => new Set(), []);
 	const dirtyIds = useMemo(() => new Set(), []);
@@ -67,7 +70,7 @@ export const useDSG = ({
 
 	const otherColumns = useMemo(() => {
 		return Fields.parse(_otherColumns);
-	}, [_otherColumns])
+	}, [_otherColumns]);
 
 	/**
 	 * 所有其他欄位
@@ -82,32 +85,36 @@ export const useDSG = ({
 	const checkColumnNames = useMemo(() => {
 		return Object.keys(otherColumns).filter(
 			(key) => otherColumns[key]?.nullble !== true
-		)
+		);
 	}, [otherColumns]);
 
 	const isRowDataEquals = useCallback((prevRowData, rowData) => {
 		const result = Objects.arePropsEqual(prevRowData, rowData, {
 			ignoresEmpty: true,
-			deepCompare: true
+			deepCompare: true,
 		});
 		console.log(`isRowDataEquals: ${result}`, prevRowData, rowData);
 		return result;
 	}, []);
 
-	const getRowKey = useCallback((rowData, rowIndex) => {
-		if (!doDirtyCheckByIndex && !keyColumn) {
-			console.error("未啟用 doDirtyCheckByIndex 或未定義 keyColumn, 無法執行 getRowKey");
-			return;
-		}
-		return doDirtyCheckByIndex ? rowIndex : _.get(rowData, keyColumn);
-	}, [doDirtyCheckByIndex, keyColumn]);
+	const getRowKey = useCallback(
+		(rowData, rowIndex) => {
+			if (!doDirtyCheckByIndex && !keyColumn) {
+				console.error(
+					"未啟用 doDirtyCheckByIndex 或未定義 keyColumn, 無法執行 getRowKey"
+				);
+				return;
+			}
+			return doDirtyCheckByIndex ? rowIndex : _.get(rowData, keyColumn);
+		},
+		[doDirtyCheckByIndex, keyColumn]
+	);
 
 	const handleDirtyCheck = useCallback(
 		(prevRowData, rowData, rowIndex, opts = {}) => {
 			const { debug } = opts;
 			// const key = byIndex ? rowIndex : _.get(rowData, keyColumn);
 			const key = getRowKey(rowData, rowIndex);
-
 
 			const isDirty = !isRowDataEquals(prevRowData, rowData);
 
@@ -135,7 +142,7 @@ export const useDSG = ({
 		({ createRow, data, length = 10 }) => {
 			const createRowMethod = createRow || _createRow;
 			if (!createRowMethod) {
-				console.error("useDSG 及 fillRow 均未提供 createRow")
+				console.error("useDSG 及 fillRow 均未提供 createRow");
 				throw new Error("fillRows failed");
 			}
 
@@ -174,7 +181,7 @@ export const useDSG = ({
 				supressEvents,
 				fillRows: _fillRows,
 				doDirtyCheck: _doDirtyCheck,
-				doDirtyCheckByIndex: _doDirtyCheckByIndex
+				doDirtyCheckByIndex: _doDirtyCheckByIndex,
 			} = opts || DEFAULT_SET_DATA_OPTS;
 
 			if (supressEvents) {
@@ -221,18 +228,25 @@ export const useDSG = ({
 						// 以 key 取出 prev
 						if (_doDirtyCheck) {
 							const key = _.get(rowData, keyColumn);
-							prevRowData = prevGridDataRef.current.find((item) => {
-								const itemKey = _.get(item, keyColumn);
-								return itemKey === key;
-							});
+							prevRowData = prevGridDataRef.current.find(
+								(item) => {
+									const itemKey = _.get(item, keyColumn);
+									return itemKey === key;
+								}
+							);
 						}
-						handleDirtyCheck(rowData, prevRowData, rowIndex, { debug });
+						handleDirtyCheck(rowData, prevRowData, rowIndex, {
+							debug,
+						});
 					});
 				}
 
 				if (commit || init) {
 					setPrevGridData(updatedGridData);
-					console.log("prevGridData after commit/init", updatedGridData);
+					console.log(
+						"prevGridData after commit/init",
+						updatedGridData
+					);
 				} else if (prevData) {
 					setPrevGridData(prevData);
 					console.log("prevGridData of prev", prevData);
@@ -247,7 +261,15 @@ export const useDSG = ({
 				return updatedGridData; // 返回最終的數據
 			});
 		},
-		[fillRows, dirtyIds, persistedIds, deletedIds, keyColumn, handleDirtyCheck, setPrevGridData]
+		[
+			fillRows,
+			dirtyIds,
+			persistedIds,
+			deletedIds,
+			keyColumn,
+			handleDirtyCheck,
+			setPrevGridData,
+		]
 	);
 
 	const handleGridDataLoaded = useCallback(
@@ -261,7 +283,12 @@ export const useDSG = ({
 	const initGridData = useCallback(
 		(payload, opts) => {
 			console.log(`${gridId}.onDataLoaded`, payload);
-			_setGridData(payload, { ...opts, reset: true, commit: true, supressEvents: true });
+			_setGridData(payload, {
+				...opts,
+				reset: true,
+				commit: true,
+				supressEvents: true,
+			});
 		},
 		[gridId, _setGridData]
 	);
@@ -374,7 +401,7 @@ export const useDSG = ({
 		[gridId, setGridData]
 	);
 
-	// 簡單的 Grid.onChange 實作，目前應該只有 ZA03 與 A011~A015 在使用 
+	// 簡單的 Grid.onChange 實作，目前應該只有 ZA03 與 A011~A015 在使用
 	// 會使用 dirty check
 	const handleGridChange = useCallback(
 		(newValue, operations) => {
@@ -400,19 +427,28 @@ export const useDSG = ({
 		[gridId, prevGridDataRef, handleDirtyCheck]
 	);
 
-
-
 	/**
-	 * 
+	 *
 	 */
 	const buildGridChangeHandler = useCallback(
-		({ setValue, getValues, gridMeta, onUpdateRow, onDeleteRow = DEFAULT_ON_DELETE_ROW, isRowDeletable, onDeleteRowFailed, onGridChanged, isRowCreatable = true, ...opts }) =>
+		({
+				setValue,
+				getValues,
+				gridMeta,
+				onUpdateRow,
+				onDeleteRow = DEFAULT_ON_DELETE_ROW,
+				isRowDeletable,
+				onDeleteRowFailed,
+				onGridChanged,
+				isRowCreatable = true,
+				...opts
+			}) =>
 			async (newValue, operations) => {
 				const {
 					focusFirstColumnOnCreate = true,
 					dirtyCheckOpts = {
 						// debug: true
-					}
+					},
 				} = opts;
 
 				const __onUpdateRow = onUpdateRow || _onUpdateRow;
@@ -425,51 +461,71 @@ export const useDSG = ({
 				let updateResult = {
 					rows: 0,
 					rowIndex: -1,
-					cols: []
-				}
+					cols: [],
+				};
 				for (const operation of operations) {
 					updateResult.type = operation.type;
 					if (operation.type === "UPDATE") {
 						if (!asyncRef.current.supressEvents) {
 							// 處理同行同時更新
-							const updatingRows = newValue
-								.slice(
-									operation.fromRowIndex,
-									operation.toRowIndex
-								);
-							const updatedRows = __onUpdateRow ? await Promise.all(
-								updatingRows
-									.map(async (item, index) => {
-										const updatedRow = await __onUpdateRow({
-											formData,
-											setValue,
-											fromRowIndex: operation.fromRowIndex,
-											newValue,
-											oldValue: gridData,
-											gridMeta,
-											updateResult
-										})(item, index);
-										return updatedRow;
-									})
-							) : updatingRows;
+							const updatingRows = newValue.slice(
+								operation.fromRowIndex,
+								operation.toRowIndex
+							);
+							const updatedRows = __onUpdateRow
+								? await Promise.all(
+										updatingRows.map(
+											async (item, index) => {
+												const updatedRow =
+													await __onUpdateRow({
+														formData,
+														setValue,
+														fromRowIndex:
+															operation.fromRowIndex,
+														newValue,
+														oldValue: gridData,
+														gridMeta,
+														updateResult,
+													})(item, index);
+												return updatedRow;
+											}
+										)
+								  )
+								: updatingRows;
 
 							if (doDirtyCheck || doDirtyCheckByIndex) {
 								updatedRows.forEach((updatedRowData, index) => {
-									const rowIndex = operation.fromRowIndex + index;
+									const rowIndex =
+										operation.fromRowIndex + index;
 									// 以 index 取出 prev
-									let prevRowData = prevGridDataRef.current[rowIndex];
+									let prevRowData =
+										prevGridDataRef.current[rowIndex];
 									// 以 key 取出 prev
 									if (doDirtyCheck) {
-										const key = _.get(updatedRows, keyColumn);
-										prevRowData = prevGridDataRef.current.find((item) => {
-											const itemKey = _.get(item, keyColumn);
-											return itemKey === key;
-										});
+										const key = _.get(
+											updatedRows,
+											keyColumn
+										);
+										prevRowData =
+											prevGridDataRef.current.find(
+												(item) => {
+													const itemKey = _.get(
+														item,
+														keyColumn
+													);
+													return itemKey === key;
+												}
+											);
 									}
 									// 以 index 作為比對依據
-									const dirty = handleDirtyCheck(updatedRowData, prevRowData, rowIndex, {
-										...dirtyCheckOpts,
-									});
+									const dirty = handleDirtyCheck(
+										updatedRowData,
+										prevRowData,
+										rowIndex,
+										{
+											...dirtyCheckOpts,
+										}
+									);
 									console.log("dirty", dirty);
 								});
 							}
@@ -480,60 +536,76 @@ export const useDSG = ({
 								updatedRows.length,
 								...updatedRows
 							);
-
 						} else {
-							console.log("grid.asyncRef.supressEvents is TRUE, grid changes not triggered");
+							console.log(
+								"grid.asyncRef.supressEvents is TRUE, grid changes not triggered"
+							);
 						}
 					} else if (operation.type === "DELETE") {
 						// 列舉原資料
-						const deletingRows = gridData
-							.slice(operation.fromRowIndex, operation.toRowIndex);
+						const deletingRows = gridData.slice(
+							operation.fromRowIndex,
+							operation.toRowIndex
+						);
 						// 檢查是否可刪除
-						checkFailed = deletingRows
-							.some((rowData, i) => {
-								const key = _.get(rowData, keyColumn);
-								if (isRowDeletable && !isRowDeletable({ key, rowData })) {
-									const rowIndex = operation.fromRowIndex + i;
-									toastEx.error(
-										`不可刪除第 ${rowIndex + 1} 筆商品`
-									);
-									return true;
-								}
-								return false;
-							});
+						checkFailed = deletingRows.some((rowData, i) => {
+							const key = _.get(rowData, keyColumn);
+							if (
+								isRowDeletable &&
+								!isRowDeletable({ key, rowData })
+							) {
+								const rowIndex = operation.fromRowIndex + i;
+								toastEx.error(
+									`不可刪除第 ${rowIndex + 1} 筆商品`
+								);
+								return true;
+							}
+							return false;
+						});
 						if (!checkFailed) {
-							const promises = deletingRows.map(async (rowData, index) => {
-								// const key = _.get(rowData, keyColumn);
-								const rowIndex = operation.fromRowIndex + index;
-								const key = getRowKey(rowData, rowIndex);
+							const promises = deletingRows.map(
+								async (rowData, index) => {
+									// const key = _.get(rowData, keyColumn);
+									const rowIndex =
+										operation.fromRowIndex + index;
+									const key = getRowKey(rowData, rowIndex);
 
-								if (!key) {
-									console.error(`key(${keyColumn}) 的內容是空的`);
-								} else {
-									if (onDeleteRow) {
-										try {
-											//await 在這裡沒有用?
-											await onDeleteRow({
-												fromRowIndex: operation.fromRowIndex,
-												toRowIndex: operation.toRowIndex,
-												updateResult
-											})(rowData, index);
-										} catch (err) {
-											if (onDeleteRowFailed) {
-												await onDeleteRowFailed({
-													fromRowIndex: operation.fromRowIndex,
-													toRowIndex: operation.toRowIndex,
-													updateResult
+									if (!key) {
+										console.error(
+											`key(${keyColumn}) 的內容是空的`
+										);
+									} else {
+										if (onDeleteRow) {
+											try {
+												//await 在這裡沒有用?
+												await onDeleteRow({
+													fromRowIndex:
+														operation.fromRowIndex,
+													toRowIndex:
+														operation.toRowIndex,
+													updateResult,
 												})(rowData, index);
+											} catch (err) {
+												if (onDeleteRowFailed) {
+													await onDeleteRowFailed({
+														fromRowIndex:
+															operation.fromRowIndex,
+														toRowIndex:
+															operation.toRowIndex,
+														updateResult,
+													})(rowData, index);
+												}
 											}
 										}
-									}
-									if (!deletedIds.has(key)) {
-										deletedIds.add(key);
-										console.log(`deletedIds added: ${key}`);
+										if (!deletedIds.has(key)) {
+											deletedIds.add(key);
+											console.log(
+												`deletedIds added: ${key}`
+											);
+										}
 									}
 								}
-							});
+							);
 							await Promise.all(promises);
 						}
 					} else if (operation.type === "CREATE") {
@@ -542,46 +614,72 @@ export const useDSG = ({
 							// process CREATE here
 							if (focusFirstColumnOnCreate) {
 								if (!gridMeta) {
-									console.warn("focusFirstColumnOnCreate is TRUE, but gridMeta is not provided in buildGridChangeHandler method");
+									console.warn(
+										"focusFirstColumnOnCreate is TRUE, but gridMeta is not provided in buildGridChangeHandler method"
+									);
 								}
 								gridMeta?.toFirstColumn({ nextRow: true });
 							}
 						} else {
 							checkFailed = true;
 							if (!gridMeta) {
-								console.warn("isRowCreatable is FALSE, but gridMeta is not provided, setActiveCell failed");
+								console.warn(
+									"isRowCreatable is FALSE, but gridMeta is not provided, setActiveCell failed"
+								);
 							}
 							const activeCell = gridMeta.getActiveCell();
 							console.log("getActiveCell", activeCell);
 							// setActiveCell back to prev in next render cycle
 							toastEx.error("新增功能目前已停用", {
-								position: "top-right"
-							})
+								position: "top-right",
+							});
 							setTimeout(() => {
-								gridMeta.setActiveCell(activeCell)
+								gridMeta.setActiveCell(activeCell);
 							});
 						}
 					}
 				}
 				console.log("Promise.all after changed", newGridData);
 				let updated = null;
-				if (onGridChanged &&
+				if (
+					onGridChanged &&
 					!asyncRef.current.supressEvents &&
-					(updateResult.rows > 0 || updateResult.cols.length > 0 || updateResult.type === "DELETE")) {
+					(updateResult.rows > 0 ||
+						updateResult.cols.length > 0 ||
+						updateResult.type === "DELETE")
+				) {
 					console.log("onGridChanged", newGridData);
-					updated = await onGridChanged({ prevGridData: prevGridDataRef.current, gridData: newGridData, formData, setValue, updateResult });
+					updated = await onGridChanged({
+						prevGridData: prevGridDataRef.current,
+						gridData: newGridData,
+						formData,
+						setValue,
+						updateResult,
+					});
 				}
 
 				if (!checkFailed) {
 					if (updated) {
-						console.log(`%conGridChanged:`, CommonStyles.CONSOLE_INFO, updated)
+						console.log(
+							`%conGridChanged:`,
+							CommonStyles.CONSOLE_INFO,
+							updated
+						);
 						setGridData(updated);
 					} else {
 						setGridData(newGridData);
 					}
 				}
 			},
-		[_onUpdateRow, doDirtyCheck, doDirtyCheckByIndex, gridData, handleDirtyCheck, keyColumn, deletedIds]
+		[
+			_onUpdateRow,
+			doDirtyCheck,
+			doDirtyCheckByIndex,
+			gridData,
+			handleDirtyCheck,
+			keyColumn,
+			deletedIds,
+		]
 	);
 
 	const spreadOnRow = useCallback(
@@ -590,9 +688,9 @@ export const useDSG = ({
 			const rewritten = newValue.map((rowData, i) =>
 				i === rowIndex
 					? {
-						...rowData,
-						...newValueObj,
-					}
+							...rowData,
+							...newValueObj,
+					  }
 					: rowData
 			);
 			console.log(`spreadOnRow(${rowIndex})`, rewritten);
@@ -645,7 +743,9 @@ export const useDSG = ({
 
 	const getDirtyRows = useCallback(() => {
 		if (!doDirtyCheck && !doDirtyCheckByIndex) {
-			throw new Error("cannot getDirtyRows without doDirtyCheck OR doDirtyCheckByIndex");
+			throw new Error(
+				"cannot getDirtyRows without doDirtyCheck OR doDirtyCheckByIndex"
+			);
 		}
 
 		if (!dirtyIds || dirtyIds.size === 0) {
@@ -654,8 +754,8 @@ export const useDSG = ({
 
 		if (doDirtyCheckByIndex) {
 			return Array.from(dirtyIds)
-				.map(index => gridData[index])
-				.filter(row => row !== undefined)
+				.map((index) => gridData[index])
+				.filter((row) => row !== undefined);
 		}
 
 		return gridData.filter((rowData) => {
@@ -684,16 +784,22 @@ export const useDSG = ({
 
 	const supressEvents = useCallback(() => {
 		asyncRef.current.supressEvents = true;
-		console.log(`%c****** ${DSGContext.displayName}.supressEvent ON ******`, CommonCSS.CONSOLE_WARN);
+		console.log(
+			`%c****** ${DSGContext.displayName}.supressEvent ON ******`,
+			CommonCSS.CONSOLE_WARN
+		);
 	}, []);
 
 	const enableEvents = useCallback(() => {
 		asyncRef.current.supressEvents = false;
-		console.log(`%c****** ${DSGContext.displayName}.supressEvent OFF ******`, CommonCSS.CONSOLE_SUCCESS);
+		console.log(
+			`%c****** ${DSGContext.displayName}.supressEvent OFF ******`,
+			CommonCSS.CONSOLE_SUCCESS
+		);
 	}, []);
 
 	const checkDirty = useCallback(() => {
-		return dirtyIds?.length > 0
+		return dirtyIds?.length > 0;
 	}, [dirtyIds?.length]);
 
 	useEffect(() => {
@@ -749,7 +855,9 @@ export const useDSG = ({
 		isDuplicated,
 		isDuplicating,
 
-		isDirty: (dirtyIds && dirtyIds.size > 0) || (deletedIds && deletedIds.size > 0),
+		isDirty:
+			(dirtyIds && dirtyIds.size > 0) ||
+			(deletedIds && deletedIds.size > 0),
 		handleDirtyCheck,
 		otherColumns,
 		otherColumnNames,
@@ -774,6 +882,6 @@ export const useDSG = ({
 		enableEvents,
 		onUpdateRow: _onUpdateRow,
 		onGridChanged,
-		checkDirty
+		checkDirty,
 	};
 };

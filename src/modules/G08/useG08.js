@@ -1,9 +1,10 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useInit } from "@/shared-hooks/useInit"; import { useToggle } from "@/shared-hooks/useToggle";
+import { useInit } from "@/shared-hooks/useInit";
+import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
@@ -52,8 +53,8 @@ export const useG08 = () => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			acc: 1
-		}
+			acc: 1,
+		},
 	});
 
 	const loadItem = useCallback(
@@ -72,7 +73,7 @@ export const useG08 = () => {
 					url: `v1/sales/recv-account/adj-entries`,
 					bearer: token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
@@ -147,9 +148,7 @@ export const useG08 = () => {
 				});
 
 				if (status.success) {
-					toastEx.success(
-						`調整單「${data?.AdjID}」新增成功`
-					);
+					toastEx.success(`調整單「${data?.AdjID}」新增成功`);
 					crud.finishedCreating();
 					crud.cancelReading();
 					// 重新整理
@@ -178,9 +177,7 @@ export const useG08 = () => {
 				});
 
 				if (status.success) {
-					toastEx.success(
-						`調整單「${data?.AdjID}」修改成功`
-					);
+					toastEx.success(`調整單「${data?.AdjID}」修改成功`);
 					crud.finishedUpdating();
 					loadItem({ id: data?.AdjID });
 					// 重新整理
@@ -217,17 +214,18 @@ export const useG08 = () => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`G08.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const promptCreating = useCallback(
 		(e) => {
 			e?.stopPropagation();
 			const data = {
-				AdjDate: new Date()
+				AdjDate: new Date(),
 			};
 			crud.promptCreating({
 				data,
@@ -246,14 +244,12 @@ export const useG08 = () => {
 						url: `v1/sales/recv-account/adj-entries`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.AdjID
-						}
+							id: crud.itemData?.AdjID,
+						},
 					});
 					if (status.success) {
 						crud.cancelAction();
-						toastEx.success(
-							`成功删除 ${crud.itemData?.AdjID}`
-						);
+						toastEx.success(`成功删除 ${crud.itemData?.AdjID}`);
 						listLoader.loadList({ refresh: true });
 					} else {
 						throw error || `發生未預期例外`;
@@ -290,15 +286,15 @@ export const useG08 = () => {
 				reset({
 					lvId: "",
 					lvName: "",
-					lvBank: null
+					lvBank: null,
 				});
 			},
 		[]
 	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebG08Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebG08Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -322,10 +318,14 @@ export const useG08 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	useInit(() => {
 		crud.cancelAction();
@@ -358,7 +358,6 @@ export const useG08 = () => {
 		handleReset,
 		onPrintSubmit,
 		onPrintSubmitError,
-		handlePrint
+		handlePrint,
 	};
 };
-

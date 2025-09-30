@@ -17,6 +17,7 @@ const ButtonExView = memo(
 			mobileText,
 			useIconButton = false,
 			tooltip,
+			dense = false,
 			...rest
 		} = props;
 
@@ -50,11 +51,11 @@ const ButtonExView = memo(
 		}, [children, useIconButton, mobile, mobileText]);
 
 		const ButtonComponent = useMemo(() => {
-			if (responsive || loading != null) {
+			if (loading != null) {
 				return LoadingButton;
 			}
 			return Button;
-		}, [loading, responsive]);
+		}, [loading]);
 
 		if (isUseIconButton) {
 			return (
@@ -70,6 +71,12 @@ const ButtonExView = memo(
 					ref={ref}
 					size="small"
 					sx={[
+						(theme) => ({
+							...dense && ({
+								padding: 0,
+								minWidth: theme.spacing(5)
+							})
+						}),
 						...(Array.isArray(sx) ? sx : [sx]),
 					]}
 					{...(isUseStartIcon && {
@@ -99,7 +106,8 @@ ButtonExView.propTypes = {
 	mobileText: PropTypes.string,
 	tooltip: PropTypes.string,
 	useIconButton: PropTypes.bool,
-	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	dense: PropTypes.bool
 };
 
 ButtonExView.displayName = "ButtonExView";

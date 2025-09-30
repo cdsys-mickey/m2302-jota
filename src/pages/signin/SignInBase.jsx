@@ -5,6 +5,7 @@ import { forwardRef, memo } from "react";
 import Colors from "@/modules/Colors.mjs";
 import FlexContainer from "@/shared-components/FlexContainer";
 import ModuleHeading from "@/shared-components/ModuleHeading";
+import useVersionCheck from "@/shared-hooks/useVersionCheck";
 import { PublicPage } from "@/shared-pages";
 import LockIcon from "@mui/icons-material/Lock";
 import PropTypes from "prop-types";

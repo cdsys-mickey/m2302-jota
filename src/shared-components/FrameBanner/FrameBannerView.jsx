@@ -1,7 +1,7 @@
 import { DeptSwitchButton, FrameTitle } from "@/components";
 import { DeptSwitchDialogContainer } from "@/components/account/DeptSwitchDialogContainer";
-import { UnreadMessagesIconButtonContainer } from "@/components/unread-messages/UnreadMessagesIconButtonContainer";
-import { UnreadMessagesPopoverContainer } from "@/components/unread-messages/UnreadMessagesPopoverContainer";
+import { UnreadMessagesIconButtonContainer } from "@/components/unread-messages/UnreadMessagesIconButton/UnreadMessagesIconButtonContainer";
+import { UnreadMessagesPopoverContainer } from "@/components/unread-messages/UnreadMessagesPopover/UnreadMessagesPopoverContainer";
 import FlexBox from "@/shared-components/FlexBox";
 import AvatarButtonContainer from "@/shared-components/protected-page/AvatarButtonContainer";
 import { Stack } from "@mui/material";

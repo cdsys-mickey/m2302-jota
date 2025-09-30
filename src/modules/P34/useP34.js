@@ -1,5 +1,5 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
@@ -32,7 +32,7 @@ export const useP34 = ({ token }) => {
 	const createRow = useCallback(
 		() => ({
 			Pkey: nanoid(),
-			MFixP: true
+			MFixP: true,
 		}),
 		[]
 	);
@@ -59,8 +59,8 @@ export const useP34 = ({ token }) => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			acc: 1
-		}
+			acc: 1,
+		},
 	});
 
 	const loadItem = useCallback(
@@ -79,14 +79,14 @@ export const useP34 = ({ token }) => {
 					url: `v1/cms/bus-comps`,
 					bearer: token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
 				if (status.success) {
 					const data = P34.transformForReading(payload.data[0]);
 					grid.initGridData(data.ranges, {
-						fillRows: 3
+						fillRows: 3,
 					});
 					crud.finishedReading({
 						data,
@@ -267,10 +267,11 @@ export const useP34 = ({ token }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`P34.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const handlePromptCreating = useCallback(
@@ -282,7 +283,7 @@ export const useP34 = ({ token }) => {
 			crud.promptCreating({
 				data,
 			});
-			grid.initGridData(data.ranges, { fillRows: 3 })
+			grid.initGridData(data.ranges, { fillRows: 3 });
 		},
 		[crud, grid]
 	);
@@ -297,8 +298,8 @@ export const useP34 = ({ token }) => {
 						url: `v1/cms/bus-comps`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.CarID
-						}
+							id: crud.itemData?.CarID,
+						},
 					});
 					if (status.success) {
 						crud.cancelAction();
@@ -341,7 +342,7 @@ export const useP34 = ({ token }) => {
 				reset({
 					lvId: "",
 					lvName: "",
-					lvBank: null
+					lvBank: null,
 				});
 			},
 		[]
@@ -378,7 +379,6 @@ export const useP34 = ({ token }) => {
 		// GRID
 		grid,
 		gridDisabled,
-		createRow
+		createRow,
 	};
 };
-

@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import D06 from "@/modules/D06.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -60,7 +60,7 @@ export const useD06 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	// CREATE
@@ -74,7 +74,7 @@ export const useD06 = () => {
 		crud.promptCreating({ data });
 		// qtyMap.clear();
 		grid.initGridData(data.prods, {
-			fillRows: true
+			fillRows: true,
 		});
 	}, [crud, grid]);
 
@@ -101,7 +101,7 @@ export const useD06 = () => {
 				if (err.code === 102) {
 					// recoverStockMap(data.prods, { mark: true });
 					toastEx.error("部分商品庫存不足，請調整後再送出", {
-						position: "top-right"
+						position: "top-right",
 					});
 				} else {
 					toastEx.error("新增失敗", err);
@@ -252,7 +252,7 @@ export const useD06 = () => {
 				// });
 				reset({
 					employee: null,
-					bdate: null
+					bdate: null,
 				});
 			},
 		[]
@@ -281,18 +281,21 @@ export const useD06 = () => {
 		async ({ rowData, rowIndex, newValue }) => {
 			const { prod } = rowData;
 
-			const prodRowIndex = prod?.ProdID ? D06.findProdIndex({
-				newValue,
-				rowData,
-				rowIndex,
-			}) : null;
+			const prodRowIndex = prod?.ProdID
+				? D06.findProdIndex({
+						newValue,
+						rowData,
+						rowIndex,
+				  })
+				: null;
 
 			const found = rowData.prod?.ProdID && prodRowIndex !== -1;
 
 			// 檢查是否已存在
 			if (found) {
 				toastEx.error(
-					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${prodRowIndex + 1
+					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
+						prodRowIndex + 1
 					} 筆, 請重新選擇`
 				);
 			}
@@ -310,27 +313,27 @@ export const useD06 = () => {
 		[]
 	);
 
-	const updateGridRow = useCallback(({ fromRowIndex, newValue }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// 商品
-		if (
-			rowData.prod?.ProdID !==
-			oldRowData.prod?.ProdID
-		) {
-			processedRowData =
-				await handleGridProdChange({
-					rowIndex,
-					rowData: processedRowData,
-					newValue,
-				});
-		}
-		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+	const updateGridRow = useCallback(
+		({ fromRowIndex, newValue }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// 商品
+				if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID) {
+					processedRowData = await handleGridProdChange({
+						rowIndex,
+						rowData: processedRowData,
+						newValue,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	const buildGridChangeHandler = useCallback(
 		({ getValues, setValue, gridMeta }) =>
@@ -355,14 +358,14 @@ export const useD06 = () => {
 									})(item, index);
 									return updatedRow;
 								})
-						)
+						);
 						console.log("updatedRows", updatedRows);
 
 						newGridData.splice(
 							operation.fromRowIndex,
 							updatedRows.length,
 							...updatedRows
-						)
+						);
 						// newValue
 						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
 						// 	.forEach(async (rowData, i) => {
@@ -404,10 +407,7 @@ export const useD06 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = D06.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = D06.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			if (crud.creating) {
 				handleCreate({ data: collected });
@@ -431,8 +431,8 @@ export const useD06 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebD06Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebD06Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -463,10 +463,14 @@ export const useD06 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const handleRemDateChanged = useCallback(
 		({ setValue }) =>

@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import B02 from "@/modules/md-b02";
 import B032 from "@/modules/md-b032";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
@@ -47,8 +47,8 @@ export const useB032 = () => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			sort: B02.OrderBy.PROD
-		}
+			sort: B02.OrderBy.PROD,
+		},
 	});
 
 	const grid = useDSG({
@@ -65,7 +65,7 @@ export const useB032 = () => {
 			Price: "",
 			QPrice: "",
 			QDate: null,
-			employee: null
+			employee: null,
 		}),
 		[]
 	);
@@ -78,7 +78,7 @@ export const useB032 = () => {
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.quotes, {
-			fillRows: 13
+			fillRows: 13,
 		});
 	}, [crud, grid]);
 
@@ -153,16 +153,27 @@ export const useB032 = () => {
 		[crud, loadItem]
 	);
 
-	const handleProdChange = useCallback(({ setValue }) => (newValue) => {
-		setValue("Price", newValue?.Price || "");
-	}, []);
+	const handleProdChange = useCallback(
+		({ setValue }) =>
+			(newValue) => {
+				setValue("Price", newValue?.Price || "");
+			},
+		[]
+	);
 
-	const handleSelectDate = useCallback((e, rowData) => {
-		console.log("handleSelectDate", rowData);
-		e?.stopPropagation();
-		crud.cancelAction();
-		loadItem({ prd: rowData.ProdID, emp: rowData.QEmplID, dat: rowData.QDate });
-	}, [crud, loadItem]);
+	const handleSelectDate = useCallback(
+		(e, rowData) => {
+			console.log("handleSelectDate", rowData);
+			e?.stopPropagation();
+			crud.cancelAction();
+			loadItem({
+				prd: rowData.ProdID,
+				emp: rowData.QEmplID,
+				dat: rowData.QDate,
+			});
+		},
+		[crud, loadItem]
+	);
 
 	const confirmQuitCreating = useCallback(() => {
 		dialogs.confirm({
@@ -287,49 +298,47 @@ export const useB032 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridCustChange = useCallback(
-		({ rowData, newValue }) => {
-			let processedRowData = { ...rowData };
+	const handleGridCustChange = useCallback(({ rowData, newValue }) => {
+		let processedRowData = { ...rowData };
 
-			processedRowData = {
-				...processedRowData,
-				["CustData_N"]: processedRowData?.customer?.CustData || "",
-				["QPrice"]: "",
-			};
-			return processedRowData;
-		},
-		[]
-	);
-
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
-
-		let processedRowData = {
-			...rowData,
+		processedRowData = {
+			...processedRowData,
+			["CustData_N"]: processedRowData?.customer?.CustData || "",
+			["QPrice"]: "",
 		};
-
-		// let employee = formData["employee"];
-		// let date = formData["Date"];
-
-		if (
-			rowData.customer?.CustID !==
-			oldRowData?.customer?.CustID
-		) {
-			console.log(
-				`[${rowIndex}]customer changed`,
-				rowData?.customer
-			);
-			processedRowData = handleGridCustChange({
-				rowData,
-				oldRowData,
-				formData,
-				newValue
-			});
-		}
 		return processedRowData;
-	}, [grid.gridData, handleGridCustChange]);
+	}, []);
+
+	const onUpdateRow = useCallback(
+		({ fromRowIndex, formData, newValue }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+
+				let processedRowData = {
+					...rowData,
+				};
+
+				// let employee = formData["employee"];
+				// let date = formData["Date"];
+
+				if (rowData.customer?.CustID !== oldRowData?.customer?.CustID) {
+					console.log(
+						`[${rowIndex}]customer changed`,
+						rowData?.customer
+					);
+					processedRowData = handleGridCustChange({
+						rowData,
+						oldRowData,
+						formData,
+						newValue,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridCustChange]
+	);
 
 	const onEditorSubmit = useCallback(
 		(data) => {
@@ -348,13 +357,9 @@ export const useB032 = () => {
 					grid.getDirtyRows()
 				);
 				const submitted = {
-					data: [
-						collected
-					],
-					delete: [
-						...grid.deletedIds
-					]
-				}
+					data: [collected],
+					delete: [...grid.deletedIds],
+				};
 				console.log("submitted", submitted);
 				handlePatch({ data: submitted });
 			} else {
@@ -438,36 +443,53 @@ export const useB032 = () => {
 	);
 
 	const onImportCustsSubmit = useCallback(
-		({ form }) => async (data) => {
-			console.log("onImportCustsSubmit", data);
-			try {
-				importCustsAction.start();
-				const { status, payload, error } = await httpGetAsync({
-					url: "v1/sales/customer/data-grid/B032",
-					bearer: token,
-					params: {
-						...B032.transformCustCriteriaAsQueryParams(ipState.criteria),
-						sk: ipState.saveKey,
-					},
-				});
-				if (status.success) {
-					const data = payload.data?.[0].B012032_W1 || [];
-					console.log("data", data);
-					const formData = form.getValues();
-					grid.initGridData(B032.transformForGridImport(data, formData?.employee, formData?.Date), {
-						fillRows: true,
+		({ form }) =>
+			async (data) => {
+				console.log("onImportCustsSubmit", data);
+				try {
+					importCustsAction.start();
+					const { status, payload, error } = await httpGetAsync({
+						url: "v1/sales/customer/data-grid/B032",
+						bearer: token,
+						params: {
+							...B032.transformCustCriteriaAsQueryParams(
+								ipState.criteria
+							),
+							sk: ipState.saveKey,
+						},
 					});
-					toastEx.success(`成功帶入 ${data.length} 筆客戶`);
-					importCustsAction.clear();
-				} else {
-					throw error ?? new Error("未預期例外");
+					if (status.success) {
+						const data = payload.data?.[0].B012032_W1 || [];
+						console.log("data", data);
+						const formData = form.getValues();
+						grid.initGridData(
+							B032.transformForGridImport(
+								data,
+								formData?.employee,
+								formData?.Date
+							),
+							{
+								fillRows: true,
+							}
+						);
+						toastEx.success(`成功帶入 ${data.length} 筆客戶`);
+						importCustsAction.clear();
+					} else {
+						throw error ?? new Error("未預期例外");
+					}
+				} catch (err) {
+					importCustsAction.fail({ error: err });
+					toastEx.error("帶入新客戶發生錯誤", err);
 				}
-			} catch (err) {
-				importCustsAction.fail({ error: err });
-				toastEx.error("帶入新客戶發生錯誤", err);
-			}
-		},
-		[httpGetAsync, importCustsAction, ipState.criteria, ipState.saveKey, grid, token]
+			},
+		[
+			httpGetAsync,
+			importCustsAction,
+			ipState.criteria,
+			ipState.saveKey,
+			grid,
+			token,
+		]
 	);
 
 	const onImportCustsSubmitError = useCallback((err) => {
@@ -475,8 +497,8 @@ export const useB032 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebB012032Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebB012032Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -507,10 +529,14 @@ export const useB032 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const importCustsFormMeta = useFormMeta(
 		`
@@ -519,7 +545,7 @@ export const useB032 = () => {
 		area,
 		channel
 		`
-	)
+	);
 
 	return {
 		...crud,
@@ -560,6 +586,6 @@ export const useB032 = () => {
 		importCustsFormMeta,
 		handleProdChange,
 		...sideDrawer,
-		handlePrint
+		handlePrint,
 	};
 };

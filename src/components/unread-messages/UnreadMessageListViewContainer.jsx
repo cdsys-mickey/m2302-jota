@@ -4,7 +4,7 @@ import { useInit } from "@/shared-hooks/useInit";
 import { useContext } from "react";
 import { UnreadMessagesContext } from "@/contexts/UnreadMessagesContext";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
-import { UnreadMessageListRowContainer } from "./UnreadMessageListRowContainer";
+import { UnreadMessageListRowContainer } from "./UnreadMessageListRow/UnreadMessageListRowContainer";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";

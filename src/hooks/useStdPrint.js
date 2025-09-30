@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useMemo, useState } from "react";
@@ -10,12 +10,7 @@ import useJotaReports from "./useJotaReports";
 import useDebugDialog from "./useDebugDialog";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
-export const useStdPrint = ({
-	token,
-	tableName,
-	deptId,
-	paramsToJsonData,
-}) => {
+export const useStdPrint = ({ token, tableName, deptId, paramsToJsonData }) => {
 	const { httpGetAsync } = useWebApi();
 	// const { postTo } = useHttpPost();
 	const auth = useContext(AuthContext);
@@ -165,8 +160,8 @@ export const useStdPrint = ({
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebStdReport.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebStdReport.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const handlePrint = useCallback(
@@ -194,7 +189,16 @@ export const useStdPrint = ({
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[deptId, listLoaderCtx?.paramsRef, operator, paramsToJsonData, reportUrl, reports, state.selectedFields, tableName]
+		[
+			deptId,
+			listLoaderCtx?.paramsRef,
+			operator,
+			paramsToJsonData,
+			reportUrl,
+			reports,
+			state.selectedFields,
+			tableName,
+		]
 	);
 
 	const handleAddAllFields = useCallback(() => {
@@ -220,23 +224,41 @@ export const useStdPrint = ({
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onDebugSubmit", payload);
-		const where = paramsToJsonData
-			? paramsToJsonData(listLoaderCtx?.paramsRef?.current, operator)
-			: null;
-		console.log(`where`, where);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onDebugSubmit", payload);
+			const where = paramsToJsonData
+				? paramsToJsonData(listLoaderCtx?.paramsRef?.current, operator)
+				: null;
+			console.log(`where`, where);
 
-		const data = {
-			RealFile: tableName,
-			DeptID: deptId,
-			StdOut: state.selectedFields.join(","),
-			...where,
-			// Top: 20,
-		};
-		console.log("data", data);
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, deptId, listLoaderCtx?.paramsRef, operator, paramsToJsonData, reportUrl, state.selectedFields, tableName]);
+			const data = {
+				RealFile: tableName,
+				DeptID: deptId,
+				StdOut: state.selectedFields.join(","),
+				...where,
+				// Top: 20,
+			};
+			console.log("data", data);
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			deptId,
+			listLoaderCtx?.paramsRef,
+			operator,
+			paramsToJsonData,
+			reportUrl,
+			state.selectedFields,
+			tableName,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -252,10 +274,14 @@ export const useStdPrint = ({
 		console.error(`onSubmitError`, err);
 	}, []);
 
-	const handleExport = useCallback(({ setValue }) => (outputType) => {
-		console.log("handleExport", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handleExport = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handleExport", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	// useInit(() => {
 	// 	load();
@@ -278,6 +304,6 @@ export const useStdPrint = ({
 		onDebugSubmit,
 		onSubmit,
 		onSubmitError,
-		handleExport
+		handleExport,
 	};
 };

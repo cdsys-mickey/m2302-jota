@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import _ from "lodash";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useState } from "react";
@@ -17,8 +17,8 @@ const defaultTransformForSubmmit = (payload) => {
 };
 
 const DEFAULT_PARAMS = {
-	np: 1
-}
+	np: 1,
+};
 
 export const useDSGCodeEditor = ({
 	// 要餵給 useDSG 的參數
@@ -37,7 +37,7 @@ export const useDSGCodeEditor = ({
 	autoDelete = false,
 	transformForReading = defaultTransformForReading,
 	transformForSubmitting = defaultTransformForSubmmit,
-	onLoaded
+	onLoaded,
 }) => {
 	const { token } = useContext(AuthContext);
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
@@ -71,8 +71,8 @@ export const useDSGCodeEditor = ({
 					url: _uri,
 					bearer: token,
 					...(_params && {
-						params: _params
-					})
+						params: _params,
+					}),
 					// params: {
 					// 	..._params,
 					// 	...(querystring && {
@@ -89,7 +89,7 @@ export const useDSGCodeEditor = ({
 					switch (status.code) {
 						default:
 							toastEx.error(`發生未預期例外 ${status.code}`, {
-								position: "top-right"
+								position: "top-right",
 							});
 							break;
 					}
@@ -100,7 +100,15 @@ export const useDSGCodeEditor = ({
 				grid.setGridLoading(false);
 			}
 		},
-		[defaultParams, grid, httpGetAsync, onLoaded, state.baseUri, token, transformForReading]
+		[
+			defaultParams,
+			grid,
+			httpGetAsync,
+			onLoaded,
+			state.baseUri,
+			token,
+			transformForReading,
+		]
 	);
 
 	const reload = useCallback(() => {
@@ -133,7 +141,16 @@ export const useDSGCodeEditor = ({
 				});
 			}
 		},
-		[displayName, grid, gridMeta, httpPostAsync, reload, state.baseUri, token, transformForSubmitting]
+		[
+			displayName,
+			grid,
+			gridMeta,
+			httpPostAsync,
+			reload,
+			state.baseUri,
+			token,
+			transformForSubmitting,
+		]
 	);
 
 	const handleUpdate = useCallback(
@@ -185,8 +202,8 @@ export const useDSGCodeEditor = ({
 								url: `${state.baseUri}`,
 								bearer: token,
 								params: {
-									id: key
-								}
+									id: key,
+								},
 							});
 
 							if (status.success) {
@@ -201,16 +218,23 @@ export const useDSGCodeEditor = ({
 				);
 				if (success > 0) {
 					if (!disableToast) {
-						toastEx.success(`刪除成功 ${success} 筆${displayName || ""}`);
+						toastEx.success(
+							`刪除成功 ${success} 筆${displayName || ""}`
+						);
 					}
 					if (onDeleted) {
 						onDeleted(rows);
 					}
 				} else {
 					if (!disableToast) {
-						toastEx.warn("沒有刪除任何資料" + error?.message ? ": " + error.message : "", {
-							position: "top-right"
-						});
+						toastEx.warn(
+							"沒有刪除任何資料" + error?.message
+								? ": " + error.message
+								: "",
+							{
+								position: "top-right",
+							}
+						);
 					}
 				}
 			} catch (err) {
@@ -268,14 +292,13 @@ export const useDSGCodeEditor = ({
 				throw new Error("未指定 rows");
 			}
 
-
-
 			let message;
 			const firstRow = rows[0];
 			if (rows.length > 1) {
 				const lastRow = rows[rows.length - 1];
-				message = ` ${rows.length} 筆${displayName} (${firstRow[grid.keyColumn]
-					} ~ ${lastRow[grid.keyColumn]})`;
+				message = ` ${rows.length} 筆${displayName} (${
+					firstRow[grid.keyColumn]
+				} ~ ${lastRow[grid.keyColumn]})`;
 			} else {
 				const key = firstRow[grid.keyColumn];
 				message = `${displayName}${!key ? "" : "「" + key + "」"}`;
@@ -327,7 +350,9 @@ export const useDSGCodeEditor = ({
 
 	const handleDuplicatedError = useCallback(
 		(row, newValue) => {
-			toastEx.error(`${displayName} ${row.rowData[grid.keyColumn]} 已存在`);
+			toastEx.error(
+				`${displayName} ${row.rowData[grid.keyColumn]} 已存在`
+			);
 
 			// 先把重複那筆的 key 清掉
 			newValue[row.rowIndex][grid.keyColumn] = "";
@@ -340,7 +365,7 @@ export const useDSGCodeEditor = ({
 				return acc;
 			}, []);
 			grid.setGridData(filteredData, {
-				commit: true
+				commit: true,
 			});
 			// grid.spreadOnRow(
 			// 	row.rowIndex,
@@ -365,7 +390,7 @@ export const useDSGCodeEditor = ({
 				operation.toRowIndex
 			);
 
-			const effectiveRows = rows.filter(row => row[grid.keyColumn]);
+			const effectiveRows = rows.filter((row) => row[grid.keyColumn]);
 
 			let goAhead = true;
 			if (onDelete && effectiveRows && effectiveRows.length > 0) {
@@ -373,7 +398,7 @@ export const useDSGCodeEditor = ({
 			}
 			if (!goAhead) {
 				grid.setGridData(newValue, {
-					commit: true
+					commit: true,
 				});
 			}
 		},
@@ -437,7 +462,7 @@ export const useDSGCodeEditor = ({
 							}
 						}
 						grid.setGridData(newValue, {
-							commit: true
+							commit: true,
 						});
 					} else {
 						// CREATE
@@ -449,9 +474,7 @@ export const useDSGCodeEditor = ({
 						}
 						grid.setGridData(newValue);
 					}
-
 				}
-
 			} else if (
 				autoDelete &&
 				Objects.isAllPropsNull(firstRow.rowData, [
@@ -477,21 +500,21 @@ export const useDSGCodeEditor = ({
 
 	const buildGridChangeHandler = useCallback(
 		({
-			// C
-			onBeforeCreate,
-			onCreate,
-			// U
-			onBeforeUpdate,
-			onUpdate,
-			onPatch,
-			// D
-			onDelete,
-			onDeleted,
-			// E
-			onDuplicatedError,
-			// Support Methods
-			// toFirstColumn,
-		} = {}) =>
+				// C
+				onBeforeCreate,
+				onCreate,
+				// U
+				onBeforeUpdate,
+				onUpdate,
+				onPatch,
+				// D
+				onDelete,
+				onDeleted,
+				// E
+				onDuplicatedError,
+				// Support Methods
+				// toFirstColumn,
+			} = {}) =>
 			(newValue, operations) => {
 				console.log(`${grid.gridId}.handleGridChange`, newValue);
 				// 只處理第一行
@@ -540,9 +563,12 @@ export const useDSGCodeEditor = ({
 		[grid, gridMeta, handleDeleteOperation, handleUpdateOperation]
 	);
 
-	const createRow = useCallback(() => ({
-		id: nanoid()
-	}), []);
+	const createRow = useCallback(
+		() => ({
+			id: nanoid(),
+		}),
+		[]
+	);
 
 	return {
 		load,
@@ -556,6 +582,6 @@ export const useDSGCodeEditor = ({
 		// ...grid,
 		// override
 		buildGridChangeHandler,
-		createRow
+		createRow,
 	};
 };

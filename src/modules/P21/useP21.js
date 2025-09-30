@@ -1,5 +1,5 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
@@ -37,8 +37,8 @@ export const useP21 = ({ token }) => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			acc: 1
-		}
+			acc: 1,
+		},
 	});
 
 	const loadItem = useCallback(
@@ -57,7 +57,7 @@ export const useP21 = ({ token }) => {
 					url: `v1/purchase/suppliers`,
 					bearer: token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
@@ -202,10 +202,11 @@ export const useP21 = ({ token }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`P21.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const handlePromptCreating = useCallback(
@@ -232,8 +233,8 @@ export const useP21 = ({ token }) => {
 						url: `v1/purchase/suppliers`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.FactID
-						}
+							id: crud.itemData?.FactID,
+						},
 					});
 					if (status.success) {
 						crud.cancelAction();
@@ -276,7 +277,7 @@ export const useP21 = ({ token }) => {
 				reset({
 					lvId: "",
 					lvName: "",
-					lvBank: null
+					lvBank: null,
 				});
 			},
 		[]
@@ -309,8 +310,6 @@ export const useP21 = ({ token }) => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
-		handleReset
+		handleReset,
 	};
 };
-
-

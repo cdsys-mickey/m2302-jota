@@ -9,7 +9,7 @@ import { Box, Popover } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { forwardRef, memo } from "react";
 
-const UnreadMessagesPopover = memo(
+const UnreadMessagesPopoverView = memo(
 	forwardRef((props, ref) => {
 		const {
 			open,
@@ -102,7 +102,7 @@ const UnreadMessagesPopover = memo(
 	})
 );
 
-UnreadMessagesPopover.propTypes = {};
+UnreadMessagesPopoverView.propTypes = {};
 
-UnreadMessagesPopover.displayName = "PushMessagesPopover";
-export default UnreadMessagesPopover;
+UnreadMessagesPopoverView.displayName = "UnreadMessagesPopoverView";
+export default UnreadMessagesPopoverView;

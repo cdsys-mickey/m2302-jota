@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import F07 from "@/modules/md-f07";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
@@ -12,10 +12,7 @@ import useAction from "@/shared-modules/ActionState/useAction";
 export const useF07 = () => {
 	const crud = useContext(CrudContext);
 	const { token } = useContext(AuthContext);
-	const {
-		httpGetAsync,
-		httpPostAsync
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync } = useWebApi();
 	const dialogs = useContext(DialogsContext);
 	const appModule = useAppModule({
 		token,
@@ -25,9 +22,8 @@ export const useF07 = () => {
 	const formMeta = useFormMeta(
 		`
 		
-		`);
-
-
+		`
+	);
 
 	// READ
 	const load = useCallback(
@@ -56,34 +52,29 @@ export const useF07 = () => {
 		[crud, httpGetAsync, token]
 	);
 
-	const handleCarryForward = useCallback(
-		async () => {
-			console.log("handleCarryForward");
-			try {
-				crud.startUpdating();
-				const { status, error } = await httpPostAsync({
-					url: "v1/inv/taking/carry-forward",
-					bearer: token
-				})
-				if (status.success) {
-					toastEx.success("結轉已成功");
-					crud.finishedUpdating();
-				} else {
-					throw error ?? new Error("未預期例外");
-				}
-			} catch (err) {
-				crud.failedUpdating(err);
-				console.error(err);
-				toastEx.error("結轉失敗", err);
-			} finally {
+	const handleCarryForward = useCallback(async () => {
+		console.log("handleCarryForward");
+		try {
+			crud.startUpdating();
+			const { status, error } = await httpPostAsync({
+				url: "v1/inv/taking/carry-forward",
+				bearer: token,
+			});
+			if (status.success) {
+				toastEx.success("結轉已成功");
 				crud.finishedUpdating();
-				load();
+			} else {
+				throw error ?? new Error("未預期例外");
 			}
-
-
-		},
-		[crud, httpPostAsync, load, token]
-	);
+		} catch (err) {
+			crud.failedUpdating(err);
+			console.error(err);
+			toastEx.error("結轉失敗", err);
+		} finally {
+			crud.finishedUpdating();
+			load();
+		}
+	}, [crud, httpPostAsync, load, token]);
 
 	const confirmCarryForward = useCallback(() => {
 		dialogs.confirm({
@@ -91,40 +82,35 @@ export const useF07 = () => {
 			onConfirm: () => {
 				handleCarryForward();
 			},
-		})
+		});
 	}, [dialogs, handleCarryForward]);
 
 	const restoreAction = useAction();
 
-	const handleRestore = useCallback(
-		async () => {
-			console.log("handleRestore");
-			try {
-				restoreAction.start();
-				const { status, error } = await httpPostAsync({
-					url: "v1/inv/taking/restore",
-					bearer: token
-				})
-				if (status.success) {
-					toastEx.success("復原已成功");
-					restoreAction.finish();
-					load();
-				} else {
-					throw error ?? new Error("未預期例外");
-				}
-			} catch (err) {
-				restoreAction.fail(err);
-				console.error(err);
-				toastEx.error("復原失敗", err);
-			} finally {
+	const handleRestore = useCallback(async () => {
+		console.log("handleRestore");
+		try {
+			restoreAction.start();
+			const { status, error } = await httpPostAsync({
+				url: "v1/inv/taking/restore",
+				bearer: token,
+			});
+			if (status.success) {
+				toastEx.success("復原已成功");
 				restoreAction.finish();
 				load();
+			} else {
+				throw error ?? new Error("未預期例外");
 			}
-
-
-		},
-		[httpPostAsync, load, restoreAction, token]
-	);
+		} catch (err) {
+			restoreAction.fail(err);
+			console.error(err);
+			toastEx.error("復原失敗", err);
+		} finally {
+			restoreAction.finish();
+			load();
+		}
+	}, [httpPostAsync, load, restoreAction, token]);
 
 	const confirmRestore = useCallback(() => {
 		dialogs.confirm({
@@ -132,10 +118,8 @@ export const useF07 = () => {
 			onConfirm: () => {
 				handleRestore();
 			},
-		})
+		});
 	}, [dialogs, handleRestore]);
-
-
 
 	return {
 		...appModule,
@@ -145,7 +129,6 @@ export const useF07 = () => {
 		load,
 		// 復原
 		confirmRestore,
-		restoreWorking: restoreAction.working
+		restoreWorking: restoreAction.working,
 	};
 };
-

@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import queryString from "query-string";
@@ -15,12 +15,10 @@ export const useAppFrame = (opts = {}) => {
 	const { toModule, toLanding } = useAppRedirect();
 	const location = useLocation();
 
-
 	const drawerMode = useMemo(() => {
 		const queryParams = new URLSearchParams(location.search);
 		return queryParams.get("drawer");
-	}, [location.search])
-
+	}, [location.search]);
 
 	const { httpPostAsync } = useWebApi();
 
@@ -69,9 +67,9 @@ export const useAppFrame = (opts = {}) => {
 			url: "v1/auth/spawn",
 			bearer: auth.token,
 			data: {
-				dept: auth.operator?.CurDeptID
-			}
-		})
+				dept: auth.operator?.CurDeptID,
+			},
+		});
 		if (status.success) {
 			console.log("spawn result", payload);
 			return payload?.LogKey;
@@ -100,7 +98,7 @@ export const useAppFrame = (opts = {}) => {
 
 	const drawerFloating = useMemo(() => {
 		return mobile && drawerState.drawerOpen;
-	}, [drawerState.drawerOpen, mobile])
+	}, [drawerState.drawerOpen, mobile]);
 
 	const handleSelect = useCallback(
 		(module, params) => {
@@ -108,10 +106,12 @@ export const useAppFrame = (opts = {}) => {
 				...prev,
 				menuItemSelected: module,
 			}));
-			console.log(`handleSelect module ${module?.JobID || null} selected`);
+			console.log(
+				`handleSelect module ${module?.JobID || null} selected`
+			);
 			if (module?.WebName) {
 				toModule(module?.WebName, params);
-				// 
+				//
 				if (drawerFloating) {
 					handleDrawerClose();
 				}
@@ -133,21 +133,23 @@ export const useAppFrame = (opts = {}) => {
 					const newLogKey = await spawnNewSession();
 					console.log("newLogKey", newLogKey);
 
-					const url = `${import.meta.env.VITE_PUBLIC_URL}/modules/${module.WebName}`;
+					const url = `${import.meta.env.VITE_PUBLIC_URL}/modules/${
+						module.WebName
+					}`;
 					// const url = `${config.PUBLIC_URL}modules/${module.WebName}`;
 					const qs = queryString.stringify({
 						drawer: 0,
 						...(newLogKey && {
-							LogKey: newLogKey
-						})
-					})
+							LogKey: newLogKey,
+						}),
+					});
 					const finalUrl = url + (qs ? `?${qs}` : "");
 					console.log("finalUrl", finalUrl);
 					const newTab = window.open(finalUrl, "_blank");
 					if (newTab) {
 						newTab.focus(); // 確保切換到新頁籤
 					} else {
-						toastEx.error('無法開啟新頁籤，可能被瀏覽器阻擋');
+						toastEx.error("無法開啟新頁籤，可能被瀏覽器阻擋");
 					}
 				} catch (err) {
 					toastEx.error("開新頁籤失敗", err);
@@ -164,8 +166,6 @@ export const useAppFrame = (opts = {}) => {
 		},
 		[handleSelect, spawnNewSession]
 	);
-
-
 
 	const selectJobById = useCallback(
 		(moduleId, params) => {
@@ -220,8 +220,6 @@ export const useAppFrame = (opts = {}) => {
 		return mobile || !drawerState.drawerOpen;
 	}, [drawerState.drawerOpen, mobile]);
 
-
-
 	useEffect(() => {
 		console.log(`mobile: ${mobile}`);
 	}, [mobile]);
@@ -245,21 +243,26 @@ export const useAppFrame = (opts = {}) => {
 		}));
 	}, []);
 
-	const getDocumentTitle = useCallback((menuItemId, matchedAuthority) => {
-		// let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
-		let deptName = `[${auth.operator.CurDeptName}]`
-		// if ((logKeyInSession || !menuItemId) && auth.operator?.CurDeptName) {
-		// 	deptName = `[${auth.operator.CurDeptName}]`
-		// }
-		return [deptName, menuItemId, matchedAuthority?.JobName].filter(Boolean).join("-")
-	}, [auth.operator?.CurDeptName]);
+	const getDocumentTitle = useCallback(
+		(menuItemId, matchedAuthority) => {
+			// let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
+			let deptName = `[${auth.operator.CurDeptName}]`;
+			// if ((logKeyInSession || !menuItemId) && auth.operator?.CurDeptName) {
+			// 	deptName = `[${auth.operator.CurDeptName}]`
+			// }
+			return [deptName, menuItemId, matchedAuthority?.JobName]
+				.filter(Boolean)
+				.join("-");
+		},
+		[auth.operator?.CurDeptName]
+	);
 
 	const recoverMenuItemSelected = useCallback(
 		(menuItemId) => {
 			console.log(`recoverMenuItemSelected(${menuItemId})`);
-			const matchedAuthority = menuItemId ? auth.authorities?.find(
-				(a) => a.JobID === menuItemId
-			) : null;
+			const matchedAuthority = menuItemId
+				? auth.authorities?.find((a) => a.JobID === menuItemId)
+				: null;
 			setMenuState((prev) => ({
 				...prev,
 				menuItemSelected: matchedAuthority,
@@ -268,8 +271,6 @@ export const useAppFrame = (opts = {}) => {
 		},
 		[auth.authorities, getDocumentTitle]
 	);
-
-
 
 	useEffect(() => {
 		if (auth.authorities) {

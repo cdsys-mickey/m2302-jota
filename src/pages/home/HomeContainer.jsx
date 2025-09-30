@@ -8,15 +8,13 @@ import { useLocation } from "react-router-dom";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useInit } from "@/shared-hooks/useInit";
 import Home from "./Home";
+import useVersionCheck from "@/shared-hooks/useVersionCheck";
 
 const HomeContainer = () => {
 	const location = useLocation();
 	const params = new URLSearchParams(location.search);
 	const auth = useContext(AuthContext);
-	const { frontEnd, version, loading } = useContext(AppContext);
 	const { token, loadAuthorities } = auth;
-	const dialogs = useContext(DialogsContext);
-	const { confirm: dialogConfirm } = dialogs;
 
 	const isLoadAuthorities = params.get("reload") === "1";
 	const { detectDrawerState } = useContext(AppFrameContext);
@@ -31,21 +29,7 @@ const HomeContainer = () => {
 		}
 	}, []);
 
-	useChangeTracking(() => {
-		if (import.meta.env.VITE_PROFILE !== "dev"
-			&& loading == false
-			&& frontEnd?.minVersion > version) {
-			setTimeout(() => {
-				dialogs.confirm({
-					message: `偵測到新版本 ${frontEnd?.minVersion}, 按下「確定更新」即可更新\n*** 若更新後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
-					confirmText: "更新",
-					onConfirm: () => {
-						window.location.reload(true);
-					}
-				})
-			}, 1000)
-		}
-	}, [frontEnd?.minVersion, version, loading])
+	useVersionCheck();
 
 	return (<Home />);
 };

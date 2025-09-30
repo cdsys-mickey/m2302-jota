@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import F01 from "@/modules/F01/F01.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
@@ -28,19 +28,15 @@ export const useF01 = () => {
 	const config = useContext(ConfigContext);
 	const doBatch = useMemo(() => {
 		return !!config?.BATCH?.F01;
-	}, [config?.BATCH?.F01])
+	}, [config?.BATCH?.F01]);
 
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 
 	const [selectedInq, setSelectedInq] = useState();
 
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
+		useWebApi();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -61,7 +57,7 @@ export const useF01 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	// CREATE
@@ -71,7 +67,7 @@ export const useF01 = () => {
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.prods, {
-			fillRows: true
+			fillRows: true,
 		});
 	}, [crud, grid]);
 
@@ -242,39 +238,47 @@ export const useF01 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridProdChange = useCallback(
-		({ rowData }) => {
-			let processedRowData = { ...rowData };
-			processedRowData = {
-				...processedRowData,
-				["ProdData_N"]: rowData?.prod?.ProdData || "",
-				["PackData_N"]: rowData?.prod?.PackData_N || "",
-			};
-			return processedRowData;
-		},
-		[]
-	);
-
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
+	const handleGridProdChange = useCallback(({ rowData }) => {
+		let processedRowData = { ...rowData };
+		processedRowData = {
+			...processedRowData,
+			["ProdData_N"]: rowData?.prod?.ProdData || "",
+			["PackData_N"]: rowData?.prod?.PackData_N || "",
 		};
-		// prod
-		if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
-			console.log(
-				`prod[${rowIndex}] changed`,
-				processedRowData?.prod
-			);
-			processedRowData = await handleGridProdChange({
-				rowData: processedRowData,
-				formData
-			});
-		}
 		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+	}, []);
+
+	const onUpdateRow = useCallback(
+		({
+				fromRowIndex,
+				formData,
+				newValue,
+				setValue,
+				gridMeta,
+				updateResult,
+			}) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// prod
+				if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+					console.log(
+						`prod[${rowIndex}] changed`,
+						processedRowData?.prod
+					);
+					processedRowData = await handleGridProdChange({
+						rowData: processedRowData,
+						formData,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	// const buildGridChangeHandler = useCallback(
 	// 	({ gridMeta }) => (newValue, operations) => {
@@ -323,10 +327,7 @@ export const useF01 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = F01.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = F01.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			if (crud.creating) {
 				handleCreate({ data: collected });
@@ -452,8 +453,8 @@ export const useF01 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebF01Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebF01Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -477,10 +478,14 @@ export const useF01 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -491,7 +496,7 @@ export const useF01 = () => {
 		catM,
 		catS
 		`
-	)
+	);
 
 	return {
 		...crud,
@@ -532,6 +537,6 @@ export const useF01 = () => {
 		...sideDrawer,
 		onUpdateRow,
 		createRow,
-		doBatch
+		doBatch,
 	};
 };

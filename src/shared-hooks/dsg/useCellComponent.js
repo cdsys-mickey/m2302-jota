@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
 import { toast } from "react-toastify";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 
 export const useCellComponent = (props = {}) => {
 	const {
@@ -47,7 +47,6 @@ export const useCellComponent = (props = {}) => {
 							break;
 					}
 				}
-
 			}
 		},
 		[getNextCell, insertRowBelow, isLastRow, lastCell, setActiveCell]

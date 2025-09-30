@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import G07 from "@/modules/G07/G07";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
@@ -24,9 +24,7 @@ export const useG07 = () => {
 		moduleId: "G07",
 	});
 
-	const {
-		httpPostAsync
-	} = useWebApi();
+	const { httpPostAsync } = useWebApi();
 	const formMeta = useFormMeta(
 		`
 		session,
@@ -34,14 +32,14 @@ export const useG07 = () => {
 		AccYM,
 		Stage,
 		`
-	)
+	);
 
 	const onSubmit = useCallback(
 		async (payload) => {
 			console.log("onSubmit", payload);
 			const data = {
 				...G07.transformForSubmitting(payload),
-			}
+			};
 			console.log("data", data);
 			try {
 				crud.startUpdating();
@@ -49,8 +47,8 @@ export const useG07 = () => {
 					url: "v1/sales/recv-account/carry-forward",
 					bearer: token,
 					mode: "form",
-					data
-				})
+					data,
+				});
 				if (status.success) {
 					toastEx.success("結轉已成功");
 					crud.finishedUpdating();
@@ -88,7 +86,6 @@ export const useG07 = () => {
 			// 		}
 			// 	},
 			// })
-
 		},
 		[crud, httpPostAsync, token]
 	);
@@ -115,8 +112,8 @@ export const useG07 = () => {
 							url: "v1/sales/recv-account/restore",
 							bearer: token,
 							mode: "form",
-							data
-						})
+							data,
+						});
 						if (status.success) {
 							restoreAction.finish();
 							toastEx.success("復原已成功");
@@ -128,16 +125,15 @@ export const useG07 = () => {
 						restoreAction.fail(err);
 						toastEx.error("復原失敗", err);
 					}
-
 				},
-			})
+			});
 		},
 		[dialogs, httpPostAsync, restoreAction, token]
 	);
 
 	const onRestoreSubmitError = useCallback((err) => {
 		console.error("onRestoreSubmitError", err);
-	}, [])
+	}, []);
 
 	return {
 		...appModule,
@@ -149,11 +145,6 @@ export const useG07 = () => {
 		onRestoreSubmit,
 		onRestoreSubmitError,
 		restoreWorking: restoreAction.working,
-		selectedTab
+		selectedTab,
 	};
 };
-
-
-
-
-

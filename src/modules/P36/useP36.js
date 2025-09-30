@@ -1,5 +1,5 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
@@ -54,7 +54,7 @@ export const useP36 = ({ token }) => {
 					url: `v1/cms/tour-guides`,
 					bearer: token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
@@ -137,7 +137,6 @@ export const useP36 = ({ token }) => {
 					if (creating) {
 						crud.finishedCreating();
 						crud.cancelReading();
-
 					} else {
 						crud.finishedUpdating();
 						loadItem({ id: data?.CndID });
@@ -210,10 +209,11 @@ export const useP36 = ({ token }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`P36.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const handlePromptCreating = useCallback(
@@ -226,7 +226,6 @@ export const useP36 = ({ token }) => {
 			crud.promptCreating({
 				data,
 			});
-
 		},
 		[crud]
 	);
@@ -241,8 +240,8 @@ export const useP36 = ({ token }) => {
 						url: `v1/cms/tour-guides`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.CndID
-						}
+							id: crud.itemData?.CndID,
+						},
 					});
 					if (status.success) {
 						crud.cancelAction();
@@ -285,7 +284,7 @@ export const useP36 = ({ token }) => {
 				reset({
 					lvId: "",
 					lvName: "",
-					lvBank: null
+					lvBank: null,
 				});
 			},
 		[]
@@ -318,9 +317,6 @@ export const useP36 = ({ token }) => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
-		handleReset
+		handleReset,
 	};
 };
-
-
-

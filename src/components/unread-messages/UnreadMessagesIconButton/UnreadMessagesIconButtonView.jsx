@@ -3,7 +3,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Badge, IconButton } from "@mui/material";
 import { Fragment, forwardRef, memo } from "react";
 
-const UnreadMessagesIconButton = memo(
+const UnreadMessagesIconButtonView = memo(
 	forwardRef((props, ref) => {
 		const { onGenerateToast, togglePopoverOpen, unreadCount, ...rest } =
 			props;
@@ -19,5 +19,5 @@ const UnreadMessagesIconButton = memo(
 	})
 );
 
-UnreadMessagesIconButton.displayName = "UnreadMessagesIconButton";
-export default UnreadMessagesIconButton;
+UnreadMessagesIconButtonView.displayName = "UnreadMessagesIconButtonView";
+export default UnreadMessagesIconButtonView;

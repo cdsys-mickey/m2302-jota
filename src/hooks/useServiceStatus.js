@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useState } from "react";
@@ -23,8 +23,8 @@ export default function useServiceStatus(opts = {}) {
 			setLoading(true);
 			const { status, payload, error } = await httpGetAsync({
 				url: `v1/pos/service-status/${name}`,
-				bearer: token
-			})
+				bearer: token,
+			});
 			if (status.success) {
 				setLoading(false);
 				setEnabled(payload["data"][0]["Using"] === "1");
@@ -36,32 +36,35 @@ export default function useServiceStatus(opts = {}) {
 		}
 	}, [httpGetAsync, name, token]);
 
-	const updateStatus = useCallback(async (enabled) => {
-		setError(null);
-		try {
-			const { status, error } = await httpPatchAsync({
-				url: `v1/pos/service-status/${name}`,
-				bearer: token,
-				data: {
-					enabled: enabled ? 1 : 0,
-					jobId
-				}
-			})
-			if (status.success) {
-				setEnabled(enabled);
-				if (enabled) {
-					toastEx.success("下載服務已開放");
+	const updateStatus = useCallback(
+		async (enabled) => {
+			setError(null);
+			try {
+				const { status, error } = await httpPatchAsync({
+					url: `v1/pos/service-status/${name}`,
+					bearer: token,
+					data: {
+						enabled: enabled ? 1 : 0,
+						jobId,
+					},
+				});
+				if (status.success) {
+					setEnabled(enabled);
+					if (enabled) {
+						toastEx.success("下載服務已開放");
+					} else {
+						toastEx.warn("下載服務已鎖定");
+					}
 				} else {
-					toastEx.warn("下載服務已鎖定");
+					throw error ?? new Error("未預期例外");
 				}
-			} else {
-				throw error ?? new Error("未預期例外");
+			} catch (err) {
+				console.error("updateStatus failed", err);
+				setError(err);
 			}
-		} catch (err) {
-			console.error("updateStatus failed", err);
-			setError(err);
-		}
-	}, [httpPatchAsync, name, token]);
+		},
+		[httpPatchAsync, name, token]
+	);
 
 	const toggle = useCallback(() => {
 		updateStatus(!enabled);
@@ -77,7 +80,6 @@ export default function useServiceStatus(opts = {}) {
 		enabled,
 		loading,
 		toggle,
-		error
-	}
-
+		error,
+	};
 }

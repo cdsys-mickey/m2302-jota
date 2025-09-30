@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import C05 from "@/modules/md-c05";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -69,7 +69,7 @@ export const useC05 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	const updateAmt = useCallback(({ setValue, data, reset = false }) => {
@@ -90,7 +90,6 @@ export const useC05 = () => {
 		}
 	}, []);
 
-
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
@@ -103,7 +102,7 @@ export const useC05 = () => {
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.prods, {
-			fillRows: true
+			fillRows: true,
 		});
 	}, [crud, grid]);
 
@@ -209,7 +208,7 @@ export const useC05 = () => {
 						console.log("refresh-grid.data", data);
 						grid.initGridData(data.prods, {
 							fillRows: crud.creating,
-							supressEvents: true
+							supressEvents: true,
 						});
 						updateAmt({ setValue, data });
 						toastEx.info("商品單價已更新");
@@ -372,7 +371,7 @@ export const useC05 = () => {
 					taxType: null,
 					rd: null,
 					rd2: null,
-					employee: null
+					employee: null,
 				});
 			},
 		[]
@@ -401,7 +400,7 @@ export const useC05 = () => {
 		async (prodId, { supplier, rtnDate }) => {
 			if (!prodId) {
 				toastEx.error("請先選擇商品", {
-					position: "top-right"
+					position: "top-right",
 				});
 				return;
 			}
@@ -409,14 +408,14 @@ export const useC05 = () => {
 			const supplierId = supplier?.FactID;
 			if (!supplierId) {
 				toastEx.error("請先選擇廠商", {
-					position: "top-right"
+					position: "top-right",
 				});
 				return;
 			}
 
 			if (!isDate(rtnDate)) {
 				toastEx.error("請先輸入退貨日期", {
-					position: "top-right"
+					position: "top-right",
 				});
 				return;
 			}
@@ -487,7 +486,7 @@ export const useC05 = () => {
 				handleRefreshAmt({
 					formData: {
 						...formData,
-						TaxType: newValue
+						TaxType: newValue,
 					},
 					gridData: grid.gridData,
 					setValue,
@@ -496,66 +495,70 @@ export const useC05 = () => {
 		[handleRefreshAmt, grid.gridData]
 	);
 
-	const onUpdateRow = useCallback(({ formData, fromRowIndex, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// prod
-		if (rowData.prod?.ProdID != oldRowData.prod?.ProdID) {
-			console.log(
-				`prod[rowIndex] changed`,
-				rowData?.prod
-			);
+	const onUpdateRow = useCallback(
+		({ formData, fromRowIndex, updateResult }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// prod
+				if (rowData.prod?.ProdID != oldRowData.prod?.ProdID) {
+					console.log(`prod[rowIndex] changed`, rowData?.prod);
 
-			const prodInfo = rowData.prod?.ProdID ? await getProdInfo(
-				rowData.prod.ProdID,
-				{
-					supplier: formData.supplier,
-					rtnDate: formData.GrtDate,
+					const prodInfo = rowData.prod?.ProdID
+						? await getProdInfo(rowData.prod.ProdID, {
+								supplier: formData.supplier,
+								rtnDate: formData.GrtDate,
+						  })
+						: null;
+					console.log("prodInfo", prodInfo);
+					// 取得報價
+
+					processedRowData = {
+						...processedRowData,
+						["ProdData"]: rowData.prod?.ProdData || "",
+						["PackData_N"]: rowData.prod?.PackData_N || "",
+						["SInqFlag"]: prodInfo?.SInqFlag || "",
+						["SPrice"]: prodInfo?.SPrice || "",
+					};
 				}
-			) : null;
-			console.log("prodInfo", prodInfo);
-			// 取得報價
 
-			processedRowData = {
-				...processedRowData,
-				["ProdData"]: rowData.prod?.ProdData || "",
-				["PackData_N"]:
-					rowData.prod?.PackData_N || "",
-				["SInqFlag"]: prodInfo?.SInqFlag || "",
-				["SPrice"]: prodInfo?.SPrice || "",
-			};
-		}
+				// 單價, 贈,  數量
+				if (
+					rowData.SPrice !== oldRowData.SPrice ||
+					rowData.SQty !== oldRowData.SQty
+				) {
+					// 計算合計
+					processedRowData = {
+						...processedRowData,
+						["SAmt"]:
+							!rowData.SPrice || !rowData.SQty
+								? ""
+								: rowData.SPrice * rowData.SQty,
+					};
+					updateResult.rows++;
+				}
 
-		// 單價, 贈,  數量
-		if (rowData.SPrice !== oldRowData.SPrice || rowData.SQty !== oldRowData.SQty) {
-			// 計算合計
-			processedRowData = {
-				...processedRowData,
-				["SAmt"]:
-					!rowData.SPrice || !rowData.SQty
-						? ""
-						: rowData.SPrice * rowData.SQty,
-			};
-			updateResult.rows++;
-		}
+				return processedRowData;
+			},
+		[getProdInfo, grid.gridData]
+	);
 
-
-		return processedRowData;
-	}, [getProdInfo, grid.gridData]);
-
-	const onGridChanged = useCallback(({ gridData, formData, setValue, updateResult, prevGridData }) => {
-		if (updateResult.rows > 0) {
-			handleRefreshAmt({
-				formData,
-				gridData,
-				setValue,
-			});
-		}
-	}, [handleRefreshAmt]);
+	const onGridChanged = useCallback(
+		({ gridData, formData, setValue, updateResult, prevGridData }) => {
+			if (updateResult.rows > 0) {
+				handleRefreshAmt({
+					formData,
+					gridData,
+					setValue,
+				});
+			}
+		},
+		[handleRefreshAmt]
+	);
 
 	// const buildGridChangeHandlerOld = useCallback(
 	// 	({ getValues, setValue, gridMeta }) =>
@@ -684,10 +687,7 @@ export const useC05 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = C05.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = C05.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			if (crud.creating) {
 				handleCreate({ data: collected });
@@ -708,14 +708,12 @@ export const useC05 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error("onEditorSubmitError", err);
-		toastEx.error(
-			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出"
-		);
+		toastEx.error("資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出");
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebC05Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebC05Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -746,10 +744,14 @@ export const useC05 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const onRefreshGridSubmit = useCallback(
 		({ setValue }) =>
@@ -776,7 +778,7 @@ export const useC05 = () => {
 							console.log("refreshed data", data);
 							grid.initGridData(data.prods, {
 								fillRows: crud.creating,
-								supressEvents: true
+								supressEvents: true,
 							});
 							updateAmt({ setValue, data });
 							toastEx.info("商品單價已更新");
@@ -825,16 +827,20 @@ export const useC05 = () => {
 		}
 	}, [checkEditableAction, crud, httpGetAsync, token]);
 
-	const handleRecvAmtChange = useCallback(({ setValue, getValues }) => (newValue) => {
-		console.log("handleRecvAmtChange", newValue);
-		const formData = getValues();
-		console.log("formData", formData);
-		handleRefreshAmt({
-			formData,
-			gridData: grid.gridData,
-			setValue,
-		});
-	}, [grid.gridData, handleRefreshAmt]);
+	const handleRecvAmtChange = useCallback(
+		({ setValue, getValues }) =>
+			(newValue) => {
+				console.log("handleRecvAmtChange", newValue);
+				const formData = getValues();
+				console.log("formData", formData);
+				handleRefreshAmt({
+					formData,
+					gridData: grid.gridData,
+					setValue,
+				});
+			},
+		[grid.gridData, handleRefreshAmt]
+	);
 
 	return {
 		...crud,
@@ -885,6 +891,6 @@ export const useC05 = () => {
 		handleRecvAmtChange,
 		refreshGrid,
 		handleRtnDateChanged,
-		handlePrint
+		handlePrint,
 	};
 };

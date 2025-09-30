@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import F05 from "@/modules/md-f05";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
@@ -12,10 +12,7 @@ export const useF05 = () => {
 	const crud = useContext(CrudContext);
 	const { token } = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);
-	const {
-		httpGetAsync,
-		httpPostAsync
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync } = useWebApi();
 	const appModule = useAppModule({
 		token,
 		moduleId: "F05",
@@ -24,35 +21,31 @@ export const useF05 = () => {
 	const formMeta = useFormMeta(
 		`
 
-		`);
-
-	const handleClose = useCallback(
-		async () => {
-			console.log("handleClose");
-			try {
-				crud.startUpdating();
-				const { status, error } = await httpPostAsync({
-					url: "v1/inv/taking/staging/close-out",
-					bearer: token
-				})
-				if (status.success) {
-					toastEx.success("結轉已成功");
-					// crud.finishedUpdating();
-				} else {
-					throw error ?? new Error("未預期例外");
-				}
-			} catch (err) {
-				crud.failedUpdating(err);
-				console.error(err);
-				toastEx.error("結轉失敗", err);
-			} finally {
-				crud.finishedUpdating();
-			}
-
-
-		},
-		[crud, httpPostAsync, token]
+		`
 	);
+
+	const handleClose = useCallback(async () => {
+		console.log("handleClose");
+		try {
+			crud.startUpdating();
+			const { status, error } = await httpPostAsync({
+				url: "v1/inv/taking/staging/close-out",
+				bearer: token,
+			});
+			if (status.success) {
+				toastEx.success("結轉已成功");
+				// crud.finishedUpdating();
+			} else {
+				throw error ?? new Error("未預期例外");
+			}
+		} catch (err) {
+			crud.failedUpdating(err);
+			console.error(err);
+			toastEx.error("結轉失敗", err);
+		} finally {
+			crud.finishedUpdating();
+		}
+	}, [crud, httpPostAsync, token]);
 
 	const confirmClose = useCallback(() => {
 		dialogs.confirm({
@@ -60,7 +53,7 @@ export const useF05 = () => {
 			onConfirm: () => {
 				handleClose();
 			},
-		})
+		});
 	}, [dialogs, handleClose]);
 
 	// READ

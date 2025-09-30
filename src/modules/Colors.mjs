@@ -25,7 +25,7 @@ const Colors = {
 	// BG: brown[50],
 	// PRIMARY: "#a64d11",
 	// PRIMARY: cyan[500],
-	// PRIMARY: "#0aaabc",
+	// PRIMARY: "rgb(0, 139, 67)",
 	PRIMARY: cyan[700],
 	SECONDARY: pink[500],
 	HEADING: "#777777",

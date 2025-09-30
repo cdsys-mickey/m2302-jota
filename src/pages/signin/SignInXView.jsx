@@ -9,7 +9,7 @@ import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
 import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
 
 const SignInXView = memo(forwardRef((props, ref) => {
-	const { loading, ...rest } = props;
+	const { loading, isRefreshRequired, ...rest } = props;
 	return (
 		<Paper
 			ref={ref}
@@ -94,7 +94,8 @@ const SignInXView = memo(forwardRef((props, ref) => {
 							size="small"
 							color="warning"
 							loading={loading}
-							endIcon={<LoginIcon />}>
+							endIcon={<LoginIcon />}
+							disabled={isRefreshRequired}>
 							登入
 						</ButtonEx>
 					</FlexBox>
@@ -107,5 +108,6 @@ const SignInXView = memo(forwardRef((props, ref) => {
 SignInXView.displayName = "SignInXView";
 SignInXView.propTypes = {
 	loading: PropTypes.bool,
+	isRefreshRequired: PropTypes.bool
 };
 export default SignInXView;

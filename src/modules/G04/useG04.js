@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import G04 from "@/modules/G04/G04.mjs";
 import useAction from "@/shared-modules/ActionState/useAction";
@@ -31,8 +31,8 @@ export const useG04 = () => {
 				const { status, error } = await httpPostAsync({
 					url: `v1/sales/recv-account/batches`,
 					data,
-					bearer: token
-				})
+					bearer: token,
+				});
 				if (status.success) {
 					crud.finishedCreating();
 					toastEx.success(`形成成功`);
@@ -61,8 +61,8 @@ export const useG04 = () => {
 				const { status, error } = await httpDeleteAsync({
 					url: `v1/sales/recv-account/batches`,
 					data,
-					bearer: token
-				})
+					bearer: token,
+				});
 				if (status.success) {
 					crud.finishedDeleting();
 					toastEx.success(`刪除成功`);
@@ -93,8 +93,8 @@ export const useG04 = () => {
 				const { status, error } = await httpPatchAsync({
 					url: `v1/sales/recv-account/batches/restore`,
 					data,
-					bearer: token
-				})
+					bearer: token,
+				});
 				if (status.success) {
 					restoreAction.finish();
 					toastEx.success(`復原成功`);
@@ -113,7 +113,6 @@ export const useG04 = () => {
 		console.error("onRecoverSubmitError", err, data);
 	}, []);
 
-
 	return {
 		...crud,
 		...appModule,
@@ -126,10 +125,6 @@ export const useG04 = () => {
 		// RECOVER
 		onRecoverSubmit,
 		onRecoverSubmitError,
-		restoreWorking: restoreAction.working
+		restoreWorking: restoreAction.working,
 	};
 };
-
-
-
-

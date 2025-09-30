@@ -1,7 +1,7 @@
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { E01Context } from "@/contexts/E01/E01Context";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
 import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";

@@ -1,5 +1,5 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import A20 from "@/modules/md-a20";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
@@ -44,10 +44,8 @@ export const useA20 = ({ token }) => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "sprod.ProdID",
-		createRow
+		createRow,
 	});
-
-
 
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
@@ -65,7 +63,7 @@ export const useA20 = ({ token }) => {
 					url: `v1/prod/boms`,
 					bearer: token,
 					params: {
-						id: itemId
+						id: itemId,
 					},
 				});
 				console.log("payload", payload);
@@ -196,10 +194,7 @@ export const useA20 = ({ token }) => {
 		async (data) => {
 			console.log(`A20.onEditorSubmit()`, data);
 			console.log(`grid.gridData`, grid.gridData);
-			const processed = A20.transformForEditorSubmit(
-				data,
-				grid.gridData
-			);
+			const processed = A20.transformForEditorSubmit(data, grid.gridData);
 			console.log(`processed`, processed);
 			if (crud.creating) {
 				handleCreate({ data: processed });
@@ -221,13 +216,12 @@ export const useA20 = ({ token }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A20.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出", {
-			position: "top-right"
-		}
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
 		);
 	}, []);
-
-
 
 	const promptCreating = useCallback(
 		(e) => {
@@ -239,7 +233,7 @@ export const useA20 = ({ token }) => {
 				data,
 			});
 			grid.initGridData(data.materials, {
-				fillRows: true
+				fillRows: true,
 			});
 		},
 		[crud, grid]
@@ -299,53 +293,67 @@ export const useA20 = ({ token }) => {
 			...rowData,
 			["SProdData"]: sprod?.ProdData || "",
 			["SPackData_N"]: sprod?.PackData_N || "",
-			["SProdQty"]: ""
+			["SProdQty"]: "",
 		};
 	}, []);
 
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// prod
-		if (processedRowData.sprod?.ProdID != oldRowData.sprod?.ProdID) {
-			console.log(
-				`sprod[${rowIndex}] changed`,
-				processedRowData?.sprod
-			);
-			processedRowData = await handleGridProdChange({
-				rowData: processedRowData,
-				formData
-			});
+	const onUpdateRow = useCallback(
+		({
+				fromRowIndex,
+				formData,
+				newValue,
+				setValue,
+				gridMeta,
+				updateResult,
+			}) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// prod
+				if (
+					processedRowData.sprod?.ProdID != oldRowData.sprod?.ProdID
+				) {
+					console.log(
+						`sprod[${rowIndex}] changed`,
+						processedRowData?.sprod
+					);
+					processedRowData = await handleGridProdChange({
+						rowData: processedRowData,
+						formData,
+					});
 
-			if (
-				rowData.sprod &&
-				grid.isDuplicating(rowData, newValue)
-			) {
-				toastEx.error(
-					`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`, {
-					position: "top-right"
+					if (
+						rowData.sprod &&
+						grid.isDuplicating(rowData, newValue)
+					) {
+						toastEx.error(
+							`「${rowData.sprod?.ProdData}」已存在, 請選擇其他商品`,
+							{
+								position: "top-right",
+							}
+						);
+						// setTimeout(() => {
+						// 	gridMeta.setActiveCell({
+						// 		col: 0,
+						// 		row: rowIndex,
+						// 	});
+						// });
+						processedRowData = {
+							...processedRowData,
+							["sprod"]: null,
+							["SProdData"]: "",
+							["SPackData_N"]: "",
+						};
+					}
 				}
-				);
-				// setTimeout(() => {
-				// 	gridMeta.setActiveCell({
-				// 		col: 0,
-				// 		row: rowIndex,
-				// 	});
-				// });
-				processedRowData = {
-					...processedRowData,
-					["sprod"]: null,
-					["SProdData"]: "",
-					["SPackData_N"]: ""
-				}
-			}
-		}
-		return processedRowData;
-	}, [grid, handleGridProdChange]);
+				return processedRowData;
+			},
+		[grid, handleGridProdChange]
+	);
 
 	// const buildGridChangeHandler = useCallback(
 	// 	({ gridMeta }) =>
@@ -430,6 +438,6 @@ export const useA20 = ({ token }) => {
 		...appModule,
 		createRow,
 		onUpdateRow,
-		...sideDrawer
+		...sideDrawer,
 	};
 };

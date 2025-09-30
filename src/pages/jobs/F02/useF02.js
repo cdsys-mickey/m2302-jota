@@ -1,5 +1,5 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import F02 from "@/pages/jobs/F02/F02.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -12,13 +12,9 @@ export const useF02 = ({ token }) => {
 	const { itemData } = crud;
 
 	const [state, setState] = useState({
-		staging: false
+		staging: false,
 	});
-	const {
-		httpGetAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-	} = useWebApi();
+	const { httpGetAsync, httpPutAsync, httpDeleteAsync } = useWebApi();
 	const appModule = useAppModule({
 		token,
 		moduleId: "F02",
@@ -28,14 +24,14 @@ export const useF02 = ({ token }) => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow: F02.createRow
+		createRow: F02.createRow,
 	});
 
 	const handleLoaded = useCallback((payload) => {
 		const data = payload.data[0];
-		setState(prev => ({
+		setState((prev) => ({
 			...prev,
-			data
+			data,
 		}));
 	}, []);
 
@@ -57,12 +53,12 @@ export const useF02 = ({ token }) => {
 					crud.finishedLoading({
 						data: data,
 					});
-					setState(prev => ({
+					setState((prev) => ({
 						...prev,
-						staging: data.prods?.length > 0
-					}))
+						staging: data.prods?.length > 0,
+					}));
 					grid.initGridData(data.prods, {
-						fillRows: 15
+						fillRows: 15,
 					});
 					grid.handleLock();
 				} else {
@@ -105,59 +101,74 @@ export const useF02 = ({ token }) => {
 		});
 	}, [crud, dialogs, httpDeleteAsync, itemData, load, token]);
 
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue, setValue, gridMeta, updateResult }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		updateResult.rowIndex = rowIndex;
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// listing
-		if (processedRowData.listing?.PhyID != oldRowData.listing?.PhyID) {
-			console.log(
-				`listing[${rowIndex}] changed`,
-				processedRowData?.listing
-			);
-			processedRowData = ({
-				...processedRowData,
-				PhyData: processedRowData.listing?.PhyData || ""
-			});
-		}
-		return processedRowData;
-	}, [grid.gridData]);
+	const onUpdateRow = useCallback(
+		({
+				fromRowIndex,
+				formData,
+				newValue,
+				setValue,
+				gridMeta,
+				updateResult,
+			}) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				updateResult.rowIndex = rowIndex;
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// listing
+				if (
+					processedRowData.listing?.PhyID != oldRowData.listing?.PhyID
+				) {
+					console.log(
+						`listing[${rowIndex}] changed`,
+						processedRowData?.listing
+					);
+					processedRowData = {
+						...processedRowData,
+						PhyData: processedRowData.listing?.PhyData || "",
+					};
+				}
+				return processedRowData;
+			},
+		[grid.gridData]
+	);
 
-	const onSubmit = useCallback(async (data) => {
-		console.log("onSubmit", data);
-		console.log("grid.gridData", grid.gridData)
-		try {
-			crud.startUpdating();
-			const { status, error } = await httpPutAsync({
-				url: "v1/inv/taking/staging",
-				bearer: token,
-				data: F02.transformForSubmitting(data, grid.gridData)
-			})
-			if (status.success) {
-				toastEx.success("電腦帳已形成，請繼續盤點作業");
+	const onSubmit = useCallback(
+		async (data) => {
+			console.log("onSubmit", data);
+			console.log("grid.gridData", grid.gridData);
+			try {
+				crud.startUpdating();
+				const { status, error } = await httpPutAsync({
+					url: "v1/inv/taking/staging",
+					bearer: token,
+					data: F02.transformForSubmitting(data, grid.gridData),
+				});
+				if (status.success) {
+					toastEx.success("電腦帳已形成，請繼續盤點作業");
+					crud.finishedUpdating();
+					grid.commitChanges();
+					load();
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				console.error("onSubmit.failed", err);
+				// crud.failedUpdating();
+				toastEx.error("產生電腦帳失敗", err);
+			} finally {
 				crud.finishedUpdating();
-				grid.commitChanges();
-				load();
-			} else {
-				throw error ?? new Error("未預期例外");
 			}
-		} catch (err) {
-			console.error("onSubmit.failed", err);
-			// crud.failedUpdating();
-			toastEx.error("產生電腦帳失敗", err);
-		} finally {
-			crud.finishedUpdating();
-		}
-
-	}, [crud, grid, httpPutAsync, load, token])
+		},
+		[crud, grid, httpPutAsync, load, token]
+	);
 
 	const onSubmitError = useCallback((err) => {
 		console.error("onSubmitError", err);
-	}, [])
+	}, []);
 
 	return {
 		...crud,
@@ -169,6 +180,6 @@ export const useF02 = ({ token }) => {
 		load,
 		onSubmit,
 		onSubmitError,
-		confirmDelete
+		confirmDelete,
 	};
 };

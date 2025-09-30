@@ -11,3 +11,22 @@
 .dsg-add-row>* {
   margin-right: 0;
 }
+
+/* 根據 toast 類型設定左邊邊框和進度條顏色 */
+/* 
+.toast-success {
+  border-left: 6px solid var(--toastify-color-success) !important;
+}
+
+.toast-error {
+  border-left: 6px solid var(--toastify-color-error) !important;
+}
+
+.toast-info {
+  border-left: 6px solid var(--toastify-color-info) !important;
+}
+
+.toast-warning {
+  border-left: 6px solid var(--toastify-color-warning) !important;
+} 
+*/

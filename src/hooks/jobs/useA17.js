@@ -8,7 +8,7 @@ import { useWebApi } from "@/shared-hooks/useWebApi";
 import Errors from "@/shared-modules/Errors.mjs";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 
 export const useA17 = () => {
 	const crud = useContext(CrudContext);

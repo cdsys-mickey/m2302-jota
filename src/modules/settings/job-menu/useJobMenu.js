@@ -4,7 +4,7 @@ import useAction from "@/shared-modules/ActionState/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import JobMenu from "./JobMenu.mjs";
 import { nanoid } from "nanoid";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import SideMenu from "@/modules/SideMenu.mjs";
 
@@ -21,7 +21,7 @@ export const useJobMenu = () => {
 		fieldsLoading: null,
 		fieldsError: null,
 		selectedFields: null,
-		menuLoading: false
+		menuLoading: false,
 	});
 
 	const printAction = useAction();
@@ -37,58 +37,65 @@ export const useJobMenu = () => {
 		printAction.clear();
 	}, [printAction]);
 
-	const loadActiveItems = useCallback(async (items) => {
-		setState(prev => ({
-			...prev,
-			menuLoading: true
-		}))
-		try {
-			const { status, payload, error } = await httpGetAsync({
-				url: `v1/user/settings/menu`,
-				bearer: token
-			})
-			if (status.success) {
-				const sortedPayload = payload
-					.map(id => {
-						if (id.startsWith("@")) {
-							return {
-								id: nanoid(),
-								JobName: id.slice(1),
-							}
-						}
-
-						const item = items.find(item => item.JobID === id);
-						return item ? { ...item, id: nanoid() } : null;
-					})
-					.filter(Boolean);
-				setState(prev => ({
-					...prev,
-					selectedFields: sortedPayload,
-					menuLoading: false
-				}))
-			} else {
-				throw error || new Error("未預期例外")
-			}
-		} catch (err) {
-			console.error(err);
-			if (err.status == 404) {
-				toastEx.info("您尚未設定功能排序，建議您可以先「加入所有功能」後，再請依需求調整");
-			} else {
-				toastEx.error("載入個人設定發生錯誤");
-			}
-		} finally {
-			setState(prev => ({
+	const loadActiveItems = useCallback(
+		async (items) => {
+			setState((prev) => ({
 				...prev,
-				menuLoading: false
-			}))
-		}
-	}, [httpGetAsync, token]);
+				menuLoading: true,
+			}));
+			try {
+				const { status, payload, error } = await httpGetAsync({
+					url: `v1/user/settings/menu`,
+					bearer: token,
+				});
+				if (status.success) {
+					const sortedPayload = payload
+						.map((id) => {
+							if (id.startsWith("@")) {
+								return {
+									id: nanoid(),
+									JobName: id.slice(1),
+								};
+							}
+
+							const item = items.find(
+								(item) => item.JobID === id
+							);
+							return item ? { ...item, id: nanoid() } : null;
+						})
+						.filter(Boolean);
+					setState((prev) => ({
+						...prev,
+						selectedFields: sortedPayload,
+						menuLoading: false,
+					}));
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				console.error(err);
+				if (err.status == 404) {
+					toastEx.info(
+						"您尚未設定功能排序，建議您可以先「加入所有功能」後，再請依需求調整"
+					);
+				} else {
+					toastEx.error("載入個人設定發生錯誤");
+				}
+			} finally {
+				setState((prev) => ({
+					...prev,
+					menuLoading: false,
+				}));
+			}
+		},
+		[httpGetAsync, token]
+	);
 
 	const loadDef = useCallback(async () => {
 		setState((prev) => ({
 			...prev,
 			fieldsLoading: true,
-			fields: []
+			fields: [],
 		}));
 		try {
 			const { status, payload, error } = await httpGetAsync({
@@ -96,17 +103,18 @@ export const useJobMenu = () => {
 				bearer: token,
 			});
 			if (status.success) {
-				const authItems = payload.map(x => ({
-					...x,
-					id: nanoid()
-				})) || [];
+				const authItems =
+					payload.map((x) => ({
+						...x,
+						id: nanoid(),
+					})) || [];
 				setState((prev) => ({
 					...prev,
 					// fields: payload.map((x) => x.JobID) || [],
 					fields: authItems,
 					selectedFields: [],
 				}));
-				loadActiveItems(authItems)
+				loadActiveItems(authItems);
 			} else {
 				throw error || new Error("讀取欄位發生例外");
 			}
@@ -132,8 +140,8 @@ export const useJobMenu = () => {
 			}
 
 			if (
-				destination.droppableId === JobMenu.SELECTED
-				&& source.droppableId === JobMenu.UNUSED
+				destination.droppableId === JobMenu.SELECTED &&
+				source.droppableId === JobMenu.UNUSED
 			) {
 				const fromIndex = source.index;
 				const toIndex = destination.index;
@@ -149,13 +157,14 @@ export const useJobMenu = () => {
 
 				setState((prev) => ({
 					...prev,
-					selectedFields:
-						toItems,
+					selectedFields: toItems,
 				}));
 			}
 
-			if (destination.droppableId === JobMenu.SELECTED
-				&& source.droppableId === JobMenu.SELECTED) {
+			if (
+				destination.droppableId === JobMenu.SELECTED &&
+				source.droppableId === JobMenu.SELECTED
+			) {
 				// 調整排序
 				const fromIndex = source.index;
 				const toIndex = destination.index;
@@ -179,7 +188,9 @@ export const useJobMenu = () => {
 		setState((prev) => ({
 			...prev,
 			// fields: [...prev.fields, f],
-			selectedFields: [...prev.selectedFields.filter((x) => x.id !== item.id)],
+			selectedFields: [
+				...prev.selectedFields.filter((x) => x.id !== item.id),
+			],
 		}));
 	}, []);
 
@@ -191,28 +202,33 @@ export const useJobMenu = () => {
 			},
 			onCancel: () => {
 				toastEx.warn("功能排序於重新登入後生效");
-			}
-		})
+			},
+		});
 	}, [auth, dialogs, token]);
 
-	const handleHeaderEdit = useCallback((item) => {
-		console.log("handleHeaderEdit", item)
-		dialogs.prompt({
-			title: "重新命名",
-			message: `請為群組標頭重新命名`,
-			defaultPromptValue: item.JobName,
-			onConfirm: ({ value }) => {
-				if (value) {
-					setState((prev) => ({
-						...prev,
-						selectedFields: prev.selectedFields.map((field) =>
-							field.id === item.id ? { ...field, JobName: value } : field
-						),
-					}));
-				}
-			}
-		})
-	}, [dialogs]);
+	const handleHeaderEdit = useCallback(
+		(item) => {
+			console.log("handleHeaderEdit", item);
+			dialogs.prompt({
+				title: "重新命名",
+				message: `請為群組標頭重新命名`,
+				defaultPromptValue: item.JobName,
+				onConfirm: ({ value }) => {
+					if (value) {
+						setState((prev) => ({
+							...prev,
+							selectedFields: prev.selectedFields.map((field) =>
+								field.id === item.id
+									? { ...field, JobName: value }
+									: field
+							),
+						}));
+					}
+				},
+			});
+		},
+		[dialogs]
+	);
 
 	const handleAdd = useCallback((f) => {
 		console.log("handleAdd", f);
@@ -228,7 +244,7 @@ export const useJobMenu = () => {
 				for (let i = 0; i < fields.length; i++) {
 					const field = fields[i];
 					if (field.JobID === f.JobID) {
-						add = true;  // 開始加入 fields
+						add = true; // 開始加入 fields
 					}
 					if (add) {
 						if (added && SideMenu.isHeader(field)) {
@@ -248,22 +264,24 @@ export const useJobMenu = () => {
 			setState((prev) => ({
 				...prev,
 				// fields: [...prev.fields.filter((x) => x !== f)],
-				selectedFields: [...prev.selectedFields, {
-					...f,
-					id: nanoid()
-				}],
+				selectedFields: [
+					...prev.selectedFields,
+					{
+						...f,
+						id: nanoid(),
+					},
+				],
 			}));
 		}
 	}, []);
-
 
 	const handleAddAllFields = useCallback(() => {
 		setState((prev) => ({
 			...prev,
 			// fields: [],
-			selectedFields: prev.fields.map(x => ({
+			selectedFields: prev.fields.map((x) => ({
 				...x,
-				id: nanoid()
+				id: nanoid(),
 			})),
 		}));
 	}, []);
@@ -285,21 +303,21 @@ export const useJobMenu = () => {
 		console.error(`onSubmitError`, err);
 	}, []);
 
-
 	const saveAction = useAction();
 
-
-
 	const handleSave = useCallback(async () => {
-		const collected = state.selectedFields?.map(x => {
-			if (!x.JobID && !x.JobName) {
-				return null;
-			}
-			if (x.JobName && !x.JobID) {
-				return `@${x.JobName}`;
-			}
-			return x.JobID;
-		}).filter(Boolean) || [];
+		const collected =
+			state.selectedFields
+				?.map((x) => {
+					if (!x.JobID && !x.JobName) {
+						return null;
+					}
+					if (x.JobName && !x.JobID) {
+						return `@${x.JobName}`;
+					}
+					return x.JobID;
+				})
+				.filter(Boolean) || [];
 		console.log("selectedFields", collected);
 
 		try {
@@ -307,8 +325,8 @@ export const useJobMenu = () => {
 			const { status, error } = await httpPutAsync({
 				url: "v1/user/settings/menu",
 				bearer: token,
-				data: collected
-			})
+				data: collected,
+			});
 			if (status.success) {
 				handleRefreshPrompt();
 				saveAction.finish();
@@ -317,31 +335,36 @@ export const useJobMenu = () => {
 			}
 		} catch (err) {
 			saveAction.fail({
-				error: err
+				error: err,
 			});
 			console.error("handleSave", err);
 			toastEx.error("儲存失敗", err);
 		}
-
-	}, [handleRefreshPrompt, httpPutAsync, saveAction, state.selectedFields, token]);
+	}, [
+		handleRefreshPrompt,
+		httpPutAsync,
+		saveAction,
+		state.selectedFields,
+		token,
+	]);
 
 	const handleAddGroup = useCallback(() => {
 		dialogs.prompt({
 			title: "新稱群組標頭",
 			message: "請輸入群組名稱",
 			onConfirm: ({ value }) => {
-				setState(prev => ({
+				setState((prev) => ({
 					...prev,
 					selectedFields: [
 						...prev.selectedFields,
 						{
 							id: nanoid(),
-							JobName: value
-						}
-					]
-				}))
-			}
-		})
+							JobName: value,
+						},
+					],
+				}));
+			},
+		});
 	}, [dialogs]);
 
 	// useInit(() => {
@@ -364,6 +387,6 @@ export const useJobMenu = () => {
 		handleSave,
 		saveWorking: saveAction.working,
 		handleAddGroup,
-		handleHeaderEdit
+		handleHeaderEdit,
 	};
 };

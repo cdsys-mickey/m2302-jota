@@ -8,10 +8,12 @@ import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import ConfigContext from "@/contexts/config/ConfigContext";
+import toastEx from "@/helpers/toastEx";
+import { Rule } from "@mui/icons-material";
 
 const SignalRTest = memo(() => {
 	const form = useForm();
-	const { register } = form;
+	const { register, setValue } = form;
 	const config = useContext(ConfigContext);
 
 	const { connection, connectionState, error } = useSignalR({
@@ -36,13 +38,28 @@ const SignalRTest = memo(() => {
 	const broadcastedHandler = useCallback((payload) => {
 		console.log(`messageBrocasted`, payload);
 		const { level, message } = payload;
-		toast.info(`[${level}]${message}`);
+		toastEx.info(`[${level}]${message}`);
 	}, []);
 
 	const receivedHandler = useCallback((payload) => {
 		console.log(`messageBrocasted`, payload);
 		const { level, message } = payload;
-		toast.success(`[${level}]${message}`);
+		toastEx.success(`[${level}]${message}`, {
+			actionText: "取消",
+			onAction: (e) => {
+				toastEx.info("onAction triggered");
+				e.preventDefault();
+				// e.stopPropagation();
+			},
+			position: "top-center",
+			// slotProps: {
+			// 	button: {
+			// 		dense: true,
+			// 		color: "white"
+			// 	}
+			// },
+			// autoClose: false
+		});
 	}, []);
 
 	const onSendSubmit = useCallback(
@@ -77,14 +94,19 @@ const SignalRTest = memo(() => {
 		};
 	}, [connection, receivedHandler]);
 
+	useEffect(() => {
+		setValue("connectionId", connection?.connectionId);
+	}, [connection?.connectionId, setValue]);
+
 	return (
 		<>
 			<div>SignalR: {connectionState},</div>
 			<div>connectionId: {connection?.connectionId || "(N/A)"}</div>
 			<div>Error: {error?.message || "(N/A)"}</div>
 			<form onSubmit={form.handleSubmit(onSendSubmit)}>
-				<input type="text" {...register("connectionId")} />
-				<input type="text" {...register("content")} />
+				<input type="text" {...register("connectionId")} style={{ minWidth: "20em" }} />
+				<br />
+				<input type="text" {...register("content")} style={{ minWidth: "20em" }} />
 
 				<input type="submit" value="發送" />
 				<input

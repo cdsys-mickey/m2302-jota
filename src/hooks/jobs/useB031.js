@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import B02 from "@/modules/md-b02";
 import B031 from "@/modules/md-b031";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
@@ -33,12 +33,8 @@ export const useB031 = () => {
 
 	const [selectedInq, setSelectedInq] = useState();
 
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPatchAsync,
-		httpDeleteAsync,
-	} = useWebApi();
+	const { httpGetAsync, httpPostAsync, httpPatchAsync, httpDeleteAsync } =
+		useWebApi();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -46,8 +42,8 @@ export const useB031 = () => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			sort: B02.OrderBy.SUPPLIER
-		}
+			sort: B02.OrderBy.SUPPLIER,
+		},
 	});
 
 	const grid = useDSG({
@@ -65,7 +61,7 @@ export const useB031 = () => {
 			Price: "",
 			QPrice: "",
 			QDate: null,
-			employee: null
+			employee: null,
 		}),
 		[]
 	);
@@ -78,7 +74,7 @@ export const useB031 = () => {
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.quotes, {
-			fillRows: 13
+			fillRows: 13,
 		});
 	}, [crud, grid]);
 
@@ -153,12 +149,19 @@ export const useB031 = () => {
 		[crud, loadItem]
 	);
 
-	const handleSelectDate = useCallback((e, rowData) => {
-		console.log("handleSelectDate", rowData);
-		e?.stopPropagation();
-		crud.cancelAction();
-		loadItem({ cst: rowData.CustID, emp: rowData.QEmplID, dat: rowData.QDate });
-	}, [crud, loadItem]);
+	const handleSelectDate = useCallback(
+		(e, rowData) => {
+			console.log("handleSelectDate", rowData);
+			e?.stopPropagation();
+			crud.cancelAction();
+			loadItem({
+				cst: rowData.CustID,
+				emp: rowData.QEmplID,
+				dat: rowData.QDate,
+			});
+		},
+		[crud, loadItem]
+	);
 
 	const confirmQuitCreating = useCallback(() => {
 		dialogs.confirm({
@@ -283,65 +286,57 @@ export const useB031 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridProdChange = useCallback(
-		({ rowData, newValue }) => {
-			let processedRowData = { ...rowData };
+	const handleGridProdChange = useCallback(({ rowData, newValue }) => {
+		let processedRowData = { ...rowData };
 
-			// if (
-			// 	processedRowData.prod &&
-			// 	grid.isDuplicating(rowData, newValue, "prod.ProdID")
-			// ) {
-			// 	toastEx.error(
-			// 		`「${processedRowData.prod?.ProdData}」已存在, 請選擇其他商品`,
-			// 		{ position: "top-right" }
-			// 	);
-			// 	processedRowData.prod = null;
-			// }
+		// if (
+		// 	processedRowData.prod &&
+		// 	grid.isDuplicating(rowData, newValue, "prod.ProdID")
+		// ) {
+		// 	toastEx.error(
+		// 		`「${processedRowData.prod?.ProdData}」已存在, 請選擇其他商品`,
+		// 		{ position: "top-right" }
+		// 	);
+		// 	processedRowData.prod = null;
+		// }
 
-			processedRowData = {
-				...processedRowData,
-				["QPrice"]: "",
-				["Price"]: processedRowData?.prod?.Price || "",
-				["PackData_N"]: processedRowData?.prod?.PackData_N || "",
-				["ProdData_N"]: processedRowData?.prod?.ProdData || "",
-
-
-
-			};
-			return processedRowData;
-		},
-		[]
-	);
-
-	const onUpdateRow = useCallback(({ fromRowIndex, formData, newValue }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
-
-		let processedRowData = {
-			...rowData,
+		processedRowData = {
+			...processedRowData,
+			["QPrice"]: "",
+			["Price"]: processedRowData?.prod?.Price || "",
+			["PackData_N"]: processedRowData?.prod?.PackData_N || "",
+			["ProdData_N"]: processedRowData?.prod?.ProdData || "",
 		};
-
-		// let employee = formData["employee"];
-		// let date = formData["Date"];
-
-		if (
-			rowData.prod?.ProdID !==
-			oldRowData?.prod?.ProdID
-		) {
-			console.log(
-				`[${rowIndex}]prod changed`,
-				rowData?.prod
-			);
-			processedRowData = handleGridProdChange({
-				rowData,
-				oldRowData,
-				formData,
-				newValue
-			});
-		}
 		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+	}, []);
+
+	const onUpdateRow = useCallback(
+		({ fromRowIndex, formData, newValue }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+
+				let processedRowData = {
+					...rowData,
+				};
+
+				// let employee = formData["employee"];
+				// let date = formData["Date"];
+
+				if (rowData.prod?.ProdID !== oldRowData?.prod?.ProdID) {
+					console.log(`[${rowIndex}]prod changed`, rowData?.prod);
+					processedRowData = handleGridProdChange({
+						rowData,
+						oldRowData,
+						formData,
+						newValue,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	// const buildGridChangeHandlerOld = useCallback(
 	// 	({ gridMeta, getValues }) => async (newValue, operations) => {
@@ -407,13 +402,9 @@ export const useB031 = () => {
 					grid.getDirtyRows()
 				);
 				const submitted = {
-					data: [
-						collected
-					],
-					delete: [
-						...grid.deletedIds
-					]
-				}
+					data: [collected],
+					delete: [...grid.deletedIds],
+				};
 				console.log("submitted", submitted);
 				handlePatch({ data: submitted });
 			} else {
@@ -425,9 +416,7 @@ export const useB031 = () => {
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error("onEditorSubmitError", err);
-		toastEx.error(
-			"資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出"
-		);
+		toastEx.error("資料驗證失敗, 請檢查並修正標註錯誤的欄位後，再重新送出");
 	}, []);
 
 	const getRowKey = useCallback(({ rowData, rowIndex }) => {
@@ -500,36 +489,53 @@ export const useB031 = () => {
 	);
 
 	const onImportProdsSubmit = useCallback(
-		({ form }) => async (data) => {
-			console.log("onImportProdsSubmit", data);
-			try {
-				importProdsAction.start();
-				const { status, payload, error } = await httpGetAsync({
-					url: "v1/prod/data-grid/B031",
-					bearer: token,
-					params: {
-						...B031.transformProdCriteriaAsQueryParams(ipState.criteria),
-						sk: ipState.saveKey,
-					},
-				});
-				if (status.success) {
-					const data = payload.data?.[0].B031031_W1 || [];
-					console.log("data", data);
-					const formData = form.getValues();
-					grid.initGridData(B031.transformForGridImport(data, formData?.employee, formData?.Date), {
-						fillRows: true,
+		({ form }) =>
+			async (data) => {
+				console.log("onImportProdsSubmit", data);
+				try {
+					importProdsAction.start();
+					const { status, payload, error } = await httpGetAsync({
+						url: "v1/prod/data-grid/B031",
+						bearer: token,
+						params: {
+							...B031.transformProdCriteriaAsQueryParams(
+								ipState.criteria
+							),
+							sk: ipState.saveKey,
+						},
 					});
-					toastEx.success(`成功帶入 ${data.length} 筆商品`);
-					importProdsAction.clear();
-				} else {
-					throw error ?? new Error("未預期例外");
+					if (status.success) {
+						const data = payload.data?.[0].B031031_W1 || [];
+						console.log("data", data);
+						const formData = form.getValues();
+						grid.initGridData(
+							B031.transformForGridImport(
+								data,
+								formData?.employee,
+								formData?.Date
+							),
+							{
+								fillRows: true,
+							}
+						);
+						toastEx.success(`成功帶入 ${data.length} 筆商品`);
+						importProdsAction.clear();
+					} else {
+						throw error ?? new Error("未預期例外");
+					}
+				} catch (err) {
+					importProdsAction.fail({ error: err });
+					toastEx.error("帶入商品發生錯誤", err);
 				}
-			} catch (err) {
-				importProdsAction.fail({ error: err });
-				toastEx.error("帶入商品發生錯誤", err);
-			}
-		},
-		[httpGetAsync, importProdsAction, ipState.criteria, ipState.saveKey, grid, token]
+			},
+		[
+			httpGetAsync,
+			importProdsAction,
+			ipState.criteria,
+			ipState.saveKey,
+			grid,
+			token,
+		]
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {
@@ -537,8 +543,8 @@ export const useB031 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebB011031Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebB011031Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -569,10 +575,14 @@ export const useB031 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -583,7 +593,7 @@ export const useB031 = () => {
 		catM,
 		catS
 		`
-	)
+	);
 
 	return {
 		...crud,
@@ -624,6 +634,6 @@ export const useB031 = () => {
 		// handleLastField,
 		loadProdFormMeta,
 		...sideDrawer,
-		handlePrint
+		handlePrint,
 	};
 };

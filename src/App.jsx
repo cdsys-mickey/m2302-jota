@@ -1,5 +1,5 @@
-import "react-toastify/dist/ReactToastify.css";
 import "react-datasheet-grid/dist/style.css";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 import {
@@ -15,20 +15,17 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { zhTW } from "date-fns/locale/zh-TW";
 // import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import zhTW from "dayjs/locale/zh-tw";
-import { ToastContainer } from "react-toastify";
 
-import { DialogsProvider } from "@/shared-contexts/dialog/DialogsProvider";
 import { AppProvider } from "@/contexts/app/AppProvider";
-import AppRoute from "@/routes/AppRoute";
 import Colors from "@/modules/Colors.mjs";
+import AppRoute from "@/routes/AppRoute";
+import { DialogsProvider } from "@/shared-contexts/dialog/DialogsProvider";
 import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";
-import { useEffect } from "react";
-import { useContext } from "react";
+import { Suspense, useContext, useEffect } from "react";
 import ConfigContext from "./contexts/config/ConfigContext";
-import { Suspense } from "react";
-import LoadingTypography from "./shared-components/LoadingTypography";
 import { MessagingProvider } from "./contexts/messaging/MessagingProvider";
-import { AuthProvider } from "./contexts/auth/AuthProvider";
+import LoadingTypography from "./shared-components/LoadingTypography";
+import ToastExProvider from "./shared-components/ToastEx/ToastExProvider";
 // use palette from default theme
 const { palette } = createTheme();
 
@@ -174,11 +171,11 @@ function App() {
 							</AppProvider>
 						</DialogsProvider>
 					</ResponsiveProvider>
-					<ToastContainer
+					<ToastExProvider
 						// theme="dark"
-						theme="colored"
-						// theme="light"
-						hideProgressBar
+						// theme="colored"
+						theme="light"
+						// hideProgressBar
 						// position="top-center"
 						position="bottom-right"
 					// autoClose={3000} // 自動關閉時間（以毫秒為單位，例如 3000 毫秒 = 3 秒）

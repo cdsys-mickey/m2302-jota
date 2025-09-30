@@ -1,4 +1,4 @@
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import Objects from "@/shared-modules/Objects.mjs";
 import Types from "@/shared-modules/Types.mjs";

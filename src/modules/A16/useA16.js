@@ -1,9 +1,10 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useInit } from "@/shared-hooks/useInit"; import { useToggle } from "@/shared-hooks/useToggle";
+import { useInit } from "@/shared-hooks/useInit";
+import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
@@ -51,8 +52,8 @@ export const useA16 = ({ token }) => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			acc: 1
-		}
+			acc: 1,
+		},
 	});
 
 	const loadItem = useCallback(
@@ -71,7 +72,7 @@ export const useA16 = ({ token }) => {
 					url: `v1/ou/depts`,
 					bearer: token,
 					params: {
-						id: _id
+						id: _id,
 					},
 				});
 				console.log("payload", payload);
@@ -216,10 +217,11 @@ export const useA16 = ({ token }) => {
 	const onEditorSubmitError = useCallback((err) => {
 		console.error(`A16.onSubmitError`, err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
-			, {
-				position: "top-right"
-			});
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
+			{
+				position: "top-right",
+			}
+		);
 	}, []);
 
 	const promptCreating = useCallback(
@@ -246,8 +248,8 @@ export const useA16 = ({ token }) => {
 						url: `v1/ou/depts`,
 						bearer: token,
 						params: {
-							id: crud.itemData?.DeptID
-						}
+							id: crud.itemData?.DeptID,
+						},
 					});
 					if (status.success) {
 						crud.cancelAction();
@@ -290,7 +292,7 @@ export const useA16 = ({ token }) => {
 				reset({
 					lvId: "",
 					lvName: "",
-					lvBank: null
+					lvBank: null,
 				});
 			},
 		[]
@@ -324,6 +326,6 @@ export const useA16 = ({ token }) => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
-		handleReset
+		handleReset,
 	};
 };

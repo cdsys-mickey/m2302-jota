@@ -1,6 +1,6 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { C05Context } from "@/contexts/C05/C05Context";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
 import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";

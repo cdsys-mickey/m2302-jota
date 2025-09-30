@@ -27,6 +27,8 @@ import ControlledRadioGroupEx from "./RadioGroupEx/ControlledRadioGroupEx";
 import DSGGridContainer from "./dsg/DSGGrid/DSGGridContainer";
 import JumboAlertView from "./JumboAlert/JumboAlertView";
 
+import ToastExContainer from "./ToastEx/ToastExContainer";
+
 export {
 	ButtonExContainer as ButtonEx,
 	CheckboxExWrapper as CheckboxEx,
@@ -52,4 +54,5 @@ export {
 	ControlledRadioGroupEx as RadioGroupEx,
 	DSGGridContainer as DSGGrid,
 	JumboAlertView as JumboAlert,
+	ToastExContainer as ToastEx,
 };

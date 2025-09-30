@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import D041 from "@/modules/D041.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -70,7 +70,7 @@ export const useD041 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	// 挑戰
@@ -114,8 +114,6 @@ export const useD041 = () => {
 	// 	[qtyMap]
 	// );
 
-
-
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
@@ -125,7 +123,7 @@ export const useD041 = () => {
 		crud.promptCreating({ data });
 		// qtyMap.clear();
 		grid.initGridData(data.prods, {
-			fillRows: true
+			fillRows: true,
 		});
 	}, [crud, grid]);
 
@@ -302,7 +300,7 @@ export const useD041 = () => {
 				reset({
 					employee: null,
 					sdate: null,
-					pdline: null
+					pdline: null,
 				});
 			},
 		[]
@@ -355,27 +353,27 @@ export const useD041 = () => {
 		[]
 	);
 
-	const updateGridRow = useCallback(({ fromRowIndex, newValue }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// 商品
-		if (
-			rowData.prod?.ProdID !==
-			oldRowData.prod?.ProdID
-		) {
-			processedRowData =
-				await handleGridProdChange({
-					rowIndex,
-					rowData: processedRowData,
-					newValue,
-				});
-		}
-		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+	const updateGridRow = useCallback(
+		({ fromRowIndex, newValue }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// 商品
+				if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID) {
+					processedRowData = await handleGridProdChange({
+						rowIndex,
+						rowData: processedRowData,
+						newValue,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	const buildGridChangeHandler = useCallback(
 		({ gridMeta }) =>
@@ -400,14 +398,14 @@ export const useD041 = () => {
 									})(item, index);
 									return updatedRow;
 								})
-						)
+						);
 						console.log("updatedRows", updatedRows);
 
 						newGridData.splice(
 							operation.fromRowIndex,
 							updatedRows.length,
 							...updatedRows
-						)
+						);
 						// newValue
 						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
 						// 	.forEach(async (rowData, i) => {
@@ -449,10 +447,7 @@ export const useD041 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = D041.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = D041.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			if (crud.creating) {
 				handleCreate({ data: collected });
@@ -476,8 +471,8 @@ export const useD041 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebD041Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebD041Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -508,10 +503,14 @@ export const useD041 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	// 有效日期查詢
 	const onExpDialogOpen = useCallback(() => {
@@ -640,6 +639,6 @@ export const useD041 = () => {
 		dtypeDisabled,
 		stypeDisabled,
 		reworkedDisabled,
-		...sideDrawer
+		...sideDrawer,
 	};
 };

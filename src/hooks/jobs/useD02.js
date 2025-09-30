@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import D02 from "@/modules/D02.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
@@ -72,7 +72,7 @@ export const useD02 = () => {
 	const grid = useDSG({
 		gridId: "prods",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
 
 	// 挑戰
@@ -116,8 +116,6 @@ export const useD02 = () => {
 	// 	[qtyMap]
 	// );
 
-
-
 	// CREATE
 	const promptCreating = useCallback(() => {
 		const data = {
@@ -126,12 +124,12 @@ export const useD02 = () => {
 		};
 		crud.promptCreating({ data });
 		grid.initGridData(data.prods, {
-			fillRows: true
+			fillRows: true,
 		});
 	}, [crud, grid]);
 
 	const promptCreatingWithCheck = useCallback(() => {
-		pwordCheck.performCheck({ callback: promptCreating })
+		pwordCheck.performCheck({ callback: promptCreating });
 	}, [promptCreating, pwordCheck]);
 
 	const handleCreate = useCallback(
@@ -157,7 +155,7 @@ export const useD02 = () => {
 				if (err.code === 102) {
 					// recoverStockMap(data.prods, { mark: true });
 					toastEx.error("部分商品庫存不足，請調整後再送出", {
-						position: "top-right"
+						position: "top-right",
 					});
 				} else {
 					toastEx.error("新增失敗", err);
@@ -300,7 +298,7 @@ export const useD02 = () => {
 	}, [crud, dialogs, httpDeleteAsync, itemData, listLoader, token]);
 
 	const confirmDeleteWithCheck = useCallback(() => {
-		pwordCheck.performCheck({ callback: confirmDelete })
+		pwordCheck.performCheck({ callback: confirmDelete });
 	}, [confirmDelete, pwordCheck]);
 
 	const handleReset = useCallback(
@@ -314,7 +312,6 @@ export const useD02 = () => {
 					employee: null,
 					rdate: null,
 					pdline: null,
-
 				});
 			},
 		[]
@@ -355,18 +352,21 @@ export const useD02 = () => {
 		async ({ rowData, rowIndex, newValue }) => {
 			const { prod } = rowData;
 
-			const prodRowIndex = rowData.prod?.ProdID ? D02.findProdIndex({
-				newValue,
-				rowData,
-				rowIndex,
-			}) : null;
+			const prodRowIndex = rowData.prod?.ProdID
+				? D02.findProdIndex({
+						newValue,
+						rowData,
+						rowIndex,
+				  })
+				: null;
 
 			const found = rowData.prod?.ProdID && prodRowIndex !== -1;
 
 			// 檢查是否已存在
 			if (found) {
 				toastEx.error(
-					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${prodRowIndex + 1
+					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
+						prodRowIndex + 1
 					} 筆, 請重新選擇`
 				);
 			}
@@ -383,28 +383,28 @@ export const useD02 = () => {
 		[]
 	);
 
-	const updateGridRow = useCallback(({ fromRowIndex, newValue }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
-		console.log(`開始處理第 ${rowIndex} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
-		// 商品
-		if (
-			rowData.prod?.ProdID !==
-			oldRowData.prod?.ProdID
-		) {
-			processedRowData =
-				await handleGridProdChange({
-					rowIndex,
-					rowData: processedRowData,
-					newValue,
-				});
-		}
+	const updateGridRow = useCallback(
+		({ fromRowIndex, newValue }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// 商品
+				if (rowData.prod?.ProdID !== oldRowData.prod?.ProdID) {
+					processedRowData = await handleGridProdChange({
+						rowIndex,
+						rowData: processedRowData,
+						newValue,
+					});
+				}
 
-		return processedRowData;
-	}, [grid.gridData, handleGridProdChange]);
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange]
+	);
 
 	const buildGridChangeHandler = useCallback(
 		({ gridMeta }) =>
@@ -428,14 +428,14 @@ export const useD02 = () => {
 									})(item, index);
 									return updatedRow;
 								})
-						)
+						);
 						console.log("updatedRows", updatedRows);
 
 						newGridData.splice(
 							operation.fromRowIndex,
 							updatedRows.length,
 							...updatedRows
-						)
+						);
 					} else if (operation.type === "DELETE") {
 						// do nothing now
 					} else if (operation.type === "CREATE") {
@@ -455,10 +455,7 @@ export const useD02 = () => {
 	const onEditorSubmit = useCallback(
 		(data) => {
 			console.log("onEditorSubmit", data);
-			const collected = D02.transformForSubmitting(
-				data,
-				grid.gridData
-			);
+			const collected = D02.transformForSubmitting(data, grid.gridData);
 			console.log("collected", collected);
 			if (crud.creating) {
 				handleCreate({ data: collected });
@@ -482,8 +479,8 @@ export const useD02 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebD02Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebD02Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
 	const onPrintSubmit = useCallback(
@@ -514,10 +511,14 @@ export const useD02 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	// 有效日期查詢
 	const onExpDialogOpen = useCallback(() => {
@@ -638,6 +639,6 @@ export const useD02 = () => {
 		handlePopperToggle,
 		handlePopperOpen,
 		handlePopperClose,
-		...sideDrawer
+		...sideDrawer,
 	};
 };

@@ -1,6 +1,6 @@
 import Types from "@/shared-modules/Types.mjs";
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { toastEx } from "@/helpers/toastEx";
+import toastEx from "@/helpers/toastEx";
 import Colors from "@/modules/Colors.mjs";
 import {
 	Autocomplete,
