@@ -1,16 +1,14 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { P41Context } from "@/modules/P41/P41Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
-import { P41ListRowContainer } from "./P41ListRowContainer";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import { useMemo } from "react";
 import P41 from "../P41.mjs";
-import P41FilterModes from "../P41FilterModePicker/P41FilterModes";
+import { P41ListRowContainer } from "./P41ListRowContainer";
 
 export const P41ListViewContainer = () => {
 	const p41 = useContext(P41Context);
@@ -65,7 +63,7 @@ export const P41ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={p41.listLoading}

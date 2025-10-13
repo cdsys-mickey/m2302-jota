@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import queryString from "query-string";

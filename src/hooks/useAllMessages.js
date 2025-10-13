@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useContext } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 
 export const useAllMessages = () => {

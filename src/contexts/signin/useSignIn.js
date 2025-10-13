@@ -1,4 +1,3 @@
-import toastEx from "@/helpers/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Auth from "@/modules/Auth.mjs";
 import { useCaptcha } from "@/shared-components/captcha-field/useCaptcha";
@@ -11,6 +10,8 @@ import { useLocation } from "react-router-dom";
 import { useForm, useWatch } from "react-hook-form";
 import { useRunOnce } from "@/shared-hooks/useRunOnce";
 import { AppContext } from "../app/AppContext";
+// import { toastEx } from "shared-components";
+import { toastEx } from "@/shared-components";
 
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWORD = "pw";

@@ -1,17 +1,15 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { C04Context } from "@/contexts/C04/C04Context";
+import C04 from "@/modules/md-c04";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import { C04ListRowContainer } from "./C04ListRowContainer";
 import Forms from "@/shared-modules/Forms.mjs";
-import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
-import { useMemo } from "react";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C04 from "@/modules/md-c04";
+import { useContext, useMemo } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import { C04ListRowContainer } from "./C04ListRowContainer";
 
 export const C04ListViewContainer = () => {
 	const c04 = useContext(C04Context);
@@ -86,7 +84,7 @@ export const C04ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={c04.listLoading}

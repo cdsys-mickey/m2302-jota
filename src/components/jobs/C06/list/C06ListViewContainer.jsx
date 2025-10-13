@@ -1,7 +1,7 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { C06Context } from "@/contexts/C06/C06Context";
 import C06 from "@/modules/C06.mjs";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounceObject from "@/shared-hooks/useDebounceObject";
@@ -98,7 +98,7 @@ export const C06ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				loading={c06.listLoading}
 				data={c06.listData}
 				itemCount={c06.itemCount}

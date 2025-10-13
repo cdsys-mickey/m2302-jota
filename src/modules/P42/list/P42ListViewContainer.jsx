@@ -1,15 +1,13 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { P42Context } from "@/modules/P42/P42Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import ListViewBox from "../../../shared-components/listview/ListViewBox";
-import { useReactWindowScroll } from "../../../shared-hooks/react-window/useReactWindowScroll";
-import { P42ListRowContainer } from "./P42ListRowContainer";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
-import { useMemo } from "react";
+import { P42ListRowContainer } from "./P42ListRowContainer";
 
 export const P42ListViewContainer = () => {
 	const p42 = useContext(P42Context);
@@ -47,7 +45,7 @@ export const P42ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={p42.listLoading}

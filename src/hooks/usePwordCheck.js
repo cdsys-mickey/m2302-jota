@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import { useCallback, useContext, useRef } from "react";

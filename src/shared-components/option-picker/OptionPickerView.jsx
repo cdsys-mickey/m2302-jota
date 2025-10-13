@@ -1,6 +1,6 @@
 import Types from "@/shared-modules/Types.mjs";
 /* eslint-disable no-mixed-spaces-and-tabs */
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import Colors from "@/modules/Colors.mjs";
 import {
 	Autocomplete,
@@ -1008,11 +1008,12 @@ const OptionPickerView = memo(
 										// opacity: 0,
 										display: "none",
 									},
-									// "&.MuiAutocomplete-root .MuiInputBase-root.Mui-disabled ":
-									// {
-									// 	paddingRight: 0,
-									// 	paddingTop: 0
-									// },
+									// 檢視(唯讀)模式下不留右邊 popup
+									"&.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon .MuiInputBase-root.Mui-disabled ":
+									{
+										paddingRight: 0,
+										paddingTop: 0
+									},
 								}),
 								...(dense && {
 									"&.MuiAutocomplete-root .MuiInputBase-root.MuiInputBase-sizeSmall":

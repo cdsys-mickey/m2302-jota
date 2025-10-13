@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
 import { useWebApi } from "@/shared-hooks/useWebApi";

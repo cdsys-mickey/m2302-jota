@@ -1,18 +1,15 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { C08Context } from "@/contexts/C08/C08Context";
+import C08 from "@/modules/C08.mjs";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { C08ListRowContainer } from "./C08ListRowContainer";
-import Forms from "@/shared-modules/Forms.mjs";
-import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
-import { useMemo } from "react";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C08 from "@/modules/C08.mjs";
 
 export const C08ListViewContainer = () => {
 	const c08 = useContext(C08Context);
@@ -98,7 +95,7 @@ export const C08ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				loading={c08.listLoading}
 				data={c08.listData}
 				itemCount={c08.itemCount}

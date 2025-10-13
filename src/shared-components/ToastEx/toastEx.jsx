@@ -16,7 +16,7 @@ const DEFAULT_VIEW_SLOT_OPTS = {
 };
 
 const toastEx = (message, opts = {}) => {
-	const { type = "info", ...restOpts } = opts;
+	const { type = "info", error, ...restOpts } = opts;
 
 	switch (type) {
 		case "success":
@@ -26,7 +26,7 @@ const toastEx = (message, opts = {}) => {
 		case "warning":
 			return toastEx.warn(message, restOpts);
 		case "error":
-			return toastEx.error(message, null, restOpts);
+			return toastEx.error(message, error, restOpts);
 		default:
 			return toastEx.info(message, restOpts);
 	}
@@ -40,7 +40,8 @@ const getToastOptions = (type, onAction, opts = {}) => {
 		}),
 		type,
 		style: {
-			...(!onAction && {
+			// ...((!onAction || opts.hideProgressBar) && {
+			...((!onAction) && {
 				borderLeft: `6px solid var(--toastify-color-${type})`, // 動態使用 CSS 變數
 			})
 			// 可根據需要添加其他樣式
@@ -51,15 +52,15 @@ const getToastOptions = (type, onAction, opts = {}) => {
 };
 
 const createToastContent = (message, opts = {}) => {
-	return opts.onAction ? (
+	return opts?.onAction ? (
 		() => (
 			<ToastEx
 				message={message || "(空白)"}
-				actionText={opts.actionText}
-				onAction={opts.onAction}
+				actionText={opts?.actionText}
+				onAction={opts?.onAction}
 				slotProps={{
 					...DEFAULT_VIEW_SLOT_OPTS,
-					...opts.slotProps
+					...opts?.slotProps
 				}}
 			/>
 		)
@@ -84,12 +85,12 @@ toastEx.warn = (message, opts = {}) => {
 	const { actionText, onAction, slotProps, ...restOpts } = opts;
 	const ToastContent = createToastContent(message, { actionText, onAction, slotProps });
 	toast(ToastContent, {
-		...getToastOptions("warn", onAction, restOpts),
+		...getToastOptions("warning", onAction, restOpts),
 		position: "top-right",
 	});
 };
 
-toastEx.error = (message, arg1, arg2) => {
+toastEx.error = (message, arg1 = {}, arg2 = {}) => {
 	let err = arg1;
 	let opts = arg2;
 

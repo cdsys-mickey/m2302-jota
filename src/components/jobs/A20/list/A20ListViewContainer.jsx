@@ -1,14 +1,13 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { A20Context } from "@/contexts/A20/A20Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "../../../../shared-components/listview/ListViewBox";
 import { A20ListRowContainer } from "./A20ListRowContainer";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
-import { useMemo } from "react";
 
 export const A20ListViewContainer = () => {
 	console.log("rendering A20ListViewContainer");
@@ -47,7 +46,7 @@ export const A20ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={a20.listLoading}

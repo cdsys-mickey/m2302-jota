@@ -3,7 +3,7 @@ import FlexBox from "@/shared-components/FlexBox";
 // import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
 import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
 import { ButtonEx, CheckboxEx } from "@/shared-components";
-import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
+import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
 import LoginIcon from "@mui/icons-material/Login";
 import { Box, Collapse, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";

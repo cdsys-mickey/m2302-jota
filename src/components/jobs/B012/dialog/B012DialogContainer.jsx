@@ -20,7 +20,7 @@ import { FormProvider, useForm, useFormContext, useWatch } from "react-hook-form
 import B012Drawer from "../B012Drawer";
 import B012DialogForm from "./B012DialogForm";
 import { B012DialogToolbarContainer } from "./toolbar/B012DialogToolbarContainer";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 

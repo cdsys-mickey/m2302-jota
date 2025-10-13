@@ -28,6 +28,9 @@ import DSGGridContainer from "./dsg/DSGGrid/DSGGridContainer";
 import JumboAlertView from "./JumboAlert/JumboAlertView";
 
 import ToastExContainer from "./ToastEx/ToastExContainer";
+import toastEx from "./ToastEx/toastEx";
+
+import ClearInputButton from "./ClearInputButton/ClearInputButton";
 
 export {
 	ButtonExContainer as ButtonEx,
@@ -38,6 +41,7 @@ export {
 	HomeBoxContainer as HomeBox,
 	FormFieldLabelWrapper as FormFieldLabel,
 	TypoLabelWrapper as TypoLabel,
+	ClearInputButton,
 	FormLabelEx,
 	OptionPickerWrapper as OptionPicker,
 	TextFieldWrapper as TextFieldEx,
@@ -55,4 +59,5 @@ export {
 	DSGGridContainer as DSGGrid,
 	JumboAlertView as JumboAlert,
 	ToastExContainer as ToastEx,
+	toastEx,
 };

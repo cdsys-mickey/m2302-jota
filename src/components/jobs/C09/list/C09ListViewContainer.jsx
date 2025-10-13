@@ -1,17 +1,14 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { C09Context } from "@/contexts/C09/C09Context";
+import C09 from "@/modules/C09.mjs";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { C09ListRowContainer } from "./C09ListRowContainer";
-import Forms from "@/shared-modules/Forms.mjs";
-import { useMemo } from "react";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C09 from "@/modules/C09.mjs";
 
 export const C09ListViewContainer = () => {
 	const c09 = useContext(C09Context);
@@ -76,7 +73,7 @@ export const C09ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				loading={c09.listLoading}
 				data={c09.listData}
 				itemCount={c09.itemCount}

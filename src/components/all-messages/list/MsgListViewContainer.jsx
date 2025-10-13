@@ -1,14 +1,13 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
+import { AllMessagesContext } from "@/contexts/msgs/AllMessagesContext";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { AllMessagesContext } from "@/contexts/msgs/AllMessagesContext";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { MsgListRowContainer } from "./MsgListRowContainer";
-import { useMemo } from "react";
 
 export const MsgListViewContainer = () => {
 	const msgs = useContext(AllMessagesContext);
@@ -44,7 +43,7 @@ export const MsgListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				loading={msgs.listLoading}
 				data={msgs.listData}
 				itemCount={msgs.itemCount}

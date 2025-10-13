@@ -10,6 +10,7 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { C05ListRowContainer } from "./C05ListRowContainer";
+import AuthListView from "@/components/AuthListView/AuthListView";
 
 export const C05ListViewContainer = () => {
 	const c05 = useContext(C05Context);
@@ -102,7 +103,7 @@ export const C05ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				loading={c05.listLoading}
 				data={c05.listData}
 				itemCount={c05.itemCount}

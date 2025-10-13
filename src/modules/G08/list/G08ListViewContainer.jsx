@@ -1,15 +1,14 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { G08Context } from "@/modules/G08/G08Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { G08ListRowContainer } from "./G08ListRowContainer";
-import { useMemo } from "react";
 import G08 from "../G08.mjs";
+import { G08ListRowContainer } from "./G08ListRowContainer";
 
 export const G08ListViewContainer = () => {
 	const g08 = useContext(G08Context);
@@ -60,7 +59,7 @@ export const G08ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={g08.listLoading}

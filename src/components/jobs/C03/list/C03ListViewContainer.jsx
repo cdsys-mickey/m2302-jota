@@ -1,18 +1,16 @@
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import AuthListView from "@/components/AuthListView/AuthListView";
+import { C03Context } from "@/contexts/C03/C03Context";
+import Squared2 from "@/modules/md-squared2";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
+import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
+import C03 from "@/modules/md-c03";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { C03ListRowContainer } from "./C03ListRowContainer";
-import { C03Context } from "@/contexts/C03/C03Context";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
-import C03 from "../../../../modules/md-c03";
-import { useMemo } from "react";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
-import Squared2 from "@/modules/md-squared2";
 
 export const C03ListViewContainer = () => {
 	const c03 = useContext(C03Context);
@@ -151,7 +149,7 @@ export const C03ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={c03.listLoading}

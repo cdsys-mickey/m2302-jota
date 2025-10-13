@@ -1,5 +1,5 @@
 import Colors from "@/modules/Colors.mjs";
-import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
+import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexContainer from "@/shared-components/FlexContainer";
 import ModuleHeading from "@/shared-components/ModuleHeading";

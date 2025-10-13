@@ -1,15 +1,15 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import { G02Context } from "@/modules/G02/G02Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { G02ListRowContainer } from "./G02ListRowContainer";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import G02 from "../G02.mjs";
-import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
+import { G02ListRowContainer } from "./G02ListRowContainer";
 
 export const G02ListViewContainer = () => {
 	const g02 = useContext(G02Context);
@@ -74,7 +74,7 @@ export const G02ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={g02.listLoading}

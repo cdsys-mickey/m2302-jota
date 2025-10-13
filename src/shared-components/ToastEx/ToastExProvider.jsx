@@ -14,7 +14,7 @@ const ToastExProvider = (props) => {
 
 	useEffect(() => {
 		setTheme(theme);
-		console.log("theme changed →", theme)
+		console.log("toastEx theme changed →", theme)
 	}, [theme]);
 
 	return (

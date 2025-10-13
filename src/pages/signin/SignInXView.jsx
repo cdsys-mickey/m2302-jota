@@ -6,7 +6,7 @@ import { Box, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
 import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
-import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
+import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
 
 const SignInXView = memo(forwardRef((props, ref) => {
 	const { loading, isRefreshRequired, ...rest } = props;

@@ -1,5 +1,5 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import G10 from "@/pages/jobs/G10/G10.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";

@@ -1,4 +1,4 @@
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";

@@ -32,7 +32,8 @@ const InfiniteListView = memo((props) => {
 		minimumBatchSize = 20,
 		threshold = 20,
 		saveKey,
-		emptyText
+		emptyText,
+		onError
 	} = props;
 
 	const infiniteLoaderRef = useRef(null);
@@ -47,6 +48,12 @@ const InfiniteListView = memo((props) => {
 		}
 		hasMountedRef.current = true;
 	}, [saveKey]);
+
+	useEffect(() => {
+		if (error && onError) {
+			onError(error);
+		}
+	}, [error, onError]);
 
 	if (loading) {
 		return (

@@ -1,15 +1,11 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-import { useSignalR } from "@/shared-hooks/useSignalR";
-import { useMemo } from "react";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
-import { useCallback } from "react";
-import { useForm } from "react-hook-form";
-import { useContext } from "react";
 import ConfigContext from "@/contexts/config/ConfigContext";
-import toastEx from "@/helpers/toastEx";
-import { Rule } from "@mui/icons-material";
+// import consoleEx from "@/helpers/consoleEx";
+// import { toastEx } from "@/shared-components";
+import { useSignalR } from "@/shared-hooks/useSignalR";
+
+import { memo, useCallback, useContext, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { consoleEx, toastEx } from "shared-components";
 
 const SignalRTest = memo(() => {
 	const form = useForm();
@@ -36,7 +32,7 @@ const SignalRTest = memo(() => {
 	// }, [connected, connecting, stopping]);
 
 	const broadcastedHandler = useCallback((payload) => {
-		console.log(`messageBrocasted`, payload);
+		consoleEx.log(`messageBrocasted`, payload);
 		const { level, message } = payload;
 		toastEx.info(`[${level}]${message}`);
 	}, []);

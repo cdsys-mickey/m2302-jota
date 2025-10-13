@@ -1,17 +1,14 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { D05Context } from "@/contexts/D05/D05Context";
+import D05 from "@/modules/D05.mjs";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { D05ListRowContainer } from "./D05ListRowContainer";
-import Forms from "@/shared-modules/Forms.mjs";
-import { useMemo } from "react";
-import D05 from "@/modules/D05.mjs";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
 
 export const D05ListViewContainer = () => {
 	const d05 = useContext(D05Context);
@@ -75,7 +72,7 @@ export const D05ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				loading={d05.listLoading}
 				data={d05.listData}
 				itemCount={d05.itemCount}

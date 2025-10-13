@@ -1,7 +1,7 @@
 import { AppContext } from "@/contexts/app/AppContext";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 import consoleEx from "@/helpers/consoleEx";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Messages from "@/modules/md-messages";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
@@ -479,6 +479,11 @@ export const useAuth = () => {
 		sessionStorage.setItem(LOG_KEY, newLogKey);
 	}, []);
 
+	const handleSessionExpired = useCallback(() => {
+		toLogin();
+		toastEx.warn("您的登入已逾期，請重新登入");
+	}, [toLogin]);
+
 	useEffect(() => {
 		console.log("state.validating", state.validating);
 		if (state.validating === null) {
@@ -555,5 +560,6 @@ export const useAuth = () => {
 		loadModules,
 		debugEnabled,
 		// ...taskListLoader,
+		handleSessionExpired,
 	};
 };

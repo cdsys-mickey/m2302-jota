@@ -1,16 +1,14 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import Colors from "@/modules/Colors.mjs";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import ControllerWrapper from "../ControllerWrapper";
-import FlexBox from "../FlexBox";
-import ClearInputButton from "../input/ClearInputButton";
+import ClearInputButton from "../ClearInputButton/ClearInputButton";
 import TextFieldExView from "./TextFieldExView";
 
-export const ControlledTextField = ({
+const ControlledTextField = ({
 	name,
 	multiline,
 	placeholder,
@@ -41,7 +39,6 @@ export const ControlledTextField = ({
 }) => {
 	const formMeta = useContext(FormMetaContext);
 	const { isFieldDisabled, handleFocusNextField, disableEnter } = formMeta || {};
-	const inFormMeta = !!formMeta;
 	// const { setFocus } = useFormContext() || {};
 	const form = useFormContext();
 	const { endAdornment, ...InputPropsWithoutEndAdornment } = InputProps || {};
@@ -74,6 +71,9 @@ export const ControlledTextField = ({
 
 	const handleKeyDown = useCallback(
 		async (e) => {
+			if (!formMeta) {
+				return;
+			}
 			// 若按住 Ctrl 則不處理
 			if (e.ctrlKey) {
 				return;
@@ -113,7 +113,7 @@ export const ControlledTextField = ({
 					}
 				}
 				e.preventDefault();
-				if (inFormMeta) {
+				if (formMeta) {
 					handleFocusNextField(name, {
 						setFocus: form.setFocus,
 						isFieldDisabled,
@@ -123,7 +123,7 @@ export const ControlledTextField = ({
 				}
 			}
 		},
-		[disableEnter, multiline, inFormMeta, getError, form, name, handleFocusNextField, isFieldDisabled]
+		[disableEnter, multiline, formMeta, getError, form, name, handleFocusNextField, isFieldDisabled]
 	);
 
 	const _placeholder = useMemo(() => {
@@ -243,3 +243,5 @@ ControlledTextField.propTypes = {
 	placeholder: PropTypes.string,
 
 };
+
+export default ControlledTextField;

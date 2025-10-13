@@ -1,15 +1,13 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { P21Context } from "@/modules/P21/P21Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import ListViewBox from "../../../shared-components/listview/ListViewBox";
-import { useReactWindowScroll } from "../../../shared-hooks/react-window/useReactWindowScroll";
-import { P21ListRowContainer } from "./P21ListRowContainer";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
-import { useMemo } from "react";
+import { P21ListRowContainer } from "./P21ListRowContainer";
 
 export const P21ListViewContainer = () => {
 	const p21 = useContext(P21Context);
@@ -47,7 +45,7 @@ export const P21ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={p21.listLoading}

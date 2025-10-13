@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo, useRef } from "react";
-import ClearInputButton from "../input/ClearInputButton";
+import ClearInputButton from "../ClearInputButton/ClearInputButton";
 
 const renderPaperStyles = ({
 	responsive,

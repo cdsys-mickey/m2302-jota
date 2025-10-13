@@ -1,14 +1,13 @@
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
+import AuthListView from "@/components/AuthListView/AuthListView";
+import { P14Context } from "@/modules/P14/P14Context";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
-import { P14ListRowContainer } from "./P14ListRowContainer";
-import { P14Context } from "@/modules/P14/P14Context";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
-import { useMemo } from "react";
+import { P14ListRowContainer } from "./P14ListRowContainer";
 
 export const P14ListViewContainer = () => {
 	const p14 = useContext(P14Context);
@@ -59,7 +58,7 @@ export const P14ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={p14.listLoading}

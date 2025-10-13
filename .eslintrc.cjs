@@ -11,21 +11,28 @@ module.exports = {
 		ecmaVersion: "latest",
 		sourceType: "module",
 	},
-	settings: { react: { version: "18.2" } },
-	plugins: ["react-refresh"],
+	settings: {
+		react: { version: "18.2" },
+		"import/resolver": {
+			typescript: {
+				project: "./tsconfig.json",
+			},
+		},
+	},
+	plugins: ["react-refresh", "@typescript-eslint", "import"],
 	rules: {
 		"react-refresh/only-export-components": "warn",
 		"@typescript-eslint/no-var-requires": "off",
 	},
 	overrides: [
 		{
-			files: ["*.ts", "*.tsx"], // 針對 TS/TSX 檔案
+			files: ["*.ts", "*.tsx"],
 			extends: [
 				"plugin:@typescript-eslint/recommended",
 				"plugin:@typescript-eslint/recommended-requiring-type-checking",
 			],
 			parserOptions: {
-				project: "./tsconfig.json", // 僅在 TS/TSX 中啟用類型檢查
+				project: "./tsconfig.json",
 			},
 			rules: {
 				"react/prop-types": "off",
@@ -33,8 +40,8 @@ module.exports = {
 			},
 		},
 		{
-			files: ["*.jsx"], // 針對 JSX 檔案
-			parser: "espree", // 使用 JavaScript 解析器
+			files: ["*.jsx"],
+			parser: "espree",
 			extends: [
 				"eslint:recommended",
 				"plugin:react/recommended",
@@ -42,8 +49,8 @@ module.exports = {
 				"plugin:react-hooks/recommended",
 			],
 			rules: {
-				"react/prop-types": "off", // 禁用 prop-types
-				"@typescript-eslint/*": "off", // 禁用所有 TypeScript 規則
+				"react/prop-types": "off",
+				"@typescript-eslint/*": "off",
 			},
 		},
 	],

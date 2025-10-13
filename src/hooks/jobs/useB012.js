@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import B012 from "@/modules/md-b012";
 import B02 from "@/modules/md-b02";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";

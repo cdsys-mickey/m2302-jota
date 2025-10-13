@@ -1,14 +1,13 @@
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
+import AuthListView from "@/components/AuthListView/AuthListView";
+import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { ZA03ListRowContainer } from "./ZA03ListRowContainer";
-import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import { useMemo } from "react";
 
 export const ZA03ListViewContainer = () => {
 	const za03 = useContext(ZA03Context);
@@ -56,7 +55,7 @@ export const ZA03ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={za03.listLoading}

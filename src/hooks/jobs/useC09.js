@@ -1,17 +1,17 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import ConfigContext from "@/contexts/config/ConfigContext";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import C09 from "@/modules/C09.mjs";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import CrudContext from "../../contexts/crud/CrudContext";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import CrudContext from "@/contexts/crud/CrudContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import useAction from "@/shared-modules/ActionState/useAction";
-import { useInfiniteLoader } from "../../shared-hooks/useInfiniteLoader";
-import { useToggle } from "../../shared-hooks/useToggle";
-import { useWebApi } from "../../shared-hooks/useWebApi";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import { useToggle } from "@/shared-hooks/useToggle";
+import { useWebApi } from "@/shared-hooks/useWebApi";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";

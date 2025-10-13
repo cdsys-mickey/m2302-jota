@@ -1,17 +1,15 @@
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import AuthListView from "@/components/AuthListView/AuthListView";
+import { BContext } from "@/contexts/B/BContext";
+import { B012Context } from "@/contexts/B012/B012Context";
+import { B032Context } from "@/contexts/B032/B032Context";
+import B012 from "@/modules/md-b012";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { B012ListRowContainer } from "./B012ListRowContainer";
-import { B012Context } from "@/contexts/B012/B012Context";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
-import B012 from "@/modules/md-b012";
-import { useMemo } from "react";
-import { BContext } from "@/contexts/B/BContext";
-import { B032Context } from "@/contexts/B032/B032Context";
 
 export const B012ListViewContainer = () => {
 	const b = useContext(BContext);
@@ -54,7 +52,7 @@ export const B012ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={b012.listLoading}

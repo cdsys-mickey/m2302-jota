@@ -1,7 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { Box, Container, FormHelperText, Grid } from "@mui/material";
-import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
+import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
 import LoginIcon from "@mui/icons-material/Login";
 import FlexBox from "@/shared-components/FlexBox";
 import ContainerEx from "@/shared-components/ContainerEx";

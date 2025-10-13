@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useToggle } from "@/shared-hooks/useToggle";
 import Objects from "@/shared-modules/Objects.mjs";
 import Types from "@/shared-modules/Types.mjs";

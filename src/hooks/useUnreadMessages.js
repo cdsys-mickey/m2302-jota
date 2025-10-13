@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 import { toast } from "react-toastify";
 import Messaging from "@/modules/md-messaging";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { HubConnectionState } from "@microsoft/signalr";
 
@@ -128,21 +128,33 @@ export const useUnreadMessages = () => {
 		// notify
 		connection?.on("notify", handlNotify);
 
-		// refresh
-		connection?.on("refresh", handleRefresh);
-
-		console.log("notify handlers registered");
-
 		return () => {
 			// notify
 			connection?.off("notify");
-
-			// refresh
-			connection?.off("refresh");
-
-			console.log("notify handlers un-registered");
 		};
 	}, [connection, handlNotify, handleRefresh]);
+
+	useEffect(() => {
+		// refresh
+		connection?.on("refresh", handleRefresh);
+
+		return () => {
+			// refresh
+			connection?.off("refresh");
+		};
+	}, [connection, handlNotify, handleRefresh]);
+
+	// const handleBroadcast = useCallback((payload) => {
+	// 	const { level, message } = payload;
+	// 	toastEx.info(`[${level}]${message}`);
+	// }, []);
+
+	// useEffect(() => {
+	// 	connection?.on("broadcast", handleBroadcast);
+	// 	return () => {
+	// 		connection?.off("broadcast");
+	// 	};
+	// }, [connection, handleBroadcast]);
 
 	useChangeTracking(() => {
 		switch (connectionState) {

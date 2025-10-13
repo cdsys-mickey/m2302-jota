@@ -1,17 +1,14 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { D02Context } from "@/contexts/D02/D02Context";
+import D02 from "@/modules/D02.mjs";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { D02ListRowContainer } from "./D02ListRowContainer";
-import Forms from "../../../../shared-modules/Forms.mjs";
-import { useMemo } from "react";
-import D02 from "@/modules/D02.mjs";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
 
 export const D02ListViewContainer = () => {
 	const d02 = useContext(D02Context);
@@ -87,7 +84,7 @@ export const D02ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={d02.listLoading}

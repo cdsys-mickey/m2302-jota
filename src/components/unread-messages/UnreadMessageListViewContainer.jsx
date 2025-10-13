@@ -1,13 +1,12 @@
-import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import { useInit } from "@/shared-hooks/useInit";
-import { useContext } from "react";
 import { UnreadMessagesContext } from "@/contexts/UnreadMessagesContext";
 import { InfiniteLoaderProvider } from "@/contexts/infinite-loader/InfiniteLoaderProvider";
-import { UnreadMessageListRowContainer } from "./UnreadMessageListRow/UnreadMessageListRowContainer";
-import PropTypes from "prop-types";
-import { useMemo } from "react";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import PropTypes from "prop-types";
+import { useContext, useMemo } from "react";
+import AuthListView from "../AuthListView/AuthListView";
+import { UnreadMessageListRowContainer } from "./UnreadMessageListRow/UnreadMessageListRowContainer";
 
 
 export const UnreadMessageListViewContainer = () => {
@@ -26,7 +25,7 @@ export const UnreadMessageListViewContainer = () => {
 	return (
 		<InfiniteLoaderProvider>
 			<ListViewBox square>
-				<InfiniteListView
+				<AuthListView
 					loading={unreadMessages.listLoading}
 					data={unreadMessages.listData}
 					itemCount={unreadMessages.itemCount}

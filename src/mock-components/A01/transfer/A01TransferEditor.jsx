@@ -1,6 +1,6 @@
 import { MockShops } from "@/mocks/mock-shops";
 import Shops from "@/modules/md-shops";
-import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
+import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
 import { TypoWebApiOptionPicker } from "@/shared-components/typo/TypoWebApiOptionPicker";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Box, Container, Grid, IconButton } from "@mui/material";

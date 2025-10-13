@@ -3,7 +3,7 @@ import Copyright from "./Copyright";
 import { AppContext } from "@/contexts/app/AppContext";
 import { useInit } from "@/shared-hooks/useInit";
 import { useCallback } from "react";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 import { useMemo } from "react";
 import { HubConnectionState } from "@microsoft/signalr";

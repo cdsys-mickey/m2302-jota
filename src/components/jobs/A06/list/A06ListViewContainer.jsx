@@ -1,15 +1,13 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { A06Context } from "@/contexts/A06/A06Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
-import { useReactWindowScroll } from "@/shared-hooks/react-window/useReactWindowScroll";
-import { A06ListRowContainer } from "./A06ListRowContainer";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
-import { useMemo } from "react";
+import { A06ListRowContainer } from "./A06ListRowContainer";
 
 export const A06ListViewContainer = () => {
 	const a06 = useContext(A06Context);
@@ -47,7 +45,7 @@ export const A06ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={a06.listLoading}

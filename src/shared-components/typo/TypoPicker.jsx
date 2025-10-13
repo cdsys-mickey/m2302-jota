@@ -1,4 +1,4 @@
-import { ControlledTextField } from "@/shared-components/TextFieldEx/ControlledTextField";
+import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
 import { FormFieldLabel } from "@/shared-components";
 import React, { forwardRef, memo } from "react";
 import MuiStyles from "../../shared-modules/MuiStyles";

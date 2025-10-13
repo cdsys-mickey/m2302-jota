@@ -4,7 +4,7 @@ import useAction from "@/shared-modules/ActionState/useAction";
 import { useWebApi } from "@/shared-hooks/useWebApi";
 import JobMenu from "./JobMenu.mjs";
 import { nanoid } from "nanoid";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import SideMenu from "@/modules/SideMenu.mjs";
 

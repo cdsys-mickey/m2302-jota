@@ -1,5 +1,5 @@
 import { useCrudZZ } from "@/contexts/crud/useCrudZZ";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { MockProducts } from "@/mocks/mock-products";
 import A01 from "@/modules/A01/A01.mjs";
 import { useCallback, useState } from "react";

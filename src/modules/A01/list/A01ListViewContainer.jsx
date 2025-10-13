@@ -1,14 +1,13 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { A01Context } from "@/modules/A01/A01Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import ListViewBox from "../../../shared-components/listview/ListViewBox";
-import { A01ListRowContainer } from "./A01ListRowContainer";
 import { useChangeTracking } from "../../../shared-hooks/useChangeTracking";
-import { useMemo } from "react";
+import { A01ListRowContainer } from "./A01ListRowContainer";
 
 export const A01ListViewContainer = () => {
 	const a01 = useContext(A01Context);
@@ -45,7 +44,7 @@ export const A01ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				saveKey={a01.saveKey}
 				loading={a01.listLoading}
 				data={a01.listData}

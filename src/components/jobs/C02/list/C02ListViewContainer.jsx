@@ -1,22 +1,19 @@
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
-import useDebounce from "@/shared-hooks/useDebounce";
+import AuthListView from "@/components/AuthListView/AuthListView";
+import { C02Context } from "@/contexts/C02/C02Context";
+import C02 from "@/modules/C02.mjs";
+import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { C02ListRowContainer } from "./C02ListRowContainer";
-import { C02Context } from "@/contexts/C02/C02Context";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C02 from "@/modules/C02.mjs";
-import { useMemo } from "react";
 
 export const C02ListViewContainer = () => {
 	const c02 = useContext(C02Context);
 	const { loadList } = c02;
 	const form = useFormContext();
-	const { getValues, setValue } = form;
 	const { height } = useWindowSize();
 
 	// const q = useWatch({
@@ -88,9 +85,10 @@ export const C02ListViewContainer = () => {
 		return height ? height - 200 : 300
 	}, [height])
 
+
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={c02.listLoading}

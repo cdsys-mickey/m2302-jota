@@ -2,7 +2,7 @@
 import { useCallback, useRef } from "react";
 import DSG from "@/shared-modules/sd-dsg";
 import { useEffect } from "react";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";
 import { useMemo } from "react";
 

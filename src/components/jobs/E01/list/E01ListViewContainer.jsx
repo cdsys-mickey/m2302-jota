@@ -1,14 +1,13 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { E01Context } from "@/contexts/E01/E01Context";
 import E01 from "@/modules/E01.mjs";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { E01ListRowContainer } from "./E01ListRowContainer";
-import { useMemo } from "react";
 
 export const E01ListViewContainer = () => {
 	const e01 = useContext(E01Context);
@@ -91,7 +90,7 @@ export const E01ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={e01.listLoading}

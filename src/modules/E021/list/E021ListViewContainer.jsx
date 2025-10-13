@@ -1,6 +1,6 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import E021 from "@/modules/E021/E021.mjs";
 import { E021Context } from "@/modules/E021/E021Context";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useInit } from "@/shared-hooks/useInit";
@@ -86,7 +86,7 @@ export const E021ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={e021.listLoading}

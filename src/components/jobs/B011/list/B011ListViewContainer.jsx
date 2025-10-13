@@ -1,16 +1,16 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
+import { BContext } from "@/contexts/B/BContext";
 import { B011Context } from "@/contexts/B011/B011Context";
+import { B031Context } from "@/contexts/B031/B031Context";
 import B011 from "@/modules/md-b011";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { B011ListRowContainer } from "./B011ListRowContainer";
-import { B031Context } from "@/contexts/B031/B031Context";
-import { BContext } from "@/contexts/B/BContext";
 
 export const B011ListViewContainer = (props) => {
 	const { forNew = false } = props;
@@ -55,7 +55,7 @@ export const B011ListViewContainer = (props) => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={b011.listLoading}

@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import toastEx from "@/helpers/toastEx";
+import toastEx from "@/shared-components/ToastEx/toastEx";
 import _ from "lodash";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useState } from "react";

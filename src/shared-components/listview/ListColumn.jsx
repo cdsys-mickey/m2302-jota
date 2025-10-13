@@ -50,8 +50,8 @@ ListColumn.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	flex: PropTypes.bool,
 	inline: PropTypes.bool,
-	alignItems: PropTypes.bool,
-	justifyContent: PropTypes.bool,
+	alignItems: PropTypes.string,
+	justifyContent: PropTypes.string,
 	onClick: PropTypes.func,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 }

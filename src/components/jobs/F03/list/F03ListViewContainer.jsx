@@ -1,15 +1,13 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { F03Context } from "@/contexts/F03/F03Context";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
 import useDebounce from "@/shared-hooks/useDebounce";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
 import { F03ListRowContainer } from "./F03ListRowContainer";
-import Forms from "../../../../shared-modules/Forms.mjs";
-import { useMemo } from "react";
 
 export const F03ListViewContainer = () => {
 	const f03 = useContext(F03Context);
@@ -44,7 +42,7 @@ export const F03ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				// onScroll={onScroll}
 				// scrollOffset={scrollOffset}
 				loading={f03.listLoading}

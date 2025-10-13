@@ -1,17 +1,15 @@
+import AuthListView from "@/components/AuthListView/AuthListView";
 import { C07Context } from "@/contexts/C07/C07Context";
+import C07 from "@/modules/md-c07";
 import ListViewBox from "@/shared-components/listview/ListViewBox";
-import InfiniteListView from "@/shared-components/listview/infinite-listview/InfiniteListView";
+import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import useDebounce from "@/shared-hooks/useDebounce";
+import useDebounceObject from "@/shared-hooks/useDebounceObject";
 import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { C07ListRowContainer } from "./C07ListRowContainer";
-import { useMemo } from "react";
-import ResponsiveLayoutContext from "@/shared-components/responsive/ResponsiveLayoutContext";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import C07 from "@/modules/md-c07";
 
 export const C07ListViewContainer = () => {
 	const c07 = useContext(C07Context);
@@ -109,7 +107,7 @@ export const C07ListViewContainer = () => {
 
 	return (
 		<ListViewBox withHeader>
-			<InfiniteListView
+			<AuthListView
 				loading={c07.listLoading}
 				data={c07.listData}
 				itemCount={c07.itemCount}

@@ -332,7 +332,7 @@ const P42DialogForm = memo((props) => {
 								<CheckboxEx
 									typo
 									// disabled={!editing}
-									label="飯店佣金已發"
+									label="區域佣金已發"
 									name="HotelPay"
 									variant="outlined"
 									fullWidth

@@ -19,6 +19,8 @@ const ErrorBox = memo(
 				return message || error?.message || defaultMessage;
 			}, [defaultMessage, error?.message, message]);
 
+			console.log("error", error);
+
 			return (
 				<AlertEx ref={ref} severity="error" flex={1} {...rest}>
 					<AlertTitle>{title}</AlertTitle>
