@@ -1,6 +1,6 @@
 import { RowProdCatMPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/RowProdCatMPickerComponentContainer";
 import { RowProdCatSPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/RowProdCatSPickerComponentContainer";
-import ProdGrid from "@/modules/md-prod-grid";
+import ProdGrid from "@/modules/ProdGrids.mjs";
 import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { ProdCatLPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/ProdCatLPickerComponentContainer";
@@ -25,7 +25,7 @@ export const useA014 = () => {
 	const grid = useDSG({
 		gridId: "A014",
 		keyColumn: "ProdID",
-		doDirtyCheckByIndex: true
+		doDirtyCheckByIndex: true,
 	});
 
 	const columns = useMemo(
@@ -58,9 +58,8 @@ export const useA014 = () => {
 								},
 							},
 						},
-					})
-				})
-				,
+					}),
+				}),
 				title: "大分類",
 				grow: 3,
 				disabled: grid.readOnly,
@@ -223,9 +222,8 @@ export const useA014 = () => {
 		columns,
 		data: grid.gridData,
 		lastCell: DSGLastCellBehavior.STOP_EDITING,
-		skipDisabled: true
+		skipDisabled: true,
 	});
-
 
 	const prodGrid = useProdGrid({
 		grid,
@@ -247,27 +245,30 @@ export const useA014 = () => {
 	// 	[]
 	// );
 
-	const onUpdateRow = useCallback(({ fromRowIndex, formData }) => async (rowData, index) => {
-		const rowIndex = fromRowIndex + index;
-		const oldRowData = grid.gridData[rowIndex];
+	const onUpdateRow = useCallback(
+		({ fromRowIndex, formData }) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
 
-		const { catL, catM } = rowData;
-		const { catL: oldCatL, catM: oldCatM } = oldRowData;
+				const { catL, catM } = rowData;
+				const { catL: oldCatL, catM: oldCatM } = oldRowData;
 
-		console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
-		let processedRowData = {
-			...rowData,
-		};
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
 
-		if (catL?.LClas !== oldCatL?.LClas) {
-			processedRowData["catM"] = null;
-			processedRowData["catS"] = null;
-		} else if (catM?.MClas !== oldCatM?.MClas) {
-			processedRowData["catS"] = null;
-		}
-		return processedRowData;
-	}, [grid.gridData]);
-
+				if (catL?.LClas !== oldCatL?.LClas) {
+					processedRowData["catM"] = null;
+					processedRowData["catS"] = null;
+				} else if (catM?.MClas !== oldCatM?.MClas) {
+					processedRowData["catS"] = null;
+				}
+				return processedRowData;
+			},
+		[grid.gridData]
+	);
 
 	return {
 		...appModule,
@@ -276,6 +277,6 @@ export const useA014 = () => {
 		grid,
 		...gridMeta,
 		gridMeta,
-		onUpdateRow
+		onUpdateRow,
 	};
 };

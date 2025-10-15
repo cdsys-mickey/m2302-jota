@@ -1,11 +1,12 @@
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import ProdGridForm from "./ProdGridForm";
 import { useCallback } from "react";
 import { useMemo } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { FormMetaProvider } from "@/shared-components";
+import Prods from "@/modules/Prods.mjs";
 
 export const ProdGridFormContainer = (props) => {
 	const { ...rest } = props;
@@ -13,7 +14,6 @@ export const ProdGridFormContainer = (props) => {
 		defaultValues: {},
 	});
 	const prodGrid = useContext(ProdGridContext);
-
 	const catL = useWatch({
 		name: "catL",
 		control: form.control
@@ -51,12 +51,42 @@ export const ProdGridFormContainer = (props) => {
 		enableOnFormTags: true,
 	});
 
+	// 表單異動監聽請看 ProdGridLoadButtonContainer
+
+	const handleProdIdChange = useCallback((e, newValue, reason) => {
+		const input = e.target.value;
+		console.log("prodId", input);
+		form.setValue("prodId", input);
+		form.setValue("prod", null);
+	}, [form]);
+
+	const handleProdChange = useCallback((newValue, reason) => {
+		console.log(`prod changed, reason: ${reason}, value:`, newValue);
+		form.setValue("prodId", newValue ? Prods.getOptionLabelForId(newValue) : "");
+	}, [form]);
+
+	const handleProdNameChange = useCallback((e, newValue, reason) => {
+		const input = e.target.value;
+		console.log("prodName", input);
+		form.setValue("prodName", input);
+		form.setValue("prod2", null);
+	}, [form]);
+
+	const handleProd2Change = useCallback((newValue) => {
+		console.log("prod2 changed", newValue);
+		form.setValue("prodName", newValue ? Prods.getOptionLabelForName(newValue) : "");
+	}, [form]);
+
 	return (
 		<div ref={hotkeyRef}>
 			<FormProvider {...form}>
 				<FormMetaProvider {...prodGrid.formMeta} isFieldDisabled={isFieldDisabled}>
 					<ProdGridForm
 						handleSubmit={handleSubmit}
+						onProdIdChange={handleProdIdChange}
+						onProdChange={handleProdChange}
+						onProdNameChange={handleProdNameChange}
+						onProd2Change={handleProd2Change}
 						{...rest}
 					/>
 				</FormMetaProvider>

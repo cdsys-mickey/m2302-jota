@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 const DEFAULT_OPTS = {
 	// progress: 1,
-	// autoClose: 5000,
+	autoClose: 10000,
 	// hideProgressBar: true
 };
 

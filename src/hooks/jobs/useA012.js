@@ -1,14 +1,14 @@
 import A012 from "@/modules/md-a012";
-import ProdGrid from "@/modules/md-prod-grid";
+import ProdGrid from "@/modules/ProdGrids.mjs";
 import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { PkgTypePickerComponentContainer } from "../../components/dsg/columns/pkg-type-picker/PkgTypePickerComponentContainer";
-import { createFloatColumn } from "../../shared-components/dsg/columns/float/createFloatColumn";
-import { optionPickerColumn } from "../../shared-components/dsg/columns/option-picker/optionPickerColumn";
-import { createTextColumnEx } from "../../shared-components/dsg/columns/text/createTextColumnEx";
-import { DSGLastCellBehavior } from "../../shared-hooks/dsg/DSGLastCellBehavior";
-import { useDSG } from "../../shared-hooks/dsg/useDSG";
-import { useDSGMeta } from "../../shared-hooks/dsg/useDSGMeta";
+import { PkgTypePickerComponentContainer } from "@/components/dsg/columns/pkg-type-picker/PkgTypePickerComponentContainer";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
@@ -167,7 +167,7 @@ export const useA012 = () => {
 		columns,
 		data: grid.gridData,
 		lastCell: DSGLastCellBehavior.STOP_EDITING,
-		skipDisabled: true
+		skipDisabled: true,
 	});
 
 	const prodGrid = useProdGrid({
@@ -183,6 +183,6 @@ export const useA012 = () => {
 		...prodGrid,
 		...grid,
 		...gridMeta,
-		gridMeta
+		gridMeta,
 	};
 };

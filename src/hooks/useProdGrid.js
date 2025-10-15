@@ -1,16 +1,13 @@
 import toastEx from "@/shared-components/ToastEx/toastEx";
-import useAction from "@/shared-modules/ActionState/useAction";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { useWebApi } from "@/shared-hooks/useWebApi";
-import Errors from "@/shared-modules/Errors.mjs";
+import useAction from "@/shared-modules/ActionState/useAction";
 import Objects from "@/shared-modules/Objects.mjs";
 import { useCallback, useContext, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { AuthContext } from "../contexts/auth/AuthContext";
-import { AppFrameContext } from "../shared-contexts/app-frame/AppFrameContext";
-import { DialogsContext } from "../shared-contexts/dialog/DialogsContext";
-import { LastFieldBehavior } from "../shared-components/form-meta/LastFieldBehavior";
-import { useFormMeta } from "../shared-components/form-meta/useFormMeta";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 
 export const useProdGrid = ({
 	grid,
@@ -43,8 +40,8 @@ export const useProdGrid = ({
 	const formMeta = useFormMeta(
 		safeQty
 			? `
-		prodId,
-		prodName,
+		prod,
+		prod2,
 		catL,
 		catM,
 		catS,
@@ -54,8 +51,8 @@ export const useProdGrid = ({
 		safeQty
 		`
 			: `
-		prodId,
-		prodName,
+		prod,
+		prod2,
 		catL,
 		catM,
 		catS,
@@ -89,6 +86,7 @@ export const useProdGrid = ({
 
 	const peek = useCallback(
 		async (criteria) => {
+			console.log("peek", criteria);
 			if (!token) {
 				throw new Error("token not specified");
 			}

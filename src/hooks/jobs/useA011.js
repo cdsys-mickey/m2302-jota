@@ -1,15 +1,14 @@
-import A011 from "@/modules/md-a011";
-import ProdGrid from "@/modules/md-prod-grid";
-import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import A011 from "@/modules/md-a011";
+import ProdGrid from "@/modules/ProdGrids.mjs";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
-import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
-import { useCallback } from "react";
+import { useProdGrid } from "../useProdGrid";
 
 export const useA011 = () => {
 	const appModule = useAppModule({
@@ -89,7 +88,7 @@ export const useA011 = () => {
 		columns,
 		data: grid.gridData,
 		lastCell: DSGLastCellBehavior.STOP_EDITING,
-		skipDisabled: true
+		skipDisabled: true,
 	});
 
 	const prodGrid = useProdGrid({
@@ -100,14 +99,11 @@ export const useA011 = () => {
 		transformForReading: A011.transformForReading,
 	});
 
-
-
 	return {
 		...appModule,
 		...prodGrid,
 		...grid,
 		...gridMeta,
 		gridMeta,
-
 	};
 };

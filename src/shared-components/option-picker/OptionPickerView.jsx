@@ -155,6 +155,7 @@ const OptionPickerView = memo(
 			focusNextCellOnChange = true,
 			focusNextFieldOnChange = true,
 			filterOptions,
+			freeSolo = false,
 			...rest
 		} = props;
 
@@ -209,6 +210,9 @@ const OptionPickerView = memo(
 			onChange(emptyValue)
 		}, [emptyValue, onChange]);
 
+		/**
+		 * onInputChange 已經有用途
+		 */
 		const handleTextChange = useCallback(
 			(event, newValue, reason) => {
 				const input = event.target.value;
@@ -326,11 +330,11 @@ const OptionPickerView = memo(
 
 		const handleChange = useCallback(
 			(event, value, reason) => {
-				// console.log(`OptionPicker.handleChange`, value);
+				console.log(`OptionPickerView.handleChange(value: ${value}, reason: ${reason}), event:`, event);
 				asyncRef.current.dirty = false;
 				if (onChange) {
 					console.log(`\ttriggered from parent, reason: ${reason}, event: `, event);
-					onChange(value);
+					onChange(value, reason);
 				}
 
 				if (name && clearErrors) {
@@ -492,8 +496,10 @@ const OptionPickerView = memo(
 
 		const handleTextFieldKeyDown = useCallback(
 			(e) => {
-				// 若按住 Ctrl 則不處理
+				// 若按住 Ctrl 則不處理, 但必須阻擋事件傳遞，否則會觸發 submit
 				if (e.ctrlKey) {
+					e.preventDefault();
+					e.stopPropagation();
 					return;
 				}
 
@@ -509,6 +515,9 @@ const OptionPickerView = memo(
 						});
 						break;
 					case "Tab":
+						if (freeSolo) {
+							return;
+						}
 						handleLookup(e, {
 							validate: false,
 						});
@@ -518,7 +527,7 @@ const OptionPickerView = memo(
 						break;
 				}
 			},
-			[disableEnter, handleArrowDown, handleLookup]
+			[disableEnter, freeSolo, handleArrowDown, handleLookup]
 		);
 
 		const handleAutocompleteKeyDown = useCallback((e) => {
@@ -550,6 +559,9 @@ const OptionPickerView = memo(
 				const input = e.target.value;
 
 				if (blurToLookup && asyncRef.current.dirty && findByInput && (input || emptyId)) {
+					if (freeSolo) {
+						return;
+					}
 					console.log("handleBlur: ", input);
 					let found;
 					// found = await findByInput(input);
@@ -577,7 +589,7 @@ const OptionPickerView = memo(
 
 
 			},
-			[_open, blurToClearErrors, blurToLookup, clearErrors, emptyId, findByInput, handleFocusNextCellOrField, inDSG, inFormMeta, handleInputNotFound, multiple, name, onChange, refocus, value]
+			[blurToClearErrors, name, clearErrors, _open, inFormMeta, inDSG, blurToLookup, findByInput, emptyId, freeSolo, multiple, onChange, value, handleFocusNextCellOrField, handleInputNotFound, refocus]
 		);
 
 		const _label = useMemo(() => {
@@ -1000,6 +1012,7 @@ const OptionPickerView = memo(
 						// onOpen={_onOpen}
 						// onOpen={_onOpen}
 						// onClose={_onClose}
+						freeSolo={freeSolo}
 						sx={[
 							{
 								...(disabled && {
@@ -1030,7 +1043,8 @@ const OptionPickerView = memo(
 							},
 							...(Array.isArray(sx) ? sx : [sx]),
 						]}
-						{...AUTO_COMPLETE_DEFAULTS}
+						{...(!freeSolo && AUTO_COMPLETE_DEFAULTS)}
+						// {...AUTO_COMPLETE_DEFAULTS}
 						{...rest}
 
 						// virtualize = true 時必須強制 override 部分屬性

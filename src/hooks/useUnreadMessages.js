@@ -106,7 +106,7 @@ export const useUnreadMessages = () => {
 		(payload) => {
 			console.log(`"notify" signal received`, payload);
 			const msg = `${payload.msgBody}\n - ${payload.sendName}`;
-			toast(msg, {
+			toastEx(msg, {
 				type: Messaging.asToastifyType(payload.type),
 				onClick: () => handleGotoJob(payload),
 			});

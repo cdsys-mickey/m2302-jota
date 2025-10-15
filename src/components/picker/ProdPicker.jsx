@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import Prods from "@/modules/md-prods";
+import Prods from "@/modules/Prods.mjs";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import queryString from "query-string";
@@ -14,6 +14,7 @@ const ProdPicker = (props) => {
 	const {
 		label = "商品",
 		packageType,
+		forName = false,
 		// withBomPackageName = false,
 		// withSalesPackageName = false,
 		// withPurchasePackageName = false,
@@ -66,11 +67,16 @@ const ProdPicker = (props) => {
 
 	const getOptionLabel = useCallback(
 		(option) => {
-			return forId
-				? Prods.getOptionLabelForId(option)
-				: Prods.getOptionLabel(option);
+			if (forId) {
+				return Prods.getOptionLabelForId(option);
+			}
+			if (forName) {
+				return Prods.getOptionLabelForName(option)
+			}
+
+			return Prods.getOptionLabel(option);
 		},
-		[forId]
+		[forId, forName]
 	);
 
 	const getTitle = useCallback((option) => {
@@ -129,6 +135,9 @@ const ProdPicker = (props) => {
 			getOptions={getOptions}
 			getTitle={getTitle}
 			stringify={stringify}
+			// {...((forId || forName) && {
+			// 	freeSolo: true
+			// })}
 			// notFoundText="商品代號 ${input} 不存在"
 			notFoundText={notFoundText}
 			placeholder="以編號或品名搜尋"

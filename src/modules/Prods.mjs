@@ -19,6 +19,12 @@ const getOptionLabelForId = (option) => {
 	return `${ProdID}`;
 };
 
+const getOptionLabelForName = (option) => {
+	if (!option) return "";
+	const { ProdData } = option;
+	return `${ProdData}`;
+};
+
 const getTitle = (option) => {
 	return option
 		? getOptionLabel(option)
@@ -40,6 +46,7 @@ const stringify = (option) => {
 const Prods = {
 	getOptionLabel,
 	getOptionLabelForId,
+	getOptionLabelForName,
 	isOptionEqualToValue,
 	stringify,
 	getTitle,

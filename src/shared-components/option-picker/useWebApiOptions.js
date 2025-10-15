@@ -106,8 +106,8 @@ export const useWebApiOptions = (opts = {}) => {
 	}, []);
 
 	const handleChange = useCallback(
-		(newValue) => {
-			onChange(newValue);
+		(newValue, reason) => {
+			onChange(newValue, reason);
 		},
 		[onChange]
 	);

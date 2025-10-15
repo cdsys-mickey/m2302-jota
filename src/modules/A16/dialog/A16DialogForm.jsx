@@ -53,6 +53,7 @@ const A16DialogForm = memo((props) => {
 									required
 									rules={{ required: "門市代碼為必填" }}
 									readOnly={updating}
+									disabled={updating}
 									slotProps={{
 										htmlInput: {
 											maxLength: 6
@@ -72,6 +73,7 @@ const A16DialogForm = memo((props) => {
 										autoFocus: true
 									}}
 									readOnly={updating}
+									disabled={updating}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={2}>

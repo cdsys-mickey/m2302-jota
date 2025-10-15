@@ -1,15 +1,23 @@
 import { ProdGridContext } from "@/contexts/prod-grid/ProdGridContext";
+import { ButtonEx } from "@/shared-components";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useDebounce from "@/shared-hooks/useDebounce";
 import Objects from "@/shared-modules/Objects.mjs";
-import { LoadingButton } from "@mui/lab";
+import _ from "lodash";
 import { useContext, useMemo } from "react";
 import { useWatch } from "react-hook-form";
-import useDebounce from "../../../shared-hooks/useDebounce";
+
+const WATCH_FIELDS = ["prodId", "prodName", "catL", "catM", "catS", "typeA", "typeB", "taxType", "safeQty"];
 
 export const ProdGridLoadButtonContainer = (props) => {
 	const { ...rest } = props;
-	const criteria = useWatch();
+
+	const watchedValues = useWatch({
+		name: WATCH_FIELDS
+	});
+	const criteria = _.zipObject(WATCH_FIELDS, watchedValues);
 	const debouncedCriteria = useDebounce(criteria, 300);
+
 	const prodGrid = useContext(ProdGridContext);
 	const { peek, totalElements, loading } = prodGrid;
 
@@ -46,7 +54,8 @@ export const ProdGridLoadButtonContainer = (props) => {
 	}, [totalElements]);
 
 	return (
-		<LoadingButton
+		<ButtonEx
+			tooltip="Ctrl + Enter"
 			type="submit"
 			disabled={disabled}
 			size="small"
@@ -56,7 +65,7 @@ export const ProdGridLoadButtonContainer = (props) => {
 			}}
 			{...rest}>
 			{buttonText}
-		</LoadingButton>
+		</ButtonEx>
 	);
 };
 
