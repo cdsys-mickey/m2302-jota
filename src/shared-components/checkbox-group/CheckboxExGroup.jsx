@@ -10,8 +10,8 @@ import { memo } from "react";
 import { useController } from "react-hook-form";
 
 import { useCallback } from "react";
-import { CheckboxExField } from "@/shared-components";
-import { useScrollable } from "../../shared-hooks/useScrollable";
+import { CheckboxEx, CheckboxExField } from "@/shared-components";
+import { useScrollable } from "@/shared-hooks/useScrollable";
 import ErrorBox from "../ErrorBox";
 import LoadingTypography from "../LoadingTypography";
 
@@ -122,15 +122,20 @@ const CheckboxExGroup = memo((props) => {
 				{loading === false && (
 					<FormGroup>
 						{options?.map((option) => {
+							const _label = getOptionLabel(option);
+							const _key = getOptionKey(option);
+							const _checked = isOptionChecked(
+								option,
+								field.value
+							);
+							const _value = getOptionKey(option);
+
 							return (
-								<CheckboxExField
-									label={getOptionLabel(option)}
-									key={getOptionKey(option)}
-									checked={isOptionChecked(
-										option,
-										field.value
-									)}
-									value={getOptionKey(option)}
+								<CheckboxEx
+									label={_label}
+									key={_key}
+									checked={_checked}
+									value={_value}
 									onChange={handleChange}
 									{...CheckboxExProps}
 								/>

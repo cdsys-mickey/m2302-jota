@@ -1,12 +1,9 @@
-import { PrintReportButton } from "@/components";
 import { E01Context } from "@/contexts/E01/E01Context";
-import { ButtonEx } from "@/shared-components";
-import { useContext } from "react";
-import { useFormContext } from "react-hook-form";
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
-import { useMemo } from "react";
 import E01 from "@/modules/E01.mjs";
+import { ButtonEx } from "@/shared-components";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import { useContext, useMemo } from "react";
 
 const E01ConvertToSalesOrderButton = (props) => {
 	const { ...rest } = props;
@@ -39,16 +36,14 @@ const E01ConvertToSalesOrderButton = (props) => {
 
 	return (
 		<TooltipWrapper title={title}>
-			<span>
-				<ButtonEx
-					startIcon={<PublishedWithChangesIcon />}
-					// onClick={ }
-					disabled={disabled}
-					{...rest}
-				>
-					轉銷貨單
-				</ButtonEx>
-			</span>
+			<ButtonEx
+				startIcon={<PublishedWithChangesIcon />}
+				// onClick={ }
+				disabled={disabled}
+				{...rest}
+			>
+				轉銷貨單
+			</ButtonEx>
 		</TooltipWrapper>
 	)
 }

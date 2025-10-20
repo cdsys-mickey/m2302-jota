@@ -4,17 +4,20 @@ import { useContext } from "react";
 import { forwardRef, memo } from "react";
 import { A16Context } from "./A16Context";
 import { useMemo } from "react";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import Auth from "../Auth.mjs";
 
 const A16CreateButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
+		const { operator } = useContext(AuthContext);
 		const a16 = useContext(A16Context);
 		const { moduleAuthorityLoading, canCreate } = a16;
 		const text = useMemo(() => {
 			return "新增";
 		}, []);
 
-		if (moduleAuthorityLoading || !canCreate) {
+		if (moduleAuthorityLoading || !canCreate || operator.Class < Auth.SCOPES.ROOT) {
 			return false;
 		}
 
@@ -22,6 +25,7 @@ const A16CreateButtonContainer = memo(
 			<ResponsiveButton
 				ref={ref}
 				variant="contained"
+				color="warning"
 				startIcon={<AddIcon />}
 				onClick={a16.promptCreating}
 				sx={{

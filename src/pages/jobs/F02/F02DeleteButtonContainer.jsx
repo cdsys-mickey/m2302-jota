@@ -1,9 +1,8 @@
 import { F02Context } from "@/pages/jobs/F02/F02Context";
 import { ButtonEx } from "@/shared-components";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Tooltip } from "@mui/material";
-import { useMemo } from "react";
-import { forwardRef, memo, useContext } from "react";
+import { forwardRef, memo, useContext, useMemo } from "react";
 
 const F02DeleteButtonContainer = memo(
 	forwardRef((props, ref) => {
@@ -19,25 +18,23 @@ const F02DeleteButtonContainer = memo(
 		}, [f02.staging])
 
 		return (
-			<Tooltip title={title} arrow>
-				<span>
-					<ButtonEx
-						responsive
-						ref={ref}
-						variant="contained"
-						startIcon={<DeleteIcon />}
-						color="secondary"
-						onClick={f02.confirmDelete}
-						disabled={disabled}
-						// disabled={f02.grid.readOnly}
-						sx={{
-							fontWeight: 600,
-						}}
-						{...rest}>
-						刪除
-					</ButtonEx>
-				</span>
-			</Tooltip>
+			<TooltipWrapper title={title} arrow>
+				<ButtonEx
+					responsive
+					ref={ref}
+					variant="contained"
+					startIcon={<DeleteIcon />}
+					color="secondary"
+					onClick={f02.confirmDelete}
+					disabled={disabled}
+					// disabled={f02.grid.readOnly}
+					sx={{
+						fontWeight: 600,
+					}}
+					{...rest}>
+					刪除
+				</ButtonEx>
+			</TooltipWrapper>
 		);
 	})
 );

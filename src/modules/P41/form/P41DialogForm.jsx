@@ -12,7 +12,7 @@ import CmsGroupTypePicker from "@/components/CmsGroupTypePicker/CmsGroupTypePick
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
-import { CheckboxEx, DatePickerEx, TextFieldEx, TimePickerEx } from "@/shared-components";
+import { CheckboxEx, CheckboxExField, DatePickerEx, TextFieldEx, TimePickerEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -110,7 +110,7 @@ const P41DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12} md={1.5}>
-							<CheckboxEx
+							<CheckboxExField
 								typo
 								label="結清"
 								name="CFlag"

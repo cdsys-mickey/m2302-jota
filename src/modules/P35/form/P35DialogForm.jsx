@@ -7,7 +7,7 @@ import LoadingTypography from "@/shared-components/LoadingTypography";
 
 import CmsAreaPicker from "@/components/CmsAreaPicker/CmsAreaPicker";
 import CmsCityPicker from "@/components/CmsCityPicker/CmsCityPicker";
-import { CheckboxEx, TextFieldEx } from "@/shared-components";
+import { CheckboxEx, CheckboxExField, TextFieldEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -256,7 +256,7 @@ const P35DialogForm = memo((props) => {
 						<hr />
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={1.5}>
-								<CheckboxEx
+								<CheckboxExField
 									typo
 									variant="outlined"
 									fullWidth
@@ -338,7 +338,7 @@ const P35DialogForm = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={5}>
-										<CheckboxEx
+										<CheckboxExField
 											typo
 											label="X 車數"
 											name="guideAmtMultipliedByBus"
@@ -355,7 +355,7 @@ const P35DialogForm = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={5}>
-										<CheckboxEx
+										<CheckboxExField
 											typo
 											label="X 車數"
 											name="driverAmtMultipliedByBus"

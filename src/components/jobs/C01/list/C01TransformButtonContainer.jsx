@@ -1,7 +1,7 @@
 import { C01Context } from "@/contexts/C01/C01Context";
 import { ButtonEx } from "@/shared-components";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useContext, useMemo } from "react";
 
@@ -23,20 +23,18 @@ export const C01TransformButtonContainer = memo(
 		}, [disabled])
 
 		return (
-			<Tooltip title={_title} arrow >
-				<span>
-					<ButtonEx
-						ref={ref}
-						responsive
-						startIcon={<CheckCircleOutlineIcon />}
-						onClick={handleTransform}
-						disabled={disabled}
-						{...rest}>
-						{children}
-					</ButtonEx>
+			<TooltipWrapper title={_title} arrow >
+				<ButtonEx
+					ref={ref}
+					responsive
+					startIcon={<CheckCircleOutlineIcon />}
+					onClick={handleTransform}
+					disabled={disabled}
+					{...rest}>
+					{children}
+				</ButtonEx>
 
-				</span>
-			</Tooltip>
+			</TooltipWrapper>
 		);
 	})
 );

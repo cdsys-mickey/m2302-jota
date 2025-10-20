@@ -1,8 +1,7 @@
 import { G10Context } from "@/pages/jobs/G10/G10Context";
 import LockSwitch from "@/shared-components/LockSwitch";
-import { Tooltip } from "@mui/material";
-import { useMemo } from "react";
-import { useContext } from "react";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { useContext, useMemo } from "react";
 
 export const G10LockSwitchContainer = (props) => {
 	const { ...rest } = props;
@@ -17,17 +16,15 @@ export const G10LockSwitchContainer = (props) => {
 	// }
 
 	return (
-		<Tooltip title={tooltip} arrow>
-			<span>
-				<LockSwitch
-					unlockedLabel="編輯"
-					locked={g10.grid.readOnly}
-					onChange={g10.grid.toggleReadOnly}
-					disabled={g10.staging}
-					{...rest}
-				/>
-			</span>
-		</Tooltip>
+		<TooltipWrapper title={tooltip} arrow>
+			<LockSwitch
+				unlockedLabel="編輯"
+				locked={g10.grid.readOnly}
+				onChange={g10.grid.toggleReadOnly}
+				disabled={g10.staging}
+				{...rest}
+			/>
+		</TooltipWrapper>
 	);
 };
 

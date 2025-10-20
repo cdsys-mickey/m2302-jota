@@ -1,6 +1,6 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
-import { CheckboxEx, FlexTable, FlexTableCell, FlexTableRow } from "@/shared-components";
+import { CheckboxEx, CheckboxExField, FlexTable, FlexTableCell, FlexTableRow } from "@/shared-components";
 
 const P35Row1ViewComponent = (props) => {
 	const { ...rest } = props;
@@ -9,7 +9,7 @@ const P35Row1ViewComponent = (props) => {
 			<FlexTableRow>
 				<FlexTableCell flex={1} />
 				<FlexTableCell w={130} px={1} align="right">
-					<CheckboxEx
+					<CheckboxExField
 						typo
 						// variant="outlined"
 						fullWidth
@@ -32,7 +32,7 @@ const P35Row1ViewComponent = (props) => {
 					/>
 				</FlexTableCell>
 				<FlexTableCell w={130} px={1} align="right">
-					<CheckboxEx
+					<CheckboxExField
 						typo
 						// variant="outlined"
 						fullWidth
@@ -56,7 +56,7 @@ const P35Row1ViewComponent = (props) => {
 					/>
 				</FlexTableCell>
 				<FlexTableCell w={130} px={1} align="right">
-					<CheckboxEx
+					<CheckboxExField
 						typo
 						// variant="outlined"
 						fullWidth

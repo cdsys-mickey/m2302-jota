@@ -2,8 +2,8 @@ import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
 import { B032Context } from "@/contexts/B032/B032Context";
 import { ButtonEx } from "@/shared-components";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
-import { Tooltip } from "@mui/material";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
@@ -39,24 +39,22 @@ const B012PrintButtonContainer = memo(
 		}
 
 		return (
-			<Tooltip title={_title} arrow >
-				<span>
-					<ButtonEx
-						responsive
-						ref={ref}
-						variant="contained"
-						startIcon={<LocalPrintshopIcon />}
-						sx={{
-							fontWeight: 600,
-						}}
-						onClick={disabled ? null : handleSubmit}
-						color="neutral"
-						disabled={disabled}
-						{...rest}>
-						列印
-					</ButtonEx>
-				</span>
-			</Tooltip >
+			<TooltipWrapper title={_title} arrow >
+				<ButtonEx
+					responsive
+					ref={ref}
+					variant="contained"
+					startIcon={<LocalPrintshopIcon />}
+					sx={{
+						fontWeight: 600,
+					}}
+					onClick={disabled ? null : handleSubmit}
+					color="neutral"
+					disabled={disabled}
+					{...rest}>
+					列印
+				</ButtonEx>
+			</TooltipWrapper >
 		);
 	})
 );

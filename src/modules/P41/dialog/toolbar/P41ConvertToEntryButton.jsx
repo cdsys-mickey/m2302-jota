@@ -1,5 +1,3 @@
-import { E01Context } from "@/contexts/E01/E01Context";
-import E01 from "@/modules/E01.mjs";
 import { ButtonEx } from "@/shared-components";
 import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
@@ -37,16 +35,14 @@ const P41ConvertToEntryButton = (props) => {
 
 	return (
 		<TooltipWrapper title={title}>
-			<span>
-				<ButtonEx
-					startIcon={<PublishedWithChangesIcon />}
-					// onClick={ }
-					disabled={disabled}
-					{...rest}
-				>
-					轉佣金輸入
-				</ButtonEx>
-			</span>
+			<ButtonEx
+				startIcon={<PublishedWithChangesIcon />}
+				// onClick={ }
+				disabled={disabled}
+				{...rest}
+			>
+				轉佣金輸入
+			</ButtonEx>
 		</TooltipWrapper>
 	)
 }

@@ -1,11 +1,11 @@
-import { memo } from "react";
+import { CheckboxExField } from "@/shared-components";
 import PropTypes from "prop-types";
-import { CheckboxEx } from "@/shared-components";
+import { memo } from "react";
 
 const P42CndPayCheckboxViewComponent = (props) => {
 	const { editing, ...rest } = props;
 	return (
-		<CheckboxEx
+		<CheckboxExField
 			// typo
 			disabled={!editing}
 			fullWidth

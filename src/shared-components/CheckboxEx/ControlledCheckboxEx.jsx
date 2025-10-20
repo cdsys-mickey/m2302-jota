@@ -12,8 +12,8 @@ const ControlledCheckboxEx = ({
 	readOnly,
 	control,
 	rules,
-	onChange: _onChange,
-	value: _value,
+	onChange,
+	value,
 	// onKeyDown,
 	// onChanged,
 	checkedToValue,
@@ -32,11 +32,11 @@ const ControlledCheckboxEx = ({
 				? checkedToValue(!e.target.checked)
 				: !e.target.checked;
 			setValue(name, newValue);
-			if (_onChange) {
-				_onChange(newValue);
+			if (onChange) {
+				onChange(newValue);
 			}
 		},
-		[_onChange, checkedToValue, name, setValue]
+		[onChange, checkedToValue, name, setValue]
 	);
 
 	const handleKeyDown = useCallback(
@@ -92,14 +92,17 @@ const ControlledCheckboxEx = ({
 	// );
 
 	const checked = useMemo(() => {
-		return valueToChecked ? valueToChecked(_value) : _value
-	}, [_value, valueToChecked]);
+		return valueToChecked ? valueToChecked(value) : value
+	}, [value, valueToChecked]);
 
 	if (!name) {
 		return (
-			<CheckboxExFieldView
+			<CheckboxExView
 				onKeyDown={handleKeyDown}
 				checked={checked}
+				onChange={onChange}
+				value={value}
+				{...rest}
 			/>
 		);
 	}
@@ -111,11 +114,11 @@ const ControlledCheckboxEx = ({
 			control={control}
 			rules={rules}
 			render={({
-				field: { value, onChange, ref },
+				field,
 				fieldState: { error },
 			}) => (
 				<CheckboxExView
-					inputRef={ref}
+					inputRef={field.ref}
 					checked={valueToChecked ? valueToChecked(value) : value}
 					onKeyDown={handleKeyDown}
 					// onKeyUp={handleKeyUp}
@@ -126,29 +129,14 @@ const ControlledCheckboxEx = ({
 								const newValue = checkedToValue
 									? checkedToValue(e.target.checked)
 									: e.target.checked;
-								if (_onChange) {
-									_onChange(newValue);
+								if (onChange) {
+									onChange(newValue);
 								}
 
-								onChange(newValue);
+								field.onChange(newValue);
 							}
 					}
-					// onChange={
-					// 	readOnly
-					// 		? null
-					// 		: (newChecked) => {
-					// 			if (_onChange) {
-					// 				_onChange(newChecked);
-					// 			}
-					// 			const newValue = checkedToValue
-					// 				? checkedToValue(newChecked)
-					// 				: newChecked;
-					// 			onChange(newValue);
-					// 		}
-					// }
 					inputProps={readOnly ? { readOnly: true } : null}
-					// InputProps={readOnly ? { disableUnderline: true } : null}
-					// disabled={readOnly}
 					error={error}
 					helperText={error?.message}
 					{...rest}

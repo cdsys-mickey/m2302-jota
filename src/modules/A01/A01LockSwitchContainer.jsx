@@ -1,14 +1,13 @@
-import { A01Context } from "@/modules/A01/A01Context";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import useServiceStatus from "@/hooks/useServiceStatus";
 import A01 from "@/modules/A01/A01.mjs";
+import { A01Context } from "@/modules/A01/A01Context";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
-import { Tooltip } from "@mui/material";
-import { useMemo } from "react";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 
 export const A01LockSwitchContainer = (props) => {
 	const { ...rest } = props;
@@ -49,22 +48,19 @@ export const A01LockSwitchContainer = (props) => {
 	}
 
 	return (
-		<Tooltip title={_title}>
-			<span>
-				<LockSwitch
-					unlockedLabel={mobile ? "POS開放" : "POS下載開放"}
-					lockedLabel={mobile ? "POS鎖定" : "POS下載鎖定"}
-					locked={!serviceStatus.enabled}
-					onChange={serviceStatus.toggle}
-					disabled={disabled}
-					width={mobile ? 90 : 130}
-					// disableBoxShadow
-					// disableShadow
-					{...rest}
-				/>
-
-			</span>
-		</Tooltip>
+		<TooltipWrapper title={_title}>
+			<LockSwitch
+				unlockedLabel={mobile ? "POS開放" : "POS下載開放"}
+				lockedLabel={mobile ? "POS鎖定" : "POS下載鎖定"}
+				locked={!serviceStatus.enabled}
+				onChange={serviceStatus.toggle}
+				disabled={disabled}
+				width={mobile ? 90 : 130}
+				// disableBoxShadow
+				// disableShadow
+				{...rest}
+			/>
+		</TooltipWrapper>
 	);
 };
 

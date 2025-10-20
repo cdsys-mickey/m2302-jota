@@ -1,7 +1,7 @@
 const getOptionLabel = (option) => {
 	if (!option) return "";
 	const { DeptID, DeptName, AbbrName } = option;
-	return [DeptID, AbbrName || DeptName || ""].filter(Boolean).join(" ");
+	return [DeptID, AbbrName || DeptName || "(無)"].filter(Boolean).join(" ");
 };
 
 const getOptionName = (option) => {

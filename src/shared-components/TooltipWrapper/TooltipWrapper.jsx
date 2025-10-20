@@ -10,7 +10,9 @@ const TooltipWrapper = (props) => {
 
 	return (
 		<Tooltip title={title} {...rest}>
-			{children}
+			<span>
+				{children}
+			</span>
 		</Tooltip>
 	)
 }

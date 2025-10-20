@@ -14,7 +14,7 @@ import HotelPicker from "@/components/HotelPicker/HotelPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
-import { CheckboxEx, DatePickerEx, FormFieldLabel, TextFieldEx } from "@/shared-components";
+import { CheckboxEx, CheckboxExField, DatePickerEx, FormFieldLabel, TextFieldEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -329,7 +329,7 @@ const P42DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3.5}>
-								<CheckboxEx
+								<CheckboxExField
 									typo
 									// disabled={!editing}
 									label="區域佣金已發"

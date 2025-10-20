@@ -13,7 +13,7 @@ import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapp
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
-import { CheckboxEx, DatePickerEx } from "@/shared-components";
+import { CheckboxEx, CheckboxExField, DatePickerEx } from "@/shared-components";
 
 const P36DialogForm = memo((props) => {
 	const {
@@ -172,7 +172,7 @@ const P36DialogForm = memo((props) => {
 
 						<Grid container spacing={1}>
 							<Grid item xs={2}>
-								<CheckboxEx
+								<CheckboxExField
 									typo
 									variant="outlined"
 									fullWidth

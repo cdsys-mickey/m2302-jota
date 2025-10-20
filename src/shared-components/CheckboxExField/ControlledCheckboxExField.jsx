@@ -12,8 +12,8 @@ const ControlledCheckboxExField = ({
 	readOnly,
 	control,
 	rules,
-	onChange: _onChange,
-	value: _value,
+	onChange,
+	value,
 	// onKeyDown,
 	// onChanged,
 	checkedToValue,
@@ -32,11 +32,11 @@ const ControlledCheckboxExField = ({
 				? checkedToValue(!e.target.checked)
 				: !e.target.checked;
 			setValue(name, newValue);
-			if (_onChange) {
-				_onChange(newValue);
+			if (onChange) {
+				onChange(newValue);
 			}
 		},
-		[_onChange, checkedToValue, name, setValue]
+		[onChange, checkedToValue, name, setValue]
 	);
 
 	const handleKeyDown = useCallback(
@@ -70,14 +70,17 @@ const ControlledCheckboxExField = ({
 	);
 
 	const checked = useMemo(() => {
-		return valueToChecked ? valueToChecked(_value) : _value
-	}, [_value, valueToChecked]);
+		return valueToChecked ? valueToChecked(value) : value
+	}, [value, valueToChecked]);
 
 	if (!name) {
 		return (
 			<CheckboxExFieldView
 				onKeyDown={handleKeyDown}
 				checked={checked}
+				onChange={onChange}
+				value={value}
+				{...rest}
 			/>
 		);
 	}
@@ -89,12 +92,12 @@ const ControlledCheckboxExField = ({
 			control={control}
 			rules={rules}
 			render={({
-				field: { value, onChange, ref },
+				field,
 				fieldState: { error },
 			}) => (
 				<CheckboxExFieldView
-					inputRef={ref}
-					checked={valueToChecked ? valueToChecked(value) : value}
+					inputRef={field.ref}
+					checked={valueToChecked ? valueToChecked(field.value) : field.value}
 					onKeyDown={handleKeyDown}
 					// onKeyUp={handleKeyUp}
 					onChange={
@@ -104,11 +107,11 @@ const ControlledCheckboxExField = ({
 								const newValue = checkedToValue
 									? checkedToValue(e.target.checked)
 									: e.target.checked;
-								if (_onChange) {
-									_onChange(newValue);
+								if (onChange) {
+									onChange(newValue);
 								}
 
-								onChange(newValue);
+								field.onChange(newValue);
 							}
 					}
 					inputProps={readOnly ? { readOnly: true } : null}

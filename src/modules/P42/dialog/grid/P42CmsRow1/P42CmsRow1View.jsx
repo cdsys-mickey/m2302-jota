@@ -1,5 +1,4 @@
-import { P42CndPayCheckbox, P42DrvPayCheckbox, P42TrvPayCheckbox } from "@/components";
-import { CheckboxEx, FlexTable, FlexTableCell, FlexTableRow, FormFieldLabel } from "@/shared-components";
+import { FlexTable, FlexTableCell, FlexTableRow } from "@/shared-components";
 import DSGLabelView from "@/shared-components/dsg/DSGLabelView";
 import PropTypes from "prop-types";
 import { memo } from "react";

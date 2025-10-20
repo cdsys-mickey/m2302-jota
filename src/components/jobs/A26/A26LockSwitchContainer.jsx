@@ -4,6 +4,7 @@ import useServiceStatus from "@/hooks/useServiceStatus";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import { Tooltip } from "@mui/material";
 import { useMemo } from "react";
@@ -45,20 +46,17 @@ export const A26LockSwitchContainer = (props) => {
 	}
 
 	return (
-		<Tooltip title={_title}>
-			<span>
-
-				<LockSwitch
-					unlockedLabel={mobile ? "POS開放" : "POS下載開放"}
-					lockedLabel={mobile ? "POS鎖定" : "POS下載鎖定"}
-					locked={!serviceStatus.enabled}
-					onChange={serviceStatus.toggle}
-					disabled={disabled}
-					width={mobile ? 90 : 130}
-					{...rest}
-				/>
-			</span>
-		</Tooltip>
+		<TooltipWrapper title={_title}>
+			<LockSwitch
+				unlockedLabel={mobile ? "POS開放" : "POS下載開放"}
+				lockedLabel={mobile ? "POS鎖定" : "POS下載鎖定"}
+				locked={!serviceStatus.enabled}
+				onChange={serviceStatus.toggle}
+				disabled={disabled}
+				width={mobile ? 90 : 130}
+				{...rest}
+			/>
+		</TooltipWrapper>
 	);
 };
 

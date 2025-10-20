@@ -1,5 +1,6 @@
 import { G10Context } from "@/pages/jobs/G10/G10Context";
 import { ButtonEx } from "@/shared-components";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import { Tooltip } from "@mui/material";
 import { useCallback } from "react";
@@ -32,23 +33,21 @@ const G10WriteOffButtonContainer = memo(
 		}, [disabled])
 
 		return (
-			<Tooltip title={title}>
-				<span>
-					<ButtonEx
-						responsive
-						ref={ref}
-						variant="contained"
-						startIcon={<PlaylistRemoveIcon />}
-						onClick={handleSubmit}
-						disabled={disabled}
-						sx={{
-							fontWeight: 600,
-						}}
-						{...rest}>
-						沖銷
-					</ButtonEx>
-				</span>
-			</Tooltip>
+			<TooltipWrapper title={title}>
+				<ButtonEx
+					responsive
+					ref={ref}
+					variant="contained"
+					startIcon={<PlaylistRemoveIcon />}
+					onClick={handleSubmit}
+					disabled={disabled}
+					sx={{
+						fontWeight: 600,
+					}}
+					{...rest}>
+					沖銷
+				</ButtonEx>
+			</TooltipWrapper>
 
 		);
 	})

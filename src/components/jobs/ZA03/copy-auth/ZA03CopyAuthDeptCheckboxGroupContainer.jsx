@@ -39,7 +39,8 @@ export const ZA03CopyAuthDeptCheckboxGroupContainer = (props) => {
 				return `${DeptOptions.getOptionLabel(v)}→${za03.selectedDept?.AbbrName || ""
 					}`;
 			}
-			return `${DeptOptions.getOptionLabel(v)}→${v?.AbbrName}`;
+			const result = `${DeptOptions.getOptionLabel(v)}→${v?.AbbrName}`;
+			return result;
 		},
 		[overrideDept, za03.selectedDept?.AbbrName]
 	);

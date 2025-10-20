@@ -1,11 +1,12 @@
+import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import { G02Context } from "@/modules/G02/G02Context";
 import { ButtonEx } from "@/shared-components";
-import { forwardRef, memo, useContext, useMemo } from "react";
-import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
-import { Button, ButtonGroup, Tooltip } from "@mui/material";
-import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
-import ClearIcon from "@mui/icons-material/Clear";
 import ButtonGroupEx from "@/shared-components/ButtonGroupEx";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import ClearIcon from "@mui/icons-material/Clear";
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import { Button, Tooltip } from "@mui/material";
+import { forwardRef, memo, useContext, useMemo } from "react";
 
 const G02WriteOffButtonContainer = memo(
 	forwardRef((props, ref) => {
@@ -33,39 +34,36 @@ const G02WriteOffButtonContainer = memo(
 		}, [disabled])
 
 		return (
-			<Tooltip title={_title}>
-				<span>
-					<ButtonGroupEx variant="contained" size="small" noDivider disableInteractive>
-						<ButtonEx
-							responsive
-							ref={ref}
+			<TooltipWrapper title={_title}>
+				<ButtonGroupEx variant="contained" size="small" noDivider disableInteractive>
+					<ButtonEx
+						responsive
+						ref={ref}
 
-							color="secondary"
-							startIcon={<PlaylistRemoveIcon />}
-							onClick={g02.confirmWriteOff}
-							className="no-margin-right"
-							sx={{
-								fontWeight: 600,
-							}}
-							disabled={disabled}
-							{...rest}>
-							{text}
-						</ButtonEx>
-						{!disabled && (
-							<Tooltip title="取消勾取">
-								<Button
-									className="no-margin-right"
-									color="neutral"
-									onClick={g02.uncheckAll}>
-									<ClearIcon fontSize="small" />
-								</Button>
-							</Tooltip>
+						color="secondary"
+						startIcon={<PlaylistRemoveIcon />}
+						onClick={g02.confirmWriteOff}
+						className="no-margin-right"
+						sx={{
+							fontWeight: 600,
+						}}
+						disabled={disabled}
+						{...rest}>
+						{text}
+					</ButtonEx>
+					{!disabled && (
+						<Tooltip title="取消勾取">
+							<Button
+								className="no-margin-right"
+								color="neutral"
+								onClick={g02.uncheckAll}>
+								<ClearIcon fontSize="small" />
+							</Button>
+						</Tooltip>
 
-						)}
-					</ButtonGroupEx>
-
-				</span>
-			</Tooltip>
+					)}
+				</ButtonGroupEx>
+			</TooltipWrapper>
 		);
 	})
 );
