@@ -4,7 +4,8 @@ import FrameMenuButtonContainer from "./FrameMenuButton/FrameMenuButtonContainer
 import HomeBoxContainer from "./HomeBox/HomeBoxContainer";
 import FormFieldLabelWrapper from "./FormFieldLabel/FormFieldLabelWrapper";
 import FormLabelEx from "./FormLabelEx/FormLabelEx";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import CheckboxExFieldWrapper from "@/shared-components/CheckboxExField/CheckboxExFieldWrapper";
+import CheckboxExView from "./CheckboxEx/CheckboxExView";
 import ButtonExContainer from "@/shared-components/ButtonEx/ButtonExContainer";
 import OptionPickerWrapper from "./option-picker/OptionPickerWrapper";
 import { TextFieldWrapper } from "./TextFieldEx/TextFieldWrapper";
@@ -34,7 +35,8 @@ import ClearInputButton from "./ClearInputButton/ClearInputButton";
 
 export {
 	ButtonExContainer as ButtonEx,
-	CheckboxExWrapper as CheckboxEx,
+	CheckboxExView as CheckboxEx,
+	CheckboxExFieldWrapper as CheckboxExField,
 	FrameBannerContainer as FrameBanner,
 	FrameBoxContainer as FrameBox,
 	FrameMenuButtonContainer as FrameMenuButton,

@@ -1,5 +1,5 @@
 import { PrintReportButton } from "@/components";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
@@ -58,7 +58,7 @@ const F04Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="是否要盤點清單編號"
 									name="PrtID"
 									defaultValue={true}

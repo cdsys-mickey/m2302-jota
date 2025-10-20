@@ -86,7 +86,7 @@ toastEx.warn = (message, opts = {}) => {
 	const ToastContent = createToastContent(message, { actionText, onAction, slotProps });
 	toast(ToastContent, {
 		...getToastOptions("warning", onAction, restOpts),
-		position: "top-right",
+		// position: "top-center",
 	});
 };
 
@@ -106,7 +106,7 @@ toastEx.error = (message, arg1 = {}, arg2 = {}) => {
 
 	const options = {
 		...getToastOptions("error", onAction, restOpts),
-		position: "top-right",
+		position: "top-center",
 	};
 
 	toast(ToastContent, options);

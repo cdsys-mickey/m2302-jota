@@ -156,11 +156,6 @@ const A19Form = memo((props) => {
 						<Grid container>
 							<Grid item xs={12} sm={6} >
 								<FlexBox alignItems="center">
-									{/* <CheckboxExWrapper
-										label="包含撥出入"
-										name="InclInv"
-										defaultValue={true}
-									/> */}
 									<A19InOutCheckbox
 										label="包含撥出入"
 										name="InclInv"

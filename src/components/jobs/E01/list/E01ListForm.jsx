@@ -1,6 +1,5 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
@@ -9,6 +8,7 @@ import { Grid } from "@mui/material";
 import { memo } from "react";
 import { E01CustomerPicker } from "../E01CustomerPicker";
 import E01ListSquaredPicker from "./E01ListSquaredPicker";
+import { CheckboxExField } from "@/shared-components";
 
 const E01ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -69,7 +69,7 @@ const E01ListForm = memo((props) => {
 					<Grid item md={8}>
 						<FlexBox inline fullWidth gap={0.2}>
 							<FlexBox justifyContent="flex-end">
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="零售"
 									name="lvRetail"
 									size="small"
@@ -94,17 +94,6 @@ const E01ListForm = memo((props) => {
 												width: 360,
 											},
 										},
-										// input: {
-										// 	startAdornment:
-										// 		(
-										// 			<InputAdornment position="start">
-										// 				<CheckboxExWrapper
-										// 					label="零售"
-										// 					name="lvRetail"
-										// 				/>
-										// 			</InputAdornment>
-										// 		)
-										// }
 									}}
 								/>
 							</FlexBox>

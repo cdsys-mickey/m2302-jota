@@ -9,31 +9,26 @@ import {
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import { forwardRef, memo } from "react";
+import CheckboxExView from "../CheckboxEx/CheckboxExView";
 
-const CheckboxExView = memo(
+
+const CheckboxExFieldView = memo(
 	forwardRef((props, ref) => {
-		const { shrink = false, variant, fullWidth = false, dense = false, label, slotProps, error, helperText, tooltip, disabled, ...rest } = props;
+		const { shrink = false, variant, fullWidth = false, dense = false, label, slotProps, error, helperText, disabled, ...rest } = props;
 		const { label: labelProps, ...checkboxSlotProps } = slotProps || {};
 
-		const checkbox = useMemo(() => (
-			<Tooltip title={tooltip}>
-				<span>
-					<Checkbox
-						ref={ref}
-						// color="default"
-						// {...(checkboxSlotProps && {
-						// 	slotProps: checkboxSlotProps
-						// })}
-						disabled={disabled}
-						{...checkboxSlotProps}
-						{...rest}
-					/>
-				</span>
-			</Tooltip>
-		), [checkboxSlotProps, disabled, ref, rest, tooltip]);
+		const checkbox = useMemo(() => {
+			return (
+				<CheckboxExView
+					{...rest}
+					{...checkboxSlotProps}
+				/>
+			)
+		}, [checkboxSlotProps, rest]);
 
 		return (
 			<FormControl
+				ref={ref}
 				disabled={disabled}
 				sx={{
 					display: 'inline-block', // 適應內容大小
@@ -104,8 +99,8 @@ const CheckboxExView = memo(
 		);
 	})
 );
-CheckboxExView.displayName = "CheckboxExView";
-CheckboxExView.propTypes = {
+CheckboxExFieldView.displayName = "CheckboxExFieldView";
+CheckboxExFieldView.propTypes = {
 	disabled: PropTypes.bool,
 	shrink: PropTypes.bool,
 	fullWidth: PropTypes.bool,
@@ -117,4 +112,4 @@ CheckboxExView.propTypes = {
 	helperText: PropTypes.string,
 	tooltip: PropTypes.string,
 };
-export default CheckboxExView;
+export default CheckboxExFieldView;

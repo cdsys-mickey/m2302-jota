@@ -45,6 +45,7 @@ const CheckboxCellComponent = memo(
 			setActiveCell,
 			readOnly,
 			focusNextCellOnChange = false,
+			color = "default"
 		} = columnData;
 
 		// const toggleChecked = useCallback(
@@ -123,7 +124,7 @@ const CheckboxCellComponent = memo(
 
 		return (
 			<Checkbox
-				color="default"
+				color={color}
 				className="dsg-checkbox"
 				style={{
 					// ...(size === "large" && {
@@ -140,9 +141,54 @@ const CheckboxCellComponent = memo(
 					cursor: "pointer",
 				}}
 				sx={{
-					"&.MuiCheckbox-root": {
-						padding: 0
-					}
+					// 確保根元素有定位和 z-index
+					'&.MuiCheckbox-root': {
+						padding: 0,
+						position: 'relative',
+						zIndex: 1, // 讓 Checkbox 本身在我們的背景偽元素之上
+					},
+
+					// 針對 Checkbox 內部的 SVG 元素
+					'& .MuiSvgIcon-root': {
+						// 這個樣式很重要，它控制了方框或勾的顏色。
+						// 預設情況下，`color` prop 已經將 SVG 的 `fill` 設定為主題色。
+						// 在未勾選時，這個 SVG 的 `fill` 基本上是透明的，只有 `stroke` 是主題色。
+					},
+
+					...(!disabled && {
+						// ------------------------------------------------------------------
+						// **處理未勾選狀態的實心白色背景**
+						// 當 Checkbox 未勾選時，添加一個白色背景的偽元素
+						'&:not(.Mui-checked)::before': {
+							content: '""',
+							width: '1em',
+							height: '1em',
+							position: 'absolute',
+							top: '50%',
+							left: '50%',
+							transform: 'translate(-50%, -50%)',
+							background: 'white', // **讓未勾選的透明中心變白色 (實心)**
+							borderRadius: '2px',
+							zIndex: -1, // 放在 SVG 圖標下方
+						},
+
+						// ------------------------------------------------------------------
+						// **處理已勾選狀態的白色勾背景**
+						// 當 Checkbox 勾選時，添加一個白色背景的偽元素 (這和上一個答案一致)
+						// 讓透明的勾透出白色
+						'&.Mui-checked::before': {
+							content: '""',
+							width: '1em',
+							height: '1em',
+							position: 'absolute',
+							top: '50%',
+							left: '50%',
+							transform: 'translate(-50%, -50%)',
+							background: 'white', // **讓透明勾透出白色**
+							borderRadius: '2px',
+							zIndex: -1,
+						},
+					})
 				}}
 				disableRipple
 				// Important to prevent any undesired "tabbing"

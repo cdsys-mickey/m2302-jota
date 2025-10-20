@@ -18,6 +18,8 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import useDebugDialog from "../useDebugDialog";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
 export const useB011 = (opts = {}) => {
 	const { forNew } = opts;
@@ -592,6 +594,76 @@ export const useB011 = (opts = {}) => {
 		return `${config.REPORT_URL}/WebB011031Rep.aspx`;
 	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
+	const appFrame = useContext(AppFrameContext);
+	const debugDialog = useDebugDialog();
+
+	const onDebugSubmit = useCallback(
+		async (payload) => {
+			console.log("onSubmit", payload);
+			// fetch ListView data
+			const {
+				status,
+				payload: fetchPayload,
+				error,
+			} = await httpGetAsync({
+				bearer: auth.token,
+				url: `${API_URL}/find-by-cust`,
+				params: {
+					sort: B02.OrderBy.SUPPLIER,
+					...listLoaderCtx.paramsRef.current,
+				},
+			});
+			if (status.success) {
+				console.log("payload", fetchPayload.data);
+				if (!fetchPayload.data?.length) {
+					toastEx.error("目前查詢沒有資料", {
+						position: "top-right",
+					});
+					return;
+				}
+			} else {
+				toastEx.error("讀取資料發生錯誤", error);
+				return;
+			}
+
+			// const { prtEmployee, prtDate } = payload;
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
+				}),
+				DeptID: operator?.CurDeptID,
+				JobName: JOB_NAME,
+				CustID: printAction.params?.lvCust?.CustID || "",
+				QEmplID: payload.prtEmployee?.CodeID || "",
+				QDate: Forms.formatDate(payload.prtDate) ?? "",
+				B011031_W1: fetchPayload.data
+					? fetchPayload.data?.map((x) => ({
+							ProdID: x.ProdID,
+							Price: x.Price,
+							QPrice: x.QPrice,
+					  }))
+					: [],
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			API_URL,
+			JOB_NAME,
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			auth.token,
+			debugDialog,
+			httpGetAsync,
+			listLoaderCtx.paramsRef,
+			operator?.CurDeptID,
+			printAction.params?.lvCust?.CustID,
+			reportUrl,
+		]
+	);
 
 	const onPrintSubmit = useCallback(
 		async (payload) => {
@@ -632,7 +704,7 @@ export const useB011 = (opts = {}) => {
 				JobName: JOB_NAME,
 				CustID: printAction.params?.lvCust?.CustID || "",
 				QEmplID: payload.prtEmployee?.CodeID || "",
-				QDate: Forms.formatDate(payload.prtDate),
+				QDate: Forms.formatDate(payload.prtDate) ?? "",
 				B011031_W1: fetchPayload.data
 					? fetchPayload.data?.map((x) => ({
 							ProdID: x.ProdID,
@@ -720,6 +792,7 @@ export const useB011 = (opts = {}) => {
 		onPrintPromptSubmitError,
 		cancelPrint: printAction.clear,
 		printDialogOpen: printAction.active,
+		onDebugSubmit,
 		onPrintSubmit,
 		onPrintSubmitError,
 		// handleLastField,

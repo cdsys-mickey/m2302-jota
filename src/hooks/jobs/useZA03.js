@@ -807,6 +807,7 @@ export const useZA03 = () => {
 		// return;
 		try {
 			const dirtyRows = grid.getDirtyRows();
+			// const dirtyRows = grid.gridData;
 			console.log(`handleAuthSave`, dirtyRows);
 			saveAuthAction.start({ message: "儲存中..." });
 			const { status, error } = await httpPatchAsync({
@@ -874,6 +875,10 @@ export const useZA03 = () => {
 			});
 			console.log("selected", selection);
 
+			if (!selection) {
+				toastEx.warn("請先選擇要操作的儲存格");
+				return;
+			}
 			grid.setGridData(
 				(prev) =>
 					prev.map((rowData, rowIndex) => {

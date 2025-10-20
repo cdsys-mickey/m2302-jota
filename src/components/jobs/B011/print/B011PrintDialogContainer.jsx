@@ -8,6 +8,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import B011PrintDialogForm from "./B011PrintDialogForm";
 import { BContext } from "@/contexts/B/BContext";
+import { DebugReportButton, PrintReportButton } from "@/components";
 
 const B011PrintDialogContainer = (props) => {
 	const { forNew = false } = props;
@@ -23,6 +24,8 @@ const B011PrintDialogContainer = (props) => {
 		)
 	}, [b011.onPrintSubmit, b011.onPrintSubmitError, form]);
 
+	const handleDebugSubmit = form.handleSubmit(b011.onDebugSubmit)
+
 	const formMeta = useFormMeta(
 		`prtEmployee,
 		prtDate,
@@ -34,21 +37,31 @@ const B011PrintDialogContainer = (props) => {
 	)
 
 	return (
-
-		<DialogEx
-			responsive
-			maxWidth="xs"
-			title="列印"
-			open={b011.printDialogOpen}
-			onClose={b011.cancelPrint}
-			onCancel={b011.cancelPrint}
-			onConfirm={handleSubmit}
-			confirmText="執行"
-		>
+		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta}>
-				<B011PrintDialogForm onSubmit={handleSubmit} />
+				<form>
+					<DialogEx
+						responsive
+						maxWidth="xs"
+						title="列印"
+						open={b011.printDialogOpen}
+						onClose={b011.cancelPrint}
+						onCancel={b011.cancelPrint}
+						onConfirm={handleSubmit}
+						confirmText="執行"
+					// otherActionButtons={<PrintReportButton color="primary"
+					// 	variant="contained"
+					// 	onSubmit={handleSubmit}
+					// 	onDebugSubmit={handleDebugSubmit}
+					// />}
+					>
+
+						<B011PrintDialogForm onSubmit={handleSubmit} />
+
+					</DialogEx>
+				</form>
 			</FormMetaProvider>
-		</DialogEx>
+		</FormProvider>
 	);
 }
 

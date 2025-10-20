@@ -183,6 +183,7 @@ const ControlledDatePicker = ({
 										"& .MuiOutlinedInput-root": {
 											'& fieldset': {
 												borderColor: Colors.REQUIRED,
+												// borderBottom: `1px solid ${Colors.REQUIRED}`,
 											},
 										}
 									}),

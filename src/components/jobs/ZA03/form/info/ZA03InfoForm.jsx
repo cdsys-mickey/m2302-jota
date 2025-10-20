@@ -8,9 +8,10 @@ import { TabPanel } from "@mui/lab";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import ZA03DeptPicker from "../depts-picker/ZA03DeptPicker";
+import ZA03DeptPicker from "../depts-picker/ZA03DeptPickerContainer";
 import { ZA03DeptsPickerContainer } from "../depts-picker/ZA03DeptsPickerContainer";
 import AuthScopePickerContainer from "@/components/fields/AuthScopePickerContainer";
+import ZA03DeptPickerContainer from "../depts-picker/ZA03DeptPickerContainer";
 
 const ZA03InfoForm = memo((props) => {
 	const { data, creating, updating, editing, handleDeptChange } = props;
@@ -89,7 +90,7 @@ const ZA03InfoForm = memo((props) => {
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={6}>
-							<ZA03DeptPicker
+							<ZA03DeptPickerContainer
 								uid={data?.UID}
 								typo
 								name="dept"

@@ -1,12 +1,11 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
 import YesNo from "@/modules/md-yes-no";
-import ControlledCheckboxEx from "../checkbox/ControlledCheckboxEx";
+import { memo } from "react";
+import ControlledCheckboxExField from "../CheckboxExField/ControlledCheckboxExField";
 
 const ControlledYesNoCheckbox = memo((props) => {
 	const { ...rest } = props;
 	return (
-		<ControlledCheckboxEx
+		<ControlledCheckboxExField
 			valueToChecked={YesNo.valueToChecked}
 			checkedToValue={YesNo.checkedToValue}
 			{...rest}

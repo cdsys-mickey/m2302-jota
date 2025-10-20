@@ -5,9 +5,9 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import ProdPicker from "@/components/picker/ProdPicker";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
@@ -61,7 +61,7 @@ const H02Form = memo((props) => {
 							</Grid>
 							<Grid item xs={3} >
 								<FlexBox alignItems="flex-start">
-									<CheckboxExWrapper
+									<CheckboxExField
 										label="含撥出入"
 										name="InclTX"
 										defaultValue={true}
@@ -73,7 +73,7 @@ const H02Form = memo((props) => {
 							</Grid>
 							<Grid item xs={3} >
 
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="含試贈樣"
 									name="InclTest"
 									defaultValue={true}

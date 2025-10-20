@@ -1,4 +1,3 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -6,13 +5,12 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import ProdPicker from "@/components/picker/ProdPicker";
+import { CheckboxExField, TextFieldEx } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
-import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import H44OrderTypePicker from "./pickers/H44OrderTypePicker";
 
 const H44Form = memo((props) => {
@@ -72,7 +70,7 @@ const H44Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<TextFieldWrapper
+								<TextFieldEx
 									name="Times"
 									label="領料次數 ≦"
 									type="number"
@@ -82,7 +80,7 @@ const H44Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="扣減退料次數"
 									name="Minus"
 									defaultValue={true}

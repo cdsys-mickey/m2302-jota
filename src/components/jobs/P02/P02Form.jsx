@@ -1,4 +1,3 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FlexBox from "@/shared-components/FlexBox";
 import FlexGrid from "@/shared-components/FlexGrid";
@@ -130,11 +129,6 @@ const P02Form = memo((props) => {
 						<FlexBox mt={2}>
 							<Grid container>
 								<FlexGrid item xs={12} sm={6} alignItems="center">
-									{/* <CheckboxExWrapper
-									label="包含撥出入"
-									name="transIncluded"
-									defaultValue={true}
-								/> */}
 								</FlexGrid>
 								<Grid item xs={12} sm={6}>
 									<FlexBox justifyContent="flex-end">

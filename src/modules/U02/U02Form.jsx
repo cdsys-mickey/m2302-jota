@@ -10,7 +10,7 @@ import { PrintReportButton } from "@/components";
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
 import Auth from "@/modules/Auth.mjs";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
@@ -87,7 +87,7 @@ const U02Form = memo((props) => {
 								/>
 							</Grid>
 							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="包含撥出入"
 									name="InvTx"
 									defaultValue={true}
@@ -98,7 +98,7 @@ const U02Form = memo((props) => {
 
 							</FlexGrid>
 							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="包含試贈樣"
 									name="SType"
 									defaultValue={true}

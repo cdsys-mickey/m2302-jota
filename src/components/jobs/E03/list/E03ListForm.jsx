@@ -1,17 +1,13 @@
-import CustomerPicker from "@/components/picker/CustomerPicker";
-import ProdPicker from "@/components/picker/ProdPicker";
+import EmployeePicker from "@/components/picker/EmployeePicker";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
+import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Grid } from "@mui/material";
 import { memo } from "react";
-import E03SquaredPicker from "../E03SquaredPicker";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
-import EmployeePicker from "@/components/picker/EmployeePicker";
 import { E03CustomerPicker } from "../E03CustomerPicker";
 import E03SalesTypePicker from "../E03SalesTypePicker";
-import FlexGrid from "@/shared-components/FlexGrid";
-import FlexBox from "@/shared-components/FlexBox";
 
 const E03ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -56,7 +52,7 @@ const E03ListForm = memo((props) => {
 				</Grid>
 				<Grid item md={3} >
 					<FlexBox justifyContent="flex-end">
-						<CheckboxExWrapper
+						<CheckboxExField
 							label="零售"
 							name="lvRetail"
 							size="small"

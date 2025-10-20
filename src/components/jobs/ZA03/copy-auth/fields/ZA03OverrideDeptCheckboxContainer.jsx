@@ -1,4 +1,4 @@
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 
@@ -13,13 +13,13 @@ export const ZA03OverrideDeptCheckboxContainer = (props) => {
 
 	const disabled = useMemo(() => {
 		return depts?.length !== 1 || !fromUser;
-	}, [depts.length, fromUser]);
+	}, [depts?.length, fromUser]);
 
 	if (!fromUser) {
 		return false;
 	}
 
-	return <CheckboxExWrapper disabled={disabled} {...rest} />;
+	return <CheckboxExField disabled={disabled} {...rest} />;
 };
 
 ZA03OverrideDeptCheckboxContainer.displayName =

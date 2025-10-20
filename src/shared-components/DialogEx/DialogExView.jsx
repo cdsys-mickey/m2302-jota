@@ -20,10 +20,9 @@ import {
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import DialogTitleEx from "./DialogTitleEx";
-import CheckboxEx from "../checkbox/CheckboxExView";
 import { ButtonEx } from "@/shared-components";
-import FormErrorBox from "../form/FormErrorBox";
 import FormAlertBox from "../form/FormAlertBox";
+import CheckboxExView from "../CheckboxEx/CheckboxExView";
 
 
 const defaultConfirmButtonProps = {
@@ -324,7 +323,7 @@ const DialogExView = memo(
 					)}
 					{(!tooSmall && check) && (
 						<Box py={1}>
-							<CheckboxEx
+							<CheckboxExView
 								inputRef={setInputRef}
 								autoFocus
 								label={checkLabel}

@@ -1,7 +1,7 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
@@ -83,12 +83,12 @@ const F01DialogForm = memo((props) => {
 									rules={{
 										required: "清單名稱為必填",
 									}}
-									readOnly={updating}
+								// readOnly={updating}
 								/>
 							</Grid>
 							{editing && (
 								<Grid item md={4}>
-									<CheckboxExWrapper
+									<CheckboxExField
 										variant="outlined"
 										fullWidth
 										typo

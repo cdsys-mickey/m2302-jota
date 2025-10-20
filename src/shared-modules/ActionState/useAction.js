@@ -16,10 +16,9 @@ export default function useAction(initState = null) {
 			...prev,
 			state: ActionState.PROMPT,
 			message,
-			...params
+			params,
 		}));
 	}, []);
-
 
 	const start = useCallback(({ message, params } = {}) => {
 		setActionState((prev) => ({
@@ -28,7 +27,7 @@ export default function useAction(initState = null) {
 			error: null,
 			// payload: null,
 			message,
-			...params
+			...params,
 		}));
 	}, []);
 
@@ -39,7 +38,7 @@ export default function useAction(initState = null) {
 			...prev,
 			state: ActionState.DONE,
 			message,
-			...params
+			...params,
 		}));
 	}, []);
 
@@ -59,7 +58,7 @@ export default function useAction(initState = null) {
 			message: null,
 			error: null,
 			params: null,
-			supressLoading: false
+			supressLoading: false,
 		});
 	}, []);
 
@@ -97,4 +96,4 @@ export default function useAction(initState = null) {
 		finished,
 		failed,
 	};
-};
+}

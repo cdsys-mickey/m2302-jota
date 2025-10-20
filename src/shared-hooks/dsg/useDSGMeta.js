@@ -333,7 +333,7 @@ export const useDSGMeta = ({
 	}, []);
 
 	const setSelection = useCallback((selection, opts = {}) => {
-		if (gridRef.current) {
+		if (gridRef.current && selection) {
 			return gridRef.current.setSelection(selection);
 		}
 		if (opts.debug) {

@@ -15,6 +15,7 @@ const Colors = {
 	// FOCUSED_BORDER: lightBlue[600],
 	FOCUSED_BORDER: "rgba(0,0,0,0.1)",
 	REQUIRED: lightBlue[600],
+	REQUIRED_RIGHT: lightBlue[300],
 	CONTAINED: "#825b10",
 	// BG: "#fffcf8",
 	// BG: "#fff5e5",

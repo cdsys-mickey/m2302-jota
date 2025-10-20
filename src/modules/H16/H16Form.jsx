@@ -8,7 +8,7 @@ import { memo } from "react";
 import { PrintReportButton } from "@/components";
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
@@ -93,7 +93,7 @@ const H16Form = memo((props) => {
 								/>
 							</Grid>
 						</Grid>
-						<CheckboxExWrapper
+						<CheckboxExField
 							label="零售客戶"
 							name="retail"
 							defaultValue={false}

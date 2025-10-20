@@ -31,6 +31,7 @@ import OptionPickerContext from "./OptionPickerContext";
 import OptionPickerPopper from "./popper/OptionPickerPopper";
 import { useContext } from "react";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import consoleEx from "@/helpers/consoleEx";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -944,6 +945,13 @@ const OptionPickerView = memo(
 			return value ?? emptyValue;
 		}, [emptyValue, value])
 
+		const _options = useMemo(() => {
+			if (!options || !Array.isArray(options)) {
+				consoleEx.warn(`options 為 ${options}, 已補正為 []`);
+			}
+			return !options || !Array.isArray(options) ? [] : options;
+		}, [options])
+
 
 		return (
 			<OptionPickerContext.Provider value={{
@@ -990,7 +998,7 @@ const OptionPickerView = memo(
 						loading={loading}
 						loadingText={loadingText}
 						value={_value}
-						options={options}
+						options={_options}
 						getOptionLabel={getOptionLabel}
 						renderOption={handleRenderOption}
 						renderGroup={handleRenderGroup}

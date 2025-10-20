@@ -1,11 +1,11 @@
+import { PaymentPicker } from "@/components";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
+import { CheckboxExField, DatePickerEx } from "@/shared-components";
 import FlexBox from "@/shared-components/FlexBox";
-import LoadingTypography from "@/shared-components/LoadingTypography";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import LoadingTypography from "@/shared-components/LoadingTypography";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Container, Grid } from "@mui/material";
 import { Box } from "@mui/system";
@@ -14,7 +14,6 @@ import { memo } from "react";
 import { E03CustomerPicker } from "../E03CustomerPicker";
 import { E03ProdGridBottomToolbar } from "./grid/E03ProdGridBottomToolbar";
 import { E03ProdGridContainer } from "./grid/E03ProdGridContainer";
-import { PaymentPicker } from "@/components";
 
 const E03DialogForm = memo((props) => {
 	const {
@@ -59,7 +58,7 @@ const E03DialogForm = memo((props) => {
 								/>
 							</Grid>)}
 							<Grid item xs={24} sm={24} md={4.5}>
-								<DatePickerWrapper
+								<DatePickerEx
 									typo
 									autoFocus
 									name="RetDate"
@@ -74,7 +73,7 @@ const E03DialogForm = memo((props) => {
 
 
 							<Grid item xs={24} sm={24} md={2}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									typo
 									label="零售"
 									name="retail"
@@ -158,7 +157,7 @@ const E03DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={24} sm={24} md={2}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									typo
 									label="稅外加"
 									name="taxExcluded"

@@ -87,6 +87,7 @@ const TextFieldExView = (props) => {
 							"& .MuiOutlinedInput-root": {
 								'& fieldset': {
 									borderColor: Colors.REQUIRED,
+									// borderBottom: `2px solid ${Colors.REQUIRED}`,
 								},
 							}
 						}),

@@ -6,17 +6,16 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import AppDeptPicker from "@/components/fields/AppDeptPicker";
-import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
+import AppDeptPicker from "@/components/fields/AppDeptPicker";
+import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
+import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import Auth from "@/modules/Auth.mjs";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import U03DataTypePicker from "./picker/U03DataTypePicker";
-import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
-import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 
 const U03Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -86,7 +85,7 @@ const U03Form = memo((props) => {
 								/>
 							</Grid>
 							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="包含撥出入"
 									name="InvTx"
 									defaultValue={true}
@@ -97,7 +96,7 @@ const U03Form = memo((props) => {
 
 							</FlexGrid>
 							<FlexGrid item xs={12} sm={6} alignItems="center">
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="包含試贈樣"
 									name="SType"
 									defaultValue={true}

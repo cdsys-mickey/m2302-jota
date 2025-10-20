@@ -7,15 +7,15 @@ import { memo } from "react";
 
 import { PrintReportButton } from "@/components";
 import CmsBusCompPicker from "@/components/CmsBusCompPicker/CmsBusCompPicker";
+import CmsCatPicker from "@/components/CmsCatPicker/CmsCatPicker";
 import { CmsEntryPicker } from "@/components/CmsEntryPicker/CmsEntryPicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
-import { CheckboxEx, TextFieldEx } from "@/shared-components";
+import { CheckboxExField, TextFieldEx } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P52ReportTypePicker from "./pickers/P52ReportTypePicker";
-import CmsCatPicker from "@/components/CmsCatPicker/CmsCatPicker";
 
 const P52Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -126,7 +126,7 @@ const P52Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<CheckboxEx
+								<CheckboxExField
 									label="列印簽名欄"
 									name="Sign"
 									defaultValue={true}

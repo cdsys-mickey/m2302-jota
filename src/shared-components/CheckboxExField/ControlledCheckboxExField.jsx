@@ -1,13 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Controller, useFormContext } from "react-hook-form";
 import PropTypes from "prop-types";
-import CheckboxExView from "./CheckboxExView";
 import { useCallback } from "react";
 import { useContext } from "react";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useMemo } from "react";
+import CheckboxExFieldView from "./CheckboxExFieldView";
 
-const ControlledCheckboxEx = ({
+const ControlledCheckboxExField = ({
 	name,
 	readOnly,
 	control,
@@ -66,30 +66,8 @@ const ControlledCheckboxEx = ({
 				}
 			}
 		},
-		[handleFocusNextField, toggleChecked, name, setFocus, isFieldDisabled]
+		[handleFocusNextField, toggleChecked, focusNextFieldBySpace, name, setFocus, isFieldDisabled]
 	);
-
-	// const handleKeyUp = useCallback(
-	// 	(e) => {
-	// 		console.log("handleKeyUp:", `"${e.key}"`);
-	// 		if (e.key === " ") {
-	// 			if (getNextField) {
-	// 				const nextField = getNextField(name, {
-	// 					forward: !e.shiftKey,
-	// 					isFieldDisabled,
-	// 				});
-	// 				console.log("nextField", nextField);
-	// 				if (nextField) {
-	// 					// e.preventDefault();
-	// 					setFocus(nextField.name, {
-	// 						shouldSelect: nextField.select,
-	// 					});
-	// 				}
-	// 			}
-	// 		}
-	// 	},
-	// 	[getNextField, isFieldDisabled, name, setFocus]
-	// );
 
 	const checked = useMemo(() => {
 		return valueToChecked ? valueToChecked(_value) : _value
@@ -97,7 +75,7 @@ const ControlledCheckboxEx = ({
 
 	if (!name) {
 		return (
-			<CheckboxExView
+			<CheckboxExFieldView
 				onKeyDown={handleKeyDown}
 				checked={checked}
 			/>
@@ -114,7 +92,7 @@ const ControlledCheckboxEx = ({
 				field: { value, onChange, ref },
 				fieldState: { error },
 			}) => (
-				<CheckboxExView
+				<CheckboxExFieldView
 					inputRef={ref}
 					checked={valueToChecked ? valueToChecked(value) : value}
 					onKeyDown={handleKeyDown}
@@ -133,22 +111,7 @@ const ControlledCheckboxEx = ({
 								onChange(newValue);
 							}
 					}
-					// onChange={
-					// 	readOnly
-					// 		? null
-					// 		: (newChecked) => {
-					// 			if (_onChange) {
-					// 				_onChange(newChecked);
-					// 			}
-					// 			const newValue = checkedToValue
-					// 				? checkedToValue(newChecked)
-					// 				: newChecked;
-					// 			onChange(newValue);
-					// 		}
-					// }
 					inputProps={readOnly ? { readOnly: true } : null}
-					// InputProps={readOnly ? { disableUnderline: true } : null}
-					// disabled={readOnly}
 					error={error}
 					helperText={error?.message}
 					{...rest}
@@ -158,9 +121,9 @@ const ControlledCheckboxEx = ({
 	);
 };
 
-export default ControlledCheckboxEx;
+export default ControlledCheckboxExField;
 
-ControlledCheckboxEx.propTypes = {
+ControlledCheckboxExField.propTypes = {
 	name: PropTypes.string,
 	readOnly: PropTypes.bool,
 	control: PropTypes.object,

@@ -1,4 +1,3 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -6,19 +5,18 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
-import CustomerPicker from "@/components/picker/CustomerPicker";
-import { OutboundTypePicker } from "@/components/picker/OutboundTypePicker";
-import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import CustomerPicker from "@/components/picker/CustomerPicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
+import ProdPicker from "@/components/picker/ProdPicker";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
-import P09ReportTypePicker from "./pickers/P09ReportTypePicker";
+import P09CalTypePicker from "./pickers/P09CalTypePicker";
 import P09DataSourcePicker from "./pickers/P09DataSourcePicker";
 import P09OrderTypePicker from "./pickers/P09OrderTypePicker";
-import OrderDirPicker from "@/components/picker/OrderDirPicker";
-import P09CalTypePicker from "./pickers/P09CalTypePicker";
+import P09ReportTypePicker from "./pickers/P09ReportTypePicker";
 
 const P09Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, forNewCustomer, ...rest } = props;
@@ -60,7 +58,7 @@ const P09Form = memo((props) => {
 								/>
 							</Grid>
 						</Grid>
-						<CheckboxExWrapper
+						<CheckboxExField
 							label="零售客戶"
 							name="retail"
 							defaultValue={false}
@@ -131,7 +129,7 @@ const P09Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="含試贈樣"
 									name="InclTest"
 									defaultValue={true}

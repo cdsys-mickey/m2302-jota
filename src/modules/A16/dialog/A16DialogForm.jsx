@@ -4,13 +4,13 @@ import { memo } from "react";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 
+import { CheckboxExField, TextFieldEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 
 const A16DialogForm = memo((props) => {
 	const {
@@ -130,7 +130,7 @@ const A16DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={12}>
-								<TextFieldWrapper
+								<TextFieldEx
 									typo
 									name="Contact"
 									label="聯絡人"
@@ -140,7 +140,7 @@ const A16DialogForm = memo((props) => {
 
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12} md={3}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									variant="outlined"
 									typo
 									name="headOffice"
@@ -149,7 +149,7 @@ const A16DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={3}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									variant="outlined"
 									typo
 									name="flagship"

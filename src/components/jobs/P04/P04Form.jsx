@@ -10,7 +10,6 @@ import { memo } from "react";
 import ReportSubmitButtonContainer from "@/components/report/ReportSubmitButtonContainer";
 import TerminalPicker from "@/components/terminal-picker/TerminalPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import Auth from "@/modules/Auth.mjs";
 import RangeGroup from "@/shared-components/RangeGroup";
 
 const P04Form = memo((props) => {
@@ -62,11 +61,6 @@ const P04Form = memo((props) => {
 						</Grid>
 						<Grid container>
 							<FlexGrid item xs={12} sm={6} alignItems="center">
-								{/* <CheckboxExWrapper
-									label="包含撥出入"
-									name="transIncluded"
-									defaultValue={true}
-								/> */}
 							</FlexGrid>
 							<Grid item xs={12} sm={6}>
 								<ListToolbar align="right">

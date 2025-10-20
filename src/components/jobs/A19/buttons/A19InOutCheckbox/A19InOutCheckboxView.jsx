@@ -1,10 +1,10 @@
-import { CheckboxEx } from "@/shared-components";
+import { CheckboxExField } from "@/shared-components";
 import { memo } from "react";
 
 const A19InOutCheckboxView = memo((props) => {
 	const { ...rest } = props;
 	return (
-		<CheckboxEx
+		<CheckboxExField
 			label="包含撥出入"
 			defaultValue={true}
 			{...rest}

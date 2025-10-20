@@ -7,16 +7,14 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 
 import { PrintReportButton } from "@/components";
-import CustomerPicker from "@/components/picker/CustomerPicker";
+import DeptPicker from "@/components/picker/DeptPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
 import ProdFreeTypePickerV2 from "@/components/prod-free-type-picker/ProdFreeTypePickerV2";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H14_3OrderTypePicker from "./pickers/H14_3OrderTypePicker";
 import H14_3ReportTypePicker from "./pickers/H14_3ReportTypePicker";
-import DeptPicker from "@/components/picker/DeptPicker";
 
 const H14_3Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, forNewCustomer = false, ...rest } = props;

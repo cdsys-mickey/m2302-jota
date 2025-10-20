@@ -5,10 +5,10 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+import { PrintReportButton } from "@/components";
 import CounterPicker from "@/components/picker/CounterPicker";
 import OrderDirPicker from "@/components/picker/OrderDirPicker";
-import { PrintReportButton } from "@/components";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
@@ -53,7 +53,7 @@ const H04Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									label="含試贈樣"
 									name="InclTest"
 									defaultValue={true}

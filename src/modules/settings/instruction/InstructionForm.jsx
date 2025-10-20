@@ -1,5 +1,4 @@
-import CheckboxEx from "@/shared-components/checkbox/CheckboxExView";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
@@ -11,7 +10,7 @@ const InstructionForm = memo((props) => {
 		<ContainerEx maxWidth="xs" alignLeft>
 			<Box pt={3}>
 				<form {...rest} noValidate>
-					<CheckboxExWrapper
+					<CheckboxExField
 						name="downloadPrompt"
 						label="檔案下載前提示進行瀏覽器設定"
 						onChange={handleDownloadPromptChange}

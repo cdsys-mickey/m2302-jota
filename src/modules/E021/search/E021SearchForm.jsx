@@ -1,14 +1,13 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexGrid from "@/shared-components/FlexGrid";
+import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
+import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { memo } from "react";
 import { E021CustomerPicker } from "../E021CustomerPicker";
 import E021SalesTypePicker from "../E021SalesTypePicker";
-import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
-import FlexBox from "@/shared-components/FlexBox";
 
 const E021SearchForm = memo((props) => {
 	const { ...rest } = props;
@@ -63,7 +62,7 @@ const E021SearchForm = memo((props) => {
 					</ResponsiveGrid>
 					<ResponsiveGrid item xs={4}>
 						<FlexBox justifyContent="flex-end">
-							<CheckboxExWrapper
+							<CheckboxExField
 								variant="outlined"
 								fullWidth
 								label="零售"

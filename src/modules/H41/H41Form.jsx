@@ -1,4 +1,3 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -6,12 +5,12 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+import { PrintReportButton } from "@/components";
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import DeptPicker from "@/components/picker/DeptPicker";
 import { OutboundTypePicker } from "@/components/picker/OutboundTypePicker";
 import ProdPicker from "@/components/picker/ProdPicker";
-import { PrintReportButton } from "@/components";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
@@ -71,7 +70,7 @@ const H41Form = memo((props) => {
 								/>
 							</Grid>
 						</Grid>
-						<CheckboxExWrapper
+						<CheckboxExField
 							label="零售客戶"
 							name="retail"
 							defaultValue={false}

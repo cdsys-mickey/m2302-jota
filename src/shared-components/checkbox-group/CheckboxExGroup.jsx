@@ -6,14 +6,14 @@ import {
 	FormLabel,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo, useState } from "react";
+import { memo } from "react";
 import { useController } from "react-hook-form";
-import CheckboxEx from "../checkbox/CheckboxExView";
 
+import { useCallback } from "react";
+import { CheckboxExField } from "@/shared-components";
+import { useScrollable } from "../../shared-hooks/useScrollable";
 import ErrorBox from "../ErrorBox";
 import LoadingTypography from "../LoadingTypography";
-import { useCallback } from "react";
-import { useScrollable } from "../../shared-hooks/useScrollable";
 
 const defaultGetOptionKey = (option) => {
 	return option;
@@ -123,7 +123,7 @@ const CheckboxExGroup = memo((props) => {
 					<FormGroup>
 						{options?.map((option) => {
 							return (
-								<CheckboxEx
+								<CheckboxExField
 									label={getOptionLabel(option)}
 									key={getOptionKey(option)}
 									checked={isOptionChecked(

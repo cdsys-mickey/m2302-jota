@@ -15,7 +15,6 @@ import YesNo from "@/modules/md-yes-no";
 import ContainerEx from "@/shared-components/ContainerEx";
 import FlexBox from "@/shared-components/FlexBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
@@ -29,6 +28,7 @@ import PropTypes from "prop-types";
 import { A01ProdComboGridContainer } from "./combo/A01ProdComboGridContainer";
 import { A01ProdTransGridContainer } from "./trans/A01ProdTransGridContainer";
 import { A01CmsGridContainer } from "./cms/A01CmsGridContainer";
+import { CheckboxExField } from "@/shared-components";
 
 const A01DialogForm = memo((props) => {
 	const {
@@ -178,7 +178,7 @@ const A01DialogForm = memo((props) => {
 										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={3}>
-										<CheckboxExWrapper
+										<CheckboxExField
 											typo
 											label="列印條碼"
 											defaultValue="N"

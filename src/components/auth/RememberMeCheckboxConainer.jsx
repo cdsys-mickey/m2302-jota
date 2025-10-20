@@ -1,4 +1,4 @@
-import CheckboxExWrapper from "../../shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import PropTypes from "prop-types";
 
 export const RememberMeCheckboxContainer = (props) => {
@@ -12,7 +12,7 @@ export const RememberMeCheckboxContainer = (props) => {
 	// 	}
 	// }, []);
 
-	return <CheckboxExWrapper label={label} {...rest} />;
+	return <CheckboxExField label={label} {...rest} />;
 };
 
 RememberMeCheckboxContainer.propTypes = {

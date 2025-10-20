@@ -1,12 +1,13 @@
 import { CustomerPurchaseOrderPicker } from "@/components/customer-purchase-order-picker/CustomerPurchaseOrderPicker";
+import PaymentPicker from "@/components/PaymentPicker/PaymentPickerContainer";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
-import FlexBox from "@/shared-components/FlexBox";
-import LoadingTypography from "@/shared-components/LoadingTypography";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
+import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
+import LoadingTypography from "@/shared-components/LoadingTypography";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Container, Grid } from "@mui/material";
 import { Box } from "@mui/system";
@@ -15,7 +16,6 @@ import { memo } from "react";
 import { E021CustomerPicker } from "../E021CustomerPicker";
 import { E021ProdGridBottomToolbar } from "./grid/E021ProdGridBottomToolbar";
 import { E021ProdGridContainer } from "./grid/E021ProdGridContainer";
-import PaymentPicker from "@/components/PaymentPicker/PaymentPickerContainer";
 
 const E021DialogForm = memo((props) => {
 	const {
@@ -99,7 +99,7 @@ const E021DialogForm = memo((props) => {
 							</Grid>
 
 							<Grid item md={3} lg={4}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									typo
 									variant="outlined"
 									label="不列印金額"
@@ -117,7 +117,7 @@ const E021DialogForm = memo((props) => {
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item md={2.5}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									fullWidth
 									typo
 									size="small"
@@ -243,7 +243,7 @@ const E021DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item md={2.5}>
-								<CheckboxExWrapper
+								<CheckboxExField
 									typo
 									label="稅外加"
 									fullWidth

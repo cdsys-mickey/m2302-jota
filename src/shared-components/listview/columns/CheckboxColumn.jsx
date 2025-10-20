@@ -1,21 +1,16 @@
 import { memo, forwardRef } from "react";
 import PropTypes from "prop-types";
 import ListColumn from "../ListColumn";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
-import CheckboxEx from "@/shared-components/checkbox/CheckboxExView";
-import { Box } from "@mui/material";
+import { CheckboxEx } from "@/shared-components";
 import { useContext } from "react";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
-import { useMemo } from "react";
-import { useCallback } from "react";
+
 
 const CheckboxColumn = memo(
 	forwardRef(({ index, sx = [], slotProps, checked, onChange, ...rest }, ref) => {
 
 		const listLoader = useContext(InfiniteLoaderContext);
 		const { setChecked } = listLoader;
-
-
 
 		return (
 			<ListColumn

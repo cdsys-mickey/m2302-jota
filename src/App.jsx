@@ -178,6 +178,7 @@ function App() {
 						// hideProgressBar
 						// position="top-center"
 						position="bottom-right"
+					// position="top-right"
 					// autoClose={3000} // 自動關閉時間（以毫秒為單位，例如 3000 毫秒 = 3 秒）
 					// progressStyle={{ width: '100%' }}
 					// progress={1}

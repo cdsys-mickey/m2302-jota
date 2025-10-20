@@ -10,7 +10,6 @@ import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Container } from "@mui/material";
 import PropTypes from "prop-types";
-import CheckboxExWrapper from "@/shared-components/checkbox/CheckboxExWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import CustomerPicker from "@/components/picker/CustomerPicker";
 
