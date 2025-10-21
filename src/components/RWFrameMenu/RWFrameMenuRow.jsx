@@ -1,9 +1,10 @@
 import { ListItem } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo, useMemo, forwardRef } from "react";
+import { memo, useMemo, forwardRef, useContext } from "react";
 import SideMenu from "@/modules/SideMenu.mjs";
-import { FrameMenuGroupHeader } from "./FrameMenuGroupHeader";
-import FrameMenuItemButtonContainer from "./FrameMenuItemButtonContainer";
+import FrameMenuContext from "../FrameMenu/FrameMenuContext";
+import { FrameMenuGroupHeader } from "../FrameMenu/FrameMenuGroupHeader";
+import FrameMenuItemButtonContainer from "../FrameMenu/FrameMenuItemButtonContainer";
 
 const PADDING_SIZE = 8;
 
@@ -12,6 +13,8 @@ const RWFrameMenuRow = memo(
 		const { index, style, data } = props;
 		const value = data[index];
 		const header = useMemo(() => SideMenu.isHeader(value), [value]);
+		const frameMenu = useContext(FrameMenuContext);
+		const { dense } = frameMenu;
 
 		return (
 			<div
@@ -27,10 +30,12 @@ const RWFrameMenuRow = memo(
 						<FrameMenuGroupHeader
 							iconComponent={SideMenu.getHeaderIcon(value)}
 							text={value.JobName}
+							dense={dense}
 						/>
 					) : (
 						<FrameMenuItemButtonContainer
 							value={value}
+							dense={dense}
 						// code={value.JobID}
 						// primary={value.JobName}
 						/>

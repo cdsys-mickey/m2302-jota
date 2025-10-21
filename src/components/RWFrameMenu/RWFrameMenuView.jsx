@@ -1,7 +1,7 @@
 import ErrorBox from "@/shared-components/ErrorBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import PropTypes from "prop-types";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { FixedSizeList } from "react-window";
 import RWFrameMenuRow from "./RWFrameMenuRow";
 import { forwardRef } from "react";
@@ -23,7 +23,7 @@ const innerElementType = forwardRef(({ style, ...rest }, ref) => (
 	/>
 ));
 
-const RWFrameMenu = memo((props) => {
+const RWFrameMenuView = memo((props) => {
 	const {
 		height = 300,
 		width = 260,
@@ -35,7 +35,12 @@ const RWFrameMenu = memo((props) => {
 		scrollOffset,
 		onScroll,
 		onItemsRendered,
+		dense = false
 	} = props;
+
+	const _itemSize = useMemo(() => {
+		return dense ? 26 : 34;
+	}, [dense])
 
 	if (loading) {
 		return <LoadingTypography>讀取中...</LoadingTypography>;
@@ -45,7 +50,7 @@ const RWFrameMenu = memo((props) => {
 		return <ErrorBox error={error} />;
 	}
 
-	// console.log("styles:", styles);
+
 
 	return (
 		<div
@@ -62,7 +67,7 @@ const RWFrameMenu = memo((props) => {
 				})}
 				height={height}
 				itemCount={itemCount}
-				itemSize={34}
+				itemSize={_itemSize}
 				itemData={data}
 				width={width - 1}
 				// innerElementType={innerElementType}
@@ -72,7 +77,7 @@ const RWFrameMenu = memo((props) => {
 		</div>
 	);
 });
-RWFrameMenu.propTypes = {
+RWFrameMenuView.propTypes = {
 	height: PropTypes.number,
 	width: PropTypes.number,
 	itemCount: PropTypes.number,
@@ -80,8 +85,9 @@ RWFrameMenu.propTypes = {
 	loading: PropTypes.bool,
 	bottomReached: PropTypes.bool,
 	error: PropTypes.object,
+	dense: PropTypes.bool
 };
 
-RWFrameMenu.displayName = "RWFrameMenu";
+RWFrameMenuView.displayName = "RWFrameMenuView";
 
-export default RWFrameMenu;
+export default RWFrameMenuView;

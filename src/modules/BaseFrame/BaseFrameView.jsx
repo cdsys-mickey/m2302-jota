@@ -16,7 +16,7 @@ const BaseFrameView = (props) => {
 		// menuFloating,
 		// loading,
 		SearchBarComponent,
-		MenuComponent,
+		menu,
 	} = props;
 
 	// const scrollable = useScrollable({
@@ -34,7 +34,7 @@ const BaseFrameView = (props) => {
 				onOpen={onDrawerOpen}>
 				<SideMenuProvider>
 					{SearchBarComponent && <SearchBarComponent />}
-					{MenuComponent && <MenuComponent />}
+					{menu}
 				</SideMenuProvider>
 			</ResponsiveDrawer>
 

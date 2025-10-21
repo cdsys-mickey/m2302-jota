@@ -3,7 +3,7 @@ import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext } from "react";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import RWFrameMenu from "./RWFrameMenu";
-import { SideMenuContext } from "../../contexts/SideMenuContext";
+import { SideMenuContext } from "@/contexts/SideMenuContext";
 
 const FrameMenuContainer = (props) => {
 	const { ...rest } = props;
@@ -16,6 +16,7 @@ const FrameMenuContainer = (props) => {
 
 	return (
 		<RWFrameMenu
+			dense
 			height={height}
 			data={sideMenu.filteredAuthorities}
 			loading={authoritiesLoading}

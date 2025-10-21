@@ -12,6 +12,7 @@ export const FrameMenuGroupHeader = memo(
 			text,
 			variant = "h6",
 			bgcolor = "primary.main",
+			dense = false,
 			sx = [],
 			...rest
 		} = props;
@@ -27,20 +28,20 @@ export const FrameMenuGroupHeader = memo(
 				sx={[
 					{
 						bgcolor,
-						height: "34px",
+						height: dense ? "26px" : "34px",
 					},
 					...(Array.isArray(sx) ? sx : [sx]),
 					MuiStyles.ELLIPSIS,
 				]}
 				{...rest}>
-				<FlexBox>{iconComponent && <Icon htmlColor="#fff" />}</FlexBox>
+				<FlexBox>{iconComponent && <Icon htmlColor="#fff" fontSize={dense ? "small" : "medium"} />}</FlexBox>
 
 				<Typography
 					variant={variant}
 					color="primary.contrastText"
 					sx={{
 						fontWeight: 500,
-						fontSize: 20,
+						fontSize: dense ? 17 : 20,
 					}}>
 					{text}
 				</Typography>

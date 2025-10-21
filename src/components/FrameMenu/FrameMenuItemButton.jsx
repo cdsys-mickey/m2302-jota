@@ -15,6 +15,7 @@ const FrameMenuItemButton = memo(
 			sx = [],
 			onClick,
 			selected = false,
+			dense = false,
 			...rest
 		} = props;
 		return (
@@ -34,20 +35,25 @@ const FrameMenuItemButton = memo(
 				{...rest}>
 				<FlexBox inline fullWidth alignItems="flex-start">
 					<FlexBox
-						pt="5px"
+						pt={dense ? "0px" : "5px"}
 						pr={1}
 						justifyContent="flex-end"
 						sx={{
 							width: "2.5rem",
 						}}>
 						<Typography
-							// variant={selected ? "body1" : "body2"}
+							sx={{
+								...(dense && {
+									fontSize: "14px"
+								})
+							}}
 							fontWeight={selected ? 700 : 200}>
 							{value.JobID}
 						</Typography>
 					</FlexBox>
 					<FlexBox
 						flex={1}
+
 						sx={[
 							{
 								borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
@@ -58,7 +64,7 @@ const FrameMenuItemButton = memo(
 							primary={value.JobName}
 							primaryTypographyProps={{
 								// variant: selected ? "body1" : "body2",
-								fontSize: 16,
+								fontSize: dense ? 14 : 16,
 							}}
 							sx={[
 								{
@@ -68,8 +74,13 @@ const FrameMenuItemButton = memo(
 									"& .MuiTypography-root": {
 										fontWeight: selected ? 800 : 400,
 									},
+									...(dense && {
+										marginTop: 0,
+										marginBottom: 0,
+									})
 								},
 								MuiStyles.ELLIPSIS,
+
 							]}
 						/>
 					</FlexBox>
@@ -84,6 +95,7 @@ FrameMenuItemButton.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
 	selected: PropTypes.bool,
+	dense: PropTypes.bool,
 };
 
 FrameMenuItemButton.displayName = "FrameMenuItemButton";

@@ -2,9 +2,9 @@ import SideMenuSearchBarContainer from "@/components/layout/SideMenuSearchBarCon
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { LoadingFrame } from "@/shared-components/protected-page/LoadingFrame";
 import { useContext } from "react";
-import RWFrameMenuContainer from "@/components/layout/RWFrameMenuContainer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import BaseFrameView from "./BaseFrameView";
+import RWFrameMenuContainer from "@/components/RWFrameMenu/RWFrameMenuContainer";
 
 const BaseFrameContainer = (props) => {
 	const { ...rest } = props;
@@ -30,7 +30,12 @@ const BaseFrameContainer = (props) => {
 			SearchBarComponent={SideMenuSearchBarContainer}
 			// menu={<FrameAccordionContainer />}
 			// menu={<FrameMenuContainer />}
-			MenuComponent={RWFrameMenuContainer}
+			// MenuComponent={RWFrameMenuContainer}
+			menu={
+				<RWFrameMenuContainer
+				// dense
+				/>
+			}
 			{...rest}
 		/>
 	);
