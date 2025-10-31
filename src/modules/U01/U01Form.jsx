@@ -14,7 +14,8 @@ import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
-import U01DataTypePicker from "./picker/U01DataTypePicker";
+import U01DataTypePicker from "./pickers/U01DataTypePicker";
+import U01OrderTypePicker from "./pickers/U01OrderTypePicker";
 
 const U01Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -92,6 +93,7 @@ const U01Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
+
 							<FlexGrid item xs={12} sm={6} alignItems="center">
 								<CheckboxExField
 									label="包含撥出入"
@@ -123,12 +125,13 @@ const U01Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								{/* <StdPrintOutputModePicker
-									required
-									name="outputType"
-									label="執行方式"
-								/> */}
+								<U01OrderTypePicker
+									name="orderType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
 							</Grid>
+
 						</Grid>
 						<FlexBox mt={1.5}>
 							<Grid container>

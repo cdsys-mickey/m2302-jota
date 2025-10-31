@@ -24,7 +24,7 @@ const A06DialogForm = memo((props) => {
 		readWorking,
 		readError,
 		itemDataReady,
-		editing,
+		creating,
 		updating,
 		slotProps,
 		...rest
@@ -51,15 +51,16 @@ const A06DialogForm = memo((props) => {
 									typo
 									name="CustID"
 									label="客戶代碼"
-									autoFocus
+									autoFocus={creating}
 									fullWidth
 									// value={data?.CustID}
 									required
 									rules={{ required: "客戶代碼為必填" }}
 									readOnly={updating}
+									disabled={updating}
 									slotProps={{
 										htmlInput: {
-											maxLength: 8
+											maxLength: 9
 										}
 									}}
 								/>
@@ -69,6 +70,7 @@ const A06DialogForm = memo((props) => {
 									typo
 									name="CustData"
 									label="名稱"
+									autoFocus={updating}
 									fullWidth
 									required
 									rules={{

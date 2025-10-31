@@ -11,6 +11,7 @@ import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import RangeGroup from "@/shared-components/RangeGroup";
+import H01OrderTypePicker from "./pickers/H01OrderTypePicker";
 
 const H01Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -86,7 +87,13 @@ const H01Form = memo((props) => {
 									size="small"
 									fullWidth
 								/>
-
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<H01OrderTypePicker
+									name="orderType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
 							</Grid>
 						</Grid>
 						<FlexBox mt={1.8}>

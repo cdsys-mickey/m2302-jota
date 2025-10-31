@@ -1,6 +1,6 @@
-import { cloneElement } from "react";
+import { TooltipEx } from "@/shared-components";
 import PropTypes from "prop-types";
-import { Tooltip } from "@mui/material";
+import { cloneElement } from "react";
 
 const TooltipWrapper = (props) => {
 	const { children, title, ...rest } = props;
@@ -9,11 +9,11 @@ const TooltipWrapper = (props) => {
 	}
 
 	return (
-		<Tooltip title={title} {...rest}>
+		<TooltipEx title={title} {...rest}>
 			<span>
 				{children}
 			</span>
-		</Tooltip>
+		</TooltipEx>
 	)
 }
 TooltipWrapper.propTypes = {

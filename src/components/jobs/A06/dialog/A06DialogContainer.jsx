@@ -89,6 +89,7 @@ export const A06DialogContainer = forwardRef((props, ref) => {
 				<A06DialogForm
 					ref={ref}
 					onSubmit={handleSubmit}
+					creating={a06.creating}
 					editing={a06.editing}
 					updating={a06.updating}
 					readWorking={a06.readWorking}

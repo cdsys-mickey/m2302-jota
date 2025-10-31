@@ -25,7 +25,18 @@ const Copyright = ({ version, loading, apiVersion, handleCopyVersion, handleCopy
 			}}>
 				{version || "(N/A)"}
 			</Link> */}
-			<Tooltip title="複製">
+			<Tooltip title="複製前端版號" arrow slotProps={{
+				popper: {
+					modifiers: [
+						{
+							name: 'offset',
+							options: {
+								offset: [0, -8], // 上下距離 -8px（越小越靠近），左右 0
+							},
+						},
+					],
+				}
+			}}>
 				<IconButton onClick={handleCopyVersion} disableFocusRipple disableRipple sx={{
 					padding: 0,
 					marginLeft: 0.5,
@@ -41,7 +52,18 @@ const Copyright = ({ version, loading, apiVersion, handleCopyVersion, handleCopy
 				{`API: ${apiVersion || (loading ? "(系統啟動中...)" : "(N/A)")}`}
 				[{connState}]
 			</Typography>
-			<Tooltip title="複製">
+			<Tooltip title="複製API版號" arrow slotProps={{
+				popper: {
+					modifiers: [
+						{
+							name: 'offset',
+							options: {
+								offset: [0, -8], // 上下距離 -8px（越小越靠近），左右 0
+							},
+						},
+					],
+				}
+			}}>
 				<IconButton onClick={handleCopyApiVersion} disableFocusRipple disableRipple sx={{
 					padding: 0,
 					marginLeft: 0.5,

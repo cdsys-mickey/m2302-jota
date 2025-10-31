@@ -1,15 +1,8 @@
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
-import { Tooltip } from "@mui/material";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { useMemo } from "react";
 import Objects from "@/shared-modules/Objects.mjs";
-import TooltipEx from "@/components/picker/tooltip-ex/TooltipEx";
 import Types from "@/shared-modules/Types.mjs";
-
-const arePropsEqual = (oldProps, newProps) => {
-	return Objects.arePropsEqual(oldProps, newProps, {
-		header: TooltipExComponent.displayName,
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import PropTypes from "prop-types";
+import { forwardRef, memo, useMemo } from "react";
 		fields: "rowData,active,disabled,focus",
 		debug: true,
 	});

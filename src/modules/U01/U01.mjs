@@ -12,6 +12,7 @@ const transformForSubmitting = (payload) => {
 		InvTx,
 		SType,
 		RptType,
+		orderType,
 		...rest
 	} = payload;
 	return {
@@ -26,6 +27,7 @@ const transformForSubmitting = (payload) => {
 		InvTx: InvTx ? "Y" : "N",
 		SType: SType ? "Y" : "N",
 		RptType: RptType.id?.toString() || "1",
+		OrdName: orderType?.id,
 		...rest,
 	};
 };

@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useCallback, useMemo } from "react";
 
-const TooltipEx = memo(forwardRef((props, ref) => {
+const TooltipExView = memo(forwardRef((props, ref) => {
 	const { children, title, items, slotProps, negativeColor = pink[200], valueSeperator = "：", ...rest } = props;
 
 	const containerStyles = useMemo(() => {
@@ -80,7 +80,7 @@ const TooltipEx = memo(forwardRef((props, ref) => {
 				</Box>
 			);
 		}
-		return title ?? "";
+		return title;
 	}, [_labelStyles, _valueStyles, containerStyles, items, title, valueSeperator]);
 
 
@@ -90,7 +90,7 @@ const TooltipEx = memo(forwardRef((props, ref) => {
 	);
 }));
 
-TooltipEx.propTypes = {
+TooltipExView.propTypes = {
 	title: PropTypes.string,
 	negativeColor: PropTypes.string,
 	valueSeperator: PropTypes.string,
@@ -99,5 +99,5 @@ TooltipEx.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array, PropTypes.func])
 }
 
-TooltipEx.displayName = "TooltipEx";
-export default TooltipEx;
+TooltipExView.displayName = "TooltipExView";
+export default TooltipExView;

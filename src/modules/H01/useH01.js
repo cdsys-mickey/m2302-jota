@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import H01 from "@/modules/H01/H01.mjs"
+import H01 from "@/modules/H01/H01.mjs";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useCallback, useContext, useMemo } from "react";
@@ -26,24 +26,38 @@ export const useH01 = () => {
 		EProdID,
 		InclTX,
 		InclTest,
+		orderType,
 		outputType,
 		`
-	)
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebH01Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebH01Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = {
-			...H01.transformForSubmitting(payload),
-			DeptId: operator.CurDeptID,
-		};
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = {
+				...H01.transformForSubmitting(payload),
+				DeptId: operator.CurDeptID,
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			operator.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -51,7 +65,7 @@ export const useH01 = () => {
 			const data = {
 				...H01.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,
-			}
+			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
@@ -62,10 +76,14 @@ export const useH01 = () => {
 		console.error("onSubmitError", err);
 	}, []);
 
-	const onSelect = useCallback(({ setValue }) => (outputType) => {
-		console.log("onBeforeSubmit", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const onSelect = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("onBeforeSubmit", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	return {
 		...appModule,
@@ -73,6 +91,6 @@ export const useH01 = () => {
 		onSubmitError,
 		onDebugSubmit,
 		formMeta,
-		onSelect
+		onSelect,
 	};
 };

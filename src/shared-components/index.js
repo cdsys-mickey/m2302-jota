@@ -32,6 +32,7 @@ import ToastExContainer from "./ToastEx/ToastExContainer";
 import toastEx from "./ToastEx/toastEx";
 
 import ClearInputButton from "./ClearInputButton/ClearInputButton";
+import TooltipExView from "./TooltipEx/TooltipExView";
 
 export {
 	ButtonExContainer as ButtonEx,
@@ -62,4 +63,5 @@ export {
 	JumboAlertView as JumboAlert,
 	ToastExContainer as ToastEx,
 	toastEx,
+	TooltipExView as TooltipEx,
 };

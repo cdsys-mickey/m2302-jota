@@ -3,6 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useH01 } from "./useH01";
 import StdPrint from "../StdPrint.mjs";
 import { H01Context } from "./H01Context";
+import H01OrderType from "./pickers/H01OrderType.mjs";
 
 export const H01Provider = ({ children }) => {
 	const h01 = useH01();
@@ -12,6 +13,7 @@ export const H01Provider = ({ children }) => {
 			EDate: null,
 			InclTX: true,
 			InclTest: false,
+			orderType: H01OrderType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

@@ -2,8 +2,9 @@ import StdPrint from "@/modules/StdPrint.mjs";
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { U01Context } from "./U01Context";
-import U01DataType from "./picker/U01DataType.mjs";
+import U01DataType from "./pickers/U01DataType.mjs";
 import { useU01 } from "./useU01";
+import U01OrderType from "./pickers/U01OrderType.mjs";
 
 export const U01Provider = ({ children }) => {
 	const u01 = useU01();
@@ -19,6 +20,7 @@ export const U01Provider = ({ children }) => {
 			SType: false,
 			outputType: StdPrint.getDefaultOption(),
 			RptType: U01DataType.getDefaultOption(),
+			orderType: U01OrderType.getDefaultOption()
 		},
 	});
 
