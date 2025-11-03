@@ -3,7 +3,7 @@ import JobMenu from "./JobMenu.mjs";
 import { JobMenuContext } from "./JobMenuContext";
 import JobMenuActiveItems from "./JobMenuActiveItems";
 
-export const JobMenuActiveItemsContainer = (props) => {
+const JobMenuActiveItemsContainer = (props) => {
 	const { ...rest } = props;
 	const jobMenu = useContext(JobMenuContext);
 	return (
@@ -18,3 +18,4 @@ export const JobMenuActiveItemsContainer = (props) => {
 };
 
 JobMenuActiveItemsContainer.displayName = "JobMenuActiveItemsContainer";
+export default JobMenuActiveItemsContainer;

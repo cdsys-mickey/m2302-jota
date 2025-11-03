@@ -126,8 +126,9 @@ const TextFieldExView = (props) => {
 								<InputAdornment position="end">
 									<IconButton onClick={handleClickShowPassword} edge="end">
 										{showPassword
-											? <VisibilityOffOutlinedIcon {...IconProps} />
-											: <VisibilityOutlinedIcon {...IconProps} />}
+											? <VisibilityOutlinedIcon {...IconProps} />
+											: <VisibilityOffOutlinedIcon {...IconProps} />
+										}
 									</IconButton>
 								</InputAdornment>
 							),

@@ -3,7 +3,7 @@ import JobMenu from "./JobMenu.mjs";
 import JobMenuAuthItems from "./JobMenuAuthItems";
 import { JobMenuContext } from "./JobMenuContext";
 
-export const JobMenuUnusedFieldsContainer = (props) => {
+const JobMenuAuthItemsContainer = (props) => {
 	const jobMenu = useContext(JobMenuContext);
 	const { ...rest } = props;
 
@@ -24,4 +24,5 @@ export const JobMenuUnusedFieldsContainer = (props) => {
 	);
 };
 
-JobMenuUnusedFieldsContainer.displayName = "JobMenuUnusedFieldsContainer";
+JobMenuAuthItemsContainer.displayName = "JobMenuAuthItemsContainer";
+export default JobMenuAuthItemsContainer;

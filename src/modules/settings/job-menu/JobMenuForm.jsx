@@ -2,8 +2,8 @@ import { Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import { JobMenuActiveItemsContainer } from "./JobMenuActiveItemsContainer";
-import { JobMenuUnusedFieldsContainer } from "./JobMenuAuthItemsContainer";
+import JobMenuActiveItemsContainer from "./JobMenuActiveItemsContainer";
+import JobMenuAuthItemsContainer from "./JobMenuAuthItemsContainer";
 
 const SectionLabel = memo((props) => {
 	const { ...rest } = props;
@@ -27,7 +27,7 @@ const JobMenuForm = memo((props) => {
 			<Grid container spacing={2}>
 				<Grid item xs={6}>
 					<SectionLabel>可用作業</SectionLabel>
-					<JobMenuUnusedFieldsContainer height={height} />
+					<JobMenuAuthItemsContainer height={height} />
 				</Grid>
 				<Grid item xs={6}>
 					<SectionLabel>目前設定</SectionLabel>
