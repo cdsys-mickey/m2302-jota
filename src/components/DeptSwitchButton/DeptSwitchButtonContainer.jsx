@@ -39,15 +39,15 @@ const DeptSwitchButtonContainer = (props) => {
 		// 	...prev,
 		// 	open: true,
 		// }));
-		// setDebouncedOpen(true, setOpen);
-		setOpen(true);
-	}, []);
+		// setOpen(true);
+		setDebouncedOpen(true, setOpen);
+	}, [setDebouncedOpen]);
 
 	const handleClose = useCallback((e) => {
 		console.log("sw.handleClose");
-		// setState((prev) => ({ ...prev, open: false }));
-		setOpen(false);
-	}, []);
+		// setOpen(false);
+		setDebouncedOpen(false, setOpen);
+	}, [setDebouncedOpen]);
 
 	const handleToggle = useCallback(() => {
 		console.log("handleToggle")
@@ -126,7 +126,7 @@ const DeptSwitchButtonContainer = (props) => {
 			onToggle={handleToggle}
 			onClick={handleToggle}
 			onSelect={switchDept}
-			hoverToOpen
+			// hoverToOpen
 			IconComponent={ExpandMoreIcon}
 			color="info"
 			size="large"

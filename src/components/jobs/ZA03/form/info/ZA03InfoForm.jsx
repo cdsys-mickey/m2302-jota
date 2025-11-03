@@ -97,7 +97,7 @@ const ZA03InfoForm = memo((props) => {
 								label="隸屬門市"
 								required
 								disableOpenOnInput
-								scope={Auth.SCOPES.BRANCH_HQ}
+							// scope={Auth.SCOPES.BRANCH_HQ}
 							/>
 							{/* <ZA03DeptPicker
 								uid={data?.UID}

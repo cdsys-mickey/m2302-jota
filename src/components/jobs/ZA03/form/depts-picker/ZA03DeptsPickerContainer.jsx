@@ -23,8 +23,8 @@ export const ZA03DeptsPickerContainer = (props) => {
 	);
 
 	const _scope = useMemo(() => {
-		return operator.Class >= 3 ? Auth.SCOPES.HQ : Auth.SCOPES.BRANCH_HQ;
-	}, [operator.Class])
+		return operator.Class >= Auth.SCOPES.ROOT ? Auth.SCOPES.HQ : Auth.SCOPES.BRANCH_HQ;
+	}, [operator?.Class])
 
 	return (
 		<AppDeptPicker

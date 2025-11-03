@@ -70,8 +70,9 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 	const handleOpen = useCallback(() => {
 		if (onOpen) {
 			onOpen();
+		} else {
+			setDebouncedOpen(true);
 		}
-		setDebouncedOpen(true);
 	}, [onOpen, setDebouncedOpen]);
 
 	const handleToggle = useCallback(() => {
@@ -106,12 +107,12 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 		console.log("button.handleClose", opts)
 		if (onClose) {
 			onClose(e);
-		}
-		// setState((prev) => ({ ...prev, open: false }));
-		if (debounce) {
-			setOpen(false);
 		} else {
-			setDebouncedOpen(false);
+			if (debounce) {
+				setOpen(false);
+			} else {
+				setDebouncedOpen(false);
+			}
 		}
 	}, [onClose, setDebouncedOpen]);
 
