@@ -35,7 +35,7 @@ const CheckboxExFieldView = memo(
 							width: "100%"
 						}),
 						...(dense && {
-							"& .MuiCheckbox-root": {
+							"&.MuiFormControl-root .MuiCheckbox-sizeSmall.MuiButtonBase-root.MuiCheckbox-root": {
 								padding: 0
 							}
 						}),

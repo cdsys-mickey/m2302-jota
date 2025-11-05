@@ -31,6 +31,14 @@ const ListToolbar = memo(
 			return RightComponent || rightComponents;
 		}, [RightComponent, rightComponents]);
 
+		const _leftFlex = useMemo(() => {
+			return hasLeft && !hasRight ? 1 : null;
+		}, [hasLeft, hasRight])
+
+		const _rightFlex = useMemo(() => {
+			return hasRight && !hasLeft ? 1 : null;
+		}, [hasLeft, hasRight])
+
 
 		return (
 			<FlexBox
@@ -72,8 +80,8 @@ const ListToolbar = memo(
 					// {...(!hasRight && {
 					// 	flex: 1,
 					// })}
-					{...(!hasLeft && {
-						flex: 0,
+					{...(_leftFlex && {
+						flex: _leftFlex,
 					})}
 					sx={[
 						(theme) => ({
@@ -94,8 +102,8 @@ const ListToolbar = memo(
 					alignItems="center"
 					justifyContent="flex-end"
 					flex={1}
-					{...(!hasRight && {
-						flex: 0,
+					{...(_rightFlex && {
+						flex: _rightFlex,
 					})}
 					sx={[
 						(theme) => ({

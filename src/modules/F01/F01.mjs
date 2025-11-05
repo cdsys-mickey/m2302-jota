@@ -89,12 +89,29 @@ const transformAsQueryParams = (data) => {
 	};
 };
 
+const findProdIndex = ({ newValue, rowData, rowIndex }) => {
+	if (!rowData?.prod?.ProdID) {
+		return -1;
+	}
+
+	const targetProdID = rowData.prod.ProdID;
+
+	for (let i = 0; i < newValue.length; i++) {
+		if (i !== rowIndex && newValue[i]?.prod?.ProdID === targetProdID) {
+			return i;
+		}
+	}
+
+	return -1;
+};
+
 const F01 = {
 	transformForReading,
 	transformForSubmitting,
 	transformAsQueryParams,
 	transformForGridImport,
 	transformGridForReading,
+	findProdIndex,
 };
 
 export default F01;

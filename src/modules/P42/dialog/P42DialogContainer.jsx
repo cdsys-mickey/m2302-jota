@@ -1,36 +1,32 @@
 import CmsTypePickerCell from "@/components/CmsTypePicker/CmsTypePickerCell";
+import CrudContext from "@/contexts/crud/CrudContext";
 import Colors from "@/modules/Colors.mjs";
 import { P42Context } from "@/modules/P42/P42Context";
-import { FormMetaProvider } from "@/shared-components";
-import { DialogEx } from "@/shared-components";
+import { DialogEx, FormMetaProvider } from "@/shared-components";
 import { optionPickerColumn } from "@/shared-components/dsg/columns/option-picker/optionPickerColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { useQuerySync } from "@/shared-hooks/useQuerySync";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { forwardRef, useCallback, useContext, useMemo } from "react";
+import { useMediaQuery } from "@mui/system";
+import { forwardRef, useCallback, useContext, useMemo, useRef } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import P42DialogForm from "../form/P42DialogForm";
 import P42Drawer from "../P42Drawer";
 import { P42DialogButtonsContainer } from "./buttons/P42DialogButtonsContainer";
-import { useMediaQuery } from "@mui/system";
-import useDebounceObject from "@/shared-hooks/useDebounceObject";
-import { useRef } from "react";
-import CrudContext from "@/contexts/crud/CrudContext";
-import { useQuerySync } from "@/shared-hooks/useQuerySync";
 
 export const P42DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
 	const { height } = useWindowSize();
 
 	const smallerThanXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
-	const crud = useContext(CrudContext);
 	const form = useFormContext();
 	const { reset } = form;
 	const p42 = useContext(P42Context);

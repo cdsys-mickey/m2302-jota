@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import ConfigContext from "@/contexts/config/ConfigContext";
 import CrudContext from "@/contexts/crud/CrudContext";
@@ -238,15 +239,37 @@ export const useF01 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridProdChange = useCallback(({ rowData }) => {
-		let processedRowData = { ...rowData };
-		processedRowData = {
-			...processedRowData,
-			["ProdData_N"]: rowData?.prod?.ProdData || "",
-			["PackData_N"]: rowData?.prod?.PackData_N || "",
-		};
-		return processedRowData;
-	}, []);
+	const handleGridProdChange = useCallback(
+		({ rowData, rowIndex, newValue }) => {
+			const { prod } = rowData;
+			const prodRowIndex = rowData.prod?.ProdID
+				? F01.findProdIndex({
+						newValue,
+						rowData,
+						rowIndex,
+				  })
+				: -1;
+			const found = rowData.prod?.ProdID && prodRowIndex !== -1;
+
+			if (found) {
+				toastEx.error(
+					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
+						prodRowIndex + 1
+					} 筆, 請重新選擇`
+				);
+			}
+
+			let processedRowData = { ...rowData };
+			processedRowData = {
+				...processedRowData,
+				prod: found || !rowData.prod ? null : rowData.prod,
+				["ProdData_N"]: found ? "" : rowData?.prod?.ProdData || "",
+				["PackData_N"]: found ? "" : rowData?.prod?.PackData_N || "",
+			};
+			return processedRowData;
+		},
+		[]
+	);
 
 	const onUpdateRow = useCallback(
 		({
@@ -271,8 +294,9 @@ export const useF01 = () => {
 						processedRowData?.prod
 					);
 					processedRowData = await handleGridProdChange({
+						rowIndex,
 						rowData: processedRowData,
-						formData,
+						newValue,
 					});
 				}
 				return processedRowData;
