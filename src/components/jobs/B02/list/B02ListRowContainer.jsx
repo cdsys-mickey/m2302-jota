@@ -19,11 +19,7 @@ export const B02ListRowContainer = (props) => {
 		<ListRowProvider loading={loading}>
 			<B02ListRow
 				index={index}
-				// loading={loading}
 				value={value}
-				// onClick={(e) => b02.handleSelect(e, value)}
-				// confirmResetPword={(e) => confirmResetPword(e, value)}
-				// promptCopyAuth={(e) => promptCopyAuth(e, value)}
 				{...rest}
 			/>
 		</ListRowProvider>

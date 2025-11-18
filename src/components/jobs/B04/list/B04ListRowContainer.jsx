@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
 import { B04Context } from "@/contexts/B04/B04Context";
 import B04ListRow from "./B04ListRow";
-import { useCallback } from "react";
 
 export const B04ListRowContainer = (props) => {
 	const b04 = useContext(B04Context);
@@ -16,9 +15,6 @@ export const B04ListRowContainer = (props) => {
 			index={index}
 			loading={loading}
 			value={value}
-			// onClick={(e) => b04.handleSelect(e, value)}
-			// confirmResetPword={(e) => confirmResetPword(e, value)}
-			// promptCopyAuth={(e) => promptCopyAuth(e, value)}
 			{...rest}
 		/>
 	);

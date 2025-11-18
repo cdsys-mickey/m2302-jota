@@ -126,8 +126,8 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: readOnly || !b011.creating,
 			},
 			{
@@ -192,8 +192,8 @@ export const B011DialogContainer = forwardRef((props, ref) => {
 				// 		})
 				// 	),
 				// 	title: "報價人",
-				// 	minWidth: 140,
-				// 	maxWidth: 140,
+				// 	minWidth: 130,
+				// 	maxWidth: 150,
 				// 	disabled: true,
 				// },
 			] : [])

@@ -134,8 +134,8 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: readOnly,
 			},
 			{
@@ -147,7 +147,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 				),
 				title: "品名規格",
 				disabled: true,
-				grow: 2,
+				grow: 1.5,
 			},
 			{
 				...keyColumn(
@@ -174,7 +174,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 			{
 				...keyColumn("SPrice", createFloatColumn(2)),
 				title: "單價",
-				minWidth: 120,
+				minWidth: 100,
 				// maxWidth: 120,
 				disabled: readOnly || e03.spriceDisabled,
 				cellClassName: e03.getSPriceClassName,
@@ -231,7 +231,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "原因",
-				minWidth: 140,
+				minWidth: 130,
 				maxWidth: 160,
 				disabled: readOnly || e03.dtypeDisabled,
 			},
@@ -243,7 +243,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "備註",
-				grow: 2,
+				grow: 1.8,
 				disabled: readOnly,
 			},
 		],

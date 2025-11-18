@@ -119,8 +119,8 @@ export const C01DialogContainer = forwardRef((props, ref) => {
 				),
 				id: "SProdID",
 				title: "商品編號",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: !c01.editing || c01.prodDisabled,
 			},
 			{

@@ -1,6 +1,5 @@
-import { Box, Grid } from "@mui/material";
-import { memo, forwardRef } from "react";
 import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
 import ListColumn from "../ListColumn";
 
 const IndexColumn = memo(
@@ -12,9 +11,9 @@ const IndexColumn = memo(
 				xs={1}
 				sx={[
 					{
-						// display: "flex",
+						display: "flex",
 						alignItems: "center",
-						justifyContent: "flex-end",
+						justifyContent: "center",
 						"& *": {
 							color: "rgb(0 0 0 / 50%)",
 						},

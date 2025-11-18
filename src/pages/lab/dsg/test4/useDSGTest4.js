@@ -63,8 +63,8 @@ export const useDSGTest4 = () => {
 					})
 				),
 				title: "商品",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: grid.readOnly,
 			},
 			{
@@ -125,8 +125,8 @@ export const useDSGTest4 = () => {
 					})
 				),
 				title: "DateField",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: grid.readOnly,
 			},
 			// {
@@ -137,8 +137,8 @@ export const useDSGTest4 = () => {
 			// 		})
 			// 	),
 			// 	title: "MuiDate",
-			// 	minWidth: 140,
-			// 	maxWidth: 140,
+			// 	minWidth: 130,
+			// 	maxWidth: 150,
 			// 	disabled: grid.readOnly
 			// },
 			{

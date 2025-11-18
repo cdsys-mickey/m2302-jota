@@ -133,8 +133,8 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: cust,
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: readOnly || !b012.creating,
 			},
 			{
@@ -181,8 +181,8 @@ export const B012DialogContainer = forwardRef((props, ref) => {
 			// 		})
 			// 	),
 			// 	title: "報價人",
-			// 	minWidth: 140,
-			// 	maxWidth: 140,
+			// 	minWidth: 130,
+			// 	maxWidth: 150,
 			// 	disabled: true,
 			// },
 		],

@@ -92,8 +92,8 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: readOnly || c06.sprodDisabled,
 			},
 			{
@@ -177,7 +177,7 @@ export const C06DialogContainer = forwardRef((props, ref) => {
 			// 		continuousUpdates: false,
 			// 	})),
 			// 	title: "訊息",
-			// 	minWidth: 140,
+			// 	minWidth: 130,
 			// 	disabled: true,
 			// },
 		],

@@ -17,22 +17,6 @@ const C02ListRow = memo((props) => {
 		<div style={style}>
 			<HoverableListItem borderBottom onClick={onClick}>
 				<HoverableListItemSecondaryAction>
-					{/* <Tooltip arrow title="編輯">
-						<IconButton>
-							<EditOutlinedIcon htmlColor="#000" />
-						</IconButton>
-					</Tooltip> 
-					<Tooltip arrow title="複製權限" sx={{ zIndex: 10000 }}>
-						<IconButton onClick={promptCopyAuth}>
-							<ContentCopyIcon htmlColor="#000" />
-						</IconButton>
-					</Tooltip>
-					<Tooltip arrow title="重設密碼" sx={{ zIndex: 10000 }}>
-						<IconButton onClick={confirmResetPword}>
-							<LockResetIcon htmlColor="#000" />
-						</IconButton>
-					</Tooltip>
-					*/}
 				</HoverableListItemSecondaryAction>
 				<Box>
 					<Grid
@@ -77,7 +61,6 @@ C02ListRow.propTypes = {
 	loading: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
-	confirmResetPword: PropTypes.func,
 	promptCopyAuth: PropTypes.func,
 };
 

@@ -88,8 +88,8 @@ export const A20DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "原物料編號",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: readOnly,
 			},
 			{

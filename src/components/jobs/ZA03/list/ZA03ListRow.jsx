@@ -4,7 +4,7 @@ import IndexColumn from "@/shared-components/listview/columns/IndexColumn";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Box, Grid, IconButton, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import ZA03IDColumn from "./columns/ZA03IDColumn";
 import ZA03NameColumn from "./columns/ZA03NameColumn";
 import LockResetIcon from "@mui/icons-material/LockReset";
@@ -12,6 +12,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ZA03ClassColumn from "./columns/ZA03ClassColumn";
 import ZA03DeptColumn from "./columns/ZA03DeptColumny";
 import AuthScopeChip from "@/components/AuthScopeChip";
+import LockIcon from '@mui/icons-material/Lock';
 
 const ZA03ListRow = memo((props) => {
 	const {
@@ -24,6 +25,10 @@ const ZA03ListRow = memo((props) => {
 		promptCopyAuth,
 		showAuthScope
 	} = props;
+
+	const _inactive = useMemo(() => {
+		return value?.PwordErrCount >= 3;
+	}, [value?.PwordErrCount])
 
 	return (
 		<div style={style}>
@@ -55,7 +60,11 @@ const ZA03ListRow = memo((props) => {
 								alignItems: "center",
 							},
 						]}>
-						<IndexColumn title={index}></IndexColumn>
+						<IndexColumn title={index}>
+							{_inactive && (
+								<LockIcon fontSize="small" />
+							)}
+						</IndexColumn>
 						<ZA03IDColumn>
 							{value?.LoginName}
 						</ZA03IDColumn>

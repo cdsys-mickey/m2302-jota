@@ -58,7 +58,6 @@ const CheckboxExFieldView = memo(
 							},
 							...(shrink && {
 								'&::before': {
-									// content: isFocused || isChecked ? '""' : undefined,
 									content: '""',
 									position: 'absolute',
 									top: '-1px',

@@ -57,7 +57,7 @@ const P35DialogForm = memo((props) => {
 									readOnly={updating}
 									slotProps={{
 										htmlInput: {
-											maxLength: 8
+											maxLength: 9
 										}
 									}}
 								/>

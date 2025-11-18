@@ -182,7 +182,7 @@ export const D041DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "不良",
-				minWidth: 140,
+				minWidth: 130,
 				maxWidth: 160,
 				disabled: readOnly || d041.dtypeDisabled,
 			},

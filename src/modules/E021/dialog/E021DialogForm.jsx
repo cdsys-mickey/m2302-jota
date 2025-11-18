@@ -202,7 +202,7 @@ const E021DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item md={6}>
+							<Grid item md={5}>
 								<EmployeePicker
 									typo
 									label="業務員"
@@ -218,7 +218,7 @@ const E021DialogForm = memo((props) => {
 								/>
 							</Grid>
 
-							<Grid item md={8}>
+							<Grid item md={8.5}>
 								<TextFieldWrapper
 									typo
 									label="送貨地址"
@@ -226,7 +226,7 @@ const E021DialogForm = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item md={3.5}>
+							<Grid item md={4}>
 								<TransportTypePicker
 									typo
 									name="transType"

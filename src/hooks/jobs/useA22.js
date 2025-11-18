@@ -79,8 +79,8 @@ export const useA22 = ({ form }) => {
 					})
 				),
 				title: "商品編號",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: grid.readOnly,
 			},
 			{

@@ -2,13 +2,12 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import useContainerSize from "@/shared-hooks/useContainerSize";
 import { useContext, useMemo } from "react";
 import FrameBannerView from "./FrameBannerView";
-import { UnreadMessagesProvider } from "@/contexts/UnreadMessagesProvider";
 
 export const FrameBannerContainer = (props) => {
 	const { ...rest } = props;
 	const appFrame = useContext(AppFrameContext);
 
-	const { containerRef, isMdOrDown, isLgOrUp, isMdOrUp, isSmOrDown } = useContainerSize();
+	const { containerRef, isMdOrUp, isSmOrDown } = useContainerSize();
 
 	const fullTitle = useMemo(() => {
 		return [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName].filter(Boolean).join(" ");
@@ -34,7 +33,7 @@ export const FrameBannerContainer = (props) => {
 			<FrameBannerView
 				title={title}
 				alt={altTitle}
-				dense={isMdOrDown}
+				dense={isSmOrDown}
 				{...rest}
 			/>
 		</div>

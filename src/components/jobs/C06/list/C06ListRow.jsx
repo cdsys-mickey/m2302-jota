@@ -79,7 +79,6 @@ C06ListRow.propTypes = {
 	expChecking: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
-	confirmResetPword: PropTypes.func,
 	promptCopyAuth: PropTypes.func,
 };
 

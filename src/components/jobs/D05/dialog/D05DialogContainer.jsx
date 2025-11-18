@@ -165,7 +165,7 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "原因",
-				minWidth: 140,
+				minWidth: 130,
 				maxWidth: 160,
 				disabled: readOnly || d05.dtypeDisabled,
 			},
@@ -193,8 +193,8 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "客戶代碼",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: readOnly || d05.customerDisabled,
 			},
 			{
@@ -218,8 +218,8 @@ export const D05DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "門市碼",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: readOnly || d05.deptDisabled,
 			},
 			{

@@ -5,11 +5,9 @@ import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import C08DateColumn from "./columns/C08DateColumn";
-import C08DeptColumn from "./columns/C08DeptColumn";
-import C08IdColumn from "./columns/C08IdColumn";
-import C08UserColumn from "./columns/C08UserColumn";
 import C08DeptIdColumn from "./columns/C08DeptIdColumn";
 import C08DeptNameColumn from "./columns/C08DeptNameColumn";
+import C08IdColumn from "./columns/C08IdColumn";
 
 const C08ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
@@ -65,7 +63,6 @@ C08ListRow.propTypes = {
 	expChecking: PropTypes.bool,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
-	confirmResetPword: PropTypes.func,
 	promptCopyAuth: PropTypes.func,
 };
 

@@ -74,7 +74,6 @@ export default defineConfig(({ mode }) => {
 			chunkSizeWarningLimit: 5000, // 設定為 5000 kB
 			rollupOptions: {
 				input: {
-					// 指定你的入口文件
 					main: "./index.html",
 				},
 				output: {

@@ -48,8 +48,8 @@ const A08GridContainer = () => {
 					})
 				),
 				title: "範圍",
-				minWidth: 122,
-				maxWidth: 140,
+				minWidth: 130,
+				maxWidth: 150,
 				disabled: a08.grid.readOnly,
 				grow: 1,
 			},
