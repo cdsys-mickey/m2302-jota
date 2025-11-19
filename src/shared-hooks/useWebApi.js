@@ -12,8 +12,8 @@ const DEFAULT_HEADERS = () => {
 	let logKeyInSession = sessionStorage.getItem("LogKey");
 	if (logKeyInSession) {
 		return {
-			LogKey: logKeyInSession
-		}
+			LogKey: logKeyInSession,
+		};
 	}
 	return null;
 };
@@ -27,8 +27,8 @@ const DEFAULT_FORM_HEADERS = {
 };
 
 const DEFAULT_RESPONSE_OPTS = {
-	headers: false
-}
+	headers: false,
+};
 
 /**
  * 呼叫 Web-API,
@@ -44,8 +44,8 @@ export const useWebApi = (props) => {
 	const config = useContext(ConfigContext);
 
 	const _baseUrl = useMemo(() => {
-		return baseUrl || config.API_URL || import.meta.env.VITE_URL_API || "/"
-	}, [baseUrl, config.API_URL])
+		return baseUrl || config.API_URL || import.meta.env.VITE_URL_API || "/";
+	}, [baseUrl, config.API_URL]);
 
 	const getUrl = useCallback(
 		(relativePath, params) => {
@@ -58,13 +58,15 @@ export const useWebApi = (props) => {
 			}
 			// 應保留彈性, 不包含 PUBLIC_URL
 
-			let result = `${_baseUrl.substring(0, 1) === "/" ? "" : "/"}${_baseUrl.substring(_baseUrl.length - 1) === "/"
-				? `${_baseUrl.substring(0, _baseUrl.length - 1)}`
-				: _baseUrl
-				}/${relativePath.substring(0, 1) === "/"
+			let result = `${_baseUrl.substring(0, 1) === "/" ? "" : "/"}${
+				_baseUrl.substring(_baseUrl.length - 1) === "/"
+					? `${_baseUrl.substring(0, _baseUrl.length - 1)}`
+					: _baseUrl
+			}/${
+				relativePath.substring(0, 1) === "/"
 					? relativePath.substring(1)
 					: relativePath
-				}`;
+			}`;
 
 			if (params) {
 				result += "?" + querystring.stringify(params);
@@ -75,33 +77,22 @@ export const useWebApi = (props) => {
 		[_baseUrl]
 	);
 
-	// const defaultGetOptions = useCallback((payload) => {
-	// 	return payload["data"] || [];
-	// }, []);
-
-	// const getHeaders = useCallback(() => {
-	// 	if (!headers) {
-	// 		return null;
-	// 	}
-	// 	if (Types.isFunction(headers)) {
-	// 		return headers();
-	// 	}
-	// 	return headers;
-	// }, [headers]);
-
 	// async 版本
 	const sendAsync = useCallback(
-		async ({
-			url,
-			method = "get",
-			data,
-			params,
-			headers: _headers,
-			bearer,
-			mode = defaultMode,
+		async (
+			{
+				url,
+				method = "get",
+				data,
+				params,
+				headers: _headers,
+				bearer,
+				mode = defaultMode,
 
-			...rest
-		}, opts = {}) => {
+				...rest
+			},
+			opts = {}
+		) => {
 			const { response: responseOpts = DEFAULT_RESPONSE_OPTS } = opts;
 			const apiUrl = getUrl(url);
 			if (!apiUrl) {
@@ -109,8 +100,7 @@ export const useWebApi = (props) => {
 			}
 			const _method = method.toUpperCase();
 			// GET 下無 params 而有 data, 就將 data 當成 params 使用
-			const isUseDataAsParams =
-				_method === "GET" && !params && !!data;
+			const isUseDataAsParams = _method === "GET" && !params && !!data;
 			const _params = isUseDataAsParams ? data : params;
 
 			console.log(`${_method} ${apiUrl}`);
@@ -164,18 +154,22 @@ export const useWebApi = (props) => {
 						status: status,
 						payload: axiosResponse.data,
 						...(responseOpts.headers && {
-							headers: axiosResponse.headers
-						})
+							headers: axiosResponse.headers,
+						}),
 					};
 				} else {
 					//should not happen, because Axios always throws error when status is not 2xx
 					return {
 						status: status,
-						error: WebApi.getErrorFromResponse(status, axiosResponse, {
-							withStack: withStack,
-							status: status.code,
-							statusText: axiosResponse.statusText,
-						}),
+						error: WebApi.getErrorFromResponse(
+							status,
+							axiosResponse,
+							{
+								withStack: withStack,
+								status: status.code,
+								statusText: axiosResponse.statusText,
+							}
+						),
 					};
 				}
 			} catch (err) {
@@ -184,10 +178,10 @@ export const useWebApi = (props) => {
 					status: HttpStatus.from(err.response?.status || 500),
 					error: err.response?.data
 						? WebApi.getErrorFromPayload(err.response.data, {
-							withStack: withStack,
-							status: err.response.status,
-							statusText: err.response.statusText,
-						})
+								withStack: withStack,
+								status: err.response.status,
+								statusText: err.response.statusText,
+						  })
 						: WebApi.getErrorFromAxiosError(err),
 				};
 			}
@@ -230,21 +224,6 @@ export const useWebApi = (props) => {
 		[sendAsync]
 	);
 
-	// 
-	const getFileNameFromDisposition = useCallback((headers) => {
-		let fileName = 'downloaded_file';
-		const disposition = headers['content-disposition'];
-		if (disposition && disposition.includes('filename=')) {
-			const matches = disposition.match(/filename="(.+)"/);
-			if (matches && matches[1]) {
-				fileName = matches[1];
-			}
-		}
-		return fileName;
-	}, []);
-
-
-
 	return {
 		sendAsync,
 		httpGetAsync,
@@ -253,7 +232,5 @@ export const useWebApi = (props) => {
 		httpPatchAsync,
 		httpDeleteAsync,
 		getUrl,
-		fetch,
-		getFileNameFromDisposition
 	};
 };
