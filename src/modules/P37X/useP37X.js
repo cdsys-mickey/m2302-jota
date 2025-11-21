@@ -3,7 +3,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { nanoid } from "nanoid";
 import { useRef } from "react";
 import { useMemo } from "react";
@@ -23,7 +23,7 @@ export default function useP37X() {
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 
 	// GRID
 	const createRow = useCallback(

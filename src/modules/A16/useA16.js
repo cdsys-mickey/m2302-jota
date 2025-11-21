@@ -5,7 +5,7 @@ import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
@@ -36,7 +36,7 @@ export const useA16 = ({ token }) => {
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 	const [selectedItem, setSelectedItem] = useState();
 	const dialogs = useContext(DialogsContext);
 

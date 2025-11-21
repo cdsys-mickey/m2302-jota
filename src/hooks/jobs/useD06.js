@@ -5,7 +5,7 @@ import D06 from "@/modules/D06.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { addDays, isDate } from "date-fns";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useRef } from "react";
@@ -39,7 +39,7 @@ export const useD06 = () => {
 	] = useToggle(false);
 
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({

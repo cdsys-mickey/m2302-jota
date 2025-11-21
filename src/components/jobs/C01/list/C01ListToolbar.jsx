@@ -9,12 +9,7 @@ import { C01TransformButtonContainer } from "./C01TransformButtonContainer";
 
 const LeftButtons = memo(() => {
 	return (
-		<FlexBox
-			sx={(theme) => ({
-				"& > *": {
-					marginRight: theme.spacing(1),
-				},
-			})}>
+		<>
 			<C01TransformButtonContainer variant="contained" />
 			<C01ListModePicker
 				dense
@@ -27,7 +22,7 @@ const LeftButtons = memo(() => {
 				width="12rem"
 				disableOpenOnInput
 			/>
-		</FlexBox>
+		</>
 	);
 });
 

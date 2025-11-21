@@ -11,7 +11,7 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
@@ -46,7 +46,7 @@ export const useC01 = () => {
 		httpPutAsync,
 		httpDeleteAsync,
 		httpPatchAsync,
-	} = useWebApi();
+	} = useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -394,7 +394,7 @@ export const useC01 = () => {
 						rowIndex,
 					});
 				}
-
+				// 供應商
 				if (
 					processedRowData.supplier?.FactID !==
 					oldRowData.supplier?.FactID

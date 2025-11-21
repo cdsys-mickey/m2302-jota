@@ -3,7 +3,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useRef } from "react";
 import UserSettingEditors from "./UserSettingEditors.mjs";
@@ -24,7 +24,7 @@ export default function useUserSettingEditor({
 	});
 	// 側邊欄
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 
 	// GRID
 	// const createRow = useCallback(

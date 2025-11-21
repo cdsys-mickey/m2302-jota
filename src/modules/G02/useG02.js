@@ -5,7 +5,7 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
@@ -28,7 +28,7 @@ export const useG02 = () => {
 	const debugDialog = useDebugDialog();
 
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({

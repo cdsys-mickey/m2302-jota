@@ -6,13 +6,13 @@ import REB from "@/modules/REB/REB";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import useAction from "@/shared-modules/ActionState/useAction";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useState } from "react";
 import F07 from "../md-f07";
 
 export const useREB = () => {
 	const crud = useContext(CrudContext);
-	const { httpGetAsync, httpPostAsync } = useWebApi();
+	const { httpGetAsync, httpPostAsync } = useWebApiAsync();
 	const [selectedTab, setSelectedTab] = useState(REB.TabType.SALES_DATA);
 	const handleTabChange = useCallback((e, newValue) => {
 		setSelectedTab(newValue);

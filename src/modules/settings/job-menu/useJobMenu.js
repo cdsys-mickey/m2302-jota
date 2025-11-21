@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useCallback, useContext, useMemo, useState } from "react";
 import useAction from "@/shared-modules/ActionState/useAction";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import JobMenu from "./JobMenu.mjs";
 import { nanoid } from "nanoid";
 import toastEx from "@/shared-components/ToastEx/toastEx";
@@ -9,7 +9,7 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import SideMenu from "@/modules/SideMenu.mjs";
 
 export const useJobMenu = () => {
-	const { httpGetAsync, httpPutAsync } = useWebApi();
+	const { httpGetAsync, httpPutAsync } = useWebApiAsync();
 
 	const auth = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);

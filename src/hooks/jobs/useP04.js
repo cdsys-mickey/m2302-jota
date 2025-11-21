@@ -4,7 +4,7 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import P04 from "@/modules/md-p04";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
@@ -15,7 +15,7 @@ export const useP04 = () => {
 		moduleId: "P04",
 	});
 	const crud = useContext(CrudContext);
-	const { httpDeleteAsync } = useWebApi();
+	const { httpDeleteAsync } = useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const formMeta = useFormMeta(

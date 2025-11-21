@@ -1,6 +1,5 @@
-import React, { ComponentType, useMemo } from "react";
-import { Box, Typography, SxProps, Theme, useTheme } from "@mui/material";
-import { SvgIconProps } from "@mui/material/SvgIcon";
+import { useMemo } from "react";
+import { Box, Typography, useTheme } from "@mui/material";
 import {
 	CheckCircleOutline,
 	InfoOutlined,
@@ -8,34 +7,15 @@ import {
 	ErrorOutline,
 } from "@mui/icons-material";
 
-type Severity = "success" | "info" | "warning" | "error";
-
-interface CustomAlertProps {
-	severity?: Severity;
-	label?: string;
-	children?: React.ReactNode;
-	icon?: ComponentType<SvgIconProps>;
-	height?: string | number;
-	fullWidth?: boolean;
-	noBackground?: boolean;
-	title?: string;
-	sx?: SxProps<Theme>;
-	slotProps?: {
-		icon?: Partial<SvgIconProps>;
-		title?: Partial<React.ComponentProps<typeof Typography>>;
-		label?: Partial<React.ComponentProps<typeof Typography>>;
-	};
-}
-
-const iconMap: Record<Severity, React.ComponentType> = {
+const iconMap = {
 	success: CheckCircleOutline,
 	info: InfoOutlined,
 	warning: WarningAmberOutlined,
 	error: ErrorOutline,
 };
 
-const JumboAlertView: React.FC<CustomAlertProps> = ({
-	severity,
+const JumboAlertView = ({
+	severity = "info",       // 預設 info
 	label,
 	children,
 	icon,
@@ -48,12 +28,13 @@ const JumboAlertView: React.FC<CustomAlertProps> = ({
 }) => {
 	const theme = useTheme();
 
-	const getColor = (property: "main" | "light" | "contrastText") => {
+	// 依照 severity 取得對應的顏色
+	const getColor = (property) => {
 		switch (severity) {
 			case "success":
 				return theme.palette.success[property];
 			case "info":
-				// 使用灰色作為預設
+				// info 使用灰色系
 				switch (property) {
 					case "main":
 						return theme.palette.grey[500];
@@ -69,7 +50,7 @@ const JumboAlertView: React.FC<CustomAlertProps> = ({
 			case "error":
 				return theme.palette.error[property];
 			default:
-				// 若 severity 無效，使用灰色
+				// 沒有 severity 或不支援時也走灰色
 				switch (property) {
 					case "main":
 						return theme.palette.grey[500];
@@ -86,24 +67,21 @@ const JumboAlertView: React.FC<CustomAlertProps> = ({
 	const mainColor = getColor("main");
 	const lightColor = getColor("light");
 
-	// 使用 useMemo 快取 boxStyles
-	const boxStyles = useMemo(
-		() =>
-			noBackground
-				? {
-						backgroundColor: "transparent",
-						border: "none",
-				  }
-				: {
-						backgroundColor:
-							theme.palette.mode === "dark"
-								? lightColor
-								: `${mainColor}1A`,
-						border: `1px solid ${mainColor}`,
-				  },
-		[noBackground, theme.palette.mode, mainColor, lightColor]
-	);
+	// 背景與邊框樣式用 useMemo 快取，避免不必要的重新計算
+	const boxStyles = useMemo(() => {
+		return noBackground
+			? {
+				backgroundColor: "transparent",
+				border: "none",
+			}
+			: {
+				backgroundColor:
+					theme.palette.mode === "dark" ? lightColor : `${mainColor}1A`, // 10% 透明度
+				border: `1px solid ${mainColor}`,
+			};
+	}, [noBackground, theme.palette.mode, mainColor, lightColor]);
 
+	// 決定要使用的 Icon（優先使用傳入的 icon → severity 對應 → 預設 Info）
 	const IconComponent = icon || (severity ? iconMap[severity] : InfoOutlined);
 
 	return (
@@ -116,15 +94,14 @@ const JumboAlertView: React.FC<CustomAlertProps> = ({
 				padding: 2,
 				borderRadius: 1,
 				textAlign: "center",
-				...(fullWidth && {
-					width: "100%",
-				}),
+				...(fullWidth && { width: "100%" }),
 				height,
 				boxSizing: "border-box",
 				...boxStyles,
 				...sx,
-			}}>
-			{/* 大圖示，展開 slotProps.icon 到 IconComponent */}
+			}}
+		>
+			{/* 大圖示 */}
 			<IconComponent
 				sx={{
 					fontSize: 200,
@@ -133,30 +110,34 @@ const JumboAlertView: React.FC<CustomAlertProps> = ({
 				}}
 				{...slotProps.icon}
 			/>
-			{/* 標題（如果有提供），使用 theme.palette.text.primary */}
+
+			{/* 標題（若有） */}
 			{title && (
 				<Typography
 					variant="h6"
 					sx={{
 						mt: 1,
-						color: theme.palette.text.primary, // 使用主要文字顏色
+						color: theme.palette.text.primary,
 						fontWeight: "bold",
 						...slotProps.title?.sx,
 					}}
-					{...slotProps.title}>
+					{...slotProps.title}
+				>
 					{title}
 				</Typography>
 			)}
-			{/* 訊息：優先使用 children，若無則使用 label，使用 theme.palette.text.secondary */}
+
+			{/* 內容文字：children 優先，沒有就顯示 label */}
 			<Typography
 				variant="subtitle1"
 				sx={{
 					mt: title ? 1 : 2,
-					color: theme.palette.text.secondary, // 使用次要文字顏色
+					color: theme.palette.text.secondary,
 					fontWeight: "medium",
 					...slotProps.label?.sx,
 				}}
-				{...slotProps.label}>
+				{...slotProps.label}
+			>
 				{children || label}
 			</Typography>
 		</Box>

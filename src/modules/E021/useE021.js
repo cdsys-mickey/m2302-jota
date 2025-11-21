@@ -8,7 +8,7 @@ import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import Forms from "@/shared-modules/Forms.mjs";
 import Objects from "@/shared-modules/Objects.mjs";
 import { isDate } from "lodash";
@@ -50,7 +50,7 @@ export const useE021 = ({ mode }) => {
 	const [selectedOrd, setSelectedOrd] = useState();
 
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({

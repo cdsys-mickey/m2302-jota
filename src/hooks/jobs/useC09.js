@@ -11,7 +11,7 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
@@ -39,7 +39,7 @@ export const useC09 = () => {
 	] = useToggle(false);
 
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({

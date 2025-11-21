@@ -12,7 +12,7 @@ import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import UserAuth from "../../modules/md-user-auth";
 import DSG from "../../shared-modules/sd-dsg";
@@ -37,7 +37,7 @@ export const useZA03 = () => {
 		httpPutAsync,
 		httpDeleteAsync,
 		httpPatchAsync,
-	} = useWebApi();
+	} = useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const loader = useInfiniteLoader({

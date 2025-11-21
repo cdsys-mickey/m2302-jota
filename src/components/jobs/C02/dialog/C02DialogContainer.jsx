@@ -21,6 +21,7 @@ import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import { SupplierPickerComponentContainer } from "@/components/dsg/columns/supplier-picker/SupplierPickerComponentContainer";
 
 export const C02DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;
@@ -136,7 +137,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 				),
 				title: "品名規格",
 				disabled: true,
-				grow: 2,
+				grow: 1.5,
 			},
 			{
 				...keyColumn(
@@ -173,16 +174,40 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 			},
 			{
 				...keyColumn(
-					"SFactID",
-					createTextColumnEx({
-						continuousUpdates: false,
+					"supplier",
+					optionPickerColumn(SupplierPickerComponentContainer, {
+						name: "supplier",
+						selectOnFocus: true,
+						forId: true,
+						disableClearable: true,
+						autoHighlight: true,
+						slotProps: {
+							paper: {
+								sx: {
+									width: 360,
+								},
+							},
+						},
 					})
 				),
 				title: "供應商",
-				// minWidth: 80,
-				maxWidth: 80,
-				disabled: true,
+				minWidth: 120,
+				maxWidth: 120,
+				disabled: readOnly,
 			},
+			// {
+			// 	...keyColumn(
+			// 		"SFactID",
+			// 		createTextColumnEx({
+			// 			continuousUpdates: false,
+			// 		})
+			// 	),
+			// 	title: "供應商",
+			// 	// minWidth: 80,
+			// 	maxWidth: 80,
+			// 	// disabled: true,
+			// 	disabled: readOnly,
+			// },
 			{
 				...keyColumn(
 					"SFactNa",
@@ -193,7 +218,8 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 				title: "名稱",
 				// grow: 2,
 				minWidth: 120,
-				disabled: true,
+				// disabled: true,
+				disabled: readOnly || c02.supplierNameDisabled,
 			},
 			{
 				...keyColumn(
@@ -207,7 +233,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 				disabled: true,
 			},
 		],
-		[c02.rqtQtyDisabled, readOnly]
+		[c02.rqtQtyDisabled, c02.supplierNameDisabled, readOnly]
 	);
 
 	const gridMeta = useDSGMeta({

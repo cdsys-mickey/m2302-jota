@@ -1,10 +1,10 @@
 import { useCallback, useContext, useState } from "react";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import { useAppFrame } from "../../shared-contexts/app-frame/useAppFrame";
-import { useWebApi } from "../../shared-hooks/useWebApi";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { useAppFrame } from "@/shared-contexts/app-frame/useAppFrame";
+import useWebApiAsync from "@/shared-hooks/useWebApi/useWebApiAsync";
 
 export const useHome = () => {
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 	const { token } = useContext(AuthContext);
 	const appFrame = useAppFrame();
 	const { selectJobById } = appFrame;

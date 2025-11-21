@@ -3,7 +3,7 @@ import { AuthContext } from "../contexts/auth/AuthContext";
 import { useInfiniteLoader } from "../shared-hooks/useInfiniteLoader";
 import { useState } from "react";
 import { useCallback } from "react";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { usePopover } from "@/shared-hooks/usePopover";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useEffect } from "react";
@@ -18,7 +18,7 @@ export const useUnreadMessages = () => {
 	const auth = useContext(AuthContext);
 	const messaging = useContext(MessagingContext);
 	const { connection, connectionState } = messaging;
-	const { httpGetAsync, httpPutAsync, httpPatchAsync } = useWebApi();
+	const { httpGetAsync, httpPutAsync, httpPatchAsync } = useWebApiAsync();
 	const unreadMessageListLoader = useInfiniteLoader({
 		url: "v1/my/messages",
 		bearer: auth.token,

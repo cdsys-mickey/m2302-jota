@@ -5,7 +5,7 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Messages from "@/modules/md-messages";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { decodeJwt } from "jose";
 import Cookies from "js-cookie";
@@ -22,7 +22,7 @@ const DEFAULT_SWITCH_DEPT_OPTS = {
 
 export const useAuth = () => {
 	const { toLogin, toLanding, toRenew } = useAppRedirect();
-	const { httpGetAsync, httpPutAsync } = useWebApi();
+	const { httpGetAsync, httpPutAsync } = useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 	const deptSwitchAction = useAction();
 	const location = useLocation();
@@ -409,7 +409,7 @@ export const useAuth = () => {
 		[toLogin]
 	);
 
-	const { httpPatchAsync } = useWebApi();
+	const { httpPatchAsync } = useWebApiAsync();
 	const changeAction = useAction();
 	const {
 		prompt: promptChanging,

@@ -8,7 +8,7 @@ import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "../useSideDrawer";
@@ -61,7 +61,7 @@ export const useA06 = ({ token, mode }) => {
 		httpPutAsync,
 		httpPatchAsync,
 		httpDeleteAsync,
-	} = useWebApi();
+	} = useWebApiAsync();
 	const [selectedItem, setSelectedItem] = useState();
 	const dialogs = useContext(DialogsContext);
 

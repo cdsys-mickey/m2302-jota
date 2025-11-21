@@ -4,7 +4,7 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import G04 from "@/modules/G04/G04.mjs";
 import useAction from "@/shared-modules/ActionState/useAction";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useState } from "react";
 
 export const useG04 = () => {
@@ -15,7 +15,7 @@ export const useG04 = () => {
 		token,
 		moduleId: "G04",
 	});
-	const { httpPatchAsync, httpPostAsync, httpDeleteAsync } = useWebApi();
+	const { httpPatchAsync, httpPostAsync, httpDeleteAsync } = useWebApiAsync();
 
 	const handleTabChange = useCallback((e, newValue) => {
 		setSelectedTab(newValue);

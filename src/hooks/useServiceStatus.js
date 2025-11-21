@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -12,7 +12,7 @@ export default function useServiceStatus(opts = {}) {
 		throw new Error("未指派服務名稱");
 	}
 
-	const { httpGetAsync, httpPatchAsync } = useWebApi();
+	const { httpGetAsync, httpPatchAsync } = useWebApiAsync();
 	const { token } = useContext(AuthContext);
 	const [enabled, setEnabled] = useState(false);
 	const [loading, setLoading] = useState();

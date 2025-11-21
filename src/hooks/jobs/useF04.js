@@ -7,20 +7,18 @@ import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import ConfigContext from "@/contexts/config/ConfigContext";
 
 export const useF04 = () => {
 	const config = useContext(ConfigContext);
 	const doBatch = useMemo(() => {
 		return !!config?.BATCH?.F01;
-	}, [config?.BATCH?.F01])
+	}, [config?.BATCH?.F01]);
 
 	const crud = useContext(CrudContext);
 	const { token, operator } = useContext(AuthContext);
-	const {
-		httpGetAsync,
-	} = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 	const appModule = useAppModule({
 		token,
 		moduleId: "F04",
@@ -33,25 +31,40 @@ export const useF04 = () => {
 		PrtType,
 		PrtID,
 		outputType,
-		`);
+		`
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebF04Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebF04Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = {
-			...F04.transformForSubmitting(payload),
-			JobName: "F04",
-			DeptID: operator?.CurDeptID,
-			...(doBatch && {
-				PrtForm: "Y"
-			})
-		};
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, doBatch, operator?.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = {
+				...F04.transformForSubmitting(payload),
+				JobName: "F04",
+				DeptID: operator?.CurDeptID,
+				...(doBatch && {
+					PrtForm: "Y",
+				}),
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			doBatch,
+			operator?.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -61,8 +74,8 @@ export const useF04 = () => {
 				JobName: "F04",
 				DeptID: operator?.CurDeptID,
 				...(doBatch && {
-					PrtForm: "Y"
-				})
+					PrtForm: "Y",
+				}),
 			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
@@ -108,7 +121,6 @@ export const useF04 = () => {
 		onDebugSubmit,
 		load,
 		...crud,
-		doBatch
+		doBatch,
 	};
 };
-

@@ -4,9 +4,9 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import _ from "lodash";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useState } from "react";
-import { DialogsContext } from "../../shared-contexts/dialog/DialogsContext";
-import Objects from "../../shared-modules/Objects.mjs";
-import { useWebApi } from "../useWebApi";
+import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import Objects from "@/shared-modules/Objects.mjs";
+import useWebApiAsync from "@/shared-hooks/useWebApi/useWebApiAsync";
 
 const defaultTransformForReading = (payload) => {
 	return payload?.data || [];
@@ -41,7 +41,7 @@ export const useDSGCodeEditor = ({
 }) => {
 	const { token } = useContext(AuthContext);
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 
 	const dialogs = useContext(DialogsContext);
 	const [state, setState] = useState({

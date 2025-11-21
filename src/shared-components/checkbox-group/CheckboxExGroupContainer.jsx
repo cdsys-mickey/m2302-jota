@@ -1,9 +1,4 @@
-import { useEffect } from "react";
 import CheckboxExGroup from "./CheckboxExGroup";
-import { useState } from "react";
-import { useWebApi } from "../../shared-hooks/useWebApi";
-import LoadingTypography from "../LoadingTypography";
-import { useCallback } from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { useOptions } from "../../shared-hooks/useOptions";

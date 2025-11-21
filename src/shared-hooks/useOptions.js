@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useWebApi } from "./useWebApi";
+import useWebApiAsync from "./useWebApi/useWebApiAsync";
 import { useEffect } from "react";
 import { useMemo } from "react";
 
@@ -15,7 +15,7 @@ export const useOptions = ({
 	defaultOptions = [],
 	getOptions = defaultGetOptions,
 }) => {
-	const { sendAsync } = useWebApi();
+	const { sendAsync } = useWebApiAsync();
 	const [optionsLoading, setOptionsLoading] = useState();
 	const [optionsError, setOptionsError] = useState();
 

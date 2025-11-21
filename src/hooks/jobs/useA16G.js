@@ -7,7 +7,7 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { nanoid } from "nanoid";
 import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
@@ -20,7 +20,7 @@ export const useA16G = () => {
 		token,
 		moduleId: "A16",
 	});
-	const { httpPatchAsync } = useWebApi();
+	const { httpPatchAsync } = useWebApiAsync();
 
 	const createRow = useCallback(
 		() => ({

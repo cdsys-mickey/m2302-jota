@@ -3,7 +3,7 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import F02 from "@/pages/jobs/F02/F02.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
@@ -14,7 +14,7 @@ export const useF02 = ({ token }) => {
 	const [state, setState] = useState({
 		staging: false,
 	});
-	const { httpGetAsync, httpPutAsync, httpDeleteAsync } = useWebApi();
+	const { httpGetAsync, httpPutAsync, httpDeleteAsync } = useWebApiAsync();
 	const appModule = useAppModule({
 		token,
 		moduleId: "F02",

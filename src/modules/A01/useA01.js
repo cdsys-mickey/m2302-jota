@@ -14,7 +14,7 @@ import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
@@ -72,7 +72,7 @@ export const useA01 = ({ mode }) => {
 		httpPutAsync,
 		httpPatchAsync,
 		httpDeleteAsync,
-	} = useWebApi();
+	} = useWebApiAsync();
 	const [selectedItem, setSelectedItem] = useState();
 	const dialogs = useContext(DialogsContext);
 

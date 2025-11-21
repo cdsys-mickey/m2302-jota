@@ -6,7 +6,7 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { RoomTwoTone } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo, useState } from "react";
@@ -18,7 +18,7 @@ import { CatSGridContext } from "./CatSGridContext";
 const CatMGridProvider = (props) => {
 	const { children } = props;
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 	const { token } = useContext(AuthContext);
 
 	const a03 = useContext(A03Context);

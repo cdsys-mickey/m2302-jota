@@ -34,13 +34,13 @@ const DEFAULT_RESPONSE_OPTS = {
  * 呼叫 Web-API,
  * createdAt: 22.12.23
  */
-export const useWebApi = (props) => {
+export default function useWebApiAsync(opts) {
 	const {
 		baseUrl,
 		mode: defaultMode = "json",
 		withStack = false,
 		headers = DEFAULT_HEADERS,
-	} = props || {};
+	} = opts || {};
 	const config = useContext(ConfigContext);
 
 	const _baseUrl = useMemo(() => {
@@ -137,7 +137,7 @@ export const useWebApi = (props) => {
 						...(mode === "json" && DEFAULT_JSON_HEADERS),
 						...(mode === "form" && DEFAULT_FORM_HEADERS),
 
-						// 先列舉 props 內的 headers
+						// 先列舉 opts 內的 headers
 						// 再列舉 參數 內的 headers
 						...(Types.isFunction(headers) ? headers() : headers),
 						...(Types.isFunction(_headers) ? _headers() : _headers),
@@ -233,4 +233,4 @@ export const useWebApi = (props) => {
 		httpDeleteAsync,
 		getUrl,
 	};
-};
+}

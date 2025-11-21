@@ -8,7 +8,7 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import Forms from "@/shared-modules/Forms.mjs";
 import { isDate } from "date-fns";
 import { nanoid } from "nanoid";
@@ -44,7 +44,7 @@ export const useC05 = () => {
 		httpPutAsync,
 		httpDeleteAsync,
 		httpPatchAsync,
-	} = useWebApi();
+	} = useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({

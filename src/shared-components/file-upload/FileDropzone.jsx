@@ -8,7 +8,7 @@ import { useDropzone } from "react-dropzone";
 import LoadingState from "@/shared-constants/loading-states";
 // Custom Components
 // 3rd party libs
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import FlexBox from "../FlexBox";
 import FileDropzoneBox from "./FileDropzoneBox";
 import FileProgress from "./FileProgress";
@@ -68,7 +68,7 @@ const FileDropzone = (props) => {
 		...rest
 	} = props;
 
-	const { sendAsync } = useWebApi();
+	const { sendAsync } = useWebApiAsync();
 	const [state, setState] = useState({
 		current: null,
 		uploading: [],

@@ -1,56 +1,45 @@
 module.exports = {
-	env: { browser: true, es2020: true },
+	env: {
+		browser: true,
+		es2021: true,
+		node: true,
+	},
 	extends: [
 		"eslint:recommended",
 		"plugin:react/recommended",
 		"plugin:react/jsx-runtime",
 		"plugin:react-hooks/recommended",
 	],
-	parser: "@typescript-eslint/parser",
 	parserOptions: {
 		ecmaVersion: "latest",
 		sourceType: "module",
+		ecmaFeatures: {
+			jsx: true,
+		},
 	},
 	settings: {
-		react: { version: "18.2" },
-		"import/resolver": {
-			typescript: {
-				project: "./tsconfig.json",
-			},
+		react: {
+			version: "detect", // 自動偵測 React 版本（推薦）
 		},
 	},
-	plugins: ["react-refresh", "@typescript-eslint", "import"],
+	plugins: ["react-refresh"],
 	rules: {
-		"react-refresh/only-export-components": "warn",
-		"@typescript-eslint/no-var-requires": "off",
+		// React Fast Refresh（Vite 專案常用）
+		"react-refresh/only-export-components": ["warn"],
+
+		// 常用且合理的規則（可依專案喜好調整）
+		"react/prop-types": "off", // JS 專案通常不用 PropTypes
+		"react/react-in-jsx-scope": "off", // React 17+ 不用 import React
+		"no-unused-vars": "warn",
+		"no-console": "warn",
 	},
+
+	// 只針對 .jsx 檔案額外調整（可選）
 	overrides: [
 		{
-			files: ["*.ts", "*.tsx"],
-			extends: [
-				"plugin:@typescript-eslint/recommended",
-				"plugin:@typescript-eslint/recommended-requiring-type-checking",
-			],
-			parserOptions: {
-				project: "./tsconfig.json",
-			},
-			rules: {
-				"react/prop-types": "off",
-				"@typescript-eslint/no-unused-vars": "error",
-			},
-		},
-		{
 			files: ["*.jsx"],
-			parser: "espree",
-			extends: [
-				"eslint:recommended",
-				"plugin:react/recommended",
-				"plugin:react/jsx-runtime",
-				"plugin:react-hooks/recommended",
-			],
 			rules: {
-				"react/prop-types": "off",
-				"@typescript-eslint/*": "off",
+				// .jsx 檔案某些規則可以更寬鬆或特別調整
 			},
 		},
 	],

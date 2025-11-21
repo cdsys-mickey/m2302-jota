@@ -4,7 +4,7 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import F07 from "@/modules/md-f07";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useAction from "@/shared-modules/ActionState/useAction";
@@ -12,7 +12,7 @@ import useAction from "@/shared-modules/ActionState/useAction";
 export const useF07 = () => {
 	const crud = useContext(CrudContext);
 	const { token } = useContext(AuthContext);
-	const { httpGetAsync, httpPostAsync } = useWebApi();
+	const { httpGetAsync, httpPostAsync } = useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 	const appModule = useAppModule({
 		token,

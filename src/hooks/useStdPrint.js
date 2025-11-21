@@ -3,7 +3,7 @@ import ConfigContext from "@/contexts/config/ConfigContext";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import useAction from "@/shared-modules/ActionState/useAction";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useState } from "react";
 import StdPrint from "../modules/StdPrint.mjs";
 import useJotaReports from "./useJotaReports";
@@ -11,7 +11,7 @@ import useDebugDialog from "./useDebugDialog";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 
 export const useStdPrint = ({ token, tableName, deptId, paramsToJsonData }) => {
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 	// const { postTo } = useHttpPost();
 	const auth = useContext(AuthContext);
 	const config = useContext(ConfigContext);

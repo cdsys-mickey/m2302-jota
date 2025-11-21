@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useRef } from "react";
 
 const DEFAULT_PROMPT = `請輸入密碼後繼續`;
@@ -29,7 +29,7 @@ const usePwordCheck = (opts = {}) => {
 	const pwordLockRef = useRef({
 		passed: false,
 	});
-	const { httpPostAsync } = useWebApi();
+	const { httpPostAsync } = useWebApiAsync();
 
 	// 讀取密碼
 	// const loadStockPword = useCallback(async () => {

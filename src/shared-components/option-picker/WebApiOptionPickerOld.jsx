@@ -1,4 +1,4 @@
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 
 import PropTypes from "prop-types";
 import queryString from "query-string";
@@ -61,7 +61,7 @@ const WebApiOptionPickerOld = memo(
 
 		// console.log("rendering WebApiOptionPickerOld");
 
-		const { sendAsync } = useWebApi();
+		const { sendAsync } = useWebApiAsync();
 
 		// const [loading, setLoading] = useState(null);
 

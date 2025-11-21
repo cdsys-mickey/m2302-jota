@@ -2,7 +2,7 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import SQtyUtils from "@/modules/md-sqty";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import _ from "lodash";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 
@@ -38,7 +38,7 @@ export default function useSQtyManager(opts = {}) {
 	const sqtyLockRef = useRef(null);
 
 	const dialogs = useContext(DialogsContext);
-	const { httpGetAsync, httpPostAsync } = useWebApi();
+	const { httpGetAsync, httpPostAsync } = useWebApiAsync();
 
 	const getStockQty = useCallback(
 		(prodId) => {

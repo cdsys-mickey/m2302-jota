@@ -1,31 +1,30 @@
-import Types from "@/shared-modules/Types.mjs";
 import { useEffect, useRef } from "react";
+import Types from "@/shared-modules/Types.mjs";
 
 export const useRunOnce = (callback) => {
-	const loadedRef = useRef(false);
-	const unloadedRef = useRef(false);
+	const hasRun = useRef(false);
+	const cleanupRef = useRef();
 
 	useEffect(() => {
-		let unloadCallback;
-		if (!loadedRef.current) {
-			if (Types.isFunction(callback)) {
-				loadedRef.current = true;
-				unloadCallback = callback();
-			} else {
-				console.warn("callback is not a function", callback);
-			}
+		if (hasRun.current) return;
+
+		hasRun.current = true;
+		const result = callback();
+
+		// 如果 callback 回傳一個 cleanup 函數，就存起來
+		if (Types.isFunction(result)) {
+			cleanupRef.current = result;
 		}
+
 		return () => {
-			if (!unloadedRef.current && unloadCallback) {
-				unloadedRef.current = true;
-				if (Types.isFunction(unloadCallback)) {
-					unloadCallback();
-				} else {
-					console.warn("unloadCallback is not a function", unloadCallback);
-				}
+			if (cleanupRef.current) {
+				cleanupRef.current();
+				cleanupRef.current = undefined;
 			}
 		};
-	}, [callback]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-	return loadedRef.current;
+	// 可選：回傳是否已初始化
+	return hasRun.current;
 };

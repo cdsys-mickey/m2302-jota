@@ -3,7 +3,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useRef, useState } from "react";
 import P37 from "./P37.mjs";
 import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
@@ -24,7 +24,7 @@ export default function useP37() {
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 
 	const [selectedTab, setSelectedTab] = useState(
 		CmsGroupTypes.Types.DOMESTIC

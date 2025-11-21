@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import Auth from "@/modules/Auth.mjs";
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useState } from "react";
 
 export const useAppModule = (props = {}) => {
@@ -24,7 +24,7 @@ export const useAppModule = (props = {}) => {
 		canExport: false,
 		canImport: false,
 	});
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 
 	const getModuleAuthority = useCallback(async () => {
 		setState((prev) => ({

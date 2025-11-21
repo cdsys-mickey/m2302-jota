@@ -5,7 +5,7 @@ import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
 import H21 from "@/modules/H21/H21.mjs";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo } from "react";
 
 export const useH21 = () => {
@@ -17,22 +17,35 @@ export const useH21 = () => {
 	});
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebH21Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebH21Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ month: "CutYM" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = {
-			...H21.transformForSubmitting(payload),
-			DeptId: operator.CurDeptID,
-		};
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = {
+				...H21.transformForSubmitting(payload),
+				DeptId: operator.CurDeptID,
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			operator.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -40,7 +53,7 @@ export const useH21 = () => {
 			const data = {
 				...H21.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,
-			}
+			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
@@ -54,10 +67,10 @@ export const useH21 = () => {
 	const getCutYM = useCallback(async () => {
 		const { status, payload } = await httpGetAsync({
 			url: "v2/ou/dept/params/cut-ym",
-			bearer: token
+			bearer: token,
 		});
 		if (status.success) {
-			return payload["CutYM"]
+			return payload["CutYM"];
 		}
 	}, [httpGetAsync, token]);
 
@@ -66,8 +79,6 @@ export const useH21 = () => {
 		onSubmit,
 		onSubmitError,
 		onDebugSubmit,
-		getCutYM
+		getCutYM,
 	};
 };
-
-

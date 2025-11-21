@@ -1,8 +1,8 @@
 import queryString from "query-string";
 import { useCallback, useMemo, useRef, useState } from "react";
 import Types from "@/shared-modules/Types.mjs";
-import { useChangeTracking } from "../../shared-hooks/useChangeTracking";
-import { useWebApi } from "../../shared-hooks/useWebApi";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import useWebApiAsync from "@/shared-hooks/useWebApi/useWebApiAsync";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
 import useSharedOptions from "./useSharedOptions";
 
@@ -68,7 +68,7 @@ export const useWebApiOptions = (opts = {}) => {
 		sharedKey,
 		...rest
 	} = opts;
-	const { sendAsync } = useWebApi();
+	const { sendAsync } = useWebApiAsync();
 
 	const isMock = useMemo(() => {
 		return mockDelay > 0;

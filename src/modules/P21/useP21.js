@@ -4,7 +4,7 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useInit } from "@/shared-hooks/useInit";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useState } from "react";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
@@ -21,7 +21,7 @@ export const useP21 = ({ token }) => {
 	// 側邊欄
 	const sideDrawer = useSideDrawer();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 	const [selectedItem, setSelectedItem] = useState();
 	const dialogs = useContext(DialogsContext);
 

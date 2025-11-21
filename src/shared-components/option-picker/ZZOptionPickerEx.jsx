@@ -1,4 +1,4 @@
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { createFilterOptions } from "@mui/material";
 import PropTypes from "prop-types";
 import queryString from "query-string";
@@ -64,7 +64,7 @@ const ZZOptionPickerEx = memo(
 			...rest
 		} = props;
 
-		const { sendAsync } = useWebApi();
+		const { sendAsync } = useWebApiAsync();
 
 		// const [loading, setLoading] = useState(null);
 

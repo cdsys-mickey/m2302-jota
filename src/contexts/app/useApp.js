@@ -1,5 +1,5 @@
 import useAppRedirect from "@/hooks/useAppRedirect";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import DateFormats from "@/shared-modules/DateFormats.mjs";
 import { format, parseISO } from "date-fns";
 import Cookies from "js-cookie";
@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { useCallback, useState } from "react";
 
 export default function useApp() {
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 	const appRedirect = useAppRedirect();
 	// 版本資訊
 	const version = useMemo(

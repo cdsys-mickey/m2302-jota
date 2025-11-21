@@ -1,7 +1,6 @@
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Auth from "@/modules/Auth.mjs";
 import { useCaptcha } from "@/shared-components/captcha-field/useCaptcha";
-import { useWebApi } from "@/shared-hooks/useWebApi";
 import Cookies from "js-cookie";
 import _ from "lodash";
 import { useCallback, useContext, useMemo, useState } from "react";
@@ -12,6 +11,7 @@ import { useRunOnce } from "@/shared-hooks/useRunOnce";
 import { AppContext } from "../app/AppContext";
 // import { toastEx } from "shared-components";
 import { toastEx } from "@/shared-components";
+import { useWebApiAsync } from "@/shared-hooks";
 
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWORD = "pw";
@@ -58,7 +58,7 @@ export const useSignIn = () => {
 		loading: false,
 	});
 
-	const { httpPostAsync } = useWebApi({
+	const { httpPostAsync } = useWebApiAsync({
 		mode: "form",
 	});
 

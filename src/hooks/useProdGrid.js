@@ -1,6 +1,6 @@
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import useAction from "@/shared-modules/ActionState/useAction";
 import Objects from "@/shared-modules/Objects.mjs";
 import { useCallback, useContext, useRef, useState } from "react";
@@ -19,7 +19,7 @@ export const useProdGrid = ({
 }) => {
 	const { token } = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);
-	const { httpGetAsync, httpPutAsync } = useWebApi();
+	const { httpGetAsync, httpPutAsync } = useWebApiAsync();
 	const [expanded, toggleExpanded] = useToggle(true);
 	const saveAction = useAction();
 	const appFrame = useContext(AppFrameContext);

@@ -12,7 +12,7 @@ import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useToggle } from "@/shared-hooks/useToggle";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import Objects from "@/shared-modules/Objects.mjs";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { keyColumn } from "react-datasheet-grid";
@@ -22,7 +22,7 @@ import useJotaReports from "../useJotaReports";
 export const useA22 = ({ form }) => {
 	const { operator, token } = useContext(AuthContext);
 	const config = useContext(ConfigContext);
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 	const [expanded, toggleExpanded] = useToggle(true);
 
 	const appFrame = useContext(AppFrameContext);

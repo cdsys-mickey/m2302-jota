@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import Arrays from "../shared-modules/sd-arrays";
@@ -33,7 +33,7 @@ export const useInfiniteLoader = (props = {}) => {
 		bottomReached: false,
 	});
 
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 
 	const defaultGetOptions = useCallback((payload) => {
 		return payload["data"] || [];
@@ -307,10 +307,12 @@ export const useInfiniteLoader = (props = {}) => {
 	);
 
 	// checkbox 支援
-	const getItemDataByIndex = useCallback((indexes) => {
-		return indexes.map(i => listData[i]);
-	}, [listData]);
-
+	const getItemDataByIndex = useCallback(
+		(indexes) => {
+			return indexes.map((i) => listData[i]);
+		},
+		[listData]
+	);
 
 	return {
 		// PROPS
@@ -333,7 +335,7 @@ export const useInfiniteLoader = (props = {}) => {
 		findNextId,
 		findPrevId,
 		getIndexById,
-		// checkbox 
-		getItemDataByIndex
+		// checkbox
+		getItemDataByIndex,
 	};
 };

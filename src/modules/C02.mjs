@@ -71,13 +71,18 @@ const getOptionById = (id) => {
 const transformGridForReading = (data) => {
 	return (
 		data?.map((rowData, rowIndex) => {
-			const { SProdID, ProdData_N, ...rest } = rowData;
+			const { SProdID, ProdData_N, SFactID, SFactNa, ...rest } = rowData;
 
 			let processedRowData = {
 				prod: {
 					ProdID: SProdID,
 					ProdData: ProdData_N,
 				},
+				supplier: {
+					FactID: SFactID,
+					FactNa: SFactNa,
+				},
+				SFactNa,
 				ProdData: ProdData_N,
 				...rest,
 			};
@@ -139,8 +144,9 @@ const transformForSubmitting = (payload, gridData) => {
 							prod,
 							SRqtQty,
 							SOrdQty,
-							SFactID,
+							// SFactID,
 							SFactNa,
+							supplier,
 							SOrdID,
 						},
 						index
@@ -149,8 +155,8 @@ const transformForSubmitting = (payload, gridData) => {
 						SProdID: prod?.ProdID,
 						SRqtQty,
 						SOrdQty,
-						SFactID,
-						SFactNa,
+						SFactID: supplier?.FactID ?? "",
+						SFactNa: (SFactNa || supplier?.FactNa) ?? "",
 						SOrdID,
 						Seq: index + 1,
 					})

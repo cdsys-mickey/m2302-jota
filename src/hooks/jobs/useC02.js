@@ -7,7 +7,7 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import Forms from "@/shared-modules/Forms.mjs";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
@@ -38,7 +38,7 @@ export const useC02 = () => {
 		httpPutAsync,
 		httpDeleteAsync,
 		httpPatchAsync,
-	} = useWebApi();
+	} = useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
 
 	const listLoader = useInfiniteLoader({
@@ -291,7 +291,7 @@ export const useC02 = () => {
 	}, []);
 
 	const supplierNameDisabled = useCallback(({ rowData }) => {
-		return !!rowData.SOrdID && rowData.SOrdID !== "*";
+		return rowData.SOrdID !== "*" || rowData.supplier?.FactID !== "*";
 	}, []);
 
 	const getProdInfo = useCallback(
@@ -348,6 +348,18 @@ export const useC02 = () => {
 		},
 		[getProdInfo]
 	);
+
+	const handleGridSupplierChange = useCallback(({ rowData, rowIndex }) => {
+		const { supplier } = rowData;
+		console.log(`supplier[${rowIndex}] changed`, supplier);
+
+		let processedRowData = { ...rowData };
+		processedRowData = {
+			...processedRowData,
+			["SFactNa"]: supplier?.FactData || "",
+		};
+		return processedRowData;
+	}, []);
 
 	const isRowDeletable = useCallback(
 		({ rowData }) => {
@@ -449,12 +461,29 @@ export const useC02 = () => {
 						},
 					});
 				}
+				// 供應商
+				if (
+					processedRowData.supplier?.FactID !==
+					oldRowData.supplier?.FactID
+				) {
+					updateResult.cols.push("supplier");
+					processedRowData = handleGridSupplierChange({
+						rowData: processedRowData,
+						rowIndex,
+					});
+				}
 				if (dirty) {
 					updateResult.rows++;
 				}
 				return processedRowData;
 			},
-		[grid, handleGridProdChange, mapTooltip, sqtyManager]
+		[
+			grid,
+			handleGridProdChange,
+			handleGridSupplierChange,
+			mapTooltip,
+			sqtyManager,
+		]
 	);
 
 	const onGridChanged = useCallback(
@@ -770,6 +799,7 @@ export const useC02 = () => {
 		onUpdateRow,
 		onGridChanged,
 		handlePrint,
+		supplierNameDisabled,
 		// validateDate
 	};
 };

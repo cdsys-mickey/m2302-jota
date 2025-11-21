@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import useAppRedirect from "@/hooks/useAppRedirect";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import queryString from "query-string";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useMatch } from "react-router-dom";
@@ -20,7 +20,7 @@ export const useAppFrame = (opts = {}) => {
 		return queryParams.get("drawer");
 	}, [location.search]);
 
-	const { httpPostAsync } = useWebApi();
+	const { httpPostAsync } = useWebApiAsync();
 
 	// Account
 

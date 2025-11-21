@@ -4,7 +4,7 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGCodeEditor } from "@/shared-hooks/dsg/useDSGCodeEditor";
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo, useState, useTransition } from "react";
 import { keyColumn } from "react-datasheet-grid";
@@ -20,7 +20,7 @@ const CatLGridProvider = (props) => {
 	const { children } = props;
 	const [isPending, startTransition] = useTransition();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 	const { token } = useContext(AuthContext);
 
 	const grid = useDSG({

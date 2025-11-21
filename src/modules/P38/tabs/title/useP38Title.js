@@ -3,7 +3,7 @@ import CrudContext from "@/contexts/crud/CrudContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 // import { useSideDrawer } from "@/hooks/useSideDrawer";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useRef } from "react";
 import P38Titles from "./P38Titles.mjs";
 
@@ -18,7 +18,7 @@ export default function useP38Title() {
 	// 側邊欄
 	// const sideDrawer = useSideDrawer();
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
-		useWebApi();
+		useWebApiAsync();
 
 	const tsRef = useRef();
 	const loadItem = useCallback(

@@ -3,7 +3,7 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import G10 from "@/pages/jobs/G10/G10.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useState } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
@@ -14,7 +14,7 @@ export const useG10 = ({ token }) => {
 	const [state, setState] = useState({
 		staging: false,
 	});
-	const { httpPostAsync } = useWebApi();
+	const { httpPostAsync } = useWebApiAsync();
 	const appModule = useAppModule({
 		token,
 		moduleId: "G10",

@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import Settings from "@/modules/settings/Settings.mjs";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useState } from "react";
 import useAction from "@/shared-modules/ActionState/useAction";
 import Cookies from "js-cookie";
@@ -18,7 +18,7 @@ export const usePersonalSettings = () => {
 		httpPutAsync,
 		httpDeleteAsync,
 		httpPatchAsync,
-	} = useWebApi();
+	} = useWebApiAsync();
 
 	const [verified, setVerified] = useState(false);
 	const verifyAction = useAction();

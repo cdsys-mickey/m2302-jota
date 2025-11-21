@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import A17 from "@/modules/md-a17";
 import { useInit } from "@/shared-hooks/useInit";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import Errors from "@/shared-modules/Errors.mjs";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
@@ -18,7 +18,7 @@ export const useA17 = () => {
 		token,
 		moduleId: "A17",
 	});
-	const { httpGetAsync, httpPutAsync } = useWebApi();
+	const { httpGetAsync, httpPutAsync } = useWebApiAsync();
 
 	const loadItem = useCallback(
 		async ({ id }) => {

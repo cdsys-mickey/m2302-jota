@@ -4,7 +4,7 @@ import toastEx from "@/shared-components/ToastEx/toastEx";
 import F05 from "@/modules/md-f05";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
@@ -12,7 +12,7 @@ export const useF05 = () => {
 	const crud = useContext(CrudContext);
 	const { token } = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);
-	const { httpGetAsync, httpPostAsync } = useWebApi();
+	const { httpGetAsync, httpPostAsync } = useWebApiAsync();
 	const appModule = useAppModule({
 		token,
 		moduleId: "F05",

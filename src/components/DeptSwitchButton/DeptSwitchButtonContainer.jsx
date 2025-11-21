@@ -3,7 +3,7 @@ import { useContext, useMemo } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeptOptions from "@/modules/DeptOptions.mjs";
 import useDebounceState from "@/shared-hooks/useDebounceState";
-import { useWebApi } from "@/shared-hooks/useWebApi";
+import { useWebApiAsync } from "@/shared-hooks";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 import DropDownButton from "../../shared-components/DropDownButton";
@@ -15,7 +15,7 @@ import { lightBlue, pink } from "@mui/material/colors";
 const DeptSwitchButtonContainer = (props) => {
 	const { sharedKey, defaultOptions = [], ...rest } = props;
 	const { operator, token, switchDept } = useContext(AuthContext);
-	const { httpGetAsync } = useWebApi();
+	const { httpGetAsync } = useWebApiAsync();
 	const appRedirect = useAppRedirect();
 	const [open, setOpen] = useState(false);
 	// const [debouncedOpen, setDebouncedOpen] = useDebounceState(open, { callback: setOpen });
