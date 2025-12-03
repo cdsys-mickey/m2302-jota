@@ -105,7 +105,16 @@ export const A16DialogContainer = forwardRef((props, ref) => {
 				contentSx={[
 					scrollable.scroller,
 				]}
-				{...rest}>
+				// slotProps={{
+				// 	title: {
+				// 		sx: {
+				// 			backgroundColor: Colors.TOOLBAR,
+				// 		}
+				// 	}
+				// }}
+				{...rest}
+
+			>
 				<FormMetaProvider {...a16.formMeta}>
 					<A16DialogForm
 						ref={ref}

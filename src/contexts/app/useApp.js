@@ -25,6 +25,7 @@ export default function useApp() {
 		error: null,
 		token: null,
 		apiVersion: null,
+		profile: null,
 	});
 
 	// const { redirectTo } = useRedirect();
@@ -58,6 +59,7 @@ export default function useApp() {
 					loading: false,
 					apiVersion: payload.version,
 					frontEnd: payload.frontEnd,
+					profile: payload.profile,
 				}));
 			} else {
 				throw error || new Error("未預期例外");

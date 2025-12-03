@@ -204,9 +204,16 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 					},
 					scrollable.scroller,
 				]}
+				// titleProps={{
+				// 	sx: {
+				// 		backgroundColor: Colors.TOOLBAR,
+				// 	}
+				// }}
 				// slotProps={{
 				// 	title: {
-				// 		closeTooltip: "關閉視窗 (Esc)"
+				// 		sx: {
+				// 			backgroundColor: Colors.TOOLBAR,
+				// 		}
 				// 	}
 				// }}
 				{...rest}>

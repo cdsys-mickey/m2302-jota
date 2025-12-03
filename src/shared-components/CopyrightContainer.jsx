@@ -10,7 +10,7 @@ import { HubConnectionState } from "@microsoft/signalr";
 
 export const CopyrightContainer = (props) => {
 	const { ...rest } = props;
-	const { version, apiVersion, loadAppInfo, loading } = useContext(AppContext);
+	const { version, apiVersion, loadAppInfo, loading, profile } = useContext(AppContext);
 	const messaging = useContext(MessagingContext);
 	const { connectionState } = messaging;
 
@@ -27,14 +27,14 @@ export const CopyrightContainer = (props) => {
 	const connState = useMemo(() => {
 		switch (connectionState) {
 			case HubConnectionState.Connected:
-				return "V";
+				return profile || "V";
 			case HubConnectionState.Connecting:
 				return "...";
 			case HubConnectionState.Disconnected:
 			default:
 				return "X";
 		}
-	}, [connectionState])
+	}, [connectionState, profile])
 
 	useInit(() => {
 		loadAppInfo();

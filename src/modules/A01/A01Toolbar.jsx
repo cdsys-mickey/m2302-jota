@@ -4,6 +4,7 @@ import A01CreateButtonContainer from "./A01CreateButtonContainer";
 import { A01FetchResultLabelContainer } from "./A01FetchResultLabelContainer";
 import A01PrintButtonContainer from "./A01PrintButtonContainer";
 import { A01LockSwitchContainer } from "./A01LockSwitchContainer";
+import Colors from "../Colors.mjs";
 
 const LeftButtons = memo(() => {
 	return (
@@ -26,6 +27,7 @@ const A01Toolbar = memo(
 				pr={1}
 				ref={ref}
 				LeftComponent={LeftButtons}
+				// bgcolor={Colors.TOOLBAR}
 				// RightComponent={() => <FetchResultLabel totalElements={365} />}
 				RightComponent={A01FetchResultLabelContainer}
 				{...rest}

@@ -10,6 +10,7 @@ const ClearInputButton = memo((props) => {
 		onChange,
 		IconComponent = ClearIcon,
 		IconProps,
+		clearText = "清除",
 		...rest
 	} = props;
 
@@ -22,7 +23,7 @@ const ClearInputButton = memo((props) => {
 	);
 
 	return (
-		<Tooltip title={value ? "清除" : ""}>
+		<Tooltip title={value ? clearText : ""}>
 			<IconButton
 				onClick={handleClear}
 				color="inherit"

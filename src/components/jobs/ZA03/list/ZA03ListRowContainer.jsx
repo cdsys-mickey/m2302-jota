@@ -7,7 +7,7 @@ import ZA03ListRow from "./ZA03ListRow";
 export const ZA03ListRowContainer = (props) => {
 	const auth = useContext(AuthContext);
 	const za03 = useContext(ZA03Context);
-	const { isItemLoading, confirmResetPword, promptCopyAuth } = za03;
+	const { isItemLoading, confirmResetPword, promptCopyAuth, confirmResetErrCount } = za03;
 	const { index, ...rest } = props;
 	const loading = useMemo(() => isItemLoading(index), [index, isItemLoading]);
 	const value = useMemo(() => za03.listData[index], [za03.listData, index]);
@@ -23,6 +23,7 @@ export const ZA03ListRowContainer = (props) => {
 			value={value}
 			onClick={(e) => za03.handleSelect(e, value)}
 			confirmResetPword={(e) => confirmResetPword(e, value)}
+			confirmResetErrCount={e => confirmResetErrCount(e, value)}
 			promptCopyAuth={(e) => promptCopyAuth(e, value)}
 			showAuthScope={showAuthScope}
 			{...rest}

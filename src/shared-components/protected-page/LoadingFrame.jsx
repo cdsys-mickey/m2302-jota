@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { Container } from "@mui/material";
 import LoadingTypography from "../LoadingTypography";
 import FlexBox from "@/shared-components/FlexBox";
-import BackgroundImage from "@/images/rm218batch4-ning-34_2.jpg";
+// import BackgroundImage from "@/images/rm218batch4-ning-34_2.jpg";
+import BackgroundImage from "@/images/LightGreenWaves.png";
 import { PublicPage } from "@/shared-pages";
 
 export const LoadingFrame = memo(

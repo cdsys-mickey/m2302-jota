@@ -13,6 +13,8 @@ import ZA03ClassColumn from "./columns/ZA03ClassColumn";
 import ZA03DeptColumn from "./columns/ZA03DeptColumny";
 import AuthScopeChip from "@/components/AuthScopeChip";
 import LockIcon from '@mui/icons-material/Lock';
+import PasswordIcon from '@mui/icons-material/Password';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 const ZA03ListRow = memo((props) => {
 	const {
@@ -22,6 +24,7 @@ const ZA03ListRow = memo((props) => {
 		loading,
 		onClick,
 		confirmResetPword,
+		confirmResetErrCount,
 		promptCopyAuth,
 		showAuthScope
 	} = props;
@@ -44,9 +47,16 @@ const ZA03ListRow = memo((props) => {
 							<ContentCopyIcon htmlColor="#000" />
 						</IconButton>
 					</Tooltip>
+					{_inactive && (
+						<Tooltip arrow title="解除鎖定" sx={{ zIndex: 10000 }}>
+							<IconButton onClick={confirmResetErrCount}>
+								<LockOpenIcon htmlColor="#000" />
+							</IconButton>
+						</Tooltip>
+					)}
 					<Tooltip arrow title="重設密碼" sx={{ zIndex: 10000 }}>
 						<IconButton onClick={confirmResetPword}>
-							<LockResetIcon htmlColor="#000" />
+							<PasswordIcon htmlColor="#000" />
 						</IconButton>
 					</Tooltip>
 				</HoverableListItemSecondaryAction>
@@ -94,6 +104,7 @@ ZA03ListRow.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	onClick: PropTypes.func,
 	confirmResetPword: PropTypes.func,
+	confirmResetErrCount: PropTypes.func,
 	promptCopyAuth: PropTypes.func,
 };
 

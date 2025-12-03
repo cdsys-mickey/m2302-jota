@@ -81,7 +81,7 @@ const SearchField = memo(
 			inputProps,
 			// input
 			name,
-			onClear,
+			clearText = "清除 (Esc)",
 			inputRef,
 			filtered,
 			// Popper
@@ -97,6 +97,7 @@ const SearchField = memo(
 			responsive = false,
 			mobilePlaceholder,
 			onSubmit,
+
 			...rest
 		} = props;
 
@@ -185,6 +186,7 @@ const SearchField = memo(
 								<ClearInputButton
 									value={value}
 									onChange={onChange}
+									clearText={clearText}
 								/>
 							}
 							{...rest}

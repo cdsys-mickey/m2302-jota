@@ -790,6 +790,38 @@ export const useZA03 = () => {
 		[dialogs, httpPatchAsync, token]
 	);
 
+	const confirmResetErrCount = useCallback(
+		(e, item) => {
+			e.stopPropagation();
+			dialogs.confirm({
+				message: `確定要解除 ${item.LoginName} 的鎖定狀態?`,
+				onConfirm: async () => {
+					try {
+						const { status, error, payload } = await httpPatchAsync(
+							{
+								url: "v1/ou/user/unlock",
+								bearer: token,
+								data: {
+									uid: item.UID,
+								},
+							}
+						);
+						if (status.success) {
+							toastEx.success(`${item.LoginName} 鎖定狀態已解除`);
+							// 重新整理
+							loader.loadList({ refresh: true });
+						} else {
+							throw error ?? new Error("未預期例外");
+						}
+					} catch (err) {
+						toastEx.error("解除失敗", err);
+					}
+				},
+			});
+		},
+		[dialogs, httpPatchAsync, loader, token]
+	);
+
 	const onRowSelectionChange = useCallback(
 		(row) => {
 			grid.setSelectedRow(row);
@@ -1030,6 +1062,7 @@ export const useZA03 = () => {
 		copyAuthWorking,
 		// buildSelectionChangeHandler: handleModuleSelectionChange,
 		confirmResetPword,
+		confirmResetErrCount,
 		onRowSelectionChange,
 		// AuthGrid
 		authGridEditingMode,

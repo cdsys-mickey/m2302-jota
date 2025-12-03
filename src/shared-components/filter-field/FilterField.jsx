@@ -60,6 +60,7 @@ const FilterField = memo(
 			onChange,
 			onClear,
 			onSubmit,
+			clearText = "清除 (Esc)",
 			// onClear,
 			// Popper
 			PopperComponent,
@@ -130,7 +131,7 @@ const FilterField = memo(
 								}}
 								className="right-box">
 								{extraEndAdorment}
-								<Tooltip title={value ? "清除" : ""}>
+								<Tooltip title={value ? clearText : ""}>
 									<IconButton
 										onClick={onClear}
 										color="inherit"

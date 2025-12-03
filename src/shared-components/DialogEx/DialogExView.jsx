@@ -131,6 +131,13 @@ const DialogExView = memo(
 			return !tooSmall ? title : "";
 		}, [title, tooSmall])
 
+		const _titleSx = useMemo(() => {
+			return {
+				...titleProps?.sx,
+				...slotProps?.title?.sx
+			}
+		}, [slotProps?.title?.sx, titleProps?.sx])
+
 		const doRenderOtherActionButtonsComponent = useMemo(() => {
 			return OtherActionButtonsComponent || otherActionButtons;
 		}, [OtherActionButtonsComponent, otherActionButtons]);
@@ -248,23 +255,22 @@ const DialogExView = memo(
 						buttons: titleButtons,
 						ButtonsComponent: TitleButtonsComponent
 					}}
+
 					{...titleProps}
 					{...defaultTitleProps}
 					{...slotProps?.title}
+					// 事先把 titleProps, slotProps.title 下的 sx 屬性提取
 					sx={[
 						(theme) => ({
 							fontWeight: 600,
 							...(!showTitle && {
 								minHeight: theme.spacing(3),
 							}),
-							// "& button, & label, & .button": {
-							// 	marginLeft: theme.spacing(0.2),
-							// },
-							// display: 'flex', // Ensure the parent is a flex container for gap to work
-							// gap: theme.spacing(0.6), // Use gap instead of marginLeft
+							..._titleSx
 						}),
 						...(Array.isArray(titleSx) ? titleSx : [titleSx]),
-					]}>
+					]}
+				>
 					{_title}
 				</DialogTitleEx>
 
