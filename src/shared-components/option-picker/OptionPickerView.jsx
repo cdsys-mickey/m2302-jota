@@ -498,16 +498,16 @@ const OptionPickerView = memo(
 		const handleTextFieldKeyDown = useCallback(
 			(e) => {
 				// 若按住 Ctrl 則不處理, 但必須阻擋事件傳遞，否則會觸發 submit
-				if (e.ctrlKey) {
-					e.preventDefault();
-					e.stopPropagation();
-					return;
-				}
+				// if (e.ctrlKey) {
+				// 	e.preventDefault();
+				// 	e.stopPropagation();
+				// 	return;
+				// }
 
 				switch (e.key) {
 					case "Enter":
 						// 按下 Shift 時必須略過不處理
-						if (disableEnter || e.shiftKey) {
+						if (disableEnter || e.shiftKey || e.ctrlKey) {
 							return;
 						}
 						handleLookup(e, {

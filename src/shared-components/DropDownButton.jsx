@@ -54,6 +54,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 		color,
 		leftButtons,
 		title,
+		disabled,
 		...rest
 	} = props;
 
@@ -202,6 +203,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 					})
 				}}
 				color={color}
+				disabled={disabled}
 				{...rest}>
 				{leftButtons}
 				<TooltipWrapper title={title}>

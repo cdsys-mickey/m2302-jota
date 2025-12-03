@@ -6,7 +6,8 @@ import { useContext } from "react";
 import PropTypes from "prop-types";
 // import BackgroundImage from "@/images/hex-bg-2.png";
 // import BackgroundImage from "@/images/v748-toon-103-bright-20-1920.png";
-import BackgroundImage from "@/images/Hex-Gradient.png";
+// import BackgroundImage from "@/images/Hex-Gradient.png";
+import BackgroundImage from "@/images/Hex-Gradient-OffWhite.png";
 
 const FrameBoxContainer = (props) => {
 	const { children, sx = [], backgroundImage = BackgroundImage, ...rest } = props;

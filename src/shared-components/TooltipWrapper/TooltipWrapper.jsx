@@ -3,16 +3,22 @@ import PropTypes from "prop-types";
 import { cloneElement } from "react";
 
 const TooltipWrapper = (props) => {
-	const { children, title, ...rest } = props;
+	const { children, title, disabled, ...rest } = props;
 	if (!title) {
 		return cloneElement(children, rest);
 	}
 
 	return (
 		<TooltipEx title={title} {...rest}>
-			<span>
-				{children}
-			</span>
+			{
+				disabled
+					? (
+						<span>
+							{children}
+						</span>
+					)
+					: children
+			}
 		</TooltipEx>
 	)
 }
