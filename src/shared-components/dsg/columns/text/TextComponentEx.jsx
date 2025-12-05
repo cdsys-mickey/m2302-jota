@@ -137,6 +137,10 @@ const TextComponentEx = memo(
 						});
 
 						break;
+					case "ArrowDown":
+					case "ArrowUp":
+						e.stopPropagation();
+						break;
 				}
 			},
 			[cell, handleFocusNextCell, stopEditing]

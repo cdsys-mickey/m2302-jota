@@ -507,7 +507,7 @@ const OptionPickerView = memo(
 				switch (e.key) {
 					case "Enter":
 						// 按下 Shift 時必須略過不處理
-						if (disableEnter || e.shiftKey || e.ctrlKey) {
+						if (disableEnter || e.shiftKey || e.ctrlKey || !handleLookup) {
 							return;
 						}
 						handleLookup(e, {
@@ -516,7 +516,7 @@ const OptionPickerView = memo(
 						});
 						break;
 					case "Tab":
-						if (freeSolo) {
+						if (freeSolo || !handleLookup) {
 							return;
 						}
 						handleLookup(e, {
