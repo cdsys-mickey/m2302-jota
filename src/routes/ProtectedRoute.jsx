@@ -7,17 +7,15 @@ import AppFrameProvider from "@/shared-contexts/app-frame/AppFrameProvider";
 
 const ProtectedRoute = () => {
 	return (
-		<AuthProvider>
-			<AppFrameProvider drawerWidth={300}>
-				{/* <MessagingProvider> */}
-				<UnreadMessagesProvider>
-					<SharedOptionsProvider>
+		<SharedOptionsProvider>
+			<AuthProvider>
+				<AppFrameProvider drawerWidth={300}>
+					<UnreadMessagesProvider>
 						<BaseFrame />
-					</SharedOptionsProvider>
-				</UnreadMessagesProvider>
-				{/* </MessagingProvider> */}
-			</AppFrameProvider>
-		</AuthProvider>
+					</UnreadMessagesProvider>
+				</AppFrameProvider>
+			</AuthProvider>
+		</SharedOptionsProvider >
 	);
 };
 

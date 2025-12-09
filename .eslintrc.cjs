@@ -28,10 +28,10 @@ module.exports = {
 		"react-refresh/only-export-components": ["warn"],
 
 		// 常用且合理的規則（可依專案喜好調整）
-		"react/prop-types": "off", // JS 專案通常不用 PropTypes
+		// "react/prop-types": "off", // JS 專案通常不用 PropTypes
 		"react/react-in-jsx-scope": "off", // React 17+ 不用 import React
 		"no-unused-vars": "warn",
-		"no-console": "warn",
+		"no-console": "off",
 	},
 
 	// 只針對 .jsx 檔案額外調整（可選）

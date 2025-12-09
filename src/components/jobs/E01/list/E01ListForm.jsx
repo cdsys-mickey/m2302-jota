@@ -9,6 +9,7 @@ import { memo } from "react";
 import { E01CustomerPicker } from "../E01CustomerPicker";
 import E01ListSquaredPicker from "./E01ListSquaredPicker";
 import { CheckboxExField } from "@/shared-components";
+import { AdaptiveCustomerPicker } from "@/shared-components/CustomerPicker/AdaptiveCustomerPicker";
 
 const E01ListForm = memo((props) => {
 	const { ...rest } = props;
@@ -82,7 +83,7 @@ const E01ListForm = memo((props) => {
 								/>
 							</FlexBox>
 							<FlexBox flex={1}>
-								<E01CustomerPicker
+								<AdaptiveCustomerPicker
 									name="lvCust"
 									retailName="lvRetail"
 									// label="客戶代碼"

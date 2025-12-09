@@ -1,3 +1,4 @@
+import consoleEx from "@/helpers/consoleEx";
 import { ListSubheader, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
 
@@ -11,6 +12,7 @@ export const useOptionPicker = () => {
 			...prev,
 			[key]: newOptions
 		}));
+		consoleEx.info(`[${key}] ${newOptions?.length ?? 0} shared option(s) set`)
 	}, []);
 
 	const getOptions = useCallback((key) => sharedOptionsMap[key] || [], [sharedOptionsMap]);
@@ -19,6 +21,44 @@ export const useOptionPicker = () => {
 		const options = sharedOptionsMap[key];
 		return !!options && options.length > 0
 	}, [sharedOptionsMap]);
+
+	const resetOptions = useCallback(({ includes, excludes } = {}) => {
+		// 若同時傳入 includes 和 excludes，警告並以 includes 優先
+		if (includes != null && excludes != null) {
+			consoleEx.warn(
+				"resetOptions(): cannot use includes and excludes at the same time, excludes will be ignored"
+			);
+		}
+
+		setSharedOptionsMap((prev) => {
+			// 情況 1：只清除指定的 key
+			if (Array.isArray(includes) && includes.length > 0) {
+				const next = { ...prev };
+				includes.forEach((k) => {
+					delete next[k];
+					consoleEx.warn(`shared option(s) [${k}] cleared, others are keeped`);
+				});
+				return next;
+			}
+
+			// 情況 2：保留指定的 key，其餘全部清除
+			if (Array.isArray(excludes) && excludes.length > 0) {
+				const next = {};
+				excludes.forEach((k) => {
+					// 安全檢查屬性是否存在於 prev 中（避免 prototype 污染）
+					if (Object.prototype.hasOwnProperty.call(prev, k)) {
+						next[k] = prev[k];
+						consoleEx.warn(`shared options [${k}] keeped, others are cleared`);
+					}
+				});
+				return next;
+			}
+
+			// 情況 3：兩個都沒傳 → 全部清除
+			consoleEx.warn("all shared options cleared");
+			return {};
+		});
+	}, []);
 
 	const renderRow = useCallback((opts) => {
 		// Props from React Window
@@ -61,6 +101,7 @@ export const useOptionPicker = () => {
 		renderRow,
 		getOptions,
 		updateOptions,
-		hasOptions
+		hasOptions,
+		resetOptions
 	};
 };

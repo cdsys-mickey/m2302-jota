@@ -10,8 +10,14 @@ export const E01CustomerPicker = (props) => {
 	});
 
 	return (
-		<CustomerPicker forNew={retail}
-			{...rest} />
+		<CustomerPicker
+			forNew={retail}
+			virtualize
+			// {...(retail && {
+			// 	sharedKey: "retail-customer"
+			// })}
+			{...rest}
+		/>
 	)
 }
 

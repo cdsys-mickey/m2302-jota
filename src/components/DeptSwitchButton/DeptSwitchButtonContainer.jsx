@@ -11,6 +11,7 @@ import useAppRedirect from "@/hooks/useAppRedirect";
 import useSharedOptions from "@/shared-components/option-picker/useSharedOptions";
 import Auth from "@/modules/Auth.mjs";
 import { lightBlue, pink } from "@mui/material/colors";
+import { SharedOptionsContext } from "@/shared-components/option-picker/SharedOptionsContext";
 
 const DeptSwitchButtonContainer = (props) => {
 	const { sharedKey, defaultOptions = [], ...rest } = props;
@@ -20,6 +21,7 @@ const DeptSwitchButtonContainer = (props) => {
 	const [open, setOpen] = useState(false);
 	// const [debouncedOpen, setDebouncedOpen] = useDebounceState(open, { callback: setOpen });
 	const [debouncedOpen, setDebouncedOpen] = useDebounceState(open);
+	const sharedOptions = useContext(SharedOptionsContext);
 
 	const [state, setState] = useState({
 		loading: null,

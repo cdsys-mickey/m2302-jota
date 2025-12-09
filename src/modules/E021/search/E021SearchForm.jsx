@@ -80,9 +80,11 @@ const E021SearchForm = memo((props) => {
 						<E021CustomerPicker
 							name="lvCust"
 							retailName="lvRetail"
+
 							// label="客戶代碼"
 							forId
 							disableOpenOnInput
+							// sharedKey="customer"
 							slotProps={{
 								paper: {
 									sx: {

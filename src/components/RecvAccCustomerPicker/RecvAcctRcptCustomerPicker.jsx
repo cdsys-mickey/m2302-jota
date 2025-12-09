@@ -3,7 +3,7 @@ import { OptionPicker } from "@/shared-components";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
-import Customers from "@/modules/md-customers";
+import Customers from "@/modules/Customers";
 import { useFormContext, useWatch } from "react-hook-form";
 
 const RecvAcctRcptCustomerPicker = (props) => {

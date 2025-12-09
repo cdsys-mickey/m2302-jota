@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { P32Context } from "./P32Context";
 import { FormProvider, useForm } from "react-hook-form";
-import { SharedOptionsProvider } from "@/shared-components/option-picker/SharedOptionsProvider";
 
 const P32GridContainer = () => {
 	const { height } = useWindowSize();

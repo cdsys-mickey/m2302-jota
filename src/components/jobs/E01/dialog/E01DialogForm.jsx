@@ -16,6 +16,7 @@ import { E01CustomerPicker } from "../E01CustomerPicker";
 import E01SquaredPicker from "./E01SquaredPicker";
 import { E01ProdGridBottomToolbar } from "./grid/E01ProdGridBottomToolbar";
 import { E01ProdGridContainer } from "./grid/E01ProdGridContainer";
+import { AdaptiveCustomerPicker } from "@/shared-components/CustomerPicker/AdaptiveCustomerPicker";
 
 const E01DialogForm = memo((props) => {
 	const {
@@ -140,7 +141,7 @@ const E01DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item md={3.5}>
-								<E01CustomerPicker
+								<AdaptiveCustomerPicker
 									retailName="retail"
 									forId
 									typo

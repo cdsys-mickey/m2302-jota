@@ -13,6 +13,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Auth from "../modules/Auth.mjs";
 import ActionState from "../shared-modules/ActionState/ActionState";
+import { SharedOptionsContext } from "@/shared-components/option-picker/SharedOptionsContext";
 
 const LOG_KEY = "LogKey";
 
@@ -30,6 +31,7 @@ export const useAuth = () => {
 	const { getSessionCookie } = useContext(AppContext);
 	const messaging = useContext(MessagingContext);
 	const { connectionId } = messaging;
+	const sharedOptions = useContext(SharedOptionsContext);
 
 	// const logKeyInUrl = useMemo(() => {
 	// 	const params = new URLSearchParams(location.search);
@@ -136,16 +138,9 @@ export const useAuth = () => {
 						logKeyInCookie
 					);
 				}
-				// const { status, payload, error } = await httpGetAsync({
-				// 	url: "v1/auth/token",
-				// 	params: {
-				// 		logKey: logKey,
-				// 	},
-				// });
-
 				if (status.success) {
-					// JOSE methods
-					// ** METHOD 1 ** → no validation
+					sharedOptions.resetOptions({ excludes: ["dept-switch"] });
+
 					const token = payload.token;
 					const jwtPayload = decodeJwt(token);
 					console.log("jwtPayload", jwtPayload);
@@ -159,20 +154,6 @@ export const useAuth = () => {
 						console.log("token is valid");
 					}
 
-					// ** METHOD 2 ** → requires https
-					// const secret = new TextEncoder().encode(
-					// 	import.meta.env.VITE_JWT_SECRET
-					// );
-					// const { payload: jwtPayload } = await jwtVerify(token, secret);
-
-					// ** METHOD 3 **
-					// const secret = jose.base64url.decode(
-					// 	"zH4NRP1HMALxxCFnRZABFA7GOJtzU_gIj02alfL1lvI"
-					// );
-					// const { payload: jwtPayload } = await jose.jwtDecrypt(
-					// 	token,
-					// 	secret
-					// );
 					console.log("jwtPayload.entity", jwtPayload.entity);
 
 					setState((prev) => ({

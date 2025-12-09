@@ -134,6 +134,7 @@ const E021DialogForm = memo((props) => {
 									typo
 									name="customer"
 									virtualize
+									// sharedKey="customer"
 									disableOpenOnInput
 									selectOnFocus
 									// disableClearable
