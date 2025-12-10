@@ -12,10 +12,9 @@ export const AdaptiveCustomerPicker = (props) => {
 	return (
 		<CustomerPicker
 			forNew={retail}
-			virtualize
-			// {...(retail && {
-			// 	sharedKey: "retail-customer"
-			// })}
+			// virtualize
+			// filterByServer
+			// sharedKey={retail ? "retail-customer" : "customer"}
 			{...rest}
 		/>
 	)

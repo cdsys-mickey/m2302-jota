@@ -1,4 +1,3 @@
-// consoleEx.js
 const consoleEx = {
 	// 預設樣式
 	defaultStyles: {
@@ -15,12 +14,7 @@ const consoleEx = {
 			typeof args[args.length - 1] === "string"
 				? args.pop()
 				: this.defaultStyles[type] || "";
-		// 如果是物件或陣列，直接輸出不加 %c
-		if (typeof message === "object" || Array.isArray(message)) {
-			console[type](message, ...args);
-		} else {
-			console[type](`%c${message}`, style, ...args);
-		}
+		console[type](`%c${message}`, style, ...args);
 	},
 
 	// 支援的方法

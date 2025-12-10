@@ -6,7 +6,7 @@ import FormBox from "@/shared-components/form/FormBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Grid } from "@mui/material";
 import { memo } from "react";
-import { E01CustomerPicker } from "../E01CustomerPicker";
+import { E01CustomerPicker } from "../ZZE01CustomerPicker";
 import E01ListSquaredPicker from "./E01ListSquaredPicker";
 import { CheckboxExField } from "@/shared-components";
 import { AdaptiveCustomerPicker } from "@/shared-components/CustomerPicker/AdaptiveCustomerPicker";

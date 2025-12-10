@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { SharedOptionsContext } from "./SharedOptionsContext";
 import { useMemo } from "react";
 import { useInit } from "@/shared-hooks/useInit";
-import consoleEx from "@/helpers/consoleEx";
 
 export default function useSharedOptions({
 	sharedKey,
@@ -20,7 +19,7 @@ export default function useSharedOptions({
 	const setOptions = useCallback(
 		(newOptions) => {
 			if (sharedKey && !sharedContext) {
-				consoleEx.error("未發現 SharedContext");
+				console.error("未發現 SharedContext");
 			}
 			if (isUseSharedOptions) {
 				sharedContext.updateOptions(sharedKey, newOptions);
@@ -35,6 +34,10 @@ export default function useSharedOptions({
 	);
 
 	const _options = useMemo(() => {
+		if (isUseSharedOptions) {
+			console.log(`sharedOptions [${sharedKey}] retrieved`);
+		}
+
 		return isUseSharedOptions
 			? sharedContext.getOptions(sharedKey)
 			: selfOptions;

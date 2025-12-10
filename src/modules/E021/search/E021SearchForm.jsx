@@ -6,8 +6,9 @@ import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { memo } from "react";
-import { E021CustomerPicker } from "../E021CustomerPicker";
+import { E021CustomerPicker } from "../ZZE021CustomerPicker";
 import E021SalesTypePicker from "../E021SalesTypePicker";
+import { AdaptiveCustomerPicker } from "@/shared-components/CustomerPicker/AdaptiveCustomerPicker";
 
 const E021SearchForm = memo((props) => {
 	const { ...rest } = props;
@@ -77,7 +78,8 @@ const E021SearchForm = memo((props) => {
 						</FlexBox>
 					</ResponsiveGrid>
 					<ResponsiveGrid item xs={5}>
-						<E021CustomerPicker
+						{/* <E021CustomerPicker */}
+						<AdaptiveCustomerPicker
 							name="lvCust"
 							retailName="lvRetail"
 

@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { useCallback } from "react";
 import { forwardRef, useEffect, useRef } from "react";
 
+/**
+ * 為了解決 DSG 內可能的焦點問題 (展開 Popper 點選又關閉)
+ */
 const OptionPickerPopper = forwardRef((props, ref) => {
 	const { open } = props;
 	const popperRef = useRef(null);

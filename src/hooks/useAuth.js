@@ -233,7 +233,7 @@ export const useAuth = () => {
 				}
 			}
 		},
-		[httpGetAsync, loadModules, navigate, toLogin, toRenew]
+		[httpGetAsync, loadModules, navigate, sharedOptions, toLogin, toRenew]
 	);
 
 	useEffect(() => {

@@ -14,6 +14,7 @@ import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { useSideDrawer } from "../useSideDrawer";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useRef } from "react";
+import { SharedOptionsContext } from "@/shared-components/option-picker/SharedOptionsContext";
 
 export const useA06 = ({ token, mode }) => {
 	const itemIdRef = useRef();
@@ -47,6 +48,7 @@ export const useA06 = ({ token, mode }) => {
 	`
 	);
 	const crud = useContext(CrudContext);
+	const sharedOptions = useContext(SharedOptionsContext);
 	const appModule = useAppModule({
 		token,
 		moduleId: mode === A06.Mode.NEW_CUSTOMER ? "A07" : "A06",
@@ -195,6 +197,12 @@ export const useA06 = ({ token, mode }) => {
 					crud.cancelReading();
 					// 重新整理
 					loader.loadList({ refresh: true });
+					sharedOptions.resetOptions({
+						includes:
+							mode === A06.Mode.NEW_CUSTOMER
+								? "retail-customer"
+								: "customer",
+					});
 				} else {
 					throw error || new Error("新增發生未預期例外");
 				}
@@ -204,7 +212,7 @@ export const useA06 = ({ token, mode }) => {
 				toastEx.error("新增失敗", err);
 			}
 		},
-		[crud, httpPostAsync, loader, mode, token]
+		[crud, httpPostAsync, loader, mode, sharedOptions, token]
 	);
 
 	const handleUpdate = useCallback(
@@ -231,6 +239,12 @@ export const useA06 = ({ token, mode }) => {
 					loadItem({ id: data?.CustID });
 					// 重新整理
 					loader.loadList({ refresh: true });
+					sharedOptions.resetOptions({
+						includes:
+							mode === A06.Mode.NEW_CUSTOMER
+								? "retail-customer"
+								: "customer",
+					});
 				} else {
 					throw error || new Error("修改發生未預期例外");
 				}
@@ -240,7 +254,7 @@ export const useA06 = ({ token, mode }) => {
 				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, loadItem, loader, mode, token]
+		[crud, httpPutAsync, loadItem, loader, mode, sharedOptions, token]
 	);
 
 	const onEditorSubmit = useCallback(
@@ -307,6 +321,12 @@ export const useA06 = ({ token, mode }) => {
 							}商品${crud.itemData.CustData}`
 						);
 						loader.loadList({ refresh: true });
+						sharedOptions.resetOptions({
+							includes:
+								mode === A06.Mode.NEW_CUSTOMER
+									? "retail-customer"
+									: "customer",
+						});
 					} else {
 						throw error || `發生未預期例外`;
 					}
@@ -317,7 +337,7 @@ export const useA06 = ({ token, mode }) => {
 				}
 			},
 		});
-	}, [crud, dialogs, httpDeleteAsync, loader, mode, token]);
+	}, [crud, dialogs, httpDeleteAsync, loader, mode, sharedOptions, token]);
 
 	// REVIEW
 	const reviewAction = useAction();

@@ -1,12 +1,12 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import { CheckboxExField } from "@/shared-components";
+import { AdaptiveCustomerPicker } from "@/shared-components/CustomerPicker/AdaptiveCustomerPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Grid } from "@mui/material";
 import { memo } from "react";
-import { E03CustomerPicker } from "../E03CustomerPicker";
 import E03SalesTypePicker from "../E03SalesTypePicker";
 
 const E03ListForm = memo((props) => {
@@ -50,35 +50,39 @@ const E03ListForm = memo((props) => {
 						clearable
 					/>
 				</Grid>
-				<Grid item md={3} >
-					<FlexBox justifyContent="flex-end">
-						<CheckboxExField
-							label="零售"
-							name="lvRetail"
-							size="small"
-							slotProps={{
-								label: {
-									labelPlacement: "start"
-								}
-							}}
-						/>
+				<Grid item md={8} >
+					<FlexBox inline fullWidth gap={0.2}>
+						<FlexBox justifyContent="flex-end">
+							<CheckboxExField
+								label="零售"
+								name="lvRetail"
+								size="small"
+								variant="outlined"
+							// fullWidth
+							// slotProps={{
+							// 	label: {
+							// 		labelPlacement: "start"
+							// 	}
+							// }}
+							/>
+						</FlexBox>
+						<FlexBox flex={1}>
+							<AdaptiveCustomerPicker
+								name="lvCust"
+								retailName="lvRetail"
+								// label="客戶代碼"
+								forId
+								disableOpenOnInput
+								slotProps={{
+									paper: {
+										sx: {
+											width: 360,
+										},
+									},
+								}}
+							/>
+						</FlexBox>
 					</FlexBox>
-				</Grid>
-				<Grid item md={5}>
-					<E03CustomerPicker
-						name="lvCust"
-						retailName="lvRetail"
-						// label="客戶代碼"
-						forId
-						disableOpenOnInput
-						slotProps={{
-							paper: {
-								sx: {
-									width: 360,
-								},
-							},
-						}}
-					/>
 				</Grid>
 				<Grid item md={6}>
 					<TextFieldWrapper

@@ -15,6 +15,7 @@ const B011ListForm = memo((props) => {
 				<Grid item md={6}>
 					<CustomerPicker
 						forNew={forNew}
+						// sharedKey={forNew ? "retail-customer" : "customer"}
 						name="lvCust"
 						label={forNew ? "新客戶代碼" : "客戶代碼"}
 						disableOpenOnInput

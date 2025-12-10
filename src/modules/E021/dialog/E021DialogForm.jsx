@@ -3,6 +3,7 @@ import PaymentPicker from "@/components/PaymentPicker/PaymentPickerContainer";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
 import { CheckboxExField } from "@/shared-components";
+import { AdaptiveCustomerPicker } from "@/shared-components/CustomerPicker/AdaptiveCustomerPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FlexBox from "@/shared-components/FlexBox";
 import FormBox from "@/shared-components/form/FormBox";
@@ -13,7 +14,6 @@ import { Container, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { E021CustomerPicker } from "../E021CustomerPicker";
 import { E021ProdGridBottomToolbar } from "./grid/E021ProdGridBottomToolbar";
 import { E021ProdGridContainer } from "./grid/E021ProdGridContainer";
 
@@ -128,7 +128,7 @@ const E021DialogForm = memo((props) => {
 								/>
 							</Grid>
 							<Grid item md={4}>
-								<E021CustomerPicker
+								<AdaptiveCustomerPicker
 									retailName="retail"
 									forId
 									typo

@@ -15,6 +15,7 @@ const B04ListForm = memo((props) => {
 					<CustomerPicker
 						forNew
 						name="customer"
+						// sharedKey="retail-customer"
 						label="新客戶代碼起"
 						disableOpenOnInput
 						slotProps={{
@@ -30,6 +31,7 @@ const B04ListForm = memo((props) => {
 					<CustomerPicker
 						forNew
 						name="customer2"
+						// sharedKey="retail-customer"
 						label="新客戶代碼訖"
 						disableOpenOnInput
 						slotProps={{

@@ -12,20 +12,21 @@ const CustomerPicker = (props) => {
 		// clearOnChange = true, 
 		clearValueOnChange = true,
 		clearOptionsOnChange = true,
+		filterByServer = true,
 		...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
 		return queryString.stringify({
-			// tp: 10000,
-			tp: 200000,
+			// tp: 5000,
+			tp: filterByServer ? 5000 : 200000,
 			fuzzy: 1,
 			abbr: fullName ? 0 : 1,
 			...(withQuotes && {
 				wq: 1
 			})
 		});
-	}, [fullName, withQuotes]);
+	}, [filterByServer, fullName, withQuotes]);
 
 	const isOptionEqualToValue = useCallback((option, value) => {
 		return Customers.isOptionEqualToValue(option, value);
@@ -110,7 +111,11 @@ const CustomerPicker = (props) => {
 			label={_label}
 			bearer={token}
 			url={url}
-			// filterByServer
+			virtualize
+			filterByServer={filterByServer}
+			{...(!filterByServer && {
+				sharedKey: forNew ? "retail-customer" : "customer"
+			})}
 			// queryRequired
 			queryParam="qs"
 			querystring={querystring}
@@ -129,7 +134,7 @@ const CustomerPicker = (props) => {
 			// clearOnChange={clearOnChange}
 			clearValueOnChange={clearValueOnChange}
 			clearOptionsOnChange={clearOptionsOnChange}
-			// sharedKey="customer"
+
 			// blurToLookup
 			{...rest}
 		/>
@@ -147,7 +152,8 @@ CustomerPicker.propTypes = {
 	withQuotes: PropTypes.bool,
 	clearOnChange: PropTypes.bool,
 	clearOptionsOnChange: PropTypes.bool,
-	clearValueOnChange: PropTypes.bool
+	clearValueOnChange: PropTypes.bool,
+	filterByServer: PropTypes.bool
 };
 
 export default CustomerPicker;

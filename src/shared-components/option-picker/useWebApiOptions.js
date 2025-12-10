@@ -1,10 +1,11 @@
 import queryString from "query-string";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import Types from "@/shared-modules/Types.mjs";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useWebApiAsync from "@/shared-hooks/useWebApi/useWebApiAsync";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
 import useSharedOptions from "./useSharedOptions";
+import { SharedOptionsContext } from "./SharedOptionsContext";
 
 const defaultTriggerServerFilter = (q) => {
 	return !!q;
@@ -49,7 +50,7 @@ export const useWebApiOptions = (opts = {}) => {
 		typeToSearchText = "請輸入關鍵字進行搜尋",
 		noOptionsText = "無可用選項",
 		fetchErrorText = "讀取失敗",
-		triggerDelay = 700,
+		triggerDelay = 500,
 		defaultOptions = [],
 		// METHODS
 		triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
@@ -90,6 +91,7 @@ export const useWebApiOptions = (opts = {}) => {
 			}));
 		},
 	});
+	const sharedOptions = useContext(SharedOptionsContext);
 
 	const [_noOptionsText, setNoOptionsText] = useState(
 		queryRequired ? typeToSearchText : noOptionsText
@@ -327,59 +329,69 @@ export const useWebApiOptions = (opts = {}) => {
 	const lazyLoadingRef = useRef();
 
 	const resetLoading = useCallback(() => {
-		setPickerState((prevState) => ({
-			...prevState,
-			loading: null,
-			// options: [],
-		}));
-		setOptions([]);
-	}, [setOptions]);
+		if (!sharedKey) {
+			setPickerState((prevState) => ({
+				...prevState,
+				loading: null,
+				query: null,
+				// options: [],
+			}));
+			setOptions([]);
+		} else {
+			setPickerState((prevState) => ({
+				...prevState,
+				loading: sharedOptions.hasOptions(sharedKey) ? false : null,
+				query: null,
+				// options: [],
+			}));
+		}
+	}, [setOptions, sharedKey, sharedOptions]);
 
 	const handleTextChange = useCallback(
 		(event, newValue, reason) => {
 			const qs = event.target.value;
 			console.log(`text changed: `, qs, newValue, reason);
-			if (disableOpenOnInput) {
-				setPickerState((prev) => ({
-					...prev,
-					query: qs,
-				}));
-			}
+			setPickerState((prev) => ({
+				...prev,
+				query: qs,
+			}));
+			// if (disableOpenOnInput) {
+			// }
 
-			if (!popperOpen) {
-				if (filterByServer) {
+			// if (!popperOpen) {
+			// 	if (filterByServer) {
+			// 		setPickerState((prev) => ({
+			// 			...prev,
+			// 			loading: null,
+			// 		}));
+			// 	}
+			// 	return;
+			// }
+
+			// 當 filterByServer 時才 loadOptions
+			if (filterByServer) {
+				if (!popperOpen) {
 					setPickerState((prev) => ({
 						...prev,
 						loading: null,
 					}));
+					return;
 				}
-				return;
-			}
-
-			// 當 filterByServer 時才 loadOptions
-			if (filterByServer) {
 				if (lazyLoadingRef.current) {
 					clearTimeout(lazyLoadingRef.current);
 				}
 
 				lazyLoadingRef.current = setTimeout(() => {
-					if (triggerServerFilter(qs)) {
-						loadOptions(qs);
-					} else {
-						clearOptions();
-					}
+					loadOptions(qs);
+					// if (triggerServerFilter(qs)) {
+					// 	loadOptions(qs);
+					// } else {
+					// 	clearOptions();
+					// }
 				}, triggerDelay);
 			}
 		},
-		[
-			clearOptions,
-			disableOpenOnInput,
-			filterByServer,
-			loadOptions,
-			popperOpen,
-			triggerDelay,
-			triggerServerFilter,
-		]
+		[filterByServer, loadOptions, popperOpen, triggerDelay]
 	);
 
 	const disabled = useMemo(() => {
@@ -434,14 +446,14 @@ export const useWebApiOptions = (opts = {}) => {
 	/** filterByServer 時, 關閉 popper 則重設 loading 狀態
 	 */
 	useChangeTracking(() => {
-		if (filterByServer && !open) {
+		if (filterByServer && !popperOpen) {
 			console.log(
 				`%cOptionPicker[${name}] LOADING RESET(filterByServer ON, popper closed)`,
 				CommonCSS.CONSOLE_WARN
 			);
 			resetLoading();
 		}
-	}, [filterByServer, open]);
+	}, [filterByServer, popperOpen]);
 
 	/**
 	 * 展開時 loadOptions
@@ -454,7 +466,8 @@ export const useWebApiOptions = (opts = {}) => {
 			);
 		}
 		if (shouldLoadOptions) {
-			loadOptions(queryRequired ? pickerState.query : null);
+			// loadOptions(queryRequired ? pickerState.query : null);
+			loadOptions(pickerState.query);
 		}
 	}, [shouldLoadOptions]);
 

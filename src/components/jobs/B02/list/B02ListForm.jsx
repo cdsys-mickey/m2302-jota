@@ -22,6 +22,7 @@ const B02ListForm = memo((props) => {
 						leftComponent={<CustomerPicker
 							name="customer"
 							forNew={b.forNew}
+							// sharedKey={b.forNew ? "retail-customer" : "customer"}
 							autoFocus
 							label={`${cust}代碼起`}
 							disableOpenOnInput
@@ -38,6 +39,7 @@ const B02ListForm = memo((props) => {
 						/>}
 						rightComponent={<CustomerPicker
 							forNew={b.forNew}
+							// sharedKey={b.forNew ? "retail-customer" : "customer"}
 							name="customer2"
 							label={`${cust}代碼訖`}
 							disableOpenOnInput

@@ -70,6 +70,7 @@ const WebApiOptionPicker = memo(
 			// pressToFind: _pressToFind,
 			openPopper,
 			closePopper,
+			onTextChange
 		} = useWebApiOptions({
 			name,
 			disableOnSingleOption,
@@ -136,6 +137,7 @@ const WebApiOptionPicker = memo(
 				// pressToFind={_pressToFind}
 				findByInput={_findByInput}
 				disableOpenOnInput={disableOpenOnInput}
+				onTextChange={onTextChange}
 				// queryRequired={queryRequired}
 				// filterByServer={filterByServer}
 				{...rest}

@@ -2,7 +2,7 @@ import CustomerPicker from "@/components/picker/CustomerPicker";
 import { useWatch } from "react-hook-form";
 import PropTypes from "prop-types";
 
-export const E03CustomerPicker = (props) => {
+export const E021CustomerPicker = (props) => {
 	const { retailName, ...rest } = props;
 
 	const retail = useWatch({
@@ -12,13 +12,17 @@ export const E03CustomerPicker = (props) => {
 	return (
 		<CustomerPicker
 			forNew={retail}
+			virtualize
+			// {...(retail && {
+			// 	sharedKey: "retail-customer"
+			// })}
+			// clearValueOnChange={false} 
 			{...rest}
 		/>
 	)
 }
 
-E03CustomerPicker.propTypes = {
+E021CustomerPicker.propTypes = {
 	retailName: PropTypes.string.isRequired
 }
-E03CustomerPicker.displayName = "E03CustomerPicker";
-
+E021CustomerPicker.displayName = "E021CustomerPicker";

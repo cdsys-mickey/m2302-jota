@@ -53,6 +53,7 @@ const B011DialogForm = memo((props) => {
 									rules={{
 										required: b.forNew ? "新客戶代碼為必填" : "客戶代碼為必填",
 									}}
+									// sharedKey={b.forNew ? "retail-customer" : "customer"}
 									virtualize
 									disableOpenOnInput
 									selectOnFocus
