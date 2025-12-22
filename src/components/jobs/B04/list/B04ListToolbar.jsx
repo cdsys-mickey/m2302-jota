@@ -1,4 +1,4 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, memo } from "react";
 import { B04FetchResultLabelContainer } from "../B04FetchResultLabelContainer";
 import { B04ListOutputModePickerContainer } from "./B04ListOutputModePickerContainer";
@@ -19,7 +19,7 @@ LeftButtons.displayName = "LeftButtons";
 const B04ListToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<ListToolbar
+			<ToolbarEx
 				// pb={1}
 				pl={0}
 				pr={1}

@@ -1,6 +1,6 @@
 import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
 import { ButtonEx, TextFieldEx } from "@/shared-components";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import LoginIcon from "@mui/icons-material/Login";
 import { Box, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";

@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 
 const ItemListViewLoading = ({ children, ...rest }) => {

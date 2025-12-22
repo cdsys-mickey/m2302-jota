@@ -6,13 +6,13 @@ import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer
 import TxtExportOutputModePicker from "../txt-export/TxtExportOutputModePicker";
 import TxtExport from "../../../modules/md-txt-export";
 import { A22OutputModePickerContainer } from "./A22OutputModePickerContainer";
-import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "../../../shared-components/ToolbarEx/ToolbarEx";
 
 const ZZA22GridToolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<ListToolbar
+			<ToolbarEx
 				ref={ref}
 				// RightComponent={A22GridLockRowsSwitchContainer}
 				leftComponents={

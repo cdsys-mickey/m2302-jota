@@ -2,7 +2,7 @@ import { memo, useCallback, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Menu, MenuItem, Tooltip, Typography } from "@mui/material";
 import ExpandMoreButton from "@/shared-components/ExpandMoreButton";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 
 const renderVariant = (size) => {
 	switch (size) {

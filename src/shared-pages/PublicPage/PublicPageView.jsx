@@ -1,5 +1,5 @@
 import AppBanner from "@/shared-components/AppBanner";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { CopyrightContainer } from "@/shared-components/CopyrightContainer";
@@ -7,7 +7,7 @@ import BasePage from "../BasePage";
 import { memo } from "react";
 
 const PublicPageView = memo(
-	({ children, height, title, sx = [], boxProps, ...rest }) => {
+	({ children, height, sx = [], boxProps, ...rest }) => {
 		return (
 			<BasePage sx={[...(Array.isArray(sx) ? sx : [sx])]} {...rest}>
 				<Box pt={2} px={2}>
@@ -32,7 +32,7 @@ const PublicPageView = memo(
 
 PublicPageView.propTypes = {
 	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-	title: PropTypes.string,
+	boxProps: PropTypes.object,
 	children: PropTypes.node,
 	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };

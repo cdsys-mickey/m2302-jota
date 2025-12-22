@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import ModuleToolbar from "../jobs/ModuleToolbar";
 import { AllMessagesFetchResultLabelContainer } from "./AllMessagesFetchResultLabelContainer";
 
@@ -14,7 +14,7 @@ LeftButtons.displayName = "LeftButtons";
 const AllMessagesToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<ListToolbar
+			<ToolbarEx
 				pb={1}
 				ref={ref}
 				LeftComponent={LeftButtons}

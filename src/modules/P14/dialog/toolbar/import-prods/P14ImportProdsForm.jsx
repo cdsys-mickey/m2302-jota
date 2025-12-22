@@ -1,5 +1,5 @@
 import ProdPicker from "@/components/picker/ProdPicker";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { Box, Grid, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
@@ -60,14 +60,14 @@ const P14LoadProdsForm = memo((props) => {
 						/>
 					</Grid>
 				</Grid>
-				<ListToolbar align="right">
+				<ToolbarEx align="right">
 					<Tooltip title="shift+Enter">
 						<P14ImportProdsButtonContainer
 							variant="contained"
 							color="primary"
 						/>
 					</Tooltip>
-				</ListToolbar>
+				</ToolbarEx>
 			</Box>
 		</form>
 	);

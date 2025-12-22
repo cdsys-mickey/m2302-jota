@@ -2,7 +2,7 @@ import RepeatIcon from "@mui/icons-material/Repeat";
 import { ListItemIcon, MenuItem, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 
 const DeptSwitchMenuItem = memo((props) => {
 	const { title, bgcolor, sx = [], ...rest } = props;

@@ -1,9 +1,8 @@
-import FlexBox from "@/shared-components/FlexBox";
-import { Typography } from "@mui/material";
-import { forwardRef, memo } from "react";
-import PropTypes from "prop-types";
-import Colors from "@/modules/Colors.mjs";
+import { FlexBox } from "@/shared-components";
 import MuiStyles from "@/shared-modules/MuiStyles";
+import { Typography } from "@mui/material";
+import PropTypes from "prop-types";
+import { forwardRef, memo } from "react";
 
 export const FrameMenuGroupHeader = memo(
 	forwardRef((props, ref) => {

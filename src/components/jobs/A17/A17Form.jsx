@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import ContainerEx from "@/shared-components/ContainerEx";
 import ErrorBox from "@/shared-components/ErrorBox";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import AppDeptPicker from "../../fields/AppDeptPicker";

@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import PropTypes from "prop-types";
 import { useMemo } from 'react';
 import FieldGroup from './FieldGroup';
-import FlexBox from './FlexBox';
+import FlexBoxView from './FlexBox/FlexBoxView';
 import { ResponsiveGrid } from './responsive-grid/ResponsiveGrid';
 
 export default function RangeGroup({ legend, leftComponent, rightComponent, required = false, multiline = false, disabled = false, seperator = "~" }) {

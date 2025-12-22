@@ -164,6 +164,10 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 		return split && options?.length > 1;
 	}, [options?.length, split])
 
+	const showOptions = useMemo(() => {
+		return loading == false && options;
+	}, [loading, options])
+
 	return (
 		<>
 			<ButtonGroup
@@ -295,10 +299,9 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 										<LoadingTypography />
 									</Box>
 								)}
-								{options && (
+								{showOptions && (
 									<ClickAwayListener onClickAway={handleClose}>
 										<MenuList id="split-button-menu" autoFocusItem>
-
 											{
 												options
 													.filter(item => {

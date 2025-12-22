@@ -2,13 +2,13 @@ import { ButtonEx } from "@/shared-components";
 import SendIcon from "@mui/icons-material/Send";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 
 const ZA03DialogEditButtons = memo(
 	forwardRef((props, ref) => {
 		const { onSave, onCancel, loading, sx = [], ...rest } = props;
 		return (
-			<ListToolbar
+			<ToolbarEx
 				{...rest}
 				rightComponents={
 					<>
@@ -31,7 +31,7 @@ const ZA03DialogEditButtons = memo(
 							儲存
 						</ButtonEx>
 					</>
-				}></ListToolbar>
+				}></ToolbarEx>
 		);
 	})
 );

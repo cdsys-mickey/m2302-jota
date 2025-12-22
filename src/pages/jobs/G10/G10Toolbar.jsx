@@ -1,6 +1,6 @@
 import Colors from "@/modules/Colors.mjs";
 import ContainerEx from "@/shared-components/ContainerEx";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, memo } from "react";
 import G10WriteOffButtonContainer from "./G10WriteOffButton/G10WriteOffButtonContainer";
 
@@ -24,7 +24,7 @@ const G10Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="md" alignLeft>
-				<ListToolbar
+				<ToolbarEx
 					bgcolor={Colors.TOOLBAR}
 					ref={ref}
 					LeftComponent={LeftComponent}

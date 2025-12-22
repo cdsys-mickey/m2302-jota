@@ -1,6 +1,6 @@
 import Colors from "@/modules/Colors.mjs";
 import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import FlexContainer from "@/shared-components/FlexContainer";
 import ModuleHeading from "@/shared-components/ModuleHeading";
 import LockResetIcon from "@mui/icons-material/LockReset";

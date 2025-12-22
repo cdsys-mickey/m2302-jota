@@ -2,14 +2,14 @@ import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineLi
 import { Container } from "@mui/material";
 import { forwardRef, memo } from "react";
 import { ZA03LockRowsSwitchContainer } from "./ZA03LockRowsSwitchContainer";
-import ListToolbar from "../../../../../shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "../../../../../shared-components/ToolbarEx/ToolbarEx";
 
 const ZZZA03Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
 			<Container maxWidth="md">
-				<ListToolbar
+				<ToolbarEx
 					ref={ref}
 					RightComponent={ZA03LockRowsSwitchContainer}
 					// right={<Switch />}

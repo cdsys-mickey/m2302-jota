@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 
 const GridListViewToolbarBox = ({
 	LeftComponent,

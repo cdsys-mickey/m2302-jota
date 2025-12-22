@@ -1,4 +1,4 @@
-import DSG from "@/shared-modules/sd-dsg";
+import DSG from "@/shared-modules/DSG.mjs";
 import { Box, styled } from "@mui/material";
 import { cyan, grey } from "@mui/material/colors";
 import PropTypes from "prop-types";

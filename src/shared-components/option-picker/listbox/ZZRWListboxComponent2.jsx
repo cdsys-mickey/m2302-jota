@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
-import VirtualizedPickerListbox from "./VirtualizedPickerListbox";
+import VirtualizedPickerListbox from "./RWOptionPickerListbox";
 import { ListSubheader, Typography } from "@mui/material";
 
 const LISTBOX_PADDING = 8; // px

@@ -1,7 +1,7 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, useContext } from "react";
 import { C03Context } from "@/contexts/C03/C03Context";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { C03ProdGridSubtotalLabel } from "./C03ProdGridSubtotalLabel";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
@@ -23,7 +23,7 @@ export const C03ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ToolbarEx ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 C03ProdGridBottomToolbar.propTypes = {};

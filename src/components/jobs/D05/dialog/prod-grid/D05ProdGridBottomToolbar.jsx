@@ -1,5 +1,5 @@
 import { D05Context } from "@/contexts/D05/D05Context";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, useContext } from "react";
 import { D05ProdGridSubtotalLabel } from "./D05ProdGridSubtotalLabel";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -27,7 +27,7 @@ export const D05ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ToolbarEx ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 D05ProdGridBottomToolbar.propTypes = {};

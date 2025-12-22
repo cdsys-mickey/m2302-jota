@@ -8,7 +8,7 @@ import { memo } from "react";
 import { PrintReportButton } from "@/components";
 import RecvAcctRcptCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctRcptCustomerPicker";
 import { RecvAcctBatchSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctBatchSessionPicker";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import G05ReportTypePicker from "./picker/G05ReportTypePicker";
 import RecvAcctBatchCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctBatchCustomerPicker";

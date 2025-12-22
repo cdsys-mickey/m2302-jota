@@ -1,7 +1,7 @@
 import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import SupplierPicker from "@/components/picker/SupplierPicker";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormBox from "@/shared-components/form/FormBox";

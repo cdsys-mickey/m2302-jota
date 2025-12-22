@@ -1,4 +1,4 @@
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 
 // import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
 import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";

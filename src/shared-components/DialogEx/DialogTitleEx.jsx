@@ -6,7 +6,7 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 import DialogTitleButtonsBox from "@/shared-components/DialogEx/DialogTitleButtonsBox";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import HoverableListItem from "@/shared-components/HoverableListItem";
 import { memo, forwardRef } from "react";
 import PropTypes from "prop-types";

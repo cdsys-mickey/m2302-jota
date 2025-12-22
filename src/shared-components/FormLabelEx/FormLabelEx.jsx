@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { FormLabel, Typography } from "@mui/material";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { memo } from "react";
 import { useMemo } from "react";
 

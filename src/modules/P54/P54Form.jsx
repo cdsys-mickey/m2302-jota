@@ -12,7 +12,7 @@ import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
 import { TextFieldEx } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P54OrderTypePicker from "./pickers/P54OrderTypePicker";
 import P54ReportTypePicker from "./pickers/P54ReportTypePicker";

@@ -10,7 +10,7 @@ import CounterPicker from "@/components/picker/CounterPicker";
 import OrderDirPicker from "@/components/picker/OrderDirPicker";
 import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H04CalTypePicker from "./pickers/H04CalTypePicker";
 import H04OrderTypePicker from "./pickers/H04OrderTypePicker";

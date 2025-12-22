@@ -1,7 +1,6 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
 import { useState } from "react";
-import FlexBox from "../../FlexBox";
+import { FlexBox } from "shared-components";
 
 const defaultTranslationKeys = {
 	button: "新增",

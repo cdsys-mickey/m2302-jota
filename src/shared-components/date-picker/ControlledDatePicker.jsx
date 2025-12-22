@@ -12,7 +12,7 @@ import { useCallback, useContext, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../form-meta/FormMetaContext";
 import ControllerWrapper from "../ControllerWrapper";
-import FlexBox from "../FlexBox";
+import FlexBoxView from "../FlexBox/FlexBoxView";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -132,7 +132,7 @@ const ControlledDatePicker = ({
 	}, [borderless, label, required])
 
 	const BoxComponent = useMemo(() => {
-		return inline ? FlexBox : Box;
+		return inline ? FlexBoxView : Box;
 	}, [inline]);
 
 	return (

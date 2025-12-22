@@ -1,6 +1,6 @@
 import { Tooltip } from "@mui/material";
 import React from "react";
-import FlexBox from "./FlexBox";
+import FlexBoxView from "./FlexBox/FlexBoxView";
 
 /**
  * 由於 Tooltip 要求 children 必須把 ref 與 各種 event callback 都放在 dom 上,

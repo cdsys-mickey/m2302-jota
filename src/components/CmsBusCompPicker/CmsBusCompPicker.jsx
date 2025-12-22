@@ -6,7 +6,7 @@ import CmsBusComps from "./CmsBusComps";
 import { useCallback } from "react";
 import { useMemo } from "react";
 import { createFilterOptions } from "@mui/material";
-import Arrays from "@/shared-modules/sd-arrays";
+import Arrays from "@/shared-modules/Arrays";
 
 const CmsBusCompPicker = forwardRef((props, ref) => {
 	const { label = "車行", forId = false, ...rest } = props;

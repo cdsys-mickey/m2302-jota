@@ -9,7 +9,7 @@ import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import { PrintReportButton } from "@/components";
 import Auth from "@/modules/Auth.mjs";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import U06DataTypePicker from "./picker/U06DataTypePicker";
 

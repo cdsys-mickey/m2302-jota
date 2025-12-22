@@ -3,7 +3,7 @@ import { ReviewWidgetContainer } from "@/components/home/widgets/review/ReviewWi
 import BackgroundImage from "@/images/Cubes.png";
 import { FrameBanner, HomeBox } from "@/shared-components";
 import { CopyrightContainer } from "@/shared-components/CopyrightContainer";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";

@@ -1,6 +1,6 @@
 import { Pagination } from "@mui/material";
 import React from "react";
-import FlexBox from "./FlexBox";
+import FlexBoxView from "./FlexBox/FlexBoxView";
 import LoadingTypography from "./LoadingTypography";
 import PageResultLabel from "./PageResultLabel";
 

@@ -2,14 +2,14 @@ import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineLi
 import { forwardRef, memo } from "react";
 import { A18FormButtonsContainer } from "./buttons/A18FormButtonsContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
-import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "../../../shared-components/ToolbarEx/ToolbarEx";
 
 const A18Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<ListToolbar
+				<ToolbarEx
 					ref={ref}
 					RightComponent={A18FormButtonsContainer}
 					{...rest}

@@ -1,4 +1,4 @@
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { OptionGridColumn } from "@/shared-components/option-picker/grid/OptionGridColumn";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";

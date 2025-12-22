@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback, useRef } from "react";
-import DSG from "@/shared-modules/sd-dsg";
+import DSG from "@/shared-modules/DSG.mjs";
 import { useEffect } from "react";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";

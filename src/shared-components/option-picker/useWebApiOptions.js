@@ -1,11 +1,22 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import queryString from "query-string";
-import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import Types from "@/shared-modules/Types.mjs";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import useWebApiAsync from "@/shared-hooks/useWebApi/useWebApiAsync";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
 import useSharedOptions from "./useSharedOptions";
 import { SharedOptionsContext } from "./SharedOptionsContext";
+import ConsoleStyles from "@/shared-modules/ConsoleStyles.mjs";
+import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
+import Objects from "@/shared-modules/Objects.mjs";
 
 const defaultTriggerServerFilter = (q) => {
 	return !!q;
@@ -18,12 +29,17 @@ const defaultGetOptions = (payload) => {
 	return payload.data;
 };
 
+const defaultGetCount = (payload) => {
+	return payload.Select?.TotalRecord;
+};
+
 const defaultOnError = (err) => {
 	console.error(`onError`, err);
 };
 
 export const useWebApiOptions = (opts = {}) => {
 	const {
+		infinite,
 		// 辨識用, 與 OptionPicker.name 不同
 		multiple,
 		name = "NO_ID",
@@ -55,6 +71,7 @@ export const useWebApiOptions = (opts = {}) => {
 		// METHODS
 		triggerServerFilter = defaultTriggerServerFilter, // 是否驅動遠端搜尋
 		getOptions = defaultGetOptions,
+		getCount: getTotalRecords = defaultGetCount,
 		onError = defaultOnError,
 		disableClose,
 		disableOnSingleOption,
@@ -183,6 +200,10 @@ export const useWebApiOptions = (opts = {}) => {
 		async (input) => {
 			// 避免使用空 input 進行搜尋
 			if (!input) {
+				console.log(
+					"%cInput is empty, fetchByInput aborted",
+					ConsoleStyles.WARN
+				);
 				return null;
 			}
 			const { status, payload, error } = await sendAsync({
@@ -236,7 +257,7 @@ export const useWebApiOptions = (opts = {}) => {
 
 	const fetchOptions = useCallback(
 		async (query, { onError: _onError } = {}) => {
-			console.log(`${name}.loadOptions(${query || ""})`);
+			console.log(`${name}.fetchOptions(${query || ""})`);
 			setPickerState((prev) => ({
 				...prev,
 				loading: true,
@@ -260,14 +281,36 @@ export const useWebApiOptions = (opts = {}) => {
 					}),
 				});
 				if (status.success) {
+					let __options;
 					const loadedOptions = getOptions(payload);
-					const __options = Types.isArray(loadedOptions)
-						? loadedOptions
-						: [];
+					// 只有 filterByServer 時此訊息才有意義
+					if (filterByServer) {
+						const totalRecords = getTotalRecords(payload);
+						const leftRows = totalRecords - loadedOptions?.length;
+						console.log("leftRows", leftRows);
+						__options = Types.isArray(loadedOptions)
+							? [
+									...loadedOptions,
+									...(leftRows > 0
+										? [
+												{
+													id: "footer",
+													message: `(僅顯示前 ${loadedOptions.length}/${totalRecords} 筆, 輸入關鍵字查看更多)`,
+													footer: true,
+												},
+										  ]
+										: []),
+							  ]
+							: [];
+					} else {
+						__options = Types.isArray(loadedOptions)
+							? loadedOptions
+							: [];
+					}
+
 					// 只有成功才會將 loading 註記為 false
 					setPickerState((prev) => ({
 						...prev,
-						// options: __options,
 						loading: false,
 					}));
 					setOptions(__options);
@@ -281,7 +324,6 @@ export const useWebApiOptions = (opts = {}) => {
 				handleError(err);
 				setPickerState((prev) => ({
 					...prev,
-					// options: [],
 					error: {
 						message: "unexpected error",
 					},
@@ -307,15 +349,113 @@ export const useWebApiOptions = (opts = {}) => {
 			headers,
 			bearer,
 			getOptions,
+			filterByServer,
 			setOptions,
 			noOptionsText,
+			getTotalRecords,
 			fetchErrorText,
 		]
 	);
 
+	const {
+		handleItemsRendered,
+		loadMoreItems,
+		isItemLoaded,
+		itemCount,
+
+		loadList,
+		listLoading,
+		listError,
+		// listItems,
+		listData,
+		listMapRef,
+	} = useInfiniteLoader({
+		url: url,
+		bearer: bearer,
+		initialFetchSize: 50,
+	});
+
+	// useEffect(() => {
+	// 	setPickerState((prev) => ({
+	// 		...prev,
+	// 		loading: listLoading,
+	// 	}));
+	// }, [listLoading]);
+
+	const infiniteProps = useMemo(() => {
+		if (!infinite) {
+			return null;
+		}
+		return {
+			listMapRef,
+			handleItemsRendered,
+			loadMoreItems,
+			isItemLoaded,
+			itemCount,
+		};
+	}, [
+		handleItemsRendered,
+		infinite,
+		isItemLoaded,
+		itemCount,
+		listMapRef,
+		loadMoreItems,
+	]);
+
+	// useEffect(() => {
+	// 	if (listData) {
+	// 		setOptions(Objects.toArray(listData));
+	// 	}
+	// }, [listData, setOptions]);
+
+	useChangeTracking(() => {
+		if (listLoading != null) {
+			setPickerState((prev) => ({
+				...prev,
+				loading: listLoading,
+			}));
+		}
+	}, [listLoading]);
+
+	useChangeTracking(() => {
+		if (listLoading == false && listData && itemCount && !options) {
+			const options = Objects.toArray(listData);
+			setOptions(options);
+		}
+	}, [itemCount, listLoading]);
+
+	const fetchOptionsPartially = useCallback(
+		async (query) => {
+			console.log(`${name}.fetchOptionsPartially(${query || ""})`);
+			// setPickerState((prev) => ({
+			// 	...prev,
+			// 	loading: true,
+			// 	error: null,
+			// }));
+			loadList({
+				refresh: true,
+				params: {
+					// ...(querystring && queryString.parse(querystring)),
+					...(query && { [queryParam]: query }),
+					// ...params,
+				},
+			});
+		},
+		[name, loadList, queryParam]
+	);
+
 	const loadOptions = useMemo(() => {
+		if (infinite) {
+			return fetchOptionsPartially;
+		}
 		return isMock ? mockFetchOptions : fetchOptions;
-	}, [fetchOptions, isMock, mockFetchOptions]);
+	}, [
+		fetchOptions,
+		fetchOptionsPartially,
+		infinite,
+		isMock,
+		mockFetchOptions,
+	]);
 
 	const clearOptions = useCallback(() => {
 		setPickerState((prev) => ({
@@ -446,7 +586,7 @@ export const useWebApiOptions = (opts = {}) => {
 	/** filterByServer 時, 關閉 popper 則重設 loading 狀態
 	 */
 	useChangeTracking(() => {
-		if (filterByServer && !popperOpen) {
+		if (filterByServer && !infinite && !popperOpen) {
 			console.log(
 				`%cOptionPicker[${name}] LOADING RESET(filterByServer ON, popper closed)`,
 				CommonCSS.CONSOLE_WARN
@@ -502,6 +642,10 @@ export const useWebApiOptions = (opts = {}) => {
 		onClose: handleClose,
 		openPopper,
 		closePopper,
+		disableOpenOnInput,
+		multiple,
+		name,
+		infiniteProps,
 		...rest,
 	};
 };

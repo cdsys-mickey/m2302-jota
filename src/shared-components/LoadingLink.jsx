@@ -1,6 +1,6 @@
 import { CircularProgress, Link } from "@mui/material";
 import React from "react";
-import FlexBox from "./FlexBox";
+import FlexBoxView from "./FlexBox/FlexBoxView";
 
 const LoadingLink = React.forwardRef(
 	({ children, loading = false, disabled = false, ...rest }, ref) => {

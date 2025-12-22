@@ -6,7 +6,7 @@ import TourGuides from "./TourGuides.mjs";
 import { createFilterOptions } from "@mui/material";
 import { useMemo } from "react";
 import { useCallback } from "react";
-import Arrays from "@/shared-modules/sd-arrays";
+import Arrays from "@/shared-modules/Arrays";
 
 const TourGuidePicker = memo(
 	forwardRef((props, ref) => {

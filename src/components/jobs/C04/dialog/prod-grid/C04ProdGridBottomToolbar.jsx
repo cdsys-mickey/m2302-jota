@@ -1,7 +1,7 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, useContext } from "react";
 import { C04Context } from "@/contexts/C04/C04Context";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { C04ProdGridSubtotalLabel } from "./C04ProdGridSubtotalLabel";
 
 const RightComponent = () => {
@@ -20,7 +20,7 @@ export const C04ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ToolbarEx ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 C04ProdGridBottomToolbar.propTypes = {};

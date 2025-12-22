@@ -2,7 +2,7 @@ import { cyan, grey } from "@mui/material/colors";
 import { Box, styled } from "@mui/system";
 import Colors from "@/modules/Colors.mjs";
 import { useMemo } from "react";
-import Arrays from "@/shared-modules/sd-arrays";
+import Arrays from "@/shared-modules/Arrays";
 
 const HoverableListItem = styled(Box, {
 	shouldForwardProp: (prop) =>

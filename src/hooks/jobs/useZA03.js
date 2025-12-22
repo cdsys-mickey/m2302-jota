@@ -15,7 +15,7 @@ import { useInit } from "@/shared-hooks/useInit";
 import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import UserAuth from "../../modules/md-user-auth";
-import DSG from "../../shared-modules/sd-dsg";
+import DSG from "../../shared-modules/DSG.mjs";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
 export const useZA03 = () => {

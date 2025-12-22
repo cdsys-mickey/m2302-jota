@@ -1,5 +1,5 @@
 import { forwardRef, memo } from "react";
-import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "../../../shared-components/ToolbarEx/ToolbarEx";
 import A06CreateButtonContainer from "./A06CreateButtonContainer";
 import { A06FetchResultLabelContainer } from "./A06FetchResultLabelContainer";
 import { A06LockSwitchContainer } from "./A06LockSwitchContainer";
@@ -20,7 +20,7 @@ LeftButtons.displayName = "LeftButtons";
 const A06Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<ListToolbar
+			<ToolbarEx
 				// pb={1}
 				pr={1}
 				alignItems="flex-end"

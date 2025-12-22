@@ -1,7 +1,7 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, useContext } from "react";
 import { D01Context } from "@/contexts/D01/D01Context";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { D01ProdGridSubtotalLabel } from "./D01ProdGridSubtotalLabel";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 
@@ -22,7 +22,7 @@ export const D01ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ToolbarEx ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 D01ProdGridBottomToolbar.propTypes = {};

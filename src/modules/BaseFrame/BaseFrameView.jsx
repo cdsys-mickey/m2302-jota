@@ -1,4 +1,4 @@
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import AppFrameContainer from "@/shared-components/protected-page/AppFrameContainer";
 import ResponsiveDrawer from "@/shared-components/responsive/ResponsiveDrawer";
 import PropTypes from "prop-types";

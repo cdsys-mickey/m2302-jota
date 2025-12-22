@@ -1,4 +1,4 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, memo } from "react";
 import UserSettingEditorSaveButton from "./UserSettingEditorSaveButton";
 import UserSettingEditorCancelButton from "./UserSettingEditorCancelButton";
@@ -26,7 +26,7 @@ const UserSettingEditorToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
 			// <ContainerEx maxWidth="sm" alignLeft>
-			<ListToolbar
+			<ToolbarEx
 				// pb={1}
 				alignItems="flex-end"
 				ref={ref}

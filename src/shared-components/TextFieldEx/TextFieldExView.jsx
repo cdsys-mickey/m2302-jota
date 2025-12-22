@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import { useMemo } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
-import FlexBox from "../FlexBox";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { FlexBox } from "@/shared-components";
 
 const IconProps = {
 	fontSize: "small",

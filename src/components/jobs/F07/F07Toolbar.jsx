@@ -1,7 +1,7 @@
 import Colors from "@/modules/Colors.mjs";
 import { forwardRef, memo } from "react";
 import ContainerEx from "@/shared-components/ContainerEx";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import F07CloseButtonContainer from "./F07CloseButtonContainer";
 import F07RestoreButtonContainer from "./F07RestoreButtonContainer";
 
@@ -10,7 +10,7 @@ const F07Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<ListToolbar
+				<ToolbarEx
 					ref={ref}
 					bgcolor={Colors.TOOLBAR}
 					LeftComponent={F07CloseButtonContainer}

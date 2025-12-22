@@ -2,7 +2,7 @@ import InlineListViewToolbar from "@/shared-components/listview/toolbar/InlineLi
 import { forwardRef, memo } from "react";
 import { REBFormButtonsContainer } from "./buttons/REBFormButtonsContainer";
 import ContainerEx from "@/shared-components/ContainerEx";
-import ListToolbar from "../../shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "../../shared-components/ToolbarEx/ToolbarEx";
 import REBCarryForwardButtonContainer from "./tabs/sales-data/REBSalesRebuildButtonContainer";
 import Colors from "../Colors.mjs";
 import REBRestoreButtonContainer from "./tabs/pos-data/REBPosRebuildButtonContainer";
@@ -12,7 +12,7 @@ const REBToolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<ListToolbar
+				<ToolbarEx
 					ref={ref}
 					bgcolor={Colors.TOOLBAR}
 					LeftComponent={REBCarryForwardButtonContainer}

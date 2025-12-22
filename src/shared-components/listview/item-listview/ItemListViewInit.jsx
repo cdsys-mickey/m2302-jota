@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Box, AlertTitle } from "@mui/material";
 import AlertEx from "@/shared-components/AlertEx";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 
 const ItemListViewInit = ({
 	children,

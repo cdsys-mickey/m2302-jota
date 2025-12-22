@@ -3,7 +3,7 @@ import { memo } from "react";
 
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import AuthScopePickerContainer from "@/components/fields/AuthScopePickerContainer";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";

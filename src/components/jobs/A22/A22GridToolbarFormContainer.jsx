@@ -4,7 +4,7 @@ import { useContext, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { A22Context } from "@/contexts/A22/A22Context";
 import TxtExport from "@/modules/md-txt-export";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import FlexGrid from "@/shared-components/FlexGrid";
 import { A22GridCancelEditButtonContainer } from "./A22GridCancelEditButtonContainer";
 import { A22GridLockRowsSwitchContainer } from "./A22GridLockRowsSwitchContainer";

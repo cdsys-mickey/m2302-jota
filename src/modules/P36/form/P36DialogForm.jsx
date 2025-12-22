@@ -2,7 +2,7 @@ import { Box, Grid, InputAdornment } from "@mui/material";
 import { memo } from "react";
 
 import BankPicker from "@/components/BankPicker/BankPicker";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 
 import FormBox from "@/shared-components/form/FormBox";

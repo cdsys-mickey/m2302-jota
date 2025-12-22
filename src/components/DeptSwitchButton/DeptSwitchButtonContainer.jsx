@@ -144,6 +144,7 @@ const DeptSwitchButtonContainer = (props) => {
 				},
 			}}
 			{...state}
+			// loading={true}
 			options={_options}
 			{...rest}
 		/>)

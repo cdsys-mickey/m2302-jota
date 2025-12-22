@@ -1,6 +1,6 @@
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { Grid } from "@mui/material";

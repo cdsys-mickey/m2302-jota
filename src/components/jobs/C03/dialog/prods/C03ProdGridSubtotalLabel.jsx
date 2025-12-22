@@ -2,7 +2,7 @@ import { forwardRef, memo } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
 import { useFormContext, useWatch } from "react-hook-form";
-import FlexBox from "../../../../../shared-components/FlexBox";
+import FlexBoxView from "../../../../../shared-components/FlexBox/FlexBoxView";
 import { useMemo } from "react";
 
 export const C03ProdGridSubtotalLabel = (props) => {

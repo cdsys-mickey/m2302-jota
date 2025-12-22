@@ -7,7 +7,7 @@ import {
 	ListItemText,
 	Tooltip,
 } from "@mui/material";
-import FlexBox from "./FlexBox";
+import FlexBoxView from "./FlexBox/FlexBoxView";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import HoverableListItemSecondaryAction from "./HoverableListItemSecondaryAction";
 import HoverableListItem from "./HoverableListItem";

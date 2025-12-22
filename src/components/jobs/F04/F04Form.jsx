@@ -2,7 +2,7 @@ import { PrintReportButton } from "@/components";
 import { CheckboxExField } from "@/shared-components";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";

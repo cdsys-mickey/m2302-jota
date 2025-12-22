@@ -1,4 +1,4 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, memo } from "react";
 import P42CreateButtonContainer from "./P42CreateButtonContainer";
 import { P42FetchResultLabelContainer } from "./P42FetchResultLabelContainer";
@@ -15,7 +15,7 @@ LeftButtons.displayName = "LeftButtons";
 const P42Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<ListToolbar
+			<ToolbarEx
 				// pb={1}
 				alignItems="flex-end"
 				ref={ref}

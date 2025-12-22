@@ -2,7 +2,7 @@ import { Box, Paper, styled } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import StdField from "./JobMenuItem";
 import JobMenu from "./JobMenu.mjs";

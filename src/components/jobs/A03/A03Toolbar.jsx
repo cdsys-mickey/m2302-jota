@@ -3,7 +3,7 @@ import { forwardRef, memo } from "react";
 import A03PrintButtonContainer from "./A03PrintButtonContainer";
 import ContainerEx from "../../../shared-components/ContainerEx";
 import { A03LockSwitchContainer } from "./A03LockSwitchContainer";
-import ListToolbar from "../../../shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "../../../shared-components/ToolbarEx/ToolbarEx";
 import { Grid } from "@mui/material";
 import Colors from "../../../modules/Colors.mjs";
 
@@ -14,7 +14,7 @@ const A03Toolbar = memo(
 			<ContainerEx maxWidth="lg" alignLeft>
 				{/* <Grid container spacing={1}>
 					<Grid item xs={12} sm={6} md={4}> */}
-				<ListToolbar
+				<ToolbarEx
 					ref={ref}
 					bgcolor={Colors.TOOLBAR}
 					borderRadius={1}

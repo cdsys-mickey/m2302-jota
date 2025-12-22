@@ -1,7 +1,7 @@
 import { forwardRef, memo } from "react";
 import Colors from "@/modules/Colors.mjs";
 import ContainerEx from "@/shared-components/ContainerEx";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { P16LockSwitchContainer } from "./P16LockSwitchContainer";
 
 const P16Toolbar = memo(
@@ -9,7 +9,7 @@ const P16Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="sm" alignLeft>
-				<ListToolbar
+				<ToolbarEx
 					bgcolor={Colors.TOOLBAR}
 					ref={ref}
 					// LeftComponent={P16PrintButtonContainer}

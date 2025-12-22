@@ -3,7 +3,7 @@ import { memo } from "react";
 
 import ZA03 from "@/modules/ZA03.mjs";
 import AlertEx from "@/shared-components/AlertEx";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { TabContext, TabList } from "@mui/lab";
 import { Container } from "@mui/material";

@@ -1,7 +1,10 @@
 import Types from "@/shared-modules/Types.mjs";
 /* eslint-disable no-mixed-spaces-and-tabs */
-import toastEx from "@/shared-components/ToastEx/toastEx";
 import Colors from "@/modules/Colors.mjs";
+import toastEx from "@/shared-components/ToastEx/toastEx";
+import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import MuiStyles from "@/shared-modules/MuiStyles";
 import {
 	Autocomplete,
 	Chip,
@@ -16,22 +19,18 @@ import {
 	forwardRef,
 	memo,
 	useCallback,
+	useContext,
 	useImperativeHandle,
 	useMemo,
 	useRef,
 	useState,
 } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import MuiStyles from "@/shared-modules/MuiStyles";
 import { OptionPickerGridPaper } from "./grid/OptionPickerGridPaper";
 import OptionPickerBox from "./listbox/OptionPickerBox";
-import VirtualizedPickerListbox from "./listbox/VirtualizedPickerListbox";
+import RWOptionPickerListbox from "./listbox/RWOptionPickerListbox";
 import OptionPickerContext from "./OptionPickerContext";
 import OptionPickerPopper from "./popper/OptionPickerPopper";
-import { useContext } from "react";
-import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import consoleEx from "@/helpers/consoleEx";
 
 const AUTO_COMPLETE_DEFAULTS = {
 	autoHighlight: true,
@@ -157,6 +156,15 @@ const OptionPickerView = memo(
 			focusNextFieldOnChange = true,
 			filterOptions,
 			freeSolo = false,
+
+			// InfiniteLoader support
+			listMapRef,
+			loadMoreItems,
+			isItemLoaded,
+			itemCount,
+			threshold = 20,
+			minimumBatchSize = 10,
+			handleItemsRendered,
 			...rest
 		} = props;
 
@@ -947,17 +955,34 @@ const OptionPickerView = memo(
 
 		const _options = useMemo(() => {
 			if (!options || !Array.isArray(options)) {
-				consoleEx.warn(`options 為 ${options}, 已補正為 []`);
+				console.warn(`options 為 ${options}, 已補正為 []`);
 			}
 			return !options || !Array.isArray(options) ? [] : options;
 		}, [options])
 
+		const _optionPickerContextValue = useMemo(() => {
+			return {
+				GridRowComponent,
+				renderOptionLabel: renderOptionLabel || getOptionLabel,
+
+			}
+		}, [GridRowComponent, getOptionLabel, renderOptionLabel])
+
+		const isUseAutoHighlight = useMemo(() => {
+			// return !freeSolo && !loadMoreItems;
+			return !freeSolo;
+		}, [freeSolo])
+
+		const _listboxComponent = useMemo(() => {
+			if (typeof virtualize === "boolean") {
+				return RWOptionPickerListbox;
+			}
+			return RWOptionPickerListbox;
+		}, [virtualize])
+
 
 		return (
-			<OptionPickerContext.Provider value={{
-				GridRowComponent,
-				renderOptionLabel: renderOptionLabel || getOptionLabel
-			}}>
+			<OptionPickerContext.Provider value={_optionPickerContextValue}>
 				<OptionPickerBox
 					// DSG 支援屬性
 					hideBorders={hideBorders}
@@ -1006,20 +1031,10 @@ const OptionPickerView = memo(
 							filterOptions: _filterOptions
 						})}
 						// Popper Open 控制
-						// open={popperOpen}
 						onOpen={handleOpen}
 						onClose={handleClose}
 						PopperComponent={OptionPickerPopper}
-						// slotProps={{
-						// 	popper: {
-						// 		popperRef: popperRef,
-						// 		tabIndex: 0, // 確保 Popper 可聚焦
-						// 	}
-						// }}
 						open={_open}
-						// onOpen={_onOpen}
-						// onOpen={_onOpen}
-						// onClose={_onClose}
 						freeSolo={freeSolo}
 						sx={[
 							{
@@ -1051,15 +1066,30 @@ const OptionPickerView = memo(
 							},
 							...(Array.isArray(sx) ? sx : [sx]),
 						]}
-						{...(!freeSolo && AUTO_COMPLETE_DEFAULTS)}
-						// {...AUTO_COMPLETE_DEFAULTS}
+						{...(isUseAutoHighlight && {
+							autoHighlight: true,
+						})}
 						{...rest}
 
 						// virtualize = true 時必須強制 override 部分屬性
 						{...(virtualize && {
-							ListboxComponent: VirtualizedPickerListbox,
+							ListboxComponent: _listboxComponent,
+							// ListboxComponent: RWOptionPickerListbox,
+							// ListboxComponent: RWOptionPickerListboxV2,
 							// 	disableListWrap: true,
 						})}
+						// {...(loadMoreItems && {
+						// 	ListboxProps: {
+						// 		listMapRef: listMapRef,
+						// 		getOptionKey: getOptionKey,
+						// 		loadMoreItems: loadMoreItems,
+						// 		isItemLoaded: isItemLoaded,
+						// 		itemCount: itemCount,
+						// 		threshold: threshold,
+						// 		minimumBatchSize: minimumBatchSize,
+						// 		onItemsRendered: handleItemsRendered
+						// 	}
+						// })}
 						{...(virtualize && {
 							disableListWrap: true,
 						})}
@@ -1128,7 +1158,7 @@ OptionPickerView.propTypes = {
 	getOptionKey: PropTypes.func,
 	getTitle: PropTypes.func,
 	// filterSelectedOptions: PropTypes.bool,
-	virtualize: PropTypes.bool,
+	virtualize: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 	labelShrink: PropTypes.bool,
 	renderOption: PropTypes.func,
 	renderGroup: PropTypes.func,
@@ -1176,6 +1206,14 @@ OptionPickerView.propTypes = {
 	slotProps: PropTypes.object,
 	focusNextCellOnChange: PropTypes.bool,
 	focusNextFieldOnChange: PropTypes.bool,
-	filterOptions: PropTypes.func
+	filterOptions: PropTypes.func,
+	// InfiniteLoader support
+	listMap: PropTypes.map,
+	handleItemsRendered: PropTypes.func,
+	loadMoreItems: PropTypes.func,
+	isItemLoaded: PropTypes.func,
+	itemCount: PropTypes.number,
+	threshold: PropTypes.number,
+	minimumBatchSize: PropTypes.number,
 };
 export default OptionPickerView;

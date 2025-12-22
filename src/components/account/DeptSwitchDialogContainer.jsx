@@ -3,8 +3,8 @@ import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import AuthDeptPicker from "@/components/AuthDeptPicker";
-import FlexBox from "@/shared-components/FlexBox";
 import { useMemo } from "react";
+import { FlexBox } from "shared-components";
 
 export const DeptSwitchDialogContainer = () => {
 	const form = useForm();

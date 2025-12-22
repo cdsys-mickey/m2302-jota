@@ -1,4 +1,4 @@
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { Container } from "@mui/material";
 import clsx from "clsx";
 import PropTypes from "prop-types";
@@ -88,15 +88,19 @@ const InfiniteListView = memo((props) => {
 						"bottom-shadow": !bottomReached,
 					})}>
 					<List
+						ref={ref}
+						height={height}
+
+						// 陰影處理
 						onScroll={onScroll}
 						className={clsx("shadow", "i-listview", {
 							"top-shadow": scrollOffset > 5,
 						})}
-						ref={ref}
-						height={height}
+
 						itemData={data}
 						itemCount={itemCount}
 						itemSize={itemHeight}
+
 						onItemsRendered={handleItemsRendered(onItemsRendered)}
 						{...otherListProps}>
 						{RowComponent}
@@ -125,6 +129,7 @@ InfiniteListView.propTypes = {
 	bottomReached: PropTypes.bool,
 	handleItemsRendered: PropTypes.func,
 	error: PropTypes.object,
+	onError: PropTypes.func
 };
 
 InfiniteListView.displayName = "InfiniteListView";

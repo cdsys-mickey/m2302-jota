@@ -11,7 +11,7 @@ import CmsBusCompPicker from "@/components/CmsBusCompPicker/CmsBusCompPicker";
 import CmsCityPicker from "@/components/CmsCityPicker/CmsCityPicker";
 import CmsCustTypePicker from "@/components/CmsCustTypePicker/CmsCustTypePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P57ReportTypePicker from "./pickers/P57ReportTypePicker";
 

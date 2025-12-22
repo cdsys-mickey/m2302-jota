@@ -1,9 +1,19 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useWebApiAsync } from "@/shared-hooks";
-import { useCallback, useContext, useMemo, useState } from "react";
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
-import Arrays from "../shared-modules/sd-arrays";
+import Arrays from "../shared-modules/Arrays";
 import useDebounce from "./useDebounce";
+import ConsoleStyles from "@/shared-modules/ConsoleStyles.mjs";
+import Objects from "@/shared-modules/Objects.mjs";
+import Maps from "@/shared-modules/Maps.mjs";
 
 export const useInfiniteLoader = (props = {}) => {
 	const {
@@ -27,6 +37,17 @@ export const useInfiniteLoader = (props = {}) => {
 	const [listError, setListError] = useState();
 	const debouncedListLoading = useDebounce(state.listLoading, debounce);
 	const [listData, setListData] = useState();
+
+	// Map 方案
+	// const listMapRef = useRef(new Map());
+	// const listMap = listMapRef.current;
+	// useEffect(() => {
+	// 	return () => {
+	// 		listMap.clear(); // unmount 時自動清空
+	// 	};
+	// }, [listMap]);
+
+	// const [listItems, setListItems] = useState();
 	const [viewportState, setViewportState] = useState({
 		visibleStartIndex: 0,
 		visibleStopIndex: 0,
@@ -35,7 +56,7 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const { httpGetAsync } = useWebApiAsync();
 
-	const defaultGetOptions = useCallback((payload) => {
+	const defaultGetItems = useCallback((payload) => {
 		return payload["data"] || [];
 	}, []);
 
@@ -55,9 +76,16 @@ export const useInfiniteLoader = (props = {}) => {
 					visibleStopIndex,
 					bottomReached: visibleStopIndex === itemCount - 1,
 				});
+				// debug 用請勿刪除
 				// console.log(
 				// 	`onItemsRendered(${visibleStartIndex}, ${visibleStopIndex})`
 				// );
+				if (!onItemsRendered) {
+					console.warn(
+						"%conItemsRendered 未指定",
+						ConsoleStyles.WARN
+					);
+				}
 				onItemsRendered({
 					visibleStartIndex,
 					visibleStopIndex,
@@ -76,11 +104,11 @@ export const useInfiniteLoader = (props = {}) => {
 			stop,
 			saveKey,
 			params,
-			getOptions = defaultGetOptions,
+			getItems = defaultGetItems,
 			getSaveKey = defaultGetSaveKey,
 			getItemCount = defaultGetItemCount,
 			refresh = false,
-			usePrevParams = false,
+			// usePrevParams = false,
 			supressLoading = false,
 			// reset = false,
 		} = {}) => {
@@ -106,7 +134,7 @@ export const useInfiniteLoader = (props = {}) => {
 				);
 				activeParams = params;
 			} else {
-				if (refresh || usePrevParams) {
+				if (refresh) {
 					activeParams = context.paramsRef?.current;
 				} else {
 					context.paramsRef.current = params;
@@ -122,10 +150,8 @@ export const useInfiniteLoader = (props = {}) => {
 				console.log("saveKey", saveKey);
 			}
 
-			const loading =
-				// ((!start || !listData) && !supressLoading) || refresh;
-				// 依賴 start 或有誤顯示的風險
-				(!listData || refresh) && !supressLoading;
+			const loading = refresh && !supressLoading;
+			// (refresh || Maps.isEmpty(listMap)) && !supressLoading;
 			console.log("loading", loading);
 
 			setListError(null);
@@ -155,17 +181,26 @@ export const useInfiniteLoader = (props = {}) => {
 					if (itemCount !== undefined) {
 						setItemCount(itemCount);
 					}
-					const newData = getOptions(payload);
-					const newDataObj = Arrays.toObject(newData, start);
+					const partialListItems = getItems(payload);
+					const partialListData = Arrays.toObject(
+						partialListItems,
+						start
+					);
+					// listData
 					// console.log("newData", newData);
 
 					if (refresh) {
-						setListData(newDataObj);
+						setListData(partialListData);
+						// setListItems(listItems);
+						// Maps.addEntries(listMap, partialListData, {
+						// 	clear: true,
+						// });
 					} else {
 						setListData((prev) => ({
 							...prev,
-							...newDataObj,
+							...partialListData,
 						}));
+						// Maps.addEntries(listMap, partialListData);
 					}
 					console.log(`mark ${startIndex}~${stopIndex} as loaded`);
 					for (let i = startIndex; i <= stopIndex; i++) {
@@ -187,12 +222,11 @@ export const useInfiniteLoader = (props = {}) => {
 			}
 		},
 		[
-			defaultGetOptions,
+			defaultGetItems,
 			defaultGetSaveKey,
 			defaultGetItemCount,
 			initialFetchSize,
 			context,
-			listData,
 			loadingMap,
 			httpGetAsync,
 			bearer,
@@ -222,7 +256,7 @@ export const useInfiniteLoader = (props = {}) => {
 				loadList({
 					start,
 					stop,
-					usePrevParams: true,
+					refresh: false,
 					...(saveKey && {
 						saveKey: saveKey,
 					}),
@@ -318,6 +352,8 @@ export const useInfiniteLoader = (props = {}) => {
 		// PROPS
 		saveKey,
 		listData,
+		// listMapRef,
+		// listItems,
 		...state,
 		debouncedListLoading: debouncedListLoadingValue,
 		listFiltered,

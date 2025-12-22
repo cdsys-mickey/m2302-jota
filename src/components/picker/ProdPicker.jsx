@@ -8,7 +8,7 @@ import { OptionPicker } from "@/shared-components";
 import { useCallback } from "react";
 import _ from "lodash";
 import { createFilterOptions } from "@mui/material";
-import Arrays from "@/shared-modules/sd-arrays";
+import Arrays from "@/shared-modules/Arrays";
 
 const ProdPicker = (props) => {
 	const {
@@ -116,7 +116,8 @@ const ProdPicker = (props) => {
 
 		// 僅當有輸入值時應用自訂排序
 		if (state.inputValue) {
-			filtered = Arrays.sortByFoundIndex(filtered, ["ProdID", "ProdData", "Barcode"], state.inputValue);
+			// filtered = Arrays.sortByFoundIndex(filtered, ["ProdID", "ProdData"], state.inputValue);
+			filtered = Arrays.sortByFoundIndex(filtered, ["ProdID"], state.inputValue);
 		}
 
 		return filtered;

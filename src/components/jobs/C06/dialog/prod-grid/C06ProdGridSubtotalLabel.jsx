@@ -1,4 +1,4 @@
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useMemo } from "react";

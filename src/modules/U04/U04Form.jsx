@@ -11,7 +11,7 @@ import { PrintReportButton } from "@/components";
 import ProdFreeTypePickerV2 from "@/components/prod-free-type-picker/ProdFreeTypePickerV2";
 import Auth from "@/modules/Auth.mjs";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import U04DataTypePicker from "./picker/U04DataTypePicker";
 import U04OrderTypePicker from "./picker/U04OrderTypePicker";

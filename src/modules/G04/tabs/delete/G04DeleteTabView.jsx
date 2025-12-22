@@ -1,7 +1,7 @@
 import RecvAcctCurrentCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctCurrentCustomerPicker";
 import { RecvAcctCurrentSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctCurrentSessionPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import FlexToolbar from "@/shared-components/FlexToolbar/FlexToolbar";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { TabPanel } from "@mui/lab";

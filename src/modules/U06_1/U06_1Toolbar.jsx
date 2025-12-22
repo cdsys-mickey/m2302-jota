@@ -1,6 +1,6 @@
 import ContainerEx from "@/shared-components/ContainerEx";
 import { forwardRef, memo } from "react";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { U06_1FormButtonsContainer } from "./buttons/U06_1FormButtonsContainer";
 
 const U06_1Toolbar = memo(
@@ -8,7 +8,7 @@ const U06_1Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="sm" alignLeft>
-				<ListToolbar
+				<ToolbarEx
 					ref={ref}
 					RightComponent={U06_1FormButtonsContainer}
 					{...rest}

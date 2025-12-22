@@ -2,7 +2,7 @@ import AuthDeptPicker from "@/components/AuthDeptPicker";
 import Auth from "@/modules/Auth.mjs";
 import REB from "@/modules/REB/REB.mjs";
 import { DatePickerEx, FormFieldLabel } from "@/shared-components";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { TabPanel } from "@mui/lab";
 import { Grid } from "@mui/material";

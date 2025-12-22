@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import Colors from "@/modules/Colors.mjs";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { ProdGridCancelChangesButtonContainer } from "./ProdGridCancelChangesButtonContainer";
 import { ProdGridCancelEditButtonContainer } from "./ProdGridCancelEditButtonContainer";
 import { ProdGridEditButtonContainer } from "./ProdGridEditButtonContainer";
@@ -11,7 +11,7 @@ const ProdGridToolbar = memo(
 		const { ...rest } = props;
 
 		return (
-			<ListToolbar
+			<ToolbarEx
 				minHeight={38}
 				bgcolor={Colors.TOOLBAR}
 				ref={ref}

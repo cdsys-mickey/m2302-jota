@@ -1,5 +1,5 @@
 import { C07Context } from "@/contexts/C07/C07Context";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, useContext } from "react";
 import { C07ProdGridSubtotalLabel } from "./C07ProdGridSubtotalLabel";
 
@@ -20,7 +20,7 @@ export const C07ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ToolbarEx ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 C07ProdGridBottomToolbar.propTypes = {};

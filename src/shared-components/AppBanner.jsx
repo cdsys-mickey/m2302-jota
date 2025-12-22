@@ -1,9 +1,6 @@
-import ConfigContext from "@/contexts/config/ConfigContext";
-import FlexBox from "@/shared-components/FlexBox";
-import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { useContext } from "react";
 import { memo, useMemo } from "react";
+import { FlexBox } from "@/shared-components";
 
 const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 	const typographyVariant = useMemo(() => {

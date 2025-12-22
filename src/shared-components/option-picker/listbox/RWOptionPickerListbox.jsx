@@ -28,15 +28,11 @@ const RENDER_OPTION_NOT_DEFINED = "???";
 /**
  * 此為 renderRow 移至 Context 的版本
  */
-const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
+const RWOptionPickerListbox = memo(forwardRef((props, ref) => {
 	const { children, ...other } = props;
-	// console.log("VirtualizedPickerListbox.otherProps", other)
+
 	const optionPicker = useContext(OptionPickerContext);
 	const { GridRowComponent, renderOptionLabel } = optionPicker;
-
-	// if (!optionPicker) {
-	// 	throw new Error("沒有偵測到 OptionPickerContext");
-	// }
 
 	const renderOption = useCallback((opts) => {
 		// opts from React Window
@@ -44,7 +40,6 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 
 		// Props from Autocomplete-renderOption
 		const dataSet = data[index];
-		// console.log(`dataSet[${index}]`, dataSet);
 
 		const { key, ...componentProps } = dataSet[0];
 		const option = dataSet[1];
@@ -65,6 +60,17 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 			);
 		}
 
+		if (option.footer) {
+			return (
+				<ListSubheader
+					key={option.id}
+					component="div"
+					style={inlineStyle}>
+					{option.message ?? "...更多"}
+				</ListSubheader>
+			);
+		}
+
 		return (
 			<Typography
 				key={key}
@@ -79,13 +85,21 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 		);
 	}, [GridRowComponent, renderOptionLabel]);
 
-	// const { renderRow } = optionPicker;
 
 	const itemData = useMemo(() => {
 		let results = [];
+		// children.forEach((item) => {
+		// 	results.push(item);
+		// 	results.push(...(item.children || []));
+		// });
+		// 原 mui options 若有 group 則可能非扁平化
 		children.forEach((item) => {
+			// 先加入 group
 			results.push(item);
-			results.push(...(item.children || []));
+			// 若 group 下有 children 且為 array 則依序加進去
+			if ('children' in item && Array.isArray(item.children)) {
+				results.push(...item.children);
+			}
 		});
 		return results;
 	}, [children])
@@ -105,7 +119,7 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 	}, [smUp]);
 
 	/**
-	 * 回應項目高度, group 是 48
+	 * 回應項目高度, group 是 48, 否則使用 itemSize
 	 */
 	const getChildSize = useCallback((child) => {
 		if (child.group !== undefined) {
@@ -114,13 +128,6 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 
 		return itemSize;
 	}, [itemSize]);
-
-	// const getHeight = useCallback(() => {
-	// 	if (itemCount > 8) {
-	// 		return 8 * itemSize;
-	// 	}
-	// 	return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
-	// }, [getChildSize, itemCount, itemData, itemSize]);
 
 	const listRef = useResetCache(itemCount);
 
@@ -160,10 +167,10 @@ const VirtualizedPickerListbox = memo(forwardRef((props, ref) => {
 	);
 }));
 
-VirtualizedPickerListbox.displayName = "VirtualizedPickerListbox";
-VirtualizedPickerListbox.propTypes = {
+RWOptionPickerListbox.displayName = "RWOptionPickerListbox";
+RWOptionPickerListbox.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	renderRow: PropTypes.func
 };
 
-export default VirtualizedPickerListbox;
+export default RWOptionPickerListbox;

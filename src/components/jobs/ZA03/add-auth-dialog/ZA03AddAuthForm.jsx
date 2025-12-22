@@ -1,7 +1,7 @@
 import { Container, FormHelperText, Grid, Typography } from "@mui/material";
 import { memo } from "react";
 import { ControlledUnusedModulePicker } from "@/components/picker/ControlledUnsuedModulePicker";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { ZA03AddPositionPickerContainer } from "./ZA03AddPositionPickerContainer";
 import FlexGrid from "../../../../shared-components/FlexGrid";
 

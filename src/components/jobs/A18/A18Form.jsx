@@ -5,7 +5,7 @@ import JobPicker from "@/components/picker/JobPicker";
 import { RealFilePicker } from "@/components/picker/RealFilePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import RangeGroup from "@/shared-components/RangeGroup";

@@ -51,26 +51,28 @@ const WebApiOptionPicker = memo(
 			clearValueOnChange,
 			mockDelay,
 			sharedKey,
+			infinite = false,
 			...rest
 		} = props;
 
 		// console.log("rendering WebApiOptionPicker");
 
 		const {
-			open: _open,
-			onOpen: _onOpen,
-			onClose: _onClose,
-			onChange: _onChange,
-			loading,
-			options: _options,
-			noOptionsText: _noOptionsText,
-			onInputChange,
 			disabled,
-			findByInput: _findByInput,
-			// pressToFind: _pressToFind,
 			openPopper,
 			closePopper,
-			onTextChange
+			// open: _open,
+			// onOpen: _onOpen,
+			// onClose: _onClose,
+			// onChange: _onChange,
+			// loading,
+			// options: _options,
+			// noOptionsText: _noOptionsText,
+			// onInputChange,
+			// findByInput: _findByInput,
+			// onTextChange
+			infiniteProps,
+			...optionsProps
 		} = useWebApiOptions({
 			name,
 			disableOnSingleOption,
@@ -110,7 +112,8 @@ const WebApiOptionPicker = memo(
 			clearOptionsOnChange,
 			clearValueOnChange,
 			mockDelay,
-			sharedKey
+			sharedKey,
+			infinite
 		});
 
 
@@ -121,25 +124,28 @@ const WebApiOptionPicker = memo(
 
 		return (
 			<OptionPickerView
-				multiple={multiple}
 				ref={ref}
-				name={name}
-				loading={loading}
-				options={_options}
-				noOptionsText={_noOptionsText}
-				disabled={disabledByParent || disabled}
 				// Controlled Props
-				onInputChange={onInputChange}
-				open={_open}
-				onOpen={_onOpen}
-				onClose={_onClose}
-				onChange={_onChange}
-				// pressToFind={_pressToFind}
-				findByInput={_findByInput}
-				disableOpenOnInput={disableOpenOnInput}
-				onTextChange={onTextChange}
-				// queryRequired={queryRequired}
-				// filterByServer={filterByServer}
+
+				// disableOpenOnInput={disableOpenOnInput}
+				disabled={disabledByParent || disabled}
+
+
+				{...optionsProps}
+				// 將以下 props 整合到 optionsProps
+				// multiple={multiple}
+				// name={name}
+				// open={_open}
+				// onOpen={_onOpen}
+				// onClose={_onClose}
+				// onChange={_onChange}
+				// loading={loading}
+				// options={_options}
+				// noOptionsText={_noOptionsText}
+				// onInputChange={onInputChange}
+				// findByInput={_findByInput}
+				// onTextChange={onTextChange}
+				{...infiniteProps}
 				{...rest}
 			/>
 		);
@@ -192,6 +198,7 @@ WebApiOptionPicker.propTypes = {
 	options: PropTypes.array,
 	mockDelay: PropTypes.number,
 	sharedKey: PropTypes.string,
+	infinite: PropTypes.bool
 };
 
 export default WebApiOptionPicker;

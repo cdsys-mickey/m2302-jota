@@ -4,7 +4,7 @@ import { ZA03Context } from "@/contexts/ZA03/ZA03Context";
 import ZA03 from "@/modules/ZA03.mjs";
 import ZA03DialogEditButtons from "../../dialog/buttons/ZA03DialogEditButtons";
 import ZA03DialogViewButtons from "../../dialog/buttons/ZA03DialogViewButtons";
-import ListToolbar from "../../../../../shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "../../../../../shared-components/ToolbarEx/ToolbarEx";
 
 export const ZA03InfoToolbarContainer = () => {
 	const za03 = useContext(ZA03Context);
@@ -32,7 +32,7 @@ export const ZA03InfoToolbarContainer = () => {
 	}
 
 	return (
-		<ListToolbar
+		<ToolbarEx
 			rightComponents={
 				<ZA03DialogViewButtons
 					onEdit={za03.promptUpdating}

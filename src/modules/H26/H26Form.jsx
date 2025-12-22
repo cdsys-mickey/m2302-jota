@@ -9,7 +9,7 @@ import DeptPicker from "@/components/picker/DeptPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H26OrderTypePicker from "./pickers/H26OrderTypePicker";
 import H26ReportTypePicker from "./pickers/H26ReportTypePicker";

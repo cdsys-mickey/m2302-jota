@@ -1,5 +1,5 @@
 import CommonStyles from "./CommonStyles.mjs";
-import Arrays from "./sd-arrays";
+import Arrays from "./Arrays";
 import _ from "lodash";
 
 const DEFAULT_PROPS_OPTS = {
@@ -300,6 +300,57 @@ function clearAllProps(obj) {
 	}
 }
 
+function toArray(obj, original = null, defaultValue = null) {
+	if (!obj || typeof obj !== "object") {
+		throw new Error("obj 必須是一個物件");
+	}
+
+	// 找出所有鍵並轉成數字，然後找出最大索引
+	const keys = Object.keys(obj);
+	if (keys.length === 0) {
+		return original && Array.isArray(original) ? [...original] : [];
+	}
+
+	const indices = keys.map((k) => parseInt(k, 10)).filter((n) => !isNaN(n));
+	const maxIndex = Math.max(...indices);
+
+	// 建立目標陣列（長度為 maxIndex + 1）
+	const result = new Array(maxIndex + 1);
+
+	// 如果有提供 original，先把 original 的內容複製進來
+	if (original != null) {
+		if (Array.isArray(original)) {
+			// original 是陣列，直接拷貝
+			for (let i = 0; i < original.length && i < result.length; i++) {
+				result[i] = original[i];
+			}
+		} else if (typeof original === "object") {
+			// original 是物件（類似目前 obj 的結構），先轉成陣列再合併
+			const temp = toArray(original, null, defaultValue); // 遞迴處理
+			for (let i = 0; i < temp.length && i < result.length; i++) {
+				result[i] = temp[i];
+			}
+		}
+	}
+
+	// 填入 defaultValue（只填還沒被 original 覆蓋的位置）
+	for (let i = 0; i < result.length; i++) {
+		if (result[i] === undefined) {
+			result[i] = defaultValue;
+		}
+	}
+
+	// 最後把 obj 的資料覆蓋到對應位置
+	for (const key in obj) {
+		const index = parseInt(key, 10);
+		if (!isNaN(index)) {
+			result[index] = obj[key];
+		}
+	}
+
+	return result;
+}
+
 const Objects = {
 	isAllPropsNullOrEmpty,
 	isAllPropsNotNull,
@@ -315,6 +366,7 @@ const Objects = {
 	isAllPropsNotEmpty,
 	isAllPropsNotUndefined,
 	clearAllProps,
+	toArray,
 };
 
 export default Objects;

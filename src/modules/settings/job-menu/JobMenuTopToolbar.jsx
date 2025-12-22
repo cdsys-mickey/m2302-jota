@@ -1,4 +1,4 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import JobMenuActionButtons from "./JobMenuActionButtons";
 import { JobMenuSaveButtonContainer } from "./JobMenuSaveButtonContainer";
 import Colors from "@/modules/Colors.mjs";
@@ -24,7 +24,7 @@ const RightComponent = () => {
 const JobMenuTopToolbar = (props) => {
 	const { ...rest } = props;
 	return (
-		<ListToolbar
+		<ToolbarEx
 			bgcolor={Colors.TOOLBAR}
 			LeftComponent={LeftComponent}
 

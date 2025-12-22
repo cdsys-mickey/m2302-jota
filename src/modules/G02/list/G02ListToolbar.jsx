@@ -1,4 +1,4 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, memo } from "react";
 import { G02FetchResultLabelContainer } from "../G02FetchResultLabelContainer";
 import G02WriteOffButtonContainer from "../G02WriteOffButtonContainer";
@@ -18,7 +18,7 @@ LeftButtons.displayName = "LeftButtons";
 const G02ListToolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<ListToolbar
+			<ToolbarEx
 				// pb={1}
 				pl={0}
 				pr={1}

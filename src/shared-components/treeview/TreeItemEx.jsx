@@ -4,7 +4,7 @@ import { Tooltip, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import PropTypes from "prop-types";
 import React, { useMemo } from "react";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import TooltipBox from "@/shared-components/TooltipBox";
 import TooltipFlexBox from "@/shared-components/TooltipFlexBox";
 import TreeItemContentEx from "./TreeItemContentEx";

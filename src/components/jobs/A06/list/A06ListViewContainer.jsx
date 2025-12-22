@@ -6,7 +6,7 @@ import { useInit } from "@/shared-hooks/useInit";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { useChangeTracking } from "../../../../shared-hooks/useChangeTracking";
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { A06ListRowContainer } from "./A06ListRowContainer";
 
 export const A06ListViewContainer = () => {

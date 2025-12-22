@@ -1,6 +1,6 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import ProdLinePicker from "@/components/picker/ProdLinePicker";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";

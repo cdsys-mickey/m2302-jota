@@ -1,8 +1,8 @@
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 
-const ListToolbar = memo(
+const ToolbarEx = memo(
 	forwardRef((props, ref) => {
 		const {
 			alignItems = "center",
@@ -120,8 +120,8 @@ const ListToolbar = memo(
 	})
 );
 
-ListToolbar.displayName = "FlexToolbar";
-ListToolbar.propTypes = {
+ToolbarEx.displayName = "FlexToolbar";
+ToolbarEx.propTypes = {
 	align: PropTypes.oneOf(["left", "right", "center"]),
 	bgcolor: PropTypes.string,
 	borderRadius: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -140,4 +140,4 @@ ListToolbar.propTypes = {
 	boxSx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
-export default ListToolbar;
+export default ToolbarEx;

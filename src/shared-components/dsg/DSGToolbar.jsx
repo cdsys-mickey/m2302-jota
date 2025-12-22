@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
-import FlexBox from "../FlexBox";
+import FlexBoxView from "../FlexBox/FlexBoxView";
 
 const DSGToolbar = memo((props) => {
 	const { children, sx = [], ...rest } = props;

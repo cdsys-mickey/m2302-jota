@@ -1,4 +1,4 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, memo } from "react";
 import A01CreateButtonContainer from "./A01CreateButtonContainer";
 import { A01FetchResultLabelContainer } from "./A01FetchResultLabelContainer";
@@ -21,7 +21,7 @@ LeftButtons.displayName = "LeftButtons";
 const A01Toolbar = memo(
 	forwardRef(({ ...rest }, ref) => {
 		return (
-			<ListToolbar
+			<ToolbarEx
 				// pb={1}
 				alignItems="flex-end"
 				pr={1}

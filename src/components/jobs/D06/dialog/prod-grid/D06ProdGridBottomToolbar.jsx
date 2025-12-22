@@ -1,7 +1,7 @@
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, useContext } from "react";
 import { D06Context } from "@/contexts/D06/D06Context";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { D06ProdGridSubtotalLabel } from "./D06ProdGridSubtotalLabel";
 
 const RightComponent = () => {
@@ -21,7 +21,7 @@ export const D06ProdGridBottomToolbar = forwardRef((props, ref) => {
 		return false;
 	}
 
-	return <ListToolbar ref={ref} RightComponent={RightComponent} {...rest} />;
+	return <ToolbarEx ref={ref} RightComponent={RightComponent} {...rest} />;
 });
 
 D06ProdGridBottomToolbar.propTypes = {};

@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form";
 import ZA03DialogEditButtons from "./ZA03DialogEditButtons";
 import ZA03DialogViewButtons from "./ZA03DialogViewButtons";
 
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { ZA03AuthAddButtonContainer } from "../../form/auth/ZA03AuthAddButtonContainer";
 import { ZA03AuthDeptPickerContainer } from "../../form/auth/ZA03AuthDeptPickerContainer";
 import { ZA03AuthLockRowsSwitchContainer } from "../../form/auth/ZA03AuthLockRowsSwitchContainer";

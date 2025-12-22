@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import ContainerEx from "@/shared-components/ContainerEx";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import F05CarryForwardButtonContainer from "./F05CarryForwardButtonContainer";
 import Colors from "@/modules/Colors.mjs";
 
@@ -9,7 +9,7 @@ const F05Toolbar = memo(
 		const { ...rest } = props;
 		return (
 			<ContainerEx maxWidth="xs" alignLeft>
-				<ListToolbar
+				<ToolbarEx
 					bgcolor={Colors.TOOLBAR}
 					ref={ref}
 					LeftComponent={F05CarryForwardButtonContainer}

@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { memo } from "react";
 
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 
 import CmsAreaPicker from "@/components/CmsAreaPicker/CmsAreaPicker";

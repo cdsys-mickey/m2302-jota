@@ -9,7 +9,7 @@ import { PrintReportButton } from "@/components";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import { TextFieldEx } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P61OrderTypePicker from "./pickers/P61OrderTypePicker";
 import P61ReportTypePicker from "./pickers/P61ReportTypePicker";

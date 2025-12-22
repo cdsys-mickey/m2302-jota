@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import FlexBox from "../FlexBox";
+import FlexBoxView from "../FlexBox/FlexBoxView";
 import FlexTableContext from "./FlexTableContext";
 import { useMemo } from "react";
 import { memo } from "react";

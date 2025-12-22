@@ -1,6 +1,6 @@
 import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
 import { TextFieldEx } from "@/shared-components";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { TabPanel } from "@mui/lab";

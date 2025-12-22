@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { useCallback, useContext, useMemo } from "react";
 import Customers from "@/modules/Customers";
 import { createFilterOptions } from "@mui/material";
-import Arrays from "@/shared-modules/sd-arrays";
+import Arrays from "@/shared-modules/Arrays";
 
 const CustomerPicker = (props) => {
 	const { label, placeholder, forId = false, forNew = false, fullName = false, withQuotes = false,
@@ -105,7 +105,6 @@ const CustomerPicker = (props) => {
 		return filtered;
 	}, [defaultFilter]);
 
-
 	return (
 		<OptionPicker
 			label={_label}
@@ -153,7 +152,8 @@ CustomerPicker.propTypes = {
 	clearOnChange: PropTypes.bool,
 	clearOptionsOnChange: PropTypes.bool,
 	clearValueOnChange: PropTypes.bool,
-	filterByServer: PropTypes.bool
+	filterByServer: PropTypes.bool,
+	infinite: PropTypes.bool,
 };
 
 export default CustomerPicker;

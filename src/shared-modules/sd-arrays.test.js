@@ -1,6 +1,6 @@
 import { expect } from "vitest";
 import { it } from "vitest";
-import Arrays from "./sd-arrays";
+import Arrays from "./Arrays";
 
 it("should reduce range array to object", () => {
 	let data = [{ name: "A" }, { name: "B" }, { name: "C" }];

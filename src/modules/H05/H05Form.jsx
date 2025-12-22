@@ -12,7 +12,7 @@ import CustomerPicker from "@/components/picker/CustomerPicker";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H05ReportTypePicker from "./pickers/H05ReportTypePicker";
 

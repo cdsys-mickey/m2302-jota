@@ -5,7 +5,7 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import { Box } from "@mui/system";
 import FlexToolbar from "@/shared-components/FlexToolbar/FlexToolbar";
-import FlexBox from "@/shared-components/FlexBox";
+import { FlexBox } from "@/shared-components";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import G04CreateBatchButtonContainer from "./G04CreateBatchButtonContainer";
 import { TabPanel } from "@mui/lab";

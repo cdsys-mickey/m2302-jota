@@ -2,8 +2,8 @@ import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
 import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
-import FlexBox from "@/shared-components/FlexBox";
-import ListToolbar from "@/shared-components/listview/toolbar/ListToolbar";
+import { FlexBox } from "@/shared-components";
+import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { Box, Grid, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
@@ -116,14 +116,14 @@ const B05LoadProdsForm = memo((props) => {
 						/>
 					</Grid>
 				</Grid>
-				<ListToolbar align="right">
+				<ToolbarEx align="right">
 					<Tooltip title="shift+Enter">
 						<B05ImportProdsButtonContainer
 							variant="contained"
 							color="primary"
 						/>
 					</Tooltip>
-				</ListToolbar>
+				</ToolbarEx>
 			</Box>
 		</form>
 	);

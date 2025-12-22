@@ -6,7 +6,7 @@ import TourGroups from "./TourGroups.mjs";
 import { useMemo } from "react";
 import { createFilterOptions } from "@mui/material";
 import { useCallback } from "react";
-import Arrays from "@/shared-modules/sd-arrays";
+import Arrays from "@/shared-modules/Arrays";
 
 const TourGroupPicker = memo(
 	forwardRef((props, ref) => {

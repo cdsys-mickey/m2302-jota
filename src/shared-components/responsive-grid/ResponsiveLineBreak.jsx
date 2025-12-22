@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import ResponsiveLayoutContext from "../responsive/ResponsiveLayoutContext";
-import FlexBox from "../FlexBox";
+import FlexBoxView from "../FlexBox/FlexBoxView";
 import { memo } from "react";
 import PropTypes from "prop-types";
 
