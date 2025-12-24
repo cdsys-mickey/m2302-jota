@@ -13,7 +13,7 @@ import OrderDirPicker from "@/components/picker/OrderDirPicker";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P03CalTypePicker from "./pickers/P03CalTypePicker";
 import P03OrderTypePicker from "./pickers/P03OrderTypePicker";

@@ -1,5 +1,5 @@
 import AppBanner from "@/shared-components/AppBanner";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { CopyrightContainer } from "@/shared-components/CopyrightContainer";

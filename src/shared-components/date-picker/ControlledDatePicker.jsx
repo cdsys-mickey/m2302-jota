@@ -12,7 +12,7 @@ import { useCallback, useContext, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { FormMetaContext } from "../form-meta/FormMetaContext";
 import ControllerWrapper from "../ControllerWrapper";
-import FlexBoxView from "../FlexBox/FlexBoxView";
+import FlexBoxView from "../ZZFlexBox/FlexBoxView";
 
 const DEFAULT_PROPS = {
 	size: "small",

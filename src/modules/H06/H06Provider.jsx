@@ -1,7 +1,7 @@
 import StdPrint from "@/modules/StdPrint.mjs";
 import PropTypes from "prop-types";
 import { FormProvider, useForm } from "react-hook-form";
-import OrderDir from "../OrderDir.mjs";
+import OrderDirs from "../OrderDirs.mjs";
 import { H06Context } from "./H06Context";
 import H06OrderType from "./pickers/H06OrderType.mjs";
 import { useH06 } from "./useH06";
@@ -16,7 +16,7 @@ export const H06Provider = ({ children }) => {
 			ECustID: null,
 			InclTest: false,
 			orderType: H06OrderType.getDefaultOption(),
-			orderDir: OrderDir.getDefaultOption(),
+			orderDir: OrderDirs.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

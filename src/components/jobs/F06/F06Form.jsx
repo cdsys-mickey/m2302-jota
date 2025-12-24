@@ -1,7 +1,7 @@
 import { PrintReportButton } from "@/components";
 import AccountingEntryListingPicker from "@/components/picker/AccountingEntryListingPicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";

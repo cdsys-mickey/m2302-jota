@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import FlexBoxView from "../FlexBox/FlexBoxView";
+import { FlexBox } from "shared-components";
 import { ButtonEx } from "@/shared-components";
 
 const ToastExView = memo((props) => {

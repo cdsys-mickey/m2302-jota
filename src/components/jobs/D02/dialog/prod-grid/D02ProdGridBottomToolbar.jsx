@@ -1,7 +1,7 @@
 import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, useContext } from "react";
 import { D02Context } from "@/contexts/D02/D02Context";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { D02ProdGridSubtotalLabel } from "./D02ProdGridSubtotalLabel";
 
 const RightComponent = () => {

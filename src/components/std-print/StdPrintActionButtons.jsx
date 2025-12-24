@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { StdPrintAddAllFieldsButtonContainer } from "./StdPrintAddAllFieldsButtonContainer";
 import { StdPrintRemoveAllFieldsButtonContainer } from "./StdPrintRemoveAllFieldsButtonContainer";
 

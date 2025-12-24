@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 
 const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 	const typographyVariant = useMemo(() => {

@@ -4,6 +4,7 @@ import { useH01 } from "./useH01";
 import StdPrint from "../StdPrint.mjs";
 import { H01Context } from "./H01Context";
 import H01OrderType from "./pickers/H01OrderType.mjs";
+import OrderDirs from "../OrderDirs.mjs";
 
 export const H01Provider = ({ children }) => {
 	const h01 = useH01();
@@ -14,6 +15,7 @@ export const H01Provider = ({ children }) => {
 			InclTX: true,
 			InclTest: false,
 			orderType: H01OrderType.getDefaultOption(),
+			orderDir: OrderDirs.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},
 	});

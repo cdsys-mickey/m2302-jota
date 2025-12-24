@@ -10,7 +10,7 @@ import CustomerPicker from "@/components/picker/CustomerPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H17OrderTypePicker from "./pickers/H17OrderTypePicker";
 

@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import { memo } from "react";
 
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import FormSectionTitle from "@/shared-components/form/FormSectionTitle";

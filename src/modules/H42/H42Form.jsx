@@ -11,7 +11,7 @@ import DeptPicker from "@/components/picker/DeptPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H42OrderTypePicker from "./pickers/H42OrderTypePicker";
 import H42ReportTypePicker from "./pickers/H42ReportTypePicker";

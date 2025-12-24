@@ -1,6 +1,6 @@
 // import BackgroundImage from "@/images/rm218batch4-ning-34_2.jpg";
 import BackgroundImage from "@/images/LightGreenWaves.png";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { forwardRef, memo } from "react";
 
 import Colors from "@/modules/Colors.mjs";

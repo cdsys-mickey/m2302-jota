@@ -1,8 +1,9 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
+import Colors from "@/modules/Colors.mjs";
 
 export const FrameMenuGroupHeader = memo(
 	forwardRef((props, ref) => {
@@ -10,7 +11,7 @@ export const FrameMenuGroupHeader = memo(
 			iconComponent,
 			text,
 			variant = "h6",
-			bgcolor = "primary.main",
+			bgcolor = Colors.PRIMARY,
 			dense = false,
 			sx = [],
 			...rest
@@ -24,9 +25,13 @@ export const FrameMenuGroupHeader = memo(
 				alignItems="center"
 				pt="2px"
 				pl={0.5}
+				bgcolor={bgcolor}
 				sx={[
 					{
-						bgcolor,
+						// ...(bgcolor && {
+						// 	backgroundColor: bgcolor
+						// }),
+						// backgroundColor: Colors.PRIMARY,
 						height: dense ? "26px" : "34px",
 					},
 					...(Array.isArray(sx) ? sx : [sx]),
@@ -55,6 +60,7 @@ FrameMenuGroupHeader.propTypes = {
 	variant: PropTypes.string,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	bgcolor: PropTypes.string,
+	dense: PropTypes.bool
 };
 
 FrameMenuGroupHeader.displayName = "FrameMenuGroupHeader";

@@ -2,7 +2,7 @@ import TaxExcludedCheckbox from "@/components/checkbox/TaxExcludedCheckbox";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import SupplierPicker from "@/components/picker/SupplierPicker";
 import { RstPurchaseOrderPicker } from "@/components/rst-purchase-order-picker/RstPurchaseOrderPicker";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FlexGrid from "@/shared-components/FlexGrid";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import Switch from "react-switch";
 import { useToggle } from "../shared-hooks/useToggle";
-import FlexBoxView from "./FlexBox/FlexBoxView";
+import { FlexBox } from "shared-components";
 import MuiStyles from "@/shared-modules/MuiStyles";
 
 const ICON_WIDTH = 30;

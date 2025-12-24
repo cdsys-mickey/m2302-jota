@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo, useContext, useMemo } from "react";
-import FlexBoxView from "../FlexBox/FlexBoxView";
+import { FlexBox } from "shared-components";
 import FlexTableContext from "./FlexTableContext";
 import FlexTableRowContext from "./FlexTableRowContext";
 

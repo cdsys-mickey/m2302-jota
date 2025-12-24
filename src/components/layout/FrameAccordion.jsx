@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import AccordionDetailsEx from "@/shared-components/accordion-ex/AccordionDetailsEx";
 import AccordionSummaryEx from "@/shared-components/accordion-ex/AccordionSummaryEx";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { memo } from "react";
 import { forwardRef } from "react";

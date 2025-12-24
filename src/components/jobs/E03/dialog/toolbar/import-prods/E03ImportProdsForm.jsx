@@ -2,7 +2,7 @@ import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
 import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { Box, Grid, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";

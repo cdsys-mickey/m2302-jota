@@ -7,7 +7,7 @@ import { memo } from "react";
 
 import { PrintReportButton } from "@/components";
 import RecvAcctRcptCustomerPicker from "@/components/RecvAccCustomerPicker/RecvAcctRcptCustomerPicker";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import G09ReportTypePicker from "./picker/G09ReportTypePicker";
 import { RecvAcctRcptSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctRcptSessionPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";

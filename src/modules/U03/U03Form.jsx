@@ -13,7 +13,7 @@ import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import Auth from "@/modules/Auth.mjs";
 import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import U03DataTypePicker from "./picker/U03DataTypePicker";
 

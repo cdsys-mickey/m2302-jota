@@ -4,7 +4,7 @@ import { TabPanel } from "@mui/lab";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import G07 from "@/modules/G07/G07.mjs";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import G07CarryForwardButtonContainer from "./G07CarryForwardButtonContainer";
 
 const G07CarryTabView = (props) => {

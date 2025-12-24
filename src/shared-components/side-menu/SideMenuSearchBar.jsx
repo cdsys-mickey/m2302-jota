@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { AppBar, IconButton } from "@mui/material";
 import PropTypes from "prop-types";

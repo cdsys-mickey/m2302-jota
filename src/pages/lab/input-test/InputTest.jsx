@@ -11,7 +11,7 @@ import ProdTypeBPicker from "@/components/picker/ProdTypeBPicker";
 import { DateFieldWrapper } from "@/shared-components/date-field/DateFieldWrapper";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FieldGroup from "@/shared-components/FieldGroup";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import LockSwitch from "@/shared-components/LockSwitch";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import {

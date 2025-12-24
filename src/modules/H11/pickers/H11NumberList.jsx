@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { List, ListItem, TextField, Button, Box, Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { TextFieldWrapper } from '@/shared-components/TextFieldEx/TextFieldWrapper';
-import FlexBoxView from '@/shared-components/FlexBox/FlexBoxView';
+import FlexBoxView from '@/shared-components/ZZFlexBox/FlexBoxView';
 import { useWatch } from 'react-hook-form';
 import { Fragment } from 'react';
 

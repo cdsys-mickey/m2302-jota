@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 
 const C01TransformForm = (props) => {

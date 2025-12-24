@@ -1,5 +1,5 @@
 import ProdTypeAPicker from "@/components/picker/ProdTypeAPicker";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { Box, Collapse, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";

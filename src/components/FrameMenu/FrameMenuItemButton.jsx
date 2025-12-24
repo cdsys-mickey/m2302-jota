@@ -1,6 +1,6 @@
 import { forwardRef, memo } from "react";
 import { ListItemButton, ListItemText, Typography } from "@mui/material";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import PropTypes from "prop-types";
 import MuiStyles from "@/shared-modules/MuiStyles";
 

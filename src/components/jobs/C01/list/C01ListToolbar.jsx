@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";

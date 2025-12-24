@@ -5,7 +5,7 @@ import StdPrint from "@/modules/StdPrint.mjs";
 import { H04Context } from "./H04Context";
 import H04ReportType from "./pickers/H04ReportType.mjs";
 import H04OrderType from "./pickers/H04OrderType.mjs";
-import OrderDir from "../OrderDir.mjs";
+import OrderDirs from "../OrderDirs.mjs";
 import H04CalType from "./pickers/H04CalType.mjs";
 
 export const H04Provider = ({ children }) => {
@@ -17,7 +17,7 @@ export const H04Provider = ({ children }) => {
 			InclTest: false,
 			reportType: H04ReportType.getDefaultOption(),
 			orderType: H04OrderType.getDefaultOption(),
-			orderDir: OrderDir.getDefaultOption(),
+			orderDir: OrderDirs.getDefaultOption(),
 			calType: H04CalType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},

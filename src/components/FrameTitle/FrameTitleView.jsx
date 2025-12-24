@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import { forwardRef, memo } from "react";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 
 const FrameTitleView = memo(
 	forwardRef((props, ref) => {

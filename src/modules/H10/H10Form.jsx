@@ -11,7 +11,7 @@ import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
 import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import H10ReportTypePicker from "./pickers/H10ReportTypePicker";

@@ -1,5 +1,5 @@
 import ContainerEx from "@/shared-components/ContainerEx";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";

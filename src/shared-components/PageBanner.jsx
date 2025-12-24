@@ -1,6 +1,6 @@
 import React from "react";
 import { OperatorAvatarContainer } from "@/components/operator/OperatorAvatarContainer";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { OperatorMenuContextProvider } from "@/contexts/OperatorMenuContext";
 
 const borderStyles = (theme) => ({

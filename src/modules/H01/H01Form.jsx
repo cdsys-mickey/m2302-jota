@@ -9,14 +9,15 @@ import { PrintReportButton } from "@/components";
 import ProdPicker from "@/components/picker/ProdPicker";
 import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H01OrderTypePicker from "./pickers/H01OrderTypePicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
 
 const H01Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth="xs" alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -66,31 +67,37 @@ const H01Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={3}>
-								<FlexBox alignItems="flex-start">
+							<Grid item xs={12} sm={12}>
+								<FlexBox sx={{ gap: 1 }}>
 									<CheckboxExField
 										label="含撥出入"
 										name="InclTX"
 										defaultValue={true}
 										variant="outlined"
 										size="small"
-										fullWidth
+									// fullWidth
 									/>
+									<CheckboxExField
+										label="含試贈樣"
+										name="InclTest"
+										defaultValue={true}
+										variant="outlined"
+										size="small"
+									// fullWidth
+									/>
+
 								</FlexBox>
-							</Grid>
-							<Grid item xs={3}>
-								<CheckboxExField
-									label="含試贈樣"
-									name="InclTest"
-									defaultValue={true}
-									variant="outlined"
-									size="small"
-									fullWidth
-								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<H01OrderTypePicker
 									name="orderType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<OrderDirPicker
+									name="orderDir"
 									disableOpenOnInput
 									selectOnFocus
 								/>

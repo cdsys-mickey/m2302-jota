@@ -5,7 +5,7 @@ import StdPrint from "../StdPrint.mjs";
 import { P10Context } from "./P10Context";
 import P10ReportType from "./pickers/P10ReportTypes.mjs";
 import P10OrderType from "./pickers/P10OrderTypes.mjs";
-import OrderDir from "../OrderDir.mjs";
+import OrderDirs from "../OrderDirs.mjs";
 
 export const P10Provider = ({ children }) => {
 	const p10 = useP10();
@@ -17,7 +17,7 @@ export const P10Provider = ({ children }) => {
 			EProdID: null,
 			RptType: P10ReportType.getDefaultOption(),
 			OrdName: P10OrderType.getDefaultOption(),
-			OrdSeq: OrderDir.getDefaultOption(),
+			OrdSeq: OrderDirs.getDefaultOption(),
 			Top: "",
 			outputType: StdPrint.getDefaultOption(),
 		},

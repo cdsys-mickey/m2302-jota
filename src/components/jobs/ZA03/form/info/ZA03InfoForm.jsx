@@ -1,7 +1,7 @@
 import Auth from "@/modules/Auth.mjs";
 import ZA03 from "@/modules/ZA03.mjs";
 import ContainerEx from "@/shared-components/ContainerEx";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { TabPanel } from "@mui/lab";

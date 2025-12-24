@@ -10,6 +10,7 @@ const transformForSubmitting = (payload) => {
 		InclTX,
 		InclTest,
 		orderType,
+		orderDir,
 		...rest
 	} = payload;
 	return {
@@ -22,6 +23,7 @@ const transformForSubmitting = (payload) => {
 		InclTX: InclTX ? "Y" : "N",
 		InclTest: InclTest ? "Y" : "N",
 		OrdName: orderType?.id,
+		OrdSeq: orderDir?.id,
 		...rest,
 	};
 };

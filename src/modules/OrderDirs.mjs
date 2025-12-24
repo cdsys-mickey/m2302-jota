@@ -25,7 +25,7 @@ const getDefaultOption = () => {
 	return getOptionById(1);
 };
 
-const OrderDir = {
+const OrderDirs = {
 	options,
 	getOptionLabel,
 	isOptionEqualToValue,
@@ -34,4 +34,4 @@ const OrderDir = {
 	getDefaultOption,
 };
 
-export default OrderDir;
+export default OrderDirs;

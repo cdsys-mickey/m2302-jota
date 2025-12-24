@@ -2,7 +2,7 @@ import EmployeePicker from "@/components/picker/EmployeePicker";
 import { CheckboxExField } from "@/shared-components";
 import { AdaptiveCustomerPicker } from "@/shared-components/CustomerPicker/AdaptiveCustomerPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Grid } from "@mui/material";

@@ -9,7 +9,7 @@ import LoadingState from "@/shared-constants/loading-states";
 // Custom Components
 // 3rd party libs
 import { useWebApiAsync } from "@/shared-hooks";
-import FlexBoxView from "../FlexBox/FlexBoxView";
+import { FlexBox } from "shared-components";
 import FileDropzoneBox from "./FileDropzoneBox";
 import FileProgress from "./FileProgress";
 

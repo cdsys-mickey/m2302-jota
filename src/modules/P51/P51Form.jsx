@@ -8,7 +8,7 @@ import { memo } from "react";
 import { PrintReportButton } from "@/components";
 import ProdPicker from "@/components/picker/ProdPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P51ReportTypePicker from "./pickers/P51ReportTypePicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";

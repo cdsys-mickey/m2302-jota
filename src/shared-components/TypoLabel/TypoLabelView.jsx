@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import MuiStyles from "../../shared-modules/MuiStyles";
-import FlexBoxView from "../FlexBox/FlexBoxView";
+import { FlexBox } from "shared-components";
 import { FormLabelEx } from "@/shared-components";
 import Types from "@/shared-modules/Types.mjs";
 import Forms from "@/shared-modules/Forms.mjs";

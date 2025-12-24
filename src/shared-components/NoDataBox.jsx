@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, AlertTitle, Box } from "@mui/material";
 import AlertEx from "@/shared-components/AlertEx";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { memo } from "react";
 import { forwardRef } from "react";
 import PropTypes from "prop-types";

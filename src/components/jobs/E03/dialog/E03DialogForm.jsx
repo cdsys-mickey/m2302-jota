@@ -3,7 +3,7 @@ import EmployeePicker from "@/components/picker/EmployeePicker";
 import TransportTypePicker from "@/components/tranport-type-picker/TransportTypePicker";
 import { CheckboxExField, DatePickerEx } from "@/shared-components";
 import { AdaptiveCustomerPicker } from "@/shared-components/CustomerPicker/AdaptiveCustomerPicker";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";

@@ -1,7 +1,7 @@
 import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import { forwardRef, useContext } from "react";
 import { C03Context } from "@/contexts/C03/C03Context";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { C03ProdGridSubtotalLabel } from "./C03ProdGridSubtotalLabel";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import FlexBoxView from "../FlexBox/FlexBoxView";
+import { FlexBox } from "shared-components";
 import PropTypes from "prop-types";
 
 const DSGToolbarBoxViewComponent = (props) => {

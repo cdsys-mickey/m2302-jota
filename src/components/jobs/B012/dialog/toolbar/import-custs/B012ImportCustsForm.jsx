@@ -1,7 +1,7 @@
 import AreaPicker from "@/components/jobs/A06/form/fields/AreaPicker";
 import ChannelPicker from "@/components/jobs/A06/form/fields/ChannelPicker";
 import CustomerPicker from "@/components/picker/CustomerPicker";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import ToolbarEx from "@/shared-components/ToolbarEx/ToolbarEx";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { Box, Grid, Tooltip } from "@mui/material";

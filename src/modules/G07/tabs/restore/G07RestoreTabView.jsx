@@ -6,7 +6,7 @@ import { TabPanel } from "@mui/lab";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import G07RestoreButtonContainer from "./G07RestoreButtonContainer";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 
 const G07RestoreTabView = (props) => {
 	const { ...rest } = props;

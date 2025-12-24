@@ -1,7 +1,7 @@
 import { FrameMenuGroupHeader } from "@/components/FrameMenu/FrameMenuGroupHeader";
 import { UnreadMessageListViewContainer } from "@/components/unread-messages/UnreadMessageListViewContainer";
 import { ButtonEx } from "@/shared-components";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";

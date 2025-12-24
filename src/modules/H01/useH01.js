@@ -27,6 +27,7 @@ export const useH01 = () => {
 		InclTX,
 		InclTest,
 		orderType,
+		orderDir,
 		outputType,
 		`
 	);

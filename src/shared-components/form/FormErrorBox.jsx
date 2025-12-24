@@ -1,7 +1,7 @@
 import { memo } from "react";
 import AlertEx from "../AlertEx";
-import FlexBoxView from "../FlexBox/FlexBoxView";
 import PropTypes from "prop-types";
+import { FlexBox } from "shared-components";
 
 const FormErrorBox = memo((props) => {
 	const { error, ...rest } = props;

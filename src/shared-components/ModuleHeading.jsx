@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { useCallback, useMemo } from "react";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 
 const ModuleHeading = (props) => {
 	const {

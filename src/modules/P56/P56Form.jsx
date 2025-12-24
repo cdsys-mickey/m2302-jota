@@ -10,7 +10,7 @@ import CmsAreaPicker from "@/components/CmsAreaPicker/CmsAreaPicker";
 import CmsCityPicker from "@/components/CmsCityPicker/CmsCityPicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P56ReportTypePicker from "./pickers/P56ReportTypePicker";
 

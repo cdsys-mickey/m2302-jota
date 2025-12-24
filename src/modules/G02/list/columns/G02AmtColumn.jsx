@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import ListColumn from "@/shared-components/listview/ListColumn";
 import PropTypes from "prop-types";
 

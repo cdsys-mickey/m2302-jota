@@ -1,5 +1,5 @@
 import { ZA03CopyAuthDeptCheckboxGroupContainer } from "@/components/jobs/ZA03/copy-auth/ZA03CopyAuthDeptCheckboxGroupContainer";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { Grid, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";

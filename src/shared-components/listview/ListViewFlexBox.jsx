@@ -1,5 +1,5 @@
 import { Paper, styled } from "@mui/material";
-import FlexBoxView from "../FlexBox/FlexBoxView";
+import { FlexBox } from "shared-components";
 
 const ListViewFlexBox = styled(FlexBoxView, {
 	name: "ListViewBox",

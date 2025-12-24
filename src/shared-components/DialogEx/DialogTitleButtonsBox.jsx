@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { styled } from "@mui/system";
 
 const DialogTitleButtonsBox = styled(FlexBox)(

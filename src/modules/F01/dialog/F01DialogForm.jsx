@@ -1,5 +1,5 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { CheckboxExField } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";

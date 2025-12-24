@@ -6,7 +6,7 @@ import P09ReportType from "./pickers/P09ReportType.mjs";
 import { useP09 } from "./useP09";
 import P09DataSource from "./pickers/P09DataSource.mjs";
 import P09OrderType from "./pickers/P09OrderType.mjs";
-import OrderDir from "../OrderDir.mjs";
+import OrderDirs from "../OrderDirs.mjs";
 import P09CalType from "./pickers/P09CalType.mjs";
 
 export const P09Provider = ({ children }) => {
@@ -21,7 +21,7 @@ export const P09Provider = ({ children }) => {
 			// InclTest: false,
 			RptType: P09ReportType.getDefaultOption(),
 			OrdName: P09OrderType.getDefaultOption(),
-			OrdSeq: OrderDir.getDefaultOption(),
+			OrdSeq: OrderDirs.getDefaultOption(),
 			Rate: P09CalType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},

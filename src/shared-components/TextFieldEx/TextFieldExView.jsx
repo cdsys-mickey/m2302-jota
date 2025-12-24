@@ -7,7 +7,7 @@ import { useState } from "react";
 import MuiStyles from "@/shared-modules/MuiStyles";
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 
 const IconProps = {
 	fontSize: "small",

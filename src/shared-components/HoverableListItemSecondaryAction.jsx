@@ -1,6 +1,6 @@
-import FlexBoxView from "./FlexBox/FlexBoxView";
 import clsx from "clsx";
 import { forwardRef } from "react";
+import { FlexBox } from "shared-components";
 
 const HoverableListItemSecondaryAction = forwardRef(
 	({ className, sx = [], top = 0, right = 0, ...rest }, ref) => {

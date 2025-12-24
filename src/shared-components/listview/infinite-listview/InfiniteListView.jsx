@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { Container } from "@mui/material";
 import clsx from "clsx";
 import PropTypes from "prop-types";

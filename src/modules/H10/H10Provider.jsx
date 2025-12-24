@@ -5,7 +5,7 @@ import StdPrint from "@/modules/StdPrint.mjs";
 import { H10Context } from "./H10Context";
 import H10ReportType from "./pickers/H10ReportType.mjs";
 import H10OrderType from "./pickers/H10OrderType.mjs";
-import OrderDir from "../OrderDir.mjs";
+import OrderDirs from "../OrderDirs.mjs";
 import H10CalType from "./pickers/H10CalType.mjs";
 
 export const H10Provider = ({ children }) => {

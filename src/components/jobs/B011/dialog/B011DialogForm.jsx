@@ -1,7 +1,7 @@
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import { BContext } from "@/contexts/B/BContext";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import FormBox from "@/shared-components/form/FormBox";

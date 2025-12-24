@@ -9,7 +9,7 @@ import { memo } from "react";
 import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import { PrintReportButton } from "@/components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H40OrderTypePicker from "./pickers/H40OrderTypePicker";
 import H40ReportTypePicker from "./pickers/H40ReportTypePicker";

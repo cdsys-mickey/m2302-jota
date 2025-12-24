@@ -10,7 +10,7 @@ import { PrintReportButton } from "@/components";
 import CustomerPicker from "@/components/picker/CustomerPicker";
 import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 

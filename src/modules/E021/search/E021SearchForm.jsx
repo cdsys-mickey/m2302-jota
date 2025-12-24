@@ -1,7 +1,7 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";

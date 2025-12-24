@@ -1,7 +1,7 @@
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import { Grid } from "@mui/material";

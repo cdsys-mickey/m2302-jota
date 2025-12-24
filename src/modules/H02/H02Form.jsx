@@ -9,7 +9,7 @@ import { PrintReportButton } from "@/components";
 import ProdPicker from "@/components/picker/ProdPicker";
 import { CheckboxExField } from "@/shared-components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 
 const H02Form = memo((props) => {

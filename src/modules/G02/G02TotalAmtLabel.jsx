@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { forwardRef } from "react";
 import { memo } from "react";
 import { G02Context } from "./G02Context";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 
 const G02TotalAmtLabel = memo(forwardRef((props, ref) => {
 	const { ...rest } = props;

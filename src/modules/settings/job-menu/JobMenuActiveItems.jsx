@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { Box, Paper, styled } from "@mui/material";

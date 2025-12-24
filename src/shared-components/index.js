@@ -34,7 +34,6 @@ import toastEx from "./ToastEx/toastEx";
 import ClearInputButton from "./ClearInputButton/ClearInputButton";
 import TooltipExView from "./TooltipEx/TooltipExView";
 import ToolbarEx from "./ToolbarEx/ToolbarEx";
-import FlexBoxView from "./FlexBox/FlexBoxView";
 
 export {
 	ButtonExContainer as ButtonEx,
@@ -67,5 +66,4 @@ export {
 	toastEx,
 	TooltipExView as TooltipEx,
 	ToolbarEx,
-	FlexBoxView as FlexBox,
 };

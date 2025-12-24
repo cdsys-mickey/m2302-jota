@@ -5,7 +5,7 @@ import { P03Context } from "./P03Context";
 import P03ReportType from "./pickers/P03ReportType.mjs";
 import { useP03 } from "./useP03";
 import P03OrderType from "./pickers/P03OrderType.mjs";
-import OrderDir from "../OrderDir.mjs";
+import OrderDirs from "../OrderDirs.mjs";
 import P03CalType from "./pickers/P03CalType.mjs";
 
 export const P03Provider = ({ children }) => {
@@ -19,7 +19,7 @@ export const P03Provider = ({ children }) => {
 			InclTest: false,
 			RptType: P03ReportType.getDefaultOption(),
 			OrdName: P03OrderType.getDefaultOption(),
-			OrdSeq: OrderDir.getDefaultOption(),
+			OrdSeq: OrderDirs.getDefaultOption(),
 			Rate: P03CalType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},

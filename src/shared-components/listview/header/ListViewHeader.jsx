@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";

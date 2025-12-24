@@ -12,7 +12,7 @@ import ProdLinePicker from "@/components/picker/ProdLinePicker";
 import ProdPicker from "@/components/picker/ProdPicker";
 import { PrintReportButton } from "@/components";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H24OrderTypePicker from "./pickers/H24OrderTypePicker";
 import H24ReportTypePicker from "./pickers/H24ReportTypePicker";

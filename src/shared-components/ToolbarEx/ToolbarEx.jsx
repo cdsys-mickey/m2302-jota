@@ -1,4 +1,4 @@
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 

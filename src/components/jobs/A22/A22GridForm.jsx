@@ -7,7 +7,7 @@ import ProdPicker from "@/components/picker/ProdPicker";
 import { A22GridForm2Container } from "./A22GridForm2Container";
 import { A22GridFormToggleButtonContainer } from "./A22GridFormToggleButtonContainer";
 import { A22GridLoadButtonContainer } from "./A22GridLoadButtonContainer";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import FormBox from "@/shared-components/form/FormBox";
 

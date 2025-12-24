@@ -13,7 +13,7 @@ import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import ValuePicker from "@/components/value-picker/ValuePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import Fieldset from "@/shared-components/Fieldset";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
 import DateFormats from "@/shared-modules/DateFormats.mjs";

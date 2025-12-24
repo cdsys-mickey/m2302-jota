@@ -2,7 +2,7 @@ import { Box, Grid } from "@mui/material";
 import { memo } from "react";
 
 import BankPicker from "@/components/BankPicker/BankPicker";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 
 import CmsAreaPicker from "@/components/CmsAreaPicker/CmsAreaPicker";

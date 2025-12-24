@@ -1,6 +1,6 @@
 import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
 import { RadioGroupEx, TextFieldEx } from "@/shared-components";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import { TabPanel } from "@mui/lab";
 import { Grid, InputAdornment, Radio, Typography } from "@mui/material";
 import PropTypes from "prop-types";

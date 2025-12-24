@@ -1,6 +1,6 @@
 import { RecvAcctCurrentSessionPicker } from "@/components/RecvAccountSessionPicker/RecvAcctCurrentSessionPicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "@/shared-components";
+import { FlexBox } from "shared-components";
 import FlexToolbar from "@/shared-components/FlexToolbar/FlexToolbar";
 import { Box, Grid } from "@mui/material";
 import PropTypes from "prop-types";

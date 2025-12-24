@@ -1,6 +1,6 @@
 import { memo } from "react";
 import AlertEx from "../AlertEx";
-import FlexBoxView from "../FlexBox/FlexBoxView";
+import FlexBoxView from "../ZZFlexBox/FlexBoxView";
 import PropTypes from "prop-types";
 
 const FormAlertBox = memo((props) => {

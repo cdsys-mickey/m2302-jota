@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { H07Context } from "./H07Context";
 import H07OrderType from "./pickers/H07OrderType.mjs";
 import { useH07 } from "./useH07";
-import OrderDir from "../OrderDir.mjs";
+import OrderDirs from "../OrderDirs.mjs";
 
 export const H07Provider = ({ children }) => {
 	const h07 = useH07();
@@ -15,7 +15,7 @@ export const H07Provider = ({ children }) => {
 			InclTest: false,
 			// reportType: H07ReportType.getDefaultOption(),
 			orderType: H07OrderType.getDefaultOption(),
-			orderDir: OrderDir.getOptionById(2),
+			orderDir: OrderDirs.getOptionById(2),
 			// calType: H07CalType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 		},
