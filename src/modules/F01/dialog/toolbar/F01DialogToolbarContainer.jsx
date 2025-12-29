@@ -4,16 +4,23 @@ import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import F01DialogEditToolbar from "./F01DialogEditToolbar";
 import F01DialogViewToolbar from "./F01DialogViewToolbar";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const F01DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
 	const f01 = useContext(F01Context);
+	const auth = useContext(AuthContext);
 	const form = useFormContext();
 
 	const handlePrint = form.handleSubmit(
 		f01.onPrintSubmit,
 		f01.onPrintSubmitError
 	);
+
+	const handleDebugPrint = form.handleSubmit(
+		f01.onDebugPrint,
+	);
+
 
 	if (!f01.itemDataReady) {
 		return false;
@@ -43,6 +50,7 @@ export const F01DialogToolbarContainer = (props) => {
 			onEdit={f01.canUpdate ? f01.promptUpdating : null}
 			onDelete={f01.canDelete ? f01.confirmDelete : null}
 			onPrint={f01.canPrint ? handlePrint : null}
+			onDebugPrint={auth.debugEnabled ? handleDebugPrint : null}
 			onSideDrawerOpen={f01.handleSideDrawerOpen}
 			{...rest}
 		/>

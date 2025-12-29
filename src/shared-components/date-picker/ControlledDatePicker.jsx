@@ -10,9 +10,9 @@ import { DatePicker } from "@mui/x-date-pickers";
 import PropTypes from "prop-types";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { FormMetaContext } from "../form-meta/FormMetaContext";
+import { FlexBox } from "shared-components";
 import ControllerWrapper from "../ControllerWrapper";
-import FlexBoxView from "../ZZFlexBox/FlexBoxView";
+import { FormMetaContext } from "../form-meta/FormMetaContext";
 
 const DEFAULT_PROPS = {
 	size: "small",
@@ -132,7 +132,7 @@ const ControlledDatePicker = ({
 	}, [borderless, label, required])
 
 	const BoxComponent = useMemo(() => {
-		return inline ? FlexBoxView : Box;
+		return inline ? FlexBox : Box;
 	}, [inline]);
 
 	return (

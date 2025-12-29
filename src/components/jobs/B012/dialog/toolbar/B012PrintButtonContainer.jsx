@@ -39,7 +39,7 @@ const B012PrintButtonContainer = memo(
 		}
 
 		return (
-			<TooltipWrapper title={_title} arrow >
+			<TooltipWrapper title={_title} arrow disabled={disabled} >
 				<ButtonEx
 					responsive
 					ref={ref}

@@ -1,11 +1,11 @@
 import StdPrint from "@/modules/StdPrint.mjs";
-import { DropDownButton } from "@/shared-components";
+import { DropDownButton } from "shared-components";
 import PropTypes from "prop-types";
 import DebugReportButton from "@/components/DebugReportButton";
 
 
 const PrintReportButtonView = (props) => {
-	const { onDebugSubmit, onItemClick, onSelect, onClick, ...rest } = props;
+	const { onDebugSubmit, onItemClick, onSelect, onClick, variant = "text", ...rest } = props;
 
 	return (
 		<DropDownButton
@@ -13,7 +13,8 @@ const PrintReportButtonView = (props) => {
 			dense
 			excludeSelected
 			hoverIconToOpen
-			variant="text"
+			// variant="text"
+			variant={variant}
 			noGutter
 			color="neutral-dark"
 			label="列印方式"
@@ -32,7 +33,7 @@ const PrintReportButtonView = (props) => {
 				}
 			}}
 			{...(onDebugSubmit && {
-				leftButtons: <DebugReportButton onClick={onDebugSubmit} />
+				leftButtons: <DebugReportButton variant={variant} onClick={onDebugSubmit} />
 			})}
 			title="Ctrl-Enter"
 			{...rest}
@@ -45,6 +46,7 @@ PrintReportButtonView.propTypes = {
 	onClick: PropTypes.func,
 	onItemClick: PropTypes.func,
 	onSelect: PropTypes.func,
+	variant: PropTypes.string
 }
 
 PrintReportButtonView.displayName = "PrintReportButtonView";

@@ -1,7 +1,7 @@
 import { Paper, styled } from "@mui/material";
 import { FlexBox } from "shared-components";
 
-const ListViewFlexBox = styled(FlexBoxView, {
+const ListViewFlexBox = styled(FlexBox, {
 	name: "ListViewBox",
 	shouldForwardProp: (prop) => prop !== "withHeader",
 })(({ theme, withHeader }) => ({

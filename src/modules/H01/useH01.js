@@ -40,7 +40,7 @@ export const useH01 = () => {
 
 	const onDebugSubmit = useCallback(
 		(payload) => {
-			console.log("onSubmit", payload);
+			console.log("onDebugSubmit", payload);
 			const data = {
 				...H01.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,

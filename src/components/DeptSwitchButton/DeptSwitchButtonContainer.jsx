@@ -6,7 +6,7 @@ import useDebounceState from "@/shared-hooks/useDebounceState";
 import { useWebApiAsync } from "@/shared-hooks";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
-import DropDownButton from "../../shared-components/DropDownButton";
+import DropDownButton from "../../shared-components/DropDownButton/DropDownButtonView";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import useSharedOptions from "@/shared-components/option-picker/useSharedOptions";
 import Auth from "@/modules/Auth.mjs";

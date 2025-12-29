@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import StdPrint from "../../modules/StdPrint.mjs";
-import FlexBoxView from "../../shared-components/ZZFlexBox/FlexBoxView";
 import { useScrollable } from "../../shared-hooks/useScrollable";
 import StdField from "./StdField";
 import { useMemo } from "react";
+import { FlexBox } from "shared-components";
 
 const ListItem = styled("li")(({ theme }) => ({
 	margin: "8px",

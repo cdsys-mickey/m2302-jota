@@ -1,18 +1,11 @@
 import { PrintReportButton } from "@/components";
 import { F01Context } from "@/modules/F01/F01Context";
 import { useContext } from "react";
-import { useFormContext } from "react-hook-form";
 
 const F01ExportButtonContainer = (props) => {
 	const { ...rest } = props;
-	const form = useFormContext();
 	const f01 = useContext(F01Context);
 	const { canPrint } = f01;
-
-	const handleSubmit = form.handleSubmit(
-		f01.onPrintSubmit,
-		f01.onPrintSubmitError
-	);
 
 	if (!canPrint) {
 		return false;
@@ -20,7 +13,6 @@ const F01ExportButtonContainer = (props) => {
 
 	return (
 		<PrintReportButton
-			onSubmit={handleSubmit}
 			{...rest}
 		/>
 	)

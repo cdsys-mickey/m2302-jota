@@ -2,7 +2,7 @@ import { FrameMenuButton } from "@/shared-components";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import FlexBoxView from "../../shared-components/ZZFlexBox/FlexBoxView";
+import { FlexBox } from "shared-components";
 
 const ZZFrameTitle = memo(
 	forwardRef((props, ref) => {

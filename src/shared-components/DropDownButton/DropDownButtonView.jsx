@@ -12,17 +12,16 @@ import {
 	MenuList,
 	Paper,
 	Popper,
-	Tooltip,
 	Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useCallback, useMemo, useRef, useState } from "react";
-import LoadingTypography from "./LoadingTypography";
+import LoadingTypography from "../LoadingTypography";
 import { Box } from "@mui/system";
-import TooltipWrapper from "./TooltipWrapper/TooltipWrapper";
+import TooltipWrapper from "../TooltipWrapper/TooltipWrapper";
 
 
-const DropDownButton = memo(forwardRef((props, ref) => {
+const DropDownButtonView = memo(forwardRef((props, ref) => {
 	const {
 		size = "medium",
 		defaultSelected,
@@ -165,7 +164,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 	}, [options?.length, split])
 
 	const showOptions = useMemo(() => {
-		return loading == false && options;
+		return !loading && !!options;
 	}, [loading, options])
 
 	return (
@@ -258,7 +257,7 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 
 						}
 						]}>
-						<IconComponent fontSize="small" htmlColor={color} {...slotProps?.dropdownButton?.icon} />
+						<IconComponent fontSize="small" htmlColor={color} {...slotProps?.dropdownButtonView?.icon} />
 					</Button>
 				)}
 			</ButtonGroup>
@@ -348,8 +347,8 @@ const DropDownButton = memo(forwardRef((props, ref) => {
 		</>
 	);
 }));
-DropDownButton.displayName = "DropDownButtonView";
-DropDownButton.propTypes = {
+DropDownButtonView.displayName = "DropDownButtonViewView";
+DropDownButtonView.propTypes = {
 	label: PropTypes.string,
 	onSelect: PropTypes.func,
 	onClick: PropTypes.func,
@@ -379,6 +378,7 @@ DropDownButton.propTypes = {
 	IconComponent: PropTypes.elementType,
 	color: PropTypes.string,
 	leftButtons: PropTypes.node,
-	title: PropTypes.string
+	title: PropTypes.string,
+	disabled: PropTypes.bool
 }
-export default DropDownButton;
+export default DropDownButtonView;

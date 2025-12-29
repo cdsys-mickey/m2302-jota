@@ -13,7 +13,7 @@ import { useQuerySync } from "@/shared-hooks/useQuerySync";
 import { useScrollable } from "@/shared-hooks/useScrollable";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { useMediaQuery } from "@mui/system";
+
 import { forwardRef, useCallback, useContext, useMemo, useRef } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -21,6 +21,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import P42DialogForm from "../form/P42DialogForm";
 import P42Drawer from "../P42Drawer";
 import { P42DialogButtonsContainer } from "./buttons/P42DialogButtonsContainer";
+import { useMediaQuery } from "@mui/material";
 
 export const P42DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

@@ -52,7 +52,7 @@ const FormFieldLabelView = memo(
 		}, [children, emptyText, loading, stringify, value]);
 
 		const BoxComponent = useMemo(() => {
-			return inline || flex ? FlexBoxView : Box;
+			return inline || flex ? FlexBox : Box;
 		}, [flex, inline]);
 
 		const defaultBoxProps = useMemo(() => {

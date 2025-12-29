@@ -19,7 +19,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import P35DialogForm from "../form/P35DialogForm";
 import P35Drawer from "../P35Drawer";
 import { P35DialogButtonsContainer } from "./buttons/P35DialogButtonsContainer";
-import { useMediaQuery } from "@mui/system";
+import { useMediaQuery } from "@mui/material";
 
 export const P35DialogContainer = forwardRef((props, ref) => {
 	const { ...rest } = props;

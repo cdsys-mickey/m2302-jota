@@ -5,7 +5,8 @@ import { useSignalR } from "@/shared-hooks/useSignalR";
 
 import { memo, useCallback, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { consoleEx, toastEx } from "shared-components";
+import { toastEx } from "shared-components/toast-ex";
+
 
 const SignalRTest = memo(() => {
 	const form = useForm();
@@ -32,7 +33,7 @@ const SignalRTest = memo(() => {
 	// }, [connected, connecting, stopping]);
 
 	const broadcastedHandler = useCallback((payload) => {
-		consoleEx.log(`messageBrocasted`, payload);
+		console.log(`messageBrocasted`, payload);
 		const { level, message } = payload;
 		toastEx.info(`[${level}]${message}`);
 	}, []);

@@ -13,9 +13,11 @@ import { useWebApiAsync } from "@/shared-hooks";
 import Objects from "@/shared-modules/Objects.mjs";
 import { nanoid } from "nanoid";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
-import useJotaReports from "../../hooks/useJotaReports";
-import { useSideDrawer } from "../../hooks/useSideDrawer";
+import useJotaReports from "@/hooks/useJotaReports";
+import { useSideDrawer } from "@/hooks/useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import useDebugDialog from "@/hooks/useDebugDialog";
 
 export const useF01 = () => {
 	const crud = useContext(CrudContext);
@@ -26,6 +28,8 @@ export const useF01 = () => {
 		token,
 		moduleId: "F01",
 	});
+	const appFrame = useContext(AppFrameContext);
+	const debugDialog = useDebugDialog();
 	const config = useContext(ConfigContext);
 	const doBatch = useMemo(() => {
 		return !!config?.BATCH?.F01;
@@ -481,6 +485,34 @@ export const useF01 = () => {
 	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
+	const onDebugPrint = useCallback(
+		(payload) => {
+			console.log("onDebugPrint", payload);
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
+				}),
+				DeptID: operator?.CurDeptID,
+				JobName: "F01",
+				IDs: crud.itemData?.PhyID,
+			};
+			console.log("data", data);
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			crud.itemData?.PhyID,
+			debugDialog,
+			operator?.CurDeptID,
+			reportUrl,
+		]
+	);
+
 	const onPrintSubmit = useCallback(
 		(payload) => {
 			console.log("onPrintSubmit", payload);
@@ -553,6 +585,7 @@ export const useF01 = () => {
 		peekProds,
 		ipState,
 		// 列印
+		onDebugPrint,
 		onPrintSubmit,
 		onPrintSubmitError,
 		handlePrint,

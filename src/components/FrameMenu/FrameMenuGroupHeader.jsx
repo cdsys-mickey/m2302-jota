@@ -11,7 +11,8 @@ export const FrameMenuGroupHeader = memo(
 			iconComponent,
 			text,
 			variant = "h6",
-			bgcolor = Colors.PRIMARY,
+			// bgcolor = Colors.PRIMARY,
+			bgcolor = "primary.main",
 			dense = false,
 			sx = [],
 			...rest

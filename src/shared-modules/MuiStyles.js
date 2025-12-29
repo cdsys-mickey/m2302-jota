@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { amber } from "@mui/material/colors";
 
 const STYLES = Object.freeze({
