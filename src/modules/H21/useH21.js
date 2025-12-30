@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";

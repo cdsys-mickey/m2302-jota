@@ -24,7 +24,7 @@ const JobMenuForm = memo((props) => {
 
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
-			<Grid container spacing={2}>
+			<Grid container spacing={1}>
 				<Grid item xs={6}>
 					<SectionLabel>可用作業</SectionLabel>
 					<JobMenuAuthItemsContainer height={height} />

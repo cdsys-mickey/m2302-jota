@@ -5,30 +5,30 @@ import { useChangeTracking } from "./useChangeTracking";
 
 export default function useVersionCheck(opts) {
 	const { autoPrompt = true } = opts ?? {};
-	const { frontEnd, version, loading } = useContext(AppContext);
+	const { version, loading, frontEnd } = useContext(AppContext);
 	const dialogs = useContext(DialogsContext);
 
 	const promptRefresh = useCallback(() => {
 		dialogs.confirm({
-			message: `偵測到新版本 ${frontEnd?.minVersion}, 按下「確定更新」即可更新\n*** 若更新後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
+			message: `偵測到新版本 ${frontEnd?.version}, 按下「確定更新」即可更新\n*** 若更新後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
 			confirmText: "更新",
 			onConfirm: () => {
 				window.location.reload(true);
 			},
 		});
-	}, [dialogs, frontEnd?.minVersion]);
+	}, [dialogs, frontEnd?.version]);
 
 	const isUpToDate = useMemo(() => {
-		return loading == false && version >= frontEnd?.minVersion;
-	}, [frontEnd?.minVersion, loading, version]);
+		return loading == false && version >= frontEnd?.version;
+	}, [frontEnd?.version, loading, version]);
 
 	const isRefreshRequired = useMemo(() => {
 		return (
 			import.meta.env.VITE_PROFILE !== "dev" &&
 			loading == false &&
-			frontEnd?.minVersion > version
+			frontEnd?.version > version
 		);
-	}, [frontEnd?.minVersion, loading, version]);
+	}, [frontEnd?.version, loading, version]);
 
 	useChangeTracking(() => {
 		if (autoPrompt && isRefreshRequired) {

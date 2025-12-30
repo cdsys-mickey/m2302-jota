@@ -13,7 +13,7 @@ const REBPosTabView = (props) => {
 	const { minDate, onDeptChange, ...rest } = props;
 	return (
 		<TabPanel value={REB.TabType.POS_DATA} {...rest}>
-			<Grid container columns={12} spacing={2}>
+			<Grid container columns={12} spacing={1}>
 				<Grid item xs={12}>
 					{/* <AppDeptPicker
 						filterByOperator
@@ -81,7 +81,7 @@ const REBPosTabView = (props) => {
 			</Grid>
 
 			<FlexBox mt={1.8}>
-				<Grid container spacing={2}>
+				<Grid container spacing={1}>
 					<Grid item xs={12} sm={6}></Grid>
 					<Grid item xs={12} sm={6}>
 						<FlexBox justifyContent="flex-end">

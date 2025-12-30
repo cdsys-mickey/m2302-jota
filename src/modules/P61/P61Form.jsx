@@ -22,7 +22,7 @@ const P61Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="交易日期" required
 									leftComponent={<DatePickerWrapper
@@ -116,7 +116,7 @@ const P61Form = memo((props) => {
 							</Grid>
 						</Grid>
 						<FlexBox mt={2}>
-							<Grid container spacing={2}>
+							<Grid container spacing={1}>
 								<Grid item xs={12} sm={6}>
 									{/* <FlexBox alignItems="center">
 										<StdPrintOutputModePicker

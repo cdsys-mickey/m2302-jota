@@ -1,5 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
+import { ConfigContext } from "shared-components/config";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApiAsync } from "@/shared-hooks";
 import queryString from "query-string";
@@ -14,6 +15,7 @@ export const useAppFrame = (opts = {}) => {
 	const { mobile } = useContext(ResponsiveContext);
 	const { toModule, toLanding } = useAppRedirect();
 	const location = useLocation();
+	const config = useContext(ConfigContext);
 
 	const drawerMode = useMemo(() => {
 		const queryParams = new URLSearchParams(location.search);
@@ -133,9 +135,7 @@ export const useAppFrame = (opts = {}) => {
 					const newLogKey = await spawnNewSession();
 					console.log("newLogKey", newLogKey);
 
-					const url = `${import.meta.env.VITE_PUBLIC_URL}/modules/${
-						module.WebName
-					}`;
+					const url = `${config.PUBLIC_URL}/modules/${module.WebName}`;
 					// const url = `${config.PUBLIC_URL}modules/${module.WebName}`;
 					const qs = queryString.stringify({
 						drawer: 0,

@@ -19,7 +19,7 @@ const SignInXView = memo(forwardRef((props, ref) => {
 			}}
 			{...rest}>
 			<Box pt={3} pb={1} px={2}>
-				<Grid container spacing={2}>
+				<Grid container spacing={1}>
 					<Grid item xs={12}>
 						<ControlledTextField
 							name="ac"

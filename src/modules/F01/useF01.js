@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import CrudContext from "@/contexts/crud/CrudContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import F01 from "@/modules/F01/F01.mjs";

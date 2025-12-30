@@ -14,7 +14,7 @@ const F07Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12}>
 								<FormFieldLabel
 									// typo

@@ -8,7 +8,7 @@ export const RecvAccountSessionGridRow = memo(
 	forwardRef((props, ref) => {
 		const { value } = props;
 		return (
-			<Grid ref={ref} container columns={24} spacing={2}>
+			<Grid ref={ref} container columns={24} spacing={1}>
 				<RecvAcctYMColumn>{value["AccYM"]}</RecvAcctYMColumn>
 				<RecvAccountSessionColumn>{value["Stage"]}</RecvAccountSessionColumn>
 			</Grid>

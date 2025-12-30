@@ -24,7 +24,7 @@ const H14_1Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間"
 									leftComponent={<DatePickerWrapper
@@ -87,7 +87,7 @@ const H14_1Form = memo((props) => {
 							defaultValue={false}
 							size="small"
 						/>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend={forNewCustomer ? "新客戶區間" : "客戶區間"}
 									leftComponent={<CustomerPicker
@@ -152,7 +152,7 @@ const H14_1Form = memo((props) => {
 							</Grid>
 						</Grid>
 						<FlexBox mt={1} >
-							<Grid container spacing={2}>
+							<Grid container spacing={1}>
 								<FlexGrid item xs={12} sm={6} alignItems="center">
 									{/* <StdPrintOutputModePicker
 										required

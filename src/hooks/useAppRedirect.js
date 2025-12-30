@@ -5,11 +5,14 @@ import { useCallback, useContext } from "react";
 import AppRoutes from "../modules/md-app-routes";
 import Auth from "../modules/Auth.mjs";
 import { AppContext } from "@/contexts/app/AppContext";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 const useAppRedirect = () => {
 	const { redirectTo } = useRedirect();
 	const crud = useContext(CrudContext);
 	const { getSessionCookie } = useContext(AppContext) ?? {};
+	const app = useContext(AppContext);
+	const auth = useContext(AuthContext);
 
 	const toRenew = useCallback(() => {
 		redirectTo("/renew");

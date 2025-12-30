@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Auth from "../modules/Auth.mjs";
 import ActionState from "../shared-modules/ActionState/ActionState";
 import { SharedOptionsContext } from "@/shared-components/option-picker/SharedOptionsContext";
+import { ConfigContext } from "shared-components/config";
 
 const LOG_KEY = "LogKey";
 
@@ -25,10 +26,11 @@ export const useAuth = () => {
 	const { toLogin, toLanding, toRenew } = useAppRedirect();
 	const { httpGetAsync, httpPutAsync } = useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
+	const config = useContext(ConfigContext);
 	const deptSwitchAction = useAction();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { getSessionCookie } = useContext(AppContext);
+	const app = useContext(AppContext);
 	const messaging = useContext(MessagingContext);
 	const { connectionId } = messaging;
 	const sharedOptions = useContext(SharedOptionsContext);
@@ -511,6 +513,23 @@ export const useAuth = () => {
 	// 	}
 	// }, [location, navigate]);
 
+	//COOKIE
+	// const ROOT_COOKIE_OPTS = useMemo(
+	// 	() => ({
+	// 		path: `${config.PUBLIC_URL || "/"}`,
+	// 		expires: 365,
+	// 	}),
+	// 	[config.PUBLIC_URL]
+	// );
+
+	// const AUTH_COOKIE_OPTS = useMemo(
+	// 	() => ({
+	// 		path: `${config.PUBLIC_URL ?? "" + "/auth"}`,
+	// 		expires: 365,
+	// 	}),
+	// 	[config.PUBLIC_URL]
+	// );
+
 	return {
 		...state,
 		...authoritiesState,
@@ -542,5 +561,7 @@ export const useAuth = () => {
 		debugEnabled,
 		// ...taskListLoader,
 		handleSessionExpired,
+		// ROOT_COOKIE_OPTS,
+		// AUTH_COOKIE_OPTS,
 	};
 };

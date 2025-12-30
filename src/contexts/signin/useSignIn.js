@@ -12,6 +12,7 @@ import { AppContext } from "../app/AppContext";
 // import { toastEx } from "shared-components";
 import { toastEx } from "@/shared-components";
 import { useWebApiAsync } from "@/shared-hooks";
+import { AuthContext } from "../auth/AuthContext";
 
 const PARAM_ACCOUNT = "ac";
 const PARAM_PWORD = "pw";
@@ -26,6 +27,7 @@ export const useSignIn = () => {
 	const { toLanding } = useAppRedirect();
 	const location = useLocation();
 	const app = useContext(AppContext);
+	const auth = useContext(AuthContext);
 	const { setSessionCookie } = app;
 
 	const form = useForm({

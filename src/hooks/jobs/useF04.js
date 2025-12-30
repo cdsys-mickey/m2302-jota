@@ -8,7 +8,7 @@ import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
 import { useWebApiAsync } from "@/shared-hooks";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 
 export const useF04 = () => {
 	const config = useContext(ConfigContext);

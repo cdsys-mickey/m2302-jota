@@ -6,7 +6,7 @@ import { useInfiniteLoader } from "@/shared-hooks/useInfiniteLoader";
 import { useCallback, useContext, useMemo } from "react";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 
 export const useB06 = () => {
 	const auth = useContext(AuthContext);
@@ -23,14 +23,17 @@ export const useB06 = () => {
 		initialFetchSize: 50,
 	});
 
-	const handleInqIdClick = useCallback((e, rowData) => {
-		e?.stopPropagation();
-		console.log("handleInqIdClick", rowData);
-		if (b05 && rowData.InqID_N) {
-			b05.cancelAction();
-			b05.loadItem({ id: rowData.InqID_N });
-		}
-	}, [b05]);
+	const handleInqIdClick = useCallback(
+		(e, rowData) => {
+			e?.stopPropagation();
+			console.log("handleInqIdClick", rowData);
+			if (b05 && rowData.InqID_N) {
+				b05.cancelAction();
+				b05.loadItem({ id: rowData.InqID_N });
+			}
+		},
+		[b05]
+	);
 
 	const onSearchSubmit = useCallback(
 		(data) => {
@@ -50,8 +53,8 @@ export const useB06 = () => {
 	}, []);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebB06Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebB06Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ from: "InqDate1", to: "InqDate2" });
 
@@ -73,10 +76,14 @@ export const useB06 = () => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	return {
 		...listLoader,
@@ -88,6 +95,6 @@ export const useB06 = () => {
 		// handleSelect,
 		...appModule,
 		handleInqIdClick,
-		handlePrint
+		handlePrint,
 	};
 };

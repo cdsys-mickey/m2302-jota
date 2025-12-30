@@ -7,7 +7,7 @@ import { useCallback, useContext, useMemo } from "react";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 
 export const useA19 = () => {
 	const { token } = useContext(AuthContext);
@@ -32,19 +32,31 @@ export const useA19 = () => {
 		InclTest,
 		outputType,
 		`
-	)
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebA19Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebA19Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = A19.transformForSubmitting(payload);
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = A19.transformForSubmitting(payload);
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {

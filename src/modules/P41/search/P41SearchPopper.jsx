@@ -28,7 +28,7 @@ const P41SearchPopper = memo(
 				<PopperTitle onClose={onClose}>進階篩選</PopperTitle>
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<P41SearchForm initSize="xs" spacing={2} />
+					<P41SearchForm initSize="xs" spacing={1} />
 				</DialogContent>
 				<Divider />
 				<DialogActions>

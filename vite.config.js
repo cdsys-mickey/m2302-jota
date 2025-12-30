@@ -2,12 +2,19 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import { visualizer } from "rollup-plugin-visualizer";
+import fs from "fs";
+import path from "path";
+import { format } from "date-fns";
+
+const DATEFNS_VERSION_FORMAT = "yyMMdd.HHmm";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
 	// eslint-disable-next-line no-undef
 	const env = loadEnv(mode, process.cwd(), "");
+	const buildTime = new Date();
 	console.log(`PROFILE: ${env.VITE_PROFILE}`);
+	const version = format(buildTime, DATEFNS_VERSION_FORMAT);
 
 	return {
 		base: env.VITE_PUBLIC_URL,
@@ -61,6 +68,24 @@ export default defineConfig(({ mode }) => {
 					maximumFileSizeToCacheInBytes: 5000000, // 5 MB
 				},
 			}),
+			{
+				name: "generate-build-result",
+				closeBundle() {
+					const outDir = "dist"; // Vite 預設輸出目錄
+					const filePath = path.resolve(
+						process.cwd(),
+						outDir,
+						"build-result.json"
+					);
+					const content = { version: version };
+
+					fs.writeFileSync(
+						filePath,
+						JSON.stringify(content, null, 2)
+					);
+					console.log(`\n✅ Build result saved to ${filePath}`);
+				},
+			},
 		],
 		resolve: {
 			alias: {
@@ -68,7 +93,9 @@ export default defineConfig(({ mode }) => {
 			},
 		},
 		define: {
-			"import.meta.env.BUILD_TIME": new Date(),
+			"import.meta.env.BUILD_TIME": JSON.stringify(
+				buildTime.toISOString()
+			),
 		},
 		build: {
 			chunkSizeWarningLimit: 5000, // 設定為 5000 kB
@@ -85,6 +112,7 @@ export default defineConfig(({ mode }) => {
 					},
 				},
 			},
+			sourcemap: env.VITE_PROFILE !== "jota",
 		},
 	};
 });

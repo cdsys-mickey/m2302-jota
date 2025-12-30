@@ -20,7 +20,7 @@ const MockProdSearchPopper = memo(
 				<PopperTitle onClose={onClose}>進階搜尋</PopperTitle>
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<Grid container spacing={2} columns={12}>
+					<Grid container spacing={1} columns={12}>
 						<Grid item xs={12} sm={12}>
 							<ControlledTextField
 								name="q"
@@ -90,7 +90,7 @@ const MockProdSearchPopper = memo(
 					<Divider textAlign="center" sx={{ mt: 2, mb: 0.5 }}>
 						分類
 					</Divider>
-					<Grid container spacing={2} columns={12}>
+					<Grid container spacing={1} columns={12}>
 						<Grid item xs={12} sm={12}>
 							<TypoWebApiOptionPicker
 								label="大"
@@ -120,7 +120,7 @@ const MockProdSearchPopper = memo(
 
 					{/* 
 				<Box mt={2}>
-					<Grid container spacing={2}>
+					<Grid container spacing={1}>
 						<Grid item xs={12}>
 							<FlexBox
 								fullWidth

@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
@@ -18,20 +18,33 @@ export const useH14_1 = () => {
 	const debugDialog = useDebugDialog();
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebH141Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebH141Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = {
-			...H14_1.transformForSubmitting(payload),
-			DeptId: operator.CurDeptID,
-		};
-		console.log("data", data);
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = {
+				...H14_1.transformForSubmitting(payload),
+				DeptId: operator.CurDeptID,
+			};
+			console.log("data", data);
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			operator.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -39,7 +52,7 @@ export const useH14_1 = () => {
 			const data = {
 				...H14_1.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,
-			}
+			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
@@ -57,7 +70,3 @@ export const useH14_1 = () => {
 		onDebugSubmit,
 	};
 };
-
-
-
-

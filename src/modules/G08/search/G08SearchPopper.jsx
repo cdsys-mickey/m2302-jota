@@ -28,7 +28,7 @@ const G08SearchPopper = memo(
 				<PopperTitle onClose={onClose}>進階篩選</PopperTitle>
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<G08SearchForm initSize="xs" spacing={2} />
+					<G08SearchForm initSize="xs" spacing={1} />
 				</DialogContent>
 				<Divider />
 				<DialogActions>

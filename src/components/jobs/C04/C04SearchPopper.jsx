@@ -29,7 +29,7 @@ const C04SearchPopper = memo(
 				<PopperTitle onClose={onClose}>進階篩選</PopperTitle>
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<Grid container spacing={2} columns={12}>
+					<Grid container spacing={1} columns={12}>
 						<Grid item xs={12} sm={12}>
 							<ControlledTextField
 								autoFocus

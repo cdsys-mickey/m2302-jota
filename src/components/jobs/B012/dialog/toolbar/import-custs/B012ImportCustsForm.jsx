@@ -14,7 +14,7 @@ const B012ImportCustsForm = memo((props) => {
 	return (
 		<form onSubmit={onSubmit} {...rest}>
 			<Box pt={2}>
-				<Grid container spacing={2} columns={24}>
+				<Grid container spacing={1} columns={24}>
 					<Grid item xs={24} sm={24}>
 						<RangeGroup legend={"客戶區間"}
 							leftComponent={<CustomerPicker

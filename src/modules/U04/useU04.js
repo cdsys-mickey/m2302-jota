@@ -5,7 +5,7 @@ import { useCallback, useContext, useMemo } from "react";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import U04 from "./U04.mjs";
 
 export const useU04 = () => {
@@ -31,22 +31,35 @@ export const useU04 = () => {
 		orderType,
 		outputType,
 		`
-	)
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebU04Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebU04Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = {
-			...U04.transformForSubmitting(payload),
-			DeptId: operator.CurDeptID,
-		}
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = {
+				...U04.transformForSubmitting(payload),
+				DeptId: operator.CurDeptID,
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			operator.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -54,7 +67,7 @@ export const useU04 = () => {
 			const data = {
 				...U04.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,
-			}
+			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
@@ -73,4 +86,3 @@ export const useU04 = () => {
 		formMeta,
 	};
 };
-

@@ -5,7 +5,7 @@ import { useCallback, useContext, useMemo } from "react";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import U06_1 from "./U06_1.mjs";
 
 export const useU06_1 = () => {
@@ -27,22 +27,35 @@ export const useU06_1 = () => {
 		RptType,
 		outputType,
 		`
-	)
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebU061Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebU061Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = {
-			...U06_1.transformForSubmitting(payload),
-			DeptId: operator.CurDeptID,
-		}
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = {
+				...U06_1.transformForSubmitting(payload),
+				DeptId: operator.CurDeptID,
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			operator.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -50,7 +63,7 @@ export const useU06_1 = () => {
 			const data = {
 				...U06_1.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,
-			}
+			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},

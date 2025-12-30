@@ -39,7 +39,7 @@ const RenewFrame = memo((props) => {
 						/>
 					</FlexBox>
 					<Box component={Paper} elevation={4} px={3} pt={3} pb={2}>
-						<Grid container spacing={2}>
+						<Grid container spacing={1}>
 							{/* <Grid item xs={12}>
 								<ControlledTextField
 									fullWidth

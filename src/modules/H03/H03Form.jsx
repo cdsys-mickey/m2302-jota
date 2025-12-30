@@ -81,7 +81,7 @@ const H03Form = memo((props) => {
 								/>
 							</Grid>
 						</Grid>
-						<Grid container spacing={2}>
+						<Grid container spacing={1}>
 							<Grid item xs={12} sm={6}>
 								{/* <FlexBox alignItems="center">
 									<StdPrintOutputModePicker

@@ -6,7 +6,7 @@ const C01TransformForm = (props) => {
 	const { ...rest } = props;
 	return (
 		<FlexBox py={1}>
-			<Grid container spacing={2}>
+			<Grid container spacing={1}>
 				<Grid item xs={12}>
 					<Typography>請選擇採購單的製單人員</Typography>
 				</Grid>

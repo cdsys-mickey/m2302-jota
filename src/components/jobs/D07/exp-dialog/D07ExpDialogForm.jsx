@@ -10,7 +10,7 @@ const D07ExpDialogForm = memo((props) => {
 	return (
 		<form onSubmit={onSubmit}>
 			<FormBox pt={1}>
-				<Grid container spacing={2}>
+				<Grid container spacing={1}>
 					<Grid item xs={12}>
 						<ProdPicker
 							autoFocus

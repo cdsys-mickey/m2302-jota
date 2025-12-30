@@ -28,7 +28,7 @@ const A05SearchPopper = memo(
 				<PopperTitle onClose={onClose}>進階篩選</PopperTitle>
 				<Divider sx={{ mt: 0, mb: 0 }} />
 				<DialogContent {...ContentProps}>
-					<A05SearchForm initSize="xs" spacing={2} />
+					<A05SearchForm initSize="xs" spacing={1} />
 				</DialogContent>
 				<Divider />
 				<DialogActions>

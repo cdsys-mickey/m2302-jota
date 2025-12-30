@@ -29,7 +29,7 @@ const H11Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container spacing={1}>
 							<Grid item xs={12} sm={8}>
-								<Grid container columns={12} spacing={2}>
+								<Grid container columns={12} spacing={1}>
 									<Grid item xs={12} sm={6}>
 										<DatePickerWrapper
 											autoFocus
@@ -140,7 +140,7 @@ const H11Form = memo((props) => {
 							</Grid>
 						</Grid>
 						<FlexBox mt={1}>
-							<Grid container spacing={2}>
+							<Grid container spacing={1}>
 								<FlexGrid item xs={12} sm={6} alignItems="center">
 									{/* <StdPrintOutputModePicker
 										required

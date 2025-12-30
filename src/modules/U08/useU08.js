@@ -5,7 +5,7 @@ import { useCallback, useContext, useMemo } from "react";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import U08 from "./U08.mjs";
 
 export const useU08 = () => {
@@ -25,22 +25,35 @@ export const useU08 = () => {
 		EDate,
 		RptType,
 		outputType,
-		`,
-	)
+		`
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebU08Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebU08Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = {
-			...U08.transformForSubmitting(payload),
-			DeptId: operator.CurDeptID,
-		}
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = {
+				...U08.transformForSubmitting(payload),
+				DeptId: operator.CurDeptID,
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			operator.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -48,7 +61,7 @@ export const useU08 = () => {
 			const data = {
 				...U08.transformForSubmitting(payload),
 				DeptId: operator.CurDeptID,
-			}
+			};
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
@@ -67,4 +80,3 @@ export const useU08 = () => {
 		formMeta,
 	};
 };
-

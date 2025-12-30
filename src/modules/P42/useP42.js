@@ -15,7 +15,7 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import useAction from "@/shared-modules/ActionState/useAction";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import useJotaReports from "@/hooks/useJotaReports";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import CmsGroupTypeContext from "@/components/CmsGroupTypePicker/CmsGroupTypeContext";

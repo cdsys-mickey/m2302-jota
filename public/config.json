@@ -1,5 +1,6 @@
 {
 	"PROFILE": "dev",
+	"PUBLIC_URL": "",
 	"API_URL": "/api",
 	"MSG_HUB_URL": "http://localhost:5229/hubs/messaging",
 	"CHAT_HUB_URL": "http://localhost:5229/hubs/chat",

@@ -16,6 +16,7 @@ import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import U01DataTypePicker from "./pickers/U01DataTypePicker";
 import U01OrderTypePicker from "./pickers/U01OrderTypePicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
 
 const U01Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -24,7 +25,7 @@ const U01Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="門市區間"
 									leftComponent={<AppDeptPicker
@@ -117,21 +118,27 @@ const U01Form = memo((props) => {
 							</FlexGrid>
 
 
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={4}>
 								<U01DataTypePicker
 									name="RptType"
 									label="報表類型"
 									required
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={4}>
 								<U01OrderTypePicker
 									name="orderType"
 									disableOpenOnInput
 									selectOnFocus
 								/>
 							</Grid>
-
+							<Grid item xs={12} sm={4}>
+								<OrderDirPicker
+									name="orderDir"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
 						</Grid>
 						<FlexBox mt={1.5}>
 							<Grid container>

@@ -15,7 +15,7 @@ const ChangePwordForm = memo((props) => {
 				<form {...rest} noValidate>
 					{verified ? (
 						<>
-							<Grid container spacing={2}>
+							<Grid container spacing={1}>
 								<Grid item xs={12}>
 									<ControlledTextField
 										name="newPword"
@@ -62,7 +62,7 @@ const ChangePwordForm = memo((props) => {
 						</>
 					) : (
 						<>
-							<Grid container spacing={2}>
+							<Grid container spacing={1}>
 								<Grid item xs={12}>
 									<ControlledTextField
 										name="ogPword"

@@ -1,4 +1,4 @@
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 // import consoleEx from "@/helpers/consoleEx";
 // import { toastEx } from "@/shared-components";
 import { useSignalR } from "@/shared-hooks/useSignalR";

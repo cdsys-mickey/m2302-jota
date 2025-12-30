@@ -6,7 +6,7 @@ import { useCallback, useContext, useMemo } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useDebugDialog from "@/hooks/useDebugDialog";
 import useJotaReports from "@/hooks/useJotaReports";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 
 export const useH01 = () => {
 	const config = useContext(ConfigContext);

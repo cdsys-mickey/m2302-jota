@@ -11,7 +11,7 @@ const G07CarryTabView = (props) => {
 	const { onSessionChanged, ...rest } = props;
 	return (
 		<TabPanel value={G07.Tabs.CARRY} {...rest}>
-			<Grid container columns={12} spacing={2}>
+			<Grid container columns={12} spacing={1}>
 				<Grid item xs={12} sm={12}>
 					<RecvAcctBatchSessionPicker
 						name="session"
@@ -44,7 +44,7 @@ const G07CarryTabView = (props) => {
 				</Grid>
 			</Grid>
 			<FlexBox mt={1.8}>
-				<Grid container spacing={2}>
+				<Grid container spacing={1}>
 					<Grid item xs={12} sm={6}></Grid>
 					<Grid item xs={12} sm={6}>
 						<FlexBox justifyContent="flex-end">

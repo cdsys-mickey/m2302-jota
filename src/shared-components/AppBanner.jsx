@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
+import { memo, useContext, useMemo } from "react";
 import { FlexBox } from "shared-components";
+import { ConfigContext } from "shared-components/config";
 
 const AppBanner = memo(({ size = "lg", children, ...rest }) => {
+	const config = useContext(ConfigContext);
 	const typographyVariant = useMemo(() => {
 		switch (size) {
 			case "md":
@@ -29,9 +31,7 @@ const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 			<FlexBox>
 				<img
 					height={imgHeight}
-					// src={`${import.meta.env.VITE_PUBLIC_URL}/logo192.png`}
-					src={`${import.meta.env.VITE_PUBLIC_URL}/banner.png`}
-					// src={`${config.PUBLIC_URL}banner.png`}
+					src={`${config.PUBLIC_URL}/banner.png`}
 					alt="logo"
 				/>
 			</FlexBox>

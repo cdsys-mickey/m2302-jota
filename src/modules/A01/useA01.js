@@ -24,7 +24,7 @@ import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { useRef } from "react";
 import { CmsTypePickerComponentContainer } from "@/components/dsg/columns/cms-type-picker/CmsTypePickerComponentContainer";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
 
 /**

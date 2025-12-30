@@ -22,10 +22,11 @@ import AppRoute from "@/routes/AppRoute";
 import { DialogsProvider } from "@/shared-contexts/dialog/DialogsProvider";
 import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";
 import { Suspense, useContext, useEffect } from "react";
-import ConfigContext from "./contexts/config/ConfigContext";
 import { MessagingProvider } from "./contexts/messaging/MessagingProvider";
 import LoadingTypography from "./shared-components/LoadingTypography";
 import ToastExProvider from "./shared-components/ToastEx/ToastExProvider";
+import { ConfigContext } from "shared-components/config";
+
 // use palette from default theme
 const { palette } = createTheme();
 

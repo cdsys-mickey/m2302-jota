@@ -12,7 +12,7 @@ import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 
 export const useB02 = (opts = {}) => {
 	const { forNew } = opts;
@@ -22,9 +22,10 @@ export const useB02 = (opts = {}) => {
 	}, [forNew]);
 
 	const API_URL = useMemo(() => {
-		return forNew ? "v1/quote/new-customer-quotes" : "v1/quote/customer-quotes";
-	}, [forNew])
-
+		return forNew
+			? "v1/quote/new-customer-quotes"
+			: "v1/quote/customer-quotes";
+	}, [forNew]);
 
 	const crud = useContext(CrudContext);
 	const { token, operator } = useContext(AuthContext);
@@ -46,8 +47,8 @@ export const useB02 = (opts = {}) => {
 		bearer: token,
 		initialFetchSize: 50,
 		params: {
-			sort: 1
-		}
+			sort: 1,
+		},
 	});
 
 	const createRow = useCallback(
@@ -62,10 +63,8 @@ export const useB02 = (opts = {}) => {
 	const grid = useDSG({
 		gridId: "quotes",
 		keyColumn: "pkey",
-		createRow
+		createRow,
 	});
-
-
 
 	// CREATE
 	const promptCreating = useCallback(() => {
@@ -85,61 +84,62 @@ export const useB02 = (opts = {}) => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridProdChange = useCallback(
-		({ rowData }) => {
-			let processedRowData = { ...rowData };
-			processedRowData = {
-				...processedRowData,
-				["SPrice"]: "",
-				["SPackData_N"]: rowData?.prod?.PackData_N || "",
-				["SProdData_N"]: rowData?.prod?.ProdData || ""
-			};
-			return processedRowData;
-		},
-		[]
-	);
+	const handleGridProdChange = useCallback(({ rowData }) => {
+		let processedRowData = { ...rowData };
+		processedRowData = {
+			...processedRowData,
+			["SPrice"]: "",
+			["SPackData_N"]: rowData?.prod?.PackData_N || "",
+			["SProdData_N"]: rowData?.prod?.ProdData || "",
+		};
+		return processedRowData;
+	}, []);
 
 	const buildGridChangeHandler = useCallback(
-		({ gridMeta }) => (newValue, operations) => {
-			console.log("buildGridChangeHandler", operations);
-			const newGridData = [...newValue];
-			for (const operation of operations) {
-				if (operation.type === "UPDATE") {
-					newValue
-						.slice(operation.fromRowIndex, operation.toRowIndex)
-						.forEach((rowData, i) => {
-							const rowIndex = operation.fromRowIndex + i;
-							const oldRowData = grid.gridData[rowIndex];
+		({ gridMeta }) =>
+			(newValue, operations) => {
+				console.log("buildGridChangeHandler", operations);
+				const newGridData = [...newValue];
+				for (const operation of operations) {
+					if (operation.type === "UPDATE") {
+						newValue
+							.slice(operation.fromRowIndex, operation.toRowIndex)
+							.forEach((rowData, i) => {
+								const rowIndex = operation.fromRowIndex + i;
+								const oldRowData = grid.gridData[rowIndex];
 
-							let processedRowData = { ...rowData };
+								let processedRowData = { ...rowData };
 
-							if (
-								rowData.prod?.ProdID !==
-								oldRowData?.prod?.ProdID
-							) {
-								console.log(
-									`[${rowIndex}]prod changed`,
-									rowData?.prod
-								);
-								processedRowData = handleGridProdChange({
-									rowData,
-									oldRowData,
-								});
-							}
+								if (
+									rowData.prod?.ProdID !==
+									oldRowData?.prod?.ProdID
+								) {
+									console.log(
+										`[${rowIndex}]prod changed`,
+										rowData?.prod
+									);
+									processedRowData = handleGridProdChange({
+										rowData,
+										oldRowData,
+									});
+								}
 
-							newGridData[rowIndex] = processedRowData;
-						});
-				} else if (operation.type === "DELETE") {
-					newGridData.splice(operation.fromRowIndex, operation.toRowIndex - operation.fromRowIndex + 1);
-				} else if (operation.type === "CREATE") {
-					console.log("dsg.CREATE");
-					// process CREATE here
-					gridMeta.toFirstColumn({ nextRow: true });
+								newGridData[rowIndex] = processedRowData;
+							});
+					} else if (operation.type === "DELETE") {
+						newGridData.splice(
+							operation.fromRowIndex,
+							operation.toRowIndex - operation.fromRowIndex + 1
+						);
+					} else if (operation.type === "CREATE") {
+						console.log("dsg.CREATE");
+						// process CREATE here
+						gridMeta.toFirstColumn({ nextRow: true });
+					}
 				}
-			}
-			console.log("after changed", newGridData);
-			grid.setGridData(newGridData);
-		},
+				console.log("after changed", newGridData);
+				grid.setGridData(newGridData);
+			},
 		[grid, handleGridProdChange]
 	);
 
@@ -158,36 +158,52 @@ export const useB02 = (opts = {}) => {
 		loading: false,
 	});
 
-	const transformForPrinting = useCallback((data) => {
-		return {
-			...(data.outputType && {
-				Action: data.outputType.id,
-			}),
-			DeptID: operator?.CurDeptID,
-			JobName: JOB_NAME,
+	const transformForPrinting = useCallback(
+		(data) => {
+			return {
+				...(data.outputType && {
+					Action: data.outputType.id,
+				}),
+				DeptID: operator?.CurDeptID,
+				JobName: JOB_NAME,
 
-			CustID1: data.customer?.CustID || "",
-			CustID2: data.customer2?.CustID || "",
-			ProdID1: data.prod?.ProdID || "",
-			ProdID2: data.prod2?.ProdID || "",
-			QDate1: Forms.formatDate(data.date) || "",
-			QDate2: Forms.formatDate(data.date2) || "",
-			// OrderBy: data.orderBy?.id == 2 ? "ZA.ProdID, ZA.QDate DESC" : ""
-			OrderBy: data.orderBy?.id,
-		};
-	}, [JOB_NAME, operator?.CurDeptID]);
+				CustID1: data.customer?.CustID || "",
+				CustID2: data.customer2?.CustID || "",
+				ProdID1: data.prod?.ProdID || "",
+				ProdID2: data.prod2?.ProdID || "",
+				QDate1: Forms.formatDate(data.date) || "",
+				QDate2: Forms.formatDate(data.date2) || "",
+				// OrderBy: data.orderBy?.id == 2 ? "ZA.ProdID, ZA.QDate DESC" : ""
+				OrderBy: data.orderBy?.id,
+			};
+		},
+		[JOB_NAME, operator?.CurDeptID]
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebB0204Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebB0204Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ from: "QDate1", to: "QDate2" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = transformForPrinting(payload);
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, reportUrl, transformForPrinting]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = transformForPrinting(payload);
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			reportUrl,
+			transformForPrinting,
+		]
+	);
 
 	const onPrintSubmit = useCallback(
 		(data) => {
@@ -203,10 +219,14 @@ export const useB02 = (opts = {}) => {
 		console.error("onPrintSubmitError", err);
 	}, []);
 
-	const handlePrint = useCallback(({ setValue }) => (outputType) => {
-		console.log("handlePrint", outputType);
-		setValue("outputType", outputType);
-	}, []);
+	const handlePrint = useCallback(
+		({ setValue }) =>
+			(outputType) => {
+				console.log("handlePrint", outputType);
+				setValue("outputType", outputType);
+			},
+		[]
+	);
 
 	const loadProdFormMeta = useFormMeta(
 		`
@@ -217,7 +237,7 @@ export const useB02 = (opts = {}) => {
 		catM,
 		catS
 		`
-	)
+	);
 
 	return {
 		...crud,
@@ -246,6 +266,6 @@ export const useB02 = (opts = {}) => {
 		...sideDrawer,
 		forNew,
 		onDebugSubmit,
-		handlePrint
+		handlePrint,
 	};
 };

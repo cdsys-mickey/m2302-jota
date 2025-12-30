@@ -3,12 +3,14 @@ import { useWebApiAsync } from "@/shared-hooks";
 import DateFormats from "@/shared-modules/DateFormats.mjs";
 import { format, parseISO } from "date-fns";
 import Cookies from "js-cookie";
-import { useMemo } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
+import { ConfigContext, useConfig } from "shared-components/config";
 
 export default function useApp() {
 	const { httpGetAsync } = useWebApiAsync();
 	const appRedirect = useAppRedirect();
+	const config = useContext(ConfigContext);
+	const frontEndConfig = useConfig();
 	// 版本資訊
 	const version = useMemo(
 		() =>
@@ -18,6 +20,23 @@ export default function useApp() {
 			),
 		[]
 	);
+
+	//COOKIE
+	// const ROOT_COOKIE_OPTS = useMemo(
+	// 	() => ({
+	// 		path: `${config.PUBLIC_URL || "/"}`,
+	// 		expires: 365,
+	// 	}),
+	// 	[config.PUBLIC_URL]
+	// );
+
+	// const AUTH_COOKIE_OPTS = useMemo(
+	// 	() => ({
+	// 		path: `${(config.PUBLIC_URL || "") + "/auth"}`,
+	// 		expires: 365,
+	// 	}),
+	// 	[config.PUBLIC_URL]
+	// );
 
 	const [state, setState] = useState({
 		data: null,
@@ -54,12 +73,21 @@ export default function useApp() {
 				url: "",
 			});
 			if (status.success) {
+				let buildResult;
+				if (import.meta.env.VITE_PROFILE !== "dev") {
+					buildResult = await frontEndConfig.loadConfig([
+						"build-result.json",
+					]);
+				}
 				setState((prev) => ({
 					...prev,
 					loading: false,
 					apiVersion: payload.version,
-					frontEnd: payload.frontEnd,
+					// frontEnd: payload.frontEnd,
 					profile: payload.profile,
+					...(buildResult && {
+						frontEnd: buildResult,
+					}),
 				}));
 			} else {
 				throw error || new Error("未預期例外");
@@ -76,7 +104,7 @@ export default function useApp() {
 				loading: false,
 			}));
 		}
-	}, [appRedirect, httpGetAsync]);
+	}, [appRedirect, frontEndConfig, httpGetAsync]);
 
 	const unloadAppInfo = useCallback(async () => {
 		setState((prev) => ({
@@ -92,7 +120,7 @@ export default function useApp() {
 					...prev,
 					loading: false,
 					apiVersion: payload.version,
-					frontEnd: payload.frontEnd,
+					// frontEnd: payload.frontEnd,
 				}));
 				appRedirect.toLogin();
 			} else {
@@ -135,5 +163,7 @@ export default function useApp() {
 		getSessionCookie,
 		setSessionCookie,
 		removeSessionValue,
+		// ROOT_COOKIE_OPTS,
+		// AUTH_COOKIE_OPTS,
 	};
 }

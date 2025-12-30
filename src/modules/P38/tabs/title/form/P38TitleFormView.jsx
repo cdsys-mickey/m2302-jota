@@ -23,7 +23,7 @@ const P38TitleFormView = memo((props) => {
 									<P38TitleToolbar />
 								</Box>
 								<Box mt={1} >
-									{loadWorking ? <LoadingTypography>讀取中</LoadingTypography> : (<Grid container spacing={2}>
+									{loadWorking ? <LoadingTypography>讀取中</LoadingTypography> : (<Grid container spacing={1}>
 										<Grid item xs={12}>
 											<TextFieldEx
 												name="Head"

@@ -9,7 +9,7 @@ export const RstPurchaseOrderGridRow = memo(
 	forwardRef((props, ref) => {
 		const { value } = props;
 		return (
-			<Grid ref={ref} container columns={24} spacing={2}>
+			<Grid ref={ref} container columns={24} spacing={1}>
 				<RstPOIdColumn>{value["採購單號"]}</RstPOIdColumn>
 				<RstPODateColumn>{value["採購日"]}</RstPODateColumn>
 				<RstPOCheckerColumn>{value["覆核人員"]}</RstPOCheckerColumn>

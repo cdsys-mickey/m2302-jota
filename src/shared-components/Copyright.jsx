@@ -1,4 +1,4 @@
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import { IconButton, Link, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext } from "react";

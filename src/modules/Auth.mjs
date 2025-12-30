@@ -26,6 +26,7 @@ const SCOPE_LABELS = Object.freeze({
 	[SCOPES.ROOT]: "超級",
 });
 
+// moved to useAuth
 const ROOT_COOKIE_OPTS = {
 	path: `${import.meta.env.VITE_PUBLIC_URL || "/"}`,
 	expires: 365,

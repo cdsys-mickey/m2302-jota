@@ -19,7 +19,7 @@ const H25Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={6}>
 								<DatePickerWrapper
 									name="ArrDate"
@@ -80,7 +80,7 @@ const H25Form = memo((props) => {
 							</Grid>
 						</Grid>
 						<FlexBox mt={1}>
-							<Grid container spacing={2}>
+							<Grid container spacing={1}>
 								<Grid item xs={12} sm={6}>
 									{/* <FlexBox alignItems="center">
 										<StdPrintOutputModePicker

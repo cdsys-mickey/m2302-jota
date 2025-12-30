@@ -20,7 +20,7 @@ const U07Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<AppDeptPicker
 
@@ -69,7 +69,7 @@ const U07Form = memo((props) => {
 							</Grid> */}
 						</Grid>
 						<FlexBox mt={1.5}>
-							<Grid container spacing={2}>
+							<Grid container spacing={1}>
 								<Grid item xs={12} sm={12}>
 									<FlexBox justifyContent="flex-end">
 										<PrintReportButton

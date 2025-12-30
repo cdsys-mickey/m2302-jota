@@ -13,7 +13,7 @@ const CustomerPurchaseOrderGridRow = memo(
 		const { value } = props;
 
 		return (
-			<Grid ref={ref} container columns={24} spacing={2}>
+			<Grid ref={ref} container columns={24} spacing={1}>
 				<DepOrderIdColumn>{value["訂貨單號"]}</DepOrderIdColumn>
 				<DepOrderFlagColumn justifyContent="center">{value["結清"]}</DepOrderFlagColumn>
 				<DepOrderDateColumn>{value["訂貨日期"]}</DepOrderDateColumn>

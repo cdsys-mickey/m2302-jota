@@ -18,7 +18,7 @@ const A21Form = memo((props) => {
 			<form onSubmit={onSubmit} {...rest}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12}>
 								<AuthDeptPicker
 									label="門市編號"
@@ -100,6 +100,7 @@ const A21Form = memo((props) => {
 										variant="contained"
 										onSubmit={onSubmit}
 										onDebugSubmit={onDebugSubmit}
+										asTxt
 									/>
 								</FlexBox>
 							</Grid>

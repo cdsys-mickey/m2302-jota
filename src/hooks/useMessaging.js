@@ -1,4 +1,4 @@
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import { useCallback, useContext, useEffect } from "react";
 import { useSignalR } from "@/shared-hooks/useSignalR";
 

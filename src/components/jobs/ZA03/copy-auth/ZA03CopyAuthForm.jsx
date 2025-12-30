@@ -14,7 +14,7 @@ const ZA03CopyAuthForm = memo((props) => {
 	}
 	return (
 		<FlexBox py={1}>
-			<Grid container spacing={2}>
+			<Grid container spacing={1}>
 				<Grid item xs={12}>
 					<Typography mb={1}>
 						* 選擇要複製權限給「{user.UserName}」的使用者

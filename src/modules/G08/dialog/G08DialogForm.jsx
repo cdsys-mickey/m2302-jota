@@ -40,7 +40,7 @@ const G08DialogForm = memo((props) => {
 			{itemDataReady && (
 				<FormBox pt={1}>
 					<FormSectionBox editing={editing}>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12} md={6}>
 								<TextFieldWrapper
 									typo

@@ -1044,11 +1044,11 @@ const OptionPickerView = memo(
 										// opacity: 0,
 										display: "none",
 									},
-									// 檢視(唯讀)模式下不留右邊 popup
+									// 檢視(唯讀)模式下不留右邊 popupIcon 空間
 									"&.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon .MuiInputBase-root.Mui-disabled ":
 									{
 										paddingRight: 0,
-										paddingTop: 0
+										// paddingTop: 0
 									},
 								}),
 								...(dense && {

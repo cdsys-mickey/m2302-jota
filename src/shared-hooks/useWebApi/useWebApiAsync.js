@@ -6,7 +6,7 @@ import WebApi from "@/shared-modules/WebApi.mjs";
 import axios from "axios";
 import querystring from "query-string";
 import Types from "@/shared-modules/Types.mjs";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 
 const DEFAULT_HEADERS = () => {
 	let logKeyInSession = sessionStorage.getItem("LogKey");

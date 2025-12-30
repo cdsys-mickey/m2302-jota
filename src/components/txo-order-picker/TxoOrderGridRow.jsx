@@ -14,7 +14,7 @@ export const TxoOrderGridRow = memo(
 			return `${value["撥出門市"]} ${value["撥出門市名稱"]}`;
 		}, [value]);
 		return (
-			<Grid ref={ref} container columns={24} spacing={2}>
+			<Grid ref={ref} container columns={24} spacing={1}>
 				<TxoOrderIdColumn>{value["撥出單號"]}</TxoOrderIdColumn>
 				<TxoOrderDateColumn>{value["撥出日期"]}</TxoOrderDateColumn>
 				<TxoOrderIdColumn>{value["撥入單號"]}</TxoOrderIdColumn>

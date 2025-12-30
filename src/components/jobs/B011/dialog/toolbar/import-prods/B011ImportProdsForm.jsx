@@ -16,7 +16,7 @@ const B011LoadProdsForm = memo((props) => {
 	return (
 		<form onSubmit={onSubmit} {...rest}>
 			<Box pt={1}>
-				<Grid container spacing={2} columns={24}>
+				<Grid container spacing={1} columns={24}>
 					<Grid item xs={24}>
 						<RangeGroup legend="貨品區間"
 							leftComponent={<ProdPicker

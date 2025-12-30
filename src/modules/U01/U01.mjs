@@ -13,6 +13,7 @@ const transformForSubmitting = (payload) => {
 		SType,
 		RptType,
 		orderType,
+		orderDir,
 		...rest
 	} = payload;
 	return {
@@ -28,6 +29,7 @@ const transformForSubmitting = (payload) => {
 		SType: SType ? "Y" : "N",
 		RptType: RptType.id?.toString() || "1",
 		OrdName: orderType?.id,
+		OrdSeq: orderDir?.id,
 		...rest,
 	};
 };

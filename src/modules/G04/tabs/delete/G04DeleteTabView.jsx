@@ -14,7 +14,7 @@ const G04DeleteTabView = (props) => {
 	const { handleDelSessionChange, handleDelSessionInputChange, ...rest } = props;
 	return (
 		<TabPanel value={G04.Tabs.DELETE} {...rest}>
-			<Grid container columns={12} spacing={2}>
+			<Grid container columns={12} spacing={1}>
 				<Grid item xs={7} >
 					<DatePickerWrapper
 						name="delYM"

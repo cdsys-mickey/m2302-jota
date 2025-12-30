@@ -1,4 +1,4 @@
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";

@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import C09 from "@/modules/C09.mjs";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";

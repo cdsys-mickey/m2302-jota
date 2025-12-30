@@ -14,7 +14,7 @@ const G04CreateTab = (props) => {
 	const { ...rest } = props;
 	return (
 		<TabPanel value={G04.Tabs.CREATE} {...rest}>
-			<Grid container columns={12} spacing={2}>
+			<Grid container columns={12} spacing={1}>
 				<Grid item xs={12} sm={7}>
 					<DatePickerWrapper
 						name="AccYM"

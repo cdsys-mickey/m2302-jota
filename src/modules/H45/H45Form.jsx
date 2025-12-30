@@ -22,7 +22,7 @@ const H45Form = memo((props) => {
 			<form {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
-						<Grid container columns={12} spacing={2}>
+						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間"
 									leftComponent={<DatePickerWrapper
@@ -122,7 +122,7 @@ const H45Form = memo((props) => {
 							{/* )} */}
 						</Grid>
 						<FlexBox mt={2}>
-							<Grid container spacing={2}>
+							<Grid container spacing={1}>
 								<Grid item xs={12} sm={6}>
 									{/* <FlexBox alignItems="center">
 										<StdPrintOutputModePicker

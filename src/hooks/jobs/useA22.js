@@ -1,6 +1,6 @@
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import A22 from "@/modules/md-a22";
 import { createIntColumn } from "@/shared-components/dsg/columns/float/createIntColumn";

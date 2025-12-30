@@ -1,12 +1,14 @@
+import { ConfigContext } from 'shared-components/config';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Button, Container, Typography } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 
 function ErrorPage() {
+	const config = useContext(ConfigContext);
 
 	const handleBackHome = useCallback(() => {
-		window.location.href = `${import.meta.env.VITE_PUBLIC_URL}/`; // 或使用 react-router 的 useNavigate 回到主頁
-	}, []);
+		window.location.href = `${config.PUBLIC_URL}/`;
+	}, [config.PUBLIC_URL]);
 
 	return (
 		<Container style={{ textAlign: 'center', marginTop: '10%' }}>

@@ -13,7 +13,7 @@ import { useToggle } from "../../shared-hooks/useToggle";
 import usePwordCheck from "../usePwordCheck";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import useJotaReports from "../useJotaReports";
 
 export const useD02 = () => {

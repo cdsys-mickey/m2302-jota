@@ -10,7 +10,7 @@ const CmsEntryGridRow = memo(
 		const { value } = props;
 
 		return (
-			<Grid ref={ref} container columns={24} spacing={2}>
+			<Grid ref={ref} container columns={24} spacing={1}>
 				<CmsEntryIdColumn>{value["OrdID"]}</CmsEntryIdColumn>
 				<CmsEntryDateColumn>{value["OrdDate"]}</CmsEntryDateColumn>
 				<CmsEntryDateColumn>{value["ArrDate"]}</CmsEntryDateColumn>

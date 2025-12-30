@@ -6,7 +6,7 @@ import { useFormMeta } from "../../shared-components/form-meta/useFormMeta";
 import useDebugDialog from "../useDebugDialog";
 import useJotaReports from "../useJotaReports";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 
 export const useF06 = () => {
 	const config = useContext(ConfigContext);
@@ -23,21 +23,35 @@ export const useF06 = () => {
 		accEntry,
 		PrtType,
 		outputType,
-		`);
+		`
+	);
 
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebF06Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebF06Rep.aspx`;
+	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = {
-			...F06.transformForSubmitting(payload),
-			DeptId: operator.CurDeptID,
-		};
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, operator.CurDeptID, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = {
+				...F06.transformForSubmitting(payload),
+				DeptId: operator.CurDeptID,
+			};
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			operator.CurDeptID,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -61,6 +75,6 @@ export const useF06 = () => {
 		onSubmit,
 		onSubmitError,
 		formMeta,
-		onDebugSubmit
+		onDebugSubmit,
 	};
 };

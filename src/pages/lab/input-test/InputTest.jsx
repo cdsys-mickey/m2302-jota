@@ -88,7 +88,7 @@ const InputTest = () => {
 			<Box px={3}>
 				<FormSectionTitle>LockSwitch</FormSectionTitle>
 				<FormSectionBox p={1} mb={1}>
-					<Grid container spacing={2}>
+					<Grid container spacing={1}>
 						<Grid item xs={12} md={6}>
 							<LockSwitch width={80} />
 						</Grid>
@@ -97,7 +97,7 @@ const InputTest = () => {
 
 				<FormSectionTitle>OptionPicker</FormSectionTitle>
 				<FormSectionBox p={1} mb={1}>
-					<Grid container spacing={2}>
+					<Grid container spacing={1}>
 						<Grid item xs={12} md={6.5}>
 							<FieldGroup legend="日期區間">
 								<FlexBox flex={1}>
@@ -132,7 +132,7 @@ const InputTest = () => {
 
 				<FormSectionTitle>OptionPicker</FormSectionTitle>
 				<FormSectionBox p={1} mb={1}>
-					<Grid container spacing={2}>
+					<Grid container spacing={1}>
 						<Grid item xs={12} md={6}>
 							<Autocomplete
 								id="use autocomplete"

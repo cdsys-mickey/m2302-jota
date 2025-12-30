@@ -17,7 +17,7 @@ const PurchaseDepOrderGridRow = memo(
 		}, [value]);
 
 		return (
-			<Grid ref={ref} container columns={24} spacing={2}>
+			<Grid ref={ref} container columns={24} spacing={1}>
 				<DepOrderFlagColumn>{value["結"]}</DepOrderFlagColumn>
 				<DepOrderIdColumn>{value["訂貨單號"]}</DepOrderIdColumn>
 				<DepOrderDateColumn>{value["訂貨日期"]}</DepOrderDateColumn>

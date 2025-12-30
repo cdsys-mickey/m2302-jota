@@ -5,7 +5,7 @@ import StdPrint from "@/modules/StdPrint.mjs";
 import PropTypes from "prop-types";
 
 const PrintReportButtonContainer = (props) => {
-	const { htmlOnly, ...rest } = props;
+	const { htmlOnly, asTxt, ...rest } = props;
 	const form = useFormContext();
 	const { setValue } = form;
 
@@ -19,12 +19,14 @@ const PrintReportButtonContainer = (props) => {
 			onSelect={onSelect}
 			noGutter
 			{...(htmlOnly && { options: StdPrint.optionsHTMLOnly })}
+			{...(asTxt && { options: StdPrint.optionsForTxt })}
 			{...rest} />
 	)
 }
 
 PrintReportButtonContainer.displayName = "PrintReportButtonContainer";
 PrintReportButtonContainer.propTypes = {
-	htmlOnly: PropTypes.bool
+	htmlOnly: PropTypes.bool,
+	asTxt: PropTypes.bool,
 }
 export default PrintReportButtonContainer;

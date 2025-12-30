@@ -11,7 +11,7 @@ const B011PrintDialogForm = memo((props) => {
 	return (
 		<form onSubmit={onSubmit} {...rest}>
 			<Box pt={1}>
-				<Grid container spacing={2} columns={12}>
+				<Grid container spacing={1} columns={12}>
 					<Grid item xs={12} sm={12} md={12}>
 						<EmployeePicker
 							label="報價人員"

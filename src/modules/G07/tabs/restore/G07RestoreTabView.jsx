@@ -12,7 +12,7 @@ const G07RestoreTabView = (props) => {
 	const { ...rest } = props;
 	return (
 		<TabPanel value={G07.Tabs.RESTORE} {...rest}>
-			<Grid container columns={12} spacing={2}>
+			<Grid container columns={12} spacing={1}>
 				<Grid item xs={12} sm={7}>
 					<DatePickerWrapper
 						name="AccYM"
@@ -45,7 +45,7 @@ const G07RestoreTabView = (props) => {
 			</Grid>
 
 			<FlexBox mt={1.8}>
-				<Grid container spacing={2}>
+				<Grid container spacing={1}>
 					<Grid item xs={12} sm={6}></Grid>
 					<Grid item xs={12} sm={6}>
 						<FlexBox justifyContent="flex-end">

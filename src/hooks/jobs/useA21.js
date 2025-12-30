@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import A21 from "@/modules/md-a21";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useCallback, useContext, useMemo } from "react";
@@ -18,18 +18,29 @@ export const useA21 = ({ form }) => {
 	const appFrame = useContext(AppFrameContext);
 	const debugDialog = useDebugDialog();
 
-
 	const reportUrl = useMemo(() => {
-		return `${config.REPORT_URL}/WebA21Rep.aspx`
-	}, [config.REPORT_URL])
+		return `${config.REPORT_URL}/WebA21Rep.aspx`;
+	}, [config.REPORT_URL]);
 
 	const reports = useJotaReports({ from: "SDate", to: "EDate" });
 
-	const onDebugSubmit = useCallback((payload) => {
-		console.log("onSubmit", payload);
-		const data = A21.transformForSubmitting(payload);
-		debugDialog.show({ data, url: reportUrl, title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}` })
-	}, [appFrame.menuItemSelected?.JobID, appFrame.menuItemSelected?.JobName, debugDialog, reportUrl]);
+	const onDebugSubmit = useCallback(
+		(payload) => {
+			console.log("onSubmit", payload);
+			const data = A21.transformForSubmitting(payload);
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[
+			appFrame.menuItemSelected?.JobID,
+			appFrame.menuItemSelected?.JobName,
+			debugDialog,
+			reportUrl,
+		]
+	);
 
 	const onSubmit = useCallback(
 		(payload) => {
@@ -59,18 +70,15 @@ export const useA21 = ({ form }) => {
 		DelyNo
 		`,
 		{
-			lastField: form.handleSubmit(
-				onSubmit,
-				onSubmitError
-			)
+			lastField: form.handleSubmit(onSubmit, onSubmitError),
 		}
-	)
+	);
 
 	return {
 		...appModule,
 		onDebugSubmit,
 		onSubmit,
 		onSubmitError,
-		formMeta
+		formMeta,
 	};
 };

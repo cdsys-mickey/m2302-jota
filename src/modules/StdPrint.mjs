@@ -32,10 +32,15 @@ const options = [
 	{ id: OutputModes.HTML, name: "預覽列印" },
 	{ id: OutputModes.EXCEL, name: "存成 Excel" },
 	// { id: OutputModes.ODF, name: "存成 ODF" },
-	{ id: OutputModes.PDF, name: "存成 PDF" },
+	// { id: OutputModes.PDF, name: "存成 PDF" },
 ];
 
 const optionsHTMLOnly = [{ id: OutputModes.HTML, name: "預覽列印" }];
+
+const optionsForTxt = [
+	{ id: OutputModes.HTML, name: "預覽列印" },
+	{ id: OutputModes.EXCEL, name: "存成文字檔" },
+];
 
 const getOptionById = (id) => {
 	return options.find((o) => o.id == id);
@@ -77,6 +82,7 @@ const StdPrint = {
 	OutputModes,
 	options,
 	optionsHTMLOnly,
+	optionsForTxt,
 	getOptionLabel,
 	isOptionEqualToValue,
 	findById,

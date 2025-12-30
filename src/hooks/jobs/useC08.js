@@ -9,7 +9,7 @@ import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useRef } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import toastEx from "@/shared-components/ToastEx/toastEx";
 import { useToggle } from "@/shared-hooks/useToggle";
 import { nanoid } from "nanoid";

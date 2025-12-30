@@ -12,7 +12,7 @@ import { useCallback, useContext, useRef } from "react";
 import { useToggle } from "../../shared-hooks/useToggle";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ConfigContext from "@/contexts/config/ConfigContext";
+import { ConfigContext } from "shared-components/config";
 import { useMemo } from "react";
 import useJotaReports from "../useJotaReports";
 

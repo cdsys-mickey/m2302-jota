@@ -10,7 +10,7 @@ const CmsBookingOrderGridRow = memo(
 		const { value } = props;
 
 		return (
-			<Grid ref={ref} container columns={24} spacing={2}>
+			<Grid ref={ref} container columns={24} spacing={1}>
 				<CmsBookingOrderIdColumn>{value["OrdID"]}</CmsBookingOrderIdColumn>
 				<CmsBookingOrderDateColumn>{value["OrdDate"]}</CmsBookingOrderDateColumn>
 				<CmsBookingOrderDateColumn>{value["ArrDate"]}</CmsBookingOrderDateColumn>
