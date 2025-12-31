@@ -31,7 +31,7 @@ const AppBanner = memo(({ size = "lg", children, ...rest }) => {
 			<FlexBox>
 				<img
 					height={imgHeight}
-					src={`${config.PUBLIC_URL}/banner.png`}
+					src={`${import.meta.env.VITE_PUBLIC_URL}/banner.png`}
 					alt="logo"
 				/>
 			</FlexBox>

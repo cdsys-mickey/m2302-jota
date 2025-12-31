@@ -17,7 +17,7 @@ const F01DialogViewToolbar = memo(
 						{/* <F01OutputModePickerContainer />
 						<F01PrintButtonContainer /> */}
 						<F01ExportButtonContainer
-							onPrint={onPrint}
+							onClick={onPrint}
 							onDebugSubmit={onDebugPrint}
 						/>
 					</>

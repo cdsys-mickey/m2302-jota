@@ -4,11 +4,11 @@ import { Button, Container, Typography } from '@mui/material';
 import { useCallback, useContext } from 'react';
 
 function ErrorPage() {
-	const config = useContext(ConfigContext);
+	// const config = useContext(ConfigContext);
 
 	const handleBackHome = useCallback(() => {
-		window.location.href = `${config.PUBLIC_URL}/`;
-	}, [config.PUBLIC_URL]);
+		window.location.href = `${import.meta.env.VITE_PUBLIC_URL}/`;
+	}, []);
 
 	return (
 		<Container style={{ textAlign: 'center', marginTop: '10%' }}>

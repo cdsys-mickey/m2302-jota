@@ -135,7 +135,9 @@ export const useAppFrame = (opts = {}) => {
 					const newLogKey = await spawnNewSession();
 					console.log("newLogKey", newLogKey);
 
-					const url = `${config.PUBLIC_URL}/modules/${module.WebName}`;
+					const url = `${import.meta.env.VITE_PUBLIC_URL}/modules/${
+						module.WebName
+					}`;
 					// const url = `${config.PUBLIC_URL}modules/${module.WebName}`;
 					const qs = queryString.stringify({
 						drawer: 0,
