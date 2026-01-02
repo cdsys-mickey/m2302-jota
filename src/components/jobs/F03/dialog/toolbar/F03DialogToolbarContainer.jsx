@@ -5,9 +5,11 @@ import { useFormContext } from "react-hook-form";
 import F03DialogEditToolbar from "./F03DialogEditToolbar";
 import F03DialogViewToolbar from "./F03DialogViewToolbar";
 import { useMemo } from "react";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const F03DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
+	const auth = useContext(AuthContext);
 	const f03 = useContext(F03Context);
 	const form = useFormContext();
 
@@ -19,6 +21,11 @@ export const F03DialogToolbarContainer = (props) => {
 		f03.onPrintSubmit,
 		f03.onPrintSubmitError
 	);
+
+	const handleDebugPrint = form.handleSubmit(
+		f03.onDebugPrint,
+	);
+
 
 	if (!f03.itemDataReady) {
 		return false;
@@ -48,6 +55,7 @@ export const F03DialogToolbarContainer = (props) => {
 			onEdit={f03.canUpdate ? f03.promptUpdating : null}
 			onDelete={canDelete ? f03.confirmDelete : null}
 			onPrint={f03.canPrint ? handlePrint : null}
+			onDebugPrint={auth.debugEnabled ? handleDebugPrint : null}
 			onSideDrawerOpen={f03.handleSideDrawerOpen}
 			{...rest}
 		/>

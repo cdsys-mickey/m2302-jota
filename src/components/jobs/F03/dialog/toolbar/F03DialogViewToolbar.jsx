@@ -8,7 +8,7 @@ import F03ExportButtonContainer from "./F03ExportButtonContainer";
 
 const F03DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, checkEditableWorking, onDelete, onPrint, onSideDrawerOpen, ...rest } =
+		const { onEdit, checkEditableWorking, onDelete, onPrint, onDebugPrint, onSideDrawerOpen, ...rest } =
 			props;
 		return (
 			<Fragment ref={ref} {...rest}>
@@ -16,7 +16,10 @@ const F03DialogViewToolbar = memo(
 					<>
 						{/* <F03OutputModePickerContainer />
 						<F03PrintButtonContainer /> */}
-						<F03ExportButtonContainer />
+						<F03ExportButtonContainer
+							onClick={onPrint}
+							onDebugSubmit={onDebugPrint}
+						/>
 					</>
 				)}
 
@@ -55,6 +58,7 @@ F03DialogViewToolbar.propTypes = {
 	onEdit: PropTypes.func,
 	onDelete: PropTypes.func,
 	onPrint: PropTypes.func,
+	onDebugPrint: PropTypes.func,
 	onSideDrawerOpen: PropTypes.func,
 	checkEditableWorking: PropTypes.bool,
 };

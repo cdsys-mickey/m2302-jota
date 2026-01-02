@@ -299,7 +299,7 @@ const E021DialogForm = memo((props) => {
 							<Grid item md={5}>
 								<TextFieldWrapper
 									typo
-									name="HDNo"
+									name="DelyNo"
 									label="宅配通單號"
 									fullWidth
 								/>

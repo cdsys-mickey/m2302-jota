@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { ConfigContext } from "shared-components/config";
 import CrudContext from "@/contexts/crud/CrudContext";
@@ -14,6 +15,8 @@ import { useToggle } from "../../shared-hooks/useToggle";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
+import useDebugDialog from "../useDebugDialog";
 
 export const useF03 = () => {
 	const config = useContext(ConfigContext);
@@ -41,6 +44,8 @@ export const useF03 = () => {
 	const { httpGetAsync, httpPostAsync, httpPutAsync, httpDeleteAsync } =
 		useWebApiAsync();
 	const dialogs = useContext(DialogsContext);
+	const appFrame = useContext(AppFrameContext);
+	const debugDialog = useDebugDialog();
 
 	const listLoader = useInfiniteLoader({
 		url: "v1/inv/taking/filling",
@@ -515,6 +520,27 @@ export const useF03 = () => {
 	}, [config.REPORT_URL]);
 	const reports = useJotaReports();
 
+	const onDebugPrint = useCallback(
+		(payload) => {
+			console.log("onDebugPrint", payload);
+			const data = {
+				...(payload.outputType && {
+					Action: payload.outputType.id,
+				}),
+				DeptID: operator?.CurDeptID,
+				JobName: "F03",
+				IDs: crud.itemData?.PhyID,
+			};
+			console.log("data", data);
+			debugDialog.show({
+				data,
+				url: reportUrl,
+				title: `${appFrame.menuItemSelected?.JobID} ${appFrame.menuItemSelected?.JobName}`,
+			});
+		},
+		[crud.itemData?.PhyID, operator?.CurDeptID, reportUrl, reports]
+	);
+
 	const onPrintSubmit = useCallback(
 		(payload) => {
 			console.log("onPrintSubmit", payload);
@@ -623,6 +649,7 @@ export const useF03 = () => {
 		purchaseOrdersDisabled,
 		spriceDisabled,
 		// 列印
+		onDebugPrint,
 		onPrintSubmit,
 		onPrintSubmitError,
 		handlePrint,

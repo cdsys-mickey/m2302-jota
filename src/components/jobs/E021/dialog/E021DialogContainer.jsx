@@ -334,7 +334,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 		InvAddr,
 		UniForm,
 		deliveryEmployee,
-		HDNo,
+		DelyNo,
 		InvNo
 		`,
 		{

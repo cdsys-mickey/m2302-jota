@@ -8,8 +8,8 @@ import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const F01DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
-	const f01 = useContext(F01Context);
 	const auth = useContext(AuthContext);
+	const f01 = useContext(F01Context);
 	const form = useFormContext();
 
 	const handlePrint = form.handleSubmit(

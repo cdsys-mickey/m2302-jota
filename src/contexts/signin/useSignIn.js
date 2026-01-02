@@ -115,12 +115,20 @@ export const useSignIn = () => {
 								`登入發生異常 ${ERROR_LOGKEY_EMPTY}`
 							);
 						}
+						//25.12.31 昨天造成的 cookie 寫錯位置
+						// LogKey 寫到 auth 底下
+						Cookies.remove(
+							Auth.COOKIE_LOGKEY,
+							Auth.AUTH_COOKIE_OPTS
+						);
+
 						// 1.儲存 COOKIE_LOGKEY
 						setSessionCookie(
 							Auth.COOKIE_LOGKEY,
 							payload.LogKey,
-							Auth.AUTH_COOKIE_OPTS
+							Auth.ROOT_COOKIE_OPTS
 						);
+
 						// Cookies.set(
 						// 	Auth.COOKIE_LOGKEY,
 						// 	payload.LogKey || "",
