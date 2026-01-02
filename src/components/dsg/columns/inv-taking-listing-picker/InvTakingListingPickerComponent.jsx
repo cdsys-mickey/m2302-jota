@@ -87,6 +87,7 @@ const InvTakingListingPickerComponent = memo((props) => {
 			queryParam="qs"
 			{...pickerProps}
 			{...rest}
+			blurToLookup
 		/>
 	);
 }, arePropsEqual);
