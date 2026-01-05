@@ -26,6 +26,7 @@ const P51Form = memo((props) => {
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="訂訪日期"
 									leftComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="SOrdDate"
 										label="日期區間"
 										fullWidth
@@ -36,6 +37,7 @@ const P51Form = memo((props) => {
 										placeholder="起"
 									/>}
 									rightComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="EOrdDate"
 										label="日期區間迄"
 										fullWidth
@@ -49,6 +51,7 @@ const P51Form = memo((props) => {
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="到訪日期"
 									leftComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="SArrDate"
 										label="日期區間"
 										fullWidth
@@ -58,6 +61,7 @@ const P51Form = memo((props) => {
 										placeholder="起"
 									/>}
 									rightComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="EArrDate"
 										label="日期區間迄"
 										fullWidth

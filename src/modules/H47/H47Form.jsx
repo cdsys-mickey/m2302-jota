@@ -27,6 +27,7 @@ const H47Form = memo((props) => {
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間"
 									leftComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										autoFocus
 										name="SDate"
 										label="日期區間"
@@ -36,6 +37,7 @@ const H47Form = memo((props) => {
 										borderless
 									/>}
 									rightComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="EDate"
 										label="日期區間迄"
 										fullWidth

@@ -24,6 +24,7 @@ const P04Form = memo((props) => {
 								<RangeGroup legend="交易日期"
 									required
 									leftComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="SDate"
 										fullWidth
 										validate
@@ -34,6 +35,7 @@ const P04Form = memo((props) => {
 
 									/>}
 									rightComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="EDate"
 										fullWidth
 										validate

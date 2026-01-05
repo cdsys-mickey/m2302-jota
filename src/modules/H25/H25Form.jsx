@@ -22,6 +22,7 @@ const H25Form = memo((props) => {
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={6}>
 								<DatePickerWrapper
+									minDate={"2026/01/01"}
 									name="ArrDate"
 									label="預計到貨日"
 									fullWidth

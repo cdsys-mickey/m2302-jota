@@ -26,6 +26,7 @@ const P61Form = memo((props) => {
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="交易日期" required
 									leftComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="SDate"
 										label="交易"
 										fullWidth
@@ -37,6 +38,7 @@ const P61Form = memo((props) => {
 										placeholder="起"
 									/>}
 									rightComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="EDate"
 										label="日期區間迄"
 										fullWidth

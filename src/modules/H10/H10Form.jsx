@@ -27,6 +27,7 @@ const H10Form = memo((props) => {
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間(一)" required
 									leftComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="SDate1"
 										required
 										rules={{
@@ -39,6 +40,7 @@ const H10Form = memo((props) => {
 										placeholder="起"
 									/>}
 									rightComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="EDate1"
 										required
 										rules={{
@@ -55,6 +57,7 @@ const H10Form = memo((props) => {
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間(二)" required
 									leftComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="SDate2"
 										rules={{
 											required: "日期區間(二)起為必填"
@@ -66,6 +69,7 @@ const H10Form = memo((props) => {
 										placeholder="起"
 									/>}
 									rightComponent={<DatePickerWrapper
+										minDate={"2026/01/01"}
 										name="EDate2"
 										rules={{
 											required: "日期區間(二)迄為必填"
