@@ -110,12 +110,14 @@ export const G08DialogContainer = forwardRef((props, ref) => {
 					<G08DialogForm
 						ref={ref}
 						onSubmit={handleSubmit}
+						creating={g08.creating}
 						editing={g08.editing}
 						updating={g08.updating}
 						readWorking={g08.readWorking}
 						readError={g08.readError}
 						data={g08.itemData}
 						itemDataReady={g08.itemDataReady}
+
 					/>
 				</FormMetaProvider>
 				<G08Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />

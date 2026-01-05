@@ -7,7 +7,8 @@ const C07DeptNameColumn = (props) => {
 	return (
 		<ListColumn
 			pr={1}
-			xs={4}
+			md={4.5}
+			sm={4}
 			{...rest}
 		/>
 	);

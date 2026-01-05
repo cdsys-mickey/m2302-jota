@@ -17,7 +17,7 @@ import H07OrderTypePicker from "./pickers/H07OrderTypePicker";
 const H07Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -126,8 +126,8 @@ const H07Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
-		</ContainerEx>
+			</form >
+		</ContainerEx >
 	);
 });
 

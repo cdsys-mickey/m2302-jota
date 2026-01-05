@@ -5,7 +5,7 @@ const D02DateColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn pr={1} xs={3} {...rest} />
+		<ListColumn pr={1} md={4} sm={3} {...rest} />
 	);
 };
 

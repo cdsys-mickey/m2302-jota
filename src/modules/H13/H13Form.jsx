@@ -17,7 +17,7 @@ import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapp
 const H13Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -133,8 +133,8 @@ const H13Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
-		</ContainerEx>
+			</form >
+		</ContainerEx >
 	);
 });
 

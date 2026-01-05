@@ -5,7 +5,7 @@ const E01CustomerColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn pr={1} xs={8} lg={8} {...rest} />
+		<ListColumn pr={1} md={7} sm={8} {...rest} />
 	);
 };
 

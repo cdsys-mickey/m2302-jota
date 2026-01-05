@@ -5,7 +5,7 @@ const C06DeptIdColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={2} {...rest} />
+		<ListColumn item pr={1} md={3} xs={2} {...rest} />
 	);
 };
 

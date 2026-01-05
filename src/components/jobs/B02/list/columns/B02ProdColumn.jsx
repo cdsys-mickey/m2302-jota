@@ -5,7 +5,7 @@ const B02ProdColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={9} {...rest} />
+		<ListColumn item pr={1} md={8} xs={9} {...rest} />
 	);
 };
 

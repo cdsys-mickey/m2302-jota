@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const B011ProdColumn = (props) => {
 	const { ...rest } = props;
 	return (
-		<ListColumn item pr={1} xs={6} {...rest} />
+		<ListColumn item pr={1} md={5} sm={6} xs={6} {...rest} />
 	);
 };
 

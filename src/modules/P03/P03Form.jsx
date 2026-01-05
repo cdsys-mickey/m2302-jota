@@ -22,7 +22,7 @@ import P03ReportTypePicker from "./pickers/P03ReportTypePicker";
 const P03Form = memo((props) => {
 	const { forNewCustomer, onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "0rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -174,14 +174,14 @@ const P03Form = memo((props) => {
 									selectOnFocus
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={5}>
 								<OrderDirPicker
 									name="OrdSeq"
 									disableOpenOnInput
 									selectOnFocus
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={7}>
 								<P03CalTypePicker
 									name="Rate"
 									disableOpenOnInput
@@ -215,8 +215,8 @@ const P03Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
-		</ContainerEx>
+			</form >
+		</ContainerEx >
 	);
 });
 

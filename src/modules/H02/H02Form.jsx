@@ -15,7 +15,7 @@ import RangeGroup from "@/shared-components/RangeGroup";
 const H02Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -59,7 +59,7 @@ const H02Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={3} >
+							<Grid item xs={6} >
 								<FlexBox alignItems="flex-start">
 									<CheckboxExField
 										label="含撥出入"
@@ -71,8 +71,7 @@ const H02Form = memo((props) => {
 									/>
 								</FlexBox>
 							</Grid>
-							<Grid item xs={3} >
-
+							<Grid item xs={6} >
 								<CheckboxExField
 									label="含試贈樣"
 									name="InclTest"
@@ -110,8 +109,8 @@ const H02Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
-		</ContainerEx>
+			</form >
+		</ContainerEx >
 	);
 });
 

@@ -18,7 +18,7 @@ import P02DataTypePicker from "./picker/P02DataTypePicker";
 const P02Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>

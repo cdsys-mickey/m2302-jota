@@ -16,7 +16,7 @@ import RangeGroup from "@/shared-components/RangeGroup";
 const H03Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -57,7 +57,7 @@ const H03Form = memo((props) => {
 									catLName="catL"
 								/>
 							</Grid>
-							<Grid item xs={3} >
+							<Grid item xs={6} >
 								<FlexBox alignItems="flex-start">
 									<CheckboxExField
 										label="含撥出入"
@@ -69,7 +69,7 @@ const H03Form = memo((props) => {
 									/>
 								</FlexBox>
 							</Grid>
-							<Grid item xs={3} >
+							<Grid item xs={6} >
 
 								<CheckboxExField
 									label="含試贈樣"
@@ -81,31 +81,33 @@ const H03Form = memo((props) => {
 								/>
 							</Grid>
 						</Grid>
-						<Grid container spacing={1}>
-							<Grid item xs={12} sm={6}>
-								{/* <FlexBox alignItems="center">
+						<FlexBox mt={1}>
+							<Grid container spacing={1}>
+								<Grid item xs={12} sm={6}>
+									{/* <FlexBox alignItems="center">
 									<StdPrintOutputModePicker
 										required
 										name="outputType"
 										label="執行方式"
 									/>
 								</FlexBox> */}
+								</Grid>
+								<Grid item xs={12} sm={6}>
+									<FlexBox justifyContent="flex-end">
+										<PrintReportButton
+											color="primary"
+											variant="contained"
+											onSubmit={onSubmit}
+											onDebugSubmit={onDebugSubmit}
+										/>
+									</FlexBox>
+								</Grid>
 							</Grid>
-							<Grid item xs={12} sm={6}>
-								<FlexBox justifyContent="flex-end">
-									<PrintReportButton
-										color="primary"
-										variant="contained"
-										onSubmit={onSubmit}
-										onDebugSubmit={onDebugSubmit}
-									/>
-								</FlexBox>
-							</Grid>
-						</Grid>
+						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
-		</ContainerEx>
+			</form >
+		</ContainerEx >
 	);
 });
 

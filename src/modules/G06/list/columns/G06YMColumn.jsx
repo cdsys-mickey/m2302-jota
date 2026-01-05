@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const G06YMColumn = (props) => {
 	const { ...rest } = props;
 	return (
-		<ListColumn item pr={1} xs={6} sm={2} {...rest} />
+		<ListColumn item pr={1} md={3} sm={2} xs={6} {...rest} />
 	);
 };
 

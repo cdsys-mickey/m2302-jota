@@ -8,7 +8,8 @@ const C06DeptNameColumn = (props) => {
 		<ListColumn
 			item
 			pr={1}
-			xs={4}
+			md={5}
+			sm={4}
 			{...rest}
 		/>
 	);

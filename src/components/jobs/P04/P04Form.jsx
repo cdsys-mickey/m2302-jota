@@ -15,7 +15,7 @@ import RangeGroup from "@/shared-components/RangeGroup";
 const P04Form = memo((props) => {
 	const { onSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="xs" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -71,8 +71,8 @@ const P04Form = memo((props) => {
 						</Grid>
 					</FormSectionBox>
 				</FormBox>
-			</form>
-		</ContainerEx>
+			</form >
+		</ContainerEx >
 	);
 });
 

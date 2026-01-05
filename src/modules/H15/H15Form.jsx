@@ -18,7 +18,7 @@ import H15ReportTypePicker from "./pickers/H15ReportTypePicker";
 const H15Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, forNewCustomer, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -169,7 +169,7 @@ const H15Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
+			</form >
 		</ContainerEx >
 	);
 });

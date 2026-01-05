@@ -9,8 +9,8 @@ import C04IdColumn from "./columns/C04IdColumn";
 import C04DeptColumn from "./columns/C04DeptColumn";
 import C04UserColumn from "./columns/C04UserColumn";
 import C04FlagColumn from "./columns/C04FlagColumn";
-import C04DeptIdColumn from "./columns/C04DeptIdColumn";
-import C04DeptNameColumn from "./columns/C04DeptNameColumn";
+import C04SpIdColumn from "./columns/C04SpIdColumn";
+import C04SpNameColumn from "./columns/C04SpNameColumn";
 import C04NumColumn from "./columns/C04NumColumn";
 
 const C04ListRow = memo((props) => {
@@ -41,12 +41,12 @@ const C04ListRow = memo((props) => {
 						<C04UserColumn>
 							{value?.倉管人員}
 						</C04UserColumn>
-						<C04DeptIdColumn>
+						<C04SpIdColumn expChecking={expChecking}>
 							{value?.廠商代碼}
-						</C04DeptIdColumn>
-						<C04DeptNameColumn expChecking={expChecking}>
+						</C04SpIdColumn>
+						<C04SpNameColumn expChecking={expChecking}>
 							{value?.廠商名稱}
-						</C04DeptNameColumn>
+						</C04SpNameColumn>
 						{expChecking && (
 							<>
 								<C04IdColumn>

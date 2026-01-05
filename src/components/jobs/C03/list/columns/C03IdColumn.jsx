@@ -5,7 +5,7 @@ const C03IdColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={3} {...rest} />
+		<ListColumn item pr={1} md={4} xs={3} {...rest} />
 	);
 };
 

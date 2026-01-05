@@ -22,7 +22,7 @@ import H06OrderTypePicker from "./pickers/H06OrderTypePicker";
 const H06Form = memo((props) => {
 	const { forNewCustomer, onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -48,7 +48,7 @@ const H06Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6.5}>
+							<Grid item xs={12} sm={6}>
 								<SalesTypePicker
 									name="SalType"
 									label="零售"
@@ -176,7 +176,7 @@ const H06Form = memo((props) => {
 								/>
 							</Grid>
 							{/*  */}
-							<Grid item xs={12} sm={3}>
+							<Grid item xs={12} sm={6}>
 								<CheckboxExField
 									label="含試贈樣"
 									name="InclTest"
@@ -226,7 +226,7 @@ const H06Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
+			</form >
 		</ContainerEx >
 	);
 });

@@ -19,7 +19,9 @@ import H04ReportTypePicker from "./pickers/H04ReportTypePicker";
 const H04Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={false} sx={{
+			maxWidth: "33rem"
+		}} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>

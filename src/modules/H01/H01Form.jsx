@@ -17,7 +17,7 @@ import OrderDirPicker from "@/components/picker/OrderDirPicker";
 const H01Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="xs" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -32,6 +32,7 @@ const H01Form = memo((props) => {
 										autoFocus
 										borderless
 										placeholder="起"
+										minDate="2026-01-01"
 									/>}
 									rightComponent={<DatePickerWrapper
 										name="EDate"
@@ -128,7 +129,7 @@ const H01Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
+			</form >
 		</ContainerEx >
 	);
 });

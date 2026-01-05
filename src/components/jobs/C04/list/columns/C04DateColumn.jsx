@@ -5,7 +5,7 @@ const C04DateColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={3} {...rest} />
+		<ListColumn item pr={1} lg={3} md={3.5} {...rest} />
 	);
 };
 

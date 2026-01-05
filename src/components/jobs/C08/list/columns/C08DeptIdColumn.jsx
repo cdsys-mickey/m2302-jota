@@ -5,7 +5,7 @@ const C08DeptIdColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn pr={1} xs={2} {...rest} />
+		<ListColumn pr={1} md={3} sm={2} {...rest} />
 	);
 };
 

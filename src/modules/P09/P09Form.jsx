@@ -21,7 +21,7 @@ import P09ReportTypePicker from "./pickers/P09ReportTypePicker";
 const P09Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, forNewCustomer, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "0rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -154,14 +154,14 @@ const P09Form = memo((props) => {
 									selectOnFocus
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={5}>
 								<OrderDirPicker
 									name="OrdSeq"
 									disableOpenOnInput
 									selectOnFocus
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={7}>
 								<P09CalTypePicker
 									name="Rate"
 									disableOpenOnInput
@@ -194,7 +194,7 @@ const P09Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
+			</form >
 		</ContainerEx >
 	);
 });

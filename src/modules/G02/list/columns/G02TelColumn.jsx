@@ -6,7 +6,7 @@ const G02TelColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={5} {...rest} />
+		<ListColumn item pr={1} md={4.5} sm={5} {...rest} />
 	);
 };
 

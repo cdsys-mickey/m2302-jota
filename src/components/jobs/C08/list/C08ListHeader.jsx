@@ -17,8 +17,7 @@ const C08ListHeader = memo(
 				<C08DateColumn>撥出日期</C08DateColumn>
 				<C08DeptIdColumn>撥出門市</C08DeptIdColumn>
 				<C08IdColumn>撥入單號</C08IdColumn>
-				<C08DeptIdColumn>撥入門市</C08DeptIdColumn>
-				<C08DeptNameColumn></C08DeptNameColumn>
+				<C08DeptNameColumn>撥入門市</C08DeptNameColumn>
 				<C08IdColumn>訂貨單號</C08IdColumn>
 			</ListViewHeader>
 		);

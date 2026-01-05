@@ -5,7 +5,7 @@ const D06UserColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn pr={1} xs={4} {...rest} />
+		<ListColumn pr={1} md={5} sm={4} {...rest} />
 	);
 };
 

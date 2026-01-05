@@ -6,7 +6,7 @@ const G02SupplierColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={9} {...rest} />
+		<ListColumn item pr={1} md={8} sm={9} {...rest} />
 	);
 };
 

@@ -60,9 +60,9 @@ const C07ListRow = memo((props) => {
 						<C07DeptNameColumn>
 							{ordDeptName}
 						</C07DeptNameColumn>
-						<C07DeptNameColumn>
+						<C07DeptIdColumn>
 							{shipDeptName}
-						</C07DeptNameColumn>
+						</C07DeptIdColumn>
 					</Grid>
 				</Box>
 			</HoverableListItem>

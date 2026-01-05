@@ -19,7 +19,7 @@ import H10ReportTypePicker from "./pickers/H10ReportTypePicker";
 const H10Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
-		<ContainerEx maxWidth="sm" alignLeft>
+		<ContainerEx maxWidth={"30rem"} alignLeft>
 			<form onSubmit={onSubmit} {...rest} style={{ paddingBottom: "10rem" }}>
 				<FormBox pt={1}>
 					<FormSectionBox editing>
@@ -133,7 +133,7 @@ const H10Form = memo((props) => {
 									clearable
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={7}>
 								<TextFieldWrapper
 									name="TopNo"
 									label="每一區域/通路,僅列前幾名店家"
@@ -142,7 +142,7 @@ const H10Form = memo((props) => {
 									fullWidth
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={5}>
 								<H10ReportTypePicker
 									name="reportType"
 									disableOpenOnInput
@@ -174,8 +174,8 @@ const H10Form = memo((props) => {
 						</FlexBox>
 					</FormSectionBox>
 				</FormBox>
-			</form>
-		</ContainerEx>
+			</form >
+		</ContainerEx >
 	);
 });
 

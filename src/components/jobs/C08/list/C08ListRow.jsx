@@ -39,10 +39,8 @@ const C08ListRow = memo((props) => {
 						<C08IdColumn>
 							{value?.撥入單號}
 						</C08IdColumn>
-						<C08DeptIdColumn>
-							{value?.撥入門市}
-						</C08DeptIdColumn>
 						<C08DeptNameColumn>
+							{value?.撥入門市}
 							{value?.撥入門市名稱}
 						</C08DeptNameColumn>
 						<C08IdColumn>
