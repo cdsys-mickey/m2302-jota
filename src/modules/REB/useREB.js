@@ -1,6 +1,6 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import CrudContext from "@/contexts/crud/CrudContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import REB from "@/modules/REB/REB";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";

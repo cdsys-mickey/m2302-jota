@@ -30,7 +30,7 @@ const HomeContainer = () => {
 		}
 	}, []);
 
-	useVersionCheck();
+	// useVersionCheck();
 
 	return (<Home title={_title} />);
 };

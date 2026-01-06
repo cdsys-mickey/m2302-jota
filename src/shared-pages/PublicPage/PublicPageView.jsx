@@ -22,7 +22,7 @@ const PublicPageView = memo(
 						{children}
 					</FlexBox>
 					<FlexBox fullWidth mt={1} justifyContent="flex-end">
-						<CopyrightContainer />
+						<CopyrightContainer autoPrompt={false} />
 					</FlexBox>
 				</Box>
 			</BasePage>

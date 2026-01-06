@@ -2,7 +2,7 @@ import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-pick
 import { BContext } from "@/contexts/B/BContext";
 import { B02Context } from "@/contexts/B02/B02Context";
 import { B04Context } from "@/contexts/B04/B04Context";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import Colors from "@/modules/Colors.mjs";
 import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";

@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import Settings from "@/modules/settings/Settings.mjs";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import useHttpPost from "@/shared-hooks/useHttpPost";

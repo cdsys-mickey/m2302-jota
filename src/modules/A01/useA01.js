@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { DeptPickerComponentContainer } from "@/components/dsg/columns/dept-picker/DeptPickerComponentContainer";
 import CrudContext from "@/contexts/crud/CrudContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import A01 from "@/modules/A01/A01.mjs";
 import TaxTypes from "@/modules/TaxTypes.mjs";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";

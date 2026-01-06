@@ -2,7 +2,7 @@ import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/f
 import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { C08Context } from "@/contexts/C08/C08Context";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import Colors from "@/modules/Colors.mjs";
 import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -304,7 +304,7 @@ export const C08DialogContainer = forwardRef((props, ref) => {
 					// fullScreen
 					responsive
 					fullWidth
-					maxWidth="lg"
+					maxWidth="xl"
 					TitleButtonsComponent={C08DialogToolbarContainer}
 					open={c08.itemViewOpen}
 					onClose={handleClose}

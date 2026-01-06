@@ -198,7 +198,7 @@ export const P35DialogContainer = forwardRef((props, ref) => {
 			fullScreen={xlOrDown}
 			responsive
 			fullWidth
-			maxWidth="lg"
+			maxWidth="xl"
 			TitleButtonsComponent={P35DialogButtonsContainer}
 			open={p35.itemViewOpen}
 			onClose={

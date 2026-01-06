@@ -1,4 +1,4 @@
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useCallback, useContext } from "react";

@@ -1,4 +1,4 @@
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { isBefore, isValid } from "date-fns";
 import DateFormats from "./DateFormats.mjs";
 import Types from "@/shared-modules/Types.mjs";

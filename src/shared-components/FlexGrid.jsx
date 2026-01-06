@@ -45,6 +45,7 @@ const FlexGrid = memo(
 
 FlexGrid.displayName = "FlexGrid";
 FlexGrid.propTypes = {
+	sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	justifyContent: PropTypes.string,
 	alignItems: PropTypes.string,

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { useRef } from "react";
 import CommonCSS from "@/shared-modules/CommonCSS.mjs";
 import FormMeta from "./FormMeta.mjs";

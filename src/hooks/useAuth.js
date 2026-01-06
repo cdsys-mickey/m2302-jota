@@ -1,7 +1,7 @@
 import { AppContext } from "@/contexts/app/AppContext";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 import consoleEx from "@/helpers/consoleEx";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import Messages from "@/modules/md-messages";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";

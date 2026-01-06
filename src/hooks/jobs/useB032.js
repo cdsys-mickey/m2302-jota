@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { ConfigContext } from "shared-components/config";
 import CrudContext from "@/contexts/crud/CrudContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import B02 from "@/modules/md-b02";
 import B032 from "@/modules/md-b032";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";

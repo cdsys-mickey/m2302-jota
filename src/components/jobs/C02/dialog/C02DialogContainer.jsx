@@ -283,7 +283,7 @@ export const C02DialogContainer = forwardRef((props, ref) => {
 				// fullScreen
 				responsive
 				fullWidth
-				maxWidth="lg"
+				maxWidth="xl"
 				TitleButtonsComponent={C02DialogToolbarContainer}
 				open={c02.itemViewOpen}
 				onClose={handleClose}

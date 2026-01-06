@@ -1,20 +1,20 @@
 import { SignInContext } from "@/contexts/signin/SignInContext";
 import { useContext } from "react";
 import SignInXView from "./SignInXView";
-import useVersionCheck from "@/shared-hooks/useVersionCheck";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+// import useVersionCheck from "@/shared-hooks/useVersionCheck";
+// import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
 export const SignInXContainer = (props) => {
 	const { ...rest } = props;
 	// const form = useFormContext();
 	const signin = useContext(SignInContext);
-	const { isRefreshRequired, promptRefresh } = useVersionCheck({ autoPrompt: false });
+	// const { isRefreshRequired, promptRefresh } = useVersionCheck({ autoPrompt: false });
 
-	useChangeTracking(() => {
-		if (isRefreshRequired) {
-			setTimeout(promptRefresh, 1000);
-		}
-	}, [isRefreshRequired]);
+	// useChangeTracking(() => {
+	// 	if (isRefreshRequired) {
+	// 		setTimeout(promptRefresh, 1000);
+	// 	}
+	// }, [isRefreshRequired]);
 
 	return (
 		<form
@@ -29,7 +29,7 @@ export const SignInXContainer = (props) => {
 			<SignInXView
 				loading={signin.loading}
 				hideCaptcha={signin.hideCaptcha}
-				isRefreshRequired={isRefreshRequired}
+				// isRefreshRequired={isRefreshRequired}
 				{...rest}
 			/>
 		</form>

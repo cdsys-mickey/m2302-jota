@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import Settings from "@/modules/settings/Settings.mjs";
 import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useState } from "react";

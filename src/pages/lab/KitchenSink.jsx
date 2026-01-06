@@ -14,7 +14,7 @@ export const KitchenSink = memo(
 
 		return (
 			<Box ref={ref} py={1} px={3}>
-				<ContainerEx maxWidth="lg">
+				<ContainerEx maxWidth="xl">
 					<FrameBanner title="元件測試" alt="kitchen-sink" />
 					<TabContext value={selectedTab}>
 						<Box mt={1}>

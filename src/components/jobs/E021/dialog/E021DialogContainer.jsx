@@ -1,7 +1,7 @@
 import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/free-prod-type-picker/FreeProdTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { E021Context } from "@/modules/E021/E021Context";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import Colors from "@/modules/Colors.mjs";
 import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -421,7 +421,7 @@ export const E021DialogContainer = forwardRef((props, ref) => {
 					// fullScreen={e021.editing}
 					responsive
 					fullWidth
-					maxWidth="lg"
+					maxWidth="xl"
 					TitleButtonsComponent={E021DialogToolbarContainer}
 					open={e021.itemViewOpen}
 					onClose={handleClose}

@@ -1,4 +1,4 @@
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { useCellComponent } from "@/shared-hooks/dsg/useCellComponent";
 import DateTimes from "@/shared-modules/DateTimes.mjs";
 import Events from "@/shared-modules/sd-events";

@@ -1,4 +1,4 @@
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useCallback, useContext } from "react";
 import { DSGLastCellBehavior } from "./DSGLastCellBehavior";

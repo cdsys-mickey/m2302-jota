@@ -8,7 +8,7 @@ import { useWebApiAsync } from "@/shared-hooks";
 import Errors from "@/shared-modules/Errors.mjs";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import CrudContext from "@/contexts/crud/CrudContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 
 export const useA17 = () => {
 	const crud = useContext(CrudContext);

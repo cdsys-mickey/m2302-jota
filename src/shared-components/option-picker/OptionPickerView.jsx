@@ -1,7 +1,7 @@
 import Types from "@/shared-modules/Types.mjs";
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Colors from "@/modules/Colors.mjs";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import MuiStyles from "@/shared-modules/MuiStyles";
@@ -116,6 +116,7 @@ const OptionPickerView = memo(
 			disableClose,
 			// Tab & Enter,
 			disableOpenOnInput,
+			disableClearable,
 			findByInput,
 			getError,
 			setError,
@@ -991,6 +992,8 @@ const OptionPickerView = memo(
 					// disablePointerEvents={disablePointerEvents}
 					hideControls={hideControls}
 					disableFadeOut={disableFadeOut}
+					disableClearable={disableClearable}
+					disabled={disabled}
 					size={size}
 					title={memoisedTitle}
 					width={_width}
@@ -1069,6 +1072,7 @@ const OptionPickerView = memo(
 						{...(isUseAutoHighlight && {
 							autoHighlight: true,
 						})}
+						disableClearable={disableClearable}
 						{...rest}
 
 						// virtualize = true 時必須強制 override 部分屬性

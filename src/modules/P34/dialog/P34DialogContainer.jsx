@@ -174,7 +174,7 @@ export const P34DialogContainer = forwardRef((props, ref) => {
 			// fullScreen
 			responsive
 			fullWidth
-			maxWidth="lg"
+			maxWidth="xl"
 			TitleButtonsComponent={P34DialogButtonsContainer}
 			open={p34.itemViewOpen}
 			onClose={

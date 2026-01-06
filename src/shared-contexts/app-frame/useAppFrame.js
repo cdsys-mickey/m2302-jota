@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { ConfigContext } from "shared-components/config";
 import useAppRedirect from "@/hooks/useAppRedirect";
 import { useWebApiAsync } from "@/shared-hooks";

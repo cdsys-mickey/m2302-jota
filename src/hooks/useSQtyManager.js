@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import SQtyUtils from "@/modules/md-sqty";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useWebApiAsync } from "@/shared-hooks";

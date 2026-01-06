@@ -11,7 +11,7 @@ const A03Toolbar = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		return (
-			<ContainerEx maxWidth="lg" alignLeft>
+			<ContainerEx maxWidth="xl" alignLeft>
 				{/* <Grid container spacing={1}>
 					<Grid item xs={12} sm={6} md={4}> */}
 				<ToolbarEx

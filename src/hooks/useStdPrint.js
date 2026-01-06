@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { ConfigContext } from "shared-components/config";
 import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoaderContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import useAction from "@/shared-modules/ActionState/useAction";
 import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext, useMemo, useState } from "react";

@@ -247,7 +247,7 @@ export const C07DialogContainer = forwardRef((props, ref) => {
 				// fullScreen
 				responsive
 				fullWidth
-				maxWidth="lg"
+				maxWidth="xl"
 				TitleButtonsComponent={C07DialogToolbarContainer}
 				open={c07.itemViewOpen}
 				onClose={handleClose}

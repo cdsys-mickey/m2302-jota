@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 import { toast } from "react-toastify";
 import Messaging from "@/modules/md-messaging";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { HubConnectionState } from "@microsoft/signalr";
 

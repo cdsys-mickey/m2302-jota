@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import { useContext } from "react";
 import { useCallback, useState } from "react";
 import P37X from "./P37X.mjs";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 
 export default function useP37X() {
 	const itemIdRef = useRef();

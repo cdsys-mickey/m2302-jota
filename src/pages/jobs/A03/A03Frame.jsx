@@ -20,7 +20,7 @@ const A03Frame = memo(() => {
 			<Box mb={0.5}>
 				<A03Toolbar />
 			</Box>
-			<ContainerEx maxWidth="lg" alignLeft>
+			<ContainerEx maxWidth="xl" alignLeft>
 				<Grid container spacing={1}>
 					<CatSProvider>
 						{/* <CatSGridProvider> */}

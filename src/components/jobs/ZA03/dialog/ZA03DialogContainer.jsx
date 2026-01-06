@@ -97,7 +97,7 @@ export const ZA03DialogContainer = forwardRef((props, ref) => {
 				title={memoisedTitle}
 				responsive
 				fullWidth
-				maxWidth="lg"
+				maxWidth="xl"
 				hideCloseButton={hideCloseButton}
 				// TitleButtonsComponent={ZA03DialogTitleButtonsContainer}
 				open={za03.itemViewOpen}

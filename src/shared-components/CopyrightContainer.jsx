@@ -3,16 +3,21 @@ import Copyright from "./Copyright";
 import { AppContext } from "@/contexts/app/AppContext";
 import { useInit } from "@/shared-hooks/useInit";
 import { useCallback } from "react";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { MessagingContext } from "@/contexts/messaging/MessagingContext";
 import { useMemo } from "react";
 import { HubConnectionState } from "@microsoft/signalr";
+import useVersionCheck from "@/shared-hooks/useVersionCheck";
+import PropTypes from "prop-types";
 
 export const CopyrightContainer = (props) => {
-	const { ...rest } = props;
+	const { autoPrompt = true, ...rest } = props;
 	const { version, apiVersion, loadAppInfo, loading, profile } = useContext(AppContext);
 	const messaging = useContext(MessagingContext);
 	const { connectionState } = messaging;
+	const { newVersion } = useVersionCheck({
+		autoPrompt: autoPrompt
+	});
 
 	const handleCopyVersion = useCallback(async () => {
 		await navigator.clipboard.writeText(version);
@@ -45,6 +50,7 @@ export const CopyrightContainer = (props) => {
 			loading={loading}
 			version={version}
 			apiVersion={apiVersion}
+			newVersion={newVersion}
 			handleCopyVersion={handleCopyVersion}
 			handleCopyApiVersion={handleCopyApiVersion}
 			connState={connState}
@@ -52,3 +58,7 @@ export const CopyrightContainer = (props) => {
 		/>
 	);
 };
+
+CopyrightContainer.propTypes = {
+	autoPrompt: PropTypes.bool
+}

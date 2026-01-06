@@ -29,7 +29,7 @@ const ZA03Grid = memo((props) => {
 
 	if (loading) {
 		return (
-			<Container maxWidth="lg">
+			<Container maxWidth="xl">
 				{/* <LoadingTypography>讀取中...</LoadingTypography> */}
 				<DSGLoading height={height} />
 			</Container>

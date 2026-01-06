@@ -2,7 +2,7 @@ import { FreeProdTypePickerComponentContainer } from "@/components/dsg/columns/f
 import { OutboundTypePickerComponentContainer } from "@/components/dsg/columns/outbound-type-picker/OutboundTypePickerComponentContainer";
 import { ProdPickerComponentContainer } from "@/components/dsg/columns/prod-picker/ProdPickerComponentContainer";
 import { E03Context } from "@/contexts/E03/E03Context";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import Colors from "@/modules/Colors.mjs";
 import { DialogEx } from "@/shared-components";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
@@ -147,7 +147,8 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 				),
 				title: "品名規格",
 				disabled: true,
-				grow: 1.5,
+				// grow: 1.5,
+				minWidth: 220
 			},
 			{
 				...keyColumn(
@@ -157,8 +158,8 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "包裝",
-				minWidth: 80,
-				maxWidth: 80,
+				minWidth: 40,
+				maxWidth: 40,
 				disabled: true,
 			},
 			{
@@ -182,8 +183,8 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 			{
 				...keyColumn("SQty", createFloatColumn(2)),
 				title: "數量",
-				minWidth: 100,
-				// maxWidth: 100,
+				minWidth: 80,
+				// maxWidth: 80,
 				disabled: readOnly || e03.sqtyDisabled,
 			},
 			{
@@ -243,7 +244,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "備註",
-				grow: 1.8,
+				grow: 1,
 				disabled: readOnly,
 			},
 		],
@@ -366,7 +367,7 @@ export const E03DialogContainer = forwardRef((props, ref) => {
 					// fullScreen
 					responsive
 					fullWidth
-					maxWidth="lg"
+					maxWidth="xl"
 					TitleButtonsComponent={E03DialogToolbarContainer}
 					open={e03.itemViewOpen}
 					onClose={handleClose}

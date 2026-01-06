@@ -2,7 +2,7 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { ConfigContext } from "shared-components/config";
 import CrudContext from "@/contexts/crud/CrudContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import F03 from "@/modules/md-f03";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";

@@ -1,5 +1,5 @@
 import CrudContext from "@/contexts/crud/CrudContext";
-import toastEx from "@/shared-components/ToastEx/toastEx";
+import { toastEx } from "shared-components/toast-ex";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import A20 from "@/modules/md-a20";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
