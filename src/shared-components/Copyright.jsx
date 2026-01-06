@@ -13,11 +13,6 @@ const Copyright = ({ version, newVersion, loading, apiVersion, handleCopyVersion
 		<FlexBox inline>
 			<FlexBox alignItems="flex-end">
 				<Typography variant="subtitle2" color="textSecondary" align="center">
-					copyright©cdsys,
-				</Typography>
-			</FlexBox>
-			<FlexBox alignItems="flex-end">
-				<Typography variant="subtitle2" color="textSecondary" align="center">
 					APP: {version}{config.PROFILE
 						? `[${config.PROFILE}]`
 						: "[no profile]"

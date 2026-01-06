@@ -24,7 +24,7 @@ import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvi
 import { Suspense, useContext, useEffect } from "react";
 import { MessagingProvider } from "./contexts/messaging/MessagingProvider";
 import LoadingTypography from "./shared-components/LoadingTypography";
-import ToastExProvider from "./shared-components/ToastEx/ToastExProvider";
+import { ToastExProvider } from "shared-components/toast-ex";
 import { ConfigContext } from "shared-components/config";
 
 // use palette from default theme
