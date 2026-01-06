@@ -391,7 +391,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 			responsive
 			fullWidth
 			maxWidth="xl"
-			minWidth={1300}
+			// minWidth={1300}
 			TitleButtonsComponent={P42DialogButtonsContainer}
 			open={p42.itemViewOpen}
 			onClose={

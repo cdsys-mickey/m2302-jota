@@ -4,7 +4,7 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 import P42IDColumn from "./columns/P42IDColumn";
-import P42NameColumn from "./columns/P42NameColumn";
+import P42GroupNameColumn from "./columns/P42GroupNameColumn";
 import { useMemo } from "react";
 import P42BankColumn from "./columns/P42BankColumn";
 import P42GuideNameColumn from "./columns/P42GuideNameColumn";
@@ -30,9 +30,9 @@ const P42ListRow = memo((props) => {
 					<P42DateColumn>
 						{value?.SalDate}
 					</P42DateColumn>
-					<P42NameColumn>
+					<P42GroupNameColumn>
 						{value?.GrpName}
-					</P42NameColumn>
+					</P42GroupNameColumn>
 					<P42BankColumn>
 						{value?.CarData}
 					</P42BankColumn>

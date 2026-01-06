@@ -5,7 +5,7 @@ const P41DateColumn = (props) => {
 	const { ...rest } = props;
 
 	return (
-		<ListColumn item pr={1} xs={17} sm={2.5} {...rest} />
+		<ListColumn item pr={1} xs={17} md={3.5} sm={2.5} {...rest} />
 	);
 };
 

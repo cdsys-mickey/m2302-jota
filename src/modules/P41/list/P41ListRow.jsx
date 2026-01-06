@@ -10,6 +10,7 @@ import P41BankColumn from "./columns/P41BankColumn";
 import P41GuideNameColumn from "./columns/P41GuideNameColumn";
 import P41DateColumn from "./columns/P41DateColumn";
 import P41FlagColumn from "./columns/P41FlagColumn";
+import P41CmsColumn from "./columns/P41CmsColumn";
 
 const P41ListRow = memo((props) => {
 	const { index, style, value, onClick } = props;
@@ -49,7 +50,7 @@ const P41ListRow = memo((props) => {
 					<P41FlagColumn>
 						{value?.CFlag}
 					</P41FlagColumn>
-					<P41IDColumn>{value?.ComID}</P41IDColumn>
+					<P41CmsColumn>{value?.ComID}</P41CmsColumn>
 				</Grid>
 			</HoverableListItem>
 		</div>

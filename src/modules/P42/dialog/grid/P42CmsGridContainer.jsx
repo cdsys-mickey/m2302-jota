@@ -21,6 +21,7 @@ const P42CmsGridContainer = (props) => {
 	const { height } = useWindowSize();
 	// const theme = useTheme();
 	const smallerThanXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
+	const smallerThanLG = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
 	const form = useFormContext();
 	const p42 = useContext(P42Context);
@@ -34,9 +35,12 @@ const P42CmsGridContainer = (props) => {
 	}, [])
 
 	const _height = useMemo(() => {
+		if (smallerThanLG) {
+			return 400;
+		}
 		return smallerThanXL ? height - 512 : height - 636;
 		// return height - 636;
-	}, [height, smallerThanXL])
+	}, [height, smallerThanLG, smallerThanXL])
 
 	const _loadingHeight = useMemo(() => {
 		return smallerThanXL ? height - 482 : 200;
