@@ -87,10 +87,9 @@ const CheckboxCellComponent = memo(
 
 		const handleMouseDown = useCallback((e) => {
 			console.log("handleMouseDown");
-			// if (!active) {
-			setRowData(!rowData);
-			// toggleChecked(e);
-			// }
+			setTimeout(() => {
+				setRowData(!rowData);
+			});
 		}, [rowData, setRowData]);
 
 		const handleChange = useCallback(() => {
