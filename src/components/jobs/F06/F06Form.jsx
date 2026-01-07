@@ -20,7 +20,7 @@ const F06Form = memo((props) => {
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12}>
 								<AccountingEntryListingPicker
-									label="盤點作帳日期"
+									label="盤點作帳日期#序號 清單編號"
 									name="accEntry"
 									autoFocus
 									required

@@ -21,6 +21,7 @@ const AccountingEntryListingPicker = memo((props) => {
 	const querystring = useMemo(() => {
 		return queryString.stringify({
 			opts: 1,
+			tp: 1000
 		});
 	}, []);
 
