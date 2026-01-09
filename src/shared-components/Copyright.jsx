@@ -3,14 +3,21 @@ import { Grid, IconButton, Link, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import FiberNewOutlinedIcon from '@mui/icons-material/FiberNewOutlined';
+
 import { FlexBox } from "shared-components";
 
-const Copyright = ({ version, newVersion, loading, apiVersion, handleCopyVersion, handleCopyApiVersion, connState }) => {
+const Copyright = ({ version, loading, mdOrUp, apiVersion, handleCopyVersion, handleCopyApiVersion, connState }) => {
 	const config = useContext(ConfigContext);
 
 	return (
 		<FlexBox inline>
+			{mdOrUp && (
+				<FlexBox alignItems="flex-end" mr={1}>
+					<Typography variant="subtitle2" color="textSecondary" align="center">
+						copyright©2026- cdsys,
+					</Typography>
+				</FlexBox>
+			)}
 			<FlexBox alignItems="flex-end">
 				<Typography variant="subtitle2" color="textSecondary" align="center">
 					APP: {version}{config.PROFILE
@@ -18,38 +25,8 @@ const Copyright = ({ version, newVersion, loading, apiVersion, handleCopyVersion
 						: "[no profile]"
 					}
 				</Typography>
-				{/* <Typography variant="subtitle2" color="textSecondary" align="center"> */}
-				{/* <Link component="button" variant="subtitle2" onClick={handleCopyVersion} sx={{
-				color: "text.secondary",
-				textDecoration: 'none', // 可選：移除底線
-				'&:hover': {
-					textDecoration: 'underline', // 可選：滑鼠懸停時顯示底線
-				},
-			}}>
-				{version || "(N/A)"}
-			</Link> */}
-				{newVersion && (
-					<Tooltip title={`發現新版號 ${newVersion}`} arrow slotProps={{
-						popper: {
-							modifiers: [
-								{
-									name: 'offset',
-									options: {
-										offset: [0, -8],
-									},
-								},
-							],
-						}
-					}}>
-						<FiberNewOutlinedIcon fontSize="large" color="secondary"
-							viewBox="0 6 24 13"
-							sx={{
-								// top: "-6px",
-								// position: "relative"
-								height: "25px"
-							}} />
-					</Tooltip>
-				)}
+
+
 
 				<Tooltip title="複製前端版號" arrow slotProps={{
 					popper: {
@@ -115,7 +92,8 @@ Copyright.propTypes = {
 	apiVersion: PropTypes.string,
 	handleCopyVersion: PropTypes.func,
 	handleCopyApiVersion: PropTypes.func,
-	connState: PropTypes.string
+	connState: PropTypes.string,
+	mdOrUp: PropTypes.bool
 };
 
 export default Copyright;

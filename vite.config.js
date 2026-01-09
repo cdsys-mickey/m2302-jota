@@ -112,7 +112,7 @@ export default defineConfig(({ mode }) => {
 					},
 				},
 			},
-			sourcemap: env.VITE_PROFILE !== "jota",
+			// sourcemap: env.VITE_PROFILE !== "jota",
 		},
 	};
 });

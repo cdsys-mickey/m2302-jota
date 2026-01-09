@@ -4,13 +4,16 @@ import { UnreadMessagesIconButtonContainer } from "@/components/unread-messages/
 import { UnreadMessagesPopoverContainer } from "@/components/unread-messages/UnreadMessagesPopover/UnreadMessagesPopoverContainer";
 import { FlexBox } from "shared-components";
 import AvatarButtonContainer from "@/shared-components/protected-page/AvatarButtonContainer";
-import { Stack } from "@mui/material";
+import { Stack, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
+import FiberNewOutlinedIcon from '@mui/icons-material/FiberNewOutlined';
+import FiberNewTwoToneIcon from '@mui/icons-material/FiberNewTwoTone';
+import FiberNewIcon from '@mui/icons-material/FiberNew';
 
 const FrameBannerView = memo(
 	forwardRef((props, ref) => {
-		const { title, alt, children, SearchComponent, dense, ...rest } = props;
+		const { title, newVersion, children, SearchComponent, dense, ...rest } = props;
 
 		const showSearchComponent = useMemo(() => {
 			return children || !!SearchComponent;
@@ -49,6 +52,31 @@ const FrameBannerView = memo(
 						sx={{ color: "action.active" }}>
 						{/* 通知 */}
 						{/* <ZZPushMessagesButtonContainer /> */}
+						{newVersion && (
+							<Tooltip title={`發現新版號 ${newVersion}, 請使用 Ctrl+F5 更新版本`} arrow slotProps={{
+								popper: {
+									modifiers: [
+										{
+											name: 'offset',
+											options: {
+												offset: [0, -8],
+											},
+										},
+									],
+								}
+							}}>
+								<FiberNewIcon
+									// <FiberNewTwoToneIcon 
+									fontSize="large"
+									color="secondary"
+									viewBox="0 6 24 13"
+									sx={{
+										// top: "-6px",
+										// position: "relative"
+										height: "25px"
+									}} />
+							</Tooltip>
+						)}
 
 						{/* 通知按鈕 */}
 						<UnreadMessagesIconButtonContainer />
@@ -82,6 +110,7 @@ const FrameBannerView = memo(
 
 FrameBannerView.displayName = "FrameBannerView";
 FrameBannerView.propTypes = {
+	newVersion: PropTypes.string,
 	title: PropTypes.string,
 	alt: PropTypes.string,
 	dense: PropTypes.bool,

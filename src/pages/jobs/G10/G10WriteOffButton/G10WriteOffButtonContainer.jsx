@@ -2,9 +2,7 @@ import { G10Context } from "@/pages/jobs/G10/G10Context";
 import { ButtonEx } from "@/shared-components";
 import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
-import { Tooltip } from "@mui/material";
-import { useCallback } from "react";
-import { forwardRef, memo, useContext, useMemo } from "react";
+import { forwardRef, memo, useCallback, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 
@@ -14,19 +12,19 @@ const G10WriteOffButtonContainer = memo(
 		const g10 = useContext(G10Context);
 		const form = useFormContext();
 
+		const disabled = useMemo(() => {
+			return !g10.grid.gridData?.filter(x => x.doc?.SDocID).length;
+		}, [g10.grid.gridData])
+
 		const handleSubmit = useCallback(() => {
-			if (g10.editing) {
+			if (!disabled) {
 				form.handleSubmit(g10.onSubmit, g10.onSubmitErrort)();
 			}
-		}, [form, g10.editing, g10.onSubmit, g10.onSubmitErrort]);
+		}, [disabled, form, g10.onSubmit, g10.onSubmitErrort]);
 
 		useHotkeys(["Control+Enter"], () => setTimeout(handleSubmit), {
 			enableOnFormTags: true
 		})
-
-		const disabled = useMemo(() => {
-			return !g10.grid.gridData?.filter(x => x.doc?.SDocID).length;
-		}, [g10.grid.gridData])
 
 		const title = useMemo(() => {
 			return disabled ? "請至少輸入一張單據" : ""
@@ -41,6 +39,7 @@ const G10WriteOffButtonContainer = memo(
 					startIcon={<PlaylistRemoveIcon />}
 					onClick={handleSubmit}
 					disabled={disabled}
+					loading={g10.updating}
 					sx={{
 						fontWeight: 600,
 					}}

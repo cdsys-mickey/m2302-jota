@@ -111,13 +111,14 @@ const ProdPicker = (props) => {
 	}), []);
 
 	const filterOptions = useCallback((options, state) => {
+		console.log("options", options)
 		// 執行預設過濾
 		let filtered = defaultFilter(options, state);
-
+		console.log("filtered", filtered)
 		// 僅當有輸入值時應用自訂排序
 		if (state.inputValue) {
-			// filtered = Arrays.sortByFoundIndex(filtered, ["ProdID", "ProdData"], state.inputValue);
 			filtered = Arrays.sortByFoundIndex(filtered, ["ProdID"], state.inputValue);
+			console.log("filtered after sort", filtered)
 		}
 
 		return filtered;

@@ -2,6 +2,7 @@ import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import useContainerSize from "@/shared-hooks/useContainerSize";
 import { useContext, useMemo } from "react";
 import FrameBannerView from "./FrameBannerView";
+import useVersionCheck from "@/shared-hooks/useVersionCheck";
 
 export const FrameBannerContainer = (props) => {
 	const { ...rest } = props;
@@ -27,13 +28,17 @@ export const FrameBannerContainer = (props) => {
 		return appFrame.menuItemSelected?.JobName;
 	}, [altTitle, appFrame.menuItemSelected?.JobName, fullTitle, isMdOrUp, isSmOrDown])
 
+	const { newVersion } = useVersionCheck({ autoPrompt: false });
+
 	return (
 
 		<div ref={containerRef}>
 			<FrameBannerView
 				title={title}
-				alt={altTitle}
 				dense={isSmOrDown}
+				// #for dev use
+				// newVersion="9999.01.01"
+				newVersion={newVersion}
 				{...rest}
 			/>
 		</div>

@@ -8,7 +8,7 @@ import { useTheme } from "@mui/system";
 import { ResponsiveGridContext } from "./ResponsiveGridContext";
 
 const ResponsiveGridItem = memo((props) => {
-	const { xs, sm, md, lg, xl, ...rest } = props;
+	const { xs, sm, md, lg, xl, children, ...rest } = props;
 	const responsiveLayout = useContext(ResponsiveLayoutContext);
 	const responsiveGrid = useContext(ResponsiveGridContext);
 
@@ -20,7 +20,7 @@ const ResponsiveGridItem = memo((props) => {
 		isXl
 	} = responsiveLayout || responsiveGrid;
 
-	const { initSize, columns } = responsiveGrid;
+	const { initSize, columns } = responsiveGrid || {};
 
 	const theme = useTheme();
 
@@ -109,11 +109,22 @@ const ResponsiveGridItem = memo((props) => {
 	// }
 
 	return (
-		<Grid item {...(_xs && { xs: _xs })} {...rest} />
+		<Grid item
+			sx={{
+				// 針對寬度與彈性基準進行過渡
+				transition: theme => theme.transitions.create(['flex-basis', 'max-width', 'width'], {
+					easing: theme.transitions.easing.easeInOut,
+					duration: theme.transitions.duration.standard, // 或者自定義時間，如 '0.5s'
+				}),
+				...rest.sx // 保留外部傳入的 sx
+			}}
+			{...(_xs && { xs: _xs })} {...rest}
+		>{children}</Grid>
 	);
 })
 
 ResponsiveGridItem.propTypes = {
+	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array, PropTypes.func]),
 	xs: PropTypes.number,
 	sm: PropTypes.number,
 	md: PropTypes.number,

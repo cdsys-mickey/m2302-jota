@@ -5,6 +5,7 @@ const P41IDColumn = (props) => {
 	const { ...rest } = props;
 	return (
 		<ListColumn item pr={1} xs={6} md={4} sm={3} {...rest} />
+		// <ListColumn responsive item pr={1} xs={6} sm={3} md={3}  {...rest} />
 	);
 };
 

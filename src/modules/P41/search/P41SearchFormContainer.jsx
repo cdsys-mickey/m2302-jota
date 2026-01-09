@@ -11,6 +11,7 @@ const P41SearchFormContainer = (props) => {
 		`
 		qs,
 		lvArrDate,
+		lvArrDateDir,
 		lvOrdDate,
 		lvFilterMode,
 		`);

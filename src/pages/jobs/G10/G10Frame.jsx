@@ -19,7 +19,7 @@ const G10Frame = memo(() => {
 					<form>
 						<G10Toolbar />
 						<ContainerEx maxWidth="xs" alignLeft>
-							<AlertEx label="說明" severity="info" transparent >請在單號欄位輸入「銷貨單號」或「銷退單號」再執行沖銷</AlertEx>
+							<AlertEx label="說明" severity="info" transparent >請在單號欄位輸入「銷貨單號(S)」或「銷退單號(R)」再執行沖銷</AlertEx>
 						</ContainerEx>
 						{/* <G10ListFormContainer /> */}
 						<G10GridContainer />

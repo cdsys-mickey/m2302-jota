@@ -2,6 +2,7 @@ import CmsGroupTypes from "@/components/CmsGroupTypePicker/CmsGroupTypes.mjs";
 import Forms from "@/shared-modules/Forms.mjs";
 import Objects from "@/shared-modules/Objects.mjs";
 import P41FilterModes from "./P41FilterModePicker/P41FilterModes";
+import OrderDirs from "../OrderDirs.mjs";
 
 /* eslint-disable no-mixed-spaces-and-tabs */
 const transformForReading = (payload, aliasOptions) => {
@@ -127,7 +128,8 @@ const isFiltered = (criteria) => {
 };
 
 const transformAsQueryParams = (data) => {
-	const { lvArrDate, lvOrdDate, lvFilterMode, qs, ...rest } = data;
+	const { lvArrDate, lvArrDateDir, lvOrdDate, lvFilterMode, qs, ...rest } =
+		data;
 	return {
 		...(qs && {
 			qs,
@@ -135,12 +137,16 @@ const transformAsQueryParams = (data) => {
 		...(lvArrDate && {
 			ard: Forms.formatDate(lvArrDate),
 		}),
+		...(lvArrDateDir && {
+			ardd: lvArrDateDir?.id,
+		}),
 		...(lvOrdDate && {
 			ord: Forms.formatDate(lvOrdDate),
 		}),
 		...(lvFilterMode && {
 			c: lvFilterMode?.id,
 		}),
+
 		...rest,
 	};
 };
@@ -183,6 +189,8 @@ const paramsToJsonData = (params) => {
 const getDefaultValues = () => {
 	return {
 		lvArrDate: new Date(),
+		// lvArrDateDir: OrderDirs.getDefaultOption(),
+		lvArrDateDir: null,
 		lvFilterMode: P41FilterModes.getDefaultOption(),
 	};
 };

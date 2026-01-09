@@ -1,4 +1,5 @@
 import BankPicker from "@/components/BankPicker/BankPicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
 import { DatePickerEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import { ResponsiveGrid } from "@/shared-components/responsive-grid/ResponsiveGrid";
@@ -30,7 +31,16 @@ const P41SearchForm = memo((props) => {
 						fullWidth
 					/>
 				</ResponsiveGrid>
-				<ResponsiveGrid item md={6} lg={4}>
+				<ResponsiveGrid item sm={5} md={5} lg={4} >
+					<OrderDirPicker
+						label="到訪日期排序"
+						name="lvArrDateDir"
+						disableOpenOnInput
+						selectOnFocus
+					// disableClearable
+					/>
+				</ResponsiveGrid>
+				<ResponsiveGrid item md={6} lg={4} >
 					<DatePickerEx
 						name="lvOrdDate"
 						label="訂訪日期"

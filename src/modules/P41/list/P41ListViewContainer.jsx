@@ -9,6 +9,8 @@ import { useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import P41 from "../P41.mjs";
 import { P41ListRowContainer } from "./P41ListRowContainer";
+import { ResponsiveProvider } from "@/shared-contexts/responsive/ResponsiveProvider";
+import ResponsiveGridProvider from "@/shared-components/responsive-grid/ResponsiveGridProvider";
 
 export const P41ListViewContainer = () => {
 	const p41 = useContext(P41Context);
@@ -36,6 +38,11 @@ export const P41ListViewContainer = () => {
 		control: form.control
 	})
 
+	const lvArrDateDir = useWatch({
+		name: "lvArrDateDir",
+		control: form.control
+	})
+
 	const debouncedQs = useDebounce(qs, 300);
 	// const { scrollOffset, onScroll } = useReactWindowScroll({ debounce: 20 });
 
@@ -51,34 +58,37 @@ export const P41ListViewContainer = () => {
 				qs: debouncedQs,
 				lvOrdDate,
 				lvArrDate,
-				lvFilterMode
+				lvFilterMode,
+				lvArrDateDir
 			}),
 			supressLoading: true,
 		});
-	}, [debouncedQs, lvOrdDate, lvArrDate, lvFilterMode]);
+	}, [debouncedQs, lvOrdDate, lvArrDate, lvArrDateDir, lvFilterMode]);
 
 	const _height = useMemo(() => {
 		return height ? height - 202 : 300
 	}, [height])
 
 	return (
-		<ListViewBox withHeader>
-			<AuthListView
-				// onScroll={onScroll}
-				// scrollOffset={scrollOffset}
-				loading={p41.listLoading}
-				data={p41.listData}
-				itemCount={p41.itemCount}
-				loadMoreItems={p41.loadMoreItems}
-				isItemLoaded={p41.isItemLoaded}
-				RowComponent={P41ListRowContainer}
-				height={_height}
-				handleItemsRendered={p41.handleItemsRendered}
-				error={p41.listError}
-				// bottomReached={p41.bottomReached}
-				bottomReached={true}
-			/>
-		</ListViewBox>
+		<ResponsiveGridProvider>
+			<ListViewBox withHeader>
+				<AuthListView
+					// onScroll={onScroll}
+					// scrollOffset={scrollOffset}
+					loading={p41.listLoading}
+					data={p41.listData}
+					itemCount={p41.itemCount}
+					loadMoreItems={p41.loadMoreItems}
+					isItemLoaded={p41.isItemLoaded}
+					RowComponent={P41ListRowContainer}
+					height={_height}
+					handleItemsRendered={p41.handleItemsRendered}
+					error={p41.listError}
+					// bottomReached={p41.bottomReached}
+					bottomReached={true}
+				/>
+			</ListViewBox>
+		</ResponsiveGridProvider>
 	);
 };
 

@@ -266,12 +266,13 @@ export const useWebApiOptions = (opts = {}) => {
 			const handleError = _onError ?? onError;
 			// 解決滑鼠先移到 Listbox 位置而選不到項目的問題
 			// await new Promise((resolve) => setTimeout(resolve, 300));
+			const withQuery = !!filterByServer && !!query;
 			try {
 				const { status, payload, error } = await sendAsync({
 					method,
 					url,
 					data: {
-						...(query && { [queryParam]: query }),
+						...(withQuery && { [queryParam]: query }),
 						...(querystring && queryString.parse(querystring)),
 						...params,
 					},

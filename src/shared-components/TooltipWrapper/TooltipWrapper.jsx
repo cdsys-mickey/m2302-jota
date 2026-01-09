@@ -23,6 +23,7 @@ const TooltipWrapper = (props) => {
 	)
 }
 TooltipWrapper.propTypes = {
+	disabled: PropTypes.bool,
 	title: PropTypes.string,
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array, PropTypes.func])
 }

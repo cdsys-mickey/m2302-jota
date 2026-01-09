@@ -118,6 +118,7 @@ const OptionPickerView = memo(
 			disableOpenOnInput,
 			disableClearable,
 			findByInput,
+			onBeforeFindByInput,
 			getError,
 			setError,
 			clearErrors,
@@ -423,8 +424,12 @@ const OptionPickerView = memo(
 					console.log("handleLookup", e.key);
 					let found;
 					let error;
+					let _input = input;
 					try {
-						found = input || emptyId ? await findByInput(input) : null;
+						if (onBeforeFindByInput) {
+							_input = onBeforeFindByInput(input);
+						}
+						found = _input || emptyId ? await findByInput(_input) : null;
 					} catch (err) {
 						error = err;
 					}
@@ -438,7 +443,7 @@ const OptionPickerView = memo(
 						// 	asyncRef.current.performFocusNext = true;
 						// }
 
-						handleInputNotFound(input, {
+						handleInputNotFound(_input, {
 							error
 						});
 						selectField();
@@ -1178,6 +1183,7 @@ OptionPickerView.propTypes = {
 	tagDisabled: PropTypes.func,
 	// Popper Open 控制
 	findByInput: PropTypes.func,
+	onBeforeFindByInput: PropTypes.func,
 	onOpen: PropTypes.func,
 	onClose: PropTypes.func,
 	open: PropTypes.bool,
@@ -1219,5 +1225,6 @@ OptionPickerView.propTypes = {
 	itemCount: PropTypes.number,
 	threshold: PropTypes.number,
 	minimumBatchSize: PropTypes.number,
+	disableClearable: PropTypes.bool
 };
 export default OptionPickerView;

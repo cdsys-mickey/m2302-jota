@@ -9,15 +9,16 @@ import { useMemo } from "react";
 import { HubConnectionState } from "@microsoft/signalr";
 import useVersionCheck from "@/shared-hooks/useVersionCheck";
 import PropTypes from "prop-types";
+import { useMediaQuery } from "@mui/material";
 
 export const CopyrightContainer = (props) => {
 	const { autoPrompt = true, ...rest } = props;
 	const { version, apiVersion, loadAppInfo, loading, profile } = useContext(AppContext);
 	const messaging = useContext(MessagingContext);
 	const { connectionState } = messaging;
-	const { newVersion } = useVersionCheck({
-		autoPrompt: autoPrompt
-	});
+	// const { newVersion } = useVersionCheck({
+	// 	autoPrompt: autoPrompt
+	// });
 
 	const handleCopyVersion = useCallback(async () => {
 		await navigator.clipboard.writeText(version);
@@ -45,15 +46,18 @@ export const CopyrightContainer = (props) => {
 		loadAppInfo();
 	}, []);
 
+	const mdOrUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
+
 	return (
 		<Copyright
 			loading={loading}
 			version={version}
 			apiVersion={apiVersion}
-			newVersion={newVersion}
+			// newVersion={newVersion}
 			handleCopyVersion={handleCopyVersion}
 			handleCopyApiVersion={handleCopyApiVersion}
 			connState={connState}
+			mdOrUp={mdOrUp}
 			{...rest}
 		/>
 	);

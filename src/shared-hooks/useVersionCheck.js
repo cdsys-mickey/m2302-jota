@@ -24,13 +24,6 @@ export default function useVersionCheck(opts) {
 	}, [frontEnd?.version, promptMessage]);
 
 	const promptRefresh = useCallback(() => {
-		// dialogs.confirm({
-		// 	message: `偵測到新版本 ${frontEnd?.version}, 按下「確定更新」即可更新\n*** 若更新後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
-		// 	confirmText: "更新",
-		// 	onConfirm: () => {
-		// 		window.location.reload(true);
-		// 	},
-		// });
 		toastEx.warn(_promptMessage, {
 			position: "bottom-right",
 		});

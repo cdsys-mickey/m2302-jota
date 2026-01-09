@@ -4,9 +4,10 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { useMemo } from "react";
 import { ListRowContext } from "./context/ListRowContext";
+import { ResponsiveGrid } from "../responsive-grid/ResponsiveGrid";
 
 const ListColumn = (props) => {
-	const { children, flex, inline, justifyContent, alignItems, onClick, sx = [], ...rest } = props;
+	const { children, flex, inline, justifyContent, alignItems, onClick, responsive = false, sx = [], ...rest } = props;
 	const listRow = useContext(ListRowContext);
 	const isLoading = useMemo(() => {
 		return listRow?.loading && !children
@@ -31,24 +32,25 @@ const ListColumn = (props) => {
 		}
 	}), [alignItems, display, justifyContent, onClick])
 
-	// const title = useMemo(() => {
-	// 	return Types.isString(children) ? children : "";
-	// }, [children])
+	const GridComponent = useMemo(() => {
+		return responsive ? ResponsiveGrid : Grid;
+	}, [responsive])
 
 	return (
-		<Grid item sx={[MuiStyles.ELLIPSIS, styles, ...(Array.isArray(sx) ? sx : [sx])]}
+		<GridComponent item sx={[MuiStyles.ELLIPSIS, styles, ...(Array.isArray(sx) ? sx : [sx])]}
 			onClick={onClick}
 			// title={title}
 			{...rest}
 		>
 			{isLoading ? <Skeleton /> : children || ""}
-		</Grid>
+		</GridComponent>
 	);
 }
 
 ListColumn.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 	flex: PropTypes.bool,
+	responsive: PropTypes.bool,
 	inline: PropTypes.bool,
 	alignItems: PropTypes.string,
 	justifyContent: PropTypes.string,

@@ -2,20 +2,29 @@ import { FlexBox } from "shared-components";
 
 // import { RememberMeCheckboxContainer } from "@/components/auth/RememberMeCheckboxConainer";
 import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
-import { ButtonEx, CheckboxEx, CheckboxExField } from "@/shared-components";
+import { ButtonEx, CheckboxExField } from "@/shared-components";
 import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
 import LoginIcon from "@mui/icons-material/Login";
 import { Box, Collapse, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
+import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
 
 const SignInView = memo(
 	forwardRef((props, ref) => {
-		const { loading, hideCaptcha, ...rest } = props;
+		const { loading, hideCaptcha, newVersion, ...rest } = props;
 
 		const pwLabel = useMemo(() => {
 			return hideCaptcha ? "OTP" : "密碼";
 		}, [hideCaptcha])
+
+		const isRefreshRequired = useMemo(() => {
+			return !!newVersion;
+		}, [newVersion])
+
+		const _tooltip = useMemo(() => {
+			return newVersion ? `請使用 Ctrl+F5 更新後再登入` : false;
+		}, [newVersion])
 
 		return (
 			<Paper
@@ -102,22 +111,25 @@ const SignInView = memo(
 								重設密碼
 							</Link> */}
 						</FlexBox>
-						<FlexBox>
-							<ButtonEx
-								type="submit"
-								variant="contained"
-								{...(hideCaptcha && {
-									color: "warning"
-								})}
-								size="small"
-								loading={loading}
-								// loading={true}
-								endIcon={<LoginIcon />}
-							// disabled={isRefreshRequired}
-							>
-								登入
-							</ButtonEx>
-						</FlexBox>
+						<TooltipWrapper title={_tooltip}>
+							<FlexBox>
+								<ButtonEx
+									type="submit"
+									variant="contained"
+									{...(hideCaptcha && {
+										color: "warning"
+									})}
+									size="small"
+									loading={loading}
+									endIcon={<LoginIcon />}
+									disabled={isRefreshRequired}
+								// #for dev use, dont delete
+								// disabled={true}
+								>
+									登入
+								</ButtonEx>
+							</FlexBox>
+						</TooltipWrapper>
 					</FlexBox>
 					{/* <FlexBox mt={1}>
 							<Typography
@@ -140,6 +152,8 @@ const SignInView = memo(
 );
 SignInView.propTypes = {
 	loading: PropTypes.bool,
+	isRefreshRequired: PropTypes.bool,
 	hideCaptcha: PropTypes.bool,
+	newVersion: PropTypes.string
 }
 export default SignInView;
