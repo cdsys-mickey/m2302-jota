@@ -12,7 +12,7 @@ import MuiStyles from "@/shared-modules/MuiStyles";
  */
 const FrameMenu = memo(
 	forwardRef((props, ref) => {
-		const { height, authorities, authoritiesLoading, authoritiesError, dense = false } =
+		const { height, authorities, authoritiesLoading, authoritiesError, hiddenAuthoritiesCount, dense = false } =
 			props;
 
 		const scrollable = useScrollable({
@@ -40,6 +40,7 @@ const FrameMenu = memo(
 									/>
 								</ListItem>
 							))}
+
 					</List>
 				</Box>
 			</Box>

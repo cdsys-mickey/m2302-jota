@@ -51,7 +51,6 @@ const U04Form = memo((props) => {
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間"
 									leftComponent={<DatePickerWrapper
-										minDate={"2026/01/01"}
 										name="SDate"
 										fullWidth
 										validate
@@ -60,7 +59,6 @@ const U04Form = memo((props) => {
 										placeholder="起"
 									/>}
 									rightComponent={<DatePickerWrapper
-										minDate={"2026/01/01"}
 										name="EDate"
 										fullWidth
 										validate

@@ -20,6 +20,7 @@ const G10Grid = memo((props) => {
 		data,
 		loading,
 		height = 300,
+		addRowsComponent,
 		// METHODS
 		onChange,
 	} = props;
@@ -43,28 +44,29 @@ const G10Grid = memo((props) => {
 	}
 
 	return (
-		<ContainerEx maxWidth="md" alignLeft>
-			<DSGGrid
-				lockRows={lockRows}
-				ref={gridRef}
-				rowKey="PosNo"
-				height={gridHeight}
-				// rowHeight={42}
-				value={data}
-				onChange={onChange}
-				columns={columns}
-				addRowsComponent={canCreate ? DSGAddRowsToolbar : null}
-				disableExpandSelection
-				// disableContextMenu
-				contextMenuComponent={ContextMenu}
-				// autoAddRow
-				createRow={G10.createRow}
-			/>
-		</ContainerEx>
+		// <ContainerEx maxWidth="md" alignLeft>
+		<DSGGrid
+			lockRows={lockRows}
+			ref={gridRef}
+			rowKey="PosNo"
+			height={gridHeight}
+			// rowHeight={42}
+			value={data}
+			onChange={onChange}
+			columns={columns}
+			addRowsComponent={addRowsComponent}
+			disableExpandSelection
+			// disableContextMenu
+			contextMenuComponent={ContextMenu}
+			// autoAddRow
+			createRow={G10.createRow}
+		/>
+		// </ContainerEx>
 	);
 });
 G10Grid.propTypes = {
 	columns: PropTypes.array,
+	canCreate: PropTypes.bool,
 	lockRows: PropTypes.bool,
 	gridRef: PropTypes.func,
 	drawerOpen: PropTypes.bool,
@@ -73,6 +75,7 @@ G10Grid.propTypes = {
 	height: PropTypes.number,
 	onChange: PropTypes.func,
 	isPersisted: PropTypes.func,
+	addRowsComponent: PropTypes.node
 	// handleActiveCellChange: PropTypes.func,
 };
 

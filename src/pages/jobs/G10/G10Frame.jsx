@@ -9,8 +9,8 @@ import G10GridContainer from "./G10GridContainer";
 import G10Toolbar from "./G10Toolbar";
 
 const G10Frame = memo(() => {
-
 	const form = useForm();
+
 	return (
 		<FrameBox>
 			<FrameBanner />
@@ -18,7 +18,7 @@ const G10Frame = memo(() => {
 				<FormProvider {...form}>
 					<form>
 						<G10Toolbar />
-						<ContainerEx maxWidth="xs" alignLeft>
+						<ContainerEx maxWidth="lg" alignLeft>
 							<AlertEx label="說明" severity="info" transparent >請在單號欄位輸入「銷貨單號(S)」或「銷退單號(R)」再執行沖銷</AlertEx>
 						</ContainerEx>
 						{/* <G10ListFormContainer /> */}

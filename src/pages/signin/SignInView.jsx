@@ -8,7 +8,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import { Box, Collapse, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 
 const SignInView = memo(
 	forwardRef((props, ref) => {
@@ -111,7 +111,7 @@ const SignInView = memo(
 								重設密碼
 							</Link> */}
 						</FlexBox>
-						<TooltipWrapper title={_tooltip}>
+						<TooltipWrapper title={_tooltip} disabled={isRefreshRequired}>
 							<FlexBox>
 								<ButtonEx
 									type="submit"

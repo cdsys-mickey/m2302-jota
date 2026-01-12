@@ -2,7 +2,7 @@ import { BContext } from "@/contexts/B/BContext";
 import { B012Context } from "@/contexts/B012/B012Context";
 import { B032Context } from "@/contexts/B032/B032Context";
 import { ButtonEx } from "@/shared-components";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { forwardRef, memo, useContext, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";

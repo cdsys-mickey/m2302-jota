@@ -1,6 +1,6 @@
 import { C01Context } from "@/contexts/C01/C01Context";
 import { ButtonEx } from "@/shared-components";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useContext, useMemo } from "react";
@@ -23,7 +23,7 @@ export const C01TransformButtonContainer = memo(
 		}, [disabled])
 
 		return (
-			<TooltipWrapper title={_title} arrow >
+			<TooltipWrapper title={_title} arrow disabled={disabled}>
 				<ButtonEx
 					ref={ref}
 					responsive

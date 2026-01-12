@@ -1,6 +1,6 @@
 import { F02Context } from "@/pages/jobs/F02/F02Context";
 import LockSwitch from "@/shared-components/LockSwitch";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import { useContext, useMemo } from "react";
 
 export const F02LockSwitchContainer = (props) => {
@@ -11,17 +11,17 @@ export const F02LockSwitchContainer = (props) => {
 		return f02.staging ? "電腦帳已形成，刪除後才能解除鎖定" : "";
 	}, [f02.staging])
 
-	// if (!f02.canUpdate) {
-	// 	return false;
-	// }
+	const disabled = useMemo(() => {
+		return f02.staging
+	}, [f02.staging])
 
 	return (
-		<TooltipWrapper title={tooltip} arrow>
+		<TooltipWrapper title={tooltip} disabled={disabled} arrow>
 			<LockSwitch
 				unlockedLabel="編輯"
 				locked={f02.grid.readOnly}
 				onChange={f02.grid.toggleReadOnly}
-				disabled={f02.staging}
+				disabled={disabled}
 				{...rest}
 			/>
 		</TooltipWrapper>

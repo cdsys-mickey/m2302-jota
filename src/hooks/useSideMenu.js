@@ -73,19 +73,19 @@ export const useSideMenu = ({ bgcolor = "#fff" } = {}) => {
 				!q
 					? authorities?.filter((x) => filterByInput(x, q))
 					: authorities
-						?.filter((x) => filterByInput(x, q))
-						.sort((x, y) => {
-							if (x.JobID?.length < y.JobID?.length) {
-								return -1;
-							} else if (x.JobID?.length > y.JobID?.length) {
-								return 1;
-							} else if (x.Seq < y.Seq) {
-								return -1;
-							} else if (x.Seq > y.Seq) {
-								return 1;
-							}
-							return 0;
-						})
+							?.filter((x) => filterByInput(x, q))
+							.sort((x, y) => {
+								if (x.JobID?.length < y.JobID?.length) {
+									return -1;
+								} else if (x.JobID?.length > y.JobID?.length) {
+									return 1;
+								} else if (x.Seq < y.Seq) {
+									return -1;
+								} else if (x.Seq > y.Seq) {
+									return 1;
+								}
+								return 0;
+							})
 			);
 		},
 		[filterByInput]

@@ -73,10 +73,23 @@ export const useG10 = ({ token }) => {
 						CustName_N: processedRowData.doc?.CustName_N ?? "",
 						Amt_N: processedRowData.doc?.Amt_N ?? "",
 					};
+					updateResult.rows++;
 				}
 				return processedRowData;
 			},
 		[grid.gridData]
+	);
+
+	const updateAmt = useCallback(({ setValue, gridData }) => {
+		const subtotal = G10.getSubtotal(gridData);
+		setValue("Amt", subtotal.toFixed(2));
+	}, []);
+
+	const onGridChanged = useCallback(
+		({ gridData, formData, setValue, updateResult }) => {
+			updateAmt({ setValue, gridData });
+		},
+		[updateAmt]
 	);
 
 	const onSubmit = useCallback(
@@ -125,5 +138,6 @@ export const useG10 = ({ token }) => {
 		onSubmit,
 		onSubmitError,
 		load,
+		onGridChanged,
 	};
 };

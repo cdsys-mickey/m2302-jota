@@ -12,6 +12,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import G10DocPickerCell from "./G10DocPickerCell/G10DocPickerCell";
 import G10Grid from "./G10Grid";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import G10GridAddRows from "./G10GridAddRows";
 
 const G10GridContainer = () => {
 	const { height } = useWindowSize();
@@ -55,6 +56,8 @@ const G10GridContainer = () => {
 				),
 				title: "類型",
 				disabled: true,
+				minWidth: 70,
+				maxWidth: 90,
 			},
 			{
 				...keyColumn(
@@ -65,6 +68,8 @@ const G10GridContainer = () => {
 				),
 				title: "單據日期",
 				disabled: true,
+				minWidth: 120,
+				maxWidth: 160,
 			},
 			{
 				...keyColumn(
@@ -75,6 +80,8 @@ const G10GridContainer = () => {
 				),
 				title: "客戶編號",
 				disabled: true,
+				minWidth: 120,
+				maxWidth: 140,
 			},
 			{
 				...keyColumn(
@@ -85,11 +92,14 @@ const G10GridContainer = () => {
 				),
 				title: "客戶名稱",
 				disabled: true,
+				grow: 1
 			},
 			{
 				...keyColumn("Amt_N", createFloatColumn(2)),
 				title: "應收金額",
 				disabled: true,
+				minWidth: 120,
+				maxWidth: 160,
 			},
 
 		],
@@ -113,12 +123,25 @@ const G10GridContainer = () => {
 	}, [gridMeta]);
 
 	const onChange = useMemo(() => {
-		return g10.grid.buildGridChangeHandler({ gridMeta, onUpdateRow: g10.onUpdateRow })
-	}, [g10.grid, g10.onUpdateRow, gridMeta])
+		return g10.grid.buildGridChangeHandler({
+			gridMeta,
+			onUpdateRow: g10.onUpdateRow,
+			onGridChanged: g10.onGridChanged,
+			setValue: form.setValue,
+		})
+	}, [form.setValue, g10.grid, g10.onGridChanged, g10.onUpdateRow, gridMeta])
 
 	const _height = useMemo(() => {
 		return height - 204
 	}, [height]);
+
+	const addRowsComponent = useMemo(() => {
+		if (!g10.canCreate) {
+			return false;
+		}
+
+		return G10GridAddRows;
+	}, [g10.canCreate])
 
 	useInit(() => {
 		g10.load();
@@ -143,6 +166,7 @@ const G10GridContainer = () => {
 					onSelectionChange={onSelectionChange}
 					// isPersisted={g10.isPersisted}
 					canCreate={g10.canCreate}
+					addRowsComponent={addRowsComponent}
 				/>
 			</DSGContext.Provider>
 		</FormProvider>

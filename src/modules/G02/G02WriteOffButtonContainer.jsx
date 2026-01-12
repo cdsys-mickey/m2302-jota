@@ -2,7 +2,7 @@ import { InfiniteLoaderContext } from "@/contexts/infinite-loader/InfiniteLoader
 import { G02Context } from "@/modules/G02/G02Context";
 import { ButtonEx } from "@/shared-components";
 import ButtonGroupEx from "@/shared-components/ButtonGroupEx";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import ClearIcon from "@mui/icons-material/Clear";
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import { Button, Tooltip } from "@mui/material";
@@ -34,7 +34,7 @@ const G02WriteOffButtonContainer = memo(
 		}, [disabled])
 
 		return (
-			<TooltipWrapper title={_title}>
+			<TooltipWrapper title={_title} disabled={disabled}>
 				<ButtonGroupEx variant="contained" size="small" noDivider disableInteractive>
 					<ButtonEx
 						responsive

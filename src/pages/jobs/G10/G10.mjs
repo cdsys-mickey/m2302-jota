@@ -48,11 +48,25 @@ function expandInput(input) {
 	return prefix + expandedNum;
 }
 
+const getSubtotal = (gridData) => {
+	let result = 0;
+	for (const rowData of gridData) {
+		const rowSubtotal = Number(rowData["Amt_N"]);
+		console.log(`rowSubtotal`, rowSubtotal);
+		if (!isNaN(rowSubtotal)) {
+			result += rowSubtotal;
+		}
+	}
+	console.log("subtotal:", result);
+	return result;
+};
+
 const G10 = {
 	transformGridForSubmitting,
 	transformForSubmitting,
 	createRow,
 	expandInput,
+	getSubtotal,
 };
 
 export default G10;

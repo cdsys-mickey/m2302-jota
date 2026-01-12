@@ -41,6 +41,9 @@ const isHeader = (module) => {
 	if (!module) {
 		return false;
 	}
+	if (module?.label) {
+		return false;
+	}
 	const jobIDPattern = /^[a-zA-Z]00$/;
 	if (
 		!module.JobID ||
@@ -52,6 +55,10 @@ const isHeader = (module) => {
 		return true;
 	}
 	return false;
+};
+
+const isReminder = (module) => {
+	return !!module?.label;
 };
 
 const isCustomHeader = (module) => {
@@ -66,6 +73,7 @@ const isCustomHeader = (module) => {
 
 const SideMenu = {
 	isHeader,
+	isReminder,
 	isCustomHeader,
 	GROUP_ICONS,
 	getHeaderIcon,

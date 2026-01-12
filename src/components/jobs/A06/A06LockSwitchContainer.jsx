@@ -5,7 +5,7 @@ import A06 from "@/modules/md-a06";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import { Tooltip } from "@mui/material";
 import { useMemo } from "react";
@@ -51,7 +51,7 @@ export const A06LockSwitchContainer = (props) => {
 	}
 
 	return (
-		<TooltipWrapper title={_title}>
+		<TooltipWrapper title={_title} disabled={disabled}>
 			<LockSwitch
 				unlockedLabel={mobile ? "POS開放" : "POS下載開放"}
 				lockedLabel={mobile ? "POS鎖定" : "POS下載鎖定"}

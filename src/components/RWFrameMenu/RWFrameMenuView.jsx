@@ -8,6 +8,7 @@ import { forwardRef } from "react";
 import "./RWFrameMenu.scss";
 import clsx from "clsx";
 import { useScrollable } from "../../shared-hooks/useScrollable";
+import { AlertEx } from "shared-components";
 
 const PADDING_SIZE = 8;
 

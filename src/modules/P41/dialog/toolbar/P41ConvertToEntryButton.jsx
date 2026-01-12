@@ -1,5 +1,5 @@
 import { ButtonEx } from "@/shared-components";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import { useContext, useMemo } from "react";
 import { P41Context } from "../../P41Context";
@@ -34,7 +34,7 @@ const P41ConvertToEntryButton = (props) => {
 	}
 
 	return (
-		<TooltipWrapper title={title}>
+		<TooltipWrapper title={title} disabled={disabled}>
 			<ButtonEx
 				startIcon={<PublishedWithChangesIcon />}
 				// onClick={ }

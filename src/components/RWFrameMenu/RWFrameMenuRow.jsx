@@ -5,16 +5,39 @@ import SideMenu from "@/modules/SideMenu.mjs";
 import FrameMenuContext from "../FrameMenu/FrameMenuContext";
 import { FrameMenuGroupHeader } from "../FrameMenu/FrameMenuGroupHeader";
 import FrameMenuItemButtonContainer from "../FrameMenu/FrameMenuItemButtonContainer";
-
-const PADDING_SIZE = 8;
+import { FrameMenuReminder } from "../FrameMenu/FrameMenuReminder";
 
 const RWFrameMenuRow = memo(
 	forwardRef((props, ref) => {
 		const { index, style, data } = props;
 		const value = data[index];
-		const header = useMemo(() => SideMenu.isHeader(value), [value]);
+		const reminder = useMemo(() => SideMenu.isReminder(value), [value]);
+		const header = useMemo(() => SideMenu.isHeader(value) && !SideMenu.isReminder(value), [value]);
 		const frameMenu = useContext(FrameMenuContext);
 		const { dense } = frameMenu;
+
+		const renderContent = () => {
+			if (header) {
+				return (
+					<FrameMenuGroupHeader
+						iconComponent={SideMenu.getHeaderIcon(value)}
+						text={value.JobName}
+						dense={dense}
+					/>
+				);
+			}
+
+			if (reminder) {
+				return <FrameMenuReminder label={value?.label} severity={value?.severity} />;
+			}
+
+			return (
+				<FrameMenuItemButtonContainer
+					value={value}
+					dense={dense}
+				/>
+			);
+		};
 
 		return (
 			<div
@@ -26,20 +49,7 @@ const RWFrameMenuRow = memo(
 					// paddingTop: `${PADDING_SIZE}px`,
 				}}>
 				<ListItem dense disablePadding>
-					{header ? (
-						<FrameMenuGroupHeader
-							iconComponent={SideMenu.getHeaderIcon(value)}
-							text={value.JobName}
-							dense={dense}
-						/>
-					) : (
-						<FrameMenuItemButtonContainer
-							value={value}
-							dense={dense}
-						// code={value.JobID}
-						// primary={value.JobName}
-						/>
-					)}
+					{renderContent()}
 				</ListItem>
 			</div>
 		);

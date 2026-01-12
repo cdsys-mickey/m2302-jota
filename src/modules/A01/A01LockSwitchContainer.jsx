@@ -5,7 +5,7 @@ import { A01Context } from "@/modules/A01/A01Context";
 import AlertEx from "@/shared-components/AlertEx";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import LockSwitch from "@/shared-components/LockSwitch";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import { ResponsiveContext } from "@/shared-contexts/responsive/ResponsiveContext";
 import { useContext, useMemo } from "react";
 
@@ -48,7 +48,7 @@ export const A01LockSwitchContainer = (props) => {
 	}
 
 	return (
-		<TooltipWrapper title={_title}>
+		<TooltipWrapper title={_title} disabled={disabled}>
 			<LockSwitch
 				unlockedLabel={mobile ? "POS開放" : "POS下載開放"}
 				lockedLabel={mobile ? "POS鎖定" : "POS下載鎖定"}

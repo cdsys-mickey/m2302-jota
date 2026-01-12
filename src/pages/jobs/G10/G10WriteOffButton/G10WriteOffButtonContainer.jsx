@@ -1,6 +1,8 @@
 import { G10Context } from "@/pages/jobs/G10/G10Context";
 import { ButtonEx } from "@/shared-components";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+// import { TooltipWrapper } from "shared-components";
+import { TooltipWrapper } from "shared-components";
+
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import { forwardRef, memo, useCallback, useContext, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
@@ -31,7 +33,7 @@ const G10WriteOffButtonContainer = memo(
 		}, [disabled])
 
 		return (
-			<TooltipWrapper title={title}>
+			<TooltipWrapper title={title} disabled={disabled}>
 				<ButtonEx
 					responsive
 					ref={ref}

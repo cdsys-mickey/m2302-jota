@@ -649,6 +649,11 @@ export const useDSG = ({
 						updateResult.type === "DELETE")
 				) {
 					console.log("onGridChanged", newGridData);
+					if (!setValue) {
+						console.warn(
+							"%csetValue 為空, onGridChanged 可能不會正確觸發"
+						);
+					}
 					updated = await onGridChanged({
 						prevGridData: prevGridDataRef.current,
 						gridData: newGridData,

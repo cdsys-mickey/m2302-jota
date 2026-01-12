@@ -70,14 +70,15 @@ export const useAuth = () => {
 			}));
 			try {
 				const { status, payload } = await httpGetAsync({
-					url: "v1/auth/modules",
+					url: "v2/auth/modules",
 					bearer: token,
 				});
 				if (status.success) {
 					setAuthoritiesState((prev) => ({
 						...prev,
-						authorities: payload,
+						authorities: payload.data ?? payload,
 						authoritiesLoading: false,
+						hiddenAuthoritiesCount: payload.hiddenCount,
 					}));
 				} else {
 					switch (status.code) {

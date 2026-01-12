@@ -1,6 +1,6 @@
 import { F02Context } from "@/pages/jobs/F02/F02Context";
 import { ButtonEx } from "@/shared-components";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { forwardRef, memo, useContext, useMemo } from "react";
 
@@ -18,7 +18,7 @@ const F02DeleteButtonContainer = memo(
 		}, [f02.staging])
 
 		return (
-			<TooltipWrapper title={title} arrow>
+			<TooltipWrapper title={title} disabled={disabled} arrow>
 				<ButtonEx
 					responsive
 					ref={ref}

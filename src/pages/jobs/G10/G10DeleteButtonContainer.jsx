@@ -1,6 +1,6 @@
 import { G10Context } from "@/pages/jobs/G10/G10Context";
 import { ButtonEx } from "@/shared-components";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { forwardRef, memo, useContext, useMemo } from "react";
 
@@ -18,7 +18,7 @@ const G10DeleteButtonContainer = memo(
 		}, [g10.staging])
 
 		return (
-			<TooltipWrapper title={title} arrow>
+			<TooltipWrapper title={title} disabled={disabled} arrow>
 				<ButtonEx
 					responsive
 					ref={ref}

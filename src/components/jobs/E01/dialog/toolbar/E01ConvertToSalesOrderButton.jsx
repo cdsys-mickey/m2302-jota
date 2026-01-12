@@ -1,7 +1,7 @@
 import { E01Context } from "@/contexts/E01/E01Context";
 import E01 from "@/modules/E01.mjs";
 import { ButtonEx } from "@/shared-components";
-import TooltipWrapper from "@/shared-components/TooltipWrapper/TooltipWrapper";
+import { TooltipWrapper } from "shared-components";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import { useContext, useMemo } from "react";
 
@@ -35,7 +35,7 @@ const E01ConvertToSalesOrderButton = (props) => {
 	}
 
 	return (
-		<TooltipWrapper title={title}>
+		<TooltipWrapper title={title} disabled={disabled}>
 			<ButtonEx
 				startIcon={<PublishedWithChangesIcon />}
 				// onClick={ }
