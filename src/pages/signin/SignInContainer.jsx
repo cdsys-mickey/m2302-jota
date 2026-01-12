@@ -1,8 +1,6 @@
 import { SignInContext } from "@/contexts/signin/SignInContext";
-import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
-import useVersionCheck from "@/shared-hooks/useVersionCheck";
+import usePWAVersionCheck from "@/shared-hooks/usePWAVersionCheck";
 import { useContext } from "react";
-import { toastEx } from "shared-components/toast-ex";
 import SignInView from "./SignInView";
 
 export const SignInContainer = (props) => {
@@ -10,15 +8,15 @@ export const SignInContainer = (props) => {
 	// const form = useFormContext();
 	const signin = useContext(SignInContext);
 
-	const { newVersion } = useVersionCheck({ autoPrompt: false });
+	const { newVersion } = usePWAVersionCheck({ autoRefresh: true, autoToastUpdated: true });
 
-	useChangeTracking(() => {
-		if (newVersion) {
-			toastEx.error(`偵測到新版本 ${newVersion}，請按 Ctrl+F5 強制更新後才能登入`, {
-				autoClose: false
-			})
-		}
-	}, [newVersion]);
+	// useChangeTracking(() => {
+	// 	if (newVersion) {
+	// 		toastEx.error(`偵測到新版本 ${newVersion}，請按 Ctrl+F5 強制更新後才能登入`, {
+	// 			autoClose: false
+	// 		})
+	// 	}
+	// }, [newVersion]);
 
 	return (
 		<form

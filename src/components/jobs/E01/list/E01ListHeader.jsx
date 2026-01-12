@@ -16,6 +16,7 @@ const E01ListHeader = memo(
 				<E01IdColumn>訂貨單號</E01IdColumn>
 				<E01FlagColumn>結清</E01FlagColumn>
 				<E01DateColumn>訂貨日期</E01DateColumn>
+				<E01DateColumn>到貨日期</E01DateColumn>
 				<E01FlagColumn>零售</E01FlagColumn>
 				<E01CustomerColumn>客戶</E01CustomerColumn>
 				<E01UserColumn>業務人員</E01UserColumn>

@@ -14,8 +14,9 @@ const E01ListRow = memo((props) => {
 	const { 客戶代碼, 客戶簡稱, ProdID, ProdData_N, PackData_N, QEmplID, EmplData_N } = value || {};
 
 	const customer = useMemo(() => {
-		return [客戶代碼, 客戶簡稱].filter(Boolean).join(" ");
-	}, [客戶代碼, 客戶簡稱])
+		// return [客戶代碼, 客戶簡稱].filter(Boolean).join(" ");
+		return [客戶簡稱].filter(Boolean).join(" ");
+	}, [客戶簡稱])
 
 	// const prod = useMemo(() => {
 	// 	return [
@@ -52,6 +53,9 @@ const E01ListRow = memo((props) => {
 						</E01FlagColumn>
 						<E01DateColumn >
 							{value?.訂貨日期 || ""}
+						</E01DateColumn>
+						<E01DateColumn >
+							{value?.到貨日期 || ""}
 						</E01DateColumn>
 
 						<E01FlagColumn>

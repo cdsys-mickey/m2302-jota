@@ -33,6 +33,12 @@ export default defineConfig(({ mode }) => {
 				},
 			},
 		},
+		define: {
+			"import.meta.env.BUILD_TIME": JSON.stringify(
+				buildTime.toISOString()
+			),
+			__BUILD_TIME__: JSON.stringify(buildTime.toISOString()),
+		},
 		plugins: [
 			react(),
 			// visualizer({
@@ -40,7 +46,7 @@ export default defineConfig(({ mode }) => {
 			// 	filename: "stats.html", // 輸出檔案
 			// }),
 			VitePWA({
-				registerType: "autoUpdate",
+				registerType: "prompt",
 				manifest: {
 					name: "JOTA 進銷存",
 					short_name: "JOTA",
@@ -66,6 +72,9 @@ export default defineConfig(({ mode }) => {
 				},
 				workbox: {
 					maximumFileSizeToCacheInBytes: 5000000, // 5 MB
+					cleanupOutdatedCaches: true,
+					skipWaiting: true, // 強制新的 SW 進入 active 狀態
+					clientsClaim: true, // 讓新的 SW 立即取得頁面控制權
 				},
 			}),
 			{
@@ -92,11 +101,7 @@ export default defineConfig(({ mode }) => {
 				"@": "/src",
 			},
 		},
-		define: {
-			"import.meta.env.BUILD_TIME": JSON.stringify(
-				buildTime.toISOString()
-			),
-		},
+
 		build: {
 			chunkSizeWarningLimit: 5000, // 設定為 5000 kB
 			rollupOptions: {

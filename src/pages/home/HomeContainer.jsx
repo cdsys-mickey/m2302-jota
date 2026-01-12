@@ -5,12 +5,13 @@ import useVersionCheck from "@/shared-hooks/useVersionCheck";
 import { useContext, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import Home from "./Home";
+import usePWAVersionCheck from "@/shared-hooks/usePWAVersionCheck";
 
 const HomeContainer = () => {
 	const location = useLocation();
 	const params = new URLSearchParams(location.search);
 	const auth = useContext(AuthContext);
-
+	usePWAVersionCheck({ autoPrompt: true, autoToastUpdated: true });
 	const { token, loadAuthorities } = auth;
 
 	const isLoadAuthorities = params.get("reload") === "1";

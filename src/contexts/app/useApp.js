@@ -3,8 +3,9 @@ import { useWebApiAsync } from "@/shared-hooks";
 import DateFormats from "@/shared-modules/DateFormats.mjs";
 import { format, parseISO } from "date-fns";
 import Cookies from "js-cookie";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { ConfigContext, useConfig } from "shared-components/config";
+import { useRegisterSW } from "virtual:pwa-register/react";
 
 export default function useApp() {
 	const { httpGetAsync } = useWebApiAsync();
@@ -20,6 +21,8 @@ export default function useApp() {
 			),
 		[]
 	);
+
+	const { needRefresh, updateServiceWorker } = useRegisterSW({});
 
 	//COOKIE
 	// const ROOT_COOKIE_OPTS = useMemo(
@@ -165,5 +168,8 @@ export default function useApp() {
 		removeSessionValue,
 		// ROOT_COOKIE_OPTS,
 		// AUTH_COOKIE_OPTS,
+		// for PWA
+		needRefresh,
+		updateServiceWorker,
 	};
 }
