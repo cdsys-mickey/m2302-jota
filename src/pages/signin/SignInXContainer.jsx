@@ -8,7 +8,6 @@ export const SignInXContainer = (props) => {
 	const { ...rest } = props;
 	// const form = useFormContext();
 	const signin = useContext(SignInContext);
-	// const { isRefreshRequired, promptRefresh } = useVersionCheck({ autoPrompt: false });
 
 	// useChangeTracking(() => {
 	// 	if (isRefreshRequired) {

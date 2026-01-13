@@ -1,17 +1,13 @@
-import { FlexBox } from "shared-components";
 import MuiStyles from "@/shared-modules/MuiStyles";
-import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo } from "react";
-import Colors from "@/modules/Colors.mjs";
-import { AlertEx } from "shared-components";
+import { AlertEx, FlexBox } from "shared-components";
 
-export const FrameMenuReminder = memo(
+export const FrameMenuReminderItem = memo(
 	forwardRef((props, ref) => {
 		const {
+			title,
 			label,
-			variant = "h6",
-			dense = false,
 			sx = [],
 			severity = "info",
 			...rest
@@ -22,17 +18,19 @@ export const FrameMenuReminder = memo(
 				inline
 				fullWidth
 				alignItems="center"
-				pt="2px"
-				pl={0.5}
+				pt={1.5}
+				pb={1}
+				pl={2}
+
 				sx={[
 					{
-						height: dense ? "26px" : "34px",
+						height: "60px",
 					},
 					...(Array.isArray(sx) ? sx : [sx]),
 					MuiStyles.ELLIPSIS,
 				]}
 				{...rest}>
-				<AlertEx severity={severity} transparent >
+				<AlertEx severity={severity} title={title} transparent >
 					{label}
 				</AlertEx>
 
@@ -41,8 +39,9 @@ export const FrameMenuReminder = memo(
 	})
 );
 
-FrameMenuReminder.propTypes = {
+FrameMenuReminderItem.propTypes = {
 	iconComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.elementType]),
+	title: PropTypes.string,
 	label: PropTypes.string.isRequired,
 	variant: PropTypes.string,
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
@@ -51,4 +50,4 @@ FrameMenuReminder.propTypes = {
 	dense: PropTypes.bool
 };
 
-FrameMenuReminder.displayName = "FrameMenuReminder";
+FrameMenuReminderItem.displayName = "FrameMenuReminder";

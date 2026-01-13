@@ -10,9 +10,9 @@ import MuiStyles from "@/shared-modules/MuiStyles";
 /**
  * 目前由 React Window 版本取代，暫不刪除
  */
-const FrameMenu = memo(
+const ZZFrameMenu = memo(
 	forwardRef((props, ref) => {
-		const { height, authorities, authoritiesLoading, authoritiesError, hiddenAuthoritiesCount, dense = false } =
+		const { height, authorities, authoritiesLoading, authoritiesError, dense = false } =
 			props;
 
 		const scrollable = useScrollable({
@@ -48,13 +48,13 @@ const FrameMenu = memo(
 	})
 );
 
-FrameMenu.propTypes = {
+ZZFrameMenu.propTypes = {
 	height: PropTypes.number,
 	authorities: PropTypes.array,
 	authoritiesLoading: PropTypes.bool,
 	authoritiesError: PropTypes.object,
 };
 
-FrameMenu.displayName = "FrameMenu";
+ZZFrameMenu.displayName = "FrameMenu";
 
-export default FrameMenu;
+export default ZZFrameMenu;

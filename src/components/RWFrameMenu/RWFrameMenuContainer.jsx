@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useWindowSize } from "@/shared-hooks/useWindowSize";
@@ -25,13 +26,16 @@ const RWFrameMenuContainer = (props) => {
 	}, [dense])
 
 	const _data = useMemo(() => {
-		return [
+		const combinedData = [
 			...(sideMenu.filteredAuthorities ?? []),
 			...(hiddenAuthoritiesCount > 0 ? [{
 				severity: "warning",
-				label: `找不到作業? 請前往個人設定調整 (${hiddenAuthoritiesCount})`
+				title: `找不到作業? 尚有 ${hiddenAuthoritiesCount} 個未顯示`,
+				label: `請前往「個人設定/功能排序」調整 `
 			}] : [])
 		]
+		console.log("combinedData", combinedData);
+		return combinedData;
 	}, [hiddenAuthoritiesCount, sideMenu.filteredAuthorities])
 
 	const _itemCount = useMemo(() => {
@@ -60,7 +64,9 @@ const RWFrameMenuContainer = (props) => {
 		</FrameMenuContext.Provider>
 	);
 };
-
+RWFrameMenuContainer.propTypes = {
+	dense: PropTypes.bool
+}
 RWFrameMenuContainer.displayName = "RWFrameMenuContainer";
 
 export default RWFrameMenuContainer;

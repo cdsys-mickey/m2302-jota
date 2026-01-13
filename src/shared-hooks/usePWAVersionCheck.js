@@ -6,12 +6,16 @@ import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
 import Cookies from "js-cookie";
 import { useRunOnce } from "./useRunOnce";
 
-const defaultPromptMessage = (newVersion) => {
+const defaultPromptMessage = ({ newVersion, autoUpdate }) => {
+	if (autoUpdate) {
+		return `新版本 ${newVersion} 已更新完成, 重新整理(F5)後即可繼續使用\n*** 若重新整理後後仍持續提示，請手動按 Ctrl+F5 強制重新整理`;
+	}
 	return `偵測到新版本 ${newVersion}，請按 Ctrl+F5 強制更新`;
 };
 
 export default function usePWAVersionCheck(opts) {
 	const {
+		autoUpdate = true,
 		autoToast = false,
 		autoPrompt = false,
 		autoRefresh = false,
@@ -33,31 +37,16 @@ export default function usePWAVersionCheck(opts) {
 
 	const _promptMessage = useMemo(() => {
 		if (typeof promptMessage === "function") {
-			return promptMessage(frontEnd?.version);
+			return promptMessage({ newVersion: frontEnd?.version, autoUpdate });
 		}
 		return promptMessage;
-	}, [frontEnd?.version, promptMessage]);
+	}, [autoUpdate, frontEnd?.version, promptMessage]);
 
 	const toastRefresh = useCallback(() => {
 		toastEx.warn(_promptMessage, {
 			position: "bottom-right",
 		});
 	}, [_promptMessage]);
-
-	const promptRefresh = useCallback(() => {
-		dialogs.confirm({
-			message: `偵測到新版本 ${frontEnd?.version}, 按下「確定更新」即可更新\n*** 若更新後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
-			confirmText: "確定更新",
-			// cancelText: "取消",
-			onConfirm: () => {
-				Cookies.get("updated-version", frontEnd?.version);
-				updateServiceWorker(true);
-				setTimeout(() => {
-					location.reload();
-				}, 500);
-			},
-		});
-	}, [dialogs, frontEnd?.version, updateServiceWorker]);
 
 	const isUpToDate = useMemo(() => {
 		return loading == false && version >= frontEnd?.version;
@@ -76,39 +65,51 @@ export default function usePWAVersionCheck(opts) {
 		return isRefreshRequired ? frontEnd?.version : null;
 	}, [frontEnd?.version, isRefreshRequired]);
 
-	useChangeTracking(() => {
+	const toastUpdated = useCallback(
+		(newVersion) => {
+			const updated = newVersion || Cookies.get("updated-version");
+			if (updated) {
+				Cookies.remove("updated-version");
+				toastEx.info(`版本 ${updated} 已更新`);
+				dialogs.confirm({
+					message: `新版本 ${updated} 已更新完成, 按下「確定」即可繼續使用\n*** 若套用後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
+					onConfirm: () => {
+						location.reload();
+					},
+				});
+			}
+		},
+		[dialogs]
+	);
+
+	useChangeTracking(async () => {
 		if (isRefreshRequired) {
-			if (autoRefresh) {
-				Cookies.set("updated-version", frontEnd?.version);
-				updateServiceWorker(true);
-				setTimeout(() => {
-					location.reload();
-				}, 500);
-			} else if (autoPrompt) {
-				setTimeout(promptRefresh, triggerDelay ?? promptDelay);
-			} else if (autoToast) {
+			if (autoUpdate) {
+				if (autoRefresh) {
+					Cookies.set("updated-version", frontEnd?.version);
+					await updateServiceWorker(true);
+					// setTimeout(() => {
+					// 	location.reload();
+					// }, 500);
+					toastUpdated(frontEnd?.version);
+				} else {
+					await updateServiceWorker(true);
+					setTimeout(toastRefresh, triggerDelay ?? toastDelay);
+				}
+			} else {
 				setTimeout(toastRefresh, triggerDelay ?? toastDelay);
 			}
 		}
 	}, [isRefreshRequired]);
 
-	const toastUpdated = useCallback(() => {
-		const updated = Cookies.get("updated-version");
-		if (updated) {
-			Cookies.remove("updated-version");
-			toastEx.info(`已更新到 ${updated}`);
-		}
-	}, []);
-
-	useRunOnce(() => {
-		if (autoToastUpdated) {
-			toastUpdated();
-		}
-	});
+	// useRunOnce(() => {
+	// 	if (autoToastUpdated) {
+	// 		toastUpdated();
+	// 	}
+	// });
 
 	return {
 		toastRefresh,
-		promptRefresh,
 		isUpToDate,
 		isRefreshRequired,
 		newVersion,

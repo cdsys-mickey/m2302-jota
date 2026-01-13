@@ -5,14 +5,14 @@ import SideMenu from "@/modules/SideMenu.mjs";
 import FrameMenuContext from "../FrameMenu/FrameMenuContext";
 import { FrameMenuGroupHeader } from "../FrameMenu/FrameMenuGroupHeader";
 import FrameMenuItemButtonContainer from "../FrameMenu/FrameMenuItemButtonContainer";
-import { FrameMenuReminder } from "../FrameMenu/FrameMenuReminder";
+import { FrameMenuReminderItem } from "../FrameMenu/FrameMenuReminderItem";
 
 const RWFrameMenuRow = memo(
 	forwardRef((props, ref) => {
 		const { index, style, data } = props;
 		const value = data[index];
 		const reminder = useMemo(() => SideMenu.isReminder(value), [value]);
-		const header = useMemo(() => SideMenu.isHeader(value) && !SideMenu.isReminder(value), [value]);
+		const header = useMemo(() => SideMenu.isHeader(value), [value]);
 		const frameMenu = useContext(FrameMenuContext);
 		const { dense } = frameMenu;
 
@@ -28,7 +28,11 @@ const RWFrameMenuRow = memo(
 			}
 
 			if (reminder) {
-				return <FrameMenuReminder label={value?.label} severity={value?.severity} />;
+				return <FrameMenuReminderItem
+					severity={value?.severity}
+					title={value?.title}
+					label={value?.label}
+				/>;
 			}
 
 			return (

@@ -9,8 +9,8 @@ export const SignInContainer = (props) => {
 	const signin = useContext(SignInContext);
 
 	const { newVersion } = usePWAVersionCheck({
-		autoToast: true,
 		autoRefresh: true,
+		// autoPrompt: true,
 		autoToastUpdated: true
 	});
 

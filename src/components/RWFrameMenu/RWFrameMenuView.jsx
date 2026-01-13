@@ -1,14 +1,15 @@
 import ErrorBox from "@/shared-components/ErrorBox";
 import LoadingTypography from "@/shared-components/LoadingTypography";
 import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
-import { FixedSizeList } from "react-window";
+import { memo, useEffect, useMemo, useRef } from "react";
+import { FixedSizeList, VariableSizeList } from "react-window";
 import RWFrameMenuRow from "./RWFrameMenuRow";
 import { forwardRef } from "react";
 import "./RWFrameMenu.scss";
 import clsx from "clsx";
 import { useScrollable } from "../../shared-hooks/useScrollable";
 import { AlertEx } from "shared-components";
+import SideMenu from "@/modules/SideMenu.mjs";
 
 const PADDING_SIZE = 8;
 
@@ -39,9 +40,32 @@ const RWFrameMenuView = memo((props) => {
 		dense = false
 	} = props;
 
-	const _itemSize = useMemo(() => {
-		return dense ? 26 : 34;
-	}, [dense])
+	const listRef = useRef(null);
+
+	// const _itemSize = useMemo(() => {
+	// 	return dense ? 26 : 34;
+	// }, [dense])
+
+	const getItemSize = (index) => {
+		const value = data[index];
+		if (SideMenu.isReminder(value)) {
+			// console.log("isReminder", value);
+			return 66; // 假設 Reminder 高度
+		}
+		if (SideMenu.isHeader(value)) {
+			// console.log("isHeader", value);
+			return 34; // 假設 Header 高度
+		}
+		// console.log("isOther", value);
+		return dense ? 26 : 34; // 一般項目高度
+	};
+
+	// 3. 當資料或 dense 改變時，清除高度快取
+	useEffect(() => {
+		if (listRef.current) {
+			listRef.current.resetAfterIndex(0);
+		}
+	}, [data, dense]);
 
 	if (loading) {
 		return <LoadingTypography>讀取中...</LoadingTypography>;
@@ -61,20 +85,22 @@ const RWFrameMenuView = memo((props) => {
 			})}
 		// style={scrollable.scroller}
 		>
-			<FixedSizeList
+			<VariableSizeList
+				ref={listRef}
 				onScroll={onScroll}
 				className={clsx("rw-scrollable", {
 					"rw-top-shadow": scrollOffset > 0,
 				})}
 				height={height}
 				itemCount={itemCount}
-				itemSize={_itemSize}
+				// itemSize={_itemSize}
+				itemSize={getItemSize}
 				itemData={data}
 				width={width - 1}
 				// innerElementType={innerElementType}
 				onItemsRendered={onItemsRendered}>
 				{RWFrameMenuRow}
-			</FixedSizeList>
+			</VariableSizeList>
 		</div>
 	);
 });
