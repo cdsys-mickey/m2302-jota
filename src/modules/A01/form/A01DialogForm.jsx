@@ -92,7 +92,7 @@ const A01DialogForm = memo((props) => {
 								{
 									doCms && (
 										<Tab
-											label="佣金類別"
+											label="各門市佣金類別設定"
 											value={A01.Tabs.CMS}
 											disabled={cmsTabDisabled}
 										/>
@@ -344,6 +344,10 @@ const A01DialogForm = memo((props) => {
 											name="cmsType"
 											// readOnly={storeMode}
 											disableOpenOnInput
+											{...storeMode && {
+												placeholder: "若未設定則以總倉設定為準",
+												emptyText: "(未設定以總倉設定為準)"
+											}}
 										/>
 									</Grid>
 								</Grid>

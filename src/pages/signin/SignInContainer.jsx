@@ -8,7 +8,11 @@ export const SignInContainer = (props) => {
 	// const form = useFormContext();
 	const signin = useContext(SignInContext);
 
-	const { newVersion } = usePWAVersionCheck({ autoRefresh: true, autoToastUpdated: true });
+	const { newVersion } = usePWAVersionCheck({
+		autoToast: true,
+		autoRefresh: true,
+		autoToastUpdated: true
+	});
 
 	// useChangeTracking(() => {
 	// 	if (newVersion) {

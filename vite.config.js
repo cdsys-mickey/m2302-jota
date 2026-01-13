@@ -76,6 +76,11 @@ export default defineConfig(({ mode }) => {
 					skipWaiting: true, // 強制新的 SW 進入 active 狀態
 					clientsClaim: true, // 讓新的 SW 立即取得頁面控制權
 				},
+				// #for dev - 在開發模式下也啟用 SW
+				// devOptions: {
+				// 	enabled: true,
+				// 	type: "module",
+				// },
 			}),
 			{
 				name: "generate-build-result",

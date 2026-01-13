@@ -47,7 +47,8 @@ export default function usePWAVersionCheck(opts) {
 	const promptRefresh = useCallback(() => {
 		dialogs.confirm({
 			message: `偵測到新版本 ${frontEnd?.version}, 按下「確定更新」即可更新\n*** 若更新後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
-			confirmText: "更新",
+			confirmText: "確定更新",
+			// cancelText: "取消",
 			onConfirm: () => {
 				Cookies.get("updated-version", frontEnd?.version);
 				updateServiceWorker(true);

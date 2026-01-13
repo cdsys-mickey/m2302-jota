@@ -6,6 +6,7 @@ import { useSignalR } from "@/shared-hooks/useSignalR";
 import { memo, useCallback, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toastEx } from "shared-components/toast-ex";
+import { useRunOnce } from "@/shared-hooks/useRunOnce";
 
 
 const SignalRTest = memo(() => {
@@ -38,7 +39,7 @@ const SignalRTest = memo(() => {
 		toastEx.info(`[${level}]${message}`);
 	}, []);
 
-	const receivedHandler = useCallback((payload) => {
+	const receivedHandler = useCallback(async (payload) => {
 		console.log(`messageBrocasted`, payload);
 		const { level, message } = payload;
 		toastEx.success(`[${level}]${message}`, {
@@ -56,6 +57,12 @@ const SignalRTest = memo(() => {
 			// 	}
 			// },
 			// autoClose: false
+		});
+
+		const registration = await navigator.serviceWorker.ready;
+		registration.showNotification('Web Push 測試', {
+			body: message,
+			icon: '/logo192.png'
 		});
 	}, []);
 
@@ -95,6 +102,15 @@ const SignalRTest = memo(() => {
 		setValue("connectionId", connection?.connectionId);
 	}, [connection?.connectionId, setValue]);
 
+	useRunOnce(async () => {
+		const permission = await Notification.requestPermission();
+		if (permission === 'granted') {
+			toastEx.info('Web Push 已允許');
+		} else {
+			toastEx.error("您已拒絕 Web Push");
+		}
+	})
+
 	return (
 		<>
 			<div>SignalR: {connectionState},</div>
@@ -105,10 +121,10 @@ const SignalRTest = memo(() => {
 				<br />
 				<input type="text" {...register("content")} style={{ minWidth: "20em" }} />
 
-				<input type="submit" value="發送" />
+				<input type="submit" value="Send & Web Push" />
 				<input
 					type="button"
-					value="廣播"
+					value="Broadcast & Web Push"
 					onClick={form.handleSubmit(onBroadcastSubmit)}
 				/>
 			</form>

@@ -1,4 +1,4 @@
-import { FrameMenuGroupHeader } from "@/components/FrameMenu/FrameMenuGroupHeader";
+import { FrameMenuGroupHeader } from "@/components/ZZFrameMenu/FrameMenuGroupHeader";
 import { UnreadMessageListViewContainer } from "@/components/unread-messages/UnreadMessageListViewContainer";
 import { ButtonEx } from "@/shared-components";
 import { FlexBox } from "shared-components";
