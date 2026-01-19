@@ -17,7 +17,7 @@ const IconProps = {
 }
 
 const TextFieldExView = (props) => {
-	const { label, passwordToggle = false, passwordPressed = false, type, inline, disabled, required, dense, error, borderless, disabledBackgroundColor = "rgba(0,0,0,0.05)", hideSpinButtons, sx = [], endAdornment, ...rest } = props;
+	const { label, passwordToggle = false, passwordPressed = false, type, inline, disabled, required, readOnly, dense, error, borderless, disabledBackgroundColor = "rgba(0,0,0,0.05)", hideSpinButtons, sx = [], endAdornment, ...rest } = props;
 	const [showPassword, setShowPassword] = useState(false);
 
 	const handleClickShowPassword = useCallback(() => {
@@ -44,6 +44,10 @@ const TextFieldExView = (props) => {
 		return passwordToggle || passwordPressed || borderless || endAdornment;
 	}, [borderless, endAdornment, passwordPressed, passwordToggle])
 
+	const _required = useMemo(() => {
+		return required && !disabled && !readOnly && !error;
+	}, [disabled, error, readOnly, required])
+
 	return (
 		<FlexBox block={!inline} sx={{ fontWeight: 700 }}>
 			{inline &&
@@ -53,6 +57,7 @@ const TextFieldExView = (props) => {
 				label={_label}
 				type={_type}
 				disabled={disabled}
+				readOnly={readOnly}
 				required={required}
 				error={error}
 				sx={[
@@ -63,6 +68,9 @@ const TextFieldExView = (props) => {
 						...(disabled && !borderless && {
 							backgroundColor: disabledBackgroundColor,
 						}),
+						"&:not(.dsg-cell *) .MuiInputBase-root.Mui-readOnly, &:not(.dsg-cell *) .MuiInputBase-root.Mui-disabled": {
+							backgroundColor: Colors.INPUT_BG_DISABLED
+						},
 						"& .clearable": {
 							visibility: "hidden",
 						},
@@ -80,14 +88,13 @@ const TextFieldExView = (props) => {
 						"& .MuiFormHelperText-root": {
 							marginTop: 0
 						},
-						...(required && !error && {
+						...(_required && {
 							"& .MuiInputLabel-root:not(.Mui-focused)": {
 								color: Colors.REQUIRED,
 							},
 							"& .MuiOutlinedInput-root": {
 								'& fieldset': {
 									borderColor: Colors.REQUIRED,
-									// borderBottom: `2px solid ${Colors.REQUIRED}`,
 								},
 							}
 						}),

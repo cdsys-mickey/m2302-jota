@@ -1,8 +1,14 @@
 import Colors from '@/modules/Colors.mjs';
 import { Box } from '@mui/system';
 import PropTypes from "prop-types";
+import { useMemo } from 'react';
 
 export default function FieldGroup({ children, legend, required, disabled }) {
+
+	const _required = useMemo(() => {
+		return required && !disabled;
+	}, [disabled, required])
+
 	return (
 		<Box
 			component="fieldset"
@@ -27,12 +33,12 @@ export default function FieldGroup({ children, legend, required, disabled }) {
 						fontWeight: 600
 					},
 				},
-				...(required && {
+				...(_required && {
 					borderColor: Colors.REQUIRED,
 				}),
 				backgroundColor: "rgb(255,255,255)",
 				...(disabled && {
-					backgroundColor: 'rgba(0, 0, 0, 0.05)'
+					backgroundColor: Colors.INPUT_BG_DISABLED
 				})
 			})}
 		>
@@ -44,7 +50,7 @@ export default function FieldGroup({ children, legend, required, disabled }) {
 						lineHeight: "1.1em",
 						padding: '0 4px',
 						color: 'rgba(0, 0, 0, 0.6)',
-						...(required && {
+						...(_required && {
 							color: Colors.REQUIRED,
 						})
 					}}

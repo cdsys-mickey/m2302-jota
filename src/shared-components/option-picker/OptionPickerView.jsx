@@ -654,7 +654,10 @@ const OptionPickerView = memo(
 									...MuiStyles.GRADIENT_INPUT_BG_HOVER,
 									...MuiStyles.GRADIENT_INPUT_BG_FOCUSED,
 								}
-							})
+							}),
+							"&:not(.dsg-cell *) .MuiInputBase-root.Mui-readOnly, &:not(.dsg-cell *) .MuiInputBase-root.Mui-disabled": {
+								backgroundColor: Colors.INPUT_BG_DISABLED
+							},
 						}]}
 						InputProps={{
 							...params.InputProps,
@@ -1056,7 +1059,6 @@ const OptionPickerView = memo(
 									"&.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon .MuiInputBase-root.Mui-disabled ":
 									{
 										paddingRight: 0,
-										// paddingTop: 0
 									},
 								}),
 								...(dense && {
@@ -1065,7 +1067,6 @@ const OptionPickerView = memo(
 										paddingTop: "2px",
 										paddingBottom: "2px",
 										paddingLeft: "2px",
-										// paddingRight: "40px",
 									},
 								}),
 								"& .MuiFormHelperText-root": {

@@ -120,6 +120,10 @@ const ControlledTimePicker = ({
 		return (borderless || !label) ? "" : `${label}${required ? "*" : ""}`;
 	}, [borderless, label, required])
 
+	const _required = useMemo(() => {
+		return required && !readOnly;
+	}, [readOnly, required])
+
 	if (!name) {
 		return <TimePicker views={views} ampm={ampm} {...rest} />;
 	}
@@ -167,7 +171,7 @@ const ControlledTimePicker = ({
 									InputProps: { disableUnderline: true }
 								}),
 								sx: {
-									...(required && !error && {
+									...(_required && !error && {
 										"& .MuiInputLabel-root:not(.Mui-focused)": {
 											color: Colors.REQUIRED,
 										},

@@ -99,6 +99,7 @@ const ControlledCheckboxExField = ({
 					inputRef={field.ref}
 					checked={valueToChecked ? valueToChecked(field.value) : field.value}
 					onKeyDown={handleKeyDown}
+					readOnly={readOnly}
 					// onKeyUp={handleKeyUp}
 					onChange={
 						readOnly

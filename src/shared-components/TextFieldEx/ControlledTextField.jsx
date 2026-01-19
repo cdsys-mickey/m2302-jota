@@ -146,7 +146,7 @@ const ControlledTextField = ({
 					label={label}
 					inline={inline}
 					inputRef={ref}
-
+					readOnly={readOnly}
 					onChange={(e) => {
 						if (readOnly) {
 							return;

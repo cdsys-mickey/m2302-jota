@@ -8,11 +8,12 @@ import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import CheckboxExView from "../CheckboxEx/CheckboxExView";
 import TooltipWrapper from "../TooltipWrapper/TooltipWrapper";
+import Colors from "@/modules/Colors.mjs";
 
 
 const CheckboxExFieldView = memo(
 	forwardRef((props, ref) => {
-		const { shrink = false, variant, fullWidth = false, dense = false, label, slotProps, error, helperText, disabled, tooltip, ...rest } = props;
+		const { shrink = false, variant, fullWidth = false, dense = false, label, slotProps, error, helperText, disabled, readOnly, tooltip, ...rest } = props;
 		const { label: labelProps } = slotProps || {};
 
 		// CheckboxExView 有支援 label, 但下面有一些判斷，因此我們這裡不要使用他的 label 繪製
@@ -20,9 +21,14 @@ const CheckboxExFieldView = memo(
 			return (
 				<CheckboxExView
 					{...rest}
+					readOnly={readOnly}
 				/>
 			)
-		}, [rest]);
+		}, [readOnly, rest]);
+
+		const _backgroundColor = useMemo(() => {
+			return disabled || readOnly ? Colors.INPUT_BG_DISABLED : "#fff"
+		}, [disabled, readOnly])
 
 		return (
 			<TooltipWrapper title={tooltip}>
@@ -43,7 +49,7 @@ const CheckboxExFieldView = memo(
 							border: (theme) => `1px solid ${theme.palette.grey[400]}`, // 與 outlined TextField 未聚焦邊框顏色一致
 							borderRadius: '4px', // 與 TextField 的圓角一致
 							padding: '1px 8px 1px 8px ', // 內邊距
-							backgroundColor: "#fff",
+							backgroundColor: _backgroundColor,
 							'&:hover': {
 								// borderColor: (theme) => theme.palette.grey[500], // 懸停時略深的灰色，模擬 TextField 行為
 								borderColor: (theme) => "#000"
@@ -100,6 +106,7 @@ const CheckboxExFieldView = memo(
 );
 CheckboxExFieldView.displayName = "CheckboxExFieldView";
 CheckboxExFieldView.propTypes = {
+	readOnly: PropTypes.bool,
 	disabled: PropTypes.bool,
 	shrink: PropTypes.bool,
 	fullWidth: PropTypes.bool,

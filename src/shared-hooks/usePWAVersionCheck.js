@@ -72,28 +72,28 @@ export default function usePWAVersionCheck(opts) {
 				Cookies.remove("updated-version");
 				toastEx.info(`版本 ${updated} 已更新`);
 				dialogs.confirm({
-					message: `新版本 ${updated} 已更新完成, 按下「確定」即可繼續使用\n*** 若套用後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
+					message: `新版本 ${updated} 已更新完成, 按下「確定」套用更新\n*** 若套用後仍持續提示，請手動按 Ctrl+F5 強制重新整理`,
 					onConfirm: () => {
 						location.reload();
 					},
 				});
 			}
 		},
-		[dialogs]
+		[dialogs],
 	);
 
 	useChangeTracking(async () => {
 		if (isRefreshRequired) {
 			if (autoUpdate) {
+				Cookies.set("updated-version", frontEnd?.version);
 				if (autoRefresh) {
-					Cookies.set("updated-version", frontEnd?.version);
-					await updateServiceWorker(true);
+					await updateServiceWorker(false);
 					// setTimeout(() => {
 					// 	location.reload();
 					// }, 500);
 					toastUpdated(frontEnd?.version);
 				} else {
-					await updateServiceWorker(true);
+					await updateServiceWorker(false);
 					setTimeout(toastRefresh, triggerDelay ?? toastDelay);
 				}
 			} else {

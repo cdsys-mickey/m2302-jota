@@ -30,8 +30,9 @@ const OptionPickerBox = styled(Box, {
 	}) => {
 
 		const _hideControls = useMemo(() => {
-			return hideControls || disabled || disableClearable;
-		}, [disableClearable, disabled, hideControls])
+			// return hideControls || disabled || disableClearable;
+			return hideControls || disabled;
+		}, [disabled, hideControls])
 
 		return ({
 			/**
@@ -54,6 +55,13 @@ const OptionPickerBox = styled(Box, {
 				"& .MuiOutlinedInput-root": {
 					paddingRight: 0,
 				}
+			}),
+			// 隱藏清除按鈕可以再讓一些空間出來
+			...(disableClearable && {
+				"& .MuiAutocomplete-hasPopupIcon .MuiOutlinedInput-root, & .MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root":
+				{
+					paddingRight: 24,
+				},
 			}),
 			...(disableFadeOut && {
 				"& .MuiInputBase-input.Mui-disabled": {
