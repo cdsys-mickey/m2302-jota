@@ -6,21 +6,41 @@ import { useFormContext } from "react-hook-form";
 import A01DialogEditToolbar from "./A01DialogEditToolbar";
 import A01DialogViewToolbar from "./A01DialogViewToolbar";
 import { useMemo } from "react";
+import { AuthContext } from "@/contexts/auth/AuthContext";
 
 export const A01DialogToolbarContainer = (props) => {
 	const { ...rest } = props;
 	const a01 = useContext(A01Context);
 	const forms = useFormContext();
+	const { operator } = useContext(AuthContext);
+
+
 
 	const editLabel = useMemo(() => {
 		switch (a01.mode) {
 			case A01.Mode.STORE:
-				// return "調整櫃位/安全存量";
-				return "編輯";
+				return "調整 櫃位/安全存量/佣金類別";
+			// return "編輯";
 			default:
 				return "編輯";
 		}
 	}, [a01.mode]);
+
+	const notEditable = useMemo(() => {
+		return operator.CurHeadOffice != 1 && a01.mode !== A01.Mode.STORE
+	}, [a01.mode, operator.CurHeadOffice])
+
+	const notEditableTitle = useMemo(() => {
+		return notEditable ? "非總公司無法使用 A01 編輯功能" : null;
+	}, [notEditable])
+
+	const notDeletable = useMemo(() => {
+		return operator.CurHeadOffice != 1 && a01.mode !== A01.Mode.STORE
+	}, [a01.mode, operator.CurHeadOffice])
+
+	const notDeletableTitle = useMemo(() => {
+		return notDeletable ? "非總公司無法使用 A01 刪除功能" : null;
+	}, [notDeletable])
 
 	const handleEdit = useMemo(() => {
 		switch (a01.mode) {
@@ -88,6 +108,10 @@ export const A01DialogToolbarContainer = (props) => {
 			onDelete={handleDelete}
 			onReview={handleReview}
 			editLabel={editLabel}
+			notEditable={notEditable}
+			notEditableTitle={notEditableTitle}
+			notDeletable={notDeletable}
+			notDeletableTitle={notDeletableTitle}
 			onSideDrawerOpen={a01.handleSideDrawerOpen}
 			{...rest}
 		/>

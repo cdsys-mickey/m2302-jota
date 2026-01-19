@@ -284,7 +284,7 @@ const A01DialogForm = memo((props) => {
 										<TextFieldWrapper
 											typo
 											name="TranCost"
-											label="調撥成本"
+											label="標準調撥成本"
 											type="number"
 											readOnly={storeMode}
 											renderLabel={Strings.formatPrice}

@@ -6,19 +6,27 @@ import PropTypes from "prop-types";
 import { Fragment, forwardRef, memo } from "react";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { IconButton, Tooltip } from "@mui/material";
+import { ButtonEx, TooltipEx } from "shared-components";
+import { TooltipWrapper } from "shared-components";
 
 const A01DialogViewToolbar = memo(
 	forwardRef((props, ref) => {
-		const { onEdit, onDelete, onReview, editLabel, onSideDrawerOpen, ...rest } = props;
+		const { onEdit, onDelete, onReview, editLabel, onSideDrawerOpen,
+			notEditable, notEditableTitle,
+			notDeletable, notDeletableTitle,
+			...rest } = props;
 		return (
 			<Fragment ref={ref} {...rest}>
 				{onDelete && (
-					<ResponsiveButton
-						startIcon={<HighlightOffIcon />}
-						color="secondary"
-						onClick={onDelete}>
-						刪除
-					</ResponsiveButton>
+					<TooltipWrapper title={notDeletableTitle} disabled={notDeletable}>
+						<ResponsiveButton
+							startIcon={<HighlightOffIcon />}
+							color="secondary"
+							onClick={onDelete}
+							disabled={notDeletable}>
+							刪除
+						</ResponsiveButton>
+					</TooltipWrapper>
 				)}
 
 				{/* <ResponsiveButton
@@ -36,12 +44,16 @@ const A01DialogViewToolbar = memo(
 				)}
 
 				{onEdit && (
-					<ResponsiveButton
-						startIcon={<EditOutlinedIcon />}
-						color="primary"
-						onClick={onEdit}>
-						{editLabel}
-					</ResponsiveButton>
+					<TooltipWrapper title={notEditableTitle} disabled={notEditable}>
+						<ButtonEx
+							responsive
+							startIcon={<EditOutlinedIcon />}
+							color="primary"
+							onClick={onEdit}
+							disabled={notEditable}>
+							{editLabel}
+						</ButtonEx>
+					</TooltipWrapper>
 				)}
 
 				<Tooltip title="詳細資訊">
@@ -60,6 +72,10 @@ A01DialogViewToolbar.propTypes = {
 	onReview: PropTypes.func,
 	onSideDrawerOpen: PropTypes.func,
 	editLabel: PropTypes.string.isRequired,
+	notEditable: PropTypes.bool,
+	notEditableTitle: PropTypes.string,
+	notDeletable: PropTypes.bool,
+	notDeletableTitle: PropTypes.string
 };
 
 export default A01DialogViewToolbar;

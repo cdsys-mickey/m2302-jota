@@ -94,7 +94,7 @@ export const A01DialogContainer = forwardRef((props, ref) => {
 				return "新增商品";
 			} else if (a01.updating) {
 				return a01.mode === A01.Mode.STORE
-					? "調整櫃位/安全存量"
+					? "調整櫃位/安全存量/佣金類別"
 					: "修改商品";
 			} else {
 				return "商品內容";
