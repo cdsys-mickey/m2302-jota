@@ -62,8 +62,7 @@ const F03DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={6} md={6}>
-							<DatePickerWrapper
-								label="電腦帳產生日期"
+							<DatePickerWrapper label="電腦帳產生日期"
 								typo
 								name="ActDate_N"
 								editing={false}

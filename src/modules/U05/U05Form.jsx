@@ -22,8 +22,7 @@ const U05Form = memo((props) => {
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="交易日期"
-									leftComponent={<DatePickerWrapper
-										name="SDate"
+									leftComponent={<DatePickerWrapper name="SDate"
 										fullWidth
 										validate
 										clearable
@@ -31,8 +30,7 @@ const U05Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EDate"
+									rightComponent={<DatePickerWrapper name="EDate"
 										fullWidth
 										validate
 										clearable
@@ -49,13 +47,13 @@ const U05Form = memo((props) => {
 									required
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12}>
+							{/* <Grid item xs={12} sm={12}>
 								<StdPrintOutputModePicker
 									required
 									name="outputType"
 									label="執行方式"
 								/>
-							</Grid>
+							</Grid> */}
 						</Grid>
 						<FlexBox mt={1.5}>
 							<Grid container>

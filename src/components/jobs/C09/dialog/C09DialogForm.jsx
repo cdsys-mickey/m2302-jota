@@ -56,8 +56,7 @@ const C09DialogForm = memo((props) => {
 							/>
 						</Grid>)}
 						<Grid item xs={24} sm={24} md={4.5}>
-							<DatePickerWrapper
-								typo
+							<DatePickerWrapper typo
 								name="txiDate"
 								label="撥入日期"
 								autoFocus

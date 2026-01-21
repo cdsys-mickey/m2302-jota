@@ -70,8 +70,7 @@ const D01DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={6}>
-							<DatePickerWrapper
-								typo
+							<DatePickerWrapper typo
 								name="OutDate"
 								label="領料日期"
 								fullWidth

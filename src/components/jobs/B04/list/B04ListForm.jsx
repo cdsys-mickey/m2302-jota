@@ -78,8 +78,7 @@ const B04ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item md={6}>
-					<DatePickerWrapper
-						name="date"
+					<DatePickerWrapper name="date"
 						label="報價日期起"
 						clearable
 						validate
@@ -87,8 +86,7 @@ const B04ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item md={6}>
-					<DatePickerWrapper
-						name="date2"
+					<DatePickerWrapper name="date2"
 						label="報價日期訖"
 						clearable
 						validate

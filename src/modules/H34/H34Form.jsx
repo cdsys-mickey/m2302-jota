@@ -22,8 +22,7 @@ const H34Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									minDate={"2026/01/01"}
+								<DatePickerWrapper minDate={"2026/01/01"}
 									autoFocus
 									name="SDate"
 									label="日期區間"
@@ -33,8 +32,7 @@ const H34Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									minDate={"2026/01/01"}
+								<DatePickerWrapper minDate={"2026/01/01"}
 									name="EDate"
 									label="日期區間迄"
 									fullWidth

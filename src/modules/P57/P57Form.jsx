@@ -25,8 +25,7 @@ const P57Form = memo((props) => {
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="交易日期" required
-									leftComponent={<DatePickerWrapper
-										name="SDate"
+									leftComponent={<DatePickerWrapper name="SDate"
 										label="交易"
 										fullWidth
 										validate
@@ -36,8 +35,7 @@ const P57Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EDate"
+									rightComponent={<DatePickerWrapper name="EDate"
 										label="日期區間迄"
 										fullWidth
 										validate

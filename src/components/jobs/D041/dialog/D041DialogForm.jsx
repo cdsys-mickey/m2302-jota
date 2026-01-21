@@ -76,8 +76,7 @@ const D041DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
-							<DatePickerWrapper
-								typo
+							<DatePickerWrapper typo
 								name="EntDate"
 								label="入庫日期"
 								fullWidth

@@ -27,8 +27,7 @@ const D06SearchForm = memo((props) => {
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item md={6} lg={4}>
-					<DatePickerWrapper
-						name="lvDate"
+					<DatePickerWrapper name="lvDate"
 						label="結餘日期(≧)"
 						validate
 					/>

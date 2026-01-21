@@ -40,14 +40,12 @@ const A18Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12}>
 								<RangeGroup legend="日期區間"
-									leftComponent={<DatePickerWrapper
-										name="SDate"
+									leftComponent={<DatePickerWrapper name="SDate"
 										label="起始日期"
 										validate
 										borderless
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EDate"
+									rightComponent={<DatePickerWrapper name="EDate"
 										label="截止日期"
 										validate
 										borderless

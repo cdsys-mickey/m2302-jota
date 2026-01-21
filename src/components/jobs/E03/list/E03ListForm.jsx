@@ -25,8 +25,7 @@ const E03ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item md={6}>
-					<DatePickerWrapper
-						name="lvRtnDate"
+					<DatePickerWrapper name="lvRtnDate"
 						label="銷退日"
 						clearable
 						validate

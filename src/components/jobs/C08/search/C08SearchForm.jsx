@@ -22,8 +22,7 @@ const C08SearchForm = memo((props) => {
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item md={5} lg={4}>
-					<DatePickerWrapper
-						name="lvTxoDate"
+					<DatePickerWrapper name="lvTxoDate"
 						label="撥出日期(>)"
 						validate
 					/>

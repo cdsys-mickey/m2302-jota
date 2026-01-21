@@ -32,8 +32,7 @@ const C04SearchForm = memo((props) => {
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item md={6} lg={4}>
-					<DatePickerWrapper
-						name="lvRstDate"
+					<DatePickerWrapper name="lvRstDate"
 						label="進貨日期(≧)"
 						clearable
 					/>

@@ -28,8 +28,7 @@ const B011PrintDialogForm = memo((props) => {
 						/>
 					</Grid>
 					<Grid item xs={12} sm={12} md={7}>
-						<DatePickerWrapper
-							name="prtDate"
+						<DatePickerWrapper name="prtDate"
 							label="報價日期"
 							clearable
 							validate

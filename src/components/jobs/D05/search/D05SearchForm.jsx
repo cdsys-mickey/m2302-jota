@@ -20,8 +20,7 @@ const D05SearchForm = memo((props) => {
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item md={6} lg={4} {...rest}>
-					<DatePickerWrapper
-						name="lvDate"
+					<DatePickerWrapper name="lvDate"
 						label="報廢日期(≧)"
 						clearable
 						clearOnEscape

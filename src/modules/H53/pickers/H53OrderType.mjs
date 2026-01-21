@@ -1,8 +1,8 @@
 const options = [
 	{ id: 1, label: "貨品" },
 	{ id: 2, label: "單據" },
-	{ id: 2, label: "日期" },
-	{ id: 2, label: "線別" },
+	{ id: 3, label: "日期" },
+	{ id: 4, label: "線別" },
 ];
 
 const getOptionLabel = (option) => {

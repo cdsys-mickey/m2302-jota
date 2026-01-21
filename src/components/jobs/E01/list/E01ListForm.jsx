@@ -28,8 +28,7 @@ const E01ListForm = memo((props) => {
 						/>
 					</Grid>
 					<Grid item md={5}>
-						<DatePickerWrapper
-							name="lvOrdDate"
+						<DatePickerWrapper name="lvOrdDate"
 							label="訂貨日"
 							clearable
 							validate
@@ -37,8 +36,7 @@ const E01ListForm = memo((props) => {
 						/>
 					</Grid>
 					<Grid item md={5}>
-						<DatePickerWrapper
-							name="lvArrDate"
+						<DatePickerWrapper name="lvArrDate"
 							label="到貨日≤"
 							clearable
 							validate

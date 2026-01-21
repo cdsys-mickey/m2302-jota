@@ -94,16 +94,14 @@ const B02ListForm = memo((props) => {
 				</Grid>
 				<Grid item xs={24} sm={24} md={12}>
 					<RangeGroup legend="報價日期區間"
-						leftComponent={<DatePickerWrapper
-							name="date"
+						leftComponent={<DatePickerWrapper name="date"
 							label="報價日期起"
 							clearable
 							validate
 							borderless
 							placeholder="起"
 						/>}
-						rightComponent={<DatePickerWrapper
-							name="date2"
+						rightComponent={<DatePickerWrapper name="date2"
 							label="報價日期訖"
 							clearable
 							validate

@@ -21,8 +21,7 @@ const H02Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={6}>
-								<DatePickerWrapper
-									minDate={"2026/01/01"}
+								<DatePickerWrapper minDate={"2026/01/01"}
 									name="SalYM"
 									label="銷售年月"
 									fullWidth

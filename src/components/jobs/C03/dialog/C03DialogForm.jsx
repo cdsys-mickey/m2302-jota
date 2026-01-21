@@ -84,8 +84,7 @@ const C03DialogForm = memo((props) => {
 						</Grid>
 
 						<Grid item xs={24} sm={24} md={5}>
-							<DatePickerWrapper
-								typo
+							<DatePickerWrapper typo
 								name="OrdDate"
 								label="採購日期"
 								fullWidth
@@ -96,8 +95,7 @@ const C03DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5}>
-							<DatePickerWrapper
-								typo
+							<DatePickerWrapper typo
 								name="ArrDate"
 								label="預計到貨日期"
 								fullWidth

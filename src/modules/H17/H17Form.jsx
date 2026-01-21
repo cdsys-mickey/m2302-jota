@@ -24,8 +24,7 @@ const H17Form = memo((props) => {
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="預計到貨日區間"
-									leftComponent={<DatePickerWrapper
-										autoFocus
+									leftComponent={<DatePickerWrapper autoFocus
 										name="SArrDate"
 										label=""
 										fullWidth
@@ -34,8 +33,7 @@ const H17Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EArrDate"
+									rightComponent={<DatePickerWrapper name="EArrDate"
 										label="預計到貨迄"
 										fullWidth
 										validate

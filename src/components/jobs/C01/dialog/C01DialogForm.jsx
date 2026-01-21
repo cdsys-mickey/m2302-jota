@@ -53,8 +53,7 @@ const C01DialogForm = memo((props) => {
 							</Grid>
 						)}
 						<Grid item xs={24} sm={24} md={4}>
-							<DatePickerWrapper
-								typo
+							<DatePickerWrapper typo
 								name="RqtDate"
 								label="請購日期"
 								autoFocus

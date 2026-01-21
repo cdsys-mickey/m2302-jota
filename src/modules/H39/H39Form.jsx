@@ -47,8 +47,7 @@ const H39Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間(一)" required
-									leftComponent={<DatePickerWrapper
-										name="SDate1"
+									leftComponent={<DatePickerWrapper name="SDate1"
 										required
 										rules={{
 											required: "日期區間(一)起為必填"
@@ -59,8 +58,7 @@ const H39Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EDate1"
+									rightComponent={<DatePickerWrapper name="EDate1"
 										required
 										rules={{
 											required: "日期區間(一)迄為必填"
@@ -75,8 +73,7 @@ const H39Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間(二)" required
-									leftComponent={<DatePickerWrapper
-										name="SDate2"
+									leftComponent={<DatePickerWrapper name="SDate2"
 										rules={{
 											required: "日期區間(二)起為必填"
 										}}
@@ -86,8 +83,7 @@ const H39Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EDate2"
+									rightComponent={<DatePickerWrapper name="EDate2"
 										rules={{
 											required: "日期區間(二)迄為必填"
 										}}

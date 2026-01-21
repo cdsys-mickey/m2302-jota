@@ -54,8 +54,7 @@ const B06SearchForm = memo(() => {
 				<ResponsiveGrid item md={12} lg={8}>
 					<RangeGroup legend="日期區間"
 						leftComponent={
-							<DatePickerWrapper
-								name="date1"
+							<DatePickerWrapper name="date1"
 								label="日期區間"
 								fullWidth
 								validate
@@ -65,8 +64,7 @@ const B06SearchForm = memo(() => {
 							/>
 						}
 						rightComponent={
-							<DatePickerWrapper
-								name="date2"
+							<DatePickerWrapper name="date2"
 								label="日期區間迄"
 								fullWidth
 								validate

@@ -51,8 +51,7 @@ const D05DialogForm = memo((props) => {
 							</Grid>
 						)}
 						<Grid item xs={24} sm={24} md={4.5}>
-							<DatePickerWrapper
-								autoFocus
+							<DatePickerWrapper autoFocus
 								typo
 								name="wdate"
 								label="報廢日期"

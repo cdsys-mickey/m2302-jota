@@ -16,8 +16,7 @@ const F05Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12}>
-								<DatePickerWrapper
-									label="電腦資料產生日期"
+								<DatePickerWrapper label="電腦資料產生日期"
 									// inline
 									typo
 									name="ActDate"

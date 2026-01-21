@@ -115,8 +115,7 @@ const A19Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間"
-									leftComponent={<DatePickerWrapper
-										name="SDate"
+									leftComponent={<DatePickerWrapper name="SDate"
 										label="起始日期"
 										fullWidth
 										validate
@@ -124,8 +123,7 @@ const A19Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EDate"
+									rightComponent={<DatePickerWrapper name="EDate"
 										label="截止日期"
 										fullWidth
 										validate

@@ -23,7 +23,6 @@ const U05_1Form = memo((props) => {
 								<RangeGroup legend="交易日期"
 									leftComponent={
 										<DatePickerWrapper
-											minDate={"2026/01/01"}
 											name="SDate"
 											label="日期區間"
 											fullWidth
@@ -35,7 +34,6 @@ const U05_1Form = memo((props) => {
 									}
 									rightComponent={
 										<DatePickerWrapper
-											minDate={"2026/01/01"}
 											name="EDate"
 											label="日期區間迄"
 											fullWidth

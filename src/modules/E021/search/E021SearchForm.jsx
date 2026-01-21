@@ -28,8 +28,7 @@ const E021SearchForm = memo((props) => {
 						/>
 					</ResponsiveGrid>
 					<ResponsiveGrid item xs={5}>
-						<DatePickerWrapper
-							name="lvSalesDate"
+						<DatePickerWrapper name="lvSalesDate"
 							label="銷貨日"
 							clearable
 							validate
@@ -37,8 +36,7 @@ const E021SearchForm = memo((props) => {
 						/>
 					</ResponsiveGrid>
 					<ResponsiveGrid item xs={5}>
-						<DatePickerWrapper
-							name="lvArrDate"
+						<DatePickerWrapper name="lvArrDate"
 							label="到貨日≤"
 							clearable
 							validate

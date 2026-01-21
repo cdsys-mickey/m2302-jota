@@ -41,15 +41,13 @@ const C03SearchForm = memo((props) => {
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item md={6} lg={4}>
-					<DatePickerWrapper
-						name="lvOrdDate"
+					<DatePickerWrapper name="lvOrdDate"
 						label="採購日期"
 						clearable
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item md={6} lg={4}>
-					<DatePickerWrapper
-						name="lvArrDate"
+					<DatePickerWrapper name="lvArrDate"
 						label="預計到貨日期(≦)"
 						clearable
 					/>

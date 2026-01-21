@@ -42,8 +42,7 @@ const B05SearchForm = memo((props) => {
 					/>
 				</ResponsiveGrid>
 				<ResponsiveGrid item lg={3}>
-					<DatePickerWrapper
-						name="lvDate"
+					<DatePickerWrapper name="lvDate"
 						label="詢價日期"
 						fullWidth
 						validate

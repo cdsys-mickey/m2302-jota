@@ -88,16 +88,14 @@ const C05SearchForm = memo((props) => {
 				*/}
 				<ResponsiveGrid item md={12} lg={8}>
 					<RangeGroup legend="退貨日期區間"
-						leftComponent={<DatePickerWrapper
-							name="rd"
+						leftComponent={<DatePickerWrapper name="rd"
 							label="退貨日期"
 							validate
 							clearable
 							borderless
 							placeholder="起"
 						/>}
-						rightComponent={<DatePickerWrapper
-							name="rd2"
+						rightComponent={<DatePickerWrapper name="rd2"
 							label="退貨日期迄"
 							validate
 							clearable

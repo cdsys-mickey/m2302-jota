@@ -50,16 +50,14 @@ const U04Form = memo((props) => {
 							</Grid>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="日期區間"
-									leftComponent={<DatePickerWrapper
-										name="SDate"
+									leftComponent={<DatePickerWrapper name="SDate"
 										fullWidth
 										validate
 										clearable
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EDate"
+									rightComponent={<DatePickerWrapper name="EDate"
 										fullWidth
 										validate
 										clearable

@@ -10,8 +10,7 @@ const F02ListForm = memo((props) => {
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
 				<Grid item md={6}>
-					<DatePickerWrapper
-						label="盤點日期"
+					<DatePickerWrapper label="盤點日期"
 						inline
 						typo
 						name="ActDate"

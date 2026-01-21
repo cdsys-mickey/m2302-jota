@@ -22,8 +22,7 @@ const H52Form = memo((props) => {
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="到貨日期區間"
-									leftComponent={<DatePickerWrapper
-										name="SArrDate"
+									leftComponent={<DatePickerWrapper name="SArrDate"
 										label="日期區間"
 										fullWidth
 										validate
@@ -32,8 +31,7 @@ const H52Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EArrDate"
+									rightComponent={<DatePickerWrapper name="EArrDate"
 										label="日期區間迄"
 										fullWidth
 										validate

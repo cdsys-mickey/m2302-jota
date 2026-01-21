@@ -71,8 +71,7 @@ const D06DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5.5}>
-							<DatePickerWrapper
-								typo
+							<DatePickerWrapper typo
 								name="RemDate"
 								label="結餘日期"
 								fullWidth
@@ -88,8 +87,7 @@ const D06DialogForm = memo((props) => {
 							/>
 						</Grid>
 						<Grid item xs={24} sm={24} md={5.5}>
-							<DatePickerWrapper
-								typo
+							<DatePickerWrapper typo
 								name="InitDate"
 								label="轉期初日期"
 								fullWidth

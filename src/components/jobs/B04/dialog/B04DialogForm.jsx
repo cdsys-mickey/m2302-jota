@@ -52,8 +52,7 @@ const B04DialogForm = memo((props) => {
 								</Grid>
 							)}
 							<Grid item xs={24} sm={24} md={5}>
-								<DatePickerWrapper
-									typo
+								<DatePickerWrapper typo
 									name="InqDate"
 									variant="outlined"
 									label="詢價日期"

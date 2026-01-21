@@ -101,8 +101,7 @@ const InputTest = () => {
 						<Grid item xs={12} md={6.5}>
 							<FieldGroup legend="日期區間">
 								<FlexBox flex={1}>
-									<DatePickerWrapper
-										autoFocus
+									<DatePickerWrapper autoFocus
 										name="SDate"
 										label=""
 										fullWidth
@@ -115,8 +114,7 @@ const InputTest = () => {
 									<Typography variant="body1">~</Typography>
 								</Box>
 								<FlexBox flex={1}>
-									<DatePickerWrapper
-										name="EDate"
+									<DatePickerWrapper name="EDate"
 										label=""
 										fullWidth
 										validate
@@ -261,8 +259,7 @@ const InputTest = () => {
 							<DateFieldWrapper name="date1" label="date1" />
 						</Grid>
 						<Grid item xs={4}>
-							<DatePickerWrapper
-								name="datepicker1"
+							<DatePickerWrapper name="datepicker1"
 								label="date-picker1"
 								validate
 							/>
