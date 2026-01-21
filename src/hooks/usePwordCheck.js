@@ -23,6 +23,7 @@ const usePwordCheck = (opts = {}) => {
 		action = "執行",
 		label = DEFAULT_LABEL,
 		entryErrorMessage = DEFAULT_ENTRY_ERROR_MESSAGE,
+		askAnyway = false,
 	} = opts;
 	const { token } = useContext(AuthContext);
 	const dialogs = useContext(DialogsContext);
@@ -63,7 +64,7 @@ const usePwordCheck = (opts = {}) => {
 				first = false,
 				callback,
 				message = DEFAULT_PROMPT,
-				title = DEFAULT_TITLE,
+				title = label || DEFAULT_TITLE,
 				label = DEFAULT_LABEL,
 			} = opts;
 			console.log("promptPwordEntry, first:", first);
@@ -120,12 +121,12 @@ const usePwordCheck = (opts = {}) => {
 				// confirmText: "通過",
 			});
 		},
-		[action, dialogs, entryErrorMessage, httpPostAsync, token]
+		[action, dialogs, entryErrorMessage, httpPostAsync, token],
 	);
 
 	const performCheck = useCallback(
 		({ callback, ...rest }) => {
-			if (!pwordLockRef.current?.passed) {
+			if (!pwordLockRef.current?.passed || askAnyway) {
 				promptPwordEntry({ first: true, callback, ...rest });
 				return;
 			}
@@ -135,7 +136,7 @@ const usePwordCheck = (opts = {}) => {
 				console.error("未指定 callback");
 			}
 		},
-		[promptPwordEntry]
+		[askAnyway, promptPwordEntry],
 	);
 
 	// useInit(() => {

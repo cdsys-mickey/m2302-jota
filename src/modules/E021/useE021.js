@@ -19,6 +19,7 @@ import { useInit } from "@/shared-hooks/useInit";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
 import useJotaReports from "@/hooks/useJotaReports";
 import useSQtyManager from "@/hooks/useSQtyManager";
+import usePwordCheck from "@/hooks/usePwordCheck";
 
 export const useE021 = ({ mode }) => {
 	const config = useContext(ConfigContext);
@@ -75,7 +76,7 @@ export const useE021 = ({ mode }) => {
 			};
 			console.log("prevData", getPrevData());
 		},
-		[getPrevData]
+		[getPrevData],
 	);
 
 	const createRow = useCallback(() => E021.createRow(), []);
@@ -92,6 +93,11 @@ export const useE021 = ({ mode }) => {
 	});
 	const { committed } = sqtyManager;
 
+	const pwordCheck = usePwordCheck({
+		// 一律詢問
+		// askAnyway: true,
+	});
+
 	const getSPriceClassName = useCallback(({ rowData }) => {
 		return rowData.stype?.id ? "line-through" : null;
 	}, []);
@@ -100,7 +106,7 @@ export const useE021 = ({ mode }) => {
 		({ rowData }) => {
 			return mode != E021.Mode.MANAGER;
 		},
-		[mode]
+		[mode],
 	);
 
 	const spriceDisabled = useCallback(({ rowData }) => {
@@ -116,7 +122,7 @@ export const useE021 = ({ mode }) => {
 					rowData.SNotQty) > 0
 			);
 		},
-		[itemData?.SalIDs]
+		[itemData?.SalIDs],
 	);
 
 	const sNotQtyDisabled = useCallback(({ rowData }) => {
@@ -147,7 +153,7 @@ export const useE021 = ({ mode }) => {
 			e?.stopPropagation();
 			promptCreating();
 		},
-		[promptCreating]
+		[promptCreating],
 	);
 
 	// 同步不列印金額註記
@@ -197,7 +203,7 @@ export const useE021 = ({ mode }) => {
 				// formMeta.asyncRef.current.supressEvents = false;
 				formMeta.enableEvents();
 			},
-		[]
+		[],
 	);
 
 	const handleRefreshAmt = useCallback(
@@ -226,7 +232,7 @@ export const useE021 = ({ mode }) => {
 				toastEx.error("計算合計失敗", err);
 			}
 		},
-		[httpGetAsync, token]
+		[httpGetAsync, token],
 	);
 
 	// READ
@@ -267,7 +273,7 @@ export const useE021 = ({ mode }) => {
 				crud.failedReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, sqtyManager, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid],
 	);
 
 	const createWithPurchaseOrder = useCallback(
@@ -311,7 +317,7 @@ export const useE021 = ({ mode }) => {
 				crud.failedReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, sqtyManager, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid],
 	);
 
 	const mapTooltip = useCallback(
@@ -374,11 +380,11 @@ export const useE021 = ({ mode }) => {
 				return row; // 不符合條件則返回原本的列
 			});
 		},
-		[sqtyManager]
+		[sqtyManager],
 	);
 
 	const handleSave = useCallback(
-		async ({ data, setValue, gridMeta }) => {
+		async ({ data, setValue, gridMeta, overrideCheckDate = false }) => {
 			const creating = crud.creating;
 			try {
 				if (creating) {
@@ -387,23 +393,30 @@ export const useE021 = ({ mode }) => {
 					crud.startUpdating();
 				}
 
+				const _data = {
+					...data,
+					...(overrideCheckDate && {
+						ChkDate: "Y",
+					}),
+				};
+
 				const { status, error } = creating
 					? await httpPostAsync({
 							url: "v1/sales/invoices",
-							data: data,
+							data: _data,
 							bearer: token,
 							params: {
 								mode: mode.description,
 							},
-					  })
+						})
 					: await httpPutAsync({
 							url: "v1/sales/invoices",
-							data: data,
+							data: _data,
 							bearer: token,
 							params: {
 								mode: mode.description,
 							},
-					  });
+						});
 				if (status.success) {
 					toastEx.success(creating ? `新增成功` : "修改成功");
 					if (creating) {
@@ -449,6 +462,19 @@ export const useE021 = ({ mode }) => {
 							grid.setGridData(updated);
 						},
 					});
+				} else if (err.code == 20) {
+					// 日期檢查失敗
+					pwordCheck.performCheck({
+						title: err.message,
+						callback: () => {
+							handleSave({
+								data,
+								setValue,
+								gridMeta,
+								overrideCheckDate: true,
+							});
+						},
+					});
 				} else {
 					toastEx.error(`${creating ? "新增" : "修改"}失敗`, err);
 				}
@@ -458,15 +484,16 @@ export const useE021 = ({ mode }) => {
 			crud,
 			httpPostAsync,
 			token,
-			mode,
+			mode.description,
 			httpPutAsync,
 			listLoader,
 			loadItem,
-			grid,
 			sqtyManager,
 			handleRefreshAmt,
 			mapTooltip,
-		]
+			grid,
+			pwordCheck,
+		],
 	);
 
 	const cancelAction = useCallback(() => {
@@ -485,7 +512,7 @@ export const useE021 = ({ mode }) => {
 
 			loadItem({ id: rowData.銷貨單號 });
 		},
-		[cancelAction, loadItem]
+		[cancelAction, loadItem],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -613,7 +640,7 @@ export const useE021 = ({ mode }) => {
 				toastEx.error("查詢報價失敗", err);
 			}
 		},
-		[httpGetAsync, sqtyManager, token]
+		[httpGetAsync, sqtyManager, token],
 	);
 
 	const handleTaxTypeChange = useCallback(
@@ -631,7 +658,7 @@ export const useE021 = ({ mode }) => {
 					setValue,
 				});
 			},
-		[handleRefreshAmt, grid.gridData]
+		[handleRefreshAmt, grid.gridData],
 	);
 
 	const handleGridProdChange = useCallback(
@@ -643,7 +670,7 @@ export const useE021 = ({ mode }) => {
 			const prodInfo = prodId
 				? await getProdInfo(prodId, {
 						formData,
-				  })
+					})
 				: null;
 
 			if (prodId) {
@@ -674,18 +701,18 @@ export const useE021 = ({ mode }) => {
 			};
 			return processedRowData;
 		},
-		[getProdInfo, sqtyManager]
+		[getProdInfo, sqtyManager],
 	);
 
 	const onUpdateRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				updateResult.rowIndex = rowIndex;
@@ -756,9 +783,9 @@ export const useE021 = ({ mode }) => {
 							!processedRowData.SPrice || !processedRowData.SQty
 								? ""
 								: processedRowData.stype?.id
-								? 0
-								: processedRowData.SPrice *
-								  processedRowData.SQty,
+									? 0
+									: processedRowData.SPrice *
+										processedRowData.SQty,
 					};
 					dirty = true;
 					updateResult.cols.push("SAmt");
@@ -772,7 +799,7 @@ export const useE021 = ({ mode }) => {
 							processedRowData.SNotQty === 0
 								? 0
 								: processedRowData.SQty -
-								  processedRowData.SOutQty,
+									processedRowData.SOutQty,
 					};
 					updateResult.cols.push("SNotQty");
 				}
@@ -781,7 +808,7 @@ export const useE021 = ({ mode }) => {
 				}
 				return processedRowData;
 			},
-		[grid, handleGridProdChange, handleRefreshAmt, sqtyManager, mapTooltip]
+		[grid, handleGridProdChange, handleRefreshAmt, sqtyManager, mapTooltip],
 	);
 
 	const onGridChanged = useCallback(
@@ -811,7 +838,7 @@ export const useE021 = ({ mode }) => {
 				return updated;
 			}
 		},
-		[handleRefreshAmt, mapTooltip]
+		[handleRefreshAmt, mapTooltip],
 	);
 
 	// const buildGridChangeHandlerOld = useCallback(
@@ -868,7 +895,7 @@ export const useE021 = ({ mode }) => {
 				console.log("onEditorSubmit", data);
 				const collected = E021.transformForSubmitting(
 					data,
-					grid.gridData
+					grid.gridData,
 				);
 				console.log("collected", collected);
 				handleSave({ data: collected, setValue, gridMeta });
@@ -880,7 +907,7 @@ export const useE021 = ({ mode }) => {
 				// 	console.error("UNKNOWN SUBMIT TYPE");
 				// }
 			},
-		[grid.gridData, handleSave, sqtyManager]
+		[grid.gridData, handleSave, sqtyManager],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -953,7 +980,7 @@ export const useE021 = ({ mode }) => {
 				}));
 			}
 		},
-		[httpGetAsync, ipState.saveKey, token]
+		[httpGetAsync, ipState.saveKey, token],
 	);
 
 	const onImportProdsSubmit = useCallback(
@@ -967,7 +994,7 @@ export const useE021 = ({ mode }) => {
 						bearer: token,
 						params: {
 							...E021.transformProdCriteriaAsQueryParams(
-								ipState.criteria
+								ipState.criteria,
 							),
 							sk: ipState.saveKey,
 						},
@@ -980,11 +1007,11 @@ export const useE021 = ({ mode }) => {
 							E021.transformForGridImport(
 								data,
 								formData?.employee,
-								formData?.Date
+								formData?.Date,
 							),
 							{
 								fillRows: true,
-							}
+							},
 						);
 						toastEx.success(`成功帶入 ${data.length} 筆商品`);
 						importProdsAction.clear();
@@ -1003,7 +1030,7 @@ export const useE021 = ({ mode }) => {
 			ipState.saveKey,
 			grid,
 			token,
-		]
+		],
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {
@@ -1030,7 +1057,7 @@ export const useE021 = ({ mode }) => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.SalID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.SalID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -1043,7 +1070,7 @@ export const useE021 = ({ mode }) => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	const loadProdFormMeta = useFormMeta(
@@ -1054,7 +1081,7 @@ export const useE021 = ({ mode }) => {
 		catL,
 		catM,
 		catS
-		`
+		`,
 	);
 
 	const squaredDisabled = useMemo(() => {
@@ -1089,7 +1116,7 @@ export const useE021 = ({ mode }) => {
 				// 	fillRows: true
 				// });
 			},
-		[]
+		[],
 	);
 
 	const onRefreshGridSubmit = useCallback(
@@ -1099,7 +1126,7 @@ export const useE021 = ({ mode }) => {
 				try {
 					const collected = E021.transformForSubmitting(
 						data,
-						grid.gridData
+						grid.gridData,
 					);
 					console.log("collected", collected);
 
@@ -1137,7 +1164,7 @@ export const useE021 = ({ mode }) => {
 					setValue("customer", prevData?.customer);
 				}
 			},
-		[grid, httpPostAsync, token, setPrevData, getPrevData]
+		[grid, httpPostAsync, token, setPrevData, getPrevData],
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {
@@ -1146,12 +1173,12 @@ export const useE021 = ({ mode }) => {
 
 	const handleCustomerChange = useCallback(
 		({
-				setValue,
-				getValues,
-				formMeta,
-				gridMeta,
-				handleRefreshGridSubmit,
-			}) =>
+			setValue,
+			getValues,
+			formMeta,
+			gridMeta,
+			handleRefreshGridSubmit,
+		}) =>
 			async (newValue) => {
 				console.log("handleCustomerChange", newValue);
 				// formMeta.asyncRef.current.supressEvents = true;
@@ -1231,7 +1258,7 @@ export const useE021 = ({ mode }) => {
 				// formMeta.asyncRef.current.supressEvents = false;
 				formMeta.enableEvents();
 			},
-		[grid.gridData, httpGetAsync, token]
+		[grid.gridData, httpGetAsync, token],
 	);
 
 	// const getTooltip = useCallback(({ rowData }) => {
@@ -1317,7 +1344,7 @@ export const useE021 = ({ mode }) => {
 						// 當客戶已選擇才會更新客戶資料
 						if (!isCustomerAlreadySelected) {
 							updateCustomerData({ setValue, formMeta })(
-								formData
+								formData,
 							);
 						}
 						// 同步不列印金額註記
@@ -1341,7 +1368,7 @@ export const useE021 = ({ mode }) => {
 			updateAmt,
 			updateCustomerData,
 			updatePrtAmt,
-		]
+		],
 	);
 
 	const handleCustomerOrdersChangedOld = useCallback(
@@ -1411,7 +1438,7 @@ export const useE021 = ({ mode }) => {
 					toastEx.error("載入訂購單商品失敗", err);
 				}
 			},
-		[grid, httpGetAsync, token, updateAmt]
+		[grid, httpGetAsync, token, updateAmt],
 	);
 
 	const handleRecdAmtChange = useCallback(
@@ -1426,7 +1453,7 @@ export const useE021 = ({ mode }) => {
 					formData,
 				});
 			},
-		[grid.gridData, handleRefreshAmt]
+		[grid.gridData, handleRefreshAmt],
 	);
 
 	const checkEditableAction = useAction();
@@ -1525,7 +1552,7 @@ export const useE021 = ({ mode }) => {
 				loadOrderAction.fail({ error: err });
 			}
 		},
-		[httpGetAsync, loadOrderAction, promptCreating, token]
+		[httpGetAsync, loadOrderAction, promptCreating, token],
 	);
 
 	// const promptLoadPurchaseOrder = useCallback(({ setValue, orderId }) => {
