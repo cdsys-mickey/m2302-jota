@@ -13,6 +13,7 @@ const transformForSubmitting = (payload) => {
 		CmsAmt,
 		CmsType,
 		reportType,
+		reportStyle,
 		Sign,
 		...rest
 	} = payload;
@@ -29,6 +30,7 @@ const transformForSubmitting = (payload) => {
 		CmsAmt: CmsAmt?.toString() ?? "",
 		CmsType: CmsType?.id ?? "",
 		RptType: reportType?.id,
+		StyType: reportStyle?.id,
 		Sign: Sign ? "Y" : "N",
 		...rest,
 	};

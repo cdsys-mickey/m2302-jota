@@ -4,6 +4,7 @@ import StdPrint from "../StdPrint.mjs";
 import { P52Context } from "./P52Context";
 import P52ReportType from "./pickers/P52ReportTypes.mjs";
 import { useP52 } from "./useP52";
+import RptStyles from "../RptStyles.mjs";
 
 export const P52Provider = ({ children }) => {
 	const p52 = useP52();
@@ -19,6 +20,7 @@ export const P52Provider = ({ children }) => {
 			CmsAmt: "",
 			CmsType: null,
 			reportType: P52ReportType.getDefaultOption(),
+			reportStyle: RptStyles.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
 			Sign: false
 		},

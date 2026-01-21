@@ -23,6 +23,7 @@ export const P52FormContainer = () => {
 		CmsAmt,
 		CmsType,
 		reportType,
+		reportStyle,
 		Sign,
 		`
 	)

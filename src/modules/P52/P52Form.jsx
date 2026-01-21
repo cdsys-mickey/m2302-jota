@@ -16,6 +16,7 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import P52ReportTypePicker from "./pickers/P52ReportTypePicker";
+import RptStylePicker from "@/components/picker/RptStylePicker";
 
 const P52Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -27,8 +28,7 @@ const P52Form = memo((props) => {
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="交易日期"
-									leftComponent={<DatePickerWrapper
-										name="SDate"
+									leftComponent={<DatePickerWrapper name="SDate"
 										label="交易"
 										fullWidth
 										validate
@@ -37,8 +37,7 @@ const P52Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper
-										name="EDate"
+									rightComponent={<DatePickerWrapper name="EDate"
 										label="日期區間迄"
 										fullWidth
 										validate
@@ -121,6 +120,14 @@ const P52Form = memo((props) => {
 								<P52ReportTypePicker
 									label="資料型態"
 									name="reportType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<RptStylePicker
+									label="報表樣式"
+									name="reportStyle"
 									disableOpenOnInput
 									selectOnFocus
 								/>
