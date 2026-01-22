@@ -6,7 +6,7 @@ import { D02Context } from "@/contexts/D02/D02Context";
 const D02CreateButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
-		const c04 = useContext(D02Context);
+		const d02 = useContext(D02Context);
 		const text = useMemo(() => {
 			return "新增";
 		}, []);
@@ -17,7 +17,7 @@ const D02CreateButtonContainer = memo(
 				variant="contained"
 				startIcon={<AddIcon />}
 				// onClick={c04.promptCreating}
-				onClick={c04.promptCreatingWithCheck}
+				onClick={d02.promptCreatingWithCheck}
 				sx={{
 					fontWeight: 600,
 				}}

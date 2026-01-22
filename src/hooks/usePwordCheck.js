@@ -6,7 +6,7 @@ import { useCallback, useContext, useRef } from "react";
 
 const DEFAULT_PROMPT = `請輸入密碼後繼續`;
 
-const DEFAULT_LABEL = ({ action }) => {
+const DEFAULT_LABEL_FUNC = ({ action }) => {
 	return `${action}密碼`;
 };
 
@@ -21,7 +21,7 @@ const DEFAULT_TITLE = ({ action }) => {
 const usePwordCheck = (opts = {}) => {
 	const {
 		action = "執行",
-		label = DEFAULT_LABEL,
+		label: defaultLabel = DEFAULT_LABEL_FUNC,
 		entryErrorMessage = DEFAULT_ENTRY_ERROR_MESSAGE,
 		askAnyway = false,
 	} = opts;
@@ -64,8 +64,8 @@ const usePwordCheck = (opts = {}) => {
 				first = false,
 				callback,
 				message = DEFAULT_PROMPT,
-				title = label || DEFAULT_TITLE,
-				label = DEFAULT_LABEL,
+				title = DEFAULT_TITLE,
+				label = defaultLabel,
 			} = opts;
 			console.log("promptPwordEntry, first:", first);
 
@@ -121,7 +121,14 @@ const usePwordCheck = (opts = {}) => {
 				// confirmText: "通過",
 			});
 		},
-		[action, dialogs, entryErrorMessage, httpPostAsync, token],
+		[
+			action,
+			defaultLabel,
+			dialogs,
+			entryErrorMessage,
+			httpPostAsync,
+			token,
+		],
 	);
 
 	const performCheck = useCallback(
