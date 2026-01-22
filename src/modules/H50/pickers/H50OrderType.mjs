@@ -2,6 +2,7 @@ const options = [
 	{ id: 1, label: "日期" },
 	{ id: 2, label: "貨品" },
 	{ id: 3, label: "門市" },
+	{ id: 4, label: "調撥量" },
 ];
 
 const getOptionLabel = (option) => {
