@@ -5,6 +5,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 import fs from "fs";
 import path from "path";
 import { format } from "date-fns";
+import { buildResultPlugin } from "shared-modules/plugins";
 
 const DATEFNS_VERSION_FORMAT = "yyMMdd.HHmm";
 
@@ -15,6 +16,8 @@ export default defineConfig(({ mode }) => {
 	const buildTime = new Date();
 	console.log(`PROFILE: ${env.VITE_PROFILE}`);
 	const version = format(buildTime, DATEFNS_VERSION_FORMAT);
+	// 定義一個變數來儲存 resolvedConfig
+	let resolvedConfig;
 
 	return {
 		base: env.VITE_PUBLIC_URL,
@@ -35,7 +38,7 @@ export default defineConfig(({ mode }) => {
 		},
 		define: {
 			"import.meta.env.BUILD_TIME": JSON.stringify(
-				buildTime.toISOString()
+				buildTime.toISOString(),
 			),
 			__BUILD_TIME__: JSON.stringify(buildTime.toISOString()),
 		},
@@ -82,24 +85,34 @@ export default defineConfig(({ mode }) => {
 				// 	type: "module",
 				// },
 			}),
-			{
-				name: "generate-build-result",
-				closeBundle() {
-					const outDir = "dist"; // Vite 預設輸出目錄
-					const filePath = path.resolve(
-						process.cwd(),
-						outDir,
-						"build-result.json"
-					);
-					const content = { version: version };
-
-					fs.writeFileSync(
-						filePath,
-						JSON.stringify(content, null, 2)
-					);
-					console.log(`\n✅ Build result saved to ${filePath}`);
-				},
-			},
+			buildResultPlugin({ buildTime }),
+			// {
+			// 	name: "generate-build-result",
+			// 	configResolved(config) {
+			// 		// 記住 Vite 最終決定的 outDir (可能是 CLI 傳入的，也可能是預設的)
+			// 		resolvedConfig = config;
+			// 	},
+			// 	closeBundle() {
+			// 		const outDir = resolvedConfig.build.outDir || "dist";
+			// 		const filePath = path.resolve(
+			// 			process.cwd(),
+			// 			outDir,
+			// 			"build-result.json",
+			// 		);
+			// 		const content = { version: version };
+			// 		// 確保目錄存在（預防萬一）
+			// 		if (!fs.existsSync(path.dirname(filePath))) {
+			// 			fs.mkdirSync(path.dirname(filePath), {
+			// 				recursive: true,
+			// 			});
+			// 		}
+			// 		fs.writeFileSync(
+			// 			filePath,
+			// 			JSON.stringify(content, null, 2),
+			// 		);
+			// 		console.log(`\n✅ Build result saved to ${filePath}`);
+			// 	},
+			// },
 		],
 		resolve: {
 			alias: {

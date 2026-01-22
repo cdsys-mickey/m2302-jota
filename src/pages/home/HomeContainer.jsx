@@ -11,7 +11,10 @@ const HomeContainer = () => {
 	const location = useLocation();
 	const params = new URLSearchParams(location.search);
 	const auth = useContext(AuthContext);
-	usePWAVersionCheck({ autoPrompt: true, autoToastUpdated: true });
+	usePWAVersionCheck({
+		autoRefresh: true,
+		autoPrompt: true,
+	});
 	const { token, loadAuthorities } = auth;
 
 	const isLoadAuthorities = params.get("reload") === "1";
