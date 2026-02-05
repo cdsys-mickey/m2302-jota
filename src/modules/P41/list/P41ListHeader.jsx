@@ -22,6 +22,7 @@ const P41ListHeader = memo(
 				{/* <P41GuideNameColumn>導遊</P41GuideNameColumn> */}
 				<P41BankColumn>車行</P41BankColumn>
 				<P41BankColumn>旅行社</P41BankColumn>
+				<P41FlagColumn>車數</P41FlagColumn>
 				<P41FlagColumn>結清</P41FlagColumn>
 				<P41CmsColumn>佣金單號</P41CmsColumn>
 			</ListViewHeader>
