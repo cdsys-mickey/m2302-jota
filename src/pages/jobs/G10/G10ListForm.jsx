@@ -10,7 +10,7 @@ const G10ListForm = memo((props) => {
 		<FormBox {...rest}>
 			<Grid container columns={24} spacing={1}>
 				<Grid item md={6}>
-					<DatePickerWrapper minDate={"2026/01/01"}
+					<DatePickerWrapper
 						label="盤點日期"
 						inline
 						typo

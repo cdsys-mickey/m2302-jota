@@ -23,7 +23,7 @@ const G05Form = memo((props) => {
 					<FormSectionBox >
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={4} >
-								<DatePickerWrapper minDate={"2026/01/01"}
+								<DatePickerWrapper
 									name="AccYM"
 									label="帳款年月"
 									fullWidth

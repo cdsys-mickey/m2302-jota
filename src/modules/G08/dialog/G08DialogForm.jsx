@@ -60,7 +60,7 @@ const G08DialogForm = memo((props) => {
 							)}
 
 							<Grid item xs={12} sm={12} md={6}>
-								<DatePickerWrapper minDate={"2026/01/01"}
+								<DatePickerWrapper
 									typo
 									name="AdjDate"
 									label="調整日期"

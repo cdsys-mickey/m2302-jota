@@ -48,6 +48,9 @@ const P41ListRow = memo((props) => {
 						{value?.TrvData}
 					</P41BankColumn>
 					<P41FlagColumn>
+						{value?.CarQty}
+					</P41FlagColumn>
+					<P41FlagColumn>
 						{value?.CFlag}
 					</P41FlagColumn>
 					<P41CmsColumn>{value?.ComID}</P41CmsColumn>

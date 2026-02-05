@@ -13,7 +13,7 @@ const G02SearchForm = memo((props) => {
 		<FormBox {...rest}>
 			<ResponsiveGrid container spacing={1}>
 				<ResponsiveGrid item lg={2.5}>
-					<DatePickerWrapper minDate={"2026/01/01"}
+					<DatePickerWrapper
 						name="lvEDate"
 						label="資料截止日 ≦"
 						fullWidth

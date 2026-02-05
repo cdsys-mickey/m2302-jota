@@ -22,7 +22,7 @@ const G08ListForm = memo((props) => {
 					/>
 				</Grid>
 				<Grid item md={6}>
-					<DatePickerWrapper minDate={"2026/01/01"}
+					<DatePickerWrapper
 						name="lvAdjDate"
 						label="調整日"
 						clearable

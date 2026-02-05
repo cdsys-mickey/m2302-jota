@@ -16,7 +16,7 @@ const G04CreateTab = (props) => {
 		<TabPanel value={G04.Tabs.CREATE} {...rest}>
 			<Grid container columns={12} spacing={1}>
 				<Grid item xs={12} sm={7}>
-					<DatePickerWrapper minDate={"2026/01/01"}
+					<DatePickerWrapper
 						name="AccYM"
 						label="帳款年月"
 						fullWidth
@@ -44,7 +44,7 @@ const G04CreateTab = (props) => {
 					/>
 				</Grid>
 				<Grid item xs={12}>
-					<DatePickerWrapper minDate={"2026/01/01"}
+					<DatePickerWrapper
 						name="CutDate"
 						label="截止日"
 						clearable
