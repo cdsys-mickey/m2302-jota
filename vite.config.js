@@ -50,6 +50,7 @@ export default defineConfig(({ mode }) => {
 			// }),
 			VitePWA({
 				registerType: "prompt",
+				// registerType: "autoUpdate",
 				manifest: {
 					name: "JOTA 進銷存",
 					short_name: "JOTA",
