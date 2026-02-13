@@ -7,10 +7,9 @@ import { useCallback, useContext, useMemo, useState } from "react";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useLocation } from "react-router-dom";
 import { useForm, useWatch } from "react-hook-form";
-import { useRunOnce } from "@/shared-hooks/useRunOnce";
 import { AppContext } from "../app/AppContext";
 // import { toastEx } from "shared-components";
-import { toastEx } from "@/shared-components";
+import { toastEx, useRunOnce } from "shared-components";
 import { useWebApiAsync } from "@/shared-hooks";
 import { AuthContext } from "../auth/AuthContext";
 
@@ -112,21 +111,21 @@ export const useSignIn = () => {
 
 						if (!payload.LogKey) {
 							throw new Error(
-								`登入發生異常 ${ERROR_LOGKEY_EMPTY}`
+								`登入發生異常 ${ERROR_LOGKEY_EMPTY}`,
 							);
 						}
 						//25.12.31 昨天造成的 cookie 寫錯位置
 						// LogKey 寫到 auth 底下
 						Cookies.remove(
 							Auth.COOKIE_LOGKEY,
-							Auth.AUTH_COOKIE_OPTS
+							Auth.AUTH_COOKIE_OPTS,
 						);
 
 						// 1.儲存 COOKIE_LOGKEY
 						setSessionCookie(
 							Auth.COOKIE_LOGKEY,
 							payload.LogKey,
-							Auth.ROOT_COOKIE_OPTS
+							Auth.ROOT_COOKIE_OPTS,
 						);
 
 						// Cookies.set(
@@ -143,7 +142,7 @@ export const useSignIn = () => {
 						setSessionCookie(
 							Auth.COOKIE_LOGIN,
 							location.pathname ?? "",
-							Auth.ROOT_COOKIE_OPTS
+							Auth.ROOT_COOKIE_OPTS,
 						);
 						// Cookies.set(
 						// 	Auth.COOKIE_LOGIN,
@@ -172,19 +171,19 @@ export const useSignIn = () => {
 						Cookies.set(
 							Auth.COOKIE_REMEMBER_ME,
 							data.rememberMe ? 1 : 0,
-							Auth.AUTH_COOKIE_OPTS
+							Auth.AUTH_COOKIE_OPTS,
 						);
 
 						if (data.rememberMe) {
 							Cookies.set(
 								Auth.COOKIE_ACCOUNT,
 								collected[PARAM_ACCOUNT],
-								Auth.AUTH_COOKIE_OPTS
+								Auth.AUTH_COOKIE_OPTS,
 							);
 						} else {
 							Cookies.remove(
 								Auth.COOKIE_ACCOUNT,
-								Auth.AUTH_COOKIE_OPTS
+								Auth.AUTH_COOKIE_OPTS,
 							);
 						}
 
@@ -196,12 +195,12 @@ export const useSignIn = () => {
 						switch (status.code) {
 							case 401:
 								toastEx.error(
-									`登入失敗，請檢查帳號密碼是否正確`
+									`登入失敗，請檢查帳號密碼是否正確`,
 								);
 								break;
 							case 429:
 								toastEx.error(
-									`登入失敗，帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`
+									`登入失敗，帳號因密碼輸入多次錯誤遭到鎖定，請聯絡管理員`,
 								);
 								break;
 							default:
@@ -229,7 +228,13 @@ export const useSignIn = () => {
 				}
 			}
 		},
-		[captcha, httpPostAsync, location.pathname, setSessionCookie, toLanding]
+		[
+			captcha,
+			httpPostAsync,
+			location.pathname,
+			setSessionCookie,
+			toLanding,
+		],
 	);
 
 	const signInSubmitHandler = useCallback(
@@ -246,7 +251,7 @@ export const useSignIn = () => {
 					setFocus,
 				});
 			},
-		[captcha, signinStub]
+		[captcha, signinStub],
 	);
 
 	const onSignInSubmitError = useCallback((err) => {
@@ -267,7 +272,7 @@ export const useSignIn = () => {
 					setFocus,
 				});
 			},
-		[captcha, signinStub]
+		[captcha, signinStub],
 	);
 
 	const onSignInXSubmitError = useCallback((err) => {
@@ -283,7 +288,7 @@ export const useSignIn = () => {
 					return false;
 			}
 		},
-		[hideCaptcha]
+		[hideCaptcha],
 	);
 
 	const handleSubmit = form.handleSubmit(
@@ -291,7 +296,7 @@ export const useSignIn = () => {
 			setFocus: form.setFocus,
 			hideCaptcha: hideCaptcha,
 		}),
-		onSignInSubmitError
+		onSignInSubmitError,
 	);
 
 	const handleSubmitX = form.handleSubmit(
@@ -299,7 +304,7 @@ export const useSignIn = () => {
 			setFocus: form.setFocus,
 			hideCaptcha: hideCaptcha,
 		}),
-		onSignInXSubmitError
+		onSignInXSubmitError,
 	);
 
 	const handleLastField = useCallback(
@@ -310,7 +315,7 @@ export const useSignIn = () => {
 			// }
 			handleSubmit();
 		},
-		[handleSubmit]
+		[handleSubmit],
 	);
 
 	const formMeta = useFormMeta(
@@ -321,7 +326,7 @@ export const useSignIn = () => {
 		captcha`,
 		{
 			lastField: handleLastField,
-		}
+		},
 	);
 
 	useRunOnce(() => {

@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useRunOnce } from "../useRunOnce";
+import { useRunOnce } from "shared-components";
 import useWebApiAsync from "./useWebApiAsync";
 
 export default function useApiSend(options = {}, config) {
@@ -54,7 +54,7 @@ export default function useApiSend(options = {}, config) {
 				throw err; // 讓呼叫端也可以 catch
 			}
 		},
-		[url, method, data, params, restOpts, sendAsync]
+		[url, method, data, params, restOpts, sendAsync],
 	);
 
 	// 自動載入（只在 mount 時一次）
@@ -68,7 +68,7 @@ export default function useApiSend(options = {}, config) {
 		(newOpts) => {
 			return handleSend(newOpts);
 		},
-		[handleSend]
+		[handleSend],
 	);
 
 	const mutate = useCallback((newData) => {

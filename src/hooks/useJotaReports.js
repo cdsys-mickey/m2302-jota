@@ -36,12 +36,20 @@ export default function useJotaReports(props, opts = DEFAULT_OPTS) {
 
 	const dialogs = useContext(DialogsContext);
 	const { postToBlank } = useHttpPost();
-	const { operator } = useContext(AuthContext);
+	const { operator, validateLogKey, handleSessionExpired } =
+		useContext(AuthContext);
 
 	const send = useCallback(
-		(url, data) => {
+		async (url, data) => {
 			const dontPrompt =
 				Cookies.get(Settings.Keys.COOKIE_DOWNLOAD_PROMPT) == 0;
+
+			const isValidLogKey = await validateLogKey();
+
+			if (!isValidLogKey) {
+				handleSessionExpired();
+				return;
+			}
 
 			postToBlank(
 				queryString.stringifyUrl({
@@ -51,7 +59,7 @@ export default function useJotaReports(props, opts = DEFAULT_OPTS) {
 						...(!dontPrompt && { DontClose: 1 }),
 					},
 				}),
-				{ jsonData: JSON.stringify(data) }
+				{ jsonData: JSON.stringify(data) },
 			);
 
 			if (!dontPrompt && data.Action != 1 && data.Action != null) {
@@ -67,7 +75,7 @@ export default function useJotaReports(props, opts = DEFAULT_OPTS) {
 						if (params.checked) {
 							Cookies.set(
 								Settings.Keys.COOKIE_DOWNLOAD_PROMPT,
-								0
+								0,
 							);
 							dialogs.alert({
 								message: Settings.MSG_REMIND,
@@ -81,7 +89,7 @@ export default function useJotaReports(props, opts = DEFAULT_OPTS) {
 				});
 			}
 		},
-		[dialogs, operator.LogKey, postToBlank]
+		[dialogs, operator.LogKey, postToBlank],
 	);
 
 	const isDateValidated = useCallback(
@@ -154,7 +162,7 @@ export default function useJotaReports(props, opts = DEFAULT_OPTS) {
 
 			return true;
 		},
-		[dialogs, fromToPairs, month, opts.name, opts.checkEvery, send]
+		[dialogs, fromToPairs, month, opts.name, opts.checkEvery, send],
 	);
 
 	const open = useCallback(
@@ -162,7 +170,7 @@ export default function useJotaReports(props, opts = DEFAULT_OPTS) {
 			if (!isDateValidated(reportUrl, data, opts)) return;
 			send(reportUrl, data, opts);
 		},
-		[isDateValidated, send]
+		[isDateValidated, send],
 	);
 
 	return { open };

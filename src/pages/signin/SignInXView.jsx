@@ -9,7 +9,7 @@ import { CaptchaFieldContainer } from "@/components/auth/CaptchaFieldContainer";
 import ControlledTextField from "@/shared-components/TextFieldEx/ControlledTextField";
 
 const SignInXView = memo(forwardRef((props, ref) => {
-	const { loading, isRefreshRequired, ...rest } = props;
+	const { loading, isRefreshRequired, applyUpdate, ...rest } = props;
 	return (
 		<Paper
 			ref={ref}
@@ -77,14 +77,18 @@ const SignInXView = memo(forwardRef((props, ref) => {
 				<Divider />
 				<FlexBox mt={1} inline fullWidth>
 					<FlexBox flex={1} alignItems="center">
-						{/* <Link
-									variant="body2"
-									underline="hover"
-									sx={{
-										cursor: "pointer",
-									}}>
-									重設密碼
-								</Link> */}
+						{isRefreshRequired && (
+							<ButtonEx
+								type="button"
+								variant="contained"
+								size="small"
+								color="warning"
+								endIcon={<BrowserUpdatedIcon />}
+								onClick={applyUpdate}
+							>
+								更新版本
+							</ButtonEx>
+						)}
 					</FlexBox>
 
 					<FlexBox>

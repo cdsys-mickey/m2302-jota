@@ -21,9 +21,15 @@ export const useP52 = () => {
 		return `${config.REPORT_URL}/WebP52Rep.aspx`;
 	}, [config.REPORT_URL]);
 
-	const reports = useJotaReports([{ from: "SDate", to: "EDate" }], {
-		name: "所有",
-	});
+	const reports = useJotaReports(
+		[
+			{ from: "SDate", to: "EDate" },
+			{ from: "SPayDate", to: "EPayDate" },
+		],
+		{
+			name: "所有",
+		},
+	);
 
 	const onDebugSubmit = useCallback(
 		(payload) => {
@@ -44,7 +50,7 @@ export const useP52 = () => {
 			debugDialog,
 			operator.CurDeptID,
 			reportUrl,
-		]
+		],
 	);
 
 	const onSubmit = useCallback(
@@ -57,7 +63,7 @@ export const useP52 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[operator.CurDeptID, reportUrl, reports]
+		[operator.CurDeptID, reportUrl, reports],
 	);
 
 	const onSubmitError = useCallback((err) => {

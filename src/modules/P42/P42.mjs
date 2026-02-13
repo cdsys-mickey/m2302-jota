@@ -32,7 +32,7 @@ const transformCmsGridForReading = (gridData) => {
 						STrvCms,
 						Seq,
 					},
-					rowIndex
+					rowIndex,
 				) => ({
 					// Seq: rowIndex + 1,
 					Seq,
@@ -45,7 +45,7 @@ const transformCmsGridForReading = (gridData) => {
 					SPCAmt,
 					SSalAmt,
 					STrvCms,
-				})
+				}),
 			) ?? []
 	);
 };
@@ -53,6 +53,7 @@ const transformCmsGridForReading = (gridData) => {
 const transformForReading = (payload, aliasOptions) => {
 	const {
 		SalDate,
+		PayDate,
 		OrdID,
 		CityID,
 		CityData_N,
@@ -87,69 +88,70 @@ const transformForReading = (payload, aliasOptions) => {
 	} = payload;
 	return {
 		SalDate: Forms.parseDate(SalDate),
+		PayDate: Forms.parseDate(PayDate),
 		bookingOrder: OrdID
 			? {
 					OrdID,
-			  }
+				}
 			: null,
 		city: CityID
 			? {
 					CodeID: CityID,
 					CodeData: CityData_N,
-			  }
+				}
 			: null,
 		CityData_N,
 		area: CtAreaID_N
 			? {
 					CodeID: CtAreaID_N,
 					CodeData: CtAreaData_N,
-			  }
+				}
 			: null,
 		GrpType: CmsGroupTypes.getOptionById(GrpType, aliasOptions),
 		custType: CustTID
 			? {
 					CodeID: CustTID,
 					CodeData: CustTData_N,
-			  }
+				}
 			: null,
 		busComp: CarID
 			? {
 					CarID,
 					CarData: CarData_N,
-			  }
+				}
 			: null,
 		CarData_N,
 		tourGroup: TrvID
 			? {
 					TrvID,
 					TrvData: TrvData_N,
-			  }
+				}
 			: null,
 		TrvData_N,
 		tourGuide: CndID
 			? {
 					CndID,
 					CndData: CndName,
-			  }
+				}
 			: null,
 		CndName,
 		employee: EmplID
 			? {
 					CodeID: EmplID,
 					CodeData: EmplData_N,
-			  }
+				}
 			: null,
 		cashier: AcctID
 			? {
 					CodeID: AcctID,
 					CodeData: AcctData_N,
-			  }
+				}
 			: null,
 		hotel: HotelID
 			? {
 					CodeID: HotelID,
 					CodeData: HotelData_N,
-			  }
+				}
 			: null,
 		ranges: transformRangeGridForReading(ComFile_CustIDs),
 		commissions: transformCmsGridForReading(ComFile_S),
@@ -201,48 +203,48 @@ const transformForImport = (payload) => {
 			? {
 					CodeID: CityID,
 					CodeData: CityData_N,
-			  }
+				}
 			: null,
 		CityData_N,
 		area: CtAreaID_N
 			? {
 					CodeID: CtAreaID_N,
 					CodeData: CtAreaData_N,
-			  }
+				}
 			: null,
 		GrpType: CmsGroupTypes.getOptionById(GrpType),
 		custType: CustTID
 			? {
 					CodeID: CustTID,
 					CodeData: CustTData_N,
-			  }
+				}
 			: null,
 		busComp: CarID
 			? {
 					CarID,
 					CarData: CarData_N,
-			  }
+				}
 			: null,
 		CarData_N,
 		tourGroup: TrvID
 			? {
 					TrvID,
 					TrvData: TrvData_N,
-			  }
+				}
 			: null,
 		TrvData_N,
 		tourGuide: CndID
 			? {
 					CndID,
 					CndData: CndName,
-			  }
+				}
 			: null,
 		CndName,
 		employee: EmplID
 			? {
 					CodeID: EmplID,
 					CodeData: EmplData_N,
-			  }
+				}
 			: null,
 		// Remark: Remark.join("\n"),
 		// SnRemark: SnRemark.join("\n"),
@@ -278,7 +280,7 @@ const transformCmsGridForSubmitting = (gridData) => {
 						SCarCms,
 						...rest
 					},
-					index
+					index,
 				) => ({
 					Seq: index + 1,
 					SCmsID: cmsType?.CodeID ?? "",
@@ -288,7 +290,7 @@ const transformCmsGridForSubmitting = (gridData) => {
 					SCndCms: SCndCms?.toString(),
 					SCarCms: SCarCms?.toString(),
 					...rest,
-				})
+				}),
 			) ?? []
 	);
 };
@@ -296,6 +298,7 @@ const transformCmsGridForSubmitting = (gridData) => {
 const transformForEditorSubmit = (payload, rangeGridData, cmsGridData) => {
 	const {
 		SalDate,
+		PayDate,
 		bookingOrder,
 		city,
 		area,
@@ -326,6 +329,7 @@ const transformForEditorSubmit = (payload, rangeGridData, cmsGridData) => {
 
 	return {
 		SalDate: Forms.formatDate(SalDate),
+		PayDate: Forms.formatDate(PayDate),
 		OrdID: bookingOrder?.OrdID || "",
 		CityID: city?.CodeID ?? "",
 		CtAreaID: area?.CodeID ?? "",

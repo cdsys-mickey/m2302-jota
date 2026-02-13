@@ -1,11 +1,10 @@
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { AppFrameContext } from "@/shared-contexts/app-frame/AppFrameContext";
 import { useInit } from "@/shared-hooks/useInit";
-import useVersionCheck from "@/shared-hooks/useVersionCheck";
+import usePWAVersionCheck from "@/shared-hooks/usePWAVersionCheck";
 import { useContext, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import Home from "./Home";
-import usePWAVersionCheck from "@/shared-hooks/usePWAVersionCheck";
 
 const HomeContainer = () => {
 	const location = useLocation();

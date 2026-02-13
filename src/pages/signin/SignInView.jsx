@@ -9,21 +9,22 @@ import { Box, Collapse, Divider, Grid, Paper } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import { TooltipWrapper } from "shared-components";
+import BrowserUpdatedIcon from '@mui/icons-material/BrowserUpdated';
 
 const SignInView = memo(
 	forwardRef((props, ref) => {
-		const { loading, hideCaptcha, newVersion, ...rest } = props;
+		const { loading, hideCaptcha, newVersion, applyUpdate, ...rest } = props;
 
 		const pwLabel = useMemo(() => {
 			return hideCaptcha ? "OTP" : "密碼";
 		}, [hideCaptcha])
 
 		const isRefreshRequired = useMemo(() => {
-			return !!newVersion;
+			return !!newVersion && !!applyUpdate;
 		}, [newVersion])
 
 		const _tooltip = useMemo(() => {
-			return newVersion ? `請使用 Ctrl+F5 更新後再登入` : false;
+			return newVersion ? `請使用 Ctrl+F5 更新後再登入` : null;
 		}, [newVersion])
 
 		return (
@@ -101,15 +102,18 @@ const SignInView = memo(
 
 					<FlexBox mt={1} inline fullWidth alignItems="center">
 						<FlexBox flex={1}>
-							{/* <Link
-								variant="body2"
-								underline="hover"
-								sx={{
-									cursor: "pointer",
-								}}
-							>
-								重設密碼
-							</Link> */}
+							{isRefreshRequired && (
+								<ButtonEx
+									type="button"
+									variant="contained"
+									size="small"
+									color="warning"
+									endIcon={<BrowserUpdatedIcon />}
+									onClick={applyUpdate}
+								>
+									更新版本
+								</ButtonEx>
+							)}
 						</FlexBox>
 						<TooltipWrapper title={_tooltip} disabled={isRefreshRequired}>
 							<FlexBox>

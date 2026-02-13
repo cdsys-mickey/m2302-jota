@@ -95,7 +95,7 @@ export const useAuth = () => {
 				}));
 			}
 		},
-		[httpGetAsync, toLogin]
+		[httpGetAsync, toLogin],
 	);
 
 	const renewCookie = useCallback((logKey) => {
@@ -133,12 +133,12 @@ export const useAuth = () => {
 				if (logKeyInSession) {
 					console.log(
 						"recovering from logKey in session",
-						logKeyInSession
+						logKeyInSession,
 					);
 				} else {
 					console.log(
 						"recovering from logKey in cookie",
-						logKeyInCookie
+						logKeyInCookie,
 					);
 				}
 				if (status.success) {
@@ -197,7 +197,7 @@ export const useAuth = () => {
 								jwtPayload.entity.UserName || ""
 							}${spawn ? "以視窗模式" : ""}成功${
 								switching ? "切換" : "登入"
-							}到${jwtPayload.entity.CurDeptName}`
+							}到${jwtPayload.entity.CurDeptName}`,
 						);
 					}
 				} else {
@@ -231,18 +231,18 @@ export const useAuth = () => {
 					queryParams.delete(LOG_KEY);
 					navigate(
 						{ search: queryParams.toString() },
-						{ replace: true }
+						{ replace: true },
 					);
 				}
 			}
 		},
-		[httpGetAsync, loadModules, navigate, sharedOptions, toLogin, toRenew]
+		[httpGetAsync, loadModules, navigate, sharedOptions, toLogin, toRenew],
 	);
 
 	useEffect(() => {
 		const handleRegister = async () => {
 			console.log(
-				`connectionId ${connectionId} connected, registering to LogKey ${state.operator?.LoginName}(${state.operator?.LogKey})`
+				`connectionId ${connectionId} connected, registering to LogKey ${state.operator?.LoginName}(${state.operator?.LogKey})`,
 			);
 			const { status } = await httpPutAsync({
 				url: "v1/auth/register",
@@ -292,7 +292,7 @@ export const useAuth = () => {
 				console.error("handleSignOut.failed", err);
 			}
 		},
-		[httpGetAsync, toLogin, state.token]
+		[httpGetAsync, toLogin, state.token],
 	);
 
 	const confirmSignOut = useCallback(() => {
@@ -332,7 +332,7 @@ export const useAuth = () => {
 					}
 
 					toastEx.success(
-						`已成功切換至 ${newDept?.AbbrName || newDept?.DeptName}`
+						`已成功切換至 ${newDept?.AbbrName || newDept?.DeptName}`,
 					);
 				} else {
 					throw error || new Error("切換單位發生未預期例外");
@@ -352,7 +352,7 @@ export const useAuth = () => {
 			state.token,
 			toLanding,
 			toLogin,
-		]
+		],
 	);
 
 	const onDeptSwitchSubmit = useCallback(
@@ -360,7 +360,7 @@ export const useAuth = () => {
 			console.log(`onDeptSwitchSubmit`, data);
 			switchDept(data?.newDept);
 		},
-		[switchDept]
+		[switchDept],
 	);
 
 	const onDeptSwitchSubmitError = useCallback((err) => {
@@ -390,7 +390,7 @@ export const useAuth = () => {
 				toLogin();
 			}
 		},
-		[toLogin]
+		[toLogin],
 	);
 
 	const { httpPatchAsync } = useWebApiAsync();
@@ -431,7 +431,7 @@ export const useAuth = () => {
 							Cookies.set(
 								Auth.COOKIE_LOGKEY,
 								payload.LogKey ?? "",
-								Auth.ROOT_COOKIE_OPTS
+								Auth.ROOT_COOKIE_OPTS,
 							);
 							toLanding({
 								reloadAuthorities: true,
@@ -452,7 +452,7 @@ export const useAuth = () => {
 			startChanging,
 			state.token,
 			toLanding,
-		]
+		],
 	);
 
 	const onChangeSubmitError = useCallback((err) => {
@@ -467,6 +467,33 @@ export const useAuth = () => {
 		toLogin();
 		toastEx.warn("您的登入已逾期，請重新登入");
 	}, [toLogin]);
+
+	const validateLogKey = useCallback(
+		async (logKey) => {
+			const _logKey = logKey || state?.operator?.LogKey;
+			if (!_logKey) {
+				return false;
+			}
+			try {
+				const { status, error } = await httpGetAsync({
+					url: "v1/auth/current-by-query",
+					bearer: state.token,
+					params: {
+						LogKey: _logKey,
+					},
+				});
+				if (status.success) {
+					return true;
+				} else {
+					throw error || new Error("未預期例外");
+				}
+			} catch (err) {
+				console.error("validateLogKey failed", err);
+				return false;
+			}
+		},
+		[handleSessionExpired, httpGetAsync, state?.operator?.LogKey],
+	);
 
 	useEffect(() => {
 		console.log("state.validating", state.validating);
@@ -564,5 +591,6 @@ export const useAuth = () => {
 		handleSessionExpired,
 		// ROOT_COOKIE_OPTS,
 		// AUTH_COOKIE_OPTS,
+		validateLogKey,
 	};
 };

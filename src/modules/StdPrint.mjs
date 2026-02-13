@@ -12,6 +12,7 @@ const OutputModes = Object.freeze({
 	EXCEL: 2,
 	ODF: 3,
 	PDF: 4,
+	TXT: 2,
 });
 
 const ICONS = {
@@ -24,8 +25,17 @@ const ICONS = {
 	[OutputModes.PDF]: PictureAsPdfIcon,
 };
 
+const ICONS_TXT = {
+	[OutputModes.HTML]: LocalPrintshopIcon,
+	[OutputModes.EXCEL]: TextSnippetIcon,
+};
+
 const getIcon = (item) => {
 	return ICONS[item?.id];
+};
+
+const getIconForTxt = (item) => {
+	return ICONS_TXT[item?.id];
 };
 
 const options = [
@@ -82,7 +92,6 @@ const StdPrint = {
 	OutputModes,
 	options,
 	optionsHTMLOnly,
-	optionsForTxt,
 	getOptionLabel,
 	isOptionEqualToValue,
 	findById,
@@ -90,6 +99,8 @@ const StdPrint = {
 	getDefaultOption,
 	getIcon,
 	getOptionKey,
+	optionsForTxt,
+	getIconForTxt,
 };
 
 export default StdPrint;

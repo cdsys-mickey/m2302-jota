@@ -2,11 +2,11 @@ import { Grid } from "@mui/material";
 import { memo } from "react";
 
 import { FlexBox } from "shared-components";
-import LoadingTypography from "@/shared-components/LoadingTypography";
 
 import CmsAreaPicker from "@/components/CmsAreaPicker/CmsAreaPicker";
 import { CmsBookingOrderPicker } from "@/components/CmsBookingOrderPicker/CmsBookingOrderPicker";
 import CmsBusCompPicker from "@/components/CmsBusCompPicker/CmsBusCompPicker";
+import CmsCalcTypes from "@/components/CmsCalcTypePicker/CmsCalTypes.mjs";
 import CmsCityPicker from "@/components/CmsCityPicker/CmsCityPicker";
 import CmsCustTypePicker from "@/components/CmsCustTypePicker/CmsCustTypePicker";
 import CmsGroupTypePicker from "@/components/CmsGroupTypePicker/CmsGroupTypePicker";
@@ -14,16 +14,14 @@ import HotelPicker from "@/components/HotelPicker/HotelPicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 import TourGroupPicker from "@/components/TourGroupPicker/TourGroupPicker";
 import TourGuidePicker from "@/components/TourGuidePicker/TourGuidePicker";
-import { CheckboxEx, CheckboxExField, DatePickerEx, FormFieldLabel, TextFieldEx } from "@/shared-components";
+import { CheckboxExField, DatePickerEx, FormFieldLabel, TextFieldEx } from "@/shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormErrorBox from "@/shared-components/form/FormErrorBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { TextFieldWrapper } from "@/shared-components/TextFieldEx/TextFieldWrapper";
-import { Container } from "@mui/material";
 import PropTypes from "prop-types";
 import P42CmsGridContainer from "../dialog/grid/P42CmsGridContainer";
 import P42RangeGridContainer from "../dialog/grid/P42RangeGridContainer";
-import CmsCalcTypes from "@/components/CmsCalcTypePicker/CmsCalTypes.mjs";
 
 const CELL_HEIGHT = "26px"
 
@@ -42,6 +40,7 @@ const P42DialogForm = memo((props) => {
 		onTourGroupChange,
 		onBusCompChange,
 		cflagDisabled,
+		validatePayDate,
 		...rest
 	} = props;
 	return (
@@ -69,7 +68,7 @@ const P42DialogForm = memo((props) => {
 									disabled
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12} md={4.5}>
+							<Grid item xs={12} sm={12} md={4}>
 								<DatePickerEx
 									typo
 									name="SalDate"
@@ -81,8 +80,23 @@ const P42DialogForm = memo((props) => {
 									validate
 								/>
 							</Grid>
+							<Grid item xs={12} sm={12} md={4}>
+								<DatePickerEx
+									typo
+									name="PayDate"
+									label="付款日"
+									autoFocus
+									fullWidth
+									// required
+									variant="outlined"
+									validate
+									rules={{
+										validate: validatePayDate
+									}}
+								/>
+							</Grid>
 
-							<Grid item xs={12} sm={12} md={7}>
+							<Grid item xs={12} sm={12} md={5}>
 								<CmsBookingOrderPicker
 									typo
 									name="bookingOrder"
@@ -98,7 +112,7 @@ const P42DialogForm = memo((props) => {
 									}}
 								/>
 							</Grid>
-							<Grid item xs={12} md={8.5}>
+							<Grid item xs={12} md={6.5}>
 								<FlexBox justifyContent="flex-end" alignItems="flex-end" height={36}>
 									<FormFieldLabel
 										name="CalcType"
@@ -387,7 +401,8 @@ P42DialogForm.propTypes = {
 	onTourGuideChange: PropTypes.func,
 	onTourGroupChange: PropTypes.func,
 	onBusCompChange: PropTypes.func,
-	cflagDisabled: PropTypes.bool
+	cflagDisabled: PropTypes.bool,
+	validatePayDate: PropTypes.func
 };
 
 P42DialogForm.displayName = "P42Form";

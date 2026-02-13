@@ -1,15 +1,9 @@
-import Auth from "@/modules/Auth.mjs";
-import { useInit } from "@/shared-hooks/useInit";
-import Cookies from "js-cookie";
+import { FormMetaProvider } from "@/shared-components";
 import PropTypes from "prop-types";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { useMemo } from "react";
+import { FormProvider } from "react-hook-form";
 import { SignInContext } from "./SignInContext";
 import { useSignIn } from "./useSignIn";
-import { useMemo } from "react";
-import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
-import { useCallback } from "react";
-import { FormMetaProvider } from "@/shared-components";
-import { useRunOnce } from "@/shared-hooks/useRunOnce";
 
 export const SignInProvider = ({ children }) => {
 	const { form, formMeta, isFieldDisabled, ...rest } = useSignIn();
@@ -75,17 +69,6 @@ export const SignInProvider = ({ children }) => {
 	// 	}
 	// );
 
-	// useRunOnce(() => {
-	// 	reset({
-	// 		ac: Cookies.get(Auth.COOKIE_ACCOUNT) ?? "",
-	// 		pw: "",
-	// 		captcha: "",
-	// 		captchaPassed: false,
-	// 		rememberMe: Cookies.get(Auth.COOKIE_REMEMBER_ME) !== undefined
-	// 			? Cookies.get(Auth.COOKIE_REMEMBER_ME) === "1"
-	// 			: true,
-	// 	})
-	// })
 
 	const contextValue = useMemo(() => ({
 		...rest,

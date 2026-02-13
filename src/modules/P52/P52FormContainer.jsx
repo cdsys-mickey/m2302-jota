@@ -15,6 +15,8 @@ export const P52FormContainer = () => {
 		`
 		SDate,
 		EDate,
+		SPayDate,
+		EPayDate,
 		SComID,
 		EComID,
 		CarID,

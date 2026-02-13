@@ -45,6 +45,7 @@ const ControlledDatePicker = ({
 	fullWidth,
 	slotProps,
 	minDate,
+	validate,
 	// variant = "outlined",
 	...rest
 }) => {
@@ -114,18 +115,27 @@ const ControlledDatePicker = ({
 	);
 
 	const _rules = useMemo(() => {
+		// 1. 準備預設驗證器
+		const dateValidator = Forms.getDateValidator({
+			fieldName: label,
+			required,
+			minDate
+		});
+
+		// 2. 處理 rules 內的 validate (可能是 function 或 object)
+		const userValidate = typeof rules?.validate === 'function'
+			? { custom: rules.validate }
+			: rules?.validate;
+
 		return {
 			...rules,
 			validate: {
-				...rules?.validate,
-				validateDate: Forms.getDateValidator({
-					fieldName: label,
-					required,
-					minDate
-				})
+				...userValidate,
+				// 只有當傳入的 validate 屬性為 true 時，才自動加入 validateDate
+				...(validate && { validateDate: dateValidator })
 			}
-		}
-	}, [label, minDate, required, rules])
+		};
+	}, [label, required, minDate, rules, validate]);
 
 	const _label = useMemo(() => {
 		return (borderless || !label) ? "" : `${label}${required ? "*" : ""}`;

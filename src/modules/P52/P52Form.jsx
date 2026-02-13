@@ -48,6 +48,26 @@ const P52Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="付款日期"
+									leftComponent={<DatePickerWrapper name="SPayDate"
+										label="交易"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="起"
+									/>}
+									rightComponent={<DatePickerWrapper name="EPayDate"
+										label="日期區間迄"
+										fullWidth
+										validate
+										clearable
+										borderless
+										placeholder="迄"
+									/>}
+								/>
+							</Grid>
+							<Grid item xs={12} sm={12}>
 								<RangeGroup legend="佣金單號"
 									leftComponent={<CmsEntryPicker
 										name="SComID"

@@ -210,6 +210,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 		DrvPay,
 		ComID,
 		SalDate,
+		PayDate,
 		bookingOrder,
 		GrpName,
 		city,
@@ -287,6 +288,21 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 
 	const handleTourGuideChange = useCallback((newValue) => {
 		form.setValue("CndName", newValue?.CndData ?? "")
+	}, [form]);
+
+	const validatePayDate = useCallback((value) => {
+		if (!value) {
+			if (form.getValues("TrvPay")) {
+				return "旅行社佣金已付, 請填付款日"
+			}
+			if (form.getValues("CndPay")) {
+				return "導遊佣金已付, 請填付款日"
+			}
+			if (form.getValues("DrvPay")) {
+				return "司機佣金已付, 請填付款日"
+			}
+		}
+		return true;
 	}, [form]);
 
 	const prevBookingOrder = useRef();
@@ -429,6 +445,7 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					onBusCompChange={handleBusCompChange}
 					onTourGroupChange={handleTourGroupChange}
 					onTourGuideChange={handleTourGuideChange}
+					validatePayDate={validatePayDate}
 				/>
 			</FormMetaProvider>
 			<P42Drawer BackdropProps={{ sx: [MuiStyles.BACKDROP_TRANSPARENT] }} />
