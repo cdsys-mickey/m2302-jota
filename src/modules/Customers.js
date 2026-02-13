@@ -36,7 +36,8 @@ const getOptionKey = (option) => {
 };
 
 const stringify = (option) => {
-	return `${option.CustID} ${option.CustData}`;
+	const { CustID, CustData, AbbrName } = option;
+	return `${CustID} ${AbbrName || CustData}`;
 };
 
 const Customers = {

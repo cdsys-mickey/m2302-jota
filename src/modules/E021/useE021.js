@@ -1215,9 +1215,13 @@ export const useE021 = ({ mode }) => {
 				if (isOrdersSelected) {
 					setValue("customerOrders", []);
 				} else {
-					setValue("CustName", newValue?.CustData ?? "", {
-						shouldTouch: true,
-					});
+					setValue(
+						"CustName",
+						newValue?.AbbrName ?? newValue?.CustData ?? "",
+						{
+							shouldTouch: true,
+						},
+					);
 					setValue("CompTel", customerInfo?.CompTel ?? "", {
 						shouldTouch: true,
 					});
