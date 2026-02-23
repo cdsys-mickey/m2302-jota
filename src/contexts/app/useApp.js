@@ -17,29 +17,12 @@ export default function useApp() {
 		() =>
 			format(
 				parseISO(import.meta.env.BUILD_TIME),
-				DateFormats.DATEFNS_VERSION
+				DateFormats.DATEFNS_VERSION,
 			),
-		[]
+		[],
 	);
 
 	const { needRefresh, updateServiceWorker } = useRegisterSW({});
-
-	//COOKIE
-	// const ROOT_COOKIE_OPTS = useMemo(
-	// 	() => ({
-	// 		path: `${config.PUBLIC_URL || "/"}`,
-	// 		expires: 365,
-	// 	}),
-	// 	[config.PUBLIC_URL]
-	// );
-
-	// const AUTH_COOKIE_OPTS = useMemo(
-	// 	() => ({
-	// 		path: `${(config.PUBLIC_URL || "") + "/auth"}`,
-	// 		expires: 365,
-	// 	}),
-	// 	[config.PUBLIC_URL]
-	// );
 
 	const [state, setState] = useState({
 		data: null,
@@ -145,7 +128,7 @@ export default function useApp() {
 		return valueInSession || Cookies.get(key);
 	}, []);
 
-	const setSessionCookie = useCallback((key, value, opts) => {
+	const setSessionAndCookie = useCallback((key, value, opts) => {
 		Cookies.set(key, value, opts);
 		sessionStorage.setItem(key, value);
 	}, []);
@@ -164,10 +147,8 @@ export default function useApp() {
 		loadAppInfo,
 		unloadAppInfo,
 		getSessionCookie,
-		setSessionCookie,
+		setSessionAndCookie,
 		removeSessionValue,
-		// ROOT_COOKIE_OPTS,
-		// AUTH_COOKIE_OPTS,
 		// for PWA
 		needRefresh,
 		updateServiceWorker,

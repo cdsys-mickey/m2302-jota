@@ -109,7 +109,7 @@ export const useAppFrame = (opts = {}) => {
 				menuItemSelected: module,
 			}));
 			console.log(
-				`handleSelect module ${module?.JobID || null} selected`
+				`handleSelect module ${module?.JobID || null} selected`,
 			);
 			if (module?.WebName) {
 				toModule(module?.WebName, params);
@@ -119,7 +119,7 @@ export const useAppFrame = (opts = {}) => {
 				}
 			}
 		},
-		[drawerFloating, handleDrawerClose, toModule]
+		[drawerFloating, handleDrawerClose, toModule],
 	);
 
 	const handleMenuItemClick = useCallback(
@@ -166,7 +166,7 @@ export const useAppFrame = (opts = {}) => {
 				// toModule(module.WebName);
 			}
 		},
-		[handleSelect, spawnNewSession]
+		[handleSelect, spawnNewSession],
 	);
 
 	const selectJobById = useCallback(
@@ -176,7 +176,7 @@ export const useAppFrame = (opts = {}) => {
 				handleSelect(module, params);
 			}
 		},
-		[auth.authorities, handleSelect]
+		[auth.authorities, handleSelect],
 	);
 
 	const handleHomeClick = useCallback(() => {
@@ -247,16 +247,12 @@ export const useAppFrame = (opts = {}) => {
 
 	const getDocumentTitle = useCallback(
 		(menuItemId, matchedAuthority) => {
-			// let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
 			let deptName = `[${auth.operator.CurDeptName}]`;
-			// if ((logKeyInSession || !menuItemId) && auth.operator?.CurDeptName) {
-			// 	deptName = `[${auth.operator.CurDeptName}]`
-			// }
 			return [deptName, menuItemId, matchedAuthority?.JobName]
 				.filter(Boolean)
 				.join("-");
 		},
-		[auth.operator?.CurDeptName]
+		[auth.operator?.CurDeptName],
 	);
 
 	const recoverMenuItemSelected = useCallback(
@@ -271,7 +267,7 @@ export const useAppFrame = (opts = {}) => {
 			}));
 			document.title = getDocumentTitle(menuItemId, matchedAuthority);
 		},
-		[auth.authorities, getDocumentTitle]
+		[auth.authorities, getDocumentTitle],
 	);
 
 	useEffect(() => {

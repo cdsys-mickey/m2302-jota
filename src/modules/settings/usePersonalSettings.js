@@ -12,13 +12,7 @@ export const usePersonalSettings = () => {
 	const { token, operator, renewLogKey } = useContext(AuthContext);
 	// const [selectedTab, setSelectedTab] = useState(Settings.Tabs.CHANGE_PWORD);
 	const [searchParams, setSearchParams] = useSearchParams();
-	const {
-		httpGetAsync,
-		httpPostAsync,
-		httpPutAsync,
-		httpDeleteAsync,
-		httpPatchAsync,
-	} = useWebApiAsync();
+	const { httpPostAsync, httpPatchAsync } = useWebApiAsync();
 
 	const [verified, setVerified] = useState(false);
 	const verifyAction = useAction();
@@ -41,7 +35,7 @@ export const usePersonalSettings = () => {
 				tab: newTab,
 			}));
 		},
-		[setSearchParams]
+		[setSearchParams],
 	);
 
 	const onVerifySubmit = useCallback(
@@ -61,11 +55,6 @@ export const usePersonalSettings = () => {
 					});
 					if (status.success) {
 						renewLogKey(payload.LogKey);
-						// Cookies.set(
-						// 	Auth.COOKIE_LOGKEY,
-						// 	payload.LogKey || "",
-						// 	Auth.COOKIE_OPTS
-						// );
 
 						setVerified(true);
 						verifyAction.finish();
@@ -87,7 +76,7 @@ export const usePersonalSettings = () => {
 					});
 				}
 			},
-		[httpPostAsync, operator, renewLogKey, verifyAction]
+		[httpPostAsync, operator, renewLogKey, verifyAction],
 	);
 
 	const onVerifySubmitError = useCallback((err) => {
@@ -118,11 +107,6 @@ export const usePersonalSettings = () => {
 					if (status.success) {
 						toastEx.success("密碼已更新");
 						finsihChanging();
-						// Cookies.set(
-						// 	Auth.COOKIE_LOGKEY,
-						// 	payload.LogKey || "",
-						// 	Auth.COOKIE_OPTS
-						// );
 						renewLogKey(payload.LogKey);
 						reset({
 							newPword: "",
@@ -143,7 +127,7 @@ export const usePersonalSettings = () => {
 			renewLogKey,
 			startChanging,
 			token,
-		]
+		],
 	);
 
 	const onChangePwordSubmitError = useCallback((err) => {

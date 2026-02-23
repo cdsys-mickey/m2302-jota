@@ -17,14 +17,14 @@ if %ERRORLEVEL% neq 0 (
 echo.
 echo [Step 2] Copying files to server...
 :: /NP (No Progress) 可以減少在終端機刷屏，讓畫面更乾淨
-robocopy .\dist-t \\ap01\app\m2302-jota-t /E /XF /NP config.json /R:3 /W:5
+robocopy .\dist-t \\ap01\app\m2302-jota-t /E /NP /XF config.json /R:3 /W:5
 
 :: 4. 判斷 Robocopy 結果 (0-7 均代表成功)
 if %ERRORLEVEL% leq 7 (
     echo.
-    echo "******************************************************************"
-    echo "* JOTA-T build process is completed, TEST IT NOW!                *"
-    echo "******************************************************************"
+	echo =================================================================
+    echo = JOTA-T build complete! You can test it now.                   =
+    echo =================================================================
     echo.
     echo [Step 3] Copy successful, starting Build Jota...
     call pnpm run build-jota

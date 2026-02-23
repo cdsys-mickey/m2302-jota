@@ -27,7 +27,7 @@ export const useSignIn = () => {
 	const location = useLocation();
 	const app = useContext(AppContext);
 	const auth = useContext(AuthContext);
-	const { setSessionCookie } = app;
+	const { setSessionAndCookie } = app;
 
 	const form = useForm({
 		defaultValues: {
@@ -122,24 +122,14 @@ export const useSignIn = () => {
 						);
 
 						// 1.儲存 COOKIE_LOGKEY
-						setSessionCookie(
+						setSessionAndCookie(
 							Auth.COOKIE_LOGKEY,
 							payload.LogKey,
 							Auth.ROOT_COOKIE_OPTS,
 						);
 
-						// Cookies.set(
-						// 	Auth.COOKIE_LOGKEY,
-						// 	payload.LogKey || "",
-						// 	Auth.ROOT_COOKIE_OPTS
-						// );
-						// sessionStorage.setItem(
-						// 	Auth.COOKIE_LOGKEY,
-						// 	payload.LogKey
-						// );
-
 						// 2.儲存 COOKIE_LOGIN
-						setSessionCookie(
+						setSessionAndCookie(
 							Auth.COOKIE_LOGIN,
 							location.pathname ?? "",
 							Auth.ROOT_COOKIE_OPTS,
@@ -232,7 +222,7 @@ export const useSignIn = () => {
 			captcha,
 			httpPostAsync,
 			location.pathname,
-			setSessionCookie,
+			setSessionAndCookie,
 			toLanding,
 		],
 	);

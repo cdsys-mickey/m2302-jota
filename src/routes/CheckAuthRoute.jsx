@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { AppContext } from "@/contexts/app/AppContext";
 
 const CheckAuthRoute = () => {
-	// const logKey = Cookies.get(Auth.COOKIE_LOGKEY);
 	const app = useContext(AppContext);
 	const logKey = app.getSessionCookie(Auth.COOKIE_LOGKEY);
 

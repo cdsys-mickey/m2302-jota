@@ -112,7 +112,6 @@ export const useAuth = () => {
 			let logKeyInSession = sessionStorage.getItem(Auth.COOKIE_LOGKEY);
 			let logKeyInCookie = Cookies.get(Auth.COOKIE_LOGKEY);
 			const logKey = logKeyInSession || logKeyInCookie;
-			// const logKey = getSessionCookie(Auth.COOKIE_LOGKEY);
 			if (!logKey) {
 				toastEx.error("您尚未登入");
 				if (doRedirect) {
@@ -204,6 +203,10 @@ export const useAuth = () => {
 					throw error ?? new Error("未預期例外");
 				}
 			} catch (err) {
+				Cookies.remove(Auth.COOKIE_LOGKEY, Auth.ROOT_COOKIE_OPTS);
+				Cookies.remove(Auth.COOKIE_LOGKEY, Auth.AUTH_COOKIE_OPTS);
+				sessionStorage.removeItem(Auth.COOKIE_LOGKEY);
+
 				console.error("token restore failed", err);
 				switch (err.status) {
 					case 426:
@@ -492,7 +495,7 @@ export const useAuth = () => {
 				return false;
 			}
 		},
-		[handleSessionExpired, httpGetAsync, state?.operator?.LogKey],
+		[httpGetAsync, state?.operator?.LogKey, state.token],
 	);
 
 	useEffect(() => {
@@ -526,38 +529,6 @@ export const useAuth = () => {
 		renewLogKeyInSession,
 	]);
 
-	// useEffect(() => {
-	// 	const params = new URLSearchParams(location.search);
-	// 	const logKey = params.get("LogKey");
-
-	// 	if (logKey) {
-	// 		console.log("")
-	// 		// 將 LogKey 寫入 sessionStorage
-	// 		sessionStorage.setItem("LogKey", logKey);
-
-	// 		// 移除 LogKey 參數並更新網址
-	// 		params.delete("LogKey");
-	// 		navigate({ search: params.toString() }, { replace: true });
-	// 	}
-	// }, [location, navigate]);
-
-	//COOKIE
-	// const ROOT_COOKIE_OPTS = useMemo(
-	// 	() => ({
-	// 		path: `${config.PUBLIC_URL || "/"}`,
-	// 		expires: 365,
-	// 	}),
-	// 	[config.PUBLIC_URL]
-	// );
-
-	// const AUTH_COOKIE_OPTS = useMemo(
-	// 	() => ({
-	// 		path: `${config.PUBLIC_URL ?? "" + "/auth"}`,
-	// 		expires: 365,
-	// 	}),
-	// 	[config.PUBLIC_URL]
-	// );
-
 	return {
 		...state,
 		...authoritiesState,
@@ -589,8 +560,6 @@ export const useAuth = () => {
 		debugEnabled,
 		// ...taskListLoader,
 		handleSessionExpired,
-		// ROOT_COOKIE_OPTS,
-		// AUTH_COOKIE_OPTS,
 		validateLogKey,
 	};
 };
