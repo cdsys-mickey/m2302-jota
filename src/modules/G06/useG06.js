@@ -13,6 +13,8 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useMemo } from "react";
 import { useRef } from "react";
 import Forms from "@/shared-modules/Forms.mjs";
+import { useA06 } from "@/hooks/jobs/useA06";
+import A06 from "../md-a06";
 
 export const useG06 = ({ token }) => {
 	const itemIdRef = useRef();
@@ -27,6 +29,7 @@ export const useG06 = ({ token }) => {
 		useWebApiAsync();
 	const [selectedItem, setSelectedItem] = useState();
 	const dialogs = useContext(DialogsContext);
+
 	const asyncRef = useRef({
 		// 前期餘額
 		PreAmt: 0,
@@ -66,13 +69,17 @@ export const useG06 = ({ token }) => {
 		},
 	});
 
+	// A06
+	const a06 = useA06({ token, mode: A06.Mode.CUSTOMER });
+	const customerRef = useRef();
+
 	const createCashRow = useCallback(
 		() => ({
 			RcvDate: null,
 			CashAmt: "",
 			DnsAmt: "",
 		}),
-		[]
+		[],
 	);
 	const createChkRow = useCallback(
 		() => ({
@@ -83,7 +90,7 @@ export const useG06 = ({ token }) => {
 			DueDate: null,
 			IssueDate: null,
 		}),
-		[]
+		[],
 	);
 
 	const createDocRow = useCallback(
@@ -97,7 +104,7 @@ export const useG06 = ({ token }) => {
 			PreNotes: "",
 			WoNotes: "",
 		}),
-		[]
+		[],
 	);
 
 	const cashGrid = useDSG({
@@ -122,14 +129,14 @@ export const useG06 = ({ token }) => {
 
 	const onUpdateDocRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				oldValue,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			oldValue,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				updateResult.rowIndex = rowIndex;
@@ -151,7 +158,7 @@ export const useG06 = ({ token }) => {
 				}
 				return processedRowData;
 			},
-		[]
+		[],
 	);
 
 	const syncNumbers = useCallback(
@@ -164,7 +171,7 @@ export const useG06 = ({ token }) => {
 			if (received) {
 				setValue(
 					"CollAmt",
-					Forms.formatMoney(asyncRef.current.CollAmt, 2)
+					Forms.formatMoney(asyncRef.current.CollAmt, 2),
 				);
 			}
 
@@ -176,7 +183,7 @@ export const useG06 = ({ token }) => {
 			if (remaining) {
 				setValue(
 					"RemAmt",
-					Forms.formatMoney(asyncRef.current.RemAmt, 2)
+					Forms.formatMoney(asyncRef.current.RemAmt, 2),
 				);
 			}
 
@@ -186,11 +193,11 @@ export const useG06 = ({ token }) => {
 			if (diff) {
 				setValue(
 					"DiffAmt",
-					Forms.formatMoney(asyncRef.current.DiffAmt, 2)
+					Forms.formatMoney(asyncRef.current.DiffAmt, 2),
 				);
 			}
 		},
-		[]
+		[],
 	);
 
 	const onDocGridChanged = useCallback(
@@ -207,20 +214,20 @@ export const useG06 = ({ token }) => {
 								? row.DocID?.DocType == 1
 									? Number(row.SalAmt)
 									: row.DocID?.DocType == 2
-									? 0 - Number(row.RetAmt)
-									: row.DocID?.DocType == 3
-									? Number(row.AdjAmt)
-									: 0
+										? 0 - Number(row.RetAmt)
+										: row.DocID?.DocType == 3
+											? Number(row.AdjAmt)
+											: 0
 								: 0),
 					}),
-					{ CutAmt: 0 }
+					{ CutAmt: 0 },
 				);
 
 				console.log("totals", totals);
 				asyncRef.current.CutAmt = totals.CutAmt ?? 0;
 				setValue(
 					"CutAmt",
-					Forms.formatMoney(asyncRef.current.CutAmt, 2)
+					Forms.formatMoney(asyncRef.current.CutAmt, 2),
 				);
 
 				//"收沖差額" = "本期收款" - "單據沖銷"
@@ -229,7 +236,7 @@ export const useG06 = ({ token }) => {
 				syncNumbers({ setValue, received: false, remaining: false });
 			}
 		},
-		[syncNumbers]
+		[syncNumbers],
 	);
 
 	const docGrid = useDSG({
@@ -281,6 +288,21 @@ export const useG06 = ({ token }) => {
 						DiffAmt: data.DiffAmt,
 						dirty: false,
 					};
+					if (data.CustID) {
+						// 讀取客戶資料
+						try {
+							customerRef.current = await a06.loadItem({
+								id: data.CustID.CustID,
+							});
+							console.log("loaded customer", customerRef.current);
+						} catch (a06Err) {
+							console.error(
+								"failed to load customer from a06",
+								a06Err,
+							);
+						}
+					}
+
 					crud.finishedReading({
 						data,
 					});
@@ -291,7 +313,7 @@ export const useG06 = ({ token }) => {
 				crud.failedReading(err);
 			}
 		},
-		[cashGrid, chkGrid, crud, docGrid, httpGetAsync, token]
+		[a06, cashGrid, chkGrid, crud, docGrid, httpGetAsync, token],
 	);
 
 	const handleSelect = useCallback(
@@ -303,7 +325,7 @@ export const useG06 = ({ token }) => {
 			crud.startReading("讀取中...", { id });
 			loadItem({ id });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmReturn = useCallback(() => {
@@ -383,7 +405,7 @@ export const useG06 = ({ token }) => {
 
 				if (status.success) {
 					toastEx.success(
-						`收款單「${data?.AccYM}第${data?.Stage}期-${data.CustData_N}」更新成功`
+						`收款單「${data?.AccYM}第${data?.Stage}期-${data.CustData_N}」更新成功`,
 					);
 					crud.finishedUpdating();
 					loadItem({ id: data?.LogID });
@@ -399,7 +421,7 @@ export const useG06 = ({ token }) => {
 				toastEx.error("更新失敗", err);
 			}
 		},
-		[crud, httpPutAsync, loadItem, listLoader, token]
+		[crud, httpPutAsync, loadItem, listLoader, token],
 	);
 
 	const onEditorSubmit = useCallback(
@@ -410,7 +432,7 @@ export const useG06 = ({ token }) => {
 				data,
 				cashGrid.gridData,
 				chkGrid.gridData,
-				docGrid.gridData
+				docGrid.gridData,
 			);
 			console.log(`processed`, processed);
 			if (crud.updating) {
@@ -425,7 +447,7 @@ export const useG06 = ({ token }) => {
 			crud.updating,
 			docGrid.gridData,
 			handleUpdate,
-		]
+		],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -434,7 +456,7 @@ export const useG06 = ({ token }) => {
 			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
 			{
 				position: "top-right",
-			}
+			},
 		);
 	}, []);
 
@@ -449,7 +471,7 @@ export const useG06 = ({ token }) => {
 				data,
 			});
 		},
-		[crud]
+		[crud],
 	);
 
 	const confirmDelete = useCallback(() => {
@@ -468,7 +490,7 @@ export const useG06 = ({ token }) => {
 					if (status.success) {
 						crud.cancelAction();
 						toastEx.success(
-							`成功删除收款單 ${G06.buildName(crud.itemData)}`
+							`成功删除收款單 ${G06.buildName(crud.itemData)}`,
 						);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -493,7 +515,7 @@ export const useG06 = ({ token }) => {
 				// reset: true,
 			});
 		},
-		[handlePopperClose, listLoader]
+		[handlePopperClose, listLoader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -509,7 +531,7 @@ export const useG06 = ({ token }) => {
 					lvBank: null,
 				});
 			},
-		[]
+		[],
 	);
 
 	useInit(() => {
@@ -518,13 +540,13 @@ export const useG06 = ({ token }) => {
 
 	const onUpdateCashRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				updateResult.rowIndex = rowIndex;
@@ -550,7 +572,7 @@ export const useG06 = ({ token }) => {
 				}
 				return processedRowData;
 			},
-		[cashGrid.gridData]
+		[cashGrid.gridData],
 	);
 
 	const onCashGridChanged = useCallback(
@@ -568,7 +590,7 @@ export const useG06 = ({ token }) => {
 						CashAmt: acc.CashAmt + Number(row.CashAmt),
 						DnsAmt: acc.DnsAmt + Number(row.DnsAmt),
 					}),
-					{ CashAmt: 0, DnsAmt: 0 }
+					{ CashAmt: 0, DnsAmt: 0 },
 				);
 				asyncRef.current.CashAmt = totals.CashAmt ?? 0;
 				setValue("CashAmt", asyncRef.current.CashAmt);
@@ -578,18 +600,18 @@ export const useG06 = ({ token }) => {
 				syncNumbers({ setValue });
 			}
 		},
-		[syncNumbers]
+		[syncNumbers],
 	);
 
 	const onUpdateChkRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				updateResult.rowIndex = rowIndex;
@@ -604,6 +626,16 @@ export const useG06 = ({ token }) => {
 				if (processedRowData.ChkAmt !== oldRowData.ChkAmt) {
 					updateResult.cols.push("ChkAmt");
 					dirty = true;
+
+					if (
+						!processedRowData.BankID &&
+						!processedRowData.BankAcct &&
+						customerRef.current
+					) {
+						processedRowData.BankID = customerRef.current.bank;
+						processedRowData.BankAcct =
+							customerRef.current.BankAcct;
+					}
 				}
 
 				if (dirty) {
@@ -611,7 +643,7 @@ export const useG06 = ({ token }) => {
 				}
 				return processedRowData;
 			},
-		[chkGrid.gridData]
+		[chkGrid.gridData],
 	);
 
 	const onChkGridChanged = useCallback(
@@ -627,12 +659,12 @@ export const useG06 = ({ token }) => {
 					(acc, row) => ({
 						ChkAmt: acc.ChkAmt + Number(row.ChkAmt),
 					}),
-					{ ChkAmt: 0 }
+					{ ChkAmt: 0 },
 				);
 				asyncRef.current.ChkAmt = totals.ChkAmt ?? 0;
 				setValue(
 					"ChkAmt",
-					Forms.formatMoney(asyncRef.current.ChkAmt, 2)
+					Forms.formatMoney(asyncRef.current.ChkAmt, 2),
 				);
 
 				// //"本期收款" = "收現金額" + "折讓金額" + "票據金額"
@@ -641,7 +673,7 @@ export const useG06 = ({ token }) => {
 				syncNumbers({ setValue });
 			}
 		},
-		[syncNumbers]
+		[syncNumbers],
 	);
 
 	return {

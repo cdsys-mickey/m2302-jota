@@ -21,7 +21,7 @@ const SignInView = memo(
 
 		const isRefreshRequired = useMemo(() => {
 			return !!newVersion && !!applyUpdate;
-		}, [newVersion])
+		}, [applyUpdate, newVersion])
 
 		const _tooltip = useMemo(() => {
 			return newVersion ? `請使用 Ctrl+F5 更新後再登入` : null;

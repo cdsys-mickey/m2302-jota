@@ -1067,6 +1067,7 @@ const OptionPickerView = memo(
 										paddingTop: "2px",
 										paddingBottom: "2px",
 										paddingLeft: "2px",
+										paddingRight: "2px",
 									},
 								}),
 								"& .MuiFormHelperText-root": {

@@ -1,6 +1,7 @@
 import { SignInContext } from "@/contexts/signin/SignInContext";
 import { useContext } from "react";
 import SignInXView from "./SignInXView";
+import { useRunOnce } from "shared-components";
 // import useVersionCheck from "@/shared-hooks/useVersionCheck";
 // import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 
@@ -14,6 +15,10 @@ export const SignInXContainer = (props) => {
 	// 		setTimeout(promptRefresh, 1000);
 	// 	}
 	// }, [isRefreshRequired]);
+
+	useRunOnce(() => {
+		signin.clearLogKey();
+	})
 
 	return (
 		<form

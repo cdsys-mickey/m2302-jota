@@ -83,14 +83,16 @@ const transformForReading = (payload) => {
 };
 
 const transformCashGridForSubmit = (data) => {
-	return data
-		.filter((x) => x.RcvDate)
-		.map(({ RcvDate, CashAmt, DnsAmt, ...rest }) => ({
-			RcvDate: RcvDate || "",
-			CashAmt: CashAmt?.toString() || "",
-			DnsAmt: DnsAmt?.toString() || "",
-			...rest,
-		}));
+	return (
+		data
+			// .filter((x) => x.RcvDate)
+			.map(({ RcvDate, CashAmt, DnsAmt, ...rest }) => ({
+				RcvDate: RcvDate || "",
+				CashAmt: CashAmt?.toString() || "",
+				DnsAmt: DnsAmt?.toString() || "",
+				...rest,
+			}))
+	);
 };
 
 const transformChkGridForSubmit = (data) => {
@@ -121,7 +123,7 @@ const transformForEditorSubmit = (
 	payload,
 	cashGridData,
 	chkGridData,
-	docGridData
+	docGridData,
 ) => {
 	const {
 		BankID,

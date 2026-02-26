@@ -45,7 +45,7 @@ export const useA06 = ({ token, mode }) => {
 		transport,
 		mainProd,
 		remark
-	`
+	`,
 	);
 	const crud = useContext(CrudContext);
 	const sharedOptions = useContext(SharedOptionsContext);
@@ -92,6 +92,7 @@ export const useA06 = ({ token, mode }) => {
 
 	const loadItem = useCallback(
 		async ({ id, refresh }) => {
+			let data;
 			const itemId = refresh ? itemIdRef.current : id;
 			if (!itemId) {
 				throw new Error("未指定 id");
@@ -115,11 +116,13 @@ export const useA06 = ({ token, mode }) => {
 				});
 				console.log("payload", payload);
 				if (status.success) {
-					const data = A06.transformForReading(payload.data[0]);
+					data = A06.transformForReading(payload.data[0]);
 
 					crud.finishedReading({
 						data,
 					});
+
+					return data;
 				} else {
 					throw error || new Error("讀取失敗");
 				}
@@ -127,7 +130,7 @@ export const useA06 = ({ token, mode }) => {
 				crud.failedReading(err);
 			}
 		},
-		[crud, httpGetAsync, mode, token]
+		[crud, httpGetAsync, mode, token],
 	);
 
 	const confirmReturn = useCallback(() => {
@@ -149,7 +152,7 @@ export const useA06 = ({ token, mode }) => {
 			crud.startReading("讀取中...", { id: rowData.CustID });
 			loadItem({ id: rowData.CustID });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmDialogClose = useCallback(() => {
@@ -191,7 +194,7 @@ export const useA06 = ({ token, mode }) => {
 					toastEx.success(
 						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
 							data?.CustData
-						}」新增成功`
+						}」新增成功`,
 					);
 					crud.finishedCreating();
 					crud.cancelReading();
@@ -212,7 +215,7 @@ export const useA06 = ({ token, mode }) => {
 				toastEx.error("新增失敗", err);
 			}
 		},
-		[crud, httpPostAsync, loader, mode, sharedOptions, token]
+		[crud, httpPostAsync, loader, mode, sharedOptions, token],
 	);
 
 	const handleUpdate = useCallback(
@@ -232,7 +235,7 @@ export const useA06 = ({ token, mode }) => {
 					toastEx.success(
 						`${mode === A06.Mode.NEW_CUSTOMER ? "新" : ""}客戶「${
 							data?.CustData
-						}」修改成功`
+						}」修改成功`,
 					);
 					crud.finishedUpdating();
 					// crud.cancelReading();
@@ -254,7 +257,7 @@ export const useA06 = ({ token, mode }) => {
 				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, loadItem, loader, mode, sharedOptions, token]
+		[crud, httpPutAsync, loadItem, loader, mode, sharedOptions, token],
 	);
 
 	const onEditorSubmit = useCallback(
@@ -270,7 +273,7 @@ export const useA06 = ({ token, mode }) => {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
 		},
-		[crud.creating, crud.updating, handleCreate, handleUpdate]
+		[crud.creating, crud.updating, handleCreate, handleUpdate],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -279,7 +282,7 @@ export const useA06 = ({ token, mode }) => {
 			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
 			{
 				position: "top-right",
-			}
+			},
 		);
 	}, []);
 
@@ -294,7 +297,7 @@ export const useA06 = ({ token, mode }) => {
 				data,
 			});
 		},
-		[crud]
+		[crud],
 	);
 
 	const confirmDelete = useCallback(() => {
@@ -318,7 +321,7 @@ export const useA06 = ({ token, mode }) => {
 						toastEx.success(
 							`成功删除${
 								mode === A06.Mode.NEW_CUSTOMER ? "新" : ""
-							}商品${crud.itemData.CustData}`
+							}商品${crud.itemData.CustData}`,
 						);
 						loader.loadList({ refresh: true });
 						sharedOptions.resetOptions({
@@ -364,7 +367,7 @@ export const useA06 = ({ token, mode }) => {
 						refresh: true,
 					});
 					toastEx.success(
-						`「${crud.itemData?.CustData}」已轉為正式客戶`
+						`「${crud.itemData?.CustData}」已轉為正式客戶`,
 					);
 				} else {
 					throw error || new Error("發生未預期例外");
@@ -373,7 +376,7 @@ export const useA06 = ({ token, mode }) => {
 				toastEx.error("轉換失敗", err);
 			}
 		},
-		[crud, httpPatchAsync, loader, reviewAction, token]
+		[crud, httpPatchAsync, loader, reviewAction, token],
 	);
 
 	const promptReview = useCallback(() => {
@@ -412,7 +415,7 @@ export const useA06 = ({ token, mode }) => {
 				params: A06.transformAsQueryParams(payload),
 			});
 		},
-		[handlePopperClose, loader]
+		[handlePopperClose, loader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -431,7 +434,7 @@ export const useA06 = ({ token, mode }) => {
 					lvBank: null,
 				});
 			},
-		[]
+		[],
 	);
 
 	const cancelAction = useCallback(() => {
@@ -478,5 +481,6 @@ export const useA06 = ({ token, mode }) => {
 		handleReset,
 		cancelAction: cancelAction,
 		...sideDrawer,
+		loadItem,
 	};
 };

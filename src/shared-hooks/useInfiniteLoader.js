@@ -83,7 +83,7 @@ export const useInfiniteLoader = (props = {}) => {
 				if (!onItemsRendered) {
 					console.warn(
 						"%conItemsRendered 未指定",
-						ConsoleStyles.WARN
+						ConsoleStyles.WARN,
 					);
 				}
 				onItemsRendered({
@@ -92,7 +92,7 @@ export const useInfiniteLoader = (props = {}) => {
 					...rest,
 				});
 			},
-		[itemCount]
+		[itemCount],
 	);
 
 	/**
@@ -112,6 +112,10 @@ export const useInfiniteLoader = (props = {}) => {
 			supressLoading = false,
 			// reset = false,
 		} = {}) => {
+			const loading =
+				(refresh || Objects.hasNoProps(loadingMap)) && !supressLoading;
+			console.log("loading", loading);
+
 			let startIndex = start !== undefined ? start : 0;
 			let stopIndex =
 				stop !== undefined ? stop : startIndex + initialFetchSize;
@@ -130,7 +134,7 @@ export const useInfiniteLoader = (props = {}) => {
 			let activeParams;
 			if (!context) {
 				console.warn(
-					"InfiniteLoaderContext not found, params cannot be memorized"
+					"InfiniteLoaderContext not found, params cannot be memorized",
 				);
 				activeParams = params;
 			} else {
@@ -144,15 +148,13 @@ export const useInfiniteLoader = (props = {}) => {
 
 			console.log(
 				`loadList(${startIndex} ~ ${stopIndex}), params:`,
-				activeParams
+				activeParams,
 			);
 			if (saveKey) {
 				console.log("saveKey", saveKey);
 			}
 
-			const loading = refresh && !supressLoading;
-			// (refresh || Maps.isEmpty(listMap)) && !supressLoading;
-			console.log("loading", loading);
+			// const loading = refresh && !supressLoading;
 
 			setListError(null);
 			setState((prev) => ({
@@ -184,7 +186,7 @@ export const useInfiniteLoader = (props = {}) => {
 					const partialListItems = getItems(payload);
 					const partialListData = Arrays.toObject(
 						partialListItems,
-						start
+						start,
 					);
 					// listData
 					// console.log("newData", newData);
@@ -232,7 +234,7 @@ export const useInfiniteLoader = (props = {}) => {
 			bearer,
 			url,
 			baseParams,
-		]
+		],
 	);
 
 	const refreshList = useCallback(() => {
@@ -264,14 +266,14 @@ export const useInfiniteLoader = (props = {}) => {
 				resolve();
 			});
 		},
-		[loadList, saveKey]
+		[loadList, saveKey],
 	);
 
 	const isItemLoading = useCallback(
 		(index) => {
 			return loadingMap[index] === true;
 		},
-		[loadingMap]
+		[loadingMap],
 	);
 
 	const isItemLoaded = useCallback(
@@ -279,7 +281,7 @@ export const useInfiniteLoader = (props = {}) => {
 			// console.log(`isItemLoaded(${index})`, loadingMap[index] === false);
 			return loadingMap[index] === false;
 		},
-		[loadingMap]
+		[loadingMap],
 	);
 
 	const listFiltered = useMemo(() => {
@@ -288,7 +290,7 @@ export const useInfiniteLoader = (props = {}) => {
 
 	const debouncedListLoadingValue = useMemo(
 		() => (debounce === 0 ? state.listLoading : debouncedListLoading),
-		[debounce, debouncedListLoading, state.listLoading]
+		[debounce, debouncedListLoading, state.listLoading],
 	);
 
 	const getIndexById = useCallback(
@@ -297,12 +299,12 @@ export const useInfiniteLoader = (props = {}) => {
 				return null;
 			}
 			const entry = Object.entries(listData).find(
-				([_, value]) => value[key] === id
+				([_, value]) => value[key] === id,
 			);
 			const index = entry ? parseInt(entry[0], 10) : null;
 			return index;
 		},
-		[listData]
+		[listData],
 	);
 
 	/**
@@ -311,7 +313,7 @@ export const useInfiniteLoader = (props = {}) => {
 	const findAdjacentId = useCallback(
 		({ key, id, reverse = false } = {}) => {
 			const entry = Object.entries(listData).find(
-				([_, value]) => value[key] === id
+				([_, value]) => value[key] === id,
 			);
 			const index = entry ? parseInt(entry[0], 10) : null;
 			if (index !== null && !isNaN(index)) {
@@ -323,21 +325,21 @@ export const useInfiniteLoader = (props = {}) => {
 			}
 			return null;
 		},
-		[listData]
+		[listData],
 	);
 
 	const findNextId = useCallback(
 		({ ...opts }) => {
 			return findAdjacentId({ ...opts });
 		},
-		[findAdjacentId]
+		[findAdjacentId],
 	);
 
 	const findPrevId = useCallback(
 		({ key, id }) => {
 			return findAdjacentId({ key, id, reverse: true });
 		},
-		[findAdjacentId]
+		[findAdjacentId],
 	);
 
 	// checkbox 支援
@@ -345,7 +347,7 @@ export const useInfiniteLoader = (props = {}) => {
 		(indexes) => {
 			return indexes.map((i) => listData[i]);
 		},
-		[listData]
+		[listData],
 	);
 
 	return {

@@ -9,19 +9,20 @@ import CmsBookingOrderGridRow from "./CmsBookingOrderGridRow";
 import CmsBookingOrders from "./CmsBookingOrders";
 
 export const CmsBookingOrderPicker = (props) => {
-	const { label = "預約單號", cleared, ...rest } = props;
+	const { label = "預約單號", cleared, params, ...rest } = props;
 	const { token } = useContext(AuthContext);
 
 	const querystring = useMemo(() => {
-		const params = {
+		const _params = {
 			tp: 100,
-			ardd: 1,
+			ardd: 0,
 			...(cleared != null && {
 				c: cleared ? 1 : 0
-			})
+			}),
+			...params
 		};
-		return queryString.stringify(params);
-	}, [cleared]);
+		return queryString.stringify(_params);
+	}, [cleared, params]);
 
 	return (
 		<OptionPicker
@@ -49,7 +50,8 @@ export const CmsBookingOrderPicker = (props) => {
 CmsBookingOrderPicker.propTypes = {
 	label: PropTypes.string,
 	children: PropTypes.node,
-	cleared: PropTypes.bool
+	cleared: PropTypes.bool,
+	params: PropTypes.object
 };
 
 CmsBookingOrderPicker.displayName = "DepOrderPicker";

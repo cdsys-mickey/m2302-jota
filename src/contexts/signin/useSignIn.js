@@ -197,7 +197,10 @@ export const useSignIn = () => {
 								toastEx.error("登入失敗", error);
 								break;
 						}
-						Cookies.remove(Auth.COOKIE_LOGKEY);
+						Cookies.remove(
+							Auth.COOKIE_LOGKEY,
+							Auth.ROOT_COOKIE_OPTS,
+						);
 					}
 				} catch (err) {
 					console.error("登入發生異常", err);
@@ -308,6 +311,11 @@ export const useSignIn = () => {
 		[handleSubmit],
 	);
 
+	const clearLogKey = useCallback(() => {
+		Cookies.remove(Auth.COOKIE_LOGKEY, Auth.ROOT_COOKIE_OPTS);
+		Cookies.remove(Auth.COOKIE_LOGKEY, Auth.AUTH_COOKIE_OPTS);
+	}, []);
+
 	const formMeta = useFormMeta(
 		`
 		ac,
@@ -345,5 +353,6 @@ export const useSignIn = () => {
 		handleSubmit,
 		handleSubmitX,
 		isFieldDisabled,
+		clearLogKey,
 	};
 };

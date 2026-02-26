@@ -12,6 +12,7 @@ import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/date
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useFormContext } from "react-hook-form";
+import { createDateInputColumn } from "@/shared-components/dsg/columns/date-input/createDateInputColumn";
 
 export const G06CashGridContainer = (props) => {
 	const { ...rest } = props;
@@ -33,7 +34,8 @@ export const G06CashGridContainer = (props) => {
 	const columns = useMemo(
 		() => [
 			{
-				...keyColumn("RcvDate", dateInputColumn),
+				// ...keyColumn("RcvDate", dateInputColumn),
+				...keyColumn("RcvDate", createDateInputColumn({ required: true })),
 				title: "收款日期",
 				minWidth: 110,
 				maxWidth: 110,

@@ -4,6 +4,7 @@ import { useContext } from "react";
 import SignInView from "./SignInView";
 import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
 import { DialogsContext } from "@/shared-contexts/dialog/DialogsContext";
+import { useRunOnce } from "shared-components";
 
 export const SignInContainer = (props) => {
 	const { ...rest } = props;
@@ -30,6 +31,10 @@ export const SignInContainer = (props) => {
 			});
 		}
 	}, [newVersion]);
+
+	useRunOnce(() => {
+		signin.clearLogKey();
+	})
 
 	return (
 		<form
