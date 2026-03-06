@@ -297,7 +297,7 @@ export const useB05 = () => {
 					);
 					processedRowData = await handleGridProdChange({
 						rowData: processedRowData,
-						formData,
+						rowIndex,
 						newValue,
 					});
 				}
