@@ -15,6 +15,7 @@ import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useC02 = () => {
 	const crud = useContext(CrudContext);
@@ -56,7 +57,7 @@ export const useC02 = () => {
 			SFactNa: "",
 			SOrdID: "*",
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -120,7 +121,7 @@ export const useC02 = () => {
 				toastEx.error("新增失敗", err);
 			}
 		},
-		[crud, httpPostAsync, listLoader, token]
+		[crud, httpPostAsync, listLoader, token],
 	);
 
 	// READ
@@ -157,7 +158,7 @@ export const useC02 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, sqtyManager, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid],
 	);
 
 	const selectById = useCallback(
@@ -171,7 +172,7 @@ export const useC02 = () => {
 				id,
 			});
 		},
-		[loadItem]
+		[loadItem],
 	);
 
 	const handleSelect = useCallback(
@@ -182,7 +183,7 @@ export const useC02 = () => {
 
 			loadItem({ id: rowData.請購單號 });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -238,7 +239,7 @@ export const useC02 = () => {
 				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
+		[crud, httpPutAsync, listLoader, loadItem, token],
 	);
 
 	//DELETE
@@ -316,7 +317,7 @@ export const useC02 = () => {
 				if (status.success) {
 					sqtyManager.updateStockQty(
 						prodId,
-						payload.Stock ?? payload.StockQty
+						payload.Stock ?? payload.StockQty,
 					);
 					return payload;
 				} else {
@@ -326,27 +327,44 @@ export const useC02 = () => {
 				toastEx.error("查詢庫存失敗", err);
 			}
 		},
-		[httpGetAsync, sqtyManager, token]
+		[httpGetAsync, sqtyManager, token],
 	);
 
 	const handleGridProdChange = useCallback(
-		async ({ rowData }) => {
+		async ({ rowData, newValue, rowIndex }) => {
 			const prodInfo = rowData?.prod
 				? await getProdInfo(rowData?.prod?.ProdID)
 				: null;
 
 			const { prod } = rowData;
+
+			const dupProdIndex = ProdGrids.findDupProdIndex({
+				newValue,
+				rowData,
+				rowIndex,
+			});
+			const dupFound = dupProdIndex !== -1;
+			// 檢查是否已存在
+			if (dupProdIndex !== -1) {
+				toastEx.error(
+					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
+						dupProdIndex + 1
+					} 筆, 請重新選擇`,
+				);
+			}
+
 			return {
 				...rowData,
-				["ProdData"]: prod?.ProdData ?? "",
-				["PackData_N"]: prod?.PackData_N ?? "",
-				["StockQty_N"]: prodInfo?.Stock ?? "",
-				["SafeQty_N"]: prodInfo?.Safety ?? "",
+				prod: dupFound || !rowData.prod ? null : rowData.prod,
+				["ProdData"]: dupFound ? "" : (prod?.ProdData ?? ""),
+				["PackData_N"]: dupFound ? "" : (prod?.PackData_N ?? ""),
+				["StockQty_N"]: dupFound ? "" : (prodInfo?.Stock ?? ""),
+				["SafeQty_N"]: dupFound ? "" : (prodInfo?.Safety ?? ""),
 				["SRqtQty"]: "",
 				["tooltip"]: "",
 			};
 		},
-		[getProdInfo]
+		[getProdInfo],
 	);
 
 	const handleGridSupplierChange = useCallback(({ rowData, rowIndex }) => {
@@ -365,7 +383,7 @@ export const useC02 = () => {
 		({ rowData }) => {
 			return !prodDisabled({ rowData });
 		},
-		[prodDisabled]
+		[prodDisabled],
 	);
 
 	const mapTooltip = useCallback(
@@ -413,18 +431,18 @@ export const useC02 = () => {
 				return row; // 不符合條件則返回原本的列
 			});
 		},
-		[sqtyManager]
+		[sqtyManager],
 	);
 
 	const onUpdateRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, offset) => {
 				const rowIndex = fromRowIndex + offset;
 				updateResult.rowIndex = rowIndex;
@@ -441,7 +459,8 @@ export const useC02 = () => {
 					updateResult.cols.push("prod");
 					processedRowData = await handleGridProdChange({
 						rowData: processedRowData,
-						formData,
+						rowIndex,
+						newValue,
 					});
 					// console.log("handleGridProdChange finished", processedRowData);
 				}
@@ -483,7 +502,7 @@ export const useC02 = () => {
 			handleGridSupplierChange,
 			mapTooltip,
 			sqtyManager,
-		]
+		],
 	);
 
 	const onGridChanged = useCallback(
@@ -506,7 +525,7 @@ export const useC02 = () => {
 				return updated;
 			}
 		},
-		[mapTooltip]
+		[mapTooltip],
 	);
 
 	// const buildGridChangeHandler = useCallback(
@@ -585,7 +604,7 @@ export const useC02 = () => {
 			handleCreate,
 			handleUpdate,
 			grid.gridData,
-		]
+		],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -636,7 +655,7 @@ export const useC02 = () => {
 						refresh: true,
 					});
 					toastEx.success(
-						`請購單${crud.itemData?.RqtID}」已覆核成功`
+						`請購單${crud.itemData?.RqtID}」已覆核成功`,
 					);
 				} else {
 					throw error || new Error("發生未預期例外");
@@ -646,7 +665,7 @@ export const useC02 = () => {
 				toastEx.error("覆核失敗", err);
 			}
 		},
-		[crud, httpPatchAsync, listLoader, reviewAction, selectById, token]
+		[crud, httpPatchAsync, listLoader, reviewAction, selectById, token],
 	);
 
 	const promptReview = useCallback(() => {
@@ -689,7 +708,7 @@ export const useC02 = () => {
 						refresh: true,
 					});
 					toastEx.success(
-						`請購單${crud.itemData?.RqtID}」已解除覆核成功`
+						`請購單${crud.itemData?.RqtID}」已解除覆核成功`,
 					);
 				} else {
 					throw error || new Error("發生未預期例外");
@@ -699,7 +718,7 @@ export const useC02 = () => {
 				toastEx.error("解除覆核失敗", err);
 			}
 		},
-		[crud, httpPatchAsync, listLoader, rejectAction, token]
+		[crud, httpPatchAsync, listLoader, rejectAction, token],
 	);
 
 	const promptReject = useCallback(() => {
@@ -731,7 +750,7 @@ export const useC02 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.RqtID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.RqtID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -744,7 +763,7 @@ export const useC02 = () => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	// const validateDate = useCallback((value) => {

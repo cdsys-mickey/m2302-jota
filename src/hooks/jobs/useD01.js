@@ -16,7 +16,7 @@ import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
-import ProdGrids from "@/modules/ProdGrids";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 const DEFAULT_ROWS = 10;
 
@@ -450,17 +450,17 @@ export const useD01 = () => {
 
 			const { prod } = rowData;
 
-			const drupProdIndex = ProdGrids.findDupProdIndex({
+			const dupProdIndex = ProdGrids.findDupProdIndex({
 				newValue,
 				rowData,
 				rowIndex,
 			});
-			const found = drupProdIndex !== -1;
+			const dupFound = dupProdIndex !== -1;
 			// 檢查是否已存在
-			if (drupProdIndex !== -1) {
+			if (dupProdIndex !== -1) {
 				toastEx.error(
 					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
-						drupProdIndex + 1
+						dupProdIndex + 1
 					} 筆, 請重新選擇`,
 				);
 			} else if (rowData.prod) {
@@ -469,10 +469,10 @@ export const useD01 = () => {
 
 			rowData = {
 				...rowData,
-				prod: found || !rowData.prod ? null : rowData.prod,
-				["ProdData"]: found ? "" : rowData.prod?.ProdData,
-				["PackData_N"]: found ? "" : prod?.PackData_N || "",
-				["StockQty_N"]: found ? "" : prod?.StockQty || "",
+				prod: dupFound || !rowData.prod ? null : rowData.prod,
+				["ProdData"]: dupFound ? "" : rowData.prod?.ProdData,
+				["PackData_N"]: dupFound ? "" : prod?.PackData_N || "",
+				["StockQty_N"]: dupFound ? "" : prod?.StockQty || "",
 				["SafeQty_N"]: prodInfo?.Safety ?? "",
 				["SQty"]: "",
 				["SExpDate"]: "",

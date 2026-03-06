@@ -14,6 +14,7 @@ import { useToggle } from "../../shared-hooks/useToggle";
 import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useD07 = () => {
 	const config = useContext(ConfigContext);
@@ -64,7 +65,7 @@ export const useD07 = () => {
 			ChkQty: "",
 			SOrdID: "",
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -157,7 +158,7 @@ export const useD07 = () => {
 				}
 			}
 		},
-		[crud, httpPostAsync, listLoader, token]
+		[crud, httpPostAsync, listLoader, token],
 	);
 
 	// READ
@@ -191,7 +192,7 @@ export const useD07 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[crud, httpGetAsync, grid, token]
+		[crud, httpGetAsync, grid, token],
 	);
 
 	const handleSelect = useCallback(
@@ -202,7 +203,7 @@ export const useD07 = () => {
 
 			loadItem({ id: rowData.試算單號 });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -258,7 +259,7 @@ export const useD07 = () => {
 				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
+		[crud, httpPutAsync, listLoader, loadItem, token],
 	);
 
 	//DELETE
@@ -303,7 +304,7 @@ export const useD07 = () => {
 					employee: null,
 				});
 			},
-		[]
+		[],
 	);
 
 	const onSearchSubmit = useCallback(
@@ -314,7 +315,7 @@ export const useD07 = () => {
 				params: D07.transformAsQueryParams(data),
 			});
 		},
-		[handlePopperClose, listLoader]
+		[handlePopperClose, listLoader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -341,36 +342,32 @@ export const useD07 = () => {
 		async ({ rowData, rowIndex, newValue }) => {
 			const { prod } = rowData;
 
-			const prodRowIndex = prod?.ProdID
-				? D07.findProdIndex({
-						newValue,
-						rowData,
-						rowIndex,
-				  })
-				: null;
-
-			const found = rowData.prod?.ProdID && prodRowIndex !== -1;
-
+			const dupProdIndex = ProdGrids.findDupProdIndex({
+				newValue,
+				rowData,
+				rowIndex,
+			});
+			const dupFound = dupProdIndex !== -1;
 			// 檢查是否已存在
-			if (found) {
+			if (dupProdIndex !== -1) {
 				toastEx.error(
 					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
-						prodRowIndex + 1
-					} 筆, 請重新選擇`
+						dupProdIndex + 1
+					} 筆, 請重新選擇`,
 				);
 			}
 
 			rowData = {
 				...rowData,
-				prod: found ? null : rowData.prod,
-				["ProdData"]: found ? "" : rowData.prod?.ProdData,
-				["PackData_N"]: found ? "" : prod?.PackData_N || "",
+				prod: dupFound ? null : rowData.prod,
+				["ProdData"]: dupFound ? "" : rowData.prod?.ProdData,
+				["PackData_N"]: dupFound ? "" : prod?.PackData_N || "",
 				["SQty"]: "",
 			};
 
 			return rowData;
 		},
-		[]
+		[],
 	);
 
 	const updateGridRow = useCallback(
@@ -392,7 +389,7 @@ export const useD07 = () => {
 				}
 				return processedRowData;
 			},
-		[grid.gridData, handleGridProdChange]
+		[grid.gridData, handleGridProdChange],
 	);
 
 	const buildGridChangeHandler = useCallback(
@@ -409,7 +406,7 @@ export const useD07 = () => {
 							newValue
 								.slice(
 									operation.fromRowIndex,
-									operation.toRowIndex
+									operation.toRowIndex,
 								)
 								.map(async (item, index) => {
 									const updatedRow = await updateGridRow({
@@ -417,14 +414,14 @@ export const useD07 = () => {
 										newValue,
 									})(item, index);
 									return updatedRow;
-								})
+								}),
 						);
 						console.log("updatedRows", updatedRows);
 
 						newGridData.splice(
 							operation.fromRowIndex,
 							updatedRows.length,
-							...updatedRows
+							...updatedRows,
 						);
 						// newValue
 						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
@@ -481,7 +478,7 @@ export const useD07 = () => {
 					grid.setGridData(newGridData);
 				}
 			},
-		[updateGridRow, grid]
+		[updateGridRow, grid],
 	);
 
 	const onEditorSubmit = useCallback(
@@ -503,7 +500,7 @@ export const useD07 = () => {
 			handleCreate,
 			handleUpdate,
 			grid.gridData,
-		]
+		],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -537,7 +534,7 @@ export const useD07 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.CalID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.CalID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -550,7 +547,7 @@ export const useD07 = () => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	// 有效日期查詢

@@ -16,6 +16,7 @@ import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useJotaReports from "@/hooks/useJotaReports";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
 import B05 from "./B05.mjs";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useB05 = () => {
 	const crud = useContext(CrudContext);
@@ -49,7 +50,7 @@ export const useB05 = () => {
 			prod: null,
 			SPrice: "",
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -93,7 +94,7 @@ export const useB05 = () => {
 				toastEx.error("新增失敗", err);
 			}
 		},
-		[crud, httpPostAsync, listLoader, token]
+		[crud, httpPostAsync, listLoader, token],
 	);
 
 	// READ
@@ -127,7 +128,7 @@ export const useB05 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[crud, httpGetAsync, grid, token]
+		[crud, httpGetAsync, grid, token],
 	);
 
 	const handleSelect = useCallback(
@@ -138,7 +139,7 @@ export const useB05 = () => {
 
 			loadItem({ id: rowData.詢價單號 });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -195,7 +196,7 @@ export const useB05 = () => {
 				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
+		[crud, httpPutAsync, listLoader, loadItem, token],
 	);
 
 	//DELETE
@@ -237,26 +238,50 @@ export const useB05 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridProdChange = useCallback(({ rowData }) => {
-		let processedRowData = { ...rowData };
-		processedRowData = {
-			...processedRowData,
-			["SProdData_N"]: rowData?.prod?.ProdData || "",
-			["SPackData_N"]: rowData?.prod?.PackData_N || "",
-			["SPrice"]: "",
-		};
-		return processedRowData;
-	}, []);
+	const handleGridProdChange = useCallback(
+		({ rowData, rowIndex, newValue }) => {
+			let processedRowData = { ...rowData };
+
+			const { prod } = rowData;
+
+			const dupProdIndex = ProdGrids.findDupProdIndex({
+				newValue,
+				rowData,
+				rowIndex,
+			});
+			const dupFound = dupProdIndex !== -1;
+			// 檢查是否已存在
+			if (dupProdIndex !== -1) {
+				toastEx.error(
+					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
+						dupProdIndex + 1
+					} 筆, 請重新選擇`,
+				);
+			}
+
+			processedRowData = {
+				...processedRowData,
+				prod: dupFound || !rowData.prod ? null : rowData.prod,
+				["SProdData_N"]: dupFound ? "" : rowData?.prod?.ProdData || "",
+				["SPackData_N"]: dupFound
+					? ""
+					: rowData?.prod?.PackData_N || "",
+				["SPrice"]: "",
+			};
+			return processedRowData;
+		},
+		[],
+	);
 
 	const onUpdateRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				const oldRowData = grid.gridData[rowIndex];
@@ -268,16 +293,17 @@ export const useB05 = () => {
 				if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
 					console.log(
 						`prod[${rowIndex}] changed`,
-						processedRowData?.prod
+						processedRowData?.prod,
 					);
 					processedRowData = await handleGridProdChange({
 						rowData: processedRowData,
 						formData,
+						newValue,
 					});
 				}
 				return processedRowData;
 			},
-		[grid.gridData, handleGridProdChange]
+		[grid.gridData, handleGridProdChange],
 	);
 
 	// const buildGridChangeHandler = useCallback(
@@ -343,13 +369,13 @@ export const useB05 = () => {
 			handleCreate,
 			handleUpdate,
 			grid.gridData,
-		]
+		],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
 		console.error("onEditorSubmitError", err);
 		toastEx.error(
-			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出"
+			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
 		);
 	}, []);
 
@@ -419,7 +445,7 @@ export const useB05 = () => {
 				}));
 			}
 		},
-		[httpGetAsync, ipState.saveKey, token]
+		[httpGetAsync, ipState.saveKey, token],
 	);
 
 	const onImportProdsSubmit = useCallback(
@@ -432,7 +458,7 @@ export const useB05 = () => {
 					bearer: token,
 					params: {
 						...B05.transformImportProdsAsQueryParams(
-							ipState.criteria
+							ipState.criteria,
 						),
 						sk: ipState.saveKey,
 					},
@@ -460,7 +486,7 @@ export const useB05 = () => {
 			ipState.saveKey,
 			grid,
 			token,
-		]
+		],
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {
@@ -487,7 +513,7 @@ export const useB05 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -508,7 +534,7 @@ export const useB05 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.InqID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const loadProdFormMeta = useFormMeta(
@@ -519,7 +545,7 @@ export const useB05 = () => {
 		catL,
 		catM,
 		catS
-		`
+		`,
 	);
 
 	return {

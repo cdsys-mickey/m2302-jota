@@ -1,4 +1,3 @@
-import ProdGrid from "@/modules/ProdGrids.mjs";
 import A013 from "@/modules/A013.mjs";
 import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
@@ -9,6 +8,7 @@ import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createT
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useA013 = () => {
 	const appModule = useAppModule({
@@ -27,7 +27,7 @@ export const useA013 = () => {
 					"ProdID",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				disabled: true,
 				grow: 2,
@@ -38,7 +38,7 @@ export const useA013 = () => {
 					"ProdData",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				title: "品名規格",
 				grow: 4,
@@ -63,7 +63,7 @@ export const useA013 = () => {
 				disabled: grid.readOnly,
 			},
 		],
-		[grid.readOnly]
+		[grid.readOnly],
 	);
 
 	const gridMeta = useDSGMeta({
@@ -76,7 +76,7 @@ export const useA013 = () => {
 	const prodGrid = useProdGrid({
 		grid,
 		baseUri: "v1/prod/data-grid/A013",
-		transformAsQueryParams: ProdGrid.transformAsQueryParams,
+		transformAsQueryParams: ProdGrids.transformAsQueryParams,
 		transformForSubmitting: A013.transformForSubmitting,
 		transformForReading: A013.transformForReading,
 	});

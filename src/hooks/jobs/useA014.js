@@ -1,6 +1,5 @@
 import { RowProdCatMPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/RowProdCatMPickerComponentContainer";
 import { RowProdCatSPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/RowProdCatSPickerComponentContainer";
-import ProdGrid from "@/modules/ProdGrids.mjs";
 import { useCallback, useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { ProdCatLPickerComponentContainer } from "@/components/dsg/columns/prod-cat-picker/ProdCatLPickerComponentContainer";
@@ -16,6 +15,7 @@ import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import { rowOptionPickerColumn } from "@/shared-components/dsg/columns/option-picker/rowOptionPickerColumn";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useA014 = () => {
 	const appModule = useAppModule({
@@ -35,7 +35,7 @@ export const useA014 = () => {
 					"ProdData_N",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				title: "品名規格",
 				grow: 3,
@@ -151,7 +151,7 @@ export const useA014 = () => {
 								},
 							},
 						},
-					})
+					}),
 				),
 				disabled: grid.readOnly,
 				title: "品別",
@@ -173,7 +173,7 @@ export const useA014 = () => {
 								},
 							},
 						},
-					})
+					}),
 				),
 				disabled: grid.readOnly,
 				title: "品類",
@@ -196,7 +196,7 @@ export const useA014 = () => {
 								},
 							},
 						},
-					})
+					}),
 				),
 				disabled: grid.readOnly,
 				title: "稅別",
@@ -215,7 +215,7 @@ export const useA014 = () => {
 			// 	disabled: readOnly,
 			// },
 		],
-		[grid.readOnly]
+		[grid.readOnly],
 	);
 
 	const gridMeta = useDSGMeta({
@@ -228,7 +228,7 @@ export const useA014 = () => {
 	const prodGrid = useProdGrid({
 		grid,
 		baseUri: "v1/prod/data-grid/A014",
-		transformAsQueryParams: ProdGrid.transformAsQueryParams,
+		transformAsQueryParams: ProdGrids.transformAsQueryParams,
 		transformForSubmitting: A014.transformForSubmitting,
 		transformForReading: A014.transformForReading,
 	});
@@ -267,7 +267,7 @@ export const useA014 = () => {
 				}
 				return processedRowData;
 			},
-		[grid.gridData]
+		[grid.gridData],
 	);
 
 	return {

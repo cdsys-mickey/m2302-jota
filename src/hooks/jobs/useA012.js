@@ -1,5 +1,4 @@
 import A012 from "@/modules/md-a012";
-import ProdGrid from "@/modules/ProdGrids.mjs";
 import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { PkgTypePickerComponentContainer } from "@/components/dsg/columns/pkg-type-picker/PkgTypePickerComponentContainer";
@@ -11,6 +10,7 @@ import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useProdGrid } from "../useProdGrid";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useA012 = () => {
 	const appModule = useAppModule({
@@ -30,7 +30,7 @@ export const useA012 = () => {
 					"ProdID",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				disabled: true,
 				grow: 2,
@@ -67,7 +67,7 @@ export const useA012 = () => {
 								},
 							},
 						},
-					})
+					}),
 				),
 				title: "庫存單位",
 				grow: 2,
@@ -92,7 +92,7 @@ export const useA012 = () => {
 								},
 							},
 						},
-					})
+					}),
 				),
 				title: "銷售單位",
 				grow: 2,
@@ -117,7 +117,7 @@ export const useA012 = () => {
 								},
 							},
 						},
-					})
+					}),
 				),
 				title: "進貨單位",
 				grow: 2,
@@ -142,7 +142,7 @@ export const useA012 = () => {
 								},
 							},
 						},
-					})
+					}),
 				),
 				title: "BOM單位",
 				grow: 2,
@@ -153,14 +153,14 @@ export const useA012 = () => {
 					"ProdData",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				title: "品名規格",
 				grow: 3,
 				disabled: grid.readOnly,
 			},
 		],
-		[grid.readOnly]
+		[grid.readOnly],
 	);
 
 	const gridMeta = useDSGMeta({
@@ -173,7 +173,7 @@ export const useA012 = () => {
 	const prodGrid = useProdGrid({
 		grid,
 		baseUri: "v1/prod/data-grid/A012",
-		transformAsQueryParams: ProdGrid.transformAsQueryParams,
+		transformAsQueryParams: ProdGrids.transformAsQueryParams,
 		transformForSubmitting: A012.transformForSubmitting,
 		transformForReading: A012.transformForReading,
 	});

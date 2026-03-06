@@ -1,4 +1,3 @@
-import ProdGrid from "@/modules/ProdGrids.mjs";
 import { useProdGrid } from "../useProdGrid";
 import A015 from "@/modules/md-a015";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
@@ -9,6 +8,7 @@ import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useA015 = () => {
 	const appModule = useAppModule({
@@ -28,7 +28,7 @@ export const useA015 = () => {
 					"ProdID",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				grow: 1,
 				title: "商品代碼",
@@ -39,7 +39,7 @@ export const useA015 = () => {
 					"PackData_N",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				title: "包裝單位",
 				grow: 1,
@@ -50,7 +50,7 @@ export const useA015 = () => {
 					"ProdData_N",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				title: "品名規格",
 				grow: 4,
@@ -64,7 +64,7 @@ export const useA015 = () => {
 				disabled: grid.readOnly,
 			},
 		],
-		[grid.readOnly]
+		[grid.readOnly],
 	);
 
 	const gridMeta = useDSGMeta({
@@ -77,7 +77,7 @@ export const useA015 = () => {
 	const prodGrid = useProdGrid({
 		grid,
 		baseUri: "v1/prod/data-grid/A015",
-		transformAsQueryParams: ProdGrid.transformAsQueryParams,
+		transformAsQueryParams: ProdGrids.transformAsQueryParams,
 		transformForSubmitting: A015.transformForSubmitting,
 		transformForReading: A015.transformForReading,
 	});

@@ -1,6 +1,5 @@
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import A011 from "@/modules/md-a011";
-import ProdGrid from "@/modules/ProdGrids.mjs";
 import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { createTextColumnEx } from "@/shared-components/dsg/columns/text/createTextColumnEx";
 import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
@@ -9,6 +8,7 @@ import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import { useMemo } from "react";
 import { keyColumn } from "react-datasheet-grid";
 import { useProdGrid } from "../useProdGrid";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useA011 = () => {
 	const appModule = useAppModule({
@@ -27,7 +27,7 @@ export const useA011 = () => {
 					"ProdID",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				disabled: true,
 				grow: 2,
@@ -38,7 +38,7 @@ export const useA011 = () => {
 					"ProdData_N",
 					createTextColumnEx({
 						continuousUpdates: false,
-					})
+					}),
 				),
 				title: "品名規格",
 				grow: 4,
@@ -81,7 +81,7 @@ export const useA011 = () => {
 				disabled: grid.readOnly,
 			},
 		],
-		[grid.readOnly]
+		[grid.readOnly],
 	);
 
 	const gridMeta = useDSGMeta({
@@ -94,7 +94,7 @@ export const useA011 = () => {
 	const prodGrid = useProdGrid({
 		grid,
 		baseUri: "v1/prod/data-grid/A011",
-		transformAsQueryParams: ProdGrid.transformAsQueryParams,
+		transformAsQueryParams: ProdGrids.transformAsQueryParams,
 		transformForSubmitting: A011.transformForSubmitting,
 		transformForReading: A011.transformForReading,
 	});

@@ -15,6 +15,7 @@ import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import useJotaReports from "@/hooks/useJotaReports";
 import { useSideDrawer } from "@/hooks/useSideDrawer";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import ProdGrids from "../ProdGrids.mjs";
 
 export const useP14 = () => {
 	const config = useContext(ConfigContext);
@@ -49,7 +50,7 @@ export const useP14 = () => {
 			SPrice: "",
 			Force: false,
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -92,7 +93,7 @@ export const useP14 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[crud, httpGetAsync, grid, token]
+		[crud, httpGetAsync, grid, token],
 	);
 
 	// CREATE
@@ -152,7 +153,7 @@ export const useP14 = () => {
 				toastEx.error(`${creating ? "新增" : "修改"}失敗`, err);
 			}
 		},
-		[crud, grid, httpPostAsync, httpPutAsync, listLoader, loadItem, token]
+		[crud, grid, httpPostAsync, httpPutAsync, listLoader, loadItem, token],
 	);
 
 	// const handleCreate = useCallback(
@@ -189,7 +190,7 @@ export const useP14 = () => {
 
 			loadItem({ id: rowData.ItmID });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -288,25 +289,47 @@ export const useP14 = () => {
 		console.error("onSearchSubmitError", err);
 	}, []);
 
-	const handleGridProdChange = useCallback(({ rowData }) => {
-		let processedRowData = { ...rowData };
-		processedRowData = {
-			...processedRowData,
-			["ProdData_N"]: rowData?.prod?.ProdData || "",
-			["PackData_N"]: rowData?.prod?.PackData_N || "",
-		};
-		return processedRowData;
-	}, []);
+	const handleGridProdChange = useCallback(
+		({ rowData, newValue, rowIndex }) => {
+			let processedRowData = { ...rowData };
+
+			const { prod } = rowData;
+
+			const dupProdIndex = ProdGrids.findDupProdIndex({
+				newValue,
+				rowData,
+				rowIndex,
+			});
+			const dupFound = dupProdIndex !== -1;
+			// 檢查是否已存在
+			if (dupProdIndex !== -1) {
+				toastEx.error(
+					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
+						dupProdIndex + 1
+					} 筆, 請重新選擇`,
+				);
+			}
+
+			processedRowData = {
+				...processedRowData,
+				prod: dupFound || !rowData.prod ? null : rowData.prod,
+				["ProdData_N"]: dupFound ? "" : rowData?.prod?.ProdData || "",
+				["PackData_N"]: dupFound ? "" : rowData?.prod?.PackData_N || "",
+			};
+			return processedRowData;
+		},
+		[],
+	);
 
 	const onUpdateRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				const oldRowData = grid.gridData[rowIndex];
@@ -318,16 +341,17 @@ export const useP14 = () => {
 				if (processedRowData.prod?.ProdID != oldRowData.prod?.ProdID) {
 					console.log(
 						`prod[${rowIndex}] changed`,
-						processedRowData?.prod
+						processedRowData?.prod,
 					);
 					processedRowData = await handleGridProdChange({
 						rowData: processedRowData,
-						formData,
+						newValue,
+						rowIndex,
 					});
 				}
 				return processedRowData;
 			},
-		[grid.gridData, handleGridProdChange]
+		[grid.gridData, handleGridProdChange],
 	);
 
 	// const buildGridChangeHandler = useCallback(
@@ -381,7 +405,7 @@ export const useP14 = () => {
 			console.log("collected", collected);
 			handleSave({ data: collected });
 		},
-		[grid.gridData, handleSave]
+		[grid.gridData, handleSave],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -452,7 +476,7 @@ export const useP14 = () => {
 				}));
 			}
 		},
-		[httpGetAsync, ipState.saveKey, token]
+		[httpGetAsync, ipState.saveKey, token],
 	);
 
 	const onImportProdsSubmit = useCallback(
@@ -484,7 +508,7 @@ export const useP14 = () => {
 				toastEx.error("帶入商品發生錯誤", err);
 			}
 		},
-		[httpGetAsync, importProdsAction, ipState.criteria, grid, token]
+		[httpGetAsync, importProdsAction, ipState.criteria, grid, token],
 	);
 
 	const onImportProdsSubmitError = useCallback((err) => {
@@ -510,7 +534,7 @@ export const useP14 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.ItmID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.ItmID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -523,7 +547,7 @@ export const useP14 = () => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	const forceDisabled = useCallback(({ rowData }) => {
@@ -538,7 +562,7 @@ export const useP14 = () => {
 		catL,
 		catM,
 		catS
-		`
+		`,
 	);
 
 	return {

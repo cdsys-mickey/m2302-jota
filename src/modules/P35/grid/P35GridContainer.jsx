@@ -42,10 +42,10 @@ const P35GridContainer = (props) => {
 			setValue: form.setValue,
 			gridMeta: formMeta.gridMeta,
 			onUpdateRow: p35.onUpdateRow,
-			onGridChanged: p35.onGridChanged,
+			// onGridChanged: p35.onGridChanged,
 			// isRowDeletable: c08.isRowDeletable
 		});
-	}, [form.getValues, form.setValue, formMeta.gridMeta, p35.grid, p35.onGridChanged, p35.onUpdateRow]);
+	}, [form.getValues, form.setValue, formMeta.gridMeta, p35.grid, p35.onUpdateRow]);
 
 	if (!p35.grid.gridData) {
 		return (

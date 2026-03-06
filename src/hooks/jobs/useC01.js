@@ -16,6 +16,7 @@ import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import ProdGrids from "@/modules/ProdGrids.mjs";
 
 export const useC01 = () => {
 	const crud = useContext(CrudContext);
@@ -64,7 +65,7 @@ export const useC01 = () => {
 			SFactNa: "",
 			SOrdID: "*",
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -132,7 +133,7 @@ export const useC01 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, sqtyManager, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid],
 	);
 
 	const handleSelect = useCallback(
@@ -143,7 +144,7 @@ export const useC01 = () => {
 
 			loadItem({ id: rowData.請購單號 });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -200,7 +201,7 @@ export const useC01 = () => {
 				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
+		[crud, httpPutAsync, listLoader, loadItem, token],
 	);
 
 	const handleReset = useCallback(
@@ -216,7 +217,7 @@ export const useC01 = () => {
 				// });
 				reset({});
 			},
-		[]
+		[],
 	);
 
 	const onSearchSubmit = useCallback(
@@ -233,7 +234,7 @@ export const useC01 = () => {
 				params: collected,
 			});
 		},
-		[handlePopperClose, listLoader]
+		[handlePopperClose, listLoader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -262,7 +263,7 @@ export const useC01 = () => {
 				if (status.success) {
 					sqtyManager.updateStockQty(
 						prodId,
-						payload.Stock ?? payload.StockQty
+						payload.Stock ?? payload.StockQty,
 					);
 					return payload;
 				} else {
@@ -272,11 +273,11 @@ export const useC01 = () => {
 				toastEx.error("查詢庫存失敗", err);
 			}
 		},
-		[httpGetAsync, sqtyManager, token]
+		[httpGetAsync, sqtyManager, token],
 	);
 
 	const handleGridProdChange = useCallback(
-		async ({ rowData, rowIndex }) => {
+		async ({ rowData, rowIndex, newValue }) => {
 			const prodInfo = rowData?.prod
 				? await getProdInfo(rowData?.prod?.ProdID)
 				: null;
@@ -285,11 +286,27 @@ export const useC01 = () => {
 			console.log(`prod[${rowIndex}] changed`, prod);
 			let processedRowData = { ...rowData };
 
+			const dupProdIndex = ProdGrids.findDupProdIndex({
+				newValue,
+				rowData,
+				rowIndex,
+			});
+			const dupFound = dupProdIndex !== -1;
+			// 檢查是否已存在
+			if (dupProdIndex !== -1) {
+				toastEx.error(
+					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
+						dupProdIndex + 1
+					} 筆, 請重新選擇`,
+				);
+			}
+
 			processedRowData = {
 				...processedRowData,
-				["ProdData"]: prod?.ProdData || "",
-				["PackData_N"]: prod?.PackData_N || "",
-				["StockQty_N"]: prodInfo?.Stock || "",
+				prod: dupFound || !rowData.prod ? null : rowData.prod,
+				["ProdData"]: dupFound ? "" : prod?.ProdData || "",
+				["PackData_N"]: dupFound ? "" : prod?.PackData_N || "",
+				["StockQty_N"]: dupFound ? "" : prodInfo?.Stock || "",
 				["SRqtQty"]: "",
 				["SOrdQty"]: "",
 				["supplier"]: null,
@@ -297,7 +314,7 @@ export const useC01 = () => {
 			};
 			return processedRowData;
 		},
-		[getProdInfo]
+		[getProdInfo],
 	);
 
 	const handleGridSupplierChange = useCallback(({ rowData, rowIndex }) => {
@@ -316,7 +333,7 @@ export const useC01 = () => {
 		({ rowData }) => {
 			return !prodDisabled({ rowData });
 		},
-		[prodDisabled]
+		[prodDisabled],
 	);
 
 	const mapTooltip = useCallback(
@@ -364,18 +381,18 @@ export const useC01 = () => {
 				return row; // 不符合條件則返回原本的列
 			});
 		},
-		[sqtyManager]
+		[sqtyManager],
 	);
 
 	const onUpdateRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				updateResult.rowIndex = rowIndex;
@@ -392,6 +409,7 @@ export const useC01 = () => {
 					processedRowData = await handleGridProdChange({
 						rowData: processedRowData,
 						rowIndex,
+						newValue,
 					});
 				}
 				// 供應商
@@ -410,7 +428,7 @@ export const useC01 = () => {
 				}
 				return processedRowData;
 			},
-		[grid.gridData, handleGridProdChange, handleGridSupplierChange]
+		[grid.gridData, handleGridProdChange, handleGridSupplierChange],
 	);
 
 	const onGridChanged = useCallback(
@@ -433,7 +451,7 @@ export const useC01 = () => {
 				return updated;
 			}
 		},
-		[mapTooltip]
+		[mapTooltip],
 	);
 
 	const onEditorSubmit = useCallback(
@@ -447,7 +465,7 @@ export const useC01 = () => {
 				console.error("UNKNOWN SUBMIT TYPE");
 			}
 		},
-		[crud.updating, handleUpdate, grid.gridData]
+		[crud.updating, handleUpdate, grid.gridData],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -495,7 +513,7 @@ export const useC01 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[grid.gridData, operator?.CurDeptID, reportUrl, reports]
+		[grid.gridData, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -508,7 +526,7 @@ export const useC01 = () => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	// 轉採購單
@@ -557,7 +575,7 @@ export const useC01 = () => {
 
 					if (!payload.OrdIDs) {
 						toastEx.error(
-							"沒有形成採購單，請確認供應商等欄位是否有確實填寫"
+							"沒有形成採購單，請確認供應商等欄位是否有確實填寫",
 						);
 						transformAction.clear();
 					} else {
@@ -565,7 +583,7 @@ export const useC01 = () => {
 						toastEx.success(
 							`成功形成 ${
 								ordIds.length
-							} 張採購單，單號：${ordIds.join("、")}`
+							} 張採購單，單號：${ordIds.join("、")}`,
 						);
 						transformAction.finish();
 						crud.cancelAction();
@@ -581,7 +599,7 @@ export const useC01 = () => {
 				toastEx.error("形成採購單失敗", err);
 			}
 		},
-		[crud, httpPatchAsync, listLoader, token, transformAction]
+		[crud, httpPatchAsync, listLoader, token, transformAction],
 	);
 
 	const onTransformSubmitError = useCallback((err) => {
@@ -638,7 +656,7 @@ export const useC01 = () => {
 
 					if (!payload.OrdIDs) {
 						toastEx.error(
-							"沒有形成採購單，請確認供應商等欄位是否有確實填寫"
+							"沒有形成採購單，請確認供應商等欄位是否有確實填寫",
 						);
 						transformListAction.clear();
 					} else {
@@ -646,7 +664,7 @@ export const useC01 = () => {
 						toastEx.success(
 							`成功形成 ${
 								ordIds.length
-							} 張採購單，單號：${ordIds.join("、")}`
+							} 張採購單，單號：${ordIds.join("、")}`,
 						);
 						transformListAction.finish();
 						crud.cancelAction();
@@ -669,7 +687,7 @@ export const useC01 = () => {
 			listLoaderCtx.paramsRef,
 			token,
 			transformListAction,
-		]
+		],
 	);
 
 	const onTransformListSubmitError = useCallback((err) => {

@@ -14,6 +14,7 @@ import { nanoid } from "nanoid";
 import { useDSG } from "@/shared-hooks/dsg/useDSG";
 import { useMemo } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
+import CmsTypeGrids from "../CmsTypeGrids.mjs";
 
 export const useP35 = () => {
 	const itemIdRef = useRef();
@@ -36,7 +37,7 @@ export const useP35 = () => {
 			Pkey: nanoid(),
 			cmsType: null,
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -98,7 +99,7 @@ export const useP35 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[auth.token, crud, grid, httpGetAsync]
+		[auth.token, crud, grid, httpGetAsync],
 	);
 
 	const handleSelect = useCallback(
@@ -110,7 +111,7 @@ export const useP35 = () => {
 			crud.startReading("讀取中...", { id: rowData.TrvID });
 			loadItem({ id: rowData.TrvID });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmReturn = useCallback(() => {
@@ -159,7 +160,7 @@ export const useP35 = () => {
 
 				if (status.success) {
 					toastEx.success(
-						`項目「${data?.TrvID} ${data?.TrvData}」${action}成功`
+						`項目「${data?.TrvID} ${data?.TrvData}」${action}成功`,
 					);
 					if (creating) {
 						crud.finishedCreating();
@@ -185,7 +186,7 @@ export const useP35 = () => {
 				toastEx.error(`${action}失敗`, err);
 			}
 		},
-		[auth.token, crud, httpPostAsync, httpPutAsync, listLoader, loadItem]
+		[auth.token, crud, httpPostAsync, httpPutAsync, listLoader, loadItem],
 	);
 
 	// const handleUpdate = useCallback(
@@ -239,7 +240,7 @@ export const useP35 = () => {
 			// 	console.error("UNKNOWN SUBMIT TYPE");
 			// }
 		},
-		[crud.creating, crud.updating, grid.gridData, handleSave]
+		[crud.creating, crud.updating, grid.gridData, handleSave],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -248,7 +249,7 @@ export const useP35 = () => {
 			"資料驗證失敗, 請檢查並修正未填寫的必填欄位(*)後，再重新送出",
 			{
 				position: "top-right",
-			}
+			},
 		);
 	}, []);
 
@@ -263,7 +264,7 @@ export const useP35 = () => {
 			});
 			grid.initGridData(data.ranges, { fillRows: 10 });
 		},
-		[crud, grid]
+		[crud, grid],
 	);
 
 	const confirmDelete = useCallback(() => {
@@ -282,7 +283,7 @@ export const useP35 = () => {
 					if (status.success) {
 						crud.cancelAction();
 						toastEx.success(
-							`成功删除${crud.itemData?.TrvID} ${crud.itemData.TrvData}`
+							`成功删除${crud.itemData?.TrvID} ${crud.itemData.TrvData}`,
 						);
 						listLoader.loadList({ refresh: true });
 					} else {
@@ -307,12 +308,81 @@ export const useP35 = () => {
 				// reset: true,
 			});
 		},
-		[handlePopperClose, listLoader]
+		[handlePopperClose, listLoader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
 		console.error(`onSearchSubmitError`, err);
 	}, []);
+
+	const handleGridProdChange = useCallback(
+		({ rowData, rowIndex, newValue }) => {
+			let processedRowData = { ...rowData };
+
+			const { cmsType } = rowData;
+
+			const dupProdIndex = CmsTypeGrids.findDupIndex({
+				newValue,
+				rowData,
+				rowIndex,
+			});
+			const dupFound = dupProdIndex !== -1;
+			// 檢查是否已存在
+			if (dupProdIndex !== -1) {
+				toastEx.error(
+					`「${cmsType.CodeID} / ${cmsType.CodeData}」已存在於第 ${
+						dupProdIndex + 1
+					} 筆, 請重新選擇`,
+				);
+			}
+
+			processedRowData = {
+				...processedRowData,
+				cmsType: dupFound || !rowData.cmsType ? null : rowData.cmsType,
+				["STrvCms"]: "",
+				["SCndCms"]: "",
+				["SDrvCms"]: "",
+			};
+			return processedRowData;
+		},
+		[],
+	);
+
+	const onUpdateRow = useCallback(
+		({
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
+			async (rowData, index) => {
+				const rowIndex = fromRowIndex + index;
+				const oldRowData = grid.gridData[rowIndex];
+				console.log(`開始處理第 ${rowIndex + 1} 列...`, rowData);
+				let processedRowData = {
+					...rowData,
+				};
+				// prod
+				if (
+					processedRowData.cmsType?.CodeID !=
+					oldRowData.cmsType?.CodeID
+				) {
+					console.log(
+						`cmsType[${rowIndex}] changed`,
+						processedRowData?.cmsType,
+					);
+					processedRowData = await handleGridProdChange({
+						rowData: processedRowData,
+						rowIndex,
+						newValue,
+					});
+				}
+				return processedRowData;
+			},
+		[grid.gridData, handleGridProdChange],
+	);
 
 	useInit(() => {
 		crud.cancelAction();
@@ -345,5 +415,7 @@ export const useP35 = () => {
 		grid,
 		gridDisabled,
 		createRow,
+		onUpdateRow,
+		handleGridProdChange,
 	};
 };
