@@ -51,7 +51,7 @@ export const useC06 = () => {
 			ChkQty: "",
 			SOrdID: "",
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -113,7 +113,7 @@ export const useC06 = () => {
 				? {
 						DeptID: spDeptId,
 						AbbrName: deptName,
-				  }
+					}
 				: null,
 		};
 		crud.promptCreating({ data });
@@ -146,7 +146,7 @@ export const useC06 = () => {
 				toastEx.error("新增失敗", err);
 			}
 		},
-		[crud, httpPostAsync, listLoader, token]
+		[crud, httpPostAsync, listLoader, token],
 	);
 
 	// READ
@@ -186,7 +186,7 @@ export const useC06 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, sqtyManager, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid],
 	);
 
 	const handleSelect = useCallback(
@@ -197,7 +197,7 @@ export const useC06 = () => {
 
 			loadItem({ id: rowData.訂貨單號 });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const spDeptDisabled = useMemo(() => {
@@ -211,7 +211,7 @@ export const useC06 = () => {
 			if (spDept && grid.gridData.filter((x) => x.prod).length > 0) {
 				const collected = C06.transformForSubmitting(
 					formData,
-					grid.gridData
+					grid.gridData,
 				);
 				console.log("collected", collected);
 				try {
@@ -229,8 +229,8 @@ export const useC06 = () => {
 							crud.creating
 								? {
 										fillRows: true,
-								  }
-								: null
+									}
+								: null,
 						);
 						updateAmt({ setValue, gridData: data.prods });
 						toastEx.info("商品單價已更新");
@@ -245,7 +245,7 @@ export const useC06 = () => {
 				console.warn("clear values?");
 			}
 		},
-		[grid, httpPostAsync, token, crud.creating, updateAmt]
+		[grid, httpPostAsync, token, crud.creating, updateAmt],
 	);
 
 	const refreshAction = useAction();
@@ -261,7 +261,7 @@ export const useC06 = () => {
 					refreshAction.clear();
 				}
 			},
-		[refreshAction, refreshGrid]
+		[refreshAction, refreshGrid],
 	);
 
 	const handleSupplierChanged = useCallback(
@@ -277,7 +277,7 @@ export const useC06 = () => {
 
 				//refresh-grid
 			},
-		[refreshGrid]
+		[refreshGrid],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -333,7 +333,7 @@ export const useC06 = () => {
 				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
+		[crud, httpPutAsync, listLoader, loadItem, token],
 	);
 
 	//DELETE
@@ -374,7 +374,7 @@ export const useC06 = () => {
 				params: C06.transformAsQueryParams(data),
 			});
 		},
-		[listLoader]
+		[listLoader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -422,7 +422,7 @@ export const useC06 = () => {
 				toastEx.error("查詢報價失敗", err);
 			}
 		},
-		[httpGetAsync, sqtyManager, token]
+		[httpGetAsync, sqtyManager, token],
 	);
 
 	const sprodDisabled = useCallback(
@@ -430,7 +430,7 @@ export const useC06 = () => {
 			// return !!crud.itemData?.transOutOrders?.length > 0;
 			return !!crud.itemData?.TxoID;
 		},
-		[crud.itemData?.TxoID]
+		[crud.itemData?.TxoID],
 	);
 
 	const sqtyDisabled = useCallback(
@@ -438,21 +438,21 @@ export const useC06 = () => {
 			// return !!crud.itemData?.transOutOrders?.length > 0;
 			return !!crud.itemData?.TxoID;
 		},
-		[crud.itemData?.TxoID]
+		[crud.itemData?.TxoID],
 	);
 
 	const sNotQtyDisabled = useCallback(
 		({ rowData }) => {
 			return !crud.itemData?.TxoID;
 		},
-		[crud.itemData?.TxoID]
+		[crud.itemData?.TxoID],
 	);
 
 	const stypeDisabled = useCallback(
 		({ rowData }) => {
 			return !!crud.itemData?.transOutOrders?.length > 0;
 		},
-		[crud.itemData?.transOutOrders?.length]
+		[crud.itemData?.transOutOrders?.length],
 	);
 
 	// const fetchAmt = useCallback(
@@ -485,16 +485,38 @@ export const useC06 = () => {
 	// );
 
 	const handleGridProdChange = useCallback(
-		async ({ rowData, formData }) => {
+		async ({ rowData, formData, newValue, rowIndex }) => {
 			let processedRowData = {
 				...rowData,
 			};
 			const prodInfo = processedRowData.prod?.ProdID
 				? await getProdInfo(processedRowData.prod?.ProdID, {
 						spDept: formData.spDept,
-				  })
+					})
 				: null;
 			console.log("prodInfo", prodInfo);
+
+			// 重複商品檢查, 無法實做，因為 stype 是後選的
+			// const { prod } = rowData;
+
+			// const prodRowIndex = rowData.prod?.ProdID
+			// 	? C06.findProdIndex({
+			// 			newValue,
+			// 			rowData,
+			// 			rowIndex,
+			// 		})
+			// 	: -1;
+
+			// const found = rowData.prod?.ProdID && prodRowIndex !== -1;
+
+			// // 檢查是否已存在
+			// if (found) {
+			// 	toastEx.error(
+			// 		`「${prod.ProdID} / ${prod.ProdData}${prod.stype?.id ? ` / ${prod.stype.label}` : ""}」已存在於第 ${
+			// 			prodRowIndex + 1
+			// 		} 筆, 請重新選擇`,
+			// 	);
+			// }
 
 			// let transferPriceEmpty = !prodInfo?.Price || prodInfo?.Price == 0;
 			// D3 調撥成本只有判斷是否為空白, 若為 0 算是有填
@@ -506,7 +528,7 @@ export const useC06 = () => {
 					`「${processedRowData.prod?.ProdData}」未設定調撥成本不可輸入`,
 					{
 						position: "top-right",
-					}
+					},
 				);
 			}
 
@@ -532,7 +554,7 @@ export const useC06 = () => {
 			};
 			return processedRowData;
 		},
-		[getProdInfo]
+		[getProdInfo],
 	);
 
 	const mapTooltip = useCallback(
@@ -579,11 +601,11 @@ export const useC06 = () => {
 				return row; // 不符合條件則返回原本的列
 			});
 		},
-		[sqtyManager]
+		[sqtyManager],
 	);
 
 	const onUpdateRow = useCallback(
-		({ fromRowIndex, formData, updateResult }) =>
+		({ fromRowIndex, formData, newValue, updateResult }) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				updateResult.rowIndex = rowIndex;
@@ -599,12 +621,14 @@ export const useC06 = () => {
 					updateResult.cols.push("prod");
 					console.log(
 						`prod[${rowIndex}] changed`,
-						processedRowData.prod
+						processedRowData.prod,
 					);
 
 					processedRowData = await handleGridProdChange({
+						rowIndex,
 						rowData: processedRowData,
 						formData,
+						newValue,
 					});
 				}
 
@@ -642,8 +666,8 @@ export const useC06 = () => {
 							!rowData.SPrice || !rowData.SQty
 								? ""
 								: rowData.stype
-								? 0
-								: rowData.SPrice * rowData.SQty,
+									? 0
+									: rowData.SPrice * rowData.SQty,
 					};
 					updateResult.rows++;
 					updateResult.cols.push("SAmt");
@@ -653,7 +677,7 @@ export const useC06 = () => {
 				}
 				return processedRowData;
 			},
-		[grid.gridData, handleGridProdChange]
+		[grid.gridData, handleGridProdChange],
 	);
 
 	const onGridChanged = useCallback(
@@ -676,7 +700,7 @@ export const useC06 = () => {
 				return updated;
 			}
 		},
-		[mapTooltip, updateAmt]
+		[mapTooltip, updateAmt],
 	);
 
 	// const buildGridChangeHandlerOld = useCallback(
@@ -869,7 +893,7 @@ export const useC06 = () => {
 			handleCreate,
 			handleUpdate,
 			grid.gridData,
-		]
+		],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -903,7 +927,7 @@ export const useC06 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.OrdID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.OrdID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -916,7 +940,7 @@ export const useC06 = () => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	const onRefreshGridSubmit = useCallback(
@@ -927,7 +951,7 @@ export const useC06 = () => {
 					if (grid.gridData.length > 0) {
 						const collected = C06.transformForSubmitting(
 							data,
-							grid.gridData
+							grid.gridData,
 						);
 						console.log("collected", collected);
 
@@ -939,7 +963,7 @@ export const useC06 = () => {
 						console.log("refresh-grid.payload", payload);
 						if (status.success) {
 							const data = C06.transformForReading(
-								payload.data[0]
+								payload.data[0],
 							);
 							console.log("refreshed data", data);
 							grid.initGridData(data.prods, {
@@ -961,7 +985,7 @@ export const useC06 = () => {
 					// 還原
 				}
 			},
-		[grid, httpPostAsync, token, updateAmt]
+		[grid, httpPostAsync, token, updateAmt],
 	);
 
 	const onRefreshGridSubmitError = useCallback((err) => {
@@ -1004,7 +1028,7 @@ export const useC06 = () => {
 					refreshGrid({ formData: getValues(), setValue });
 				}
 			},
-		[grid.gridData, refreshGrid]
+		[grid.gridData, refreshGrid],
 	);
 
 	const getSPriceClassName = useCallback(({ rowData }) => {

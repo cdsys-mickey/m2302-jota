@@ -66,7 +66,7 @@ const transformForReading = (payload) => {
 			? {
 					CodeID: PDlineID,
 					CodeData: PDlineData_N,
-			  }
+				}
 			: null,
 		prods: transformGridForReading(MatOut_S),
 		remark: Remark.join("\n"),
@@ -119,21 +119,22 @@ const isFiltered = (criteria) => {
 	return Objects.isAnyPropNotEmpty(criteria, "employee,pdate,pdline");
 };
 
-const findProdIndex = ({ newValue, rowData, rowIndex }) => {
-	if (!rowData?.prod?.ProdID) {
-		return -1;
-	}
+// moved to ProdGrids
+// const findProdIndex = ({ newValue, rowData, rowIndex }) => {
+// 	if (!rowData?.prod?.ProdID) {
+// 		return -1;
+// 	}
 
-	const targetProdID = rowData.prod.ProdID;
+// 	const targetProdID = rowData.prod.ProdID;
 
-	for (let i = 0; i < newValue.length; i++) {
-		if (i !== rowIndex && newValue[i]?.prod?.ProdID === targetProdID) {
-			return i;
-		}
-	}
+// 	for (let i = 0; i < newValue.length; i++) {
+// 		if (i !== rowIndex && newValue[i]?.prod?.ProdID === targetProdID) {
+// 			return i;
+// 		}
+// 	}
 
-	return -1;
-};
+// 	return -1;
+// };
 
 const getTooltip = ({ rowData, rowIndex }) => {
 	let results = [];
@@ -182,7 +183,7 @@ const D01 = {
 	transformGridForReading,
 	getTotal,
 	isFiltered,
-	findProdIndex,
+	// findProdIndex,
 	getTooltip,
 	getTooltips,
 };

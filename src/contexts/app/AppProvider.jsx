@@ -12,7 +12,7 @@ export const AppProvider = ({ children }) => {
 
 		if (updatedVersion) {
 			// 顯示含版號的成功訊息
-			toastEx.success(`系統已成功更新至最新版本 ${updatedVersion}！`, {
+			toastEx.info(`系統已成功更新至最新版本 ${updatedVersion}！`, {
 				position: "top-center",
 				autoClose: 5000, // 給使用者多一點時間看版號
 			});

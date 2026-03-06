@@ -116,19 +116,27 @@ const DateInputComponent = memo((props) => {
 		escPressed: false,
 		tabPressed: false,
 		invalid: false,
+		errorHandling: false
 	})
 
-	asyncRef.current = {
+	// asyncRef.current = {
+	// 	rowData,
+	// 	setRowData,
+	// 	continuousUpdates,
+	// 	firstRender,
+	// 	focusedAt: asyncRef.current.focusedAt,
+	// 	changedAt: asyncRef.current.changedAt,
+	// 	escPressed: asyncRef.current.escPressed,
+	// 	tabPressed: asyncRef.current.tabPressed,
+	// 	invalid: asyncRef.current.invalid,
+	// }
+
+	Object.assign(asyncRef.current, {
 		rowData,
 		setRowData,
 		continuousUpdates,
 		firstRender,
-		focusedAt: asyncRef.current.focusedAt,
-		changedAt: asyncRef.current.changedAt,
-		escPressed: asyncRef.current.escPressed,
-		tabPressed: asyncRef.current.tabPressed,
-		invalid: asyncRef.current.invalid
-	}
+	});
 
 	const applyMask = useCallback((value) => {
 		// 移除非數字字符
@@ -345,57 +353,68 @@ const DateInputComponent = memo((props) => {
 	}, []);
 
 	const checkLeave = useCallback(() => {
-		if (inputRef.current) {
-			console.log("changedAt >= focusedAt", asyncRef.current.changedAt >= asyncRef.current.focusedAt);
-			console.log("invalid", asyncRef.current.invalid)
-			const modified = asyncRef.current.changedAt >= asyncRef.current.focusedAt;
-			if (
-				!asyncRef.current.escPressed &&
-				!asyncRef.current.continuousUpdates &&
-				!asyncRef.current.firstRender &&
-				(modified || asyncRef.current.invalid)
-			) {
-				if (!inputRef.current.value) {
-					if (required) {
-						const message = getRequiredMessage({ value: inputRef.current.value })
-
-						toastEx.error(message, {
-							position: "top-right"
-						})
-						refocus();
-					}
-				} else {
-					const validationResult = isValidDate(inputRef.current.value);
-					console.log("isValidDate", validationResult);
-					asyncRef.current.invalid = !validationResult;
-
-					// 變更時錯誤的那次不能觸發
-					if ((!modified || asyncRef.current.tabPressed) && asyncRef.current.invalid) {
-						toastEx.error(`"${inputRef.current.value}" 不是正確的日期格式`, {
-							position: "top-right"
-						})
-						if (asyncRef.current.tabPressed) {
-							asyncRef.current.tabPressed = false;
-							inputRef.current.value = "";
-						}
-						refocus({
-							touch: true,
-						})
-					}
-
-					// if (!validationResult) {
-
-					// }
-				}
-
-				console.log(`${DateInputComponent.displayName}.setRowData`, inputRef.current.value);
-				asyncRef.current.setRowData(inputRef.current.value || "");
-			}
-			inputRef.current.blur();
+		// 如果正在處理錯誤，或者組件已經卸載，直接跳過
+		if (!inputRef.current || asyncRef.current.errorHandling) {
+			return;
 		}
+
+		const value = inputRef.current.value;
+		const modified = asyncRef.current.changedAt >= asyncRef.current.focusedAt;
+
+		// 判斷是否需要驗證
+		const shouldValidate = !asyncRef.current.escPressed &&
+			!asyncRef.current.firstRender &&
+			(modified || asyncRef.current.invalid || (required && !value));
+
+		if (shouldValidate) {
+			// --- 情況 A: 必填檢查 ---
+			if (!value && required) {
+				asyncRef.current.errorHandling = true; // 鎖定
+				toastEx.error(getRequiredMessage({ value }), { position: "top-right" });
+
+				asyncRef.current.changedAt = 0; // 清除修改標記避免迴圈
+				setTimeout(() => {
+					refocus({ touch: true });
+					// 延遲久一點再解鎖，確保 refocus 引起的渲染已完成
+					setTimeout(() => { asyncRef.current.errorHandling = false; }, 300);
+				}, 50);
+				return;
+			}
+
+			// --- 情況 B: 格式檢查 ---
+			if (value) {
+				const validationResult = isValidDate(value);
+				asyncRef.current.invalid = !validationResult;
+
+				if (asyncRef.current.invalid) {
+					asyncRef.current.errorHandling = true; // 鎖定
+					toastEx.error(`"${value}" 不是正確的日期格式`, { position: "top-right" });
+
+					if (asyncRef.current.tabPressed) {
+						asyncRef.current.tabPressed = false;
+						inputRef.current.value = "";
+					}
+
+					asyncRef.current.changedAt = 0;
+					setTimeout(() => {
+						refocus({ touch: true });
+						setTimeout(() => { asyncRef.current.errorHandling = false; }, 300);
+					}, 50);
+					return;
+				}
+			}
+
+			// --- 情況 C: 通過驗證 ---
+			console.log("Validation passed, updating rowData");
+			asyncRef.current.setRowData(value || "");
+		}
+
+		inputRef.current.blur();
 	}, [getRequiredMessage, isValidDate, refocus, required]);
 
 	useLayoutEffect(() => {
+		if (asyncRef.current.errorHandling) return; // 鎖定期間不回應 focus 變化
+
 		if (focus) {
 			checkEnter();
 		} else {

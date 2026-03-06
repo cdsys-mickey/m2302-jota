@@ -82,7 +82,7 @@ const transformGridForSubmitting = (gridData) => {
 					stype,
 					...rest
 				},
-				index
+				index,
 			) => ({
 				Pkey: Pkey?.length < 36 ? "" : Pkey,
 				SProdID: prod?.ProdID,
@@ -95,7 +95,7 @@ const transformGridForSubmitting = (gridData) => {
 				SType: stype?.id || "",
 				Seq: index + 1,
 				...rest,
-			})
+			}),
 		);
 };
 
@@ -219,7 +219,7 @@ const getTotal = (gridData) => {
 const isFiltered = (criteria) => {
 	return Objects.isAnyPropNotEmpty(
 		criteria,
-		"supplier,spn,spa,spu,rd,employee,tt"
+		"supplier,spn,spa,spu,rd,employee,tt",
 	);
 };
 
@@ -267,6 +267,27 @@ const stringifyOrders = (orders) => {
 		: "";
 };
 
+const findProdIndex = ({ newValue, rowData, rowIndex }) => {
+	if (!rowData?.prod?.ProdID) {
+		return -1;
+	}
+
+	const targetProdID = rowData.prod.ProdID;
+	const targetSType = rowData.prod.style?.id;
+
+	for (let i = 0; i < newValue.length; i++) {
+		if (
+			i !== rowIndex &&
+			newValue[i]?.prod?.ProdID === targetProdID &&
+			newValue[i]?.prod?.stype?.id === targetSType
+		) {
+			return i;
+		}
+	}
+
+	return -1;
+};
+
 const C06 = {
 	transformForReading,
 	transformForSubmitting,
@@ -285,6 +306,7 @@ const C06 = {
 	getTooltip,
 	getTooltips,
 	isOptionEqualToValue,
+	findProdIndex,
 };
 
 export default C06;

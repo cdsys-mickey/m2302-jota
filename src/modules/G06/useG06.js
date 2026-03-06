@@ -301,6 +301,8 @@ export const useG06 = ({ token }) => {
 								a06Err,
 							);
 						}
+					} else {
+						customerRef.current = null;
 					}
 
 					crud.finishedReading({

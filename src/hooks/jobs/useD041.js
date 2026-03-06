@@ -64,7 +64,7 @@ export const useD041 = () => {
 			stype: null,
 			SRemark: "",
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -131,13 +131,13 @@ export const useD041 = () => {
 		async ({ data }) => {
 			try {
 				crud.startCreating();
-				const { status, error } = await httpPostAsync({
+				const { status, error, payload } = await httpPostAsync({
 					url: "v1/own-brand/stocking-orders",
 					data: data,
 					bearer: token,
 				});
 				if (status.success) {
-					toastEx.success(`新增成功`);
+					toastEx.success(`新增完成，單號：${payload.EntID}`);
 					crud.finishedCreating();
 					crud.cancelReading();
 					listLoader.loadList({ refresh: true });
@@ -155,7 +155,7 @@ export const useD041 = () => {
 				}
 			}
 		},
-		[crud, httpPostAsync, listLoader, token]
+		[crud, httpPostAsync, listLoader, token],
 	);
 
 	// READ
@@ -189,7 +189,7 @@ export const useD041 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[crud, httpGetAsync, grid, token]
+		[crud, httpGetAsync, grid, token],
 	);
 
 	const handleSelect = useCallback(
@@ -200,7 +200,7 @@ export const useD041 = () => {
 
 			loadItem({ id: rowData.入庫單號 });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -242,7 +242,7 @@ export const useD041 = () => {
 					bearer: token,
 				});
 				if (status.success) {
-					toastEx.success(`修改成功`);
+					toastEx.success(`修改完成`);
 					crud.finishedUpdating();
 					//crud.cancelReading();
 					loadItem({ refresh: true });
@@ -256,7 +256,7 @@ export const useD041 = () => {
 				toastEx.error("修改失敗", err);
 			}
 		},
-		[crud, httpPutAsync, listLoader, loadItem, token]
+		[crud, httpPutAsync, listLoader, loadItem, token],
 	);
 
 	//DELETE
@@ -303,7 +303,7 @@ export const useD041 = () => {
 					pdline: null,
 				});
 			},
-		[]
+		[],
 	);
 
 	const onSearchSubmit = useCallback(
@@ -314,7 +314,7 @@ export const useD041 = () => {
 				params: D041.transformAsQueryParams(data),
 			});
 		},
-		[handlePopperClose, listLoader]
+		[handlePopperClose, listLoader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -350,7 +350,7 @@ export const useD041 = () => {
 
 			return rowData;
 		},
-		[]
+		[],
 	);
 
 	const updateGridRow = useCallback(
@@ -372,7 +372,7 @@ export const useD041 = () => {
 				}
 				return processedRowData;
 			},
-		[grid.gridData, handleGridProdChange]
+		[grid.gridData, handleGridProdChange],
 	);
 
 	const buildGridChangeHandler = useCallback(
@@ -389,7 +389,7 @@ export const useD041 = () => {
 							newValue
 								.slice(
 									operation.fromRowIndex,
-									operation.toRowIndex
+									operation.toRowIndex,
 								)
 								.map(async (item, index) => {
 									const updatedRow = await updateGridRow({
@@ -397,14 +397,14 @@ export const useD041 = () => {
 										newValue,
 									})(item, index);
 									return updatedRow;
-								})
+								}),
 						);
 						console.log("updatedRows", updatedRows);
 
 						newGridData.splice(
 							operation.fromRowIndex,
 							updatedRows.length,
-							...updatedRows
+							...updatedRows,
 						);
 						// newValue
 						// 	.slice(operation.fromRowIndex, operation.toRowIndex)
@@ -441,7 +441,7 @@ export const useD041 = () => {
 					grid.setGridData(newGridData);
 				}
 			},
-		[updateGridRow, grid]
+		[updateGridRow, grid],
 	);
 
 	const onEditorSubmit = useCallback(
@@ -463,7 +463,7 @@ export const useD041 = () => {
 			handleCreate,
 			handleUpdate,
 			grid.gridData,
-		]
+		],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -496,7 +496,7 @@ export const useD041 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.EntID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.EntID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -509,7 +509,7 @@ export const useD041 = () => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	// 有效日期查詢

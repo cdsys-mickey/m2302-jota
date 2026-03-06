@@ -266,6 +266,10 @@ export const useE021 = ({ mode }) => {
 					setSelectedOrd(data);
 
 					grid.initGridData(data.prods);
+
+					if (data.AccYMD) {
+						toastEx.warn(`已轉應收帳(${data.AccYMD})`);
+					}
 				} else {
 					throw error ?? new Error("未預期例外");
 				}
@@ -400,7 +404,7 @@ export const useE021 = ({ mode }) => {
 					}),
 				};
 
-				const { status, error } = creating
+				const { status, error, payload } = creating
 					? await httpPostAsync({
 							url: "v1/sales/invoices",
 							data: _data,
@@ -418,7 +422,11 @@ export const useE021 = ({ mode }) => {
 							},
 						});
 				if (status.success) {
-					toastEx.success(creating ? `新增成功` : "修改成功");
+					toastEx.success(
+						creating
+							? `新增完成，單號：${payload.SalID}`
+							: "修改完成",
+					);
 					if (creating) {
 						crud.finishedCreating();
 						crud.cancelReading();

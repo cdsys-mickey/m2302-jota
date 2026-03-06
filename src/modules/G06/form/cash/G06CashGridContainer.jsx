@@ -1,18 +1,14 @@
-import { AuthContext } from "@/contexts/auth/AuthContext";
+import { createDateInputColumn } from "@/shared-components/dsg/columns/date-input/createDateInputColumn";
+import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
 import { DSGContext } from "@/shared-contexts/datasheet-grid/DSGContext";
-import { useWindowSize } from "@/shared-hooks/useWindowSize";
+import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
+import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
 import PropTypes from "prop-types";
 import { useContext, useMemo } from "react";
-import G06CashGrid from "./G06CashGrid";
-import { G06Context } from "../../G06Context";
-import { useDSGMeta } from "@/shared-hooks/dsg/useDSGMeta";
-import { DSGLastCellBehavior } from "@/shared-hooks/dsg/DSGLastCellBehavior";
 import { keyColumn } from "react-datasheet-grid";
-import { dateInputColumn } from "@/shared-components/dsg/columns/date-input/dateInputColumn";
-import { createFloatColumn } from "@/shared-components/dsg/columns/float/createFloatColumn";
-import { FormMetaContext } from "@/shared-components/form-meta/FormMetaContext";
 import { useFormContext } from "react-hook-form";
-import { createDateInputColumn } from "@/shared-components/dsg/columns/date-input/createDateInputColumn";
+import { G06Context } from "../../G06Context";
+import G06CashGrid from "./G06CashGrid";
 
 export const G06CashGridContainer = (props) => {
 	const { ...rest } = props;

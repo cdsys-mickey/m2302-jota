@@ -16,6 +16,7 @@ import useJotaReports from "../useJotaReports";
 import { useSideDrawer } from "../useSideDrawer";
 import useSQtyManager from "../useSQtyManager";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import ProdGrids from "@/modules/ProdGrids";
 
 const DEFAULT_ROWS = 10;
 
@@ -69,7 +70,7 @@ export const useD01 = () => {
 			SOrdID: "",
 			SExpDate: null,
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -177,7 +178,7 @@ export const useD01 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, sqtyManager, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid],
 	);
 
 	/**
@@ -193,20 +194,24 @@ export const useD01 = () => {
 					crud.startUpdating();
 				}
 
-				const { status, error } = creating
+				const { status, error, payload } = creating
 					? await httpPostAsync({
 							url: "v1/mat/picking-orders",
 							data: data,
 							bearer: token,
-					  })
+						})
 					: await httpPutAsync({
 							url: "v1/mat/picking-orders",
 							data: data,
 							bearer: token,
-					  });
+						});
 
 				if (status.success) {
-					toastEx.success(creating ? `新增成功` : `修改成功`);
+					toastEx.success(
+						creating
+							? `新增完成，單號：${payload.OutID}`
+							: `修改完成`,
+					);
 					if (creating) {
 						crud.finishedCreating();
 						crud.cancelReading();
@@ -253,7 +258,7 @@ export const useD01 = () => {
 			loadItem,
 			sqtyManager,
 			token,
-		]
+		],
 	);
 
 	const handleSelect = useCallback(
@@ -264,7 +269,7 @@ export const useD01 = () => {
 
 			loadItem({ id: rowData.領料單號 });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const confirmQuitCreating = useCallback(() => {
@@ -369,7 +374,7 @@ export const useD01 = () => {
 					pdline: null,
 				});
 			},
-		[]
+		[],
 	);
 
 	const onSearchSubmit = useCallback(
@@ -380,7 +385,7 @@ export const useD01 = () => {
 				params: D01.transformAsQueryParams(data),
 			});
 		},
-		[handlePopperClose, listLoader]
+		[handlePopperClose, listLoader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -424,7 +429,7 @@ export const useD01 = () => {
 				if (status.success) {
 					sqtyManager.updateStockQty(
 						prodId,
-						payload.Stock ?? payload.StockQty
+						payload.Stock ?? payload.StockQty,
 					);
 					return payload;
 				} else {
@@ -434,7 +439,7 @@ export const useD01 = () => {
 				toastEx.error("查詢庫存失敗", err);
 			}
 		},
-		[httpGetAsync, sqtyManager, token]
+		[httpGetAsync, sqtyManager, token],
 	);
 
 	const handleGridProdChange = useCallback(
@@ -445,22 +450,18 @@ export const useD01 = () => {
 
 			const { prod } = rowData;
 
-			const prodRowIndex = rowData.prod?.ProdID
-				? D01.findProdIndex({
-						newValue,
-						rowData,
-						rowIndex,
-				  })
-				: -1;
-
-			const found = rowData.prod?.ProdID && prodRowIndex !== -1;
-
+			const drupProdIndex = ProdGrids.findDupProdIndex({
+				newValue,
+				rowData,
+				rowIndex,
+			});
+			const found = drupProdIndex !== -1;
 			// 檢查是否已存在
-			if (found) {
+			if (drupProdIndex !== -1) {
 				toastEx.error(
 					`「${prod.ProdID} / ${prod.ProdData}」已存在於第 ${
-						prodRowIndex + 1
-					} 筆, 請重新選擇`
+						drupProdIndex + 1
+					} 筆, 請重新選擇`,
 				);
 			} else if (rowData.prod) {
 				sqtyManager.updateStockQty(prod.ProdID, prod.StockQty);
@@ -480,7 +481,7 @@ export const useD01 = () => {
 			};
 			return rowData;
 		},
-		[getProdInfo, sqtyManager]
+		[getProdInfo, sqtyManager],
 	);
 
 	const mapTooltip = useCallback(
@@ -540,7 +541,7 @@ export const useD01 = () => {
 				return row; // 不符合條件則返回原本的列
 			});
 		},
-		[sqtyManager]
+		[sqtyManager],
 	);
 
 	const onUpdateRow = useCallback(
@@ -586,7 +587,7 @@ export const useD01 = () => {
 				}
 				return processedRowData;
 			},
-		[grid, handleGridProdChange, mapTooltip, sqtyManager]
+		[grid, handleGridProdChange, mapTooltip, sqtyManager],
 	);
 
 	const onGridChanged = useCallback(
@@ -609,7 +610,7 @@ export const useD01 = () => {
 				return updated;
 			}
 		},
-		[mapTooltip]
+		[mapTooltip],
 	);
 
 	// const buildGridChangeHandler = useCallback(
@@ -711,7 +712,7 @@ export const useD01 = () => {
 				console.log("onEditorSubmit", data);
 				const collected = D01.transformForSubmitting(
 					data,
-					grid.gridData
+					grid.gridData,
 				);
 				console.log("collected", collected);
 				handleSave({ data: collected, setValue, gridMeta });
@@ -723,7 +724,7 @@ export const useD01 = () => {
 				// 	console.error("UNKNOWN SUBMIT TYPE");
 				// }
 			},
-		[sqtyManager, grid.gridData, handleSave]
+		[sqtyManager, grid.gridData, handleSave],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -757,7 +758,7 @@ export const useD01 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.OutID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.OutID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -770,7 +771,7 @@ export const useD01 = () => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	// 有效日期查詢

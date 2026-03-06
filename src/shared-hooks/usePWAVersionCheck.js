@@ -83,22 +83,36 @@ export default function usePWAVersionCheck(opts) {
 	 * 保留 just-updated Cookie 用於重整後的狀態識別
 	 */
 	const applyUpdate = useCallback(async () => {
+		// 額外保險：手動清除 Cache Storage (選用，視乎你的 SW 實作)
+		if ("caches" in window) {
+			const keys = await caches.keys();
+			await Promise.all(keys.map((key) => caches.delete(key)));
+		}
+
+		// 1. 確保 SW 進入 skipWaiting
 		if (updateServiceWorker) {
+			// 傳入 true 通常代表立即啟動新 SW
 			await updateServiceWorker(true);
 		}
 
-		// 將新版本號存入 Cookie
+		// 2. 存入 Cookie 作為重整後的標記 (原邏輯保留)
 		if (frontEnd?.version) {
 			Cookies.set("just-updated", frontEnd.version, {
-				expires: 1 / 1440,
+				expires: 1 / 1440, // 1 分鐘
 			});
 		}
 
+		// 3. 強制刷新頁面
 		setTimeout(() => {
+			// 使用 location.reload(true) 或附加隨機參數來繞過快取
 			const url = new URL(window.location.href);
-			url.searchParams.set("t", Date.now()); // 加入時間戳，例如 ?t=1715830000000
-			window.location.replace(url.toString());
-		}, 200);
+			url.searchParams.set("v", frontEnd?.version || Date.now());
+
+			// 關鍵：使用 window.location.reload() 有時比 replace 更有效處理 PWA 更新
+			window.location.href = url.toString();
+			// 在某些瀏覽器中，這能更徹底清除狀態
+			window.location.reload();
+		}, 300);
 	}, [updateServiceWorker, frontEnd?.version]);
 
 	/**

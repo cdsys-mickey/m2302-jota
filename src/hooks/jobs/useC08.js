@@ -64,7 +64,7 @@ export const useC08 = () => {
 			// overrideSQty: null
 			SQtyNote: "",
 		}),
-		[]
+		[],
 	);
 
 	const grid = useDSG({
@@ -128,7 +128,7 @@ export const useC08 = () => {
 				setValue("TxoAmt", "");
 			}
 		},
-		[]
+		[],
 	);
 
 	// const calcProdStock = useCallback(
@@ -195,7 +195,7 @@ export const useC08 = () => {
 				crud.failedReading(err);
 			}
 		},
-		[httpGetAsync, token, crud, sqtyManager, grid]
+		[httpGetAsync, token, crud, sqtyManager, grid],
 	);
 
 	const handleSave = useCallback(
@@ -208,7 +208,7 @@ export const useC08 = () => {
 					crud.startUpdating();
 				}
 
-				const { status, error } = creating
+				const { status, error, payload } = creating
 					? await httpPostAsync({
 							url: "v1/purchase/trans-out-orders",
 							data: data,
@@ -218,7 +218,7 @@ export const useC08 = () => {
 									override: 1,
 								},
 							}),
-					  })
+						})
 					: await httpPutAsync({
 							url: "v1/purchase/trans-out-orders",
 							data: data,
@@ -228,9 +228,13 @@ export const useC08 = () => {
 									override: 1,
 								},
 							}),
-					  });
+						});
 				if (status.success) {
-					toastEx.success(creating ? `新增成功` : `修改成功`);
+					toastEx.success(
+						creating
+							? `新增完成，單號：${payload.TxoID}`
+							: `修改完成`,
+					);
 					if (creating) {
 						crud.finishedCreating();
 						crud.cancelReading();
@@ -295,7 +299,7 @@ export const useC08 = () => {
 			pwordCheck,
 			sqtyManager,
 			token,
-		]
+		],
 	);
 
 	const handleSelect = useCallback(
@@ -306,7 +310,7 @@ export const useC08 = () => {
 
 			loadItem({ id: rowData.撥出單號 });
 		},
-		[crud, loadItem]
+		[crud, loadItem],
 	);
 
 	const refreshAction = useAction();
@@ -422,7 +426,7 @@ export const useC08 = () => {
 					transType: null,
 				});
 			},
-		[]
+		[],
 	);
 
 	const onSearchSubmit = useCallback(
@@ -433,7 +437,7 @@ export const useC08 = () => {
 				params: C08.transformAsQueryParams(data),
 			});
 		},
-		[handlePopperClose, listLoader]
+		[handlePopperClose, listLoader],
 	);
 
 	const onSearchSubmitError = useCallback((err) => {
@@ -473,7 +477,7 @@ export const useC08 = () => {
 				toastEx.error("查詢調撥成本失敗", err);
 			}
 		},
-		[httpGetAsync, sqtyManager, token]
+		[httpGetAsync, sqtyManager, token],
 	);
 
 	const overrideSQtyDisabled = useCallback(({ rowData }) => {
@@ -495,7 +499,7 @@ export const useC08 = () => {
 			const prodInfo = rowData.prod?.ProdID
 				? await getProdInfo(rowData.prod?.ProdID, {
 						txiDeptId,
-				  })
+					})
 				: null;
 
 			// D3 調撥成本只有判斷是否為空白, 若為 0 算是有填
@@ -504,7 +508,7 @@ export const useC08 = () => {
 			// 未設定調撥成本不可輸入
 			if (processedRowData.prod && transferPriceEmpty) {
 				toastEx.error(
-					`「${processedRowData.prod?.ProdData}」未設定調撥成本不可輸入`
+					`「${processedRowData.prod?.ProdData}」未設定調撥成本不可輸入`,
 				);
 			}
 
@@ -529,7 +533,7 @@ export const useC08 = () => {
 
 			return processedRowData;
 		},
-		[getProdInfo]
+		[getProdInfo],
 	);
 
 	const handleGridSPriceChange = useCallback(({ rowData }) => {
@@ -543,8 +547,8 @@ export const useC08 = () => {
 				!rowData.SPrice || !rowData.SQty
 					? ""
 					: rowData.stype?.id
-					? 0
-					: rowData.SPrice * rowData.SQty,
+						? 0
+						: rowData.SPrice * rowData.SQty,
 		};
 		return processedRowData;
 	}, []);
@@ -556,7 +560,7 @@ export const useC08 = () => {
 		({ key, rowData }) => {
 			return !sprodDisabled({ rowData });
 		},
-		[sprodDisabled]
+		[sprodDisabled],
 	);
 
 	const mapTooltip = useCallback(
@@ -619,18 +623,18 @@ export const useC08 = () => {
 				return row; // 不符合條件則返回原本的列
 			});
 		},
-		[sqtyManager]
+		[sqtyManager],
 	);
 
 	const onUpdateRow = useCallback(
 		({
-				fromRowIndex,
-				formData,
-				newValue,
-				setValue,
-				gridMeta,
-				updateResult,
-			}) =>
+			fromRowIndex,
+			formData,
+			newValue,
+			setValue,
+			gridMeta,
+			updateResult,
+		}) =>
 			async (rowData, index) => {
 				const rowIndex = fromRowIndex + index;
 				updateResult.rowIndex = rowIndex;
@@ -711,7 +715,7 @@ export const useC08 = () => {
 			handleRefreshAmt,
 			mapTooltip,
 			sqtyManager,
-		]
+		],
 	);
 
 	const onGridChanged = useCallback(
@@ -733,7 +737,7 @@ export const useC08 = () => {
 					.map((item) => item.SOrdID.split("#")[0]); // 提取 # 前的部分
 
 				const newDepOrders = formData.depOrders.filter((depOrder) =>
-					gridOrderNumbers.includes(depOrder["訂貨單號"])
+					gridOrderNumbers.includes(depOrder["訂貨單號"]),
 				);
 				if (newDepOrders.length != formData.depOrders.length) {
 					setValue("depOrders", newDepOrders);
@@ -756,7 +760,7 @@ export const useC08 = () => {
 				return updated;
 			}
 		},
-		[handleRefreshAmt, mapTooltip]
+		[handleRefreshAmt, mapTooltip],
 	);
 
 	const onEditorSubmit = useCallback(
@@ -767,7 +771,7 @@ export const useC08 = () => {
 				console.log("prodGrid.gridData", grid.gridData);
 				const collected = C08.transformForSubmitting(
 					data,
-					grid.gridData
+					grid.gridData,
 				);
 				console.log("collected", collected);
 				handleSave({ data: collected, setValue, gridMeta });
@@ -779,7 +783,7 @@ export const useC08 = () => {
 				// 	console.error("UNKNOWN SUBMIT TYPE");
 				// }
 			},
-		[sqtyManager, grid.gridData, handleSave]
+		[sqtyManager, grid.gridData, handleSave],
 	);
 
 	const onEditorSubmitError = useCallback((err) => {
@@ -807,7 +811,7 @@ export const useC08 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[crud.itemData?.TxoID, operator?.CurDeptID, reportUrl, reports]
+		[crud.itemData?.TxoID, operator?.CurDeptID, reportUrl, reports],
 	);
 
 	const onPrintSubmitError = useCallback((err) => {
@@ -820,7 +824,7 @@ export const useC08 = () => {
 				console.log("handlePrint", outputType);
 				setValue("outputType", outputType);
 			},
-		[]
+		[],
 	);
 
 	const checkEditableAction = useAction();
@@ -859,7 +863,7 @@ export const useC08 = () => {
 
 			const ordIds = [...new Set(gridData.map((item) => item.ordId))];
 			const filteredOrders = newOrders.filter((order) =>
-				ordIds.includes(order["訂貨單號"])
+				ordIds.includes(order["訂貨單號"]),
 			);
 
 			if (filteredOrders.length < newOrders.length) {
@@ -870,11 +874,11 @@ export const useC08 = () => {
 					.map((order) => order["訂貨單號"]);
 
 				toastEx.warn(
-					`訂貨單號 ${filteredOutOrdIds.join(", ")} 已同步移除`
+					`訂貨單號 ${filteredOutOrdIds.join(", ")} 已同步移除`,
 				);
 			}
 		},
-		[]
+		[],
 	);
 
 	const handleDepOrdersChanged = useCallback(
@@ -892,7 +896,7 @@ export const useC08 = () => {
 				console.log("formData", formData);
 				const collected = C08.transformForSubmitting(
 					formData,
-					grid.gridData
+					grid.gridData,
 				);
 				console.log("collected", collected);
 				try {
@@ -935,7 +939,7 @@ export const useC08 = () => {
 			token,
 			handleRefreshAmt,
 			checkAndRemoveDepOrders,
-		]
+		],
 	);
 
 	const handleTxiDeptChanged = useCallback(
@@ -953,7 +957,7 @@ export const useC08 = () => {
 					// 若沒有 depOrders 則 refresh-grid
 					const collected = C08.transformForSubmitting(
 						formData,
-						grid.gridData
+						grid.gridData,
 					);
 					console.log("collected", collected);
 					try {
@@ -964,7 +968,7 @@ export const useC08 = () => {
 						});
 						if (status.success) {
 							const data = C08.transformForReading(
-								payload.data[0]
+								payload.data[0],
 							);
 							console.log("refreshed data", data);
 							grid.setGridData(data.prods, {
@@ -983,7 +987,7 @@ export const useC08 = () => {
 					}
 				}
 			},
-		[httpPostAsync, grid, handleRefreshAmt, token]
+		[httpPostAsync, grid, handleRefreshAmt, token],
 	);
 
 	const sqtyDisabled = useCallback(({ rowData }) => {
@@ -998,7 +1002,7 @@ export const useC08 = () => {
 		({ rowData }) => {
 			return !rowData.prod || !!crud.itemData?.txoOrders?.length > 0;
 		},
-		[crud.itemData?.txoOrders?.length]
+		[crud.itemData?.txoOrders?.length],
 	);
 
 	const getSPriceClassName = useCallback(({ rowData }) => {
