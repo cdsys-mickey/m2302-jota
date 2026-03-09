@@ -909,6 +909,9 @@ export const useC08 = () => {
 					if (status.success) {
 						const data = C08.transformForReading(payload.data[0]);
 						console.log("refreshed data", data);
+						sqtyManager.recoverStockMap(data.prods, {
+							safety: true,
+						});
 						grid.setGridData(data.prods, {
 							fillRows: true,
 							supressEvents: true,
