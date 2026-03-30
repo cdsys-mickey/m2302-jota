@@ -64,7 +64,8 @@ export const G02ListViewContainer = () => {
 					lvID: debouncedID
 				})
 			},
-			supressLoading: true,
+			reset: true,
+			// supressLoading: true,
 		});
 	}, [debouncedDate, debouncedCustId, debouncedCustName, debouncedTel, debouncedID]);
 

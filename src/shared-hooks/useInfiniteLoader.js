@@ -110,17 +110,18 @@ export const useInfiniteLoader = (props = {}) => {
 			refresh = false,
 			// usePrevParams = false,
 			supressLoading = false,
-			// reset = false,
+			reset = false,
 		} = {}) => {
 			const loading =
-				(refresh || Objects.hasNoProps(loadingMap)) && !supressLoading;
+				(reset || refresh || Objects.hasNoProps(loadingMap)) &&
+				!supressLoading;
 			console.log("loading", loading);
 
 			let startIndex = start !== undefined ? start : 0;
 			let stopIndex =
 				stop !== undefined ? stop : startIndex + initialFetchSize;
 
-			if (refresh) {
+			if (refresh || reset) {
 				Object.keys(loadingMap).forEach((key) => {
 					delete loadingMap[key];
 				});
@@ -138,11 +139,11 @@ export const useInfiniteLoader = (props = {}) => {
 				);
 				activeParams = params;
 			} else {
-				if (refresh) {
-					activeParams = context.paramsRef?.current;
-				} else {
+				if (params || reset) {
 					context.paramsRef.current = params;
 					activeParams = params;
+				} else {
+					activeParams = context.paramsRef?.current;
 				}
 			}
 
@@ -191,7 +192,7 @@ export const useInfiniteLoader = (props = {}) => {
 					// listData
 					// console.log("newData", newData);
 
-					if (refresh) {
+					if (refresh || reset) {
 						setListData(partialListData);
 						// setListItems(listItems);
 						// Maps.addEntries(listMap, partialListData, {
