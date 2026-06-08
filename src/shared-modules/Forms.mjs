@@ -1,5 +1,5 @@
 import { toastEx } from "shared-components/toast-ex";
-import { isBefore, isValid } from "date-fns";
+import { isAfter, isBefore, isValid } from "date-fns";
 import DateFormats from "./DateFormats.mjs";
 import Types from "@/shared-modules/Types.mjs";
 import DateTimes from "./DateTimes.mjs";
@@ -20,7 +20,7 @@ const formatDate = (value, format) => {
 
 const formatDateTime = (
 	value,
-	format = DateFormats.DATEFNS_DATETIME_SECONDS
+	format = DateFormats.DATEFNS_DATETIME_SECONDS,
 ) => {
 	return formatDate(value, format);
 };
@@ -66,7 +66,7 @@ const parseTime = (value, pattern = DateFormats.DATEFNS_TIME) => {
 const parseDateAndTime = (
 	dateValue,
 	timeValue,
-	pattern = DateFormats.DATEFNS_DATETIME
+	pattern = DateFormats.DATEFNS_DATETIME,
 ) => {
 	return DateTimes.parse(`${dateValue} ${dateValue}`, pattern);
 };
@@ -88,7 +88,7 @@ const formatTime = (value, format = "HH:mm") => {
 const processDateFieldsForSubmit = (
 	obj,
 	dateFields,
-	pattern = DateFormats.DATEFNS_DATE
+	pattern = DateFormats.DATEFNS_DATE,
 ) => {
 	if (!dateFields) {
 		throw new Error("dateFields not specified!");
@@ -112,11 +112,11 @@ const processDateFieldsForSubmit = (
 				// resultObj[field] = format(resultObj[field], pattern);
 				resultObj[field] = formatDate(resultObj[field], pattern);
 				console.log(
-					`field [${field}] formatted -> ${resultObj[field]}`
+					`field [${field}] formatted -> ${resultObj[field]}`,
 				);
 			} catch (err) {
 				console.error(
-					`failed to format ${resultObj[field]} as a date in pattern[${pattern}]`
+					`failed to format ${resultObj[field]} as a date in pattern[${pattern}]`,
 				);
 			}
 		}
@@ -127,7 +127,7 @@ const processDateFieldsForSubmit = (
 const processDateFieldsForReset = (
 	obj,
 	dateFields,
-	pattern = DateFormats.DATEFNS_DATE
+	pattern = DateFormats.DATEFNS_DATE,
 ) => {
 	if (!dateFields) {
 		throw new Error("dateFields not specified!");
@@ -146,13 +146,13 @@ const processDateFieldsForReset = (
 		if (resultObj[field]) {
 			try {
 				console.log(
-					`parsing date field[${field}]: ${resultObj[field]}`
+					`parsing date field[${field}]: ${resultObj[field]}`,
 				);
 				// resultObj[field] = DateTimes.parse(resultObj[field], pattern);
 				resultObj[field] = parseDate(resultObj[field], pattern);
 			} catch (err) {
 				console.error(
-					`failed to format ${resultObj[field]} as date in pattern[${pattern}]`
+					`failed to format ${resultObj[field]} as date in pattern[${pattern}]`,
 				);
 			}
 		}
@@ -213,7 +213,13 @@ const getDateValidator =
 			fieldName = "日期",
 			requiredMessage,
 			minDate,
+			maxDate,
+			// 新增 pattern 參數，預設為 DateFormats.DATEFNS_DATE
+			// 如果是年月，呼叫時請傳入 DateFormats.DATEFNS_YEAR_AND_MONTH (yyyy/MM)
+			format = DateFormats.DATEFNS_DATE,
 		} = opts;
+
+		// 1. 處理必填欄位驗證
 		if (!value) {
 			if (required) {
 				if (fieldName) {
@@ -224,13 +230,38 @@ const getDateValidator =
 				}
 				return "日期為必填";
 			}
-		} else if (!isValid(value)) {
+			return true; // 非必填且無值，視為驗證通過
+		}
+
+		// 2. 核心修正：將字串解析為 Date 物件
+		let dateObj = value;
+		if (typeof value === "string") {
+			try {
+				// 使用你現有的 parseDate 方法，依照傳入的格式(如 yyyy/MM)解析
+				dateObj = parseDate(value, format);
+			} catch (err) {
+				return errorMessage;
+			}
+		}
+
+		// 3. 驗證 Date 物件是否有效
+		if (!dateObj || !isValid(dateObj)) {
 			return errorMessage;
-		} else if (minDate) {
-			if (isBefore(value, minDate)) {
+		}
+
+		// 4. 驗證最小值限制
+		if (minDate) {
+			if (isBefore(dateObj, minDate)) {
 				return `必須在 ${Forms.formatDate(minDate)} (含)之後`;
 			}
 		}
+
+		if (maxDate) {
+			if (isAfter(dateObj, maxDate)) {
+				return `必須在 ${Forms.formatDate(minDate)} (含)之前`;
+			}
+		}
+
 		return true;
 	};
 
@@ -272,7 +303,7 @@ const validateTime = (value) => {
 const parseNumber = (value, defaultValue = 0) => {
 	if (typeof value === "number") return value;
 	return typeof value === "string"
-		? Number(value.replace(/,/g, "")) ?? defaultValue
+		? (Number(value.replace(/,/g, "")) ?? defaultValue)
 		: defaultValue;
 };
 

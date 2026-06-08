@@ -8,6 +8,7 @@ import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
 import useAction from "@/shared-modules/ActionState/useAction";
+import { Box } from "@mui/material";
 
 export const useF07 = () => {
 	const crud = useContext(CrudContext);
@@ -22,7 +23,7 @@ export const useF07 = () => {
 	const formMeta = useFormMeta(
 		`
 		
-		`
+		`,
 	);
 
 	// READ
@@ -49,56 +50,83 @@ export const useF07 = () => {
 				crud.failedLoading(err);
 			}
 		},
-		[crud, httpGetAsync, token]
+		[crud, httpGetAsync, token],
 	);
 
-	const handleCarryForward = useCallback(async () => {
-		console.log("handleCarryForward");
-		try {
-			crud.startUpdating();
-			const { status, error } = await httpPostAsync({
-				url: "v1/inv/taking/carry-forward",
-				bearer: token,
-			});
-			if (status.success) {
-				toastEx.success("結轉已成功");
+	const handleCarryForward = useCallback(
+		async (data) => {
+			console.log("handleCarryForward");
+			try {
+				crud.startUpdating();
+				const { status, error } = await httpPostAsync({
+					url: "v1/inv/taking/carry-forward",
+					bearer: token,
+					data: data,
+				});
+				if (status.success) {
+					toastEx.success("庫存月結轉已完成");
+					crud.finishedUpdating();
+				} else {
+					throw error ?? new Error("未預期例外");
+				}
+			} catch (err) {
+				crud.failedUpdating(err);
+				console.error(err);
+				toastEx.error("結轉失敗", err);
+			} finally {
 				crud.finishedUpdating();
-			} else {
-				throw error ?? new Error("未預期例外");
+				load();
 			}
-		} catch (err) {
-			crud.failedUpdating(err);
-			console.error(err);
-			toastEx.error("結轉失敗", err);
-		} finally {
-			crud.finishedUpdating();
-			load();
-		}
-	}, [crud, httpPostAsync, load, token]);
+		},
+		[crud, httpPostAsync, load, token],
+	);
 
-	const confirmCarryForward = useCallback(() => {
-		dialogs.confirm({
-			message: "確定將庫存進行月結轉?",
-			onConfirm: () => {
-				handleCarryForward();
-			},
-		});
-	}, [dialogs, handleCarryForward]);
+	const onSubmit = useCallback(
+		(data) => {
+			dialogs.confirm({
+				message: (
+					<span>
+						確定將庫存月結轉到
+						<Box
+							component="span"
+							pl={0.5}
+							sx={{
+								color: "error.main",
+								fontWeight: 600,
+							}}>
+							{data.CutYM}
+						</Box>
+						?
+					</span>
+				),
+				onConfirm: () => {
+					handleCarryForward(data);
+				},
+			});
+		},
+		[dialogs, handleCarryForward],
+	);
+
+	const onSubmitError = useCallback((err) => {
+		console.log("onSubmitError", err);
+	}, []);
 
 	const restoreAction = useAction();
 
-	const handleRestore = useCallback(async () => {
+	const handleRestore = useCallback(async (init = 0) => {
 		console.log("handleRestore");
 		try {
 			restoreAction.start();
 			const { status, error } = await httpPostAsync({
 				url: "v1/inv/taking/restore",
 				bearer: token,
+				data: {
+					init
+				}
 			});
 			if (status.success) {
-				toastEx.success("復原已成功");
+				toastEx.success("復原已完成");
 				restoreAction.finish();
-				load();
 			} else {
 				throw error ?? new Error("未預期例外");
 			}
@@ -112,11 +140,23 @@ export const useF07 = () => {
 		}
 	}, [httpPostAsync, load, restoreAction, token]);
 
-	const confirmRestore = useCallback(() => {
+	const confirmRestore = useCallback((init = 0) => {
 		dialogs.confirm({
-			message: "確定還原庫存月結轉?",
+			message: <span>
+				確定重整
+				<Box
+					component="span"
+					pl={0.5}
+					sx={{
+						color: "error.main",
+						fontWeight: 600,
+					}}>
+					{init == 1 ? "所有期數庫存" : "當期庫存"}
+				</Box>
+				?
+			</span>,
 			onConfirm: () => {
-				handleRestore();
+				handleRestore(init);
 			},
 		});
 	}, [dialogs, handleRestore]);
@@ -124,7 +164,8 @@ export const useF07 = () => {
 	return {
 		...appModule,
 		...crud,
-		confirmCarryForward,
+		onSubmit,
+		onSubmitError,
 		formMeta,
 		load,
 		// 復原

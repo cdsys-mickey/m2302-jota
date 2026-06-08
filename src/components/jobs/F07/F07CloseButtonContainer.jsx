@@ -14,7 +14,8 @@ const F07CloseButtonContainer = memo(
 				ref={ref}
 				variant="contained"
 				startIcon={<LockIcon />}
-				onClick={f07.confirmCarryForward}
+				// onClick={f07.confirmCarryForward}
+				type="submit"
 				loading={f07.updateWorking}
 				sx={{
 					fontWeight: 600,

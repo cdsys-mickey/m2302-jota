@@ -299,11 +299,19 @@ const DialogExView = memo(
 						}}>螢幕可用空間不足無法顯示, 請縮小螢幕縮放比例以容納更多內容，或以關閉按鈕離開本作業
 						</FormAlertBox>
 					)}
-					{!tooSmall && message?.split("\n").map((line, index) => (
-						<DialogContentText key={`line-${index}`}>
-							{line}
-						</DialogContentText>
-					))}
+					{!tooSmall && message && (
+						typeof message === "string" ? (
+							message.split("\n").map((line, index) => (
+								<DialogContentText key={`line-${index}`}>
+									{line}
+								</DialogContentText>
+							))
+						) : (
+							<DialogContentText component="div">
+								{message}
+							</DialogContentText>
+						)
+					)}
 					{(!tooSmall && prompt) && (
 						<Box py={1}>
 							<TextField
@@ -397,7 +405,7 @@ DialogExView.propTypes = {
 	sx: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 
 	title: PropTypes.string,
-	message: PropTypes.string,
+	message: PropTypes.node,
 	placeholder: PropTypes.string,
 	children: PropTypes.node,
 	confirmText: PropTypes.string,

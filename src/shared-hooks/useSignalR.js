@@ -29,7 +29,7 @@ export const useSignalR = ({
 	reconnectDelays = DEFAULT_RECONNECT_DELAYS, // 斷線後重新嘗試的等待時間
 	retryInterval = 60000, // 交握失敗的等待時間
 	autoConnect = true,
-	logginLevel = signalR.LogLevel.Error,
+	loggingLevel = signalR.LogLevel.Error,
 }) => {
 	const [connection, setConnection] = useState();
 	const [state, setState] = useState({
@@ -46,7 +46,7 @@ export const useSignalR = ({
 					: reconnectDelays.length - 1;
 			return reconnectDelays[index];
 		},
-		[reconnectDelays]
+		[reconnectDelays],
 	);
 
 	const createConnection = useCallback(() => {
@@ -55,8 +55,8 @@ export const useSignalR = ({
 			// skipNegotiation: true,
 			// transport: signalR.HttpTransportType.WebSockets,
 		});
-		if (logginLevel) {
-			builder.configureLogging(logginLevel);
+		if (loggingLevel) {
+			builder.configureLogging(loggingLevel);
 		}
 
 		if (reconnectDelays) {
@@ -66,7 +66,7 @@ export const useSignalR = ({
 		}
 		const newConn = builder.build();
 		setConnection(newConn);
-	}, [logginLevel, nextRetryPolicy, reconnectDelays, url]);
+	}, [loggingLevel, nextRetryPolicy, reconnectDelays, url]);
 
 	const handleConnected = useCallback(
 		({ connection } = {}) => {
@@ -79,7 +79,7 @@ export const useSignalR = ({
 				onConnected({ connection });
 			}
 		},
-		[onConnected]
+		[onConnected],
 	);
 
 	const handleFailed = useCallback(
@@ -93,7 +93,7 @@ export const useSignalR = ({
 				onConnectFailed(err);
 			}
 		},
-		[onConnectFailed]
+		[onConnectFailed],
 	);
 
 	const handleClose = useCallback(
@@ -108,7 +108,7 @@ export const useSignalR = ({
 				onClose({ error, connection });
 			}
 		},
-		[onClose]
+		[onClose],
 	);
 
 	const handleReconnecting = useCallback(
@@ -123,7 +123,7 @@ export const useSignalR = ({
 				onReconnecting({ connection, error });
 			}
 		},
-		[onReconnecting]
+		[onReconnecting],
 	);
 
 	const handleReconnected = useCallback(
@@ -138,7 +138,7 @@ export const useSignalR = ({
 				onReconnected(connectionId);
 			}
 		},
-		[onReconnected]
+		[onReconnected],
 	);
 
 	const connect = useCallback(async () => {
@@ -153,7 +153,7 @@ export const useSignalR = ({
 				await connection.start();
 				console.log(
 					`[SignalR] Hub ${url} connected, connectionId: ${connection.connectionId}`,
-					connection
+					connection,
 				);
 				handleConnected({ connection });
 			} catch (err) {
@@ -171,14 +171,14 @@ export const useSignalR = ({
 
 				console.error(
 					`[SignalR] Hub ${url} failed to connect, retry in ${retryInterval} millis, retryIntervalId: ${retryIntervalIdRef.current}`,
-					err
+					err,
 				);
 				handleFailed(err);
 			}
 		} else {
 			console.warn(
 				"connection.state is not Disconnected: ",
-				connection.state
+				connection.state,
 			);
 		}
 	}, [connection, handleConnected, handleFailed, retryInterval, url]);
@@ -186,8 +186,6 @@ export const useSignalR = ({
 	const connectionId = useMemo(() => {
 		return connection?.connectionId;
 	}, [connection?.connectionId]);
-
-
 
 	const retryIntervalIdRef = useRef();
 

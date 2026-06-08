@@ -45,6 +45,7 @@ const ControlledDatePicker = ({
 	fullWidth,
 	slotProps,
 	minDate,
+	maxDate,
 	validate,
 	// variant = "outlined",
 	...rest
@@ -119,7 +120,9 @@ const ControlledDatePicker = ({
 		const dateValidator = Forms.getDateValidator({
 			fieldName: label,
 			required,
-			minDate
+			minDate,
+			maxDate,
+			format
 		});
 
 		// 2. 處理 rules 內的 validate (可能是 function 或 object)
@@ -135,7 +138,7 @@ const ControlledDatePicker = ({
 				...(validate && { validateDate: dateValidator })
 			}
 		};
-	}, [label, required, minDate, rules, validate]);
+	}, [label, required, minDate, format, rules, validate]);
 
 	const _label = useMemo(() => {
 		return (borderless || !label) ? "" : `${label}${required ? "*" : ""}`;
@@ -275,6 +278,7 @@ const ControlledDatePicker = ({
 						invalidDateMessage={invalidDateMessage}
 						fullWidth={fullWidth}
 						minDate={minDate}
+						maxDate={maxDate}
 						{...rest}
 					/>
 				</BoxComponent>
@@ -311,6 +315,7 @@ ControlledDatePicker.propTypes = {
 	slotProps: PropTypes.object,
 	borderless: PropTypes.bool,
 	placeholder: PropTypes.string,
-	minDate: PropTypes.object
+	minDate: PropTypes.object,
+	maxDate: PropTypes.object
 };
 export default ControlledDatePicker;

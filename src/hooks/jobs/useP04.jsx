@@ -7,6 +7,7 @@ import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useWebApiAsync } from "@/shared-hooks";
 import { useCallback, useContext } from "react";
 import { useAppModule } from "@/hooks/jobs/useAppModule";
+import { Box } from "@mui/material";
 
 export const useP04 = () => {
 	const { token, operator } = useContext(AuthContext);
@@ -23,7 +24,7 @@ export const useP04 = () => {
 		SDate,
 		EDate,
 		SPosNo,
-		`
+		`,
 	);
 
 	const onSubmit = useCallback(
@@ -31,11 +32,24 @@ export const useP04 = () => {
 			console.log("onSubmit", payload);
 			const data = P04.transformForSubmitting(payload);
 			dialogs.confirm({
-				message: `確認要清除${
-					data?.posno ? `收銀機號[${data?.posno}]` : ""
-				} ${data?.sdate}${
-					data?.edate ? ` ~ ${data?.edate}` : ""
-				} 的銷售資料?`,
+				message: (
+					<span>
+						確認要清除
+						{`${data?.sdate}${data?.edate ? ` ~ ${data?.edate}` : ""}`}
+
+						<Box
+							component="span"
+							pl={0.5}
+							sx={{
+								color: "error.main",
+								fontWeight: 600,
+							}}>
+							{data?.posno ? `收銀機號[${data?.posno}]` : "所有收銀機號"}
+						</Box>
+
+						{`  的銷售資料?`}
+					</span>
+				),
 				onConfirm: async () => {
 					crud.startLoading();
 					try {
@@ -56,7 +70,7 @@ export const useP04 = () => {
 				},
 			});
 		},
-		[crud, dialogs, httpDeleteAsync, token]
+		[crud, dialogs, httpDeleteAsync, token],
 	);
 
 	const onSubmitError = useCallback((err) => {

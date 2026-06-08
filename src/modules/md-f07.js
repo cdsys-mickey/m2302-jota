@@ -1,7 +1,8 @@
 const transformForReading = (payload) => {
-	const { CutYM } = payload;
+	const { CutYM, ...rest } = payload;
 	return {
 		CutYM,
+		...rest,
 	};
 };
 

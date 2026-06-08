@@ -4,7 +4,7 @@ import { ButtonEx } from "@/shared-components";
 import RestoreIcon from '@mui/icons-material/Restore';
 import { forwardRef, memo, useContext } from "react";
 
-const F07RestoreButtonContainer = memo(
+const F07RestoreAllButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
 		const f07 = useContext(F07Context);
@@ -20,19 +20,19 @@ const F07RestoreButtonContainer = memo(
 				ref={ref}
 				variant="contained"
 				startIcon={<RestoreIcon />}
-				onClick={f07.confirmRestore}
+				onClick={() => f07.confirmRestore(1)}
 				loading={f07.restoreWorking}
-				color="warning"
+				color="secondary"
 				sx={{
 					fontWeight: 600,
 				}}
 				{...rest}>
-				當期重整
+				全部重整
 			</ButtonEx>
 		);
 	})
 );
-F07RestoreButtonContainer.displayName = "F07RestoreButtonContainer";
-export default F07RestoreButtonContainer;
+F07RestoreAllButtonContainer.displayName = "F07RestoreAllButtonContainer";
+export default F07RestoreAllButtonContainer;
 
 
