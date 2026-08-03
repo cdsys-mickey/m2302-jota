@@ -1,22 +1,24 @@
-import StdPrintOutputModePicker from "@/components/std-print/StdPrintOutputModePicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import FlexGrid from "@/shared-components/FlexGrid";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+import { PrintReportButton } from "@/components";
 import CounterPicker from "@/components/picker/CounterPicker";
 import ProdCatLPicker from "@/components/picker/ProdCatLPicker";
 import ProdCatMPicker from "@/components/picker/ProdCatMPicker";
 import ProdCatSPicker from "@/components/picker/ProdCatSPicker";
 import ProdPicker from "@/components/picker/ProdPicker";
-import { PrintReportButton } from "@/components";
-import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
-import { FlexBox } from "shared-components";
+// 交叉引用元件會有抓不到 FormContext 的問題
+// import { FlexBox, FormFieldLabel } from "shared-components";
+import { FormFieldLabel } from "@/shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
-import DateFormats from "@/shared-modules/DateFormats.mjs";
+import { FlexBox } from "shared-components";
+import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
+import { DateFormats } from "shared-modules";
+import H21ReportTypePicker from "./pickers/H21ReportTypePicker";
 
 const H21Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -36,7 +38,18 @@ const H21Form = memo((props) => {
 									autoFocus
 									views={["year", "month"]}
 									format={DateFormats.DATEFNS_YEAR_AND_MONTH}
+									placeholder="年/月"
 								/>
+								{/* <FormFieldLabel
+									name="CutYM_Value"
+									label="資料年月"
+								/> */}
+								{/* {b05.itemData?.WriteDate} */}
+								{/* </FormFieldLabel> */}
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<Typography variant="body2" color="secondary.main">預設(留空白)帶出上線期初到目前的數據，</Typography>
+								<Typography variant="body2" color="secondary.main">若指定年月則帶出該月份數據。</Typography>
 							</Grid>
 							<FlexBox fullWidth />
 							<Grid item xs={12} sm={12}>
@@ -95,6 +108,16 @@ const H21Form = memo((props) => {
 									selectOnFocus
 								/>
 							</Grid>
+							<Grid item xs={12} sm={6}>
+								<H21ReportTypePicker
+									name="reportType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+
+							</Grid>
 						</Grid>
 						<FlexBox mt={1}>
 							<Grid container spacing={1}>
@@ -123,7 +146,7 @@ const H21Form = memo((props) => {
 					</FormSectionBox>
 				</FormBox>
 			</form>
-		</ContainerEx>
+		</ContainerEx >
 	);
 });
 

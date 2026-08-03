@@ -1,19 +1,17 @@
+import { useChangeTracking } from "@/shared-hooks/useChangeTracking";
+import Forms from "@/shared-modules/Forms.mjs";
+import { addMonths, startOfMonth } from "date-fns";
+import { useCallback, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import REBRestoreTabView from "./REBPosTabView";
-import { useMemo } from "react";
-import { addMonths, startOfMonth } from "date-fns";
-import Forms from "@/shared-modules/Forms.mjs";
-import { useCallback } from "react";
-import { REBContext } from "../../REBContext";
-import { useContext } from "react";
-import Auth from "@/modules/Auth.mjs";
-import { AppContext } from "@/contexts/app/AppContext";
+import { useREB } from "../../useREB";
 
 const REBPosTabContainer = (props) => {
 	const { ...rest } = props;
 	// const { operator } = useContext(AppContext);
 	const form = useFormContext();
-	const reb = useContext(REBContext);
+	const { reset, setValue } = form;
+	const reb = useREB();
 	const cutYM = useWatch({
 		name: "CutYM",
 		control: form.control
@@ -35,9 +33,13 @@ const REBPosTabContainer = (props) => {
 		}
 	}, [reb]);
 
-	// const deptDisabled = useMemo(() => {
-	// 	return operator?.Class < Auth.SCOPES.ROOT;
-	// }, [operator?.Class])
+	useChangeTracking(() => {
+		if (reb.itemDataReady) {
+			console.log("reb form reset", reb.itemData);
+			// reset(reb.itemData, { keepDefaultValues: true });
+			setValue("CutYM", reb.itemData?.CutYM)
+		}
+	}, [reb.itemData, reb.itemDataReady]);
 
 	return (
 		<REBRestoreTabView

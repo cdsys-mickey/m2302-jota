@@ -3,12 +3,14 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useH21 } from "./useH21";
 import StdPrint from "@/modules/StdPrint.mjs";
 import { H21Context } from "./H21Context";
+import H21ReportType from "./pickers/H21ReportType.mjs";
 
 export const H21Provider = ({ children }) => {
 	const h21 = useH21();
 	const form = useForm({
 		defaultValues: {
 			outputType: StdPrint.getDefaultOption(),
+			reportType: H21ReportType.getDefaultOption(),
 		},
 	});
 

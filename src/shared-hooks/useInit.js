@@ -1,7 +1,7 @@
 import Types from "@/shared-modules/Types.mjs";
 import { useEffect, useRef } from "react";
 
-export const useInit = (callback, dependencies) => {
+export const useInit = (callback, dependencies = []) => {
 	const loadedRef = useRef(false);
 	const unloadedRef = useRef(false);
 
@@ -17,10 +17,13 @@ export const useInit = (callback, dependencies) => {
 				if (Types.isFunction(unloadCallback)) {
 					unloadCallback();
 				} else {
-					console.warn("unloadCallback is not a function", unloadCallback)
+					console.warn(
+						"unloadCallback is not a function",
+						unloadCallback,
+					);
 				}
 			}
-		}
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [callback, ...dependencies]);
 

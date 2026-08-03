@@ -11,6 +11,7 @@ const transformForSubmitting = (payload) => {
 		catM,
 		catS,
 		counter,
+		reportType,
 		...rest
 	} = payload;
 	return {
@@ -24,6 +25,7 @@ const transformForSubmitting = (payload) => {
 		MClas: catM?.MClas || "",
 		SClas: catS?.SClas || "",
 		CaseID: counter?.CodeID || "",
+		RptType: reportType?.id,
 		...rest,
 	};
 };

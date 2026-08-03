@@ -26,6 +26,7 @@ export const H21FormContainer = () => {
 			catM,
 			catS,
 			counter,
+			reportType,
 			outputType,
 			`
 	)
@@ -75,7 +76,8 @@ export const H21FormContainer = () => {
 		const cutYM = await h21.getCutYM();
 		reset({
 			outputType: StdPrint.getDefaultOption(),
-			CutYM: cutYM ? Forms.parseDate(cutYM, DateFormats.DATEFNS_YEAR_AND_MONTH) : null
+			CutYM: cutYM ? Forms.parseDate(cutYM, DateFormats.DATEFNS_YEAR_AND_MONTH) : null,
+			// CutYM_Value: cutYM
 		})
 	}, []);
 

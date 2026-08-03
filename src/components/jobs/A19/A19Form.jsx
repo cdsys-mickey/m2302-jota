@@ -1,6 +1,6 @@
 import AppDeptPicker from "@/components/fields/AppDeptPicker";
 import ContainerEx from "@/shared-components/ContainerEx";
-import { FlexBox } from "shared-components";
+import { CheckboxExField, FlexBox } from "shared-components";
 import FormBox from "@/shared-components/form/FormBox";
 import FormSectionBox from "@/shared-components/form/FormSectionBox";
 import { Grid } from "@mui/material";
@@ -150,6 +150,40 @@ const A19Form = memo((props) => {
 									label="執行方式"
 								/> */}
 							</Grid>
+							{/* <Grid item xs={6} >
+								<FlexBox alignItems="flex-start">
+									<CheckboxExField
+										label="含撥出入"
+										name="InclInv"
+										defaultValue={true}
+										variant="outlined"
+										size="small"
+										fullWidth
+									/>
+								</FlexBox>
+							</Grid>
+							<Grid item xs={6} >
+								<CheckboxExField
+									label="含試贈樣"
+									name="InclTest"
+									defaultValue={true}
+									variant="outlined"
+									size="small"
+									fullWidth
+								/>
+							</Grid>
+							<Grid item xs={6} >
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<FlexBox justifyContent="flex-end">
+									<PrintReportButton
+										color="primary"
+										variant="contained"
+										onSubmit={onSubmit}
+										onDebugSubmit={onDebugSubmit}
+									/>
+								</FlexBox>
+							</Grid> */}
 						</Grid>
 						<Grid container>
 							<Grid item xs={12} sm={6} >

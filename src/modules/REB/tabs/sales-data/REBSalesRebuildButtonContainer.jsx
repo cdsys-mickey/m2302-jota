@@ -4,16 +4,19 @@ import { forwardRef, memo, useContext } from "react";
 import { REBContext } from "../../REBContext";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
+import { useREB } from "../../useREB";
+import { useRebSales } from "./contexts/useRebSales";
 
 const REBSalesRebuildButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
-		const reb = useContext(REBContext);
+		const rebSales = useRebSales();
+		const reb = useREB();
 		const form = useFormContext();
 
 		const handleSubmit = useMemo(() => {
-			return form.handleSubmit(reb.onSubmit, reb.onSubmitError);
-		}, [form, reb.onSubmit, reb.onSubmitError])
+			return form.handleSubmit(rebSales.onSubmit, rebSales.onSubmitError);
+		}, [form, rebSales.onSubmit, rebSales.onSubmitError])
 
 		return (
 			<ButtonEx
@@ -22,7 +25,7 @@ const REBSalesRebuildButtonContainer = memo(
 				variant="contained"
 				startIcon={<RestoreIcon />}
 				onClick={handleSubmit}
-				loading={reb.updateWorking}
+				loading={rebSales.updateWorking}
 				disabled={reb.loadWorking}
 				sx={{
 					fontWeight: 600,

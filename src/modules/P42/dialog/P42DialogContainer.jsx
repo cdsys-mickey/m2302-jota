@@ -181,12 +181,12 @@ export const P42DialogContainer = forwardRef((props, ref) => {
 					})
 				),
 				title: "PC總額",
-				disabled: readOnly,
+				disabled: readOnly || p42.sPcAmtDisabled,
 				minWidth: 120,
 				maxWidth: 120,
 			},
 		],
-		[readOnly]
+		[p42.sPcAmtDisabled, readOnly]
 	);
 
 	const cmsGridMeta = useDSGMeta({

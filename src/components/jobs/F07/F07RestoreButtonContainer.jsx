@@ -4,6 +4,9 @@ import { ButtonEx } from "@/shared-components";
 import RestoreIcon from '@mui/icons-material/Restore';
 import { forwardRef, memo, useContext } from "react";
 
+/**
+ * 目前沒辦法重整當期，已停用
+ */
 const F07RestoreButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;

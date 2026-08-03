@@ -23,7 +23,8 @@ export const useH21 = () => {
 		return `${config.REPORT_URL}/WebH21Rep.aspx`;
 	}, [config.REPORT_URL]);
 
-	const reports = useJotaReports({ month: "CutYM" });
+	// const reports = useJotaReports({ month: "CutYM" });
+	const reports = useJotaReports({});
 
 	const onDebugSubmit = useCallback(
 		(payload) => {
@@ -44,7 +45,7 @@ export const useH21 = () => {
 			debugDialog,
 			operator.CurDeptID,
 			reportUrl,
-		]
+		],
 	);
 
 	const onSubmit = useCallback(
@@ -57,7 +58,7 @@ export const useH21 = () => {
 			console.log("data", data);
 			reports.open(reportUrl, data);
 		},
-		[operator.CurDeptID, reportUrl, reports]
+		[operator.CurDeptID, reportUrl, reports],
 	);
 
 	const onSubmitError = useCallback((err) => {

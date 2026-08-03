@@ -17,7 +17,7 @@ const F07Toolbar = memo(
 				LeftComponent={F07CloseButtonContainer}
 				rightComponents={<>
 					<F07RestoreAllButtonContainer />
-					<F07RestoreButtonContainer />
+					{/* <F07RestoreButtonContainer /> */}
 				</>}
 				{...rest}
 			/>

@@ -27,7 +27,7 @@ const F07RestoreAllButtonContainer = memo(
 					fontWeight: 600,
 				}}
 				{...rest}>
-				全部重整
+				重整庫存
 			</ButtonEx>
 		);
 	})

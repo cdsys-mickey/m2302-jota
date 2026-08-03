@@ -66,26 +66,27 @@ const H01Form = memo((props) => {
 									/>}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={12}>
-								<FlexBox sx={{ gap: 1 }}>
+							<Grid item xs={6} >
+								<FlexBox alignItems="flex-start">
 									<CheckboxExField
 										label="含撥出入"
 										name="InclTX"
 										defaultValue={true}
 										variant="outlined"
 										size="small"
-									// fullWidth
+										fullWidth
 									/>
-									<CheckboxExField
-										label="含試贈樣"
-										name="InclTest"
-										defaultValue={true}
-										variant="outlined"
-										size="small"
-									// fullWidth
-									/>
-
 								</FlexBox>
+							</Grid>
+							<Grid item xs={6} >
+								<CheckboxExField
+									label="含試贈樣"
+									name="InclTest"
+									defaultValue={true}
+									variant="outlined"
+									size="small"
+									fullWidth
+								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<H01OrderTypePicker

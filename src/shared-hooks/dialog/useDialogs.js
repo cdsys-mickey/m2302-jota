@@ -9,28 +9,35 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 		console.log("close dialog", opts);
 		const { id, dontDestory = false } = opts;
 
-		setEntities(prev => {
+		setEntities((prev) => {
 			if (id) {
-				const selected = prev.find(x => x.id === id);
+				const selected = prev.find((x) => x.id === id);
 				if (selected) {
 					// if (selected.onClose) {
 					// 	selected.onClose();
 					// }
 					if (dontDestory) {
-						return prev.map(x => x.id === opts.id ? { ...x, open: false, working: false } : x);
+						return prev.map((x) =>
+							x.id === opts.id
+								? { ...x, open: false, working: false }
+								: x,
+						);
 					} else {
-						return prev.filter(x => x.id !== opts.id);
+						return prev.filter((x) => x.id !== opts.id);
 					}
 				} else {
-					console.warn(`由於沒有找到 opts.id [${opts.id}], 忽略關閉視窗動作`)
+					// 怕影響已上線程式，這裡直接 mark 掉訊息，主因為 confirm -> create 多次 close 同一個 id 造成
+					// console.warn(
+					// 	`由於沒有找到 opts.id [${opts.id}], 忽略關閉視窗動作`,
+					// );
 					return prev;
 					// return [];
 				}
 			} else {
-				console.warn("由於 opts.id 為空, 清除了所有 dialogs")
+				console.warn("由於 opts.id 為空, 清除了所有 dialogs");
 				return [];
 			}
-		})
+		});
 	}, []);
 
 	const closeLatest = useCallback(() => {
@@ -75,7 +82,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 						id: newId,
 					});
 				}
-			}
+			};
 
 			// const handleCancel = (opts) => {
 			// 	if (onCancel) {
@@ -86,7 +93,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 
 			const handleClose = () => {
 				close({ id: newId });
-			}
+			};
 
 			const newDialog = {
 				id: newId,
@@ -99,20 +106,15 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 				// onCancel: handleCancel,
 				onClose: handleClose,
 				...dialogProps,
-			}
+			};
 			if (closeOthers) {
-				setEntities([
-					newDialog,
-				]);
+				setEntities([newDialog]);
 			} else {
-				setEntities((prev) => [
-					...prev,
-					newDialog,
-				]);
+				setEntities((prev) => [...prev, newDialog]);
 			}
 			return newId;
 		},
-		[baseButtonProps, close, entities.length, sizeLimit]
+		[baseButtonProps, close, entities.length, sizeLimit],
 	);
 
 	const setWorking = useCallback((working) => {
@@ -142,10 +144,11 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 				title: title,
 				message: message,
 				onConfirm: (params) => {
-					if (onConfirm) onConfirm({
-						...params,
-						id: newId,
-					});
+					if (onConfirm)
+						onConfirm({
+							...params,
+							id: newId,
+						});
 					if (closeOnConfirm) {
 						close({
 							...params,
@@ -154,10 +157,11 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 					}
 				},
 				onCancel: (params) => {
-					if (onCancel) onCancel({
-						...params,
-						id: newId,
-					});
+					if (onCancel)
+						onCancel({
+							...params,
+							id: newId,
+						});
 					close({
 						...params,
 						id: newId,
@@ -166,7 +170,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 				...rest,
 			});
 		},
-		[close, create]
+		[close, create],
 	);
 
 	const prompt = useCallback(
@@ -200,10 +204,11 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 				// 	}
 				// },
 				onCancel: (params) => {
-					if (onCancel) onCancel({
-						...params,
-						id: newId,
-					});
+					if (onCancel)
+						onCancel({
+							...params,
+							id: newId,
+						});
 					close({
 						...params,
 						id: newId,
@@ -212,7 +217,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 				...rest,
 			});
 		},
-		[close, create]
+		[close, create],
 	);
 
 	const alert = useCallback(
@@ -230,7 +235,7 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 				...rest,
 			});
 		},
-		[create]
+		[create],
 	);
 
 	return {
@@ -242,6 +247,6 @@ export const useDialogs = ({ buttonProps: baseButtonProps, sizeLimit = 5 }) => {
 		setWorking,
 		closeLatest,
 		prompt,
-		close
+		close,
 	};
 };

@@ -89,7 +89,7 @@ const TypoLabelView = memo(
 						// 	marginTop: "-8px"
 						// })
 					})
-				}} {...slotProps?.value} {...(isNegative && slotProps?.negativeValue)}>
+				}} {...slotProps?.valueProps} {...(isNegative && slotProps?.negativeValueProps)}>
 					{Types.isLiteral(body) ? <>
 						<Typography
 							color="primary"

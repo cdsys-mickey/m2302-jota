@@ -9,6 +9,10 @@ import { TabContext, TabList } from "@mui/lab";
 import REB from "./REB.mjs";
 import REBPosTabContainer from "./tabs/pos-data/REBPosTabContainer";
 import REBSalesTabContainer from "./tabs/sales-data/REBSalesTabContainer";
+import REBInitQtyTabContainer from "./tabs/init-qty/REBInitQtyTabContainer";
+import { RebSalesProvider } from "./tabs/sales-data/contexts/RebSalesProvider";
+import { RebPosProvider } from "./tabs/pos-data/contexts/RebPosProvider";
+import { RebInitQtyProvider } from "./tabs/init-qty/contexts/RebInitQtyProvider";
 
 const REBForm = memo((props) => {
 	const { selectedTab, handleTabChange, ...rest } = props;
@@ -25,8 +29,15 @@ const REBForm = memo((props) => {
 									))}
 								</TabList>
 							</Box>
-							<REBSalesTabContainer />
-							<REBPosTabContainer />
+							<RebSalesProvider>
+								<REBSalesTabContainer />
+							</RebSalesProvider>
+							<RebPosProvider>
+								<REBPosTabContainer />
+							</RebPosProvider>
+							<RebInitQtyProvider>
+								<REBInitQtyTabContainer />
+							</RebInitQtyProvider>
 						</TabContext>
 
 

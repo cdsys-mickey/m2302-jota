@@ -23,10 +23,10 @@ const NumberFieldLabel = (props) => {
 	const { ...rest } = props;
 	return <FormFieldLabel
 		slotProps={{
-			value: {
+			valueProps: {
 				ml: 2
 			},
-			negativeValue: {
+			negativeValueProps: {
 				ml: 1
 			}
 		}}

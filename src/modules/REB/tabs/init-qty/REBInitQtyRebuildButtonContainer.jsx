@@ -2,15 +2,14 @@ import { ButtonEx } from "@/shared-components";
 import RestoreIcon from '@mui/icons-material/Restore';
 import { forwardRef, memo } from "react";
 import { useFormContext } from "react-hook-form";
+// import { useREB } from "../../useREB";
+import { useRebInitQty } from "./contexts/useRebInitQty";
 
-import { useREB } from "../../useREB";
-import { useRebPos } from "./contexts/useRebPos";
-
-const REBPosRebuildButtonContainer = memo(
+const REBInitQtyRebuildButtonContainer = memo(
 	forwardRef((props, ref) => {
 		const { ...rest } = props;
-		const rebPos = useRebPos();
-		const reb = useREB();
+		// const reb = useREB();
+		const rebInitQty = useRebInitQty();
 		const form = useFormContext();
 
 		return (
@@ -19,9 +18,9 @@ const REBPosRebuildButtonContainer = memo(
 				ref={ref}
 				variant="contained"
 				startIcon={<RestoreIcon />}
-				onClick={form.handleSubmit(rebPos.onSubmit, rebPos.onSubmitError)}
-				loading={rebPos.updateWorking}
-				disabled={reb.loadWorking}
+				onClick={form.handleSubmit(rebInitQty.onSubmit, rebInitQty.onSubmitError)}
+				loading={rebInitQty.updateWorking}
+				// disabled={reb.loadWorking}
 				// color="secondary"
 				sx={{
 					fontWeight: 600,
@@ -32,8 +31,8 @@ const REBPosRebuildButtonContainer = memo(
 		);
 	})
 );
-REBPosRebuildButtonContainer.displayName = "REBPosRebuildButtonContainer";
-export default REBPosRebuildButtonContainer;
+REBInitQtyRebuildButtonContainer.displayName = "REBInitQtyRebuildButtonContainer";
+export default REBInitQtyRebuildButtonContainer;
 
 
 

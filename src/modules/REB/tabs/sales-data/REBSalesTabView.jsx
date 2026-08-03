@@ -14,7 +14,7 @@ const REBSalesTabView = (props) => {
 	const { minDate, onDeptChange, ...rest } = props;
 	return (
 		<TabPanel value={REB.TabType.SALES_DATA} {...rest}>
-			<Grid container columns={12} spacing={1}>
+			<Grid container columns={12} spacing={2}>
 				<Grid item xs={12}>
 					{/* <AppDeptPicker
 						filterByOperator

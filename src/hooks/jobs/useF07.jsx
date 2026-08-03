@@ -113,7 +113,7 @@ export const useF07 = () => {
 
 	const restoreAction = useAction();
 
-	const handleRestore = useCallback(async (init = 0) => {
+	const handleRestore = useCallback(async () => {
 		console.log("handleRestore");
 		try {
 			restoreAction.start();
@@ -121,7 +121,7 @@ export const useF07 = () => {
 				url: "v1/inv/taking/restore",
 				bearer: token,
 				data: {
-					init
+					// init
 				}
 			});
 			if (status.success) {
@@ -140,7 +140,7 @@ export const useF07 = () => {
 		}
 	}, [httpPostAsync, load, restoreAction, token]);
 
-	const confirmRestore = useCallback((init = 0) => {
+	const confirmRestore = useCallback((init = 1) => {
 		dialogs.confirm({
 			message: <span>
 				確定重整
@@ -151,7 +151,7 @@ export const useF07 = () => {
 						color: "error.main",
 						fontWeight: 600,
 					}}>
-					{init == 1 ? "所有期數庫存" : "當期庫存"}
+					{init == 1 ? "上線期數庫存量" : "當期庫存"}
 				</Box>
 				?
 			</span>,

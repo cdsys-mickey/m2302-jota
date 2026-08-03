@@ -3,6 +3,7 @@ import Forms from "@/shared-modules/Forms.mjs";
 const TabType = Object.freeze({
 	SALES_DATA: "SALES_DATA",
 	POS_DATA: "POS_DATA",
+	INIT_QTY: "INIT_QTY",
 });
 
 const tabs = [
@@ -13,6 +14,10 @@ const tabs = [
 	{
 		id: TabType.POS_DATA,
 		label: "POS資料",
+	},
+	{
+		id: TabType.INIT_QTY,
+		label: "期初庫存重整",
 	},
 ];
 
