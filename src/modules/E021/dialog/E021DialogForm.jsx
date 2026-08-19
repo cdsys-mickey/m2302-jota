@@ -135,6 +135,7 @@ const E021DialogForm = memo((props) => {
 									disableOpenOnInput
 									selectOnFocus
 									// disableClearable
+									clearValueOnChange={false}
 									onChanged={handleCustomerChange}
 									required={customerRequired}
 									rules={{

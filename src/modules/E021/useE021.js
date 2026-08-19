@@ -21,12 +21,15 @@ import useJotaReports from "@/hooks/useJotaReports";
 import useSQtyManager from "@/hooks/useSQtyManager";
 import usePwordCheck from "@/hooks/usePwordCheck";
 
+const CHAIN_DELAY_MS = 300;
+
 export const useE021 = ({ mode }) => {
 	const config = useContext(ConfigContext);
 	const crud = useContext(CrudContext);
 	const { itemData } = crud;
 	const itemIdRef = useRef();
-	const purchaseOrderIdRef = useRef();
+	// const purchaseOrderIdRef = useRef();
+	const chainByRef = useRef();
 	const prevOrdersRef = useRef([]);
 	const { token, operator } = useContext(AuthContext);
 
@@ -180,10 +183,40 @@ export const useE021 = ({ mode }) => {
 	const updateCustomerData = useCallback(
 		({ setValue, formMeta }) =>
 			(data) => {
-				// formMeta.asyncRef.current.supressEvents = true;
-				formMeta.supressEvents();
-				setValue("retail", data ? data?.retail : false);
-				setValue("customer", data ? data?.customer : null);
+				let eventsSupressed = formMeta.supressEvents();
+
+				if (data?.retail !== undefined) {
+					setValue("retail", data.retail);
+				}
+
+				// 取得 Customer ID (包含 fallback 機制)
+				const custId = data?.customer?.CustID || data?.CustID;
+				let customerObj = data?.customer ?? null;
+
+				if (customerObj) {
+					customerObj = {
+						...customerObj,
+						CustID: customerObj.CustID,
+						CustName: data?.CustName || customerObj.CustData || "",
+						AbbrName: data?.CustName || customerObj.CustData || "",
+						CustData:
+							customerObj.CustData ||
+							`${customerObj.CustID} ${data?.CustName || ""}`.trim(),
+					};
+				} else if (custId) {
+					customerObj = {
+						CustID: custId,
+						CustName: data?.CustName || "",
+						AbbrName: data?.CustName || "",
+						CustData: `${custId} ${data?.CustName || ""}`.trim(),
+					};
+				}
+
+				// 若有算出的 customerObj 才更新 customer，避免誤傳 null 蓋掉原有值
+				if (customerObj) {
+					setValue("customer", customerObj);
+				}
+
 				setValue("CustName", data?.CustName || "");
 				setValue("CompTel", data?.CompTel || "");
 				setValue("RecAddr", data?.RecAddr || "");
@@ -193,15 +226,11 @@ export const useE021 = ({ mode }) => {
 				setValue("employee", data?.employee || "");
 				setValue("taxExcluded", data?.taxExcluded || "");
 				setValue("paymentType", data?.paymentType || "");
-				// // 更新備註
 				setValue("remark", data?.remark || "");
 
-				// // 更新列印註記
-				// setValue("dontPrtAmt", data?.dontPrtAmt ?? false);
-				// // 更新數字
-
-				// formMeta.asyncRef.current.supressEvents = false;
-				formMeta.enableEvents();
+				if (eventsSupressed) {
+					formMeta.enableEvents();
+				}
 			},
 		[],
 	);
@@ -1099,27 +1128,42 @@ export const useE021 = ({ mode }) => {
 	const handleRetailChange = useCallback(
 		({ setValue, gridMeta }) =>
 			(newValue) => {
+				if (chainByRef.current) {
+					console.log(
+						`由 ${chainByRef.current} 觸發，跳過 handleRetailChange`,
+					);
+					return;
+				}
+
 				console.log("handleRetailChange", newValue);
-				setValue("customer", null);
-				setValue("CustName", "");
-				setValue("CompTel", "");
-				setValue("RecAddr", "");
-				setValue("InvAddr", "");
-				setValue("UniForm", "");
-				setValue("transType", null, {
-					shouldTouch: true,
-				});
-				setValue("taxExcluded", null, {
-					shouldTouch: true,
-				});
-				setValue("paymentType", null, {
-					shouldTouch: true,
-				});
-				setValue("employee", null, {
-					shouldTouch: true,
-				});
-				setValue("remark", "");
-				gridMeta.setActiveCell(null);
+
+				try {
+					chainByRef.current = "handleRetailChange";
+					setValue("customer", null);
+					setValue("CustName", "");
+					setValue("CompTel", "");
+					setValue("RecAddr", "");
+					setValue("InvAddr", "");
+					setValue("UniForm", "");
+					setValue("transType", null, {
+						shouldTouch: true,
+					});
+					setValue("taxExcluded", null, {
+						shouldTouch: true,
+					});
+					setValue("paymentType", null, {
+						shouldTouch: true,
+					});
+					setValue("employee", null, {
+						shouldTouch: true,
+					});
+					setValue("remark", "");
+					gridMeta.setActiveCell(null);
+				} finally {
+					setTimeout(() => {
+						chainByRef.current = null;
+					}, CHAIN_DELAY_MS);
+				}
 				// grid.initGridData([], {
 				// 	fillRows: true
 				// });
@@ -1188,87 +1232,131 @@ export const useE021 = ({ mode }) => {
 			handleRefreshGridSubmit,
 		}) =>
 			async (newValue) => {
+				// 1. 如果是程式自動更新（如選擇訂購單帶入），直接攔截
+				if (chainByRef.current) {
+					console.log(
+						`由 ${chainByRef.current} 觸發，跳過 handleCustomerChange`,
+					);
+					return;
+				}
 				console.log("handleCustomerChange", newValue);
-				// formMeta.asyncRef.current.supressEvents = true;
-				formMeta.supressEvents();
+
+				if (formMeta.asyncRef.supressEvents) {
+					return;
+				}
+
 				const formData = getValues();
 
-				const isOrdersSelected =
-					!!formData.customerOrders &&
-					formData.customerOrders.length > 0;
+				// 2. 檢查客戶 ID 是否真的有改變，若沒變（或重複選擇相同客戶）則不處理
+				// if (formData.customer?.CustID === newValue?.CustID) {
+				// 	console.log("customer 沒變不觸發", newValue?.CustID);
+				// 	return;
+				// }
 
-				let customerInfo = null;
-				if (newValue) {
-					const retail = getValues("retail");
-					try {
-						const { status, payload, error } = await httpGetAsync({
-							url: `v1/sales/customer-orders/customer-info`,
-							bearer: token,
-							params: {
-								cst: newValue.CustID,
-								sal: retail ? "Y" : "",
-							},
-						});
-						if (status.success) {
-							customerInfo = payload.data[0];
-						} else {
-							throw error ?? new Error("未預期例外");
+				let eventsSupressed = formMeta.supressEvents();
+
+				try {
+					chainByRef.current = "handleCustomerChange";
+					const isOrdersSelected =
+						!!formData.customerOrders &&
+						formData.customerOrders.length > 0;
+
+					let customerInfo = null;
+					if (newValue) {
+						const retail = getValues("retail");
+						try {
+							const { status, payload, error } =
+								await httpGetAsync({
+									url: `v1/sales/customer-orders/customer-info`,
+									bearer: token,
+									params: {
+										cst: newValue.CustID,
+										sal: retail ? "Y" : "",
+									},
+								});
+							if (status.success) {
+								customerInfo = payload.data[0];
+							} else {
+								throw error ?? new Error("未預期例外");
+							}
+						} catch (err) {
+							console.error(err);
+							toastEx.error("讀取客戶資料發生錯誤", err);
 						}
-					} catch (err) {
-						console.error(err);
-						toastEx.error("讀取客戶資料發生錯誤", err);
+					}
+
+					if (isOrdersSelected) {
+						setValue("customerOrders", []);
+						updateCustomerData({ setValue, formMeta })(null);
+						updatePrtAmt({ setValue, formData: null });
+						updateAmt({ setValue, formData: null, reset: true });
+						grid.setGridData(grid.fillRows({ data: [] }), {
+							supressEvents: true,
+						});
+					} else {
+						setValue(
+							"CustName",
+							newValue?.AbbrName ?? newValue?.CustData ?? "",
+							{
+								shouldTouch: true,
+							},
+						);
+						setValue("CompTel", customerInfo?.CompTel ?? "", {
+							shouldTouch: true,
+						});
+						setValue("RecAddr", customerInfo?.RecAddr ?? "", {
+							shouldTouch: true,
+						});
+						setValue("InvAddr", customerInfo?.InvAddr ?? "", {
+							shouldTouch: true,
+						});
+						setValue("UniForm", customerInfo?.UniForm ?? "", {
+							shouldTouch: true,
+						});
+
+						setValue("transType", E021.getTransType(customerInfo), {
+							shouldTouch: true,
+						});
+						setValue(
+							"taxExcluded",
+							E021.getTaxExcluded(customerInfo),
+							{
+								shouldTouch: true,
+							},
+						);
+						setValue(
+							"paymentType",
+							E021.getPaymentType(customerInfo),
+							{
+								shouldTouch: true,
+							},
+						);
+						setValue("employee", E021.getEmployee(customerInfo), {
+							shouldTouch: true,
+						});
+					}
+
+					if (
+						grid.gridData.filter((rowData) => rowData.prod?.ProdID)
+							.length > 0
+					) {
+						handleRefreshGridSubmit();
+					} else {
+						console.log(
+							"grid is empty, refresh-grid not triggered",
+						);
+					}
+
+					gridMeta.setActiveCell(null);
+					// formMeta.asyncRef.current.supressEvents = false;
+				} finally {
+					setTimeout(() => {
+						chainByRef.current = null;
+					}, CHAIN_DELAY_MS);
+					if (eventsSupressed) {
+						formMeta.enableEvents();
 					}
 				}
-
-				if (isOrdersSelected) {
-					setValue("customerOrders", []);
-				} else {
-					setValue(
-						"CustName",
-						newValue?.AbbrName ?? newValue?.CustData ?? "",
-						{
-							shouldTouch: true,
-						},
-					);
-					setValue("CompTel", customerInfo?.CompTel ?? "", {
-						shouldTouch: true,
-					});
-					setValue("RecAddr", customerInfo?.RecAddr ?? "", {
-						shouldTouch: true,
-					});
-					setValue("InvAddr", customerInfo?.InvAddr ?? "", {
-						shouldTouch: true,
-					});
-					setValue("UniForm", customerInfo?.UniForm ?? "", {
-						shouldTouch: true,
-					});
-
-					setValue("transType", E021.getTransType(customerInfo), {
-						shouldTouch: true,
-					});
-					setValue("taxExcluded", E021.getTaxExcluded(customerInfo), {
-						shouldTouch: true,
-					});
-					setValue("paymentType", E021.getPaymentType(customerInfo), {
-						shouldTouch: true,
-					});
-					setValue("employee", E021.getEmployee(customerInfo), {
-						shouldTouch: true,
-					});
-				}
-
-				if (
-					grid.gridData.filter((rowData) => rowData.prod?.ProdID)
-						.length > 0
-				) {
-					handleRefreshGridSubmit();
-				} else {
-					console.log("grid is empty, refresh-grid not triggered");
-				}
-
-				gridMeta.setActiveCell(null);
-				// formMeta.asyncRef.current.supressEvents = false;
-				formMeta.enableEvents();
 			},
 		[grid.gridData, httpGetAsync, token],
 	);
@@ -1290,37 +1378,20 @@ export const useE021 = ({ mode }) => {
 	const handleCustomerOrdersChanged2 = useCallback(
 		({ setValue, getValues, formMeta }) =>
 			async (newValue) => {
-				console.log("crud.readWorking", crud.readWorking);
+				if (chainByRef.current) {
+					console.log(
+						`由 ${chainByRef.current} 觸發，跳過 handleCustomerOrdersChanged2`,
+					);
+					return;
+				}
 				console.log("handleCustomerOrdersChanged2", newValue);
 
+				let eventsSupressed = formMeta.supressEvents();
+
 				const formData = getValues();
-				console.log("formData after customerOrdersChanged", formData);
-
-				const custId =
-					newValue?.[0]?.["客戶代碼"] ??
-					formData.customer?.CustID ??
-					"";
-				const retail =
-					newValue?.[0]?.["零售"] == "Y" || formData.retail;
-				const isCustomerAlreadySelected =
-					!!formData.customer &&
-					newValue?.[0]?.["客戶代碼"] == formData.customer?.CustID;
-				// const isGuestCustomer = !custId && retail;
-
-				// if (isGuestCustomer && newValue && newValue.length > 1) {
-				// 	toastEx.error("無客編非正式客戶僅能選擇一筆訂貨單");
-				// 	console.log("prevOrdersRef", prevOrdersRef.current)
-
-				// 	prevOrdersRef.current = newValue;
-				// 	return;
-				// }
-
-				// prevOrdersRef.current = newValue;
-
-				// 訂購單空白則清空表單
+				// 訂購單空白則清空表單與 DSG
 				if (!newValue || newValue.length === 0) {
 					updateCustomerData({ setValue, formMeta })(null);
-					// 清除不列印金額註記
 					updatePrtAmt({ setValue, formData: null });
 					updateAmt({ setValue, formData: null, reset: true });
 
@@ -1328,40 +1399,78 @@ export const useE021 = ({ mode }) => {
 						supressEvents: true,
 					});
 					console.log("grid cleared in handleCustomerOrdersChanged2");
+
+					if (eventsSupressed) {
+						formMeta.enableEvents();
+					}
 					return;
 				}
+
+				// 安全取得目前表單上的 CustID
+				const currentCustId =
+					typeof formData.customer === "object"
+						? formData.customer?.CustID
+						: formData.customer;
+
+				const retail = formData.retail;
+
 				try {
+					// 標記程式自動更新中，防止 handleCustomerChange 觸發無窮循環
+					chainByRef.current = "handleCustomerOrdersChanged2";
+
 					const { status, payload, error } = await httpGetAsync({
 						url: "v1/sales/invoices/load-prods",
 						bearer: token,
 						params: {
-							cst: custId,
+							cst: currentCustId || "",
 							ids: newValue.map((x) => x["訂貨單號"]).join(","),
 							retail: retail ? 1 : 0,
 						},
 					});
+
 					console.log("load-prods.payload", payload);
+
 					if (status.success) {
 						const data = E021.transformForReading(payload.data[0]);
-						console.log("refreshed data", data);
-						const { prods, ...formData } = data;
-						// 更新 grid
+						console.log("loaded data", data);
+						const { prods, ...readFormData } = data;
+
+						// 更新 DSG Grid
 						grid.setGridData(grid.fillRows({ data: prods }), {
 							supressEvents: true,
 						});
 
-						// 暫存上次讀取成功的訂貨單
+						// 暫存上次讀取成功的訂購單
 						prevOrdersRef.current = data.customerOrders;
 
-						// 當客戶已選擇才會更新客戶資料
+						// 取得 API 回傳的 CustID (支援頂層與層級結構)
+						const loadedCustId =
+							data.customer?.CustID || data.CustID;
+
+						// 比對 API 回傳的 CustID 是否與當前表單上的客戶相同
+						const isCustomerAlreadySelected =
+							!!currentCustId && loadedCustId === currentCustId;
+
+						// 若客戶不同或原本沒有選客戶，才全面覆蓋客戶資料；否則只補齊漏掉的欄位
 						if (!isCustomerAlreadySelected) {
 							updateCustomerData({ setValue, formMeta })(
-								formData,
+								readFormData,
 							);
+						} else {
+							// 即使已選擇相同客戶，也呼叫 updateCustomerData 確保所有連動欄位（如地址、電話、CompTel 等）補齊，同時保持 Picker 正確選中
+							updateCustomerData({ setValue, formMeta })({
+								...readFormData,
+								customer: formData.customer, // 優先保留原有正確的 customer 物件
+							});
 						}
-						// 同步不列印金額註記
-						updatePrtAmt({ setValue, formData: data });
-						updateAmt({ setValue, formData: data, reset: !data });
+
+						// 同步金額與不列印金額註記 (Flag)
+						updatePrtAmt({ setValue, formData: readFormData });
+						updateAmt({
+							setValue,
+							formData: readFormData,
+							reset: !readFormData,
+						});
 					} else {
 						throw error ?? new Error("未預期例外");
 					}
@@ -1370,10 +1479,18 @@ export const useE021 = ({ mode }) => {
 					if (err.code == 4 && prevOrdersRef.current) {
 						setValue("customerOrders", prevOrdersRef.current);
 					}
+				} finally {
+					// 延遲重置標記，確保非同步事件佇列處理完畢
+					setTimeout(() => {
+						chainByRef.current = null;
+					}, CHAIN_DELAY_MS);
+
+					if (eventsSupressed) {
+						formMeta.enableEvents();
+					}
 				}
 			},
 		[
-			crud.readWorking,
 			grid,
 			httpGetAsync,
 			token,
@@ -1534,7 +1651,16 @@ export const useE021 = ({ mode }) => {
 
 	const loadPurchaseOrder = useCallback(
 		async ({ setValue, orderId }) => {
+			if (chainByRef.current) {
+				console.log(
+					`由 ${chainByRef.current} 觸發，跳過 loadPurchaseOrder`,
+				);
+				return;
+			}
+			console.log("loadPurchaseOrder", orderId);
+
 			try {
+				chainByRef.current = "loadPurchaseOrder";
 				promptCreating();
 				loadOrderAction.start({ message: `載入訂貨單...` });
 				const { status, payload, error } = await httpGetAsync({
@@ -1562,6 +1688,10 @@ export const useE021 = ({ mode }) => {
 				loadOrderAction.clear();
 			} catch (err) {
 				loadOrderAction.fail({ error: err });
+			} finally {
+				setTimeout(() => {
+					chainByRef.current = null;
+				}, CHAIN_DELAY_MS);
 			}
 		},
 		[httpGetAsync, loadOrderAction, promptCreating, token],

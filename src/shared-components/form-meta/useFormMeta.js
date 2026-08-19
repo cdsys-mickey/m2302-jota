@@ -70,7 +70,7 @@ export const useFormMeta = (value, opts = {}) => {
 
 			return null;
 		},
-		[fields]
+		[fields],
 	);
 
 	const nextEnabled = useCallback(
@@ -84,11 +84,11 @@ export const useFormMeta = (value, opts = {}) => {
 				});
 			} else {
 				console.warn(
-					"nextField not found or setFocus is undefined, checks formMetaProvider"
+					"nextField not found or setFocus is undefined, checks formMetaProvider",
 				);
 			}
 		},
-		[getNextField, setFocus]
+		[getNextField, setFocus],
 	);
 
 	const handleFocusNextField = useCallback(
@@ -120,7 +120,7 @@ export const useFormMeta = (value, opts = {}) => {
 					switch (lastField) {
 						case LastFieldBehavior.PROMPT:
 							toastEx.warn(
-								forward ? lastFieldMessage : firstFieldMessage
+								forward ? lastFieldMessage : firstFieldMessage,
 							);
 							break;
 						case LastFieldBehavior.BLUR:
@@ -131,22 +131,32 @@ export const useFormMeta = (value, opts = {}) => {
 				}
 			}
 		},
-		[firstFieldMessage, getNextField, lastField, lastFieldMessage, setFocus]
+		[
+			firstFieldMessage,
+			getNextField,
+			lastField,
+			lastFieldMessage,
+			setFocus,
+		],
 	);
 
 	const supressEvents = useCallback(() => {
+		if (asyncRef.current.supressEvents == true) {
+			return false;
+		}
 		asyncRef.current.supressEvents = true;
 		console.log(
 			`%c****** ${FormMetaProvider.displayName}.supressEvent ON ******`,
-			CommonCSS.CONSOLE_WARN
+			CommonCSS.CONSOLE_WARN,
 		);
+		return true;
 	}, []);
 
 	const enableEvents = useCallback(() => {
 		asyncRef.current.supressEvents = false;
 		console.log(
 			`%c****** ${FormMetaProvider.displayName}.supressEvent OFF ******`,
-			CommonCSS.CONSOLE_SUCCESS
+			CommonCSS.CONSOLE_SUCCESS,
 		);
 	}, []);
 
