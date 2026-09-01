@@ -42,7 +42,7 @@ const getSalesTypeOptionById = (id) => {
 
 const findSalesTypeOptionByInput = (s) => {
 	return salesTypeOptions.find(
-		(o) => o.id?.toLowerCase() === s?.toLowerCase()
+		(o) => o.id?.toLowerCase() === s?.toLowerCase(),
 	);
 };
 
@@ -196,7 +196,7 @@ const transformGridForReading = (data) => {
 					? {
 							ProdID: SProdID,
 							ProdData: ProdData_N,
-					  }
+						}
 					: null,
 				ProdData_N,
 				PackData_N,
@@ -317,7 +317,7 @@ const transformForReading = (payload) => {
 			? {
 					CustID,
 					CustData: CustName,
-			  }
+				}
 			: null,
 		CustName,
 		paymentType: getPaymentType({ RecvID, RecvData_N }),
@@ -414,7 +414,7 @@ const transformAsQueryParams = (data) => {
 		}),
 		cust: data.cust?.CustID,
 		custName: data.custName,
-		compTel: data.compTel,
+		telno: data.compTel,
 		employee: data.employee?.CodeID,
 	};
 };

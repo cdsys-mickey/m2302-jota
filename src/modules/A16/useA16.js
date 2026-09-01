@@ -67,7 +67,6 @@ export const useA16 = ({ token }) => {
 				crud.startReading("讀取中...", { id });
 			}
 			try {
-				// const encodedId = encodeURIComponent(id);
 				const { status, payload, error } = await httpGetAsync({
 					url: `v1/ou/depts`,
 					bearer: token,
