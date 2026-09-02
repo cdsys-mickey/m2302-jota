@@ -5,6 +5,7 @@ import { H07Context } from "./H07Context";
 import H07OrderType from "./pickers/H07OrderType.mjs";
 import { useH07 } from "./useH07";
 import OrderDirs from "../OrderDirs.mjs";
+import H07ReportType from "./pickers/H07ReportType.mjs";
 
 export const H07Provider = ({ children }) => {
 	const h07 = useH07();
@@ -13,7 +14,7 @@ export const H07Provider = ({ children }) => {
 			SDate: null,
 			EDate: null,
 			InclTest: false,
-			// reportType: H07ReportType.getDefaultOption(),
+			reportType: H07ReportType.getDefaultOption(),
 			orderType: H07OrderType.getDefaultOption(),
 			orderDir: OrderDirs.getOptionById(2),
 			// calType: H07CalType.getDefaultOption(),

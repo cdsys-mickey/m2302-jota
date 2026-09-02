@@ -1,6 +1,6 @@
 const options = [
-	{ id: 1, label: "淨銷" },
-	{ id: 2, label: "銷/退" },
+	{ id: 1, label: "明細表" },
+	{ id: 2, label: "業務員簡表" },
 ];
 
 const getOptionById = (id) => {
@@ -22,7 +22,7 @@ const findByInput = (s) => {
 };
 
 const getDefaultOption = () => {
-	return getOptionById(2);
+	return getOptionById(1);
 };
 
 const H07ReportType = {

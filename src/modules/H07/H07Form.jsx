@@ -13,6 +13,8 @@ import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWra
 import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
 import H07OrderTypePicker from "./pickers/H07OrderTypePicker";
+import OrderDirPicker from "@/components/picker/OrderDirPicker";
+import H07ReportTypePicker from "./pickers/H07ReportTypePicker";
 
 const H07Form = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
@@ -74,8 +76,14 @@ const H07Form = memo((props) => {
 									clearable
 								/>
 							</Grid>
-							<FlexBox fullWidth />
-							<Grid item xs={12} sm={12}>
+							<Grid item xs={12} sm={6}>
+								<H07ReportTypePicker
+									name="reportType"
+									disableOpenOnInput
+									selectOnFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
 								<ProdFreeTypePicker
 									name="InclTest"
 									label="含試贈樣"
@@ -83,6 +91,7 @@ const H07Form = memo((props) => {
 									clearable
 								/>
 							</Grid>
+							<FlexBox fullWidth />
 							<Grid item xs={12} sm={6}>
 								<H07OrderTypePicker
 									name="orderType"
@@ -90,13 +99,13 @@ const H07Form = memo((props) => {
 									selectOnFocus
 								/>
 							</Grid>
-							{/* <Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={6}>
 								<OrderDirPicker
 									name="orderDir"
 									disableOpenOnInput
 									selectOnFocus
 								/>
-							</Grid> */}
+							</Grid>
 
 						</Grid>
 						<FlexBox mt={2}>

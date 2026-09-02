@@ -11,6 +11,7 @@ const transformForSubmitting = (payload) => {
 		InclTest,
 		SProdID,
 		EProdID,
+		reportType,
 		...rest
 	} = payload;
 	return {
@@ -22,6 +23,7 @@ const transformForSubmitting = (payload) => {
 		SProdID: SProdID?.ProdID || "",
 		EProdID: EProdID?.ProdID || "",
 		InclTest: InclTest?.id || "",
+		RptType: reportType?.id,
 		OrdName: orderType?.id,
 		OrdSeq: orderDir?.id,
 		...rest,

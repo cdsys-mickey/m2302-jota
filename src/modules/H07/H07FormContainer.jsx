@@ -17,8 +17,10 @@ export const H07FormContainer = () => {
 			SProdID,
 			EProdID,
 			SalType,
+			reportType,
 			InclTest,
 			orderType,
+			orderDir,
 			outputType,
 			`
 	)

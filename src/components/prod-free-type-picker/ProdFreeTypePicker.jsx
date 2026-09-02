@@ -17,7 +17,7 @@ const ProdFreeTypePicker = memo(
 				isOptionEqualToValue={ProdFreeTypes.isOptionEqualToValue}
 				findByInput={ProdFreeTypes.findOptionByInput}
 				notFoundText="試贈樣 ${input} 不存在"
-				placeholder="Y:只含試贈樣 N:不含試贈樣, 空白: 不篩選"
+				placeholder="Y:只含 N:不含"
 				{...rest}
 			/>
 		);
