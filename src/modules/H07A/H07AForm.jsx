@@ -12,12 +12,12 @@ import SalesTypePicker from "@/components/sales-type-picker/SalesTypePicker";
 import { DatePickerWrapper } from "@/shared-components/date-picker/DatePickerWrapper";
 import { FlexBox } from "shared-components";
 import RangeGroup from "@/shared-components/RangeGroup";
-import H07OrderTypePicker from "./pickers/H07OrderTypePicker";
+import H07AOrderTypePicker from "./pickers/H07AOrderTypePicker";
 import OrderDirPicker from "@/components/picker/OrderDirPicker";
-import H07ReportTypePicker from "./pickers/H07ReportTypePicker";
+import H07AReportTypePicker from "./pickers/H07AReportTypePicker";
 import EmployeePicker from "@/components/picker/EmployeePicker";
 
-const H07Form = memo((props) => {
+const H07AForm = memo((props) => {
 	const { onSubmit, onDebugSubmit, ...rest } = props;
 	return (
 		<ContainerEx maxWidth={"30rem"} alignLeft>
@@ -26,8 +26,8 @@ const H07Form = memo((props) => {
 					<FormSectionBox editing>
 						<Grid container columns={12} spacing={1}>
 							<Grid item xs={12} sm={12}>
-								<RangeGroup legend="日期區間"
-									leftComponent={<DatePickerWrapper name="SDate"
+								<RangeGroup legend="日期區間1"
+									leftComponent={<DatePickerWrapper name="SDate1"
 										fullWidth
 										validate
 										clearable
@@ -35,7 +35,7 @@ const H07Form = memo((props) => {
 										borderless
 										placeholder="起"
 									/>}
-									rightComponent={<DatePickerWrapper name="EDate"
+									rightComponent={<DatePickerWrapper name="EDate1"
 										fullWidth
 										validate
 										clearable
@@ -45,29 +45,24 @@ const H07Form = memo((props) => {
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12}>
-								<RangeGroup legend="貨品區間"
-									leftComponent={<ProdPicker
-										name="SProdID"
-										size="small"
-										virtualize
-										disableOpenOnInput
-										selectOnFocus
+								<RangeGroup legend="日期區間2"
+									leftComponent={<DatePickerWrapper name="SDate2"
+										fullWidth
+										validate
+										clearable
 										borderless
 										placeholder="起"
-										autoHighlight
 									/>}
-									rightComponent={<ProdPicker
-										name="EProdID"
-										size="small"
-										virtualize
-										disableOpenOnInput
-										selectOnFocus
+									rightComponent={<DatePickerWrapper name="EDate2"
+										fullWidth
+										validate
+										clearable
 										borderless
 										placeholder="迄"
-
 									/>}
 								/>
 							</Grid>
+
 							<Grid item xs={12} sm={6}>
 								<SalesTypePicker
 									name="SalType"
@@ -75,13 +70,6 @@ const H07Form = memo((props) => {
 									fullWidth
 									validate
 									clearable
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<H07ReportTypePicker
-									name="reportType"
-									disableOpenOnInput
-									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} >
@@ -92,22 +80,6 @@ const H07Form = memo((props) => {
 									disableOpenOnInput
 									selectOnFocus
 									multiple
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<ProdFreeTypePicker
-									name="InclTest"
-									label="含試贈樣"
-									fullWidth
-									clearable
-								/>
-							</Grid>
-							<FlexBox fullWidth />
-							<Grid item xs={12} sm={6}>
-								<H07OrderTypePicker
-									name="orderType"
-									disableOpenOnInput
-									selectOnFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -149,7 +121,7 @@ const H07Form = memo((props) => {
 	);
 });
 
-H07Form.propTypes = {
+H07AForm.propTypes = {
 	readWorking: PropTypes.bool,
 	editing: PropTypes.bool,
 	updating: PropTypes.bool,
@@ -159,8 +131,9 @@ H07Form.propTypes = {
 	onDebugSubmit: PropTypes.func,
 };
 
-H07Form.displayName = "H07Form";
-export default H07Form;
+H07AForm.displayName = "H07AForm";
+export default H07AForm;
+
 
 
 

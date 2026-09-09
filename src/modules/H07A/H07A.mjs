@@ -3,37 +3,31 @@ import Forms from "@/shared-modules/Forms.mjs";
 const transformForSubmitting = (payload) => {
 	const {
 		outputType,
-		SDate,
-		EDate,
+		SDate1,
+		EDate1,
+		SDate2,
+		EDate2,
 		SalType,
-		orderType,
 		orderDir,
-		InclTest,
-		SProdID,
-		EProdID,
-		reportType,
 		employee,
 		...rest
 	} = payload;
 	return {
-		JobName: "H07",
+		JobName: "H07A",
 		Action: outputType?.id?.toString() || "",
-		SDate: Forms.formatDate(SDate) || "",
-		EDate: Forms.formatDate(EDate) || "",
+		SDate1: Forms.formatDate(SDate1) || "",
+		EDate1: Forms.formatDate(EDate1) || "",
+		SDate2: Forms.formatDate(SDate2) || "",
+		EDate2: Forms.formatDate(EDate2) || "",
 		SalType: SalType?.id || "",
-		SProdID: SProdID?.ProdID || "",
-		EProdID: EProdID?.ProdID || "",
-		InclTest: InclTest?.id || "",
-		RptType: reportType?.id,
-		OrdName: orderType?.id,
 		OrdSeq: orderDir?.id,
 		EmplIDs: employee.filter((e) => Boolean(e.CodeID)).map((e) => e.CodeID),
 		...rest,
 	};
 };
 
-const H07 = {
+const H07A = {
 	transformForSubmitting,
 };
 
-export default H07;
+export default H07A;

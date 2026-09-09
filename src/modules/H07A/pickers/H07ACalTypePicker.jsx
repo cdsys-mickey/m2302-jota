@@ -1,0 +1,37 @@
+import Constants from "@/modules/md-constants";
+import { OptionPicker } from "@/shared-components";
+import PropTypes from "prop-types";
+import { forwardRef } from "react";
+import H07ACalType from "./H07ACalType.mjs";
+
+
+
+const H07ACalTypePicker = forwardRef((props, ref) => {
+	const { name, label = "百分率算法", ...rest } = props;
+
+	return (
+		<OptionPicker
+			name={name}
+			ref={ref}
+			label={label}
+			options={H07ACalType.options}
+			getOptionLabel={H07ACalType.getOptionLabel}
+			isOptionEqualToValue={H07ACalType.isOptionEqualToValue}
+			findByInput={H07ACalType.findByInput}
+			notFoundText="百分率算法 ${input} 不存在"
+			{...Constants.STATIC_PICKER_OPTS}
+			// blurToLookup
+			{...rest}
+		/>
+	);
+});
+H07ACalTypePicker.propTypes = {
+	name: PropTypes.string,
+	label: PropTypes.string,
+	children: PropTypes.node,
+};
+
+H07ACalTypePicker.displayName = "H07ACalTypePicker";
+export default H07ACalTypePicker;
+
+

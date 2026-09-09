@@ -36,6 +36,8 @@ import { H14_3Provider } from "@/modules/H14_3/H14_3Provider";
 import { H14_3FrameContainer } from "@/modules/H14_3/H14_3FrameContainer";
 import { H14_2Provider } from "@/modules/H14_2/H14_2Provider";
 import { H14_2FrameContainer } from "@/modules/H14_2/H14_2FrameContainer";
+import { H07AProvider } from "@/modules/H07A/H07AProvider";
+import { H07AFrameContainer } from "@/modules/H07A/H07AFrameContainer";
 
 const hRoutes = (
 	<>
@@ -119,6 +121,18 @@ const hRoutes = (
 						<H07Provider>
 							<H07FrameContainer />
 						</H07Provider>
+					</InfiniteLoaderProvider>
+				</CrudProvider>
+			}
+		/>
+		<Route
+			path="H07A"
+			element={
+				<CrudProvider>
+					<InfiniteLoaderProvider>
+						<H07AProvider>
+							<H07AFrameContainer />
+						</H07AProvider>
 					</InfiniteLoaderProvider>
 				</CrudProvider>
 			}

@@ -2,25 +2,22 @@ import { FormMetaProvider } from "@/shared-components";
 import { useFormMeta } from "@/shared-components/form-meta/useFormMeta";
 import { useContext, useMemo } from "react";
 import { FormProvider, useFormContext } from "react-hook-form";
-import { H07Context } from "./H07Context";
-import H07Form from "./H07Form";
+import { H07AContext } from "./H07AContext";
+import H07AForm from "./H07AForm";
 import { useHotkeys } from "react-hotkeys-hook";
 
-export const H07FormContainer = () => {
+export const H07AFormContainer = () => {
 	const form = useFormContext();
-	const h07 = useContext(H07Context);
+	const h07a = useContext(H07AContext);
 
 	const formMeta = useFormMeta(
 		`
-			SDate,
-			EDate,
-			SProdID,
-			EProdID,
+			SDate1,
+			EDate1,
+			SDate2,
+			EDate2,
 			SalType,
-			reportType,
 			employee,
-			InclTest,
-			orderType,
 			orderDir,
 			outputType,
 			`
@@ -28,17 +25,17 @@ export const H07FormContainer = () => {
 
 	const handleSubmit = useMemo(() => {
 		return form.handleSubmit(
-			h07.onSubmit,
-			h07.onSubmitError
+			h07a.onSubmit,
+			h07a.onSubmitError
 		)
-	}, [h07.onSubmit, h07.onSubmitError, form]);
+	}, [h07a.onSubmit, h07a.onSubmitError, form]);
 
 
 	const onDebugSubmit = useMemo(() => {
 		return form.handleSubmit(
-			h07.onDebugSubmit,
+			h07a.onDebugSubmit,
 		)
-	}, [h07.onDebugSubmit, form]);
+	}, [h07a.onDebugSubmit, form]);
 
 	useHotkeys(["Shift+Enter", "Control+Enter"], () => setTimeout(handleSubmit), {
 		enableOnFormTags: true
@@ -47,13 +44,14 @@ export const H07FormContainer = () => {
 	return (
 		<FormProvider {...form}>
 			<FormMetaProvider {...formMeta} >
-				<H07Form onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
+				<H07AForm onSubmit={handleSubmit} onDebugSubmit={onDebugSubmit} />
 			</FormMetaProvider>
 		</FormProvider>
 	);
 };
 
-H07FormContainer.displayName = "H07FormContainer";
+H07AFormContainer.displayName = "H07AFormContainer";
+
 
 
 

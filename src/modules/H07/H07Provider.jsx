@@ -13,12 +13,14 @@ export const H07Provider = ({ children }) => {
 		defaultValues: {
 			SDate: null,
 			EDate: null,
+			SalType: null,
 			InclTest: false,
 			reportType: H07ReportType.getDefaultOption(),
 			orderType: H07OrderType.getDefaultOption(),
 			orderDir: OrderDirs.getOptionById(2),
 			// calType: H07CalType.getDefaultOption(),
 			outputType: StdPrint.getDefaultOption(),
+			employee: []
 		},
 	});
 
