@@ -16,6 +16,8 @@ export const H07AFormContainer = () => {
 			EDate1,
 			SDate2,
 			EDate2,
+			SProdID,
+			EProdID,
 			SalType,
 			employee,
 			orderDir,

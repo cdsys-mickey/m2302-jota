@@ -1,6 +1,7 @@
 const options = [
 	{ id: 1, label: "明細表" },
 	{ id: 2, label: "業務員簡表" },
+	{ id: 3, label: "貨品簡表" },
 ];
 
 const getOptionById = (id) => {

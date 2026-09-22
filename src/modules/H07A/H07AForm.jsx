@@ -62,7 +62,30 @@ const H07AForm = memo((props) => {
 									/>}
 								/>
 							</Grid>
+							<Grid item xs={12} sm={12}>
+								<RangeGroup legend="貨品區間"
+									leftComponent={<ProdPicker
+										name="SProdID"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="起"
+										autoHighlight
+									/>}
+									rightComponent={<ProdPicker
+										name="EProdID"
+										size="small"
+										virtualize
+										disableOpenOnInput
+										selectOnFocus
+										borderless
+										placeholder="迄"
 
+									/>}
+								/>
+							</Grid>
 							<Grid item xs={12} sm={6}>
 								<SalesTypePicker
 									name="SalType"
